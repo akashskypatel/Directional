@@ -1,3 +1,48 @@
+## M3-CP4c3-TB18-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB18_Independent_Review_Record.md`, measures **BT0-BT9** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BT0.** Source `57635e87` exists, is an ancestor of HEAD, **no code drift**; selector 383 recomputes to
+  `a7fe57cc...6f3a4b2c` with 383 identities, selector 382 an exact prefix, accepted 365-prefix unchanged; pre/post
+  package census identical. TB18's attempt-1 stop at ordinal 40 is an **orchestration** event, correctly handled:
+  the revision verified and copied forward ordinals 1-39 and recorded `rerun_completed_ordinals=false`.
+- **BT2 - mechanism measured.** At `(0,1,102)`: actual **1**, `k` **1**, expected **2**, low by exactly one; one
+  untruncated incidence `trace=1 arc=15 segment=4`, `incomingCarrier=none`, `outgoingCarrier=0-102`,
+  `forwardOrbit=reverseOrbit=0`, neither exterior-dropped; three edge rows each `[0]`. Exterior filtering and both
+  high-side mechanisms are **eliminated** for this witness; **shared global orbit ownership** is selected.
+- **BT3 - what the incidence is.** Segment 4 is not segment 0, so not the trace's port origin: one of CB19's 48
+  vertex transits. The carrier-less branch binds the corner opposite the outgoing carrier - **vertex 1**, degree 6,
+  angle defect 0, a regular vertex on two 90-degree sharp edges. The chord separates the triangle locally.
+- **BT4 - shared ownership is legitimate, so the check is unsound.** The face walk is the canonical rotation-system
+  face permutation, validated total; its orbits are its cycles and it cannot fuse darts a valid rotation system
+  separates. Two darts of one arc share an orbit exactly when the arc is a bridge or non-separating - both
+  legitimate. `|owners| = k+1` is therefore not an invariant of any valid input; the sound relation is
+  `|owners| <= localFragmentCount`. The residual "the rotation system is wrong" reading is unsupported and, more
+  decisively, irrelevant: a validation that cannot distinguish legitimate topology from a defect is replaced, not
+  tuned.
+- **BT5 - BS9-5 RETIRED.** The missing `fragment_reconciliation` line is fully explained: CB20 implemented BS4 as
+  written ("when diagnostics are enabled"), and `fragment_diagnostics_enabled()` reads
+  `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`, which the artifact-only runner never sets. The record prints exactly
+  the three values BS1 already retained and TB18 published (1/1/2), so the measure asked for a text duplicate of
+  typed evidence. **Discharged as satisfied in substance; nothing is owed; BS4 is closed as correctly implemented.**
+- **BT6 - accepted-boundary safety proved by construction.** The validation loop is pure: it returns a failure or
+  falls through and mutates nothing. `size > expected` holds on a strict subset of `size != expected`, so the
+  failing set only shrinks and every previously-passing input is byte-identical. 1-365 are 365/365, so the accepted
+  boundary cannot move. Downstream, `fragmentOrbits[face]` is consumed only to register face-to-region membership,
+  which is correct under shared ownership.
+- **BT8 - product correction AUTHORIZED:** **`M3-CP4c-3-CB21`** under **BU0-BU9**. One comparison changes to `>`;
+  the low-side deficit, a locally computed (non-fatal) fragment count and a bridge/orbit census are added as
+  evidence. **No further diagnostic-only turn is authorized on this surface.**
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **84**.
+
+## M3-CP4c3-TB18-REV-CAND-01 - the sound local-fragment invariant is not yet established - **NEW / ACTIVE / EVIDENCE / NON-STABLE**
+
+Replacing `|owners| = k+1` with a locally computed fragment count is sound only if a triangle with `k` chords has
+exactly `k+1` local fragments, which holds only when no two chords cross inside the face. Nothing in the design or
+the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without making the local count fatal;
+`M3-CP4c-3-TB19-REV` owns promotion to fatal and the closure of this candidate.
+
 ## M3-CP4c3-TB18 — fragment mismatch mechanism measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** CB20 source `57635e87306a416daabb8321e1f36fa9c788d208`, compile artifact `9903305256`, selector 383; final run/job `33785382790 / 100748821924`; result/log artifacts `9905330011 / 9905330748`; ledger `a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`.
@@ -77,7 +122,7 @@
 - **Postflight:** package census identical at `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; all build/repair/discovery/mutation/benchmark flags false.
 - **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **84**. Exact next owner: `M3-CP4c-3-TB17-REV` BRQ0–BRQ8.
 
-## M3-CP4c3-TB17-CAND-01 - face-local fragment cardinality is compared to distinct global face-walk owners — **ACTIVE / GATING / MECHANISM RUNTIME-MEASURED / CONTRACT UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB17-CAND-01 - face-local fragment cardinality is compared to distinct global face-walk owners — **ACTIVE / GATING / OWNER PROVED AT TB18-REV / CORRECTION AUTHORIZED UNDER BU1-BU2 / NON-STABLE**
 
 - **Observed:** TB18 ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at `(0,1,102)` with actual/trace/expected **`1 / 1 / 2`**. Accepted 1–365 remains 365/365. The same downstream stop is reached by 367/371/372.
 - **Retained incidence:** exactly one real chord is reported, untruncated: trace 1 / arc 15 / segment 4 / Forward, incoming carrier absent, outgoing carrier `0-102`; forward orbit `0`, reverse orbit `0`; neither side is dropped by the exterior filter. Every failing-face edge-evidence row contains only orbit `0`.

@@ -44,6 +44,14 @@ At the end of every turn:
 12. **`.agents/Directional/ORIENTATION.md` is DURABLE and must be updated at every REVIEW turn.** It is the cold-start context document: architecture, current position, witnesses, open problems, recurring defect patterns and source pointers, deliberately **substance-only** with no procedural content. It may be corrected or extended; it must not be deleted, renamed away, collapsed into another document, or replaced by a summary without explicit user authorization. Every REVIEW turn updates its currency line, "where we are", the witness table if a witness changed, open problems in priority order, and the recurring-defect section if the turn found a new pattern or instance. Authority: user instruction, preserved in `M3_CP4c_Consolidated_Record.md` §6.6 and the 2026-08-29 R7-REV/DOC-R1 changelog entries.
 13. `[ChatGPT Web]` `RETENTION_POLICY.md`'s **downloadable work-preservation durability barrier is mandatory**. Any coherent repository-applicable work that exists only in the local/container workspace must be emitted as a File-Library-backed downloadable `Directional__<TURN-ID>__base-<12SHA>__work-preservation.patch` before entering tool-heavy remote orchestration or another interruption-risk phase. A local `/mnt/data` file alone is not durable. The patch is recovery material, not semantic/build/test authority.
 
+14. **Every REVIEW turn must perform document consolidation before closing** — `CLEAN_UP_POLICY.md`
+    §"Document consolidation — every REVIEW turn". Preserve each folded document's durable facts in a retained
+    record first, append its exact filename and verdict to the family's **folded document index**, retain one
+    current document per role plus every selector file, and repair live citations in the same turn. It is a
+    preservation procedure, not a reduction target, and it never reaches durable project authority, normative
+    definitions, policies, closure records or selector files. Authority: user instruction 2026-09-03, first
+    applied at `M3-CP4c-3-TB18-REV`.
+
 Do not add transcripts, chronological tool history, copied superseded artifact tables, obsolete task selections, or generic procedure already owned by policy/skill files. Concision never authorizes deletion of durable information.
 
 ## Mandatory start-of-turn checklist — DURABLE, DO NOT DELETE
@@ -93,84 +101,130 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB18-REV` — EXACT NEXT / independent REVIEW + PLAN only
+## Mandatory next turn — `M3-CP4c-3-CB21` — EXACT NEXT / Code + Build, PRODUCT CORRECTION
 
-`M3-CP4c-3-TB18` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**.
+`M3-CP4c-3-TB18-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` (measures **BT0–BT9** discharged, static only).
 
 ### TB18 immutable runtime authority
 
-- semantic/evidence source: **`57635e87306a416daabb8321e1f36fa9c788d208`**;
-- CB20 compile run/job: **`33780005014 / 100731152066`**;
-- compile artifact: **`9903305256`** (`sha256:06def1b690bf63391520392da9381088c2bf6529138b6e9f44816bf06996563a`);
-- selector 383: **`a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`**;
-- final TB18 run/job: **`33785382790 / 100748821924`**;
-- result artifact: **`9905330011`** (`sha256:c060eea3b1469c2ddc368bcf1d1d3a61c4ce35ad1de7bda249e11bdb566c5faa`);
-- log artifact: **`9905330748`** (`sha256:2bb5e0504d80b9f9d1f905d802a90980caedc47c42531664df7eb063a3c181c3`);
+- semantic/evidence source: **`57635e87306a416daabb8321e1f36fa9c788d208`** — ancestor of HEAD, **no code drift**;
+- CB20 compile run/job: **`33780005014 / 100731152066`**; compile artifact **`9903305256`**;
+- selector 383: **`a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`**, 383 identities, selector 382
+  an exact prefix, accepted 365 an exact prefix;
+- final TB18 run/job: **`33785382790 / 100748821924`**; result artifact **`9905330011`**; log artifact
+  **`9905330748`**;
 - exact result ledger: **`a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`**;
 - pre/post package byte+mode census: **IDENTICAL**, `5fb1dcf55b2850f5655e76a58b3a77e3b49c29b137c3773ebd416bbedb350eb8`;
 - selector result: **375 PASS / 8 RED**; accepted 1–365 **365/365 PASS**; reds 366/367/368/369/370/371/372/374.
 
-Attempt 1 `33784755615 / 100746771952` executed ordinals 1–39 PASS and stopped before ordinal 40 on a temporary
-owner-map omission. Its evidence was preserved; the successful revision verified those 39 results and resumed at 40
-without rerunning them.
+TB18's attempt-1 stop before ordinal 40 was an **orchestration** event, correctly handled: the revision verified
+attempt 1's artifact and per-ordinal log hashes, copied ordinals 1–39 forward, resumed at 40, and recorded
+`rerun_completed_ordinals=false`.
 
-### New deciding runtime evidence
+### What the review established
 
-Ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`, preserving CB20's no-semantic-
-change boundary. The production failure now reports:
+TB18 measured the deciding values through CB20's diagnostic projection. Ordinal 366 is unmoved -
+`TraceCutFaceFragmentCountMismatch` at `(0,1,102)` - which is itself the proof that CB20's BS7 boundary held.
 
-- `fragmentOrbitCount=1`;
-- `tracePieceCount=1`;
-- `expectedFragmentCount=2` — **actual < expected**;
-- one untruncated incidence: trace 1 / arc 15 / segment 4 / Forward, incoming `none`, outgoing `0-102`;
-- `forwardOrbit=0`, `reverseOrbit=0`;
-- `forwardExteriorDropped=false`, `reverseExteriorDropped=false`;
-- all three source edges (`1-102`, `0-1`, `0-102`) each retain exactly orbit `[0]`.
+- **The mechanism is measured and singular.** actual **1** / `k` **1** / expected **2**, low by exactly one; one
+  untruncated incidence `trace=1 arc=15 segment=4`, `incomingCarrier=none`, `outgoingCarrier=0-102`,
+  `forwardOrbit=0`, `reverseOrbit=0`, neither exterior-dropped; three edge rows each `[0]`. Exterior filtering and
+  both high-side mechanisms are **eliminated**; **shared global orbit ownership** is selected.
+- **The incidence is a vertex transit through a regular vertex.** Segment 4 is not segment 0, so not the trace's
+  port origin: one of CB19's 48 vertex transits. The carrier-less branch binds the corner opposite the outgoing
+  carrier - **vertex 1**, degree 6, angle defect 0, two 90-degree sharp edges. The chord separates the triangle
+  **locally**.
+- **Shared ownership is legitimate, not a merge defect.** The face walk is the canonical rotation-system face
+  permutation, validated total; its orbits are its cycles, so it cannot fuse darts a valid rotation system
+  separates. Two darts of one arc share an orbit exactly when the arc is a bridge or non-separating - both
+  legitimate. `|owners| = k+1` is therefore **not an invariant of any valid input**; the sound relation is
+  `|owners| <= localFragmentCount`.
+- **The correction is safe by construction.** The validation loop is pure - it returns a failure or falls through
+  and mutates nothing. `size > expected` holds on a strict subset of `size != expected`, so the failing set only
+  shrinks and every previously-passing input is byte-identical. 1-365 are 365/365, so the accepted boundary cannot
+  move. Downstream, `fragmentOrbits[face]` registers face-to-region membership only, correct under shared ownership.
+- **BS9-5 is RETIRED.** The missing `fragment_reconciliation` line sits behind
+  `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`, which the artifact-only runner never sets, and it prints exactly the
+  three values BS1 already retained (1/1/2). It asked for a text duplicate of typed evidence. Nothing is owed and
+  BS4 is closed as correctly implemented.
 
-For this witness the mismatch is therefore a **shared-global-owner collapse**, not exterior filtering: the two oriented
-sides of one real chord map to one global face-walk owner. TB18 records the mechanism but does **not** prescribe the
-replacement representation/invariant.
+`M3-CP4c3-TB17-CAND-01` transitions to **owner proved / correction authorized**. New
+`M3-CP4c3-TB18-REV-CAND-01`: the local-fragment invariant is `k+1` only if no two chords cross inside a face, which
+is unproved. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 co-reachers, vertex 30 and the
+finalize/contact fall-through are unchanged. **There is still no vertex-30 discriminator.**
 
-BS9-5 is **FAIL / diagnostic insufficiency**: the typed production failure retains the three-edge evidence, but the
-selector logs contain no `M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation` line for the failing face. The
-frozen plan forbids an ad-hoc evidence-seeking rerun.
+### CB21 binding scope — `BU0–BU9`, in the review record §11
 
-367/371/372 co-reach the same mismatch; 368 remains prescribed-sphere
-`TraceEventPositionInvalid / NoCarrierMatch / SourceEdgeUnavailable`; 369 remains saturation; 370 remains the
-`CellularityNotEstablished` / missing-locus surface; 374 remains `atlasBuild=false`.
+**Product correction - a loosening plus evidence.** Owner: `src/geometry/GlobalTopologyPlan.cpp`, the fragment-count
+validation loop in `build_regions` and the error it emits. First authorized product correction since CB19.
 
-### Exact review mandate
+- **BU0** - accepted 365 untouched; **selector 383 byte-frozen** at `a7fe57cc...6f3a4b2c`, republished unchanged;
+  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
+- **BU1** - **the only semantic change:** at `GlobalTopologyPlan.cpp:777-779` replace
+  `found->second.size() != expected` with `found->second.size() > expected`. The high side stays fatal and keeps its
+  full CB20 evidence payload. Nothing else in the loop changes.
+- **BU2** - retain the low-side deficit as **evidence, never as a failure**: per face the local fragment count, the
+  owner count, `deficit = expected - actual`, and the chords whose two sides share one owner.
+- **BU3** - compute the local fragment count **locally** from the face's own chord arrangement and retain it.
+  **It must not be fatal in CB21** - the safety proof covers a loosening only. Retain also whether any two of the
+  face's chords cross inside the face.
+- **BU4** - publish the **bridge / owner census**: per arc whether its forward and reverse darts share an orbit;
+  per trace whether it ends in a terminal slit; globally the total, exterior and non-exterior orbit counts.
+  Evidence only, bounded, with an explicit truncation marker.
+- **BU5** - one witness per new field through the **production** path, a witness pinning that a face with one chord
+  and one shared owner now passes the validation site, and a byte-identical high-side regression witness.
+- **BU6** - append **selector 384** with only the BU5 identities; no reordering; 383 stays an exact prefix.
+- **BU7** - **prohibited:** any change to `tracePieceCount`, `add_fragment_orbit`, the `exteriorOrbits` filter,
+  `is_terminal_slit`, `resolve_carrierless_corner_binding`, `build_fragment_corner_incidence`, the face walk, the
+  rotation system or region draft construction; any new fatal condition; any fixture mutation, tolerance,
+  float-derived decision or accepted-boundary relaxation; any revert of CB12-CB20; any sphere / saturation /
+  ordinal-370 / folded-cone / vertex-30 / finalize-contact work. **BS9-5 is retired - do not restore it.**
+- **BU8** - audit by assumption: reproduce the safety proof against the actual diff. Show the loop stays pure, the
+  new predicate is strictly weaker, and every new computation is observational.
+- **BU9** - six `M3-CP4c-3-TB19` discriminators: (1) 1-365 stay **365/365**; (2) **ordinal 366 no longer reds at
+  `TraceCutFaceFragmentCountMismatch`** and must move to a different site - not moving falsifies BU1; (3) 367/371/372
+  move with it; (4) the retained deficit at `(0,1,102)` is **1** with the shared-owner chord named; (5) the global
+  orbit census is published, including whether trace 1 ends in a terminal slit; (6) carried surfaces 368, 369, 370,
+  374 are unchanged.
 
-`M3-CP4c-3-TB18-REV` must independently adjudicate the representation contract. It must decide whether the product
-must carry local face-fragment identity separately from global region-orbit ownership or prove another invariant that
-is valid under shared owners, exterior filtering, and closed-surface topology. It must explicitly disposition the
-missing `fragment_reconciliation` text record and may not authorize a symptom-scoped count tweak, fixture exception,
-dedup bypass, exterior-filter weakening, or accepted-boundary relaxation without proof.
-
-Because this is a REVIEW turn, update `ORIENTATION.md` before closeout. No semantic Code + Build is pre-authorized by
-TB18.
+**No further diagnostic-only turn is authorized on this surface.** The successor after TB19 is an independent
+`M3-CP4c-3-TB19-REV`, which owns promotion of the local-fragment assertion to fatal.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **84**.
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **84**.
+
+**Document consolidation ran this turn** under the new standing rule (`CLEAN_UP_POLICY.md`). The TB17 report, the
+TB17 review record, the CB20 build report and the consumed TB18 plan were folded into
+`M3_CP4c_Consolidated_Record.md`'s folded document index after their durable facts were verified present in the
+retained records. Current authority is the TB18 report plus the TB18-REV record. No selector file, normative
+definition or policy was touched.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent REVIEW + PLAN guidance
+- turn-based-coding-agent CODE + BUILD guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first; update it during this REVIEW turn.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state and exact successor.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB18 evidence contract.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` — prior static owner-class adjudication.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions/amendments.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` — **frozen CB21 scope, §11 BU0–BU9**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
+5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
+   document index** resolves every folded per-turn plan, report and record, including the four folded at
+   `M3-CP4c-3-TB18-REV`.
 
-No runtime, compile, benchmark, product/test/fixture/selector mutation, or semantic correction is authorized in
-TB18-REV. It is independent review and planning only.
+Source surfaces CB21 will touch: `src/geometry/GlobalTopologyPlan.cpp` (the fragment-count validation loop, its
+error, and the evidence structures only), the plan error/diagnostics headers for the added typed fields, and
+`tests/` for the BU5 witnesses.
+
+**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
+`review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and
+`fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
@@ -234,4 +288,5 @@ before declaring the layer done.** A check at authoring time replaces a whole tu
 7. **On every REVIEW turn, update `.agents/Directional/ORIENTATION.md` before closing** — currency line, "where we are" including selector authority and stable accounting, the witness table if a witness changed, open problems in priority order, and the recurring-defect section if the turn found a new pattern or a new instance. It is durable; keep it substance-only.
 8. Confirm the handoff names exactly one next turn and the task index agrees with it.
 9. `[ChatGPT Web]` Make the final repository write one summarized PR #8 conversation comment after all branch/PR-description writes. No downloadable-artifact/tool emission may occur after that final comment.
+10. **On every REVIEW turn, perform document consolidation before closing** — fold superseded per-turn reports/review records/build reports/consumed plans into the family's consolidated record, index each folded filename with the verdict it carried, and repair live citations. Verify first that every durable fact already has a retained home. See `CLEAN_UP_POLICY.md`.
 

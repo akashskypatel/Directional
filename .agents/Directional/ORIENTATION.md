@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-02):** TB12 remains latest runtime at accepted 365/365 / first red 366; CB15 is current build authority on immutable package 83 / selector 379. Exact next is artifact-only `M3-CP4c-3-TB13`; CB15 makes no runtime-acceptance claim.
+> **Current CP4c-3 authority (2026-09-03):** TB18 is latest runtime on immutable package from source `57635e87` / selector **383** at **375 PASS / 8 RED**, accepted **365/365**, first red **366**. `M3-CP4c-3-TB18-REV` proved the fragment-count equality unsound and **authorized the correction**. Exact next is `M3-CP4c-3-CB21` under **BU0-BU9** - a loosening plus evidence, not a diagnostic turn.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -16,6 +16,8 @@ behind. The required update covers:
 3. **§4 the witness table** — if any witness's state changed;
 4. **§7 Open problems** — re-ordered by current priority, with resolved items removed;
 5. **§8 Recurring defect patterns** — if the turn found a new pattern or a new instance of an existing one.
+
+The same REVIEW turn also performs **document consolidation** under `CLEAN_UP_POLICY.md`; that is a repository-hygiene duty owned by policy, not by this document.
 
 **Keep it substance-only.** No turn workflow, no policies, no checklists, no transport or connector mechanics.
 That boundary is what makes this document cheap enough to read first, and it is the reason it exists.
@@ -183,233 +185,26 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB17-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
-selector **382** (`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`, 382 identities) whose first
-365 lines reproduce accepted `6b5b6555…cfc14b8a1`.
+**Current authority — TB18 / TB18-REV.** Accepted authority remains selector **365**
+(`6b5b6555…cfc14b8a1`). CP4c-3's frozen unaccepted gate is selector **383**
+(`a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`, 383 identities) whose first 382 lines
+reproduce selector 382 exactly and whose first 365 reproduce the accepted prefix.
 
-**TB17 is the latest semantic runtime evidence** (package 87, run/job `33770523736 / 100699356052`, ledger
-`7c446413…aa36b6fd`): **374 PASS / 8 RED**, ordinals **1–365 green**, first red **366** at
-`TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`; red set {366, 367, 368, 369, 370, 371, 372, 374};
-identical pre/post byte+mode census `0438202b…3dbcd518`.
+**TB18 is the latest semantic runtime evidence** (source `57635e87306a416daabb8321e1f36fa9c788d208`, run/job
+`33785382790 / 100748821924`, ledger `a99c31d8…9130604ed`): **375 PASS / 8 RED**, ordinals **1–365 green**, first
+red **366** at `TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`; red set
+{366, 367, 368, 369, 370, 371, 372, 374}; identical pre/post byte+mode census `5fb1dcf5…bbedb350eb8`.
 
-`M3-CP4c-3-TB17-REV` falsified the fragment equality, named the owner class, and froze the diagnostic-only
-**`M3-CP4c-3-CB20` under BS0–BS9** (§7 item 1). Stable accounting is **44 / 14 / 30**, produced-witness debt **5**,
-semantic M3 packages **84**. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, the
-finalize/contact fall-through and the vertex-30 evidence contract remain deferred under their own owners.
-**Vertex 30 is still not reached.**
+**The fragment-count invariant is now falsified with its mechanism measured.** The failing face reports
+`fragmentOrbitCount = 1`, `tracePieceCount = 1`, `expectedFragmentCount = 2` — low by exactly one — with a single
+untruncated incidence whose forward and reverse face-walk orbits are **both 0** and neither exterior-dropped.
+Exterior filtering and the high-side mechanisms are eliminated for this witness; **shared global orbit ownership**
+is selected. `M3-CP4c-3-TB18-REV` proved that shared ownership is legitimate topology rather than a merge defect,
+and froze the **product correction** `M3-CP4c-3-CB21` under BU0–BU9 (§7 item 1).
 
-**Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
-accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
-`first_red_ordinal` is comparable across the whole arc.
-
-| selector | SHA-256 |
-|---|---|
-| accepted 316 prefix | `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` |
-| accepted 346 prefix | `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a` |
-| accepted 353 prefix | `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5` |
-| accepted 355 | `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` |
-| CP4c-2 357 prefix (superseded as a gate; retained) | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` |
-| CP4c-2 358 (**withdrawn** as a gate; retained) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
-| CP4c-2 361 prefix (superseded by accepted 365; retained) | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
-| **accepted 365 (CP4c-2, closed at R10)** | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
-| CP4c-3 367 prefix (frozen at DEFN; superseded as a gate, retained) | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` |
-| CP4c-3 370 prefix (AL7 append; retained) | `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525` |
-| **CP4c-3 gate 373 (frozen at CB2 under AM8, unselected)** | `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` |
-| **CP4c-3 gate 374 (frozen at CB9 under AY6; current gate)** | `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f` |
-| CP4c-3 diagnostic 375 (one append) | `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0` |
-| CP4c-3 376 (one append) | `6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8` |
-| **CP4c-3 execution selector 377 (current, TB10)** | `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1` |
-| CP4c-3 execution selector 378 (TB12 diagnostics; frozen prefix) | `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8` |
-| **CP4c-3 execution selector 379 (current, CB15/TB13)** | `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7` |
-
-**All seventeen values are authority**, each recomputed from committed bytes — never transcribed. The current
-execution selector file `Architecture_M3_CP4c3_Required_Green_Selector_379.txt` is 379 lines / 379 unique identities; selector 378 is its exact 378-line prefix, and all earlier frozen prefixes remain byte-identical. CB15 recomputed selector 379 as `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7` without executing it.
-`Architecture_M3_CP4c1_Required_Green_Selector.txt` was retired in a cleanup and **no longer exists**; that is by
-design, because every accepted hash survives as a **prefix of its successor file**. Derive the older values from
-379 with `head -316`, `head -346`, `head -353`, `head -355`, `head -357`, `head -361`, `head -365`. 358 has its own
-retained file. **Every selector file reproduces all of its predecessor prefixes exactly**, which is what keeps
-`first_red_ordinal` comparable across the whole arc. **Recompute rather than copy**, validate every expected digest
-as exactly 64 lowercase hex at authoring, and never write one as `PREFIX…SUFFIX` where a value is expected: `PR8`
-orchestration defect `R7-ORCH-01` was four hashes expanded back to full length from abbreviations, one of them only
-63 characters long.
-
-
-**CP4c-2 CLOSED / ACCEPTED at 365/365.** R10 (run/job `33331453506 / 99310594268`) executed the frozen gate from
-ordinal 1 against immutable CB9 package `9736088354`, one identity per fresh process, with green immutable
-pre/postflight and every mutation and benchmark flag false. Accepted source
-`57444781af7bdc460e38cc68930a9a8c8199eeea`; package SHA-256 `78f542c7…0490ebdf`. Criteria **C1**, **C3** and **C6**
-are green.
-
-**What CP4c-2 did not deliver**, so the closure is not read as more than it is: the **prescribed sphere** still
-fails before cut selection and was outside the gate by recorded decision, so CP4c-2 closed with one of its three
-witnesses unable to reach A2b at all (§7 item 2); Amendment 14's **ordinary** trace-crossed proposal path is
-unexercised (§7 item 3); and the zero-node/zero-arc question was undecided (§7 item 4). All three passed to CP4c-3,
-which has now **gated the sphere** and **decided** the zero-node question.
-
-**The torus is done, and this is the checkpoint's headline result.** Ordinal 356 publishes `networkV=48`,
-`networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`; the independent oracle publishes actual graph
-`V/E/F = 72/76/4`. `72 − 48 = 24` added vertices and `76 − 48 = 28` added edges — **28 is exactly the producer's
-cut-edge count**, so producer and oracle agree term for term. A2a′ takes a closed genus-1 surface from a
-non-cellular network to a certified cellular embedding and A2b derives four regions. Criteria **C1**, **C3** and
-**C6** all hold on the produced torus (ordinals 356, 357, 362).
-
-Stable regression accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**;
-authoritative M3 packages **68**. `selected_r2_branch=NONE`; selector **365** is now accepted authority;
-`gate_execution_authorized=false`. TB1 added **+0 events / +0 recurrences**: ordinal 366 belongs to a gate that has
-never been accepted, and the accepted 365 prefix went green in that very run.
-
-**CP4c-3 is open, and its gate is frozen at 373** — accepted 365, plus criterion **C2** (ordinal 366) and criterion
-**C3**'s full torus-and-mechanical form (367), plus the inherited prescribed sphere (368), the ordinary
-trace-crossed proposal (369) and the typed empty-network rejection (370), plus Amendment 15's three self-checks
-(371–373). All eight are red or unreached today, which is correct for a required-green selector.
-`M3-CP4c-3-DEFN` also put the **prescribed sphere in the gate** after two checkpoints outside one, and decided
-`R8-CAND-02`.
-
-**TB3 packaging review is now decisive.** Package 71 never reached runtime. Raw CB3 artifact `9750227619` independently retains all six exact executable hashes with mode `0755`; final package 71 retains those bytes but exposes `0644`. The loss point is the fixture-packaging job's `actions/download-artifact@v4` materialization boundary. The correction is transport-only: package the immutable tree inside `tar.gz` so executable metadata survives outer Actions transport. Accepted authority remains CP4c-2 at **365/365**; CP4c-3 selector 373 is still frozen and runtime-unproved beyond the prior TB2 first-red history. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
-
-**Phase 1 is done and its answers are in.** `M3-CP4c-3-TB1` (run/job `33340448381 / 99335020672`, immutable CB1
-package `9739919234`, semantic source `48dd011c4aa689a245b74527ed9df0900ada9bf3`) re-proved the **accepted 365
-prefix green on package 68** and hard-stopped at ordinal **366** — a valid semantic red, with every immutability
-flag green and every configure/compile/relink/repair/benchmark/mutation flag false. Selector 367 is byte-identical
-to its freeze.
-
-- **Mechanical witness — cause ESTABLISHED, and it is an architectural disagreement, not a bug at a line.**
-  `IncompleteCycleBasis → CycleTransportAdjacencyMissing`, region `0`, source edge `0-3`,
-  `fieldTransportAdjacencyExists=false`. Edge `0-3` is a `HardFeature` **barrier**, established by elimination over
-  `FieldTransportAtlas::make`'s four adjacency buckets: `SourceBoundary` is excluded by `globalEF=1,158` (two
-  incident faces), `NonTraversable` by a region count of 1 over all 300 faces, and `adjacencies` by the measurement
-  itself. **The region decomposition and the traversability classification disagree about the same edge.** Regions
-  skip hard-feature edges when flood-filling, but skipping an adjacency **disconnects nothing unless the removed
-  edges actually separate**; here region 0 is all 300 faces with `boundaryLoops=0`, so the edge stays *interior* to
-  the local mesh (`localEF=1,158`), enters `innerAdjacencies` (450 = E), is spanned by the cycle basis, and the
-  transport walk demands the adjacency the atlas deliberately withheld. §7 item 1 carries the corrective options.
-- **Prescribed sphere — the measurement is one level short.** `RotationSystemInconsistent →
-  TraceEventPositionInvalid`, reached with source topology, atlas and network all available (24 traces / 56 events).
-  AK3 did exactly what it was asked, but `TraceEventPositionInvalid` is **itself a two-way collapse** whose two
-  branches need opposite fixes. AL3 resolves it; AL4 forbids designing across it. §7 item 2.
-- **The two causes do not share a locus** — A1 `FieldTransportAtlas` versus A2a′ `EmbeddedGraphTopology`, no shared
-  code and no shared datum — so they may be worked independently. That is what unblocked phase 2 for the mechanical
-  witness alone.
-- Frozen non-gating diagnostics ran in full: **0 PASS / 3 RED**, report-only. Three workflow controls failed in
-  preflight and executed no Directional runtime; one of them is the **third** occurrence of the `R7-ORCH-01`
-  malformed-digest defect, escalated from a reminder to a mechanism by AL8.
-
-**`M3-CP4c-3-TB5` moved the first red to a zero-candidate, zero-diagnostic locus — and that is the finding.**
-Run/job `33448925069 / 99674216849`, immutable package **74**, semantic source
-`49536cf7b4b261bd52f36a91c861b6459db356a4`. Ordinals **1–365 green**; ordinal 366 still
-`VertexTransitSectorUnresolved`, now at `sourceVertex=11`, face `(8,10,11)`, branch 1, region 0, `FaceInterior`,
-**`publishedFaceCount=0`**, `barrierAbsorbed=false`, `barrierIncident=false`, and **zero `vertexTransitState`
-rows**.
-
-- **It is a silent seed-drop, not an election.** CB6 made the BFS seed *conditional*
-  (`SurfaceCellTracing.cpp:659-667`): if the arrival pairing is missing or its direction fails to convert, `pending`
-  is empty, the loop never runs, `diagnostics` stays empty, and the function still returns "sector unresolved".
-  Four exits drop states without recording anything (§7 item 2). Vertex 11 is a structurally ordinary **regular**
-  vertex with a closed, consistently oriented 6-face fan — reproduced from the fixture — so zero examined states is
-  a defect in seeding, not in geometry.
-- **CB6 broke exactness to satisfy Amendment 17.** The "single datum" is carried as a **world-space `double`**:
-  exact barycentric → `to_double()` → normalized 3-vector → transported in doubles → `from_double_exact()` → fed to
-  the exact sector comparison. The comparison stayed exact; the datum did not. **Amendment 18** now governs this.
-- **Amendment 17 is masked, not cleared.** The stop precedes any election, so AS1's falsifier never ran and the
-  vertex-30 reconstruction remains untested.
-- **The sphere advanced:** ordinal 368 resolves to **`NoCarrierMatch / SourceEdgeUnavailable`** — AL3's
-  discriminator is answered, the ambiguity suspicion carried since TB1 is **dead**, and AL4's blocking condition is
-  discharged. **Ordinal 370 is classified**: the atlas's `NonIntegralCycleLift` rejection of a constant ambient
-  field on a closed torus is legitimate, so that witness is invalid, not the product.
-
-**`M3-CP4c-3-TB4` published the vertex-30 locus and falsified every mechanism the previous review named.** Run/job
-`33436492493 / 99634138202`, immutable package **73** (`9773591345`), semantic source
-`2d22ef293363058cfdca96d01158a93d2c0200f8`. Ordinals **1–365 green**; ordinal 366 still first-reds at
-`VertexTransitSectorUnresolved`, now with `sourceVertex=30`, arrival face `(24,30,32)`, `branch=1`, region 0,
-`arrivalMode=FaceInterior`, **two** candidate faces `(25,30,31)` and `(30,31,119)`, `barrierAbsorbed=false`,
-`barrierIncident=false`. CB5's typed locus channel (AP1) worked exactly as ordered — no fourth review had to
-recover a locus by elimination.
-
-- **All three enumerated mechanisms are dead.** M1 (zero candidates) — cardinality is 2. M3 (P2 consumer mismatch
-  at a barrier-absorbed vertex) — the vertex is neither absorbed nor barrier-incident. M2 (singular-vertex
-  holonomy) — vertex 30 is **regular**, reproduced from the committed fixture: six incident faces forming one
-  closed, consistently oriented fan, and Poincaré–Hopf closes with exactly the eight known index-`+1`
-  singularities (`4χ = 8`), so there are no others.
-- **A proof replaces the guesswork.** The half-open predicate `direction[next] > 0 && direction[prev] >= 0` is an
-  exact partition of the full turn: adjacent wedges share one ray, owned by the face where it is `next`. The two
-  candidates are **fan-adjacent**, sharing ray 30→31, which `(25,30,31)` owns. A single direction can elect at
-  most one wedge — **so the two elected states were tested against two geometrically distinct vectors.** They are
-  two representations of **one** semantic continuation, not two continuations.
-- **`AP6`'s report-only pass paid for itself immediately**, turning a three-turn blackout into four findings: 369
-  gives the first *runtime* confirmation of `saturationUsed=true`; 370 fails at its own precondition before its
-  contract; 373 passes only on a **synthetic** fixture; and 367/371/372 are **blocked upstream**, so Amendment 15's
-  arithmetic remains **unmeasured, not falsified**.
-- **`M3-CP4c-3-TB4-REV` declared Amendment 17.** See §7 item 1.
-
-**`M3-CP4c-3-TB3-R1` proved Amendment 16/P2 works, and A1 is clear end to end.** Run/job
-`33416686424 / 99568970224`, immutable mode-preserving package **72** (`9765247195`), semantic source
-`93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`. `MissingSingularityBranchTransport` is **gone**; the mechanical
-witness clears the cut transport domain, the tangent bundle, the cycle basis, index accounting **and** singularity
-port attachment, and first-reds for the first time in **A2a** at
-`NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`. **Ordinals 1–365 stayed green** through
-this second invasive A1 change, as they did through the first.
-
-- CB3 chose Amendment 16 policy **P2** on measured evidence: 8 prescribed singularities, **4 barrier-incident**,
-  all `InteriorArc` with `d_B(v)=2` and a 2-component star, now `PortPolicy::BarrierAbsorbed` and emitting no
-  ports; the other four (vertices **10, 35, 47, 71**) emit normally.
-- CB3's census also **statically confirms DEFN-R1's Theorem 2**: the mechanical barrier graph is a four-component
-  forest, `n=16`, `m=12`, `c=4`, `χ(B)=4`, **no cycles**. Static, not runtime — ordinals 371–373 still have never
-  executed.
-- **Cause of the new red is NOT established**, deliberately. The locus exists in the typed error and was discarded
-  by the pipeline's failure funnel (§7 item 7), so zero-versus-multiple candidates cannot be decided from this run.
-  Three mechanisms remain live and one measurement discriminates all three — see §7 item 1.
-- `M3-CP4c3-TB2-ORCH-01`, `M3-CP4c3-TB2-REV-CAND-01` and `M3-CP4c3-TB3-ORCH-01` are all **resolved and
-  runtime-proved** by package 72 and this run.
-
-**`M3-CP4c-3-TB2` proved Amendment 15 works, and that remains the prior stage's headline result.** Run `33355714664`,
-semantic package **69** (`9742715856`), semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, executed
-against fixture-only transport package **70**. The mechanical witness **advanced past `IncompleteCycleBasis`** —
-TB1's stop is gone, the cut transport domain is constructed, the tangent bundle initializes, the cycle basis is
-built and validated, and execution reaches a later stage of the same producer. **Ordinals 1–365 are green**, so a
-deeply invasive change to A1's local mesh construction regressed nothing in the accepted gate.
-
-- **New first red at ordinal 366: `MissingSingularityBranchTransport`** — and it is the *same architectural
-  disagreement one consumer later*. `build_singularity_attachments` (`FieldTransportAtlas.cpp:597-618`) walks the
-  ordered one-ring fan of a singular vertex and demands a branch transport on **every** radial edge;
-  `ordered_incident_fan` (`:351-402`) builds that fan from the **global** `sourceMesh.F` and *requires it to
-  close*; and `branchTransports` (`:304-342`, built at `:1827` from `adjacencies`) **excludes every barrier by
-  construction**. So a singular vertex incident to a hard feature fails by construction. Established by the same
-  elimination as TB1: the failing radial edge is not `SourceBoundary` (the domain is closed) and not
-  `NonTraversable` (one region over all 300 faces), so it is `HardFeature`.
-- **It is pre-existing and was merely unmasked — not a regression.** Call order is `build_branch_transports`
-  `:1827` → cycle-basis loop `:1865` → `build_singularity_attachments` `:2384`, so the cycle failure fired first at
-  TB1; and CB2's diff to that file begins at old line **842**, leaving all three functions untouched. The
-  mechanical witness simply got further.
-- **Amendment 15's own self-checks never ran.** First-red at 366 left ordinals 367–373 unexecuted, so the barrier
-  decomposition, the Euler cut identity and the unbound-singularity count are still **unmeasured**, and every
-  DEFN-R1 prediction remains unverified. The amendment is *effective* and *unverified* at once.
-- **`M3-CP4c-3-TB2-REV` declared Amendment 16**, generalizing 15 from the cycle basis to **every** A1 derivation
-  that walks transport. See §7 item 1.
-
-**`M3-CP4c-3-DEFN-R1` settled the normative question with Amendment 15 (`DESIGN.md` §7.2.1).** A region's face set
-and its published `euler_characteristic()` / `boundary_loop_count()` are facts about the **uncut** source complex
-and are unchanged; A1 instead derives its tangent bundle, cycle basis and index quantities from the region's
-**transport domain** — the region **cut along** `B(R) = { e ∈ hardFeatureEdges : both incident faces ∈ R }`. The
-cut lives in A1's derived local mesh, **not** in the region product, for three reasons: the region product
-literally cannot express an open slit (§7 item 1); it is the Amendment 14 precedent — an immutability guarantee
-constrains the writer, not a derived view; and it makes the two classifications agree **by construction** instead
-of by an unwritten assumption. The corrective is now defined; **`M3-CP4c-3-CB2` implements it under AM0–AM9**.
-
-**The gate is selector 365**, frozen by CB7 under AG7: selector 361 plus criterion C3's torus identity and the
-three Amendment-14 identities. Every prefix is byte-identical to its predecessor — 355, 357, 361 — so
-`first_red_ordinal` is comparable across the whole CP4c arc.
-
-- **361 is superseded** by 365 and retained for lineage; **357 is superseded**, not wrong — its two
-  `GlobalTopologyPlan` torus identities are retained in both.
-- **358 is withdrawn.** Its sole addition, `RotationSystemAndFaceWalkAgreeOnProducedWitnesses`, binds
-  `cp4c_mechanical_fixture()`, and the mechanical witness has no atlas and is out of CP4c-2 scope — a gate may not
-  bind a witness its own checkpoint excludes. Criterion **C3** survives: its torus half becomes its own identity
-  and enters the gate; the mechanical half moves to CP4c-3.
-- **Two of the four appended identities enter the gate red.** That is correct — a required-green selector says what
-  must be true for the checkpoint to close, not what happens to pass today.
-
-`selected_gate` is still **NONE** and `gate_execution_authorized` is still **false**: freezing a gate's bytes is not
-selecting it.
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **84**. Sphere 368,
+saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, the finalize/contact fall-through and the
+vertex-30 evidence contract remain deferred under their own owners. **Vertex 30 is still not reached.**
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -513,33 +308,35 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The face-fragment check compares a local count with a global owner cardinality — ACTIVE and gating; the
-   invariant is FALSIFIED, the correction is not yet decidable.** TB17's first red is
-   `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`. `M3-CP4c-3-TB17-REV` proved:
+1. **The face-fragment check compares a local count with a global owner cardinality — the invariant is
+   FALSIFIED, the mechanism is MEASURED, and the correction is AUTHORIZED.** The emitter is one comparison,
+   `GlobalTopologyPlan.cpp:777–779`: `fragmentOrbits[face].size() != tracePieceCount[face] + 1`.
 
-   - **One emitter, one comparison.** `GlobalTopologyPlan.cpp:779` tests
-     `fragmentOrbits[face].size() != tracePieceCount[face] + 1` and returns with `sourceFace` alone.
-   - **The equality is unsound.** Per real chord the loop adds **one** to `tracePieceCount` and inserts **two**
-     global orbit ids into a `std::set`. Equality with `k+1` assumes the local-fragment → global-owner map is
-     injective; nothing establishes that, and it is false in general on a closed surface. `add_fragment_orbit`
-     also drops `exteriorOrbits` members unconditionally.
-   - **Three mechanisms, opposite directions.** Shared global owner (low), exterior filtering (low),
-     non-collapsing chord sides or duplicated orbit evidence (high). `k = 1` is trivially satisfiable, so the
-     first exposing face has **two or more chords**.
-   - **The deciding numbers are computed and discarded.** `diagnostics->fragmentOrbits`, `tracePieceCount` and
-     `edgeOrbitEvidence` are filled and printed as `fragment_reconciliation` — for every face — **below** the
-     early return that needs them.
+   - **Measured at `(0,1,102)`:** actual **1**, `k` **1**, expected **2** — low by exactly one. The single
+     untruncated incidence is `trace=1 arc=15 segment=4`, `incomingCarrier=none`, `outgoingCarrier=0-102`,
+     `forwardOrbit=0`, `reverseOrbit=0`, neither exterior-dropped. All three edges of the face carry orbit `[0]`.
+   - **What the incidence is.** Segment 4 is not segment 0, so it is not the trace's port origin: it is one of
+     CB19's 48 vertex transits. The carrier-less branch binds the corner opposite the outgoing carrier, which for
+     `0-102` is **vertex 1** — degree 6, angle defect **0**, a *regular* vertex carrying two 90° sharp edges. The
+     chord runs corner-to-opposite-edge and separates the triangle **locally**.
+   - **Shared ownership is legitimate.** The face walk is the canonical `φ = σ⁻¹ ∘ α` permutation of the rotation
+     system, validated to be total (incidence count exactly 1 per dart, every successor assigned, every orbit
+     closing, no re-entry at a foreign start). Its orbits are its cycles, so it cannot fuse darts a valid rotation
+     system separates. Two darts of one arc share an orbit exactly when the arc is a bridge or is non-separating —
+     both legitimate. **Therefore `|owners| = k+1` is not an invariant of any valid input;** the sound relation is
+     `|owners| ≤ localFragmentCount`.
+   - **The correction is safe by construction.** The loop is pure validation — it returns a failure or falls
+     through, mutating nothing. `size > expected` is true on a strict subset of `size != expected`, so the failing
+     set only shrinks and every previously-passing input is byte-identical. 1–365 are 365/365, so the accepted
+     boundary cannot move.
 
-   `M3-CP4c-3-CB20` (BS0–BS9) is **diagnostic-only**: put actual / expected / `tracePieceCount` on the error,
-   retain the failing face's per-chord incidences with both orbit ids and any exterior-drop flag, publish the
-   face's `edgeOrbitEvidence`, and make the reconciliation record reachable on the failing path. **Prohibited:**
-   any semantic change — the comparison, `tracePieceCount`, `add_fragment_orbit`, the `exteriorOrbits` filter,
-   `is_terminal_slit`, `resolve_carrierless_corner_binding`, `build_fragment_corner_incidence`, `build_regions`
-   and all orbit/region construction stay untouched, and CB19 is not reverted.
+   `M3-CP4c-3-CB21` (BU0–BU9) changes **one** comparison to `>` and adds evidence: the low-side deficit, a
+   **locally** computed fragment count (retained, *not* fatal), and a bridge/orbit census. **Prohibited:** any
+   change to `tracePieceCount`, `add_fragment_orbit`, the `exteriorOrbits` filter, `is_terminal_slit`, the face
+   walk, the rotation system or region drafts; any new fatal condition; any revert of CB12–CB20.
 
-   *(The correct representation, for the turn after: count local fragments **locally**, and use orbit ids only for
-   ownership. Relaxing the equality to `≤` would silence a real check without restoring the missing one, and is
-   not authorized.)*
+   *(Open behind it: the local fragment count is `k+1` only if no two chords cross inside a face. Nothing yet
+   proves non-crossing — `M3-CP4c3-TB18-REV-CAND-01`.)*
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -607,6 +404,18 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A diagnostic is reachable only when both its position and its enabling condition hold on the failing path.**
+TB17-REV found the `fragment_reconciliation` record sitting thirty lines *below* the early return that needed it.
+CB20 moved it above the return — and it still never appeared, because it stays behind
+`getenv("DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS") == "1"`, which the frozen artifact-only gate runner never sets and
+is forbidden from setting. Position was fixed; reachability was not. `LESSONS.md` §4 97.
+
+**The two ends of a curve are asymmetric in the code and symmetric in the topology.** `is_terminal_slit` correctly
+removes a trace's last segment from the chord count — that segment materializes no chord. But what a free end
+actually establishes is a property of the **whole trace**: a dangling path separates nothing globally, so *every*
+chord that trace cuts also fails to produce a second owner. The exclusion fixes the last segment and leaves the
+preceding ones counted as if they separated. Fifth instance of the class. `LESSONS.md` §4 99.
 
 **A diagnostic that is unreachable on the failing path is not a diagnostic.** `build_regions` computes the actual
 fragment count, the piece count and the expected count for **every** face, and formats all three into a
@@ -1356,8 +1165,11 @@ The two-ring is constructed in the test file, not a fixture.
   `tracePieceCount` or the orbit set, so slits are excluded from **both** sides consistently. The mechanical
   witness has **10** terminal slits.
 - `build_regions` publishes a full `fragment_reconciliation` diagnostic — `source_face`, `fragment_orbit_count`,
-  `trace_piece_count`, `expected_fragment_count` — for every face, but only after all validation has passed. Any
-  early `return failure` in that function discards it.
+  `trace_piece_count`, `expected_fragment_count` — for every face after all validation passes, and since CB20 also
+  for the first failing face immediately before its early return. **Both are gated on
+  `fragment_diagnostics_enabled()`** (`GlobalTopologyPlan.cpp:81–84`), which reads
+  `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`; when unset, `diagnostics` is `nullptr` at `:1814–1816` and every
+  `M3_CP4AB_FRAGMENT_DIAG` record is suppressed. The artifact-only gate runner never sets it.
 - Face `(0,1,102)` is **mesh row 259**, stored corner order `(102,1,0)`. Vertex 0 is a chamfered box corner:
   degree 4, angle defect **1.767801150**, edge `0-1` a **90 degree** sharp edge shared by rows 0 and 259.
 - **CP4c document layout since 2026-09-03:** `M3_CP4c_Current_And_Forward.md` holds current state, the frozen
@@ -1366,4 +1178,20 @@ The two-ring is constructed in the test file, not a fixture.
   history). The six frozen-definition documents were merged **verbatim** into `M3_CP4c_Frozen_Definitions.md`
   (Parts I–VI, with a citation map from the former filenames; operative definitions are Part III for CP4c-2 and
   Part VI for CP4c-3). Every `Required_Green_Selector_*.txt` is untouched. All former `Architecture_M3_CP4ab_*`
-  references now resolve to `M3_CP4ab_Closure_Record.md`, which carries their index.
+  references now resolve to `M3_CP4ab_Closure_Record.md`, which carries their index. Since 2026-09-03 every
+  REVIEW turn folds its own superseded per-turn documents into that index under `CLEAN_UP_POLICY.md`.
+- The face walk at `EmbeddedGraphTopology.cpp:1698–1775` is the canonical rotation-system face permutation:
+  `successor[dart(reversed(inc))] = dart(rotation.counterClockwise[(index + count - 1) % count])`. It is validated
+  total before use — each dart has incidence count exactly 1, every successor is assigned, each orbit closes within
+  the dart budget, and `FaceWalkOrbitReenteredAtDifferentStart` rejects a foreign re-entry. **Its orbits are the
+  cycles of a permutation, so it cannot merge darts that a valid rotation system separates.**
+- Two darts of one arc share a face orbit exactly when the arc lies on no cycle (a bridge) or is non-separating in
+  the embedding. A pendant end anywhere on a trace makes every arc of that trace's path a bridge. The mechanical
+  witness has **10 terminal slits**, i.e. 10 pendant ends.
+- After validation, `fragmentOrbits[face]` is consumed only at `GlobalTopologyPlan.cpp:925–945`, to register the
+  face with the region draft of each owning orbit. A face whose two sides share one owner is registered once — the
+  correct membership under shared ownership — so loosening the count check introduces no downstream inconsistency.
+- Mechanical fixture, **vertex 1**: degree 6, angle defect **−0.000000000** (regular), edges `0-1` and `1-4` both
+  **90°** sharp; `0-1` shared by rows 0/259, `1-102` shared by rows 258/259. It is the corner the failing
+  carrier-less incidence binds to.
+- `kFragmentFailureEvidenceLimit = 8` bounds every retained fragment-failure evidence list.

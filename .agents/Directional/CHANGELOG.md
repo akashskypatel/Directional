@@ -1,3 +1,59 @@
+## 2026-09-03 — `M3-CP4c-3-TB18-REV`: fragment equality falsified with the shared owner proved legitimate; product correction authorized; REVIEW-turn document consolidation rule adopted
+
+Independent review of immutable TB18 evidence. Record:
+`Architecture_M3_CP4c3_TB18_Independent_Review_Record.md`, measures **BT0–BT9** discharged. Static only — no
+runtime, compile, link, package, benchmark, or product/test/fixture/selector mutation.
+
+Authority re-verified: source `57635e87306a416daabb8321e1f36fa9c788d208` exists, is an ancestor of HEAD and has
+**no code drift**; selector 383 recomputes to `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`
+with 383 identities, selector 382 an exact prefix and accepted `6b5b6555…cfc14b8a1` an exact 365-prefix. TB18's
+attempt-1 stop before ordinal 40 is confirmed an orchestration event, correctly handled with
+`rerun_completed_ordinals=false`.
+
+**The invariant is falsified and the correction is authorized.** The retained incidence at `(0,1,102)` is not the
+trace's port origin — segment 4 is not segment 0 — but one of CB19's 48 vertex transits, binding the corner
+opposite carrier `0-102`, which is **vertex 1**: degree 6, angle defect 0, two 90° sharp edges. The chord separates
+the triangle locally. The face walk at `EmbeddedGraphTopology.cpp:1698–1775` is the canonical rotation-system face
+permutation, validated total, so its orbits are the cycles of a permutation and it cannot fuse darts a valid
+rotation system separates; two darts of one arc share an orbit exactly when the arc is a bridge or is
+non-separating, both legitimate. `|owners| = k+1` is therefore not an invariant of any valid input, and the sound
+relation is `|owners| ≤ localFragmentCount`.
+
+**Accepted-boundary safety is proved by construction, not argued.** The validation loop is pure — it returns a
+failure or falls through, mutating nothing — and `size > expected` holds on a strict subset of `size != expected`,
+so the failing set only shrinks and every previously-passing input is byte-identical. Ordinals 1–365 are 365/365,
+so the accepted boundary cannot move. Downstream, `fragmentOrbits[face]` registers face-to-region membership only,
+which is correct under shared ownership.
+
+**BS9-5 is RETIRED.** The missing `M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation` line is fully explained:
+CB20 implemented BS4 as written ("when diagnostics are enabled"), and `fragment_diagnostics_enabled()` at
+`GlobalTopologyPlan.cpp:81–84` reads `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`, which the artifact-only gate runner
+never sets and is forbidden from setting. The record prints exactly the three values BS1 already retained and TB18
+published (1/1/2), so the measure asked for a text duplicate of typed evidence. Nothing is owed; BS4 is closed as
+correctly implemented.
+
+Candidates: `M3-CP4c3-TB17-CAND-01` transitions to **owner proved / correction authorized under BU1–BU2**. New
+`M3-CP4c3-TB18-REV-CAND-01` — the local-fragment invariant is `k+1` only if no two chords cross inside a face,
+which is unproved; CB21 retains crossing evidence without making the local count fatal. Lessons **97–99** added.
+Static turn on an unaccepted surface: **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**,
+packages **84**; accepted authority **365/365**; CP4c-3 **OPEN**.
+
+Exact successor frozen: **`M3-CP4c-3-CB21`** under **BU0–BU9** — a one-comparison loosening plus evidence, the
+first authorized product correction since CB19. **No further diagnostic-only turn is authorized on this surface.**
+
+**Policy change — document consolidation on every REVIEW turn.** Authorized by the user on 2026-09-03 and codified
+in `CLEAN_UP_POLICY.md` §"Document consolidation — every REVIEW turn", cross-referenced from
+`RETENTION_POLICY.md`, and bound into the handoff's durable policy (item 14) and end-of-turn checklist (item 10).
+The rule is a preservation procedure, not a reduction target: durable facts must already have a retained home
+before anything is folded, each folded filename and verdict is indexed in the family's consolidated record, one
+current document per role is retained, live citations are repaired in the same turn, and durable project
+authority, normative definitions, policies, closure records and selector files are explicitly out of scope. First
+applied this turn: `Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md`,
+`Architecture_M3_CP4c3_TB17_Independent_Review_Record.md`, `Architecture_M3_CP4c3_CB20_Code_Build_Report.md` and
+`Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` — 4 documents, 615 lines — folded into
+`M3_CP4c_Consolidated_Record.md`'s folded document index, bringing its running total to 39 documents / 8945 lines.
+Their full text remains recoverable from git history.
+
 ## 2026-09-03 — `M3-CP4c-3-TB18`: shared global-owner fragment collapse measured; independent review next
 
 Artifact-only TB18 consumed immutable CB20 source/artifact `57635e87306a416daabb8321e1f36fa9c788d208 / 9903305256` with

@@ -26,43 +26,67 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB18-REV` (independent REVIEW + PLAN only)
+## Current focus — `M3-CP4c-3-CB21` (Code + Build, PRODUCT CORRECTION)
 
-`M3-CP4c-3-TB18` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**. Report:
-`Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB18-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` (**BT0–BT9** discharged, static only).
 
-TB18 consumed CB20 artifact `9903305256` at semantic source
-**`57635e87306a416daabb8321e1f36fa9c788d208`**. Final run/job **`33785382790 / 100748821924`** produced
-result/log artifacts **`9905330011 / 9905330748`**. Selector 383 completed **375 PASS / 8 RED**; accepted
-ordinals **1–365 remain 365/365 PASS**; the red set remains 366/367/368/369/370/371/372/374.
+TB18 measured the deciding values through CB20's diagnostic projection. Ordinal 366 is unmoved -
+`TraceCutFaceFragmentCountMismatch` at `(0,1,102)` - which is itself the proof that CB20's BS7 boundary held.
 
-Ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at `(0,1,102)` and now measures
-`fragmentOrbitCount=1`, `tracePieceCount=1`, `expectedFragmentCount=2`: **actual < expected**. The one retained
-real chord has `forwardOrbit=0`, `reverseOrbit=0`, and both exterior-drop flags false; all three face edges retain
-only orbit `0`. This runtime witness selects the **shared global-owner collapse** mechanism, not exterior filtering.
-No product correction is authorized from TB18 itself.
+- **The mechanism is measured and singular.** actual **1** / `k` **1** / expected **2**, low by exactly one; one
+  untruncated incidence `trace=1 arc=15 segment=4`, `incomingCarrier=none`, `outgoingCarrier=0-102`,
+  `forwardOrbit=0`, `reverseOrbit=0`, neither exterior-dropped; three edge rows each `[0]`. Exterior filtering and
+  both high-side mechanisms are **eliminated**; **shared global orbit ownership** is selected.
+- **The incidence is a vertex transit through a regular vertex.** Segment 4 is not segment 0, so not the trace's
+  port origin: one of CB19's 48 vertex transits. The carrier-less branch binds the corner opposite the outgoing
+  carrier - **vertex 1**, degree 6, angle defect 0, two 90-degree sharp edges. The chord separates the triangle
+  **locally**.
+- **Shared ownership is legitimate, not a merge defect.** The face walk is the canonical rotation-system face
+  permutation, validated total; its orbits are its cycles, so it cannot fuse darts a valid rotation system
+  separates. Two darts of one arc share an orbit exactly when the arc is a bridge or non-separating - both
+  legitimate. `|owners| = k+1` is therefore **not an invariant of any valid input**; the sound relation is
+  `|owners| <= localFragmentCount`.
+- **The correction is safe by construction.** The validation loop is pure - it returns a failure or falls through
+  and mutates nothing. `size > expected` holds on a strict subset of `size != expected`, so the failing set only
+  shrinks and every previously-passing input is byte-identical. 1-365 are 365/365, so the accepted boundary cannot
+  move. Downstream, `fragmentOrbits[face]` registers face-to-region membership only, correct under shared ownership.
+- **BS9-5 is RETIRED.** The missing `fragment_reconciliation` line sits behind
+  `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`, which the artifact-only runner never sets, and it prints exactly the
+  three values BS1 already retained (1/1/2). It asked for a text duplicate of typed evidence. Nothing is owed and
+  BS4 is closed as correctly implemented.
 
-TB18 BS9 discriminator 5 is **diagnostically insufficient**: the typed production failure retains the three-edge
-orbit evidence, but no `M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation` line was retained. The frozen TB18
-plan forbids an ad-hoc rerun/probe for missing diagnostic evidence.
+`M3-CP4c3-TB17-CAND-01` transitions to **owner proved / correction authorized**. New
+`M3-CP4c3-TB18-REV-CAND-01`: the local-fragment invariant is `k+1` only if no two chords cross inside a face, which
+is unproved. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 co-reachers, vertex 30 and the
+finalize/contact fall-through are unchanged. **There is still no vertex-30 discriminator.**
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB18-REV` — independent REVIEW + PLAN only**.
+Run **`M3-CP4c-3-CB21`** under §11 **BU0–BU9** of
+`Architecture_M3_CP4c3_TB18_Independent_Review_Record.md`. **Product correction — a loosening plus evidence.**
 
-- [ ] Treat TB18 selector 383 runtime evidence as immutable authority: 375 PASS / 8 RED, accepted 365/365.
-- [ ] Adjudicate the representation contract now that the failing face proves one real chord, two oriented sides,
-      one shared global orbit owner, and no exterior filtering.
-- [ ] Decide whether local fragment cardinality must be represented independently from global region-orbit ownership,
-      or whether a different proved invariant is required. Do not prescribe a symptom-scoped count tweak.
-- [ ] Account explicitly for all three edge-evidence rows and the absence of the `fragment_reconciliation` text record.
-- [ ] Preserve CB19 terminal-slit/carrier-less results and all carried 368/369/370/374 owners.
-- [ ] If and only if a corrective contract is proved accepted-safe enough to implement, freeze one bounded successor
-      Code + Build plan. Otherwise freeze the minimum diagnostic successor; do not guess.
-- [ ] Update `ORIENTATION.md` because this is a REVIEW turn.
+- [ ] **BU0** — selector 383 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
+- [ ] **BU1** — the only semantic change: `size != expected` becomes `size > expected` at
+      `GlobalTopologyPlan.cpp:777-779`.
+- [ ] **BU2** — retain the low-side deficit and the shared-owner chords as evidence, never as a failure.
+- [ ] **BU3** — compute the local fragment count **locally** and retain it, **non-fatal**; retain chord-crossing
+      evidence.
+- [ ] **BU4** — publish the bridge / orbit census: per-arc shared-dart flag, per-trace terminal-slit flag, and the
+      global total / exterior / non-exterior orbit counts.
+- [ ] **BU5** — one witness per new field, a witness that one chord with one shared owner now passes, and a
+      byte-identical high-side regression witness.
+- [ ] **BU6** — append selector 384 with only the BU5 identities; 383 stays an exact prefix.
+- [ ] **BU7** — **prohibited:** `tracePieceCount`, `add_fragment_orbit`, the `exteriorOrbits` filter,
+      `is_terminal_slit`, `resolve_carrierless_corner_binding`, `build_fragment_corner_incidence`, the face walk,
+      the rotation system and region drafts stay untouched; no new fatal condition; no CB12–CB20 revert. **BS9-5 is
+      retired — do not restore it.**
+- [ ] **BU8** — audit by assumption; reproduce the safety proof against the actual diff.
+- [ ] **BU9** — publish the six `M3-CP4c-3-TB19` discriminators, chiefly that **ordinal 366 no longer reds at
+      `TraceCutFaceFragmentCountMismatch`**.
 
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains
-**44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **84**.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **84**.
 
 ## Carried forward from M1
 

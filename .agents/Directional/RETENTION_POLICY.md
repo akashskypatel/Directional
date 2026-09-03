@@ -4,7 +4,7 @@
 
 Define which project records are durable, which turn records may be retired, and the authorization required before durable information may be removed, weakened, consolidated, or replaced. This policy is maintained separately from `Future_Chat_Session_Handoff.md`.
 
-Repository cleanup mechanics are defined in `CLEAN_UP_POLICY.md`. GitHub Actions workflow and remote-artifact lifecycle rules are defined in `GitHub_Workflow_Policy.md`.
+Repository cleanup mechanics are defined in `CLEAN_UP_POLICY.md`, including the mandatory **document consolidation performed by every REVIEW turn** (user-authorized 2026-09-03; first applied at `M3-CP4c-3-TB18-REV`). That section is the standing authorization this policy requires for consolidation inside a REVIEW turn, and it is bounded: it never reaches durable project authority, normative definitions, policies, closure records or selector files, and it never authorizes replacing detailed authority with a summary. GitHub Actions workflow and remote-artifact lifecycle rules are defined in `GitHub_Workflow_Policy.md`.
 
 ## Durable project authority
 
@@ -117,6 +117,7 @@ This policy is durable and must remain in force unless the user explicitly chang
 - Protected information includes design, architecture, policy, remediation and roadmaps, plans, audit/review findings, regression/root-cause history, testing strategy, workflow/process rules, TODO/handoff recovery state, and any other record whose purpose is durable project memory.
 - Routine stale per-turn evidence cleanup applies only to records expressly classified as temporary after all necessary facts have been preserved. It never authorizes destructive edits to protected durable information.
 - Never remove, weaken, consolidate, reinterpret, or replace a durable document or mandatory instruction merely to reduce file count.
+- The REVIEW-turn document consolidation defined in `CLEAN_UP_POLICY.md` is the one standing exception to the authorization requirement above, and only within its written scope: superseded per-turn reports, review records, build reports and consumed plans, folded into their family's consolidated record with their exact filenames and verdicts indexed, after their durable facts are already retained elsewhere. It is a preservation procedure, not a reduction target, and it grants no authority over any document listed as durable project authority above.
 - Without the required authorization, edits must be additive or narrowly corrective and must preserve all prior durable meaning. If classification or authority is uncertain, stop and ask the user before editing.
 - Before an authorized destructive edit, inventory the information at risk, define the exact authorized scope, and verify the resulting diff against that scope.
 

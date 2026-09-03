@@ -1502,6 +1502,26 @@ building any conclusion on it.**
     enough to ship, false in general on a closed surface, and invisible until a face carries two chords. When a
     check compares a count against a set's cardinality, name the map between them and state why it is injective.
 
+97. **A diagnostic is reachable only when both its position and its enabling condition hold on the failing path.**
+    Lesson 95 caught a reconciliation record sitting below the early return that needed it. The next turn moved it
+    above the return and it still never appeared, because it remained behind an environment variable the frozen
+    artifact-only gate runner never sets and is forbidden from setting. Fixing position is half the work. When you
+    freeze a discriminator over a diagnostic, state the condition under which the evidence is produced, or require
+    evidence the production path emits unconditionally.
+
+98. **Never freeze a discriminator that asks for a text duplicate of data already carried in a typed envelope.**
+    The measure required three numbers from a log line - fragment orbit count, trace piece count, expected count -
+    that the same turn already retained and projected as three typed fields. Its failure carried no information and
+    cost a full turn's disposition. Before freezing a discriminator, ask what it would tell you that the typed
+    evidence does not.
+
+99. **The two ends of a curve are asymmetric in the code and symmetric in the topology.** The terminal-slit
+    exclusion correctly removes a trace's last segment from the chord count: that segment materializes no chord.
+    But a free end is a property of the **whole trace** - a dangling path separates nothing globally, so every
+    chord that trace cuts also fails to create a second region owner. The exclusion fixed the last segment and left
+    the preceding chords counted as if they separated. Fifth instance of "correct in the scope that produced it,
+    used in a scope that does not make it valid" (85, 87, 93, 96).
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

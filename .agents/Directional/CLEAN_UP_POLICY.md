@@ -30,6 +30,52 @@ Every Test + Benchmark turn must end by replacing stale evidence with current ev
 - Remove the consumed Test + Benchmark plan, the superseded preceding Code + Build report/plan, older superseded per-turn evidence, evidence indexes, machine summaries, and other records expressly classified as temporary after their durable facts have been preserved.
 - Never delete the current immutable source/package authority until its necessary facts are captured in the new authoritative report and the retained durable records appropriate to that information.
 
+## Document consolidation — every REVIEW turn — DURABLE, DO NOT DELETE
+
+**Authorized by the user on 2026-09-03 and binding for all future REVIEW turns.** First applied at
+`M3-CP4c-3-TB18-REV`.
+
+Every REVIEW turn must perform document consolidation before closeout, in addition to updating `ORIENTATION.md`.
+Consolidation is a *retention* action, not a reduction target: its purpose is that a cold-start agent finds one
+current document per role instead of an accumulating per-turn series.
+
+### Mandatory procedure
+
+1. **Preserve first, fold second.** Before any document is folded, verify that its durable facts already live in a
+   retained record: findings and adjudications in the current review record, root causes/candidates/stable IDs in
+   `Regression_Root_Cause_Tracker.md`, substance in `ORIENTATION.md`, generalizable rules in `LESSONS.md`, and
+   exact source/run/artifact/selector identities in the owning report and `CHANGELOG.md`. If a fact has no
+   retained home, create the home before folding.
+2. **Fold, do not delete silently.** Every folded document's exact filename is appended to the **folded document
+   index** of its family's consolidated record (`M3_CP4c_Consolidated_Record.md` for the CP4c family; the
+   corresponding closure record for a closed checkpoint) together with the verdict or role it carried. The full
+   text remains recoverable from git history; the index is what makes it findable.
+3. **Retain one current document per role.** After consolidation the family retains: the current runtime-authority
+   report, the current review record, exactly one next-turn plan, the consolidated historical record, the
+   consolidated normative definitions, and every byte-frozen selector file. Nothing else from the per-turn series.
+4. **Never fold current authority.** The current immutable source/package/runtime authority and the single frozen
+   next-turn plan are retained until superseded by their successors.
+5. **Repair references in the same turn.** After folding, rewrite live citations of the folded filenames to the
+   consolidated record (and its part/section where one exists). Historical citations tied to a cited commit may
+   remain as provenance when the retained record carries a resolver note naming the index that resolves them.
+6. **Verify the diff against the authorized scope.** Inventory what is at risk before the edit and confirm
+   afterwards that no durable document, explicitly durable section, policy, acceptance criterion, normative
+   definition, selector file, stable ID, artifact identity, unresolved blocker, failed-attempt lesson or
+   resume-critical state was removed or weakened.
+
+### Authorization boundary
+
+This section is the standing user authorization required by `RETENTION_POLICY.md` for consolidation performed
+**within a REVIEW turn and within the scope defined above**. It authorizes nothing else:
+
+- it does **not** authorize consolidating durable project authority, normative definitions, policies, closure
+  records or selector files — those move only under a separate, explicit user instruction naming them;
+- it does **not** authorize replacing detailed authority with a summary. Folding relocates findability; it never
+  substitutes a précis for a record whose detail is still load-bearing;
+- it does **not** extend to any other turn type. A CB or TB turn performs stale-evidence cleanup only.
+
+If classification or authority is uncertain, stop and ask the user before editing.
+
 ## Cleanup verification
 
 After cleanup:
