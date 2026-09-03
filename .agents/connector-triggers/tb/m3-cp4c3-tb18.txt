@@ -1,5 +1,6 @@
-Purpose: execute M3-CP4c-3-TB18 artifact-only on immutable CB20 compile artifact / selector 383.
+Purpose: resume M3-CP4c-3-TB18 artifact-only on immutable CB20 compile artifact / selector 383 after orchestration-only owner-map omission at ordinal 40.
 Package artifact: 9903305256
 Semantic source: 57635e87306a416daabb8321e1f36fa9c788d208
-Runtime: full selector 383 from ordinal 1, one identity per fresh process; no benchmark/build/repair/discovery/mutation.
-Retry: 0
+Runtime: preserve attempt-1 ordinals 1-39 as already executed fresh-process PASS evidence; resume at ordinal 40 without rerunning completed identities; no benchmark/build/repair/discovery/mutation.
+Attempt-1 run/result: 33784755615 / 9904975159
+Retry: 1
