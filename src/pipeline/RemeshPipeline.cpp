@@ -160,6 +160,26 @@ project_field_aligned_curve_network_failure_locus(
     return std::array<std::size_t, 2>{edge.first().index(),
                                       edge.second().index()};
   };
+  const auto source_support_locus = [&](const authority::SourceSupport &support) {
+    return std::visit(
+        [&](const auto &typedSupport) {
+          using Support = std::decay_t<decltype(typedSupport)>;
+          std::ostringstream out;
+          if constexpr (std::is_same_v<Support, authority::SourceVertexSupport>) {
+            out << "Vertex(" << typedSupport.vertex.index() << ')';
+          } else if constexpr (std::is_same_v<Support,
+                                              authority::SourceEdgeSupport>) {
+            const auto edge = topology_edge_locus(typedSupport.edge);
+            out << "Edge(" << edge[0] << '-' << edge[1] << ')';
+          } else {
+            const auto face = topology_face_locus(typedSupport.face);
+            out << "Face(" << face[0] << ',' << face[1] << ',' << face[2]
+                << ')';
+          }
+          return out.str();
+        },
+        support);
+  };
   const auto exact_string = [](const authority::FieldExactRational &value) {
     return value.numerator_string() + "/" + value.denominator_string();
   };
@@ -179,6 +199,8 @@ project_field_aligned_curve_network_failure_locus(
     locus.singularity = error.singularity->index();
   if (error.sourceFace.has_value())
     locus.sourceFace = topology_face_locus(*error.sourceFace);
+  if (error.singularity.has_value())
+    locus.singularity = error.singularity->index();
   if (error.relatedSourceFace.has_value())
     locus.relatedSourceFace = topology_face_locus(*error.relatedSourceFace);
   if (error.branch.has_value())
@@ -439,6 +461,25 @@ project_surface_cut_graph_failure_locus(
     locus.traceIncomingCarrier = topology_edge_locus(*error.traceIncomingCarrier);
   if (error.traceOutgoingCarrier.has_value())
     locus.traceOutgoingCarrier = topology_edge_locus(*error.traceOutgoingCarrier);
+  if (error.traceSegmentOrientation.has_value())
+    locus.traceSegmentOrientation =
+        *error.traceSegmentOrientation == authority::Orientation::Forward
+            ? "Forward"
+            : "Reverse";
+  locus.traceSegmentIndex = error.traceSegmentIndex;
+  locus.traceSegmentIsFirst = error.traceSegmentIsFirst;
+  if (error.traceSourcePort.has_value())
+    locus.traceSourcePort = error.traceSourcePort->index();
+  if (error.traceBoundCorner.has_value())
+    locus.traceBoundCorner = error.traceBoundCorner->index();
+  if (error.traceBoundCornerProvenance.has_value())
+    locus.traceBoundCornerProvenance =
+        geometry::trace_corner_binding_provenance_name(
+            *error.traceBoundCornerProvenance);
+  if (error.traceEntrySupport.has_value())
+    locus.traceEntrySupport = source_support_locus(*error.traceEntrySupport);
+  if (error.traceExitSupport.has_value())
+    locus.traceExitSupport = source_support_locus(*error.traceExitSupport);
   locus.edgeTraceContactIndex = error.edgeTraceContactIndex;
   if (error.edgeTraceOtherCarrier.has_value())
     locus.edgeTraceOtherCarrier = topology_edge_locus(*error.edgeTraceOtherCarrier);
@@ -6989,6 +7030,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       projected.sourceVertex = error.sourceVertex;
       projected.sourceEdge = error.sourceEdge;
       projected.sourceFace = error.sourceFace;
+      projected.singularity = error.singularity;
       projected.secondSourceFace = error.secondSourceFace;
       projected.arc = error.arc;
       projected.secondArc = error.secondArc;
@@ -7005,6 +7047,14 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       projected.traceOnePastLastSegment = error.traceOnePastLastSegment;
       projected.traceIncomingCarrier = error.traceIncomingCarrier;
       projected.traceOutgoingCarrier = error.traceOutgoingCarrier;
+      projected.traceSegmentOrientation = error.traceSegmentOrientation;
+      projected.traceSegmentIndex = error.traceSegmentIndex;
+      projected.traceSegmentIsFirst = error.traceSegmentIsFirst;
+      projected.traceSourcePort = error.traceSourcePort;
+      projected.traceBoundCorner = error.traceBoundCorner;
+      projected.traceBoundCornerProvenance = error.traceBoundCornerProvenance;
+      projected.traceEntrySupport = error.traceEntrySupport;
+      projected.traceExitSupport = error.traceExitSupport;
       projected.edgeTraceContactIndex = error.edgeTraceContactIndex;
       projected.edgeTraceOtherCarrier = error.edgeTraceOtherCarrier;
       projected.edgeTraceFaceCorners = error.edgeTraceFaceCorners;

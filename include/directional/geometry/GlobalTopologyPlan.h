@@ -18,6 +18,7 @@
 #include <Eigen/Core>
 
 #include <directional/authority/AuthorityIds.h>
+#include <directional/authority/SourceSupport.h>
 #include <directional/geometry/SourceTopologyRegions.h>
 #include <directional/geometry/RotationSystemDiagnostics.h>
 #include <directional/geometry/SurfaceCellTracing.h>
@@ -246,6 +247,12 @@ enum class TraceEventPositionPass : std::uint8_t {
   SourceEdgeUnavailable = 2,
 };
 
+/** Exact authority used to bind a carrier-less trace segment to a face corner. */
+enum class TraceCornerBindingProvenance : std::uint8_t {
+  TraceOrigin = 0,
+  SegmentEntrySupport = 1,
+};
+
 enum class TraceEventPositionCarrierRole : std::uint8_t {
   Incoming = 0,
   Outgoing = 1,
@@ -291,6 +298,14 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> traceOnePastLastSegment;
   std::optional<authority::SourceEdgeTopologyKey> traceIncomingCarrier;
   std::optional<authority::SourceEdgeTopologyKey> traceOutgoingCarrier;
+  std::optional<authority::Orientation> traceSegmentOrientation;
+  std::optional<std::size_t> traceSegmentIndex;
+  std::optional<bool> traceSegmentIsFirst;
+  std::optional<authority::SingularityPortId> traceSourcePort;
+  std::optional<authority::SourceVertexId> traceBoundCorner;
+  std::optional<TraceCornerBindingProvenance> traceBoundCornerProvenance;
+  std::optional<authority::SourceSupport> traceEntrySupport;
+  std::optional<authority::SourceSupport> traceExitSupport;
   std::optional<std::size_t> edgeTraceContactIndex;
   std::optional<authority::SourceEdgeTopologyKey> edgeTraceOtherCarrier;
   std::optional<std::array<authority::SourceVertexId, 3>> edgeTraceFaceCorners;
@@ -445,6 +460,8 @@ private:
     TraceEventPositionPass pass) noexcept;
 [[nodiscard]] const char *trace_event_position_carrier_role_name(
     TraceEventPositionCarrierRole role) noexcept;
+[[nodiscard]] const char *trace_corner_binding_provenance_name(
+    TraceCornerBindingProvenance provenance) noexcept;
 [[nodiscard]] std::uint64_t
     global_topology_plan_hash(const GlobalTopologyPlan &plan) noexcept;
 

@@ -2094,6 +2094,15 @@ std::optional<IndependentFragmentPartition> independent_fragment_partition(
       const auto &segment = trace->segments[segmentIndex];
       const auto face = topology->faces.find(segment.sourceFace);
       if (face == topology->faces.end()) return std::nullopt;
+      const bool terminalSlit =
+          !trace->terminalBarrier.has_value() &&
+          segmentIndex + 1U == trace->segments.size();
+      if (terminalSlit) {
+        // Independent oracle contract: the final no-barrier continuation is
+        // hypothetical and is not one of the k real chords that create k+1
+        // fragments in a source triangle.
+        continue;
+      }
       ++tracePieces[segment.sourceFace];
       traceTouchedEdges.insert(segment.outgoingCarrier);
       if (segment.incomingCarrier.has_value()) {
@@ -2127,10 +2136,18 @@ std::optional<IndependentFragmentPartition> independent_fragment_partition(
               .insert(sideOrbit);
         }
       } else {
+        const auto entrySupport = segment.entryPoint.source_support();
+        if (!entrySupport.has_value()) return std::nullopt;
+        const auto *entryVertex = std::get_if<
+            directional::authority::SourceVertexSupport>(&*entrySupport);
+        if (entryVertex == nullptr) return std::nullopt;
+        if (segmentIndex == 0U && entryVertex->vertex != trace->sourceVertex) {
+          return std::nullopt;
+        }
         std::optional<std::size_t> sourceCorner;
         for (std::size_t corner = 0U; corner < face->second.vertices.size();
              ++corner) {
-          if (face->second.vertices[corner] == trace->sourceVertex) {
+          if (face->second.vertices[corner] == entryVertex->vertex) {
             sourceCorner = corner;
             break;
           }
@@ -3520,6 +3537,40 @@ void append_cp4c_failure_locus(
     report << ";traceFirstSegment=" << *locus.traceFirstSegment;
   if (locus.traceOnePastLastSegment.has_value())
     report << ";traceOnePastLastSegment=" << *locus.traceOnePastLastSegment;
+  if (!locus.traceSegmentOrientation.empty())
+    report << ";traceSegmentOrientation=" << locus.traceSegmentOrientation;
+  if (locus.traceSegmentIndex.has_value())
+    report << ";traceSegmentIndex=" << *locus.traceSegmentIndex;
+  if (locus.traceSegmentIsFirst.has_value())
+    report << ";traceSegmentIsFirst="
+           << (*locus.traceSegmentIsFirst ? "true" : "false");
+  if (locus.traceSourcePort.has_value())
+    report << ";traceSourcePort=" << *locus.traceSourcePort;
+  if (locus.traceBoundCorner.has_value())
+    report << ";traceBoundCorner=" << *locus.traceBoundCorner;
+  if (!locus.traceBoundCornerProvenance.empty())
+    report << ";traceBoundCornerProvenance="
+           << locus.traceBoundCornerProvenance;
+  if (!locus.traceEntrySupport.empty())
+    report << ";traceEntrySupport=" << locus.traceEntrySupport;
+  if (!locus.traceExitSupport.empty())
+    report << ";traceExitSupport=" << locus.traceExitSupport;
+  if (locus.traceSegmentIndex.has_value()) {
+    report << ";traceIncomingCarrier=";
+    if (locus.traceIncomingCarrier.has_value()) {
+      report << (*locus.traceIncomingCarrier)[0] << '-'
+             << (*locus.traceIncomingCarrier)[1];
+    } else {
+      report << "none";
+    }
+    report << ";traceOutgoingCarrier=";
+    if (locus.traceOutgoingCarrier.has_value()) {
+      report << (*locus.traceOutgoingCarrier)[0] << '-'
+             << (*locus.traceOutgoingCarrier)[1];
+    } else {
+      report << "none";
+    }
+  }
   if (locus.arc.has_value()) report << ";arc=" << *locus.arc;
   if (locus.secondArc.has_value()) report << ";secondArc=" << *locus.secondArc;
   if (locus.trace.has_value()) report << ";trace=" << *locus.trace;
@@ -5157,6 +5208,65 @@ void append_plan_error(std::ostringstream &stream,
     stream << ";traceFirstSegment=" << *error.traceFirstSegment;
   if (error.traceOnePastLastSegment.has_value())
     stream << ";traceOnePastLastSegment=" << *error.traceOnePastLastSegment;
+  if (error.traceSegmentOrientation.has_value()) {
+    stream << ";traceSegmentOrientation="
+           << (*error.traceSegmentOrientation ==
+                       directional::authority::Orientation::Forward
+                   ? "Forward"
+                   : "Reverse");
+  }
+  if (error.traceSegmentIndex.has_value())
+    stream << ";traceSegmentIndex=" << *error.traceSegmentIndex;
+  if (error.traceSegmentIsFirst.has_value())
+    stream << ";traceSegmentIsFirst="
+           << (*error.traceSegmentIsFirst ? "true" : "false");
+  if (error.traceSourcePort.has_value())
+    stream << ";traceSourcePort=" << error.traceSourcePort->index();
+  if (error.traceBoundCorner.has_value())
+    stream << ";traceBoundCorner=" << error.traceBoundCorner->index();
+  if (error.traceBoundCornerProvenance.has_value()) {
+    stream << ";traceBoundCornerProvenance="
+           << directional::geometry::trace_corner_binding_provenance_name(
+                  *error.traceBoundCornerProvenance);
+  }
+  const auto append_support = [&](const char *label,
+                                  const directional::authority::SourceSupport &support) {
+    stream << ';' << label << '=';
+    std::visit(
+        [&](const auto &typedSupport) {
+          using Support = std::decay_t<decltype(typedSupport)>;
+          if constexpr (std::is_same_v<
+                            Support,
+                            directional::authority::SourceVertexSupport>) {
+            stream << "Vertex(" << typedSupport.vertex.index() << ')';
+          } else if constexpr (std::is_same_v<
+                                   Support,
+                                   directional::authority::SourceEdgeSupport>) {
+            stream << "Edge(" << source_edge_locus(typedSupport.edge) << ')';
+          } else {
+            stream << "Face(" << source_face_locus(typedSupport.face) << ')';
+          }
+        },
+        support);
+  };
+  if (error.traceEntrySupport.has_value())
+    append_support("traceEntrySupport", *error.traceEntrySupport);
+  if (error.traceExitSupport.has_value())
+    append_support("traceExitSupport", *error.traceExitSupport);
+  if (error.traceSegmentIndex.has_value()) {
+    stream << ";traceIncomingCarrier=";
+    if (error.traceIncomingCarrier.has_value()) {
+      stream << source_edge_locus(*error.traceIncomingCarrier);
+    } else {
+      stream << "none";
+    }
+    stream << ";traceOutgoingCarrier=";
+    if (error.traceOutgoingCarrier.has_value()) {
+      stream << source_edge_locus(*error.traceOutgoingCarrier);
+    } else {
+      stream << "none";
+    }
+  }
   const auto append_plan_ray = [&](
       const char *label,
       const directional::geometry::RotationRayOrderDiagnostic &ray) {
@@ -5939,6 +6049,96 @@ std::string cp4c_grazing_trace_multiplicity_census(
 
 // CP4c witness idiom 2/3: loaded production fixtures consume retained
 // productSnapshots; strict callers additionally require A2b products.
+struct TraceSegmentContractObservation {
+  std::size_t nonFirstCarrierlessCount = 0U;
+  std::size_t nonFirstCarrierlessDistinctOriginCount = 0U;
+  std::size_t terminalSlitCount = 0U;
+  std::string positiveWitness;
+  std::string terminalSlitWitness;
+};
+
+TraceSegmentContractObservation observe_trace_segment_contract(
+    const TriMesh &mesh, const FieldAlignedCurveNetwork &network) {
+  TraceSegmentContractObservation observation;
+  const auto topology = independent_source_topology(mesh);
+  if (!topology.has_value()) return observation;
+
+  for (const auto &trace : network.candidate_traces()) {
+    for (std::size_t segmentIndex = 0U;
+         segmentIndex < trace.segments.size(); ++segmentIndex) {
+      const auto &segment = trace.segments[segmentIndex];
+      const bool terminalSlit =
+          !trace.terminalBarrier.has_value() &&
+          segmentIndex + 1U == trace.segments.size();
+      if (terminalSlit) {
+        ++observation.terminalSlitCount;
+        if (observation.terminalSlitWitness.empty()) {
+          std::ostringstream out;
+          out << "trace=" << trace.id.index() << ",segment=" << segmentIndex
+              << ",sourceFace=" << source_face_locus(segment.sourceFace)
+              << ",outgoing=" << source_edge_locus(segment.outgoingCarrier)
+              << ",realChordContribution=0";
+          observation.terminalSlitWitness = out.str();
+        }
+      }
+      if (segmentIndex == 0U || segment.incomingCarrier.has_value()) continue;
+      ++observation.nonFirstCarrierlessCount;
+
+      const auto support = segment.entryPoint.source_support();
+      const auto *entryVertex = support.has_value()
+                                    ? std::get_if<
+                                          directional::authority::SourceVertexSupport>(
+                                          &*support)
+                                    : nullptr;
+      if (entryVertex == nullptr || entryVertex->vertex == trace.sourceVertex) {
+        continue;
+      }
+      ++observation.nonFirstCarrierlessDistinctOriginCount;
+      if (!observation.positiveWitness.empty()) continue;
+
+      const auto face = topology->faces.find(segment.sourceFace);
+      if (face == topology->faces.end()) continue;
+      std::optional<std::size_t> corner;
+      for (std::size_t candidate = 0U;
+           candidate < face->second.vertices.size(); ++candidate) {
+        if (face->second.vertices[candidate] == entryVertex->vertex) {
+          corner = candidate;
+          break;
+        }
+      }
+      const auto outgoing = independent_local_edge_index(
+          face->second, segment.outgoingCarrier);
+      if (!corner.has_value() || !outgoing.has_value() ||
+          *outgoing != (*corner + 1U) % 3U) {
+        continue;
+      }
+      const auto forwardEdge = face->second.edges[(*corner + 2U) % 3U];
+      const auto reverseEdge = face->second.edges[*corner];
+      std::ostringstream out;
+      out << "trace=" << trace.id.index() << ",segment=" << segmentIndex
+          << ",sourceFace=" << source_face_locus(segment.sourceFace)
+          << ",traceOrigin=" << trace.sourceVertex.index()
+          << ",entryCorner=" << entryVertex->vertex.index()
+          << ",provenance=SegmentEntrySupport"
+          << ",forwardEvidenceEdge=" << source_edge_locus(forwardEdge)
+          << ",reverseEvidenceEdge=" << source_edge_locus(reverseEdge);
+      observation.positiveWitness = out.str();
+    }
+  }
+  return observation;
+}
+
+void append_trace_segment_contract_observation(
+    std::ostream &out, const TraceSegmentContractObservation &observation) {
+  out << ";traceSegmentContract={nonFirstCarrierless="
+      << observation.nonFirstCarrierlessCount
+      << ",nonFirstCarrierlessDistinctOrigin="
+      << observation.nonFirstCarrierlessDistinctOriginCount
+      << ",terminalSlits=" << observation.terminalSlitCount
+      << ",positive={" << observation.positiveWitness << "}"
+      << ",terminal={" << observation.terminalSlitWitness << "}}";
+}
+
 Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
     const std::string &fixtureStem, const std::string &fixtureName) {
   Cp4cProductionFixture fixture;
@@ -5994,6 +6194,10 @@ Cp4cProductionFixture build_cp4c_production_fixture(
             << fixture.terminalFailureStage
             << ";detailCode=" << fixture.terminalFailureDetailCode;
     append_cp4c_failure_locus(failure, fixture.terminalFailureLocus);
+    if (fixture.network.has_value()) {
+      append_trace_segment_contract_observation(
+          failure, observe_trace_segment_contract(fixture.mesh, *fixture.network));
+    }
     if (fixture.atlasError.has_value()) {
       failure << ';';
       append_atlas_error(failure, *fixture.atlasError);
@@ -8539,15 +8743,46 @@ TEST(GlobalTopologyPlan,
     (void)cp4c_mechanical_fixture();
   } catch (const std::runtime_error &error) {
     const std::string emitted = error.what();
-    for (const std::string &token :
-         std::vector<std::string>{";arc=", ";secondArc=", ";trace=",
-                                  ";secondTrace=", ";rotationPreviousRay={",
-                                  ";rotationCurrentRay={"}) {
+    for (const std::string &token : std::vector<std::string>{
+             ";traceSegmentContract={nonFirstCarrierless=",
+             ",nonFirstCarrierlessDistinctOrigin=", ",terminalSlits=",
+             ",positive={trace=", ",terminal={trace="}) {
       EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+    }
+    if (emitted.find("RegionTraceSourcePortCarrierNotAdmissible") !=
+            std::string::npos ||
+        emitted.find("TraceSourcePortCarrierNotAdmissible") !=
+            std::string::npos) {
+      for (const std::string &token : std::vector<std::string>{
+               ";arc=", ";trace=", ";sourceVertex=",
+               ";traceFirstSegment=", ";traceOnePastLastSegment=",
+               ";traceSegmentOrientation=Forward", ";traceSegmentIndex=",
+               ";traceSegmentIsFirst=false", ";traceSourcePort=",
+               ";traceBoundCorner=",
+               ";traceBoundCornerProvenance=SegmentEntrySupport",
+               ";traceEntrySupport=Vertex(", ";traceOutgoingCarrier="}) {
+        EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+      }
+    } else if (emitted.find("rotationSystemReason=") != std::string::npos) {
+      for (const std::string &token : std::vector<std::string>{
+               ";arc=", ";secondArc=", ";trace=", ";secondTrace=",
+               ";rotationPreviousRay={", ";rotationCurrentRay={"}) {
+        EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+      }
     }
     throw;
   }
   const auto &fixture = cp4c_mechanical_fixture();
+  const TraceSegmentContractObservation contract =
+      observe_trace_segment_contract(fixture.mesh, *fixture.network);
+  EXPECT_GT(contract.nonFirstCarrierlessCount, 0U);
+  EXPECT_GT(contract.nonFirstCarrierlessDistinctOriginCount, 0U);
+  EXPECT_GT(contract.terminalSlitCount, 0U);
+  EXPECT_FALSE(contract.positiveWitness.empty());
+  EXPECT_FALSE(contract.terminalSlitWitness.empty());
+  std::ostringstream contractReport;
+  append_trace_segment_contract_observation(contractReport, contract);
+  std::cout << "m3Cp4c3BR6" << contractReport.str() << '\n';
   ASSERT_NO_FATAL_FAILURE(assert_cp4c_mechanical_preconditions(fixture));
   ASSERT_NO_FATAL_FAILURE(expect_cp4c_plan_disc_proofs(fixture));
 }
@@ -10493,6 +10728,70 @@ TEST(GlobalTopologyPlan,
   EXPECT_FALSE(missingRank.has_value());
   EXPECT_EQ(EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound,
             failureReason);
+}
+
+TEST(GlobalTopologyPlan,
+     CarrierlessTraceIncidenceDiagnosticsSurviveProductionFailureProjection) {
+  using directional::authority::NetworkArcId;
+  using directional::authority::Orientation;
+  using directional::authority::SourceEdgeSupport;
+  using directional::authority::SourceSupport;
+  using directional::authority::SourceVertexSupport;
+  using directional::authority::TraceId;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+  using directional::geometry::SurfaceCutGraphError;
+  using directional::geometry::SurfaceCutGraphErrorCode;
+  using directional::geometry::TraceCornerBindingProvenance;
+
+  SurfaceCutGraphError error;
+  error.code = SurfaceCutGraphErrorCode::CellularityNotEstablished;
+  error.originatingTopologyError =
+      GlobalTopologyPlanErrorCode::RegionTraceSourcePortCarrierNotAdmissible;
+  error.sourceFace = topology_face(9, 11, 17, 80U);
+  error.sourceVertex = SourceVertexId::from_index(10U, 80U).value();
+  error.singularity = FieldSingularityId::from_index(0U, 4U).value();
+  error.arc = NetworkArcId::from_index(6U, 16U).value();
+  error.trace = TraceId::from_index(3U, 8U).value();
+  error.traceFirstSegment = 1U;
+  error.traceOnePastLastSegment = 4U;
+  error.traceSegmentOrientation = Orientation::Forward;
+  error.traceSegmentIndex = 2U;
+  error.traceSegmentIsFirst = false;
+  error.traceSourcePort = SingularityPortId::from_index(0U, 4U).value();
+  error.traceBoundCorner = SourceVertexId::from_index(11U, 80U).value();
+  error.traceBoundCornerProvenance =
+      TraceCornerBindingProvenance::SegmentEntrySupport;
+  error.traceEntrySupport = SourceSupport{
+      SourceVertexSupport{SourceVertexId::from_index(11U, 80U).value()}};
+  error.traceExitSupport = SourceSupport{
+      SourceEdgeSupport{topology_edge(11, 17, 80U)}};
+  error.traceIncomingCarrier = std::nullopt;
+  error.traceOutgoingCarrier = topology_edge(9, 11, 80U);
+
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_surface_cut_graph_failure_locus(error);
+  ASSERT_TRUE(locus.traceSegmentIndex.has_value());
+  EXPECT_EQ(2U, *locus.traceSegmentIndex);
+  ASSERT_TRUE(locus.traceSegmentIsFirst.has_value());
+  EXPECT_FALSE(*locus.traceSegmentIsFirst);
+  ASSERT_TRUE(locus.traceBoundCorner.has_value());
+  EXPECT_EQ(11U, *locus.traceBoundCorner);
+  EXPECT_EQ("SegmentEntrySupport", locus.traceBoundCornerProvenance);
+  EXPECT_EQ("Vertex(11)", locus.traceEntrySupport);
+  EXPECT_EQ("Edge(11-17)", locus.traceExitSupport);
+
+  const std::string emitted = production_cut_graph_error_locus(error);
+  for (const std::string &token : std::vector<std::string>{
+           "sourceFace=9,11,17", "sourceVertex=10", "singularity=0",
+           "arc=6", "trace=3", "traceFirstSegment=1",
+           "traceOnePastLastSegment=4", "traceSegmentOrientation=Forward",
+           "traceSegmentIndex=2", "traceSegmentIsFirst=false",
+           "traceSourcePort=0", "traceBoundCorner=11",
+           "traceBoundCornerProvenance=SegmentEntrySupport",
+           "traceEntrySupport=Vertex(11)", "traceExitSupport=Edge(11-17)",
+           "traceIncomingCarrier=none", "traceOutgoingCarrier=9-11"}) {
+    EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+  }
 }
 
 TEST(GlobalTopologyPlan,

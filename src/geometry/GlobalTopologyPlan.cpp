@@ -143,6 +143,93 @@ struct FragmentDiagnosticEvidence {
   std::vector<FragmentDiagnosticTraceSegment> traceSegments;
 };
 
+[[nodiscard]] bool is_terminal_slit(
+    const FieldAlignedCandidateTrace &trace,
+    const std::size_t segmentIndex) noexcept {
+  return !trace.terminalBarrier.has_value() &&
+         segmentIndex + 1U == trace.segments.size();
+}
+
+[[nodiscard]] std::optional<authority::SourceSupport> trace_segment_exit_support(
+    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
+  if (segmentIndex >= trace.segments.size()) return std::nullopt;
+  const auto &segment = trace.segments[segmentIndex];
+  if (segment.edgeTransitExit.has_value()) {
+    return segment.edgeTransitExit->source_support();
+  }
+  if (segmentIndex + 1U == trace.segments.size() &&
+      trace.terminalPoint.has_value()) {
+    return trace.terminalPoint->source_support();
+  }
+  return std::nullopt;
+}
+
+struct CarrierlessCornerBinding {
+  std::size_t sourceCorner = 0U;
+  authority::SourceVertexId boundCorner;
+  TraceCornerBindingProvenance provenance =
+      TraceCornerBindingProvenance::SegmentEntrySupport;
+};
+
+[[nodiscard]] std::optional<CarrierlessCornerBinding>
+resolve_carrierless_corner_binding(
+    const embedded_graph_topology_detail::SourceFaceRecord &face,
+    const FieldAlignedCandidateTrace &trace,
+    const std::size_t segmentIndex,
+    const FieldAlignedCandidateTraceSegment &segment) {
+  const auto entrySupport = segment.entryPoint.source_support();
+  if (!entrySupport.has_value()) return std::nullopt;
+  const auto *entryVertex =
+      std::get_if<authority::SourceVertexSupport>(&*entrySupport);
+  if (entryVertex == nullptr) return std::nullopt;
+
+  const bool firstSegment = segmentIndex == 0U;
+  if (firstSegment && entryVertex->vertex != trace.sourceVertex) {
+    return std::nullopt;
+  }
+
+  std::optional<std::size_t> sourceCorner;
+  for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
+    if (face.vertices[corner] == entryVertex->vertex) {
+      sourceCorner = corner;
+      break;
+    }
+  }
+  if (!sourceCorner.has_value()) return std::nullopt;
+
+  return CarrierlessCornerBinding{
+      *sourceCorner, entryVertex->vertex,
+      firstSegment ? TraceCornerBindingProvenance::TraceOrigin
+                   : TraceCornerBindingProvenance::SegmentEntrySupport};
+}
+
+void annotate_trace_segment_incidence(
+    GlobalTopologyPlanError &failure, const GlobalTopologyArc &arc,
+    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex,
+    const FieldAlignedCandidateTraceSegment &segment,
+    const std::optional<CarrierlessCornerBinding> &binding = std::nullopt) {
+  // Segment indices always traverse the candidate trace in its forward
+  // direction, independently of which face-walk side owns a resulting orbit.
+  failure.arc = arc.id;
+  failure.trace = trace.id;
+  failure.singularity = trace.singularity;
+  failure.sourceVertex = trace.sourceVertex;
+  failure.traceSourcePort = trace.port;
+  failure.traceSegmentOrientation = authority::Orientation::Forward;
+  failure.traceFirstSegment = arc.firstSegment;
+  failure.traceOnePastLastSegment = arc.onePastLastSegment;
+  failure.traceSegmentIndex = segmentIndex;
+  failure.traceSegmentIsFirst = segmentIndex == 0U;
+  failure.traceIncomingCarrier = segment.incomingCarrier;
+  failure.traceOutgoingCarrier = segment.outgoingCarrier;
+  failure.traceEntrySupport = segment.entryPoint.source_support();
+  failure.traceExitSupport = trace_segment_exit_support(trace, segmentIndex);
+  if (binding.has_value()) {
+    failure.traceBoundCorner = binding->boundCorner;
+    failure.traceBoundCornerProvenance = binding->provenance;
+  }
+}
+
 // Actual embedded-graph arc/rotation/orbit construction is owned by
 // EmbeddedGraphTopology.cpp and consumed here as the single pre-region authority.
 using namespace embedded_graph_topology_detail;
@@ -239,13 +326,11 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
         failure.sourceFace = segment.sourceFace;
         return failure;
       }
-      const bool terminalSlit =
-          !trace->terminalBarrier.has_value() &&
-          segmentIndex + 1U == trace->segments.size();
-      if (terminalSlit) {
+      if (is_terminal_slit(*trace, segmentIndex)) {
         // The retained outgoing carrier is only a hypothetical continuation.
-        // The frozen fragment/F authority remains untouched; this helper only
-        // omits the nonexistent chord from source-corner separation.
+        // A terminal slit is not a real face chord and contributes no fragment
+        // separation. build_regions() applies the same predicate before any
+        // fragment count, touched-edge, or orbit-evidence mutation.
         continue;
       }
       if (forwardOrbit == reverseOrbit) {
@@ -334,24 +419,21 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
         failure.sourceFace = segment.sourceFace;
         return failure;
       }
-      std::optional<std::size_t> sourceCorner;
-      for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
-        if (face.vertices[corner] == trace->sourceVertex) {
-          sourceCorner = corner;
-          break;
-        }
-      }
+      const auto binding = resolve_carrierless_corner_binding(
+          face, *trace, segmentIndex, segment);
       const auto outgoing = local_edge_index(face, segment.outgoingCarrier);
-      if (!sourceCorner.has_value() || !outgoing.has_value() ||
-          *outgoing != (*sourceCorner + 1U) % 3U) {
+      if (!binding.has_value() || !outgoing.has_value() ||
+          *outgoing != (binding->sourceCorner + 1U) % 3U) {
         GlobalTopologyPlanError failure =
             error(GlobalTopologyPlanErrorCode::TraceSourcePortCarrierNotAdmissible);
-        failure.arc = arc.id;
         failure.sourceFace = segment.sourceFace;
+        annotate_trace_segment_incidence(failure, arc, *trace, segmentIndex,
+                                         segment, binding);
         return failure;
       }
       raysByFace[segment.sourceFace].push_back(
-          RayCut{port->ordinal, forwardOrbit, reverseOrbit, *sourceCorner});
+          RayCut{port->ordinal, forwardOrbit, reverseOrbit,
+                 binding->sourceCorner});
     }
   }
 
@@ -603,6 +685,13 @@ RegionBuildResult build_regions(
         failure.sourceFace = segment.sourceFace;
         return failure;
       }
+      if (is_terminal_slit(*trace, segmentIndex)) {
+        // No source-face chord was materialized: the retained outgoing carrier
+        // is a hypothetical continuation only. A face with k real trace chords
+        // has exactly k+1 fragments, so a terminal slit contributes zero to k,
+        // touches no source edge, and publishes no orbit evidence.
+        continue;
+      }
       ++tracePieceCount[segment.sourceFace];
       add_fragment_orbit(segment.sourceFace, forwardOrbit);
       add_fragment_orbit(segment.sourceFace, reverseOrbit);
@@ -649,25 +738,22 @@ RegionBuildResult build_regions(
               .insert(sideOrbit);
         }
       } else {
-        std::optional<std::size_t> sourceCorner;
-        for (std::size_t corner = 0U; corner < faceIt->second.vertices.size();
-             ++corner) {
-          if (faceIt->second.vertices[corner] == trace->sourceVertex) {
-            sourceCorner = corner;
-            break;
-          }
-        }
+        const auto binding = resolve_carrierless_corner_binding(
+            faceIt->second, *trace, segmentIndex, segment);
         const auto outgoing =
             local_edge_index(faceIt->second, segment.outgoingCarrier);
-        if (!sourceCorner.has_value() || !outgoing.has_value() ||
-            *outgoing != (*sourceCorner + 1U) % 3U) {
+        if (!binding.has_value() || !outgoing.has_value() ||
+            *outgoing != (binding->sourceCorner + 1U) % 3U) {
           GlobalTopologyPlanError failure =
               error(GlobalTopologyPlanErrorCode::RegionTraceSourcePortCarrierNotAdmissible);
           failure.sourceFace = segment.sourceFace;
+          annotate_trace_segment_incidence(failure, arc, *trace, segmentIndex,
+                                           segment, binding);
           return failure;
         }
-        const auto forwardEdge = faceIt->second.edges[(*sourceCorner + 2U) % 3U];
-        const auto reverseEdge = faceIt->second.edges[*sourceCorner];
+        const auto forwardEdge =
+            faceIt->second.edges[(binding->sourceCorner + 2U) % 3U];
+        const auto reverseEdge = faceIt->second.edges[binding->sourceCorner];
         if (exteriorOrbits.count(forwardOrbit) == 0U) {
           edgeOrbitEvidence[std::make_pair(segment.sourceFace, forwardEdge)]
               .insert(forwardOrbit);
@@ -681,7 +767,8 @@ RegionBuildResult build_regions(
   }
 
   // Validate every directly cut face before extending single-fragment interiors.
-  // A face with k trace chords has k+1 fragments; a face with no chord has one.
+  // A face with k real trace chords has k+1 fragments; a terminal slit is
+  // not a chord and contributes zero to k. A face with no real chord has one.
   for (const auto &[faceKey, record] : topology.faces) {
     (void)record;
     const auto found = fragmentOrbits.find(faceKey);
@@ -2344,6 +2431,17 @@ const char *trace_event_position_carrier_role_name(
     return "Incoming";
   case TraceEventPositionCarrierRole::Outgoing:
     return "Outgoing";
+  }
+  return "Unknown";
+}
+
+const char *trace_corner_binding_provenance_name(
+    const TraceCornerBindingProvenance provenance) noexcept {
+  switch (provenance) {
+  case TraceCornerBindingProvenance::TraceOrigin:
+    return "TraceOrigin";
+  case TraceCornerBindingProvenance::SegmentEntrySupport:
+    return "SegmentEntrySupport";
   }
   return "Unknown";
 }

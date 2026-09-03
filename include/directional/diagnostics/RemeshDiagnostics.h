@@ -156,6 +156,14 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> traceOnePastLastSegment;
   std::optional<std::array<std::size_t, 2>> traceIncomingCarrier;
   std::optional<std::array<std::size_t, 2>> traceOutgoingCarrier;
+  std::string traceSegmentOrientation;
+  std::optional<std::size_t> traceSegmentIndex;
+  std::optional<bool> traceSegmentIsFirst;
+  std::optional<std::size_t> traceSourcePort;
+  std::optional<std::size_t> traceBoundCorner;
+  std::string traceBoundCornerProvenance;
+  std::string traceEntrySupport;
+  std::string traceExitSupport;
   std::optional<std::size_t> edgeTraceContactIndex;
   std::optional<std::array<std::size_t, 2>> edgeTraceOtherCarrier;
   std::optional<std::array<std::size_t, 3>> edgeTraceFaceCorners;

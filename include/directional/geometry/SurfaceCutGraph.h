@@ -114,6 +114,7 @@ struct SurfaceCutGraphError {
   std::optional<authority::SourceVertexId> sourceVertex;
   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
   std::optional<authority::SourceFaceTopologyKey> sourceFace;
+  std::optional<authority::FieldSingularityId> singularity;
   std::optional<GlobalTopologyPlanErrorCode> originatingTopologyError;
   std::optional<std::size_t> nonDiscComponentCount;
   std::optional<std::size_t> remainingAdmissibleEdgeCount;
@@ -131,6 +132,14 @@ struct SurfaceCutGraphError {
   std::optional<std::size_t> traceOnePastLastSegment;
   std::optional<authority::SourceEdgeTopologyKey> traceIncomingCarrier;
   std::optional<authority::SourceEdgeTopologyKey> traceOutgoingCarrier;
+  std::optional<authority::Orientation> traceSegmentOrientation;
+  std::optional<std::size_t> traceSegmentIndex;
+  std::optional<bool> traceSegmentIsFirst;
+  std::optional<authority::SingularityPortId> traceSourcePort;
+  std::optional<authority::SourceVertexId> traceBoundCorner;
+  std::optional<TraceCornerBindingProvenance> traceBoundCornerProvenance;
+  std::optional<authority::SourceSupport> traceEntrySupport;
+  std::optional<authority::SourceSupport> traceExitSupport;
   std::optional<std::size_t> edgeTraceContactIndex;
   std::optional<authority::SourceEdgeTopologyKey> edgeTraceOtherCarrier;
   std::optional<std::array<authority::SourceVertexId, 3>> edgeTraceFaceCorners;
