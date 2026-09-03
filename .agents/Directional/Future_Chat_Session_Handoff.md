@@ -92,53 +92,55 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB15` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB15-REV` — EXACT NEXT / independent REVIEW + PLAN
 
-`M3-CP4c-3-CB17` is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE**.
+`M3-CP4c-3-TB15` is **COMPLETE / VALID SEMANTIC RED / BRANCH DISCRIMINATED / NON-STABLE**. Do not rerun TB15.
 
-### Immutable authority
+### Current immutable/runtime authority
 
-- final semantic source: **`1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4`**;
-- compile run/job: **`33697315308 / 100468915978`**; result artifact **`9872340053`**, Actions digest `3a814357edf9b1f2424f4047b6c84b1e37ed54dc1751ab6a1fa3b125af206274`;
-- compile log artifact **`9872340412`**, digest `fcda1a3fbd206e6b9ce159dea3516a18b405897d842528268a28ad0827023b39`;
-- immutable package **85** run/job **`33697837275 / 100470530585`**; package artifact **`9872426500`**, Actions digest `6c0e960b3f689bae2d2ef7f79c32709f63d1fefa87ecefdf6351427ac91ea0e2`;
-- package log **`9872426826`**, digest `33ee68f4217af33ce8c37049820c3a7f41bae55c29c97972025887f616d99b20`;
-- inner `package85.tar.gz` SHA-256 **`98f5940254beaa50ec200157a3cbe6ab0ec15d8a5117006679d42684968aad08`**; packaged source archive SHA-256 **`cb078005cef48d97401ddfb843a4276f92c53086b0827a915b01344dc665c4a9`**;
-- selector **381** SHA-256 **`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`**; selector 380 remains byte-frozen at `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`;
-- 27 package-relative fixtures, six executable `directional_*` binaries, exact backend GMP; no Directional runtime or benchmark executed during CB17.
+- semantic/package source: **`1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4`**;
+- immutable package **85** artifact **`9872426500`**, Actions digest `6c0e960b3f689bae2d2ef7f79c32709f63d1fefa87ecefdf6351427ac91ea0e2`;
+- inner `package85.tar.gz` SHA-256 **`98f5940254beaa50ec200157a3cbe6ab0ec15d8a5117006679d42684968aad08`**; packaged source SHA-256 **`cb078005cef48d97401ddfb843a4276f92c53086b0827a915b01344dc665c4a9`**;
+- selector **381** SHA-256 **`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`**; selector 380 frozen prefix `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`;
+- TB15 run/job **`33700074471 / 100477303760`**;
+- result artifact **`9873244271`**, SHA-256 `4bf9cbbf415aecf42f08f6840890e7e21dfd18899cfec863f4984ddab618493a`;
+- log artifact **`9873244582`**, SHA-256 `243d8867a5a2807d329d2945184ca4999622ed1ae2129fbe30026d2c40919c46`;
+- selector result **372 PASS / 9 RED**; accepted 1-365 **365/365 PASS**; first red **366**;
+- immutable pre/post 58-file census SHA-256 **`3235eb993863ba4e4eaa88e83e46d6c4663eb5ebb6c2b4f3990ab6d1a8af6295`**.
 
-CB17 gives `edge_locus_secondary_rank` six typed diagnostic exits (`TraceRayFaceUnavailable`, `SourceFaceRecordUnavailable`, `ContactEdgeUnavailable`, `OppositeCarrierNotInFace`, `CoincidentLocalEdgeIndex`, `SourceVertexFallbackUnbound`) and projects the bounded incidence plus edge-locus ray census through the production renderer. The successful rank path is compiled to remain unchanged. **No semantic correction was made.**
+### Measured branch and binding review question
 
-### TB15 binding discriminators
+Ordinal 366 did not move: `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid` at source edge `25-31`, source face `(25,30,31)`, attempt 0 / zero cut edges. TB15 now proves the exact branch is **`SourceVertexFallbackUnbound`**.
 
-Use `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Plan.md` exactly.
+Retained incidence: source vertex **35**, arc **19**, trace **5**, **Reverse**, segment interval **`[0,5)`**, incoming carrier none, outgoing carrier **`25-31`**, contact index **2**, other carrier none, face corners **`{25,30,31}`**. The bounded rotation census is complete: **3 rays**, `truncated=false`; the trace ray has primary 3 and secondary unavailable.
 
-1. accepted ordinals **1-365 stay 365/365**;
-2. ordinal **366 stays RED** at `EdgeTraceSecondaryRankInvalid`, source edge `25-31`, source face `(25,30,31)`, certification attempt 0 / zero cut edges — **any movement falsifies CB17 BN7**;
-3. the production line names the exact `EdgeTraceSecondaryRankFailureReason` branch;
-4. the same evidence retains arc, trace, orientation, segment interval, both carriers and the bounded incidence fields;
-5. a bounded edge-locus ray census is present with explicit truncation state;
-6. **the v47 five-ray/distinct-secondary conjunction remains owed**. Selector 380 is expected to remain RED at the upstream edge-locus frontier until its owner is corrected; do not close the inherited v47 candidates from absence of the old collision alone.
+Selector 381's typed-production witness **PASSes**. Selector 380 remains **RED**, so the inherited v47 full five-ray/distinct-secondary production proof remains owed. There is still no vertex-30 discriminator. The non-gating mechanical diagnostic remains RED at the same upstream edge/reason with zero gate credit.
 
-Execute selector 381 from ordinal 1 one identity per fresh process, run the retained non-gating mechanical diagnostic once with zero gate credit, and perform immutable pre/post package census. **No benchmark is frozen.** No rebuild, configure, relink, package repair, generated discovery, source/test/fixture/selector mutation, or product correction is authorized in TB15. There is still **no vertex-30 discriminator**.
+Package 85's contract names a nonexistent non-gating diagnostic identity. The frozen TB15 plan names and executed the correct existing diagnostic; this is non-stable package metadata only. Package 85 was not repaired.
+
+### TB15-REV binding scope
+
+Use `Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md` exactly, measures **BO0-BO8**. Determine whether the Reverse contact-node ray is invalid/stale producer provenance or a valid ray whose source-vertex fallback binds the wrong datum/namespace. If valid, derive the canonical rank datum from topology/provenance rather than fixture IDs; if invalid, identify the earliest producer invariant that owns rejection. Audit the fallback class broadly enough to generalize, preserve accepted **365/365**, preserve the v47 obligation and independent carried surfaces, adjudicate package metadata separately, and freeze exactly one bounded successor.
+
+TB15-REV is **static REVIEW + PLAN only**: no Directional runtime, benchmark, configure, compile, link, package, or product/test/fixture/selector mutation. Update `ORIENTATION.md` as required for every REVIEW turn.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**; stable accounting **44 / 14 / 30**; produced-witness debt **5**; authoritative semantic M3 package count **82**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Test + Benchmark guidance
+- turn-based-coding-agent independent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Plan.md` — **frozen executable TB15 authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB17_Code_Build_Report.md` — **package-85/build authority and BN0-BN9 implementation record**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB14_Independent_Review_Record.md` — semantic basis for the six discriminators and branch ownership question.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — current valid runtime authority and ordinal-366 baseline.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during REVIEW.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md` — **frozen BO0-BO8 successor authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority and exact typed incidence**.
+3. `.agents/Directional/Regression_Root_Cause_Tracker.md` — current TB15 candidates and inherited v47 ownership.
+4. `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `ROADMAP.md` — current task/history/checkpoint state.
+5. Source at semantic commit `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` as required by BO1-BO5. Do not execute it.
 
-TB15 must consume immutable package 85 only. No source inspection is needed for ordinary EXEC unless the frozen plan explicitly requires static evidence after execution.
+TB15-REV must not rerun package 85. Runtime evidence is already complete.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

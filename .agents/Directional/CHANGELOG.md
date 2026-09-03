@@ -1,3 +1,13 @@
+## 2026-09-03 — `M3-CP4c-3-TB15`: package 85 valid semantic red; exact edge-locus fallback branch discriminated
+
+Artifact-only TB15 consumed immutable package **85** / source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` / selector **381**. Run/job **`33700074471 / 100477303760`** completed all 381 selector identities one-per-fresh-process for **372 PASS / 9 RED**, accepted ordinals **1-365 = 365/365 PASS**, first red **366**. Result/log artifacts `9873244271` / `9873244582` have SHA-256 `4bf9cbbf415aecf42f08f6840890e7e21dfd18899cfec863f4984ddab618493a` / `243d8867a5a2807d329d2945184ca4999622ed1ae2129fbe30026d2c40919c46`.
+
+Ordinal 366 does not move: `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid` at edge `25-31` / face `(25,30,31)`, attempt 0 / zero cut edges. CB17's typed production instrumentation proves the exact branch is **`SourceVertexFallbackUnbound`**. Retained incidence is source vertex **35**, arc **19**, trace **5**, Reverse, `[0,5)`, incoming carrier none, outgoing `25-31`, contact index 2, other carrier none, face corners `{25,30,31}`. Production publishes a complete **3-ray**, untruncated census; the failing trace ray has primary 3 and secondary unavailable. Selector 381's typed-production witness PASSes. Selector 380 remains RED, so the inherited v47 full five-ray/distinct-secondary production proof remains open. The retained non-gating mechanical diagnostic is RED at the same upstream edge/reason with zero gate credit.
+
+Package 85's contract names a nonexistent non-gating diagnostic identity, while the frozen TB15 plan names and executed `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable`. Classified `M3-CP4c3-TB15-PKG-01`, non-gating/non-stable package metadata; package 85 was not repaired or repackaged and semantic execution is unaffected. Pre/post 58-file byte/mode census is identical at `3235eb993863ba4e4eaa88e83e46d6c4663eb5ebb6c2b4f3990ab6d1a8af6295`; no benchmark/configure/compile/relink/repair/discovery/source/test/fixture/selector mutation occurred.
+
+`M3-CP4c3-TB14-CAND-01` is discriminated/superseded by **`M3-CP4c3-TB15-CAND-01`**, which owns semantic validity of the measured fallback branch. Stable totals remain **44 / 14 / 30**, debt **5**, packages **82**. Exact next: independent **`M3-CP4c-3-TB15-REV`** under frozen BO0-BO8; no runtime or correction is authorized there.
+
 ## 2026-09-02 — `M3-CP4c-3-TB14-REV`: first edge locus reached; branch undetermined; `M3-CP4c-3-CB17` frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`, measures **BM0–BM8**.

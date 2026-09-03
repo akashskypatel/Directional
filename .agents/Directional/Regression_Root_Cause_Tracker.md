@@ -1,4 +1,30 @@
-## M3-CP4c3-TB14-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-TB15 — exact edge-locus branch measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** immutable package **85** / source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4`, selector **381**; run/job `33700074471 / 100477303760`; result/log artifacts `9873244271` / `9873244582` with SHA-256 `4bf9cbbf415aecf42f08f6840890e7e21dfd18899cfec863f4984ddab618493a` / `243d8867a5a2807d329d2945184ca4999622ed1ae2129fbe30026d2c40919c46`.
+- **Gate:** 381 fresh processes, **372 PASS / 9 RED**; accepted 1-365 **365/365 PASS**; first red 366. Selector 381 typed-production witness PASS; selector 380 RED; retained non-gating mechanical diagnostic RED with zero gate credit.
+- **No movement:** ordinal 366 remains `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid`, edge `25-31`, face `(25,30,31)`, attempt 0 / zero cut edges / 450 candidates.
+- **Exact branch:** `edgeTraceSecondaryFailure=SourceVertexFallbackUnbound`. Retained incidence is source vertex **35**, arc **19**, trace **5**, Reverse, `[0,5)`, incoming carrier none, outgoing `25-31`, contact index 2, other carrier none, face corners `{25,30,31}`.
+- **Bounded census:** exactly **3** rays, untruncated. Two mandatory rays have secondary 0; the trace ray is primary 3 with secondary unavailable, arc 19 / trace 5 / Reverse / source face `(25,30,31)`.
+- **v47 remains open:** selector 380 still stops upstream before publishing the required full five-ray v47 rotation and distinct former-pair secondary ranks. `M3-CP4c3-TB11-CAND-01` remains OPEN and `M3-CP4c3-TB12-REV-CAND-01` remains runtime-open/partially discriminated. No vertex-30 discriminator exists.
+- **Postflight:** 58-file byte/mode census identical before/after at `3235eb993863ba4e4eaa88e83e46d6c4663eb5ebb6c2b4f3990ab6d1a8af6295`; no benchmark/configure/compile/relink/repair/discovery/source/test/fixture/selector mutation.
+- **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **82**. Exact owner: independent `M3-CP4c-3-TB15-REV` BO0-BO8.
+
+## M3-CP4c3-TB15-CAND-01 - source-vertex fallback cannot bind at mechanical contact edge 25-31 - **ACTIVE / GATING / BRANCH DISCRIMINATED / NON-STABLE**
+
+- **Runtime discrimination:** TB15 excludes the TB14-REV opposite-carrier alternative and proves the actual production branch is `SourceVertexFallbackUnbound`.
+- **Exact incidence:** source vertex 35; arc 19 / trace 5 / Reverse / segments `[0,5)`; source face `(25,30,31)`; incoming carrier none; outgoing carrier `25-31`; contact index 2; other carrier none; complete three-ray untruncated census.
+- **Semantic question still open:** source vertex 35 is not a corner of `{25,30,31}`. Review must determine whether this is invalid/stale producer provenance or whether the edge-locus fallback is binding the wrong namespace/datum for a valid contact-node Reverse ray. The typed reason itself does not authorize a correction.
+- **Owner:** `M3-CP4c-3-TB15-REV` BO1-BO5, then exactly one bounded successor under BO8.
+- **Accounting:** **+0/+0**, totals **44 / 14 / 30**; accepted **365/365**, debt **5**, packages **82**.
+
+## M3-CP4c3-TB15-PKG-01 - package contract names nonexistent non-gating diagnostic - **RECORDED / NON-GATING PACKAGE METADATA / NON-STABLE**
+
+- Package 85 `fixture-package-contract.txt` names `GlobalTopologyPlan.EdgeTraceSecondaryRankUnavailableIsTypedAndObservable`, which does not exist. Frozen TB15 authority instead names `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable`, which exists and ran exactly once.
+- Frozen-plan selection controlled execution, so the metadata mismatch did not alter selector execution, gate credit, exit codes, or package bytes. Package 85 was not repaired or repackaged.
+- **Owner:** TB15-REV BO0/BO7 records the package-authoring disposition; a future package may correct the metadata without reinterpreting TB15.
+- **Accounting:** package/control metadata only, **+0/+0**.
+
+## M3-CP4c3-TB14-REV - independent review adjudication - **HISTORICAL REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB14_Independent_Review_Record.md`, measures **BM0-BM8** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
@@ -42,21 +68,13 @@
   PROVED**: TB14's rotation passes **every** vertex locus including v10, which is only possible if that case
   resolves.
 
-## M3-CP4c3-TB14-CAND-01 - edge-locus trace secondary rank unavailable at mechanical edge 25-31 - **ACTIVE / GATING / BRANCH UNDETERMINED BY RETAINED EVIDENCE / NON-STABLE**
+## M3-CP4c3-TB14-CAND-01 - edge-locus trace secondary rank unavailable at mechanical edge 25-31 - **DISCRIMINATED / SUPERSEDED BY TB15-CAND-01 / NON-STABLE**
 
-- **Adjudicated at `M3-CP4c-3-TB14-REV`:** one emitter, but `edge_locus_secondary_rank` collapses **five**
-  conditions into an untyped `nullopt` and the emitter retains no incidence identity. Branches 1-3 are excluded;
-  the surviving two - opposite-carrier and source-vertex fallback - have **different owners and opposite
-  corrections**. This is the **first edge locus ever reached** on this witness. Re-owned to
-  **`M3-CP4c-3-CB17`** (BN0-BN9, diagnostic-only), then to `M3-CP4c-3-TB15-REV` for the semantic decision.
-
-- **Declared from valid `M3-CP4c-3-TB14` replacement runtime.** Package 84 / selector 380 completed all 380 fresh processes: corrected **371 PASS / 9 RED**, accepted 1-365 **365/365 PASS**, first red 366.
-- **First-red evidence:** `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid`, source edge `25-31`, source face `(25,30,31)`, `cutCandidateCount=450`, certification attempt 0 / zero cut edges. Ordinal 367 and the 371/372 shared fixture inherit the same upstream failure. The non-gating mechanical diagnostic independently reproduces reason/edge and reaches no global topology plan.
-- **Progress from CB16:** TB13's source-vertex-10 / face `(8,10,11)` / ambiguous `VertexTracePortOrdinalInvalid` failure is absent. Selector 379 PASSes. Selector 380 reaches its focused exact-corner/typed-failure checks and fails only at its final production assertion because the mechanical rotation now stops on the edge-locus reason.
-- **Root-cause status:** not assigned in TB14. Package source has `edge_locus_secondary_rank(...) -> nullopt` as the immediate reason producer, but independent review must trace the exact arc/trace/orientation/segment/carrier incidence and distinguish a valid canonical-rank contract gap from invalid/stale trace provenance. No fixture-index-specific correction is authorized.
-- **v47:** the old `RotationRayOrderKeyCollision` remains absent, but complete attempt-0 rotation does not publish, so the full five-ray v47/distinct-former-pair proof remains open.
-- **Owner:** independent `M3-CP4c-3-TB14-REV` BM0-BM8.
-- **Accounting:** new evidence is on the still-unaccepted CP4c-3 gating surface and causes no accepted-green loss. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **81**.
+- TB14/TB14-REV correctly narrowed the first newly reached edge locus to two opposite-owner possibilities: `OppositeCarrierNotInFace` versus source-vertex fallback. No correction was authorized while that distinction was unobservable.
+- TB15's CB17 instrumentation now proves the actual branch is **`SourceVertexFallbackUnbound`**, with source vertex 35 / arc 19 / trace 5 / Reverse / `[0,5)` / outgoing carrier `25-31` / contact index 2 / face `{25,30,31}` and a complete three-ray census.
+- The old branch-undetermined candidate is therefore closed as an ambiguity record and superseded by **`M3-CP4c3-TB15-CAND-01`**, which owns semantic validity of the measured fallback branch.
+- The v47 five-ray/distinct-secondary obligation remains open because selector 380 is still RED upstream.
+- **Accounting:** same unaccepted gating surface, **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **82**.
 
 ## M3-CP4c3-TB14-ORCH-02 - exact `[ OK ]` line parser mislabeled completed GoogleTest processes - **RESOLVED / REPORTING ORCHESTRATION / NON-STABLE**
 
