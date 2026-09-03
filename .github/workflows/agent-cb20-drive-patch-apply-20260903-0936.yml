@@ -1,9 +1,9 @@
-name: Agent CB20 Closeout Drive Patch 20260903 0948
+name: Agent CB20 Closeout Drive Patch 20260903 0952
 
 on:
   push:
     paths:
-      - ".agents/connector-triggers/google-drive-patch/cb20-closeout-20260903-0948.txt"
+      - ".agents/connector-triggers/google-drive-patch/cb20-closeout-r2-20260903-0952.txt"
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: cb20-closeout-drive-patch
+      label: cb20-closeout-drive-patch-r2
     secrets: inherit
 
   apply:
@@ -33,7 +33,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1igiho1u5vBHWvwqC19_v7pgw9LvMdbf9
-      patch_sha256: 94b7b64253b0f9e5166f5cd55d0aa8859e642218242d3f12038488a0fa0358a3
+      patch_sha256: 6c5c616813716f5db22debb82d988efb35a47fa45773036139bb83708973da45
       base_sha: 416d75fc6141645309c223ee86c124eb0da77bc9
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close CB20 and freeze TB18"
