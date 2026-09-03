@@ -1,0 +1,48 @@
+name: Agent M3 CP4c3 TB16 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/google-drive/m3-cp4c3-tb16-closeout-apply-20260903.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c3-tb16-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-tb16-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb16-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 12vBFlItPqtlWIuTnUJuXneVaRLkmI6z3
+      patch_sha256: bf06c54c3e512b219d1f600ece6d271cc1df3105538447d66bf482b73cb948be
+      base_sha: 223822f9875336cd81c80218601c4a19b2f8e80d
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3 CP4c3 TB16 and freeze review"
+      retention_days: 14
+    secrets: inherit
