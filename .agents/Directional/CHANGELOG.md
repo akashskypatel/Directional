@@ -1,3 +1,22 @@
+## 2026-09-03 — `M3-CP4c-3-CB22`: component-seed decision evidence retained; selector 385 compiled; TB20 frozen
+
+`M3-CP4c-3-CB22` completed as a diagnostic-only Code + Build turn. Semantic source **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`** retains the
+`UncutFaceComponentOrbitSeedNotUnique` component id, exact seed count, typed `seedState`, bounded face membership,
+bounded boundary-edge contribution/skip evidence, iteration-locus typing and component census projection without
+changing the seeding decision or downstream topology semantics. Selector 384 remains byte-identical at
+`c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`; selector 385 has **388 identities**, SHA-256 `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, with four appended diagnostic witnesses and
+384 as an exact prefix.
+
+The first compile found a C++ aggregate-construction defect in the new boundary diagnostic row; the only correction
+initializes its required `SourceEdgeTopologyKey` at construction. Corrected compile run/job
+**`33805683152 / 100815534364`** succeeded on all eight required targets with mandatory GMP/GMPXX and
+`runtimeExecution=false`. Immutable result artifact **`9912976409`** has ZIP SHA-256
+**`b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`**; compile log artifact **`9912977164`** has SHA-256 `583621ab73e508fccafefddca3351f5ac1a3681761e33e4468800f50242287ff`.
+
+No tests or benchmarks ran. Accepted authority remains **365/365** and TB19 remains current runtime authority.
+Exact next: artifact-only **`M3-CP4c-3-TB20`** under
+`Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Plan.md`; expected successor is independent TB20-REV.
+
 ## 2026-09-03 — `M3-CP4c-3-TB19-REV`: CB21 confirmed; the new frontier's locus proved non-discriminating; seed cardinality unobservable; diagnostic-only CB22 frozen
 
 Independent review of immutable TB19 evidence under the binding plan's measures **CR0–CR8**. Record:

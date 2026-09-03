@@ -26,65 +26,51 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB22` (Code + Build, DIAGNOSTIC-ONLY)
+## Current focus — `M3-CP4c-3-TB20` (Test + Benchmark, ARTIFACT-ONLY)
 
-`M3-CP4c-3-TB19-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB19_Independent_Review_Record.md` (**CR0–CR8** discharged, static only).
+`M3-CP4c-3-CB22` is **COMPLETE / COMPILE-GREEN / RUNTIME-NOT-EXECUTED**.
 
-CB21 is **confirmed against BU0-BU9**: 1-365 stay 365/365, ordinal 366 leaves
-`TraceCutFaceFragmentCountMismatch` (the load-bearing discriminator), 367/371/372 move with it, the `(0,1,102)`
-deficit is retained as 1 non-fatally, the census is untruncated, and carried surfaces are unchanged.
-**`M3-CP4c3-TB17-CAND-01` closes.**
+Authoritative CB22 build evidence:
 
-The new frontier is `UncutFaceComponentOrbitSeedNotUnique` at source face `(0,1,2)`, emitted at
-`GlobalTopologyPlan.cpp:1151-1163` in the block that labels faces no chord touched.
+- semantic source: **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`**;
+- compile run/job: **`33805683152 / 100815534364`**;
+- immutable result artifact: **`9912976409`**, ZIP SHA-256
+  **`b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`**;
+- compile log artifact: **`9912977164`**, SHA-256 **`583621ab73e508fccafefddca3351f5ac1a3681761e33e4468800f50242287ff`**;
+- exact arithmetic backend: **GMP/GMPXX**;
+- eight required targets compiled; `runtimeExecution=false`;
+- selector 384 remains byte-frozen at **`c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`**;
+- selector 385 contains **388 identities**, SHA-256 **`164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`**, with selector 384 as an exact prefix.
 
-- **The reported locus is an iteration artifact, and this is proved.** `failure.sourceFace` is the **first
-  unlabeled face in `std::map` key order**. `(0,1,2)` is **row 0 of the mechanical fixture and row 0 of the torus
-  fixture**, and the historical torus stop of the same name reported the identical face. Two unrelated witnesses,
-  same code, same locus.
-- **Zero seeds versus two-or-more is NOT derivable from committed bytes.** Neither the component id, its
-  membership, nor its seed set is retained. Partial evidence favours two-or-more - face `(0,1,2)` neighbours
-  labeled row 259 `(0,1,102)` across edge `0-1`, which the TB18 chord never made a carrier
-  (`incomingCarrier=none`) - but the barrier membership of `0-1` is a product decision not recoverable statically.
-- **The deciding numbers are discarded, sixth instance.** The component id, its membership and `seedOrbits` are all
-  in hand at the failure; only `sourceFace` survives, and it is the one field that cannot discriminate.
-- **The torus stop is a different mechanism.** With **0 traces** no face acquires a chord label, so no edge has a
-  labeled side and every seed set is empty - provably the **zero** branch. The mechanical witness has 70 labeled
-  faces and 6 non-exterior orbits and cannot be that. The candidates are **not merged**.
-- **A universal non-crossing invariant is REFUTED, not merely unproved.** The tracer builds `TraceIntersection`
-  contact nodes bound to a source face, so crossings are a modelled case in which `k` chords make `k + 1 + c`
-  local fragments. The 70/70 non-crossing rows are witness-local sufficiency only, so `localFragmentCount` must
-  stay non-fatal.
-- **371/372 remain deferred with a standing trigger:** both abort in a fixture constructor that will stop throwing
-  once the production plan builds, so a test-only accessor now risks landing a surface the next correction makes
-  redundant. Authorize the decoupling at the first review that either closes the mechanical production frontier or
-  finds the frontier unmoved across two consecutive TB turns.
+CB22's frozen `BV0–BV9` diagnostic scope is implemented. It adds typed component seed cardinality/state, bounded
+component membership and boundary-edge evidence, component census projection, production-path witnesses and the
+unrelated-error byte-identity witness. It does **not** change the seeding predicate, component barriers/partition,
+seed construction, face walk, rotation system, region drafts, CB21 fragment comparison, tolerances or fixtures;
+`localFragmentCount` remains non-fatal and 371/372 remain coupled.
 
-368/369/370/374 are unchanged under their existing owners. **There is still no vertex-30 discriminator.**
+The first compile attempt exposed one C++ construction defect in the new diagnostic row; the minimal correction
+constructs `UncutFaceComponentBoundaryEdgeDiagnostic` with its required `SourceEdgeTopologyKey`. The corrected
+evidence commit above compiles all eight targets.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB22`** under §10 **BV0–BV9** of
-`Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`. **Diagnostic-only.**
+Run **`M3-CP4c-3-TB20`** from
+`Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Plan.md`.
 
-- [ ] **BV0** — selector 384 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
-- [ ] **BV1** — component id, seed count, and an explicit **`seedState in {None, Multiple}`** on the error.
-- [ ] **BV2** — the failing component's face count and bounded membership, with a truncation marker.
-- [ ] **BV3** — bounded boundary-edge rows: edge key, labeled-side flag, owner count, barrier class, and the seed
-      or the exact reason none was contributed — **including the silent `edgeOrbitEvidence` skip at `:1136-1139`**.
-- [ ] **BV4** — publish that `sourceFace` is an iteration-order locus; add the component identity as the
-      discriminating one.
-- [ ] **BV5** — extend the existing `TraceFragmentOwnerEvidenceDiagnostic` census with component rows.
-- [ ] **BV6** — one witness per new field plus an unrelated-error regression witness; append selector 385.
-- [ ] **BV7** — **no semantic change**: the predicate, barrier set, partition, `seedOrbits`, `edgeOrbitEvidence`,
-      the face walk, the rotation system, region drafts and CB21's comparison stay untouched;
-      **`localFragmentCount` stays non-fatal**; no 371/372 decoupling.
-- [ ] **BV8** — audit by assumption; prove 1–365 unaffected by construction.
-- [ ] **BV9** — publish the six `M3-CP4c-3-TB20` discriminators, chiefly that the failure now carries `seedState`.
+- [ ] Execute all **388** selector-385 identities in order, one exact identity per fresh process.
+- [ ] Preserve accepted ordinals 1–365 at **365/365 PASS**.
+- [ ] Require ordinal 366 to remain at `UncutFaceComponentOrbitSeedNotUnique`; movement falsifies CB22's
+      diagnostic-only assumption.
+- [ ] Retain ordinal 366's explicit `seedState` and complete bounded component membership/boundary evidence,
+      deciding **None versus Multiple** from runtime rather than inference.
+- [ ] Require component census/truncation evidence and all four new identities 385–388.
+- [ ] Verify 367/371/372 co-reachers and carried 368/369/370/374 remain under their established owners.
+- [ ] Require exact pre/post package byte+mode census identity and a closing 388-row ledger.
+- [ ] Categorize every observed regression/candidate disposition in `Regression_Root_Cause_Tracker.md`.
 
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **85**.
+Accepted semantic authority remains **365/365** and current runtime authority remains **TB19** until TB20 executes.
+CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness
+debt **5**; authoritative semantic M3 package count **85**.
 
 ## Carried forward from M1
 
@@ -121,7 +107,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB19/selector384 is current runtime authority** at 376 PASS / 8 RED and accepted 365/365. CB21's fragment-owner correction is runtime-proved; the new frontier is `UncutFaceComponentOrbitSeedNotUnique` at `(0,1,2)`. Exact next: independent **`M3-CP4c-3-TB19-REV`**.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB19/selector384 is current runtime authority** at 376 PASS / 8 RED and accepted 365/365. CB22 is compile-green at source `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131` with selector 385 prepared for TB20. Exact next: artifact-only **`M3-CP4c-3-TB20`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -132,8 +118,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — region ownership frontier:** TB19 runtime-proves the CB21 one-sided fragment-owner correction: 366/367/371/372 clear `TraceCutFaceFragmentCountMismatch`, accepted 1–365 stays 365/365, and ordinal 384 passes. The next typed frontier is **`UncutFaceComponentOrbitSeedNotUnique` at `(0,1,2)`**; retained evidence does not distinguish zero component seeds from multiple seeds. Exact owner is `M3-CP4c-3-TB19-REV`. Vertex 30 and finalize/contact remain separate and untouched.
-- [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. TB19 confirms both clear the fragment mismatch but still abort at the shared downstream `UncutFaceComponentOrbitSeedNotUnique` frontier, so their own Amendment-15 atlas contracts remain unmeasured. The already-specified test-only atlas-scoped accessor remains **review-owned, not authorized**; TB19-REV decides whether to decouple now or keep it deferred. `M3-CP4c3-TB10-REV-CAND-01`.
+- [ ] **CP4c-3 criterion C2 — region ownership frontier:** TB19 runtime-proves the CB21 one-sided fragment-owner correction: 366/367/371/372 clear `TraceCutFaceFragmentCountMismatch`, accepted 1–365 stays 365/365, and ordinal 384 passes. The next typed frontier is **`UncutFaceComponentOrbitSeedNotUnique` at `(0,1,2)`**; retained evidence does not distinguish zero component seeds from multiple seeds. CB22 now retains the deciding component/seed evidence without changing the decision. Exact owner is `M3-CP4c-3-TB20`; vertex 30 and finalize/contact remain separate and untouched.
+- [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. TB19 confirms both clear the fragment mismatch but still abort at the shared downstream `UncutFaceComponentOrbitSeedNotUnique` frontier, so their own Amendment-15 atlas contracts remain unmeasured. CB22 intentionally leaves the already-specified test-only atlas-scoped accessor **not authorized**; TB20 reports them as co-reachers and TB20-REV owns the next disposition. `M3-CP4c3-TB10-REV-CAND-01`.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
@@ -159,4 +145,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **85**. **TB19/selector384 is current runtime authority: 376 PASS / 8 RED, accepted 365/365; CB21's fragment-owner correction is runtime-proved and the later component-seed frontier is review-owned.** Exact next is `M3-CP4c-3-TB19-REV`. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **85**. **TB19/selector384 remains current runtime authority: 376 PASS / 8 RED, accepted 365/365. CB22 is compile-green at `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131` and selector 385 is frozen for runtime discrimination.** Exact next is `M3-CP4c-3-TB20`. PR #8 remains open, draft, and unmerged.

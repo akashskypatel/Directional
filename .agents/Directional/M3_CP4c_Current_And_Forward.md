@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-03** at `M3-CP4c-3-TB19-REV`.
+Last updated **2026-09-03** at `M3-CP4c-3-CB22`.
 
 ---
 
@@ -24,6 +24,8 @@ Last updated **2026-09-03** at `M3-CP4c-3-TB19-REV`.
 | **Accepted authority** | **365 / 365** — selector 365, `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
 | **Current runtime authority** | **`M3-CP4c-3-TB19`** — source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, run/job `33798040003 / 100790444711`, **376 PASS / 8 RED** |
 | **Current gate selector** | **384** — `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`, 384 identities, selector 383 an exact prefix, accepted 365 an exact prefix |
+| **Next runtime selector** | **385** — `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, **388 identities**, selector 384 an exact prefix |
+| **CB22 compile authority** | source **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`**, run/job **`33805683152 / 100815534364`**, result artifact **`9912976409`**, ZIP SHA-256 `b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`, GMP/GMPXX, no runtime |
 | **Immutable package** | compile run/job `33794307778 / 100778238374`, result artifact `9908695433`, ZIP SHA-256 `efb65c06cc6d73d233ee271a31fc82705d2575da313fb7f18b389a5196441fc5` |
 | **TB19 artifacts** | result/log `9910078670 / 9910079341` |
 | **Ledger** | `e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b` — 376 + 8 = 384, closes |
@@ -71,35 +73,36 @@ edge; the guard demands `size() == 1`.
 
 ---
 
-## 3. Exact next turn — `M3-CP4c-3-CB22`, diagnostic-only, `BV0–BV9`
+## 3. Exact next turn — `M3-CP4c-3-TB20`, artifact-only Test + Benchmark
 
-Full text in §10 of `Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`. Zero and two-or-more imply
-**opposite** corrections, so no product correction is authorized. TB18-REV's prohibition on further diagnostic-only
-turns was scoped to the fragment-count surface, which CB21 corrected and TB19 closed; **it does not reach this
-surface.** In brief:
+CB22 is complete and compile-green at semantic source **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`**. It retained the already-computed component
+seed decision evidence without changing the seeding predicate, barriers, component partition, `seedOrbits`,
+`edgeOrbitEvidence`, face walk, rotation system, region drafts or CB21 one-sided fragment comparison.
+`localFragmentCount` remains non-fatal; 371/372 remain coupled.
 
-- **BV0** — accepted 365 untouched; selector **384 byte-frozen** and republished unchanged; eight standard compile
-  targets with **mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BV1** — the component id, its seed count, and an explicit **`seedState ∈ {None, Multiple}`** on the error.
-- **BV2** — the failing component's face count and bounded membership, with a truncation marker.
-- **BV3** — bounded boundary-edge rows: edge key, labeled-side flag, owner count, barrier class, and the seed or
-  the exact reason none was contributed — **including the silent `edgeOrbitEvidence`-not-unique skip at
-  `:1136–1139`**.
-- **BV4** — publish that `sourceFace` is an iteration-order locus; add the component identity as the
-  discriminating one.
-- **BV5** — extend the existing `TraceFragmentOwnerEvidenceDiagnostic` census with component rows.
-- **BV6** — one witness per new field plus an unrelated-error regression witness; append **selector 385**; 384
-  stays an exact prefix.
-- **BV7** — **no semantic change**: the predicate, `componentBarriers`, the partition, `seedOrbits`,
-  `edgeOrbitEvidence`, `add_fragment_orbit`, the `exteriorOrbits` filter, `is_terminal_slit`, the face walk, the
-  rotation system, region drafts and CB21's comparison stay untouched. **`localFragmentCount` stays non-fatal.**
-  No 371/372 test decoupling.
-- **BV8** — audit by assumption; prove 1–365 unaffected by construction.
-- **BV9** — six `M3-CP4c-3-TB20` discriminators, chiefly: 1–365 stay 365/365; ordinal 366 **still** reds at the
-  same site; and the failure now publishes **`seedState`**, deciding zero versus multiple.
+Static/build closure:
 
-**One diagnostic turn only.** The successor after TB20 is an independent `M3-CP4c-3-TB20-REV`, expected to
-authorize a product correction rather than a further observation turn.
+- accepted selector 365 remains `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- selector 384 remains byte-identical at `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`;
+- selector 385 has **388 identities**, SHA-256 `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, with 384 as an exact prefix;
+- compile run/job `33805683152 / 100815534364` succeeded on all eight required targets with GMP/GMPXX;
+- immutable result artifact `9912976409` has ZIP SHA-256 `b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`;
+- `runtimeExecution=false`; therefore **TB19 remains current runtime authority** until TB20 runs.
+
+TB20 must execute `Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Plan.md` in full. The six load-bearing
+discriminators remain the frozen BV9 set:
+
+1. accepted 1–365 stay **365/365 PASS**;
+2. ordinal 366 remains at `UncutFaceComponentOrbitSeedNotUnique`;
+3. its retained **`seedState`** decides `None` versus `Multiple`;
+4. bounded component membership/boundary rows retain every skip reason;
+5. component census and truncation flags are present;
+6. 367/371/372 co-reachers plus carried 368/369/370/374 remain under their established owners.
+
+TB20 uses selector 385's 388 identities, one identity per fresh process, with exact pre/post package byte+mode
+census and no configure/compile/relink/package/test/fixture/selector mutation.
+
+**Expected successor after TB20:** independent `M3-CP4c-3-TB20-REV`. No product correction is authorized by CB22.
 
 ---
 

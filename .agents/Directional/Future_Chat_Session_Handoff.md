@@ -101,132 +101,94 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB22` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB20` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
 
-`M3-CP4c-3-TB19-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB19_Independent_Review_Record.md` (measures **CR0–CR8** discharged, static only).
+`M3-CP4c-3-CB22` is **COMPLETE / COMPILE-GREEN / RUNTIME-NOT-EXECUTED**.
 
-### TB19 immutable runtime authority
+### Immutable CB22 build authority
 
-- semantic/evidence source: **`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`** — ancestor of HEAD, **no code drift**;
-- CB21 compile run/job: **`33794307778 / 100778238374`**; compile artifact **`9908695433`**, ZIP SHA-256
-  **`efb65c06cc6d73d233ee271a31fc82705d2575da313fb7f18b389a5196441fc5`**;
-- selector 384: **`c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`**, 384 identities, selector 383
-  an exact prefix, accepted 365 an exact prefix;
-- TB19 run/job: **`33798040003 / 100790444711`**; result/log artifacts **`9910078670 / 9910079341`**;
-- exact 384-row ledger: **`e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`**;
-- pre/post package byte+mode census: **IDENTICAL**, `c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d`;
-- selector result: **376 PASS / 8 RED**; accepted 1–365 **365/365 PASS**; reds 366/367/368/369/370/371/372/374.
+- semantic/evidence source: **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`**;
+- compile run/job: **`33805683152 / 100815534364`**;
+- immutable result artifact: **`9912976409`**, ZIP SHA-256 **`b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`**;
+- compile log artifact: **`9912977164`**, ZIP SHA-256 **`583621ab73e508fccafefddca3351f5ac1a3681761e33e4468800f50242287ff`**;
+- packaged source archive SHA-256: **`cec7db850646ffc4c2de0ed1515afc42d544f989ec83ca20055c30accd9929d3`**;
+- eight standard compile targets succeeded;
+- mandatory exact arithmetic backend: **GMP/GMPXX**, verified on generated link evidence;
+- build/preflight exits `0 / 0`, final source status clean;
+- `runtimeExecution=false`.
 
-### What the review established
+The first CB22 compile attempt failed only because the new boundary diagnostic row default-constructed a
+non-default-constructible `SourceEdgeTopologyKey`. The correction initializes the aggregate with the edge at
+construction. The corrected source above is authoritative compile evidence; the failed source is not.
 
-CB21 is **confirmed against BU0-BU9**: 1-365 stay 365/365, ordinal 366 leaves
-`TraceCutFaceFragmentCountMismatch` (the load-bearing discriminator), 367/371/372 move with it, the `(0,1,102)`
-deficit is retained as 1 non-fatally, the census is untruncated, and carried surfaces are unchanged.
-**`M3-CP4c3-TB17-CAND-01` closes.**
+### Selector authority
 
-The new frontier is `UncutFaceComponentOrbitSeedNotUnique` at source face `(0,1,2)`, emitted at
-`GlobalTopologyPlan.cpp:1151-1163` in the block that labels faces no chord touched.
+- accepted selector 365: **365 identities**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- TB19 runtime selector 384: **384 identities**, SHA-256 `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564` — byte-frozen;
+- TB20 selector 385: **388 identities**, SHA-256 `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, selector 384 an exact prefix;
+- appended identities 385–388 are the CB22 production-decision, projection, census and unrelated-error
+  byte-identity witnesses only.
 
-- **The reported locus is an iteration artifact, and this is proved.** `failure.sourceFace` is the **first
-  unlabeled face in `std::map` key order**. `(0,1,2)` is **row 0 of the mechanical fixture and row 0 of the torus
-  fixture**, and the historical torus stop of the same name reported the identical face. Two unrelated witnesses,
-  same code, same locus.
-- **Zero seeds versus two-or-more is NOT derivable from committed bytes.** Neither the component id, its
-  membership, nor its seed set is retained. Partial evidence favours two-or-more - face `(0,1,2)` neighbours
-  labeled row 259 `(0,1,102)` across edge `0-1`, which the TB18 chord never made a carrier
-  (`incomingCarrier=none`) - but the barrier membership of `0-1` is a product decision not recoverable statically.
-- **The deciding numbers are discarded, sixth instance.** The component id, its membership and `seedOrbits` are all
-  in hand at the failure; only `sourceFace` survives, and it is the one field that cannot discriminate.
-- **The torus stop is a different mechanism.** With **0 traces** no face acquires a chord label, so no edge has a
-  labeled side and every seed set is empty - provably the **zero** branch. The mechanical witness has 70 labeled
-  faces and 6 non-exterior orbits and cannot be that. The candidates are **not merged**.
-- **A universal non-crossing invariant is REFUTED, not merely unproved.** The tracer builds `TraceIntersection`
-  contact nodes bound to a source face, so crossings are a modelled case in which `k` chords make `k + 1 + c`
-  local fragments. The 70/70 non-crossing rows are witness-local sufficiency only, so `localFragmentCount` must
-  stay non-fatal.
-- **371/372 remain deferred with a standing trigger:** both abort in a fixture constructor that will stop throwing
-  once the production plan builds, so a test-only accessor now risks landing a surface the next correction makes
-  redundant. Authorize the decoupling at the first review that either closes the mechanical production frontier or
-  finds the frontier unmoved across two consecutive TB turns.
+**TB19 remains the current runtime authority** until TB20 executes: 376 PASS / 8 RED, accepted 365/365, red
+ordinals 366/367/368/369/370/371/372/374. CB22 makes no runtime or acceptance claim.
 
-368/369/370/374 are unchanged under their existing owners. **There is still no vertex-30 discriminator.**
+### CB22 scope closure
 
-### CB22 binding scope — `BV0–BV9`, in the review record §10
+CB22 discharges frozen `BV0–BV9` statically/build-only:
 
-**Diagnostic-only.** Owner: `src/geometry/GlobalTopologyPlan.cpp`, the unlabeled-face component-seeding block at
-`:1102-1165` and the error it emits. Zero and two-or-more imply **opposite** corrections - seed an under-seeded
-component, versus separate one that straddles two regions - so no product correction is authorized. TB18-REV's
-prohibition on further diagnostic-only turns was scoped to the fragment-count surface, which CB21 corrected and
-TB19 closed; **it does not reach this surface.**
+- `UncutFaceComponentOrbitSeedNotUnique` now retains component identity, seed count and typed
+  `seedState ∈ {None, Multiple}`;
+- failing component face count, bounded membership and truncation are retained;
+- bounded boundary-edge rows retain barrier/labeled-side/owner state and the contributed seed or exact reason none
+  was contributed, including non-unique `edgeOrbitEvidence`;
+- `sourceFace` is explicitly typed as an iteration-order locus and the component is the discriminating locus;
+- existing fragment-owner evidence projects a bounded component-seed census;
+- production-path witnesses and an unrelated-error byte-identity witness cover the new fields;
+- the seeding predicate, component barriers/partition, seed construction, face walk, rotation system, region drafts
+  and CB21 fragment comparison are unchanged; `localFragmentCount` remains non-fatal; 371/372 are not decoupled.
 
-- **BV0** - accepted 365 untouched; **selector 384 byte-frozen** at `c9425b93...632a05564`, republished unchanged;
-  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BV1** - put the deciding cardinality on the error: the component id, its **seed count**, and an explicit
-  **`seedState in {None, Multiple}`** discriminator so zero and two-or-more are never again conflated.
-- **BV2** - retain the failing component's **membership**: face count and a bounded face list with a truncation
-  marker. `(0,1,2)` alone is not a component.
-- **BV3** - retain the component's **boundary edge rows**, bounded: per edge the edge key, whether the other side
-  is labeled, that face's owner count, the edge's barrier class (`mandatory`/`cut`/`traceTouched`/`none`), and the
-  seed contributed or the exact reason none was - **including the currently silent `edgeOrbitEvidence`-not-unique
-  skip at `:1136-1139`**, which today leaves no trace at all.
-- **BV4** - make the locus honest: keep `sourceFace` for continuity, publish that it is the first unlabeled face in
-  iteration order, and add the component identity as the discriminating locus. Discharges
-  `M3-CP4c3-TB19-REV-CAND-02`.
-- **BV5** - extend the existing `TraceFragmentOwnerEvidenceDiagnostic` census rather than adding a parallel
-  channel: per component the face count, seed count, `seedState` and seed orbit ids, bounded and truncation-flagged,
-  on the production path CB21 established and ordinal 384 already pins.
-- **BV6** - one witness per new field through the **production** path plus a byte-identical unrelated-error
-  regression witness; append **selector 385** with only those identities; no reordering; 384 stays an exact prefix.
-- **BV7** - **no semantic change whatsoever**: the seeding predicate, `componentBarriers`, the component partition,
-  `seedOrbits` construction, the `size() != 1U` test, `edgeOrbitEvidence`, `add_fragment_orbit`, the
-  `exteriorOrbits` filter, `is_terminal_slit`, the face walk, the rotation system, region drafts and CB21's
-  one-sided fragment comparison stay untouched. **`localFragmentCount` stays non-fatal.** No fixture mutation,
-  tolerance, float-derived decision or accepted-boundary relaxation; no sphere / saturation / ordinal-370 /
-  folded-cone / vertex-30 / finalize-contact work; **no 371/372 test decoupling**.
-- **BV8** - audit by assumption; prove every addition observational and 1-365 unaffected by construction.
-- **BV9** - six `M3-CP4c-3-TB20` discriminators: (1) 1-365 stay **365/365**; (2) ordinal 366 **still** reds at
-  `UncutFaceComponentOrbitSeedNotUnique` - any movement falsifies BV7; (3) the failure publishes **`seedState`**, so
-  zero-versus-multiple is finally decided; (4) the failing component's face count, bounded membership and bounded
-  boundary-edge rows are retained, including every skip reason; (5) the component census is present with explicit
-  truncation flags; (6) carried surfaces 368/369/370/374 and the 367/371/372 co-reachers are unchanged.
+### TB20 execution contract
 
-**One diagnostic turn only.** TB20 must supply the discriminator, and `M3-CP4c-3-TB20-REV` is expected to authorize
-a product correction rather than a further observation turn.
+Execute `Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Plan.md` exactly:
+
+1. verify artifact/source/GMP/internal-hash/mode authority and selector hashes/prefixes before runtime;
+2. record a complete pre-runtime package byte+mode census;
+3. execute all **388** selector-385 identities in selector order, one exact GoogleTest identity per fresh process;
+4. accepted 1–365 must remain **365/365 PASS**;
+5. ordinal 366 must remain at `UncutFaceComponentOrbitSeedNotUnique` and publish explicit `seedState`; any movement
+   falsifies CB22's diagnostic-only assumption and is semantic evidence;
+6. retain ordinal 366's component membership, boundary rows including every skip reason, and matching component
+   census/truncation;
+7. require new identities 385–388 and report 367/371/372 plus carried 368/369/370/374 under their established
+   owners;
+8. record a post-runtime package byte+mode census and require exact identity;
+9. close a 388-row ledger and update `Regression_Root_Cause_Tracker.md` for every observed regression/candidate
+   disposition.
+
+No configure, compile, relink, package repair, mode repair, generated discovery, source/test/fixture/selector
+mutation, or benchmark execution is authorized.
+
+If TB20 is semantically red as expected, route next to **`M3-CP4c-3-TB20-REV` — independent REVIEW + PLAN**.
+Do not implement a product correction in TB20.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **85**.
 
-**Document consolidation ran this turn** under the standing rule (`CLEAN_UP_POLICY.md`). The TB18 report, the
-TB18 review record, the CB21 build report, the consumed TB19 plan and the consumed TB19 review plan were folded
-into `M3_CP4c_Consolidated_Record.md`'s folded document index after their durable facts were verified present in
-the retained records. Current authority is the TB19 report plus the TB19-REV record. No selector file, normative
-definition or policy was touched.
-
-## Context Load Plan
-
-`load_next`:
-- turn-based-coding-agent CODE + BUILD guidance
+### Context Load Plan
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB19_Independent_Review_Record.md` — **frozen CB22 scope, §10 BV0–BV9**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
-5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
-   document index** resolves every folded per-turn plan, report and record.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB22_Code_Build_Report.md`.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Plan.md` — **exact next plan**.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md` — current runtime baseline.
+5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI.
+6. `.agents/Directional/GMP_COMPILE_POLICY.md` and `.agents/Directional/Regression_Root_Cause_Tracker.md`.
+7. `TODO.md` and `CHANGELOG.md`.
 
-Source surfaces CB22 will touch: `src/geometry/GlobalTopologyPlan.cpp` (the unlabeled-face component-seeding block
-at `:1102–1165` and its error only), the plan error/diagnostics headers for the added typed fields, and `tests/`
-for the BV6 witnesses.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
-`review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and
-`fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
+For the turn-based coding skill, load canonical `references/turns/TB.md`; load the GitHub connector module because
+TB20 is artifact/workflow-driven. Do not preload sibling turn files or historical folded records.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
