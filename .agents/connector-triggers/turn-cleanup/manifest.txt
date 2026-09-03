@@ -1,0 +1,2 @@
+# M3-CP4c-3-TB21 temporary-state manifest
+.agents/connector-triggers/source-snapshot/tb21-start.txt
