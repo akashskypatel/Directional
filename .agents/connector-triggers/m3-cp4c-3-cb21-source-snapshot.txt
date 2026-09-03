@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-CB21
-semantic_source_sha=5d89d14ddea61862879d6569a4c00eb2e0711196
-purpose=exact-source snapshot

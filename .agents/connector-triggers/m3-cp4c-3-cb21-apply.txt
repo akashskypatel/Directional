@@ -1,4 +1,0 @@
-M3-CP4c-3-CB21 closeout documentation patch apply
-base_sha=9d864ec802a79d9ebead2a5b3fdcc91940410841
-patch_sha256=326df4d64c796a96bc64b609972a6dfd06c6e2e2157178f683af935b6eb345e8
-file_id=1SF2MQgWORT0or4cEaTUXdWjP2AiV4ne1
