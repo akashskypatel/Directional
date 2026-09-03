@@ -100,6 +100,16 @@ SurfaceCutGraphError topology_error(const GlobalTopologyPlanError &error) {
   result.traceEventPositionFailureReason =
       error.traceEventPositionFailureReason;
   result.traceEventPositionPass = error.traceEventPositionPass;
+  result.embeddedGraphEulerCensusComplete =
+      error.embeddedGraphEulerCensusComplete;
+  result.embeddedGraphNodeCount = error.embeddedGraphNodeCount;
+  result.embeddedGraphArcCount = error.embeddedGraphArcCount;
+  result.embeddedGraphFaceWalkOrbitCount =
+      error.embeddedGraphFaceWalkOrbitCount;
+  result.embeddedGraphComponentCount = error.embeddedGraphComponentCount;
+  result.embeddedGraphSourceEulerCharacteristic =
+      error.embeddedGraphSourceEulerCharacteristic;
+  result.embeddedGraphEulerResidual = error.embeddedGraphEulerResidual;
   result.traceEventPositionCandidates.reserve(
       error.traceEventPositionCandidates.size());
   for (const TraceEventPositionCandidate &candidate :
@@ -110,6 +120,74 @@ SurfaceCutGraphError topology_error(const GlobalTopologyPlanError &error) {
             candidate.carrierRole});
   }
   return result;
+}
+
+std::int64_t source_euler_characteristic(
+    const SourceTopologyIndex &topology) {
+  std::set<authority::SourceVertexId> vertices;
+  for (const auto &[faceKey, face] : topology.faces) {
+    (void)faceKey;
+    vertices.insert(face.vertices.begin(), face.vertices.end());
+  }
+  return static_cast<std::int64_t>(vertices.size()) -
+         static_cast<std::int64_t>(topology.incidentFaces.size()) +
+         static_cast<std::int64_t>(topology.faces.size());
+}
+
+std::size_t diagnostic_graph_component_count(
+    const std::size_t nodeCount,
+    const std::vector<GlobalTopologyArc> &arcs) {
+  if (nodeCount == 0U) return 0U;
+  std::vector<std::size_t> parent(nodeCount);
+  std::iota(parent.begin(), parent.end(), 0U);
+  const auto root = [&](const auto &self, std::size_t value) -> std::size_t {
+    return parent[value] == value ? value : self(self, parent[value]);
+  };
+  const auto unite = [&](std::size_t first, std::size_t second) {
+    first = root(root, first);
+    second = root(root, second);
+    if (first == second) return;
+    if (first < second) parent[second] = first;
+    else parent[first] = second;
+  };
+  for (const auto &arc : arcs) unite(arc.firstNode.index(), arc.secondNode.index());
+  std::set<std::size_t> roots;
+  for (std::size_t node = 0U; node < nodeCount; ++node)
+    roots.insert(root(root, node));
+  return roots.size();
+}
+
+void annotate_failure_euler_census(
+    SurfaceCutGraphError &failure, const SourceTopologyIndex &topology,
+    const FieldAlignedCurveNetwork &network,
+    const std::vector<authority::SourceEdgeTopologyKey> &cutEdges) {
+  using namespace embedded_graph_topology_detail;
+  failure.embeddedGraphSourceEulerCharacteristic =
+      source_euler_characteristic(topology);
+  const auto cutNodeBuild = build_cut_node_bindings(network, cutEdges);
+  if (std::holds_alternative<GlobalTopologyPlanError>(cutNodeBuild)) return;
+  const auto &cutNodes = std::get<CutNodeBindings>(cutNodeBuild);
+  failure.embeddedGraphNodeCount = cutNodes.combinedNodeExtent;
+  const auto arcBuild = build_arcs(network, cutEdges, cutNodes);
+  if (std::holds_alternative<GlobalTopologyPlanError>(arcBuild)) return;
+  const auto &arcs = std::get<std::vector<GlobalTopologyArc>>(arcBuild);
+  failure.embeddedGraphArcCount = arcs.size();
+  failure.embeddedGraphComponentCount =
+      diagnostic_graph_component_count(cutNodes.combinedNodeExtent, arcs);
+  const auto rotationBuild = build_rotation_system(topology, network, cutNodes, arcs);
+  if (std::holds_alternative<GlobalTopologyPlanError>(rotationBuild)) return;
+  const auto &rotations =
+      std::get<std::vector<GlobalTopologyNodeRotation>>(rotationBuild);
+  const auto faceWalkBuild = walk_graph_faces(arcs, rotations);
+  if (std::holds_alternative<GlobalTopologyPlanError>(faceWalkBuild)) return;
+  const auto &faceWalk = std::get<FaceWalkResult>(faceWalkBuild);
+  failure.embeddedGraphFaceWalkOrbitCount = faceWalk.orbits.size();
+  failure.embeddedGraphEulerResidual =
+      static_cast<std::int64_t>(cutNodes.combinedNodeExtent) -
+      static_cast<std::int64_t>(arcs.size()) +
+      static_cast<std::int64_t>(faceWalk.orbits.size()) -
+      *failure.embeddedGraphSourceEulerCharacteristic;
+  failure.embeddedGraphEulerCensusComplete = true;
 }
 
 bool exact_interior_parameter(const authority::ExactUnitParameter &parameter) {
@@ -370,7 +448,7 @@ CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std
   std::set<authority::SourceEdgeTopologyKey> cuts;
   bool saturationUsed=false;std::optional<authority::SourceFaceTopologyKey> saturationLocus;std::size_t saturationPromotedEdgeCount=0U;
   std::size_t certificationAttemptIndex = 0U;
-  while(true){const auto evidence=classify_cut_candidates(*topology,mandatory,traceCrossed,cuts);const auto certificateBuild=certify_actual_embedded_graph(sourceFaces,sourceVertexCount,sourceAuthority,network,{cuts.begin(),cuts.end()},evidence);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&certificateBuild)){auto result=*failure;result.cutCandidates=evidence;result.certificationAttemptIndex=certificationAttemptIndex;result.certificationCutEdgeCount=cuts.size();return result;}auto certificate=std::get<SurfaceCutGraphCellularityCertificate>(certificateBuild);if(certificate.proves_cellularity()){certificate.saturationUsed=saturationUsed;certificate.saturationLocus=saturationLocus;certificate.saturationPromotedEdgeCount=saturationPromotedEdgeCount;SurfaceCutGraphCandidate result;result.cutEdges.assign(cuts.begin(),cuts.end());result.certificate=std::move(certificate);result.sourceDigest=network.source_digest();result.atlasDigest=network.atlas_digest();result.networkDigest=network.semantic_digest();return result;}
+  while(true){const auto evidence=classify_cut_candidates(*topology,mandatory,traceCrossed,cuts);const auto certificateBuild=certify_actual_embedded_graph(sourceFaces,sourceVertexCount,sourceAuthority,network,{cuts.begin(),cuts.end()},evidence);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&certificateBuild)){auto result=*failure;annotate_failure_euler_census(result,*topology,network,{cuts.begin(),cuts.end()});result.cutCandidates=evidence;result.certificationAttemptIndex=certificationAttemptIndex;result.certificationCutEdgeCount=cuts.size();return result;}auto certificate=std::get<SurfaceCutGraphCellularityCertificate>(certificateBuild);if(certificate.proves_cellularity()){certificate.saturationUsed=saturationUsed;certificate.saturationLocus=saturationLocus;certificate.saturationPromotedEdgeCount=saturationPromotedEdgeCount;SurfaceCutGraphCandidate result;result.cutEdges.assign(cuts.begin(),cuts.end());result.certificate=std::move(certificate);result.sourceDigest=network.source_digest();result.atlasDigest=network.atlas_digest();result.networkDigest=network.semantic_digest();return result;}
     ++certificationAttemptIndex;
     std::set<authority::SourceEdgeTopologyKey> barriers=mandatory;barriers.insert(traceCrossed.begin(),traceCrossed.end());barriers.insert(cuts.begin(),cuts.end());const auto components=proposal_components(*topology,barriers);bool added=false;std::optional<authority::SourceFaceTopologyKey> blockedLocus;std::vector<std::vector<authority::SourceFaceTopologyKey>> nonDiscComponents;
     for(const auto &component:components){const auto disc=proposal_component_is_disc(*topology,component,barriers);if(!disc.has_value())return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);if(*disc)continue;nonDiscComponents.push_back(component);if(!component.empty()&&!blockedLocus.has_value())blockedLocus=component.front();const auto proposed=proposal_tree_cotree_cut_edges(*topology,component,barriers);if(!proposed.has_value())continue;for(const auto &edge:*proposed){if(mandatory.count(edge))continue;added=cuts.insert(edge).second||added;}}

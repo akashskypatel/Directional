@@ -538,6 +538,16 @@ project_surface_cut_graph_failure_locus(
   locus.remainingAdmissibleEdgeCount = error.remainingAdmissibleEdgeCount;
   locus.certificationAttemptIndex = error.certificationAttemptIndex;
   locus.certificationCutEdgeCount = error.certificationCutEdgeCount;
+  locus.embeddedGraphEulerCensusComplete =
+      error.embeddedGraphEulerCensusComplete;
+  locus.embeddedGraphNodeCount = error.embeddedGraphNodeCount;
+  locus.embeddedGraphArcCount = error.embeddedGraphArcCount;
+  locus.embeddedGraphFaceWalkOrbitCount =
+      error.embeddedGraphFaceWalkOrbitCount;
+  locus.embeddedGraphComponentCount = error.embeddedGraphComponentCount;
+  locus.embeddedGraphSourceEulerCharacteristic =
+      error.embeddedGraphSourceEulerCharacteristic;
+  locus.embeddedGraphEulerResidual = error.embeddedGraphEulerResidual;
   return locus;
 }
 
@@ -605,6 +615,16 @@ project_global_topology_plan_failure_locus(
   projected.rotationPreviousRay = error.rotationPreviousRay;
   projected.rotationCurrentRay = error.rotationCurrentRay;
   projected.rotationFanCensus = error.rotationFanCensus;
+  projected.embeddedGraphEulerCensusComplete =
+      error.embeddedGraphEulerCensusComplete;
+  projected.embeddedGraphNodeCount = error.embeddedGraphNodeCount;
+  projected.embeddedGraphArcCount = error.embeddedGraphArcCount;
+  projected.embeddedGraphFaceWalkOrbitCount =
+      error.embeddedGraphFaceWalkOrbitCount;
+  projected.embeddedGraphComponentCount = error.embeddedGraphComponentCount;
+  projected.embeddedGraphSourceEulerCharacteristic =
+      error.embeddedGraphSourceEulerCharacteristic;
+  projected.embeddedGraphEulerResidual = error.embeddedGraphEulerResidual;
 
   SurfaceCellFailureLocusDiagnostics locus =
       project_surface_cut_graph_failure_locus(projected);
@@ -666,6 +686,17 @@ project_global_topology_plan_failure_locus(
   }
   locus.uncutFaceComponentBoundaryEdgesTruncated =
       error.uncutFaceComponentBoundaryEdgesTruncated;
+  locus.uncutFaceComponentBoundaryOrbitCount =
+      error.uncutFaceComponentBoundaryOrbitCount;
+  locus.uncutFaceComponentBoundaryOrbits.reserve(
+      error.uncutFaceComponentBoundaryOrbits.size());
+  for (const auto &orbit : error.uncutFaceComponentBoundaryOrbits) {
+    locus.uncutFaceComponentBoundaryOrbits.push_back(
+        SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics{
+            orbit.orbit, orbit.boundaryEdgeCount});
+  }
+  locus.uncutFaceComponentBoundaryOrbitsTruncated =
+      error.uncutFaceComponentBoundaryOrbitsTruncated;
 
   const auto &ownerEvidence = error.fragmentOwnerEvidence;
   auto &projectedOwnerEvidence = locus.fragmentOwnerEvidence;

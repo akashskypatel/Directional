@@ -1171,6 +1171,7 @@ RegionBuildResult build_regions(
   };
   const auto component_boundary_evidence = [&](const std::size_t component) {
     std::vector<UncutFaceComponentBoundaryEdgeDiagnostic> rows;
+    std::map<std::size_t, std::size_t> orbitBoundaryEdgeCounts;
     std::size_t rowCount = 0U;
     for (const auto &[edge, incident] : topology.incidentFaces) {
       std::optional<std::size_t> componentSide;
@@ -1200,45 +1201,58 @@ RegionBuildResult build_regions(
       if (otherInComponent) continue;
 
       ++rowCount;
-      if (rows.size() >= kUncutComponentBoundaryEvidenceLimit) continue;
       UncutFaceComponentBoundaryEdgeDiagnostic row{edge};
       row.barrierClass = component_barrier_class(edge);
 
       if (incident.size() != 2U) {
-        row.noSeedReason = UncutFaceComponentNoSeedReason::IncidentFaceCountNotTwo;
-        rows.push_back(std::move(row));
-        continue;
-      }
-      const auto &otherFace = incident[*componentSide ^ 1U];
-      const auto labeled = fragmentOrbits.find(otherFace);
-      row.otherSideLabeled = unlabeledIndex.find(otherFace) == unlabeledIndex.end();
-      row.labeledFaceOwnerCount =
-          labeled == fragmentOrbits.end() ? 0U : labeled->second.size();
-
-      if (row.barrierClass != UncutFaceComponentBarrierClass::None) {
-        row.noSeedReason = UncutFaceComponentNoSeedReason::Barrier;
-      } else if (!row.otherSideLabeled) {
-        row.noSeedReason = UncutFaceComponentNoSeedReason::OtherSideUnlabeled;
-      } else if (labeled == fragmentOrbits.end() || labeled->second.empty()) {
-        row.noSeedReason = UncutFaceComponentNoSeedReason::LabeledFaceHasNoOwner;
-      } else if (labeled->second.size() == 1U) {
-        row.contributedSeed = *labeled->second.begin();
+        row.noSeedReason =
+            UncutFaceComponentNoSeedReason::IncidentFaceCountNotTwo;
       } else {
+        const auto &otherFace = incident[*componentSide ^ 1U];
+        const auto labeled = fragmentOrbits.find(otherFace);
+        row.otherSideLabeled =
+            unlabeledIndex.find(otherFace) == unlabeledIndex.end();
+        row.labeledFaceOwnerCount =
+            labeled == fragmentOrbits.end() ? 0U : labeled->second.size();
         const auto edgeEvidence =
             edgeOrbitEvidence.find(std::make_pair(otherFace, edge));
-        if (edgeEvidence == edgeOrbitEvidence.end()) {
+        if (edgeEvidence != edgeOrbitEvidence.end()) {
+          for (const std::size_t orbit : edgeEvidence->second)
+            ++orbitBoundaryEdgeCounts[orbit];
+        } else if (labeled != fragmentOrbits.end() &&
+                   labeled->second.size() == 1U) {
+          ++orbitBoundaryEdgeCounts[*labeled->second.begin()];
+        }
+
+        if (row.barrierClass != UncutFaceComponentBarrierClass::None) {
+          row.noSeedReason = UncutFaceComponentNoSeedReason::Barrier;
+        } else if (!row.otherSideLabeled) {
           row.noSeedReason =
-              UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceMissing;
-        } else if (edgeEvidence->second.size() != 1U) {
+              UncutFaceComponentNoSeedReason::OtherSideUnlabeled;
+        } else if (labeled == fragmentOrbits.end() || labeled->second.empty()) {
           row.noSeedReason =
-              UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique;
+              UncutFaceComponentNoSeedReason::LabeledFaceHasNoOwner;
+        } else if (labeled->second.size() == 1U) {
+          row.contributedSeed = *labeled->second.begin();
         } else {
-          row.contributedSeed = *edgeEvidence->second.begin();
+          if (edgeEvidence == edgeOrbitEvidence.end()) {
+            row.noSeedReason =
+                UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceMissing;
+          } else if (edgeEvidence->second.size() != 1U) {
+            row.noSeedReason =
+                UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique;
+          } else {
+            row.contributedSeed = *edgeEvidence->second.begin();
+          }
         }
       }
-      rows.push_back(std::move(row));
+
+      if (rows.size() < kUncutComponentBoundaryEvidenceLimit) {
+        rows.push_back(std::move(row));
+      }
     }
-    return std::make_pair(std::move(rows), rowCount);
+    return std::make_tuple(std::move(rows), rowCount,
+                           std::move(orbitBoundaryEdgeCounts));
   };
 
   if (ownerEvidence != nullptr) {
@@ -1301,12 +1315,26 @@ RegionBuildResult build_regions(
       failure.uncutFaceComponentFacesTruncated =
           failure.uncutFaceComponentFaceCount >
           failure.uncutFaceComponentFaces.size();
-      auto [boundaryRows, boundaryRowCount] =
+      auto [boundaryRows, boundaryRowCount, boundaryOrbitCounts] =
           component_boundary_evidence(component->second);
       failure.uncutFaceComponentBoundaryEdgeCount = boundaryRowCount;
       failure.uncutFaceComponentBoundaryEdges = std::move(boundaryRows);
       failure.uncutFaceComponentBoundaryEdgesTruncated =
           boundaryRowCount > failure.uncutFaceComponentBoundaryEdges.size();
+      failure.uncutFaceComponentBoundaryOrbitCount =
+          boundaryOrbitCounts.size();
+      for (const auto &[orbit, boundaryEdgeCount] : boundaryOrbitCounts) {
+        if (failure.uncutFaceComponentBoundaryOrbits.size() >=
+            kUncutComponentSeedEvidenceLimit) {
+          break;
+        }
+        failure.uncutFaceComponentBoundaryOrbits.push_back(
+            UncutFaceComponentBoundaryOrbitDiagnostic{orbit,
+                                                       boundaryEdgeCount});
+      }
+      failure.uncutFaceComponentBoundaryOrbitsTruncated =
+          failure.uncutFaceComponentBoundaryOrbitCount >
+          failure.uncutFaceComponentBoundaryOrbits.size();
       return failure;
     }
     fragmentOrbits[unlabeledFaces[index]].insert(*seeds->second.begin());
@@ -2209,6 +2237,19 @@ CandidateBuildResult canonical_candidate(
                        [](const auto &face) { return face.ownerDeficit != 0U; });
   };
   const auto annotate_owner_evidence = [&](GlobalTopologyPlanError failure) {
+    const auto &census = cutGraph.certificate();
+    failure.embeddedGraphEulerCensusComplete = true;
+    failure.embeddedGraphNodeCount = census.vertexCount;
+    failure.embeddedGraphArcCount = census.edgeCount;
+    failure.embeddedGraphFaceWalkOrbitCount = census.totalOrbitCount;
+    failure.embeddedGraphComponentCount = census.graphComponentCount;
+    failure.embeddedGraphSourceEulerCharacteristic =
+        census.sourceEulerCharacteristic;
+    failure.embeddedGraphEulerResidual =
+        static_cast<std::int64_t>(census.vertexCount) -
+        static_cast<std::int64_t>(census.edgeCount) +
+        static_cast<std::int64_t>(census.totalOrbitCount) -
+        static_cast<std::int64_t>(census.sourceEulerCharacteristic);
     // The high-side mismatch keeps the byte-identical CB20 failure envelope.
     // Low-side evidence is observational and follows only later failures.
     if (failure.code !=

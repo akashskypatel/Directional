@@ -194,6 +194,11 @@ struct SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics {
   std::string noSeedReason;
 };
 
+struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
+  std::size_t orbit = 0U;
+  std::size_t boundaryEdgeCount = 0U;
+};
+
 struct SurfaceCellUncutFaceComponentSeedCensusDiagnostics {
   std::size_t component = 0U;
   std::size_t faceCount = 0U;
@@ -259,6 +264,13 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> fragmentOrbitCount;
   std::optional<std::size_t> tracePieceCount;
   std::optional<std::size_t> expectedFragmentCount;
+  bool embeddedGraphEulerCensusComplete = false;
+  std::optional<std::size_t> embeddedGraphNodeCount;
+  std::optional<std::size_t> embeddedGraphArcCount;
+  std::optional<std::size_t> embeddedGraphFaceWalkOrbitCount;
+  std::optional<std::size_t> embeddedGraphComponentCount;
+  std::optional<std::int64_t> embeddedGraphSourceEulerCharacteristic;
+  std::optional<std::int64_t> embeddedGraphEulerResidual;
   std::vector<SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics>
       fragmentIncidences;
   std::size_t fragmentIncidenceCount = 0U;
@@ -276,6 +288,10 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::vector<SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics>
       uncutFaceComponentBoundaryEdges;
   bool uncutFaceComponentBoundaryEdgesTruncated = false;
+  std::size_t uncutFaceComponentBoundaryOrbitCount = 0U;
+  std::vector<SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics>
+      uncutFaceComponentBoundaryOrbits;
+  bool uncutFaceComponentBoundaryOrbitsTruncated = false;
   SurfaceCellTraceFragmentOwnerEvidenceDiagnostics fragmentOwnerEvidence;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;

@@ -3576,6 +3576,46 @@ void append_cp4c_failure_locus(
   if (locus.trace.has_value()) report << ";trace=" << *locus.trace;
   if (locus.secondTrace.has_value())
     report << ";secondTrace=" << *locus.secondTrace;
+  if (locus.embeddedGraphEulerCensusComplete ||
+      locus.embeddedGraphNodeCount.has_value() ||
+      locus.embeddedGraphArcCount.has_value() ||
+      locus.embeddedGraphFaceWalkOrbitCount.has_value() ||
+      locus.embeddedGraphComponentCount.has_value() ||
+      locus.embeddedGraphSourceEulerCharacteristic.has_value() ||
+      locus.embeddedGraphEulerResidual.has_value()) {
+    report << ";embeddedGraphEulerCensusComplete="
+           << (locus.embeddedGraphEulerCensusComplete ? "true" : "false");
+    report << ";embeddedGraphV=";
+    if (locus.embeddedGraphNodeCount.has_value())
+      report << *locus.embeddedGraphNodeCount;
+    else
+      report << "none";
+    report << ";embeddedGraphE=";
+    if (locus.embeddedGraphArcCount.has_value())
+      report << *locus.embeddedGraphArcCount;
+    else
+      report << "none";
+    report << ";embeddedGraphF=";
+    if (locus.embeddedGraphFaceWalkOrbitCount.has_value())
+      report << *locus.embeddedGraphFaceWalkOrbitCount;
+    else
+      report << "none";
+    report << ";embeddedGraphComponentCount=";
+    if (locus.embeddedGraphComponentCount.has_value())
+      report << *locus.embeddedGraphComponentCount;
+    else
+      report << "none";
+    report << ";embeddedGraphSourceChi=";
+    if (locus.embeddedGraphSourceEulerCharacteristic.has_value())
+      report << *locus.embeddedGraphSourceEulerCharacteristic;
+    else
+      report << "none";
+    report << ";embeddedGraphEulerResidual=";
+    if (locus.embeddedGraphEulerResidual.has_value())
+      report << *locus.embeddedGraphEulerResidual;
+    else
+      report << "none";
+  }
   if (locus.fragmentOrbitCount.has_value())
     report << ";fragmentOrbitCount=" << *locus.fragmentOrbitCount;
   if (locus.tracePieceCount.has_value())
@@ -3670,6 +3710,22 @@ void append_cp4c_failure_locus(
       if (!row.noSeedReason.empty()) report << row.noSeedReason;
       else report << "none";
       report << '}';
+    }
+  }
+  if (locus.uncutFaceComponentBoundaryOrbitCount != 0U ||
+      locus.uncutFaceComponentBoundaryOrbitsTruncated ||
+      !locus.uncutFaceComponentBoundaryOrbits.empty()) {
+    report << ";uncutFaceComponentBoundaryOrbitCount="
+           << locus.uncutFaceComponentBoundaryOrbitCount
+           << ";uncutFaceComponentBoundaryOrbitsTruncated="
+           << (locus.uncutFaceComponentBoundaryOrbitsTruncated ? "true"
+                                                               : "false");
+    for (std::size_t index = 0U;
+         index < locus.uncutFaceComponentBoundaryOrbits.size(); ++index) {
+      const auto &row = locus.uncutFaceComponentBoundaryOrbits[index];
+      report << ";uncutFaceComponentBoundaryOrbit[" << index
+             << "]={orbit=" << row.orbit
+             << ",boundaryEdgeCount=" << row.boundaryEdgeCount << '}';
     }
   }
   const auto &ownerEvidence = locus.fragmentOwnerEvidence;
@@ -6409,6 +6465,24 @@ const Cp4cProductionFixture &cp4c_mechanical_fixture() {
   return fixture;
 }
 
+const Cp4cProductionFixture &cp4c_mechanical_atlas_fixture() {
+  static const Cp4cProductionFixture fixture = [] {
+    Cp4cProductionFixture value = build_cp4c_pipeline_products_fixture(
+        "mechanical_feature", "mechanical feature");
+    if (!value.loadError.empty()) throw std::runtime_error(value.loadError);
+    if (!value.atlas.has_value()) {
+      std::ostringstream failure;
+      failure << "mechanical feature pipeline did not retain the atlas: "
+              << value.terminalFailureCode << '/' << value.terminalFailureStage
+              << ";detailCode=" << value.terminalFailureDetailCode;
+      append_cp4c_failure_locus(failure, value.terminalFailureLocus);
+      throw std::runtime_error(failure.str());
+    }
+    return value;
+  }();
+  return fixture;
+}
+
 struct IndependentComplementComponentTopology {
   std::size_t faceCount = 0U;
   std::size_t vertexCount = 0U;
@@ -9059,7 +9133,7 @@ TEST(SurfaceCutGraph, EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError) {
 }
 
 TEST(FieldTransportAtlas, NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis) {
-  const auto &fixture = cp4c_mechanical_fixture();
+  const auto &fixture = cp4c_mechanical_atlas_fixture();
   ASSERT_TRUE(fixture.atlas.has_value());
   const auto edge03 = topology_edge(
       0, 3, static_cast<std::size_t>(fixture.mesh.V.rows()));
@@ -9085,7 +9159,7 @@ TEST(FieldTransportAtlas, NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis) {
 }
 
 TEST(FieldTransportAtlas, CutTransportDomainSatisfiesTheEulerCutIdentity) {
-  const auto &fixture = cp4c_mechanical_fixture();
+  const auto &fixture = cp4c_mechanical_atlas_fixture();
   ASSERT_TRUE(fixture.atlas.has_value());
   ASSERT_FALSE(fixture.atlas->region_transport_diagnostics().empty());
   std::ostringstream report;
@@ -11277,6 +11351,144 @@ TEST(GlobalTopologyPlan,
   error.sourceFace = topology_face(0, 1, 2, 16U);
   EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
             production_global_topology_plan_error_locus(error));
+}
+
+TEST(GlobalTopologyPlan,
+     EmbeddedGraphEulerCensusPublishesThroughMechanicalProductionFailure) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_FALSE(mechanical.plan.has_value());
+  const auto &certificate = mechanical.cutGraph->certificate();
+  const auto &locus = mechanical.terminalFailureLocus;
+
+  EXPECT_TRUE(locus.embeddedGraphEulerCensusComplete);
+  ASSERT_TRUE(locus.embeddedGraphNodeCount.has_value());
+  ASSERT_TRUE(locus.embeddedGraphArcCount.has_value());
+  ASSERT_TRUE(locus.embeddedGraphFaceWalkOrbitCount.has_value());
+  ASSERT_TRUE(locus.embeddedGraphComponentCount.has_value());
+  ASSERT_TRUE(locus.embeddedGraphSourceEulerCharacteristic.has_value());
+  ASSERT_TRUE(locus.embeddedGraphEulerResidual.has_value());
+  EXPECT_EQ(certificate.vertexCount, *locus.embeddedGraphNodeCount);
+  EXPECT_EQ(certificate.edgeCount, *locus.embeddedGraphArcCount);
+  EXPECT_EQ(certificate.totalOrbitCount,
+            *locus.embeddedGraphFaceWalkOrbitCount);
+  EXPECT_EQ(certificate.graphComponentCount,
+            *locus.embeddedGraphComponentCount);
+  EXPECT_EQ(certificate.sourceEulerCharacteristic,
+            *locus.embeddedGraphSourceEulerCharacteristic);
+  const std::int64_t residual =
+      static_cast<std::int64_t>(certificate.vertexCount) -
+      static_cast<std::int64_t>(certificate.edgeCount) +
+      static_cast<std::int64_t>(certificate.totalOrbitCount) -
+      static_cast<std::int64_t>(certificate.sourceEulerCharacteristic);
+  EXPECT_EQ(residual, *locus.embeddedGraphEulerResidual);
+  std::cout << "m3Cp4c3BW1BW2;V=" << certificate.vertexCount
+            << ";E=" << certificate.edgeCount
+            << ";F=" << certificate.totalOrbitCount
+            << ";componentCount=" << certificate.graphComponentCount
+            << ";sourceChi=" << certificate.sourceEulerCharacteristic
+            << ";residual=" << residual << '\n';
+}
+
+TEST(GlobalTopologyPlan,
+     UncutFaceComponentBoundaryOrbitAttributionPublishesThroughMechanicalProductionFailure) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
+            mechanical.terminalFailureDetailCode);
+  const auto &locus = mechanical.terminalFailureLocus;
+  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
+  EXPECT_EQ(locus.uncutFaceComponentBoundaryOrbitCount >
+                locus.uncutFaceComponentBoundaryOrbits.size(),
+            locus.uncutFaceComponentBoundaryOrbitsTruncated);
+  ASSERT_GT(locus.uncutFaceComponentBoundaryOrbitCount, 0U);
+  ASSERT_FALSE(locus.uncutFaceComponentBoundaryOrbits.empty());
+
+  const auto component = std::find_if(
+      locus.fragmentOwnerEvidence.components.begin(),
+      locus.fragmentOwnerEvidence.components.end(), [&](const auto &row) {
+        return row.component == *locus.uncutFaceComponent;
+      });
+  ASSERT_NE(locus.fragmentOwnerEvidence.components.end(), component);
+  ASSERT_FALSE(component->seedOrbitsTruncated);
+  ASSERT_FALSE(locus.uncutFaceComponentBoundaryOrbitsTruncated);
+  std::vector<std::size_t> attributedOrbits;
+  std::size_t attributedBoundaryEdges = 0U;
+  for (const auto &row : locus.uncutFaceComponentBoundaryOrbits) {
+    EXPECT_GT(row.boundaryEdgeCount, 0U);
+    EXPECT_LE(row.boundaryEdgeCount,
+              locus.uncutFaceComponentBoundaryEdgeCount);
+    attributedOrbits.push_back(row.orbit);
+    attributedBoundaryEdges += row.boundaryEdgeCount;
+  }
+  for (const std::size_t seedOrbit : component->seedOrbitIds) {
+    EXPECT_NE(attributedOrbits.end(),
+              std::find(attributedOrbits.begin(), attributedOrbits.end(),
+                        seedOrbit));
+  }
+  std::cout << "m3Cp4c3BW3;component=" << *locus.uncutFaceComponent
+            << ";orbitCount=" << locus.uncutFaceComponentBoundaryOrbitCount
+            << ";attributedBoundaryEdges=" << attributedBoundaryEdges
+            << ";boundaryEdgeCount="
+            << locus.uncutFaceComponentBoundaryEdgeCount << '\n';
+}
+
+TEST(GlobalTopologyPlan,
+     EmbeddedGraphEulerCensusCarriesAcrossTorusAndPrescribedSphereProductionPaths) {
+  const Cp4cProductionFixture torus =
+      build_cp4c_pipeline_products_fixture("torus", "torus");
+  ASSERT_TRUE(torus.cutGraph.has_value()) << torus.terminalFailureCode;
+  const auto &torusCertificate = torus.cutGraph->certificate();
+  EXPECT_TRUE(torusCertificate.proves_cellularity());
+  const std::int64_t torusResidual =
+      static_cast<std::int64_t>(torusCertificate.vertexCount) -
+      static_cast<std::int64_t>(torusCertificate.edgeCount) +
+      static_cast<std::int64_t>(torusCertificate.totalOrbitCount) -
+      static_cast<std::int64_t>(torusCertificate.sourceEulerCharacteristic);
+
+  const Cp4cProductionFixture sphere = build_cp4c_pipeline_products_fixture(
+      "sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.cutGraph.has_value()) << sphere.terminalFailureCode;
+  const auto &sphereCertificate = sphere.cutGraph->certificate();
+  const auto &sphereLocus = sphere.terminalFailureLocus;
+  ASSERT_FALSE(sphere.plan.has_value());
+  EXPECT_TRUE(sphereLocus.embeddedGraphEulerCensusComplete);
+  ASSERT_TRUE(sphereLocus.embeddedGraphNodeCount.has_value());
+  ASSERT_TRUE(sphereLocus.embeddedGraphArcCount.has_value());
+  ASSERT_TRUE(sphereLocus.embeddedGraphFaceWalkOrbitCount.has_value());
+  ASSERT_TRUE(sphereLocus.embeddedGraphComponentCount.has_value());
+  ASSERT_TRUE(sphereLocus.embeddedGraphSourceEulerCharacteristic.has_value());
+  ASSERT_TRUE(sphereLocus.embeddedGraphEulerResidual.has_value());
+  EXPECT_EQ(sphereCertificate.vertexCount, *sphereLocus.embeddedGraphNodeCount);
+  EXPECT_EQ(sphereCertificate.edgeCount, *sphereLocus.embeddedGraphArcCount);
+  EXPECT_EQ(sphereCertificate.totalOrbitCount,
+            *sphereLocus.embeddedGraphFaceWalkOrbitCount);
+  EXPECT_EQ(sphereCertificate.graphComponentCount,
+            *sphereLocus.embeddedGraphComponentCount);
+  EXPECT_EQ(sphereCertificate.sourceEulerCharacteristic,
+            *sphereLocus.embeddedGraphSourceEulerCharacteristic);
+  const std::int64_t sphereResidual =
+      static_cast<std::int64_t>(sphereCertificate.vertexCount) -
+      static_cast<std::int64_t>(sphereCertificate.edgeCount) +
+      static_cast<std::int64_t>(sphereCertificate.totalOrbitCount) -
+      static_cast<std::int64_t>(sphereCertificate.sourceEulerCharacteristic);
+  EXPECT_EQ(sphereResidual, *sphereLocus.embeddedGraphEulerResidual);
+  std::cout << "m3Cp4c3BW4;torus={V=" << torusCertificate.vertexCount
+            << ",E=" << torusCertificate.edgeCount
+            << ",F=" << torusCertificate.totalOrbitCount
+            << ",componentCount=" << torusCertificate.graphComponentCount
+            << ",sourceChi=" << torusCertificate.sourceEulerCharacteristic
+            << ",residual=" << torusResidual << "};sphere={V="
+            << sphereCertificate.vertexCount << ",E="
+            << sphereCertificate.edgeCount << ",F="
+            << sphereCertificate.totalOrbitCount << ",componentCount="
+            << sphereCertificate.graphComponentCount << ",sourceChi="
+            << sphereCertificate.sourceEulerCharacteristic << ",residual="
+            << sphereResidual << "}\n";
 }
 
 TEST(GlobalTopologyPlan,

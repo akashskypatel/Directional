@@ -26,7 +26,8 @@ ROLE = {
     358: ("withdrawn", "**Off-chain** - not a prefix of 361. Retained as historical authority by DEFN-R2 AG0."),
     361: ("superseded", "First file of the current prefix chain."),
     365: ("**ACCEPTED AUTHORITY**", "The load-bearing boundary. Every acceptance claim cites this hash."),
-    385: ("**CURRENT GATE**", "Name is 385; identity count is **388**. See the naming section above."),
+    385: ("superseded", "Name is 385; identity count is **388**. See the naming section above."),
+    391: ("**CURRENT GATE**", "CB23 appends three diagnostic-only witnesses to the frozen 388-identity selector 385."),
 }
 
 rows = []

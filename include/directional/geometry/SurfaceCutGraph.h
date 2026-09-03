@@ -122,6 +122,13 @@ struct SurfaceCutGraphError {
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
   std::optional<std::size_t> certificationAttemptIndex;
   std::optional<std::size_t> certificationCutEdgeCount;
+  bool embeddedGraphEulerCensusComplete = false;
+  std::optional<std::size_t> embeddedGraphNodeCount;
+  std::optional<std::size_t> embeddedGraphArcCount;
+  std::optional<std::size_t> embeddedGraphFaceWalkOrbitCount;
+  std::optional<std::size_t> embeddedGraphComponentCount;
+  std::optional<std::int64_t> embeddedGraphSourceEulerCharacteristic;
+  std::optional<std::int64_t> embeddedGraphEulerResidual;
   std::optional<RotationSystemInconsistencyReason>
       originatingRotationSystemInconsistencyReason;
   std::optional<VertexTraceSecondaryParameterFailureReason>
