@@ -3,7 +3,7 @@ name: Agent Source Snapshot Caller 20260903 0903
 on:
   push:
     paths:
-      - ".agents/connector-triggers/source-snapshot/session-20260903-0903.txt"
+      - ".agents/connector-triggers/exact-source-snapshot/session-20260903-0903.txt"
 
 permissions:
   contents: read
