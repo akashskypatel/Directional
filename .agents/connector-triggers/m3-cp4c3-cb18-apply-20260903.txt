@@ -1,4 +1,0 @@
-Purpose: apply verified M3-CP4c-3-CB18 closeout documentation patch from Google Drive.
-Expected patch base: a01016ca59314232526c8b1222c96235856ace6d
-Patch SHA-256: fb8247cade473e227128963d5d47b14dd8972da7e8e7c7f11f26ebe084e908e4
-Retry: 0

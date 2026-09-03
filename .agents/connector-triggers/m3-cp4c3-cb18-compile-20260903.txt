@@ -1,3 +1,0 @@
-Purpose: compile M3-CP4c-3-CB18 exact semantic source with the eight standard targets and GMP/GMPXX.
-Source: a01016ca59314232526c8b1222c96235856ace6d
-Retry: 0
