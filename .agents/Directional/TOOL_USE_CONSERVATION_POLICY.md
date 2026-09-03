@@ -8,6 +8,8 @@ This document is durable project authority under `RETENTION_POLICY.md`. It defin
 
 Tool-use conservation is subordinate to correctness. Never save a tool call by weakening source identity, skipping a required policy read, merging Code + Build with Test + Benchmark, omitting required evidence, using stale branch authority, or bypassing a stop rule.
 
+Any repeated action that requires generating the same file or performing the same operation should be turned into a reusable fixture (ex. reusable workflow files) or tool (ex. python scripts under `.agents/Directional/tools/`). If a file is already generated, do not regenerate it; use the reusable fixture or tool instead and tailor it to the specific needs of the current task.
+
 ## 1. Core operating rule
 
 Use the cheapest authoritative access path that can answer the whole question once:
