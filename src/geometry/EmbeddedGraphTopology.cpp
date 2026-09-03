@@ -1107,9 +1107,11 @@ std::optional<std::size_t> edge_locus_secondary_rank(
   if (diagnosticContext != nullptr)
     diagnosticContext->contactIndex = *contactIndex;
 
-  const auto &segment = orientation == authority::Orientation::Forward
-                            ? trace.segments[arc.firstSegment]
-                            : trace.segments[arc.onePastLastSegment - 1U];
+  const std::size_t segmentIndex =
+      orientation == authority::Orientation::Forward
+          ? arc.firstSegment
+          : arc.onePastLastSegment - 1U;
+  const auto &segment = trace.segments[segmentIndex];
   if (diagnosticContext != nullptr) {
     diagnosticContext->incomingCarrier = segment.incomingCarrier;
     diagnosticContext->outgoingCarrier = segment.outgoingCarrier;
@@ -1140,12 +1142,33 @@ std::optional<std::size_t> edge_locus_secondary_rank(
     return 2U * ((*otherIndex + 3U - *contactIndex) % 3U);
   }
 
-  // A first/last segment can connect the contact carrier directly to its
-  // singularity source vertex. Keep that exact topological case between the
-  // two carrier destinations without using geometry.
-  for (std::size_t corner = 0U; corner < 3U; ++corner) {
-    if (faceIt->second.vertices[corner] == trace.sourceVertex) {
-      return 1U + 2U * corner;
+  // With no opposite carrier, the ray can still leave this contact edge
+  // through a face corner. Bind that corner to the selected segment's own
+  // far-end boundary support: entry for Reverse, exit for Forward. This also
+  // recovers the historical first-segment singularity case because that
+  // segment's entry support is the trace source vertex.
+  const authority::FieldBoundaryPoint *farEndPoint = nullptr;
+  if (orientation == authority::Orientation::Reverse) {
+    farEndPoint = &segment.entryPoint;
+  } else if (segment.edgeTransitExit.has_value()) {
+    farEndPoint = &*segment.edgeTransitExit;
+  } else if (segmentIndex + 1U < trace.segments.size()) {
+    farEndPoint = &trace.segments[segmentIndex + 1U].entryPoint;
+  } else if (trace.terminalPoint.has_value()) {
+    farEndPoint = &*trace.terminalPoint;
+  }
+
+  if (farEndPoint != nullptr) {
+    const auto support = farEndPoint->source_support();
+    if (support.has_value()) {
+      if (const auto *vertex =
+              std::get_if<authority::SourceVertexSupport>(&*support)) {
+        for (std::size_t corner = 0U; corner < 3U; ++corner) {
+          if (faceIt->second.vertices[corner] != vertex->vertex) continue;
+          return 1U +
+                 2U * ((corner + 2U + 3U - *contactIndex) % 3U);
+        }
+      }
     }
   }
   return fail(

@@ -10325,6 +10325,177 @@ TEST(GlobalTopologyPlan,
 }
 
 TEST(GlobalTopologyPlan,
+     EdgeLocusSecondaryRankUsesSegmentFarEndSupportAndContactRelativeOrdering) {
+  using directional::authority::FieldBoundaryPoint;
+  using directional::authority::FieldBranch;
+  using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::SourceComponentId;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::EdgeTraceSecondaryRankFailureReason;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto topology = embedded::build_source_index(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+
+  const auto component = SourceComponentId::from_index(0, 1).value();
+  const auto region = TopologyRegionId::from_index(0, 1).value();
+  const auto singularity = FieldSingularityId::from_index(0, 1).value();
+  const auto port = SingularityPortId::from_index(0, 1).value();
+  const auto branch = FieldBranch::from_integer(0);
+  const SourceFaceTopologyKey face = topology_face(0, 1, 4, 5U);
+  const std::array<SourceVertexId, 3> corners{
+      SourceVertexId::from_index(0U, 5U).value(),
+      SourceVertexId::from_index(1U, 5U).value(),
+      SourceVertexId::from_index(4U, 5U).value()};
+  const std::array<SourceEdgeTopologyKey, 3> edges{
+      topology_edge(0, 1, 5U), topology_edge(1, 4, 5U),
+      topology_edge(0, 4, 5U)};
+  const std::array<FieldBoundaryPoint, 3> cornerPoints{
+      boundary_point(edges[0], 0, 1), boundary_point(edges[0], 1, 1),
+      boundary_point(edges[1], 1, 1)};
+  const SourceVertexId foreignVertex =
+      SourceVertexId::from_index(2U, 5U).value();
+
+  const auto makeArc = [&](const std::size_t arcIndex, const TraceId trace,
+                           const std::size_t firstSegment = 0U,
+                           const std::size_t onePastLastSegment = 1U) {
+    return GlobalTopologyArc{
+        NetworkArcId::from_index(arcIndex, 64U).value(),
+        GlobalTopologyArcKind::Trace,
+        NetworkNodeId::from_index(0U, 2U).value(),
+        NetworkNodeId::from_index(1U, 2U).value(), std::nullopt, trace,
+        std::nullopt, firstSegment, onePastLastSegment, {face}};
+  };
+  const auto expectedCornerRank = [](const std::size_t corner,
+                                     const std::size_t contact) {
+    return 1U + 2U * ((corner + 2U + 3U - contact) % 3U);
+  };
+
+  std::size_t traceIndex = 0U;
+  std::size_t arcIndex = 0U;
+  for (std::size_t contact = 0U; contact < edges.size(); ++contact) {
+    SCOPED_TRACE(std::string("contactIndex=") + std::to_string(contact));
+
+    std::array<std::size_t, 3> fallbackRanks{};
+    for (std::size_t corner = 0U; corner < corners.size(); ++corner) {
+      FieldAlignedCandidateTrace fallback(
+          TraceId::from_index(traceIndex++, 64U).value(), port, singularity,
+          corners[corner], component, region);
+      fallback.segments.emplace_back(face, branch, cornerPoints[corner],
+                                     std::nullopt, edges[contact],
+                                     std::nullopt);
+      const GlobalTopologyArc arc = makeArc(arcIndex++, fallback.id);
+      const auto rank = embedded::edge_locus_secondary_rank(
+          *topology, edges[contact], arc, Orientation::Reverse, fallback);
+      ASSERT_TRUE(rank.has_value());
+      fallbackRanks[corner] = *rank;
+      EXPECT_EQ(expectedCornerRank(corner, contact), *rank);
+
+      const std::size_t legacyRank = 1U + 2U * corner;
+      if (contact == 2U) {
+        EXPECT_EQ(legacyRank, *rank)
+            << "contact index 2 is the exact legacy special case";
+      } else {
+        EXPECT_NE(legacyRank, *rank)
+            << "contact-relative ordering must change the legacy absolute rank";
+      }
+    }
+
+    // Ordinary two-carrier ranks are the frozen regression authority. Together
+    // with the three corner ranks they must publish the collision-free local
+    // order 1,2,3,4,5 around every possible contact edge.
+    std::array<std::size_t, 2> carrierRanks{};
+    for (std::size_t delta = 1U; delta <= 2U; ++delta) {
+      const std::size_t otherIndex = (contact + delta) % 3U;
+      FieldAlignedCandidateTrace carrier(
+          TraceId::from_index(traceIndex++, 64U).value(), port, singularity,
+          foreignVertex, component, region);
+      carrier.segments.emplace_back(
+          face, branch, boundary_point(edges[otherIndex], 1, 2),
+          edges[otherIndex], edges[contact], std::nullopt);
+      const GlobalTopologyArc arc = makeArc(arcIndex++, carrier.id);
+      const auto rank = embedded::edge_locus_secondary_rank(
+          *topology, edges[contact], arc, Orientation::Reverse, carrier);
+      ASSERT_TRUE(rank.has_value());
+      carrierRanks[delta - 1U] = *rank;
+      EXPECT_EQ(2U * delta, *rank)
+          << "the ordinary two-carrier branch must remain byte-identical";
+    }
+
+    std::vector<std::size_t> published{
+        fallbackRanks[(contact + 1U) % 3U], carrierRanks[0],
+        fallbackRanks[(contact + 2U) % 3U], carrierRanks[1],
+        fallbackRanks[contact]};
+    EXPECT_EQ(std::vector<std::size_t>({1U, 2U, 3U, 4U, 5U}), published);
+  }
+
+  // TB15's shape: a Reverse incidence whose selected segment entered its face
+  // through a vertex even though trace.sourceVertex is trace-global provenance
+  // elsewhere on the mesh. The rank must come from the segment entry support.
+  FieldAlignedCandidateTrace reverseVertexTransit(
+      TraceId::from_index(traceIndex++, 64U).value(), port, singularity,
+      foreignVertex, component, region);
+  reverseVertexTransit.segments.emplace_back(
+      face, branch, cornerPoints[1], std::nullopt, edges[2], std::nullopt);
+  const GlobalTopologyArc reverseArc =
+      makeArc(arcIndex++, reverseVertexTransit.id);
+  EdgeTraceSecondaryRankFailureReason untouchedReason =
+      EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable;
+  const auto reverseRank = embedded::edge_locus_secondary_rank(
+      *topology, edges[2], reverseArc, Orientation::Reverse,
+      reverseVertexTransit, &untouchedReason);
+  ASSERT_TRUE(reverseRank.has_value());
+  EXPECT_EQ(3U, *reverseRank);
+  EXPECT_EQ(EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable,
+            untouchedReason)
+      << "a successful vertex-transit rank must not manufacture a failure";
+
+  // Forward uses the selected segment's exit side. A terminal boundary point
+  // at a face corner is sufficient and must not fall back to trace provenance.
+  FieldAlignedCandidateTrace forwardVertexExit(
+      TraceId::from_index(traceIndex++, 64U).value(), port, singularity,
+      foreignVertex, component, region);
+  forwardVertexExit.segments.emplace_back(
+      face, branch, cornerPoints[0], std::nullopt, edges[1], std::nullopt);
+  forwardVertexExit.terminalPoint = cornerPoints[2];
+  const GlobalTopologyArc forwardArc =
+      makeArc(arcIndex++, forwardVertexExit.id);
+  const auto forwardRank = embedded::edge_locus_secondary_rank(
+      *topology, edges[0], forwardArc, Orientation::Forward,
+      forwardVertexExit);
+  ASSERT_TRUE(forwardRank.has_value());
+  EXPECT_EQ(expectedCornerRank(2U, 0U), *forwardRank);
+
+  // A far end with no exact boundary support remains fail-closed and retains
+  // CB17's typed failure vocabulary.
+  FieldAlignedCandidateTrace unbindable(
+      TraceId::from_index(traceIndex++, 64U).value(), port, singularity,
+      foreignVertex, component, region);
+  unbindable.segments.emplace_back(
+      face, branch, boundary_point(edges[0], 1, 2), std::nullopt, edges[1],
+      std::nullopt);
+  const GlobalTopologyArc unbindableArc =
+      makeArc(arcIndex++, unbindable.id);
+  EdgeTraceSecondaryRankFailureReason failureReason =
+      EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable;
+  const auto missingRank = embedded::edge_locus_secondary_rank(
+      *topology, edges[0], unbindableArc, Orientation::Forward, unbindable,
+      &failureReason);
+  EXPECT_FALSE(missingRank.has_value());
+  EXPECT_EQ(EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound,
+            failureReason);
+}
+
+TEST(GlobalTopologyPlan,
      RotationRayOrderCollisionDiagnosticsSurviveProductionFailureProjection) {
   using directional::authority::NetworkArcId;
   using directional::authority::SourceVertexId;
