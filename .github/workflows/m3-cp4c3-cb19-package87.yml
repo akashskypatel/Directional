@@ -96,8 +96,10 @@ jobs:
           src="$RUNNER_TEMP/source-tree"
           rm -rf "$src" && mkdir -p "$src"
           tar -xzf "$source_archive" -C "$src"
+          s365="$src/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt"
+          test "$(sha256sum "$s365" | awk '{print $1}')" = 6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1
+          test "$(wc -l < "$s365" | tr -d ' ')" = 365
           for spec in \
-            '365 6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1' \
             '380 1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e' \
             '381 af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90' \
             '382 f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a'; do
@@ -106,9 +108,12 @@ jobs:
             test "$(sha256sum "$f" | awk '{print $1}')" = "$2"
             test "$(wc -l < "$f" | tr -d ' ')" = "$1"
           done
-          head -n 365 "$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_382.txt" | cmp - "$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_365.txt"
-          head -n 380 "$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_382.txt" | cmp - "$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_380.txt"
-          head -n 381 "$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_382.txt" | cmp - "$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_381.txt"
+          s380="$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_380.txt"
+          s381="$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_381.txt"
+          s382="$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_382.txt"
+          head -n 365 "$s382" | cmp - "$s365"
+          head -n 380 "$s382" | cmp - "$s380"
+          head -n 381 "$s382" | cmp - "$s381"
 
           out="$RUNNER_TEMP/package87"
           rm -rf "$out" && mkdir -p "$out/package87/test-data/benchmarks"
