@@ -77,10 +77,13 @@ jobs:
           set -euo pipefail
           runner=.agents/Directional/turn-payloads/m3-cp4c3-tb18-run.sh
           test -f "$runner"
-          test "$(git hash-object "$runner")" = '6f08eb013f609ddeb7bcde4e266730b31fd9ae57'
-          test "$(sha256sum "$runner" | awk '{print $1}')" = '36b10476cc0390d816eb407968b2a4cefd6a14bca992f76bb3d39411388c9885'
+          test "$(git hash-object "$runner")" = 'dcb35dfb7f9b966db149d93514f89dc9e58d0f56'
+          test "$(sha256sum "$runner" | awk '{print $1}')" = '11a627b429873a183d45010586ec9da85ffc4989a83c68fd683d8cbb6b7c945d'
           echo "runner_blob_sha1=$(git hash-object "$runner")" | tee -a "$RUNNER_TEMP/m3-cp4c3-tb18-diagnostic.log"
           echo "runner_sha256=$(sha256sum "$runner" | awk '{print $1}')" | tee -a "$RUNNER_TEMP/m3-cp4c3-tb18-diagnostic.log"
+          helper=.agents/Directional/turn-payloads/m3-cp4c3-tb18-resume39.sh
+          test "$(git hash-object "$helper")" = '20cc66dbbec826a28aa68888a18a4b6ccee76659'
+          test "$(sha256sum "$helper" | awk '{print $1}')" = '72ea3630f26e7874b046c1207dabbe83a64b87623130c4e22fd6cba098c53a80'
 
       - name: Execute immutable CB20 selector 383 gate
         id: tb18
