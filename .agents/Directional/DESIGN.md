@@ -535,7 +535,7 @@ withdrawn except where an amendment says so explicitly.
   still emits singularity ports (per-sector ports, versus absorbing the index into the slit boundary cycle and
   emitting none), because the two differ in product-visible behaviour — the second means no traces start at such a
   singularity — and the choice requires a measured census of barrier-incident singularities that does not yet
-  exist. Source: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` §5.
+  exist. Source: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` §5 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).
 
 - **Amendment 17 — an election among candidate cells is decided from a single datum, not from one representative
   per cell.** Where a producer chooses among candidate faces, sectors or cells by asking *"is this cell's own
@@ -554,7 +554,7 @@ withdrawn except where an amendment says so explicitly.
   is prohibited for the same reason. The amendment fixes the frame and the prohibitions; **which** single datum is
   used — the incoming direction transported into each candidate, the ray's geometric exit from the star, or a
   continuation owner published upstream — is a single-writer question left to the turn that measures the elected
-  directions. Source: `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` §§AQ2, 5.
+  directions. Source: `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` §§AQ2, 5 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).
 
 - **Amendment 18 — exactness is a property of the derivation chain, not of the final comparison.** A value that
   reaches a topological decision may not have passed through floating point at **any** point in its derivation,
@@ -566,7 +566,7 @@ withdrawn except where an amendment says so explicitly.
   computation** (Shewchuk-style adaptive predicates, or interval arithmetic used as a filter). A filter that can
   return a different answer than the exact path is not a filter and is prohibited; so is snapping an exact
   coordinate onto a bounded lattice, which changes the value rather than the cost. Source:
-  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT6, §9.1.
+  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT6, §9 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).1.
 - **Amendment 19 — a producer may not have an unreportable exit.** Every control-flow path that can end in a typed
   failure must record a typed reason. An early `continue`, a `nullopt` return on a conversion, or a guard that
   skips a state must leave evidence. A producer that reports a typed name describing a decision it never made is
@@ -574,7 +574,7 @@ withdrawn except where an amendment says so explicitly.
   spent on names that misdescribed their own cause. Where a producer publishes per-state diagnostics, the
   diagnostic must be recorded **before** any conditional that can skip the state, and an empty diagnostic set must
   itself be a distinguishable, named condition. Source:
-  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT1-AT2, §11.
+  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT1-AT2, §11 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`).
 
 - **Amendment 20 — input admissibility and conditioning is a stage, not an assumption.** A0 has a predecessor. The
   conditioning stage consumes the raw input and either emits a **conditioned source product** — immutable, with its

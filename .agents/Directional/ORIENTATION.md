@@ -31,48 +31,49 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-03 at `M3-CP4c-3-TB16-REV`. CB18 cleared the edge-locus rotation frontier and
-the review **proved the next one is the same class one stage later — plus a second divergence in the same copied
-loop that is what actually fired.**
+**Currency.** Last updated 2026-09-03 at `M3-CP4c-3-TB17-REV`. CB19 cleared the region source-port frontier; the
+review **falsified the fragment-count invariant** but could not adjudicate its correction, because the deciding
+numbers are computed and then discarded.
 
-**CB18 is runtime-proved.** TB16 (package 86, source `a01016ca59314232526c8b1222c96235856ace6d`, run/job
-`33709721203 / 100506452813`, selector **382**) is **374 PASS / 8 RED**, accepted **365/365**, selector 380/381/382
-all PASS. The edge-`25-31` `EdgeTraceSecondaryRankInvalid` failure is gone, mechanical attempt-0 rotation publishes
-completely, and `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01` and `M3-CP4c3-TB15-CAND-01` are **CLOSED**.
-Ordinal 366 now first-reds later, in region construction:
-`RegionTraceSourcePortCarrierNotAdmissible`, source face **`(9,11,17)`**, `cutCandidateCount=0`.
+**Where the frontier is.** TB17 (package 87, source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`, run/job
+`33770523736 / 100699356052`) is **374 PASS / 8 RED**, accepted **365/365**. Ordinal 366 now first-reds at
+`TraceCutFaceFragmentCountMismatch`, source face **`(0,1,102)`** = mesh row **259** — published with `sourceFace`
+and **nothing else**.
 
-**Two functions hold the same predicate on the same trace-global datum, and the copy diverged twice.**
-`build_regions` (`GlobalTopologyPlan.cpp:409`, run at `:1660`) and `build_fragment_corner_incidence` (`:180`, run
-at `:1492`) both treat `incomingCarrier == nullopt` as a source-port incidence and search the face for
-**`trace->sourceVertex`**. But `SurfaceCellTracing.cpp` calls `incomingCarrier.reset()` at both vertex-transit
-continuations (`:2335`, `:2432`), so a carrier-less segment is *ordinarily* an Amendment-3 vertex continuation —
-**the fourth instance** of the class corrected at CB16, CB17 and CB18 (lessons 85 / 87). The second divergence is
-that `build_fragment_corner_incidence` **skips** a trace's final segment when the trace has no `terminalBarrier`
-("the retained outgoing carrier is only a hypothetical continuation"), while `build_regions` counts it in
-`tracePieceCount`, adds its `outgoingCarrier` to `traceTouchedEdges`, and derives orbit evidence from it.
+**The invariant is unsound as an equality.** `GlobalTopologyPlan.cpp:779` compares
+`fragmentOrbits[face].size()` against `tracePieceCount[face] + 1`. Each real chord contributes **one** to
+`tracePieceCount` and **two** insertions of *global orbit ids* into a `std::set`. Equality with `k+1` requires the
+local-fragment → global-owner map to be **injective**, which nothing establishes and which is false in general on
+a closed surface. `add_fragment_orbit` additionally **drops** any orbit in `exteriorOrbits`, unconditionally.
 
-**The divergence, not the datum, is what fired — and that is provable.** The earlier loop runs first, over the same
-arcs and segment ranges, with a textually identical predicate, and it **passed**; its only skip for a carrier-less
-segment is the terminal slit. So the failing segment is **the trace's last segment on a trace with no terminal
-barrier**. Independently, from the committed fixture: face `(9,11,17)` is mesh **row 18** in vertex **11**'s closed
-six-face fan; the port-emitting singularities are **v10, v35, v47, v71**; row 18's corners are `{9,11,17}`. A first
-segment's face always contains its trace's `sourceVertex` (construction requires
-`field_boundary_point_at_vertex(startFace, port.sourceVertex)`), so **the failing segment is not any trace's first
-segment** and the failing disjunct is `sourceCorner` not found, never the outgoing-rank test.
+**Three mechanisms break it, in opposite directions.** A shared global owner (fails low — two locally separated
+fragments joined elsewhere); exterior filtering (fails low); non-collapsing chord sides or duplicated orbit
+evidence (fails high). For `k = 1` the check is trivially satisfiable, so the first face that can expose this has
+**two or more chords**.
 
-**Fixing only the datum would scope the repair to the symptom**; fixing only the skip leaves the datum defect
-latent until a witness produces a *non-terminal* carrier-less segment. Both must be reconciled together, and the
-change is **not accepted-safe by construction** — removing terminal slits from `build_regions` moves
-`tracePieceCount`, the fragment-count invariant, `traceTouchedEdges` and orbit evidence, and the torus reaches A2b
-end to end.
+**The deciding numbers already exist and are thrown away.** The same function fills `diagnostics->fragmentOrbits`,
+`tracePieceCount` and `edgeOrbitEvidence` and prints `fragment_orbit_count`, `trace_piece_count` and
+`expected_fragment_count` **for every face** — thirty lines *below* the early `return failure`, so the failing run
+never emits them. The instrumentation was written for exactly this failure and cannot be reached by it.
 
-One bounded successor is authorized: **`M3-CP4c-3-CB19`** under **BR0–BR9**, a **product correction** reconciling
-both loops — bind the carrier-less branch to the segment's own entry support, settle the terminal-slit contract
-once, re-derive the fragment-count invariant rather than assume it, publish the incidence at the emitter, and
-**demonstrate** accepted-boundary safety with pinned before/after values. **Vertex 30 is still not reached and no
-vertex-30 discriminator is published.** Selectors **380, 381, 382** stay byte-frozen; selector 383 is conditional
-on BR6. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **83**.
+**Owner class named, corrective contract not provable.** It is a product local-fragment/orbit **representation**
+defect — but the three mechanisms imply different corrections, and no accepted-boundary argument exists for a
+stage the torus and sphere currently pass. Diagnostic-only is therefore mandatory under BRQ6, and unusually cheap.
+
+One bounded successor is authorized: **`M3-CP4c-3-CB20`** under **BS0–BS9**, **diagnostic-only** — put actual /
+expected / `tracePieceCount` on the error, retain the failing face's per-chord incidences and both orbit ids, make
+the existing `fragment_reconciliation` record reachable on the failing path, and change **no** semantics. Selector
+**382** stays byte-frozen; selector 383 is conditional on BS6. Stable accounting **44 / 14 / 30**, debt **5**,
+semantic M3 packages **84**. **Vertex 30 is still not reached.**
+
+**Document layout changed this turn.** The CP4c family is now two documents plus normative authority:
+`M3_CP4c_Current_And_Forward.md` (current state, frozen successor, candidate index) and
+`M3_CP4c_Consolidated_Record.md` (history, with a **folded document index** resolving all 35 folded per-turn
+plans/reports/records). The frozen-definition chain and every selector file are untouched.
+
+*(Prior turn, retained for lineage: `M3-CP4c-3-TB16-REV` proved the `(9,11,17)` failing segment was a **terminal
+slit**, and CB19's correction cleared it. The v47 five-ray re-proof and CB18 closure were achieved at TB16 and are
+**not** reopened.)*
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB15-REV` proved the edge-locus fallback bound `trace.sourceVertex`
 instead of the ray's far-end support, and derived a second latent defect — the fallback ranked corners absolutely
@@ -181,26 +182,20 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB16-REV.** Accepted authority remains selector **365**. CP4c-3's execution selector is
-**382** (`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`, 382 identities), with **381**
-(`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`) and **380**
-(`1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`) as byte-frozen prefixes and the accepted 365
-prefix byte-identical throughout. All were recomputed over LF-normalized bytes at this review with
-`tools/selector_probe.py`; a naive `sha256sum` on a CRLF checkout will not reproduce them.
+**Current authority — TB17-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
+selector **382** (`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`, 382 identities) whose first
+365 lines reproduce accepted `6b5b6555…cfc14b8a1`.
 
-**TB16 is the latest semantic runtime evidence** (package 86, source
-`a01016ca59314232526c8b1222c96235856ace6d`, run/job `33709721203 / 100506452813`): corrected immutable ledger
-**374 PASS / 8 RED**, accepted **365/365**, first red **366**, true reds 366/367/368/369/370/371/372/374 with 373
-passing — `374 + 8 = 382`, arithmetically closed against the selector cardinality. Selectors 380, 381 and 382 all
-PASS; the retained non-gating mechanical diagnostic is RED with zero gate credit; package pre/post byte+mode census
-identical at `606d193e…be10db`. `tools/review_check.py authority` confirms **no code drift** between the package-86
-source and the reviewed head, so static reading of the tree is valid evidence about the package.
+**TB17 is the latest semantic runtime evidence** (package 87, run/job `33770523736 / 100699356052`, ledger
+`7c446413…aa36b6fd`): **374 PASS / 8 RED**, ordinals **1–365 green**, first red **366** at
+`TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`; red set {366, 367, 368, 369, 370, 371, 372, 374};
+identical pre/post byte+mode census `0438202b…3dbcd518`.
 
-Ordinal 366 now first-reds in **region construction** at `RegionTraceSourcePortCarrierNotAdmissible`, source face
-`(9,11,17)`, `cutCandidateCount=0`. `M3-CP4c-3-TB16-REV` classified it a **product region-builder defect** with two
-divergences in one copied loop (§7 item 1) and froze **`M3-CP4c-3-CB19` under BR0–BR9**, a product correction.
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **83**. **Vertex 30 is
-still not reached**, so `M3-CP4c3-TB6-CAND-01` stays ACTIVE.
+`M3-CP4c-3-TB17-REV` falsified the fragment equality, named the owner class, and froze the diagnostic-only
+**`M3-CP4c-3-CB20` under BS0–BS9** (§7 item 1). Stable accounting is **44 / 14 / 30**, produced-witness debt **5**,
+semantic M3 packages **84**. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, the
+finalize/contact fall-through and the vertex-30 evidence contract remain deferred under their own owners.
+**Vertex 30 is still not reached.**
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -422,7 +417,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, and **the entire edge-locus rotation frontier** since CB18 | **Current owner of the critical path, now in region construction.** TB16's first red is `RegionTraceSourcePortCarrierNotAdmissible` at source face `(9,11,17)` = **mesh row 18**, attempt 0 / `cutCandidateCount=0`. Row 18 is an ordinary interior face of vertex **11**'s closed six-face fan (`angleDefect = 0`). TB16-REV proved the failing segment is **carrier-less**, **not any trace's first segment** (port vertices are `{10,35,47,71}`; row 18's corners are `{9,11,17}`; a first segment's face always contains its trace's `sourceVertex`), and therefore that the failing disjunct is `sourceCorner` **not found** rather than the outgoing-rank test. It is further proved to be a **terminal slit** — the trace's last segment on a trace with no `terminalBarrier` — because the textually identical predicate in `build_fragment_corner_incidence` ran first and passed, and its only skip for a carrier-less segment is exactly that case. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path, in region construction.** TB17's first red is `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)` = **mesh row 259** (stored corner order `(102,1,0)`), published with `sourceFace` alone. Vertex 0 is a chamfered box corner - degree 4, defect **1.767801150** - with edge `0-1` a **90 degree** sharp edge shared by rows 0 and 259, so the failing face sits on the part's sharp silhouette. TB17-REV proved the check compares a **face-local** chord count against the cardinality of a set of **global** orbit owners, and that the actual and expected counts are computed and printed for every face thirty lines below the early return that needs them. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -517,40 +512,33 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Region construction binds the trace's origin vertex to a per-segment decision, and consumes a segment its
-   sibling loop documents as hypothetical — ACTIVE and gating; both defects PROVED, product correction frozen.**
-   TB16's first red is `RegionTraceSourcePortCarrierNotAdmissible` at source face `(9,11,17)`,
-   `cutCandidateCount=0`. `M3-CP4c-3-TB16-REV` proved:
+1. **The face-fragment check compares a local count with a global owner cardinality — ACTIVE and gating; the
+   invariant is FALSIFIED, the correction is not yet decidable.** TB17's first red is
+   `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`. `M3-CP4c-3-TB17-REV` proved:
 
-   - **Sole emitter, two disjuncts.** `GlobalTopologyPlan.cpp:665`, inside `build_regions` (`:409`, run at
-     `:1660`). The branch is entered when `segment.incomingCarrier == nullopt` and fails when `trace->sourceVertex`
-     is not a corner of the segment's face, or when `*outgoing != (*sourceCorner + 1) % 3`. It publishes only
-     `sourceFace`.
-   - **The failing disjunct is `sourceCorner` not found.** Port vertices are `{10, 35, 47, 71}`; face `(9,11,17)`
-     is mesh row 18 with corners `{9, 11, 17}`. Disjoint, so the rank test is never reached.
-   - **The segment is not any trace's first segment.** A trace is built with `sourceVertex = port.sourceVertex` and
-     its first segment's entry point is `field_boundary_point_at_vertex(startFace, port.sourceVertex)`, which must
-     succeed or the network build fails `InvalidCandidateTraceBinding` — so a first segment's face always contains
-     that trace's origin vertex.
-   - **A later carrier-less segment is legitimate and produced by design.** `incomingCarrier.reset()` appears at
-     exactly two sites, `SurfaceCellTracing.cpp:2335` and `:2432`, the two **vertex-transit** continuations. So
-     `incomingCarrier == nullopt` means "entered through a corner", not "source port"; source port is the special
-     case where that corner is the trace's origin. **Fourth instance** of the class corrected at CB16, CB17 and
-     CB18 (lessons 85 / 87).
-   - **The trigger is a second divergence, not the datum.** `build_fragment_corner_incidence` (`:180`, run at
-     `:1492`) holds a **textually identical** predicate on the same datum, iterates the same arcs and segment
-     ranges — and passed. Its only skip for a carrier-less segment is the terminal-slit `continue` (`:242-249`),
-     taken when the trace has no `terminalBarrier`, because "the retained outgoing carrier is only a hypothetical
-     continuation". **Therefore the failing segment is exactly that terminal slit**, which `build_regions`
-     instead counts in `tracePieceCount`, adds to `traceTouchedEdges`, and derives orbit evidence from.
+   - **One emitter, one comparison.** `GlobalTopologyPlan.cpp:779` tests
+     `fragmentOrbits[face].size() != tracePieceCount[face] + 1` and returns with `sourceFace` alone.
+   - **The equality is unsound.** Per real chord the loop adds **one** to `tracePieceCount` and inserts **two**
+     global orbit ids into a `std::set`. Equality with `k+1` assumes the local-fragment → global-owner map is
+     injective; nothing establishes that, and it is false in general on a closed surface. `add_fragment_orbit`
+     also drops `exteriorOrbits` members unconditionally.
+   - **Three mechanisms, opposite directions.** Shared global owner (low), exterior filtering (low),
+     non-collapsing chord sides or duplicated orbit evidence (high). `k = 1` is trivially satisfiable, so the
+     first exposing face has **two or more chords**.
+   - **The deciding numbers are computed and discarded.** `diagnostics->fragmentOrbits`, `tracePieceCount` and
+     `edgeOrbitEvidence` are filled and printed as `fragment_reconciliation` — for every face — **below** the
+     early return that needs them.
 
-   **`M3-CP4c-3-CB19` (BR0–BR9) reconciles both loops**: bind the carrier-less branch to the segment's own entry
-   support via `FieldBoundaryPoint::source_support()` and keep it fail-closed (BR1); settle the terminal-slit
-   contract once and apply it in both (BR2); **re-derive** the fragment-count invariant rather than assume it, since
-   removing terminal slits moves its operand (BR3); publish the full incidence at the emitter (BR4); and
-   **demonstrate** accepted-boundary safety with pinned before/after values (BR5) — this correction is **not**
-   accepted-safe by construction, and the torus reaches A2b end to end. Prohibited: importing CB18's datum fix
-   without settling BR2, or scoping the repair to the source-port branch alone.
+   `M3-CP4c-3-CB20` (BS0–BS9) is **diagnostic-only**: put actual / expected / `tracePieceCount` on the error,
+   retain the failing face's per-chord incidences with both orbit ids and any exterior-drop flag, publish the
+   face's `edgeOrbitEvidence`, and make the reconciliation record reachable on the failing path. **Prohibited:**
+   any semantic change — the comparison, `tracePieceCount`, `add_fragment_orbit`, the `exteriorOrbits` filter,
+   `is_terminal_slit`, `resolve_carrierless_corner_binding`, `build_fragment_corner_incidence`, `build_regions`
+   and all orbit/region construction stay untouched, and CB19 is not reverted.
+
+   *(The correct representation, for the turn after: count local fragments **locally**, and use orbit ids only for
+   ownership. Relaxing the equality to `≤` would silence a real check without restoring the missing one, and is
+   not authorized.)*
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -618,6 +606,18 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A diagnostic that is unreachable on the failing path is not a diagnostic.** `build_regions` computes the actual
+fragment count, the piece count and the expected count for **every** face, and formats all three into a
+`fragment_reconciliation` record — thirty lines below a `return failure;` that fires precisely when those three
+numbers are the question. The instrumentation was written for this failure and cannot be reached by it. Place
+diagnostics where errors are **raised**, not where the successful path ends. `LESSONS.md` §4 95.
+
+**Counting a local quantity with a global identifier silently assumes injectivity.** "k chords make k+1 fragments"
+is a statement about one triangle; `|set of orbit ids|` is a statement about the whole surface. Equating them
+assumes distinct local pieces never share a global owner — true often enough to ship, false on a closed surface,
+and invisible until a face carries two chords. When a check compares a count to a set's cardinality, name the map
+between them and say why it is injective. `LESSONS.md` §4 96.
 
 **A predicate copied into a second consumer inherits the original's defect and then diverges — and the divergence,
 not the inherited defect, decides which copy fires.** `build_regions` and `build_fragment_corner_incidence` hold
@@ -1347,3 +1347,19 @@ The two-ring is constructed in the test file, not a fixture.
 - The four port-emitting singularities of the mechanical fixture are **v10, v35, v47, v71**. `trace.sourceVertex`
   always names one of them and says nothing about which face a later segment is in — it is trace-global
   provenance, not a face-local datum.
+- `GlobalTopologyPlan.cpp` fragment accounting: per non-terminal-slit segment the region loop does
+  `++tracePieceCount[face]` **once** and `add_fragment_orbit(face, forwardOrbit)` / `(face, reverseOrbit)` —
+  **two** insertions into a `std::set<std::size_t>` of global orbit ids. `add_fragment_orbit` silently **skips**
+  any orbit in `exteriorOrbits`. The validation at `:779` then asserts `set.size() == tracePieceCount + 1`.
+- A **terminal slit** contributes zero to `k`: the loop `continue`s on `is_terminal_slit` before touching either
+  `tracePieceCount` or the orbit set, so slits are excluded from **both** sides consistently. The mechanical
+  witness has **10** terminal slits.
+- `build_regions` publishes a full `fragment_reconciliation` diagnostic — `source_face`, `fragment_orbit_count`,
+  `trace_piece_count`, `expected_fragment_count` — for every face, but only after all validation has passed. Any
+  early `return failure` in that function discards it.
+- Face `(0,1,102)` is **mesh row 259**, stored corner order `(102,1,0)`. Vertex 0 is a chamfered box corner:
+  degree 4, angle defect **1.767801150**, edge `0-1` a **90 degree** sharp edge shared by rows 0 and 259.
+- **CP4c document layout since 2026-09-03:** `M3_CP4c_Current_And_Forward.md` holds current state, the frozen
+  successor and the candidate index; `M3_CP4c_Consolidated_Record.md` holds history and carries a **folded
+  document index** that resolves all 35 folded per-turn plans/reports/records (their full text stays in git
+  history). The six frozen-definition documents and every `Required_Green_Selector_*.txt` were **not** folded.

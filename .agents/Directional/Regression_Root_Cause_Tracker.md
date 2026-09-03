@@ -1,3 +1,38 @@
+## M3-CP4c3-TB17-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB17_Independent_Review_Record.md`, measures **BRQ0-BRQ8** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BRQ0.** Source `bf971a6c` is an ancestor of branch HEAD with **no code drift**; selector 382 recomputes to
+  `f30d5d56...50d665a1a` with 382 identities and an accepted 365-prefix of `6b5b6555...cfc14b8a1`. The
+  control-plane `READ_MODE` miss is **inert**: package bytes, selector membership/order and per-identity exit
+  codes are each pinned by a verified digest or by fresh-process execution, so a reporting miss can misdescribe
+  the evidence but not change it. No rerun authorized.
+- **BRQ1.** CB19's facts are preserved unchanged: `(9,11,17)` cleared; **48** non-first carrier-less segments, all
+  48 with entry support distinct from trace origin; positive witness uses `SegmentEntrySupport`; **10** terminal
+  slits; retained terminal witness has `realChordContribution=0`. Terminal slits are excluded from **both** sides
+  of the fragment comparison, which reinforces rather than reopens that classification.
+- **BRQ2/BRQ4 - the invariant is FALSIFIED.** One emitter (`GlobalTopologyPlan.cpp:779`) compares
+  `fragmentOrbits[face].size()` with `tracePieceCount[face] + 1`. Each real chord adds **one** to the count and
+  **two** global orbit ids to a `std::set`; equality requires an injectivity nothing establishes, and
+  `add_fragment_orbit` drops `exteriorOrbits` members unconditionally. Three mechanisms break it in **opposite**
+  directions: shared global owner (low), exterior filtering (low), non-collapsing sides or duplicated orbit
+  evidence (high).
+- **BRQ3 - the missing datum, and where it already exists.** The error sets `sourceFace` alone, so the actual
+  count, expected count, per-chord incidences, orbit ids and edge-orbit evidence are unrecoverable from committed
+  bytes. The same function nevertheless fills `diagnostics->fragmentOrbits`/`tracePieceCount`/`edgeOrbitEvidence`
+  and prints `fragment_orbit_count`, `trace_piece_count` and `expected_fragment_count` for every face - **below**
+  the early return. Face `(0,1,102)` is mesh row **259**; vertex 0 is a chamfered box corner (degree 4, defect
+  1.767801150) on a 90-degree sharp edge.
+- **BRQ5.** Both CB19-reconciled loops classify the same material segments by construction, but their per-face
+  evidence at `(0,1,102)` is not retained; ownership therefore moves to the shared invariant/representation, not
+  to a third copied-loop reconciliation.
+- **BRQ6 - diagnostic-only is mandatory.** The owner **class** is proved (local-fragment/orbit representation);
+  the corrective **contract** is not, because the three mechanisms imply different fixes and no accepted-boundary
+  argument exists for a stage the torus and sphere currently pass.
+- **BRQ8 - one bounded successor frozen:** **`M3-CP4c-3-CB20`** under **BS0-BS9**, diagnostic-only.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **84**.
+
 ## M3-CP4c3-TB17 — fragment-count frontier after CB19 region-loop reconciliation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 87 / source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e` / selector 382; run/job `33770523736 / 100699356052`; result/log artifacts `9899516228 / 9899516703`.
@@ -8,7 +43,7 @@
 - **Postflight:** package census identical at `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; all build/repair/discovery/mutation/benchmark flags false.
 - **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **84**. Exact next owner: `M3-CP4c-3-TB17-REV` BRQ0–BRQ8.
 
-## M3-CP4c3-TB17-CAND-01 — face-local chord count is compared to distinct global face-walk orbit owners without retaining the mismatch incidence — **ACTIVE / GATING / OWNER UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB17-CAND-01 - face-local chord count is compared to distinct global face-walk orbit owners without retaining the mismatch incidence - **ACTIVE / GATING / OWNER CLASS NAMED AT TB17-REV / CONTRACT UNADJUDICATED / NON-STABLE**
 
 - **Observed:** TB17 ordinal 366 first-reds at `TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`, after the TB16 `(9,11,17)` source-port rejection is gone. The same downstream stop is reached by 367/371/372.
 - **Sole emitter:** `build_regions` validates each directly cut face using `expected = tracePieceCount[face] + 1` and compares that local geometric count to `fragmentOrbits[face].size()`, where `fragmentOrbits` is a set of global face-walk orbit IDs contributed by oriented trace/cut/mandatory darts.

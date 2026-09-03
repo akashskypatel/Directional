@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-03).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN** on execution selector **382**. `M3-CP4c-3-TB17` on immutable package **87** is the current runtime authority at **374 PASS / 8 RED**, accepted **365/365**. CB19's former `RegionTraceSourcePortCarrierNotAdmissible` at `(9,11,17)` is runtime-cleared; ordinal 366 now first-reds downstream at **`TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`**, while 367/371/372 inherit that stop and 368/369/370/374 retain their independent pre-classified surfaces. The independent trace-segment observation proves 48 non-first carrier-less segments with segment-entry support, 10 terminal slits and a retained terminal witness with `realChordContribution=0`. Package pre/post census is identical and every build/repair/discovery/mutation/benchmark flag is false. Exact next is **`M3-CP4c-3-TB17-REV`** under BRQ0–BRQ8; the face-fragment mismatch is owner-unadjudicated because the error retains only `sourceFace`, not actual/expected counts or contributing segment/orbit incidence. Accepted authority stays **365/365**; stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **84**. **Vertex 30 is still not reached.**
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB17-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 382, accepted authority **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **84**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -783,3 +783,61 @@ two-ring and mechanical witnesses. Selector 382 keeps every byte; ordinal 383 on
 Prohibited: importing CB18's datum fix without settling the terminal-slit contract, or scoping the repair to the
 source-port branch alone. The prescribed sphere, ordinal 370, saturation, the folded-cone witness, vertex 30, the
 finalize/contact fall-through and the 371/372 fixture coupling all remain deferred and separately owned.
+
+---
+## Folded document index — DURABLE, DO NOT DELETE
+Consolidated on **2026-09-03** at `M3-CP4c-3-TB17-REV`. The 35 per-turn plans, reports and review records
+listed below were folded into this record: their conclusions are carried by this file, by
+`Regression_Root_Cause_Tracker.md` (candidate adjudications), by `LESSONS.md` (durable lessons) and by
+`ORIENTATION.md` (recurring patterns and facts). **Their full text is retained in git history** — recover any
+of them with `git log --diff-filter=D -- .agents/Directional/<name>` and `git show <sha>^:<path>`.
+
+This index exists so that citations elsewhere still resolve. `CHANGELOG.md`, this record and
+`Regression_Root_Cause_Tracker.md` cite these filenames as statements about past turns; those citations were
+deliberately **not** rewritten, because they describe what a turn produced at the time. Look the name up here.
+
+**Not folded, and still live authority:** the frozen-definition chain
+(`Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`, `…_DEFN_R1_…`, `…_DEFN_R2_…`,
+`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`, `…_DEFN_R1_…`, `…_DEFN_R2_…`), every
+`Required_Green_Selector_*.txt`, the current `M3-CP4c-3-TB17` report and review record, and
+`M3_CP4c_Current_And_Forward.md`.
+
+| Folded document | Lines | Recorded verdict or title |
+|---|---:|---|
+| `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` | 330 | M3-CP4c-2 TB-X2-R10 Independent Review Record |
+| `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` | 312 | M3-CP4c-3 TB1 Phase-1 Independent Review Record |
+| `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` | 417 | M3-CP4c-3 TB2 Independent Review Record |
+| `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` | 100 | **COMPLETE / VALID SEMANTIC RED — FIRST RED AT ORDINAL 366** |
+| `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` | 87 | **FROZEN NEXT-TURN PLAN / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md` | 139 | **COMPLETE / VALID SEMANTIC RED — FIRST RED AT ORDINAL 366; AP6 DIAGNOSTIC PASS COMPLETE** |
+| `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md` | 115 | **FROZEN NEXT-TURN PLAN / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` | 396 | M3-CP4c-3 TB4 Independent Review Record |
+| `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md` | 89 | M3-CP4c-3-TB5 Independent Review + Plan — Frozen Scope |
+| `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` | 473 | M3-CP4c-3 TB5 Independent Review Record |
+| `Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md` | 122 | M3-CP4c-3-TB7 Independent Review + Plan — Frozen Scope |
+| `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` | 567 | M3-CP4c-3-TB7 — Independent Review + Plan Record |
+| `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md` | 204 | M3-CP4c-3-CB8 Code + Build Plan — Exact Single-Authority Vertex Transit |
+| `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md` | 305 | **COMPLETE / CB8 ARCHITECTURAL STOP UPHELD / DEEPER DEFINITION REQUIRED / NO SUCCESSOR CB AUTHORIZED** |
+| `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` | 123 | M3-CP4c-3-TB8 Independent Review + Plan — Frozen Scope |
+| `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` | 426 | TB8 is a **valid semantic red**. The ordinal-366 first red is classified **BA2 category 3 — |
+| `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` | 133 | M3-CP4c-3-TB9 Independent Review + Plan — Frozen Scope |
+| `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` | 441 | TB9 is a **valid semantic red**. Ordinal 366 is classified **BC2 category 1 — a genuine product |
+| `Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md` | 123 | **FROZEN SUCCESSOR / REVIEW + PLAN ONLY / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` | 388 | M3-CP4c-3-TB10 — Independent Review + Plan Record |
+| `Architecture_M3_CP4c3_TB11_Independent_Review_Plan.md` | 72 | **FROZEN SUCCESSOR / REVIEW + PLAN ONLY / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` | 404 | TB11 is a **valid semantic red**. The ordinal-366 collision is **not adjudicable from the retained |
+| `Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` | 112 | **FROZEN SUCCESSOR / REVIEW + PLAN ONLY / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` | 344 | TB12 is a **valid semantic red**, and the root cause is now **proved**: BI2 alternative **2** — two |
+| `Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md` | 119 | **FROZEN SUCCESSOR / REVIEW + PLAN ONLY / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` | 371 | TB13 is a **valid semantic red**, and the condition TB13 called underdetermined is **determined here |
+| `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` | 134 | **FROZEN SUCCESSOR / INDEPENDENT REVIEW + PLAN ONLY / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB14_Independent_Review_Record.md` | 335 | TB14 is a **valid semantic red**. CB16's correction worked and pushed the rotation past **every vertex |
+| `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` | 103 | **COMPLETE / VALID SEMANTIC RED / BRANCH DISCRIMINATED / NON-STABLE** |
+| `Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md` | 96 | **FROZEN SUCCESSOR / INDEPENDENT REVIEW + PLAN ONLY / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` | 355 | TB15 is a **valid semantic red** and CB17's diagnostics resolve it. The incidence is **valid**; the |
+| `Architecture_M3_CP4c3_TB16_Artifact_Only_Test_Benchmark_Report.md` | 98 | **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / V47 RE-PROVED / NON-STABLE** |
+| `Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md` | 66 | **FROZEN SUCCESSOR / INDEPENDENT REVIEW + PLAN ONLY / NOT EXECUTED** |
+| `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` | 364 | M3-CP4c-3-TB16 — Independent Review + Plan Record |
+| `Architecture_M3_CP4c3_TB17_Independent_Review_Plan.md` | 67 | **FROZEN SUCCESSOR / INDEPENDENT REVIEW + PLAN ONLY / NOT EXECUTED** |
+
+**Total folded:** 35 documents, 8330 lines.

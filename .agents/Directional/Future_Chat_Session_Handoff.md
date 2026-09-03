@@ -93,42 +93,101 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB17-REV` — EXACT NEXT / independent REVIEW + PLAN only
+## Mandatory next turn — `M3-CP4c-3-CB20` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
 
-`M3-CP4c-3-TB17` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE** on immutable package **87**, semantic source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`, selector **382**. Run/job **`33770523736 / 100699356052`** completed all 382 exact selector identities one per fresh process plus the retained non-gating mechanical diagnostic. Result/log artifacts are **`9899516228 / 9899516703`**, Actions digests `c03480f525e6125367c360c851ba374c59dc32180044efd49e40938368509f0f` / `f4933482c6b5ec943edf258356157dabd2a5d69de8dfd64a6c893c89344a9bda`.
+`M3-CP4c-3-TB17-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` (measures **BRQ0–BRQ8** discharged, static only).
 
-### TB17 runtime authority
+### What the review established
 
-- gate: **374 PASS / 8 RED**; accepted ordinals **1–365 = 365/365 PASS**; reds 366/367/368/369/370/371/372/374; first red 366;
-- exact result-ledger SHA-256: **`7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`**;
-- ordinal 366 clears TB16's `RegionTraceSourcePortCarrierNotAdmissible` at `(9,11,17)` and now fails **`TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`**, `cutCandidateCount=0`;
-- 367/371/372 move with 366 to the same downstream fragment-count stop;
-- 368 is unchanged prescribed-sphere `RotationSystemInconsistent -> TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains actual `CellularityNotEstablished` with no source-face locus instead of `EmptyNetworkOnClosedSurface`; 374 remains `atlasBuild=false`;
-- independent CB19 trace-segment observation on the mechanical witness: `nonFirstCarrierless=48`, `nonFirstCarrierlessDistinctOrigin=48`, `terminalSlits=10`, positive segment-entry witness `trace=0/segment=1/face=9-11-17/entryCorner=11`, terminal witness `trace=0/segment=4/face=28-29-35/realChordContribution=0`;
-- non-gating mechanical diagnostic is RED at the same new `TraceCutFaceFragmentCountMismatch`, `sourceFace=0-1-102`, while retaining `surfaceCutGraph=true`, `networkAlreadyCellular=true`, zero cut edges;
-- package pre/post byte+mode census is **IDENTICAL**, SHA-256 `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; configure/compile/relink/repair/generated-discovery/source/test/fixture/selector mutation and benchmark execution are all false.
+TB17's first red is `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)` = mesh row 259, published with
+**`sourceFace` and nothing else**.
 
-### Review boundary
+- **The invariant is falsified.** `GlobalTopologyPlan.cpp:779` compares `fragmentOrbits[face].size()` with
+  `tracePieceCount[face] + 1`. Each real chord adds **one** to the count and **two** *global* orbit ids to a
+  `std::set`; equality requires the local-fragment → global-owner map to be **injective**, which nothing
+  establishes and which is false in general on a closed surface. `add_fragment_orbit` also drops any
+  `exteriorOrbits` member unconditionally.
+- **Three mechanisms, opposite directions.** Shared global owner (fails low), exterior filtering (fails low),
+  non-collapsing chord sides or duplicated orbit evidence (fails high). `k = 1` is trivially satisfiable, so the
+  first exposing face has **two or more chords**.
+- **The deciding numbers are computed and then discarded.** The same function fills
+  `diagnostics->fragmentOrbits`, `tracePieceCount` and `edgeOrbitEvidence` and prints `fragment_orbit_count`,
+  `trace_piece_count`, `expected_fragment_count` for every face — thirty lines *below* the early `return failure`.
+- **Owner class named, contract not provable.** A product local-fragment/orbit **representation** defect, but the
+  three mechanisms imply different corrections and no accepted-boundary argument exists for a stage the torus and
+  sphere pass. **BRQ6 makes diagnostic-only mandatory.**
 
-The new rejection's sole emitter validates `fragmentOrbits[face].size() == tracePieceCount[face] + 1`, but TB17 publishes only the failing face. It does **not** retain the actual/expected counts, contributing trace segments/arcs, forward/reverse face-walk orbit IDs or edge-orbit evidence. Do not infer those values. `M3-CP4c3-TB17-CAND-01` is therefore gating but owner-unadjudicated until independent review distinguishes local geometric fragments from global face-walk/region orbit ownership and audits the reconciled CB19 loops at `(0,1,102)`. If static immutable evidence cannot recover the missing incidence, the review must freeze a diagnostic-only CB rather than a semantic patch.
+CB19's facts are preserved (`(9,11,17)` cleared; 48 carrier-less segments with distinct entry support;
+`SegmentEntrySupport` witness; 10 terminal slits; `realChordContribution=0`). The `READ_MODE` control-plane miss is
+**inert** — package bytes, selector order and per-identity exit codes are each pinned independently.
+`M3-CP4c3-TB17-CAND-01` transitions to **owner class named**. Sphere 368, saturation 369, ordinal 370, folded-cone
+374, the 371/372 co-reachers, vertex 30 and the finalize/contact fall-through are unchanged.
+**There is still no vertex-30 discriminator.**
 
-CB19's settled facts stay settled: the source-port datum is segment-local, the old `(9,11,17)` branch is cleared, terminal slits are independently observed as zero real-chord contribution, selectors 380/381/382 remain byte-frozen, and no selector 383 exists. Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 packages **84**.
+### CB20 binding scope — `BS0–BS9`, in the review record §10
+
+**Diagnostic-only**, under BRQ6's mandate. Owner: `src/geometry/GlobalTopologyPlan.cpp`, the fragment-count
+validation loop and the error it emits.
+
+- **BS0** — accepted 365 untouched; **selector 382 byte-frozen** at `f30d5d56…50d665a1a`, republished unchanged;
+  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
+- **BS1** — put **actual**, **expected** and `tracePieceCount` on the error and render them through the production
+  locus path.
+- **BS2** — retain the failing face's contributing incidences: per real chord the trace and arc ids, segment
+  index, orientation, both carriers, **both** orbit ids, and any exterior-drop flag. Bounded, with a truncation
+  marker.
+- **BS3** — publish the face's accumulated `edgeOrbitEvidence` for its three edges, bounded the same way.
+- **BS4** — make the existing `fragment_reconciliation` diagnostic reachable on the failing path; do not delete or
+  weaken the all-faces version.
+- **BS5** — one witness per new field through the **production** path, plus a byte-identical regression witness.
+- **BS6** — append **selector 383** only on demonstrated falsification; no reordering.
+- **BS7** — **no semantic change whatsoever**: the comparison, `tracePieceCount`, `add_fragment_orbit`, the
+  `exteriorOrbits` filter, `is_terminal_slit`, `resolve_carrierless_corner_binding`,
+  `build_fragment_corner_incidence`, `build_regions` and all orbit/region construction stay untouched; CB19 is not
+  reverted; no fixture mutation, tolerance, float-derived decision or accepted-boundary weakening; no sphere /
+  saturation / ordinal-370 / folded-cone correction; no vertex-30 or finalize/contact work.
+- **BS8** — audit by assumption; prove no count, orbit, region or plan changes and that 1–365 are unaffected.
+- **BS9** — six `M3-CP4c-3-TB18` discriminators: (1) 1–365 stay **365/365**; (2) ordinal 366 **still** reds at
+  `TraceCutFaceFragmentCountMismatch`, still at `(0,1,102)` — any movement falsifies BS7; (3) the line carries
+  **actual**, **expected** and `tracePieceCount`, so the **direction** is finally known; (4) it carries the
+  bounded per-chord incidence list with both orbit ids and any exterior-drop flag; (5) the
+  `fragment_reconciliation` record for the failing face is in the retained log; (6) carried surfaces 368, 369,
+  370, 374 and the 367/371/372 co-reachers are unchanged.
+
+**No product correction is authorized until TB18 supplies the direction and the contributing incidences.**
+
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **84**.
+
+**Document layout changed this turn.** The CP4c family is now `M3_CP4c_Current_And_Forward.md` (current state and
+forward plan) plus `M3_CP4c_Consolidated_Record.md` (history, carrying a **folded document index** for the 35
+folded per-turn plans/reports/records). The six frozen-definition documents and all selector files are unchanged.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent independent REVIEW + PLAN guidance
+- turn-based-coding-agent CODE + BUILD guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority and BR9 disposition.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB17_Independent_Review_Plan.md` — BRQ0–BRQ8 exact review measures.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` — CB19 semantic rationale/BR9 lineage only; do not treat TB16 as current runtime.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `ROADMAP.md`.
-5. Immutable package **87** artifact `9896472535` and TB17 result/log artifacts **`9899516228 / 9899516703`**. No rerun is authorized in review.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` — **frozen CB20 scope, §10 BS0–BS9**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — normative definitions and amendments.
+5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
+   document index** resolves every per-turn plan/report/record folded on 2026-09-03.
 
-The review must finish with exactly one bounded successor and no runtime/product mutation.
+Source surfaces CB20 will touch: `src/geometry/GlobalTopologyPlan.cpp` (the fragment-count validation loop and its
+error only), the plan error/diagnostics headers for the added typed fields, `src/pipeline/RemeshPipeline.cpp` for
+the projection, and `tests/` for the BS5 witnesses.
+
+**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
+`review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and
+`fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

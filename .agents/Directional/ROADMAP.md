@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-03 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB17` on immutable package **87** / selector **382** is current runtime authority at **374 PASS / 8 RED** with accepted **365/365**. CB19 runtime-clears the former `(9,11,17)` region source-port branch and proves its segment-entry / terminal-slit contract; ordinal 366 now first-reds downstream at **`TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`**. The rejection retains only the face locus, so ownership is not yet adjudicated. 368/369/370/374 remain unchanged independent surfaces. **NEXT:** independent `M3-CP4c-3-TB17-REV` under BRQ0–BRQ8; no rerun or Code + Build before review.)
+**Status date:** 2026-09-03 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB17` on immutable package **87** / selector **382** is current runtime authority at **374 PASS / 8 RED** with accepted **365/365**. Ordinal 366 first-reds at `TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)` = mesh row 259, published with the face locus alone. **`M3-CP4c-3-TB17-REV` falsified the invariant behind that check:** each real chord adds one to `tracePieceCount` and **two** global orbit ids to a set, so equality with `k+1` assumes an injectivity nothing establishes and which is false in general on a closed surface; `add_fragment_orbit` also drops exterior orbits unconditionally. Three mechanisms break it in opposite directions, so the owner **class** is named while the corrective **contract** is not - and the deciding counts are computed and printed for every face thirty lines below the early return that needs them. 368/369/370/374 remain unchanged independent surfaces and vertex 30 is still not reached. Selector **382 stays byte-frozen**; selector 383 is conditional on BS6. **NEXT:** `M3-CP4c-3-CB20` under BS0-BS9, **diagnostic-only** - no product correction before TB18 supplies the direction.)
 
 ---
 
@@ -389,7 +389,7 @@ conditioning contract** under `M4-CP-COND`.
 ## 3c. Development-cadence changes — 2026-08-31
 
 CP4c-3 held ordinal 366 red for six consecutive TB runs at roughly **one defect per three turns**. The causes are
-recorded in `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §10. Three changes follow, none of which
+recorded in `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §10 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`). Three changes follow, none of which
 weakens the gate, changes a selector byte, or alters `first_red_ordinal` semantics:
 
 1. **Full report-only pass.** After the first red fixes the verdict, execute **every remaining ordinal** report-only

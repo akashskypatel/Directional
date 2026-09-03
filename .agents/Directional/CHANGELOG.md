@@ -1,3 +1,60 @@
+## 2026-09-03 — `M3-CP4c-3-TB17-REV`: fragment invariant falsified; `M3-CP4c-3-CB20` frozen; CP4c docs consolidated
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB17_Independent_Review_Plan.md`, measures **BRQ0–BRQ8**.
+Record: `Architecture_M3_CP4c3_TB17_Independent_Review_Record.md`. Static only — no runtime, compile, link,
+package, benchmark, or product/test/fixture/selector mutation.
+
+**BRQ0.** Source `bf971a6c` verified as an ancestor of branch HEAD with **no code drift**; selector 382 recomputes
+to `f30d5d56…50d665a1a` with 382 identities and an accepted 365-prefix of `6b5b6555…cfc14b8a1`. The control-plane
+`READ_MODE` miss is **inert**: package bytes, selector membership and order, and per-identity exit codes are each
+pinned by a verified digest or by fresh-process execution, so a reporting miss can misdescribe that evidence but
+cannot change it. No rerun authorized.
+
+**BRQ1.** CB19's results are preserved unchanged — `(9,11,17)` cleared, **48** non-first carrier-less segments all
+with entry support distinct from trace origin, the `SegmentEntrySupport` positive witness, **10** terminal slits,
+and `realChordContribution = 0` on the retained terminal witness. Terminal slits are excluded from **both** sides
+of the fragment comparison, which reinforces that classification rather than reopening it.
+
+**BRQ2/BRQ4 — the invariant is falsified.** `GlobalTopologyPlan.cpp:779` is the sole emitter and compares
+`fragmentOrbits[face].size()` against `tracePieceCount[face] + 1`. Per real chord the loop adds **one** to the
+count and inserts **two** *global* orbit ids into a `std::set`; equality with `k+1` requires the local-fragment →
+global-owner map to be **injective**, which nothing establishes and which is false in general on a closed surface.
+`add_fragment_orbit` additionally drops any `exteriorOrbits` member unconditionally. Three mechanisms break the
+equality in **opposite** directions: a shared global owner (low), exterior filtering (low), and non-collapsing
+chord sides or duplicated orbit evidence (high). `k = 1` is trivially satisfiable, so the first exposing face has
+two or more chords.
+
+**BRQ3 — the missing datum, and where it already exists.** The error sets `sourceFace` alone, so the actual and
+expected counts, the contributing incidences, the orbit ids and the edge-orbit evidence are unrecoverable from
+committed bytes. Yet the same function fills `diagnostics->fragmentOrbits`, `tracePieceCount` and
+`edgeOrbitEvidence` and prints `fragment_orbit_count`, `trace_piece_count` and `expected_fragment_count` **for
+every face** — thirty lines *below* the early `return failure`. Face `(0,1,102)` is mesh row **259**; vertex 0 is
+a chamfered box corner (degree 4, defect 1.767801150) on a 90° sharp edge shared by rows 0 and 259.
+
+**BRQ6/BRQ8 — diagnostic-only.** The owner **class** is proved (product local-fragment/orbit representation); the
+corrective **contract** is not, because the three mechanisms imply different fixes and no accepted-boundary
+argument exists for a stage the torus and sphere currently pass. One bounded successor frozen:
+**`M3-CP4c-3-CB20`** under **BS0–BS9**, diagnostic-only — put the counts on the error, retain the per-chord
+incidences and both orbit ids, publish the face's edge-orbit evidence, and make the existing
+`fragment_reconciliation` record reachable on the failing path. `M3-CP4c3-TB17-CAND-01` transitions to *owner
+class named*. Carried surfaces 368, 369, 370, 374, the 367/371/372 co-reachers, vertex 30 and the finalize/contact
+fall-through keep their owners. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**,
+packages **84**.
+
+**Document consolidation (user-directed).** The `M3-CP4c` family is reorganized into two documents plus normative
+authority. `M3_CP4c_Current_And_Forward.md` is new and holds current state, the frozen successor, the open-candidate
+index and the resume pointer. `M3_CP4c_Consolidated_Record.md` becomes **history only** and gains a **Folded
+document index** listing all **35** folded per-turn plans, reports and review records (10,272 lines) with their
+recorded verdicts, so existing citations still resolve; full text stays in git history. **Not folded:** the six
+frozen-definition documents — DESIGN.md cites that amendment lineage normatively — every
+`Required_Green_Selector_*.txt`, and the current TB17 report and review record. Historical citations in
+`CHANGELOG.md` and `Regression_Root_Cause_Tracker.md` were deliberately **not** rewritten, because they describe
+what a turn produced at the time; live pointers in `DESIGN.md`, `ROADMAP.md`, the handoff and `TODO.md` were
+updated. CP4c markdown documents: **44 → 10**.
+
+**Lessons added.** §4 **95** — a diagnostic that is unreachable on the failing path is not a diagnostic. §4 **96**
+— counting a local quantity with a global identifier silently assumes injectivity.
+
 ## 2026-09-03 — `M3-CP4c-3-TB16-REV`: the region frontier is one copied loop that diverged twice, and `M3-CP4c-3-CB19` is frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md`, measures **BQ0–BQ8**

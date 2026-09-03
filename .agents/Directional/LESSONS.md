@@ -1489,6 +1489,19 @@ building any conclusion on it.**
     reached a different verdict, and let the difference between their guards do the work.** It is often cheaper and
     stronger than the diagnostic turn it replaces. `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §5.2.
 
+95. **A diagnostic that is unreachable on the failing path is not a diagnostic.** `build_regions` computes the
+    actual fragment-orbit count, the trace-piece count and the expected count for every face and formats all three
+    into a `fragment_reconciliation` record - thirty lines below a `return failure;` that fires precisely when
+    those three numbers are the question. The instrumentation was written for that failure and cannot be reached
+    by it. When adding diagnostics to a function with early returns, attach them where the errors are raised, not
+    where the successful path ends.
+
+96. **Counting a local quantity with a global identifier silently assumes injectivity.** "k chords make k+1
+    fragments" is a statement about one triangle; the cardinality of a set of face-walk orbit ids is a statement
+    about the whole surface. Equating them assumes distinct local pieces never share a global owner - true often
+    enough to ship, false in general on a closed surface, and invisible until a face carries two chords. When a
+    check compares a count against a set's cardinality, name the map between them and state why it is injective.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
