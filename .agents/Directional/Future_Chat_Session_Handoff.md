@@ -77,7 +77,8 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 3. **A green TB closes the checkpoint.** There is no separate acceptance ceremony.
 4. **A red TB mandatorily routes to `REVIEW + PLAN`.** No retry, no patch, and no further CB without
    an intervening review.
-5. **A red TB is information, not a debit.** Nothing is consumed, nothing is reset.
+5. **Orchestration Failure**: Orchestration failure is not a `RED` turn failure. Fix the orchestration issue as a revision turn and re-execute the failed turn.
+6. **A red TB is information, not a debit.** Nothing is consumed, nothing is reset.
 
 **Non-gating diagnostic identities**: A checkpoint may declare
 identities that TB executes and reports but that are **excluded from the gate count**, each with a
