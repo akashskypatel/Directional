@@ -1,0 +1,44 @@
+name: Agent M3 CP4c3 CB19 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb19-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  actions: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  workflow-schema-validation:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-cb19-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply-patch:
+    needs: workflow-schema-validation
+    if: needs.workflow-schema-validation.outputs.valid == 'true'
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1vAw0ci9qF05hPMgxidVZcucRfOPOJz3q
+      patch_sha256: 7b34392c51a3ab552dc2d124d5688625f5832dd5e607f555ac7bfb3f054a3d55
+      base_sha: f1c94358b8551614bee8bb76265e1c9a51c7aea3
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-CB19: correct carrier-less region incidence"
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb19-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
