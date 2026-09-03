@@ -6,7 +6,7 @@ on:
       - ".agents/connector-triggers/exact-source-snapshot/session-20260903-0903.txt"
 
 permissions:
-  contents: read
+  contents: write
   actions: read
   issues: write
   pull-requests: write
