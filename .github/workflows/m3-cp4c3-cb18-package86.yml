@@ -1,0 +1,196 @@
+name: M3 CP4c3 CB18 Package 86
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb18-package86-20260903.txt
+
+permissions:
+  contents: write
+  actions: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb18-package86
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb18-package86.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb18-package86
+      commit_run_file: false
+    secrets: inherit
+
+  package:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize package log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/package86.log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            "compile_run=33706268720" \
+            "compile_artifact_id=9875350611" \
+            "source_sha=a01016ca59314232526c8b1222c96235856ace6d" \
+            'runtimeExecution=false' \
+            'packageRepair=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$RUNNER_TEMP/package86.log"
+
+      - name: Verify immutable compile artifact metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/package86.log") 2>&1
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/9875350611" > "$RUNNER_TEMP/compile-artifact.json"
+          test "$(jq -r '.workflow_run.id' "$RUNNER_TEMP/compile-artifact.json")" = '33706268720'
+          test "$(jq -r '.name' "$RUNNER_TEMP/compile-artifact.json")" = 'm3-cp4c3-cb18-result-33706268720'
+          test "$(jq -r '.digest' "$RUNNER_TEMP/compile-artifact.json")" = 'sha256:cc2935716ecf7022fda6c120f0ef6313e60df553d34d7354b587e47ee9663d3a'
+          test "$(jq -r '.expired' "$RUNNER_TEMP/compile-artifact.json")" = false
+          jq '{id,name,digest,expired,workflow_run}' "$RUNNER_TEMP/compile-artifact.json"
+
+      - name: Download immutable compile result
+        uses: actions/download-artifact@v4
+        with:
+          name: m3-cp4c3-cb18-result-33706268720
+          path: ${{ runner.temp }}/raw
+          repository: ${{ github.repository }}
+          run-id: 33706268720
+          github-token: ${{ github.token }}
+
+      - name: Verify compile result and build package 86
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/package86.log") 2>&1
+          raw="$RUNNER_TEMP/raw"
+          source_sha=a01016ca59314232526c8b1222c96235856ace6d
+          test "$(cat "$raw/metadata/source-commit.txt")" = "$source_sha"
+          (cd "$raw" && sha256sum -c SHA256SUMS)
+          grep -qx 'runtimeExecution=false' "$raw/metadata/command-boundary.txt"
+          grep -qx 'turnBoundary=Code+Build-only' "$raw/metadata/command-boundary.txt"
+          grep -qx 'exactArithmeticBackend=GMP' "$raw/metadata/command-boundary.txt"
+          grep -qi gmpxx "$raw/metadata/gmp-evidence.txt"
+          grep -qi gmp "$raw/metadata/gmp-evidence.txt"
+          test "$(cat "$raw/metadata/build-exit-code.txt")" = 0
+          test "$(cat "$raw/metadata/preflight-exit-code.txt")" = 0
+          for status in "$raw"/metadata/source-status-*.txt; do test ! -s "$status"; done
+          expected='directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks'
+          test "$(tr '\n' ' ' < "$raw/metadata/compiled-targets.txt" | sed 's/ $//')" = "$expected"
+          for exe in directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks; do
+            test -x "$raw/bin/$exe"
+          done
+          source_archive="$raw/source/source-$source_sha.tar.gz"
+          test -f "$source_archive"
+          src="$RUNNER_TEMP/source-tree"
+          rm -rf "$src" && mkdir -p "$src"
+          tar -xzf "$source_archive" -C "$src"
+          s381="$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_381.txt"
+          s382="$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_382.txt"
+          test "$(sha256sum "$s381" | awk '{print $1}')" = af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90
+          test "$(sha256sum "$s382" | awk '{print $1}')" = f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a
+          test "$(wc -l < "$s381" | tr -d ' ')" = 381
+          test "$(wc -l < "$s382" | tr -d ' ')" = 382
+          test "$(sort "$s382" | uniq | wc -l | tr -d ' ')" = 382
+          head -n 381 "$s382" | cmp - "$s381"
+          for n in $(seq 374 382); do
+            prev=$((n-1))
+            a="$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_${prev}.txt"
+            b="$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_${n}.txt"
+            test -f "$a"; test -f "$b"
+            head -n "$prev" "$b" | cmp - "$a"
+          done
+          out="$RUNNER_TEMP/package86"
+          rm -rf "$out" && mkdir -p "$out/package86" "$out/package86/test-data/benchmarks"
+          cp -a "$raw/bin" "$raw/lib" "$raw/metadata" "$raw/source" "$out/package86/"
+          cp -a "$src/benchmarks/fixtures" "$out/package86/test-data/benchmarks/fixtures"
+          fixture_count="$(find "$out/package86/test-data/benchmarks/fixtures" -type f | wc -l | tr -d ' ')"
+          test "$fixture_count" = 27
+          cat > "$out/package86/metadata/fixture-package-contract.txt" <<EOF
+package=86
+source_commit=$source_sha
+fixture_count=27
+fixture_authority=package-relative
+selector=382
+selector_sha256=f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a
+frozen_selector_381_sha256=af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90
+non_gating_diagnostic_identity=GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable
+runtimeExecution=false
+packageRepair=false
+EOF
+          cat > "$out/package86/metadata/package-envelope.txt" <<'EOF'
+runtimeExecution=false
+turnBoundary=Code+Build-only
+exactArithmeticBackend=GMP
+modePreservingEnvelope=true
+semanticContracts=compiled-not-executed
+EOF
+          (cd "$out/package86" && find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > SHA256SUMS)
+          (cd "$out/package86" && sha256sum -c SHA256SUMS)
+          test "$(grep -c 'SHA256SUMS' "$out/package86/SHA256SUMS" || true)" = 0
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -czf "$out/package86.tar.gz" -C "$out" package86
+          sha256sum "$out/package86.tar.gz" > "$out/package86.sha256"
+          sha256sum "$source_archive" > "$out/source-archive.sha256"
+          cat > "$out/package86-boundary.txt" <<'EOF'
+runtimeExecution=false
+packageRepair=false
+No Directional binary was executed while packaging.
+EOF
+          echo "fixture_count=$fixture_count"
+          echo "package86_sha256=$(awk '{print $1}' "$out/package86.sha256")"
+          echo "source_archive_sha256=$(awk '{print $1}' "$out/source-archive.sha256")"
+          echo 'runtimeExecution=false'
+          echo 'packageRepair=false'
+
+      - name: Upload package 86
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-cb18-package86
+          path: |
+            ${{ runner.temp }}/package86/package86.tar.gz
+            ${{ runner.temp }}/package86/package86.sha256
+            ${{ runner.temp }}/package86/source-archive.sha256
+            ${{ runner.temp }}/package86/package86-boundary.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Record final package status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          {
+            echo "final_job_status=${{ job.status }}"
+            echo 'runtimeExecution=false'
+            echo 'packageRepair=false'
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$RUNNER_TEMP/package86.log"
+
+      - name: Upload package log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-cb18-package86-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/package86.log
+          if-no-files-found: error
+          retention-days: 14
