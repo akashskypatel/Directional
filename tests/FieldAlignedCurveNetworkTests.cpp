@@ -3623,9 +3623,59 @@ void append_cp4c_failure_locus(
     }
     report << "]}";
   }
+  if (locus.uncutFaceComponent.has_value())
+    report << ";uncutFaceComponent=" << *locus.uncutFaceComponent;
+  if (locus.uncutFaceComponentSeedCount.has_value())
+    report << ";uncutFaceComponentSeedCount="
+           << *locus.uncutFaceComponentSeedCount;
+  if (!locus.uncutFaceComponentSeedState.empty())
+    report << ";uncutFaceComponentSeedState="
+           << locus.uncutFaceComponentSeedState;
+  if (!locus.sourceFaceLocusKind.empty())
+    report << ";sourceFaceLocusKind=" << locus.sourceFaceLocusKind;
+  if (locus.uncutFaceComponentFaceCount != 0U ||
+      locus.uncutFaceComponentFacesTruncated ||
+      !locus.uncutFaceComponentFaces.empty()) {
+    report << ";uncutFaceComponentFaceCount="
+           << locus.uncutFaceComponentFaceCount
+           << ";uncutFaceComponentFacesTruncated="
+           << (locus.uncutFaceComponentFacesTruncated ? "true" : "false");
+    for (std::size_t index = 0U;
+         index < locus.uncutFaceComponentFaces.size(); ++index) {
+      const auto &face = locus.uncutFaceComponentFaces[index];
+      report << ";uncutFaceComponentFace[" << index << "]=" << face[0] << ','
+             << face[1] << ',' << face[2];
+    }
+  }
+  if (locus.uncutFaceComponentBoundaryEdgeCount != 0U ||
+      locus.uncutFaceComponentBoundaryEdgesTruncated ||
+      !locus.uncutFaceComponentBoundaryEdges.empty()) {
+    report << ";uncutFaceComponentBoundaryEdgeCount="
+           << locus.uncutFaceComponentBoundaryEdgeCount
+           << ";uncutFaceComponentBoundaryEdgesTruncated="
+           << (locus.uncutFaceComponentBoundaryEdgesTruncated ? "true"
+                                                               : "false");
+    for (std::size_t index = 0U;
+         index < locus.uncutFaceComponentBoundaryEdges.size(); ++index) {
+      const auto &row = locus.uncutFaceComponentBoundaryEdges[index];
+      report << ";uncutFaceComponentBoundaryEdge[" << index
+             << "]={sourceEdge=" << row.sourceEdge[0] << '-'
+             << row.sourceEdge[1] << ",otherSideLabeled="
+             << (row.otherSideLabeled ? "true" : "false")
+             << ",labeledFaceOwnerCount=" << row.labeledFaceOwnerCount
+             << ",barrierClass=" << row.barrierClass << ",seed=";
+      if (row.contributedSeed.has_value()) report << *row.contributedSeed;
+      else report << "none";
+      report << ",noSeedReason=";
+      if (!row.noSeedReason.empty()) report << row.noSeedReason;
+      else report << "none";
+      report << '}';
+    }
+  }
   const auto &ownerEvidence = locus.fragmentOwnerEvidence;
   if (ownerEvidence.faceCount != 0U || ownerEvidence.arcCount != 0U ||
-      ownerEvidence.traceCount != 0U || ownerEvidence.totalOrbitCount != 0U) {
+      ownerEvidence.traceCount != 0U || ownerEvidence.totalOrbitCount != 0U ||
+      ownerEvidence.componentCount != 0U) {
     report << ";fragmentOwnerFaceCount=" << ownerEvidence.faceCount
            << ";fragmentOwnerFacesTruncated="
            << (ownerEvidence.facesTruncated ? "true" : "false");
@@ -3684,7 +3734,26 @@ void append_cp4c_failure_locus(
            << ";fragmentOwnerExteriorOrbitCount="
            << ownerEvidence.exteriorOrbitCount
            << ";fragmentOwnerNonExteriorOrbitCount="
-           << ownerEvidence.nonExteriorOrbitCount;
+           << ownerEvidence.nonExteriorOrbitCount
+           << ";fragmentOwnerComponentCount=" << ownerEvidence.componentCount
+           << ";fragmentOwnerComponentsTruncated="
+           << (ownerEvidence.componentsTruncated ? "true" : "false");
+    for (std::size_t index = 0U; index < ownerEvidence.components.size();
+         ++index) {
+      const auto &row = ownerEvidence.components[index];
+      report << ";fragmentOwnerComponent[" << index << "]={component="
+             << row.component << ",faceCount=" << row.faceCount
+             << ",seedCount=" << row.seedCount << ",seedState="
+             << row.seedState << ",seedOrbitCount=" << row.seedOrbitCount
+             << ",seedOrbitsTruncated="
+             << (row.seedOrbitsTruncated ? "true" : "false")
+             << ",seedOrbits=[";
+      for (std::size_t seed = 0U; seed < row.seedOrbitIds.size(); ++seed) {
+        if (seed != 0U) report << ',';
+        report << row.seedOrbitIds[seed];
+      }
+      report << "]}";
+    }
   }
   if (locus.rotationPreviousRay.has_value())
     append_rotation_ray_diagnostics(report, "rotationPreviousRay",
@@ -11053,6 +11122,161 @@ TEST(GlobalTopologyPlan,
       "truncated=false,orbits=[13]};fragmentEdgeOrbitEvidence[2]={sourceEdge="
       "1-102,totalOrbitCount=0,truncated=false,orbits=[]};cutCandidateCount=0",
       production_global_topology_plan_error_locus(highSide));
+}
+
+TEST(GlobalTopologyPlan,
+     UncutFaceComponentSeedFailurePublishesProductionDecisionEvidence) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.network.has_value()) << mechanical.loadError;
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
+            mechanical.terminalFailureDetailCode);
+
+  const auto &locus = mechanical.terminalFailureLocus;
+  ASSERT_TRUE(locus.sourceFace.has_value());
+  EXPECT_EQ("FirstUnlabeledFaceInIterationOrder", locus.sourceFaceLocusKind);
+  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentSeedCount.has_value());
+  EXPECT_NE(1U, *locus.uncutFaceComponentSeedCount);
+  EXPECT_EQ(*locus.uncutFaceComponentSeedCount == 0U ? "None" : "Multiple",
+            locus.uncutFaceComponentSeedState);
+  EXPECT_GT(locus.uncutFaceComponentFaceCount, 0U);
+  EXPECT_EQ(locus.uncutFaceComponentFaceCount >
+                locus.uncutFaceComponentFaces.size(),
+            locus.uncutFaceComponentFacesTruncated);
+  EXPECT_GT(locus.uncutFaceComponentBoundaryEdgeCount, 0U);
+  EXPECT_EQ(locus.uncutFaceComponentBoundaryEdgeCount >
+                locus.uncutFaceComponentBoundaryEdges.size(),
+            locus.uncutFaceComponentBoundaryEdgesTruncated);
+  for (const auto &row : locus.uncutFaceComponentBoundaryEdges) {
+    EXPECT_FALSE(row.barrierClass.empty());
+    if (row.contributedSeed.has_value()) {
+      EXPECT_TRUE(row.noSeedReason.empty());
+    } else {
+      EXPECT_FALSE(row.noSeedReason.empty());
+    }
+  }
+
+  const auto &census = locus.fragmentOwnerEvidence;
+  EXPECT_EQ(census.componentCount > census.components.size(),
+            census.componentsTruncated);
+  const auto component = std::find_if(
+      census.components.begin(), census.components.end(), [&](const auto &row) {
+        return row.component == *locus.uncutFaceComponent;
+      });
+  ASSERT_NE(census.components.end(), component);
+  EXPECT_EQ(locus.uncutFaceComponentFaceCount, component->faceCount);
+  EXPECT_EQ(*locus.uncutFaceComponentSeedCount, component->seedCount);
+  EXPECT_EQ(locus.uncutFaceComponentSeedState, component->seedState);
+  EXPECT_EQ(component->seedOrbitCount > component->seedOrbitIds.size(),
+            component->seedOrbitsTruncated);
+}
+
+TEST(GlobalTopologyPlan,
+     UncutFaceComponentSeedFailureProjectsDecisionAndBoundaryEvidence) {
+  using directional::geometry::GlobalTopologyPlanError;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+  using directional::geometry::UncutFaceComponentBarrierClass;
+  using directional::geometry::UncutFaceComponentBoundaryEdgeDiagnostic;
+  using directional::geometry::UncutFaceComponentNoSeedReason;
+  using directional::geometry::UncutFaceComponentSeedState;
+  using directional::geometry::UncutFaceSourceFaceLocusKind;
+
+  GlobalTopologyPlanError error;
+  error.code = GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique;
+  error.sourceFace = topology_face(7, 11, 19, 64U);
+  error.sourceFaceLocusKind =
+      UncutFaceSourceFaceLocusKind::FirstUnlabeledFaceInIterationOrder;
+  error.uncutFaceComponent = 3U;
+  error.uncutFaceComponentSeedCount = 2U;
+  error.uncutFaceComponentSeedState = UncutFaceComponentSeedState::Multiple;
+  error.uncutFaceComponentFaceCount = 3U;
+  error.uncutFaceComponentFaces = {topology_face(7, 11, 19, 64U),
+                                   topology_face(11, 19, 23, 64U)};
+  error.uncutFaceComponentFacesTruncated = true;
+  error.uncutFaceComponentBoundaryEdgeCount = 2U;
+  error.uncutFaceComponentBoundaryEdges = {
+      UncutFaceComponentBoundaryEdgeDiagnostic{
+          topology_edge(7, 11, 64U), true, 2U,
+          UncutFaceComponentBarrierClass::None, std::nullopt,
+          UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique},
+      UncutFaceComponentBoundaryEdgeDiagnostic{
+          topology_edge(19, 23, 64U), false, 0U,
+          UncutFaceComponentBarrierClass::TraceTouched, std::nullopt,
+          UncutFaceComponentNoSeedReason::Barrier}};
+
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_global_topology_plan_failure_locus(error);
+  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
+  EXPECT_EQ(3U, *locus.uncutFaceComponent);
+  ASSERT_TRUE(locus.uncutFaceComponentSeedCount.has_value());
+  EXPECT_EQ(2U, *locus.uncutFaceComponentSeedCount);
+  EXPECT_EQ("Multiple", locus.uncutFaceComponentSeedState);
+  EXPECT_EQ("FirstUnlabeledFaceInIterationOrder", locus.sourceFaceLocusKind);
+  EXPECT_EQ(3U, locus.uncutFaceComponentFaceCount);
+  EXPECT_TRUE(locus.uncutFaceComponentFacesTruncated);
+  ASSERT_EQ(2U, locus.uncutFaceComponentFaces.size());
+  EXPECT_EQ((std::array<std::size_t, 3>{7U, 11U, 19U}),
+            locus.uncutFaceComponentFaces[0]);
+  EXPECT_EQ(2U, locus.uncutFaceComponentBoundaryEdgeCount);
+  EXPECT_FALSE(locus.uncutFaceComponentBoundaryEdgesTruncated);
+  ASSERT_EQ(2U, locus.uncutFaceComponentBoundaryEdges.size());
+  EXPECT_TRUE(locus.uncutFaceComponentBoundaryEdges[0].otherSideLabeled);
+  EXPECT_EQ(2U,
+            locus.uncutFaceComponentBoundaryEdges[0].labeledFaceOwnerCount);
+  EXPECT_EQ("none", locus.uncutFaceComponentBoundaryEdges[0].barrierClass);
+  EXPECT_EQ("edgeOrbitEvidenceNotUnique",
+            locus.uncutFaceComponentBoundaryEdges[0].noSeedReason);
+  EXPECT_EQ("traceTouched",
+            locus.uncutFaceComponentBoundaryEdges[1].barrierClass);
+  EXPECT_EQ("barrier", locus.uncutFaceComponentBoundaryEdges[1].noSeedReason);
+}
+
+TEST(GlobalTopologyPlan,
+     FragmentOwnerEvidenceProjectsUncutComponentSeedCensus) {
+  using directional::geometry::GlobalTopologyPlanError;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+  using directional::geometry::UncutFaceComponentSeedCensusDiagnostic;
+  using directional::geometry::UncutFaceComponentSeedState;
+
+  GlobalTopologyPlanError error;
+  error.code = GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique;
+  error.fragmentOwnerEvidence.componentCount = 3U;
+  error.fragmentOwnerEvidence.componentsTruncated = true;
+  error.fragmentOwnerEvidence.components = {
+      UncutFaceComponentSeedCensusDiagnostic{0U, 4U, 0U,
+                                             UncutFaceComponentSeedState::None,
+                                             {}, 0U, false},
+      UncutFaceComponentSeedCensusDiagnostic{1U, 6U, 3U,
+                                             UncutFaceComponentSeedState::Multiple,
+                                             {5U, 7U}, 3U, true}};
+
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_global_topology_plan_failure_locus(error);
+  EXPECT_EQ(3U, locus.fragmentOwnerEvidence.componentCount);
+  EXPECT_TRUE(locus.fragmentOwnerEvidence.componentsTruncated);
+  ASSERT_EQ(2U, locus.fragmentOwnerEvidence.components.size());
+  EXPECT_EQ("None", locus.fragmentOwnerEvidence.components[0].seedState);
+  EXPECT_EQ("Multiple", locus.fragmentOwnerEvidence.components[1].seedState);
+  EXPECT_EQ(3U, locus.fragmentOwnerEvidence.components[1].seedOrbitCount);
+  EXPECT_TRUE(locus.fragmentOwnerEvidence.components[1].seedOrbitsTruncated);
+  EXPECT_EQ((std::vector<std::size_t>{5U, 7U}),
+            locus.fragmentOwnerEvidence.components[1].seedOrbitIds);
+}
+
+TEST(GlobalTopologyPlan,
+     UnrelatedFailureProjectionIsByteIdenticalWithoutUncutSeedDiagnostics) {
+  using directional::geometry::GlobalTopologyPlanError;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+
+  GlobalTopologyPlanError error;
+  error.code = GlobalTopologyPlanErrorCode::InvalidSourceBinding;
+  error.sourceFace = topology_face(0, 1, 2, 16U);
+  EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
+            production_global_topology_plan_error_locus(error));
 }
 
 TEST(GlobalTopologyPlan,

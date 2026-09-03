@@ -36,6 +36,9 @@ constexpr std::uint64_t kFnvPrime = 1099511628211ULL;
 constexpr std::size_t kFragmentFailureEvidenceLimit = 8U;
 constexpr std::size_t kFragmentFaceEvidenceLimit = 4096U;
 constexpr std::size_t kFragmentOwnerCensusEvidenceLimit = 64U;
+constexpr std::size_t kUncutComponentFaceEvidenceLimit = 64U;
+constexpr std::size_t kUncutComponentBoundaryEvidenceLimit = 64U;
+constexpr std::size_t kUncutComponentSeedEvidenceLimit = 64U;
 
 void hash_consume(std::uint64_t &hash, const std::uint64_t value) noexcept {
   hash ^= value;
@@ -1148,6 +1151,126 @@ RegionBuildResult build_regions(
     }
   }
 
+  const auto component_seed_state = [&](const std::size_t component) {
+    const auto seeds = seedOrbits.find(component);
+    const std::size_t count =
+        seeds == seedOrbits.end() ? 0U : seeds->second.size();
+    if (count == 0U) return UncutFaceComponentSeedState::None;
+    if (count == 1U) return UncutFaceComponentSeedState::Unique;
+    return UncutFaceComponentSeedState::Multiple;
+  };
+  const auto component_barrier_class = [&](
+      const authority::SourceEdgeTopologyKey &edge) {
+    if (mandatoryEdges.count(edge) != 0U)
+      return UncutFaceComponentBarrierClass::Mandatory;
+    if (cutEdges.count(edge) != 0U)
+      return UncutFaceComponentBarrierClass::Cut;
+    if (traceTouchedEdges.count(edge) != 0U)
+      return UncutFaceComponentBarrierClass::TraceTouched;
+    return UncutFaceComponentBarrierClass::None;
+  };
+  const auto component_boundary_evidence = [&](const std::size_t component) {
+    std::vector<UncutFaceComponentBoundaryEdgeDiagnostic> rows;
+    std::size_t rowCount = 0U;
+    for (const auto &[edge, incident] : topology.incidentFaces) {
+      std::optional<std::size_t> componentSide;
+      for (std::size_t side = 0U; side < incident.size(); ++side) {
+        const auto found = componentPartition.componentByFace.find(incident[side]);
+        if (found != componentPartition.componentByFace.end() &&
+            found->second == component) {
+          if (componentSide.has_value()) {
+            componentSide.reset();
+            break;
+          }
+          componentSide = side;
+        }
+      }
+      if (!componentSide.has_value()) continue;
+
+      bool otherInComponent = false;
+      for (std::size_t side = 0U; side < incident.size(); ++side) {
+        if (side == *componentSide) continue;
+        const auto found = componentPartition.componentByFace.find(incident[side]);
+        if (found != componentPartition.componentByFace.end() &&
+            found->second == component) {
+          otherInComponent = true;
+          break;
+        }
+      }
+      if (otherInComponent) continue;
+
+      ++rowCount;
+      if (rows.size() >= kUncutComponentBoundaryEvidenceLimit) continue;
+      UncutFaceComponentBoundaryEdgeDiagnostic row;
+      row.sourceEdge = edge;
+      row.barrierClass = component_barrier_class(edge);
+
+      if (incident.size() != 2U) {
+        row.noSeedReason = UncutFaceComponentNoSeedReason::IncidentFaceCountNotTwo;
+        rows.push_back(std::move(row));
+        continue;
+      }
+      const auto &otherFace = incident[*componentSide ^ 1U];
+      const auto labeled = fragmentOrbits.find(otherFace);
+      row.otherSideLabeled = unlabeledIndex.find(otherFace) == unlabeledIndex.end();
+      row.labeledFaceOwnerCount =
+          labeled == fragmentOrbits.end() ? 0U : labeled->second.size();
+
+      if (row.barrierClass != UncutFaceComponentBarrierClass::None) {
+        row.noSeedReason = UncutFaceComponentNoSeedReason::Barrier;
+      } else if (!row.otherSideLabeled) {
+        row.noSeedReason = UncutFaceComponentNoSeedReason::OtherSideUnlabeled;
+      } else if (labeled == fragmentOrbits.end() || labeled->second.empty()) {
+        row.noSeedReason = UncutFaceComponentNoSeedReason::LabeledFaceHasNoOwner;
+      } else if (labeled->second.size() == 1U) {
+        row.contributedSeed = *labeled->second.begin();
+      } else {
+        const auto edgeEvidence =
+            edgeOrbitEvidence.find(std::make_pair(otherFace, edge));
+        if (edgeEvidence == edgeOrbitEvidence.end()) {
+          row.noSeedReason =
+              UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceMissing;
+        } else if (edgeEvidence->second.size() != 1U) {
+          row.noSeedReason =
+              UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique;
+        } else {
+          row.contributedSeed = *edgeEvidence->second.begin();
+        }
+      }
+      rows.push_back(std::move(row));
+    }
+    return std::make_pair(std::move(rows), rowCount);
+  };
+
+  if (ownerEvidence != nullptr) {
+    ownerEvidence->componentCount = componentPartition.components.size();
+    for (std::size_t component = 0U;
+         component < componentPartition.components.size(); ++component) {
+      if (ownerEvidence->components.size() >=
+          kFragmentOwnerCensusEvidenceLimit) {
+        break;
+      }
+      UncutFaceComponentSeedCensusDiagnostic row;
+      row.component = component;
+      row.faceCount = componentPartition.components[component].size();
+      const auto seeds = seedOrbits.find(component);
+      row.seedCount = seeds == seedOrbits.end() ? 0U : seeds->second.size();
+      row.seedState = component_seed_state(component);
+      row.seedOrbitCount = row.seedCount;
+      if (seeds != seedOrbits.end()) {
+        for (const std::size_t seed : seeds->second) {
+          if (row.seedOrbitIds.size() >= kUncutComponentSeedEvidenceLimit)
+            break;
+          row.seedOrbitIds.push_back(seed);
+        }
+      }
+      row.seedOrbitsTruncated = row.seedOrbitCount > row.seedOrbitIds.size();
+      ownerEvidence->components.push_back(std::move(row));
+    }
+    ownerEvidence->componentsTruncated =
+        ownerEvidence->componentCount > ownerEvidence->components.size();
+  }
+
   for (std::size_t index = 0U; index < unlabeledFaces.size(); ++index) {
     const auto component =
         componentPartition.componentByFace.find(unlabeledFaces[index]);
@@ -1159,6 +1282,32 @@ RegionBuildResult build_regions(
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique);
       failure.sourceFace = unlabeledFaces[index];
+      failure.sourceFaceLocusKind =
+          UncutFaceSourceFaceLocusKind::FirstUnlabeledFaceInIterationOrder;
+      failure.uncutFaceComponent = component->second;
+      failure.uncutFaceComponentSeedCount =
+          seeds == seedOrbits.end() ? 0U : seeds->second.size();
+      failure.uncutFaceComponentSeedState =
+          component_seed_state(component->second);
+      const auto &componentFaces =
+          componentPartition.components[component->second];
+      failure.uncutFaceComponentFaceCount = componentFaces.size();
+      for (const auto &face : componentFaces) {
+        if (failure.uncutFaceComponentFaces.size() >=
+            kUncutComponentFaceEvidenceLimit) {
+          break;
+        }
+        failure.uncutFaceComponentFaces.push_back(face);
+      }
+      failure.uncutFaceComponentFacesTruncated =
+          failure.uncutFaceComponentFaceCount >
+          failure.uncutFaceComponentFaces.size();
+      auto [boundaryRows, boundaryRowCount] =
+          component_boundary_evidence(component->second);
+      failure.uncutFaceComponentBoundaryEdgeCount = boundaryRowCount;
+      failure.uncutFaceComponentBoundaryEdges = std::move(boundaryRows);
+      failure.uncutFaceComponentBoundaryEdgesTruncated =
+          boundaryRowCount > failure.uncutFaceComponentBoundaryEdges.size();
       return failure;
     }
     fragmentOrbits[unlabeledFaces[index]].insert(*seeds->second.begin());
@@ -2065,7 +2214,9 @@ CandidateBuildResult canonical_candidate(
     // Low-side evidence is observational and follows only later failures.
     if (failure.code !=
             GlobalTopologyPlanErrorCode::TraceCutFaceFragmentCountMismatch &&
-        has_owner_deficit()) {
+        (has_owner_deficit() ||
+         failure.code ==
+             GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique)) {
       failure.fragmentOwnerEvidence = ownerEvidence;
     }
     return failure;
@@ -2553,6 +2704,62 @@ const char *global_topology_plan_error_code_name(
     return "RegionOwnedBoundaryEdgeMissingFromWalk";
   case GlobalTopologyPlanErrorCode::InvalidCutGraphBinding:
     return "InvalidCutGraphBinding";
+  }
+  return "Unknown";
+}
+
+const char *uncut_face_component_seed_state_name(
+    const UncutFaceComponentSeedState state) noexcept {
+  switch (state) {
+  case UncutFaceComponentSeedState::None:
+    return "None";
+  case UncutFaceComponentSeedState::Unique:
+    return "Unique";
+  case UncutFaceComponentSeedState::Multiple:
+    return "Multiple";
+  }
+  return "Unknown";
+}
+
+const char *uncut_face_component_barrier_class_name(
+    const UncutFaceComponentBarrierClass barrierClass) noexcept {
+  switch (barrierClass) {
+  case UncutFaceComponentBarrierClass::None:
+    return "none";
+  case UncutFaceComponentBarrierClass::Mandatory:
+    return "mandatory";
+  case UncutFaceComponentBarrierClass::Cut:
+    return "cut";
+  case UncutFaceComponentBarrierClass::TraceTouched:
+    return "traceTouched";
+  }
+  return "unknown";
+}
+
+const char *uncut_face_component_no_seed_reason_name(
+    const UncutFaceComponentNoSeedReason reason) noexcept {
+  switch (reason) {
+  case UncutFaceComponentNoSeedReason::IncidentFaceCountNotTwo:
+    return "incidentFaceCountNotTwo";
+  case UncutFaceComponentNoSeedReason::Barrier:
+    return "barrier";
+  case UncutFaceComponentNoSeedReason::OtherSideUnlabeled:
+    return "otherSideUnlabeled";
+  case UncutFaceComponentNoSeedReason::LabeledFaceHasNoOwner:
+    return "labeledFaceHasNoOwner";
+  case UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceMissing:
+    return "edgeOrbitEvidenceMissing";
+  case UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique:
+    return "edgeOrbitEvidenceNotUnique";
+  }
+  return "unknown";
+}
+
+const char *uncut_face_source_face_locus_kind_name(
+    const UncutFaceSourceFaceLocusKind kind) noexcept {
+  switch (kind) {
+  case UncutFaceSourceFaceLocusKind::FirstUnlabeledFaceInIterationOrder:
+    return "FirstUnlabeledFaceInIterationOrder";
   }
   return "Unknown";
 }

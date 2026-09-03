@@ -152,6 +152,32 @@ enum class GlobalTopologyPlanErrorCode : std::uint8_t {
   InvalidCutGraphBinding = 38,
 };
 
+enum class UncutFaceComponentSeedState : std::uint8_t {
+  None = 0,
+  Unique = 1,
+  Multiple = 2,
+};
+
+enum class UncutFaceComponentBarrierClass : std::uint8_t {
+  None = 0,
+  Mandatory = 1,
+  Cut = 2,
+  TraceTouched = 3,
+};
+
+enum class UncutFaceComponentNoSeedReason : std::uint8_t {
+  IncidentFaceCountNotTwo = 0,
+  Barrier = 1,
+  OtherSideUnlabeled = 2,
+  LabeledFaceHasNoOwner = 3,
+  EdgeOrbitEvidenceMissing = 4,
+  EdgeOrbitEvidenceNotUnique = 5,
+};
+
+enum class UncutFaceSourceFaceLocusKind : std::uint8_t {
+  FirstUnlabeledFaceInIterationOrder = 0,
+};
+
 enum class RotationSystemInconsistencyReason : std::uint8_t {
   TraceEventPositionInvalid = 0,
   TraceEventPositionNodeConflict = 1,
@@ -328,6 +354,32 @@ struct TraceTerminalSlitCensusDiagnostic {
   auto operator<=>(const TraceTerminalSlitCensusDiagnostic &) const = default;
 };
 
+struct UncutFaceComponentBoundaryEdgeDiagnostic {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  bool otherSideLabeled = false;
+  std::size_t labeledFaceOwnerCount = 0U;
+  UncutFaceComponentBarrierClass barrierClass =
+      UncutFaceComponentBarrierClass::None;
+  std::optional<std::size_t> contributedSeed;
+  std::optional<UncutFaceComponentNoSeedReason> noSeedReason;
+
+  auto operator<=>(const UncutFaceComponentBoundaryEdgeDiagnostic &) const =
+      default;
+};
+
+struct UncutFaceComponentSeedCensusDiagnostic {
+  std::size_t component = 0U;
+  std::size_t faceCount = 0U;
+  std::size_t seedCount = 0U;
+  UncutFaceComponentSeedState seedState = UncutFaceComponentSeedState::None;
+  std::vector<std::size_t> seedOrbitIds;
+  std::size_t seedOrbitCount = 0U;
+  bool seedOrbitsTruncated = false;
+
+  auto operator<=>(const UncutFaceComponentSeedCensusDiagnostic &) const =
+      default;
+};
+
 struct TraceFragmentOwnerEvidenceDiagnostic {
   std::vector<TraceCutFaceFragmentOwnerEvidenceDiagnostic> faces;
   std::size_t faceCount = 0U;
@@ -341,6 +393,9 @@ struct TraceFragmentOwnerEvidenceDiagnostic {
   std::size_t totalOrbitCount = 0U;
   std::size_t exteriorOrbitCount = 0U;
   std::size_t nonExteriorOrbitCount = 0U;
+  std::vector<UncutFaceComponentSeedCensusDiagnostic> components;
+  std::size_t componentCount = 0U;
+  bool componentsTruncated = false;
 
   auto operator<=>(const TraceFragmentOwnerEvidenceDiagnostic &) const =
       default;
@@ -373,6 +428,17 @@ struct GlobalTopologyPlanError {
   bool fragmentIncidencesTruncated = false;
   std::vector<TraceCutFaceEdgeOrbitEvidenceDiagnostic>
       fragmentEdgeOrbitEvidence;
+  std::optional<std::size_t> uncutFaceComponent;
+  std::optional<std::size_t> uncutFaceComponentSeedCount;
+  std::optional<UncutFaceComponentSeedState> uncutFaceComponentSeedState;
+  std::optional<UncutFaceSourceFaceLocusKind> sourceFaceLocusKind;
+  std::size_t uncutFaceComponentFaceCount = 0U;
+  std::vector<authority::SourceFaceTopologyKey> uncutFaceComponentFaces;
+  bool uncutFaceComponentFacesTruncated = false;
+  std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
+  std::vector<UncutFaceComponentBoundaryEdgeDiagnostic>
+      uncutFaceComponentBoundaryEdges;
+  bool uncutFaceComponentBoundaryEdgesTruncated = false;
   TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
@@ -543,6 +609,14 @@ private:
 
 [[nodiscard]] const char *global_topology_plan_error_code_name(
     GlobalTopologyPlanErrorCode code) noexcept;
+[[nodiscard]] const char *uncut_face_component_seed_state_name(
+    UncutFaceComponentSeedState state) noexcept;
+[[nodiscard]] const char *uncut_face_component_barrier_class_name(
+    UncutFaceComponentBarrierClass barrierClass) noexcept;
+[[nodiscard]] const char *uncut_face_component_no_seed_reason_name(
+    UncutFaceComponentNoSeedReason reason) noexcept;
+[[nodiscard]] const char *uncut_face_source_face_locus_kind_name(
+    UncutFaceSourceFaceLocusKind kind) noexcept;
 [[nodiscard]] const char *rotation_system_inconsistency_reason_name(
     RotationSystemInconsistencyReason reason) noexcept;
 [[nodiscard]] const char *vertex_trace_secondary_parameter_failure_reason_name(

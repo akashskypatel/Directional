@@ -626,6 +626,46 @@ project_global_topology_plan_failure_locus(
     row.truncated = evidence.truncated;
     locus.fragmentEdgeOrbitEvidence.push_back(std::move(row));
   }
+  locus.uncutFaceComponent = error.uncutFaceComponent;
+  locus.uncutFaceComponentSeedCount = error.uncutFaceComponentSeedCount;
+  if (error.uncutFaceComponentSeedState.has_value()) {
+    locus.uncutFaceComponentSeedState =
+        geometry::uncut_face_component_seed_state_name(
+            *error.uncutFaceComponentSeedState);
+  }
+  if (error.sourceFaceLocusKind.has_value()) {
+    locus.sourceFaceLocusKind = geometry::uncut_face_source_face_locus_kind_name(
+        *error.sourceFaceLocusKind);
+  }
+  locus.uncutFaceComponentFaceCount = error.uncutFaceComponentFaceCount;
+  locus.uncutFaceComponentFaces.reserve(error.uncutFaceComponentFaces.size());
+  for (const auto &face : error.uncutFaceComponentFaces) {
+    const auto vertices = face.vertices();
+    locus.uncutFaceComponentFaces.push_back(
+        {vertices[0].index(), vertices[1].index(), vertices[2].index()});
+  }
+  locus.uncutFaceComponentFacesTruncated =
+      error.uncutFaceComponentFacesTruncated;
+  locus.uncutFaceComponentBoundaryEdgeCount =
+      error.uncutFaceComponentBoundaryEdgeCount;
+  locus.uncutFaceComponentBoundaryEdges.reserve(
+      error.uncutFaceComponentBoundaryEdges.size());
+  for (const auto &edge : error.uncutFaceComponentBoundaryEdges) {
+    SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics row;
+    row.sourceEdge = topology_edge_locus(edge.sourceEdge);
+    row.otherSideLabeled = edge.otherSideLabeled;
+    row.labeledFaceOwnerCount = edge.labeledFaceOwnerCount;
+    row.barrierClass = geometry::uncut_face_component_barrier_class_name(
+        edge.barrierClass);
+    row.contributedSeed = edge.contributedSeed;
+    if (edge.noSeedReason.has_value()) {
+      row.noSeedReason = geometry::uncut_face_component_no_seed_reason_name(
+          *edge.noSeedReason);
+    }
+    locus.uncutFaceComponentBoundaryEdges.push_back(std::move(row));
+  }
+  locus.uncutFaceComponentBoundaryEdgesTruncated =
+      error.uncutFaceComponentBoundaryEdgesTruncated;
 
   const auto &ownerEvidence = error.fragmentOwnerEvidence;
   auto &projectedOwnerEvidence = locus.fragmentOwnerEvidence;
@@ -675,6 +715,21 @@ project_global_topology_plan_failure_locus(
   projectedOwnerEvidence.exteriorOrbitCount = ownerEvidence.exteriorOrbitCount;
   projectedOwnerEvidence.nonExteriorOrbitCount =
       ownerEvidence.nonExteriorOrbitCount;
+  projectedOwnerEvidence.componentCount = ownerEvidence.componentCount;
+  projectedOwnerEvidence.componentsTruncated = ownerEvidence.componentsTruncated;
+  projectedOwnerEvidence.components.reserve(ownerEvidence.components.size());
+  for (const auto &component : ownerEvidence.components) {
+    SurfaceCellUncutFaceComponentSeedCensusDiagnostics row;
+    row.component = component.component;
+    row.faceCount = component.faceCount;
+    row.seedCount = component.seedCount;
+    row.seedState = geometry::uncut_face_component_seed_state_name(
+        component.seedState);
+    row.seedOrbitIds = component.seedOrbitIds;
+    row.seedOrbitCount = component.seedOrbitCount;
+    row.seedOrbitsTruncated = component.seedOrbitsTruncated;
+    projectedOwnerEvidence.components.push_back(std::move(row));
+  }
   return locus;
 }
 

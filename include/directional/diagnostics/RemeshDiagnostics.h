@@ -185,6 +185,25 @@ struct SurfaceCellTraceTerminalSlitCensusDiagnostics {
   bool terminatesInTerminalSlit = false;
 };
 
+struct SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics {
+  std::array<std::size_t, 2> sourceEdge{};
+  bool otherSideLabeled = false;
+  std::size_t labeledFaceOwnerCount = 0U;
+  std::string barrierClass;
+  std::optional<std::size_t> contributedSeed;
+  std::string noSeedReason;
+};
+
+struct SurfaceCellUncutFaceComponentSeedCensusDiagnostics {
+  std::size_t component = 0U;
+  std::size_t faceCount = 0U;
+  std::size_t seedCount = 0U;
+  std::string seedState;
+  std::vector<std::size_t> seedOrbitIds;
+  std::size_t seedOrbitCount = 0U;
+  bool seedOrbitsTruncated = false;
+};
+
 struct SurfaceCellTraceFragmentOwnerEvidenceDiagnostics {
   std::vector<SurfaceCellTraceCutFaceFragmentOwnerEvidenceDiagnostics> faces;
   std::size_t faceCount = 0U;
@@ -198,6 +217,9 @@ struct SurfaceCellTraceFragmentOwnerEvidenceDiagnostics {
   std::size_t totalOrbitCount = 0U;
   std::size_t exteriorOrbitCount = 0U;
   std::size_t nonExteriorOrbitCount = 0U;
+  std::vector<SurfaceCellUncutFaceComponentSeedCensusDiagnostics> components;
+  std::size_t componentCount = 0U;
+  bool componentsTruncated = false;
 };
 
 struct SurfaceCellFailureLocusDiagnostics {
@@ -243,6 +265,17 @@ struct SurfaceCellFailureLocusDiagnostics {
   bool fragmentIncidencesTruncated = false;
   std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
       fragmentEdgeOrbitEvidence;
+  std::optional<std::size_t> uncutFaceComponent;
+  std::optional<std::size_t> uncutFaceComponentSeedCount;
+  std::string uncutFaceComponentSeedState;
+  std::string sourceFaceLocusKind;
+  std::size_t uncutFaceComponentFaceCount = 0U;
+  std::vector<std::array<std::size_t, 3>> uncutFaceComponentFaces;
+  bool uncutFaceComponentFacesTruncated = false;
+  std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
+  std::vector<SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics>
+      uncutFaceComponentBoundaryEdges;
+  bool uncutFaceComponentBoundaryEdgesTruncated = false;
   SurfaceCellTraceFragmentOwnerEvidenceDiagnostics fragmentOwnerEvidence;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;
