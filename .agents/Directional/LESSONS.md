@@ -1522,6 +1522,23 @@ building any conclusion on it.**
     the preceding chords counted as if they separated. Fifth instance of "correct in the scope that produced it,
     used in a scope that does not make it valid" (85, 87, 93, 96).
 
+100. **An error code plus a source locus that two unrelated witnesses both produce is a symptom, not an identity.**
+     The torus (0 traces, 72/216/144) and the mechanical witness (12 traces, 152/450/300) both reported
+     `UncutFaceComponentOrbitSeedNotUnique` at face `(0,1,2)`, because `(0,1,2)` is row 0 of both meshes and the
+     emitter reports the first unlabeled face in `std::map` order. The torus case is provably the zero-seed branch;
+     the mechanical case cannot be. Before merging two failures by name and locus, ask whether the locus is a
+     property of the defect or of the iteration.
+
+101. **A guard that reports "not exactly one" must say which side it fell off.** An empty set and a set of size two
+     are opposite defects with opposite corrections - under-seeded versus straddling two regions - and the emitter
+     distinguishes them internally, then discards the distinction and reports a face that cannot discriminate
+     either. Sixth instance of computing the deciding number and dropping it at the reporting boundary (95, 97).
+
+102. **A witness that exercises none of the disputed behaviour cannot settle it.** All 70 retained mechanical face
+     arrangements were non-crossing, which is evidence about non-crossing arrangements only - and the tracer builds
+     `TraceIntersection` contact nodes bound to a source face, so crossings are a modelled case where `k` chords
+     make `k + 1 + c` local fragments. Uniform evidence from one witness is evidence about that witness.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

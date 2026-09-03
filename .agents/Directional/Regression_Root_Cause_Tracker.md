@@ -1,3 +1,50 @@
+## M3-CP4c3-TB19-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`, measures **CR0-CR8** discharged per the
+  binding plan. Static only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **CR0.** Source `b00efbd5` exists, is an ancestor of HEAD, **no code drift**; selector 384 recomputes to
+  `c9425b93...632a05564` with 384 identities, selector 383 an exact prefix, accepted 365-prefix unchanged; the
+  384-row ledger closes at 376+8; pre/post package census identical. **CB21 is confirmed against BU0-BU9**, with
+  BU9-2 - ordinal 366 leaving `TraceCutFaceFragmentCountMismatch` - the load-bearing discriminator.
+- **CR1 - the locus is proved non-discriminating.** The emitter at `GlobalTopologyPlan.cpp:1151-1163` sets
+  `failure.sourceFace` to the **first unlabeled face in `std::map` key order**. `(0,1,2)` is **row 0 of the
+  mechanical fixture and row 0 of the torus fixture**. The failing branch fires on `seeds == end()` (zero) or
+  `size() != 1` (two or more); neither the component id, its membership, nor its seed set is retained, so the
+  cardinality is **not derivable from committed bytes**. Partial evidence favours two-or-more - face `(0,1,2)`
+  neighbours labeled row 259 `(0,1,102)` across edge `0-1`, which the TB18 chord never made a carrier - but the
+  barrier membership of `0-1` is a product decision not recoverable statically. **Sixth instance of computing the
+  deciding number and discarding it at the reporting boundary.**
+- **CR2 - same guard, different mechanism; candidates NOT merged.** The historical torus stop
+  (`CHANGELOG.md` line 361, `M3-CP4c-1-TB-R2`: "0 traces/events ... `UncutFaceComponentOrbitSeedNotUnique` at
+  `0-1-2`") is **provably the zero-seed branch**: with no traces, no face acquires a chord label, so no edge has a
+  labeled side and every component's seed set is empty. The mechanical witness has **70 labeled faces and 6
+  non-exterior orbits** and cannot be that. Identical name and identical locus, different root mechanism.
+- **CR3 - a universal non-crossing invariant is REFUTED, not merely unproved.** `SurfaceCellTracing.cpp` builds
+  contact nodes at trace intersections bound to a source face
+  (`field_aligned_append_contact_node(candidate, *nextFace)`, `FieldAlignedNetworkEventKind::TraceIntersection`).
+  Crossings are a modelled case, in which `k` chords make `k + 1 + c` local fragments. The 70/70 non-crossing rows
+  are witness-local sufficiency only.
+- **CR4 - 371/372 remain DEFERRED with a standing trigger.** Both abort in a fixture constructor that will stop
+  throwing once the production plan builds; a test-only accessor now risks landing a surface the next correction
+  makes redundant. Authorize the decoupling at the first review that either closes the mechanical production
+  frontier or finds the frontier unmoved across two consecutive TB turns.
+- **CR5.** 368/369/370/374 semantically unchanged, each under its existing owner, explicitly not merged into the
+  component-seed correction.
+- **CR7 - one bounded successor frozen:** **`M3-CP4c-3-CB22`** under **BV0-BV9**, **diagnostic-only**. Zero and
+  two-or-more imply opposite corrections, so no product correction is authorized. TB18-REV's prohibition on further
+  diagnostic-only turns was scoped to the fragment-count surface, which CB21 corrected and TB19 closed; it does not
+  reach this surface.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss, red ordinal set unexpanded.
+  **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**.
+
+## M3-CP4c3-TB19-REV-CAND-02 - the component-seed error cannot identify its own cause - **NEW / ACTIVE / EVIDENCE CONTRACT / NON-STABLE**
+
+`UncutFaceComponentOrbitSeedNotUnique` retains only `sourceFace`, which is the first unlabeled face in `std::map`
+order and which two unrelated witnesses (torus, mechanical) both report as `(0,1,2)`. The error therefore cannot
+distinguish its own failing branch, component, or seed set. Owner: **BV4** - keep `sourceFace` for continuity but
+publish that it is an iteration-order locus and add the component identity as the discriminating one. Related:
+`M3-CP4c3-TB19-CAND-01`.
+
 ## M3-CP4c3-TB19 — CB21 fragment-owner correction clears; uncut-component seed frontier exposed — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** semantic source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, compile artifact `9908695433`,
@@ -22,7 +69,7 @@
   +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**. Exact next owner:
   `M3-CP4c-3-TB19-REV`.
 
-## M3-CP4c3-TB19-CAND-01 — unlabeled mechanical component has non-unique retained orbit seed set after fragment correction — **NEW / ACTIVE / GATING / REVIEW-OWNED / NON-STABLE**
+## M3-CP4c3-TB19-CAND-01 - unlabeled-face component orbit seed set is not unique, branch undetermined - **ACTIVE / GATING / MECHANISM UNOBSERVABLE / LOCUS PROVED NON-DISCRIMINATING / NON-STABLE**
 
 - **Observed:** 366/367/371/372 now terminate at
   `UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`, after the fragment-owner low-side correction

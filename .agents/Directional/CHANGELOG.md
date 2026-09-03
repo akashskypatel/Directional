@@ -1,3 +1,63 @@
+## 2026-09-03 — `M3-CP4c-3-TB19-REV`: CB21 confirmed; the new frontier's locus proved non-discriminating; seed cardinality unobservable; diagnostic-only CB22 frozen
+
+Independent review of immutable TB19 evidence under the binding plan's measures **CR0–CR8**. Record:
+`Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`. Static only — no runtime, compile, link, package,
+benchmark, or product/test/fixture/selector mutation.
+
+Authority re-verified: source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2` exists, is an ancestor of HEAD and has
+**no code drift**; selector 384 recomputes to `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`
+with 384 identities, selector 383 an exact prefix and accepted `6b5b6555…cfc14b8a1` an exact 365-prefix; the
+384-row ledger closes at 376 + 8; pre/post package census identical at `c2386681…275e133d`.
+
+**CB21 is confirmed against BU0–BU9.** Ordinals 1–365 stay 365/365; ordinal 366 leaves
+`TraceCutFaceFragmentCountMismatch` — the load-bearing discriminator; 367/371/372 move with it; ordinal 384 passes;
+`(0,1,102)` retains `localFragmentCount=2 / ownerCount=1 / ownerDeficit=1` non-fatally. **`M3-CP4c3-TB17-CAND-01`
+closes.**
+
+**The new frontier's reported locus is an iteration artifact, and this is proved.**
+`UncutFaceComponentOrbitSeedNotUnique` at `GlobalTopologyPlan.cpp:1151–1163` sets `failure.sourceFace` to the first
+unlabeled face in `std::map` key order. `(0,1,2)` is **row 0 of the mechanical fixture and row 0 of the torus
+fixture**, and the historical torus stop of the same name (`M3-CP4c-1-TB-R2`, 0 traces) reported the identical
+face. Two unrelated witnesses, same code, same locus.
+
+**The torus case is provably the zero-seed branch and the mechanical case cannot be.** With no traces, no face
+acquires a chord label, so no edge has a labeled side and every component's seed set is empty; the mechanical
+witness has 70 labeled faces and 6 non-exterior orbits. Same guard, different mechanism — **the candidates are not
+merged**.
+
+**The mechanical seed cardinality is not derivable from committed bytes.** Neither the component id, its
+membership, nor its seed set is retained, and `seeds == end()` versus `size() > 1` imply **opposite** corrections.
+Partial evidence favours two-or-more — `(0,1,2)` neighbours labeled row 259 `(0,1,102)` across edge `0-1`, which
+the TB18 chord never made a carrier — but the barrier membership of `0-1` is not recoverable statically. Sixth
+instance of computing the deciding number and discarding it at the reporting boundary.
+
+**A universal chord non-crossing invariant is REFUTED, not merely unproved.** `SurfaceCellTracing.cpp` builds
+`TraceIntersection` contact nodes bound to a source face, so crossings are a modelled case in which `k` chords make
+`k + 1 + c` local fragments. TB19's 70/70 non-crossing rows are witness-local sufficiency only;
+`M3-CP4c3-TB18-REV-CAND-01` moves to **SCOPE REFUTED / DERIVATION REQUIRED** and `localFragmentCount` stays
+non-fatal.
+
+371/372 remain deferred under `M3-CP4c3-TB10-REV-CAND-01` with a **standing trigger**: authorize the test-only
+atlas-scoped decoupling at the first review that either closes the mechanical production frontier or finds it
+unmoved across two consecutive TB turns. Both abort in a fixture constructor that will stop throwing once the plan
+builds. 368/369/370/374 are unchanged under their existing owners. New `M3-CP4c3-TB19-REV-CAND-02` owns the
+error's evidence contract. Lessons **100–102** added.
+
+Static turn on an unaccepted surface with the red ordinal set unexpanded: **+0 events / +0 recurrences**; totals
+remain **44 / 14 / 30**, debt **5**, packages **85**; accepted authority **365/365**; CP4c-3 **OPEN**.
+
+Exact successor frozen: **`M3-CP4c-3-CB22`** under **BV0–BV9**, **diagnostic-only** — publish
+`seedState ∈ {None, Multiple}`, the component identity, its bounded membership and its bounded boundary-edge rows
+including the currently silent `edgeOrbitEvidence` skip. TB18-REV's prohibition on further diagnostic-only turns
+was scoped to the fragment-count surface, which CB21 corrected and TB19 closed, and does not reach this one. **One
+diagnostic turn only:** `M3-CP4c-3-TB20-REV` is expected to authorize a correction.
+
+Second application of the standing REVIEW-turn consolidation rule: the TB18 report, the TB18 review record, the
+CB21 build report, the consumed TB19 plan and the consumed TB19 review plan — 5 documents, 990 lines — were folded
+into `M3_CP4c_Consolidated_Record.md`'s folded document index after their durable facts were verified present in
+the retained records, bringing its running total to 44 documents / 9935 lines. Their full text remains recoverable
+from git history.
+
 ## 2026-09-03 — `M3-CP4c-3-TB19`: CB21 low-side fragment correction runtime-proved; later component-seed frontier exposed
 
 TB19 is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE** on immutable CB21 semantic source

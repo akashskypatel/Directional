@@ -2,13 +2,13 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB18-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 383, accepted authority **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **84**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB19-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 384, accepted authority **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **85**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
 - the CP4c-2 and CP4c-3 frozen `DEFN*` contracts and all frozen `Required_Green_Selector_*` lineage files;
 - `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`, which closes CP4c-2 and supplies live CP4c-3 carry-forward authority;
-- `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB18_Independent_Review_Record.md`, which retain the current runtime boundary and the frozen CB21 scope; `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` remains CB19 rationale lineage;
+- `Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`, which retain the current runtime boundary and the frozen CB22 scope; `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` remains CB19 rationale lineage;
 - historical review/plan records still referenced by `DESIGN.md`, `LESSONS.md`, `ROADMAP.md`, `Regression_Root_Cause_Tracker.md`, or by a retained frozen definition/review authority. Their transitive dependency chain remains exact-byte authority and was deliberately excluded from this retirement.
 
 All other superseded CP4c-3 per-turn files that had no live current/future dependency were folded into §§4/6 below and retired from the working tree. Git history remains the exact-byte recovery source for every retired file.
@@ -857,5 +857,21 @@ durable facts were verified present in `Architecture_M3_CP4c3_TB18_Independent_R
 
 **Total folded this turn:** 4 documents, 615 lines. **Running total:** 39 documents, 8945 lines.
 
-**Retained as current authority:** `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` (review and the frozen CB21 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, this record, and every `Required_Green_Selector_*.txt`.
+### Consolidated on 2026-09-03 at `M3-CP4c-3-TB19-REV`
+
+Second application of the standing REVIEW-turn consolidation rule. Each document's durable facts were verified
+present in `Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`,
+`ORIENTATION.md`, `LESSONS.md` and `CHANGELOG.md` **before** it was folded.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` | 148 | superseded runtime authority - TB18 375/8 at selector 383; superseded by the TB19 report |
+| `Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` | 366 | superseded review authority - BT0-BT9; falsified the fragment equality, proved shared ownership legitimate, froze CB21/BU0-BU9, retired BS9-5 |
+| `Architecture_M3_CP4c3_CB21_Code_Build_Report.md` | 173 | consumed build report - the one-sided fragment-owner correction; BU0-BU9 disposition confirmed by TB19 and carried by the TB19-REV record |
+| `Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md` | 191 | consumed evidence contract - discriminators D1-D6; dispositions carried by the TB19 report |
+| `Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md` | 112 | consumed binding review plan - measures CR0-CR8, all discharged in the TB19-REV record |
+
+**Total folded this turn:** 5 documents, 990 lines. **Running total:** 44 documents, 9935 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB19_Independent_Review_Record.md` (review and the frozen CB22 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, this record, and every `Required_Green_Selector_*.txt`.
 

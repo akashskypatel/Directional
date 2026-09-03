@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-03):** TB18 is latest runtime on immutable package from source `57635e87` / selector **383** at **375 PASS / 8 RED**, accepted **365/365**, first red **366**. `M3-CP4c-3-TB18-REV` proved the fragment-count equality unsound and **authorized the correction**. Exact next is `M3-CP4c-3-CB21` under **BU0-BU9** - a loosening plus evidence, not a diagnostic turn.
+> **Current CP4c-3 authority (2026-09-03):** TB19 is latest runtime on source `b00efbd5` / selector **384** at **376 PASS / 8 RED**, accepted **365/365**, first red **366**. CB21's fragment-owner correction is runtime-proved and the frontier moved to `UncutFaceComponentOrbitSeedNotUnique`. `M3-CP4c-3-TB19-REV` proved that error's reported face is an iteration artifact and left the seed cardinality undetermined. Exact next is `M3-CP4c-3-CB22` under **BV0-BV9**, diagnostic-only.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,24 +185,27 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB18 / TB18-REV.** Accepted authority remains selector **365**
-(`6b5b6555…cfc14b8a1`). CP4c-3's frozen unaccepted gate is selector **383**
-(`a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`, 383 identities) whose first 382 lines
-reproduce selector 382 exactly and whose first 365 reproduce the accepted prefix.
+**Current authority — TB19 / TB19-REV.** Accepted authority remains selector **365**
+(`6b5b6555…cfc14b8a1`). CP4c-3's frozen unaccepted gate is selector **384**
+(`c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`, 384 identities) whose first 383 lines
+reproduce selector 383 exactly and whose first 365 reproduce the accepted prefix.
 
-**TB18 is the latest semantic runtime evidence** (source `57635e87306a416daabb8321e1f36fa9c788d208`, run/job
-`33785382790 / 100748821924`, ledger `a99c31d8…9130604ed`): **375 PASS / 8 RED**, ordinals **1–365 green**, first
-red **366** at `TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`; red set
-{366, 367, 368, 369, 370, 371, 372, 374}; identical pre/post byte+mode census `5fb1dcf5…bbedb350eb8`.
+**TB19 is the latest semantic runtime evidence** (source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, run/job
+`33798040003 / 100790444711`, ledger `e9ab64a8…41841c04b`): **376 PASS / 8 RED**, ordinals **1–365 green**, red set
+{366, 367, 368, 369, 370, 371, 372, 374}; identical pre/post byte+mode census `c2386681…275e133d`.
 
-**The fragment-count invariant is now falsified with its mechanism measured.** The failing face reports
-`fragmentOrbitCount = 1`, `tracePieceCount = 1`, `expectedFragmentCount = 2` — low by exactly one — with a single
-untruncated incidence whose forward and reverse face-walk orbits are **both 0** and neither exterior-dropped.
-Exterior filtering and the high-side mechanisms are eliminated for this witness; **shared global orbit ownership**
-is selected. `M3-CP4c-3-TB18-REV` proved that shared ownership is legitimate topology rather than a merge defect,
-and froze the **product correction** `M3-CP4c-3-CB21` under BU0–BU9 (§7 item 1).
+**CB21's fragment-owner correction is runtime-proved and the frontier moved.** Ordinals 366/367/371/372 all clear
+`TraceCutFaceFragmentCountMismatch`; ordinal 384 passes; face `(0,1,102)` retains owner/expected/deficit `1/2/1`
+non-fatally. The new common terminal stop is **`UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`**.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **84**. Sphere 368,
+**`M3-CP4c-3-TB19-REV` proved that locus is an iteration artifact and left the mechanism open.** The emitter reports
+the first unlabeled face in `std::map` order; `(0,1,2)` is **row 0 of both** the mechanical and torus fixtures, and
+the historical torus stop of the same name — with **0 traces** — reported the identical face under a provably
+different (zero-seed) mechanism. Whether the mechanical component has **zero** seeds or **two or more** is not
+derivable from committed bytes, so the frozen successor `M3-CP4c-3-CB22` (BV0–BV9) is **diagnostic-only** (§7
+item 1).
+
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **85**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, the finalize/contact fall-through and the
 vertex-30 evidence contract remain deferred under their own owners. **Vertex 30 is still not reached.**
 
@@ -308,35 +311,33 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The face-fragment check compares a local count with a global owner cardinality — the invariant is
-   FALSIFIED, the mechanism is MEASURED, and the correction is AUTHORIZED.** The emitter is one comparison,
-   `GlobalTopologyPlan.cpp:777–779`: `fragmentOrbits[face].size() != tracePieceCount[face] + 1`.
+1. **The unlabeled-face component seeding rejects a component whose neighbouring orbit seeds are not exactly one
+   — ACTIVE and gating; the reported locus is PROVED NON-DISCRIMINATING and the cardinality is UNOBSERVABLE.**
+   The emitter is `GlobalTopologyPlan.cpp:1151–1163`, in the block that labels faces no chord touched.
 
-   - **Measured at `(0,1,102)`:** actual **1**, `k` **1**, expected **2** — low by exactly one. The single
-     untruncated incidence is `trace=1 arc=15 segment=4`, `incomingCarrier=none`, `outgoingCarrier=0-102`,
-     `forwardOrbit=0`, `reverseOrbit=0`, neither exterior-dropped. All three edges of the face carry orbit `[0]`.
-   - **What the incidence is.** Segment 4 is not segment 0, so it is not the trace's port origin: it is one of
-     CB19's 48 vertex transits. The carrier-less branch binds the corner opposite the outgoing carrier, which for
-     `0-102` is **vertex 1** — degree 6, angle defect **0**, a *regular* vertex carrying two 90° sharp edges. The
-     chord runs corner-to-opposite-edge and separates the triangle **locally**.
-   - **Shared ownership is legitimate.** The face walk is the canonical `φ = σ⁻¹ ∘ α` permutation of the rotation
-     system, validated to be total (incidence count exactly 1 per dart, every successor assigned, every orbit
-     closing, no re-entry at a foreign start). Its orbits are its cycles, so it cannot fuse darts a valid rotation
-     system separates. Two darts of one arc share an orbit exactly when the arc is a bridge or is non-separating —
-     both legitimate. **Therefore `|owners| = k+1` is not an invariant of any valid input;** the sound relation is
-     `|owners| ≤ localFragmentCount`.
-   - **The correction is safe by construction.** The loop is pure validation — it returns a failure or falls
-     through, mutating nothing. `size > expected` is true on a strict subset of `size != expected`, so the failing
-     set only shrinks and every previously-passing input is byte-identical. 1–365 are 365/365, so the accepted
-     boundary cannot move.
+   - **How seeding works.** `componentBarriers = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`. Components are
+     maximal sets of unlabeled faces joined across non-barrier edges. `seedOrbits[component]` unions, over every
+     non-barrier edge with one unlabeled and one labeled side, the labeled side's orbit — taken directly when that
+     face has exactly one owner, else from `edgeOrbitEvidence[(labeledFace, edge)]` when unique, and **silently
+     skipped when neither is unique**. The guard demands `size() == 1`.
+   - **The locus is an artifact.** `failure.sourceFace` is the first unlabeled face in `std::map` key order.
+     `(0,1,2)` is **row 0 of the mechanical fixture and row 0 of the torus**, and the historical torus stop of the
+     same name reported the identical face. Two unrelated witnesses, same code, same locus.
+   - **Zero versus two-or-more is undetermined.** Both branches remain live. Face `(0,1,2)` neighbours row 259
+     `(0,1,102)` across edge `0-1`, which the TB18 chord never made a carrier (`incomingCarrier=none`), so if `0-1`
+     is not a cut or mandatory edge the component is seeded and the failure must be **two-or-more** — but the
+     barrier membership of `0-1` is not recoverable from committed bytes.
+   - **The deciding numbers are discarded, sixth instance.** The component id, its membership and `seedOrbits` are
+     all in hand at the failure; only `sourceFace` survives, and that is the one field that cannot discriminate.
 
-   `M3-CP4c-3-CB21` (BU0–BU9) changes **one** comparison to `>` and adds evidence: the low-side deficit, a
-   **locally** computed fragment count (retained, *not* fatal), and a bridge/orbit census. **Prohibited:** any
-   change to `tracePieceCount`, `add_fragment_orbit`, the `exteriorOrbits` filter, `is_terminal_slit`, the face
-   walk, the rotation system or region drafts; any new fatal condition; any revert of CB12–CB20.
+   `M3-CP4c-3-CB22` (BV0–BV9) is **diagnostic-only**: publish `seedState ∈ {None, Multiple}`, the component id,
+   its bounded membership, and bounded boundary-edge rows with every skip reason — including the silent
+   `edgeOrbitEvidence`-not-unique skip. **Prohibited:** any semantic change to the predicate, the barrier set, the
+   partition, `seedOrbits`, `edgeOrbitEvidence` or CB21's fragment comparison; `localFragmentCount` stays
+   non-fatal.
 
-   *(Open behind it: the local fragment count is `k+1` only if no two chords cross inside a face. Nothing yet
-   proves non-crossing — `M3-CP4c3-TB18-REV-CAND-01`.)*
+   *(Zero and two-or-more imply opposite corrections — seed an under-seeded component, versus separate one that
+   straddles two regions — which is exactly why no correction is authorized yet.)*
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -404,6 +405,23 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**An error code plus a source locus that two unrelated witnesses both produce is a symptom, not an identity.**
+The torus (0 traces, 72/216/144) and the mechanical witness (12 traces, 152/450/300) both report
+`UncutFaceComponentOrbitSeedNotUnique` at face `(0,1,2)` — because `(0,1,2)` is row 0 of both meshes and the emitter
+reports the first unlabeled face in `std::map` order. The torus case is provably the zero-seed branch (no traces, so
+no labeled face can seed anything); the mechanical case has 70 labeled faces and 6 orbits. Before merging two
+failures by name and locus, ask whether the locus is a property of the defect or of the iteration.
+`LESSONS.md` §4 100.
+
+**A guard that reports "not exactly one" must say which side it fell off.** `seeds == end()` and `size() > 1` are
+opposite defects with opposite corrections, and the emitter distinguishes them internally and then discards the
+distinction. `LESSONS.md` §4 101.
+
+**A witness that exercises none of the disputed behaviour cannot settle it.** All 70 retained mechanical face
+arrangements are non-crossing, which says nothing about crossing arrangements — and `SurfaceCellTracing.cpp` builds
+`TraceIntersection` contact nodes bound to a source face, so crossings are a modelled case in which `k` chords make
+`k + 1 + c` local fragments, not `k+1`. `LESSONS.md` §4 102.
 
 **A diagnostic is reachable only when both its position and its enabling condition hold on the failing path.**
 TB17-REV found the `fragment_reconciliation` record sitting thirty lines *below* the early return that needed it.
@@ -1195,3 +1213,19 @@ The two-ring is constructed in the test file, not a fixture.
   **90°** sharp; `0-1` shared by rows 0/259, `1-102` shared by rows 258/259. It is the corner the failing
   carrier-less incidence binds to.
 - `kFragmentFailureEvidenceLimit = 8` bounds every retained fragment-failure evidence list.
+- The unlabeled-face seeding block is `GlobalTopologyPlan.cpp:1102–1165`. `unlabeledFaces` is built by iterating
+  `topology.faces` (a `std::map`, so **key order**) and keeping every face with no `fragmentOrbits` entry, so the
+  first unlabeled face is normally the lexicographically minimal face key. **`(0,1,2)` is row 0 of the mechanical
+  fixture and row 0 of the torus fixture.**
+- The seeding skip at `:1136–1139` is silent: when a two-owner labeled face has no unique
+  `edgeOrbitEvidence[(face, edge)]` row, the edge contributes no seed and leaves **no trace at all**.
+- `SurfaceCellTracing.cpp` constructs contact nodes at trace intersections bound to a source face
+  (`field_aligned_append_contact_node(candidate, *nextFace)`, `FieldAlignedNetworkEventKind::TraceIntersection`,
+  `contact->sourceFace`). **Chord crossings inside a face are a modelled case**, so `localFragments = k + 1 + c`
+  for `c` interior crossings — `k+1` is only the non-crossing special case.
+- TB19 mechanical census: **70** face rows (all evaluated, all `chordsCrossInside=false`, 18 with `ownerDeficit=1`,
+  none above 1), **26** arc rows, **12** trace rows, all untruncated; total face-walk orbits **6**, exterior **0**,
+  non-exterior **6**; arc 15 `sharesOrbit=true`; trace 1 `terminalSlit=false`.
+- CB21's `TraceFragmentOwnerEvidenceDiagnostic` (`include/directional/geometry/GlobalTopologyPlan.h:299–319`,
+  projected through `RemeshDiagnostics.h:162–180`) is the established production-path census channel; extend it
+  rather than adding a parallel one.

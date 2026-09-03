@@ -26,57 +26,65 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB19-REV` (independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB22` (Code + Build, DIAGNOSTIC-ONLY)
 
-`M3-CP4c-3-TB19-EXEC` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE**. Current runtime report:
-`Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB19-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB19_Independent_Review_Record.md` (**CR0–CR8** discharged, static only).
 
-Immutable semantic/package authority remains CB21 source
-**`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`**, compile run/job
-**`33794307778 / 100778238374`**, artifact **`9908695433`**. TB19 authoritative run/job
-**`33798040003 / 100790444711`** executed selector **384** completely:
+CB21 is **confirmed against BU0-BU9**: 1-365 stay 365/365, ordinal 366 leaves
+`TraceCutFaceFragmentCountMismatch` (the load-bearing discriminator), 367/371/372 move with it, the `(0,1,102)`
+deficit is retained as 1 non-fatally, the census is untruncated, and carried surfaces are unchanged.
+**`M3-CP4c3-TB17-CAND-01` closes.**
 
-- **376 PASS / 8 RED**;
-- accepted ordinals **1–365: 365/365 PASS**;
-- reds **366/367/368/369/370/371/372/374**;
-- exact ledger SHA-256
-  **`e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`**;
-- result/log artifacts **`9910078670 / 9910079341`**;
-- pre/post package byte+mode census **IDENTICAL** at
-  **`c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d`**;
-- ordinal **384 PASS**.
+The new frontier is `UncutFaceComponentOrbitSeedNotUnique` at source face `(0,1,2)`, emitted at
+`GlobalTopologyPlan.cpp:1151-1163` in the block that labels faces no chord touched.
 
-CB21's fragment-owner correction is runtime-proved at its intended surface. Ordinals **366/367/371/372** all move
-past `TraceCutFaceFragmentCountMismatch`; their new terminal frontier is
-`UncutFaceComponentOrbitSeedNotUnique`, source face **`(0,1,2)`**. The retained error does not distinguish zero
-component seeds from multiple component seeds, so new `M3-CP4c3-TB19-CAND-01` is review-owned.
+- **The reported locus is an iteration artifact, and this is proved.** `failure.sourceFace` is the **first
+  unlabeled face in `std::map` key order**. `(0,1,2)` is **row 0 of the mechanical fixture and row 0 of the torus
+  fixture**, and the historical torus stop of the same name reported the identical face. Two unrelated witnesses,
+  same code, same locus.
+- **Zero seeds versus two-or-more is NOT derivable from committed bytes.** Neither the component id, its
+  membership, nor its seed set is retained. Partial evidence favours two-or-more - face `(0,1,2)` neighbours
+  labeled row 259 `(0,1,102)` across edge `0-1`, which the TB18 chord never made a carrier
+  (`incomingCarrier=none`) - but the barrier membership of `0-1` is a product decision not recoverable statically.
+- **The deciding numbers are discarded, sixth instance.** The component id, its membership and `seedOrbits` are all
+  in hand at the failure; only `sourceFace` survives, and it is the one field that cannot discriminate.
+- **The torus stop is a different mechanism.** With **0 traces** no face acquires a chord label, so no edge has a
+  labeled side and every seed set is empty - provably the **zero** branch. The mechanical witness has 70 labeled
+  faces and 6 non-exterior orbits and cannot be that. The candidates are **not merged**.
+- **A universal non-crossing invariant is REFUTED, not merely unproved.** The tracer builds `TraceIntersection`
+  contact nodes bound to a source face, so crossings are a modelled case in which `k` chords make `k + 1 + c`
+  local fragments. The 70/70 non-crossing rows are witness-local sufficiency only, so `localFragmentCount` must
+  stay non-fatal.
+- **371/372 remain deferred with a standing trigger:** both abort in a fixture constructor that will stop throwing
+  once the production plan builds, so a test-only accessor now risks landing a surface the next correction makes
+  redundant. Authorize the decoupling at the first review that either closes the mechanical production frontier or
+  finds the frontier unmoved across two consecutive TB turns.
 
-The mechanical witness keeps the intended observational evidence: face `(0,1,102)` has owner/expected/deficit
-`1/2/1`, local fragment count 2, one non-crossing shared chord trace 1 / arc 15 / segment 4 / orbits `0/0`.
-The full untruncated census has 70 face rows, 26 arc rows, 12 trace rows; arc 15 `sharesOrbit=true`, trace 1
-`terminalSlit=false`, total/exterior/non-exterior orbit counts `6/0/6`. Carried 368/369/370/374 terminal semantics
-are unchanged from TB18.
+368/369/370/374 are unchanged under their existing owners. **There is still no vertex-30 discriminator.**
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB19-REV`** under
-`Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md`. Review only; no runtime, compile, package, product/test/
-fixture/selector mutation, and no successor CB before the review adjudicates the new frontier.
+Run **`M3-CP4c-3-CB22`** under §10 **BV0–BV9** of
+`Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`. **Diagnostic-only.**
 
-- [ ] Re-verify immutable TB19 authority, accepted 365/365, selector 384, ledger, and package census.
-- [ ] Determine whether the `(0,1,2)` component seed set is statically provable as zero, greater than one, or still
-      unobservable; do not infer it from the global six-orbit census.
-- [ ] Compare the historical torus same-code stop without assuming the same root cause.
-- [ ] Adjudicate `M3-CP4c3-TB18-REV-CAND-01`: 70/70 retained mechanical face arrangements are non-crossing, but
-      witness-local observation is not automatically a universal invariant.
-- [ ] Reassess 371/372 shared-fixture coupling now that the fragment mismatch is cleared.
-- [ ] Keep 368/369/370/374 under existing owners unless static evidence proves semantic movement.
-- [ ] Update regression accounting, `ORIENTATION.md`, and perform mandatory REVIEW-turn document consolidation.
-- [ ] Freeze exactly one smallest justified successor plan only after the review measures are discharged.
+- [ ] **BV0** — selector 384 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
+- [ ] **BV1** — component id, seed count, and an explicit **`seedState in {None, Multiple}`** on the error.
+- [ ] **BV2** — the failing component's face count and bounded membership, with a truncation marker.
+- [ ] **BV3** — bounded boundary-edge rows: edge key, labeled-side flag, owner count, barrier class, and the seed
+      or the exact reason none was contributed — **including the silent `edgeOrbitEvidence` skip at `:1136-1139`**.
+- [ ] **BV4** — publish that `sourceFace` is an iteration-order locus; add the component identity as the
+      discriminating one.
+- [ ] **BV5** — extend the existing `TraceFragmentOwnerEvidenceDiagnostic` census with component rows.
+- [ ] **BV6** — one witness per new field plus an unrelated-error regression witness; append selector 385.
+- [ ] **BV7** — **no semantic change**: the predicate, barrier set, partition, `seedOrbits`, `edgeOrbitEvidence`,
+      the face walk, the rotation system, region drafts and CB21's comparison stay untouched;
+      **`localFragmentCount` stays non-fatal**; no 371/372 decoupling.
+- [ ] **BV8** — audit by assumption; prove 1–365 unaffected by construction.
+- [ ] **BV9** — publish the six `M3-CP4c-3-TB20` discriminators, chiefly that the failure now carries `seedState`.
 
-CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**;
-produced-witness debt **5**; semantic M3 package count **85**.
-
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **85**.
 
 ## Carried forward from M1
 
