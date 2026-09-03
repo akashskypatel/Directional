@@ -1,0 +1,3 @@
+.agents/connector-triggers/m3-cp4c-3-cb21-apply.txt
+.agents/connector-triggers/m3-cp4c-3-cb21-compile.txt
+.agents/connector-triggers/m3-cp4c-3-cb21-source-snapshot.txt
