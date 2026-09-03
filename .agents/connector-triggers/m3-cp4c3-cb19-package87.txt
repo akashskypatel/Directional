@@ -6,3 +6,4 @@ package=87
 selected_gate=NONE
 gate_execution_authorized=false
 runtimeExecution=false
+retry=accepted-selector-path-correction
