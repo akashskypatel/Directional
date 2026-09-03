@@ -1,0 +1,4 @@
+source_patch_file_id=1igiho1u5vBHWvwqC19_v7pgw9LvMdbf9
+patch_sha256=94b7b64253b0f9e5166f5cd55d0aa8859e642218242d3f12038488a0fa0358a3
+base_sha=416d75fc6141645309c223ee86c124eb0da77bc9
+caller=.github/workflows/agent-cb20-drive-patch-apply-20260903-0936.yml
