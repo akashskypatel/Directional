@@ -1,3 +1,41 @@
+## 2026-09-03 — `M3-CP4c-3-CB21`: low-side fragment-owner equality corrected; selector 384 frozen; eight-target GMP compile green
+
+Code + Build product-correction turn under TB18-REV **BU0–BU9**. Final semantic source
+**`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`**; report:
+`Architecture_M3_CP4c3_CB21_Code_Build_Report.md`. No Directional runtime was executed.
+
+The sole semantic relaxation changes the directly-cut-face validation from `ownerCount != expected` to
+**`ownerCount > expected`**. High-side owner overcount remains fatal with the CB20 payload unchanged; low-side
+owner deficit becomes observational evidence. CB21 additionally retains exact local triangle-chord arrangement
+information, shared-owner chord incidences, bounded per-arc shared-orbit census, per-trace terminal-slit census, and
+global total/exterior/non-exterior orbit counts through the production path. Frozen BU7 surfaces and the accepted
+365 boundary were not changed.
+
+Selector **384** is frozen at
+`c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`; its first 383 lines reproduce selector
+383 `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c` exactly. The sole appended identity is
+`GlobalTopologyPlan.FragmentOwnerDeficitPublishesCorrectionEvidenceThroughProductionPath`.
+
+Initial compile-only run/job `33793819402 / 100776654267` failed before runtime on two local compile defects:
+unqualified `SourceFaceRecord` helper signatures and default construction of an evidence row containing a
+non-default-constructible `SourceFaceTopologyKey`. A surgical one-file **7-insertion / 6-deletion** repair changed
+no semantic predicate or evidence contract. Final run/job **`33794307778 / 100778238374`** then compiled and linked
+all eight standard targets with GMP/GMPXX, preflight/build exit 0, clean source state, 28-entry manifest, and
+`runtimeExecution=false`.
+
+Immutable result artifact **`9908695433`** has ZIP SHA-256
+`efb65c06cc6d73d233ee271a31fc82705d2575da313fb7f18b389a5196441fc5`; packaged source archive SHA-256
+`8b774500559e5cc9cd7afece39a68add2065a9812a0d15a40f39cf7f9aafd8e7`. Compile log artifact **`9908695835`**
+hashes to `f334db6b4bf254c3e2eb84f0a65cb0f6a21fc56285b3677a037cb20881b8ad3f`.
+
+Accepted runtime authority remains **365/365** and TB18/selector383 remains current runtime evidence at **375 PASS /
+8 RED**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**. The successful package advances
+semantic M3 package count **84 → 85**. CP4c-3 remains **OPEN**.
+
+Exact next turn: artifact-only **`M3-CP4c-3-TB19-EXEC`** under
+`Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md`, using only immutable artifact `9908695433` and
+selector 384.
+
 ## 2026-09-03 — `M3-CP4c-3-TB18-REV`: fragment equality falsified with the shared owner proved legitimate; product correction authorized; REVIEW-turn document consolidation rule adopted
 
 Independent review of immutable TB18 evidence. Record:

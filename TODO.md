@@ -26,67 +26,54 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB21` (Code + Build, PRODUCT CORRECTION)
+## Current focus — `M3-CP4c-3-TB19-EXEC` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB18-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` (**BT0–BT9** discharged, static only).
+`M3-CP4c-3-CB21` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE**. Record:
+`Architecture_M3_CP4c3_CB21_Code_Build_Report.md`.
 
-TB18 measured the deciding values through CB20's diagnostic projection. Ordinal 366 is unmoved -
-`TraceCutFaceFragmentCountMismatch` at `(0,1,102)` - which is itself the proof that CB20's BS7 boundary held.
+CB21 final semantic source is **`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`**. Authoritative compile-only run/job
+**`33794307778 / 100778238374`** built all eight standard targets with GMP/GMPXX and `runtimeExecution=false`.
+Immutable result artifact **`9908695433`** has ZIP SHA-256
+`efb65c06cc6d73d233ee271a31fc82705d2575da313fb7f18b389a5196441fc5`; packaged source archive SHA-256
+`8b774500559e5cc9cd7afece39a68add2065a9812a0d15a40f39cf7f9aafd8e7`. Compile log artifact `9908695835` hashes
+to `f334db6b4bf254c3e2eb84f0a65cb0f6a21fc56285b3677a037cb20881b8ad3f`.
 
-- **The mechanism is measured and singular.** actual **1** / `k` **1** / expected **2**, low by exactly one; one
-  untruncated incidence `trace=1 arc=15 segment=4`, `incomingCarrier=none`, `outgoingCarrier=0-102`,
-  `forwardOrbit=0`, `reverseOrbit=0`, neither exterior-dropped; three edge rows each `[0]`. Exterior filtering and
-  both high-side mechanisms are **eliminated**; **shared global orbit ownership** is selected.
-- **The incidence is a vertex transit through a regular vertex.** Segment 4 is not segment 0, so not the trace's
-  port origin: one of CB19's 48 vertex transits. The carrier-less branch binds the corner opposite the outgoing
-  carrier - **vertex 1**, degree 6, angle defect 0, two 90-degree sharp edges. The chord separates the triangle
-  **locally**.
-- **Shared ownership is legitimate, not a merge defect.** The face walk is the canonical rotation-system face
-  permutation, validated total; its orbits are its cycles, so it cannot fuse darts a valid rotation system
-  separates. Two darts of one arc share an orbit exactly when the arc is a bridge or non-separating - both
-  legitimate. `|owners| = k+1` is therefore **not an invariant of any valid input**; the sound relation is
-  `|owners| <= localFragmentCount`.
-- **The correction is safe by construction.** The validation loop is pure - it returns a failure or falls through
-  and mutates nothing. `size > expected` holds on a strict subset of `size != expected`, so the failing set only
-  shrinks and every previously-passing input is byte-identical. 1-365 are 365/365, so the accepted boundary cannot
-  move. Downstream, `fragmentOrbits[face]` registers face-to-region membership only, correct under shared ownership.
-- **BS9-5 is RETIRED.** The missing `fragment_reconciliation` line sits behind
-  `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`, which the artifact-only runner never sets, and it prints exactly the
-  three values BS1 already retained (1/1/2). It asked for a text duplicate of typed evidence. Nothing is owed and
-  BS4 is closed as correctly implemented.
+CB21 disposition:
 
-`M3-CP4c3-TB17-CAND-01` transitions to **owner proved / correction authorized**. New
-`M3-CP4c3-TB18-REV-CAND-01`: the local-fragment invariant is `k+1` only if no two chords cross inside a face, which
-is unproved. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 co-reachers, vertex 30 and the
-finalize/contact fall-through are unchanged. **There is still no vertex-30 discriminator.**
+- [x] **BU0** — selector 383 byte-frozen; accepted 365 untouched; eight compile targets green with GMP/GMPXX.
+- [x] **BU1** — sole semantic change `ownerCount != expected` → `ownerCount > expected`; high side remains fatal.
+- [x] **BU2** — low-side deficit/shared-owner chords retained as evidence, never as a mismatch.
+- [x] **BU3** — exact local fragment count and interior chord-crossing evidence retained, non-fatal.
+- [x] **BU4** — bounded per-arc shared-orbit, per-trace terminal-slit, and global orbit census published.
+- [x] **BU5** — production-path evidence witness and byte-identical high-side regression oracle compiled.
+- [x] **BU6** — selector 384 appended exactly one identity; SHA-256
+      `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`; first 383 exact prefix.
+- [x] **BU7** — prohibited semantics/surfaces unchanged by diff audit.
+- [x] **BU8** — safety proof reproduced against the actual diff: pure loop, strictly weaker predicate,
+      observational new computations.
+- [x] **BU9** — TB19 discriminators frozen in
+      `Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB21`** under §11 **BU0–BU9** of
-`Architecture_M3_CP4c3_TB18_Independent_Review_Record.md`. **Product correction — a loosening plus evidence.**
+Run **`M3-CP4c-3-TB19-EXEC`** under
+`Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md` using only immutable artifact `9908695433`.
 
-- [ ] **BU0** — selector 383 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
-- [ ] **BU1** — the only semantic change: `size != expected` becomes `size > expected` at
-      `GlobalTopologyPlan.cpp:777-779`.
-- [ ] **BU2** — retain the low-side deficit and the shared-owner chords as evidence, never as a failure.
-- [ ] **BU3** — compute the local fragment count **locally** and retain it, **non-fatal**; retain chord-crossing
-      evidence.
-- [ ] **BU4** — publish the bridge / orbit census: per-arc shared-dart flag, per-trace terminal-slit flag, and the
-      global total / exterior / non-exterior orbit counts.
-- [ ] **BU5** — one witness per new field, a witness that one chord with one shared owner now passes, and a
-      byte-identical high-side regression witness.
-- [ ] **BU6** — append selector 384 with only the BU5 identities; 383 stays an exact prefix.
-- [ ] **BU7** — **prohibited:** `tracePieceCount`, `add_fragment_orbit`, the `exteriorOrbits` filter,
-      `is_terminal_slit`, `resolve_carrierless_corner_binding`, `build_fragment_corner_incidence`, the face walk,
-      the rotation system and region drafts stay untouched; no new fatal condition; no CB12–CB20 revert. **BS9-5 is
-      retired — do not restore it.**
-- [ ] **BU8** — audit by assumption; reproduce the safety proof against the actual diff.
-- [ ] **BU9** — publish the six `M3-CP4c-3-TB19` discriminators, chiefly that **ordinal 366 no longer reds at
-      `TraceCutFaceFragmentCountMismatch`**.
+- [ ] Verify the artifact ZIP, all 28 manifest entries, source commit, zero compile exits, GMP/GMPXX evidence, and
+      clean packaged source state.
+- [ ] Verify selector 384 has 384 identities, correct full hash, selector 383 exact prefix, and accepted 365 prefix.
+- [ ] Record package byte+mode census, then execute all **384 identities in order, one fresh process each**.
+- [ ] Confirm ordinals **1–365 remain 365/365 PASS**.
+- [ ] Measure whether **366** and co-reachers **367/371/372** move past `TraceCutFaceFragmentCountMismatch`.
+- [ ] Retain face `(0,1,102)` deficit/shared-chord evidence and the arc/trace/orbit census.
+- [ ] Compare carried surfaces **368/369/370/374** against TB18 without forcing outcomes.
+- [ ] Execute ordinal **384** exactly once and record its production-path evidence result.
+- [ ] Recompute postflight byte+mode census and require exact equality; publish exact ledger/log hashes.
+- [ ] Update `Regression_Root_Cause_Tracker.md` for every observed runtime regression/candidate before handoff.
 
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **84**.
+Current immutable runtime authority is still **TB18 / selector 383**, **375 PASS / 8 RED**, accepted **365/365**.
+CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness
+debt **5**; semantic M3 package count **85**.
 
 ## Carried forward from M1
 
@@ -123,7 +110,8 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB18/selector383 is current runtime authority** at 375 PASS / 8 RED and accepted 365/365. CB20 diagnostic source `57635e87` remains the semantic/build source. Exact next is independent `M3-CP4c-3-TB18-REV`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB18/selector383 remains current runtime authority** at 375 PASS / 8 RED and accepted 365/365. CB21 semantic source `b00efbd5` is compile green in immutable package `9908695433`; selector 384 is frozen but unexecuted. Exact next: artifact-only **`M3-CP4c-3-TB19-EXEC`**.
+
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -133,8 +121,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — face-fragment orbit/count frontier:** TB18 preserves accepted 365/365 and first-reds at `TraceCutFaceFragmentCountMismatch` on `(0,1,102)`, measuring actual/trace/expected as `1/1/2`. The one chord's forward/reverse orbit ids are both `0` and both exterior-drop flags are false, so this witness is a shared-global-owner collapse. `M3-CP4c-3-TB18-REV` must adjudicate the replacement representation/invariant; TB18 itself authorizes no correction. Vertex 30 and finalize/contact remain separate and untouched.
-- [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. Amendment 15's barrier-cycle and Euler-cut contracts have been unmeasured from TB2 through TB10 for a reason unrelated to either. Corrective is test-only (an atlas-scoped fixture accessor, assertions byte-unchanged); deferred because clearing ordinal 366 unblocks them automatically. `M3-CP4c3-TB10-REV-CAND-01`.
+- [ ] **CP4c-3 criterion C2 — face-fragment orbit/count frontier:** TB18 measured the low-side shared-owner stop at `(0,1,102)` as actual/trace/expected `1/1/2`; TB18-REV proved exact global-owner equality unsound and authorized the one-sided relaxation. CB21 has implemented and compiled that correction at semantic source `b00efbd5` with retained local-fragment/shared-owner/orbit evidence. **TB19-EXEC must now prove the runtime frontier moves past `TraceCutFaceFragmentCountMismatch` without disturbing accepted 1–365.** Vertex 30 and finalize/contact remain separate and untouched.
+- [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. Amendment 15's barrier-cycle and Euler-cut contracts have been unmeasured for a reason unrelated to either. Corrective remains test-only (an atlas-scoped fixture accessor, assertions byte-unchanged), but **TB19 first measures whether CB21 clears their shared fragment-owner stop and records each later frontier independently.** `M3-CP4c3-TB10-REV-CAND-01`.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
@@ -160,4 +148,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **84**. **TB18/selector383 is current runtime authority: 375 PASS / 8 RED, accepted 365/365, first red 366 `TraceCutFaceFragmentCountMismatch` at `(0,1,102)` with measured actual/trace/expected `1/1/2`.** Exact next is independent `M3-CP4c-3-TB18-REV`. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **85**. **TB18/selector383 remains current runtime authority: 375 PASS / 8 RED, accepted 365/365. CB21 source `b00efbd5` / package `9908695433` is compile green and runtime-unexecuted; selector 384 is frozen.** Exact next is artifact-only `M3-CP4c-3-TB19-EXEC`. PR #8 remains open, draft, and unmerged.
