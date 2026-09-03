@@ -1,7 +1,0 @@
-# M3-CP4c-3-CB22 temporary-state cleanup inventory
-.agents/connector-triggers/source-snapshot/start-20260903-1325-e5f10cc4.txt
-.agents/connector-triggers/cb22/drive-apply-20260903.txt
-.agents/connector-triggers/cb22/compile-20260903.txt
-.agents/connector-triggers/cb22/compile-correction-apply-20260903.txt
-.agents/connector-triggers/cb22/compile-r1-20260903.txt
-.agents/connector-triggers/cb22/closeout-apply-20260903.txt
