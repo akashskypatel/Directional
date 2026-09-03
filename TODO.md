@@ -26,57 +26,33 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB16` (Artifact-only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB16-REV` (Independent REVIEW + PLAN, STATIC ONLY)
 
-`M3-CP4c-3-CB18` is **COMPLETE / BUILD + PACKAGE GREEN / PRODUCT CORRECTION / RUNTIME-FREE** at semantic source
-`a01016ca59314232526c8b1222c96235856ace6d`. It replaces the edge-locus fallback's trace-global
-`trace.sourceVertex` lookup with the current segment's exact far-end vertex support in the selected face — entry
-support for Reverse, exit support for Forward — and makes the fallback corner rank contact-relative:
-`1 + 2·((corner + 2 − contactIndex) mod 3)`. The two-carrier branch and all excluded topology/collision paths remain
-unchanged; a genuinely unbindable far end still fails typed as `SourceVertexFallbackUnbound`.
+`M3-CP4c-3-TB16` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / V47 RE-PROVED** on immutable package **86** / selector **382**.
 
-BP5/BP6 compile-time witnesses cover the previously succeeding first-segment singularity case, contact indices
-`{0,1,2}`, Reverse vertex-entry recovery, unbindable negative behavior, carrier/fallback ordering, and the ordinary
-two-carrier regression. Selector **381 remains byte-frozen** at
-`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`; selector **382** appends exactly
-`GlobalTopologyPlan.EdgeLocusSecondaryRankUsesSegmentFarEndSupportAndContactRelativeOrdering`, SHA-256
-`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`.
-
-Authoritative eight-target GMP/GMPXX compile `33706268720 / 100495948544` is GREEN. Result/log artifacts are
-`9875350611` (`cc2935716ecf7022fda6c120f0ef6313e60df553d34d7354b587e47ee9663d3a`) / `9875350974`
-(`ea39d44a9196e47934cb3ff626633c3031a2c607c542ef5e34298cc6665328f5`). Immutable package **86** is GREEN on
-`33707299159 / 100499114323`: artifact `9875664940`
-(`8c98b134a527db87b83852de175288a320a158405d22867d95ba986cf68cbef8`), log `9875665222`
-(`fe86b4f391d731eb629461e1d79cb3b9543f1bab968fa922c1f8a0deb9565d28`), inner tar
-`125d2851164d7af62f90a3ff6ad8f360076a651c8575b655acac59fb50b9e9e7`, packaged source archive
-`c96446f169959c56f3c536c7fe711df6f7741d679cbd1413cc7c464838a659e8`. Package verification is **57/57**,
-27 fixtures, six executable test/benchmark binaries with preserved executable modes, `runtimeExecution=false`,
-`packageRepair=false`. The first package attempts were orchestration-only failures; the successful caller restored the
-mode-preserving direct artifact-ZIP extraction already proven by package 85. No Directional binary ran.
+- Authoritative run/job: `33709721203 / 100506452813`; result/log artifacts `9876548209 / 9876548556`.
+- Corrected immutable ledger: **374 PASS / 8 RED**; ordinals **1-365 = 365/365 PASS**; true reds `366,367,368,369,370,371,372,374`.
+- The temporary exact-`[ OK ]` parser repeated TB14's reporting-only defect. Exit codes + terminal logs reconstruct the ledger at SHA-256 `7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`; **no rerun**.
+- Ordinal 366 clears `EdgeTraceSecondaryRankInvalid` and moves downstream to **`RegionTraceSourcePortCarrierNotAdmissible`**, source face **`(9,11,17)`**.
+- Selector **380 PASS**, 381 PASS, 382 PASS. Mechanical attempt-0 rotation now publishes completely; with unchanged network incidence and TB12's retained five-ray census, the v47 collision/distinct-rank obligation is discharged. `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01`, and `M3-CP4c3-TB15-CAND-01` close.
+- New **`M3-CP4c3-TB16-CAND-01`** owns the region-building frontier. Static source shows the carrier-less region branch searches the current face for trace-global `trace.sourceVertex`, but review must prove whether that assumption is invalid here rather than importing CB18's answer.
+- Package pre/post byte+mode census is identical at `606d193e3641ec68114c5616d41bd0e8e43207756f79ae50356ce973c1be10db`. No benchmark/build/repair/mutation occurred.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB16`** artifact-only on immutable package **86** / selector **382**. Do not rebuild, relink, repair,
-patch, regenerate, mutate package contents, or change selectors/fixtures. Extract with archived executable modes
-preserved and run each selector identity in a fresh process. Execute the retained mechanical diagnostic report-only
-with zero gate credit.
+Run **`M3-CP4c-3-TB16-REV`** under **BQ0–BQ8** of `Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md`.
 
-The six frozen BP9 discriminators are:
+- [ ] BQ0 re-establish immutable authority and reporting-only parser disposition; no rerun.
+- [ ] BQ1 prove the sole `RegionTraceSourcePortCarrierNotAdmissible` control path.
+- [ ] BQ2 reconstruct the exact face `(9,11,17)` trace/segment incidence and name every unavailable datum.
+- [ ] BQ3 adjudicate whether carrier-less region incidence is valid source-port, later vertex-transit, or invalid provenance.
+- [ ] BQ4 audit both source-port fallback contracts and all affected currently-succeeding classes.
+- [ ] BQ5 classify owner before prescribing correction; diagnostics-only if evidence is insufficient.
+- [ ] BQ6 preserve accepted 365/365, selector 382, and v47/CB18 closure.
+- [ ] BQ7 keep sphere/saturation/370/371-372/folded-cone/vertex30/finalize-contact separately owned.
+- [ ] BQ8 freeze exactly one bounded successor; **do not execute it during review**.
 
-- [ ] **TB16-1** — ordinals **1–365 remain 365/365 PASS**; this is the load-bearing accepted-boundary safety proof.
-- [ ] **TB16-2** — ordinal **366** no longer reports `EdgeTraceSecondaryRankInvalid` at edge `25-31`.
-- [ ] **TB16-3** — any remaining rotation red has a different typed branch, locus, or incidence.
-- [ ] **TB16-4** — re-prove the **v47 five-ray conjunction**: selector 380 passes with the full five-ray rotation and
-      distinct former-pair secondary ranks.
-- [ ] **TB16-5** — close `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01`, and
-      `M3-CP4c3-TB15-CAND-01` only if TB16-1, TB16-2, and TB16-4 all hold.
-- [ ] **TB16-6** — certification may now reach the face walk; report non-disc/admissible counters only if actually
-      observed. **No vertex-30 discriminator is authorized.**
-
-A semantic red routes to REVIEW + PLAN; an orchestration failure is repaired as orchestration only. CP4c-3 remains
-**OPEN** until TB16 is green. Accepted authority remains **365/365** from TB15; stable accounting remains **44 events /
-14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count advances to
-**83**.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **83**.
 
 ## Carried forward from M1
 
@@ -113,7 +89,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB15/package85 is current runtime authority at accepted 365/365 / first red 366 `EdgeTraceSecondaryRankInvalid -> SourceVertexFallbackUnbound` at edge 25-31 / face `(25,30,31)`. CB18/package86 is current runtime-free build/package authority at selector 382. Exact next is artifact-only `M3-CP4c-3-TB16`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB16/package86 is current runtime authority** at 374 PASS / 8 RED, accepted 365/365, first red 366 `RegionTraceSourcePortCarrierNotAdmissible` at face `(9,11,17)`. Exact next is static `M3-CP4c-3-TB16-REV` under BQ0-BQ8.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -123,7 +99,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — edge-locus source-vertex fallback frontier:** TB15 re-proves accepted 365/365 and keeps first red 366 at edge `25-31` / face `(25,30,31)` / attempt 0 / zero cut edges, typed `SourceVertexFallbackUnbound`. TB15-REV adjudicated the incidence as valid and the fallback datum/rank namespace as wrong. CB18 has implemented and compile-packaged the bounded correction under BP0-BP9; **TB16 now owns the runtime discrimination**. The load-bearing checks are accepted 1-365 staying 365/365, ordinal 366 clearing the edge-25-31 edge-rank stop, and the v47 full five-ray/distinct-rank production proof. Selector 381 PASS and compile-only selector 382 are insufficient without TB16 runtime. Vertex 30 and finalize/contact remain separate and untouched.
+- [ ] **CP4c-3 criterion C2 — region source-port carrier frontier:** TB16 proves accepted 365/365, clears the edge-25-31 `EdgeTraceSecondaryRankInvalid`, passes selectors 380/381/382, and discharges the v47 five-ray/distinct-rank obligation. The new first red 366 is `RegionTraceSourcePortCarrierNotAdmissible` at source face `(9,11,17)` after complete attempt-0 rotation. `M3-CP4c3-TB16-CAND-01` owns static adjudication of the carrier-less region segment; no correction is authorized before BQ0-BQ8 review. Vertex 30 and finalize/contact remain separate and untouched.
 - [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. Amendment 15's barrier-cycle and Euler-cut contracts have been unmeasured from TB2 through TB10 for a reason unrelated to either. Corrective is test-only (an atlas-scoped fixture accessor, assertions byte-unchanged); deferred because clearing ordinal 366 unblocks them automatically. `M3-CP4c3-TB10-REV-CAND-01`.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
@@ -150,4 +126,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **83**. TB15/package85 remains current runtime authority: **372 PASS / 9 RED**, accepted **365/365**, first red 366 `SourceVertexFallbackUnbound` at edge 25-31 / face `(25,30,31)`. CB18/package86 is current immutable build/package authority at selector **382** and has executed no Directional runtime. Exact next is artifact-only `M3-CP4c-3-TB16` on package 86 / selector 382. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **83**. **TB16/package86 is current runtime authority: 374 PASS / 8 RED, accepted 365/365, first red 366 `RegionTraceSourcePortCarrierNotAdmissible` at face `(9,11,17)`.** Exact next is static `M3-CP4c-3-TB16-REV` under BQ0-BQ8. PR #8 remains open, draft, and unmerged.

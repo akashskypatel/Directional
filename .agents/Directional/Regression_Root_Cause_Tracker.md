@@ -1,4 +1,28 @@
-## M3-CP4c3-TB15-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-TB16 — region-building frontier after complete mechanical rotation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package 86 / source `a01016ca59314232526c8b1222c96235856ace6d` / selector 382; run/job `33709721203 / 100506452813`; result/log artifacts `9876548209 / 9876548556`.
+- **Corrected gate:** **374 PASS / 8 RED**, accepted 1-365 **365/365 PASS**, first red 366. True reds are 366/367/368/369/370/371/372/374; selectors 380/381/382 PASS.
+- **New frontier:** ordinal 366 reaches region construction and rejects `RegionTraceSourcePortCarrierNotAdmissible` at source face `(9,11,17)`, with no old edge-25-31 rotation failure.
+- **v47 closure:** complete attempt-0 rotation now publishes; unchanged network incidence plus TB12's retained five-ray census and selector-382 collision-free rank ordering discharge the inherited v47 obligation. TB11-CAND-01, TB12-REV-CAND-01 and TB15-CAND-01 close.
+- **Postflight:** package census identical at `606d193e3641ec68114c5616d41bd0e8e43207756f79ae50356ce973c1be10db`; no build/repair/mutation/benchmark.
+- **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **83**. Exact owner: `M3-CP4c-3-TB16-REV` BQ0-BQ8.
+
+## M3-CP4c3-TB16-CAND-01 — carrier-less region trace segment rejected as source-port incidence — **ACTIVE / GATING / OWNER UNADJUDICATED / NON-STABLE**
+
+- Runtime locus: `RegionTraceSourcePortCarrierNotAdmissible`, source face `(9,11,17)`, after complete attempt-0 rotation.
+- Static emitter: the region-fragment/orbit-evidence carrier-less branch searches the current face corners for trace-global `trace->sourceVertex` and requires the outgoing carrier to follow that corner.
+- Semantic owner is **not yet decided**. Review must prove whether this is a valid later vertex-transit segment, a genuine first-segment source-port contract, invalid producer provenance, or insufficiently instrumented evidence.
+- Owner: `M3-CP4c-3-TB16-REV` BQ1-BQ5; no product patch before adjudication.
+- Accounting: **+0/+0**, totals **44 / 14 / 30**.
+
+## M3-CP4c3-TB16-ORCH-01 — exact `[ OK ]` line parser mislabeled completed GoogleTest processes — **RESOLVED / REPORTING ORCHESTRATION / NON-STABLE**
+
+- Same reporting shape as resolved TB14-ORCH-02: timed GoogleTest success lines are not exact-equal to `[       OK ] <identity>`.
+- Selection and each process completed organically; exit codes and terminal logs were captured before summary parsing. Reconstructed immutable ledger SHA-256 `7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd` gives 374 PASS / 8 RED.
+- No semantic rerun, package repair, or mutation is required. Future temporary TB runners must match the success prefix/timing suffix correctly or use process exit plus exact selected-test evidence.
+- Accounting: control/reporting only, **+0/+0**.
+
+## M3-CP4c3-TB15-REV - independent review adjudication - **PRIOR REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`, measures **BO0-BO8** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
@@ -38,7 +62,7 @@
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
   remain **44 / 14 / 30**, debt **5**, packages **82**.
 
-## M3-CP4c3-TB15-CAND-01 - edge-locus fallback binds the trace's origin vertex, and ranks corners absolutely - **ACTIVE / GATING / PRODUCT / NON-STABLE**
+## M3-CP4c3-TB15-CAND-01 - edge-locus fallback binds the trace's origin vertex, and ranks corners absolutely - **CLOSED / RUNTIME PROVED AT TB16 / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB15-REV`** from TB15's retained incidence plus static source authority.
 - **Two defects in one helper.** (a) The fallback searches the ray's face for `trace.sourceVertex` - trace-global
@@ -60,7 +84,7 @@
   `SourceVertexFallbackUnbound` with the complete incidence and a 3-ray untruncated census. Superseded as an owner
   by `M3-CP4c3-TB15-CAND-01`.
 
-## M3-CP4c3-TB15 — exact edge-locus branch measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
+## M3-CP4c3-TB15 — exact edge-locus branch measured — **PRIOR RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** immutable package **85** / source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4`, selector **381**; run/job `33700074471 / 100477303760`; result/log artifacts `9873244271` / `9873244582` with SHA-256 `4bf9cbbf415aecf42f08f6840890e7e21dfd18899cfec863f4984ddab618493a` / `243d8867a5a2807d329d2945184ca4999622ed1ae2129fbe30026d2c40919c46`.
 - **Gate:** 381 fresh processes, **372 PASS / 9 RED**; accepted 1-365 **365/365 PASS**; first red 366. Selector 381 typed-production witness PASS; selector 380 RED; retained non-gating mechanical diagnostic RED with zero gate credit.
@@ -71,7 +95,7 @@
 - **Postflight:** 58-file byte/mode census identical before/after at `3235eb993863ba4e4eaa88e83e46d6c4663eb5ebb6c2b4f3990ab6d1a8af6295`; no benchmark/configure/compile/relink/repair/discovery/source/test/fixture/selector mutation.
 - **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **82**. Exact owner: independent `M3-CP4c-3-TB15-REV` BO0-BO8.
 
-## M3-CP4c3-TB15-CAND-01 - source-vertex fallback cannot bind at mechanical contact edge 25-31 - **ACTIVE / GATING / BRANCH DISCRIMINATED / NON-STABLE**
+## M3-CP4c3-TB15-CAND-01 - source-vertex fallback cannot bind at mechanical contact edge 25-31 - **CLOSED / RUNTIME PROVED AT TB16 / NON-STABLE**
 
 - **Runtime discrimination:** TB15 excludes the TB14-REV opposite-carrier alternative and proves the actual production branch is `SourceVertexFallbackUnbound`.
 - **Exact incidence:** source vertex 35; arc 19 / trace 5 / Reverse / segments `[0,5)`; source face `(25,30,31)`; incoming carrier none; outgoing carrier `25-31`; contact index 2; other carrier none; complete three-ray untruncated census.
@@ -364,7 +388,7 @@
 - **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
   debt **5**, packages **78**.
 
-## M3-CP4c3-TB12-REV-CAND-01 - vertex-locus ray rank is taken from the ray's origin namespace - **PARTIALLY RUNTIME DISCRIMINATED / BLOCKED BY EARLIER NEW RED / GATING / PRODUCT / NON-STABLE**
+## M3-CP4c3-TB12-REV-CAND-01 - vertex-locus ray rank is taken from the ray's origin namespace - **CLOSED / RUNTIME PROVED AT TB16 / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB12-REV`** from static derivation over TB12's retained runtime operands.
 - **Mechanism.** `RayOrderKey::secondary` is the designated within-wedge rank at a vertex locus, but is assigned
@@ -382,7 +406,7 @@
 - **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
   **44 / 14 / 30**, debt **5**, packages **80**.
 
-## M3-CP4c3-TB11-CAND-01 - vertex-47 distinct-ray same-sector collision during initial certification - **ACTIVE / GATING / ROOT CAUSE PROVED AT TB12-REV / NON-STABLE**
+## M3-CP4c3-TB11-CAND-01 - vertex-47 distinct-ray same-sector collision during initial certification - **CLOSED / RUNTIME PROVED AT TB16 / NON-STABLE**
 
 - **Adjudicated at `M3-CP4c-3-TB12-REV` as BI2 alternative 2:** both rays are valid, and they collapse because
   `RayOrderKey::secondary` at a vertex locus is the ray's **origin** port ordinal instead of a locus-relative

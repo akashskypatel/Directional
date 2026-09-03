@@ -93,76 +93,53 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB16` — EXACT NEXT / Artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB16-REV` — EXACT NEXT / Independent REVIEW + PLAN, STATIC ONLY
 
-`M3-CP4c-3-CB18` is **COMPLETE / BUILD + PACKAGE GREEN / PRODUCT CORRECTION / RUNTIME-FREE**. Semantic source:
-`a01016ca59314232526c8b1222c96235856ace6d`.
+`M3-CP4c-3-TB16` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / V47 RE-PROVED / NON-STABLE** on immutable package **86** / semantic source `a01016ca59314232526c8b1222c96235856ace6d` / selector **382**.
 
-### CB18 frozen build/package authority
+### TB16 runtime authority
 
-- Product correction: `edge_locus_secondary_rank` now resolves a carrier-less trace ray from the current segment's
-  **far-end vertex support in this face** — entry for Reverse, exit for Forward, via
-  `FieldBoundaryPoint::source_support()` — rather than trace-global `trace.sourceVertex`.
-- Fallback corner rank is contact-relative: `1 + 2·((corner + 2 − contactIndex) mod 3)`. The previous formula is
-  recovered at contact index 2. A genuinely unbindable far end remains typed
-  `SourceVertexFallbackUnbound`. The carrier branch, `trace_ray_face`, `sideRank`, `key.primary`, collision detection,
-  `build_node_loci`, contact-node construction, and vertex-locus path remain untouched.
-- BP5/BP6 witnesses compile the accepted-shape pinning for contact indices 0/1/2, Reverse vertex entry, typed
-  negative behavior, fallback/carrier ordering, and ordinary two-carrier regression. No runtime acceptance is
-  claimed by those compiled witnesses.
-- Selector **381** is byte-frozen at
-  `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`. Selector **382** appends exactly
-  `GlobalTopologyPlan.EdgeLocusSecondaryRankUsesSegmentFarEndSupportAndContactRelativeOrdering`, SHA-256
-  `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`.
-- Eight-target GMP/GMPXX compile: run/job `33706268720 / 100495948544` — GREEN; result artifact `9875350611`
-  (`cc2935716ecf7022fda6c120f0ef6313e60df553d34d7354b587e47ee9663d3a`); log artifact `9875350974`
-  (`ea39d44a9196e47934cb3ff626633c3031a2c607c542ef5e34298cc6665328f5`); `runtimeExecution=false`.
-- Immutable package **86**: run/job `33707299159 / 100499114323` — GREEN; artifact `9875664940`
-  (`8c98b134a527db87b83852de175288a320a158405d22867d95ba986cf68cbef8`); log `9875665222`
-  (`fe86b4f391d731eb629461e1d79cb3b9543f1bab968fa922c1f8a0deb9565d28`); inner tar
-  `125d2851164d7af62f90a3ff6ad8f360076a651c8575b655acac59fb50b9e9e7`; packaged source
-  `c96446f169959c56f3c536c7fe711df6f7741d679cbd1413cc7c464838a659e8`; 57/57 internal manifest, 27 fixtures,
-  six executable binaries with mode 755; `runtimeExecution=false`, `packageRepair=false`.
-- Packaging retry history is orchestration-only. The successful retry uses direct artifact ZIP extraction to preserve
-  executable modes; no package contents were repaired and no Directional runtime executed.
+- run/job `33709721203 / 100506452813`;
+- result artifact `9876548209` (`573f8eacf7de1ac993cfd2a4ef440514e2acb3bd6d0a85f322ac280bfec0b89f`);
+- log artifact `9876548556` (`2d0cd2ab4ff4068293d0a2bb8449d0119fa03014a93cb561575d1da7a55cb75b`);
+- corrected immutable ledger SHA-256 `7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`: **374 PASS / 8 RED**, accepted **365/365**, true reds 366/367/368/369/370/371/372/374;
+- selector 380 PASS, 381 PASS, 382 PASS; retained non-gating mechanical diagnostic RED with zero gate credit;
+- package byte+mode pre/post census identical at `606d193e3641ec68114c5616d41bd0e8e43207756f79ae50356ce973c1be10db`;
+- runtime only: no benchmark/configure/compile/relink/repair/discovery/source/test/fixture/selector mutation.
 
-TB15/package85 remains the current **runtime** authority at 372 PASS / 9 RED, accepted 365/365, first red ordinal 366.
-CB18/package86 is the current **build/package** authority and has no runtime standing. Stable accounting remains
-**44 events / 14 categories / 30 recurrences**, debt **5**, semantic package count **83**. CP4c-3 remains OPEN.
+The temporary runner repeated TB14's exact-`[ OK ]` parser bug and mislabeled timed GoogleTest success lines in generated summary fields. Immutable exit codes and terminal logs precede that parser and reconstruct the authoritative ledger without a rerun. `M3-CP4c3-TB16-ORCH-01` is resolved reporting orchestration only.
 
-### TB16 frozen execution/discriminators
+### Current semantic frontier
 
-Consume immutable package **86** directly. No configure, compile, relink, package repair, fixture/selector/source
-mutation, generated discovery, or replacement packaging is authorized. Preserve archived executable modes during
-extraction. Run selector **382** one identity per fresh process and the retained
-`GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` diagnostic report-only with zero gate credit.
-Postflight must prove package bytes/modes unchanged.
+Ordinal 366 **clears the entire CB18 edge-locus rotation frontier**. It no longer reports `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid` at edge `25-31`. Mechanical attempt-0 rotation publishes completely and region construction now fails at:
 
-1. Ordinals **1–365 = 365/365 PASS**. This is the load-bearing accepted-boundary safety proof for CB18.
-2. Ordinal **366** no longer reports `EdgeTraceSecondaryRankInvalid` at source edge `25-31`.
-3. Any remaining rotation red has a different typed branch, locus, or incidence.
-4. Re-prove the **v47 conjunction**: selector 380 passes with the full five-ray rotation and distinct secondary ranks
-   for the former colliding pair.
-5. `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01`, and `M3-CP4c3-TB15-CAND-01` close only if 1, 2, and 4
-   all hold.
-6. Certification may now reach the face walk; report non-disc/admissible counters only when actually observed.
+`RegionTraceSourcePortCarrierNotAdmissible`, source face **`(9,11,17)`**, `cutCandidateCount=0`.
 
-**No vertex-30 discriminator is authorized.** A semantic red routes to REVIEW + PLAN. An orchestration failure is
-repaired only as orchestration.
+CB18's accepted-boundary safety is demonstrated by 365/365. Selector 382 passes. The v47 obligation is discharged by the conjunction of unchanged network incidence/TB12's retained five-ray census, complete attempt-0 rotation publication, and selector-382 collision-free contact-relative local ordering. `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01`, and `M3-CP4c3-TB15-CAND-01` are **CLOSED / RUNTIME PROVED AT TB16**.
+
+New `M3-CP4c3-TB16-CAND-01` is the sole new gating owner. Static source maps it to the region-fragment orbit-evidence carrier-less branch in `GlobalTopologyPlan.cpp`, which searches the current face for trace-global `trace->sourceVertex`. That resembles CB18's earlier assumption but is **not yet adjudicated**; the region contract may differ. Review must reconstruct the exact face `(9,11,17)` trace/segment incidence before prescribing any correction.
+
+Sphere 368, saturation 369, empty-network 370, 371/372 test coupling, folded-cone 374, vertex 30 and finalize/contact remain independently owned. No vertex-30 discriminator.
+
+### Frozen review measures
+
+Run **BQ0–BQ8** from `Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md`: re-establish immutable authority; prove the new emitter/control path; reconstruct the exact trace segment; adjudicate semantic validity of the carrier-less region incidence; audit both source-port fallback contracts; classify owner before correction; preserve v47/CB18 closure; keep carried surfaces separate; freeze exactly one bounded successor. **No runtime, compile, package, or source/test/fixture/selector mutation in the review turn.**
+
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, debt **5**, semantic package count **83**. CP4c-3 remains OPEN.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent TEST + BENCHMARK guidance
+- turn-based-coding-agent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` §9 — frozen BP9 TB16 discriminators.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` — current runtime baseline.
-3. `.agents/Directional/M3_CP4c_Consolidated_Record.md` §4 — current CB18/package-86 build/package authority and prior lineage.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-5. Immutable package 86 artifact `9875664940`; do not rebuild from source.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during the REVIEW turn.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB16_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md` — frozen BQ0-BQ8 review contract.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` §§4-7/9 — CB18 semantic rationale and preserved v47 obligation.
+4. `.agents/Directional/M3_CP4c_Consolidated_Record.md` §4, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+5. Semantic source `a01016ca...`, especially `src/geometry/GlobalTopologyPlan.cpp` around the region trace carrier-less branch. Do not rebuild or rerun package 86.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
