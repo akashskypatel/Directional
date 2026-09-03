@@ -44,6 +44,6 @@ jobs:
       patch_sha256: 539ecbbe783f3e219ddfe0dea6847e241d05ea5347da57ca8e8e18db75512fdf
       base_sha: 93b1e159cafa6fe70ae1ed9e36b231abf4e82d8b
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: M3-CP4c-3-TB15: install artifact-only runner payload
+      commit_message: "M3-CP4c-3-TB15: install artifact-only runner payload"
       retention_days: 14
     secrets: inherit
