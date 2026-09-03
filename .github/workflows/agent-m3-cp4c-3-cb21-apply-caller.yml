@@ -1,0 +1,47 @@
+name: Agent M3 CP4c 3 CB21 Apply Caller
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c-3-cb21-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c-3-cb21-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c-3-cb21-apply-caller.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c-3-cb21-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1FTdwn8yLgcjMKBqPE3y2vwGMHFHffEu9
+      patch_sha256: 'ababa42f4bb18882afbb7c5a70905a0596eb9437194a980fe69a704bafb6a082'
+      base_sha: 5d89d14ddea61862879d6569a4c00eb2e0711196
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'fix: correct CP4c fragment-owner validation'
+    secrets: inherit
