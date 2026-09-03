@@ -38,10 +38,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1wiDvf3dEXB5CR-lZM1nIYU5mMnvNANqD
-      patch_sha256: 7f55a0df53a4e1a620547fb856849587b2816b9db732894b212260288ed54208
-      base_sha: 7426df924be2c87648b1e70e0069bb6363f38466
+      file_id: 1FiMBR704ydqN5SXSAYhxu2orNF7g2mPI
+      patch_sha256: fb8247cade473e227128963d5d47b14dd8972da7e8e7c7f11f26ebe084e908e4
+      base_sha: a01016ca59314232526c8b1222c96235856ace6d
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3 CP4c-3 CB18: correct edge-locus segment endpoint rank"
+      commit_message: "M3 CP4c-3 CB18: close out build package and hand off TB16"
       retention_days: 14
     secrets: inherit
