@@ -27,18 +27,18 @@ jobs:
     if: needs.workflow-schema-validation.outputs.valid == 'true'
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1LJPl5E1Bc5MdpJWX3GQPcbDVnp93KoPo
-      patch_sha256: 4395513e9d162dcef833964d00d76042651504a25f84579ea21578738154c3f8
-      base_sha: ac0b95b9cbed21007c2e4acd474c5e7c92cf4563
+      file_id: 1JRyH-TnXAWgYG-DDMpTkRWrQ_4HlzUXk
+      patch_sha256: 15ac5c71b4eab448ba1de2f8e0f9d58b4afbae787c8c07b03236afe2784b70df
+      base_sha: d098e45c841cfac2c2b47796560797f54ad71e89
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB19: fix trace provenance declaration visibility"
+      commit_message: "M3-CP4c-3-CB19: match trace provenance enum underlying type"
     secrets: inherit
 
   observe:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c3-cb19-drive-apply-r1
+      label: m3-cp4c3-cb19-drive-apply-r2
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
