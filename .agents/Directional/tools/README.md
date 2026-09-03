@@ -16,6 +16,25 @@ Pure standard library, deliberately: `numpy` has been missing on two different r
 
 ---
 
+## `selector_manifest.py`
+
+Regenerates `../Required_Green_Selector_Manifest.md` — the derived index of every byte-frozen
+`Required_Green_Selector_*.txt`: identity count, LF-normalized SHA-256, prefix parent, appended identities and
+role.
+
+```
+python .agents/Directional/tools/selector_manifest.py
+```
+
+Read-only with respect to selector files; it writes only the manifest. Run it after any turn that appends a
+selector.
+
+**Caveats.** A selector filename is **not** an identity count — files 357-384 happen to match, but
+`..._Selector_385.txt` holds 388 identities. Selectors **357 and 358 are off-chain**: 357 is not a prefix of 358
+and 358 is not a prefix of 361, so both hold unique bytes. Hashes are over LF-normalized bytes, matching the
+published values; a Windows checkout stores CRLF, so a raw file hash will not match. The manifest is derived and
+grants no authority — where it disagrees with a selector file, **the selector file wins**.
+
 ## `review_check.py`
 
 ```

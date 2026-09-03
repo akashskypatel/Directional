@@ -1,3 +1,42 @@
+## 2026-09-03 — selector-set audit: manifest added, consolidation explicitly refused
+
+Answered a direct question — should the selector files be cleaned up and consolidated? — by auditing the set rather
+than the policy. **19 CP4c selector files, 7,576 lines, 628 KB.** Verified the whole chain byte-by-byte:
+
+- **357 and 358 are off-chain.** 357 is not a prefix of 358, and 358 is not a prefix of 361 — 358 was a withdrawn
+  branch, not a step. Both hold unique bytes and are not reconstructible from the chain, which is exactly why
+  DEFN-R2 AG0 requires them retained.
+- **361 → 385 is a strict 16-file prefix chain.** Files 361 through 384 hold no unique bytes relative to the
+  current gate, roughly 490 KB of literal duplication that grows by one file per appending turn.
+
+**Consolidation refused, and the reason recorded as durable policy.** The redundancy is the mechanism: every turn
+re-proves that accepted selector 365 is an exact prefix of the current gate, and that check has force only because
+365's bytes are stored independently. Collapsing the chain into one file plus line counts would make the check
+compare a file against itself, so it could never fail — deleting the witness while keeping the assertion. Each file
+is additionally hash-pinned in an immutable TB report and an Actions artifact, `tools/review_check.py boundary`
+re-verifies every hash against HEAD each turn, and Parts IV and V of `M3_CP4c_Frozen_Definitions.md` prohibit
+changing the bytes of 357/358/361/365/367. `RETENTION_POLICY.md` gains a **"Selector files — never consolidated"**
+section stating this, and `CLEAN_UP_POLICY.md`'s consolidation scope now excludes them explicitly.
+
+**Added `Required_Green_Selector_Manifest.md`** (durable, additive, no selector byte touched): one row per selector
+with identity count, LF SHA-256, prefix parent, count of appended identities and role, plus a per-file section
+listing exactly which identities each selector appended and which files are off-chain. It permanently removes the
+name-versus-count hazard that surfaced at TB20-REV — the file named 385 holds 388 identities. The manifest is
+derived and grants no authority: where it disagrees with a selector file, the selector file wins.
+
+**Added `tools/selector_manifest.py`** to regenerate it, so the derivation is not rebuilt by hand each turn.
+Pointers added from `RETENTION_POLICY.md` (durable list), `CLEAN_UP_POLICY.md`, `ORIENTATION.md` §10,
+`M3_CP4c_Current_And_Forward.md` (§1 note and resume pointer) and `tools/README.md`.
+
+**Fixed a false positive the new filename exposed in `tools/review_check.py`.** Its selector-mutation gate matched
+the substring `Required_Green_Selector_` against any changed path, so it failed on
+`Required_Green_Selector_Manifest.md` — a document *about* selectors, not a selector. The predicate now matches
+only an actual byte-frozen selector: `Required_Green_Selector_<digits>.txt`, or `M1_Full_Required_Green_Selector.txt`.
+Every real selector hash verified against HEAD throughout; the gate passes.
+
+No selector file, product source, test, fixture or accepted identity was touched. Accepted authority remains
+**365/365**; stable accounting remains **44 / 14 / 30**, debt **5**, packages **85**.
+
 ## 2026-09-03 — `M3-CP4c-3-TB20-REV`: the seed guard is normative and correct; the missing input is a cut graph, now on a genus-0 witness; CB23 frozen
 
 Independent review of immutable TB20 evidence under the binding plan's measures **CW0–CW9**. Record:

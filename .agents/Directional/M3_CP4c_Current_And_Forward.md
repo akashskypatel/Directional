@@ -37,6 +37,8 @@ Last updated **2026-09-03** at `M3-CP4c-3-TB20-REV`.
 > **Selector naming.** Every selector file 357–384 is named by its identity count. The current gate file is named
 > **385** and holds **388** identities. Its bytes are frozen, hash-verified and correct — **do not rename it** —
 > but never derive a count from a selector filename. Future selector files are named by their identity count.
+> `Required_Green_Selector_Manifest.md` indexes the whole set: counts, LF hashes, prefix parents, appended
+> identities and roles. **Selector files are never consolidated** (`RETENTION_POLICY.md`).
 
 ---
 
@@ -177,6 +179,8 @@ After the durable start-of-turn checklist, load:
 7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 8. `M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded document index**
    resolves every folded or retired per-turn plan, report and record.
+9. `Required_Green_Selector_Manifest.md` — when any selector's count, hash, prefix parent or role is in
+   question.
 
 **Review tooling.** `.agents/Directional/tools/` holds read-only helpers: `review_check.py authority <sha>` and
 `review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and

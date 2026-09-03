@@ -129,7 +129,12 @@ def cmd_boundary(args):
     report(not code_touched, "no product/test/fixture/build mutation",
            "clean" if not code_touched else ", ".join(code_touched[:6]))
 
-    selector_touched = [p for p in paths if "Required_Green_Selector_" in p]
+    # An actual byte-frozen selector is a .txt named by a number, or the M1 full
+    # selector. Match those exactly -- a substring test also fires on documents
+    # about selectors, such as Required_Green_Selector_Manifest.md.
+    selector_touched = [p for p in paths
+                        if re.search(r"Required_Green_Selector_\d+\.txt$", p)
+                        or p.endswith("M1_Full_Required_Green_Selector.txt")]
     report(not selector_touched, "no selector mutation",
            "clean" if not selector_touched else ", ".join(selector_touched))
 

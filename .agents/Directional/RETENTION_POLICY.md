@@ -20,6 +20,7 @@ The following records are durable project authority and must be retained unless 
 - `.agents/Directional/RETENTION_POLICY.md`
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - `.agents/Directional/PR_8_Regression_Audit_Inventory.md`
+- `.agents/Directional/Required_Green_Selector_Manifest.md`
 - `.agents/Directional/LESSONS.md`
 - `.agents/Directional/M1_Closure_Record.md`
 - `.agents/Directional/M2_Closure_Record.md`
@@ -53,6 +54,23 @@ In addition to the durable set, retain only the current authoritative evidence/r
 - Preserve exact implementation commits, artifact/run identities, stable regression IDs, failure classifications, and material operational lessons in the changelog when they cease to be resume-critical.
 - Keep unresolved or immediately actionable information in the handoff until it is no longer needed to resume the next turn correctly.
 - A changelog entry supplements authoritative per-turn reports; it does not replace the exact evidence report while that report is the current immutable authority.
+
+## Selector files — never consolidated
+
+Every `Required_Green_Selector_*.txt` is durable, byte-frozen authority. They are **not** subject to the REVIEW-turn
+document consolidation in `CLEAN_UP_POLICY.md`, and no turn may consolidate, rename, merge or delete one without
+explicit user authorization naming the exact files.
+
+The apparent redundancy is the mechanism. Most of the chain are exact prefixes of their successor, but every turn
+re-proves that the accepted selector is an exact prefix of the current gate, and **that check has force only
+because the accepted bytes are stored independently of the gate file**. Collapsing the chain would make the check
+compare a file against itself, so it could never fail. The off-chain files (a superseded or withdrawn branch) hold
+unique bytes and are not reconstructible from the chain at all.
+
+`Required_Green_Selector_Manifest.md` is the derived index of the whole set — counts, LF SHA-256, prefix parents,
+appended identities and roles. It is additive and grants no authority: **where it disagrees with a selector file,
+the selector file wins.** Regenerate it with `tools/selector_manifest.py` after any turn that appends a selector.
+A selector filename is not an identity count — read the count from the manifest.
 
 ## Evidence retention
 

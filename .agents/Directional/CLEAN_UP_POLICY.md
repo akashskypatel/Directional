@@ -73,7 +73,8 @@ This section is the standing user authorization required by `RETENTION_POLICY.md
 **within a REVIEW turn and within the scope defined above**. It authorizes nothing else:
 
 - it does **not** authorize consolidating durable project authority, normative definitions, policies, closure
-  records or selector files — those move only under a separate, explicit user instruction naming them;
+  records or selector files. **Selector files are never consolidated** — `RETENTION_POLICY.md` gives the
+  reason, and `Required_Green_Selector_Manifest.md` is the additive index that makes the set legible instead — those move only under a separate, explicit user instruction naming them;
 - it does **not** authorize replacing detailed authority with a summary. Folding relocates findability; it never
   substitutes a précis for a record whose detail is still load-bearing;
 - it does **not** extend to any other turn type. A CB or TB turn performs stale-evidence cleanup only.

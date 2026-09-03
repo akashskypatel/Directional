@@ -1260,6 +1260,10 @@ The two-ring is constructed in the test file, not a fixture.
 - TB20 component census: **9** components, untruncated. Component 0 has **191** faces and **97** boundary edges;
   64 rows of each are retained and explicitly truncated. Owner counts in the window split 47×1 / 17×2; barrier
   classes 46 `none` / 18 `traceTouched`; seeds 44×orbit 0, 1×orbit 1, 1×orbit 3.
-- **Selector naming:** every selector file 357–384 is named by its identity count.
+- **Selector naming and the chain:** `Required_Green_Selector_Manifest.md` is the derived index of all 19
+  selector files — identity count, LF SHA-256, prefix parent, appended identities, role. **A selector filename is
+  not an identity count:** files 357–384 are named by their count, but
   `Architecture_M3_CP4c3_Required_Green_Selector_385.txt` holds **388** identities. Its bytes are frozen and
-  correct; the name is not a count. Future selector files are named by their resulting identity count.
+  correct; future files are named by their resulting count. **357 and 358 are off-chain** — 357 is not a prefix of
+  358 and 358 is not a prefix of 361 — so they hold unique bytes; 361 through the current gate form one strict
+  prefix chain. Regenerate the manifest with `tools/selector_manifest.py`.
