@@ -1,3 +1,32 @@
+## 2026-09-03 — `M3-CP4c-3-TB20`: mechanical component seed branch resolved as Multiple/3; accepted 365/365 preserved
+
+Artifact-only TB20 consumed immutable CB22 semantic source **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`** and
+compile artifact **`9912976409`** with no rebuild, relink, benchmark, repair, discovery, or source/test/fixture/selector
+mutation. Runtime run/job **`33809177155 / 100826787667`** executed all **388** selector-385 identities one per fresh
+process: **380 PASS / 8 RED**, accepted **365/365**, reds **366/367/368/369/370/371/372/374**. Result/log artifacts
+are **`9914226104 / 9914226799`** with SHA-256 **`38acaac785afed41c1a0daf0ced6f3b925ebba62e8219d45e40f564cbe54b0bd`** /
+**`438b3480ebd5ecce937dcbfba94c79357bd5d77e2a7c460662df6a88d7c112c5`**. Exact ledger SHA-256 is
+`0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a`; pre/post package byte+mode census is
+identical at `f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0`.
+
+The post-CB21 mechanical frontier remains `UncutFaceComponentOrbitSeedNotUnique`, but the CB22 decision evidence
+now resolves its branch: **component 0, seed count 3, `seedState=Multiple`, exact untruncated seed orbits `[0,1,3]`,
+component face count 191**. `sourceFace=(0,1,2)` is explicitly an iteration-order locus and remains non-discriminating.
+The historical torus occurrence remains the different zero-seed mechanism and is not merged.
+
+Component/boundary evidence is intentionally bounded: 64/191 face rows and 64/97 boundary rows are retained and
+marked truncated. The retained boundary window contributes 44×orbit 0, 1×orbit 1 and 1×orbit 3, with 18 barrier
+skips. No `edgeOrbitEvidenceNotUnique` row appears in that retained production window, so global absence is not
+inferred; ordinal 386 independently proves that reason is preserved by the projection contract when present.
+
+371/372 again co-reach the same component-seed frontier. TB19 and TB20 therefore satisfy the two-consecutive-TB
+standing-trigger condition in `M3-CP4c3-TB10-REV-CAND-01`; **TB20-REV must adjudicate** the already specified
+test-only atlas-scoped decoupling. 368/369/370/374 retain their prior owners. Stable accounting remains **44 / 14 /
+30**, debt **5**, semantic packages **85**; CP4c-3 remains OPEN.
+
+Exact successor: planning-only **`M3-CP4c-3-TB20-REV`** under **CW0–CW9** in
+`Architecture_M3_CP4c3_TB20_Independent_Review_Plan.md`.
+
 ## 2026-09-03 — `M3-CP4c-3-CB22`: component-seed decision evidence retained; selector 385 compiled; TB20 frozen
 
 `M3-CP4c-3-CB22` completed as a diagnostic-only Code + Build turn. Semantic source **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`** retains the

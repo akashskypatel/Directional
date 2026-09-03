@@ -101,76 +101,55 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB20` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB20-REV` — EXACT NEXT / independent REVIEW + PLAN, planning-only
 
-`M3-CP4c-3-CB22` is **COMPLETE / COMPILE-GREEN / RUNTIME-NOT-EXECUTED**.
+`M3-CP4c-3-TB20` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**.
 
-### Immutable CB22 build authority
+### Immutable TB20 runtime authority
 
-- semantic/evidence source: **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`**;
-- compile run/job: **`33805683152 / 100815534364`**;
-- immutable result artifact: **`9912976409`**, ZIP SHA-256 **`b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`**;
-- compile log artifact: **`9912977164`**, ZIP SHA-256 **`583621ab73e508fccafefddca3351f5ac1a3681761e33e4468800f50242287ff`**;
-- packaged source archive SHA-256: **`cec7db850646ffc4c2de0ed1515afc42d544f989ec83ca20055c30accd9929d3`**;
-- eight standard compile targets succeeded;
-- mandatory exact arithmetic backend: **GMP/GMPXX**, verified on generated link evidence;
-- build/preflight exits `0 / 0`, final source status clean;
-- `runtimeExecution=false`.
+- semantic source: **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`**;
+- compile run/job: **`33805683152 / 100815534364`**; immutable result artifact **`9912976409`**, ZIP SHA-256 **`b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`**;
+- runtime run/job: **`33809177155 / 100826787667`**;
+- result/log artifacts: **`9914226104 / 9914226799`**, SHA-256 **`38acaac785afed41c1a0daf0ced6f3b925ebba62e8219d45e40f564cbe54b0bd`** / **`438b3480ebd5ecce937dcbfba94c79357bd5d77e2a7c460662df6a88d7c112c5`**;
+- selector 385: **388 identities**, SHA-256 `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, selector 384 and accepted 365 exact prefixes;
+- result: **380 PASS / 8 RED**, accepted **365/365**, reds 366/367/368/369/370/371/372/374;
+- ledger SHA-256 **`0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a`**;
+- package pre/post census identical at **`f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0`**;
+- TB20 performed runtime only: no configure/compile/relink/benchmark/package repair/mode repair/generated discovery or source/test/fixture/selector mutation.
 
-The first CB22 compile attempt failed only because the new boundary diagnostic row default-constructed a
-non-default-constructible `SourceEdgeTopologyKey`. The correction initializes the aggregate with the edge at
-construction. The corrected source above is authoritative compile evidence; the failed source is not.
+### Resolved discriminator and evidence limit
 
-### Selector authority
+Ordinal 366 remains at `UncutFaceComponentOrbitSeedNotUnique`, but CB22/TB20 now prove the mechanical branch is
+**component 0 / seed count 3 / `seedState=Multiple` / seed orbits `[0,1,3]`**. `sourceFace=(0,1,2)` remains an
+explicit iteration-order locus and is not the cause discriminator. The historical torus occurrence remains the
+distinct zero-seed mechanism and must not be merged.
 
-- accepted selector 365: **365 identities**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
-- TB19 runtime selector 384: **384 identities**, SHA-256 `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564` — byte-frozen;
-- TB20 selector 385: **388 identities**, SHA-256 `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, selector 384 an exact prefix;
-- appended identities 385–388 are the CB22 production-decision, projection, census and unrelated-error
-  byte-identity witnesses only.
+Component 0 has 191 faces and 97 boundary edges. TB20 retains 64 face rows and 64 boundary rows, both explicitly
+truncated. In that retained boundary window: 44 rows contribute orbit 0, one contributes orbit 1, one contributes
+orbit 3, and 18 are barrier-skipped. No `edgeOrbitEvidenceNotUnique` row occurs in the retained production window;
+that is not evidence of global absence because 33 boundary rows are unretained. Ordinal 386 independently proves
+that reason survives the projection contract when present.
 
-**TB19 remains the current runtime authority** until TB20 executes: 376 PASS / 8 RED, accepted 365/365, red
-ordinals 366/367/368/369/370/371/372/374. CB22 makes no runtime or acceptance claim.
+TB19 and TB20 are two consecutive TB turns with 371/372 stopped at the same downstream mechanical production
+frontier. The standing trigger in `M3-CP4c3-TB10-REV-CAND-01` is therefore met as a fact; TB20-REV must adjudicate
+the previously specified test-only atlas-scoped decoupling.
 
-### CB22 scope closure
+### TB20-REV execution contract
 
-CB22 discharges frozen `BV0–BV9` statically/build-only:
+Run `Architecture_M3_CP4c3_TB20_Independent_Review_Plan.md` under **CW0–CW9** exactly. The review is static/planning
+only. It must:
 
-- `UncutFaceComponentOrbitSeedNotUnique` now retains component identity, seed count and typed
-  `seedState ∈ {None, Multiple}`;
-- failing component face count, bounded membership and truncation are retained;
-- bounded boundary-edge rows retain barrier/labeled-side/owner state and the contributed seed or exact reason none
-  was contributed, including non-unique `edgeOrbitEvidence`;
-- `sourceFace` is explicitly typed as an iteration-order locus and the component is the discriminating locus;
-- existing fragment-owner evidence projects a bounded component-seed census;
-- production-path witnesses and an unrelated-error byte-identity witness cover the new fields;
-- the seeding predicate, component barriers/partition, seed construction, face walk, rotation system, region drafts
-  and CB21 fragment comparison are unchanged; `localFragmentCount` remains non-fatal; 371/372 are not decoupled.
+1. re-verify TB20 source/artifact/run/selector/ledger/package immutability;
+2. independently prove the component-0 / count-3 / `Multiple` discriminator and seed orbits `[0,1,3]`;
+3. trace the three seeds through committed producer semantics and decide whether the exactly-one-seed requirement or its inputs are wrong;
+4. keep the historical zero-seed torus case separate;
+5. decide whether the bounded 64/97 boundary evidence is sufficient, and freeze one smallest evidence-only successor only if a concrete missing field is truly necessary;
+6. preserve accepted 365/365 and settled CB21 behavior;
+7. adjudicate the reached 371/372 test-coupling trigger;
+8. keep 368/369/370/374 under their existing owners;
+9. freeze exactly one smallest sufficient successor.
 
-### TB20 execution contract
-
-Execute `Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Plan.md` exactly:
-
-1. verify artifact/source/GMP/internal-hash/mode authority and selector hashes/prefixes before runtime;
-2. record a complete pre-runtime package byte+mode census;
-3. execute all **388** selector-385 identities in selector order, one exact GoogleTest identity per fresh process;
-4. accepted 1–365 must remain **365/365 PASS**;
-5. ordinal 366 must remain at `UncutFaceComponentOrbitSeedNotUnique` and publish explicit `seedState`; any movement
-   falsifies CB22's diagnostic-only assumption and is semantic evidence;
-6. retain ordinal 366's component membership, boundary rows including every skip reason, and matching component
-   census/truncation;
-7. require new identities 385–388 and report 367/371/372 plus carried 368/369/370/374 under their established
-   owners;
-8. record a post-runtime package byte+mode census and require exact identity;
-9. close a 388-row ledger and update `Regression_Root_Cause_Tracker.md` for every observed regression/candidate
-   disposition.
-
-No configure, compile, relink, package repair, mode repair, generated discovery, source/test/fixture/selector
-mutation, or benchmark execution is authorized.
-
-If TB20 is semantically red as expected, route next to **`M3-CP4c-3-TB20-REV` — independent REVIEW + PLAN**.
-Do not implement a product correction in TB20.
-
+No product/test/fixture/selector/build mutation, compile, benchmark, or runtime is authorized by this handoff.
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **85**.
 
@@ -180,15 +159,15 @@ Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB22_Code_Build_Report.md`.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Plan.md` — **exact next plan**.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md` — current runtime baseline.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB20_Independent_Review_Plan.md` — **exact next plan**.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB19_Independent_Review_Record.md` — prior review/CB22 rationale.
 5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI.
 6. `.agents/Directional/GMP_COMPILE_POLICY.md` and `.agents/Directional/Regression_Root_Cause_Tracker.md`.
 7. `TODO.md` and `CHANGELOG.md`.
 
-For the turn-based coding skill, load canonical `references/turns/TB.md`; load the GitHub connector module because
-TB20 is artifact/workflow-driven. Do not preload sibling turn files or historical folded records.
+For the turn-based coding skill, load canonical review/planning guidance. Do not preload sibling turn files or
+historical folded records unless CW2–CW4 require lineage.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

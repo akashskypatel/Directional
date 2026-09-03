@@ -1,3 +1,13 @@
+## M3-CP4c3-TB20 — three-seed component branch measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+
+- **Authority:** semantic source `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`, compile artifact `9912976409`, selector 385; run/job `33809177155 / 100826787667`; result/log artifacts `9914226104 / 9914226799`; exact ledger `0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a`.
+- **Gate:** **380 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds 366/367/368/369/370/371/372/374. Ordinals 384–388 pass. Pre/post package byte+mode census is identical at `f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0`.
+- **Primary discriminator resolved:** ordinal 366 remains `UncutFaceComponentOrbitSeedNotUnique` and now retains `component=0`, `seedCount=3`, `seedState=Multiple`, component face count 191 and exact untruncated seed orbits `[0,1,3]`. `sourceFace=(0,1,2)` is explicitly the first-unlabeled-face iteration-order locus. The historical torus occurrence remains the separate zero-seed mechanism.
+- **Bounded evidence:** retained component faces are 64/191 and boundary rows 64/97, both marked truncated. In the retained boundary window 44 rows contribute orbit 0, one orbit 1, one orbit 3, and 18 contribute no seed because of a barrier. No `edgeOrbitEvidenceNotUnique` row appears in that retained production window; global absence is not inferred. Ordinal 386 independently proves that reason is projection-preserved when present.
+- **Co-reachers/trigger:** 367/371/372 reach the same typed component-seed frontier. Because TB19 and TB20 are two consecutive TB turns with this downstream mechanical frontier unmoved, the standing condition in `M3-CP4c3-TB10-REV-CAND-01` is met and TB20-REV must adjudicate the test-only atlas-scoped decoupling.
+- **Carried surfaces:** 368 remains `CellularityNotEstablished` from `RotationSystemInconsistent/TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch/SourceEdgeUnavailable`; 369 remains saturation-used; 370 remains the existing typed-error mismatch; 374 remains `atlasBuild=false`. No candidate is merged into the component-seed correction.
+- **Accounting:** red set unchanged, no accepted-green loss, CP4c-3 unaccepted. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**. Exact owner: `M3-CP4c-3-TB20-REV` under CW0–CW9.
+
 ## M3-CP4c3-TB19-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB19_Independent_Review_Record.md`, measures **CR0-CR8** discharged per the
@@ -37,15 +47,16 @@
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss, red ordinal set unexpanded.
   **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**.
 
-## M3-CP4c3-TB19-REV-CAND-02 - the component-seed error cannot identify its own cause - **NEW / ACTIVE / EVIDENCE CONTRACT / NON-STABLE**
+## M3-CP4c3-TB19-REV-CAND-02 - component-seed discriminator evidence contract - **CLOSED / SATISFIED / NON-STABLE**
 
-`UncutFaceComponentOrbitSeedNotUnique` retains only `sourceFace`, which is the first unlabeled face in `std::map`
-order and which two unrelated witnesses (torus, mechanical) both report as `(0,1,2)`. The error therefore cannot
-distinguish its own failing branch, component, or seed set. Owner: **BV4** - keep `sourceFace` for continuity but
-publish that it is an iteration-order locus and add the component identity as the discriminating one. Related:
-`M3-CP4c3-TB19-CAND-01`.
+TB19 proved that `sourceFace` alone could not distinguish branch, component, or seed set. CB22 retained the
+component identity, exact seed count/state, bounded component/boundary evidence and component census while keeping
+`sourceFace` only for continuity and typing it as an iteration-order locus. TB20 runtime-proved those fields on the
+production failure: component 0, count 3, `Multiple`, orbits `[0,1,3]`. The evidence-contract objective is therefore
+**satisfied and closed**. Reopen only if TB20-REV CW4 identifies one concrete additional field required to choose
+the next semantic correction. Related: `M3-CP4c3-TB19-CAND-01`.
 
-## M3-CP4c3-TB19 — CB21 fragment-owner correction clears; uncut-component seed frontier exposed — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+## M3-CP4c3-TB19 — CB21 fragment-owner correction clears; uncut-component seed frontier exposed — **SUPERSEDED BY TB20 / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** semantic source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, compile artifact `9908695433`,
   selector 384; run/job `33798040003 / 100790444711`; result/log artifacts `9910078670 / 9910079341`; exact
@@ -69,7 +80,7 @@ publish that it is an iteration-order locus and add the component identity as th
   +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**. Exact next owner:
   `M3-CP4c-3-TB19-REV`.
 
-## M3-CP4c3-TB19-CAND-01 - unlabeled-face component orbit seed set is not unique, branch undetermined - **ACTIVE / GATING / MECHANISM UNOBSERVABLE / LOCUS PROVED NON-DISCRIMINATING / NON-STABLE**
+## M3-CP4c3-TB19-CAND-01 - mechanical uncut-face component has three orbit seeds - **ACTIVE / GATING / BRANCH RESOLVED: MULTIPLE / SEMANTIC OWNER PENDING / NON-STABLE**
 
 - **Observed:** 366/367/371/372 now terminate at
   `UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`, after the fragment-owner low-side correction
@@ -83,8 +94,9 @@ publish that it is an iteration-order locus and add the component identity as th
 - **Historical same-code caution:** `UncutFaceComponentOrbitSeedNotUnique` appeared on the torus earlier in CP4c,
   but identical error names do not establish identical root cause. `M3-CP4c-3-TB19-REV` must compare the producer
   state and emitter inputs before calling this a recurrence.
-- **Disposition:** valid later frontier on an unaccepted surface; no semantic correction or diagnostic-only turn is
-  authorized until independent review adjudicates zero-vs-many observability and ownership.
+- **TB20 disposition update:** the zero-vs-many ambiguity is resolved from immutable production evidence: component
+  0 has exactly **3** seeds, state **`Multiple`**, with exact seed orbits **`[0,1,3]`**. Semantic ownership is now
+  pending TB20-REV CW2–CW4; the historical torus zero-seed mechanism remains separate.
 - **Accounting:** **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **85**.
 
 ## M3-CP4c3-CB21 — low-side fragment-owner validation correction — **CURRENT BUILD AUTHORITY / PRODUCT CORRECTION / COMPILE GREEN / TB19 RUNTIME-PROVED AT PRIOR STOP / NON-STABLE**
