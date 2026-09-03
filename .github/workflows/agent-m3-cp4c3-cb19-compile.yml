@@ -26,7 +26,7 @@ jobs:
     if: needs.workflow-schema-validation.outputs.valid == 'true'
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 9afe66ede2632c768ba0d96f43a6e9c7128c6076
+      source_sha: bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e
       artifact_prefix: m3-cp4c3-cb19-compile
     secrets: inherit
 
@@ -34,7 +34,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c3-cb19-compile-r2
+      label: m3-cp4c3-cb19-compile-r3
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
