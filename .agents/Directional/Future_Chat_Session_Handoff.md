@@ -162,7 +162,8 @@ categories / 30 recurrences**; produced-witness debt **5**; authoritative semant
 
 **Document layout changed this turn.** The CP4c family is now `M3_CP4c_Current_And_Forward.md` (current state and
 forward plan) plus `M3_CP4c_Consolidated_Record.md` (history, carrying a **folded document index** for the 35
-folded per-turn plans/reports/records). The six frozen-definition documents and all selector files are unchanged.
+folded per-turn plans/reports/records) plus `M3_CP4c_Frozen_Definitions.md`, which carries all six former
+frozen-definition documents **verbatim** as Parts I–VI with a citation map. All selector files are unchanged.
 
 ## Context Load Plan
 
@@ -175,7 +176,7 @@ Minimum successor context after the mandatory durable policy/start checklist:
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
 2. `.agents/Directional/Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` — **frozen CB20 scope, §10 BS0–BS9**.
 3. `.agents/Directional/Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — normative definitions and amendments.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
 5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded

@@ -69,7 +69,8 @@ semantic M3 packages **84**. **Vertex 30 is still not reached.**
 **Document layout changed this turn.** The CP4c family is now two documents plus normative authority:
 `M3_CP4c_Current_And_Forward.md` (current state, frozen successor, candidate index) and
 `M3_CP4c_Consolidated_Record.md` (history, with a **folded document index** resolving all 35 folded per-turn
-plans/reports/records). The frozen-definition chain and every selector file are untouched.
+plans/reports/records), plus `M3_CP4c_Frozen_Definitions.md` — the six frozen-definition documents merged
+**verbatim** into one normative file with a citation map. Every selector file is untouched.
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB16-REV` proved the `(9,11,17)` failing segment was a **terminal
 slit**, and CB19's correction cleared it. The v47 five-ray re-proof and CB18 closure were achieved at TB16 and are
@@ -1362,4 +1363,7 @@ The two-ring is constructed in the test file, not a fixture.
 - **CP4c document layout since 2026-09-03:** `M3_CP4c_Current_And_Forward.md` holds current state, the frozen
   successor and the candidate index; `M3_CP4c_Consolidated_Record.md` holds history and carries a **folded
   document index** that resolves all 35 folded per-turn plans/reports/records (their full text stays in git
-  history). The six frozen-definition documents and every `Required_Green_Selector_*.txt` were **not** folded.
+  history). The six frozen-definition documents were merged **verbatim** into `M3_CP4c_Frozen_Definitions.md`
+  (Parts I–VI, with a citation map from the former filenames; operative definitions are Part III for CP4c-2 and
+  Part VI for CP4c-3). Every `Required_Green_Selector_*.txt` is untouched. All former `Architecture_M3_CP4ab_*`
+  references now resolve to `M3_CP4ab_Closure_Record.md`, which carries their index.

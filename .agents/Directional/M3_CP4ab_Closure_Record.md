@@ -77,7 +77,7 @@ self-contained. Two defects were introduced and are repaired at this review:
 
 ### 1c. Final CP4ab per-turn report retirement — 2026-08-31
 
-`Architecture_M3_CP4ab_TB_R3_Artifact_Only_Test_Benchmark_Report.md` was the last remaining CP4ab
+`M3_CP4ab_Closure_Record.md` was the last remaining CP4ab
 per-turn report. It is now retired into this closure record; its authoritative acceptance facts were already
 represented in §§1–2 and are unchanged. The remaining non-duplicated provenance from that report is retained here:
 
@@ -153,3 +153,45 @@ The merged checkpoint required multiple review/correction arcs because the origi
 Final cumulative M3 package count is **34** at CP4ab closure. The final accepted package is CB-R11 `9527801615`; TB-R3 consumes acceptance attempt 1/3 and no new package. The final reset diagnostic window consumed one gate at DG-R6.
 
 With CP4ab accepted, A2b's region/disc-authority portion is complete. The exact next bounded turn is `M3-CP4c-CB`; CP4c has its own untouched 3-attempt budget and its planned diagnostic gate.
+
+---
+
+## Folded document index — DURABLE, DO NOT DELETE
+
+The 35 per-turn CP4ab documents below were folded into this closure record in an earlier consolidation. On **2026-09-03** every remaining reference to them across the project was redirected here, so their names no longer appear as live pointers. This index keeps the mapping legible; the full text of each remains in git history (`git log --diff-filter=D -- .agents/Directional/<name>`).
+
+- `Architecture_M3_CP4ab_CB_R5_Package_Independent_Review.md`
+- `Architecture_M3_CP4ab_CB_R6_Static_Authority_Independent_Review.md`
+- `Architecture_M3_CP4ab_CB_R6_Static_Authority_Independent_Review_Plan.md`
+- `Architecture_M3_CP4ab_CB_R7_Precondition_Independent_Review.md`
+- `Architecture_M3_CP4ab_CB_R8_S0_Independent_Review.md`
+- `Architecture_M3_CP4ab_CB_R8_S0_Static_Precondition_Stop_Report.md`
+- `Architecture_M3_CP4ab_DG_Artifact_Only_Test_Benchmark_Report.md`
+- `Architecture_M3_CP4ab_DG_R2_Independent_Review.md`
+- `Architecture_M3_CP4ab_DG_R3_Artifact_Only_Diagnostic_Report.md`
+- `Architecture_M3_CP4ab_DG_R3_Independent_Review.md`
+- `Architecture_M3_CP4ab_DG_R3_Independent_Review_Plan.md`
+- `Architecture_M3_CP4ab_DG_R4_Artifact_Only_Diagnostic_Report.md`
+- `Architecture_M3_CP4ab_DG_R4_Independent_Review.md`
+- `Architecture_M3_CP4ab_DG_R4_Independent_Review_Plan.md`
+- `Architecture_M3_CP4ab_DG_R5_Artifact_Only_Diagnostic_Report.md`
+- `Architecture_M3_CP4ab_DG_R5_Independent_Review.md`
+- `Architecture_M3_CP4ab_DG_R5_Independent_Review_Plan.md`
+- `Architecture_M3_CP4ab_DG_R6_Artifact_Only_Diagnostic_Report.md`
+- `Architecture_M3_CP4ab_K5_Routing_Independent_Review_Plan.md`
+- `Architecture_M3_CP4ab_R10_Terminal_Zero_Cell_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_R11_Validation_Ordering_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_R2_Code_Build_Plan.md`
+- `Architecture_M3_CP4ab_R2_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_R3_Code_Build_Plan.md`
+- `Architecture_M3_CP4ab_R4_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_R5_Instrumentation_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_R6_Static_Authority_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_R7_Cyclic_Port_Order_Code_Build_Plan.md`
+- `Architecture_M3_CP4ab_R7_Cyclic_Port_Order_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_R9_Mandatory_Arc_Split_Code_Build_Report.md`
+- `Architecture_M3_CP4ab_TB_R1_Independent_Review.md`
+- `Architecture_M3_CP4ab_TB_R2_Artifact_Only_Test_Benchmark_Report.md`
+- `Architecture_M3_CP4ab_TB_R2_Independent_Review.md`
+- `Architecture_M3_CP4ab_TB_R2_Independent_Review_Plan.md`
+- `Architecture_M3_CP4ab_TB_R3_Artifact_Only_Test_Benchmark_Report.md`

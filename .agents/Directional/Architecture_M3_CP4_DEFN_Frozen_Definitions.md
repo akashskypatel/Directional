@@ -36,7 +36,7 @@ and may change only by an explicit plan update.
    meaning and locus match. The split lands alone, before any semantic change.
 
 **Amended again 2026-08-22 by `M3-CP4ab-K5-ROUTING-REVIEW` (Part A of
-`Architecture_M3_CP4ab_K5_Routing_Independent_Review_Plan.md` — RETIRED at CP4ab closure, binding):**
+`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 4. **Section 4.4 is amended.** A region is one face of the embedded graph and owns the set of **face
    fragments** it covers, where a fragment is the portion of one source face lying in one graph face,
@@ -53,7 +53,7 @@ and may change only by an explicit plan update.
    `SourceComponentId`/`TopologyRegionId`; no unsigned whole-trace support; no repair path.**
 
 **Amended again 2026-08-23 by `M3-CP4ab-TB-R1-INDEPENDENT-REVIEW` (Part A of
-`Architecture_M3_CP4ab_TB_R1_Independent_Review.md` — RETIRED at CP4ab closure, binding):**
+`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 5. **"Computes on fragments" is made exact.** Amendment 4 said the disc proof "now computes on
    fragments" without defining fragment adjacency or the meaning of `V`, `E`, `F` for a fragment
@@ -71,7 +71,7 @@ and may change only by an explicit plan update.
      frozen code and both source-face loci.
 
 **Amended again 2026-08-23 by `M3-CP4ab-TB-R2-INDEPENDENT-REVIEW`
-(`Architecture_M3_CP4ab_TB_R2_Independent_Review.md` — RETIRED at CP4ab closure, binding):**
+(`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 6. **Amendment 5's Euler clause is WITHDRAWN and replaced.** `χ = F − E_int` is valid only when the
    fragment-dual graph is acyclic — it silently assumes the very property it was meant to test. The
@@ -97,7 +97,7 @@ and may change only by an explicit plan update.
    are **unaffected and proven correct** by TB-R2, which cleared `RegionInteriorDisconnected`.
 
 **Amended again 2026-08-23 by `M3-CP4ab-CB-R6-STATIC-AUTHORITY-INDEPENDENT-REVIEW`
-(`Architecture_M3_CP4ab_CB_R6_Static_Authority_Independent_Review.md` — RETIRED at CP4ab closure, binding):**
+(`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 7. **Fragment-corner incidence is defined, and needs no carrier-contact order.** Amendment 6 requires
    `V_int`, which requires knowing which fragment of a cut face carries each source corner. That is now
@@ -130,7 +130,7 @@ and may change only by an explicit plan update.
    re-proof boundary in the Review's section 8.
 
 **Amended again 2026-08-23 by `M3-CP4ab-CB-R7-PRECONDITION-INDEPENDENT-REVIEW`
-(`Architecture_M3_CP4ab_CB_R7_Precondition_Independent_Review.md` — RETIRED at CP4ab closure, binding and superseding amendment 7's order source):**
+(`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding and superseding amendment 7's order source):**
 
 8. **Amendment 7's `orbitByDart` order source is WITHDRAWN as circular; its chord/slit facts remain.**
    `walk.orbitByDart` is computed *after* `build_rotation_system(...)`, and the current rotation breaks a
@@ -161,7 +161,7 @@ and may change only by an explicit plan update.
    accepted CP2b/CP3a/CP3b surface on the successor package. No identity is removed or weakened.
 
 **Amended again 2026-08-23 by `M3-CP4ab-DG-R3-INDEPENDENT-REVIEW`
-(`Architecture_M3_CP4ab_DG_R3_Independent_Review.md` — RETIRED at CP4ab closure, binding):**
+(`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 9. **Amendment 6's interior-vertex rule is CORRECTED: it omitted the mesh boundary.** DG-R3 measured
    `V_int=2 E_int=6 F=6 chi=2` for region 2/orbit 3 and `V_int=1 E_int=1 F=2 chi=2` for B3 — both off by
@@ -199,7 +199,7 @@ and may change only by an explicit plan update.
    cyclic-order sanity checks are 3/3 PASS.
 
 **Amended again 2026-08-24 by `M3-CP4ab-CB-R8-S0-INDEPENDENT-REVIEW`
-(`Architecture_M3_CP4ab_CB_R8_S0_Independent_Review.md` — RETIRED at CP4ab closure, binding):**
+(`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 10. **Section 4.1's arc definition is CORRECTED: mandatory arcs must be split at trace terminal points.**
     Section 4.1 defined the arc set as *"one mandatory arc per `FieldAlignedMandatoryEdge`"* while
@@ -240,7 +240,7 @@ and may change only by an explicit plan update.
     consistency check is expected to be satisfiable rather than firing.
 
 **Amended again 2026-08-24 by `M3-CP4ab-DG-R4-INDEPENDENT-REVIEW`
-(`Architecture_M3_CP4ab_DG_R4_Independent_Review.md` — RETIRED at CP4ab closure, binding):**
+(`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 11. **Amendment 10's A2b-locality claim is WITHDRAWN; A2a must publish every trace terminus as a real
     0-cell.** Amendment 10 assumed the interior barrier-contact node already existed. It does not. A2a
@@ -293,7 +293,7 @@ and may change only by an explicit plan update.
     endpoints. The CP4ab gate stays **316**.
 
 **Amended again 2026-08-24 by `M3-CP4ab-DG-R5-INDEPENDENT-REVIEW`
-(`Architecture_M3_CP4ab_DG_R5_Independent_Review.md` — RETIRED at CP4ab closure, binding):**
+(`M3_CP4ab_Closure_Record.md` — RETIRED at CP4ab closure, binding):**
 
 12. **Structural inputs must be validated before any consumer derives from them, and global cellularity
     on a bounded source surface must exclude the exterior orbits.** Two independent rules, both proven

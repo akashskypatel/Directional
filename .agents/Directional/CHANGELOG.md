@@ -1,4 +1,43 @@
+## 2026-09-03 — CP4c definitions consolidated; CP4ab references redirected
+
+Documentation consolidation, user-directed. No runtime, compile, package, or product/test/fixture/selector
+mutation.
+
+**The six frozen-definition documents are merged into `M3_CP4c_Frozen_Definitions.md`.** Unlike the per-turn fold,
+this merge is **verbatim**: each source document appears in full as Parts I–VI, headings demoted by two so the
+parts nest under one hierarchy, with an automated check confirming **zero** non-heading source lines were lost.
+Supersession is stated explicitly — within each checkpoint `DEFN` → `DEFN-R1` → `DEFN-R2`, so the operative
+definitions are **Part III** for CP4c-2 and **Part VI** for CP4c-3 — and earlier revisions are retained because
+`DESIGN.md` and the tracker cite the amendment lineage directly. A citation map at the head of the file resolves
+each former filename to its part, and section numbering inside each part is unchanged, so a citation such as
+"`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". **23** references across 6 documents were rewritten
+to the new path plus part label.
+
+**All CP4ab references now resolve to `M3_CP4ab_Closure_Record.md`.** A survey found **62** mentions of **35**
+distinct CP4ab document names, **none of which still existed as files** — every one was a dangling pointer left by
+an earlier consolidation. All 62 were redirected, and the closure record gained a folded document index listing the
+35 names so the mapping stays legible; full text remains in git history.
+
+**Accumulated citation debt made resolvable rather than rewritten.** A project-wide scan found roughly 110 further
+historical citations, in `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md` and `ROADMAP.md`, that point at
+documents folded across several earlier consolidations. Rewriting them would rewrite statements about what past
+turns produced, so instead both `CHANGELOG.md` and the tracker gained a **folded-document resolver note** naming
+the three indexes that resolve any such filename. The three citations in `LESSONS.md` were redirected inline,
+because lessons are live guidance rather than history.
+
+CP4c markdown documents: **10 → 5** (`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Consolidated_Record.md`,
+`M3_CP4c_Frozen_Definitions.md`, and the current TB17 report and review record). Selector files are untouched.
+Accepted authority remains **365/365**; stable accounting remains **44 / 14 / 30**, debt **5**, packages **84**.
+
 ## 2026-09-03 — `M3-CP4c-3-TB17-REV`: fragment invariant falsified; `M3-CP4c-3-CB20` frozen; CP4c docs consolidated
+
+> **Folded-document references.** Any `Architecture_M3_CP4*` filename cited below that no longer exists was
+> folded in a consolidation. Resolve it through the folded document index in
+> `M3_CP4c_Consolidated_Record.md` (CP4c per-turn plans, reports and review records),
+> `M3_CP4ab_Closure_Record.md` (CP4ab turn documents), or the citation map in
+> `M3_CP4c_Frozen_Definitions.md` (the six frozen-definition documents). Full text of every folded document
+> remains in git history. These citations are deliberately not rewritten: they state what a turn produced
+> at the time.
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB17_Independent_Review_Plan.md`, measures **BRQ0–BRQ8**.
 Record: `Architecture_M3_CP4c3_TB17_Independent_Review_Record.md`. Static only — no runtime, compile, link,
@@ -956,7 +995,7 @@ Definition + Review/Plan only, discharging **AX0–AX9** from `Architecture_M3_C
 No Directional runtime, compile, link, package, benchmark, product, test, fixture or selector byte was executed or
 mutated. Selector **373** stays byte-frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
 **selector 374 still does not exist** and is conditional on AY5. Accepted authority remains **365**. Record:
-`Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md`.
+`M3_CP4c_Frozen_Definitions.md` Part VI.
 
 **Amendment 22 — a curve continues through a source vertex along the *straightest geodesic* of the intrinsic vertex
 star.** The primitive datum is one exact incoming ray, anchored once at the vertex-arrival event, expressed in the
@@ -1637,7 +1676,7 @@ Stable accounting remains **44 events / 14 categories / 30 recurrences**, debt *
 Combined definition + review turn under the standing cadence, discharging **AL2**. Nothing executed, compiled,
 packaged or benchmarked; no gate selected or run; **no product, test, fixture, selector or build-logic byte
 changed**. Measures issued: **AM0–AM9**. Full record:
-`Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`. Normative record: `DESIGN.md` §7.2.1 **Amendment 15**.
+`M3_CP4c_Frozen_Definitions.md` Part V. Normative record: `DESIGN.md` §7.2.1 **Amendment 15**.
 
 **Two theorems settle the scope, and both are forced by construction rather than observed on one witness.**
 
@@ -1848,7 +1887,7 @@ durable turn-workflow sections of `TODO.md` and `Future_Chat_Session_Handoff.md`
 
 No Directional runtime, build, compile, package, benchmark, or product/test/fixture change. One selector authority
 file was **created**; no existing selector byte was modified. Measures issued: **AK0–AK9**. Full record:
-`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`.
+`M3_CP4c_Frozen_Definitions.md` Part IV.
 
 **The finding — `IncompleteCycleBasis` is a seven-way collapse, and the mechanical witness has never been
 diagnosed.** `ORIENTATION` had recorded only "no atlas — stops in A1 at `IncompleteCycleBasis`". Read at source,
@@ -2222,7 +2261,7 @@ AF1 extracted the prescribed-sphere `m3Cp4c2ActualGraphOracle` row already publi
 therefore **REFUTED**. This is an independent oracle finding and does not reinterpret the producer's earlier lossy
 error translation as a cellularity verdict.
 
-The result activates `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` §8.3: DEFN-R1 proves cut completeness
+The result activates `M3_CP4c_Frozen_Definitions.md` Part II §8.3: DEFN-R1 proves cut completeness
 for trace-free components, explicitly leaves the trace-crossed non-disc case unproved, and requires CP4c-2 to
 return to definition if the prescribed sphere proves non-cellular. The sphere has 24 retained traces, so the gap is
 now live. CB6 therefore deferred AF0/AF2/AF3/AF4 rather than implementing across a frozen definition stop; AF5 is
@@ -2453,7 +2492,7 @@ Code + Build only; **no Directional runtime, test, or benchmark executed**.
 
 ### 2026-08-29 — `M3-CP4c-2-DEFN-R1`: the actual embedded graph, and a withdrawn reviewer ruling
 
-Definition-only. No Directional runtime, build, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`. `selected_r2_branch` and `selected_gate` both remain **NONE**.
+Definition-only. No Directional runtime, build, compile, package, benchmark, or product/test/fixture/selector change. Record: `M3_CP4c_Frozen_Definitions.md` Part II. `selected_r2_branch` and `selected_gate` both remain **NONE**.
 
 - **Amendment 13 freezes the normative complex as the actual embedded graph** of `FieldAlignedCurveNetwork ∪ cutEdges` — vertices are network nodes plus cut-created nodes, edges are network arcs plus cut arcs, faces are the **dart orbits** under the node rotation system. DEFN §5.4's whole-source-face construction guidance is **withdrawn** as cellularity authority and survives only as a cut-proposal heuristic and diagnostic provenance. §§5.1–5.3, Amendment 12, and §3's torus theorem all remain binding.
 - **Nothing new is invented.** `GlobalTopologyArc`, `GlobalTopologyOrientedArc`, `GlobalTopologyNodeRotation` and `walk_graph_faces(arcs, rotations)` already exist in A2b and already compute this complex. The corrective is a **lift into one shared pre-region authority**, consumed by both A2a′ and A2b. **A second implementation is prohibited** — `LESSONS.md` 22e — and a second implementation is precisely how this checkpoint arrived here.
@@ -2478,7 +2517,7 @@ Definition-only. No Directional runtime, build, compile, package, benchmark, or 
 - R2's prior claim that `sourceEdgeBarrier` is the normative complex, with carrier-edge coarsening only a quality concern, is **withdrawn**. `R2-CAND-02` remains ACTIVE as **TEST-AUTHORITY / WRONG SEMANTIC COMPLEX** until an independent oracle measures the actual embedded graph/fragment complement through a different mechanism.
 - R4 AA2 is independently discharged: the two prescribed-sphere lines in artifact `9707662462` are each **468 bytes**, each SHA-256 `84f9ca015ab63093086981cbd29256526159329c64537dfb52fba9e89d9fd078`, and byte-identical. AA5 runtime publication remains pending because R5 never reached D1. AA1 sphere-snapshot retention also remains runtime pending, but AA1 is **not causal**: `SurfaceCutGraph.cpp` predates AA1 unchanged, and ordinal 305 fails before pipeline snapshot publication is relevant.
 - New non-stable `R5-ORCH-01` records the `set -e` leakage that suppressed postflight. The next runtime harness must guarantee finalization/postflight even on semantic red.
-- `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` §5.4.1 now preserves a narrow R5 correction: §§5.1-5.3 remain binding, while whole-source-face/source-edge-barrier complement construction is withdrawn as cellularity authority pending redefinition.
+- `M3_CP4c_Frozen_Definitions.md` Part I §5.4.1 now preserves a narrow R5 correction: §§5.1-5.3 remain binding, while whole-source-face/source-edge-barrier complement construction is withdrawn as cellularity authority pending redefinition.
 - **Exact next:** `M3-CP4c-2-DEFN-R1`, definition/replanning only, measures **AB0-AB9**. It must freeze one pre-region exact actual embedded-graph complement representation, candidate-cut update/certification, termination/completeness argument, and independent same-semantic-complex oracle before any later CB. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
 ## 2026-08-29 — `M3-CP4c-2-CB3-DIAG`: snapshot retention and publication hygiene compile green
@@ -2690,7 +2729,7 @@ gate execution/review. Report: `Architecture_M3_CP4c2_CB1_Code_Build_Report.md`;
 
 ## 2026-08-28 — `M3-CP4c-2-DEFN`: the torus network provably cannot bound discs; `SurfaceCutGraph` frozen
 
-Definition-only. No Directional runtime, build, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`.
+Definition-only. No Directional runtime, build, compile, package, benchmark, or product/test/fixture/selector change. Record: `M3_CP4c_Frozen_Definitions.md` Part I.
 
 - **CP4c-1's closure was independently re-verified first**, from the repository rather than the report: the 355 selector `e9d88f11…5afeaa` and all three accepted prefixes (`601ce2b6…`, `20d3b0b1…`, `51ff96d7…`) recomputed identical; the 3-entry non-gating selector `537a8010…ffcd6a` confirmed with both W5-retired identities absent; `src/` and `include/` unchanged across CB4 with `tests/FieldAlignedCurveNetworkTests.cpp` the only code file touched; W1's precondition deleted cleanly, W2's `ASSERT_FALSE(producedTerminalKinds.empty())` in place with both named checks surviving. **The closure claim is upheld.**
 - **A theorem, not a conjecture.** For a cellular embedding, `F = E − V + χ`. The measured torus network has `V = 48`, `E = 48`, and `χ = 0`, giving `F = 0` — impossible, since the complement is non-empty. At least one complementary component is not a disc. Generalized: a disjoint union of closed curves always has `E = V`, so **no disjoint union of closed curves can ever be a cut graph of the torus**. The gap is architectural, not a property of the committed fixture, and cannot be fixed by choosing better feature curves.
@@ -3876,7 +3915,7 @@ User-authorized documentation cleanup after `M3-CP4ab-TB-R3` accepted the cumula
 **Retained current/latest M3 CP4 documents — byte-for-byte unchanged by this cleanup:**
 
 - `Architecture_M3_CP4_DEFN_Frozen_Definitions.md` — SHA-256 `878bdb1f813cd70ffccfd6eb290bf26f1c5cc855379c16945d68d0e18700fb9e`
-- `Architecture_M3_CP4ab_TB_R3_Artifact_Only_Test_Benchmark_Report.md` — SHA-256 `8bfb445795259cbd6fd5ddd70b92b0481b2a7211d63bb66d7887f4d6b20fc2b6`
+- `M3_CP4ab_Closure_Record.md` — SHA-256 `8bfb445795259cbd6fd5ddd70b92b0481b2a7211d63bb66d7887f4d6b20fc2b6`
 - `Architecture_M3_Field_Aligned_Curve_Network_Code_Build_Plan.md` — SHA-256 `6545af24c9f47292e0046fa1af22d3619ea7ac7c00815e37984c7b5a7887b13b`
 - `M3_CP4ab_Closure_Record.md` — SHA-256 `e20a0bd90a6feff8bfad404973435f15169f7e38f538485fe32d0df0a206515a`
 
@@ -3884,45 +3923,45 @@ User-authorized documentation cleanup after `M3-CP4ab-TB-R3` accepted the cumula
 
 | Retired path | Bytes | SHA-256 | Archived material fact |
 |---|---:|---|---|
-| `Architecture_M3_CP4ab_CB_R5_Package_Independent_Review.md` | 16515 | `887278654357be901b3df5787841baafba84146c8d51c42b2e8aeb35b663fec4` | Independent package review verified the runtime-free/default-off CB-R5 instrumentation package but denied DG-R3 because fragment-corner reconstruction and per-identity evidence were not lossless. |
-| `Architecture_M3_CP4ab_CB_R6_Static_Authority_Independent_Review.md` | 20197 | `a203d5dbb485c7ca37069c2495462b834b70a668c87302659430510362bf1825` | Independent review upheld the R6 static stop, derived lawful fan-order authority from existing products, and authorized the bounded R7 route without reopening an earlier product. |
-| `Architecture_M3_CP4ab_CB_R6_Static_Authority_Independent_Review_Plan.md` | 5191 | `fe12168736e6ec320b5bfa2d20229d4bab5be6378f5475652162daa8d47b1238` | Review plan that froze the R6 authority questions, prohibited invented contact ordering, and required a single lawful owner before any later diagnostic. |
-| `Architecture_M3_CP4ab_CB_R7_Precondition_Independent_Review.md` | 13001 | `9be6f8c902c246b7aea15683222ddde5f3bf0adb378b1d7a3c241a9490afb8d6` | Rejected the prior orbit-side chaining construction as circular; moved the single writer for cyclic singularity-port order to A1 localSlot, transported through A2a ordinal, then consumed by A2b. |
-| `Architecture_M3_CP4ab_CB_R8_S0_Independent_Review.md` | 11694 | `80e8fecc6f6938da2edc2972911ed73101a6e2c4bbe7ff466a254278e0077958` | Confirmed the S0 boundary inconsistency was caused by mandatory edges not being split at trace terminal points and authorized the R9 mandatory-arc terminal split. |
-| `Architecture_M3_CP4ab_CB_R8_S0_Static_Precondition_Stop_Report.md` | 5253 | `548af27e808cc88d20831e440fed2dc130164ce88ca55231e37543bd5e0ce3cb` | Static precondition stop: a region reached the mesh boundary while its boundary walk lacked the corresponding mandatory boundary arc; implementation stopped before mutation and routed to Review. |
-| `Architecture_M3_CP4ab_DG_Artifact_Only_Test_Benchmark_Report.md` | 9106 | `ab0b371989e951cf257bb8eac729d4212c7b5b4f8a777b154ba12fb2da3332ac` | DG-R1 measured 4 walk orbits / 3 region drafts versus 2 whole-face cut components; all ten reds first hit RegionCutComponentCountDeficit, confirming the fragment-ownership finding and routing K2R→K3R→K4. |
-| `Architecture_M3_CP4ab_DG_R2_Independent_Review.md` | 25383 | `a716d843c170a534621ea123297d3b323397813aeefc219f66a34c087e3310b1` | Binding review localized support-face-corner conflation in V_int, kept ownership/connectivity settled, identified the latent B4 boundary issue, and selected instrumentation rather than another semantic patch. |
-| `Architecture_M3_CP4ab_DG_R3_Artifact_Only_Diagnostic_Report.md` | 7834 | `2cea170be6eeb750fea1a3425100739e4e86787dff319bd9003c306864a7e3f8` | Valid 12-identity diagnostic: 2 PASS / 10 FAIL, A4/B6 green, all ten reds first RegionEulerCharacteristicNotOne; focused cyclic-order sanity was 3/3 green. |
-| `Architecture_M3_CP4ab_DG_R3_Independent_Review.md` | 15593 | `3ba24e6aee08f0b70764896d1283b1271e7d2a91fd6e4b2cc28ea8e0542ba40a` | Adjudicated the DG-R3 Euler/vertex-incidence residue, froze the next bounded correction and S0 precondition route, and kept previously settled ownership/connectivity seams closed. |
-| `Architecture_M3_CP4ab_DG_R3_Independent_Review_Plan.md` | 7253 | `037d75def672768704232d6957386b85f8ce18c16f686e37d41e651145745f09` | Independent-review plan for the DG-R3 2/12 evidence, including the required Euler/fragment-incidence questions and stop conditions before another semantic change. |
-| `Architecture_M3_CP4ab_DG_R4_Artifact_Only_Diagnostic_Report.md` | 6736 | `dae757219d90f2ba48311b2e82bb3f9f8bc1097263dc71b94543559c7da35ccc` | Valid 12-identity diagnostic: 2 PASS / 10 FAIL, A4/B6 green, all ten reds first InvalidNetworkBinding before region construction. |
-| `Architecture_M3_CP4ab_DG_R4_Independent_Review.md` | 28457 | `faa96566f175673ebbabdc1f872a912e09edb4f2a3bc11509e4c166fd1a25517` | Binding review proved the missing barrier terminus was an A2a network-0-cell authority defect, froze U0–U8, and authorized the CB-R10 terminal-node publication correction. |
-| `Architecture_M3_CP4ab_DG_R4_Independent_Review_Plan.md` | 3411 | `f8793d510910652c110c279775c2227a62b8f4520f1753ceecd28b7120c843f0` | Independent-review plan for the DG-R4 InvalidNetworkBinding baseline and terminal-position authority question. |
-| `Architecture_M3_CP4ab_DG_R5_Artifact_Only_Diagnostic_Report.md` | 7186 | `1faef7e0aecdec95760ae06254f5615fe89af6f6df946ffaf875994a3e2fcb4e` | Valid focused diagnostic improved the frozen surface to 9/12; terminal binding cleared while A5, B2, and B4 remained as typed residue requiring Review. |
-| `Architecture_M3_CP4ab_DG_R5_Independent_Review.md` | 28361 | `b1f96907090d7dcee6778c40add9f93eee1120e56a0d566f30e38684be685c50` | Binding review classified A5/B2 as validation-ordering defects, B4 as bounded-surface Euler-oracle arithmetic, noted U5/U6 were outside the CP4ab selector, froze V0–V8, and authorized CB-R11. |
-| `Architecture_M3_CP4ab_DG_R5_Independent_Review_Plan.md` | 5158 | `5d3d8211bb7c8481d450c34fb2ad30ffa99d194f20a4250e37bc60b7d9e8fb59` | Review plan for the 9/12 DG-R5 residue, including accepted-authority U5/U6 re-proof and the validation-order/oracle decision. |
-| `Architecture_M3_CP4ab_DG_R6_Artifact_Only_Diagnostic_Report.md` | 5759 | `ee92ae03764d264ba3dfcd09b0cb3e15dd520448164b31fc6233a09c9c43fffc` | Focused immutable diagnostic passed 12/12 CP4ab plus 2/2 accepted CP3b U5/U6 (14/14) with package/source integrity preserved; routed to TB-R3. |
-| `Architecture_M3_CP4ab_K5_Routing_Independent_Review_Plan.md` | 19120 | `bcd9819ecd7e376f11e84c9c2e4e4814a882606896ebc5622683128ee88938ff` | Plan plus binding routing result that corrected the initial K5-only route, restored K3 fragment ownership as the semantic correction, and prescribed the DG-R1 measurement / K2R→K3R→K4 sequence. |
-| `Architecture_M3_CP4ab_R10_Terminal_Zero_Cell_Code_Build_Report.md` | 5312 | `3c156171c00925fc244595245d0dec162573a28a8679f65835de4f8d0d0b15f8` | Runtime-free CB-R10 published an A2a network 0-cell for barrier terminal events, compiled/package-passed, and created the package later used by DG-R5. |
-| `Architecture_M3_CP4ab_R11_Validation_Ordering_Code_Build_Report.md` | 7756 | `2ab9afb1dcf3b514549ad0744c4f72e987b34c7557bb53cc071c0f6a49525309` | Runtime-free CB-R11 hoisted structural validation before consumers and corrected the bounded-surface Euler oracle; package 9527801615 became the immutable source of DG-R6 and accepted TB-R3. |
-| `Architecture_M3_CP4ab_R2_Code_Build_Plan.md` | 8503 | `ea2948991762f74db51082b88be8e8833b2a1d5f93c9ed0ba2dd3655825a5ed6` | Bounded runtime-free K2R→K3R→K4 implementation plan following DG-R1, freezing fragment ownership before construction and strengthening A3 without weakening B1–B5. |
-| `Architecture_M3_CP4ab_R2_Code_Build_Report.md` | 4832 | `49f63b42005db9f325c3dee1e9ac6d06f2b44af290050a224b1c5e70406ccd88` | K2R→K3R→K4 compile/package PASS, runtime-free; produced immutable package 9485452946 and routed to TB-R1. |
-| `Architecture_M3_CP4ab_R4_Code_Build_Report.md` | 10690 | `ad0c8a06b7d1d73941bc89ef1fbdd7b5221be357475d1e4d18aabf9046914ac7` | Runtime-free correction of the fragment Euler proof / validation seam after TB-R2 Review; compile/package PASS and optional DG-R2 instrumentation route selected. |
-| `Architecture_M3_CP4ab_R5_Instrumentation_Code_Build_Report.md` | 17504 | `a98176d6d6686d1ed056293bb28e67d4cf0cb4a6c31c094d4a5175cda53fd479` | Default-off diagnostics-only fragment/orbit instrumentation compiled and packaged successfully without changing product semantics or executing runtime. |
-| `Architecture_M3_CP4ab_R6_Static_Authority_Code_Build_Report.md` | 8203 | `1ea1ddc75b3c97839b476cf348a04ef13d0bc4faa5bd5bcabb199988fc7ba380` | Static authority gate stopped before semantic mutation/build/package because a lawful distinct-contact order could not be invented inside R6. |
-| `Architecture_M3_CP4ab_R7_Cyclic_Port_Order_Code_Build_Plan.md` | 9230 | `b99d572d2abf39b54ea467cc26a599e67bd7e15bb71f185665cbd3a877b637d6` | Runtime-free plan for A1 fan-anchored cyclic port order, A2a ordinal transport, A2b consumption, invariant/tamper checks, and subsequent DG-R3 adjudication. |
-| `Architecture_M3_CP4ab_R7_Cyclic_Port_Order_Code_Build_Report.md` | 12764 | `ba6a9081b57a0e4b08a413f891cb29aedf8d0f482f275854b4b01b6970cf730a` | CB-R7 cyclic-port-order implementation and six-target package passed runtime-free; exact semantic source bd362ab5… / package 9502422252 advanced to DG-R3. |
-| `Architecture_M3_CP4ab_R9_Mandatory_Arc_Split_Code_Build_Report.md` | 6099 | `a7f70da42460cfe367be74da383d28b331f1f8e9a7f5429ec7190f79b0924e40` | Runtime-free CB-R9 split mandatory arcs at trace terminal nodes, compile/package-passed, and routed immutable package 9505724200 to DG-R4. |
-| `Architecture_M3_CP4ab_TB_R1_Independent_Review.md` | 16759 | `dd313c0f4f75e069ac2fa998dff45b6bc76bb6255e53a1ca5125f2f74b2267ca` | Independent review found the ownership correction was working, froze the fragment-complex N1–N6 representation, and routed the remaining disc-certificate representation correction; its original Euler clause was later withdrawn. |
-| `Architecture_M3_CP4ab_TB_R2_Artifact_Only_Test_Benchmark_Report.md` | 9340 | `86f0359b37300a3137663e2a9c39f89c8aaf657e4366e38cfad2ddfd5e96447a` | Valid immutable 316 gate returned 306/316 with accepted predecessor 304/304; connectivity cleared while the remaining nine-identity Euler baseline plus B3 ordering required Review. |
-| `Architecture_M3_CP4ab_TB_R2_Independent_Review.md` | 18336 | `82ef31006eff6c1cc70392962821cce0e091703131b55a81c6b948657a50991a` | Binding review proved the nine-identity baseline was a false rejection from the wrong F−E_int formula, established that the witness regions were genuine discs, and froze P1–P7 / CB-R4. |
-| `Architecture_M3_CP4ab_TB_R2_Independent_Review_Plan.md` | 6315 | `ae5797010d0ea4de458b15e40c41e2a68ef4a0e67cba86371e5fa7703beb8373` | Review plan for the 306/316 TB-R2 result; its questions and stop rules were discharged by the binding TB-R2 independent review and retained only as provenance. |
+| `M3_CP4ab_Closure_Record.md` | 16515 | `887278654357be901b3df5787841baafba84146c8d51c42b2e8aeb35b663fec4` | Independent package review verified the runtime-free/default-off CB-R5 instrumentation package but denied DG-R3 because fragment-corner reconstruction and per-identity evidence were not lossless. |
+| `M3_CP4ab_Closure_Record.md` | 20197 | `a203d5dbb485c7ca37069c2495462b834b70a668c87302659430510362bf1825` | Independent review upheld the R6 static stop, derived lawful fan-order authority from existing products, and authorized the bounded R7 route without reopening an earlier product. |
+| `M3_CP4ab_Closure_Record.md` | 5191 | `fe12168736e6ec320b5bfa2d20229d4bab5be6378f5475652162daa8d47b1238` | Review plan that froze the R6 authority questions, prohibited invented contact ordering, and required a single lawful owner before any later diagnostic. |
+| `M3_CP4ab_Closure_Record.md` | 13001 | `9be6f8c902c246b7aea15683222ddde5f3bf0adb378b1d7a3c241a9490afb8d6` | Rejected the prior orbit-side chaining construction as circular; moved the single writer for cyclic singularity-port order to A1 localSlot, transported through A2a ordinal, then consumed by A2b. |
+| `M3_CP4ab_Closure_Record.md` | 11694 | `80e8fecc6f6938da2edc2972911ed73101a6e2c4bbe7ff466a254278e0077958` | Confirmed the S0 boundary inconsistency was caused by mandatory edges not being split at trace terminal points and authorized the R9 mandatory-arc terminal split. |
+| `M3_CP4ab_Closure_Record.md` | 5253 | `548af27e808cc88d20831e440fed2dc130164ce88ca55231e37543bd5e0ce3cb` | Static precondition stop: a region reached the mesh boundary while its boundary walk lacked the corresponding mandatory boundary arc; implementation stopped before mutation and routed to Review. |
+| `M3_CP4ab_Closure_Record.md` | 9106 | `ab0b371989e951cf257bb8eac729d4212c7b5b4f8a777b154ba12fb2da3332ac` | DG-R1 measured 4 walk orbits / 3 region drafts versus 2 whole-face cut components; all ten reds first hit RegionCutComponentCountDeficit, confirming the fragment-ownership finding and routing K2R→K3R→K4. |
+| `M3_CP4ab_Closure_Record.md` | 25383 | `a716d843c170a534621ea123297d3b323397813aeefc219f66a34c087e3310b1` | Binding review localized support-face-corner conflation in V_int, kept ownership/connectivity settled, identified the latent B4 boundary issue, and selected instrumentation rather than another semantic patch. |
+| `M3_CP4ab_Closure_Record.md` | 7834 | `2cea170be6eeb750fea1a3425100739e4e86787dff319bd9003c306864a7e3f8` | Valid 12-identity diagnostic: 2 PASS / 10 FAIL, A4/B6 green, all ten reds first RegionEulerCharacteristicNotOne; focused cyclic-order sanity was 3/3 green. |
+| `M3_CP4ab_Closure_Record.md` | 15593 | `3ba24e6aee08f0b70764896d1283b1271e7d2a91fd6e4b2cc28ea8e0542ba40a` | Adjudicated the DG-R3 Euler/vertex-incidence residue, froze the next bounded correction and S0 precondition route, and kept previously settled ownership/connectivity seams closed. |
+| `M3_CP4ab_Closure_Record.md` | 7253 | `037d75def672768704232d6957386b85f8ce18c16f686e37d41e651145745f09` | Independent-review plan for the DG-R3 2/12 evidence, including the required Euler/fragment-incidence questions and stop conditions before another semantic change. |
+| `M3_CP4ab_Closure_Record.md` | 6736 | `dae757219d90f2ba48311b2e82bb3f9f8bc1097263dc71b94543559c7da35ccc` | Valid 12-identity diagnostic: 2 PASS / 10 FAIL, A4/B6 green, all ten reds first InvalidNetworkBinding before region construction. |
+| `M3_CP4ab_Closure_Record.md` | 28457 | `faa96566f175673ebbabdc1f872a912e09edb4f2a3bc11509e4c166fd1a25517` | Binding review proved the missing barrier terminus was an A2a network-0-cell authority defect, froze U0–U8, and authorized the CB-R10 terminal-node publication correction. |
+| `M3_CP4ab_Closure_Record.md` | 3411 | `f8793d510910652c110c279775c2227a62b8f4520f1753ceecd28b7120c843f0` | Independent-review plan for the DG-R4 InvalidNetworkBinding baseline and terminal-position authority question. |
+| `M3_CP4ab_Closure_Record.md` | 7186 | `1faef7e0aecdec95760ae06254f5615fe89af6f6df946ffaf875994a3e2fcb4e` | Valid focused diagnostic improved the frozen surface to 9/12; terminal binding cleared while A5, B2, and B4 remained as typed residue requiring Review. |
+| `M3_CP4ab_Closure_Record.md` | 28361 | `b1f96907090d7dcee6778c40add9f93eee1120e56a0d566f30e38684be685c50` | Binding review classified A5/B2 as validation-ordering defects, B4 as bounded-surface Euler-oracle arithmetic, noted U5/U6 were outside the CP4ab selector, froze V0–V8, and authorized CB-R11. |
+| `M3_CP4ab_Closure_Record.md` | 5158 | `5d3d8211bb7c8481d450c34fb2ad30ffa99d194f20a4250e37bc60b7d9e8fb59` | Review plan for the 9/12 DG-R5 residue, including accepted-authority U5/U6 re-proof and the validation-order/oracle decision. |
+| `M3_CP4ab_Closure_Record.md` | 5759 | `ee92ae03764d264ba3dfcd09b0cb3e15dd520448164b31fc6233a09c9c43fffc` | Focused immutable diagnostic passed 12/12 CP4ab plus 2/2 accepted CP3b U5/U6 (14/14) with package/source integrity preserved; routed to TB-R3. |
+| `M3_CP4ab_Closure_Record.md` | 19120 | `bcd9819ecd7e376f11e84c9c2e4e4814a882606896ebc5622683128ee88938ff` | Plan plus binding routing result that corrected the initial K5-only route, restored K3 fragment ownership as the semantic correction, and prescribed the DG-R1 measurement / K2R→K3R→K4 sequence. |
+| `M3_CP4ab_Closure_Record.md` | 5312 | `3c156171c00925fc244595245d0dec162573a28a8679f65835de4f8d0d0b15f8` | Runtime-free CB-R10 published an A2a network 0-cell for barrier terminal events, compiled/package-passed, and created the package later used by DG-R5. |
+| `M3_CP4ab_Closure_Record.md` | 7756 | `2ab9afb1dcf3b514549ad0744c4f72e987b34c7557bb53cc071c0f6a49525309` | Runtime-free CB-R11 hoisted structural validation before consumers and corrected the bounded-surface Euler oracle; package 9527801615 became the immutable source of DG-R6 and accepted TB-R3. |
+| `M3_CP4ab_Closure_Record.md` | 8503 | `ea2948991762f74db51082b88be8e8833b2a1d5f93c9ed0ba2dd3655825a5ed6` | Bounded runtime-free K2R→K3R→K4 implementation plan following DG-R1, freezing fragment ownership before construction and strengthening A3 without weakening B1–B5. |
+| `M3_CP4ab_Closure_Record.md` | 4832 | `49f63b42005db9f325c3dee1e9ac6d06f2b44af290050a224b1c5e70406ccd88` | K2R→K3R→K4 compile/package PASS, runtime-free; produced immutable package 9485452946 and routed to TB-R1. |
+| `M3_CP4ab_Closure_Record.md` | 10690 | `ad0c8a06b7d1d73941bc89ef1fbdd7b5221be357475d1e4d18aabf9046914ac7` | Runtime-free correction of the fragment Euler proof / validation seam after TB-R2 Review; compile/package PASS and optional DG-R2 instrumentation route selected. |
+| `M3_CP4ab_Closure_Record.md` | 17504 | `a98176d6d6686d1ed056293bb28e67d4cf0cb4a6c31c094d4a5175cda53fd479` | Default-off diagnostics-only fragment/orbit instrumentation compiled and packaged successfully without changing product semantics or executing runtime. |
+| `M3_CP4ab_Closure_Record.md` | 8203 | `1ea1ddc75b3c97839b476cf348a04ef13d0bc4faa5bd5bcabb199988fc7ba380` | Static authority gate stopped before semantic mutation/build/package because a lawful distinct-contact order could not be invented inside R6. |
+| `M3_CP4ab_Closure_Record.md` | 9230 | `b99d572d2abf39b54ea467cc26a599e67bd7e15bb71f185665cbd3a877b637d6` | Runtime-free plan for A1 fan-anchored cyclic port order, A2a ordinal transport, A2b consumption, invariant/tamper checks, and subsequent DG-R3 adjudication. |
+| `M3_CP4ab_Closure_Record.md` | 12764 | `ba6a9081b57a0e4b08a413f891cb29aedf8d0f482f275854b4b01b6970cf730a` | CB-R7 cyclic-port-order implementation and six-target package passed runtime-free; exact semantic source bd362ab5… / package 9502422252 advanced to DG-R3. |
+| `M3_CP4ab_Closure_Record.md` | 6099 | `a7f70da42460cfe367be74da383d28b331f1f8e9a7f5429ec7190f79b0924e40` | Runtime-free CB-R9 split mandatory arcs at trace terminal nodes, compile/package-passed, and routed immutable package 9505724200 to DG-R4. |
+| `M3_CP4ab_Closure_Record.md` | 16759 | `dd313c0f4f75e069ac2fa998dff45b6bc76bb6255e53a1ca5125f2f74b2267ca` | Independent review found the ownership correction was working, froze the fragment-complex N1–N6 representation, and routed the remaining disc-certificate representation correction; its original Euler clause was later withdrawn. |
+| `M3_CP4ab_Closure_Record.md` | 9340 | `86f0359b37300a3137663e2a9c39f89c8aaf657e4366e38cfad2ddfd5e96447a` | Valid immutable 316 gate returned 306/316 with accepted predecessor 304/304; connectivity cleared while the remaining nine-identity Euler baseline plus B3 ordering required Review. |
+| `M3_CP4ab_Closure_Record.md` | 18336 | `82ef31006eff6c1cc70392962821cce0e091703131b55a81c6b948657a50991a` | Binding review proved the nine-identity baseline was a false rejection from the wrong F−E_int formula, established that the witness regions were genuine discs, and froze P1–P7 / CB-R4. |
+| `M3_CP4ab_Closure_Record.md` | 6315 | `ae5797010d0ea4de458b15e40c41e2a68ef4a0e67cba86371e5fa7703beb8373` | Review plan for the 306/316 TB-R2 result; its questions and stop rules were discharged by the binding TB-R2 independent review and retained only as provenance. |
 | `Architecture_M3_CP4b_Mandatory_Independent_Review_Plan.md` | 20932 | `9f79f71b35a79c3c767f307d32fdc33b715be237d2026fb33b808c7aaf41bec0` | Plan containing the binding mandatory-review result: CP4a flood-fill region ownership was prohibited/vacuous, CP4b rewrote accepted authority, the face/component equality was self-referential, K1–K7 were frozen, and CP4a+CP4b were rescoped to CP4ab at gate 316. |
 | `evidence/M3_CP4ab_DG_R2/README.md` | 1253 | `938853be5f03662ae8f4e080c3bea84c864916b9db3e7053823f50a98d01af15` | Repository-side raw-evidence index for DG-R2; recorded exact source/package provenance and why stdout/stderr were retained without rerun. |
 | `evidence/M3_CP4ab_DG_R2/stderr.txt` | 12059 | `9c1d492558fec0a4f85094c25d649223a69bf175c1884e5d9fc8fdcc57a50b6b` | Raw DG-R2 stderr retained the first typed Euler rejections and follow-on diagnostic/helper output used by the independent review. |
 | `evidence/M3_CP4ab_DG_R2/stdout.txt` | 6937 | `4cec3efdeeda65c1e6d0c7c9384541659ee9dacbad55b095dec7548d7dd09d9e` | Raw DG-R2 stdout retained the exact selected identities and semantic execution transcript used by the independent review. |
 
-The retired review plans/reports are no longer resume authority. Binding semantics they introduced remain frozen in `Architecture_M3_CP4_DEFN_Frozen_Definitions.md`; accepted CP4ab outcome/evidence remains in `M3_CP4ab_Closure_Record.md` and `Architecture_M3_CP4ab_TB_R3_Artifact_Only_Test_Benchmark_Report.md`; CP4c execution authority remains in `Architecture_M3_Field_Aligned_Curve_Network_Code_Build_Plan.md`. No source, test, fixture, selector, build, package, or runtime authority is changed by this documentation consolidation.
+The retired review plans/reports are no longer resume authority. Binding semantics they introduced remain frozen in `Architecture_M3_CP4_DEFN_Frozen_Definitions.md`; accepted CP4ab outcome/evidence remains in `M3_CP4ab_Closure_Record.md` and `M3_CP4ab_Closure_Record.md`; CP4c execution authority remains in `Architecture_M3_Field_Aligned_Curve_Network_Code_Build_Plan.md`. No source, test, fixture, selector, build, package, or runtime authority is changed by this documentation consolidation.
 
 
 ### 2026-08-24 — `M3-CP4ab-TB-R3`: cumulative 316 acceptance GREEN; CP4ab closed
@@ -3953,7 +3992,7 @@ M3 packages **34**; acceptance **0/3**; diagnostics **1/2 consumed**; stable **4
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic consumed.** Output:
-`Architecture_M3_CP4ab_DG_R5_Independent_Review.md`, binding.
+`M3_CP4ab_Closure_Record.md`, binding.
 
 **R1 — the U-series terminal-0-cell subcause is RESOLVED.** DG-R5 moved the gate **2/12 -> 9/12** with
 zero `InvalidNetworkBinding`. The DG-R4 Review's static predictions (`9/11/9/3`, fan `8`) are discharged
@@ -4007,7 +4046,7 @@ Valid artifact-only run/job `32695156248 / 97335775412` executes the frozen **12
 
 Semantic result **9 PASS / 3 FAIL**. A1/A2/A3/A4/A6/B1/B3/B5/B6 pass; A4/B6 remain green; the DG-R4 `InvalidNetworkBinding` barrier is absent. A5's unowned-source-face tamper now receives `RegionEulerCharacteristicNotOne` instead of `RegionSourceFaceUnowned`; B2's duplicated-walk tamper receives raw `RotationSystemInconsistent` with no arc payload instead of `RegionBoundaryNotSingleWalk`; B4's positive independent oracle returns false, consistent with its already-queued latent boundary-equation defect. Valid DG consumes diagnostic **1/2**, no acceptance attempt; stable totals remain **42 / 14 / 28**, debt **5**, packages **33**.
 
-Preliminary run `32694960195` failed stale package metadata path assumptions before runtime and executed zero identities, so it consumes nothing. Its corrected retry exposed one reporting pitfall: the machine TSV's B2 first-rejection grep captured the expected enum before the actual enum; raw streams are authoritative. Exact next is `M3-CP4ab-DG-R5-INDEPENDENT-REVIEW`; TB-R3, B4 correction, and CP4c remain blocked. Exact report/plan: `Architecture_M3_CP4ab_DG_R5_Artifact_Only_Diagnostic_Report.md`, `Architecture_M3_CP4ab_DG_R5_Independent_Review_Plan.md`.
+Preliminary run `32694960195` failed stale package metadata path assumptions before runtime and executed zero identities, so it consumes nothing. Its corrected retry exposed one reporting pitfall: the machine TSV's B2 first-rejection grep captured the expected enum before the actual enum; raw streams are authoritative. Exact next is `M3-CP4ab-DG-R5-INDEPENDENT-REVIEW`; TB-R3, B4 correction, and CP4c remain blocked. Exact report/plan: `M3_CP4ab_Closure_Record.md`, `M3_CP4ab_Closure_Record.md`.
 
 ### 2026-08-24 — `M3-CP4ab-CB-R10`: publish barrier terminal 0-cells; compile/package PASS
 
@@ -4015,13 +4054,13 @@ Preliminary run `32694960195` failed stale package metadata path assumptions bef
 
 Changed-owner compile `32692398892 / 97328305141` PASS; result artifact `9507700639` digest `a4bedc89a33ae51cf2237689b09712a301127324fd6e1fbe86f8089310f0d95c`. Six-target package compile `32692557352 / 97328729432` PASS; immutable package `9507735791`, digest `025cc6585de3165a4da6a562e0b5114947e3f88325bbe6d12571e782475058d6`; exact-source archive `fb2610e2236b0465ffcd7d302094406a401944705310e8fd899f0561edae28fe`; manifest **27/27 PASS**; five source statuses empty; `runtimeExecution=false`. M3 packages **33**; acceptance **0/3**; diagnostics **0/2**; stable **42 / 14 / 28**; debt **5**; latest accepted runtime remains CP3b **304/304**.
 
-Exact next is artifact-only `M3-CP4ab-DG-R5` on package `9507735791`, frozen selector **12/12/12** one process each. It must test the derived U-series counts/degree and absence of the prior terminal-binding first rejections without rebuild/relink/repair/discovery/mutation; a valid run spends diagnostic **1/2**, no acceptance attempt. Exact report: `Architecture_M3_CP4ab_R10_Terminal_Zero_Cell_Code_Build_Report.md`.
+Exact next is artifact-only `M3-CP4ab-DG-R5` on package `9507735791`, frozen selector **12/12/12** one process each. It must test the derived U-series counts/degree and absence of the prior terminal-binding first rejections without rebuild/relink/repair/discovery/mutation; a valid run spends diagnostic **1/2**, no acceptance attempt. Exact report: `M3_CP4ab_Closure_Record.md`.
 
 ### 2026-08-24 — `M3-CP4ab-DG-R4-INDEPENDENT-REVIEW`: the missing terminus is an A2a authority defect
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic gate consumed.** Output:
-`Architecture_M3_CP4ab_DG_R4_Independent_Review.md`, binding.
+`M3_CP4ab_Closure_Record.md`, binding.
 
 **Disposition: A2a / product authority defect.** A2a is the single writer of network 0-cells. Its
 transport loop has exactly one exit primitive and it returns an edge (`field_aligned_outgoing_carrier`,
@@ -4074,14 +4113,14 @@ Static localization: the network publishes only the terminal barrier edge key an
 
 **Code + Build only; no generated Directional runtime.** Binding S0 Review T0-T6 completed on semantic source `7a9e174e9375dd917ea00989f9801eaf61b725dc`. T0 mapped trace 0 -> `(6,7)`, trace 1 -> `(8,9)`, trace 2 -> `(6,10)`, each `k=1`, so no multi-terminal stop fired. A2b now splits a parent mandatory edge at its barrier terminal graph node, preserves parent-edge provenance, types unresolved `k>=2` ordering as `MandatoryEdgeTerminalOrderUnresolved`, guards owned mesh-boundary edges with `RegionOwnedBoundaryEdgeMissingFromWalk`, and then applies the reviewed mesh-boundary `V_int` exclusion. A4's oracle was updated to recognize preserved parent edges through their plan-arc pieces; tests were compiled, not executed.
 
-Affected-owner compile `32686030291 / 97311178306` PASS. Six-target package compile `32686147560 / 97311520663` PASS; immutable package `9505724200`, artifact digest `d5967c204844980a7c2563409335429c3a250bc874bebb8107b4ac9041809b2f`, source archive `46bda0d3dcce8649a9a71c7b0e17710f9cef73aa21faf021a26b22d2b24da42d`, manifest **27/27 PASS**, source clean, `runtimeExecution=false`. M3 packages **32**; acceptance **0/3**; diagnostics **0/2**; stable **42 / 14 / 28**; debt **5**. Exact next: `M3-CP4ab-DG-R4` on package `9505724200`; TB-R3/B4/CP4c remain blocked. Exact report: `Architecture_M3_CP4ab_R9_Mandatory_Arc_Split_Code_Build_Report.md`.
+Affected-owner compile `32686030291 / 97311178306` PASS. Six-target package compile `32686147560 / 97311520663` PASS; immutable package `9505724200`, artifact digest `d5967c204844980a7c2563409335429c3a250bc874bebb8107b4ac9041809b2f`, source archive `46bda0d3dcce8649a9a71c7b0e17710f9cef73aa21faf021a26b22d2b24da42d`, manifest **27/27 PASS**, source clean, `runtimeExecution=false`. M3 packages **32**; acceptance **0/3**; diagnostics **0/2**; stable **42 / 14 / 28**; debt **5**. Exact next: `M3-CP4ab-DG-R4` on package `9505724200`; TB-R3/B4/CP4c remain blocked. Exact report: `M3_CP4ab_Closure_Record.md`.
 
 
 ### 2026-08-24 — `M3-CP4ab-CB-R8-S0-INDEPENDENT-REVIEW`: mandatory arcs are never split at trace terminal points
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic gate consumed.** Result:
-`Architecture_M3_CP4ab_CB_R8_S0_Independent_Review.md`, binding.
+`M3_CP4ab_Closure_Record.md`, binding.
 
 **`M3-CP4ab-CB-R8`'s S0 stop was correct and its derivation is upheld in full**, re-derived
 independently this turn from the witness definition. It consumed nothing and prevented S1 from making
@@ -4133,7 +4172,7 @@ authority **CP3b 304/304**. DG-R4, TB-R3, B4 correction, and CP4c remain blocked
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic gate consumed.** Result:
-`Architecture_M3_CP4ab_DG_R3_Independent_Review.md`, binding.
+`M3_CP4ab_Closure_Record.md`, binding.
 
 **Verdict: `V_int` over-counts by exactly one in both baselines, because the interior rule the planning
 agent froze omitted the mesh boundary. CB-R7 implemented that rule faithfully — the rule is the defect.**
@@ -4198,7 +4237,7 @@ Diagnostic accounting advances **0/2 -> 1/2**; acceptance stays **0/3**; package
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic gate consumed.** Result:
-`Architecture_M3_CP4ab_CB_R6_Static_Authority_Independent_Review.md`, binding.
+`M3_CP4ab_Closure_Record.md`, binding.
 
 **Mandated question answered: OPTION (1).** Fragment-corner incidence **is** uniquely reconstructible
 from existing accepted authority **without any carrier-contact order**. **No earlier semantic stage is
@@ -4255,7 +4294,7 @@ blocked. Exact next is `M3-CP4ab-CB-R7`.
 ### 2026-08-23 — `M3-CP4ab-CB-R5-PACKAGE-INDEPENDENT-REVIEW`: Insufficient Evidence; DG-R3 denied
 
 **Independent Review / planning and evidence only.** Output:
-`Architecture_M3_CP4ab_CB_R5_Package_Independent_Review.md`. No product, header/API, test,
+`M3_CP4ab_Closure_Record.md`. No product, header/API, test,
 helper, fixture, selector, build/workflow, or normative-definition change; no compile, package,
 generated binary, test, benchmark, DG, TB, diagnostic, or acceptance execution.
 
@@ -4317,7 +4356,7 @@ acceptance **0/3**, stable **42/14/28**, debt **5**. Exact next is
 
 **Independent Review / planning only.** No product, test, fixture, selector, build configuration,
 compile, package, generated runtime, test, benchmark, acceptance attempt, or diagnostic gate executed.
-Binding output: `Architecture_M3_CP4ab_DG_R2_Independent_Review.md`.
+Binding output: `M3_CP4ab_Closure_Record.md`.
 
 DG-R2 is valid semantic diagnostic evidence on exact CB-R4 source/package
 `ae13180a188a72c4e19c614052ee56370162f1af / 9498456436`: exact producer binary and frozen
@@ -4372,7 +4411,7 @@ M3 packages 28 -> **29**. Acceptance remains **0/3**, diagnostics **0/2**, stabl
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic gate consumed.** Result:
-`Architecture_M3_CP4ab_TB_R2_Independent_Review.md`, binding.
+`M3_CP4ab_Closure_Record.md`, binding.
 
 **Verdict: the nine-identity `RegionEulerCharacteristicNotOne` baseline is a FALSE REJECTION caused by a
 formula the planning agent prescribed. The regions are genuine discs.** CB-R3 implemented the
@@ -4446,7 +4485,7 @@ Exact next is `M3-CP4ab-TB-R2`, package `9496035583`; valid completion consumes 
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic gate consumed.** Result:
-`Architecture_M3_CP4ab_TB_R1_Independent_Review.md`, binding. Verdict: **the correction is working; do
+`M3_CP4ab_Closure_Record.md`, binding. Verdict: **the correction is working; do
 not reopen ownership.**
 
 - **TB-R1 was progress, not a stall.** 307/316 with the accepted predecessor 304/304 green.
@@ -4498,7 +4537,7 @@ cost and the mandatory-review ratchet resets with it. **Diagnostic gates remain 
 authorization named attempts and was not extended further — so CB-R3 advances directly to
 `M3-CP4ab-TB-R2`, which will be the first evidence.
 
-`Architecture_M3_CP4ab_R3_Code_Build_Plan.md` is upheld and **completed** by this Review, which governs
+`M3_CP4ab_Closure_Record.md` is upheld and **completed** by this Review, which governs
 where they differ. M3 packages remain **27**, stable accounting **42 / 14 / 28**, produced-witness debt
 **5**, `PR8-R042` active stable, latest accepted runtime authority **CP3b 304/304**, CP4c blocked. Exact
 next is `M3-CP4ab-CB-R3`.
@@ -4557,7 +4596,7 @@ that resumed past a breakpoint without RIP rewind. Neither affects product/packa
 
 **Independent Review / planning only. No product, test, fixture, selector, build, package, or runtime;
 no acceptance attempt and no diagnostic gate consumed.** Result is Part A of
-`Architecture_M3_CP4ab_K5_Routing_Independent_Review_Plan.md` and is binding. Decision: **Option C**,
+`M3_CP4ab_Closure_Record.md` and is binding. Decision: **Option C**,
 an ordered K2R/K3R bundle preceded by one measurement gate.
 
 - **The DG routing was wrong.** `RegionCutComponentCountDeficit` routes to **K3, not K5**. The `-> K5`
@@ -4627,7 +4666,7 @@ authority remains **CP3b 304/304**. Exact next is `M3-CP4ab-DG-R1`.
 - Mandatory Review Part A §A.6/F5 already classifies the underlying `cutComponents.size() == drafts.size()` requirement as a self-referential precondition that prevents non-cellular/non-disc topology from reaching certification. Part A §A.7 assigns removal/replacement of that equality precondition to **K3**; **K5 only freezes B1–B5 against weakening**. Therefore the DG's frozen `RegionCutComponentCountDeficit -> K5` routing cannot authorize the needed semantic correction without contradicting the binding Review.
 - Exact ownership proof blocks a K5-only workaround: with fewer components than drafts, one-to-one whole-component ownership is impossible; sharing one cut component's source faces across regions violates exact-once ownership, while grouping/refining boundary orbits and cut components changes the K2/K3 region-construction contract. No prohibited order/BFS/proximity/A0/fallback authority was introduced.
 - No semantic source/test/fixture/selector/build-configuration bytes changed; no prepackage/package compile was needed because no new semantic source exists; no generated Directional runtime ran. M3 packages stay **26**; CP4ab acceptance stays **0/3**; diagnostic budget stays **1/2**; stable accounting stays **42 / 14 / 28**, debt **5**; `PR8-R042` remains active; CP4c remains blocked.
-- Exact next is independent Review **`M3-CP4ab-K5-ROUTING-REVIEW`** under `Architecture_M3_CP4ab_K5_Routing_Independent_Review_Plan.md`. It must reconcile the DG routing with mandatory Review K3 and publish exactly one replacement Code + Build plan or stop decision. No second DG or acceptance attempt is authorized before that Review.
+- Exact next is independent Review **`M3-CP4ab-K5-ROUTING-REVIEW`** under `M3_CP4ab_Closure_Record.md`. It must reconcile the DG routing with mandatory Review K3 and publish exactly one replacement Code + Build plan or stop decision. No second DG or acceptance attempt is authorized before that Review.
 
 ### 2026-08-22 — M3 CP4ab attempt-free DG localizes all ten prior reds to `RegionCutComponentCountDeficit`; K5 selected
 

@@ -283,7 +283,7 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     terminates traces at singular vertices before vertex-star transit ever runs, so a vertex-star witness with a
     non-flat centre must carry `Σ_cycle effort = −4K` and a matching composing to lift `0`, or the vertex it is
     built around is a singularity and the path it exists to test is unreachable.
-    `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §5.
+    `M3_CP4c_Consolidated_Record.md` (folded `Architecture_M3_CP4c3_TB7_Independent_Review_Record`) §5.
 
 22s. **A shared fixture helper that returns all-or-nothing converts every downstream failure into a blackout over
     every upstream contract that uses it.** `cp4c_mechanical_fixture()` throws unless all five of
@@ -296,7 +296,7 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     **Scope a fixture helper's precondition to what its consumers actually read**, or give it per-stage accessors, so
     an identity is blocked only by the products it asserts about. A helper is also a gate: an over-strong
     precondition silently converts an unrelated red into missing evidence, which is the most expensive kind because
-    it looks like nothing happened. `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §5.
+    it looks like nothing happened. `M3_CP4c_Consolidated_Record.md` (folded `Architecture_M3_CP4c3_TB10_Independent_Review_Record`) §5.
 
 23. **A loop guard is not effective merely because one exists; its bound must terminate expensive work before the process becomes operationally stuck.** TB-R8 already had two nominal guards: exact tracing tracks visited states and a structural step budget, and `BigInteger::gcd` throws after 10,000 Euclidean iterations. Yet the prescribed sphere received a trace budget of **1,775,616** states, one identity spent 853 s before the GCD backstop fired, and the next sphere identity still had to be cancelled. For geometry with exact arithmetic, guard the semantic progress/cycle at the owning algorithm with a deterministic, practically bounded finite-work contract. Keep low-level arithmetic guards as backstops; do not substitute CI/test wall-clock timeouts for a product termination invariant.
 
@@ -1265,7 +1265,7 @@ building any conclusion on it.**
     destroyed at a stage boundary is unexecuted authority in the sense of 56, wearing a diagnostic's costume. A
     related trap the same episode exposed: publishing *richer* rows for a datum that is semantically wrong makes the
     wrong decision better documented, so freeze the audit contract for the corrected datum before extending any
-    projection. `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` §AX8.
+    projection. `M3_CP4c_Frozen_Definitions.md` Part VI §AX8.
 76. **When an exact decision has no bounded algebraic representation, the budget is part of the architecture — and
     the measured case is not the worst case.** Electing a developed vertex sector is deciding the sign of a signed
     sum of arccosines: each face angle has `cos θ = D/√P`, `sin θ = √Q/√P` with `D`, `P`, `Q` exact rationals, so
@@ -1313,7 +1313,7 @@ building any conclusion on it.**
     and ownership of its boundary are not the same relation, and only the second is allowed to be half-open.
     This is the sharpest form yet of the single-authority family: not two authorities for one datum, but **one
     correct rule reused for a question it was not written to answer**.
-    `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §3, §6.
+    `M3_CP4c_Consolidated_Record.md` (folded `Architecture_M3_CP4c3_TB7_Independent_Review_Record`) §3, §6.
 
 78. **A guarantee is scoped by its call graph, not by its name.** Accepted identity
     `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly` has passed every gate since it
@@ -1375,7 +1375,7 @@ building any conclusion on it.**
     ones that least need a name, and an instrumentation measure scoped by "add a reason" will be satisfied by the
     easy half unless it says otherwise. Write the measure as a predicate over sites — *"any site constructing this
     error without assigning a reason"* — and require the implementer to report the count.
-    `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §3.
+    `M3_CP4c_Consolidated_Record.md` (folded `Architecture_M3_CP4c3_TB10_Independent_Review_Record`) §3.
 
 85. **Count every boundary that drops the datum before repairing one — the loss you can see is usually the last
     one.** TB10 correctly observed that `RemeshPipeline::cut_graph_failure_locus` publishes two of the ten fields
@@ -1387,7 +1387,7 @@ building any conclusion on it.**
     worth keeping: when one stage boundary in a file publishes everything it holds and the neighbouring one
     publishes two fields, the asymmetry is the finding — here the *atlas* failure in the same function renders
     `incompleteCycleBasisReason` plus full per-region rows, forty lines above the cut-graph failure that renders
-    almost nothing. `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §3.3.
+    almost nothing. `M3_CP4c_Consolidated_Record.md` (folded `Architecture_M3_CP4c3_TB10_Independent_Review_Record`) §3.3.
 
 84. **A fail-closed uniqueness assertion must compare the whole key it asserts on, or say why not.** `RayOrderKey`
     sorts on six members - `primary`, `secondary`, `kind`, `trace`, `arc`, `orientation` - and
@@ -1476,7 +1476,7 @@ building any conclusion on it.**
     Two controls fall out. **When two consumers share a predicate, diff what each one *skips* before concluding
     anything from which one failed** — the guards are the contract, and only one of them is usually written down.
     And **when a divergence is found, settle the contract once and apply it in both**, rather than making the
-    stricter one match the observed failure. `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §5.
+    stricter one match the observed failure. `M3_CP4c_Consolidated_Record.md` (folded `Architecture_M3_CP4c3_TB16_Independent_Review_Record`) §5.
 
 96. **An earlier identical check that passed is evidence about the input, not noise — order of execution across
     functions is usable the way order across turns is (89).** TB16 retained only `sourceFace`, yet the failing
@@ -1487,7 +1487,7 @@ building any conclusion on it.**
     failed to publish.
     The general move: **when a failure is under-instrumented, look for a sibling check that saw the same input and
     reached a different verdict, and let the difference between their guards do the work.** It is often cheaper and
-    stronger than the diagnostic turn it replaces. `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §5.2.
+    stronger than the diagnostic turn it replaces. `M3_CP4c_Consolidated_Record.md` (folded `Architecture_M3_CP4c3_TB16_Independent_Review_Record`) §5.2.
 
 95. **A diagnostic that is unreachable on the failing path is not a diagnostic.** `build_regions` computes the
     actual fragment-orbit count, the trace-piece count and the expected count for every face and formats all three

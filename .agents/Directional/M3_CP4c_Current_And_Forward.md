@@ -4,7 +4,7 @@
 family: where the checkpoint stands, what the next turn must do, which candidates are open, and which surfaces are
 deferred under their own owners. Superseded per-turn plans, reports and review records are folded into
 `M3_CP4c_Consolidated_Record.md`; normative definitions live in
-`Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md`; selector files remain byte-frozen alongside.
+`M3_CP4c_Frozen_Definitions.md` Part VI; selector files remain byte-frozen alongside.
 
 Anything in this file that is no longer current is moved to the consolidated historical record, not deleted from
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
@@ -137,7 +137,7 @@ After the durable start-of-turn checklist, load:
 2. **this file** — current state, frozen successor, candidate index.
 3. `Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` — the frozen **CB20** scope, §10 BS0–BS9.
 4. `Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-5. `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — normative definitions and amendments.
+5. `M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
 6. `GMP_COMPILE_POLICY.md` — mandatory for every compile.
 7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 8. `M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed.

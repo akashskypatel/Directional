@@ -139,8 +139,8 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 ## 4. CP4c-3 carry-forward summary
 
-This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
-`Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
+This section is navigation only; `M3_CP4c_Frozen_Definitions.md` Part IV and
+`M3_CP4c_Frozen_Definitions.md` Part VI remain normative. Current measured runtime authority is
 `Architecture_M3_CP4c3_TB16_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is CB19/package 87.
 
 ### `M3-CP4c-3-TB16` — current measured runtime boundary
@@ -390,7 +390,7 @@ Stable accounting remains **44 / 14 / 30**, debt **5**, packages **68**; TB1 add
 
 ### `M3-CP4c-3-DEFN-R1` — Amendment 15 (measures AM0–AM9)
 
-Record: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`. Normative record: `DESIGN.md` §7.2.1
+Record: `M3_CP4c_Frozen_Definitions.md` Part V. Normative record: `DESIGN.md` §7.2.1
 **Amendment 15**. Definition, review and planning in one turn under the standing cadence; no runtime, no compile,
 no packaging, no gate execution, and no product/test/fixture/selector byte changed.
 
@@ -796,11 +796,10 @@ This index exists so that citations elsewhere still resolve. `CHANGELOG.md`, thi
 `Regression_Root_Cause_Tracker.md` cite these filenames as statements about past turns; those citations were
 deliberately **not** rewritten, because they describe what a turn produced at the time. Look the name up here.
 
-**Not folded, and still live authority:** the frozen-definition chain
-(`Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`, `…_DEFN_R1_…`, `…_DEFN_R2_…`,
-`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`, `…_DEFN_R1_…`, `…_DEFN_R2_…`), every
-`Required_Green_Selector_*.txt`, the current `M3-CP4c-3-TB17` report and review record, and
-`M3_CP4c_Current_And_Forward.md`.
+**Not folded, and still live authority:** every `Required_Green_Selector_*.txt`, the current `M3-CP4c-3-TB17`
+report and review record, `M3_CP4c_Current_And_Forward.md`, and the normative definitions — which were
+themselves consolidated on 2026-09-03 into `M3_CP4c_Frozen_Definitions.md`, carrying all six source documents
+**verbatim** with a citation map from the former filenames.
 
 | Folded document | Lines | Recorded verdict or title |
 |---|---:|---|

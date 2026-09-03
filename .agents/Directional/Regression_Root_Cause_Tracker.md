@@ -1,5 +1,13 @@
 ## M3-CP4c3-TB17-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
+> **Folded-document references.** Any `Architecture_M3_CP4*` filename cited below that no longer exists was
+> folded in a consolidation. Resolve it through the folded document index in
+> `M3_CP4c_Consolidated_Record.md` (CP4c per-turn plans, reports and review records),
+> `M3_CP4ab_Closure_Record.md` (CP4ab turn documents), or the citation map in
+> `M3_CP4c_Frozen_Definitions.md` (the six frozen-definition documents). Full text of every folded document
+> remains in git history. These citations are deliberately not rewritten: they state what a turn produced
+> at the time.
+
 - **Record:** `Architecture_M3_CP4c3_TB17_Independent_Review_Record.md`, measures **BRQ0-BRQ8** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
 - **BRQ0.** Source `bf971a6c` is an ancestor of branch HEAD with **no code drift**; selector 382 recomputes to
@@ -1947,7 +1955,7 @@
 - **Stable-count rationale:** gate-authoring finding on an unaccepted checkpoint. **+0 events / +0 recurrences.**
   Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
 - **DEFN-R2 resolution — CLOSED.** Gate membership was decided per identity in
-  `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` §7, and selector
+  `M3_CP4c_Frozen_Definitions.md` Part III §7, and selector
   `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` was created as the CP4c-2 required-green gate:
   whole-file SHA-256 `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`, computed from the created
   bytes and validated as 64 lowercase hex per AE4.

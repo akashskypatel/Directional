@@ -470,20 +470,20 @@ withdrawn except where an amendment says so explicitly.
 
 - **Amendment 12 — precondition, not repair.** Establishing a precondition *before* a product is derived is not
   repairing that product afterward. A2a′ runs before any region exists and may not read a `GlobalTopologyPlan`.
-  Source: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`; restated in `…DEFN_R1…` §3.5.
+  Source: `M3_CP4c_Frozen_Definitions.md` Part I; restated in `…DEFN_R1…` §3.5.
 - **Amendment 13 — the normative complex.** A2a′ certifies cellularity in the **actual embedded graph** of
   `FieldAlignedCurveNetwork ∪ cutEdges`: vertices are network nodes plus nodes created by cuts, edges are network
   arcs plus cut arcs, faces are the **dart orbits** under the node rotation system. Source-edge carrier provenance
   is not graph-edge authority. The whole-source-face / source-edge-barrier partition is **withdrawn as cellularity
   authority** and survives only as a cut-proposal heuristic and diagnostic provenance, and every publication of it
-  must say so. Source: `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` §3.
+  must say so. Source: `M3_CP4c_Frozen_Definitions.md` Part II §3.
 - **Amendment 14 — trace-crossed cut admissibility, and completeness.** A source edge crossed by a trace at an
   interior point **is** an admissible cut; promoting it adds one arc per sub-interval between consecutive crossings
   and one cut-created node per crossing, subdividing the trace **in the derived arrangement only**. The immutable
   network — its traces, segments, events and digests — is unchanged. The admissible cut set is therefore every
   source edge that is not already a graph arc. Consequently `network ∪ (source 1-skeleton)` is a cellular
   embedding, a sufficient cut set always exists, and step 8's "certified source-edge cuts" is a total contract
-  rather than a conditional one. Source: `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` §§3, 5.
+  rather than a conditional one. Source: `M3_CP4c_Frozen_Definitions.md` Part III §§3, 5.
 - **Amendment 15 — a topology region's transport domain is the region cut along its non-separating barriers.**
   A region's face set, its published `euler_characteristic()` and its published `boundary_loop_count()` are facts
   about the **uncut** source complex and are unchanged. A1's tangent bundle, cycle basis and index quantities are
@@ -513,7 +513,7 @@ withdrawn except where an amendment says so explicitly.
   barrier loses its inner-vertex cycle, so a prescribed singularity there must be re-bound to the slit's boundary
   cycle and **fail closed** when it binds to nothing. Amendment 12 is not weakened: constructing a derived
   transport domain is not repairing an upstream product, exactly as Amendment 14 established for the derived
-  arrangement. Source: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` §§2-7.
+  arrangement. Source: `M3_CP4c_Frozen_Definitions.md` Part V §§2-7.
 - **Amendment 16 — every derivation that walks transport is a transport-domain operation.** Amendment 15
   defined a region's transport domain and applied it to the cycle basis. It applies to **every** derivation
   that traverses transport, in **any** stage, without exception — including singularity port attachment, its
@@ -628,7 +628,7 @@ withdrawn except where an amendment says so explicitly.
   sector of angle exactly `0` or `π` is reported with its locus at A2a and repaired only at the conditioning stage
   (Amendment 20), never in place. Candidate ordering, nearest-angle selection, a seam, a tolerance, and inventing a
   port or face all remain prohibited (Amendments 17, 21). Source:
-  `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` §§AX1-AX3, AX5.
+  `M3_CP4c_Frozen_Definitions.md` Part VI §§AX1-AX3, AX5.
 
 - **Amendment 23 — where an exact decision has no bounded algebraic representation, the architecture must state the
   budget, not hide it.** Electing a developed sector is deciding the sign of a signed sum of arccosines of algebraic
@@ -647,7 +647,7 @@ withdrawn except where an amendment says so explicitly.
   inconclusive ⇒ reject", which silently converts the boundary case into a failure. An exactly-recognizable rational
   short-circuit is permitted as an optimization — a right angle is `u·w = 0`, two angles are complementary iff
   `D₁D₂ ≥ 0 ∧ (D₁D₂)² = Q₁Q₂` — provided it is an exact identity and the general path stays reachable. Source:
-  `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` §AX4.
+  `M3_CP4c_Frozen_Definitions.md` Part VI §AX4.
 
 ### 7.3 Single-writer authority
  

@@ -357,7 +357,7 @@ removed to obtain green. A1 and A3 are rewritten to be *falsifiable*, which stre
 
 #### Routing correction and the representational finding — `M3-CP4ab-K5-ROUTING-REVIEW`, 2026-08-22
 
-Binding: Part A of `Architecture_M3_CP4ab_K5_Routing_Independent_Review_Plan.md` — **RETIRED at CP4ab
+Binding: Part A of `M3_CP4ab_Closure_Record.md` — **RETIRED at CP4ab
 closure; its binding content is inlined in DEFN amendment 4.** Decision **Option C**,
 an ordered K2R/K3R bundle preceded by one measurement gate.
 
