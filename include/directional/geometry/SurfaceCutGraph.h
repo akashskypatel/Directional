@@ -111,6 +111,91 @@ struct SurfaceCutGraphCertifiedOwnerConflict {
       default;
 };
 
+enum class SurfaceCutGraphUncutComponentArcKind : std::uint8_t {
+  Mandatory = 0,
+  Trace = 1,
+  Cut = 2,
+};
+
+enum class SurfaceCutGraphUncutComponentSeedRule : std::uint8_t {
+  SingleFaceOwner = 0,
+  EdgeSideOwner = 1,
+};
+
+struct SurfaceCutGraphUncutComponentBoundaryEdgeCensus {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey componentFace;
+  std::optional<authority::SourceFaceTopologyKey> oppositeFace;
+  SurfaceCutGraphCertifiedOwnerConflictBarrierClass barrierClass =
+      SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None;
+  bool barrierPresent = false;
+  bool oppositeFaceTraceCut = false;
+  bool sideOwnerExists = false;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentBoundaryEdgeCensus &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentArcIncidenceCensus {
+  authority::NetworkArcId arc;
+  SurfaceCutGraphUncutComponentArcKind kind =
+      SurfaceCutGraphUncutComponentArcKind::Mandatory;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentArcIncidenceCensus &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentVertexTransitCensus {
+  authority::TraceId trace;
+  std::size_t segmentIndex = 0U;
+  authority::SourceVertexId sourceVertex;
+  std::vector<authority::SourceFaceTopologyKey> incidentUncutFaces;
+  bool adjacentAcrossNonBarrierEdge = false;
+  std::optional<authority::SourceEdgeTopologyKey> adjacentNonBarrierEdge;
+  std::optional<authority::SourceFaceTopologyKey> firstAdjacentFace;
+  std::optional<authority::SourceFaceTopologyKey> secondAdjacentFace;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentVertexTransitCensus &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentSeedAttribution {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey componentFace;
+  authority::SourceFaceTopologyKey oppositeFace;
+  std::size_t orbit = 0U;
+  SurfaceCutGraphUncutComponentSeedRule rule =
+      SurfaceCutGraphUncutComponentSeedRule::SingleFaceOwner;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentSeedAttribution &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentCensus {
+  std::size_t component = 0U;
+  std::vector<authority::SourceFaceTopologyKey> faces;
+  bool boundaryCensusPublished = false;
+  std::size_t boundaryEdgeCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentBoundaryEdgeCensus> boundaryEdges;
+  bool boundaryEdgesTruncated = false;
+  bool interiorArcIncidenceCensusPublished = false;
+  std::size_t interiorArcIncidenceCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcIncidenceCensus>
+      interiorArcIncidences;
+  bool interiorArcIncidencesTruncated = false;
+  bool vertexTransitCensusPublished = false;
+  std::size_t vertexTransitCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentVertexTransitCensus> vertexTransits;
+  bool vertexTransitsTruncated = false;
+  SurfaceCutGraphSourceFaceOwnershipStatus ownershipStatus =
+      SurfaceCutGraphSourceFaceOwnershipStatus::Unavailable;
+  std::vector<std::size_t> seedOrbitMultiset;
+  std::vector<std::size_t> seedOrbits;
+  std::size_t seedAttributionCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentSeedAttribution> seedAttributions;
+  bool seedAttributionsTruncated = false;
+  auto operator<=>(const SurfaceCutGraphUncutComponentCensus &) const =
+      default;
+};
+
 struct SurfaceCutGraphCellularityCertificate {
   SurfaceCutGraphComplexKind complex = SurfaceCutGraphComplexKind::ActualEmbeddedGraph;
   std::size_t vertexCount = 0U;
@@ -139,6 +224,8 @@ struct SurfaceCutGraphCellularityCertificate {
   bool certifiedOwnerConflictCensusPublished = false;
   std::vector<SurfaceCutGraphCertifiedOwnerConflict>
       certifiedOwnerConflictCensus;
+  bool uncutComponentCensusPublished = false;
+  std::vector<SurfaceCutGraphUncutComponentCensus> uncutComponentCensuses;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
   [[nodiscard]] bool proves_embedded_cellularity() const noexcept;
   [[nodiscard]] bool proves_cellularity() const noexcept;

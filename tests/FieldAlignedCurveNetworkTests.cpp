@@ -38,6 +38,7 @@
 #include "../src/geometry/GlobalTopologyCertificateDiagnostics.h"
 #include "../src/geometry/CertifiedSourceFaceOwnerConsistency.h"
 #include "../src/geometry/CertifiedOwnerConflictCensus.h"
+#include "../src/geometry/UncutComponentCertificateCensus.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
@@ -11445,7 +11446,7 @@ TEST(GlobalTopologyPlan,
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
   const auto &certificate = mechanical.cutGraph->certificate();
-  EXPECT_TRUE(certificate.proves_cellularity());
+  EXPECT_TRUE(certificate.proves_embedded_cellularity());
   const std::int64_t residual =
       static_cast<std::int64_t>(certificate.vertexCount) -
       static_cast<std::int64_t>(certificate.edgeCount) +
@@ -11485,7 +11486,8 @@ TEST(GlobalTopologyPlan,
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  EXPECT_TRUE(mechanical.cutGraph->certificate().proves_cellularity());
+  const auto &certificate = mechanical.cutGraph->certificate();
+  EXPECT_TRUE(certificate.proves_embedded_cellularity());
   if (mechanical.plan.has_value()) {
     std::cout << "m3Cp4c3BW3;status=guard-cleared\n";
     return;
@@ -11496,7 +11498,21 @@ TEST(GlobalTopologyPlan,
   const auto &locus = mechanical.terminalFailureLocus;
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
-  ASSERT_GT(*locus.uncutFaceComponentCertifiedFaceDistinctCount, 1U);
+  ASSERT_TRUE(certificate.uncutComponentCensusPublished);
+  const auto attribution = std::find_if(
+      certificate.uncutComponentCensuses.begin(),
+      certificate.uncutComponentCensuses.end(), [&](const auto &row) {
+        return row.component == *locus.uncutFaceComponent;
+      });
+  ASSERT_NE(certificate.uncutComponentCensuses.end(), attribution);
+  EXPECT_TRUE(attribution->boundaryCensusPublished);
+  EXPECT_EQ(attribution->boundaryEdgeCount, attribution->boundaryEdges.size());
+  EXPECT_FALSE(attribution->boundaryEdgesTruncated);
+  EXPECT_EQ(attribution->seedAttributionCount,
+            attribution->seedAttributions.size());
+  EXPECT_FALSE(attribution->seedAttributionsTruncated);
+  EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceDistinctCount,
+            attribution->seedOrbits.size());
   ASSERT_FALSE(locus.uncutFaceComponentCertifiedFaceMultiset.empty());
   EXPECT_FALSE(locus.uncutFaceComponentCertifiedFaceMultisetTruncated);
 
@@ -11659,7 +11675,7 @@ TEST(GlobalTopologyPlan,
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
   const auto &certificate = mechanical.cutGraph->certificate();
-  ASSERT_TRUE(certificate.proves_cellularity());
+  ASSERT_TRUE(certificate.proves_embedded_cellularity());
   ASSERT_EQ(static_cast<std::size_t>(mechanical.mesh.F.rows()),
             certificate.sourceFaceCount);
   ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
@@ -14214,6 +14230,102 @@ TEST(SurfaceCutGraph,
   EXPECT_EQ(13U, census.front().secondOwner);
   EXPECT_EQ(SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None,
             census.front().barrierClass);
+}
+
+TEST(SurfaceCutGraph,
+     UncutComponentArcIncidenceCensusPublishesOnOwnershipFailure) {
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnershipStatus;
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.uncutComponentCensusPublished);
+
+  const auto component = std::find_if(
+      certificate.uncutComponentCensuses.begin(),
+      certificate.uncutComponentCensuses.end(),
+      [](const auto &row) { return row.component == 0U; });
+  ASSERT_NE(certificate.uncutComponentCensuses.end(), component);
+  EXPECT_TRUE(component->boundaryCensusPublished);
+  EXPECT_EQ(component->boundaryEdgeCount, component->boundaryEdges.size());
+  EXPECT_FALSE(component->boundaryEdgesTruncated);
+  EXPECT_TRUE(component->interiorArcIncidenceCensusPublished);
+  EXPECT_EQ(component->interiorArcIncidenceCount,
+            component->interiorArcIncidences.size());
+  EXPECT_FALSE(component->interiorArcIncidencesTruncated);
+  EXPECT_TRUE(component->vertexTransitCensusPublished);
+  EXPECT_EQ(component->vertexTransitCount, component->vertexTransits.size());
+  EXPECT_FALSE(component->vertexTransitsTruncated);
+  EXPECT_EQ(component->seedAttributionCount, component->seedAttributions.size());
+  EXPECT_FALSE(component->seedAttributionsTruncated);
+  for (const auto &face : component->faces) {
+    const auto *owner = certificate.find_source_face_owner(face);
+    ASSERT_NE(nullptr, owner);
+    EXPECT_NE(SurfaceCutGraphSourceFaceOwnershipStatus::Established,
+              owner->status);
+  }
+
+  std::cout << "m3Cp4c3UncutComponentCensus;component=0"
+            << ";boundaryEdges=" << component->boundaryEdgeCount
+            << ";interiorArcs=" << component->interiorArcIncidenceCount
+            << ";vertexTransits=" << component->vertexTransitCount
+            << ";seedAttributions=" << component->seedAttributionCount
+            << '\n';
+}
+
+TEST(SurfaceCutGraph,
+     VertexTransitCensusNamesAFaceSeparationNoSourceEdgeBarrierCanCarry) {
+  using directional::authority::FieldBranch;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+
+  constexpr std::size_t vertexExtent = 5U;
+  const auto first = topology_face(0, 1, 2, vertexExtent);
+  const auto second = topology_face(0, 2, 3, vertexExtent);
+  const auto traceFace = topology_face(0, 3, 4, vertexExtent);
+  const auto shared = topology_edge(0, 2, vertexExtent);
+  const auto entryEdge = topology_edge(0, 3, vertexExtent);
+  const auto outgoingEdge = topology_edge(0, 4, vertexExtent);
+  const auto vertex = SourceVertexId::from_index(0U, vertexExtent).value();
+
+  directional::geometry::detail::SourceFaceComponentPartition partition;
+  partition.components = {{first, second}};
+  partition.componentByFace = {{first, 0U}, {second, 0U}};
+  const std::map<SourceVertexId, std::vector<SourceFaceTopologyKey>>
+      incidentFacesByVertex{{vertex, {first, second, traceFace}}};
+  const std::map<SourceEdgeTopologyKey, std::vector<SourceFaceTopologyKey>>
+      incidentFaces{{shared, {first, second}}};
+  const std::set<SourceEdgeTopologyKey> barriers;
+
+  FieldAlignedCandidateTrace trace(
+      TraceId::from_index(0U, 1U).value(),
+      SingularityPortId::from_index(0U, 1U).value(),
+      FieldSingularityId::from_index(0U, 1U).value(),
+      SourceVertexId::from_index(4U, vertexExtent).value(),
+      SourceComponentId::from_index(0U, 1U).value(),
+      directional::authority::TopologyRegionId::from_index(0U, 1U).value());
+  trace.segments.emplace_back(traceFace, FieldBranch::from_integer(0),
+                              boundary_point(entryEdge, 0, 1), std::nullopt,
+                              outgoingEdge, std::nullopt);
+  const std::vector<FieldAlignedCandidateTrace> traces{trace};
+
+  const auto census = directional::geometry::detail::
+      build_uncut_component_vertex_transit_census(
+          traces, incidentFacesByVertex, incidentFaces, partition, barriers);
+  ASSERT_EQ(1U, census.size());
+  ASSERT_EQ(1U, census[0].size());
+  const auto &row = census[0][0];
+  EXPECT_EQ(vertex, row.sourceVertex);
+  EXPECT_EQ((std::vector<SourceFaceTopologyKey>{first, second}),
+            row.incidentUncutFaces);
+  EXPECT_TRUE(row.adjacentAcrossNonBarrierEdge);
+  ASSERT_TRUE(row.adjacentNonBarrierEdge.has_value());
+  EXPECT_EQ(shared, *row.adjacentNonBarrierEdge);
+  ASSERT_TRUE(row.firstAdjacentFace.has_value());
+  ASSERT_TRUE(row.secondAdjacentFace.has_value());
+  EXPECT_EQ(first, *row.firstAdjacentFace);
+  EXPECT_EQ(second, *row.secondAdjacentFace);
 }
 
 TEST(TestFixturePaths, MissingPackageFailsClosedInsteadOfReturningMissingPath) {

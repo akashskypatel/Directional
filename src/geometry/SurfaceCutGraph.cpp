@@ -9,6 +9,7 @@
 #include "EmbeddedGraphTopology.h"
 #include "CertifiedOwnerConflictCensus.h"
 #include "SourceFaceComponentPartition.h"
+#include "UncutComponentCertificateCensus.h"
 
 #include <algorithm>
 #include <map>
@@ -397,6 +398,8 @@ struct OwnershipBuild {
   std::vector<SurfaceCutGraphSourceFaceOwnership> owners;
   std::vector<SurfaceCutGraphCertifiedOwnerConflict> conflicts;
   bool conflictCensusPublished = false;
+  std::vector<SurfaceCutGraphUncutComponentCensus> uncutComponentCensuses;
+  bool uncutComponentCensusPublished = false;
 };
 
 using OwnershipBuildResult =
@@ -597,43 +600,130 @@ OwnershipBuildResult build_source_face_ownership(
   const auto partition = detail::build_source_face_component_partition(
       uncutFaces, embedded.sourceTopology.incidentFaces, barriers);
 
-  // Preserve the exact directly established read when a component has
-  // multiple candidate owners. Propagation is performed only in the already
-  // unambiguous singleton case; CB28 measures disagreement and does not choose
-  // a winner or change the attribution rule.
+  const auto vertexTransitCensus =
+      detail::build_uncut_component_vertex_transit_census(
+          network.candidate_traces(),
+          embedded.sourceTopology.incidentFacesByVertex,
+          embedded.sourceTopology.incidentFaces, partition, barriers);
+
+  std::vector<SurfaceCutGraphUncutComponentCensus> componentCensuses;
+  componentCensuses.reserve(partition.components.size());
+
+  // Restore the pre-CB27 seed sources without treating the heuristic as
+  // certified ownership. A unique seed can be propagated; disagreement is
+  // published as Conflicting and no winner is selected.
   for (std::size_t component = 0U; component < partition.components.size();
        ++component) {
     const auto &faces = partition.components[component];
+    const std::set<SourceFace> componentFaces(faces.begin(), faces.end());
     std::set<std::size_t> owners;
+
+    SurfaceCutGraphUncutComponentCensus census;
+    census.component = component;
+    census.faces = faces;
+    census.boundaryCensusPublished = true;
+    census.interiorArcIncidenceCensusPublished = true;
+    census.vertexTransitCensusPublished = true;
+
     for (const SourceFace &face : faces) {
       const auto direct = directOwners.find(face);
-      if (direct != directOwners.end()) {
-        owners.insert(direct->second.begin(), direct->second.end());
+      if (direct == directOwners.end()) continue;
+      for (const std::size_t orbit : direct->second) {
+        owners.insert(orbit);
+        census.seedOrbitMultiset.push_back(orbit);
       }
     }
+
     for (const auto &[edge, incident] : embedded.sourceTopology.incidentFaces) {
-      if (barriers.count(edge) != 0U || incident.size() != 2U) continue;
-      std::optional<std::size_t> componentSide;
-      for (std::size_t side = 0U; side < incident.size(); ++side) {
-        const auto found = partition.componentByFace.find(incident[side]);
-        if (found != partition.componentByFace.end() &&
-            found->second == component) {
-          componentSide = side;
-          break;
-        }
+      std::vector<SourceFace> componentSides;
+      for (const SourceFace &face : incident) {
+        if (componentFaces.count(face) != 0U) componentSides.push_back(face);
       }
-      if (!componentSide.has_value()) continue;
-      const SourceFace &other = incident[*componentSide ^ 1U];
-      if (traceCutFaces.count(other) == 0U) continue;
-      const auto sideOwner = directOwnersByEdgeSide.find({other, edge});
-      if (sideOwner != directOwnersByEdgeSide.end() &&
-          sideOwner->second.size() == 1U) {
-        owners.insert(*sideOwner->second.begin());
+      if (componentSides.empty() ||
+          (incident.size() == 2U && componentSides.size() == 2U)) {
+        continue;
+      }
+
+      for (const SourceFace &componentFace : componentSides) {
+        SurfaceCutGraphUncutComponentBoundaryEdgeCensus boundary{edge,
+                                                                  componentFace};
+        boundary.barrierPresent = barriers.count(edge) != 0U;
+        const auto barrierClass = expectedBarrierClasses.find(edge);
+        if (barrierClass != expectedBarrierClasses.end())
+          boundary.barrierClass = barrierClass->second;
+
+        if (incident.size() == 2U) {
+          const SourceFace &other =
+              incident[0] == componentFace ? incident[1] : incident[0];
+          boundary.oppositeFace = other;
+          boundary.oppositeFaceTraceCut = traceCutFaces.count(other) != 0U;
+          const auto edgeOwner = directOwnersByEdgeSide.find({other, edge});
+          boundary.sideOwnerExists =
+              edgeOwner != directOwnersByEdgeSide.end() &&
+              !edgeOwner->second.empty();
+
+          if (!boundary.barrierPresent && boundary.oppositeFaceTraceCut) {
+            std::optional<std::size_t> seed;
+            SurfaceCutGraphUncutComponentSeedRule rule =
+                SurfaceCutGraphUncutComponentSeedRule::SingleFaceOwner;
+            const auto faceOwner = directOwners.find(other);
+            if (faceOwner != directOwners.end() &&
+                faceOwner->second.size() == 1U) {
+              seed = *faceOwner->second.begin();
+            } else if (edgeOwner != directOwnersByEdgeSide.end() &&
+                       edgeOwner->second.size() == 1U) {
+              seed = *edgeOwner->second.begin();
+              rule = SurfaceCutGraphUncutComponentSeedRule::EdgeSideOwner;
+            }
+            if (seed.has_value()) {
+              owners.insert(*seed);
+              census.seedOrbitMultiset.push_back(*seed);
+              census.seedAttributions.push_back(
+                  SurfaceCutGraphUncutComponentSeedAttribution{
+                      edge, componentFace, other, *seed, rule});
+            }
+          }
+        }
+        census.boundaryEdges.push_back(std::move(boundary));
       }
     }
-    if (owners.size() == 1U) {
+
+    for (const GlobalTopologyArc &arc : embedded.arcs) {
+      if (arc.kind != GlobalTopologyArcKind::Trace) continue;
+      const bool meetsComponentInterior = std::any_of(
+          arc.sourceFaces.begin(), arc.sourceFaces.end(),
+          [&](const SourceFace &face) {
+            return componentFaces.count(face) != 0U;
+          });
+      if (!meetsComponentInterior) continue;
+      const std::size_t forwardDart = dart_index(
+          GlobalTopologyOrientedArc{arc.id, authority::Orientation::Forward});
+      const std::size_t reverseDart = dart_index(
+          GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
+      census.interiorArcIncidences.push_back(
+          SurfaceCutGraphUncutComponentArcIncidenceCensus{
+              arc.id, SurfaceCutGraphUncutComponentArcKind::Trace,
+              embedded.faceWalk.orbitByDart[forwardDart],
+              embedded.faceWalk.orbitByDart[reverseDart]});
+    }
+
+    census.vertexTransits = vertexTransitCensus[component];
+    census.boundaryEdgeCount = census.boundaryEdges.size();
+    census.interiorArcIncidenceCount = census.interiorArcIncidences.size();
+    census.vertexTransitCount = census.vertexTransits.size();
+    census.seedAttributionCount = census.seedAttributions.size();
+    census.seedOrbits.assign(owners.begin(), owners.end());
+    census.ownershipStatus =
+        owners.empty()
+            ? SurfaceCutGraphSourceFaceOwnershipStatus::Unavailable
+            : owners.size() == 1U
+                  ? SurfaceCutGraphSourceFaceOwnershipStatus::Established
+                  : SurfaceCutGraphSourceFaceOwnershipStatus::Conflicting;
+
+    if (!owners.empty()) {
       for (const SourceFace &face : faces) directOwners[face] = owners;
     }
+    componentCensuses.push_back(std::move(census));
   }
 
   OwnershipBuild build;
@@ -679,6 +769,8 @@ OwnershipBuildResult build_source_face_ownership(
       embedded.sourceTopology.incidentFaces, build.owners, barriers,
       expectedBarrierClasses);
   build.conflictCensusPublished = true;
+  build.uncutComponentCensuses = std::move(componentCensuses);
+  build.uncutComponentCensusPublished = true;
   return build;
 }
 
@@ -724,6 +816,9 @@ CertificateResult certify_actual_embedded_graph(
     certificate.certifiedOwnerConflictCensusPublished =
         ownership.conflictCensusPublished;
     certificate.certifiedOwnerConflictCensus = ownership.conflicts;
+    certificate.uncutComponentCensusPublished =
+        ownership.uncutComponentCensusPublished;
+    certificate.uncutComponentCensuses = ownership.uncutComponentCensuses;
   }
   return certificate;
 }
