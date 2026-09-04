@@ -116,68 +116,65 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB24-EXEC` — EXACT NEXT / artifact-only runtime
+## Mandatory next turn — `M3-CP4c-3-TB24-REV` — EXACT NEXT / independent REVIEW + PLAN
 
-`M3-CP4c-3-CB27` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE**.
+`M3-CP4c-3-TB24-EXEC` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**.
 
-### Immutable authority entering TB24
+### Immutable TB24 authority
 
-- latest semantic runtime authority remains **`M3-CP4c-3-TB23-R1`**: 389 PASS / 8 RED, accepted
-  **1–365 = 365/365**, RED `[366,367,368,369,370,374,393,397]`;
-- final CB27 semantic source: `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`;
-- final CB27 compile run/job: `33870767698 / 101015974984`;
-- immutable compile package: `9935929108`, SHA-256 `b5e11a2c97c110d2cf484d63bb3afe3b753e7f4769098ec927a5cf1692f5d881`;
-- persistent compile log: `9935929698`, SHA-256 `36042ceb31103219d7a7260b8eae878ba093ea3906b64785c8a233b7dc00822b`;
-- selector 397 remains byte-frozen at
-  `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`;
-- selector 401 is the current gate, SHA-256
-  `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`.
+- semantic source: `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`;
+- immutable CB27 package: `9935929108`, SHA-256 `b5e11a2c97c110d2cf484d63bb3afe3b753e7f4769098ec927a5cf1692f5d881`;
+- formal TB24 run/job: `33891467611 / 101083954177`, SUCCESS;
+- result artifact: `9944102469`, SHA-256 `0c72806d0e975bf9829c3b3a130001529a7728fe3f6d1be6e6d8aa3125898f6c`;
+- diagnostic-log artifact: `9944102936`, SHA-256 `0147193e71a493428918d151cf6a26ea2148d1d3d3831eaf4da8afc285aaba74`;
+- selector 397: `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`;
+- selector 401: `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`;
+- ledger: **389 PASS / 12 RED**, accepted **1–365 = 365/365 PASS**;
+- RED ordinals: `[366,367,368,369,370,374,384,385,389,390,393,398]`;
+- ledger SHA-256: `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`.
 
-CB27 implemented Part VII §9 `CG0–CG9`: total certified source-face ownership is published,
-`proves_cellularity()` is strengthened, the plan reads ownership rather than seeding it, the seed guard is
-relocated to owner consistency, ordinal 397's unrelated-locus regression is fixed rather than relaxed, ordinal 393
-is replaced in place by the owner-map contract, `test_data_root()` fails closed, and four gating witnesses extend
-the selector to 401. The only source correction after the first remote compile was the compile-only construction of
-`SurfaceCutGraphSourceFaceOwnership` with its non-default-constructible `SourceFaceTopologyKey`; no behavior or
-turn scope was broadened.
+The formal execution completed preflight, all 401 fresh-process identities and postflight immutability. Package,
+packaged-source and execution-view censuses are equal before/after. All prohibited-operation flags are false. Two
+earlier caller attempts (`33890566735`, `33891113785`) ended before Directional runtime and are orchestration
+provenance only.
 
-No Directional runtime/test/benchmark/discovery command ran in CB27. Accepted authority remains **365/365**;
-CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness
-debt **5**, semantic M3 package count **89**.
+### Frozen discriminator outcomes
 
-### TB24 binding execution plan
+1. accepted 1–365: **365/365 PASS**;
+2. mechanical owner-map production: ordinal 398 REDs at `SourceFaceOwnershipNotEstablished`; published owner-entry
+   count is unavailable;
+3. component-0 D3: **0 observed / 191 unavailable** owners; distinct/all-equal result unavailable because ordinal
+   393 has no `SurfaceCutGraph` value;
+4. ordinal 366 REDs at `SourceFaceOwnershipNotEstablished` and does not emit the relocated component/conflicting-
+   owner guard diagnostic;
+5. ordinal 393 RED; ordinal 397 PASS;
+6. 367/368/369/370/374 RED; 371/372/391/392 PASS.
 
-Use `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md`. TB24-EXEC consumes the
-immutable package only and must not configure, compile, relink, repair, mutate source/tests/fixtures/selectors, or
-generate discovery state. Run selector 401 one identity per fresh process in ordinal order after proving package,
-executable, selector, and fixture authority.
+New ordinals: 398 RED; 399/400/401 PASS. Ordinals 384/385/389/390, which passed in TB23-R1, are RED in TB24. EXEC
+records these facts only. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness
+debt **5**, semantic M3 package count **89** pending independent review.
 
-The six mandatory discriminators are:
+### TB24-REV boundary
 
-1. accepted 1–365 remain **365/365**;
-2. the owner map is published and total on the mechanical witness;
-3. report all **191** component-0 certified owners and whether they are all equal, deciding
-   `M3-CP4c3-TB21-CAND-01`;
-4. ordinal 366 either clears or fails through the relocated guard naming component/conflicting owners;
-5. ordinals **393 and 397 are GREEN**;
-6. report carried 367/368/369/370/374 and re-prove 371/372/391/392 against their prior PASS authority.
-
-New ordinals 398–401 must independently execute. TB24-EXEC records facts only. Any valid semantic RED stops at
-`M3-CP4c-3-TB24-REV`, the independent review/planning boundary; do not diagnose or patch from EXEC.
+Review `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` and the immutable
+TB24 artifacts against exact source authority. Diagnose/classify the 12 RED ledger, including 384/385/389/390 and
+398; adjudicate the unavailable D3 branch; update stable accounting only when justified; perform mandatory REVIEW
+consolidation plus `ORIENTATION.md`; and authorize at most one bounded successor. Do **not** rerun Directional,
+rebuild/relink/repair the package, or patch product/tests before that review.
 
 ### Context Load Plan
 
-`load_next`: artifact-only TEST + BENCHMARK execution guidance.
+`load_next`: independent REVIEW + PLAN guidance.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first; no edit in EXEC unless later REVIEW requires it.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during mandatory REVIEW closeout.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB27_Code_Build_Report.md` — exact compile/package authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md` — frozen execution plan.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md` — frozen execution contract.
 4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII — CG0–CG9 semantic contract and discriminators.
 5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 401 and frozen 397 prefix.
-6. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — prior runtime baseline.
+6. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — prior runtime baseline for change comparison.
 7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

@@ -1,3 +1,22 @@
+## M3-CP4c3-TB24-EXEC — valid semantic runtime — **CURRENT RUNTIME AUTHORITY / FACTUAL / REVIEW PENDING**
+
+- **Authority:** source `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`, immutable package `9935929108`; formal run/job
+  `33891467611 / 101083954177`; result `9944102469` (`0c72806d...125898f6c`); log `9944102936`
+  (`0147193e...85aaba74`).
+- **Gate:** selector 401 completed in 401 fresh processes, **389 PASS / 12 RED**; accepted **1–365 = 365/365**; RED
+  `[366,367,368,369,370,374,384,385,389,390,393,398]`; ledger SHA-256
+  `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`.
+- **Discriminators:** 397 PASS; 393 RED before a production `SurfaceCutGraph` is available; 398 RED at
+  `SourceFaceOwnershipNotEstablished`; 399/400/401 PASS. D3 records 0 observed / 191 unavailable component-0
+  certified owners and no all-equal/not-all-equal result. 371/372/391/392 remain PASS.
+- **Changed runtime surfaces versus TB23-R1:** 384/385/389/390 change PASS → RED; 397 changes RED → PASS; new 398
+  is RED. This EXEC record does **not** diagnose or classify those changes.
+- **Immutability:** package/source/execution-view pre/post censuses equal; all prohibited-operation flags false. Two
+  preceding caller failures (`33890566735`, `33891113785`) stopped with `runtime_started=false` and are
+  orchestration provenance only.
+- **Accounting:** frozen by the Test + Benchmark boundary pending independent review: **44 events / 14 categories /
+  30 recurrences**, debt **5**, packages **89**. Exact owner: `M3-CP4c-3-TB24-REV`.
+
 ## M3-CP4c3-DEFN-R3 - definition turn (absorbs REVIEW + PLAN) - **CURRENT DEFINITION AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `M3_CP4c_Frozen_Definitions.md` **Part VII**, measures **CF0-CF9** discharged. No runtime, compile,

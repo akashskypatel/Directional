@@ -1,3 +1,23 @@
+## 2026-09-04 — `M3-CP4c-3-TB24-EXEC`: valid selector-401 runtime; 389 PASS / 12 RED; accepted 365/365
+
+Immutable artifact-only runtime of CB27 source/package `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5 / 9935929108`. Formal
+run/job `33891467611 / 101083954177` succeeded. Result artifact `9944102469`
+(`0c72806d0e975bf9829c3b3a130001529a7728fe3f6d1be6e6d8aa3125898f6c`) and log artifact `9944102936`
+(`0147193e71a493428918d151cf6a26ea2148d1d3d3831eaf4da8afc285aaba74`) preserve the complete 401-process
+execution. Ledger SHA-256 `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`: **389 PASS / 12
+RED**, accepted **365/365**, RED `[366,367,368,369,370,374,384,385,389,390,393,398]`.
+
+Ordinal 397 now PASSes; 393 remains RED before a production `SurfaceCutGraph` is available. New 398 REDs at
+`SourceFaceOwnershipNotEstablished`; 399/400/401 PASS. D3 therefore records **0 observed / 191 unavailable**
+component-0 owners and no all-equal/not-all-equal result. Ordinals 384/385/389/390, previously PASS in TB23-R1,
+are RED in TB24. EXEC records these facts only and assigns no root-cause or stable-regression classification.
+
+Preflight and all 401 fresh-process executions completed; package/source/execution-view censuses are identical
+before/after and all prohibited-operation flags are false. Earlier runs `33890566735` and `33891113785` stopped
+before Directional runtime and remain orchestration provenance only. Stable accounting stays frozen pending review
+at **44 / 14 / 30**, debt **5**, packages **89**. CP4c-3 remains OPEN. Exact successor:
+**`M3-CP4c-3-TB24-REV`**, independent REVIEW + PLAN only.
+
 ## 2026-09-04 — `M3-CP4c-3-CB27`: certified source-face ownership published; selector 401; compile/package GREEN
 
 Code + Build only under Part VII §9 **CG0–CG9**. Final semantic source

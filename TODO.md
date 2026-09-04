@@ -26,45 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB24-EXEC` (artifact-only runtime)
+## Current focus — `M3-CP4c-3-TB24-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB27` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE** at semantic source
-`9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`. It implements Part VII §9 `CG0–CG9`: the certifier publishes
-a total source-face owner map; `proves_cellularity()` is strengthened to require it; `GlobalTopologyPlan` reads
-certified ownership instead of reconstructing seed ownership; the consistency guard is relocated; ordinal 397's
-unrelated locus is restored; ordinal 393 is replaced in place by the owner-map contract; fixture resolution fails
-closed; and selector 397 is extended by four gating identities to selector **401**.
+`M3-CP4c-3-TB24-EXEC` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**. Formal
+run/job `33891467611 / 101083954177` consumed immutable CB27 package `9935929108` and selector 401 without rebuild,
+relink, repair, source/test/fixture/selector mutation, generated discovery, or package mutation.
 
-- selector 397 remains byte-frozen at
-  `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`;
-- selector 401 has SHA-256
-  `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`;
-- final compile/package authority: run/job `33870767698 / 101015974984`, package `9935929108`,
-  log `9935929698`;
-- no Directional runtime/test/benchmark/discovery command executed in CB27; accepted authority remains **365/365**;
-  CP4c-3 remains **OPEN**; stable accounting remains **44 events / 14 categories / 30 recurrences**;
-  produced-witness debt **5**; semantic M3 package count **89**.
+- ledger: **389 PASS / 12 RED**, accepted **1–365 = 365/365 PASS**;
+- RED ordinals: `366,367,368,369,370,374,384,385,389,390,393,398`;
+- ledger SHA-256: `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`;
+- result artifact `9944102469`, SHA-256 `0c72806d0e975bf9829c3b3a130001529a7728fe3f6d1be6e6d8aa3125898f6c`;
+- log artifact `9944102936`, SHA-256 `0147193e71a493428918d151cf6a26ea2148d1d3d3831eaf4da8afc285aaba74`;
+- ordinal 397 is now PASS; 393 remains RED; new 398 is RED while 399/400/401 PASS;
+- D3 is unavailable: ordinal 393 has no `SurfaceCutGraph` value, so component 0 reports 0 observed / 191 unavailable
+  certified owners and no all-equal/not-all-equal result;
+- ordinals 384/385/389/390, previously PASS in TB23-R1, are RED in the TB24 ledger; EXEC does not classify them.
+
+Stable accounting remains frozen pending review at **44 events / 14 categories / 30 recurrences**, produced-witness
+debt **5**, semantic M3 package count **89**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB24-EXEC`** using the immutable CB27 package and
-`.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md`. Runtime execution only; no
-rebuild, relink, package repair, source/test/fixture/selector mutation, or generated discovery.
-
-TB24 must publish the six frozen discriminators:
-
-- [ ] accepted 1–365 remain **365/365**;
-- [ ] the owner map is published and total on the mechanical production witness;
-- [ ] all 191 certified owners for component 0 are reported as **all equal** or **not all equal**, deciding
-      `M3-CP4c3-TB21-CAND-01`;
-- [ ] ordinal 366 either clears or fails through the relocated guard naming its component and conflicting owners;
-- [ ] ordinals **393 and 397 are GREEN**;
-- [ ] carried 367/368/369/370/374 are reported as observed and 371/372/391/392 are rechecked against their prior
-      PASS authority.
-
-New gating ordinals 398–401 exercise production owner-map totality, owner-orbit tamper rejection, independent
-consistency-rule falsifiability, and fail-closed fixture/package resolution. `TB24-EXEC` records facts only; any
-semantic RED routes to the independent `M3-CP4c-3-TB24-REV` boundary for diagnosis/classification.
+Run **`M3-CP4c-3-TB24-REV`**, independent REVIEW + PLAN only. Review the immutable TB24 report/artifacts and exact
+source authority; diagnose/classify the 12 RED surfaces, adjudicate the unavailable 191-face D3 discriminator,
+update stable accounting only when justified, perform mandatory REVIEW consolidation plus `ORIENTATION.md`, and
+authorize at most one bounded successor. Do not rerun Directional, rebuild/relink/repair the package, or patch
+product/tests before that review.
 
 ## Carried forward from M1
 
@@ -102,8 +89,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open; **CB27 is compile-green** at semantic source `9c72fea8…`, selector401/package89. Exact next:
-  immutable **`M3-CP4c-3-TB24-EXEC`**.
+  CP4c-3 remains open; **TB24 is the latest valid semantic runtime** at 389 PASS / 12 RED, accepted 365/365,
+  selector401/package89. Exact next: independent **`M3-CP4c-3-TB24-REV`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -114,7 +101,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 source-face seed/ownership projection:** CB25 replaced the vacuous/circular diagnostics with certificate-derived, independently sided, falsifiable measurements without changing product semantics. Valid TB23-R1 evidence is now available but CA4 reports 191/191 unavailable certified faces, so branch adjudication remains with `M3-CP4c-3-TB23-R1-REV`. Exact owner: that review.
+- [ ] **CP4c-3 source-face seed/ownership projection:** TB24 valid runtime reaches `SourceFaceOwnershipNotEstablished` before a production `SurfaceCutGraph` is published; D3 therefore records 0 observed / 191 unavailable component-0 owners and cannot fire the all-equal/not-all-equal branch. Exact owner: independent `M3-CP4c-3-TB24-REV`.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
