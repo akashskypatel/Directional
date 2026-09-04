@@ -1,3 +1,59 @@
+## 2026-09-04 — `M3-CP4c-3-TB23-R1-REV`: harness correction confirmed; the ownership datum proved absent; DEFN-R3 frozen
+
+Independent review of the immutable TB23-R1 evidence, measures **CE0–CE8**. Record:
+`Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`. Static only — no runtime, compile, package, package
+repair, or product/test/fixture/selector mutation.
+
+Authority: source `e12396d471c0754b112a40272a7992020ff49ced` is an ancestor of HEAD with **no code drift**;
+selector 397 hashes to `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` with 397 identities; the
+ledger closes at 389 + 8; accepted **1–365 = 365/365**; package, source and execution-view censuses all equal. The
+run **is semantically authoritative** — CD2's precondition was satisfied before runtime, which TB23-EXEC lacked.
+
+**CE1 — the orchestration correction is confirmed and `M3-CP4c3-TB23-REV-CAND-02` closes.** The corrected harness
+staged the execution view and verified it through the consumer's own resolution rule; accepted returned to
+365/365, proving the invalid attempt's 38 accepted-prefix failures were fixture-open failures and never semantic.
+This was the first use of the new `TB (orchestration-invalid) → CB (control-plane correction) → TB (re-execute)`
+routing, and it worked end to end.
+
+**CE2 — both new REDs are the new witnesses working.** Ordinal **393** (production) REDs on
+`m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true` and on `certifiedFaceDiffersFromSeed`, while
+ordinal **396** (unit) PASSES — the "can versus does" split CA6 was written to create, and without it this turn
+would have recorded a clean-looking zero exactly as CB24's structural zero was recorded. Ordinal **397** REDs on a
+**genuine defect**: CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** topology error.
+CA2's aliasing is fixed, but **CA1 is not met on the edge-side path** — `add_direct(…, walk.orbitByDart[dart])`
+writes the same quantity `edgeOrbitEvidence` records, so every available labeled certified face equals its seed.
+
+**CE3 — all 191 component certified faces are `unavailable`.** `resolve_certificate_face_projection` assigns an
+owner only when a component's certified-face set has exactly one element, and unites eligible faces across every
+edge not in `embeddedGraphSourceEdges` — mandatory and cut only, **omitting `traceTouchedEdges`**. Its components
+are therefore strictly coarser than the seed guard's 191-face component, so they collect several certified faces
+and every member resolves to `nullopt`. `differing=0` is consequently conditionally vacuous; `examined=273` is
+genuine but uninformative. CA4's multiset is empty and **neither branch of `M3-CP4c3-TB21-CAND-01` fired**.
+
+**CE4 — the ownership question is unanswerable from the published certificate.**
+`SurfaceCutGraphFaceCertificate` publishes `orbit`, `boundaryWalkCount`, `boundaryArcCount` and
+`discTopologyEstablished` — **no source-face membership and no boundary arc list**. No Code + Build turn can read a
+datum the contract does not publish, which is why three successive diagnostic contracts each had to reconstruct
+the answer from `walk.orbitByDart` — the seed quantity — and each collapsed the same way. **This is a definition
+gap**, and TB22-REV's "no further diagnostic turn on this surface" prohibition is honoured: the successor is a
+**DEFN**, not a fourth diagnostic turn.
+
+New `M3-CP4c3-TB23-R1-REV-CAND-01` (the unrelated-locus regression, must be fixed not absorbed) and
+`M3-CP4c3-TB23-R1-REV-CAND-02` (ordinal 393's unsatisfiable expectation, never to be silently deleted). Lessons
+**115–117** added. Both new REDs are on unaccepted ordinals, were introduced by this checkpoint's own diagnostic
+scaffolding, and reflect no change on any accepted identity, so neither is a stable event: **+0 events / +0
+recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **88**; accepted authority **365/365**; CP4c-3
+**OPEN**.
+
+Exact successor frozen: **`M3-CP4c-3-DEFN-R3`** under **CF0–CF9** — decide what a certified face must publish,
+whether the seed guard's premise is checkable, the required barrier set for any projection, the CB21-versus-Parts
+IV/V prohibition conflict, and the explicit disposition of ordinals 393 and 397.
+
+Seventh application of the standing REVIEW-turn consolidation rule: the superseded TB23 review record was folded,
+and the **five** files TB23-R1's stale-evidence cleanup retired between reviews — the TB22 report, CB25 report,
+CB26 report, consumed TB23 plan and invalid TB23-EXEC report — were indexed retrospectively. 6 documents / 902
+lines, running total 64 documents / 13383 lines.
+
 ## 2026-09-04 — `M3-CP4c-3-TB23-R1`: corrected immutable gate valid; 389 PASS / 8 RED; accepted 365/365; review next
 
 Artifact-only runtime re-execution of immutable CB25 package `9921914679` after CB26's execution-view correction.

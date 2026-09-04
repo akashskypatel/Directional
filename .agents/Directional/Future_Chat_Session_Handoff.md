@@ -116,57 +116,116 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB23-R1-REV` — EXACT NEXT / Independent REVIEW + PLAN
+## Mandatory next turn — `M3-CP4c-3-DEFN-R3` — EXACT NEXT / DEFN (absorbs REVIEW + PLAN)
 
-`M3-CP4c-3-TB23-R1` is **COMPLETE / SEMANTIC RED / ACCEPTED PREFIX SAFE / IMMUTABLE ARTIFACT PRESERVED**.
-Authoritative report: `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB23-R1-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` (measures **CE0–CE8** discharged, static only).
 
 ### Immutable runtime authority
 
-- semantic/package source: `e12396d471c0754b112a40272a7992020ff49ced`;
-- immutable package: `9921914679`, SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`;
-- corrected harness SHA-256: `fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7`;
-- formal run/job: `33839673886 / 100919253449`, SUCCESS;
-- result artifact: `9924532894`, SHA-256 `9be9a07702b80e0b5a35e263330b90653faa6cc5409b968e8888f82f5f73f522`;
-- diagnostic log artifact: `9924533267`, SHA-256 `f3e4c83184f129b8cd49f153ded0fc422186bd1726c088f3fa1ec6ce6e78276f`;
-- ledger: **389 PASS / 8 RED**, RED `[366,367,368,369,370,374,393,397]`, accepted **365/365**;
-- ledger SHA-256: `812241705ee5f0c467ce0272a15d4eed842dbe5c6004b1415f2432cbdedef314`;
-- package/source/execution-view pre/post censuses: equal;
-- no benchmark/configure/compile/relink/discovery/package-repair/mode-repair/source-test-fixture-selector mutation.
+- semantic/package source: **`e12396d471c0754b112a40272a7992020ff49ced`** — ancestor of HEAD, **no code drift**;
+- immutable package: **`9921914679`**, `sha256:db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`;
+- corrected harness: `fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7`;
+- run/job: **`33839673886 / 100919253449`**, SUCCESS; result/log artifacts **`9924532894 / 9924533267`**;
+- selector **397**: `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`, **397 identities**;
+- ledger **389 PASS / 8 RED**, reds `[366,367,368,369,370,374,393,397]`, accepted **365/365**; ledger
+  `812241705ee5f0c467ce0272a15d4eed842dbe5c6004b1415f2432cbdedef314`;
+- package / source / execution-view pre/post censuses: **equal**.
 
-The first caller attempt `33839600920` was a pre-job Actions startup failure from a permission ceiling and produced
-no runtime. It is orchestration provenance only. The formal run corrected that ceiling and is the semantic authority.
+### What the review established
 
-### Frozen facts for review
+**The harness correction is confirmed and the ownership question is proved unanswerable.**
 
-1. Accepted ordinals **1–365 remain 365/365 PASS**.
-2. Ordinal 366 remains `UncutFaceComponentOrbitSeedNotUnique` at component 0 / `Multiple` / `[0,1,3]` / 191 faces.
-3. CA3 publishes `examined=273`, `differing=0`, `witnessCount=64`, `truncated=true`; ordinal 393 REDs on the
-   expected non-zero differing count.
-4. Two CA2 minority rows exist; each component certified face is `unavailable`, while labeled certified faces are
-   `3` and `1`, equal to their shown seeds. Ordinal 393 also REDs because no certified face differs from seed.
-5. CA4 publishes `observed=0`, `unavailable=191`, `distinct=0`, empty multiset. The frozen one-versus-several branch
-   discriminator therefore did not fire.
-6. 394/395/396 PASS; **397 RED** because the unrelated failure-locus expectation `;sourceFace=2,4,6` received
-   `;sourceFace=2,4,6;cutCandidateCount=0`.
-7. Carried RED 367/368/369/370/374 remain RED; 371/372/391/392 remain PASS; ordinal 393 is newly RED.
+- **`M3-CP4c3-TB23-REV-CAND-02` CLOSES / RUNTIME PROVED.** The corrected harness staged the execution view and
+  verified it through the consumer's own resolution rule; accepted returned to **365/365**, confirming the invalid
+  attempt's 38 accepted-prefix failures were fixture-open failures. First use of the new
+  `TB (orchestration-invalid) -> CB (control-plane correction) -> TB (re-execute)` routing, and it worked end to end.
+- **Both new REDs are the new witnesses working, not product regressions.** Ordinal **393** (production) REDs on
+  `m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true` and on `certifiedFaceDiffersFromSeed`, while
+  ordinal **396** (unit) PASSES - the "can versus does" split CA6 was written to create. Ordinal **397** REDs on a
+  **genuine defect**: CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** error.
+- **CA2 is discharged; CA1 is not.** Both sides are now filled by separate accessor calls (`:1365-1370`), so
+  CB24's aliasing is gone. But the edge-side path writes `walk.orbitByDart[dart]` (`:487, :502-503`) - the same
+  quantity `edgeOrbitEvidence` records - so every available labeled certified face **equals its seed**.
+- **All 191 component certified faces are `unavailable`.** `resolve_certificate_face_projection` assigns an owner
+  only when a component's certified-face set has exactly one element
+  (`GlobalTopologyCertificateDiagnostics.h:134-138`), and unites across every edge not in
+  `embeddedGraphSourceEdges` - **mandatory and cut only**, omitting `traceTouchedEdges`. Its components are
+  therefore **strictly coarser** than the seed guard's, so they collect several certified faces and every member
+  resolves to `nullopt`. CA4's multiset is empty and **neither branch of `M3-CP4c3-TB21-CAND-01` fired**.
+- **THE DATUM DOES NOT EXIST.** `SurfaceCutGraphFaceCertificate` (`SurfaceCutGraph.h:53-63`) publishes `orbit`,
+  `boundaryWalkCount`, `boundaryArcCount` and `discTopologyEstablished` - **no source-face membership, no boundary
+  arc list**. No Code + Build turn can read what the contract does not publish, which is why three successive
+  diagnostic contracts each had to reconstruct the answer from `walk.orbitByDart` and each collapsed the same way.
+  **This is a definition gap**, and TB22-REV's "no further diagnostic turn" prohibition is honoured: the successor
+  is a **DEFN**.
 
-### Exact review contract
+Carried surfaces 367/368/369/370/374 unchanged; 371/372/391/392 still PASS. **There is still no vertex-30
+discriminator.**
 
-`M3-CP4c-3-TB23-R1-REV` is static REVIEW + PLAN only. Do **not** rerun Directional, rebuild, relink, repair the
-package, or patch source/tests before review. The review must verify the immutable evidence, diagnose/classify the
-393 and 397 semantic REDs from exact source authority, adjudicate what the unavailable CA2/CA4 evidence permits for
-`M3-CP4c3-TB21-CAND-01`, formally dispose the corrected-harness candidate, update stable accounting only when
-classification is justified, perform mandatory REVIEW consolidation plus `ORIENTATION.md`, and authorize at most
-one bounded successor.
+### DEFN-R3 binding scope — `CF0–CF9`, in the review record §8
 
-TB23-R1 itself intentionally did not edit `Regression_Root_Cause_Tracker.md`; stable accounting remains provisionally
-**44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 package count **88** until
-review classification. CP4c-3 remains **OPEN**.
+**A DEFN, not a CB and not another diagnostic turn.** Under the turn workflow **`DEFN` absorbs `REVIEW + PLAN`**,
+so this turn freezes definitions, adjudicates inherited candidates and issues its successor's measures in one turn.
+It is the correct boundary because the blocking datum is absent from a published contract, which no implementation
+turn may unilaterally invent.
 
-TB23-R1 stale-evidence cleanup retired five superseded per-turn files after preserving their durable facts; the
-review must index them in `M3_CP4c_Consolidated_Record.md`: TB22 report (112 lines), CB25 report (115), CB26 report
-(111), consumed TB23 plan (200), and invalid TB23-EXEC report (100).
+- **CF0** - accepted 365 untouched; selector **397** byte-frozen; **no runtime, no compile, no package**.
+- **CF1** - **decide what a certified face must publish.** State whether `SurfaceCutGraphFaceCertificate` must
+  carry source-face membership, a boundary arc list, or another representation sufficient to answer *"which
+  certified face contains this source triangle"* - and if not, state what else answers it and who owns that.
+- **CF2** - **decide whether the seed guard's premise is checkable at all.** Either define the evidence that makes
+  "each uncut component has exactly one owner" decidable, or replace the invariant with one that is - but **do
+  not** weaken `UncutFaceComponentOrbitSeedNotUnique` without a stated replacement, per Parts IV/V.
+- **CF3** - **fix the partition mismatch in the definition.** Any certified-face projection must be at least as
+  fine as the partition whose property it adjudicates; state the required barrier set explicitly so a successor
+  cannot omit `traceTouchedEdges` again.
+- **CF4** - **adjudicate `M3-CP4c3-TB20-REV-CAND-02`.** Parts IV/V prohibit weakening the fragment-count invariant,
+  which CB21 weakened with a sound accepted-boundary proof. Either lift the prohibition with reasons - the
+  invariant is false on cellular complexes containing bridges - or require restoration. Only a DEFN may resolve it.
+- **CF5** - carry forward unweakened: `proves_cellularity()`, accepted 1-365, the certified cellularity evidence
+  (`V=22, E=26, F=6, componentCount=1, chi=2, residual=0`), CB21's correction, 371/372/391/392 closure, and
+  separate ownership of 367/368/369/370/374.
+- **CF6** - record that **both branches of `M3-CP4c3-TB21-CAND-01` were never discriminated**, and state precisely
+  what evidence would discriminate them under CF1's decision.
+- **CF7** - **disposition ordinals 393 and 397 explicitly.** 393 encodes an expectation the production path cannot
+  currently satisfy: decide whether it is corrected, re-scoped, or declared non-gating **with a written rationale
+  and an owning measure** - never silently deleted. 397 is a genuine defect and must be **fixed**, not relaxed.
+- **CF8** - freeze the successor Code + Build's measures, including the two carried debts that belong to a
+  source-changing turn: `M3-CP4c3-TB23-REV-CAND-01` (fail-open `test_data_root()`) and
+  `M3-CP4c3-TB23-R1-REV-CAND-01` (the unrelated-locus regression).
+- **CF9** - **prohibited:** inventing a certificate field without naming its producer and proof obligation;
+  weakening `proves_cellularity()`, the fragment-count invariant or the seed guard without a stated replacement;
+  relaxing ordinal 397's expectation; deleting ordinal 393; any fixture-specific branch; any tolerance or
+  float-derived topological decision; any accepted-boundary relaxation; any sphere / saturation / ordinal-370 /
+  folded-cone / vertex-30 / finalize-contact work.
+
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **88**.
+
+**Document consolidation ran this turn** under the standing rule (`CLEAN_UP_POLICY.md`), including the
+retrospective indexing of the **five** files TB23-R1's stale-evidence cleanup retired between reviews.
+
+### Context Load Plan
+
+`load_next`: turn-based-coding-agent DEFN guidance (DEFN absorbs REVIEW + PLAN).
+
+Minimum successor context after the mandatory durable policy/start checklist:
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` — **frozen DEFN-R3 scope, §8 CF0–CF9**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — the whole chain. **Part I §3 is an implication with a
+   premise**; Parts IV/V carry the prohibited lists CF4 must adjudicate; Part VI is vertex-star scoped.
+5. `include/directional/geometry/SurfaceCutGraph.h` — the certificate contract CF1 decides.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector counts, LF hashes, prefix parents, roles.
+8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
+   document index** resolves every folded or retired per-turn plan, report and record.
+
+**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
+`review_check.py boundary`, `selector_probe.py`, `selector_manifest.py`, and `fixture_probe.py`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

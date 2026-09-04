@@ -1607,6 +1607,23 @@ building any conclusion on it.**
      that staging was required. The first harness that omitted it had no way to know. Write the required runtime
      layout into the frozen plan.
 
+115. **If three independent measurement attempts collapse the same way, stop measuring and check whether the datum
+     exists.** A residual was unsatisfiable by construction, per-side "certificate" columns were aliased to the
+     seed, and a certified-face projection re-derived the seed's own dart orbit - all because the certificate
+     published an orbit id and three counts and no source-face membership. The question was never measurable; each
+     contract was a new way of reconstructing an answer the system does not record. Check the producer's published
+     contract before specifying a fourth measurement.
+
+116. **A falsifiability witness earns its keep by splitting "can" from "does".** A unit witness proving a
+     measurement *can* report a non-zero result passed, while the production witness proving it *does not* in this
+     configuration red. Without that pair, a zero would have been reported as a clean result - exactly as an
+     earlier structural zero was. Require both a mechanism witness and a production witness.
+
+117. **A derived partition must be at least as fine as the one whose property it is testing.** A certified-face
+     projection united faces across everything except mandatory and cut edges, omitting trace-crossed edges, so its
+     components were strictly coarser than the partition under adjudication - guaranteeing multi-owner sets and an
+     unavailable answer for every face. State the required barrier set in the definition, not only in the code.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

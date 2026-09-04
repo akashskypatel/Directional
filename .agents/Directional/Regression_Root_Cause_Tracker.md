@@ -1,3 +1,54 @@
+## M3-CP4c3-TB23-R1-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`, measures **CE0-CE8** discharged. Static
+  only: no runtime, compile, package, package repair, or product/test/fixture/selector mutation.
+- **CE0.** Source `e12396d4` exists, is an ancestor of HEAD, **no code drift**; selector 397 hashes to
+  `d67e5fb7...9b4853ee5` with **397** identities; ledger closes at 389+8=397; accepted **1-365 = 365/365**;
+  package/source/execution-view censuses equal. The run **is semantically authoritative** - CD2's precondition was
+  satisfied before runtime, which is exactly what TB23-EXEC lacked.
+- **CE1 - `M3-CP4c3-TB23-REV-CAND-02` CLOSES / RUNTIME PROVED.** The corrected harness (`fdc335dd...80cc16d7`)
+  staged the execution view and verified it through the consumer's own resolution rule; accepted returned to
+  365/365, confirming the invalid attempt's 38 accepted-prefix failures were fixture-open failures. First use of
+  the new orchestration routing, and it worked end to end.
+- **CE2 - both new REDs are the new witnesses working.** Ordinal **393** (production) REDs on
+  `examined=273;differing=0` and on `certifiedFaceDiffersFromSeed`, while ordinal **396** (unit) PASSES - the
+  "can versus does" split CA6 was written to create. Ordinal **397** REDs on a real defect: CB25 appended
+  `;cutCandidateCount=0` to the rendered locus of an **unrelated** error. **CA2's aliasing is fixed** (both sides
+  are filled by separate accessor calls, `:1365-1370`), but **CA1 is not met on the edge-side path**:
+  `add_direct(..., thirdEdge/forwardEdge/reverseEdge, walk.orbitByDart[dart])` (`:487, :502-503`) writes the same
+  quantity `edgeOrbitEvidence` records, so every available labeled certified face **equals its seed**.
+- **CE3 - why 191/191 component certified faces are `unavailable`.**
+  `resolve_certificate_face_projection` assigns an owner only when a component's certified-face set has **exactly
+  one element** (`GlobalTopologyCertificateDiagnostics.h:134-138`), and unites eligible faces across every edge not
+  in `embeddedGraphSourceEdges` - **mandatory and cut only**, omitting `traceTouchedEdges` (`:427`). Its components
+  are therefore **strictly coarser** than the seed guard's 191-face component, so they collect several certified
+  faces and every member resolves to `nullopt`. `differing=0` is consequently **conditionally vacuous**;
+  `examined=273` is genuine but uninformative.
+- **CE4 - THE OWNERSHIP QUESTION IS UNANSWERABLE FROM THE PUBLISHED CERTIFICATE.**
+  `SurfaceCutGraphFaceCertificate` (`SurfaceCutGraph.h:53-63`) publishes `orbit`, `boundaryWalkCount`,
+  `boundaryArcCount`, `discTopologyEstablished` - **no source-face membership, no boundary arc list**. No Code +
+  Build turn can read a datum the contract does not publish, and every diagnostic has had to reconstruct it from
+  `walk.orbitByDart` - the seed quantity. **This is a definition gap.** TB22-REV's "no further diagnostic turn"
+  prohibition is honoured: the successor is a **DEFN**.
+- **CE8 - one bounded successor frozen:** **`M3-CP4c-3-DEFN-R3`** under **CF0-CF9**. DEFN absorbs REVIEW + PLAN.
+- **Accounting:** both new REDs are on unaccepted ordinals, were introduced by this checkpoint's own diagnostic
+  scaffolding, and reflect no change on any accepted identity. **+0 events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, packages **88**.
+
+## M3-CP4c3-TB23-R1-REV-CAND-01 - CB25 changed an unrelated error's rendered locus - **NEW / ACTIVE / PRODUCT / NON-STABLE**
+
+Ordinal 397 expected `;sourceFace=2,4,6` and received `;sourceFace=2,4,6;cutCandidateCount=0`: CB25's diagnostic
+work appended a field to the rendered locus of an **unrelated** topology error. Small and contained, but exactly
+the class the byte-identical regression witness exists to catch. **Must be fixed, not absorbed by relaxing the
+expectation.** Owner: the DEFN's successor Code + Build turn (CF8).
+
+## M3-CP4c3-TB23-R1-REV-CAND-02 - ordinal 393 encodes an expectation the production path cannot satisfy - **NEW / ACTIVE / DIAGNOSTIC CONTRACT / NON-STABLE**
+
+Ordinal 393 requires a non-zero differing count and a certified face differing from its seed. Neither is reachable
+while certified ownership is underivable from the published certificate. **Do not delete or weaken it.** `CF7`
+decides its disposition - corrected, re-scoped, or declared non-gating with a written rationale and an owning
+measure - once the certificate's contract is settled.
+
 ## M3-CP4c3-TB23-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB23_Independent_Review_Record.md`, measures **CC0-CC8** discharged. Static
@@ -43,7 +94,7 @@ failures instead of one typed precondition stop - the direct cause of TB23-EXEC'
 397-row ledger. Owner: the **next Code + Build turn on any surface**, since it mutates test infrastructure.
 Explicitly **not** in scope for `M3-CP4c-3-TB23-R1`, which mutates no source. Related: lesson 112.
 
-## M3-CP4c3-TB23-REV-CAND-02 - the TB23 harness omitted the execution-view staging every prior gate performed - **NEW / ACTIVE / ORCHESTRATION / NON-STABLE**
+## M3-CP4c3-TB23-REV-CAND-02 - the TB23 harness omitted the execution-view staging - **CLOSED / RUNTIME PROVED AT TB23-R1 / NON-STABLE**
 
 The immutable package never contains `test-data`; fixtures reach the binaries only because the execution harness
 stages them into the layout `test_data_root()` resolves. TB18-TB22 did this; TB23 did not, and its preflight
@@ -143,7 +194,7 @@ BZ7's escape clause. Related: lessons 109-111.
 - **Accounting:** RED set moved 8 -> 7 by clearing 371/372 and adding a diagnostic co-reacher of an owned surface.
   **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **86**.
 
-## M3-CP4c3-TB21-CAND-01 - the source-face component construction is an unvalidated projection of a certified cellular complex - **ACTIVE / ARCHITECTURAL / GATING / BOTH BRANCHES LIVE AFTER TB22-REV / NON-STABLE**
+## M3-CP4c3-TB21-CAND-01 - the source-face component construction is an unvalidated projection - **ACTIVE / ARCHITECTURAL / GATING / BOTH BRANCHES NEVER DISCRIMINATED / OWNER: M3-CP4c-3-DEFN-R3 / NON-STABLE**
 
 TB22 preserves the 191-triangle component with exact seeds `[0,1,3]` while the actual embedded complex remains cellular. CB24's deciding measurement is now runtime-settled: projection residual **0**, no residual witnesses, and the two minority edges stay within certificate faces **3/3** and **1/1**. Their distinct seeds are still derived by **`edgeOrbitEvidence`** (3 and 1). This narrows the candidate away from the measured missing-barrier/different-certificate-face branch and onto the semantic relationship between edge-orbit evidence and certified component ownership. Owner: independent **TB22-REV BZ2–BZ5**. The review must validate that residual 0 is not a false zero, derive the seed-selection contract independently, and only then authorize Code + Build or DEFN. Supersedes `M3-CP4c3-TB20-REV-CAND-01`; absorbs `M3-CP4c3-TB19-CAND-01` as its symptom record.
 

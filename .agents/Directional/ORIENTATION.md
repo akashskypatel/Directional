@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-04):** authoritative semantic runtime remains **TB22** - source `d69729a6` / selector **393**, **387 PASS / 6 RED**, accepted **365/365**. **`M3-CP4c-3-TB23-EXEC` is ORCHESTRATION-INVALID**: its harness never staged the fixture tree into the executable-relative layout and verified the wrong path, so its 397-process ledger is not semantic authority. `M3-CP4c-3-TB23-REV` proved the defect belongs to the **harness**, not CB25 or the package, and that **CB25 statically satisfies CA1/CA3**. Exact next is `M3-CP4c-3-TB23-R1` under **CD0-CD8** - re-execute the same immutable package.
+> **Current CP4c-3 authority (2026-09-04):** TB23-R1 is latest runtime on source `e12396d4` / selector **397** at **389 PASS / 8 RED**, accepted **365/365**; the corrected harness is confirmed. **`M3-CP4c-3-TB23-R1-REV` proved the ownership question unanswerable from the published certificate** - `SurfaceCutGraphFaceCertificate` carries an orbit id and three counts, **no source-face membership** - so all 191 component certified faces are `unavailable` and neither branch of the projection question fired. Exact next is **`M3-CP4c-3-DEFN-R3`** under **CF0-CF9**; no further diagnostic turn.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,35 +185,33 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Authoritative semantic runtime remains `M3-CP4c-3-TB22`** — source `d69729a69a40b020968ed6ef1fbc1bc788284518`,
-selector **393**, **387 PASS / 6 RED**, accepted **365/365**, reds {366, 367, 368, 369, 370, 374}. Accepted
-authority is selector **365** (`6b5b6555…cfc14b8a1`).
+**Current runtime authority — `M3-CP4c-3-TB23-R1`.** Source `e12396d471c0754b112a40272a7992020ff49ced`, immutable
+package `9921914679`, selector **397** (`d67e5fb7…9b4853ee5`, 397 identities), run/job
+`33839673886 / 100919253449`, ledger `81224170…dedef314`: **389 PASS / 8 RED**, accepted **1–365 = 365/365**, reds
+{366, 367, 368, 369, 370, 374, **393**, **397**}. Package, source and execution-view censuses all equal.
 
-**`M3-CP4c-3-CB25` produced package `9921914679`** (`sha256:db346ad9…f444a4fe7`) from source
-`e12396d471c0754b112a40272a7992020ff49ced`, with frozen selector **397**
-(`d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`, 397 identities; selector 393 and accepted 365
-both exact prefixes). Appended ordinals **394–397** are the certificate-diagnostic witnesses.
+**The orchestration correction is confirmed.** CB26's corrected harness staged the execution view and verified it
+through the consumer's own resolution rule; accepted returned to **365/365**, proving the invalid attempt's 38
+accepted-prefix failures were fixture-open failures and never semantic.
+`M3-CP4c3-TB23-REV-CAND-02` **closes**. This was the first use of the new
+`TB (orchestration-invalid) → CB (control-plane correction) → TB (re-execute)` routing, and it worked end to end.
 
-**`M3-CP4c-3-TB23-EXEC` is ORCHESTRATION-INVALID and produced no semantic ledger.** The frozen plan required a
-known fixture to exist at the path the packaged executable resolves before runtime; the harness checked the
-extracted source workspace instead, then ran 397 processes against a missing fixture tree. Its raw
-342 PASS / 55 RED and accepted 327/365 are **fixture-open failures, audit-only, not regression authority**. The
-package was byte-identical before and after.
+**Both new REDs are the new witnesses working, not product regressions.** Ordinal **393** (production) REDs on
+`m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true` and on `certifiedFaceDiffersFromSeed`, while
+ordinal **396** (unit) PASSES — the "can versus does" split CA6 was written to create. Ordinal **397** REDs because
+CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** error; that is a genuine defect and
+must be fixed, not absorbed.
 
-**`M3-CP4c-3-TB23-REV` located the defect precisely.** The reusable compile workflow has **never** packaged a
-`test-data` tree — TB18–TB22 passed because their harnesses *staged* fixtures into the executable-relative layout
-that `tests/TestFixturePaths.h` resolves. **The TB23 harness omitted that staging**, so this is neither a CB25 nor
-a package regression. Separately, **`test_data_root()` fails open** — when neither candidate path exists it returns
-one anyway — which is why a harness slip became a full 397-row pseudo-ledger instead of one typed stop.
-
-**CB25 statically satisfies its contract**: `certificate_side_orbit` is gone, certified ownership comes from
-`GlobalTopologyCertificateDiagnostics.h`, and the CA3 pair loop quantifies over uncut adjacent pairs outside
-`componentBarriers` with a **satisfiable** predicate and an `examinedPairCount` that increments for every such
-edge. Re-execution is therefore worth doing (§7 item 1).
+**The ownership question is unanswerable from the published certificate.**
+`SurfaceCutGraphFaceCertificate` publishes `orbit`, `boundaryWalkCount`, `boundaryArcCount` and
+`discTopologyEstablished` — **no source-face membership and no boundary arc list**. Every diagnostic has had to
+reconstruct certified ownership from `walk.orbitByDart`, which is the seed quantity. All 191 component certified
+faces report `unavailable`, CA4's multiset is empty, and **neither branch of `M3-CP4c3-TB21-CAND-01` fired**
+(§7 item 1). The successor is therefore a **DEFN**, not a fourth diagnostic turn.
 
 Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **88**. Sphere 368,
-saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence
-contract remain deferred under their own owners. **Vertex 30 is still not reached.**
+saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence contract
+remain deferred under their own owners. **Vertex 30 is still not reached.**
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -317,25 +315,34 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The source-face component construction is an unvalidated projection of a certified cellular complex —
-   ARCHITECTURAL and gating; BOTH BRANCHES REMAIN LIVE, and the evidence that would decide them has not yet run.**
-   Ordinal 366 is `UncutFaceComponentOrbitSeedNotUnique`, component 0, 191 faces, orbits `[0,1,3]`, boundary
-   attribution **81 / 1 / 1** over 97 edges.
+1. **Certified-face ownership of an uncut source triangle is not derivable from what the system publishes —
+   ARCHITECTURAL, gating, and now proved.** `M3-CP4c3-TB21-CAND-01`'s two branches have never been discriminated.
 
-   - **The projection's faithfulness condition** — every pair of adjacent uncut triangles in different certified
-     faces must be separated by a `componentBarriers` edge — is stated by neither construction and was never
-     measured: CB24's residual was a **structural zero** and its certificate columns were the **seed re-printed**.
-   - **CB25 was built to measure it properly and statically does.** `certificate_side_orbit` is retired;
-     `GlobalTopologyCertificateDiagnostics.h` derives `certifiedFaceBySourceFace` from certificate evidence and
-     assigns an owner only when a component's certified-face set has exactly one element; the CA3 pair loop is
-     **satisfiable** and counts `examinedPairCount` for every qualifying edge.
-   - **No valid runtime has consumed it.** TB23-EXEC was orchestration-invalid, so CA2/CA4/CA5/CA6 remain
-     runtime-unconfirmed and the branch is undecided.
+   - **The datum does not exist.** `SurfaceCutGraphFaceCertificate` carries only `orbit`, `boundaryWalkCount`,
+     `boundaryArcCount` and `discTopologyEstablished`. There is no source-face membership, so nothing inside
+     `GlobalTopologyPlan` can *read* which certified face contains a triangle; it can only reconstruct a guess from
+     `walk.orbitByDart` — the seed quantity.
+   - **Three contracts have collapsed the same way.** CB24's residual was unsatisfiable by construction; CB24's
+     certificate columns were aliased to the seed; CB25's edge-side path re-derives the seed's dart orbit
+     (`GlobalTopologyPlan.cpp:487, 502–503`) and its whole-face path assigns an owner only when a component's
+     certified-face set has exactly one element (`GlobalTopologyCertificateDiagnostics.h:134–138`).
+   - **The projection is coarser than the partition it adjudicates.** Its union-find unites across every edge not
+     in `embeddedGraphSourceEdges` — **mandatory and cut only**, omitting `traceTouchedEdges` — so its components
+     are strictly coarser than the seed guard's 191-face component, guaranteeing multi-owner sets and
+     `unavailable` for all 191 faces.
+   - **`differing=0` is conditionally vacuous**: it increments only when both sides hold values, and essentially
+     every uncut face is `unavailable`. `examined=273` is genuine but carries no information about ownership.
 
-   `M3-CP4c-3-TB23-R1` (CD0–CD8) **re-executes the same immutable package** with a corrected execution view. Its
-   CD7 discriminator — the failing component's certified-face multiset, with `examinedPairCount` non-zero —
-   **names the live branch**. **Prohibited:** rebuild, relink, replacement artifact, package repair, in-place
-   fixture insertion, or any source/test/fixture/selector mutation.
+   `M3-CP4c-3-DEFN-R3` (CF0–CF9) must decide what a certified face publishes, whether the seed guard's premise is
+   checkable at all, and the required barrier set for any projection. **Prohibited:** inventing a certificate field
+   without naming its producer and proof obligation; weakening `proves_cellularity()`, the fragment-count invariant
+   or the seed guard without a stated replacement; deleting ordinal 393; relaxing ordinal 397.
+
+2. **Two carried debts belong to the next source-changing Code + Build turn.** `test_data_root()`
+   (`tests/TestFixturePaths.h:51–64`) still **fails open**, returning a non-existent path when neither candidate
+   exists (`M3-CP4c3-TB23-REV-CAND-01`); and CB25 appended `;cutCandidateCount=0` to an **unrelated** error's
+   rendered locus, caught by ordinal 397 (`M3-CP4c3-TB23-R1-REV-CAND-01`). Neither is architectural; both must be
+   fixed rather than absorbed.
 
 2. **The test fixture resolver fails open — NON-GATING but it corrupted a whole turn's evidence.**
    `tests/TestFixturePaths.h:51–64` checks a sibling and a legacy `test-data` location and, when **neither**
@@ -410,6 +417,22 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**If three independent measurement attempts collapse the same way, stop measuring and check whether the datum
+exists.** The residual was unsatisfiable, the certificate columns were aliased, and the certified-face projection
+re-derived the seed — all because the certificate publishes an orbit id and three counts and no source-face
+membership. The question was never measurable; each contract was a new way of reconstructing an answer the system
+does not record. `LESSONS.md` §4 115.
+
+**A falsifiability witness earns its keep by splitting "can" from "does".** The unit witness proving the pair
+measurement *can* report a non-zero differing count passes, while the production witness proving it *does not*
+here reds. Without that pair, `differing=0` would have been reported as a clean result — exactly as CB24's
+structural zero was. `LESSONS.md` §4 116.
+
+**A derived partition must be at least as fine as the one whose property it is testing.** The certified-face
+projection united faces across everything except mandatory and cut edges, omitting `traceTouchedEdges`, so its
+components were strictly coarser than the seed guard's — guaranteeing multi-owner sets and `unavailable` for every
+face. `LESSONS.md` §4 117.
 
 **A resolver for a required precondition must fail closed.** `test_data_root()` checks two candidate fixture
 locations and, when neither exists, returns one of them anyway. A harness slip that should have produced one typed
@@ -1368,3 +1391,19 @@ The two-ring is constructed in the test file, not a fixture.
   `certificateSeparatingSourceEdges` intersection, so CB24's structural zero cannot recur in this form.
 - TB23-EXEC raw invalid-attempt fields, **audit-only**: 342 PASS / 55 RED, accepted 327/365, ledger
   `839e95fe…7ffc76e85e8d`, ordinals 394–397 `PASS,PASS,PASS,RED`, CA2/CA3/CA4 row counts `0/0/0`.
+- **`SurfaceCutGraphFaceCertificate` (`include/directional/geometry/SurfaceCutGraph.h:53–63`) publishes `orbit`,
+  `boundaryWalkCount`, `boundaryArcCount`, `discTopologyEstablished` — and nothing else.** No source-face
+  membership, no boundary arc list. `certificateFaceOrbits` is only the *set of those orbit ids*, used as a
+  membership filter.
+- **CB25's edge-side certified faces are the seed by another route.**
+  `add_direct(segment.sourceFace, thirdEdge, sideOrbit)` and the carrier-less
+  `add_direct(…, forwardEdge/reverseEdge, forwardOrbit/reverseOrbit)` write `walk.orbitByDart[dart]` — the same
+  quantity `edgeOrbitEvidence` records — filtered only by `certificateFaceOrbits`. Hence every available labeled
+  certified face **equals its seed**.
+- **`resolve_certificate_face_projection` unites across every edge not in `embeddedGraphSourceEdges`**, which holds
+  only mandatory and cut source edges (`GlobalTopologyPlan.cpp:427`). It therefore merges across trace-crossed
+  edges and is **coarser** than `componentBarriers`.
+- TB23-R1 mechanical evidence: `m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true`;
+  `m3Cp4c3CA4;observed=0;unavailable=191;distinct=0;multiset=;truncated=false`; minority rows `10-79` seed 3 and
+  `29-35` seed 1, both with `componentCertifiedFace=unavailable` and `labeledCertifiedFace` equal to the seed.
+- Ordinal 397's exact difference: expected `;sourceFace=2,4,6`, received `;sourceFace=2,4,6;cutCandidateCount=0`.

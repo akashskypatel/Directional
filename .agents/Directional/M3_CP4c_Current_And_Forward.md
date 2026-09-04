@@ -33,50 +33,67 @@ Last updated **2026-09-04** at `M3-CP4c-3-TB23-R1` closeout.
 Stable accounting remains **provisionally 44 events / 14 categories / 30 recurrences** until review classifies the
 new 393/397 RED surfaces; produced-witness debt **5**, semantic M3 package count **88**.
 
-## 2. The current frontier — valid TB23-R1 runtime exposes two additional RED surfaces
+## 2. The current frontier — the ownership datum does not exist
 
-The corrected CB26 execution view is runtime-proved operational. Formal TB23-R1 run `33839673886` passed the
-fixture-resolution preflight (`resolved_rule=sibling`), executed all 397 identities, and preserved package/source/
-execution-view censuses exactly. No benchmark, configure, compile, relink, discovery, package repair, mode repair or
-source/test/fixture/selector mutation occurred.
+**Current runtime authority — `M3-CP4c-3-TB23-R1`.** Source `e12396d471c0754b112a40272a7992020ff49ced`, package
+`9921914679`, selector **397** (`d67e5fb7…9b4853ee5`), run/job `33839673886 / 100919253449`, ledger
+`81224170…dedef314`: **389 PASS / 8 RED**, accepted **1–365 = 365/365**, reds
+{366, 367, 368, 369, 370, 374, **393**, **397**}. All censuses equal.
 
-**Accepted authority remains 365/365.** Ordinal 366 retains the exact carried
-`UncutFaceComponentOrbitSeedNotUnique` component-0 / `Multiple` / `[0,1,3]` / 191-face locus. Carried REDs
-367/368/369/370/374 remain RED; 371/372/391/392 remain PASS.
+**The orchestration correction is confirmed.** CB26's harness staged the execution view and verified it through the
+consumer's own resolution rule; accepted returned to 365/365, proving the invalid attempt's 38 accepted-prefix
+failures were fixture-open failures. `M3-CP4c3-TB23-REV-CAND-02` **closes**. First use of the new
+`TB (orchestration-invalid) → CB (control-plane correction) → TB (re-execute)` routing, and it worked end to end.
 
-**Ordinal 393 is newly RED in valid semantic evidence.** Its production diagnostics are:
+**Both new REDs are the new witnesses working.** Ordinal **393** (production) REDs on
+`m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true` and on `certifiedFaceDiffersFromSeed`, while
+ordinal **396** (unit) PASSES — the "can versus does" split CA6 was written to create. Ordinal **397** REDs on a
+**genuine defect**: CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** error.
 
-- CA3 `examined=273`, `differing=0`, `witnessCount=64`, `truncated=true`;
-- two CA2 minority rows, both component certified faces `unavailable`; labeled certified faces `3` and `1`, equal
-  to the shown seeds;
-- CA4 `observed=0`, `unavailable=191`, `distinct=0`, empty multiset.
+**`M3-CP4c-3-TB23-R1-REV` (CE0–CE8) proved why three diagnostic contracts have failed:**
 
-The test also reports `certifiedFaceDiffersFromSeed=false`. This TB records the facts only; review owns whether they
-implicate the projection, the witness contract, or another cause.
+- **CA2 is discharged; CA1 is not.** Both sides are filled by separate accessor calls, so CB24's aliasing is gone —
+  but the edge-side path writes `walk.orbitByDart[dart]` (`GlobalTopologyPlan.cpp:487, 502–503`), the same quantity
+  `edgeOrbitEvidence` records, so every available labeled certified face **equals its seed**.
+- **All 191 component certified faces are `unavailable`.** `resolve_certificate_face_projection` assigns an owner
+  only when a component's certified-face set has exactly one element
+  (`GlobalTopologyCertificateDiagnostics.h:134–138`), and unites across every edge not in
+  `embeddedGraphSourceEdges` — **mandatory and cut only**, omitting `traceTouchedEdges`. Its components are
+  therefore **strictly coarser** than the seed guard's, so they collect several certified faces and every member
+  resolves to `nullopt`. CA4's multiset is empty; **neither branch of `M3-CP4c3-TB21-CAND-01` fired**.
+- **The datum does not exist.** `SurfaceCutGraphFaceCertificate` (`SurfaceCutGraph.h:53–63`) publishes `orbit`,
+  `boundaryWalkCount`, `boundaryArcCount` and `discTopologyEstablished` — **no source-face membership, no boundary
+  arc list**. No Code + Build turn can read what the contract does not publish, which is why every diagnostic has
+  had to reconstruct the answer from the seed's own dart orbit. **This is a definition gap.**
 
-**Ordinals 394–396 PASS. Ordinal 397 is newly RED.** Its exact unrelated-locus assertion expected
-`;sourceFace=2,4,6` and received `;sourceFace=2,4,6;cutCandidateCount=0`. Ownership of that byte difference is
-unclassified until review.
-
-The CA4 result does not realize the frozen one-versus-several branch discriminator because 191/191 certified-face
-observations are unavailable. `M3-CP4c3-TB21-CAND-01` therefore remains unadjudicated pending independent review.
-
-The earlier TB23-EXEC raw 342/55 ledger remains invalid-attempt provenance only. It is superseded as runtime
-authority by this valid TB23-R1 ledger and must never be mixed into regression accounting.
+TB22-REV's "no further diagnostic turn on this surface" prohibition is honoured: the successor is a **DEFN**.
 
 ---
 
-## 3. Exact next turn — `M3-CP4c-3-TB23-R1-REV`, independent REVIEW + PLAN
+## 3. Exact next turn — `M3-CP4c-3-DEFN-R3`, `CF0–CF9`
 
-Static review only. Do not rerun Directional or patch source/tests before review. The review must verify the
-immutable evidence, diagnose/classify 393 and 397, adjudicate the unavailable CA2/CA4 evidence against the live
-architectural candidate, formally dispose the corrected-harness candidate, update stable accounting only where
-justified, perform mandatory REVIEW consolidation plus `ORIENTATION.md`, and authorize at most one bounded
-successor.
+**DEFN absorbs `REVIEW + PLAN`**, so it freezes definitions, adjudicates inherited candidates and issues its
+successor's measures in one turn. Full text in §8 of
+`Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`.
 
-TB23-R1 stale-evidence cleanup retired five superseded per-turn records; the review must index them in the CP4c
-consolidated folded-document index with their line counts: TB22 report 112, CB25 report 115, CB26 report 111,
-consumed TB23 plan 200, invalid TB23-EXEC report 100.
+- **CF0** — accepted 365 untouched; selector 397 byte-frozen; **no runtime, no compile, no package**.
+- **CF1** — decide what a certified face must publish so *"which certified face contains this source triangle"* is
+  answerable; if it must not, say what else answers it and who owns that.
+- **CF2** — decide whether the seed guard's premise is checkable at all; no weakening of
+  `UncutFaceComponentOrbitSeedNotUnique` without a stated replacement.
+- **CF3** — state the required barrier set for any certified-face projection, so `traceTouchedEdges` cannot be
+  omitted again.
+- **CF4** — adjudicate `M3-CP4c3-TB20-REV-CAND-02`: lift the Parts IV/V prohibition with reasons, or require CB21's
+  restoration. Only a DEFN may resolve it.
+- **CF5** — carry forward `proves_cellularity()`, accepted 1–365, the cellularity evidence, CB21, 371/372/391/392
+  closure, and separate ownership of 367/368/369/370/374.
+- **CF6** — record that both branches of `M3-CP4c3-TB21-CAND-01` were never discriminated, and what would
+  discriminate them.
+- **CF7** — disposition ordinals **393** and **397** explicitly; 397 must be **fixed**, 393 never silently deleted.
+- **CF8** — freeze the successor CB's measures, including the fail-open `test_data_root()` and the
+  unrelated-locus regression.
+- **CF9** — prohibited list, including inventing a certificate field without naming its producer and proof
+  obligation.
 
 ---
 
@@ -88,6 +105,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 |---|---|
 | `M3-CP4c3-TB23-REV-CAND-01` | **NEW / ACTIVE / TEST INFRASTRUCTURE / NON-GATING** — `test_data_root()` fails open, so a missing fixture tree produces a pseudo-ledger instead of one typed stop. Owner: the next Code + Build turn already changing source; **not** CB26. |
 | `M3-CP4c3-TB23-REV-CAND-02` | **ACTIVE / ORCHESTRATION / RUNTIME RE-PROVED** — CB26's corrected execution view completed TB23-R1 successfully with `resolved_rule=sibling`; formal closure/classification belongs to TB23-R1-REV. |
+| `M3-CP4c3-TB23-R1-REV-CAND-01` | **NEW / ACTIVE / PRODUCT** — CB25 appended `;cutCandidateCount=0` to an **unrelated** error's rendered locus, caught by ordinal 397. Must be **fixed**, not absorbed. Owner: the DEFN's successor CB (CF8). |
+| `M3-CP4c3-TB23-R1-REV-CAND-02` | **NEW / ACTIVE / DIAGNOSTIC CONTRACT** — ordinal 393 encodes an expectation the production path cannot satisfy while certified ownership is underivable. **Do not delete or weaken it**; CF7 decides its disposition. |
 | `M3-CP4c3-TB21-CAND-01` | **ACTIVE / ARCHITECTURAL / GATING / UNADJUDICATED** — valid TB23-R1 CA4 reports `observed=0, unavailable=191, distinct=0`, so the frozen one-versus-several discriminator did not fire. Owner: `M3-CP4c-3-TB23-R1-REV`. |
 | `M3-CP4c3-TB22-REV-CAND-01` | **NEW / ACTIVE / EVIDENCE INTEGRITY** — two production diagnostics report values that cannot vary; ordinal 393 pins the vacuous contract as required-green. Owner: CA1–CA3 and CA6. |
 | `M3-CP4c3-TB21-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 391 passes with the sphere half explicitly skipped. |
@@ -137,7 +156,7 @@ After the durable start-of-turn checklist, load only the minimum current authori
 1. `ORIENTATION.md` — read first; update it during the mandatory REVIEW closeout.
 2. **this file** — current frontier and candidate ownership.
 3. `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority and exact immutable evidence.
-4. `Architecture_M3_CP4c3_TB23_Independent_Review_Record.md` — current review authority until TB23-R1-REV replaces it.
+4. `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — current immutable runtime authority.
 5. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
 6. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 7. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.

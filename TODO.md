@@ -26,32 +26,61 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB23-R1-REV` (Independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-DEFN-R3` (DEFN; absorbs REVIEW + PLAN)
 
-`M3-CP4c-3-TB23-R1` is **COMPLETE / SEMANTIC RED / ACCEPTED PREFIX SAFE / IMMUTABLE ARTIFACT PRESERVED**.
-Record: `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB23-R1-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` (**CE0–CE8** discharged, static only).
 
-Formal run/job `33839673886 / 100919253449` succeeded against immutable package `9921914679`; result/log artifacts
-are `9924532894 / 9924533267`. Ledger: **389 PASS / 8 RED**, accepted **365/365**, RED ordinals
-`[366,367,368,369,370,374,393,397]`. Package/source/execution-view censuses are unchanged and all prohibited
-build/repair/mutation flags are false.
+**The harness correction is confirmed and the ownership question is proved unanswerable.**
+
+- **`M3-CP4c3-TB23-REV-CAND-02` CLOSES / RUNTIME PROVED.** The corrected harness staged the execution view and
+  verified it through the consumer's own resolution rule; accepted returned to **365/365**, confirming the invalid
+  attempt's 38 accepted-prefix failures were fixture-open failures. First use of the new
+  `TB (orchestration-invalid) -> CB (control-plane correction) -> TB (re-execute)` routing, and it worked end to end.
+- **Both new REDs are the new witnesses working, not product regressions.** Ordinal **393** (production) REDs on
+  `m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true` and on `certifiedFaceDiffersFromSeed`, while
+  ordinal **396** (unit) PASSES - the "can versus does" split CA6 was written to create. Ordinal **397** REDs on a
+  **genuine defect**: CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** error.
+- **CA2 is discharged; CA1 is not.** Both sides are now filled by separate accessor calls (`:1365-1370`), so
+  CB24's aliasing is gone. But the edge-side path writes `walk.orbitByDart[dart]` (`:487, :502-503`) - the same
+  quantity `edgeOrbitEvidence` records - so every available labeled certified face **equals its seed**.
+- **All 191 component certified faces are `unavailable`.** `resolve_certificate_face_projection` assigns an owner
+  only when a component's certified-face set has exactly one element
+  (`GlobalTopologyCertificateDiagnostics.h:134-138`), and unites across every edge not in
+  `embeddedGraphSourceEdges` - **mandatory and cut only**, omitting `traceTouchedEdges`. Its components are
+  therefore **strictly coarser** than the seed guard's, so they collect several certified faces and every member
+  resolves to `nullopt`. CA4's multiset is empty and **neither branch of `M3-CP4c3-TB21-CAND-01` fired**.
+- **THE DATUM DOES NOT EXIST.** `SurfaceCutGraphFaceCertificate` (`SurfaceCutGraph.h:53-63`) publishes `orbit`,
+  `boundaryWalkCount`, `boundaryArcCount` and `discTopologyEstablished` - **no source-face membership, no boundary
+  arc list**. No Code + Build turn can read what the contract does not publish, which is why three successive
+  diagnostic contracts each had to reconstruct the answer from `walk.orbitByDart` and each collapsed the same way.
+  **This is a definition gap**, and TB22-REV's "no further diagnostic turn" prohibition is honoured: the successor
+  is a **DEFN**.
+
+Carried surfaces 367/368/369/370/374 unchanged; 371/372/391/392 still PASS. **There is still no vertex-30
+discriminator.**
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB23-R1-REV`** as static independent review only.
+Run **`M3-CP4c-3-DEFN-R3`** under §8 **CF0–CF9** of
+`Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`. **No runtime, no compile, no package.**
 
-- [ ] Re-verify artifact `9924532894`, ledger SHA-256 `812241705ee5f0c467ce0272a15d4eed842dbe5c6004b1415f2432cbdedef314`, and accepted **365/365**.
-- [ ] Diagnose/classify ordinal **393** from exact source: CA3 `examined=273,differing=0`; both CA2 component certified faces unavailable; available labeled certified faces equal their seeds; CA4 `observed=0,unavailable=191,distinct=0`.
-- [ ] Diagnose/classify ordinal **397** exact output mismatch: expected `;sourceFace=2,4,6`, actual `;sourceFace=2,4,6;cutCandidateCount=0`.
-- [ ] Adjudicate what the unavailable CA2/CA4 result can and cannot decide for `M3-CP4c3-TB21-CAND-01`.
-- [ ] Formally dispose `M3-CP4c3-TB23-REV-CAND-02` now that the corrected execution gate completed successfully.
-- [ ] Update stable regression accounting only after classification; TB23-R1 intentionally left the tracker unchanged.
-- [ ] Perform mandatory REVIEW-turn consolidation, including indexing the five per-turn files retired by TB23-R1, and update `ORIENTATION.md`.
-- [ ] Authorize at most one bounded successor; no runtime rerun or source/test correction is pre-authorized.
+- [ ] **CF0** — accepted 365 untouched; selector 397 byte-frozen; definitions and measures only.
+- [ ] **CF1** — decide what a certified face must publish so ownership of an uncut triangle is answerable.
+- [ ] **CF2** — decide whether the seed guard's premise is checkable; no weakening without a stated replacement.
+- [ ] **CF3** — state the required barrier set for any certified-face projection.
+- [ ] **CF4** — adjudicate `M3-CP4c3-TB20-REV-CAND-02` (CB21 vs the Parts IV/V prohibition).
+- [ ] **CF5** — carry forward `proves_cellularity()`, accepted 1–365, the cellularity evidence, CB21, and the
+      separate ownership of 367/368/369/370/374.
+- [ ] **CF6** — record that both branches of `M3-CP4c3-TB21-CAND-01` were never discriminated.
+- [ ] **CF7** — disposition ordinals **393** and **397** explicitly; 397 must be **fixed**, 393 never silently
+      deleted.
+- [ ] **CF8** — freeze the successor CB's measures, including the fail-open `test_data_root()` and the
+      unrelated-locus regression.
+- [ ] **CF9** — observe the prohibited list.
 
-Current semantic runtime authority is **TB23-R1: 389 PASS / 8 RED, accepted 365/365**. CP4c-3 remains **OPEN**.
-Provisionally retained accounting: **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**,
-semantic M3 package count **88**, pending review classification of 393/397.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **88**.
 
 ## Carried forward from M1
 
