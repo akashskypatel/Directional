@@ -1,0 +1,3 @@
+.agents/connector-triggers/source-snapshot/tb25-start-20260904.txt
+.agents/connector-triggers/tb25-exec/trigger-20260904.txt
+.agents/connector-triggers/turn-cleanup/manifest.txt
