@@ -1,0 +1,49 @@
+name: Agent M3 CP4c3 TB25 R1 Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb25-r1-docs-apply/trigger-20260904.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c3-tb25-r1-docs-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-tb25-r1-docs-apply.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 14
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb25-r1-docs-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1sLfWUKhLodZ33hf8isKWAarEAjSLmymu
+      patch_sha256: '285e2b0372597099d4ef0dad2d33321836bcb0ee9824eb3acbbdf7475f3f623d'
+      base_sha: 375f887847268ed4560f6f6e577f0be0f202c430
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M3-CP4c-3-TB25-R1: record artifact-only runtime evidence'
+      retention_days: 14
+    secrets: inherit
