@@ -43,17 +43,13 @@ build_certified_owner_conflict_census(
         second->second->certifiedFaceOrbits.front();
     if (firstOwner == secondOwner) continue;
 
-    SurfaceCutGraphCertifiedOwnerConflict row;
-    row.sourceEdge = edge;
-    row.firstFace = incident[0];
-    row.firstOwner = firstOwner;
-    row.secondFace = incident[1];
-    row.secondOwner = secondOwner;
     const auto classification = barrierClasses.find(edge);
-    if (classification != barrierClasses.end()) {
-      row.barrierClass = classification->second;
-    }
-    result.push_back(std::move(row));
+    const auto barrierClass =
+        classification != barrierClasses.end()
+            ? classification->second
+            : SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None;
+    result.push_back(SurfaceCutGraphCertifiedOwnerConflict{
+        edge, incident[0], firstOwner, incident[1], secondOwner, barrierClass});
   }
   return result;
 }
