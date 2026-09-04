@@ -1,0 +1,45 @@
+name: Agent CB28 Drive Apply Caller
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb28-drive-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb28-drive-apply-caller.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb28-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1jYCus5YksElC2lb1lAy9alycBxuDaKcl
+      patch_sha256: 925edca5bee77c1477c0cc97c2bc9c9c2772749cb40ae65ccc07fdf7c2194c5e
+      base_sha: 2ec2a978001be478d99e0730005fae5d379e974b
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: M3-CP4c-3-CB28 measure certified ownership conflicts
+      retention_days: 7
+    secrets: inherit
