@@ -1,4 +1,0 @@
-CB28 Drive apply trigger.
-base_sha=2ec2a978001be478d99e0730005fae5d379e974b
-patch_sha256=925edca5bee77c1477c0cc97c2bc9c9c2772749cb40ae65ccc07fdf7c2194c5e
-file_id=1jYCus5YksElC2lb1lAy9alycBxuDaKcl
