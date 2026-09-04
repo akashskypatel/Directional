@@ -1,3 +1,0 @@
-CB28 compile-fix patch apply trigger.
-base_sha=8a8b9af7b3d3d51bba8b710f841a867c77840440
-patch_sha256=be9bdfcf751f713b4e4a01235d77586ecd8c9d2aeab08f1d397a488c1b9239b6
