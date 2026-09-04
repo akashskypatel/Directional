@@ -28,7 +28,8 @@ ROLE = {
     365: ("**ACCEPTED AUTHORITY**", "The load-bearing boundary. Every acceptance claim cites this hash."),
     385: ("superseded", "Name is 385; identity count is **388**. See the naming section above."),
     391: ("superseded", "CB23 appends three diagnostic-only witnesses to the frozen 388-identity selector 385."),
-    393: ("**CURRENT GATE**", "CB24 appends two diagnostic-only projection witnesses to frozen selector 391."),
+    393: ("superseded", "CB24 appends two diagnostic-only projection witnesses to frozen selector 391; CB25 supersedes the vacuous diagnostic contract without changing these bytes."),
+    397: ("**CURRENT GATE**", "CB25 appends four diagnostic-only certificate-source and falsifiability witnesses to frozen selector 393."),
 }
 
 rows = []

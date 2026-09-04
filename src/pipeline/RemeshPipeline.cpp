@@ -696,8 +696,8 @@ project_global_topology_plan_failure_locus(
           *edge.noSeedReason);
     }
     row.minoritySeedOrbit = edge.minoritySeedOrbit;
-    row.componentSideCertificateFace = edge.componentSideCertificateFace;
-    row.labeledSideCertificateFace = edge.labeledSideCertificateFace;
+    row.componentSideCertifiedFace = edge.componentSideCertifiedFace;
+    row.labeledSideCertifiedFace = edge.labeledSideCertifiedFace;
     locus.uncutFaceComponentBoundaryEdges.push_back(std::move(row));
   }
   locus.uncutFaceComponentBoundaryEdgesTruncated =
@@ -713,21 +713,37 @@ project_global_topology_plan_failure_locus(
   }
   locus.uncutFaceComponentBoundaryOrbitsTruncated =
       error.uncutFaceComponentBoundaryOrbitsTruncated;
-  locus.uncutFaceProjectionFaithfulnessResidual =
-      error.uncutFaceProjectionFaithfulnessResidual;
-  locus.uncutFaceProjectionFaithfulnessEdges.reserve(
-      error.uncutFaceProjectionFaithfulnessEdges.size());
-  for (const auto &edge : error.uncutFaceProjectionFaithfulnessEdges) {
-    SurfaceCellUncutFaceProjectionFaithfulnessEdgeDiagnostics row;
+  locus.uncutFaceCertificatePairExaminedCount =
+      error.uncutFaceCertificatePairExaminedCount;
+  locus.uncutFaceCertificatePairDifferingCount =
+      error.uncutFaceCertificatePairDifferingCount;
+  locus.uncutFaceCertificatePairs.reserve(error.uncutFaceCertificatePairs.size());
+  for (const auto &edge : error.uncutFaceCertificatePairs) {
+    SurfaceCellUncutFaceCertificatePairDiagnostics row;
     row.sourceEdge = topology_edge_locus(edge.sourceEdge);
     row.firstFace = topology_face_locus(edge.firstFace);
     row.secondFace = topology_face_locus(edge.secondFace);
-    row.firstCertificateFace = edge.firstCertificateFace;
-    row.secondCertificateFace = edge.secondCertificateFace;
-    locus.uncutFaceProjectionFaithfulnessEdges.push_back(std::move(row));
+    row.firstCertifiedFace = edge.firstCertifiedFace;
+    row.secondCertifiedFace = edge.secondCertifiedFace;
+    locus.uncutFaceCertificatePairs.push_back(std::move(row));
   }
-  locus.uncutFaceProjectionFaithfulnessEdgesTruncated =
-      error.uncutFaceProjectionFaithfulnessEdgesTruncated;
+  locus.uncutFaceCertificatePairsTruncated =
+      error.uncutFaceCertificatePairsTruncated;
+  locus.uncutFaceComponentCertifiedFaceObservationCount =
+      error.uncutFaceComponentCertifiedFaceObservationCount;
+  locus.uncutFaceComponentCertifiedFaceUnavailableCount =
+      error.uncutFaceComponentCertifiedFaceUnavailableCount;
+  locus.uncutFaceComponentCertifiedFaceDistinctCount =
+      error.uncutFaceComponentCertifiedFaceDistinctCount;
+  locus.uncutFaceComponentCertifiedFaceMultiset.reserve(
+      error.uncutFaceComponentCertifiedFaceMultiset.size());
+  for (const auto &entry : error.uncutFaceComponentCertifiedFaceMultiset) {
+    locus.uncutFaceComponentCertifiedFaceMultiset.push_back(
+        SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics{
+            entry.certifiedFace, entry.sourceFaceCount});
+  }
+  locus.uncutFaceComponentCertifiedFaceMultisetTruncated =
+      error.uncutFaceComponentCertifiedFaceMultisetTruncated;
 
   const auto &ownerEvidence = error.fragmentOwnerEvidence;
   auto &projectedOwnerEvidence = locus.fragmentOwnerEvidence;

@@ -53,7 +53,8 @@ Future selector files are named by their resulting identity count.
 | **384** | 384 | `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564` | 383 | 1 | superseded |
 | **385** | 388 | `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca` | 384 | 4 | superseded |
 | **391** | 391 | `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` | 385 | 3 | superseded |
-| **393** | 393 | `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d` | 391 | 2 | **CURRENT GATE** |
+| **393** | 393 | `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d` | 391 | 2 | superseded |
+| **397** | 397 | `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` | 393 | 4 | **CURRENT GATE** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -237,16 +238,29 @@ Appended 3 identities to selector 385 (whose frozen file contains 388 identities
 - `GlobalTopologyPlan.UncutFaceComponentBoundaryOrbitAttributionPublishesThroughMechanicalProductionFailure`
 - `GlobalTopologyPlan.EmbeddedGraphEulerCensusCarriesAcrossTorusAndPrescribedSphereProductionPaths`
 
-### 393 — CURRENT GATE
+### 393 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_393.txt` — 393 identities, first committed by M3-CP4c-3-CB24.
 
-CB24 appends two diagnostic-only projection witnesses to frozen selector 391.
+CB24 appends two diagnostic-only projection witnesses to frozen selector 391; CB25 supersedes the vacuous diagnostic contract without changing these bytes.
 
 Appended 2 identities to selector 391:
 
 - `GlobalTopologyPlan.UncutFaceComponentBoundaryEvidenceRetainsDistinctSeedAndReasonRows`
 - `GlobalTopologyPlan.MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual`
+
+### 397 — CURRENT GATE
+
+`Architecture_M3_CP4c3_Required_Green_Selector_397.txt` — 397 identities, first committed by M3-CP4c-3-CB25.
+
+CB25 appends four diagnostic-only certificate-source and falsifiability witnesses to frozen selector 393.
+
+Appended 4 identities to selector 393:
+
+- `GlobalTopologyPlan.CertificateFaceProjectionDerivesOwnerFromCertifiedFaceWalkSide`
+- `GlobalTopologyPlan.CertificateSideLookupDoesNotAliasOppositeSideOrSeed`
+- `GlobalTopologyPlan.CertificatePairMeasurementCanReportNonZeroDifferingCount`
+- `GlobalTopologyPlan.UnrelatedTopologyErrorLocusRemainsByteIdenticalAfterCertificateDiagnostics`
 
 ## Separate lineage — M1
 

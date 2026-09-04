@@ -196,16 +196,21 @@ struct SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics {
   std::string seedRule;
   std::string noSeedReason;
   bool minoritySeedOrbit = false;
-  std::optional<std::size_t> componentSideCertificateFace;
-  std::optional<std::size_t> labeledSideCertificateFace;
+  std::optional<std::size_t> componentSideCertifiedFace;
+  std::optional<std::size_t> labeledSideCertifiedFace;
 };
 
-struct SurfaceCellUncutFaceProjectionFaithfulnessEdgeDiagnostics {
+struct SurfaceCellUncutFaceCertificatePairDiagnostics {
   std::array<std::size_t, 2> sourceEdge{};
   std::array<std::size_t, 3> firstFace{};
   std::array<std::size_t, 3> secondFace{};
-  std::optional<std::size_t> firstCertificateFace;
-  std::optional<std::size_t> secondCertificateFace;
+  std::optional<std::size_t> firstCertifiedFace;
+  std::optional<std::size_t> secondCertifiedFace;
+};
+
+struct SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics {
+  std::size_t certifiedFace = 0U;
+  std::size_t sourceFaceCount = 0U;
 };
 
 struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
@@ -306,10 +311,17 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::vector<SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics>
       uncutFaceComponentBoundaryOrbits;
   bool uncutFaceComponentBoundaryOrbitsTruncated = false;
-  std::optional<std::size_t> uncutFaceProjectionFaithfulnessResidual;
-  std::vector<SurfaceCellUncutFaceProjectionFaithfulnessEdgeDiagnostics>
-      uncutFaceProjectionFaithfulnessEdges;
-  bool uncutFaceProjectionFaithfulnessEdgesTruncated = false;
+  std::optional<std::size_t> uncutFaceCertificatePairExaminedCount;
+  std::optional<std::size_t> uncutFaceCertificatePairDifferingCount;
+  std::vector<SurfaceCellUncutFaceCertificatePairDiagnostics>
+      uncutFaceCertificatePairs;
+  bool uncutFaceCertificatePairsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceObservationCount;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceUnavailableCount;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceDistinctCount;
+  std::vector<SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics>
+      uncutFaceComponentCertifiedFaceMultiset;
+  bool uncutFaceComponentCertifiedFaceMultisetTruncated = false;
   SurfaceCellTraceFragmentOwnerEvidenceDiagnostics fragmentOwnerEvidence;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;

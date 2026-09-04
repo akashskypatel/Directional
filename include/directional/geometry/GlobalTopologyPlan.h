@@ -371,21 +371,29 @@ struct UncutFaceComponentBoundaryEdgeDiagnostic {
   std::optional<UncutFaceComponentSeedRule> seedRule;
   std::optional<UncutFaceComponentNoSeedReason> noSeedReason;
   bool minoritySeedOrbit = false;
-  std::optional<std::size_t> componentSideCertificateFace;
-  std::optional<std::size_t> labeledSideCertificateFace;
+  std::optional<std::size_t> componentSideCertifiedFace;
+  std::optional<std::size_t> labeledSideCertifiedFace;
 
   auto operator<=>(const UncutFaceComponentBoundaryEdgeDiagnostic &) const =
       default;
 };
 
-struct UncutFaceProjectionFaithfulnessEdgeDiagnostic {
+struct UncutFaceCertificatePairDiagnostic {
   authority::SourceEdgeTopologyKey sourceEdge;
   authority::SourceFaceTopologyKey firstFace;
   authority::SourceFaceTopologyKey secondFace;
-  std::optional<std::size_t> firstCertificateFace;
-  std::optional<std::size_t> secondCertificateFace;
+  std::optional<std::size_t> firstCertifiedFace;
+  std::optional<std::size_t> secondCertifiedFace;
 
-  auto operator<=>(const UncutFaceProjectionFaithfulnessEdgeDiagnostic &) const =
+  auto operator<=>(const UncutFaceCertificatePairDiagnostic &) const = default;
+};
+
+struct UncutFaceComponentCertifiedFaceMultiplicityDiagnostic {
+  std::size_t certifiedFace = 0U;
+  std::size_t sourceFaceCount = 0U;
+
+  auto operator<=>(
+      const UncutFaceComponentCertifiedFaceMultiplicityDiagnostic &) const =
       default;
 };
 
@@ -480,10 +488,16 @@ struct GlobalTopologyPlanError {
   std::vector<UncutFaceComponentBoundaryOrbitDiagnostic>
       uncutFaceComponentBoundaryOrbits;
   bool uncutFaceComponentBoundaryOrbitsTruncated = false;
-  std::optional<std::size_t> uncutFaceProjectionFaithfulnessResidual;
-  std::vector<UncutFaceProjectionFaithfulnessEdgeDiagnostic>
-      uncutFaceProjectionFaithfulnessEdges;
-  bool uncutFaceProjectionFaithfulnessEdgesTruncated = false;
+  std::optional<std::size_t> uncutFaceCertificatePairExaminedCount;
+  std::optional<std::size_t> uncutFaceCertificatePairDifferingCount;
+  std::vector<UncutFaceCertificatePairDiagnostic> uncutFaceCertificatePairs;
+  bool uncutFaceCertificatePairsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceObservationCount;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceUnavailableCount;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceDistinctCount;
+  std::vector<UncutFaceComponentCertifiedFaceMultiplicityDiagnostic>
+      uncutFaceComponentCertifiedFaceMultiset;
+  bool uncutFaceComponentCertifiedFaceMultisetTruncated = false;
   TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
