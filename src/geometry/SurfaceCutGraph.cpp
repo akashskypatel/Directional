@@ -554,8 +554,7 @@ OwnershipBuildResult build_source_face_ownership(
       failure.sourceFace = faceKey;
       return failure;
     }
-    SurfaceCutGraphSourceFaceOwnership owner;
-    owner.sourceFace = faceKey;
+    SurfaceCutGraphSourceFaceOwnership owner{faceKey};
     owner.certifiedFaceOrbits.assign(found->second.begin(), found->second.end());
     const auto sides = traceSides.find(faceKey);
     if (sides != traceSides.end()) owner.traceFragmentSides = sides->second;
