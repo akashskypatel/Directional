@@ -1,3 +1,14 @@
+## M3-CP4c3-TB22 — projection residual zero; seed rule remains the live architectural question — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+
+- **Authority:** semantic source `d69729a69a40b020968ed6ef1fbc1bc788284518`, package artifact `9919225745`, selector 393; run/job `33826248118 / 100879465830`; result/log artifacts `9920122224 / 9920122598`; exact ledger SHA-256 `4998ca25b1477c2a32299bc3eb3d552e3ea9b0e2ccbf0eb4894393964f29dbbe`.
+- **Gate:** **387 PASS / 6 RED**, accepted 1–365 **365/365 PASS**, reds `366,367,368,369,370,374`. Pre/post package byte+mode census identical at `7e0c552c79281f97b7553406acd44383ff867197f36da54cd306ac9258fa2b74`.
+- **Ordinal 366:** same `UncutFaceComponentOrbitSeedNotUnique`, component 0, 191 faces, `Multiple`, seed count 3, exact `[0,1,3]`; actual embedded graph remains certified cellular at `V=22,E=26,F=6,componentCount=1,sourceChi=2,residual=0`.
+- **BY2/BY3:** minority edge `10-79` seeds orbit 3 via `edgeOrbitEvidence`, component/labeled certificate faces `3/3`; edge `29-35` seeds orbit 1 via `edgeOrbitEvidence`, certificate faces `1/1`. Both rows retain full source-face/edge metadata.
+- **BY4:** `projectionFaithfulnessResidual=0`, witness count 0, untruncated. At the measured relation, no adjacent uncut source-triangle pair in different certificate faces crosses an unbarriered edge. Review must validate that diagnostic semantics before using it as correction authority.
+- **Ordinal 391:** PASS; torus/mechanical evidence runs and prescribed sphere is `SKIPPED,reason=ordinal368-open`. `M3-CP4c3-TB21-CAND-02` **CLOSES / RUNTIME PROVED / NON-STABLE**.
+- **Required-green:** 392/393 PASS; 371/372 remain PASS. Carried 367/368/369/370/374 remain separately owned.
+- **Accounting:** no accepted-green loss and no new stable category. Totals remain **44 / 14 / 30**, debt **5**, packages **87**. Exact owner: independent `M3-CP4c-3-TB22-REV` BZ0–BZ8.
+
 ## M3-CP4c3-TB21-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB21_Independent_Review_Record.md`, measures **BX0-BX8** discharged per the
@@ -36,17 +47,11 @@
 - **Accounting:** RED set moved 8 -> 7 by clearing 371/372 and adding a diagnostic co-reacher of an owned surface.
   **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **86**.
 
-## M3-CP4c3-TB21-CAND-01 - the source-face component construction is an unvalidated projection of a certified cellular complex - **NEW / ACTIVE / ARCHITECTURAL / GATING / NON-STABLE**
+## M3-CP4c3-TB21-CAND-01 - source-face component seed ownership remains inconsistent with certified-face attribution - **ACTIVE / NARROWED BY TB22 / ARCHITECTURAL / GATING / NON-STABLE**
 
-The certificate proves the actual embedded complex cellular (`22-26+6-2=0`, all faces discs) while the seed guard
-finds a 191-triangle component seeded by three orbits. Both are correct about their own object; the projection
-between them has an unstated faithfulness condition that neither checks. Two readings with **opposite**
-corrections: the barrier set is missing two separations, or two seed reads are wrong. Owner: **BY1-BY4** evidence
-(retain by distinctness, publish the minority rows in full, attribute each minority edge's sides to certificate
-faces, publish the faithfulness residual), then TB22-REV. Supersedes `M3-CP4c3-TB20-REV-CAND-01`; absorbs
-`M3-CP4c3-TB19-CAND-01` as its symptom record.
+TB22 preserves the 191-triangle component with exact seeds `[0,1,3]` while the actual embedded complex remains cellular. CB24's deciding measurement is now runtime-settled: projection residual **0**, no residual witnesses, and the two minority edges stay within certificate faces **3/3** and **1/1**. Their distinct seeds are still derived by **`edgeOrbitEvidence`** (3 and 1). This narrows the candidate away from the measured missing-barrier/different-certificate-face branch and onto the semantic relationship between edge-orbit evidence and certified component ownership. Owner: independent **TB22-REV BZ2–BZ5**. The review must validate that residual 0 is not a false zero, derive the seed-selection contract independently, and only then authorize Code + Build or DEFN. Supersedes `M3-CP4c3-TB20-REV-CAND-01`; absorbs `M3-CP4c3-TB19-CAND-01` as its symptom record.
 
-## M3-CP4c3-TB21 — actual-complex cellularity contradicts the seed-frontier interpretation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+## M3-CP4c3-TB21 — actual-complex cellularity contradicts the seed-frontier interpretation — **PRECEDING RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** semantic source `fa5646106ccaa23770b84a935c6d1d6007928640`, package artifact `9916511617`, selector 391; run/job `33818038269 / 100854435211`; result/log artifacts `9917317234 / 9917317654`; exact ledger `8606fb7ba5673e6d3b45b5055f7744559b29a79d5caa8d0df76da85920aa6f77`.
 - **Gate:** **384 PASS / 7 RED**, accepted 1–365 **365/365 PASS**, reds `366,367,368,369,370,374,391`. Pre/post package byte+mode census identical at `e15a8ababed2d6580d36abe9e2421a9d573bd29fb5fe36fb08ab844f80161897`.
@@ -57,21 +62,13 @@ faces, publish the faithfulness residual), then TB22-REV. Supersedes `M3-CP4c3-T
 - **D6:** 367/368/369/370/374 remain independently owned; 389/390 PASS. 391 is a new RED at `sphere.cutGraph.has_value()==false`, co-reaching the existing prescribed-sphere 368 surface.
 - **Accounting:** no accepted-green loss. New architectural contradiction and diagnostic dependency are non-stable; **+0 stable events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **86**. Exact owner: `M3-CP4c-3-TB21-REV`.
 
-## M3-CP4c3-TB21-CAND-01 — certified cellular actual complex coexists with a three-orbit source-face seed component — **NEW / ACTIVE / ARCHITECTURAL / GATING / NON-STABLE**
+## M3-CP4c3-TB21-CAND-01 — certified cellular actual complex coexists with a three-orbit source-face seed component — **ACTIVE / NARROWED BY TB22 / ARCHITECTURAL / GATING / NON-STABLE**
 
-TB21 measures `22-26+6-2=0`, one graph component, and a `SurfaceCutGraph` value whose certificate passed
-`proves_cellularity()`, while GlobalTopologyPlan component 0 still spans seed orbits `[0,1,3]`. This directly
-contradicts the prior interpretation that the three-seed state itself proves the certified actual embedded graph is
-non-cellular. Owner: `M3-CP4c-3-TB21-REV` BX1–BX4, which must reconcile the actual embedded arrangement, post-cut
-edge set, source-face barrier projection and frozen definition scope before any correction.
+TB22 retains this coexistence and adds the deciding projection evidence: residual **0**, no witnesses, minority edges `10-79` and `29-35` with same-certificate side pairs `3/3` and `1/1`, and seeds 3/1 derived by `edgeOrbitEvidence`. The candidate remains non-stable and gating, but is **narrowed** to the seed/ownership rule unless BZ2 disproves the residual's completeness. Owner: independent `M3-CP4c-3-TB22-REV` BZ2–BZ5; no correction is pre-authorized.
 
-## M3-CP4c3-TB21-CAND-02 — appended cross-witness Euler diagnostic is blocked by the existing prescribed-sphere surface — **NEW / ACTIVE / DIAGNOSTIC DEPENDENCY / NON-STABLE**
+## M3-CP4c3-TB21-CAND-02 — appended cross-witness Euler diagnostic dependency — **CLOSED / RUNTIME PROVED AT TB22 / NON-STABLE**
 
-Ordinal 391 reaches its prescribed-sphere half and fails `sphere.cutGraph.has_value()` with `NotProductionReady`.
-Ordinal 368 independently retains the owned sphere failure `CellularityNotEstablished` from
-`RotationSystemInconsistent / TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`.
-The new RED is therefore a co-reacher/dependency of existing sphere authority, not a new stable regression category
-and not authorization for a sphere correction. Owner: TB21-REV BX6.
+TB22 ordinal 391 executes the re-scoped mechanical/torus assertions and **PASSes**. Its prescribed-sphere half reports `status=SKIPPED,reason=ordinal368-open,terminalFailureCode=NotProductionReady`. The dependency no longer creates a RED; ordinal 368 retains its independently owned sphere surface. This candidate closes without a stable event/category/recurrence change and without authorizing a sphere correction.
 
 ## M3-CP4c3-TB20-REV - independent review adjudication - **PRECEDING REVIEW AUTHORITY / STATIC / NON-STABLE**
 

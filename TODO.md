@@ -26,49 +26,21 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB22` (Test + Benchmark, ARTIFACT-ONLY)
+## Current focus — `M3-CP4c-3-TB22-REV` (independent REVIEW + PLAN, STATIC ONLY)
 
-`M3-CP4c-3-CB24` is **COMPLETE / COMPILE PASS / RUNTIME-FREE**. Record:
-`Architecture_M3_CP4c3_CB24_Code_Build_Report.md`. Built evidence/source commit:
-**`d69729a69a40b020968ed6ef1fbc1bc788284518`**. Compile run/job **`33823590494 / 100871347582`**;
-immutable result artifact **`9919225745`**, SHA-256
-`7955c243d7968e51e62f0f8d4b0cc96da313a2356ee8bf2eeba7c995b856e87d`; log artifact **`9919226113`**.
-All eight required targets compiled/linked with **GMP/GMPXX mandatory**, source clean, and `runtimeExecution=false`.
-No Directional test, benchmark, discovery/list/help/version command, CLI, fuzzer, or custom input executed.
+`M3-CP4c-3-TB22` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / ARTIFACT IMMUTABLE** on source `d69729a69a40b020968ed6ef1fbc1bc788284518`, immutable artifact `9919225745`, selector 393, run/job `33826248118 / 100879465830`, result/log artifacts `9920122224 / 9920122598`.
 
-CB24 discharged **BY0–BY9 at the implementation/build boundary** without changing the protected topology semantics:
+TB22 completed all 393 exact identities: **387 PASS / 6 RED**, accepted **365/365**, REDs `366,367,368,369,370,374`. Ledger SHA-256 is `4998ca25b1477c2a32299bc3eb3d552e3ea9b0e2ccbf0eb4894393964f29dbbe`; package pre/post byte+mode census is identical at `7e0c552c79281f97b7553406acd44383ff867197f36da54cd306ac9258fa2b74`.
 
-- [x] **BY0** — accepted 365 untouched; selector 391 byte-frozen; eight-target GMP compile PASS.
-- [x] **BY1** — bounded boundary rows retain distinct seed orbits and `noSeedReason` values before positional fill.
-- [x] **BY2** — minority rows publish full edge/face/seed metadata and the seed rule.
-- [x] **BY3** — minority-edge sides publish certificate-face attribution.
-- [x] **BY4** — typed projection-faithfulness residual plus bounded witness rows is published.
-- [x] **BY5** — compiled witnesses cover each new diagnostic field and unrelated-error byte identity.
-- [x] **BY6** — selector **393** appended with exactly two identities; selector 391 remains its exact byte prefix; manifest regenerated.
-- [x] **BY7** — ordinal 391 re-scoped so the owned sphere dependency cannot red the mechanical/torus halves.
-- [x] **BY8** — no product semantic change; guard/barrier/partition/seed/certificate authorities remain untouched.
-- [x] **BY9** — TB22 discriminators are encoded in the artifact-only plan.
+- [x] Ordinal 366 remains `UncutFaceComponentOrbitSeedNotUnique`, component 0, 191 faces, exact seed orbits `[0,1,3]`.
+- [x] Minority rows retained: edge `10-79` seed 3 via `edgeOrbitEvidence`, certificate faces `3/3`; edge `29-35` seed 1 via `edgeOrbitEvidence`, certificate faces `1/1`.
+- [x] Projection-faithfulness residual is **0**, witness count 0, untruncated.
+- [x] Ordinal 391 PASS; torus/mechanical evidence runs while sphere is `SKIPPED,reason=ordinal368-open`.
+- [x] 392/393 PASS; 371/372 remain PASS.
+- [x] 367/368/369/370/374 retain their carried ownership.
+- [x] No configure, compile, relink, package repair, generated discovery, mutation, or benchmark occurred.
 
-Selector 393 contains **393 identities**, SHA-256
-`ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`; selector 391 remains
-`f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` and is an exact prefix.
-
-### Exact next turn
-
-Run **`M3-CP4c-3-TB22`** exactly from
-`Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Plan.md` against immutable artifact **9919225745**.
-Execute all 393 identities in ordinal order, one fresh process per identity, without configure/compile/relink/repair,
-mutation, generated binary discovery, or benchmark execution. Preserve the exact BY2/BY3 minority rows, BY4 residual and
-witnesses, ordinal-391 skip evidence, the full 393-row ledger, and an identical pre/post package byte+mode census.
-
-The expected no-new-regression ledger is **387 PASS / 6 RED**, with carried REDs
-`366,367,368,369,370,374`; this is an expectation, not permission to manufacture success. Accepted 1–365 must remain
-**365/365 PASS**. The actual projection-faithfulness residual is deliberately **not predetermined**.
-
-After TB22, the mandatory next boundary is independent **`M3-CP4c-3-TB22-REV`**. No correction or DEFN execution is
-pre-authorized. Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains
-**44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count
-**87**.
+Exact next authority: `Architecture_M3_CP4c3_TB22_Independent_Review_Plan.md`, measures **BZ0–BZ8**. The review must validate what residual 0 proves, reconcile same-certificate minority rows with `edgeOrbitEvidence`, independently derive the component seed/ownership contract, and select the next owner. No Code + Build or DEFN execution is pre-authorized.
 
 ## Carried forward from M1
 
@@ -105,7 +77,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB21 remains current runtime authority** at 384 PASS / 7 RED and accepted 365/365, while CB24 package 87 / selector393 is the exact artifact-only validation authority. Exact next: **`M3-CP4c-3-TB22`**.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB22 is current runtime authority** at 387 PASS / 6 RED and accepted 365/365 on package 87 / selector393. Exact next: independent static **`M3-CP4c-3-TB22-REV`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -116,9 +88,9 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 unvalidated source-face projection:** CB24 now publishes the minority seed rows, certificate-face attribution and projection-faithfulness residual without changing the guard/barrier/certificate semantics. Exact runtime owner is TB22; interpretation/correction owner is independent TB22-REV. `M3-CP4c3-TB21-CAND-01`.
+- [ ] **CP4c-3 source-face seed/ownership projection:** TB22 measured residual 0; minority edges `10-79` and `29-35` stay within certificate faces `3/3` and `1/1` yet seed via `edgeOrbitEvidence`. Candidate is narrowed but not corrected. Exact owner: independent TB22-REV BZ2–BZ5. `M3-CP4c3-TB21-CAND-01`.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
-- [ ] **CP4c-3 ordinal 391 diagnostic dependency:** CB24 re-scoped the test so mechanical/torus evidence is independent and the unavailable prescribed-sphere half is skipped-with-reason while 368 remains open. TB22 must prove ordinal 391 no longer REDs for this dependency. `M3-CP4c3-TB21-CAND-02`.
+- [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
