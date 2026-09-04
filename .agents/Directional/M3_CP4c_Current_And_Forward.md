@@ -16,6 +16,8 @@ Last updated **2026-09-04** at `M3-CP4c-3-TB25-REV` closeout.
 
 ## 1. Where the checkpoint stands
 
+**CB30 is COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED.** Exact compiled source `e045bf7147afc02bd90eff4822e4b609edbaba66`, package `9957324848` (`7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`), selector 405 (`615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`). Semantic package count is **91**. Latest semantic runtime remains TB25-R1 until TB26.
+
 `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**.
 **CP4c-3 remains OPEN.** TB25-R1 is the latest semantic runtime: **393 PASS / 10 RED**, accepted **365/365**.
 The first TB25 attempt remains pre-runtime-invalid provenance; CB29's control correction is now runtime-proved.
@@ -32,7 +34,7 @@ The first TB25 attempt remains pre-runtime-invalid provenance; CB29's control co
 | TB25-R1 runtime evidence | run/job `33919389753 / 101173990222`; result `9954531868`; log `9954532357` |
 | Invalid first TB25 attempt | run/job `33910913448 / 101146905061`; result/log `9951314815 / 9951315281`; 0 identities executed |
 | CB29 control proof | run/job `33915621191 / 101162027243`; result/log `9953038617 / 9953039237`; runtime started false |
-| Exact next | `M3-CP4c-3-CB30` — Code + Build, runtime-free, GMP/GMPXX linked, under CJ6–CJ9 |
+| Exact next | `M3-CP4c-3-TB26-EXEC` — immutable artifact-only selector-405 execution on CB30 package `9957324848` |
 
 Stable accounting is **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
 package count **90**. `M3-CP4c-3-TB25-REV` adjudicated the ledger and added **no stable event**: accepted 1–365 is
@@ -68,28 +70,18 @@ transiting a source vertex**, which a partition of source faces over source edge
 owner, and all 191 of component 0's faces are `Unavailable`. `conflictRowCount=0` is a structural zero over exactly
 the region under investigation — the third such zero in this checkpoint. `LESSONS.md` 122.
 
-## 3. Exact next turn — `M3-CP4c-3-CB30`
+## 3. Exact next turn — `M3-CP4c-3-TB26-EXEC`
 
-Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`, under **CJ6–CJ9** of
-`Architecture_M3_CP4c3_TB25_Independent_Review_Record.md`.
+CB30 is compile-green and runtime-unaccepted. Exact source/package/selector authority:
 
-- **CJ6 — three censuses per uncut component**, published on the failure path and **never gated on an established
-  owner**: (1) boundary edges with independently derived barrier class and side-owner presence, untruncated for
-  component 0's 97; (2) **interior arc-incidence** — every arc whose dart lies on a component face, with kind and
-  both dart orbits; (3) **vertex-transit census** — every vertex a trace enters through `SourceVertexSupport`, its
-  incident uncut faces, and whether any pair is adjacent across a non-barrier edge. Outcomes are mutually exclusive
-  and jointly exhaustive, and each names a locus.
-- **CJ7 — restore the second seed source**, exactly as the pre-CB27 rule had it. A restoration, not a new
-  heuristic. Multi-seed components publish `Conflicting` with the full multiset; `proves_cellularity()` stays false.
-  **No winner is chosen among disagreeing seeds.**
-- **CJ8 — one contract per gate.** 389/390/393 assert `proves_embedded_cellularity()`; 390's
-  `ASSERT_GT(distinctCount, 1U)` is replaced in place by the contract it owns. **398 is untouched and remains the
-  sole gate on ownership totality.**
-- **CJ9 — selector 405** with 403 as an exact prefix; gating ordinals **404** (censuses published and complete) and
-  **405** (independent vertex-transit falsifiability witness).
+- source `e045bf7147afc02bd90eff4822e4b609edbaba66`;
+- package `9957324848`, SHA-256 `7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`;
+- compile run/job `33927223741 / 101198287660`, GMP/GMPXX linked, `runtimeExecution=false`;
+- selector 405, SHA-256 `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`, with selector 403 as its exact prefix.
 
-**No barrier may be added or removed and no attribution rule changed beyond the CJ7 restoration before CJ6
-reports.**
+Execute `Architecture_M3_CP4c3_TB26_Artifact_Only_Test_Benchmark_Plan.md`: 405 identities, one per fresh process, no rebuild/relink/repair/discovery/mutation. Preserve the three CJ6 censuses as complete named-locus evidence. TB26-EXEC records facts only; exact successor is `M3-CP4c-3-TB26-REV`.
+
+CB30 compiled CJ6–CJ9 exactly: owner-independent censuses; restored two-source seed path with no winner; 389/390/393 narrowed to their own contracts while 398 remains untouched; selector 405 appends 404/405. No barrier was added or removed.
 
 ## 4. Open candidates
 
@@ -157,13 +149,12 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first; update it during the mandatory REVIEW closeout.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` — **CJ0–CJ9**, the adjudication and the frozen CB30 scope.
+3. `Architecture_M3_CP4c3_TB26_Artifact_Only_Test_Benchmark_Plan.md` — exact immutable selector-405 execution contract.
 4. `Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
-5. `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable product/package build authority.
+5. `Architecture_M3_CP4c3_CB30_Code_Build_Report.md` — current immutable product/package build authority.
 6. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
 7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 8. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
 9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver, including the five documents indexed at TB25-REV.
 
-Exact next is `M3-CP4c-3-CB30` under CJ6–CJ9. **CB30 measures and restores one dropped seed source; it chooses no
-winner and moves no barrier.**
+Exact next is `M3-CP4c-3-TB26-EXEC` on immutable package `9957324848` and selector 405. **No runtime interpretation, rebuild, source mutation, winner selection, or barrier change belongs in EXEC.**

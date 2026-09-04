@@ -26,45 +26,28 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB30` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-TB26-EXEC` (artifact-only runtime)
 
-`M3-CP4c-3-TB25-R1` is **COMPLETE / VALID IMMUTABLE SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE** and
-`M3-CP4c-3-TB25-REV` has adjudicated it. Formal run/job `33919389753 / 101173990222` consumed immutable CB28
-package `9950303110` and selector 403 in 403 fresh processes.
+`M3-CP4c-3-CB30` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**. It implements the TB25-REV frozen CJ6–CJ9 scope without adding/removing barriers, choosing a seed winner, or weakening `proves_cellularity()`.
 
-- ledger: **393 PASS / 10 RED**, accepted **1–365 = 365/365 PASS**, SHA-256
-  `bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`;
-- RED ordinals: `366,367,368,369,370,374,389,390,393,398`;
-- result artifact `9954531868`; log artifact `9954532357`.
+- exact compiled source: `e045bf7147afc02bd90eff4822e4b609edbaba66`;
+- compile run/job: `33927223741 / 101198287660`, SUCCESS, `runtimeExecution=false`;
+- immutable package artifact `9957324848`, SHA-256 `7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`;
+- compile-log artifact `9957325254`, SHA-256 `626b1d49c46f9bdc09f7f7ef5fb83d9ed5b1f1d51dd667f98891d7f8a9a8153a`;
+- selector **405**, SHA-256 `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`; selector 403 is its exact prefix; 401 and 397 remain frozen prefixes.
 
-**TB25-REV verdict.** CH6/CH7 are runtime-proved — **384 and 385 return to PASS** and the ownership publication is
-readable: `300 faces — 74 established, 226 unavailable, 0 conflicting`, conflict census published with **0 rows**;
-component 0 has **191 faces, 97 boundary edges, seedCount 0, seedState None**. Ten REDs, **four causes**: 366/367
-the open product problem, 398 the honest gate, 389/390/393 collateral assertions their identities do not own,
-368/369/370/374 carried surfaces. **The defect:** CB28's seed rule admits one source where the pre-CB27 rule
-admitted two — **83 attributed boundary edges → 0** on the identical component. `M3-CP4c3-TB21-CAND-01` **CLOSES
-as ill-formed**; CH8's conflict census was **vacuous** (it reads only established owners). **No stable event
-added.**
+**CJ6–CJ9 compiled.**
 
-Stable accounting is **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **90**. CP4c-3 remains **OPEN**.
+- [x] **CJ6** owner-independent boundary / interior-arc / vertex-transit censuses publish on the failure path; component rows are not gated on an established owner.
+- [x] **CJ7** restores both pre-CB27 seed sources; singleton seeds establish, multi-seed sets publish `Conflicting` with the full evidence; no winner is chosen.
+- [x] **CJ8** 389/390/393 gate their identity-owned embedded-cellularity/census contracts; **398 is untouched** and remains the sole ownership-totality gate.
+- [x] **CJ9** selector 405 appends gating ordinals 404/405 to byte-identical selector 403.
+
+Latest semantic runtime remains TB25-R1: **393 PASS / 10 RED**, accepted **365/365**, RED `366,367,368,369,370,374,389,390,393,398`. Stable accounting remains **44 events / 14 categories / 30 recurrences** and produced-witness debt **5** until TB26 runtime/review. Semantic M3 package count is now **91**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB30`**, Code + Build, runtime-free, GMP/GMPXX linked, under **CJ6–CJ9** of
-`Architecture_M3_CP4c3_TB25_Independent_Review_Record.md`:
-
-- [ ] **CJ6** three censuses per uncut component — boundary edges with barrier class, interior arc-incidence,
-      vertex transit — published on the failure path and **never gated on an established owner**; component 0's 97
-      boundary edges untruncated.
-- [ ] **CJ7** restore the second admissible seed source; publish `Conflicting` with the full multiset for
-      multi-seed components; **choose no winner**.
-- [ ] **CJ8** one contract per gate — 389/390/393 assert `proves_embedded_cellularity()`, 390's
-      `ASSERT_GT(..., 1U)` replaced in place; **398 untouched**.
-- [ ] **CJ9** selector **405** with 403 as an exact prefix; gating ordinals 404 and 405.
-
-**No barrier may be added or removed and no attribution rule changed beyond the CJ7 restoration before CJ6
-reports.** No Directional runtime before `M3-CP4c-3-TB26`.
+Run **`M3-CP4c-3-TB26-EXEC`** under `Architecture_M3_CP4c3_TB26_Artifact_Only_Test_Benchmark_Plan.md` using immutable package `9957324848` and selector 405. Execute all 405 identities one per fresh process with no configure/compile/relink/discovery/repair/source-test-fixture-selector mutation. EXEC records evidence only; exact successor is `M3-CP4c-3-TB26-REV`.
 
 ## Carried forward from M1
 
@@ -102,9 +85,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open; **TB25-R1 is the latest valid semantic runtime** at 393 PASS / 10 RED, accepted 365/365,
-  adjudicated by `M3-CP4c-3-TB25-REV`. Selector403/package90 remain immutable; exact next: **`M3-CP4c-3-CB30`**
-  under CJ6–CJ9.
+  CP4c-3 remains open; **TB25-R1 is the latest valid semantic runtime** at 393 PASS / 10 RED, accepted 365/365.
+  CB30 is compile-green at source `e045bf7147afc02bd90eff4822e4b609edbaba66` / package `9957324848`; selector 405 is current. Exact next: **`M3-CP4c-3-TB26-EXEC`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -115,7 +97,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 source-face ownership derivation:** TB25-REV diagnosed the seed rule as **starved** — CB28 admits one seed source where the pre-CB27 rule admitted two, taking component 0 from **83** attributed boundary edges to **0**. `M3-CP4c3-TB21-CAND-01` is **CLOSED as ill-formed** (3 owners under one rule, 0 under another). The successor question is a dichotomy about the object: **either component 0 lies in exactly one certified face, or a separating arc meets its interior**, the only hidden-arc mechanism being a trace transiting a vertex. Exact owner: `M3-CP4c-3-CB30` CJ6–CJ7.
+- [ ] **CP4c-3 source-face ownership derivation:** TB25-REV diagnosed the seed rule as **starved** — CB28 admits one seed source where the pre-CB27 rule admitted two, taking component 0 from **83** attributed boundary edges to **0**. `M3-CP4c3-TB21-CAND-01` is **CLOSED as ill-formed** (3 owners under one rule, 0 under another). The successor question is a dichotomy about the object: **either component 0 lies in exactly one certified face, or a separating arc meets its interior**, the only hidden-arc mechanism being a trace transiting a vertex. Exact runtime owner: `M3-CP4c-3-TB26-EXEC` / `TB26-REV`; CB30 CJ6–CJ7 is compiled but not yet runtime-adjudicated.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -143,4 +125,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB25-REV`. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **90**. **TB25-R1 is the latest semantic runtime authority at 393 PASS / 10 RED, accepted 365/365.** Immutable CB28 artifact `9950303110` remains unchanged. Exact next is `M3-CP4c-3-CB30` under CJ6–CJ9. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB25-REV`. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **91**. **TB25-R1 is the latest semantic runtime authority at 393 PASS / 10 RED, accepted 365/365.** Immutable CB30 artifact `9957324848` is the next runtime package. Exact next is `M3-CP4c-3-TB26-EXEC` under the frozen TB26 plan. PR #8 remains open, draft, and unmerged.

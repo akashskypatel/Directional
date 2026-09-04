@@ -1,3 +1,11 @@
+## 2026-09-04 — `M3-CP4c-3-CB30`: CJ6–CJ9 compiled; selector 405; immutable package 91 GREEN
+
+Code + Build only. CB30 adds owner-independent boundary/interior-arc/vertex-transit censuses, restores the second pre-CB27 seed source without choosing a winner, replaces 389/390/393 collateral ownership-totality assertions with their identity-owned contracts, leaves ordinal 398 and `proves_cellularity()` strong, and appends gating ordinals 404/405 in selector 405. No barrier was added or removed.
+
+Exact semantic patch commit `0ff22eafd61c0500dac8c8c69bd07454f029dafe`; exact compile source after temporary Drive-control retirement `e045bf7147afc02bd90eff4822e4b609edbaba66`. Compile run/job **`33927223741 / 101198287660`** succeeded Release/static PRE_TEST with GMP/GMPXX linked and all eight approved targets. Immutable package **`9957324848`** has SHA-256 `7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`; log artifact **`9957325254`** has SHA-256 `626b1d49c46f9bdc09f7f7ef5fb83d9ed5b1f1d51dd667f98891d7f8a9a8153a`; manifest self-verification and clean-source checks passed. `runtimeExecution=false`; no generated Directional runtime executed.
+
+Selector 405 has 405 identities, SHA-256 `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`; selector 403 is its exact prefix and 401/397 remain frozen. Latest semantic runtime remains TB25-R1 at **393 PASS / 10 RED**, accepted **365/365**. Stable accounting stays **44 / 14 / 30**, debt **5**; semantic packages advance to **91**. CP4c-3 remains OPEN. Exact successor: **`M3-CP4c-3-TB26-EXEC`** under `Architecture_M3_CP4c3_TB26_Artifact_Only_Test_Benchmark_Plan.md`, followed by `M3-CP4c-3-TB26-REV`.
+
 ## 2026-09-04 — `M3-CP4c-3-TB25-REV`: the seed rule is starved, `TB21-CAND-01` closes as ill-formed, CB30 frozen
 
 Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/

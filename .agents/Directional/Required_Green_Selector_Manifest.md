@@ -282,7 +282,7 @@ identities, 399/400/401 PASS and 398 REDs. `M3-CP4c-3-TB24-REV` classified 398 a
 the open problem and stays gating. Ordinal **385**'s assertions will be replaced in place by CB28; its name and
 ordinal do not change, so the first 401 lines stay byte-identical.
 
-### 403 — CURRENT GATE
+### 403 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_403.txt` — 403 identities, first authored by M3-CP4c-3-CB28.
 
@@ -301,18 +301,16 @@ and ordinals **384 and 385 recovered** from TB24's RED. `M3-CP4c-3-TB25-REV` rec
 only established owners, and every face of component 0 is `Unavailable`. Ordinals 402/403 stay gating and are not
 withdrawn, but **neither may be cited as evidence about component 0**.
 
-### 405 — PLANNED, `M3-CP4c-3-CB30` CJ9
+### 405 — CURRENT GATE
 
-Selector 403 must be its exact 403-line prefix, 401 the exact prefix of that, and 397 byte-frozen. Two gating
-identities are appended:
+`Architecture_M3_CP4c3_Required_Green_Selector_405.txt` — **405 identities**, authored by M3-CP4c-3-CB30, LF SHA-256 `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`. Selector 403 is its exact 403-line prefix, selector 401 its exact 401-line prefix, and selector 397 remains byte-frozen. Two gating identities are appended:
 
 - `SurfaceCutGraph.UncutComponentArcIncidenceCensusPublishesOnOwnershipFailure`
 - `SurfaceCutGraph.VertexTransitCensusNamesAFaceSeparationNoSourceEdgeBarrierCanCarry`
 
 The first asserts **publication and completeness** of the three CJ6 censuses with **no established owner
 required** — the defect that made ordinal 402 vacuous must not recur. The second is the independent falsifiability
-witness on a constructed vertex-transit fixture. Ordinal **390**'s assertions are replaced in place by CJ8; its name
-and ordinal do not change, so the first 403 lines stay byte-identical.
+witness on a constructed vertex-transit fixture. Ordinal **390**'s assertions were replaced in place by CJ8; its name and ordinal do not change, so the first 403 lines stay byte-identical. CB30 compile authority is source `e045bf7147afc02bd90eff4822e4b609edbaba66`, package `9957324848`; runtime is pending TB26-EXEC.
 
 ## Separate lineage — M1
 
