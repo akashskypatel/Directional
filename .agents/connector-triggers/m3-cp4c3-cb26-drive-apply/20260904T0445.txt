@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-CB26 Drive patch apply
+base_sha=9df9da68e911354842aa52af6b993b8150beffa9
+patch_sha256=57f9fdad7dc78db0b1077c9e5af76f70e6505f1c612fc271875c493d0410f767
+retry=0
