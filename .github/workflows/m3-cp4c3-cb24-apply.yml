@@ -1,0 +1,38 @@
+name: M3 CP4c3 CB24 Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb24-apply-20260903.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb24-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb24-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1lIgeUgIC0t9fxG0Z9WyWmk0wpkaYvNg1
+      patch_sha256: 7e414a024ec37184bdb49c4634d17ffd0b3a2985d6f2333bf40176899c21531f
+      base_sha: a5a15484cfbe70443f674c1fb2e3cbfdd38f601a
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: M3-CP4c-3-CB24 publish projection diagnostics
+      retention_days: 7
+    secrets: inherit
