@@ -10,86 +10,46 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-04** at `M3-CP4c-3-TB24-REV` closeout.
+Last updated **2026-09-04** at `M3-CP4c-3-CB28` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
 `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**.
-**CP4c-3 remains OPEN.** TB24 is the latest valid semantic runtime authority; accepted authority remains 365/365.
+**CP4c-3 remains OPEN.** CB28 is compile-green and runtime-free; TB24 remains the latest semantic runtime.
 
 | Authority | Current value |
 |---|---|
 | Latest semantic runtime authority | `M3-CP4c-3-TB24-EXEC` — 389 PASS / 12 RED, accepted 365/365 |
 | Current runtime RED ordinals | 366, 367, 368, 369, 370, 374, 384, 385, 389, 390, 393, 398 |
-| CB27 semantic source | `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5` |
-| CB27 immutable package | `9935929108`, SHA-256 `b5e11a2c97c110d2cf484d63bb3afe3b753e7f4769098ec927a5cf1692f5d881` |
-| Current selector | selector 401, 401 identities, `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` |
-| Frozen prefix | selector 397, `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` |
-| CB27 compile evidence | run/job `33870767698 / 101015974984`; log `9935929698` |
+| CB28 final semantic source | `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac` |
+| CB28 immutable compile artifact | `9950303110`, SHA-256 `84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189` |
+| Current selector | selector 403, 403 identities, `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007` |
+| Frozen predecessor | selector 401, exact first 401 lines, `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` |
+| CB28 compile evidence | run/job `33907875533 / 101137084443`; log `9950303474` |
 | TB24 runtime evidence | run/job `33891467611 / 101083954177`; result `9944102469`; log `9944102936` |
-| TB24 ledger | 389 PASS / 12 RED; SHA-256 `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b` |
-| Exact next | `M3-CP4c-3-CB28` — Code + Build, runtime-free, GMP/GMPXX linked, under CH6–CH9 |
+| Exact next | `M3-CP4c-3-TB25-EXEC` — immutable artifact-only execution of selector 403 |
 
-Stable accounting is **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
-package count **89**. `M3-CP4c-3-TB24-REV` adjudicated the ledger and added **no stable event**: accepted 1–365 is
-365/365 with no accepted-green loss, and the four PASS→RED surfaces are **evidence-subject loss, not behaviour
-loss**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**. CB28 is
+semantic M3 package **90**. No stable count changes because CB28 executed no runtime.
 
-## 2. The current frontier — one ordering defect, seven surfaces, and a branch still undecided
+## 2. Current frontier — discriminator compiled, not executed
 
-**`M3-CP4c-3-TB24-REV` found a single cause.** `certify_actual_embedded_graph` (`SurfaceCutGraph.cpp:604–615`)
-returns a `SurfaceCutGraphError` instead of a certificate whenever `build_source_face_ownership` cannot establish
-ownership. `mechanical.cutGraph.has_value()` is therefore false, and every witness downstream of the certificate
-loses its subject: ordinals **366, 384, 385, 389, 390, 393, 398** are **one defect on one fixture**. TB24's own
-report proves it — each reaches `has_value()==false` *before its later evidence assertion*.
+CB28 compiles publication of embedded cellularity even when source-face ownership is incomplete, explicit per-face
+ownership status, consumer-side owner consistency evidence, and a certified-owner conflict census with independent
+barrier classification. This removes the TB24 evidence-subject ordering blocker without correcting the ownership
+derivation itself.
 
-**The evidence CB27 built is complete, correct and unreachable.** `GlobalTopologyPlan.cpp:1122–1170` assembles the
-component partition, `check_certified_source_face_owner_consistency`, the `ownerEvidence` census with component id,
-face count, owner count, typed `seedState` and untruncated orbit ids, and then fails through
-`UncutFaceComponentOrbitSeedNotUnique` naming the component and the conflicting owners — exactly DEFN-R3.2 and
-discriminator D4. None of it runs. **Ordinal 400 proves the relocated guard works; ordinal 366 proves it is never
-reached.**
+No affected outcome is runtime-proved yet. 366, 384/385/389/390, 393, 398 and new gating 402/403 remain TB25
+observations. `M3-CP4c3-TB21-CAND-01` therefore remains unadjudicated until the new census is executed and reviewed.
 
-**What CB27 got right, runtime-proved.** Ordinal **397 PASSes** its byte-identical expectation — fixed, not
-relaxed. Ordinals **399/400/401 PASS**. Accepted **365/365**. The plan no longer seeds ownership.
+## 3. Exact next turn — `M3-CP4c-3-TB25-EXEC`
 
-**D3 was unmeasurable, and that was foreseeable.** It was defined to read the published owner map while the same
-definition made publication conditional on the derivation succeeding, so it could only report when there was
-nothing to decide: **0 observed / 191 unavailable**. `M3-CP4c3-TB21-CAND-01` stays **UNADJUDICATED**. What TB24 does
-settle is negative and useful: the ambiguity is **not** an artefact of where the derivation lives — the relocated
-code reproduced `[0,1,3]` at `(0,1,2)` exactly.
-
-**One definition clause is withdrawn.** DEFN-R3.1's *decision* stands; its justification — "a publication decision,
-not a new computation" — does not. The face walk's darts are darts of network and cut arcs, so only arc-incident
-and trace-crossed faces have a directly readable orbit; every other face still needs propagation. Recorded as
-`M3-CP4c3-TB24-REV-CAND-02`. **Definition authority otherwise remains `M3-CP4c-3-DEFN-R3`, Part VII.**
-
----
-
-## 3. Exact next turn — `M3-CP4c-3-CB28`
-
-Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`, under **CH6–CH9** of
-`Architecture_M3_CP4c3_TB24_Independent_Review_Record.md`.
-
-- **CH6 — publication survives failure.** The certifier publishes the certificate with whatever ownership was
-  established, each entry carrying an explicit status, and `proves_cellularity()` still returns false.
-  DEFN-R3.1's proof obligation is **unchanged and not weakened**. Ordinal 399 must stay PASS.
-- **CH7 — the consumer reaches its own census.** Build the partition and the consistency census before failing.
-  Required outcome: 366 names component and conflicting owners; **384, 389, 390 return to PASS with no assertion
-  changed**. If they do not, `M3-CP4c3-TB24-REV-CAND-01` is falsified.
-- **CH8 — the certified-owner conflict census, falsification condition first.** Every non-barrier source edge whose
-  two incident faces carry different established owners, each row naming the edge's **barrier class**. Class other
-  than `none` ⇒ missing barrier, proven, edge named. All `none` ⇒ mis-attribution, proven. No rows but a
-  zero-owner component ⇒ a third mechanism, named. No rows and one owner per component ⇒ the derivation succeeds.
-  Exhaustive, and published on the failure path.
-- **CH9 — selector 403**, keeping selector 401 as an exact 401-line prefix and 397 as the frozen prefix of that.
-  New gating ordinals **402** (census publishes) and **403** (independent falsifiability). Ordinal **385**'s
-  assertions replaced in place, retained and gating. Ordinal **398** stays gating and is **expected RED**.
-
-**CB28 measures; it does not correct.** No barrier may be added, no attribution rule changed, no accepted identity
-touched, and no Directional runtime executed.
+Execute `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` against immutable
+artifact `9950303110` and selector 403. Execute all 403 identities once, preserve the full ledger/identity map and
+immutability evidence, and stop at `M3-CP4c-3-TB25-REV`. No configure/build/relink/repair/mutation or EXEC-turn
+stable-regression adjudication is authorized.
 
 ---
 
@@ -99,12 +59,12 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB24-REV-CAND-01` | **NEW / ACTIVE / GATING / PRODUCT + EVIDENCE ORDERING** — the certifier returns an error instead of a certificate, moving the failure upstream of every witness that observes it. Owner: CH6/CH7. Falsified when 384/389/390 return to PASS unchanged and 366 names the component and owners. |
-| `M3-CP4c3-TB24-REV-CAND-02` | **NEW / ACTIVE / ARCHITECTURAL / DEFINITION CORRECTION** — ownership of non-arc-incident source faces is a derivation, not a read; DEFN-R3.1's justification clause is withdrawn. Owner: CH8. |
-| `M3-CP4c3-TB21-CAND-01` | **ACTIVE / ARCHITECTURAL / GATING / UNADJUDICATED** — neither branch selected; D3 was unmeasurable. **CH8 decides it exhaustively.** |
-| `M3-CP4c3-TB23-R1-REV-CAND-02` | **ACTIVE / DIAGNOSTIC CONTRACT** — ordinal 393's replacement assertions are authored but **untested**, because the subject is absent. Owner: CH6/CH7, then TB25. |
+| `M3-CP4c3-TB24-REV-CAND-01` | **NEW / ACTIVE / GATING / PRODUCT + EVIDENCE ORDERING** — the certifier returns an error instead of a certificate, moving the failure upstream of every witness that observes it. CB28 implementation is compile-green; TB25/TB25-REV owns runtime adjudication. |
+| `M3-CP4c3-TB24-REV-CAND-02` | **NEW / ACTIVE / ARCHITECTURAL / DEFINITION CORRECTION** — ownership of non-arc-incident source faces is a derivation, not a read; DEFN-R3.1's justification clause is withdrawn. CB28 CH8 instrumentation is compile-green; TB25/TB25-REV owns runtime adjudication. |
+| `M3-CP4c3-TB21-CAND-01` | **ACTIVE / ARCHITECTURAL / GATING / UNADJUDICATED** — neither branch selected; D3 was unmeasurable. **TB25 records the CH8 census; TB25-REV decides it exhaustively.** |
+| `M3-CP4c3-TB23-R1-REV-CAND-02` | **ACTIVE / DIAGNOSTIC CONTRACT** — ordinal 393's replacement assertions are authored but **untested**, because the subject is absent. CB28 publication path is compiled; TB25 owns runtime proof. |
 | `M3-CP4c3-DEFN-R3-CAND-01` | **ACTIVE / ARCHITECTURAL / NON-GATING** — two independent constructions of one embedded topology; unresolved and still not load-bearing. |
-| `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY** — ordinal 393 still pins a contract no execution has exercised. Owner: CH6/CH7, then TB25. |
+| `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY** — ordinal 393 still pins a contract no execution has exercised. CB28 publication path is compiled; TB25 owns runtime proof. |
 | `M3-CP4c3-TB19-CAND-01` | **ACTIVE / SYMPTOM RECORD** under `M3-CP4c3-TB21-CAND-01`. |
 | `M3-CP4c3-TB21-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 391 passes with the sphere half explicitly skipped. |
 | `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED**; `localFragmentCount` stays non-fatal. |
@@ -158,12 +118,12 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first; update it during the mandatory REVIEW closeout.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — **CH0–CH9**, the adjudication and the frozen CB28 scope.
-4. `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority and exact immutable evidence.
-5. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
-6. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
-8. `M3_CP4c_Consolidated_Record.md` — folded document index, including the three files folded at TB24-REV.
+3. `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — exact next execution contract.
+4. `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — final CB28 product/build evidence.
+5. `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority and exact immutable evidence.
+6. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
+7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+8. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
+9. `M3_CP4c_Consolidated_Record.md` — folded document index, including the three files folded at TB24-REV.
 
-Exact next is `M3-CP4c-3-CB28` under CH6–CH9. **CB28 measures; it does not correct** — no barrier may be added and
-no attribution rule changed before CH8 reports.
+Exact next is `M3-CP4c-3-TB25-EXEC`, immutable artifact-only runtime. No rebuild or correction is authorized in EXEC.

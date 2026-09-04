@@ -1,3 +1,26 @@
+## 2026-09-04 — `M3-CP4c-3-CB28`: ownership-failure publication + conflict census; selector 403; compile GREEN
+
+Code + Build only under TB24-REV **CH6–CH9**. Final semantic source
+`3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`; final compile run/job `33907875533 / 101137084443`; immutable
+compile artifact `9950303110` (`84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`); log `9950303474`
+(`c0401abdcab22df514a05b09084c27fb408619106652b0e4d7a02ceaaa33e204`). Release/static `PRE_TEST`, exact eight
+standard targets, GMP/GMPXX linked. **No Directional runtime executed.**
+
+CB28 separates embedded-cellularity publication from the stronger complete-ownership proof, publishes per-source-face
+ownership status, allows `GlobalTopologyPlan` to reach its owner-consistency census, and publishes a certified-owner
+conflict census with edge, incident faces, owners and independent barrier class. Selector **403** appends gating
+402/403 to byte-identical selector 401; LF SHA-256
+`60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007`.
+
+Compile run `33897882778` exposed one bounded default-construction error in the new conflict row. The follow-up
+aggregate-constructs the same row and changes only `src/geometry/CertifiedOwnerConflictCensus.h`. Caller run
+`33897746403` had zero jobs. Neither failed attempt executed runtime.
+
+Runtime authority remains TB24 at **389 PASS / 12 RED**, accepted **365/365**, stable **44 / 14 / 30**, debt **5**.
+CB28 is semantic M3 package **90**, compile-green but semantically unaccepted. Exact successor:
+**`M3-CP4c-3-TB25-EXEC`**, immutable artifact-only execution of selector 403 under
+`Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md`.
+
 ## 2026-09-04 — `M3-CP4c-3-TB24-REV`: one ordering defect, seven surfaces; D3 defeated by its own precondition; CB28 frozen
 
 Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/
