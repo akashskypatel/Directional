@@ -1,3 +1,3 @@
-purpose=apply M3-CP4c-3-CB24 diagnostic-only patch
-base_sha=a5a15484cfbe70443f674c1fb2e3cbfdd38f601a
-retry=0
+purpose=apply M3-CP4c-3-CB24 closeout documentation and TB22 plan
+base_sha=238ccac293da2cf1fe4cf7898255c3e937c42dd3
+retry=1
