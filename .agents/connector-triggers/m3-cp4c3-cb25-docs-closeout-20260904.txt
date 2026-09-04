@@ -1,4 +1,0 @@
-base_sha=3760ef954d97b588769890a685ccd034f8775b7b
-file_id=1weNY3AK_Fvw7D6wMgekgX0h1ZAdV-0xT
-patch_sha256=c4179bcade662f35d27f3cd368311ea69154aa5fe878ba3e4a91e8087606b56d
-purpose=M3-CP4c-3-CB25-docs-closeout
