@@ -1,0 +1,8 @@
+.agents/connector-triggers/source-snapshot/20260904T1000Z-cbc850506f0d.txt
+.agents/connector-triggers/cb27-drive-apply/20260904T1146Z.txt
+.agents/connector-triggers/cb27-drive-apply/20260904T1152Z-corrected.txt
+.agents/connector-triggers/cb27-drive-apply/20260904T1205Z-compile-fix.txt
+.agents/connector-triggers/cb27-drive-apply/20260904T1210Z-docs-closeout.txt
+.agents/connector-triggers/cb27-compile/20260904T1156Z.txt
+.agents/connector-triggers/cb27-compile/20260904T1202Z-permissions-corrected.txt
+.agents/connector-triggers/cb27-compile/20260904T1207Z-compile-fix.txt
