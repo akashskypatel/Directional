@@ -1,0 +1,3 @@
+requested_semantic_source_sha=187a703ef748ea7a83d6418baef3bc149f7c8ef7
+purpose=M3-CP4c-3-TB24-EXEC start-turn source snapshot
+runtimeExecution=false
