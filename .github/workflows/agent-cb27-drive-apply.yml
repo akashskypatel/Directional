@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 13ga1KBcU8kw-OAlD55f9IrSnlEoouOl5
-      patch_sha256: '30234417489c07746aa9feae040705159ddd26573cf64274fe0d3dc5c6b1ae46'
-      base_sha: 63aae44056abd2efdd2dcc74ad0488942799c004
+      file_id: 1eP91Ua-6uOLfLKiut33NR7AQ40VVVqTa
+      patch_sha256: 'bfaf2b153541d3efd98cdaf660bb5f98dcc71cea35c859568f89830b7cb0cb23'
+      base_sha: 30d52522045588b8f970524e999cc34907533eb9
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M3-CP4c-3-CB27: make certified source-face ownership authoritative'
+      commit_message: 'M3-CP4c-3-CB27: construct source-face ownership with explicit key'
       retention_days: 14
     secrets: inherit
