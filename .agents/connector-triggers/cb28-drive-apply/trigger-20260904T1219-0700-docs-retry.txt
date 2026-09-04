@@ -1,3 +1,0 @@
-CB28 documentation closeout patch apply retry after caller YAML correction.
-base_sha=793b1f2fac99904625b8aebb0738c3ddb7593111
-patch_sha256=58e2edf75788bc2d44254a3e8c74fbfc98b1cdb182d4e525d9e7439fc6c4d190
