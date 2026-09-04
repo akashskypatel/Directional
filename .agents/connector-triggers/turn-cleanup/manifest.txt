@@ -1,4 +1,0 @@
-.agents/connector-triggers/source-snapshot/tb25-r1-20260904.txt
-.agents/connector-triggers/tb25-r1/trigger-20260904.txt
-.agents/connector-triggers/tb25-r1-docs-apply/trigger-20260904.txt
-.agents/connector-triggers/tb25-r1-docs-apply/trigger-20260904-r2.txt

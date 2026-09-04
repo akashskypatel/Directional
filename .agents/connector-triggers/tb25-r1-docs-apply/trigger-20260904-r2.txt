@@ -1,4 +1,0 @@
-M3-CP4c-3-TB25-R1 documentation correction trigger.
-Drive patch: 1D1pNGZavHx_IU72wL6vepG_8Ui52BsFJ
-Patch SHA-256: eb166cb91280228423aab6374d0e1accf62ef7106c02751eeff116bc7a6b0175
-Base: c7a80be2581c72b808365b0c508fbc877d7abdf8
