@@ -1,3 +1,23 @@
+## M3-CP4c3-TB25-ORCH-01 — historical-harness selector insertion anchor mismatches extracted indentation — **ACTIVE / PRE-RUNTIME ORCHESTRATION / NON-STABLE**
+
+- **Attempt:** `M3-CP4c-3-TB25-EXEC` run/job `33910913448 / 101146905061`. Workflow schema validation succeeded.
+  `Materialize proven TB25 artifact-only harness` then failed with exact message `selector injection point missing`;
+  `Execute immutable TB25 gate` was skipped, and result artifact `9951314815` records `ledger_available=false`.
+  Diagnostic log artifact: `9951315281`.
+- **Root cause:** the caller extracts the historical TB24 YAML `run: |` block and removes ten leading indentation
+  columns from every shell line, but the subsequent selector-authority injection anchor is hard-coded with twelve
+  leading spaces. The semantic text was transformed correctly; the indentation-sensitive anchor cannot match the
+  left-shifted shell block, so materialization fails closed before a TB25 harness is written.
+- **Classification:** orchestration/control-plane only. No Directional binary was invoked, no selector identity
+  executed, no semantic ledger exists, and CB28 product/test/fixture/selector/package bytes are unchanged.
+- **Accounting:** **+0 stable events / +0 recurrences**. Totals remain **44 events / 14 categories / 30 recurrences**;
+  produced-witness debt **5**; semantic M3 packages **90**. Latest semantic runtime remains TB24 at 389 PASS / 12
+  RED, accepted 365/365.
+- **Owner / falsification:** `M3-CP4c-3-CB29`, control-plane-only. It must replace the indentation-sensitive
+  materialization contract with a directly verifiable representation while reusing immutable artifact `9950303110`
+  unchanged and executing no Directional runtime. A later fresh TB25 re-execution closes this candidate only after
+  the corrected preflight reaches and executes the unchanged 403-identity gate from ordinal 1.
+
 ## M3-CP4c3-TB24-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md`, measures **CH0–CH9**. Static only: no

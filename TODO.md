@@ -26,35 +26,39 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB25-EXEC` (immutable artifact-only runtime)
+## Current focus — `M3-CP4c-3-CB29` (control-plane-only orchestration correction)
 
-`M3-CP4c-3-CB28` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**. Final source
-`3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`; compile run/job `33907875533 / 101137084443`; immutable artifact
-`9950303110` (`84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`); selector 403 hash
-`60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007`. No runtime executed.
+`M3-CP4c-3-TB25-EXEC` first formal attempt is **ORCHESTRATION INVALID / PRE-RUNTIME / NO SEMANTIC VERDICT**.
+Run/job `33910913448 / 101146905061` passed workflow-schema validation, then failed in `Materialize proven TB25
+artifact-only harness` with `selector injection point missing`. The runtime step was skipped and the result reports
+`ledger_available=false`; **0/403 identities executed**. Result/log artifacts: `9951314815 / 9951315281`
+(`e573a591dddbf49e4624cc99bc01c781acb56b5e086b06c33b525c7a4e7a69ac` /
+`2eb0dd521df88fe1baec5608e981c4744f266c2a4c2fed3dab8d601ac06a9c92`).
 
-TB24 remains semantic runtime authority at **389 PASS / 12 RED**, accepted **365/365**. Stable totals remain
-**44 events / 14 categories / 30 recurrences**, debt **5**; semantic M3 package count is **90**. CP4c-3 remains OPEN.
+TB24 therefore remains semantic runtime authority at **389 PASS / 12 RED**, accepted **365/365**. Stable totals remain
+**44 events / 14 categories / 30 recurrences**, debt **5**; semantic M3 package count **90**. CB28 source/package and
+selector 403 remain immutable authority; CP4c-3 remains OPEN.
 
-### CB28 closeout
+### TB25 invalid-attempt disposition
 
-- [x] CH6 publication survives ownership failure with explicit ownership status; `proves_cellularity()` unweakened.
-- [x] CH7 consumer-side component/owner consistency can be reached before terminal ownership failure.
-- [x] CH8 certified-owner conflict census compiled with edge/faces/owners and independent barrier class.
-- [x] CH9 selector 403 keeps 401 as exact prefix; gating 402/403 appended; ordinal 385 changed in place; 398 retained.
-- [x] Eight-target Release/static compile GREEN with GMP/GMPXX; no Directional runtime executed.
+- [x] schema validator passed before the failed materialization step;
+- [x] failed attempt preserved as `M3-CP4c3-TB25-ORCH-01`;
+- [x] exact root cause bounded to indentation-sensitive harness materialization;
+- [x] `Execute immutable TB25 gate` skipped; no Directional runtime or semantic ledger exists;
+- [x] +0 stable events / +0 recurrences; no semantic owner changed.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB25-EXEC`** under `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md`:
+Run **`M3-CP4c-3-CB29`** as a control-plane-only orchestration correction:
 
-- [ ] consume artifact `9950303110` and selector 403 only;
-- [ ] execute all 403 identities exactly once in fresh processes;
-- [ ] preserve complete identity map, ledger, accepted-prefix status, censuses, and prohibited-operation flags;
-- [ ] report 366, 384/385/389/390, 393, 398, 402/403 and prior-green 371/372/391/392/397/399/400/401;
-- [ ] report carried 367/368/369/370/374 without changing their owners;
-- [ ] do not configure, build, relink, repair, generate discovery/benchmarks, or mutate source/tests/fixtures/selectors;
-- [ ] do not classify stable accounting or close CP4c-3 in EXEC; stop at `M3-CP4c-3-TB25-REV`.
+- [ ] preserve run `33910913448` and artifacts `9951314815 / 9951315281` as invalid-attempt provenance;
+- [ ] remove the indentation-sensitive selector-authority insertion failure and make the harness representation
+      directly verifiable before execution;
+- [ ] do not change product source, tests, fixtures, selectors, CMake/build semantics, or package bytes;
+- [ ] reuse immutable artifact `9950303110` and selector 403 unchanged;
+- [ ] do not configure, compile, relink, repackage, repair modes, or execute Directional runtime in CB29;
+- [ ] prove the corrected control reaches a valid pre-runtime harness and then route to a fresh artifact-only TB25
+      re-execution under `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Carried forward from M1
 
@@ -93,7 +97,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
   CP4c-3 remains open; **TB24 is the latest valid semantic runtime** at 389 PASS / 12 RED, accepted 365/365,
-  selector403/package90 prepared by compile-green CB28; TB24 remains runtime authority. Exact next: **`M3-CP4c-3-TB25-EXEC`**.
+  selector403/package90 prepared by compile-green CB28; the first TB25 attempt was pre-runtime orchestration-invalid. Exact next: **`M3-CP4c-3-CB29`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -132,4 +136,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB24-REV`. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **90**. **TB24 remains the latest semantic runtime authority at 389 PASS / 12 RED, accepted 365/365.** CB28 artifact `9950303110` is prepared for selector 403. Exact next is `M3-CP4c-3-TB25-EXEC`. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB24-REV`. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **90**. **TB24 remains the latest semantic runtime authority at 389 PASS / 12 RED, accepted 365/365.** CB28 artifact `9950303110` remains prepared for selector 403. The first TB25 attempt executed 0 identities and is orchestration-invalid; exact next is `M3-CP4c-3-CB29`. PR #8 remains open, draft, and unmerged.

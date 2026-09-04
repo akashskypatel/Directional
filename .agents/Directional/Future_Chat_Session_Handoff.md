@@ -116,74 +116,75 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB25-EXEC` — EXACT NEXT / immutable artifact-only runtime
+## Mandatory next turn — `M3-CP4c-3-CB29` — EXACT NEXT / control-plane-only orchestration correction
 
-`M3-CP4c-3-CB28` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**. It implemented
-TB24-REV CH6–CH9 without correcting the ownership derivation, then produced one immutable compile result for TB25.
+`M3-CP4c-3-TB25-EXEC` attempted immutable artifact-only execution but is **ORCHESTRATION INVALID / PRE-RUNTIME /
+NO SEMANTIC VERDICT**. The workflow validated successfully, then failed while materializing the inherited TB24
+harness; the Directional runtime step was skipped and no selector identity executed. Under the durable turn workflow,
+this routes directly to a Code + Build orchestration-correction turn, not to REVIEW + PLAN.
 
-### Immutable CB28 build authority
+### Invalid TB25 attempt provenance
 
-- primary CB28 semantic commit: `8a8b9af7b3d3d51bba8b710f841a867c77840440`;
+- caller install commit: `4ce8dd8341f0ae7c9bd7ae3e02188f4b7b1c6e9e`;
+- trigger commit: `66e1f2aa19122c008550f7be19a47443c22ffbf2`;
+- run/job: `33910913448 / 101146905061`, workflow conclusion `failure`;
+- schema-validation job succeeded before execution;
+- failing step: `Materialize proven TB25 artifact-only harness`; exact failure: `selector injection point missing`;
+- `Execute immutable TB25 gate` was skipped; result states `ledger_available=false`;
+- invalid-attempt result artifact: `9951314815`, SHA-256
+  `e573a591dddbf49e4624cc99bc01c781acb56b5e086b06c33b525c7a4e7a69ac`;
+- invalid-attempt log artifact: `9951315281`, SHA-256
+  `2eb0dd521df88fe1baec5608e981c4744f266c2a4c2fed3dab8d601ac06a9c92`.
+
+The control defect is bounded: the materializer strips ten YAML indentation columns from the historical shell block,
+but its later selector-authority injection anchor still requires twelve leading spaces. The anchor therefore cannot
+match and fails closed before the generated harness is written. This is `M3-CP4c3-TB25-ORCH-01`, orchestration-only
+and non-stable. No product, test, fixture, selector, package, or semantic-runtime evidence is implicated.
+
+### Immutable CB28 authority is unchanged
+
 - final CB28 product source: `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`;
-- final compile-only run/job: `33907875533 / 101137084443`, SUCCESS;
-- immutable compile result/package artifact: `9950303110`, SHA-256
+- compile run/job: `33907875533 / 101137084443`, SUCCESS;
+- immutable package artifact: `9950303110`, SHA-256
   `84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`;
-- compile log artifact: `9950303474`, SHA-256
-  `c0401abdcab22df514a05b09084c27fb408619106652b0e4d7a02ceaaa33e204`;
 - selector 403: 403 identities, LF SHA-256
   `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007`;
-- selector 401 is the exact first 401 lines, SHA-256
+- selector 401 is its exact first 401 lines, SHA-256
   `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`;
-- Release/static `PRE_TEST`, exact eight standard targets, GMP/GMPXX linked;
-- `runtimeExecution=false`; no Directional runtime was executed.
+- accepted selector 365 remains the load-bearing prefix, SHA-256
+  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
 
-The compile correction changed only `src/geometry/CertifiedOwnerConflictCensus.h`, aggregate-constructing a conflict
-row whose topology-key members have no default constructors. Caller run `33897746403` had zero jobs and compile run
-`33897882778` exposed that constructor error; neither has semantic runtime credit.
-
-### Runtime authority remains TB24
-
-`M3-CP4c-3-TB24-EXEC` remains the latest valid runtime: **389 PASS / 12 RED**, accepted **365/365**, RED ordinals
+Latest valid semantic runtime remains `M3-CP4c-3-TB24-EXEC`: **389 PASS / 12 RED**, accepted **365/365**, RED
 `[366,367,368,369,370,374,384,385,389,390,393,398]`. Stable accounting remains
-**44 events / 14 categories / 30 recurrences**, produced-witness debt **5**. CB28 is semantic M3 package **90**.
-CP4c-3 remains **OPEN**.
+**44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 packages **90**. CP4c-3
+remains **OPEN**.
 
-### What CB28 compiled
+### M3-CP4c-3-CB29 — run next, bounded orchestration correction
 
-- **CH6:** per-source-face `Established` / `Unavailable` / `Conflicting` publication plus
-  `proves_embedded_cellularity()`; `proves_cellularity()` remains stronger and unweakened.
-- **CH7:** `GlobalTopologyPlan` can reach its component/owner consistency census before terminal ownership failure.
-- **CH8:** a failure-published certified-owner conflict census names source edge, both source faces, both certified
-  owners, and independently derived barrier class.
-- **CH9:** selector **403** keeps selector 401 as an exact prefix, appends gating 402/403, changes ordinal 385 in
-  place as authorized, and leaves ordinal 398 gating.
+CB29 owns only `M3-CP4c3-TB25-ORCH-01`. It must:
 
-These are compiled mechanisms, not runtime outcomes. No affected identity receives PASS credit until TB25.
-
-### M3-CP4c-3-TB25-EXEC — run next, bounded artifact-only runtime
-
-Follow `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` exactly.
-
-- consume immutable artifact `9950303110` and selector 403 only;
-- execute all 403 identities exactly once in fresh processes and preserve the full identity map + ledger;
-- prove package/source/execution-view immutability and record every prohibited-operation flag;
-- preserve exact CB28 evidence for 366, 384/385/389/390, 393, 398, 402 and 403;
-- preserve prior-green 371/372/391/392/397/399/400/401 and carried 367/368/369/370/374 outcomes explicitly;
-- do **not** rebuild, configure, relink, repair, mutate product/tests/fixtures/selectors, or generate a benchmark;
-- do **not** classify a new stable regression or close CP4c-3 in EXEC. Interpretation belongs to
-  `M3-CP4c-3-TB25-REV`.
+- preserve run `33910913448` and artifacts `9951314815 / 9951315281` as invalid-attempt provenance;
+- correct the harness materialization/selector-365 insertion contract without changing product source, tests, fixtures,
+  selectors, or immutable package bytes;
+- prefer a direct, verifiable harness representation over another indentation-sensitive textual anchor;
+- perform no Directional runtime in the CB turn;
+- reuse immutable artifact `9950303110` unchanged; no configure, compile, relink, repackage, chmod/mode repair, or
+  replacement package is authorized unless a source change becomes genuinely necessary and is separately justified;
+- prove the corrected control reaches a pre-runtime-valid executable harness while still executing zero Directional
+  identities in CB;
+- then route to a fresh artifact-only TB25 re-execution under the unchanged frozen
+  `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ### Context Load Plan
 
-0. `.agents/Directional/ORIENTATION.md` — read first; update only in the later REVIEW turn.
+0. `.agents/Directional/ORIENTATION.md` — substance-only cold-start context; no REVIEW update is due in CB29.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — exact TB25 contract.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — CB28 build authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — runtime authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — CH6–CH9 intent.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 403/current prefixes.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-8. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII and `.agents/Directional/M3_CP4c_Consolidated_Record.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — unchanged runtime contract.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable package authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — latest runtime authority.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB25-ORCH-01`.
+6. `.agents/Directional/Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII and `.agents/Directional/M3_CP4c_Consolidated_Record.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

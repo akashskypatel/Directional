@@ -10,14 +10,15 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-04** at `M3-CP4c-3-CB28` closeout.
+Last updated **2026-09-04** after the pre-runtime orchestration-invalid `M3-CP4c-3-TB25-EXEC` attempt.
 
 ---
 
 ## 1. Where the checkpoint stands
 
 `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**.
-**CP4c-3 remains OPEN.** CB28 is compile-green and runtime-free; TB24 remains the latest semantic runtime.
+**CP4c-3 remains OPEN.** CB28 remains compile-green and semantically unaccepted. TB25's first formal attempt stopped
+before Directional runtime because its temporary harness materializer failed, so TB24 remains the latest semantic runtime.
 
 | Authority | Current value |
 |---|---|
@@ -29,29 +30,32 @@ Last updated **2026-09-04** at `M3-CP4c-3-CB28` closeout.
 | Frozen predecessor | selector 401, exact first 401 lines, `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` |
 | CB28 compile evidence | run/job `33907875533 / 101137084443`; log `9950303474` |
 | TB24 runtime evidence | run/job `33891467611 / 101083954177`; result `9944102469`; log `9944102936` |
-| Exact next | `M3-CP4c-3-TB25-EXEC` — immutable artifact-only execution of selector 403 |
+| Invalid TB25 attempt | run/job `33910913448 / 101146905061`; result/log `9951314815 / 9951315281`; 0 identities executed |
+| Exact next | `M3-CP4c-3-CB29` — control-plane-only orchestration correction |
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**. CB28 is
-semantic M3 package **90**. No stable count changes because CB28 executed no runtime.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
+package count **90**. The invalid TB25 attempt adds **+0 stable events / +0 recurrences** because no Directional runtime
+started and no semantic ledger exists.
 
-## 2. Current frontier — discriminator compiled, not executed
+## 2. Current frontier — discriminator compiled, runtime still unmeasured
 
 CB28 compiles publication of embedded cellularity even when source-face ownership is incomplete, explicit per-face
 ownership status, consumer-side owner consistency evidence, and a certified-owner conflict census with independent
-barrier classification. This removes the TB24 evidence-subject ordering blocker without correcting the ownership
-derivation itself.
+barrier classification. The first TB25 attempt measured none of those surfaces: schema validation passed, then
+`Materialize proven TB25 artifact-only harness` failed with `selector injection point missing`; the runtime step was
+skipped and `ledger_available=false`.
 
-No affected outcome is runtime-proved yet. 366, 384/385/389/390, 393, 398 and new gating 402/403 remain TB25
-observations. `M3-CP4c3-TB21-CAND-01` therefore remains unadjudicated until the new census is executed and reviewed.
+`M3-CP4c3-TB25-ORCH-01` owns that control defect. The materializer left-shifts the historical YAML shell block by ten
+columns, while its selector-authority insertion anchor still expects twelve leading spaces. It therefore fails closed
+before writing the generated harness. This does not change any CB28 product or selector claim and does not adjudicate
+`M3-CP4c3-TB21-CAND-01`.
 
-## 3. Exact next turn — `M3-CP4c-3-TB25-EXEC`
+## 3. Exact next turn — `M3-CP4c-3-CB29`
 
-Execute `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` against immutable
-artifact `9950303110` and selector 403. Execute all 403 identities once, preserve the full ledger/identity map and
-immutability evidence, and stop at `M3-CP4c-3-TB25-REV`. No configure/build/relink/repair/mutation or EXEC-turn
-stable-regression adjudication is authorized.
-
----
+Perform a **control-plane-only orchestration correction**. Preserve failed run `33910913448` as invalid-attempt
+provenance, correct the harness representation/materialization without touching product source, tests, fixtures,
+selectors, or package bytes, and reuse artifact `9950303110` unchanged. CB29 executes no Directional runtime. After
+its control is proven, the successor re-executes the unchanged frozen TB25 artifact-only plan from ordinal 1.
 
 ## 4. Open candidates
 
@@ -118,7 +122,7 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first; update it during the mandatory REVIEW closeout.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — exact next execution contract.
+3. `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — unchanged runtime contract that CB29 must preserve for re-execution.
 4. `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — final CB28 product/build evidence.
 5. `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority and exact immutable evidence.
 6. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
@@ -126,4 +130,4 @@ After the durable start-of-turn checklist, load only the minimum current authori
 8. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
 9. `M3_CP4c_Consolidated_Record.md` — folded document index, including the three files folded at TB24-REV.
 
-Exact next is `M3-CP4c-3-TB25-EXEC`, immutable artifact-only runtime. No rebuild or correction is authorized in EXEC.
+Exact next is `M3-CP4c-3-CB29`, control-plane-only orchestration correction. It must reuse immutable artifact `9950303110` unchanged and execute no Directional runtime; the corrected control then routes back to the frozen TB25 artifact-only gate.

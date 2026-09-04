@@ -1,3 +1,23 @@
+## 2026-09-04 — `M3-CP4c-3-TB25-EXEC`: pre-runtime orchestration invalid; semantic authority stays TB24
+
+Artifact-only TB25 was triggered against immutable CB28 package `9950303110` / source
+`3d7f7f9a3afad3ed37fc615a206801cf6310f4ac` and selector 403. Run/job `33910913448 / 101146905061` passed the
+caller schema-validation job, then failed in `Materialize proven TB25 artifact-only harness` with
+`selector injection point missing`. The Directional execution step was **skipped**; result artifact `9951314815`
+(`e573a591dddbf49e4624cc99bc01c781acb56b5e086b06c33b525c7a4e7a69ac`) records `ledger_available=false`; log
+artifact `9951315281` (`2eb0dd521df88fe1baec5608e981c4744f266c2a4c2fed3dab8d601ac06a9c92`) preserves the exact failure.
+
+`M3-CP4c3-TB25-ORCH-01` is **ACTIVE / PRE-RUNTIME ORCHESTRATION / NON-STABLE**. The materializer removes ten YAML
+indentation columns while extracting the historical TB24 shell block, but its later selector-authority insertion
+anchor still requires twelve leading spaces; the anchor therefore cannot match and fails closed before a generated
+harness exists. **0/403 identities executed.** No product, test, fixture, selector, package, configure, compile, relink,
+repair or semantic-runtime evidence changed.
+
+Latest valid runtime remains TB24 at **389 PASS / 12 RED**, accepted **365/365**; stable accounting remains
+**44 events / 14 categories / 30 recurrences**, debt **5**, semantic M3 packages **90**. CP4c-3 remains OPEN. Under
+the user-authorized orchestration edge, exact successor is **`M3-CP4c-3-CB29`**, control-plane-only correction that
+reuses package `9950303110` unchanged and executes no Directional runtime before a fresh TB25 re-execution.
+
 ## 2026-09-04 — `M3-CP4c-3-CB28`: ownership-failure publication + conflict census; selector 403; compile GREEN
 
 Code + Build only under TB24-REV **CH6–CH9**. Final semantic source
