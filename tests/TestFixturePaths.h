@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
+#include <optional>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -48,9 +50,9 @@ inline std::filesystem::path test_executable_directory() {
 #endif
 }
 
-inline std::filesystem::path test_data_root() {
-  const std::filesystem::path executableDirectory =
-      test_executable_directory();
+inline std::optional<std::filesystem::path> find_test_data_root(
+    const std::filesystem::path &executableDirectory) {
+  if (executableDirectory.empty()) return std::nullopt;
   const std::filesystem::path siblingPackage =
       executableDirectory.parent_path() / "test-data";
   if (std::filesystem::exists(siblingPackage / "benchmarks" / "fixtures")) {
@@ -60,7 +62,22 @@ inline std::filesystem::path test_data_root() {
   if (std::filesystem::exists(legacyPackage / "benchmarks" / "fixtures")) {
     return legacyPackage;
   }
-  return siblingPackage;
+  return std::nullopt;
+}
+
+inline std::filesystem::path require_test_data_root(
+    const std::filesystem::path &executableDirectory) {
+  const auto resolved = find_test_data_root(executableDirectory);
+  if (!resolved.has_value()) {
+    throw std::runtime_error(
+        "Directional test-data package not found adjacent to test executable: " +
+        executableDirectory.string());
+  }
+  return *resolved;
+}
+
+inline std::filesystem::path test_data_root() {
+  return require_test_data_root(test_executable_directory());
 }
 
 inline std::filesystem::path benchmark_fixture_path(

@@ -62,6 +62,24 @@ struct SurfaceCutGraphFaceCertificate {
   auto operator<=>(const SurfaceCutGraphFaceCertificate &) const = default;
 };
 
+struct SurfaceCutGraphTraceFragmentSideOwner {
+  authority::TraceId trace;
+  std::size_t segmentIndex = 0U;
+  authority::Orientation orientation = authority::Orientation::Forward;
+  std::size_t orbit = 0U;
+  auto operator<=>(const SurfaceCutGraphTraceFragmentSideOwner &) const = default;
+};
+
+struct SurfaceCutGraphSourceFaceOwnership {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::vector<std::size_t> certifiedFaceOrbits;
+  std::vector<SurfaceCutGraphTraceFragmentSideOwner> traceFragmentSides;
+  [[nodiscard]] bool trace_crossed() const noexcept {
+    return !traceFragmentSides.empty();
+  }
+  auto operator<=>(const SurfaceCutGraphSourceFaceOwnership &) const = default;
+};
+
 struct SurfaceCutGraphCellularityCertificate {
   SurfaceCutGraphComplexKind complex = SurfaceCutGraphComplexKind::ActualEmbeddedGraph;
   std::size_t vertexCount = 0U;
@@ -85,8 +103,12 @@ struct SurfaceCutGraphCellularityCertificate {
   std::optional<authority::SourceFaceTopologyKey> saturationLocus;
   std::size_t saturationPromotedEdgeCount = 0U;
   std::vector<SurfaceCutGraphFaceCertificate> faces;
+  std::size_t sourceFaceCount = 0U;
+  std::vector<SurfaceCutGraphSourceFaceOwnership> sourceFaceOwners;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
   [[nodiscard]] bool proves_cellularity() const noexcept;
+  [[nodiscard]] const SurfaceCutGraphSourceFaceOwnership *
+  find_source_face_owner(const authority::SourceFaceTopologyKey &sourceFace) const noexcept;
   auto operator<=>(const SurfaceCutGraphCellularityCertificate &) const = default;
 };
 
@@ -98,6 +120,7 @@ enum class SurfaceCutGraphErrorCode : std::uint8_t {
   CellularityNotEstablished = 4,
   CutSearchExhaustedBeforeCellularity = 5,
   EmptyNetworkOnClosedSurface = 6,
+  SourceFaceOwnershipNotEstablished = 7,
 };
 
 struct SurfaceCutGraphTraceEventPositionCandidate {

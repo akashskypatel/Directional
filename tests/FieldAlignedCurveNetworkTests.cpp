@@ -36,6 +36,7 @@
 
 #include "../src/geometry/EmbeddedGraphTopology.h"
 #include "../src/geometry/GlobalTopologyCertificateDiagnostics.h"
+#include "../src/geometry/CertifiedSourceFaceOwnerConsistency.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
@@ -11144,7 +11145,7 @@ TEST(GlobalTopologyPlan,
   GlobalTopologyPlanError nonMismatch;
   nonMismatch.code = GlobalTopologyPlanErrorCode::InvalidSourceBinding;
   nonMismatch.sourceFace = topology_face(0, 1, 2, 128U);
-  EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
+  EXPECT_EQ(";sourceFace=0,1,2",
             production_global_topology_plan_error_locus(nonMismatch));
 }
 
@@ -11278,7 +11279,7 @@ TEST(GlobalTopologyPlan,
       "0-1,totalOrbitCount=1,truncated=false,orbits=[11]};"
       "fragmentEdgeOrbitEvidence[1]={sourceEdge=0-102,totalOrbitCount=1,"
       "truncated=false,orbits=[13]};fragmentEdgeOrbitEvidence[2]={sourceEdge="
-      "1-102,totalOrbitCount=0,truncated=false,orbits=[]};cutCandidateCount=0",
+      "1-102,totalOrbitCount=0,truncated=false,orbits=[]}",
       production_global_topology_plan_error_locus(highSide));
 }
 
@@ -11287,50 +11288,42 @@ TEST(GlobalTopologyPlan,
   const Cp4cProductionFixture mechanical =
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
-  ASSERT_TRUE(mechanical.network.has_value()) << mechanical.loadError;
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
+  const auto &certificate = mechanical.cutGraph->certificate();
+  EXPECT_TRUE(certificate.proves_cellularity());
+  EXPECT_EQ(static_cast<std::size_t>(mechanical.mesh.F.rows()),
+            certificate.sourceFaceCount);
+  EXPECT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
 
-  const auto &locus = mechanical.terminalFailureLocus;
-  ASSERT_TRUE(locus.sourceFace.has_value());
-  EXPECT_EQ("FirstUnlabeledFaceInIterationOrder", locus.sourceFaceLocusKind);
-  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
-  ASSERT_TRUE(locus.uncutFaceComponentSeedCount.has_value());
-  EXPECT_NE(1U, *locus.uncutFaceComponentSeedCount);
-  EXPECT_EQ(*locus.uncutFaceComponentSeedCount == 0U ? "None" : "Multiple",
-            locus.uncutFaceComponentSeedState);
-  EXPECT_GT(locus.uncutFaceComponentFaceCount, 0U);
-  EXPECT_EQ(locus.uncutFaceComponentFaceCount >
-                locus.uncutFaceComponentFaces.size(),
-            locus.uncutFaceComponentFacesTruncated);
-  EXPECT_GT(locus.uncutFaceComponentBoundaryEdgeCount, 0U);
-  EXPECT_EQ(locus.uncutFaceComponentBoundaryEdgeCount >
-                locus.uncutFaceComponentBoundaryEdges.size(),
-            locus.uncutFaceComponentBoundaryEdgesTruncated);
-  for (const auto &row : locus.uncutFaceComponentBoundaryEdges) {
-    EXPECT_FALSE(row.barrierClass.empty());
-    if (row.contributedSeed.has_value()) {
-      EXPECT_TRUE(row.noSeedReason.empty());
-    } else {
-      EXPECT_FALSE(row.noSeedReason.empty());
-    }
+  if (mechanical.plan.has_value()) {
+    std::cout << "m3Cp4c3OwnerConsistency;status=guard-cleared;ownerMapTotal=true\n";
+    return;
   }
 
+  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
+            mechanical.terminalFailureDetailCode);
+  const auto &locus = mechanical.terminalFailureLocus;
+  ASSERT_TRUE(locus.sourceFace.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceObservationCount.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceUnavailableCount.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
+  EXPECT_EQ(0U, *locus.uncutFaceComponentCertifiedFaceUnavailableCount);
+  EXPECT_EQ(locus.uncutFaceComponentFaceCount,
+            *locus.uncutFaceComponentCertifiedFaceObservationCount);
+  EXPECT_GT(*locus.uncutFaceComponentCertifiedFaceDistinctCount, 1U);
+  EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceDistinctCount,
+            locus.uncutFaceComponentCertifiedFaceMultiset.size());
+
   const auto &census = locus.fragmentOwnerEvidence;
-  EXPECT_EQ(census.componentCount > census.components.size(),
-            census.componentsTruncated);
   const auto component = std::find_if(
       census.components.begin(), census.components.end(), [&](const auto &row) {
         return row.component == *locus.uncutFaceComponent;
       });
   ASSERT_NE(census.components.end(), component);
   EXPECT_EQ(locus.uncutFaceComponentFaceCount, component->faceCount);
-  EXPECT_EQ(*locus.uncutFaceComponentSeedCount, component->seedCount);
-  EXPECT_EQ(locus.uncutFaceComponentSeedState, component->seedState);
-  EXPECT_EQ(component->seedOrbitCount > component->seedOrbitIds.size(),
-            component->seedOrbitsTruncated);
+  EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceDistinctCount,
+            component->seedOrbitCount);
 }
 
 TEST(GlobalTopologyPlan,
@@ -11435,7 +11428,7 @@ TEST(GlobalTopologyPlan,
   GlobalTopologyPlanError error;
   error.code = GlobalTopologyPlanErrorCode::InvalidSourceBinding;
   error.sourceFace = topology_face(0, 1, 2, 16U);
-  EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
+  EXPECT_EQ(";sourceFace=0,1,2",
             production_global_topology_plan_error_locus(error));
 }
 
@@ -11445,31 +11438,33 @@ TEST(GlobalTopologyPlan,
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
   const auto &certificate = mechanical.cutGraph->certificate();
-  const auto &locus = mechanical.terminalFailureLocus;
-
-  EXPECT_TRUE(locus.embeddedGraphEulerCensusComplete);
-  ASSERT_TRUE(locus.embeddedGraphNodeCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphArcCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphFaceWalkOrbitCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphComponentCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphSourceEulerCharacteristic.has_value());
-  ASSERT_TRUE(locus.embeddedGraphEulerResidual.has_value());
-  EXPECT_EQ(certificate.vertexCount, *locus.embeddedGraphNodeCount);
-  EXPECT_EQ(certificate.edgeCount, *locus.embeddedGraphArcCount);
-  EXPECT_EQ(certificate.totalOrbitCount,
-            *locus.embeddedGraphFaceWalkOrbitCount);
-  EXPECT_EQ(certificate.graphComponentCount,
-            *locus.embeddedGraphComponentCount);
-  EXPECT_EQ(certificate.sourceEulerCharacteristic,
-            *locus.embeddedGraphSourceEulerCharacteristic);
+  EXPECT_TRUE(certificate.proves_cellularity());
   const std::int64_t residual =
       static_cast<std::int64_t>(certificate.vertexCount) -
       static_cast<std::int64_t>(certificate.edgeCount) +
       static_cast<std::int64_t>(certificate.totalOrbitCount) -
       static_cast<std::int64_t>(certificate.sourceEulerCharacteristic);
-  EXPECT_EQ(residual, *locus.embeddedGraphEulerResidual);
+
+  if (!mechanical.plan.has_value()) {
+    const auto &locus = mechanical.terminalFailureLocus;
+    EXPECT_TRUE(locus.embeddedGraphEulerCensusComplete);
+    ASSERT_TRUE(locus.embeddedGraphNodeCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphArcCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphFaceWalkOrbitCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphComponentCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphSourceEulerCharacteristic.has_value());
+    ASSERT_TRUE(locus.embeddedGraphEulerResidual.has_value());
+    EXPECT_EQ(certificate.vertexCount, *locus.embeddedGraphNodeCount);
+    EXPECT_EQ(certificate.edgeCount, *locus.embeddedGraphArcCount);
+    EXPECT_EQ(certificate.totalOrbitCount,
+              *locus.embeddedGraphFaceWalkOrbitCount);
+    EXPECT_EQ(certificate.graphComponentCount,
+              *locus.embeddedGraphComponentCount);
+    EXPECT_EQ(certificate.sourceEulerCharacteristic,
+              *locus.embeddedGraphSourceEulerCharacteristic);
+    EXPECT_EQ(residual, *locus.embeddedGraphEulerResidual);
+  }
   std::cout << "m3Cp4c3BW1BW2;V=" << certificate.vertexCount
             << ";E=" << certificate.edgeCount
             << ";F=" << certificate.totalOrbitCount
@@ -11483,16 +11478,21 @@ TEST(GlobalTopologyPlan,
   const Cp4cProductionFixture mechanical =
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
-  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  EXPECT_TRUE(mechanical.cutGraph->certificate().proves_cellularity());
+  if (mechanical.plan.has_value()) {
+    std::cout << "m3Cp4c3BW3;status=guard-cleared\n";
+    return;
+  }
+
   ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
             mechanical.terminalFailureDetailCode);
   const auto &locus = mechanical.terminalFailureLocus;
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
-  EXPECT_EQ(locus.uncutFaceComponentBoundaryOrbitCount >
-                locus.uncutFaceComponentBoundaryOrbits.size(),
-            locus.uncutFaceComponentBoundaryOrbitsTruncated);
-  ASSERT_GT(locus.uncutFaceComponentBoundaryOrbitCount, 0U);
-  ASSERT_FALSE(locus.uncutFaceComponentBoundaryOrbits.empty());
+  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
+  ASSERT_GT(*locus.uncutFaceComponentCertifiedFaceDistinctCount, 1U);
+  ASSERT_FALSE(locus.uncutFaceComponentCertifiedFaceMultiset.empty());
+  EXPECT_FALSE(locus.uncutFaceComponentCertifiedFaceMultisetTruncated);
 
   const auto component = std::find_if(
       locus.fragmentOwnerEvidence.components.begin(),
@@ -11500,27 +11500,11 @@ TEST(GlobalTopologyPlan,
         return row.component == *locus.uncutFaceComponent;
       });
   ASSERT_NE(locus.fragmentOwnerEvidence.components.end(), component);
-  ASSERT_FALSE(component->seedOrbitsTruncated);
-  ASSERT_FALSE(locus.uncutFaceComponentBoundaryOrbitsTruncated);
-  std::vector<std::size_t> attributedOrbits;
-  std::size_t attributedBoundaryEdges = 0U;
-  for (const auto &row : locus.uncutFaceComponentBoundaryOrbits) {
-    EXPECT_GT(row.boundaryEdgeCount, 0U);
-    EXPECT_LE(row.boundaryEdgeCount,
-              locus.uncutFaceComponentBoundaryEdgeCount);
-    attributedOrbits.push_back(row.orbit);
-    attributedBoundaryEdges += row.boundaryEdgeCount;
-  }
-  for (const std::size_t seedOrbit : component->seedOrbitIds) {
-    EXPECT_NE(attributedOrbits.end(),
-              std::find(attributedOrbits.begin(), attributedOrbits.end(),
-                        seedOrbit));
-  }
+  EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceDistinctCount,
+            component->seedOrbitCount);
   std::cout << "m3Cp4c3BW3;component=" << *locus.uncutFaceComponent
-            << ";orbitCount=" << locus.uncutFaceComponentBoundaryOrbitCount
-            << ";attributedBoundaryEdges=" << attributedBoundaryEdges
-            << ";boundaryEdgeCount="
-            << locus.uncutFaceComponentBoundaryEdgeCount << '\n';
+            << ";certifiedOwnerCount="
+            << *locus.uncutFaceComponentCertifiedFaceDistinctCount << '\n';
 }
 
 TEST(GlobalTopologyPlan,
@@ -11667,107 +11651,68 @@ TEST(GlobalTopologyPlan,
   const Cp4cProductionFixture mechanical =
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
-  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.proves_cellularity());
+  ASSERT_EQ(static_cast<std::size_t>(mechanical.mesh.F.rows()),
+            certificate.sourceFaceCount);
+  ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
+
+  std::set<std::size_t> certifiedOrbits;
+  for (const auto &face : certificate.faces) certifiedOrbits.insert(face.orbit);
+  ASSERT_FALSE(certifiedOrbits.empty());
+  for (const auto &owner : certificate.sourceFaceOwners) {
+    ASSERT_FALSE(owner.certifiedFaceOrbits.empty());
+    for (const auto orbit : owner.certifiedFaceOrbits)
+      EXPECT_NE(0U, certifiedOrbits.count(orbit));
+    for (const auto &side : owner.traceFragmentSides) {
+      EXPECT_NE(0U, certifiedOrbits.count(side.orbit));
+      EXPECT_NE(owner.certifiedFaceOrbits.end(),
+                std::find(owner.certifiedFaceOrbits.begin(),
+                          owner.certifiedFaceOrbits.end(), side.orbit));
+    }
+  }
+
+  if (mechanical.plan.has_value()) {
+    std::cout << "m3Cp4c3OwnerMap;sourceFaceCount=" << certificate.sourceFaceCount
+              << ";ownerMapCount=" << certificate.sourceFaceOwners.size()
+              << ";component0=guard-cleared;owners=all-equal\n";
+    return;
+  }
+
   ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
             mechanical.terminalFailureDetailCode);
   const auto &locus = mechanical.terminalFailureLocus;
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
-  ASSERT_TRUE(locus.uncutFaceCertificatePairExaminedCount.has_value());
-  ASSERT_TRUE(locus.uncutFaceCertificatePairDifferingCount.has_value());
-  EXPECT_GT(*locus.uncutFaceCertificatePairExaminedCount, 0U);
-  EXPECT_GT(*locus.uncutFaceCertificatePairDifferingCount, 0U);
-  ASSERT_FALSE(locus.uncutFaceCertificatePairs.empty());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceObservationCount.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceUnavailableCount.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
+  EXPECT_EQ(0U, *locus.uncutFaceComponentCertifiedFaceUnavailableCount);
   EXPECT_EQ(locus.uncutFaceComponentFaceCount,
-            *locus.uncutFaceComponentCertifiedFaceObservationCount +
-                *locus.uncutFaceComponentCertifiedFaceUnavailableCount);
-  std::size_t multisetObservationCount = 0U;
+            *locus.uncutFaceComponentCertifiedFaceObservationCount);
+  EXPECT_GT(*locus.uncutFaceComponentCertifiedFaceDistinctCount, 1U);
+
+  std::size_t observed = 0U;
   for (const auto &entry : locus.uncutFaceComponentCertifiedFaceMultiset)
-    multisetObservationCount += entry.sourceFaceCount;
-  if (!locus.uncutFaceComponentCertifiedFaceMultisetTruncated) {
-    EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceObservationCount,
-              multisetObservationCount);
-    EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceDistinctCount,
-              locus.uncutFaceComponentCertifiedFaceMultiset.size());
-  }
+    observed += entry.sourceFaceCount;
+  if (!locus.uncutFaceComponentCertifiedFaceMultisetTruncated)
+    EXPECT_EQ(locus.uncutFaceComponentFaceCount, observed);
 
-  std::map<std::size_t, std::size_t> orbitCounts;
-  std::size_t modalCount = 0U;
-  for (const auto &row : locus.uncutFaceComponentBoundaryOrbits) {
-    orbitCounts[row.orbit] = row.boundaryEdgeCount;
-    modalCount = std::max(modalCount, row.boundaryEdgeCount);
-  }
-  ASSERT_GT(modalCount, 0U);
-
-  std::size_t expectedMinorityRows = 0U;
-  for (const auto &[orbit, count] : orbitCounts) {
-    (void)orbit;
-    if (count < modalCount) expectedMinorityRows += count;
-  }
-  std::size_t publishedMinorityRows = 0U;
-  bool certifiedFaceDiffersFromSeed = false;
-  for (const auto &row : locus.uncutFaceComponentBoundaryEdges) {
-    if (!row.minoritySeedOrbit) continue;
-    ++publishedMinorityRows;
-    ASSERT_TRUE(row.contributedSeed.has_value());
-    ASSERT_TRUE(row.componentFace.has_value());
-    ASSERT_TRUE(row.labeledFace.has_value());
-    EXPECT_TRUE(row.otherSideLabeled);
-    EXPECT_EQ("none", row.barrierClass);
-    EXPECT_FALSE(row.seedRule.empty());
-    if (row.componentSideCertifiedFace.has_value()) {
-      certifiedFaceDiffersFromSeed = certifiedFaceDiffersFromSeed ||
-          *row.componentSideCertifiedFace != *row.contributedSeed;
-    }
-    if (row.labeledSideCertifiedFace.has_value()) {
-      certifiedFaceDiffersFromSeed = certifiedFaceDiffersFromSeed ||
-          *row.labeledSideCertifiedFace != *row.contributedSeed;
-    }
-    std::cout << "m3Cp4c3CA2;sourceEdge=" << row.sourceEdge[0] << '-'
-              << row.sourceEdge[1] << ";seed=" << *row.contributedSeed
-              << ";seedRule=" << row.seedRule << ";componentFace="
-              << (*row.componentFace)[0] << ',' << (*row.componentFace)[1]
-              << ',' << (*row.componentFace)[2] << ";labeledFace="
-              << (*row.labeledFace)[0] << ',' << (*row.labeledFace)[1] << ','
-              << (*row.labeledFace)[2] << ";componentCertifiedFace=";
-    if (row.componentSideCertifiedFace.has_value())
-      std::cout << *row.componentSideCertifiedFace;
-    else
-      std::cout << "unavailable";
-    std::cout << ";labeledCertifiedFace=";
-    if (row.labeledSideCertifiedFace.has_value())
-      std::cout << *row.labeledSideCertifiedFace;
-    else
-      std::cout << "unavailable";
-    std::cout << '\n';
-  }
-  EXPECT_EQ(expectedMinorityRows, publishedMinorityRows);
-  EXPECT_TRUE(certifiedFaceDiffersFromSeed);
-
-  std::cout << "m3Cp4c3CA3;examined="
-            << *locus.uncutFaceCertificatePairExaminedCount
-            << ";differing=" << *locus.uncutFaceCertificatePairDifferingCount
-            << ";witnessCount=" << locus.uncutFaceCertificatePairs.size()
-            << ";truncated="
-            << (locus.uncutFaceCertificatePairsTruncated ? "true" : "false")
-            << '\n';
-  std::cout << "m3Cp4c3CA4;observed="
-            << *locus.uncutFaceComponentCertifiedFaceObservationCount
-            << ";unavailable="
-            << *locus.uncutFaceComponentCertifiedFaceUnavailableCount
-            << ";distinct=" << *locus.uncutFaceComponentCertifiedFaceDistinctCount
-            << ";multiset=";
+  std::cout << "m3Cp4c3OwnerMap;sourceFaceCount=" << certificate.sourceFaceCount
+            << ";ownerMapCount=" << certificate.sourceFaceOwners.size()
+            << ";component=" << *locus.uncutFaceComponent
+            << ";componentFaceCount=" << locus.uncutFaceComponentFaceCount
+            << ";certifiedOwners=";
   for (std::size_t index = 0U;
        index < locus.uncutFaceComponentCertifiedFaceMultiset.size(); ++index) {
     if (index != 0U) std::cout << ',';
     const auto &entry = locus.uncutFaceComponentCertifiedFaceMultiset[index];
     std::cout << entry.certifiedFace << ':' << entry.sourceFaceCount;
   }
-  std::cout << ";truncated="
-            << (locus.uncutFaceComponentCertifiedFaceMultisetTruncated ? "true"
-                                                                       : "false")
+  std::cout << ";allEqual="
+            << (*locus.uncutFaceComponentCertifiedFaceDistinctCount == 1U
+                    ? "true"
+                    : "false")
             << '\n';
 }
 
@@ -14098,4 +14043,112 @@ TEST(GlobalTopologyPlan,
   std::cout << "m3Cp4c2X7"
             << ";torusRegionCount=" << torus.plan->regions().size()
             << ";c6RegionsExamined=" << examinedRegions << '\n';
+}
+
+TEST(SurfaceCutGraph,
+     CellularityCertificatePublishesTotalSourceFaceOwnershipOnProductionFixtures) {
+  const std::array<std::pair<const char *, const char *>, 3> fixtures{{
+      {"mechanical_feature", "mechanical feature"},
+      {"torus", "torus"},
+      {"sphere_prescribed", "prescribed sphere"}}};
+  std::size_t publishedTraceSideRows = 0U;
+  for (const auto &[stem, name] : fixtures) {
+    const Cp4cProductionFixture fixture =
+        build_cp4c_pipeline_products_fixture(stem, name);
+    ASSERT_TRUE(fixture.cutGraph.has_value())
+        << name << ':' << fixture.terminalFailureCode << '/'
+        << fixture.terminalFailureDetailCode;
+    const auto &certificate = fixture.cutGraph->certificate();
+    ASSERT_TRUE(certificate.proves_cellularity()) << name;
+    ASSERT_EQ(static_cast<std::size_t>(fixture.mesh.F.rows()),
+              certificate.sourceFaceCount)
+        << name;
+    ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size())
+        << name;
+
+    std::set<std::size_t> certifiedOrbits;
+    for (const auto &face : certificate.faces) certifiedOrbits.insert(face.orbit);
+    for (const auto &owner : certificate.sourceFaceOwners) {
+      ASSERT_FALSE(owner.certifiedFaceOrbits.empty()) << name;
+      if (!owner.trace_crossed()) {
+        EXPECT_EQ(1U, owner.certifiedFaceOrbits.size()) << name;
+      }
+      for (const auto orbit : owner.certifiedFaceOrbits)
+        EXPECT_NE(0U, certifiedOrbits.count(orbit)) << name;
+      for (const auto &side : owner.traceFragmentSides) {
+        ++publishedTraceSideRows;
+        EXPECT_NE(0U, certifiedOrbits.count(side.orbit)) << name;
+        EXPECT_NE(owner.certifiedFaceOrbits.end(),
+                  std::find(owner.certifiedFaceOrbits.begin(),
+                            owner.certifiedFaceOrbits.end(), side.orbit))
+            << name;
+      }
+    }
+    std::cout << "m3Cp4c3OwnerMapFixture;fixture=" << stem
+              << ";sourceFaceCount=" << certificate.sourceFaceCount
+              << ";ownerMapCount=" << certificate.sourceFaceOwners.size()
+              << ";provesCellularity=true\n";
+  }
+  EXPECT_GT(publishedTraceSideRows, 0U)
+      << "the production witness must exercise trace-fragment side ownership";
+}
+
+TEST(SurfaceCutGraph,
+     CellularityCertificateRejectsOwnerOutsideItsCertifiedFaces) {
+  using directional::geometry::SurfaceCutGraphCellularityCertificate;
+  using directional::geometry::SurfaceCutGraphComplexKind;
+  using directional::geometry::SurfaceCutGraphFaceCertificate;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnership;
+
+  SurfaceCutGraphCellularityCertificate certificate;
+  certificate.complex = SurfaceCutGraphComplexKind::ActualEmbeddedGraph;
+  certificate.totalOrbitCount = 1U;
+  certificate.faceCount = 1U;
+  certificate.graphComponentCount = 1U;
+  certificate.sourceComponentCount = 1U;
+  certificate.eulerCharacteristic = 1;
+  certificate.sourceEulerCharacteristic = 1;
+  certificate.faces = {SurfaceCutGraphFaceCertificate{7U, 1U, 4U, true}};
+  certificate.sourceFaceCount = 1U;
+  certificate.sourceFaceOwners = {SurfaceCutGraphSourceFaceOwnership{
+      topology_face(0, 1, 2, 3U), {7U}, {}}};
+  ASSERT_TRUE(certificate.proves_cellularity());
+
+  certificate.sourceFaceOwners.front().certifiedFaceOrbits = {11U};
+  EXPECT_FALSE(certificate.proves_cellularity());
+}
+
+TEST(GlobalTopologyPlan,
+     CertifiedSourceFaceOwnerConsistencyCanRejectConflictingComponentOwners) {
+  using directional::geometry::SurfaceCutGraphCellularityCertificate;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnership;
+  const auto first = topology_face(0, 1, 2, 4U);
+  const auto second = topology_face(0, 2, 3, 4U);
+  directional::geometry::detail::SourceFaceComponentPartition partition;
+  partition.components = {{first, second}};
+  partition.componentByFace = {{first, 0U}, {second, 0U}};
+
+  SurfaceCutGraphCellularityCertificate certificate;
+  certificate.sourceFaceCount = 2U;
+  certificate.sourceFaceOwners = {
+      SurfaceCutGraphSourceFaceOwnership{first, {5U}, {}},
+      SurfaceCutGraphSourceFaceOwnership{second, {13U}, {}}};
+
+  const auto result = directional::geometry::detail::
+      check_certified_source_face_owner_consistency(partition, certificate);
+  ASSERT_FALSE(result.consistent());
+  ASSERT_TRUE(result.firstConflictComponent.has_value());
+  EXPECT_EQ(0U, *result.firstConflictComponent);
+  ASSERT_EQ(1U, result.components.size());
+  EXPECT_EQ((std::map<std::size_t, std::size_t>{{5U, 1U}, {13U, 1U}}),
+            result.components.front().ownerMultiplicity);
+}
+
+TEST(TestFixturePaths, MissingPackageFailsClosedInsteadOfReturningMissingPath) {
+  const std::filesystem::path missing =
+      std::filesystem::temp_directory_path() /
+      "directional-cb27-fixture-root-that-must-not-exist" / "bin";
+  EXPECT_FALSE(directional::tests::find_test_data_root(missing).has_value());
+  EXPECT_THROW((void)directional::tests::require_test_data_root(missing),
+               std::runtime_error);
 }

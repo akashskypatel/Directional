@@ -533,7 +533,8 @@ project_surface_cut_graph_failure_locus(
   if (error.traceEventPositionPass.has_value())
     locus.traceEventPositionPass = geometry::trace_event_position_pass_name(
         *error.traceEventPositionPass);
-  locus.cutCandidateCount = error.cutCandidates.size();
+  if (!error.cutCandidates.empty())
+    locus.cutCandidateCount = error.cutCandidates.size();
   locus.nonDiscComponentCount = error.nonDiscComponentCount;
   locus.remainingAdmissibleEdgeCount = error.remainingAdmissibleEdgeCount;
   locus.certificationAttemptIndex = error.certificationAttemptIndex;

@@ -29,7 +29,8 @@ ROLE = {
     385: ("superseded", "Name is 385; identity count is **388**. See the naming section above."),
     391: ("superseded", "CB23 appends three diagnostic-only witnesses to the frozen 388-identity selector 385."),
     393: ("superseded", "CB24 appends two diagnostic-only projection witnesses to frozen selector 391; CB25 supersedes the vacuous diagnostic contract without changing these bytes."),
-    397: ("**CURRENT GATE**", "CB25 appends four diagnostic-only certificate-source and falsifiability witnesses to frozen selector 393."),
+    397: ("superseded", "CB25 appends four diagnostic-only certificate-source and falsifiability witnesses to frozen selector 393; CB27 retains all 397 bytes unchanged."),
+    401: ("**CURRENT GATE**", "CB27 appends four owner-map, consistency-falsifiability, and fail-closed fixture-path witnesses to frozen selector 397."),
 }
 
 rows = []

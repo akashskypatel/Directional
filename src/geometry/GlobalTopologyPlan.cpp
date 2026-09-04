@@ -7,8 +7,8 @@
 #include <directional/geometry/GlobalTopologyPlan.h>
 
 #include "SourceFaceComponentPartition.h"
+#include "CertifiedSourceFaceOwnerConsistency.h"
 #include "EmbeddedGraphTopology.h"
-#include "GlobalTopologyCertificateDiagnostics.h"
 
 #include <algorithm>
 #include <array>
@@ -373,142 +373,6 @@ void annotate_trace_segment_incidence(
 // Actual embedded-graph arc/rotation/orbit construction is owned by
 // EmbeddedGraphTopology.cpp and consumed here as the single pre-region authority.
 using namespace embedded_graph_topology_detail;
-namespace certificate_diagnostics =
-    ::directional::geometry::global_topology_certificate_diagnostics_detail;
-
-certificate_diagnostics::CertificateFaceProjection
-build_certificate_face_projection(
-    const SourceTopologyIndex &topology,
-    const FieldAlignedCurveNetwork &network, const SurfaceCutGraph &cutGraph,
-    const std::vector<GlobalTopologyArc> &arcs, const FaceWalkResult &walk) {
-  std::set<std::size_t> certificateFaceOrbits;
-  for (const auto &face : cutGraph.certificate().faces) {
-    certificateFaceOrbits.insert(face.orbit);
-  }
-
-  std::vector<authority::SourceFaceTopologyKey> sourceFaces;
-  sourceFaces.reserve(topology.faces.size());
-  for (const auto &[face, record] : topology.faces) {
-    (void)record;
-    sourceFaces.push_back(face);
-  }
-
-  std::set<authority::SourceFaceTopologyKey> traceCutFaces;
-  std::set<authority::SourceEdgeTopologyKey> embeddedGraphSourceEdges;
-  std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>>
-      directCertifiedFaces;
-  certificate_diagnostics::CertifiedFacesBySourceEdgeSide
-      directCertifiedFacesBySourceEdgeSide;
-
-  const auto add_direct = [&](
-      const authority::SourceFaceTopologyKey &face,
-      const std::optional<authority::SourceEdgeTopologyKey> &edge,
-      const std::size_t orbit) {
-    if (certificateFaceOrbits.count(orbit) == 0U) return;
-    directCertifiedFaces[face].insert(orbit);
-    if (edge.has_value()) {
-      directCertifiedFacesBySourceEdgeSide[std::make_pair(face, *edge)]
-          .insert(orbit);
-    }
-  };
-
-  for (const GlobalTopologyArc &arc : arcs) {
-    std::optional<authority::SourceEdgeTopologyKey> graphSourceEdge;
-    if (arc.kind == GlobalTopologyArcKind::Mandatory &&
-        arc.mandatoryEdge.has_value()) {
-      const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
-      if (mandatory != nullptr) graphSourceEdge = mandatory->sourceEdge;
-    } else if (arc.kind == GlobalTopologyArcKind::Cut &&
-               arc.cutEdge.has_value()) {
-      graphSourceEdge = arc.cutEdge;
-    }
-
-    if (graphSourceEdge.has_value()) {
-      embeddedGraphSourceEdges.insert(*graphSourceEdge);
-      const auto incident = topology.incidentFaces.find(*graphSourceEdge);
-      if (incident == topology.incidentFaces.end()) continue;
-      for (const auto &faceKey : incident->second) {
-        const auto face = topology.faces.find(faceKey);
-        if (face == topology.faces.end()) continue;
-        const bool forward =
-            face_orients_edge_forward(face->second, *graphSourceEdge);
-        const std::size_t interiorDart =
-            2U * arc.id.index() + (forward ? 0U : 1U);
-        if (interiorDart >= walk.orbitByDart.size()) continue;
-        add_direct(faceKey, graphSourceEdge, walk.orbitByDart[interiorDart]);
-      }
-      continue;
-    }
-
-    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value())
-      continue;
-    const auto *trace = find_trace(network, *arc.trace);
-    if (trace == nullptr || arc.firstSegment >= arc.onePastLastSegment ||
-        arc.onePastLastSegment > trace->segments.size()) {
-      continue;
-    }
-    const std::size_t forwardDart = dart_index(GlobalTopologyOrientedArc{
-        arc.id, authority::Orientation::Forward});
-    const std::size_t reverseDart = dart_index(GlobalTopologyOrientedArc{
-        arc.id, authority::Orientation::Reverse});
-    if (forwardDart >= walk.orbitByDart.size() ||
-        reverseDart >= walk.orbitByDart.size()) {
-      continue;
-    }
-    const std::size_t forwardOrbit = walk.orbitByDart[forwardDart];
-    const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
-
-    for (std::size_t segmentIndex = arc.firstSegment;
-         segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
-      const auto &segment = trace->segments[segmentIndex];
-      if (is_terminal_slit(*trace, segmentIndex)) continue;
-      const auto faceIt = topology.faces.find(segment.sourceFace);
-      if (faceIt == topology.faces.end()) continue;
-      traceCutFaces.insert(segment.sourceFace);
-      add_direct(segment.sourceFace, std::nullopt, forwardOrbit);
-      add_direct(segment.sourceFace, std::nullopt, reverseOrbit);
-
-      if (segment.incomingCarrier.has_value()) {
-        const auto incoming =
-            local_edge_index(faceIt->second, *segment.incomingCarrier);
-        const auto outgoing =
-            local_edge_index(faceIt->second, segment.outgoingCarrier);
-        if (!incoming.has_value() || !outgoing.has_value() ||
-            *incoming == *outgoing) {
-          continue;
-        }
-        const std::size_t turn = (*outgoing + 3U - *incoming) % 3U;
-        if (turn != 1U && turn != 2U) continue;
-        std::size_t third = 0U;
-        while (third == *incoming || third == *outgoing) ++third;
-        const std::size_t sideOrbit =
-            turn == 1U ? forwardOrbit : reverseOrbit;
-        add_direct(segment.sourceFace, faceIt->second.edges[third], sideOrbit);
-        continue;
-      }
-
-      const auto binding = resolve_carrierless_corner_binding(
-          faceIt->second, *trace, segmentIndex, segment);
-      const auto outgoing =
-          local_edge_index(faceIt->second, segment.outgoingCarrier);
-      if (!binding.has_value() || !outgoing.has_value() ||
-          *outgoing != (binding->sourceCorner + 1U) % 3U) {
-        continue;
-      }
-      const auto forwardEdge =
-          faceIt->second.edges[(binding->sourceCorner + 2U) % 3U];
-      const auto reverseEdge = faceIt->second.edges[binding->sourceCorner];
-      add_direct(segment.sourceFace, forwardEdge, forwardOrbit);
-      add_direct(segment.sourceFace, reverseEdge, reverseOrbit);
-    }
-  }
-
-  return certificate_diagnostics::resolve_certificate_face_projection(
-      sourceFaces, topology.incidentFaces, traceCutFaces,
-      embeddedGraphSourceEdges, directCertifiedFaces,
-      directCertifiedFacesBySourceEdgeSide, certificateFaceOrbits);
-}
-
 std::optional<std::size_t> region_orbit(
     const GlobalTopologyRegion &region, const FaceWalkResult &walk) {
   std::optional<std::size_t> result;
@@ -1232,268 +1096,59 @@ RegionBuildResult build_regions(
     }
   }
 
-  // Uncrossed faces that are not themselves boundary evidence have one
-  // fragment. Resolve only the equivalence induced by source edges untouched
-  // by the embedded network. Union-find is used as an order-independent
-  // equality constraint; ownership still comes exclusively from a unique
-  // neighboring dart-orbit seed. No BFS, distance, proximity, A0 identity, or
-  // arbitrary unclaimed-face fallback participates.
+  // Source-face ownership is certified by SurfaceCutGraph. GlobalTopologyPlan
+  // consumes that total map directly; it does not reconstruct ownership from
+  // component seeds. The component partition remains only as a consistency
+  // guard that verifies one certified owner per uncut component.
   std::vector<authority::SourceFaceTopologyKey> unlabeledFaces;
-  std::map<authority::SourceFaceTopologyKey, std::size_t> unlabeledIndex;
   for (const auto &[faceKey, record] : topology.faces) {
     (void)record;
     const auto found = fragmentOrbits.find(faceKey);
     if (found != fragmentOrbits.end() && !found->second.empty()) continue;
-    unlabeledIndex.emplace(faceKey, unlabeledFaces.size());
     unlabeledFaces.push_back(faceKey);
   }
+
+  for (const auto &face : unlabeledFaces) {
+    const auto *owner = cutGraph.certificate().find_source_face_owner(face);
+    if (owner == nullptr || owner->trace_crossed() ||
+        owner->certifiedFaceOrbits.size() != 1U) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::SourceFaceFragmentOrbitMissing);
+      failure.sourceFace = face;
+      return failure;
+    }
+    fragmentOrbits[face].insert(owner->certifiedFaceOrbits.front());
+  }
+
   std::set<authority::SourceEdgeTopologyKey> componentBarriers = mandatoryEdges;
   componentBarriers.insert(traceTouchedEdges.begin(), traceTouchedEdges.end());
   componentBarriers.insert(cutEdges.begin(), cutEdges.end());
   const auto componentPartition = detail::build_source_face_component_partition(
       unlabeledFaces, topology.incidentFaces, componentBarriers);
-  const auto certificateFaceProjection = build_certificate_face_projection(
-      topology, network, cutGraph, arcs, walk);
-
-  std::map<std::size_t, std::set<std::size_t>> seedOrbits;
-  for (const auto &[edge, incident] : topology.incidentFaces) {
-    if (incident.size() != 2U || mandatoryEdges.count(edge) != 0U || cutEdges.count(edge) != 0U ||
-        traceTouchedEdges.count(edge) != 0U) {
-      continue;
-    }
-    for (std::size_t side = 0U; side < 2U; ++side) {
-      const auto unlabeled = unlabeledIndex.find(incident[side]);
-      if (unlabeled == unlabeledIndex.end()) continue;
-      const auto &labeledFace = incident[side ^ 1U];
-      const auto labeled = fragmentOrbits.find(labeledFace);
-      if (labeled == fragmentOrbits.end() || labeled->second.empty()) continue;
-
-      std::optional<std::size_t> seed;
-      if (labeled->second.size() == 1U) {
-        seed = *labeled->second.begin();
-      } else {
-        const auto edgeEvidence =
-            edgeOrbitEvidence.find(std::make_pair(labeledFace, edge));
-        if (edgeEvidence != edgeOrbitEvidence.end() &&
-            edgeEvidence->second.size() == 1U) {
-          seed = *edgeEvidence->second.begin();
-        }
-      }
-      if (seed.has_value()) {
-        const auto component = componentPartition.componentByFace.find(incident[side]);
-        if (component == componentPartition.componentByFace.end()) {
-          return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
-        }
-        seedOrbits[component->second].insert(*seed);
-      }
-    }
-  }
-
-  const auto component_seed_state = [&](const std::size_t component) {
-    const auto seeds = seedOrbits.find(component);
-    const std::size_t count =
-        seeds == seedOrbits.end() ? 0U : seeds->second.size();
-    if (count == 0U) return UncutFaceComponentSeedState::None;
-    if (count == 1U) return UncutFaceComponentSeedState::Unique;
-    return UncutFaceComponentSeedState::Multiple;
-  };
-  const auto component_barrier_class = [&](
-      const authority::SourceEdgeTopologyKey &edge) {
-    if (mandatoryEdges.count(edge) != 0U)
-      return UncutFaceComponentBarrierClass::Mandatory;
-    if (cutEdges.count(edge) != 0U)
-      return UncutFaceComponentBarrierClass::Cut;
-    if (traceTouchedEdges.count(edge) != 0U)
-      return UncutFaceComponentBarrierClass::TraceTouched;
-    return UncutFaceComponentBarrierClass::None;
-  };
-  const auto component_boundary_evidence = [&](const std::size_t component) {
-    std::vector<UncutFaceComponentBoundaryEdgeDiagnostic> allRows;
-    std::map<std::size_t, std::size_t> orbitBoundaryEdgeCounts;
-    for (const auto &[edge, incident] : topology.incidentFaces) {
-      std::optional<std::size_t> componentSide;
-      for (std::size_t side = 0U; side < incident.size(); ++side) {
-        const auto found = componentPartition.componentByFace.find(incident[side]);
-        if (found != componentPartition.componentByFace.end() &&
-            found->second == component) {
-          if (componentSide.has_value()) {
-            componentSide.reset();
-            break;
-          }
-          componentSide = side;
-        }
-      }
-      if (!componentSide.has_value()) continue;
-
-      bool otherInComponent = false;
-      for (std::size_t side = 0U; side < incident.size(); ++side) {
-        if (side == *componentSide) continue;
-        const auto found = componentPartition.componentByFace.find(incident[side]);
-        if (found != componentPartition.componentByFace.end() &&
-            found->second == component) {
-          otherInComponent = true;
-          break;
-        }
-      }
-      if (otherInComponent) continue;
-
-      UncutFaceComponentBoundaryEdgeDiagnostic row{edge};
-      row.componentFace = incident[*componentSide];
-      row.barrierClass = component_barrier_class(edge);
-
-      if (incident.size() != 2U) {
-        row.noSeedReason =
-            UncutFaceComponentNoSeedReason::IncidentFaceCountNotTwo;
-      } else {
-        const auto &otherFace = incident[*componentSide ^ 1U];
-        row.labeledFace = otherFace;
-        const auto labeled = fragmentOrbits.find(otherFace);
-        row.otherSideLabeled =
-            unlabeledIndex.find(otherFace) == unlabeledIndex.end();
-        row.labeledFaceOwnerCount =
-            labeled == fragmentOrbits.end() ? 0U : labeled->second.size();
-        const auto edgeEvidence =
-            edgeOrbitEvidence.find(std::make_pair(otherFace, edge));
-        if (edgeEvidence != edgeOrbitEvidence.end()) {
-          for (const std::size_t orbit : edgeEvidence->second)
-            ++orbitBoundaryEdgeCounts[orbit];
-        } else if (labeled != fragmentOrbits.end() &&
-                   labeled->second.size() == 1U) {
-          ++orbitBoundaryEdgeCounts[*labeled->second.begin()];
-        }
-
-        row.componentSideCertifiedFace =
-            certificate_diagnostics::certified_face_on_source_edge_side(
-                certificateFaceProjection, row.componentFace.value(), edge);
-        row.labeledSideCertifiedFace =
-            certificate_diagnostics::certified_face_on_source_edge_side(
-                certificateFaceProjection, otherFace, edge);
-
-        if (row.barrierClass != UncutFaceComponentBarrierClass::None) {
-          row.noSeedReason = UncutFaceComponentNoSeedReason::Barrier;
-        } else if (!row.otherSideLabeled) {
-          row.noSeedReason =
-              UncutFaceComponentNoSeedReason::OtherSideUnlabeled;
-        } else if (labeled == fragmentOrbits.end() || labeled->second.empty()) {
-          row.noSeedReason =
-              UncutFaceComponentNoSeedReason::LabeledFaceHasNoOwner;
-        } else if (labeled->second.size() == 1U) {
-          row.contributedSeed = *labeled->second.begin();
-          row.seedRule = UncutFaceComponentSeedRule::SingleFaceOwner;
-        } else {
-          if (edgeEvidence == edgeOrbitEvidence.end()) {
-            row.noSeedReason =
-                UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceMissing;
-          } else if (edgeEvidence->second.size() != 1U) {
-            row.noSeedReason =
-                UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique;
-          } else {
-            row.contributedSeed = *edgeEvidence->second.begin();
-            row.seedRule = UncutFaceComponentSeedRule::EdgeOrbitEvidence;
-          }
-        }
-      }
-
-      allRows.push_back(std::move(row));
-    }
-
-    std::size_t modalCount = 0U;
-    for (const auto &[orbit, count] : orbitBoundaryEdgeCounts) {
-      (void)orbit;
-      modalCount = std::max(modalCount, count);
-    }
-    for (auto &row : allRows) {
-      if (!row.contributedSeed.has_value()) continue;
-      const auto found = orbitBoundaryEdgeCounts.find(*row.contributedSeed);
-      row.minoritySeedOrbit =
-          found != orbitBoundaryEdgeCounts.end() && found->second < modalCount;
-    }
-
-    // Retention is diagnostic-only. Preserve representatives by semantic
-    // distinctness before using the remaining budget for source-edge order.
-    std::vector<bool> retain(allRows.size(), false);
-    std::size_t retained = 0U;
-    std::set<std::size_t> retainedSeedOrbits;
-    std::set<UncutFaceComponentNoSeedReason> retainedNoSeedReasons;
-    const auto retain_index = [&](const std::size_t index) {
-      if (index >= allRows.size() || retain[index] ||
-          retained >= kUncutComponentBoundaryEvidenceLimit) {
-        return;
-      }
-      retain[index] = true;
-      ++retained;
-    };
-    for (std::size_t index = 0U; index < allRows.size(); ++index) {
-      const auto &row = allRows[index];
-      if (row.contributedSeed.has_value() &&
-          retainedSeedOrbits.insert(*row.contributedSeed).second) {
-        retain_index(index);
-      }
-    }
-    for (std::size_t index = 0U; index < allRows.size(); ++index) {
-      const auto &row = allRows[index];
-      if (row.noSeedReason.has_value() &&
-          retainedNoSeedReasons.insert(*row.noSeedReason).second) {
-        retain_index(index);
-      }
-    }
-    for (std::size_t index = 0U; index < allRows.size(); ++index) {
-      if (allRows[index].minoritySeedOrbit) retain_index(index);
-    }
-    for (std::size_t index = 0U; index < allRows.size(); ++index) {
-      retain_index(index);
-    }
-
-    std::vector<UncutFaceComponentBoundaryEdgeDiagnostic> rows;
-    rows.reserve(retained);
-    for (std::size_t index = 0U; index < allRows.size(); ++index) {
-      if (retain[index]) rows.push_back(std::move(allRows[index]));
-    }
-    return std::make_tuple(std::move(rows), allRows.size(),
-                           std::move(orbitBoundaryEdgeCounts));
-  };
-
-  const auto certificate_pair_evidence = [&]() {
-    const std::set<authority::SourceFaceTopologyKey> uncutFaces(
-        unlabeledFaces.begin(), unlabeledFaces.end());
-    const auto measured =
-        certificate_diagnostics::measure_uncut_certificate_pairs(
-            topology.incidentFaces, uncutFaces, componentBarriers,
-            certificateFaceProjection.certifiedFaceBySourceFace,
-            kUncutComponentBoundaryEvidenceLimit);
-    std::vector<UncutFaceCertificatePairDiagnostic> rows;
-    rows.reserve(measured.pairs.size());
-    for (const auto &pair : measured.pairs) {
-      rows.push_back(UncutFaceCertificatePairDiagnostic{
-          pair.sourceEdge, pair.firstFace, pair.secondFace,
-          pair.firstCertifiedFace, pair.secondCertifiedFace});
-    }
-    return std::make_tuple(std::move(rows), measured.examinedPairCount,
-                           measured.differingPairCount, measured.truncated);
-  };
-
+  const auto ownerConsistency = detail::check_certified_source_face_owner_consistency(
+      componentPartition, cutGraph.certificate());
 
   if (ownerEvidence != nullptr) {
-    ownerEvidence->componentCount = componentPartition.components.size();
-    for (std::size_t component = 0U;
-         component < componentPartition.components.size(); ++component) {
+    ownerEvidence->componentCount = ownerConsistency.components.size();
+    for (const auto &component : ownerConsistency.components) {
       if (ownerEvidence->components.size() >=
           kFragmentOwnerCensusEvidenceLimit) {
         break;
       }
       UncutFaceComponentSeedCensusDiagnostic row;
-      row.component = component;
-      row.faceCount = componentPartition.components[component].size();
-      const auto seeds = seedOrbits.find(component);
-      row.seedCount = seeds == seedOrbits.end() ? 0U : seeds->second.size();
-      row.seedState = component_seed_state(component);
-      row.seedOrbitCount = row.seedCount;
-      if (seeds != seedOrbits.end()) {
-        for (const std::size_t seed : seeds->second) {
-          if (row.seedOrbitIds.size() >= kUncutComponentSeedEvidenceLimit)
-            break;
-          row.seedOrbitIds.push_back(seed);
-        }
+      row.component = component.component;
+      row.faceCount = component.faces.size();
+      row.seedCount = component.ownerMultiplicity.size();
+      row.seedState = row.seedCount == 0U
+                          ? UncutFaceComponentSeedState::None
+                          : row.seedCount == 1U
+                                ? UncutFaceComponentSeedState::Unique
+                                : UncutFaceComponentSeedState::Multiple;
+      row.seedOrbitCount = component.ownerMultiplicity.size();
+      for (const auto &[owner, count] : component.ownerMultiplicity) {
+        (void)count;
+        if (row.seedOrbitIds.size() >= kUncutComponentSeedEvidenceLimit) break;
+        row.seedOrbitIds.push_back(owner);
       }
       row.seedOrbitsTruncated = row.seedOrbitCount > row.seedOrbitIds.size();
       ownerEvidence->components.push_back(std::move(row));
@@ -1502,104 +1157,57 @@ RegionBuildResult build_regions(
         ownerEvidence->componentCount > ownerEvidence->components.size();
   }
 
-  for (std::size_t index = 0U; index < unlabeledFaces.size(); ++index) {
-    const auto component =
-        componentPartition.componentByFace.find(unlabeledFaces[index]);
-    if (component == componentPartition.componentByFace.end()) {
-      return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+  if (!ownerConsistency.consistent()) {
+    const std::size_t component = *ownerConsistency.firstConflictComponent;
+    const auto &row = ownerConsistency.components[component];
+    GlobalTopologyPlanError failure =
+        error(GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique);
+    failure.sourceFace = row.invalidFace.has_value()
+                             ? *row.invalidFace
+                             : row.faces.front();
+    failure.sourceFaceLocusKind =
+        UncutFaceSourceFaceLocusKind::FirstUnlabeledFaceInIterationOrder;
+    failure.uncutFaceComponent = component;
+    failure.uncutFaceComponentSeedCount = row.ownerMultiplicity.size();
+    failure.uncutFaceComponentSeedState =
+        row.ownerMultiplicity.empty()
+            ? UncutFaceComponentSeedState::None
+            : row.ownerMultiplicity.size() == 1U
+                  ? UncutFaceComponentSeedState::Unique
+                  : UncutFaceComponentSeedState::Multiple;
+    failure.uncutFaceComponentFaceCount = row.faces.size();
+    for (const auto &face : row.faces) {
+      if (failure.uncutFaceComponentFaces.size() >=
+          kUncutComponentFaceEvidenceLimit) {
+        break;
+      }
+      failure.uncutFaceComponentFaces.push_back(face);
     }
-    const auto seeds = seedOrbits.find(component->second);
-    if (seeds == seedOrbits.end() || seeds->second.size() != 1U) {
-      GlobalTopologyPlanError failure =
-          error(GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique);
-      failure.sourceFace = unlabeledFaces[index];
-      failure.sourceFaceLocusKind =
-          UncutFaceSourceFaceLocusKind::FirstUnlabeledFaceInIterationOrder;
-      failure.uncutFaceComponent = component->second;
-      failure.uncutFaceComponentSeedCount =
-          seeds == seedOrbits.end() ? 0U : seeds->second.size();
-      failure.uncutFaceComponentSeedState =
-          component_seed_state(component->second);
-      const auto &componentFaces =
-          componentPartition.components[component->second];
-      failure.uncutFaceComponentFaceCount = componentFaces.size();
-      for (const auto &face : componentFaces) {
-        if (failure.uncutFaceComponentFaces.size() >=
-            kUncutComponentFaceEvidenceLimit) {
-          break;
-        }
-        failure.uncutFaceComponentFaces.push_back(face);
-      }
-      failure.uncutFaceComponentFacesTruncated =
-          failure.uncutFaceComponentFaceCount >
-          failure.uncutFaceComponentFaces.size();
-      auto [boundaryRows, boundaryRowCount, boundaryOrbitCounts] =
-          component_boundary_evidence(component->second);
-      failure.uncutFaceComponentBoundaryEdgeCount = boundaryRowCount;
-      failure.uncutFaceComponentBoundaryEdges = std::move(boundaryRows);
-      failure.uncutFaceComponentBoundaryEdgesTruncated =
-          boundaryRowCount > failure.uncutFaceComponentBoundaryEdges.size();
-      failure.uncutFaceComponentBoundaryOrbitCount =
-          boundaryOrbitCounts.size();
-      for (const auto &[orbit, boundaryEdgeCount] : boundaryOrbitCounts) {
-        if (failure.uncutFaceComponentBoundaryOrbits.size() >=
-            kUncutComponentSeedEvidenceLimit) {
-          break;
-        }
-        failure.uncutFaceComponentBoundaryOrbits.push_back(
-            UncutFaceComponentBoundaryOrbitDiagnostic{orbit,
-                                                       boundaryEdgeCount});
-      }
-      failure.uncutFaceComponentBoundaryOrbitsTruncated =
-          failure.uncutFaceComponentBoundaryOrbitCount >
-          failure.uncutFaceComponentBoundaryOrbits.size();
-      auto [certificatePairRows, certificatePairExaminedCount,
-            certificatePairDifferingCount, certificatePairsTruncated] =
-          certificate_pair_evidence();
-      failure.uncutFaceCertificatePairExaminedCount =
-          certificatePairExaminedCount;
-      failure.uncutFaceCertificatePairDifferingCount =
-          certificatePairDifferingCount;
-      failure.uncutFaceCertificatePairs = std::move(certificatePairRows);
-      failure.uncutFaceCertificatePairsTruncated = certificatePairsTruncated;
-
-      std::map<std::size_t, std::size_t> certifiedFaceMultiplicity;
-      std::size_t certifiedFaceObservationCount = 0U;
-      std::size_t certifiedFaceUnavailableCount = 0U;
-      for (const auto &face : componentFaces) {
-        const auto certified =
-            certificateFaceProjection.certifiedFaceBySourceFace.find(face);
-        if (certified ==
-                certificateFaceProjection.certifiedFaceBySourceFace.end() ||
-            !certified->second.has_value()) {
-          ++certifiedFaceUnavailableCount;
-          continue;
-        }
-        ++certifiedFaceObservationCount;
-        ++certifiedFaceMultiplicity[*certified->second];
-      }
-      failure.uncutFaceComponentCertifiedFaceObservationCount =
-          certifiedFaceObservationCount;
-      failure.uncutFaceComponentCertifiedFaceUnavailableCount =
-          certifiedFaceUnavailableCount;
-      failure.uncutFaceComponentCertifiedFaceDistinctCount =
-          certifiedFaceMultiplicity.size();
-      for (const auto &[certifiedFace, sourceFaceCount] :
-           certifiedFaceMultiplicity) {
-        if (failure.uncutFaceComponentCertifiedFaceMultiset.size() >=
-            kUncutComponentSeedEvidenceLimit) {
-          break;
-        }
-        failure.uncutFaceComponentCertifiedFaceMultiset.push_back(
-            UncutFaceComponentCertifiedFaceMultiplicityDiagnostic{
-                certifiedFace, sourceFaceCount});
-      }
-      failure.uncutFaceComponentCertifiedFaceMultisetTruncated =
-          certifiedFaceMultiplicity.size() >
-          failure.uncutFaceComponentCertifiedFaceMultiset.size();
-      return failure;
+    failure.uncutFaceComponentFacesTruncated =
+        row.faces.size() > failure.uncutFaceComponentFaces.size();
+    std::size_t observationCount = 0U;
+    for (const auto &[owner, multiplicity] : row.ownerMultiplicity) {
+      (void)owner;
+      observationCount += multiplicity;
     }
-    fragmentOrbits[unlabeledFaces[index]].insert(*seeds->second.begin());
+    failure.uncutFaceComponentCertifiedFaceObservationCount = observationCount;
+    failure.uncutFaceComponentCertifiedFaceUnavailableCount =
+        row.faces.size() - observationCount;
+    failure.uncutFaceComponentCertifiedFaceDistinctCount =
+        row.ownerMultiplicity.size();
+    for (const auto &[owner, multiplicity] : row.ownerMultiplicity) {
+      if (failure.uncutFaceComponentCertifiedFaceMultiset.size() >=
+          kUncutComponentSeedEvidenceLimit) {
+        break;
+      }
+      failure.uncutFaceComponentCertifiedFaceMultiset.push_back(
+          UncutFaceComponentCertifiedFaceMultiplicityDiagnostic{owner,
+                                                                 multiplicity});
+    }
+    failure.uncutFaceComponentCertifiedFaceMultisetTruncated =
+        row.ownerMultiplicity.size() >
+        failure.uncutFaceComponentCertifiedFaceMultiset.size();
+    return failure;
   }
 
   std::vector<std::vector<authority::SourceFaceTopologyKey>> owned(drafts.size());
