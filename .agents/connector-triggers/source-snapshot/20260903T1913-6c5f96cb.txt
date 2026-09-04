@@ -1,2 +1,0 @@
-semantic_source_sha=6c5f96cb030813f416457419b8e930b43243ee60
-purpose=start-of-turn-source-snapshot
