@@ -1,4 +1,4 @@
-## M3-CP4c3-TB25-ORCH-01 — historical-harness selector insertion anchor mismatches extracted indentation — **CONTROL FIX PROVED / AWAITING RE-EXECUTION / NON-STABLE**
+## M3-CP4c3-TB25-ORCH-01 — historical-harness selector insertion anchor mismatches extracted indentation — **CLOSED / CONTROL FIX RUNTIME PROVED / NON-STABLE**
 
 - **Invalid attempt:** `M3-CP4c-3-TB25-EXEC` run/job `33910913448 / 101146905061`. Workflow schema validation
   succeeded; materialization then failed with exact message `selector injection point missing`; runtime was skipped,
@@ -20,9 +20,37 @@
   byte changed and no semantic ledger was produced. Stable totals remain **44 events / 14 categories / 30
   recurrences**; produced-witness debt **5**; semantic M3 packages **90**. Latest semantic runtime remains TB24 at
   389 PASS / 12 RED, accepted 365/365.
-- **Closure condition:** `M3-CP4c-3-TB25-R1` closes this candidate only after corrected preflight succeeds and the
-  unchanged 403-identity gate starts at ordinal 1. A pre-runtime failure remains orchestration-invalid; a semantic RED
-  routes to independent review.
+- **Runtime closure:** `M3-CP4c-3-TB25-R1` run/job `33919389753 / 101173990222` passed corrected preflight,
+  started the unchanged gate at ordinal 1 and completed all 403 fresh processes. Result/log artifacts
+  `9954531868 / 9954532357`, SHA-256
+  `e3b2ac7a9df5afabfd844450059b33f26fff040d0f1632e523bc7aa085e06cd0` /
+  `412c86f35906482bd9b36f646306a1267f5e13dad16d11986a3993d93a762fc4`. The control defect is therefore
+  runtime-proved closed. It remains non-stable and contributes **+0** stable events/recurrences.
+
+
+## M3-CP4c3-TB25-R1 — valid semantic runtime — **CURRENT RUNTIME AUTHORITY / FACTUAL / REVIEW PENDING**
+
+- **Authority:** source `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`, immutable package `9950303110`; formal
+  run/job `33919389753 / 101173990222`; result `9954531868`
+  (`e3b2ac7a9df5afabfd844450059b33f26fff040d0f1632e523bc7aa085e06cd0`); log `9954532357`
+  (`412c86f35906482bd9b36f646306a1267f5e13dad16d11986a3993d93a762fc4`).
+- **Gate:** selector 403 completed in 403 fresh processes, **393 PASS / 10 RED**; accepted **1–365 = 365/365**;
+  RED `[366,367,368,369,370,374,389,390,393,398]`; ledger SHA-256
+  `bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`.
+- **Runtime transitions versus TB24:** 384 and 385 change RED → PASS; the other ten TB24 REDs remain RED;
+  371/372/391/392/397/399/400/401 remain PASS; new 402/403 PASS. No accepted-green loss.
+- **Ownership discriminator facts:** ordinal 385 publishes `sourceFaceCount=300`, `established=74`,
+  `unavailable=226`, `conflicting=0`, `conflictCensusPublished=true`, `conflictRowCount=0`. Ordinal 402 PASS
+  independently records the production conflict census as published with `rowCount=0`; ordinal 403 PASS proves the
+  bounded non-barrier differing-owner row contract. Ordinals 366/367 report component 0 with 191 faces,
+  certified observations 0, unavailable 191, distinct 0, seed state `None`. EXEC assigns no branch conclusion.
+- **Remaining RED facts:** 389/393/398 fail with `proves_cellularity()==false`; 390 also observes certified-face
+  distinct count 0. 368/369/370/374 remain their carried upstream/contract surfaces.
+- **Immutability:** package/source/execution-view pre/post censuses equal; all prohibited-operation flags false;
+  `orchestration_failure=false`; runtime completed.
+- **Accounting:** frozen by the Test + Benchmark boundary pending independent review: **44 events / 14 categories /
+  30 recurrences**, debt **5**, packages **90**. Exact owner: `M3-CP4c-3-TB25-REV`.
+
 
 ## M3-CP4c3-TB24-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
@@ -107,7 +135,7 @@
   expected RED. **CB28 measures; it does not correct** — no barrier may be added and no attribution rule changed
   before CH8 reports.
 
-## M3-CP4c3-TB24-EXEC — valid semantic runtime — **CURRENT RUNTIME AUTHORITY / FACTUAL / REVIEW PENDING**
+## M3-CP4c3-TB24-EXEC — valid semantic runtime — **SUPERSEDED RUNTIME AUTHORITY / FACTUAL / REVIEWED**
 
 - **Authority:** source `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`, immutable package `9935929108`; formal run/job
   `33891467611 / 101083954177`; result `9944102469` (`0c72806d...125898f6c`); log `9944102936`

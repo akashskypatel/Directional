@@ -26,37 +26,40 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB25-R1` (fresh immutable artifact-only re-execution)
+## Current focus — `M3-CP4c-3-TB25-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB29` is **COMPLETE / CONTROL PROOF GREEN / RUNTIME NOT EXECUTED / SEMANTIC AUTHORITY UNCHANGED**.
-It corrected only `M3-CP4c3-TB25-ORCH-01`; no product/test/fixture/selector/package byte changed and no Directional
-runtime ran.
+`M3-CP4c-3-TB25-R1` is **COMPLETE / VALID IMMUTABLE SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**.
 
-CB29 proof run/job `33915621191 / 101162027243` succeeded. Result/log artifacts:
-`9953038617 / 9953039237` (`f1216938b3d543d4d3fcb498279b1ce432feac008ec240afbf9ae18b1fbe31cf` /
-`5c2a3900e7d225e52651ced15edf6be0a0c320caf4c76aa247f06ec04dc17ac9`). The directly verifiable materialized
-TB25 harness has SHA-256 `13ec524fa0fe609949b147ab36bf710392244b8202684ece2eea10eb5c83e0e9`; package authority and selector
-365→403 / 401→403 exact-prefix checks passed with `runtime_started=false` and `directional_runtime_invocations=0`.
+Formal run/job `33919389753 / 101173990222` consumed immutable artifact `9950303110` at semantic source
+`3d7f7f9a3afad3ed37fc615a206801cf6310f4ac` and selector 403. Result/log artifacts:
+`9954531868 / 9954532357` (`e3b2ac7a9df5afabfd844450059b33f26fff040d0f1632e523bc7aa085e06cd0` /
+`412c86f35906482bd9b36f646306a1267f5e13dad16d11986a3993d93a762fc4`).
 
-The first TB25 attempt remains invalid provenance at run/job `33910913448 / 101146905061`, result/log
-`9951314815 / 9951315281`, **0/403** identities executed. `M3-CP4c3-TB25-ORCH-01` is now **CONTROL FIX PROVED /
-AWAITING RE-EXECUTION / NON-STABLE** and is not closed until a fresh TB25 run reaches the unchanged gate from ordinal 1.
+The 403 fresh-process ledger is **393 PASS / 10 RED**, accepted **365/365 PASS**. RED ordinals:
+**366, 367, 368, 369, 370, 374, 389, 390, 393, 398**. Relative to TB24, 384 and 385 recover RED → PASS;
+new 402/403 PASS. Package/source/execution-view censuses are equal and every prohibited-operation flag is false.
 
-TB24 remains semantic runtime authority at **389 PASS / 12 RED**, accepted **365/365**. Stable totals remain
-**44 events / 14 categories / 30 recurrences**, debt **5**; semantic M3 package count **90**. Immutable CB28 artifact
-`9950303110` and selector 403 remain the runtime candidate; CP4c-3 remains OPEN.
+Production ownership evidence is now explicit: source faces **300 = 74 established + 226 unavailable + 0 conflicting**;
+the certified-owner conflict census is published with **0 rows**. Component 0 reports 191 faces with 0 certified
+observations, 191 unavailable, 0 distinct. EXEC records those facts only.
+
+`M3-CP4c3-TB25-ORCH-01` is **CLOSED / CONTROL FIX RUNTIME PROVED / NON-STABLE**. The first invalid TB25 attempt
+remains separate 0/403 provenance.
+
+Stable accounting remains frozen at **44 events / 14 categories / 30 recurrences**, debt **5**, semantic M3 package
+count **90**, pending review.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB25-R1`** under the unchanged frozen TB25 plan:
+Run **`M3-CP4c-3-TB25-REV`**:
 
-- [ ] reuse immutable artifact `9950303110`, source `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`, selector 403;
-- [ ] reuse the CB29-proved pre-runtime representation and verify the exact harness SHA above;
-- [ ] verify package, GMP, selector 365/401/403 hashes/counts/prefixes before runtime;
-- [ ] execute all 403 selector identities exactly once, each in a fresh process, with every mutation flag false;
-- [ ] do not rebuild, configure, relink, repackage, repair modes, mutate source/tests/fixtures/selectors, or replace the package;
-- [ ] preserve the first invalid attempt separately from the fresh semantic ledger;
-- [ ] if semantic RED, route to independent `TB25-R1-REV`; if orchestration fails before semantic measurement, follow the orchestration-failure edge.
+- [ ] independent REVIEW + PLAN only; no Directional runtime, compile, package repair, product/test/fixture/selector mutation;
+- [ ] adjudicate all 10 RED surfaces and the factual 384/385 recoveries;
+- [ ] adjudicate the zero production conflict-row census together with 226 unavailable source faces and the component-0 evidence;
+- [ ] update stable regression accounting only when justified by review;
+- [ ] update `ORIENTATION.md`;
+- [ ] perform mandatory REVIEW document consolidation and repair live citations;
+- [ ] authorize at most one bounded successor.
 
 ## Carried forward from M1
 
@@ -94,8 +97,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open; **TB24 is the latest valid semantic runtime** at 389 PASS / 12 RED, accepted 365/365,
-  selector403/package90 prepared by compile-green CB28; CB29 proved the corrected pre-runtime control with zero Directional runtime. Exact next: **`M3-CP4c-3-TB25-R1`**.
+  CP4c-3 remains open; **TB25-R1 is the latest valid semantic runtime** at 393 PASS / 10 RED, accepted 365/365.
+  Selector403/package90 remain immutable; exact next: **`M3-CP4c-3-TB25-REV`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -106,7 +109,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 source-face ownership derivation:** TB24-REV proved the RED is an **ordering defect** — the certifier returns an error instead of a certificate, so the owner map, the consumer's census and D3 are all unreachable, and the relocated derivation reproduces the pre-CB27 answer (component 0, orbits `[0,1,3]`, locus `(0,1,2)`) because relocation added no information. `M3-CP4c3-TB21-CAND-01` stays UNADJUDICATED. CB28 compiled the discriminator; TB25 owns evidence and TB25-REV adjudication.
+- [ ] **CP4c-3 source-face ownership derivation:** TB25-R1 now measures the CB28 discriminator: 300 source faces, 74 established, 226 unavailable, 0 conflicting; production conflict census published with 0 rows; component 0 has 191/191 certified owners unavailable. Ordinals 384/385 recover PASS while 389/390/393/398 remain RED. `M3-CP4c3-TB21-CAND-01` is REVIEW PENDING; TB25-REV owns interpretation.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -134,4 +137,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB24-REV`. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **90**. **TB24 remains the latest semantic runtime authority at 389 PASS / 12 RED, accepted 365/365.** CB28 artifact `9950303110` remains prepared for selector 403. CB29 proved the corrected pre-runtime harness/package authority with zero Directional runtime; exact next is `M3-CP4c-3-TB25-R1`. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, pending `M3-CP4c-3-TB25-REV`. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **90**. **TB25-R1 is the latest semantic runtime authority at 393 PASS / 10 RED, accepted 365/365.** Immutable CB28 artifact `9950303110` remains unchanged. Exact next is `M3-CP4c-3-TB25-REV`. PR #8 remains open, draft, and unmerged.

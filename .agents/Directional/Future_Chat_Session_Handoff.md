@@ -116,74 +116,94 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB25-R1` — EXACT NEXT / fresh immutable artifact-only runtime
+## Mandatory next turn — `M3-CP4c-3-TB25-REV` — EXACT NEXT / independent REVIEW + PLAN only
 
-`M3-CP4c-3-CB29` is **COMPLETE / CONTROL PROOF GREEN / RUNTIME NOT EXECUTED / SEMANTIC AUTHORITY UNCHANGED**.
-It corrected only the pre-runtime harness representation that invalidated the first TB25 attempt. Product source,
-tests, fixtures, selectors, build semantics, and immutable package bytes are unchanged.
+`M3-CP4c-3-TB25-R1` is **COMPLETE / VALID IMMUTABLE SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**.
+It is now the latest semantic runtime authority. CP4c-3 remains **OPEN**.
 
-### Invalid first TB25 attempt remains provenance
+### Immutable TB25-R1 runtime authority
 
-- run/job `33910913448 / 101146905061`; schema validation succeeded;
-- exact failure `selector injection point missing` during harness materialization;
-- runtime step skipped; 0/403 identities executed; `ledger_available=false`;
-- result/log artifacts `9951314815 / 9951315281`;
-- tracker owner `M3-CP4c3-TB25-ORCH-01`, non-stable and +0 accounting.
-
-### CB29 correction authority
-
-CB29 removed the indentation-sensitive selector insertion entirely. The TB24-proven shell body is now transformed
-into a directly syntax-verifiable standalone TB25 harness, while accepted selector-365 and selector-401 prefix
-authority are verified separately against immutable selector 403 before runtime.
-
-- proof run/job: `33915621191 / 101162027243`, SUCCESS;
-- proof result artifact: `9953038617`, SHA-256
-  `f1216938b3d543d4d3fcb498279b1ce432feac008ec240afbf9ae18b1fbe31cf`;
-- proof log artifact: `9953039237`, SHA-256
-  `5c2a3900e7d225e52651ced15edf6be0a0c320caf4c76aa247f06ec04dc17ac9`;
-- materialized TB25 harness SHA-256:
-  `13ec524fa0fe609949b147ab36bf710392244b8202684ece2eea10eb5c83e0e9`;
-- `package_authority_valid=true`; `selector365_exact_prefix_of_403=true`;
-  `selector401_exact_prefix_of_403=true`; `pre_runtime_harness_valid=true`;
-- `runtime_started=false`; `directional_runtime_invocations=0`.
-
-`M3-CP4c3-TB25-ORCH-01` is **CONTROL FIX PROVED / AWAITING RE-EXECUTION / NON-STABLE**. It closes only after
-a fresh TB25 execution passes corrected preflight and starts the unchanged 403-identity gate from ordinal 1.
-
-### Immutable CB28 authority is unchanged
-
-- product source `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`;
-- immutable package artifact `9950303110`, SHA-256
+- semantic product source: `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`;
+- immutable CB28 package artifact: `9950303110`, SHA-256
   `84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`;
-- selector 403: 403 identities, LF SHA-256
+- selector 403: 403 identities, SHA-256
   `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007`;
-- selector 401 exact-prefix SHA-256 `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`;
-- accepted selector 365 SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
+- accepted selector 365 SHA-256
+  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- selector 401 SHA-256
+  `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`;
+- formal run/job: `33919389753 / 101173990222`, SUCCESS;
+- result artifact: `9954531868`, SHA-256
+  `e3b2ac7a9df5afabfd844450059b33f26fff040d0f1632e523bc7aa085e06cd0`;
+- diagnostic-log artifact: `9954532357`, SHA-256
+  `412c86f35906482bd9b36f646306a1267f5e13dad16d11986a3993d93a762fc4`;
+- ledger SHA-256 `bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`;
+- identity-map SHA-256 `7ec8d68589bd6f8d18df7e3386a584203914e5462703adf578ae1325d4e90d8f`.
 
-Latest semantic runtime remains TB24: **389 PASS / 12 RED**, accepted **365/365**, RED
-`[366,367,368,369,370,374,384,385,389,390,393,398]`. Stable accounting remains
-**44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 packages **90**. CP4c-3
-remains **OPEN**.
+### Runtime result
 
-### M3-CP4c-3-TB25-R1 — run next
+The full gate completed in **403 fresh processes**:
 
-Execute the frozen 403-identity gate exactly once per fresh process from immutable artifact `9950303110` under the
-**unchanged** `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md`, using the CB29-proved pre-runtime
-representation. Do not rebuild, configure, relink, repair, repackage, mutate source/tests/fixtures/selectors/package
-bytes, or replace the immutable package. Preserve the first invalid attempt as provenance. If the runtime is semantic
-RED, route to independent REVIEW + PLAN; if orchestration fails again before semantic measurement, follow the
-user-authorized orchestration-failure edge.
+- **393 PASS / 10 RED**;
+- accepted **1–365 = 365/365 PASS**;
+- RED ordinals **366, 367, 368, 369, 370, 374, 389, 390, 393, 398**;
+- 384 and 385 change TB24 RED → PASS;
+- new 402 and 403 PASS;
+- 371/372/391/392/397/399/400/401 remain PASS.
+
+All package/source/execution-view pre/post censuses are equal. `runtime_completed=true`,
+`orchestration_failure=false`, and all configure/compile/relink/repair/mutation flags are false.
+
+### TB25 ownership evidence to review
+
+Factual runtime evidence, without EXEC interpretation:
+
+- ordinal 385: `sourceFaceCount=300; established=74; unavailable=226; conflicting=0`;
+  `conflictCensusPublished=true; conflictRowCount=0`;
+- ordinal 402 PASS: production conflict census published with `rowCount=0`;
+- ordinal 403 PASS: bounded non-barrier differing-owner census witness works;
+- ordinals 366/367: component 0, 191 faces, seed count 0 / `None`,
+  certified observation count 0, unavailable count 191, distinct count 0;
+- 389/393/398 remain RED with `proves_cellularity()==false`;
+- 390 remains RED with `proves_cellularity()==false` and distinct certified-face count 0.
+
+The frozen TB25 plan assigns branch selection and diagnosis to REVIEW. Do not pre-interpret the zero-row census in
+the next turn's startup summary.
+
+### Orchestration candidate
+
+`M3-CP4c3-TB25-ORCH-01` is **CLOSED / CONTROL FIX RUNTIME PROVED / NON-STABLE**. Corrected preflight passed and
+the unchanged gate completed all 403 identities. The first TB25 attempt (`33910913448 / 101146905061`, 0/403)
+remains invalid provenance only and contributes +0 stable events/recurrences.
+
+Stable accounting remains **44 events / 14 categories / 30 recurrences** pending review; produced-witness debt
+remains **5**; semantic M3 package count remains **90**.
+
+### M3-CP4c-3-TB25-REV — run next
+
+Independent REVIEW + PLAN only. Do **not** execute Directional, rebuild, configure, relink, repair, repackage, or
+mutate product/tests/fixtures/selectors/package bytes. Review must:
+
+1. validate the TB25-R1 immutable evidence and full 403-row ledger;
+2. classify all 10 RED surfaces and the 384/385 recoveries;
+3. adjudicate the certified-owner discriminator using the measured zero conflict rows, 226 unavailable source
+   faces, and component-0 evidence under the frozen CH8 rules;
+4. update stable accounting only when justified;
+5. update `.agents/Directional/ORIENTATION.md`;
+6. perform mandatory REVIEW document consolidation and repair live citations;
+7. authorize at most one bounded successor.
 
 ### Context Load Plan
 
-0. `.agents/Directional/ORIENTATION.md` — substance-only cold-start context; no REVIEW update is due in TB EXEC.
+0. `.agents/Directional/ORIENTATION.md` — substance-only cold-start context; REVIEW must update it before closeout.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — unchanged runtime contract.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB29_Code_Build_Report.md` — corrected control and proof authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable package authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — latest semantic runtime authority.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB25-ORCH-01` plus active semantic candidates.
-7. `.agents/Directional/Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — frozen discriminator/interpretation contract.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — current review authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` and
+   `.agents/Directional/Architecture_M3_CP4c3_CB29_Code_Build_Report.md`.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`.
+7. `.agents/Directional/Required_Green_Selector_Manifest.md`, `TODO.md`, `.agents/Directional/CHANGELOG.md`.
 8. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII and `.agents/Directional/M3_CP4c_Consolidated_Record.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

@@ -1,3 +1,29 @@
+## 2026-09-04 — `M3-CP4c-3-TB25-R1`: valid selector-403 runtime; 393 PASS / 10 RED; accepted 365/365
+
+Fresh artifact-only re-execution after CB29 completed on run/job **`33919389753 / 101173990222`** using immutable
+CB28 package `9950303110` / semantic source `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac` and selector 403. Result/log
+artifacts are `9954531868`
+(`e3b2ac7a9df5afabfd844450059b33f26fff040d0f1632e523bc7aa085e06cd0`) / `9954532357`
+(`412c86f35906482bd9b36f646306a1267f5e13dad16d11986a3993d93a762fc4`). Ledger SHA-256
+`bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`: **393 PASS / 10 RED**, accepted
+**365/365**, RED `[366,367,368,369,370,374,389,390,393,398]`.
+
+Relative to TB24, ordinals **384 and 385 recover RED → PASS**; all other prior REDs remain RED; new 402/403 PASS.
+Ownership publication now reports **300 source faces = 74 established + 226 unavailable + 0 conflicting** and a
+published production conflict census with **0 rows**. Component 0 reports 191 faces with 0 certified observations,
+191 unavailable and 0 distinct. EXEC records these facts without choosing the frozen ownership branch.
+
+Preflight re-verified the CB29-proved harness SHA
+`13ec524fa0fe609949b147ab36bf710392244b8202684ece2eea10eb5c83e0e9`, immutable artifact/package/GMP authority,
+and selector 365→403 plus 401→403 exact prefixes. All 403 identities ran one per fresh process; package/source/
+execution-view censuses are equal before/after, runtime completed, and all configure/compile/relink/repair/mutation
+flags are false.
+
+`M3-CP4c3-TB25-ORCH-01` is **CLOSED / CONTROL FIX RUNTIME PROVED / NON-STABLE**. The first invalid TB25 attempt
+remains 0/403 provenance only. Stable accounting remains frozen at **44 events / 14 categories / 30 recurrences**,
+debt **5**, semantic packages **90**, pending independent review. CP4c-3 remains OPEN. Exact successor:
+**`M3-CP4c-3-TB25-REV`**, independent REVIEW + PLAN only.
+
 ## 2026-09-04 — `M3-CP4c-3-CB29`: TB25 control defect corrected; pre-runtime harness/package proof GREEN
 
 CB29 is **COMPLETE / CONTROL PROOF GREEN / RUNTIME NOT EXECUTED / SEMANTIC AUTHORITY UNCHANGED**. It owns only
