@@ -1,6 +1,7 @@
-# M3-CP4c-3-TB22 temporary non-workflow state
+# M3-CP4c-3-TB22 final temporary non-workflow state
 .agents/connector-triggers/source-snapshot/m3-cp4c3-tb22-20260904.txt
 .agents/connector-triggers/m3-cp2b-cb-r3-schema-20260820.txt
 .agents/connector-triggers/tb/m3-cp4c3-tb22.txt
+.agents/connector-triggers/tb/m3-cp4c3-tb22-closeout-apply.txt
 .agents/Directional/turn-payloads/m3-cp2b-cb-r3-compile.yml
 .agents/Directional/turn-payloads/m3-cp4c3-tb22-run.sh
