@@ -1,5 +1,0 @@
-.agents/connector-triggers/source-snapshot
-.agents/connector-triggers/m3-cp2b-cb-r3-schema-20260820.txt
-.agents/connector-triggers/m3-cp4c3-cb24-apply-20260903.txt
-.agents/connector-triggers/m3-cp4c3-cb24-compile-20260903.txt
-.agents/Directional/turn-payloads/m3-cp2b-cb-r3-compile.yml
