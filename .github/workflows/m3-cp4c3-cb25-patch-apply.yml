@@ -1,0 +1,47 @@
+name: M3 CP4c3 CB25 Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb25-patch-apply-20260904.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb25-patch-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb25-patch-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb25-patch-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1-oFSz45xNj96knX14m76UdTNy4CXmVOO
+      patch_sha256: 'bed88d2ab8e4f65963aa03a089ff1c1856c9af48038386dde5f458d2f698362f'
+      base_sha: 2ba2c81bb12f70f1e0a740d98004a5246b4bba8a
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'diag: M3-CP4c-3-CB25 certificate-face diagnostics'
+    secrets: inherit
