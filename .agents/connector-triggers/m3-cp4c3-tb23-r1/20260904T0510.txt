@@ -1,4 +1,0 @@
-semantic_source_sha=e12396d471c0754b112a40272a7992020ff49ced
-package_artifact_id=9921914679
-harness_sha256=fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7
-purpose=m3-cp4c3-tb23-r1-artifact-only-execution

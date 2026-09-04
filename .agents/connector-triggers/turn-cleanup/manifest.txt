@@ -1,5 +1,0 @@
-# M3-CP4c-3-TB23-R1 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/20260904T0459-6964b38e.txt
-.agents/connector-triggers/m3-cp4c3-tb23-r1/20260904T0510.txt
-.agents/connector-triggers/m3-cp4c3-tb23-r1/20260904T0513-retry1.txt
-.agents/connector-triggers/m3-cp4c3-tb23-r1-docs-drive-apply/20260904T0521.txt

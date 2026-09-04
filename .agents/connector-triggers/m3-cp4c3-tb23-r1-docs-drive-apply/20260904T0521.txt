@@ -1,4 +1,0 @@
-patch_file_id=1GngfRtwfDhmcefjDmAzktMJz9R9l4VDJ
-patch_sha256=ee8034b8e9f0b6bd8980835ed15d3a7a40ea6231c623540d50f55f6fe1b34a03
-base_sha=b9d11255e5a644e2ac51442f6443be5e7998b6de
-purpose=tb23-r1-docs-closeout
