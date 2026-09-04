@@ -55,7 +55,8 @@ Future selector files are named by their resulting identity count.
 | **391** | 391 | `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` | 385 | 3 | superseded |
 | **393** | 393 | `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d` | 391 | 2 | superseded |
 | **397** | 397 | `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` | 393 | 4 | superseded |
-| **401** | 401 | `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` | 397 | 4 | **CURRENT GATE** |
+| **401** | 401 | `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` | 397 | 4 | superseded |
+| **403** | 403 | `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007` | 401 | 2 | **CURRENT GATE** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -263,7 +264,7 @@ Appended 4 identities to selector 393:
 - `GlobalTopologyPlan.CertificatePairMeasurementCanReportNonZeroDifferingCount`
 - `GlobalTopologyPlan.UnrelatedTopologyErrorLocusRemainsByteIdenticalAfterCertificateDiagnostics`
 
-### 401 — CURRENT GATE
+### 401 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_401.txt` — 401 identities, first committed by M3-CP4c-3-CB27.
 
@@ -281,10 +282,12 @@ identities, 399/400/401 PASS and 398 REDs. `M3-CP4c-3-TB24-REV` classified 398 a
 the open problem and stays gating. Ordinal **385**'s assertions will be replaced in place by CB28; its name and
 ordinal do not change, so the first 401 lines stay byte-identical.
 
-### 403 — PLANNED, `M3-CP4c-3-CB28` CH9
+### 403 — CURRENT GATE
 
-Selector 401 must be its exact 401-line prefix, and selector 397 the frozen prefix of that. Two gating identities
-are appended:
+`Architecture_M3_CP4c3_Required_Green_Selector_403.txt` — 403 identities, first authored by M3-CP4c-3-CB28.
+
+CB28 appends two measurement/falsifiability witnesses to frozen selector 401. Selector 401 is its exact
+401-line prefix and selector 397 remains the frozen prefix of that. Two gating identities are appended:
 
 - `SurfaceCutGraph.CertifiedOwnerConflictCensusPublishesOnOwnershipFailure`
 - `SurfaceCutGraph.CertifiedOwnerConflictCensusNamesANonBarrierEdgeSeparatingCertifiedFaces`

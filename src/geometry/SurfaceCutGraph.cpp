@@ -7,6 +7,7 @@
 #include <directional/geometry/SurfaceCutGraph.h>
 
 #include "EmbeddedGraphTopology.h"
+#include "CertifiedOwnerConflictCensus.h"
 #include "SourceFaceComponentPartition.h"
 
 #include <algorithm>
@@ -44,6 +45,40 @@ void hash_edge(std::uint64_t &hash,
 void hash_face(std::uint64_t &hash,
                const authority::SourceFaceTopologyKey &face) noexcept {
   for (const auto vertex : face.vertices()) hash_id(hash, vertex);
+}
+
+void hash_owner_status_and_conflicts(
+    std::uint64_t &hash,
+    const SurfaceCutGraphCellularityCertificate &certificate) noexcept {
+  const bool hasNonDefaultStatus = std::any_of(
+      certificate.sourceFaceOwners.begin(), certificate.sourceFaceOwners.end(),
+      [](const auto &owner) {
+        return owner.status !=
+               SurfaceCutGraphSourceFaceOwnershipStatus::Established;
+      });
+  if (!hasNonDefaultStatus &&
+      certificate.certifiedOwnerConflictCensus.empty()) {
+    return;
+  }
+
+  // Keep the digest of previously fully-established certificates stable.
+  constexpr std::uint64_t kOwnershipDiagnosticMarker =
+      0x434232384f574e52ULL; // "CB28OWNR"
+  hash_consume(hash, kOwnershipDiagnosticMarker);
+  hash_consume(hash, certificate.certifiedOwnerConflictCensusPublished ? 1U
+                                                                      : 0U);
+  for (const auto &owner : certificate.sourceFaceOwners) {
+    hash_consume(hash, static_cast<std::uint64_t>(owner.status));
+  }
+  hash_consume(hash, certificate.certifiedOwnerConflictCensus.size());
+  for (const auto &row : certificate.certifiedOwnerConflictCensus) {
+    hash_edge(hash, row.sourceEdge);
+    hash_face(hash, row.firstFace);
+    hash_consume(hash, row.firstOwner);
+    hash_face(hash, row.secondFace);
+    hash_consume(hash, row.secondOwner);
+    hash_consume(hash, static_cast<std::uint64_t>(row.barrierClass));
+  }
 }
 
 SurfaceCutGraphError cut_error(const SurfaceCutGraphErrorCode code) {
@@ -357,9 +392,15 @@ std::optional<std::set<authority::SourceEdgeTopologyKey>> proposal_tree_cotree_c
 }
 
 using CertificateResult = std::variant<SurfaceCutGraphCellularityCertificate, SurfaceCutGraphError>;
+
+struct OwnershipBuild {
+  std::vector<SurfaceCutGraphSourceFaceOwnership> owners;
+  std::vector<SurfaceCutGraphCertifiedOwnerConflict> conflicts;
+  bool conflictCensusPublished = false;
+};
+
 using OwnershipBuildResult =
-    std::variant<std::vector<SurfaceCutGraphSourceFaceOwnership>,
-                 SurfaceCutGraphError>;
+    std::variant<OwnershipBuild, SurfaceCutGraphError>;
 
 OwnershipBuildResult build_source_face_ownership(
     const EmbeddedGraphTopology &embedded,
@@ -369,6 +410,7 @@ OwnershipBuildResult build_source_face_ownership(
   using namespace embedded_graph_topology_detail;
   using SourceFace = authority::SourceFaceTopologyKey;
   using SourceEdge = authority::SourceEdgeTopologyKey;
+  using BarrierClass = SurfaceCutGraphCertifiedOwnerConflictBarrierClass;
 
   std::map<SourceFace, std::set<std::size_t>> directOwners;
   std::map<std::pair<SourceFace, SourceEdge>, std::set<std::size_t>>
@@ -377,6 +419,40 @@ OwnershipBuildResult build_source_face_ownership(
       traceSides;
   std::set<SourceFace> traceCutFaces;
   std::set<SourceEdge> barriers(cutEdges.begin(), cutEdges.end());
+
+  // The classification map is derived independently from the actual barrier
+  // set. That makes a census row capable of distinguishing a genuinely
+  // non-barrier disagreement from an edge that should have been inserted as a
+  // barrier but was omitted by construction.
+  std::map<SourceEdge, BarrierClass> expectedBarrierClasses;
+  const auto record_barrier_class = [&](const SourceEdge &edge,
+                                        const BarrierClass classification) {
+    const auto found = expectedBarrierClasses.find(edge);
+    if (found == expectedBarrierClasses.end() ||
+        static_cast<std::uint8_t>(classification) >
+            static_cast<std::uint8_t>(found->second)) {
+      expectedBarrierClasses[edge] = classification;
+    }
+  };
+  for (const SourceEdge &edge : cutEdges)
+    record_barrier_class(edge, BarrierClass::CutEdge);
+  for (const SourceEdge &edge : mandatory_source_edges(network))
+    record_barrier_class(edge, BarrierClass::MandatoryEdge);
+  for (const auto &trace : network.candidate_traces()) {
+    for (std::size_t segmentIndex = 0U; segmentIndex < trace.segments.size();
+         ++segmentIndex) {
+      const bool terminalSlit = !trace.terminalBarrier.has_value() &&
+                                segmentIndex + 1U == trace.segments.size();
+      if (terminalSlit) continue;
+      const auto &segment = trace.segments[segmentIndex];
+      record_barrier_class(segment.outgoingCarrier,
+                           BarrierClass::TraceOutgoingCarrier);
+      if (segment.incomingCarrier.has_value()) {
+        record_barrier_class(*segment.incomingCarrier,
+                             BarrierClass::TraceIncomingCarrier);
+      }
+    }
+  }
 
   const auto add_owner = [&](const SourceFace &face,
                              const std::optional<SourceEdge> &edge,
@@ -394,18 +470,21 @@ OwnershipBuildResult build_source_face_ownership(
         arc.mandatoryEdge.has_value()) {
       const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
       if (mandatory != nullptr) graphSourceEdge = mandatory->sourceEdge;
-    } else if (arc.kind == GlobalTopologyArcKind::Cut && arc.cutEdge.has_value()) {
+    } else if (arc.kind == GlobalTopologyArcKind::Cut &&
+               arc.cutEdge.has_value()) {
       graphSourceEdge = arc.cutEdge;
     }
 
     if (graphSourceEdge.has_value()) {
       barriers.insert(*graphSourceEdge);
-      const auto incident = embedded.sourceTopology.incidentFaces.find(*graphSourceEdge);
+      const auto incident =
+          embedded.sourceTopology.incidentFaces.find(*graphSourceEdge);
       if (incident == embedded.sourceTopology.incidentFaces.end()) continue;
       for (const SourceFace &faceKey : incident->second) {
         const auto face = embedded.sourceTopology.faces.find(faceKey);
         if (face == embedded.sourceTopology.faces.end()) continue;
-        const bool forward = face_orients_edge_forward(face->second, *graphSourceEdge);
+        const bool forward =
+            face_orients_edge_forward(face->second, *graphSourceEdge);
         const std::size_t interiorDart =
             2U * arc.id.index() + (forward ? 0U : 1U);
         if (interiorDart >= embedded.faceWalk.orbitByDart.size()) continue;
@@ -415,22 +494,25 @@ OwnershipBuildResult build_source_face_ownership(
       continue;
     }
 
-    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value()) continue;
+    if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value())
+      continue;
     const auto *trace = find_trace(network, *arc.trace);
     if (trace == nullptr || arc.firstSegment >= arc.onePastLastSegment ||
         arc.onePastLastSegment > trace->segments.size()) {
       continue;
     }
-    const std::size_t forwardDart =
-        dart_index(GlobalTopologyOrientedArc{arc.id, authority::Orientation::Forward});
-    const std::size_t reverseDart =
-        dart_index(GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
+    const std::size_t forwardDart = dart_index(
+        GlobalTopologyOrientedArc{arc.id, authority::Orientation::Forward});
+    const std::size_t reverseDart = dart_index(
+        GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
     if (forwardDart >= embedded.faceWalk.orbitByDart.size() ||
         reverseDart >= embedded.faceWalk.orbitByDart.size()) {
       continue;
     }
-    const std::size_t forwardOrbit = embedded.faceWalk.orbitByDart[forwardDart];
-    const std::size_t reverseOrbit = embedded.faceWalk.orbitByDart[reverseDart];
+    const std::size_t forwardOrbit =
+        embedded.faceWalk.orbitByDart[forwardDart];
+    const std::size_t reverseOrbit =
+        embedded.faceWalk.orbitByDart[reverseDart];
 
     for (std::size_t segmentIndex = arc.firstSegment;
          segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
@@ -438,12 +520,14 @@ OwnershipBuildResult build_source_face_ownership(
       const bool terminalSlit = !trace->terminalBarrier.has_value() &&
                                 segmentIndex + 1U == trace->segments.size();
       if (terminalSlit) continue;
-      const auto faceIt = embedded.sourceTopology.faces.find(segment.sourceFace);
+      const auto faceIt =
+          embedded.sourceTopology.faces.find(segment.sourceFace);
       if (faceIt == embedded.sourceTopology.faces.end()) continue;
 
       traceCutFaces.insert(segment.sourceFace);
       barriers.insert(segment.outgoingCarrier);
-      if (segment.incomingCarrier.has_value()) barriers.insert(*segment.incomingCarrier);
+      if (segment.incomingCarrier.has_value())
+        barriers.insert(*segment.incomingCarrier);
 
       add_owner(segment.sourceFace, std::nullopt, forwardOrbit);
       add_owner(segment.sourceFace, std::nullopt, reverseOrbit);
@@ -461,9 +545,12 @@ OwnershipBuildResult build_source_face_ownership(
       }
 
       if (segment.incomingCarrier.has_value()) {
-        const auto incoming = local_edge_index(faceIt->second, *segment.incomingCarrier);
-        const auto outgoing = local_edge_index(faceIt->second, segment.outgoingCarrier);
-        if (!incoming.has_value() || !outgoing.has_value() || *incoming == *outgoing)
+        const auto incoming =
+            local_edge_index(faceIt->second, *segment.incomingCarrier);
+        const auto outgoing =
+            local_edge_index(faceIt->second, segment.outgoingCarrier);
+        if (!incoming.has_value() || !outgoing.has_value() ||
+            *incoming == *outgoing)
           continue;
         const std::size_t turn = (*outgoing + 3U - *incoming) % 3U;
         if (turn != 1U && turn != 2U) continue;
@@ -480,19 +567,22 @@ OwnershipBuildResult build_source_face_ownership(
           std::get_if<authority::SourceVertexSupport>(&*entrySupport);
       if (entryVertex == nullptr) continue;
       std::optional<std::size_t> sourceCorner;
-      for (std::size_t corner = 0U; corner < faceIt->second.vertices.size(); ++corner) {
+      for (std::size_t corner = 0U;
+           corner < faceIt->second.vertices.size(); ++corner) {
         if (faceIt->second.vertices[corner] == entryVertex->vertex) {
           sourceCorner = corner;
           break;
         }
       }
-      const auto outgoing = local_edge_index(faceIt->second, segment.outgoingCarrier);
+      const auto outgoing =
+          local_edge_index(faceIt->second, segment.outgoingCarrier);
       if (!sourceCorner.has_value() || !outgoing.has_value() ||
           *outgoing != (*sourceCorner + 1U) % 3U) {
         continue;
       }
       add_owner(segment.sourceFace,
-                faceIt->second.edges[(*sourceCorner + 2U) % 3U], forwardOrbit);
+                faceIt->second.edges[(*sourceCorner + 2U) % 3U],
+                forwardOrbit);
       add_owner(segment.sourceFace, faceIt->second.edges[*sourceCorner],
                 reverseOrbit);
     }
@@ -507,7 +597,12 @@ OwnershipBuildResult build_source_face_ownership(
   const auto partition = detail::build_source_face_component_partition(
       uncutFaces, embedded.sourceTopology.incidentFaces, barriers);
 
-  for (std::size_t component = 0U; component < partition.components.size(); ++component) {
+  // Preserve the exact directly established read when a component has
+  // multiple candidate owners. Propagation is performed only in the already
+  // unambiguous singleton case; CB28 measures disagreement and does not choose
+  // a winner or change the attribution rule.
+  for (std::size_t component = 0U; component < partition.components.size();
+       ++component) {
     const auto &faces = partition.components[component];
     std::set<std::size_t> owners;
     for (const SourceFace &face : faces) {
@@ -521,7 +616,8 @@ OwnershipBuildResult build_source_face_ownership(
       std::optional<std::size_t> componentSide;
       for (std::size_t side = 0U; side < incident.size(); ++side) {
         const auto found = partition.componentByFace.find(incident[side]);
-        if (found != partition.componentByFace.end() && found->second == component) {
+        if (found != partition.componentByFace.end() &&
+            found->second == component) {
           componentSide = side;
           break;
         }
@@ -530,47 +626,60 @@ OwnershipBuildResult build_source_face_ownership(
       const SourceFace &other = incident[*componentSide ^ 1U];
       if (traceCutFaces.count(other) == 0U) continue;
       const auto sideOwner = directOwnersByEdgeSide.find({other, edge});
-      if (sideOwner != directOwnersByEdgeSide.end() && sideOwner->second.size() == 1U) {
+      if (sideOwner != directOwnersByEdgeSide.end() &&
+          sideOwner->second.size() == 1U) {
         owners.insert(*sideOwner->second.begin());
       }
     }
-    if (owners.size() != 1U) {
-      SurfaceCutGraphError failure =
-          cut_error(SurfaceCutGraphErrorCode::SourceFaceOwnershipNotEstablished);
-      if (!faces.empty()) failure.sourceFace = faces.front();
-      return failure;
+    if (owners.size() == 1U) {
+      for (const SourceFace &face : faces) directOwners[face] = owners;
     }
-    for (const SourceFace &face : faces) directOwners[face] = owners;
   }
 
-  std::vector<SurfaceCutGraphSourceFaceOwnership> result;
-  result.reserve(embedded.sourceTopology.faces.size());
+  OwnershipBuild build;
+  build.owners.reserve(embedded.sourceTopology.faces.size());
   for (const auto &[faceKey, record] : embedded.sourceTopology.faces) {
     (void)record;
+    SurfaceCutGraphSourceFaceOwnership owner{faceKey};
     const auto found = directOwners.find(faceKey);
     if (found == directOwners.end() || found->second.empty()) {
-      SurfaceCutGraphError failure =
-          cut_error(SurfaceCutGraphErrorCode::SourceFaceOwnershipNotEstablished);
-      failure.sourceFace = faceKey;
-      return failure;
+      owner.status = SurfaceCutGraphSourceFaceOwnershipStatus::Unavailable;
+    } else {
+      owner.certifiedFaceOrbits.assign(found->second.begin(),
+                                       found->second.end());
+      for (const std::size_t orbit : owner.certifiedFaceOrbits) {
+        if (certificateFaceOrbits.count(orbit) == 0U) {
+          SurfaceCutGraphError failure =
+              cut_error(
+                  SurfaceCutGraphErrorCode::SourceFaceOwnershipNotEstablished);
+          failure.sourceFace = faceKey;
+          return failure;
+        }
+      }
+      if (traceCutFaces.count(faceKey) != 0U ||
+          owner.certifiedFaceOrbits.size() == 1U) {
+        owner.status = SurfaceCutGraphSourceFaceOwnershipStatus::Established;
+      } else {
+        owner.status = SurfaceCutGraphSourceFaceOwnershipStatus::Conflicting;
+      }
     }
-    SurfaceCutGraphSourceFaceOwnership owner{faceKey};
-    owner.certifiedFaceOrbits.assign(found->second.begin(), found->second.end());
+
     const auto sides = traceSides.find(faceKey);
     if (sides != traceSides.end()) owner.traceFragmentSides = sides->second;
-    std::sort(owner.traceFragmentSides.begin(), owner.traceFragmentSides.end());
+    std::sort(owner.traceFragmentSides.begin(),
+              owner.traceFragmentSides.end());
     owner.traceFragmentSides.erase(
-        std::unique(owner.traceFragmentSides.begin(), owner.traceFragmentSides.end()),
+        std::unique(owner.traceFragmentSides.begin(),
+                    owner.traceFragmentSides.end()),
         owner.traceFragmentSides.end());
-    if (traceCutFaces.count(faceKey) == 0U && owner.certifiedFaceOrbits.size() != 1U) {
-      SurfaceCutGraphError failure =
-          cut_error(SurfaceCutGraphErrorCode::SourceFaceOwnershipNotEstablished);
-      failure.sourceFace = faceKey;
-      return failure;
-    }
-    result.push_back(std::move(owner));
+    build.owners.push_back(std::move(owner));
   }
-  return result;
+
+  build.conflicts = detail::build_certified_owner_conflict_census(
+      embedded.sourceTopology.incidentFaces, build.owners, barriers,
+      expectedBarrierClasses);
+  build.conflictCensusPublished = true;
+  return build;
 }
 
 CertificateResult certify_actual_embedded_graph(
@@ -607,17 +716,21 @@ CertificateResult certify_actual_embedded_graph(
     for (const auto &face : certificate.faces) certificateFaceOrbits.insert(face.orbit);
     const auto ownershipBuild = build_source_face_ownership(
         embedded, network, cutEdges, certificateFaceOrbits);
-    if (const auto *failure = std::get_if<SurfaceCutGraphError>(&ownershipBuild))
+    if (const auto *failure =
+            std::get_if<SurfaceCutGraphError>(&ownershipBuild))
       return *failure;
-    certificate.sourceFaceOwners =
-        std::get<std::vector<SurfaceCutGraphSourceFaceOwnership>>(ownershipBuild);
+    const auto &ownership = std::get<OwnershipBuild>(ownershipBuild);
+    certificate.sourceFaceOwners = ownership.owners;
+    certificate.certifiedOwnerConflictCensusPublished =
+        ownership.conflictCensusPublished;
+    certificate.certifiedOwnerConflictCensus = ownership.conflicts;
   }
   return certificate;
 }
 
 std::uint64_t candidate_hash(const SurfaceCutGraphCandidate &candidate) noexcept {
   std::uint64_t hash=kFnvOffset; hash_consume(hash,candidate.sourceDigest);hash_consume(hash,candidate.atlasDigest);hash_consume(hash,candidate.networkDigest);hash_consume(hash,candidate.cutEdges.size());for(const auto &edge:candidate.cutEdges)hash_edge(hash,edge);
-  const auto &c=candidate.certificate; hash_consume(hash,static_cast<std::uint64_t>(c.complex));hash_consume(hash,c.vertexCount);hash_consume(hash,c.edgeCount);hash_consume(hash,c.totalOrbitCount);hash_consume(hash,c.excludedBoundaryOrbitCount);hash_consume(hash,c.sourceBoundaryLoopCount);hash_consume(hash,c.faceCount);hash_consume(hash,c.graphComponentCount);hash_consume(hash,c.sourceComponentCount);hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.disconnectedComponentCorrection)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.eulerCharacteristic)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.sourceEulerCharacteristic)));hash_consume(hash,c.saturationUsed?1U:0U);if(c.saturationLocus.has_value()){for(const auto vertex:c.saturationLocus->vertices())hash_id(hash,vertex);}else{hash_consume(hash,0U);}hash_consume(hash,c.saturationPromotedEdgeCount);hash_consume(hash,c.faces.size());for(const auto &face:c.faces){hash_consume(hash,face.orbit);hash_consume(hash,face.boundaryWalkCount);hash_consume(hash,face.boundaryArcCount);hash_consume(hash,face.discTopologyEstablished?1U:0U);}hash_consume(hash,c.sourceFaceCount);hash_consume(hash,c.sourceFaceOwners.size());for(const auto &owner:c.sourceFaceOwners){hash_face(hash,owner.sourceFace);hash_consume(hash,owner.certifiedFaceOrbits.size());for(const auto orbit:owner.certifiedFaceOrbits)hash_consume(hash,orbit);hash_consume(hash,owner.traceFragmentSides.size());for(const auto &side:owner.traceFragmentSides){hash_id(hash,side.trace);hash_consume(hash,side.segmentIndex);hash_consume(hash,static_cast<std::uint64_t>(side.orientation));hash_consume(hash,side.orbit);}}hash_consume(hash,c.cutCandidates.size());for(const auto &e:c.cutCandidates){hash_edge(hash,e.sourceEdge);hash_consume(hash,static_cast<std::uint64_t>(e.classification));hash_consume(hash,e.selected?1U:0U);}return hash;
+  const auto &c=candidate.certificate; hash_consume(hash,static_cast<std::uint64_t>(c.complex));hash_consume(hash,c.vertexCount);hash_consume(hash,c.edgeCount);hash_consume(hash,c.totalOrbitCount);hash_consume(hash,c.excludedBoundaryOrbitCount);hash_consume(hash,c.sourceBoundaryLoopCount);hash_consume(hash,c.faceCount);hash_consume(hash,c.graphComponentCount);hash_consume(hash,c.sourceComponentCount);hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.disconnectedComponentCorrection)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.eulerCharacteristic)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.sourceEulerCharacteristic)));hash_consume(hash,c.saturationUsed?1U:0U);if(c.saturationLocus.has_value()){for(const auto vertex:c.saturationLocus->vertices())hash_id(hash,vertex);}else{hash_consume(hash,0U);}hash_consume(hash,c.saturationPromotedEdgeCount);hash_consume(hash,c.faces.size());for(const auto &face:c.faces){hash_consume(hash,face.orbit);hash_consume(hash,face.boundaryWalkCount);hash_consume(hash,face.boundaryArcCount);hash_consume(hash,face.discTopologyEstablished?1U:0U);}hash_consume(hash,c.sourceFaceCount);hash_consume(hash,c.sourceFaceOwners.size());for(const auto &owner:c.sourceFaceOwners){hash_face(hash,owner.sourceFace);hash_consume(hash,owner.certifiedFaceOrbits.size());for(const auto orbit:owner.certifiedFaceOrbits)hash_consume(hash,orbit);hash_consume(hash,owner.traceFragmentSides.size());for(const auto &side:owner.traceFragmentSides){hash_id(hash,side.trace);hash_consume(hash,side.segmentIndex);hash_consume(hash,static_cast<std::uint64_t>(side.orientation));hash_consume(hash,side.orbit);}}hash_consume(hash,c.cutCandidates.size());for(const auto &e:c.cutCandidates){hash_edge(hash,e.sourceEdge);hash_consume(hash,static_cast<std::uint64_t>(e.classification));hash_consume(hash,e.selected?1U:0U);}hash_owner_status_and_conflicts(hash, c);return hash;
 }
 
 
@@ -679,6 +792,7 @@ std::uint64_t candidate_semantic_hash(
     hash_consume(hash, static_cast<std::uint64_t>(evidence.classification));
     hash_consume(hash, evidence.selected ? 1U : 0U);
   }
+  hash_owner_status_and_conflicts(hash, certificate);
   return hash;
 }
 
@@ -693,7 +807,7 @@ CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std
   std::set<authority::SourceEdgeTopologyKey> cuts;
   bool saturationUsed=false;std::optional<authority::SourceFaceTopologyKey> saturationLocus;std::size_t saturationPromotedEdgeCount=0U;
   std::size_t certificationAttemptIndex = 0U;
-  while(true){const auto evidence=classify_cut_candidates(*topology,mandatory,traceCrossed,cuts);const auto certificateBuild=certify_actual_embedded_graph(sourceFaces,sourceVertexCount,sourceAuthority,network,{cuts.begin(),cuts.end()},evidence);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&certificateBuild)){auto result=*failure;annotate_failure_euler_census(result,*topology,network,{cuts.begin(),cuts.end()});result.cutCandidates=evidence;result.certificationAttemptIndex=certificationAttemptIndex;result.certificationCutEdgeCount=cuts.size();return result;}auto certificate=std::get<SurfaceCutGraphCellularityCertificate>(certificateBuild);if(certificate.proves_cellularity()){certificate.saturationUsed=saturationUsed;certificate.saturationLocus=saturationLocus;certificate.saturationPromotedEdgeCount=saturationPromotedEdgeCount;SurfaceCutGraphCandidate result;result.cutEdges.assign(cuts.begin(),cuts.end());result.certificate=std::move(certificate);result.sourceDigest=network.source_digest();result.atlasDigest=network.atlas_digest();result.networkDigest=network.semantic_digest();return result;}
+  while(true){const auto evidence=classify_cut_candidates(*topology,mandatory,traceCrossed,cuts);const auto certificateBuild=certify_actual_embedded_graph(sourceFaces,sourceVertexCount,sourceAuthority,network,{cuts.begin(),cuts.end()},evidence);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&certificateBuild)){auto result=*failure;annotate_failure_euler_census(result,*topology,network,{cuts.begin(),cuts.end()});result.cutCandidates=evidence;result.certificationAttemptIndex=certificationAttemptIndex;result.certificationCutEdgeCount=cuts.size();return result;}auto certificate=std::get<SurfaceCutGraphCellularityCertificate>(certificateBuild);if(certificate.proves_embedded_cellularity()){certificate.saturationUsed=saturationUsed;certificate.saturationLocus=saturationLocus;certificate.saturationPromotedEdgeCount=saturationPromotedEdgeCount;SurfaceCutGraphCandidate result;result.cutEdges.assign(cuts.begin(),cuts.end());result.certificate=std::move(certificate);result.sourceDigest=network.source_digest();result.atlasDigest=network.atlas_digest();result.networkDigest=network.semantic_digest();return result;}
     ++certificationAttemptIndex;
     std::set<authority::SourceEdgeTopologyKey> barriers=mandatory;barriers.insert(traceCrossed.begin(),traceCrossed.end());barriers.insert(cuts.begin(),cuts.end());const auto components=proposal_components(*topology,barriers);bool added=false;std::optional<authority::SourceFaceTopologyKey> blockedLocus;std::vector<std::vector<authority::SourceFaceTopologyKey>> nonDiscComponents;
     for(const auto &component:components){const auto disc=proposal_component_is_disc(*topology,component,barriers);if(!disc.has_value())return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);if(*disc)continue;nonDiscComponents.push_back(component);if(!component.empty()&&!blockedLocus.has_value())blockedLocus=component.front();const auto proposed=proposal_tree_cotree_cut_edges(*topology,component,barriers);if(!proposed.has_value())continue;for(const auto &edge:*proposed){if(mandatory.count(edge))continue;added=cuts.insert(edge).second||added;}}
@@ -720,16 +834,20 @@ CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std
 }
 } // namespace
 
+bool SurfaceCutGraphCellularityCertificate::proves_embedded_cellularity()
+    const noexcept {
+  return complex == SurfaceCutGraphComplexKind::ActualEmbeddedGraph &&
+         faceCount != 0U && totalOrbitCount >= excludedBoundaryOrbitCount &&
+         sourceBoundaryLoopCount == excludedBoundaryOrbitCount &&
+         graphComponentCount == sourceComponentCount &&
+         eulerCharacteristic == sourceEulerCharacteristic && !faces.empty() &&
+         std::all_of(faces.begin(), faces.end(), [](const auto &face) {
+           return face.proves_disc_topology();
+         });
+}
+
 bool SurfaceCutGraphCellularityCertificate::proves_cellularity() const noexcept {
-  if (complex != SurfaceCutGraphComplexKind::ActualEmbeddedGraph ||
-      faceCount == 0U || totalOrbitCount < excludedBoundaryOrbitCount ||
-      sourceBoundaryLoopCount != excludedBoundaryOrbitCount ||
-      graphComponentCount != sourceComponentCount ||
-      eulerCharacteristic != sourceEulerCharacteristic || faces.empty() ||
-      !std::all_of(faces.begin(), faces.end(),
-                   [](const auto &face) { return face.proves_disc_topology(); })) {
-    return false;
-  }
+  if (!proves_embedded_cellularity()) return false;
   if (sourceFaceCount == 0U || sourceFaceOwners.size() != sourceFaceCount)
     return false;
   std::set<std::size_t> certifiedFaceOrbits;
@@ -739,7 +857,7 @@ bool SurfaceCutGraphCellularityCertificate::proves_cellularity() const noexcept 
     if (previousFace.has_value() && !(*previousFace < owner.sourceFace))
       return false;
     previousFace = owner.sourceFace;
-    if (owner.certifiedFaceOrbits.empty()) return false;
+    if (!owner.established() || owner.certifiedFaceOrbits.empty()) return false;
     if (!owner.trace_crossed() && owner.certifiedFaceOrbits.size() != 1U)
       return false;
     for (const auto orbit : owner.certifiedFaceOrbits) {
@@ -777,6 +895,34 @@ SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(const Eigen::Mat
 const char *surface_cut_graph_error_code_name(const SurfaceCutGraphErrorCode code) noexcept {switch(code){case SurfaceCutGraphErrorCode::InvalidSourceBinding:return "InvalidSourceBinding";case SurfaceCutGraphErrorCode::InvalidAtlasBinding:return "InvalidAtlasBinding";case SurfaceCutGraphErrorCode::InvalidNetworkBinding:return "InvalidNetworkBinding";case SurfaceCutGraphErrorCode::NonManifoldSource:return "NonManifoldSource";case SurfaceCutGraphErrorCode::CellularityNotEstablished:return "CellularityNotEstablished";case SurfaceCutGraphErrorCode::CutSearchExhaustedBeforeCellularity:return "CutSearchExhaustedBeforeCellularity";case SurfaceCutGraphErrorCode::EmptyNetworkOnClosedSurface:return "EmptyNetworkOnClosedSurface";case SurfaceCutGraphErrorCode::SourceFaceOwnershipNotEstablished:return "SourceFaceOwnershipNotEstablished";}return "Unknown";}
 const char *surface_cut_candidate_class_name(const SurfaceCutCandidateClass c) noexcept {switch(c){case SurfaceCutCandidateClass::Admissible:return "Admissible";case SurfaceCutCandidateClass::MandatoryAlreadyPresent:return "MandatoryAlreadyPresent";case SurfaceCutCandidateClass::TraceInteriorCrossing:return "TraceInteriorCrossing";}return "Unknown";}
 const char *surface_cut_graph_complex_kind_name(const SurfaceCutGraphComplexKind kind) noexcept {switch(kind){case SurfaceCutGraphComplexKind::ActualEmbeddedGraph:return "actualEmbeddedGraph";}return "Unknown";}
+const char *surface_cut_graph_source_face_ownership_status_name(
+    const SurfaceCutGraphSourceFaceOwnershipStatus status) noexcept {
+  switch (status) {
+  case SurfaceCutGraphSourceFaceOwnershipStatus::Established:
+    return "Established";
+  case SurfaceCutGraphSourceFaceOwnershipStatus::Unavailable:
+    return "Unavailable";
+  case SurfaceCutGraphSourceFaceOwnershipStatus::Conflicting:
+    return "Conflicting";
+  }
+  return "Unknown";
+}
+const char *surface_cut_graph_certified_owner_conflict_barrier_class_name(
+    const SurfaceCutGraphCertifiedOwnerConflictBarrierClass barrierClass) noexcept {
+  switch (barrierClass) {
+  case SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None:
+    return "none";
+  case SurfaceCutGraphCertifiedOwnerConflictBarrierClass::TraceOutgoingCarrier:
+    return "traceOutgoingCarrier";
+  case SurfaceCutGraphCertifiedOwnerConflictBarrierClass::TraceIncomingCarrier:
+    return "traceIncomingCarrier";
+  case SurfaceCutGraphCertifiedOwnerConflictBarrierClass::MandatoryEdge:
+    return "mandatoryEdge";
+  case SurfaceCutGraphCertifiedOwnerConflictBarrierClass::CutEdge:
+    return "cutEdge";
+  }
+  return "unknown";
+}
 std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept {return graph.provenance_digest();}
 
 } // namespace directional::geometry

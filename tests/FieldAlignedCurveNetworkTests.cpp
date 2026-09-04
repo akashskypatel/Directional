@@ -37,6 +37,7 @@
 #include "../src/geometry/EmbeddedGraphTopology.h"
 #include "../src/geometry/GlobalTopologyCertificateDiagnostics.h"
 #include "../src/geometry/CertifiedSourceFaceOwnerConsistency.h"
+#include "../src/geometry/CertifiedOwnerConflictCensus.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
@@ -11285,45 +11286,50 @@ TEST(GlobalTopologyPlan,
 
 TEST(GlobalTopologyPlan,
      UncutFaceComponentSeedFailurePublishesProductionDecisionEvidence) {
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnershipStatus;
+
   const Cp4cProductionFixture mechanical =
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
   const auto &certificate = mechanical.cutGraph->certificate();
-  EXPECT_TRUE(certificate.proves_cellularity());
   EXPECT_EQ(static_cast<std::size_t>(mechanical.mesh.F.rows()),
             certificate.sourceFaceCount);
-  EXPECT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
+  ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
+  EXPECT_TRUE(certificate.certifiedOwnerConflictCensusPublished);
 
-  if (mechanical.plan.has_value()) {
-    std::cout << "m3Cp4c3OwnerConsistency;status=guard-cleared;ownerMapTotal=true\n";
-    return;
+  std::size_t established = 0U;
+  std::size_t unavailable = 0U;
+  std::size_t conflicting = 0U;
+  for (const auto &owner : certificate.sourceFaceOwners) {
+    switch (owner.status) {
+    case SurfaceCutGraphSourceFaceOwnershipStatus::Established:
+      ++established;
+      EXPECT_FALSE(owner.certifiedFaceOrbits.empty());
+      break;
+    case SurfaceCutGraphSourceFaceOwnershipStatus::Unavailable:
+      ++unavailable;
+      EXPECT_TRUE(owner.certifiedFaceOrbits.empty());
+      break;
+    case SurfaceCutGraphSourceFaceOwnershipStatus::Conflicting:
+      ++conflicting;
+      EXPECT_GT(owner.certifiedFaceOrbits.size(), 1U);
+      break;
+    }
   }
+  EXPECT_EQ(certificate.sourceFaceCount,
+            established + unavailable + conflicting);
 
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
-  const auto &locus = mechanical.terminalFailureLocus;
-  ASSERT_TRUE(locus.sourceFace.has_value());
-  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
-  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceObservationCount.has_value());
-  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceUnavailableCount.has_value());
-  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
-  EXPECT_EQ(0U, *locus.uncutFaceComponentCertifiedFaceUnavailableCount);
-  EXPECT_EQ(locus.uncutFaceComponentFaceCount,
-            *locus.uncutFaceComponentCertifiedFaceObservationCount);
-  EXPECT_GT(*locus.uncutFaceComponentCertifiedFaceDistinctCount, 1U);
-  EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceDistinctCount,
-            locus.uncutFaceComponentCertifiedFaceMultiset.size());
-
-  const auto &census = locus.fragmentOwnerEvidence;
-  const auto component = std::find_if(
-      census.components.begin(), census.components.end(), [&](const auto &row) {
-        return row.component == *locus.uncutFaceComponent;
-      });
-  ASSERT_NE(census.components.end(), component);
-  EXPECT_EQ(locus.uncutFaceComponentFaceCount, component->faceCount);
-  EXPECT_EQ(*locus.uncutFaceComponentCertifiedFaceDistinctCount,
-            component->seedOrbitCount);
+  std::cout << "m3Cp4c3CertifiedOwnerPublication"
+            << ";sourceFaceCount=" << certificate.sourceFaceCount
+            << ";established=" << established
+            << ";unavailable=" << unavailable
+            << ";conflicting=" << conflicting
+            << ";conflictCensusPublished="
+            << (certificate.certifiedOwnerConflictCensusPublished ? "true"
+                                                                   : "false")
+            << ";conflictRowCount="
+            << certificate.certifiedOwnerConflictCensus.size() << '\n';
 }
 
 TEST(GlobalTopologyPlan,
@@ -14142,6 +14148,72 @@ TEST(GlobalTopologyPlan,
   ASSERT_EQ(1U, result.components.size());
   EXPECT_EQ((std::map<std::size_t, std::size_t>{{5U, 1U}, {13U, 1U}}),
             result.components.front().ownerMultiplicity);
+}
+
+TEST(SurfaceCutGraph,
+     CertifiedOwnerConflictCensusPublishesOnOwnershipFailure) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.certifiedOwnerConflictCensusPublished);
+
+  std::cout << "m3Cp4c3CertifiedOwnerConflictCensus"
+            << ";published=true;rowCount="
+            << certificate.certifiedOwnerConflictCensus.size();
+  std::size_t index = 0U;
+  for (const auto &row : certificate.certifiedOwnerConflictCensus) {
+    std::cout << ";row[" << index++ << "]={edge="
+              << row.sourceEdge.first().index() << '-'
+              << row.sourceEdge.second().index()
+              << ",firstOwner=" << row.firstOwner
+              << ",secondOwner=" << row.secondOwner
+              << ",barrierClass="
+              << directional::geometry::
+                     surface_cut_graph_certified_owner_conflict_barrier_class_name(
+                         row.barrierClass)
+              << '}';
+  }
+  std::cout << '\n';
+}
+
+TEST(SurfaceCutGraph,
+     CertifiedOwnerConflictCensusNamesANonBarrierEdgeSeparatingCertifiedFaces) {
+  using directional::geometry::SurfaceCutGraphCertifiedOwnerConflictBarrierClass;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnership;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnershipStatus;
+
+  const auto first = topology_face(0, 1, 2, 4U);
+  const auto second = topology_face(0, 2, 3, 4U);
+  const auto shared = topology_edge(0, 2, 4U);
+
+  const std::map<SourceEdgeTopologyKey, std::vector<SourceFaceTopologyKey>>
+      incidentFaces{{shared, {first, second}}};
+  const std::vector<SurfaceCutGraphSourceFaceOwnership> owners{
+      SurfaceCutGraphSourceFaceOwnership{
+          first, {5U}, {},
+          SurfaceCutGraphSourceFaceOwnershipStatus::Established},
+      SurfaceCutGraphSourceFaceOwnership{
+          second, {13U}, {},
+          SurfaceCutGraphSourceFaceOwnershipStatus::Established}};
+  const std::set<SourceEdgeTopologyKey> barriers;
+  const std::map<
+      SourceEdgeTopologyKey,
+      SurfaceCutGraphCertifiedOwnerConflictBarrierClass>
+      classifications;
+
+  const auto census =
+      directional::geometry::detail::build_certified_owner_conflict_census(
+          incidentFaces, owners, barriers, classifications);
+  ASSERT_EQ(1U, census.size());
+  EXPECT_EQ(shared, census.front().sourceEdge);
+  EXPECT_EQ(first, census.front().firstFace);
+  EXPECT_EQ(5U, census.front().firstOwner);
+  EXPECT_EQ(second, census.front().secondFace);
+  EXPECT_EQ(13U, census.front().secondOwner);
+  EXPECT_EQ(SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None,
+            census.front().barrierClass);
 }
 
 TEST(TestFixturePaths, MissingPackageFailsClosedInsteadOfReturningMissingPath) {

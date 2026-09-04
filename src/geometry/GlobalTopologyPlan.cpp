@@ -1108,18 +1108,6 @@ RegionBuildResult build_regions(
     unlabeledFaces.push_back(faceKey);
   }
 
-  for (const auto &face : unlabeledFaces) {
-    const auto *owner = cutGraph.certificate().find_source_face_owner(face);
-    if (owner == nullptr || owner->trace_crossed() ||
-        owner->certifiedFaceOrbits.size() != 1U) {
-      GlobalTopologyPlanError failure =
-          error(GlobalTopologyPlanErrorCode::SourceFaceFragmentOrbitMissing);
-      failure.sourceFace = face;
-      return failure;
-    }
-    fragmentOrbits[face].insert(owner->certifiedFaceOrbits.front());
-  }
-
   std::set<authority::SourceEdgeTopologyKey> componentBarriers = mandatoryEdges;
   componentBarriers.insert(traceTouchedEdges.begin(), traceTouchedEdges.end());
   componentBarriers.insert(cutEdges.begin(), cutEdges.end());
@@ -1192,7 +1180,8 @@ RegionBuildResult build_regions(
     }
     failure.uncutFaceComponentCertifiedFaceObservationCount = observationCount;
     failure.uncutFaceComponentCertifiedFaceUnavailableCount =
-        row.faces.size() - observationCount;
+        row.faces.size() > observationCount ? row.faces.size() - observationCount
+                                            : 0U;
     failure.uncutFaceComponentCertifiedFaceDistinctCount =
         row.ownerMultiplicity.size();
     for (const auto &[owner, multiplicity] : row.ownerMultiplicity) {
@@ -1208,6 +1197,18 @@ RegionBuildResult build_regions(
         row.ownerMultiplicity.size() >
         failure.uncutFaceComponentCertifiedFaceMultiset.size();
     return failure;
+  }
+
+  for (const auto &face : unlabeledFaces) {
+    const auto *owner = cutGraph.certificate().find_source_face_owner(face);
+    if (owner == nullptr || owner->trace_crossed() ||
+        !owner->established() || owner->certifiedFaceOrbits.size() != 1U) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::SourceFaceFragmentOrbitMissing);
+      failure.sourceFace = face;
+      return failure;
+    }
+    fragmentOrbits[face].insert(owner->certifiedFaceOrbits.front());
   }
 
   std::vector<std::vector<authority::SourceFaceTopologyKey>> owned(drafts.size());
@@ -2083,7 +2084,7 @@ CandidateBuildResult canonical_candidate(
   if (network.source_digest() == 0U) {
     return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
   }
-  if (!cutGraph.certificate().proves_cellularity() ||
+  if (!cutGraph.certificate().proves_embedded_cellularity() ||
       cutGraph.source_digest() != network.source_digest() ||
       cutGraph.network_digest() != network.semantic_digest()) {
     return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);

@@ -43,8 +43,14 @@ check_certified_source_face_owner_consistency(
     for (const auto &face : row.faces) {
       const auto *owner = certificate.find_source_face_owner(face);
       if (owner == nullptr || owner->trace_crossed() ||
+          !owner->established() ||
           owner->certifiedFaceOrbits.size() != 1U) {
         if (!row.invalidFace.has_value()) row.invalidFace = face;
+        if (owner != nullptr) {
+          for (const std::size_t orbit : owner->certifiedFaceOrbits) {
+            ++row.ownerMultiplicity[orbit];
+          }
+        }
         continue;
       }
       ++row.ownerMultiplicity[owner->certifiedFaceOrbits.front()];
