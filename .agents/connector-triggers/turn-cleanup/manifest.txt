@@ -1,5 +1,0 @@
-# M3-CP4c-3-CB26 end-of-turn temporary-state cleanup
-.agents/connector-triggers/source-snapshot/20260904T0433-4bc52801.txt
-.agents/connector-triggers/m3-cp4c3-cb26-drive-apply/20260904T0445.txt
-.agents/connector-triggers/m3-cp4c3-cb26-preflight/20260904T0448.txt
-.agents/connector-triggers/m3-cp4c3-cb26-docs-drive-apply/20260904T0452.txt
