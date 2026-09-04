@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-TB22-CLOSEOUT
+purpose=apply preserved durable TB22 closeout patch
+base_sha=6364906df051b100c4296f0536b1bee606db8f08
+patch_sha256=20786b75281762f3d11d0f43664c8f257f958d5bc24dde03077c76ddaa025e36
+runtimeExecution=false
