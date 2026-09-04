@@ -2,9 +2,9 @@
 
 ## Authority
 
-- Canonical turn: Test + Benchmark, split into **TB23-EXEC** then **TB23-REV**.
-- TB23-EXEC is execution/evidence preservation only. It must not diagnose beyond recording plan-defined structured fields, edit source/test/build logic, compile, relink, regenerate, repair the package, or create a replacement artifact.
-- TB23-REV consumes only the immutable TB23-EXEC evidence and performs diagnostics/review. It must not execute new unplanned Directional runtime.
+- Canonical successor turn: **`M3-CP4c-3-TB23-R1`**, artifact-only Test + Benchmark re-execution under the CB26 orchestration correction, followed by independent **`M3-CP4c-3-TB23-R1-REV`**.
+- `TB23-R1` is execution/evidence preservation only. It must not diagnose beyond recording plan-defined structured fields, edit source/test/build logic, compile, relink, regenerate, repair the package, or create a replacement artifact.
+- `TB23-EXEC` / `TB23-REV` are retained historical provenance: the first execution was orchestration-invalid and the review froze the CB26 correction. Their raw runtime ledger is not semantic authority.
 - Semantic source: `e12396d471c0754b112a40272a7992020ff49ced`.
 - Immutable build artifact: `9921914679`, `m3-cp4c3-cb25-package-result-33831662949`, Actions digest `sha256:db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`.
 - Compile run/job: `33831662949 / 100895799092`.
@@ -13,7 +13,42 @@
 - Accepted selector 365: exactly **365** identities, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` and exact prefix.
 - Benchmark execution: **none**. This is a diagnostic selector gate, not a performance turn.
 
-## TB23-EXEC preflight — fail closed before Directional runtime
+
+## CB26 orchestration amendment — binding for `M3-CP4c-3-TB23-R1`
+
+`M3-CP4c-3-TB23-EXEC` is retained as an **orchestration-invalid attempt**. Its raw `342 PASS / 55 RED`
+ledger is provenance only and is not semantic authority. `M3-CP4c-3-TB23-R1` re-executes this same frozen
+397-identity semantic contract against the **same immutable package**. CB26 changes only the execution harness and
+preflight layout; it does **not** change product, test, fixture, selector, package, compile, or link bytes.
+
+The corrected harness is `.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh`. It has two explicit modes:
+`--preflight-only` (CB26 static/control-plane validation, no Directional runtime) and `--execute` (TB23-R1 only).
+An omitted or unknown mode fails closed instead of defaulting to runtime.
+
+### Required execution-view layout
+
+The immutable package and immutable packaged-source extraction remain untouched. The harness constructs a separate
+execution view:
+
+```text
+<execution-view>/
+  bin/<six packaged executables>      # hard links to immutable package/bin bytes
+  test-data/benchmarks/fixtures/...   # copied from immutable packaged source/benchmarks/fixtures
+```
+
+For a staged executable `<execution-view>/bin/<binary>`, reproduce `tests/TestFixturePaths.h` exactly:
+
+1. candidate 1: `<execution-view>/test-data` (`executableDirectory.parent_path() / "test-data"`);
+2. candidate 2: `<execution-view>/bin/test-data` (`executableDirectory / "test-data"`);
+3. select the first candidate containing `benchmarks/fixtures`;
+4. if neither candidate contains that tree, **stop before Directional runtime** with orchestration failure.
+
+CB26/TB23-R1 must verify a known committed fixture through that selected consumer path, not through the extracted
+source workspace. The intended corrected view selects candidate 1. Package and packaged-source pre/post byte+mode
+censuses must remain equal to the preserved TB23 authority (`9c7b12f4beba6f64e4ab1af3980554ba7b9f46af535ec2d2f2a9650f0359a927`
+and `e7bec1591154b4d9d79cd64ad27871305f54a51ba15946dc2042b55f6d2d8654`).
+
+## TB23-R1 preflight — fail closed before Directional runtime
 
 1. Download the exact Actions artifact by artifact ID. Record the provider artifact digest and the downloaded outer archive SHA-256.
 2. Extract with an ordinary mode-preserving archive tool. **Do not use Python `zipfile.extractall`, `chmod`, or any content/mode repair.** If required executable mode is absent, stop as orchestration failure.
@@ -26,7 +61,7 @@
    - `metadata/compiled-targets.txt` contains exactly the eight CB25 package targets;
    - all required six test/benchmark executables are present and executable with archived mode intact;
    - source archive exists and hashes through the package manifest.
-4. Extract `source/source-e12396d471c0754b112a40272a7992020ff49ced.tar.gz` into the job workspace **with its repository-root paths intact**. Verify a known fixture under `benchmarks/fixtures/` exists at the exact runtime path the packaged binary resolves through `DIRECTIONAL_TEST_SOURCE_DIR`; do not patch the binary or relocate individual fixtures after runtime begins.
+4. Extract `source/source-e12396d471c0754b112a40272a7992020ff49ced.tar.gz` into an isolated immutable packaged-source root **with its repository-root paths intact**. Before runtime, construct the CB26 execution view described above: hard-link the six packaged executables under `<execution-view>/bin`, copy the packaged-source `benchmarks/fixtures` tree to `<execution-view>/test-data/benchmarks/fixtures`, reproduce `test_data_root()`'s two-candidate resolution rule against the staged executable path, and require a known committed fixture at the selected path. If neither candidate resolves, stop before Directional runtime. Do not patch the binary, mutate the immutable package/source trees, or relocate individual fixtures after runtime begins.
 5. From the extracted source, run the read-only selector checks:
    - `python .agents/Directional/tools/selector_probe.py hash 365`
    - `python .agents/Directional/tools/selector_probe.py hash 393`
@@ -37,12 +72,12 @@
 6. Build a **static** identity-to-binary map from packaged source/CMake ownership. Do not execute a generated binary with `--gtest_list_tests`, help, version, discovery, or any other non-plan runtime command. Every selector identity must map to exactly one packaged binary; zero or multiple owners is orchestration failure.
 7. Record a recursive byte+mode census of the immutable extracted package before the first Directional process. This is the postflight comparison authority.
 
-## TB23-EXEC runtime protocol
+## TB23-R1 runtime protocol
 
 Execute all **397 selector identities in ordinal order**, one exact identity per **fresh process**:
 
 ```bash
-"$PACKAGE_ROOT/bin/$OWNER_BINARY" --gtest_filter="$TEST_IDENTITY"
+"$EXECUTION_VIEW/bin/$OWNER_BINARY" --gtest_filter="$TEST_IDENTITY"
 ```
 
 Rules:
@@ -109,7 +144,7 @@ Preserve:
 - bounded `(certifiedFace, multiplicity)` table;
 - truncation flag.
 
-Adjudication for TB23-REV is deliberately binary: **one distinct certified face versus several distinct certified faces** names which live branch of `M3-CP4c3-TB21-CAND-01` remains causal. TB23-EXEC records the data and does not choose the correction.
+Adjudication for `M3-CP4c-3-TB23-R1-REV` is deliberately binary: **one distinct certified face versus several distinct certified faces** names which live branch of `M3-CP4c3-TB21-CAND-01` remains causal. TB23-R1 records the data and does not choose the correction.
 
 ### D6 — carried surfaces and new witnesses
 
@@ -124,7 +159,7 @@ With only the six inherited semantic REDs, the expected complete ledger is **391
 
 ## Evidence to preserve
 
-TB23-EXEC must upload separate result and diagnostic-log artifacts containing at minimum:
+TB23-R1 must upload separate result and diagnostic-log artifacts containing at minimum:
 
 - exact package artifact ID/name/provider digest and downloaded archive SHA-256;
 - semantic source SHA;
@@ -144,13 +179,13 @@ After the last process, recompute the recursive byte+mode census and require it 
 
 ## Stop and routing rules
 
-- **Preflight orchestration failure:** stop before Directional runtime; fix only orchestration in a revision of TB23-EXEC. It consumes no semantic result.
+- **TB23-R1 preflight orchestration failure:** stop before Directional runtime; preserve the failed control-plane attempt and return to an orchestration-correction CB. It consumes no semantic result.
 - **After runtime begins:** do not repair the immutable package or change launch roots. Preserve the result as semantic or orchestration-invalid according to the frozen contract.
-- **Any accepted-prefix RED:** preserve all available evidence and route directly to TB23-REV; do not patch in TB.
-- **Expected ordinal-366 RED with discriminating CA3/CA4 evidence:** complete all 397 identities, preserve the full ledger, then route to TB23-REV.
-- **No further diagnostic Code + Build turn is authorized on this surface after TB23.** TB23-REV is the independent reasoning boundary that owns the correction decision.
-- TB23-EXEC must not edit `Regression_Root_Cause_Tracker.md`; TB23-REV owns classification/documentation after reviewing the immutable execution evidence.
+- **Any accepted-prefix RED:** preserve all available evidence and route directly to `M3-CP4c-3-TB23-R1-REV`; do not patch in TB.
+- **Expected ordinal-366 RED with discriminating CA3/CA4 evidence:** complete all 397 identities, preserve the full ledger, then route to `M3-CP4c-3-TB23-R1-REV`.
+- **No further diagnostic Code + Build turn is authorized on this surface after CB25.** CB26 is orchestration-only and does not add product diagnostics. `M3-CP4c-3-TB23-R1-REV` is the independent reasoning boundary that owns the correction decision.
+- TB23-R1 must not edit `Regression_Root_Cause_Tracker.md`; `M3-CP4c-3-TB23-R1-REV` owns classification/documentation after reviewing the immutable execution evidence.
 
-## Success criterion for TB23-EXEC
+## Success criterion for TB23-R1
 
-TB23-EXEC is complete when the immutable artifact is proven unchanged, all 397 identities have exactly one fresh-process result, the accepted prefix is 365/365, D2–D6 are fully recorded, and result/log artifacts make the run independently reviewable. Because ordinal 366 is expected to remain semantic RED, **TB23-EXEC completion is not checkpoint acceptance**. Exact successor: `M3-CP4c-3-TB23-REV`.
+`M3-CP4c-3-TB23-R1` is complete when the immutable artifact is proven unchanged, all 397 identities have exactly one fresh-process result, the accepted prefix is 365/365, D2–D6 are fully recorded, and result/log artifacts make the run independently reviewable. Because ordinal 366 is expected to remain semantic RED, **TB23-R1 completion is not checkpoint acceptance**. Exact successor: `M3-CP4c-3-TB23-R1-REV`.
