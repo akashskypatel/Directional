@@ -37,7 +37,7 @@ jobs:
 
   preflight:
     needs: validate
-    if: ${{ needs.validate.outputs.valid == 'true' && github.event.head_commit.message == 'chore: trigger CB25 compile preflight' }}
+    if: "${{ needs.validate.outputs.valid == 'true' && github.event.head_commit.message == 'chore: trigger CB25 compile preflight' }}"
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
       source_sha: e12396d471c0754b112a40272a7992020ff49ced
@@ -47,7 +47,7 @@ jobs:
 
   package:
     needs: validate
-    if: ${{ needs.validate.outputs.valid == 'true' && github.event.head_commit.message == 'chore: trigger CB25 compile package' }}
+    if: "${{ needs.validate.outputs.valid == 'true' && github.event.head_commit.message == 'chore: trigger CB25 compile package' }}"
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
       source_sha: e12396d471c0754b112a40272a7992020ff49ced
