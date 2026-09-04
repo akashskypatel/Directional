@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-TB22
-artifact_id=9919225745
-selector_count=393
-runtimeExecution=true
-benchmarkExecution=false

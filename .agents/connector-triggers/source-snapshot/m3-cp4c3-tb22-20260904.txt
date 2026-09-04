@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-TB22
-purpose=start-of-turn exact repository snapshot
-runtimeExecution=false
