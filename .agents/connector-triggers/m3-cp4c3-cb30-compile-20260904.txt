@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-CB30
-purpose=compile exact pushed CB30 source with durable GMP compile workflow
-source_sha=e045bf7147afc02bd90eff4822e4b609edbaba66
-retry=0
