@@ -1,22 +1,28 @@
-## M3-CP4c3-TB25-ORCH-01 — historical-harness selector insertion anchor mismatches extracted indentation — **ACTIVE / PRE-RUNTIME ORCHESTRATION / NON-STABLE**
+## M3-CP4c3-TB25-ORCH-01 — historical-harness selector insertion anchor mismatches extracted indentation — **CONTROL FIX PROVED / AWAITING RE-EXECUTION / NON-STABLE**
 
-- **Attempt:** `M3-CP4c-3-TB25-EXEC` run/job `33910913448 / 101146905061`. Workflow schema validation succeeded.
-  `Materialize proven TB25 artifact-only harness` then failed with exact message `selector injection point missing`;
-  `Execute immutable TB25 gate` was skipped, and result artifact `9951314815` records `ledger_available=false`.
-  Diagnostic log artifact: `9951315281`.
-- **Root cause:** the caller extracts the historical TB24 YAML `run: |` block and removes ten leading indentation
-  columns from every shell line, but the subsequent selector-authority injection anchor is hard-coded with twelve
-  leading spaces. The semantic text was transformed correctly; the indentation-sensitive anchor cannot match the
-  left-shifted shell block, so materialization fails closed before a TB25 harness is written.
-- **Classification:** orchestration/control-plane only. No Directional binary was invoked, no selector identity
-  executed, no semantic ledger exists, and CB28 product/test/fixture/selector/package bytes are unchanged.
-- **Accounting:** **+0 stable events / +0 recurrences**. Totals remain **44 events / 14 categories / 30 recurrences**;
-  produced-witness debt **5**; semantic M3 packages **90**. Latest semantic runtime remains TB24 at 389 PASS / 12
-  RED, accepted 365/365.
-- **Owner / falsification:** `M3-CP4c-3-CB29`, control-plane-only. It must replace the indentation-sensitive
-  materialization contract with a directly verifiable representation while reusing immutable artifact `9950303110`
-  unchanged and executing no Directional runtime. A later fresh TB25 re-execution closes this candidate only after
-  the corrected preflight reaches and executes the unchanged 403-identity gate from ordinal 1.
+- **Invalid attempt:** `M3-CP4c-3-TB25-EXEC` run/job `33910913448 / 101146905061`. Workflow schema validation
+  succeeded; materialization then failed with exact message `selector injection point missing`; runtime was skipped,
+  0/403 identities executed, and result artifact `9951314815` records `ledger_available=false`. Diagnostic log
+  artifact: `9951315281`.
+- **Root cause:** the failed caller removed ten YAML indentation columns from the historical TB24 shell block, then
+  searched the transformed shell for a selector-authority insertion anchor that still required twelve leading spaces.
+- **CB29 correction:** eliminate post-extraction selector text injection. Materialize the transformed TB25 shell as a
+  standalone directly syntax-verifiable harness; verify selector 365/401/403 authority separately against immutable
+  package `9950303110` before any Directional runtime.
+- **Proof:** CB29 run/job `33915621191 / 101162027243` SUCCESS. Result/log artifacts
+  `9953038617 / 9953039237`, SHA-256
+  `f1216938b3d543d4d3fcb498279b1ce432feac008ec240afbf9ae18b1fbe31cf` /
+  `5c2a3900e7d225e52651ced15edf6be0a0c320caf4c76aa247f06ec04dc17ac9`. Materialized harness SHA-256
+  `13ec524fa0fe609949b147ab36bf710392244b8202684ece2eea10eb5c83e0e9`; `bash -n` PASS;
+  `package_authority_valid=true`; selector 365 and 401 exact-prefix checks against 403 true;
+  `runtime_started=false`; `directional_runtime_invocations=0`.
+- **Classification/accounting:** orchestration/control-plane only. No product/test/fixture/selector/package semantic
+  byte changed and no semantic ledger was produced. Stable totals remain **44 events / 14 categories / 30
+  recurrences**; produced-witness debt **5**; semantic M3 packages **90**. Latest semantic runtime remains TB24 at
+  389 PASS / 12 RED, accepted 365/365.
+- **Closure condition:** `M3-CP4c-3-TB25-R1` closes this candidate only after corrected preflight succeeds and the
+  unchanged 403-identity gate starts at ordinal 1. A pre-runtime failure remains orchestration-invalid; a semantic RED
+  routes to independent review.
 
 ## M3-CP4c3-TB24-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 

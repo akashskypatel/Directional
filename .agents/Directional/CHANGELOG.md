@@ -1,3 +1,23 @@
+## 2026-09-04 — `M3-CP4c-3-CB29`: TB25 control defect corrected; pre-runtime harness/package proof GREEN
+
+CB29 is **COMPLETE / CONTROL PROOF GREEN / RUNTIME NOT EXECUTED / SEMANTIC AUTHORITY UNCHANGED**. It owns only
+`M3-CP4c3-TB25-ORCH-01` and changes no Directional product source, test, fixture, selector, build semantic, or
+immutable package byte. The failed TB25 run `33910913448` remains invalid provenance at 0/403 identities.
+
+The correction removes the indentation-sensitive selector-365 insertion that failed after the TB24 YAML body was
+left-shifted. The TB24-proven execution body is now materialized as a standalone directly syntax-verifiable TB25
+harness; selector 365/401/403 authority is verified separately against immutable CB28 artifact `9950303110` before
+any runtime. Proof run/job **`33915621191 / 101162027243`** succeeded. Result/log artifacts are
+`9953038617` (`f1216938b3d543d4d3fcb498279b1ce432feac008ec240afbf9ae18b1fbe31cf`) / `9953039237`
+(`5c2a3900e7d225e52651ced15edf6be0a0c320caf4c76aa247f06ec04dc17ac9`). Materialized harness SHA-256 is
+`13ec524fa0fe609949b147ab36bf710392244b8202684ece2eea10eb5c83e0e9`; `bash -n`, package authority, exact
+selector 365→403 and 401→403 prefixes all pass; `runtime_started=false`, `directional_runtime_invocations=0`.
+
+TB24 remains semantic authority at **389 PASS / 12 RED**, accepted **365/365**; stable accounting **44 / 14 / 30**,
+debt **5**, semantic packages **90**. `M3-CP4c3-TB25-ORCH-01` is control-fix-proved but awaits fresh execution. Exact
+successor: **`M3-CP4c-3-TB25-R1`**, immutable artifact-only execution of selector 403 under the unchanged frozen TB25
+plan using package `9950303110`; no rebuild or mutation is authorized.
+
 ## 2026-09-04 — `M3-CP4c-3-TB25-EXEC`: pre-runtime orchestration invalid; semantic authority stays TB24
 
 Artifact-only TB25 was triggered against immutable CB28 package `9950303110` / source
