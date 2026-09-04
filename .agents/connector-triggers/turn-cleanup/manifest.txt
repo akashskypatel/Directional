@@ -1,3 +1,0 @@
-# M3-CP4c-3-CB30 turn closeout
-# All known CB30 temporary workflow callers and trigger markers were retired workflow-first before this manifest.
-# No additional temporary repository paths remain to batch-delete; this manifest self-removes in the durable cleanup workflow.
