@@ -101,137 +101,75 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB25` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB23-EXEC` — EXACT NEXT / Test + Benchmark, IMMUTABLE EXECUTION ONLY
 
-`M3-CP4c-3-TB22-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` (measures **BZ0–BZ8** discharged, static only).
+`M3-CP4c-3-CB25` is **COMPLETE / COMPILE-GREEN / NO RUNTIME EXECUTED**.
 
-### TB22 immutable runtime authority
+### Exact authority
 
-- semantic/evidence source: **`d69729a69a40b020968ed6ef1fbc1bc788284518`** — ancestor of HEAD, **no code drift**;
-- CB24 compile run/job: **`33823590494 / 100871347582`**; package artifact **`9919225745`**,
-  `sha256:7955c243d7968e51e62f0f8d4b0cc96da313a2356ee8bf2eeba7c995b856e87d`;
-- selector **393**: `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`, **393 identities**,
-  selector 391 and accepted 365 both exact prefixes;
-- TB22 run/job: **`33826248118 / 100879465830`**; result/log artifacts **`9920122224 / 9920122598`**;
-- exact 393-row ledger: **`4998ca25b1477c2a32299bc3eb3d552e3ea9b0e2ccbf0eb4894393964f29dbbe`**;
-- pre/post package byte+mode census: **IDENTICAL**, `7e0c552c79281f97b7553406acd44383ff867197f36da54cd306ac9258fa2b74`;
-- selector result: **387 PASS / 6 RED**; accepted 1–365 **365/365 PASS**; reds 366/367/368/369/370/374.
+- Repository: `https://github.com/akashskypatel/Directional`
+- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
+- PR: `#8`, open / draft / unmerged
+- `evidence_commit`: `e12396d471c0754b112a40272a7992020ff49ced`
+- Pre-package owner-target compile: run/job `33831440291 / 100895129339`, result artifact `9921874264`, SUCCESS
+- Authoritative eight-target package compile: run/job `33831662949 / 100895799092`, SUCCESS
+- Immutable TB23 package: `9921914679` / `m3-cp4c3-cb25-package-result-33831662949` /
+  SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`
+- Compile log: `9921915098` / SHA-256 `7eee7b03e48a2301d9e60235d899a696c731826b4b52bb29230cccd33774e5d6`
+- `runtimeExecution=false`; GMP/GMPXX proved by CMake discovery and generated link command; package `SHA256SUMS` verified.
 
-### What the review established
+### CB25 result
 
-**Both CB24 measurements are vacuous - proved statically, not inferred.** BZ2 said not to accept a diagnostic's
-name as its proof; neither diagnostic measures what its name says.
+CB25 discharged frozen `CA0–CA9` diagnostically only. It now derives certified-face attribution from certificate-filtered face-walk
+evidence, resolves both minority-edge sides independently, publishes satisfiable uncut-face examined/differing counts, publishes a bounded
+failing-component certified-face multiset, and adds one falsifiability witness per new field plus an unrelated-error witness. The protected
+seed rule, uniqueness guard, component barriers/partition, `seedOrbits`, `edgeOrbitEvidence`, face walk, rotation system, region drafts,
+CB21 comparison, certificate and `proves_cellularity()` remain semantically unchanged.
 
-- **The faithfulness residual is a structural zero.** `GlobalTopologyPlan.cpp:1362-1389` requires an edge to be in
-  `certificateSeparatingSourceEdges` **and not** in `componentBarriers`. That first set is populated only from
-  Mandatory and Cut arcs (`:1191-1200`), whose source edges are exactly `mandatoryEdges` (`:674`) and `cutEdges`
-  (`:649`), and `componentBarriers = mandatoryEdges u traceTouchedEdges u cutEdges` (`:1114-1116`). **The subset
-  relation makes the conjunction empty; the loop body never executes.** `residual=0, witnessCount=0` on every
-  mesh, unconditionally.
-- **The certificate columns are the seed, re-printed.** `certificate_side_orbit` (`:1172-1184`) returns
-  `edgeOrbitEvidence[(face,edge)]` when unique, else `fragmentOrbits[face]` when size 1 - the same two lookups the
-  seed rule uses - and the component side is **assigned equal** to the labeled side (`:1272-1278`). The `3/3` and
-  `1/1` agreement is a **tautology**: one value, computed once, displayed three times.
-- **Two producers; the shipped path calls the wrong one.** `certificateSideOrbitsByEdge` (`:1204-1212`) *is*
-  genuinely certificate-derived from `walk.orbitByDart`, but it is consulted **only** inside the unreachable
-  residual loop.
-- **The seed asks the wrong question.** `edgeOrbitEvidence` records a dart side of a chord in the **labeled
-  neighbour** - evidence about that triangle's interior arrangement, not about which certified face the **uncut**
-  triangle across the edge belongs to. The uniqueness guard is **preserved** as a safety property; `[0,1,3]` is
-  fixture-specific and must not drive a general rule.
-- **No correction is authorized.** Not a seed-rule CB (the causal claim still needs the certificate attribution
-  that was never measured), not a DEFN (the definitions are not ambiguous; the code never asks the certificate),
-  not a barrier-set change. **Both branches of `M3-CP4c3-TB21-CAND-01` remain live.**
+Selector authority:
 
-**These were my own measures.** BY3 said "attribute each minority edge's two sides to certificate faces" and BY4
-said "publish the projection faithfulness residual". Neither named its source of truth or stated a falsifiability
-condition, so both were satisfiable without measuring anything. CA1-CA3 and CA6 fix that.
+- selector 365: 365 identities, `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- selector 393: byte-frozen 393 identities, `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`;
+- selector 397: 397 identities, `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`; 365 and 393 are exact prefixes.
 
-**371/372/391/392/393 all pass**; `M3-CP4c3-TB21-CAND-02` **closes / runtime proved**. 368/369/370/374 unchanged
-under their existing owners. **There is still no vertex-30 discriminator.**
+The generated-manifest helper was not trusted to rewrite historical first-commit metadata from the synthetic snapshot checkout; the existing
+manifest history was preserved and only the current selector-role metadata was updated.
 
-### CB25 binding scope — `CA0–CA9`, in the review record §8
+### Exact next execution
 
-**Diagnostic-only, with falsifiability required.** No product semantic change.
+Use `.agents/Directional/Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` without modification. TB23 is split:
 
-- **CA0** - accepted 365 untouched; **selector 393 byte-frozen** at `ee8cc033...27644c4d`, republished unchanged;
-  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **CA1** - **derive certified face ownership from the certificate.** A source triangle's certified face must come
-  from the `SurfaceCutGraph` certificate's face structure - the authority `proves_cellularity()` validates - and
-  **not** from `edgeOrbitEvidence`, `fragmentOrbits`, `seedOrbits` or any seed-side lookup. Publish it under a
-  distinct name, and **retire or rename `certificate_side_orbit`** so a seed-derived value can never again be read
-  as certificate evidence.
-- **CA2** - **measure each minority edge's two sides independently.** Both sides' certified faces come from CA1's
-  authority; **neither may be assigned from the other**, and a row must record when a side's certified face is
-  unavailable rather than inheriting a value.
-- **CA3** - **replace the residual with a satisfiable one.** Quantify over adjacent **uncut** source-triangle pairs
-  whose shared edge is **not** in `componentBarriers`, counting a pair when the two triangles' CA1 certified faces
-  **differ**. Publish the **examined-pair count separately from the differing-pair count**, so a zero result is
-  distinguishable from an empty domain.
-- **CA4** - publish the failing component's **multiset of CA1 certified faces** over its member triangles, bounded
-  with a truncation marker. Spanning several certified faces makes the missing-barrier branch live; spanning one
-  makes the seed-read branch live.
-- **CA5** - one witness per new field through the **production** path, plus a byte-identical unrelated-error
-  regression witness.
-- **CA6** - **every new diagnostic must be falsifiable and its witness must exercise the variation.** For CA3, a
-  witness whose input makes the differing-pair count **non-zero**; for CA1/CA2, a witness where the certified face
-  and the seed orbit **differ**. A witness that only asserts a field is published does not satisfy CA6. **This
-  supersedes ordinal 393's contract** under BZ7's escape clause.
-- **CA7** - append the next selector **named by its resulting identity count**; 393 stays an exact prefix; no
-  reordering; regenerate `Required_Green_Selector_Manifest.md` with `tools/selector_manifest.py`.
-- **CA8** - **no product semantic change whatsoever**: the seed rule, the guard and its predicate,
-  `componentBarriers`, the component partition, `seedOrbits`, `edgeOrbitEvidence`, `add_fragment_orbit`, the
-  `exteriorOrbits` filter, `is_terminal_slit`, the face walk, the rotation system, region drafts, CB21's
-  comparison, `proves_cellularity()` and the certificate stay untouched; `localFragmentCount` stays non-fatal.
-  **No barrier-set change. No revert of CB21.** No fixture geometry mutation, tolerance, float-derived decision or
-  accepted-boundary relaxation; no sphere / saturation / ordinal-370 / folded-cone / vertex-30 / finalize-contact
-  product work.
-- **CA9** - six `M3-CP4c-3-TB23` discriminators: (1) 1-365 stay **365/365**; (2) ordinal 366 **still** reds at
-  `UncutFaceComponentOrbitSeedNotUnique`, component 0, `Multiple`, orbits `[0,1,3]`, 191 faces - any movement
-  falsifies CA8; (3) the CA3 residual publishes **both** an examined-pair count and a differing-pair count, and
-  the **examined count is non-zero**; (4) the minority rows carry **independently computed** certified faces for
-  both sides, with the seed shown alongside; (5) the failing component's certified-face multiset is published -
-  **spanning several faces or one decides the owner**; (6) 367/368/369/370/374 unchanged and 371/372/391/392 still
-  PASS.
+1. **`M3-CP4c-3-TB23-EXEC`** — immutable package execution and raw evidence preservation only. No diagnosis-driven extra probes, no source/test/build edits, no compile/relink/rebuild/package repair, no benchmarks.
+2. **`M3-CP4c-3-TB23-REV`** — consume only TB23-EXEC evidence; perform diagnostics/review; no new unplanned Directional runtime.
 
-**No further diagnostic turn is authorized on this surface after TB23** - CA6 exists precisely so this one
-produces a discriminating result. The successor after TB23 is an independent `M3-CP4c-3-TB23-REV`, which owns the
-correction once CA3/CA4 name the live branch.
+Frozen execution discriminators are D1–D6 in the TB23 plan: accepted prefix 365/365, ordinal 366's exact semantic locus, non-zero
+examined-pair exercise, independently certified minority sides, failing-component certified-face multiset, carried surfaces, and new
+ordinals 394–397. **No further diagnostic Code + Build turn is authorized on this surface after TB23.**
 
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **87**.
-
-**Document consolidation ran this turn** under the standing rule (`CLEAN_UP_POLICY.md`), including retrospective
-indexing of anything the CB24/TB22 turns retired between reviews. Current authority is the TB22 report plus the
-TB22-REV record. No selector file, normative definition or policy was touched.
+CP4c-3 remains **OPEN**. TB22 remains the latest runtime authority until TB23-EXEC produces immutable evidence. Stable accounting remains
+44 events / 14 categories / 30 recurrences; produced-witness debt 5; semantic M3 package count 88.
 
 ### Context Load Plan
 
-`load_next`: turn-based-coding-agent CODE + BUILD guidance.
+```yaml
+load_next:
+  - references/turns/TB-EXEC.md
+conditional_modules:
+  - trigger: GitHub Actions/artifact access for immutable TB23 execution
+    path: modules/github-connector/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/GMP_COMPILE_POLICY.md
+  - .agents/Directional/Required_Green_Selector_Manifest.md
+templates_when_producing: []
+do_not_preload:
+  - sibling turn files
+  - research/provenance/examples
+  - uncited historical reports
+```
 
-Minimum successor context after the mandatory durable policy/start checklist:
-
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` — **frozen CB25 scope, §8 CA0–CA9**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part I §3 is an implication with a premise; Parts IV/V
-   prohibited lists; Part VI for vertex-star definitions. **Read the prohibited lists before authorizing any
-   correction, and carry each finding's premise, not just its conclusion.**
-5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector counts, LF hashes, prefix parents, roles.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
-   document index** resolves every folded or retired per-turn plan, report and record.
-
-Source surfaces CB25 will touch: `src/geometry/GlobalTopologyPlan.cpp` (certified-face derivation, the minority
-rows and the residual only), `src/geometry/SurfaceCutGraph.*` read-only for the certificate's face structure, the
-plan diagnostics headers for the added typed fields, and `tests/` for the CA5/CA6 witnesses.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
-`review_check.py boundary`, `selector_probe.py`, `selector_manifest.py`, and `fixture_probe.py`. See
-`tools/README.md` for the caveats.
+TB23-EXEC executor role is the lightweight runtime-execution role; TB23-REV is the thorough diagnostic/review role. The independent
+review/planning boundary remains externally owned; the loop must stop at that boundary rather than silently continuing into a corrective CB.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

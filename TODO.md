@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-03 UTC
+Last updated: 2026-09-04 UTC
 
 ## Purpose
 
@@ -26,67 +26,48 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB25` (Code + Build, DIAGNOSTIC-ONLY)
+## Current focus — `M3-CP4c-3-TB23-EXEC` (Test + Benchmark, IMMUTABLE EXECUTION ONLY)
 
-`M3-CP4c-3-TB22-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` (**BZ0–BZ8** discharged, static only).
+`M3-CP4c-3-CB25` is **COMPLETE / COMPILE-GREEN / RUNTIME-NOT-EXECUTED**. Exact semantic/evidence source:
+`e12396d471c0754b112a40272a7992020ff49ced`. The diagnostic-only implementation discharged the frozen
+`CA0–CA9` scope from `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` without changing the protected
+seed rule, uniqueness guard, barrier construction, partition, face walk, rotation system, region drafts, certificate,
+or `proves_cellularity()`.
 
-**Both CB24 measurements are vacuous - proved statically, not inferred.** BZ2 said not to accept a diagnostic's
-name as its proof; neither diagnostic measures what its name says.
+CB25 compile authority:
 
-- **The faithfulness residual is a structural zero.** `GlobalTopologyPlan.cpp:1362-1389` requires an edge to be in
-  `certificateSeparatingSourceEdges` **and not** in `componentBarriers`. That first set is populated only from
-  Mandatory and Cut arcs (`:1191-1200`), whose source edges are exactly `mandatoryEdges` (`:674`) and `cutEdges`
-  (`:649`), and `componentBarriers = mandatoryEdges u traceTouchedEdges u cutEdges` (`:1114-1116`). **The subset
-  relation makes the conjunction empty; the loop body never executes.** `residual=0, witnessCount=0` on every
-  mesh, unconditionally.
-- **The certificate columns are the seed, re-printed.** `certificate_side_orbit` (`:1172-1184`) returns
-  `edgeOrbitEvidence[(face,edge)]` when unique, else `fragmentOrbits[face]` when size 1 - the same two lookups the
-  seed rule uses - and the component side is **assigned equal** to the labeled side (`:1272-1278`). The `3/3` and
-  `1/1` agreement is a **tautology**: one value, computed once, displayed three times.
-- **Two producers; the shipped path calls the wrong one.** `certificateSideOrbitsByEdge` (`:1204-1212`) *is*
-  genuinely certificate-derived from `walk.orbitByDart`, but it is consulted **only** inside the unreachable
-  residual loop.
-- **The seed asks the wrong question.** `edgeOrbitEvidence` records a dart side of a chord in the **labeled
-  neighbour** - evidence about that triangle's interior arrangement, not about which certified face the **uncut**
-  triangle across the edge belongs to. The uniqueness guard is **preserved** as a safety property; `[0,1,3]` is
-  fixture-specific and must not drive a general rule.
-- **No correction is authorized.** Not a seed-rule CB (the causal claim still needs the certificate attribution
-  that was never measured), not a DEFN (the definitions are not ambiguous; the code never asks the certificate),
-  not a barrier-set change. **Both branches of `M3-CP4c3-TB21-CAND-01` remain live.**
+- pre-package owner-target compile: `33831440291 / 100895129339`, artifact `9921874264`, **SUCCESS**;
+- authoritative eight-target package compile: `33831662949 / 100895799092`, **SUCCESS**;
+- immutable package: `9921914679` (`m3-cp4c3-cb25-package-result-33831662949`), SHA-256
+  `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`;
+- persistent compile log: `9921915098`, SHA-256
+  `7eee7b03e48a2301d9e60235d899a696c731826b4b52bb29230cccd33774e5d6`;
+- GMP/GMPXX mandatory evidence is present; `runtimeExecution=false`; no Directional test or benchmark ran in CB25.
 
-**These were my own measures.** BY3 said "attribute each minority edge's two sides to certificate faces" and BY4
-said "publish the projection faithfulness residual". Neither named its source of truth or stated a falsifiability
-condition, so both were satisfiable without measuring anything. CA1-CA3 and CA6 fix that.
+Selector authority:
 
-**371/372/391/392/393 all pass**; `M3-CP4c3-TB21-CAND-02` **closes / runtime proved**. 368/369/370/374 unchanged
-under their existing owners. **There is still no vertex-30 discriminator.**
+- accepted selector 365 remains exact at `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- selector 393 remains byte-frozen at `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`;
+- selector 397 contains exactly 397 identities at
+  `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`, with 365 and 393 exact prefixes.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB25`** under §8 **CA0–CA9** of
-`Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`. **No product semantic change.**
+Run **`M3-CP4c-3-TB23-EXEC`** exactly as frozen in
+`Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md`.
 
-- [ ] **CA0** — selector 393 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
-- [ ] **CA1** — derive certified faces **from the certificate**; retire or rename `certificate_side_orbit`.
-- [ ] **CA2** — measure both sides of each minority edge **independently**; never assign one from the other.
-- [ ] **CA3** — replace the residual with a satisfiable one; publish **examined** and **differing** counts
-      separately.
-- [ ] **CA4** — publish the failing component's certified-face multiset, bounded.
-- [ ] **CA5** — one witness per new field plus an unrelated-error regression witness.
-- [ ] **CA6** — **every new diagnostic must be falsifiable**, with a witness that exercises the variation;
-      supersedes ordinal 393's contract.
-- [ ] **CA7** — append the next selector **named by its identity count**; regenerate the selector manifest.
-- [ ] **CA8** — **no product semantic change**; seed rule, guard, barrier set, partition, `seedOrbits`,
-      `edgeOrbitEvidence`, face walk, rotation system, region drafts, CB21's comparison, `proves_cellularity()`
-      and the certificate stay untouched.
-- [ ] **CA9** — publish the six `M3-CP4c-3-TB23` discriminators, chiefly a **non-zero examined-pair count** and
-      the certified-face multiset that names the live branch.
+- [ ] Consume only immutable package `9921914679`; do not rebuild, relink, repair, regenerate, or mutate source/tests/fixtures/selectors.
+- [ ] Verify package hashes, archived executable modes, source SHA, GMP/GMPXX evidence, and selector 365/393/397 hashes/prefixes before runtime.
+- [ ] Execute all 397 identities in ordinal order, one fresh process per exact identity; no benchmark execution.
+- [ ] Require accepted prefix 1–365 = **365/365 PASS**.
+- [ ] Preserve ordinal 366's exact locus and CA2–CA4 diagnostics, including non-zero examined-pair evidence and the failing-component certified-face multiset.
+- [ ] Preserve complete raw evidence and pre/post byte+mode equality.
 
-**No further diagnostic turn is authorized on this surface after TB23.**
+TB23 is explicitly split into **TB23-EXEC** (runtime execution and raw evidence only) and **TB23-REV** (diagnostics/review only).
+**No further diagnostic Code + Build turn is authorized on this surface after TB23.** TB23-REV owns the correction decision.
 
 Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **87**.
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count advances to **88**.
 
 ## Carried forward from M1
 
@@ -123,7 +104,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB22 is current runtime authority** at 387 PASS / 6 RED and accepted 365/365 on package 87 / selector393. Exact next: independent static **`M3-CP4c-3-TB22-REV`**.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **CB25 is compile-green** at semantic source `e12396d...`, selector397/package88. Exact next: immutable **`M3-CP4c-3-TB23-EXEC`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -134,7 +115,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 source-face seed/ownership projection:** TB22 measured residual 0; minority edges `10-79` and `29-35` stay within certificate faces `3/3` and `1/1` yet seed via `edgeOrbitEvidence`. Candidate is narrowed but not corrected. Exact owner: independent TB22-REV BZ2–BZ5. `M3-CP4c3-TB21-CAND-01`.
+- [ ] **CP4c-3 source-face seed/ownership projection:** CB25 replaced the vacuous/circular diagnostics with certificate-derived, independently sided, falsifiable measurements without changing product semantics. Both branches of `M3-CP4c3-TB21-CAND-01` remain live until immutable TB23 evidence is reviewed. Exact owner: `M3-CP4c-3-TB23-REV`.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -162,4 +143,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **87**. **TB21 remains current runtime authority: 384 PASS / 7 RED, accepted 365/365; CB24 artifact 9919225745 and selector393 are the exact next artifact-only validation authority.** Exact next is `M3-CP4c-3-TB22`; the mandatory successor after TB22 is independent `M3-CP4c-3-TB22-REV`. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **88**. **TB22 remains the latest runtime authority until TB23 executes; CB25 is compile-green at semantic source `e12396d471c0754b112a40272a7992020ff49ced`, immutable package `9921914679`, selector397.** Exact next is `M3-CP4c-3-TB23-EXEC`, followed by evidence-only `M3-CP4c-3-TB23-REV`. PR #8 remains open, draft, and unmerged.

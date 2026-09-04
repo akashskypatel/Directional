@@ -1,3 +1,23 @@
+## 2026-09-04 — `M3-CP4c-3-CB25`: certificate-derived falsifiable diagnostics compile-green; TB23 frozen
+
+Diagnostic-only Code + Build under frozen **CA0–CA9**. Exact semantic/evidence source
+`e12396d471c0754b112a40272a7992020ff49ced` replaces CB24's circular/vacuous diagnostic projection with certificate-filtered
+face-walk ownership, independent two-side certified-face attribution, satisfiable adjacent-uncut examined/differing counts, and a bounded
+failing-component certified-face multiplicity table. New witnesses make each field falsifiable and preserve an unrelated failure locus.
+Protected topology semantics in CA8 remain unchanged.
+
+Selector 393 remains byte-identical at `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`; selector397 has exactly
+397 identities at `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`, with accepted selector365 and selector393 exact prefixes.
+
+Compile-only evidence is green. Owner-target pre-package run/job `33831440291 / 100895129339` succeeded. Authoritative eight-target
+package run/job `33831662949 / 100895799092` succeeded with mandatory GMP/GMPXX and `runtimeExecution=false`. Immutable result
+artifact `9921914679` has SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`; persistent log artifact
+`9921915098` has SHA-256 `7eee7b03e48a2301d9e60235d899a696c731826b4b52bb29230cccd33774e5d6`. Internal package manifest verification passed.
+No Directional runtime test, benchmark, discovery command, CLI, fuzzer, or custom input executed. Semantic M3 package count advances **87 → 88**.
+
+Exact next is immutable `M3-CP4c-3-TB23-EXEC` under the frozen artifact-only plan, followed by diagnostic/review-only
+`M3-CP4c-3-TB23-REV`. No further diagnostic Code + Build turn is authorized on this surface after TB23.
+
 ## 2026-09-04 — `M3-CP4c-3-TB22-REV`: both CB24 measurements proved vacuous; neither branch eliminated; CB25 frozen
 
 Independent review of immutable TB22 evidence under the binding plan's measures **BZ0–BZ8**. Record:
