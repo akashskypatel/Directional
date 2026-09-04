@@ -1,4 +1,4 @@
-# M3-CP4c-3-CB29 temporary non-workflow state
+# M3-CP4c-3-CB29 temporary non-workflow state — ready for final cleanup
 .agents/connector-triggers/source-snapshot/cb29-20260904T1310-0700.txt
 .agents/connector-triggers/cb29-harness-proof/trigger-20260904.txt
 .agents/connector-triggers/cb29-docs-apply/trigger-20260904.txt
