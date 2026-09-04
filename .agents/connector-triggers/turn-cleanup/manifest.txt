@@ -1,2 +1,5 @@
-# M3-CP4c-3-TB21 temporary-state manifest
+# M3-CP4c-3-TB21 final temporary-state manifest
 .agents/connector-triggers/source-snapshot/tb21-start.txt
+.agents/connector-triggers/tb/m3-cp4c3-tb21.txt
+.agents/connector-triggers/tb/m3-cp4c3-tb21-closeout-drive.txt
+.agents/Directional/turn-payloads/m3-cp4c3-tb21-run.sh
