@@ -1,0 +1,146 @@
+name: M3 CP4c3 CB26 Preflight
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb26-preflight/**
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb26-preflight-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb26-preflight.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb26-preflight
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  preflight:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-cb26-preflight-bootstrap.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=${GITHUB_WORKFLOW}" \
+            "run_id=${GITHUB_RUN_ID}" \
+            "event=${GITHUB_EVENT_NAME}" \
+            "event_sha=${GITHUB_SHA}" \
+            "ref=${GITHUB_REF}" \
+            "repository=${GITHUB_REPOSITORY}" \
+            'turnBoundary=Code+Build-orchestration-only' \
+            'runtimeExecution=false' \
+            'compileExecution=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Fetch exact committed CB26 harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-cb26-preflight-bootstrap.log"
+          exec > >(tee -a "$log") 2>&1
+          url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh"
+          curl --fail --silent --show-error "$url" -o "${RUNNER_TEMP}/m3_cp4c3_tb23_r1_harness.sh"
+          bash -n "${RUNNER_TEMP}/m3_cp4c3_tb23_r1_harness.sh"
+          sha256sum "${RUNNER_TEMP}/m3_cp4c3_tb23_r1_harness.sh"
+
+      - name: Validate corrected execution view without Directional runtime
+        id: preflight
+        shell: bash
+        run: |
+          set +e
+          bash "${RUNNER_TEMP}/m3_cp4c3_tb23_r1_harness.sh" --preflight-only
+          status=$?
+          echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
+          echo "cb26_preflight_exit=${status}" | tee -a "${RUNNER_TEMP}/m3-cp4c3-cb26-preflight-bootstrap.log"
+          exit 0
+
+      - name: Upload CB26 preflight result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-cb26-preflight-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb23-r1-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Consolidate diagnostic log
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          bootstrap="${RUNNER_TEMP}/m3-cp4c3-cb26-preflight-bootstrap.log"
+          harness="${RUNNER_TEMP}/m3-cp4c3-tb23-r1.log"
+          final="${RUNNER_TEMP}/m3-cp4c3-cb26-preflight-final.log"
+          cat "$bootstrap" > "$final"
+          if [[ -f "$harness" ]]; then
+            printf '\n===== harness log =====\n' >> "$final"
+            cat "$harness" >> "$final"
+          fi
+          printf '%s\n' \
+            "preflight_step_exit=${{ steps.preflight.outputs.exit_code }}" \
+            "job_status=${{ job.status }}" \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$final"
+
+      - name: Upload CB26 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-cb26-preflight-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-cb26-preflight-final.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Enforce CB26 orchestration boundary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          status='${{ steps.preflight.outputs.exit_code }}'
+          boundary="${RUNNER_TEMP}/m3-cp4c3-tb23-r1-result/execution-boundary.txt"
+          test "$status" = '0'
+          test -f "$boundary"
+          grep -Fxq 'mode=--preflight-only' "$boundary"
+          grep -Fxq 'runtime_started=false' "$boundary"
+          grep -Fxq 'runtime_completed=false' "$boundary"
+          grep -Fxq 'preflight_completed=true' "$boundary"
+          grep -Fxq 'execution_view_verified=true' "$boundary"
+          grep -Fxq 'orchestration_failure=false' "$boundary"
+          grep -Fxq 'benchmark_execution=false' "$boundary"
+          grep -Fxq 'configure_execution=false' "$boundary"
+          grep -Fxq 'compile_execution=false' "$boundary"
+          grep -Fxq 'relink_execution=false' "$boundary"
+          grep -Fxq 'generated_discovery=false' "$boundary"
+          grep -Fxq 'package_repair=false' "$boundary"
+          grep -Fxq 'mode_repair=false' "$boundary"
+          grep -Fxq 'source_test_fixture_selector_mutation=false' "$boundary"
+          grep -Fxq 'resolved_rule=sibling' "${RUNNER_TEMP}/m3-cp4c3-tb23-r1-result/execution-view.txt"
+          grep -Fxq 'package_census_equal=true' "${RUNNER_TEMP}/m3-cp4c3-tb23-r1-result/package-immutability.txt"
+          grep -Fxq 'source_census_equal=true' "${RUNNER_TEMP}/m3-cp4c3-tb23-r1-result/source-immutability.txt"
+          grep -Fxq 'execution_view_census_equal=true' "${RUNNER_TEMP}/m3-cp4c3-tb23-r1-result/execution-view-immutability.txt"
