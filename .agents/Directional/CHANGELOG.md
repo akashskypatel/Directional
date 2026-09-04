@@ -1,3 +1,61 @@
+## 2026-09-04 — `M3-CP4c-3-TB22-REV`: both CB24 measurements proved vacuous; neither branch eliminated; CB25 frozen
+
+Independent review of immutable TB22 evidence under the binding plan's measures **BZ0–BZ8**. Record:
+`Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`. Static only — no runtime, compile, link, package,
+benchmark, or product/test/fixture/selector mutation.
+
+Authority re-verified: source `d69729a69a40b020968ed6ef1fbc1bc788284518` exists, is an ancestor of HEAD and has
+**no code drift**; selector 393 hashes to `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d` with
+**393** identities, selector 391 an exact prefix and accepted `6b5b6555…cfc14b8a1` an exact 365-prefix; the ledger
+closes at 387 + 6; pre/post package census identical at `7e0c552c…9258fa2b74`. The early cleanup failure is
+orchestration-only.
+
+**BZ2 — the projection-faithfulness residual is a structural zero.** `GlobalTopologyPlan.cpp:1362–1389` requires an
+edge to be in `certificateSeparatingSourceEdges` **and not** in `componentBarriers`. That first set is populated
+only from Mandatory and Cut arcs (`:1191–1200`), whose source edges are exactly `mandatoryEdges` (`:674`) and
+`cutEdges` (`:649`), while `componentBarriers = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` (`:1114–1116`).
+**`certificateSeparatingSourceEdges ⊆ componentBarriers`, so the conjunction is empty and the loop body never
+executes** — `residual=0, witnessCount=0` on every mesh, unconditionally. It rules nothing out, and BZ5's guard
+against a barrier-set change (conditioned on BZ2 confirming faithfulness) does not bind.
+
+**BZ3 — the minority rows' certificate columns are the seed, re-printed.** `certificate_side_orbit` (`:1172–1184`)
+returns `edgeOrbitEvidence[(face,edge)]` when unique, else `fragmentOrbits[face]` when size 1 — the same two
+lookups the seed rule uses — and the component-side value is **assigned equal** to the labeled side (`:1272–1278`).
+So `contributedSeed`, `labeledSideCertificateFace` and `componentSideCertificateFace` are one value computed once
+and displayed three times; the reported `3/3` and `1/1` agreement is a **tautology**. Separately,
+`certificateSideOrbitsByEdge` (`:1204–1212`) *is* genuinely certificate-derived but is consulted only inside the
+unreachable residual loop — two producers for one quantity, with the shipped path calling the circular one.
+
+**BZ4/BZ5 — no correction is authorized.** An uncut triangle lies in exactly one certified face, so attaching a
+component needs the certified face of one member triangle; `edgeOrbitEvidence` instead records a dart side of a
+chord in the **labeled neighbour**, which is evidence about that triangle's interior arrangement. That makes the
+seed representation suspect but not yet causal, because the certificate attribution was never measured. Not a
+seed-rule CB, not a DEFN (the definitions are not ambiguous — the code never asks the certificate), not a
+barrier-set change. **Both branches of `M3-CP4c3-TB21-CAND-01` remain live.**
+
+These were my own measures: BY3 and BY4 named output fields without naming a source of truth or a falsifiability
+condition, so both were satisfiable without measuring anything. New `M3-CP4c3-TB22-REV-CAND-01` owns the
+evidence-integrity defect, and ordinal **393's contract is explicitly superseded** under BZ7's escape clause.
+
+**BZ1 — `M3-CP4c3-TB21-CAND-02` CLOSES / RUNTIME PROVED.** Ordinal 391 passes with its sphere half
+`SKIPPED, reason=ordinal368-open`; 371/372/392/393 also pass; the torus census is
+`V=72, E=76, F=4, componentCount=1, χ=0, residual=0`. Carried surfaces 367/368/369/370/374 unchanged under their
+existing owners; vertex 30 still not reached. Lessons **109–111** added.
+
+Static turn on an unaccepted surface with the red set unchanged at six: **+0 events / +0 recurrences**; totals
+remain **44 / 14 / 30**, debt **5**, packages **87**; accepted authority **365/365**; CP4c-3 **OPEN**.
+
+Exact successor frozen: **`M3-CP4c-3-CB25`** under **CA0–CA9**, **diagnostic-only** — derive certified faces from
+the certificate and retire `certificate_side_orbit`, measure both sides of each minority edge independently,
+replace the residual with a satisfiable one publishing examined and differing counts separately, publish the
+failing component's certified-face multiset, and **require every new diagnostic to be falsifiable with a witness
+that exercises the variation**. **No further diagnostic turn is authorized on this surface after TB23.**
+
+Fifth application of the standing REVIEW-turn consolidation rule: the TB21 review record and the consumed TB22
+review plan were folded, and the TB21 report and CB24 build report — retired by `M3-CP4c-3-TB22`'s own
+stale-evidence cleanup at `4207907c` without an index entry — were indexed retrospectively. 4 documents / 640
+lines, running total 57 documents / 12155 lines.
+
 ## 2026-09-03 — `M3-CP4c-3-CB24`: projection diagnostics published; selector393/package87 compile-green; TB22 frozen
 
 Diagnostic-only Code + Build under TB21-REV **BY0–BY9**. Exact implementation/evidence source

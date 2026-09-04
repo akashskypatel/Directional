@@ -1,3 +1,47 @@
+## M3-CP4c3-TB22-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`, measures **BZ0-BZ8** discharged per the
+  binding plan. Static only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BZ0.** Source `d69729a6` exists, is an ancestor of HEAD, **no code drift**; selector 393 hashes to
+  `ee8cc033...27644c4d` with **393** identities, selector 391 an exact prefix, accepted 365-prefix unchanged;
+  ledger closes at 387+6=393; pre/post census identical. The early cleanup failure is orchestration-only.
+- **BZ1 - `M3-CP4c3-TB21-CAND-02` CLOSES / RUNTIME PROVED.** Ordinal 391 passes with the sphere half
+  `SKIPPED, reason=ordinal368-open`; 371/372/392/393 also pass. Torus census `V=72,E=76,F=4,chi=0,residual=0`.
+- **BZ2 - THE FAITHFULNESS RESIDUAL IS A STRUCTURAL ZERO.** `GlobalTopologyPlan.cpp:1362-1389` requires an edge to
+  be in `certificateSeparatingSourceEdges` **and not** in `componentBarriers`. That first set is populated only
+  from Mandatory and Cut arcs (`:1191-1200`), whose source edges are exactly `mandatoryEdges` (`:674`) and
+  `cutEdges` (`:649`); `componentBarriers = mandatoryEdges u traceTouchedEdges u cutEdges` (`:1114-1116`).
+  **`certificateSeparatingSourceEdges` is a subset of `componentBarriers`, so the conjunction is empty and the
+  loop body never executes.** `residual=0, witnessCount=0` on every mesh, unconditionally. It rules nothing out,
+  and BZ5's guard against a barrier-set change (conditioned on BZ2 confirming faithfulness) **does not bind**.
+- **BZ3 - THE CERTIFICATE COLUMNS ARE THE SEED, RE-PRINTED.** `certificate_side_orbit` (`:1172-1184`) returns
+  `edgeOrbitEvidence[(face,edge)]` when unique, else `fragmentOrbits[face]` when size 1 - the same two lookups the
+  seed rule uses. The component-side value is then **assigned equal** to the labeled side when
+  `barrierClass == None` (`:1272-1278`). So `contributedSeed`, `labeledSideCertificateFace` and
+  `componentSideCertificateFace` are **one value computed once and displayed three times**; the `3/3` and `1/1`
+  agreement is a tautology. Separately, `certificateSideOrbitsByEdge` (`:1204-1212`) *is* certificate-derived but
+  is consulted only inside the unreachable residual loop.
+- **BZ4 - the seed asks the wrong question.** An uncut triangle lies in exactly one certified face, so attaching a
+  component needs the certified face of **one** member triangle. `edgeOrbitEvidence` records a dart side of a
+  chord in the **labeled neighbour** - evidence about that triangle's interior arrangement, not about the uncut
+  triangle's certified ownership. The uniqueness guard is **preserved** as a safety property; `[0,1,3]` is
+  fixture-specific and must not drive a general rule.
+- **BZ5 - NO CORRECTION AUTHORIZED.** Not a seed-rule CB (the causal claim still needs the certificate attribution
+  that was never measured), not a DEFN (the definitions are not ambiguous; the code never asks the certificate),
+  not a barrier-set change. **Both branches of `M3-CP4c3-TB21-CAND-01` remain live.**
+- **Accounting:** static, unaccepted surface, red set unchanged at six. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **87**.
+
+## M3-CP4c3-TB22-REV-CAND-01 - two production diagnostics report values that cannot vary - **NEW / ACTIVE / EVIDENCE INTEGRITY / NON-STABLE**
+
+`projectionFaithfulnessResidual` is computed over an unsatisfiable predicate and is `0` on every mesh by
+construction; the minority rows' `*CertificateFace` columns are aliased to the seed value. Ordinal **393** pins
+this vacuous contract as required-green because it asserts the fields are *published*, never that they could
+differ. Owner: **CA1-CA3** (read from the certificate; measure both sides independently; replace the residual with
+a satisfiable one publishing examined and differing counts separately) and **CA6** (every new diagnostic must be
+falsifiable, with a witness that exercises the variation). CA6 explicitly supersedes ordinal 393's contract under
+BZ7's escape clause. Related: lessons 109-111.
+
 ## M3-CP4c3-TB22 — projection residual zero; seed rule remains the live architectural question — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** semantic source `d69729a69a40b020968ed6ef1fbc1bc788284518`, package artifact `9919225745`, selector 393; run/job `33826248118 / 100879465830`; result/log artifacts `9920122224 / 9920122598`; exact ledger SHA-256 `4998ca25b1477c2a32299bc3eb3d552e3ea9b0e2ccbf0eb4894393964f29dbbe`.
@@ -47,7 +91,7 @@
 - **Accounting:** RED set moved 8 -> 7 by clearing 371/372 and adding a diagnostic co-reacher of an owned surface.
   **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **86**.
 
-## M3-CP4c3-TB21-CAND-01 - source-face component seed ownership remains inconsistent with certified-face attribution - **ACTIVE / NARROWED BY TB22 / ARCHITECTURAL / GATING / NON-STABLE**
+## M3-CP4c3-TB21-CAND-01 - the source-face component construction is an unvalidated projection of a certified cellular complex - **ACTIVE / ARCHITECTURAL / GATING / BOTH BRANCHES LIVE AFTER TB22-REV / NON-STABLE**
 
 TB22 preserves the 191-triangle component with exact seeds `[0,1,3]` while the actual embedded complex remains cellular. CB24's deciding measurement is now runtime-settled: projection residual **0**, no residual witnesses, and the two minority edges stay within certificate faces **3/3** and **1/1**. Their distinct seeds are still derived by **`edgeOrbitEvidence`** (3 and 1). This narrows the candidate away from the measured missing-barrier/different-certificate-face branch and onto the semantic relationship between edge-orbit evidence and certified component ownership. Owner: independent **TB22-REV BZ2–BZ5**. The review must validate that residual 0 is not a false zero, derive the seed-selection contract independently, and only then authorize Code + Build or DEFN. Supersedes `M3-CP4c3-TB20-REV-CAND-01`; absorbs `M3-CP4c3-TB19-CAND-01` as its symptom record.
 
@@ -66,7 +110,7 @@ TB22 preserves the 191-triangle component with exact seeds `[0,1,3]` while the a
 
 TB22 retains this coexistence and adds the deciding projection evidence: residual **0**, no witnesses, minority edges `10-79` and `29-35` with same-certificate side pairs `3/3` and `1/1`, and seeds 3/1 derived by `edgeOrbitEvidence`. The candidate remains non-stable and gating, but is **narrowed** to the seed/ownership rule unless BZ2 disproves the residual's completeness. Owner: independent `M3-CP4c-3-TB22-REV` BZ2–BZ5; no correction is pre-authorized.
 
-## M3-CP4c3-TB21-CAND-02 — appended cross-witness Euler diagnostic dependency — **CLOSED / RUNTIME PROVED AT TB22 / NON-STABLE**
+## M3-CP4c3-TB21-CAND-02 - ordinal 391's sphere half blocked by the owned 368 surface - **CLOSED / RUNTIME PROVED AT TB22 / NON-STABLE**
 
 TB22 ordinal 391 executes the re-scoped mechanical/torus assertions and **PASSes**. Its prescribed-sphere half reports `status=SKIPPED,reason=ordinal368-open,terminalFailureCode=NotProductionReady`. The dependency no longer creates a RED; ordinal 368 retains its independently owned sphere surface. This candidate closes without a stable event/category/recurrence change and without authorizing a sphere correction.
 

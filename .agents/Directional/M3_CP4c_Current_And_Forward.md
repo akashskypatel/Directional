@@ -37,32 +37,76 @@ Selector 391 remains byte-frozen at `f60638a5890e133d7eb3cfcee2783c000192f310a41
 
 ---
 
-## 2. The current frontier — seed evidence versus certified-face ownership
+## 2. The current frontier — both CB24 measurements are vacuous
 
-TB22 materially narrows `M3-CP4c3-TB21-CAND-01` without choosing a correction. The actual embedded graph remains certified cellular (`V=22,E=26,F=6,componentCount=1,sourceChi=2,residual=0`) while source-face component 0 still collects three seed orbits `[0,1,3]`.
+TB22 is **387 PASS / 6 RED** on selector **393** with accepted **365/365**; reds are 366, 367, 368, 369, 370, 374.
+Ordinals **371, 372, 391, 392 and 393** all pass. Ordinal 391 now reports its sphere half as
+`SKIPPED, reason=ordinal368-open`, closing `M3-CP4c3-TB21-CAND-02`; the torus census is
+`V=72, E=76, F=4, componentCount=1, χ=0, residual=0`.
 
-CB24's projection-faithfulness measurement reports **residual 0**, no witnesses, and no truncation. The two minority rows are not evidence of adjacent uncut triangles crossing different certified faces: their component/labeled certificate faces are **3/3** and **1/1**. Both minority seeds instead arise from **`edgeOrbitEvidence`**.
+Ordinal 366 is unchanged: `UncutFaceComponentOrbitSeedNotUnique`, component **0**, **191** faces,
+`seedState=Multiple`, orbits **`[0,1,3]`**, boundary attribution **81 / 1 / 1** over 97 edges.
 
-Therefore the measured mechanical witness does not support the prior “missing barrier between different certificate faces” branch at the relation CB24 instrumented. The remaining live question is whether the current edge-orbit seed read is the correct representation for attaching an uncut source-face component to the certified region structure. Independent TB22-REV must validate the residual's semantics and derive that ownership rule from frozen invariants before authorizing any correction.
+**`M3-CP4c-3-TB22-REV` adjudicated CB24's evidence under BZ0–BZ8**
+(`Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`) and found **neither diagnostic measures what its name
+says**:
 
-Ordinal 391's diagnostic dependency is resolved at runtime: mechanical/torus reporting runs and the prescribed-sphere half skips with `reason=ordinal368-open`. `M3-CP4c3-TB21-CAND-02` closes as runtime-proved/non-stable; the owned sphere surface at 368 remains unchanged.
+- **`projectionFaithfulnessResidual` is a structural zero.** `GlobalTopologyPlan.cpp:1362–1389` requires an edge to
+  be in `certificateSeparatingSourceEdges` **and not** in `componentBarriers`. The first set is populated only
+  from Mandatory and Cut arcs (`:1191–1200`), whose source edges are exactly `mandatoryEdges` (`:674`) and
+  `cutEdges` (`:649`); `componentBarriers = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` (`:1114–1116`). **The
+  subset relation makes the conjunction empty — the loop body never executes.** `residual=0, witnessCount=0` on
+  every mesh, unconditionally.
+- **The minority rows' certificate columns are the seed, re-printed.** `certificate_side_orbit` (`:1172–1184`)
+  returns `edgeOrbitEvidence[(face,edge)]` when unique, else `fragmentOrbits[face]` when size 1 — the same two
+  lookups the seed rule uses — and the component side is **assigned equal** to the labeled side (`:1272–1278`). The
+  published `3/3` and `1/1` agreement is a **tautology**: one value, computed once, displayed three times.
+- **Two producers; the shipped path calls the wrong one.** `certificateSideOrbitsByEdge` (`:1204–1212`) *is*
+  genuinely certificate-derived from `walk.orbitByDart`, but it is consulted only inside the unreachable residual
+  loop.
+- **The seed asks the wrong question.** `edgeOrbitEvidence` records a dart side of a chord in the **labeled
+  neighbour** — evidence about that triangle's interior arrangement, not about which certified face the **uncut**
+  triangle across the edge belongs to. The uniqueness guard is **preserved** as a safety property, and `[0,1,3]` is
+  fixture-specific evidence that must not drive a general rule.
+
+**Consequently no correction is authorized and both branches of `M3-CP4c3-TB21-CAND-01` remain live.** BZ5's guard
+against a barrier-set change was conditioned on BZ2 confirming faithfulness; that antecedent fails.
+
+These were **my own measures** — BY3 and BY4 named output fields without naming a source of truth or a
+falsifiability condition, so both were satisfiable without measuring anything. CA1–CA3 and CA6 fix that.
 
 ---
 
-## 3. Exact next turn — `M3-CP4c-3-TB22-REV`, independent static review
+## 3. Exact next turn — `M3-CP4c-3-CB25`, diagnostic-only, `CA0–CA9`
 
-Execute `Architecture_M3_CP4c3_TB22_Independent_Review_Plan.md` under **BZ0–BZ8**. This is REVIEW + PLAN, STATIC ONLY. No product/test/fixture/selector/build mutation, configure, compile, link, runtime test, benchmark, package operation, or DEFN execution is authorized.
+Full text in §8 of `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`.
 
-Load-bearing review questions:
+- **CA0** — accepted 365 untouched; **selector 393 byte-frozen** and republished unchanged; eight standard compile
+  targets with **mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
+- **CA1** — derive certified face ownership **from the certificate**, never from `edgeOrbitEvidence`,
+  `fragmentOrbits` or `seedOrbits`; **retire or rename `certificate_side_orbit`**.
+- **CA2** — measure both sides of each minority edge **independently**; neither may be assigned from the other, and
+  an unavailable side must be recorded as such.
+- **CA3** — replace the residual with a **satisfiable** one over adjacent uncut triangle pairs whose shared edge is
+  not in `componentBarriers`, counting pairs whose certified faces **differ**; publish the **examined** count
+  separately from the **differing** count.
+- **CA4** — publish the failing component's **certified-face multiset**, bounded. Several faces ⇒ missing-barrier
+  branch; one face ⇒ seed-read branch.
+- **CA5** — one witness per new field through the production path, plus an unrelated-error regression witness.
+- **CA6** — **every new diagnostic must be falsifiable, and its witness must exercise the variation.** Supersedes
+  ordinal 393's contract under BZ7's escape clause.
+- **CA7** — append the next selector **named by its resulting identity count**; 393 stays an exact prefix;
+  regenerate `Required_Green_Selector_Manifest.md` with `tools/selector_manifest.py`.
+- **CA8** — **no product semantic change**: the seed rule, the guard, `componentBarriers`, the partition,
+  `seedOrbits`, `edgeOrbitEvidence`, `add_fragment_orbit`, the `exteriorOrbits` filter, `is_terminal_slit`, the
+  face walk, the rotation system, region drafts, CB21's comparison, `proves_cellularity()` and the certificate stay
+  untouched; `localFragmentCount` stays non-fatal. **No barrier-set change. No revert of CB21.**
+- **CA9** — six `M3-CP4c-3-TB23` discriminators, chiefly a **non-zero examined-pair count**, independently computed
+  certified faces on both sides of each minority edge, and the certified-face multiset that **names the live
+  branch**.
 
-- prove the zero residual measures the stated projection-faithfulness premise completely and has no false-zero path;
-- reconcile the two minority rows with their same-certificate `3/3` and `1/1` attribution and `seedRule=edgeOrbitEvidence`;
-- derive the correct component seed/ownership contract independently of current implementation output;
-- choose Code + Build only if the contract is already clear and the seed read is wrong; choose DEFN only if the normative ownership rule is genuinely undefined;
-- do not authorize a barrier-set change merely to force seed uniqueness if the measured projection is faithful;
-- preserve accepted 365/365, 371/372, ordinal-391 decoupling, 392/393 evidence, and separate ownership of 368/369/370/374.
-
-The review must stop after establishing one exact successor.
+**No further diagnostic turn is authorized on this surface after TB23.** The successor after TB23 is an
+independent `M3-CP4c-3-TB23-REV`.
 
 ---
 
@@ -72,38 +116,38 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB21-CAND-01` | **ACTIVE / NARROWED BY TB22 / ARCHITECTURAL / GATING / NON-STABLE** — projection residual is 0; both minority edges remain within one certificate face per side; minority seeds come from `edgeOrbitEvidence`. Interpretation/correction owner: independent TB22-REV. |
-| `M3-CP4c3-TB21-CAND-02` | **CLOSED / RUNTIME PROVED / NON-STABLE** — ordinal 391 PASS; sphere half skips with `reason=ordinal368-open` while mechanical/torus evidence runs. |
-| `M3-CP4c3-TB20-REV-CAND-01` | **WITHDRAWN** — load-bearing non-cellularity claim measured false. |
-| `M3-CP4c3-TB20-REV-CAND-02` | **DOWNGRADED / FORMAL ONLY** — CB21 corrected real unsoundness and is not reverted; Parts IV/V formal prohibition remains owned by a future DEFN turn. |
-| `M3-CP4c3-TB19-CAND-01` | **ACTIVE / SYMPTOM RECORD** under `M3-CP4c3-TB21-CAND-01`; the guard is not relaxed. |
-| `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED** — universal non-crossing is refuted; must not be promoted to fatal. |
+| `M3-CP4c3-TB21-CAND-01` | **ACTIVE / ARCHITECTURAL / GATING / BOTH BRANCHES LIVE** — the source-face component construction is an unvalidated projection of a certified cellular complex. CB24's evidence was vacuous, so neither the missing-barrier nor the seed-read branch is eliminated. Owner: CA1–CA4, then TB23-REV. |
+| `M3-CP4c3-TB22-REV-CAND-01` | **NEW / ACTIVE / EVIDENCE INTEGRITY** — two production diagnostics report values that cannot vary; ordinal 393 pins the vacuous contract as required-green. Owner: CA1–CA3 and CA6. |
+| `M3-CP4c3-TB21-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 391 passes with the sphere half explicitly skipped. |
+| `M3-CP4c3-TB20-REV-CAND-02` | **ACTIVE / FORMAL ONLY** — CB21 not reverted; Parts IV/V's written prohibition remains unlifted. Owner: a DEFN turn. |
+| `M3-CP4c3-TB19-CAND-01` | **ACTIVE / SYMPTOM RECORD** under `M3-CP4c3-TB21-CAND-01`. |
+| `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED**; `localFragmentCount` stays non-fatal. |
 | `M3-CP4c3-TB7-CAND-02` | **ACTIVE / DEFERRED** — folded-cone witness, ordinal 374. |
-| `M3-CP4c3-DEFN-R2-CAND-01` | **ACTIVE / ARCHITECTURAL CLASS** — exact decision with no declared bound on input size. |
-| `M3-CP4c3-TB6-CAND-01` | **ACTIVE** — vertex-30 evidence contract; no vertex-30 discriminator yet. |
+| `M3-CP4c3-DEFN-R2-CAND-01` | **ACTIVE / ARCHITECTURAL CLASS** — an exact decision with no declared input-size bound. |
+| `M3-CP4c3-TB6-CAND-01` | **ACTIVE** — vertex-30 evidence contract. **There is still no vertex-30 discriminator.** |
 | `M3-CP4c2-TB-X2-CAND-04` | **ACTIVE** — prescribed sphere 368. |
 | `M3-CP4c2-TB-X2-R10-CAND-01` | **ACTIVE / QUALITY / COVERAGE** — saturation, ordinal 369. |
-| `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — ordinal 370; no correction authorized. |
-| finalize/contact fall-through | **ACTIVE** — separate owner. |
+| `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — ordinal 370. **No correction authorized.** |
+| finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
-**Closed:** `M3-CP4c3-TB21-CAND-02` (runtime proved at TB22), `M3-CP4c3-TB10-REV-CAND-01` (runtime proved at TB21), `M3-CP4c3-TB19-REV-CAND-02`, `M3-CP4c3-TB17-CAND-01`.
+**Closed:** `M3-CP4c3-TB21-CAND-02`, `M3-CP4c3-TB10-REV-CAND-01`, `M3-CP4c3-TB19-REV-CAND-02`,
+`M3-CP4c3-TB17-CAND-01`. The historical torus `UncutFaceComponentOrbitSeedNotUnique` record stays separate as the
+genuine non-cellular case Part I proved.
 
 ---
 
 ## 5. Settled facts a successor must not reopen
 
-- **The mechanical actual embedded complex is cellular** — `22 − 26 + 6 − 2 = 0`, all faces certified discs. Do not
-  re-derive non-cellularity from the seed error.
-- **Part I §3 is an implication with a premise.** It licenses "not a cut graph" only where the complex is
-  independently shown non-cellular, as on the torus. It says nothing about the source-face projection.
-- **The certificate and the seed guard test different objects**; neither validates the other, and the projection's
-  faithfulness condition is stated by neither.
-- **CB21 is not reverted**, and TB20-REV's argument against it is withdrawn; only the formal Parts IV/V gap
-  remains, owned by a DEFN turn.
-- **371/372 are closed and their fixture accessor is test-only** — never product authority.
-- **Ordinal 391 dependency is CLOSED / RUNTIME PROVED at TB22**; its sphere half skips because the independently owned 368 surface remains open.
-- **A universal chord non-crossing invariant is refuted**; `localFragmentCount` must not become a fatal oracle
-  without the crossing derivation and a crossing witness.
+- **`projectionFaithfulnessResidual = 0` is a structural zero** — the predicate is unsatisfiable by construction.
+  It never ruled anything out and must not be cited as evidence.
+- **The minority rows' certificate-face columns are the seed value re-printed.** Their agreement is a tautology.
+- **Both branches of `M3-CP4c3-TB21-CAND-01` are live.**
+- **The mechanical actual embedded complex is cellular** — `22 − 26 + 6 − 2 = 0`, all faces certified discs.
+- **Part I §3 is an implication with a premise**; it says nothing about the source-face projection.
+- **The certificate and the seed guard test different objects**; neither validates the other.
+- **CB21 is not reverted**; only the formal Parts IV/V gap remains, owned by a DEFN turn.
+- **371/372 and ordinal 391 are closed**; the atlas accessor is test-only and never product authority.
+- **A universal chord non-crossing invariant is refuted**; `localFragmentCount` must not become a fatal oracle.
 - The face walk is a validated total permutation; shared orbit ownership by the two sides of one arc is legitimate
   topology. **BS9-5 remains retired.**
 - Identical typed error names across witnesses do not establish identical root cause.
@@ -119,15 +163,24 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 After the durable start-of-turn checklist, load:
 
 1. `ORIENTATION.md` — read first.
-2. `Architecture_M3_CP4c3_TB22_Independent_Review_Plan.md` — exact next static review authority.
-3. `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` — current runtime evidence.
-4. `Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` — preceding review/BY0–BY9 intent.
-5. **this file** — current frontier, settled facts and candidate ownership.
-6. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `Required_Green_Selector_Manifest.md` — selector counts, LF hashes, prefix parents and roles.
-8. `M3_CP4c_Frozen_Definitions.md` — required when deriving the ownership/seed contract.
-9. `M3_CP4c_Consolidated_Record.md` only when historical lineage is needed.
+2. **this file** — current frontier, frozen successor, settled facts and candidate ownership.
+3. `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` — the frozen **CB25** scope, §8 CA0–CA9.
+4. `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` — current immutable runtime authority.
+5. `M3_CP4c_Frozen_Definitions.md` — **Part I §3 is an implication with a premise**; Parts IV/V prohibited lists;
+   Part VI for vertex-star definitions. **Read the prohibited lists before authorizing any correction, and carry
+   each finding's premise, not just its conclusion.**
+6. `GMP_COMPILE_POLICY.md` — mandatory for every compile.
+7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+8. `Required_Green_Selector_Manifest.md` — selector counts, LF hashes, prefix parents and roles.
+9. `M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded document index**
+   resolves every folded or retired per-turn plan, report and record.
 
-**Review boundary.** TB22-REV is static-only. Do not execute generated binaries, configure, compile, test, benchmark, mutate product/test/selector/build logic, or begin its successor.
+**Review tooling.** `.agents/Directional/tools/` holds read-only helpers: `review_check.py authority <sha>` and
+`review_check.py boundary`, `selector_probe.py`, `selector_manifest.py`, and `fixture_probe.py`. See
+`tools/README.md` for the caveats — in particular that geometric sharpness is not the product's barrier set, and
+that the singularity reconstruction is corroboration only.
 
-**Document consolidation.** TB22-REV owns the next REVIEW consolidation/ORIENTATION update under `CLEAN_UP_POLICY.md`; selector files remain independent byte-frozen witnesses.
+**Document consolidation.** Every REVIEW turn folds its superseded per-turn documents into
+`M3_CP4c_Consolidated_Record.md`'s folded document index under `CLEAN_UP_POLICY.md`, **and indexes anything a CB or
+TB turn's stale-evidence cleanup retired between reviews**. Preserve durable facts in a retained record first;
+never fold current authority, normative definitions, policies or selector files.

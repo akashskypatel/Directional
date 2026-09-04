@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-03):** TB21 is latest runtime on source `fa564610` / selector **391** at **384 PASS / 7 RED**, accepted **365/365**. **The mechanical actual embedded complex is CELLULAR** - `V=22, E=26, F=6, componentCount=1, chi=2, residual=0`, all faces certified discs - so `M3-CP4c-3-TB20-REV`'s non-cellularity conclusion is **withdrawn**. The surviving question is that the source-face component construction is an **unvalidated projection** of that complex. 371/372 now pass. Exact next is `M3-CP4c-3-CB24` under **BY0-BY9**, diagnostic-only.
+> **Current CP4c-3 authority (2026-09-04):** TB22 is latest runtime on source `d69729a6` / selector **393** at **387 PASS / 6 RED**, accepted **365/365**; 371/372/391/392/393 all pass. **`M3-CP4c-3-TB22-REV` proved both CB24 measurements VACUOUS** - the projection-faithfulness residual is `0` on every mesh by construction, and the minority rows' certificate-face columns are the seed value re-printed - so **neither branch of the projection question is eliminated**. Exact next is `M3-CP4c-3-CB25` under **CA0-CA9**, diagnostic-only, with falsifiability required.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,32 +185,29 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB21 / TB21-REV.** Accepted authority remains selector **365**
-(`6b5b6555…cfc14b8a1`). CP4c-3's frozen unaccepted gate is selector **391**
-(`f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`, **391 identities** — name and count agree
-again), with the 388-identity 385-file and accepted 365 both exact prefixes.
+**Current authority — TB22 / TB22-REV.** Accepted authority remains selector **365**
+(`6b5b6555…cfc14b8a1`). CP4c-3's frozen unaccepted gate is selector **393**
+(`ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`, **393 identities**), with selector 391 and
+accepted 365 both exact prefixes.
 
-**TB21 is the latest semantic runtime evidence** (source `fa5646106ccaa23770b84a935c6d1d6007928640`, run/job
-`33818038269 / 100854435211`, ledger `8606fb7b…20aa6f77`): **384 PASS / 7 RED**, ordinals **1–365 green**, red set
-{366, 367, 368, 369, 370, 374, 391}; identical pre/post byte+mode census `e15a8aba…f80161897`. **371 and 372 now
-pass** — they reach their own assertions for the first time after the test-only atlas decoupling, closing
-`M3-CP4c3-TB10-REV-CAND-01`. Ordinal **391** is a new RED: its prescribed-sphere half needs `sphere.cutGraph` and
-hits the already-owned 368 surface.
+**TB22 is the latest semantic runtime evidence** (source `d69729a69a40b020968ed6ef1fbc1bc788284518`, run/job
+`33826248118 / 100879465830`, ledger `4998ca25…64f29dbbe`): **387 PASS / 6 RED**, ordinals **1–365 green**, red set
+{366, 367, 368, 369, 370, 374}; identical pre/post byte+mode census `7e0c552c…9258fa2b74`. Ordinal **391 passes**
+with its sphere half explicitly `SKIPPED, reason=ordinal368-open`, closing `M3-CP4c3-TB21-CAND-02`; the torus
+census is `V=72, E=76, F=4, componentCount=1, χ=0, residual=0`.
 
-**The mechanical actual embedded complex is CELLULAR.** CB23's census reports `V=22, E=26, F=6,
-componentCount=1, sourceChi=2, residual=0`, with every face certified a disc by
-`SurfaceCutGraphCellularityCertificate::proves_cellularity()`. **`M3-CP4c-3-TB20-REV`'s conclusion that the network
-is not a cut graph is therefore withdrawn** — it applied `M3_CP4c_Frozen_Definitions.md` Part I §3's *conclusion*
-without carrying its *premise*, and Part I proves non-cellularity for the torus independently, from `V = E = 48`
-and `χ = 0`.
+**Both CB24 measurements are vacuous — proved statically, not inferred.**
 
-**The surviving question is a projection, not a cut graph.** The certificate counts faces of the embedded graph on
-the **surface**; the seed guard counts components of whole **source triangles** joined across non-barrier source
-edges. Neither validates the other, and the condition that makes the projection faithful is stated by neither
-(§7 item 1). Ordinal 366 is unchanged: component 0, 191 faces, `seedState=Multiple`, orbits `[0,1,3]`, boundary
-attribution **81 / 1 / 1** over 97 edges.
+- `projectionFaithfulnessResidual` quantifies over `certificateSeparatingSourceEdges` **minus**
+  `componentBarriers`, and `certificateSeparatingSourceEdges ⊆ mandatoryEdges ∪ cutEdges ⊆ componentBarriers`.
+  **The predicate is unsatisfiable; the residual is `0` on every mesh, always.**
+- The minority rows' `*CertificateFace` columns are **the seed value re-printed**: `certificate_side_orbit` reads
+  `edgeOrbitEvidence` then `fragmentOrbits` — the seed machinery — and the component side is *assigned equal* to
+  the labeled side. One value, computed once, displayed three times.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **86**. Sphere 368,
+**Neither branch of `M3-CP4c3-TB21-CAND-01` is eliminated**, and no correction is authorized (§7 item 1).
+
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **87**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence
 contract remain deferred under their own owners. **Vertex 30 is still not reached.**
 
@@ -317,32 +314,34 @@ features first, then threads them through source authority *and* atlas). Copy on
 ## 7. Open problems, in priority order
 
 1. **The source-face component construction is an unvalidated projection of a certified cellular complex —
-   ARCHITECTURAL and gating.** The symptom is still `UncutFaceComponentOrbitSeedNotUnique` at
-   `GlobalTopologyPlan.cpp:1151–1163`, but the earlier reading of it was wrong.
+   ARCHITECTURAL and gating; BOTH BRANCHES REMAIN LIVE.** The symptom is still
+   `UncutFaceComponentOrbitSeedNotUnique` at `GlobalTopologyPlan.cpp:1151–1163`, component 0, 191 faces, orbits
+   `[0,1,3]`, boundary attribution **81 / 1 / 1** over 97 edges.
 
-   - **The complex is cellular.** `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`, every face a certified
-     disc. Do **not** re-derive non-cellularity from the seed error.
-   - **Two different objects.** `certify_actual_embedded_graph` counts nodes, arcs and face-walk orbits of the
-     **embedded graph on the surface**, whose faces are bounded by arcs running through triangle interiors. The
-     seed guard joins whole **uncut source triangles** across source edges not in
-     `componentBarriers = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`. The second is a *coarsening* of the
-     first, and **neither validates the other**.
-   - **The unstated contract.** The projection is faithful only if *every pair of adjacent uncut source triangles
-     lying in different certificate faces is separated by an edge in `componentBarriers`.* Cellularity does not
-     imply it; no construction states or checks it.
-   - **Two readings, opposite corrections.** Component 0's boundary attribution is **81 / 1 / 1** over 97 edges:
-     one dominant orbit and two single-edge outliers. Either those two edges genuinely separate certificate faces
-     and the barrier set is missing them (fix the barrier set), or two seed reads are wrong (fix the seed rule at
-     `:1130–1140`).
-   - **The deciding rows already exist.** TB20's first-64 window showed 44/1/1 and TB21's complete census shows
-     81/1/1, so **both minority rows are inside the retained window** — captured in the artifact, summarized into
-     counts by the report. No new measurement is needed, only retention and projection by *distinctness*.
+   - **Two different objects.** The certificate counts faces of the embedded graph on the **surface**; the guard
+     joins whole **uncut source triangles** across edges not in `componentBarriers`. The second is a coarsening of
+     the first, faithful only if *every pair of adjacent uncut triangles in different certificate faces is
+     separated by a `componentBarriers` edge* — a condition neither construction states or checks.
+   - **CB24 did not test it.** The residual's predicate is **unsatisfiable by construction** (`:1362–1389`):
+     `certificateSeparatingSourceEdges` is built only from Mandatory and Cut arcs (`:1191–1200`), whose source
+     edges are exactly the members of `mandatoryEdges` (`:674`) and `cutEdges` (`:649`), both subsets of
+     `componentBarriers` (`:1114–1116`). It reports `0` for every input on every mesh.
+   - **The certificate columns are circular.** `certificate_side_orbit` (`:1172–1184`) reads `edgeOrbitEvidence`
+     then `fragmentOrbits` — never the certificate — and the component side is copied from the labeled side
+     (`:1272–1278`). The published `3/3` and `1/1` agreement is a tautology.
+   - **Two producers, and the shipped path calls the wrong one.** `certificateSideOrbitsByEdge` (`:1204–1212`) *is*
+     genuinely certificate-derived from `walk.orbitByDart`, but it is consulted **only** inside the unreachable
+     residual loop.
+   - **The seed asks the wrong question.** `edgeOrbitEvidence` records the orbit of a dart side of a chord in the
+     **labeled neighbour** — evidence about that triangle's interior arrangement, not about which certified face
+     the **uncut** triangle across the edge belongs to.
 
-   `M3-CP4c-3-CB24` (BY0–BY9) is **diagnostic-only**: retain rows by distinctness, publish the minority rows in
-   full with which rule produced each seed, attribute each minority edge's two sides to certificate faces, and
-   publish the projection faithfulness residual. **Prohibited:** any semantic change to the guard, the barrier set,
-   the partition, `seedOrbits`, the seed rule, `edgeOrbitEvidence`, the face walk, the rotation system, region
-   drafts, CB21's comparison, `proves_cellularity()` or the certificate.
+   `M3-CP4c-3-CB25` (CA0–CA9) is **diagnostic-only**: derive certified faces **from the certificate**, measure both
+   sides independently, replace the residual with a satisfiable one that publishes examined and differing counts
+   separately, publish the failing component's certified-face multiset, and **require every new diagnostic to be
+   falsifiable with a witness that exercises the variation**. **Prohibited:** any semantic change to the seed
+   rule, the guard, the barrier set, the partition, `seedOrbits`, `edgeOrbitEvidence`, the face walk, the rotation
+   system, region drafts, CB21's comparison, `proves_cellularity()` or the certificate.
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -410,6 +409,24 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A diagnostic measure must name its source of truth, not just its output field.** "Attribute each edge's sides
+to certificate faces" was implemented by a helper called `certificate_side_orbit` that reads `edgeOrbitEvidence`
+and `fragmentOrbits` — the seed machinery — and never touches the certificate. The field name matched the request;
+the value answered a different question, and three columns of a report turned out to be one number printed three
+times. Specify **which authority** a diagnostic reads from, and make the witness prove it read from there.
+`LESSONS.md` §4 109.
+
+**A measurement that cannot vary is not evidence — state what would falsify it.** The faithfulness residual
+quantifies over a set intersected with the complement of one of its own supersets, so it is `0` on every mesh
+forever; its required-green witness passes because the field is *published*, never because it could have been
+non-zero. Every diagnostic contract should state the condition under which it would report a different value, and
+the witness should exercise that condition. `LESSONS.md` §4 110.
+
+**Two mechanisms for one quantity means the reachable one is probably the wrong one.** `GlobalTopologyPlan.cpp`
+computes certificate side orbits twice: once genuinely from `walk.orbitByDart` on mandatory/cut arcs, once from the
+seed lookups. The genuine one is consulted only inside unreachable code; the circular one feeds every published
+row. When a value has two producers, check which one the shipped path actually calls. `LESSONS.md` §4 111.
 
 **Bounded evidence must be retained by distinctness, not by position.** A first-N window preserves the majority
 and can drop exactly the outliers a "not unique" failure exists to report. Component 0's boundary census is
@@ -1302,3 +1319,19 @@ The two-ring is constructed in the test file, not a fixture.
   rows lie inside the retained window** in both runs.
 - Ordinals **371 and 372 pass** as of TB21, reaching their own assertions for the first time. Their fixture
   accessor is **test-only** and is never product authority.
+- **`projectionFaithfulnessResidual` is a structural zero.** `GlobalTopologyPlan.cpp:1362–1389` requires an edge
+  to be in `certificateSeparatingSourceEdges` **and not** in `componentBarriers`. The first set is populated only
+  from Mandatory and Cut arcs (`:1191–1200`); those source edges are exactly `mandatoryEdges` (`:674`) and
+  `cutEdges` (`:649`), and `componentBarriers = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` (`:1114–1116`).
+  **The conjunction is empty. The loop body never executes.**
+- **`certificate_side_orbit` (`:1172–1184`) is not the certificate.** It returns
+  `edgeOrbitEvidence[(face,edge)]` when unique, else `fragmentOrbits[face]` when size 1 — the same two lookups the
+  seed rule uses (`:1284–1299`). The row's component-side value is then **assigned equal** to the labeled side
+  whenever `barrierClass == None` (`:1272–1278`).
+- **`certificateSideOrbitsByEdge` (`:1204–1212`) *is* certificate-derived** — it reads `walk.orbitByDart` for the
+  arc on a mandatory or cut edge — but it is consulted only inside the unreachable residual loop.
+- TB22 minority rows: edge `10-79` seed **3**, faces `10,79,151` ↔ `10,11,79`; edge `29-35` seed **1**, faces
+  `28,29,35` ↔ `29,35,91`. Both `seedRule=edgeOrbitEvidence`, `labeledFaceOwnerCount=2`, `barrierClass=none`.
+  Their reported certificate-face agreement is a **tautology**, not corroboration.
+- Torus census at TB22: `V=72, E=76, F=4, componentCount=1, sourceChi=0, residual=0` — `72 − 76 + 4 = 0 = χ`, so
+  the torus complex is cellular once its cut edges are present.

@@ -1573,6 +1573,23 @@ building any conclusion on it.**
      disproved the antecedent. When citing a frozen finding, restate its premise and verify it holds for the
      witness in hand.
 
+109. **A diagnostic measure must name its source of truth, not just its output field.** A frozen measure said
+     "attribute each edge's two sides to certificate faces". The implementation added a helper named
+     `certificate_side_orbit` that reads the seed machinery and never touches the certificate, so three columns of
+     the resulting report were one number printed three times. Specify which authority the diagnostic must read
+     from, and require its witness to prove it read from there.
+
+110. **A measurement that cannot vary is not evidence - state what would falsify it.** A "faithfulness residual"
+     quantified over a set intersected with the complement of one of its own supersets: empty by construction, so
+     the residual was zero on every mesh forever. Its required-green witness passed because the field was
+     published, never because it could have been non-zero. Every diagnostic contract should state the condition
+     under which it would report a different value, and the witness should exercise that condition.
+
+111. **Two mechanisms for one quantity means the reachable one is probably the wrong one.** One file computed
+     certificate side orbits twice - once genuinely from the face-walk darts on mandatory/cut arcs, once from the
+     seed lookups. The genuine producer was consulted only inside unreachable code; the circular one fed every
+     published row. When a value has two producers, check which one the shipped path actually calls.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
