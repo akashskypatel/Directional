@@ -1624,6 +1624,19 @@ building any conclusion on it.**
      components were strictly coarser than the partition under adjudication - guaranteeing multi-owner sets and an
      unavailable answer for every face. State the required barrier set in the definition, not only in the code.
 
+118. **A consumer must never re-derive a partition its producer already computed.** A certifier built an entire
+     embedded topology and its face walk, then published four scalars per face; the consumer rebuilt the identical
+     structure and tried to reconstruct ownership from fragments of it. Four successive diagnostic contracts failed
+     on that reconstruction. When a value proves hard to measure downstream, check whether the producer computed
+     and discarded it - publishing it is usually cheaper than any measurement.
+
+119. **A prohibition inherits the premise of the finding that motivated it.** "Do not weaken the fragment-count
+     invariant" was written when the only observed instance was a witness where non-cellularity had been
+     independently proved. On a certified cellular witness containing a bridge the invariant is simply false, so
+     the prohibition could not be honoured as written; it had to be lifted with stated reasons by the definition
+     authority rather than quietly worked around. Re-check a prohibition's premise before treating it as binding
+     on a new witness.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

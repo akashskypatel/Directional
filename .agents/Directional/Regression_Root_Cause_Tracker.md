@@ -1,3 +1,41 @@
+## M3-CP4c3-DEFN-R3 - definition turn (absorbs REVIEW + PLAN) - **CURRENT DEFINITION AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `M3_CP4c_Frozen_Definitions.md` **Part VII**, measures **CF0-CF9** discharged. No runtime, compile,
+  package, or product/test/fixture/selector mutation. Accepted 365 untouched; selector 397 byte-frozen.
+- **CF1 / DEFN-R3.1 - the certifier must publish a total source-face owner map.** `SurfaceCutGraphFaceCertificate`
+  publishes an orbit id and three counts and no source-face membership, so certified ownership was never readable.
+  But `certify_actual_embedded_graph` (`SurfaceCutGraph.cpp:356-380`) already calls the same
+  `build_embedded_graph_topology` the plan calls and derives the same face walk - **this is a publication
+  decision, not a new computation**. `proves_cellularity()` is extended to require the map to be total with ids
+  drawn from the certificate's own faces.
+- **CF2 / DEFN-R3.2 - ownership is read, not seeded.** `componentBarriers`, the unlabeled-face partition,
+  `seedOrbits` and the per-edge seed rule are replaced by a lookup.
+  `UncutFaceComponentOrbitSeedNotUnique` is **relocated, not weakened**, into a consistency check that names the
+  component and the conflicting owners. This satisfies Parts IV/V: the replacement decides more, not less.
+- **CF3 / DEFN-R3.3** - any retained projection must use the full
+  `mandatoryEdges u traceTouchedEdges u cutEdges`; a strict subset is not admissible ownership evidence.
+- **CF4 / DEFN-R3.4 - the fragment-count prohibition is LIFTED with reasons.** `|owners| = k+1` is false on a
+  certified cellular complex containing a bridge - TB18 measured arc 15 with `forwardOrbit = reverseOrbit = 0` -
+  and Part I §3's motivating premise (non-cellularity) was measured false for the mechanical witness at TB21. CB21
+  stands and is **not reverted**; its accepted-boundary proof is by construction. The `proves_cellularity()` and
+  seed-guard prohibitions remain in force.
+- **CF6 / DEFN-R3.5 - the branch discriminator is a lookup:** certified owners of component 0's 191 faces; not all
+  equal means missing barrier, all equal means mis-read seed. No further diagnostic instrumentation is authorized.
+- **CF7 / DEFN-R3.6, R3.7** - ordinal **397 must be fixed** (relaxing its expectation is prohibited); ordinal
+  **393's assertions are replaced in place**, ordinal retained and gating, because its seed-relative expectation
+  becomes meaningless once the seed ceases to exist.
+- **CF8 - successor frozen:** **`M3-CP4c-3-CB27`** under **CG0-CG9**, runtime-free, GMP/GMPXX linked.
+- **Accounting:** definition turn, no runtime, no gate. **+0 events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, packages **88**.
+
+## M3-CP4c3-DEFN-R3-CAND-01 - one embedded topology, two independent constructions - **NEW / ACTIVE / ARCHITECTURAL / NON-GATING / NON-STABLE**
+
+`build_embedded_graph_topology` is invoked independently by `certify_actual_embedded_graph` and by
+`GlobalTopologyPlan`, giving two sources of truth for the same object and two orbit numberings that happen to
+coincide only because the construction is deterministic. That coincidence is what let seed-derived values pass a
+`certificateFaceOrbits` membership filter and be mistaken for certificate evidence. Whether to unify the two is an
+implementation judgement left to **CG1**; any unification must keep the certifier's result authoritative.
+
 ## M3-CP4c3-TB23-R1-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`, measures **CE0-CE8** discharged. Static
@@ -194,7 +232,7 @@ BZ7's escape clause. Related: lessons 109-111.
 - **Accounting:** RED set moved 8 -> 7 by clearing 371/372 and adding a diagnostic co-reacher of an owned surface.
   **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **86**.
 
-## M3-CP4c3-TB21-CAND-01 - the source-face component construction is an unvalidated projection - **ACTIVE / ARCHITECTURAL / GATING / BOTH BRANCHES NEVER DISCRIMINATED / OWNER: M3-CP4c-3-DEFN-R3 / NON-STABLE**
+## M3-CP4c3-TB21-CAND-01 - the source-face component construction is an unvalidated projection - **ACTIVE / ARCHITECTURAL / GATING / DISCRIMINATOR DEFINED AT DEFN-R3.5 / OWNER: CG9-3 / NON-STABLE**
 
 TB22 preserves the 191-triangle component with exact seeds `[0,1,3]` while the actual embedded complex remains cellular. CB24's deciding measurement is now runtime-settled: projection residual **0**, no residual witnesses, and the two minority edges stay within certificate faces **3/3** and **1/1**. Their distinct seeds are still derived by **`edgeOrbitEvidence`** (3 and 1). This narrows the candidate away from the measured missing-barrier/different-certificate-face branch and onto the semantic relationship between edge-orbit evidence and certified component ownership. Owner: independent **TB22-REV BZ2–BZ5**. The review must validate that residual 0 is not a false zero, derive the seed-selection contract independently, and only then authorize Code + Build or DEFN. Supersedes `M3-CP4c3-TB20-REV-CAND-01`; absorbs `M3-CP4c3-TB19-CAND-01` as its symptom record.
 
@@ -267,7 +305,7 @@ is reclassified as the **symptom** record under this class, and the historical t
 merged**, as the genus-1 instance. Owner: **BW1-BW3** evidence, then a definition-level turn that decides whether
 the producer must construct a cut graph.
 
-## M3-CP4c3-TB20-REV-CAND-02 - CB21 weakened an invariant the frozen definitions prohibit weakening - **DOWNGRADED AT TB21-REV / FORMAL DOCUMENTATION GAP ONLY / SUBSTANTIVE CONCERN WITHDRAWN / NON-STABLE**
+## M3-CP4c3-TB20-REV-CAND-02 - CB21 weakened an invariant the frozen definitions prohibit weakening - **CLOSED AT DEFN-R3 / PROHIBITION LIFTED WITH REASONS / CB21 NOT REVERTED / NON-STABLE**
 
 `M3-CP4c-3-CB21` made the fragment-count invariant's low side non-fatal. **Parts IV and V** of
 `M3_CP4c_Frozen_Definitions.md` prohibit relaxing that invariant, and Part I §3 explains the reason the sibling

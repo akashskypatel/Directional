@@ -1,3 +1,68 @@
+## 2026-09-04 — `M3-CP4c-3-DEFN-R3`: the certifier must publish a total source-face owner map; ownership becomes a lookup
+
+Definition turn, frozen as **Part VII** of `M3_CP4c_Frozen_Definitions.md`, measures **CF0–CF9**. `DEFN` absorbs
+`REVIEW + PLAN`, so this turn also adjudicated the inherited candidates and issued its successor's measures. No
+runtime, compile, link, package, or product/test/fixture/selector mutation. Accepted 365 untouched; selector 397
+byte-frozen. Part VII supersedes Parts IV–VI **where they conflict, and only there**.
+
+**DEFN-R3.1 — the certifier must publish a total source-face owner map.** `SurfaceCutGraphFaceCertificate`
+publishes `orbit`, `boundaryWalkCount`, `boundaryArcCount` and `discTopologyEstablished` — no source-face
+membership — so *which certified face contains this source triangle* was never readable, and four successive
+diagnostic contracts each reconstructed it from `walk.orbitByDart`, the seed quantity, and each collapsed. But
+`certify_actual_embedded_graph` (`src/geometry/SurfaceCutGraph.cpp:356–380`) **already calls the same
+`build_embedded_graph_topology` the plan calls** at `GlobalTopologyPlan.cpp:2364` and derives the same face walk,
+then publishes counts only while the plan rebuilds the structure to guess. **This is a publication decision, not a
+new computation.** `proves_cellularity()` is extended to require the map to be total over source faces with ids
+drawn from the certificate's own faces; a certificate that cannot produce it reports a typed failure naming the
+first unowned source face.
+
+**DEFN-R3.2 — ownership is read, not seeded.** With a total map, `componentBarriers`, the unlabeled-face component
+partition, `seedOrbits` and the per-edge seed rule are replaced by a lookup.
+`UncutFaceComponentOrbitSeedNotUnique` is **relocated, not weakened**, into a consistency check over the published
+map that fails closed and names the component and the conflicting owners. This satisfies Parts IV/V: a prohibition
+on weakening is not a prohibition on replacing with something that decides more.
+
+**DEFN-R3.3** — a derived partition must be at least as fine as the partition whose property it adjudicates; any
+retained source-face projection must use the full `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`. CB25's
+projection omitted `traceTouchedEdges`, which is why all 191 component faces reported `unavailable`.
+
+**DEFN-R3.4 — the fragment-count prohibition is LIFTED, with reasons, and only it.** `|owners| = k+1` equates a
+local fragment count with the cardinality of a set of global owners and requires an injectivity nothing
+establishes; TB18 measured a counterexample on a **certified cellular** witness (arc 15,
+`forwardOrbit = reverseOrbit = 0`), and Part I §3's motivating premise — non-cellularity — was measured false for
+the mechanical witness at TB21. The prohibition was authored when the only observed instance was the torus.
+**`M3-CP4c-3-CB21` stands and is not reverted**; its accepted-boundary safety was proved by construction. The
+`proves_cellularity()` and seed-guard prohibitions remain in force — DEFN-R3.1 strengthens the first and DEFN-R3.2
+relocates the second. `M3-CP4c3-TB20-REV-CAND-02` **CLOSES**.
+
+**DEFN-R3.5 — the long-open branch question becomes a lookup.** Take the certified owners of component 0's 191
+member faces: **not all equal ⇒ the missing-barrier branch; all equal ⇒ the mis-read-seed branch.** No further
+diagnostic instrumentation is authorized to answer it.
+
+**DEFN-R3.6 / R3.7 — ordinals 397 and 393.** 397 must be **fixed**: CB25 appended `;cutCandidateCount=0` to an
+unrelated error's rendered locus, and relaxing the expectation is prohibited, since a byte-identical regression
+witness edited to match a regression becomes its opposite. 393's assertions are **replaced in place** and the
+ordinal stays gating, because its seed-relative expectation becomes meaningless once the seed ceases to exist —
+its purpose, falsifiable evidence about certified ownership, is preserved.
+
+New `M3-CP4c3-DEFN-R3-CAND-01`: `build_embedded_graph_topology` is invoked independently by the certifier and the
+plan — one object, two constructions, whose orbit numberings coincide only because the construction is
+deterministic, which is what let seed-derived values pass a `certificateFaceOrbits` membership filter and be
+mistaken for certificate evidence. Non-gating; left to CG1's judgement. Lessons **118–119** added.
+
+Definition turn with no runtime and no gate: **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt
+**5**, packages **88**; accepted authority **365/365**; CP4c-3 **OPEN**.
+
+Consolidation duty discharged: `DEFN` absorbs `REVIEW + PLAN`, so the standing rule applies, but no CI turn ran
+between reviews and **no per-turn document was retired or superseded** — the definitions were authored directly
+into `M3_CP4c_Frozen_Definitions.md` as Part VII rather than as a separate file, which is the arrangement the
+earlier consolidation established. Nothing needed folding or retrospective indexing.
+
+Exact successor frozen: **`M3-CP4c-3-CB27`** under **CG0–CG9**, runtime-free and GMP/GMPXX linked — publish the
+owner map, strengthen `proves_cellularity()`, replace seeding with the lookup, fix the unrelated-locus rendering,
+replace ordinal 393's assertions, make `test_data_root()` fail closed, and publish the TB24 discriminators of which
+**component 0's 191 certified owners** is the one that decides `M3-CP4c3-TB21-CAND-01`.
+
 ## 2026-09-04 — `M3-CP4c-3-TB23-R1-REV`: harness correction confirmed; the ownership datum proved absent; DEFN-R3 frozen
 
 Independent review of the immutable TB23-R1 evidence, measures **CE0–CE8**. Record:

@@ -116,113 +116,114 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-DEFN-R3` — EXACT NEXT / DEFN (absorbs REVIEW + PLAN)
+## Mandatory next turn — `M3-CP4c-3-CB27` — EXACT NEXT / Code + Build, runtime-free
 
-`M3-CP4c-3-TB23-R1-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` (measures **CE0–CE8** discharged, static only).
+`M3-CP4c-3-DEFN-R3` is **COMPLETE**, frozen as **Part VII** of `M3_CP4c_Frozen_Definitions.md`
+(measures **CF0–CF9** discharged; no runtime, compile, package or mutation).
 
-### Immutable runtime authority
+### Inherited runtime authority
 
-- semantic/package source: **`e12396d471c0754b112a40272a7992020ff49ced`** — ancestor of HEAD, **no code drift**;
-- immutable package: **`9921914679`**, `sha256:db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`;
-- corrected harness: `fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7`;
-- run/job: **`33839673886 / 100919253449`**, SUCCESS; result/log artifacts **`9924532894 / 9924533267`**;
-- selector **397**: `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`, **397 identities**;
-- ledger **389 PASS / 8 RED**, reds `[366,367,368,369,370,374,393,397]`, accepted **365/365**; ledger
-  `812241705ee5f0c467ce0272a15d4eed842dbe5c6004b1415f2432cbdedef314`;
-- package / source / execution-view pre/post censuses: **equal**.
+- runtime authority: **`M3-CP4c-3-TB23-R1`** — source `e12396d471c0754b112a40272a7992020ff49ced`, package
+  `9921914679`, selector **397** (`d67e5fb7…9b4853ee5`), ledger `81224170…dedef314`;
+- **389 PASS / 8 RED**, accepted **1–365 = 365/365**, reds `[366,367,368,369,370,374,393,397]`;
+- the mechanical actual embedded complex is **certified cellular** — `V=22, E=26, F=6, componentCount=1, χ=2,
+  residual=0`.
 
-### What the review established
+### What DEFN-R3 decided
 
-**The harness correction is confirmed and the ownership question is proved unanswerable.**
+**`M3-CP4c-3-DEFN-R3` is frozen as Part VII of `M3_CP4c_Frozen_Definitions.md`**, superseding Parts IV-VI where
+they conflict and only there. DEFN absorbs REVIEW + PLAN, so it also adjudicated the inherited candidates and
+issued its successor's measures.
 
-- **`M3-CP4c3-TB23-REV-CAND-02` CLOSES / RUNTIME PROVED.** The corrected harness staged the execution view and
-  verified it through the consumer's own resolution rule; accepted returned to **365/365**, confirming the invalid
-  attempt's 38 accepted-prefix failures were fixture-open failures. First use of the new
-  `TB (orchestration-invalid) -> CB (control-plane correction) -> TB (re-execute)` routing, and it worked end to end.
-- **Both new REDs are the new witnesses working, not product regressions.** Ordinal **393** (production) REDs on
-  `m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true` and on `certifiedFaceDiffersFromSeed`, while
-  ordinal **396** (unit) PASSES - the "can versus does" split CA6 was written to create. Ordinal **397** REDs on a
-  **genuine defect**: CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** error.
-- **CA2 is discharged; CA1 is not.** Both sides are now filled by separate accessor calls (`:1365-1370`), so
-  CB24's aliasing is gone. But the edge-side path writes `walk.orbitByDart[dart]` (`:487, :502-503`) - the same
-  quantity `edgeOrbitEvidence` records - so every available labeled certified face **equals its seed**.
-- **All 191 component certified faces are `unavailable`.** `resolve_certificate_face_projection` assigns an owner
-  only when a component's certified-face set has exactly one element
-  (`GlobalTopologyCertificateDiagnostics.h:134-138`), and unites across every edge not in
-  `embeddedGraphSourceEdges` - **mandatory and cut only**, omitting `traceTouchedEdges`. Its components are
-  therefore **strictly coarser** than the seed guard's, so they collect several certified faces and every member
-  resolves to `nullopt`. CA4's multiset is empty and **neither branch of `M3-CP4c3-TB21-CAND-01` fired**.
-- **THE DATUM DOES NOT EXIST.** `SurfaceCutGraphFaceCertificate` (`SurfaceCutGraph.h:53-63`) publishes `orbit`,
-  `boundaryWalkCount`, `boundaryArcCount` and `discTopologyEstablished` - **no source-face membership, no boundary
-  arc list**. No Code + Build turn can read what the contract does not publish, which is why three successive
-  diagnostic contracts each had to reconstruct the answer from `walk.orbitByDart` and each collapsed the same way.
-  **This is a definition gap**, and TB22-REV's "no further diagnostic turn" prohibition is honoured: the successor
-  is a **DEFN**.
+- **DEFN-R3.1 - the certifier must publish a total source-face owner map.** `SurfaceCutGraphFaceCertificate`
+  publishes an orbit id and three counts and **no source-face membership**, so certified ownership was never
+  readable and four turns of diagnostics each had to reconstruct it from the seed quantity. But
+  `certify_actual_embedded_graph` (`SurfaceCutGraph.cpp:356-380`) **already calls the same
+  `build_embedded_graph_topology` the plan calls** and derives the same face walk, then publishes counts only.
+  **This is a publication decision, not a new computation.** `proves_cellularity()` is extended to require the map
+  to be total with ids drawn from the certificate's own faces.
+- **DEFN-R3.2 - ownership is read, not seeded.** `componentBarriers`, the unlabeled-face partition, `seedOrbits`
+  and the per-edge seed rule are replaced by a lookup. `UncutFaceComponentOrbitSeedNotUnique` is **relocated, not
+  weakened**, into a consistency check that names the component and the conflicting owners - which satisfies Parts
+  IV/V, since the replacement decides more, not less.
+- **DEFN-R3.3** - any retained projection must use the full `mandatoryEdges u traceTouchedEdges u cutEdges`.
+- **DEFN-R3.4 - the fragment-count prohibition is LIFTED, with reasons.** `|owners| = k+1` is false on a certified
+  cellular complex containing a bridge, which TB18 measured directly (arc 15, `forwardOrbit = reverseOrbit = 0`),
+  and Part I §3's motivating premise was measured false at TB21. **CB21 stands and is not reverted.** The
+  `proves_cellularity()` and seed-guard prohibitions remain in force.
+- **DEFN-R3.5 - the open branch becomes a lookup.** Certified owners of component 0's 191 faces: **not all equal ->
+  missing-barrier branch; all equal -> mis-read-seed branch.** No further diagnostic instrumentation is authorized.
+- **DEFN-R3.6 / R3.7** - ordinal **397 must be FIXED** (relaxing its expectation is prohibited, since a
+  byte-identical regression witness edited to match a regression becomes its opposite); ordinal **393's assertions
+  are REPLACED in place**, retained and gating, because its seed-relative expectation becomes meaningless once the
+  seed ceases to exist.
+
+`M3-CP4c3-TB20-REV-CAND-02` **CLOSES**. New `M3-CP4c3-DEFN-R3-CAND-01`: `build_embedded_graph_topology` is invoked
+independently by the certifier and the plan - one object, two constructions, whose orbit numberings coincide only
+because the construction is deterministic. That coincidence is what let seed-derived values pass a
+`certificateFaceOrbits` filter and be mistaken for certificate evidence.
 
 Carried surfaces 367/368/369/370/374 unchanged; 371/372/391/392 still PASS. **There is still no vertex-30
 discriminator.**
 
-### DEFN-R3 binding scope — `CF0–CF9`, in the review record §8
+### CB27 binding scope — `CG0–CG9`, in Part VII §9
 
-**A DEFN, not a CB and not another diagnostic turn.** Under the turn workflow **`DEFN` absorbs `REVIEW + PLAN`**,
-so this turn freezes definitions, adjudicates inherited candidates and issues its successor's measures in one turn.
-It is the correct boundary because the blocking datum is absent from a published contract, which no implementation
-turn may unilaterally invent.
+**Code + Build, runtime-free, GMP/GMPXX linked.** Full text in Part VII §9 of `M3_CP4c_Frozen_Definitions.md`.
 
-- **CF0** - accepted 365 untouched; selector **397** byte-frozen; **no runtime, no compile, no package**.
-- **CF1** - **decide what a certified face must publish.** State whether `SurfaceCutGraphFaceCertificate` must
-  carry source-face membership, a boundary arc list, or another representation sufficient to answer *"which
-  certified face contains this source triangle"* - and if not, state what else answers it and who owns that.
-- **CF2** - **decide whether the seed guard's premise is checkable at all.** Either define the evidence that makes
-  "each uncut component has exactly one owner" decidable, or replace the invariant with one that is - but **do
-  not** weaken `UncutFaceComponentOrbitSeedNotUnique` without a stated replacement, per Parts IV/V.
-- **CF3** - **fix the partition mismatch in the definition.** Any certified-face projection must be at least as
-  fine as the partition whose property it adjudicates; state the required barrier set explicitly so a successor
-  cannot omit `traceTouchedEdges` again.
-- **CF4** - **adjudicate `M3-CP4c3-TB20-REV-CAND-02`.** Parts IV/V prohibit weakening the fragment-count invariant,
-  which CB21 weakened with a sound accepted-boundary proof. Either lift the prohibition with reasons - the
-  invariant is false on cellular complexes containing bridges - or require restoration. Only a DEFN may resolve it.
-- **CF5** - carry forward unweakened: `proves_cellularity()`, accepted 1-365, the certified cellularity evidence
-  (`V=22, E=26, F=6, componentCount=1, chi=2, residual=0`), CB21's correction, 371/372/391/392 closure, and
-  separate ownership of 367/368/369/370/374.
-- **CF6** - record that **both branches of `M3-CP4c3-TB21-CAND-01` were never discriminated**, and state precisely
-  what evidence would discriminate them under CF1's decision.
-- **CF7** - **disposition ordinals 393 and 397 explicitly.** 393 encodes an expectation the production path cannot
-  currently satisfy: decide whether it is corrected, re-scoped, or declared non-gating **with a written rationale
-  and an owning measure** - never silently deleted. 397 is a genuine defect and must be **fixed**, not relaxed.
-- **CF8** - freeze the successor Code + Build's measures, including the two carried debts that belong to a
-  source-changing turn: `M3-CP4c3-TB23-REV-CAND-01` (fail-open `test_data_root()`) and
-  `M3-CP4c3-TB23-R1-REV-CAND-01` (the unrelated-locus regression).
-- **CF9** - **prohibited:** inventing a certificate field without naming its producer and proof obligation;
-  weakening `proves_cellularity()`, the fragment-count invariant or the seed guard without a stated replacement;
-  relaxing ordinal 397's expectation; deleting ordinal 393; any fixture-specific branch; any tolerance or
-  float-derived topological decision; any accepted-boundary relaxation; any sphere / saturation / ordinal-370 /
-  folded-cone / vertex-30 / finalize-contact work.
+- **CG0** - accepted 365 untouched; selector **397** byte-frozen and republished unchanged; the eight standard
+  compile targets with **mandatory GMP/GMPXX linkage**; **no runtime**; no acceptance claimed.
+- **CG1** - implement **DEFN-R3.1**: publish the total source-face owner map on the certificate, produced by the
+  certifier from the topology it already builds, with ids drawn from its own `faces[].orbit`.
+- **CG2** - extend `proves_cellularity()` with DEFN-R3.1's proof obligation; a certificate that cannot produce the
+  map reports a typed failure naming the first unowned source face.
+- **CG3** - implement **DEFN-R3.2**: replace the seeding construction with a lookup and relocate
+  `UncutFaceComponentOrbitSeedNotUnique` into a map-consistency check that names the component and conflicting
+  owners.
+- **CG4** - implement **DEFN-R3.6**: restore byte-identical locus rendering for unrelated errors
+  (`M3-CP4c3-TB23-R1-REV-CAND-01`). **Fix, do not relax.**
+- **CG5** - implement **DEFN-R3.7**: replace ordinal 393's assertions with the new contract, recording before and
+  after; the ordinal stays gating (`M3-CP4c3-TB23-R1-REV-CAND-02`).
+- **CG6** - make `test_data_root()` (`tests/TestFixturePaths.h:51-64`) **fail closed** rather than return a
+  non-existent path (`M3-CP4c3-TB23-REV-CAND-01`).
+- **CG7** - witnesses: one per new published field through the **production** path; the owner map is total on all
+  three fixtures; the relocated guard **names its component and conflicting owners**; and, per the standing
+  falsifiability rule, a **unit** witness that the consistency check *can* fail plus a **production** witness of
+  whether it *does*. Append the next selector **named by its resulting identity count**; 397 stays an exact prefix;
+  regenerate `Required_Green_Selector_Manifest.md` with `tools/selector_manifest.py`.
+- **CG8** - audit by assumption; prove accepted **1-365** unaffected by construction and `proves_cellularity()`
+  only strengthened.
+- **CG9** - publish the `M3-CP4c-3-TB24` discriminators: (1) 1-365 stay **365/365**; (2) the owner map is published
+  and total on the mechanical witness; (3) **component 0's 191 certified owners are reported - all-equal or not,
+  which decides `M3-CP4c3-TB21-CAND-01`**; (4) ordinal 366 either clears or fails with the relocated guard naming
+  its component and conflicting owners; (5) ordinals **393 and 397 are green**; (6) carried surfaces
+  367/368/369/370/374 unchanged and 371/372/391/392 still PASS.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **88**.
 
-**Document consolidation ran this turn** under the standing rule (`CLEAN_UP_POLICY.md`), including the
-retrospective indexing of the **five** files TB23-R1's stale-evidence cleanup retired between reviews.
-
 ### Context Load Plan
 
-`load_next`: turn-based-coding-agent DEFN guidance (DEFN absorbs REVIEW + PLAN).
+`load_next`: turn-based-coding-agent CODE + BUILD guidance.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` — **frozen DEFN-R3 scope, §8 CF0–CF9**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — the whole chain. **Part I §3 is an implication with a
-   premise**; Parts IV/V carry the prohibited lists CF4 must adjudicate; Part VI is vertex-star scoped.
-5. `include/directional/geometry/SurfaceCutGraph.h` — the certificate contract CF1 decides.
+2. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part VII (DEFN-R3) is the frozen CG0–CG9 scope**;
+   Part VI remains operative alongside it; Parts IV/V's prohibitions stand **except** the fragment-count one,
+   which Part VII §5 lifts with reasons. **Part I §3 is an implication with a premise.**
+3. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+4. `include/directional/geometry/SurfaceCutGraph.h` and `src/geometry/SurfaceCutGraph.cpp` — the certificate
+   contract CG1/CG2 change.
+5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector counts, LF hashes, prefix parents, roles.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
-   document index** resolves every folded or retired per-turn plan, report and record.
+8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed.
+
+Source surfaces CB27 will touch: `src/geometry/SurfaceCutGraph.cpp` and its header (the owner map and the
+strengthened certificate), `src/geometry/GlobalTopologyPlan.cpp` (replace seeding with the lookup, relocate the
+guard, restore unrelated-locus rendering), `tests/TestFixturePaths.h` (fail closed), and `tests/` for the CG5/CG7
+witnesses.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
 `review_check.py boundary`, `selector_probe.py`, `selector_manifest.py`, and `fixture_probe.py`.

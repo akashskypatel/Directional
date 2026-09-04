@@ -8,7 +8,7 @@ verbatim, with heading levels demoted by two so the parts nest under one hierarc
 **Supersession.** Within each checkpoint the revisions supersede in order — `DEFN` → `DEFN-R1` → `DEFN-R2`. The
 earlier revisions are retained because `DESIGN.md` and the regression tracker cite the amendment lineage directly,
 and because an amendment's provenance is part of its authority. **The operative definitions for CP4c-2 are Part
-III; for CP4c-3 they are Part VI.** Where an earlier part conflicts with a later revision of the same checkpoint,
+III; for CP4c-3 they are Part VI together with Part VII, which supersedes it where they conflict.** Where an earlier part conflicts with a later revision of the same checkpoint,
 the later revision governs.
 
 This file is normative authority, not history. History lives in `M3_CP4c_Consolidated_Record.md`; current state and
@@ -26,6 +26,7 @@ Citations written against the former filenames resolve here:
 | `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` | Part IV — M3-CP4c-3 DEFN |
 | `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` | Part V — M3-CP4c-3 DEFN-R1 |
 | `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` | Part VI — M3-CP4c-3 DEFN-R2 |
+| *(no prior file — authored in place)* | **Part VII — M3-CP4c-3 DEFN-R3** |
 
 Section numbering inside each part is unchanged, so a citation such as "`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". Full text of the originals also remains in git history.
 
@@ -2477,5 +2478,304 @@ Accepted 365 green in the last authoritative run; every finding on an unaccepted
 
 **`M3-CP4c-3-CB9`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AY0–AY9**. Selector 373 stays frozen;
 selector 374 is conditional on AY5. CP4c-2 remains **CLOSED / ACCEPTED at 365/365**; CP4c-3 remains **OPEN**.
+
+---
+
+## Part VII — M3-CP4c-3 DEFN-R3
+
+*Authored in place on 2026-09-04 at `M3-CP4c-3-DEFN-R3`. This part is a **DEFN turn**, and under the project's turn
+workflow **`DEFN` absorbs `REVIEW + PLAN`**: it freezes definitions, adjudicates the inherited candidates, and
+issues its successor's measures in one turn. It supersedes Parts IV–VI where they conflict, and only there.*
+
+**Boundary.** No Directional runtime, configure, compile, link, package, or product/test/fixture/selector mutation
+occurred in this turn. Accepted selector **365** is untouched; selector **397** is byte-frozen. Measures
+**CF0–CF9**, frozen by `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` §8.
+
+---
+
+### 1. CF0 — the state this part inherits
+
+Current runtime authority is `M3-CP4c-3-TB23-R1` on selector 397: **389 PASS / 8 RED**, accepted **1–365 =
+365/365**, reds `{366, 367, 368, 369, 370, 374, 393, 397}`. The mechanical actual embedded complex is **certified
+cellular** — `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`, every face proving disc topology.
+
+Ordinal 366 has stopped at `UncutFaceComponentOrbitSeedNotUnique` since TB19: source-face component **0**, **191**
+faces, `seedState=Multiple`, seed orbits `[0,1,3]`, boundary attribution **81 / 1 / 1** over 97 edges. Four
+successive turns tried to determine whether that is a missing barrier or a mis-read seed. **None succeeded**, and
+`M3-CP4c3-TB21-CAND-01`'s two branches have never been discriminated.
+
+---
+
+### 2. CF1 — what a certified face must publish
+
+#### 2.1 The finding that decides it
+
+`SurfaceCutGraphFaceCertificate` publishes exactly four fields per certified face:
+
+```cpp
+std::size_t orbit; std::size_t boundaryWalkCount;
+std::size_t boundaryArcCount; bool discTopologyEstablished;
+```
+
+There is **no source-face membership and no boundary arc list**. The question every recent diagnostic has tried to
+answer — *which certified face contains this source triangle* — is therefore not answerable by reading the
+certificate. Each attempt had to **reconstruct** it from `walk.orbitByDart`, which is the seed quantity, and each
+collapsed identically:
+
+| Turn | Intended measurement | Why it reported nothing |
+|---|---|---|
+| CB24 | projection faithfulness residual | predicate **unsatisfiable by construction** |
+| CB24 | per-side certificate faces | **aliased to the seed** |
+| CB25 | certified-face ownership | edge-side path **re-derives the seed's dart orbit**; whole-face path collapses on "exactly one element" over a **coarser** partition |
+
+#### 2.2 The certifier already computes the answer and discards it
+
+`certify_actual_embedded_graph` (`src/geometry/SurfaceCutGraph.cpp:356–380`) begins by calling
+**`build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network, cutEdges)`** — the
+identical function `GlobalTopologyPlan` calls at `:2364` — and derives `embedded.faceWalk` from it. The certifier
+holds the complete embedded topology, its arcs, its source topology and its face walk. It then publishes **counts
+only**, and the plan rebuilds the identical structure to re-derive what the certifier already had.
+
+**This is therefore a publication decision, not a new computation.**
+
+#### 2.3 Normative decision — DEFN-R3.1
+
+> **The owner map of a certified complex is a property of certification, and must be produced by the certifier.**
+> `SurfaceCutGraphCellularityCertificate` **must publish a total source-face owner map**:
+>
+> - for a source face the network does **not** cross: the **single** certified-face id whose interior contains it;
+> - for a source face the network **does** cross: the **set** of certified-face ids owning its local fragments,
+>   keyed so that a consumer can attribute each fragment side without re-deriving it;
+> - every published id must be one of that same certificate's `faces[].orbit` values;
+> - the map must be **total** over the source faces of the certified complex.
+>
+> **Proof obligation.** `proves_cellularity()` is extended to require the map to be total and its ids to be drawn
+> from the certificate's own faces. A certificate that cannot produce a total map does **not** prove cellularity —
+> it reports a typed failure naming the first unowned source face.
+
+**Rationale.** A consumer must never re-derive a partition its producer already computed. Re-derivation from
+partial evidence is precisely what produced the aliasing, the unsatisfiable predicate and the coarse projection.
+
+**What this does not decide.** Whether the two `build_embedded_graph_topology` invocations are unified into one is
+an implementation question, not a definition. It is recorded as `M3-CP4c3-DEFN-R3-CAND-01` and left to the
+successor's judgement; **two sources of truth for one object is a standing hazard**, and any unification must keep
+the certifier's result authoritative.
+
+---
+
+### 3. CF2 — is the seed guard's premise checkable, and what replaces it
+
+**Today: no.** The guard requires each connected component of uncut source faces to receive exactly one orbit seed
+from its labeled neighbours. Whether that holds is a statement about **certified faces**, and certified faces do
+not say which source faces they contain. The premise is unverifiable as the system publishes today, which is why
+`seedState=Multiple` has been neither confirmed nor refuted for four turns.
+
+**Under DEFN-R3.1: yes, and the guard's present form becomes unnecessary.**
+
+> **DEFN-R3.2 — ownership is read, not seeded.** With a total owner map published, a source face's certified owner
+> is a **lookup**. The seeding construction — `componentBarriers`, the unlabeled-face component partition,
+> `seedOrbits`, and the per-edge seed rule with its `SingleFaceOwner` / `edgeOrbitEvidence` disjunction — is
+> **replaced** by that lookup. `UncutFaceComponentOrbitSeedNotUnique` is **not weakened and not deleted**: it is
+> **relocated** into a consistency check on the published map, failing closed when a component's faces do not all
+> carry the same certified owner, and naming the component and the conflicting owners.
+
+**This satisfies Parts IV and V.** Those parts prohibit *weakening* `UncutFaceComponentOrbitSeedNotUnique`. The
+replacement is **strictly stronger**: it decides the same property from an authoritative total map instead of
+reconstructing it from partial neighbour evidence, and it can name its own failure. A prohibition on weakening is
+not a prohibition on replacing with something that decides more.
+
+---
+
+### 4. CF3 — the barrier set for any retained projection
+
+`resolve_certificate_face_projection` unites source faces across every edge **not** in `embeddedGraphSourceEdges`,
+which holds **mandatory and cut source edges only**. It therefore merges across trace-crossed edges, making its
+components strictly coarser than the seed construction's — and a coarser component necessarily collects owners
+from several certified faces, which is why all 191 faces reported `unavailable`.
+
+> **DEFN-R3.3 — a derived partition must be at least as fine as the partition whose property it adjudicates.** Any
+> source-face projection used to reason about certified ownership **must** use the full barrier set
+> `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`. A projection over a strict subset of that set is **not**
+> admissible evidence about ownership and may not be published as such.
+
+Under DEFN-R3.2 no such projection is required at all. This clause binds any projection that is nevertheless
+retained for cross-checking, so the omission cannot recur.
+
+---
+
+### 5. CF4 — adjudication of `M3-CP4c3-TB20-REV-CAND-02`
+
+Parts IV and V each prohibit *"relaxing / weakening `proves_cellularity()`, the fragment-count invariant, or
+`UncutFaceComponentOrbitSeedNotUnique`."* `M3-CP4c-3-CB21` made the fragment-count invariant's **low side**
+non-fatal, and `M3-CP4c-3-TB18-REV` authorized that without consulting those lists.
+
+**Both facts are accepted, and the substantive question has since been settled against the prohibition.**
+
+- `|owners| = k + 1` equates a **local** fragment count with the cardinality of a set of **global** face-walk orbit
+  owners. Equality requires the local-fragment → global-owner map to be injective.
+- TB18 **measured** a counterexample on a witness whose complex is **certified cellular**: arc 15 with
+  `forwardOrbit = reverseOrbit = 0`. On a cellular complex containing a bridge, the two sides of an arc genuinely
+  share a face. The invariant is therefore **false**, not merely unproven.
+- Part I §3's reasoning — which is what made the sibling guard "correct" — turns on a premise (**non-cellularity**)
+  that TB21 measured false for the mechanical witness. The prohibition was authored when the only observed
+  instance was the torus, where non-cellularity was independently proved.
+
+> **DEFN-R3.4 — the prohibition on the fragment-count invariant is LIFTED, for stated reasons, and only for it.**
+> `|owners| = k + 1` is not an invariant of a valid cellular complex, so a check asserting it cannot be preserved
+> as written. `M3-CP4c-3-CB21`'s one-sided relaxation **stands and is not reverted**: its accepted-boundary safety
+> was proved by construction — the validation loop is pure, and `>` holds on a strict subset of `!=`, so the
+> failing set only shrinks and no previously-passing input changes.
+>
+> **The prohibitions on `proves_cellularity()` and `UncutFaceComponentOrbitSeedNotUnique` remain in force**, and
+> DEFN-R3.1 *strengthens* the former while DEFN-R3.2 *relocates* rather than weakens the latter.
+
+`M3-CP4c3-TB20-REV-CAND-02` is therefore **CLOSED — prohibition lifted with reasons**. Recorded so no successor
+re-opens it by citing Parts IV/V alone: **Part VII governs where it conflicts with Parts IV–VI.**
+
+---
+
+### 6. CF5 — carried forward unweakened
+
+`proves_cellularity()` (strengthened by DEFN-R3.1, never relaxed); the accepted **1–365** boundary; the certified
+cellularity evidence `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`; **CB21's correction**; the closure of
+ordinals 371/372/391/392; and the separate ownership of **367/368/369/370/374**, vertex-30 and the
+finalize/contact fall-through. **There is still no vertex-30 discriminator.**
+
+Also carried: Part I §3 is an **implication with a premise** and licenses "the network is not a cut graph" only
+where non-cellularity is independently established; the face walk is a validated total permutation; shared orbit
+ownership by the two sides of one arc is legitimate topology.
+
+---
+
+### 7. CF6 — the undiscriminated branches, and what would discriminate them
+
+**Recorded plainly: neither branch of `M3-CP4c3-TB21-CAND-01` has ever been discriminated.** The two readings of
+component 0's `[0,1,3]` remain:
+
+- **(a) missing barrier** — two boundary edges genuinely separate certified faces and are absent from
+  `componentBarriers`;
+- **(b) mis-read seed** — the edges are ordinary and the seed rule reported an orbit that does not face the
+  component.
+
+> **DEFN-R3.5 — the discriminator.** Under DEFN-R3.1 the question is decided by **one lookup, not a measurement**:
+> take the certified owners of the 191 member faces of component 0 from the published map.
+> **If they are not all equal, reading (a) holds** — the component spans certified faces, and the barrier set is
+> missing the separations between them, which the differing pairs name directly.
+> **If they are all equal, reading (b) holds** — the component lies in one certified face and the two minority
+> seeds were mis-reads.
+>
+> No further diagnostic instrumentation is authorized to answer this. If the published map cannot be produced,
+> that is a DEFN-R3.1 failure and is reported as one.
+
+---
+
+### 8. CF7 — disposition of ordinals 393 and 397
+
+**Ordinal 397 — `UnrelatedTopologyErrorLocusRemainsByteIdenticalAfterCertificateDiagnostics` — must be FIXED.**
+CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** topology error; the witness expected
+`;sourceFace=2,4,6` and received `;sourceFace=2,4,6;cutCandidateCount=0`. The defect is in the product's locus
+rendering, not in the expectation.
+
+> **DEFN-R3.6.** Restore byte-identical rendering for errors the diagnostic work does not own. **Relaxing or
+> re-scoping ordinal 397's expectation is prohibited.** A byte-identical regression witness that is edited to
+> match a regression has been converted into its opposite.
+
+**Ordinal 393 — `MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual` — is SUPERSEDED, and its
+assertions are REPLACED in place.** Its expectations (`differing > 0`, `certifiedFaceDiffersFromSeed`) were written
+to falsify a *reconstruction*. Under DEFN-R3.2 the reconstruction and its seed both cease to exist, so those
+expectations are not merely unsatisfiable but **meaningless** — there is no seed for a certified face to differ
+from.
+
+> **DEFN-R3.7.** The successor Code + Build **replaces ordinal 393's assertions** with the DEFN-R3.1 contract: the
+> published owner map is total, its ids are drawn from the certificate's own faces, and the certified owners of a
+> named component are reported. **The ordinal is retained and stays gating**; the identity name may be updated to
+> match its new contract. It is **not** deleted, **not** reordered, and **not** made non-gating.
+>
+> This is the correct route rather than a permanent non-gating carve-out: the identity's *purpose* — falsifiable
+> evidence about certified ownership — is preserved, while only the obsolete mechanism it referenced is replaced.
+> The change must be recorded in the successor's report with the before and after assertions.
+
+**Selector governance.** Selector 397 stays byte-frozen through the successor; identities are appended only, never
+removed or reordered. Replacing an identity's assertions is a test-source change, not a selector change.
+
+---
+
+### 9. CF8 — successor gate
+
+#### `M3-CP4c-3-CB27` — Code + Build, measures **CG0–CG9**, runtime-free, GMP/GMPXX linked
+
+- **CG0** — accepted 365 untouched; selector **397** byte-frozen and republished unchanged; the eight standard
+  compile targets with **mandatory GMP/GMPXX linkage**; **no runtime**; no acceptance claimed.
+- **CG1** — implement **DEFN-R3.1**: publish the total source-face owner map on
+  `SurfaceCutGraphCellularityCertificate`, produced by the certifier from the topology it already builds, with ids
+  drawn from its own `faces[].orbit`.
+- **CG2** — extend `proves_cellularity()` with DEFN-R3.1's proof obligation: the map is total over source faces and
+  its ids are certificate face ids. A certificate that cannot produce it reports a typed failure naming the first
+  unowned source face.
+- **CG3** — implement **DEFN-R3.2**: replace the seeding construction with a lookup, and relocate
+  `UncutFaceComponentOrbitSeedNotUnique` into a consistency check over the published map that names the component
+  and the conflicting owners on failure.
+- **CG4** — implement **DEFN-R3.6**: restore byte-identical locus rendering for unrelated errors.
+- **CG5** — implement **DEFN-R3.7**: replace ordinal 393's assertions with the new contract, recording before and
+  after; keep the ordinal gating.
+- **CG6** — discharge the two carried debts, both of which require source changes and so belong here:
+  `M3-CP4c3-TB23-REV-CAND-01` — make `tests/TestFixturePaths.h`'s `test_data_root()` **fail closed** rather than
+  return a non-existent path; and `M3-CP4c3-TB23-R1-REV-CAND-01`, which CG4 covers.
+- **CG7** — witnesses: one per new published field through the **production** path; a witness that the owner map is
+  total on all three fixtures; a witness that the relocated guard **names its component and conflicting owners**;
+  and — per the standing rule that a diagnostic must be falsifiable — a **unit** witness proving the consistency
+  check *can* fail and a **production** witness proving whether it *does*. Append the next selector **named by its
+  resulting identity count**; 397 stays an exact prefix; regenerate
+  `Required_Green_Selector_Manifest.md` with `tools/selector_manifest.py`.
+- **CG8** — audit by assumption; prove accepted ordinals **1–365** unaffected by construction, and that
+  `proves_cellularity()` is only strengthened.
+- **CG9** — publish the `M3-CP4c-3-TB24` discriminators: **(1)** 1–365 stay 365/365; **(2)** the owner map is
+  published and total on the mechanical witness; **(3)** **the certified owners of component 0's 191 faces are
+  reported — all-equal or not, which decides `M3-CP4c3-TB21-CAND-01` per DEFN-R3.5**; **(4)** ordinal 366 either
+  clears or fails with the relocated guard naming its component and conflicting owners; **(5)** ordinals **393 and
+  397 are green**; **(6)** carried surfaces 367/368/369/370/374 unchanged and 371/372/391/392 still PASS.
+
+---
+
+### 10. CF9 — prohibited
+
+Inventing a certificate field without naming its producer and its proof obligation. Weakening
+`proves_cellularity()` or `UncutFaceComponentOrbitSeedNotUnique` — DEFN-R3.1 strengthens the first and DEFN-R3.2
+relocates the second; neither may be softened. Relaxing or re-scoping **ordinal 397's** expectation. Deleting,
+reordering or de-gating **ordinal 393**. Publishing a source-face projection built on a strict subset of
+`mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` as ownership evidence. Any further **diagnostic-only** turn on the
+ownership surface — DEFN-R3.5 makes it a lookup. Any fixture-specific branch, tolerance, float-derived topological
+decision, or accepted-boundary relaxation. Reverting `M3-CP4c-3-CB21`. Any sphere / saturation / ordinal-370 /
+folded-cone / vertex-30 / finalize-contact work.
+
+---
+
+### 11. Falsifiable predictions
+
+1. The owner map is producible from what the certifier already computes, without a new traversal — CG1 lands
+   without adding a face walk.
+2. `proves_cellularity()` continues to hold on all three fixtures after CG2 strengthens it; if it does not, the
+   certificate was over-claiming and the failure names the first unowned source face.
+3. Component 0's 191 certified owners are **not all equal**, making reading (a) — missing barrier — the live
+   branch. *This is a prediction, not an authorization*: CG9-3 reports the fact either way, and a correction is
+   frozen only by the review that reads it.
+4. Ordinals 393 and 397 both go green under CG4/CG5; 397 going green requires no expectation change.
+
+---
+
+### 12. Accounting and exact next turn
+
+`M3-CP4c3-TB20-REV-CAND-02` **CLOSES** (prohibition lifted with reasons, §5). New `M3-CP4c3-DEFN-R3-CAND-01` —
+`build_embedded_graph_topology` is invoked independently by both the certifier and the plan, giving two sources of
+truth for one object; **ACTIVE / ARCHITECTURAL / NON-GATING**, owner CG1's judgement.
+`M3-CP4c3-TB21-CAND-01` remains **ACTIVE / GATING**, now with a stated discriminator (§7).
+`M3-CP4c3-TB23-REV-CAND-01` and `M3-CP4c3-TB23-R1-REV-CAND-01` are assigned to **CG6/CG4**.
+`M3-CP4c3-TB23-R1-REV-CAND-02` is assigned to **CG5**.
+
+This is a definition turn: no runtime, no gate, **+0 stable events / +0 recurrences**. Totals remain **44 events /
+14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **88**. Accepted authority
+remains **365/365**; CP4c-3 remains **OPEN**.
+
+**Exact next turn: `M3-CP4c-3-CB27` — Code + Build, runtime-free, GMP/GMPXX linked, under CG0–CG9.**
 
 ---
