@@ -1,3 +1,0 @@
-requested_source_sha=7fd50bee894d9f8949eb78dac4cc647078f5d2fd
-purpose=M3-CP4c-3-CB30 source snapshot
-semantic_source_authority=7fd50bee894d9f8949eb78dac4cc647078f5d2fd
