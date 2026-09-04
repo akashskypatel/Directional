@@ -10,48 +10,45 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-04** at `M3-CP4c-3-CB25` closeout.
+Last updated **2026-09-04** at `M3-CP4c-3-TB23-EXEC` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
 `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. **CP4c-3 remains OPEN.**
-`M3-CP4c-3-CB25` is compile-green and runtime-free; TB22 remains the latest runtime authority until TB23 executes.
+TB23-EXEC terminated with an orchestration-invalid runtime attempt; it did not establish a semantic ledger. TB22 therefore remains the latest authoritative runtime.
 
 | Authority | Current value |
 |---|---|
-| Latest runtime authority | `M3-CP4c-3-TB22` — 387 PASS / 6 RED, accepted 365/365 |
+| Latest semantic runtime authority | `M3-CP4c-3-TB22` — 387 PASS / 6 RED, accepted 365/365 |
 | CB25 semantic/evidence source | `e12396d471c0754b112a40272a7992020ff49ced` |
-| CB25 package compile | `33831662949 / 100895799092`, SUCCESS |
-| Immutable TB23 package | `9921914679`, SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7` |
+| Immutable package | `9921914679`, SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7` |
 | Current gate selector | selector 397, 397 identities, `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` |
-| Frozen predecessors | selector393 `ee8cc033...44c4d`; accepted selector365 `6b5b6555...c14b8a1`; both exact prefixes |
-| Exact next | `M3-CP4c-3-TB23-EXEC`, then `M3-CP4c-3-TB23-REV` |
+| TB23-EXEC invalid-runtime evidence | `33833497955 / 100901221113`; result `9922540133`; log `9922540522` |
+| Raw invalid ledger | 342 PASS / 55 RED, accepted 327/365 — **not semantic authority** |
+| Exact next | `M3-CP4c-3-TB23-REV` — independent diagnostics/review boundary |
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 package count **88**.
 
-## 2. CB25 diagnostic producer is now falsifiable
+## 2. TB23-EXEC execution-integrity result
 
-The TB22 independent review proved CB24's certificate diagnostics vacuous/circular. CB25 changes only the diagnostic producer and witnesses:
+The immutable package passed package hash, source SHA, GMP/GMPXX, selector hash/prefix and static identity-owner checks, and package/source
+pre/post censuses remained equal. The frozen preflight additionally required a known committed fixture at the exact runtime location used
+by the packaged test executables. The harness checked the extracted source tree rather than the executable-relative `package/test-data`
+location. Runtime then began with that location absent.
 
-- certificate-face ownership is derived from certificate-filtered face-walk side evidence rather than the seed maps;
-- component and labeled sides are resolved independently, with unavailable state explicit;
-- the old structural-zero residual is replaced by adjacent uncut-face examined/differing counts, with `examined > 0` required by the witness;
-- the failing component publishes a bounded certified-face multiplicity table;
-- ordinals 394–397 independently exercise the new fields and preserve an unrelated failure locus.
+The resulting complete 397-row process ledger is preserved for audit, but the frozen contract classifies the attempt as orchestration-invalid.
+It is not regression authority and does not adjudicate CB25's certificate diagnostics. No benchmark, configure, compile, relink, discovery,
+package repair, mode repair, or source/test/fixture/selector mutation occurred.
 
-No protected product semantic in CA8 changed. Therefore CB25 does **not** choose between the two live branches of
-`M3-CP4c3-TB21-CAND-01`; immutable TB23 evidence plus TB23-REV owns that adjudication.
+## 3. Exact next turn — `M3-CP4c-3-TB23-REV`
 
-## 3. Exact next turn — `M3-CP4c-3-TB23-EXEC`
+Consume only the frozen TB23 plan and immutable TB23-EXEC artifacts. Review the execution/package defect, decide the authorized successor,
+and perform any regression/root-cause accounting justified by authoritative evidence. Do not run new Directional runtime from the review
+turn and do not treat the invalid 342/55 ledger as a semantic result.
 
-Execute the frozen artifact-only plan `Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` against package `9921914679`.
-Do not rebuild, relink, repair, regenerate, mutate source/tests/fixtures/selectors, or run benchmarks. Execute all 397 identities one fresh
-process each, preserve complete raw evidence and package immutability, and require the accepted prefix to remain 365/365.
-
-TB23-EXEC records D1–D6 only. It does not select a correction. Exact successor is **`M3-CP4c-3-TB23-REV`**, which consumes only the
-immutable execution evidence. **No further diagnostic Code + Build turn is authorized on this surface after TB23.**
+**Stop at the independent review/planning boundary.** No corrective Code + Build turn is pre-authorized by TB23-EXEC.
 
 ## 4. Open candidates
 
@@ -107,11 +104,12 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first.
 2. **this file** — current frontier and settled/candidate ownership.
-3. `Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB23-EXEC contract.
-4. `Architecture_M3_CP4c3_CB25_Code_Build_Report.md` — exact compile/package provenance and CA0–CA9 implementation mapping.
-5. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
-6. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
-8. `M3_CP4c_Consolidated_Record.md` only if historical lineage is needed.
+3. `Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` — frozen execution contract.
+4. `Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md` — immutable execution-integrity evidence and invalid-attempt provenance.
+5. `Architecture_M3_CP4c3_CB25_Code_Build_Report.md` — exact compile/package provenance and CA0–CA9 implementation mapping.
+6. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
+7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+8. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
+9. `M3_CP4c_Consolidated_Record.md` only if historical lineage is needed.
 
-TB23-EXEC then hands immutable evidence to TB23-REV. Do not continue into a correction or a further diagnostic CB at that boundary.
+Exact next is TB23-REV. It consumes the preserved execution-integrity evidence; do not continue into a correction from this record.

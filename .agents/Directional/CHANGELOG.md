@@ -1,3 +1,23 @@
+## 2026-09-04 — `M3-CP4c-3-TB23-EXEC`: immutable package verified; runtime attempt orchestration-invalid; semantic authority stays TB22
+
+Artifact-only EXEC against CB25 package `9921914679` / source `e12396d471c0754b112a40272a7992020ff49ced`. Package hash,
+internal `SHA256SUMS`, exact source, GMP/GMPXX, all eight compiled targets, selector 365/393/397 hashes/prefixes and static 397-identity
+binary ownership verified. Pre/post package and extracted-source byte+mode censuses remained equal. No benchmark, configure, compile,
+relink, discovery, package/mode repair, or source/test/fixture/selector mutation occurred.
+
+The first orchestration attempt (`33833432331`) failed before Directional runtime on a temporary caller permission ceiling and consumed no
+semantic result. The corrected caller run/job `33833497955 / 100901221113` executed all 397 identities, but its preflight was defective:
+the frozen plan required a known fixture at the exact executable-relative runtime path before runtime, while the harness checked the extracted
+source workspace and allowed runtime to begin with `package/test-data` absent. Under the frozen stop rule the complete process ledger is
+preserved as **orchestration-invalid**, not semantic authority. Raw invalid-attempt ledger: 342 PASS / 55 RED, accepted 327/365,
+SHA-256 `839e95feea68bdff35c8c9b11ca22f486f3452413f82017888f17ffc76e85e8d`; 394–397 = PASS/PASS/PASS/RED. Result/log artifacts:
+`9922540133` (`cd439a2646fc215252594a2bf5c3ae83e201d3bad252506d5c77e800ed600f3a`) and `9922540522`
+(`6fc1d7ae0e742b28c5e1484bc8735212fa11f5c179693f905bc069697549e9df`).
+
+No stable regression accounting changes: latest authoritative semantic runtime remains **TB22: 387 PASS / 6 RED, accepted 365/365**;
+CP4c-3 remains OPEN; totals remain **44 / 14 / 30**, debt **5**, packages **88**. Exact successor is independent
+`M3-CP4c-3-TB23-REV`; TB23-EXEC does not authorize a rerun, package repair, or corrective CB.
+
 ## 2026-09-04 — `M3-CP4c-3-CB25`: certificate-derived falsifiable diagnostics compile-green; TB23 frozen
 
 Diagnostic-only Code + Build under frozen **CA0–CA9**. Exact semantic/evidence source

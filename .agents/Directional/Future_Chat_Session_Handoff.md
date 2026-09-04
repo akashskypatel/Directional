@@ -101,65 +101,58 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB23-EXEC` — EXACT NEXT / Test + Benchmark, IMMUTABLE EXECUTION ONLY
+## Mandatory next turn — `M3-CP4c-3-TB23-REV` — EXACT NEXT / independent diagnostics + review
 
-`M3-CP4c-3-CB25` is **COMPLETE / COMPILE-GREEN / NO RUNTIME EXECUTED**.
+`M3-CP4c-3-TB23-EXEC` is **TERMINATED / ORCHESTRATION-INVALID / NO AUTHORITATIVE SEMANTIC LEDGER**.
 
 ### Exact authority
 
 - Repository: `https://github.com/akashskypatel/Directional`
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 - PR: `#8`, open / draft / unmerged
-- `evidence_commit`: `e12396d471c0754b112a40272a7992020ff49ced`
-- Pre-package owner-target compile: run/job `33831440291 / 100895129339`, result artifact `9921874264`, SUCCESS
-- Authoritative eight-target package compile: run/job `33831662949 / 100895799092`, SUCCESS
-- Immutable TB23 package: `9921914679` / `m3-cp4c3-cb25-package-result-33831662949` /
-  SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`
-- Compile log: `9921915098` / SHA-256 `7eee7b03e48a2301d9e60235d899a696c731826b4b52bb29230cccd33774e5d6`
-- `runtimeExecution=false`; GMP/GMPXX proved by CMake discovery and generated link command; package `SHA256SUMS` verified.
+- semantic/evidence source: `e12396d471c0754b112a40272a7992020ff49ced`
+- immutable CB25/TB23 package: `9921914679`, SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`
+- frozen selector 397: 397 identities, `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`
+- preserved TB23-EXEC invalid-runtime run/job: `33833497955 / 100901221113`
+- result artifact: `9922540133`, SHA-256 `cd439a2646fc215252594a2bf5c3ae83e201d3bad252506d5c77e800ed600f3a`
+- diagnostic log artifact: `9922540522`, SHA-256 `6fc1d7ae0e742b28c5e1484bc8735212fa11f5c179693f905bc069697549e9df`
+- TB23-EXEC report: `Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md`
 
-### CB25 result
+### Execution disposition
 
-CB25 discharged frozen `CA0–CA9` diagnostically only. It now derives certified-face attribution from certificate-filtered face-walk
-evidence, resolves both minority-edge sides independently, publishes satisfiable uncut-face examined/differing counts, publishes a bounded
-failing-component certified-face multiset, and adds one falsifiability witness per new field plus an unrelated-error witness. The protected
-seed rule, uniqueness guard, component barriers/partition, `seedOrbits`, `edgeOrbitEvidence`, face walk, rotation system, region drafts,
-CB21 comparison, certificate and `proves_cellularity()` remain semantically unchanged.
+The package itself passed hash/source/GMP/selector/static-owner checks and remained byte-identical. The frozen plan also required a known
+fixture to exist at the exact runtime path resolved by the packaged executable before any Directional runtime. The harness checked the
+extracted source workspace instead; `package/test-data` was absent. Runtime then began, so the resulting complete 397-row process ledger is
+preserved but **orchestration-invalid** under the frozen stop rule. No package repair or launch-root workaround was attempted.
 
-Selector authority:
+Raw invalid-attempt fields for audit only: 342 PASS / 55 RED, accepted 327/365, ledger
+`839e95feea68bdff35c8c9b11ca22f486f3452413f82017888f17ffc76e85e8d`, ordinals 394–397 = PASS/PASS/PASS/RED,
+D2 detail count 0, CA2/CA3/CA4 rows 0/0/0. These fields are **not semantic regression authority**.
 
-- selector 365: 365 identities, `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
-- selector 393: byte-frozen 393 identities, `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`;
-- selector 397: 397 identities, `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`; 365 and 393 are exact prefixes.
+Latest authoritative semantic runtime remains **M3-CP4c-3-TB22: 387 PASS / 6 RED, accepted 365/365**. Stable accounting remains
+44 events / 14 categories / 30 recurrences; produced-witness debt 5; semantic M3 package count 88. CP4c-3 remains OPEN.
 
-The generated-manifest helper was not trusted to rewrite historical first-commit metadata from the synthetic snapshot checkout; the existing
-manifest history was preserved and only the current selector-role metadata was updated.
+### Exact next boundary
 
-### Exact next execution
-
-Use `.agents/Directional/Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` without modification. TB23 is split:
-
-1. **`M3-CP4c-3-TB23-EXEC`** — immutable package execution and raw evidence preservation only. No diagnosis-driven extra probes, no source/test/build edits, no compile/relink/rebuild/package repair, no benchmarks.
-2. **`M3-CP4c-3-TB23-REV`** — consume only TB23-EXEC evidence; perform diagnostics/review; no new unplanned Directional runtime.
-
-Frozen execution discriminators are D1–D6 in the TB23 plan: accepted prefix 365/365, ordinal 366's exact semantic locus, non-zero
-examined-pair exercise, independently certified minority sides, failing-component certified-face multiset, carried surfaces, and new
-ordinals 394–397. **No further diagnostic Code + Build turn is authorized on this surface after TB23.**
-
-CP4c-3 remains **OPEN**. TB22 remains the latest runtime authority until TB23-EXEC produces immutable evidence. Stable accounting remains
-44 events / 14 categories / 30 recurrences; produced-witness debt 5; semantic M3 package count 88.
+**`M3-CP4c-3-TB23-REV`** consumes the immutable TB23-EXEC evidence and frozen TB23 plan, adjudicates the execution/package defect and
+next authorized action, and performs any regression/root-cause accounting justified by authoritative evidence. Do not execute new
+Directional runtime, do not repair the package in place, and do not continue directly into a corrective CB from this handoff.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/TB-REVIEW.md
 conditional_modules:
-  - trigger: GitHub Actions/artifact access for immutable TB23 execution
+  - trigger: inspect GitHub Actions/artifact evidence
     path: modules/github-connector/MODULE.md
+  - trigger: diagnose test/fixture execution-integrity evidence
+    path: modules/unit-testing/MODULE.md
 deep_references:
   - .agents/Directional/Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/GMP_COMPILE_POLICY.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_CB25_Code_Build_Report.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
 templates_when_producing: []
 do_not_preload:
@@ -168,8 +161,7 @@ do_not_preload:
   - uncited historical reports
 ```
 
-TB23-EXEC executor role is the lightweight runtime-execution role; TB23-REV is the thorough diagnostic/review role. The independent
-review/planning boundary remains externally owned; the loop must stop at that boundary rather than silently continuing into a corrective CB.
+The independent review/planning boundary is externally owned. Stop here; do not silently continue into a correction turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

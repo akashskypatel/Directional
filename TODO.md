@@ -26,48 +26,37 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB23-EXEC` (Test + Benchmark, IMMUTABLE EXECUTION ONLY)
+## Current focus — `M3-CP4c-3-TB23-REV` (independent diagnostics/review boundary)
 
-`M3-CP4c-3-CB25` is **COMPLETE / COMPILE-GREEN / RUNTIME-NOT-EXECUTED**. Exact semantic/evidence source:
-`e12396d471c0754b112a40272a7992020ff49ced`. The diagnostic-only implementation discharged the frozen
-`CA0–CA9` scope from `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` without changing the protected
-seed rule, uniqueness guard, barrier construction, partition, face walk, rotation system, region drafts, certificate,
-or `proves_cellularity()`.
+`M3-CP4c-3-TB23-EXEC` is **TERMINATED / ORCHESTRATION-INVALID / NO AUTHORITATIVE SEMANTIC LEDGER**.
+The immutable CB25 package `9921914679` verified byte-for-byte, but the frozen TB23 preflight required committed
+fixtures at the exact executable-relative runtime path before Directional runtime. The execution harness checked the
+extracted source workspace instead. Runtime therefore began with `package/test-data` absent; the resulting 397-row
+ledger is preserved as invalid execution evidence and is not semantic authority.
 
-CB25 compile authority:
+Execution evidence:
 
-- pre-package owner-target compile: `33831440291 / 100895129339`, artifact `9921874264`, **SUCCESS**;
-- authoritative eight-target package compile: `33831662949 / 100895799092`, **SUCCESS**;
-- immutable package: `9921914679` (`m3-cp4c3-cb25-package-result-33831662949`), SHA-256
-  `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`;
-- persistent compile log: `9921915098`, SHA-256
-  `7eee7b03e48a2301d9e60235d899a696c731826b4b52bb29230cccd33774e5d6`;
-- GMP/GMPXX mandatory evidence is present; `runtimeExecution=false`; no Directional test or benchmark ran in CB25.
+- semantic/evidence source: `e12396d471c0754b112a40272a7992020ff49ced`;
+- immutable package: `9921914679`, SHA-256 `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`;
+- first orchestration-only attempt: run `33833432331`, failed before Directional runtime;
+- preserved invalid-runtime run/job: `33833497955 / 100901221113`;
+- result artifact `9922540133`, SHA-256 `cd439a2646fc215252594a2bf5c3ae83e201d3bad252506d5c77e800ed600f3a`;
+- log artifact `9922540522`, SHA-256 `6fc1d7ae0e742b28c5e1484bc8735212fa11f5c179693f905bc069697549e9df`;
+- raw invalid-attempt ledger: 342 PASS / 55 RED, accepted prefix 327/365, ledger SHA-256
+  `839e95feea68bdff35c8c9b11ca22f486f3452413f82017888f17ffc76e85e8d`;
+- raw 394–397 results: PASS / PASS / PASS / RED;
+- package/source pre/post censuses equal; no benchmark, configure, compile, relink, discovery, package/mode repair,
+  or source/test/fixture/selector mutation occurred.
 
-Selector authority:
-
-- accepted selector 365 remains exact at `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
-- selector 393 remains byte-frozen at `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`;
-- selector 397 contains exactly 397 identities at
-  `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`, with 365 and 393 exact prefixes.
+The raw ledger does **not** supersede semantic authority. Latest authoritative runtime remains **TB22: 387 PASS / 6 RED,
+accepted 365/365**. Stable accounting therefore remains **44 events / 14 categories / 30 recurrences**; produced-witness
+debt **5**; authoritative semantic M3 package count **88**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB23-EXEC`** exactly as frozen in
-`Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md`.
-
-- [ ] Consume only immutable package `9921914679`; do not rebuild, relink, repair, regenerate, or mutate source/tests/fixtures/selectors.
-- [ ] Verify package hashes, archived executable modes, source SHA, GMP/GMPXX evidence, and selector 365/393/397 hashes/prefixes before runtime.
-- [ ] Execute all 397 identities in ordinal order, one fresh process per exact identity; no benchmark execution.
-- [ ] Require accepted prefix 1–365 = **365/365 PASS**.
-- [ ] Preserve ordinal 366's exact locus and CA2–CA4 diagnostics, including non-zero examined-pair evidence and the failing-component certified-face multiset.
-- [ ] Preserve complete raw evidence and pre/post byte+mode equality.
-
-TB23 is explicitly split into **TB23-EXEC** (runtime execution and raw evidence only) and **TB23-REV** (diagnostics/review only).
-**No further diagnostic Code + Build turn is authorized on this surface after TB23.** TB23-REV owns the correction decision.
-
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count advances to **88**.
+**STOP at `M3-CP4c-3-TB23-REV`.** Consume the immutable TB23-EXEC result/log evidence and frozen plan. Determine the
+execution/package disposition and next authorized action. Do not treat the invalid 342/55 ledger as product regression authority,
+do not rerun Directional from TB23-EXEC, and do not start a corrective CB from this closeout.
 
 ## Carried forward from M1
 
