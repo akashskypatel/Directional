@@ -1,3 +1,27 @@
+## 2026-09-03 — `M3-CP4c-3-CB24`: projection diagnostics published; selector393/package87 compile-green; TB22 frozen
+
+Diagnostic-only Code + Build under TB21-REV **BY0–BY9**. Exact implementation/evidence source
+`d69729a69a40b020968ed6ef1fbc1bc788284518` publishes distinctness-retained boundary rows, full minority seed-rule
+and certificate-side attribution, a typed projection-faithfulness residual with bounded witnesses, and a re-scoped
+ordinal391 that no longer makes the mechanical/torus census depend on the already-owned prescribed-sphere surface.
+No protected topology semantics changed: barrier construction, uncut-face partition, seed election, face walk, rotation
+system, region drafts, CB21 comparison, certificate and `proves_cellularity()` remain untouched.
+
+Selector391 is byte-identical at `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`; selector393
+contains exactly 393 identities at `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`, with 391 as an exact
+byte prefix and only the two new diagnostic witnesses appended.
+
+Authoritative compile run/job `33823590494 / 100871347582` built all eight required targets with mandatory GMP/GMPXX,
+clean source and `runtimeExecution=false`. Immutable package artifact `9919225745` has
+`sha256:7955c243d7968e51e62f0f8d4b0cc96da313a2356ee8bf2eeba7c995b856e87d`; packaged source archive SHA-256
+`34d938298466d4be9b73a6034d1ed21230104c6634a1dfaa82b2ab71f81fa704`; log artifact `9919226113` has
+`sha256:a9efadb18ace1feb1e1df156d561573da4cdfead642d168cc88eb7c09c5b05a9`. No Directional runtime test, benchmark,
+discovery/list/help/version command, CLI, fuzzer or custom input executed. Semantic M3 package count advances **86 → 87**.
+
+Exact next is artifact-only `M3-CP4c-3-TB22` against package87/selector393. Expected no-new-regression outcome is
+387 PASS / 6 RED with carried reds 366/367/368/369/370/374, while the BY4 residual is intentionally not predetermined.
+After TB22 the mandatory boundary is independent `M3-CP4c-3-TB22-REV`; no correction/DEFN is pre-authorized.
+
 ## 2026-09-03 — `M3-CP4c-3-TB21-REV`: the complex is cellular, TB20-REV's conclusion withdrawn; the real surface is an unvalidated projection; CB24 frozen
 
 Independent review of immutable TB21 evidence under the binding plan's measures **BX0–BX8**. Record:

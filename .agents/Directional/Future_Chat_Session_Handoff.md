@@ -101,136 +101,86 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB24` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB22` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
 
-`M3-CP4c-3-TB21-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` (measures **BX0–BX8** discharged, static only).
+`M3-CP4c-3-CB24` is **COMPLETE / COMPILE PASS / RUNTIME-FREE**. Record:
+`Architecture_M3_CP4c3_CB24_Code_Build_Report.md`.
 
-### TB21 immutable runtime authority
+### CB24 immutable build/package authority
 
-- semantic/evidence source: **`fa5646106ccaa23770b84a935c6d1d6007928640`** — ancestor of HEAD, **no code drift**;
-- CB23 compile run/package job: **`33815475590 / 100847694307`**; package artifact **`9916511617`**,
-  `sha256:8378a108811740cff5fd1a0fc9db66f9e3334d7048ea9e7c7d6e8e1cbd852050`;
-- selector **391**: `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`, **391 identities**, the
-  388-identity 385-file an exact prefix, accepted 365 an exact prefix;
-- TB21 run/job: **`33818038269 / 100854435211`**; result/log artifacts **`9917317234 / 9917317654`**;
-- exact 391-row ledger: **`8606fb7ba5673e6d3b45b5055f7744559b29a79d5caa8d0df76da85920aa6f77`**;
-- pre/post package byte+mode census: **IDENTICAL**, `e15a8ababed2d6580d36abe9e2421a9d573bd29fb5fe36fb08ab844f80161897`;
-- selector result: **384 PASS / 7 RED**; accepted 1–365 **365/365 PASS**; reds 366/367/368/369/370/374/391.
+- evidence/source commit: **`d69729a69a40b020968ed6ef1fbc1bc788284518`**;
+- compile run/job: **`33823590494 / 100871347582`**;
+- result artifact: **`9919225745`**, `m3-cp4c3-cb24-compile-result-33823590494`,
+  `sha256:7955c243d7968e51e62f0f8d4b0cc96da313a2356ee8bf2eeba7c995b856e87d`;
+- packaged source archive SHA-256: **`34d938298466d4be9b73a6034d1ed21230104c6634a1dfaa82b2ab71f81fa704`**;
+- compile log artifact: **`9919226113`**,
+  `sha256:a9efadb18ace1feb1e1df156d561573da4cdfead642d168cc88eb7c09c5b05a9`;
+- all eight required targets compiled/linked, source clean, mandatory **GMP/GMPXX** verified;
+- package records `exactArithmeticBackend=GMP`, `turnBoundary=Code+Build-only`, `runtimeExecution=false`;
+- no Directional test, benchmark, discovery/list/help/version command, CLI, fuzzer or custom input executed.
 
-### What the review established
+Selector authority for TB22:
 
-**TB20-REV's non-cellularity conclusion is WITHDRAWN.** The census it ordered proves the mechanical actual
-embedded complex is **cellular**: `V=22, E=26, F=6, componentCount=1, chi=2, residual=0`, every face certified a
-disc. Part I §3's "the network is not a cut graph" is an **implication with a premise** - Part I establishes
-non-cellularity for the torus independently, from `V = E = 48` and `chi = 0`. TB20-REV applied the conclusion
-without carrying the premise. There is **no normative conflict between documents**; the conflict was with a
-misreading.
+- accepted 365: `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- frozen selector 391: **391 identities**, `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`;
+- current selector 393: **393 identities**, `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`;
+- selector 391 is an exact byte prefix of selector 393; ordinals 392/393 are the only appended identities.
 
-- **The two constructions count different objects.** `certify_actual_embedded_graph` + `proves_cellularity()`
-  (`SurfaceCutGraph.cpp:451,478`) count nodes/arcs/face-walk orbits of the **embedded graph on the surface**, whose
-  faces are bounded by arcs running through triangle interiors, and require every face to prove disc topology.
-  `GlobalTopologyPlan.cpp:1102-1165` joins whole **uncut source triangles** across source edges not in
-  `componentBarriers`. The second is a **projection** of the first. **Neither validates the other.**
-- **The unstated contract.** The projection is faithful only if *every pair of adjacent uncut source triangles
-  lying in different certificate faces is separated by an edge in `componentBarriers`*. Cellularity does not imply
-  it; no construction states or checks it. **That is the real defect surface.**
-- **Two readings, opposite corrections.** Component 0's complete boundary attribution is **orbit 0 -> 81 edges,
-  orbit 1 -> 1, orbit 3 -> 1**, plus 14 barrier/no-seed, over 97 edges - one dominant orbit and two single-edge
-  outliers. Either those two edges genuinely separate certificate faces and the barrier set is missing them, or
-  two seed reads are wrong at `:1130-1140`.
-- **The deciding rows already exist in the artifact.** TB20's first-64 window showed 44/1/1 and TB21's complete
-  census shows 81/1/1, so **both minority rows lie inside the retained window** with edge key, owner count,
-  barrier class and seed captured - and were summarized into counts by the report. **No new measurement is
-  required**, only retention and projection by *distinctness*. Raising the 64/97 cap would be the wrong fix.
-- **371 and 372 PASS** and `M3-CP4c3-TB10-REV-CAND-01` **closes / runtime proved**; the atlas accessor stays
-  test-only and never becomes product authority.
-- **Ordinal 391 is a self-inflicted diagnostic RED** - its sphere half needs `sphere.cutGraph` and hits the owned
-  368 surface, because BW4 required one census witness to span all three witnesses. BY7 re-scopes it; no sphere
-  product surface is touched.
-- **`M3-CP4c3-TB20-REV-CAND-02` is downgraded to a formal documentation gap.** Its substantive argument rested on
-  non-cellularity and does not survive; CB21 corrected a real unsoundness and **is not reverted**. Parts IV/V's
-  written prohibition remains unlifted - owner: a DEFN turn.
+Semantic M3 package count is **87**. Accepted authority remains **365/365**; CP4c-3 remains **OPEN**.
 
-368/369/370/374 unchanged under their existing owners. **There is still no vertex-30 discriminator.**
+### Prior immutable runtime authority remains TB21
 
-### CB24 binding scope — `BY0–BY9`, in the review record §10
+No runtime occurred in CB24, so current runtime authority remains `M3-CP4c-3-TB21`: run/job
+`33818038269 / 100854435211`, result/log artifacts `9917317234 / 9917317654`, **384 PASS / 7 RED**,
+accepted **365/365**, REDs `366,367,368,369,370,374,391`, ledger SHA-256
+`8606fb7ba5673e6d3b45b5055f7744559b29a79d5caa8d0df76da85920aa6f77`, immutable package census
+`e15a8ababed2d6580d36abe9e2421a9d573bd29fb5fe36fb08ab844f80161897`.
 
-**Diagnostic-only.** Not a DEFN - there is no normative conflict. Not a correction - the two readings imply
-opposite fixes. One indispensable relation is absent from *reported* evidence and is already captured in the
-artifact, so the successor is small.
+The mechanical actual embedded graph is certified cellular (`V=22,E=26,F=6,componentCount=1,sourceChi=2,residual=0`)
+while the source-face component seed state remains `Multiple` with exact seed orbits `[0,1,3]`. CB24 did not choose a
+correction; it instruments the projection between these objects.
 
-- **BY0** - accepted 365 untouched; **selector 391 byte-frozen** at `f60638a5...cf6086c0`, republished unchanged;
-  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BY1** - **retain boundary rows by distinctness, not position.** Before filling the row budget in order, retain
-  at least one row per distinct contributed seed orbit and per distinct `noSeedReason`. Keep the cap and the
-  truncation marker.
-- **BY2** - project the **minority-orbit rows in full**: per row the edge key, `otherSideLabeled`, the labeled
-  neighbour's face key and owner count, the barrier class, **which rule produced the seed** (owner-shortcut at
-  `:1131` versus `edgeOrbitEvidence` at `:1134`), and the seed value.
-- **BY3** - for each such edge, publish **which certificate face each side lies in**, separating the two readings
-  by measurement rather than argument.
-- **BY4** - publish the **projection faithfulness residual**: the count of adjacent uncut source-triangle pairs
-  whose sides lie in different certificate faces while their shared edge is **not** in `componentBarriers`. Zero
-  means the defect is in the seed read; non-zero names the barrier set. Bounded, with a truncation marker.
-- **BY5** - one witness per new field through the **production** path, plus a byte-identical unrelated-error
-  regression witness.
-- **BY6** - append the next selector **named by its resulting identity count**; 391 stays an exact prefix; no
-  reordering. Regenerate `Required_Green_Selector_Manifest.md` with `tools/selector_manifest.py`.
-- **BY7** - **re-scope ordinal 391** so its mechanical and torus halves assert and report independently of the
-  prescribed-sphere half, and the sphere half is skipped-with-reason while 368 is open. Touches no sphere product
-  surface and does not weaken 368's ownership.
-- **BY8** - **no product semantic change whatsoever**: the guard and its predicate, `componentBarriers`, the
-  partition, `seedOrbits`, the seed rule, `edgeOrbitEvidence`, `add_fragment_orbit`, the `exteriorOrbits` filter,
-  `is_terminal_slit`, the face walk, the rotation system, region drafts, CB21's comparison, `proves_cellularity()`
-  and the certificate stay untouched; `localFragmentCount` stays non-fatal. No fixture geometry mutation,
-  tolerance, float-derived decision or accepted-boundary relaxation; no sphere / saturation / ordinal-370 /
-  folded-cone / vertex-30 / finalize-contact product work; **no revert of CB21**.
-- **BY9** - six `M3-CP4c-3-TB22` discriminators: (1) 1-365 stay **365/365**; (2) ordinal 366 **still** reds at
-  `UncutFaceComponentOrbitSeedNotUnique`, component 0, `Multiple`, orbits `[0,1,3]`, 191 faces - any movement
-  falsifies BY8; (3) both **minority-orbit rows are published in full**; (4) each minority edge's two sides are
-  attributed to certificate faces; (5) the **projection faithfulness residual** is published - zero or non-zero
-  decides the owner; (6) **391 is no longer RED**, 371/372 stay PASS, and 367/368/369/370/374 are unchanged.
+### TB22 binding execution
 
-The successor after TB22 is an independent **`M3-CP4c-3-TB22-REV`**, which owns the correction once BY4's residual
-names the owner. A DEFN turn becomes correct **only** if that residual is non-zero and the barrier-set contract
-must be restated; it is not scheduled in advance.
+Execute `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Plan.md` exactly. In particular:
 
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **86**.
+1. verify artifact 9919225745 and its internal manifest/source/GMP boundary before any Directional binary executes;
+2. extract with a mode-preserving archive tool; do not use Python `zipfile` extraction and do not chmod-repair;
+3. resolve all 393 identities statically to exactly one packaged binary before execution; generated binary discovery,
+   listing, help or version execution is forbidden; zero-selected is orchestration failure;
+4. execute ordinals 1–393 in order, one exact identity per fresh process, and continue the planned remainder after
+   valid semantic REDs;
+5. require accepted ordinals 1–365 to remain **365/365 PASS**;
+6. for ordinal 366 preserve the unchanged typed seed failure plus all `m3Cp4c3BY2BY3` minority-row evidence and all
+   `m3Cp4c3BY4` projection-faithfulness residual/witness evidence; **do not predetermine the residual**;
+7. prove ordinal 391 no longer REDs solely because `sphere.cutGraph` is absent; capture the explicit sphere skip reason;
+8. require 371/372 to remain PASS and record exact status for carried 367/368/369/370/374;
+9. run appended required-green ordinals 392/393 normally; expected no-new-regression ledger is **387 PASS / 6 RED**,
+   with REDs `366,367,368,369,370,374`, but actual evidence controls;
+10. emit the exact 393-row ledger and hash, complete logs, BY2/BY3/BY4 rows, and identical pre/post recursive package
+    byte+mode census. No configure/compile/relink/regeneration/repair/mutation/benchmark is authorized.
 
-**Document consolidation ran this turn** under the standing rule (`CLEAN_UP_POLICY.md`). The TB20 report, the TB20
-review record and the consumed TB21 review plan were folded, and the CB23 build report and TB21 plan — retired by
-`M3-CP4c-3-TB21`'s own stale-evidence cleanup without an index entry — were indexed retrospectively. Current
-authority is the TB21 report plus the TB21-REV record. No selector file, normative definition or policy was
-touched.
+After TB22 closes, the exact next boundary is **independent `M3-CP4c-3-TB22-REV`**. The loop must stop there. No
+Code + Build correction and no DEFN execution is pre-authorized. A DEFN becomes eligible only if that independent
+review concludes the barrier-set contract itself must be restated.
 
 ### Context Load Plan
 
-`load_next`: turn-based-coding-agent CODE + BUILD guidance.
+`load_next`: turn-based-coding-agent canonical **Test + Benchmark** guidance.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` — **frozen CB24 scope, §10 BY0–BY9**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part I §3 is an implication with a premise**; Parts IV/V
-   prohibited lists; Part VI for vertex-star definitions. **Read the prohibited lists before authorizing any
-   correction, and carry each finding's premise, not just its conclusion.**
-5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector counts, hashes, prefix parents, roles.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
-   document index** resolves every folded or retired per-turn plan, report and record.
-
-Source surfaces CB24 will touch: `src/geometry/GlobalTopologyPlan.cpp` (boundary-row retention/projection and the
-faithfulness residual only), the plan diagnostics headers for the added typed fields, and `tests/` for the BY5
-witnesses and the BY7 re-scoping of ordinal 391.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
-`review_check.py boundary`, `selector_probe.py`, `selector_manifest.py`, and `fixture_probe.py`. See
-`tools/README.md` for the caveats.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Plan.md` — **binding execution plan**.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB24_Code_Build_Report.md` — exact source/package/selector authority.
+3. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current frontier and candidate ownership.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md` — comparison runtime authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` — BY0–BY9 intent and review boundary.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md` — TB regression closeout is mandatory.
+7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector counts, hashes, prefix parents and roles.
+8. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` only when a runtime observation needs normative classification;
+   do not use it to pre-authorize a correction during TB.
+9. `.agents/Directional/M3_CP4c_Consolidated_Record.md` only when historical lineage is specifically needed.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
