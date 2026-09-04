@@ -1,0 +1,50 @@
+name: Agent TB25 Docs Apply Caller
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb25-docs-apply/trigger-20260904.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-tb25-docs-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb25-docs-apply-caller.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 14
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb25-docs-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: "11JLFGG6hbs0GmApzCM8A3HqSJVepR6Om"
+      patch_sha256: "664c51292e6f1de635e1750399e3030290c55edb8ae62c0a4d799eaea4b0fae5"
+      base_sha: "c4f201953883386114f30bc70ca01f9a96b8d58c"
+      target_branch: "agent/surface_cell_quad/p5-recover-bridge-healing"
+      commit_message: "docs: record TB25 pre-runtime orchestration failure"
+      retention_days: 14
+    secrets: inherit
