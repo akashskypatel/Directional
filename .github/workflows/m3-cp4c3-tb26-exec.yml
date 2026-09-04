@@ -1,0 +1,75 @@
+name: M3 CP4c3 TB26 EXEC
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m3-cp4c3-tb26-exec-20260904.txt]
+permissions: {actions: read, contents: write, issues: write, pull-requests: write}
+concurrency: {group: m3-cp4c3-tb26-exec, cancel-in-progress: false}
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with: {pr_number: 8, label: m3-cp4c3-tb26-exec, commit_run_file: false}
+    secrets: inherit
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with: {workflow_path: .github/workflows/m3-cp4c3-tb26-exec.yml, source_ref: "${{ github.sha }}"}
+    secrets: inherit
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+      AID: '9957324848'
+      ZSHA: 7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de
+      SSHA: e045bf7147afc02bd90eff4822e4b609edbaba66
+      H405: 615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7
+      H403: 60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007
+      H401: 0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869
+      H397: d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5
+    steps:
+      - name: Execute immutable selector 405
+        shell: bash
+        run: |
+          set -euo pipefail
+          R="$RUNNER_TEMP/tb26"; P="$R/pkg"; S="$R/src"; V="$R/view"; O="$RUNNER_TEMP/tb26-result"; L="$RUNNER_TEMP/tb26.log"
+          mkdir -p "$P" "$S" "$V/bin" "$O/raw" "$O/resources" "$R/run"; :>"$L"; exec > >(tee -a "$L") 2>&1
+          of=false; rs=false; rc=false
+          end(){ x=$?; set +e; printf 'script_exit=%s\norchestration_failure=%s\nruntime_started=%s\nruntime_completed=%s\nconfigure_execution=false\ncompile_execution=false\nrelink_execution=false\ngenerated_discovery=false\npackage_repair=false\nmode_repair=false\nsource_test_fixture_selector_mutation=false\n' "$x" "$of" "$rs" "$rc" >"$O/execution-boundary.txt"; }; trap end EXIT
+          fail(){ of=true; echo "ORCHESTRATION_FAILURE: $*" >&2; exit 90; }
+          census(){ d="$1"; o="$2"; :>"$o"; while IFS= read -r -d '' f; do r="${f#$d/}"; printf '%s\t%s\t%s\t%s\n' "$r" "$(stat -c %a "$f")" "$(stat -c %s "$f")" "$(sha256sum "$f"|cut -d' ' -f1)" >>"$o"; done < <(find "$d" -type f -print0|LC_ALL=C sort -z); }
+          M=$(curl -fsS -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$AID"); [[ $(jq -r .digest<<<"$M") == "sha256:$ZSHA" ]]||fail 'provider digest'; [[ $(jq -r .name<<<"$M") == m3-cp4c3-cb30-compile-result-33927223741 ]]||fail 'artifact name'
+          curl -LfsS -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$AID/zip" -o "$R/p.zip"; [[ $(sha256sum "$R/p.zip"|cut -d' ' -f1) == "$ZSHA" ]]||fail 'ZIP digest'
+          unzip -q "$R/p.zip" -d "$P"; (cd "$P"&&sha256sum -c SHA256SUMS)>"$O/manifest-check.txt"||fail 'manifest'; [[ $(cat "$P/metadata/source-commit.txt") == "$SSHA" ]]||fail 'source SHA'
+          for x in runtimeExecution=false turnBoundary=Code+Build-only exactArithmeticBackend=GMP; do grep -Fxq "$x" "$P/metadata/command-boundary.txt"||fail "boundary $x"; done
+          tar -xzf "$P/source/source-$SSHA.tar.gz" -C "$S"; Q="$S/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_405.txt"; [[ $(wc -l<"$Q") -eq 405 ]]||fail 'selector count'; [[ $(sha256sum "$Q"|cut -d' ' -f1) == "$H405" ]]||fail 'selector 405'
+          for n in 403 401 397; do head -n "$n" "$Q">"$R/q$n"; v=H$n; [[ $(sha256sum "$R/q$n"|cut -d' ' -f1) == "${!v}" ]]||fail "prefix $n"; done; H365=$(sha256sum "$S/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt"|cut -d' ' -f1); head -n365 "$Q">"$R/q365"; [[ $(sha256sum "$R/q365"|cut -d' ' -f1) == "$H365" ]]||fail 'prefix 365'
+          E=(directional_compiled_api_tests directional_surface_cell_authority_kernel_tests directional_surface_cell_completion_tests directional_surface_cell_producer_tests directional_surface_cell_validation_tests); mkdir -p "$V/test-data/benchmarks"; for e in "${E[@]}"; do [[ -x "$P/bin/$e" ]]||fail "mode $e"; ln "$P/bin/$e" "$V/bin/$e"||fail "link $e"; done; cp -a "$S/benchmarks/fixtures" "$V/test-data/benchmarks/"; [[ -f "$V/test-data/benchmarks/fixtures/milestone-g/mechanical_feature.obj" ]]||fail 'fixture'; grep -Fq 'executableDirectory.parent_path() / "test-data"' "$S/tests/TestFixturePaths.h"||fail 'fixture rule'
+          python3 - "$S" "$Q" "$O/identity-map.tsv" <<'PY'
+          import pathlib,re,sys
+          r=pathlib.Path(sys.argv[1]); ids=pathlib.Path(sys.argv[2]).read_text().splitlines(); c=(r/'cmake/DirectionalTests.cmake').read_text(); bs=['directional_compiled_api_tests','directional_surface_cell_producer_tests','directional_surface_cell_authority_kernel_tests','directional_surface_cell_completion_tests','directional_surface_cell_validation_tests']; p=re.compile(r'\bTEST(?:_F|_P)?\s*\(\s*(\w+)\s*,\s*(\w+)\s*\)'); prod=re.search(r'set\(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES(.*?)\)\n\nadd_executable',c,re.S).group(1); O={}
+          for b in bs:
+            z=re.search(r'add_executable\(\s*'+re.escape(b)+r'\s+(.*?)\)',c,re.S).group(1).replace('${DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES}',prod)
+            for f in [x for x in z.split() if x.endswith('.cpp')]:
+              for a,n in p.findall((r/f).read_text(errors='replace')): O.setdefault(f'{a}.{n}',[]).append(b)
+          rows=[]
+          for i,x in enumerate(ids,1):
+            z=O.get(x,[])
+            if len(z)!=1: raise SystemExit(f'owner count {len(z)} at {i}:{x}')
+            rows.append((i,x,z[0]))
+          pathlib.Path(sys.argv[3]).write_text('ordinal\tidentity\tbinary\n'+''.join(f'{i}\t{x}\t{b}\n' for i,x,b in rows))
+          PY
+          [[ $(($(wc -l<"$O/identity-map.tsv")-1)) -eq 405 ]]||fail 'identity map'; census "$P" "$O/package-before.tsv"; census "$S" "$O/source-before.tsv"; census "$V" "$O/view-before.tsv"
+          printf 'ordinal\tidentity\tbinary\texit\tselected\tresult\telapsed\tmax_rss_kb\traw_log\tresource_log\n'>"$O/ledger.tsv"; rs=true
+          while IFS= read -r id||[[ -n "$id" ]]; do o=$(grep -Fxn "$id" "$Q"|cut -d: -f1); b=$(awk -F'\t' -v o="$o" 'NR>1&&$1==o{print $3}' "$O/identity-map.tsv"); raw="$O/raw/o$(printf %03d "$o").log"; t="$O/resources/o$(printf %03d "$o").time"; mkdir -p "$R/run/$o"; set +e; (cd "$R/run/$o"&&/usr/bin/time -v -o "$t" "$V/bin/$b" --gtest_filter="$id")>"$raw" 2>&1; x=$?; set -e; n=$(grep -c '^\[ RUN      \]' "$raw"||true); q=$(grep -Fxc "[ RUN      ] $id" "$raw"||true); [[ $n -eq 1&&$q -eq 1 ]]||fail "selection $o"; z=RED; [[ $x -eq 0 ]]&&z=PASS; et=$(sed -n 's/^\s*Elapsed (wall clock) time (h:mm:ss or m:ss): //p' "$t"); rss=$(awk -F: '/Maximum resident set size/{gsub(/ /,"",$2);print $2}' "$t"); printf '%s\t%s\t%s\t%s\t1\t%s\t%s\t%s\t%s\t%s\n' "$o" "$id" "$b" "$x" "$z" "$et" "$rss" "raw/$(basename "$raw")" "resources/$(basename "$t")">>"$O/ledger.tsv"; done<"$Q"; rc=true
+          pass=$(awk -F'\t' 'NR>1&&$6=="PASS"{n++}END{print n+0}' "$O/ledger.tsv"); reds=$(awk -F'\t' 'NR>1&&$6=="RED"{printf "%s%s",s,$1;s=","}' "$O/ledger.tsv"); acc=$(awk -F'\t' 'NR>1&&$1<=365&&$6=="PASS"{n++}END{print n+0}' "$O/ledger.tsv"); printf 'total=405\npass=%s\nred=%s\nred_ordinals=[%s]\naccepted_prefix_pass=%s/365\n' "$pass" "$((405-pass))" "$reds" "$acc">"$O/semantic-summary.txt"
+          { for o in 366 367 389 390 393 398 404 405; do echo "===== ordinal $o ====="; cat "$O/raw/o$(printf %03d "$o").log"; done; }>"$O/cj6-raw-payload.txt"; grep -Ei 'uncut|component|boundary|barrier|arc|vertex|seed|owner|orbit|m3Cp4c3' "$O/cj6-raw-payload.txt">"$O/cj6-structured-lines.txt"||true
+          census "$P" "$O/package-after.tsv"; census "$S" "$O/source-after.tsv"; census "$V" "$O/view-after.tsv"; cmp -s "$O/package-before.tsv" "$O/package-after.tsv"||fail 'package changed'; cmp -s "$O/source-before.tsv" "$O/source-after.tsv"||fail 'source changed'; cmp -s "$O/view-before.tsv" "$O/view-after.tsv"||fail 'view changed'; sha256sum "$O/ledger.tsv" "$O/identity-map.tsv" "$O/cj6-raw-payload.txt">"$O/result-hashes.txt"; cat "$O/semantic-summary.txt"
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with: {name: "m3-cp4c3-tb26-exec-result-${{ github.run_id }}", path: "${{ runner.temp }}/tb26-result", if-no-files-found: error, retention-days: 7}
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with: {name: "m3-cp4c3-tb26-exec-log-${{ github.run_id }}", path: "${{ runner.temp }}/tb26.log", if-no-files-found: error, retention-days: 7}
