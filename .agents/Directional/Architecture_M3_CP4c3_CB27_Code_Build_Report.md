@@ -123,5 +123,6 @@ TB24 must report, without reinterpretation:
 ## Exact successor
 
 **`M3-CP4c-3-TB24-EXEC` — artifact-only runtime execution of package `9935929108` under
-`Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md`.** No rebuild, relink, package repair, source
+`Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md` (executed, then folded into
+`M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB24-REV`).** No rebuild, relink, package repair, source
 mutation, test mutation, fixture mutation, selector mutation, or generated discovery is authorized.

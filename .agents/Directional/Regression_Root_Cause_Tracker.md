@@ -1,3 +1,86 @@
+## M3-CP4c3-TB24-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md`, measures **CH0–CH9**. Static only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
+  365/365 untouched; selector 397 and selector 401 byte-frozen.
+  `review_check.py authority 9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5` — ALL CHECKS PASSED, so static review of
+  HEAD is valid evidence about immutable package `9935929108`.
+
+- **CH0 — one cause, seven surfaces.** `certify_actual_embedded_graph` (`SurfaceCutGraph.cpp:604–615`) returns a
+  `SurfaceCutGraphError` instead of a certificate when `build_source_face_ownership` cannot establish ownership.
+  `mechanical.cutGraph.has_value()` is therefore false and every witness downstream of the certificate loses its
+  subject: ordinals **366, 384, 385, 389, 390, 393, 398** are one defect on one fixture, not seven regressions.
+  TB24's own text proves it — each reaches `has_value()==false` **before its later evidence assertion**.
+
+- **CH0.1 — the evidence the plan was built to publish is complete, correct and unreachable.** CB27's plan-side
+  relocation is fully implemented at `GlobalTopologyPlan.cpp:1122–1170`: component partition,
+  `check_certified_source_face_owner_consistency`, the `ownerEvidence` census with component id, face count,
+  owner count, typed `seedState` and untruncated orbit ids, then `UncutFaceComponentOrbitSeedNotUnique` naming
+  the component and the conflicting owners — exactly DEFN-R3.2 and D4. **None of it runs.** Ordinal **400 proves
+  the relocated guard works; ordinal 366 proves it is never reached.**
+
+- **CH0.2 — the relocated failure carries less evidence than the one it replaced.** `SurfaceCutGraphError` has no
+  uncut-component identity and no owner multiset; `build_source_face_ownership` sets only `sourceFace`. The
+  pre-CB27 failure carried `uncutFaceComponent`, seed count, typed `seedState`, untruncated orbit ids, the
+  component face census and the boundary attribution. **D4's contract is unmet, not merely RED.**
+
+- **CH0.3 — same failure, same locus.** Pre-CB27: component 0, 191 faces, `seedState=Multiple`, orbits `[0,1,3]`,
+  locus `(0,1,2)`. Post-CB27: `SourceFaceOwnershipNotEstablished`, `sourceFace=(0,1,2)`.
+  `build_source_face_ownership` seeds from `faceWalk.orbitByDart` at mandatory/cut arcs and the corner-turn rule
+  at trace segments, unions across non-barrier edges, and rejects a component whose owner set is not a singleton
+  (`SurfaceCutGraph.cpp:508–541`) — the pre-CB27 algorithm transcribed. **Relocation gave it no new information.**
+
+- **CH1 — classification.** 384/385/389/390 PASS→RED and 393/398 RED are **evidence-subject loss**, not behaviour
+  loss: no assertion in any of them was evaluated and found wrong. 385 is additionally **contract-obsolete** —
+  the seed it witnesses was deliberately deleted by DEFN-R3.2. 398 is **the honest gate**: it states the real
+  open problem and stays gating and RED. 367/368/369/370/374 are unchanged carried surfaces with separate
+  owners, untouched by this review. 371/372/391/392 PASS; 399/400/401 PASS.
+
+- **CH2 — discriminators.** D1 **MET** (365/365). D2 **NOT MET** — owner-entry count `unavailable`; the map is
+  never published, so its totality was never tested. D3 **NOT MEASURABLE** — 0 observed / 191 unavailable. D4
+  **CONTRACT UNMET**. D5 split — **397 PASS, fixed not relaxed, DEFN-R3.6 discharged**; 393 RED by subject loss.
+  D6 **MET**.
+
+- **CH2.1 — why D3 was unmeasurable, owned by this review.** D3 was defined to read the published owner map;
+  CG1 made publication conditional on the derivation succeeding. **A discriminator gated on the success of the
+  thing it discriminates can only fire when there is nothing to decide.** DEFN-R3.5 defined it without checking
+  that its input survives the failure it was meant to diagnose. Fifth consecutive attempt to measure certified
+  ownership; fourth defeated by its own preconditions (`LESSONS.md` 115).
+
+- **`M3-CP4c3-TB21-CAND-01` remains ACTIVE / GATING / UNADJUDICATED.** Neither branch selected. TB24's real
+  contribution is negative and valuable: the ambiguity is **not** an artefact of where the derivation lives.
+
+- **CH3 — DEFN-R3 upheld except one clause.** Upheld: R3.1's *decision* (certifier is the authority), R3.2
+  (consumer reads — proved by ordinal 400), R3.3 (full barrier set — conformant), R3.4 (prohibition stays
+  lifted), R3.6 (397 fixed — runtime-proved), R3.7 (393 replaced in place). **Withdrawn: DEFN-R3.1's
+  justification clause** that publication is "a publication decision, not a new computation". The face walk's
+  darts are darts of *network and cut arcs*; a source face has a directly readable orbit only if it is
+  arc-incident or trace-crossed. Every other face — including most of component 0's 191 — must have its owner
+  **propagated**, which is the seeding algorithm R3.2 set out to delete. The decision survives; the reason does
+  not.
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **89**. Rationale: accepted 1–365 is 365/365 with no accepted-green loss; 384/385/389/390 are CP4c-3
+  carried witnesses over an open frontier, not accepted authority; their RED is subject loss, not behaviour
+  loss; 366–374 are already-counted carried surfaces; and 398 is a new witness that has never been green, so it
+  cannot regress. Every observed regression is nonetheless categorised here and in §2 of the record.
+
+- **Candidates.** New `M3-CP4c3-TB24-REV-CAND-01` (**GATING** — the failure was moved upstream of its own
+  witnesses; falsified when 384/389/390 return to PASS unchanged and 366 names the component and owners) and
+  `M3-CP4c3-TB24-REV-CAND-02` (**ARCHITECTURAL** — ownership of non-incident faces is a derivation, not a read).
+  **Closed, runtime-proved:** `M3-CP4c3-TB23-REV-CAND-01` (401 PASS, fail-closed fixtures),
+  `M3-CP4c3-TB23-REV-CAND-02` (corrected execution view, `execution_view_verified=true`, equal censuses),
+  `M3-CP4c3-TB23-R1-REV-CAND-01` (397 PASS, byte-identical). All other candidates unchanged.
+
+- **Successor frozen: `M3-CP4c-3-CB28`** under **CH6–CH9**, runtime-free, GMP/GMPXX linked. CH6 publication
+  survives failure (`proves_cellularity()` unchanged and still false); CH7 the consumer reaches its own census
+  before failing; **CH8 the certified-owner conflict census with its falsification condition stated first** —
+  every non-barrier source edge whose two incident faces carry different established owners, each row naming the
+  edge's **barrier class**, which decides `M3-CP4c3-TB21-CAND-01` totally and exhaustively; CH9 selector **403**
+  with 401 as exact prefix, new gating ordinals 402/403, ordinal 385 replaced in place, 398 stays gating and
+  expected RED. **CB28 measures; it does not correct** — no barrier may be added and no attribution rule changed
+  before CH8 reports.
+
 ## M3-CP4c3-TB24-EXEC — valid semantic runtime — **CURRENT RUNTIME AUTHORITY / FACTUAL / REVIEW PENDING**
 
 - **Authority:** source `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`, immutable package `9935929108`; formal run/job
@@ -57,7 +140,8 @@ implementation judgement left to **CG1**; any unification must keep the certifie
 
 ## M3-CP4c3-TB23-R1-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
-- **Record:** `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`, measures **CE0-CE8** discharged. Static
+- **Record:** `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB24-REV`), measures **CE0-CE8** discharged. Static
   only: no runtime, compile, package, package repair, or product/test/fixture/selector mutation.
 - **CE0.** Source `e12396d4` exists, is an ancestor of HEAD, **no code drift**; selector 397 hashes to
   `d67e5fb7...9b4853ee5` with **397** identities; ledger closes at 389+8=397; accepted **1-365 = 365/365**;
@@ -4523,20 +4607,25 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB19**: semantic source
-`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, compile artifact `9908695433`, selector 384, run/job
-`33798040003 / 100790444711`, **376 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds
-366/367/368/369/370/371/372/374. Exact ledger:
-`e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`; pre/post package census identical at
-`c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d`. Stable totals remain
-**44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **85**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB24-EXEC**: semantic source
+`9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`, immutable package `9935929108`
+(`b5e11a2c97c110d2cf484d63bb3afe3b753e7f4769098ec927a5cf1692f5d881`), selector 401, formal run/job
+`33891467611 / 101083954177`, **389 PASS / 12 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,384,385,389,390,393,398]`. Exact ledger:
+`db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`; package/source/execution-view pre/post
+censuses equal. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages
+**89**.
 
-CB21's fragment-owner low-side correction is runtime-proved: 366/367/371/372 clear
-`TraceCutFaceFragmentCountMismatch`, ordinal 384 passes, and accepted 365/365 is preserved. The later current
-frontier is `UncutFaceComponentOrbitSeedNotUnique` at `(0,1,2)`, owned by non-stable
-`M3-CP4c3-TB19-CAND-01`; the retained envelope does not distinguish zero component seeds from multiple seeds.
+`M3-CP4c-3-TB24-REV` adjudicated that ledger. Seven of the twelve REDs are one defect on one fixture: the
+certifier returns an error instead of a certificate when ownership is incomplete, so every witness downstream of
+the certificate loses its subject and the plan's complete, correct consistency evidence is unreachable. Ordinal
+397 is fixed and PASSes; ordinal 400 proves the relocated guard works; ordinal 366 proves it is never reached.
+`M3-CP4c3-TB21-CAND-01` remains **UNADJUDICATED** because D3's input does not survive the failure D3 was built
+to diagnose.
 
-**Exact next: `M3-CP4c-3-TB19-REV` — independent REVIEW + PLAN only**, under
-`Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md` CR0–CR8. No runtime, compile, package, product/test/fixture/
-selector mutation, retry, or successor CB is authorized before that review adjudicates the component-seed frontier,
-the local-fragment non-crossing candidate, 371/372 fixture coupling, and unchanged carried surfaces.
+**Exact next: `M3-CP4c-3-CB28` - Code + Build, runtime-free, GMP/GMPXX linked**, under
+`Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` **CH6-CH9**. Publication must survive failure; the
+consumer must reach its own census; the certified-owner conflict census must publish with each row's barrier
+class; selector **403** keeps selector 401 as an exact prefix. **CB28 measures; it does not correct.** No
+barrier may be added, no attribution rule changed, no accepted identity touched, and no Directional runtime
+executed before `M3-CP4c-3-TB25` reports CH8.

@@ -1637,6 +1637,27 @@ building any conclusion on it.**
      authority rather than quietly worked around. Re-check a prohibition's premise before treating it as binding
      on a new witness.
 
+120. **A diagnostic must not be gated on the success of the thing it diagnoses.** A discriminator was defined to
+     read a published owner map, and the same turn made publication conditional on the ownership derivation
+     succeeding. The only executions in which the discriminator could report were the ones in which there was
+     nothing left to decide; on the failing case it returned "unavailable" for all 191 faces. The same ordering
+     defect cost four more surfaces: the producer's typed error replaced the certificate, so five witnesses built
+     to observe the consumer's failure never got a subject to observe, and the consumer's complete, correct
+     evidence census sat one stage downstream of a return statement. **When authoring a measurement, ask which
+     code path runs when the thing being measured is broken, and put the measurement on that path.** Publish the
+     partial result with an explicit per-item status and let the proof predicate fail; do not replace the object
+     with an error.
+
+121. **Moving a computation to the correct authority does not give it more information.** A definition turn found
+     that a consumer was reconstructing ownership its producer had already computed, and ruled that the producer
+     must publish it - correctly. But the justification, "this is a publication decision, not a new computation",
+     was false for most of the data: the producer held a dart only for faces incident to an arc, and every other
+     face still needed the same propagation the ruling set out to delete. The relocated code reproduced the
+     original ambiguity at the identical locus with the identical orbit ids. **Before ruling that a value should
+     move, check that the destination can derive it from data the source lacked. If both sides need the same
+     propagation, the boundary was never the defect** - and say so when withdrawing the reason while keeping the
+     decision.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

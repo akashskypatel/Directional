@@ -2489,7 +2489,8 @@ issues its successor's measures in one turn. It supersedes Parts IV–VI where t
 
 **Boundary.** No Directional runtime, configure, compile, link, package, or product/test/fixture/selector mutation
 occurred in this turn. Accepted selector **365** is untouched; selector **397** is byte-frozen. Measures
-**CF0–CF9**, frozen by `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` §8.
+**CF0–CF9**, frozen by `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` §8 (folded into
+`M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB24-REV`).
 
 ---
 
@@ -2537,6 +2538,19 @@ holds the complete embedded topology, its arcs, its source topology and its face
 only**, and the plan rebuilds the identical structure to re-derive what the certifier already had.
 
 **This is therefore a publication decision, not a new computation.**
+
+> **AMENDMENT — WITHDRAWN AT `M3-CP4c-3-TB24-REV`.** The sentence immediately above is **false for the faces that
+> matter** and is withdrawn. It is retained, struck, so a reader can see what was believed and why the successor
+> failed. The face walk's darts are darts of *network and cut arcs*: a source face has a directly readable
+> certified orbit **only if it is incident to an arc or crossed by a trace**. Every other source face — including
+> most of component 0's 191 — has no dart of its own, and its owner must still be **propagated** across
+> non-barrier edges from a face that does. That propagation is exactly the seeding algorithm DEFN-R3.2 set out to
+> delete. CB27 implemented DEFN-R3.1 faithfully, re-implemented the propagation inside the certifier because it
+> had to, and reproduced the identical failure — component 0, owner orbits `[0,1,3]`, locus `(0,1,2)`.
+>
+> **The normative decision of DEFN-R3.1 below is UNCHANGED and remains in force.** The certifier is the right
+> authority. What is withdrawn is only the claim that it already knows the answer. See
+> `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` §4, `M3-CP4c3-TB24-REV-CAND-02` and `LESSONS.md` 121.
 
 #### 2.3 Normative decision — DEFN-R3.1
 

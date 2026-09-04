@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-04 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority remains `M3-CP4c-3-TB23-R1` on selector 397 at **389 PASS / 8 RED**, accepted **365/365**. `M3-CP4c-3-CB27` is compile-green at semantic source `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`, publishes the certifier-owned total source-face owner map, replaces seed ownership with lookup, restores ordinal 397, replaces ordinal 393 in place, fails fixture resolution closed, and extends the gate to selector **401**. **NEXT:** immutable `M3-CP4c-3-TB24-EXEC`.)
+**Status date:** 2026-09-04 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority is `M3-CP4c-3-TB24-EXEC` on selector 401 at **389 PASS / 12 RED**, accepted **365/365**. `M3-CP4c-3-TB24-REV` adjudicated it: seven REDs are **one ordering defect** — the certifier returns a typed error instead of a certificate when ownership is incomplete, so every witness downstream of the certificate loses its subject and discriminator D3 was unmeasurable. Ordinal 397 is **fixed, not relaxed, and PASSes**; ordinal 400 proves the relocated guard works. `M3-CP4c3-TB21-CAND-01` stays **UNADJUDICATED**; no stable event added. **NEXT:** `M3-CP4c-3-CB28` under **CH6–CH9**, runtime-free — publication survives failure, the consumer reaches its own census, and the certified-owner conflict census decides the branch. Selector **403**.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB23-R1 runtime 389 PASS / 8 RED, accepted 365/365; CB27 compile-green selector401/package89; TB24-EXEC next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB24 runtime 389 PASS / 12 RED, accepted 365/365, selector401/package89; TB24-REV adjudicated; CB28 next under CH6–CH9 |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 397** | **OPEN.** Latest semantic runtime TB22: **387 PASS / 6 RED**, accepted 365/365. CB25 package88/selector397 is immutable; TB23-EXEC is orchestration-invalid. CB26 corrected and preflight-proved the executable-relative fixture staging without runtime/rebuild. **NEXT:** `M3-CP4c-3-TB23-R1`, then `M3-CP4c-3-TB23-R1-REV`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 401** | **OPEN.** Latest semantic runtime TB24: **389 PASS / 12 RED**, accepted 365/365. CB27 package89/selector401 is immutable. TB24-REV found one ordering defect behind seven REDs, upheld DEFN-R3 except its publication-not-computation clause, and left `M3-CP4c3-TB21-CAND-01` unadjudicated. **NEXT:** `M3-CP4c-3-CB28` under CH6–CH9, then `M3-CP4c-3-TB25`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

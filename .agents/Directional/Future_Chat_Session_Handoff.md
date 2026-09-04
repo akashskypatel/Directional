@@ -116,9 +116,10 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB24-REV` — EXACT NEXT / independent REVIEW + PLAN
+## Mandatory next turn — `M3-CP4c-3-CB28` — EXACT NEXT / Code + Build, runtime-free
 
-`M3-CP4c-3-TB24-EXEC` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**.
+`M3-CP4c-3-TB24-EXEC` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**, and
+`M3-CP4c-3-TB24-REV` has adjudicated it.
 
 ### Immutable TB24 authority
 
@@ -129,53 +130,63 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 - diagnostic-log artifact: `9944102936`, SHA-256 `0147193e71a493428918d151cf6a26ea2148d1d3d3831eaf4da8afc285aaba74`;
 - selector 397: `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`;
 - selector 401: `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`;
-- ledger: **389 PASS / 12 RED**, accepted **1–365 = 365/365 PASS**;
-- RED ordinals: `[366,367,368,369,370,374,384,385,389,390,393,398]`;
-- ledger SHA-256: `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`.
+- ledger: **389 PASS / 12 RED**, accepted **1–365 = 365/365 PASS**, SHA-256
+  `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`;
+- RED ordinals: `[366,367,368,369,370,374,384,385,389,390,393,398]`.
 
-The formal execution completed preflight, all 401 fresh-process identities and postflight immutability. Package,
-packaged-source and execution-view censuses are equal before/after. All prohibited-operation flags are false. Two
-earlier caller attempts (`33890566735`, `33891113785`) ended before Directional runtime and are orchestration
-provenance only.
+### What TB24-REV found
 
-### Frozen discriminator outcomes
+**Seven of the twelve REDs are one defect on one fixture.** `certify_actual_embedded_graph`
+(`SurfaceCutGraph.cpp:604–615`) returns a `SurfaceCutGraphError` instead of a certificate when
+`build_source_face_ownership` cannot establish ownership, so `mechanical.cutGraph.has_value()` is false and every
+witness downstream of the certificate loses its subject: 366, 384, 385, 389, 390, 393, 398. The plan-side
+relocation CB27 built is **complete, correct and unreachable** (`GlobalTopologyPlan.cpp:1122–1170`): **ordinal 400
+proves the relocated guard works; ordinal 366 proves it is never reached.** Discriminator **D3 was unmeasurable**
+because it reads a map whose publication was made conditional on the derivation succeeding, so
+`M3-CP4c3-TB21-CAND-01` stays **UNADJUDICATED**. Ordinal **397 is fixed, not relaxed, and PASSes**; 399/400/401
+PASS; accepted prefix is safe. **No stable event added** — 384/385/389/390 are evidence-subject loss, not
+behaviour loss. Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, packages **89**.
 
-1. accepted 1–365: **365/365 PASS**;
-2. mechanical owner-map production: ordinal 398 REDs at `SourceFaceOwnershipNotEstablished`; published owner-entry
-   count is unavailable;
-3. component-0 D3: **0 observed / 191 unavailable** owners; distinct/all-equal result unavailable because ordinal
-   393 has no `SurfaceCutGraph` value;
-4. ordinal 366 REDs at `SourceFaceOwnershipNotEstablished` and does not emit the relocated component/conflicting-
-   owner guard diagnostic;
-5. ordinal 393 RED; ordinal 397 PASS;
-6. 367/368/369/370/374 RED; 371/372/391/392 PASS.
+DEFN-R3.1's *decision* stands; its justification clause ("a publication decision, not a new computation") is
+**withdrawn** and struck in place in Part VII.
 
-New ordinals: 398 RED; 399/400/401 PASS. Ordinals 384/385/389/390, which passed in TB23-R1, are RED in TB24. EXEC
-records these facts only. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness
-debt **5**, semantic M3 package count **89** pending independent review.
+### CB28 boundary — CH6–CH9
 
-### TB24-REV boundary
+Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked, no runtime, no package repair, no acceptance
+evidence.
 
-Review `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` and the immutable
-TB24 artifacts against exact source authority. Diagnose/classify the 12 RED ledger, including 384/385/389/390 and
-398; adjudicate the unavailable D3 branch; update stable accounting only when justified; perform mandatory REVIEW
-consolidation plus `ORIENTATION.md`; and authorize at most one bounded successor. Do **not** rerun Directional,
-rebuild/relink/repair the package, or patch product/tests before that review.
+- **CH6** — the certifier must publish the certificate with whatever ownership was established, each entry
+  carrying an explicit status, and `proves_cellularity()` still returns false. DEFN-R3.1's proof obligation is
+  **unchanged and not weakened**. Ordinal 399 stays PASS.
+- **CH7** — `GlobalTopologyPlan` must build the partition and the consistency census **before** failing.
+  Required: ordinal 366 names component and conflicting owners; **384, 389, 390 return to PASS with no assertion
+  changed**.
+- **CH8** — the **certified-owner conflict census**: every non-barrier source edge whose two incident faces carry
+  different established owners, each row naming the edge's **barrier class**. Class other than `none` ⇒ missing
+  barrier proven, edge named; all `none` ⇒ mis-attribution proven; no rows but a zero-owner component ⇒ a third
+  mechanism, named; no rows and one owner per component ⇒ the derivation succeeds. Published on the failure path.
+- **CH9** — selector **403**, keeping selector 401 as an exact 401-line prefix and 397 as the frozen prefix of
+  that. New gating ordinals **402**/**403**. Ordinal **385**'s assertions replaced in place, retained and gating.
+  Ordinal **398** stays gating and is **expected RED**.
+
+**Prohibited:** correcting the ownership derivation before CH8 reports; weakening `proves_cellularity()` or
+ordinals 397/398/399/400; changing any accepted identity 1–365 or any byte of selector 397 or the first 401 lines
+of selector 403; reverting CB21/CB25/CB26/CB27; executing any Directional runtime.
 
 ### Context Load Plan
 
-`load_next`: independent REVIEW + PLAN guidance.
+`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first and update during mandatory REVIEW closeout.
+0. `.agents/Directional/ORIENTATION.md` — read first.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md` — frozen execution contract.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII — CG0–CG9 semantic contract and discriminators.
-5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 401 and frozen 397 prefix.
-6. `.agents/Directional/Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` — prior runtime baseline for change comparison.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — **CH0–CH9**, the frozen CB28 scope.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII — DEFN-R3 and its TB24-REV amendment.
+5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 401 and the frozen 397 prefix.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index, including the three files folded at TB24-REV.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

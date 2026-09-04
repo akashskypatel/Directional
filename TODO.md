@@ -26,32 +26,44 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB24-REV` (independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB28` (Code + Build, runtime-free)
 
-`M3-CP4c-3-TB24-EXEC` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**. Formal
-run/job `33891467611 / 101083954177` consumed immutable CB27 package `9935929108` and selector 401 without rebuild,
-relink, repair, source/test/fixture/selector mutation, generated discovery, or package mutation.
+`M3-CP4c-3-TB24-EXEC` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE** and
+`M3-CP4c-3-TB24-REV` has adjudicated it. Formal run/job `33891467611 / 101083954177` consumed immutable CB27
+package `9935929108` and selector 401 with no rebuild, relink, repair, mutation or generated discovery.
 
-- ledger: **389 PASS / 12 RED**, accepted **1–365 = 365/365 PASS**;
+- ledger: **389 PASS / 12 RED**, accepted **1–365 = 365/365 PASS**, SHA-256
+  `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`;
 - RED ordinals: `366,367,368,369,370,374,384,385,389,390,393,398`;
-- ledger SHA-256: `db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`;
-- result artifact `9944102469`, SHA-256 `0c72806d0e975bf9829c3b3a130001529a7728fe3f6d1be6e6d8aa3125898f6c`;
-- log artifact `9944102936`, SHA-256 `0147193e71a493428918d151cf6a26ea2148d1d3d3831eaf4da8afc285aaba74`;
-- ordinal 397 is now PASS; 393 remains RED; new 398 is RED while 399/400/401 PASS;
-- D3 is unavailable: ordinal 393 has no `SurfaceCutGraph` value, so component 0 reports 0 observed / 191 unavailable
-  certified owners and no all-equal/not-all-equal result;
-- ordinals 384/385/389/390, previously PASS in TB23-R1, are RED in the TB24 ledger; EXEC does not classify them.
+- result artifact `9944102469`; log artifact `9944102936`.
 
-Stable accounting remains frozen pending review at **44 events / 14 categories / 30 recurrences**, produced-witness
-debt **5**, semantic M3 package count **89**. CP4c-3 remains **OPEN**.
+**TB24-REV verdict.** Seven REDs — 366, 384, 385, 389, 390, 393, 398 — are **one defect on one fixture**: the
+certifier returns a typed error instead of a certificate when ownership is incomplete, so every witness downstream
+of the certificate loses its subject and CB27's complete, correct plan-side census is unreachable. **Ordinal 400
+proves the relocated guard works; ordinal 366 proves it is never reached.** D3 was **unmeasurable** — it reads a
+map whose publication was gated on the derivation succeeding — so `M3-CP4c3-TB21-CAND-01` stays **UNADJUDICATED**.
+Ordinal **397 is fixed, not relaxed, and PASSes**. **No stable event added:** accepted 365/365 with no
+accepted-green loss, and 384/385/389/390 are evidence-subject loss, not behaviour loss.
+
+Stable accounting is **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
+package count **89**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB24-REV`**, independent REVIEW + PLAN only. Review the immutable TB24 report/artifacts and exact
-source authority; diagnose/classify the 12 RED surfaces, adjudicate the unavailable 191-face D3 discriminator,
-update stable accounting only when justified, perform mandatory REVIEW consolidation plus `ORIENTATION.md`, and
-authorize at most one bounded successor. Do not rerun Directional, rebuild/relink/repair the package, or patch
-product/tests before that review.
+Run **`M3-CP4c-3-CB28`**, Code + Build, runtime-free, GMP/GMPXX linked, under **CH6–CH9** of
+`Architecture_M3_CP4c3_TB24_Independent_Review_Record.md`:
+
+- [ ] **CH6** publication survives failure — publish the certificate with per-entry ownership status;
+      `proves_cellularity()` unchanged and still false; ordinal 399 stays PASS.
+- [ ] **CH7** the consumer reaches its own census before failing — 366 names component and conflicting owners;
+      **384, 389, 390 return to PASS with no assertion changed**.
+- [ ] **CH8** the **certified-owner conflict census** with per-edge barrier class, published on the failure path;
+      decides `M3-CP4c3-TB21-CAND-01` exhaustively.
+- [ ] **CH9** selector **403** with 401 as an exact prefix; new gating ordinals 402/403; ordinal 385 replaced in
+      place; ordinal 398 stays gating and expected RED.
+
+**CB28 measures; it does not correct.** No barrier may be added, no attribution rule changed, no accepted identity
+touched, and no Directional runtime executed.
 
 ## Carried forward from M1
 
@@ -90,7 +102,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
   CP4c-3 remains open; **TB24 is the latest valid semantic runtime** at 389 PASS / 12 RED, accepted 365/365,
-  selector401/package89. Exact next: independent **`M3-CP4c-3-TB24-REV`**.
+  selector401/package89, adjudicated by `M3-CP4c-3-TB24-REV`. Exact next: **`M3-CP4c-3-CB28`** under CH6–CH9.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -101,7 +113,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 source-face seed/ownership projection:** TB24 valid runtime reaches `SourceFaceOwnershipNotEstablished` before a production `SurfaceCutGraph` is published; D3 therefore records 0 observed / 191 unavailable component-0 owners and cannot fire the all-equal/not-all-equal branch. Exact owner: independent `M3-CP4c-3-TB24-REV`.
+- [ ] **CP4c-3 source-face ownership derivation:** TB24-REV proved the RED is an **ordering defect** — the certifier returns an error instead of a certificate, so the owner map, the consumer's census and D3 are all unreachable, and the relocated derivation reproduces the pre-CB27 answer (component 0, orbits `[0,1,3]`, locus `(0,1,2)`) because relocation added no information. `M3-CP4c3-TB21-CAND-01` stays UNADJUDICATED. Exact owner: `M3-CP4c-3-CB28` CH6–CH8.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -129,4 +141,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current provisionally retained totals are **44 events / 14 categories / 30 recurrences** pending TB23-R1-REV classification. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **88**. **TB23-R1 is the latest semantic runtime authority at 389 PASS / 8 RED, accepted 365/365; package `9921914679` remains immutable.** Exact next is independent `M3-CP4c-3-TB23-R1-REV`. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB24-REV`. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **89**. **TB24 is the latest semantic runtime authority at 389 PASS / 12 RED, accepted 365/365; package `9935929108` remains immutable.** Exact next is `M3-CP4c-3-CB28` under CH6–CH9. PR #8 remains open, draft, and unmerged.

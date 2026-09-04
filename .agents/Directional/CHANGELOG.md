@@ -1,3 +1,51 @@
+## 2026-09-04 — `M3-CP4c-3-TB24-REV`: one ordering defect, seven surfaces; D3 defeated by its own precondition; CB28 frozen
+
+Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/
+benchmark/build/selector mutation. `review_check.py authority 9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5` passed, so
+static review of HEAD is valid evidence about immutable package `9935929108`.
+
+**The finding.** `certify_actual_embedded_graph` (`SurfaceCutGraph.cpp:604–615`) returns a `SurfaceCutGraphError`
+instead of a certificate when `build_source_face_ownership` cannot establish ownership. `mechanical.cutGraph`
+therefore has no value and every witness downstream of the certificate loses its subject: ordinals **366, 384, 385,
+389, 390, 393, 398** are **one defect on one fixture**, not seven regressions. CB27's plan-side relocation is
+**complete, correct and unreachable** — `GlobalTopologyPlan.cpp:1122–1170` assembles the partition, the consistency
+check, the `ownerEvidence` census and the `UncutFaceComponentOrbitSeedNotUnique` failure naming component and
+conflicting owners, one stage below a return statement. **Ordinal 400 proves the relocated guard works; ordinal 366
+proves it is never reached.** The relocated failure also carries strictly less evidence than the one it replaced —
+`SurfaceCutGraphError` has no component identity and no owner multiset — so **D4's contract is unmet, not merely
+RED**.
+
+**D3 was unmeasurable, and this review owns why.** DEFN-R3.5 defined the discriminator to read the published owner
+map while CG1 made publication conditional on the derivation succeeding, so it could only fire when there was
+nothing to decide: 0 observed / 191 unavailable. `M3-CP4c3-TB21-CAND-01` remains **UNADJUDICATED**. What TB24 does
+settle is negative and useful: the ambiguity is not an artefact of where the derivation lives — CB27 reproduced
+`[0,1,3]` at `(0,1,2)` exactly.
+
+**What CB27 got right, runtime-proved.** Ordinal **397 PASSes** its byte-identical expectation, fixed not relaxed
+(DEFN-R3.6 discharged); 399/400/401 PASS; accepted **365/365**; the plan no longer seeds ownership (DEFN-R3.2, with
+the full barrier set per DEFN-R3.3).
+
+**Definition amendment.** DEFN-R3.1's decision stands; its justification clause — "a publication decision, not a
+new computation" — is **withdrawn and struck in place** in Part VII. The face walk's darts are darts of network and
+cut arcs, so only arc-incident and trace-crossed faces have a directly readable orbit; every other face still needs
+propagation.
+
+**Accounting unchanged: 44 events / 14 categories / 30 recurrences**, debt **5**, packages **89**. Accepted 1–365 is
+365/365 with no accepted-green loss, and 384/385/389/390 are evidence-subject loss, not behaviour loss.
+
+**Candidates.** New `M3-CP4c3-TB24-REV-CAND-01` (gating — the failure was moved upstream of its own witnesses) and
+`M3-CP4c3-TB24-REV-CAND-02` (architectural — ownership of non-incident faces is a derivation, not a read). Closed
+runtime-proved: `M3-CP4c3-TB23-REV-CAND-01`, `M3-CP4c3-TB23-REV-CAND-02`, `M3-CP4c3-TB23-R1-REV-CAND-01`.
+
+**Lessons 120 and 121** added. **Consolidation:** the TB23-R1 report, the TB23-R1 review record and the consumed
+TB24 plan were folded into `M3_CP4c_Consolidated_Record.md` with an index entry each and their live citations
+repaired.
+
+**Exact successor: `M3-CP4c-3-CB28`** under **CH6–CH9** — publication survives failure, the consumer reaches its
+own census, and the **certified-owner conflict census** with per-edge barrier class decides
+`M3-CP4c3-TB21-CAND-01` exhaustively. Selector **403** with 401 as an exact prefix. **CB28 measures; it does not
+correct.**
+
 ## 2026-09-04 — `M3-CP4c-3-TB24-EXEC`: valid selector-401 runtime; 389 PASS / 12 RED; accepted 365/365
 
 Immutable artifact-only runtime of CB27 source/package `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5 / 9935929108`. Formal

@@ -276,6 +276,22 @@ Appended 4 identities to selector 397:
 - `GlobalTopologyPlan.CertifiedSourceFaceOwnerConsistencyCanRejectConflictingComponentOwners`
 - `TestFixturePaths.MissingPackageFailsClosedInsteadOfReturningMissingPath`
 
+**Executed at `M3-CP4c-3-TB24-EXEC`:** 389 PASS / 12 RED, accepted 1–365 = 365/365. Of the four appended
+identities, 399/400/401 PASS and 398 REDs. `M3-CP4c-3-TB24-REV` classified 398 as **the honest gate** — it states
+the open problem and stays gating. Ordinal **385**'s assertions will be replaced in place by CB28; its name and
+ordinal do not change, so the first 401 lines stay byte-identical.
+
+### 403 — PLANNED, `M3-CP4c-3-CB28` CH9
+
+Selector 401 must be its exact 401-line prefix, and selector 397 the frozen prefix of that. Two gating identities
+are appended:
+
+- `SurfaceCutGraph.CertifiedOwnerConflictCensusPublishesOnOwnershipFailure`
+- `SurfaceCutGraph.CertifiedOwnerConflictCensusNamesANonBarrierEdgeSeparatingCertifiedFaces`
+
+The first asserts **publication**, never a particular value; the second is the independent falsifiability witness
+that splits *can* from *does*, as 399/400 did for their rules.
+
 ## Separate lineage — M1
 
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full
