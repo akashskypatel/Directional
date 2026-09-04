@@ -1,3 +1,68 @@
+## 2026-09-04 — `M3-CP4c-3-TB23-REV`: TB23-EXEC upheld as orchestration-invalid; the harness owns it; orchestration failures now route to CB
+
+Independent review of the immutable TB23-EXEC evidence, measures **CC0–CC8**. Record:
+`Architecture_M3_CP4c3_TB23_Independent_Review_Record.md`. Static only — no runtime, compile, package, package
+repair, fixture staging, or product/test/fixture/selector mutation.
+
+**Turn-workflow change, user-authorized 2026-09-04.** An orchestration failure now routes to a **`CB`
+orchestration-correction turn** followed by a re-executing `TB`, instead of to `REVIEW + PLAN`. An orchestration
+failure produces no semantic ledger, so there is nothing for a review to adjudicate. The correction `CB` is
+control-plane-only where possible and then **reuses the existing immutable package unchanged**, so the re-executed
+`TB` stays comparable to the frozen plan it consumes; it must preserve the failed attempt as invalid-attempt
+provenance and may promote none of it. **Rule 4 is unchanged and independent: a semantic red still routes to
+`REVIEW + PLAN`.** Recorded in the durable Turn workflow section of `Future_Chat_Session_Handoff.md`, including the
+diagram. Under this rule the present review turn would not have been scheduled; its diagnosis is retained because
+it is exactly what the correction turn needs, and its successor is re-pointed from a combined re-execution to the
+`CB → TB` pair.
+
+Authority re-verified: source `e12396d471c0754b112a40272a7992020ff49ced` exists, is an ancestor of HEAD and has
+**no code drift**; selector 397 hashes to `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` with
+**397** identities, selector 393 an exact prefix, accepted 365-prefix unchanged; package pre/post census equal at
+`9c7b12f4…0359a927`; every prohibited-operation flag false.
+
+**CC1 — the ORCHESTRATION-INVALID classification is upheld.** The frozen plan required a fixture at the path the
+packaged executable resolves before runtime; the harness checked the extracted source workspace, so
+`preflight_completed=true` did not prove the frozen requirement. Workflow-job success is independent of gate
+validity because the harness records REDs without failing the job. TB23-EXEC's restraint — no repair, relocation,
+relaunch or probe — was correct.
+
+**CC2 — the defect is the harness, not CB25 and not the package.**
+`.github/workflows/agent-compile-reusable.yml` copies only the eight compiled targets to `$OUT/bin` and two
+libraries to `$OUT/lib`; **no workflow in the repository references `test-data`**, so the package has never
+contained it. Fixtures reach the binaries only because the execution harness stages them into the layout
+`tests/TestFixturePaths.h:51–64` resolves — TB21's report records binaries hard-linked into an execution view with
+fixtures extracted from the packaged source. TB23's harness omitted that staging. CB25's diff touches no CMake, no
+`TestFixturePaths.h` and no packaging.
+
+**CC3 — why a slip became a 397-row pseudo-ledger.** `test_data_root()` **fails open**: when neither candidate path
+exists it returns the sibling path anyway, so a missing fixture tree surfaces as hundreds of file-open failures
+instead of one typed precondition stop. The raw 342 PASS / 55 RED and accepted 327/365 are consistent with that and
+are **audit-only**.
+
+**CC4 — CB25 statically satisfies CA1 and CA3, so re-execution is worthwhile.** `certificate_side_orbit` no longer
+exists; `GlobalTopologyCertificateDiagnostics.h` derives `certifiedFaceBySourceFace` from certificate evidence,
+assigning an owner only when a component's certified-face set has exactly one element; the CA3 pair loop
+quantifies over uncut adjacent pairs outside `componentBarriers` with **no** `certificateSeparatingSourceEdges`
+intersection, so CB24's structural zero cannot recur in this form. Ordinal 396 is the CA6 variation witness and 395
+the CA2 independence witness. **CA2/CA4/CA5/CA6 remain runtime-unconfirmed**; the invalid run's 394–397 results are
+not credited.
+
+New `M3-CP4c3-TB23-REV-CAND-01` (fail-open fixture resolver, non-gating, owned by the next source-changing CB) and
+`M3-CP4c3-TB23-REV-CAND-02` (the harness staging omission, owned by CD1–CD4). Lessons **112–114** added. No
+authoritative semantic runtime was produced, so the raw invalid REDs are execution-integrity evidence, not stable
+events: **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **88**; authoritative
+semantic runtime remains **TB22 at 387 PASS / 6 RED, accepted 365/365**; CP4c-3 **OPEN**.
+
+Exact successor frozen: **`M3-CP4c-3-CB26`** under **CD0–CD8** — control-plane-only orchestration correction that
+stages the execution view, verifies it through the consumer's own resolution rule, fails closed, and writes the
+required layout into the frozen plan so it stops being an undocumented dependency. **Then `M3-CP4c-3-TB23-R1`**
+re-executes the frozen TB23 plan on the same immutable package.
+
+Sixth application of the standing REVIEW-turn consolidation rule: no document was retired between reviews, so
+nothing needed retrospective indexing, and only the superseded TB22 review record was folded — 1 document / 326
+lines, running total 58 documents / 12481 lines. The TB22 report, CB25 build report, frozen TB23 plan and TB23-EXEC
+report are all retained as live authority for the correction and its re-execution.
+
 ## 2026-09-04 — `M3-CP4c-3-TB23-EXEC`: immutable package verified; runtime attempt orchestration-invalid; semantic authority stays TB22
 
 Artifact-only EXEC against CB25 package `9921914679` / source `e12396d471c0754b112a40272a7992020ff49ced`. Package hash,

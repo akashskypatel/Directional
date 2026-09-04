@@ -1590,6 +1590,23 @@ building any conclusion on it.**
      seed lookups. The genuine producer was consulted only inside unreachable code; the circular one fed every
      published row. When a value has two producers, check which one the shipped path actually calls.
 
+112. **A resolver for a required precondition must fail closed.** A fixture-path helper checked two candidate
+     locations and, when neither existed, returned one of them anyway. A harness slip that should have produced a
+     single typed stop instead produced a complete 397-process ledger with 38 accepted-prefix failures, all of
+     which then had to be argued away as non-semantic. A helper that resolves a required precondition must report
+     when it cannot, not hand back a path it has just established is absent.
+
+113. **A preflight must check the path the consumer resolves, not a path that merely holds the same bytes.** The
+     harness verified fixtures in the extracted source workspace while the packaged binaries resolve their fixture
+     tree relative to their own executable directory. Both locations held identical files, so the check looked
+     correct and proved nothing. Verify a precondition through the consumer's own resolution rule.
+
+114. **When several turns pass on an arrangement no artifact records, that arrangement is an undocumented
+     dependency.** Five consecutive gates worked because their harnesses staged fixtures into an
+     executable-relative view; nothing in the package, the reusable compile workflow, or any durable document said
+     that staging was required. The first harness that omitted it had no way to know. Write the required runtime
+     layout into the frozen plan.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

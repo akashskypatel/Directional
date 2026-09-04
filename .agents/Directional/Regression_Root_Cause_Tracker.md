@@ -1,3 +1,55 @@
+## M3-CP4c3-TB23-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB23_Independent_Review_Record.md`, measures **CC0-CC8** discharged. Static
+  only: no runtime, compile, package, package repair, fixture staging, or product/test/fixture/selector mutation.
+- **CC0.** Source `e12396d4` exists, is an ancestor of HEAD, **no code drift**; selector 397 hashes to
+  `d67e5fb7...9b4853ee5` with **397** identities, selector 393 an exact prefix, accepted 365-prefix unchanged;
+  package pre/post census equal at `9c7b12f4...0359a927`; all prohibited-operation flags false.
+- **CC1 - the ORCHESTRATION-INVALID classification is UPHELD.** The frozen plan required a fixture at the path the
+  packaged executable resolves before runtime; the harness checked the extracted source workspace instead, so
+  `preflight_completed=true` did not prove the frozen requirement. Workflow-job success is independent of gate
+  validity because the harness records REDs without failing the job. TB23-EXEC's restraint was correct - no repair,
+  no relocation, no relaunch, no probe. **Authoritative semantic runtime remains TB22, 387 PASS / 6 RED.**
+- **CC2 - THE DEFECT IS THE HARNESS, NOT CB25 AND NOT THE PACKAGE.**
+  `.github/workflows/agent-compile-reusable.yml` copies **only** the eight targets to `$OUT/bin` and two libraries
+  to `$OUT/lib`; **no workflow in the repository references `test-data`**, so the package has never contained it.
+  `tests/TestFixturePaths.h:51-64` resolves a sibling then a legacy `test-data` location - the latter being what
+  `cmake/DirectionalTests.cmake` builds under `$<TARGET_FILE_DIR>` - and TB21's report records the working
+  arrangement: binaries hard-linked into an execution view with fixtures extracted from the packaged source.
+  **The TB23 harness omitted that staging.** CB25's diff touches no CMake, no `TestFixturePaths.h` and no
+  packaging.
+- **CC3 - why a slip became a pseudo-ledger.** `test_data_root()` **fails open**: when neither candidate exists it
+  returns the sibling path anyway, so a missing fixture tree surfaces as hundreds of file-open failures rather than
+  one typed stop. The raw 342/55 and accepted 327/365 are consistent with that and are **audit-only**.
+- **CC4 - CB25 statically satisfies CA1 and CA3, so re-execution is worthwhile.** `certificate_side_orbit` no
+  longer exists; `GlobalTopologyCertificateDiagnostics.h` derives `certifiedFaceBySourceFace` from certificate
+  evidence, assigning an owner only when a component's certified-face set has exactly one element (`:135-137`);
+  the CA3 pair loop (`:181-200`) quantifies over uncut adjacent pairs outside `componentBarriers` with **no**
+  `certificateSeparatingSourceEdges` intersection, incrementing `examinedPairCount` for every qualifying edge.
+  Ordinal 396 is the CA6 variation witness and 395 the CA2 independence witness. **CA2/CA4/CA5/CA6 remain
+  runtime-unconfirmed**; the invalid run's 394-397 results are not credited.
+- **CC6 - one bounded successor frozen:** **`M3-CP4c-3-TB23-R1`** under **CD0-CD8** - re-execute the **same**
+  immutable package with a correctly staged execution view, verified through the consumer's own resolution rule,
+  failing closed if it does not pass.
+- **Accounting:** no authoritative semantic runtime was produced; the raw invalid REDs are execution-integrity
+  evidence, not stable events. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**,
+  packages **88**.
+
+## M3-CP4c3-TB23-REV-CAND-01 - the test fixture resolver fails open - **NEW / ACTIVE / TEST INFRASTRUCTURE / NON-GATING / NON-STABLE**
+
+`tests/TestFixturePaths.h:51-64` checks a sibling then a legacy `test-data` location and, when **neither** exists,
+returns the sibling path regardless. A missing fixture tree therefore produces hundreds of individual file-open
+failures instead of one typed precondition stop - the direct cause of TB23-EXEC's plausible-looking but meaningless
+397-row ledger. Owner: the **next Code + Build turn on any surface**, since it mutates test infrastructure.
+Explicitly **not** in scope for `M3-CP4c-3-TB23-R1`, which mutates no source. Related: lesson 112.
+
+## M3-CP4c3-TB23-REV-CAND-02 - the TB23 harness omitted the execution-view staging every prior gate performed - **NEW / ACTIVE / ORCHESTRATION / NON-STABLE**
+
+The immutable package never contains `test-data`; fixtures reach the binaries only because the execution harness
+stages them into the layout `test_data_root()` resolves. TB18-TB22 did this; TB23 did not, and its preflight
+verified the extracted source workspace - a path the executable never consults - so the omission was not caught.
+Owner: **CD1-CD3**. Closes when a valid gate runs. Related: lessons 113-114.
+
 ## M3-CP4c3-TB22-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`, measures **BZ0-BZ8** discharged per the
