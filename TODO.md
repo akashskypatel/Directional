@@ -26,57 +26,66 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB21-REV` (Independent REVIEW + PLAN — STATIC ONLY)
+## Current focus — `M3-CP4c-3-CB24` (Code + Build, DIAGNOSTIC-ONLY)
 
-`M3-CP4c-3-TB21` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE**. Record:
-`Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md`. Exact review contract:
-`Architecture_M3_CP4c3_TB21_Independent_Review_Plan.md`.
+`M3-CP4c-3-TB21-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` (**BX0–BX8** discharged, static only).
 
-TB21 consumed immutable CB23 artifact **`9916511617`** from semantic source
-**`fa5646106ccaa23770b84a935c6d1d6007928640`** and executed all **391** selector identities one per fresh
-process. Runtime run/job **`33818038269 / 100854435211`** completed at **384 PASS / 7 RED**, accepted
-**365/365 PASS**, exact RED set **366/367/368/369/370/374/391**. Result/log artifacts are
-**`9917317234 / 9917317654`**; package pre/post byte+mode census is identical at
-`e15a8ababed2d6580d36abe9e2421a9d573bd29fb5fe36fb08ab844f80161897`.
+**TB20-REV's non-cellularity conclusion is WITHDRAWN.** The census it ordered proves the mechanical actual
+embedded complex is **cellular**: `V=22, E=26, F=6, componentCount=1, chi=2, residual=0`, every face certified a
+disc. Part I §3's "the network is not a cut graph" is an **implication with a premise** - Part I establishes
+non-cellularity for the torus independently, from `V = E = 48` and `chi = 0`. TB20-REV applied the conclusion
+without carrying the premise. There is **no normative conflict between documents**; the conflict was with a
+misreading.
 
-### Load-bearing TB21 finding
+- **The two constructions count different objects.** `certify_actual_embedded_graph` + `proves_cellularity()`
+  (`SurfaceCutGraph.cpp:451,478`) count nodes/arcs/face-walk orbits of the **embedded graph on the surface**, whose
+  faces are bounded by arcs running through triangle interiors, and require every face to prove disc topology.
+  `GlobalTopologyPlan.cpp:1102-1165` joins whole **uncut source triangles** across source edges not in
+  `componentBarriers`. The second is a **projection** of the first. **Neither validates the other.**
+- **The unstated contract.** The projection is faithful only if *every pair of adjacent uncut source triangles
+  lying in different certificate faces is separated by an edge in `componentBarriers`*. Cellularity does not imply
+  it; no construction states or checks it. **That is the real defect surface.**
+- **Two readings, opposite corrections.** Component 0's complete boundary attribution is **orbit 0 -> 81 edges,
+  orbit 1 -> 1, orbit 3 -> 1**, plus 14 barrier/no-seed, over 97 edges - one dominant orbit and two single-edge
+  outliers. Either those two edges genuinely separate certificate faces and the barrier set is missing them, or
+  two seed reads are wrong at `:1130-1140`.
+- **The deciding rows already exist in the artifact.** TB20's first-64 window showed 44/1/1 and TB21's complete
+  census shows 81/1/1, so **both minority rows lie inside the retained window** with edge key, owner count,
+  barrier class and seed captured - and were summarized into counts by the report. **No new measurement is
+  required**, only retention and projection by *distinctness*. Raising the 64/97 cap would be the wrong fix.
+- **371 and 372 PASS** and `M3-CP4c3-TB10-REV-CAND-01` **closes / runtime proved**; the atlas accessor stays
+  test-only and never becomes product authority.
+- **Ordinal 391 is a self-inflicted diagnostic RED** - its sphere half needs `sphere.cutGraph` and hits the owned
+  368 surface, because BW4 required one census witness to span all three witnesses. BY7 re-scopes it; no sphere
+  product surface is touched.
+- **`M3-CP4c3-TB20-REV-CAND-02` is downgraded to a formal documentation gap.** Its substantive argument rested on
+  non-cellularity and does not survive; CB21 corrected a real unsoundness and **is not reverted**. Parts IV/V's
+  written prohibition remains unlifted - owner: a DEFN turn.
 
-Ordinal 366 remains `UncutFaceComponentOrbitSeedNotUnique` on component 0 with `seedState=Multiple`, seed count 3,
-and untruncated seed orbits `[0,1,3]`. But the complete production census for the same mechanical path reports the
-actual embedded graph as **`V=22,E=26,F=6,componentCount=1,sourceChi=2,residual=0`**, and the mechanical
-`SurfaceCutGraph` exists only after its actual-complex certificate passes `proves_cellularity()`. This contradicts
-TB20-REV's load-bearing inference that the three-seed state proves that certified actual complex non-cellular.
+368/369/370/374 unchanged under their existing owners. **There is still no vertex-30 discriminator.**
 
-Component 0's complete aggregate boundary attribution is orbit **0→81, 1→1, 3→1**, 3 rows untruncated,
-83/97 boundary edges attributed; 14 are barrier/no-seed. Ordinals **371/372 both PASS** their own unchanged atlas
-assertions, closing their test-coupling candidate. 389/390 PASS. Ordinal **391 RED** because the prescribed-sphere
-half has no `sphere.cutGraph`; this co-reaches the already-owned sphere 368 surface and is not a new stable class.
+### Exact next turn
 
-### Exact next turn — BX0–BX8 only
+Run **`M3-CP4c-3-CB24`** under §10 **BY0–BY9** of
+`Architecture_M3_CP4c3_TB21_Independent_Review_Record.md`. **No product semantic change.**
 
-- [ ] **BX0:** independently re-establish source/package/selector/TB21 ledger and immutable postflight authority.
-- [ ] **BX1:** statically reconcile the `SurfaceCutGraph` actual-complex certificate with the `GlobalTopologyPlan`
-  source-face component/seed construction; name the exact graph/partition each counts.
-- [ ] **BX2:** adjudicate the scope of `M3_CP4c_Frozen_Definitions.md` Part I §3 and Parts IV/V against the
-  actual-complex/cut authority introduced by Amendments 13–14; do not weaken either guard or certificate.
-- [ ] **BX3:** explain how three seed orbits and the 81/1/1 boundary attribution coexist with residual 0, including
-  the 14 barrier/no-seed edges, without inferring from error names.
-- [ ] **BX4:** re-evaluate `M3-CP4c3-TB20-REV-CAND-01` and the CB21 governance candidate only after BX1–BX3 settle
-  the representation relation. No silent revert or preservation of CB21 is authorized.
-- [ ] **BX5:** close `M3-CP4c3-TB10-REV-CAND-01` from TB21's 371/372 runtime proof.
-- [ ] **BX6:** keep ordinal 391's prescribed-sphere diagnostic dependency separate from the mechanical contradiction.
-- [ ] **BX7:** reconcile every TB21 RED in `Regression_Root_Cause_Tracker.md`; stable totals remain unchanged unless
-  the evidence independently proves a new stable category/recurrence.
-- [ ] **BX8:** freeze exactly one smallest successor. A DEFN is permitted only if review proves a real normative
-  conflict; a diagnostic-only CB only if an indispensable representation relation is still absent. No runtime in review.
+- [ ] **BY0** — selector 391 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
+- [ ] **BY1** — retain boundary rows **by distinctness**: one per distinct seed orbit and per distinct
+      `noSeedReason` before filling the budget in order.
+- [ ] **BY2** — publish the minority-orbit rows in full, including **which rule produced each seed**.
+- [ ] **BY3** — attribute each minority edge's two sides to certificate faces.
+- [ ] **BY4** — publish the **projection faithfulness residual**; zero or non-zero decides the owner.
+- [ ] **BY5** — one witness per new field plus an unrelated-error regression witness.
+- [ ] **BY6** — append the next selector **named by its identity count**; regenerate the selector manifest.
+- [ ] **BY7** — re-scope ordinal 391 so the sphere half cannot red the mechanical/torus halves.
+- [ ] **BY8** — **no product semantic change**; guard, barrier set, partition, `seedOrbits`, seed rule,
+      `edgeOrbitEvidence`, face walk, rotation system, region drafts, CB21's comparison, `proves_cellularity()`
+      and the certificate stay untouched; `localFragmentCount` stays non-fatal.
+- [ ] **BY9** — publish the six `M3-CP4c-3-TB22` discriminators, chiefly the faithfulness residual and 391 green.
 
-The review must update `ORIENTATION.md` and perform the mandatory CP4c REVIEW-turn document consolidation before
-closing. **No Code + Build, DEFN execution, test, benchmark, configure, compile, link, package or runtime is
-pre-authorized.**
-
-Accepted runtime authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains
-**44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package
-count **86**.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **86**.
 
 ## Carried forward from M1
 

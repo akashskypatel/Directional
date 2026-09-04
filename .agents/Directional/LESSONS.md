@@ -1556,6 +1556,23 @@ building any conclusion on it.**
      The mechanical witness reached the same conclusion by a route the theorem does not describe. Re-derive the
      bound on a new witness rather than assuming the old proof carries.
 
+106. **Bounded evidence must be retained by distinctness, not by position.** A first-N window preserves the
+     majority and can drop exactly the outliers a "not unique" failure exists to report. A failing component's
+     boundary census was 81 / 1 / 1 across three orbits - the two rows that decide the defect were single rows
+     among 97, and survived only by luck of ordering. When capping evidence for a uniqueness failure, retain at
+     least one row per distinct value before filling the remaining budget in order.
+
+107. **A cross-witness diagnostic identity inherits the blockers of every witness it spans.** Requiring one census
+     witness to cover mechanical, torus and prescribed sphere turned a known-red sphere surface into a new RED in
+     an otherwise clean diagnostic turn. Scope a diagnostic per witness, or make each witness's half assert and
+     report independently.
+
+108. **Carry the premise, not just the conclusion.** A frozen finding of the form "X implies Y" gets cited as "Y"
+     once it is a turn or two old. A review applied a frozen section's conclusion - "the network is not a cut
+     graph" - to a witness whose antecedent it had not checked, and the measurement it ordered in the same breath
+     disproved the antecedent. When citing a frozen finding, restate its premise and verify it holds for the
+     witness in hand.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

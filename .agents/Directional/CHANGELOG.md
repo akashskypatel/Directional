@@ -1,3 +1,61 @@
+## 2026-09-03 — `M3-CP4c-3-TB21-REV`: the complex is cellular, TB20-REV's conclusion withdrawn; the real surface is an unvalidated projection; CB24 frozen
+
+Independent review of immutable TB21 evidence under the binding plan's measures **BX0–BX8**. Record:
+`Architecture_M3_CP4c3_TB21_Independent_Review_Record.md`. Static only — no runtime, compile, link, package,
+benchmark, or product/test/fixture/selector mutation.
+
+Authority re-verified: source `fa5646106ccaa23770b84a935c6d1d6007928640` exists, is an ancestor of HEAD and has
+**no code drift**; selector 391 hashes to `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` with
+**391** identities — name and count agree again per BW6 — the 388-identity 385-file an exact prefix and accepted
+`6b5b6555…cfc14b8a1` an exact 365-prefix; the ledger closes at 384 + 7; pre/post package census identical at
+`e15a8aba…f80161897`.
+
+**`M3-CP4c-3-TB20-REV`'s non-cellularity conclusion is WITHDRAWN.** The Euler census that review ordered proves the
+mechanical actual embedded complex is **cellular**: `V=22, E=26, F=6, componentCount=1, sourceChi=2, residual=0`,
+every face certified a disc by `proves_cellularity()`. `M3_CP4c_Frozen_Definitions.md` Part I §3 is an
+**implication with a premise** — it establishes non-cellularity for the torus independently from `V = E = 48` and
+`χ = 0` forcing `F = 0`, and only then concludes "not a cut graph." TB20-REV applied the conclusion without
+carrying the premise. **There is no normative conflict between documents**; the conflict was with a misreading.
+`proves_cellularity()`, the fragment-count invariant and the seed guard are not weakened by this review.
+
+**The surviving question is sharper and smaller: an unvalidated projection.** `certify_actual_embedded_graph` +
+`proves_cellularity()` (`SurfaceCutGraph.cpp:451,478`) count nodes, arcs and face-walk orbits of the embedded graph
+**on the surface**, whose faces are bounded by arcs running through triangle interiors. `GlobalTopologyPlan.cpp:1102–1165`
+joins whole **uncut source triangles** across source edges not in `componentBarriers`. The second is a coarsening
+of the first, and **neither validates the other**. The projection is faithful only if every pair of adjacent uncut
+triangles lying in different certificate faces is separated by a `componentBarriers` edge — a condition neither
+construction states or checks. New `M3-CP4c3-TB21-CAND-01` owns it.
+
+**Two readings, opposite corrections, and the deciding rows already exist.** Component 0's complete boundary
+attribution over 97 edges is orbit 0 → **81**, orbit 1 → **1**, orbit 3 → **1**, plus 14 barrier/no-seed: one
+dominant orbit and two single-edge outliers. Either those edges genuinely separate certificate faces and the
+barrier set is missing them, or two seed reads are wrong. TB20's first-64 window showed 44/1/1 and TB21's complete
+census shows 81/1/1, so **both minority rows lie inside the retained window** — captured in the artifact, then
+summarized into counts by the report. **No new measurement is required**, only retention by distinctness.
+
+**371 and 372 PASS**, reaching their own assertions for the first time; `M3-CP4c3-TB10-REV-CAND-01` **closes /
+runtime proved**, and the atlas accessor stays test-only and never becomes product authority. **Ordinal 391 is a
+self-inflicted diagnostic RED** — its sphere half needs `sphere.cutGraph` and hits the owned 368 surface, because
+TB20-REV's BW4 required one census witness to span all three witnesses; BY7 re-scopes it.
+**`M3-CP4c3-TB20-REV-CAND-02` is downgraded to a formal documentation gap**: its substantive argument rested on
+non-cellularity and does not survive, CB21 corrected a real unsoundness and is **not reverted**, and only Parts
+IV/V's unlifted written prohibition remains, owned by a DEFN turn.
+
+Carried surfaces 367/368/369/370/374 unchanged under their existing owners; vertex 30 still not reached. Lessons
+**106–108** added. The RED set moved 8 → 7 by clearing 371/372 and adding a diagnostic co-reacher of an owned
+surface: **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **86**; accepted
+authority **365/365**; CP4c-3 **OPEN**.
+
+Exact successor frozen: **`M3-CP4c-3-CB24`** under **BY0–BY9**, **diagnostic-only** — retain boundary rows by
+distinctness rather than position, publish the two minority rows in full with which rule produced each seed,
+attribute each minority edge's sides to certificate faces, publish the projection faithfulness residual that names
+the owner, and re-scope ordinal 391. Not a DEFN (no normative conflict) and not a correction (opposite fixes).
+
+Fourth application of the standing REVIEW-turn consolidation rule: the TB20 report, the TB20 review record and the
+consumed TB21 review plan were folded, and the CB23 build report and TB21 plan — retired by `M3-CP4c-3-TB21`'s own
+stale-evidence cleanup at `8396f23c0` without an index entry — were indexed retrospectively under the clause added
+last turn. 5 documents / 762 lines, running total 53 documents / 11515 lines.
+
 ## 2026-09-03 — `M3-CP4c-3-TB21`: actual-complex certificate is cellular; seed-frontier non-cellularity inference contradicted
 
 Artifact-only run `33818038269 / 100854435211` consumed immutable CB23 artifact `9916511617` and selector 391.

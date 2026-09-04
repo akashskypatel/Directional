@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-03):** TB20 is latest runtime on source `c5d3c659` / the 388-identity selector at **380 PASS / 8 RED**, accepted **365/365**. The frontier's branch is measured: `seedState=Multiple`, component 0, seed orbits `[0,1,3]`. **`M3-CP4c-3-TB20-REV` found normative authority already adjudicates that guard as correct** - it reports a missing input, the network is not a cut graph - and the class now appears on a **genus-0** witness. Exact next is `M3-CP4c-3-CB23` under **BW0-BW9**: publish the embedded graph's Euler census and decouple 371/372.
+> **Current CP4c-3 authority (2026-09-03):** TB21 is latest runtime on source `fa564610` / selector **391** at **384 PASS / 7 RED**, accepted **365/365**. **The mechanical actual embedded complex is CELLULAR** - `V=22, E=26, F=6, componentCount=1, chi=2, residual=0`, all faces certified discs - so `M3-CP4c-3-TB20-REV`'s non-cellularity conclusion is **withdrawn**. The surviving question is that the source-face component construction is an **unvalidated projection** of that complex. 371/372 now pass. Exact next is `M3-CP4c-3-CB24` under **BY0-BY9**, diagnostic-only.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,31 +185,34 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB20 / TB20-REV.** Accepted authority remains selector **365**
-(`6b5b6555…cfc14b8a1`). CP4c-3's frozen unaccepted gate is the file
-`Architecture_M3_CP4c3_Required_Green_Selector_385.txt`
-(`164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`) — **388 identities**, selector 384 an exact
-prefix, accepted 365 an exact prefix. *(That file's name is 385 while its count is 388: the `name == count`
-convention every selector 357–384 followed is broken here. The bytes are frozen and correct; do not rename it, and
-do not derive a count from a selector filename.)*
+**Current authority — TB21 / TB21-REV.** Accepted authority remains selector **365**
+(`6b5b6555…cfc14b8a1`). CP4c-3's frozen unaccepted gate is selector **391**
+(`f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`, **391 identities** — name and count agree
+again), with the 388-identity 385-file and accepted 365 both exact prefixes.
 
-**TB20 is the latest semantic runtime evidence** (source `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`, run/job
-`33809177155 / 100826787667`, ledger `0a4d8b17…5868203a`): **380 PASS / 8 RED**, ordinals **1–365 green**, red set
-{366, 367, 368, 369, 370, 371, 372, 374}; identical pre/post byte+mode census `f0b1beec…dab653c5b0`.
+**TB21 is the latest semantic runtime evidence** (source `fa5646106ccaa23770b84a935c6d1d6007928640`, run/job
+`33818038269 / 100854435211`, ledger `8606fb7b…20aa6f77`): **384 PASS / 7 RED**, ordinals **1–365 green**, red set
+{366, 367, 368, 369, 370, 374, 391}; identical pre/post byte+mode census `e15a8aba…f80161897`. **371 and 372 now
+pass** — they reach their own assertions for the first time after the test-only atlas decoupling, closing
+`M3-CP4c3-TB10-REV-CAND-01`. Ordinal **391** is a new RED: its prescribed-sphere half needs `sphere.cutGraph` and
+hits the already-owned 368 surface.
 
-**The branch is measured and the guard is normative.** Ordinal 366's retained production evidence gives
-`uncutFaceComponent=0`, `seedCount=3`, `seedState=Multiple`, component face count **191**, seed orbits
-**`[0,1,3]`** untruncated, and `sourceFaceLocusKind=FirstUnlabeledFaceInIterationOrder`.
-`M3-CP4c-3-TB20-REV` then found that **`M3_CP4c_Frozen_Definitions.md` Part I §3 already adjudicates this exact
-line**: the guard is correct, the producer is behaving correctly, there is no bug there, and multiple seeds report
-a **missing input** — the network is not a cut graph of its surface. Parts IV and V additionally prohibit relaxing
-it. **No correction is authorized at the guard**, and the class now appears on a **genus-0** witness for the first
-time (§7 item 1).
+**The mechanical actual embedded complex is CELLULAR.** CB23's census reports `V=22, E=26, F=6,
+componentCount=1, sourceChi=2, residual=0`, with every face certified a disc by
+`SurfaceCutGraphCellularityCertificate::proves_cellularity()`. **`M3-CP4c-3-TB20-REV`'s conclusion that the network
+is not a cut graph is therefore withdrawn** — it applied `M3_CP4c_Frozen_Definitions.md` Part I §3's *conclusion*
+without carrying its *premise*, and Part I proves non-cellularity for the torus independently, from `V = E = 48`
+and `χ = 0`.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **85**. Sphere 368,
+**The surviving question is a projection, not a cut graph.** The certificate counts faces of the embedded graph on
+the **surface**; the seed guard counts components of whole **source triangles** joined across non-barrier source
+edges. Neither validates the other, and the condition that makes the projection faithful is stated by neither
+(§7 item 1). Ordinal 366 is unchanged: component 0, 191 faces, `seedState=Multiple`, orbits `[0,1,3]`, boundary
+attribution **81 / 1 / 1** over 97 edges.
+
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **86**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence
-contract remain deferred under their own owners. **Vertex 30 is still not reached.** The 371/372 test-coupling
-trigger has fired and their decoupling is authorized under BW7.
+contract remain deferred under their own owners. **Vertex 30 is still not reached.**
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -313,34 +316,33 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The field-aligned network is not a cut graph of its surface — ARCHITECTURAL, gating, and now observed on a
-   GENUS-0 witness.** The visible symptom is `UncutFaceComponentOrbitSeedNotUnique` at
-   `GlobalTopologyPlan.cpp:1151–1163`, but the guard is not the defect.
+1. **The source-face component construction is an unvalidated projection of a certified cellular complex —
+   ARCHITECTURAL and gating.** The symptom is still `UncutFaceComponentOrbitSeedNotUnique` at
+   `GlobalTopologyPlan.cpp:1151–1163`, but the earlier reading of it was wrong.
 
-   - **Measured branch.** Component **0**, **191** faces, **97** boundary edges, seed count **3**, seed orbits
-     **`[0,1,3]`** with `seedOrbitsTruncated=false`, `seedState=Multiple`. The retained 64-row boundary window
-     splits 46 `none` (all seeding: 44×orbit 0, 1×orbit 1, 1×orbit 3) and 18 `traceTouched` (all skipped).
-   - **Normative authority already ruled on it.** `M3_CP4c_Frozen_Definitions.md` **Part I §3**: the component
-     rule "requires each resulting component to receive **exactly one** orbit seed … **The error code is correct
-     and the producer is behaving correctly. There is no bug at that line.** It is reporting a missing input."
-     A component collecting several seeds is one that spans several graph faces — the complement is not a disjoint
-     union of discs, so the embedding is not cellular. **Parts IV and V prohibit relaxing this guard**, and Part VI
-     (vertex-star scoped) lifts nothing.
-   - **This is a new instance, not a repetition.** Part I proved it for the torus from `χ = 0` and `E = V = 48`.
-     The mechanical witness is **closed with χ = 2**, where that argument does not apply, and reaches the same
-     class by an unmeasured route.
-   - **One arithmetic decides it.** A graph embedded in a closed surface is cellular exactly when
-     `V − E + F = χ` per connected component. `F = 6` face-walk orbits are known; the embedded graph's own `V`,
-     `E` and component count are **not retained anywhere**. That is the whole missing datum.
+   - **The complex is cellular.** `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`, every face a certified
+     disc. Do **not** re-derive non-cellularity from the seed error.
+   - **Two different objects.** `certify_actual_embedded_graph` counts nodes, arcs and face-walk orbits of the
+     **embedded graph on the surface**, whose faces are bounded by arcs running through triangle interiors. The
+     seed guard joins whole **uncut source triangles** across source edges not in
+     `componentBarriers = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`. The second is a *coarsening* of the
+     first, and **neither validates the other**.
+   - **The unstated contract.** The projection is faithful only if *every pair of adjacent uncut source triangles
+     lying in different certificate faces is separated by an edge in `componentBarriers`.* Cellularity does not
+     imply it; no construction states or checks it.
+   - **Two readings, opposite corrections.** Component 0's boundary attribution is **81 / 1 / 1** over 97 edges:
+     one dominant orbit and two single-edge outliers. Either those two edges genuinely separate certificate faces
+     and the barrier set is missing them (fix the barrier set), or two seed reads are wrong (fix the seed rule at
+     `:1130–1140`).
+   - **The deciding rows already exist.** TB20's first-64 window showed 44/1/1 and TB21's complete census shows
+     81/1/1, so **both minority rows are inside the retained window** — captured in the artifact, summarized into
+     counts by the report. No new measurement is needed, only retention and projection by *distinctness*.
 
-   `M3-CP4c-3-CB23` (BW0–BW9) publishes that Euler census on the production path and carries it to all three
-   witnesses; it changes **no** product semantics. **Prohibited:** relaxing, weakening or special-casing
-   `UncutFaceComponentOrbitSeedNotUnique`, `proves_cellularity()` or the fragment-count invariant; more boundary
-   retention (the deciding quantity is already untruncated).
-
-   *(Open behind it: `M3-CP4c3-TB20-REV-CAND-02` — CB21 weakened the fragment-count invariant, which Parts IV and
-   V prohibit, and TB18-REV authorized it without consulting those lists. Only a definition-level turn may resolve
-   it.)*
+   `M3-CP4c-3-CB24` (BY0–BY9) is **diagnostic-only**: retain rows by distinctness, publish the minority rows in
+   full with which rule produced each seed, attribute each minority edge's two sides to certificate faces, and
+   publish the projection faithfulness residual. **Prohibited:** any semantic change to the guard, the barrier set,
+   the partition, `seedOrbits`, the seed rule, `edgeOrbitEvidence`, the face walk, the rotation system, region
+   drafts, CB21's comparison, `proves_cellularity()` or the certificate.
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -408,6 +410,22 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Bounded evidence must be retained by distinctness, not by position.** A first-N window preserves the majority
+and can drop exactly the outliers a "not unique" failure exists to report. Component 0's boundary census is
+**81 / 1 / 1** across three orbits; the two rows that decide the defect are single rows among 97, and both survived
+only by luck of ordering. When capping evidence for a uniqueness failure, retain at least one row per distinct
+value **before** filling the remaining budget in order. `LESSONS.md` §4 106.
+
+**A cross-witness diagnostic identity inherits the blockers of every witness it spans.** Requiring one census
+witness to cover mechanical, torus and prescribed sphere turned the known-red sphere surface into a new RED in an
+otherwise clean diagnostic turn. Scope a diagnostic per witness, or make each half report independently.
+`LESSONS.md` §4 107.
+
+**Carry the premise, not just the conclusion.** A frozen finding of the form "X implies Y" gets cited as "Y" once
+it is a turn or two old. TB20-REV applied Part I §3's conclusion — "the network is not a cut graph" — to a witness
+whose antecedent it had not checked, and the census it ordered in the same breath disproved the antecedent. When
+citing a frozen finding, restate its premise and verify it holds for the witness in hand. `LESSONS.md` §4 108.
 
 **Check the frozen definitions' prohibited list before authorizing a correction, not after.** TB18-REV proved a
 real mathematical fact — `|owners| = k+1` is not a universal invariant — and authorized relaxing the check that
@@ -1267,3 +1285,20 @@ The two-ring is constructed in the test file, not a fixture.
   correct; future files are named by their resulting count. **357 and 358 are off-chain** — 357 is not a prefix of
   358 and 358 is not a prefix of 361 — so they hold unique bytes; 361 through the current gate form one strict
   prefix chain. Regenerate the manifest with `tools/selector_manifest.py`.
+- **The mechanical actual embedded complex is cellular:** `V=22, E=26, F=6, componentCount=1, sourceChi=2,
+  residual=0`. `SurfaceCutGraphCellularityCertificate::proves_cellularity()`
+  (`src/geometry/SurfaceCutGraph.cpp:478`) additionally requires `graphComponentCount == sourceComponentCount`,
+  `eulerCharacteristic == sourceEulerCharacteristic`, balanced boundary-orbit accounting, and **every face to
+  satisfy `proves_disc_topology()`**. `canonical_candidate` returns a cut graph only after it holds.
+- **Part I §3 is an implication with a premise.** It licenses "the network is not a cut graph" only where the
+  complex is independently shown non-cellular — as on the torus, via `V = E = 48`, `chi = 0`, so `F = 0`. It says
+  nothing about the source-face projection, and nothing about a witness whose complex certifies cellular.
+- **The certificate and the seed guard test different objects.** Certificate faces are regions of the surface
+  bounded by arcs through triangle interiors; the seed guard's components are sets of whole source triangles joined
+  across non-barrier source edges. The projection is faithful only if every pair of adjacent uncut triangles in
+  different certificate faces is separated by a `componentBarriers` edge - stated and checked by neither.
+- **Component 0 boundary attribution (complete, untruncated):** orbit 0 -> **81** edges, orbit 1 -> **1**, orbit 3
+  -> **1**, plus **14** barrier/no-seed, totalling 97. TB20's first-64 window showed 44/1/1, so **both minority
+  rows lie inside the retained window** in both runs.
+- Ordinals **371 and 372 pass** as of TB21, reaching their own assertions for the first time. Their fixture
+  accessor is **test-only** and is never product authority.

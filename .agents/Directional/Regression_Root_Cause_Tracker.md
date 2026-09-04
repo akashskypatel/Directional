@@ -1,3 +1,51 @@
+## M3-CP4c3-TB21-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB21_Independent_Review_Record.md`, measures **BX0-BX8** discharged per the
+  binding plan. Static only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BX0.** Source `fa564610` exists, is an ancestor of HEAD, **no code drift**; selector 391 hashes to
+  `f60638a5...cf6086c0` with **391** identities (name and count agree again per BW6), the 388-identity 385-file an
+  exact prefix, accepted 365-prefix unchanged; ledger closes at 384+7=391; pre/post census identical. Ordinal 391
+  is a new **diagnostic** RED, not an accepted-prefix regression.
+- **BX1 - THE TWO CONSTRUCTIONS COUNT DIFFERENT OBJECTS.** `certify_actual_embedded_graph` +
+  `proves_cellularity()` (`SurfaceCutGraph.cpp:451,478`) count nodes/arcs/face-walk orbits of the **embedded graph
+  on the surface**, whose faces are bounded by arcs running through triangle interiors, and require every face to
+  prove disc topology. `GlobalTopologyPlan.cpp:1102-1165` joins whole **uncut source triangles** across source
+  edges not in `componentBarriers`. The second is a **coarsening/projection** of the first. They are **not
+  required to be equivalent and neither validates the other.**
+- **BX1 - the unstated contract.** The projection is faithful only if *every pair of adjacent uncut source
+  triangles lying in different certificate faces is separated by an edge in `componentBarriers`*. Cellularity does
+  not imply it; no construction states or checks it. **This is the real defect surface.**
+- **BX2 - TB20-REV's CONCLUSION IS WITHDRAWN.** The mechanical actual complex is **cellular**:
+  `V=22, E=26, F=6, componentCount=1, chi=2, residual=0`, all faces certified discs. Part I §3's "the network is
+  not a cut graph" is an **implication with a premise** - Part I establishes non-cellularity for the torus
+  independently from `V = E = 48`, `chi = 0`. TB20-REV applied the conclusion without carrying the premise. **No
+  normative conflict between documents exists**; the conflict was with a misreading. `proves_cellularity()`, the
+  fragment-count invariant and the seed guard are **not weakened** by this review.
+- **BX3 - the deciding rows already exist in the artifact.** Complete attribution over component 0's 97 boundary
+  edges: orbit 0 -> **81**, orbit 1 -> **1**, orbit 3 -> **1**, plus 14 barrier/no-seed. TB20's first-64 window
+  showed 44/1/1, so **both minority rows lie inside the retained window** with edge key, owner count, barrier
+  class and seed captured - and were summarized into counts by the report. **No new measurement is required**, only
+  retention and projection by distinctness. The 64/97 cap is not the blocker; raising it would be the wrong fix.
+- **BX5 - `M3-CP4c3-TB10-REV-CAND-01` CLOSES / RUNTIME PROVED.** 371 and 372 each selected once, reached their own
+  assertions and passed. The test-only atlas accessor **does not become product authority**.
+- **BX6.** Ordinal 391 is a diagnostic dependency on the owned 368 surface. It exists because TB20-REV's **BW4**
+  required the census to span mechanical, torus and prescribed sphere without checking that the sphere path is
+  blocked - a self-inflicted RED, removed by BY7 re-scoping, touching no sphere product surface.
+- **BX8 - one bounded successor frozen:** **`M3-CP4c-3-CB24`** under **BY0-BY9**, **diagnostic-only**. Not a DEFN
+  (there is no normative conflict) and not a correction (the two readings imply opposite fixes).
+- **Accounting:** RED set moved 8 -> 7 by clearing 371/372 and adding a diagnostic co-reacher of an owned surface.
+  **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **86**.
+
+## M3-CP4c3-TB21-CAND-01 - the source-face component construction is an unvalidated projection of a certified cellular complex - **NEW / ACTIVE / ARCHITECTURAL / GATING / NON-STABLE**
+
+The certificate proves the actual embedded complex cellular (`22-26+6-2=0`, all faces discs) while the seed guard
+finds a 191-triangle component seeded by three orbits. Both are correct about their own object; the projection
+between them has an unstated faithfulness condition that neither checks. Two readings with **opposite**
+corrections: the barrier set is missing two separations, or two seed reads are wrong. Owner: **BY1-BY4** evidence
+(retain by distinctness, publish the minority rows in full, attribute each minority edge's sides to certificate
+faces, publish the faithfulness residual), then TB22-REV. Supersedes `M3-CP4c3-TB20-REV-CAND-01`; absorbs
+`M3-CP4c3-TB19-CAND-01` as its symptom record.
+
 ## M3-CP4c3-TB21 — actual-complex cellularity contradicts the seed-frontier interpretation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** semantic source `fa5646106ccaa23770b84a935c6d1d6007928640`, package artifact `9916511617`, selector 391; run/job `33818038269 / 100854435211`; result/log artifacts `9917317234 / 9917317654`; exact ledger `8606fb7ba5673e6d3b45b5055f7744559b29a79d5caa8d0df76da85920aa6f77`.
@@ -66,7 +114,7 @@ and not authorization for a sphere correction. Owner: TB21-REV BX6.
 - **Accounting:** static, unaccepted surface, no accepted-green loss, red set unchanged. **+0 events / +0
   recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**.
 
-## M3-CP4c3-TB20-REV-CAND-01 - the field-aligned network is not a cut graph of its surface, on a GENUS-0 witness - **ACTIVE / ARCHITECTURAL / GATING / TB21 CONTRADICTS ACTUAL-COMPLEX NON-CELLULARITY INFERENCE / REVIEW REQUIRED / NON-STABLE**
+## M3-CP4c3-TB20-REV-CAND-01 - the field-aligned network is not a cut graph, on a genus-0 witness - **WITHDRAWN AT TB21-REV / LOAD-BEARING CLAIM MEASURED FALSE / NON-STABLE**
 
 Second instance of the class `M3_CP4c_Frozen_Definitions.md` Part I §3 proved for the torus, reached by a route
 that proof does not cover. Symptom: `UncutFaceComponentOrbitSeedNotUnique`, component 0, 191 faces, seed orbits
@@ -75,7 +123,7 @@ is reclassified as the **symptom** record under this class, and the historical t
 merged**, as the genus-1 instance. Owner: **BW1-BW3** evidence, then a definition-level turn that decides whether
 the producer must construct a cut graph.
 
-## M3-CP4c3-TB20-REV-CAND-02 - CB21 weakened an invariant the frozen definitions prohibit weakening - **NEW / ACTIVE / GOVERNANCE / NON-STABLE**
+## M3-CP4c3-TB20-REV-CAND-02 - CB21 weakened an invariant the frozen definitions prohibit weakening - **DOWNGRADED AT TB21-REV / FORMAL DOCUMENTATION GAP ONLY / SUBSTANTIVE CONCERN WITHDRAWN / NON-STABLE**
 
 `M3-CP4c-3-CB21` made the fragment-count invariant's low side non-fatal. **Parts IV and V** of
 `M3_CP4c_Frozen_Definitions.md` prohibit relaxing that invariant, and Part I §3 explains the reason the sibling
@@ -168,7 +216,7 @@ the next semantic correction. Related: `M3-CP4c3-TB19-CAND-01`.
   +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**. Exact next owner:
   `M3-CP4c-3-TB19-REV`.
 
-## M3-CP4c3-TB19-CAND-01 - unlabeled-face component orbit seed set is not unique - **ACTIVE / SYMPTOM RECORD / BRANCH RESOLVED: Multiple(3) / RECLASSIFIED UNDER M3-CP4c3-TB20-REV-CAND-01 / NON-STABLE**
+## M3-CP4c3-TB19-CAND-01 - unlabeled-face component orbit seed set is not unique - **ACTIVE / SYMPTOM RECORD UNDER M3-CP4c3-TB21-CAND-01 / NON-STABLE**
 
 - **Observed:** 366/367/371/372 now terminate at
   `UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`, after the fragment-owner low-side correction
@@ -932,7 +980,7 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - **Accounting:** gating on an unaccepted surface, accepted 365 prefix green; **+0 events / +0 recurrences**. Totals
   remain **44 / 14 / 30**, debt **5**, packages **78**.
 
-## M3-CP4c3-TB10-REV-CAND-01 — ordinals 371/372 shared fixture precondition — **CLOSED / RUNTIME PROVED AT TB21 / NON-STABLE**
+## M3-CP4c3-TB10-REV-CAND-01 - 371/372 blocked by a shared fixture precondition - **CLOSED / RUNTIME PROVED AT TB21 / NON-STABLE**
 
 - **TB21 closure:** CB23 added the authorized atlas-only test accessor without changing product source, assertions, ordinals or selector membership. Artifact-only TB21 executes each identity exactly once: **371 PASS** and **372 PASS**. The test-coupling defect is closed; the accessor does not become product authority.
 - **Historical declaration at `M3-CP4c-3-TB10-REV`:** static only; no runtime executed.
