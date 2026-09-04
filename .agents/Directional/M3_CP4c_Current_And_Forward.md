@@ -128,10 +128,10 @@ After the durable start-of-turn checklist, load only the minimum current authori
 2. **this file** — current frontier and candidate ownership.
 3. `Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
 4. `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable product/package build authority.
-5. `M3_CP4c_Consolidated_Record.md` — resolver for retired per-turn records; the next REVIEW must index the TB24 runtime report, consumed TB25 plan, and CB29 control report retired by TB25-R1 stale-evidence cleanup.
+5. `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — current review authority and frozen CH6–CH9 semantics.
 6. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
 7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 8. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
-9. `M3_CP4c_Consolidated_Record.md` — folded document index, including the three files folded at TB24-REV.
+9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver; the next REVIEW must index the TB24 runtime report, consumed TB25 plan, and CB29 control report retired by TB25-R1 stale-evidence cleanup.
 
 Exact next is `M3-CP4c-3-TB25-REV`, independent REVIEW + PLAN over the valid 403-process TB25-R1 evidence.

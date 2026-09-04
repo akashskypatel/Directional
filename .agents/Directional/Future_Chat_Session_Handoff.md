@@ -197,14 +197,12 @@ mutate product/tests/fixtures/selectors/package bytes. Review must:
 
 0. `.agents/Directional/ORIENTATION.md` — substance-only cold-start context; REVIEW must update it before closeout.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — frozen discriminator/interpretation contract.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — current review authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` and
-   `.agents/Directional/Architecture_M3_CP4c3_CB29_Code_Build_Report.md`.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-7. `.agents/Directional/Required_Green_Selector_Manifest.md`, `TODO.md`, `.agents/Directional/CHANGELOG.md`.
-8. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII and `.agents/Directional/M3_CP4c_Consolidated_Record.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority and preserved frozen TB25 discriminator contract.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — current review authority and CH6–CH9 semantics.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable product/package build authority.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`.
+6. `.agents/Directional/Required_Green_Selector_Manifest.md`, `TODO.md`, `.agents/Directional/CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII and `.agents/Directional/M3_CP4c_Consolidated_Record.md`. The REVIEW must index the TB24 runtime report, consumed TB25 plan, and CB29 control report retired by TB25-R1 stale-evidence cleanup.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -108,8 +108,18 @@ Ordinal **402 PASS** independently records the production conflict census as pub
 Ordinal **403 PASS** proves the census contract can name a non-barrier edge separating certified faces on its
 bounded witness.
 
-These are factual runtime observations only. The frozen plan assigns interpretation of the production zero-row
-census together with incomplete ownership to TB25-REV.
+These are factual runtime observations only. The consumed frozen TB25 plan defined the interpretation contract that
+TB25-REV must apply without modification:
+
+1. any published conflict row with a non-`None` expected barrier class means the expected barrier is missing;
+2. published rows whose barrier classes are all `None` mean the established-owner attribution is inconsistent across a
+   non-barrier edge;
+3. no rows together with zero/unavailable/non-singleton component ownership means a third mechanism / incomplete
+   ownership establishment;
+4. no rows together with exactly one established owner per component means the derivation has succeeded and any
+   remaining failure is downstream.
+
+EXEC does not select among those branches; TB25-REV owns the adjudication.
 
 ### Component-0 evidence
 
@@ -181,6 +191,21 @@ adds no stable event.
 The 10 semantic REDs are recorded as **REVIEW PENDING** against their existing owners. This EXEC turn does not
 change stable regression accounting: **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains
 **5** and semantic M3 package count remains **90**.
+
+## Stale-evidence cleanup
+
+Per `CLEAN_UP_POLICY.md`, this turn replaces prior per-turn evidence with the current runtime authority. After their
+durable facts were preserved here, in the tracker, changelog, handoff, and current-authority record, TB25-R1 retires:
+
+- `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` — superseded runtime report;
+- `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` — consumed runtime plan; its frozen discriminator
+  contract is preserved above;
+- `Architecture_M3_CP4c3_CB29_Code_Build_Report.md` — superseded control-only report; its correction/proof authority is
+  preserved in this report.
+
+The next REVIEW must add these exact filenames to the CP4c folded-document index as required by the cleanup policy.
+CB28's compile report remains current immutable package build authority. No next Code + Build plan is authorized before
+TB25-REV.
 
 ## Outcome routing
 
