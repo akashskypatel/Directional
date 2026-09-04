@@ -174,6 +174,11 @@ enum class UncutFaceComponentNoSeedReason : std::uint8_t {
   EdgeOrbitEvidenceNotUnique = 5,
 };
 
+enum class UncutFaceComponentSeedRule : std::uint8_t {
+  SingleFaceOwner = 0,
+  EdgeOrbitEvidence = 1,
+};
+
 enum class UncutFaceSourceFaceLocusKind : std::uint8_t {
   FirstUnlabeledFaceInIterationOrder = 0,
 };
@@ -356,14 +361,31 @@ struct TraceTerminalSlitCensusDiagnostic {
 
 struct UncutFaceComponentBoundaryEdgeDiagnostic {
   authority::SourceEdgeTopologyKey sourceEdge;
+  std::optional<authority::SourceFaceTopologyKey> componentFace;
+  std::optional<authority::SourceFaceTopologyKey> labeledFace;
   bool otherSideLabeled = false;
   std::size_t labeledFaceOwnerCount = 0U;
   UncutFaceComponentBarrierClass barrierClass =
       UncutFaceComponentBarrierClass::None;
   std::optional<std::size_t> contributedSeed;
+  std::optional<UncutFaceComponentSeedRule> seedRule;
   std::optional<UncutFaceComponentNoSeedReason> noSeedReason;
+  bool minoritySeedOrbit = false;
+  std::optional<std::size_t> componentSideCertificateFace;
+  std::optional<std::size_t> labeledSideCertificateFace;
 
   auto operator<=>(const UncutFaceComponentBoundaryEdgeDiagnostic &) const =
+      default;
+};
+
+struct UncutFaceProjectionFaithfulnessEdgeDiagnostic {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey firstFace;
+  authority::SourceFaceTopologyKey secondFace;
+  std::optional<std::size_t> firstCertificateFace;
+  std::optional<std::size_t> secondCertificateFace;
+
+  auto operator<=>(const UncutFaceProjectionFaithfulnessEdgeDiagnostic &) const =
       default;
 };
 
@@ -458,6 +480,10 @@ struct GlobalTopologyPlanError {
   std::vector<UncutFaceComponentBoundaryOrbitDiagnostic>
       uncutFaceComponentBoundaryOrbits;
   bool uncutFaceComponentBoundaryOrbitsTruncated = false;
+  std::optional<std::size_t> uncutFaceProjectionFaithfulnessResidual;
+  std::vector<UncutFaceProjectionFaithfulnessEdgeDiagnostic>
+      uncutFaceProjectionFaithfulnessEdges;
+  bool uncutFaceProjectionFaithfulnessEdgesTruncated = false;
   TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
@@ -634,6 +660,8 @@ private:
     UncutFaceComponentBarrierClass barrierClass) noexcept;
 [[nodiscard]] const char *uncut_face_component_no_seed_reason_name(
     UncutFaceComponentNoSeedReason reason) noexcept;
+[[nodiscard]] const char *uncut_face_component_seed_rule_name(
+    UncutFaceComponentSeedRule rule) noexcept;
 [[nodiscard]] const char *uncut_face_source_face_locus_kind_name(
     UncutFaceSourceFaceLocusKind kind) noexcept;
 [[nodiscard]] const char *rotation_system_inconsistency_reason_name(

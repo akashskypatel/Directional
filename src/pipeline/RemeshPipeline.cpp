@@ -559,6 +559,12 @@ project_global_topology_plan_failure_locus(
     return std::array<std::size_t, 2>{edge.first().index(),
                                       edge.second().index()};
   };
+  const auto topology_face_locus = [](
+      const authority::SourceFaceTopologyKey &face) {
+    const auto vertices = face.vertices();
+    return std::array<std::size_t, 3>{vertices[0].index(), vertices[1].index(),
+                                      vertices[2].index()};
+  };
   const auto fragment_incidence_locus = [&](
       const geometry::TraceCutFaceFragmentIncidenceDiagnostic &incidence) {
     SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics row;
@@ -673,15 +679,25 @@ project_global_topology_plan_failure_locus(
   for (const auto &edge : error.uncutFaceComponentBoundaryEdges) {
     SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics row;
     row.sourceEdge = topology_edge_locus(edge.sourceEdge);
+    if (edge.componentFace.has_value())
+      row.componentFace = topology_face_locus(*edge.componentFace);
+    if (edge.labeledFace.has_value())
+      row.labeledFace = topology_face_locus(*edge.labeledFace);
     row.otherSideLabeled = edge.otherSideLabeled;
     row.labeledFaceOwnerCount = edge.labeledFaceOwnerCount;
     row.barrierClass = geometry::uncut_face_component_barrier_class_name(
         edge.barrierClass);
     row.contributedSeed = edge.contributedSeed;
+    if (edge.seedRule.has_value()) {
+      row.seedRule = geometry::uncut_face_component_seed_rule_name(*edge.seedRule);
+    }
     if (edge.noSeedReason.has_value()) {
       row.noSeedReason = geometry::uncut_face_component_no_seed_reason_name(
           *edge.noSeedReason);
     }
+    row.minoritySeedOrbit = edge.minoritySeedOrbit;
+    row.componentSideCertificateFace = edge.componentSideCertificateFace;
+    row.labeledSideCertificateFace = edge.labeledSideCertificateFace;
     locus.uncutFaceComponentBoundaryEdges.push_back(std::move(row));
   }
   locus.uncutFaceComponentBoundaryEdgesTruncated =
@@ -697,6 +713,21 @@ project_global_topology_plan_failure_locus(
   }
   locus.uncutFaceComponentBoundaryOrbitsTruncated =
       error.uncutFaceComponentBoundaryOrbitsTruncated;
+  locus.uncutFaceProjectionFaithfulnessResidual =
+      error.uncutFaceProjectionFaithfulnessResidual;
+  locus.uncutFaceProjectionFaithfulnessEdges.reserve(
+      error.uncutFaceProjectionFaithfulnessEdges.size());
+  for (const auto &edge : error.uncutFaceProjectionFaithfulnessEdges) {
+    SurfaceCellUncutFaceProjectionFaithfulnessEdgeDiagnostics row;
+    row.sourceEdge = topology_edge_locus(edge.sourceEdge);
+    row.firstFace = topology_face_locus(edge.firstFace);
+    row.secondFace = topology_face_locus(edge.secondFace);
+    row.firstCertificateFace = edge.firstCertificateFace;
+    row.secondCertificateFace = edge.secondCertificateFace;
+    locus.uncutFaceProjectionFaithfulnessEdges.push_back(std::move(row));
+  }
+  locus.uncutFaceProjectionFaithfulnessEdgesTruncated =
+      error.uncutFaceProjectionFaithfulnessEdgesTruncated;
 
   const auto &ownerEvidence = error.fragmentOwnerEvidence;
   auto &projectedOwnerEvidence = locus.fragmentOwnerEvidence;

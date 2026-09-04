@@ -1169,10 +1169,53 @@ RegionBuildResult build_regions(
       return UncutFaceComponentBarrierClass::TraceTouched;
     return UncutFaceComponentBarrierClass::None;
   };
+  const auto certificate_side_orbit = [&](const authority::SourceFaceTopologyKey &face,
+                                          const authority::SourceEdgeTopologyKey &edge)
+      -> std::optional<std::size_t> {
+    const auto exact = edgeOrbitEvidence.find(std::make_pair(face, edge));
+    if (exact != edgeOrbitEvidence.end() && exact->second.size() == 1U) {
+      return *exact->second.begin();
+    }
+    const auto owners = fragmentOrbits.find(face);
+    if (owners != fragmentOrbits.end() && owners->second.size() == 1U) {
+      return *owners->second.begin();
+    }
+    return std::nullopt;
+  };
+
+  std::set<authority::SourceEdgeTopologyKey> certificateSeparatingSourceEdges;
+  std::map<authority::SourceEdgeTopologyKey,
+           std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>>>
+      certificateSideOrbitsByEdge;
+  for (const auto &arc : arcs) {
+    std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
+    if (arc.kind == GlobalTopologyArcKind::Mandatory &&
+        arc.mandatoryEdge.has_value()) {
+      const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
+      if (mandatory != nullptr) sourceEdge = mandatory->sourceEdge;
+    } else if (arc.kind == GlobalTopologyArcKind::Cut && arc.cutEdge.has_value()) {
+      sourceEdge = arc.cutEdge;
+    }
+    if (!sourceEdge.has_value()) continue;
+    certificateSeparatingSourceEdges.insert(*sourceEdge);
+    const auto incident = topology.incidentFaces.find(*sourceEdge);
+    if (incident == topology.incidentFaces.end()) continue;
+    for (const auto &faceKey : incident->second) {
+      const auto face = topology.faces.find(faceKey);
+      if (face == topology.faces.end()) continue;
+      const bool forward = face_orients_edge_forward(face->second, *sourceEdge);
+      const std::size_t interiorDart =
+          2U * arc.id.index() + (forward ? 0U : 1U);
+      if (interiorDart < walk.orbitByDart.size()) {
+        certificateSideOrbitsByEdge[*sourceEdge][faceKey].insert(
+            walk.orbitByDart[interiorDart]);
+      }
+    }
+  }
+
   const auto component_boundary_evidence = [&](const std::size_t component) {
-    std::vector<UncutFaceComponentBoundaryEdgeDiagnostic> rows;
+    std::vector<UncutFaceComponentBoundaryEdgeDiagnostic> allRows;
     std::map<std::size_t, std::size_t> orbitBoundaryEdgeCounts;
-    std::size_t rowCount = 0U;
     for (const auto &[edge, incident] : topology.incidentFaces) {
       std::optional<std::size_t> componentSide;
       for (std::size_t side = 0U; side < incident.size(); ++side) {
@@ -1200,8 +1243,8 @@ RegionBuildResult build_regions(
       }
       if (otherInComponent) continue;
 
-      ++rowCount;
       UncutFaceComponentBoundaryEdgeDiagnostic row{edge};
+      row.componentFace = incident[*componentSide];
       row.barrierClass = component_barrier_class(edge);
 
       if (incident.size() != 2U) {
@@ -1209,6 +1252,7 @@ RegionBuildResult build_regions(
             UncutFaceComponentNoSeedReason::IncidentFaceCountNotTwo;
       } else {
         const auto &otherFace = incident[*componentSide ^ 1U];
+        row.labeledFace = otherFace;
         const auto labeled = fragmentOrbits.find(otherFace);
         row.otherSideLabeled =
             unlabeledIndex.find(otherFace) == unlabeledIndex.end();
@@ -1224,6 +1268,14 @@ RegionBuildResult build_regions(
           ++orbitBoundaryEdgeCounts[*labeled->second.begin()];
         }
 
+        row.labeledSideCertificateFace = certificate_side_orbit(otherFace, edge);
+        if (row.barrierClass == UncutFaceComponentBarrierClass::None &&
+            row.labeledSideCertificateFace.has_value()) {
+          // No embedded-graph source-edge arc separates the open edge interior,
+          // so both source-triangle sides lie in the same certificate face.
+          row.componentSideCertificateFace = row.labeledSideCertificateFace;
+        }
+
         if (row.barrierClass != UncutFaceComponentBarrierClass::None) {
           row.noSeedReason = UncutFaceComponentNoSeedReason::Barrier;
         } else if (!row.otherSideLabeled) {
@@ -1234,6 +1286,7 @@ RegionBuildResult build_regions(
               UncutFaceComponentNoSeedReason::LabeledFaceHasNoOwner;
         } else if (labeled->second.size() == 1U) {
           row.contributedSeed = *labeled->second.begin();
+          row.seedRule = UncutFaceComponentSeedRule::SingleFaceOwner;
         } else {
           if (edgeEvidence == edgeOrbitEvidence.end()) {
             row.noSeedReason =
@@ -1243,17 +1296,99 @@ RegionBuildResult build_regions(
                 UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique;
           } else {
             row.contributedSeed = *edgeEvidence->second.begin();
+            row.seedRule = UncutFaceComponentSeedRule::EdgeOrbitEvidence;
           }
         }
       }
 
-      if (rows.size() < kUncutComponentBoundaryEvidenceLimit) {
-        rows.push_back(std::move(row));
+      allRows.push_back(std::move(row));
+    }
+
+    std::size_t modalCount = 0U;
+    for (const auto &[orbit, count] : orbitBoundaryEdgeCounts) {
+      (void)orbit;
+      modalCount = std::max(modalCount, count);
+    }
+    for (auto &row : allRows) {
+      if (!row.contributedSeed.has_value()) continue;
+      const auto found = orbitBoundaryEdgeCounts.find(*row.contributedSeed);
+      row.minoritySeedOrbit =
+          found != orbitBoundaryEdgeCounts.end() && found->second < modalCount;
+    }
+
+    // Retention is diagnostic-only. Preserve representatives by semantic
+    // distinctness before using the remaining budget for source-edge order.
+    std::vector<bool> retain(allRows.size(), false);
+    std::size_t retained = 0U;
+    std::set<std::size_t> retainedSeedOrbits;
+    std::set<UncutFaceComponentNoSeedReason> retainedNoSeedReasons;
+    const auto retain_index = [&](const std::size_t index) {
+      if (index >= allRows.size() || retain[index] ||
+          retained >= kUncutComponentBoundaryEvidenceLimit) {
+        return;
+      }
+      retain[index] = true;
+      ++retained;
+    };
+    for (std::size_t index = 0U; index < allRows.size(); ++index) {
+      const auto &row = allRows[index];
+      if (row.contributedSeed.has_value() &&
+          retainedSeedOrbits.insert(*row.contributedSeed).second) {
+        retain_index(index);
       }
     }
-    return std::make_tuple(std::move(rows), rowCount,
+    for (std::size_t index = 0U; index < allRows.size(); ++index) {
+      const auto &row = allRows[index];
+      if (row.noSeedReason.has_value() &&
+          retainedNoSeedReasons.insert(*row.noSeedReason).second) {
+        retain_index(index);
+      }
+    }
+    for (std::size_t index = 0U; index < allRows.size(); ++index) {
+      if (allRows[index].minoritySeedOrbit) retain_index(index);
+    }
+    for (std::size_t index = 0U; index < allRows.size(); ++index) {
+      retain_index(index);
+    }
+
+    std::vector<UncutFaceComponentBoundaryEdgeDiagnostic> rows;
+    rows.reserve(retained);
+    for (std::size_t index = 0U; index < allRows.size(); ++index) {
+      if (retain[index]) rows.push_back(std::move(allRows[index]));
+    }
+    return std::make_tuple(std::move(rows), allRows.size(),
                            std::move(orbitBoundaryEdgeCounts));
   };
+
+  const auto projection_faithfulness_evidence = [&]() {
+    std::vector<UncutFaceProjectionFaithfulnessEdgeDiagnostic> rows;
+    std::size_t residual = 0U;
+    for (const auto &[edge, incident] : topology.incidentFaces) {
+      if (incident.size() != 2U ||
+          unlabeledIndex.find(incident[0]) == unlabeledIndex.end() ||
+          unlabeledIndex.find(incident[1]) == unlabeledIndex.end() ||
+          certificateSeparatingSourceEdges.count(edge) == 0U ||
+          componentBarriers.count(edge) != 0U) {
+        continue;
+      }
+      ++residual;
+      if (rows.size() >= kUncutComponentBoundaryEvidenceLimit) continue;
+      UncutFaceProjectionFaithfulnessEdgeDiagnostic row{
+          edge, incident[0], incident[1], std::nullopt, std::nullopt};
+      const auto sideEvidence = certificateSideOrbitsByEdge.find(edge);
+      if (sideEvidence != certificateSideOrbitsByEdge.end()) {
+        const auto first = sideEvidence->second.find(incident[0]);
+        if (first != sideEvidence->second.end() && first->second.size() == 1U)
+          row.firstCertificateFace = *first->second.begin();
+        const auto second = sideEvidence->second.find(incident[1]);
+        if (second != sideEvidence->second.end() && second->second.size() == 1U)
+          row.secondCertificateFace = *second->second.begin();
+      }
+      rows.push_back(std::move(row));
+    }
+    return std::make_pair(std::move(rows), residual);
+  };
+
 
   if (ownerEvidence != nullptr) {
     ownerEvidence->componentCount = componentPartition.components.size();
@@ -1335,6 +1470,13 @@ RegionBuildResult build_regions(
       failure.uncutFaceComponentBoundaryOrbitsTruncated =
           failure.uncutFaceComponentBoundaryOrbitCount >
           failure.uncutFaceComponentBoundaryOrbits.size();
+      auto [faithfulnessRows, faithfulnessResidual] =
+          projection_faithfulness_evidence();
+      failure.uncutFaceProjectionFaithfulnessResidual = faithfulnessResidual;
+      failure.uncutFaceProjectionFaithfulnessEdges = std::move(faithfulnessRows);
+      failure.uncutFaceProjectionFaithfulnessEdgesTruncated =
+          faithfulnessResidual >
+          failure.uncutFaceProjectionFaithfulnessEdges.size();
       return failure;
     }
     fragmentOrbits[unlabeledFaces[index]].insert(*seeds->second.begin());
@@ -2791,6 +2933,17 @@ const char *uncut_face_component_no_seed_reason_name(
     return "edgeOrbitEvidenceMissing";
   case UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique:
     return "edgeOrbitEvidenceNotUnique";
+  }
+  return "unknown";
+}
+
+const char *uncut_face_component_seed_rule_name(
+    const UncutFaceComponentSeedRule rule) noexcept {
+  switch (rule) {
+  case UncutFaceComponentSeedRule::SingleFaceOwner:
+    return "singleFaceOwner";
+  case UncutFaceComponentSeedRule::EdgeOrbitEvidence:
+    return "edgeOrbitEvidence";
   }
   return "unknown";
 }

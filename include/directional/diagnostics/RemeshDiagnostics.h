@@ -187,11 +187,25 @@ struct SurfaceCellTraceTerminalSlitCensusDiagnostics {
 
 struct SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics {
   std::array<std::size_t, 2> sourceEdge{};
+  std::optional<std::array<std::size_t, 3>> componentFace;
+  std::optional<std::array<std::size_t, 3>> labeledFace;
   bool otherSideLabeled = false;
   std::size_t labeledFaceOwnerCount = 0U;
   std::string barrierClass;
   std::optional<std::size_t> contributedSeed;
+  std::string seedRule;
   std::string noSeedReason;
+  bool minoritySeedOrbit = false;
+  std::optional<std::size_t> componentSideCertificateFace;
+  std::optional<std::size_t> labeledSideCertificateFace;
+};
+
+struct SurfaceCellUncutFaceProjectionFaithfulnessEdgeDiagnostics {
+  std::array<std::size_t, 2> sourceEdge{};
+  std::array<std::size_t, 3> firstFace{};
+  std::array<std::size_t, 3> secondFace{};
+  std::optional<std::size_t> firstCertificateFace;
+  std::optional<std::size_t> secondCertificateFace;
 };
 
 struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
@@ -292,6 +306,10 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::vector<SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics>
       uncutFaceComponentBoundaryOrbits;
   bool uncutFaceComponentBoundaryOrbitsTruncated = false;
+  std::optional<std::size_t> uncutFaceProjectionFaithfulnessResidual;
+  std::vector<SurfaceCellUncutFaceProjectionFaithfulnessEdgeDiagnostics>
+      uncutFaceProjectionFaithfulnessEdges;
+  bool uncutFaceProjectionFaithfulnessEdgesTruncated = false;
   SurfaceCellTraceFragmentOwnerEvidenceDiagnostics fragmentOwnerEvidence;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;

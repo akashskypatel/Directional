@@ -52,7 +52,8 @@ Future selector files are named by their resulting identity count.
 | **383** | 383 | `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c` | 382 | 1 | superseded |
 | **384** | 384 | `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564` | 383 | 1 | superseded |
 | **385** | 388 | `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca` | 384 | 4 | superseded |
-| **391** | 391 | `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` | 385 | 3 | **CURRENT GATE** |
+| **391** | 391 | `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` | 385 | 3 | superseded |
+| **393** | 393 | `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d` | 391 | 2 | **CURRENT GATE** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -226,7 +227,7 @@ Appended 4 identities to selector 384:
 - `GlobalTopologyPlan.FragmentOwnerEvidenceProjectsUncutComponentSeedCensus`
 - `GlobalTopologyPlan.UnrelatedFailureProjectionIsByteIdenticalWithoutUncutSeedDiagnostics`
 
-### 391 — CURRENT GATE
+### 391 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_391.txt` — 391 identities, first committed by M3-CP4c-3-CB23.
 
@@ -235,6 +236,17 @@ Appended 3 identities to selector 385 (whose frozen file contains 388 identities
 - `GlobalTopologyPlan.EmbeddedGraphEulerCensusPublishesThroughMechanicalProductionFailure`
 - `GlobalTopologyPlan.UncutFaceComponentBoundaryOrbitAttributionPublishesThroughMechanicalProductionFailure`
 - `GlobalTopologyPlan.EmbeddedGraphEulerCensusCarriesAcrossTorusAndPrescribedSphereProductionPaths`
+
+### 393 — CURRENT GATE
+
+`Architecture_M3_CP4c3_Required_Green_Selector_393.txt` — 393 identities, first committed by M3-CP4c-3-CB24.
+
+CB24 appends two diagnostic-only projection witnesses to frozen selector 391.
+
+Appended 2 identities to selector 391:
+
+- `GlobalTopologyPlan.UncutFaceComponentBoundaryEvidenceRetainsDistinctSeedAndReasonRows`
+- `GlobalTopologyPlan.MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual`
 
 ## Separate lineage — M1
 

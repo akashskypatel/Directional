@@ -27,7 +27,8 @@ ROLE = {
     361: ("superseded", "First file of the current prefix chain."),
     365: ("**ACCEPTED AUTHORITY**", "The load-bearing boundary. Every acceptance claim cites this hash."),
     385: ("superseded", "Name is 385; identity count is **388**. See the naming section above."),
-    391: ("**CURRENT GATE**", "CB23 appends three diagnostic-only witnesses to the frozen 388-identity selector 385."),
+    391: ("superseded", "CB23 appends three diagnostic-only witnesses to the frozen 388-identity selector 385."),
+    393: ("**CURRENT GATE**", "CB24 appends two diagnostic-only projection witnesses to frozen selector 391."),
 }
 
 rows = []
