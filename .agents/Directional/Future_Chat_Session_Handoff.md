@@ -116,135 +116,62 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB26` — EXACT NEXT / Code + Build, ORCHESTRATION CORRECTION
+## Mandatory next turn — `M3-CP4c-3-TB23-R1` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY RE-EXECUTION
 
-`M3-CP4c-3-TB23-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB23_Independent_Review_Record.md` (measures **CC0–CC8** discharged, static only).
+`M3-CP4c-3-CB26` is **COMPLETE / ORCHESTRATION CORRECTION VALIDATED / RUNTIME-NOT-EXECUTED / NO REBUILD**. Record:
+`Architecture_M3_CP4c3_CB26_Code_Build_Report.md`.
 
-### Authority for the correction and the re-execution
+### Immutable authority
 
-- semantic/evidence source: **`e12396d471c0754b112a40272a7992020ff49ced`** — ancestor of HEAD, **no code drift**;
-- immutable CB25 package: **`9921914679`**,
-  `sha256:db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7` — **reused unchanged**;
-- frozen selector **397**: `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`, **397 identities**,
-  selector 393 and accepted 365 both exact prefixes;
-- preserved invalid-attempt run/job: `33833497955 / 100901221113`; result/log artifacts `9922540133 / 9922540522`;
-  raw ledger `839e95feea68bdff35c8c9b11ca22f486f3452413f82017888f17ffc76e85e8d` — **audit-only provenance**;
-- package pre/post census `9c7b12f4beba6f64e4ab1af3980554ba7b9f46af535ec2d2f2a9650f0359a927` — equal.
+- latest semantic runtime authority remains **TB22**: **387 PASS / 6 RED, accepted 365/365**;
+- semantic/package source: `e12396d471c0754b112a40272a7992020ff49ced`;
+- immutable package: `9921914679`, `m3-cp4c3-cb25-package-result-33831662949`, SHA-256
+  `db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`;
+- accepted selector 365: `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- selector 393: `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`;
+- execution selector 397: 397 identities, `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5`;
+- corrected harness: `.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh`, SHA-256
+  `fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7`;
+- CB26 preflight run/job: `33838073812 / 100914602406`, SUCCESS;
+- CB26 result/log artifacts: `9923955664 / 9923956087`, SHA-256
+  `d41efb94efee51c94f24c52a3ccb896fdcc3355aa8aec365ce72e11a753bcd9e` /
+  `c385a4e39d1ff1d3b26104c99c2b09f6d534e1a402b269b7b041d071b0abf430`.
 
-**Authoritative semantic runtime remains `M3-CP4c-3-TB22`: 387 PASS / 6 RED, accepted 365/365.**
+CB26 proved the corrected execution view selects the consumer's **sibling** `test-data` candidate, resolves the
+known mechanical fixture, preserves the immutable package/source/view censuses, and keeps
+`runtime_started=false`, `compile_execution=false`, `relink_execution=false`, `package_repair=false`, and every
+source/test/fixture/selector mutation flag false. No runtime ledger was produced in CB26.
 
-### What the review established
+The orchestration-invalid TB23-EXEC evidence remains provenance only: run/job `33833497955 / 100901221113`, result
+`9922540133`, log `9922540522`, raw 342 PASS / 55 RED, accepted 327/365. **Do not promote any of it.**
 
-**The ORCHESTRATION-INVALID classification is upheld, and the defect is the harness - not CB25 and not the
-package.**
+### Exact TB23-R1 execution contract
 
-- **The package never contains `test-data`.** `.github/workflows/agent-compile-reusable.yml` copies only the eight
-  compiled targets to `$OUT/bin` and two libraries to `$OUT/lib`; **no workflow in the repository references
-  `test-data`**. Fixtures reach the binaries only because the **execution harness stages them** into the layout
-  `tests/TestFixturePaths.h:51-64` resolves. TB18-TB22 did that staging - TB21's report records binaries
-  hard-linked into an execution view with fixtures extracted from the packaged source. **TB23's harness omitted
-  it**, and verified the extracted source workspace, a path the executable never consults.
-- **CB25 is not implicated.** Its diff touches `RemeshDiagnostics.h`, `GlobalTopologyPlan.h`, the new
-  `GlobalTopologyCertificateDiagnostics.h`, `GlobalTopologyPlan.cpp`, `RemeshPipeline.cpp` and
-  `FieldAlignedCurveNetworkTests.cpp` - **no CMake, no `TestFixturePaths.h`, no packaging**.
-- **Why a slip became a pseudo-ledger:** `test_data_root()` **fails open** - when neither candidate path exists it
-  returns the sibling path anyway - so a missing fixture tree surfaces as hundreds of file-open failures instead of
-  one typed stop. The raw **342 PASS / 55 RED, accepted 327/365** are fixture-open failures, **audit-only, not
-  regression authority**.
-- **CB25 statically satisfies its contract, so re-execution is worth doing.** `certificate_side_orbit` is **gone**;
-  `GlobalTopologyCertificateDiagnostics.h` derives `certifiedFaceBySourceFace` from certificate evidence and
-  assigns an owner only when a component's certified-face set has exactly one element (`:135-137`); the CA3 pair
-  loop (`:181-200`) quantifies over **uncut** adjacent pairs outside `componentBarriers` with **no**
-  `certificateSeparatingSourceEdges` intersection and increments `examinedPairCount` for every qualifying edge -
-  CB24's structural zero **cannot recur in this form**. Ordinal 396 is the CA6 variation witness, 395 the CA2
-  independence witness.
-- **Not credited:** the invalid run's ordinals 394-397 results. **CA2/CA4/CA5/CA6 remain runtime-unconfirmed.**
+Use `Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` and the corrected harness in **`--execute`**
+mode. Reuse package `9921914679` exactly; do not rebuild, relink, repackage, patch, repair modes, regenerate,
+change source/tests/fixtures/selectors, or run discovery/list/help/version commands. Execute all **397** selector
+identities in ordinal order, one exact identity per fresh process from the corrected execution view.
 
-**Authoritative semantic runtime remains `M3-CP4c-3-TB22`: 387 PASS / 6 RED, accepted 365/365.** Carried surfaces
-367/368/369/370/374 unchanged. **There is still no vertex-30 discriminator.**
+The run must publish all frozen discriminators:
 
-### CB26 binding scope — `CD0–CD8`, in the review record §7
+1. accepted ordinals **1–365 = 365/365**;
+2. ordinal 366 still reports `UncutFaceComponentOrbitSeedNotUnique` at component **0**, seed state `Multiple`, seed
+   orbits `[0,1,3]`, **191** component faces;
+3. CA3 publishes non-zero examined-pair count alongside differing-pair count;
+4. minority rows publish independently measured certified faces on the component/labeled sides with the seed shown
+   alongside;
+5. the failing component publishes its certified-face multiset; **one** distinct certified face versus **several**
+   names the remaining branch of `M3-CP4c3-TB21-CAND-01`;
+6. ordinals **394–397** are recorded; carried RED surfaces **367/368/369/370/374** remain unchanged; and
+   **371/372/391/392/393** remain PASS.
 
-Under the **2026-09-04 routing rule** an orchestration failure routes to a `CB` that fixes the orchestration,
-followed by a `TB` that re-executes. **CB26 is that correction turn**; its subject is the execution harness and
-the control plane, not the product.
-
-- **CD0 - control-plane-only, and say so.** The defect is in the harness, not in source, so CB26 **must not**
-  change product/test/fixture/selector bytes and **must not** rebuild or repackage. It **reuses immutable package
-  `9921914679`** (`sha256:db346ad93460a20f12315eea984df3fa5bdd054cf5046fb5756d366f444a4fe7`) from source
-  `e12396d471c0754b112a40272a7992020ff49ced` with selector **397** (`d67e5fb7...9b4853ee5`) byte-frozen, so the
-  re-executed gate stays comparable to the frozen TB23 plan.
-- **CD1** - **construct the execution view explicitly.** Stage the packaged binaries and the fixture tree extracted
-  from the packaged source archive into the layout `tests/TestFixturePaths.h` resolves - a `test-data` directory
-  that is either a sibling of the executable's parent or a child of the executable's directory, containing
-  `test-data/benchmarks/fixtures`. **Record the exact staged layout in the report.**
-- **CD2** - **verify through the consumer's resolution rule.** Preflight must confirm a known committed fixture is
-  readable at the path the packaged executable itself resolves, by reproducing `test_data_root()`'s two-candidate
-  rule against the staged view - **not** by checking the source workspace.
-- **CD3** - **fail closed.** If CD2 does not pass, **do not start Directional runtime**; terminate with the frozen
-  stop reason and preserve the evidence. This is the rule TB23-EXEC's harness violated.
-- **CD4 - document the required layout.** Write the staged-view contract into the frozen TB plan and the harness,
-  with the resolution order spelled out, so it stops being an undocumented dependency five gates relied on.
-- **CD5 - preserve the failed attempt** as invalid-attempt provenance (run/job `33833497955 / 100901221113`,
-  artifacts `9922540133 / 9922540522`, ledger `839e95fe...7ffc76e85e8d`). Promote none of it; do not repair,
-  relocate or re-launch it.
-- **CD6 - no product change; the fail-open resolver stays out of scope.** `M3-CP4c3-TB23-REV-CAND-01` is a source
-  change that would invalidate package reuse and force a rebuild, so it belongs to the next CB already changing
-  source. CB26 executes no Directional runtime.
-- **CD7 - audit by assumption**: no product/test/fixture/selector/package byte changed, the package census still
-  matches `9c7b12f4...0359a927`, and the only edits are harness/control-plane.
-- **CD8 - publish the successor TB's obligations.** `M3-CP4c-3-TB23-R1` re-executes the frozen TB23 plan on the
-  same package and must publish: accepted **1-365 = 365/365**; ordinal 366's seed state unchanged (component 0,
-  `Multiple`, orbits `[0,1,3]`, 191 faces); **`examinedPairCount` non-zero** alongside `differingPairCount`;
-  independently measured certified faces on both sides of each minority edge with the seed shown alongside; **the
-  failing component's certified-face multiset**; ordinals **394-397** results; carried surfaces
-  **367/368/369/370/374** unchanged; and **371/372/391/392/393** still PASS.
-
-**Then `M3-CP4c-3-TB23-R1`** - artifact-only re-execution of the frozen TB23 plan on the same immutable package,
-one identity per fresh process across all 397, every mutation flag false, publishing CD8's discriminators and
-stating explicitly whether the run is semantically authoritative.
-
-CD8's certified-face multiset **names the live branch** of `M3-CP4c3-TB21-CAND-01`: several certified faces means
-the missing-barrier branch, one means the seed-read branch. The successor after TB23-R1 is an independent
-`M3-CP4c-3-TB23-R1-REV`, which owns the correction. TB22-REV's prohibition stands: **no further diagnostic turn is
-authorized on that surface** - CB25's contract is the last one.
+Any preflight failure stops before Directional runtime and is orchestration-only. Once runtime begins, preserve the
+entire immutable result; do not repair or relaunch. Any semantic result routes to independent
+**`M3-CP4c-3-TB23-R1-REV`**. No further diagnostic Code + Build turn is authorized on the projection surface;
+CB25 remains the final diagnostic contract.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **88**.
-
-**Document consolidation ran this turn** under the standing rule (`CLEAN_UP_POLICY.md`). No document was retired
-between reviews, so nothing needed retrospective indexing; only the superseded TB22 review record was folded. The
-TB22 report, the CB25 build report, the frozen TB23 plan and the TB23-EXEC report are all **retained** — each is
-still live authority for the re-execution.
-
-### Context Load Plan
-
-`load_next`: turn-based-coding-agent CODE + BUILD guidance (orchestration correction; control-plane only).
-
-Minimum successor context after the mandatory durable policy/start checklist:
-
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB23_Independent_Review_Record.md` — **frozen CB26 scope, §7 CD0–CD8**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` — the frozen TB23 plan
-   the successor TB re-executes; CD4 writes the staged-layout contract into it.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md` — invalid-attempt
-   provenance; **its ledger is not semantic authority**.
-5. `.agents/Directional/Architecture_M3_CP4c3_CB25_Code_Build_Report.md` — the package under re-execution.
-6. `.agents/Directional/Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` — **current
-   authoritative semantic runtime**.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-8. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector counts, LF hashes, prefix parents, roles.
-9. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed.
-
-**Runtime layout the harness must produce** (this is the dependency TB23 missed):
-`tests/TestFixturePaths.h` resolves `executableDirectory.parent_path()/test-data` first, then
-`executableDirectory/test-data`, and **returns the first path even when neither exists**. Stage fixtures so that
-one of those two candidates contains `benchmarks/fixtures`, and verify by that rule.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
-`review_check.py boundary`, `selector_probe.py`, `selector_manifest.py`, and `fixture_probe.py`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

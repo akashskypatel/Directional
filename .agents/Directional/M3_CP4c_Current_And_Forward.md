@@ -10,14 +10,14 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-04** at `M3-CP4c-3-TB23-EXEC` closeout.
+Last updated **2026-09-04** at `M3-CP4c-3-CB26` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
 `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. **CP4c-3 remains OPEN.**
-TB23-EXEC terminated with an orchestration-invalid runtime attempt; it did not establish a semantic ledger. TB22 therefore remains the latest authoritative runtime.
+TB23-EXEC terminated with an orchestration-invalid runtime attempt; CB26 has now validated the corrected execution view without runtime. TB22 therefore remains the latest authoritative runtime until TB23-R1.
 
 | Authority | Current value |
 |---|---|
@@ -27,11 +27,12 @@ TB23-EXEC terminated with an orchestration-invalid runtime attempt; it did not e
 | Current gate selector | selector 397, 397 identities, `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` |
 | TB23-EXEC invalid-runtime evidence | `33833497955 / 100901221113`; result `9922540133`; log `9922540522` |
 | Raw invalid ledger | 342 PASS / 55 RED, accepted 327/365 — **not semantic authority** |
-| Exact next | `M3-CP4c-3-TB23-REV` — independent diagnostics/review boundary |
+| CB26 correction | implementation `cd8e9d75d3facab3710dc51127ca3bd4f9e17c9a`; preflight `33838073812 / 100914602406`, SUCCESS |
+| Exact next | `M3-CP4c-3-TB23-R1` — immutable artifact-only re-execution |
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 package count **88**.
 
-## 2. The current frontier — no valid gate has consumed CB25 yet
+## 2. The current frontier — CB26 corrected orchestration; no valid runtime gate has consumed CB25 yet
 
 **Authoritative semantic runtime remains `M3-CP4c-3-TB22`** — selector **393**, **387 PASS / 6 RED**, accepted
 **365/365**, reds {366, 367, 368, 369, 370, 374}.
@@ -60,34 +61,34 @@ failures — **audit-only, not regression authority**. The package was byte-iden
   outside `componentBarriers` with a **satisfiable** predicate. CB24's structural zero cannot recur in this form.
   **CA2/CA4/CA5/CA6 remain runtime-unconfirmed** — the invalid run's ordinals 394–397 are not credited.
 
+**`M3-CP4c-3-CB26` is COMPLETE.** The committed harness `m3_cp4c3_tb23_r1_harness.sh` constructs an isolated execution view, hard-links the immutable binaries under `bin`, stages packaged-source fixtures under sibling `test-data`, reproduces the consumer's candidate order, and fails closed before runtime if resolution fails. GitHub preflight `33838073812 / 100914602406` selected `resolved_rule=sibling`, reproduced package/source census hashes `9c7b12f4…0359a927` / `e7bec159…d2d8654`, preserved execution-view census equality, and recorded `runtime_started=false`; no ledger was produced. Harness SHA-256: `fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7`.
+
 **Both branches of `M3-CP4c3-TB21-CAND-01` remain live** until a valid gate publishes the certified-face multiset.
 
 ---
 
-## 3. Exact next turn — `M3-CP4c-3-CB26`, orchestration correction, `CD0–CD8`
+## 3. Exact next turn — `M3-CP4c-3-TB23-R1`, artifact-only re-execution
 
-**Routing changed on 2026-09-04:** an orchestration failure now routes to a **`CB` orchestration-correction turn**
-followed by a re-executing `TB`, not to `REVIEW + PLAN`. Rule 4 is untouched — a *semantic* red still routes to
-review. Full text in §7 of `Architecture_M3_CP4c3_TB23_Independent_Review_Record.md`.
+Use `Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` and committed harness
+`.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh --execute` against **the same immutable package
+`9921914679`**. No rebuild, relink, repackage, package repair, mode repair, discovery, source/test/fixture/selector
+mutation, or product change is authorized.
 
-- **CD0** — **control-plane only**; reuse package `9921914679`, source `e12396d4` and selector **397**
-  byte-frozen; no rebuild, no repackage, no product/test/fixture/selector byte changed.
-- **CD1** — stage the execution view so `test-data/benchmarks/fixtures` sits where `tests/TestFixturePaths.h`
-  resolves it.
-- **CD2** — verify a known fixture **through the consumer's own resolution rule**, not the source workspace.
-- **CD3** — **fail closed**: do not start Directional runtime if CD2 fails.
-- **CD4** — write the required staged layout into the frozen plan and the harness, so it stops being an
-  undocumented dependency five gates relied on.
-- **CD5** — preserve TB23-EXEC's evidence as invalid-attempt provenance; promote none of it.
-- **CD6** — no product change; the fail-open resolver (`M3-CP4c3-TB23-REV-CAND-01`) is **out of scope** here
-  because it would force a rebuild and break package reuse.
-- **CD7** — audit by assumption; package census unchanged at `9c7b12f4…0359a927`.
-- **CD8** — publish `M3-CP4c-3-TB23-R1`'s obligations, chiefly a **non-zero `examinedPairCount`** and the failing
-  component's **certified-face multiset**, which names the live branch.
+Execute all **397** identities in ordinal order, one identity per fresh process from the corrected execution view.
+The gate must publish:
 
-**Then `M3-CP4c-3-TB23-R1`** re-executes the frozen TB23 plan on the same immutable package. The successor after it
-is an independent `M3-CP4c-3-TB23-R1-REV`. TB22-REV's prohibition stands: **no further diagnostic turn on the
-projection surface** — CB25's contract is the last one.
+- accepted ordinals **1–365 = 365/365**;
+- ordinal 366 unchanged at component 0 / `Multiple` / seed orbits `[0,1,3]` / 191 faces;
+- non-zero CA3 examined-pair count alongside differing-pair count;
+- independently measured certified faces on both minority-edge sides with the seed shown alongside;
+- the failing component's certified-face multiset — **one** distinct certified face versus **several** names the
+  remaining branch of `M3-CP4c3-TB21-CAND-01`;
+- ordinals 394–397 results; carried 367/368/369/370/374 unchanged; 371/372/391/392/393 PASS;
+- unchanged package/source/execution-view byte+mode censuses and all no-mutation flags.
+
+Any preflight failure is orchestration-only and stops before runtime. Once runtime begins, preserve the complete
+result and do not repair/relaunch. Exact successor: independent **`M3-CP4c-3-TB23-R1-REV`**. The separate fail-open
+`test_data_root()` candidate remains out of scope for this immutable-package re-execution.
 
 ---
 
@@ -98,8 +99,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | Candidate | State |
 |---|---|
 | `M3-CP4c3-TB23-REV-CAND-01` | **NEW / ACTIVE / TEST INFRASTRUCTURE / NON-GATING** — `test_data_root()` fails open, so a missing fixture tree produces a pseudo-ledger instead of one typed stop. Owner: the next Code + Build turn already changing source; **not** CB26. |
-| `M3-CP4c3-TB23-REV-CAND-02` | **NEW / ACTIVE / ORCHESTRATION** — the TB23 harness omitted the execution-view staging every prior gate performed. Owner: **CD1–CD4**. Closes when a valid gate runs. |
-| `M3-CP4c3-TB21-CAND-01` | **ACTIVE / ARCHITECTURAL / GATING / BOTH BRANCHES LIVE** — the source-face component construction is an unvalidated projection of a certified cellular complex. CB24's evidence was vacuous, so neither the missing-barrier nor the seed-read branch is eliminated. Owner: CA1–CA4, then TB23-REV. |
+| `M3-CP4c3-TB23-REV-CAND-02` | **NEW / ACTIVE / ORCHESTRATION** — the TB23 harness omitted the execution-view staging every prior gate performed. CB26 **CD1–CD4 complete / preflight-proved**; remains open only until TB23-R1 confirms the valid runtime gate. |
+| `M3-CP4c3-TB21-CAND-01` | **ACTIVE / ARCHITECTURAL / GATING / BOTH BRANCHES LIVE** — the source-face component construction is an unvalidated projection of a certified cellular complex. CB24's evidence was vacuous, so neither the missing-barrier nor the seed-read branch is eliminated. Owner: CA1–CA4, then `M3-CP4c-3-TB23-R1-REV`. |
 | `M3-CP4c3-TB22-REV-CAND-01` | **NEW / ACTIVE / EVIDENCE INTEGRITY** — two production diagnostics report values that cannot vary; ordinal 393 pins the vacuous contract as required-green. Owner: CA1–CA3 and CA6. |
 | `M3-CP4c3-TB21-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 391 passes with the sphere half explicitly skipped. |
 | `M3-CP4c3-TB20-REV-CAND-02` | **ACTIVE / FORMAL ONLY** — CB21 not reverted; Parts IV/V's written prohibition remains unlifted. Owner: a DEFN turn. |
@@ -155,4 +156,4 @@ After the durable start-of-turn checklist, load only the minimum current authori
 8. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
 9. `M3_CP4c_Consolidated_Record.md` only if historical lineage is needed.
 
-Exact next is TB23-REV. It consumes the preserved execution-integrity evidence; do not continue into a correction from this record.
+Exact next is `M3-CP4c-3-TB23-R1`. Execute the corrected immutable artifact-only plan; do not diagnose or repair in TB.

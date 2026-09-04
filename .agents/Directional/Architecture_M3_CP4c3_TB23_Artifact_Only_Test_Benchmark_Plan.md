@@ -25,6 +25,15 @@ The corrected harness is `.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh`
 `--preflight-only` (CB26 static/control-plane validation, no Directional runtime) and `--execute` (TB23-R1 only).
 An omitted or unknown mode fails closed instead of defaulting to runtime.
 
+CB26 implementation/validation authority:
+
+- harness implementation commit: `cd8e9d75d3facab3710dc51127ca3bd4f9e17c9a`;
+- harness LF SHA-256: `fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7`;
+- orchestration preflight run/job: `33838073812 / 100914602406`, SUCCESS;
+- result artifact `9923955664`, SHA-256 `d41efb94efee51c94f24c52a3ccb896fdcc3355aa8aec365ce72e11a753bcd9e`;
+- log artifact `9923956087`, SHA-256 `c385a4e39d1ff1d3b26104c99c2b09f6d534e1a402b269b7b041d071b0abf430`;
+- preflight proved `resolved_rule=sibling`, package/source/view census equality, and `runtime_started=false`; no selector ledger was produced.
+
 ### Required execution-view layout
 
 The immutable package and immutable packaged-source extraction remain untouched. The harness constructs a separate

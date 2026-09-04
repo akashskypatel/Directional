@@ -1,3 +1,28 @@
+## 2026-09-04 — `M3-CP4c-3-CB26`: execution-view orchestration corrected and preflight-proved; no runtime/rebuild; TB23-R1 next
+
+Orchestration-only Code + Build under TB23-REV **CD0–CD8**. Implementation commit
+`cd8e9d75d3facab3710dc51127ca3bd4f9e17c9a` adds the durable TB23-R1 harness and amends the frozen artifact-only
+plan; product source, test source, fixtures, selectors, CMake/build logic and immutable package bytes are unchanged.
+Harness SHA-256: `fdc335ddffe1fbaeb45783a24bfaf45b17ba0843a65df8b22950b29980cc16d7`.
+
+The corrected harness constructs `<execution-view>/bin` from hard links to the six packaged executables and stages
+the immutable packaged-source fixture tree at sibling `<execution-view>/test-data/benchmarks/fixtures`. Before any
+Directional runtime it reproduces `TestFixturePaths.h`'s two-candidate rule, fails closed if neither candidate
+contains the fixture tree, and exposes explicit `--preflight-only` / `--execute` modes only.
+
+GitHub preflight run/job `33838073812 / 100914602406` succeeded. Result artifact `9923955664`
+(`d41efb94efee51c94f24c52a3ccb896fdcc3355aa8aec365ce72e11a753bcd9e`) and log artifact `9923956087`
+(`c385a4e39d1ff1d3b26104c99c2b09f6d534e1a402b269b7b041d071b0abf430`) prove `resolved_rule=sibling`, package
+census `9c7b12f4…0359a927`, packaged-source census `e7bec159…d2d8654`, pre/post package/source/view equality,
+`preflight_completed=true`, `execution_view_verified=true`, and **`runtime_started=false`**. No runtime ledger was
+created; configure/compile/relink/discovery/package-repair/mode-repair/source-test-fixture-selector mutation flags
+all remained false. CD0 therefore intentionally produced **no build/repackage** and reused package `9921914679`.
+
+TB23-EXEC's invalid 342/55 ledger remains provenance only; semantic authority remains **TB22 387 PASS / 6 RED,
+accepted 365/365**. Stable accounting stays **44 / 14 / 30**, debt **5**, semantic M3 packages **88**. Exact next:
+**`M3-CP4c-3-TB23-R1`** on the same immutable package using the corrected harness, followed by independent
+`M3-CP4c-3-TB23-R1-REV`.
+
 ## 2026-09-04 — `M3-CP4c-3-TB23-REV`: TB23-EXEC upheld as orchestration-invalid; the harness owns it; orchestration failures now route to CB
 
 Independent review of the immutable TB23-EXEC evidence, measures **CC0–CC8**. Record:
