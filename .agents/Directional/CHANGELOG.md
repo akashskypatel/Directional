@@ -1,3 +1,29 @@
+## 2026-09-04 — `M3-CP4c-3-TB23-R1`: corrected immutable gate valid; 389 PASS / 8 RED; accepted 365/365; review next
+
+Artifact-only runtime re-execution of immutable CB25 package `9921914679` after CB26's execution-view correction.
+Formal run/job `33839673886 / 100919253449` succeeded; result artifact `9924532894`
+(`9be9a07702b80e0b5a35e263330b90653faa6cc5409b968e8888f82f5f73f522`) and log artifact `9924533267`
+(`f3e4c83184f129b8cd49f153ded0fc422186bd1726c088f3fa1ec6ce6e78276f`). Ledger SHA-256
+`812241705ee5f0c467ce0272a15d4eed842dbe5c6004b1415f2432cbdedef314`: **389 PASS / 8 RED**, accepted
+**365/365**, RED `[366,367,368,369,370,374,393,397]`.
+
+Corrected preflight resolved the sibling `test-data` execution view and all package/source/execution-view censuses
+were equal before/after. No benchmark/configure/compile/relink/discovery/package-repair/mode-repair/source-test-
+fixture-selector mutation occurred. First caller run `33839600920` was a zero-job startup permission failure and is
+orchestration provenance only.
+
+Ordinal 366 preserves component 0 / `Multiple` / `[0,1,3]` / 191 faces. Valid production CA3 reports
+`examined=273,differing=0`; CA2 publishes two minority rows with component certified faces unavailable and labeled
+certified faces equal to shown seeds; CA4 reports `observed=0,unavailable=191,distinct=0`, so the frozen
+one-versus-several branch discriminator did not fire. 394/395/396 PASS. 397 REDs because expected unrelated locus
+`;sourceFace=2,4,6` is emitted as `;sourceFace=2,4,6;cutCandidateCount=0`. TB does not diagnose or classify these
+semantic REDs; stable totals remain provisionally **44 / 14 / 30**, debt **5**, packages **88** pending review.
+
+Stale-evidence replacement retired TB22 report (112 lines), CB25 report (115), CB26 report (111), consumed TB23
+plan (200), and invalid TB23-EXEC report (100) after preserving their load-bearing facts in the new TB23-R1 report
+and durable current-state records. The next REVIEW must index those filenames in the CP4c consolidated record.
+Exact successor: independent **`M3-CP4c-3-TB23-R1-REV`**; no rerun or source/test correction is authorized by TB23-R1.
+
 ## 2026-09-04 — `M3-CP4c-3-CB26`: execution-view orchestration corrected and preflight-proved; no runtime/rebuild; TB23-R1 next
 
 Orchestration-only Code + Build under TB23-REV **CD0–CD8**. Implementation commit

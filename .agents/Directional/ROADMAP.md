@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-04 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Authoritative semantic runtime remains **`M3-CP4c-3-TB22`** at **387 PASS / 6 RED**, accepted **365/365**. CB25 package `9921914679` / selector 397 remains immutable. TB23-EXEC is orchestration-invalid and non-authoritative. **CB26 is COMPLETE**: the corrected execution-view harness was GitHub-preflighted at `33838073812 / 100914602406` with consumer resolution `sibling`, immutable census equality, and `runtime_started=false`; no rebuild occurred. **NEXT:** `M3-CP4c-3-TB23-R1`, artifact-only re-execution of the same package; then independent `M3-CP4c-3-TB23-R1-REV`.)
+**Status date:** 2026-09-04 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** `M3-CP4c-3-TB23-R1` is the latest valid semantic runtime authority at **389 PASS / 8 RED**, accepted **365/365**, on immutable package `9921914679` / selector397. New valid RED surfaces are 393 and 397; diagnosis/classification is deferred. Package/source/execution-view immutability passed and no build/repair/mutation occurred. **NEXT:** independent `M3-CP4c-3-TB23-R1-REV`; no rerun or correction is pre-authorized.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB17/package87 current runtime **374 PASS / 8 RED**, accepted **365/365**, first red 366 `TraceCutFaceFragmentCountMismatch` at `(0,1,102)`; TB17-REV exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB23-R1 current runtime **389 PASS / 8 RED**, accepted **365/365**, RED 366/367/368/369/370/374/393/397; TB23-R1-REV exact next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

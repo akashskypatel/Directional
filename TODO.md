@@ -26,45 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB23-R1` (Test + Benchmark, ARTIFACT-ONLY RE-EXECUTION)
+## Current focus — `M3-CP4c-3-TB23-R1-REV` (Independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB26` is **COMPLETE / ORCHESTRATION CORRECTION VALIDATED / RUNTIME-NOT-EXECUTED / NO REBUILD**.
-Record: `Architecture_M3_CP4c3_CB26_Code_Build_Report.md`.
+`M3-CP4c-3-TB23-R1` is **COMPLETE / SEMANTIC RED / ACCEPTED PREFIX SAFE / IMMUTABLE ARTIFACT PRESERVED**.
+Record: `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md`.
 
-CB26 discharged the frozen orchestration correction without changing semantic/package bytes:
-
-- [x] **CD0** — reused package `9921914679`, source `e12396d4`, selector 397; no rebuild/repackage/product/test/fixture/selector change.
-- [x] **CD1** — staged six immutable executables under `<execution-view>/bin` and packaged-source fixtures under `<execution-view>/test-data/benchmarks/fixtures`.
-- [x] **CD2** — verified the known fixture through `TestFixturePaths.h`'s own two-candidate rule; `resolved_rule=sibling`.
-- [x] **CD3** — fail-closed guard is before `runtime_started=true`.
-- [x] **CD4** — required layout and resolution order are binding in the frozen TB23-R1 plan and committed harness.
-- [x] **CD5** — invalid TB23-EXEC 342/55 ledger remains provenance only; nothing promoted.
-- [x] **CD6** — fail-open resolver left unchanged/out of scope.
-- [x] **CD7** — package/source census authorities reproduced exactly; package/source/view pre/post equality PASS.
-- [x] **CD8** — TB23-R1 discriminator obligations frozen.
-
-CB26 GitHub preflight `33838073812 / 100914602406` succeeded with result/log artifacts
-`9923955664 / 9923956087`; `runtime_started=false`, no ledger produced, and no compile/relink/package repair or
-source/test/fixture/selector mutation occurred.
+Formal run/job `33839673886 / 100919253449` succeeded against immutable package `9921914679`; result/log artifacts
+are `9924532894 / 9924533267`. Ledger: **389 PASS / 8 RED**, accepted **365/365**, RED ordinals
+`[366,367,368,369,370,374,393,397]`. Package/source/execution-view censuses are unchanged and all prohibited
+build/repair/mutation flags are false.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB23-R1`** against immutable package `9921914679` using
-`.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh --execute` and the frozen artifact-only plan.
+Run **`M3-CP4c-3-TB23-R1-REV`** as static independent review only.
 
-- [ ] Execute all **397** identities in ordinal order, one exact identity per fresh process.
-- [ ] Require accepted **1–365 = 365/365**.
-- [ ] Require ordinal 366's carried locus: component 0 / `Multiple` / `[0,1,3]` / 191 faces.
-- [ ] Publish CA3 examined/differing counts with examined non-zero.
-- [ ] Publish independently measured component/labeled certified faces beside the seed for minority rows.
-- [ ] Publish the failing-component certified-face multiset; one versus several names the live branch.
-- [ ] Record 394–397 results; keep 367/368/369/370/374 carried and 371/372/391/392/393 PASS.
-- [ ] Preserve package/source/execution-view byte+mode censuses and all no-mutation flags.
-- [ ] Route the complete immutable result to **`M3-CP4c-3-TB23-R1-REV`**; do not diagnose/repair in TB.
+- [ ] Re-verify artifact `9924532894`, ledger SHA-256 `812241705ee5f0c467ce0272a15d4eed842dbe5c6004b1415f2432cbdedef314`, and accepted **365/365**.
+- [ ] Diagnose/classify ordinal **393** from exact source: CA3 `examined=273,differing=0`; both CA2 component certified faces unavailable; available labeled certified faces equal their seeds; CA4 `observed=0,unavailable=191,distinct=0`.
+- [ ] Diagnose/classify ordinal **397** exact output mismatch: expected `;sourceFace=2,4,6`, actual `;sourceFace=2,4,6;cutCandidateCount=0`.
+- [ ] Adjudicate what the unavailable CA2/CA4 result can and cannot decide for `M3-CP4c3-TB21-CAND-01`.
+- [ ] Formally dispose `M3-CP4c3-TB23-REV-CAND-02` now that the corrected execution gate completed successfully.
+- [ ] Update stable regression accounting only after classification; TB23-R1 intentionally left the tracker unchanged.
+- [ ] Perform mandatory REVIEW-turn consolidation, including indexing the five per-turn files retired by TB23-R1, and update `ORIENTATION.md`.
+- [ ] Authorize at most one bounded successor; no runtime rerun or source/test correction is pre-authorized.
 
-Authoritative semantic runtime remains **TB22: 387 PASS / 6 RED, accepted 365/365** until TB23-R1 produces a valid
-immutable ledger. CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**;
-produced-witness debt **5**; authoritative semantic M3 package count **88**.
+Current semantic runtime authority is **TB23-R1: 389 PASS / 8 RED, accepted 365/365**. CP4c-3 remains **OPEN**.
+Provisionally retained accounting: **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**,
+semantic M3 package count **88**, pending review classification of 393/397.
 
 ## Carried forward from M1
 
@@ -112,7 +99,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 source-face seed/ownership projection:** CB25 replaced the vacuous/circular diagnostics with certificate-derived, independently sided, falsifiable measurements without changing product semantics. Both branches of `M3-CP4c3-TB21-CAND-01` remain live until valid TB23-R1 evidence is reviewed. Exact owner: `M3-CP4c-3-TB23-R1-REV`.
+- [ ] **CP4c-3 source-face seed/ownership projection:** CB25 replaced the vacuous/circular diagnostics with certificate-derived, independently sided, falsifiable measurements without changing product semantics. Valid TB23-R1 evidence is now available but CA4 reports 191/191 unavailable certified faces, so branch adjudication remains with `M3-CP4c-3-TB23-R1-REV`. Exact owner: that review.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -140,4 +127,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **88**. **TB22 remains the latest runtime authority until TB23-R1 executes; CB25 package `9921914679` / selector397 remains immutable, and CB26's corrected harness is preflight-proved with no runtime/rebuild.** Exact next is `M3-CP4c-3-TB23-R1`, followed by independent `M3-CP4c-3-TB23-R1-REV`. PR #8 remains open, draft, and unmerged.
+Current provisionally retained totals are **44 events / 14 categories / 30 recurrences** pending TB23-R1-REV classification. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **88**. **TB23-R1 is the latest semantic runtime authority at 389 PASS / 8 RED, accepted 365/365; package `9921914679` remains immutable.** Exact next is independent `M3-CP4c-3-TB23-R1-REV`. PR #8 remains open, draft, and unmerged.
