@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1DjHQG68-grYdiWBvpsQuvbJfcxl0ym-2
-      patch_sha256: '1fcb6a4fcc2b2fb5be07286b5346a6b97d322e26c4b4349f0c55755d8a5d6eb1'
+      patch_sha256: '37d3c991f4e076ff348f213852fd7833614fb8e80f745279600dfad7760514aa'
       base_sha: fe02f930a1c33b7174e77870025ceefb44edd05e
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: close CB29 orchestration correction'
