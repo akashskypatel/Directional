@@ -1658,6 +1658,27 @@ building any conclusion on it.**
      propagation, the boundary was never the defect** - and say so when withdrawing the reason while keeping the
      decision.
 
+122. **A census over "established" values is vacuous exactly where nothing is established.** A conflict census was
+     built to compare the certified owners on the two sides of every non-barrier edge, with an exhaustive branch
+     table written before the code. It emitted a row only when **both** faces had an established singleton owner -
+     and on the 191-face component under investigation every face was `Unavailable`, so no row was possible whatever
+     the geometry did. The reported zero was structural, the third such zero this project has paid for. Checking
+     that a measurement runs on the failure path is not enough: **check that its inputs survive the failure too.**
+     The branch table saved the turn; the census contributed nothing.
+
+123. **A required-green assertion must never encode a hypothesis still under investigation.** A witness named for
+     publishing boundary-orbit attribution carried `ASSERT_GT(distinctCount, 1U)` - authored when the observed count
+     was 3, under the then-current belief that the component spanned several certified faces. When a later
+     measurement returned 0, the gate failed on the *hypothesis*, not on the contract the identity owns, and its RED
+     said nothing about the product. A witness asserts what its identity is responsible for; the live hypothesis
+     belongs in a diagnostic that is allowed to report either answer.
+
+124. **A falsification condition that bundles several witnesses fails on the first one with a second cause.** A
+     review froze "measure X is falsified unless ordinals A, B and C return to PASS". A recovered, B and C did not -
+     because B and C each additionally asserted an unrelated predicate that the measure was never meant to address.
+     The measure was right and the condition was wrong. **State the falsification against the mechanism, and name
+     per-witness exceptions when a witness carries assertions outside the mechanism's scope.**
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

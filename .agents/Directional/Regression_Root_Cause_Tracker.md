@@ -1,3 +1,96 @@
+## M3-CP4c3-TB25-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB25_Independent_Review_Record.md`, measures **CJ0–CJ9**. Static only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
+  365/365 untouched; selectors 397/401/403 byte-frozen.
+  `review_check.py authority 3d7f7f9a3afad3ed37fc615a206801cf6310f4ac` — ALL CHECKS PASSED.
+
+- **CJ0 — CH6/CH7 worked; ownership publication is readable for the first time in seven turns.** Ordinals **384
+  and 385 return to PASS**. The mechanical production census is
+  `sourceFaceCount=300; established=74; unavailable=226; conflicting=0; conflictCensusPublished=true;
+  conflictRowCount=0`, and component 0 reports `faceCount=191`, `seedCount=0`, `seedState=None`,
+  `certifiedFaceObservationCount=0`, `unavailableCount=191`, `distinctCount=0`, untruncated. Under the frozen TB25
+  contract this is **branch 3 — a third mechanism / incomplete ownership establishment.**
+
+- **CJ0.1 — `M3-CP4c3-TB21-CAND-01` is CLOSED as ILL-FORMED.** Neither the missing-barrier nor the mis-read-seed
+  branch is selected; **both recorded predictions were wrong** (DEFN-R3's and TB24-REV's). The candidate presupposes
+  that the seed rule reading those owners is a valid reading of certified ownership, and no rule in the codebase is:
+  the same fixture and the same certified complex give **3 owners under one rule and 0 under another**. A question
+  whose answer is set by which heuristic ran is a question about the heuristic. Superseded by
+  `M3-CP4c3-TB25-REV-CAND-02`, posed about the object. `M3-CP4c3-TB19-CAND-01` closes with it as a symptom record.
+
+- **CJ0.2 — CH8's conflict census is vacuous on the region it was built for; this review owns that.**
+  `build_certified_owner_conflict_census` (`CertifiedOwnerConflictCensus.h:33–38`) emits a row only when **both**
+  incident faces are `established()` with a singleton owner. All 191 of component 0's faces are `Unavailable`, so
+  **no edge there can ever produce a row**. `conflictRowCount=0` is a structural zero — the
+  `projectionFaithfulnessResidual` defect again (`LESSONS.md` 110). TB24-REV checked that the census publishes on
+  the failure path but not that its **input** survives the failure. The branch table caught the outcome; the census
+  contributed nothing. `LESSONS.md` 122.
+
+- **CJ1 — the diagnosis, provable from two code sites and two measurements of one component.** The pre-CB27 plan
+  rule (`63aae440:GlobalTopologyPlan.cpp:1259–1289`) admitted a seed from **either** a labeled neighbour with a
+  single fragment orbit **or** unique per-edge evidence. CB28's certifier rule (`SurfaceCutGraph.cpp:604–637`)
+  admits only an analogue of the second, and only from a **trace-cut** neighbour. On component 0's **97** boundary
+  edges the plan rule attributed **83** — orbit 0 → **81**, orbit 1 → **1**, orbit 3 → **1**, 14 barrier/no-seed —
+  and the certifier rule attributes **0**. **83 against 0 on the identical component.** Neither rule is derived
+  from the certificate: one guesses generously, the other refuses to guess.
+
+- **CJ2 — the dichotomy that does not depend on any seed rule.** Certified faces are orbits of the face walk, and
+  only arcs can separate them. **If no arc meets the interior of an uncut component, that component lies in
+  exactly one certified face.** So either component 0 has a single certified owner — making `3` wrong, `0` starved,
+  and the 81/1/1 majority the answer — **or** the barrier set fails to mark a separating arc. The only identified
+  mechanism for the second horn is a **trace transiting a source vertex**: the vertex-entry branch
+  (`SurfaceCutGraph.cpp:564–586`) handles exactly the segments with no incoming carrier, and only
+  `barriers.insert(segment.outgoingCarrier)` (`:528–530`) runs, so two faces meeting at that vertex can lie in
+  different certified faces with every source edge between them a non-barrier. **A partition of source faces over
+  source edges cannot represent that separation** — `LESSONS.md` 117 one level deeper. That mechanism is proved
+  *admissible by the code* and **not** proved to occur here; CJ6 measures it.
+
+- **CJ3 — ten REDs, four causes.** **366/367** are the one open product problem (seed starvation, §CJ1/CJ2).
+  **398** is the honest gate: `proves_cellularity()` is false because ownership genuinely is incomplete.
+  **389/390/393** are **collateral** — each identity's own subject is green and each additionally asserts
+  `proves_cellularity()`, which DEFN-R3.1 coupled to ownership totality. **368/369/370/374** are unchanged carried
+  surfaces with separate owners.
+
+- **CJ3.1 — two gates now assert what their identities do not own, and one encodes a refuted hypothesis.** Ordinal
+  **389** publishes its Euler census correctly (`V=22;E=26;F=6;componentCount=1;sourceChi=2;residual=0`) and REDs
+  solely on `EXPECT_TRUE(certificate.proves_cellularity())` (`tests/FieldAlignedCurveNetworkTests.cpp:11448`),
+  written when that predicate meant embedded cellularity — which CB28 now publishes separately as
+  `proves_embedded_cellularity()`. Ordinal **390** REDs on
+  `ASSERT_GT(*locus.uncutFaceComponentCertifiedFaceDistinctCount, 1U)` (`:11499`), observed **0**: **a
+  required-green gate demanding that the missing-barrier hypothesis be true**, authored when the count was 3 and
+  refuted by the same turn's measurement. `LESSONS.md` 123. Nothing is weakened by fixing these — **398 remains the
+  sole gate on ownership totality.**
+
+- **CJ3.2 — correction to TB24-REV's own falsification condition.** It required "384, **389, 390** return to PASS".
+  384/385 returned; 389/390 did not, because each carries an independent second assertion the ordering fix could
+  not address. The condition bundled witnesses and failed on the first with a second cause. The candidate is
+  **CONFIRMED**, not falsified. `LESSONS.md` 124.
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **90**. Accepted 1–365 is **365/365** with no accepted RED ordinal and no accepted-green loss; 384/385
+  recovered and recovery is not an event; 389/390/393/398 are open-frontier witnesses whose REDs are named above;
+  366–374 are already counted; the orchestration correction carries no semantic credit.
+
+- **Candidates. Closed:** `M3-CP4c3-TB21-CAND-01` (ill-formed/superseded), `M3-CP4c3-TB19-CAND-01` (symptom
+  record), `M3-CP4c3-TB24-REV-CAND-01` (runtime proved — the failure no longer sits upstream of the evidence),
+  `M3-CP4c3-TB25-ORCH-01` (control fix runtime proved). **Confirmed:** `M3-CP4c3-TB24-REV-CAND-02` — ownership is a
+  derivation, not a read. **New:** `M3-CP4c3-TB25-REV-CAND-01` (**GATING / PRODUCT** — the seed rule was narrowed
+  from two admissible sources to one, 83 → 0 on component 0), `M3-CP4c3-TB25-REV-CAND-02` (**GATING /
+  ARCHITECTURAL** — *is component 0 inside a single certified face?*, posed about the object, exhaustive under
+  CJ2's dichotomy), `M3-CP4c3-TB25-REV-CAND-03` (**GATING / TEST AUTHORITY** — 389/390 gate on foreign assertions
+  and 390 encodes a refuted hypothesis).
+
+- **Successor frozen: `M3-CP4c-3-CB30`** under **CJ6–CJ9**, runtime-free, GMP/GMPXX linked. **CJ6** publishes three
+  censuses per uncut component — boundary edges with barrier class, **interior arc-incidence**, and a
+  **vertex-transit census** — on the failure path, **none of them gated on an established owner**, with three
+  mutually exclusive and jointly exhaustive outcomes each naming a locus. **CJ7** restores the second admissible
+  seed source without inventing a new one and without choosing a winner among disagreeing seeds. **CJ8** gives one
+  contract per gate: 389/390/393 move to `proves_embedded_cellularity()` and 390's `ASSERT_GT(...,1U)` is replaced
+  in place; **398 is untouched**. **CJ9** selector **405** with 403 as an exact prefix, adding gating ordinals 404
+  and 405. **No barrier may be added or removed and no attribution rule changed beyond the CJ7 restoration before
+  CJ6 reports.**
+
 ## M3-CP4c3-TB25-ORCH-01 — historical-harness selector insertion anchor mismatches extracted indentation — **CLOSED / CONTROL FIX RUNTIME PROVED / NON-STABLE**
 
 - **Invalid attempt:** `M3-CP4c-3-TB25-EXEC` run/job `33910913448 / 101146905061`. Workflow schema validation
@@ -54,7 +147,8 @@
 
 ## M3-CP4c3-TB24-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
-- **Record:** `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md`, measures **CH0–CH9**. Static only: no
+- **Record:** `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB25-REV`), measures **CH0–CH9**. Static only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
   365/365 untouched; selector 397 and selector 401 byte-frozen.
   `review_check.py authority 9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5` — ALL CHECKS PASSED, so static review of
@@ -4661,25 +4755,26 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB24-EXEC**: semantic source
-`9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`, immutable package `9935929108`
-(`b5e11a2c97c110d2cf484d63bb3afe3b753e7f4769098ec927a5cf1692f5d881`), selector 401, formal run/job
-`33891467611 / 101083954177`, **389 PASS / 12 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,384,385,389,390,393,398]`. Exact ledger:
-`db6ca1c76373a0cc215096989acbd281852d25d6b5e7db703885d7a46cdd858b`; package/source/execution-view pre/post
-censuses equal. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages
-**89**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB25-R1**: semantic source
+`3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`, immutable CB28 package `9950303110`
+(`84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`), selector 403, formal run/job
+`33919389753 / 101173990222`, **393 PASS / 10 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,389,390,393,398]`. Exact ledger:
+`bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`; package/source/execution-view pre/post censuses
+equal. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **90**.
 
-`M3-CP4c-3-TB24-REV` adjudicated that ledger. Seven of the twelve REDs are one defect on one fixture: the
-certifier returns an error instead of a certificate when ownership is incomplete, so every witness downstream of
-the certificate loses its subject and the plan's complete, correct consistency evidence is unreachable. Ordinal
-397 is fixed and PASSes; ordinal 400 proves the relocated guard works; ordinal 366 proves it is never reached.
-`M3-CP4c3-TB21-CAND-01` remains **UNADJUDICATED** because D3's input does not survive the failure D3 was built
-to diagnose.
+`M3-CP4c-3-TB25-REV` adjudicated that ledger. Ten REDs, four causes: 366/367 are the one open product problem, 398
+is the honest ownership gate, 389/390/393 are collateral assertions their identities do not own, and 368/369/370/374
+are carried surfaces. The certifier's seed rule was narrowed from two admissible sources to one and starves
+component 0 - **83 attributed boundary edges under the pre-CB27 rule, 0 under CB28's, on the identical component**.
+`M3-CP4c3-TB21-CAND-01` is **CLOSED as ill-formed**: its answer is set by which heuristic ran, not by the geometry.
+What replaces it is a dichotomy about the object - **either component 0 lies in exactly one certified face, or a
+separating arc meets its interior**, and the only mechanism that can hide such an arc from a source-edge barrier
+set is a trace transiting a vertex.
 
-**Exact next: `M3-CP4c-3-CB28` - Code + Build, runtime-free, GMP/GMPXX linked**, under
-`Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` **CH6-CH9**. Publication must survive failure; the
-consumer must reach its own census; the certified-owner conflict census must publish with each row's barrier
-class; selector **403** keeps selector 401 as an exact prefix. **CB28 measures; it does not correct.** No
-barrier may be added, no attribution rule changed, no accepted identity touched, and no Directional runtime
-executed before `M3-CP4c-3-TB25` reports CH8.
+**Exact next: `M3-CP4c-3-CB30` - Code + Build, runtime-free, GMP/GMPXX linked**, under
+`Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` **CJ6-CJ9**. Three censuses per uncut component -
+boundary, interior arc-incidence, vertex transit - published on the failure path and **never gated on an
+established owner**; the second admissible seed source restored without choosing a winner; one contract per gate;
+selector **405** with 403 as an exact prefix. **No barrier may be added or removed and no attribution rule changed
+beyond the CJ7 restoration before CJ6 reports.** No Directional runtime before `M3-CP4c-3-TB26`.

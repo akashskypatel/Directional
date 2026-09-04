@@ -1,3 +1,61 @@
+## 2026-09-04 — `M3-CP4c-3-TB25-REV`: the seed rule is starved, `TB21-CAND-01` closes as ill-formed, CB30 frozen
+
+Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/
+benchmark/build/selector mutation. `review_check.py authority 3d7f7f9a3afad3ed37fc615a206801cf6310f4ac` passed, so
+static review of HEAD is valid evidence about immutable package `9950303110`.
+
+**CH6/CH7 are runtime-proved.** Ordinals **384 and 385 return to PASS** and the production ownership publication is
+readable for the first time in seven turns: `300 source faces — 74 established, 226 unavailable, 0 conflicting`,
+conflict census published with **0 rows**. Component 0: **191 faces, 97 boundary edges, seedCount 0, seedState
+None**.
+
+**Ten REDs, four causes.** 366/367 are the one open product problem. **398 is the honest gate** —
+`proves_cellularity()` is false because ownership genuinely is incomplete. **389/390/393 are collateral**: each
+identity's own subject is green and each additionally asserts `proves_cellularity()`, which DEFN-R3.1 coupled to
+ownership totality. 368/369/370/374 are unchanged carried surfaces.
+
+**The diagnosis, provable from two code sites and two measurements of one component.** CB28's certifier seed rule
+(`SurfaceCutGraph.cpp:604–637`) admits one seed source where the pre-CB27 plan rule
+(`63aae440:GlobalTopologyPlan.cpp:1259–1289`) admitted two. On component 0's **97** boundary edges the old rule
+attributed **83** — orbit 0 → 81, orbit 1 → 1, orbit 3 → 1 — and the new rule attributes **0**. Neither rule is
+derived from the certificate: one guesses generously, the other refuses to guess.
+
+**`M3-CP4c3-TB21-CAND-01` CLOSES as ill-formed.** Both branches refuted and both recorded predictions wrong. The
+same fixture and the same certified complex give 3 owners under one rule and 0 under another; a question whose
+answer is set by which heuristic ran is a question about the heuristic. `M3-CP4c3-TB19-CAND-01` closes with it.
+
+**CH8's conflict census was vacuous, and this review owns that.** It emits a row only when both incident faces have
+an established singleton owner; all 191 of component 0's faces are `Unavailable`, so `rowCount=0` is a structural
+zero over exactly the region under investigation — the third such zero in this checkpoint.
+
+**What replaces the closed question — a dichotomy about the object.** Only arcs separate certified faces, so an
+uncut component whose interior no arc meets lies in **exactly one** certified face. Either component 0 has a single
+owner — making 3 wrong, 0 starved, and 81/1/1's majority the answer — or the barrier set fails to mark a separating
+arc. The only identified mechanism for the second horn is a **trace transiting a source vertex**
+(`SurfaceCutGraph.cpp:564–586`, with only the outgoing carrier becoming a barrier at `:528–530`), which a partition
+of source faces over source edges cannot express.
+
+**Two gates assert what their identities do not own.** Ordinal 389 REDs solely on
+`EXPECT_TRUE(certificate.proves_cellularity())` (`tests/FieldAlignedCurveNetworkTests.cpp:11448`) while its Euler
+census is green; ordinal 390 REDs on `ASSERT_GT(..., 1U)` (`:11499`), observed 0 — **a required-green gate demanding
+that the missing-barrier hypothesis be true.**
+
+**Accounting unchanged: 44 events / 14 categories / 30 recurrences**, debt **5**, packages **90**. Accepted 1–365 is
+365/365 with no accepted RED ordinal.
+
+**Candidates.** Closed: `M3-CP4c3-TB21-CAND-01` (ill-formed), `M3-CP4c3-TB19-CAND-01` (symptom record),
+`M3-CP4c3-TB24-REV-CAND-01` (runtime proved), `M3-CP4c3-TB25-ORCH-01` (control fix runtime proved). Confirmed:
+`M3-CP4c3-TB24-REV-CAND-02`. New: `M3-CP4c3-TB25-REV-CAND-01` (seed rule narrowed), `-CAND-02` (is component 0 in a
+single certified face?), `-CAND-03` (389/390 gate on foreign assertions).
+
+**Lessons 122, 123 and 124** added. **Consolidation:** the TB24 review record and the CB27 build report were folded
+into `M3_CP4c_Consolidated_Record.md`, and the TB24 runtime report, consumed TB25 plan and CB29 control report —
+retired by TB25-R1's stale-evidence cleanup — were indexed retrospectively.
+
+**Exact successor: `M3-CP4c-3-CB30`** under **CJ6–CJ9** — three censuses per uncut component published on the
+failure path and never gated on an established owner, the dropped seed source restored without choosing a winner,
+one contract per gate, selector **405** with 403 as an exact prefix.
+
 ## 2026-09-04 — `M3-CP4c-3-TB25-R1`: valid selector-403 runtime; 393 PASS / 10 RED; accepted 365/365
 
 Fresh artifact-only re-execution after CB29 completed on run/job **`33919389753 / 101173990222`** using immutable

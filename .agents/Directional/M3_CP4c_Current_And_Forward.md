@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-04** after valid immutable `M3-CP4c-3-TB25-R1` completed selector 403.
+Last updated **2026-09-04** at `M3-CP4c-3-TB25-REV` closeout.
 
 ---
 
@@ -32,34 +32,64 @@ The first TB25 attempt remains pre-runtime-invalid provenance; CB29's control co
 | TB25-R1 runtime evidence | run/job `33919389753 / 101173990222`; result `9954531868`; log `9954532357` |
 | Invalid first TB25 attempt | run/job `33910913448 / 101146905061`; result/log `9951314815 / 9951315281`; 0 identities executed |
 | CB29 control proof | run/job `33915621191 / 101162027243`; result/log `9953038617 / 9953039237`; runtime started false |
-| Exact next | `M3-CP4c-3-TB25-REV` — independent REVIEW + PLAN only |
+| Exact next | `M3-CP4c-3-CB30` — Code + Build, runtime-free, GMP/GMPXX linked, under CJ6–CJ9 |
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences** pending TB25-REV; produced-witness debt
-remains **5**; semantic M3 package count remains **90**.
+Stable accounting is **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
+package count **90**. `M3-CP4c-3-TB25-REV` adjudicated the ledger and added **no stable event**: accepted 1–365 is
+365/365 with no accepted RED ordinal, 384/385 recovered, and every remaining RED is named below.
 
-## 2. Current frontier — discriminator measured; review owns interpretation
+## 2. Current frontier — the seed rule is starved, and the question has been re-posed about the object
 
-TB25-R1 completed all 403 identities from immutable artifact `9950303110` with no rebuild/repair/mutation and equal
-package/source/execution-view censuses. Relative to TB24, ordinals **384 and 385 recover RED → PASS**; the remaining
-RED set is **366, 367, 368, 369, 370, 374, 389, 390, 393, 398**. New ordinals **402 and 403 PASS**.
+**Ten REDs, four causes.** 366/367 are the one open product problem. **398 is the honest gate** —
+`proves_cellularity()` is false because ownership genuinely is incomplete. **389/390/393 are collateral**: each
+identity's own subject is green and each additionally asserts `proves_cellularity()`, which DEFN-R3.1 coupled to
+ownership totality. 368/369/370/374 are unchanged carried surfaces with separate owners.
 
-The production ownership publication is now measurable. Ordinal 385 reports **300 source faces: 74 established,
-226 unavailable, 0 conflicting**, with the conflict census published and **0 rows**. Ordinal 402 also reports the
-production conflict census published with **rowCount=0**; ordinal 403 PASSes its bounded non-barrier differing-owner
-witness. Ordinals 366/367 report component 0 with **191 faces, 0 certified observations, 191 unavailable, 0 distinct,
-seedState=None**. These facts are deliberately not converted into the missing-barrier/mis-attribution/third-mechanism
-decision here; the unchanged frozen TB25 plan assigns that interpretation to TB25-REV.
+**CH6/CH7 worked.** Ordinals **384 and 385 return to PASS** and the production ownership publication is readable
+for the first time in seven turns: `300 source faces — 74 established, 226 unavailable, 0 conflicting`, conflict
+census published with **0 rows**. Component 0: **191 faces, 97 boundary edges, seedCount 0, seedState None**.
 
-`M3-CP4c3-TB25-ORCH-01` is **CLOSED / CONTROL FIX RUNTIME PROVED / NON-STABLE**: corrected preflight passed and
-the full fresh-process gate completed. The first invalid attempt remains provenance only.
+**The diagnosis.** CB28's certifier seed rule admits **one** seed source where the pre-CB27 plan rule admitted
+**two** — a labeled neighbour with a single fragment orbit, or unique per-edge evidence; only the second survived
+the move. On component 0's 97 boundary edges the old rule attributed **83** (orbit 0 → 81, orbit 1 → 1, orbit 3 →
+1) and the new rule attributes **0**. Neither rule is derived from the certificate.
 
-## 3. Exact next turn — `M3-CP4c-3-TB25-REV`
+**`M3-CP4c3-TB21-CAND-01` is CLOSED as ill-formed.** Both branches refuted; both recorded predictions wrong. The
+same fixture and the same certified complex give **3 owners under one rule and 0 under another** — that is a
+question about the heuristic, not about the geometry.
 
-Perform **independent REVIEW + PLAN only** over the immutable TB25-R1 evidence. Do not rerun Directional, rebuild,
-relink, repair, mutate product/tests/fixtures/selectors/package bytes, or reinterpret the first invalid attempt as
-semantic evidence. Review owns the 10-RED classification, the 384/385 recoveries, the production zero-row conflict
-census with 226 unavailable source faces, the long-open ownership branch adjudication, stable accounting, mandatory
-`ORIENTATION.md` update, and mandatory REVIEW document consolidation. Authorize at most one bounded successor.
+**What replaces it — a dichotomy about the object.** Certified faces are orbits of the face walk, and only arcs can
+separate them. **If no arc meets an uncut component's interior, that component lies in exactly one certified face.**
+So either component 0 has a single certified owner — making `3` wrong, `0` starved, and 81/1/1's majority the answer
+— or the barrier set fails to mark a separating arc. The only identified mechanism for the second horn is a **trace
+transiting a source vertex**, which a partition of source faces over source edges cannot express.
+
+**CH8's conflict census was vacuous.** It emits a row only when both incident faces have an established singleton
+owner, and all 191 of component 0's faces are `Unavailable`. `conflictRowCount=0` is a structural zero over exactly
+the region under investigation — the third such zero in this checkpoint. `LESSONS.md` 122.
+
+## 3. Exact next turn — `M3-CP4c-3-CB30`
+
+Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`, under **CJ6–CJ9** of
+`Architecture_M3_CP4c3_TB25_Independent_Review_Record.md`.
+
+- **CJ6 — three censuses per uncut component**, published on the failure path and **never gated on an established
+  owner**: (1) boundary edges with independently derived barrier class and side-owner presence, untruncated for
+  component 0's 97; (2) **interior arc-incidence** — every arc whose dart lies on a component face, with kind and
+  both dart orbits; (3) **vertex-transit census** — every vertex a trace enters through `SourceVertexSupport`, its
+  incident uncut faces, and whether any pair is adjacent across a non-barrier edge. Outcomes are mutually exclusive
+  and jointly exhaustive, and each names a locus.
+- **CJ7 — restore the second seed source**, exactly as the pre-CB27 rule had it. A restoration, not a new
+  heuristic. Multi-seed components publish `Conflicting` with the full multiset; `proves_cellularity()` stays false.
+  **No winner is chosen among disagreeing seeds.**
+- **CJ8 — one contract per gate.** 389/390/393 assert `proves_embedded_cellularity()`; 390's
+  `ASSERT_GT(distinctCount, 1U)` is replaced in place by the contract it owns. **398 is untouched and remains the
+  sole gate on ownership totality.**
+- **CJ9 — selector 405** with 403 as an exact prefix; gating ordinals **404** (censuses published and complete) and
+  **405** (independent vertex-transit falsifiability witness).
+
+**No barrier may be added or removed and no attribution rule changed beyond the CJ7 restoration before CJ6
+reports.**
 
 ## 4. Open candidates
 
@@ -67,13 +97,13 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB24-REV-CAND-01` | **NEW / ACTIVE / GATING / PRODUCT + EVIDENCE ORDERING** — the certifier returns an error instead of a certificate, moving the failure upstream of every witness that observes it. CB28 implementation is compile-green; TB25/TB25-REV owns runtime adjudication. |
-| `M3-CP4c3-TB24-REV-CAND-02` | **NEW / ACTIVE / ARCHITECTURAL / DEFINITION CORRECTION** — ownership of non-arc-incident source faces is a derivation, not a read; DEFN-R3.1's justification clause is withdrawn. CB28 CH8 instrumentation is compile-green; TB25/TB25-REV owns runtime adjudication. |
-| `M3-CP4c3-TB21-CAND-01` | **ACTIVE / ARCHITECTURAL / GATING / REVIEW PENDING** — TB25-R1 measured production `conflictRowCount=0` with 226/300 source faces unavailable and component-0 191/191 certified owners unavailable. **TB25-REV owns the branch adjudication.** |
+| `M3-CP4c3-TB25-REV-CAND-01` | **NEW / ACTIVE / GATING / PRODUCT** — the certifier's seed rule admits one source where the rule it replaced admitted two; component 0 goes from 83 attributed boundary edges to 0. Owner: CJ6/CJ7. |
+| `M3-CP4c3-TB25-REV-CAND-02` | **NEW / ACTIVE / GATING / ARCHITECTURAL** — *is component 0 contained in a single certified face?* Posed about the object. Yes unless a separating arc meets its interior; the only mechanism that can hide one is a trace transiting a vertex. Owner: CJ6. |
+| `M3-CP4c3-TB25-REV-CAND-03` | **NEW / ACTIVE / GATING / TEST AUTHORITY** — ordinals 389/390 gate on assertions their identities do not own, and 390's `ASSERT_GT(..., 1U)` encodes a refuted hypothesis. Owner: CJ8. |
 | `M3-CP4c3-TB23-R1-REV-CAND-02` | **ACTIVE / DIAGNOSTIC CONTRACT** — ordinal 393's replacement assertions are authored but **untested**, because the subject is absent. CB28 publication path is compiled; TB25 owns runtime proof. |
 | `M3-CP4c3-DEFN-R3-CAND-01` | **ACTIVE / ARCHITECTURAL / NON-GATING** — two independent constructions of one embedded topology; unresolved and still not load-bearing. |
 | `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY** — ordinal 393 still pins a contract no execution has exercised. CB28 publication path is compiled; TB25 owns runtime proof. |
-| `M3-CP4c3-TB19-CAND-01` | **ACTIVE / SYMPTOM RECORD** under `M3-CP4c3-TB21-CAND-01`. |
+| `M3-CP4c3-TB24-REV-CAND-02` | **CONFIRMED / ACTIVE / ARCHITECTURAL** — ownership of non-arc-incident faces is a derivation, not a read. TB25-R1 shows the derivation is what is broken. |
 | `M3-CP4c3-TB21-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 391 passes with the sphere half explicitly skipped. |
 | `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED**; `localFragmentCount` stays non-fatal. |
 | `M3-CP4c3-TB7-CAND-02` | **ACTIVE / DEFERRED** — folded-cone witness, ordinal 374. |
@@ -84,7 +114,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — ordinal 370. **No correction authorized.** |
 | finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
-**Closed control candidate at TB25-R1:** `M3-CP4c3-TB25-ORCH-01` (corrected preflight and full 403-process gate completed). **Closed at TB24-REV, all runtime-proved:** `M3-CP4c3-TB23-REV-CAND-01` (ordinal 401 PASS — fixtures fail
+**Closed at TB25-REV:** `M3-CP4c3-TB21-CAND-01` (**ill-formed / superseded** — its answer was set by which seed heuristic ran), `M3-CP4c3-TB19-CAND-01` (symptom record of the same ill-formed question), `M3-CP4c3-TB24-REV-CAND-01` (**runtime proved** — 384/385 recovered; the failure no longer sits upstream of the evidence), `M3-CP4c3-TB25-ORCH-01` (control fix runtime proved). **Closed at TB24-REV, all runtime-proved:** `M3-CP4c3-TB23-REV-CAND-01` (ordinal 401 PASS — fixtures fail
 closed), `M3-CP4c3-TB23-REV-CAND-02` (corrected execution view, `execution_view_verified=true`, equal censuses),
 `M3-CP4c3-TB23-R1-REV-CAND-01` (ordinal 397 PASS, byte-identical, fixed not relaxed). **Previously closed:**
 `M3-CP4c3-TB21-CAND-02`, `M3-CP4c3-TB10-REV-CAND-01`, `M3-CP4c3-TB19-REV-CAND-02`, `M3-CP4c3-TB17-CAND-01`. The historical torus `UncutFaceComponentOrbitSeedNotUnique` record stays separate as the
@@ -97,7 +127,7 @@ genuine non-cellular case Part I proved.
 - **`projectionFaithfulnessResidual = 0` is a structural zero** — the predicate is unsatisfiable by construction.
   It never ruled anything out and must not be cited as evidence.
 - **The minority rows' certificate-face columns are the seed value re-printed.** Their agreement is a tautology.
-- **Both branches of `M3-CP4c3-TB21-CAND-01` are live.**
+- **Both branches of `M3-CP4c3-TB21-CAND-01` are REFUTED, and the question is closed as ill-formed.** Do not re-pose it. The successor question is whether component 0 lies in a single certified face — asked about the object, not about a rule.
 - **The mechanical actual embedded complex is cellular** — `22 − 26 + 6 − 2 = 0`, all faces certified discs.
 - **Part I §3 is an implication with a premise**; it says nothing about the source-face projection.
 - **The certificate and the seed guard test different objects**; neither validates the other.
@@ -113,8 +143,9 @@ genuine non-cellular case Part I proved.
   D3 proved this at a cost of one full turn.
 - **Relocating a derivation adds no information.** CB27 moved ownership into the certifier — the right authority —
   and got `[0,1,3]` at `(0,1,2)`, the same answer as before.
-- **384/385/389/390 did not regress in accepted behaviour.** TB25-R1 now returns 384/385 to PASS; 389/390 remain RED.
-  Stable classification remains owned by review.
+- **384/385 recovered at TB25-R1; 389/390 remain RED for a named, separate reason** — each carries an assertion its identity does not own. No accepted behaviour was ever lost.
+- **A census over established values is vacuous where nothing is established.** CH8's `rowCount=0` proved this at a cost of one turn.
+- **Only arcs separate certified faces.** An uncut component whose interior no arc meets lies in exactly one certified face. This is a proof, not a measurement.
 - 368/369/370/374 are unchanged carried surfaces with separate owners. Vertex 30 and finalize/contact remain
   separate and untouched.
 
@@ -126,12 +157,13 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first; update it during the mandatory REVIEW closeout.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
-4. `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable product/package build authority.
-5. `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — current review authority and frozen CH6–CH9 semantics.
+3. `Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` — **CJ0–CJ9**, the adjudication and the frozen CB30 scope.
+4. `Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
+5. `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable product/package build authority.
 6. `M3_CP4c_Frozen_Definitions.md` — prohibited lists and premise-bearing definitions; do not reinterpret them from failure names.
 7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 8. `Required_Green_Selector_Manifest.md` — selector counts, hashes, prefixes, current role.
-9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver; the next REVIEW must index the TB24 runtime report, consumed TB25 plan, and CB29 control report retired by TB25-R1 stale-evidence cleanup.
+9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver, including the five documents indexed at TB25-REV.
 
-Exact next is `M3-CP4c-3-TB25-REV`, independent REVIEW + PLAN over the valid 403-process TB25-R1 evidence.
+Exact next is `M3-CP4c-3-CB30` under CJ6–CJ9. **CB30 measures and restores one dropped seed source; it chooses no
+winner and moves no barrier.**

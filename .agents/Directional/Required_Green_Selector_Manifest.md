@@ -295,6 +295,25 @@ CB28 appends two measurement/falsifiability witnesses to frozen selector 401. Se
 The first asserts **publication**, never a particular value; the second is the independent falsifiability witness
 that splits *can* from *does*, as 399/400 did for their rules.
 
+**Executed at `M3-CP4c-3-TB25-R1`:** 393 PASS / 10 RED, accepted 1–365 = 365/365. Both appended identities **PASS**,
+and ordinals **384 and 385 recovered** from TB24's RED. `M3-CP4c-3-TB25-REV` recorded that ordinal 402's
+`rowCount=0` is **structurally unable to be anything else** on the region under investigation — the census reads
+only established owners, and every face of component 0 is `Unavailable`. Ordinals 402/403 stay gating and are not
+withdrawn, but **neither may be cited as evidence about component 0**.
+
+### 405 — PLANNED, `M3-CP4c-3-CB30` CJ9
+
+Selector 403 must be its exact 403-line prefix, 401 the exact prefix of that, and 397 byte-frozen. Two gating
+identities are appended:
+
+- `SurfaceCutGraph.UncutComponentArcIncidenceCensusPublishesOnOwnershipFailure`
+- `SurfaceCutGraph.VertexTransitCensusNamesAFaceSeparationNoSourceEdgeBarrierCanCarry`
+
+The first asserts **publication and completeness** of the three CJ6 censuses with **no established owner
+required** — the defect that made ordinal 402 vacuous must not recur. The second is the independent falsifiability
+witness on a constructed vertex-transit fixture. Ordinal **390**'s assertions are replaced in place by CJ8; its name
+and ordinal do not change, so the first 403 lines stay byte-identical.
+
 ## Separate lineage — M1
 
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full

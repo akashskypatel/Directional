@@ -116,93 +116,88 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB25-REV` — EXACT NEXT / independent REVIEW + PLAN only
+## Mandatory next turn — `M3-CP4c-3-CB30` — EXACT NEXT / Code + Build, runtime-free
 
-`M3-CP4c-3-TB25-R1` is **COMPLETE / VALID IMMUTABLE SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**.
-It is now the latest semantic runtime authority. CP4c-3 remains **OPEN**.
+`M3-CP4c-3-TB25-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**, and
+`M3-CP4c-3-TB25-REV` has adjudicated it.
 
-### Immutable TB25-R1 runtime authority
+### Immutable TB25-R1 authority
 
-- semantic product source: `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`;
-- immutable CB28 package artifact: `9950303110`, SHA-256
-  `84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`;
-- selector 403: 403 identities, SHA-256
-  `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007`;
-- accepted selector 365 SHA-256
-  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
-- selector 401 SHA-256
-  `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`;
+- semantic source: `3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`;
+- immutable CB28 package: `9950303110`, SHA-256 `84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`;
 - formal run/job: `33919389753 / 101173990222`, SUCCESS;
-- result artifact: `9954531868`, SHA-256
-  `e3b2ac7a9df5afabfd844450059b33f26fff040d0f1632e523bc7aa085e06cd0`;
-- diagnostic-log artifact: `9954532357`, SHA-256
-  `412c86f35906482bd9b36f646306a1267f5e13dad16d11986a3993d93a762fc4`;
-- ledger SHA-256 `bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`;
-- identity-map SHA-256 `7ec8d68589bd6f8d18df7e3386a584203914e5462703adf578ae1325d4e90d8f`.
+- result artifact `9954531868`; diagnostic-log artifact `9954532357`;
+- selector 403: `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007`; selector 401 is its exact
+  401-line prefix, selector 365 its exact 365-line prefix;
+- ledger: **393 PASS / 10 RED**, accepted **1–365 = 365/365 PASS**, SHA-256
+  `bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`;
+- RED ordinals: `[366,367,368,369,370,374,389,390,393,398]`.
 
-### Runtime result
+### What TB25-REV found
 
-The full gate completed in **403 fresh processes**:
+**CH6/CH7 worked** — ordinals **384 and 385 return to PASS**, and the production ownership publication is readable
+for the first time in seven turns: `300 source faces — 74 established, 226 unavailable, 0 conflicting`, conflict
+census published with **0 rows**; component 0 has **191 faces, 97 boundary edges, seedCount 0, seedState None**.
 
-- **393 PASS / 10 RED**;
-- accepted **1–365 = 365/365 PASS**;
-- RED ordinals **366, 367, 368, 369, 370, 374, 389, 390, 393, 398**;
-- 384 and 385 change TB24 RED → PASS;
-- new 402 and 403 PASS;
-- 371/372/391/392/397/399/400/401 remain PASS.
+**Ten REDs, four causes.** 366/367 are the one open product problem; **398 is the honest gate**
+(`proves_cellularity()` false because ownership genuinely is incomplete); **389/390/393 are collateral** — each
+identity's own subject is green and each additionally asserts `proves_cellularity()`; 368/369/370/374 are unchanged
+carried surfaces.
 
-All package/source/execution-view pre/post censuses are equal. `runtime_completed=true`,
-`orchestration_failure=false`, and all configure/compile/relink/repair/mutation flags are false.
+**The diagnosis.** CB28's certifier seed rule admits **one** seed source where the pre-CB27 plan rule admitted
+**two**. On component 0's 97 boundary edges the old rule attributed **83** (81/1/1) and the new rule attributes
+**0**. Neither rule is derived from the certificate.
 
-### TB25 ownership evidence to review
+**`M3-CP4c3-TB21-CAND-01` is CLOSED as ill-formed** — the same fixture gives 3 owners under one rule and 0 under
+another, so the question was about the heuristic. **CH8's conflict census was vacuous** — it reads only established
+owners and every face of component 0 is `Unavailable`; `rowCount=0` is a structural zero.
 
-Factual runtime evidence, without EXEC interpretation:
+**The dichotomy that replaces it:** only arcs separate certified faces, so **either component 0 lies in exactly one
+certified face, or a separating arc meets its interior** — and the only mechanism that can hide such an arc from a
+source-edge barrier set is a **trace transiting a vertex**.
 
-- ordinal 385: `sourceFaceCount=300; established=74; unavailable=226; conflicting=0`;
-  `conflictCensusPublished=true; conflictRowCount=0`;
-- ordinal 402 PASS: production conflict census published with `rowCount=0`;
-- ordinal 403 PASS: bounded non-barrier differing-owner census witness works;
-- ordinals 366/367: component 0, 191 faces, seed count 0 / `None`,
-  certified observation count 0, unavailable count 191, distinct count 0;
-- 389/393/398 remain RED with `proves_cellularity()==false`;
-- 390 remains RED with `proves_cellularity()==false` and distinct certified-face count 0.
+**Accounting unchanged: 44 events / 14 categories / 30 recurrences**, debt **5**, packages **90**. Accepted 365/365
+with no accepted RED ordinal.
 
-The frozen TB25 plan assigns branch selection and diagnosis to REVIEW. Do not pre-interpret the zero-row census in
-the next turn's startup summary.
+### CB30 boundary — CJ6–CJ9
 
-### Orchestration candidate
+Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked, no runtime, no package repair, no acceptance
+evidence.
 
-`M3-CP4c3-TB25-ORCH-01` is **CLOSED / CONTROL FIX RUNTIME PROVED / NON-STABLE**. Corrected preflight passed and
-the unchanged gate completed all 403 identities. The first TB25 attempt (`33910913448 / 101146905061`, 0/403)
-remains invalid provenance only and contributes +0 stable events/recurrences.
+- **CJ6** — three censuses per uncut component, published on the failure path and **never gated on an established
+  owner**: boundary edges with barrier class and side-owner presence (untruncated for component 0's 97); interior
+  arc-incidence with kind and both dart orbits; and a vertex-transit census naming every vertex a trace enters
+  through `SourceVertexSupport` and whether its incident uncut faces are adjacent across a non-barrier edge. The
+  three outcomes are mutually exclusive and jointly exhaustive, and each names a locus.
+- **CJ7** — restore the second admissible seed source the pre-CB27 rule had. A restoration, not a new heuristic.
+  Multi-seed components publish `Conflicting` with the full multiset; `proves_cellularity()` stays false; **no
+  winner is chosen among disagreeing seeds.**
+- **CJ8** — one contract per gate. 389/390/393 assert `proves_embedded_cellularity()`; 390's
+  `ASSERT_GT(*locus.uncutFaceComponentCertifiedFaceDistinctCount, 1U)` is replaced in place by the contract it
+  owns. **398 is untouched and remains the sole gate on ownership totality.**
+- **CJ9** — selector **405**, keeping 403 as an exact 403-line prefix. Gating ordinals **404** (censuses published
+  and complete) and **405** (independent vertex-transit falsifiability witness).
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences** pending review; produced-witness debt
-remains **5**; semantic M3 package count remains **90**.
-
-### M3-CP4c-3-TB25-REV — run next
-
-Independent REVIEW + PLAN only. Do **not** execute Directional, rebuild, configure, relink, repair, repackage, or
-mutate product/tests/fixtures/selectors/package bytes. Review must:
-
-1. validate the TB25-R1 immutable evidence and full 403-row ledger;
-2. classify all 10 RED surfaces and the 384/385 recoveries;
-3. adjudicate the certified-owner discriminator using the measured zero conflict rows, 226 unavailable source
-   faces, and component-0 evidence under the frozen CH8 rules;
-4. update stable accounting only when justified;
-5. update `.agents/Directional/ORIENTATION.md`;
-6. perform mandatory REVIEW document consolidation and repair live citations;
-7. authorize at most one bounded successor.
+**Prohibited:** adding or removing a barrier, changing the attribution rule beyond the CJ7 restoration, or choosing
+a winner among disagreeing seeds, before CJ6 reports; gating any CJ6 census on an established owner; weakening
+`proves_cellularity()` or ordinals 397–403; changing any accepted identity 1–365 or any byte of selector 397/401 or
+the first 403 lines of selector 405; reverting CB21/CB25/CB26/CB27/CB28/CB29; executing any Directional runtime.
 
 ### Context Load Plan
 
-0. `.agents/Directional/ORIENTATION.md` — substance-only cold-start context; REVIEW must update it before closeout.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority and preserved frozen TB25 discriminator contract.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` — current review authority and CH6–CH9 semantics.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable product/package build authority.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md`, `TODO.md`, `.agents/Directional/CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII and `.agents/Directional/M3_CP4c_Consolidated_Record.md`. The REVIEW must index the TB24 runtime report, consumed TB25 plan, and CB29 control report retired by TB25-R1 stale-evidence cleanup.
+`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
+
+Minimum successor context after the mandatory durable policy/start checklist:
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` — **CJ0–CJ9**, the frozen CB30 scope.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB28_Code_Build_Report.md` — immutable package build authority.
+5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII — DEFN-R3 and its TB24-REV amendment.
+6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 403 and the frozen prefixes.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index, including the five documents indexed at TB25-REV.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

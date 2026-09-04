@@ -2550,7 +2550,8 @@ only**, and the plan rebuilds the identical structure to re-derive what the cert
 >
 > **The normative decision of DEFN-R3.1 below is UNCHANGED and remains in force.** The certifier is the right
 > authority. What is withdrawn is only the claim that it already knows the answer. See
-> `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` §4, `M3-CP4c3-TB24-REV-CAND-02` and `LESSONS.md` 121.
+> `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` §4 (folded into `M3_CP4c_Consolidated_Record.md` at
+> `M3-CP4c-3-TB25-REV`), `M3-CP4c3-TB24-REV-CAND-02` and `LESSONS.md` 121.
 
 #### 2.3 Normative decision — DEFN-R3.1
 
