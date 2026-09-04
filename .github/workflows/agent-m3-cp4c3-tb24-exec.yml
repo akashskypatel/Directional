@@ -210,7 +210,8 @@ jobs:
             "selector397_exact_prefix_of_401=true" > "${RESULT}/selector-authority.txt"
 
           for binary in "${!expected_sha[@]}"; do ln "$PKG/bin/$binary" "$EXEC_VIEW/bin/$binary"; done
-          cp -a "$SOURCE/test-data" "$EXEC_VIEW/test-data"
+          mkdir -p "$EXEC_VIEW/test-data/benchmarks"
+          cp -a "$SOURCE/benchmarks/fixtures" "$EXEC_VIEW/test-data/benchmarks/"
           known_fixture="$EXEC_VIEW/test-data/benchmarks/fixtures/milestone-g/mechanical_feature.obj"
           [[ -f "$known_fixture" ]] || fail_orchestration 'execution-view fixture tree missing'
           grep -Fq 'executableDirectory.parent_path() / "test-data"' "$SOURCE/tests/TestFixturePaths.h" || fail_orchestration 'sibling fixture rule drifted'
