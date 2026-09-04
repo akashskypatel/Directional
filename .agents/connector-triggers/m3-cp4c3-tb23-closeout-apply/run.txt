@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-TB23-EXEC
-purpose=apply-docs-closeout
-patch_file_id=1xzbm-3yOcuXPANMHugWaLjlYrUtaSiH2
-patch_sha256=884480e07b1da1a2b35bee018cdbdef3dbd999c656d9e395267848601e697b09
-base_sha=cfbc42c9a352fd3829ed6750ebfb60eb449d6527

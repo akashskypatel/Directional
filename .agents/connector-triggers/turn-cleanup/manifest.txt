@@ -1,5 +1,0 @@
-# M3-CP4c-3-TB23-EXEC closeout temporary-state cleanup
-.agents/Directional/turn-payloads/m3-cp4c3-tb23-exec.sh
-.agents/connector-triggers/m3-cp4c3-tb23-closeout-apply/run.txt
-.agents/connector-triggers/m3-cp4c3-tb23-exec/run.txt
-.agents/connector-triggers/source-snapshot/20260903T2020-tb23exec.txt
