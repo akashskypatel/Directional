@@ -1,0 +1,4 @@
+purpose=apply-cb27-documentation-closeout
+base_sha=2c27cfe16d2888a8b600b434c7559b7207386b45
+patch_sha256=0847019b429edcb47e16ae86a7241bbaa7617d719de14f21fa8bc64fe177127d
+runtimeExecution=false
