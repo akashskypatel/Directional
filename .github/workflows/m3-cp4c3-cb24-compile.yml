@@ -1,0 +1,35 @@
+name: M3 CP4c3 CB24 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb24-compile-20260903.txt
+
+permissions:
+  actions: write
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb24-compile
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb24-compile
+      commit_run_file: false
+    secrets: inherit
+
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: d69729a69a40b020968ed6ef1fbc1bc788284518
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c3-cb24-compile
+    secrets: inherit
