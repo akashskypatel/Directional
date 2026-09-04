@@ -1,4 +1,4 @@
 turn=M3-CP4c-3-TB21
 purpose=apply durable TB21 closeout documentation patch
 base=cc35b13680efec4c003943455403ec3fc072b8fc
-retry=1
+retry=2
