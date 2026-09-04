@@ -1,0 +1,4 @@
+purpose=apply-corrected-preserved-cb27-patch
+base_sha=63aae44056abd2efdd2dcc74ad0488942799c004
+patch_sha256=30234417489c07746aa9feae040705159ddd26573cf64274fe0d3dc5c6b1ae46
+runtimeExecution=false
