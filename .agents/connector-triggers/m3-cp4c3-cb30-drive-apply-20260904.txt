@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-CB30
+purpose=apply preserved CJ6-CJ9 source/test/selector patch from Google Drive
+base_sha=b8a8b404a381fbd5cd2f1c900261ac300affeb1a
+retry=0
