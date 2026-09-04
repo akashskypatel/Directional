@@ -1,4 +1,31 @@
-## M3-CP4c3-TB20-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-TB21 — actual-complex cellularity contradicts the seed-frontier interpretation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+
+- **Authority:** semantic source `fa5646106ccaa23770b84a935c6d1d6007928640`, package artifact `9916511617`, selector 391; run/job `33818038269 / 100854435211`; result/log artifacts `9917317234 / 9917317654`; exact ledger `8606fb7ba5673e6d3b45b5055f7744559b29a79d5caa8d0df76da85920aa6f77`.
+- **Gate:** **384 PASS / 7 RED**, accepted 1–365 **365/365 PASS**, reds `366,367,368,369,370,374,391`. Pre/post package byte+mode census identical at `e15a8ababed2d6580d36abe9e2421a9d573bd29fb5fe36fb08ab844f80161897`.
+- **D2:** ordinal 366 remains `UncutFaceComponentOrbitSeedNotUnique`, component 0, seed state `Multiple`, count 3, untruncated `[0,1,3]`, iteration-order source face `(0,1,2)`.
+- **D3 contradiction:** complete actual embedded graph census is `V=22,E=26,F=6,componentCount=1,sourceChi=2,residual=0`. The mechanical `SurfaceCutGraph` value is returned only after its actual-complex certificate proves cellularity. TB20-REV's non-cellularity inference therefore cannot be carried forward without review.
+- **D4:** component-0 aggregate boundary attribution is orbit 0→81, orbit 1→1, orbit 3→1; 3 rows, untruncated; 83/97 edges attributed and 14 are barrier/no-seed. Raw edge rows remain 64/97 truncated.
+- **D5:** 371 and 372 both execute their unchanged assertions and **PASS**, closing `M3-CP4c3-TB10-REV-CAND-01` at runtime.
+- **D6:** 367/368/369/370/374 remain independently owned; 389/390 PASS. 391 is a new RED at `sphere.cutGraph.has_value()==false`, co-reaching the existing prescribed-sphere 368 surface.
+- **Accounting:** no accepted-green loss. New architectural contradiction and diagnostic dependency are non-stable; **+0 stable events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **86**. Exact owner: `M3-CP4c-3-TB21-REV`.
+
+## M3-CP4c3-TB21-CAND-01 — certified cellular actual complex coexists with a three-orbit source-face seed component — **NEW / ACTIVE / ARCHITECTURAL / GATING / NON-STABLE**
+
+TB21 measures `22-26+6-2=0`, one graph component, and a `SurfaceCutGraph` value whose certificate passed
+`proves_cellularity()`, while GlobalTopologyPlan component 0 still spans seed orbits `[0,1,3]`. This directly
+contradicts the prior interpretation that the three-seed state itself proves the certified actual embedded graph is
+non-cellular. Owner: `M3-CP4c-3-TB21-REV` BX1–BX4, which must reconcile the actual embedded arrangement, post-cut
+edge set, source-face barrier projection and frozen definition scope before any correction.
+
+## M3-CP4c3-TB21-CAND-02 — appended cross-witness Euler diagnostic is blocked by the existing prescribed-sphere surface — **NEW / ACTIVE / DIAGNOSTIC DEPENDENCY / NON-STABLE**
+
+Ordinal 391 reaches its prescribed-sphere half and fails `sphere.cutGraph.has_value()` with `NotProductionReady`.
+Ordinal 368 independently retains the owned sphere failure `CellularityNotEstablished` from
+`RotationSystemInconsistent / TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`.
+The new RED is therefore a co-reacher/dependency of existing sphere authority, not a new stable regression category
+and not authorization for a sphere correction. Owner: TB21-REV BX6.
+
+## M3-CP4c3-TB20-REV - independent review adjudication - **PRECEDING REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB20_Independent_Review_Record.md`, measures **CW0-CW9** discharged per the
   binding plan. Static only: no runtime, compile, package, or product/test/fixture/selector mutation.
@@ -39,7 +66,7 @@
 - **Accounting:** static, unaccepted surface, no accepted-green loss, red set unchanged. **+0 events / +0
   recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**.
 
-## M3-CP4c3-TB20-REV-CAND-01 - the field-aligned network is not a cut graph of its surface, on a GENUS-0 witness - **NEW / ACTIVE / ARCHITECTURAL / GATING / NON-STABLE**
+## M3-CP4c3-TB20-REV-CAND-01 - the field-aligned network is not a cut graph of its surface, on a GENUS-0 witness - **ACTIVE / ARCHITECTURAL / GATING / TB21 CONTRADICTS ACTUAL-COMPLEX NON-CELLULARITY INFERENCE / REVIEW REQUIRED / NON-STABLE**
 
 Second instance of the class `M3_CP4c_Frozen_Definitions.md` Part I §3 proved for the torus, reached by a route
 that proof does not cover. Symptom: `UncutFaceComponentOrbitSeedNotUnique`, component 0, 191 faces, seed orbits
@@ -59,7 +86,7 @@ under Part I's frame the mismatch it suppressed was reporting the same missing c
 the definition-level turn, which must either lift the prohibition with stated reasons or restore the invariant
 with an accepted-boundary argument. Related: `M3-CP4c3-TB20-REV-CAND-01`, lessons 103-104.
 
-## M3-CP4c3-TB20 — three-seed component branch measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+## M3-CP4c3-TB20 — three-seed component branch measured — **PRECEDING RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** semantic source `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`, compile artifact `9912976409`, selector 385; run/job `33809177155 / 100826787667`; result/log artifacts `9914226104 / 9914226799`; exact ledger `0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a`.
 - **Gate:** **380 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds 366/367/368/369/370/371/372/374. Ordinals 384–388 pass. Pre/post package byte+mode census is identical at `f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0`.
@@ -905,8 +932,10 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - **Accounting:** gating on an unaccepted surface, accepted 365 prefix green; **+0 events / +0 recurrences**. Totals
   remain **44 / 14 / 30**, debt **5**, packages **78**.
 
-## M3-CP4c3-TB10-REV-CAND-01 — ordinals 371/372 are blocked by a shared fixture precondition, not by their own contracts — **ACTIVE / TEST-COUPLING / DEFERRED / NON-STABLE**
+## M3-CP4c3-TB10-REV-CAND-01 — ordinals 371/372 shared fixture precondition — **CLOSED / RUNTIME PROVED AT TB21 / NON-STABLE**
 
+- **TB21 closure:** CB23 added the authorized atlas-only test accessor without changing product source, assertions, ordinals or selector membership. Artifact-only TB21 executes each identity exactly once: **371 PASS** and **372 PASS**. The test-coupling defect is closed; the accessor does not become product authority.
+- **Historical declaration at `M3-CP4c-3-TB10-REV`:** static only; no runtime executed.
 - **Declared at `M3-CP4c-3-TB10-REV`** from static reading; no runtime executed.
 - **Observed relation.** Ordinals 367, 371 and 372 all abort inside the function-local `static`
   `cp4c_mechanical_fixture()`, initialized by `build_cp4c_production_fixture`, which **throws** unless all five of

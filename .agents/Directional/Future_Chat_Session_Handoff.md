@@ -101,71 +101,69 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB21` — EXACT NEXT / Artifact-Only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB21-REV` — EXACT NEXT / Independent REVIEW + PLAN, STATIC ONLY
 
-`M3-CP4c-3-CB23` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE**. Records:
+`M3-CP4c-3-TB21` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE**. Record:
+`Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md`. Review plan:
+`Architecture_M3_CP4c3_TB21_Independent_Review_Plan.md` under **BX0–BX8**.
 
-- `Architecture_M3_CP4c3_CB23_Code_Build_Report.md` — semantic/build closeout;
-- `Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Plan.md` — frozen successor contract.
+### TB21 immutable runtime authority
 
-### CB23 immutable semantic/build authority
+- semantic source **`fa5646106ccaa23770b84a935c6d1d6007928640`**;
+- package run/job **`33815475590 / 100847694307`**, artifact **`9916511617`**, digest
+  `8378a108811740cff5fd1a0fc9db66f9e3334d7048ea9e7c7d6e8e1cbd852050`;
+- selector 391 **391 identities**, `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`;
+- TB21 run/job **`33818038269 / 100854435211`**; result/log **`9917317234 / 9917317654`**;
+- exact ledger **`8606fb7ba5673e6d3b45b5055f7744559b29a79d5caa8d0df76da85920aa6f77`**;
+- **384 PASS / 7 RED**, accepted **365/365 PASS**, reds `366,367,368,369,370,374,391`;
+- package pre/post byte+mode census **IDENTICAL**, `e15a8ababed2d6580d36abe9e2421a9d573bd29fb5fe36fb08ab844f80161897`;
+- no configure, compile, relink, repair, discovery, source/test/fixture/selector mutation or benchmark execution.
 
-- semantic source: **`fa5646106ccaa23770b84a935c6d1d6007928640`**;
-- selector 391: **391 identities**, SHA-256 **`f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`**;
-- predecessor selector 385: 388 identities, `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`; accepted selector 365 remains `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
-- compile run **`33815475590`**; preflight job `100846561708`, package job **`100847694307`**, both GREEN;
-- immutable package artifact **`9916511617`**, digest **`sha256:8378a108811740cff5fd1a0fc9db66f9e3334d7048ea9e7c7d6e8e1cbd852050`**;
-- compile log artifact **`9916511915`**, digest `sha256:620381f4b9881ac0773fca206e2913ab3be52cc2b1abef9d8cbe9f62477e716e`;
-- GMP/GMPXX discovery and authoritative link evidence PASS; `manifest_self_verification=pass`, `source_status_clean=pass`, `runtimeExecution=false`.
+### Load-bearing contradiction
 
-### What CB23 added — evidence only
+Ordinal 366 is semantically unchanged: component 0, `seedState=Multiple`, seed count 3, seed orbits `[0,1,3]`,
+iteration-order source face `(0,1,2)`. But CB23's complete actual-complex census now reports
+**`V=22,E=26,F=6,componentCount=1,sourceChi=2,residual=0`**. The mechanical `SurfaceCutGraph` value exists only after
+its actual embedded graph certificate passes `proves_cellularity()`.
 
-- embedded-graph `V`, `E`, `F`, connected-component count, source `χ(S)`, and `V − E + F − χ(S)` residual on production failure projection;
-- bounded per-orbit boundary-edge attribution for the failing uncut component without increasing raw boundary-row retention;
-- three production-path diagnostic identities appended as ordinals **389–391**;
-- additive `cp4c_mechanical_atlas_fixture()` used only by existing ordinals **371/372**; their assertions, ordinals and selector membership remain unchanged;
-- no relaxation or rewrite of the normative seed guard, cut/barrier partition, face walk, rotation system, `proves_cellularity()`, CB21 comparison, saturation, folded-cone, vertex-30 or finalize/contact semantics.
+That directly contradicts the prior review's load-bearing inference that the three-seed state proves this
+certified actual complex is non-cellular. **Do not repair either side before review.** BX1–BX4 must determine what
+semantic relation the source-face barrier/component partition has to the post-cut actual embedded graph and how
+Part I §3 / Parts IV–V apply after Amendments 13–14.
 
-### Preceding runtime authority remains TB20
+### Other TB21 decisions
 
-TB20 run/job **`33809177155 / 100826787667`** remains the newest runtime evidence: **380 PASS / 8 RED**, accepted **365/365**, reds 366/367/368/369/370/371/372/374. Ordinal 366 was `UncutFaceComponentOrbitSeedNotUnique`, component 0, `seedState=Multiple`, seed count 3, seed orbits `[0,1,3]`. No CB23 runtime result exists yet.
+- component-0 aggregate boundary attribution: orbit 0→81, orbit 1→1, orbit 3→1; 3 rows untruncated; 83/97 edges
+  attributed, 14 barrier/no-seed;
+- 371 and 372 both execute their unchanged assertions and **PASS**; their test-coupling candidate closes;
+- 389/390 PASS;
+- 391 REDs at `sphere.cutGraph.has_value()==false`, co-reaching the existing prescribed-sphere 368 surface;
+- stable accounting remains **44 events / 14 categories / 30 recurrences**, debt **5**, packages **86**.
 
-### TB21 binding contract
+### Exact review boundary
 
-Run the full selector 391, one identity per fresh process, from immutable package `9916511617`. No configure, compile, relink, discovery, package repair, source/test/fixture/selector mutation or added runtime probe is authorized.
-
-TB21 must establish all six BW9 discriminators:
-
-1. accepted ordinals **1–365 remain 365/365 PASS**;
-2. ordinal **366 remains at the same normative `Multiple(3)` seed-uniqueness failure**;
-3. the mechanical embedded graph publishes `V/E/F/componentCount/χ/residual`, sufficient to decide cellularity by arithmetic;
-4. the failing component publishes bounded per-orbit boundary attribution;
-5. **371 and 372 execute their own existing assertions** through the atlas-only fixture and report their real results;
-6. co-reacher 367, carried 368/369/370/374 and appended 389–391 are all measured and separately classified.
-
-Pre/post package byte+mode census must be identical and `Regression_Root_Cause_Tracker.md` must classify every observed red/new surface before TB21 closes.
-
-If the Euler residual confirms non-cellularity, exact next is **`M3-CP4c-3-DEFN`**; `DEFN` absorbs review+plan and owns both the missing cut-graph construction contract and `M3-CP4c3-TB20-REV-CAND-02`. If the Euler evidence conflicts or ordinal 366 moves, exact next is independent **`M3-CP4c-3-TB21-REV`**. No Code + Build turn is pre-authorized.
-
-Accepted runtime authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **86**.
+**`M3-CP4c-3-TB21-REV` only.** Static independent review + plan. No Code + Build, DEFN execution, test, benchmark,
+configure, compile, link, package or runtime is authorized. The review must update `ORIENTATION.md` and perform the
+mandatory CP4c document consolidation before closing.
 
 ### Context Load Plan
 
-`load_next`: turn-based-coding-agent TEST + BENCHMARK guidance.
+`load_next`: turn-based-coding-agent REVIEW + PLAN guidance.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state and candidate index.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Plan.md` — **exact next execution contract**.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB23_Code_Build_Report.md` — exact semantic/build/package authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Report.md` — preceding runtime authority.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part I §3 plus Parts IV/V prohibited lists; no guard relaxation.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB21_Independent_Review_Plan.md` — **exact next review contract**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part I §3, Parts IV/V prohibited lists, plus later definition parts.
+5. `DESIGN.md` — especially Amendments 13–14 actual-complex/cut authority.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 391 / predecessor / accepted-prefix authority.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — historical lineage only.
+7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector authority.
+8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — historical lineage and folded-document index.
 
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; see `tools/README.md` for caveats.
+**Review tooling:** `.agents/Directional/tools/` contains the read-only review/selector/fixture probes. Use them
+only as helpers; runtime artifacts and committed source remain authority.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

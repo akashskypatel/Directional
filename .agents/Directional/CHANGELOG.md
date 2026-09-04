@@ -1,3 +1,23 @@
+## 2026-09-03 — `M3-CP4c-3-TB21`: actual-complex certificate is cellular; seed-frontier non-cellularity inference contradicted
+
+Artifact-only run `33818038269 / 100854435211` consumed immutable CB23 artifact `9916511617` and selector 391.
+All 391 identities executed one per fresh process: **384 PASS / 7 RED**, accepted **365/365 PASS**, exact RED set
+`366,367,368,369,370,374,391`. Result/log artifacts are `9917317234 / 9917317654`; ledger SHA-256
+`8606fb7ba5673e6d3b45b5055f7744559b29a79d5caa8d0df76da85920aa6f77`; pre/post package byte+mode census is
+identical at `e15a8ababed2d6580d36abe9e2421a9d573bd29fb5fe36fb08ab844f80161897`.
+
+Ordinal 366 is unchanged (`component=0`, `Multiple`, 3 seeds, `[0,1,3]`), but CB23's complete actual-embedded-graph
+census reports **V=22, E=26, F=6, one graph component, source χ=2, residual 0**. The mechanical `SurfaceCutGraph`
+exists only after `certificate.proves_cellularity()` succeeds. This therefore contradicts TB20-REV's load-bearing
+inference that the three-seed state proves this certified actual complex is non-cellular. No guard or certificate
+was weakened; exact next is independent `M3-CP4c-3-TB21-REV`.
+
+The failing component's complete aggregate boundary attribution is orbit 0→81, orbit 1→1, orbit 3→1, three rows
+untruncated (83 of 97 boundary edges attributed; 14 barrier/no-seed). **371 and 372 both PASS** their own unchanged
+atlas assertions, closing their test-coupling owner. 389/390 PASS. New diagnostic 391 REDs at
+`sphere.cutGraph.has_value()==false`, co-reaching the already-owned prescribed-sphere 368 surface. Stable accounting
+remains **44 / 14 / 30**, debt **5**, packages **86**. No configure/compile/relink/repair/discovery or mutation occurred.
+
 ## 2026-09-03 — selector-set audit: manifest added, consolidation explicitly refused
 
 Answered a direct question — should the selector files be cleaned up and consolidated? — by auditing the set rather
