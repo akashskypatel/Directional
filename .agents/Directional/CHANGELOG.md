@@ -1,3 +1,30 @@
+## 2026-09-04 — `M3-CP4c-3-CB27`: certified source-face ownership published; selector 401; compile/package GREEN
+
+Code + Build only under Part VII §9 **CG0–CG9**. Final semantic source
+`9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`; final GitHub compile run/job `33870767698 / 101015974984`;
+package `9935929108` (`b5e11a2c97c110d2cf484d63bb3afe3b753e7f4769098ec927a5cf1692f5d881`), persistent log `9935929698` (`36042ceb31103219d7a7260b8eae878ba093ea3906b64785c8a233b7dc00822b`). Release/static
+`PRE_TEST`; exact eight standard targets; GMP/GMPXX linked. **No Directional runtime, tests, benchmarks, generated
+discovery, `ctest`, CLI, fuzzer, help/version command, or custom input executed.** Accepted runtime authority remains
+365/365; CP4c-3 remains OPEN; stable totals stay **44 / 14 / 30**, debt **5**; this is semantic M3 package **89**.
+
+The certifier now publishes a total source-face owner map from the embedded topology/face walk it already owns;
+`proves_cellularity()` requires total source-face coverage and certificate-local owner orbits. `GlobalTopologyPlan`
+reads that map rather than reconstructing seed ownership, and the old uniqueness guard is relocated to certified
+owner consistency. Ordinal 397's unrelated `;cutCandidateCount=0` suffix is removed rather than absorbed. Ordinal
+393 is replaced in place by the owner-map contract and remains gating. `test_data_root()` now fails closed. Selector
+397 remains byte-frozen at `d67e5fb7…9b4853ee5`; four gating witnesses extend it to selector **401**, SHA-256
+`0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869`.
+
+Corrective provenance: compile caller run `33870167342` was a zero-job permission-ceiling startup failure. The first
+semantic compile `33870305830 / 101014479201` failed in `SurfaceCutGraph.cpp` because the new ownership aggregate
+was default-constructed even though `SourceFaceTopologyKey` has no default constructor. The surgical follow-up
+constructs the aggregate with `faceKey` directly; no semantic scope was broadened and no runtime ran in either
+failed attempt.
+
+Exact successor: **`M3-CP4c-3-TB24-EXEC`**, artifact-only runtime on the immutable CB27 package. The six frozen
+discriminators include the complete 191-face component-0 certified-owner multiset, which finally decides
+`M3-CP4c3-TB21-CAND-01`.
+
 ## 2026-09-04 — `M3-CP4c-3-DEFN-R3`: the certifier must publish a total source-face owner map; ownership becomes a lookup
 
 Definition turn, frozen as **Part VII** of `M3_CP4c_Frozen_Definitions.md`, measures **CF0–CF9**. `DEFN` absorbs

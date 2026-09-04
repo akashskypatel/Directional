@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-04 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority is `M3-CP4c-3-TB23-R1` on selector **397** at **389 PASS / 8 RED** with accepted **365/365**. **`M3-CP4c-3-DEFN-R3` is frozen as Part VII of `M3_CP4c_Frozen_Definitions.md`**, superseding Parts IV-VI where they conflict. Its central decision: **the certifier must publish a total source-face owner map**. Certified ownership of a source triangle was never readable - `SurfaceCutGraphFaceCertificate` carries an orbit id and three counts - so four turns of diagnostics each reconstructed it from the seed quantity and each collapsed; but `certify_actual_embedded_graph` already builds the same embedded topology and face walk the plan builds, so this is a **publication decision, not a new computation**. Ownership therefore becomes a **lookup**, and `UncutFaceComponentOrbitSeedNotUnique` is **relocated, not weakened**, into a map-consistency check. The fragment-count prohibition is **lifted with reasons** - the invariant is false on a certified cellular complex containing a bridge, which TB18 measured - and CB21 is not reverted. The long-open branch question becomes a lookup: component 0's 191 certified owners either agree or they do not. Ordinal 397 must be **fixed**, ordinal 393's assertions **replaced in place**. **NEXT:** `M3-CP4c-3-CB27` under CG0-CG9, runtime-free, GMP/GMPXX linked.)
+**Status date:** 2026-09-04 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority remains `M3-CP4c-3-TB23-R1` on selector 397 at **389 PASS / 8 RED**, accepted **365/365**. `M3-CP4c-3-CB27` is compile-green at semantic source `9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5`, publishes the certifier-owned total source-face owner map, replaces seed ownership with lookup, restores ordinal 397, replaces ordinal 393 in place, fails fixture resolution closed, and extends the gate to selector **401**. **NEXT:** immutable `M3-CP4c-3-TB24-EXEC`.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB23-R1 current runtime **389 PASS / 8 RED**, accepted **365/365**, RED 366/367/368/369/370/374/393/397; TB23-R1-REV exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB23-R1 runtime 389 PASS / 8 RED, accepted 365/365; CB27 compile-green selector401/package89; TB24-EXEC next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
