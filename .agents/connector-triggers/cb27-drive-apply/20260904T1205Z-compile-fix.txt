@@ -1,4 +1,0 @@
-purpose=apply-cb27-compile-fix
-base_sha=30d52522045588b8f970524e999cc34907533eb9
-patch_sha256=bfaf2b153541d3efd98cdaf660bb5f98dcc71cea35c859568f89830b7cb0cb23
-runtimeExecution=false

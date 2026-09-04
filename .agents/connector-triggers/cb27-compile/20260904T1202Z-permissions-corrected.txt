@@ -1,4 +1,0 @@
-purpose=cb27-compile-only-permission-corrected
-semantic_source_sha=30d52522045588b8f970524e999cc34907533eb9
-runtimeExecution=false
-exactArithmeticBackend=GMP

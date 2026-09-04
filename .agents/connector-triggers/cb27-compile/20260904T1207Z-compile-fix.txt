@@ -1,4 +1,0 @@
-purpose=cb27-compile-only-after-compile-fix
-semantic_source_sha=9c72fea8b666534b9e52fa42bbe8cbf8ae68ffe5
-runtimeExecution=false
-exactArithmeticBackend=GMP

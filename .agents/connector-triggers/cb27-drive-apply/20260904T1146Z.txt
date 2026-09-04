@@ -1,3 +1,0 @@
-purpose=apply-preserved-cb27-patch
-base_sha=63aae44056abd2efdd2dcc74ad0488942799c004
-runtimeExecution=false
