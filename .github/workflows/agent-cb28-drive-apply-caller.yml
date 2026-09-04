@@ -40,6 +40,6 @@ jobs:
       patch_sha256: 58e2edf75788bc2d44254a3e8c74fbfc98b1cdb182d4e525d9e7439fc6c4d190
       base_sha: 793b1f2fac99904625b8aebb0738c3ddb7593111
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close CB28 and stage TB25 execution plan
+      commit_message: "docs: close CB28 and stage TB25 execution plan"
       retention_days: 7
     secrets: inherit
