@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 #include <map>
 #include <numeric>
 #include <set>
@@ -9,6 +10,30 @@
 #include <directional/authority/FieldTransportAtlas.h>
 
 namespace directional::geometry::detail {
+
+inline void source_face_set_digest_consume(std::uint64_t &hash,
+                                         const std::uint64_t value) noexcept {
+  for (std::size_t byte = 0U; byte < sizeof(value); ++byte) {
+    hash ^= (value >> (8U * byte)) & 0xffU;
+    hash *= 1099511628211ULL;
+  }
+}
+
+inline std::uint64_t source_face_set_digest(
+    std::vector<authority::SourceFaceTopologyKey> faces) noexcept {
+  std::sort(faces.begin(), faces.end());
+  faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
+  std::uint64_t hash = 1469598103934665603ULL;
+  source_face_set_digest_consume(hash, faces.size());
+  for (const auto &face : faces) {
+    const auto vertices = face.vertices();
+    source_face_set_digest_consume(hash, vertices.size());
+    for (const auto vertex : vertices) {
+      source_face_set_digest_consume(hash, vertex.index());
+    }
+  }
+  return hash;
+}
 
 struct SourceFaceComponentPartition {
   std::vector<std::vector<authority::SourceFaceTopologyKey>> components;

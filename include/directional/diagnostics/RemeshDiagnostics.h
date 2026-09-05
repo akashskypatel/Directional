@@ -213,6 +213,20 @@ struct SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics {
   std::size_t sourceFaceCount = 0U;
 };
 
+struct SurfaceCellUncutFaceComponentCertifiedFaceObservationDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::size_t certifiedFace = 0U;
+};
+
+struct SurfaceCellUncutComponentPartitionIdentityDiagnostics {
+  std::string domainRule;
+  bool cutGraphCutEdges = false;
+  bool networkMandatoryEdges = false;
+  bool embeddedMandatoryArcSourceEdges = false;
+  bool embeddedCutArcSourceEdges = false;
+  bool nonTerminalTraceCarrierEdges = false;
+};
+
 struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
   std::size_t orbit = 0U;
   std::size_t boundaryEdgeCount = 0U;
@@ -303,6 +317,14 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::size_t uncutFaceComponentFaceCount = 0U;
   std::vector<std::array<std::size_t, 3>> uncutFaceComponentFaces;
   bool uncutFaceComponentFacesTruncated = false;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      uncutFaceComponentPartitionIdentity;
+  std::optional<std::uint64_t> uncutFaceComponentFaceSetDigest;
+  std::optional<std::size_t> uncutComponentCensusComponent;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      uncutComponentCensusPartitionIdentity;
+  std::optional<std::uint64_t> uncutComponentCensusFaceSetDigest;
+  std::optional<bool> uncutComponentCensusMatchesFailingComponent;
   std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
   std::vector<SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics>
       uncutFaceComponentBoundaryEdges;
@@ -317,6 +339,9 @@ struct SurfaceCellFailureLocusDiagnostics {
       uncutFaceCertificatePairs;
   bool uncutFaceCertificatePairsTruncated = false;
   std::optional<std::size_t> uncutFaceComponentCertifiedFaceObservationCount;
+  std::vector<SurfaceCellUncutFaceComponentCertifiedFaceObservationDiagnostics>
+      uncutFaceComponentCertifiedFaceObservations;
+  bool uncutFaceComponentCertifiedFaceObservationsTruncated = false;
   std::optional<std::size_t> uncutFaceComponentCertifiedFaceUnavailableCount;
   std::optional<std::size_t> uncutFaceComponentCertifiedFaceDistinctCount;
   std::vector<SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics>

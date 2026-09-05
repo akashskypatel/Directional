@@ -111,6 +111,28 @@ struct SurfaceCutGraphCertifiedOwnerConflict {
       default;
 };
 
+enum class UncutComponentPartitionDomainRule : std::uint8_t {
+  NotTraceCut = 0,
+  EmptyFragmentOrbits = 1,
+};
+
+struct UncutComponentPartitionBarrierComposition {
+  bool cutGraphCutEdges = false;
+  bool networkMandatoryEdges = false;
+  bool embeddedMandatoryArcSourceEdges = false;
+  bool embeddedCutArcSourceEdges = false;
+  bool nonTerminalTraceCarrierEdges = false;
+  auto operator<=>(const UncutComponentPartitionBarrierComposition &) const =
+      default;
+};
+
+struct UncutComponentPartitionIdentity {
+  UncutComponentPartitionDomainRule domainRule =
+      UncutComponentPartitionDomainRule::NotTraceCut;
+  UncutComponentPartitionBarrierComposition barriers;
+  auto operator<=>(const UncutComponentPartitionIdentity &) const = default;
+};
+
 enum class SurfaceCutGraphUncutComponentArcKind : std::uint8_t {
   Mandatory = 0,
   Trace = 1,
@@ -172,6 +194,8 @@ struct SurfaceCutGraphUncutComponentSeedAttribution {
 struct SurfaceCutGraphUncutComponentCensus {
   std::size_t component = 0U;
   std::vector<authority::SourceFaceTopologyKey> faces;
+  UncutComponentPartitionIdentity partitionIdentity;
+  std::uint64_t faceSetDigest = 0U;
   bool boundaryCensusPublished = false;
   std::size_t boundaryEdgeCount = 0U;
   std::vector<SurfaceCutGraphUncutComponentBoundaryEdgeCensus> boundaryEdges;
@@ -383,6 +407,12 @@ private:
     SurfaceCutGraphSourceFaceOwnershipStatus status) noexcept;
 [[nodiscard]] const char *surface_cut_graph_certified_owner_conflict_barrier_class_name(
     SurfaceCutGraphCertifiedOwnerConflictBarrierClass barrierClass) noexcept;
+[[nodiscard]] const char *uncut_component_partition_domain_rule_name(
+    UncutComponentPartitionDomainRule rule) noexcept;
+[[nodiscard]] const char *surface_cut_graph_uncut_component_arc_kind_name(
+    SurfaceCutGraphUncutComponentArcKind kind) noexcept;
+[[nodiscard]] const char *surface_cut_graph_uncut_component_seed_rule_name(
+    SurfaceCutGraphUncutComponentSeedRule rule) noexcept;
 [[nodiscard]] std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept;
 
 } // namespace directional::geometry

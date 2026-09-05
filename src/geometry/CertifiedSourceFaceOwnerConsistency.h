@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <map>
 #include <optional>
+#include <utility>
 #include <vector>
 
 namespace directional::geometry::detail {
@@ -15,6 +16,8 @@ struct CertifiedSourceFaceOwnerComponentConsistency {
   std::size_t component = 0U;
   std::vector<authority::SourceFaceTopologyKey> faces;
   std::map<std::size_t, std::size_t> ownerMultiplicity;
+  std::vector<std::pair<authority::SourceFaceTopologyKey, std::size_t>>
+      ownerObservations;
   std::optional<authority::SourceFaceTopologyKey> invalidFace;
 };
 
@@ -49,11 +52,14 @@ check_certified_source_face_owner_consistency(
         if (owner != nullptr) {
           for (const std::size_t orbit : owner->certifiedFaceOrbits) {
             ++row.ownerMultiplicity[orbit];
+            row.ownerObservations.emplace_back(face, orbit);
           }
         }
         continue;
       }
       ++row.ownerMultiplicity[owner->certifiedFaceOrbits.front()];
+      row.ownerObservations.emplace_back(face,
+                                         owner->certifiedFaceOrbits.front());
     }
 
     const bool conflict = row.invalidFace.has_value() ||

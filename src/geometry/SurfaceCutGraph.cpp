@@ -621,6 +621,13 @@ OwnershipBuildResult build_source_face_ownership(
     SurfaceCutGraphUncutComponentCensus census;
     census.component = component;
     census.faces = faces;
+    census.partitionIdentity.domainRule =
+        UncutComponentPartitionDomainRule::NotTraceCut;
+    census.partitionIdentity.barriers.cutGraphCutEdges = true;
+    census.partitionIdentity.barriers.embeddedMandatoryArcSourceEdges = true;
+    census.partitionIdentity.barriers.embeddedCutArcSourceEdges = true;
+    census.partitionIdentity.barriers.nonTerminalTraceCarrierEdges = true;
+    census.faceSetDigest = detail::source_face_set_digest(faces);
     census.boundaryCensusPublished = true;
     census.interiorArcIncidenceCensusPublished = true;
     census.vertexTransitCensusPublished = true;
@@ -1017,6 +1024,41 @@ const char *surface_cut_graph_certified_owner_conflict_barrier_class_name(
     return "cutEdge";
   }
   return "unknown";
+}
+
+const char *uncut_component_partition_domain_rule_name(
+    const UncutComponentPartitionDomainRule rule) noexcept {
+  switch (rule) {
+  case UncutComponentPartitionDomainRule::NotTraceCut:
+    return "NotTraceCut";
+  case UncutComponentPartitionDomainRule::EmptyFragmentOrbits:
+    return "EmptyFragmentOrbits";
+  }
+  return "Unknown";
+}
+
+const char *surface_cut_graph_uncut_component_arc_kind_name(
+    const SurfaceCutGraphUncutComponentArcKind kind) noexcept {
+  switch (kind) {
+  case SurfaceCutGraphUncutComponentArcKind::Mandatory:
+    return "Mandatory";
+  case SurfaceCutGraphUncutComponentArcKind::Trace:
+    return "Trace";
+  case SurfaceCutGraphUncutComponentArcKind::Cut:
+    return "Cut";
+  }
+  return "Unknown";
+}
+
+const char *surface_cut_graph_uncut_component_seed_rule_name(
+    const SurfaceCutGraphUncutComponentSeedRule rule) noexcept {
+  switch (rule) {
+  case SurfaceCutGraphUncutComponentSeedRule::SingleFaceOwner:
+    return "SingleFaceOwner";
+  case SurfaceCutGraphUncutComponentSeedRule::EdgeSideOwner:
+    return "EdgeSideOwner";
+  }
+  return "Unknown";
 }
 std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept {return graph.provenance_digest();}
 

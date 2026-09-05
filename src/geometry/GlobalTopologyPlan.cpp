@@ -37,7 +37,6 @@ constexpr std::uint64_t kFnvPrime = 1099511628211ULL;
 constexpr std::size_t kFragmentFailureEvidenceLimit = 8U;
 constexpr std::size_t kFragmentFaceEvidenceLimit = 4096U;
 constexpr std::size_t kFragmentOwnerCensusEvidenceLimit = 64U;
-constexpr std::size_t kUncutComponentFaceEvidenceLimit = 64U;
 constexpr std::size_t kUncutComponentBoundaryEvidenceLimit = 64U;
 constexpr std::size_t kUncutComponentSeedEvidenceLimit = 64U;
 
@@ -1164,24 +1163,54 @@ RegionBuildResult build_regions(
                   ? UncutFaceComponentSeedState::Unique
                   : UncutFaceComponentSeedState::Multiple;
     failure.uncutFaceComponentFaceCount = row.faces.size();
-    for (const auto &face : row.faces) {
-      if (failure.uncutFaceComponentFaces.size() >=
-          kUncutComponentFaceEvidenceLimit) {
-        break;
-      }
-      failure.uncutFaceComponentFaces.push_back(face);
+    failure.uncutFaceComponentFaces = row.faces;
+    failure.uncutFaceComponentFacesTruncated = false;
+
+    UncutComponentPartitionIdentity planPartitionIdentity;
+    planPartitionIdentity.domainRule =
+        UncutComponentPartitionDomainRule::EmptyFragmentOrbits;
+    planPartitionIdentity.barriers.cutGraphCutEdges = true;
+    planPartitionIdentity.barriers.networkMandatoryEdges = true;
+    planPartitionIdentity.barriers.nonTerminalTraceCarrierEdges = true;
+    failure.uncutFaceComponentPartitionIdentity = planPartitionIdentity;
+    failure.uncutFaceComponentFaceSetDigest =
+        detail::source_face_set_digest(row.faces);
+
+    const auto census = std::find_if(
+        cutGraph.certificate().uncutComponentCensuses.begin(),
+        cutGraph.certificate().uncutComponentCensuses.end(),
+        [component](const auto &candidate) {
+          return candidate.component == component;
+        });
+    if (census != cutGraph.certificate().uncutComponentCensuses.end()) {
+      failure.uncutComponentCensusComponent = census->component;
+      failure.uncutComponentCensusPartitionIdentity =
+          census->partitionIdentity;
+      failure.uncutComponentCensusFaceSetDigest = census->faceSetDigest;
+      failure.uncutComponentCensusMatchesFailingComponent =
+          census->faces == row.faces;
     }
-    failure.uncutFaceComponentFacesTruncated =
-        row.faces.size() > failure.uncutFaceComponentFaces.size();
-    std::size_t observationCount = 0U;
-    for (const auto &[owner, multiplicity] : row.ownerMultiplicity) {
-      (void)owner;
-      observationCount += multiplicity;
+
+    failure.uncutFaceComponentCertifiedFaceObservationCount =
+        row.ownerObservations.size();
+    failure.uncutFaceComponentCertifiedFaceObservations.reserve(
+        row.ownerObservations.size());
+    for (const auto &[sourceFace, certifiedFace] : row.ownerObservations) {
+      failure.uncutFaceComponentCertifiedFaceObservations.push_back(
+          UncutFaceComponentCertifiedFaceObservationDiagnostic{
+              sourceFace, certifiedFace});
     }
-    failure.uncutFaceComponentCertifiedFaceObservationCount = observationCount;
+    failure.uncutFaceComponentCertifiedFaceObservationsTruncated = false;
+
+    std::set<authority::SourceFaceTopologyKey> observedFaces;
+    for (const auto &[sourceFace, certifiedFace] : row.ownerObservations) {
+      (void)certifiedFace;
+      observedFaces.insert(sourceFace);
+    }
     failure.uncutFaceComponentCertifiedFaceUnavailableCount =
-        row.faces.size() > observationCount ? row.faces.size() - observationCount
-                                            : 0U;
+        row.faces.size() > observedFaces.size()
+            ? row.faces.size() - observedFaces.size()
+            : 0U;
     failure.uncutFaceComponentCertifiedFaceDistinctCount =
         row.ownerMultiplicity.size();
     for (const auto &[owner, multiplicity] : row.ownerMultiplicity) {

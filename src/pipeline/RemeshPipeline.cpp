@@ -566,6 +566,22 @@ project_global_topology_plan_failure_locus(
     return std::array<std::size_t, 3>{vertices[0].index(), vertices[1].index(),
                                       vertices[2].index()};
   };
+  const auto partition_identity_locus = [](
+      const geometry::UncutComponentPartitionIdentity &identity) {
+    SurfaceCellUncutComponentPartitionIdentityDiagnostics row;
+    row.domainRule =
+        geometry::uncut_component_partition_domain_rule_name(
+            identity.domainRule);
+    row.cutGraphCutEdges = identity.barriers.cutGraphCutEdges;
+    row.networkMandatoryEdges = identity.barriers.networkMandatoryEdges;
+    row.embeddedMandatoryArcSourceEdges =
+        identity.barriers.embeddedMandatoryArcSourceEdges;
+    row.embeddedCutArcSourceEdges =
+        identity.barriers.embeddedCutArcSourceEdges;
+    row.nonTerminalTraceCarrierEdges =
+        identity.barriers.nonTerminalTraceCarrierEdges;
+    return row;
+  };
   const auto fragment_incidence_locus = [&](
       const geometry::TraceCutFaceFragmentIncidenceDiagnostic &incidence) {
     SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics row;
@@ -673,6 +689,21 @@ project_global_topology_plan_failure_locus(
   }
   locus.uncutFaceComponentFacesTruncated =
       error.uncutFaceComponentFacesTruncated;
+  if (error.uncutFaceComponentPartitionIdentity.has_value()) {
+    locus.uncutFaceComponentPartitionIdentity =
+        partition_identity_locus(*error.uncutFaceComponentPartitionIdentity);
+  }
+  locus.uncutFaceComponentFaceSetDigest =
+      error.uncutFaceComponentFaceSetDigest;
+  locus.uncutComponentCensusComponent = error.uncutComponentCensusComponent;
+  if (error.uncutComponentCensusPartitionIdentity.has_value()) {
+    locus.uncutComponentCensusPartitionIdentity =
+        partition_identity_locus(*error.uncutComponentCensusPartitionIdentity);
+  }
+  locus.uncutComponentCensusFaceSetDigest =
+      error.uncutComponentCensusFaceSetDigest;
+  locus.uncutComponentCensusMatchesFailingComponent =
+      error.uncutComponentCensusMatchesFailingComponent;
   locus.uncutFaceComponentBoundaryEdgeCount =
       error.uncutFaceComponentBoundaryEdgeCount;
   locus.uncutFaceComponentBoundaryEdges.reserve(
@@ -732,6 +763,17 @@ project_global_topology_plan_failure_locus(
       error.uncutFaceCertificatePairsTruncated;
   locus.uncutFaceComponentCertifiedFaceObservationCount =
       error.uncutFaceComponentCertifiedFaceObservationCount;
+  locus.uncutFaceComponentCertifiedFaceObservations.reserve(
+      error.uncutFaceComponentCertifiedFaceObservations.size());
+  for (const auto &observation :
+       error.uncutFaceComponentCertifiedFaceObservations) {
+    locus.uncutFaceComponentCertifiedFaceObservations.push_back(
+        SurfaceCellUncutFaceComponentCertifiedFaceObservationDiagnostics{
+            topology_face_locus(observation.sourceFace),
+            observation.certifiedFace});
+  }
+  locus.uncutFaceComponentCertifiedFaceObservationsTruncated =
+      error.uncutFaceComponentCertifiedFaceObservationsTruncated;
   locus.uncutFaceComponentCertifiedFaceUnavailableCount =
       error.uncutFaceComponentCertifiedFaceUnavailableCount;
   locus.uncutFaceComponentCertifiedFaceDistinctCount =

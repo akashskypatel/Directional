@@ -397,6 +397,15 @@ struct UncutFaceComponentCertifiedFaceMultiplicityDiagnostic {
       default;
 };
 
+struct UncutFaceComponentCertifiedFaceObservationDiagnostic {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::size_t certifiedFace = 0U;
+
+  auto operator<=>(
+      const UncutFaceComponentCertifiedFaceObservationDiagnostic &) const =
+      default;
+};
+
 struct UncutFaceComponentBoundaryOrbitDiagnostic {
   std::size_t orbit = 0U;
   std::size_t boundaryEdgeCount = 0U;
@@ -480,6 +489,14 @@ struct GlobalTopologyPlanError {
   std::size_t uncutFaceComponentFaceCount = 0U;
   std::vector<authority::SourceFaceTopologyKey> uncutFaceComponentFaces;
   bool uncutFaceComponentFacesTruncated = false;
+  std::optional<UncutComponentPartitionIdentity>
+      uncutFaceComponentPartitionIdentity;
+  std::optional<std::uint64_t> uncutFaceComponentFaceSetDigest;
+  std::optional<std::size_t> uncutComponentCensusComponent;
+  std::optional<UncutComponentPartitionIdentity>
+      uncutComponentCensusPartitionIdentity;
+  std::optional<std::uint64_t> uncutComponentCensusFaceSetDigest;
+  std::optional<bool> uncutComponentCensusMatchesFailingComponent;
   std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
   std::vector<UncutFaceComponentBoundaryEdgeDiagnostic>
       uncutFaceComponentBoundaryEdges;
@@ -493,6 +510,9 @@ struct GlobalTopologyPlanError {
   std::vector<UncutFaceCertificatePairDiagnostic> uncutFaceCertificatePairs;
   bool uncutFaceCertificatePairsTruncated = false;
   std::optional<std::size_t> uncutFaceComponentCertifiedFaceObservationCount;
+  std::vector<UncutFaceComponentCertifiedFaceObservationDiagnostic>
+      uncutFaceComponentCertifiedFaceObservations;
+  bool uncutFaceComponentCertifiedFaceObservationsTruncated = false;
   std::optional<std::size_t> uncutFaceComponentCertifiedFaceUnavailableCount;
   std::optional<std::size_t> uncutFaceComponentCertifiedFaceDistinctCount;
   std::vector<UncutFaceComponentCertifiedFaceMultiplicityDiagnostic>
