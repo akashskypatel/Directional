@@ -1,0 +1,34 @@
+name: Agent Exact Source Snapshot 20260905 0956
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/source-snapshot/exact-20260905-0956.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-exact-source-snapshot-20260905-0956
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-source-snapshot-exact-20260905-0956.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  snapshot:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: 76289afffd3ce1d1a29faabdb4450c94830e9cb6
+      artifact_prefix: agent-source-snapshot-exact-20260905-0956
+    secrets: inherit
