@@ -1,6 +1,0 @@
-# M3-CP4c-3-TB28 temporary state
-.agents/connector-triggers/source-snapshot/tb28-20260905-1320.txt
-.agents/connector-triggers/tb28/tb28-r1-20260905-1335.txt
-.agents/connector-triggers/tb28/tb28-r2-20260905-1342.txt
-.agents/connector-triggers/tb28/tb28-closeout-apply-20260905.txt
-.agents/connector-triggers/tb28/tb28-closeout-apply-r2-20260905.txt

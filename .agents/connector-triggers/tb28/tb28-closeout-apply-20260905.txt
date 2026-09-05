@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB28
-kind=closeout-docs-apply
-base_sha=b15313921cdd9f4140563efa19a8286b03f6fc76
-patch_sha256=32e26cd92f3186a46ef131d5137cefdba7f1d6e65393c1e7425f5625a817a484
