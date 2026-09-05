@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB32 closeout correction apply
-base_sha=8716d4d46d10687a0c6c78ab256c2b8a36113bed
-patch_sha256=88d43495f7ca8d3bb223305b9d5b2ad0a51a3f12f3df9cba9aafd83f863e4b87
-runtimeExecution=false

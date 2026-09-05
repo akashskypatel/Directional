@@ -1,2 +1,0 @@
-# M3-CP4c-3-CB32 closeout-correction temporary state
-.agents/connector-triggers/m3-cp4c3-cb32-closeout-fix-apply-20260905.txt
