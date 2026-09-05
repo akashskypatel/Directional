@@ -1,0 +1,4 @@
+# M3-CP4c-3-TB28-R3-EXEC mandatory turn cleanup
+.agents/connector-triggers/source-snapshot/m3-cp4c-3-tb28-r3-exec.txt
+.agents/connector-triggers/m3-cp4c-3-tb28-r3-exec.txt
+.agents/connector-triggers/m3-cp4c-3-tb28-r3-exec-closeout-drive-apply.txt
