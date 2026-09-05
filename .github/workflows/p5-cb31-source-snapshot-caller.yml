@@ -6,6 +6,7 @@ on:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
       - .agents/connector-triggers/p5-cb31-source-snapshot-20260904.txt
+      - .github/workflows/p5-cb31-source-snapshot-caller.yml
 
 permissions:
   contents: read
