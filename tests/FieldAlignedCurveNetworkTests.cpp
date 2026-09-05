@@ -14676,6 +14676,94 @@ TEST(SurfaceCutGraph,
   }
 }
 
+TEST(SurfaceCutGraph,
+     SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.sourceAuthority.has_value()) << mechanical.loadError;
+  ASSERT_TRUE(mechanical.network.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+
+  const auto embeddedBuild = embedded::build_embedded_graph_topology(
+      mechanical.mesh.F, static_cast<std::size_t>(mechanical.mesh.V.rows()),
+      *mechanical.sourceAuthority, *mechanical.network,
+      mechanical.cutGraph->cut_edges());
+  const auto *embeddedTopology =
+      std::get_if<embedded::EmbeddedGraphTopology>(&embeddedBuild);
+  ASSERT_NE(nullptr, embeddedTopology);
+
+  std::set<SourceFaceTopologyKey> separatingArcFaces;
+  std::set<SourceFaceTopologyKey> previouslyTraceCutFaces;
+  std::set<SourceFaceTopologyKey> equalOrbitTerminalSlitFaces;
+  for (const auto &arc : embeddedTopology->arcs) {
+    if (arc.kind != directional::geometry::GlobalTopologyArcKind::Trace ||
+        !arc.trace.has_value()) {
+      continue;
+    }
+    const auto *trace = embedded::find_trace(*mechanical.network, *arc.trace);
+    ASSERT_NE(nullptr, trace);
+    ASSERT_LT(arc.firstSegment, arc.onePastLastSegment);
+    ASSERT_LE(arc.onePastLastSegment, trace->segments.size());
+
+    const std::size_t forwardDart = embedded::dart_index(
+        directional::geometry::GlobalTopologyOrientedArc{
+            arc.id, directional::authority::Orientation::Forward});
+    const std::size_t reverseDart = embedded::dart_index(
+        directional::geometry::GlobalTopologyOrientedArc{
+            arc.id, directional::authority::Orientation::Reverse});
+    ASSERT_LT(forwardDart, embeddedTopology->faceWalk.orbitByDart.size());
+    ASSERT_LT(reverseDart, embeddedTopology->faceWalk.orbitByDart.size());
+    const bool separatesCertifiedFaces =
+        embeddedTopology->faceWalk.orbitByDart[forwardDart] !=
+        embeddedTopology->faceWalk.orbitByDart[reverseDart];
+    if (separatesCertifiedFaces) {
+      separatingArcFaces.insert(arc.sourceFaces.begin(),
+                                arc.sourceFaces.end());
+    }
+
+    for (std::size_t segmentIndex = arc.firstSegment;
+         segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
+      const auto &segment = trace->segments[segmentIndex];
+      const bool terminalSlit = !trace->terminalBarrier.has_value() &&
+                                segmentIndex + 1U == trace->segments.size();
+      if (!terminalSlit) previouslyTraceCutFaces.insert(segment.sourceFace);
+      if (terminalSlit && !separatesCertifiedFaces) {
+        equalOrbitTerminalSlitFaces.insert(segment.sourceFace);
+      }
+    }
+  }
+
+  std::set<SourceFaceTopologyKey> unchangedTerminalSlitFaces;
+  for (const auto &face : equalOrbitTerminalSlitFaces) {
+    if (separatingArcFaces.count(face) == 0U &&
+        previouslyTraceCutFaces.count(face) == 0U) {
+      unchangedTerminalSlitFaces.insert(face);
+    }
+  }
+  ASSERT_FALSE(separatingArcFaces.empty());
+  ASSERT_FALSE(unchangedTerminalSlitFaces.empty());
+
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.uncutComponentCensusPublished);
+  std::set<SourceFaceTopologyKey> uncutCensusFaces;
+  std::size_t interiorArcRows = 0U;
+  for (const auto &component : certificate.uncutComponentCensuses) {
+    uncutCensusFaces.insert(component.faces.begin(), component.faces.end());
+    for (const auto &arc : component.interiorArcIncidences) {
+      ++interiorArcRows;
+      EXPECT_EQ(arc.forwardOrbit, arc.reverseOrbit);
+    }
+  }
+  ASSERT_GT(interiorArcRows, 0U);
+  for (const auto &face : separatingArcFaces) {
+    EXPECT_EQ(0U, uncutCensusFaces.count(face));
+  }
+  for (const auto &face : unchangedTerminalSlitFaces) {
+    EXPECT_EQ(1U, uncutCensusFaces.count(face));
+  }
+}
+
 TEST(TestFixturePaths, MissingPackageFailsClosedInsteadOfReturningMissingPath) {
   const std::filesystem::path missing =
       std::filesystem::temp_directory_path() /

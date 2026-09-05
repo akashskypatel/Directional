@@ -535,13 +535,18 @@ OwnershipBuildResult build_source_face_ownership(
         embedded.faceWalk.orbitByDart[forwardDart];
     const std::size_t reverseOrbit =
         embedded.faceWalk.orbitByDart[reverseDart];
+    const bool separatesCertifiedFaces = forwardOrbit != reverseOrbit;
 
     for (std::size_t segmentIndex = arc.firstSegment;
          segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
       const auto &segment = trace->segments[segmentIndex];
       const bool terminalSlit = !trace->terminalBarrier.has_value() &&
                                 segmentIndex + 1U == trace->segments.size();
-      if (terminalSlit) {
+      // The existing path below already inserts every non-terminal segment's
+      // crossed face and carrier edges.  Reuse it for a terminal segment only
+      // when this arc's two darts prove that the arc separates certified
+      // faces; equal-orbit arcs retain the terminal-slit exclusion unchanged.
+      if (terminalSlit && !separatesCertifiedFaces) {
         if (traceCutFaces.count(segment.sourceFace) == 0U) {
           arcExclusionReasons[segment.sourceFace] =
               SurfaceCutGraphTraceCutExclusionReason::TerminalSlit;

@@ -116,7 +116,31 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB34` — EXACT NEXT / Code + Build, the frozen product correction
+## Mandatory continuation — `M3-CP4c-3-CB34` — EXACT NEXT / finish the interrupted Code + Build turn
+
+### Interruption recovery point — WIP, not build or runtime authority
+
+The user requested an immediate recoverability checkpoint before CB34 could finish. The working branch was
+refetched at `b1276f36004b1e6676cbdf46763626b7ba3ce4a7`; source-snapshot run `33999215292` succeeded and produced
+artifact `9978978627`, whose metadata names that exact source. The WIP commit containing this handoff carries:
+
+- the single frozen product edit in `build_source_face_ownership`: terminal trace segments now follow the existing
+  trace-cut/carrier-barrier path when the arc's forward and reverse dart orbits differ, while equal-orbit terminal
+  slits retain the old exclusion;
+- one appended test identity,
+  `SurfaceCutGraph.SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus`, which checks only census effects
+  and equal-orbit preservation and predicts no owner value;
+- no selector-408 file, manifest regeneration, CN7 retained transcription, compile caller, compile artifact, or
+  CB34 closeout report yet.
+
+No Directional runtime, test, benchmark, compile, or package operation has executed in this interrupted turn.
+The WIP is deliberately **uncompiled and semantically unaccepted**. On resume: refetch branch head; inspect this
+WIP diff; create selector 408 as selector 407's exact byte prefix plus the identity above; update the selector
+manifest without discarding its retained hand-authored authority notes; complete CN7 from immutable TB28-R3 log
+artifact `9978114502`; run static checks; then compile the exact pushed SHA only through
+`.github/workflows/agent-compile-reusable.yml` with GMP/GMPXX and `runtimeExecution=false`. Do not execute a
+Directional binary. The source-snapshot marker
+`.agents/connector-triggers/source-snapshot/m3-cp4c3-cb34.txt` remains temporary cleanup debt.
 
 `M3-CP4c-3-TB28-R3-REV` has adjudicated the control run. **It passed**, and `M3-CP4c-3-TB28-R3` is promoted to
 current valid semantic runtime authority.
@@ -248,4 +272,3 @@ before declaring the layer done.** A check at authoring time replaces a whole tu
 8. Confirm the handoff names exactly one next turn and the task index agrees with it.
 9. `[ChatGPT Web]` Make the final repository write one summarized PR #8 conversation comment after all branch/PR-description writes. No downloadable-artifact/tool emission may occur after that final comment.
 10. **On every REVIEW turn, perform document consolidation before closing** — fold superseded per-turn reports/review records/build reports/consumed plans into the family's consolidated record, index each folded filename with the verdict it carried, and repair live citations. Verify first that every durable fact already has a retained home. See `CLEAN_UP_POLICY.md`.
-
