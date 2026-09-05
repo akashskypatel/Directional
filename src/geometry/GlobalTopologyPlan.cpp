@@ -1220,7 +1220,7 @@ RegionBuildResult build_regions(
           }
         }
         if (meetsFailingComponent) {
-          failingArcRows[enriched.arc] = std::move(enriched);
+          failingArcRows.insert_or_assign(enriched.arc, std::move(enriched));
         }
       }
     }
