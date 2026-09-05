@@ -1,0 +1,5 @@
+purpose=P5-CB31 exact source snapshot retrigger v2
+source_ref=d70312ee97ea0943f34175d128b04e3e70057e22
+caller=.github/workflows/p5-cb31-source-snapshot-retrigger-v2.yml
+fix=caller contents permission raised to write to match reusable workflow
+requested_by=user
