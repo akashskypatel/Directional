@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-CB33 apply preserved orchestration harness and TB28-R3 plan
+base_sha=b580e2038707f1685876019b0828f0535c17be33
+patch_sha256=136ed1d51febd36ecbcd37eb935a7721ee8ce19f47fd96b18ab6bdc273ff8d04
+retry=1
