@@ -1,0 +1,2 @@
+# M3-CP4c-3-TB26 turn cleanup
+.agents/connector-triggers/source-snapshot/2026-09-04-tb26-source-snapshot.txt
