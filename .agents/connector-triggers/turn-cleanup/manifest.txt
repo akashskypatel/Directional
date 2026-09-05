@@ -1,0 +1,3 @@
+# M3-CP4c-3-CB32 temporary state
+.agents/connector-triggers/m3-cp4c3-cb32-compile-r1-20260905.txt
+.agents/connector-triggers/m3-cp4c3-cb32-closeout-apply-20260905.txt
