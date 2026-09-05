@@ -50,7 +50,7 @@ regression; the last established result is TB27-R1's 365/365.
   the frontier is component 0 with **191** faces and **4** interior arcs. The `subset=true` row compares neither of
   the sets CL7 asked about and cannot be credited.
 
-## 3. Exact next turns — CB33 → TB28-R3 → CB34
+## 3. Exact next turns — TB28-R3-EXEC → TB28-R3-REV → CB34
 
 **CL8 is discharged: the product correction is FROZEN and may not be re-opened.**
 
@@ -66,17 +66,15 @@ argued.**
 Only the *application order* is sequenced, because the one instrument that could confirm the correction currently
 reports green on a product that provably fails:
 
-1. **`M3-CP4c-3-CB33` — orchestration correction only** (CM7). Control-plane where possible, **reusing immutable
-   package `9975737868` unchanged**. Per-identity binary routing from the static identity map; **a row that selects
-   zero tests is RED, never PASS**; publish the full 407-row ledger with a `selected` column, the identity map, RED
-   ordinals, the accepted-prefix count, three censuses and resource evidence; preserve R1/R2 as invalid-attempt
-   provenance.
-2. **`M3-CP4c-3-TB28-R3`** (CM8) — re-execute the same package as a control. **Credible only if 366/367/398 are
-   RED.** If they are reported green again, replace the harness wholesale with
+1. **`M3-CP4c-3-CB33` — COMPLETE / preflight GREEN** (CM7). Static per-identity routing, per-row selection proof,
+   full ledger/resource/census contract and invalid-attempt provenance are installed. No Directional runtime or
+   product correction occurred.
+2. **`M3-CP4c-3-TB28-R3-EXEC`** (CM8) — re-execute the same package as a control and preserve raw evidence only.
+   **Credible only if 366/367/398 are RED.** If they are reported green again, replace the harness wholesale with
    `tools/m3_cp4c3_tb23_r1_harness.sh` rather than correcting it a third time.
-3. **`M3-CP4c-3-CB34`** (CM9) — implement the frozen correction and nothing else. The review between step 2 and
-   step 3 confirms harness validity and records the census; it **may not re-derive, re-open, widen or narrow the
-   correction**.
+3. **`M3-CP4c-3-TB28-R3-REV`** — review the existing R3 evidence only; confirm harness validity and the 191-face
+   census without new runtime work and without re-opening the frozen correction.
+4. **`M3-CP4c-3-CB34`** (CM9) — if the control is credible, implement the frozen correction and nothing else.
 
 **TB28-R2's `407 PASS / 0 RED` may not be quoted as a gate result, an accepted-prefix result, or evidence that any
 candidate is discharged.**
@@ -87,8 +85,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB28-REV-CAND-01` | **NEW / ACTIVE / GATING / ORCHESTRATION** — TB28-R2 reported `407 PASS / 0 RED` on a byte-for-byte unchanged ownership path and published none of the required ledger artifacts. Probable mechanism: single-binary routing with `exit 0` as PASS and no per-row selection count. Owner: CM7. Falsified when TB28-R3 reproduces the known REDs with a `selected` column. |
-| `M3-CP4c3-TB28-REV-CAND-02` | **NEW / ACTIVE / EVIDENCE INTEGRITY** — the CL6 block was published from the relief-topology/quad-patch path over a 27-face candidate set with `censusFailureCount=0`, not from the 191-face ownership frontier. Owner: CM7, then the TB28-R3 review. |
+| `M3-CP4c3-TB28-REV-CAND-01` | **ACTIVE / GATING / ORCHESTRATION — CB33 correction installed and preflight GREEN.** TB28-R2 false-green mechanism is now guarded by static per-identity routing plus per-row `selected`; semantic falsification still requires TB28-R3 to reproduce known REDs 366/367/398. Owner: TB28-R3-EXEC/REV. |
+| `M3-CP4c3-TB28-REV-CAND-02` | **ACTIVE / EVIDENCE INTEGRITY.** The CL6 block must be re-adjudicated from the 191-face ownership frontier in TB28-R3; CB33 changed only harness evidence plumbing. Owner: TB28-R3-REV. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **ACTIVE / GATING / PRODUCT — THE CORRECTION IS FROZEN** — the certifier's 214-face component contains two separating arcs, so that partition merges faces lying in different certified faces. Corrected by the frozen separating-arc barrier rule at **CM9 / CB34**. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
 | `M3-CP4c3-TB27-REV-CAND-02` | **ACTIVE / ARCHITECTURAL / NON-GATING** — the plan excludes from its component domain exactly the faces carrying a direct certified read (`GlobalTopologyPlan.cpp:702`, `:750`), then fails to seed that component. **Not** confirmed by TB28-R2, whose subset row compares a 27-face relief-topology candidate set. |
@@ -171,10 +169,11 @@ After the durable start-of-turn checklist, load only the minimum current authori
 3. `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` — **CM0–CM9**, the rejection, the frozen correction and the CB33/TB28-R3/CB34 sequence.
 4. `Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — **the current valid semantic runtime authority**.
 5. `Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — package under test.
-6. `Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md` — the frozen contract TB28-R3 re-executes.
+6. `Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` — the exact corrected R3 EXEC/REV contract.
+7. `Architecture_M3_CP4c3_CB33_Code_Build_Report.md` — CB33 harness/preflight evidence.
 7. `Architecture_M3_CP4c3_TB28_R2_Artifact_Only_Test_Benchmark_Report.md` — **invalid-attempt provenance only**.
 8. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
 9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-Exact next is **`M3-CP4c-3-CB33`**, orchestration correction only, reusing package `9975737868` unchanged. The
+CB33 is complete with static preflight GREEN. Exact next is **`M3-CP4c-3-TB28-R3-EXEC`**, reusing package `9975737868` unchanged. The
 product correction is already frozen and must not be re-opened.

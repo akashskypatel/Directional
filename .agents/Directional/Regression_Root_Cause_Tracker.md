@@ -48,8 +48,8 @@
 
 - **CM4 — sequencing, and why this is not a seventh escape hatch.** The correction is written out, not deferred to
   another review. Only its *application order* is sequenced, because **the sole instrument that could confirm it
-  currently reports green on a product that provably fails**. Order: **CB33** orchestration correction only,
-  control-plane, **reusing package `9975737868` unchanged**; **TB28-R3** re-executes the same package as a control
+  currently reports green on a product that provably fails**. **CB33 is complete**: corrected static routing/selection
+  proof is installed and preflight GREEN without Directional runtime. **TB28-R3** now re-executes package `9975737868` as a control
   — **credible only if 366/367/398 are RED**; **CB34** applies the frozen correction. The review between CB33's TB
   and CB34 confirms harness validity and records the census; it **may not re-derive, re-open, widen or narrow the
   correction**. CL8 banned another *diagnostic* turn on ownership; a harness repair is not one, and it authorizes no
@@ -67,15 +67,15 @@
 
 - **Candidates.** **New:** `M3-CP4c3-TB28-REV-CAND-01` (**GATING / ORCHESTRATION** — a green gate on a byte-for-byte
   unchanged ownership path, with none of the required ledger artifacts; falsified when TB28-R3 reproduces the known
-  REDs with a per-row `selected` column) and `M3-CP4c3-TB28-REV-CAND-02` (**EVIDENCE INTEGRITY** — the CL6 block was
-  published from the relief-topology path with `censusFailureCount=0`). **Nothing is discharged by TB28-R2, because
+  REDs with a per-row `selected` column; CB33 has installed/preflighted that guard, runtime falsification pending) and
+  `M3-CP4c3-TB28-REV-CAND-02` (**EVIDENCE INTEGRITY** — the CL6 block was published from the relief-topology path
+  with `censusFailureCount=0`; 191-face re-adjudication pending R3-REV). **Nothing is discharged by TB28-R2, because
   an invalid gate discharges nothing** — `M3-CP4c3-TB25-REV-CAND-02`, `-TB26-REV-CAND-04`, `-DEFN-R3-CAND-01`,
   `-TB27-REV-CAND-01` and `-TB27-REV-CAND-02` all keep their prior status.
 
-- **Successors frozen:** **`M3-CP4c-3-CB33`** under **CM7** (per-identity binary routing; a row selecting zero tests
-  is **RED, never PASS**; publish the full ledger, identity map, RED ordinals, accepted-prefix count, three censuses
-  and resource evidence; preserve R1/R2 as invalid-attempt provenance), then **`M3-CP4c-3-TB28-R3`** under **CM8**,
-  then **`M3-CP4c-3-CB34`** under **CM9**, which implements the §4 correction and nothing else. **TB28-R2's
+- **Successors frozen:** **CB33 is COMPLETE / preflight GREEN** under CM7. Exact next is **`M3-CP4c-3-TB28-R3-EXEC`**,
+  followed by evidence-only **`M3-CP4c-3-TB28-R3-REV`** under CM8; then **`M3-CP4c-3-CB34`** under CM9, which
+  implements the §4 correction and nothing else. **TB28-R2's
   `407 PASS / 0 RED` may not be quoted as a gate result, an accepted-prefix result, or evidence that any candidate
   is discharged.**
 
@@ -5091,13 +5091,14 @@ two darts lie in different face-walk orbits contributes its source edges to `bar
 crosses is treated as trace-cut. Derived from certified data, non-circular, and it does not over-cut because arcs
 with equal orbits are untouched.
 
-**Exact next: `M3-CP4c-3-CB33` - orchestration correction only**, control-plane where possible, **reusing immutable
-package `9975737868` unchanged**, under **CM7**: per-identity binary routing from the static identity map; a row
-that selects zero tests is **RED, never PASS**; publish the full 407-row ledger with a `selected` column, the
-identity map, RED ordinals, the accepted-prefix count, three censuses and resource evidence; preserve TB28-R1 and
-TB28-R2 as invalid-attempt provenance. Then **`M3-CP4c-3-TB28-R3`** under **CM8** re-executes the same package as a
-control - **credible only if 366/367/398 are RED** - and then **`M3-CP4c-3-CB34`** under **CM9** implements the
-frozen correction and nothing else.
+**CB33 is COMPLETE.** Harness+plan commit `75dbc4dbc9caabbbb39471636c0c807b09b2543d`; static preflight
+`33995166968 / 101384352855` verified 407/407 static owners, six executable hashes/modes, selector authority and
+immutable package/source/execution-view censuses with `runtime_started=false`. No semantic authority changed.
+
+**Exact next: `M3-CP4c-3-TB28-R3-EXEC`**, immutable package `9975737868` unchanged, followed by evidence-only
+`M3-CP4c-3-TB28-R3-REV`. The control is credible only if **366/367/398 are RED** with `selected==1` per row and
+postflight immutability green. If credible, CB34 implements only the frozen correction; if not, replace the harness
+wholesale with the proven TB23-R1 architecture.
 
 **TB28-R2's `407 PASS / 0 RED` may not be quoted as a gate result, an accepted-prefix result, or evidence that any
 candidate is discharged.** If TB28-R3 again reports 366/367/398 green with the product unchanged, replace the

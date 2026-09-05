@@ -1,3 +1,23 @@
+## 2026-09-05 — `M3-CP4c-3-CB33`: TB28-R3 harness corrected; static preflight GREEN; no product/runtime/compile change
+
+Code + Build boundary, orchestration-only. CB33 adds a static selector-to-binary identity map, per-row selection proof
+(`selected`, `GTEST_FAIL_IF_NO_TEST_SELECTED=1`), complete 407-row ledger/resource/census output, and immutable
+package/source/execution-view verification in `tools/m3_cp4c3_tb28_r3_harness.sh`. The accompanying R3 plan freezes
+the EXEC/REV control contract. Product, test, fixture, build, benchmark and selector semantics are unchanged; the
+frozen separating-arc barrier correction is **not** implemented. No reusable workflow permissions changed.
+
+Work-preservation patch `136ed1d51febd36ecbcd37eb935a7721ee8ce19f47fd96b18ab6bdc273ff8d04` was applied
+as `75dbc4dbc9caabbbb39471636c0c807b09b2543d`. Static remote preflight `33995166968 / 101384352855` is GREEN:
+artifact `9975737868` verified unchanged; selector prefix chain and 407/407 static owners verified; six runtime
+executables recorded with hash/mode/size; three byte+mode censuses are unchanged; `runtime_started=false` and all
+configure/compile/relink/discovery/repair/mutation/benchmark flags are false. Result/log artifacts are
+`9977824674 / 9977824834`.
+
+Semantic authority remains TB27-R1 at **399 PASS / 7 RED**, accepted **365/365**. TB28-R1/R2 remain
+orchestration-invalid. Stable accounting stays **44 / 14 / 30**, debt **5**, semantic packages **93**. Exact next
+is `M3-CP4c-3-TB28-R3-EXEC` on immutable package `9975737868`, followed by evidence-only R3-REV; R3 is credible
+only if 366/367/398 are RED.
+
 ## 2026-09-05 — `M3-CP4c-3-TB28-INDEPENDENT-REVIEW`: TB28-R2 rejected as orchestration-invalid; CL8 discharged with the correction frozen
 
 Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/
