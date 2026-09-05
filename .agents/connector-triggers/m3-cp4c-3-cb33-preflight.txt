@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-CB33 static harness preflight only
+immutable_artifact=9975737868
+runtimeExecution=false
+retry=1
