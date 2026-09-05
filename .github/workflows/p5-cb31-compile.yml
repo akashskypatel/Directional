@@ -1,0 +1,40 @@
+name: P5 CB31 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/p5-cb31-compile-20260904.txt
+
+permissions:
+  contents: read
+  actions: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/p5-cb31-compile.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb31-compile
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  compile:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc
+      artifact_prefix: m3-cp4c3-cb31
+    secrets: inherit
