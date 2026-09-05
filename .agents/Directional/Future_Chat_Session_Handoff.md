@@ -116,38 +116,39 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB28-R3-EXEC` — EXACT NEXT / artifact-only control
+## Mandatory next turn — `M3-CP4c-3-TB28-R3-REV` — EXACT NEXT / evidence-only review
 
-`M3-CP4c-3-CB33` is **COMPLETE** as an orchestration-only correction. The immutable CB32 package was not rebuilt,
-no product/test/fixture/build/selector semantics changed, and no Directional runtime executed in CB33.
+`M3-CP4c-3-TB28-R3-EXEC` is **COMPLETE / mechanically valid**. It consumed immutable CB32 package `9975737868`
+without rebuilding or mutating product/test/fixture/build/selector bytes. EXEC intentionally did not perform the
+semantic review assigned to R3-REV.
 
 ### Current authority
 
-- **Valid semantic runtime authority remains `M3-CP4c-3-TB27-R1`**: source
-  `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, package `9961564041`, selector 406, **399 PASS / 7 RED**, accepted
-  **365/365**, RED `[366,367,368,369,370,374,398]`, ledger
-  `8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`.
-- TB28-R1 `33990315861` and TB28-R2 `33990951740` remain **orchestration-invalid** and carry no semantic credit.
-- Package under control remains CB32 artifact `9975737868`, source `098ac7d93ea203222dd0ac50cdb68667744f0fd4`,
-  package 93, selector407 SHA-256 `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`.
-- Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**. The accepted-prefix result for TB28
-  remains unestablished until a credible R3 run.
+- **Accepted semantic runtime authority remains `M3-CP4c-3-TB27-R1` pending R3-REV**: source
+  `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, package `9961564041`, selector406, **399 PASS / 7 RED**, accepted
+  **365/365**, RED `[366,367,368,369,370,374,398]`.
+- TB28-R1 `33990315861` and TB28-R2 `33990951740` remain orchestration-invalid with no semantic credit.
+- R3-EXEC run/job `33995961030 / 101386467115` completed SUCCESS at the orchestration level on CB32 artifact
+  `9975737868` / semantic source `098ac7d93ea203222dd0ac50cdb68667744f0fd4`.
+- Result/log artifacts: `9978114313 / 9978114502`, SHA-256
+  `98163e9e512223136df8feaa6192a29bc9ede8a17f9784ba4fd17946754f9b54` /
+  `bad7431f68be53da770069ad48cabb0033ffeb02a2dde94c6a06ba8b47e9a994`.
+- Ledger SHA-256: `fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`; selector407 SHA-256
+  `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`.
+- Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic package count **93** pending review.
 
-### CB33 orchestration authority
+### R3-EXEC mechanical evidence
 
-Harness+plan source was committed as `75dbc4dbc9caabbbb39471636c0c807b09b2543d`. The remote `--preflight-only`
-run/job **`33995166968 / 101384352855`** is GREEN with result/log artifacts `9977824674 / 9977824834`. It proved:
+The immutable execution boundary records `runtime_started=true`, `runtime_completed=true`,
+`orchestration_failure=false`, `selection_integrity=true`, and `timeout_count=0`. All **407** ledger rows have
+`selected=1`; 407 raw logs and 407 resource records are present. Package, packaged-source, and execution-view
+byte+mode censuses are identical before/after. No configure, compile, relink, rebuild, repackage, generated
+discovery, benchmark execution, package repair, mode repair, or semantic-byte mutation occurred.
 
-- 407/407 static identity-to-binary owners, identity-map SHA
-  `9e726c011f884da55877e6bbca420be530f05325263eddcd86993c1f0a54d3fd`;
-- six packaged runtime executables with SHA-256/mode/size, all mode 755;
-- frozen selector 365/397/401/403/405/406/407 hashes and prefix chain;
-- immutable package/source/execution-view byte+mode censuses;
-- `runtime_started=false`, no configure/compile/relink/discovery/repair/mutation/benchmark.
-
-The execution harness now records `selected` per row, sets `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, routes each identity
-through its static owner binary, and emits the complete 407-row ledger/resource/census contract. **No reusable
-workflow permissions were changed.**
+For review intake only, the raw harness labels are **400 PASS / 7 RED** at
+`[366,367,368,369,370,374,398]`; raw prefix rows 1–365 are all labelled PASS, and control rows 366/367/398 are
+mechanically RED. **These are not promoted to semantic authority by EXEC.** R3-REV must apply the credibility gate,
+classify regressions, and adjudicate the 191-face ownership publication.
 
 ### Product correction remains FROZEN
 
@@ -155,35 +156,33 @@ workflow permissions were changed.**
 > `orbitByDart[forwardDart] != orbitByDart[reverseDart]`, the arc's source edges enter `barriers` and every source
 > face the arc crosses is treated as trace-cut.
 
-CB33 did not implement it. No successor review may re-derive, widen, or narrow it.
+R3-EXEC did not implement it. No successor review may re-derive, widen, or narrow it.
 
-### TB28-R3 execution / review split
+### Exact review boundary
 
-**Exact next is `M3-CP4c-3-TB28-R3-EXEC`.** Consume immutable artifact `9975737868` only and execute
-`.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh --execute` under
-`Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md`. EXEC performs runtime and preserves raw
-evidence only; no product/test/fixture/build/selector edits and no compile/relink are allowed.
+**`M3-CP4c-3-TB28-R3-REV`** consumes the existing R3 artifacts only. It must perform no new runtime work and must:
 
-R3 is credible only if ordinals **366, 367 and 398 are RED**, every row selects exactly one test, all 407 rows are
-present, and pre/post censuses are immutable. It must publish the restored source-face census for the **191-face
-failing component**, not the incidental 27-face relief object. No semantic retry is allowed.
+1. verify artifact/source/selector/executable/identity-map/census integrity;
+2. prove each ledger row selected exactly one test;
+3. apply the 366/367/398 harness-control credibility gate before considering totals;
+4. report accepted-prefix status and all RED ordinals;
+5. classify every observed regression in `Regression_Root_Cause_Tracker.md`;
+6. evaluate the required 191-face source-face-ownership publication;
+7. decide only whether the frozen CM9 sequence may proceed to CB34 or whether the harness must be replaced.
 
-Then `M3-CP4c-3-TB28-R3-REV` reviews the existing evidence only. If any of 366/367/398 is green on the unchanged
-product, do **not** proceed to CB34; replace the harness wholesale with
-`.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh`. If the control is credible, CB34 may implement only the
-frozen separating-arc barrier correction.
+No CB34 product correction is authorized until R3-REV closes.
 
 ### Context Load Plan
 
-`load_next`: canonical Test + Benchmark / TB-EXEC guidance; GitHub artifact-only workflow policy and
-`TOOL_USE_CONSERVATION_POLICY.md` per the start checklist.
+`load_next`: canonical TB-REV diagnostics/review guidance; `TOOL_USE_CONSERVATION_POLICY.md` and review/document
+consolidation policy per the start checklist.
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` — exact EXEC/REV contract.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB33_Code_Build_Report.md` — harness/preflight authority.
-3. `.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh` — execute with `--execute`, unchanged.
+0. `.agents/Directional/ORIENTATION.md` — read first; REVIEW must update it before closeout.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md` — immutable EXEC evidence index.
+2. R3 result artifact `9978114313` and log artifact `9978114502` — review existing evidence only.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` — exact REV contract.
 4. `.agents/Directional/Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` — CM7–CM9 and frozen correction.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — valid control baseline.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — accepted control baseline.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 7. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current sequence/candidates.
 

@@ -1,3 +1,23 @@
+## 2026-09-05 — `M3-CP4c-3-TB28-R3-EXEC`: artifact-only control execution mechanically valid; semantic review pending
+
+Runtime-execution half of the frozen R3 plan only. Immutable CB32 artifact `9975737868` / source
+`098ac7d93ea203222dd0ac50cdb68667744f0fd4` executed in run/job `33995961030 / 101386467115`; no configure,
+compile, relink, rebuild, repackage, discovery, benchmark execution, package/mode repair or semantic-byte mutation
+occurred. Result/log artifacts are `9978114313 / 9978114502`, SHA-256
+`98163e9e512223136df8feaa6192a29bc9ede8a17f9784ba4fd17946754f9b54` /
+`bad7431f68be53da770069ad48cabb0033ffeb02a2dde94c6a06ba8b47e9a994`.
+
+Mechanical integrity is GREEN: 407/407 ledger rows are present, every row has `selected=1`, timeout count is zero,
+407 raw logs and 407 resource records are retained, and package/source/execution-view byte+mode censuses are
+identical before/after. Ledger SHA-256 is `fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`.
+The raw harness labels are 400 PASS / 7 RED at `[366,367,368,369,370,374,398]`; controls 366/367/398 are
+mechanically RED and raw prefix rows 1–365 are all PASS. **EXEC does not semantically adjudicate or promote these
+counts.** Accepted semantic authority therefore remains TB27-R1 until R3-REV.
+
+No regression/candidate disposition changed in EXEC; `Regression_Root_Cause_Tracker.md` is intentionally reserved
+for the mandated evidence-only R3-REV. Stable accounting remains 44 / 14 / 30, debt 5, semantic packages 93 pending
+review. Exact next is **`M3-CP4c-3-TB28-R3-REV`**, with no new runtime; the separating-arc correction remains frozen.
+
 ## 2026-09-05 — `M3-CP4c-3-CB33`: TB28-R3 harness corrected; static preflight GREEN; no product/runtime/compile change
 
 Code + Build boundary, orchestration-only. CB33 adds a static selector-to-binary identity map, per-row selection proof

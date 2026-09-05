@@ -26,44 +26,40 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB28-R3-EXEC` (artifact-only control)
+## Current focus — `M3-CP4c-3-TB28-R3-REV` (evidence-only review)
 
-`M3-CP4c-3-CB33` is **COMPLETE**. The harness correction is committed at
-`75dbc4dbc9caabbbb39471636c0c807b09b2543d`; remote static preflight `33995166968 / 101384352855` is GREEN.
-No Directional runtime, compile, product/test/fixture/build/selector mutation, or product correction occurred.
+`M3-CP4c-3-TB28-R3-EXEC` is **COMPLETE / mechanically valid** on immutable CB32 artifact `9975737868`. Run/job
+`33995961030 / 101386467115` completed with no orchestration failure, timeout, selection mismatch, rebuild, repair,
+or semantic-byte mutation. Result/log artifacts are `9978114313 / 9978114502`; ledger SHA-256 is
+`fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`.
 
-- [x] per-identity static binary routing for all 407 selector rows;
-- [x] per-row selection proof (`selected`, `GTEST_FAIL_IF_NO_TEST_SELECTED=1`); zero-selected can never PASS;
-- [x] full ledger/map/raw/resource/census evidence contract encoded in the harness;
-- [x] all six packaged runtime executables record SHA-256, mode and size;
-- [x] TB28-R1/R2 preserved as invalid-attempt provenance;
-- [x] immutable package `9975737868`, selector hashes/prefixes and three censuses verified preflight-only;
-- [x] no reusable workflow permission changes.
+- [x] all 407 selector identities executed once in fresh processes;
+- [x] every ledger row selected exactly one test; 407 raw logs and 407 resource records are present;
+- [x] package/source/execution-view byte+mode censuses are unchanged and timeout count is zero;
+- [x] control rows 366/367/398 are mechanically labelled RED in the raw ledger;
+- [x] no configure/compile/relink/repackage/discovery/benchmark/package-repair/mode-repair/mutation occurred;
+- [ ] R3-REV must apply the control credibility gate and decide whether the raw ledger is semantic authority;
+- [ ] R3-REV must classify every observed regression in `Regression_Root_Cause_Tracker.md`;
+- [ ] R3-REV must assess the required **191-face failing-component** ownership publication;
+- [ ] R3-REV must decide only CB34-vs-harness-replacement under the already-frozen CM9 sequence.
 
-**Semantic authority is unchanged:** `M3-CP4c-3-TB27-R1`, selector406, **399 PASS / 7 RED**, accepted **365/365**,
-RED `366,367,368,369,370,374,398`, package `9961564041`. TB28-R1/R2 carry no semantic credit.
+The harness raw summary is **400 PASS / 7 RED** at `[366,367,368,369,370,374,398]`, with raw prefix rows 1–365
+all labelled PASS. **EXEC does not semantically adjudicate or promote those counts.** Until R3-REV completes, valid
+semantic authority remains `M3-CP4c-3-TB27-R1`, selector406, **399 PASS / 7 RED**, accepted **365/365**. TB28-R1/R2
+remain orchestration-invalid and carry no semantic credit.
 
 **The product correction remains frozen:** separating arcs (`orbitByDart[forwardDart] != orbitByDart[reverseDart]`)
-contribute their source edges to barriers and every crossed source face becomes trace-cut. CB33 did not implement it.
+contribute their source edges to barriers and every crossed source face becomes trace-cut. R3-EXEC did not implement
+it.
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **93**. CP4c-3 remains **OPEN**.
+package count **93** pending review. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB28-R3-EXEC`** from
-`Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` using immutable package `9975737868` and
-`.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh --execute`. No rebuild/relink/mutation is allowed.
-
-- [ ] execute all 407 identities once in selector order, one fresh process each, routed by the static identity map;
-- [ ] require exactly one selected test per row; preserve ledger, raw logs, resource evidence and all three censuses;
-- [ ] require control ordinals **366/367/398 to be RED** before granting semantic credibility;
-- [ ] publish/adjudicate the **191-face failing-component** source-face census, not the incidental 27-face object;
-- [ ] perform no semantic retry.
-
-Then **`M3-CP4c-3-TB28-R3-REV`** reviews existing evidence only. If any control ordinal is green on unchanged
-product, replace the harness wholesale with `tools/m3_cp4c3_tb23_r1_harness.sh`; do not proceed to CB34. If the
-control is credible, **CB34** applies only the frozen separating-arc barrier rule.
+Run **`M3-CP4c-3-TB28-R3-REV`** from
+`Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md`, consuming only the existing R3 result/log
+artifacts and `Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md`. No new Directional runtime is authorized.
 
 ## Carried forward from M1
 
@@ -101,9 +97,9 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB27-R1 remains the latest valid semantic runtime**: selector406 is 399 PASS / 7 RED,
-  accepted 365/365. TB28-R1/R2 are orchestration-invalid; CB33 repaired and statically preflighted the R3 harness
-  without product/runtime changes. Exact next: **`M3-CP4c-3-TB28-R3-EXEC`** on immutable package `9975737868`.
+  CP4c-3 remains open. R3-EXEC is mechanically complete on immutable package `9975737868`; semantic review is
+  deliberately pending. **TB27-R1 remains the latest accepted semantic runtime** until R3-REV adjudicates the raw
+  R3 ledger. Exact next: **`M3-CP4c-3-TB28-R3-REV`**, evidence-only with no new runtime.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -115,8 +111,9 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 source-face ownership derivation:** independent review rejected TB28-R2's off-object census and froze
-  the separating-arc barrier correction. CB33 repaired only the harness. TB28-R3 must first reproduce known REDs and
-  publish the 191-face failing-component census; no product correction is authorized before that control is credible.
+  the separating-arc barrier correction. R3-EXEC has mechanically reproduced the frozen control rows without
+  orchestration/selection failure; R3-REV now owns credibility, regression classification, and the required 191-face
+  census adjudication. No product correction is authorized before that review.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -148,5 +145,5 @@ Current totals are **44 events / 14 categories / 30 recurrences**, classified at
 `M3-CP4c-3-TB28-INDEPENDENT-REVIEW` with no stable change. Produced-witness debt remains **5**. Authoritative
 semantic M3 package count is **93**. **The latest valid semantic runtime authority is `M3-CP4c-3-TB27-R1` at
 399 PASS / 7 RED, accepted 365/365**; `M3-CP4c-3-TB28-R2` is rejected as orchestration-invalid and the
-accepted-prefix count is unestablished for TB28. CB33 is complete / preflight GREEN; exact next is `M3-CP4c-3-TB28-R3-EXEC` on immutable package `9975737868`.
+accepted-prefix result remains semantically unestablished for TB28 until R3-REV. R3-EXEC is mechanically complete; exact next is `M3-CP4c-3-TB28-R3-REV` with no new runtime.
 PR #8 remains open, draft, and unmerged.

@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-05** at `M3-CP4c-3-TB28-INDEPENDENT-REVIEW` closeout.
+Last updated **2026-09-05** at `M3-CP4c-3-TB28-R3-EXEC` closeout; semantic adjudication is deliberately pending R3-REV.
 
 ---
 
@@ -50,7 +50,7 @@ regression; the last established result is TB27-R1's 365/365.
   the frontier is component 0 with **191** faces and **4** interior arcs. The `subset=true` row compares neither of
   the sets CL7 asked about and cannot be credited.
 
-## 3. Exact next turns — TB28-R3-EXEC → TB28-R3-REV → CB34
+## 3. Exact next turns — TB28-R3-REV → CB34
 
 **CL8 is discharged: the product correction is FROZEN and may not be re-opened.**
 
@@ -69,12 +69,12 @@ reports green on a product that provably fails:
 1. **`M3-CP4c-3-CB33` — COMPLETE / preflight GREEN** (CM7). Static per-identity routing, per-row selection proof,
    full ledger/resource/census contract and invalid-attempt provenance are installed. No Directional runtime or
    product correction occurred.
-2. **`M3-CP4c-3-TB28-R3-EXEC`** (CM8) — re-execute the same package as a control and preserve raw evidence only.
-   **Credible only if 366/367/398 are RED.** If they are reported green again, replace the harness wholesale with
-   `tools/m3_cp4c3_tb23_r1_harness.sh` rather than correcting it a third time.
-3. **`M3-CP4c-3-TB28-R3-REV`** — review the existing R3 evidence only; confirm harness validity and the 191-face
-   census without new runtime work and without re-opening the frozen correction.
-4. **`M3-CP4c-3-CB34`** (CM9) — if the control is credible, implement the frozen correction and nothing else.
+2. **`M3-CP4c-3-TB28-R3-EXEC` — COMPLETE / mechanically valid.** Run/job `33995961030 / 101386467115`
+   executed all 407 rows with `selected=1`, no timeout/orchestration failure and immutable pre/post censuses. The raw
+   ledger labels 366/367/398 RED, but EXEC does not promote semantic authority.
+3. **`M3-CP4c-3-TB28-R3-REV` — EXACT NEXT.** Review the existing R3 evidence only; apply the credibility gate,
+   classify regressions and adjudicate the 191-face census without new runtime or re-opening the frozen correction.
+4. **`M3-CP4c-3-CB34`** (CM9) — only if R3-REV authorizes it, implement the frozen correction and nothing else.
 
 **TB28-R2's `407 PASS / 0 RED` may not be quoted as a gate result, an accepted-prefix result, or evidence that any
 candidate is discharged.**
@@ -85,7 +85,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB28-REV-CAND-01` | **ACTIVE / GATING / ORCHESTRATION — CB33 correction installed and preflight GREEN.** TB28-R2 false-green mechanism is now guarded by static per-identity routing plus per-row `selected`; semantic falsification still requires TB28-R3 to reproduce known REDs 366/367/398. Owner: TB28-R3-EXEC/REV. |
+| `M3-CP4c3-TB28-REV-CAND-01` | **ACTIVE / GATING / ORCHESTRATION — R3-EXEC mechanically reproduced RED controls 366/367/398 with `selected=1`.** Semantic discharge is reserved to R3-REV after full integrity review. |
 | `M3-CP4c3-TB28-REV-CAND-02` | **ACTIVE / EVIDENCE INTEGRITY.** The CL6 block must be re-adjudicated from the 191-face ownership frontier in TB28-R3; CB33 changed only harness evidence plumbing. Owner: TB28-R3-REV. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **ACTIVE / GATING / PRODUCT — THE CORRECTION IS FROZEN** — the certifier's 214-face component contains two separating arcs, so that partition merges faces lying in different certified faces. Corrected by the frozen separating-arc barrier rule at **CM9 / CB34**. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
@@ -169,11 +169,11 @@ After the durable start-of-turn checklist, load only the minimum current authori
 3. `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` — **CM0–CM9**, the rejection, the frozen correction and the CB33/TB28-R3/CB34 sequence.
 4. `Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — **the current valid semantic runtime authority**.
 5. `Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — package under test.
-6. `Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` — the exact corrected R3 EXEC/REV contract.
-7. `Architecture_M3_CP4c3_CB33_Code_Build_Report.md` — CB33 harness/preflight evidence.
-7. `Architecture_M3_CP4c3_TB28_R2_Artifact_Only_Test_Benchmark_Report.md` — **invalid-attempt provenance only**.
-8. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
+6. `Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md` — current immutable execution evidence index.
+7. `Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` — exact REV contract.
+8. `Architecture_M3_CP4c3_CB33_Code_Build_Report.md` — CB33 harness/preflight evidence.
+9. `Architecture_M3_CP4c3_TB28_R2_Artifact_Only_Test_Benchmark_Report.md` — **invalid-attempt provenance only**.
+10. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+11. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-CB33 is complete with static preflight GREEN. Exact next is **`M3-CP4c-3-TB28-R3-EXEC`**, reusing package `9975737868` unchanged. The
-product correction is already frozen and must not be re-opened.
+R3-EXEC is mechanically complete on immutable package `9975737868`; accepted semantic authority remains TB27-R1 until review. Exact next is **`M3-CP4c-3-TB28-R3-REV`**, evidence-only with no new runtime. The product correction is already frozen and must not be re-opened.
