@@ -343,6 +343,15 @@ compiled all eight approved targets with GMP/GMPXX linked; preflight and build e
 `runtimeExecution=false`. This is compile authority only, not semantic acceptance. Exact successor:
 `M3-CP4c-3-TB27`, artifact-only execution of selector 406.
 
+**Executed at `M3-CP4c-3-TB27-R1`:** formal run/job `33946094875 / 101252363079` on immutable package
+`9961564041` produced **399 PASS / 7 RED**, accepted **1–365 = 365/365**. RED
+`[366,367,368,369,370,374,398]`; ordinal393 recovered to PASS and ordinals404/406 PASS. Result/log artifacts
+`9963419649 / 9963419830`; ledger SHA-256
+`8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`. Ordinal406 publishes
+`matchesFailingComponent=false` between the plan `EmptyFragmentOrbits` failure partition and certifier
+`NotTraceCut` census partition. Selector bytes are unchanged. Exact successor:
+`M3-CP4c-3-TB27-INDEPENDENT-REVIEW`.
+
 ## Separate lineage — M1
 
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full

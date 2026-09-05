@@ -116,83 +116,75 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB27` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB27-INDEPENDENT-REVIEW` — EXACT NEXT / REVIEW + PLAN
 
-`M3-CP4c-3-CB31` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**.
-Its implementation is bounded to CK8–CK9 of
-`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`; it publishes evidence and partition identity but
-corrects no product behavior.
+`M3-CP4c-3-TB27-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**.
 
-### Immutable CB31 Code + Build authority
+### Immutable TB27 runtime authority
 
-- exact clean semantic source: `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`;
-- selector 406:
-  `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_406.txt`, **406 identities**, LF SHA-256
-  `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`; selector 405 is its exact
-  405-line prefix and 403/401/397/365 remain frozen prefixes;
-- compile run/job: `33940038189 / 101235542774`;
-- immutable result/log artifacts: `9961564041 / 9961564295`;
-- result/log SHA-256:
-  `ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf` /
-  `f05d03dfe8457fe93c49a086915f1a69069ceb50726a02f0463887a734b4d73a`;
-- all eight approved targets compiled Release/static `PRE_TEST`; GMP/GMPXX linkage is recorded in package
-  evidence; preflight/build exit codes are zero; all 28 package `SHA256SUMS` entries verify;
-- `runtimeExecution=false`; no Directional runtime executed;
-- Drive patch apply run `33939858921` produced semantic commit
-  `751106491e2440fb17b3fef9e42ccc33bd3d992c`; temporary Drive/compile control state was retired and the
-  consumed Drive patch was permanently deleted.
+- semantic source: `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`;
+- immutable CB31 package: `9961564041`, SHA-256
+  `ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf`;
+- selector406: 406 identities, LF SHA-256
+  `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`; selector405 and earlier chain remain
+  exact frozen prefixes;
+- formal run/job: `33946094875 / 101252363079`, SUCCESS;
+- result/log artifacts: `9963419649 / 9963419830`, SHA-256
+  `adaee20abd667108dbf7ffc0e3db8f0d2f85f9682a15434b83d6291982f1e026` /
+  `6ea8381fed0ebd501957961dc6f8b483fb8a355d003d1b39aede7f59f05c855d`;
+- ledger SHA-256: `8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`;
+- **399 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
+- package/source/execution-view pre/post censuses equal; no configure, compile, relink, generated discovery, repair,
+  mode repair, benchmark execution, package mutation, or source/test/fixture/selector mutation.
 
-Latest semantic runtime authority remains **TB26-R1** on CB30 package `9957324848`: **397 PASS / 8 RED**,
-accepted **365/365**, RED `[366,367,368,369,370,374,393,398]`. Stable accounting remains **44 / 14 / 30**,
-produced-witness debt **5**. CB31 advances semantic M3 package count to **92** without acceptance.
+A prior preflight-only attempt `33946019995` is invalid semantic provenance: it stopped before runtime because a
+filesystem census hash was not portable across extraction environments. The formal run uses runner-local pre/post
+census equality while retaining exact package digest and internal checksum authority.
 
-### What CB31 compiled
+### Runtime facts the review must consume
 
-- **CK8:** failing-component census publication is untruncated and prints every interior-arc row with arc kind and
-  both dart orbits, every seed-attribution row with edge/faces/orbit/rule, every boundary-edge row, every
-  vertex-transit row, component face count, and stable face-set digest. Ordinal **404** now gates publication and
-  completeness only. Ordinal **393** now gates coverage of distinct observed source faces and untruncated owner
-  publication, never observation-row arity.
-- **CK9:** the plan and certifier publish typed partition domain/barrier composition and face-set digests; the
-  `UncutFaceComponentOrbitSeedNotUnique` locus publishes the certifier census identity/digest and explicitly
-  states whether it matches the failing plan component. Selector **406** appends one identity that gates
-  publication of that correspondence, never equality.
+1. **Ordinal 393 PASS.** The repaired contract reports `sourceFaceCount=300;ownerMapCount=300;componentFaceCount=191`
+   while preserving the full conflicting owner population `0:191,1:191,3:191;allEqual=false`. The stale 573-row
+   arity rejection is gone; the conflict is not hidden.
+2. **Ordinal 404 PASS.** The certifier census names component 0 as **214 faces**, `NotTraceCut`, digest
+   `7937364815223192706`, with 76 boundary, 4 interior-arc, 53 vertex-transit and 46 seed-attribution rows.
+   Interior trace arcs are: 14 `0/1`, 20 `0/0`, 22 `0/3`, 24 `0/0`. Therefore **two are separating and two have
+   equal dart orbits**. The TB26 independent review's all-four-bridges prediction is refuted for this certifier
+   component.
+3. **Ordinal 406 PASS.** The failing plan component is `EmptyFragmentOrbits`, digest
+   `17919102493633069558`; the certifier census is `NotTraceCut`, digest `7937364815223192706`;
+   `matchesFailingComponent=false`. The 191-face failure object and 214-face census object are different runtime
+   partitions.
+4. The separating arcs in #2 **cannot be applied to the failing 191-face plan component** because #3 proves the
+   partitions do not correspond. `M3-CP4c3-TB25-REV-CAND-02` remains undecided for the failing object.
+5. **Ordinal 398 remains RED** unchanged as the strong ownership-totality gate; 366/367 remain the open fail-closed
+   ownership frontier. 368/369/370/374 remain separately owned carried surfaces.
 
-No barrier was added or removed, no attribution rule changed, no seed winner was chosen, no partition was unified,
-no `terminalSlit` handling changed, ordinal 398 was not weakened, and accepted identities 1–365 were not changed.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
+package count **92**. CP4c-3 remains OPEN.
 
-### TB27 boundary
+### Review boundary
 
-Artifact-only Test + Benchmark on immutable CB31 package `9961564041` / source
-`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / selector 406. No configure, compile, relink, repair,
-source/test/fixture/selector mutation, or package mutation is authorized.
-
-TB27 must execute the full 406-identity gate one identity per fresh process and report the ordinary semantic
-ledger plus the newly readable CK8–CK9 evidence. In particular it must preserve and report:
-
-- ordinal 393 distinct-source-face coverage and untruncated owner observations;
-- ordinal 404's complete named boundary/interior-arc/seed-attribution/vertex-transit rows, including both dart
-  orbits for every interior arc;
-- ordinal 406's two partition identities/digests and the published match boolean;
-- ordinal 398 unchanged as the strong ownership-totality gate;
-- accepted prefix 1–365 as the load-bearing acceptance boundary.
-
-The static prediction that the four certifier interior-arc rows are bridges remains a **prediction until TB27**;
-CB31 compile success is not evidence for the row values or for equality/inequality of the two component face sets.
+This is the mandatory review after a semantic-red TB. No retry, CB, selector mutation, barrier change, partition
+unification, `terminalSlit` change, or owner-selection heuristic is authorized before the review. The review must
+adjudicate the refuted bridge prediction, the runtime-proved partition mismatch, and the actual evidence needed to
+derive ownership on the **191-face failing plan partition**, then issue the next bounded plan.
 
 ### Context Load Plan
 
-`load_next`: artifact-only Test + Benchmark guidance.
+`load_next`: independent REVIEW + PLAN guidance.
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
+0. `.agents/Directional/ORIENTATION.md` — read first and update this REVIEW turn as required.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB31_Code_Build_Report.md` — immutable CB31 package/source authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` — CK0–CK9 and the evidence questions TB27 must answer.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md` — latest semantic runtime baseline.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — latest semantic
+   runtime authority and exact evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` — prior CK0–CK9 predictions and
+   the static claims TB27 tested.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB31_Code_Build_Report.md` — immutable package/source authority.
 5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 406 current; 405 and earlier prefixes frozen.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`,
+   `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -10,58 +10,53 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-04** at `M3-CP4c-3-CB31` Code + Build closeout.
+Last updated **2026-09-04** at `M3-CP4c-3-TB27-R1` artifact-only Test + Benchmark closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**TB26-R1 remains the latest semantic runtime authority:** **397 PASS / 8 RED**, accepted **365/365**, on CB30
-package `9957324848` / source `e045bf7147afc02bd90eff4822e4b609edbaba66` / selector405. Result artifact
-`9958722468`; run/job `33931380325 / 101210520053`.
+**TB27-R1 is the latest semantic runtime authority:** **399 PASS / 7 RED**, accepted **365/365**, on immutable CB31
+package `9961564041` / source `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / selector406. Formal run/job
+`33946094875 / 101252363079`; result/log artifacts `9963419649 / 9963419830`; ledger SHA-256
+`8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`.
 
-**CB31 is the current compile authority and is not yet semantically accepted:** clean source
-`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, immutable package `9961564041`, selector406, compile run/job
-`33940038189 / 101235542774`. The package compiled all eight approved targets Release/static `PRE_TEST` with
-GMP/GMPXX linked, preflight/build exit codes zero, and `runtimeExecution=false`. CB31 advances semantic M3 package
-count to **92**. CP4c-3 remains OPEN. Stable accounting stays **44 / 14 / 30**, debt **5**.
+RED ordinals are `[366,367,368,369,370,374,398]`. Ordinal 393 recovered to PASS under the repaired distinct-face
+coverage contract; 404 and 406 PASS. Accepted 1–365 is unchanged and 398 remains the strong ownership-totality gate.
 
-Selector 406 has 406 identities, LF SHA-256
-`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`; selector405 is its exact prefix.
-No Directional runtime has executed on CB31.
+CB31 remains the current compile/package authority: package SHA-256
+`ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf`, compile run/job
+`33940038189 / 101235542774`. Semantic M3 package count remains **92**. CP4c-3 remains OPEN. Stable accounting stays
+**44 / 14 / 30**, debt **5**.
 
-## 2. Current frontier — the discriminator is now published but not yet executed
+## 2. Current frontier — runtime proves two different partition objects
 
-CB31 implemented CK8–CK9 without changing product behavior. The failure locus can now serialize every relevant
-certifier census row, the plan and certifier partition identities, their stable face-set digests, and whether the
-census component matches the failing plan component. Ordinal 393 now owns distinct-source-face coverage rather
-than observation-row arity; ordinal 404 owns untruncated publication and both dart-orbit fields; ordinal 406 owns
-publication of partition correspondence, **not equality**.
+TB27 makes the CK8–CK9 publication surfaces semantic evidence.
 
-The architectural distinction remains settled: the plan partitions faces with empty fragment orbits using
-`mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`; the certifier partitions faces not crossed by a trace with its
-own typed barrier composition. **76 versus 97 remains a lawful domain difference, not omitted rows.** CB31 merely
-makes the two identities and their correspondence auditable.
+Ordinal 404's certifier census is component 0 with **214 faces**, domain `NotTraceCut`, face-set digest
+`7937364815223192706`, and complete 76 boundary / 4 interior-arc / 53 vertex-transit / 46 seed-attribution rows.
+The four trace-arc orbit pairs are 14 `0/1`, 20 `0/0`, 22 `0/3`, 24 `0/0`: **two separating, two equal**. That
+refutes the prior static prediction that all four certifier arcs would be bridges.
 
-The independent review's static bridge argument remains deliberately unresolved by Code + Build evidence. It
-predicts that each of the four certifier interior-arc rows will have equal forward/reverse orbits, but only TB27 may
-measure those values. Likewise, compile success says nothing about whether the plan and certifier component face
-sets match on the runtime witness.
+Ordinal 406 simultaneously proves this census is **not the failing plan component**. The failure object is component
+0 of domain `EmptyFragmentOrbits`, face-set digest `17919102493633069558`, and the publication states
+`matchesFailingComponent=false`. Thus the 214-face certifier census and 191-face plan failure are different runtime
+objects. The two separating certifier arcs cannot be used as evidence about the failing plan partition.
 
-## 3. Exact next turn — `M3-CP4c-3-TB27`
+Ordinal 393 PASSes while continuing to publish `componentFaceCount=191;certifiedOwners=0:191,1:191,3:191;
+allEqual=false`; the contract repair removed a false arity rejection without choosing an owner.
 
-Artifact-only Test + Benchmark on immutable CB31 package `9961564041` / source
-`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / selector406. No rebuild, relink, repair, package mutation,
-source/test/fixture/selector mutation, or other semantic change is authorized.
+## 3. Exact next turn — `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`
 
-- Execute the full **406** identities one per fresh process.
-- Preserve accepted-prefix authority **1–365** and ordinal **398** unchanged.
-- Report ordinal **393** distinct-source-face coverage and full owner observations.
-- Report ordinal **404** complete named census rows, including both dart orbits for every interior arc.
-- Report ordinal **406** plan/census partition identities, digests, and the published match boolean.
-- Produce the ordinary semantic ledger and immutable pre/post source/package/execution-view censuses.
+Mandatory REVIEW + PLAN after semantic RED. It must:
 
-CB31 compiled publication surfaces; **TB27 is the first turn authorized to use them as runtime evidence.**
+- adjudicate the runtime refutation of the all-four-bridges prediction;
+- treat `matchesFailingComponent=false` as runtime evidence that the plan/failure and certifier census partitions
+  are distinct;
+- decide what evidence or derivation can lawfully establish ownership for the **191-face failing plan component**;
+- keep `M3-CP4c3-TB25-REV-CAND-02` open unless evidence about that exact failing object decides it;
+- preserve 398, accepted 1–365, selectors and all unrelated carried surfaces unchanged;
+- issue the next bounded plan. No CB or semantic retry is authorized before this review.
 
 ## 4. Open candidates
 
@@ -69,14 +64,14 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB26-REV-CAND-01` | **UPHELD / IMPLEMENTED IN CB31 / AWAITING TB27** — complete named rows and both dart orbits are now compiled for publication; runtime values remain unmeasured. |
-| `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 are boundaries of two different partitions; no row was omitted. |
-| `M3-CP4c3-TB26-REV-CAND-03` | **UPHELD / IMPLEMENTED IN CB31 / AWAITING TB27** — ordinal 393 now gates distinct-source-face coverage and untruncated owner publication, not row arity. |
-| `M3-CP4c3-TB26-REV-CAND-04` | **ACTIVE / INSTRUMENTED IN CB31 / AWAITING TB27** — both partition identities/digests and their correspondence are now compiled for publication. |
-| `M3-CP4c3-TB25-REV-CAND-02` | **ACTIVE / GATING / UNDECIDED** — *is the failing component contained in a single certified face?* CB31 exposes the evidence; TB27 must decide what the runtime rows support. |
-| `M3-CP4c3-DEFN-R3-CAND-01` | **GATING / INSTRUMENTED IN CB31 / AWAITING TB27** — the two partition identities are now explicit; selector406 gates publication of their correspondence. |
+| `M3-CP4c3-TB26-REV-CAND-01` | **RUNTIME-PROVED / DISCHARGED AS EVIDENCE PUBLICATION** — ordinal404 publishes all named rows and both dart orbits untruncated. |
+| `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
+| `M3-CP4c3-TB26-REV-CAND-03` | **RUNTIME-PROVED / DISCHARGED AS TEST AUTHORITY** — ordinal393 PASSes on distinct-source-face coverage while preserving all conflicting owner observations. |
+| `M3-CP4c3-TB26-REV-CAND-04` | **RUNTIME-PROVED / GATING / ARCHITECTURAL** — ordinal406 reports `matchesFailingComponent=false`; census and failure partitions differ. |
+| `M3-CP4c3-TB25-REV-CAND-02` | **ACTIVE / GATING / UNDECIDED FOR FAILING OBJECT** — certifier component contains two separating arcs, but it is not the 191-face failing plan component. |
+| `M3-CP4c3-DEFN-R3-CAND-01` | **RUNTIME-PROVED / GATING / ARCHITECTURAL** — duplicated constructions yield different partition objects on the witness; diagnostic census runs on the non-failing one. |
 | `M3-CP4c3-TB24-REV-CAND-02` | **ACTIVE / ARCHITECTURAL** — ownership of non-arc-incident faces is a derivation, not a read. |
-| `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY / CB31 CONTRACT REPAIRED** — 393 now measures distinct-face coverage; TB27 must execute it. |
+| `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY** — earlier vacuous diagnostic surfaces remain historical architectural debt; ordinal393's current contract itself is runtime-proved. |
 | `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED**; `localFragmentCount` stays non-fatal. |
 | `M3-CP4c3-TB7-CAND-02` | **ACTIVE / DEFERRED** — folded-cone witness, ordinal 374. |
 | `M3-CP4c3-DEFN-R2-CAND-01` | **ACTIVE / ARCHITECTURAL CLASS** — an exact decision with no declared input-size bound. |
@@ -86,11 +81,10 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — ordinal 370. **No correction authorized.** |
 | finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
-**Closed at this review, runtime-proved:** `M3-CP4c3-TB25-REV-CAND-01` (starved seed rule — restored, reproduces
-`[0,1,3]`), `M3-CP4c3-TB25-REV-CAND-03` (389/390 foreign assertions — both PASS). **Previously closed:**
-`M3-CP4c3-TB21-CAND-01` (ill-formed), `M3-CP4c3-TB19-CAND-01`, `M3-CP4c3-TB24-REV-CAND-01`,
-`M3-CP4c3-TB25-ORCH-01`, `M3-CP4c3-TB23-REV-CAND-01/02`, `M3-CP4c3-TB23-R1-REV-CAND-01`,
-`M3-CP4c3-TB21-CAND-02`, `M3-CP4c3-TB10-REV-CAND-01`, `M3-CP4c3-TB19-REV-CAND-02`, `M3-CP4c3-TB17-CAND-01`.
+**Runtime-proved at TB27:** CK8 publication (`TB26-REV-CAND-01`), ordinal393 contract
+(`TB26-REV-CAND-03`), and partition non-correspondence (`TB26-REV-CAND-04` /
+`DEFN-R3-CAND-01`). The latter remain architectural/gating rather than closed product defects because their
+corrective ownership rule is not yet authorized.
 
 ---
 
@@ -122,6 +116,11 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
   faces not crossed by a trace. Never quote a number from one as evidence about the other.
 - **A census over established values is vacuous where nothing is established.** CH8's `rowCount=0` proved this at a cost of one turn.
 - **Only arcs separate certified faces.** An uncut component whose interior no arc meets lies in exactly one certified face. This is a proof, not a measurement.
+- **TB27 runtime refutes the claim that all four certifier interior arcs are bridges:** arcs 14 and 22 have
+  different forward/reverse orbits; arcs 20 and 24 have equal orbits. This fact is scoped to the certifier
+  `NotTraceCut` partition.
+- **The failure and census partitions are runtime-proved different:** ordinal406 publishes
+  `matchesFailingComponent=false`. Never transfer certifier component counts/arcs to the failing plan component.
 - 368/369/370/374 are unchanged carried surfaces with separate owners. Vertex 30 and finalize/contact remain
   separate and untouched.
 
@@ -133,11 +132,10 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_CB31_Code_Build_Report.md` — current immutable compile/package authority.
-4. `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` — CK0–CK9 and the evidence questions TB27 must answer.
-5. `Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md` — latest semantic runtime baseline.
+3. `Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — latest semantic runtime authority.
+4. `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` — prior CK0–CK9 predictions now requiring adjudication.
+5. `Architecture_M3_CP4c3_CB31_Code_Build_Report.md` — immutable compile/package authority.
 6. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
 7. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-Exact next is `M3-CP4c-3-TB27`, artifact-only execution of selector406 on immutable CB31 package `9961564041`.
-No CB31 compile result may be treated as runtime evidence.
+Exact next is `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`. No CB/retry is authorized before it.

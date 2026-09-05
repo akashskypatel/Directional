@@ -1,3 +1,38 @@
+## M3-CP4c3-TB27-REV — runtime diagnostics — **CURRENT RUNTIME REVIEW / SEMANTIC RED / NON-STABLE PENDING INDEPENDENT REVIEW**
+
+- **Authority:** formal run/job `33946094875 / 101252363079`, immutable CB31 package `9961564041`, semantic source
+  `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, selector406. Valid 406-row ledger: **399 PASS / 7 RED**, accepted
+  **365/365**, RED `[366,367,368,369,370,374,398]`. Result `9963419649`; ledger SHA
+  `8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`. Package/source/execution-view
+  pre/post censuses equal and all mutation/build/repair flags false.
+- **`M3-CP4c3-TB26-REV-CAND-01` — RUNTIME-PROVED / DISCHARGED AS EVIDENCE PUBLICATION:** ordinal404 PASSes
+  and emits the complete certifier component census: 214 faces, digest `7937364815223192706`, 76 boundary rows,
+  four interior-arc rows, 53 vertex-transit rows and 46 seed-attribution rows. The four arc rows are fully auditable:
+  14 Trace `0/1`, 20 Trace `0/0`, 22 Trace `0/3`, 24 Trace `0/0`.
+- **Static prediction REFUTED on the certifier object:** arcs 14 and 22 have different dart orbits; arcs 20 and 24
+  have equal dart orbits. Therefore the TB26 independent review's prediction that all four certifier rows are
+  bridges is false. This does **not** decide the failing plan object.
+- **`M3-CP4c3-TB26-REV-CAND-04` + `M3-CP4c3-DEFN-R3-CAND-01` — RUNTIME-PROVED / GATING /
+  ARCHITECTURAL:** ordinal406 PASSes and publishes
+  `failingDomain=EmptyFragmentOrbits;failingFaceSetDigest=17919102493633069558;censusDomain=NotTraceCut;`
+  `censusFaceSetDigest=7937364815223192706;matchesFailingComponent=false`. The diagnostic census and ownership
+  failure are on different partitions. The 214-face/76-boundary certifier data cannot be cited about the 191-face
+  failing component. This runtime-proves the duplicated-partition defect but does not authorize a unification.
+- **`M3-CP4c3-TB26-REV-CAND-02` stays RESOLVED / LAWFUL DOMAIN DIFFERENCE:** the old 76-versus-97 discrepancy is
+  now accompanied by explicit different domain names, face counts and digests; no omitted-row theory is needed.
+- **`M3-CP4c3-TB26-REV-CAND-03` — RUNTIME-PROVED / DISCHARGED AS TEST AUTHORITY:** ordinal393 recovers RED→PASS
+  on distinct-source-face coverage while preserving the full conflict
+  `componentFaceCount=191;certifiedOwners=0:191,1:191,3:191;allEqual=false`. The contract repair removes only the
+  stale 573-row arity assertion.
+- **`M3-CP4c3-TB25-REV-CAND-02` remains ACTIVE / GATING / UNDECIDED FOR THE FAILING OBJECT.** The certifier
+  component contains separating arcs, but ordinal406 proves it is not the 191-face failing plan component. The
+  question whether that exact failing component lies in one certified face still requires review-owned evidence.
+- **Carried REDs:** 366/367 remain the open fail-closed ownership frontier; 398 is the unchanged strong
+  ownership-totality gate; 368/369/370/374 retain separate owners. No cross-cause merge is inferred.
+- **Accounting:** no accepted regression and no new stable category/recurrence. Totals remain **44 events /
+  14 categories / 30 recurrences**, debt **5**, packages **92**. Exact next is
+  `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`; no retry/CB before it.
+
 ## M3-CP4c3-TB26-INDEPENDENT-REVIEW — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`, measures **CK0–CK9**. Static only: no

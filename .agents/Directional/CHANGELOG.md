@@ -1,3 +1,29 @@
+## 2026-09-04 — `M3-CP4c-3-TB27-R1`: 399 PASS / 7 RED; partition mismatch runtime-proved
+
+Artifact-only Test + Benchmark on immutable CB31 package `9961564041` / source
+`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / selector406. Formal run/job
+`33946094875 / 101252363079` completed SUCCESS with **399 PASS / 7 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`. Result/log artifacts `9963419649 / 9963419830` have SHA-256
+`adaee20abd667108dbf7ffc0e3db8f0d2f85f9682a15434b83d6291982f1e026` /
+`6ea8381fed0ebd501957961dc6f8b483fb8a355d003d1b39aede7f59f05c855d`; ledger SHA-256
+`8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`. Package, packaged-source and
+execution-view censuses are unchanged; no configure, compile, relink, discovery, repair or semantic mutation ran.
+
+Ordinal **393 recovered to PASS** under the repaired distinct-source-face contract while still publishing the full
+owner conflict `0:191,1:191,3:191`. Ordinal **404 PASS** now exposes the full certifier census: component 0 is
+`NotTraceCut`, 214 faces, digest `7937364815223192706`, with 76 boundary, four interior-arc, 53 vertex-transit and
+46 seed-attribution rows. The four trace arcs are 14 `0/1`, 20 `0/0`, 22 `0/3`, 24 `0/0`: **two separating and
+two equal**, refuting the prior static all-four-bridges prediction for that certifier object.
+
+Ordinal **406 PASS** is the decisive correspondence result:
+`failingDomain=EmptyFragmentOrbits;failingFaceSetDigest=17919102493633069558;`
+`censusDomain=NotTraceCut;censusFaceSetDigest=7937364815223192706;matchesFailingComponent=false`.
+The certifier census and 191-face failing plan partition are runtime-proved different objects, so the separating
+certifier arcs cannot be used as evidence about the failure partition. Ordinal **398 remains RED** unchanged.
+
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, packages **92**. CP4c-3 remains OPEN.
+Exact successor is **`M3-CP4c-3-TB27-INDEPENDENT-REVIEW`**; no retry or CB is authorized before that review.
+
 ## 2026-09-04 — `M3-CP4c-3-CB31`: CK8–CK9 publication compiled; selector 406; immutable package 92 GREEN
 
 Code + Build only, runtime-free. CB31 publishes the complete failing-component census rows already computed by
