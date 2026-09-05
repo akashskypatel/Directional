@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB32 compile fix 2 apply
-base_sha=d75f685c7d7ec65a003bfec39f95359d85145d48
-patch_sha256=294345293a48081bc5c4fc32e7890362a33c6b4b1201b65a83d030a94187f5cf
-retry=0
