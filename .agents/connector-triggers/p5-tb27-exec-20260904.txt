@@ -1,0 +1,7 @@
+purpose=M3-CP4c-3-TB27 artifact-only Test+Benchmark
+package_artifact_id=9961564041
+package_sha256=ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf
+semantic_source=eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc
+selector406_sha256=efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0
+caller=.github/workflows/p5-tb27-exec.yml
+runtimeExecution=true
