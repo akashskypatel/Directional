@@ -26,24 +26,46 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB26-INDEPENDENT-REVIEW` (outsourced REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB31` (Code + Build, runtime-free)
 
-`M3-CP4c-3-TB26-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**.
-Immutable CB30 package `9957324848` / semantic source `e045bf7147afc02bd90eff4822e4b609edbaba66` executed selector 405 in run/job `33931380325 / 101210520053`.
+`M3-CP4c-3-TB26-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**, and
+`M3-CP4c-3-TB26-INDEPENDENT-REVIEW` has adjudicated it. Immutable CB30 package `9957324848` / semantic source
+`e045bf7147afc02bd90eff4822e4b609edbaba66` executed selector 405 in run/job `33931380325 / 101210520053`.
 
 - ledger: **397 PASS / 8 RED**, accepted **1–365 = 365/365 PASS**;
 - RED ordinals: `366,367,368,369,370,374,393,398`;
 - result/log artifacts: `9958722468 / 9958722840`;
 - 389/390 recover to PASS; 404/405 PASS;
-- component 0: 191 faces, conflicting seeds `[0,1,3]`; ordinal404 aggregates `boundaryEdges=76;interiorArcs=4;vertexTransits=53;seedAttributions=46`.
+- component 0: 191 faces, conflicting seeds `[0,1,3]`, no winner selected; ordinal 404 aggregates
+  `boundaryEdges=76;interiorArcs=4;vertexTransits=53;seedAttributions=46`.
 
-**TB26-REV verdict.** CJ6 selects the separating-arc horn because `interiorArcs=4`; source-edge-only component ownership therefore cannot be repaired by choosing the 81/1/1 majority. CJ7 correctly fails closed on three owners and 398 remains the honest ownership-totality gate. The runtime evidence is nevertheless incomplete for the frozen review contract: ordinal404 publishes only aggregate counts, so the four decisive arc loci cannot be named; its 76 boundary rows also do not reproduce the frozen 97-edge baseline. Ordinal393 is collateral under full multi-owner publication (`191` faces versus `573` owner observations). These are review candidates, not stable events.
+**Independent-review verdict.** CJ7/CJ8/CJ9 worked — 389/390 recovered, the restored seed rule reproduces the
+pre-CB27 `[0,1,3]` and the plan fails closed, 404/405 PASS, 398 untouched. But the discriminator is **not**
+discharged, for two independent reasons. **(1) An incidence count is not a separation:** an arc separates iff its
+two darts lie in different orbits, and the per-arc orbit pair is computed and stored but serialized only as a
+count. **(2) The census describes a different object than the failure:** the CJ6 censuses run on the certifier's
+partition while the RED is raised on the plan's, and their domains differ by construction — which is also why 76
+does not reproduce 97. Ordinal 393 is a **stale arity** assertion (`573 = 3 × 191`). **No stable event added.**
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 package count **91**. CP4c-3 remains **OPEN**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
+package count **91**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB26-INDEPENDENT-REVIEW`**, independent REVIEW + PLAN only, using `Architecture_M3_CP4c3_TB26_Independent_Review_Intake.md`. The current orchestration loop **stops at this boundary**. No retry, CB patch, barrier mutation, selector change, or ownership winner is authorized before that independent review freezes the successor.
+Run **`M3-CP4c-3-CB31`**, Code + Build, runtime-free, GMP/GMPXX linked, under **CK8–CK9** of
+`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`:
+
+- [ ] **CK8** serialize one line per census row for the failing component — interior arcs with **both dart
+      orbits**, seed attributions with edge/faces/orbit/**rule**, boundary edges, vertex transits — plus the
+      component's face count and face-set digest; strengthen ordinal 404 in place (all `*Truncated` false, both
+      orbit fields present); replace ordinal 393's assertion with **distinct-source-face coverage**. Selector 405
+      unchanged.
+- [ ] **CK9** publish the **partition identity** and face-set digest on both sides, and state whether they match;
+      add one gating identity at selector **406** asserting **publication of the correspondence, not equality**.
+
+**CB31 corrects no product behaviour** — no barrier added or removed, no attribution rule changed, no seed winner
+chosen, no partition unified, no `terminalSlit` handling altered. No Directional runtime before
+`M3-CP4c-3-TB27`.
 
 ## Carried forward from M1
 
@@ -121,4 +143,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified through TB26-REV with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **91**. **TB26-R1 is the latest semantic runtime authority at 397 PASS / 8 RED, accepted 365/365.** Exact next is the outsourced `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`; the current orchestration loop stops there. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB26-INDEPENDENT-REVIEW` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **91**. **TB26-R1 is the latest semantic runtime authority at 397 PASS / 8 RED, accepted 365/365.** Exact next is `M3-CP4c-3-CB31` under CK8–CK9. PR #8 remains open, draft, and unmerged.

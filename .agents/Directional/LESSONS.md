@@ -1679,6 +1679,23 @@ building any conclusion on it.**
      The measure was right and the condition was wrong. **State the falsification against the mechanism, and name
      per-witness exceptions when a witness carries assertions outside the mechanism's scope.**
 
+125. **An incidence count is not a separation - publish the field that carries the distinction.** A frozen
+     discriminator asked whether a **separating** arc meets a component's interior; the runtime reported
+     `interiorArcs=4` and the turn read that as the horn being selected. An arc separates two faces only if its two
+     darts lie in different face-walk orbits, and the census computed and stored both orbits per row while
+     serializing only the count - so the aggregate that was read could not carry the answer either way. Worse, the
+     same report admitted it could not name the four arcs. **When a measure is defined by a predicate, the
+     published evidence must contain the predicate's operands, not their cardinality**, and a horn nobody can name
+     is not selected.
+
+126. **A diagnostic must be computed on the object that failed.** Two partitions of the same mesh existed - the
+     consumer's, over faces with no fragment orbits and barriers `mandatory u traceTouched u cut`, and the
+     producer's, over faces not crossed by a trace with a narrower barrier set. The failure was raised on the
+     first; the entire diagnostic census was computed on the second, and their boundary counts differed (97 versus
+     76) precisely because they are different objects. Nothing in the evidence established that the two "component
+     0"s were even the same faces. **Before trusting a census about a failure, check that the census's domain is
+     the failure's domain** - and publish the identity of the partition each number belongs to.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

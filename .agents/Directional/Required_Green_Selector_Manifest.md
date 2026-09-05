@@ -310,7 +310,27 @@ withdrawn, but **neither may be cited as evidence about component 0**.
 
 The first asserts **publication and completeness** of the three CJ6 censuses with **no established owner
 required** — the defect that made ordinal 402 vacuous must not recur. The second is the independent falsifiability
-witness on a constructed vertex-transit fixture. Ordinal **390**'s assertions were replaced in place by CJ8; its name and ordinal do not change, so the first 403 lines stay byte-identical. CB30 compile authority is source `e045bf7147afc02bd90eff4822e4b609edbaba66`, package `9957324848`; runtime is pending TB26-EXEC.
+witness on a constructed vertex-transit fixture. Ordinal **390**'s assertions were replaced in place by CJ8; its name and ordinal do not change, so the first 403 lines stay byte-identical. CB30 compile authority is source `e045bf7147afc02bd90eff4822e4b609edbaba66`, package `9957324848`.
+
+**Executed at `M3-CP4c-3-TB26-R1`:** 397 PASS / 8 RED, accepted 1–365 = 365/365. Both appended identities **PASS**,
+and ordinals **389 and 390 recovered** from TB25-R1's RED. `M3-CP4c-3-TB26-INDEPENDENT-REVIEW` recorded that
+ordinal **404's PASS proves publication but not readability**: it asserts the in-memory census is complete while
+the runtime serializes only aggregate counts, so the per-arc dart-orbit pair that decides the frozen discriminator
+is not auditable from the immutable log. **Ordinal 404 must not be cited as evidence that the separating-arc horn
+is selected.** CK8 strengthens it in place; the identity is not withdrawn.
+
+### 406 — PLANNED, `M3-CP4c-3-CB31` CK9
+
+Selector 405 must be its exact 405-line prefix, with 403/401/397/365 the frozen prefixes of that. One gating
+identity is appended:
+
+- `GlobalTopologyPlan.UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent`
+
+It asserts that both partition identities and both face-set digests are published and that the failure locus states
+**whether they match** — **publication of the correspondence, never equality**, because inequality is a live
+possibility and a gate must not demand a hypothesis be true (`LESSONS.md` 123). Ordinals **404** and **393** have
+their assertions replaced in place by CK8; their names and ordinals do not change, so the first 405 lines stay
+byte-identical.
 
 ## Separate lineage — M1
 

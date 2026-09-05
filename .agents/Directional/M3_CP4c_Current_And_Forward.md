@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-04** at `M3-CP4c-3-TB26-REV` closeout.
+Last updated **2026-09-04** at `M3-CP4c-3-TB26-INDEPENDENT-REVIEW` closeout.
 
 ---
 
@@ -20,19 +20,81 @@ Last updated **2026-09-04** at `M3-CP4c-3-TB26-REV` closeout.
 
 389/390 recovered to PASS; 404/405 PASS. Remaining RED: `366,367,368,369,370,374,393,398`.
 
-## 2. Current frontier — the object contains a hidden separating arc
+## 2. Current frontier — the discriminator is measured, unreadable, and computed on the wrong object
 
-Mechanical component0 has 191 faces and restored conflicting seeds `[0,1,3]`. Ordinal404 reports **4 interior trace-arc incidences**, so the frozen dichotomy selects the separating-arc horn; the component is not a single certified face merely awaiting majority attribution. Vertex-transit evidence is also nonempty at 53 rows. Fail-closed conflict publication is therefore correct while the source-face component model lacks the embedded separation.
+**What worked.** CJ7's restored seed rule returns component 0's `[0,1,3]` — identical to the pre-CB27 rule — and
+the plan **fails closed without choosing a winner**. CJ8 recovered **389 and 390**; 390 publishes
+`certifiedOwnerCount=3` without asserting a winner. CJ9's 404/405 PASS. **398 is untouched.**
 
-Three items require independent adjudication before code changes: (1) ordinal404 exposes only aggregate counts and cannot name the four decisive arc loci; (2) its 76 boundary rows do not reproduce the frozen 97-edge baseline; (3) ordinal393 observes 573 owner observations over 191 faces because all three conflicts are now published. 398 remains the unmodified ownership-totality gate.
+**The separating-arc horn is NOT selected.** CJ6 defined the horn as a *separating* arc, and an arc separates iff
+its two darts lie in **different** face-walk orbits. `interiorArcs=4` is an incidence count. The deciding fields —
+`forwardOrbit`/`reverseOrbit` per row, and the 46 seed attributions with their `rule` — are **computed and stored**
+(`SurfaceCutGraph.h:138–170`, `SurfaceCutGraph.cpp:689–708`) and serialized only as counts. TB26-R1's own §3 admits
+it cannot name the four arcs; a horn nobody can name is not selected.
 
-## 3. Exact next turn — `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`
+**The census describes a different object than the failure.** Two partitions exist — the plan's over
+`unlabeledFaces` with `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` (`GlobalTopologyPlan.cpp:1103–1115`) and the
+certifier's over `uncutFaces` with a narrower barrier set (`SurfaceCutGraph.cpp:596–601`). An arc-incident face is
+in the second and not the first, **by construction**. The RED is raised on the plan's partition; every CJ6 census
+is computed on the certifier's, and nothing published establishes that their component 0s are the same faces.
+**Until that correspondence exists, no CJ6 number is admissible about the failing component.**
 
-Independent REVIEW + PLAN only, explicitly outside this orchestration loop. Consume `Architecture_M3_CP4c3_TB26_Independent_Review_Intake.md`; reconcile the evidence-surface and boundary-domain questions, determine the topology correction, adjudicate 393, and only then freeze a successor CB.
+**76 versus 97 is that lawful domain difference**, not 21 omitted rows — and it is itself evidence for the finding
+above.
+
+**Static argument, to be tested by printing one integer pair per row.** A trace arc reaches an uncut component's
+interior **only** through a terminal-slit segment; that arc ends at a degree-1 free end, so it is a **bridge**, and
+both darts of a bridge share an orbit — the case DEFN-R3.4 already measured (arc 15,
+`forwardOrbit = reverseOrbit = 0`). **Predicted: all four rows are bridges, the horn is refuted, and the two
+minority seeds among 81/1/1 are attribution errors the unprinted rows already name.**
+
+## 3. Exact next turn — `M3-CP4c-3-CB31`
+
+Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`, under **CK8–CK9** of
+`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`.
+
+- **CK8 — print what CB30 already measured.** One line per census row for the failing component, untruncated:
+  interior arcs with **both dart orbits**; seed attributions with edge, both faces, orbit and **rule**; boundary
+  edges with barrier class and side-owner presence; vertex transits. Plus the component's face count and a stable
+  face-set digest. Ordinal **404** strengthened in place to require untruncated rows and both orbit fields.
+  Ordinal **393**'s assertion replaced in place by **coverage of distinct source faces**, never a row count.
+  Selector 405 unchanged.
+- **CK9 — establish which partition the census describes.** Both sides publish their partition identity (domain
+  rule and barrier composition) and face-set digest, and the failure locus states **whether they match**. One
+  gating identity at selector **406** with 405 as its exact prefix, asserting **publication of the correspondence,
+  not equality**.
+
+**CB31 corrects no product behaviour.** No barrier added or removed, no attribution rule changed, no seed winner
+chosen, no partition unified, no `terminalSlit` handling altered.
 
 ## 4. Open candidates
 
-Authoritative detail stays in `Regression_Root_Cause_Tracker.md`. Current additions are `M3-CP4c3-TB26-REV-CAND-01` (named-locus publication), `-CAND-02` (76-vs-97 boundary domain), and `-CAND-03` (ordinal393 observation semantics). `M3-CP4c3-TB25-REV-CAND-02` is resolved at aggregate level toward the separating-arc horn. Carried 368/369/370/374 retain separate owners.
+Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the index.
+
+| Candidate | State |
+|---|---|
+| `M3-CP4c3-TB26-REV-CAND-01` | **UPHELD / ACTIVE / GATING / EVIDENCE SURFACE** — the deciding census fields are computed and stored but serialized as counts. Owner: CK8. |
+| `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 are boundaries of two different partitions; no row was omitted. |
+| `M3-CP4c3-TB26-REV-CAND-03` | **UPHELD / ACTIVE / TEST AUTHORITY** — ordinal 393 asserts one observation per face against deliberate multi-owner publication. Owner: CK8. |
+| `M3-CP4c3-TB26-REV-CAND-04` | **NEW / ACTIVE / GATING / ARCHITECTURAL** — the censuses are computed on the certifier's partition; the RED is raised on the plan's. Owner: CK9. |
+| `M3-CP4c3-TB25-REV-CAND-02` | **ACTIVE / GATING / UNDECIDED** — *is the failing component contained in a single certified face?* TB26 did not decide it. Owner: CK8/CK9. |
+| `M3-CP4c3-DEFN-R3-CAND-01` | **PROMOTED to GATING** — the duplicated construction has produced two partitions, and the diagnostic runs on the one that does not fail. Owner: CK9. |
+| `M3-CP4c3-TB24-REV-CAND-02` | **ACTIVE / ARCHITECTURAL** — ownership of non-arc-incident faces is a derivation, not a read. |
+| `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY** — 393's contract is still not exercised as intended. |
+| `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED**; `localFragmentCount` stays non-fatal. |
+| `M3-CP4c3-TB7-CAND-02` | **ACTIVE / DEFERRED** — folded-cone witness, ordinal 374. |
+| `M3-CP4c3-DEFN-R2-CAND-01` | **ACTIVE / ARCHITECTURAL CLASS** — an exact decision with no declared input-size bound. |
+| `M3-CP4c3-TB6-CAND-01` | **ACTIVE** — vertex-30 evidence contract. **There is still no vertex-30 discriminator.** |
+| `M3-CP4c2-TB-X2-CAND-04` | **ACTIVE** — prescribed sphere 368. |
+| `M3-CP4c2-TB-X2-R10-CAND-01` | **ACTIVE / QUALITY / COVERAGE** — saturation, ordinal 369. |
+| `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — ordinal 370. **No correction authorized.** |
+| finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
+
+**Closed at this review, runtime-proved:** `M3-CP4c3-TB25-REV-CAND-01` (starved seed rule — restored, reproduces
+`[0,1,3]`), `M3-CP4c3-TB25-REV-CAND-03` (389/390 foreign assertions — both PASS). **Previously closed:**
+`M3-CP4c3-TB21-CAND-01` (ill-formed), `M3-CP4c3-TB19-CAND-01`, `M3-CP4c3-TB24-REV-CAND-01`,
+`M3-CP4c3-TB25-ORCH-01`, `M3-CP4c3-TB23-REV-CAND-01/02`, `M3-CP4c3-TB23-R1-REV-CAND-01`,
+`M3-CP4c3-TB21-CAND-02`, `M3-CP4c3-TB10-REV-CAND-01`, `M3-CP4c3-TB19-REV-CAND-02`, `M3-CP4c3-TB17-CAND-01`.
 
 ---
 
@@ -58,6 +120,10 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`. Current additi
 - **Relocating a derivation adds no information.** CB27 moved ownership into the certifier — the right authority —
   and got `[0,1,3]` at `(0,1,2)`, the same answer as before.
 - **384/385 recovered at TB25-R1; 389/390 recovered at TB26-R1 after their contracts were narrowed to identity-owned evidence.** No accepted behaviour was lost.
+- **An incidence count is not a separation.** `interiorArcs=4` says four arcs touch the component; it says nothing
+  about whether any of them separates certified faces. Only the per-arc dart-orbit pair does.
+- **There are two partitions, not one.** The plan's is over faces with no fragment orbits; the certifier's is over
+  faces not crossed by a trace. Never quote a number from one as evidence about the other.
 - **A census over established values is vacuous where nothing is established.** CH8's `rowCount=0` proved this at a cost of one turn.
 - **Only arcs separate certified faces.** An uncut component whose interior no arc meets lies in exactly one certified face. This is a proof, not a measurement.
 - 368/369/370/374 are unchanged carried surfaces with separate owners. Vertex 30 and finalize/contact remain
@@ -69,10 +135,12 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`. Current additi
 
 After the durable start-of-turn checklist, load only the minimum current authority:
 
-1. `ORIENTATION.md` — mandatory independent-review update target.
-2. **this file** — current frontier.
-3. `Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority.
-4. `Architecture_M3_CP4c3_TB26_Independent_Review_Intake.md` — exact outsourced review questions and stop rules.
+1. `ORIENTATION.md` — read first.
+2. **this file** — current frontier and candidate ownership.
+3. `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` — **CK0–CK9**, the adjudication and the frozen CB31 scope.
+4. `Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md` — current semantic runtime authority and package provenance.
 5. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+6. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-Exact next is the outsourced `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`. **No retry, CB patch, barrier mutation, ownership winner, selector change, compile, or runtime before that review freezes a successor.**
+Exact next is `M3-CP4c-3-CB31` under CK8–CK9. **CB31 prints what CB30 already measured and publishes the partition
+identity on both sides; it corrects no product behaviour.**

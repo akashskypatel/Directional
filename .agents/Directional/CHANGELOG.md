@@ -1,3 +1,60 @@
+## 2026-09-04 — `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`: an incidence count is not a separation, and the census ran on the wrong partition; CB31 frozen
+
+Independent REVIEW + PLAN, static only, explicitly outside the orchestration loop. No runtime, no compile, no
+package operation, no product/test/fixture/benchmark/build/selector mutation.
+`review_check.py authority e045bf7147afc02bd90eff4822e4b609edbaba66` passed, so static review of HEAD is valid
+evidence about immutable package `9957324848`.
+
+**What worked.** CJ8 recovered ordinals **389 and 390**; 390 publishes `certifiedOwnerCount=3` **without asserting
+a winner**. CJ7's restored seed rule reproduces the pre-CB27 `[0,1,3]` exactly and the plan **fails closed** rather
+than choosing. CJ9's 404/405 PASS. Ordinal 398 untouched. Accepted **365/365** with no accepted RED ordinal.
+
+**The intake's first premise is declined.** CJ6 defined the horn as a **separating** arc, and an arc separates iff
+its two darts lie in different face-walk orbits. `interiorArcs=4` is an incidence count. The TB26-R1 report is
+internally inconsistent — §1 declares the horn selected while §3 states it cannot name the four arcs. A horn nobody
+can name is not selected.
+
+**The deciding fields are computed and stored; only the print is missing.**
+`SurfaceCutGraphUncutComponentArcIncidenceCensus` carries `forwardOrbit` and `reverseOrbit`
+(`SurfaceCutGraph.h:138–146`, populated at `SurfaceCutGraph.cpp:689–708`), and the 46 seed attributions carry edge,
+both faces, orbit and `rule`. CB30 measured the deciding fields and serialized only counts.
+
+**The load-bearing finding: the census describes a different object than the failure.** Two partitions exist — the
+plan's over `unlabeledFaces` with `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`
+(`GlobalTopologyPlan.cpp:1103–1115`) and the certifier's over `uncutFaces` with a narrower barrier set
+(`SurfaceCutGraph.cpp:596–601`). An arc-incident face is in the second and not the first, **by construction**. The
+RED is raised on the plan's partition; every CJ6 census is computed on the certifier's, and nothing published
+establishes that their component 0s are the same faces. **76 versus 97 is that lawful domain difference, not 21
+omitted rows.**
+
+**Static argument, falsifiable by printing one integer pair per row.** A trace arc reaches an uncut component's
+interior only through a **terminal slit**; that arc ends at a degree-1 free end, so it is a **bridge**, and both
+darts of a bridge share an orbit — the case DEFN-R3.4 already measured as arc 15, `forwardOrbit = reverseOrbit = 0`.
+Predicted: all four rows are bridges and the separating-arc horn is refuted.
+
+**Ordinal 393 is a stale arity assertion.** `573 = 3 × 191`: it asserts one observation per face against a
+deliberately multi-owner publication whose own output — `certifiedOwners=0:191,1:191,3:191;allEqual=false` — is
+correct. The contract it owns is coverage of distinct source faces.
+
+**Two intake questions are declined as premature** — how to partition when an arc crosses a component's interior,
+and the minimal 366/367/398 correction. Two opposite corrections follow from one unprinted pair of integers.
+
+**Accounting unchanged: 44 events / 14 categories / 30 recurrences**, debt **5**, packages **91**.
+
+**Candidates.** Closed runtime-proved: `M3-CP4c3-TB25-REV-CAND-01`, `M3-CP4c3-TB25-REV-CAND-03`. Adjudicated:
+`M3-CP4c3-TB26-REV-CAND-01` UPHELD, `-CAND-02` RESOLVED as a lawful domain difference, `-CAND-03` UPHELD.
+Promoted to gating: `M3-CP4c3-DEFN-R3-CAND-01`. New: `M3-CP4c3-TB26-REV-CAND-04` — census partition ≠ failure
+partition. Still undecided: `M3-CP4c3-TB25-REV-CAND-02`.
+
+**Lessons 125 and 126** added. **Consolidation:** the TB25 review record, the CB28 build report and the consumed
+TB26 intake were folded into `M3_CP4c_Consolidated_Record.md`, and the absence of a standalone CB30 build report
+was noted for a successor to restore.
+
+**Exact successor: `M3-CP4c-3-CB31`** under **CK8–CK9** — serialize one line per census row including both dart
+orbits, strengthen ordinal 404 in place, replace ordinal 393's assertion with distinct-source-face coverage, and
+publish the partition identity on both sides with one new gating identity at selector **406**. **CB31 corrects no
+product behaviour.**
+
 ## 2026-09-04 — `M3-CP4c-3-TB26-R1/TB26-REV`: 397 PASS / 8 RED; separating-arc horn selected; independent review required
 
 Artifact-only selector405 runtime completed in run/job **`33931380325 / 101210520053`** on immutable CB30 package `9957324848` / source `e045bf7147afc02bd90eff4822e4b609edbaba66`. Result/log artifacts `9958722468 / 9958722840`; result SHA-256 `1daf2ec4a4b8a644f7cf66407ac14b69ac92aa20ec3c241093270179ae6c6768`; ledger SHA-256 `5d16ee4508ead7eb5422c4dd0d03a9903009b8552d8e815ff2394f872eebe34a`. All 405 identities ran once in fresh processes with immutable pre/post censuses.

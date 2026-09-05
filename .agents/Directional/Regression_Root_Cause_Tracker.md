@@ -1,3 +1,91 @@
+## M3-CP4c3-TB26-INDEPENDENT-REVIEW — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`, measures **CK0–CK9**. Static only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
+  365/365 untouched; selectors 397/401/403/405 byte-frozen.
+  `review_check.py authority e045bf7147afc02bd90eff4822e4b609edbaba66` — ALL CHECKS PASSED.
+
+- **CK0 — the separating-arc horn is NOT established, and the intake's first premise is declined.** CJ6 defined the
+  interior arc-incidence census as every arc with **the orbit at each of its two darts**, and the horn as a
+  **separating** arc. An arc separates iff its two darts lie in different face-walk orbits. `interiorArcs=4` is a
+  count of incidences and carries no separation claim. The TB26-R1 report is internally inconsistent on this: §1
+  declares the horn selected while §3 states TB26 "cannot independently name which four arcs constitute the
+  decisive incidence set". **A horn nobody can name is not selected.** `LESSONS.md` 108 and new 125.
+
+- **CK0.1 — the deciding fields are computed and stored; only the print is missing.**
+  `SurfaceCutGraphUncutComponentArcIncidenceCensus` (`SurfaceCutGraph.h:138–146`) carries `forwardOrbit` and
+  `reverseOrbit`, populated at `SurfaceCutGraph.cpp:689–708`;
+  `SurfaceCutGraphUncutComponentSeedAttribution` (`:161–170`) carries edge, both faces, orbit and **rule** for all
+  46 attributions. **CB30 measured the deciding fields and serialized only counts.** That is categorically cheaper
+  than the four preceding diagnostic failures and is why CK8 is a print, not an investigation.
+
+- **CK0.2 — static argument that the horn is probably refuted.** `arc.sourceFaces` is exactly the arc's segments'
+  source faces (`EmbeddedGraphTopology.cpp:549–554`), and `traceCutFaces` receives every segment in that range
+  **except a terminal slit** (`SurfaceCutGraph.cpp:523–530`). **A trace arc can therefore meet an uncut
+  component's interior only through a terminal-slit segment** — which ends at the trace's free end, a degree-1
+  node, making the arc a **bridge**, whose two darts share an orbit. DEFN-R3.4 already records TB18's measured
+  bridge, arc 15 with `forwardOrbit = reverseOrbit = 0`. **Prediction, falsifiable by printing one integer pair per
+  row: all four rows have `forwardOrbit == reverseOrbit`.**
+
+- **CK1 — the load-bearing finding: the census describes a different object than the failure.** Two partitions
+  exist. The **plan** partitions `unlabeledFaces` (empty `fragmentOrbits`) with
+  `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` (`GlobalTopologyPlan.cpp:1103–1115`); the **certifier** partitions
+  `uncutFaces` (not in `traceCutFaces`) with `cutEdges ∪ arc source edges ∪ non-slit carriers`
+  (`SurfaceCutGraph.cpp:596–601`). The domains differ **by construction**: `fragmentOrbits` is populated for
+  mandatory/cut arc interiors at `GlobalTopologyPlan.cpp:702` and `:750`, so an arc-incident face is excluded from
+  the plan's domain and retained in the certifier's. **The RED is raised on the plan's partition; every CJ6 census
+  is computed on the certifier's**, and TB26 published neither the certifier component's face count nor any
+  correspondence. Until that is established, **no CJ6 evidence is admissible about the failing component.**
+  `LESSONS.md` 126. This is `M3-CP4c3-DEFN-R3-CAND-01` one level down, and the same shape as the standing fact that
+  the certificate and the seed guard test different objects.
+
+- **CK2 — 76 versus 97 is a lawful domain difference, not 21 omitted rows.** The 97 is the *plan's* component-0
+  boundary (83 attributed — 81/1/1 — plus 14 barrier/no-seed); the 76 is the *certifier's*
+  (`SurfaceCutGraph.cpp:637–686`, one row per component-side face of every edge not wholly inside the component).
+  **76 must not be treated as equivalent to 97**, and the difference is itself evidence for CK1.
+
+- **CK3 — what TB26 did establish.** **CJ8 worked**: 389 and 390 recover RED → PASS, 390 publishing
+  `certifiedOwnerCount=3` **without asserting a winner**. **CJ7 worked**: component 0 returns `seedCount=3`,
+  `seedState=Multiple`, orbits `[0,1,3]` — identical to the pre-CB27 rule, confirming the restoration is faithful —
+  and the plan fails closed instead of choosing. **CJ9 worked**: 404 and 405 PASS. **398 untouched.** Accepted
+  365/365, no accepted RED ordinal, no mutation, no orchestration failure.
+
+- **CK4 — eight REDs, four causes.** 366/367 the open frontier, correctly fail-closed and **not** correctable until
+  CK0/CK1 are discharged; **393 stale arity** — `573 = 3 × 191`, an assertion of one observation per face against a
+  deliberately multi-owner publication whose own output (`certifiedOwners=0:191,1:191,3:191;allEqual=false`) is
+  correct and useful; **398 the honest gate**; 368/369/370/374 unchanged carried surfaces with separate owners.
+
+- **CK5 — two intake questions are declined as premature.** *How to partition when an arc crosses a component's
+  interior* and *the minimal 366/367/398 correction* both depend on whether any interior arc separates. **Two
+  opposite corrections follow from one unprinted pair of integers**, and answering now would repeat `LESSONS.md`
+  64. This is the fifth consecutive diagnostic turn (`LESSONS.md` 115); the distinction relied on is that the datum
+  exists, is computed, and is stored. **If CB31's report still cannot name the arcs, the next review must say the
+  pattern is no longer distinguishable from the previous four.**
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **91**. Accepted 1–365 is 365/365 with no accepted RED ordinal; 389/390 recovered; 393 is test authority;
+  the serialization and partition defects are evidence-surface candidates.
+
+- **Candidates.** **Closed, runtime-proved:** `M3-CP4c3-TB25-REV-CAND-01` (starved seed rule — restored, produces
+  `[0,1,3]` again), `M3-CP4c3-TB25-REV-CAND-03` (389/390 foreign assertions — both PASS). **Adjudicated:**
+  `M3-CP4c3-TB26-REV-CAND-01` **UPHELD / GATING** (owner CK8), `M3-CP4c3-TB26-REV-CAND-02` **RESOLVED / lawful
+  domain difference**, `M3-CP4c3-TB26-REV-CAND-03` **UPHELD / TEST AUTHORITY** (owner CK8). **Promoted:**
+  `M3-CP4c3-DEFN-R3-CAND-01` to **GATING** — the duplicated construction has produced two partitions and the
+  diagnostic runs on the one that does not fail. **Still undecided:** `M3-CP4c3-TB25-REV-CAND-02` — TB26 did not
+  decide whether the failing component lies in one certified face. **New:** `M3-CP4c3-TB26-REV-CAND-04`
+  (**GATING / ARCHITECTURAL** — census partition ≠ failure partition; owner CK9).
+
+- **Successor frozen: `M3-CP4c-3-CB31`** under **CK8–CK9**, runtime-free, GMP/GMPXX linked. **CK8** serializes one
+  line per census row for the failing component — interior arcs with **both orbits**, seed attributions with edge,
+  faces, orbit and rule, boundary edges with barrier class, vertex transits — plus the component's face count and
+  face-set digest; strengthens ordinal 404 in place to require untruncated rows and both orbit fields; and replaces
+  ordinal 393's assertion in place with **coverage of distinct source faces**, never a row count. Selector 405 is
+  unchanged by CK8. **CK9** publishes the **partition identity** on both sides and adds one gating identity at
+  selector **406** asserting that both identities and face-set digests are published and whether they match —
+  **publication of the correspondence, not equality**. **CB31 corrects no product behaviour**: no barrier added or
+  removed, no attribution rule changed, no seed winner chosen, no partition unified, no `terminalSlit` handling
+  altered.
+
 ## M3-CP4c3-TB26-REV — runtime diagnostics — **CURRENT RUNTIME REVIEW / SEMANTIC RED / NON-STABLE PENDING INDEPENDENT REVIEW**
 
 - **Authority:** run/job `33931380325 / 101210520053`, immutable package `9957324848`, selector405. Valid 405-row ledger: **397 PASS / 8 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,393,398]`. 389/390/404/405 PASS. Result `9958722468`; ledger SHA `5d16ee4508ead7eb5422c4dd0d03a9903009b8552d8e815ff2394f872eebe34a`.
@@ -11,7 +99,8 @@
 
 ## M3-CP4c3-TB25-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
-- **Record:** `Architecture_M3_CP4c3_TB25_Independent_Review_Record.md`, measures **CJ0–CJ9**. Static only: no
+- **Record:** `Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`), measures **CJ0–CJ9**. Static only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
   365/365 untouched; selectors 397/401/403 byte-frozen.
   `review_check.py authority 3d7f7f9a3afad3ed37fc615a206801cf6310f4ac` — ALL CHECKS PASSED.
@@ -4766,26 +4855,27 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB25-R1**: semantic source
-`3d7f7f9a3afad3ed37fc615a206801cf6310f4ac`, immutable CB28 package `9950303110`
-(`84c9cd0bdf5d8bef2288e1ca57d52bcec8d1503f368d82101ae10cfa14c49189`), selector 403, formal run/job
-`33919389753 / 101173990222`, **393 PASS / 10 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,389,390,393,398]`. Exact ledger:
-`bdcfbb9d2ea5e7c45535a0b95e2d1914f5245bab498a62dd99cb7b0348936cc0`; package/source/execution-view pre/post censuses
-equal. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **90**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB26-R1**: semantic source
+`e045bf7147afc02bd90eff4822e4b609edbaba66`, immutable CB30 package `9957324848`
+(`7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`), selector 405, formal run/job
+`33931380325 / 101210520053`, **397 PASS / 8 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,393,398]`. Exact ledger:
+`5d16ee4508ead7eb5422c4dd0d03a9903009b8552d8e815ff2394f872eebe34a`; package/source/execution-view pre/post censuses
+equal. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **91**.
 
-`M3-CP4c-3-TB25-REV` adjudicated that ledger. Ten REDs, four causes: 366/367 are the one open product problem, 398
-is the honest ownership gate, 389/390/393 are collateral assertions their identities do not own, and 368/369/370/374
-are carried surfaces. The certifier's seed rule was narrowed from two admissible sources to one and starves
-component 0 - **83 attributed boundary edges under the pre-CB27 rule, 0 under CB28's, on the identical component**.
-`M3-CP4c3-TB21-CAND-01` is **CLOSED as ill-formed**: its answer is set by which heuristic ran, not by the geometry.
-What replaces it is a dichotomy about the object - **either component 0 lies in exactly one certified face, or a
-separating arc meets its interior**, and the only mechanism that can hide such an arc from a source-edge barrier
-set is a trace transiting a vertex.
+`M3-CP4c-3-TB26-INDEPENDENT-REVIEW` adjudicated that ledger. CJ7/CJ8/CJ9 all worked - 389 and 390 recovered, the
+restored seed rule reproduces `[0,1,3]` and fails closed without choosing a winner, and 404/405 pass. But the
+frozen discriminator is **not** discharged: `interiorArcs=4` is an incidence count, not a separation, and the
+per-arc `forwardOrbit`/`reverseOrbit` that carries the distinction is computed and stored but serialized only as a
+count. Independently, **the CJ6 censuses are computed on the certifier's partition while the RED is raised on the
+plan's** - different domains and different barrier sets by construction - so no CJ6 number is yet admissible about
+the failing component. The 76-versus-97 boundary discrepancy is that same lawful domain difference, not omitted
+rows.
 
-**Exact next: `M3-CP4c-3-CB30` - Code + Build, runtime-free, GMP/GMPXX linked**, under
-`Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` **CJ6-CJ9**. Three censuses per uncut component -
-boundary, interior arc-incidence, vertex transit - published on the failure path and **never gated on an
-established owner**; the second admissible seed source restored without choosing a winner; one contract per gate;
-selector **405** with 403 as an exact prefix. **No barrier may be added or removed and no attribution rule changed
-beyond the CJ7 restoration before CJ6 reports.** No Directional runtime before `M3-CP4c-3-TB26`.
+**Exact next: `M3-CP4c-3-CB31` - Code + Build, runtime-free, GMP/GMPXX linked**, under
+`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` **CK8-CK9**. Serialize one line per census row for the
+failing component including both dart orbits per interior arc; strengthen ordinal 404 in place; replace ordinal
+393's assertion with distinct-source-face coverage; publish the partition identity on both sides and add one gating
+identity at selector **406** asserting the correspondence is published, not that it holds. **CB31 corrects no
+product behaviour** - no barrier added or removed, no attribution rule changed, no seed winner chosen, no partition
+unified, no `terminalSlit` handling altered. No Directional runtime before `M3-CP4c-3-TB27`.
