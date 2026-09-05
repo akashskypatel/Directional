@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB33 closeout docs apply
-base_sha=b580e2038707f1685876019b0828f0535c17be33
-patch_sha256=d9c21ef82b86df3d578e8b41e1f8468ce652219d9b819858e2bb7918a5c93464
-retry=1
