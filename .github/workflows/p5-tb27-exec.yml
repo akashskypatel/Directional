@@ -1,0 +1,377 @@
+name: P5 TB27 Artifact-Only Test Benchmark
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/p5-tb27-exec-20260904.txt
+      - .github/workflows/p5-tb27-exec.yml
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/p5-tb27-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb27-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Execute immutable CB31 selector406 artifact-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARTIFACT_ID=9961564041
+          EXPECTED_ARTIFACT_NAME='m3-cp4c3-cb31-result-33940038189'
+          EXPECTED_PROVIDER_DIGEST='sha256:ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf'
+          EXPECTED_ZIP_SHA='ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf'
+          EXPECTED_SOURCE_SHA='eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc'
+          EXPECTED_365='6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1'
+          EXPECTED_397='d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5'
+          EXPECTED_401='0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869'
+          EXPECTED_403='60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007'
+          EXPECTED_405='615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7'
+          EXPECTED_406='efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0'
+          EXPECTED_PACKAGE_CENSUS_SHA='c482ef44f2c40fd2ec6668f31da0965ca508e4de9198d87ebfb913972dc854ea'
+          EXPECTED_SOURCE_CENSUS_SHA='0cb00d0c452f563d7b1baa05d757f5e1aa033957ab67940d011be98692013e2e'
+
+          ROOT="$RUNNER_TEMP/m3-cp4c3-tb27"
+          PKG="$ROOT/package"
+          SOURCE="$ROOT/source"
+          EXEC_VIEW="$ROOT/execution-view"
+          RUNTIME="$ROOT/runtime"
+          RESULT="$RUNNER_TEMP/m3-cp4c3-tb27-result"
+          LOG="$RUNNER_TEMP/m3-cp4c3-tb27.log"
+          ZIP="$ROOT/artifact-${ARTIFACT_ID}.zip"
+          rm -rf "$ROOT" "$RESULT"
+          mkdir -p "$PKG" "$SOURCE" "$EXEC_VIEW/bin" "$RUNTIME" "$RESULT/raw" "$RESULT/resources"
+          : > "$LOG"
+          exec > >(tee -a "$LOG") 2>&1
+
+          runtime_started=false
+          runtime_completed=false
+          preflight_completed=false
+          execution_view_verified=false
+          orchestration_failure=false
+          benchmark_execution=false
+          configure_execution=false
+          compile_execution=false
+          relink_execution=false
+          generated_discovery=false
+          package_repair=false
+          mode_repair=false
+          source_test_fixture_selector_mutation=false
+
+          finish() {
+            status=$?
+            set +e
+            {
+              echo "script_exit=${status}"
+              echo "runtime_started=${runtime_started}"
+              echo "runtime_completed=${runtime_completed}"
+              echo "preflight_completed=${preflight_completed}"
+              echo "execution_view_verified=${execution_view_verified}"
+              echo "orchestration_failure=${orchestration_failure}"
+              echo "benchmark_execution=${benchmark_execution}"
+              echo "configure_execution=${configure_execution}"
+              echo "compile_execution=${compile_execution}"
+              echo "relink_execution=${relink_execution}"
+              echo "generated_discovery=${generated_discovery}"
+              echo "package_repair=${package_repair}"
+              echo "mode_repair=${mode_repair}"
+              echo "source_test_fixture_selector_mutation=${source_test_fixture_selector_mutation}"
+            } | tee "$RESULT/execution-boundary.txt"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$LOG"
+          }
+          trap finish EXIT
+
+          fail_orchestration() {
+            orchestration_failure=true
+            echo "ORCHESTRATION_FAILURE: $*" >&2
+            exit 90
+          }
+
+          census_tree() {
+            local root="$1" out="$2"
+            : > "$out"
+            while IFS= read -r -d '' path; do
+              rel="${path#"$root"/}"
+              [[ "$path" == "$root" ]] && rel='.'
+              mode="$(stat -c '%a' "$path")"
+              type="$(stat -c '%F' "$path")"
+              size="$(stat -c '%s' "$path")"
+              digest='-'
+              target='-'
+              if [[ -f "$path" ]]; then digest="$(sha256sum "$path" | awk '{print $1}')"; fi
+              if [[ -L "$path" ]]; then target="$(readlink "$path")"; fi
+              printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$rel" "$type" "$mode" "$size" "$digest" "$target" >> "$out"
+            done < <(find "$root" -mindepth 0 -print0 | LC_ALL=C sort -z)
+          }
+          census_sha() { sha256sum "$1" | awk '{print $1}'; }
+
+          {
+            echo "turn=M3-CP4c-3-TB27"
+            echo "workflow=$GITHUB_WORKFLOW"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "event=$GITHUB_EVENT_NAME"
+            echo "event_sha=$GITHUB_SHA"
+            echo "artifact_id=$ARTIFACT_ID"
+            echo "expected_source_sha=$EXPECTED_SOURCE_SHA"
+            echo "runtime_contract=406-identities-one-per-fresh-process"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            uname -a
+            python3 --version
+          } | tee "$RESULT/environment.txt"
+
+          artifact_json="$(curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}")"
+          provider_digest="$(printf '%s' "$artifact_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("digest", ""))')"
+          artifact_name="$(printf '%s' "$artifact_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("name", ""))')"
+          [[ "$provider_digest" == "$EXPECTED_PROVIDER_DIGEST" ]] || fail_orchestration "provider digest mismatch: $provider_digest"
+          [[ "$artifact_name" == "$EXPECTED_ARTIFACT_NAME" ]] || fail_orchestration "artifact name mismatch: $artifact_name"
+          curl -L --fail --silent --show-error \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" \
+            -o "$ZIP"
+          zip_sha="$(sha256sum "$ZIP" | awk '{print $1}')"
+          [[ "$zip_sha" == "$EXPECTED_ZIP_SHA" ]] || fail_orchestration "ZIP digest mismatch: $zip_sha"
+          printf 'artifact_id=%s\nartifact_name=%s\nprovider_digest=%s\ndownloaded_zip_sha256=%s\n' \
+            "$ARTIFACT_ID" "$artifact_name" "$provider_digest" "$zip_sha" | tee "$RESULT/artifact-authority.txt"
+
+          unzip -q "$ZIP" -d "$PKG"
+          (cd "$PKG"; sha256sum -c SHA256SUMS) > "$RESULT/sha256sums-check.txt"
+          [[ "$(cat "$PKG/metadata/source-commit.txt")" == "$EXPECTED_SOURCE_SHA" ]] || fail_orchestration 'source commit mismatch'
+          [[ "$(cat "$PKG/metadata/build-exit-code.txt")" == '0' ]] || fail_orchestration 'build exit nonzero'
+          [[ "$(cat "$PKG/metadata/preflight-exit-code.txt")" == '0' ]] || fail_orchestration 'compile preflight exit nonzero'
+          for token in 'runtimeExecution=false' 'turnBoundary=Code+Build-only' 'exactArithmeticBackend=GMP' 'preflightCompile=true'; do
+            grep -Fxq "$token" "$PKG/metadata/command-boundary.txt" || fail_orchestration "missing command boundary: $token"
+          done
+          for token in 'DIRECTIONAL_ENABLE_GMP:BOOL=ON' 'libgmpxx.so' 'libgmp.so'; do
+            grep -Fq "$token" "$PKG/metadata/CMakeCache.txt" "$PKG/metadata/gmp-evidence.txt" || fail_orchestration "missing GMP evidence: $token"
+          done
+
+          required_executables=(
+            directional_benchmarks
+            directional_compiled_api_tests
+            directional_surface_cell_authority_kernel_tests
+            directional_surface_cell_completion_tests
+            directional_surface_cell_producer_tests
+            directional_surface_cell_validation_tests
+          )
+          for exe in "${required_executables[@]}"; do
+            [[ -f "$PKG/bin/$exe" && -x "$PKG/bin/$exe" ]] || fail_orchestration "required executable mode absent: $exe"
+          done
+
+          census_tree "$PKG" "$RESULT/package-census-before.tsv"
+          package_before="$(census_sha "$RESULT/package-census-before.tsv")"
+          [[ "$package_before" == "$EXPECTED_PACKAGE_CENSUS_SHA" ]] || fail_orchestration "package census mismatch: $package_before"
+          printf '%s  package-census-before.tsv\n' "$package_before" > "$RESULT/package-census-before.sha256"
+
+          source_archive="$PKG/source/source-${EXPECTED_SOURCE_SHA}.tar.gz"
+          [[ -f "$source_archive" ]] || fail_orchestration 'source archive absent'
+          tar -xzf "$source_archive" -C "$SOURCE"
+          census_tree "$SOURCE" "$RESULT/source-census-before.tsv"
+          source_before="$(census_sha "$RESULT/source-census-before.tsv")"
+          [[ "$source_before" == "$EXPECTED_SOURCE_CENSUS_SHA" ]] || fail_orchestration "source census mismatch: $source_before"
+          printf '%s  source-census-before.tsv\n' "$source_before" > "$RESULT/source-census-before.sha256"
+
+          declare -A selectors=(
+            [365]='.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt'
+            [397]='.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_397.txt'
+            [401]='.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_401.txt'
+            [403]='.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_403.txt'
+            [405]='.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_405.txt'
+            [406]='.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_406.txt'
+          )
+          declare -A expected=(
+            [365]="$EXPECTED_365" [397]="$EXPECTED_397" [401]="$EXPECTED_401"
+            [403]="$EXPECTED_403" [405]="$EXPECTED_405" [406]="$EXPECTED_406"
+          )
+          : > "$RESULT/selector-authority.txt"
+          for n in 365 397 401 403 405 406; do
+            path="$SOURCE/${selectors[$n]}"
+            [[ -f "$path" ]] || fail_orchestration "selector missing: $n"
+            actual="$(sha256sum "$path" | awk '{print $1}')"
+            count="$(wc -l < "$path" | tr -d ' ')"
+            [[ "$actual" == "${expected[$n]}" ]] || fail_orchestration "selector hash mismatch: $n"
+            [[ "$count" == "$n" ]] || fail_orchestration "selector count mismatch: $n/$count"
+            printf '%s\t%s\t%s\n' "$n" "$actual" "$count" >> "$RESULT/selector-authority.txt"
+          done
+          selector406="$SOURCE/${selectors[406]}"
+          for n in 365 397 401 403 405; do
+            cmp -s <(head -n "$n" "$selector406") "$SOURCE/${selectors[$n]}" || fail_orchestration "selector $n is not exact prefix of 406"
+          done
+
+          mkdir -p "$EXEC_VIEW/bin" "$EXEC_VIEW/test-data/benchmarks"
+          for exe in "${required_executables[@]}"; do
+            ln "$PKG/bin/$exe" "$EXEC_VIEW/bin/$exe" || fail_orchestration "hardlink failed: $exe"
+            [[ "$(sha256sum "$PKG/bin/$exe" | awk '{print $1}')" == "$(sha256sum "$EXEC_VIEW/bin/$exe" | awk '{print $1}')" ]] || fail_orchestration "staged binary digest mismatch: $exe"
+          done
+          [[ -d "$SOURCE/benchmarks/fixtures" ]] || fail_orchestration 'packaged fixture tree absent'
+          cp -a "$SOURCE/benchmarks/fixtures" "$EXEC_VIEW/test-data/benchmarks/"
+          probe="$EXEC_VIEW/bin/directional_surface_cell_producer_tests"
+          exe_dir="$(dirname "$(realpath -e "$probe")")"
+          sibling="$(dirname "$exe_dir")/test-data"
+          legacy="$exe_dir/test-data"
+          if [[ -d "$sibling/benchmarks/fixtures" ]]; then
+            resolved="$sibling"; rule=sibling
+          elif [[ -d "$legacy/benchmarks/fixtures" ]]; then
+            resolved="$legacy"; rule=legacy
+          else
+            fail_orchestration 'consumer-resolution preflight found no fixture tree'
+          fi
+          [[ "$rule" == sibling ]] || fail_orchestration "unexpected fixture resolution rule: $rule"
+          [[ -f "$resolved/benchmarks/fixtures/milestone-g/mechanical_feature.obj" ]] || fail_orchestration 'mechanical fixture absent'
+          [[ -f "$resolved/benchmarks/fixtures/milestone-g/sphere_prescribed.obj" ]] || fail_orchestration 'sphere fixture absent'
+          grep -Fq 'executableDirectory.parent_path() / "test-data"' "$SOURCE/tests/TestFixturePaths.h" || fail_orchestration 'sibling rule drifted'
+          grep -Fq 'executableDirectory / "test-data"' "$SOURCE/tests/TestFixturePaths.h" || fail_orchestration 'legacy rule drifted'
+          printf 'binary_stage=hardlink\nfixture_stage=copy-from-immutable-packaged-source\nresolved_rule=%s\nresolved_test_data=%s\n' "$rule" "$resolved" > "$RESULT/execution-view.txt"
+          execution_view_verified=true
+
+          python3 - "$SOURCE" "$selector406" "$RESULT/identity-map.tsv" <<'PY'
+          import pathlib, re, sys, hashlib
+          root=pathlib.Path(sys.argv[1]); selector=pathlib.Path(sys.argv[2]).read_text().splitlines(); out=pathlib.Path(sys.argv[3])
+          cm=(root/'cmake/DirectionalTests.cmake').read_text()
+          targets={
+            'directional_compiled_api_tests':['tests/CompiledLibraryTests.cpp'],
+            'directional_surface_cell_producer_tests':[],
+            'directional_surface_cell_authority_kernel_tests':['tests/FieldTransportAtlasTests.cpp','tests/SurfaceCellAuthorityKernelTests.cpp'],
+            'directional_surface_cell_completion_tests':['tests/FlowRepStrandsPhase15Tests.cpp','tests/PatchDescriptorMilestoneETests.cpp','tests/PureQuadCompletionPhase18Tests.cpp','tests/SurfaceArrangementRowIdentityTests.cpp','tests/SurfaceComplexSimplificationPhase17Tests.cpp'],
+            'directional_surface_cell_validation_tests':['tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp','tests/SurfaceMeshOptimizerPhase19Tests.cpp','tests/SurfaceMeshOptimizerPhase20Tests.cpp','tests/SurfaceMeshOptimizerPhase21Tests.cpp','tests/SurfaceMeshOptimizerPhase22Tests.cpp'],
+          }
+          m=re.search(r'set\(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES(.*?)\)\n\nadd_executable',cm,re.S)
+          if not m: raise SystemExit('producer source set not found')
+          for line in m.group(1).splitlines():
+            s=line.strip()
+            if s.endswith('.cpp'): targets['directional_surface_cell_producer_tests'].append(s)
+          pat=re.compile(r'\bTEST(?:_F|_P)?\s*\(\s*([A-Za-z0-9_]+)\s*,\s*([A-Za-z0-9_]+)\s*\)')
+          owners={}
+          for binary, files in targets.items():
+            for rel in files:
+              for suite,name in pat.findall((root/rel).read_text(errors='replace')):
+                owners.setdefault(f'{suite}.{name}',[]).append((binary,rel))
+          rows=[]
+          for ordinal,identity in enumerate(selector,1):
+            found=owners.get(identity,[])
+            if len(found)!=1: raise SystemExit(f'identity owner count {len(found)} for {ordinal}:{identity}')
+            rows.append((ordinal,identity,*found[0]))
+          out.write_text('ordinal\tidentity\tbinary\tsource\n'+''.join(f'{o}\t{i}\t{b}\t{s}\n' for o,i,b,s in rows))
+          if len(rows)!=406: raise SystemExit(f'identity count {len(rows)}')
+          print('identity_count=406')
+          print('identity_map_sha256='+hashlib.sha256(out.read_bytes()).hexdigest())
+          PY
+          [[ "$(($(wc -l < "$RESULT/identity-map.tsv") - 1))" -eq 406 ]] || fail_orchestration 'identity map count mismatch'
+          sha256sum "$RESULT/identity-map.tsv" > "$RESULT/identity-map.sha256"
+
+          census_tree "$EXEC_VIEW" "$RESULT/execution-view-before.tsv"
+          sha256sum "$RESULT/execution-view-before.tsv" > "$RESULT/execution-view-before.sha256"
+          preflight_completed=true
+
+          printf 'ordinal\tidentity\tbinary\texit\tselected\tresult\telapsed_seconds\tmax_rss_kib\traw_log\n' > "$RESULT/ledger.tsv"
+          runtime_started=true
+          ordinal=0
+          while IFS= read -r identity || [[ -n "$identity" ]]; do
+            ordinal=$((ordinal+1))
+            map_line="$(awk -F '\t' -v o="$ordinal" 'NR>1 && $1==o {print; exit}' "$RESULT/identity-map.tsv")"
+            binary="$(printf '%s\n' "$map_line" | cut -f3)"
+            [[ -n "$binary" ]] || fail_orchestration "owner missing for ordinal $ordinal"
+            raw="$RESULT/raw/ordinal-$(printf '%03d' "$ordinal").log"
+            resource="$RESULT/resources/ordinal-$(printf '%03d' "$ordinal").time"
+            work="$RUNTIME/ordinal-$(printf '%03d' "$ordinal")"
+            mkdir -p "$work"
+            echo "TB27 ordinal=$ordinal identity=$identity owner=$binary"
+            set +e
+            (cd "$work" && timeout 180s /usr/bin/time -f 'elapsed_seconds=%e\nmax_rss_kib=%M' -o "$resource" "$EXEC_VIEW/bin/$binary" --gtest_filter="$identity" --gtest_color=no) > "$raw" 2>&1
+            code=$?
+            set -e
+            [[ "$code" -ne 124 && "$code" -ne 137 ]] || fail_orchestration "timeout at ordinal $ordinal"
+            [[ "$code" -eq 0 || "$code" -eq 1 ]] || fail_orchestration "abnormal runtime exit $code at ordinal $ordinal"
+            selected="$(grep -c '^\[ RUN      \] ' "$raw" || true)"
+            [[ "$selected" -eq 1 ]] || fail_orchestration "non-single selection ($selected) at ordinal $ordinal"
+            result=RED; [[ "$code" -eq 0 ]] && result=PASS
+            elapsed="$(awk -F= '$1=="elapsed_seconds"{print $2}' "$resource")"
+            rss="$(awk -F= '$1=="max_rss_kib"{print $2}' "$resource")"
+            printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$ordinal" "$identity" "$binary" "$code" "$selected" "$result" "$elapsed" "$rss" "raw/$(basename "$raw")" >> "$RESULT/ledger.tsv"
+          done < "$selector406"
+          [[ "$ordinal" -eq 406 ]] || fail_orchestration "runtime identity count mismatch: $ordinal"
+          runtime_completed=true
+
+          python3 - "$RESULT/ledger.tsv" "$RESULT/semantic-summary.txt" <<'PY'
+          import csv, hashlib, pathlib, sys
+          ledger=pathlib.Path(sys.argv[1]); summary=pathlib.Path(sys.argv[2])
+          rows=list(csv.DictReader(ledger.open(), delimiter='\t'))
+          if len(rows)!=406: raise SystemExit(f'incomplete ledger: {len(rows)}')
+          red=[int(r['ordinal']) for r in rows if r['result']=='RED']
+          passed=sum(r['result']=='PASS' for r in rows)
+          accepted=sum(r['result']=='PASS' for r in rows if int(r['ordinal'])<=365)
+          resources=[(float(r['elapsed_seconds']),int(r['max_rss_kib']),int(r['ordinal'])) for r in rows]
+          longest=max(resources); peak=max(resources,key=lambda x:x[1])
+          text=(f'total=406\npass={passed}\nred={len(red)}\nred_ordinals={red}\naccepted_prefix_pass={accepted}/365\n'
+                f'ordinal_393={rows[392]["result"]}\nordinal_398={rows[397]["result"]}\nordinal_404={rows[403]["result"]}\nordinal_406={rows[405]["result"]}\n'
+                f'longest_elapsed_seconds={longest[0]} ordinal={longest[2]}\npeak_rss_kib={peak[1]} ordinal={peak[2]}\n'
+                f'ledger_sha256={hashlib.sha256(ledger.read_bytes()).hexdigest()}\n')
+          summary.write_text(text); print(text,end='')
+          PY
+          sha256sum "$RESULT/ledger.tsv" > "$RESULT/ledger.sha256"
+          cp "$RESULT/raw/ordinal-393.log" "$RESULT/ordinal-393-evidence.log"
+          cp "$RESULT/raw/ordinal-404.log" "$RESULT/ordinal-404-evidence.log"
+          cp "$RESULT/raw/ordinal-406.log" "$RESULT/ordinal-406-evidence.log"
+
+          census_tree "$PKG" "$RESULT/package-census-after.tsv"
+          census_tree "$SOURCE" "$RESULT/source-census-after.tsv"
+          census_tree "$EXEC_VIEW" "$RESULT/execution-view-after.tsv"
+          [[ "$(census_sha "$RESULT/package-census-after.tsv")" == "$EXPECTED_PACKAGE_CENSUS_SHA" ]] || fail_orchestration 'immutable package census changed'
+          if [[ "$(census_sha "$RESULT/source-census-after.tsv")" != "$EXPECTED_SOURCE_CENSUS_SHA" ]]; then
+            source_test_fixture_selector_mutation=true
+            fail_orchestration 'immutable packaged source census changed'
+          fi
+          cmp -s "$RESULT/execution-view-before.tsv" "$RESULT/execution-view-after.tsv" || fail_orchestration 'execution view census changed'
+          echo 'package_census_equal=true' > "$RESULT/package-immutability.txt"
+          echo 'source_census_equal=true' > "$RESULT/source-immutability.txt"
+          echo 'execution_view_census_equal=true' > "$RESULT/execution-view-immutability.txt"
+          echo 'TB27_COMPLETE: artifact-only immutable execution complete; semantic interpretation deferred to captured evidence.'
+
+      - name: Upload TB27 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb27-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb27-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB27 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb27-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb27.log
+          if-no-files-found: error
+          retention-days: 14
