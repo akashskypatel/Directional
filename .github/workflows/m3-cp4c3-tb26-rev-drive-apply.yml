@@ -1,0 +1,32 @@
+name: M3 CP4c3 TB26 REV Drive Apply
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m3-cp4c3-tb26-rev-drive-apply-20260904.txt]
+permissions:
+  actions: write
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with: {pr_number: 8, label: m3-cp4c3-tb26-rev-drive-apply, commit_run_file: false}
+    secrets: inherit
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with: {workflow_path: .github/workflows/m3-cp4c3-tb26-rev-drive-apply.yml, source_ref: "${{ github.sha }}"}
+    secrets: inherit
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 14rm6oRuT0ec_IBjPPBc_O4LdCCxKGfAz
+      patch_sha256: 2532f1766982697a0471e4e23b2fb5170758315cef5a383aaa52add22e0b3145
+      base_sha: 89de16abc155d46d8c436260bdd9c5e7b0b8f8b0
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs(agent): close M3 CP4c3 TB26 runtime review"
+      retention_days: 7
+    secrets: inherit
