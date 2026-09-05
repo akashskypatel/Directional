@@ -138,10 +138,3 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **Sweep for other tolerant-selector / exact-consumer seams.** CP4c-0 found the pattern three times
   in one subsystem (flow classification, vertex sector, cross-edge flow). The same audit is owed wherever
   an exact authority was introduced downstream of a `double` decision.
-
----
-
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB27-INDEPENDENT-REVIEW` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **92**. **TB27-R1 is the latest semantic runtime authority at 399 PASS / 7 RED, accepted 365/365.** Exact next is `M3-CP4c-3-CB32` under CL6–CL9, the last diagnostic turn authorized on this frontier. PR #8 remains open, draft, and unmerged.
-remains **5**. Semantic M3 package count is **92**. **TB27-R1 is the latest semantic runtime authority at
-399 PASS / 7 RED, accepted 365/365.** Selector406 remains current. Exact next is
-`M3-CP4c-3-TB27-INDEPENDENT-REVIEW`. PR #8 remains open and unmerged.
