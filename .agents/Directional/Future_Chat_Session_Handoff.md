@@ -116,84 +116,92 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB32` — EXACT NEXT / Code + Build, runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB28` — EXACT NEXT / Test + Benchmark, artifact-only
 
-`M3-CP4c-3-TB27-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**, and
-`M3-CP4c-3-TB27-INDEPENDENT-REVIEW` has adjudicated it.
+`M3-CP4c-3-CB32` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**. It is the last
+diagnostic Code + Build turn authorized on the source-face-ownership frontier.
 
-### Immutable TB27-R1 authority
+### Immutable CB32 compile authority
 
-- semantic source `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`; immutable CB31 package `9961564041`
-  (`ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf`);
-- selector 406 (`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`), with 405/403/401/397/365 as
-  exact prefixes;
-- formal run/job `33946094875 / 101252363079`; result/log `9963419649 / 9963419830`;
-- ledger `8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`: **399 PASS / 7 RED**, accepted
-  **365/365**, RED `[366,367,368,369,370,374,398]`;
-- the prior attempt `33946019995` stopped with `runtime_started=false;orchestration_failure=true` and carries no
-  semantic credit.
+- evidence source: **`098ac7d93ea203222dd0ac50cdb68667744f0fd4`**;
+- compile run/job: **`33987769718 / 101364411259`**;
+- immutable result artifact: **`9975737868`**, SHA-256
+  **`16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec`**;
+- compile log artifact: **`9975738137`**, SHA-256
+  **`ba2a7c97532f328bb50742c2de31dfd106d130b4ec4533e434250bceb9ec36ae`**;
+- all eight approved targets compile GREEN; preflight 77/77 and full build 49/49 actions succeeded;
+- package internal `SHA256SUMS` verification passed and source status is clean;
+- `runtimeExecution=false`; no Directional test, benchmark, CLI, discovery binary, or custom input executed;
+- selector407: **407** identities, LF SHA-256
+  **`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`**;
+- selector406 is its exact 406-line prefix, packaged LF SHA-256
+  `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`.
 
-### What the independent review found
+The two compile corrections were mechanical only: `insert_or_assign` replaced default-constructing map access for a
+non-default-constructible semantic id, and the crossed-face census row is directly aggregate-initialized with its
+`sourceFace`. Neither changes the diagnostic semantics or product behavior.
 
-**Both CK measures landed.** Ordinal 404 publishes all four interior-arc rows with both dart orbits — arc **14**
-`(0,1)` and arc **22** `(0,3)` **separate**, arcs 20 and 24 are `(0,0)`. Ordinal 406 publishes
-`matchesFailingComponent=false`: the census is the certifier's `NotTraceCut` component with **214** faces, the
-failure is the plan's `EmptyFragmentOrbits` component with **191**, and the digests differ. Ordinal **393
-recovered** on a distinct-source-face coverage contract that still prints the whole conflict population.
+### What CB32 publishes
 
-**The prior review's all-bridges prediction is refuted** — an arc runs between consecutive `TraceCut` nodes and can
-contain a terminal-slit *segment* while still separating. Its two load-bearing claims are **confirmed**.
+CL6 now carries the arc-locus census required by the TB27 review: every interior-arc row can publish crossed source
+faces untruncated, each crossed face's component id in both the certifier `NotTraceCut` and plan
+`EmptyFragmentOrbits` partitions, and a typed trace-cut miss reason. The same evidence surface is attached to the
+failing plan component's interior arcs.
 
-**The separating arcs belong to the certifier's component and may not be promoted into evidence about the failing
-one.** Statically: the barrier families are identical and the plan's domain is contained in the certifier's, so
-each plan component sits inside a certifier component; the 23-face difference is the faces carrying a direct
-certified read, which the plan excludes and then cannot find as seeds.
+CL7 publishes the subset relation without unifying partitions. CL9 establishes selector407 and strengthens
+ordinal404 in place. CB32 publishes evidence only; it does not encode or execute the later review's correction choice.
 
-**Accounting unchanged: 44 / 14 / 30**, debt **5**, packages **92**. Accepted 365/365, no accepted RED ordinal.
+**CB32 did not apply a product correction.** No barrier was added/removed, no attribution rule changed, no owner
+winner selected, no partition unified, and no `terminalSlit` behavior changed.
 
-### CB32 boundary — CL6–CL9
+### Immutable pre-CB32 runtime authority
 
-Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked, no runtime, no package repair, no acceptance
-evidence. **The frontier reduces to one unmeasured fact: which source faces do arcs 14/20/22/24 cross, and which
-component of each partition contains them?**
+TB27-R1 remains the latest semantic runtime: source `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, package
+`9961564041`, selector406, run/job `33946094875 / 101252363079`, **399 PASS / 7 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`. Ordinal404 proves two separating certifier arcs (14 and 22); ordinal406 proves the
+certifier 214-face component and failing 191-face plan component are different objects.
 
-- **CL6 — the arc-locus census.** Every interior-arc row gains the arc's **crossed source faces** untruncated, each
-  face's component id in **both** partitions (or `absent`), and the **typed reason** the face is not trace-cut —
-  `TerminalSlit` / `SegmentRangeInvalid` / `TraceNotFound` / `DartOutOfRange` / `FaceNotFound` / `Other`. Publish
-  the same three fields for the **failing plan component's** interior arcs. Falsification stated first: a
-  separating arc inside the failing component selects the **barrier-set** correction with the arc named; its
-  absence selects the **attribution-rule** correction with the edges already named among 46 rows; a failing
-  component that is not a subset of the certifier's refutes the static containment argument.
-- **CL7** — publish the **subset** relation alongside the already-refuted equality boolean. **No partition is
-  unified**; that is a definition decision owned by `M3-CP4c3-DEFN-R3-CAND-01`.
-- **CL9** — selector **407** with 406 as its exact 406-line prefix; one gating publication/completeness identity,
-  `SurfaceCutGraph.InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`. Ordinal 404 strengthened
-  in place.
+Stable accounting remains **44 / 14 / 30**, debt **5**. CB32 is compile-green semantic package **93**, but no new
+semantic acceptance exists until TB28 executes it.
 
-**CL8 — HARD STOP RULE.** CB32 is the **last diagnostic turn authorized on source-face ownership**. The review that
-reads TB28 **must freeze a product correction** whichever branch CL6 measures; both are pre-named and the outcomes
-are exhaustive, so "insufficient evidence" is not an available finding. **If CL6 returns ambiguous, the default is
-the barrier-set branch: an arc whose two darts lie in different face-walk orbits must induce a barrier.**
+### TB28 boundary
 
-**Prohibited:** any product behaviour change — no barrier added or removed, no attribution rule changed, no seed
-winner chosen, no partition unified, no `terminalSlit` handling altered; asserting a value in ordinal 404 or 407;
-gating a CL6 census on an established owner; inferring a `traceCutFaces` exit reason from static source instead of
-publishing it; weakening `proves_cellularity()` or ordinals 397–406; changing any accepted identity 1–365 or any
-frozen selector byte; executing any Directional runtime.
+Execute `Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md` exactly against immutable artifact
+`9975737868` / source `098ac7d93ea203222dd0ac50cdb68667744f0fd4`.
+
+- artifact-only; no configure, compile, relink, repair, generated discovery, or source/test/fixture/selector mutation;
+- verify provider digest, internal `SHA256SUMS`, source authority, selector407 hash/cardinality, and the complete
+  frozen prefix chain before runtime;
+- execute all **407** identities exactly once in selector order, one identity per fresh process;
+- preserve the full 404/406/407 publication plus CL6/CL7 crossed-face/component/subset fields;
+- semantic RED is permitted evidence; orchestration failure is not;
+- postflight must prove package/source/execution-view immutability.
+
+**CL8 remains a hard route rule.** After one valid TB28 semantic run, the mandatory independent review must freeze a
+product correction. A separating arc inside the failing component selects the barrier-set correction; its absence
+selects the attribution-rule correction when the frozen evidence supports it; ambiguous/incomplete CL6 evidence
+defaults to the barrier-set correction. No fourth standalone diagnostic turn is authorized.
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
+`load_next`:
+- `turn-based-coding-agent/references/turns/TB.md`
+
+Project authority to load, in order:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` — **CL0–CL9**, the frozen CB32 scope.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB31_Code_Build_Report.md` — immutable package build authority.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII — DEFN-R3 and its TB24-REV amendment.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 406 and the frozen prefixes.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current frontier/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — exact CB32 compile/package authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md` — executable TB28 plan.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` — CL6–CL9 and CL8 hard stop.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — latest semantic baseline.
+6. `.agents/Directional/Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`.
+7. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` and `M3_CP4c_Consolidated_Record.md` only as routed authority.
+
+`conditional_modules`:
+- GitHub connector/Actions module for artifact acquisition, temporary workflow orchestration, and evidence capture.
+
+Do not preload sibling turn files, cold research/provenance, or uncited historical reports.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

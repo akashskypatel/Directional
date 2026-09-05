@@ -358,17 +358,33 @@ checkpoint whose PASS is **also readable** — 404 publishes all four interior-a
 certifier's. Ordinal **393**'s repaired coverage contract is runtime-proved. CL6 strengthens 404 in place; no
 identity is withdrawn.
 
-### 407 — PLANNED, `M3-CP4c-3-CB32` CL9
+### 407 — CURRENT GATE
 
-Selector 406 must be its exact 406-line prefix, with 405/403/401/397/365 the frozen prefixes of that. One gating
-identity is appended:
+`Architecture_M3_CP4c3_Required_Green_Selector_407.txt` — **407 identities**, authored by
+`M3-CP4c-3-CB32`, LF SHA-256
+`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`. Selector 406 is its exact 406-line
+prefix in the CB32 packaged source (LF SHA-256
+`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`), with the earlier frozen prefix chain
+retained. One gating identity is appended:
 
 - `SurfaceCutGraph.InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`
 
-It asserts that every interior-arc row publishes its **crossed source faces** untruncated, each face's component id
-in **both** partitions, and the **typed reason** the face is not trace-cut — **publication and completeness only,
-never a value**, and never gated on an established owner. Ordinal **404** has its assertions strengthened in place
-by CL6; its name and ordinal do not change, so the first 406 lines stay byte-identical.
+CB32 also strengthens ordinal **404** in place so the failing/certifier arc-locus publication is complete and bound
+to crossed source faces, component ids in both partitions, and typed trace-cut miss reasons. Its name and ordinal do
+not change, preserving the selector406 prefix. The appended identity remains a publication/completeness gate; it
+does not require the eventual correction branch to take a hypothesized value.
+
+**Compiled at `M3-CP4c-3-CB32`:** semantic evidence source
+`098ac7d93ea203222dd0ac50cdb68667744f0fd4`; run/job `33987769718 / 101364411259`; result/log artifacts
+`9975737868 / 9975738137` with SHA-256
+`16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec` /
+`ba2a7c97532f328bb50742c2de31dfd106d130b4ec4533e434250bceb9ec36ae`. Release/static Code + Build compiled all
+eight approved targets with GMP/GMPXX linked; preflight/full build succeeded and `runtimeExecution=false`. This is
+compile authority only, not semantic acceptance.
+
+**Exact successor:** `M3-CP4c-3-TB28`, artifact-only execution of selector407 on immutable package `9975737868`.
+After one valid semantic run, CL8 requires independent review to freeze a product correction; no fourth standalone
+diagnostic turn is authorized.
 
 ## Separate lineage — M1
 

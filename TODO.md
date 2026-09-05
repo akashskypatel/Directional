@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-04 UTC
+Last updated: 2026-09-05 UTC
 
 ## Purpose
 
@@ -26,45 +26,39 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB32` (Code + Build, runtime-free) — LAST DIAGNOSTIC TURN ON THIS FRONTIER
+## Current focus — `M3-CP4c-3-TB28` (Test + Benchmark, artifact-only)
 
-`M3-CP4c-3-TB27-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**, and
-`M3-CP4c-3-TB27-INDEPENDENT-REVIEW` has adjudicated it. Immutable CB31 package `9961564041` / semantic source
-`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` executed selector 406 in run/job `33946094875 / 101252363079`.
+`M3-CP4c-3-CB32` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**. Exact semantic
+evidence source `098ac7d93ea203222dd0ac50cdb68667744f0fd4` compiled in run/job
+`33987769718 / 101364411259` across all eight approved targets. Immutable package artifact `9975737868` has SHA-256
+`16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec`; log artifact `9975738137` has SHA-256
+`ba2a7c97532f328bb50742c2de31dfd106d130b4ec4533e434250bceb9ec36ae`. `runtimeExecution=false`.
 
-- ledger: **399 PASS / 7 RED**, accepted **1–365 = 365/365 PASS**;
-- RED ordinals: `366,367,368,369,370,374,398` — **the smallest RED set of the checkpoint**;
-- result/log artifacts: `9963419649 / 9963419830`;
-- **393 recovered**; 404 and 406 PASS.
+Selector407 is frozen at **407 identities**, LF SHA-256
+`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`; selector406 is its exact 406-line prefix.
+CB32 publishes CL6 crossed-source-face/component/miss-reason evidence for both partitions and the failing plan
+component and CL7 subset evidence. It changes no product behavior and does not choose the correction branch.
 
-**Independent-review verdict.** Both CK measures landed. Ordinal 404 publishes all four interior-arc rows with both
-dart orbits — arc **14** `(0,1)` and arc **22** `(0,3)` **separate**, arcs 20 and 24 are `(0,0)` — refuting the
-prior review's all-bridges prediction. Ordinal 406 publishes `matchesFailingComponent=false`: the census is the
-certifier's 214-face `NotTraceCut` component, the failure is the plan's 191-face `EmptyFragmentOrbits` one.
-**The separating arcs may not be promoted into evidence about the failing component.** No stable event added.
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **92**. CP4c-3 remains **OPEN**.
+Latest semantic runtime remains TB27-R1: **399 PASS / 7 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`. Stable accounting remains **44 events / 14 categories / 30 recurrences**,
+produced-witness debt **5**. CB32 is compile-green semantic package **93**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB32`**, Code + Build, runtime-free, GMP/GMPXX linked, under **CL6–CL9** of
-`Architecture_M3_CP4c3_TB27_Independent_Review_Record.md`:
+- [ ] Execute **`M3-CP4c-3-TB28`** from immutable artifact `9975737868` only, following
+      `Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md`.
+- [ ] Preflight exact artifact/source/selector authority; selector407 must be 407 identities with hash
+      `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae` and selector406 an exact prefix.
+- [ ] Run all 407 identities exactly once, in order, one identity per fresh process. No rebuild/repair/mutation and
+      no benchmark execution.
+- [ ] Preserve complete ordinal404/406/407 and CL6/CL7 crossed-face/component/subset publication.
+- [ ] Update `Regression_Root_Cause_Tracker.md` for every observed RED/candidate before TB28 closes.
+- [ ] Route one valid semantic run to **`M3-CP4c-3-TB28-INDEPENDENT-REVIEW`**.
 
-- [ ] **CL6** publish each interior arc's **crossed source faces** untruncated, each face's component id in **both**
-      partitions, and the **typed reason** the face is not trace-cut; publish the same for the **failing plan
-      component's** interior arcs.
-- [ ] **CL7** publish the **subset** relation alongside the refuted equality boolean; unify nothing.
-- [ ] **CL9** selector **407** with 406 as an exact prefix; one gating publication/completeness identity; ordinal
-      404 strengthened in place.
-
-**CL8 — HARD STOP RULE.** CB32 is the **last diagnostic turn authorized on source-face ownership**. The review that
-reads TB28 **must freeze a product correction** whichever branch CL6 measures — a separating arc inside the failing
-component selects the barrier-set correction, its absence selects the attribution-rule correction — and an ambiguous
-census **defaults to the barrier-set branch**: an arc whose two darts lie in different face-walk orbits must induce
-a barrier.
-
-**CB32 corrects no product behaviour.** No Directional runtime before `M3-CP4c-3-TB28`.
+**CL8 — HARD STOP RULE.** That review must freeze a product correction. A separating arc inside the failing
+component selects the barrier-set correction; its absence selects the attribution-rule correction when the frozen
+evidence supports it; ambiguous/incomplete CL6 evidence defaults to the barrier-set correction. No fourth standalone
+diagnostic turn is authorized.
 
 ## Carried forward from M1
 
@@ -104,7 +98,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
   CP4c-3 remains open. **TB27-R1 is the latest valid semantic runtime** at 399 PASS / 7 RED, accepted 365/365,
   on source `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / package `9961564041` / selector406.
-  Exact next: **`M3-CP4c-3-TB27-INDEPENDENT-REVIEW`**.
+  Exact next: **`M3-CP4c-3-TB28`**, artifact-only on immutable CB32 package `9975737868` / selector407.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.

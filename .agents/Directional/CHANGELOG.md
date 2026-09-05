@@ -1,3 +1,33 @@
+## 2026-09-05 — `M3-CP4c-3-CB32`: final source-face ownership diagnostic compiled GREEN; selector407/package93; TB28 next
+
+Code + Build only; **no Directional runtime or benchmark executed**. CB32 implements CL6–CL9 from the TB27
+independent review without correcting product behavior. Interior-arc diagnostics now publish crossed source faces,
+component ids in both the certifier `NotTraceCut` and failing-plan `EmptyFragmentOrbits` partitions, typed trace-cut
+miss reasons, and the corresponding failing-plan arc locus. CL7 publishes the subset relation without unifying partitions. CB32 stops at evidence publication; the correction
+branch remains owned by the post-TB28 independent review under CL8.
+
+Selector407 is **407 identities**, LF SHA-256
+`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`, with selector406 as its exact 406-line
+prefix. The appended identity is
+`SurfaceCutGraph.InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`; ordinal404 is
+strengthened in place.
+
+Two mechanical compile defects were corrected without semantic change: non-default-constructible census values now
+use `insert_or_assign`, and crossed-face rows are directly aggregate-initialized with `sourceFace`. Exact semantic
+evidence source **`098ac7d93ea203222dd0ac50cdb68667744f0fd4`** compiled in run/job
+**`33987769718 / 101364411259`**. Immutable result/log artifacts are **`9975737868 / 9975738137`**, SHA-256
+`16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec` /
+`ba2a7c97532f328bb50742c2de31dfd106d130b4ec4533e434250bceb9ec36ae`. Preflight 77/77 and full build 49/49
+actions succeeded across all eight approved targets, package manifest verification passed, GMP/GMPXX link evidence
+is present, source status stayed clean, and `runtimeExecution=false`.
+
+The second compile-fix Drive patch was consumed successfully by run `33987631930`, permanently deleted afterward,
+and its temporary apply controls retired. Stable accounting remains **44 / 14 / 30**, debt **5**; compile-green,
+semantically unaccepted package count advances to **93**. Latest semantic runtime remains TB27-R1 at **399 PASS / 7
+RED**, accepted **365/365**. Exact successor: **`M3-CP4c-3-TB28`**, artifact-only on package `9975737868` /
+selector407. CL8 requires the following independent review to freeze a product correction; no fourth standalone
+diagnostic turn is authorized.
+
 ## 2026-09-05 — `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`: two of four arcs separate, on the wrong component; CB32 frozen as the last diagnostic turn
 
 Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/
