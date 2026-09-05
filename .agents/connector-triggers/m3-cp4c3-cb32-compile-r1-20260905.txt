@@ -1,4 +1,4 @@
-purpose=M3-CP4c-3-CB32 compile-only retry after diagnosed map insertion fix
-source_sha=d75f685c7d7ec65a003bfec39f95359d85145d48
+purpose=M3-CP4c-3-CB32 compile-only retry after diagnosed crossed-face census initialization fix
+source_sha=098ac7d93ea203222dd0ac50cdb68667744f0fd4
 runtimeExecution=false
-retry=1
+retry=2
