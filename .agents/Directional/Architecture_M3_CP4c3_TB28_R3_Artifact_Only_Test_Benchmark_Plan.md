@@ -7,7 +7,7 @@
 **Package ZIP SHA-256:** `16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec`
 **Selector:** 407 identities, LF SHA-256 `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`
 **Execution harness:** `.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh --execute`
-**Authority:** CM7–CM9 of `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md`.
+**Authority:** CM7–CM9 of `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB28-R3-REV`; its frozen correction is restated in `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md` §7).
 
 ## 1. Purpose and credibility gate
 

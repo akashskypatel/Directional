@@ -391,11 +391,17 @@ selector's frozen plan requires, and recorded one runtime binary hash where the 
 executables. **Selector 407 has therefore never been validly executed**, and its `407 PASS` figure may not be
 quoted as a gate result or an accepted-prefix result. `LESSONS.md` 129, 130.
 
-**Exact successor:** `M3-CP4c-3-CB33`, orchestration correction only, then `M3-CP4c-3-TB28-R3`, a control
-re-execution of selector 407 on the same immutable package `9975737868` — **credible only if ordinals 366, 367 and
-398 are RED**. The product correction is already frozen (the separating-arc barrier rule) and is applied at
-`M3-CP4c-3-CB34`; it may require an appended witness at selector **408**, with 407 as an exact prefix, asserting the
-rule's effect on the census and never a predicted owner value.
+**Validly executed at `M3-CP4c-3-TB28-R3`** — run/job `33995961030 / 101386467115` on the same immutable package
+`9975737868`, harness `b3191b314afa22f72e6f720519cfa2f8ad090dce3de5617612ad64c195489fbf`, ledger
+`fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`: **400 PASS / 7 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, **every row `selected=1`**. Ordinals 404, 406 and the
+appended 407 PASS. Against TB27-R1's 399 PASS / 7 RED on selector 406, **the delta is exactly the appended
+identity** — the control that settled the TB28-R2 false green. Promoted to runtime authority at
+`M3-CP4c-3-TB28-R3-REV`.
+
+**Exact successor:** `M3-CP4c-3-CB34`, which applies the frozen **separating-arc barrier rule** and may require an
+appended witness at selector **408**, with 407 as an exact prefix, asserting the rule's **effect on the census** and
+never a predicted owner value. Ordinals 397–407 keep their contracts and none may be weakened to obtain a green.
 
 ## Separate lineage — M1
 

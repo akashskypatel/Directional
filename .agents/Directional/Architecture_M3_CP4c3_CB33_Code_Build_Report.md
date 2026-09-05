@@ -2,7 +2,7 @@
 
 **Turn:** `M3-CP4c-3-CB33`
 **Disposition:** **COMPLETE / ORCHESTRATION CORRECTION INSTALLED / STATIC PREFLIGHT GREEN / NO DIRECTIONAL RUNTIME / NO COMPILE REQUIRED / SEMANTIC AUTHORITY UNCHANGED**
-**Scope owner:** CM7 of `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md`
+**Scope owner:** CM7 of `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB28-R3-REV`; its frozen correction is restated in `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md` §7)
 **Exact successor:** `M3-CP4c-3-TB28-R3-EXEC`, then evidence-only `M3-CP4c-3-TB28-R3-REV`.
 
 ## 1. Boundary and authority

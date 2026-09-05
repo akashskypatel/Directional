@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-05, `M3-CP4c-3-TB28-INDEPENDENT-REVIEW`):** runtime authority **remains TB27-R1** on selector 406 at **399 PASS / 7 RED**, accepted **365/365**. **`M3-CP4c-3-TB28-R2` is REJECTED as orchestration-invalid**: it reported `407 PASS / 0 RED` on a product whose ownership path is byte-for-byte unchanged from that 7-RED baseline, and published none of the ledger artifacts its frozen plan requires. **A status change with no behaviour change is a harness result, not a product result.** **CL8 is discharged - the product correction is FROZEN: the separating-arc barrier rule**, every arc whose two darts lie in different face-walk orbits contributes barriers and its crossed faces become trace-cut. Exact next is `M3-CP4c-3-CB33`, **orchestration correction only**, reusing the package unchanged; then TB28-R3 as a control; then CB34 applies the frozen correction.
+> **Current CP4c-3 authority (2026-09-05, `M3-CP4c-3-TB28-R3-REV`):** runtime authority is **TB28-R3** on selector **407** at **400 PASS / 7 RED**, accepted **365/365** — **the control passed.** On the same immutable package and with no product change, the repaired harness reproduced TB27-R1's ledger **exactly**, the only delta being the one appended identity; TB28-R2's `407 PASS / 0 RED` on that same artifact is settled as the harness failure it was. The instrument now proves selection per row — `PASS` requires `selected == 1` **and** `exit == 0` — and was verified in source. **The accepted-prefix count, unestablished at TB28, is restored to 365/365.** Exact next is **`M3-CP4c-3-CB34`**, which applies the **frozen separating-arc barrier rule** — the first product correction on this frontier since CB27.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,32 +185,27 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB27-R1`, unchanged.** Selector **406**, **399 PASS / 7 RED**, accepted
-**1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. The mechanical actual embedded complex is
-**certified cellular** — `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`.
+**Runtime authority — `M3-CP4c-3-TB28-R3`.** Selector **407**, **400 PASS / 7 RED**, accepted **1–365 = 365/365**,
+reds {366, 367, 368, 369, 370, 374, 398}. The mechanical actual embedded complex is **certified cellular** —
+`V=22, E=26, F=6, componentCount=1, χ=2, residual=0`.
 
-**`M3-CP4c-3-TB28-R2` produced no runtime authority.** Its `407 PASS / 0 RED` is rejected as orchestration-invalid.
-The proof is short: selector 407 is selector 406 plus one identity with 406 as its exact prefix, so ordinals 366,
-367 and 398 are present unchanged; CB32's entire source diff is diagnostic — every added reference to
-`traceCutFaces` is a `.count()` read, and nothing writes `barriers`, `directOwners`, the seed rule, the partition or
-`proves_cellularity()`. **No behaviour change can account for the status change.** The report also omits the
-ledger, identity map, RED ordinal list, accepted-prefix count, censuses and resource evidence its own frozen plan
-requires, and records **one** runtime binary hash where the package holds five test executables — consistent with
-every row being routed to a single binary, where an unmatched `--gtest_filter` exits 0 and "exit 0 is PASS"
-manufactures the green. `LESSONS.md` 129, 130.
+**The control passed, and it was a real control.** TB27-R1 was 399 PASS / 7 RED on selector 406; TB28-R3 is 400
+PASS / 7 RED on selector 407 = 406 plus one identity, and that identity PASSes. **The delta between the two runs is
+exactly the appended identity.** Same immutable package `9975737868`, same source, and `git diff` over
+`src include tests` is empty — CB33 changed only the harness and **deliberately did not recompile**, because a new
+package would have created a second changed variable.
 
-**Its CL6 census was also off-object, for the fourth consecutive turn** — `ReliefTopologyBuildFailed` at
-`quadPatchIndex=0` over a 27-face candidate set in component 1 with `censusFailureCount=0`, where the frontier is
-component 0 with 191 faces and 4 interior arcs. The `subset=true` result compares neither of the sets CL7 asked
-about.
+**The instrument proves selection now.** `tools/m3_cp4c3_tb28_r3_harness.sh` enforces exactly one binary owner per
+identity and raises otherwise, requires each staged executable to match the package by digest and mode, sets
+`GTEST_FAIL_IF_NO_TEST_SELECTED=1`, counts `[ RUN      ]` lines independently of the exit code, and sets
+`result=PASS` **only when `selected == 1` and `exit == 0`**. Every ledger row records `selected=1`. The 407
+identities are independently confirmed to span **15 distinct test source files**, which is why single-binary
+routing produced a false green. `LESSONS.md` 129, 130, 132.
 
-**CL8 is discharged: the correction is frozen.** *The separating-arc barrier rule* — in
-`build_source_face_ownership`, every arc with `orbitByDart[forwardDart] != orbitByDart[reverseDart]` contributes its
-source edges to `barriers`, and every source face it crosses becomes trace-cut. It is derived from certified data
-and is therefore non-circular; it is the invariant a partition of certified ownership must satisfy; and it does
-**not** over-cut, since arcs 20 and 24 have equal orbits and are untouched. **Accepted-prefix safety must be
-demonstrated, not argued.** Only its application *order* is sequenced, because the one instrument that could
-confirm it currently reports green on a product that provably fails.
+**Not discharged:** the frozen plan required the **191-face component's** ownership census to be published and
+adjudicated; the EXEC report defers it without carrying the values. The census exists inside immutable log artifact
+`9978114502` but is in no retained document. It does **not** block the correction, which is sound on both branches
+of the CL6 dichotomy by construction — that was the purpose of pre-naming a default. `LESSONS.md` 131.
 
 **Definition authority — `M3-CP4c-3-DEFN-R3`, Part VII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Parts
 IV–VI where they conflict, and only there. Its decisions:
@@ -351,21 +346,23 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Certified-face ownership — the correction is FROZEN; what is missing is a trustworthy gate.**
+1. **Certified-face ownership — the correction is FROZEN and CB34 now applies it.**
 
-   - **The correction, decided and not to be re-opened.** *The separating-arc barrier rule*: every arc with
+   - **The rule.** *The separating-arc barrier rule*: every arc with
      `orbitByDart[forwardDart] != orbitByDart[reverseDart]` contributes its source edges to `barriers`, and every
-     source face it crosses becomes trace-cut. Derived from certified data, non-circular, and it does not over-cut
-     — arcs 20 and 24 have equal orbits and are untouched, so the `terminalSlit` skip is superseded **only for
-     separating arcs**. TB27-R1 measured that this is not hypothetical: arcs **14** `(0,1)` and **22** `(0,3)`
-     separate.
-   - **Accepted-prefix safety must be demonstrated by construction**, not argued — the rule must be shown a no-op
-     wherever the current code already inserts the same barrier, with the remainder enumerated.
-   - **The blocker is the instrument.** TB28-R2 reported a full green on a byte-for-byte unchanged ownership path.
-     Until a gate reproduces the known REDs, no correction can be confirmed and none should be applied.
-   - **Order:** CB33 harness repair reusing the package unchanged → TB28-R3 control (credible only if 366/367/398
-     are RED) → CB34 applies the frozen correction. The review in between confirms the harness and **may not
-     re-open the correction**.
+     source face it crosses becomes trace-cut. Derived from certified data, non-circular, and it does not
+     over-cut — arcs 20 and 24 have equal orbits and are untouched, so the `terminalSlit` skip is superseded **only
+     for separating arcs**.
+   - **The blocker is cleared.** TB28-R3's control passed, so the gate can now tell whether the correction worked.
+     This is the first product correction on this frontier since CB27, and the first authorized after eight
+     diagnostic turns.
+   - **Accepted-prefix safety must be demonstrated by construction**, not argued — show the rule is a no-op wherever
+     the current code already inserts the same barrier, and enumerate the remainder. Ordinals 397–407 keep their
+     contracts and **none may be weakened to obtain a green**.
+   - **One correction only.** No attribution-rule edit, no seed winner, no partition unification, and no new
+     ownership diagnostic. CL8 stands.
+   - **Owed alongside it:** transcribe the 191-face component's census into a retained document. It is a
+     transcription of evidence that already exists inside the immutable log artifact, not a new measurement.
 
 2. **Two partitions of one mesh, and the diagnostic runs on the one that does not fail.** Confirmed at runtime by
    ordinal 406. The barrier families are identical; only the domain predicate differs, and the plan's domain
@@ -420,6 +417,17 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A control run is worth more than a clever measurement.** After eight turns of elaborate diagnostics, what
+settled which of two contradictory gates was measuring the product was changing **one** variable — the harness —
+against an unchanged package and comparing ledgers line-for-line. Deliberately *not* recompiling is what made the
+comparison mean anything. When two results disagree, reproduce the older one before explaining the newer one.
+`LESSONS.md` §4 132.
+
+**Evidence that exists only inside an artifact is not in the record.** Three consecutive turns produced a required
+datum and failed to put it where a reviewer reads: orbits serialized as counts, then a summary with no ledger, then
+a census published into a runtime log the review had no copy of. A retained document must carry the values a
+downstream decision depends on. `LESSONS.md` §4 131.
 
 **A status change with no behaviour change is a harness result, not a product result.** A gate that had reported
 7 RED reported 407 PASS one turn later, on a package whose only source change read the ownership state and never

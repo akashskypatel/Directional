@@ -1,6 +1,82 @@
+## M3-CP4c3-TB28-R3-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / CONTROL PASSED**
+
+- **Record:** `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md`, measures **CN0–CN8**. Evidence-only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
+  `review_check.py authority 098ac7d93ea203222dd0ac50cdb68667744f0fd4` — ALL CHECKS PASSED.
+
+- **CN0 — the control PASSED, and TB28-R3 is promoted to current valid semantic runtime authority.** Selector
+  **407**, **400 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Run
+  `33995961030` / job `101386467115`; package `9975737868`; result/log `9978114313 / 9978114502`; ledger
+  `fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`; identity map
+  `9e726c011f884da55877e6bbca420be530f05325263eddcd86993c1f0a54d3fd`; harness
+  `b3191b314afa22f72e6f720519cfa2f8ad090dce3de5617612ad64c195489fbf`. **The accepted-prefix count, recorded as
+  UNESTABLISHED at TB28, is restored to 365/365.**
+
+- **CN0.1 — the reproduction is exact, not merely gate-satisfying.** TB27-R1 was 399 PASS / 7 RED on selector 406;
+  TB28-R3 is 400 PASS / 7 RED on selector 407 = 406 + one identity, with ordinal 407 PASS. **The delta between the
+  two runs is exactly the appended identity and nothing else.** On the same immutable package, TB28-R2 had reported
+  407 PASS / 0 RED; two runs of one artifact differing by seven ordinals settle which was measuring the product.
+
+- **CN0.2 — it was genuinely a control.** `git diff` over `src include tests` between the TB28 review commit and
+  HEAD is **empty**; CB33 touched only the harness and the plan, and **deliberately did not recompile** because a
+  replacement compile would have created a new package/source authority and defeated the experiment. Same artifact,
+  same source, one changed variable.
+
+- **CN1 — the harness proves selection, verified in source rather than trusted.**
+  `.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh` enforces **exactly one binary owner per identity** and
+  raises otherwise (`:311–314`); requires every mapped binary present and executable (`:326–327`) and each staged
+  executable to match the package by **digest and mode** (`:336–337`); sets `GTEST_FAIL_IF_NO_TEST_SELECTED=1`
+  (`:415`); counts selection **independently of the exit code** from `[ RUN      ]` lines (`:421`); and sets
+  `result=PASS` **only when `selected == 1` and `exit == 0`** (`:423–424`). It computes `accepted_red` over
+  ordinals ≤ 365 (`:460`) and emits `control_known_red_reproduced` over {366,367,398} (`:472`) — the CM8 gate
+  implemented inside the instrument. Every ledger row records `selected=1`; 407 rows, 407 raw logs, 407 resource
+  records, `timeout_count=0`, all three byte+mode censuses equal pre/post.
+
+- **CN1.1 — independent confirmation of the TB28-R2 mechanism.** Reconstructing the owner map locally from the
+  repository: all **407** selector identities resolve, none unmapped, spread across **15 distinct test source
+  files** (120 `FieldAlignedCurveNetworkTests.cpp`, 93 `SurfaceCellsPhase10Tests.cpp`, 48
+  `PureQuadCompletionPhase18Tests.cpp`, …). Routing every row to one binary leaves the majority unmatched, and with
+  `exit 0` read as PASS that manufactures exactly the green TB28-R2 reported. **`M3-CP4c3-TB28-REV-CAND-01` is
+  CLOSED / runtime-proved** on its own stated falsification condition.
+
+- **CN2 — plan obligation 6 is NOT discharged.** The frozen R3 plan §6 required the **191-face failing component's**
+  census to be published/adjudicated; the EXEC report records 404/406/407 PASS and defers the assessment without
+  carrying the values. This is a **report-completeness** gap, not a measurement gap — the census was published at
+  runtime into immutable log artifact `9978114502`. **It does not block CB34**, because the frozen correction was
+  written to be sound on both branches of the CL6 dichotomy; that was the purpose of pre-naming a default at CL8.
+  Third consecutive turn in which a required datum existed and was absent from the record a reviewer reads.
+  `LESSONS.md` 131.
+
+- **CN3 — the 7 REDs are unchanged and no new regression is observed.** 366/367 the open frontier failing closed —
+  what CB34 corrects; **398 the honest gate**, untouched; 368/369/370/374 unchanged carried surfaces with separate
+  owners. Ordinals 404, 406 and new **407** PASS.
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **93** — CB33 compiled nothing, so the count does not advance. Accepted 365/365 with no accepted RED
+  ordinal. TB28-R1 and TB28-R2 remain orchestration-invalid provenance with no semantic credit.
+
+- **Candidates.** **CLOSED / runtime-proved:** `M3-CP4c3-TB28-REV-CAND-01`. **Narrowed:**
+  `M3-CP4c3-TB28-REV-CAND-02` from "published from the wrong path" to "**published at runtime but not transcribed
+  into any retained record**", owner **CN7**. All other candidates keep their prior status; none is discharged by
+  this turn.
+
+- **CN6 — DECISION: the frozen CM9 sequence PROCEEDS to `M3-CP4c-3-CB34`.** The instrument reproduces the baseline,
+  proves selection per row, and is verifiable in source. The **separating-arc barrier rule** stands verbatim — every
+  arc whose two darts satisfy `orbitByDart[forwardDart] != orbitByDart[reverseDart]` contributes its source edges to
+  `barriers` and every source face it crosses becomes trace-cut; non-separating arcs untouched; accepted-prefix
+  safety **demonstrated by construction, not argued**; no ordinal weakened; any witness appends as **408** with 407
+  an exact prefix. **This review may not and does not re-derive, widen or narrow it.**
+
+- **CN7 — one added obligation.** CB34's closeout, or the TB report after it, must **transcribe** the 191-face
+  component's census into a retained document: component/domain identities, face-set digest, face count, interior-arc
+  rows with both dart orbits and crossed faces, and seed attributions. It is a transcription of existing evidence,
+  **not a new diagnostic**, so CL8 is untouched.
+
 ## M3-CP4c3-TB28-INDEPENDENT-REVIEW — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / TB28-R2 REJECTED**
 
-- **Record:** `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md`, measures **CM0–CM9**. Static only: no
+- **Record:** `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB28-R3-REV`; its frozen correction is restated in the TB28-R3 review record §7), measures
+  **CM0–CM9**. Static only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
   `review_check.py authority 098ac7d93ea203222dd0ac50cdb68667744f0fd4` — ALL CHECKS PASSED.
 
@@ -5074,32 +5150,27 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority remains **M3-CP4c-3-TB27-R1**: semantic source
-`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, immutable CB31 package `9961564041`, selector 406, formal run/job
-`33946094875 / 101252363079`, **399 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,398]`, ledger `8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB28-R3**: semantic source
+`098ac7d93ea203222dd0ac50cdb68667744f0fd4`, immutable CB32 package `9975737868`
+(`16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec`), selector 407, run/job
+`33995961030 / 101386467115`, **400 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,398]`. Ledger `fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`;
+result/log `9978114313 / 9978114502`; all three byte+mode censuses equal pre/post. Stable totals remain
+**44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **93**.
 
-**`M3-CP4c-3-TB28-R2` is REJECTED as orchestration-invalid** and produced no runtime authority. Its
-`407 PASS / 0 RED` contradicts a byte-for-byte unchanged ownership path and it published none of the ledger,
-identity-map, RED-ordinal, accepted-prefix or census artifacts its frozen plan requires. The accepted-prefix count
-is **unestablished for TB28** - neither 365/365 nor a regression. Stable totals remain **44 events / 14 categories /
-30 recurrences**, debt **5**, M3 packages **93** (CB32, compile-green, semantically unaccepted).
+`M3-CP4c-3-TB28-R3-REV` promoted that ledger to runtime authority after the control passed: the run reproduces
+TB27-R1's ledger exactly, the only delta being the one appended identity, on the same immutable package with no
+product change. The repaired harness proves selection per row - `PASS` requires `selected == 1` **and** `exit == 0`
+- and was verified in source, not taken on trust. **The accepted-prefix count, unestablished at TB28, is restored
+to 365/365.**
 
-**CL8 is discharged: the product correction is frozen** in
-`Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` §4 - **the separating-arc barrier rule**: every arc whose
-two darts lie in different face-walk orbits contributes its source edges to `barriers`, and every source face it
-crosses is treated as trace-cut. Derived from certified data, non-circular, and it does not over-cut because arcs
-with equal orbits are untouched.
+**Exact next: `M3-CP4c-3-CB34` - Code + Build, runtime-free, GMP/GMPXX linked**, implementing **CM9 as frozen**
+plus **CN7**. The **separating-arc barrier rule**: every arc whose two darts satisfy
+`orbitByDart[forwardDart] != orbitByDart[reverseDart]` contributes its source edges to `barriers`, and every source
+face it crosses is treated as trace-cut. Non-separating arcs untouched. **Accepted-prefix safety must be
+demonstrated by construction, not argued.** No ordinal may be weakened; any witness appends as selector **408** with
+407 an exact prefix. **CN7:** transcribe the 191-face component's census into a retained document - a transcription
+of existing evidence, not a new diagnostic.
 
-**CB33 is COMPLETE.** Harness+plan commit `75dbc4dbc9caabbbb39471636c0c807b09b2543d`; static preflight
-`33995166968 / 101384352855` verified 407/407 static owners, six executable hashes/modes, selector authority and
-immutable package/source/execution-view censuses with `runtime_started=false`. No semantic authority changed.
-
-**Exact next: `M3-CP4c-3-TB28-R3-EXEC`**, immutable package `9975737868` unchanged, followed by evidence-only
-`M3-CP4c-3-TB28-R3-REV`. The control is credible only if **366/367/398 are RED** with `selected==1` per row and
-postflight immutability green. If credible, CB34 implements only the frozen correction; if not, replace the harness
-wholesale with the proven TB23-R1 architecture.
-
-**TB28-R2's `407 PASS / 0 RED` may not be quoted as a gate result, an accepted-prefix result, or evidence that any
-candidate is discharged.** If TB28-R3 again reports 366/367/398 green with the product unchanged, replace the
-harness wholesale with `tools/m3_cp4c3_tb23_r1_harness.sh` rather than correcting it again.
+**Prohibited:** re-deriving, widening, narrowing or deferring the frozen correction; a second product change; any
+new diagnostic contract on source-face ownership. CL8 stands. No Directional runtime before `M3-CP4c-3-TB29`.

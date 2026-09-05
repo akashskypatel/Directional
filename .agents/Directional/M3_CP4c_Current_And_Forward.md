@@ -10,74 +10,68 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-05** at `M3-CP4c-3-TB28-R3-EXEC` closeout; semantic adjudication is deliberately pending R3-REV.
+Last updated **2026-09-05** at `M3-CP4c-3-TB28-R3-REV` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**The latest valid semantic runtime authority is `M3-CP4c-3-TB27-R1`**, unchanged: selector **406**, **399 PASS /
-7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB31 package `9961564041` /
-source `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, ledger
-`8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`.
+**`M3-CP4c-3-TB28-R3` is the current valid semantic runtime authority.** Selector **407**, **400 PASS / 7 RED**,
+accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB32 package `9975737868` / source
+`098ac7d93ea203222dd0ac50cdb68667744f0fd4`. Run/job `33995961030 / 101386467115`; result/log
+`9978114313 / 9978114502`; ledger `fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`; identity map
+`9e726c011f884da55877e6bbca420be530f05325263eddcd86993c1f0a54d3fd`; harness
+`b3191b314afa22f72e6f720519cfa2f8ad090dce3de5617612ad64c195489fbf`. All three byte+mode censuses equal pre/post.
 
-**`M3-CP4c-3-TB28-R2` is REJECTED as orchestration-invalid and produced no runtime authority.** Its
-`407 PASS / 0 RED` on CB32 artifact `9975737868` / source `098ac7d93ea203222dd0ac50cdb68667744f0fd4` is retained
-only as invalid-attempt provenance (run `33990951740`; result/log `9976662518 / 9976662690`). R1 `33990315861` was
-already orchestration-invalid.
+**The accepted-prefix count, recorded as unestablished at TB28, is restored to 365/365.** CP4c-3 remains **OPEN**.
+Stable accounting **44 / 14 / 30**, debt **5**, packages **93** — CB33 compiled nothing, so the count does not
+advance. TB28-R1 and TB28-R2 remain orchestration-invalid provenance with no semantic credit.
 
-CP4c-3 remains **OPEN**. Stable accounting stays **44 / 14 / 30**, debt **5**, packages **93** (CB32, compile-green
-and semantically unaccepted). **The accepted-prefix count is unestablished for TB28** — neither 365/365 nor a
-regression; the last established result is TB27-R1's 365/365.
+## 2. The control passed, and it was a real control
 
-## 2. Why TB28-R2 is rejected
+TB27-R1 was 399 PASS / 7 RED on selector **406**; TB28-R3 is 400 PASS / 7 RED on selector **407** = 406 plus one
+identity, and that identity PASSes. **The delta between the two runs is exactly the appended identity and nothing
+else** — the whole 406-row prefix is unchanged in outcome. On the same artifact, TB28-R2 had reported
+`407 PASS / 0 RED`; two runs of one immutable package differing by seven ordinals settle which was measuring the
+product.
 
-**A status change with no behaviour change is a harness result, not a product result.**
+- **No product change.** `git diff` over `src include tests` between the TB28 review commit and HEAD is **empty**.
+- **CB33 deliberately did not recompile**, because a replacement compile would have created a new package/source
+  authority and defeated the experiment. One variable changed: the harness.
+- **The instrument proves selection.** `tools/m3_cp4c3_tb28_r3_harness.sh` enforces exactly one binary owner per
+  identity and raises otherwise, requires each staged executable to match the package by digest **and mode**, sets
+  `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, counts `[ RUN      ]` lines independently of the exit code, and sets
+  `result=PASS` **only when `selected == 1` and `exit == 0`**. Every ledger row records `selected=1`.
+- **The TB28-R2 mechanism is independently confirmed:** the 407 identities span **15 distinct test source files**,
+  so single-binary routing leaves the majority unmatched, and `exit 0` read as PASS manufactures the green.
 
-- Selector 407 is selector **406 plus one identity**, with 406 as its exact 406-line prefix, so ordinals **366**,
-  **367** and **398** are present unchanged. TB27-R1 reported all three RED.
-- CB32's entire source diff is diagnostic. Every added reference to `traceCutFaces` is a `.count()` read; nothing
-  writes `barriers`, `directOwners`, the seed rule, the component partition or `proves_cellularity()`. Ordinal 398
-  fails exactly when the owner map is not total, and the mechanical component still carried three conflicting
-  owners. **No behaviour change can account for the status change.**
-- The report publishes none of the artifacts its frozen plan §4 requires — no ledger or its SHA-256, no identity
-  map, no RED ordinal list, no accepted-prefix count, no censuses, no resource evidence — and records **one**
-  runtime binary hash where the package holds five test executables. Routed to one binary, an unmatched
-  `--gtest_filter` **exits 0**, and "exit 0 is PASS" manufactures the green. The plan's per-row `selected` column
-  exists to prevent exactly this and is absent. `LESSONS.md` 129, 130.
-- Its CL6 census was also **off-object for the fourth consecutive turn**: `ReliefTopologyBuildFailed` at
-  `quadPatchIndex=0`, component **1**, **27** candidate faces, **101** interior arcs, `censusFailureCount=0` — where
-  the frontier is component 0 with **191** faces and **4** interior arcs. The `subset=true` row compares neither of
-  the sets CL7 asked about and cannot be credited.
+**Not discharged:** the frozen plan required the **191-face component's** ownership census to be published and
+adjudicated. The EXEC report records 404/406/407 PASS and defers the assessment without carrying the values. The
+census exists inside immutable log artifact `9978114502` and in no retained document. It does **not** block the
+correction, which is sound on both branches of the CL6 dichotomy by construction. `LESSONS.md` 131.
 
-## 3. Exact next turns — TB28-R3-REV → CB34
+## 3. Exact next turn — `M3-CP4c-3-CB34`
 
-**CL8 is discharged: the product correction is FROZEN and may not be re-opened.**
+Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`. It implements **CM9 as frozen** plus
+**CN7**, and **the correction may not be re-derived, widened, narrowed or deferred**.
 
-> **The separating-arc barrier rule.** In `build_source_face_ownership`, for every arc whose two darts satisfy
-> `orbitByDart[forwardDart] != orbitByDart[reverseDart]`, the arc's source edges enter `barriers` and every source
-> face the arc crosses is treated as trace-cut.
+> **The separating-arc barrier rule.** In `build_source_face_ownership`, for every arc of `embedded.arcs` whose two
+> darts satisfy `orbitByDart[forwardDart] != orbitByDart[reverseDart]`, the arc's source edges enter `barriers`,
+> and every source face the arc crosses is treated as trace-cut and therefore excluded from `uncutFaces`.
 
-Derived from certified data and therefore non-circular; the invariant a partition of certified ownership must
-satisfy; and it does **not** over-cut — arcs 20 and 24 have equal orbits and are untouched, so the `terminalSlit`
-skip is superseded **only for separating arcs**. **Accepted-prefix safety must be demonstrated by construction, not
-argued.**
+- Barriers and trace-cut status key on the **orbit inequality**, not on `terminalSlit`. Non-separating arcs — arcs
+  20 and 24 have equal orbits — are untouched, so the rule does not over-cut.
+- **Accepted-prefix safety is demonstrated by construction, not argued**: show the rule is a no-op wherever the
+  current code already inserts the same barrier, and enumerate what changes where it does not.
+- `proves_cellularity()` and ordinals 397–407 keep their contracts. **No ordinal is weakened to obtain a green.**
+- Any required witness appends as selector **408** with 407 as an exact prefix, asserting the rule's **effect on
+  the census**, never a predicted owner value.
+- **CN7:** transcribe the 191-face component's census into a retained document — component/domain identities,
+  face-set digest, face count, interior-arc rows with both dart orbits and crossed faces, and seed attributions.
+  A transcription of existing evidence, **not a new diagnostic**, so CL8 is untouched.
 
-Only the *application order* is sequenced, because the one instrument that could confirm the correction currently
-reports green on a product that provably fails:
-
-1. **`M3-CP4c-3-CB33` — COMPLETE / preflight GREEN** (CM7). Static per-identity routing, per-row selection proof,
-   full ledger/resource/census contract and invalid-attempt provenance are installed. No Directional runtime or
-   product correction occurred.
-2. **`M3-CP4c-3-TB28-R3-EXEC` — COMPLETE / mechanically valid.** Run/job `33995961030 / 101386467115`
-   executed all 407 rows with `selected=1`, no timeout/orchestration failure and immutable pre/post censuses. The raw
-   ledger labels 366/367/398 RED, but EXEC does not promote semantic authority.
-3. **`M3-CP4c-3-TB28-R3-REV` — EXACT NEXT.** Review the existing R3 evidence only; apply the credibility gate,
-   classify regressions and adjudicate the 191-face census without new runtime or re-opening the frozen correction.
-4. **`M3-CP4c-3-CB34`** (CM9) — only if R3-REV authorizes it, implement the frozen correction and nothing else.
-
-**TB28-R2's `407 PASS / 0 RED` may not be quoted as a gate result, an accepted-prefix result, or evidence that any
-candidate is discharged.**
+**One correction only.** No attribution-rule edit, no seed winner, no partition unification, no new ownership
+diagnostic.
 
 ## 4. Open candidates
 
@@ -85,11 +79,11 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB28-REV-CAND-01` | **ACTIVE / GATING / ORCHESTRATION — R3-EXEC mechanically reproduced RED controls 366/367/398 with `selected=1`.** Semantic discharge is reserved to R3-REV after full integrity review. |
-| `M3-CP4c3-TB28-REV-CAND-02` | **ACTIVE / EVIDENCE INTEGRITY.** The CL6 block must be re-adjudicated from the 191-face ownership frontier in TB28-R3; CB33 changed only harness evidence plumbing. Owner: TB28-R3-REV. |
+| `M3-CP4c3-TB28-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — TB28-R3 reproduced all seven known REDs with `selected=1` on every row, on the unchanged package, and the harness mechanism was verified in source. Its own falsification condition is met. |
+| `M3-CP4c3-TB28-REV-CAND-02` | **ACTIVE / EVIDENCE INTEGRITY — NARROWED** from "published from the wrong path" to "**published at runtime but not transcribed into any retained record**". The census lives in immutable log artifact `9978114502`. Owner: **CN7**, at CB34 closeout. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **ACTIVE / GATING / PRODUCT — THE CORRECTION IS FROZEN** — the certifier's 214-face component contains two separating arcs, so that partition merges faces lying in different certified faces. Corrected by the frozen separating-arc barrier rule at **CM9 / CB34**. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
-| `M3-CP4c3-TB27-REV-CAND-02` | **ACTIVE / ARCHITECTURAL / NON-GATING** — the plan excludes from its component domain exactly the faces carrying a direct certified read (`GlobalTopologyPlan.cpp:702`, `:750`), then fails to seed that component. **Not** confirmed by TB28-R2, whose subset row compares a 27-face relief-topology candidate set. |
+| `M3-CP4c3-TB27-REV-CAND-02` | **ACTIVE / ARCHITECTURAL / NON-GATING** — the plan excludes from its component domain exactly the faces carrying a direct certified read (`GlobalTopologyPlan.cpp:702`, `:750`), then fails to seed that component. Still unconfirmed; TB28-R2's subset row was inadmissible and TB28-R3's census is untranscribed. |
 | `M3-CP4c3-TB26-REV-CAND-04` | **RUNTIME-PROVED / GATING / ARCHITECTURAL** — ordinal406 reports `matchesFailingComponent=false`; census and failure partitions differ. |
 | `M3-CP4c3-TB25-REV-CAND-02` | **ACTIVE / GATING / UNDECIDED FOR THE FAILING OBJECT** — the certifier component contains two separating arcs, but it is not the 191-face failing plan component. **TB28-R2 supplied no admissible evidence about it.** CL8 is nonetheless discharged: the correction is frozen and does not depend on this being decided first. |
 | `M3-CP4c3-DEFN-R3-CAND-01` | **RUNTIME-PROVED / GATING / ARCHITECTURAL** — duplicated constructions yield different partition objects on the witness; diagnostic census runs on the non-failing one. |
@@ -129,7 +123,10 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 - **Accepted ordinals 1–365** are the load-bearing boundary. A correction that changes any behaviour those
   identities exercise must demonstrate safety, not argue it.
 - **A green gate that contradicts an unchanged product is invalid evidence.** TB28-R2's `407 PASS / 0 RED` is
-  rejected and may never be quoted as a gate result.
+  rejected and may never be quoted as a gate result. TB28-R3 settled it by reproducing the baseline exactly on the
+  same artifact.
+- **A control run beats a clever measurement.** Change one variable, compare against a known baseline, and do not
+  recompile — a new package is a second changed variable.
 - **The product correction is FROZEN** — the separating-arc barrier rule. It is not to be re-derived, re-opened,
   widened or narrowed by any successor review.
 - **Two of four certifier interior arcs SEPARATE** — arc 14 `(0,1)`, arc 22 `(0,3)`; arcs 20 and 24 are `(0,0)`.
@@ -166,14 +163,14 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` — **CM0–CM9**, the rejection, the frozen correction and the CB33/TB28-R3/CB34 sequence.
-4. `Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — **the current valid semantic runtime authority**.
-5. `Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — package under test.
-6. `Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md` — current immutable execution evidence index.
-7. `Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` — exact REV contract.
-8. `Architecture_M3_CP4c3_CB33_Code_Build_Report.md` — CB33 harness/preflight evidence.
-9. `Architecture_M3_CP4c3_TB28_R2_Artifact_Only_Test_Benchmark_Report.md` — **invalid-attempt provenance only**.
-10. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-11. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
+3. `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md` — **CN0–CN8**, the control adjudication, the restated frozen correction and CN7.
+4. `Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md` — **the current valid semantic runtime authority**.
+5. `Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` — the contract it executed.
+6. `Architecture_M3_CP4c3_CB33_Code_Build_Report.md` and `Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — the harness correction and the package under test.
+7. `tools/m3_cp4c3_tb28_r3_harness.sh` — **the instrument itself; read it rather than a summary of it**.
+8. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-R3-EXEC is mechanically complete on immutable package `9975737868`; accepted semantic authority remains TB27-R1 until review. Exact next is **`M3-CP4c-3-TB28-R3-REV`**, evidence-only with no new runtime. The product correction is already frozen and must not be re-opened.
+Exact next is **`M3-CP4c-3-CB34`**, which applies the frozen separating-arc barrier rule and transcribes the
+191-face census. **The correction may not be re-opened**, and no second product change or new ownership diagnostic
+is authorized.

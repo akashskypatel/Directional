@@ -1,3 +1,47 @@
+## 2026-09-05 — `M3-CP4c-3-TB28-R3-REV`: the control passed; TB28-R3 promoted to runtime authority; CB34 authorized to apply the frozen correction
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 098ac7d93ea203222dd0ac50cdb68667744f0fd4` passed.
+
+**The control passed.** `M3-CP4c-3-TB28-R3` is promoted to **current valid semantic runtime authority**: selector
+**407**, **400 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Run/job
+`33995961030 / 101386467115`; result/log `9978114313 / 9978114502`; ledger
+`fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`. **The accepted-prefix count, recorded as
+unestablished at TB28, is restored to 365/365.**
+
+**The reproduction is exact, not merely gate-satisfying.** TB27-R1 was 399 PASS / 7 RED on selector 406; TB28-R3 is
+400 PASS / 7 RED on selector 407 = 406 plus one identity, and that identity PASSes. **The delta between the two
+runs is exactly the appended identity** — the whole 406-row prefix is unchanged in outcome. On the same immutable
+artifact TB28-R2 had reported 407 PASS / 0 RED; two runs of one package differing by seven ordinals settle which was
+measuring the product.
+
+**It was genuinely a control.** `git diff` over `src include tests` is empty; CB33 changed only the harness and the
+plan and **deliberately did not recompile**, because a replacement compile would have created a second changed
+variable and defeated the experiment.
+
+**The instrument was verified in source, not trusted.** `tools/m3_cp4c3_tb28_r3_harness.sh` enforces exactly one
+binary owner per identity and raises otherwise, requires each staged executable to match the package by digest and
+mode, sets `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, counts `[ RUN      ]` lines independently of the exit code, and sets
+`result=PASS` **only when `selected == 1` and `exit == 0`**. It also implements the CM8 credibility gate internally.
+Independently reconstructing the owner map from the repository confirms all 407 identities resolve across **15
+distinct test source files** — which is exactly why single-binary routing manufactured TB28-R2's green.
+`M3-CP4c3-TB28-REV-CAND-01` is **CLOSED / runtime-proved** on its own falsification condition.
+
+**Plan obligation 6 is NOT discharged.** The frozen plan required the **191-face component's** ownership census to
+be published and adjudicated; the EXEC report records 404/406/407 PASS and defers the assessment without carrying
+the values. This is a report-completeness gap — the census exists inside immutable log artifact `9978114502` — and
+it does **not** block the correction, which was written to be sound on both branches of the CL6 dichotomy. Third
+consecutive turn in which a required datum existed and was absent from the record a reviewer reads.
+
+**Decision: the frozen CM9 sequence proceeds to `M3-CP4c-3-CB34`.** The separating-arc barrier rule stands verbatim
+and is restated in §7 of the review record before its source document was folded. Accepted-prefix safety must be
+demonstrated by construction, not argued; no ordinal may be weakened; one correction only.
+
+**Accounting: no stable change.** Totals remain **44 / 14 / 30**, debt **5**, packages **93** — CB33 compiled
+nothing. **Lessons 131 and 132** added. **Consolidation:** the TB28 review record, the TB27-R1 runtime report, the
+rejected TB28-R2 report and the consumed TB28 plan were folded into `M3_CP4c_Consolidated_Record.md`; the harness is
+recorded as never-folded because it is the instrument, not a document.
+
 ## 2026-09-05 — `M3-CP4c-3-TB28-R3-EXEC`: artifact-only control execution mechanically valid; semantic review pending
 
 Runtime-execution half of the frozen R3 plan only. Immutable CB32 artifact `9975737868` / source

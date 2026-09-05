@@ -1725,6 +1725,20 @@ building any conclusion on it.**
      count and treat "zero tests selected" as a failure**, never as a pass; a plan that specifies a `selected`
      column is stating this requirement, and a report that omits the column has not met it.
 
+131. **Evidence that exists only inside an artifact is not in the record.** Three consecutive turns produced a
+     required datum and failed to put it where a reviewer reads: one computed per-arc orbits and serialized only
+     their count; one published nothing and asserted a summary; one published correctly into a runtime log inside an
+     immutable artifact and deferred the assessment to a review that had no copy. Each was a smaller failure than
+     the last, and each cost the same turn. **A retained document must carry the values a downstream decision
+     depends on**, not a pointer to bytes nobody downstream can open.
+
+132. **A control run is worth more than a clever measurement.** After eight turns of increasingly elaborate
+     diagnostics, the turn that settled which of two contradictory gates was measuring the product changed **one**
+     variable - the harness - against an unchanged package, and compared the ledger line-for-line with its
+     predecessor: same seven RED ordinals, the only delta the one appended identity. Deliberately **not**
+     recompiling was what made the comparison mean anything, since a new package would have created a second
+     changed variable. When two results disagree, reproduce the older one before explaining the newer one.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

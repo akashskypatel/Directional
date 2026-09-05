@@ -26,40 +26,41 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB28-R3-REV` (evidence-only review)
+## Current focus — `M3-CP4c-3-CB34` (Code + Build) — THE FROZEN PRODUCT CORRECTION
 
-`M3-CP4c-3-TB28-R3-EXEC` is **COMPLETE / mechanically valid** on immutable CB32 artifact `9975737868`. Run/job
-`33995961030 / 101386467115` completed with no orchestration failure, timeout, selection mismatch, rebuild, repair,
-or semantic-byte mutation. Result/log artifacts are `9978114313 / 9978114502`; ledger SHA-256 is
-`fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`.
+`M3-CP4c-3-TB28-R3-REV` adjudicated the control run. **It passed**, and `M3-CP4c-3-TB28-R3` is now the current
+valid semantic runtime authority.
 
-- [x] all 407 selector identities executed once in fresh processes;
-- [x] every ledger row selected exactly one test; 407 raw logs and 407 resource records are present;
-- [x] package/source/execution-view byte+mode censuses are unchanged and timeout count is zero;
-- [x] control rows 366/367/398 are mechanically labelled RED in the raw ledger;
-- [x] no configure/compile/relink/repackage/discovery/benchmark/package-repair/mode-repair/mutation occurred;
-- [ ] R3-REV must apply the control credibility gate and decide whether the raw ledger is semantic authority;
-- [ ] R3-REV must classify every observed regression in `Regression_Root_Cause_Tracker.md`;
-- [ ] R3-REV must assess the required **191-face failing-component** ownership publication;
-- [ ] R3-REV must decide only CB34-vs-harness-replacement under the already-frozen CM9 sequence.
+- selector **407**, **400 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
+- immutable CB32 package `9975737868` / source `098ac7d93ea203222dd0ac50cdb68667744f0fd4`;
+- run/job `33995961030 / 101386467115`; result/log `9978114313 / 9978114502`;
+- **the accepted-prefix count, unestablished at TB28, is restored to 365/365.**
 
-The harness raw summary is **400 PASS / 7 RED** at `[366,367,368,369,370,374,398]`, with raw prefix rows 1–365
-all labelled PASS. **EXEC does not semantically adjudicate or promote those counts.** Until R3-REV completes, valid
-semantic authority remains `M3-CP4c-3-TB27-R1`, selector406, **399 PASS / 7 RED**, accepted **365/365**. TB28-R1/R2
-remain orchestration-invalid and carry no semantic credit.
-
-**The product correction remains frozen:** separating arcs (`orbitByDart[forwardDart] != orbitByDart[reverseDart]`)
-contribute their source edges to barriers and every crossed source face becomes trace-cut. R3-EXEC did not implement
-it.
+**Why the control is credible.** TB27-R1 was 399 PASS / 7 RED on selector 406; TB28-R3 is 400 PASS / 7 RED on
+selector 407 = 406 plus one identity, which PASSes. **The delta is exactly the appended identity.** No product
+change, same package, CB33 deliberately did not recompile, and the harness now proves selection — `PASS` requires
+`selected == 1` **and** `exit == 0`. `M3-CP4c3-TB28-REV-CAND-01` is **CLOSED / runtime-proved**.
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **93** pending review. CP4c-3 remains **OPEN**.
+package count **93**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB28-R3-REV`** from
-`Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md`, consuming only the existing R3 result/log
-artifacts and `Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md`. No new Directional runtime is authorized.
+Run **`M3-CP4c-3-CB34`**, Code + Build, runtime-free, GMP/GMPXX linked, implementing **CM9 as frozen** plus
+**CN7**. **The correction may not be re-derived, widened, narrowed or deferred.**
+
+- [ ] **The separating-arc barrier rule** — every arc whose two darts satisfy
+      `orbitByDart[forwardDart] != orbitByDart[reverseDart]` contributes its source edges to `barriers`, and every
+      source face it crosses becomes trace-cut. Non-separating arcs untouched.
+- [ ] **Demonstrate accepted-prefix safety by construction**, not argument: the rule is a no-op wherever the current
+      code already inserts the same barrier; enumerate what changes where it does not.
+- [ ] `proves_cellularity()` and ordinals 397–407 keep their contracts; **no ordinal weakened to obtain a green**.
+      Any witness appends as selector **408** with 407 an exact prefix.
+- [ ] **CN7** — transcribe the 191-face component's census into a retained document. Existing evidence, not a new
+      diagnostic.
+
+**One correction only.** No attribution-rule edit, no seed winner, no partition unification, no new ownership
+diagnostic. No Directional runtime before `M3-CP4c-3-TB29`.
 
 ## Carried forward from M1
 
@@ -141,9 +142,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at
-`M3-CP4c-3-TB28-INDEPENDENT-REVIEW` with no stable change. Produced-witness debt remains **5**. Authoritative
-semantic M3 package count is **93**. **The latest valid semantic runtime authority is `M3-CP4c-3-TB27-R1` at
-399 PASS / 7 RED, accepted 365/365**; `M3-CP4c-3-TB28-R2` is rejected as orchestration-invalid and the
-accepted-prefix result remains semantically unestablished for TB28 until R3-REV. R3-EXEC is mechanically complete; exact next is `M3-CP4c-3-TB28-R3-REV` with no new runtime.
-PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB28-R3-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **93**. **`M3-CP4c-3-TB28-R3` is the current valid semantic runtime authority at 400 PASS / 7 RED, accepted 365/365 on selector 407.** Exact next is `M3-CP4c-3-CB34`, the frozen product correction. PR #8 remains open, draft, and unmerged.
