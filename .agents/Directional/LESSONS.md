@@ -1711,6 +1711,20 @@ building any conclusion on it.**
      measurement, **the exhaustive outcome list, the correction each outcome selects, and the default correction if
      the measurement returns ambiguous**, so that "insufficient evidence" stops being an available finding.
 
+129. **A status change with no behaviour change is a harness result, not a product result.** A gate that had
+     reported 7 RED reported 407 PASS / 0 RED one turn later, on a package whose only source change was
+     diagnostic - every touched line read the ownership state and none wrote it. The three previously red
+     identities were present in the selector and provably still failing conditions. **Before recording a status
+     change, name the behaviour change that caused it.** If none exists, the instrument moved, not the product, and
+     the run is orchestration-invalid however clean its summary looks. A green that arrives without a cause is the
+     most expensive kind of evidence, because everything downstream is built on it.
+
+130. **"Exit 0 is PASS" needs proof that something ran.** GoogleTest exits 0 when a `--gtest_filter` matches no
+     tests. A harness that routes every selector identity to one binary, when the identities are spread across five,
+     will see the four-fifths it cannot match exit 0 and record them all as passing. **Require a per-row selection
+     count and treat "zero tests selected" as a failure**, never as a pass; a plan that specifies a `selected`
+     column is stating this requirement, and a report that omits the column has not met it.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

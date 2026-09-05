@@ -382,9 +382,20 @@ does not require the eventual correction branch to take a hypothesized value.
 eight approved targets with GMP/GMPXX linked; preflight/full build succeeded and `runtimeExecution=false`. This is
 compile authority only, not semantic acceptance.
 
-**Exact successor:** `M3-CP4c-3-TB28`, artifact-only execution of selector407 on immutable package `9975737868`.
-After one valid semantic run, CL8 requires independent review to freeze a product correction; no fourth standalone
-diagnostic turn is authorized.
+**Execution status.** `M3-CP4c-3-TB28-R1` failed before runtime on a `SHA256SUMS.txt` layout assumption.
+`M3-CP4c-3-TB28-R2` reported `407 PASS / 0 RED` and was **REJECTED as orchestration-invalid** at
+`M3-CP4c-3-TB28-INDEPENDENT-REVIEW`: selector 407 contains ordinals 366/367/398, all RED at TB27-R1, and CB32's
+source diff is diagnostic-only, so **no behaviour change can account for the status change**. The report also
+omitted the ledger, identity map, RED ordinals, accepted-prefix count, censuses and resource evidence this
+selector's frozen plan requires, and recorded one runtime binary hash where the package holds five test
+executables. **Selector 407 has therefore never been validly executed**, and its `407 PASS` figure may not be
+quoted as a gate result or an accepted-prefix result. `LESSONS.md` 129, 130.
+
+**Exact successor:** `M3-CP4c-3-CB33`, orchestration correction only, then `M3-CP4c-3-TB28-R3`, a control
+re-execution of selector 407 on the same immutable package `9975737868` — **credible only if ordinals 366, 367 and
+398 are RED**. The product correction is already frozen (the separating-arc barrier rule) and is applied at
+`M3-CP4c-3-CB34`; it may require an appended witness at selector **408**, with 407 as an exact prefix, asserting the
+rule's effect on the census and never a predicted owner value.
 
 ## Separate lineage — M1
 

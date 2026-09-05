@@ -2,7 +2,8 @@
 
 **Turn:** `M3-CP4c-3-CB32`
 **Disposition:** **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**
-**Scope owner:** CL6–CL9 of `Architecture_M3_CP4c3_TB27_Independent_Review_Record.md`
+**Scope owner:** CL6–CL9 of `Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` (folded into
+`M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB28-INDEPENDENT-REVIEW`)
 **Exact successor:** `M3-CP4c-3-TB28` — artifact-only Test + Benchmark on selector 407.
 
 ## 1. Boundary and source authority

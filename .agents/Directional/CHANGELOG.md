@@ -1,3 +1,60 @@
+## 2026-09-05 — `M3-CP4c-3-TB28-INDEPENDENT-REVIEW`: TB28-R2 rejected as orchestration-invalid; CL8 discharged with the correction frozen
+
+Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/
+benchmark/build/selector mutation. `review_check.py authority 098ac7d93ea203222dd0ac50cdb68667744f0fd4` passed.
+
+**`M3-CP4c-3-TB28-R2`'s `407 PASS / 0 RED` is rejected.** It is not a semantic ledger, carries no semantic credit,
+and does not advance the checkpoint. **The valid semantic runtime authority remains `M3-CP4c-3-TB27-R1`** — 399
+PASS / 7 RED on selector 406, accepted 365/365.
+
+**The contradiction is provable.** Selector 407 is selector 406 plus one identity with 406 as its exact 406-line
+prefix, so ordinals **366**, **367** and **398** — all RED at TB27-R1 — are present unchanged. CB32's entire source
+diff is diagnostic: it adds a `traceCutExclusionReasons` map, records a typed reason at each pre-existing
+`continue`, and builds census rows. **Every added reference to `traceCutFaces` is a `.count()` read**, and nothing
+writes `barriers`, `directOwners`, the seed rule, the component partition or `proves_cellularity()`. Ordinal 398
+fails exactly when the owner map is not total, and the mechanical component still carried three conflicting owners.
+**A status change with no behaviour change is a harness result, not a product result.**
+
+**The report omits nearly every artifact its own frozen plan §4 requires** — no ledger or its SHA-256, no identity
+map, no RED ordinal list, no accepted-prefix count, no censuses, no resource evidence. It records **one** runtime
+binary SHA-256 where the package holds five test executables and the plan's identity map exists to assign a binary
+per identity. Routed to one binary, an unmatched `--gtest_filter` **exits 0**, and the plan's "exit 0 is PASS" rule
+manufactures the green; the per-row `selected` column that would have caught it is absent.
+
+**Its CL6 census was also off-object, for the fourth consecutive turn** — `ReliefTopologyBuildFailed` at
+`quadPatchIndex=0`, failing plan component 1, 27 candidate faces, 101 interior arcs, `censusFailureCount=0`, where
+the frontier is component 0 with 191 faces and 4 interior arcs. The `subset=true` row compares neither of the sets
+CL7 asked about.
+
+**CL8 is discharged: the product correction is frozen, unconditionally.** *The separating-arc barrier rule* — in
+`build_source_face_ownership`, every arc whose two darts satisfy
+`orbitByDart[forwardDart] != orbitByDart[reverseDart]` contributes its source edges to `barriers`, and every source
+face it crosses is treated as trace-cut. It is derived from certified data and therefore non-circular; it is the
+invariant a partition of certified ownership must satisfy; and it does **not** over-cut, since arcs 20 and 24 have
+equal orbits and are untouched. Accepted-prefix safety must be demonstrated by construction, not argued.
+
+**Only the application order is sequenced**, because the one instrument that could confirm the correction currently
+reports green on a product that provably fails: `M3-CP4c-3-CB33` harness repair reusing package `9975737868`
+unchanged → `M3-CP4c-3-TB28-R3` control, credible only if 366/367/398 are RED → `M3-CP4c-3-CB34` applies the frozen
+correction. The intervening review may not re-open it. If TB28-R3 again reports those ordinals green, the harness is
+replaced wholesale with `tools/m3_cp4c3_tb23_r1_harness.sh`.
+
+**Accounting: no stable change and no runtime authority produced.** Totals remain **44 / 14 / 30**, debt **5**,
+packages **93**. The accepted-prefix count is **unestablished** for TB28 — neither 365/365 nor a regression.
+"Produced no runtime authority" and "was green" must never be conflated.
+
+**Candidates.** New: `M3-CP4c3-TB28-REV-CAND-01` (orchestration — the false green) and `-CAND-02` (evidence
+integrity — the off-object census). **Nothing is discharged by TB28-R2**; every prior candidate keeps its TB27-REV
+status.
+
+**Lessons 129 and 130** added. **Consolidation:** the TB27 review record and the CB31 build report were folded into
+`M3_CP4c_Consolidated_Record.md`; the TB27-R1 runtime report is **deliberately retained** as the current valid
+runtime authority, and TB28-R2 plus the TB28 plan are retained as invalid-attempt provenance and re-execution
+contract.
+
+**Exact successor: `M3-CP4c-3-CB33`** under **CM7** — orchestration correction only, control-plane where possible,
+reusing the immutable package unchanged.
+
 ## 2026-09-05 — `M3-CP4c-3-CB32`: final source-face ownership diagnostic compiled GREEN; selector407/package93; TB28 next
 
 Code + Build only; **no Directional runtime or benchmark executed**. CB32 implements CL6–CL9 from the TB27

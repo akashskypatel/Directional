@@ -116,58 +116,89 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB28-INDEPENDENT-REVIEW` — EXACT NEXT / independent review + correction freeze
+## Mandatory next turn — `M3-CP4c-3-CB33` — EXACT NEXT / orchestration correction only
 
-`M3-CP4c-3-TB28` is **COMPLETE / VALID ARTIFACT-ONLY RUNTIME / FULL SELECTOR407 GREEN / SEMANTICALLY UNACCEPTED PENDING REVIEW**. R2 run `33990951740` is the authoritative semantic execution. R1 `33990315861` failed before runtime on a package-layout harness assumption and contributes no semantic evidence.
+`M3-CP4c-3-TB28-INDEPENDENT-REVIEW` has adjudicated TB28 and **rejected `M3-CP4c-3-TB28-R2` as
+orchestration-invalid**. It produced no runtime authority.
 
-### Immutable TB28 authority
+### Current authority
 
-- compile/source authority: **`098ac7d93ea203222dd0ac50cdb68667744f0fd4`**;
-- immutable CB32 artifact: **`9975737868`**, SHA-256 **`16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec`**;
-- runtime binary SHA-256: **`b31d41981114475c6149ea25a0c9db04600c8e83db769e8ee3b070179c1d4065`**, size `24381304`;
-- selector407: **407** identities, LF SHA-256 **`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`**;
-- authoritative run: **`33990951740`**; execution/verification jobs **`101373825038 / 101374345712`**;
-- result artifact **`9976662518`**, SHA-256 **`970573beb31bc43bb2cbcd4dee957edfb2f23c0c543edfe9997c5dcfc487053d`**;
-- log artifact **`9976662690`**, SHA-256 **`4272bd5fc1750d19c9fceb94daf3be8367b05d6fa9e13828fc6a97c1c6fe44d`**;
-- selector ledger: **407 passed / 0 failed / 0 crash / 0 timeout / 0 missing**;
-- `sourceMutation=false`, `testMutation=false`, `fixtureMutation=false`, `selectorMutation=false` before and after runtime; runtime binary, selector, and package manifest unchanged postflight.
+- **Valid semantic runtime authority remains `M3-CP4c-3-TB27-R1`**: source
+  `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, package `9961564041`, selector 406, **399 PASS / 7 RED**, accepted
+  **365/365**, RED `[366,367,368,369,370,374,398]`, ledger
+  `8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`.
+- **Invalid-attempt provenance:** TB28-R1 `33990315861` (pre-runtime `SHA256SUMS.txt` layout) and TB28-R2
+  `33990951740` (`407 PASS / 0 RED`, rejected). Neither carries semantic credit.
+- Package under test: CB32 artifact `9975737868`, source `098ac7d93ea203222dd0ac50cdb68667744f0fd4`, package **93**,
+  compile-green and semantically unaccepted. Selector 407 = selector 406 plus one identity, 406 an exact prefix.
+- Stable accounting **44 / 14 / 30**, debt **5**. **The accepted-prefix count is unestablished for TB28.**
 
-### TB28 semantic measurement
+### Why TB28-R2 was rejected
 
-The mechanical production path still reports `ReliefTopologyBuildFailed`, `quadPatchIndex=0`, failing plan component `1`. Candidate face count is `27`; `candidateFacesEqualCensusComponent=false`; `candidateFacesSubsetOfCensusComponent=true`; `censusFailureCount=0`. The failing plan component publishes **101/101** interior-arc rows with no truncation.
+Selector 407 contains ordinals **366**, **367** and **398**, all RED at TB27-R1. CB32's entire source diff is
+diagnostic — every added reference to `traceCutFaces` is a `.count()` read, and nothing writes `barriers`,
+`directOwners`, the seed rule, the partition or `proves_cellularity()`. **No behaviour change can account for the
+status change.** The report also omits the ledger, identity map, RED ordinals, accepted-prefix count, censuses and
+resource evidence its frozen plan §4 requires, and records **one** runtime binary hash where the package holds five
+test executables — consistent with single-binary routing, where an unmatched `--gtest_filter` exits 0 and
+"exit 0 is PASS" manufactures the green. Its CL6 block was also off-object: `ReliefTopologyBuildFailed` at
+`quadPatchIndex=0`, 27 candidate faces, `censusFailureCount=0`. `LESSONS.md` 129, 130.
 
-The decisive crossed-face row is:
+### The product correction is FROZEN — CL8 discharged
 
-`arc=(0,2):sourceFace=0:certifierComponent=0:planComponent=1:notTraceCutReason=TerminalSlit`
+> **The separating-arc barrier rule.** In `build_source_face_ownership`, for every arc whose two darts satisfy
+> `orbitByDart[forwardDart] != orbitByDart[reverseDart]`, the arc's source edges enter `barriers` and every source
+> face the arc crosses is treated as trace-cut.
 
-This is valid CL6/CL7 evidence that the two published partitions name the same crossed source face differently. TB28 does **not** decide whether the correct product change is barrier-set, attribution-rule, partition construction, or another already-enumerated branch. No product semantics changed in TB28.
+Derived from certified data and therefore non-circular; it is the invariant a partition of certified ownership must
+satisfy; and it does **not** over-cut — arcs 20 and 24 have equal orbits and are untouched, so the `terminalSlit`
+skip is superseded **only for separating arcs**. **Accepted-prefix safety must be demonstrated by construction, not
+argued.** No successor review may re-derive, re-open, widen or narrow it.
 
-Stable accounting remains **44 / 14 / 30**, debt **5**. CP4c-3 stays open pending review.
+### CB33 boundary — CM7
 
-### CL8 review boundary
+Orchestration correction only. Control-plane where possible, **reusing immutable package `9975737868` unchanged**;
+it recompiles only if the harness cannot be fixed otherwise, and must say which case applies.
 
-**CL8 is now active and binding.** The exact next turn must independently review the complete TB28 evidence and freeze one product correction. No fourth standalone source-face ownership diagnostic turn is authorized, and no correction CB may start before the review. The review must update `ORIENTATION.md` and perform the mandatory REVIEW document consolidation.
+1. **Per-identity binary routing** from the static identity map; record the SHA-256 and mode of **every** runtime
+   executable, not one.
+2. **Selection is proved, never assumed** — each row records a `selected` count, and **a row selecting zero tests is
+   RED, never PASS**, whatever the exit code. Set `GTEST_FAIL_IF_NO_TEST_SELECTED` or parse the run summary.
+3. **Publish the plan's ledger** — `ordinal, identity, binary, exit, selected, result, raw_log` for all 407 rows,
+   its SHA-256, the identity-map SHA-256, per-ordinal raw logs, the RED ordinal list, the accepted-prefix count for
+   1–365, three pre/post censuses, and resource evidence.
+4. **Preserve TB28-R1 and TB28-R2 as invalid-attempt provenance.** The `407 PASS` figure may not be quoted as a
+   gate result, an accepted-prefix result, or evidence that any candidate is discharged.
+
+### Then TB28-R3 (CM8), then CB34 (CM9)
+
+`M3-CP4c-3-TB28-R3` re-executes selector 407 on package `9975737868`, unchanged, as a control. **It is credible
+only if ordinals 366, 367 and 398 are RED**, and it must publish the restored CL6/CL7 census for the **191-face
+failing component**. If those ordinals are reported green again, replace the harness wholesale with
+`tools/m3_cp4c3_tb23_r1_harness.sh` rather than correcting it a third time.
+
+`M3-CP4c-3-CB34` then implements the frozen correction and nothing else. The review between TB28-R3 and CB34
+confirms harness validity and records the census; **it may not re-open the correction**.
+
+**Prohibited:** any product behaviour change in CB33; changing any accepted identity 1–365 or any byte of selector
+397/401/403/405/406/407; retrying TB28-R3 for a cleaner result, widening or narrowing the selector, repairing
+fixtures or regenerating expected data; any new diagnostic contract on source-face ownership — CL8 stands and the
+correction is frozen.
 
 ### Context Load Plan
 
-`load_next`:
-- `turn-based-coding-agent/references/turns/REVIEW.md`
-
-Project authority to load, in order:
+`load_next`: orchestration-correction Code + Build guidance; `GitHub_Workflow_Policy.md` and
+`TOOL_USE_CONSERVATION_POLICY.md` per the start checklist.
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current frontier/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB28_R2_Artifact_Only_Test_Benchmark_Report.md` — authoritative TB28 runtime evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` — CL6–CL9 and CL8 branch/stop rules.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — exact diagnostic publication implementation/package authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md` — frozen executed TB28 contract.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`.
-7. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` and `M3_CP4c_Consolidated_Record.md` only as routed authority.
-
-`conditional_modules`:
-- GitHub connector module for static repository review/document writes only; no Directional runtime is authorized by the review itself.
-
-Do not preload sibling historical turn files or run a new diagnostic.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` — **CM0–CM9**, the rejection, the frozen correction, and the CB33/TB28-R3/CB34 sequence.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` — the valid runtime authority to reproduce.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md` — the frozen contract TB28-R3 re-executes.
+5. `.agents/Directional/tools/m3_cp4c3_tb23_r1_harness.sh` — the reference harness the plan names.
+6. `.agents/Directional/Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — package under test.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

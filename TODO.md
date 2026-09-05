@@ -26,22 +26,49 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB28-INDEPENDENT-REVIEW` (mandatory review + correction freeze)
+## Current focus — `M3-CP4c-3-CB33` (orchestration correction only)
 
-`M3-CP4c-3-TB28` is **COMPLETE / VALID ARTIFACT-ONLY RUNTIME / FULL SELECTOR407 GREEN / CHECKPOINT SEMANTICALLY UNACCEPTED PENDING REVIEW**. Authoritative R2 run `33990951740` consumed immutable CB32 artifact `9975737868` from source `098ac7d93ea203222dd0ac50cdb68667744f0fd4` with selector407 (407 identities, LF SHA-256 `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`). Result/log artifacts are `9976662518` (`970573beb31bc43bb2cbcd4dee957edfb2f23c0c543edfe9997c5dcfc487053d`) and `9976662690` (`4272bd5fc1750d19c9fceb94daf3be8367b05d6fa9e13828fc6a97c1c6fe44d`). All 407 selector rows passed; build/source/test/fixture/selector mutation remained false and package/binary/selector postflight was unchanged.
+`M3-CP4c-3-TB28-INDEPENDENT-REVIEW` has **rejected `M3-CP4c-3-TB28-R2` as orchestration-invalid**. It produced no
+runtime authority.
 
-R1 run `33990315861` is orchestration-invalid/non-semantic only: it failed before runtime on an incorrect package-layout assumption and contributes no semantic evidence.
+- **Valid semantic runtime authority remains `M3-CP4c-3-TB27-R1`** — selector 406, **399 PASS / 7 RED**, accepted
+  **365/365**, RED `366,367,368,369,370,374,398`, package `9961564041`.
+- TB28-R1 and TB28-R2 are **invalid-attempt provenance**; the `407 PASS / 0 RED` figure may not be quoted as a gate
+  result, an accepted-prefix result, or evidence that any candidate is discharged.
+- **The accepted-prefix count is unestablished for TB28** — neither 365/365 nor a regression.
 
-TB28 CL6/CL7 measurement keeps `ReliefTopologyBuildFailed`, failing plan component `1`, 27 candidate faces, `candidateFacesEqualCensusComponent=false`, `candidateFacesSubsetOfCensusComponent=true`, zero census failures, and 101/101 untruncated failing-plan interior-arc rows. The decisive published row is `arc=(0,2):sourceFace=0:certifierComponent=0:planComponent=1:notTraceCutReason=TerminalSlit`. This measures the partition mismatch; it does **not** itself choose the product correction. Stable regression accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**.
+**Why it was rejected.** Selector 407 contains ordinals 366/367/398, all RED at TB27-R1, and CB32's entire source
+diff is diagnostic — every added `traceCutFaces` reference is a `.count()` read, and nothing writes `barriers`,
+`directOwners`, the seed rule, the partition or `proves_cellularity()`. **No behaviour change can account for the
+status change.** The report also omits the ledger, identity map, RED ordinals, accepted-prefix count, censuses and
+resource evidence its frozen plan requires, and records one runtime binary hash where the package holds five test
+executables.
+
+**CL8 is discharged — the product correction is FROZEN:** *the separating-arc barrier rule* — every arc whose two
+darts lie in different face-walk orbits contributes its source edges to `barriers`, and every source face it
+crosses becomes trace-cut. Derived from certified data, non-circular, and it does not over-cut. **No successor
+review may re-open it.**
+
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
+package count **93**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-- [ ] Perform **`M3-CP4c-3-TB28-INDEPENDENT-REVIEW`** against the immutable TB28 R2 report/evidence.
-- [ ] Freeze exactly one product correction under CL8 using the measured CL6/CL7 evidence; do not run a fourth standalone diagnostic turn.
-- [ ] Reconcile `M3-CP4c3-TB27-REV-CAND-01`, `M3-CP4c3-TB27-REV-CAND-02`, and `M3-CP4c3-TB25-REV-CAND-02` with the TB28 crossed-face/component evidence.
-- [ ] Update `ORIENTATION.md` during that REVIEW turn and perform the mandatory REVIEW document consolidation before closeout.
+Run **`M3-CP4c-3-CB33`**, orchestration correction only, control-plane where possible, **reusing immutable package
+`9975737868` unchanged**, under **CM7** of `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md`:
 
-**CL8 — HARD STOP RULE.** No further source-face ownership diagnostic or product correction is authorized before this independent review. The review must freeze the correction from the now-complete TB28 evidence; it may not defer to another standalone diagnostic turn.
+- [ ] **per-identity binary routing** from the static identity map; record every runtime executable's SHA-256 and
+      mode, not one.
+- [ ] **a row that selects zero tests is RED, never PASS** — record a `selected` count per row.
+- [ ] publish the plan's full 407-row ledger, identity map, RED ordinals, accepted-prefix count, three censuses and
+      resource evidence.
+- [ ] preserve TB28-R1/R2 as invalid-attempt provenance.
+
+Then **`M3-CP4c-3-TB28-R3`** (CM8) re-executes the same package as a control — **credible only if 366/367/398 are
+RED** — and then **`M3-CP4c-3-CB34`** (CM9) implements the frozen correction and nothing else.
+
+**If TB28-R3 again reports those ordinals green with the product unchanged, replace the harness wholesale with
+`tools/m3_cp4c3_tb23_r1_harness.sh` rather than correcting it a third time.**
 
 ## Carried forward from M1
 
@@ -122,3 +149,12 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **Sweep for other tolerant-selector / exact-consumer seams.** CP4c-0 found the pattern three times
   in one subsystem (flow classification, vertex sector, cross-edge flow). The same audit is owed wherever
   an exact authority was introduced downstream of a `double` decision.
+
+---
+
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at
+`M3-CP4c-3-TB28-INDEPENDENT-REVIEW` with no stable change. Produced-witness debt remains **5**. Authoritative
+semantic M3 package count is **93**. **The latest valid semantic runtime authority is `M3-CP4c-3-TB27-R1` at
+399 PASS / 7 RED, accepted 365/365**; `M3-CP4c-3-TB28-R2` is rejected as orchestration-invalid and the
+accepted-prefix count is unestablished for TB28. Exact next is `M3-CP4c-3-CB33`, orchestration correction only.
+PR #8 remains open, draft, and unmerged.

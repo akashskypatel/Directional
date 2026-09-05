@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-05 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Latest semantic runtime remains `M3-CP4c-3-TB27-R1` on selector406 at **399 PASS / 7 RED**, accepted **365/365**. `M3-CP4c-3-CB32` is now compile GREEN on exact evidence source `098ac7d93ea203222dd0ac50cdb68667744f0fd4`, immutable package `9975737868`, selector407 at 407 identities. CB32 publishes the final CL6/CL7 source-face/component/subset discriminator without changing product behavior. **NEXT:** `M3-CP4c-3-TB28`, artifact-only; its independent review must freeze a correction under CL8 and may not authorize another standalone diagnostic turn.)
+**Status date:** 2026-09-05 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Latest **valid** semantic runtime remains `M3-CP4c-3-TB27-R1` on selector406 at **399 PASS / 7 RED**, accepted **365/365**. **`M3-CP4c-3-TB28-R2` is REJECTED as orchestration-invalid**: it reported `407 PASS / 0 RED` on a package whose ownership path is byte-for-byte unchanged from that 7-RED baseline, and published none of the ledger artifacts its frozen plan requires. A status change with no behaviour change is a harness result. **CL8 is discharged - the product correction is FROZEN: the separating-arc barrier rule**, every arc whose two darts lie in different face-walk orbits contributes barriers and its crossed faces become trace-cut. **NEXT:** `M3-CP4c-3-CB33`, **orchestration correction only**, reusing package `9975737868` unchanged; then TB28-R3 as a control, credible only if 366/367/398 are RED; then CB34 applies the frozen correction.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB27-R1 runtime 399 PASS / 7 RED, accepted 365/365; CB32 package93/selector407 compile GREEN; TB28 next artifact-only |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB27-R1 remains the valid runtime at 399 PASS / 7 RED, accepted 365/365; TB28-R2 rejected as orchestration-invalid; correction frozen; CB33 next (harness) |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 407** | **OPEN.** Latest semantic runtime TB27-R1: **399 PASS / 7 RED**, accepted 365/365. CB32 package93/selector407 is compile GREEN on `098ac7d...` and publishes the final CL6/CL7 discriminator without product correction. **NEXT:** artifact-only `M3-CP4c-3-TB28`; its independent review must freeze the correction under CL8. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 407** | **OPEN.** Latest **valid** semantic runtime TB27-R1: **399 PASS / 7 RED**, accepted 365/365. CB32 package93/selector407 is compile GREEN; **TB28-R2 is rejected as orchestration-invalid**. The product correction is **frozen** (separating-arc barrier rule). **NEXT:** `M3-CP4c-3-CB33` harness repair, then TB28-R3 control, then CB34. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval
