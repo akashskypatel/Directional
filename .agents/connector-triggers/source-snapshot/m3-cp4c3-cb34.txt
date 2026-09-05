@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-CB34
+starting_source_sha=ec232fd82b42f55f135416a1d818a7291f485b15
+purpose=exact source snapshot before the frozen separating-arc barrier correction
+runtimeExecution=false
