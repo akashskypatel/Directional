@@ -1,0 +1,44 @@
+name: P5 TB27 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/p5-tb27-drive-apply-20260904.txt
+
+permissions:
+  contents: write
+  actions: read
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/p5-tb27-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb27-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 18IrdnY0RAvK087FTD2_mRZzwJxAOGL4M
+      patch_sha256: 'aab3dcc0c43df2bfc09a95411214cc23f437dad65b25c1a08d908af1db765ccd'
+      base_sha: 359bdea948f20458740ac0479062f90b43cb7bb8
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close out M3-CP4c-3-TB27 runtime evidence'
+    secrets: inherit
