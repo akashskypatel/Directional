@@ -1,0 +1,3 @@
+purpose=M3-CP4c-3-CB33 exact semantic source snapshot
+source_sha=b580e2038707f1685876019b0828f0535c17be33
+retry=1
