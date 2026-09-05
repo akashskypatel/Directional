@@ -1,4 +1,0 @@
-purpose=P5-CB31 exact source snapshot retrigger
-source_ref=d70312ee97ea0943f34175d128b04e3e70057e22
-caller=.github/workflows/p5-cb31-source-snapshot-retrigger.yml
-requested_by=user
