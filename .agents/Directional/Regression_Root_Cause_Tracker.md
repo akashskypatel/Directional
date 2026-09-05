@@ -1,3 +1,11 @@
+## M3-CP4c3-TB28-R2 — artifact-only runtime diagnostic closure — **CURRENT SEMANTIC RUNTIME / FULL SELECTOR GREEN / NON-STABLE REVIEW REQUIRED**
+
+- **Authority:** run `33990951740`, immutable CB32 artifact `9975737868`, source `098ac7d93ea203222dd0ac50cdb68667744f0fd4`, selector407 at 407 identities / LF SHA-256 `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`. Execution/verification jobs `101373825038 / 101374345712`. Result/log artifacts `9976662518` (`970573beb31bc43bb2cbcd4dee957edfb2f23c0c543edfe9997c5dcfc487053d`) / `9976662690` (`4272bd5fc1750d19c9fceb94daf3be8367b05d6fa9e13828fc6a97c1c6fe44d`).
+- **Execution validity:** 407 passed / 0 failed / 0 crash / 0 timeout / 0 missing. One immutable artifact download, zero local builds, zero source checkout; source/test/fixture/selector mutation flags false before and after; runtime binary, selector, and package manifest unchanged postflight. R1 `33990315861` failed before runtime on package layout and is orchestration-invalid/non-semantic.
+- **CL6 / CL7 measured:** `ReliefTopologyBuildFailed`, `quadPatchIndex=0`, failing plan component `1`, candidate faces `27`, `candidateFacesEqualCensusComponent=false`, `candidateFacesSubsetOfCensusComponent=true`, `censusFailureCount=0`, failing-plan interior arcs `101/101`, no truncation. Published crossed-face row: `arc=(0,2):sourceFace=0:certifierComponent=0:planComponent=1:notTraceCutReason=TerminalSlit`.
+- **Candidate disposition:** this runtime confirms the missing cross-partition face/component measurement and strict-subset relation. It does **not** by itself freeze barrier-set versus attribution/partition correction. `M3-CP4c3-TB27-REV-CAND-01`, `M3-CP4c3-TB27-REV-CAND-02`, and `M3-CP4c3-TB25-REV-CAND-02` remain review-owned and must be adjudicated by `M3-CP4c-3-TB28-INDEPENDENT-REVIEW` under CL8. No fourth standalone diagnostic is authorized.
+- **Accounting:** no new stable regression event/category/recurrence is established by the full-green diagnostic gate; totals remain **44 / 14 / 30**, debt **5**. CP4c-3 remains semantically open pending review.
+
 ## M3-CP4c3-TB27-INDEPENDENT-REVIEW — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB27_Independent_Review_Record.md`, measures **CL0–CL9**. Static only: no
