@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB26-EXEC
-caller_sha256=7633cf10cc349cc4761847ff2838ef45a2d87a84bb2bcd468eaacf47b4a35189
-immutable_artifact=9957324848
-selector=405
