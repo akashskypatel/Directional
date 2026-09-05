@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB32 documentation closeout apply
-base_sha=3744d80b18d716f3729f4537dccaefaf18b9943d
-patch_sha256=83e7aa0f0c3a21d820603a8d37233c37e6ce4cf95620814ab765baf1ab123648
-runtimeExecution=false
