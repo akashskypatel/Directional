@@ -1,3 +1,90 @@
+## M3-CP4c3-TB27-INDEPENDENT-REVIEW — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB27_Independent_Review_Record.md`, measures **CL0–CL9**. Static only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
+  365/365 untouched; selectors 397/401/403/405/406 byte-frozen.
+  `review_check.py authority eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` — ALL CHECKS PASSED.
+
+- **CL0 — the TB26-REV prediction is REFUTED, recorded first.** Predicted: all four interior-arc rows would show
+  `forwardOrbit == reverseOrbit`. Measured: arc **14** `(0,1)` **separating**, arc 20 `(0,0)`, arc **22** `(0,3)`
+  **separating**, arc 24 `(0,0)` — **two of four separate**. The derivation's hidden premise, flagged at the time as
+  a hedge, was that the arc's end node has degree 1. An arc runs between consecutive `TraceCut` nodes and can
+  contain a terminal-slit **segment** while still separating certified faces. A per-segment property was used to
+  classify a per-arc object. `LESSONS.md` 127. TB26-REV's two load-bearing claims are both **confirmed**; the
+  prediction was explicitly non-load-bearing and no measure depended on it.
+
+- **CL0.1 — the TB26-REV stop rule did not trigger.** It required the next review to declare the pattern
+  indistinguishable if CB31 still could not name the arcs. **CB31 named them.** Ordinal 404 publishes all four rows
+  with both orbits, all truncation flags false and a validated face-set digest; ordinal 406 publishes both partition
+  identities. `M3-CP4c3-TB26-REV-CAND-01` and `-CAND-03` are **discharged, runtime-proved**.
+
+- **CL1 — CK9 runtime-proves the partition mismatch.** Ordinal 406 publishes
+  `failingComponent=0;failingDomain=EmptyFragmentOrbits;failingFaceSetDigest=17919102493633069558;censusComponent=0;censusDomain=NotTraceCut;censusFaceSetDigest=7937364815223192706;matchesFailingComponent=false`.
+  **191 faces versus 214, different digests, false correspondence reported by the product itself.** Consequently
+  **the two separating arcs are properties of the 214-face certifier component and may not be promoted into
+  evidence about the 191-face failing component.** TB27-R1 states this correctly and does not overreach.
+
+- **CL1.1 — provable statically about the two partitions.** The **barrier families are the same three**, and
+  `traceTouchedEdges` applies the same `is_terminal_slit` skip (`GlobalTopologyPlan.cpp:830–843`) the certifier
+  applies (`SurfaceCutGraph.cpp:523–530`). The **plan's domain is contained in the certifier's**: a non-slit trace
+  segment calls `add_fragment_orbit`, so every trace-cut face is excluded from `unlabeledFaces`; contrapositive, a
+  face in the plan's domain is not trace-cut. Same barriers plus contained domain gives **plan component ⊆
+  certifier component**. The 23-face difference matches the faces given a `fragmentOrbits` entry by the mandatory/cut
+  arc interior rule (`GlobalTopologyPlan.cpp:702`, `:750`) — **the plan excludes from its component exactly the
+  faces carrying a direct certified read, then fails to seed that component.** Containment is the shape the next
+  measurement must confirm; digests are not containment-checkable and it is not asserted.
+
+- **CL2 — the whole frontier now reduces to one unmeasured fact:** *which source faces do arcs 14/20/22/24 cross,
+  and which component of each partition contains them?* Two exhaustive branches, each with a correction already
+  named: **a separating arc crosses the failing component** ⇒ the component genuinely spans certified faces, the
+  seed guard is right to fail, and the **barrier set** is the defect with the arc named; **neither does** ⇒ the
+  component lies in one certified face and the **attribution rule** is the defect, with the offending edges already
+  named among the 46 published seed-attribution rows.
+
+- **CL2.1 — a conjecture, labelled as one.** The two separating arcs' reverse orbits are **1** and **3**; the
+  failing component's seeds are **`[0,1,3]`** distributed **81/1/1**, one lone edge each for 1 and 3. **Striking and
+  not evidence** — they were measured on different components, and this project has repeatedly paid for identifying
+  loci because their numbers matched (`LESSONS.md` 57, 64). Recorded only so CL6 can confirm or refute it.
+
+- **CL2.2 — the mechanism to examine.** `GlobalTopologyPlan.cpp:830–836` justifies the terminal-slit skip with "a
+  terminal slit … touches no source edge, and publishes no orbit evidence." **The last clause is now measurably
+  false in general** — arcs containing a terminal-slit segment do publish orbit evidence, and for arcs 14 and 22 it
+  says the arc separates. The rule decides a per-face trace-cut status and a per-edge barrier status from a
+  per-segment property. **No change to it is authorized in CB32.**
+
+- **CL3 — seven REDs, and the set is the smallest of the checkpoint.** 366/367 the open frontier failing closed;
+  **398 the honest gate**, untouched; 368/369/370/374 unchanged carried surfaces with separate owners.
+  **393 RECOVERED** on the distinct-source-face coverage contract while still printing the full conflict population
+  `certifiedOwners=0:191,1:191,3:191;allEqual=false`. Every ordinal that was collateral to diagnostic scaffolding
+  has been returned to green **without weakening a contract**.
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **92**. Accepted 1–365 = 365/365, no accepted RED ordinal. The orchestration-invalid attempt
+  `33946019995` stopped with `runtime_started=false` and carries no semantic credit; its correction changed only the
+  harness census comparison, retaining artifact-digest and internal `SHA256SUMS` authority.
+
+- **Candidates.** **Discharged, runtime-proved:** `M3-CP4c3-TB26-REV-CAND-01`, `M3-CP4c3-TB26-REV-CAND-03`.
+  **Confirmed at runtime and gating:** `M3-CP4c3-TB26-REV-CAND-04` (partition mismatch, owner CL6/CL7),
+  `M3-CP4c3-DEFN-R3-CAND-01` (duplicated construction now demonstrably yields two partition objects; owner CL7, then
+  a `DEFN` turn if unification is chosen). **Still undecided, now precisely posed:**
+  `M3-CP4c3-TB25-REV-CAND-02` (owner CL6). **New:** `M3-CP4c3-TB27-REV-CAND-01` (**GATING / PRODUCT** — the
+  certifier's 214-face component contains two separating arcs, so that partition **merges faces lying in different
+  certified faces**; any ownership propagated across it would be unsound, masked only because the component has no
+  unique seed) and `M3-CP4c3-TB27-REV-CAND-02` (**ARCHITECTURAL / NON-GATING** — the plan excludes its own direct
+  certified reads from the component it then fails to seed).
+
+- **Successor frozen: `M3-CP4c-3-CB32`** under **CL6–CL9**, runtime-free, GMP/GMPXX linked. **CL6** adds to every
+  interior-arc row the arc's **crossed source faces** untruncated, each face's component id in **both** partitions,
+  and the **typed reason** the face is not trace-cut (`TerminalSlit` / `SegmentRangeInvalid` / `TraceNotFound` /
+  `DartOutOfRange` / `FaceNotFound` / `Other`), and publishes the same for the **failing plan component's** interior
+  arcs. **CL7** publishes the **subset** relation alongside the already-refuted equality boolean; **no partition is
+  unified**. **CL9** selector **407** with 406 as an exact prefix, adding one gating publication/completeness
+  identity. **CL8 — HARD STOP RULE: CB32 is the last diagnostic turn authorized on source-face ownership.** The
+  review that reads TB28 **must freeze a product correction** whichever branch CL6 measures; both are pre-named and
+  the outcomes are exhaustive, so "insufficient evidence" is not an available finding. **If CL6 returns ambiguous,
+  the default correction is the barrier-set branch: an arc whose two darts lie in different face-walk orbits must
+  induce a barrier.** `LESSONS.md` 115 and 128.
+
 ## M3-CP4c3-TB27-REV — runtime diagnostics — **CURRENT RUNTIME REVIEW / SEMANTIC RED / NON-STABLE PENDING INDEPENDENT REVIEW**
 
 - **Authority:** formal run/job `33946094875 / 101252363079`, immutable CB31 package `9961564041`, semantic source
@@ -35,7 +122,8 @@
 
 ## M3-CP4c3-TB26-INDEPENDENT-REVIEW — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
-- **Record:** `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`, measures **CK0–CK9**. Static only: no
+- **Record:** `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`), measures **CK0–CK9**. Static only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
   365/365 untouched; selectors 397/401/403/405 byte-frozen.
   `review_check.py authority e045bf7147afc02bd90eff4822e4b609edbaba66` — ALL CHECKS PASSED.
@@ -4890,27 +4978,30 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB26-R1**: semantic source
-`e045bf7147afc02bd90eff4822e4b609edbaba66`, immutable CB30 package `9957324848`
-(`7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`), selector 405, formal run/job
-`33931380325 / 101210520053`, **397 PASS / 8 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,393,398]`. Exact ledger:
-`5d16ee4508ead7eb5422c4dd0d03a9903009b8552d8e815ff2394f872eebe34a`; package/source/execution-view pre/post censuses
-equal. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **91**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB27-R1**: semantic source
+`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`, immutable CB31 package `9961564041`
+(`ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf`), selector 406, formal run/job
+`33946094875 / 101252363079`, **399 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,398]`. Exact ledger:
+`8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`; package and packaged-source pre/post censuses
+equal on the same runner. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3
+packages **92**.
 
-`M3-CP4c-3-TB26-INDEPENDENT-REVIEW` adjudicated that ledger. CJ7/CJ8/CJ9 all worked - 389 and 390 recovered, the
-restored seed rule reproduces `[0,1,3]` and fails closed without choosing a winner, and 404/405 pass. But the
-frozen discriminator is **not** discharged: `interiorArcs=4` is an incidence count, not a separation, and the
-per-arc `forwardOrbit`/`reverseOrbit` that carries the distinction is computed and stored but serialized only as a
-count. Independently, **the CJ6 censuses are computed on the certifier's partition while the RED is raised on the
-plan's** - different domains and different barrier sets by construction - so no CJ6 number is yet admissible about
-the failing component. The 76-versus-97 boundary discrepancy is that same lawful domain difference, not omitted
-rows.
+`M3-CP4c-3-TB27-INDEPENDENT-REVIEW` adjudicated that ledger. CK8/CK9 both worked: all four interior-arc rows are
+published with both dart orbits - **arc 14 `(0,1)` and arc 22 `(0,3)` separate**, arcs 20 and 24 do not - and
+ordinal 406 proves `matchesFailingComponent=false` with **214 certifier faces against 191 failing plan faces** and
+differing digests. Ordinal **393 recovered**. The prior review's all-bridges prediction is **refuted**; its two
+load-bearing claims are **confirmed**. The separating arcs belong to the certifier's component and **may not be
+promoted into evidence about the failing one**.
 
-**Exact next: `M3-CP4c-3-CB31` - Code + Build, runtime-free, GMP/GMPXX linked**, under
-`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` **CK8-CK9**. Serialize one line per census row for the
-failing component including both dart orbits per interior arc; strengthen ordinal 404 in place; replace ordinal
-393's assertion with distinct-source-face coverage; publish the partition identity on both sides and add one gating
-identity at selector **406** asserting the correspondence is published, not that it holds. **CB31 corrects no
-product behaviour** - no barrier added or removed, no attribution rule changed, no seed winner chosen, no partition
-unified, no `terminalSlit` handling altered. No Directional runtime before `M3-CP4c-3-TB27`.
+**Exact next: `M3-CP4c-3-CB32` - Code + Build, runtime-free, GMP/GMPXX linked**, under
+`Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` **CL6-CL9**. Publish each interior arc's crossed source
+faces, their component ids in **both** partitions, and the typed reason each face is not trace-cut; publish the same
+for the failing plan component; publish the subset relation; selector **407** with 406 as an exact prefix.
+**CB32 corrects no product behaviour.**
+
+**Hard stop rule (CL8):** CB32 is the **last diagnostic turn authorized on source-face ownership**. The review that
+reads TB28 must freeze a product correction whichever branch CL6 measures - a separating arc inside the failing
+component selects the barrier-set correction, its absence selects the attribution-rule correction - and an ambiguous
+census defaults to the barrier-set branch: **an arc whose two darts lie in different face-walk orbits must induce a
+barrier.** No Directional runtime before `M3-CP4c-3-TB28`.

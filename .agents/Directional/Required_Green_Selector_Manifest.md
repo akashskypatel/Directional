@@ -349,8 +349,26 @@ compiled all eight approved targets with GMP/GMPXX linked; preflight and build e
 `9963419649 / 9963419830`; ledger SHA-256
 `8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`. Ordinal406 publishes
 `matchesFailingComponent=false` between the plan `EmptyFragmentOrbits` failure partition and certifier
-`NotTraceCut` census partition. Selector bytes are unchanged. Exact successor:
-`M3-CP4c-3-TB27-INDEPENDENT-REVIEW`.
+`NotTraceCut` census partition. Selector bytes are unchanged.
+
+**Adjudicated at `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`:** ordinals 404 and 406 are the first diagnostic gates in this
+checkpoint whose PASS is **also readable** — 404 publishes all four interior-arc rows with both dart orbits (arc 14
+`(0,1)` and arc 22 `(0,3)` separating), and 406 proves the census and the failure are different partition objects.
+**Ordinal 404 still may not be cited as evidence about the failing plan component**, because it describes the
+certifier's. Ordinal **393**'s repaired coverage contract is runtime-proved. CL6 strengthens 404 in place; no
+identity is withdrawn.
+
+### 407 — PLANNED, `M3-CP4c-3-CB32` CL9
+
+Selector 406 must be its exact 406-line prefix, with 405/403/401/397/365 the frozen prefixes of that. One gating
+identity is appended:
+
+- `SurfaceCutGraph.InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`
+
+It asserts that every interior-arc row publishes its **crossed source faces** untruncated, each face's component id
+in **both** partitions, and the **typed reason** the face is not trace-cut — **publication and completeness only,
+never a value**, and never gated on an established owner. Ordinal **404** has its assertions strengthened in place
+by CL6; its name and ordinal do not change, so the first 406 lines stay byte-identical.
 
 ## Separate lineage — M1
 

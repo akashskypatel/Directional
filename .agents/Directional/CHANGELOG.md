@@ -1,3 +1,54 @@
+## 2026-09-05 — `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`: two of four arcs separate, on the wrong component; CB32 frozen as the last diagnostic turn
+
+Independent REVIEW + PLAN, static only. No runtime, no compile, no package operation, no product/test/fixture/
+benchmark/build/selector mutation. `review_check.py authority eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` passed, so
+static review of HEAD is valid evidence about immutable package `9961564041`.
+
+**My TB26-REV prediction is refuted, recorded first.** I predicted all four interior-arc rows would show
+`forwardOrbit == reverseOrbit`. Measured: arc **14** `(0,1)` **separating**, arc 20 `(0,0)`, arc **22** `(0,3)`
+**separating**, arc 24 `(0,0)`. The hidden premise — flagged at the time as a hedge — was that the arc's end node
+has degree 1; an arc runs between consecutive `TraceCut` nodes and can contain a terminal-slit *segment* while
+still separating certified faces. A per-segment property was used to classify a per-arc object. That review's two
+load-bearing claims are both **confirmed**, and the prediction was explicitly non-load-bearing.
+
+**Its stop rule did not trigger.** CB31 named the arcs. Ordinal 404 publishes all four rows with both orbits, all
+truncation flags false and a validated digest; ordinal 406 publishes both partition identities.
+`M3-CP4c3-TB26-REV-CAND-01` and `-CAND-03` are **discharged, runtime-proved**.
+
+**CK9 runtime-proves the partition mismatch.** `matchesFailingComponent=false`, with the census on the certifier's
+`NotTraceCut` component (**214** faces, digest `7937364815223192706`) and the failure on the plan's
+`EmptyFragmentOrbits` component (**191** faces, digest `17919102493633069558`). **The two separating arcs may not
+be promoted into evidence about the failing component.**
+
+**Provable statically:** the barrier families are identical and both apply the same terminal-slit skip; a face in
+the plan's domain is never trace-cut, so **plan domain ⊆ certifier domain** and each plan component sits inside a
+certifier one. The 23-face difference is the faces given a `fragmentOrbits` entry by the mandatory/cut arc interior
+rule — **the plan excludes exactly the faces carrying a direct certified read, then fails to seed the component
+that lost them.**
+
+**393 recovered** on the distinct-source-face coverage contract while still printing
+`certifiedOwners=0:191,1:191,3:191;allEqual=false`. The RED set is now the smallest of the checkpoint: one product
+frontier (366/367), one honest gate (398), four independently owned carried surfaces.
+
+**A conjecture, labelled as one:** the separating arcs' reverse orbits are 1 and 3; the failing component's seeds
+are `[0,1,3]` distributed 81/1/1. Different components — recorded only so the next census can confirm or refute.
+
+**Accounting unchanged: 44 events / 14 categories / 30 recurrences**, debt **5**, packages **92**.
+
+**Candidates.** Closed runtime-proved: `M3-CP4c3-TB26-REV-CAND-01`, `-CAND-03`. Confirmed and gating:
+`-CAND-04`, `M3-CP4c3-DEFN-R3-CAND-01`. Still undecided: `M3-CP4c3-TB25-REV-CAND-02`. New:
+`M3-CP4c3-TB27-REV-CAND-01` (the certifier partition merges faces lying in different certified faces) and
+`-CAND-02` (the plan excludes its own direct certified reads from the component it then fails to seed).
+
+**Lessons 127 and 128** added. **Consolidation:** the TB26 review record and the TB26-R1 and TB25-R1 runtime
+reports were folded into `M3_CP4c_Consolidated_Record.md`.
+
+**Exact successor: `M3-CP4c-3-CB32`** under **CL6–CL9** — publish each interior arc's crossed source faces, their
+component ids in both partitions, and the typed reason each face is not trace-cut; publish the same for the failing
+plan component; publish the subset relation; selector **407**. **CL8 makes it the last diagnostic turn authorized
+on this frontier: the review that reads TB28 must freeze a product correction whichever branch is measured, and an
+ambiguous census defaults to the barrier-set branch.**
+
 ## 2026-09-04 — `M3-CP4c-3-TB27-R1`: 399 PASS / 7 RED; partition mismatch runtime-proved
 
 Artifact-only Test + Benchmark on immutable CB31 package `9961564041` / source

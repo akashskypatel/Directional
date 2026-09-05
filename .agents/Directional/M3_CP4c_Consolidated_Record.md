@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 405 at 397 PASS / 8 RED, accepted authority **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **91**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 406 at 399 PASS / 7 RED, accepted authority **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **92**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -893,6 +893,27 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
 
+### Consolidated on 2026-09-05 at `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB27_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md`, `Regression_Root_Cause_Tracker.md`,
+`ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` | 343 | superseded review authority - CK0-CK9. Its two load-bearing claims are **runtime-confirmed** (an incidence count is not a separation; the census described a different object). Its §1.2 static all-bridges prediction is **refuted** - arcs 14 and 22 separate |
+| `Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md` | 93 | superseded runtime authority - TB26-R1, 397 PASS / 8 RED on selector 405, accepted 365/365; the ledger the CK measures were frozen against |
+| `Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` | 220 | superseded runtime authority - TB25-R1, 393 PASS / 10 RED on selector 403; retained one turn longer as the `established=74 / unavailable=226` baseline, now carried by the TB27 review record and this index |
+
+**Folded here:** 3 documents, 656 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md`
+(**authoritative semantic runtime**), `Architecture_M3_CP4c3_CB31_Code_Build_Report.md` (the package under review),
+`Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` (this review and the frozen CB32 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
 ### Consolidated on 2026-09-04 at `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`
 
 Mandatory REVIEW consolidation. Durable facts were verified present in
@@ -986,7 +1007,7 @@ present in `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`, `Regres
 | `Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md` | 100 | invalid-attempt provenance - orchestration-invalid, no semantic ledger. **Retired by `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup, indexed here at TB23-R1-REV** |
 
 **Total folded this turn:** 6 documents, 902 lines — 1 folded by this review, plus 5 retired by
-`M3-CP4c-3-TB23-R1` without an index entry. **Running total:** 75 documents, 14970 lines.
+`M3-CP4c-3-TB23-R1` without an index entry. **Running total:** 78 documents, 15626 lines.
 
 **Retained as current authority:** `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` (review and the frozen DEFN-R3 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
 

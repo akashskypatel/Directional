@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-04, `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`):** runtime authority is TB26-R1 on selector **405** at **397 PASS / 8 RED**, accepted **365/365**. CJ7/CJ8/CJ9 all worked - **389 and 390 recovered**, the restored seed rule reproduces `[0,1,3]` and **fails closed without choosing a winner**, 404/405 pass. But the discriminator is **not** discharged: `interiorArcs=4` is an **incidence count, not a separation**, and the per-arc `forwardOrbit`/`reverseOrbit` that carries the distinction is computed and stored but never printed. Independently, **the censuses are computed on the certifier's partition while the RED is raised on the plan's** - different domains and barrier sets by construction - so no census number is yet admissible about the failing component. Exact next is `M3-CP4c-3-CB31` under **CK8-CK9**: print the rows, publish the partition identity on both sides. **It corrects no product behaviour.**
+> **Current CP4c-3 authority (2026-09-05, `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`):** runtime authority is TB27-R1 on selector **406** at **399 PASS / 7 RED**, accepted **365/365** - the smallest RED set of the checkpoint. CK8/CK9 both worked: all four interior-arc rows publish both dart orbits - **arc 14 `(0,1)` and arc 22 `(0,3)` SEPARATE**, arcs 20 and 24 do not - and ordinal 406 proves `matchesFailingComponent=false`, **214 certifier faces against 191 failing plan faces**. Ordinal **393 recovered**. The prior review's all-bridges prediction is **refuted**; its two load-bearing claims are confirmed. **The separating arcs belong to the certifier's component and may not be promoted into evidence about the failing one.** Exact next is `M3-CP4c-3-CB32` under **CL6-CL9** - publish each arc's crossed faces and their component ids in **both** partitions. **CL8 makes it the last diagnostic turn on this frontier.**
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,34 +185,39 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB26-R1`.** Selector **405**, **397 PASS / 8 RED**, accepted **1–365 = 365/365**,
-reds {366, 367, 368, 369, 370, 374, 393, 398}. The mechanical actual embedded complex is **certified cellular** —
+**Runtime authority — `M3-CP4c-3-TB27-R1`.** Selector **406**, **399 PASS / 7 RED**, accepted **1–365 = 365/365**,
+reds {366, 367, 368, 369, 370, 374, 398}. The mechanical actual embedded complex is **certified cellular** —
 `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`.
 
-**Review authority — `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`.** Eight REDs, **four causes**: 366/367 the open frontier
-(correctly fail-closed), 393 a **stale arity** assertion, 398 the honest gate, 368/369/370/374 carried surfaces.
+**Review authority — `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`.** Seven REDs: 366/367 the open frontier failing closed,
+**398 the honest gate**, and four independently owned carried surfaces. **393 recovered** on a distinct-source-face
+coverage contract that still prints the whole conflict population. Every ordinal that was collateral to diagnostic
+scaffolding is back to green **without weakening a contract**.
 
-**What worked.** CJ8 recovered **389 and 390** — 390 publishes `certifiedOwnerCount=3` **without asserting a
-winner**. CJ7's restored seed rule reproduces the pre-CB27 `[0,1,3]` exactly and the plan **fails closed** rather
-than choosing. CJ9's 404/405 pass.
+**The two measurements that landed.**
 
-**Why the discriminator is still open — two independent defects.**
+- **Interior arcs, with both dart orbits** — arc **14** `(0,1)` and arc **22** `(0,3)` **separate**; arcs 20 and 24
+  `(0,0)` do not. An arc separates two certified faces iff its dart orbits differ, so **two of four genuinely
+  separate**, and the earlier prediction that all four would be bridges is **refuted**: an arc runs between
+  consecutive `TraceCut` nodes and can contain a terminal-slit *segment* while still separating. `LESSONS.md` 127.
+- **`matchesFailingComponent=false`** — the census component is the certifier's `NotTraceCut` partition with **214**
+  faces and digest `7937364815223192706`; the failure is raised on the plan's `EmptyFragmentOrbits` partition with
+  **191** faces and digest `17919102493633069558`. **The separating arcs may not be promoted into evidence about
+  the failing component.**
 
-1. **An incidence count is not a separation.** CJ6 defined the horn as a *separating* arc, and an arc separates iff
-   its two darts lie in **different** face-walk orbits. `interiorArcs=4` carries no such claim. The deciding fields
-   — `forwardOrbit`, `reverseOrbit` per row, and the 46 seed attributions with their `rule` — are **computed and
-   stored** (`SurfaceCutGraph.h:138–170`, `SurfaceCutGraph.cpp:689–708`) and serialized only as counts.
-2. **The census describes a different object than the failure.** Two partitions exist: the plan's over
-   `unlabeledFaces` with `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`
-   (`GlobalTopologyPlan.cpp:1103–1115`), and the certifier's over `uncutFaces` with a narrower barrier set
-   (`SurfaceCutGraph.cpp:596–601`). An arc-incident face is in the second and not the first, by construction. **The
-   RED is on the plan's; every census is on the certifier's**, and nothing published establishes that their
-   component 0s are the same faces. The 76-versus-97 boundary counts are that lawful difference, not omitted rows.
+**What is provable statically.** The barrier families are the same three and both apply the same terminal-slit skip;
+a face in the plan's domain is never trace-cut, so **plan domain ⊆ certifier domain** and each plan component sits
+inside a certifier component. The 23-face difference is the faces given a `fragmentOrbits` entry by the mandatory/cut
+arc interior rule (`GlobalTopologyPlan.cpp:702`, `:750`) — **the plan excludes exactly the faces carrying a direct
+certified read, then fails to seed the component that lost them.**
 
-**Static argument, to be tested by printing one integer pair per row.** A trace arc can meet an uncut component's
-interior **only** through a terminal-slit segment; such an arc ends at a degree-1 free end, so it is a **bridge**,
-and both darts of a bridge share an orbit — the case DEFN-R3.4 already measured as arc 15,
-`forwardOrbit = reverseOrbit = 0`. **Predicted: all four rows are bridges and the separating-arc horn is refuted.**
+**The frontier now reduces to one unmeasured fact:** which source faces do arcs 14/20/22/24 cross, and which
+component of each partition contains them? A separating arc inside the failing component means the seed guard is
+right and the **barrier set** is the defect; its absence means the **attribution rule** is, with the offending edges
+already named among 46 published rows.
+
+**Conjecture, not evidence.** The separating arcs' reverse orbits are **1** and **3**; the failing component's seeds
+are `[0,1,3]` distributed **81/1/1**. Different components — recorded only so the next census can confirm or refute.
 
 **Definition authority — `M3-CP4c-3-DEFN-R3`, Part VII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Parts
 IV–VI where they conflict, and only there. Its decisions:
@@ -247,7 +252,7 @@ IV–VI where they conflict, and only there. Its decisions:
   assertions are REPLACED in place**, retained and gating, because its seed-relative expectation becomes
   meaningless once the seed ceases to exist.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **91**. Sphere 368,
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **92**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence contract
 remain deferred under their own owners. **Vertex 30 is still not reached.**
 
@@ -258,7 +263,7 @@ remain deferred under their own owners. **Vertex 30 is still not reached.**
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path, in region construction.** The actual embedded complex is certified cellular. Since CB30 the plan **fails closed** on component **0** — **191** faces, `seedCount=3`, `seedState=Multiple`, orbits **`[0,1,3]`** — publishing all three owners rather than choosing (`certifiedOwners=0:191,1:191,3:191;allEqual=false`). The certifier's census for its own component 0 reports `boundaryEdges=76; interiorArcs=4; vertexTransits=53; seedAttributions=46` — **a different partition**, so those numbers are not yet admissible about the failing component. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path, in region construction.** The actual embedded complex is certified cellular. The plan **fails closed** on its `EmptyFragmentOrbits` component **0** — **191** faces, seeds **`[0,1,3]`** distributed **81/1/1** over 83 attributed boundary edges — publishing all three owners rather than choosing. The certifier's `NotTraceCut` component 0 is a **different object**: **214** faces, 76 boundary rows, **4 interior trace arcs of which 2 separate** (arc 14 `(0,1)`, arc 22 `(0,3)`), 53 vertex transits, 46 seed attributions. `matchesFailingComponent=false`. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -353,31 +358,34 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Certified-face ownership — the discriminator is measured but not yet readable, and it was measured on the
-   wrong object.**
+1. **Certified-face ownership — one unmeasured fact remains, and the next turn is the last diagnostic one.**
 
-   - **The seed rule is no longer starved.** CJ7 restored the second admissible source; component 0 returns
-     `[0,1,3]`, identical to the pre-CB27 rule, and the plan **fails closed without choosing a winner**. That part
-     is settled.
-   - **`interiorArcs=4` does not select the separating-arc horn.** An arc separates iff its two darts lie in
-     different orbits. The census stores both orbits per row; the runtime printed the count. **The horn cannot be
-     selected by evidence that cannot name the arcs.**
-   - **The census is computed on the certifier's partition; the RED is raised on the plan's.** Different domains,
-     different barrier sets, by construction. No published evidence says their component 0s are the same faces.
-   - **Static argument.** A trace arc reaches an uncut component's interior only via a **terminal slit**, which
-     ends at a degree-1 node, making the arc a **bridge** whose darts share an orbit. Predicted: all four rows are
-     bridges, the horn is refuted, the component lies in one certified face, and the two minority seeds among
-     81/1/1 are attribution errors the 46 unprinted attribution rows already name.
+   - **Two of four interior arcs separate.** Arc 14 `(0,1)` and arc 22 `(0,3)`; arcs 20 and 24 are `(0,0)`. So the
+     certifier's 214-face component **is not contained in one certified face**, and any owner propagated across
+     that partition would be unsound — masked today only because the component has no unique seed.
+   - **But they were measured on the wrong object.** `matchesFailingComponent=false`: the failure is raised on the
+     plan's 191-face `EmptyFragmentOrbits` component, the census on the certifier's 214-face `NotTraceCut` one.
+   - **The one unmeasured fact.** Which source faces do those arcs cross, and which component of each partition
+     contains them? **A separating arc inside the failing component** ⇒ the component genuinely spans certified
+     faces, the seed guard is right to fail, and the **barrier set** is the defect. **Neither inside** ⇒ the
+     component lies in one certified face and the **attribution rule** is the defect, its edges already named among
+     46 published rows.
+   - **The mechanism to examine.** `GlobalTopologyPlan.cpp:830–836` justifies the terminal-slit skip with "a
+     terminal slit … touches no source edge, and publishes no orbit evidence." **The last clause is measurably
+     false in general.** The rule decides per-face trace-cut status and per-edge barrier status from a per-segment
+     property. `LESSONS.md` 127.
 
-   `M3-CP4c-3-CB31` (CK8–CK9) prints the rows and publishes the partition identity on both sides. **Prohibited:**
-   any product correction — no barrier added or removed, no attribution rule changed, no seed winner chosen, no
-   partition unified, no `terminalSlit` handling altered — before the arcs are named.
+   `M3-CP4c-3-CB32` (CL6–CL9) publishes each arc's crossed faces, their component ids in **both** partitions, and
+   the typed reason each face is not trace-cut. **CL8 is a hard stop rule: CB32 is the last diagnostic turn
+   authorized on this frontier.** The review that reads TB28 must freeze a product correction whichever branch is
+   measured, and an ambiguous census defaults to the barrier-set branch — **an arc whose two darts lie in different
+   face-walk orbits must induce a barrier.** `LESSONS.md` 128.
 
-2. **Ordinal 393 asserts a superseded arity.** It requires one certified-face observation per component face;
-   CJ7 deliberately publishes the full conflict multiset, so the count is `573 = 3 × 191`. The identity's own
-   output is correct and useful. The contract it owns is **coverage** — the distinct source faces observed equal
-   the component's face set — plus untruncated publication. Owner: **CK8**, replaced in place, ordinal retained and
-   gating. `LESSONS.md` 123.
+2. **Two partitions of one mesh, and the diagnostic runs on the one that does not fail.** Confirmed at runtime by
+   ordinal 406. The barrier families are identical; only the domain predicate differs, and the plan's domain
+   excludes exactly the faces carrying a direct certified read (`GlobalTopologyPlan.cpp:702`, `:750`) — the seeds it
+   then cannot find. `M3-CP4c3-DEFN-R3-CAND-01` is now **gating**. **Unification is a definition decision** and
+   belongs to a `DEFN` turn once the mechanism is known; CB32 publishes the subset relation and unifies nothing.
 
 3. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
    path: the `VertexStarTransitAudit` is constructed **after** all five seed guards, so every seed failure publishes
@@ -426,6 +434,16 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A per-segment property cannot decide a per-arc or per-face classification.** A trace's last segment being a
+terminal slit was used to exclude that segment's *face* from the trace-cut set and its carriers from the barrier
+set — and a review then inferred from the same flag that the whole *arc* must be a bridge. Runtime found two of four
+such arcs separating. State the quantifier before classifying the larger object. `LESSONS.md` §4 127.
+
+**When a measurement chain reaches its third turn, freeze the stop rule and pre-name the corrections.** Six
+successive turns measured one ownership frontier, each correctly explaining why the last could not answer. Every
+step was justified; the sequence was the larger risk. Write the exhaustive outcome list, the correction each outcome
+selects, and the default on ambiguity, so "insufficient evidence" stops being available. `LESSONS.md` §4 128.
 
 **An incidence count is not a separation — publish the field that carries the distinction.** The frozen
 discriminator asked whether a *separating* arc meets a component's interior; the runtime reported `interiorArcs=4`

@@ -26,43 +26,45 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB27-INDEPENDENT-REVIEW` (REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB32` (Code + Build, runtime-free) — LAST DIAGNOSTIC TURN ON THIS FRONTIER
 
-`M3-CP4c-3-TB27-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE** on immutable
-CB31 package `9961564041` / source `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / selector406.
+`M3-CP4c-3-TB27-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**, and
+`M3-CP4c-3-TB27-INDEPENDENT-REVIEW` has adjudicated it. Immutable CB31 package `9961564041` / semantic source
+`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` executed selector 406 in run/job `33946094875 / 101252363079`.
 
-Formal run/job `33946094875 / 101252363079` produced **399 PASS / 7 RED**, accepted **365/365**, RED
-`[366,367,368,369,370,374,398]`. Result/log artifacts `9963419649 / 9963419830` have SHA-256
-`adaee20abd667108dbf7ffc0e3db8f0d2f85f9682a15434b83d6291982f1e026` /
-`6ea8381fed0ebd501957961dc6f8b483fb8a355d003d1b39aede7f59f05c855d`; ledger SHA-256
-`8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`.
+- ledger: **399 PASS / 7 RED**, accepted **1–365 = 365/365 PASS**;
+- RED ordinals: `366,367,368,369,370,374,398` — **the smallest RED set of the checkpoint**;
+- result/log artifacts: `9963419649 / 9963419830`;
+- **393 recovered**; 404 and 406 PASS.
 
-Runtime facts now frozen for review:
-
-- [x] ordinal **393 PASS** — distinct-source-face coverage is complete while the full conflicting population
-      `0:191,1:191,3:191` remains published;
-- [x] ordinal **404 PASS** — certifier component 0 is `NotTraceCut`, 214 faces, digest
-      `7937364815223192706`, with 76 boundary / 4 interior-arc / 53 vertex-transit / 46 seed-attribution rows;
-- [x] the four interior trace arcs are 14 `0/1`, 20 `0/0`, 22 `0/3`, 24 `0/0`: **two separating, two equal**,
-      refuting the static all-bridges prediction for the certifier partition;
-- [x] ordinal **406 PASS** — the failing plan component is `EmptyFragmentOrbits`, digest
-      `17919102493633069558`, and `matchesFailingComponent=false` against the certifier census;
-- [x] ordinal **398 remains RED** unchanged; no owner winner was chosen and no barrier/partition behavior changed.
+**Independent-review verdict.** Both CK measures landed. Ordinal 404 publishes all four interior-arc rows with both
+dart orbits — arc **14** `(0,1)` and arc **22** `(0,3)` **separate**, arcs 20 and 24 are `(0,0)` — refuting the
+prior review's all-bridges prediction. Ordinal 406 publishes `matchesFailingComponent=false`: the census is the
+certifier's 214-face `NotTraceCut` component, the failure is the plan's 191-face `EmptyFragmentOrbits` one.
+**The separating arcs may not be promoted into evidence about the failing component.** No stable event added.
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **92**. CP4c-3 remains OPEN.
+package count **92**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB27-INDEPENDENT-REVIEW`** as the mandatory REVIEW + PLAN for this semantic RED. It must:
+Run **`M3-CP4c-3-CB32`**, Code + Build, runtime-free, GMP/GMPXX linked, under **CL6–CL9** of
+`Architecture_M3_CP4c3_TB27_Independent_Review_Record.md`:
 
-- adjudicate the runtime refutation of the all-four-bridges prediction without applying certifier-partition rows to
-  the different failing plan partition;
-- treat `matchesFailingComponent=false` as runtime evidence for the duplicated-partition architectural defect;
-- decide what evidence/correction, if any, can establish ownership for the **191-face failing plan component**;
-- preserve 398 as the strong gate and accepted 1–365 unchanged;
-- categorize the seven RED ordinals by owner and issue the next bounded plan. No CB/retry is authorized before this
-  review.
+- [ ] **CL6** publish each interior arc's **crossed source faces** untruncated, each face's component id in **both**
+      partitions, and the **typed reason** the face is not trace-cut; publish the same for the **failing plan
+      component's** interior arcs.
+- [ ] **CL7** publish the **subset** relation alongside the refuted equality boolean; unify nothing.
+- [ ] **CL9** selector **407** with 406 as an exact prefix; one gating publication/completeness identity; ordinal
+      404 strengthened in place.
+
+**CL8 — HARD STOP RULE.** CB32 is the **last diagnostic turn authorized on source-face ownership**. The review that
+reads TB28 **must freeze a product correction** whichever branch CL6 measures — a separating arc inside the failing
+component selects the barrier-set correction, its absence selects the attribution-rule correction — and an ambiguous
+census **defaults to the barrier-set branch**: an arc whose two darts lie in different face-walk orbits must induce
+a barrier.
+
+**CB32 corrects no product behaviour.** No Directional runtime before `M3-CP4c-3-TB28`.
 
 ## Carried forward from M1
 
@@ -145,7 +147,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences** with no stable change. Produced-witness debt
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB27-INDEPENDENT-REVIEW` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **92**. **TB27-R1 is the latest semantic runtime authority at 399 PASS / 7 RED, accepted 365/365.** Exact next is `M3-CP4c-3-CB32` under CL6–CL9, the last diagnostic turn authorized on this frontier. PR #8 remains open, draft, and unmerged.
 remains **5**. Semantic M3 package count is **92**. **TB27-R1 is the latest semantic runtime authority at
 399 PASS / 7 RED, accepted 365/365.** Selector406 remains current. Exact next is
 `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`. PR #8 remains open and unmerged.

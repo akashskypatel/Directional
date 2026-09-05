@@ -1696,6 +1696,21 @@ building any conclusion on it.**
      0"s were even the same faces. **Before trusting a census about a failure, check that the census's domain is
      the failure's domain** - and publish the identity of the partition each number belongs to.
 
+127. **A per-segment property cannot decide a per-arc or per-face classification.** A trace's *last segment* being a
+     terminal slit was used to exclude that segment's **face** from the trace-cut set and its carriers from the
+     barrier set - and a review then reasoned from the same flag that the whole **arc** must be a bridge separating
+     nothing. Runtime found two of four such arcs with different forward and reverse face-walk orbits: an arc runs
+     between two consecutive graph nodes and can contain a terminal-slit segment while still separating certified
+     faces. **Before a per-item flag is used to classify a larger object, state the quantifier - does the property
+     hold of every constituent, or only the last one** - and check the larger object directly.
+
+128. **When a measurement chain reaches its third turn, freeze the stop rule and pre-name the corrections.** Six
+     successive turns measured one ownership frontier, each correctly identifying why the previous measurement could
+     not answer the question. Every individual step was justified; the sequence was the largest risk in the
+     checkpoint. The escape is not to guess earlier - it is to write, in the review that authorizes the next
+     measurement, **the exhaustive outcome list, the correction each outcome selects, and the default correction if
+     the measurement returns ambiguous**, so that "insufficient evidence" stops being an available finding.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
