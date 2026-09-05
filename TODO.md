@@ -26,46 +26,46 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB31` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-TB27` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB26-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**, and
-`M3-CP4c-3-TB26-INDEPENDENT-REVIEW` has adjudicated it. Immutable CB30 package `9957324848` / semantic source
-`e045bf7147afc02bd90eff4822e4b609edbaba66` executed selector 405 in run/job `33931380325 / 101210520053`.
+`M3-CP4c-3-CB31` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**.
+Its clean semantic source is `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`; compile run/job
+`33940038189 / 101235542774`; immutable result/log artifacts `9961564041 / 9961564295` with SHA-256
+`ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf` /
+`f05d03dfe8457fe93c49a086915f1a69069ceb50726a02f0463887a734b4d73a`.
+All eight approved targets compiled Release/static `PRE_TEST` with GMP/GMPXX linked; preflight/build exit codes are
+zero and `runtimeExecution=false`.
 
-- ledger: **397 PASS / 8 RED**, accepted **1–365 = 365/365 PASS**;
-- RED ordinals: `366,367,368,369,370,374,393,398`;
-- result/log artifacts: `9958722468 / 9958722840`;
-- 389/390 recover to PASS; 404/405 PASS;
-- component 0: 191 faces, conflicting seeds `[0,1,3]`, no winner selected; ordinal 404 aggregates
-  `boundaryEdges=76;interiorArcs=4;vertexTransits=53;seedAttributions=46`.
+Selector **406** is current: 406 identities, LF SHA-256
+`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`; selector405 is its exact
+405-line prefix. CB31 implemented the independent review's CK8–CK9 publication surfaces without changing product
+behavior:
 
-**Independent-review verdict.** CJ7/CJ8/CJ9 worked — 389/390 recovered, the restored seed rule reproduces the
-pre-CB27 `[0,1,3]` and the plan fails closed, 404/405 PASS, 398 untouched. But the discriminator is **not**
-discharged, for two independent reasons. **(1) An incidence count is not a separation:** an arc separates iff its
-two darts lie in different orbits, and the per-arc orbit pair is computed and stored but serialized only as a
-count. **(2) The census describes a different object than the failure:** the CJ6 censuses run on the certifier's
-partition while the RED is raised on the plan's, and their domains differ by construction — which is also why 76
-does not reproduce 97. Ordinal 393 is a **stale arity** assertion (`573 = 3 × 191`). **No stable event added.**
+- [x] **CK8** complete named failing-component census rows, stable face-set digest, ordinal404 untruncated
+      publication/both-orbit contract, and ordinal393 distinct-source-face coverage contract.
+- [x] **CK9** typed plan/certifier partition identities and digests, published correspondence/match boolean, and
+      one new gating identity at selector406 that requires publication, never equality.
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **91**. CP4c-3 remains **OPEN**.
+Latest semantic runtime remains **TB26-R1** at **397 PASS / 8 RED**, accepted **365/365**, on CB30 package
+`9957324848`; stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt
+**5**. CB31 advances semantic M3 package count to **92**. CP4c-3 remains OPEN.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB31`**, Code + Build, runtime-free, GMP/GMPXX linked, under **CK8–CK9** of
-`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`:
+Run **`M3-CP4c-3-TB27`**, artifact-only Test + Benchmark, on immutable CB31 package `9961564041` / source
+`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / selector406:
 
-- [ ] **CK8** serialize one line per census row for the failing component — interior arcs with **both dart
-      orbits**, seed attributions with edge/faces/orbit/**rule**, boundary edges, vertex transits — plus the
-      component's face count and face-set digest; strengthen ordinal 404 in place (all `*Truncated` false, both
-      orbit fields present); replace ordinal 393's assertion with **distinct-source-face coverage**. Selector 405
-      unchanged.
-- [ ] **CK9** publish the **partition identity** and face-set digest on both sides, and state whether they match;
-      add one gating identity at selector **406** asserting **publication of the correspondence, not equality**.
+- [ ] execute all **406** identities one per fresh process with no configure, compile, relink, repair, source/test/
+      fixture/selector mutation, or package mutation;
+- [ ] preserve accepted-prefix authority **1–365** and ordinal **398** unchanged;
+- [ ] report ordinal **393** distinct-source-face coverage and full untruncated owner observations;
+- [ ] report ordinal **404** complete named boundary/interior-arc/seed-attribution/vertex-transit rows, including
+      both dart orbits for every interior arc;
+- [ ] report ordinal **406** plan/certifier partition identities, digests, and the published match boolean;
+- [ ] produce the ordinary semantic ledger and immutable pre/post source/package/execution-view censuses.
 
-**CB31 corrects no product behaviour** — no barrier added or removed, no attribution rule changed, no seed winner
-chosen, no partition unified, no `terminalSlit` handling altered. No Directional runtime before
-`M3-CP4c-3-TB27`.
+The independent review's bridge argument and any plan/certifier component equality are still **runtime questions**.
+CB31 compile evidence must not be cited as an answer to either.
 
 ## Carried forward from M1
 
@@ -103,8 +103,10 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open; **TB25-R1 is the latest valid semantic runtime** at 393 PASS / 10 RED, accepted 365/365.
-  TB26-R1 is valid semantic runtime on source `e045bf7147afc02bd90eff4822e4b609edbaba66` / package `9957324848`; selector405 is current. Exact next: outsourced **`M3-CP4c-3-TB26-INDEPENDENT-REVIEW`**.
+  CP4c-3 remains open. **TB26-R1 is the latest valid semantic runtime** at 397 PASS / 8 RED, accepted 365/365,
+  on source `e045bf7147afc02bd90eff4822e4b609edbaba66` / package `9957324848`. CB31 is compile GREEN on
+  `eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc` / package `9961564041`; selector406 is current but unexecuted.
+  Exact next: **`M3-CP4c-3-TB27`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -115,7 +117,11 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 source-face ownership derivation:** TB25-REV diagnosed the seed rule as **starved** — CB28 admits one seed source where the pre-CB27 rule admitted two, taking component 0 from **83** attributed boundary edges to **0**. `M3-CP4c3-TB21-CAND-01` is **CLOSED as ill-formed** (3 owners under one rule, 0 under another). The successor question is a dichotomy about the object: **either component 0 lies in exactly one certified face, or a separating arc meets its interior**, the only hidden-arc mechanism being a trace transiting a vertex. TB26 runtime now proves `interiorArcs=4` on component 0 and three conflicting owners `[0,1,3]`; exact corrective ownership is deferred to `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`.
+- [ ] **CP4c-3 source-face ownership derivation:** TB26 runtime reports `interiorArcs=4` on the certifier component
+  and conflicting owners `[0,1,3]`, but independent review proved an incidence count is not a separation and that
+  the certifier and plan use different partitions. CB31 now publishes every deciding row plus both typed partition
+  identities/digests without choosing a winner or changing barriers. **TB27 must measure those rows and their
+  correspondence before any corrective ownership rule is authorized.**
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -143,4 +149,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB26-INDEPENDENT-REVIEW` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **91**. **TB26-R1 is the latest semantic runtime authority at 397 PASS / 8 RED, accepted 365/365.** Exact next is `M3-CP4c-3-CB31` under CK8–CK9. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences** with no stable change. Produced-witness debt
+remains **5**. Semantic M3 package count is **92** after compile-green CB31. **TB26-R1 remains the latest semantic
+runtime authority at 397 PASS / 8 RED, accepted 365/365.** Selector406 is current but unexecuted. Exact next is
+`M3-CP4c-3-TB27`. PR #8 remains open and unmerged.

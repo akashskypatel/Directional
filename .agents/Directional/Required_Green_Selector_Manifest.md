@@ -301,7 +301,7 @@ and ordinals **384 and 385 recovered** from TB24's RED. `M3-CP4c-3-TB25-REV` rec
 only established owners, and every face of component 0 is `Unavailable`. Ordinals 402/403 stay gating and are not
 withdrawn, but **neither may be cited as evidence about component 0**.
 
-### 405 — CURRENT GATE
+### 405 — SUPERSEDED BY 406
 
 `Architecture_M3_CP4c3_Required_Green_Selector_405.txt` — **405 identities**, authored by M3-CP4c-3-CB30, LF SHA-256 `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`. Selector 403 is its exact 403-line prefix, selector 401 its exact 401-line prefix, and selector 397 remains byte-frozen. Two gating identities are appended:
 
@@ -319,10 +319,12 @@ the runtime serializes only aggregate counts, so the per-arc dart-orbit pair tha
 is not auditable from the immutable log. **Ordinal 404 must not be cited as evidence that the separating-arc horn
 is selected.** CK8 strengthens it in place; the identity is not withdrawn.
 
-### 406 — PLANNED, `M3-CP4c-3-CB31` CK9
+### 406 — CURRENT GATE
 
-Selector 405 must be its exact 405-line prefix, with 403/401/397/365 the frozen prefixes of that. One gating
-identity is appended:
+`Architecture_M3_CP4c3_Required_Green_Selector_406.txt` — **406 identities**, authored by
+`M3-CP4c-3-CB31`, LF SHA-256
+`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`. Selector 405 is its exact
+405-line prefix, with 403/401/397/365 the frozen prefixes of that. One gating identity is appended:
 
 - `GlobalTopologyPlan.UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent`
 
@@ -331,6 +333,15 @@ It asserts that both partition identities and both face-set digests are publishe
 possibility and a gate must not demand a hypothesis be true (`LESSONS.md` 123). Ordinals **404** and **393** have
 their assertions replaced in place by CK8; their names and ordinals do not change, so the first 405 lines stay
 byte-identical.
+
+**Compiled at `M3-CP4c-3-CB31`:** semantic source
+`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`; run/job
+`33940038189 / 101235542774`; result/log artifacts `9961564041 / 9961564295` with SHA-256
+`ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf` /
+`f05d03dfe8457fe93c49a086915f1a69069ceb50726a02f0463887a734b4d73a`. Release/static `PRE_TEST`
+compiled all eight approved targets with GMP/GMPXX linked; preflight and build exit codes are zero and
+`runtimeExecution=false`. This is compile authority only, not semantic acceptance. Exact successor:
+`M3-CP4c-3-TB27`, artifact-only execution of selector 406.
 
 ## Separate lineage — M1
 

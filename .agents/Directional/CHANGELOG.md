@@ -1,3 +1,31 @@
+## 2026-09-04 — `M3-CP4c-3-CB31`: CK8–CK9 publication compiled; selector 406; immutable package 92 GREEN
+
+Code + Build only, runtime-free. CB31 publishes the complete failing-component census rows already computed by
+CB30, strengthens ordinal 404 for untruncated row publication, replaces ordinal 393's stale observation-row-count
+assertion with distinct-source-face coverage, and publishes typed partition identity plus stable face-set digest on
+both the plan and certifier sides. It appends exactly one gating identity at selector 406:
+`GlobalTopologyPlan.UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent`.
+The new identity asserts publication of the correspondence, **not equality**. No barrier, attribution rule, seed
+winner, partition construction, `terminalSlit` handling, or accepted 1–365 behavior was changed.
+
+The preserved patch was applied through Drive in run **`33939858921`** and produced semantic commit
+`751106491e2440fb17b3fef9e42ccc33bd3d992c`; after temporary Drive-control retirement the exact clean semantic
+source is **`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`**. Compile run/job
+**`33940038189 / 101235542774`** succeeded Release/static `PRE_TEST`, GMP/GMPXX linked, on all eight approved
+targets. Result artifact **`9961564041`** has SHA-256
+`ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf`; log artifact **`9961564295`** has
+SHA-256 `f05d03dfe8457fe93c49a086915f1a69069ceb50726a02f0463887a734b4d73a`. Preflight/build exit codes are
+zero, all 28 internal `SHA256SUMS` entries verified, source status stayed clean, and
+`runtimeExecution=false`. No Directional runtime executed.
+
+Selector 406 has **406 identities**, LF SHA-256
+`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`; selector 405 is its exact
+405-line prefix and the earlier frozen prefix chain remains unchanged. CB31 is semantic M3 package **92**,
+compile-green but semantically unaccepted. Latest semantic runtime remains TB26-R1 at **397 PASS / 8 RED**,
+accepted **365/365**; stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness
+debt **5**. Exact successor: **`M3-CP4c-3-TB27`**, artifact-only execution of selector 406 on immutable CB31
+package `9961564041`.
+
 ## 2026-09-04 — `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`: an incidence count is not a separation, and the census ran on the wrong partition; CB31 frozen
 
 Independent REVIEW + PLAN, static only, explicitly outside the orchestration loop. No runtime, no compile, no
