@@ -1,0 +1,515 @@
+name: M3 CP4c3 TB28 R1 Artifact Only
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb28/tb28-r1-20260905-1335.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-tb28-r1-20260905-1335.yml
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb28-r1
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs:
+      - validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      CB32_ARTIFACT_ID: '9975737868'
+      CB32_ARTIFACT_NAME: m3-cp4c3-cb32-compile-result-33987769718
+      CB32_ARTIFACT_DIGEST: sha256:16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec
+      CB32_SOURCE_SHA: 098ac7d93ea203222dd0ac50cdb68667744f0fd4
+      SELECTOR365_SHA: 6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1
+      SELECTOR397_SHA: d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5
+      SELECTOR401_SHA: 0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869
+      SELECTOR403_SHA: 60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007
+      SELECTOR405_SHA: 615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7
+      SELECTOR406_SHA: efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0
+      SELECTOR407_SHA: 9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae
+      PRIOR_TB27_RED: '366,367,368,369,370,374,398'
+    steps:
+      - name: Initialize TB28 artifact-only gate
+        id: gate
+        shell: bash
+        run: |
+          set -uo pipefail
+          ROOT="$RUNNER_TEMP/m3-cp4c3-tb28-r1"
+          RESULT="$ROOT/result"
+          LOG="$ROOT/tb28-r1.log"
+          mkdir -p "$RESULT"
+          : > "$LOG"
+          echo "root=$ROOT" >> "$GITHUB_OUTPUT"
+          echo "result=$RESULT" >> "$GITHUB_OUTPUT"
+          echo "log=$LOG" >> "$GITHUB_OUTPUT"
+          status=orchestration_failure
+          runtime_started=false
+          runtime_completed=false
+          finish() {
+            local ec=$?
+            {
+              echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              echo "exit_code=$ec"
+              echo "gate_status=$status"
+              echo "runtime_started=$runtime_started"
+              echo "runtime_completed=$runtime_completed"
+            } | tee -a "$LOG"
+            echo "gate_status=$status" >> "$GITHUB_OUTPUT"
+          }
+          trap finish EXIT
+
+          fail_orchestration() {
+            echo "ORCHESTRATION_FAILURE: $*" | tee -a "$LOG" >&2
+            status=orchestration_failure
+            exit 1
+          }
+
+          census() {
+            local root="$1"
+            local out="$2"
+            python3 - "$root" "$out" <<'PY'
+          import hashlib
+          import os
+          import pathlib
+          import stat
+          import sys
+          root = pathlib.Path(sys.argv[1])
+          out = pathlib.Path(sys.argv[2])
+          rows=[]
+          for path in sorted(root.rglob('*')):
+              rel=path.relative_to(root).as_posix()
+              st=path.lstat()
+              mode=stat.S_IMODE(st.st_mode)
+              kind='dir' if path.is_dir() else 'file' if path.is_file() else 'other'
+              size=st.st_size
+              digest='-'
+              if path.is_file():
+                  digest=hashlib.sha256(path.read_bytes()).hexdigest()
+              rows.append((rel,kind,f'{mode:04o}',str(size),digest))
+          out.write_text('path\tkind\tmode\tsize\tsha256\n' + ''.join('\t'.join(r)+'\n' for r in rows))
+          PY
+          }
+
+          digest_file() {
+            sha256sum "$1" | awk '{print $1}'
+          }
+
+          echo "M3-CP4c-3-TB28 R1 artifact-only run" | tee -a "$LOG"
+          {
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            uname -a
+            python3 --version
+            unzip -v | sed -n '1,2p'
+            tar --version | sed -n '1p'
+            /usr/bin/time --version 2>&1 | sed -n '1p'
+            timeout --version | sed -n '1p'
+          } | tee "${RESULT}/environment.txt"
+
+          ARTIFACT_JSON="$ROOT/artifact.json"
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$REPO/actions/artifacts/$CB32_ARTIFACT_ID" > "$ARTIFACT_JSON" \
+            || fail_orchestration 'artifact metadata request failed'
+          artifact_json="$(cat "$ARTIFACT_JSON")"
+          provider_digest="$(printf '%s' "$artifact_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("digest", ""))')"
+          artifact_name="$(printf '%s' "$artifact_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("name", ""))')"
+          [[ "$artifact_name" == "$CB32_ARTIFACT_NAME" ]] || fail_orchestration "artifact name mismatch: $artifact_name"
+          [[ "$provider_digest" == "$CB32_ARTIFACT_DIGEST" ]] || fail_orchestration "provider digest mismatch: $provider_digest"
+
+          ZIP="$ROOT/cb32.zip"
+          curl --fail --silent --show-error --location \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$REPO/actions/artifacts/$CB32_ARTIFACT_ID/zip" -o "$ZIP" \
+            || fail_orchestration 'artifact download failed'
+          zip_sha="$(sha256sum "$ZIP" | awk '{print $1}')"
+          [[ "sha256:$zip_sha" == "$CB32_ARTIFACT_DIGEST" ]] || fail_orchestration "download digest mismatch: sha256:$zip_sha"
+          {
+            echo "artifact_id=$CB32_ARTIFACT_ID"
+            echo "artifact_name=$artifact_name"
+            echo "provider_digest=$provider_digest"
+            echo "download_sha256=$zip_sha"
+          } | tee "${RESULT}/artifact-authority.txt"
+
+          PKG="$ROOT/package"
+          mkdir -p "$PKG"
+          unzip -q "$ZIP" -d "$PKG" || fail_orchestration 'artifact unzip failed'
+          [[ -f "$PKG/SHA256SUMS.txt" ]] || fail_orchestration 'SHA256SUMS.txt missing'
+          (cd "$PKG" && sha256sum -c SHA256SUMS.txt) > "${RESULT}/internal-sha256-check.txt" 2>&1 \
+            || fail_orchestration 'internal package digest failure'
+          [[ "$(find "$PKG" -type f | wc -l)" -eq 29 ]] || fail_orchestration 'unexpected package file count'
+          [[ "$(grep -Ec '^[0-9a-f]{64}  ' "$PKG/SHA256SUMS.txt")" -eq 28 ]] || fail_orchestration 'unexpected SHA256SUMS entry count'
+
+          [[ -f "$PKG/source/SOURCE_SHA.txt" ]] || fail_orchestration 'SOURCE_SHA.txt missing'
+          actual_source_sha="$(tr -d '\r\n' < "$PKG/source/SOURCE_SHA.txt")"
+          [[ "$actual_source_sha" == "$CB32_SOURCE_SHA" ]] || fail_orchestration "source mismatch: $actual_source_sha"
+          [[ -f "$PKG/runtime/command-boundary.txt" ]] || fail_orchestration 'command-boundary missing'
+          grep -Fxq 'runtimeExecution=false' "$PKG/runtime/command-boundary.txt" \
+            || fail_orchestration 'CB32 package is not compile-only authority'
+          grep -Fxq "source_sha=$CB32_SOURCE_SHA" "$PKG/runtime/command-boundary.txt" \
+            || fail_orchestration 'command-boundary source mismatch'
+
+          expected_bins=(
+            MilestoneBClosureTests
+            SurfaceCellPipelinePhase19Tests
+            SurfaceCellPipelinePhase20Tests
+            SurfaceCellPipelinePhase22Tests
+            SurfaceCellPipelinePhase23Tests
+            SurfaceCellPipelinePhase25Tests
+            SurfaceCellPipelinePhase27Tests
+            SurfaceCellPostCollapseTests
+          )
+          for exe in "${expected_bins[@]}"; do
+            [[ -f "$PKG/bin/$exe" ]] || fail_orchestration "missing owner binary: $exe"
+            [[ -x "$PKG/bin/$exe" ]] || fail_orchestration "owner binary not executable: $exe"
+          done
+          for exe in "${expected_bins[@]}"; do
+            mode="$(stat -c '%a' "$PKG/bin/$exe")"
+            printf '%s\t%s\n' "$exe" "$mode"
+          done | tee "${RESULT}/executable-modes.txt"
+
+          census "$PKG" "${RESULT}/package-census-before.tsv"
+          package_census_before_sha="$(digest_file "${RESULT}/package-census-before.tsv")"
+          printf '%s  package-census-before.tsv\n' "$package_census_before_sha" | tee "${RESULT}/package-census-before.sha256"
+
+          source_archive="$PKG/source/source.tar.gz"
+          [[ -f "$source_archive" ]] || fail_orchestration 'source archive missing'
+          tar -tzf "$source_archive" > "${RESULT}/source-archive-list.txt" || fail_orchestration "failed to list source archive"
+          sed -n '1,25p' "${RESULT}/source-archive-list.txt" | tee "${RESULT}/source-archive-root.txt"
+          SOURCE="$ROOT/source"
+          mkdir -p "$SOURCE"
+          tar -xzf "$source_archive" -C "$SOURCE" || fail_orchestration 'source archive extraction failed'
+          [[ -f "$SOURCE/tests/SurfaceCellPipelinePhase20Tests.cpp" ]] || fail_orchestration 'packaged source root invalid'
+          [[ -f "$SOURCE/cmake/DirectionalTests.cmake" ]] || fail_orchestration 'DirectionalTests.cmake missing'
+          census "$SOURCE" "${RESULT}/source-census-before.tsv"
+          source_census_before_sha="$(digest_file "${RESULT}/source-census-before.tsv")"
+          printf '%s  source-census-before.tsv\n' "$source_census_before_sha" | tee "${RESULT}/source-census-before.sha256"
+
+          EXEC_VIEW="$ROOT/exec-view"
+          mkdir -p "$EXEC_VIEW/bin" "$EXEC_VIEW/test-data"
+          for exe in "${expected_bins[@]}"; do
+            ln "$PKG/bin/$exe" "$EXEC_VIEW/bin/$exe" || fail_orchestration "hardlink failed: $exe"
+            [[ "$(sha256sum "$PKG/bin/$exe" | awk '{print $1}')" == "$(sha256sum "$EXEC_VIEW/bin/$exe" | awk '{print $1}')" ]] \
+              || fail_orchestration "execution-view binary digest mismatch: $exe"
+          done
+          for fixture in \
+            bunny_1k_random.obj \
+            bunny_1k_random.surface_cells.tsv \
+            bunny_1k_random.surface_cells.meta.tsv \
+            bunny_1k_random.surface_cells.phase2.tsv \
+            bunny_1k_random.surface_cells.phase2.raw.tsv \
+            bunny_1k_random.surface_cells.phase2.meta.tsv \
+            bunny_1k_random.surface_cells.phase3.tsv \
+            bunny_1k_random.surface_cells.phase3.meta.tsv; do
+            src="$SOURCE/test-data/$fixture"
+            [[ -f "$src" ]] || fail_orchestration "fixture missing from immutable source: $fixture"
+            cp "$src" "$EXEC_VIEW/test-data/$fixture" || fail_orchestration "fixture copy failed: $fixture"
+          done
+          consumer="$SOURCE/tests/SurfaceCellTestUtils.cpp"
+          [[ -f "$consumer" ]] || fail_orchestration 'fixture consumer source missing'
+          grep -Fq '../test-data' "$consumer" || fail_orchestration 'sibling test-data fallback not found in packaged consumer source'
+          {
+            echo "execution_view=$EXEC_VIEW"
+            echo "consumer_source=$consumer"
+            echo 'fixture_rule=immutable source test-data copied to sibling ../test-data view; binaries hardlinked from immutable package'
+            echo 'binary_mutation=false'
+            echo 'source_mutation=false'
+            echo 'fixture_mutation=false'
+            echo 'selector_mutation=false'
+          } | tee "${RESULT}/execution-view.txt"
+
+          selector="$PKG/selector/selector407.txt"
+          [[ -f "$selector" ]] || fail_orchestration 'selector407 missing'
+          [[ "$(wc -l < "$selector")" -eq 407 ]] || fail_orchestration 'selector407 count mismatch'
+          selector_probe="$PKG/selector/selector_probe.sh"
+          [[ -x "$selector_probe" ]] || fail_orchestration 'selector_probe.sh missing or non-executable'
+          (
+            cd "$PKG/selector"
+            ./selector_probe.sh 365 "$SELECTOR365_SHA"
+            ./selector_probe.sh 397 "$SELECTOR397_SHA"
+            ./selector_probe.sh 401 "$SELECTOR401_SHA"
+            ./selector_probe.sh 403 "$SELECTOR403_SHA"
+            ./selector_probe.sh 405 "$SELECTOR405_SHA"
+            ./selector_probe.sh 406 "$SELECTOR406_SHA"
+            ./selector_probe.sh 407 "$SELECTOR407_SHA"
+            ./selector_probe.sh 365 "$SELECTOR365_SHA" 397 "$SELECTOR397_SHA"
+            ./selector_probe.sh 397 "$SELECTOR397_SHA" 401 "$SELECTOR401_SHA"
+            ./selector_probe.sh 401 "$SELECTOR401_SHA" 403 "$SELECTOR403_SHA"
+            ./selector_probe.sh 403 "$SELECTOR403_SHA" 405 "$SELECTOR405_SHA"
+            ./selector_probe.sh 405 "$SELECTOR405_SHA" 406 "$SELECTOR406_SHA"
+            ./selector_probe.sh 406 "$SELECTOR406_SHA" 407 "$SELECTOR407_SHA"
+          ) | tee "${RESULT}/selector-probe.txt" || fail_orchestration 'selector probe failed'
+
+          python3 - "$SOURCE" "$selector" "${RESULT}/identity-map.tsv" <<'PY'
+          import pathlib
+          import re
+          import sys
+          root=pathlib.Path(sys.argv[1])
+          selector=pathlib.Path(sys.argv[2])
+          out=pathlib.Path(sys.argv[3])
+          cmake=(root/'cmake/DirectionalTests.cmake').read_text(errors='replace')
+          tests_dir=root/'tests'
+          source_to_target={}
+          cmd=re.compile(r'add_executable\s*\(\s*([^\s\)]+)(.*?)\)', re.S)
+          for m in cmd.finditer(cmake):
+              target=m.group(1)
+              body=m.group(2)
+              for src in re.findall(r'([A-Za-z0-9_./+-]+\.cpp)', body):
+                  source_to_target[pathlib.Path(src).name]=target
+          identities={}
+          test_rx=re.compile(r'\bTEST(?:_F|_P)?\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)')
+          for src in sorted(tests_dir.glob('*.cpp')):
+              target=source_to_target.get(src.name)
+              if not target:
+                  continue
+              text=src.read_text(errors='replace')
+              for suite,name in test_rx.findall(text):
+                  ident=f'{suite}.{name}'
+                  identities.setdefault(ident,[]).append((target,src.name))
+          rows=[]
+          missing=[]
+          ambiguous=[]
+          for ordinal, ident in enumerate(selector.read_text().splitlines(),1):
+              owners=identities.get(ident,[])
+              if len(owners)!=1:
+                  (missing if not owners else ambiguous).append((ordinal,ident,owners))
+                  continue
+              target,src=owners[0]
+              rows.append((ordinal,ident,target,src))
+          if missing or ambiguous or len(rows)!=407:
+              print(f'missing={missing[:10]} ambiguous={ambiguous[:10]} rows={len(rows)}', file=sys.stderr)
+              raise SystemExit(2)
+          out.write_text('ordinal\tidentity\tbinary\tsource\n' + ''.join(f'{o}\t{i}\t{b}\t{s}\n' for o,i,b,s in rows))
+          PY
+          [[ "$(($(wc -l < "${RESULT}/identity-map.tsv") - 1))" -eq 407 ]] || fail_orchestration 'identity-map count mismatch'
+          for exe in "${expected_bins[@]}"; do
+            grep -Fq $'\t'"$exe"$'\t' "${RESULT}/identity-map.tsv" || fail_orchestration "identity map omits owner binary: $exe"
+          done
+          sha256sum "${RESULT}/identity-map.tsv" | tee "${RESULT}/identity-map.sha256"
+          census "$EXEC_VIEW" "${RESULT}/execution-view-before.tsv"
+          execution_census_before_sha="$(digest_file "${RESULT}/execution-view-before.tsv")"
+          sha256sum "${RESULT}/execution-view-before.tsv" | tee "${RESULT}/execution-view-before.sha256"
+
+          cat > "${RESULT}/command-boundary.txt" <<EOF
+          artifactOnly=true
+          buildInvoked=false
+          rebuild=false
+          relink=false
+          sourceMutation=false
+          testMutation=false
+          fixtureMutation=false
+          selectorMutation=false
+          replacementPackage=false
+          benchmarkInvoked=false
+          frozenTimeoutSeconds=180
+          selectorCount=407
+          selector407Sha256=$SELECTOR407_SHA
+          sourceSha=$CB32_SOURCE_SHA
+          packageArtifactId=$CB32_ARTIFACT_ID
+          packageDigest=$CB32_ARTIFACT_DIGEST
+          EOF
+
+          RUNTIME="$ROOT/runtime"
+          mkdir -p "$RUNTIME"
+          printf 'ordinal\tidentity\tbinary\texit_code\tselected\tresult\telapsed_seconds\tpeak_rss_kib\traw_log\n' > "${RESULT}/ledger.tsv"
+          ordinal=0
+          runtime_started=true
+          while IFS= read -r identity; do
+            ordinal=$((ordinal + 1))
+            map_line="$(awk -F '\t' -v n="$ordinal" 'NR==n+1 {print; exit}' "${RESULT}/identity-map.tsv")"
+            [[ -n "$map_line" ]] || fail_orchestration "identity map row missing: $ordinal"
+            binary="$(printf '%s\n' "$map_line" | cut -f3)"
+            [[ -x "$EXEC_VIEW/bin/$binary" ]] || fail_orchestration "mapped owner binary unavailable: $binary"
+            raw="$RUNTIME/$(printf '%03d' "$ordinal").log"
+            resource="$RUNTIME/$(printf '%03d' "$ordinal").resource.tsv"
+            work="$RUNTIME/ordinal-$(printf '%03d' "$ordinal")"
+            mkdir -p "$work"
+            echo "TB28_R1 ordinal=$ordinal identity=$identity owner=$binary"
+            set +e
+            (
+              cd "$work"
+              /usr/bin/time -f '%e\t%M' -o "$resource" \
+                timeout --signal=TERM --kill-after=5s 180s "$EXEC_VIEW/bin/$binary" --gtest_filter="$identity"
+            ) >"$raw" 2>&1
+            code=$?
+            set -e
+            cat "$raw"
+            run_marker_count="$(grep -Fc '[ RUN      ]' "$raw" || true)"
+            selected=0
+            if grep -Fq "[==========] Running 1 test" "$raw" && [[ "$run_marker_count" -eq 1 ]]; then
+              selected=1
+            fi
+            [[ "$selected" -eq 1 ]] || fail_orchestration "zero/non-single selection at ordinal $ordinal"
+            result=RED
+            [[ "$code" -eq 0 ]] && result=PASS
+            elapsed=NA
+            rss=NA
+            if [[ -s "$resource" ]]; then
+              IFS=$'\t' read -r elapsed rss < <(tail -n 1 "$resource")
+            fi
+            printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+              "$ordinal" "$identity" "$binary" "$code" "$selected" "$result" "$elapsed" "$rss" "raw/$(basename "$raw")" \
+              >> "${RESULT}/ledger.tsv"
+          done < "$selector"
+          [[ "$ordinal" -eq 407 ]] || fail_orchestration "runtime row count mismatch: $ordinal"
+          runtime_completed=true
+
+          python3 - "${RESULT}/ledger.tsv" "${RESULT}/semantic-summary.txt" "${RESULT}/resource-summary.txt" <<'PY'
+          import csv
+          import hashlib
+          import pathlib
+          import sys
+          ledger=pathlib.Path(sys.argv[1])
+          summary=pathlib.Path(sys.argv[2])
+          resource=pathlib.Path(sys.argv[3])
+          rows=list(csv.DictReader(ledger.open(), delimiter='\t'))
+          if len(rows)!=407:
+              raise SystemExit(f'ledger rows={len(rows)}')
+          ordinals=[int(r['ordinal']) for r in rows]
+          if ordinals!=list(range(1,408)):
+              raise SystemExit('ledger ordinal sequence invalid')
+          if any(r['selected']!='1' for r in rows):
+              raise SystemExit('non-single-selected row in completed ledger')
+          red=[r for r in rows if r['result']=='RED']
+          passed=[r for r in rows if r['result']=='PASS']
+          accepted=[r for r in rows if int(r['ordinal'])<=365]
+          accepted_red=[r for r in accepted if r['result']=='RED']
+          prior={366,367,368,369,370,374,398}
+          current={int(r['ordinal']) for r in red}
+          sha=hashlib.sha256(ledger.read_bytes()).hexdigest()
+          def row(n): return rows[n-1]
+          lines=[
+              'turn=M3-CP4c-3-TB28',
+              'attempt=R1',
+              'semanticRows=407',
+              f'passCount={len(passed)}',
+              f'redCount={len(red)}',
+              'redOrdinals=' + ','.join(str(r['ordinal']) for r in red),
+              f'acceptedPrefixCount=365',
+              f'acceptedPrefixRedCount={len(accepted_red)}',
+              'acceptedPrefixRedOrdinals=' + ','.join(str(r['ordinal']) for r in accepted_red),
+              'priorTB27RedOrdinals=' + ','.join(map(str,sorted(prior))),
+              'priorTB27RedStillRed=' + ','.join(map(str,sorted(prior & current))),
+              'newRedVsTB27=' + ','.join(map(str,sorted(current-prior))),
+              'clearedRedVsTB27=' + ','.join(map(str,sorted(prior-current))),
+              f'ordinal404Result={row(404)["result"]}',
+              f'ordinal406Result={row(406)["result"]}',
+              f'ordinal407Result={row(407)["result"]}',
+              f'ledgerSha256={sha}',
+          ]
+          summary.write_text('\n'.join(lines)+'\n')
+          numeric=[]
+          for r in rows:
+              try: numeric.append((float(r['elapsed_seconds']),int(r['peak_rss_kib']),r))
+              except Exception: pass
+          numeric.sort(key=lambda x:x[0], reverse=True)
+          peak=max(numeric, key=lambda x:x[1]) if numeric else None
+          with resource.open('w') as f:
+              if numeric:
+                  e,m,r=numeric[0]; f.write(f'longestOrdinal={r["ordinal"]}\nlongestIdentity={r["identity"]}\nlongestSeconds={e}\n')
+              if peak:
+                  e,m,r=peak; f.write(f'peakRssOrdinal={r["ordinal"]}\npeakRssIdentity={r["identity"]}\npeakRssKiB={m}\n')
+          PY
+          sha256sum "${RESULT}/ledger.tsv" | tee "${RESULT}/ledger.sha256"
+          cat "${RESULT}/semantic-summary.txt"
+          cat "${RESULT}/resource-summary.txt"
+
+          mkdir -p "${RESULT}/raw"
+          for n in 404 406 407; do
+            cp "$RUNTIME/$(printf '%03d' "$n").log" "${RESULT}/raw/$(printf '%03d' "$n").log"
+          done
+          grep -H '^m3Cp4c3' "$RUNTIME"/*.log > "${RESULT}/all-m3cp4c3-publication.txt" || true
+          for n in 404 406 407; do
+            grep '^m3Cp4c3' "$RUNTIME/$(printf '%03d' "$n").log" > "${RESULT}/publication-$(printf '%03d' "$n").txt" || true
+          done
+
+          census "$PKG" "${RESULT}/package-census-after.tsv"
+          census "$SOURCE" "${RESULT}/source-census-after.tsv"
+          census "$EXEC_VIEW" "${RESULT}/execution-view-after.tsv"
+          package_census_after_sha="$(digest_file "${RESULT}/package-census-after.tsv")"
+          source_census_after_sha="$(digest_file "${RESULT}/source-census-after.tsv")"
+          execution_census_after_sha="$(digest_file "${RESULT}/execution-view-after.tsv")"
+          [[ "$package_census_after_sha" == "$package_census_before_sha" ]] || fail_orchestration 'package mutation detected'
+          [[ "$source_census_after_sha" == "$source_census_before_sha" ]] || fail_orchestration 'source mutation detected'
+          [[ "$execution_census_after_sha" == "$execution_census_before_sha" ]] || fail_orchestration 'execution-view mutation detected'
+          {
+            echo "packageCensusBeforeSha256=$package_census_before_sha"
+            echo "packageCensusAfterSha256=$package_census_after_sha"
+            echo "sourceCensusBeforeSha256=$source_census_before_sha"
+            echo "sourceCensusAfterSha256=$source_census_after_sha"
+            echo "executionViewCensusBeforeSha256=$execution_census_before_sha"
+            echo "executionViewCensusAfterSha256=$execution_census_after_sha"
+            echo 'packageMutation=false'
+            echo 'sourceMutation=false'
+            echo 'fixtureMutation=false'
+            echo 'selectorMutation=false'
+            echo 'binaryMutation=false'
+          } | tee "${RESULT}/postflight-immutability.txt"
+
+          status=semantic_complete
+          echo 'runtimeExecution=true' > "${RESULT}/runtime-boundary.txt"
+          echo 'semanticAcceptance=false' >> "${RESULT}/runtime-boundary.txt"
+          echo 'reviewRequired=M3-CP4c-3-TB28-INDEPENDENT-REVIEW' >> "${RESULT}/runtime-boundary.txt"
+          echo 'TB28 R1 artifact-only execution completed; semantic RED is evidence, not orchestration failure.' | tee -a "$LOG"
+
+      - name: Stage raw runtime evidence
+        if: always()
+        shell: bash
+        run: |
+          root="${{ steps.gate.outputs.root }}"
+          result="${{ steps.gate.outputs.result }}"
+          if [[ -d "$root/runtime" && -d "$result" ]]; then
+            mkdir -p "$result/raw-all" "$result/resource-all"
+            cp "$root"/runtime/*.log "$result/raw-all/" 2>/dev/null || true
+            cp "$root"/runtime/*.resource.tsv "$result/resource-all/" 2>/dev/null || true
+          fi
+
+      - name: Upload TB28 R1 result bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb28-r1-result-${{ github.run_id }}
+          path: ${{ steps.gate.outputs.result }}
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload TB28 R1 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb28-r1-log-${{ github.run_id }}
+          path: ${{ steps.gate.outputs.log }}
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Fail orchestration-invalid run
+        if: always()
+        shell: bash
+        run: |
+          [[ "${{ steps.gate.outputs.gate_status }}" == semantic_complete ]]
