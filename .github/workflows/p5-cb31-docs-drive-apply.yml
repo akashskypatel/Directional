@@ -1,0 +1,45 @@
+name: P5 CB31 Documentation Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/p5-cb31-docs-drive-apply-20260904.txt
+      - .github/workflows/p5-cb31-docs-drive-apply.yml
+
+permissions:
+  contents: write
+  id-token: write
+  actions: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/p5-cb31-docs-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb31-docs-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1DxbfZWULR9zq9wE75WykYjqlaO6yyKgF
+      patch_sha256: 14ae6c42aa8fc3748c7433ecd57957f816c0e51da4597785dd4882eba00bcb80
+      base_sha: 7c73f7ff3967c5afcd0659b494f69ea4acc134d6
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close out M3-CP4c-3-CB31 Code+Build"
+    secrets: inherit
