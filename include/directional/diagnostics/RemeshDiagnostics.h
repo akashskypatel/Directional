@@ -208,6 +208,23 @@ struct SurfaceCellUncutFaceCertificatePairDiagnostics {
   std::optional<std::size_t> secondCertifiedFace;
 };
 
+struct SurfaceCellUncutComponentArcFaceDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::optional<std::size_t> certifierComponent;
+  std::optional<std::size_t> planComponent;
+  std::string notTraceCutReason;
+};
+
+struct SurfaceCellUncutComponentArcIncidenceDiagnostics {
+  std::size_t arc = 0U;
+  std::string kind;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  std::size_t crossedFaceCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcFaceDiagnostics> crossedFaces;
+  bool crossedFacesTruncated = false;
+};
+
 struct SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics {
   std::size_t certifiedFace = 0U;
   std::size_t sourceFaceCount = 0U;
@@ -325,6 +342,12 @@ struct SurfaceCellFailureLocusDiagnostics {
       uncutComponentCensusPartitionIdentity;
   std::optional<std::uint64_t> uncutComponentCensusFaceSetDigest;
   std::optional<bool> uncutComponentCensusMatchesFailingComponent;
+  std::optional<bool> uncutFaceComponentSubsetOfCensusComponent;
+  bool uncutFaceComponentInteriorArcCensusPublished = false;
+  std::size_t uncutFaceComponentInteriorArcCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcIncidenceDiagnostics>
+      uncutFaceComponentInteriorArcIncidences;
+  bool uncutFaceComponentInteriorArcIncidencesTruncated = false;
   std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
   std::vector<SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics>
       uncutFaceComponentBoundaryEdges;

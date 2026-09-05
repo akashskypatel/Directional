@@ -582,6 +582,31 @@ project_global_topology_plan_failure_locus(
         identity.barriers.nonTerminalTraceCarrierEdges;
     return row;
   };
+  const auto uncut_arc_locus = [&](
+      const geometry::SurfaceCutGraphUncutComponentArcIncidenceCensus &arc) {
+    SurfaceCellUncutComponentArcIncidenceDiagnostics row;
+    row.arc = arc.arc.index();
+    row.kind = geometry::surface_cut_graph_uncut_component_arc_kind_name(
+        arc.kind);
+    row.forwardOrbit = arc.forwardOrbit;
+    row.reverseOrbit = arc.reverseOrbit;
+    row.crossedFaceCount = arc.crossedFaceCount;
+    row.crossedFaces.reserve(arc.crossedFaces.size());
+    for (const auto &crossed : arc.crossedFaces) {
+      SurfaceCellUncutComponentArcFaceDiagnostics face;
+      face.sourceFace = topology_face_locus(crossed.sourceFace);
+      face.certifierComponent = crossed.certifierComponent;
+      face.planComponent = crossed.planComponent;
+      if (crossed.notTraceCutReason.has_value()) {
+        face.notTraceCutReason =
+            geometry::surface_cut_graph_trace_cut_exclusion_reason_name(
+                *crossed.notTraceCutReason);
+      }
+      row.crossedFaces.push_back(std::move(face));
+    }
+    row.crossedFacesTruncated = arc.crossedFacesTruncated;
+    return row;
+  };
   const auto fragment_incidence_locus = [&](
       const geometry::TraceCutFaceFragmentIncidenceDiagnostic &incidence) {
     SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics row;
@@ -704,6 +729,20 @@ project_global_topology_plan_failure_locus(
       error.uncutComponentCensusFaceSetDigest;
   locus.uncutComponentCensusMatchesFailingComponent =
       error.uncutComponentCensusMatchesFailingComponent;
+  locus.uncutFaceComponentSubsetOfCensusComponent =
+      error.uncutFaceComponentSubsetOfCensusComponent;
+  locus.uncutFaceComponentInteriorArcCensusPublished =
+      error.uncutFaceComponentInteriorArcCensusPublished;
+  locus.uncutFaceComponentInteriorArcCount =
+      error.uncutFaceComponentInteriorArcCount;
+  locus.uncutFaceComponentInteriorArcIncidences.reserve(
+      error.uncutFaceComponentInteriorArcIncidences.size());
+  for (const auto &arc : error.uncutFaceComponentInteriorArcIncidences) {
+    locus.uncutFaceComponentInteriorArcIncidences.push_back(
+        uncut_arc_locus(arc));
+  }
+  locus.uncutFaceComponentInteriorArcIncidencesTruncated =
+      error.uncutFaceComponentInteriorArcIncidencesTruncated;
   locus.uncutFaceComponentBoundaryEdgeCount =
       error.uncutFaceComponentBoundaryEdgeCount;
   locus.uncutFaceComponentBoundaryEdges.reserve(

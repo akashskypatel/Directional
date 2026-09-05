@@ -14331,6 +14331,18 @@ TEST(SurfaceCutGraph,
   for (const auto &arc : component->interiorArcIncidences) {
     EXPECT_LT(arc.forwardOrbit, certificate.totalOrbitCount);
     EXPECT_LT(arc.reverseOrbit, certificate.totalOrbitCount);
+    EXPECT_EQ(arc.crossedFaceCount, arc.crossedFaces.size());
+    EXPECT_FALSE(arc.crossedFacesTruncated);
+    for (const auto &crossedFace : arc.crossedFaces) {
+      if (crossedFace.certifierComponent.has_value())
+        ASSERT_TRUE(crossedFace.notTraceCutReason.has_value());
+      if (crossedFace.notTraceCutReason.has_value()) {
+        EXPECT_STRNE(
+            "Unknown",
+            directional::geometry::surface_cut_graph_trace_cut_exclusion_reason_name(
+                *crossedFace.notTraceCutReason));
+      }
+    }
   }
   for (const auto &face : component->faces) {
     const auto *owner = certificate.find_source_face_owner(face);
@@ -14394,7 +14406,36 @@ TEST(SurfaceCutGraph,
               << directional::geometry::
                      surface_cut_graph_uncut_component_arc_kind_name(row.kind)
               << ";forwardOrbit=" << row.forwardOrbit
-              << ";reverseOrbit=" << row.reverseOrbit << '\n';
+              << ";reverseOrbit=" << row.reverseOrbit
+              << ";crossedFaceCount=" << row.crossedFaceCount
+              << ";crossedFacesTruncated="
+              << (row.crossedFacesTruncated ? "true" : "false") << '\n';
+    for (std::size_t faceIndex = 0U; faceIndex < row.crossedFaces.size();
+         ++faceIndex) {
+      const auto &crossedFace = row.crossedFaces[faceIndex];
+      std::cout << "m3Cp4c3UncutComponentInteriorArcFace;component=0;row="
+                << index << ";faceRow=" << faceIndex
+                << ";arc=" << row.arc.index()
+                << ";sourceFace=" << print_face(crossedFace.sourceFace)
+                << ";certifierComponent=";
+      if (crossedFace.certifierComponent.has_value())
+        std::cout << *crossedFace.certifierComponent;
+      else
+        std::cout << "absent";
+      std::cout << ";planComponent=";
+      if (crossedFace.planComponent.has_value())
+        std::cout << *crossedFace.planComponent;
+      else
+        std::cout << "absent";
+      std::cout << ";notTraceCutReason=";
+      if (crossedFace.notTraceCutReason.has_value())
+        std::cout << directional::geometry::
+                         surface_cut_graph_trace_cut_exclusion_reason_name(
+                             *crossedFace.notTraceCutReason);
+      else
+        std::cout << "none";
+      std::cout << '\n';
+    }
   }
 
   for (std::size_t index = 0U; index < component->seedAttributions.size();
@@ -14535,6 +14576,7 @@ TEST(GlobalTopologyPlan,
   EXPECT_FALSE(locus.uncutComponentCensusPartitionIdentity->domainRule.empty());
   ASSERT_TRUE(locus.uncutComponentCensusFaceSetDigest.has_value());
   ASSERT_TRUE(locus.uncutComponentCensusMatchesFailingComponent.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentSubsetOfCensusComponent.has_value());
 
   std::cout << "m3Cp4c3UncutComponentPartitionCorrespondence"
             << ";failingComponent=" << *locus.uncutFaceComponent
@@ -14550,7 +14592,88 @@ TEST(GlobalTopologyPlan,
             << ";matchesFailingComponent="
             << (*locus.uncutComponentCensusMatchesFailingComponent ? "true"
                                                                    : "false")
+            << ";failingComponentSubsetOfCensusComponent="
+            << (*locus.uncutFaceComponentSubsetOfCensusComponent ? "true"
+                                                                  : "false")
             << '\n';
+}
+
+TEST(SurfaceCutGraph,
+     InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
+            mechanical.terminalFailureDetailCode);
+
+  const auto &locus = mechanical.terminalFailureLocus;
+  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentSubsetOfCensusComponent.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentInteriorArcCensusPublished);
+  EXPECT_EQ(locus.uncutFaceComponentInteriorArcCount,
+            locus.uncutFaceComponentInteriorArcIncidences.size());
+  EXPECT_FALSE(locus.uncutFaceComponentInteriorArcIncidencesTruncated);
+
+  const auto print_optional_component = [](
+      const std::optional<std::size_t> &value) {
+    return value.has_value() ? std::to_string(*value) : std::string("absent");
+  };
+  const auto reason_is_typed = [](const std::string &reason) {
+    return reason == "TerminalSlit" || reason == "SegmentRangeInvalid" ||
+           reason == "TraceNotFound" || reason == "DartOutOfRange" ||
+           reason == "FaceNotFound" || reason == "Other";
+  };
+
+  std::cout << "m3Cp4c3FailingPlanInteriorArcCensus"
+            << ";component=" << *locus.uncutFaceComponent
+            << ";interiorArcs=" << locus.uncutFaceComponentInteriorArcCount
+            << ";truncated="
+            << (locus.uncutFaceComponentInteriorArcIncidencesTruncated ? "true"
+                                                                       : "false")
+            << ";subsetOfCensusComponent="
+            << (*locus.uncutFaceComponentSubsetOfCensusComponent ? "true"
+                                                                  : "false")
+            << '\n';
+
+  for (std::size_t arcIndex = 0U;
+       arcIndex < locus.uncutFaceComponentInteriorArcIncidences.size();
+       ++arcIndex) {
+    const auto &arc = locus.uncutFaceComponentInteriorArcIncidences[arcIndex];
+    EXPECT_EQ(arc.crossedFaceCount, arc.crossedFaces.size());
+    EXPECT_FALSE(arc.crossedFacesTruncated);
+    std::cout << "m3Cp4c3FailingPlanInteriorArc;component="
+              << *locus.uncutFaceComponent << ";row=" << arcIndex
+              << ";arc=" << arc.arc << ";kind=" << arc.kind
+              << ";forwardOrbit=" << arc.forwardOrbit
+              << ";reverseOrbit=" << arc.reverseOrbit
+              << ";crossedFaceCount=" << arc.crossedFaceCount
+              << ";crossedFacesTruncated="
+              << (arc.crossedFacesTruncated ? "true" : "false") << '\n';
+
+    for (std::size_t faceIndex = 0U; faceIndex < arc.crossedFaces.size();
+         ++faceIndex) {
+      const auto &face = arc.crossedFaces[faceIndex];
+      if (face.certifierComponent.has_value())
+        EXPECT_FALSE(face.notTraceCutReason.empty());
+      if (!face.notTraceCutReason.empty())
+        EXPECT_TRUE(reason_is_typed(face.notTraceCutReason));
+      std::cout << "m3Cp4c3FailingPlanInteriorArcFace;component="
+                << *locus.uncutFaceComponent << ";arcRow=" << arcIndex
+                << ";faceRow=" << faceIndex << ";arc=" << arc.arc
+                << ";sourceFace=" << face.sourceFace[0] << ','
+                << face.sourceFace[1] << ',' << face.sourceFace[2]
+                << ";certifierComponent="
+                << print_optional_component(face.certifierComponent)
+                << ";planComponent="
+                << print_optional_component(face.planComponent)
+                << ";notTraceCutReason="
+                << (face.notTraceCutReason.empty() ? "none"
+                                                   : face.notTraceCutReason)
+                << '\n';
+    }
+  }
 }
 
 TEST(TestFixturePaths, MissingPackageFailsClosedInsteadOfReturningMissingPath) {

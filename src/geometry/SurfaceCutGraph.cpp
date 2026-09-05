@@ -421,6 +421,9 @@ OwnershipBuildResult build_source_face_ownership(
   std::map<SourceFace, std::vector<SurfaceCutGraphTraceFragmentSideOwner>>
       traceSides;
   std::set<SourceFace> traceCutFaces;
+  std::map<authority::NetworkArcId,
+           std::map<SourceFace, SurfaceCutGraphTraceCutExclusionReason>>
+      traceCutExclusionReasons;
   std::set<SourceEdge> barriers(cutEdges.begin(), cutEdges.end());
 
   // The classification map is derived independently from the actual barrier
@@ -499,9 +502,21 @@ OwnershipBuildResult build_source_face_ownership(
 
     if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value())
       continue;
+    auto &arcExclusionReasons = traceCutExclusionReasons[arc.id];
     const auto *trace = find_trace(network, *arc.trace);
-    if (trace == nullptr || arc.firstSegment >= arc.onePastLastSegment ||
+    if (trace == nullptr) {
+      for (const SourceFace &sourceFace : arc.sourceFaces) {
+        arcExclusionReasons[sourceFace] =
+            SurfaceCutGraphTraceCutExclusionReason::TraceNotFound;
+      }
+      continue;
+    }
+    if (arc.firstSegment >= arc.onePastLastSegment ||
         arc.onePastLastSegment > trace->segments.size()) {
+      for (const SourceFace &sourceFace : arc.sourceFaces) {
+        arcExclusionReasons[sourceFace] =
+            SurfaceCutGraphTraceCutExclusionReason::SegmentRangeInvalid;
+      }
       continue;
     }
     const std::size_t forwardDart = dart_index(
@@ -510,6 +525,10 @@ OwnershipBuildResult build_source_face_ownership(
         GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
     if (forwardDart >= embedded.faceWalk.orbitByDart.size() ||
         reverseDart >= embedded.faceWalk.orbitByDart.size()) {
+      for (const SourceFace &sourceFace : arc.sourceFaces) {
+        arcExclusionReasons[sourceFace] =
+            SurfaceCutGraphTraceCutExclusionReason::DartOutOfRange;
+      }
       continue;
     }
     const std::size_t forwardOrbit =
@@ -522,12 +541,25 @@ OwnershipBuildResult build_source_face_ownership(
       const auto &segment = trace->segments[segmentIndex];
       const bool terminalSlit = !trace->terminalBarrier.has_value() &&
                                 segmentIndex + 1U == trace->segments.size();
-      if (terminalSlit) continue;
+      if (terminalSlit) {
+        if (traceCutFaces.count(segment.sourceFace) == 0U) {
+          arcExclusionReasons[segment.sourceFace] =
+              SurfaceCutGraphTraceCutExclusionReason::TerminalSlit;
+        }
+        continue;
+      }
       const auto faceIt =
           embedded.sourceTopology.faces.find(segment.sourceFace);
-      if (faceIt == embedded.sourceTopology.faces.end()) continue;
+      if (faceIt == embedded.sourceTopology.faces.end()) {
+        if (traceCutFaces.count(segment.sourceFace) == 0U) {
+          arcExclusionReasons[segment.sourceFace] =
+              SurfaceCutGraphTraceCutExclusionReason::FaceNotFound;
+        }
+        continue;
+      }
 
       traceCutFaces.insert(segment.sourceFace);
+      arcExclusionReasons.erase(segment.sourceFace);
       barriers.insert(segment.outgoingCarrier);
       if (segment.incomingCarrier.has_value())
         barriers.insert(*segment.incomingCarrier);
@@ -588,6 +620,13 @@ OwnershipBuildResult build_source_face_ownership(
                 forwardOrbit);
       add_owner(segment.sourceFace, faceIt->second.edges[*sourceCorner],
                 reverseOrbit);
+    }
+    for (const SourceFace &sourceFace : arc.sourceFaces) {
+      if (traceCutFaces.count(sourceFace) == 0U &&
+          arcExclusionReasons.count(sourceFace) == 0U) {
+        arcExclusionReasons[sourceFace] =
+            SurfaceCutGraphTraceCutExclusionReason::Other;
+      }
     }
   }
 
@@ -707,11 +746,40 @@ OwnershipBuildResult build_source_face_ownership(
           GlobalTopologyOrientedArc{arc.id, authority::Orientation::Forward});
       const std::size_t reverseDart = dart_index(
           GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
-      census.interiorArcIncidences.push_back(
-          SurfaceCutGraphUncutComponentArcIncidenceCensus{
-              arc.id, SurfaceCutGraphUncutComponentArcKind::Trace,
-              embedded.faceWalk.orbitByDart[forwardDart],
-              embedded.faceWalk.orbitByDart[reverseDart]});
+      SurfaceCutGraphUncutComponentArcIncidenceCensus arcRow{
+          arc.id, SurfaceCutGraphUncutComponentArcKind::Trace,
+          embedded.faceWalk.orbitByDart[forwardDart],
+          embedded.faceWalk.orbitByDart[reverseDart]};
+      std::vector<SourceFace> crossedFaces = arc.sourceFaces;
+      std::sort(crossedFaces.begin(), crossedFaces.end());
+      crossedFaces.erase(std::unique(crossedFaces.begin(), crossedFaces.end()),
+                         crossedFaces.end());
+      arcRow.crossedFaceCount = crossedFaces.size();
+      arcRow.crossedFaces.reserve(crossedFaces.size());
+      const auto reasons = traceCutExclusionReasons.find(arc.id);
+      for (const SourceFace &sourceFace : crossedFaces) {
+        SurfaceCutGraphUncutComponentArcFaceCensus faceRow;
+        faceRow.sourceFace = sourceFace;
+        const auto certifierComponent = partition.componentByFace.find(sourceFace);
+        if (certifierComponent != partition.componentByFace.end()) {
+          faceRow.certifierComponent = certifierComponent->second;
+        }
+        if (traceCutFaces.count(sourceFace) == 0U) {
+          if (reasons != traceCutExclusionReasons.end()) {
+            const auto reason = reasons->second.find(sourceFace);
+            if (reason != reasons->second.end()) {
+              faceRow.notTraceCutReason = reason->second;
+            }
+          }
+          if (!faceRow.notTraceCutReason.has_value()) {
+            faceRow.notTraceCutReason =
+                SurfaceCutGraphTraceCutExclusionReason::Other;
+          }
+        }
+        arcRow.crossedFaces.push_back(std::move(faceRow));
+      }
+      arcRow.crossedFacesTruncated = false;
+      census.interiorArcIncidences.push_back(std::move(arcRow));
     }
 
     census.vertexTransits = vertexTransitCensus[component];
@@ -1057,6 +1125,25 @@ const char *surface_cut_graph_uncut_component_seed_rule_name(
     return "SingleFaceOwner";
   case SurfaceCutGraphUncutComponentSeedRule::EdgeSideOwner:
     return "EdgeSideOwner";
+  }
+  return "Unknown";
+}
+
+const char *surface_cut_graph_trace_cut_exclusion_reason_name(
+    const SurfaceCutGraphTraceCutExclusionReason reason) noexcept {
+  switch (reason) {
+  case SurfaceCutGraphTraceCutExclusionReason::TerminalSlit:
+    return "TerminalSlit";
+  case SurfaceCutGraphTraceCutExclusionReason::SegmentRangeInvalid:
+    return "SegmentRangeInvalid";
+  case SurfaceCutGraphTraceCutExclusionReason::TraceNotFound:
+    return "TraceNotFound";
+  case SurfaceCutGraphTraceCutExclusionReason::DartOutOfRange:
+    return "DartOutOfRange";
+  case SurfaceCutGraphTraceCutExclusionReason::FaceNotFound:
+    return "FaceNotFound";
+  case SurfaceCutGraphTraceCutExclusionReason::Other:
+    return "Other";
   }
   return "Unknown";
 }

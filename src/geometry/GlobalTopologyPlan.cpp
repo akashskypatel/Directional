@@ -1189,7 +1189,52 @@ RegionBuildResult build_regions(
       failure.uncutComponentCensusFaceSetDigest = census->faceSetDigest;
       failure.uncutComponentCensusMatchesFailingComponent =
           census->faces == row.faces;
+      failure.uncutFaceComponentSubsetOfCensusComponent =
+          std::includes(census->faces.begin(), census->faces.end(),
+                        row.faces.begin(), row.faces.end());
     }
+
+    // Publish the arc census again in the failing plan partition instead of
+    // treating the certifier's same-numbered component as the same object.
+    // Each crossed face retains its certifier membership and receives the
+    // independently constructed plan membership here.
+    const std::set<authority::SourceFaceTopologyKey> failingPlanFaces(
+        row.faces.begin(), row.faces.end());
+    std::map<authority::NetworkArcId,
+             SurfaceCutGraphUncutComponentArcIncidenceCensus>
+        failingArcRows;
+    for (const auto &certifierCensus :
+         cutGraph.certificate().uncutComponentCensuses) {
+      for (const auto &certifierArc : certifierCensus.interiorArcIncidences) {
+        SurfaceCutGraphUncutComponentArcIncidenceCensus enriched =
+            certifierArc;
+        bool meetsFailingComponent = false;
+        for (auto &crossedFace : enriched.crossedFaces) {
+          const auto planComponent =
+              componentPartition.componentByFace.find(crossedFace.sourceFace);
+          if (planComponent != componentPartition.componentByFace.end()) {
+            crossedFace.planComponent = planComponent->second;
+          }
+          if (failingPlanFaces.count(crossedFace.sourceFace) != 0U) {
+            meetsFailingComponent = true;
+          }
+        }
+        if (meetsFailingComponent) {
+          failingArcRows[enriched.arc] = std::move(enriched);
+        }
+      }
+    }
+    failure.uncutFaceComponentInteriorArcCensusPublished = true;
+    failure.uncutFaceComponentInteriorArcIncidences.reserve(
+        failingArcRows.size());
+    for (auto &[arcId, arcRow] : failingArcRows) {
+      (void)arcId;
+      failure.uncutFaceComponentInteriorArcIncidences.push_back(
+          std::move(arcRow));
+    }
+    failure.uncutFaceComponentInteriorArcCount =
+        failure.uncutFaceComponentInteriorArcIncidences.size();
+    failure.uncutFaceComponentInteriorArcIncidencesTruncated = false;
 
     failure.uncutFaceComponentCertifiedFaceObservationCount =
         row.ownerObservations.size();

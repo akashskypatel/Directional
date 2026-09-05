@@ -497,6 +497,12 @@ struct GlobalTopologyPlanError {
       uncutComponentCensusPartitionIdentity;
   std::optional<std::uint64_t> uncutComponentCensusFaceSetDigest;
   std::optional<bool> uncutComponentCensusMatchesFailingComponent;
+  std::optional<bool> uncutFaceComponentSubsetOfCensusComponent;
+  bool uncutFaceComponentInteriorArcCensusPublished = false;
+  std::size_t uncutFaceComponentInteriorArcCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcIncidenceCensus>
+      uncutFaceComponentInteriorArcIncidences;
+  bool uncutFaceComponentInteriorArcIncidencesTruncated = false;
   std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
   std::vector<UncutFaceComponentBoundaryEdgeDiagnostic>
       uncutFaceComponentBoundaryEdges;

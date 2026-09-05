@@ -144,6 +144,15 @@ enum class SurfaceCutGraphUncutComponentSeedRule : std::uint8_t {
   EdgeSideOwner = 1,
 };
 
+enum class SurfaceCutGraphTraceCutExclusionReason : std::uint8_t {
+  TerminalSlit = 0,
+  SegmentRangeInvalid = 1,
+  TraceNotFound = 2,
+  DartOutOfRange = 3,
+  FaceNotFound = 4,
+  Other = 5,
+};
+
 struct SurfaceCutGraphUncutComponentBoundaryEdgeCensus {
   authority::SourceEdgeTopologyKey sourceEdge;
   authority::SourceFaceTopologyKey componentFace;
@@ -157,12 +166,24 @@ struct SurfaceCutGraphUncutComponentBoundaryEdgeCensus {
       const SurfaceCutGraphUncutComponentBoundaryEdgeCensus &) const = default;
 };
 
+struct SurfaceCutGraphUncutComponentArcFaceCensus {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::optional<std::size_t> certifierComponent;
+  std::optional<std::size_t> planComponent;
+  std::optional<SurfaceCutGraphTraceCutExclusionReason> notTraceCutReason;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentArcFaceCensus &) const = default;
+};
+
 struct SurfaceCutGraphUncutComponentArcIncidenceCensus {
   authority::NetworkArcId arc;
   SurfaceCutGraphUncutComponentArcKind kind =
       SurfaceCutGraphUncutComponentArcKind::Mandatory;
   std::size_t forwardOrbit = 0U;
   std::size_t reverseOrbit = 0U;
+  std::size_t crossedFaceCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcFaceCensus> crossedFaces;
+  bool crossedFacesTruncated = false;
   auto operator<=>(
       const SurfaceCutGraphUncutComponentArcIncidenceCensus &) const = default;
 };
@@ -413,6 +434,8 @@ private:
     SurfaceCutGraphUncutComponentArcKind kind) noexcept;
 [[nodiscard]] const char *surface_cut_graph_uncut_component_seed_rule_name(
     SurfaceCutGraphUncutComponentSeedRule rule) noexcept;
+[[nodiscard]] const char *surface_cut_graph_trace_cut_exclusion_reason_name(
+    SurfaceCutGraphTraceCutExclusionReason reason) noexcept;
 [[nodiscard]] std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept;
 
 } // namespace directional::geometry
