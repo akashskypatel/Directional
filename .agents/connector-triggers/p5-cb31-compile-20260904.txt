@@ -1,0 +1,5 @@
+purpose=M3-CP4c-3-CB31 compile check
+source_sha=eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc
+artifact_prefix=m3-cp4c3-cb31
+caller=.github/workflows/p5-cb31-compile.yml
+runtimeExecution=false
