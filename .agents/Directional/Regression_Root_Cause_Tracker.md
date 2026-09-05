@@ -1,3 +1,14 @@
+## M3-CP4c3-TB26-REV — runtime diagnostics — **CURRENT RUNTIME REVIEW / SEMANTIC RED / NON-STABLE PENDING INDEPENDENT REVIEW**
+
+- **Authority:** run/job `33931380325 / 101210520053`, immutable package `9957324848`, selector405. Valid 405-row ledger: **397 PASS / 8 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,393,398]`. 389/390/404/405 PASS. Result `9958722468`; ledger SHA `5d16ee4508ead7eb5422c4dd0d03a9903009b8552d8e815ff2394f872eebe34a`.
+- **`M3-CP4c3-TB25-REV-CAND-02` resolved at aggregate level:** component0 has `interiorArcs=4`, so the separating-arc horn is selected. It also has 53 vertex-transit rows. The single-certified-face horn is not the measured outcome.
+- **CJ7 runtime:** component0 has three conflicting seeds `[0,1,3]`; 366/367 fail `UncutFaceComponentOrbitSeedNotUnique` and 398 remains the honest strong ownership gate. No winner is chosen.
+- **`M3-CP4c3-TB26-REV-CAND-01` — ACTIVE / EVIDENCE INTEGRITY:** ordinal404 emits only aggregate counts, so the four decisive interior-arc IDs/kinds/orbits and source-face loci required by the frozen discriminator are not externally auditable. Product source contains rows, but static inference is not runtime publication.
+- **`M3-CP4c3-TB26-REV-CAND-02` — ACTIVE / CENSUS DOMAIN:** ordinal404 reports 76 component0 boundary rows while frozen TB20/TB25 authority reports 97 for the identical 191-face component. Independent review must establish whether domains differ lawfully or 21 rows are omitted.
+- **`M3-CP4c3-TB26-REV-CAND-03` — ACTIVE / TEST AUTHORITY:** ordinal393 now fails `componentFaceCount=191` versus `certifiedFaceObservationCount=573`; runtime prints `0:191,1:191,3:191`. This is collateral to full conflict publication until independently adjudicated.
+- **Carried:** 368/369/370/374 remain separately owned; no merge or stable recurrence is inferred.
+- **Accounting:** no accepted regression; stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, packages **91**. Exact next is outsourced `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`; no CB/retry before it.
+
 ## M3-CP4c3-TB25-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB25_Independent_Review_Record.md`, measures **CJ0–CJ9**. Static only: no

@@ -1,3 +1,11 @@
+## 2026-09-04 — `M3-CP4c-3-TB26-R1/TB26-REV`: 397 PASS / 8 RED; separating-arc horn selected; independent review required
+
+Artifact-only selector405 runtime completed in run/job **`33931380325 / 101210520053`** on immutable CB30 package `9957324848` / source `e045bf7147afc02bd90eff4822e4b609edbaba66`. Result/log artifacts `9958722468 / 9958722840`; result SHA-256 `1daf2ec4a4b8a644f7cf66407ac14b69ac92aa20ec3c241093270179ae6c6768`; ledger SHA-256 `5d16ee4508ead7eb5422c4dd0d03a9903009b8552d8e815ff2394f872eebe34a`. All 405 identities ran once in fresh processes with immutable pre/post censuses.
+
+Ledger **397 PASS / 8 RED**, accepted **365/365**; RED `[366,367,368,369,370,374,393,398]`. 389/390 recover to PASS and 404/405 PASS. Component0 remains 191 faces but now publishes conflicting seeds `[0,1,3]`; ordinal404 reports `boundaryEdges=76;interiorArcs=4;vertexTransits=53;seedAttributions=46`. The nonzero interior-arc census selects TB25-REV's separating-arc horn, ruling out majority-seed selection as a valid cure. 398 remains the strong ownership-totality gate.
+
+TB26-REV found three non-stable review candidates: ordinal404 does not serialize the four decisive named arc loci required by the frozen discriminator; its 76 boundary rows disagree with the frozen 97-edge baseline; and ordinal393's old one-observation-per-face contract now sees 573 observations from three deliberately published conflicting owners. Stable accounting remains **44 / 14 / 30**, debt **5**, packages **91**. CP4c-3 remains OPEN. Exact next is the separately outsourced **`M3-CP4c-3-TB26-INDEPENDENT-REVIEW`**; the orchestration loop stops at that boundary.
+
 ## 2026-09-04 — `M3-CP4c-3-CB30`: CJ6–CJ9 compiled; selector 405; immutable package 91 GREEN
 
 Code + Build only. CB30 adds owner-independent boundary/interior-arc/vertex-transit censuses, restores the second pre-CB27 seed source without choosing a winner, replaces 389/390/393 collateral ownership-totality assertions with their identity-owned contracts, leaves ordinal 398 and `proves_cellularity()` strong, and appends gating ordinals 404/405 in selector 405. No barrier was added or removed.

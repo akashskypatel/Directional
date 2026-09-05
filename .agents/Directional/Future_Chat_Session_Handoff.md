@@ -116,50 +116,40 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB26-EXEC` — EXACT NEXT / Test + Benchmark execution only
+## Mandatory next turn — `M3-CP4c-3-TB26-INDEPENDENT-REVIEW` — EXACT NEXT / OUTSOURCED REVIEW + PLAN
 
-`M3-CP4c-3-CB30` is **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTICALLY UNACCEPTED**. The exact compiled source is `e045bf7147afc02bd90eff4822e4b609edbaba66`; immutable package artifact `9957324848` has provider SHA-256 `7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`. Compile run/job `33927223741 / 101198287660` succeeded with GMP/GMPXX linked and `runtimeExecution=false`.
+`M3-CP4c-3-TB26-R1` is **COMPLETE / VALID SEMANTIC RUNTIME / SEMANTIC RED / ACCEPTED PREFIX SAFE**. Exact semantic source `e045bf7147afc02bd90eff4822e4b609edbaba66`; immutable package `9957324848` (`7ea9446f2e8cde520b8f7570cc62ba189ccffe801bd68a298f56560c661f81de`); selector405 (`615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`). Formal run/job `33931380325 / 101210520053`; result/log `9958722468 / 9958722840`.
 
-### Current selector/package authority
+### TB26 runtime authority
 
-- selector 405: `Architecture_M3_CP4c3_Required_Green_Selector_405.txt`, 405 identities, LF SHA-256 `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`;
-- selector 403 is its exact 403-line prefix (`60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007`); selector 401 and selector 397 remain frozen prefixes;
-- package `9957324848` is semantic M3 package **91**; compile-log artifact `9957325254` has SHA-256 `626b1d49c46f9bdc09f7f7ef5fb83d9ed5b1f1d51dd667f98891d7f8a9a8153a`;
-- latest semantic runtime remains TB25-R1 at **393 PASS / 10 RED**, accepted **365/365**; stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**.
+- **397 PASS / 8 RED**, accepted **365/365**; RED `[366,367,368,369,370,374,393,398]`.
+- 389/390 recovered to PASS; new 404/405 PASS.
+- component 0: 191 faces; restored seeds conflict on orbits `[0,1,3]`; no winner selected.
+- ordinal404 aggregate: `boundaryEdges=76;interiorArcs=4;vertexTransits=53;seedAttributions=46`.
+- `interiorArcs=4` selects the frozen separating-arc horn; component 0 is not proved to lie in one certified face.
+- 398 remains the untouched strong ownership-totality gate and is RED.
+- 393 REDs on `191 == 573` after all three conflicting owners are published for all 191 component faces.
+- package/source/execution-view censuses are unchanged; orchestration failure false; no configure/compile/relink/discovery/repair/mutation.
 
-### CB30 compiled scope
+### Independent-review intake
 
-- **CJ6:** owner-independent boundary-edge, interior-arc-incidence and vertex-transit censuses publish per uncut component on the failure path;
-- **CJ7:** both pre-CB27 seed sources are admitted; singleton establishes, multi-seed publishes `Conflicting` with full evidence; no winner is selected and no barrier changes;
-- **CJ8:** ordinals 389/390/393 assert their identity-owned embedded-cellularity/census contracts; ordinal 398 is untouched and remains the strong ownership-totality gate;
-- **CJ9:** selector 405 appends gating 404/405 while selector 403 remains byte-identical as prefix.
+Consume `Architecture_M3_CP4c3_TB26_Independent_Review_Intake.md` and the TB26 report. The review must: (1) require publication of the four decisive arc loci instead of inferring them from source; (2) reconcile CJ6 `boundaryEdges=76` against the frozen 97-edge baseline; (3) decide the topology correction when a trace arc separates faces inside a source-edge component; (4) adjudicate ordinal393's observation-count contract; (5) preserve 398 fail-closed ownership totality; and (6) freeze any successor CB only after that reasoning. Stable accounting remains **44 / 14 / 30**, debt **5**, packages **91** unless the independent review justifies a change.
 
-### TB26-EXEC authority and boundary
-
-Consume `Architecture_M3_CP4c3_TB26_Artifact_Only_Test_Benchmark_Plan.md` exactly. Verify package/source/GMP/selector/prefix authority before runtime, execute **all 405 selector identities one per fresh process**, preserve complete CJ6 named-locus payloads, and verify postflight immutability. No configure, compile, relink, generated discovery, package repair, mode repair, source/test/fixture/selector mutation, interpretation-driven retry, or source patch is permitted. An orchestration failure produces no semantic ledger.
-
-TB26-EXEC records runtime facts only. Its exact successor is **`M3-CP4c-3-TB26-REV`** for diagnostics/review of the recorded execution. If TB26-REV reaches the project-required independent REVIEW + PLAN boundary, the orchestration loop must stop there.
+**Stop boundary:** independent REVIEW + PLAN is explicitly outsourced. The current orchestration loop must stop completely here. No retry, CB patch, barrier change, ownership winner, selector mutation, compile, or runtime belongs before the outsourced review closes.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB-EXEC.md
-conditional_modules:
-  - trigger: github_connector / GitHub Actions / artifact-only runtime
-    path: turn-based-coding-agent/modules/github-connector/MODULE.md
+  - turn-based-coding-agent/references/turns/REVIEW.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB26_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c3_CB30_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_405.txt
+  - .agents/Directional/Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB26_Independent_Review_Intake.md
   - .agents/Directional/M3_CP4c_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - .agents/Directional/ORIENTATION.md
 templates_when_producing:
-  - turn-based-coding-agent/templates/TEST_REPORT.md
-do_not_preload:
-  - sibling turn files
-  - module reference directories
-  - uncited historical reports
+  - turn-based-coding-agent/templates/REVIEW_REPORT.md
 ```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
