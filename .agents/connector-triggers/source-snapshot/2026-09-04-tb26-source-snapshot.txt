@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB26
-purpose=start-of-turn READ_MODE=snapshot
-frozen_head=f8ced4f4bbc4e315927298e8469178c5a8086dc4
-runtimeExecution=false
