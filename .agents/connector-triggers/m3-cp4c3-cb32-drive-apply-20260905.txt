@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-CB32 code/test/selector patch apply
+base_sha=76289afffd3ce1d1a29faabdb4450c94830e9cb6
+patch_sha256=8e363a2189727dfd55f96a31caa75ead3107031708a2cda696aa056e2ce498fb
+retry=0
