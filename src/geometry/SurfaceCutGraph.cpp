@@ -758,8 +758,7 @@ OwnershipBuildResult build_source_face_ownership(
       arcRow.crossedFaces.reserve(crossedFaces.size());
       const auto reasons = traceCutExclusionReasons.find(arc.id);
       for (const SourceFace &sourceFace : crossedFaces) {
-        SurfaceCutGraphUncutComponentArcFaceCensus faceRow;
-        faceRow.sourceFace = sourceFace;
+        SurfaceCutGraphUncutComponentArcFaceCensus faceRow{sourceFace};
         const auto certifierComponent = partition.componentByFace.find(sourceFace);
         if (certifierComponent != partition.componentByFace.end()) {
           faceRow.certifierComponent = certifierComponent->second;
