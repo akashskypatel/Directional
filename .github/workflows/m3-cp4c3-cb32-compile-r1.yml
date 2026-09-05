@@ -38,7 +38,7 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: d75f685c7d7ec65a003bfec39f95359d85145d48
+      source_sha: 098ac7d93ea203222dd0ac50cdb68667744f0fd4
       targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix: m3-cp4c3-cb32-compile
     secrets: inherit
