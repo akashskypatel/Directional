@@ -5,4 +5,4 @@ semantic_source=eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc
 selector406_sha256=efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0
 caller=.github/workflows/p5-tb27-exec.yml
 runtimeExecution=true
-retry=observer-permission-envelope-fixed
+retry=runner-local-immutability-census
