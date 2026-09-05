@@ -6,9 +6,10 @@ on:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
       - .agents/connector-triggers/p5-cb31-compile-20260904.txt
+      - .github/workflows/p5-cb31-compile.yml
 
 permissions:
-  contents: read
+  contents: write
   actions: write
   issues: write
   pull-requests: write
