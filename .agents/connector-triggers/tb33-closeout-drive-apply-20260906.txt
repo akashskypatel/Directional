@@ -1,4 +1,0 @@
-purpose=apply corrected verified M3-CP4c-3-TB33-EXEC closeout documentation patch
-base_sha=e817abafbcaa2fd1f897a90efe1dfd28819c0f3e
-patch_sha256=2667d0f9f03114de25414d99bed56c7fc23f309a86f6d98e684229242199371b
-retry=1

@@ -1,5 +1,0 @@
-purpose=execute frozen M3-CP4c-3-TB33 artifact-only plan
-artifact_id=9994997588
-source_sha=0d03edb07388c56b592a74e2e7fc5f3edde8cea4
-selector_count=408
-retry=0

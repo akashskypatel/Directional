@@ -1,3 +1,0 @@
-.agents/connector-triggers/source-snapshot/tb33-start.txt
-.agents/connector-triggers/tb33-exec-20260906.txt
-.agents/connector-triggers/tb33-closeout-drive-apply-20260906.txt

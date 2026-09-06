@@ -1,4 +1,0 @@
-purpose=TB33 start-of-turn exact repository snapshot
-requested_head=739700563a370195d7f089086669e7f55597151b
-read_mode=snapshot
-retry=0
