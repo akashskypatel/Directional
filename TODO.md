@@ -26,55 +26,49 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB38` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-TB33-EXEC` (artifact-only runtime)
 
-`M3-CP4c-3-TB32-REV` promoted TB32 to **current valid semantic runtime authority**.
+`M3-CP4c-3-CB38` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE**. Current semantic runtime authority remains
+TB32 until TB33-REV adjudicates new evidence.
 
-- selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**, RED
-  `366,367,368,369,370,374,390,393,398,406,407`;
-- immutable CB37 package `9983643195` / source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`;
-- run/job `34024893763 / 101464028080`; result/log `9986786215 / 9986786399`; every row `selected=1`;
-- certified ownership **300 / 0 / 0**.
+- TB32 selector **408**, **397 PASS / 11 RED**, accepted **365/365**, RED
+  `366,367,368,369,370,374,390,393,398,406,407`; ownership **300 / 0 / 0**.
+- CB38 semantic source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`.
+- CB38 compile run/job `34052395109 / 101538234734`; immutable artifact `9994997588` /
+  `m3-cp4c3-cb38-result-34052395109`, SHA-256
+  `059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8`; source archive
+  `092b3a5b81894ce15d1c767d41399fc72e65cd72f2400c0e7ff4c6970300c0e0`; manifest **28/28 PASS**; GMP/GMPXX;
+  `runtimeExecution=false`.
+- Selector 408 remains byte-identical at
+  `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`; package count **98**.
 
-**Both DEFN-R4 falsifiers held.** Zero emissions of `TraceArcDoesNotSeparateItsSides` and zero of
-`UncutFaceComponentOrbitSeedNotUnique` across all 408 raw logs; 366/367 **advanced** to
-`RegionBoundaryNotSingleWalk`, strictly later, which CS6 permitted. **Two guards cleared in two turns.**
-
-**CS3 is unmet, and DEFN-R4.5 was under-specified.** 390/393/406/407 did not return to PASS: removing their
-failure-code assertion left assertions about **a stage the plan no longer fails at**. **Which** assertion fails is
-not in the report — the third consecutive turn with that gap — so the review declined to guess between two causes
-that imply different corrections.
-
-**Two evidence findings.** Seed-stage `uncutFaceComponent*` fields are **back-filled onto later failures**; and
-**TB32's ledger SHA-256 is byte-identical to TB31's** despite entirely different failure reasons, so the ledger
-digest is a pass/fail fingerprint only.
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **97**. CP4c-3 remains **OPEN**.
+CB38 implemented CT3–CT6: typed region-frontier stage evidence, no later-stage back-fill into legacy seed fields,
+a justified cleared-stage branch for 390/393/406/407, per-row failure-detail fingerprints beside the unchanged
+ledger columns, and a parameterized artifact harness that records the executing run. CT7 is frozen into the TB33 plan.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB38`**, Code + Build, runtime-free, under **CT3–CT7** of
-`Architecture_M3_CP4c3_TB32_Independent_Review_Record.md`:
+Run **`M3-CP4c-3-TB33-EXEC`** under
+`Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md` on immutable artifact `9994997588`.
 
-- [ ] **CT3** frontier evidence carries a typed **stage label**; `uncutFaceComponent*` publish **only** when the
-      uncut-component stage raised the failure. Narrows DEFN-R4.4.
-- [ ] **CT4** ordinals **390/393/406/407** replaced **in place** with two admissible outcomes — the stage failed and
-      published, **or** the stage was cleared **and** the later failure published its labelled evidence.
-      **Absence alone is never a pass.**
-- [ ] **CT5** a per-row **failure-detail digest**, or one published beside the ledger; existing columns unchanged.
-- [ ] **CT6** the harness is **parameterised by turn identity**, not relabelled; `baseline-authority.txt` records
-      the executing run.
-- [ ] **CT7** `M3-CP4c-3-TB33`'s report **must** transcribe the failing assertion text for every RED ordinal in the
-      focused index. A report that omits it is **incomplete**.
+- [ ] Execute all **408** selector identities exactly once through the packaged parameterized harness; accepted
+      **1–365 = 365/365 PASS**, zero selection mismatches/timeouts.
+- [ ] Require **390/393/406/407 PASS** under the justified cleared-stage contract.
+- [ ] Verify later-stage frontier evidence is labelled `RegionConstruction`/`RegionCertification`, complete, and
+      publishes **no** legacy `uncutFaceComponent*` seed fields.
+- [ ] Require zero emissions of `TraceArcDoesNotSeparateItsSides` and `UncutFaceComponentOrbitSeedNotUnique`.
+- [ ] 366/367 must not move earlier than `RegionBoundaryNotSingleWalk`; preserve any later movement exactly.
+- [ ] Preserve 368/369/370/374/398 as credibility surfaces; any unexpected colour/locus change is review evidence.
+- [ ] Verify `baseline-authority.txt` names the **executing TB33 run** and failure-detail files/digests cover all rows.
+- [ ] **CT7:** transcribe the exact retained failing assertion/exception text for every RED ordinal in the focused
+      index. Missing transcription makes the EXEC report incomplete.
+- [ ] Verify package/source/execution-view byte+mode postflight equality and all configure/compile/relink/repair/
+      discovery/benchmark/mutation flags false.
+- [ ] Update `Regression_Root_Cause_Tracker.md` for every observed regression/candidate before TB33-EXEC closes.
+- [ ] After EXEC closeout, stop the loop at **independent `M3-CP4c-3-TB33-REV`**.
 
-**Falsifiers stated first:** if the four still fail with stage-labelled evidence published, the re-scoping is wrong;
-if either retired code reappears, CB38 changed forbidden behaviour; if 366/367 move **earlier**, CB38 regressed the
-pipeline.
-
-**Must not:** change product topology, barriers, ownership or the retired guard; weaken or re-scope ordinal 398;
-touch 368/369/370/374; relax anything the four witnesses legitimately own; add any ownership diagnostic; change any
-accepted identity or selector byte.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**. CP4c-3 remains
+**OPEN**.
 
 ## Carried forward from M1
 
@@ -112,10 +106,10 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB31 remains semantic runtime authority** at 397 PASS / 11 RED, accepted 365/365.
-  CB37 is compile-green on immutable package `9983643195` / source
-  `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`; no runtime executed. Exact next:
-  **`M3-CP4c-3-TB32-EXEC`**, artifact-only runtime under the frozen TB32 plan.
+  CP4c-3 remains open. **TB32 remains semantic runtime authority** at 397 PASS / 11 RED, accepted 365/365.
+  CB38 is compile-green on immutable artifact `9994997588` / source
+  `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`; no CB38 runtime executed. Exact next:
+  **`M3-CP4c-3-TB33-EXEC`**, artifact-only runtime under the frozen TB33 plan.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -127,9 +121,10 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  CB37 implements DEFN-R4 ownership-map semantics and code-independent frontier evidence at source
-  `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`. Exact next is TB32-EXEC on artifact `9983643195`; runtime must
-  decide whether 366/367 advance and must restore 390/393/406/407 without disturbing carried credibility rows.
+  CB38 implements CT3–CT6 stage/evidence/harness corrections at source
+  `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`. Exact next is TB33-EXEC on artifact `9994997588`; runtime must
+  prove 390/393/406/407 under the justified cleared-stage contract, preserve retired-code silence and accepted
+  365/365, and show 366/367 do not move earlier than `RegionBoundaryNotSingleWalk`.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -157,4 +152,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB32-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **97**. **`M3-CP4c-3-TB32` is the current valid semantic runtime authority at 397 PASS / 11 RED, accepted 365/365 on selector 408, with ownership total at 300/300 and both retired failure codes absent from all 408 logs.** Exact next is `M3-CP4c-3-CB38` under CT3–CT7. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB32-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **98**. **`M3-CP4c-3-TB32` is the current valid semantic runtime authority at 397 PASS / 11 RED, accepted 365/365 on selector 408, with ownership total at 300/300 and both retired failure codes absent from all 408 logs.** Exact next is `M3-CP4c-3-TB33-EXEC` on immutable CB38 artifact `9994997588`; stop at independent TB33-REV. PR #8 remains open, draft, and unmerged.

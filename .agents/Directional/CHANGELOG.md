@@ -1,3 +1,33 @@
+## 2026-09-06 — `M3-CP4c-3-CB38`: stage-labelled frontier evidence and reusable TB harness compile green
+
+CB38 is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic source
+`0d03edb07388c56b592a74e2e7fc5f3edde8cea4`. CT3–CT6 are implemented without changing product topology,
+barriers, ownership, the retired guard, separating-arc semantics, fixtures or selector bytes: frontier failures now
+carry typed `UncutComponent` / `RegionConstruction` / `RegionCertification` stage authority; legacy
+`uncutFaceComponent*` fields publish only for the uncut stage; later failures publish labelled component/certifier
+correspondence evidence; 390/393/406/407 retain their names/ordinals/gating and accept only complete uncut-stage
+evidence or a complete justified cleared-stage branch. Selector 408 remains 408 rows at
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
+
+The new parameterized `.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh` preserves historical
+`ledger.tsv` columns, adds complete per-row failure-detail files/digests, and writes the executing `${GITHUB_RUN_ID}`
+to `baseline-authority.txt`; packaged harness SHA-256 is
+`aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`. CT7 is frozen as a hard TB33 report
+requirement: exact failing assertion/exception text must be transcribed for every RED ordinal in the focused index.
+
+Verified Drive application run/job `34052306929 / 101537995936` pushed the semantic commit; its consumed patch was
+retired. Authoritative GMP/GMPXX compile run/job `34052395109 / 101538234734` built all eight standard targets and
+produced immutable artifact `9994997588` (`m3-cp4c3-cb38-result-34052395109`, provider/download SHA-256
+`059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8`), source archive
+`092b3a5b81894ce15d1c767d41399fc72e65cd72f2400c0e7ff4c6970300c0e0`, root manifest **28/28 PASS**, clean
+source, `runtimeExecution=false`, `exactArithmeticBackend=GMP`. Compile log artifact `9994997848` has digest
+`sha256:71f550cad64e9e1255984327ae33812317deb356e2ae32e7421b62a3729fa531`.
+
+TB32 remains semantic runtime authority at **397 PASS / 11 RED**, accepted **365/365**, ownership **300/0/0**;
+stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages advance to **98**. Exact next is
+artifact-only **`M3-CP4c-3-TB33-EXEC`** on artifact `9994997588`; after EXEC closeout the loop stops at independent
+`TB33-REV`.
+
 ## 2026-09-06 — `M3-CP4c-3-TB32-REV`: both DEFN-R4 falsifiers held and the frontier advanced; CS3 unmet; CB38 frozen
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

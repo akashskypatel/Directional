@@ -116,92 +116,95 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB38` — EXACT NEXT / Code + Build, runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB33-EXEC` — EXACT NEXT / Test + Benchmark, artifact-only
 
-`M3-CP4c-3-TB32-REV` has adjudicated TB32 and promoted it to **current valid semantic runtime authority**.
+`M3-CP4c-3-CB38` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE**. It implements CT3–CT6 from the TB32
+independent review and freezes CT7 as a hard TB33 reporting obligation. No semantic runtime authority changes until
+TB33 executes and independent TB33-REV adjudicates it.
 
-### Current authority
+### Current semantic runtime authority
 
 - **`M3-CP4c-3-TB32`** — selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**, RED
   `[366,367,368,369,370,374,390,393,398,406,407]`; immutable CB37 package `9983643195`, source
   `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`; run/job `34024893763 / 101464028080`; result/log
-  `9986786215 / 9986786399`; every row `selected=1`; `timeout_count=0`; all three byte+mode censuses equal
-  pre/post.
-- Certified source-face ownership remains **300 established / 0 unavailable / 0 conflicting**.
-- Definition authority is **Part VIII (DEFN-R4)**; **CT3 below narrows DEFN-R4.4**.
-- Stable accounting **44 / 14 / 30**, debt **5**, packages **97**.
+  `9986786215 / 9986786399`; ownership **300 established / 0 unavailable / 0 conflicting**.
+- Both retired failure codes are absent across all 408 TB32 logs; 366/367 currently stop at
+  `RegionBoundaryNotSingleWalk`.
+- Stable accounting **44 / 14 / 30**, produced-witness debt **5**.
 
-### What TB32 established
+### CB38 compile/package authority
 
-**Both DEFN-R4 falsifiers held.** Zero emissions of `TraceArcDoesNotSeparateItsSides` (**R4.3 upheld**) and zero of
-`UncutFaceComponentOrbitSeedNotUnique` (**R4.1 upheld**) across all 408 raw logs. 366/367 now stop at
-**`RegionBoundaryNotSingleWalk`**, from `validate_single_boundary_walk` inside `build_region_certificates` —
-**strictly later** than the retired guard, the outcome CS6 permitted. **Two guards cleared in two turns.**
+- semantic source: `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`;
+- compile run/job: `34052395109 / 101538234734`;
+- immutable result artifact: `9994997588` / `m3-cp4c3-cb38-result-34052395109`;
+- provider/download ZIP SHA-256: `059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8`;
+- packaged source archive SHA-256: `092b3a5b81894ce15d1c767d41399fc72e65cd72f2400c0e7ff4c6970300c0e0`;
+- compile log artifact: `9994997848`, digest
+  `sha256:71f550cad64e9e1255984327ae33812317deb356e2ae32e7421b62a3729fa531`;
+- root `SHA256SUMS` **28/28 PASS**, all eight standard targets compiled, source clean, GMP/GMPXX linked;
+- `runtimeExecution=false`, `turnBoundary=Code+Build-only`, `exactArithmeticBackend=GMP`;
+- selector 408 remains exactly 408 rows with unchanged SHA-256
+  `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`;
+- semantic M3 package count is now **98**.
 
-**CB37 landed CS1/CS2/CS3-letter/CS5**, verified in source.
+### What CB38 changed
 
-**CS3 is unmet, and DEFN-R4.5 was under-specified.** 390/393/406/407 did not return to PASS: removing their
-failure-code assertion left `ASSERT_TRUE(locus.uncutFaceComponent.has_value())` and further assertions about **the
-uncut-component stage the plan no longer fails at**. DEFN-R3.7 set the precedent for ordinal 385 and it was not
-applied; ordinal 390's `guard-cleared` early return is conditioned on `plan.has_value()`, which is too strong.
-`LESSONS.md` 142.
+1. **CT3:** typed `UncutComponent` / `RegionConstruction` / `RegionCertification` frontier stages. Legacy
+   `uncutFaceComponent*` fields publish only on `UncutComponent`; later failures publish labelled frontier/census
+   correspondence evidence without seed-stage back-fill.
+2. **CT4:** ordinals 390/393/406/407 retain names/ordinals/gating/selector bytes and now accept either complete
+   uncut-stage evidence or a justified cleared-stage outcome with complete later-stage evidence. Absence alone is not a pass.
+3. **CT5:** historical `ledger.tsv` columns remain unchanged; a separate per-row `failure-detail-digests.tsv` and
+   retained failure-detail files distinguish failure semantics.
+4. **CT6:** one parameterized packaged harness replaces relabelled per-turn copies; `baseline-authority.txt` writes the
+   **executing `${GITHUB_RUN_ID}`**. Packaged harness SHA-256
+   `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
+5. **CT7:** TB33's report must transcribe the exact retained assertion/exception text for every RED ordinal in the
+   focused index; omission makes the report incomplete.
 
-**Two evidence findings.** CB37 **back-fills** `uncutFaceComponent*` onto failures the seed guard did not raise —
-more than DEFN-R4.4 asked for. And **TB32's ledger SHA-256 is byte-identical to TB31's** although every failure
-reason differs, so the ledger digest is a **pass/fail fingerprint**, not a semantic one; provenance rests on the
-artifact digests and censuses. `LESSONS.md` 141.
+No product topology, barrier, ownership, retired guard, separating-arc rule, fixture, selector, or 368/369/370/374/398
+contract changed.
 
-**Which assertion fails is not in the report** — the **third consecutive turn** with that gap. The two candidate
-causes imply different corrections, so the review declined to guess.
+### TB33-EXEC boundary
 
-**Provenance note, adjudicated cosmetic:** `baseline-authority.txt` records `TB32 run=<TB31 run>` because the
-harness was materialized by globally renaming TB31 labels. Every independent identifier is distinct and consistent,
-and EXEC disclosed it.
+Execute `Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md` exactly, using the packaged
+`.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh --execute` and immutable artifact `9994997588`.
 
-### CB38 boundary — CT3–CT7
+Required semantic/runtime checks:
 
-Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked. **No change to product topology, barriers,
-ownership, the retired guard, or the separating-arc rule.**
+- all 408 selector rows execute exactly once; accepted 1–365 remain **365/365 PASS**;
+- 390/393/406/407 are required GREEN under the justified cleared-stage contract;
+- later-stage region-frontier evidence must be labelled and complete with no legacy seed-field back-fill;
+- zero emissions of `TraceArcDoesNotSeparateItsSides` or `UncutFaceComponentOrbitSeedNotUnique`;
+- 366/367 must not move earlier than `RegionBoundaryNotSingleWalk`;
+- 368/369/370/374/398 remain untouched credibility surfaces and any change is raw review evidence;
+- certified ownership, when reached, remains **300 / 0 / 0**;
+- `baseline-authority.txt` names the executing TB33 run; failure-detail digests/files cover all 408 rows;
+- the report transcribes the exact failure text for every RED ordinal in the focused index;
+- no rebuild, repair, configure, relink, discovery, benchmark execution, or packaged-byte mutation.
 
-1. **CT3 — stage-labelled evidence.** Frontier evidence carries a typed **stage label** naming the stage that
-   raised the failure. `uncutFaceComponent*` publish **only** when the uncut-component stage is that stage; on a
-   later-stage failure they are absent and the DEFN-R4.4 fields publish with the label. **This narrows DEFN-R4.4.**
-2. **CT4 — the four witnesses get a justified cleared-stage outcome.** Ordinals **390, 393, 406, 407** replaced
-   **in place**; ordinals, names and selector bytes unchanged; all remain **gating**. Each asserts: *the stage
-   raised the failure* → every evidence field it owns is published, complete and untruncated; **or** *a later stage
-   raised it* → it passes **only when that failure publishes the DEFN-R4.4 evidence with its stage label**.
-   **Absence alone is never a pass.**
-3. **CT5 — a digest that distinguishes failure reasons.** A per-row failure-detail digest in the ledger, or one
-   published beside it; existing columns unchanged so historical hashes stay comparable.
-4. **CT6 — the harness is parameterised by turn identity**, not produced by search-and-replace over a previous
-   turn's labels, and `baseline-authority.txt` records **the executing run**.
-5. **CT7 — hard TB obligation.** `M3-CP4c-3-TB33`'s report **must** transcribe the failing assertion text or
-   exception detail for **every** RED ordinal in the plan's focused index. A report that omits it is
-   **incomplete**, and the review that reads it must say so rather than infer.
-
-**Falsifiers, stated before the build.** If 390/393/406/407 still fail **with stage-labelled evidence published**,
-the re-scoping of `M3-CP4c3-TB31-REV-CAND-02` is wrong and the defect is in the evidence contract. If either
-retired code reappears, CB38 changed behaviour it was forbidden to touch. If 366/367 move to an **earlier** stage,
-CB38 regressed the pipeline.
-
-**Prohibited:** any product topology, barrier, ownership or retired-guard change; weakening or re-scoping
-**ordinal 398** (prescribed sphere); touching 368/369/370/374; relaxing anything 390/393/406/407 legitimately own;
-any new diagnostic contract on source-face ownership (**closed**); changing any accepted identity 1–365 or any byte
-of selector 397–408 — **selector 408 stays unchanged**, and any required witness appends as **409** with 408 an
-exact prefix; executing any Directional runtime.
+TB33-EXEC records raw evidence and required regression documentation only. It does not diagnose/fix product code or
+claim acceptance. After EXEC formally closes, the exact next boundary is **`M3-CP4c-3-TB33-REV`**, explicitly
+outsourced to an independent agent. **The implementation/orchestration loop stops completely there.**
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
+`load_next`: `references/turns/TB-EXEC.md` from the turn-based-coding-agent skill.
+
+Conditional capability: GitHub connector/Actions module for immutable artifact workflow execution.
+
+Project context, in order after mandatory start-of-turn policy reads:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` — **CT0–CT7**, the adjudication and the frozen CB38 scope.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB32_EXEC_Report.md` — current runtime authority.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part VIII operative**; CT3 narrows DEFN-R4.4.
-5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and the frozen prefixes.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB38_Code_Build_Report.md`.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md` — **executable contract**.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` — CT3–CT7 authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB32_EXEC_Report.md` — current semantic runtime authority.
+6. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII.
+7. `.agents/Directional/Required_Green_Selector_Manifest.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`,
+   `TODO.md`, `.agents/Directional/CHANGELOG.md`, `.agents/Directional/LESSONS.md`.
+8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
