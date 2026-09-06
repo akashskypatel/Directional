@@ -1,0 +1,200 @@
+name: Agent TB33 Artifact Runtime 20260906
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb33-exec-20260906.txt
+
+permissions:
+  contents: write
+  actions: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-tb33-exec-20260906
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb33-exec-20260906
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb33-exec-20260906.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  execute:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/tb33-exec-control.log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" \
+            'turnBoundary=Test+Benchmark/TB-EXEC' \
+            'compileExecution=false' \
+            'benchmarkExecution=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            | tee -a "$RUNNER_TEMP/tb33-exec-control.log"
+
+      - name: Extract and verify frozen packaged harness
+        id: bootstrap
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: '9994997588'
+          EXPECTED_ARTIFACT_NAME: m3-cp4c3-cb38-result-34052395109
+          EXPECTED_PROVIDER_DIGEST: sha256:059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8
+          EXPECTED_ZIP_SHA256: 059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8
+          EXPECTED_SOURCE_SHA: 0d03edb07388c56b592a74e2e7fc5f3edde8cea4
+          EXPECTED_HARNESS_SHA256: aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/tb33-exec-control.log"
+          exec > >(tee -a "$log") 2>&1
+          root="$RUNNER_TEMP/tb33-bootstrap"
+          pkg="$root/package"
+          source="$root/source"
+          zip="$root/artifact.zip"
+          rm -rf "$root"
+          mkdir -p "$pkg" "$source"
+          artifact_json="$(curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}")"
+          provider_digest="$(printf '%s' "$artifact_json" | jq -r '.digest // empty')"
+          artifact_name="$(printf '%s' "$artifact_json" | jq -r '.name // empty')"
+          test "$provider_digest" = "$EXPECTED_PROVIDER_DIGEST"
+          test "$artifact_name" = "$EXPECTED_ARTIFACT_NAME"
+          curl --fail --silent --show-error --location \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" \
+            -o "$zip"
+          test "$(sha256sum "$zip" | awk '{print $1}')" = "$EXPECTED_ZIP_SHA256"
+          unzip -q "$zip" -d "$pkg"
+          test -f "$pkg/SHA256SUMS"
+          (cd "$pkg" && sha256sum -c SHA256SUMS)
+          source_archive="$pkg/source/source-${EXPECTED_SOURCE_SHA}.tar.gz"
+          test -f "$source_archive"
+          tar -xzf "$source_archive" -C "$source"
+          harness="$source/.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh"
+          test -f "$harness"
+          harness_sha="$(sha256sum "$harness" | awk '{print $1}')"
+          test "$harness_sha" = "$EXPECTED_HARNESS_SHA256"
+          printf '%s\n' \
+            "bootstrap_artifact_id=$ARTIFACT_ID" \
+            "bootstrap_provider_digest=$provider_digest" \
+            "bootstrap_zip_sha256=$EXPECTED_ZIP_SHA256" \
+            "packaged_harness_sha256=$harness_sha"
+          echo "harness_path=$harness" >> "$GITHUB_OUTPUT"
+
+      - name: Execute frozen TB33 artifact-only plan
+        id: runtime
+        if: ${{ steps.bootstrap.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TURN_ID: M3-CP4c-3-TB33-EXEC
+          ARTIFACT_ID: '9994997588'
+          EXPECTED_ARTIFACT_NAME: m3-cp4c3-cb38-result-34052395109
+          EXPECTED_PROVIDER_DIGEST: sha256:059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8
+          EXPECTED_ZIP_SHA256: 059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8
+          EXPECTED_SOURCE_SHA: 0d03edb07388c56b592a74e2e7fc5f3edde8cea4
+          SELECTOR_RELATIVE_PATH: .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_408.txt
+          EXPECTED_SELECTOR_COUNT: '408'
+          EXPECTED_SELECTOR_SHA256: 2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6
+          ACCEPTED_PREFIX_COUNT: '365'
+        shell: bash
+        run: |
+          set -uo pipefail
+          log="$RUNNER_TEMP/tb33-exec-control.log"
+          exec > >(tee -a "$log") 2>&1
+          harness='${{ steps.bootstrap.outputs.harness_path }}'
+          set +e
+          bash "$harness" --execute
+          rc=$?
+          set -e
+          echo "harness_exit=$rc" | tee -a "$log"
+          echo "harness_exit=$rc" >> "$GITHUB_OUTPUT"
+          exit "$rc"
+
+      - name: Write control result
+        if: always()
+        env:
+          BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+          HARNESS_EXIT: ${{ steps.runtime.outputs.harness_exit }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/tb33-exec-control-result"
+          mkdir -p "$out"
+          printf '%s\n' \
+            "event_sha=$GITHUB_SHA" \
+            "artifact_id=9994997588" \
+            "source_sha=0d03edb07388c56b592a74e2e7fc5f3edde8cea4" \
+            "bootstrap_outcome=${BOOTSTRAP_OUTCOME:-unavailable}" \
+            "runtime_outcome=${RUNTIME_OUTCOME:-unavailable}" \
+            "harness_exit=${HARNESS_EXIT:-unavailable}" \
+            'compileExecution=false' \
+            'benchmarkExecution=false' \
+            'packageRepair=false' \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            > "$out/control.env"
+          cat "$out/control.env" | tee -a "$RUNNER_TEMP/tb33-exec-control.log"
+
+      - name: Upload TB33 raw result
+        if: always() && steps.bootstrap.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb33-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M3-CP4c-3-TB33-EXEC-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB33 diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb33-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/tb33-exec-control.log
+            ${{ runner.temp }}/M3-CP4c-3-TB33-EXEC.log
+            ${{ runner.temp }}/tb33-exec-control-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Propagate execution status
+        if: always()
+        env:
+          BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$BOOTSTRAP_OUTCOME" = success
+          test "$RUNTIME_OUTCOME" = success
