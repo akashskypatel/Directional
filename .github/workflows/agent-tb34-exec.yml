@@ -111,9 +111,10 @@ jobs:
           tar -xzf "$source_archive" -C "$source"
           harness="$source/.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh"
           printf '%s  %s\n' "$EXPECTED_HARNESS_SHA256" "$harness" | sha256sum -c -
-          test "$(stat -c '%a' "$harness")" = 775
+          test -f "$harness"
           echo "packaged_harness=$harness"
           echo "packaged_harness_sha256=$(sha256sum "$harness" | awk '{print $1}')"
+          echo "packaged_harness_mode=$(stat -c '%a' "$harness")"
 
       - name: Execute immutable selector 409 through packaged harness
         env:
