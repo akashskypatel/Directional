@@ -1769,6 +1769,22 @@ building any conclusion on it.**
      the next reader to conclude the correction had failed. **Re-read what a long-red gate actually asserts, and
      which of its assertions is failing, before using its colour as evidence about anything.**
 
+137. **A witness that hard-codes which failure the product currently makes reds on every forward step.** Six
+     identities across two successive corrections went red for one reason: each asserted a specific terminal
+     failure code - "expected `UncutFaceComponentOrbitSeedNotUnique`" - and the product stopped producing it,
+     which was the goal. The two identities that stayed green through both steps were the two written to assert
+     **publication and completeness** rather than an outcome. **Pin a witness to the contract it owns, not to the
+     defect it currently observes**; if a witness must reference a failure code, it should assert that *some*
+     typed failure carried the required evidence, not *which* one.
+
+138. **A key that has been injective on every witness so far is not an identity.** Fragments were identified as
+     `(face, orbit)` throughout region certification. That is unique only while no arc has its two darts in the
+     same face-walk orbit - and a bridge does exactly that, which the same checkpoint had twice established is
+     legitimate topology. The guard rejecting such arcs was not gratuitous: it was protecting a non-injective key,
+     and deleting it would have merged two distinct fragments silently. **When a guard forbids a legitimate
+     configuration, look at the representation it is defending before removing it** - the defect is usually the key,
+     not the check.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

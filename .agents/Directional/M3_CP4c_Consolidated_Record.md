@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB30-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 408 at **401 PASS / 7 RED**, accepted authority **365/365**. **Certified source-face ownership is total — 300 established / 0 unavailable / 0 conflicting** — so the certifier half of the frontier is closed; what remains is the same guard at its second site, `GlobalTopologyPlan.cpp:830`. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **95**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB31-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 408 at **397 PASS / 11 RED**, accepted authority **365/365**. **The seed-uniqueness frontier opened at TB19 is CLOSED** — certified ownership is total at 300/300 and the plan's component 0 has a unique seed `[0]` over 189 faces. The frontier moved to **fragment identity**: `(face, orbit)` is not injective on a bridge arc. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **96**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -893,6 +893,32 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
 
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB31-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB31_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **The certified-owner census
+`300 / 0 / 0` and the closing component-0 fingerprint `189 faces / seedCount 1 / Unique / [0]` are preserved in
+§§1–2 of the TB31 review record.**
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` | 313 | superseded review authority - CQ0-CQ8. Found ownership total at 300/300, diagnosed the frozen rule as applied at one of two sites, and reclassified ordinal 398 off the ownership frontier. Its `M3-CP4c3-TB30-REV-CAND-01` is **runtime-proved and closed**, and **both its stated falsifiers were checked and neither reproduced** |
+| `Architecture_M3_CP4c3_TB30_EXEC_Report.md` | 102 | superseded runtime authority - TB30, 401 PASS / 7 RED on selector 408, accepted 365/365 |
+| `Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md` | 177 | consumed contract |
+| `Architecture_M3_CP4c3_CB36_Code_Build_Report.md` | 162 | consumed build report - **the second application of the frozen separating-arc rule**, one guard plus a comment correction, runtime-proved at TB31: component 0 collapsed from 3 seeds to a unique `[0]` |
+
+**Folded here:** 4 documents, 754 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB31_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 408 at 397 PASS / 11 RED, accepted 365/365),
+`Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` (this review and the frozen DEFN-R4 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** the artifact-only harness scripts are the instrument, not documents.
+
 ### Consolidated on 2026-09-05 at `M3-CP4c-3-TB30-REV`
 
 Mandatory REVIEW consolidation. Durable facts were verified present in
@@ -1116,7 +1142,7 @@ present in `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`, `Regres
 | `Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md` | 100 | invalid-attempt provenance - orchestration-invalid, no semantic ledger. **Retired by `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup, indexed here at TB23-R1-REV** |
 
 **Total folded this turn:** 6 documents, 902 lines — 1 folded by this review, plus 5 retired by
-`M3-CP4c-3-TB23-R1` without an index entry. **Running total:** 94 documents, 18740 lines.
+`M3-CP4c-3-TB23-R1` without an index entry. **Running total:** 98 documents, 19494 lines.
 
 **Retained as current authority:** `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` (review and the frozen DEFN-R3 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
 

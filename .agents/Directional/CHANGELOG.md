@@ -1,3 +1,59 @@
+## 2026-09-06 — `M3-CP4c-3-TB31-REV`: the seed frontier is CLOSED; the frontier moved to fragment identity; DEFN-R4 frozen
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 90bf8430f54c8b81fb90a6bda820cf8edebce6e9` passed.
+
+**TB31 is promoted to current valid semantic runtime authority:** selector **408**, **397 PASS / 11 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`; every row `selected=1`,
+`timeout_count=0`, all three byte+mode censuses equal pre/post.
+
+**The seed-uniqueness frontier open since TB19 is CLOSED.** Component 0 moved from **191 faces / seedCount 3 /
+`Multiple` / `[0,1,3]`** to **189 / 1 / `Unique` / `[0]`**, and certified ownership remains **300 established / 0
+unavailable / 0 conflicting**. The chain — *can certified source-face ownership be established, and can the plan
+consume it?* — is answered on both halves. **Both falsifiers stated before the build were checked and neither
+reproduced:** the old fingerprint did not return, and **no `TraceCutFaceFragmentCountMismatch` appears in any of the
+408 raw logs**, confirming the `tracePieceCount` by-construction argument. CB36's diff is the single guard at
+`GlobalTopologyPlan.cpp:830` plus a comment correction. `M3-CP4c3-TB30-REV-CAND-01` is **CLOSED / runtime-proved**.
+
+**The frontier moved to fragment identity.** 366/367 now stop at **`TraceArcDoesNotSeparateItsSides`**, **arc 15**,
+`sourceFace=8,10,151`, at `GlobalTopologyPlan.cpp:474–479` in `build_fragment_corner_incidence`. The guard is
+**pre-existing** — CB36 did not touch its site, which carries its own untouched `is_terminal_slit` skip at `:467` —
+and it is **not gratuitous**. `FragmentCornerIncidence` is `map<SourceFace, map<orbit, set<vertex>>>` (`:399–401`)
+and its consumer keys fragments as `pair<SourceFaceTopologyKey, orbit>` with an `owningOrbit` parameter (`:1675`,
+`:1693–1699`). **A fragment is identified by `(face, orbit)`, and that key is not injective when an arc's two darts
+share an orbit** — the two sides collapse onto one entry and their corner sets merge. Deleting the guard would merge
+two distinct fragments silently.
+
+**Its premise contradicts a settled fact** carried since TB18: shared orbit ownership by the two sides of one arc is
+**legitimate topology**, measured on arc 15 at DEFN-R3.4 and relied on by the very correction that closed the seed
+frontier. **The defect is the key, not the check.**
+
+**Four ordinals are pinned witnesses.** 390, 393, 406 and 407 each expected
+`UncutFaceComponentOrbitSeedNotUnique` and received the new code. **404 and 408 stayed PASS** — the two identities
+written to assert *publication and completeness* rather than an outcome. Six identities across two forward steps
+have now redded for this reason.
+
+**Not established, and not guessed:** why the guard became reachable. Static source does not settle it; the retained
+logs in artifact `9982618174` do, and CR8 requires it transcribed.
+
+**Accounting: no stable change.** Totals remain **44 / 14 / 30**, debt **5**, packages **96**. Accepted 365/365 with
+no accepted-green loss — the second product correction on this frontier and the boundary held again. 366/367
+**advanced** rather than regressed; 390/393/406/407 are evidence-contract failures.
+
+**Candidates.** Closed: `M3-CP4c3-TB30-REV-CAND-01`. Re-scoped: `M3-CP4c3-TB26-REV-CAND-04` /
+`M3-CP4c3-DEFN-R3-CAND-01` remain active but are no longer the blocking cause. New: `M3-CP4c3-TB31-REV-CAND-01`
+(fragment identity `(face, orbit)` non-injective), `-CAND-02` (four pinned witnesses), `-CAND-03` (frontier evidence
+attached to one failure path).
+
+**Lessons 137 and 138** added. **Consolidation:** the TB30 review record, EXEC report and plan, plus the CB36 build
+report, were folded; the census `300 / 0 / 0` and the closing fingerprint `189 / 1 / Unique / [0]` are preserved in
+the TB31 review record.
+
+**Exact successor: `M3-CP4c-3-DEFN-R4`** — a **definition** turn, because `(face, orbit)` is the identity of a
+fragment across region disc certification and changing it decides what a fragment *is*. **CL8 does not bind**: it
+forbade further diagnostics on source-face ownership, which is now closed. It must not re-open ownership, re-scope
+ordinal 398, touch 368/369/370/374, or unify the two partitions.
+
 ## 2026-09-06 — `M3-CP4c-3-CB36`: second frozen-rule site corrected; compile green; TB31 frozen next
 
 Code + Build only. **One product change** in `src/geometry/GlobalTopologyPlan.cpp`: the plan-side terminal-slit

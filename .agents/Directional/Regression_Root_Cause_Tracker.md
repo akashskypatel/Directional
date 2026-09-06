@@ -1,3 +1,82 @@
+## M3-CP4c3-TB31-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / SEED FRONTIER CLOSED**
+
+- **Record:** `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md`, measures **CR0–CR8**. Evidence-only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
+  `review_check.py authority 90bf8430f54c8b81fb90a6bda820cf8edebce6e9` — ALL CHECKS PASSED.
+
+- **TB31 promoted to current valid semantic runtime authority.** Selector **408**, **397 PASS / 11 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. Run/job `34011402843 / 101427791582`;
+  immutable CB36 package `9982174864`; source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`; ledger
+  `6632f428243788c98c816571f47ef0cf98df25a57274b2df75612674d563250b`; every row `selected=1`, `timeout_count=0`,
+  all three byte+mode censuses equal pre/post.
+
+- **CR0 — `M3-CP4c3-TB30-REV-CAND-01` CONFIRMED and CLOSED. The seed-uniqueness frontier open since TB19 is
+  CLOSED.** Component 0 moved from **191 faces / seedCount 3 / `Multiple` / `[0,1,3]`** to **189 faces / seedCount
+  1 / `Unique` / `[0]`**. Two faces — the terminal-slit faces of the two separating arcs — left the component and
+  the three-way ambiguity collapsed to the orbit the 81/1/1 majority always pointed at. **Both stated falsifiers
+  were checked and neither reproduced:** the old fingerprint did not return, and **no
+  `TraceCutFaceFragmentCountMismatch` appears in any of the 408 raw logs**, confirming the `tracePieceCount`
+  by-construction argument. CB36's diff is the guard at `GlobalTopologyPlan.cpp:830` plus a comment correction and
+  nothing else. Certified ownership remains **300 established / 0 unavailable / 0 conflicting**.
+
+- **CR1 — the new frontier: `TraceArcDoesNotSeparateItsSides`, arc 15, `sourceFace=8,10,151`.** The guard is at
+  `GlobalTopologyPlan.cpp:474–479` in `build_fragment_corner_incidence`, is **pre-existing**, and CB36 did not
+  touch its site (which carries its own untouched `is_terminal_slit` skip at `:467`). **It is not gratuitous.**
+  Twenty lines later the function writes `result[sourceFace][cornerOrbit]`, and `FragmentCornerIncidence` is
+  `map<SourceFace, map<orbit, set<SourceVertexId>>>` (`:399–401`) whose consumer keys fragments the same way —
+  `FragmentKey = pair<SourceFaceTopologyKey, std::size_t /*orbit*/>` with an `owningOrbit` parameter (`:1675`,
+  `:1693–1699`). **A fragment is identified by `(face, orbit)` throughout region disc certification, and that key
+  is not injective when an arc's two darts share an orbit** — the two sides collapse onto one entry and their
+  corner sets merge. The guard refuses rather than merging silently, which is the right instinct.
+
+- **CR1.1 — the guard's premise contradicts a settled fact.** `M3_CP4c_Current_And_Forward.md` §5 has carried since
+  TB18: *"the face walk is a validated total permutation; **shared orbit ownership by the two sides of one arc is
+  legitimate topology**. BS9-5 remains retired."* DEFN-R3.4 measured exactly that on **arc 15**,
+  `forwardOrbit = reverseOrbit = 0`, and the correction just proved rests on the same fact — arcs 20 and 24 (`0/0`)
+  are deliberately left alone. **The defect is the representation, not the guard**: deleting the guard would merge
+  two distinct fragments under one key, strictly worse than refusing. `LESSONS.md` 138.
+
+- **CR1.2 — what I could not establish and did not guess.** The guard sits upstream of the seed guard in the
+  reported failure order, yet the mechanical fixture previously stopped at the seed guard. **Static source does not
+  settle why it became reachable**; the retained per-ordinal logs in artifact `9982618174` do. **CR8** requires it
+  transcribed rather than inferred, and no measure depends on it.
+
+- **CR2 — the four newly-RED ordinals are pinned witnesses, for the third time.** 390, 393, 406 and 407 all *"fail
+  assertions that expected `UncutFaceComponentOrbitSeedNotUnique` but received `TraceArcDoesNotSeparateItsSides`"*.
+  They hard-code which failure the product currently makes and red when it stops making it — the goal. **404 and
+  408 stayed PASS**, and those are exactly the two identities written to assert **publication and completeness**
+  rather than an outcome. **Six identities across two forward steps** have now redded for this reason.
+  `LESSONS.md` 137. Re-pointing them is a restoration, not a weakening — the same disposition CB35 applied and
+  TB30 proved correct.
+
+- **CR3 — eleven REDs, four causes.** 366/367 the **new** frontier (advanced, not regressed); 390/393/406/407
+  pinned witnesses; **398 the carried sphere surface** and **not an ownership gate**; 368/369/370/374 unchanged
+  carried surfaces. Ordinals 404 and 408 PASS; census remains 300 / 0 / 0.
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **96** (CB36). Accepted **365/365** with no accepted RED ordinal and no accepted-green loss — the second
+  product correction on this frontier and the load-bearing boundary held again. 390/393/406/407 are
+  evidence-contract failures, not behaviour losses; 366/367 **advanced** rather than regressed. The first TB31
+  trigger failed on a caller permission ceiling before semantic runtime and carries no ledger.
+
+- **Candidates. Closed:** `M3-CP4c3-TB30-REV-CAND-01` (runtime-proved; neither falsifier reproduced). **Re-scoped:**
+  `M3-CP4c3-TB26-REV-CAND-04` / `M3-CP4c3-DEFN-R3-CAND-01` remain ACTIVE but are **no longer the blocking cause** —
+  the plan's partition now yields a unique owner. **New:** `M3-CP4c3-TB31-REV-CAND-01` (**GATING / ARCHITECTURAL** —
+  fragment identity `(face, orbit)` is non-injective on a bridge), `-CAND-02` (**GATING / TEST AUTHORITY** — four
+  witnesses pin a terminal failure code), `-CAND-03` (**EVIDENCE SURFACE / NON-GATING** — the plan-side digest and
+  `censusCorrespondence` are emitted only on the seed-guard path and vanished when the terminal failure changed).
+
+- **Successor frozen: `M3-CP4c-3-DEFN-R4`** — **a definition turn, not a Code + Build turn.** `(face, orbit)` is the
+  identity of a fragment across `FragmentCornerIncidence` and region disc certification, so changing it decides
+  what a fragment *is*; Part VII's chain is where this project freezes such decisions, and `DEFN` absorbs
+  REVIEW + PLAN. **CL8 does not bind:** it forbade further diagnostics on **source-face ownership**, which is now
+  closed, and a definition decision is not a diagnostic. **CR6** — decide what identifies a fragment (injective on
+  a bridge), dispose of `TraceArcDoesNotSeparateItsSides` **only as a consequence** of that decision, freeze the
+  in-place repair of 390/393/406/407, and decide where frontier evidence is attached. **CR7 — must not** re-open
+  source-face ownership (closed at 300/300 with a unique seed), weaken or re-scope ordinal 398, touch 368/369/370/374,
+  unify the two partitions, or change any accepted identity or selector byte. **CR8** — transcribe from artifact
+  `9982618174` why the guard became reachable; existing evidence, not a new measurement.
+
 ## M3-CP4c3-CB36 — Code + Build closeout — **BUILD GREEN / NON-STABLE / PRODUCT CORRECTION / RUNTIME-FREE**
 
 - **Product correction:** at the second frozen-rule site in `src/geometry/GlobalTopologyPlan.cpp`, CB36 defines
@@ -29,7 +108,8 @@
 
 ## M3-CP4c3-TB30-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / OWNERSHIP TOTAL**
 
-- **Record:** `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md`, measures **CQ0–CQ8**. Evidence-only: no
+- **Record:** `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB31-REV`), measures **CQ0–CQ8**. Evidence-only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
   `review_check.py authority ab86747bdfdb94c7c383bf5d2893ced4207eb555` — ALL CHECKS PASSED.
 
@@ -5379,31 +5459,35 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB30**: semantic source
-`ab86747bdfdb94c7c383bf5d2893ced4207eb555`, immutable CB35 package `9980764888`
-(`ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`), selector 408, run/job
-`34008104497 / 101418934144`, **401 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,398]`. Ledger `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`;
-result/log `9981641004 / 9981641260`; every row `selected=1`; all three byte+mode censuses equal pre/post. Stable
-totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **95**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB31**: semantic source
+`90bf8430f54c8b81fb90a6bda820cf8edebce6e9`, immutable CB36 package `9982174864`
+(`8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b`), selector 408, run/job
+`34011402843 / 101427791582`, **397 PASS / 11 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,390,393,398,406,407]`. Ledger
+`6632f428243788c98c816571f47ef0cf98df25a57274b2df75612674d563250b`; result/log `9982618043 / 9982618174`; every row
+`selected=1`; all three byte+mode censuses equal pre/post. Stable totals remain **44 events / 14 categories / 30
+recurrences**, debt **5**, M3 packages **96**.
 
-`M3-CP4c-3-TB30-REV` promoted that ledger and adjudicated three things. **Source-face ownership is now TOTAL** -
-`established=300 / unavailable=0 / conflicting=0` against TB25-R1's 74 / 226 / 0 - so **the certifier half of the
-frontier is closed**. **The frozen separating-arc rule was applied at one of its two sites**: `SurfaceCutGraph.cpp`
-carries the orbit-keyed guard, `GlobalTopologyPlan.cpp:830` still carries the unconditional terminal-slit skip, so
-`traceTouchedEdges` still omits arcs 14 and 22's carriers, the plan's partition is unchanged, and 366/367 fail
-identically with the same digest `17919102493633069558`. **Ordinal 398 is no longer an ownership gate** - it fails
-on the prescribed sphere and is owned by `M3-CP4c2-TB-X2-CAND-04`; **the ownership frontier is 366 and 367 only**.
+`M3-CP4c-3-TB31-REV` promoted that ledger. **The seed-uniqueness frontier open since TB19 is CLOSED**: component 0
+moved from 191 faces / seedCount 3 / `Multiple` / `[0,1,3]` to **189 faces / seedCount 1 / `Unique` / `[0]`**, and
+certified ownership remains **300 / 0 / 0**. Both stated falsifiers were checked and neither reproduced.
 
-**Exact next: `M3-CP4c-3-CB36` - Code + Build, runtime-free**, under
-`Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` **CQ7-CQ8**. **One change:** at
-`GlobalTopologyPlan.cpp:830`, `if (is_terminal_slit(...) && !separatesCertifiedFaces)` with
-`separatesCertifiedFaces = forwardOrbit != reverseOrbit`, both already in scope. The same rule at its second site -
-not a new correction and not a re-opening. Accepted-prefix safety demonstrated by construction; non-separating arcs
-untouched.
+The pipeline now stops at a **new** frontier: `TraceArcDoesNotSeparateItsSides`, arc **15**, `sourceFace=8,10,151`,
+guarded at `GlobalTopologyPlan.cpp:474-479`. The guard is pre-existing and **not gratuitous** - it protects
+`FragmentCornerIncidence`, where a fragment is identified by **`(face, orbit)`**, a key that is **not injective**
+when an arc's two darts share an orbit. This checkpoint has twice established that a bridge arc legitimately does
+exactly that. **The defect is the representation, not the guard**; deleting it would merge two distinct fragments.
 
-**Falsification stated first:** if 366/367 still fail with component 0, 191 faces and seeds `[0,1,3]`,
-`M3-CP4c3-TB30-REV-CAND-01` is falsified; if `TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount`
-premise is wrong and the change narrows to the `traceTouchedEdges` insertion alone. **Prohibited:** partition
-unification (a `DEFN` question), re-scoping ordinal 398 to exclude the sphere, touching 368/369/370/374, any new
-ownership diagnostic. No Directional runtime before `M3-CP4c-3-TB31`.
+Ordinals **390, 393, 406 and 407** are **pinned witnesses** - each expected `UncutFaceComponentOrbitSeedNotUnique`
+and received the new code. **404 and 408 stayed PASS**, being the two identities that assert publication and
+completeness rather than an outcome.
+
+**Exact next: `M3-CP4c-3-DEFN-R4` - a definition turn**, under
+`Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` **CR6-CR8**. Decide what identifies a fragment so the key
+is injective on a bridge; dispose of `TraceArcDoesNotSeparateItsSides` **only as a consequence**; freeze the in-place
+repair of the four pinned witnesses; decide where frontier evidence attaches; and transcribe from artifact
+`9982618174` why the guard became reachable.
+
+**Prohibited:** re-opening source-face ownership (closed at 300/300 with a unique seed); weakening or re-scoping
+ordinal 398 (prescribed sphere); touching 368/369/370/374; unifying the two partitions; any accepted-identity or
+selector byte change. No Directional runtime before the CB that DEFN-R4 freezes.

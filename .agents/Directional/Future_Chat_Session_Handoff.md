@@ -116,79 +116,79 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB31-REV` — EXACT NEXT / evidence-only semantic review
+## Mandatory next turn — `M3-CP4c-3-DEFN-R4` — EXACT NEXT / definition turn (absorbs REVIEW + PLAN)
 
-`M3-CP4c-3-TB31-EXEC` is **COMPLETE / MECHANICALLY VALID / RAW EVIDENCE PRESERVED / SEMANTIC REVIEW REQUIRED**.
-No new runtime or implementation is authorized before the separate review adjudicates the immutable evidence.
+`M3-CP4c-3-TB31-REV` has adjudicated TB31 and promoted it to **current valid semantic runtime authority**.
 
-### Current semantic runtime authority
+### Current authority
 
-- **TB30 remains semantic authority:** selector **408**, **401 PASS / 7 RED**, accepted **365/365**, RED
-  `[366,367,368,369,370,374,398]`.
-- Certified ownership under accepted authority is **300 established / 0 unavailable / 0 conflicting**.
-- Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **96**.
+- **`M3-CP4c-3-TB31`** — selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`; immutable CB36 package `9982174864`, source
+  `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`; run/job `34011402843 / 101427791582`; result/log
+  `9982618043 / 9982618174`; ledger `6632f428243788c98c816571f47ef0cf98df25a57274b2df75612674d563250b`; every row
+  `selected=1`; `timeout_count=0`; all three byte+mode censuses equal pre/post.
+- Stable accounting **44 / 14 / 30**, debt **5**, packages **96**.
 
-### TB31-EXEC raw evidence — review input only
+### What TB31 established
 
-- immutable package `9982174864` / source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`;
-- run/job **`34011402843 / 101427791582`**;
-- result artifact **`9982618043`**, provider digest
-  `sha256:d640ee7c7c65d992de996b9cfef81269b4833a97411ec136742828032b73fc57`;
-- log artifact **`9982618174`**, provider digest
-  `sha256:8c4cd61801e64f2f8d33856a2675542315165b561349640fcef3309e44337c06`;
-- selector 408 SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`;
-- all 408 identities executed exactly once, every row selected one test, zero timeouts, accepted **365/365**;
-- raw aggregate **397 PASS / 11 RED**, RED `[366,367,368,369,370,374,390,393,398,406,407]`;
-- raw owner publication remains **300 / 0 / 0**;
-- package/source/execution-view censuses identical pre/post; no compile/configure/relink/repair/discovery/benchmark/
-  source-test-fixture-selector mutation.
+**The seed-uniqueness frontier open since TB19 is CLOSED.** Component 0 moved from **191 faces / seedCount 3 /
+`Multiple` / `[0,1,3]`** to **189 / 1 / `Unique` / `[0]`**, and certified ownership remains **300 established / 0
+unavailable / 0 conflicting**. **Both falsifiers stated before the build were checked and neither reproduced** —
+the old fingerprint did not return, and no `TraceCutFaceFragmentCountMismatch` appears in any of the 408 raw logs.
 
-The old 366/367 191-face Multiple `[0,1,3]` fingerprint is absent. Both now terminate at
-`TraceArcDoesNotSeparateItsSides`; retained fragment-owner component 0 is **189 faces / Unique / orbit [0]**. No
-`TraceCutFaceFragmentCountMismatch` appears. The frozen plan-side digest and `censusCorrespondence` are not emitted
-on those rows because the new failure terminates earlier. Newly-RED 390/393/406/407 each expected
-`UncutFaceComponentOrbitSeedNotUnique` but received `TraceArcDoesNotSeparateItsSides`. These facts are **not** yet
-candidate or regression adjudication.
+**The frontier moved to fragment identity.** 366/367 now stop at **`TraceArcDoesNotSeparateItsSides`**, **arc 15**,
+`sourceFace=8,10,151`, at `GlobalTopologyPlan.cpp:474–479`. The guard is **pre-existing** and **not gratuitous**:
+`FragmentCornerIncidence` is `map<SourceFace, map<orbit, set<vertex>>>` (`:399–401`) and its consumer keys
+fragments as `pair<SourceFaceTopologyKey, orbit>` with an `owningOrbit` parameter (`:1675`, `:1693–1699`).
+**A fragment is identified by `(face, orbit)`, and that key is not injective when an arc's two darts share an
+orbit** — the two sides merge. Deleting the guard would merge two distinct fragments silently. Since §5 has held
+since TB18 that shared orbit ownership by the two sides of one arc is **legitimate topology** — measured on arc 15
+at DEFN-R3.4 and relied on by the correction that just closed the seed frontier — **the defect is the key, not the
+check**.
 
-The first TB31 trigger was pre-runtime orchestration-invalid because the temporary caller's permission ceiling did
-not cover the durable observer reusable graph. Only the caller ceiling was corrected; no reusable workflow
-permission changed. R2 above is the sole semantic runtime attempt.
+**Four ordinals are pinned witnesses.** 390, 393, 406 and 407 each expected
+`UncutFaceComponentOrbitSeedNotUnique` and received the new code. **404 and 408 stayed PASS** — the two identities
+written to assert *publication and completeness* rather than an outcome. `LESSONS.md` 137, 138.
 
-### Exact review obligations
+**Not established:** why the guard became reachable. Static source does not settle it; the retained logs do.
 
-`M3-CP4c-3-TB31-REV` must consume the immutable TB31 artifacts and perform no new runtime, compile, repair, or
-product/test/fixture/benchmark/build/selector mutation. It must:
+### DEFN-R4 boundary — CR6–CR8
 
-1. verify the 408-row execution, selector, artifact and immutability provenance;
-2. classify all eleven raw REDs and every TB30→TB31 status change, especially 390/393/406/407;
-3. adjudicate `M3-CP4c3-TB30-REV-CAND-01` and related partition candidates against the changed 366/367 evidence;
-4. determine the evidentiary consequence of the missing plan-side digest/`censusCorrespondence` fields;
-5. update `Regression_Root_Cause_Tracker.md` and mandatory REVIEW `ORIENTATION.md`;
-6. perform mandatory REVIEW document consolidation before closing;
-7. freeze only the next Code + Build or other edge justified by the review.
+A **definition** turn. `(face, orbit)` is the identity of a fragment across `FragmentCornerIncidence` and region
+disc certification, so changing it decides what a fragment *is*; Part VII's chain is where such decisions are
+frozen, and `DEFN` absorbs REVIEW + PLAN. **CL8 does not bind** — it forbade further diagnostics on **source-face
+ownership**, which is now closed, and a definition decision is not a diagnostic.
 
-## Context Load Plan
+**CR6 — decide:**
+1. **what identifies a fragment**, so the key is **injective on a bridge arc**;
+2. **the disposition of `TraceArcDoesNotSeparateItsSides`** — retired **only as a consequence** of an injective
+   identity, never merely deleted;
+3. the **in-place** repair of ordinals **390, 393, 406, 407** — each keeps every contract it legitimately owns and
+   stops asserting *which* terminal failure code the product produces; ordinals retained and gating, selector 408
+   unchanged;
+4. **where frontier evidence attaches**, since the plan-side face-set digest and `censusCorrespondence` are emitted
+   only on the seed-guard failure path and vanished when the terminal failure changed.
 
-```yaml
-load_next:
-  - references/turns/TB-REVIEW.md
-conditional_modules:
-  - trigger: GitHub artifact, PR, branch, or workflow evidence access is required
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB31_EXEC_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB30_Independent_Review_Record.md
-  - .agents/Directional/M3_CP4c_Current_And_Forward.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - .agents/Directional/ORIENTATION.md
-  - .agents/Directional/CLEAN_UP_POLICY.md
-  - .agents/Directional/RETENTION_POLICY.md
-templates_when_producing: []
-do_not_preload:
-  - sibling turn files
-  - uncited historical reports
-  - research/provenance/examples
-```
+**CR7 — must not:** re-open source-face ownership (**closed** — 300/300 certified, component 0 unique at `[0]`; the
+separating-arc barrier rule stands at both sites); weaken or re-scope **ordinal 398** (prescribed sphere, owned by
+`M3-CP4c2-TB-X2-CAND-04`); touch ordinals 368/369/370/374; unify the two partitions; change any accepted identity
+1–365 or any byte of selector 397–408.
+
+**CR8 — transcribe**, from retained artifact `9982618174`, why `TraceArcDoesNotSeparateItsSides` became reachable —
+which stage's output changed between the CB35 and CB36 packages. Existing evidence, **not a new measurement**.
+
+### Context Load Plan
+
+`load_next`: definition-turn guidance (DEFN absorbs REVIEW + PLAN).
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` — **CR0–CR8**, the adjudication and the frozen DEFN-R4 scope.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB31_EXEC_Report.md` — current runtime authority.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VII and its TB24-REV amendment; **DEFN-R4 appends here**.
+5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and the frozen prefixes.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

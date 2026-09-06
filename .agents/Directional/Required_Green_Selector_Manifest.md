@@ -456,9 +456,25 @@ Two dispositions this selector must carry forward:
 - **Ordinals 366 and 367 are the whole remaining ownership frontier**, awaiting the same frozen guard at
   `GlobalTopologyPlan.cpp:830`.
 
-**Exact successor:** `M3-CP4c-3-CB36`, one product change — the frozen separating-arc guard at its second site —
-then `M3-CP4c-3-TB31`, which re-executes selector 408 unchanged. **No selector is authored by CB36** unless a
-witness for the second site proves necessary; if one is, it appends as **409** with 408 as an exact prefix.
+**Re-executed at `M3-CP4c-3-TB31`** — run/job `34011402843 / 101427791582` on immutable CB36 package `9982174864`,
+ledger `6632f428243788c98c816571f47ef0cf98df25a57274b2df75612674d563250b`: **397 PASS / 11 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, every row `selected=1`. **CB36 authored no
+selector change**, so selector 408 has now carried three runtimes unchanged.
+
+What this execution recorded:
+
+- **The seed-uniqueness frontier is CLOSED.** Component 0 moved from 191 faces / seedCount 3 / `Multiple` /
+  `[0,1,3]` to **189 / 1 / `Unique` / `[0]`**; certified ownership remains **300 / 0 / 0**.
+- **Ordinals 404 and 408 stayed PASS** through both product corrections. They are the two identities written to
+  assert **publication and completeness** rather than an outcome, and that is why they survived the frontier
+  moving.
+- **Ordinals 390, 393, 406 and 407 went PASS → RED as pinned witnesses** — each expected
+  `UncutFaceComponentOrbitSeedNotUnique` and received `TraceArcDoesNotSeparateItsSides`. Their assertions are
+  repaired **in place** by `M3-CP4c-3-DEFN-R4`; names, ordinals and selector bytes do not change.
+
+**Exact successor:** `M3-CP4c-3-DEFN-R4`, a definition turn on **fragment identity**. It authors no selector; any
+witness the fragment-identity decision requires appends as **409** with 408 as an exact prefix, and ordinals 397–408
+keep their contracts.
 
 ## Separate lineage — M1
 
