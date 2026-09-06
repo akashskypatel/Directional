@@ -1,7 +1,7 @@
 # M3-CP4c-3-CB34 — Code + Build Report
 
 **Turn:** `M3-CP4c-3-CB34`
-**Disposition:** **IN PROGRESS / PRODUCT + TEST EDIT PREPARED / COMPILE PENDING / RUNTIME NOT EXECUTED**
+**Disposition:** **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTIC ACCEPTANCE PENDING TB29**
 **Frozen owner:** CM9 + CN7 from `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md`.
 
 ## 1. Resume authority
@@ -190,14 +190,56 @@ repeating the off-object-evidence error documented in `LESSONS.md` 126 and 131.
 
 ## 5. Static verification
 
-Pending final pre-push static verification. No compile result is claimed in this draft.
+Before remote compile:
+
+- selector 408 contains **408** identities and selector 407 is its exact **407-line prefix**;
+- selector 407 LF SHA-256 remains
+  `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`;
+- selector 408 LF SHA-256 is
+  `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`;
+- `selector_manifest.py` regeneration was rerun idempotently and retained the hand-authored authority notes;
+- `python3 -m py_compile` passed for `selector_manifest.py` and `selector_probe.py`;
+- `git diff --check` passed;
+- the exact work-preservation patch passed `git apply --check` against the exact resume snapshot before remote
+  application.
+
+No Directional binary was run by any of these checks.
 
 ## 6. Compile evidence
 
-Pending. CB34 may compile only the exact pushed semantic source through
-`.github/workflows/agent-compile-reusable.yml`, with GMP/GMPXX linked and `runtimeExecution=false`.
+The semantic source was pushed as commit
+**`25ab3d55697598bde436d1ac811d71e6cf911f2e`** and compiled exactly once through the durable
+`.github/workflows/agent-compile-reusable.yml`.
+
+- compile run/job: **`34001505322 / 101401105075`**;
+- result artifact: **`9979639398`**, `m3-cp4c3-cb34-result-34001505322`, provider/download ZIP SHA-256
+  **`c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2`**;
+- persistent log artifact: **`9979639588`**, SHA-256
+  **`de006914c3874c7d607d4deb34e39f17c08b847d708e96c99a9957d455d40f3c`**;
+- packaged source archive SHA-256:
+  **`187d75cc76a4664c5fd2486b7e6b1b9bae5d7fe0a0e2a5d9be54c73a0885ff5e`**;
+- root `SHA256SUMS`: **28/28 PASS**;
+- preflight compile exit: **0**; full approved-target build exit: **0**;
+- all eight required targets compiled:
+  `directional_core`, `directional_pipeline`,
+  `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`,
+  `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`,
+  `directional_compiled_api_tests`, and `directional_benchmarks`;
+- package source status is empty after configure/build;
+- command-boundary evidence records `turnBoundary=Code+Build-only`, `runtimeExecution=false`,
+  `preflightCompile=true`, and `exactArithmeticBackend=GMP`;
+- generated link evidence contains both `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and
+  `/usr/lib/x86_64-linux-gnu/libgmp.so`.
+
+This is **compile authority only**. CB34 executed no Directional test, benchmark, discovery command, CLI, or other
+generated Directional binary. The current valid semantic runtime authority therefore remains TB28-R3 at
+**400 PASS / 7 RED**, accepted **1–365 = 365/365**, until TB29 reviews the CB34 package. Stable accounting remains
+**44 events / 14 categories / 30 recurrences**, produced-witness debt **5**; the successful CB34 compile advances
+the semantic M3 package count from **93 to 94**.
 
 ## 7. Successor
 
-Pending successful compile. The next turn will be artifact-only Test + Benchmark execution of selector 408; CB34
-does not execute it.
+The exact next boundary is **`M3-CP4c-3-TB29-EXEC`**, followed by **`M3-CP4c-3-TB29-REV`**. TB29 is artifact-only
+and must consume result artifact `9979639398` from source
+`25ab3d55697598bde436d1ac811d71e6cf911f2e` without rebuilding or repairing it. Its frozen execution contract is
+`Architecture_M3_CP4c3_TB29_Artifact_Only_Test_Benchmark_Plan.md`. CB34 stops here and does not execute TB29.

@@ -417,6 +417,17 @@ Appended 1 identity to selector 407:
 
 - `SurfaceCutGraph.SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus`
 
+**Compiled at `M3-CP4c-3-CB34`:** semantic evidence source
+`25ab3d55697598bde436d1ac811d71e6cf911f2e`; run/job `34001505322 / 101401105075`; result/log artifacts
+`9979639398 / 9979639588` with SHA-256
+`c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2` /
+`de006914c3874c7d607d4deb34e39f17c08b847d708e96c99a9957d455d40f3c`. All eight approved targets compiled
+with GMP/GMPXX linked and `runtimeExecution=false`; root package `SHA256SUMS` is 28/28 PASS. This is compile
+authority only. Selector 408 is not semantically accepted until TB29.
+
+**Exact successor:** `M3-CP4c-3-TB29-EXEC`, artifact-only on the immutable CB34 package, followed by
+`M3-CP4c-3-TB29-REV`.
+
 ## Separate lineage — M1
 
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full

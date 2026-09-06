@@ -1,3 +1,31 @@
+## 2026-09-05 — `M3-CP4c-3-CB34`: frozen separating-arc correction compiled GREEN; selector 408 and CN7 retained; no runtime
+
+Code + Build only. CB34 resumed the preserved WIP and implemented exactly CM9: unequal-orbit terminal trace arcs
+now follow the pre-existing trace-cut/carrier-barrier path, while equal-orbit terminal slits remain excluded. The
+change is a no-op for non-terminal arcs already processed by that path. No attribution rule, seed winner, partition
+rule, `proves_cellularity()` contract, accepted identity, or existing selector byte changed.
+
+Selector 408 appends only
+`SurfaceCutGraph.SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus` to selector 407; 407 remains its
+exact prefix. Selector 408 has 408 identities, LF SHA-256
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`. CN7 is retained in the CB34 report from
+immutable TB28-R3 log `9978114502`: failing component `EmptyFragmentOrbits`, 191 faces, digest
+`17919102493633069558`, the four interior-arc rows, crossed faces, and the 46 seed-attribution rows of the distinct
+214-face `NotTraceCut` comparison census. No new ownership diagnostic was added.
+
+Semantic source `25ab3d55697598bde436d1ac811d71e6cf911f2e` compiled GREEN in run/job
+`34001505322 / 101401105075` through the durable reusable compile workflow. Result/log artifacts are
+`9979639398 / 9979639588`, SHA-256
+`c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2` /
+`de006914c3874c7d607d4deb34e39f17c08b847d708e96c99a9957d455d40f3c`; package `SHA256SUMS` is **28/28 PASS**.
+All eight approved targets compiled with GMP/GMPXX and evidence records `exactArithmeticBackend=GMP`,
+`preflightCompile=true`, `runtimeExecution=false`. No Directional test, benchmark, discovery command, CLI, or
+generated binary executed. Stable accounting stays **44 / 14 / 30**, debt **5**; semantic M3 package count advances
+to **94**. Current semantic runtime authority remains TB28-R3 at 400 PASS / 7 RED, accepted 365/365.
+
+Exact next is **`M3-CP4c-3-TB29-EXEC`**, artifact-only on `9979639398`, followed by evidence-only
+`M3-CP4c-3-TB29-REV`.
+
 ## 2026-09-05 — `M3-CP4c-3-TB28-R3-REV`: the control passed; TB28-R3 promoted to runtime authority; CB34 authorized to apply the frozen correction
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

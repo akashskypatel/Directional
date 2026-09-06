@@ -116,98 +116,90 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory continuation — `M3-CP4c-3-CB34` — EXACT NEXT / finish the interrupted Code + Build turn
+## Mandatory continuation — `M3-CP4c-3-TB29-EXEC` — EXACT NEXT / artifact-only runtime
 
-### Interruption recovery point — WIP, not build or runtime authority
+### CB34 closeout authority
 
-The user requested an immediate recoverability checkpoint before CB34 could finish. The working branch was
-refetched at `b1276f36004b1e6676cbdf46763626b7ba3ce4a7`; source-snapshot run `33999215292` succeeded and produced
-artifact `9978978627`, whose metadata names that exact source. The WIP commit containing this handoff carries:
+`M3-CP4c-3-CB34` resumed the interrupted WIP and is now **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED**. It
+implemented exactly the independent-review-frozen CM9 correction:
 
-- the single frozen product edit in `build_source_face_ownership`: terminal trace segments now follow the existing
-  trace-cut/carrier-barrier path when the arc's forward and reverse dart orbits differ, while equal-orbit terminal
-  slits retain the old exclusion;
-- one appended test identity,
-  `SurfaceCutGraph.SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus`, which checks only census effects
-  and equal-orbit preservation and predicts no owner value;
-- no selector-408 file, manifest regeneration, CN7 retained transcription, compile caller, compile artifact, or
-  CB34 closeout report yet.
+> For every trace arc whose two darts have different `orbitByDart` face-walk orbits, the arc's source edges enter
+> `barriers` and all source faces crossed by that arc are trace-cut/excluded from `uncutFaces`. Equal-orbit terminal
+> slits remain on the old exclusion path.
 
-No Directional runtime, test, benchmark, compile, or package operation has executed in this interrupted turn.
-The WIP is deliberately **uncompiled and semantically unaccepted**. On resume: refetch branch head; inspect this
-WIP diff; create selector 408 as selector 407's exact byte prefix plus the identity above; update the selector
-manifest without discarding its retained hand-authored authority notes; complete CN7 from immutable TB28-R3 log
-artifact `9978114502`; run static checks; then compile the exact pushed SHA only through
-`.github/workflows/agent-compile-reusable.yml` with GMP/GMPXX and `runtimeExecution=false`. Do not execute a
-Directional binary. The source-snapshot marker
-`.agents/connector-triggers/source-snapshot/m3-cp4c3-cb34.txt` remains temporary cleanup debt.
+Accepted-prefix safety was demonstrated by construction. Existing non-terminal trace arcs were already on the same
+trace-cut/carrier-barrier path; only unequal-orbit terminal arcs are newly admitted. Equal-orbit terminal arcs 20
+and 24 remain unchanged. No attribution rule, seed winner, partition rule, `proves_cellularity()` contract, accepted
+identity, or byte of selectors 397/401/403/405/406/407 changed.
 
-`M3-CP4c-3-TB28-R3-REV` has adjudicated the control run. **It passed**, and `M3-CP4c-3-TB28-R3` is promoted to
-current valid semantic runtime authority.
+CB34 appended exactly one witness as selector 408:
 
-### Current authority
+`SurfaceCutGraph.SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus`
 
-- **`M3-CP4c-3-TB28-R3`** — selector **407**, **400 PASS / 7 RED**, accepted **1–365 = 365/365**, RED
-  `[366,367,368,369,370,374,398]`; immutable CB32 package `9975737868`, source
-  `098ac7d93ea203222dd0ac50cdb68667744f0fd4`; run/job `33995961030 / 101386467115`; result/log
-  `9978114313 / 9978114502`; ledger `fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`; identity
-  map `9e726c011f884da55877e6bbca420be530f05325263eddcd86993c1f0a54d3fd`; harness
-  `b3191b314afa22f72e6f720519cfa2f8ad090dce3de5617612ad64c195489fbf`. All three byte+mode censuses equal pre/post.
-- **The accepted-prefix count, unestablished at TB28, is restored to 365/365.**
-- Stable accounting **44 / 14 / 30**, debt **5**, packages **93** — CB33 compiled nothing.
-- TB28-R1 and TB28-R2 remain orchestration-invalid provenance with no semantic credit.
+Selector 407 is the exact 407-identity prefix. Selector 408 has 408 identities and LF SHA-256
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`. The witness checks census effects and
+equal-orbit preservation only; it predicts no owner. CN7 is retained in
+`Architecture_M3_CP4c3_CB34_Code_Build_Report.md`, including the 191-face failing component identity/digest, the
+four interior-arc rows and crossed faces, and all 46 comparison-census seed-attribution rows transcribed from
+immutable TB28-R3 log artifact `9978114502`. No new ownership diagnostic was introduced.
 
-### Why the control is credible
+### Immutable CB34 compile package
 
-TB27-R1 was 399 PASS / 7 RED on selector 406; TB28-R3 is 400 PASS / 7 RED on selector 407 = 406 plus one identity,
-and that identity PASSes. **The delta is exactly the appended identity.** `git diff` over `src include tests` is
-empty, CB33 changed only the harness and **deliberately did not recompile**, and the instrument now proves
-selection: `result=PASS` requires `selected == 1` **and** `exit == 0`, with the count taken from `[ RUN      ]`
-lines independently of the exit code, `GTEST_FAIL_IF_NO_TEST_SELECTED=1` set, exactly one binary owner enforced per
-identity, and each staged executable matched to the package by digest and mode. The 407 identities span **15
-distinct test source files**, which is why TB28-R2's single-binary routing produced a false green.
+- semantic source: **`25ab3d55697598bde436d1ac811d71e6cf911f2e`**;
+- compile run/job: **`34001505322 / 101401105075`**;
+- result artifact: **`9979639398`**, `m3-cp4c3-cb34-result-34001505322`, ZIP SHA-256
+  **`c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2`**;
+- log artifact: **`9979639588`**, SHA-256
+  **`de006914c3874c7d607d4deb34e39f17c08b847d708e96c99a9957d455d40f3c`**;
+- packaged source archive SHA-256:
+  **`187d75cc76a4664c5fd2486b7e6b1b9bae5d7fe0a0e2a5d9be54c73a0885ff5e`**;
+- package `SHA256SUMS`: **28/28 PASS**; preflight/full build exit **0 / 0**;
+- all eight approved targets compiled through `agent-compile-reusable.yml`;
+- GMP/GMPXX link evidence is present; `exactArithmeticBackend=GMP`;
+- `turnBoundary=Code+Build-only`, `preflightCompile=true`, `runtimeExecution=false`;
+- no Directional runtime, test, benchmark, discovery command, CLI, or generated binary executed in CB34.
 
-**Not discharged:** the 191-face component's ownership census was published at runtime into log artifact
-`9978114502` but is in **no retained document**. It does not block the correction, which is sound on both branches
-of the CL6 dichotomy by construction. `LESSONS.md` 131.
+The successful compile advances semantic M3 package count to **94**. Stable accounting remains **44 / 14 / 30**
+and produced-witness debt remains **5**.
 
-### CB34 boundary — CM9 as frozen, plus CN7
+### Current semantic runtime authority
 
-Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked, no runtime, no package repair, no acceptance
-evidence. **The correction may not be re-derived, widened, narrowed or deferred.**
+Until TB29 is reviewed, authority remains **`M3-CP4c-3-TB28-R3`**: selector 407, **400 PASS / 7 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; immutable package `9975737868`; source
+`098ac7d93ea203222dd0ac50cdb68667744f0fd4`; run/job `33995961030 / 101386467115`. TB28-R1 and TB28-R2 remain
+orchestration-invalid provenance. CB34 compile success does not change semantic acceptance.
 
-> **The separating-arc barrier rule.** In `build_source_face_ownership`, for every arc of `embedded.arcs` whose two
-> darts satisfy `orbitByDart[forwardDart] != orbitByDart[reverseDart]`, the arc's source edges enter `barriers`,
-> and every source face the arc crosses is treated as trace-cut and therefore excluded from `uncutFaces`.
+### TB29-EXEC boundary
 
-1. Barriers and trace-cut status key on the **orbit inequality**, not on `terminalSlit`. Non-separating arcs — arcs
-   20 and 24 have equal orbits — are untouched, so the rule does not over-cut.
-2. **Accepted-prefix safety is demonstrated by construction, not argued:** show the rule is a no-op wherever the
-   current code already inserts the same barrier, and enumerate what changes where it does not.
-3. `proves_cellularity()` and ordinals 397–407 keep their contracts. **No ordinal is weakened to obtain a green.**
-4. Any required witness appends as selector **408** with 407 as an exact prefix, asserting the rule's **effect on
-   the census**, never a predicted owner value.
-5. **CN7 — transcribe the 191-face census** into a retained document: component/domain identities, face-set digest,
-   face count, interior-arc rows with both dart orbits and crossed faces, and seed attributions. A transcription of
-   existing evidence, **not a new diagnostic**.
+**Exact next:** `M3-CP4c-3-TB29-EXEC`. Consume
+`.agents/Directional/Architecture_M3_CP4c3_TB29_Artifact_Only_Test_Benchmark_Plan.md` exactly.
 
-**Prohibited:** re-opening the correction; a second product change — no attribution-rule edit, no seed winner, no
-partition unification; any new diagnostic contract on source-face ownership (CL8 stands); changing any accepted
-identity 1–365 or any byte of selector 397/401/403/405/406/407; executing any Directional runtime.
+Runtime execution only:
+
+1. verify immutable artifact `9979639398`, its provider/download digest, 28/28 root checksums, source commit/archive,
+   GMP evidence, and preserved executable modes;
+2. verify the exact selector prefix chain through selector 408 and construct a static exactly-one-owner identity map;
+3. execute all **408** identities once, one identity per fresh process and working directory, with
+   `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, selected-count proof, focused timeout, and resource evidence;
+4. preserve the complete ledger, all raw logs, executable census, and pre/post package/source/execution-view
+   byte+mode censuses;
+5. do not compile, relink, rebuild, repackage, repair modes, mutate semantic bytes, execute benchmarks, retry semantic
+   REDs, or plan a product correction.
+
+TB29-EXEC records raw evidence and then stops at **`M3-CP4c-3-TB29-REV`**. TB29-REV performs evidence-only
+semantic review with no new runtime.
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
+`load_next`: turn-based coding agent `references/turns/TB-EXEC.md`, plus the frozen TB29 plan.
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md` — **CN0–CN8**, the control adjudication and the restated frozen correction.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md` — current runtime authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB32_Code_Build_Report.md` — package under test.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII — DEFN-R3 and its TB24-REV amendment.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 407 and the frozen prefixes.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB29_Artifact_Only_Test_Benchmark_Plan.md` — executable authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB34_Code_Build_Report.md` — exact correction, CN7 and compile authority.
+3. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and frozen prefix lineage.
+4. `.agents/Directional/M3_CP4c_Current_And_Forward.md` and `M3_CP4c_Frozen_Definitions.md` — current checkpoint definitions.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+6. `.agents/Directional/M3_CP4c_Consolidated_Record.md` only if the plan cites folded historical evidence.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
