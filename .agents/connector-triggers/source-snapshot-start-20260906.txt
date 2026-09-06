@@ -1,3 +1,0 @@
-purpose=exact-source snapshot for turn start
-source_sha=665f4f32f4abbd405a6ff8ee0643ecd53c889cf3
-retry=0
