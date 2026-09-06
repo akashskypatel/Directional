@@ -1,0 +1,4 @@
+TB34 artifact-only EXEC trigger
+artifact_id=9997560649
+semantic_source=7711b9c2c20d284823911aa4ca067bd33244f4e6
+selector_count=409
