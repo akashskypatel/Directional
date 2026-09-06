@@ -1816,6 +1816,15 @@ building any conclusion on it.**
      admissible outcomes: the stage failed and published, or the stage was cleared **and the later failure
      published its own labelled evidence**. Absence of evidence must never be a pass on its own.
 
+143. **A walk may pass through its own start node; "reached the start" is not "closed the loop".** A boundary
+     validator rejected a region as soon as its traversal returned to the starting node with arcs still unconsumed,
+     treating that as proof of a second loop. On a surface with terminal slits - this fixture had **ten** - a face
+     boundary traverses each slit arc twice, out and back, and legitimately revisits the node at the slit's base.
+     The chain test `next.first != current` already rejects genuinely disconnected loops; the early-return added
+     only the rejection of walks pinched at a node, which the cellularity certificate had independently established
+     as discs. **When a traversal check has both a chain test and an early "we're back at the start" test, the
+     second one is usually rejecting a legitimate degeneracy the first already handles.**
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

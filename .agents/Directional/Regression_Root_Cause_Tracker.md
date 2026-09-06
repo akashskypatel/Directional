@@ -1,3 +1,85 @@
+## M3-CP4c3-TB33-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / ALL CT MEASURES DISCHARGED**
+
+- **Record:** `Architecture_M3_CP4c3_TB33_Independent_Review_Record.md`, measures **CU0–CU6**. Evidence-only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
+  `review_check.py authority 0d03edb07388c56b592a74e2e7fc5f3edde8cea4` — ALL CHECKS PASSED.
+
+- **TB33 promoted to current valid semantic runtime authority.** Selector **408**, **401 PASS / 7 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Run/job `34054234216 / 101543088114`; immutable CB38
+  package `9994997588`; source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`; result/log `9995528719 / 9995529075`;
+  every row `selected=1`, `timeout_count=0`.
+
+- **CU0 — every CT measure discharged, each verified against retained evidence.** **CT3**: 366/367 publish
+  `regionFrontierFailureStage=RegionCertification` and their failure-detail bytes contain **no legacy
+  `uncutFaceComponent*` fields** — the back-fill is gone. **CT4**: **390/393/406/407 PASS**, selector 408
+  byte-unchanged. **CT5**: `failure-detail-digests.tsv` covers all 408 rows, table SHA-256 `2347c691…57cf479`.
+  **CT6**: the harness is now turn-agnostic `tools/m3_cp4c3_artifact_only_harness.sh` and `baseline-authority.txt`
+  records the executing run exactly. **CT7**: verbatim failure text transcribed for **every** RED focused ordinal,
+  each with its own detail SHA-256. **Both standing falsifiers held** — zero `TraceArcDoesNotSeparateItsSides`,
+  zero `UncutFaceComponentOrbitSeedNotUnique` across 408 logs, and no move to an earlier stage.
+
+- **CU0.1 — CT5 justified itself on the run that introduced it.** TB33's ledger SHA-256
+  `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0` is **byte-identical to TB30's**: same pass/fail
+  vector, entirely different product, package and failure reasons. Second collision in three turns (TB32↔TB31,
+  TB33↔TB30). **The failure-detail table is now what separates them, and the ledger hash must never again be quoted
+  as a run's semantic identity.**
+
+- **CU0.2 — ownership is unambiguous everywhere.** The retained fragment-owner publication lists **nine**
+  components, untruncated, **every one `seedCount=1, seedState=Unique`** — component 0 at 189 faces `[0]`,
+  component 4 at 30 faces `[2]`, and seven singletons — with `fragmentOwnerOrbitCount=6` matching the certificate's
+  `F=6`. At TB19 this component had three conflicting seeds and 226 of 300 faces unowned.
+
+- **CU1 — the four witnesses recovered, confirming the TB32-REV re-scoping.** 390/393/406/407 are green with
+  nothing they legitimately own relaxed. The defect was never that they named a failure code — CB37 had removed
+  that — but that **their subject was a stage the plan no longer fails at**; giving them a justified cleared-stage
+  outcome fixed it in one turn. `M3-CP4c3-TB31-REV-CAND-02` **CLOSED / runtime-proved** on its own falsifier.
+
+- **CU2 — the frontier, diagnosed from source.** 366/367 publish `RegionBoundaryNotSingleWalk; arc=3;
+  regionFrontierFailureStage=RegionCertification; V=22;E=26;F=6;componentCount=1;sourceChi=2;eulerResidual=0;
+  regionFrontierComponentCount=6`, every component `censusCorrespondence=Superset` with
+  `componentSubsetOfCensusComponent=true`. `validate_single_boundary_walk` rejects in-loop on
+  `current == start || next.first != current`, and `failure.arc` is set only by that in-loop branch — **arc 3 is
+  where the loop rejected**. The second disjunct is the real chain check; **the first rejects a walk that passes
+  through its own start node**. This fixture reports **`terminalSlits=10`** across twelve traces, and a slit arc
+  appears **twice** in a face boundary — out and back — so a boundary legitimately revisits the slit's base node.
+  **The certificate independently contradicts the rejection**: the same failure publishes six faces, componentCount
+  1 and **residual 0**, all established as discs. Same family as the two guards already retired here: a predicate
+  correct on the non-degenerate case that rejects the degeneracy bridges and slits create. `LESSONS.md` 143.
+
+- **CU2.1 — removing the disjunct loses nothing.** Two genuinely disconnected loops still fail `next.first !=
+  current` once the first loop closes; the only case the removed disjunct catches and the chain check does not is
+  two loops meeting **at the start node**, which is precisely the pinched-but-legitimate walk. The trailing
+  `current != start` still requires closure. **Stated as a source derivation, not a measurement** — the published
+  `arc=3` does not say which disjunct fired, which is why **CU5** requires a typed reason.
+
+- **CU3 — seven REDs, and no diagnostic scaffolding left.** 366/367 the frontier; **398 the carried sphere
+  surface**, not an ownership gate; 368/369/370/374 unchanged carried surfaces with separate owners. Ordinals
+  **404 and 408 remain PASS** across four consecutive forward steps.
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **98** (CB38). Accepted **365/365**, no accepted RED ordinal, **no accepted-green loss** — fourth
+  product change on this frontier, boundary held again. 390/393/406/407 recovered and recovery is not an event.
+
+- **Candidates. Closed, runtime-proved:** `M3-CP4c3-TB31-REV-CAND-02` (four witnesses),
+  `M3-CP4c3-TB32-REV-CAND-01` (back-filled stage evidence — no legacy fields remain),
+  `M3-CP4c3-TB32-REV-CAND-02` (ledger digest — **and vindicated on the same run**),
+  `M3-CP4c3-TB32-REV-CAND-03` (harness relabelling). **New:** `M3-CP4c3-TB33-REV-CAND-01` (**GATING / PRODUCT** —
+  `validate_single_boundary_walk`'s `current == start` disjunct rejects a walk pinched at its start node). All other
+  candidates unchanged; the two-partition pair is now **measured and benign** — the plan's partition is strictly
+  finer, every component a subset of one census component.
+
+- **Successor frozen: `M3-CP4c-3-CB39`** under **CU4–CU6**, runtime-free, **one product change**. **CU4** delete the
+  `current == start` disjunct, keeping the chain test and the trailing closure test; accepted-prefix safety **by
+  construction** — the only reachable change is a walk that revisits its start node with arcs remaining. **CU5**
+  publish a typed reason on `RegionBoundaryNotSingleWalk` distinguishing `ArcChainBroken` / `ClosedBeforeEnd` /
+  `WalkNotClosed`; the `ClosedBeforeEnd` condition is **recorded, never rejecting**. **CU6** append selector **409**
+  with 408 an exact prefix and one gating identity,
+  `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`, a constructed negative proving the check
+  still rejects two node-disjoint loops with reason `ArcChainBroken`. **Falsifiers stated first:** if 366/367 still
+  fail with reason `ArcChainBroken`, the diagnosis is wrong and the defect is upstream in boundary assembly; if
+  ordinal 409 fails, the correction weakened the check and must be reverted; if either retired code reappears or
+  366/367 move earlier, CB39 changed forbidden behaviour.
+
 ## M3-CP4c3-TB33-EXEC — artifact-only runtime intake — **MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB33_EXEC_Report.md`. Immutable CB38 artifact `9994997588`, source
@@ -29,7 +111,8 @@
 
 ## M3-CP4c3-TB32-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / R4 FALSIFIERS HELD**
 
-- **Record:** `Architecture_M3_CP4c3_TB32_Independent_Review_Record.md`, measures **CT0–CT7**. Evidence-only: no
+- **Record:** `Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB33-REV`), measures **CT0–CT7**. Evidence-only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
   `review_check.py authority 7f63b5f41a0ca72f0b984ec4ee42d11f74775719` — ALL CHECKS PASSED.
 
@@ -5651,31 +5734,35 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB32**: semantic source
-`7f63b5f41a0ca72f0b984ec4ee42d11f74775719`, immutable CB37 package `9983643195`
-(`75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f`), selector 408, run/job
-`34024893763 / 101464028080`, **397 PASS / 11 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,390,393,398,406,407]`. Result/log `9986786215 / 9986786399`; every row `selected=1`; all
-three byte+mode censuses equal pre/post. Certified ownership remains **300 / 0 / 0**. Stable totals remain
-**44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **97**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB33**: semantic source
+`0d03edb07388c56b592a74e2e7fc5f3edde8cea4`, immutable CB38 package `9994997588`, selector 408, run/job
+`34054234216 / 101543088114`, **401 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,398]`. Result/log `9995528719 / 9995529075`; every row `selected=1`;
+`failure-detail-digests.tsv` table SHA-256 `2347c691275ada2cafd2b63606fce092d8c1429f4836279256fe7fddf57cf479`.
+Certified ownership remains **300 / 0 / 0** and **all nine** plan components have `seedCount=1 / Unique`. Stable
+totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **98**.
 
-`M3-CP4c-3-TB32-REV` promoted that ledger. **Both DEFN-R4 falsifiers held**: zero emissions of
-`TraceArcDoesNotSeparateItsSides` and zero of `UncutFaceComponentOrbitSeedNotUnique` across all 408 raw logs, and
-366/367 advanced to **`RegionBoundaryNotSingleWalk`**, a strictly later stage that CS6 permitted. **CS3 is unmet**:
-390/393/406/407 did not return to PASS, because removing their failure-code assertion left assertions whose subject
-is a stage the plan no longer fails at - **DEFN-R4.5 was under-specified**. Two further findings: CB37 **back-fills
-seed-stage locus fields onto later failures**, which DEFN-R4.4 did not authorize; and **TB32's ledger SHA-256 is
-byte-identical to TB31's** although every failure reason differs, so the ledger digest is a pass/fail fingerprint
-and not a semantic one.
+`M3-CP4c-3-TB33-REV` promoted that ledger and discharged **every** CT measure: stage labels present with no legacy
+`uncutFaceComponent*` back-fill; **390/393/406/407 returned to PASS** with selector 408 byte-unchanged; a per-row
+failure-detail digest table; a turn-agnostic harness with a correct `baseline-authority.txt`; and verbatim failure
+transcription for every RED focused ordinal. Both standing falsifiers held. **TB33's ledger hash is byte-identical
+to TB30's** - the second collision in three turns - which vindicates the failure-detail digest on the run that
+introduced it.
 
-**Exact next: `M3-CP4c-3-CB38` - Code + Build, runtime-free**, under
-`Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` **CT3-CT7**: evidence carries a typed **stage label** and
-`uncutFaceComponent*` publish only when that stage raised the failure; ordinals 390/393/406/407 gain a **justified
-cleared-stage** outcome, with absence of evidence never a pass on its own; a per-row **failure-detail digest**; a
-harness **parameterised by turn identity** rather than relabelled, with `baseline-authority.txt` recording the
-executing run; and the TB33 report **must** transcribe the failing assertion text for every RED ordinal in the
-focused index.
+The frontier is `RegionBoundaryNotSingleWalk` at **arc 3**, stage `RegionCertification`.
+`validate_single_boundary_walk` rejects in-loop on `current == start || next.first != current`; the second disjunct
+is the real chain check and **the first rejects a walk that passes through its own start node** - the configuration
+this fixture's **ten terminal slits** produce, and one the certificate contradicts by publishing six disc faces with
+residual 0.
 
-**Prohibited:** any product topology, barrier, ownership or retired-guard change; weakening or re-scoping ordinal
-398; touching 368/369/370/374; relaxing anything 390/393/406/407 legitimately own; any new ownership diagnostic;
-any accepted-identity or selector byte change. No Directional runtime before `M3-CP4c-3-TB33`.
+**Exact next: `M3-CP4c-3-CB39` - Code + Build, runtime-free**, under
+`Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` **CU4-CU6**: delete the `current == start` disjunct;
+publish a typed reason distinguishing `ArcChainBroken` / `ClosedBeforeEnd` / `WalkNotClosed`, the middle one
+recorded and never rejecting; append selector **409** with one constructed-negative identity proving two
+node-disjoint loops are still rejected.
+
+**Falsification stated first:** if 366/367 still fail with reason `ArcChainBroken`, the diagnosis is wrong and the
+defect is upstream in boundary assembly; if ordinal 409 fails, the correction weakened the check and must be
+reverted. **Prohibited:** any topology, barrier, ownership or retired-guard change; weakening ordinal 398 or
+touching 368/369/370/374; relaxing anything 390/393/404/406/407/408 legitimately own; any new ownership diagnostic;
+any accepted-identity change. No Directional runtime before `M3-CP4c-3-TB34`.

@@ -472,9 +472,24 @@ What this execution recorded:
   `UncutFaceComponentOrbitSeedNotUnique` and received `TraceArcDoesNotSeparateItsSides`. Their assertions are
   repaired **in place** by `M3-CP4c-3-DEFN-R4`; names, ordinals and selector bytes do not change.
 
-**Exact successor:** `M3-CP4c-3-DEFN-R4`, a definition turn on **fragment identity**. It authors no selector; any
-witness the fragment-identity decision requires appends as **409** with 408 as an exact prefix, and ordinals 397–408
-keep their contracts.
+**Selector 408 has now carried five runtimes unchanged** — TB29, TB30, TB31, TB32 and TB33 — across four product
+corrections. At `M3-CP4c-3-TB33` it recorded **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED
+`[366,367,368,369,370,374,398]`, every row `selected=1`, on immutable CB38 package `9994997588`.
+
+Two facts this selector must carry forward:
+
+- **Ordinals 404 and 408 have never gone RED across four consecutive forward steps.** They are the two identities
+  written to assert **publication and completeness** rather than an outcome, and that is why they survived every
+  frontier move. Treat them as the template.
+- **Ordinals 390, 393, 406 and 407 returned to PASS** once each was given a **justified cleared-stage** outcome —
+  the stage failed and published, or the stage was cleared and the later failure published its labelled evidence.
+  Their assertions were replaced in place; no selector byte changed.
+
+**Exact successor:** `M3-CP4c-3-CB39` appends **409** with 408 as an exact 408-line prefix and one gating identity,
+`GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected` — a constructed negative proving that two
+node-disjoint boundary loops are still rejected with reason `ArcChainBroken` after the `current == start` disjunct
+is removed. It asserts a constructed rejection, never a value on the production fixture. Ordinals 397–408 keep
+their contracts.
 
 ## Separate lineage — M1
 

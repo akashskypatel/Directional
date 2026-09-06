@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-TB32-REV`):** runtime authority is **TB32** on selector **408** at **397 PASS / 11 RED**, accepted **365/365**, ownership **300 / 0 / 0**. **Both DEFN-R4 falsifiers held** — zero emissions of `TraceArcDoesNotSeparateItsSides` and zero of `UncutFaceComponentOrbitSeedNotUnique` across all 408 logs — and 366/367 **advanced again**, to `RegionBoundaryNotSingleWalk`, a strictly later stage. **CS3 is unmet**: 390/393/406/407 did not return to PASS because their subject is a stage the plan no longer fails at; **DEFN-R4.5 was under-specified**. Two further findings: seed-stage locus fields are **back-filled onto later failures**, and **TB32's ledger digest is byte-identical to TB31's** although every failure reason differs. Exact next is `M3-CP4c-3-CB38` under **CT3–CT7**.
+> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-TB33-REV`):** runtime authority is **TB33** on selector **408** at **401 PASS / 7 RED**, accepted **365/365**. **Every CT measure discharged** — stage labels with no back-fill, **390/393/406/407 back to PASS**, a per-row failure-detail digest, a turn-agnostic harness, and verbatim failure transcription for every RED focused ordinal. **The RED set is now the frontier pair plus four independently owned carried surfaces — no diagnostic scaffolding remains.** Ownership is total and **all nine plan components have a unique seed**. The frontier is `RegionBoundaryNotSingleWalk` at **arc 3**, whose guard rejects a walk that **passes through its own start node** — the configuration this fixture's **ten terminal slits** produce. Exact next is `M3-CP4c-3-CB39` under **CU4–CU6**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,31 +185,27 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB32`.** Selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**,
-reds {366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. Certified source-face ownership remains
-**300 established / 0 unavailable / 0 conflicting**.
+**Runtime authority — `M3-CP4c-3-TB33`.** Selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**,
+reds {366, 367, 368, 369, 370, 374, 398}. Certified source-face ownership is **300 / 0 / 0**, and **all nine** plan
+components publish `seedCount=1, seedState=Unique` — component 0 at 189 faces `[0]`, component 4 at 30 faces `[2]`,
+seven singletons — with `fragmentOwnerOrbitCount=6` matching the certificate's `F=6`.
 
-**Both DEFN-R4 falsifiers held.** A complete search of all 408 raw logs finds **zero** emissions of
-`TraceArcDoesNotSeparateItsSides` (**R4.3 upheld**) and **zero** of `UncutFaceComponentOrbitSeedNotUnique`
-(**R4.1 upheld**). 366/367 now stop at **`RegionBoundaryNotSingleWalk`**, raised from
-`validate_single_boundary_walk` inside `build_region_certificates` — **strictly later** than the retired guard, and
-the outcome CS6 expressly permitted. **Two guards cleared in two turns**, each with its falsifier stated first.
+**Every CT measure is discharged.** 366/367 publish `regionFrontierFailureStage=RegionCertification` with **no
+legacy `uncutFaceComponent*` back-fill**; **390/393/406/407 returned to PASS** with selector 408 byte-unchanged; a
+`failure-detail-digests.tsv` covers all 408 rows; the harness is turn-agnostic and `baseline-authority.txt` records
+the executing run; and the report transcribes verbatim failure text for **every** RED focused ordinal. Both standing
+falsifiers held — zero emissions of either retired code across 408 logs.
 
-**CS3 is unmet, and the definition was under-specified.** 390/393/406/407 did not return to PASS. Removing their
-`ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique", …)` did not help, because the next lines are
-`ASSERT_TRUE(locus.uncutFaceComponent.has_value())` and the rest of each identity's assertions are about the
-**uncut-component stage the plan no longer fails at**. DEFN-R3.7 set the precedent for ordinal 385 and it was not
-applied; ordinal 390's existing `guard-cleared` early return is conditioned on `plan.has_value()`, which is **too
-strong**. `LESSONS.md` 142.
+**The ledger digest collided again.** TB33's ledger SHA-256 is byte-identical to **TB30's**, on a different product,
+package and set of failure reasons — the second collision in three turns. The new failure-detail table is what
+separates them. `LESSONS.md` 141.
 
-**Two evidence findings.** CB37 **back-fills** `uncutFaceComponent*` onto failures the seed guard did not raise,
-resolved from an associated face or region — more than DEFN-R4.4 asked for, and a reader may conclude the seed
-stage is implicated when it is not. And **TB32's ledger SHA-256 is byte-identical to TB31's** while every failure
-reason differs: the ledger columns encode no failure detail, so it is a **pass/fail fingerprint**, not a semantic
-one. `LESSONS.md` 141.
-
-**Ordinals 404 and 408 remain PASS**, having now survived **three** consecutive forward steps — the two identities
-that assert publication and completeness rather than an outcome.
+**The frontier is a pinched boundary walk.** 366/367 stop at `RegionBoundaryNotSingleWalk`, **arc 3**.
+`validate_single_boundary_walk` rejects in-loop on `current == start || next.first != current`. The second disjunct
+is the real chain check; **the first rejects a walk that passes through its own start node** — and this fixture
+reports **`terminalSlits=10`**, each slit arc appearing twice in a face boundary, out and back. The certificate
+independently contradicts the rejection by publishing `F=6`, `componentCount=1`, **`eulerResidual=0`** with all six
+faces established as discs. Same family as the two guards already retired here. `LESSONS.md` 143.
 
 **Definition authority — `M3-CP4c-3-DEFN-R4`, Part VIII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Part VII where they conflict.
 
@@ -253,7 +249,7 @@ IV–VI where they conflict, and only there. Its decisions:
   assertions are REPLACED in place**, retained and gating, because its seed-relative expectation becomes
   meaningless once the seed ceases to exist.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **97**. Sphere 368,
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **98**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence contract
 remain deferred under their own owners. **Vertex 30 is still not reached.**
 
@@ -264,7 +260,7 @@ remain deferred under their own owners. **Vertex 30 is still not reached.**
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path.** Certified ownership is **total (300/300)** and the seed frontier is **closed**. The pipeline has since cleared two more guards and now stops at **`RegionBoundaryNotSingleWalk`**, inside `build_region_certificates` — neither `UncutFaceComponentOrbitSeedNotUnique` nor `TraceArcDoesNotSeparateItsSides` appears anywhere in 408 raw logs. Ordinals 390/393/406/407 red only because their subject is a **cleared** stage. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path.** Certified ownership is **total (300/300)** and **all nine plan components have a unique seed**. Three guards have been cleared in as many corrections; neither `UncutFaceComponentOrbitSeedNotUnique` nor `TraceArcDoesNotSeparateItsSides` appears in any of 408 raw logs. The pipeline now stops at **`RegionBoundaryNotSingleWalk`, arc 3**, stage `RegionCertification` — a boundary walk that revisits its own start node, which this fixture's **ten terminal slits** produce. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -359,19 +355,21 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Region boundary — the current stop; and four witnesses of cleared stages.**
+1. **Region boundary — a walk pinched at its start node.**
 
-   - **Cleared and closed:** source-face ownership (300/300, component 0 unique at `[0]`), the seed guard, and
-     `TraceArcDoesNotSeparateItsSides`. None of them appears in any of the 408 raw logs. Do not re-open them.
-   - **The current stop** is `RegionBoundaryNotSingleWalk`, from `validate_single_boundary_walk` inside
-     `build_region_certificates` — strictly later than everything cleared so far. It is **not yet diagnosed**, and
-     no correction to it is authorized.
-   - **Blocking the gate instead:** ordinals 390/393/406/407 assert evidence that only the *seed stage's* failure
-     produces. They need a **justified cleared-stage** outcome — the stage failed and published, or the stage was
-     cleared **and** the later failure published its labelled frontier evidence. Absence alone must never pass.
-   - **Evidence hygiene owed with it:** stage-label the frontier evidence rather than back-filling
-     `uncutFaceComponent*` onto later failures, and give the ledger a failure-detail digest — TB31 and TB32 share a
-     ledger hash despite entirely different failure reasons.
+   - **Cleared and closed:** source-face ownership (300/300, **all nine components unique**), the seed guard, and
+     `TraceArcDoesNotSeparateItsSides`. Neither retired code appears in any of the 408 raw logs.
+   - **The current stop** is `RegionBoundaryNotSingleWalk`, **arc 3**, stage `RegionCertification`.
+     `validate_single_boundary_walk` rejects in-loop on `current == start || next.first != current`. The second
+     disjunct is the chain check; **the first rejects a walk that passes through its own start node** — exactly
+     what a terminal slit produces, and this fixture reports **ten** of them.
+   - **The certificate contradicts the rejection**: the same failure publishes `F=6`, `componentCount=1`,
+     `eulerResidual=0`, all six faces established as discs.
+   - **Removing the disjunct loses nothing**: two node-disjoint loops still fail the chain test, and the trailing
+     `current != start` still requires closure. `M3-CP4c-3-CB39` (CU4–CU6) makes the change, publishes a typed
+     reason so the next runtime says which disjunct fired, and adds a constructed negative at selector **409**.
+   - **The witnesses are all green.** 390/393/406/407 recovered once "this stage was cleared" became a
+     first-class, justified outcome; 404 and 408 have now survived four consecutive forward steps.
 
 2. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
@@ -425,6 +423,12 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A walk may pass through its own start node.** A boundary validator treated "returned to the start with arcs
+remaining" as proof of a second loop. With ten terminal slits, a face boundary traverses each slit twice and
+legitimately revisits the slit's base node. The chain test already rejects disconnected loops; the early return only
+added the rejection of a legitimate pinch. **When a traversal check has both a chain test and an early
+back-at-the-start test, suspect the second.** `LESSONS.md` §4 143.
 
 **A pass/fail ledger digest is not a semantic fingerprint.** TB31 and TB32 produced byte-identical ledger hashes
 while every failure reason differed; the ledger's columns encode no failure detail. Provenance rests on artifact
