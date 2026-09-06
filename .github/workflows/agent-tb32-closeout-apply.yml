@@ -1,0 +1,48 @@
+name: M3 CP4c3 TB32 EXEC Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb32-exec/run.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb32-exec-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb32-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb32-exec-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 154GOWZ_Zwkh__F7uHqkVtfGMPQwscdQ7
+      patch_sha256: 77db804a5ff2943ff6b8825257daf35c967c65335d52da9182a760387ef5f34b
+      base_sha: b75a2605eea481a32dd9917cbd707e305d647651
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3-CP4c-3-TB32-EXEC and hand off TB32-REV"
+    secrets: inherit
