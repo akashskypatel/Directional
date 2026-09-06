@@ -1755,6 +1755,20 @@ building any conclusion on it.**
      defect. **Match objects by identity - a face-set digest, an explicit correspondence, a published subset
      relation - never by an integer that two independent constructions both happen to start at zero.**
 
+135. **When a rule is frozen, name every site that implements it.** A review froze one correction - "an arc whose
+     two darts lie in different face-walk orbits must induce a barrier" - and named the function it had been
+     diagnosing. The identical guard existed in a second file governing a second partition, and the correction went
+     in at one site only. The certifier's ownership went from 74/300 established to **300/300**, and the failing
+     production ordinals did not move by a single field: same component, same 191 faces, same seeds `[0,1,3]`,
+     same locus. **Before freezing a rule, grep for the predicate it replaces** and list the sites in the freeze;
+     a rule stated once and implemented twice will be corrected once.
+
+136. **A gate's name outlives the reason it was red.** One ordinal was described for many turns as "the honest gate
+     on ownership totality" and was cited that way in every handoff. When ownership finally became total the gate
+     stayed red - on an unrelated deferred fixture it had always also covered - and the description would have led
+     the next reader to conclude the correction had failed. **Re-read what a long-red gate actually asserts, and
+     which of its assertions is failing, before using its colour as evidence about anything.**
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

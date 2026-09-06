@@ -1,6 +1,89 @@
+## M3-CP4c3-TB30-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / OWNERSHIP TOTAL**
+
+- **Record:** `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md`, measures **CQ0–CQ8**. Evidence-only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
+  `review_check.py authority ab86747bdfdb94c7c383bf5d2893ced4207eb555` — ALL CHECKS PASSED.
+
+- **TB30 promoted to current valid semantic runtime authority.** Selector **408**, **401 PASS / 7 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Run/job `34008104497 / 101418934144`; immutable CB35
+  package `9980764888`; source `ab86747bdfdb94c7c383bf5d2893ced4207eb555`; ledger
+  `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`; every row `selected=1`; all three byte+mode
+  censuses equal pre/post. **Arithmetic check:** TB28-R3 was 400/7 on selector 407; TB30 is 401/7 on 408 = 407 + 1
+  with ordinal 408 PASS — the delta is exactly the appended identity.
+
+- **CQ0 — CO6/CO8 discharged and both TB29-REV inferences confirmed verbatim.** **390 and 404 return to PASS**;
+  selector unchanged; `git diff` over `src include` for CB35 is empty. The transcribed failing text confirms both
+  diagnoses: **404** failed at `:14350` with `(Established) != (owner->status), actual: <00> vs <00>` — **the
+  owners were Established, so the regression was the correction working** — and **390** failed at `:11575` with
+  `3` versus `1`, the plan locus against a certifier census matched **by index**. CB35's repair matches by
+  **face-set digest**, falls back to the published census digest on a recorded subset, compares seed counts only on
+  an exact match, and otherwise asserts the subset flag is false — identity matching that **degrades honestly**.
+  `M3-CP4c3-TB29-REV-CAND-01` and `-CAND-02` **CLOSED / runtime-proved**.
+
+- **CQ1 — OWNERSHIP IS TOTAL. The certifier half of the frontier is CLOSED.** CB35's CO7 transcription of TB29 log
+  `9980019636` records
+  `m3Cp4c3CertifiedOwnerPublication;sourceFaceCount=300;established=300;unavailable=0;conflicting=0;conflictCensusPublished=true;conflictRowCount=0`.
+  **300/300 established, 0 unavailable, 0 conflicting** — against TB25-R1's **74 / 226 / 0**. The post-correction
+  uncut census contains **only arcs 20 and 24** (`0/0`); **arcs 14 and 22 are absent**. The question opened at TB19
+  — can certified source-face ownership be established? — is **answered: yes, for every face**.
+
+- **CQ2 — the frozen rule was applied at ONE of its TWO sites.** 366/367 fail **identically** to pre-correction:
+  `UncutFaceComponentOrbitSeedNotUnique;sourceFace=10,79,151;uncutFaceComponent=0;seedCount=3;seedState=Multiple;
+  faceCount=191;seedOrbits=[0,1,3]`, and the failing face-set digest is still **`17919102493633069558`**. The cause
+  is in source: `SurfaceCutGraph.cpp:549` now reads `if (terminalSlit && !separatesCertifiedFaces)`, while
+  **`GlobalTopologyPlan.cpp:830` still reads `if (is_terminal_slit(*trace, segmentIndex))` unconditionally**, and
+  that file contains **no** occurrence of `separatesCertifiedFaces` or `forwardOrbit != reverseOrbit`. That skip
+  governs `tracePieceCount`, `add_fragment_orbit` **and `traceTouchedEdges.insert(...)` for both carriers** —
+  `traceTouchedEdges` being one of the three families in `componentBarriers`. So the plan's barrier set still omits
+  arcs 14 and 22's carriers and its partition is unchanged. **This is not a defect in the correction; it is the
+  correction applied to one of two sites carrying the same guard.** `LESSONS.md` 135.
+
+- **CQ2.1 — the divergence is now measurable.** Corrected ordinal 390 emits **`censusCorrespondence=none`** and
+  takes the else-branch asserting the published subset flag is **false**: before the correction the failing
+  component was a strict subset of a certifier census component; now it is a subset of none. **The two partitions
+  diverged further, not converged.** `M3-CP4c3-TB26-REV-CAND-04` and `M3-CP4c3-DEFN-R3-CAND-01` are **promoted from
+  architectural background to the active blocking cause**.
+
+- **CQ3 — ordinal 398 is NO LONGER AN OWNERSHIP GATE, and the standing description of it was wrong.** Its
+  transcribed failure is `:14146 Value of: fixture.cutGraph.has_value() Actual: false` with
+  `prescribed sphere: NotProductionReady/CellularityNotEstablished`. **It fails on the prescribed sphere**, ordinal
+  368's `RotationSystemInconsistent / TraceEventPositionInvalid` surface, owned by `M3-CP4c2-TB-X2-CAND-04` and
+  deferred. **The ownership frontier is 366 and 367 only**; 398 will not go green from any ownership correction and
+  must not be used to judge one. It is still not to be weakened, and **re-scoping it to exclude the sphere is
+  expressly forbidden**. `LESSONS.md` 136.
+
+- **CQ4 — seven REDs, all carried.** 366/367 the ownership frontier (corrected by CQ7); 398 the carried sphere
+  surface (reclassified); 368/369/370/374 unchanged with separate owners. The RED set is the same seven as TB27-R1
+  and TB28-R3, with the entire diagnostic scaffolding now back to green.
+
+- **Accounting — no stable change.** Totals remain **44 events / 14 categories / 30 recurrences**, debt **5**,
+  packages **95** (CB35). Accepted 365/365 with no accepted RED ordinal and no accepted-green loss; 390/404
+  recovered and recovery is not an event; selector 408 unchanged with no identity added, removed, weakened or
+  re-scoped.
+
+- **Candidates. Closed:** `M3-CP4c3-TB29-REV-CAND-01`, `-CAND-02`, and `M3-CP4c3-TB24-REV-CAND-02` (**satisfied** —
+  the derivation now succeeds for all 300 faces). **Promoted to the active blocking cause:**
+  `M3-CP4c3-TB26-REV-CAND-04` and `M3-CP4c3-DEFN-R3-CAND-01`. **New:** `M3-CP4c3-TB30-REV-CAND-01` (**GATING /
+  PRODUCT** — the frozen rule is unapplied at `GlobalTopologyPlan.cpp:830`; owner CQ7) and
+  `M3-CP4c3-TB30-REV-CAND-02` (**EVIDENCE SURFACE / NON-GATING** — the plan-side interior-arc census is a
+  projection of the certifier's rows, so an arc that still cuts the plan's component but has left the certifier's
+  uncut census is invisible to it).
+
+- **Successor frozen: `M3-CP4c-3-CB36`** under **CQ7–CQ8**, runtime-free. **One change:** at
+  `GlobalTopologyPlan.cpp:830`, `if (is_terminal_slit(...) && !separatesCertifiedFaces)` with
+  `separatesCertifiedFaces = forwardOrbit != reverseOrbit` — both already in scope at `:805–806`. **The same rule,
+  the identical shape, at its second site**; not a new correction and not a re-opening. All three consequences are
+  correct for a separating arc: the carriers become barriers, the face is labelled with its two orbits and leaves
+  `unlabeledFaces`, and `tracePieceCount` +1 keeps `expected = k + 1 = 2` consistent with two fragment orbits.
+  Non-separating arcs 20 and 24 are untouched. **Accepted-prefix safety demonstrated by construction.**
+  **Falsification stated first:** if 366/367 still fail with component 0, 191 faces and seeds `[0,1,3]`,
+  CAND-01 is falsified; if `TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount` premise is wrong and
+  the change narrows to the `traceTouchedEdges` insertion alone. **No partition unification** — that stays a `DEFN`
+  question.
+
 ## M3-CP4c3-CB35 — Code + Build closeout — **BUILD GREEN / NON-STABLE / TEST AUTHORITY CORRECTED / RUNTIME-FREE**
 
-- **Report:** `Architecture_M3_CP4c3_CB35_Code_Build_Report.md`. Code + Build only; no Directional runtime,
+- **Report:** `Architecture_M3_CP4c3_CB35_Code_Build_Report.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB30-REV`; its transcription is preserved in `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` §§1–4). Code + Build only; no Directional runtime,
   benchmark, fixture mutation, selector mutation, product change, or reusable-workflow permission change.
 - **Test-authority correction:** ordinal 404 removed only the out-of-contract requirement that ownership remain
   non-`Established`; ordinal 390 stopped equating the plan and certifier partitions by numeric component index and
@@ -34,7 +117,8 @@
 
 ## M3-CP4c3-TB29-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / CORRECTION RUNTIME-PROVED**
 
-- **Record:** `Architecture_M3_CP4c3_TB29_Independent_Review_Record.md`, measures **CO0–CO8**. Evidence-only: no
+- **Record:** `Architecture_M3_CP4c3_TB29_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md`
+  at `M3-CP4c-3-TB30-REV`), measures **CO0–CO8**. Evidence-only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
   `review_check.py authority 25ab3d55697598bde436d1ac811d71e6cf911f2e` — ALL CHECKS PASSED. Selector 408 verified
   here as selector 407 plus one identity, 407 an exact prefix.
@@ -5266,22 +5350,31 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 **semantic runtime authority remains `M3-CP4c-3-TB29`**: source
-`25ab3d55697598bde436d1ac811d71e6cf911f2e`, immutable CB34 package `9979639398`, selector 408, run/job
-`34002726062 / 101404386206`, **399 PASS / 9 RED**, accepted 1–365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,390,398,404]`, ledger
-`3199d7117dbed28dd23dd22cefb543ff43f449a5a2aa859075f543a8f6195f51`. Stable totals remain
-**44 events / 14 categories / 30 recurrences**, debt **5**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB30**: semantic source
+`ab86747bdfdb94c7c383bf5d2893ced4207eb555`, immutable CB35 package `9980764888`
+(`ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`), selector 408, run/job
+`34008104497 / 101418934144`, **401 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,398]`. Ledger `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`;
+result/log `9981641004 / 9981641260`; every row `selected=1`; all three byte+mode censuses equal pre/post. Stable
+totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **95**.
 
-`M3-CP4c-3-CB35` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE**. It corrected only the two TB29 test-authority
-witnesses and transcribed the already-published post-correction census. Built evidence source is
-`ab86747bdfdb94c7c383bf5d2893ced4207eb555`; immutable package `9980764888` has provider ZIP SHA-256
-`ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`. Semantic M3 packages are now **95**.
-No product behavior or selector byte changed, so TB29 remains runtime authority until the successor is reviewed.
+`M3-CP4c-3-TB30-REV` promoted that ledger and adjudicated three things. **Source-face ownership is now TOTAL** -
+`established=300 / unavailable=0 / conflicting=0` against TB25-R1's 74 / 226 / 0 - so **the certifier half of the
+frontier is closed**. **The frozen separating-arc rule was applied at one of its two sites**: `SurfaceCutGraph.cpp`
+carries the orbit-keyed guard, `GlobalTopologyPlan.cpp:830` still carries the unconditional terminal-slit skip, so
+`traceTouchedEdges` still omits arcs 14 and 22's carriers, the plan's partition is unchanged, and 366/367 fail
+identically with the same digest `17919102493633069558`. **Ordinal 398 is no longer an ownership gate** - it fails
+on the prescribed sphere and is owned by `M3-CP4c2-TB-X2-CAND-04`; **the ownership frontier is 366 and 367 only**.
 
-**Exact next: `M3-CP4c-3-TB30-EXEC`**, artifact-only on package `9980764888` and selector 408, consuming
-`Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md`. Accepted 1–365 must remain 365/365; corrected
-ordinals **390 and 404 must PASS**; credibility controls **366, 367 and 398 must remain RED**. If only those two
-authorized witness corrections change, the consistent aggregate is **401 PASS / 7 RED** with reds
-`[366,367,368,369,370,374,398]`. TB30-EXEC records raw evidence only and stops at
-**`M3-CP4c-3-TB30-REV`**. No second product correction is authorized before that review.
+**Exact next: `M3-CP4c-3-CB36` - Code + Build, runtime-free**, under
+`Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` **CQ7-CQ8**. **One change:** at
+`GlobalTopologyPlan.cpp:830`, `if (is_terminal_slit(...) && !separatesCertifiedFaces)` with
+`separatesCertifiedFaces = forwardOrbit != reverseOrbit`, both already in scope. The same rule at its second site -
+not a new correction and not a re-opening. Accepted-prefix safety demonstrated by construction; non-separating arcs
+untouched.
+
+**Falsification stated first:** if 366/367 still fail with component 0, 191 faces and seeds `[0,1,3]`,
+`M3-CP4c3-TB30-REV-CAND-01` is falsified; if `TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount`
+premise is wrong and the change narrows to the `traceTouchedEdges` insertion alone. **Prohibited:** partition
+unification (a `DEFN` question), re-scoping ordinal 398 to exclude the sphere, touching 368/369/370/374, any new
+ownership diagnostic. No Directional runtime before `M3-CP4c-3-TB31`.

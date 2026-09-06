@@ -116,72 +116,89 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB30-REV` — EXACT NEXT / evidence-only review
+## Mandatory next turn — `M3-CP4c-3-CB36` — EXACT NEXT / the same frozen guard, at its second site
 
-`M3-CP4c-3-TB30-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC REVIEW DEFERRED**.
+`M3-CP4c-3-TB30-REV` has adjudicated TB30 and promoted it to **current valid semantic runtime authority**.
 
-### Immutable EXEC authority
+### Current authority
 
-- Runtime run/job: `34008104497 / 101418934144`, orchestration success.
-- Runtime trigger/control source: `773e5a32daf8ee14e610f2c16cd81318a09f269c`.
-- Built evidence remains source `ab86747bdfdb94c7c383bf5d2893ced4207eb555` in immutable artifact `9980764888`;
-  provider/download SHA-256 `ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`.
-- Result artifact `9981641004`, SHA-256
-  `40f58d136073e08392701eafd189a4f6b45e1907a4381393ab3d4673cc6b2913`.
-- Diagnostic-log artifact `9981641260`, SHA-256
-  `dde276e2b448f9ba58b36dbe554bed7b7f4fa6ab2bff90df5ac15ee5af8cbd6d`.
-- Harness SHA-256 `e3768a3dd1089af27896abe18aa3e784a474bac1af86a63dcf4716b66f8cb822`;
-  ledger SHA-256 `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`.
-- Root package `SHA256SUMS` verified 28/28; selector 408 identity and prefix authority verified; all package/source/
-  execution-view byte+mode censuses are identical pre/post; all six runtime executables retained mode `0755`;
-  `directional_benchmarks` was not executed.
-- `execution-boundary.txt`: runtime/preflight/execution-view complete, `selection_integrity=true`, no timeout,
-  orchestration failure, configure/compile/relink/discovery/repair/benchmark/mutation.
+- **`M3-CP4c-3-TB30`** — selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED
+  `[366,367,368,369,370,374,398]`; immutable CB35 package `9980764888`, source
+  `ab86747bdfdb94c7c383bf5d2893ced4207eb555`; run/job `34008104497 / 101418934144`; result/log
+  `9981641004 / 9981641260`; ledger `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`; every row
+  `selected=1`; all three byte+mode censuses equal pre/post.
+- Stable accounting **44 / 14 / 30**, debt **5**, packages **95**.
 
-### Raw runtime vector — REVIEW INPUT ONLY
+### What TB30 established
 
-TB30-EXEC mechanically records **401 PASS / 7 RED**, RED `[366,367,368,369,370,374,398]`, accepted 1–365 =
-**365/365 PASS**, and `selected=1` for all 408 rows. Corrected witnesses 390 and 404 mechanically PASS; credibility
-controls 366/367/398 mechanically remain RED. This is exactly the plan's mechanically expected delta from TB29,
-but **EXEC does not promote it to semantic authority**.
+**Certified source-face ownership is TOTAL** — `sourceFaceCount=300; established=300; unavailable=0;
+conflicting=0; conflictRowCount=0`, against TB25-R1's **74 / 226 / 0**. The post-correction uncut census contains
+**only arcs 20 and 24** (`0/0`); arcs 14 and 22 are gone. **The question opened at TB19 is answered: certified
+ownership can be established, and it is established for every face.** The certifier half of the frontier is
+**closed**.
 
-Current accepted semantic authority therefore remains TB29: selector 408, **399 PASS / 9 RED**, accepted 365/365,
-RED `[366,367,368,369,370,374,390,398,404]` until TB30-REV adjudicates the immutable EXEC evidence.
+**The frozen rule was applied at one of its two sites.** 366/367 fail identically to pre-correction —
+`sourceFace=10,79,151`, `uncutFaceComponent=0`, `faceCount=191`, `seedOrbits=[0,1,3]`, failing digest still
+`17919102493633069558`. `SurfaceCutGraph.cpp:549` carries the orbit-keyed guard;
+**`GlobalTopologyPlan.cpp:830` still carries `if (is_terminal_slit(...))` unconditionally**, and that file has no
+occurrence of `separatesCertifiedFaces`. The skip governs `tracePieceCount`, `add_fragment_orbit` **and
+`traceTouchedEdges.insert(...)`**, and `traceTouchedEdges` is one of the three families in `componentBarriers`.
 
-### TB30-REV boundary
+**The divergence is measurable:** corrected ordinal 390 emits **`censusCorrespondence=none`** — the failing
+component is now a subset of no certifier census component.
 
-Consume `Architecture_M3_CP4c3_TB30_EXEC_Report.md`, result artifact `9981641004`, diagnostic-log artifact
-`9981641260`, and the frozen `Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md`.
+**Ordinal 398 is no longer an ownership gate.** It fails on the prescribed sphere
+(`NotProductionReady/CellularityNotEstablished`), ordinal 368's surface, owned by `M3-CP4c2-TB-X2-CAND-04`.
+**The ownership frontier is 366 and 367 only**; 398 will not go green from an ownership correction and **must not
+be re-scoped to exclude the sphere**.
 
-TB30-REV performs **no new runtime, compile, package operation, or implementation/test/fixture/selector mutation**.
-It must verify provenance/integrity, compare the complete 408-row vector against TB29, independently re-check accepted
-1–365, adjudicate 390/404 and the 366/367/398 credibility controls, classify every semantic RED/change in
-`Regression_Root_Cause_Tracker.md`, read the retained post-correction census before any second product correction,
-update `ORIENTATION.md`, and perform mandatory REVIEW-turn document consolidation. Do not start a CB before this
-review chooses an authorized edge.
+**CO6/CO8 discharged:** 390 and 404 returned to PASS, selector unchanged, and the transcribed failing text
+confirmed both TB29-REV diagnoses verbatim.
+
+### CB36 boundary — CQ7–CQ8
+
+Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked, no runtime, no package repair. **One change.**
+
+At `GlobalTopologyPlan.cpp:830`:
+
+```cpp
+const bool separatesCertifiedFaces = forwardOrbit != reverseOrbit;   // both in scope at :805–806
+if (is_terminal_slit(*trace, segmentIndex) && !separatesCertifiedFaces) { … continue; }
+```
+
+**Not a new correction and not a re-opening** — the rule frozen at `M3-CP4c-3-TB28-INDEPENDENT-REVIEW` §4 and
+runtime-proved at TB29, applied where the first application did not reach.
+
+All three consequences are correct for a separating arc: both carriers become **barriers**; the face is labelled
+with its two distinct orbits and leaves `unlabeledFaces`, matching the certifier already treating it as trace-cut;
+and **`tracePieceCount` +1** keeps `expected = k + 1 = 2` consistent with two published fragment orbits. Arcs 20
+and 24 (`0/0`) are untouched. **Accepted-prefix safety must be demonstrated by construction, not argued.**
+
+**Falsification, stated before the build.** If 366/367 still fail with component 0, 191 faces and seeds `[0,1,3]`,
+`M3-CP4c3-TB30-REV-CAND-01` is falsified. If `TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount`
+premise is wrong and the change narrows to the `traceTouchedEdges` insertion alone.
+
+**TB31 must report** the plan-side failing component after the correction — id, domain, face count, **face-set
+digest**, seed count/state/orbits — whether `censusCorrespondence` is restored, and that the ownership counts remain
+**300 / 0 / 0**. **Ordinal 398 must not be read as an ownership signal.**
+
+**Prohibited:** any change beyond that guard and what is strictly required to compile it; **partition unification**
+(a `DEFN` question); re-scoping ordinal 398; touching ordinals 368/369/370/374; any new diagnostic contract on
+source-face ownership (CL8 stands); changing any accepted identity 1–365 or any selector byte; executing any
+Directional runtime.
 
 ### Context Load Plan
 
-```yaml
-canonical_turn: Test + Benchmark
-subturn: TB-REVIEW
-load_next:
-  - references/turns/TB-REVIEW.md
-conditional_modules:
-  - trigger: GitHub artifact/remote evidence operations are needed
-    path: modules/github-connector/MODULE.md
-  - trigger: existing-test assertion/fixture semantics require review
-    path: modules/unit-testing/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB30_EXEC_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-templates_when_producing: []
-do_not_preload:
-  - sibling turn files
-  - module reference directories
-  - uncited historical reports
-```
+`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` — **CQ0–CQ8**, the adjudication and the frozen CB36 scope, **including both census transcriptions**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB30_EXEC_Report.md` — current runtime authority.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VII — DEFN-R3 and its TB24-REV amendment.
+5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and the frozen prefixes.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

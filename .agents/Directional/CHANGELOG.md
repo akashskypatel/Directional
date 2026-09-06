@@ -1,3 +1,59 @@
+## 2026-09-05 — `M3-CP4c-3-TB30-REV`: ownership is total; the frozen rule was applied at one of its two sites; ordinal 398 reclassified
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority ab86747bdfdb94c7c383bf5d2893ced4207eb555` passed.
+
+**TB30 is promoted to current valid semantic runtime authority:** selector **408**, **401 PASS / 7 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Arithmetic check: TB28-R3 was 400/7 on selector 407; TB30
+is 401/7 on 408 = 407 + 1 with ordinal 408 PASS — the delta is exactly the appended identity.
+
+**Certified source-face ownership is TOTAL.** The transcribed census reads
+`sourceFaceCount=300; established=300; unavailable=0; conflicting=0; conflictRowCount=0`, against TB25-R1's
+**74 established / 226 unavailable**. The post-correction uncut census contains **only arcs 20 and 24** (`0/0`);
+arcs 14 and 22 are gone. **The question opened at TB19 — can certified source-face ownership be established? — is
+answered: yes, for every face.** The certifier half of the frontier is closed.
+
+**The frozen rule was applied at one of its two sites.** 366/367 fail identically to pre-correction —
+`sourceFace=10,79,151`, `uncutFaceComponent=0`, `faceCount=191`, `seedOrbits=[0,1,3]`, failing face-set digest still
+`17919102493633069558`. `SurfaceCutGraph.cpp:549` now reads `if (terminalSlit && !separatesCertifiedFaces)`, while
+**`GlobalTopologyPlan.cpp:830` still reads `if (is_terminal_slit(...))` unconditionally** and that file contains no
+occurrence of `separatesCertifiedFaces`. The skip governs `tracePieceCount`, `add_fragment_orbit` **and
+`traceTouchedEdges.insert(...)` for both carriers** — and `traceTouchedEdges` is one of the three families in
+`componentBarriers`. This is the correction applied to one of two sites carrying the same guard, not a defect in
+the correction.
+
+**The divergence is measurable.** Corrected ordinal 390 emits **`censusCorrespondence=none`** and asserts the
+published subset flag is false: the failing component was a strict subset of a certifier census component before
+the correction and is a subset of none now. `M3-CP4c3-TB26-REV-CAND-04` and `M3-CP4c3-DEFN-R3-CAND-01` are
+**promoted from architectural background to the active blocking cause**.
+
+**Ordinal 398 is no longer an ownership gate**, and the long-standing description of it is withdrawn. Its
+transcribed failure is `fixture.cutGraph.has_value() Actual: false` with
+`prescribed sphere: NotProductionReady/CellularityNotEstablished` — ordinal 368's surface, owned by
+`M3-CP4c2-TB-X2-CAND-04` and deferred. **The ownership frontier is 366 and 367 only.** 398 stays gating and must
+not be re-scoped to exclude the sphere.
+
+**CO6 and CO8 are discharged.** 390 and 404 returned to PASS with selector 408 unchanged and nothing they
+legitimately own relaxed, and the transcribed failing text confirmed both TB29-REV diagnoses **verbatim**: 404
+failed on `(Established) != (owner->status), actual: <00> vs <00>` — the owners *were* established — and 390 failed
+comparing `3` against `1` across two partitions matched by index. CB35's repair matches by face-set digest, falls
+back to the published census digest on a recorded subset, and degrades honestly when no correspondence exists.
+
+**Accounting: no stable change.** Totals remain **44 / 14 / 30**, debt **5**, packages **95**. Accepted 365/365
+with no accepted-green loss; recovery is not an event; selector 408 unchanged.
+
+**Candidates.** Closed: `M3-CP4c3-TB29-REV-CAND-01`, `-CAND-02`, and `M3-CP4c3-TB24-REV-CAND-02` (**satisfied** —
+the derivation now succeeds for all 300 faces). Promoted: `M3-CP4c3-TB26-REV-CAND-04`, `M3-CP4c3-DEFN-R3-CAND-01`.
+New: `M3-CP4c3-TB30-REV-CAND-01` (the rule unapplied at the second site) and `-CAND-02` (the plan-side interior-arc
+census is a projection of the certifier's rows).
+
+**Lessons 135 and 136** added. **Consolidation:** the TB29 review record, EXEC report and plan, plus the CB34 and
+CB35 build reports, were folded; **both census transcriptions are preserved in §§1–4 of the TB30 review record.**
+
+**Exact successor: `M3-CP4c-3-CB36`** under **CQ7–CQ8** — at `GlobalTopologyPlan.cpp:830`,
+`if (is_terminal_slit(...) && !separatesCertifiedFaces)`. One change, the same frozen rule at its second site,
+accepted-prefix safety demonstrated by construction, with the falsification stated before the build.
+
 ## 2026-09-05 — `M3-CP4c-3-TB29-REV`: the correction landed and is runtime-proved; the TB20 question is decided; two test-authority REDs
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

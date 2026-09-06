@@ -441,9 +441,24 @@ was failing — and 390 matches the plan and certifier partitions **by component
 replaced in place at **CO6 / CB35**; names, ordinals and selector bytes do not change, so selector 408 stays
 byte-identical and no new selector is authored.
 
-**Exact successor:** `M3-CP4c-3-CB35`, test authority and transcription only, then `M3-CP4c-3-TB30`, which
-re-executes selector 408 with **390 and 404 required to return to PASS** and 366/367/398 required to stay RED as
-the credibility gate.
+**Re-executed at `M3-CP4c-3-TB30`** — run/job `34008104497 / 101418934144` on immutable CB35 package
+`9980764888`, ledger `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`: **401 PASS / 7 RED**,
+accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, every row `selected=1`. **Ordinals 390 and 404
+returned to PASS** with **no selector byte changed** — CB35 replaced their assertions in place — and the
+credibility controls 366/367/398 stayed RED as required. Promoted to runtime authority at `M3-CP4c-3-TB30-REV`.
+
+Two dispositions this selector must carry forward:
+
+- **Ordinal 398 is not an ownership gate.** It fails on the **prescribed sphere**
+  (`NotProductionReady/CellularityNotEstablished`), ordinal 368's surface. Certified source-face ownership is
+  **total** — 300 established / 0 unavailable / 0 conflicting. **398 must not be re-scoped to exclude the sphere**,
+  and its colour must not be read as an ownership signal.
+- **Ordinals 366 and 367 are the whole remaining ownership frontier**, awaiting the same frozen guard at
+  `GlobalTopologyPlan.cpp:830`.
+
+**Exact successor:** `M3-CP4c-3-CB36`, one product change — the frozen separating-arc guard at its second site —
+then `M3-CP4c-3-TB31`, which re-executes selector 408 unchanged. **No selector is authored by CB36** unless a
+witness for the second site proves necessary; if one is, it appends as **409** with 408 as an exact prefix.
 
 ## Separate lineage — M1
 

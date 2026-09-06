@@ -26,49 +26,52 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB30-EXEC` (Test + Benchmark) — ARTIFACT-ONLY RUNTIME
+## Current focus — `M3-CP4c-3-CB36` (Code + Build) — THE SAME GUARD, AT ITS SECOND SITE
 
-`M3-CP4c-3-CB35` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE**. Current semantic runtime authority remains
-`M3-CP4c-3-TB29` until TB30 is validly reviewed.
+`M3-CP4c-3-TB30-REV` promoted TB30 to **current valid semantic runtime authority**.
 
-- built evidence source **`ab86747bdfdb94c7c383bf5d2893ced4207eb555`**;
-- immutable CB35 package **`9980764888`**, `m3-cp4c3-cb35-result-34005311571`, provider ZIP SHA-256
-  `ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`;
-- selector **408**, LF SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`,
-  unchanged by CB35;
-- current semantic runtime authority TB29: **399 PASS / 9 RED**, accepted **1–365 = 365/365**, RED
-  `366,367,368,369,370,374,390,398,404`.
+- selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
+- immutable CB35 package `9980764888` / source `ab86747bdfdb94c7c383bf5d2893ced4207eb555`;
+- run/job `34008104497 / 101418934144`; result/log `9981641004 / 9981641260`; every row `selected=1`.
 
-**CB35 changed test authority only.** Ordinal **404** no longer asserts that ownership must remain non-established;
-ordinal **390** no longer equates the plan and certifier partitions by component index. No product source, fixture,
-benchmark, build logic, selector byte, accepted identity 1–365, ordinal 398, 366, or 367 changed.
+**Certified source-face ownership is TOTAL** — `established=300 / unavailable=0 / conflicting=0`, against TB25-R1's
+74 / 226 / 0. The certifier half of the frontier is **closed**, and the question opened at TB19 is answered.
 
-CO7 transcribed the existing TB29 post-correction evidence without new runtime: the failing plan component is
-`0 / EmptyFragmentOrbits / 191 faces / digest 17919102493633069558 / seeds [0,1,3]`; the comparison census is
-`0 / NotTraceCut / 212 faces / digest 835099723348023536`, with neither exact match nor subset relation; only
-equal-orbit arcs 20 and 24 remain interior; certified owner publication is **300 established / 0 unavailable /
-0 conflicting**. Exact RED assertion text is retained in `Architecture_M3_CP4c3_CB35_Code_Build_Report.md`.
+**The frozen rule was applied at one of its two sites.** 366/367 fail identically to pre-correction
+(`sourceFace=10,79,151`, component 0, 191 faces, seeds `[0,1,3]`, digest `17919102493633069558`) because
+`GlobalTopologyPlan.cpp:830` still carries the unconditional terminal-slit skip, so `traceTouchedEdges` omits arcs
+14 and 22's carriers and `componentBarriers` is unchanged. Corrected ordinal 390 now reports
+`censusCorrespondence=none` — the two partitions **diverged further**.
+
+**Ordinal 398 is no longer an ownership gate.** It fails on the prescribed sphere and is owned by
+`M3-CP4c2-TB-X2-CAND-04`. **The ownership frontier is 366 and 367 only.**
+
+**CO6/CO8 discharged:** 390 and 404 returned to PASS with selector 408 unchanged; the transcribed failing text
+confirmed both TB29-REV diagnoses verbatim. **No stable event.**
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
 package count **95**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB30-REV`** as evidence-only review of immutable TB30-EXEC artifacts
-`9981641004 / 9981641260`:
+Run **`M3-CP4c-3-CB36`**, Code + Build, runtime-free, under **CQ7–CQ8** of
+`Architecture_M3_CP4c3_TB30_Independent_Review_Record.md`. **One change:**
 
-- [ ] verify run/package/source/selector/executable/identity-map/census integrity and all 408 `selected=1` rows;
-- [ ] compare the full ordinal vector against TB29 and independently verify accepted 1–365 = 365/365;
-- [ ] adjudicate corrected witnesses 390/404 and credibility controls 366/367/398;
-- [ ] classify every semantic RED/change in `Regression_Root_Cause_Tracker.md` without new runtime;
-- [ ] read the retained post-correction census before authorizing any second product correction;
-- [ ] update `ORIENTATION.md` and perform mandatory REVIEW-turn document consolidation.
+- [ ] at `GlobalTopologyPlan.cpp:830`, `if (is_terminal_slit(...) && !separatesCertifiedFaces)` with
+      `separatesCertifiedFaces = forwardOrbit != reverseOrbit` — both already in scope at `:805–806`. The same
+      frozen rule at its second site; **not a new correction and not a re-opening**.
+- [ ] **demonstrate accepted-prefix safety by construction** — the change is reachable only on the terminal segment
+      of an arc whose two darts lie in different face-walk orbits; arcs 20 and 24 are untouched.
+- [ ] `M3-CP4c-3-TB31` then re-executes selector 408 and reports the plan-side failing component (id, domain, face
+      count, **face-set digest**, seed count/state/orbits), whether `censusCorrespondence` is restored, and that
+      ownership stays **300 / 0 / 0**.
 
-TB30-EXEC raw evidence is mechanically **401 PASS / 7 RED**, RED `366,367,368,369,370,374,398`, with 390/404
-PASS and accepted 365/365. It is review input only; accepted semantic authority remains TB29 at 399/9 until REV.
+**Falsification stated first:** if 366/367 still fail with component 0, 191 faces and seeds `[0,1,3]`,
+`M3-CP4c3-TB30-REV-CAND-01` is falsified; if `TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount`
+premise is wrong and the change narrows to the `traceTouchedEdges` insertion alone.
 
-**No runtime, compile, package operation, product/test/fixture/selector mutation, semantic retry, or corrective CB is
-authorized in TB30-REV.**
+**Prohibited:** partition unification (a `DEFN` question); re-scoping ordinal 398; touching 368/369/370/374; any new
+ownership diagnostic; any accepted-identity or selector byte change.
 
 ## Carried forward from M1
 
@@ -152,4 +155,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB29-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **95**. **`M3-CP4c-3-TB29` remains the current valid semantic runtime authority at 399 PASS / 9 RED, accepted 365/365 on selector 408; CB35 is compile-green and runtime-free.** Exact next is `M3-CP4c-3-TB30-EXEC`, artifact-only, followed by evidence-only `TB30-REV`. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB30-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **95**. **`M3-CP4c-3-TB30` is the current valid semantic runtime authority at 401 PASS / 7 RED, accepted 365/365 on selector 408, with certified source-face ownership total at 300/300.** Exact next is `M3-CP4c-3-CB36`, the same frozen guard at its second site. PR #8 remains open, draft, and unmerged.
