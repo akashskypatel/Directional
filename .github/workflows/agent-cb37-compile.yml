@@ -1,0 +1,55 @@
+name: Agent CB37 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb37-compile.txt
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-cb37-compile
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb37-compile.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      commit_run_file: false
+      label: cb37-compile
+      trim_stale_comments: false
+    secrets: inherit
+
+  compile-owner:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 7f63b5f41a0ca72f0b984ec4ee42d11f74775719
+      targets: directional_surface_cell_producer_tests
+      artifact_prefix: cb37-owner-precompile
+    secrets: inherit
+
+  compile-package:
+    needs: [validate-caller, compile-owner]
+    if: ${{ needs.validate-caller.outputs.valid == 'true' && needs.compile-owner.result == 'success' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 7f63b5f41a0ca72f0b984ec4ee42d11f74775719
+      targets: directional_surface_cell_producer_tests directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: cb37-package
+    secrets: inherit
