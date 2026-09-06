@@ -1,0 +1,7 @@
+{
+  "turn": "M3-CP4c-3-CB36",
+  "purpose": "apply-verified-drive-patch",
+  "patch_file_id": "1tPsZd4UV2jaHL-H_2F29Gaj8JeQ89buP",
+  "patch_sha256": "f584881b6621afe26b03566077adfb5ed28ac3e52bb90745d1af158b2b7d88f2",
+  "base_sha": "4320323bf340f5d60bcef1c629e6d7ad6dc01634"
+}
