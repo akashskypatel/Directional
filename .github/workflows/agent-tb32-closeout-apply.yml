@@ -30,7 +30,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: tb32-exec-closeout-apply
+      label: tb32-exec-closeout-apply-r2
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -40,8 +40,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 154GOWZ_Zwkh__F7uHqkVtfGMPQwscdQ7
-      patch_sha256: 77db804a5ff2943ff6b8825257daf35c967c65335d52da9182a760387ef5f34b
+      file_id: 1nfQ6yXgbr1OXjeqXs-x1_FA12FoP1Vqp
+      patch_sha256: aabeb44ddfa0a0bda1426a893c522d37ae63e062b3b65484bf4745ee8ee9bcab
       base_sha: b75a2605eea481a32dd9917cbd707e305d647651
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M3-CP4c-3-TB32-EXEC and hand off TB32-REV"
