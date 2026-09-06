@@ -56,7 +56,11 @@ Future selector files are named by their resulting identity count.
 | **393** | 393 | `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d` | 391 | 2 | superseded |
 | **397** | 397 | `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` | 393 | 4 | superseded |
 | **401** | 401 | `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` | 397 | 4 | superseded |
-| **403** | 403 | `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007` | 401 | 2 | **CURRENT GATE** |
+| **403** | 403 | `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007` | 401 | 2 | superseded |
+| **405** | 405 | `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7` | 403 | 2 | superseded |
+| **406** | 406 | `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0` | 405 | 1 | superseded |
+| **407** | 407 | `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae` | 406 | 1 | superseded |
+| **408** | 408 | `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6` | 407 | 1 | **CURRENT GATE** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -319,7 +323,7 @@ the runtime serializes only aggregate counts, so the per-arc dart-orbit pair tha
 is not auditable from the immutable log. **Ordinal 404 must not be cited as evidence that the separating-arc horn
 is selected.** CK8 strengthens it in place; the identity is not withdrawn.
 
-### 406 — CURRENT GATE
+### 406 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_406.txt` — **406 identities**, authored by
 `M3-CP4c-3-CB31`, LF SHA-256
@@ -358,7 +362,7 @@ checkpoint whose PASS is **also readable** — 404 publishes all four interior-a
 certifier's. Ordinal **393**'s repaired coverage contract is runtime-proved. CL6 strengthens 404 in place; no
 identity is withdrawn.
 
-### 407 — CURRENT GATE
+### 407 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_407.txt` — **407 identities**, authored by
 `M3-CP4c-3-CB32`, LF SHA-256
@@ -402,6 +406,16 @@ identity** — the control that settled the TB28-R2 false green. Promoted to run
 **Exact successor:** `M3-CP4c-3-CB34`, which applies the frozen **separating-arc barrier rule** and may require an
 appended witness at selector **408**, with 407 as an exact prefix, asserting the rule's **effect on the census** and
 never a predicted owner value. Ordinals 397–407 keep their contracts and none may be weakened to obtain a green.
+
+### 408 — CURRENT GATE
+
+`Architecture_M3_CP4c3_Required_Green_Selector_408.txt` — **408 identities**, authored by `M3-CP4c-3-CB34`, LF SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
+
+CB34 appends one separating-arc barrier-rule census-effect witness to frozen selector 407.
+
+Appended 1 identity to selector 407:
+
+- `SurfaceCutGraph.SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus`
 
 ## Separate lineage — M1
 

@@ -30,8 +30,23 @@ ROLE = {
     391: ("superseded", "CB23 appends three diagnostic-only witnesses to the frozen 388-identity selector 385."),
     393: ("superseded", "CB24 appends two diagnostic-only projection witnesses to frozen selector 391; CB25 supersedes the vacuous diagnostic contract without changing these bytes."),
     397: ("superseded", "CB25 appends four diagnostic-only certificate-source and falsifiability witnesses to frozen selector 393; CB27 retains all 397 bytes unchanged."),
-    401: ("**CURRENT GATE**", "CB27 appends four owner-map, consistency-falsifiability, and fail-closed fixture-path witnesses to frozen selector 397."),
+    401: ("superseded", "CB27 appends four owner-map, consistency-falsifiability, and fail-closed fixture-path witnesses to frozen selector 397."),
+    403: ("superseded", "CB28 appends two measurement/falsifiability witnesses to frozen selector 401."),
+    405: ("superseded", "CB30 appends two complete-census/falsifiability witnesses to frozen selector 403."),
+    406: ("superseded", "CB31 appends one partition-correspondence witness to frozen selector 405."),
+    407: ("superseded", "CB32 appends one crossed-face/interior-arc publication witness to frozen selector 406."),
+    408: ("**CURRENT GATE**", "CB34 appends one separating-arc barrier-rule census-effect witness to frozen selector 407."),
 }
+
+manifest_path = os.path.join(d, "Required_Green_Selector_Manifest.md")
+existing_sections = {}
+if os.path.exists(manifest_path):
+    existing_text = io.open(manifest_path, encoding="utf-8").read().replace("\r\n", "\n")
+    match = re.search(r"(?ms)^## Per-file notes and appended identities\n\n(.*?)(?=^## Separate lineage)", existing_text)
+    if match:
+        section_text = match.group(1)
+        for section in re.finditer(r"(?ms)^(### (\d+) —[^\n]*\n.*?)(?=^### \d+ —|\Z)", section_text):
+            existing_sections[int(section.group(2))] = section.group(1).rstrip("\n").split("\n")
 
 rows = []
 prev = None
@@ -107,6 +122,17 @@ branch carrying unique bytes. Those are not redundant with anything and cannot b
 ## Per-file notes and appended identities
 """)
 for num, name, n, sha, parent, added, role, note in rows:
+    retained = existing_sections.get(num)
+    if retained is not None:
+        heading = retained[0]
+        if role == "**CURRENT GATE**":
+            heading = "### %d — CURRENT GATE" % num
+        elif "CURRENT GATE" in heading:
+            heading = "### %d — superseded" % num
+        out.extend([heading] + retained[1:])
+        out.append("")
+        continue
+
     out.append("### %d — %s" % (num, role.replace("**", "")))
     out.append("")
     out.append("`%s` — %d identities, first committed %s." % (name, n, git_first_commit(".agents/Directional/" + name)))
