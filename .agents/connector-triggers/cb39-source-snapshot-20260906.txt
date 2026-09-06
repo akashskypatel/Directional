@@ -1,0 +1,2 @@
+source_ref=0b4e41b2f9208beeeb0a42202c9219ebc18e5e70
+purpose=M3-CP4c-3-CB39 exact source snapshot
