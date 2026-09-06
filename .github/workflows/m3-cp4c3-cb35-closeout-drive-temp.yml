@@ -1,0 +1,46 @@
+name: M3 CP4c3 CB35 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb35-closeout-drive-20260905.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb35-closeout-drive
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb35-closeout-drive-temp.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb35-closeout-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1q0UO6rBsLeaPPquPGgh6mavLxWA9nXLM
+      patch_sha256: 4dd66d38aa73112e9aa142533fce86380abf9d921c9fdb528f014f4e88061029
+      base_sha: 61454bb22e41c0acb96a61bcb313dafea3bdef0e
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3-CP4c-3-CB35 and hand off TB30"
+    secrets: inherit
