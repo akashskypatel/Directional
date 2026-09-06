@@ -1,3 +1,20 @@
+## 2026-09-06 — `M3-CP4c-3-TB31-EXEC`: artifact-only selector408 mechanically 397/11; four newly RED; review required
+
+TB31-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB36 artifact
+`9982174864` / source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9` / selector 408. Authoritative R2 run/job
+`34011402843 / 101427791582` executed all 408 identities once in fresh processes/execution views, every row selected
+one test, zero timeouts, accepted **365/365**, and raw aggregate **397 PASS / 11 RED** with
+`[366,367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts are `9982618043 / 9982618174`; package,
+source and execution-view byte+mode censuses are unchanged, with no configure/compile/relink/repair/discovery/
+benchmark/mutation.
+
+The old 366/367 191-face Multiple `[0,1,3]` fingerprint no longer appears; both terminate at
+`TraceArcDoesNotSeparateItsSides`, with retained fragment-owner component 0 at 189 faces / Unique / orbit `[0]`.
+No `TraceCutFaceFragmentCountMismatch` occurs. Raw owner publication remains 300/0/0. Newly-RED 390/393/406/407
+expected `UncutFaceComponentOrbitSeedNotUnique` but received the new detail. EXEC does not classify these changes;
+semantic authority remains TB30 at **401/7** until evidence-only **`M3-CP4c-3-TB31-REV`** updates the regression
+tracker and ORIENTATION, performs mandatory document consolidation, and freezes the justified successor.
+
 ## 2026-09-05 — `M3-CP4c-3-TB30-EXEC`: selector408 artifact-only runtime mechanically 401/7; review required
 
 TB30-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB35 artifact

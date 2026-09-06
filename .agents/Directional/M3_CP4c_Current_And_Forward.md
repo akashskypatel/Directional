@@ -10,67 +10,55 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-06** at `M3-CP4c-3-CB36` closeout.
+Last updated **2026-09-06** at `M3-CP4c-3-TB31-EXEC` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB30` remains the current valid semantic runtime authority.** Selector **408**, **401 PASS / 7 RED**,
-accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB35 package `9980764888` / source
-`ab86747bdfdb94c7c383bf5d2893ced4207eb555`. Run/job `34008104497 / 101418934144`; result/log
-`9981641004 / 9981641260`; ledger `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`.
+**`M3-CP4c-3-TB30` remains the current valid semantic runtime authority pending TB31 review.** Selector **408**,
+**401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB35 package
+`9980764888` / source `ab86747bdfdb94c7c383bf5d2893ced4207eb555`.
 
-**CB36 is the current compile authority, not runtime authority.** Exact built source
-`90bf8430f54c8b81fb90a6bda820cf8edebce6e9`; compile run/job `34010011172 / 101424080079` SUCCESS; immutable
-package `9982174864` / `m3-cp4c3-cb36-result-34010011172`; compile log `9982175106`; provider ZIP SHA-256
-`8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b`; packaged-source SHA-256
-`f909864226b07a4cd89a9a51669792e8cdd63206c5b2a23d2e0b179476d78cae`; GMP/GMPXX; all eight targets;
-`runtimeExecution=false`.
+**TB31-EXEC is complete raw review input, not semantic authority.** It executed immutable CB36 package `9982174864`
+/ source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9` on run/job `34011402843 / 101427791582`. Result/log artifacts are
+`9982618043 / 9982618174`. All 408 rows selected exactly one identity, zero timed out, accepted 1–365 remained
+365/365, and the raw aggregate is **397 PASS / 11 RED** with
+`[366,367,368,369,370,374,390,393,398,406,407]`.
 
-CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, packages **96**.
+CP4c-3 remains **OPEN**. Stable accounting stays **44 / 14 / 30**, debt **5**, packages **96** until TB31-REV.
 
-## 2. Ownership is total; CB36 corrected the second frozen-rule site
+## 2. Post-CB36 runtime moved the frontier; ownership publication remains total
 
-**The certifier half remains closed:** `sourceFaceCount=300; established=300; unavailable=0; conflicting=0;
-conflictRowCount=0` under TB30.
+TB31 mechanically republishes certified source-face ownership as **300 established / 0 unavailable / 0
+conflicting**. The old 366/367 `component 0 / 191 faces / Multiple [0,1,3]` fingerprint does not reproduce. Both
+rows now terminate at `TraceArcDoesNotSeparateItsSides`; the retained fragment-owner component 0 is `faceCount=189`,
+`seedCount=1`, `seedState=Unique`, `seedOrbits=[0]`. No `TraceCutFaceFragmentCountMismatch` appears in any TB31 raw
+log.
 
-TB30 proved that the certifier and plan partitions diverged because the same terminal-slit rule had been updated at
-only one of two implementation sites. CB36 applied the already-frozen rule at the second site in
-`GlobalTopologyPlan.cpp`: only an equal-orbit terminal slit is skipped; a separating terminal slit now contributes
-to the pre-existing fragment/orbit/touched-edge logic. The predicate is purely `forwardOrbit != reverseOrbit`, with
-no fixture/ordinal/arc special case.
+Because the new termination occurs before the frozen plan-side digest/`censusCorrespondence` evidence is emitted,
+TB31-EXEC does not claim partition convergence. It preserves that evidence absence for review. Four rows that were
+PASS in TB30 — **390, 393, 406, 407** — are newly RED and all expected
+`UncutFaceComponentOrbitSeedNotUnique` while receiving `TraceArcDoesNotSeparateItsSides`.
 
-This correction is **compile-proved only**. No claim is made yet that 366/367 are green or that the plan partition
-has converged. TB31 must establish the post-correction component and correspondence from immutable runtime evidence.
+Ordinal 398 remains the prescribed-sphere surface owned by `M3-CP4c2-TB-X2-CAND-04`; EXEC does not re-own or
+reclassify it. 368/369/370/374 likewise remain raw carried REDs pending review.
 
-**Ordinal 398 remains outside the ownership frontier.** It is the prescribed-sphere
-`NotProductionReady/CellularityNotEstablished` surface owned by `M3-CP4c2-TB-X2-CAND-04`; it stays gating and must
-not be re-scoped or interpreted as ownership evidence. 368/369/370/374 remain carried with separate owners.
+## 3. Exact next turn — `M3-CP4c-3-TB31-REV`
 
-## 3. Exact next turn — `M3-CP4c-3-TB31-EXEC`
+Evidence-only semantic review of immutable TB31 result artifact `9982618043` and diagnostic artifact `9982618174`.
+No new runtime, compile, product/test/fixture/benchmark/build/selector mutation, or repair is authorized.
 
-Artifact-only runtime execution under `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md`.
+REV must:
 
-Use immutable CB36 package `9982174864` / source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`. Verify all package/source,
-mode, selector, prefix, identity-map and no-mutation preconditions before runtime. Execute every selector identity
-1–408 once in a fresh process/workdir; no semantic retries and no benchmarks.
-
-**Required gates:**
-
-- accepted 1–365 remains **365/365 PASS**;
-- certified ownership remains **300 / 0 / 0**;
-- retain the complete post-correction plan component identity for 366/367, including face-set digest,
-  seed state/orbits, fragment-count evidence and `censusCorrespondence`;
-- carried 368/369/370/374/398 remain independently evidenced and are not re-owned by CB36.
-
-**Falsification:** unchanged 366/367 failure at component 0 / 191 faces / `[0,1,3]` / digest
-`17919102493633069558` falsifies `M3-CP4c3-TB30-REV-CAND-01`; any
-`TraceCutFaceFragmentCountMismatch` falsifies the `tracePieceCount` premise. TB31-EXEC preserves raw evidence and
-stops at TB31-REV; it performs no repair or semantic adjudication.
-
-A **403 PASS / 5 RED** vector with RED `[368,369,370,374,398]` is only the mechanically consistent expectation if
-both frontier ordinals become PASS and nothing else changes.
+- verify all 408 execution/provenance and immutability controls;
+- classify every one of the 11 raw REDs and the TB30→TB31 status changes;
+- adjudicate the changed 366/367 failure surface against the frozen TB30 candidate/falsifiers without treating
+  movement alone as proof;
+- decide the evidentiary consequence of missing plan-side digest/`censusCorrespondence` output;
+- update `Regression_Root_Cause_Tracker.md` and `ORIENTATION.md`;
+- perform mandatory REVIEW document consolidation;
+- freeze only the successor justified by that adjudication.
 
 ## 4. Open candidates
 
@@ -78,7 +66,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB30-REV-CAND-01` | **CORRECTED BY CB36 / AWAITING TB31 / GATING / PRODUCT** — CB36 applied the frozen separating-arc guard at the second site in `GlobalTopologyPlan.cpp`; compile-green only. Runtime falsification remains unchanged: same 366/367 component 0 / 191 / `[0,1,3]` fingerprint means the candidate is false. |
+| `M3-CP4c3-TB30-REV-CAND-01` | **TB31 RAW EVIDENCE AVAILABLE / REVIEW REQUIRED / GATING / PRODUCT** — the frozen old-fingerprint falsifier did not fire: 366/367 moved from 191 / Multiple `[0,1,3]` to `TraceArcDoesNotSeparateItsSides` with retained fragment-owner component 189 / Unique `[0]`. EXEC does not promote, close, or reclassify the candidate; TB31-REV owns that decision. |
 | `M3-CP4c3-TB30-REV-CAND-02` | **NEW / ACTIVE / EVIDENCE SURFACE / NON-GATING** — the plan-side interior-arc census is a projection of the certifier's rows, so an arc that still cuts the plan's component but has left the certifier's uncut census is invisible to it. Not blocking CQ7. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **CORRECTED / RUNTIME-PROVED** — CB34's separating-arc barrier rule excludes the crossed faces and preserves equal-orbit slits; ordinal 408 passes on all three properties. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
@@ -169,16 +157,7 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, load only the minimum current authority:
-
-1. `ORIENTATION.md` — read first.
-2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_CB36_Code_Build_Report.md` — exact change/build evidence.
-4. `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` — frozen next execution contract.
-5. `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` — CQ7–CQ8 and falsification basis.
-6. `Architecture_M3_CP4c3_TB30_EXEC_Report.md` — current semantic runtime baseline.
-7. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `M3_CP4c_Frozen_Definitions.md`.
-8. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
-
-Exact next is **`M3-CP4c-3-TB31-EXEC`** on immutable package `9982174864`. No compile, repair, benchmark, generated
-discovery, fixture/test/selector mutation, or semantic review is authorized in EXEC.
+Exact next: **`M3-CP4c-3-TB31-REV`**. Primary evidence is
+`Architecture_M3_CP4c3_TB31_EXEC_Report.md` plus immutable artifacts `9982618043 / 9982618174`. Current semantic
+runtime authority remains TB30 until REV completes. No new runtime or implementation is authorized before that
+review.

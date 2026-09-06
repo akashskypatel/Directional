@@ -116,103 +116,79 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB31-EXEC` — EXACT NEXT / artifact-only proof of CB36
+## Mandatory next turn — `M3-CP4c-3-TB31-REV` — EXACT NEXT / evidence-only semantic review
 
-`M3-CP4c-3-CB36` is **Code + Build complete / compile-green / runtime-unaccepted**. The next turn may execute only
-the frozen artifact-only TB31 plan; no new product/test/fixture/benchmark/build/selector mutation is authorized.
+`M3-CP4c-3-TB31-EXEC` is **COMPLETE / MECHANICALLY VALID / RAW EVIDENCE PRESERVED / SEMANTIC REVIEW REQUIRED**.
+No new runtime or implementation is authorized before the separate review adjudicates the immutable evidence.
 
 ### Current semantic runtime authority
 
-- **`M3-CP4c-3-TB30`** — selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED
-  `[366,367,368,369,370,374,398]`; immutable CB35 package `9980764888`, source
-  `ab86747bdfdb94c7c383bf5d2893ced4207eb555`; run/job `34008104497 / 101418934144`; result/log
-  `9981641004 / 9981641260`; ledger `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`;
-  every row `selected=1`.
-- Certified source-face ownership is **TOTAL: 300 established / 0 unavailable / 0 conflicting**.
-- Stable accounting **44 / 14 / 30**, produced-witness debt **5**.
+- **TB30 remains semantic authority:** selector **408**, **401 PASS / 7 RED**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,398]`.
+- Certified ownership under accepted authority is **300 established / 0 unavailable / 0 conflicting**.
+- Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **96**.
 
-### Current compile authority — CB36
+### TB31-EXEC raw evidence — review input only
 
-- **Exact built source:** `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`.
-- **Compile run/job:** `34010011172 / 101424080079` — SUCCESS.
-- **Immutable package:** `9982174864`, `m3-cp4c3-cb36-result-34010011172`; provider ZIP SHA-256
-  `8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b`.
-- **Compile log:** `9982175106`; packaged source archive SHA-256
-  `f909864226b07a4cd89a9a51669792e8cdd63206c5b2a23d2e0b179476d78cae`.
-- GMP/GMPXX linked; all eight required targets compiled; `runtimeExecution=false`.
-- Semantic M3 package count is now **96**. TB30 remains runtime authority until TB31-REV.
+- immutable package `9982174864` / source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`;
+- run/job **`34011402843 / 101427791582`**;
+- result artifact **`9982618043`**, provider digest
+  `sha256:d640ee7c7c65d992de996b9cfef81269b4833a97411ec136742828032b73fc57`;
+- log artifact **`9982618174`**, provider digest
+  `sha256:8c4cd61801e64f2f8d33856a2675542315165b561349640fcef3309e44337c06`;
+- selector 408 SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`;
+- all 408 identities executed exactly once, every row selected one test, zero timeouts, accepted **365/365**;
+- raw aggregate **397 PASS / 11 RED**, RED `[366,367,368,369,370,374,390,393,398,406,407]`;
+- raw owner publication remains **300 / 0 / 0**;
+- package/source/execution-view censuses identical pre/post; no compile/configure/relink/repair/discovery/benchmark/
+  source-test-fixture-selector mutation.
 
-### What CB36 changed
+The old 366/367 191-face Multiple `[0,1,3]` fingerprint is absent. Both now terminate at
+`TraceArcDoesNotSeparateItsSides`; retained fragment-owner component 0 is **189 faces / Unique / orbit [0]**. No
+`TraceCutFaceFragmentCountMismatch` appears. The frozen plan-side digest and `censusCorrespondence` are not emitted
+on those rows because the new failure terminates earlier. Newly-RED 390/393/406/407 each expected
+`UncutFaceComponentOrbitSeedNotUnique` but received `TraceArcDoesNotSeparateItsSides`. These facts are **not** yet
+candidate or regression adjudication.
 
-Exactly one product rule at the second named site in `GlobalTopologyPlan.cpp`:
+The first TB31 trigger was pre-runtime orchestration-invalid because the temporary caller's permission ceiling did
+not cover the durable observer reusable graph. Only the caller ceiling was corrected; no reusable workflow
+permission changed. R2 above is the sole semantic runtime attempt.
 
-```cpp
-const bool separatesCertifiedFaces = forwardOrbit != reverseOrbit;
-if (is_terminal_slit(*trace, segmentIndex) && !separatesCertifiedFaces) { … continue; }
+### Exact review obligations
+
+`M3-CP4c-3-TB31-REV` must consume the immutable TB31 artifacts and perform no new runtime, compile, repair, or
+product/test/fixture/benchmark/build/selector mutation. It must:
+
+1. verify the 408-row execution, selector, artifact and immutability provenance;
+2. classify all eleven raw REDs and every TB30→TB31 status change, especially 390/393/406/407;
+3. adjudicate `M3-CP4c3-TB30-REV-CAND-01` and related partition candidates against the changed 366/367 evidence;
+4. determine the evidentiary consequence of the missing plan-side digest/`censusCorrespondence` fields;
+5. update `Regression_Root_Cause_Tracker.md` and mandatory REVIEW `ORIENTATION.md`;
+6. perform mandatory REVIEW document consolidation before closing;
+7. freeze only the next Code + Build or other edge justified by the review.
+
+## Context Load Plan
+
+```yaml
+load_next:
+  - references/turns/TB-REVIEW.md
+conditional_modules:
+  - trigger: GitHub artifact, PR, branch, or workflow evidence access is required
+    path: modules/github-connector/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c3_TB31_EXEC_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB30_Independent_Review_Record.md
+  - .agents/Directional/M3_CP4c_Current_And_Forward.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - .agents/Directional/ORIENTATION.md
+  - .agents/Directional/CLEAN_UP_POLICY.md
+  - .agents/Directional/RETENTION_POLICY.md
+templates_when_producing: []
+do_not_preload:
+  - sibling turn files
+  - uncited historical reports
+  - research/provenance/examples
 ```
-
-This is the same frozen separating-arc rule already applied in `SurfaceCutGraph.cpp`, not a new correction or
-re-opening. Accepted-prefix safety is by construction: non-terminal segments are unchanged, and equal-orbit terminal
-slits still take the original skip. Only a terminal slit whose certified darts belong to different face-walk orbits
-now reaches the pre-existing fragment/orbit/touched-edge body. Known equal-orbit arcs 20/24 are therefore untouched.
-
-The exact product patch was emitted before remote application, applied through the durable Drive workflow, and the
-staged Drive copy was retired. No tests, benchmarks, selectors, fixtures, ownership diagnostics, or reusable-workflow
-permissions changed.
-
-### TB31-EXEC contract
-
-Use `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` exactly.
-
-Before runtime verify artifact `9982174864`, source `90bf8430...`, root checksums, executable modes/bytes, selector
-408 and all frozen selector-prefix hashes. Construct the identity map statically from packaged source; **no generated
-discovery**.
-
-Execute all 408 identities once, in ordinal order, one fresh process/workdir per identity, with
-`GTEST_FAIL_IF_NO_TEST_SELECTED=1`, `GTEST_COLOR=no`, `/usr/bin/time -v`, and a 180-second per-process timeout.
-Semantic REDs do not stop the selector. Execute **no benchmark**.
-
-Required evidence:
-
-- accepted 1–365 result, which must remain **365/365 PASS**;
-- complete raw rows/logs for 366/367 and carried 368/369/370/374/398;
-- for 366/367, the plan-side component id/domain, face count, **face-set digest**, seed count/state/orbits,
-  fragment-count evidence, and `censusCorrespondence`;
-- certified ownership publication, which must remain **300 / 0 / 0**;
-- pre/post package/source/execution-view byte+mode censuses and all mutation/build/repair/discovery flags false.
-
-**Falsification first:** if 366/367 still fail with component 0, 191 faces, seeds `[0,1,3]` and digest
-`17919102493633069558`, `M3-CP4c3-TB30-REV-CAND-01` is falsified. If
-`TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount` premise is wrong; EXEC preserves evidence and
-does not improvise a repair.
-
-If only 366/367 become PASS and carried surfaces remain unchanged, **403 PASS / 5 RED** with
-`[368,369,370,374,398]` is the consistency expectation, not a pre-judged acceptance result. Ordinal 398 is not an
-ownership signal.
-
-TB31-EXEC records raw evidence only and stops at **`M3-CP4c-3-TB31-REV`**. Independent review/planning remains a
-separate boundary.
-
-### Turn-control note
-
-A control-plane ordering deviation in CB36 is durably recorded in the CB36 report: source-snapshot orchestration
-began after the full `TOOL_USE_CONSERVATION_POLICY.md` read but before the full project `GitHub_Workflow_Policy.md`
-read had completed. The workflow policy was fully read before semantic source mutation, Drive patch application, or
-compilation. The deviation affected control-plane ordering only and did not alter semantic/build/runtime evidence.
-
-### Context Load Plan
-
-`load_next`: Test + Benchmark execution guidance only.
-
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current frontier/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB36_Code_Build_Report.md` — exact CB36 change/build evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` — **executable contract**.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` — CQ7–CQ8 and falsification basis.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB30_EXEC_Report.md` — current semantic runtime baseline.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and frozen prefixes.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

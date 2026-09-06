@@ -26,50 +26,43 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB31-EXEC` (artifact-only runtime) — PROVE THE SECOND-SITE GUARD
+## Current focus — `M3-CP4c-3-TB31-REV` — ADJUDICATE TB31 RAW 397/11
 
-`M3-CP4c-3-CB36` is **Code + Build complete / compile-green / runtime-unaccepted**.
+`M3-CP4c-3-TB31-EXEC` is **complete / mechanically valid / artifact-only / semantically unadjudicated**.
 
-- one product change only in `src/geometry/GlobalTopologyPlan.cpp`: the terminal-slit skip now applies only when
-  `forwardOrbit == reverseOrbit`; separating terminal slits flow through the pre-existing fragment/orbit/touched-edge
-  body;
-- exact built evidence source **`90bf8430f54c8b81fb90a6bda820cf8edebce6e9`**;
-- compile run/job **`34010011172 / 101424080079`** — SUCCESS, GMP/GMPXX, all eight required targets;
-- immutable package **`9982174864`** / `m3-cp4c3-cb36-result-34010011172`, provider ZIP SHA-256
-  `8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b`;
-- compile log **`9982175106`**; packaged source archive SHA-256
-  `f909864226b07a4cd89a9a51669792e8cdd63206c5b2a23d2e0b179476d78cae`;
-- `runtimeExecution=false`; no Directional binary/test/benchmark/discovery command executed.
+- immutable CB36 package `9982174864`, built source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`;
+- authoritative run/job `34011402843 / 101427791582`;
+- result/log artifacts `9982618043 / 9982618174`;
+- all **408/408** identities executed exactly once, every row selected one test, zero timeouts;
+- accepted **1–365 = 365/365 PASS**;
+- raw aggregate **397 PASS / 11 RED**, RED `[366,367,368,369,370,374,390,393,398,406,407]`;
+- raw ownership publication remains **300 established / 0 unavailable / 0 conflicting**;
+- package/source/execution-view censuses are byte+mode identical pre/post; no compile/configure/relink/repair/
+  discovery/benchmark/source-test-fixture-selector mutation occurred.
 
-**Current semantic runtime authority remains TB30** until TB31-REV: selector **408**, **401 PASS / 7 RED**,
-accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Certified ownership is already total at
-**300 / 0 / 0**. Stable accounting remains **44 / 14 / 30**, debt **5**; semantic M3 package count advances
-**95 → 96** for the compile-valid CB36 package. CP4c-3 remains **OPEN**.
+The old 366/367 `191 faces / Multiple [0,1,3]` fingerprint does not reproduce. Both now terminate at
+`TraceArcDoesNotSeparateItsSides`; the retained fragment-owner component 0 is **189 faces / Unique / orbit [0]**.
+No `TraceCutFaceFragmentCountMismatch` occurs anywhere in TB31. The four newly-RED raw rows 390/393/406/407 all
+expected `UncutFaceComponentOrbitSeedNotUnique` but received `TraceArcDoesNotSeparateItsSides`. These are evidence
+facts only, not classifications.
+
+**Current semantic runtime authority remains TB30** until REV: selector 408, **401 PASS / 7 RED**, accepted
+**365/365**, RED `[366,367,368,369,370,374,398]`; stable accounting **44 / 14 / 30**, debt **5**, packages **96**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB31-EXEC`** from
-`Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` against immutable package `9982174864`.
+Run **`M3-CP4c-3-TB31-REV`** as evidence-only review.
 
-- [ ] verify package/source/checksums/modes, selector 408 and all frozen prefix hashes before runtime;
-- [ ] execute all **408/408** identities exactly once in fresh processes/workdirs; no semantic retries;
-- [ ] require accepted **1–365 = 365/365 PASS** and ownership **300 established / 0 unavailable / 0 conflicting**;
-- [ ] retain complete plan-component evidence for **366/367**: component/domain, face count, face-set digest, seed
-      count/state/orbits, fragment-count evidence, and `censusCorrespondence`;
-- [ ] retain exact status/logs for carried 368/369/370/374/398; ordinal 398 is **not** an ownership signal;
-- [ ] execute no benchmarks, compile, relink, repair, generated discovery, fixture mutation, or selector mutation.
+- [ ] verify immutable TB31 artifacts and full 408-row provenance;
+- [ ] classify every raw RED/change, especially newly-RED 390/393/406/407;
+- [ ] adjudicate what the changed 366/367 frontier means for `M3-CP4c3-TB30-REV-CAND-01` and related partition
+      candidates without assuming that failure movement equals correctness;
+- [ ] adjudicate the missing plan-side digest/`censusCorrespondence` evidence caused by the earlier
+      `TraceArcDoesNotSeparateItsSides` termination;
+- [ ] update `Regression_Root_Cause_Tracker.md` and mandatory REVIEW `ORIENTATION.md`;
+- [ ] perform mandatory REVIEW document consolidation and freeze the justified successor.
 
-**Falsification first:** if 366/367 still fail with component 0 / 191 faces / seeds `[0,1,3]` / digest
-`17919102493633069558`, `M3-CP4c3-TB30-REV-CAND-01` is falsified. If
-`TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount` premise is wrong; preserve evidence and stop any
-repair attempt in EXEC.
-
-If only the intended 366/367 frontier changes to PASS while all carried surfaces remain unchanged, the consistent
-aggregate is **403 PASS / 5 RED**, RED `[368,369,370,374,398]`; this is a consistency expectation, not an assumed
-result.
-
-TB31-EXEC records raw evidence only and stops at **`M3-CP4c-3-TB31-REV`**. No further product correction is
-authorized before that review.
+TB31-REV may not execute new runtime, compile, or mutate product/test/fixture/benchmark/build/selector logic.
 
 ## Carried forward from M1
 
