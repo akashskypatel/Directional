@@ -1,0 +1,5 @@
+# M3-CP4c-3-CB36 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m3-cp4c3-cb36-20260906T0340Z.json
+.agents/connector-triggers/drive-apply/m3-cp4c3-cb36-20260906T0357Z.json
+.agents/connector-triggers/compile/m3-cp4c3-cb36-20260906T0403Z.json
+.agents/connector-triggers/drive-apply/m3-cp4c3-cb36-closeout-20260906T0412Z.json
