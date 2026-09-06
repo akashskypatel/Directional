@@ -1,0 +1,9 @@
+{
+  "turn": "M3-CP4c-3-TB31-EXEC",
+  "purpose": "artifact-only-selector-408-execution",
+  "artifact_id": 9982174864,
+  "source_sha": "90bf8430f54c8b81fb90a6bda820cf8edebce6e9",
+  "selector_count": 408,
+  "runtimeExecution": true,
+  "benchmarkExecution": false
+}
