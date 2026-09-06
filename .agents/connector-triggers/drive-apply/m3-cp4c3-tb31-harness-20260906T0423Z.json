@@ -1,7 +1,0 @@
-{
-  "turn": "M3-CP4c-3-TB31-EXEC",
-  "purpose": "apply-artifact-only-execution-harness",
-  "patch_file_id": "197RFLEqj6iSOXwQ_B9SF_Squh87-EQt4",
-  "patch_sha256": "ae1fc9eb50ab4d4cb6066d9fd2231b611b41a23c67818bf88b1f2a50588a179e",
-  "base_sha": "d526179843f607687fa90b5595122b06725790fa"
-}

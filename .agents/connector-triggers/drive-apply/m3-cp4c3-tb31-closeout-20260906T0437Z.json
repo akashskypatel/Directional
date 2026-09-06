@@ -1,7 +1,0 @@
-{
-  "turn": "M3-CP4c-3-TB31-EXEC",
-  "purpose": "apply-exec-closeout-documentation",
-  "patch_file_id": "1ERLYKTnSGq6ARVXHfllIrd7ZvK_mOcaK",
-  "patch_sha256": "7ec9752e01d2a50fb916e9289f946f973576ec5a16e95327646db2188ce8d85a",
-  "base_sha": "d526179843f607687fa90b5595122b06725790fa"
-}
