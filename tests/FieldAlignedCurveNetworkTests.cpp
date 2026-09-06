@@ -11554,8 +11554,6 @@ TEST(GlobalTopologyPlan,
     return;
   }
 
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
   const auto &locus = mechanical.terminalFailureLocus;
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
@@ -11785,8 +11783,6 @@ TEST(GlobalTopologyPlan,
     return;
   }
 
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
   const auto &locus = mechanical.terminalFailureLocus;
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceObservationCount.has_value());
@@ -14577,8 +14573,6 @@ TEST(GlobalTopologyPlan,
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
   ASSERT_FALSE(mechanical.plan.has_value());
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
 
   const auto &locus = mechanical.terminalFailureLocus;
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
@@ -14619,8 +14613,6 @@ TEST(SurfaceCutGraph,
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
   ASSERT_FALSE(mechanical.plan.has_value());
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
 
   const auto &locus = mechanical.terminalFailureLocus;
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());

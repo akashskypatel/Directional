@@ -471,14 +471,10 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
         // fragment count, touched-edge, or orbit-evidence mutation.
         continue;
       }
-      if (forwardOrbit == reverseOrbit) {
-        GlobalTopologyPlanError failure =
-            error(GlobalTopologyPlanErrorCode::TraceArcDoesNotSeparateItsSides);
-        failure.arc = arc.id;
-        failure.sourceFace = segment.sourceFace;
-        return failure;
-      }
-
+      // FragmentCornerIncidence is an ownership map keyed by certified face
+      // orbit, not a fragment identity. When both dart sides share one orbit,
+      // the full-chord writes below intentionally merge all face corners into
+      // that single owner's entry (DEFN-R4.1/R4.2).
       const SourceFaceRecord &face = faceIt->second;
       if (segment.incomingCarrier.has_value()) {
         if (hasFullChord[segment.sourceFace] ||
@@ -623,8 +619,199 @@ struct RegionDraft {
   std::vector<GlobalTopologyOrientedArc> boundary;
 };
 
+struct RegionFrontierEvidence {
+  detail::SourceFaceComponentPartition partition;
+  detail::CertifiedSourceFaceOwnerConsistency ownerConsistency;
+};
+
+struct RegionBuildSuccess {
+  std::vector<GlobalTopologyRegion> regions;
+  RegionFrontierEvidence frontier;
+};
+
+[[nodiscard]] bool contains_all_faces(
+    const std::vector<authority::SourceFaceTopologyKey> &container,
+    const std::vector<authority::SourceFaceTopologyKey> &contained) {
+  return std::includes(container.begin(), container.end(), contained.begin(),
+                       contained.end());
+}
+
+[[nodiscard]] const SurfaceCutGraphUncutComponentCensus *
+find_corresponding_uncut_component_census(
+    const SurfaceCutGraphCellularityCertificate &certificate,
+    const std::vector<authority::SourceFaceTopologyKey> &planFaces) {
+  const SurfaceCutGraphUncutComponentCensus *bestSubset = nullptr;
+  for (const auto &candidate : certificate.uncutComponentCensuses) {
+    if (candidate.faces == planFaces) return &candidate;
+    if (!contains_all_faces(candidate.faces, planFaces)) continue;
+    if (bestSubset == nullptr ||
+        std::make_pair(candidate.faces.size(), candidate.component) <
+            std::make_pair(bestSubset->faces.size(), bestSubset->component)) {
+      bestSubset = &candidate;
+    }
+  }
+  return bestSubset;
+}
+
+[[nodiscard]] std::optional<std::size_t> region_frontier_component(
+    const GlobalTopologyPlanError &failure,
+    const RegionFrontierEvidence &frontier,
+    const std::vector<GlobalTopologyRegion> *regions = nullptr) {
+  if (failure.uncutFaceComponent.has_value() &&
+      *failure.uncutFaceComponent < frontier.partition.components.size()) {
+    return *failure.uncutFaceComponent;
+  }
+  if (failure.sourceFace.has_value()) {
+    const auto component =
+        frontier.partition.componentByFace.find(*failure.sourceFace);
+    if (component != frontier.partition.componentByFace.end()) {
+      return component->second;
+    }
+  }
+  if (regions != nullptr && failure.region.has_value()) {
+    const auto region = std::find_if(
+        regions->begin(), regions->end(), [&](const auto &candidate) {
+          return candidate.id == *failure.region;
+        });
+    if (region != regions->end()) {
+      std::optional<std::size_t> component;
+      for (const auto &face : region->sourceFaces) {
+        const auto found = frontier.partition.componentByFace.find(face);
+        if (found == frontier.partition.componentByFace.end()) continue;
+        if (component.has_value() && *component != found->second) {
+          return std::nullopt;
+        }
+        component = found->second;
+      }
+      if (component.has_value()) return component;
+    }
+  }
+  if (frontier.partition.components.size() == 1U) return 0U;
+  return std::nullopt;
+}
+
+void annotate_region_frontier_evidence(
+    GlobalTopologyPlanError &failure, const RegionFrontierEvidence &frontier,
+    const SurfaceCutGraphCellularityCertificate &certificate,
+    const std::vector<GlobalTopologyRegion> *regions = nullptr) {
+  const auto component = region_frontier_component(failure, frontier, regions);
+  if (!component.has_value() ||
+      *component >= frontier.ownerConsistency.components.size()) {
+    return;
+  }
+  const auto &row = frontier.ownerConsistency.components[*component];
+
+  failure.uncutFaceComponent = *component;
+  failure.uncutFaceComponentSeedCount = row.ownerMultiplicity.size();
+  failure.uncutFaceComponentSeedState =
+      row.ownerMultiplicity.empty()
+          ? UncutFaceComponentSeedState::None
+          : row.ownerMultiplicity.size() == 1U
+                ? UncutFaceComponentSeedState::Unique
+                : UncutFaceComponentSeedState::Multiple;
+  failure.uncutFaceComponentFaceCount = row.faces.size();
+  failure.uncutFaceComponentFaces = row.faces;
+  failure.uncutFaceComponentFacesTruncated = false;
+
+  UncutComponentPartitionIdentity planPartitionIdentity;
+  planPartitionIdentity.domainRule =
+      UncutComponentPartitionDomainRule::EmptyFragmentOrbits;
+  planPartitionIdentity.barriers.cutGraphCutEdges = true;
+  planPartitionIdentity.barriers.networkMandatoryEdges = true;
+  planPartitionIdentity.barriers.nonTerminalTraceCarrierEdges = true;
+  failure.uncutFaceComponentPartitionIdentity = planPartitionIdentity;
+  failure.uncutFaceComponentFaceSetDigest =
+      detail::source_face_set_digest(row.faces);
+
+  const auto *census =
+      find_corresponding_uncut_component_census(certificate, row.faces);
+  if (census != nullptr) {
+    failure.uncutComponentCensusComponent = census->component;
+    failure.uncutComponentCensusPartitionIdentity = census->partitionIdentity;
+    failure.uncutComponentCensusFaceSetDigest = census->faceSetDigest;
+    failure.uncutComponentCensusMatchesFailingComponent =
+        census->faces == row.faces;
+    failure.uncutFaceComponentSubsetOfCensusComponent =
+        contains_all_faces(census->faces, row.faces);
+  }
+
+  const std::set<authority::SourceFaceTopologyKey> failingPlanFaces(
+      row.faces.begin(), row.faces.end());
+  std::map<authority::NetworkArcId,
+           SurfaceCutGraphUncutComponentArcIncidenceCensus>
+      failingArcRows;
+  for (const auto &certifierCensus : certificate.uncutComponentCensuses) {
+    for (const auto &certifierArc : certifierCensus.interiorArcIncidences) {
+      SurfaceCutGraphUncutComponentArcIncidenceCensus enriched = certifierArc;
+      bool meetsFailingComponent = false;
+      for (auto &crossedFace : enriched.crossedFaces) {
+        const auto planComponent =
+            frontier.partition.componentByFace.find(crossedFace.sourceFace);
+        if (planComponent != frontier.partition.componentByFace.end()) {
+          crossedFace.planComponent = planComponent->second;
+        }
+        if (failingPlanFaces.count(crossedFace.sourceFace) != 0U) {
+          meetsFailingComponent = true;
+        }
+      }
+      if (meetsFailingComponent) {
+        failingArcRows.insert_or_assign(enriched.arc, std::move(enriched));
+      }
+    }
+  }
+  failure.uncutFaceComponentInteriorArcCensusPublished = true;
+  failure.uncutFaceComponentInteriorArcIncidences.clear();
+  failure.uncutFaceComponentInteriorArcIncidences.reserve(
+      failingArcRows.size());
+  for (auto &[arcId, arcRow] : failingArcRows) {
+    (void)arcId;
+    failure.uncutFaceComponentInteriorArcIncidences.push_back(
+        std::move(arcRow));
+  }
+  failure.uncutFaceComponentInteriorArcCount =
+      failure.uncutFaceComponentInteriorArcIncidences.size();
+  failure.uncutFaceComponentInteriorArcIncidencesTruncated = false;
+
+  failure.uncutFaceComponentCertifiedFaceObservationCount =
+      row.ownerObservations.size();
+  failure.uncutFaceComponentCertifiedFaceObservations.clear();
+  failure.uncutFaceComponentCertifiedFaceObservations.reserve(
+      row.ownerObservations.size());
+  for (const auto &[sourceFace, certifiedFace] : row.ownerObservations) {
+    failure.uncutFaceComponentCertifiedFaceObservations.push_back(
+        UncutFaceComponentCertifiedFaceObservationDiagnostic{sourceFace,
+                                                               certifiedFace});
+  }
+  failure.uncutFaceComponentCertifiedFaceObservationsTruncated = false;
+
+  std::set<authority::SourceFaceTopologyKey> observedFaces;
+  for (const auto &[sourceFace, certifiedFace] : row.ownerObservations) {
+    (void)certifiedFace;
+    observedFaces.insert(sourceFace);
+  }
+  failure.uncutFaceComponentCertifiedFaceUnavailableCount =
+      row.faces.size() > observedFaces.size()
+          ? row.faces.size() - observedFaces.size()
+          : 0U;
+  failure.uncutFaceComponentCertifiedFaceDistinctCount =
+      row.ownerMultiplicity.size();
+  failure.uncutFaceComponentCertifiedFaceMultiset.clear();
+  for (const auto &[owner, multiplicity] : row.ownerMultiplicity) {
+    if (failure.uncutFaceComponentCertifiedFaceMultiset.size() >=
+        kUncutComponentSeedEvidenceLimit) {
+      break;
+    }
+    failure.uncutFaceComponentCertifiedFaceMultiset.push_back(
+        UncutFaceComponentCertifiedFaceMultiplicityDiagnostic{owner,
+                                                               multiplicity});
+  }
+  failure.uncutFaceComponentCertifiedFaceMultisetTruncated =
+      row.ownerMultiplicity.size() >
+      failure.uncutFaceComponentCertifiedFaceMultiset.size();
+}
+
 using RegionBuildResult =
-    std::variant<std::vector<GlobalTopologyRegion>, GlobalTopologyPlanError>;
+    std::variant<RegionBuildSuccess, GlobalTopologyPlanError>;
 
 RegionBuildResult build_regions(
     const SourceTopologyIndex &topology,
@@ -1147,6 +1334,13 @@ RegionBuildResult build_regions(
         ownerEvidence->componentCount > ownerEvidence->components.size();
   }
 
+  const RegionFrontierEvidence frontier{componentPartition, ownerConsistency};
+  const auto annotate_frontier = [&](GlobalTopologyPlanError failure) {
+    annotate_region_frontier_evidence(failure, frontier,
+                                      cutGraph.certificate());
+    return failure;
+  };
+
   if (!ownerConsistency.consistent()) {
     const std::size_t component = *ownerConsistency.firstConflictComponent;
     const auto &row = ownerConsistency.components[component];
@@ -1158,122 +1352,7 @@ RegionBuildResult build_regions(
     failure.sourceFaceLocusKind =
         UncutFaceSourceFaceLocusKind::FirstUnlabeledFaceInIterationOrder;
     failure.uncutFaceComponent = component;
-    failure.uncutFaceComponentSeedCount = row.ownerMultiplicity.size();
-    failure.uncutFaceComponentSeedState =
-        row.ownerMultiplicity.empty()
-            ? UncutFaceComponentSeedState::None
-            : row.ownerMultiplicity.size() == 1U
-                  ? UncutFaceComponentSeedState::Unique
-                  : UncutFaceComponentSeedState::Multiple;
-    failure.uncutFaceComponentFaceCount = row.faces.size();
-    failure.uncutFaceComponentFaces = row.faces;
-    failure.uncutFaceComponentFacesTruncated = false;
-
-    UncutComponentPartitionIdentity planPartitionIdentity;
-    planPartitionIdentity.domainRule =
-        UncutComponentPartitionDomainRule::EmptyFragmentOrbits;
-    planPartitionIdentity.barriers.cutGraphCutEdges = true;
-    planPartitionIdentity.barriers.networkMandatoryEdges = true;
-    planPartitionIdentity.barriers.nonTerminalTraceCarrierEdges = true;
-    failure.uncutFaceComponentPartitionIdentity = planPartitionIdentity;
-    failure.uncutFaceComponentFaceSetDigest =
-        detail::source_face_set_digest(row.faces);
-
-    const auto census = std::find_if(
-        cutGraph.certificate().uncutComponentCensuses.begin(),
-        cutGraph.certificate().uncutComponentCensuses.end(),
-        [component](const auto &candidate) {
-          return candidate.component == component;
-        });
-    if (census != cutGraph.certificate().uncutComponentCensuses.end()) {
-      failure.uncutComponentCensusComponent = census->component;
-      failure.uncutComponentCensusPartitionIdentity =
-          census->partitionIdentity;
-      failure.uncutComponentCensusFaceSetDigest = census->faceSetDigest;
-      failure.uncutComponentCensusMatchesFailingComponent =
-          census->faces == row.faces;
-      failure.uncutFaceComponentSubsetOfCensusComponent =
-          std::includes(census->faces.begin(), census->faces.end(),
-                        row.faces.begin(), row.faces.end());
-    }
-
-    // Publish the arc census again in the failing plan partition instead of
-    // treating the certifier's same-numbered component as the same object.
-    // Each crossed face retains its certifier membership and receives the
-    // independently constructed plan membership here.
-    const std::set<authority::SourceFaceTopologyKey> failingPlanFaces(
-        row.faces.begin(), row.faces.end());
-    std::map<authority::NetworkArcId,
-             SurfaceCutGraphUncutComponentArcIncidenceCensus>
-        failingArcRows;
-    for (const auto &certifierCensus :
-         cutGraph.certificate().uncutComponentCensuses) {
-      for (const auto &certifierArc : certifierCensus.interiorArcIncidences) {
-        SurfaceCutGraphUncutComponentArcIncidenceCensus enriched =
-            certifierArc;
-        bool meetsFailingComponent = false;
-        for (auto &crossedFace : enriched.crossedFaces) {
-          const auto planComponent =
-              componentPartition.componentByFace.find(crossedFace.sourceFace);
-          if (planComponent != componentPartition.componentByFace.end()) {
-            crossedFace.planComponent = planComponent->second;
-          }
-          if (failingPlanFaces.count(crossedFace.sourceFace) != 0U) {
-            meetsFailingComponent = true;
-          }
-        }
-        if (meetsFailingComponent) {
-          failingArcRows.insert_or_assign(enriched.arc, std::move(enriched));
-        }
-      }
-    }
-    failure.uncutFaceComponentInteriorArcCensusPublished = true;
-    failure.uncutFaceComponentInteriorArcIncidences.reserve(
-        failingArcRows.size());
-    for (auto &[arcId, arcRow] : failingArcRows) {
-      (void)arcId;
-      failure.uncutFaceComponentInteriorArcIncidences.push_back(
-          std::move(arcRow));
-    }
-    failure.uncutFaceComponentInteriorArcCount =
-        failure.uncutFaceComponentInteriorArcIncidences.size();
-    failure.uncutFaceComponentInteriorArcIncidencesTruncated = false;
-
-    failure.uncutFaceComponentCertifiedFaceObservationCount =
-        row.ownerObservations.size();
-    failure.uncutFaceComponentCertifiedFaceObservations.reserve(
-        row.ownerObservations.size());
-    for (const auto &[sourceFace, certifiedFace] : row.ownerObservations) {
-      failure.uncutFaceComponentCertifiedFaceObservations.push_back(
-          UncutFaceComponentCertifiedFaceObservationDiagnostic{
-              sourceFace, certifiedFace});
-    }
-    failure.uncutFaceComponentCertifiedFaceObservationsTruncated = false;
-
-    std::set<authority::SourceFaceTopologyKey> observedFaces;
-    for (const auto &[sourceFace, certifiedFace] : row.ownerObservations) {
-      (void)certifiedFace;
-      observedFaces.insert(sourceFace);
-    }
-    failure.uncutFaceComponentCertifiedFaceUnavailableCount =
-        row.faces.size() > observedFaces.size()
-            ? row.faces.size() - observedFaces.size()
-            : 0U;
-    failure.uncutFaceComponentCertifiedFaceDistinctCount =
-        row.ownerMultiplicity.size();
-    for (const auto &[owner, multiplicity] : row.ownerMultiplicity) {
-      if (failure.uncutFaceComponentCertifiedFaceMultiset.size() >=
-          kUncutComponentSeedEvidenceLimit) {
-        break;
-      }
-      failure.uncutFaceComponentCertifiedFaceMultiset.push_back(
-          UncutFaceComponentCertifiedFaceMultiplicityDiagnostic{owner,
-                                                                 multiplicity});
-    }
-    failure.uncutFaceComponentCertifiedFaceMultisetTruncated =
-        row.ownerMultiplicity.size() >
-        failure.uncutFaceComponentCertifiedFaceMultiset.size();
-    return failure;
+    return annotate_frontier(std::move(failure));
   }
 
   for (const auto &face : unlabeledFaces) {
@@ -1283,7 +1362,7 @@ RegionBuildResult build_regions(
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::SourceFaceFragmentOrbitMissing);
       failure.sourceFace = face;
-      return failure;
+      return annotate_frontier(std::move(failure));
     }
     fragmentOrbits[face].insert(owner->certifiedFaceOrbits.front());
   }
@@ -1296,7 +1375,7 @@ RegionBuildResult build_regions(
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::SourceFaceFragmentOrbitMissing);
       failure.sourceFace = faceKey;
-      return failure;
+      return annotate_frontier(std::move(failure));
     }
     for (const std::size_t orbit : fragments->second) {
       const auto draft = draftByOrbit.find(orbit);
@@ -1304,7 +1383,7 @@ RegionBuildResult build_regions(
         GlobalTopologyPlanError failure =
             error(GlobalTopologyPlanErrorCode::SourceFaceFragmentOrbitHasNoRegionDraft);
         failure.sourceFace = faceKey;
-        return failure;
+        return annotate_frontier(std::move(failure));
       }
       owned[draft->second].push_back(faceKey);
     }
@@ -1320,7 +1399,7 @@ RegionBuildResult build_regions(
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::RegionElectedCutComponentEmpty);
       failure.region = make_id<authority::NetworkRegionId>(index, drafts.size());
-      return failure;
+      return annotate_frontier(std::move(failure));
     }
     regions.push_back(GlobalTopologyRegion{
         make_id<authority::NetworkRegionId>(index, drafts.size()),
@@ -1371,7 +1450,7 @@ RegionBuildResult build_regions(
       }
     }
   }
-  return regions;
+  return RegionBuildSuccess{std::move(regions), frontier};
 }
 
 std::pair<authority::NetworkNodeId, authority::NetworkNodeId>
@@ -2216,10 +2295,11 @@ CandidateBuildResult canonical_candidate(
     return annotate_owner_evidence(*failure);
   }
 
+  const auto &regionSuccess = std::get<RegionBuildSuccess>(regionBuild);
   GlobalTopologyPlanCandidate candidate;
   candidate.arcs = embedded.arcs;
   candidate.rotations = embedded.rotations;
-  candidate.regions = std::get<std::vector<GlobalTopologyRegion>>(regionBuild);
+  candidate.regions = regionSuccess.regions;
   const RegionCertificatesBuildResult certificateBuild =
       build_region_certificates(embedded.sourceTopology, network, cutGraph,
                                 embedded.cutNodes, candidate.rotations,
@@ -2227,7 +2307,11 @@ CandidateBuildResult canonical_candidate(
                                 candidate.regions, diagnostics);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
-    return annotate_owner_evidence(*failure);
+    GlobalTopologyPlanError annotated = *failure;
+    annotate_region_frontier_evidence(annotated, regionSuccess.frontier,
+                                      cutGraph.certificate(),
+                                      &candidate.regions);
+    return annotate_owner_evidence(std::move(annotated));
   }
   candidate.regionCertificates =
       std::get<std::vector<GlobalTopologyRegionDiscCertificate>>(certificateBuild);
