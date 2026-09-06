@@ -1,3 +1,30 @@
+## 2026-09-06 — `M3-CP4c-3-TB32-EXEC`: artifact-only runtime mechanically valid; required-green rows remain raw RED; REV frozen next
+
+Artifact-only Test + Benchmark execution only; **no compile, rebuild, repair, source/test/fixture/selector mutation,
+generated discovery or benchmark execution**. Immutable CB37 package `9983643195`, exact source
+`7f63b5f41a0ca72f0b984ec4ee42d11f74775719`, selector 408 unchanged at
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
+
+Run/job `34024893763 / 101464028080` completed successfully. Result artifact `9986786215`, provider/download digest
+`be70cc9fa0531a3438d13a31425545b61f13336baa6f1bdbb0ca3526b0f8fd6f`; log artifact `9986786399`, digest
+`3fbcba8f76982590f9a79935844f20ff63b68bfe4446faa7ecd1a1e551a7e092`. All **408/408** rows selected exactly
+one test, zero timeouts, accepted **1–365 = 365/365 PASS**. Package/source/execution-view byte+mode censuses are
+identical pre/post; all build/repair/discovery/benchmark/mutation flags are false.
+
+Raw ledger is **397 PASS / 11 RED**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. 366/367 both expose
+`RegionBoundaryNotSingleWalk`; zero raw logs contain `TraceArcDoesNotSeparateItsSides` or
+`UncutFaceComponentOrbitSeedNotUnique`. Required-green 390/393/406/407 remain raw RED; credibility rows
+368/369/370/374/398 remain raw RED. These are review inputs only; EXEC makes no root-cause/candidate/accounting
+classification. Semantic runtime authority therefore remains TB31 and stable accounting stays **44 / 14 / 30**,
+debt **5**, reported semantic packages **97** until TB32-REV.
+
+A label-only orchestration quirk is preserved in raw evidence: `baseline-authority.txt` says
+`TB32 run=34011402843` after deterministic historical-label renaming. That numeric run is the TB31 baseline; the
+actual TB32 run is independently recorded as `34024893763`. No semantic rerun was performed.
+
+**Exact successor: `M3-CP4c-3-TB32-REV`**, evidence-only on artifacts `9986786215` / `9986786399`. No new runtime or
+compile is authorized.
+
 ## 2026-09-06 — `M3-CP4c-3-CB37`: DEFN-R4 implemented; compile green; TB32-EXEC frozen next
 
 Code + Build only; **no Directional runtime or benchmark executed**. Exact semantic/evidence source

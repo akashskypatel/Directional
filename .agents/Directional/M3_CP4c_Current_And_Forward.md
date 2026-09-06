@@ -10,61 +10,55 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-06** at `M3-CP4c-3-CB37` closeout.
+Last updated **2026-09-06** at `M3-CP4c-3-TB32-EXEC` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB31` remains the current valid semantic runtime authority.** Selector **408**, **397 PASS / 11 RED**,
-accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. CB37 has not executed
-runtime. Certified ownership therefore remains last-runtime **300 established / 0 unavailable / 0 conflicting**.
+**`M3-CP4c-3-TB31` remains the current valid semantic runtime authority pending TB32-REV.** Selector **408**,
+**397 PASS / 11 RED**, accepted **1–365 = 365/365**, RED
+`[366,367,368,369,370,374,390,393,398,406,407]`, certified ownership **300 established / 0 unavailable / 0
+conflicting**. TB32-EXEC is mechanically valid raw evidence only and has not been semantically promoted.
 
-**CB37 is compile-green.** Exact evidence source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`; compile run
-`34014992328`; owner precompile job `101437131130` SUCCESS; package job `101437310546` SUCCESS; immutable package
-artifact `9983643195`, provider digest `75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f`;
-packaged source SHA-256 `cae8e29946c5e9dfea1a49070e0d8721bc17fb53dba54bb6c66188347560d3fa`; GMP/GMPXX linked;
-root checksums PASS; source status clean; `runtimeExecution=false`. Selector 408 stayed byte-identical.
+**TB32-EXEC is complete.** Run/job `34024893763 / 101464028080`; immutable result artifact `9986786215`, digest
+`be70cc9fa0531a3438d13a31425545b61f13336baa6f1bdbb0ca3526b0f8fd6f`; log artifact `9986786399`, digest
+`3fbcba8f76982590f9a79935844f20ff63b68bfe4446faa7ecd1a1e551a7e092`. All 408 rows selected exactly once,
+accepted 365/365, zero timeouts, all byte+mode censuses equal, and all forbidden build/mutation/benchmark flags false.
 
-CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, reported semantic packages **97**.
+Raw ledger: **397 PASS / 11 RED**, same RED set as TB31. 366/367 now expose `RegionBoundaryNotSingleWalk`; no raw
+log contains `TraceArcDoesNotSeparateItsSides` or `UncutFaceComponentOrbitSeedNotUnique`; required-green
+390/393/406/407 remain raw RED. These are review inputs only.
 
-## 2. Part VIII implementation is complete; runtime proof is pending
+CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, reported semantic packages **97** until
+TB32-REV adjudicates the immutable evidence.
 
-CB37 implements DEFN-R4 CS1-CS5:
+## 2. Part VIII implementation has runtime evidence; semantic adjudication is pending
 
-- `FragmentCornerIncidence` remains an ownership map; equal-orbit full-chord sides now intentionally accumulate
-  into one owning-orbit entry instead of emitting `TraceArcDoesNotSeparateItsSides`. Enum/string declaration stays.
-- existing frontier fields are now populated on region-construction/certification failures through a shared private
-  annotation path. Correspondence between the plan and certifier partitions is derived by face-set relation, never
-  by equal numeric component index.
-- ordinals 390/393/406/407 retain all evidence they legitimately own but no longer pin the incidental terminal
-  detail code. Names, fixtures, ordinals, gating membership and selector bytes are unchanged.
-- source-face ownership was not reopened; 368/369/370/374/398 are untouched; the two partitions remain separate;
-  no new diagnostic contract was added.
+CB37 implementation remains unchanged and compile-green at source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`,
+artifact `9983643195`. TB32-EXEC supplied the first runtime after DEFN-R4/CB37 without rebuilding or mutating it.
+Mechanically:
 
-Accepted-prefix safety is by construction: terminal-slit handling and unequal-orbit behavior are unchanged; the
-only removed stop was the contradictory equal-orbit full-chord rejection; the same function's ray path already
-accepts that ownership relation.
+- the retired `TraceArcDoesNotSeparateItsSides` string is absent from all 408 raw logs;
+- the old `UncutFaceComponentOrbitSeedNotUnique` stop is absent from all 408 raw logs;
+- 366/367 both remain RED at `RegionBoundaryNotSingleWalk`;
+- 390/393/406/407 remain RED despite being frozen required-green identities;
+- 368/369/370/374/398 remain RED as the unchanged credibility surfaces;
+- accepted 1–365 remain 365/365 PASS and package/source/execution-view bytes/modes are unchanged.
 
-## 3. Exact next subturn — `M3-CP4c-3-TB32-EXEC`
+No candidate is closed, re-owned or re-scoped by EXEC. TB32-REV owns all semantic interpretation.
 
-Execute immutable package `9983643195` under
-`Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md`. No rebuild, repair, source/test/fixture/selector
-mutation, generated discovery or benchmark.
+## 3. Exact next subturn — `M3-CP4c-3-TB32-REV`
 
-Required outcome/evidence:
+Review immutable TB32 result/log artifacts `9986786215` / `9986786399` only. No new runtime, compile, rebuild,
+repair, source/test/fixture/selector mutation, generated discovery or benchmark is permitted.
 
-- selector 408 executes exactly once per identity; accepted 1–365 remain 365/365;
-- 390/393/406/407 return PASS;
-- 368/369/370/374/398 stay RED as credibility rows not owned by CB37;
-- 366/367 do not emit `TraceArcDoesNotSeparateItsSides`;
-- the old 189/1/`[0]` `UncutFaceComponentOrbitSeedNotUnique` stop does not reproduce;
-- complete plan/certifier frontier evidence and ownership census are preserved;
-- package/source/execution-view bytes and modes remain unchanged.
-
-TB32-EXEC records raw evidence only. Exact successor after a mechanically valid EXEC is `M3-CP4c-3-TB32-REV`,
-which performs evidence-only semantic review and no runtime or implementation mutation. Independent review/planning
-is a separate outsourced boundary; stop the implementation loop there.
+REV must independently verify provenance and the 408-row mechanical contract, adjudicate the two frozen R4
+falsifiers, determine why required-green 390/393/406/407 remain RED without weakening their contracts, classify the
+366/367 `RegionBoundaryNotSingleWalk` locus, preserve existing owners for 368/369/370/374/398 unless evidence proves
+otherwise, update durable regression accounting only where justified, update `ORIENTATION.md`, perform mandatory
+REVIEW consolidation, and freeze the next boundary. If semantic RED remains, route to separately outsourced
+independent `REVIEW + PLAN` and stop the implementation loop there.
 
 ## 4. Open candidates
 
@@ -72,9 +66,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB31-REV-CAND-01` | **IMPLEMENTED BY CB37 / AWAITING TB32** — ownership-map semantics are implemented; the equal-orbit guard emission is retired. Runtime owner: TB32. |
-| `M3-CP4c3-TB31-REV-CAND-02` | **IMPLEMENTED BY CB37 / AWAITING TB32** — 390/393/406/407 assert their durable evidence without pinning one terminal code. Runtime owner: TB32. |
-| `M3-CP4c3-TB31-REV-CAND-03` | **IMPLEMENTED BY CB37 / AWAITING TB32** — frontier evidence publication is generalized across region-construction/certification failure loci. Runtime owner: TB32. |
+| `M3-CP4c3-TB31-REV-CAND-01` | **IMPLEMENTED BY CB37 / TB32 RAW EVIDENCE CAPTURED / AWAITING TB32-REV** — ownership-map semantics are implemented; the equal-orbit guard emission is retired. Semantic disposition owner: TB32-REV. |
+| `M3-CP4c3-TB31-REV-CAND-02` | **IMPLEMENTED BY CB37 / TB32 RAW EVIDENCE CAPTURED / AWAITING TB32-REV** — 390/393/406/407 assert their durable evidence without pinning one terminal code; all four remain raw RED. Semantic disposition owner: TB32-REV. |
+| `M3-CP4c3-TB31-REV-CAND-03` | **IMPLEMENTED BY CB37 / TB32 RAW EVIDENCE CAPTURED / AWAITING TB32-REV** — frontier evidence publication is generalized across region-construction/certification failure loci. Semantic disposition owner: TB32-REV. |
 | `M3-CP4c3-TB30-REV-CAND-02` | **NEW / ACTIVE / EVIDENCE SURFACE / NON-GATING** — the plan-side interior-arc census is a projection of the certifier's rows, so an arc that still cuts the plan's component but has left the certifier's uncut census is invisible to it. Not blocking CQ7. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **CORRECTED / RUNTIME-PROVED** — CB34's separating-arc barrier rule excludes the crossed faces and preserves equal-orbit slits; ordinal 408 passes on all three properties. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
@@ -172,17 +166,16 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, TB32-EXEC loads only the minimum current authority:
+After the durable start-of-turn checklist, TB32-REV loads only the minimum current authority:
 
-1. `ORIENTATION.md` — read first.
-2. `Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md` — authoritative immutable runtime plan.
-3. `Architecture_M3_CP4c3_CB37_Code_Build_Report.md` — exact source/package provenance and static safety argument.
-4. **this file** — current frontier and candidate ownership.
-5. `M3_CP4c_Frozen_Definitions.md` — Part VIII definition/falsification authority.
-6. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `LESSONS.md` plus workflow/retention/cleanup policies required by the start checklist.
+1. `ORIENTATION.md` — read first and update during REV.
+2. `Architecture_M3_CP4c3_TB32_EXEC_Report.md` — current immutable raw-evidence index.
+3. TB32 artifacts `9986786215` / `9986786399` — raw authority.
+4. `Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md` — frozen criteria.
+5. `Architecture_M3_CP4c3_CB37_Code_Build_Report.md` — exact package/source provenance.
+6. **this file**, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`,
+   `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md` and `LESSONS.md`.
+7. workflow/retention/cleanup policies required by the start checklist.
 
-Exact next is **`M3-CP4c-3-TB32-EXEC`** on immutable artifact `9983643195`. It executes selector 408 exactly as
-frozen, preserves raw evidence, performs no rebuild/repair/mutation and executes no benchmark. After mechanically
-valid EXEC evidence, exact next is **`M3-CP4c-3-TB32-REV`**. Source-face ownership remains closed and must not be
-re-opened.
+Exact next is **`M3-CP4c-3-TB32-REV`**, evidence-only. It performs no runtime or implementation mutation. Source-face
+ownership remains closed unless immutable evidence independently falsifies that settled fact.
