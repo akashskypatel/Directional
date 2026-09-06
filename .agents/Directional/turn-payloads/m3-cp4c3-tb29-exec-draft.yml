@@ -1,0 +1,186 @@
+name: M3 CP4c3 TB29 Artifact-Only EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-tb29-exec-20260905.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: m3-cp4c3-tb29-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb29-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-tb29-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize TB29 diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-tb29-exec-wrapper.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "turn=M3-CP4c-3-TB29-EXEC"
+            echo "runtime_boundary=artifact-only"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Materialize frozen TB29 harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-tb29-exec-wrapper.log"
+          exec > >(tee -a "$log") 2>&1
+          src='.agents/Directional/tools/m3_cp4c3_tb28_r3_harness.sh'
+          out="${RUNNER_TEMP}/m3_cp4c3_tb29_harness.sh"
+          test -f "$src"
+          python3 - "$src" "$out" <<'PY'
+          from pathlib import Path
+          import sys
+
+          src = Path(sys.argv[1])
+          out = Path(sys.argv[2])
+          text = src.read_text(encoding='utf-8')
+
+          replacements = [
+              ("ARTIFACT_ID=9975737868", "ARTIFACT_ID=9979639398"),
+              ("EXPECTED_ARTIFACT_NAME='m3-cp4c3-cb32-compile-result-33987769718'", "EXPECTED_ARTIFACT_NAME='m3-cp4c3-cb34-result-34001505322'"),
+              ("EXPECTED_PROVIDER_DIGEST='sha256:16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec'", "EXPECTED_PROVIDER_DIGEST='sha256:c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2'"),
+              ("EXPECTED_ZIP_SHA='16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec'", "EXPECTED_ZIP_SHA='c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2'"),
+              ("EXPECTED_SOURCE_SHA='098ac7d93ea203222dd0ac50cdb68667744f0fd4'", "EXPECTED_SOURCE_SHA='25ab3d55697598bde436d1ac811d71e6cf911f2e'\nEXPECTED_SOURCE_ARCHIVE_SHA='187d75cc76a4664c5fd2486b7e6b1b9bae5d7fe0a0e2a5d9be54c73a0885ff5e'"),
+              ("EXPECTED_407='9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae'", "EXPECTED_407='9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae'\nEXPECTED_408='2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6'"),
+              ('m3-cp4c3-tb28-r3', 'm3-cp4c3-tb29'),
+              ("(cd \"$PKG\" && sha256sum -c SHA256SUMS) | tee \"${RESULT}/sha256sums-check.txt\"", "[[ \"$(wc -l < \"$PKG/SHA256SUMS\")\" -eq 28 ]] || fail_orchestration 'root SHA256SUMS entry count mismatch'\n(cd \"$PKG\" && sha256sum -c SHA256SUMS) | tee \"${RESULT}/sha256sums-check.txt\""),
+              ("[[ -f \"$source_archive\" ]] || fail_orchestration 'source archive absent'", "[[ -f \"$source_archive\" ]] || fail_orchestration 'source archive absent'\n[[ \"$(sha_file \"$source_archive\")\" == \"$EXPECTED_SOURCE_ARCHIVE_SHA\" ]] || fail_orchestration 'source archive digest mismatch'"),
+              ("    407: '9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae',\n}", "    407: '9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae',\n    408: '2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6',\n}"),
+              ("for n in [397, 401, 403, 405, 406, 407]:", "for n in [397, 401, 403, 405, 406, 407, 408]:"),
+              ("[(397,401),(401,403),(403,405),(405,406),(406,407)]", "[(397,401),(401,403),(403,405),(405,406),(406,407),(407,408)]"),
+              ("for n in [365,397,401,403,405,406,407]:", "for n in [365,397,401,403,405,406,407,408]:"),
+              ("selector_prefix_chain=365<397<401<403<405<406<407", "selector_prefix_chain=365<397<401<403<405<406<407<408"),
+              ("Architecture_M3_CP4c3_Required_Green_Selector_407.txt", "Architecture_M3_CP4c3_Required_Green_Selector_408.txt"),
+              ("-eq 407 ]] || fail_orchestration 'identity map count mismatch'", "-eq 408 ]] || fail_orchestration 'identity map count mismatch'"),
+              ("if len(rows) != 407:", "if len(rows) != 408:"),
+              ("list(range(1, 408))", "list(range(1, 409))"),
+              ("ledger ordinal sequence is not exactly 1..407", "ledger ordinal sequence is not exactly 1..408"),
+              ("'total=407\\n'", "'total=408\\n'"),
+              ("for n in 366 367 398 404 406 407; do", "for n in 366 367 398 404 406 407 408; do"),
+              ("TB28_R3 ordinal=", "TB29 ordinal="),
+              ("TB28_R3_COMPLETE: immutable artifact-only selector407 execution complete; semantic interpretation deferred to TB28-R3 review.", "TB29_EXEC_COMPLETE: immutable artifact-only selector408 execution complete; semantic interpretation deferred to TB29-REV."),
+              ("CB33_PREFLIGHT_COMPLETE: package, executable routing, selection authority, and execution view verified; no Directional runtime executed.", "TB29_PREFLIGHT_COMPLETE: package, executable routing, selection authority, and execution view verified; no Directional runtime executed."),
+          ]
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'replacement anchor count {count}, expected 1: {old[:80]}')
+              text = text.replace(old, new, 1)
+          out.write_text(text, encoding='utf-8')
+          PY
+          bash -n "$out"
+          grep -Fq "Architecture_M3_CP4c3_Required_Green_Selector_408.txt" "$out"
+          grep -Fq "total=408" "$out"
+          grep -Fq "for n in 366 367 398 404 406 407 408" "$out"
+          sha256sum "$out" | tee "${RUNNER_TEMP}/m3-cp4c3-tb29-harness.sha256"
+
+      - name: Execute frozen TB29 artifact-only gate
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m3-cp4c3-tb29-exec-wrapper.log"
+          harness="${RUNNER_TEMP}/m3_cp4c3_tb29_harness.sh"
+          bash "$harness" --execute
+          code=$?
+          echo "harness_exit=${code}" | tee -a "$log"
+          echo "exit_code=${code}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Record final control source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m3-cp4c3-tb29-exec-wrapper.log"
+          {
+            echo "final_control_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)"
+            git status --short 2>&1 || true
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload TB29 result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb29-exec-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb29-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB29 diagnostic log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb29-exec-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/m3-cp4c3-tb29.log
+            ${{ runner.temp }}/m3-cp4c3-tb29-exec-wrapper.log
+            ${{ runner.temp }}/m3-cp4c3-tb29-harness.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Propagate orchestration failure
+        if: always()
+        env:
+          HARNESS_EXIT: ${{ steps.gate.outputs.exit_code }}
+        shell: bash
+        run: |
+          if [[ -z "${HARNESS_EXIT}" ]]; then
+            echo 'TB29 harness did not report an exit code.' >&2
+            exit 91
+          fi
+          if [[ "${HARNESS_EXIT}" != '0' ]]; then
+            echo "TB29 harness failed with orchestration exit ${HARNESS_EXIT}." >&2
+            exit "${HARNESS_EXIT}"
+          fi
