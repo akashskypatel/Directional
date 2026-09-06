@@ -1,0 +1,47 @@
+name: Agent CB37 Apply Closeout Docs
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb37-apply-docs.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-cb37-apply-docs
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb37-apply-docs.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      commit_run_file: false
+      label: cb37-apply-docs
+      trim_stale_comments: false
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 13-ZYjzc32DCIJGMDc5-gs9LiKtf_Qnln
+      patch_sha256: 5091c3aac6a4272165c3915992c5fca49080f2436a0972d779ef354dfd4464a1
+      base_sha: 0be969170ae2f361725c27322e9d22e8eb788038
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close CB37 and freeze TB32 artifact-only validation"
+    secrets: inherit
