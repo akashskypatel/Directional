@@ -1,0 +1,44 @@
+name: Agent TB34 Source Snapshot Caller
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb34-source-snapshot-20260906.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-tb34-source-snapshot
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb34-source-snapshot-caller.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb34-source-snapshot
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  snapshot:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: 593730ee25d605f3d100fbb4940e4d597025f1e0
+      artifact_prefix: tb34-source-snapshot
+      retention_days: 7
+    secrets: inherit
