@@ -1,3 +1,32 @@
+## M3-CP4c3-TB33-EXEC — artifact-only runtime intake — **MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB33_EXEC_Report.md`. Immutable CB38 artifact `9994997588`, source
+  `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`, selector 408. Run/job `34054234216 / 101543088114`; result/log
+  artifacts `9995528719 / 9995529075`. No configure, compile, relink, discovery, benchmark, repair or packaged-byte
+  mutation occurred.
+
+- **Mechanical ledger:** **401 PASS / 7 RED**, accepted **1–365 = 365/365 PASS**, RED
+  `[366,367,368,369,370,374,398]`, every row selected exactly one test, zero timeouts. Ledger SHA-256
+  `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`.
+
+- **Raw CT evidence:** 390/393/406/407 mechanically PASS; 366/367 remain at
+  `RegionBoundaryNotSingleWalk` with `regionFrontierFailureStage=RegionCertification`, complete labelled frontier
+  correspondence, and no legacy `uncutFaceComponent*` publication; both retired codes are absent from all 408 raw
+  logs; certified ownership remains **300 / 0 / 0**. `baseline-authority.txt` names executing run `34054234216`.
+  Failure-detail table SHA-256 is `2347c691275ada2cafd2b63606fce092d8c1429f4836279256fe7fddf57cf479`.
+  The EXEC report transcribes the exact retained failure text for every RED focused ordinal.
+
+- **Credibility rows:** 368/369/370/374/398 remain RED. EXEC does not adjudicate whether their exact carried loci are
+  semantically unchanged beyond preserving the raw files for review.
+
+- **Candidate/accounting rule:** no candidate closes in EXEC. The mechanically green 390/393/406/407 and the runtime
+  CT3/CT5/CT6 observations are evidence for independent TB33-REV, not semantic dispositions. Stable totals remain
+  **44 events / 14 categories / 30 recurrences**, debt **5**, semantic packages **98**. Current semantic runtime
+  authority remains TB32 until review.
+
+- **Exact successor:** independent `M3-CP4c-3-TB33-REV`, evidence-only. No new runtime, compile or corrective source
+  change is authorized before that review.
+
 ## M3-CP4c3-TB32-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / R4 FALSIFIERS HELD**
 
 - **Record:** `Architecture_M3_CP4c3_TB32_Independent_Review_Record.md`, measures **CT0–CT7**. Evidence-only: no

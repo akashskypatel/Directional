@@ -1,3 +1,24 @@
+## 2026-09-06 — `M3-CP4c-3-TB33-EXEC`: artifact-only selector408 mechanically 401/7; four retained witnesses recover; review required
+
+TB33-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB38 artifact
+`9994997588` / source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4` / selector 408. Run/job
+`34054234216 / 101543088114` executed all 408 identities exactly once with every row selected once, zero timeouts,
+accepted **365/365**, and raw aggregate **401 PASS / 7 RED** with
+`[366,367,368,369,370,374,398]`. Result/log artifacts are `9995528719 / 9995529075`.
+
+390/393/406/407 mechanically PASS under the CB38 cleared-stage contract. 366/367 remain at
+`RegionBoundaryNotSingleWalk`, publish `regionFrontierFailureStage=RegionCertification` with complete labelled
+plan↔certifier correspondence, and publish no legacy `uncutFaceComponent*` seed fields. Both retired failure codes
+remain absent from all 408 raw logs. Certified ownership remains **300/0/0**. `baseline-authority.txt` correctly
+names executing run `34054234216`; failure-detail table SHA-256 is
+`2347c691275ada2cafd2b63606fce092d8c1429f4836279256fe7fddf57cf479`, and the EXEC report transcribes exact
+failure text for every RED focused ordinal. Package/source/execution-view censuses are unchanged pre/post and all
+configure/compile/relink/discovery/benchmark/repair/mutation flags are false.
+
+EXEC makes no semantic promotion or stable-accounting change: TB32 remains current semantic runtime authority,
+stable accounting remains **44 / 14 / 30**, debt **5**, packages **98**. Exact next is independent
+`M3-CP4c-3-TB33-REV`; no new runtime or corrective implementation is authorized before review.
+
 ## 2026-09-06 — `M3-CP4c-3-CB38`: stage-labelled frontier evidence and reusable TB harness compile green
 
 CB38 is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic source

@@ -10,87 +10,54 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-06** at `M3-CP4c-3-CB38` closeout.
+Last updated **2026-09-06** at `M3-CP4c-3-TB33-EXEC` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB32` remains the current valid semantic runtime authority.** Selector **408**, **397 PASS / 11 RED**,
-accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, on immutable CB37 package
-`9983643195` / source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`. Run/job `34024893763 / 101464028080`; result/log
-`9986786215 / 9986786399`; certified ownership **300 established / 0 unavailable / 0 conflicting**.
+**`M3-CP4c-3-TB32` remains current valid semantic runtime authority until independent TB33-REV.** TB33-EXEC has now
+completed mechanically on immutable CB38 artifact `9994997588` / source
+`0d03edb07388c56b592a74e2e7fc5f3edde8cea4`: run/job `34054234216 / 101543088114`, result/log
+`9995528719 / 9995529075`, selector 408, **401 PASS / 7 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`.
 
-**CB38 is Code + Build GREEN and runtime-free.** Semantic source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4` implements CT3–CT6:
-typed frontier stage evidence, justified cleared-stage assertions for 390/393/406/407, a per-row failure-detail fingerprint, and a
-parameterized artifact-only harness whose `baseline-authority.txt` records the executing run. Authoritative GMP/GMPXX compile
-run/job `34052395109 / 101538234734` produced immutable artifact `9994997588`
-(`m3-cp4c3-cb38-result-34052395109`, SHA-256 `059f40350b0acdc885e77523668ff6b50708fc802d910b257ba278d54444f8d8`);
-source archive SHA-256 `092b3a5b81894ce15d1c767d41399fc72e65cd72f2400c0e7ff4c6970300c0e0`; root manifest **28/28 PASS**;
-`runtimeExecution=false`. Selector 408 remains byte-identical.
+Raw TB33 evidence: 390/393/406/407 PASS; 366/367 remain at `RegionBoundaryNotSingleWalk` with
+`regionFrontierFailureStage=RegionCertification`, complete labelled correspondence, and no legacy
+`uncutFaceComponent*` back-fill; both retired failure codes are absent across all 408 raw logs; certified ownership
+remains **300 / 0 / 0**; `baseline-authority.txt` names executing run `34054234216`; failure-detail table SHA-256 is
+`2347c691275ada2cafd2b63606fce092d8c1429f4836279256fe7fddf57cf479`. Package/source/execution-view censuses
+match pre/post and no configure/compile/relink/discovery/benchmark/repair/mutation occurred.
 
-CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, semantic packages **98**. Exact next is
-**`M3-CP4c-3-TB33-EXEC`** on the immutable CB38 artifact; the loop stops at independent `TB33-REV`.
+CP4c-3 remains **OPEN**. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **98**. Exact
+next is independent **`M3-CP4c-3-TB33-REV`**; no new runtime or corrective implementation is authorized before it.
 
-## 2. Both DEFN-R4 falsifiers held; the frontier advanced; CS3 did not
+## 2. TB33 raw evidence preserved for review
 
-**Upheld.** A complete search of all 408 raw logs finds **zero** emissions of `TraceArcDoesNotSeparateItsSides`
-(**R4.3**) and **zero** of `UncutFaceComponentOrbitSeedNotUnique` (**R4.1**). 366/367 now stop at
-**`RegionBoundaryNotSingleWalk`**, raised from `validate_single_boundary_walk` inside
-`build_region_certificates` — **strictly later** than the retired guard, the outcome CS6 expressly permitted.
-**Two guards cleared in two turns**, each with its falsifier stated before the build.
+The four retained witnesses 390/393/406/407 now mechanically PASS under the CB38 cleared-stage contract. EXEC does
+not close their candidates; independent review must decide whether the runtime evidence satisfies CT4 semantically.
 
-**CB37 landed CS1/CS2/CS3-letter/CS5**, verified in source: the guard is replaced by a comment recording
-DEFN-R4.1/R4.2; `annotate_region_frontier_evidence` is applied inside `build_regions` (`:1337–1342`) **and** to the
-region-certification failure (`:2310–2313`); the four failure-code assertions were removed and nothing else in the
-test file changed; selector 408 is byte-unchanged.
+366/367 do not regress earlier: both still terminate at `RegionBoundaryNotSingleWalk`, now with typed
+`RegionCertification` frontier authority. Their retained failure detail contains the complete six-component
+plan↔certifier correspondence and no legacy `uncutFaceComponent*` fields. The two retired codes remain absent.
 
-**CS3 is unmet, and DEFN-R4.5 was under-specified.** 390/393/406/407 did not return to PASS. Removing
-`ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique", …)` does not help when the next lines are
-`ASSERT_TRUE(locus.uncutFaceComponent.has_value())` and the remaining assertions are about **the uncut-component
-stage the plan no longer fails at**. DEFN-R3.7 set this precedent for ordinal 385 and it was not applied; ordinal
-390's existing `guard-cleared` early return is conditioned on `plan.has_value()`, which is **too strong**.
+The carried credibility rows 368/369/370/374/398 remain RED. Their exact failure text is preserved in
+`Architecture_M3_CP4c3_TB33_EXEC_Report.md`; EXEC does not reinterpret them.
 
-**Which assertion fails is not in the report** — the third consecutive turn on which the failing text for the
-plan's own focused ordinals was not transcribed. The two candidate causes imply different corrections, so this
-review declines to guess.
+CT5/CT6 provenance is mechanically present: all 408 rows have failure-detail files/digests, PASS files use canonical
+`PASS\\n`, the failure-detail table hashes to
+`2347c691275ada2cafd2b63606fce092d8c1429f4836279256fe7fddf57cf479`, and `baseline-authority.txt` names the
+executing TB33 run rather than a predecessor. CT7 is satisfied mechanically by the report's verbatim transcription
+for every RED ordinal in the focused index.
 
-**Two evidence findings.**
+## 3. Exact next turn — independent `M3-CP4c-3-TB33-REV`
 
-- **Back-filled stage evidence.** `region_frontier_component` resolves a component from `failure.sourceFace` or
-  `failure.region` when `uncutFaceComponent` is unset, and the annotator then populates the `uncutFaceComponent*`
-  fields — so a `RegionBoundaryNotSingleWalk` failure can report a component that did **not** fail. DEFN-R4.4 asked
-  for the digest and correspondence, not for the seed guard's own fields.
-- **The ledger digest is not a semantic fingerprint.** TB32's ledger SHA-256 is **byte-identical to TB31's**
-  (`6632f428…d563250b`) although every failure reason differs; the columns encode no failure detail. TB32 is
-  genuinely a new run — distinct run/job, package, source, artifacts and **all three censuses** — but its
-  provenance rests on those, not on the ledger hash.
+Evidence-only review. Consume `Architecture_M3_CP4c3_TB33_EXEC_Report.md` and immutable artifacts
+`9995528719 / 9995529075`. Execute no runtime, compile, package mutation, or corrective implementation.
 
-**Provenance note, adjudicated as cosmetic:** `baseline-authority.txt` records `TB32 run=<TB31 run>` because the
-harness was materialized by globally renaming TB31 labels. Every independent identifier is distinct and consistent,
-and EXEC disclosed it. It must not recur.
-
-## 3. Exact next turn — `M3-CP4c-3-TB33-EXEC`
-
-Artifact-only Test + Benchmark execution under `Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md`.
-Consume **only** immutable artifact `9994997588` from source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4` and the packaged
-parameterized harness. No configure, compile, relink, repair, generated discovery, benchmark execution, or packaged-byte mutation.
-
-The frozen runtime checks are:
-
-- selector 408 executes all rows exactly once; accepted **1–365 = 365/365 PASS**;
-- 390/393/406/407 are required GREEN under their justified cleared-stage contract;
-- any later-stage evidence is labelled `RegionConstruction` or `RegionCertification`, complete, and carries no legacy
-  `uncutFaceComponent*` back-fill;
-- `TraceArcDoesNotSeparateItsSides` and `UncutFaceComponentOrbitSeedNotUnique` remain absent from every raw log;
-- 366/367 must not move earlier than `RegionBoundaryNotSingleWalk`;
-- 368/369/370/374/398 remain untouched credibility surfaces and any colour/locus change is preserved for review;
-- `baseline-authority.txt` must name the **executing TB33 run**;
-- `failure-detail-digests.tsv` must cover all 408 rows, and the TB33 report must transcribe the exact retained failing
-  assertion/exception text for **every RED ordinal in the focused index**. Missing transcription makes the report incomplete.
-
-After TB33-EXEC closes its raw evidence, regression documentation, and cleanup, the exact next boundary is **independent
-`M3-CP4c-3-TB33-REV`**. The implementation/orchestration loop stops there.
+The review must adjudicate the 401/7 ledger, CT3–CT7, candidate states, and whether semantic authority can advance
+from TB32; update `ORIENTATION.md`; perform mandatory REVIEW document consolidation; and freeze exactly one
+successor. **The implementation/orchestration loop stops at this review boundary.**
 
 ## 4. Open candidates
 
@@ -99,11 +66,11 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | Candidate | State |
 |---|---|
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |
-| `M3-CP4c3-TB31-REV-CAND-02` | **IMPLEMENTED / GATING / AWAITING TB33** — CB38 gives the four retained witnesses a justified cleared-stage outcome while preserving their identity-owned assertions. Runtime proof is TB33. |
+| `M3-CP4c3-TB31-REV-CAND-02` | **RUNTIME EVIDENCE PRESENT / GATING / AWAITING TB33-REV** — CB38 gives the four retained witnesses a justified cleared-stage outcome while preserving their identity-owned assertions. Runtime proof is TB33. |
 | `M3-CP4c3-TB31-REV-CAND-03` | **CLOSED / IMPLEMENTED** — frontier evidence publishes at both annotation sites. Its **over-reach** is carried forward as `M3-CP4c3-TB32-REV-CAND-01` rather than left inside a closed candidate. |
-| `M3-CP4c3-TB32-REV-CAND-01` | **IMPLEMENTED / GATING / AWAITING TB33** — CB38 stage-labels frontier evidence and confines legacy `uncutFaceComponent*` to `UncutComponent`; TB33 must prove runtime publication. |
-| `M3-CP4c3-TB32-REV-CAND-02` | **IMPLEMENTED / EVIDENCE SURFACE / AWAITING TB33** — CB38 preserves ledger columns and adds per-row failure-detail files/digests; TB33 verifies runtime provenance. |
-| `M3-CP4c3-TB32-REV-CAND-03` | **IMPLEMENTED / ORCHESTRATION / AWAITING TB33** — CB38 adds one parameterized harness and writes the executing `${GITHUB_RUN_ID}`; TB33 must prove it does not inherit a predecessor run ID. |
+| `M3-CP4c3-TB32-REV-CAND-01` | **RUNTIME EVIDENCE PRESENT / GATING / AWAITING TB33-REV** — CB38 stage-labels frontier evidence and confines legacy `uncutFaceComponent*` to `UncutComponent`; TB33 must prove runtime publication. |
+| `M3-CP4c3-TB32-REV-CAND-02` | **RUNTIME EVIDENCE PRESENT / EVIDENCE SURFACE / AWAITING TB33-REV** — CB38 preserves ledger columns and adds per-row failure-detail files/digests; TB33 verifies runtime provenance. |
+| `M3-CP4c3-TB32-REV-CAND-03` | **RUNTIME EVIDENCE PRESENT / ORCHESTRATION / AWAITING TB33-REV** — CB38 adds one parameterized harness and writes the executing `${GITHUB_RUN_ID}`; TB33 must prove it does not inherit a predecessor run ID. |
 | `M3-CP4c3-TB30-REV-CAND-02` | **NEW / ACTIVE / EVIDENCE SURFACE / NON-GATING** — the plan-side interior-arc census is a projection of the certifier's rows, so an arc that still cuts the plan's component but has left the certifier's uncut census is invisible to it. Not blocking CQ7. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **CORRECTED / RUNTIME-PROVED** — CB34's separating-arc barrier rule excludes the crossed faces and preserves equal-orbit slits; ordinal 408 passes on all three properties. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
@@ -205,17 +172,18 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, TB33-EXEC loads only the minimum current authority:
+After the durable start-of-turn checklist, independent TB33-REV loads only the minimum current authority:
 
-1. `ORIENTATION.md` — read first.
+1. `ORIENTATION.md` — read first and update during this REVIEW turn.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_CB38_Code_Build_Report.md` — exact source/build/package authority and CT3–CT7 disposition.
-4. `Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md` — **the executable TB33 contract**.
-5. `Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` — the adjudication that froze CT3–CT7.
-6. `Architecture_M3_CP4c3_TB32_EXEC_Report.md` — current semantic runtime authority until TB33-REV.
-7. `M3_CP4c_Frozen_Definitions.md` — Part VIII operative; CB38 implements CT3's narrowing.
-8. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
-9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
+3. `Architecture_M3_CP4c3_TB33_EXEC_Report.md` — immutable raw TB33 execution evidence.
+4. `Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md` — frozen CT3–CT7 execution contract.
+5. `Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` — adjudication that froze CT3–CT7.
+6. `Architecture_M3_CP4c3_CB38_Code_Build_Report.md` — exact source/build/package authority.
+7. `Architecture_M3_CP4c3_TB32_EXEC_Report.md` — current semantic runtime authority until TB33-REV decides otherwise.
+8. `M3_CP4c_Frozen_Definitions.md` — Part VIII operative definitions.
+9. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
+10. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-Exact next is **`M3-CP4c-3-TB33-EXEC`** on artifact `9994997588`; after raw EXEC closeout the loop stops at
-**independent `M3-CP4c-3-TB33-REV`**.
+Exact next is **independent `M3-CP4c-3-TB33-REV`**. No new runtime, compile, or corrective implementation is
+authorized before it; the implementation/orchestration loop stops there.
