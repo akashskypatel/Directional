@@ -1,3 +1,15 @@
+## M3-CP4c3-TB34-EXEC — artifact-only runtime intake — **MECHANICALLY VALID / RAW HARD FALSIFIERS / SEMANTICALLY UNADJUDICATED / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB34_EXEC_Report.md`. Immutable CB39 artifact `9997560649`, source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector 409. Corrected run/job `34066225065 / 101575358433`; result/log artifacts `9999073820 / 9999074092`; no configure, compile, relink, discovery, benchmark, repair, or package/source/test/fixture/selector mutation occurred.
+- **Invalid attempt provenance:** `34066163471 / 101575197341` started no Directional runtime. Frozen artifact/source/harness byte authority verified, then an extra umask-sensitive bootstrap mode assertion failed. Diagnostic artifact `9998996499` preserves that orchestration-only attempt; the corrected retry removed only the control-plane assertion and reused the immutable package unchanged.
+- **Mechanical ledger:** **400 PASS / 9 RED**, RED `[312,366,367,368,369,370,374,398,409]`; all 409 rows present in order, every row `selected=1`, zero timeouts. Accepted prefix is **364/365**, with sole accepted-prefix RED **312**. Ledger SHA-256 `1704550db48f56657013b56dbde19820babfd708c3efb757a0f24b0ee800b1a0`; failure-detail table SHA-256 `829fc30926dcd3006065777936f64174dabf2a71278acf65b9c0d5413d21efda`. All three byte+mode censuses are equal pre/post.
+- **`M3-CP4c3-TB34-EXEC-CAND-01`: NEW / HARD-FALSIFIER INTAKE / NON-STABLE.** Accepted-prefix ordinal **312**, `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is RED. The retained assertion expected `RegionBoundaryNotSingleWalk` but observed `RotationSystemInconsistent`; `arc.has_value()` is false. TB33 accepted all 1–365, so this is raw new-regression evidence. EXEC does not decide product versus test ownership.
+- **`M3-CP4c3-TB34-EXEC-CAND-02`: NEW / HARD-FALSIFIER INTAKE / NON-STABLE.** Gating ordinal **409**, `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`, is RED before the intended `ArcChainBroken` assertion because `disjointRegions.has_value()` is false. The frozen plan required 409 PASS; EXEC therefore preserves a hard-falsifier result but does not classify the failed construction as fixture or product.
+- **Existing frontier raw movement:** 366/367 clear `RegionBoundaryNotSingleWalk`, remain at `regionFrontierFailureStage=RegionCertification`, publish `regionBoundaryWalkReason=ClosedBeforeEnd`, and reject later as `RegionEulerCharacteristicNotOne`. This is raw evidence for `M3-CP4c3-TB33-REV-CAND-01`, not semantic closure.
+- **Other frozen checks:** 390/393/404/406/407/408 PASS; zero raw logs contain either retired code; ordinal 385 publishes ownership **300 established / 0 unavailable / 0 conflicting**. Carried 368/369/370/374/398 remain RED and are preserved byte-for-byte for review.
+- **Candidate/accounting rule:** no candidate closes in EXEC. Current semantic runtime authority remains TB33 at 401 PASS / 7 RED, accepted 365/365. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, semantic packages **99**.
+- **Exact successor:** independent `M3-CP4c-3-TB34-REV`, evidence-only. No new runtime, compile, or corrective source change is authorized before that review.
+
 ## M3-CP4c3-CB39 — Code + Build closeout — **IMPLEMENTED / COMPILE-GREEN / RUNTIME-UNADJUDICATED / NON-STABLE**
 
 - **Candidate `M3-CP4c3-TB33-REV-CAND-01`: IMPLEMENTED / COMPILE-PROVED / runtime verdict pending TB34.** CB39
@@ -5758,30 +5770,19 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB33**: semantic source
+Current valid semantic runtime authority remains **M3-CP4c-3-TB33**: semantic source
 `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`, immutable CB38 package `9994997588`, selector 408, run/job
 `34054234216 / 101543088114`, **401 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,398]`. Result/log `9995528719 / 9995529075`; every row `selected=1`;
-`failure-detail-digests.tsv` table SHA-256 `2347c691275ada2cafd2b63606fce092d8c1429f4836279256fe7fddf57cf479`.
-Certified ownership remains **300 / 0 / 0** and **all nine** plan components have `seedCount=1 / Unique`. Stable
-totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **98**.
+`[366,367,368,369,370,374,398]`. Certified ownership remains **300 / 0 / 0** and all nine plan components
+remain uniquely seeded. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **99**.
 
-`M3-CP4c-3-TB33-REV` promoted that ledger and discharged **every** CT measure: stage labels present with no legacy
-`uncutFaceComponent*` back-fill; **390/393/406/407 returned to PASS** with selector 408 byte-unchanged; a per-row
-failure-detail digest table; a turn-agnostic harness with a correct `baseline-authority.txt`; and verbatim failure
-transcription for every RED focused ordinal. Both standing falsifiers held. **TB33's ledger hash is byte-identical
-to TB30's** - the second collision in three turns - which vindicates the failure-detail digest on the run that
-introduced it.
+TB34-EXEC mechanically executed immutable CB39 artifact `9997560649` from semantic source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6` with selector 409. Corrected run/job
+`34066225065 / 101575358433` produced raw **400 PASS / 9 RED**, accepted **364/365**, reds
+`[312,366,367,368,369,370,374,398,409]`. Ordinals 366/367 moved later to
+`RegionEulerCharacteristicNotOne` with `regionBoundaryWalkReason=ClosedBeforeEnd`; protected greens
+390/393/404/406/407/408 PASS; retired-code silence and ownership 300/0/0 held. Hard raw falsifiers are
+accepted-prefix ordinal 312 and gating ordinal 409. EXEC makes no semantic/root-cause adjudication.
 
-The frontier is `RegionBoundaryNotSingleWalk` at **arc 3**, stage `RegionCertification`.
-`validate_single_boundary_walk` rejects in-loop on `current == start || next.first != current`; the second disjunct
-is the real chain check and **the first rejects a walk that passes through its own start node** - the configuration
-this fixture's **ten terminal slits** produce, and one the certificate contradicts by publishing six disc faces with
-residual 0.
-
-**CB39 implemented and compile-proved that frozen correction** at semantic source
-`7711b9c2c20d284823911aa4ca067bd33244f4e6`; runtime remains unadjudicated. Exact next is artifact-only
-**`M3-CP4c-3-TB34-EXEC`** on immutable artifact `9997560649`, selector 409. The same pre-runtime falsifiers remain
-binding: if 366/367 still fail with reason `ArcChainBroken`, the diagnosis is wrong and the defect is upstream in
-boundary assembly; if ordinal 409 fails, the correction weakened the check. Protected greens and retired-code
-silence remain mandatory. EXEC must stop at independent `M3-CP4c-3-TB34-REV`.
+**Exact next is independent `M3-CP4c-3-TB34-REV`**, evidence-only. It must adjudicate the raw TB34 evidence,
+including 312/409 and the later 366/367 frontier, before any new runtime, compile, or corrective source change.

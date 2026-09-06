@@ -116,80 +116,56 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB34-EXEC` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB34-REV` — EXACT NEXT / independent evidence-only review
 
-`M3-CP4c-3-CB39` is **CLOSED / COMPILE-GREEN / RUNTIME-UNADJUDICATED**. Do not advance past TB34-EXEC in the
-implementation/orchestration loop; after mechanically complete EXEC closeout, stop at independent `TB34-REV`.
+`M3-CP4c-3-TB34-EXEC` is **CLOSED / MECHANICALLY VALID / RAW-RED / SEMANTICALLY UNADJUDICATED**. The implementation/orchestration loop stops here. Do not execute new runtime, compile, repair the package, or mutate product/test/fixture/selector/build semantics before independent review.
 
 ### Current semantic runtime authority
 
-- **`M3-CP4c-3-TB33`** — selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED
-  `[366,367,368,369,370,374,398]`; immutable CB38 package `9994997588`, source
-  `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`; run/job `34054234216 / 101543088114`; result/log
-  `9995528719 / 9995529075`; certified ownership **300 / 0 / 0** and all nine plan components uniquely seeded.
-- Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**.
+- **TB33 remains semantic authority:** selector 408, **401 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`, package `9994997588`, run/job `34054234216 / 101543088114`.
+- Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic package count **99**.
 
-### CB39 immutable compile authority
+### TB34 raw execution authority
 
-- Semantic evidence source: **`7711b9c2c20d284823911aa4ca067bd33244f4e6`**.
-- Compile run/job: **`34061111130 / 101561719362`**, terminal **success**.
-- Immutable result artifact: **`9997560649`**, `m3-cp4c3-cb39-result-34061111130`, provider/download ZIP SHA-256
-  `9a71fe17b789c94f70580116b822b3949dabecda7bf1d736afef10a1e6a9c3d2`.
-- Compile log artifact: **`9997560940`**, `m3-cp4c3-cb39-log-34061111130`, SHA-256
-  `6f11586812cf77cd601f0a2339b573d915d57cb2b1bfbda0cfecfa87066ed645`.
-- Packaged source archive SHA-256: `c0005445a764dda63a2fa2c6c30e512f26aabe84f944f23cde078046b4bf0fc7`.
-- Root `SHA256SUMS`: **28/28 PASS**. Eight standard targets compiled/linked.
-- `DIRECTIONAL_ENABLE_GMP=ON`; GMP/GMPXX discovery and authoritative link evidence include both `gmpxx` and `gmp`.
-- Command boundary: `runtimeExecution=false`, `turnBoundary=Code+Build-only`, `exactArithmeticBackend=GMP`.
-- Semantic package count is now **99**. No Directional runtime, test, benchmark, discovery, CLI/help/version, fuzzer,
-  or custom input executed in CB39.
+- Immutable CB39 package **`9997560649`** / source **`7711b9c2c20d284823911aa4ca067bd33244f4e6`** / selector **409**.
+- Corrected run/job **`34066225065 / 101575358433`**.
+- Result artifact **`9999073820`**, SHA-256 `348edc1d170b68d698acda32a39686e33e7a6a88608d1396cc91a85e3b7a34b7`.
+- Log artifact **`9999074092`**, SHA-256 `20bf7b7d8d4f61ae51e483b66a37d8a21f6febfb869e8e19b2b900d726efabde`.
+- Mechanical ledger **400 PASS / 9 RED**, RED `[312,366,367,368,369,370,374,398,409]`; accepted **364/365** because ordinal 312 is RED; every row selected exactly once; zero timeouts.
+- Ledger SHA-256 `1704550db48f56657013b56dbde19820babfd708c3efb757a0f24b0ee800b1a0`; failure-detail table SHA-256 `829fc30926dcd3006065777936f64174dabf2a71278acf65b9c0d5413d21efda`.
+- Package/source/execution-view byte+mode censuses are identical pre/post; configure/compile/relink/discovery/benchmark/repair/mutation flags all false.
 
-### CB39 implementation frozen for runtime
+### Raw hard-falsifier intake
 
-1. **CU4:** `validate_single_boundary_walk` no longer rejects merely because `current == start` occurs before all
-   incidences are consumed; `next.first != current` and final `current != start` rejection semantics are unchanged.
-2. **CU5:** typed reason `ArcChainBroken` / `ClosedBeforeEnd` / `WalkNotClosed`; `ClosedBeforeEnd` is evidence only
-   and never rejects.
-3. **CU6:** selector **409** is selector 408 plus exactly one gating identity,
-   `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`. Selector 409 SHA-256
-   `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; its first 408 lines hash exactly to
-   `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
+1. **Accepted-prefix 312 RED.** `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks` expected `RegionBoundaryNotSingleWalk` but observed `RotationSystemInconsistent`; no arc locus published. TB33 had 365/365 accepted PASS.
+2. **Gating 409 RED.** `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected` fails before its intended `ArcChainBroken` oracle because `disjointRegions.has_value()` is false. The frozen plan required PASS. EXEC does not decide fixture versus product ownership.
+3. **366/367 advance later:** both reject at `RegionEulerCharacteristicNotOne`, stage `RegionCertification`, with `regionBoundaryWalkReason=ClosedBeforeEnd`.
+4. **Protected greens hold:** 390/393/404/406/407/408 PASS. Both retired codes remain absent. Ownership remains **300/0/0** when published.
 
-### TB34-EXEC boundary
+The first caller attempt `34066163471 / 101575197341` is invalid-attempt provenance only: no Directional runtime started; frozen byte hashes verified; then an extra umask-sensitive bootstrap mode assertion failed. Corrected retry changed only that control-plane assertion and reused the immutable package unchanged.
 
-Execute `.agents/Directional/Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md` against artifact
-`9997560649` **without rebuilding**. Use the packaged `m3_cp4c3_artifact_only_harness.sh --execute` path. Preserve
-package/source/execution-view bytes and archived executable modes exactly. No package repair, `chmod`, configure,
-compile, relink, generated discovery, source/test/fixture/selector mutation, or benchmark execution is authorized.
+### Independent TB34-REV duties
 
-Hard falsifiers and required checks are frozen before runtime:
-
-- ordinal **409 must PASS**; otherwise the chain guard was weakened and CB39 is falsified;
-- **390/393/404/406/407/408 must remain PASS**;
-- accepted identities **1–365 must remain 365/365 PASS**;
-- neither retired code may reappear;
-- 366/367 may PASS or move to a later legitimate stage, but may not move earlier; if they remain
-  `RegionBoundaryNotSingleWalk` with reason `ArcChainBroken`, the TB33 diagnosis is falsified and upstream boundary
-  assembly becomes the owner;
-- whenever ownership publishes, require **300 established / 0 unavailable / 0 conflicting**;
-- all 409 identities must select exactly once, with zero timeout and complete failure-detail provenance;
-- package/source/execution-view byte+mode censuses must be identical pre/post.
-
-TB34-EXEC preserves raw facts only. It does not close candidates, alter stable accounting, or promote itself over
-TB33. Semantic/root-cause adjudication belongs exclusively to independent `M3-CP4c-3-TB34-REV`.
+- Read `ORIENTATION.md` first and update it before review closeout.
+- Consume `Architecture_M3_CP4c3_TB34_EXEC_Report.md`, raw result/log artifacts `9999073820 / 9999074092`, `Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md`, CB39 compile report, TB33 independent review record, `M3_CP4c_Frozen_Definitions.md`, selector manifest, tracker, TODO, changelog, and consolidated record.
+- Execute **no** runtime or compile and perform no package operation or product/test/fixture/selector/build mutation.
+- Adjudicate `M3-CP4c3-TB34-EXEC-CAND-01` (accepted-prefix 312), `M3-CP4c3-TB34-EXEC-CAND-02` (gating 409), and existing frontier candidate `M3-CP4c3-TB33-REV-CAND-01`.
+- Decide whether raw 366/367 later-stage evidence supports the CB39 diagnosis and whether 312/409 failures are product, fixture/test-authority, or another class; do not inherit EXEC labels as semantic verdicts.
+- Update semantic authority/stable accounting only if justified. Perform mandatory REVIEW document consolidation and freeze exactly one successor.
 
 ### Context Load Plan
 
-`load_next`: Test + Benchmark execution guidance.
+`load_next`: independent review guidance.
 
-0. `.agents/Directional/ORIENTATION.md` — cold-start context; do not update it in EXEC.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md` — **authoritative execution plan**.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB39_Code_Build_Report.md` — immutable compile/package authority.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII operative.
-5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 409 and frozen prefixes.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `.agents/Directional/CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
+0. `.agents/Directional/ORIENTATION.md`.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB34_EXEC_Report.md` — authoritative raw execution record.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md` — frozen contract.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB39_Code_Build_Report.md` — immutable package authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` — semantic authority entering TB34.
+6. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII operative.
+7. `.agents/Directional/Required_Green_Selector_Manifest.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `.agents/Directional/CHANGELOG.md`.
+8. `.agents/Directional/M3_CP4c_Consolidated_Record.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

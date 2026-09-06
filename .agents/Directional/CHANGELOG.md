@@ -1,3 +1,15 @@
+## 2026-09-06 — `M3-CP4c-3-TB34-EXEC`: selector409 mechanically 400/9; accepted-prefix 312 and gating 409 are raw hard falsifiers; review required
+
+Artifact-only runtime on immutable CB39 package `9997560649` / source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector 409. Corrected run/job `34066225065 / 101575358433` completed all **409/409** rows exactly once, zero timeouts, and preserved package/source/execution-view byte+mode censuses. Result/log artifacts `9999073820 / 9999074092` have SHA-256 `348edc1d170b68d698acda32a39686e33e7a6a88608d1396cc91a85e3b7a34b7 / 20bf7b7d8d4f61ae51e483b66a37d8a21f6febfb869e8e19b2b900d726efabde`. No configure, compile, relink, generated discovery, benchmark, repair, or source/test/fixture/selector mutation occurred.
+
+Raw aggregate is **400 PASS / 9 RED**, RED `[312,366,367,368,369,370,374,398,409]`. Accepted prefix is **364/365** because ordinal **312** regresses: it expected `RegionBoundaryNotSingleWalk` but observed `RotationSystemInconsistent` and no arc locus. New gating ordinal **409** is also RED, before its intended `ArcChainBroken` oracle because the constructed negative fails to produce `disjointRegions`. Both are frozen hard-falsifier intake for independent review, not semantic classifications in EXEC.
+
+366/367 advance later to `RegionEulerCharacteristicNotOne`, still at `RegionCertification`, with non-rejecting `regionBoundaryWalkReason=ClosedBeforeEnd`; 390/393/404/406/407/408 PASS; both retired codes remain absent; ownership is **300/0/0** when published. Failure-detail table SHA-256 is `829fc30926dcd3006065777936f64174dabf2a71278acf65b9c0d5413d21efda`, and the EXEC report transcribes every RED focused detail plus accepted-prefix 312.
+
+The first caller attempt `34066163471 / 101575197341` was orchestration-only and started no Directional runtime; an extra umask-sensitive bootstrap mode assertion failed after all immutable byte hashes verified. Corrected retry removed only that control-plane assertion.
+
+EXEC makes no semantic promotion or stable-accounting change: TB33 remains current semantic authority at 401 PASS / 7 RED, accepted 365/365; stable accounting remains **44 / 14 / 30**, debt **5**, packages **99**. Exact next is independent `M3-CP4c-3-TB34-REV`; no new runtime or corrective implementation is authorized before review.
+
 ## 2026-09-06 — `M3-CP4c-3-CB39`: pinched boundary-walk correction compiles; selector409/package99 frozen for TB34
 
 Code + Build only, **runtime-free**. Exact semantic source `7711b9c2c20d284823911aa4ca067bd33244f4e6` implements
