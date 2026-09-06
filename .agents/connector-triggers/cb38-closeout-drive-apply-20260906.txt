@@ -1,4 +1,0 @@
-purpose=apply verified M3-CP4c-3-CB38 closeout documentation patch
-base_sha=0d03edb07388c56b592a74e2e7fc5f3edde8cea4
-patch_sha256=c4c01cea4e5edf88eda53f315fe9a6a07463ff501170164debc92ec11356d6d2
-retry=0
