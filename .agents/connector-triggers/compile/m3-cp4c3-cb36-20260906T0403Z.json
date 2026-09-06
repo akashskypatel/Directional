@@ -1,0 +1,7 @@
+{
+  "turn": "M3-CP4c-3-CB36",
+  "purpose": "compile-only",
+  "source_sha": "90bf8430f54c8b81fb90a6bda820cf8edebce6e9",
+  "runtimeExecution": false,
+  "backend": "GMP"
+}
