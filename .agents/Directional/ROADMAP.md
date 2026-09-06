@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-06 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority is **`M3-CP4c-3-TB31`** on selector408 at **397 PASS / 11 RED**, accepted **365/365**. **The seed-uniqueness frontier open since TB19 is CLOSED** - component 0 moved from 191 faces / 3 seeds / `Multiple` / `[0,1,3]` to **189 / 1 / `Unique` / `[0]`**, with certified ownership total at **300 / 0 / 0**; both stated falsifiers were checked and neither reproduced. The frontier **moved** to **fragment identity**: 366/367 now stop at `TraceArcDoesNotSeparateItsSides` on arc 15, whose guard defends a `(face, orbit)` fragment key that is **not injective on a bridge** - a configuration this checkpoint has twice established is legitimate. **The defect is the key, not the check.** Four ordinals red only because they pin the failure code the product used to make. No stable event. **NEXT:** `M3-CP4c-3-DEFN-R4`, a **definition** turn deciding what identifies a fragment.)
+**Status date:** 2026-09-06 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority remains **`M3-CP4c-3-TB31`** on selector408 at **397 PASS / 11 RED**, accepted **365/365**, with the **seed frontier closed** - ownership total at 300/300 and component 0 unique at `[0]` over 189 faces. **`M3-CP4c-3-DEFN-R4` is frozen as Part VIII**: `FragmentCornerIncidence` is an **ownership map keyed by owning certified face**, not a fragment index; a bridge chord's single merged entry is **correct**; and `TraceArcDoesNotSeparateItsSides` is **RETIRED**, since its premise is refuted, it contradicts the separating-arc rule, and the same function already accepts equal orbits on its ray path. Established from source: the guard is **downstream** of the seed guard, so it became reachable only because the pipeline advanced. **NEXT:** `M3-CP4c-3-CB37` under **CS1-CS6**, runtime-free, selector 408 unchanged.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB31 runtime 397 PASS / 11 RED, accepted 365/365, selector408/package96; **seed frontier closed, ownership total**; DEFN-R4 next on fragment identity |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB31 runtime 397 PASS / 11 RED, accepted 365/365, selector408/package96; seed frontier closed; **DEFN-R4 frozen as Part VIII**; CB37 next under CS1–CS6 |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 408** | **OPEN.** Runtime authority TB31: **397 PASS / 11 RED**, accepted 365/365 on CB36 package96. **The seed frontier is closed** — certified ownership 300/300, component 0 unique at `[0]`. The frontier moved to **fragment identity**: `(face, orbit)` is not injective on a bridge arc. **NEXT:** `M3-CP4c-3-DEFN-R4`, a definition turn. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 408** | **OPEN.** Runtime authority TB31: **397 PASS / 11 RED**, accepted 365/365 on CB36 package96. The seed frontier is closed; **DEFN-R4 (Part VIII)** decided fragment ownership and retired `TraceArcDoesNotSeparateItsSides`. **NEXT:** `M3-CP4c-3-CB37` under CS1–CS6, then `M3-CP4c-3-TB32`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

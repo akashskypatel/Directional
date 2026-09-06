@@ -8,7 +8,8 @@ verbatim, with heading levels demoted by two so the parts nest under one hierarc
 **Supersession.** Within each checkpoint the revisions supersede in order — `DEFN` → `DEFN-R1` → `DEFN-R2`. The
 earlier revisions are retained because `DESIGN.md` and the regression tracker cite the amendment lineage directly,
 and because an amendment's provenance is part of its authority. **The operative definitions for CP4c-2 are Part
-III; for CP4c-3 they are Part VI together with Part VII, which supersedes it where they conflict.** Where an earlier part conflicts with a later revision of the same checkpoint,
+III; for CP4c-3 they are Part VI together with Parts VII and VIII, each superseding the earlier where they
+conflict.** Where an earlier part conflicts with a later revision of the same checkpoint,
 the later revision governs.
 
 This file is normative authority, not history. History lives in `M3_CP4c_Consolidated_Record.md`; current state and
@@ -27,6 +28,7 @@ Citations written against the former filenames resolve here:
 | `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` | Part V — M3-CP4c-3 DEFN-R1 |
 | `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` | Part VI — M3-CP4c-3 DEFN-R2 |
 | *(no prior file — authored in place)* | **Part VII — M3-CP4c-3 DEFN-R3** |
+| *(no prior file — authored in place)* | **Part VIII — M3-CP4c-3 DEFN-R4** |
 
 Section numbering inside each part is unchanged, so a citation such as "`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". Full text of the originals also remains in git history.
 
@@ -2792,5 +2794,171 @@ This is a definition turn: no runtime, no gate, **+0 stable events / +0 recurren
 remains **365/365**; CP4c-3 remains **OPEN**.
 
 **Exact next turn: `M3-CP4c-3-CB27` — Code + Build, runtime-free, GMP/GMPXX linked, under CG0–CG9.**
+
+---
+
+## Part VIII — M3-CP4c-3 DEFN-R4
+
+**Turn:** `M3-CP4c-3-DEFN-R4` — definition turn (absorbs REVIEW + PLAN).
+**Frozen owner:** CR6–CR8 of `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md`.
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+
+Runtime authority entering this turn: `M3-CP4c-3-TB31`, selector 408, **397 PASS / 11 RED**, accepted
+**1–365 = 365/365**, certified source-face ownership **300 established / 0 unavailable / 0 conflicting**, plan
+component 0 at **189 faces / seedCount 1 / `Unique` / `[0]`**. Stable accounting **44 / 14 / 30**, debt **5**,
+packages **96**.
+
+### 1. CR8 — why the guard became reachable, established from source
+
+TB31-REV recorded that it could not determine this statically and required transcription from the retained log.
+**It is determinable from source, and the transcription is unnecessary.**
+
+- `build_regions` is defined at `GlobalTopologyPlan.cpp:629` and called at `:2212`. It contains
+  `UncutFaceComponentOrbitSeedNotUnique`.
+- `build_fragment_corner_incidence` is defined at `:405` and called at `:2014`, **from
+  `build_region_certificates`** (`:1988`), which takes the already-built `regions` as a parameter.
+- `build_region_certificates` therefore runs **after** `build_regions`.
+
+**`TraceArcDoesNotSeparateItsSides` is strictly downstream of `UncutFaceComponentOrbitSeedNotUnique`.** It was
+unreachable for as long as the seed guard fired. CB36 cleared the seed guard, the mechanical fixture reached region
+certificate construction for the first time, and the next guard on that path fired.
+
+**This corrects TB31-REV §2.2**, which inferred from line numbers that the guard sat *upstream* of the seed guard
+and treated its reachability as unexplained. It is downstream, and its reachability is fully explained by the
+pipeline advancing. **CB36 did not change the walk this function observes**, which removes the risk TB31-REV
+flagged as the reason the transcription mattered.
+
+`M3-CP4c3-TB31-REV-CAND-03`'s evidence-attachment concern is unaffected and is decided at §5 below.
+
+### 2. What `FragmentCornerIncidence` actually is — DEFN-R4.1
+
+TB31-REV called `(face, orbit)` a **fragment identity** and concluded the key was not injective. That description
+is withdrawn. The structure is not a fragment index.
+
+> **DEFN-R4.1 — normative.** `FragmentCornerIncidence`, `map<SourceFaceTopologyKey, map<orbit, set<SourceVertexId>>>`
+> (`GlobalTopologyPlan.cpp:399–401`), is an **ownership map**: `fragmentCorners[face][orbit]` is the set of `face`'s
+> corner vertices owned by **certified face `orbit`**. It is keyed by owning region, not by fragment, and it is not
+> required to distinguish two fragments that share an owner.
+
+Both consumers use it exactly that way:
+
+- `:1893–1906` — `cutFace->second.find(owningOrbit)`: *"which of this face's corners belong to **my** region?"*,
+  failing with `RegionSourceFaceOwningFragmentMissing` when the region owns none.
+- `:1927–1945` — iterating `(orbit, corners)` to classify a vertex as `ownedByRegion` when `orbit == owningOrbit`
+  and `ownedByOtherRegion` otherwise: *"mine, or another region's?"*
+
+Neither asks how many fragments a face has, nor which geometric fragment a corner lies in. The `FragmentKey` used
+for region interior connectivity (`:1693–1699`) carries `owningOrbit` as a **constant tag** for every face of the
+region, so it too is region-scoped rather than fragment-scoped.
+
+### 3. A bridge chord — DEFN-R4.2
+
+> **DEFN-R4.2 — normative.** When a trace arc's two darts lie in the **same** face-walk orbit, both sides of its
+> chord are owned by that one certified face. The correct value of `fragmentCorners[face]` is then a **single entry
+> containing every corner of the face**. This is the correct answer under DEFN-R4.1, not a key collision.
+
+The full-chord branch already produces it: `result[face][cornerOrbit].insert(sharedCorner)` (`:541–543`) and
+`result[face][sideOrbit].insert(other corners)` (`:544–548`) merge into one entry when
+`cornerOrbit == sideOrbit`, yielding all three corners under the single owning orbit. Both consumers then answer
+correctly — the region owns all three, and no vertex is misattributed to another region.
+
+### 4. `TraceArcDoesNotSeparateItsSides` is RETIRED — DEFN-R4.3
+
+> **DEFN-R4.3 — normative.** `GlobalTopologyPlanErrorCode::TraceArcDoesNotSeparateItsSides` is **retired from the
+> emission path**. `build_fragment_corner_incidence` must not reject a trace segment because its arc's two darts
+> share a face-walk orbit. The enum entry remains declared so the typed-error surface and ledger history stay
+> stable; it becomes unreachable.
+
+Three reasons, each independently sufficient and all checkable:
+
+1. **Its premise is refuted by a settled fact.** *"Shared orbit ownership by the two sides of one arc is legitimate
+   topology; BS9-5 remains retired"* has stood since TB18, and DEFN-R3.4 measured exactly that on **arc 15**,
+   `forwardOrbit = reverseOrbit = 0`, on a certified cellular complex.
+2. **It contradicts the correction this checkpoint just proved.** The separating-arc barrier rule keys on
+   `forwardOrbit != reverseOrbit` precisely because equal orbits mean *does not separate*, and deliberately leaves
+   arcs 20 and 24 (`0/0`) alone. A guard that then rejects those arcs asserts the opposite of the rule that
+   depends on them.
+3. **The same function already accepts equal orbits on its other path.** The ray branch writes
+   `result[face][ray.forwardOrbit]` and `result[face][ray.reverseOrbit]` (`:608–615`) with no guard, merging
+   silently and correctly when they coincide. **The rejection is an internal inconsistency within one function, not
+   a protection of the representation.**
+
+This retirement is **a consequence of DEFN-R4.1 and R4.2, not a relaxation**. TB31-REV's caution — that deleting
+the guard would merge two distinct fragments — was correct about the mechanism and wrong about the consequence:
+the merge is what DEFN-R4.1 requires. The successor must record the merge as intended behaviour at the site, so a
+later reader does not reintroduce the guard.
+
+**Prohibited:** removing the guard without recording DEFN-R4.1's contract in the code, and re-deriving fragment
+identity from the orbit anywhere downstream.
+
+### 5. Frontier evidence must not hang off one failure code — DEFN-R4.4
+
+> **DEFN-R4.4 — normative.** The plan-side failing-component **face-set digest**, the certifier census identity and
+> the `censusCorrespondence` / subset relation are properties of the plan's state, not of any particular typed
+> failure. They must be published on the failure locus **whenever the plan terminates during region construction or
+> region certification**, independently of which typed code terminates it.
+
+They vanished at TB31 solely because the terminal code changed, which is the defect
+`M3-CP4c3-TB31-REV-CAND-03` names.
+
+### 6. Witnesses must not name the failure — DEFN-R4.5
+
+> **DEFN-R4.5 — normative.** A witness whose contract is *"this evidence is published when the production path
+> fails"* must assert the **evidence**, not **which** typed failure produced it. Ordinals **390, 393, 406 and 407**
+> have their assertions **replaced in place**: each keeps every contract it legitimately owns, and each stops
+> asserting `terminalFailureDetailCode == "UncutFaceComponentOrbitSeedNotUnique"`. Ordinals, names and selector
+> bytes are unchanged; all four remain **gating**.
+
+Where an identity genuinely needs a typed failure to exist, it asserts that the failure **carries the required
+evidence fields**, not its name. This is the disposition CB35 applied to ordinals 390 and 404 and TB30 proved
+correct, generalized.
+
+**This is a restoration, not a weakening.** Six identities across two forward steps have redded because they pinned
+the failure the product used to make; the two that survived both steps — **404 and 408** — assert publication and
+completeness instead. That is the standard.
+
+### 7. What DEFN-R4 does not decide
+
+1. **Source-face ownership is CLOSED** — 300/300 certified, component 0 unique at `[0]`. The separating-arc barrier
+   rule stands **at both sites** and is not re-opened.
+2. **Ordinal 398 is untouched.** It fails on the prescribed sphere
+   (`NotProductionReady/CellularityNotEstablished`), owned by `M3-CP4c2-TB-X2-CAND-04`. It is **not** an ownership
+   gate and must not be re-scoped to exclude the sphere.
+3. **Ordinals 368, 369, 370 and 374** keep their separate owners and are untouched.
+4. **The two partitions are not unified.** `M3-CP4c3-TB26-REV-CAND-04` / `M3-CP4c3-DEFN-R3-CAND-01` stay open; the
+   plan's partition now yields a unique owner, so the divergence does not hold the frontier and its resolution is
+   not required here.
+5. **No new diagnostic contract** on ownership or on fragments. Everything above is decided from source.
+
+### 8. Successor — CS0–CS6, `M3-CP4c-3-CB37`
+
+Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`.
+
+- **CS1** — retire the `TraceArcDoesNotSeparateItsSides` emission in `build_fragment_corner_incidence`
+  (`:474–479`), per DEFN-R4.3. Record DEFN-R4.1's ownership contract at the site so the merge reads as intended.
+  The enum entry stays declared.
+- **CS2** — publish the plan-side failing-component digest, the certifier census identity and the
+  `censusCorrespondence` / subset relation on every region-construction and region-certification failure locus, per
+  DEFN-R4.4.
+- **CS3** — replace in place the assertions of ordinals **390, 393, 406, 407** per DEFN-R4.5. Ordinals, names and
+  selector bytes unchanged; all remain gating. **Nothing any of them legitimately owns may be relaxed.**
+- **CS4** — **accepted-prefix safety by construction.** CS1's only reachable behaviour change is on a trace segment
+  whose arc has equal dart orbits; enumerate what differs there and show every other path is identical.
+- **CS5** — selector **408 unchanged**. If the ownership contract needs a witness, it appends as **409** with 408 as
+  an exact 408-line prefix, asserting **publication and completeness** — that a face crossed by a bridge chord
+  publishes exactly one owning-orbit entry containing all of its corners — and **never** a predicted owner value.
+- **CS6** — `M3-CP4c-3-TB32` re-executes. **Credibility gate: 368, 369, 370, 374 and 398 must remain RED**, since
+  none is touched. **Required outcome: 390, 393, 406 and 407 return to PASS.** For 366/367, either the plan
+  proceeds past region certification or it stops at a **further** guard; a stop at
+  `TraceArcDoesNotSeparateItsSides` falsifies DEFN-R4.3, and a stop reproducing
+  `UncutFaceComponentOrbitSeedNotUnique` with component 0 at 189/1/`[0]` would falsify DEFN-R4.1.
+
+### 9. Accounting
+
+Definition turn: no runtime, no compile, no gate. **+0 events / +0 recurrences.** Totals remain **44 events / 14
+categories / 30 recurrences**, produced-witness debt **5**, semantic M3 package count **96**. Accepted authority
+remains **365/365**; CP4c-3 remains **OPEN**.
+
+**Exact next turn: `M3-CP4c-3-CB37` — Code + Build, runtime-free, GMP/GMPXX linked, under CS1–CS6.**
 
 ---

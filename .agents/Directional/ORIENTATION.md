@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-05, `M3-CP4c-3-TB31-REV`):** runtime authority is **TB31** on selector **408** at **397 PASS / 11 RED**, accepted **365/365**. **The seed-uniqueness frontier open since TB19 is CLOSED** — component 0 moved from **191 faces / 3 seeds / `Multiple` / `[0,1,3]`** to **189 / 1 / `Unique` / `[0]`**, with certified ownership still **300 / 0 / 0**. Both stated falsifiers were checked and neither reproduced. The pipeline now stops at a **new** frontier — **`TraceArcDoesNotSeparateItsSides`, arc 15** — whose guard protects a fragment identity **`(face, orbit)`** that is **not injective on a bridge**, a configuration this checkpoint has twice established is legitimate. **The defect is the representation, not the guard.** Four ordinals (390/393/406/407) red only because they **pin the failure code the product used to make**. Exact next is **`M3-CP4c-3-DEFN-R4`**, a definition turn.
+> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-DEFN-R4`):** runtime authority remains **TB31** on selector **408** at **397 PASS / 11 RED**, accepted **365/365**, with the **seed frontier closed** — ownership total at 300/300 and component 0 unique at `[0]` over 189 faces. **`M3-CP4c-3-DEFN-R4` is frozen as Part VIII** of `M3_CP4c_Frozen_Definitions.md`: `FragmentCornerIncidence` is an **ownership map keyed by owning certified face**, not a fragment index; a bridge chord's single merged entry is the **correct** value; and `TraceArcDoesNotSeparateItsSides` is **RETIRED**, because its premise is refuted, it contradicts the separating-arc rule, and **the same function already accepts equal orbits on its ray path**. Established from source: the guard is **downstream** of the seed guard, so it became reachable only because the pipeline advanced. Exact next is `M3-CP4c-3-CB37` under **CS1–CS6**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -209,6 +209,15 @@ and DEFN-R3.4 measured exactly that on arc 15, **the defect is the key, not the 
 written to assert *publication and completeness* rather than an outcome. Six identities across two forward steps
 have now redded for this reason. `LESSONS.md` 137.
 
+**Definition authority — `M3-CP4c-3-DEFN-R4`, Part VIII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Part VII where they conflict.
+
+- **DEFN-R4.1 — `FragmentCornerIncidence` is an ownership map.** `fragmentCorners[face][orbit]` is the set of `face`'s corners **owned by certified face `orbit`** — keyed by owning region, not by fragment. Both consumers use it that way (`:1893–1906` asks *"which corners are mine?"*; `:1927–1945` classifies mine-versus-another's), and the `FragmentKey` at `:1693–1699` carries `owningOrbit` as a **constant tag**. TB31-REV's description of `(face, orbit)` as a *fragment identity* is **withdrawn**.
+- **DEFN-R4.2 — a bridge chord yields one entry with all three corners, and that is correct.** Both sides are owned by the same certified face, so the merge at `:541–548` is the right answer, not a collision.
+- **DEFN-R4.3 — `TraceArcDoesNotSeparateItsSides` is RETIRED** from the emission path (enum entry stays declared). Its premise is refuted by the TB18 fact measured on arc 15; it contradicts the separating-arc rule that deliberately leaves arcs 20 and 24 alone; and **the same function already accepts equal orbits on its ray path** (`:608–615`). An internal inconsistency, not a protection.
+- **DEFN-R4.4 — frontier evidence must not hang off one failure code.** The failing-component digest, census identity and `censusCorrespondence` publish on **every** region-construction and region-certification failure locus.
+- **DEFN-R4.5 — witnesses assert the evidence, not which failure produced it.** Ordinals 390/393/406/407 are replaced in place, retained and gating.
+- **Established from source (CR8):** `build_fragment_corner_incidence` is called from `build_region_certificates`, which runs **after** `build_regions` — so the guard is **downstream** of the seed guard and became reachable only because the pipeline advanced. **CB36 did not change the walk.** `LESSONS.md` 139.
+
 **Definition authority — `M3-CP4c-3-DEFN-R3`, Part VII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Parts
 IV–VI where they conflict, and only there. Its decisions:
 
@@ -348,20 +357,19 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Fragment identity — `(face, orbit)` is not injective, and that is the current frontier.**
+1. **Fragment ownership — decided at DEFN-R4; CB37 implements it.**
 
-   - **Ownership is CLOSED.** 300/300 certified, and the consumer's component 0 has a unique seed `[0]` over 189
-     faces. Do not re-open it; the separating-arc barrier rule stands at both sites.
-   - **The new stop.** `TraceArcDoesNotSeparateItsSides`, arc 15, `sourceFace=8,10,151`, at
-     `GlobalTopologyPlan.cpp:474–479`.
-   - **What the guard protects.** `FragmentCornerIncidence` keys fragments by `(face, orbit)`, and so does region
-     disc certification (`FragmentKey`, `owningOrbit`). On a bridge arc both sides share an orbit and the key
-     collapses. **Deleting the guard would merge two distinct fragments** — it is defending a broken key, not
-     asserting a false fact about geometry.
-   - **The premise it asserts is refuted by §5**: shared orbit ownership by the two sides of one arc is legitimate
-     topology, measured on arc 15 at TB18, and relied on by the correction that just closed the seed frontier.
-   - **This is a definition question.** What identifies a fragment is decided at `DEFN`, not guessed at in a Code +
-     Build turn. `M3-CP4c-3-DEFN-R4` owns it.
+   - **Ownership is CLOSED** (300/300 certified, component 0 unique at `[0]` over 189 faces) and the
+     separating-arc barrier rule stands at both sites. Do not re-open it.
+   - **`FragmentCornerIncidence` is an ownership map**, keyed by the owning certified face — not a fragment index.
+     A bridge chord's single merged entry containing all three corners is the **correct** value.
+   - **`TraceArcDoesNotSeparateItsSides` is retired**: its premise is refuted by the TB18 fact measured on arc 15,
+     it contradicts the separating-arc rule that leaves arcs 20 and 24 alone, and **the same function already
+     accepts equal orbits on its ray path**.
+   - **The guard is downstream of the seed guard**, established from callers rather than line numbers, so it became
+     reachable only because CB36 let the pipeline advance.
+   - **Open:** whether 366/367 clear at region certification or stop at a further guard. CS6 states both
+     falsifiers.
 
 2. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
@@ -415,6 +423,16 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Line order is not call order.** A review inferred one guard sat upstream of another from its smaller line number,
+recorded its reachability as unexplained, and demanded a log transcription. The guards live in different functions;
+`grep` for the call sites settled it in one step — the "earlier" one runs later and had been unreachable all along.
+Establish call order from callers. `LESSONS.md` §4 139.
+
+**A guard that contradicts another path in its own function is an inconsistency, not a protection.** One branch of
+`build_fragment_corner_incidence` rejected equal dart orbits outright while its ray branch accepted them silently
+and handled them correctly. Check whether a function already accepts what its guard forbids before preserving the
+guard. `LESSONS.md` §4 140.
 
 **A witness that hard-codes which failure the product currently makes reds on every forward step.** Six identities
 across two corrections went red because each asserted a specific terminal failure code and the product stopped

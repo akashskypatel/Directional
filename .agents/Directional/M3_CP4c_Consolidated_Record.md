@@ -893,6 +893,26 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
 
+### Consolidated on 2026-09-06 at `M3-CP4c-3-DEFN-R4` — nothing folded, and why
+
+Mandatory REVIEW consolidation performed (`DEFN` absorbs REVIEW + PLAN). **No document was folded**, and that is
+the correct outcome rather than an omission:
+
+- `M3-CP4c-3-DEFN-R4` was **authored in place** as **Part VIII** of `M3_CP4c_Frozen_Definitions.md`, per the
+  standing practice since Part VII, so it created no per-turn document to retire.
+- `Architecture_M3_CP4c3_TB31_EXEC_Report.md` is the **current runtime authority** and
+  `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` is the review DEFN-R4 consumes and **corrects** at its
+  §2.2 — neither is superseded.
+- `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` is the contract that produced the current
+  runtime authority and is retained with it.
+
+Consolidation is a preservation procedure, not a reduction target; there was nothing whose durable facts needed a
+new home this turn. **Running total unchanged: 98 documents, 19,494 lines.**
+
+**Definition-authority note.** The operative CP4c-3 definitions are now **Part VI together with Parts VII and
+VIII**, each superseding the earlier where they conflict. Part VIII withdraws TB31-REV's description of
+`(face, orbit)` as a *fragment identity* and replaces it with the **ownership map** reading.
+
 ### Consolidated on 2026-09-06 at `M3-CP4c-3-TB31-REV`
 
 Mandatory REVIEW consolidation. Durable facts were verified present in

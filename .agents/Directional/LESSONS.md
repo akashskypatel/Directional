@@ -1785,6 +1785,21 @@ building any conclusion on it.**
      configuration, look at the representation it is defending before removing it** - the defect is usually the key,
      not the check.
 
+139. **Line order is not call order.** A review inferred that one guard sat *upstream* of another because its line
+     number was smaller, then recorded the guard's sudden reachability as unexplained and demanded a log
+     transcription to settle it. The two guards live in different functions: the "earlier" one is called from a
+     helper that the "later" one's caller invokes **afterwards**, so it had been unreachable for as long as the
+     other fired. Clearing the first guard let the pipeline advance and the second fired for the first time - a
+     complete explanation available from `grep` for the call sites. **Establish call order from callers, not from
+     file position**, and prefer that to ordering evidence you cannot open.
+
+140. **A guard that contradicts another path in its own function is an inconsistency, not a protection.** One
+     branch of a builder rejected a configuration outright while a second branch of the *same* builder accepted it
+     silently and handled it correctly. That asymmetry is the strongest available evidence that the rejection is
+     defending nothing: if the representation could not survive the configuration, the tolerant branch would be
+     corrupting it. **Before removing or preserving a guard, check whether its own function already accepts what it
+     forbids.**
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

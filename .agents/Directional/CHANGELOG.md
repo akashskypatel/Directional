@@ -1,3 +1,57 @@
+## 2026-09-06 — `M3-CP4c-3-DEFN-R4`: fragment ownership decided, `TraceArcDoesNotSeparateItsSides` retired, CB37 frozen
+
+Definition turn (absorbs REVIEW + PLAN), frozen as **Part VIII** of `M3_CP4c_Frozen_Definitions.md`. Static only:
+no runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation. Accepted
+365/365 untouched; selectors 397–408 byte-frozen.
+
+**CR8 discharged from source, and TB31-REV corrected.** `build_fragment_corner_incidence` (`:405`) is called at
+`:2014` from **`build_region_certificates` (`:1988`)**, which takes the already-built `regions`, while
+`build_regions` (`:629`) is called at `:2212`. **`TraceArcDoesNotSeparateItsSides` is strictly downstream of
+`UncutFaceComponentOrbitSeedNotUnique`** and was unreachable while the seed guard fired; CB36 cleared it and the
+next guard on that path fired. TB31-REV inferred the opposite from line numbers and asked for a log transcription
+to settle it. **CB36 did not change the walk**, which removes the risk that made the transcription matter.
+`LESSONS.md` 139.
+
+**DEFN-R4.1 — `FragmentCornerIncidence` is an ownership map, not a fragment index.**
+`fragmentCorners[face][orbit]` is the set of `face`'s corners **owned by certified face `orbit`**. Both consumers
+use it that way — `:1893–1906` asks *"which corners are mine?"* and `:1927–1945` classifies mine-versus-another
+region's — and the `FragmentKey` at `:1693–1699` carries `owningOrbit` as a **constant tag**. TB31-REV's
+description of `(face, orbit)` as a *fragment identity* is **withdrawn**.
+
+**DEFN-R4.2 — a bridge chord yields one entry containing all three corners, and that is correct**, not a key
+collision: both sides are owned by the same certified face.
+
+**DEFN-R4.3 — `TraceArcDoesNotSeparateItsSides` is RETIRED** from the emission path; the enum entry stays declared
+for ledger stability. Three independently sufficient reasons: its premise is refuted by the fact settled at TB18
+and measured on **arc 15** at DEFN-R3.4; it contradicts the separating-arc barrier rule this checkpoint just
+proved, which deliberately leaves arcs 20 and 24 (`0/0`) alone; and **the same function already accepts equal
+orbits on its ray path** (`:608–615`), merging silently and correctly. **An internal inconsistency, not a
+protection.** This is a consequence of R4.1/R4.2, not a relaxation: TB31-REV was right that removing the guard
+merges the two sides, and wrong that the merge is a defect. `LESSONS.md` 140.
+
+**DEFN-R4.4 — frontier evidence must not hang off one failure code.** The plan-side failing-component digest, the
+certifier census identity and the `censusCorrespondence` / subset relation publish on **every** region-construction
+and region-certification failure locus.
+
+**DEFN-R4.5 — witnesses assert the evidence, not which failure produced it.** Ordinals 390, 393, 406 and 407 are
+replaced in place, retained and gating. A restoration, not a weakening — the disposition CB35 applied and TB30
+proved correct, generalized.
+
+**Not decided, deliberately:** source-face ownership stays **closed** (300/300, component 0 unique at `[0]`);
+ordinal 398 is untouched and must not be re-scoped off the prescribed sphere; 368/369/370/374 keep their owners;
+the two partitions are **not** unified; no new diagnostic contract.
+
+**Accounting:** definition turn, no runtime, no gate. **+0 events / +0 recurrences.** Totals remain
+**44 / 14 / 30**, debt **5**, packages **96**.
+
+**Lessons 139 and 140** added.
+
+**Exact successor: `M3-CP4c-3-CB37`** under Part VIII **CS1–CS6** — retire the guard emission and record the
+ownership contract at the site; publish the frontier evidence on every region failure locus; replace
+390/393/406/407 in place; accepted-prefix safety **by construction**; selector **408 unchanged**. Falsifiers stated
+first: a stop at `TraceArcDoesNotSeparateItsSides` falsifies R4.3, and a stop reproducing
+`UncutFaceComponentOrbitSeedNotUnique` at 189/1/`[0]` falsifies R4.1.
+
 ## 2026-09-06 — `M3-CP4c-3-TB31-REV`: the seed frontier is CLOSED; the frontier moved to fragment identity; DEFN-R4 frozen
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
