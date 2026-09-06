@@ -1,3 +1,0 @@
-purpose=M3-CP4c-3-TB30-EXEC start-of-turn exact source snapshot
-initial_head=3b2355a40b22cce7af23bf806c71f5fd46e5cfa5
-read_mode=snapshot

@@ -1,3 +1,0 @@
-M3-CP4c-3-TB30 Drive closeout workflow draft schema validation.
-Draft path: .agents/Directional/turn-payloads/m3-cp4c3-tb29-exec-draft.yml.
-No Directional runtime; closeout retry=0.
