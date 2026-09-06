@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1ERLYKTnSGq6ARVXHfllIrd7ZvK_mOcaK
-      patch_sha256: 7ec9752e01d2a50fb916e9289f946f973576ec5a16e95327646db2188ce8d85a
+      patch_sha256: 6d8512cc2686c5846b671551be8ef484e7200eb2860e0038fc0659cc62283cfc
       base_sha: d526179843f607687fa90b5595122b06725790fa
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M3-CP4c-3-TB31-EXEC and freeze review"
