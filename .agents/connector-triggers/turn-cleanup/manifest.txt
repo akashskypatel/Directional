@@ -1,0 +1,5 @@
+# M3-CP4c-3-CB37 temporary-state cleanup
+.agents/connector-triggers/cb37-apply-docs.txt
+.agents/connector-triggers/cb37-compile.txt
+.agents/connector-triggers/cb37-apply-source.txt
+.agents/connector-triggers/source-snapshot-cb37.txt
