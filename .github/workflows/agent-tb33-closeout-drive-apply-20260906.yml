@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1sjys9qw61NUjjtq6GghCyTIvSutdW6DL
-      patch_sha256: 410356bb1946ce588a0017f520ec54abd4e175b3bf1071e9a9dd7fde363532be
+      patch_sha256: 2667d0f9f03114de25414d99bed56c7fc23f309a86f6d98e684229242199371b
       base_sha: e817abafbcaa2fd1f897a90efe1dfd28819c0f3e
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M3-CP4c-3-TB33: preserve artifact-only execution closeout"
