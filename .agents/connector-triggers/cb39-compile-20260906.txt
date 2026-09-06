@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-CB39
+purpose=compile exact pushed CB39 semantic source only
+source_sha=7711b9c2c20d284823911aa4ca067bd33244f4e6
+runtimeExecution=false
+retry=0
