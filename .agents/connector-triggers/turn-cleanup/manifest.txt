@@ -1,4 +1,0 @@
-.agents/connector-triggers/source-snapshot/m3-cp4c3-cb34.txt
-.agents/connector-triggers/google-drive/m3-cp4c3-cb34-continue.txt
-.agents/connector-triggers/compile/m3-cp4c3-cb34.txt
-.agents/connector-triggers/google-drive/m3-cp4c3-cb34-closeout.txt
