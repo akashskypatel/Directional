@@ -1,3 +1,27 @@
+## M3-CP4c3-CB39 — Code + Build closeout — **IMPLEMENTED / COMPILE-GREEN / RUNTIME-UNADJUDICATED / NON-STABLE**
+
+- **Candidate `M3-CP4c3-TB33-REV-CAND-01`: IMPLEMENTED / COMPILE-PROVED / runtime verdict pending TB34.** CB39
+  removes only the premature `current == start` rejection from `validate_single_boundary_walk`; the chain guard
+  `next.first != current` and trailing `current != start` closure guard are unchanged. Typed boundary-walk reason
+  publication distinguishes `ArcChainBroken`, `ClosedBeforeEnd`, and `WalkNotClosed`; `ClosedBeforeEnd` is
+  evidence-only and never rejects.
+- **Hard negative frozen at selector 409.** `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`
+  constructs two node-disjoint loops and requires `ArcChainBroken`. Selector 409 has 409 entries, SHA-256
+  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; selector 408 is its exact 408-line prefix.
+- **Compile authority:** semantic source `7711b9c2c20d284823911aa4ca067bd33244f4e6`; run/job
+  `34061111130 / 101561719362`; immutable package99 artifact `9997560649`, ZIP SHA-256
+  `9a71fe17b789c94f70580116b822b3949dabecda7bf1d736afef10a1e6a9c3d2`; compile log artifact `9997560940`,
+  SHA-256 `6f11586812cf77cd601f0a2339b573d915d57cb2b1bfbda0cfecfa87066ed645`. Root package checksums 28/28 PASS,
+  all eight required targets compile/link, GMP/GMPXX evidence is authoritative, source status clean,
+  `runtimeExecution=false`.
+- **No stable accounting change.** No runtime executed, so no candidate is semantically closed and no regression
+  event/category/recurrence is added. Totals remain **44 / 14 / 30**, debt **5**. TB33 remains current semantic
+  runtime authority at 401 PASS / 7 RED, accepted 365/365.
+- **Exact next:** `M3-CP4c-3-TB34-EXEC`, artifact-only on `9997560649`. Falsifiers are unchanged: 409 must PASS;
+  protected greens 390/393/404/406/407/408 must remain PASS; retired codes stay absent; 366/367 may not move
+  earlier. If 366/367 remain `RegionBoundaryNotSingleWalk` with `ArcChainBroken`, the diagnosis is falsified and
+  upstream boundary assembly becomes the owner. EXEC stops at independent `TB34-REV`.
+
 ## M3-CP4c3-TB33-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / ALL CT MEASURES DISCHARGED**
 
 - **Record:** `Architecture_M3_CP4c3_TB33_Independent_Review_Record.md`, measures **CU0–CU6**. Evidence-only: no
@@ -5755,14 +5779,9 @@ is the real chain check and **the first rejects a walk that passes through its o
 this fixture's **ten terminal slits** produce, and one the certificate contradicts by publishing six disc faces with
 residual 0.
 
-**Exact next: `M3-CP4c-3-CB39` - Code + Build, runtime-free**, under
-`Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` **CU4-CU6**: delete the `current == start` disjunct;
-publish a typed reason distinguishing `ArcChainBroken` / `ClosedBeforeEnd` / `WalkNotClosed`, the middle one
-recorded and never rejecting; append selector **409** with one constructed-negative identity proving two
-node-disjoint loops are still rejected.
-
-**Falsification stated first:** if 366/367 still fail with reason `ArcChainBroken`, the diagnosis is wrong and the
-defect is upstream in boundary assembly; if ordinal 409 fails, the correction weakened the check and must be
-reverted. **Prohibited:** any topology, barrier, ownership or retired-guard change; weakening ordinal 398 or
-touching 368/369/370/374; relaxing anything 390/393/404/406/407/408 legitimately own; any new ownership diagnostic;
-any accepted-identity change. No Directional runtime before `M3-CP4c-3-TB34`.
+**CB39 implemented and compile-proved that frozen correction** at semantic source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`; runtime remains unadjudicated. Exact next is artifact-only
+**`M3-CP4c-3-TB34-EXEC`** on immutable artifact `9997560649`, selector 409. The same pre-runtime falsifiers remain
+binding: if 366/367 still fail with reason `ArcChainBroken`, the diagnosis is wrong and the defect is upstream in
+boundary assembly; if ordinal 409 fails, the correction weakened the check. Protected greens and retired-code
+silence remain mandatory. EXEC must stop at independent `M3-CP4c-3-TB34-REV`.

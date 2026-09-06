@@ -26,51 +26,40 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB39` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-TB34-EXEC` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB33-REV` promoted TB33 to **current valid semantic runtime authority**.
+`M3-CP4c-3-CB39` is **CLOSED / COMPILE-GREEN / RUNTIME-UNADJUDICATED**. CU4–CU6 landed in exact semantic source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`: the premature `current == start` rejection was removed while the
+real chain and final-closure guards stayed intact; typed boundary-walk reasons now distinguish `ArcChainBroken`,
+`ClosedBeforeEnd`, and `WalkNotClosed` with `ClosedBeforeEnd` evidence-only; and selector **409** appends exactly one
+constructed disjoint-loop negative while preserving selector 408 as an exact prefix.
 
-- selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
-- immutable CB38 package `9994997588` / source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`;
-- run/job `34054234216 / 101543088114`; result/log `9995528719 / 9995529075`; every row `selected=1`;
-- certified ownership **300 / 0 / 0**, and **all nine plan components uniquely seeded**.
+Authoritative compile-only evidence is run/job **`34061111130 / 101561719362`**. Immutable package **99** is artifact
+**`9997560649`**, `m3-cp4c3-cb39-result-34061111130`, provider/download ZIP SHA-256
+`9a71fe17b789c94f70580116b822b3949dabecda7bf1d736afef10a1e6a9c3d2`; packaged source archive SHA-256
+`c0005445a764dda63a2fa2c6c30e512f26aabe84f944f23cde078046b4bf0fc7`. Root `SHA256SUMS` verifies **28/28**;
+all eight required targets compiled; `DIRECTIONAL_ENABLE_GMP=ON`; authoritative link evidence contains both
+`gmpxx` and `gmp`; command boundary records `runtimeExecution=false`, `turnBoundary=Code+Build-only`, and
+`exactArithmeticBackend=GMP`. No Directional runtime, discovery, benchmark, or custom input executed.
 
-**Every CT measure discharged.** Stage labels with **no legacy back-fill**; **390/393/406/407 returned to PASS**
-with selector 408 byte-unchanged; a per-row failure-detail digest table; a turn-agnostic harness with a correct
-`baseline-authority.txt`; verbatim failure transcription for every RED focused ordinal. **Both standing falsifiers
-held.** **The RED set is now the frontier pair plus four independently owned carried surfaces — no diagnostic
-scaffolding remains.**
+Selector 409 count/SHA-256: **409** /
+`eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; selector 408 remains exact prefix SHA-256
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
 
-**CT5 justified itself on the run that introduced it:** TB33's ledger hash is byte-identical to **TB30's** — second
-collision in three turns — and the failure-detail table is what separates them.
-
-**The frontier** is `RegionBoundaryNotSingleWalk`, **arc 3**. `validate_single_boundary_walk` rejects in-loop on
-`current == start || next.first != current`; the first disjunct **rejects a walk that passes through its own start
-node**, which this fixture's **ten terminal slits** produce, and which the certificate contradicts by publishing
-six disc faces with residual 0.
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
-package count **98**. CP4c-3 remains **OPEN**.
+**Runtime authority is unchanged:** TB33 remains current valid semantic runtime authority at selector 408,
+**401 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300 / 0 / 0** with
+all nine plan components uniquely seeded. Stable accounting remains **44 events / 14 categories / 30 recurrences**;
+produced-witness debt remains **5**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB39`**, Code + Build, runtime-free, under **CU4–CU6** of
-`Architecture_M3_CP4c3_TB33_Independent_Review_Record.md`:
-
-- [ ] **CU4** delete the `current == start` disjunct; keep the chain test and the trailing closure test.
-      **Accepted-prefix safety by construction.**
-- [ ] **CU5** publish a typed reason — `ArcChainBroken` / `ClosedBeforeEnd` / `WalkNotClosed`. **`ClosedBeforeEnd`
-      is recorded and never rejects.**
-- [ ] **CU6** append selector **409** with 408 an exact prefix and one gating identity,
-      `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`, a constructed negative.
-
-**Falsifiers stated first:** if 366/367 still fail with reason `ArcChainBroken`, the diagnosis is wrong and the
-defect is upstream in boundary assembly; if ordinal 409 fails, the correction weakened the check and must be
-reverted; if either retired code reappears or 366/367 move **earlier**, CB39 changed forbidden behaviour.
-
-**Must not:** change topology, barriers, ownership or any retired guard; weaken or re-scope ordinal 398; touch
-368/369/370/374; relax anything 390/393/404/406/407/408 legitimately own; add any ownership diagnostic; change any
-accepted identity.
+Run **`M3-CP4c-3-TB34-EXEC`** using immutable artifact `9997560649` and
+`.agents/Directional/Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md`. Do **not** rebuild, repair,
+relink, regenerate discovery, mutate package/source/test/fixture/selector bytes, or run benchmarks. Execute all
+**409** selector identities exactly once through the packaged turn-agnostic harness. Required hard checks include
+accepted prefix **365/365**, ordinal **409 PASS**, protected greens **390/393/404/406/407/408 PASS**, retired-code
+silence, no earlier-stage movement of 366/367, complete per-row failure-detail provenance, and byte+mode immutability.
+After mechanically complete TB34-EXEC closeout, stop completely at independent **`M3-CP4c-3-TB34-REV`**.
 
 ## Carried forward from M1
 
@@ -108,7 +97,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB32 remains semantic runtime authority** pending review. TB33-EXEC is mechanically complete at **401 PASS / 7 RED**, accepted 365/365, on immutable artifact `9994997588`; exact next is independent **`M3-CP4c-3-TB33-REV`**.
+  CP4c-3 remains open. **TB33 is current semantic runtime authority** at **401 PASS / 7 RED**, accepted 365/365, selector 408. CB39 compiled immutable package **99** (`9997560649`) from semantic source `7711b9c2c20d284823911aa4ca067bd33244f4e6`; exact next is artifact-only **`M3-CP4c-3-TB34-EXEC`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -120,9 +109,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  TB33-EXEC mechanically observed 390/393/406/407 PASS, retired-code silence, accepted 365/365, ownership 300/0/0,
-  and 366/367 still at `RegionBoundaryNotSingleWalk`. Independent TB33-REV must adjudicate whether that raw evidence
-  closes the region-frontier runtime proof.
+  TB33-REV established the current frontier and CB39 implemented/compiled its narrow correction without runtime. TB34-EXEC now owns the runtime proof on immutable artifact `9997560649`, including ordinal 409 and the frozen 366/367 falsifiers.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -150,4 +137,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB33-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **98**. **`M3-CP4c-3-TB33` is the current valid semantic runtime authority at 401 PASS / 7 RED, accepted 365/365 on selector 408, with ownership total and all nine plan components uniquely seeded.** Exact next is `M3-CP4c-3-CB39` under CU4–CU6. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, unchanged by runtime-free CB39. Produced-witness debt remains **5**. Authoritative M3 package count is **99**. **`M3-CP4c-3-TB33` remains the current valid semantic runtime authority at 401 PASS / 7 RED, accepted 365/365 on selector 408, with ownership total and all nine plan components uniquely seeded.** CB39 compile authority is source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, artifact `9997560649`, selector 409. Exact next is artifact-only `M3-CP4c-3-TB34-EXEC`, then a full stop at independent `TB34-REV`. PR #8 remains open, draft, and unmerged.

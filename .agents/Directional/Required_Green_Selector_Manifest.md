@@ -486,7 +486,7 @@ Two facts this selector must carry forward:
   the stage failed and published, or the stage was cleared and the later failure published its labelled evidence.
   Their assertions were replaced in place; no selector byte changed.
 
-**Exact successor:** `M3-CP4c-3-CB39` appends **409** with 408 as an exact 408-line prefix and one gating identity,
+**CB39 result:** selector **409** appends 408 as an exact 408-line prefix and one gating identity,
 `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected` — a constructed negative proving that two
 node-disjoint boundary loops are still rejected with reason `ArcChainBroken` after the `current == start` disjunct
 is removed. It asserts a constructed rejection, never a value on the production fixture. Ordinals 397–408 keep
@@ -494,13 +494,24 @@ their contracts.
 
 ### 409 — CURRENT GATE
 
-`Architecture_M3_CP4c3_Required_Green_Selector_409.txt` — 409 identities, first committed -.
+`Architecture_M3_CP4c3_Required_Green_Selector_409.txt` — **409 identities**, authored by `M3-CP4c-3-CB39`, LF
+SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`. Selector 408 is its exact 408-line
+prefix, LF SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
 
-CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen selector 408.
-
-Appended 1 identity to selector 408:
+CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen selector 408:
 
 - `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`
+
+**Compiled at `M3-CP4c-3-CB39`:** semantic evidence source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`; run/job `34061111130 / 101561719362`; result/log artifacts
+`9997560649 / 9997560940` with SHA-256
+`9a71fe17b789c94f70580116b822b3949dabecda7bf1d736afef10a1e6a9c3d2` /
+`6f11586812cf77cd601f0a2339b573d915d57cb2b1bfbda0cfecfa87066ed645`. All eight approved targets compiled
+with GMP/GMPXX linked; root package `SHA256SUMS` is 28/28 PASS; command boundary records `runtimeExecution=false`.
+This is compile authority only. Selector 409 is not semantically accepted until TB34. Package count is **99**.
+
+**Exact successor:** artifact-only `M3-CP4c-3-TB34-EXEC` on immutable artifact `9997560649`; do not rebuild.
+Ordinal 409 is a hard falsifier and must PASS; ordinals 390/393/404/406/407/408 keep their contracts.
 
 ## Separate lineage — M1
 

@@ -1,3 +1,24 @@
+## 2026-09-06 — `M3-CP4c-3-CB39`: pinched boundary-walk correction compiles; selector409/package99 frozen for TB34
+
+Code + Build only, **runtime-free**. Exact semantic source `7711b9c2c20d284823911aa4ca067bd33244f4e6` implements
+only TB33-REV CU4–CU6: remove the premature `current == start` rejection while preserving the real chain/final
+closure guards; publish typed `ArcChainBroken` / `ClosedBeforeEnd` / `WalkNotClosed` evidence with
+`ClosedBeforeEnd` non-rejecting; append selector **409** with one constructed node-disjoint-loop hard negative and
+selector 408 as an exact prefix. Selector409 SHA-256 is
+`eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+
+Compile-only run/job `34061111130 / 101561719362` succeeded through the durable reusable compile workflow. Immutable
+package **99** artifact `9997560649` (`m3-cp4c3-cb39-result-34061111130`) has provider/download ZIP SHA-256
+`9a71fe17b789c94f70580116b822b3949dabecda7bf1d736afef10a1e6a9c3d2`; compile log artifact `9997560940` has
+SHA-256 `6f11586812cf77cd601f0a2339b573d915d57cb2b1bfbda0cfecfa87066ed645`; packaged source archive SHA-256
+`c0005445a764dda63a2fa2c6c30e512f26aabe84f944f23cde078046b4bf0fc7`. Root `SHA256SUMS` is 28/28 PASS, all
+eight required targets compiled, GMP/GMPXX are linked, source status is clean, and `runtimeExecution=false`. No
+Directional runtime/test/benchmark/discovery command executed.
+
+TB33 remains semantic runtime authority at 401 PASS / 7 RED, accepted 365/365. Stable accounting stays
+**44 / 14 / 30**, debt **5**; package count becomes **99**. Exact next is artifact-only
+`M3-CP4c-3-TB34-EXEC` on artifact `9997560649`, then a complete stop at independent `TB34-REV`.
+
 ## 2026-09-06 — `M3-CP4c-3-TB33-REV`: every CT measure discharged; the RED set is clean; CB39 frozen on a pinched boundary walk
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

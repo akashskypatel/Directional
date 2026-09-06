@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-06** at `M3-CP4c-3-TB33-REV` closeout.
+Last updated **2026-09-06** at `M3-CP4c-3-CB39` closeout.
 
 ---
 
@@ -24,7 +24,7 @@ accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutabl
 
 Certified ownership is **300 established / 0 unavailable / 0 conflicting**, and **all nine** plan components
 publish `seedCount=1, seedState=Unique`. CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**,
-packages **98**.
+packages **99** (CB39 compile package; TB33 remains runtime authority).
 
 ## 2. Every CT measure discharged; the RED set is now clean
 
@@ -66,27 +66,22 @@ it uniquely caught is two loops meeting at the start node, which is the legitima
 This is a **source derivation, not a measurement** — the published `arc=3` does not say which disjunct fired, which
 is why CU5 requires a typed reason.
 
-## 3.1 Exact next turn — `M3-CP4c-3-CB39`
+## 3.1 Exact next turn — `M3-CP4c-3-TB34-EXEC`
 
-Code + Build, runtime-free, GMP/GMPXX linked. **One product change.**
+Artifact-only Test + Benchmark on immutable CB39 artifact **`9997560649`** from exact semantic source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector **409**. Compile run/job
+`34061111130 / 101561719362` is green; package ZIP SHA-256
+`9a71fe17b789c94f70580116b822b3949dabecda7bf1d736afef10a1e6a9c3d2`; root package checksums verify 28/28;
+GMP/GMPXX are linked; `runtimeExecution=false`. CB39 itself makes no runtime claim.
 
-- **CU4** — delete the `current == start` disjunct; keep the chain test and the trailing closure test.
-  **Accepted-prefix safety by construction**: the only reachable change is a walk that revisits its start node with
-  arcs remaining.
-- **CU5** — publish a typed reason on `RegionBoundaryNotSingleWalk`: `ArcChainBroken` / `ClosedBeforeEnd` /
-  `WalkNotClosed`. **`ClosedBeforeEnd` is recorded as evidence and never rejects.**
-- **CU6** — append selector **409** with 408 as an exact prefix and one gating identity,
-  `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`, a constructed negative proving two
-  node-disjoint loops are still rejected with reason `ArcChainBroken`.
+Run `.agents/Directional/Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md` without rebuilding or
+mutating immutable bytes. Required hard controls: accepted prefix 365/365, ordinal 409 PASS, protected greens
+390/393/404/406/407/408 PASS, retired-code silence, no earlier-stage movement of 366/367, ownership 300/0/0
+whenever published, complete per-row failure details, and package/source/execution-view byte+mode immutability.
 
-**Falsifiers, stated before the build.** If 366/367 still fail with reason `ArcChainBroken`, the diagnosis is wrong
-and the defect is upstream in boundary assembly. If ordinal 409 fails, the correction weakened the check and must
-be reverted. If either retired code reappears, or 366/367 move to an **earlier** stage, CB39 changed behaviour it
-was forbidden to touch.
-
-**Prohibited:** any topology, barrier, ownership or retired-guard change; weakening or re-scoping ordinal 398;
-touching 368/369/370/374; relaxing anything 390/393/404/406/407/408 legitimately own; any new ownership diagnostic;
-any accepted-identity change.
+If 366/367 remain `RegionBoundaryNotSingleWalk` with `regionBoundaryWalkReason=ArcChainBroken`, the TB33 diagnosis
+is falsified and the owner moves upstream to boundary assembly. If 409 fails, CB39 weakened the chain guard. EXEC
+preserves raw evidence only; after complete closeout, stop at independent **`M3-CP4c-3-TB34-REV`**.
 
 ## 4. Open candidates
 
@@ -98,7 +93,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB31-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — 390/393/406/407 PASS with selector 408 byte-unchanged and nothing they legitimately own relaxed. |
 | `M3-CP4c3-TB31-REV-CAND-03` | **CLOSED / IMPLEMENTED** — frontier evidence publishes at both annotation sites. Its **over-reach** is carried forward as `M3-CP4c3-TB32-REV-CAND-01` rather than left inside a closed candidate. |
 | `M3-CP4c3-TB32-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — 366/367 publish `regionFrontierFailureStage=RegionCertification` and their detail bytes contain **no legacy `uncutFaceComponent*` fields**. |
-| `M3-CP4c3-TB33-REV-CAND-01` | **NEW / ACTIVE / GATING / PRODUCT** — `validate_single_boundary_walk`'s `current == start` disjunct rejects a boundary walk that passes through its own start node, the configuration this fixture's ten terminal slits produce. Owner: CU4/CU5. |
+| `M3-CP4c3-TB33-REV-CAND-01` | **IMPLEMENTED / COMPILE-PROVED / RUNTIME-UNADJUDICATED** — CB39 removed only the premature `current == start` rejection and published typed boundary-walk reasons. TB34 owns the frozen runtime falsifiers; no semantic closure before independent review. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
 | `M3-CP4c3-TB32-REV-CAND-03` | **CLOSED / RUNTIME PROVED** — the harness is turn-agnostic and `baseline-authority.txt` records the executing run. |
 | `M3-CP4c3-TB30-REV-CAND-02` | **NEW / ACTIVE / EVIDENCE SURFACE / NON-GATING** — the plan-side interior-arc census is a projection of the certifier's rows, so an arc that still cuts the plan's component but has left the certifier's uncut census is invisible to it. Not blocking CQ7. |
@@ -218,6 +213,7 @@ After the durable start-of-turn checklist, independent TB33-REV loads only the m
 9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 10. `tools/m3_cp4c3_artifact_only_harness.sh` — the instrument; read it rather than a summary of it.
 
-Exact next is **`M3-CP4c-3-CB39`** under **CU4–CU6**: delete the `current == start` disjunct, publish a typed
-reason so the next runtime says which branch fired, and append a constructed negative at selector **409**.
-**Source-face ownership is closed and unique across all nine components.**
+Exact next is **`M3-CP4c-3-TB34-EXEC`**, artifact-only on immutable CB39 artifact `9997560649` / semantic source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector **409**. Execute the frozen TB34 plan without rebuild or
+mutation, preserve raw facts only, then stop at independent **`M3-CP4c-3-TB34-REV`**. **Source-face ownership is
+closed and unique across all nine components.**
