@@ -1,0 +1,5 @@
+.agents/connector-triggers/cb39-closeout-drive-apply-20260906.txt
+.agents/connector-triggers/cb39-compile-20260906.txt
+.agents/connector-triggers/cb39-drive-apply-20260906.txt
+.agents/connector-triggers/cb39-source-snapshot-20260906.txt
+.agents/connector-triggers/source-snapshot/tb33-rev-start.txt
