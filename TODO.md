@@ -54,24 +54,21 @@ package count **95**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB30-EXEC`** exactly from
-`Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md` on immutable package `9980764888`:
+Run **`M3-CP4c-3-TB30-REV`** as evidence-only review of immutable TB30-EXEC artifacts
+`9981641004 / 9981641260`:
 
-- [ ] verify package/source/checksums/executable modes and frozen selector 408 before runtime;
-- [ ] execute all **408** identities in frozen order, one identity per fresh process and fresh working directory;
-- [ ] require `selected == 1` for every row and preserve the complete raw ledger, per-identity logs/resource evidence,
-      and pre/post byte+mode censuses;
-- [ ] accepted 1–365 must remain **365/365 PASS**;
-- [ ] corrected witnesses **390 PASS** and **404 PASS** are required;
-- [ ] credibility controls **366 RED, 367 RED, 398 RED** are required because CB35 changed no product behavior;
-- [ ] record 368/369/370/374 exactly, with no repair or mutation.
+- [ ] verify run/package/source/selector/executable/identity-map/census integrity and all 408 `selected=1` rows;
+- [ ] compare the full ordinal vector against TB29 and independently verify accepted 1–365 = 365/365;
+- [ ] adjudicate corrected witnesses 390/404 and credibility controls 366/367/398;
+- [ ] classify every semantic RED/change in `Regression_Root_Cause_Tracker.md` without new runtime;
+- [ ] read the retained post-correction census before authorizing any second product correction;
+- [ ] update `ORIENTATION.md` and perform mandatory REVIEW-turn document consolidation.
 
-If only the two authorized witness corrections change, the consistent aggregate is **401 PASS / 7 RED** with RED
-`366,367,368,369,370,374,398`.
+TB30-EXEC raw evidence is mechanically **401 PASS / 7 RED**, RED `366,367,368,369,370,374,398`, with 390/404
+PASS and accepted 365/365. It is review input only; accepted semantic authority remains TB29 at 399/9 until REV.
 
-**No configure, compile, relink, rebuild, repackaging, package repair/chmod, generated discovery, benchmark,
-source/test/fixture/selector mutation, or semantic retry.** TB30-EXEC records raw evidence only and stops at
-**`M3-CP4c-3-TB30-REV`**. No second product correction is authorized before that review reads the census.
+**No runtime, compile, package operation, product/test/fixture/selector mutation, semantic retry, or corrective CB is
+authorized in TB30-REV.**
 
 ## Carried forward from M1
 
@@ -110,9 +107,9 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
   CP4c-3 remains open. CB35 is compile-green on immutable package `9980764888` / source
-  `ab86747bdfdb94c7c383bf5d2893ced4207eb555`; no CB35 runtime has executed. `M3-CP4c-3-TB29` remains the latest
-  valid semantic runtime at 399 PASS / 9 RED, accepted 365/365. Exact next: **`M3-CP4c-3-TB30-EXEC`**,
-  artifact-only, followed by evidence-only `TB30-REV`.
+  `ab86747bdfdb94c7c383bf5d2893ced4207eb555`. TB30-EXEC has mechanically completed at 401 PASS / 7 RED,
+  accepted 365/365, but semantic authority remains TB29 at 399 PASS / 9 RED until review. Exact next:
+  **`M3-CP4c-3-TB30-REV`**, evidence-only.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -125,8 +122,9 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [ ] **CP4c-3 source-face ownership derivation:** CB34's frozen separating-arc barrier correction is runtime-proved
   by TB29. CB35 then restored ordinals 390/404 to their own test contracts and compiled immutable package
-  `9980764888` without product change. TB30-EXEC must re-run selector 408; 390/404 are required PASS while
-  366/367/398 remain credibility RED controls. No second product correction is authorized before TB30-REV.
+  `9980764888` without product change. TB30-EXEC mechanically re-ran selector 408 at 401 PASS / 7 RED with
+  390/404 PASS and 366/367/398 RED. TB30-REV must adjudicate that immutable evidence before any second product
+  correction is authorized.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 

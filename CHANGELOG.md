@@ -1,3 +1,19 @@
+## 2026-09-05 — `M3-CP4c-3-TB30-EXEC`: selector408 artifact-only runtime mechanically 401/7; review required
+
+TB30-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB35 artifact
+`9980764888` / source `ab86747bdfdb94c7c383bf5d2893ced4207eb555` / selector 408. Run/job
+`34008104497 / 101418934144` executed all 408 identities one per fresh process/workdir with every row `selected=1`,
+no timeout, accepted rows 1–365 mechanically 365/365 PASS, and raw aggregate **401 PASS / 7 RED** with
+`[366,367,368,369,370,374,398]`. Corrected witnesses 390/404 mechanically PASS; credibility controls 366/367/398
+remain RED. Result/log artifacts are `9981641004` (`40f58d136073e08392701eafd189a4f6b45e1907a4381393ab3d4673cc6b2913`)
+/ `9981641260` (`dde276e2b448f9ba58b36dbe554bed7b7f4fa6ab2bff90df5ac15ee5af8cbd6d`). Package/source/execution-view
+byte+mode censuses are identical pre/post; no configure/compile/relink/repair/discovery/benchmark/mutation occurred.
+
+This is raw EXEC evidence only. Semantic authority remains TB29 at 399 PASS / 9 RED until **`M3-CP4c-3-TB30-REV`**
+consumes the immutable artifacts, adjudicates the two changed witnesses and credibility controls, classifies every
+semantic RED/change in the regression tracker, and reads the retained census. No corrective CB is authorized before
+that review.
+
 ## 2026-09-05 — `M3-CP4c-3-CB35`: test-authority witnesses restored; CO7 census transcribed; package 95 compile-green
 
 CB35 is **COMPLETE / BUILD + PACKAGE GREEN / TEST-AUTHORITY ONLY / RUNTIME-FREE**. It changes only

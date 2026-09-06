@@ -116,70 +116,72 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB30-EXEC` — EXACT NEXT / artifact-only runtime
+## Mandatory next turn — `M3-CP4c-3-TB30-REV` — EXACT NEXT / evidence-only review
 
-`M3-CP4c-3-CB35` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE**.
+`M3-CP4c-3-TB30-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC REVIEW DEFERRED**.
 
-### Current authority
+### Immutable EXEC authority
 
-- **Built evidence source:** `ab86747bdfdb94c7c383bf5d2893ced4207eb555`.
-- **Immutable CB35 package:** artifact `9980764888`, `m3-cp4c3-cb35-result-34005311571`, provider ZIP SHA-256
-  `ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`.
-- **Packaged source archive SHA-256:** `64801a38ccbe9de282dbec261cad6c2b6575403ed38e93b514c893c22f03684a`.
-- **Compile run:** `34005311571` — success; root `SHA256SUMS` 28/28, clean source, all eight required targets,
-  `runtimeExecution=false`, GMP/GMPXX linked.
-- **Selector:** 408 identities, LF SHA-256
-  `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`; selector bytes unchanged by CB35.
-- **Current semantic runtime authority remains TB29:** 399 PASS / 9 RED, accepted 1–365 = 365/365, RED
-  `[366,367,368,369,370,374,390,398,404]`. CB35 has not executed any Directional runtime.
-- Stable accounting **44 / 14 / 30**, debt **5**, semantic packages **95**.
+- Runtime run/job: `34008104497 / 101418934144`, orchestration success.
+- Runtime trigger/control source: `773e5a32daf8ee14e610f2c16cd81318a09f269c`.
+- Built evidence remains source `ab86747bdfdb94c7c383bf5d2893ced4207eb555` in immutable artifact `9980764888`;
+  provider/download SHA-256 `ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`.
+- Result artifact `9981641004`, SHA-256
+  `40f58d136073e08392701eafd189a4f6b45e1907a4381393ab3d4673cc6b2913`.
+- Diagnostic-log artifact `9981641260`, SHA-256
+  `dde276e2b448f9ba58b36dbe554bed7b7f4fa6ab2bff90df5ac15ee5af8cbd6d`.
+- Harness SHA-256 `e3768a3dd1089af27896abe18aa3e784a474bac1af86a63dcf4716b66f8cb822`;
+  ledger SHA-256 `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`.
+- Root package `SHA256SUMS` verified 28/28; selector 408 identity and prefix authority verified; all package/source/
+  execution-view byte+mode censuses are identical pre/post; all six runtime executables retained mode `0755`;
+  `directional_benchmarks` was not executed.
+- `execution-boundary.txt`: runtime/preflight/execution-view complete, `selection_integrity=true`, no timeout,
+  orchestration failure, configure/compile/relink/discovery/repair/benchmark/mutation.
 
-### What CB35 changed
+### Raw runtime vector — REVIEW INPUT ONLY
 
-**NO PRODUCT CHANGE.** Only `tests/FieldAlignedCurveNetworkTests.cpp` changed semantically.
+TB30-EXEC mechanically records **401 PASS / 7 RED**, RED `[366,367,368,369,370,374,398]`, accepted 1–365 =
+**365/365 PASS**, and `selected=1` for all 408 rows. Corrected witnesses 390 and 404 mechanically PASS; credibility
+controls 366/367/398 mechanically remain RED. This is exactly the plan's mechanically expected delta from TB29,
+but **EXEC does not promote it to semantic authority**.
 
-1. **Ordinal 404** no longer asserts that every owner must remain non-`Established`; all publication/completeness
-   assertions remain.
-2. **Ordinal 390** no longer matches two partitions by numeric component index. It uses face-set digest / the
-   published subset correspondence and compares cross-partition counts only on exact semantic correspondence.
-3. Ordinals, names, selector bytes, gating membership, 398, 366, 367, and accepted 1–365 are untouched.
+Current accepted semantic authority therefore remains TB29: selector 408, **399 PASS / 9 RED**, accepted 365/365,
+RED `[366,367,368,369,370,374,390,398,404]` until TB30-REV adjudicates the immutable EXEC evidence.
 
-The exact CO7 transcription is retained in `Architecture_M3_CP4c3_CB35_Code_Build_Report.md`. Resume-critical facts:
+### TB30-REV boundary
 
-- failing plan component: `0`, `EmptyFragmentOrbits`, 191 faces, digest `17919102493633069558`, seeds
-  `3 / Multiple / [0,1,3]`;
-- comparison census: component `0`, `NotTraceCut`, 212 faces, digest `835099723348023536`,
-  `matchesFailingComponent=false`, `failingComponentSubsetOfCensusComponent=false`;
-- post-correction uncut interior arcs: only 20 and 24, both `0 / 0`;
-- owner publication over 300 source faces: **300 established / 0 unavailable / 0 conflicting**;
-- exact first failure text for all nine TB29 RED ordinals is retained in the report.
+Consume `Architecture_M3_CP4c3_TB30_EXEC_Report.md`, result artifact `9981641004`, diagnostic-log artifact
+`9981641260`, and the frozen `Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md`.
 
-### TB30 execution boundary
+TB30-REV performs **no new runtime, compile, package operation, or implementation/test/fixture/selector mutation**.
+It must verify provenance/integrity, compare the complete 408-row vector against TB29, independently re-check accepted
+1–365, adjudicate 390/404 and the 366/367/398 credibility controls, classify every semantic RED/change in
+`Regression_Root_Cause_Tracker.md`, read the retained post-correction census before any second product correction,
+update `ORIENTATION.md`, and perform mandatory REVIEW-turn document consolidation. Do not start a CB before this
+review chooses an authorized edge.
 
-Consume only `Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md` and immutable package
-`9980764888`.
+### Context Load Plan
 
-- No configure, compile, relink, rebuild, repackaging, package repair, chmod, generated discovery, fixture/test/source
-  mutation, selector mutation, or benchmark execution.
-- Verify artifact/source/checksum/modes and selector 408 before runtime.
-- Execute all **408** selector identities in frozen order, one identity per fresh process and fresh working directory,
-  through the statically resolved owning packaged test binary.
-- Require `selected == 1` for every row and preserve all raw logs / ledger / resource evidence / pre-post byte+mode
-  censuses.
-- **Accepted authority:** ordinals 1–365 must remain 365/365 PASS.
-- **Required corrected outcomes:** ordinal **390 PASS**, ordinal **404 PASS**.
-- **Credibility controls:** **366 RED, 367 RED, 398 RED**. Because CB35 changed no product behavior, an unexpected
-  PASS is evidence-integrity trouble until reviewed, not automatic progress.
-- 368/369/370/374 are separate-owner carried surfaces; record them exactly but do not repair them.
-- If only the two authorized witness corrections change, the consistent aggregate is **401 PASS / 7 RED** with
-  RED `[366,367,368,369,370,374,398]`.
-
-TB30-EXEC records raw evidence only and **stops at the review boundary**. `M3-CP4c-3-TB30-REV` then consumes the
-immutable EXEC artifacts, performs no runtime, classifies all RED/deltas, and reads the census before any second
-product correction may be authorized.
-
-**Do not start a new CB from TB30-EXEC. A semantic RED routes to review. Independent review/planning is a separate
-agent boundary.**
+```yaml
+canonical_turn: Test + Benchmark
+subturn: TB-REVIEW
+load_next:
+  - references/turns/TB-REVIEW.md
+conditional_modules:
+  - trigger: GitHub artifact/remote evidence operations are needed
+    path: modules/github-connector/MODULE.md
+  - trigger: existing-test assertion/fixture semantics require review
+    path: modules/unit-testing/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c3_TB30_EXEC_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
+templates_when_producing: []
+do_not_preload:
+  - sibling turn files
+  - module reference directories
+  - uncited historical reports
+```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -205,6 +205,7 @@ After the durable start-of-turn checklist, load only the minimum current authori
 8. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
 9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-Exact next is **`M3-CP4c-3-TB30-EXEC`** on immutable package `9980764888` and selector 408. It is artifact-only,
-records raw evidence, and stops at **`M3-CP4c-3-TB30-REV`**. No second product correction is authorized before that
-review.
+TB30-EXEC is mechanically complete on immutable package `9980764888`: **401 PASS / 7 RED**, accepted 365/365,
+RED `[366,367,368,369,370,374,398]`, with 390/404 PASS and every row `selected=1`. This raw ledger is not yet
+semantic authority. Exact next is **`M3-CP4c-3-TB30-REV`**, evidence-only, on result/log artifacts
+`9981641004 / 9981641260`. No second product correction is authorized before that review.
