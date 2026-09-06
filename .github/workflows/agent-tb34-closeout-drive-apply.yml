@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1TLDno6qbxHLhWRyCBTizZkUhaYqrodVU
-      patch_sha256: 44fa6fc4c47c69043902f445e87b687d45fd257ee52785cf6d78b88f94e6f2e0
+      patch_sha256: 9399fd68b3cad0f982de46604ead200252273fc85b4b394a1e8d6a77279ed3d6
       base_sha: ac61ac58f8825dfb94ad5c8dee5df89d4677c70d
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close TB34 EXEC and freeze independent review"
