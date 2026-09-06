@@ -1,4 +1,4 @@
-turn=M3-CP4c-3-CB34
-starting_source_sha=ec232fd82b42f55f135416a1d818a7291f485b15
-purpose=exact source snapshot before the frozen separating-arc barrier correction
+turn=M3-CP4c-3-CB34-resume
+starting_source_sha=6cce83978ffc85e8e4072a0ce647e425800c543b
+purpose=exact source snapshot for interrupted CB34 continuation after WIP patch recovery
 runtimeExecution=false
