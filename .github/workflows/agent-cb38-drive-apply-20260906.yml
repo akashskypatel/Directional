@@ -1,0 +1,47 @@
+name: Agent CB38 Drive Apply 20260906
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb38-drive-apply-20260906.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-cb38-drive-apply-20260906
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb38-drive-apply-20260906
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb38-drive-apply-20260906.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1YC7DZROEd3WCjY7ypxrkCVPDaETS6Mri
+      patch_sha256: ac9584f8420d5a22fdc5d063f80c1e162b71e64fae58aa742bc843904be1e919
+      base_sha: 665f4f32f4abbd405a6ff8ee0643ecd53c889cf3
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-CB38: publish typed frontier stage evidence"
+    secrets: inherit
