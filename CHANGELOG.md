@@ -1,3 +1,28 @@
+## 2026-09-05 — `M3-CP4c-3-CB35`: test-authority witnesses restored; CO7 census transcribed; package 95 compile-green
+
+CB35 is **COMPLETE / BUILD + PACKAGE GREEN / TEST-AUTHORITY ONLY / RUNTIME-FREE**. It changes only
+`tests/FieldAlignedCurveNetworkTests.cpp`: ordinal 404 removes the out-of-contract assertion that every owner must
+remain non-`Established`; ordinal 390 stops matching the plan and certifier partitions by numeric component index
+and instead uses face-set digest / the published subset relation, comparing cross-partition counts only on exact
+semantic correspondence. Ordinals, names, gating membership, selector 408 bytes, accepted identities 1–365,
+ordinal 398, 366 and 367 are unchanged; there is **no product change**.
+
+CO7 transcribed the existing immutable TB29 log (`9980019636`) rather than measuring anything new: failing plan
+component `0 / EmptyFragmentOrbits / 191 faces / digest 17919102493633069558 / seeds [0,1,3]`; comparison census
+`0 / NotTraceCut / 212 faces / digest 835099723348023536`, with neither exact match nor subset relation; only
+equal-orbit arcs 20 and 24 remain interior; certified owner publication is **300 established / 0 unavailable /
+0 conflicting**. The CB35 report retains the exact first failing assertion text for every TB29 RED ordinal.
+
+Semantic test-authority commit is `7bcf578984a1c650df58abbccb73ed8e1ed0a395`; the semantically equivalent clean
+built source is `ab86747bdfdb94c7c383bf5d2893ced4207eb555`. Authoritative GMP/GMPXX compile run `34005311571`
+succeeded with `runtimeExecution=false`, clean source, root `SHA256SUMS` **28/28**, and all eight required targets,
+producing immutable package **95** artifact `9980764888` (`m3-cp4c3-cb35-result-34005311571`, provider ZIP SHA-256
+`ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`) and packaged source archive SHA-256
+`64801a38ccbe9de282dbec261cad6c2b6575403ed38e93b514c893c22f03684a`. Stable accounting remains
+**44 / 14 / 30**, debt **5**. Current semantic runtime authority remains TB29 at **399 PASS / 9 RED**, accepted
+365/365. Exact next: artifact-only **`M3-CP4c-3-TB30-EXEC`** on package `9980764888` / selector 408, requiring
+390/404 PASS and credibility controls 366/367/398 RED, then stopping at evidence-only `TB30-REV`.
+
 ## 2026-09-05 — `M3-CP4c-3-TB28`: artifact-only selector407 green; CL6/CL7 partition mismatch measured; review required
 
 TB28 R2 is **COMPLETE / VALID ARTIFACT-ONLY RUNTIME / 407-of-407 SELECTOR GREEN / SEMANTICALLY UNACCEPTED PENDING REVIEW** on immutable CB32 artifact `9975737868` / source `098ac7d93ea203222dd0ac50cdb68667744f0fd4` / selector407 (`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`). Run `33990951740`, execution/verification jobs `101373825038 / 101374345712`, produced result/log artifacts `9976662518` (`970573beb31bc43bb2cbcd4dee957edfb2f23c0c543edfe9997c5dcfc487053d`) / `9976662690` (`4272bd5fc1750d19c9fceb94daf3be8367b05d6fa9e13828fc6a97c1c6fe44d`). All 407 identities passed; all mutation flags remained false and package/binary/selector postflight was unchanged. R1 `33990315861` is pre-runtime orchestration-invalid only and carries no semantic evidence.

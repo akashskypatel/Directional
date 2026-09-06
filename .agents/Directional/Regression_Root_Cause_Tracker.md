@@ -1,3 +1,37 @@
+## M3-CP4c3-CB35 — Code + Build closeout — **BUILD GREEN / NON-STABLE / TEST AUTHORITY CORRECTED / RUNTIME-FREE**
+
+- **Report:** `Architecture_M3_CP4c3_CB35_Code_Build_Report.md`. Code + Build only; no Directional runtime,
+  benchmark, fixture mutation, selector mutation, product change, or reusable-workflow permission change.
+- **Test-authority correction:** ordinal 404 removed only the out-of-contract requirement that ownership remain
+  non-`Established`; ordinal 390 stopped equating the plan and certifier partitions by numeric component index and
+  now uses face-set digest / published subset correspondence, comparing cross-partition counts only on exact semantic
+  correspondence. Ordinals/names/gating membership and selector bytes are unchanged; 398/366/367 and accepted
+  1–365 are untouched.
+- **CO7 transcription from immutable TB29 log `9980019636`:** failing plan component
+  `0 / EmptyFragmentOrbits / 191 faces / digest 17919102493633069558 / seeds [0,1,3]`; comparison census
+  `0 / NotTraceCut / 212 faces / digest 835099723348023536`, with `matchesFailingComponent=false` and
+  `failingComponentSubsetOfCensusComponent=false`; only equal-orbit arcs 20/24 remain interior; certified owner
+  publication is **300 established / 0 unavailable / 0 conflicting**. Exact first failing assertion text for all
+  nine TB29 RED ordinals is retained in the report.
+- **Build authority:** semantic test-authority commit `7bcf578984a1c650df58abbccb73ed8e1ed0a395`; semantically equivalent
+  clean built source `ab86747bdfdb94c7c383bf5d2893ced4207eb555`; compile run `34005311571` **SUCCESS**; immutable package
+  `9980764888` / `m3-cp4c3-cb35-result-34005311571`, provider ZIP SHA-256
+  `ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`; packaged source archive SHA-256
+  `64801a38ccbe9de282dbec261cad6c2b6575403ed38e93b514c893c22f03684a`; root `SHA256SUMS` **28/28 PASS**;
+  GMP/GMPXX linked; all eight required targets compiled; `runtimeExecution=false`.
+- **Candidate status:** `M3-CP4c3-TB29-REV-CAND-01` and `M3-CP4c3-TB29-REV-CAND-02` are **CORRECTED BY CB35 /
+  AWAITING TB30 / GATING / TEST AUTHORITY**. They are not closed or runtime-proved until TB30 executes and
+  TB30-REV adjudicates the immutable evidence.
+- **Accounting:** no new stable regression event or recurrence. Totals remain **44 events / 14 categories /
+  30 recurrences**, produced-witness debt **5**. Semantic M3 package count advances **94 → 95** because the CB35
+  package is compile-valid; current semantic runtime authority remains TB29 at **399 PASS / 9 RED**, accepted
+  **365/365**.
+- **Exact next:** `M3-CP4c-3-TB30-EXEC` on package `9980764888` / selector 408. Required corrected outcomes:
+  **390 PASS, 404 PASS**. Credibility controls: **366 RED, 367 RED, 398 RED**. If only the two authorized witness
+  corrections change, the consistent aggregate is **401 PASS / 7 RED** with RED
+  `[366,367,368,369,370,374,398]`. TB30-EXEC records raw evidence only and stops at
+  `M3-CP4c-3-TB30-REV`; no second product correction is authorized before that review.
+
 ## M3-CP4c3-TB29-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / CORRECTION RUNTIME-PROVED**
 
 - **Record:** `Architecture_M3_CP4c3_TB29_Independent_Review_Record.md`, measures **CO0–CO8**. Evidence-only: no
@@ -5232,28 +5266,22 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB29**: semantic source
-`25ab3d55697598bde436d1ac811d71e6cf911f2e`, immutable CB34 package `9979639398`
-(`c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2`), selector 408, run/job
-`34002726062 / 101404386206`, **399 PASS / 9 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,390,398,404]`. Ledger `3199d7117dbed28dd23dd22cefb543ff43f449a5a2aa859075f543a8f6195f51`;
-result/log `9980019423 / 9980019636`; every row `selected=1`; all three byte+mode censuses equal pre/post. Stable
-totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **94**.
+Current immutable CP4c-3 **semantic runtime authority remains `M3-CP4c-3-TB29`**: source
+`25ab3d55697598bde436d1ac811d71e6cf911f2e`, immutable CB34 package `9979639398`, selector 408, run/job
+`34002726062 / 101404386206`, **399 PASS / 9 RED**, accepted 1–365 **365/365 PASS**, reds
+`[366,367,368,369,370,374,390,398,404]`, ledger
+`3199d7117dbed28dd23dd22cefb543ff43f449a5a2aa859075f543a8f6195f51`. Stable totals remain
+**44 events / 14 categories / 30 recurrences**, debt **5**.
 
-`M3-CP4c-3-TB29-REV` promoted that ledger. **The frozen separating-arc barrier correction landed and is
-runtime-proved** — ordinal 408 passes on all three properties, including the positive falsification of
-over-cutting. **The frontier question open since TB20 is DECIDED:** arcs 14 `(0/1)` and 22 `(0/3)` cross faces with
-`plan=0`, so the 191-face component genuinely spans certified faces 0, 1 and 3; the seeds `[0,1,3]` are the true
-geometry and the seed guard was right to fail. TB22's minority edges `10-79` and `29-35` are edges of exactly those
-two arcs' terminal-slit faces.
+`M3-CP4c-3-CB35` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE**. It corrected only the two TB29 test-authority
+witnesses and transcribed the already-published post-correction census. Built evidence source is
+`ab86747bdfdb94c7c383bf5d2893ced4207eb555`; immutable package `9980764888` has provider ZIP SHA-256
+`ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`. Semantic M3 packages are now **95**.
+No product behavior or selector byte changed, so TB29 remains runtime authority until the successor is reviewed.
 
-The two new REDs are **test authority**: ordinal 404 asserts that no face has established ownership - an
-out-of-contract value assertion introduced at CB31 that passed vacuously until the correction worked - and ordinal
-390 matches the plan and certifier partitions **by component index**, the conflation ordinal 406 proved invalid.
-Neither is a product regression and neither fix is a weakening.
-
-**Exact next: `M3-CP4c-3-CB35` - Code + Build, runtime-free, test authority and transcription only**, under
-`Architecture_M3_CP4c3_TB29_Independent_Review_Record.md` **CO6-CO8**. Restore both witnesses to their own
-contracts, and transcribe the post-correction census including the `established`/`unavailable`/`conflicting` counts
-and the failing assertion text for every RED ordinal. **No product change is authorized** until that census is
-read; CL8 stands. `M3-CP4c-3-TB30` then re-executes selector 408 with 390 and 404 required to return to PASS.
+**Exact next: `M3-CP4c-3-TB30-EXEC`**, artifact-only on package `9980764888` and selector 408, consuming
+`Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md`. Accepted 1–365 must remain 365/365; corrected
+ordinals **390 and 404 must PASS**; credibility controls **366, 367 and 398 must remain RED**. If only those two
+authorized witness corrections change, the consistent aggregate is **401 PASS / 7 RED** with reds
+`[366,367,368,369,370,374,398]`. TB30-EXEC records raw evidence only and stops at
+**`M3-CP4c-3-TB30-REV`**. No second product correction is authorized before that review.

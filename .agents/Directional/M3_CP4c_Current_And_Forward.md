@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-05** at `M3-CP4c-3-TB29-REV` closeout.
+Last updated **2026-09-05** at `M3-CP4c-3-CB35` closeout.
 
 ---
 
@@ -22,7 +22,15 @@ source `25ab3d55697598bde436d1ac811d71e6cf911f2e`. Run/job `34002726062 / 101404
 `9980019423 / 9980019636`; ledger `3199d7117dbed28dd23dd22cefb543ff43f449a5a2aa859075f543a8f6195f51`; every row
 `selected=1`; all three byte+mode censuses equal pre/post.
 
-CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, packages **94**.
+CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, semantic packages **95**.
+
+`M3-CP4c-3-CB35` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE** at built evidence source
+`ab86747bdfdb94c7c383bf5d2893ced4207eb555`. Immutable package `9980764888`
+(`m3-cp4c3-cb35-result-34005311571`) has provider ZIP SHA-256
+`ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`; compile run `34005311571` succeeded,
+root `SHA256SUMS` verified 28/28, source remained clean, all eight required targets compiled, GMP/GMPXX linkage was
+verified, and `runtimeExecution=false`. Selector 408 bytes are unchanged. TB29 therefore remains the current
+semantic runtime authority until TB30 is validly reviewed.
 
 ## 2. The correction landed, and the frontier question is decided
 
@@ -58,24 +66,37 @@ distribution was never an attribution defect.**
 `conflicting` counts after the correction are what decide whether a second correction is needed, and the runtime
 already publishes them.
 
-## 3. Exact next turn — `M3-CP4c-3-CB35`
+**CB35 restored the two test witnesses without changing product behavior.** Ordinal 404 no longer requires every
+owner to remain non-`Established`. Ordinal 390 now uses face-set digest / published subset correspondence and only
+compares cross-partition counts on exact semantic correspondence; numeric component index is never treated as
+identity. The post-correction TB29 census was transcribed from immutable artifact `9980019636`: failing plan
+component `0 / EmptyFragmentOrbits / 191 faces / digest 17919102493633069558 / seeds [0,1,3]`; comparison census
+`0 / NotTraceCut / 212 faces / digest 835099723348023536`, with `matchesFailingComponent=false` and
+`failingComponentSubsetOfCensusComponent=false`; only equal-orbit arcs 20 and 24 remain interior; owner publication
+is **300 established / 0 unavailable / 0 conflicting**. Exact RED assertion text is retained in
+`Architecture_M3_CP4c3_CB35_Code_Build_Report.md`.
 
-Code + Build, runtime-free, GMP/GMPXX linked, **test authority and transcription only. No product change.**
+## 3. Exact next turn — `M3-CP4c-3-TB30-EXEC`
 
-- **CO6 — restore two witnesses to their own contracts**, replace-in-place, ordinals retained and gating, names and
-  selector bytes unchanged. Delete ordinal 404's ownership-status loop, keeping every other assertion. Make ordinal
-  390 locate the comparison census by **face-set digest or the published subset relation**, never by index, and
-  assert only plan-side quantities when no census corresponds. **Nothing either identity legitimately owns may be
-  relaxed, ordinal 398 is untouched, and 366/367 are not touched.**
-- **CO7 — transcribe the post-correction census** from TB29 log artifact `9980019636`: the failing plan component
-  (id, domain, face count, digest, seed count/state/orbits), every uncut component's interior-arc rows with both
-  dart orbits, the **`established` / `unavailable` / `conflicting` counts over the 300 source faces**, and **the
-  failing assertion text for every RED ordinal**. Transcription of existing evidence — **not a new diagnostic**, so
-  CL8 is untouched.
-- **CO8 — `M3-CP4c-3-TB30`** re-executes selector 408. Credibility gate: 366/367/398 RED. **Required outcome: 390
-  and 404 return to PASS**; otherwise both new candidates are falsified.
+Artifact-only Test + Benchmark on immutable CB35 package `9980764888` and frozen selector 408. Follow
+`Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md` exactly.
 
-**No second product correction is authorized until that census is read.**
+- Verify exact artifact/source/checksum/executable-mode authority before runtime.
+- Execute all **408** selector identities in frozen order, one identity per fresh process and fresh working
+  directory, through the statically resolved owning packaged test binary.
+- Require `selected == 1` for every row and preserve all raw identity logs, ledger/resource evidence, and pre/post
+  byte+mode censuses.
+- Accepted identities **1–365 must remain 365/365 PASS**.
+- Corrected witnesses **390 and 404 must PASS**.
+- Credibility controls **366, 367 and 398 must remain RED** because CB35 changed no product behavior. An unexpected
+  PASS is evidence-integrity trouble until review, not automatic progress.
+- 368/369/370/374 are carried separate-owner surfaces and are recorded exactly without repair or mutation.
+- If only the two authorized witness corrections change, the consistent aggregate is **401 PASS / 7 RED** with
+  RED `[366,367,368,369,370,374,398]`.
+
+No configure, compile, relink, rebuild, repackaging, package repair/chmod, generated discovery, benchmark,
+source/test/fixture/selector mutation, or semantic retry is permitted. TB30-EXEC records raw evidence only and
+**stops at `M3-CP4c-3-TB30-REV`**. No second product correction is authorized before that review reads the census.
 
 ## 4. Open candidates
 
@@ -83,8 +104,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB29-REV-CAND-01` | **NEW / ACTIVE / GATING / TEST AUTHORITY** — ordinal 404 requires `EXPECT_NE(Established, …)` for every face, an out-of-contract assertion that the defect under repair is still present. Introduced at CB31; passed vacuously for four turns. Owner: CO6. |
-| `M3-CP4c3-TB29-REV-CAND-02` | **NEW / ACTIVE / GATING / TEST AUTHORITY** — ordinal 390 locates the certifier census by component **index**, the conflation ordinal 406 proved invalid. Owner: CO6. |
+| `M3-CP4c3-TB29-REV-CAND-01` | **CORRECTED BY CB35 / AWAITING TB30 / GATING / TEST AUTHORITY** — ordinal 404's out-of-contract `EXPECT_NE(Established, …)` loop was removed; all publication/completeness assertions remain. Runtime proof pending TB30. |
+| `M3-CP4c3-TB29-REV-CAND-02` | **CORRECTED BY CB35 / AWAITING TB30 / GATING / TEST AUTHORITY** — ordinal 390 now uses face-set digest / published subset correspondence and never component index as cross-partition identity. Runtime proof pending TB30. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **CORRECTED / RUNTIME-PROVED** — CB34's separating-arc barrier rule excludes the crossed faces and preserves equal-orbit slits; ordinal 408 passes on all three properties. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
 | `M3-CP4c3-TB27-REV-CAND-02` | **ACTIVE / ARCHITECTURAL / NON-GATING** — the plan excludes from its component domain exactly the faces carrying a direct certified read (`GlobalTopologyPlan.cpp:702`, `:750`), then fails to seed that component. |
@@ -175,14 +196,15 @@ After the durable start-of-turn checklist, load only the minimum current authori
 
 1. `ORIENTATION.md` — read first.
 2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_TB29_Independent_Review_Record.md` — **CO0–CO8**, the adjudication and the frozen CB35 scope.
-4. `Architecture_M3_CP4c3_TB29_EXEC_Report.md` — **the current valid semantic runtime authority**.
-5. `Architecture_M3_CP4c3_CB34_Code_Build_Report.md` — the package under test, **and the retained CN7 census transcription**.
-6. `Architecture_M3_CP4c3_TB29_Artifact_Only_Test_Benchmark_Plan.md` — the contract it executed.
-7. `tools/m3_cp4c3_tb28_r3_harness.sh` and its TB29 successor — **the instrument; read it rather than a summary of it**.
+3. `Architecture_M3_CP4c3_CB35_Code_Build_Report.md` — built evidence, exact CO7 census transcription, and CB35
+   compile/package authority.
+4. `Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md` — **the exact next executable contract**.
+5. `Architecture_M3_CP4c3_TB29_EXEC_Report.md` — current valid semantic runtime authority.
+6. `Architecture_M3_CP4c3_TB29_Independent_Review_Record.md` — CO0–CO8 adjudication and frozen CB35/TB30 boundary.
+7. `tools/m3_cp4c3_tb28_r3_harness.sh` and its TB29/TB30 successor — the instrument; read it rather than a summary.
 8. `M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
 9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
 
-Exact next is **`M3-CP4c-3-CB35`** — restore ordinals 390 and 404 to their own contracts and transcribe the
-post-correction census. **Test authority and transcription only; no product change is authorized until that census
-is read.**
+Exact next is **`M3-CP4c-3-TB30-EXEC`** on immutable package `9980764888` and selector 408. It is artifact-only,
+records raw evidence, and stops at **`M3-CP4c-3-TB30-REV`**. No second product correction is authorized before that
+review.
