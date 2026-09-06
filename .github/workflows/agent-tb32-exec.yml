@@ -1,0 +1,218 @@
+name: M3 CP4c3 TB32 Artifact-Only EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb32-exec/run.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb32-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb32-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb32-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent wrapper log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-tb32-exec-wrapper.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" \
+            'turn=M3-CP4c-3-TB32-EXEC' \
+            'artifact_id=9983643195' \
+            'expected_source_sha=7f63b5f41a0ca72f0b984ec4ee42d11f74775719' \
+            'runtimeBoundary=artifact-only' \
+            'historical_harness_blob=cfea4a0e468fa84b17c31445f9b13115f5035547' \
+            'historical_harness_sha256=1f4ed91cb8ac055632b574a6b08a4aa0fb45b9e07c125b9f08f30d7baaef47bb' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Materialize deterministic TB32 harness from preserved TB31 harness
+        id: harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          wrapper="${RUNNER_TEMP}/m3-cp4c3-tb32-exec-wrapper.log"
+          blob_json="${RUNNER_TEMP}/m3-cp4c3-tb31-harness-blob.json"
+          harness="${RUNNER_TEMP}/m3_cp4c3_tb32_exec_harness.sh"
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/blobs/cfea4a0e468fa84b17c31445f9b13115f5035547" \
+            -o "$blob_json"
+          python3 - "$blob_json" "$harness" <<'PY'
+          import base64
+          import hashlib
+          import json
+          import pathlib
+          import sys
+
+          blob_json = pathlib.Path(sys.argv[1])
+          out = pathlib.Path(sys.argv[2])
+          payload = json.loads(blob_json.read_text())
+          data = base64.b64decode(payload['content'])
+          old_sha = hashlib.sha256(data).hexdigest()
+          if old_sha != '1f4ed91cb8ac055632b574a6b08a4aa0fb45b9e07c125b9f08f30d7baaef47bb':
+              raise SystemExit(f'historical harness digest mismatch: {old_sha}')
+          text = data.decode('utf-8')
+
+          exact = {
+              "ARTIFACT_ID=9982174864": "ARTIFACT_ID=9983643195",
+              "EXPECTED_ARTIFACT_NAME='m3-cp4c3-cb36-result-34010011172'": "EXPECTED_ARTIFACT_NAME='cb37-package-result-34014992328'",
+              "EXPECTED_PROVIDER_DIGEST='sha256:8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b'": "EXPECTED_PROVIDER_DIGEST='sha256:75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f'",
+              "EXPECTED_ZIP_SHA='8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b'": "EXPECTED_ZIP_SHA='75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f'",
+              "EXPECTED_SOURCE_SHA='90bf8430f54c8b81fb90a6bda820cf8edebce6e9'": "EXPECTED_SOURCE_SHA='7f63b5f41a0ca72f0b984ec4ee42d11f74775719'",
+              "EXPECTED_SOURCE_ARCHIVE_SHA='f909864226b07a4cd89a9a51669792e8cdd63206c5b2a23d2e0b179476d78cae'": "EXPECTED_SOURCE_ARCHIVE_SHA='cae8e29946c5e9dfea1a49070e0d8721bc17fb53dba54bb6c66188347560d3fa'",
+              "TB30 run=34008104497 selector=408 pass=401 red=7 red_ordinals=[366,367,368,369,370,374,398] accepted_prefix=365/365 ownership=300/0/0 semantic_authority=true": "TB31 run=34011402843 selector=408 pass=397 red=11 red_ordinals=[366,367,368,369,370,374,390,393,398,406,407] accepted_prefix=365/365 ownership=300/0/0 semantic_authority=true",
+              "for n in 366 367 368 369 370 374 390 398 404 408; do": "for n in 366 367 368 369 370 374 390 393 398 406 407; do",
+              "for n in 366 367 390 404 408; do": "for n in 366 367 390 393 406 407; do",
+          }
+          for old, new in exact.items():
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'expected exactly one harness token, got {count}: {old}')
+              text = text.replace(old, new, 1)
+
+          if 'm3-cp4c3-tb31' not in text or 'TB31' not in text:
+              raise SystemExit('historical TB31 orchestration labels missing')
+          text = text.replace('m3-cp4c3-tb31', 'm3-cp4c3-tb32')
+          text = text.replace('TB31', 'TB32')
+
+          old_grep = "|TraceCutFaceFragmentCountMismatch|censusCorrespondence'"
+          new_grep = "|TraceCutFaceFragmentCountMismatch|censusCorrespondence|planComponent|partitionIdentity|certifier|subset|interiorArc|terminal|detailCode|failureCode|failureLocus|certifiedOwner|ownerPublication'"
+          if text.count(old_grep) != 1:
+              raise SystemExit('focused frontier grep token drifted')
+          text = text.replace(old_grep, new_grep, 1)
+
+          forbidden = [
+              '9982174864',
+              '90bf8430f54c8b81fb90a6bda820cf8edebce6e9',
+              'm3-cp4c3-tb31',
+          ]
+          for token in forbidden:
+              if token in text:
+                  raise SystemExit(f'stale TB31 harness token remains: {token}')
+          required = [
+              'ARTIFACT_ID=9983643195',
+              "EXPECTED_SOURCE_SHA='7f63b5f41a0ca72f0b984ec4ee42d11f74775719'",
+              "EXPECTED_408='2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6'",
+              'for n in 366 367 368 369 370 374 390 393 398 406 407; do',
+              'for n in 366 367 390 393 406 407; do',
+              'TB32_EXEC_COMPLETE',
+          ]
+          for token in required:
+              if token not in text:
+                  raise SystemExit(f'required TB32 harness token absent: {token}')
+          out.write_text(text)
+          print('historical_harness_sha256=' + old_sha)
+          print('tb32_harness_sha256=' + hashlib.sha256(out.read_bytes()).hexdigest())
+          PY
+          chmod 755 "$harness"
+          {
+            echo "tb32_harness=$harness"
+            echo "tb32_harness_mode=$(stat -c '%a' "$harness")"
+            echo "tb32_harness_sha256=$(sha256sum "$harness" | awk '{print $1}')"
+          } | tee -a "$wrapper"
+          echo "harness_path=$harness" >> "$GITHUB_OUTPUT"
+
+      - name: Verify and execute immutable artifact-only harness
+        id: execute
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HARNESS: ${{ steps.harness.outputs.harness_path }}
+        shell: bash
+        run: |
+          set +e
+          wrapper="${RUNNER_TEMP}/m3-cp4c3-tb32-exec-wrapper.log"
+          [[ -n "$HARNESS" && -f "$HARNESS" && -x "$HARNESS" ]] || {
+            echo 'materialized TB32 harness missing or non-executable' | tee -a "$wrapper" >&2
+            status=92
+            echo "harness_exit=$status" | tee -a "$wrapper"
+            echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+          "$HARNESS" --execute
+          status=$?
+          echo "harness_exit=$status" | tee -a "$wrapper"
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload TB32 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb32-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb32-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB32 diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb32-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/m3-cp4c3-tb32.log
+            ${{ runner.temp }}/m3-cp4c3-tb32-exec-wrapper.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Propagate harness status
+        if: always()
+        env:
+          HARNESS_EXIT: ${{ steps.execute.outputs.exit_code }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$HARNESS_EXIT"
+          if [[ "$HARNESS_EXIT" != 0 ]]; then
+            echo "TB32 artifact-only harness failed with exit ${HARNESS_EXIT}" >&2
+            exit "$HARNESS_EXIT"
+          fi
+          echo 'TB32 artifact-only harness completed without orchestration failure.'
