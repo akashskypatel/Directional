@@ -10,98 +10,61 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-06** at `M3-CP4c-3-DEFN-R4` closeout.
+Last updated **2026-09-06** at `M3-CP4c-3-CB37` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB31` is the current valid semantic runtime authority.** Selector **408**, **397 PASS / 11 RED**,
-accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, on immutable CB36 package
-`9982174864` / source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`. Run/job `34011402843 / 101427791582`; result/log
-`9982618043 / 9982618174`; ledger `6632f428243788c98c816571f47ef0cf98df25a57274b2df75612674d563250b`; every row
-`selected=1`; `timeout_count=0`; all three byte+mode censuses equal pre/post.
+**`M3-CP4c-3-TB31` remains the current valid semantic runtime authority.** Selector **408**, **397 PASS / 11 RED**,
+accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. CB37 has not executed
+runtime. Certified ownership therefore remains last-runtime **300 established / 0 unavailable / 0 conflicting**.
 
-CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, packages **96**.
+**CB37 is compile-green.** Exact evidence source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`; compile run
+`34014992328`; owner precompile job `101437131130` SUCCESS; package job `101437310546` SUCCESS; immutable package
+artifact `9983643195`, provider digest `75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f`;
+packaged source SHA-256 `cae8e29946c5e9dfea1a49070e0d8721bc17fb53dba54bb6c66188347560d3fa`; GMP/GMPXX linked;
+root checksums PASS; source status clean; `runtimeExecution=false`. Selector 408 stayed byte-identical.
 
-## 2. The seed frontier is closed; the frontier moved to fragment identity
+CP4c-3 remains **OPEN**. Stable accounting **44 / 14 / 30**, debt **5**, reported semantic packages **97**.
 
-**Closed.** Component 0 moved from **191 faces / seedCount 3 / `Multiple` / `[0,1,3]`** to
-**189 / 1 / `Unique` / `[0]`**. Certified ownership remains **300 established / 0 unavailable / 0 conflicting**.
-The chain opened at TB19 — *can certified source-face ownership be established, and can the plan consume it?* — is
-answered on both halves.
+## 2. Part VIII implementation is complete; runtime proof is pending
 
-**Both falsifiers stated before the build were checked and neither reproduced.** The old
-`191 / 3 / [0,1,3]` fingerprint did not return, and **no `TraceCutFaceFragmentCountMismatch` appears in any of the
-408 raw logs** — confirming the `tracePieceCount` by-construction argument. CB36's diff is the guard at
-`GlobalTopologyPlan.cpp:830` plus a comment correction and nothing else.
+CB37 implements DEFN-R4 CS1-CS5:
 
-**The new frontier.** 366/367 now stop at **`TraceArcDoesNotSeparateItsSides`**, **arc 15**,
-`sourceFace=8,10,151`, guarded at `GlobalTopologyPlan.cpp:474–479` in `build_fragment_corner_incidence`. The guard
-is **pre-existing** — CB36 did not touch its site, which carries its own untouched `is_terminal_slit` skip at
-`:467`.
+- `FragmentCornerIncidence` remains an ownership map; equal-orbit full-chord sides now intentionally accumulate
+  into one owning-orbit entry instead of emitting `TraceArcDoesNotSeparateItsSides`. Enum/string declaration stays.
+- existing frontier fields are now populated on region-construction/certification failures through a shared private
+  annotation path. Correspondence between the plan and certifier partitions is derived by face-set relation, never
+  by equal numeric component index.
+- ordinals 390/393/406/407 retain all evidence they legitimately own but no longer pin the incidental terminal
+  detail code. Names, fixtures, ordinals, gating membership and selector bytes are unchanged.
+- source-face ownership was not reopened; 368/369/370/374/398 are untouched; the two partitions remain separate;
+  no new diagnostic contract was added.
 
-**It is not gratuitous.** The function writes `result[sourceFace][cornerOrbit]`, `FragmentCornerIncidence` is
-`map<SourceFace, map<orbit, set<SourceVertexId>>>` (`:399–401`), and its consumer keys fragments the same way —
-`FragmentKey = pair<SourceFaceTopologyKey, std::size_t /*orbit*/>` with an `owningOrbit` parameter (`:1675`,
-`:1693–1699`). **A fragment is identified by `(face, orbit)` throughout region disc certification, and that key is
-not injective when an arc's two darts share an orbit**: the two sides collapse onto one entry and their corner sets
-merge. The guard refuses rather than merging silently.
+Accepted-prefix safety is by construction: terminal-slit handling and unequal-orbit behavior are unchanged; the
+only removed stop was the contradictory equal-orbit full-chord rejection; the same function's ray path already
+accepts that ownership relation.
 
-**Its premise contradicts §5**, which has held since TB18: shared orbit ownership by the two sides of one arc is
-**legitimate topology**, measured on arc 15 at DEFN-R3.4, and relied on by the very correction that closed the seed
-frontier — arcs 20 and 24 (`0/0`) are deliberately left alone. **The defect is the key, not the check.**
+## 3. Exact next subturn — `M3-CP4c-3-TB32-EXEC`
 
-**Four ordinals are pinned witnesses.** 390, 393, 406 and 407 each expected
-`UncutFaceComponentOrbitSeedNotUnique` and received the new code. **404 and 408 stayed PASS** — the two identities
-written to assert *publication and completeness* rather than an outcome. Six identities across two forward steps
-have now redded for this reason.
+Execute immutable package `9983643195` under
+`Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md`. No rebuild, repair, source/test/fixture/selector
+mutation, generated discovery or benchmark.
 
-**Not established:** why the guard became reachable. Static source does not settle it; the retained logs in artifact
-`9982618174` do, and CR8 requires it transcribed rather than inferred.
+Required outcome/evidence:
 
-## 3. Definition authority — `M3-CP4c-3-DEFN-R4`, Part VIII
+- selector 408 executes exactly once per identity; accepted 1–365 remain 365/365;
+- 390/393/406/407 return PASS;
+- 368/369/370/374/398 stay RED as credibility rows not owned by CB37;
+- 366/367 do not emit `TraceArcDoesNotSeparateItsSides`;
+- the old 189/1/`[0]` `UncutFaceComponentOrbitSeedNotUnique` stop does not reproduce;
+- complete plan/certifier frontier evidence and ownership census are preserved;
+- package/source/execution-view bytes and modes remain unchanged.
 
-Frozen as **Part VIII** of `M3_CP4c_Frozen_Definitions.md`; it supersedes Part VII where they conflict.
-
-- **CR8 discharged from source — and TB31-REV corrected.** `build_fragment_corner_incidence` (`:405`) is called at
-  `:2014` from **`build_region_certificates` (`:1988`)**, which takes the already-built `regions`; `build_regions`
-  (`:629`) is called at `:2212`. **`TraceArcDoesNotSeparateItsSides` is strictly downstream of
-  `UncutFaceComponentOrbitSeedNotUnique`** and was unreachable while the seed guard fired. TB31-REV inferred the
-  opposite from line numbers. **CB36 did not change the walk**, which removes the risk that made the transcription
-  matter. `LESSONS.md` 139.
-- **DEFN-R4.1 — `FragmentCornerIncidence` is an ownership map**, `fragmentCorners[face][orbit]` = the corners of
-  `face` **owned by certified face `orbit`**. Both consumers use it that way (`:1893–1906`, `:1927–1945`), and the
-  `FragmentKey` at `:1693–1699` carries `owningOrbit` as a constant tag. **TB31-REV's "fragment identity"
-  description is withdrawn.**
-- **DEFN-R4.2 — a bridge chord's single merged entry, containing all three corners, is correct**, not a collision.
-- **DEFN-R4.3 — `TraceArcDoesNotSeparateItsSides` is RETIRED** from the emission path; the enum entry stays
-  declared. Its premise is refuted by the TB18 fact measured on **arc 15**; it contradicts the separating-arc rule
-  that deliberately leaves arcs 20 and 24 (`0/0`) alone; and **the same function already accepts equal orbits on
-  its ray path** (`:608–615`). **A consequence of R4.1/R4.2, not a relaxation.** `LESSONS.md` 140.
-- **DEFN-R4.4 — frontier evidence must not hang off one failure code**: the failing-component digest, census
-  identity and `censusCorrespondence` publish on **every** region-construction and region-certification failure
-  locus.
-- **DEFN-R4.5 — witnesses assert the evidence, not which failure produced it.** Ordinals 390/393/406/407 replaced
-  in place, retained and gating.
-- **Not decided:** ownership stays **closed**; ordinal 398 untouched; 368/369/370/374 untouched; the two partitions
-  are **not** unified; no new diagnostic contract.
-
-## 3.1 Exact next turn — `M3-CP4c-3-CB37`
-
-Code + Build, runtime-free, GMP/GMPXX linked, under Part VIII **CS1–CS6**.
-
-- **CS1** retire the guard emission at `:474–479` and record DEFN-R4.1's ownership contract at the site.
-- **CS2** publish the failing-component digest, certifier census identity and `censusCorrespondence` / subset
-  relation on every region-construction and region-certification failure locus.
-- **CS3** replace ordinals 390/393/406/407's assertions **in place** — nothing they legitimately own relaxed.
-- **CS4** **accepted-prefix safety by construction**: the only reachable change is a trace segment whose arc has
-  equal dart orbits.
-- **CS5** selector **408 unchanged**; any witness appends as **409** with 408 an exact prefix, asserting
-  publication and completeness only.
-- **CS6** `M3-CP4c-3-TB32` re-executes. Credibility gate: **368/369/370/374/398 stay RED**. **Required outcome:
-  390/393/406/407 return to PASS.** **A stop at `TraceArcDoesNotSeparateItsSides` falsifies R4.3; a stop
-  reproducing `UncutFaceComponentOrbitSeedNotUnique` at 189/1/`[0]` falsifies R4.1.**
+TB32-EXEC records raw evidence only. Exact successor after a mechanically valid EXEC is `M3-CP4c-3-TB32-REV`,
+which performs evidence-only semantic review and no runtime or implementation mutation. Independent review/planning
+is a separate outsourced boundary; stop the implementation loop there.
 
 ## 4. Open candidates
 
@@ -109,9 +72,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB31-REV-CAND-01` | **DECIDED at DEFN-R4 / IMPLEMENTATION PENDING** — the structure is an **ownership map**, not a fragment index; a bridge chord's merged entry is correct, and the guard is **retired** as a consequence. Owner: CS1. |
-| `M3-CP4c3-TB31-REV-CAND-02` | **DECIDED at DEFN-R4 / IMPLEMENTATION PENDING** — DEFN-R4.5: a witness asserts the evidence, not which failure produced it. Owner: CS3. |
-| `M3-CP4c3-TB31-REV-CAND-03` | **DECIDED at DEFN-R4 / IMPLEMENTATION PENDING** — DEFN-R4.4: frontier evidence publishes on every region-construction and region-certification failure locus. Owner: CS2. |
+| `M3-CP4c3-TB31-REV-CAND-01` | **IMPLEMENTED BY CB37 / AWAITING TB32** — ownership-map semantics are implemented; the equal-orbit guard emission is retired. Runtime owner: TB32. |
+| `M3-CP4c3-TB31-REV-CAND-02` | **IMPLEMENTED BY CB37 / AWAITING TB32** — 390/393/406/407 assert their durable evidence without pinning one terminal code. Runtime owner: TB32. |
+| `M3-CP4c3-TB31-REV-CAND-03` | **IMPLEMENTED BY CB37 / AWAITING TB32** — frontier evidence publication is generalized across region-construction/certification failure loci. Runtime owner: TB32. |
 | `M3-CP4c3-TB30-REV-CAND-02` | **NEW / ACTIVE / EVIDENCE SURFACE / NON-GATING** — the plan-side interior-arc census is a projection of the certifier's rows, so an arc that still cuts the plan's component but has left the certifier's uncut census is invisible to it. Not blocking CQ7. |
 | `M3-CP4c3-TB27-REV-CAND-01` | **CORRECTED / RUNTIME-PROVED** — CB34's separating-arc barrier rule excludes the crossed faces and preserves equal-orbit slits; ordinal 408 passes on all three properties. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
@@ -209,18 +172,17 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, load only the minimum current authority:
+After the durable start-of-turn checklist, TB32-EXEC loads only the minimum current authority:
 
 1. `ORIENTATION.md` — read first.
-2. **this file** — current frontier and candidate ownership.
-3. `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` — **CR0–CR8**, the adjudication and the frozen DEFN-R4 scope.
-4. `Architecture_M3_CP4c3_TB31_EXEC_Report.md` — **the current valid semantic runtime authority**.
-5. `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` — the contract it executed.
-6. `M3_CP4c_Frozen_Definitions.md` — **Part VIII is the current definition authority**; Parts VI–VII remain operative where not superseded.
-7. `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`.
-8. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
+2. `Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md` — authoritative immutable runtime plan.
+3. `Architecture_M3_CP4c3_CB37_Code_Build_Report.md` — exact source/package provenance and static safety argument.
+4. **this file** — current frontier and candidate ownership.
+5. `M3_CP4c_Frozen_Definitions.md` — Part VIII definition/falsification authority.
+6. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `LESSONS.md` plus workflow/retention/cleanup policies required by the start checklist.
 
-Exact next is **`M3-CP4c-3-CB37`** under Part VIII **CS1–CS6**: retire the guard emission and record the ownership
-contract at the site, publish the frontier evidence on every region failure locus, replace ordinals 390/393/406/407
-in place, and demonstrate accepted-prefix safety by construction. Selector **408 unchanged**. **Source-face
-ownership is closed and must not be re-opened.**
+Exact next is **`M3-CP4c-3-TB32-EXEC`** on immutable artifact `9983643195`. It executes selector 408 exactly as
+frozen, preserves raw evidence, performs no rebuild/repair/mutation and executes no benchmark. After mechanically
+valid EXEC evidence, exact next is **`M3-CP4c-3-TB32-REV`**. Source-face ownership remains closed and must not be
+re-opened.

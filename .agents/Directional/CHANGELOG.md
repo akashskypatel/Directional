@@ -1,3 +1,37 @@
+## 2026-09-06 — `M3-CP4c-3-CB37`: DEFN-R4 implemented; compile green; TB32-EXEC frozen next
+
+Code + Build only; **no Directional runtime or benchmark executed**. Exact semantic/evidence source
+`7f63b5f41a0ca72f0b984ec4ee42d11f74775719`. CB37 retires `TraceArcDoesNotSeparateItsSides` from the emission
+path while retaining its enum/string declaration; records `FragmentCornerIncidence` as the owning-certified-face
+corner map at the equal-orbit full-chord site; generalizes existing frontier evidence across region construction and
+certification failures using face-set correspondence between the still-distinct partitions; and removes only the
+incidental terminal-detail-code assertions from gating ordinals 390/393/406/407. Selector 408 is byte-identical at
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`. No fixture, benchmark, accepted identity,
+source-face ownership rule, ordinal 398, 368/369/370/374 contract, or reusable workflow changed in semantic source.
+
+Accepted-prefix safety is by construction: the terminal-slit skip and unequal-orbit path are unchanged; only the
+equal-orbit full-chord rejection is removed, and the existing ownership writes now merge all corners into the one
+correct owning-orbit entry. The evidence helper writes only pre-existing diagnostic fields after a region failure is
+already known and matches independent partitions by face-set relation rather than numeric component ID.
+
+Mandatory changed-owner precompile **PASS**: run/job `34014992328 / 101437131130`, target
+`directional_surface_cell_producer_tests`, result artifact `9983635776`, provider digest
+`bbca642fed351d149b8ca0f4e16d0746d99938b3e8eb47100a3d8af22c6869ba`. Final package compile **PASS**: same run,
+job `101437310546`, all eight required targets, immutable result artifact `9983643195`, provider digest
+`75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f`, persistent log artifact `9983643357` /
+`26d733fc358ac22b816e3cfd61ce149d6e404a4db438eb6a51d5eb75cb9d6cb6`, source archive SHA-256
+`cae8e29946c5e9dfea1a49070e0d8721bc17fb53dba54bb6c66188347560d3fa`. Root `SHA256SUMS` passed, source status
+empty, preflight/build exit 0, GMP/GMPXX both linked, `runtimeExecution=false`.
+
+No semantic accounting changes can be claimed in Code + Build. TB31 remains runtime authority at **397 PASS / 11
+RED**, accepted **365/365**, ownership **300/0/0**, stable **44 / 14 / 30**, debt **5**. Final semantic package count
+is now **97**.
+
+**Exact successor: `M3-CP4c-3-TB32-EXEC`** on immutable artifact `9983643195`, using
+`Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md`; then `TB32-REV` reviews immutable EXEC evidence
+only. Required credibility: 390/393/406/407 PASS; 368/369/370/374/398 remain RED; accepted 1–365 stay green; no
+`TraceArcDoesNotSeparateItsSides`; no reproduction of the prior 189/1/`[0]` seed stop.
+
 ## 2026-09-06 — `M3-CP4c-3-DEFN-R4`: fragment ownership decided, `TraceArcDoesNotSeparateItsSides` retired, CB37 frozen
 
 Definition turn (absorbs REVIEW + PLAN), frozen as **Part VIII** of `M3_CP4c_Frozen_Definitions.md`. Static only:

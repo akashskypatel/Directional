@@ -116,78 +116,78 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB37` — EXACT NEXT / Code + Build, runtime-free
-
-`M3-CP4c-3-DEFN-R4` is frozen as **Part VIII** of `M3_CP4c_Frozen_Definitions.md`.
+## Mandatory next turn — `M3-CP4c-3-TB32-EXEC` — EXACT NEXT / artifact-only runtime
 
 ### Current authority
 
-- **Runtime authority remains `M3-CP4c-3-TB31`** — selector **408**, **397 PASS / 11 RED**, accepted
-  **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`; immutable CB36 package `9982174864`,
-  source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`; ledger
-  `6632f428243788c98c816571f47ef0cf98df25a57274b2df75612674d563250b`.
-- **Certified source-face ownership is total** — 300 established / 0 unavailable / 0 conflicting — and plan
-  component 0 is **189 faces / seedCount 1 / `Unique` / `[0]`**. The seed frontier is **closed**.
-- **Definition authority is Part VIII (DEFN-R4)**, superseding Part VII where they conflict.
-- Stable accounting **44 / 14 / 30**, debt **5**, packages **96**.
+- **Semantic runtime authority remains `M3-CP4c-3-TB31`** — selector 408, **397 PASS / 11 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. No CB37 runtime has executed.
+- **CB37 compile evidence is immutable and green** — source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`; run
+  `34014992328`; changed-owner job `101437131130` SUCCESS; package job `101437310546` SUCCESS; result artifact
+  `9983643195` / provider digest `75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f`;
+  log artifact `9983643357`; packaged source SHA-256
+  `cae8e29946c5e9dfea1a49070e0d8721bc17fb53dba54bb6c66188347560d3fa`. Root checksums PASS, GMP/GMPXX
+  linked, source status clean, `runtimeExecution=false`.
+- Selector 408 is unchanged with SHA-256
+  `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
+- Certified source-face ownership remains last-runtime **300 established / 0 unavailable / 0 conflicting**.
+- Stable accounting remains **44 / 14 / 30**, debt **5**. Reported semantic M3 package count is now **97**.
+- CP4c-3 remains **OPEN**.
 
-### What DEFN-R4 decided
+### What CB37 changed
 
-- **CR8 discharged from source.** `build_fragment_corner_incidence` is called from `build_region_certificates`,
-  which runs **after** `build_regions`, so **`TraceArcDoesNotSeparateItsSides` is downstream of the seed guard** and
-  became reachable only because CB36 let the pipeline advance. **CB36 did not change the walk.** TB31-REV's
-  contrary inference from line numbers is corrected.
-- **DEFN-R4.1** — `FragmentCornerIncidence` is an **ownership map**: `fragmentCorners[face][orbit]` is the set of
-  `face`'s corners owned by certified face `orbit`, keyed by owning region rather than by fragment.
-- **DEFN-R4.2** — a bridge chord's **single merged entry containing all three corners is correct**.
-- **DEFN-R4.3** — `TraceArcDoesNotSeparateItsSides` is **RETIRED** from the emission path (enum entry stays
-  declared): premise refuted at TB18/arc 15, contradicts the separating-arc rule, and **the same function already
-  accepts equal orbits on its ray path**.
-- **DEFN-R4.4** — frontier evidence publishes on **every** region-construction and region-certification failure
-  locus, not only the seed-guard path.
-- **DEFN-R4.5** — witnesses assert the evidence, **not which failure produced it**; ordinals 390/393/406/407 are
-  replaced in place, retained and gating.
+1. Retired the `TraceArcDoesNotSeparateItsSides` emission while leaving its enum/string declaration intact.
+2. Recorded the frozen `FragmentCornerIncidence` ownership-map contract at the equal-orbit full-chord site.
+3. Generalized existing frontier-evidence publication across region-construction/certification failures, matching the
+   certifier census by face-set relation rather than independent component index.
+4. Repaired ordinals 390/393/406/407 in place so they assert their durable evidence rather than one terminal detail
+   code; names, fixtures, ordinals, gating status and selector bytes remain unchanged.
+5. No ownership re-open, partition unification, ordinal-398 change, 368/369/370/374 change, new diagnostic contract,
+   accepted identity change, fixture change, benchmark change or reusable-workflow change occurred.
 
-### CB37 boundary — Part VIII CS1–CS6
+Full implementation/build evidence: `Architecture_M3_CP4c3_CB37_Code_Build_Report.md`.
 
-Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked, no runtime, no package repair.
+### TB32-EXEC boundary
 
-1. **CS1** — retire the guard emission at `GlobalTopologyPlan.cpp:474–479` and **record DEFN-R4.1's ownership
-   contract at the site**, so the merge reads as intended and nobody reintroduces the guard.
-2. **CS2** — publish the plan-side failing-component **face-set digest**, the certifier census identity and the
-   `censusCorrespondence` / subset relation on every region-construction and region-certification failure locus.
-3. **CS3** — replace ordinals **390, 393, 406, 407**'s assertions **in place**. Each keeps every contract it
-   legitimately owns and stops asserting `terminalFailureDetailCode == "UncutFaceComponentOrbitSeedNotUnique"`.
-   Ordinals, names and selector bytes unchanged; all four remain gating.
-4. **CS4** — **accepted-prefix safety by construction**: the only reachable behaviour change is a trace segment
-   whose arc has equal dart orbits; enumerate what differs there and show every other path is identical.
-5. **CS5** — selector **408 unchanged**. Any witness the ownership contract requires appends as **409** with 408 as
-   an exact 408-line prefix, asserting **publication and completeness** — one owning-orbit entry containing all the
-   corners of a bridge-crossed face — and **never** a predicted owner value.
-6. **CS6** — `M3-CP4c-3-TB32` re-executes. Credibility gate: **368, 369, 370, 374 and 398 stay RED**, none being
-   touched. **Required outcome: 390, 393, 406 and 407 return to PASS.**
+Execute only `Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md` against artifact `9983643195`.
+No configure, compile, relink, rebuild, patch, fixture/test/selector mutation, generated discovery, or benchmark.
 
-**Falsification, stated before the build.** A stop at `TraceArcDoesNotSeparateItsSides` falsifies **DEFN-R4.3**. A
-stop reproducing `UncutFaceComponentOrbitSeedNotUnique` with component 0 at **189 / 1 / `[0]`** falsifies
-**DEFN-R4.1**.
+Required mechanical/semantic checks:
 
-**Prohibited:** re-opening source-face ownership (**closed**); weakening or re-scoping **ordinal 398** (prescribed
-sphere, owned by `M3-CP4c2-TB-X2-CAND-04`); touching ordinals 368/369/370/374; unifying the two partitions; any new
-diagnostic contract; changing any accepted identity 1–365 or any byte of selector 397–408; executing any
-Directional runtime.
+1. all 408 identities execute exactly once with one statically resolved owner and zero timeout;
+2. accepted 1–365 remain **365/365 PASS**;
+3. **390/393/406/407 are PASS**;
+4. credibility rows **368/369/370/374/398 stay RED**;
+5. 366/367 must not emit `TraceArcDoesNotSeparateItsSides`;
+6. the old 189-face / seedCount 1 / `[0]` `UncutFaceComponentOrbitSeedNotUnique` stop must not reproduce;
+7. preserve all frontier/census/ownership evidence and complete raw logs;
+8. pre/post package/source/execution-view byte+mode censuses must match exactly.
+
+**Falsification remains first.** Any `TraceArcDoesNotSeparateItsSides` emission falsifies DEFN-R4.3. Reproduction
+of the old 189/1/`[0]` seed stop falsifies DEFN-R4.1. EXEC records evidence only and does not diagnose or repair.
+
+### Successor boundary
+
+After mechanically valid EXEC evidence, exact next is **`M3-CP4c-3-TB32-REV`**. REV is evidence-only: no new
+runtime, no source/test/build mutation. It classifies 366/367 and any unexpected row changes, updates durable
+regression accounting only when justified, and freezes the next boundary. Independent review/planning is outsourced
+to a separate agent and the implementation loop stops at that boundary.
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
+`load_next`: TB-EXEC guidance only.
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part VIII is the current definition authority and the frozen CB37 scope**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB31_EXEC_Report.md` — current runtime authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` — CR0–CR8, and the §2.2 inference DEFN-R4 corrects.
-5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and the frozen prefixes.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md` — **authoritative execution plan**.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB37_Code_Build_Report.md` — exact package/build provenance.
+3. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII definition/falsification authority.
+5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and frozen prefixes.
+6. `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`,
+   `.agents/Directional/RETENTION_POLICY.md`, `.agents/Directional/CLEAN_UP_POLICY.md`.
+7. `TODO.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`, `.agents/Directional/LESSONS.md`.
+
+Do not preload sibling turn plans, historical reports, research/provenance files or unrelated milestone documents.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
