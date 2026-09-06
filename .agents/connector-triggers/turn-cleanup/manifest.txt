@@ -1,2 +1,2 @@
-.agents/connector-triggers/source-snapshot/tb32-exec.txt
 .agents/connector-triggers/tb32-exec/run.txt
+.agents/connector-triggers/source-snapshot/tb32-exec.txt
