@@ -2800,7 +2800,7 @@ remains **365/365**; CP4c-3 remains **OPEN**.
 ## Part VIII — M3-CP4c-3 DEFN-R4
 
 **Turn:** `M3-CP4c-3-DEFN-R4` — definition turn (absorbs REVIEW + PLAN).
-**Frozen owner:** CR6–CR8 of `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md`.
+**Frozen owner:** CR6–CR8 of `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB32-REV`).
 **Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
 
 Runtime authority entering this turn: `M3-CP4c-3-TB31`, selector 408, **397 PASS / 11 RED**, accepted

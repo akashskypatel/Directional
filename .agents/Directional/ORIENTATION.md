@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-DEFN-R4`):** runtime authority remains **TB31** on selector **408** at **397 PASS / 11 RED**, accepted **365/365**, with the **seed frontier closed** — ownership total at 300/300 and component 0 unique at `[0]` over 189 faces. **`M3-CP4c-3-DEFN-R4` is frozen as Part VIII** of `M3_CP4c_Frozen_Definitions.md`: `FragmentCornerIncidence` is an **ownership map keyed by owning certified face**, not a fragment index; a bridge chord's single merged entry is the **correct** value; and `TraceArcDoesNotSeparateItsSides` is **RETIRED**, because its premise is refuted, it contradicts the separating-arc rule, and **the same function already accepts equal orbits on its ray path**. Established from source: the guard is **downstream** of the seed guard, so it became reachable only because the pipeline advanced. Exact next is `M3-CP4c-3-CB37` under **CS1–CS6**.
+> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-TB32-REV`):** runtime authority is **TB32** on selector **408** at **397 PASS / 11 RED**, accepted **365/365**, ownership **300 / 0 / 0**. **Both DEFN-R4 falsifiers held** — zero emissions of `TraceArcDoesNotSeparateItsSides` and zero of `UncutFaceComponentOrbitSeedNotUnique` across all 408 logs — and 366/367 **advanced again**, to `RegionBoundaryNotSingleWalk`, a strictly later stage. **CS3 is unmet**: 390/393/406/407 did not return to PASS because their subject is a stage the plan no longer fails at; **DEFN-R4.5 was under-specified**. Two further findings: seed-stage locus fields are **back-filled onto later failures**, and **TB32's ledger digest is byte-identical to TB31's** although every failure reason differs. Exact next is `M3-CP4c-3-CB38` under **CT3–CT7**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,29 +185,31 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB31`.** Selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**,
-reds {366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. The mechanical actual embedded complex is **certified
-cellular** — `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`.
+**Runtime authority — `M3-CP4c-3-TB32`.** Selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**,
+reds {366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. Certified source-face ownership remains
+**300 established / 0 unavailable / 0 conflicting**.
 
-**The seed frontier is closed.** Component 0: **191 → 189 faces**, **seedCount 3 → 1**, `Multiple` → **`Unique`**,
-`[0,1,3]` → **`[0]`**. Certified ownership remains **300 established / 0 unavailable / 0 conflicting**. Both
-falsifiers stated before the build were checked: the old fingerprint did not return, and **no
-`TraceCutFaceFragmentCountMismatch` appears in any of the 408 raw logs**, confirming the `tracePieceCount`
-by-construction argument. CB36's diff is the single guard plus a comment correction.
+**Both DEFN-R4 falsifiers held.** A complete search of all 408 raw logs finds **zero** emissions of
+`TraceArcDoesNotSeparateItsSides` (**R4.3 upheld**) and **zero** of `UncutFaceComponentOrbitSeedNotUnique`
+(**R4.1 upheld**). 366/367 now stop at **`RegionBoundaryNotSingleWalk`**, raised from
+`validate_single_boundary_walk` inside `build_region_certificates` — **strictly later** than the retired guard, and
+the outcome CS6 expressly permitted. **Two guards cleared in two turns**, each with its falsifier stated first.
 
-**The new frontier is a representation defect.** 366/367 now stop at `TraceArcDoesNotSeparateItsSides`, **arc 15**,
-`sourceFace=8,10,151` (`GlobalTopologyPlan.cpp:474–479`, in `build_fragment_corner_incidence`). The guard is
-**pre-existing and not gratuitous**: `FragmentCornerIncidence` is `map<SourceFace, map<orbit, set<vertex>>>`
-(`:399–401`) and its consumer keys fragments as `pair<SourceFaceTopologyKey, orbit>` with an `owningOrbit`
-parameter (`:1675`, `:1693–1699`). **A fragment is identified by `(face, orbit)`, and that key is not injective
-when an arc's two darts share an orbit** — the two sides merge. The guard refuses rather than merging silently.
-Since §5 has held since TB18 that shared orbit ownership by the two sides of one arc is **legitimate topology**,
-and DEFN-R3.4 measured exactly that on arc 15, **the defect is the key, not the check**. `LESSONS.md` 138.
+**CS3 is unmet, and the definition was under-specified.** 390/393/406/407 did not return to PASS. Removing their
+`ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique", …)` did not help, because the next lines are
+`ASSERT_TRUE(locus.uncutFaceComponent.has_value())` and the rest of each identity's assertions are about the
+**uncut-component stage the plan no longer fails at**. DEFN-R3.7 set the precedent for ordinal 385 and it was not
+applied; ordinal 390's existing `guard-cleared` early return is conditioned on `plan.has_value()`, which is **too
+strong**. `LESSONS.md` 142.
 
-**Four ordinals are pinned witnesses.** 390, 393, 406 and 407 each expected
-`UncutFaceComponentOrbitSeedNotUnique` and received the new code. **404 and 408 stayed PASS** — the two identities
-written to assert *publication and completeness* rather than an outcome. Six identities across two forward steps
-have now redded for this reason. `LESSONS.md` 137.
+**Two evidence findings.** CB37 **back-fills** `uncutFaceComponent*` onto failures the seed guard did not raise,
+resolved from an associated face or region — more than DEFN-R4.4 asked for, and a reader may conclude the seed
+stage is implicated when it is not. And **TB32's ledger SHA-256 is byte-identical to TB31's** while every failure
+reason differs: the ledger columns encode no failure detail, so it is a **pass/fail fingerprint**, not a semantic
+one. `LESSONS.md` 141.
+
+**Ordinals 404 and 408 remain PASS**, having now survived **three** consecutive forward steps — the two identities
+that assert publication and completeness rather than an outcome.
 
 **Definition authority — `M3-CP4c-3-DEFN-R4`, Part VIII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Part VII where they conflict.
 
@@ -251,7 +253,7 @@ IV–VI where they conflict, and only there. Its decisions:
   assertions are REPLACED in place**, retained and gating, because its seed-relative expectation becomes
   meaningless once the seed ceases to exist.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **96**. Sphere 368,
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **97**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence contract
 remain deferred under their own owners. **Vertex 30 is still not reached.**
 
@@ -262,7 +264,7 @@ remain deferred under their own owners. **Vertex 30 is still not reached.**
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path.** The actual embedded complex is certified cellular, **certified source-face ownership is total (300/300)**, and the plan's component 0 now has a **unique** seed: **189 faces, seedCount 1, `[0]`** — down from 191 / 3 / `[0,1,3]`. **The seed frontier is closed.** The pipeline now stops later, at `TraceArcDoesNotSeparateItsSides` on **arc 15**, `sourceFace=8,10,151` — a fragment-identity representation defect, not an ownership one. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path.** Certified ownership is **total (300/300)** and the seed frontier is **closed**. The pipeline has since cleared two more guards and now stops at **`RegionBoundaryNotSingleWalk`**, inside `build_region_certificates` — neither `UncutFaceComponentOrbitSeedNotUnique` nor `TraceArcDoesNotSeparateItsSides` appears anywhere in 408 raw logs. Ordinals 390/393/406/407 red only because their subject is a **cleared** stage. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -357,19 +359,19 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Fragment ownership — decided at DEFN-R4; CB37 implements it.**
+1. **Region boundary — the current stop; and four witnesses of cleared stages.**
 
-   - **Ownership is CLOSED** (300/300 certified, component 0 unique at `[0]` over 189 faces) and the
-     separating-arc barrier rule stands at both sites. Do not re-open it.
-   - **`FragmentCornerIncidence` is an ownership map**, keyed by the owning certified face — not a fragment index.
-     A bridge chord's single merged entry containing all three corners is the **correct** value.
-   - **`TraceArcDoesNotSeparateItsSides` is retired**: its premise is refuted by the TB18 fact measured on arc 15,
-     it contradicts the separating-arc rule that leaves arcs 20 and 24 alone, and **the same function already
-     accepts equal orbits on its ray path**.
-   - **The guard is downstream of the seed guard**, established from callers rather than line numbers, so it became
-     reachable only because CB36 let the pipeline advance.
-   - **Open:** whether 366/367 clear at region certification or stop at a further guard. CS6 states both
-     falsifiers.
+   - **Cleared and closed:** source-face ownership (300/300, component 0 unique at `[0]`), the seed guard, and
+     `TraceArcDoesNotSeparateItsSides`. None of them appears in any of the 408 raw logs. Do not re-open them.
+   - **The current stop** is `RegionBoundaryNotSingleWalk`, from `validate_single_boundary_walk` inside
+     `build_region_certificates` — strictly later than everything cleared so far. It is **not yet diagnosed**, and
+     no correction to it is authorized.
+   - **Blocking the gate instead:** ordinals 390/393/406/407 assert evidence that only the *seed stage's* failure
+     produces. They need a **justified cleared-stage** outcome — the stage failed and published, or the stage was
+     cleared **and** the later failure published its labelled frontier evidence. Absence alone must never pass.
+   - **Evidence hygiene owed with it:** stage-label the frontier evidence rather than back-filling
+     `uncutFaceComponent*` onto later failures, and give the ledger a failure-detail digest — TB31 and TB32 share a
+     ledger hash despite entirely different failure reasons.
 
 2. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
@@ -423,6 +425,15 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A pass/fail ledger digest is not a semantic fingerprint.** TB31 and TB32 produced byte-identical ledger hashes
+while every failure reason differed; the ledger's columns encode no failure detail. Provenance rests on artifact
+digests and censuses, not on that hash. `LESSONS.md` §4 141.
+
+**When a stage stops failing, a witness of that stage needs a justified *cleared* outcome, not a deleted
+assertion.** Four identities kept failing after their hard-coded failure code was removed, because their remaining
+assertions demand evidence only that stage's failure produces. Give such a witness two admissible outcomes and
+never let absence of evidence be one of them. `LESSONS.md` §4 142.
 
 **Line order is not call order.** A review inferred one guard sat upstream of another from its smaller line number,
 recorded its reachability as unexplained, and demanded a log transcription. The guards live in different functions;

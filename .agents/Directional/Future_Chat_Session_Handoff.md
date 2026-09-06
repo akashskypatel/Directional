@@ -116,83 +116,92 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB32-REV` — EXACT NEXT / evidence-only semantic review
+## Mandatory next turn — `M3-CP4c-3-CB38` — EXACT NEXT / Code + Build, runtime-free
+
+`M3-CP4c-3-TB32-REV` has adjudicated TB32 and promoted it to **current valid semantic runtime authority**.
 
 ### Current authority
 
-- **Semantic runtime authority remains `M3-CP4c-3-TB31` pending review** — selector 408, **397 PASS / 11 RED**,
-  accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`.
-- **TB32-EXEC raw evidence is mechanically valid and immutable, but not yet semantically promoted** — run/job
-  `34024893763 / 101464028080`; result artifact `9986786215` / digest
-  `be70cc9fa0531a3438d13a31425545b61f13336baa6f1bdbb0ca3526b0f8fd6f`; log artifact `9986786399` / digest
-  `3fbcba8f76982590f9a79935844f20ff63b68bfe4446faa7ecd1a1e551a7e092`.
-- Immutable package/source remain CB37 artifact `9983643195` at source
-  `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`, provider digest
-  `75fcebb299c02b3a10525d935973a8cfca5bf119e3cfc4e54b5591f3cf8f699f`.
-- Selector 408 remains byte-identical at
-  `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
-- Stable accounting remains **44 / 14 / 30**, debt **5**, reported semantic M3 package count **97** until REV.
-- CP4c-3 remains **OPEN**.
+- **`M3-CP4c-3-TB32`** — selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`; immutable CB37 package `9983643195`, source
+  `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`; run/job `34024893763 / 101464028080`; result/log
+  `9986786215 / 9986786399`; every row `selected=1`; `timeout_count=0`; all three byte+mode censuses equal
+  pre/post.
+- Certified source-face ownership remains **300 established / 0 unavailable / 0 conflicting**.
+- Definition authority is **Part VIII (DEFN-R4)**; **CT3 below narrows DEFN-R4.4**.
+- Stable accounting **44 / 14 / 30**, debt **5**, packages **97**.
 
-### TB32-EXEC raw evidence — review input only
+### What TB32 established
 
-- all **408/408** identities executed exactly once; every row selected exactly one test; zero timeouts;
-- accepted **1–365 = 365/365 PASS**;
-- raw aggregate **397 PASS / 11 RED**, RED `[366,367,368,369,370,374,390,393,398,406,407]`;
-- credibility rows 368/369/370/374/398 remain raw RED;
-- required-green rows 390/393/406/407 remain raw RED;
-- 366/367 remain raw RED and both expose `detailCode=RegionBoundaryNotSingleWalk`;
-- zero `TraceArcDoesNotSeparateItsSides` strings appear in any of the 408 raw logs;
-- zero `UncutFaceComponentOrbitSeedNotUnique` strings appear in any of the 408 raw logs;
-- the component-0 evidence still publishes 189 faces / seedCount 1 / Unique / `[0]` without the retired seed-stop;
-- certified owner publication remains available as **300 established / 0 unavailable / 0 conflicting**;
-- package, packaged-source and execution-view byte+mode censuses are exactly equal pre/post;
-- configure/compile/relink/discovery/repair/benchmark and source/test/fixture/selector mutation flags are all false.
+**Both DEFN-R4 falsifiers held.** Zero emissions of `TraceArcDoesNotSeparateItsSides` (**R4.3 upheld**) and zero of
+`UncutFaceComponentOrbitSeedNotUnique` (**R4.1 upheld**) across all 408 raw logs. 366/367 now stop at
+**`RegionBoundaryNotSingleWalk`**, from `validate_single_boundary_walk` inside `build_region_certificates` —
+**strictly later** than the retired guard, the outcome CS6 permitted. **Two guards cleared in two turns.**
 
-The complete raw evidence and exact hashes are recorded in
-`Architecture_M3_CP4c3_TB32_EXEC_Report.md`. EXEC makes no root-cause, candidate, accounting, or successor-product
-judgment.
+**CB37 landed CS1/CS2/CS3-letter/CS5**, verified in source.
 
-One control-label caveat is preserved rather than repaired: `baseline-authority.txt` says `TB32 run=34011402843`
-after deterministic historical-label renaming. The run ID and baseline values are TB31; the actual TB32 run is
-independently recorded as `34024893763`. REV must account for the label when verifying provenance; no semantic
-rerun is authorized from EXEC.
+**CS3 is unmet, and DEFN-R4.5 was under-specified.** 390/393/406/407 did not return to PASS: removing their
+failure-code assertion left `ASSERT_TRUE(locus.uncutFaceComponent.has_value())` and further assertions about **the
+uncut-component stage the plan no longer fails at**. DEFN-R3.7 set the precedent for ordinal 385 and it was not
+applied; ordinal 390's `guard-cleared` early return is conditioned on `plan.has_value()`, which is too strong.
+`LESSONS.md` 142.
 
-### TB32-REV boundary
+**Two evidence findings.** CB37 **back-fills** `uncutFaceComponent*` onto failures the seed guard did not raise —
+more than DEFN-R4.4 asked for. And **TB32's ledger SHA-256 is byte-identical to TB31's** although every failure
+reason differs, so the ledger digest is a **pass/fail fingerprint**, not a semantic one; provenance rests on the
+artifact digests and censuses. `LESSONS.md` 141.
 
-Consume only immutable TB32-EXEC artifacts `9986786215` and `9986786399`. Do **not** execute new runtime, compile,
-rebuild, repair, or mutate production/test/fixture/selector/build logic.
+**Which assertion fails is not in the report** — the **third consecutive turn** with that gap. The two candidate
+causes imply different corrections, so the review declined to guess.
 
-REV must:
+**Provenance note, adjudicated cosmetic:** `baseline-authority.txt` records `TB32 run=<TB31 run>` because the
+harness was materialized by globally renaming TB31 labels. Every independent identifier is distinct and consistent,
+and EXEC disclosed it.
 
-1. independently verify artifact/package/source/selector/executable/identity-map/census integrity;
-2. verify 408/408 selected exactly once, zero timeouts, and accepted 1–365 = 365/365;
-3. adjudicate the two frozen R4 falsifiers from raw evidence;
-4. adjudicate the blocking raw RED state of 390/393/406/407 without weakening their frozen contracts;
-5. classify the 366/367 `RegionBoundaryNotSingleWalk` locus only from immutable evidence;
-6. verify 368/369/370/374/398 remain under their existing owners unless evidence independently proves otherwise;
-7. verify ownership/frontier evidence without equating independent partition component indices;
-8. update `Regression_Root_Cause_Tracker.md` only where evidence justifies stable changes;
-9. update `ORIENTATION.md` and perform mandatory REVIEW document consolidation;
-10. freeze the next boundary. If the semantic gate is red, route to the separately outsourced independent
-    `REVIEW + PLAN` boundary and stop the implementation loop there.
+### CB38 boundary — CT3–CT7
+
+Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked. **No change to product topology, barriers,
+ownership, the retired guard, or the separating-arc rule.**
+
+1. **CT3 — stage-labelled evidence.** Frontier evidence carries a typed **stage label** naming the stage that
+   raised the failure. `uncutFaceComponent*` publish **only** when the uncut-component stage is that stage; on a
+   later-stage failure they are absent and the DEFN-R4.4 fields publish with the label. **This narrows DEFN-R4.4.**
+2. **CT4 — the four witnesses get a justified cleared-stage outcome.** Ordinals **390, 393, 406, 407** replaced
+   **in place**; ordinals, names and selector bytes unchanged; all remain **gating**. Each asserts: *the stage
+   raised the failure* → every evidence field it owns is published, complete and untruncated; **or** *a later stage
+   raised it* → it passes **only when that failure publishes the DEFN-R4.4 evidence with its stage label**.
+   **Absence alone is never a pass.**
+3. **CT5 — a digest that distinguishes failure reasons.** A per-row failure-detail digest in the ledger, or one
+   published beside it; existing columns unchanged so historical hashes stay comparable.
+4. **CT6 — the harness is parameterised by turn identity**, not produced by search-and-replace over a previous
+   turn's labels, and `baseline-authority.txt` records **the executing run**.
+5. **CT7 — hard TB obligation.** `M3-CP4c-3-TB33`'s report **must** transcribe the failing assertion text or
+   exception detail for **every** RED ordinal in the plan's focused index. A report that omits it is
+   **incomplete**, and the review that reads it must say so rather than infer.
+
+**Falsifiers, stated before the build.** If 390/393/406/407 still fail **with stage-labelled evidence published**,
+the re-scoping of `M3-CP4c3-TB31-REV-CAND-02` is wrong and the defect is in the evidence contract. If either
+retired code reappears, CB38 changed behaviour it was forbidden to touch. If 366/367 move to an **earlier** stage,
+CB38 regressed the pipeline.
+
+**Prohibited:** any product topology, barrier, ownership or retired-guard change; weakening or re-scoping
+**ordinal 398** (prescribed sphere); touching 368/369/370/374; relaxing anything 390/393/406/407 legitimately own;
+any new diagnostic contract on source-face ownership (**closed**); changing any accepted identity 1–365 or any byte
+of selector 397–408 — **selector 408 stays unchanged**, and any required witness appends as **409** with 408 an
+exact prefix; executing any Directional runtime.
 
 ### Context Load Plan
 
-`load_next`: TB-REVIEW guidance only.
+`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
 
-0. `.agents/Directional/ORIENTATION.md` — read first and update during REV.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB32_EXEC_Report.md` — **current immutable EXEC evidence index**.
-2. TB32 result/log artifacts `9986786215` / `9986786399` — raw authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md` — frozen criteria.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB37_Code_Build_Report.md` — package/source provenance.
-5. `.agents/Directional/M3_CP4c_Current_And_Forward.md` and `M3_CP4c_Frozen_Definitions.md` Part VIII.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`,
-   `CHANGELOG.md`, and `LESSONS.md`.
-7. `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`,
-   `.agents/Directional/RETENTION_POLICY.md`, `.agents/Directional/CLEAN_UP_POLICY.md`.
-
-Do not preload sibling plans, uncited historical reports, research/provenance files or unrelated milestone documents.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` — **CT0–CT7**, the adjudication and the frozen CB38 scope.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB32_EXEC_Report.md` — current runtime authority.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part VIII operative**; CT3 narrows DEFN-R4.4.
+5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 408 and the frozen prefixes.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

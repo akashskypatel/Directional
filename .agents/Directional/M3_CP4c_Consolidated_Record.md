@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB31-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 408 at **397 PASS / 11 RED**, accepted authority **365/365**. **The seed-uniqueness frontier opened at TB19 is CLOSED** — certified ownership is total at 300/300 and the plan's component 0 has a unique seed `[0]` over 189 faces. The frontier moved to **fragment identity**: `(face, orbit)` is not injective on a bridge arc. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **96**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB32-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 408 at **397 PASS / 11 RED**, accepted authority **365/365**. Certified ownership is total at **300/300**; the seed guard and `TraceArcDoesNotSeparateItsSides` are both cleared and appear in **no** raw log. The current stop is **`RegionBoundaryNotSingleWalk`**, strictly later. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **97**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -893,6 +893,33 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
 
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB32-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB32_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in §§1–2 of the
+TB32 review record:** the ownership census `300 / 0 / 0`, the component-0 fingerprint `189 / 1 / Unique / [0]`, and
+the fact that **neither `UncutFaceComponentOrbitSeedNotUnique` nor `TraceArcDoesNotSeparateItsSides` appears in any
+of the 408 raw logs**.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` | 293 | superseded review authority - CR0-CR8. Closed the seed frontier, diagnosed the fragment-key guard, and froze DEFN-R4. Its §2.2 line-number inference was corrected by DEFN-R4, and its CAND-01 is now **closed / runtime-proved** |
+| `Architecture_M3_CP4c3_TB31_EXEC_Report.md` | 118 | superseded runtime authority - TB31, 397 PASS / 11 RED on selector 408, accepted 365/365; the run whose ledger hash TB32 later reproduced byte-for-byte |
+| `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` | 247 | consumed contract |
+| `Architecture_M3_CP4c3_CB37_Code_Build_Report.md` | 90 | consumed build report - CS1/CS2/CS3-letter/CS5, each verified in source by TB32-REV: the guard retired with the ownership contract recorded at the site, frontier evidence annotated at two loci, four failure-code assertions removed, selector 408 byte-unchanged |
+
+**Folded here:** 4 documents, 748 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB32_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 408 at 397 PASS / 11 RED, accepted 365/365),
+`Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` (this review and the frozen CB38 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part VIII operative**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** the artifact-only harness scripts are the instrument, not documents.
+
 ### Consolidated on 2026-09-06 at `M3-CP4c-3-DEFN-R4` — nothing folded, and why
 
 Mandatory REVIEW consolidation performed (`DEFN` absorbs REVIEW + PLAN). **No document was folded**, and that is
@@ -907,7 +934,7 @@ the correct outcome rather than an omission:
   runtime authority and is retained with it.
 
 Consolidation is a preservation procedure, not a reduction target; there was nothing whose durable facts needed a
-new home this turn. **Running total unchanged: 98 documents, 19,494 lines.**
+new home this turn. **Running total unchanged: 98 documents, 19,494 lines.** *(Advanced to 102 documents, 20,242 lines at `M3-CP4c-3-TB32-REV`.)*
 
 **Definition-authority note.** The operative CP4c-3 definitions are now **Part VI together with Parts VII and
 VIII**, each superseding the earlier where they conflict. Part VIII withdraws TB31-REV's description of

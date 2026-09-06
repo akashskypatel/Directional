@@ -1800,6 +1800,22 @@ building any conclusion on it.**
      corrupting it. **Before removing or preserving a guard, check whether its own function already accepts what it
      forbids.**
 
+141. **A pass/fail ledger digest is not a semantic fingerprint.** Two consecutive runs produced **byte-identical**
+     ledger SHA-256 values while every failure reason differed - one stopped at a guard that the next turn retired,
+     the other at a stage further along. The ledger's columns were `ordinal, identity, binary, exit, selected,
+     result, raw_log`, none of which encodes *why* a row failed, so identical pass/fail vectors hash identically.
+     The digest had been quoted turn after turn as the run's semantic identity. **Either put a failure-detail
+     digest in the ledger or publish one beside it**, and until then treat artifact digests and censuses - not the
+     ledger hash - as the proof that two runs differ.
+
+142. **When a stage stops failing, a witness of that stage needs a justified *cleared* outcome, not a deleted
+     assertion.** Four identities existed to prove that a particular production stage publishes its evidence when
+     it fails. A correction removed their hard-coded failure-code assertion - the letter of the instruction - and
+     they still red, because their remaining assertions demand evidence that only that stage's failure produces.
+     **Removing the name of the failure does not help when the subject is the failure.** Give such a witness two
+     admissible outcomes: the stage failed and published, or the stage was cleared **and the later failure
+     published its own labelled evidence**. Absence of evidence must never be a pass on its own.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

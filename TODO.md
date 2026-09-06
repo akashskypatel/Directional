@@ -26,43 +26,55 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB32-REV` (evidence-only semantic review)
+## Current focus — `M3-CP4c-3-CB38` (Code + Build, runtime-free)
 
-`M3-CP4c-3-TB32-EXEC` is **COMPLETE / MECHANICALLY VALID / RAW EVIDENCE PRESERVED / REVIEW REQUIRED** against
-immutable CB37 artifact `9983643195`, source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`.
+`M3-CP4c-3-TB32-REV` promoted TB32 to **current valid semantic runtime authority**.
 
-Immutable EXEC evidence:
+- selector **408**, **397 PASS / 11 RED**, accepted **1–365 = 365/365**, RED
+  `366,367,368,369,370,374,390,393,398,406,407`;
+- immutable CB37 package `9983643195` / source `7f63b5f41a0ca72f0b984ec4ee42d11f74775719`;
+- run/job `34024893763 / 101464028080`; result/log `9986786215 / 9986786399`; every row `selected=1`;
+- certified ownership **300 / 0 / 0**.
 
-- run/job `34024893763 / 101464028080` **SUCCESS**;
-- result artifact `9986786215` / provider digest
-  `be70cc9fa0531a3438d13a31425545b61f13336baa6f1bdbb0ca3526b0f8fd6f`;
-- log artifact `9986786399` / provider digest
-  `3fbcba8f76982590f9a79935844f20ff63b68bfe4446faa7ecd1a1e551a7e092`;
-- all 408 identities selected exactly once, zero timeouts, accepted **365/365 PASS**;
-- raw aggregate **397 PASS / 11 RED**, RED `[366,367,368,369,370,374,390,393,398,406,407]`;
-- raw 366/367 detail `RegionBoundaryNotSingleWalk`;
-- zero `TraceArcDoesNotSeparateItsSides` and zero `UncutFaceComponentOrbitSeedNotUnique` emissions across all raw logs;
-- 390/393/406/407 remain raw RED; 368/369/370/374/398 remain raw RED;
-- package/source/execution-view byte+mode censuses equal pre/post; all mutation/build/benchmark flags false.
+**Both DEFN-R4 falsifiers held.** Zero emissions of `TraceArcDoesNotSeparateItsSides` and zero of
+`UncutFaceComponentOrbitSeedNotUnique` across all 408 raw logs; 366/367 **advanced** to
+`RegionBoundaryNotSingleWalk`, strictly later, which CS6 permitted. **Two guards cleared in two turns.**
 
-**No semantic promotion occurs in EXEC.** TB31 therefore remains semantic runtime authority until REV adjudicates
-the immutable TB32 evidence: selector 408, **397 PASS / 11 RED**, accepted **365/365**, ownership **300 / 0 / 0**.
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, reported semantic M3 package count **97**.
-CP4c-3 remains **OPEN**.
+**CS3 is unmet, and DEFN-R4.5 was under-specified.** 390/393/406/407 did not return to PASS: removing their
+failure-code assertion left assertions about **a stage the plan no longer fails at**. **Which** assertion fails is
+not in the report — the third consecutive turn with that gap — so the review declined to guess between two causes
+that imply different corrections.
 
-### Exact next subturn
+**Two evidence findings.** Seed-stage `uncutFaceComponent*` fields are **back-filled onto later failures**; and
+**TB32's ledger SHA-256 is byte-identical to TB31's** despite entirely different failure reasons, so the ledger
+digest is a pass/fail fingerprint only.
 
-Run **`M3-CP4c-3-TB32-REV`** as evidence-only review. It consumes artifacts `9986786215` and `9986786399`, performs
-no runtime/compile or product/test/fixture/selector/build mutation, independently verifies mechanical evidence,
-adjudicates the frozen R4 falsifiers and the raw RED state of 390/393/406/407, classifies the 366/367 locus, updates
-`Regression_Root_Cause_Tracker.md` and `ORIENTATION.md`, performs mandatory REVIEW document consolidation, and freezes
-the next boundary. If the semantic gate remains red, the next independent `REVIEW + PLAN` boundary is outsourced and
-the implementation loop stops there.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
+package count **97**. CP4c-3 remains **OPEN**.
 
-The raw evidence index is `Architecture_M3_CP4c3_TB32_EXEC_Report.md`. The baseline label
-`TB32 run=34011402843` inside the raw result artifact is a preserved orchestration-label quirk from deterministic
-historical-label renaming; the current run is independently identified as `34024893763`. REV must account for it
-without a semantic rerun.
+### Exact next turn
+
+Run **`M3-CP4c-3-CB38`**, Code + Build, runtime-free, under **CT3–CT7** of
+`Architecture_M3_CP4c3_TB32_Independent_Review_Record.md`:
+
+- [ ] **CT3** frontier evidence carries a typed **stage label**; `uncutFaceComponent*` publish **only** when the
+      uncut-component stage raised the failure. Narrows DEFN-R4.4.
+- [ ] **CT4** ordinals **390/393/406/407** replaced **in place** with two admissible outcomes — the stage failed and
+      published, **or** the stage was cleared **and** the later failure published its labelled evidence.
+      **Absence alone is never a pass.**
+- [ ] **CT5** a per-row **failure-detail digest**, or one published beside the ledger; existing columns unchanged.
+- [ ] **CT6** the harness is **parameterised by turn identity**, not relabelled; `baseline-authority.txt` records
+      the executing run.
+- [ ] **CT7** `M3-CP4c-3-TB33`'s report **must** transcribe the failing assertion text for every RED ordinal in the
+      focused index. A report that omits it is **incomplete**.
+
+**Falsifiers stated first:** if the four still fail with stage-labelled evidence published, the re-scoping is wrong;
+if either retired code reappears, CB38 changed forbidden behaviour; if 366/367 move **earlier**, CB38 regressed the
+pipeline.
+
+**Must not:** change product topology, barriers, ownership or the retired guard; weaken or re-scope ordinal 398;
+touch 368/369/370/374; relax anything the four witnesses legitimately own; add any ownership diagnostic; change any
+accepted identity or selector byte.
 
 ## Carried forward from M1
 
@@ -145,4 +157,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **44 events / 14 categories / 30 recurrences** because CB37 executed no runtime. Produced-witness debt remains **5**. Reported semantic M3 package count is **97**. **`M3-CP4c-3-TB31` remains the current valid semantic runtime authority at 397 PASS / 11 RED, accepted 365/365 on selector 408.** CB37 is compile-green on artifact `9983643195`; exact next is `M3-CP4c-3-TB32-EXEC`. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB32-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **97**. **`M3-CP4c-3-TB32` is the current valid semantic runtime authority at 397 PASS / 11 RED, accepted 365/365 on selector 408, with ownership total at 300/300 and both retired failure codes absent from all 408 logs.** Exact next is `M3-CP4c-3-CB38` under CT3–CT7. PR #8 remains open, draft, and unmerged.
