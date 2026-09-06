@@ -1507,11 +1507,14 @@ oriented_arc_nodes(const GlobalTopologyArc &arc,
 
 std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
     const GlobalTopologyRegion &region,
-    const std::map<authority::NetworkArcId, const GlobalTopologyArc *> &arcById) {
+    const std::map<authority::NetworkArcId, const GlobalTopologyArc *> &arcById,
+    bool *closedBeforeEndObserved = nullptr) {
+  if (closedBeforeEndObserved != nullptr) *closedBeforeEndObserved = false;
   if (region.boundary.empty()) {
     GlobalTopologyPlanError failure =
         error(GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk);
     failure.region = region.id;
+    failure.regionBoundaryWalkReason = RegionBoundaryWalkReason::WalkNotClosed;
     return failure;
   }
   const auto firstArc = arcById.find(region.boundary.front().arc);
@@ -1537,11 +1540,15 @@ std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
     }
     const auto next =
         oriented_arc_nodes(*nextArc->second, region.boundary[index].orientation);
-    if (current == start || next.first != current) {
+    if (current == start && closedBeforeEndObserved != nullptr) {
+      *closedBeforeEndObserved = true;
+    }
+    if (next.first != current) {
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk);
       failure.region = region.id;
       failure.arc = region.boundary[index].arc;
+      failure.regionBoundaryWalkReason = RegionBoundaryWalkReason::ArcChainBroken;
       return failure;
     }
     current = next.second;
@@ -1551,6 +1558,7 @@ std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
         error(GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk);
     failure.region = region.id;
     failure.arc = region.boundary.front().arc;
+    failure.regionBoundaryWalkReason = RegionBoundaryWalkReason::WalkNotClosed;
     return failure;
   }
   return std::nullopt;
@@ -2150,21 +2158,32 @@ RegionCertificatesBuildResult build_region_certificates(
             std::get_if<GlobalTopologyPlanError>(&singularities)) {
       return *failure;
     }
-    if (const auto failure = validate_single_boundary_walk(region, arcById);
+    bool closedBeforeEndObserved = false;
+    if (const auto failure = validate_single_boundary_walk(
+            region, arcById, &closedBeforeEndObserved);
         failure.has_value()) {
       return *failure;
     }
+    const auto annotate_boundary_walk_evidence =
+        [&](GlobalTopologyPlanError failure) {
+          if (closedBeforeEndObserved &&
+              !failure.regionBoundaryWalkReason.has_value()) {
+            failure.regionBoundaryWalkReason =
+                RegionBoundaryWalkReason::ClosedBeforeEnd;
+          }
+          return failure;
+        };
     const auto orbit = region_orbit(region, walk);
     if (!orbit.has_value()) {
       GlobalTopologyPlanError failure =
           rotation_error(RotationSystemInconsistencyReason::RegionOrbitMissing);
       failure.region = region.id;
-      return failure;
+      return annotate_boundary_walk_evidence(std::move(failure));
     }
     if (const auto pinch = validate_no_region_fragment_pinch(
             topology, nodeLoci, rotations, walk, region, *orbit);
         pinch.has_value()) {
-      return *pinch;
+      return annotate_boundary_walk_evidence(*pinch);
     }
     const auto built = build_region_certificate(
         topology, network, cutGraph, arcs, region, *orbit, arcById,
@@ -2172,7 +2191,7 @@ RegionCertificatesBuildResult build_region_certificates(
         std::get<std::vector<authority::FieldSingularityId>>(singularities),
         fragmentCorners, diagnostics);
     if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&built)) {
-      return *failure;
+      return annotate_boundary_walk_evidence(*failure);
     }
     certificates.push_back(std::get<GlobalTopologyRegionDiscCertificate>(built));
   }
@@ -2833,6 +2852,19 @@ const char *uncut_face_component_seed_state_name(
     return "Unique";
   case UncutFaceComponentSeedState::Multiple:
     return "Multiple";
+  }
+  return "Unknown";
+}
+
+const char *region_boundary_walk_reason_name(
+    const RegionBoundaryWalkReason reason) noexcept {
+  switch (reason) {
+  case RegionBoundaryWalkReason::ArcChainBroken:
+    return "ArcChainBroken";
+  case RegionBoundaryWalkReason::ClosedBeforeEnd:
+    return "ClosedBeforeEnd";
+  case RegionBoundaryWalkReason::WalkNotClosed:
+    return "WalkNotClosed";
   }
   return "Unknown";
 }

@@ -694,6 +694,10 @@ project_global_topology_plan_failure_locus(
     row.truncated = evidence.truncated;
     locus.fragmentEdgeOrbitEvidence.push_back(std::move(row));
   }
+  if (error.regionBoundaryWalkReason.has_value()) {
+    locus.regionBoundaryWalkReason = geometry::region_boundary_walk_reason_name(
+        *error.regionBoundaryWalkReason);
+  }
   if (error.regionFrontierFailureStage.has_value()) {
     locus.regionFrontierFailureStage =
         geometry::region_frontier_failure_stage_name(

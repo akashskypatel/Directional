@@ -158,6 +158,12 @@ enum class UncutFaceComponentSeedState : std::uint8_t {
   Multiple = 2,
 };
 
+enum class RegionBoundaryWalkReason : std::uint8_t {
+  ArcChainBroken = 0,
+  ClosedBeforeEnd = 1,
+  WalkNotClosed = 2,
+};
+
 enum class RegionFrontierFailureStage : std::uint8_t {
   UncutComponent = 0,
   RegionConstruction = 1,
@@ -509,6 +515,7 @@ struct GlobalTopologyPlanError {
   bool fragmentIncidencesTruncated = false;
   std::vector<TraceCutFaceEdgeOrbitEvidenceDiagnostic>
       fragmentEdgeOrbitEvidence;
+  std::optional<RegionBoundaryWalkReason> regionBoundaryWalkReason;
   std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<RegionFrontierComponentEvidenceDiagnostic>
@@ -728,6 +735,8 @@ private:
     GlobalTopologyPlanErrorCode code) noexcept;
 [[nodiscard]] const char *uncut_face_component_seed_state_name(
     UncutFaceComponentSeedState state) noexcept;
+[[nodiscard]] const char *region_boundary_walk_reason_name(
+    RegionBoundaryWalkReason reason) noexcept;
 [[nodiscard]] const char *region_frontier_failure_stage_name(
     RegionFrontierFailureStage stage) noexcept;
 [[nodiscard]] const char *region_frontier_census_correspondence_name(

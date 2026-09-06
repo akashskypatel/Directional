@@ -60,7 +60,8 @@ Future selector files are named by their resulting identity count.
 | **405** | 405 | `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7` | 403 | 2 | superseded |
 | **406** | 406 | `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0` | 405 | 1 | superseded |
 | **407** | 407 | `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae` | 406 | 1 | superseded |
-| **408** | 408 | `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6` | 407 | 1 | **CURRENT GATE** |
+| **408** | 408 | `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6` | 407 | 1 | superseded |
+| **409** | 409 | `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` | 408 | 1 | **CURRENT GATE** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -407,7 +408,7 @@ identity** — the control that settled the TB28-R2 false green. Promoted to run
 appended witness at selector **408**, with 407 as an exact prefix, asserting the rule's **effect on the census** and
 never a predicted owner value. Ordinals 397–407 keep their contracts and none may be weakened to obtain a green.
 
-### 408 — CURRENT GATE
+### 408 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_408.txt` — **408 identities**, authored by `M3-CP4c-3-CB34`, LF SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
 
@@ -490,6 +491,16 @@ Two facts this selector must carry forward:
 node-disjoint boundary loops are still rejected with reason `ArcChainBroken` after the `current == start` disjunct
 is removed. It asserts a constructed rejection, never a value on the production fixture. Ordinals 397–408 keep
 their contracts.
+
+### 409 — CURRENT GATE
+
+`Architecture_M3_CP4c3_Required_Green_Selector_409.txt` — 409 identities, first committed -.
+
+CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen selector 408.
+
+Appended 1 identity to selector 408:
+
+- `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`
 
 ## Separate lineage — M1
 

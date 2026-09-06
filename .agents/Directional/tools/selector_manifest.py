@@ -35,7 +35,8 @@ ROLE = {
     405: ("superseded", "CB30 appends two complete-census/falsifiability witnesses to frozen selector 403."),
     406: ("superseded", "CB31 appends one partition-correspondence witness to frozen selector 405."),
     407: ("superseded", "CB32 appends one crossed-face/interior-arc publication witness to frozen selector 406."),
-    408: ("**CURRENT GATE**", "CB34 appends one separating-arc barrier-rule census-effect witness to frozen selector 407."),
+    408: ("superseded", "CB34 appends one separating-arc barrier-rule census-effect witness to frozen selector 407."),
+    409: ("**CURRENT GATE**", "CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen selector 408."),
 }
 
 manifest_path = os.path.join(d, "Required_Green_Selector_Manifest.md")

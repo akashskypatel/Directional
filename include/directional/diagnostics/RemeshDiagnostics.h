@@ -339,6 +339,7 @@ struct SurfaceCellFailureLocusDiagnostics {
   bool fragmentIncidencesTruncated = false;
   std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
       fragmentEdgeOrbitEvidence;
+  std::string regionBoundaryWalkReason;
   std::string regionFrontierFailureStage;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<SurfaceCellRegionFrontierComponentEvidenceDiagnostics>
