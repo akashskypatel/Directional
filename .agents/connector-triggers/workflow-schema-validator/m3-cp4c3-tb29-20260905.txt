@@ -1,3 +1,0 @@
-M3-CP4c-3-TB29 workflow draft schema validation retry 2.
-Validated schema-caller bytes are reinstalled at commit 25710c115bba2a0aba10c425cef649e5e9b473b4.
-Draft payload was corrected before any Directional runtime; materializer static checks and bash -n pass locally.
