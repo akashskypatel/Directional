@@ -1739,6 +1739,22 @@ building any conclusion on it.**
      recompiling was what made the comparison mean anything, since a new package would have created a second
      changed variable. When two results disagree, reproduce the older one before explaining the newer one.
 
+133. **A witness that asserts a defect is still present cannot be told apart from a correct one until the defect is
+     fixed - and then it blocks the fix.** A publication-and-completeness gate was strengthened with a loop
+     requiring that **no** face of the component had established ownership. Its frozen contract said "publication
+     and completeness only, never a value"; requiring a value to be *absent* is the same violation pointed the
+     other way. It passed for four turns because ownership genuinely was failing, so it was **vacuously true**, and
+     the first turn the product improved it fired and was reported as a regression. **When a review says "never
+     assert a value", read the implementation for assertions that the broken state persists** - they are invisible
+     while the state is broken, and they turn the fix into a red.
+
+134. **Never match two partitions by index.** A witness located a producer-side census by
+     `row.component == locus.component`, matching an index in one partition against an index in another with a
+     different domain and a different face set. It passed while both happened to be `0` with equal counts; a
+     correction that changed the two partitions differently broke the coincidence and the witness failed on its own
+     defect. **Match objects by identity - a face-set digest, an explicit correspondence, a published subset
+     relation - never by an integer that two independent constructions both happen to start at zero.**
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

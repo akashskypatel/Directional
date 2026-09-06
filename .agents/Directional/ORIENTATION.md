@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-05, `M3-CP4c-3-TB28-R3-REV`):** runtime authority is **TB28-R3** on selector **407** at **400 PASS / 7 RED**, accepted **365/365** — **the control passed.** On the same immutable package and with no product change, the repaired harness reproduced TB27-R1's ledger **exactly**, the only delta being the one appended identity; TB28-R2's `407 PASS / 0 RED` on that same artifact is settled as the harness failure it was. The instrument now proves selection per row — `PASS` requires `selected == 1` **and** `exit == 0` — and was verified in source. **The accepted-prefix count, unestablished at TB28, is restored to 365/365.** Exact next is **`M3-CP4c-3-CB34`**, which applies the **frozen separating-arc barrier rule** — the first product correction on this frontier since CB27.
+> **Current CP4c-3 authority (2026-09-05, `M3-CP4c-3-TB29-REV`):** runtime authority is **TB29** on selector **408** at **399 PASS / 9 RED**, accepted **365/365**. **The frozen separating-arc barrier correction landed and is runtime-proved** — seven lines of product change, ordinal 408 green on all three properties including the positive falsification of over-cutting. **The question open since TB20 is DECIDED:** arcs 14 `(0/1)` and 22 `(0/3)` cross faces with `plan=0`, so the 191-face component **genuinely spans certified faces 0, 1 and 3** — the seeds `[0,1,3]` are the true geometry and **the seed guard was right to fail**. The two new REDs, 390 and 404, are **test authority**: one asserts that no face has established ownership, the other matches two partitions **by index**. Exact next is `M3-CP4c-3-CB35` — restore both witnesses to their contracts and transcribe the post-correction census. **No product change until that census is read.**
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,27 +185,32 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB28-R3`.** Selector **407**, **400 PASS / 7 RED**, accepted **1–365 = 365/365**,
-reds {366, 367, 368, 369, 370, 374, 398}. The mechanical actual embedded complex is **certified cellular** —
-`V=22, E=26, F=6, componentCount=1, χ=2, residual=0`.
+**Runtime authority — `M3-CP4c-3-TB29`.** Selector **408**, **399 PASS / 9 RED**, accepted **1–365 = 365/365**,
+reds {366, 367, 368, 369, 370, 374, 390, 398, 404}. The mechanical actual embedded complex is **certified
+cellular** — `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`.
 
-**The control passed, and it was a real control.** TB27-R1 was 399 PASS / 7 RED on selector 406; TB28-R3 is 400
-PASS / 7 RED on selector 407 = 406 plus one identity, and that identity PASSes. **The delta between the two runs is
-exactly the appended identity.** Same immutable package `9975737868`, same source, and `git diff` over
-`src include tests` is empty — CB33 changed only the harness and **deliberately did not recompile**, because a new
-package would have created a second changed variable.
+**The correction landed.** CB34's product change is seven lines (`SurfaceCutGraph.cpp:538,549`):
+`separatesCertifiedFaces = forwardOrbit != reverseOrbit`, and the terminal-slit skip becomes
+`if (terminalSlit && !separatesCertifiedFaces)`. For a separating arc the **pre-existing** body runs unchanged —
+`traceCutFaces.insert(sourceFace)` plus both carrier insertions into `barriers`; for an equal-orbit arc nothing
+changes. Accepted-prefix safety is structural, and 365/365 confirms it. Ordinal **408** PASSes all three
+properties: no separating arc remains interior to any uncut component; every separating-arc crossed face is absent
+from the uncut census; **every equal-orbit terminal-slit face is still present** — over-cutting falsified
+positively.
 
-**The instrument proves selection now.** `tools/m3_cp4c3_tb28_r3_harness.sh` enforces exactly one binary owner per
-identity and raises otherwise, requires each staged executable to match the package by digest and mode, sets
-`GTEST_FAIL_IF_NO_TEST_SELECTED=1`, counts `[ RUN      ]` lines independently of the exit code, and sets
-`result=PASS` **only when `selected == 1` and `exit == 0`**. Every ledger row records `selected=1`. The 407
-identities are independently confirmed to span **15 distinct test source files**, which is why single-binary
-routing produced a false green. `LESSONS.md` 129, 130, 132.
+**The frontier question is DECIDED.** From CB34's CN7 transcription of the TB28-R3 census: arc **14** (`0/1`) has
+terminal crossed face **`(28,29,35)`** and arc **22** (`0/3`) has **`(10,79,151)`**, **both with `plan=0`** — inside
+the 191-face failing component — and the census records **subset = true**. So the component **genuinely spans
+certified faces 0, 1 and 3**; the seeds `[0,1,3]` are the true geometry, not attribution errors; **the seed guard
+was right to fail**, and the defect was the barrier set. TB22's minority edges **`10-79`** and **`29-35`** are edges
+of exactly those two arcs' terminal-slit faces, and the minority orbits are those arcs' reverse orbits. **The 81/1/1
+distribution was never an attribution defect.**
 
-**Not discharged:** the frozen plan required the **191-face component's** ownership census to be published and
-adjudicated; the EXEC report defers it without carrying the values. The census exists inside immutable log artifact
-`9978114502` but is in no retained document. It does **not** block the correction, which is sound on both branches
-of the CL6 dichotomy by construction — that was the purpose of pre-naming a default. `LESSONS.md` 131.
+**The two new REDs are test authority, not product.** Ordinal **404** requires `EXPECT_NE(Established, …)` for every
+face of the component — a required-green assertion that the defect under repair is still present, contrary to its
+own contract, introduced at CB31 and passing **vacuously** for four turns. **Its firing is positive evidence:** it
+can only fail if a face is now `Established`. Ordinal **390** matches the plan and certifier partitions **by
+component index** — the conflation ordinal 406 proved invalid. `LESSONS.md` 133, 134.
 
 **Definition authority — `M3-CP4c-3-DEFN-R3`, Part VII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Parts
 IV–VI where they conflict, and only there. Its decisions:
@@ -240,7 +245,7 @@ IV–VI where they conflict, and only there. Its decisions:
   assertions are REPLACED in place**, retained and gating, because its seed-relative expectation becomes
   meaningless once the seed ceases to exist.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **93**. Sphere 368,
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **94**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence contract
 remain deferred under their own owners. **Vertex 30 is still not reached.**
 
@@ -251,7 +256,7 @@ remain deferred under their own owners. **Vertex 30 is still not reached.**
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path, in region construction.** The actual embedded complex is certified cellular. The plan **fails closed** on its `EmptyFragmentOrbits` component **0** — **191** faces, seeds **`[0,1,3]`** distributed **81/1/1** over 83 attributed boundary edges — publishing all three owners rather than choosing. The certifier's `NotTraceCut` component 0 is a **different object**: **214** faces, 76 boundary rows, **4 interior trace arcs of which 2 separate** (arc 14 `(0,1)`, arc 22 `(0,3)`), 53 vertex transits, 46 seed attributions. `matchesFailingComponent=false`. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path.** The actual embedded complex is certified cellular. Its 191-face `EmptyFragmentOrbits` component 0 is now **proved to span certified faces 0, 1 and 3** — arcs **14** `(0/1)` and **22** `(0/3)` cross it at terminal-slit faces `(28,29,35)` and `(10,79,151)`, whose edges are TB22's minority edges `29-35` and `10-79`. The seeds `[0,1,3]` at **81/1/1** are the true geometry. CB34's separating-arc barrier rule now excludes those faces from the uncut census (ordinal 408 green); 366/367/398 remain RED while ownership is not yet total. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -346,23 +351,21 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Certified-face ownership — the correction is FROZEN and CB34 now applies it.**
+1. **Certified-face ownership — the correction has landed and the branch is decided; what remains is whether one
+   correction is enough.**
 
-   - **The rule.** *The separating-arc barrier rule*: every arc with
-     `orbitByDart[forwardDart] != orbitByDart[reverseDart]` contributes its source edges to `barriers`, and every
-     source face it crosses becomes trace-cut. Derived from certified data, non-circular, and it does not
-     over-cut — arcs 20 and 24 have equal orbits and are untouched, so the `terminalSlit` skip is superseded **only
-     for separating arcs**.
-   - **The blocker is cleared.** TB28-R3's control passed, so the gate can now tell whether the correction worked.
-     This is the first product correction on this frontier since CB27, and the first authorized after eight
-     diagnostic turns.
-   - **Accepted-prefix safety must be demonstrated by construction**, not argued — show the rule is a no-op wherever
-     the current code already inserts the same barrier, and enumerate the remainder. Ordinals 397–407 keep their
-     contracts and **none may be weakened to obtain a green**.
-   - **One correction only.** No attribution-rule edit, no seed winner, no partition unification, and no new
-     ownership diagnostic. CL8 stands.
-   - **Owed alongside it:** transcribe the 191-face component's census into a retained document. It is a
-     transcription of evidence that already exists inside the immutable log artifact, not a new measurement.
+   - **Decided.** A separating arc crosses the failing component. It genuinely spans certified faces 0, 1 and 3,
+     the seeds `[0,1,3]` are the true geometry, and **the seed guard was right to fail**. The barrier set was the
+     defect, as the frozen rule assumed.
+   - **Corrected and proved.** CB34's seven-line change supersedes the terminal-slit skip **only for separating
+     arcs**; ordinal 408 proves separating-arc faces leave the uncut census, equal-orbit slits stay, and no
+     separating arc remains interior. Accepted prefix held at 365/365.
+   - **Open.** 366/367/398 are still RED, so ownership is not yet total. **The `established` / `unavailable` /
+     `conflicting` counts after the correction are the number that decides whether a second correction is needed**,
+     and the runtime already publishes them — CB35 transcribes them. **No product change is authorized until that
+     census is read**, and CL8 still forbids a new diagnostic.
+   - **Blocking nothing, but owed:** two witnesses must be restored to their own contracts first — ordinal 404 must
+     stop asserting that ownership is *un*established, and ordinal 390 must stop matching two partitions by index.
 
 2. **Two partitions of one mesh, and the diagnostic runs on the one that does not fail.** Confirmed at runtime by
    ordinal 406. The barrier families are identical; only the domain predicate differs, and the plan's domain
@@ -417,6 +420,17 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A witness that asserts a defect is still present cannot be told apart from a correct one until the defect is
+fixed — and then it blocks the fix.** Ordinal 404's contract said "publication and completeness only, never a
+value"; the implementation added a loop requiring that **no** face had established ownership. It passed vacuously
+for four turns and fired the moment the correction worked. When a review forbids value assertions, read the
+implementation for assertions that the broken state persists. `LESSONS.md` §4 133.
+
+**Never match two partitions by index.** Ordinal 390 located the certifier census by
+`row.component == locus.component`, matching indices across two partitions with different domains and face sets. It
+agreed while both were `0` with equal counts. Match by face-set digest or a published correspondence — never by an
+integer two independent constructions both start at zero. `LESSONS.md` §4 134.
 
 **A control run is worth more than a clever measurement.** After eight turns of elaborate diagnostics, what
 settled which of two contradictory gates was measuring the product was changing **one** variable — the harness —

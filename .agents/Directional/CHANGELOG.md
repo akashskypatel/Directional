@@ -1,3 +1,56 @@
+## 2026-09-05 — `M3-CP4c-3-TB29-REV`: the correction landed and is runtime-proved; the TB20 question is decided; two test-authority REDs
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 25ab3d55697598bde436d1ac811d71e6cf911f2e` passed. Selector 408
+verified as selector 407 plus one identity, 407 an exact prefix.
+
+**TB29 is promoted to current valid semantic runtime authority:** selector **408**, **399 PASS / 9 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,390,398,404]`. Credibility gate holds, every row `selected=1`,
+all three byte+mode censuses equal pre/post.
+
+**The frozen separating-arc barrier correction landed and works.** CB34's product change is seven lines
+(`SurfaceCutGraph.cpp:538,549`): `separatesCertifiedFaces = forwardOrbit != reverseOrbit`, and the terminal-slit
+skip becomes `if (terminalSlit && !separatesCertifiedFaces)`. For a separating arc the **pre-existing** body runs
+unchanged — `traceCutFaces.insert(sourceFace)` plus both carrier insertions into `barriers`; for an equal-orbit arc
+nothing changes at all. **Accepted-prefix safety is structural rather than argued**, and 365/365 confirms it.
+Ordinal **408** PASSes all three properties: no separating arc remains interior to any uncut component; every
+separating-arc crossed face is absent from the uncut census; and **every equal-orbit terminal-slit face is still
+present** — over-cutting falsified positively.
+
+**The question open since TB20 is DECIDED.** From CB34's CN7 transcription of the TB28-R3 census: arc **14**
+(`0/1`) has terminal crossed face **`(28,29,35)`** and arc **22** (`0/3`) has **`(10,79,151)`**, **both with
+`plan=0`** — inside the 191-face failing component — and the census records **subset = true**. The component
+**genuinely spans certified faces 0, 1 and 3**; the seeds `[0,1,3]` are the true geometry, not attribution errors;
+**the seed guard was right to fail**; the barrier set was the defect, exactly as the frozen rule assumed. TB22's
+minority edges **`10-79`** and **`29-35`** are edges of precisely those two arcs' terminal-slit faces, and the
+minority orbits 1 and 3 are those arcs' reverse orbits. The 81/1/1 distribution was never an attribution defect.
+
+**The two new REDs are test authority, provable from the test source.** Ordinal **404** ends with a loop requiring
+`EXPECT_NE(Established, owner->status)` for every face of the component — a required-green assertion that the defect
+under repair is still present, contrary to its own contract ("publication and completeness only, never a value").
+It was introduced by **CB31**, passed for four turns **vacuously**, and **its firing is positive evidence**: it can
+only fail if a face is now `Established`. Ordinal **390** locates the certifier census by
+`row.component == *locus.uncutFaceComponent` — **matching two partitions by index**, the conflation ordinal 406
+proved invalid. Neither fix is a weakening: removing an assertion a frozen contract excluded restores the identity
+to its contract.
+
+**Accounting: no stable change.** Totals remain **44 / 14 / 30**, debt **5**, packages **94**. Accepted 365/365
+with **no accepted-green loss** — the load-bearing boundary survived the first product correction on this frontier
+since CB27. 390 and 404 are evidence-contract failures, not behaviour losses, on the TB24-REV precedent.
+
+**Candidates.** Closed: `M3-CP4c3-TB25-REV-CAND-02` (decided: NO), `M3-CP4c3-TB27-REV-CAND-01` (corrected,
+runtime-proved), `M3-CP4c3-TB28-REV-CAND-02` (CN7 discharged). New: `M3-CP4c3-TB29-REV-CAND-01` and `-CAND-02`,
+both test authority and gating.
+
+**Lessons 133 and 134** added. **Consolidation:** the TB28-R3 review record, EXEC report and plan, plus the CB32
+and CB33 build reports, were folded into `M3_CP4c_Consolidated_Record.md`; CB34's report is **retained** so its
+46-row CN7 transcription stays readable.
+
+**Exact successor: `M3-CP4c-3-CB35`** under **CO6–CO8** — restore ordinals 404 and 390 to their own contracts,
+transcribe the post-correction census including the `established`/`unavailable`/`conflicting` counts and the
+failing assertion text for every RED ordinal. **Test authority and transcription only; no product change until that
+census is read.**
+
 ## 2026-09-05 — `M3-CP4c-3-CB34`: frozen separating-arc correction compiled GREEN; selector 408 and CN7 retained; no runtime
 
 Code + Build only. CB34 resumed the preserved WIP and implemented exactly CM9: unequal-orbit terminal trace arcs

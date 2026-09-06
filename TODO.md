@@ -26,40 +26,47 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB29-EXEC` (Test + Benchmark execution) — ARTIFACT ONLY
+## Current focus — `M3-CP4c-3-CB35` (Code + Build) — TEST AUTHORITY AND TRANSCRIPTION ONLY
 
-`M3-CP4c-3-CB34` is complete and compile-green. It applied exactly the frozen CM9 separating-arc correction,
-appended one census-effect witness as selector 408, and retained CN7's 191-face ownership census without creating a
-new diagnostic. No Directional runtime executed in CB34.
+`M3-CP4c-3-TB29-REV` promoted TB29 to **current valid semantic runtime authority**.
 
-- semantic source: `25ab3d55697598bde436d1ac811d71e6cf911f2e`;
-- compile run/job: `34001505322 / 101401105075`;
-- immutable result/log artifacts: `9979639398 / 9979639588`;
-- package ZIP SHA-256: `c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2`;
-- selector 408: 408 identities, LF SHA-256
-  `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`; selector 407 is its exact prefix;
-- compile package `SHA256SUMS`: 28/28 PASS; all eight approved targets compiled with GMP/GMPXX;
-  `runtimeExecution=false`.
+- selector **408**, **399 PASS / 9 RED**, accepted **1–365 = 365/365**, RED
+  `366,367,368,369,370,374,390,398,404`;
+- immutable CB34 package `9979639398` / source `25ab3d55697598bde436d1ac811d71e6cf911f2e`;
+- run/job `34002726062 / 101404386206`; result/log `9980019423 / 9980019636`; every row `selected=1`.
 
-The current valid semantic runtime authority remains `M3-CP4c-3-TB28-R3`: selector 407, **400 PASS / 7 RED**,
-accepted **1–365 = 365/365**, RED `366,367,368,369,370,374,398`. Stable accounting remains **44 events / 14
-categories / 30 recurrences**, produced-witness debt **5**. The successful CB34 compile advances semantic M3 package
-count to **94**. CP4c-3 remains **OPEN** pending runtime evidence.
+**The frozen correction landed and is runtime-proved.** Seven lines of product change; ordinal **408** passes on all
+three properties, including the positive falsification of over-cutting. **Accepted prefix held at 365/365.**
+
+**The question open since TB20 is DECIDED.** Arcs **14** `(0/1)` and **22** `(0/3)` cross faces with `plan=0`, so
+the 191-face component **genuinely spans certified faces 0, 1 and 3**; the seeds `[0,1,3]` are the true geometry and
+**the seed guard was right to fail**. TB22's minority edges `10-79` and `29-35` are edges of exactly those two arcs'
+terminal-slit faces.
+
+**The two new REDs are test authority.** Ordinal **404** asserts that no face has established ownership — an
+out-of-contract assertion introduced at CB31 that passed vacuously for four turns; **its firing is positive
+evidence**. Ordinal **390** matches two partitions **by component index**. Neither is a product regression and
+**no stable event is added**.
+
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3
+package count **94**. CP4c-3 remains **OPEN**; 366/367/398 are still RED because ownership is not yet total.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB29-EXEC`** exactly from
-`.agents/Directional/Architecture_M3_CP4c3_TB29_Artifact_Only_Test_Benchmark_Plan.md`. Runtime execution only:
+Run **`M3-CP4c-3-CB35`**, Code + Build, runtime-free, under **CO6–CO8** of
+`Architecture_M3_CP4c3_TB29_Independent_Review_Record.md`:
 
-- [ ] download and verify immutable artifact `9979639398`; do not rebuild or repair it;
-- [ ] verify package/source/GMP/selector authority before runtime;
-- [ ] statically route each selector identity to exactly one packaged owner executable;
-- [ ] execute all 408 identities once, one identity per fresh process, with exact selected-count proof;
-- [ ] preserve all raw logs, ledger, resource evidence, and pre/post byte+mode censuses;
-- [ ] do not diagnose or plan a product correction in EXEC; route the evidence to **`M3-CP4c-3-TB29-REV`**.
+- [ ] **CO6** delete ordinal 404's ownership-status loop (`tests/FieldAlignedCurveNetworkTests.cpp:14347–14352`),
+      keeping every other assertion; make ordinal 390 locate the comparison census by **face-set digest or the
+      published subset relation**, never by index. Replace-in-place, ordinals retained and gating, **nothing they
+      legitimately own relaxed**, 398/366/367 untouched.
+- [ ] **CO7** transcribe from TB29 log artifact `9980019636`: the post-correction failing component, every uncut
+      component's interior-arc rows with both dart orbits, the **`established`/`unavailable`/`conflicting` counts
+      over the 300 source faces**, and **the failing assertion text for every RED ordinal**.
+- [ ] **CO8** `M3-CP4c-3-TB30` re-executes selector 408 — credibility gate 366/367/398 RED, **required outcome 390
+      and 404 return to PASS**.
 
-No compile, relink, benchmark execution, mode repair, source mutation, fixture mutation, selector mutation, or semantic
-retry is authorized in TB29-EXEC.
+**NO PRODUCT CHANGE.** One product correction has landed; the next is not authorized until TB30's census is read.
 
 ## Carried forward from M1
 
@@ -140,4 +147,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences** with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **94** after CB34's compile-green package. **`M3-CP4c-3-TB28-R3` remains the current valid semantic runtime authority at 400 PASS / 7 RED, accepted 365/365 on selector 407.** Exact next is `M3-CP4c-3-TB29-EXEC`, artifact-only on package `9979639398`. PR #8 remains open, draft, and unmerged.
+Current totals are **44 events / 14 categories / 30 recurrences**, classified at `M3-CP4c-3-TB29-REV` with no stable change. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **94**. **`M3-CP4c-3-TB29` is the current valid semantic runtime authority at 399 PASS / 9 RED, accepted 365/365 on selector 408.** Exact next is `M3-CP4c-3-CB35`, test authority and transcription only. PR #8 remains open, draft, and unmerged.

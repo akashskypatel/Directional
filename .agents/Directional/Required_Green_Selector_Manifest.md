@@ -425,8 +425,25 @@ Appended 1 identity to selector 407:
 with GMP/GMPXX linked and `runtimeExecution=false`; root package `SHA256SUMS` is 28/28 PASS. This is compile
 authority only. Selector 408 is not semantically accepted until TB29.
 
-**Exact successor:** `M3-CP4c-3-TB29-EXEC`, artifact-only on the immutable CB34 package, followed by
-`M3-CP4c-3-TB29-REV`.
+**Executed at `M3-CP4c-3-TB29`** — run/job `34002726062 / 101404386206`, ledger
+`3199d7117dbed28dd23dd22cefb543ff43f449a5a2aa859075f543a8f6195f51`: **399 PASS / 9 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,390,398,404]`, **every row `selected=1`**. Promoted to runtime
+authority at `M3-CP4c-3-TB29-REV`.
+
+Ordinal **408 PASSes on its first execution** and proves all three properties of the separating-arc barrier rule:
+no separating arc remains interior to any uncut component; every separating-arc crossed face leaves the uncut
+census; and **every equal-orbit terminal-slit face is preserved** — the rule does not over-cut. This is the first
+identity in the checkpoint to assert the *effect* of a product correction and pass on it.
+
+Ordinals **390** and **404** changed PASS → RED and are **test authority, not product**: 404 requires that no face
+has established ownership — an out-of-contract assertion introduced at CB31 that passed vacuously while ownership
+was failing — and 390 matches the plan and certifier partitions **by component index**. Both have their assertions
+replaced in place at **CO6 / CB35**; names, ordinals and selector bytes do not change, so selector 408 stays
+byte-identical and no new selector is authored.
+
+**Exact successor:** `M3-CP4c-3-CB35`, test authority and transcription only, then `M3-CP4c-3-TB30`, which
+re-executes selector 408 with **390 and 404 required to return to PASS** and 366/367/398 required to stay RED as
+the credibility gate.
 
 ## Separate lineage — M1
 

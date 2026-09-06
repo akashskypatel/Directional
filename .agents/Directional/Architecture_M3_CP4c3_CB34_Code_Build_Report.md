@@ -2,7 +2,7 @@
 
 **Turn:** `M3-CP4c-3-CB34`
 **Disposition:** **COMPLETE / COMPILE GREEN / RUNTIME NOT EXECUTED / SEMANTIC ACCEPTANCE PENDING TB29**
-**Frozen owner:** CM9 + CN7 from `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md`.
+**Frozen owner:** CM9 + CN7 from `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB29-REV`).
 
 ## 1. Resume authority
 

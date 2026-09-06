@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-05 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority is **`M3-CP4c-3-TB28-R3`** on selector407 at **400 PASS / 7 RED**, accepted **365/365** - **the control passed**. On the same immutable package with no product change, the repaired harness reproduced TB27-R1's ledger exactly, the only delta being the one appended identity; TB28-R2's `407 PASS / 0 RED` on that same artifact is settled as the harness failure it was, and the accepted-prefix count is restored from *unestablished* to 365/365. The instrument now proves selection per row and was verified in source. **NEXT:** `M3-CP4c-3-CB34`, which applies the **frozen separating-arc barrier rule** - the first product correction on this frontier since CB27 - and transcribes the 191-face census. Accepted-prefix safety must be demonstrated by construction.)
+**Status date:** 2026-09-05 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Runtime authority is **`M3-CP4c-3-TB29`** on selector408 at **399 PASS / 9 RED**, accepted **365/365**. **The frozen separating-arc barrier correction landed and is runtime-proved** - seven lines of product change, ordinal 408 green on all three properties including the positive falsification of over-cutting, accepted prefix intact. **The question open since TB20 is DECIDED:** arcs 14 `(0/1)` and 22 `(0/3)` cross faces with `plan=0`, so the 191-face component genuinely spans certified faces 0, 1 and 3 - the seeds `[0,1,3]` are the true geometry and the seed guard was right to fail. The two new REDs, 390 and 404, are **test authority**: one asserts that no face has established ownership, the other matches two partitions by index. No stable event. **NEXT:** `M3-CP4c-3-CB35`, **test authority and transcription only** - restore both witnesses to their contracts and transcribe the post-correction census. No product change until that census is read.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB28-R3 runtime 400 PASS / 7 RED, accepted 365/365, selector407/package93; control passed; CB34 next applies the frozen correction |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB29 runtime 399 PASS / 9 RED, accepted 365/365, selector408/package94; the separating-arc correction is runtime-proved; CB35 next (test authority) |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 407** | **OPEN.** Runtime authority TB28-R3: **400 PASS / 7 RED**, accepted 365/365 on CB32 package93. The control run settled the TB28-R2 false green and restored the accepted-prefix statement. **NEXT:** `M3-CP4c-3-CB34` applies the frozen separating-arc barrier rule, then `M3-CP4c-3-TB29`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 408** | **OPEN.** Runtime authority TB29: **399 PASS / 9 RED**, accepted 365/365 on CB34 package94. The separating-arc barrier correction is runtime-proved and the 191-face component is proved to span certified faces 0, 1 and 3. Remaining REDs 390/404 are test authority. **NEXT:** `M3-CP4c-3-CB35`, then `M3-CP4c-3-TB30`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval
