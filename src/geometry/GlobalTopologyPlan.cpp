@@ -804,6 +804,7 @@ RegionBuildResult build_regions(
     }
     const std::size_t forwardOrbit = walk.orbitByDart[forwardDart];
     const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
+    const bool separatesCertifiedFaces = forwardOrbit != reverseOrbit;
 
     std::optional<authority::SourceVertexId> sourcePortVertex;
     if (diagnostics != nullptr) {
@@ -827,11 +828,13 @@ RegionBuildResult build_regions(
         failure.sourceFace = segment.sourceFace;
         return failure;
       }
-      if (is_terminal_slit(*trace, segmentIndex)) {
+      if (is_terminal_slit(*trace, segmentIndex) &&
+          !separatesCertifiedFaces) {
         // No source-face chord was materialized: the retained outgoing carrier
         // is a hypothetical continuation only. A face with k real trace chords
-        // has exactly k+1 fragments, so a terminal slit contributes zero to k,
-        // touches no source edge, and publishes no orbit evidence.
+        // has exactly k+1 fragments, so a non-separating terminal slit
+        // contributes zero to k, touches no source edge, and publishes no orbit
+        // evidence.
         continue;
       }
       ++tracePieceCount[segment.sourceFace];
