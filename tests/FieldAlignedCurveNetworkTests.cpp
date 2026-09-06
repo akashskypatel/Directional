@@ -3667,6 +3667,46 @@ void append_cp4c_failure_locus(
     }
     report << "]}";
   }
+  if (!locus.regionFrontierFailureStage.empty() ||
+      locus.regionFrontierComponentCount != 0U ||
+      !locus.regionFrontierComponents.empty() ||
+      locus.regionFrontierComponentsTruncated) {
+    report << ";regionFrontierFailureStage="
+           << (locus.regionFrontierFailureStage.empty()
+                   ? "none"
+                   : locus.regionFrontierFailureStage)
+           << ";regionFrontierComponentCount="
+           << locus.regionFrontierComponentCount
+           << ";regionFrontierComponentsTruncated="
+           << (locus.regionFrontierComponentsTruncated ? "true" : "false");
+    for (std::size_t index = 0U;
+         index < locus.regionFrontierComponents.size(); ++index) {
+      const auto &row = locus.regionFrontierComponents[index];
+      report << ";regionFrontierComponent[" << index
+             << "]={component=" << row.component
+             << ",domainRule=" << row.partitionIdentity.domainRule
+             << ",faceSetDigest=" << row.faceSetDigest
+             << ",censusCorrespondence=" << row.censusCorrespondence
+             << ",censusComponent=";
+      if (row.censusComponent.has_value())
+        report << *row.censusComponent;
+      else
+        report << "none";
+      report << ",censusDomainRule=";
+      if (row.censusPartitionIdentity.has_value())
+        report << row.censusPartitionIdentity->domainRule;
+      else
+        report << "none";
+      report << ",censusFaceSetDigest=";
+      if (row.censusFaceSetDigest.has_value())
+        report << *row.censusFaceSetDigest;
+      else
+        report << "none";
+      report << ",componentSubsetOfCensusComponent="
+             << (row.componentSubsetOfCensusComponent ? "true" : "false")
+             << '}';
+    }
+  }
   if (locus.uncutFaceComponent.has_value())
     report << ";uncutFaceComponent=" << *locus.uncutFaceComponent;
   if (locus.uncutFaceComponentSeedCount.has_value())
@@ -4209,6 +4249,73 @@ void append_cp4c_failure_locus(
     if (locus.vertexStarRadialRay.has_value())
       report << ";vertexStarRadialRay=" << *locus.vertexStarRadialRay;
   }
+}
+
+
+void expect_later_region_frontier_evidence(
+    const directional::SurfaceCellFailureLocusDiagnostics &locus) {
+  ASSERT_TRUE(locus.regionFrontierFailureStage == "RegionConstruction" ||
+              locus.regionFrontierFailureStage == "RegionCertification")
+      << "regionFrontierFailureStage=" << locus.regionFrontierFailureStage;
+  ASSERT_GT(locus.regionFrontierComponentCount, 0U);
+  EXPECT_EQ(locus.regionFrontierComponentCount,
+            locus.regionFrontierComponents.size());
+  EXPECT_FALSE(locus.regionFrontierComponentsTruncated);
+
+  std::set<std::size_t> components;
+  for (const auto &row : locus.regionFrontierComponents) {
+    EXPECT_TRUE(components.insert(row.component).second);
+    EXPECT_FALSE(row.partitionIdentity.domainRule.empty());
+    ASSERT_TRUE(row.censusCorrespondence == "Exact" ||
+                row.censusCorrespondence == "Superset")
+        << "component=" << row.component
+        << ";censusCorrespondence=" << row.censusCorrespondence;
+    ASSERT_TRUE(row.censusComponent.has_value()) << "component=" << row.component;
+    ASSERT_TRUE(row.censusPartitionIdentity.has_value())
+        << "component=" << row.component;
+    EXPECT_FALSE(row.censusPartitionIdentity->domainRule.empty());
+    ASSERT_TRUE(row.censusFaceSetDigest.has_value())
+        << "component=" << row.component;
+    EXPECT_TRUE(row.componentSubsetOfCensusComponent);
+  }
+
+  // Later-stage frontier evidence must not impersonate the cleared uncut seed
+  // stage. The legacy fields remain reserved for the stage that owns them.
+  EXPECT_FALSE(locus.uncutFaceComponent.has_value());
+  EXPECT_FALSE(locus.uncutFaceComponentSeedCount.has_value());
+  EXPECT_TRUE(locus.uncutFaceComponentSeedState.empty());
+  EXPECT_TRUE(locus.sourceFaceLocusKind.empty());
+  EXPECT_EQ(0U, locus.uncutFaceComponentFaceCount);
+  EXPECT_TRUE(locus.uncutFaceComponentFaces.empty());
+  EXPECT_FALSE(locus.uncutFaceComponentFacesTruncated);
+  EXPECT_FALSE(locus.uncutFaceComponentPartitionIdentity.has_value());
+  EXPECT_FALSE(locus.uncutFaceComponentFaceSetDigest.has_value());
+  EXPECT_FALSE(locus.uncutComponentCensusComponent.has_value());
+  EXPECT_FALSE(locus.uncutComponentCensusPartitionIdentity.has_value());
+  EXPECT_FALSE(locus.uncutComponentCensusFaceSetDigest.has_value());
+  EXPECT_FALSE(locus.uncutComponentCensusMatchesFailingComponent.has_value());
+  EXPECT_FALSE(locus.uncutFaceComponentSubsetOfCensusComponent.has_value());
+  EXPECT_FALSE(locus.uncutFaceComponentInteriorArcCensusPublished);
+  EXPECT_EQ(0U, locus.uncutFaceComponentInteriorArcCount);
+  EXPECT_TRUE(locus.uncutFaceComponentInteriorArcIncidences.empty());
+  EXPECT_FALSE(locus.uncutFaceComponentInteriorArcIncidencesTruncated);
+  EXPECT_EQ(0U, locus.uncutFaceComponentBoundaryEdgeCount);
+  EXPECT_TRUE(locus.uncutFaceComponentBoundaryEdges.empty());
+  EXPECT_FALSE(locus.uncutFaceComponentBoundaryEdgesTruncated);
+  EXPECT_EQ(0U, locus.uncutFaceComponentBoundaryOrbitCount);
+  EXPECT_TRUE(locus.uncutFaceComponentBoundaryOrbits.empty());
+  EXPECT_FALSE(locus.uncutFaceComponentBoundaryOrbitsTruncated);
+  EXPECT_FALSE(locus.uncutFaceCertificatePairExaminedCount.has_value());
+  EXPECT_FALSE(locus.uncutFaceCertificatePairDifferingCount.has_value());
+  EXPECT_TRUE(locus.uncutFaceCertificatePairs.empty());
+  EXPECT_FALSE(locus.uncutFaceCertificatePairsTruncated);
+  EXPECT_FALSE(locus.uncutFaceComponentCertifiedFaceObservationCount.has_value());
+  EXPECT_TRUE(locus.uncutFaceComponentCertifiedFaceObservations.empty());
+  EXPECT_FALSE(locus.uncutFaceComponentCertifiedFaceObservationsTruncated);
+  EXPECT_FALSE(locus.uncutFaceComponentCertifiedFaceUnavailableCount.has_value());
+  EXPECT_FALSE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
+  EXPECT_TRUE(locus.uncutFaceComponentCertifiedFaceMultiset.empty());
+  EXPECT_FALSE(locus.uncutFaceComponentCertifiedFaceMultisetTruncated);
 }
 
 
@@ -11555,6 +11662,10 @@ TEST(GlobalTopologyPlan,
   }
 
   const auto &locus = mechanical.terminalFailureLocus;
+  if (locus.regionFrontierFailureStage != "UncutComponent") {
+    expect_later_region_frontier_evidence(locus);
+    return;
+  }
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentFaceSetDigest.has_value());
@@ -11784,6 +11895,10 @@ TEST(GlobalTopologyPlan,
   }
 
   const auto &locus = mechanical.terminalFailureLocus;
+  if (locus.regionFrontierFailureStage != "UncutComponent") {
+    expect_later_region_frontier_evidence(locus);
+    return;
+  }
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceObservationCount.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceUnavailableCount.has_value());
@@ -14575,6 +14690,10 @@ TEST(GlobalTopologyPlan,
   ASSERT_FALSE(mechanical.plan.has_value());
 
   const auto &locus = mechanical.terminalFailureLocus;
+  if (locus.regionFrontierFailureStage != "UncutComponent") {
+    expect_later_region_frontier_evidence(locus);
+    return;
+  }
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentPartitionIdentity.has_value());
   EXPECT_FALSE(locus.uncutFaceComponentPartitionIdentity->domainRule.empty());
@@ -14615,6 +14734,10 @@ TEST(SurfaceCutGraph,
   ASSERT_FALSE(mechanical.plan.has_value());
 
   const auto &locus = mechanical.terminalFailureLocus;
+  if (locus.regionFrontierFailureStage != "UncutComponent") {
+    expect_later_region_frontier_evidence(locus);
+    return;
+  }
   ASSERT_TRUE(locus.uncutFaceComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentSubsetOfCensusComponent.has_value());
   ASSERT_TRUE(locus.uncutFaceComponentInteriorArcCensusPublished);

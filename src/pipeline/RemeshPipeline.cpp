@@ -694,6 +694,34 @@ project_global_topology_plan_failure_locus(
     row.truncated = evidence.truncated;
     locus.fragmentEdgeOrbitEvidence.push_back(std::move(row));
   }
+  if (error.regionFrontierFailureStage.has_value()) {
+    locus.regionFrontierFailureStage =
+        geometry::region_frontier_failure_stage_name(
+            *error.regionFrontierFailureStage);
+  }
+  locus.regionFrontierComponentCount = error.regionFrontierComponentCount;
+  locus.regionFrontierComponentsTruncated =
+      error.regionFrontierComponentsTruncated;
+  locus.regionFrontierComponents.reserve(error.regionFrontierComponents.size());
+  for (const auto &component : error.regionFrontierComponents) {
+    SurfaceCellRegionFrontierComponentEvidenceDiagnostics row;
+    row.component = component.component;
+    row.partitionIdentity =
+        partition_identity_locus(component.partitionIdentity);
+    row.faceSetDigest = component.faceSetDigest;
+    row.censusCorrespondence =
+        geometry::region_frontier_census_correspondence_name(
+            component.censusCorrespondence);
+    row.censusComponent = component.censusComponent;
+    if (component.censusPartitionIdentity.has_value()) {
+      row.censusPartitionIdentity =
+          partition_identity_locus(*component.censusPartitionIdentity);
+    }
+    row.censusFaceSetDigest = component.censusFaceSetDigest;
+    row.componentSubsetOfCensusComponent =
+        component.componentSubsetOfCensusComponent;
+    locus.regionFrontierComponents.push_back(std::move(row));
+  }
   locus.uncutFaceComponent = error.uncutFaceComponent;
   locus.uncutFaceComponentSeedCount = error.uncutFaceComponentSeedCount;
   if (error.uncutFaceComponentSeedState.has_value()) {

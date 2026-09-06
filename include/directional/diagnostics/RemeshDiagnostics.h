@@ -244,6 +244,18 @@ struct SurfaceCellUncutComponentPartitionIdentityDiagnostics {
   bool nonTerminalTraceCarrierEdges = false;
 };
 
+struct SurfaceCellRegionFrontierComponentEvidenceDiagnostics {
+  std::size_t component = 0U;
+  SurfaceCellUncutComponentPartitionIdentityDiagnostics partitionIdentity;
+  std::uint64_t faceSetDigest = 0U;
+  std::string censusCorrespondence;
+  std::optional<std::size_t> censusComponent;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      censusPartitionIdentity;
+  std::optional<std::uint64_t> censusFaceSetDigest;
+  bool componentSubsetOfCensusComponent = false;
+};
+
 struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
   std::size_t orbit = 0U;
   std::size_t boundaryEdgeCount = 0U;
@@ -327,6 +339,11 @@ struct SurfaceCellFailureLocusDiagnostics {
   bool fragmentIncidencesTruncated = false;
   std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
       fragmentEdgeOrbitEvidence;
+  std::string regionFrontierFailureStage;
+  std::size_t regionFrontierComponentCount = 0U;
+  std::vector<SurfaceCellRegionFrontierComponentEvidenceDiagnostics>
+      regionFrontierComponents;
+  bool regionFrontierComponentsTruncated = false;
   std::optional<std::size_t> uncutFaceComponent;
   std::optional<std::size_t> uncutFaceComponentSeedCount;
   std::string uncutFaceComponentSeedState;

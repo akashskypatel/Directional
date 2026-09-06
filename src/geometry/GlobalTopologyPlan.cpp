@@ -653,55 +653,102 @@ find_corresponding_uncut_component_census(
   return bestSubset;
 }
 
-[[nodiscard]] std::optional<std::size_t> region_frontier_component(
+[[nodiscard]] UncutComponentPartitionIdentity
+plan_uncut_component_partition_identity() {
+  UncutComponentPartitionIdentity identity;
+  identity.domainRule = UncutComponentPartitionDomainRule::EmptyFragmentOrbits;
+  identity.barriers.cutGraphCutEdges = true;
+  identity.barriers.networkMandatoryEdges = true;
+  identity.barriers.nonTerminalTraceCarrierEdges = true;
+  return identity;
+}
+
+[[nodiscard]] std::vector<std::size_t> region_frontier_components(
     const GlobalTopologyPlanError &failure,
     const RegionFrontierEvidence &frontier,
     const std::vector<GlobalTopologyRegion> *regions = nullptr) {
-  if (failure.uncutFaceComponent.has_value() &&
-      *failure.uncutFaceComponent < frontier.partition.components.size()) {
-    return *failure.uncutFaceComponent;
-  }
-  if (failure.sourceFace.has_value()) {
+  std::set<std::size_t> components;
+  const auto add_component = [&](const std::size_t component) {
+    if (component < frontier.ownerConsistency.components.size())
+      components.insert(component);
+  };
+
+  if (failure.uncutFaceComponent.has_value()) {
+    add_component(*failure.uncutFaceComponent);
+  } else if (failure.sourceFace.has_value()) {
     const auto component =
         frontier.partition.componentByFace.find(*failure.sourceFace);
-    if (component != frontier.partition.componentByFace.end()) {
-      return component->second;
-    }
-  }
-  if (regions != nullptr && failure.region.has_value()) {
+    if (component != frontier.partition.componentByFace.end())
+      add_component(component->second);
+  } else if (regions != nullptr && failure.region.has_value()) {
     const auto region = std::find_if(
         regions->begin(), regions->end(), [&](const auto &candidate) {
           return candidate.id == *failure.region;
         });
     if (region != regions->end()) {
-      std::optional<std::size_t> component;
       for (const auto &face : region->sourceFaces) {
         const auto found = frontier.partition.componentByFace.find(face);
-        if (found == frontier.partition.componentByFace.end()) continue;
-        if (component.has_value() && *component != found->second) {
-          return std::nullopt;
-        }
-        component = found->second;
+        if (found != frontier.partition.componentByFace.end())
+          add_component(found->second);
       }
-      if (component.has_value()) return component;
     }
   }
-  if (frontier.partition.components.size() == 1U) return 0U;
-  return std::nullopt;
+
+  if (components.empty() && frontier.partition.components.size() == 1U)
+    add_component(0U);
+  return {components.begin(), components.end()};
 }
 
 void annotate_region_frontier_evidence(
-    GlobalTopologyPlanError &failure, const RegionFrontierEvidence &frontier,
+    GlobalTopologyPlanError &failure, const RegionFrontierFailureStage stage,
+    const RegionFrontierEvidence &frontier,
     const SurfaceCutGraphCellularityCertificate &certificate,
     const std::vector<GlobalTopologyRegion> *regions = nullptr) {
-  const auto component = region_frontier_component(failure, frontier, regions);
-  if (!component.has_value() ||
-      *component >= frontier.ownerConsistency.components.size()) {
+  failure.regionFrontierFailureStage = stage;
+  failure.regionFrontierComponents.clear();
+
+  const UncutComponentPartitionIdentity planPartitionIdentity =
+      plan_uncut_component_partition_identity();
+  for (const std::size_t component :
+       region_frontier_components(failure, frontier, regions)) {
+    const auto &row = frontier.ownerConsistency.components[component];
+    RegionFrontierComponentEvidenceDiagnostic evidence;
+    evidence.component = component;
+    evidence.partitionIdentity = planPartitionIdentity;
+    evidence.faceSetDigest = detail::source_face_set_digest(row.faces);
+
+    const auto *census =
+        find_corresponding_uncut_component_census(certificate, row.faces);
+    if (census != nullptr) {
+      evidence.censusCorrespondence =
+          census->faces == row.faces
+              ? RegionFrontierCensusCorrespondence::Exact
+              : RegionFrontierCensusCorrespondence::Superset;
+      evidence.censusComponent = census->component;
+      evidence.censusPartitionIdentity = census->partitionIdentity;
+      evidence.censusFaceSetDigest = census->faceSetDigest;
+      evidence.componentSubsetOfCensusComponent =
+          contains_all_faces(census->faces, row.faces);
+    }
+    failure.regionFrontierComponents.push_back(std::move(evidence));
+  }
+  failure.regionFrontierComponentCount = failure.regionFrontierComponents.size();
+  failure.regionFrontierComponentsTruncated = false;
+}
+
+void annotate_uncut_face_component_seed_evidence(
+    GlobalTopologyPlanError &failure, const RegionFrontierEvidence &frontier,
+    const SurfaceCutGraphCellularityCertificate &certificate) {
+  annotate_region_frontier_evidence(
+      failure, RegionFrontierFailureStage::UncutComponent, frontier,
+      certificate);
+  if (!failure.uncutFaceComponent.has_value() ||
+      *failure.uncutFaceComponent >= frontier.ownerConsistency.components.size()) {
     return;
   }
-  const auto &row = frontier.ownerConsistency.components[*component];
+  const std::size_t component = *failure.uncutFaceComponent;
+  const auto &row = frontier.ownerConsistency.components[component];
 
-  failure.uncutFaceComponent = *component;
   failure.uncutFaceComponentSeedCount = row.ownerMultiplicity.size();
   failure.uncutFaceComponentSeedState =
       row.ownerMultiplicity.empty()
@@ -712,14 +759,8 @@ void annotate_region_frontier_evidence(
   failure.uncutFaceComponentFaceCount = row.faces.size();
   failure.uncutFaceComponentFaces = row.faces;
   failure.uncutFaceComponentFacesTruncated = false;
-
-  UncutComponentPartitionIdentity planPartitionIdentity;
-  planPartitionIdentity.domainRule =
-      UncutComponentPartitionDomainRule::EmptyFragmentOrbits;
-  planPartitionIdentity.barriers.cutGraphCutEdges = true;
-  planPartitionIdentity.barriers.networkMandatoryEdges = true;
-  planPartitionIdentity.barriers.nonTerminalTraceCarrierEdges = true;
-  failure.uncutFaceComponentPartitionIdentity = planPartitionIdentity;
+  failure.uncutFaceComponentPartitionIdentity =
+      plan_uncut_component_partition_identity();
   failure.uncutFaceComponentFaceSetDigest =
       detail::source_face_set_digest(row.faces);
 
@@ -1336,8 +1377,9 @@ RegionBuildResult build_regions(
 
   const RegionFrontierEvidence frontier{componentPartition, ownerConsistency};
   const auto annotate_frontier = [&](GlobalTopologyPlanError failure) {
-    annotate_region_frontier_evidence(failure, frontier,
-                                      cutGraph.certificate());
+    annotate_region_frontier_evidence(
+        failure, RegionFrontierFailureStage::RegionConstruction, frontier,
+        cutGraph.certificate());
     return failure;
   };
 
@@ -1352,7 +1394,9 @@ RegionBuildResult build_regions(
     failure.sourceFaceLocusKind =
         UncutFaceSourceFaceLocusKind::FirstUnlabeledFaceInIterationOrder;
     failure.uncutFaceComponent = component;
-    return annotate_frontier(std::move(failure));
+    annotate_uncut_face_component_seed_evidence(
+        failure, frontier, cutGraph.certificate());
+    return failure;
   }
 
   for (const auto &face : unlabeledFaces) {
@@ -2308,9 +2352,9 @@ CandidateBuildResult canonical_candidate(
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
     GlobalTopologyPlanError annotated = *failure;
-    annotate_region_frontier_evidence(annotated, regionSuccess.frontier,
-                                      cutGraph.certificate(),
-                                      &candidate.regions);
+    annotate_region_frontier_evidence(
+        annotated, RegionFrontierFailureStage::RegionCertification,
+        regionSuccess.frontier, cutGraph.certificate(), &candidate.regions);
     return annotate_owner_evidence(std::move(annotated));
   }
   candidate.regionCertificates =
@@ -2789,6 +2833,32 @@ const char *uncut_face_component_seed_state_name(
     return "Unique";
   case UncutFaceComponentSeedState::Multiple:
     return "Multiple";
+  }
+  return "Unknown";
+}
+
+const char *region_frontier_failure_stage_name(
+    const RegionFrontierFailureStage stage) noexcept {
+  switch (stage) {
+  case RegionFrontierFailureStage::UncutComponent:
+    return "UncutComponent";
+  case RegionFrontierFailureStage::RegionConstruction:
+    return "RegionConstruction";
+  case RegionFrontierFailureStage::RegionCertification:
+    return "RegionCertification";
+  }
+  return "Unknown";
+}
+
+const char *region_frontier_census_correspondence_name(
+    const RegionFrontierCensusCorrespondence correspondence) noexcept {
+  switch (correspondence) {
+  case RegionFrontierCensusCorrespondence::None:
+    return "None";
+  case RegionFrontierCensusCorrespondence::Exact:
+    return "Exact";
+  case RegionFrontierCensusCorrespondence::Superset:
+    return "Superset";
   }
   return "Unknown";
 }

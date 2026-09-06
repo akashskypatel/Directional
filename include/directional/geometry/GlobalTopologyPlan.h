@@ -158,6 +158,18 @@ enum class UncutFaceComponentSeedState : std::uint8_t {
   Multiple = 2,
 };
 
+enum class RegionFrontierFailureStage : std::uint8_t {
+  UncutComponent = 0,
+  RegionConstruction = 1,
+  RegionCertification = 2,
+};
+
+enum class RegionFrontierCensusCorrespondence : std::uint8_t {
+  None = 0,
+  Exact = 1,
+  Superset = 2,
+};
+
 enum class UncutFaceComponentBarrierClass : std::uint8_t {
   None = 0,
   Mandatory = 1,
@@ -427,6 +439,21 @@ struct UncutFaceComponentSeedCensusDiagnostic {
       default;
 };
 
+struct RegionFrontierComponentEvidenceDiagnostic {
+  std::size_t component = 0U;
+  UncutComponentPartitionIdentity partitionIdentity;
+  std::uint64_t faceSetDigest = 0U;
+  RegionFrontierCensusCorrespondence censusCorrespondence =
+      RegionFrontierCensusCorrespondence::None;
+  std::optional<std::size_t> censusComponent;
+  std::optional<UncutComponentPartitionIdentity> censusPartitionIdentity;
+  std::optional<std::uint64_t> censusFaceSetDigest;
+  bool componentSubsetOfCensusComponent = false;
+
+  auto operator<=>(const RegionFrontierComponentEvidenceDiagnostic &) const =
+      default;
+};
+
 struct TraceFragmentOwnerEvidenceDiagnostic {
   std::vector<TraceCutFaceFragmentOwnerEvidenceDiagnostic> faces;
   std::size_t faceCount = 0U;
@@ -482,6 +509,11 @@ struct GlobalTopologyPlanError {
   bool fragmentIncidencesTruncated = false;
   std::vector<TraceCutFaceEdgeOrbitEvidenceDiagnostic>
       fragmentEdgeOrbitEvidence;
+  std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
+  std::size_t regionFrontierComponentCount = 0U;
+  std::vector<RegionFrontierComponentEvidenceDiagnostic>
+      regionFrontierComponents;
+  bool regionFrontierComponentsTruncated = false;
   std::optional<std::size_t> uncutFaceComponent;
   std::optional<std::size_t> uncutFaceComponentSeedCount;
   std::optional<UncutFaceComponentSeedState> uncutFaceComponentSeedState;
@@ -696,6 +728,10 @@ private:
     GlobalTopologyPlanErrorCode code) noexcept;
 [[nodiscard]] const char *uncut_face_component_seed_state_name(
     UncutFaceComponentSeedState state) noexcept;
+[[nodiscard]] const char *region_frontier_failure_stage_name(
+    RegionFrontierFailureStage stage) noexcept;
+[[nodiscard]] const char *region_frontier_census_correspondence_name(
+    RegionFrontierCensusCorrespondence correspondence) noexcept;
 [[nodiscard]] const char *uncut_face_component_barrier_class_name(
     UncutFaceComponentBarrierClass barrierClass) noexcept;
 [[nodiscard]] const char *uncut_face_component_no_seed_reason_name(
