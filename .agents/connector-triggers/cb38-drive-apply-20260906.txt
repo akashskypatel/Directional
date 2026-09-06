@@ -1,4 +1,0 @@
-purpose=apply verified M3-CP4c-3-CB38 work-preservation patch
-base_sha=665f4f32f4abbd405a6ff8ee0643ecd53c889cf3
-patch_sha256=ac9584f8420d5a22fdc5d063f80c1e162b71e64fae58aa742bc843904be1e919
-retry=0
