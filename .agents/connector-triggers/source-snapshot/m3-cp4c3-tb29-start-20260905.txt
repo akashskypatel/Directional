@@ -1,0 +1,3 @@
+M3-CP4c-3-TB29-EXEC start-of-turn source snapshot.
+Requested authority before trigger: 2d06ac51b3d57d0debdbda3491e61f69ab7077a1.
+Purpose: materialize exact current tree for mandatory snapshot-mode inspection.
