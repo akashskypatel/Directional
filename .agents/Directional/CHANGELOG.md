@@ -1,3 +1,40 @@
+## 2026-09-06 — `M3-CP4c-3-CB36`: second frozen-rule site corrected; compile green; TB31 frozen next
+
+Code + Build only. **One product change** in `src/geometry/GlobalTopologyPlan.cpp`: the plan-side terminal-slit
+skip now uses the same certified-orbit separation guard already frozen and runtime-proved for the certifier side.
+`separatesCertifiedFaces = forwardOrbit != reverseOrbit`, and only
+`is_terminal_slit(...) && !separatesCertifiedFaces` takes the early continue. Equal-orbit terminal slits are
+unchanged by construction; no arc/face/ordinal/fixture special case exists.
+
+**Exact built source:** `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`. Durable compile run/job
+`34010011172 / 101424080079` **SUCCESS**, GMP/GMPXX, all eight required targets. Immutable result artifact
+`9982174864` / `m3-cp4c3-cb36-result-34010011172`, provider ZIP SHA-256
+`8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b`; compile log artifact `9982175106`,
+provider ZIP SHA-256 `d7c4fbc4d4ee31a809ccba26e0b39a77dab49a1fc4d43009377354bc0c353d27`; packaged-source archive SHA-256
+`f909864226b07a4cd89a9a51669792e8cdd63206c5b2a23d2e0b179476d78cae`. Root checksums passed, source-status
+files empty, `runtimeExecution=false`. **No Directional runtime, test, benchmark, discovery, fixture mutation,
+selector mutation, or reusable-workflow permission change occurred.**
+
+The exact product work-preservation patch was emitted before remote application (SHA-256
+`f584881b6621afe26b03566077adfb5ed28ac3e52bb90745d1af158b2b7d88f2`), staged under
+`My Drive/Directional-CI`, applied through durable `agent-google-drive-reusable.yml` (run/job
+`34009914130 / 101423888870`), and the staged Drive copy was permanently retired after the push succeeded.
+
+`M3-CP4c3-TB30-REV-CAND-01` is now **CORRECTED BY CB36 / AWAITING TB31**, not closed. Runtime authority therefore
+remains TB30 at **401 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership
+**300 / 0 / 0**. Stable counts stay **44 / 14 / 30**, debt **5**; semantic package count **95 → 96**.
+
+**TB31 falsification:** unchanged 366/367 component 0 / 191 faces / `[0,1,3]` / digest
+`17919102493633069558` falsifies the candidate; `TraceCutFaceFragmentCountMismatch` falsifies the
+`tracePieceCount` premise. `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` freezes the complete
+selector-408 execution and evidence contract. Exact next is **`M3-CP4c-3-TB31-EXEC`**, artifact-only, then
+separate TB31-REV.
+
+**Control-plane deviation recorded:** source-snapshot orchestration began after the mandatory full tool-conservation
+policy read but before the full project GitHub workflow policy read had completed. The workflow policy was fully
+read before semantic source mutation, Drive patch application, or compile. No semantic/build/runtime evidence was
+affected.
+
 ## 2026-09-05 — `M3-CP4c-3-TB30-REV`: ownership is total; the frozen rule was applied at one of its two sites; ordinal 398 reclassified
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

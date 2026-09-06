@@ -1,3 +1,32 @@
+## M3-CP4c3-CB36 — Code + Build closeout — **BUILD GREEN / NON-STABLE / PRODUCT CORRECTION / RUNTIME-FREE**
+
+- **Product correction:** at the second frozen-rule site in `src/geometry/GlobalTopologyPlan.cpp`, CB36 defines
+  `separatesCertifiedFaces = forwardOrbit != reverseOrbit` and skips a terminal slit only when
+  `!separatesCertifiedFaces`. No fixture, selector, test, benchmark, ownership diagnostic, partition-unification
+  rule, or carried-surface scope changed.
+- **Why this is the same correction:** TB30-REV proved `SurfaceCutGraph.cpp` already carried the frozen orbit-keyed
+  guard while `GlobalTopologyPlan.cpp` still skipped every terminal slit. CB36 applies the identical certified-orbit
+  separation rule at that second site. Equal-orbit terminal slits remain behaviorally unchanged by construction.
+- **Build authority:** exact source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9`; run/job
+  `34010011172 / 101424080079` SUCCESS; immutable package `9982174864` /
+  `m3-cp4c3-cb36-result-34010011172`; package ZIP SHA-256
+  `8bbc10da2372730a4fd644250a420f0ba7e6dd73f59e93364b2b1ccacfbcf43b`; compile log `9982175106`; packaged-source
+  SHA-256 `f909864226b07a4cd89a9a51669792e8cdd63206c5b2a23d2e0b179476d78cae`; GMP/GMPXX; all eight targets;
+  `runtimeExecution=false`.
+- **Candidate status:** `M3-CP4c3-TB30-REV-CAND-01` is **CORRECTED BY CB36 / AWAITING TB31 / GATING / PRODUCT**.
+  It is not closed or runtime-proved. Falsification remains: if 366/367 reproduce component 0 / 191 faces /
+  `[0,1,3]` / digest `17919102493633069558`, the candidate is false. If
+  `TraceCutFaceFragmentCountMismatch` appears, the `tracePieceCount` premise is false and any authorized successor
+  must narrow rather than expand the correction.
+- **Runtime authority unchanged:** TB30 remains selector 408, **401 PASS / 7 RED**, accepted 365/365, RED
+  `[366,367,368,369,370,374,398]`, until TB31-REV adjudicates new immutable runtime evidence. Certified ownership
+  remains last runtime-proved at **300 / 0 / 0**.
+- **Stable accounting:** no new runtime observation exists, so no stable event/category/recurrence changes. Totals
+  remain **44 / 14 / 30**, debt **5**. Semantic M3 package count advances **95 → 96** because CB36 produced a
+  compile-valid immutable package.
+- **Exact next:** `M3-CP4c-3-TB31-EXEC`, artifact-only selector-408 execution on package `9982174864`, followed by
+  separate evidence-only `M3-CP4c-3-TB31-REV`.
+
 ## M3-CP4c3-TB30-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / OWNERSHIP TOTAL**
 
 - **Record:** `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md`, measures **CQ0–CQ8**. Evidence-only: no
