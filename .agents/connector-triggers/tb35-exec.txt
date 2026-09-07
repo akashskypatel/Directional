@@ -1,5 +1,5 @@
 M3-CP4c-3-TB35-EXEC artifact-only execution trigger
-caller_commit=4690d0a5c2cd2b5dfd6ba14954390fb794a24bf9
+caller_commit=473adfcf3e2cad84b112d82869be16a37424594c
 package_artifact=10003613409
 semantic_source=23a753a83f0eda0447172ce96bcd3180bf95ae8a
-retry_reason=workflow-registration-lag-no-run-on-initial-marker
+retry_reason=replace-startup-failing-draft-with-proven-TB34-caller-pattern
