@@ -116,89 +116,81 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB42` — EXACT NEXT / Code + Build, runtime-free, MEASUREMENT ONLY
+## Mandatory next turn — `M3-CP4c-3-TB37-EXEC` — EXACT NEXT / Test + Benchmark, artifact-only
 
-`M3-CP4c-3-TB36-REV` adjudicated TB36 and promoted it to **current valid semantic runtime authority**.
+`M3-CP4c-3-CB42` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. It added only the CY6 source-submesh
+measurement surface and created immutable package102. It did not execute Directional runtime or change acceptance
+semantics.
 
 ### Current authority
 
-- **`M3-CP4c-3-TB36`** — selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED
-  `[366,367,368,369,370,374,398]`; immutable CB41 package `10029250324`, source
-  `14aa1368523580444929bc65cab0b65449240ec2`, run `34153857590`; 409 rows, every row `selected=1`, zero timeouts,
-  all three censuses identical pre/post, failure-detail digest table published.
-- Certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
-- **Stable accounting 45 events / 14 categories / 31 recurrences** — **no new event**, no accepted green was lost —
-  debt **5**, packages **101**.
-- Definition authority is **Part IX (DEFN-R5)**, amended by **Part IX-A**.
+- **Current semantic runtime:** `M3-CP4c-3-TB36` — selector **409**, **402 PASS / 7 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; package101 `10029250324`, source
+  `14aa1368523580444929bc65cab0b65449240ec2`, run `34153857590`.
+- **Next immutable execution package:** package102 artifact `10032277517` /
+  `m3-cp4c3-cb42-result-34159743881`, evidence source
+  `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, compile `34159743881 / 101858898702`, result SHA-256
+  `ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`, packaged source SHA-256
+  `84b2624f425d9870ff8079403a468bca41c584c139752e9f7e5e6b00758da42f`.
+- Certified ownership remains **300 / 0 / 0** at last runtime. Stable accounting remains **45 events / 14
+  categories / 31 recurrences**, debt **5**. Semantic package count is now **102**.
+- Definition authority remains **Part IX (DEFN-R5)**, amended by **Part IX-A**.
 
-### What TB36 established
+### What CB42 changed — measurement only
 
-**The provenance contract works, in both directions.** 366/367 advanced past `ClosedBeforeEnd` publishing
-`regionBoundaryProvenance=FaceWalkOrbit` — CX8's stated falsifier for DEFN-R5.2/R5.3, not triggered. And ordinals
-**312/409 stayed PASS**: both mutate a **copy** of a real plan region
-(`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253`, `:3276–3279`), the derived relation resolves the mutated
-boundary to `Unguaranteed`, and both still reject. A stored construction-time flag would have suppressed both.
-`M3-CP4c3-TB35-REV-CAND-01` is **CLOSED / RUNTIME PROVED**. `LESSONS.md` 148.
+On `RegionEulerCharacteristicNotOne`, package102 publishes:
 
-**The frozen CX5 measurement was implemented in the wrong domain.** χ counts a **sub-mesh of whole source
-triangles** — faces partitioned one-per-region (`GlobalTopologyPlan.cpp:1400–1433`), `edgeCount` over **source
-edges** (`:1847–1860`), `interiorVertices` over **source vertices** (`:2048–2094`). CX5 censuses the **network
-graph** (`std::set<authority::NetworkArcId>` / `NetworkNodeId`, `:2122–2123`), and a network arc may be a **trace
-chord through face interiors** that is not a source edge at all. **`22 = 22` therefore says nothing about whether
-the boundary terms cancel.** `LESSONS.md` 150.
+- `regionInteriorBarrierEdgeCount` (`B_int`);
+- `regionExcludedVertexCount` (`X`) and its mesh-boundary / `boundaryVertices` / `allOwned` split;
+- source-submesh boundary edge and vertex counts;
+- `regionVTotal`, `regionETotal`, `regionChiFull`;
+- `regionBoundaryCensusDomain=NetworkGraph`;
+- `regionBoundaryNodeOccurrenceCountDerived=true`.
 
-**The open question reduces to one integer.** Every source face is a triangle
-(`src/geometry/EmbeddedGraphTopology.h:25–32`), so 250 faces give exactly 750 face-edge incidences. With `B_int` =
-barrier edges having both incident faces in the region (skipped at `:1848–1850`) and `X` = sub-mesh vertices
-excluded from `interiorVertices`:
+The existing reduced `vertexCount`, `edgeCount`, `faceCount`, `eulerCharacteristic`, the Euler formula, region
+construction, disc acceptance, ownership, and deferred product surfaces are unchanged. Selector409, selector408
+prefix, the artifact-only harness, and ordinal 312/409 test blocks remain byte-frozen.
 
-> **χ_true = X + B_int − 47.**
+### TB37 boundary
 
-Published `χ = −3` ⟺ `X + B_int = 44` ⟺ the cancellation premise **holds** and **the region is not a disc**. A
-disc ⟺ `X + B_int = 48` ⟺ the premise is **false by exactly 4**. **The certificate cannot both cancel its boundary
-terms and certify discs.** New candidate `M3-CP4c3-TB36-REV-CAND-01` owns this.
+Execute `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` exactly against package102. No configure,
+compile, relink, regeneration, repair, fixture/test/selector mutation, benchmark, or package mutation is permitted.
 
-### CB42 boundary — CY6.1–CY6.6
+**Behavioral hard gate:** CB42 is diagnostic-only, therefore TB37 must reproduce TB36 exactly: **402 PASS / 7
+RED**, RED `[366,367,368,369,370,374,398]`, accepted **365/365**, protected
+**312/390/393/404/406/407/408/409 PASS**, ownership **300/0/0**, retired-code silence. Any movement is a CB42 scope
+falsifier.
 
-**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`. **Diagnostics only. No correction.**
+For ordinals 366/367, preserve the existing `RegionEulerCharacteristicNotOne` /
+`regionBoundaryProvenance=FaceWalkOrbit` evidence and require the complete new source-submesh fields. Verify:
 
-- **CY6.1** — publish `regionInteriorBarrierEdgeCount` (`B_int`) and `regionExcludedVertexCount` (`X`), splitting
-  `X` into its three disjoint causes: mesh-boundary, `boundaryVertices` membership, `allOwned` failure.
-- **CY6.2** — publish the sub-mesh boundary in its own domain: `regionSubmeshBoundaryEdgeCount` (source edges with
-  exactly one incident face in the region) and `regionSubmeshBoundaryVertexCount`. **These, not the network counts,
-  are the `V_boundary` and `E_boundary` the comment at `:2099–2100` refers to.**
-- **CY6.3** — publish `V_total`, `E_total` and `chiFull` alongside the existing reduced value. **Do not change the
-  formula, force χ to 1, or accept/reject any region on the new numbers.**
-- **CY6.4** — state in the report that the network census is **network-domain**; retire or flag
-  `regionBoundaryNodeOccurrenceCount`, which is `regionBoundaryArcOccurrenceCount` by construction.
-- **CY6.5** — ordinals **312** and **409** keep byte-identical test blocks; selector **409** stays byte-frozen;
-  accepted **1–365** untouched; no work on 368/369/370/374/398; no ownership, partition-unification, retired-guard,
-  sphere, saturation, folded-cone or finalize/contact change. **Grep the corpus for
-  `RegionEulerCharacteristicNotOne` before implementing.**
-- **CY6.6** — `M3-CP4c-3-TB37` re-executes selector 409, one identity per fresh process, accepted prefix first.
+```text
+X = excludedMeshBoundary + excludedBoundaryVertices + excludedAllOwned
+regionChiFull = regionVTotal - regionETotal + faceCount
+regionChiFull = X + B_int - 47    # frozen mechanical witness, faceCount=250
+D = X + B_int
+```
 
-**Falsifiers, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
-conditions; **CB42 adds diagnostics only, so any behaviour change at all is a defect in the turn.** If
-`X + B_int = 44`, the premise holds, χ = −3 is correct, and **the frontier moves to region construction**. If
-`X + B_int = 48`, the premise is false by exactly 4 and **the frontier is the certificate's arithmetic**. If
-neither, one of the three exclusion causes is miscounting and the split names which.
+The already-frozen discriminator is evidence only:
 
-**Must not:** correct the Euler formula, region construction or disc acceptance; decide the frontier from the
-network census; publish a predicted χ for the mechanical fixture; change any accepted identity 1–365 or any byte of
-selector 397–409; execute any Directional runtime in CB42.
+- `D = 44` → cancellation premise holds; χ_full = −3; review owns the **region-construction** frontier.
+- `D = 48` → χ_full = 1; review owns the **certificate arithmetic/cancellation** frontier.
+- otherwise → the new measurement/derivation is inconsistent; review diagnoses the census first.
+
+Do not infer the discriminator from network arc/node counts, and do not implement a correction in TB37.
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance.
+`load_next`: Test + Benchmark / TB-EXEC guidance.
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.2, §3.3, §3.4.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` — **CY0–CY6**.
-3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part IX operative**, amended by Part IX-A.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB36_EXEC_Report.md` — current runtime authority.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` — **executable authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB42_Code_Build_Report.md` — package102 build/evidence authority.
+3. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current frontier and frozen discriminator.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB36_EXEC_Report.md` — current semantic baseline.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-6. `.agents/Directional/LESSONS.md` — mandatory; **144, 148 and 150** govern this change.
-7. `.agents/Directional/AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
+6. `.agents/Directional/LESSONS.md` — mandatory; 144, 148 and 150 remain relevant.
+7. `.agents/Directional/AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — TB mechanics.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

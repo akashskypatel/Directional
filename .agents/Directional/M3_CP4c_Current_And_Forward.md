@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-07** at `M3-CP4c-3-TB36-REV` closeout.
+Last updated **2026-09-07** at `M3-CP4c-3-CB42` closeout.
 
 ---
 
@@ -23,7 +23,12 @@ Last updated **2026-09-07** at `M3-CP4c-3-TB36-REV` closeout.
 `SHA256SUMS` 28/28, executables `0755`.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting **45 events / 14 categories
-/ 31 recurrences** — **no new event**, because no accepted green was lost — debt **5**, packages **101**.
+/ 31 recurrences** — **no new event**, because no accepted green was lost — debt **5**, packages **102**.
+
+**CB42 is compile-green / runtime-free.** Package102 artifact `10032277517` was built from exact semantic source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` in run/job `34159743881 / 101858898702`; result SHA-256
+`ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`. It adds only the CY6 source-submesh
+measurement fields. Exact next is artifact-only `M3-CP4c-3-TB37-EXEC`.
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -115,28 +120,33 @@ sub-mesh, yet `:1848–1850` drops it from `E_int` and `:1919`/`:1925`/`:1947` p
 `boundaryVertices`, which `:2048–2051` then excludes from `V_int`. A terminal slit is exactly such an edge, and
 this fixture publishes ten. **This review names that suspicion; it does not conclude it.**
 
-## 3.4 Exact next turn — `M3-CP4c-3-CB42`
+## 3.4 CB42 is complete; exact next is `M3-CP4c-3-TB37-EXEC`
 
-**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`. **Measurement only — no correction.**
+CB42 implemented CY6 as **measurement only** and compiled package102. On the existing Euler-failure path it now
+publishes `B_int`, `X` plus its three exclusion causes, source-submesh boundary edge/vertex counts, `V_total`,
+`E_total` and `chiFull`. The older multiplicity census is explicitly `NetworkGraph`, and its node occurrence field
+is flagged derived. The reduced Euler formula and all acceptance behavior remain untouched.
 
-- **CY6.1** — publish `regionInteriorBarrierEdgeCount` (`B_int`) and `regionExcludedVertexCount` (`X`), with `X`
-  split into its three disjoint causes: mesh-boundary, `boundaryVertices` membership, and `allOwned` failure.
-- **CY6.2** — publish the sub-mesh boundary in its own domain: `regionSubmeshBoundaryEdgeCount` (source edges with
-  exactly one incident face in the region) and `regionSubmeshBoundaryVertexCount`.
-- **CY6.3** — publish `V_total`, `E_total` and `chiFull` alongside the existing reduced value. **Do not change the
-  formula, force χ to 1, or accept/reject any region on the new numbers.**
-- **CY6.4** — mark the network census as network-domain; retire or flag the redundant occurrence field.
-- **CY6.5** — ordinals **312/409** byte-identical, selector **409** byte-frozen, accepted **1–365** untouched; no
-  work on 368/369/370/374/398. **Grep the corpus for `RegionEulerCharacteristicNotOne` first.**
-- **CY6.6** — `M3-CP4c-3-TB37` re-executes.
+Static protection remained frozen: selector409 `eea6d8c…`, selector408-prefix `2a742ba9…`, harness `aaadab35…`,
+ordinal 312 block `94724bef…`, ordinal 409 block `ea574dab…`. No test-source assertion of
+`RegionEulerCharacteristicNotOne` was found by the required corpus grep.
 
-**Falsifiers, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
-conditions; CB42 adds diagnostics only, so **any** behaviour change is a defect in the turn. `X + B_int = 44` moves
-the frontier to **region construction**; `= 48` moves it to **the certificate's arithmetic**; anything else means
-one of the three exclusion causes is miscounting, and the split names it.
+**TB37 is the sole next semantic operation.** It executes package102 / selector409 artifact-only, one identity per
+fresh process. Since CB42 added diagnostics only, the semantic result must be byte-for-byte compatible in outcome
+with TB36: **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, protected
+312/390/393/404/406/407/408/409 PASS, ownership 300/0/0.
 
-**Must not:** correct the Euler formula, region construction or disc acceptance in CB42; decide the frontier from
-the network census; publish a predicted χ for the mechanical fixture; change any accepted identity or selector byte.
+For 366/367, TB37 must verify the published source-submesh arithmetic:
+
+> `X = X_meshBoundary + X_boundaryVertices + X_allOwnedFailure`
+>
+> `chiFull = V_total - E_total + F`
+>
+> for the frozen 250-face witness, `chiFull = X + B_int - 47`.
+
+Then compute `D = X + B_int` only from those source-submesh counts. `D=44` moves review to region construction;
+`D=48` moves review to the certificate arithmetic/cancellation premise; any other value means the measurement
+derivation itself must be reviewed first. **TB37 may not correct any branch.**
 
 ## 4. Open candidates
 
@@ -153,7 +163,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB34-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 409 re-aimed at the constructible shared-start shape and PASSes its oracle. |
 | `M3-CP4c3-TB34-REV-CAND-03` | **ACTIVE / RE-SCOPED** — the CX5 census was taken over the network graph, not the source sub-mesh χ counts, so it does not bear on the cancellation premise. Superseded as the owning question by `M3-CP4c3-TB36-REV-CAND-01`. |
 | `M3-CP4c3-TB35-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — TB36 advanced 366/367 past `ClosedBeforeEnd` on `FaceWalkOrbit` while 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. Part IX's derived relation is confirmed in both directions. |
-| `M3-CP4c3-TB36-REV-CAND-01` | **ACTIVE / GATING** — the region certificate asserts both that the boundary terms cancel and that regions are discs; χ_true = X + B_int − 47 makes those mutually exclusive. One integer decides it. Owner: `M3-CP4c-3-CB42` under CY6.1–CY6.6. |
+| `M3-CP4c3-TB36-REV-CAND-01` | **ACTIVE / GATING** — the region certificate asserts both that the boundary terms cancel and that regions are discs; χ_true = X + B_int − 47 makes those mutually exclusive. One integer decides it. Owner: `M3-CP4c-3-TB37` measurement/adjudication on package102; correction remains unassigned until review. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |

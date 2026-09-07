@@ -26,51 +26,45 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB42` (Code + Build, runtime-free) — MEASUREMENT ONLY
+## Current focus — `M3-CP4c-3-TB37-EXEC` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB36-REV` promoted TB36 to **current valid semantic runtime authority**:
+`M3-CP4c-3-CB42` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE / MEASUREMENT ONLY**:
 
-- selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
-- immutable CB41 package `10029250324` / source `14aa1368523580444929bc65cab0b65449240ec2`; run `34153857590`;
-- certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
+- exact semantic/evidence source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`;
+- compile `34159743881 / 101858898702`;
+- immutable package102 `10032277517` / `m3-cp4c3-cb42-result-34159743881`, SHA-256
+  `ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`;
+- source archive SHA-256 `84b2624f425d9870ff8079403a468bca41c584c139752e9f7e5e6b00758da42f`;
+- manifest **28/28 PASS**, GMP/GMPXX linked, `runtimeExecution=false`;
+- semantic M3 package count **102**; no new runtime event.
 
-**The provenance contract is runtime confirmed, in both directions.** 366/367 advanced past `ClosedBeforeEnd` on
-`regionBoundaryProvenance=FaceWalkOrbit` — CX8's falsifier, not triggered — while ordinals 312/409, which mutate a
-**copy** of a real plan region, stayed PASS on `Unguaranteed`. `M3-CP4c3-TB35-REV-CAND-01` is **CLOSED / RUNTIME
-PROVED**.
+CY6.1-CY6.5 are complete: the Euler-failure evidence now publishes `B_int`, `X` plus the three exclusion causes,
+source-submesh boundary edge/vertex counts, `V_total`, `E_total`, `chiFull`; the older multiplicity census is
+explicitly `NetworkGraph` and its node-occurrence count is flagged derived. The Euler formula, region construction,
+disc acceptance, accepted tests, selector and deferred surfaces are unchanged.
 
-**The frozen CX5 measurement was in the wrong domain.** It censuses the **network graph**
-(`NetworkArcId`/`NetworkNodeId`) while χ counts a **sub-mesh of whole source triangles**, and a network arc may be
-a trace chord that is not a source edge at all. `22 = 22` says nothing about whether the boundary terms cancel.
-
-**The open question reduces to one integer.** With `B_int` = barrier edges having both faces in the region and `X`
-= sub-mesh vertices excluded from `interiorVertices`, **χ_true = X + B_int − 47**. Published χ = −3 means
-`X + B_int = 44` — premise holds, region is **not** a disc. A disc needs 48 — premise false by exactly 4. **The
-certificate cannot both cancel its boundary terms and certify discs.** New candidate
-`M3-CP4c3-TB36-REV-CAND-01`.
-
-Stable accounting remains **45 events / 14 categories / 31 recurrences** — no accepted green was lost, so **no new
-event** — produced-witness debt **5**, semantic M3 package count **101**. CP4c-3 remains **OPEN**.
+`M3-CP4c-3-TB36` remains current semantic runtime authority: **402 PASS / 7 RED**, accepted **365/365**, RED
+`366,367,368,369,370,374,398`, ownership **300/0/0**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB42`**, a runtime-free **Code + Build** turn under **CY6.1–CY6.6**. **Diagnostics only:**
+Run **`M3-CP4c-3-TB37-EXEC`** exactly from
+`Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md`:
 
-- [ ] **CY6.1** publish `regionInteriorBarrierEdgeCount` (`B_int`) and `regionExcludedVertexCount` (`X`), with `X`
-      split into mesh-boundary / `boundaryVertices` / `allOwned` causes;
-- [ ] **CY6.2** publish the **sub-mesh** boundary counts in their own domain — source edges with exactly one
-      incident face in the region, and their distinct source vertices;
-- [ ] **CY6.3** publish `V_total`, `E_total` and `chiFull` beside the reduced value, **without changing the formula
-      or forcing χ to 1**;
-- [ ] **CY6.4** mark the network census as network-domain; retire or flag the redundant occurrence field;
-- [ ] **CY6.5** keep ordinals 312/409 byte-identical and selector 409 byte-frozen; grep the corpus for
-      `RegionEulerCharacteristicNotOne` first;
-- [ ] **CY6.6** hand off to `M3-CP4c-3-TB37`.
+- [ ] fail-closed preflight exact package102/source/digests/GMP/manifest/selector/harness/modes;
+- [ ] execute all 409 selector identities once, in order, one fresh process per identity;
+- [ ] require exact behavioral preservation: **402 PASS / 7 RED**, accepted **365/365**, same RED ordinals,
+      protected 312/390/393/404/406/407/408/409 PASS, ownership 300/0/0;
+- [ ] on 366/367 require the complete old + CB42 diagnostic set and
+      `regionBoundaryCensusDomain=NetworkGraph`, `regionBoundaryNodeOccurrenceCountDerived=true`;
+- [ ] verify `X` equals its three causes, `chiFull = V_total - E_total + F`, and for the frozen 250-face witness
+      `chiFull = X + B_int - 47`;
+- [ ] classify `D=X+B_int`: **44 -> region-construction frontier; 48 -> certificate-arithmetic frontier; otherwise
+      measurement inconsistency**;
+- [ ] preserve raw evidence and stop at independent `M3-CP4c-3-TB37-REV`; do not patch or retry a semantic RED.
 
-**Must not:** correct the Euler formula, region construction or disc acceptance; decide the frontier from the
-network census; publish a predicted χ for the mechanical fixture; weaken ordinal 398; touch 368/369/370/374;
-re-open ownership or any retired guard. **Accepted prefix 365/365 and ordinals 312/409 PASS are stop conditions,
-and since CB42 adds diagnostics only, any behaviour change at all is a defect in the turn.**
+**Must not:** configure, compile, relink, repair package/source/tests/fixtures/selector, execute benchmarks, infer the
+discriminator from network counts, or implement any Euler/region correction inside TB37.
 
 ## Carried forward from M1
 
@@ -108,7 +102,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409 / package101. The provenance contract is runtime proved; the Euler question reduces to `χ_true = X + B_int − 47`, which the frozen network-domain census could not measure. Exact next is runtime-free **`M3-CP4c-3-CB42`**.
+  CP4c-3 remains open. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409 / package101. CB42 package102 now publishes the source-submesh CY6 measurements without changing semantics. Exact next is artifact-only **`M3-CP4c-3-TB37-EXEC`** on package102.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -120,7 +114,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  TB35-REV adjudicated the recovered prefix and proved the 366/367 frontier is provenance blindness. Part IX froze the correction. CB41 has now implemented and compiled exact derived face-walk provenance in package101 and added measurement-only evidence for the separate Euler frontier; TB36 owns the runtime verdict.
+  TB36 proved the derived provenance contract and exposed the separate Euler frontier. CB42 package102 adds only the source-submesh `B_int` / `X` / boundary / full-Euler measurements needed to adjudicate it. TB37 owns the next runtime measurement; no correction is authorized before review.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -148,4 +142,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **101**. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**, promoted at TB36-REV. Exact next is runtime-free `M3-CP4c-3-CB42` under CY6.1–CY6.6, measurement only. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **102**. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**, promoted at TB36-REV. CB42 is compile-green/runtime-free; exact next is artifact-only `M3-CP4c-3-TB37-EXEC` on package102. PR #8 remains open, draft, and unmerged.

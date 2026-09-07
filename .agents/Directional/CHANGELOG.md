@@ -1,3 +1,31 @@
+## 2026-09-07 — `M3-CP4c-3-CB42`: source-submesh Euler diagnostics compile; package102 frozen for TB37
+
+Code + Build, **runtime-free**, measurement only. Exact semantic/evidence source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`. CB42 implements CY6.1–CY6.5 without changing the Euler formula,
+region construction, disc acceptance, ownership, selectors, accepted tests, or deferred failure surfaces.
+
+- `RegionEulerCharacteristicNotOne` now publishes source-submesh `B_int`, `X` and its mesh-boundary /
+  `boundaryVertices` / `allOwned` exclusion split, source-submesh boundary edge/vertex counts, `V_total`, `E_total`,
+  and `chiFull`.
+- The older arc/node multiplicity census is explicitly labeled `regionBoundaryCensusDomain=NetworkGraph`; the
+  redundant node-occurrence field remains available but is flagged `regionBoundaryNodeOccurrenceCountDerived=true`.
+- Pre-implementation corpus grep found no test-source assertion of `RegionEulerCharacteristicNotOne`. Selector409
+  remains `eea6d8c…`; selector408-prefix `2a742ba9…`; harness `aaadab35…`; ordinal 312 block `94724bef…` and ordinal
+  409 block `ea574dab…` are byte-identical.
+- Semantic patch: five intended files, **148 insertions / 0 deletions**. Work-preservation patch SHA-256
+  `fac1c5bde17e6421f44a72c4d8841fc9fe568935374ffaef9ea127f18a21c85a`; Drive application run `34159647865`.
+- Authoritative compile `34159743881 / 101858898702` passed Release/static/PRE_TEST with mandatory GMP/GMPXX and
+  `runtimeExecution=false`. Result package `10032277517` /
+  `m3-cp4c3-cb42-result-34159743881`, SHA-256
+  `ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`; persistent log `10032277909`, SHA-256
+  `f01f180730307e276d03be0b89fcae5e23a27ad2c083134af4a058136c7f3901`; packaged source archive SHA-256
+  `84b2624f425d9870ff8079403a468bca41c584c139752e9f7e5e6b00758da42f`; manifest **28/28 PASS**.
+- No Directional runtime/test/benchmark/discovery command executed. Stable totals remain **45 events / 14 categories
+  / 31 recurrences**, debt **5**; semantic M3 package count advances to **102**.
+- `M3-CP4c-3-TB36` remains current semantic runtime authority. Exact next is artifact-only
+  **`M3-CP4c-3-TB37-EXEC`** on package102. Because CB42 is observational only, TB37 must reproduce 402 PASS / 7 RED
+  exactly and use the new source-submesh fields to classify `X + B_int` without implementing a correction.
+
 ## 2026-09-07 — `M3-CP4c-3-TB36-REV`: TB36 promoted; provenance proved; the frozen measurement was in the wrong domain
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
