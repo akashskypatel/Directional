@@ -5,6 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
+      - .github/workflows/agent-tb35-exec-temp.yml
       - .agents/connector-triggers/tb35-exec.txt
 
 permissions:
@@ -12,6 +13,10 @@ permissions:
   contents: read
   issues: write
   pull-requests: write
+
+concurrency:
+  group: agent-tb35-exec-temp
+  cancel-in-progress: false
 
 jobs:
   observe:
@@ -33,6 +38,7 @@ jobs:
 
   execute:
     needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
     runs-on: ubuntu-24.04
     permissions:
       actions: read
