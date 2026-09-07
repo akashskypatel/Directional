@@ -1,0 +1,145 @@
+name: M3 CP4c3 TB35 Artifact Only Exec Temp
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb35-exec.txt
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb35-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb35-exec-temp.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 7
+    secrets: inherit
+
+  execute:
+    needs: validate-caller
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Initialize TB35 control log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-tb35-control.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            'runtimeExecution=true' \
+            'turnBoundary=Test+Benchmark-exec-only' \
+            'executionMode=authoritative-artifact-only-gate' \
+            'sourceMutation=false' \
+            'testMutation=false' \
+            'fixtureMutation=false' \
+            'selectorMutation=false' \
+            'buildMutation=false' \
+            'compileExecution=false' \
+            'benchmarkExecution=false' \
+            'generatedDiscovery=false' \
+            'artifactOnly=true' | tee -a "$log"
+
+      - name: Checkout exact TB35 control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Verify frozen control identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-tb35-control.log"
+          exec > >(tee -a "$log") 2>&1
+          harness='.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh'
+          selector='.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt'
+          test "$(sha256sum "$harness" | awk '{print $1}')" = 'aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3'
+          test "$(grep -cve '^[[:space:]]*$' "$selector")" = '409'
+          test "$(sha256sum "$selector" | awk '{print $1}')" = 'eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e'
+          test "$(head -n 408 "$selector" | sha256sum | awk '{print $1}')" = '2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6'
+          printf '%s\n' \
+            'control_harness_sha256=aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3' \
+            'control_selector_count=409' \
+            'control_selector_sha256=eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e' \
+            'control_selector_408_prefix_sha256=2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6'
+
+      - name: Execute immutable package100 selector gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TURN_ID: M3-CP4c-3-TB35-EXEC
+          ARTIFACT_ID: '10003613409'
+          EXPECTED_ARTIFACT_NAME: m3-cp4c3-cb40-result-34080675952
+          EXPECTED_PROVIDER_DIGEST: sha256:bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f
+          EXPECTED_ZIP_SHA256: bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f
+          EXPECTED_SOURCE_SHA: 23a753a83f0eda0447172ce96bcd3180bf95ae8a
+          SELECTOR_RELATIVE_PATH: .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+          EXPECTED_SELECTOR_COUNT: '409'
+          EXPECTED_SELECTOR_SHA256: eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e
+          ACCEPTED_PREFIX_COUNT: '365'
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash .agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh --execute
+
+      - name: Record frozen package auxiliary identities
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="${RUNNER_TEMP}/M3-CP4c-3-TB35-EXEC-result"
+          log="${RUNNER_TEMP}/m3-cp4c3-tb35-control.log"
+          if [[ -d "$result" ]]; then
+            {
+              echo 'expected_source_archive_sha256=56dc4a0ba09797bb08374abc15d4eaf472d19bcd8bcfa5d2ca3db361182257b4'
+              echo 'expected_packaged_harness_sha256=aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3'
+              echo 'expected_selector_408_prefix_sha256=2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6'
+              echo 'runtimeExecution=true'
+              echo 'compileExecution=false'
+              echo 'benchmarkExecution=false'
+            } > "$result/tb35-frozen-auxiliary-authority.txt"
+          fi
+          echo "final_job_status=${{ job.status }}" | tee -a "$log"
+          echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Upload TB35 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb35-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M3-CP4c-3-TB35-EXEC-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB35 diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb35-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/M3-CP4c-3-TB35-EXEC.log
+            ${{ runner.temp }}/m3-cp4c3-tb35-control.log
+          if-no-files-found: error
+          retention-days: 14
