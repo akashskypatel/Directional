@@ -524,9 +524,17 @@ forward:
   the reachable negative — two loops meeting at a shared node, rejected with reason `ClosedBeforeEnd`. Its name,
   ordinal and the first 408 selector lines do not change.
 
-**Exact successor:** `M3-CP4c-3-CB40` under CV2–CV6. It authors no selector; selector 409 stays byte-frozen while
-ordinal 409's assertions are replaced in place. **Required outcome: ordinal 312 returns to PASS and the accepted
-prefix returns to 365/365.** Ordinals 390/393/404/406/407/408 keep their contracts and must stay green.
+**CB40 discharged that successor.** TB35 recorded ordinal **312 PASS** with the accepted prefix restored to
+**365/365**, and ordinal **409 PASS** on its re-aimed shared-start oracle. Ordinals 390/393/404/406/407/408 stayed
+green.
+
+**Exact successor:** `M3-CP4c-3-CB41` under **CX0–CX8** of `M3_CP4c_Frozen_Definitions.md` Part IX (DEFN-R5).
+**It authors no selector: 409 stays byte-identical**, and CX4 forbids editing ordinals **312** or **409** — their
+fixtures, names, assertions, order or selector membership. Both mutate a copy of a real plan region
+(`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253` and `:3276–3279`), so under Part IX's derived relation their
+boundaries resolve to `Unguaranteed` and must still reject with `RegionBoundaryNotSingleWalk / ClosedBeforeEnd`.
+**Part IX-A §A.1 records why:** a construction-time provenance flag would survive that copy and re-break accepted
+ordinal 312. **Accepted prefix 365/365 is a stop condition.**
 
 ## Separate lineage — M1
 

@@ -10,7 +10,7 @@ text of their definition turns.
 earlier revisions are retained because `DESIGN.md` and the regression tracker cite the amendment lineage directly,
 and because an amendment's provenance is part of its authority. **The operative definitions for CP4c-2 are Part
 III; for CP4c-3 they are Part VI together with Parts VII, VIII and IX, each superseding the earlier where they
-conflict.** Where an earlier part conflicts with a later revision of the same checkpoint,
+conflict; Part IX-A amends Part IX without overriding any of it.** Where an earlier part conflicts with a later revision of the same checkpoint,
 the later revision governs.
 
 This file is normative authority, not history. History lives in `M3_CP4c_Consolidated_Record.md`; current state and
@@ -31,6 +31,7 @@ Citations written against the former filenames resolve here:
 | *(no prior file — authored in place)* | **Part VII — M3-CP4c-3 DEFN-R3** |
 | *(no prior file — authored in place)* | **Part VIII — M3-CP4c-3 DEFN-R4** |
 | *(no prior file — authored in place)* | **Part IX — M3-CP4c-3 DEFN-R5** |
+| *(no prior file — authored in place)* | **Part IX-A — DEFN-R5 reconciliation amendment** |
 
 Section numbering inside each part is unchanged, so a citation such as "`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". Full text of the originals also remains in git history.
 
@@ -3142,5 +3143,91 @@ produced-witness debt **5**; semantic M3 packages **100**; accepted runtime auth
 CP4c-3 remains **OPEN**.
 
 **Exact next turn: `M3-CP4c-3-CB41` — Code + Build, runtime-free, GMP/GMPXX linked, under CX0–CX8.**
+
+---
+
+## Part IX-A — M3-CP4c-3 DEFN-R5 reconciliation amendment
+
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE. **Amends Part IX; overrides nothing in it.**
+
+Part IX was frozen from one execution of `M3-CP4c-3-DEFN-R5`. A second, independent execution of the same turn ran
+concurrently and reached three findings that Part IX does not carry. Two of them **confirm Part IX against a
+competing draft that was wrong**, and recording *why* the competing rule fails is the load-bearing content here —
+it is the same failure mode that already cost this checkpoint an accepted-green regression once.
+
+### A.1 — DEFN-R5.2's derived relation is not a stylistic preference; the alternative loses accepted green
+
+The competing draft made provenance **established at construction**: set the guaranteed value in `build_regions`
+where the boundary is taken from `walk.orbits[orbit]`, default unguaranteed, and store it on the region.
+
+**That rule breaks accepted ordinal 312**, and the test says so directly
+(`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253`):
+
+```cpp
+auto candidate = plan.validation_candidate();
+const auto duplicateWalk = candidate.regions[0].boundary;
+candidate.regions[0].boundary.insert(candidate.regions[0].boundary.end(),
+                                     duplicateWalk.begin(), duplicateWalk.end());
+```
+
+The synthetic region is a **copy of a real plan region**, whose boundary is then doubled. A stored construction-time
+flag is copied with the struct and **survives the mutation**, so the region would present as `FaceWalkOrbit`,
+`ClosedBeforeEnd` would be suppressed, and ordinal 312 would go RED — reproducing the `CB39` / `CU4` accepted-green
+loss by a different route. Ordinal 409 mutates the same way (`:3276–3279`) and would fail identically.
+
+DEFN-R5.2's derived exact relation has no such failure: the doubled boundary equals no authoritative
+`walk.orbits[orbit]`, so it resolves to `Unguaranteed` and stays rejected. **DEFN-R5.2 and its prohibition on a
+mutable region flag are confirmed, and the prohibition is the reason the rule is correct, not a note attached to
+it.** `LESSONS.md` 148.
+
+### A.2 — the Euler *causation* is settled even though the *correction* is not
+
+Part IX §5 calls `RegionEulerCharacteristicNotOne` "a separate, unresolved question". The **correction** is
+unresolved; the **causation** is not, and TB35-REV's framing of it as a *"second, independent finding"* is
+**withdrawn**.
+
+`GlobalTopologyPlan.cpp:2097–2104` computes `χ = V_int − E_int + F`, `certificate.edgeCount` counts interior edges
+only (`:1861`, published as `E_int` at `:1804`), and `boundaryVertices` (`:1893–1969`) is consulted only to
+**exclude** vertices from `interiorVertices` (`:2052`) — never counted. The comment at `:2099–2100` names the
+no-pinch condition as the premise for dropping the boundary terms. **TB34 removed that premise's guard, so the
+Euler failure it then observed was produced by the removal, not exposed by it.**
+
+This does not change Part IX's disposition — it strengthens it. Under CX3 the guard stops rejecting face-walk
+boundaries, so **366/367 advancing to `RegionEulerCharacteristicNotOne` is a predicted outcome of CB41, not a
+discovery**, and CX8 already treats that advance as confirmation-without-authorization. CB41 must not read it as
+new evidence, and TB36-REV must not count it as a new finding.
+
+### A.3 — the naive Euler correction is refuted, which is why CX5 measures instead of correcting
+
+The competing draft asserted that a boundary walk with k extra node revisits gives `V_bnd − E_bnd = −k`, hence
+χ = 1 − k, and proposed generalizing χ to `(V_int + V_bnd) − (E_int + E_bnd) + F = 1` **coupled** to the scoping
+change so that neither could land alone.
+
+**The arithmetic is wrong.** It holds only when every boundary edge is traversed once. A **bridge is traversed
+once per dart**, so a boundary walk of length L over a face containing a bridge has *both* `V_bnd < L` and
+`E_bnd < L`, and the deficit is not determined by the node-revisit count alone. With ten terminal slits in this
+fixture, repeated **edges** are expected, not exceptional. So no closed-form correction is derivable from the
+revisit count, and the coupling argument built on it does not hold.
+
+**This independently vindicates DEFN-R5.5.** The measurement it freezes is exactly the set that decides the
+question — `regionBoundaryArcOccurrenceCount` **and** `regionBoundaryDistinctArcCount`, `…NodeOccurrenceCount`
+**and** `…DistinctNodeCount` — because occurrence-versus-distinct must be resolved separately for arcs and for
+nodes. A correction frozen on the revisit count alone would have been wrong. `LESSONS.md` 149.
+
+### A.4 — fixture evidence for DEFN-R5.1
+
+Part IX proves the single-closed-walk guarantee from construction. The fixture independently shows the guarantee is
+**load-bearing rather than theoretical**: it publishes `terminalSlits=10` across twelve traces on a complex
+certified cellular with `V=22, E=26, F=6, componentCount=1, χ=2, residual=0` and **every face established as a
+disc**. A face containing a bridge necessarily revisits that bridge's base node, so rejecting repeated-node
+boundaries would reject a decomposition the certifier has already established as cellular, and no change to region
+construction avoids producing them for this input.
+
+### A.5 — what this amendment does not change
+
+Part IX governs. **DEFN-R5.1 through R5.6, CX0–CX8, the prohibited list, and the ordinals 312/409 contracts are
+unchanged.** No stable event, category or recurrence changes: totals remain **45 / 14 / 31**, debt **5**, packages
+**100**. Runtime authority remains **TB35** at 402 PASS / 7 RED, accepted **365/365**. **Exact next turn remains
+`M3-CP4c-3-CB41` — Code + Build, runtime-free, GMP/GMPXX linked, under CX0–CX8.**
 
 ---

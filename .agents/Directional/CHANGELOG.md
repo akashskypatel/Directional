@@ -1,3 +1,42 @@
+## 2026-09-07 — `M3-CP4c-3-DEFN-R5`: Part IX freezes derived boundary provenance; Part IX-A reconciles a concurrent second execution
+
+Definition turn (`DEFN` absorbs REVIEW + PLAN), static. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority unchanged: **`M3-CP4c-3-TB35`**, selector
+**409**, **402 PASS / 7 RED**, accepted **1–365 = 365/365**.
+
+**Part IX is operative.** Provenance is a **derived exact relation**, not a stored claim: a boundary is
+`FaceWalkOrbit(orbit)` iff exactly one authoritative `walk.orbits[orbit]` equals the current ordered
+`region.boundary`; otherwise `Unguaranteed`. `ClosedBeforeEnd` rejects only `Unguaranteed`; on a face-walk orbit it
+is non-rejecting observation. `ArcChainBroken` and `WalkNotClosed` stay universal. `RegionEulerCharacteristicNotOne`
+is **not corrected** — CX5 freezes exact arc/node occurrence-and-distinct measurement instead. Ordinals 312 and 409
+are immutable falsifiers of provenance overreach.
+
+**Part IX-A — reconciliation amendment.** This turn was executed twice concurrently and the two drafts diverged.
+Part IX governs; the amendment records the findings the second execution contributed and that Part IX does not
+carry.
+
+- **A.1 — the rejected draft's construction-time provenance flag would have re-broken accepted ordinal 312.**
+  `tests/FieldAlignedCurveNetworkTests.cpp:3247–3253` takes `plan.validation_candidate()` — a **copy of a real plan
+  region** — and doubles its boundary. A stored flag survives the copy and goes stale, suppressing the rejection;
+  the derived relation correctly disappears. Ordinal 409 mutates the same way at `:3276–3279`. **DEFN-R5.2's
+  prohibition on a mutable region flag is the reason the rule is correct, not a footnote to it.**
+- **A.2 — the Euler causation is settled even though the correction is not.** `GlobalTopologyPlan.cpp:2099–2100`
+  drops the boundary terms from χ **because** of the no-pinch condition; `edgeCount` counts interior edges only
+  (`:1861`) and `boundaryVertices` (`:1893–1969`) is consulted only to exclude vertices (`:2052`). TB34's
+  `RegionEulerCharacteristicNotOne` was **produced by** removing that guard. TB35-REV's "second, independent
+  finding" is **withdrawn**, and 366/367 advancing to Euler under CB41 is a **predicted** outcome, not a discovery.
+- **A.3 — the naive Euler correction is refuted, which vindicates CX5.** The claim `V_bnd − E_bnd = −k` holds only
+  when every boundary edge is traversed once; a **bridge is traversed once per dart**, and this fixture has ten
+  terminal slits. The deficit is underdetermined by the node-revisit count, so no closed-form correction was
+  derivable — which is exactly why DEFN-R5.5 requires occurrence **and** distinct counts for arcs **and** nodes.
+- **A.4** adds fixture evidence for DEFN-R5.1: `terminalSlits=10` on a complex certified cellular with
+  `V=22, E=26, F=6, χ=2, residual=0`, every face a disc.
+
+**Accounting.** Static turn: **+0 events / +0 recurrences**. Totals remain **45 events / 14 categories / 31
+recurrences**, debt **5**, packages **100**. `LESSONS.md` **147, 148, 149** added.
+
+**Exact next: `M3-CP4c-3-CB41`** — Code + Build, runtime-free, GMP/GMPXX linked, under **CX0–CX8**.
+
 ## 2026-09-06 — `M3-CP4c-3-TB35-REV`: accepted prefix restored; the frontier proved from source; DEFN-R5 frozen
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

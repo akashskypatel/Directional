@@ -1850,6 +1850,34 @@ building any conclusion on it.**
      guarantee a boundary carried**. The remedy for a predicate that oscillates is not a more careful verdict; it
      is to write the guarantee down where the checker can see it, and scope the rejection to the provenance that
      lacks it.
+147. **A comment naming an assumption is a dependency edge; grep for the prose before you delete the code.**
+     Region Euler characteristic was computed as `V_interior - E_interior + F`, and the comment directly above the
+     site said the boundary terms were dropped **because** the validated single boundary walk and no-pinch
+     condition give `V_boundary == E_boundary`. A turn removed the no-pinch guard, saw
+     `RegionEulerCharacteristicNotOne` appear behind it, and recorded it as a **second, independent** finding the
+     guard had been masking. It was neither: the arithmetic had lost its own stated premise. Before removing a
+     predicate, search the surrounding source for prose citing its **postcondition**, not only for code that calls
+     it. And when a failure appears *behind* a guard you just removed, the first hypothesis is that you invalidated
+     a downstream premise - not that you uncovered a new defect.
+148. **A property established at construction is not established after a copy - and the tests copy.**
+     Two drafts of one definition turn proposed opposite provenance rules. The rejected draft set a "this boundary
+     came from a face walk" flag in `build_regions` and stored it on the region. The accepted draft made provenance
+     a **derived exact relation** - recomputed by comparing the current ordered boundary against the authoritative
+     face-walk orbits. The deciding fact is in the test file: the synthetic negatives take
+     `plan.validation_candidate()`, which hands back a **copy of a real region**, and then mutate its boundary. A
+     stored flag survives that copy and goes stale; the derived relation correctly disappears. The construction-time
+     rule would have re-broken accepted ordinal 312 by a second route, months after the first. **When a trusted
+     property can be carried across a copy into a mutated object, derive it on demand instead of storing it** - and
+     read how the negatives are actually built before choosing.
+149. **Do not freeze a closed-form correction whose formula you have only checked on the easy case.**
+     A draft argued that a boundary walk revisiting a node k extra times gives `V_bnd - E_bnd = -k`, hence
+     `chi = 1 - k`, and proposed a generalized Euler formula coupled to the guard change so neither could land
+     alone. The identity holds only when every boundary **edge** is traversed once - and a bridge is traversed once
+     per dart, which is exactly what the ten terminal slits in this fixture produce. Repeated edges make the deficit
+     underdetermined by the node-revisit count, so the correction was underivable and the coupling argument built on
+     it collapsed. The surviving turn froze a **measurement** instead, requiring occurrence *and* distinct counts
+     for arcs *and* nodes separately. **When a correction depends on a multiplicity, measure every multiplicity it
+     could depend on before writing the formula down.**
 
 ## 5. Cross-field, cycle, and orientation conventions
 
@@ -2168,6 +2196,21 @@ a reset window to hold that information.
 77. **Reusable-workflow caller permissions are the union of every nested job, not only the path you expect to execute.** A reusable observer may contain a conditionally skipped branch-write job; GitHub still validates the caller permission ceiling against that transitive job graph. Before publishing a caller, inspect the reusable workflow's complete permissions and grant the narrow union required by all nested jobs. A permission-ceiling failure before generated runtime is orchestration-only evidence, never a diagnostic or acceptance result.
 
 78. **Actions artifact round-trips preserve bytes but not executable permission.** `actions/download-artifact@v4` documents that artifact downloads normalize files to mode `0644`; a later `upload-artifact` therefore faithfully re-uploads non-executable files even when every SHA-256 is unchanged. `M3-CP4c3-TB3-ORCH-01` proved the failure end to end: raw CB3 artifact 9750227619 stored all six exact runtime binaries as `100755`, fixture packaging materialized them through `download-artifact`, and final package 71 stored the same hashes as `100644`. **When executable mode is part of package authority, carry the package tree inside a mode-preserving archive such as tar before crossing an Actions artifact boundary, and verify the modes after a clean archive round-trip. Never repair modes in TB.**
+
+79. **`git push origin <branch>` pushes the local ref of that name, not `HEAD` — and it succeeds silently when
+    they differ.** A turn's work was committed on `agent/surface_cell_quad/p5-recover-bridge-healing` and pushed
+    with `git push origin master`. Git resolved `master` to a stale local branch, pushed nothing new, exited 0, and
+    the turn was reported complete. The commit existed only locally and the next session could not find it.
+    **Push with `git push origin HEAD` or verify with `git status -sb` afterwards** — an "ahead 1" line after a
+    push that claimed success is the whole tell. Never treat a quiet exit 0 from `push` as proof that the intended
+    commit reached the remote.
+80. **Two agents can execute the same named turn concurrently, and the workflow does not prevent it.** `DEFN-R5`
+    was authored twice from the same frozen scope - once locally, once through the Drive-patch pipeline - and the
+    drafts reached opposite rules on the load-bearing question. The remote push landed first and is authoritative;
+    the local draft had to be reset away. **Before starting a turn, fetch and check whether the successor the last
+    turn froze has already been executed on the remote branch you are on** - which is the branch the work belongs
+    to, not `master`. When it has, the correct action is to reconcile into an amendment that preserves only what
+    the landed version lacks, never to merge two competing normative documents.
 
 ### Trigger commits must descend from the installed caller
 

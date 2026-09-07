@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-DEFN-R5`):** runtime authority remains **TB35** on selector **409** at **402 PASS / 7 RED**, accepted **365/365**. **Part IX is now the operative definition authority:** a region earns `FaceWalkOrbit(orbit)` only from an exact unique equality to the current face-walk orbit; provenance is derived, never a copied flag. `ClosedBeforeEnd` rejects only an `Unguaranteed` boundary, while `ArcChainBroken` and `WalkNotClosed` remain universal. The separate Euler result is **not corrected**; CB41 measures the repeated-node cancellation premise. Exact next is **`M3-CP4c-3-CB41`** under CX0–CX8. Stable accounting remains **45 / 14 / 31**.
+> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-DEFN-R5`):** runtime authority remains **TB35** on selector **409** at **402 PASS / 7 RED**, accepted **365/365**. **Part IX is now the operative definition authority:** a region earns `FaceWalkOrbit(orbit)` only from an exact unique equality to the current face-walk orbit; provenance is derived, never a copied flag. `ClosedBeforeEnd` rejects only an `Unguaranteed` boundary, while `ArcChainBroken` and `WalkNotClosed` remain universal. The separate Euler result is **not corrected**; CB41 measures the repeated-node cancellation premise. Exact next is **`M3-CP4c-3-CB41`** under CX0–CX8. **Part IX-A** amends Part IX from a concurrent second execution of the turn: the Euler *causation* is settled even though the correction is not — χ drops the boundary terms *because* of the no-pinch condition (`GlobalTopologyPlan.cpp:2099–2100`), so 366/367 advancing to `RegionEulerCharacteristicNotOne` under CB41 is a **predicted** outcome, not a discovery. Stable accounting remains **45 / 14 / 31**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -432,6 +432,29 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A property established at construction is not established after a copy — and the tests copy.** Two drafts of one
+definition turn proposed opposite provenance rules: a flag set in `build_regions` and stored on the region, versus
+a relation derived on demand by exact equality against the authoritative face-walk orbits. The deciding fact was in
+the test file — the synthetic negatives take `plan.validation_candidate()`, a **copy of a real region**, and then
+mutate its boundary. The stored flag survives that copy and goes stale; the derived relation correctly disappears.
+The construction-time rule would have re-broken accepted ordinal 312 by a second route. Derive a trusted property
+on demand whenever it can be carried across a copy into a mutated object, and read how the negatives are actually
+built before choosing. `LESSONS.md` §4 148.
+
+**A comment naming an assumption is a dependency edge — grep for it before removing the thing it names.** χ was
+computed as `V_interior − E_interior + F`, and the comment directly above said the boundary terms were omitted
+*because* the validated no-pinch condition made them cancel. A turn removed the guard and read the resulting
+`RegionEulerCharacteristicNotOne` as a **second, independent** defect the guard had been masking. It was the
+arithmetic losing its own stated premise. When a failure appears *behind* a guard you just removed, the first
+hypothesis is that you invalidated a downstream premise. `LESSONS.md` §4 147.
+
+**Do not freeze a closed-form correction whose formula you have only checked on the easy case.** A draft derived
+`χ = 1 − k` from the boundary walk's node-revisit count and proposed coupling the Euler correction to the guard
+change. The identity holds only when every boundary **edge** is traversed once — and a bridge is traversed once per
+dart, which is what ten terminal slits produce. Repeated edges leave the deficit underdetermined by k, so the
+correction was underivable and the coupling collapsed. The surviving turn froze a **measurement** requiring
+occurrence *and* distinct counts for arcs *and* nodes separately. `LESSONS.md` §4 149.
 
 **When a checker flips twice, the missing artefact is the contract, not the verdict.** One boundary predicate was
 removed as a false rejection, restored after it cost an accepted-green regression, and only then was the deciding
