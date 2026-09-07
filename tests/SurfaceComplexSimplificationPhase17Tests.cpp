@@ -1,12 +1,44 @@
 #include <directional/geometry/SurfaceComplexSimplification.h>
+#include <directional/geometry/SourceChartTransitions.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
+
+
+
+
+
+
+
+
+
 
 namespace {
+
+const directional::geometry::SourceTopologyRegions *
+row_identity_source_authority(const Eigen::MatrixXi &faces,
+                              const std::vector<int> &components,
+                              const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed row-identity source authority.");
+  }
+  static std::vector<std::unique_ptr<directional::geometry::SourceTopologyRegions>> arena;
+  arena.push_back(std::make_unique<directional::geometry::SourceTopologyRegions>(
+      std::move(*authority)));
+  return arena.back().get();
+}
+
 
 std::vector<directional::geometry::SurfaceSimplificationElement>
 make_elements(const int count) {
@@ -119,7 +151,249 @@ OversampledFixture oversampled_parallel_complex() {
   return fixture;
 }
 
+
+struct ClosedToroidalCandidateFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  directional::geometry::SurfaceCellComplex complex;
+};
+
+ClosedToroidalCandidateFixture closed_toroidal_candidate_complex() {
+  ClosedToroidalCandidateFixture fixture;
+  constexpr int uCount = 4;
+  constexpr int vCount = 4;
+  constexpr double pi = 3.14159265358979323846;
+  constexpr double majorRadius = 2.0;
+  constexpr double minorRadius = 0.5;
+
+  const auto node_id = [](const int u, const int v) {
+    const int wrappedU = (u % uCount + uCount) % uCount;
+    const int wrappedV = (v % vCount + vCount) % vCount;
+    return wrappedU * vCount + wrappedV;
+  };
+  const auto cell_id = [](const int u, const int v) {
+    const int wrappedU = (u % uCount + uCount) % uCount;
+    const int wrappedV = (v % vCount + vCount) % vCount;
+    return wrappedU * vCount + wrappedV;
+  };
+
+  fixture.vertices.resize(uCount * vCount, 3);
+  for (int u = 0; u < uCount; ++u) {
+    const double theta = 2.0 * pi * static_cast<double>(u) /
+                         static_cast<double>(uCount);
+    for (int v = 0; v < vCount; ++v) {
+      const double phi = 2.0 * pi * static_cast<double>(v) /
+                         static_cast<double>(vCount);
+      const double ring = majorRadius + minorRadius * std::cos(phi);
+      fixture.vertices.row(node_id(u, v)) = Eigen::RowVector3d(
+          ring * std::cos(theta), ring * std::sin(theta),
+          minorRadius * std::sin(phi));
+    }
+  }
+
+  fixture.faces.resize(2 * uCount * vCount, 3);
+  int face = 0;
+  for (int u = 0; u < uCount; ++u) {
+    for (int v = 0; v < vCount; ++v) {
+      const int a = node_id(u, v);
+      const int b = node_id(u + 1, v);
+      const int c = node_id(u, v + 1);
+      const int d = node_id(u + 1, v + 1);
+      fixture.faces.row(face++) = Eigen::RowVector3i(a, b, c);
+      fixture.faces.row(face++) = Eigen::RowVector3i(b, d, c);
+    }
+  }
+
+  auto &complex = fixture.complex;
+  complex.nodes.reserve(uCount * vCount);
+  for (int u = 0; u < uCount; ++u) {
+    for (int v = 0; v < vCount; ++v) {
+      directional::geometry::SurfaceArrangementNode node;
+      node.id = node_id(u, v);
+      node.sourceFace = 2 * cell_id(u, v);
+      node.barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
+      directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
+      occurrence.sourceFace = node.sourceFace;
+      occurrence.barycentric = node.barycentric;
+      occurrence.provenance = node.id;
+      node.occurrences.push_back(occurrence);
+      complex.nodes.push_back(std::move(node));
+    }
+  }
+
+  const auto add_pair = [&](const int from, const int to,
+                            const int forwardCell, const int reverseCell,
+                            const int family, const int strand,
+                            const int sourceFace) {
+    const int first = static_cast<int>(complex.halfedges.size());
+    directional::geometry::SurfaceArrangementHalfedge forward;
+    directional::geometry::SurfaceArrangementHalfedge reverse;
+    for (directional::geometry::SurfaceArrangementHalfedge *edge :
+         {&forward, &reverse}) {
+      edge->sourceFace = sourceFace;
+      edge->family = family;
+      edge->strand = strand;
+      edge->sourceArc = first / 2;
+      directional::geometry::SurfaceArrangementProvenance provenance;
+      provenance.sourceArc = first / 2;
+      provenance.provenance = first / 2;
+      provenance.sourceFace = sourceFace;
+      provenance.family = family;
+      provenance.strand = strand;
+      edge->provenance.push_back(provenance);
+    }
+    forward.id = first;
+    forward.twin = first + 1;
+    forward.from = from;
+    forward.to = to;
+    forward.cell = forwardCell;
+    reverse.id = first + 1;
+    reverse.twin = first;
+    reverse.from = to;
+    reverse.to = from;
+    reverse.cell = reverseCell;
+    reverse.sourceT0 = 1.0;
+    reverse.sourceT1 = 0.0;
+    reverse.provenance.front().sourceT0 = 1.0;
+    reverse.provenance.front().sourceT1 = 0.0;
+    complex.halfedges.push_back(std::move(forward));
+    complex.halfedges.push_back(std::move(reverse));
+    return first;
+  };
+
+  std::vector<int> horizontal(static_cast<std::size_t>(uCount * vCount), -1);
+  std::vector<int> vertical(static_cast<std::size_t>(uCount * vCount), -1);
+  for (int u = 0; u < uCount; ++u) {
+    for (int v = 0; v < vCount; ++v) {
+      const int index = cell_id(u, v);
+      const int sourceFace = 2 * index;
+      horizontal[static_cast<std::size_t>(index)] = add_pair(
+          node_id(u, v), node_id(u + 1, v), cell_id(u, v),
+          cell_id(u, v - 1), 0, v, sourceFace);
+      vertical[static_cast<std::size_t>(index)] = add_pair(
+          node_id(u, v), node_id(u, v + 1), cell_id(u - 1, v),
+          cell_id(u, v), 1, u, sourceFace);
+    }
+  }
+
+  complex.cells.reserve(uCount * vCount);
+  for (int u = 0; u < uCount; ++u) {
+    for (int v = 0; v < vCount; ++v) {
+      const int id = cell_id(u, v);
+      directional::geometry::SurfaceArrangementCell cell;
+      cell.id = id;
+      cell.sourceFace = 2 * id;
+      cell.sourceFaces = {2 * id, 2 * id + 1};
+      cell.halfedges = {
+          horizontal[static_cast<std::size_t>(cell_id(u, v))],
+          vertical[static_cast<std::size_t>(cell_id(u + 1, v))],
+          horizontal[static_cast<std::size_t>(cell_id(u, v + 1))] + 1,
+          vertical[static_cast<std::size_t>(cell_id(u, v))] + 1};
+      cell.closed = true;
+      cell.disk = true;
+      cell.boundaryCycle = false;
+      cell.boundaryComponentCount = 1;
+      cell.eulerCharacteristic = 1;
+      cell.signedArea = 1.0;
+      cell.area = 1.0;
+      for (int edgeIndex = 0;
+           edgeIndex < static_cast<int>(cell.halfedges.size()); ++edgeIndex) {
+        const int halfedge = cell.halfedges[static_cast<std::size_t>(edgeIndex)];
+        complex.halfedges[static_cast<std::size_t>(halfedge)].next =
+            cell.halfedges[static_cast<std::size_t>(
+                (edgeIndex + 1) % static_cast<int>(cell.halfedges.size()))];
+      }
+      complex.cells.push_back(std::move(cell));
+    }
+  }
+
+  complex.diagnostics.eulerCharacteristic = 0;
+  complex.diagnostics.sourceEulerCharacteristic = 0;
+  complex.diagnostics.connectedComponentCount = 1;
+  complex.diagnostics.sourceConnectedComponentCount = 1;
+  complex.diagnostics.boundaryLoopCount = 0;
+  complex.diagnostics.sourceBoundaryLoopCount = 0;
+  complex.diagnostics.incidenceValid = true;
+  complex.diagnostics.embeddingValid = true;
+  complex.diagnostics.orientationValid = true;
+  complex.diagnostics.cellsDiskValid = true;
+  complex.diagnostics.boundaryLoopsValid = true;
+  complex.diagnostics.eulerCharacteristicValid = true;
+  complex.diagnostics.topologyValid = true;
+  return fixture;
+}
+
+
 } // namespace
+
+TEST(SurfaceComplexSimplificationPhase17,
+     CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous) {
+  const ClosedToroidalCandidateFixture baseline =
+      closed_toroidal_candidate_complex();
+  const auto candidates =
+      directional::geometry::extract_surface_simplification_candidates(
+          baseline.complex, baseline.vertices, baseline.faces);
+  const auto found = std::find_if(
+      candidates.candidates.begin(), candidates.candidates.end(),
+      [](const auto &candidate) {
+        return !candidate.touchesHardFeature && !candidate.touchesBoundary &&
+               !candidate.touchesSingularity && !candidate.changesTopology &&
+               candidate.sideFeasible;
+      });
+  ASSERT_NE(found, candidates.candidates.end());
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     CanonicalSourceScopeIdentityIsRowIndependentWithNonVacuousCandidateBaseline) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           0, 2, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 1};
+  const auto *firstAuthority =
+      row_identity_source_authority(faces, components, sheets);
+  const directional::geometry::SourceChartTransitionGraph firstGraph(
+      faces, *firstAuthority, directional::geometry::empty_hard_feature_edges());
+  ASSERT_TRUE(firstGraph.available());
+  const auto firstChart = firstGraph.chart(0);
+  const auto distinctChart = firstGraph.chart(1);
+  ASSERT_TRUE(firstChart.has_value());
+  ASSERT_TRUE(distinctChart.has_value());
+  EXPECT_NE(firstChart.value(), distinctChart.value());
+
+  const auto regionResult =
+      directional::authority::TopologyRegionId::from_index(0, 2);
+  ASSERT_TRUE(regionResult.has_value());
+  const std::optional<directional::authority::TopologyRegionId> region(
+      regionResult.value());
+  const directional::geometry::surface_simplification_detail::SourceScope
+      firstIdentity{
+          region, firstChart};
+
+  Eigen::MatrixXi reorderedFaces = faces;
+  reorderedFaces.row(0).swap(reorderedFaces.row(1));
+  const std::vector<int> reorderedComponents = {0, 0};
+  const std::vector<int> reorderedSheets = {1, 0};
+  const auto *reorderedAuthority = row_identity_source_authority(
+      reorderedFaces, reorderedComponents, reorderedSheets);
+  const directional::geometry::SourceChartTransitionGraph reorderedGraph(
+      reorderedFaces, *reorderedAuthority,
+      directional::geometry::empty_hard_feature_edges());
+  ASSERT_TRUE(reorderedGraph.available());
+  const auto reorderedChart = reorderedGraph.chart(1);
+  ASSERT_TRUE(reorderedChart.has_value());
+  EXPECT_EQ(firstChart.value(), reorderedChart.value());
+
+  const directional::geometry::surface_simplification_detail::SourceScope
+      reorderedIdentity{
+          region, reorderedChart};
+  EXPECT_EQ(firstIdentity, reorderedIdentity);
+
+  const directional::geometry::surface_simplification_detail::SourceScope
+      distinctIdentity{
+          region, distinctChart};
+  EXPECT_NE(firstIdentity, distinctIdentity);
+}
 
 TEST(SurfaceComplexSimplificationPhase17, OpenStripRemovalCommitsCoherently) {
   auto elements = make_elements(6);
@@ -608,10 +882,10 @@ TEST(SurfaceComplexSimplificationPhase17,
     if (halfedge.id < halfedge.twin && halfedge.family < 0) {
       protectedHalfedge = halfedge.id;
       halfedge.hardFeature = true;
-      halfedge.railId = 77;
+      halfedge.railId = directional::tests::test_hard_rail_id(77);
       auto &twin = complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
       twin.hardFeature = true;
-      twin.railId = 77;
+      twin.railId = directional::tests::test_hard_rail_id(77);
       break;
     }
   }
@@ -632,7 +906,7 @@ TEST(SurfaceComplexSimplificationPhase17,
   ASSERT_GT(result.committed, 0);
   EXPECT_TRUE(std::any_of(result.complex.halfedges.begin(), result.complex.halfedges.end(),
                           [](const auto &halfedge) {
-                            return halfedge.hardFeature && halfedge.railId == 77;
+                            return halfedge.hardFeature && halfedge.railId == directional::tests::test_hard_rail_id(77);
                           }));
   EXPECT_TRUE(result.complex.diagnostics.topologyValid);
 }
@@ -672,6 +946,21 @@ TEST(SurfaceComplexSimplificationPhase17,
 
   EXPECT_EQ(result.committed, 1);
   EXPECT_EQ(result.rejected, 0);
+  ASSERT_EQ(result.transactions.size(), 1U);
+  const auto &transaction = result.transactions.front();
+  EXPECT_TRUE(transaction.topologyHealing);
+  EXPECT_TRUE(transaction.committed);
+  EXPECT_TRUE(transaction.trialBuilt);
+  EXPECT_GT(transaction.beforeNonDiskDefect,
+            transaction.afterNonDiskDefect);
+  EXPECT_TRUE(transaction.incidenceValid);
+  EXPECT_TRUE(transaction.embeddingValid);
+  EXPECT_TRUE(transaction.orientationValid);
+  EXPECT_TRUE(transaction.boundaryLoopsValid);
+  EXPECT_TRUE(transaction.eulerCharacteristicValid);
+  EXPECT_TRUE(transaction.noUnsplitCrossings);
+  EXPECT_TRUE(transaction.noGeometricTJunctions);
+  EXPECT_TRUE(transaction.protectedSupportPreserved);
   EXPECT_LT(result.complex.halfedges.size(), complex.halfedges.size());
   EXPECT_EQ(directional::geometry::surface_simplification_detail::
                 non_disk_topology_defect(result.complex),
@@ -681,6 +970,136 @@ TEST(SurfaceComplexSimplificationPhase17,
             result.complex.diagnostics.sourceEulerCharacteristic);
   EXPECT_EQ(result.complex.diagnostics.boundaryLoopCount,
             result.complex.diagnostics.sourceBoundaryLoopCount);
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  auto firstLeaf = arc(310, {0.80, 0.20, 0.0}, {0.65, 0.20, 0.15}, 0);
+  firstLeaf.strand = 900;
+  firstLeaf.layoutSupport = true;
+  auto secondLeaf = arc(311, {0.80, 0.0, 0.20}, {0.65, 0.15, 0.20}, 1);
+  secondLeaf.strand = 901;
+  secondLeaf.layoutSupport = true;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, {firstLeaf, secondLeaf});
+  const int beforeDefect = directional::geometry::
+      surface_simplification_detail::non_disk_topology_defect(complex);
+  ASSERT_GT(beforeDefect, 0);
+
+  const auto extracted =
+      directional::geometry::extract_surface_simplification_candidates(
+          complex, vertices, faces);
+  const auto aggregate = std::find_if(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [](const auto &candidate) {
+        return candidate.topologyHealing && candidate.elementIds.size() == 2U &&
+               candidate.affectedCellIds.size() == 1U &&
+               !candidate.touchesHardFeature &&
+               !candidate.touchesBoundary &&
+               !candidate.touchesSingularity &&
+               !candidate.touchesLocalSheetBoundary;
+      });
+  ASSERT_NE(aggregate, extracted.candidates.end());
+
+  auto options = permissive_options();
+  options.topologyHealingOnly = true;
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, vertices, faces, extracted.candidates, options);
+
+  EXPECT_EQ(result.committed, 1);
+  EXPECT_TRUE(std::any_of(
+      result.transactions.begin(), result.transactions.end(),
+      [beforeDefect](const auto &transaction) {
+        return transaction.committed && transaction.elementIds.size() == 2U &&
+               transaction.beforeNonDiskDefect == beforeDefect &&
+               transaction.afterNonDiskDefect == 0;
+      }));
+  EXPECT_EQ(directional::geometry::surface_simplification_detail::
+                non_disk_topology_defect(result.complex),
+            0);
+  EXPECT_TRUE(result.complex.diagnostics.topologyValid);
+  EXPECT_EQ(result.complex.diagnostics.eulerCharacteristic,
+            result.complex.diagnostics.sourceEulerCharacteristic);
+  EXPECT_EQ(result.complex.diagnostics.connectedComponentCount,
+            result.complex.diagnostics.sourceConnectedComponentCount);
+  EXPECT_EQ(result.complex.diagnostics.boundaryLoopCount,
+            result.complex.diagnostics.sourceBoundaryLoopCount);
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains) {
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              0.0, 1.0, 0.0,
+              3.0, 0.0, 0.0,
+              4.0, 0.0, 0.0,
+              3.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           3, 4, 5;
+
+  auto firstOptional =
+      arc(320, {0.80, 0.20, 0.0}, {0.65, 0.20, 0.15}, 0);
+  firstOptional.strand = 910;
+  firstOptional.layoutSupport = true;
+  auto secondOptional =
+      arc(321, {0.80, 0.0, 0.20}, {0.65, 0.15, 0.20}, 1);
+  secondOptional.strand = 911;
+  secondOptional.layoutSupport = true;
+  auto required = arc(322, {0.75, 0.25, 0.0}, {0.40, 0.30, 0.30}, 0);
+  required.sourceFace = 1;
+  required.strand = 912;
+  required.layoutSupport = true;
+  required.singularitySupport = true;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, {firstOptional, secondOptional, required});
+  const int beforeDefect = directional::geometry::
+      surface_simplification_detail::non_disk_topology_defect(complex);
+  ASSERT_GT(beforeDefect, 1);
+
+  const auto beforeProtected = directional::geometry::
+      surface_simplification_detail::protected_support(complex);
+  const auto extracted =
+      directional::geometry::extract_surface_simplification_candidates(
+          complex, vertices, faces);
+  const auto aggregate = std::find_if(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [](const auto &candidate) {
+        return candidate.topologyHealing && candidate.elementIds.size() == 2U &&
+               !candidate.touchesSingularity;
+      });
+  ASSERT_NE(aggregate, extracted.candidates.end());
+
+  auto options = permissive_options();
+  options.topologyHealingOnly = true;
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, vertices, faces, extracted.candidates, options);
+
+  EXPECT_EQ(result.committed, 1);
+  const auto committed = std::find_if(
+      result.transactions.begin(), result.transactions.end(),
+      [](const auto &transaction) { return transaction.committed; });
+  ASSERT_NE(committed, result.transactions.end());
+  EXPECT_TRUE(committed->topologyMismatchNotWorse);
+  EXPECT_TRUE(committed->protectedSupportPreserved);
+  EXPECT_GT(committed->afterNonDiskDefect, 0);
+  EXPECT_LT(committed->afterNonDiskDefect,
+            committed->beforeNonDiskDefect);
+  EXPECT_FALSE(result.complex.diagnostics.topologyValid);
+  EXPECT_EQ(directional::geometry::surface_simplification_detail::
+                protected_support(result.complex),
+            beforeProtected);
+  EXPECT_TRUE(std::any_of(
+      result.complex.halfedges.begin(), result.complex.halfedges.end(),
+      [](const auto &halfedge) { return halfedge.singularitySupport; }));
 }
 
 TEST(SurfaceComplexSimplificationPhase17,

@@ -3612,7 +3612,6 @@ tutorial/output/polyvector.rawfield
 **/dist/
 *.pyd
 vcpkg_installed/
-.agents/
 **/output/
 .claude/
 .gitnexusignore
@@ -3629,3 +3628,6 @@ output/
 !benchmarks/fixtures/
 benchmarks/fixtures/*
 !benchmarks/fixtures/component_parallelism.json
+**/*.patch
+**/.obsidian/*
+**/.cache/*

@@ -17,7 +17,9 @@
 #include <map>
 #include <numeric>
 #include <queue>
+#include <set>
 #include <sstream>
+#include <tuple>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -49,6 +51,8 @@ struct Options {
   bool useTargetedParametrizationStiffening = false;
   int maxComponentThreads = 0;
   int maximumIntegerBatchSize = 0;
+  int surfaceCellInjectFailureAfterStage = -1;
+  bool disableSurfaceCellSourceGridRecovery = false;
   std::filesystem::path parametrizationHeatmapDirectory;
   std::filesystem::path saveMesherCachePath;
   std::filesystem::path loadMesherCachePath;
@@ -71,6 +75,11 @@ struct RunRecord {
   bool success = false;
   double wallSeconds = 0.0;
   std::uint64_t peakWorkingSetBytes = 0;
+  bool sameSampleOwnershipMeasurementAvailable = false;
+  std::uint64_t sameSampleWorkingSetBytes = 0;
+  std::uint64_t sameSampleCategorizedOwnedBytes = 0;
+  std::uint64_t sameSampleReconciliationRemainderBytes = 0;
+  std::uint64_t sameSampleSequence = 0;
   std::uint64_t fixtureHash = 0;
   std::uint64_t fieldHash = 0;
   bool usedFieldFile = false;
@@ -98,6 +107,8 @@ void print_usage() {
             << "  --enable-targeted-stiffening\n"
             << "  --max-component-threads <count> 0 selects hardware concurrency.\n"
             << "  --integer-batch-max <count> Override integration rounding batch cap.\n"
+            << "  --surface-cell-inject-failure-after-stage <index> Stop after a SurfaceCells stage for diagnostics.\n"
+            << "  --disable-surface-cell-source-grid-recovery Diagnose direct SurfaceCells completion without recovery.\n"
             << "  --write-parametrization-heatmaps <dir>\n"
             << "  --save-mesher-cache <path>\n"
             << "  --load-mesher-cache <path> Run mesher only from cache.\n"
@@ -186,6 +197,13 @@ Options parse_options(const int argc, char **argv) {
       if (options.maximumIntegerBatchSize <= 0) {
         throw std::runtime_error("--integer-batch-max must be greater than zero.");
       }
+    } else if (argument == "--surface-cell-inject-failure-after-stage") {
+      options.surfaceCellInjectFailureAfterStage = parse_nonnegative_int(
+          requireValue("--surface-cell-inject-failure-after-stage"),
+          "--surface-cell-inject-failure-after-stage");
+    } else if (argument ==
+               "--disable-surface-cell-source-grid-recovery") {
+      options.disableSurfaceCellSourceGridRecovery = true;
     } else if (argument == "--write-parametrization-heatmaps") {
       options.parametrizationHeatmapDirectory =
           requireValue("--write-parametrization-heatmaps");
@@ -318,8 +336,8 @@ double polygon_area(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &face
 
 StructuralMetrics compute_structural_metrics(const pipeline::RemeshResult &result) {
   StructuralMetrics metrics;
-  metrics.outputVertices = static_cast<int>(result.vertices.rows());
-  metrics.outputFaces = static_cast<int>(result.degrees.size());
+  metrics.outputVertices = static_cast<int>(result.product().vertices.rows());
+  metrics.outputFaces = static_cast<int>(result.product().degrees.size());
   if (metrics.outputVertices == 0 || metrics.outputFaces == 0) {
     return metrics;
   }
@@ -327,17 +345,17 @@ StructuralMetrics compute_structural_metrics(const pipeline::RemeshResult &resul
   std::map<std::pair<int, int>, int> edgeUse;
   std::vector<std::vector<int>> adjacency(static_cast<std::size_t>(metrics.outputVertices));
   for (int face = 0; face < metrics.outputFaces; ++face) {
-    if (result.degrees(face) == 4) {
+    if (result.product().degrees(face) == 4) {
       ++metrics.quadFaces;
     } else {
       ++metrics.nonQuadFaces;
     }
-    if (polygon_area(result.vertices, result.faces, result.degrees, face) <= 1.0e-14) {
+    if (polygon_area(result.product().vertices, result.product().faces, result.product().degrees, face) <= 1.0e-14) {
       ++metrics.degenerateFaces;
     }
-    for (int corner = 0; corner < result.degrees(face); ++corner) {
-      const int a = result.faces(face, corner);
-      const int b = result.faces(face, (corner + 1) % result.degrees(face));
+    for (int corner = 0; corner < result.product().degrees(face); ++corner) {
+      const int a = result.product().faces(face, corner);
+      const int b = result.product().faces(face, (corner + 1) % result.product().degrees(face));
       if (a < 0 || b < 0 || a >= metrics.outputVertices ||
           b >= metrics.outputVertices || a == b) {
         ++metrics.degenerateFaces;
@@ -446,14 +464,14 @@ determinant_heatmap_color(const ParametrizationFaceQuality &quality) {
 void write_parametrization_heatmap_ply(
     const std::filesystem::path &path,
     const directional::pipeline::RemeshResult &result) {
-  if (result.cutVertices.rows() == 0 || result.cutFaces.rows() == 0 ||
-      result.cutFunctions.rows() == 0 || result.cutFunctions.cols() < 2) {
+  if (result.product().cutVertices.rows() == 0 || result.product().cutFaces.rows() == 0 ||
+      result.product().cutFunctions.rows() == 0 || result.product().cutFunctions.cols() < 2) {
     return;
   }
 
   const ParametrizationQualityReport report =
-      analyze_parametrization_quality(result.cutVertices, result.cutFaces,
-                                      result.cutFunctions);
+      analyze_parametrization_quality(result.product().cutVertices, result.product().cutFaces,
+                                      result.product().cutFunctions);
 
   if (!path.parent_path().empty()) {
     std::filesystem::create_directories(path.parent_path());
@@ -469,11 +487,11 @@ void write_parametrization_heatmap_ply(
       << "format ascii 1.0\n"
       << "comment Directional parametrization determinant heatmap\n"
       << "comment red=inverted orange=degenerate/high-distortion blue=healthy\n"
-      << "element vertex " << result.cutVertices.rows() << "\n"
+      << "element vertex " << result.product().cutVertices.rows() << "\n"
       << "property float x\n"
       << "property float y\n"
       << "property float z\n"
-      << "element face " << result.cutFaces.rows() << "\n"
+      << "element face " << result.product().cutFaces.rows() << "\n"
       << "property list uchar int vertex_indices\n"
       << "property uchar red\n"
       << "property uchar green\n"
@@ -481,16 +499,16 @@ void write_parametrization_heatmap_ply(
       << "end_header\n";
 
   out << std::setprecision(9);
-  for (Eigen::Index row = 0; row < result.cutVertices.rows(); ++row) {
-    out << result.cutVertices(row, 0) << ' ' << result.cutVertices(row, 1)
-        << ' ' << result.cutVertices(row, 2) << '\n';
+  for (Eigen::Index row = 0; row < result.product().cutVertices.rows(); ++row) {
+    out << result.product().cutVertices(row, 0) << ' ' << result.product().cutVertices(row, 1)
+        << ' ' << result.product().cutVertices(row, 2) << '\n';
   }
 
-  for (Eigen::Index face = 0; face < result.cutFaces.rows(); ++face) {
+  for (Eigen::Index face = 0; face < result.product().cutFaces.rows(); ++face) {
     const std::array<unsigned char, 3> color = determinant_heatmap_color(
         report.faces[static_cast<std::size_t>(face)]);
-    out << "3 " << result.cutFaces(face, 0) << ' ' << result.cutFaces(face, 1)
-        << ' ' << result.cutFaces(face, 2) << ' '
+    out << "3 " << result.product().cutFaces(face, 0) << ' ' << result.product().cutFaces(face, 1)
+        << ' ' << result.product().cutFaces(face, 2) << ' '
         << static_cast<int>(color[0]) << ' ' << static_cast<int>(color[1])
         << ' ' << static_cast<int>(color[2]) << '\n';
   }
@@ -711,13 +729,27 @@ RunRecord run_case_once(
           benchmarkOptions.useLocalPatchPrevalidation;
       mesherData.useLocalPatchQuadrangulationFallback =
           benchmarkOptions.useLocalPatchQuadrangulationFallback;
-      record.result.cutVertices = mesherData.cutV;
-      record.result.cutFaces = mesherData.cutF;
-      record.result.success =
-          mesher(meshWhole, mesherData, record.result.vertices,
-                 record.result.degrees, record.result.faces);
-      record.result.diagnostics.mesher = mesherData.diagnostics;
-      record.success = record.result.success;
+      pipeline::RemeshProduct product;
+      product.cutVertices = mesherData.cutV;
+      product.cutFaces = mesherData.cutF;
+      const bool mesherSucceeded =
+          mesher(meshWhole, mesherData, product.vertices, product.degrees,
+                 product.faces);
+      directional::RemeshDiagnostics diagnostics;
+      diagnostics.mesher = mesherData.diagnostics;
+      if (mesherSucceeded) {
+        record.result = pipeline::RemeshResult::produced(
+            std::move(product), pipeline::RemeshProductKind::Meshed, true, {},
+            std::move(diagnostics));
+      } else {
+        pipeline::RemeshFailure failure;
+        failure.kind = pipeline::RemeshFailureKind::MesherRejected;
+        failure.stage = "mesher-cache";
+        failure.crossFieldAccepted = true;
+        record.result = pipeline::RemeshResult::rejected(
+            std::move(failure), {}, std::move(diagnostics));
+      }
+      record.success = record.result.is_produced();
       if (record.success) {
         record.metrics = compute_structural_metrics(record.result);
       }
@@ -734,6 +766,25 @@ RunRecord run_case_once(
             std::chrono::steady_clock::now() - start)
             .count() /
         1.0e6;
+    record.sameSampleWorkingSetBytes =
+        current_process_working_set_bytes();
+    record.sameSampleSequence = static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now().time_since_epoch())
+            .count());
+    if (!record.result.surfaceCellContext.memoryOwnershipTimeline.empty()) {
+      record.sameSampleCategorizedOwnedBytes =
+          record.result.surfaceCellContext.memoryOwnershipTimeline.back()
+              .simultaneousOwnedBytes;
+      record.sameSampleOwnershipMeasurementAvailable =
+          record.sameSampleWorkingSetBytes > 0U;
+    }
+    record.sameSampleReconciliationRemainderBytes =
+        record.sameSampleWorkingSetBytes >
+                record.sameSampleCategorizedOwnedBytes
+            ? record.sameSampleWorkingSetBytes -
+                  record.sameSampleCategorizedOwnedBytes
+            : 0U;
     record.peakWorkingSetBytes = memorySampler.finish();
     return record;
   }
@@ -767,6 +818,13 @@ RunRecord run_case_once(
   options.targetedStiffening.enabled =
       benchmarkOptions.useTargetedParametrizationStiffening;
   options.maxComponentThreads = benchmarkOptions.maxComponentThreads;
+  if (benchmarkOptions.surfaceCellInjectFailureAfterStage >= 0) {
+    options.surfaceCells.injectFailureAfterStage =
+        benchmarkOptions.surfaceCellInjectFailureAfterStage;
+  }
+  if (benchmarkOptions.disableSurfaceCellSourceGridRecovery) {
+    options.surfaceCells.allowSourceGridRecovery = false;
+  }
   if (benchmarkOptions.maximumIntegerBatchSize > 0) {
     options.integerBatching.maximumBatchSize =
         benchmarkOptions.maximumIntegerBatchSize;
@@ -791,7 +849,7 @@ RunRecord run_case_once(
       record.result =
           pipeline::remesh_from_mesh(mesh.vertices, mesh.faces, options);
     }
-    record.success = record.result.success;
+    record.success = record.result.is_produced();
     if (record.success) {
       record.metrics = compute_structural_metrics(record.result);
     }
@@ -808,6 +866,23 @@ RunRecord run_case_once(
           std::chrono::steady_clock::now() - start)
           .count() /
       1.0e6;
+  record.sameSampleWorkingSetBytes = current_process_working_set_bytes();
+  record.sameSampleSequence = static_cast<std::uint64_t>(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::steady_clock::now().time_since_epoch())
+          .count());
+  if (!record.result.surfaceCellContext.memoryOwnershipTimeline.empty()) {
+    record.sameSampleCategorizedOwnedBytes =
+        record.result.surfaceCellContext.memoryOwnershipTimeline.back()
+            .simultaneousOwnedBytes;
+    record.sameSampleOwnershipMeasurementAvailable =
+        record.sameSampleWorkingSetBytes > 0U;
+  }
+  record.sameSampleReconciliationRemainderBytes =
+      record.sameSampleWorkingSetBytes > record.sameSampleCategorizedOwnedBytes
+          ? record.sameSampleWorkingSetBytes -
+                record.sameSampleCategorizedOwnedBytes
+          : 0U;
   record.peakWorkingSetBytes = memorySampler.finish();
   if (record.success && !artifactDirectory.empty()) {
     const std::uint64_t outputHash =
@@ -1160,6 +1235,48 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
 void write_remesh_diagnostics_json(std::ostream &out,
                                    const pipeline::RemeshResult &result) {
   const RemeshDiagnostics &diagnostics = result.diagnostics;
+  const geometry::SourceTopologyRegions *sourceAuthority =
+      result.surfaceCellContext.productSnapshots.traceNetwork.sourceTopologyRegions.has_value()
+          ? &*result.surfaceCellContext.productSnapshots.traceNetwork.sourceTopologyRegions
+          : nullptr;
+  const auto typed_sheet_index =
+      [](const std::optional<authority::IsolationSheetId> &sheet) {
+        return sheet.has_value() ? static_cast<int>(sheet->index()) : -1;
+      };
+  const auto source_component_for_region =
+      [&](const std::optional<authority::TopologyRegionId> &region) {
+        if (sourceAuthority == nullptr || !region.has_value() ||
+            region->index() >= sourceAuthority->regions().size()) {
+          return -1;
+        }
+        return static_cast<int>(sourceAuthority->region(*region).component().index());
+      };
+  const auto source_component_for_face = [&](const int sourceFace) {
+    if (sourceAuthority == nullptr || sourceFace < 0) return -1;
+    const auto row = authority::SourceFaceId::from_index(
+        sourceFace, sourceAuthority->face_count());
+    return row ? static_cast<int>(sourceAuthority->component_for_row(row.value()).index())
+               : -1;
+  };
+  const auto source_sheet_for_face = [&](const int sourceFace) {
+    if (sourceAuthority == nullptr || sourceFace < 0) return -1;
+    const auto row = authority::SourceFaceId::from_index(
+        sourceFace, sourceAuthority->face_count());
+    return row ? static_cast<int>(sourceAuthority->sheet_for_row(row.value()).index())
+               : -1;
+  };
+  const auto source_scope_for_faces = [&](const std::vector<int> &sourceFaces) {
+    if (sourceFaces.empty()) return std::pair<int, int>{-1, -1};
+    const int component = source_component_for_face(sourceFaces.front());
+    const int sheet = source_sheet_for_face(sourceFaces.front());
+    for (const int sourceFace : sourceFaces) {
+      if (source_component_for_face(sourceFace) != component ||
+          source_sheet_for_face(sourceFace) != sheet) {
+        return std::pair<int, int>{-1, -1};
+      }
+    }
+    return std::pair<int, int>{component, sheet};
+  };
   out << "{"
       << "\"overallPipelineSeconds\":" << diagnostics.overallPipelineSeconds
       << ","
@@ -1255,6 +1372,1372 @@ void write_remesh_diagnostics_json(std::ostream &out,
         << "}";
   }
   out << "],"
+      << "\"flowRepEndpointCompletionAttempted\":"
+      << (result.surfaceCellContext.flowRepEndpointCompletionAttempted ? "true" : "false") << ","
+      << "\"flowRepOpenEndpointsBeforeCompletion\":"
+      << result.surfaceCellContext.flowRepOpenEndpointsBeforeCompletion << ","
+      << "\"flowRepResolvedEndpoints\":"
+      << result.surfaceCellContext.flowRepResolvedEndpoints << ","
+      << "\"flowRepUnresolvedEndpoints\":"
+      << result.surfaceCellContext.flowRepUnresolvedEndpoints << ","
+      << "\"flowRepUnresolvedRequiredEndpoints\":"
+      << result.surfaceCellContext.flowRepUnresolvedRequiredEndpoints << ","
+      << "\"flowRepEndpointCompletionAddedArcs\":"
+      << result.surfaceCellContext.flowRepEndpointCompletionAddedArcs << ","
+      << "\"flowRepEndpointCompletionFailure\":\""
+      << escape_json(result.surfaceCellContext.flowRepEndpointCompletionFailure)
+      << "\","
+      << "\"flowRepEndpointTerminationCounts\":[";
+  for (std::size_t index = 0;
+       index < result.surfaceCellContext.flowRepEndpointTerminationCounts.size();
+       ++index) {
+    if (index > 0) {
+      out << ",";
+    }
+    out << result.surfaceCellContext.flowRepEndpointTerminationCounts[index];
+  }
+  out << "],"
+      << "\"flowRepEndpointDiagnostics\":[";
+  for (std::size_t index = 0;
+       index < result.surfaceCellContext.flowRepEndpointDiagnostics.size();
+       ++index) {
+    if (index > 0) {
+      out << ",";
+    }
+    const geometry::FlowRepEndpointCompletionDiagnostic &endpoint =
+        result.surfaceCellContext.flowRepEndpointDiagnostics[index];
+    out << "{"
+        << "\"sourceArcId\":" << endpoint.sourceArcId << ","
+        << "\"startEndpoint\":"
+        << (endpoint.startEndpoint ? "true" : "false") << ","
+        << "\"requiredSingularitySupport\":"
+        << (endpoint.requiredSingularitySupport ? "true" : "false") << ","
+        << "\"hardFeatureRail\":"
+        << (endpoint.hardFeatureRail ? "true" : "false") << ","
+        << "\"family\":" << endpoint.family << ","
+        << "\"sign\":" << endpoint.sign << ","
+        << "\"termination\":"
+        << static_cast<int>(endpoint.termination) << ","
+        << "\"tracedSegments\":" << endpoint.tracedSegments << ","
+        << "\"skippedDegenerateSegments\":"
+        << endpoint.skippedDegenerateSegments << ","
+        << "\"terminalSourceFace\":" << endpoint.terminalSourceFace << ","
+        << "\"terminalSourceVertex\":" << endpoint.terminalSourceVertex
+        << ","
+        << "\"terminalSourceEdge0\":" << endpoint.terminalSourceEdge0
+        << ","
+        << "\"terminalSourceEdge1\":" << endpoint.terminalSourceEdge1
+        << ","
+        << "\"terminalSourceEdgeT\":" << endpoint.terminalSourceEdgeT
+        << ",\"terminalBarycentric\":[";
+    write_json_number(out, endpoint.terminalBarycentric[0]);
+    out << ",";
+    write_json_number(out, endpoint.terminalBarycentric[1]);
+    out << ",";
+    write_json_number(out, endpoint.terminalBarycentric[2]);
+    out << "],"
+        << "\"lastRepresentableSourceFace\":"
+        << endpoint.lastRepresentableSourceFace << ","
+        << "\"lastRepresentableSourceVertex\":"
+        << endpoint.lastRepresentableSourceVertex << ","
+        << "\"lastRepresentableSourceEdge0\":"
+        << endpoint.lastRepresentableSourceEdge0 << ","
+        << "\"lastRepresentableSourceEdge1\":"
+        << endpoint.lastRepresentableSourceEdge1 << ","
+        << "\"lastRepresentableSourceEdgeT\":"
+        << endpoint.lastRepresentableSourceEdgeT
+        << ",\"lastRepresentableBarycentric\":[";
+    write_json_number(out, endpoint.lastRepresentableBarycentric[0]);
+    out << ",";
+    write_json_number(out, endpoint.lastRepresentableBarycentric[1]);
+    out << ",";
+    write_json_number(out, endpoint.lastRepresentableBarycentric[2]);
+    out << "],\"terminalDistanceToLastRepresentable\":";
+    write_json_number(out, endpoint.terminalDistanceToLastRepresentable);
+    out << ","
+        << "\"terminalFeatureRailCandidates\":"
+        << endpoint.terminalFeatureRailCandidates << ","
+        << "\"terminalCompatibleFeatureRailCandidates\":"
+        << endpoint.terminalCompatibleFeatureRailCandidates << ","
+        << "\"generatedSupportTraceId\":"
+        << endpoint.generatedSupportTraceId << ","
+        << "\"captureTargetArcId\":" << endpoint.captureTargetArcId << ","
+        << "\"captureTraceSegment\":" << endpoint.captureTraceSegment << ","
+        << "\"captureTraceParameter\":";
+    write_json_number(out, endpoint.captureTraceParameter);
+    out << ",\"captureTargetParameter\":";
+    write_json_number(out, endpoint.captureTargetParameter);
+    out << ",\"captureTargetSourceFace\":"
+        << endpoint.captureTargetSourceFace
+        << ",\"captureBarycentric\":[";
+    write_json_number(out, endpoint.captureBarycentric[0]);
+    out << ",";
+    write_json_number(out, endpoint.captureBarycentric[1]);
+    out << ",";
+    write_json_number(out, endpoint.captureBarycentric[2]);
+    out << "],\"captureTargetStartBarycentric\":[";
+    write_json_number(out, endpoint.captureTargetStartBarycentric[0]);
+    out << ",";
+    write_json_number(out, endpoint.captureTargetStartBarycentric[1]);
+    out << ",";
+    write_json_number(out, endpoint.captureTargetStartBarycentric[2]);
+    out << "],\"captureTargetEndBarycentric\":[";
+    write_json_number(out, endpoint.captureTargetEndBarycentric[0]);
+    out << ",";
+    write_json_number(out, endpoint.captureTargetEndBarycentric[1]);
+    out << ",";
+    write_json_number(out, endpoint.captureTargetEndBarycentric[2]);
+    out << "],"
+        << "\"resolution\":"
+        << static_cast<int>(endpoint.resolution)
+        << "}";
+  }
+  out << "],"
+      << "\"simplificationDiagnosticsAvailable\":"
+      << (result.surfaceCellContext.hasSimplificationDiagnostics ? "true"
+                                                                 : "false")
+      << ","
+      << "\"simplificationCandidateCount\":"
+      << result.surfaceCellContext.simplificationCandidateCount << ","
+      << "\"simplificationTopologyHealingCandidateCount\":"
+      << result.surfaceCellContext.simplificationTopologyHealingCandidateCount
+      << ","
+      << "\"simplificationCommitted\":"
+      << result.surfaceCellContext.simplificationCommitted << ","
+      << "\"simplificationRejected\":"
+      << result.surfaceCellContext.simplificationRejected << ","
+      << "\"simplificationGeneratedCandidates\":"
+      << result.surfaceCellContext.simplificationGeneratedCandidates << ","
+      << "\"simplificationDeduplicatedCandidates\":"
+      << result.surfaceCellContext.simplificationDeduplicatedCandidates << ","
+      << "\"simplificationInvalidatedCandidates\":"
+      << result.surfaceCellContext.simplificationInvalidatedCandidates << ","
+      << "\"simplificationStaleGenerationCandidates\":"
+      << result.surfaceCellContext.simplificationStaleGenerationCandidates << ","
+      << "\"simplificationFrontierGenerations\":"
+      << result.surfaceCellContext.simplificationFrontierGenerations << ","
+      << "\"simplificationPeakLiveCandidates\":"
+      << result.surfaceCellContext.simplificationPeakLiveCandidates << ","
+      << "\"simplificationEvaluatedCandidates\":"
+      << result.surfaceCellContext.simplificationEvaluatedCandidates << ","
+      << "\"simplificationTopologyHealingCandidates\":[";
+  for (std::size_t index = 0;
+       index < result.surfaceCellContext
+                   .simplificationTopologyHealingCandidates.size();
+       ++index) {
+    if (index > 0) {
+      out << ",";
+    }
+    const geometry::SurfaceSimplificationCandidate &candidate =
+        result.surfaceCellContext
+            .simplificationTopologyHealingCandidates[index];
+    out << "{"
+        << "\"candidateId\":" << candidate.stableId << ","
+        << "\"type\":" << static_cast<int>(candidate.type) << ","
+        << "\"touchesHardFeature\":"
+        << (candidate.touchesHardFeature ? "true" : "false") << ","
+        << "\"touchesBoundary\":"
+        << (candidate.touchesBoundary ? "true" : "false") << ","
+        << "\"touchesSingularity\":"
+        << (candidate.touchesSingularity ? "true" : "false") << ","
+        << "\"touchesLocalSheetBoundary\":"
+        << (candidate.touchesLocalSheetBoundary ? "true" : "false") << ","
+        << "\"changesTopology\":"
+        << (candidate.changesTopology ? "true" : "false") << ","
+        << "\"affectedPatchDisk\":"
+        << (candidate.affectedPatchDisk ? "true" : "false") << ","
+        << "\"sideFeasible\":"
+        << (candidate.sideFeasible ? "true" : "false") << ","
+        << "\"elementIds\":[";
+    for (std::size_t elementIndex = 0;
+         elementIndex < candidate.elementIds.size(); ++elementIndex) {
+      if (elementIndex > 0) out << ",";
+      out << candidate.elementIds[elementIndex];
+    }
+    out << "],\"affectedCellIds\":[";
+    for (std::size_t cellIndex = 0;
+         cellIndex < candidate.affectedCellIds.size(); ++cellIndex) {
+      if (cellIndex > 0) out << ",";
+      out << candidate.affectedCellIds[cellIndex];
+    }
+    out << "],\"elements\":[";
+    for (std::size_t elementIndex = 0;
+         elementIndex < candidate.elementIds.size(); ++elementIndex) {
+      if (elementIndex > 0) out << ",";
+      const int halfedgeId = candidate.elementIds[elementIndex];
+      if (!result.surfaceCellContext.hasArrangement || halfedgeId < 0 ||
+          halfedgeId >= static_cast<int>(
+                            result.surfaceCellContext.productSnapshots.arrangement.halfedges
+                                .size())) {
+        out << "{\"halfedgeId\":" << halfedgeId << "}";
+        continue;
+      }
+      const geometry::SurfaceArrangementHalfedge &halfedge =
+          result.surfaceCellContext.productSnapshots.arrangement.halfedges[
+              static_cast<std::size_t>(halfedgeId)];
+      int fromDegree = 0;
+      int toDegree = 0;
+      for (const geometry::SurfaceArrangementHalfedge &incident :
+           result.surfaceCellContext.productSnapshots.arrangement.halfedges) {
+        if (incident.from == halfedge.from) ++fromDegree;
+        if (incident.from == halfedge.to) ++toDegree;
+      }
+      out << "{"
+          << "\"halfedgeId\":" << halfedge.id << ","
+          << "\"twin\":" << halfedge.twin << ","
+          << "\"from\":" << halfedge.from << ","
+          << "\"to\":" << halfedge.to << ","
+          << "\"fromDegree\":" << fromDegree << ","
+          << "\"toDegree\":" << toDegree << ","
+          << "\"sourceArc\":" << halfedge.sourceArc << ","
+          << "\"family\":" << halfedge.family << ","
+          << "\"strand\":" << halfedge.strand << ","
+          << "\"sourceFace\":" << halfedge.sourceFace << ","
+          << "\"sourceComponent\":"
+          << source_component_for_region(halfedge.sourceTopologyRegion) << ","
+          << "\"sourceSheet\":" << source_sheet_for_face(halfedge.sourceFace) << ","
+          << "\"layoutSupport\":"
+          << (halfedge.layoutSupport ? "true" : "false") << ","
+          << "\"singularitySupport\":"
+          << (halfedge.singularitySupport ? "true" : "false") << "}";
+    }
+    out << "]}";
+  }
+  out << "],\"simplificationTransactions\":[";
+  for (std::size_t index = 0;
+       index < result.surfaceCellContext.simplificationTransactions.size();
+       ++index) {
+    if (index > 0) {
+      out << ",";
+    }
+    const geometry::SurfaceSimplificationTransaction &transaction =
+        result.surfaceCellContext.simplificationTransactions[index];
+    out << "{"
+        << "\"candidateId\":" << transaction.candidateId << ","
+        << "\"type\":" << static_cast<int>(transaction.type) << ","
+        << "\"topologyHealing\":"
+        << (transaction.topologyHealing ? "true" : "false") << ","
+        << "\"committed\":"
+        << (transaction.committed ? "true" : "false") << ","
+        << "\"rejection\":" << static_cast<int>(transaction.rejection)
+        << ","
+        << "\"beforeNonDiskDefect\":"
+        << transaction.beforeNonDiskDefect << ","
+        << "\"afterNonDiskDefect\":" << transaction.afterNonDiskDefect
+        << ","
+        << "\"beforeNodeCount\":" << transaction.beforeNodeCount << ","
+        << "\"afterNodeCount\":" << transaction.afterNodeCount << ","
+        << "\"beforeUndirectedEdgeCount\":"
+        << transaction.beforeUndirectedEdgeCount << ","
+        << "\"afterUndirectedEdgeCount\":"
+        << transaction.afterUndirectedEdgeCount << ","
+        << "\"beforeInteriorCellCount\":"
+        << transaction.beforeInteriorCellCount << ","
+        << "\"afterInteriorCellCount\":"
+        << transaction.afterInteriorCellCount << ","
+        << "\"beforeEulerCharacteristic\":"
+        << transaction.beforeEulerCharacteristic << ","
+        << "\"afterEulerCharacteristic\":"
+        << transaction.afterEulerCharacteristic << ","
+        << "\"sourceEulerCharacteristic\":"
+        << transaction.sourceEulerCharacteristic << ","
+        << "\"beforeConnectedComponentCount\":"
+        << transaction.beforeConnectedComponentCount << ","
+        << "\"afterConnectedComponentCount\":"
+        << transaction.afterConnectedComponentCount << ","
+        << "\"sourceConnectedComponentCount\":"
+        << transaction.sourceConnectedComponentCount << ","
+        << "\"beforeBoundaryLoopCount\":"
+        << transaction.beforeBoundaryLoopCount << ","
+        << "\"afterBoundaryLoopCount\":"
+        << transaction.afterBoundaryLoopCount << ","
+        << "\"sourceBoundaryLoopCount\":"
+        << transaction.sourceBoundaryLoopCount << ","
+        << "\"beforeUnsplitCrossings\":"
+        << transaction.beforeUnsplitCrossings << ","
+        << "\"afterUnsplitCrossings\":"
+        << transaction.afterUnsplitCrossings << ","
+        << "\"beforeGeometricTJunctions\":"
+        << transaction.beforeGeometricTJunctions << ","
+        << "\"afterGeometricTJunctions\":"
+        << transaction.afterGeometricTJunctions << ","
+        << "\"trialBuilt\":"
+        << (transaction.trialBuilt ? "true" : "false") << ","
+        << "\"beforeEmbeddingValid\":"
+        << (transaction.beforeEmbeddingValid ? "true" : "false") << ","
+        << "\"beforeOrientationValid\":"
+        << (transaction.beforeOrientationValid ? "true" : "false") << ","
+        << "\"beforeBoundaryLoopsValid\":"
+        << (transaction.beforeBoundaryLoopsValid ? "true" : "false") << ","
+        << "\"beforeEulerCharacteristicValid\":"
+        << (transaction.beforeEulerCharacteristicValid ? "true" : "false")
+        << ","
+        << "\"incidenceValid\":"
+        << (transaction.incidenceValid ? "true" : "false") << ","
+        << "\"embeddingValid\":"
+        << (transaction.embeddingValid ? "true" : "false") << ","
+        << "\"orientationValid\":"
+        << (transaction.orientationValid ? "true" : "false") << ","
+        << "\"boundaryLoopsValid\":"
+        << (transaction.boundaryLoopsValid ? "true" : "false") << ","
+        << "\"eulerCharacteristicValid\":"
+        << (transaction.eulerCharacteristicValid ? "true" : "false") << ","
+        << "\"noUnsplitCrossings\":"
+        << (transaction.noUnsplitCrossings ? "true" : "false") << ","
+        << "\"noGeometricTJunctions\":"
+        << (transaction.noGeometricTJunctions ? "true" : "false") << ","
+        << "\"topologyMismatchNotWorse\":"
+        << (transaction.topologyMismatchNotWorse ? "true" : "false") << ","
+        << "\"protectedSupportPreserved\":"
+        << (transaction.protectedSupportPreserved ? "true" : "false")
+        << ",\"elementIds\":[";
+    for (std::size_t elementIndex = 0;
+         elementIndex < transaction.elementIds.size(); ++elementIndex) {
+      if (elementIndex > 0) out << ",";
+      out << transaction.elementIds[elementIndex];
+    }
+    out << "],\"affectedCellIds\":[";
+    for (std::size_t cellIndex = 0;
+         cellIndex < transaction.affectedCellIds.size(); ++cellIndex) {
+      if (cellIndex > 0) out << ",";
+      out << transaction.affectedCellIds[cellIndex];
+    }
+    out << "]}";
+  }
+  out << "],"
+      << "\"tracingCurrentOwnedBytes\":"
+      << result.surfaceCellContext.tracingCurrentOwnedBytes << ","
+      << "\"tracingPeakOwnedBytes\":"
+      << result.surfaceCellContext.tracingPeakOwnedBytes << ","
+      << "\"flowRepCurrentOwnedBytes\":"
+      << result.surfaceCellContext.flowRepCurrentOwnedBytes << ","
+      << "\"flowRepPeakOwnedBytes\":"
+      << result.surfaceCellContext.flowRepPeakOwnedBytes << ","
+      << "\"arrangementCurrentOwnedBytes\":"
+      << result.surfaceCellContext.arrangementCurrentOwnedBytes << ","
+      << "\"arrangementPeakOwnedBytes\":"
+      << result.surfaceCellContext.arrangementPeakOwnedBytes << ","
+      << "\"simplificationCurrentOwnedBytes\":"
+      << result.surfaceCellContext.simplificationCurrentOwnedBytes << ","
+      << "\"simplificationPeakOwnedBytes\":"
+      << result.surfaceCellContext.simplificationPeakOwnedBytes << ","
+      << "\"maxSimultaneousLiveLargeStructures\":"
+      << result.surfaceCellContext.maxSimultaneousLiveLargeStructures << ","
+      << "\"traceStorageReleasedAfterFlowRep\":"
+      << (result.surfaceCellContext.traceStorageReleasedAfterFlowRep
+              ? "true" : "false") << ","
+      << "\"flowRepSelectionStorageReleasedAfterSelection\":"
+      << (result.surfaceCellContext
+                  .flowRepSelectionStorageReleasedAfterSelection
+              ? "true" : "false") << ","
+      << "\"embeddedArrangementStorageReleasedAfterArrangement\":"
+      << (result.surfaceCellContext
+                  .embeddedArrangementStorageReleasedAfterArrangement
+              ? "true" : "false") << ","
+      << "\"tracingLogicalPayloadBytes\":"
+      << result.surfaceCellContext.tracingLogicalPayloadBytes << ","
+      << "\"tracingRetainedCapacityBytes\":"
+      << result.surfaceCellContext.tracingRetainedCapacityBytes << ","
+      << "\"flowRepLogicalPayloadBytes\":"
+      << result.surfaceCellContext.flowRepLogicalPayloadBytes << ","
+      << "\"flowRepRetainedCapacityBytes\":"
+      << result.surfaceCellContext.flowRepRetainedCapacityBytes << ","
+      << "\"arrangementLogicalPayloadBytes\":"
+      << result.surfaceCellContext.arrangementLogicalPayloadBytes << ","
+      << "\"arrangementRetainedCapacityBytes\":"
+      << result.surfaceCellContext.arrangementRetainedCapacityBytes << ","
+      << "\"simplificationLogicalPayloadBytes\":"
+      << result.surfaceCellContext.simplificationLogicalPayloadBytes << ","
+      << "\"simplificationRetainedCapacityBytes\":"
+      << result.surfaceCellContext.simplificationRetainedCapacityBytes << ","
+      << "\"completionLogicalPayloadBytes\":"
+      << result.surfaceCellContext.completionLogicalPayloadBytes << ","
+      << "\"completionRetainedCapacityBytes\":"
+      << result.surfaceCellContext.completionRetainedCapacityBytes << ","
+      << "\"estimatedPeakSimultaneousOwnedBytes\":"
+      << result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes << ","
+      << "\"memoryOwnershipTimeline\":[";
+  for (std::size_t eventIndex = 0;
+       eventIndex < result.surfaceCellContext.memoryOwnershipTimeline.size();
+       ++eventIndex) {
+    if (eventIndex > 0U) out << ",";
+    const auto &event =
+        result.surfaceCellContext.memoryOwnershipTimeline[eventIndex];
+    out << "{\"stage\":\"" << escape_json(event.stage)
+        << "\",\"action\":\"" << escape_json(event.action)
+        << "\",\"logicalPayloadBytes\":"
+        << event.logicalPayloadBytes
+        << ",\"retainedCapacityBytes\":"
+        << event.retainedCapacityBytes
+        << ",\"simultaneousOwnedBytes\":"
+        << event.simultaneousOwnedBytes << "}";
+  }
+  out << "],"
+      << "\"surfaceCellContextSourceGridRecoveryUsed\":"
+      << (result.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed ? "true" : "false")
+      << ","
+      << "\"completionOddCellsBeforeRepair\":"
+      << result.surfaceCellContext.completionOddCellsBeforeRepair << ","
+      << "\"completionOddCellsAfterRepair\":"
+      << result.surfaceCellContext.completionOddCellsAfterRepair << ","
+      << "\"completionParitySplitEdges\":"
+      << result.surfaceCellContext.completionParitySplitEdges << ","
+      << "\"completionParityAlternativeCandidateBudget\":"
+      << result.surfaceCellContext.completionParityAlternativeCandidateBudget
+      << ","
+      << "\"completionParityAlternativeCandidatesAttempted\":"
+      << result.surfaceCellContext.completionParityAlternativeCandidatesAttempted
+      << ","
+      << "\"completionParityAlternativeVisitedStates\":"
+      << result.surfaceCellContext.completionParityAlternativeVisitedStates
+      << ","
+      << "\"completionParityAlternativeSelectedExclusion\":"
+      << result.surfaceCellContext.completionParityAlternativeSelectedExclusion
+      << ","
+      << "\"completionParityAlternativeStateSequenceHash\":"
+      << result.surfaceCellContext.completionParityAlternativeStateSequenceHash
+      << ","
+      << "\"completionParityAlternativeDisposition\":\""
+      << geometry::surface_cell_parity_alternative_disposition_name(
+             result.surfaceCellContext.completionParityAlternativeDisposition)
+      << "\","
+      << "\"completionSideInfeasibleBeforeRepair\":"
+      << result.surfaceCellContext.completionSideInfeasibleBeforeRepair << ","
+      << "\"completionSideInfeasibleAfterRepair\":"
+      << result.surfaceCellContext.completionSideInfeasibleAfterRepair << ","
+      << "\"completionSideInitialEquationDefect\":"
+      << result.surfaceCellContext.completionSideInitialEquationDefect << ","
+      << "\"completionSideFinalEquationDefect\":"
+      << result.surfaceCellContext.completionSideFinalEquationDefect << ","
+      << "\"completionSideInsertedVertices\":"
+      << result.surfaceCellContext.completionSideInsertedVertices << ","
+      << "\"completionSideRollbackEquivalent\":"
+      << (result.surfaceCellContext.completionSideRollbackEquivalent
+              ? "true"
+              : "false")
+      << ","
+      << "\"completionSideRollbackIdentityHashBefore\":"
+      << result.surfaceCellContext.completionSideRollbackIdentityHashBefore
+      << ","
+      << "\"completionSideRollbackIdentityHashAfter\":"
+      << result.surfaceCellContext.completionSideRollbackIdentityHashAfter
+      << ","
+      << "\"completionSideRollbackUndoOwnedBytes\":"
+      << result.surfaceCellContext.completionSideRollbackUndoOwnedBytes
+      << ","
+      << "\"completionAttemptedPatches\":"
+      << result.surfaceCellContext.completionAttemptedPatches << ","
+      << "\"completionFailedPatches\":"
+      << result.surfaceCellContext.completionFailedPatches << ","
+      << "\"completionOwnershipRepairAttempts\":"
+      << result.surfaceCellContext.completionOwnershipRepairAttempts << ","
+      << "\"completionTemplateInitialConflictCount\":"
+      << result.surfaceCellContext.completionTemplateInitialConflictCount << ","
+      << "\"completionTemplateFinalConflictCount\":"
+      << result.surfaceCellContext.completionTemplateFinalConflictCount << ","
+      << "\"completionTemplateConflictComponentCount\":"
+      << result.surfaceCellContext.completionTemplateConflictComponentCount << ","
+      << "\"completionTemplateChangedPatchCount\":"
+      << result.surfaceCellContext.completionTemplateChangedPatchCount << ","
+      << "\"completionTemplateAssemblyPasses\":"
+      << result.surfaceCellContext.completionTemplateAssemblyPasses << ","
+      << "\"completionOwnershipStructuralRepairAttempts\":"
+      << result.surfaceCellContext
+             .completionOwnershipStructuralRepairAttempts
+      << ","
+      << "\"completionOwnershipInsertedBoundaryVertices\":"
+      << result.surfaceCellContext
+             .completionOwnershipInsertedBoundaryVertices
+      << ","
+      << "\"completionOwnershipStructuralCandidateBudget\":"
+      << result.surfaceCellContext
+             .completionOwnershipStructuralCandidateBudget
+      << ","
+      << "\"completionOwnershipStructuralCandidatesConsumed\":"
+      << result.surfaceCellContext
+             .completionOwnershipStructuralCandidatesConsumed
+      << ","
+      << "\"completionOwnershipVisitedStateCount\":"
+      << result.surfaceCellContext.completionOwnershipVisitedStateCount
+      << ","
+      << "\"completionOwnershipFullRecomputationPasses\":"
+      << result.surfaceCellContext
+             .completionOwnershipFullRecomputationPasses
+      << ","
+      << "\"completionOwnershipIncrementalRecomputationPasses\":"
+      << result.surfaceCellContext
+             .completionOwnershipIncrementalRecomputationPasses
+      << ","
+      << "\"completionOwnershipPreConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipPreConflictCount
+      << ","
+      << "\"completionOwnershipPostConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipPostConflictCount
+      << ","
+      << "\"completionOwnershipRetainedConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipRetainedConflictCount
+      << ","
+      << "\"completionOwnershipRemovedConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipRemovedConflictCount
+      << ","
+      << "\"completionOwnershipIntroducedConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipIntroducedConflictCount
+      << ","
+      << "\"completionOwnershipConflictComponentCount\":"
+      << result.surfaceCellContext.completionOwnershipConflictComponentCount
+      << ","
+      << "\"completionOwnershipIndependentComponentCount\":"
+      << result.surfaceCellContext
+             .completionOwnershipIndependentComponentCount
+      << ","
+      << "\"completionOwnershipReusedPatchCompletions\":"
+      << result.surfaceCellContext.completionOwnershipReusedPatchCompletions
+      << ","
+      << "\"completionOwnershipRecomputedPatchCompletions\":"
+      << result.surfaceCellContext
+             .completionOwnershipRecomputedPatchCompletions
+      << ","
+      << "\"completionOwnershipProductCacheHashMisses\":"
+      << result.surfaceCellContext
+             .completionOwnershipProductCacheHashMisses
+      << ","
+      << "\"completionOwnershipProductCacheExactMismatches\":"
+      << result.surfaceCellContext
+             .completionOwnershipProductCacheExactMismatches
+      << ","
+      << "\"completionOwnershipProductCacheMismatchVector\":[";
+  for (std::size_t mismatchIndex = 0;
+       mismatchIndex < result.surfaceCellContext
+                           .completionOwnershipProductCacheMismatchVector.size();
+       ++mismatchIndex) {
+    if (mismatchIndex > 0U) out << ",";
+    const auto &mismatch = result.surfaceCellContext
+        .completionOwnershipProductCacheMismatchVector[mismatchIndex];
+    out << "{\"requestedCell\":" << mismatch.requestedCell
+        << ",\"cachedCell\":" << mismatch.cachedCell
+        << ",\"hashMiss\":" << (mismatch.hashMiss ? "true" : "false")
+        << ",\"sourceDomain\":" << (mismatch.sourceDomain ? "true" : "false")
+        << ",\"sideSubdivision\":" << (mismatch.sideSubdivision ? "true" : "false")
+        << ",\"boundarySourceCoordinates\":"
+        << (mismatch.boundarySourceCoordinates ? "true" : "false")
+        << ",\"railCurveSupport\":" << (mismatch.railCurveSupport ? "true" : "false")
+        << ",\"singularityRequirements\":"
+        << (mismatch.singularityRequirements ? "true" : "false")
+        << ",\"backendVariant\":" << (mismatch.backendVariant ? "true" : "false")
+        << ",\"topologyTemplate\":" << (mismatch.topologyTemplate ? "true" : "false")
+        << ",\"rebindValidation\":" << (mismatch.rebindValidation ? "true" : "false")
+        << "}";
+  }
+  out << "],"
+      << "\"completionParityScopeFailureAvailable\":"
+      << (result.surfaceCellContext.hasCompletionParityScopeFailure
+              ? "true" : "false")
+      << ",\"completionParityOriginalCell\":"
+      << result.surfaceCellContext.completionParityScopeFailure.originalCell
+      << ",\"completionParityReplacementCell\":"
+      << result.surfaceCellContext.completionParityScopeFailure.replacementCell
+      << ",\"completionParityHalfedge\":"
+      << result.surfaceCellContext.completionParityScopeFailure.halfedge
+      << ",\"completionParityTwin\":"
+      << result.surfaceCellContext.completionParityScopeFailure.twin
+      << ",\"completionParitySelectedComponent\":"
+      << result.surfaceCellContext.completionParityScopeFailure.selectedComponent
+      << ",\"completionParitySelectedSheet\":"
+      << result.surfaceCellContext.completionParityScopeFailure.selectedSheet
+      << ",\"completionParityAvailableComponents\":[";
+  for (std::size_t componentIndex = 0;
+       componentIndex < result.surfaceCellContext.completionParityScopeFailure
+                            .availableComponents.size();
+       ++componentIndex) {
+    if (componentIndex > 0U) out << ",";
+    out << result.surfaceCellContext.completionParityScopeFailure
+               .availableComponents[componentIndex];
+  }
+  out << "],\"completionParityAvailableSheets\":[";
+  for (std::size_t sheetIndex = 0;
+       sheetIndex < result.surfaceCellContext.completionParityScopeFailure
+                        .availableSheets.size();
+       ++sheetIndex) {
+    if (sheetIndex > 0U) out << ",";
+    out << result.surfaceCellContext.completionParityScopeFailure
+               .availableSheets[sheetIndex];
+  }
+  out << "],"
+      << "\"completionParityMutationPhase\":\""
+      << escape_json(result.surfaceCellContext
+                         .completionParityScopeFailure.mutationPhase)
+      << "\","
+      << "\"completionOwnershipPreConflictInventoryHash\":"
+      << result.surfaceCellContext
+             .completionOwnershipPreConflictInventoryHash
+      << ","
+      << "\"completionOwnershipPostConflictInventoryHash\":"
+      << result.surfaceCellContext
+             .completionOwnershipPostConflictInventoryHash
+      << ","
+      << "\"completionOwnershipConflictFrontierOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipConflictFrontierOwnedBytes
+      << ","
+      << "\"completionOwnershipProductCacheOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipProductCacheOwnedBytes
+      << ","
+      << "\"completionOwnershipCurrentLiveCandidateComplexes\":"
+      << result.surfaceCellContext
+             .completionOwnershipCurrentLiveCandidateComplexes
+      << ","
+      << "\"completionOwnershipPeakLiveCandidateComplexes\":"
+      << result.surfaceCellContext
+             .completionOwnershipPeakLiveCandidateComplexes
+      << ","
+      << "\"completionOwnershipLastCandidateHalfedge\":"
+      << result.surfaceCellContext.completionOwnershipLastCandidateHalfedge
+      << ","
+      << "\"completionOwnershipRouteCandidateCount\":"
+      << result.surfaceCellContext.completionOwnershipRouteCandidateCount
+      << ","
+      << "\"completionOwnershipRollbackOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipRollbackOwnedBytes
+      << ","
+      << "\"completionOwnershipCandidateOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipCandidateOwnedBytes
+      << ","
+      << "\"completionOwnershipDescriptorOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipDescriptorOwnedBytes
+      << ","
+      << "\"completionOwnershipCompletedPatchOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipCompletedPatchOwnedBytes
+      << ","
+      << "\"completionOwnershipAssemblyOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipAssemblyOwnedBytes
+      << ","
+      << "\"completionOwnershipCurrentStructuralOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipCurrentStructuralOwnedBytes
+      << ","
+      << "\"completionOwnershipPeakStructuralOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipPeakStructuralOwnedBytes
+      << ","
+      << "\"completionOwnershipLastCandidateHalfedges\":[";
+  for (std::size_t halfedgeIndex = 0;
+       halfedgeIndex < result.surfaceCellContext
+                           .completionOwnershipLastCandidateHalfedges.size();
+       ++halfedgeIndex) {
+    if (halfedgeIndex > 0U) out << ",";
+    out << result.surfaceCellContext
+               .completionOwnershipLastCandidateHalfedges[halfedgeIndex];
+  }
+  out << "],"
+      << "\"completionOwnershipStructuralExhaustionReason\":\""
+      << geometry::surface_cell_structural_repair_exhaustion_reason_name(
+             result.surfaceCellContext
+                 .completionOwnershipStructuralExhaustionReason)
+      << "\","
+      << "\"completionOwnershipLastAffectedPatches\":[";
+  for (std::size_t patchIndex = 0;
+       patchIndex < result.surfaceCellContext
+                        .completionOwnershipLastAffectedPatches.size();
+       ++patchIndex) {
+    if (patchIndex > 0U) out << ",";
+    out << result.surfaceCellContext
+               .completionOwnershipLastAffectedPatches[patchIndex];
+  }
+  out << "],"
+      << "\"completionOwnershipRepairLog\":[";
+  for (std::size_t attemptIndex = 0;
+       attemptIndex <
+       result.surfaceCellContext.completionOwnershipRepairLog.size();
+       ++attemptIndex) {
+    if (attemptIndex > 0U) out << ",";
+    const geometry::SurfaceCellOwnershipRepairAttempt &attempt =
+        result.surfaceCellContext
+            .completionOwnershipRepairLog[attemptIndex];
+    out << "{"
+        << "\"ordinal\":" << attempt.ordinal << ","
+        << "\"action\":\""
+        << geometry::surface_cell_ownership_repair_action_name(
+               attempt.action)
+        << "\","
+        << "\"conflictClass\":\""
+        << geometry::surface_cell_ownership_conflict_name(
+               attempt.conflictClass)
+        << "\","
+        << "\"resultingConflictClass\":\""
+        << geometry::surface_cell_ownership_conflict_name(
+               attempt.resultingConflictClass)
+        << "\","
+        << "\"firstPatch\":" << attempt.firstPatch << ","
+        << "\"secondPatch\":" << attempt.secondPatch << ","
+        << "\"selectedPatch\":" << attempt.selectedPatch << ","
+        << "\"selectedHalfedge\":" << attempt.selectedHalfedge
+        << ","
+        << "\"routeIdentityHash\":" << attempt.routeIdentityHash
+        << ","
+        << "\"routeCandidateCount\":" << attempt.routeCandidateCount
+        << ","
+        << "\"routeIntervalCount\":" << attempt.routeIntervalCount
+        << ","
+        << "\"rollbackOwnedBytes\":" << attempt.rollbackOwnedBytes
+        << ","
+        << "\"candidateOwnedBytes\":" << attempt.candidateOwnedBytes
+        << ","
+        << "\"descriptorOwnedBytes\":" << attempt.descriptorOwnedBytes
+        << ","
+        << "\"completedPatchOwnedBytes\":"
+        << attempt.completedPatchOwnedBytes << ","
+        << "\"assemblyOwnedBytes\":" << attempt.assemblyOwnedBytes
+        << ","
+        << "\"totalStructuralOwnedBytes\":"
+        << attempt.totalStructuralOwnedBytes << ","
+        << "\"selectedHalfedges\":[";
+    for (std::size_t halfedgeIndex = 0;
+         halfedgeIndex < attempt.selectedHalfedges.size(); ++halfedgeIndex) {
+      if (halfedgeIndex > 0U) out << ",";
+      out << attempt.selectedHalfedges[halfedgeIndex];
+    }
+    out << "],\"sharedCornerIdentityHashes\":[";
+    for (std::size_t hashIndex = 0;
+         hashIndex < attempt.sharedCornerIdentityHashes.size(); ++hashIndex) {
+      if (hashIndex > 0U) out << ",";
+      out << attempt.sharedCornerIdentityHashes[hashIndex];
+    }
+    out << "],"
+        << "\"backend\":\""
+        << geometry::pure_quad_completion_backend_name(attempt.backend)
+        << "\","
+        << "\"fromVariant\":" << attempt.fromVariant << ","
+        << "\"toVariant\":" << attempt.toVariant << ","
+        << "\"insertedVertices\":" << attempt.insertedVertices
+        << ","
+        << "\"splitUndirectedEdges\":"
+        << attempt.splitUndirectedEdges << ","
+        << "\"candidateEvaluation\":"
+        << attempt.candidateEvaluation << ","
+        << "\"structuralAttempt\":"
+        << attempt.structuralAttempt << ","
+        << "\"fullRecomputationPass\":"
+        << attempt.fullRecomputationPass << ","
+        << "\"visitedStateCount\":"
+        << attempt.visitedStateCount << ","
+        << "\"globalInsertedVerticesBefore\":"
+        << attempt.globalInsertedVerticesBefore << ","
+        << "\"globalInsertedVerticesAfter\":"
+        << attempt.globalInsertedVerticesAfter << ","
+        << "\"liveCandidateComplexes\":"
+        << attempt.liveCandidateComplexes << ","
+        << "\"outcome\":\""
+        << geometry::surface_cell_ownership_repair_outcome_name(
+               attempt.outcome)
+        << "\","
+        << "\"completionSucceeded\":"
+        << (attempt.completionSucceeded ? "true" : "false") << ","
+        << "\"committed\":"
+        << (attempt.committed ? "true" : "false") << ","
+        << "\"repeatedState\":"
+        << (attempt.repeatedState ? "true" : "false") << ","
+        << "\"madeProgress\":"
+        << (attempt.madeProgress ? "true" : "false") << ","
+        << "\"introducedOwnershipClaim\":"
+        << (attempt.introducedOwnershipClaim ? "true" : "false") << ","
+        << "\"preConflictCount\":" << attempt.preConflictCount << ","
+        << "\"postConflictCount\":" << attempt.postConflictCount << ","
+        << "\"retainedConflictCount\":"
+        << attempt.retainedConflictCount << ","
+        << "\"removedConflictCount\":"
+        << attempt.removedConflictCount << ","
+        << "\"introducedConflictCount\":"
+        << attempt.introducedConflictCount << ","
+        << "\"preConflictInventoryHash\":"
+        << attempt.preConflictInventoryHash << ","
+        << "\"postConflictInventoryHash\":"
+        << attempt.postConflictInventoryHash << ","
+        << "\"reusedPatchCompletions\":"
+        << attempt.reusedPatchCompletions << ","
+        << "\"recomputedPatchCompletions\":"
+        << attempt.recomputedPatchCompletions << ","
+        << "\"affectedPatches\":[";
+    for (std::size_t patchIndex = 0;
+         patchIndex < attempt.affectedPatches.size(); ++patchIndex) {
+      if (patchIndex > 0U) out << ",";
+      out << attempt.affectedPatches[patchIndex];
+    }
+    out << "],"
+        << "\"failure\":\"" << escape_json(attempt.failure)
+        << "\"}";
+  }
+  out << "],"
+      << "\"completionFailure\":\""
+      << escape_json(result.surfaceCellContext.completionFailure) << "\","
+      << "\"completionDomainIdentityAuditAvailable\":"
+      << (result.surfaceCellContext.hasCompletionDomainIdentityAudit
+              ? "true"
+              : "false")
+      << ","
+      << "\"completionDomainIdentityFailure\":\""
+      << directional::geometry::surface_cell_domain_identity_failure_name(
+             result.surfaceCellContext.completionDomainIdentityAudit.failure)
+      << "\","
+      << "\"completionDomainIdentityCell\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.cellId
+      << ","
+      << "\"completionDomainIdentityHalfedge\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.halfedgeId
+      << ","
+      << "\"completionDomainIdentityNode\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.nodeId
+      << ","
+      << "\"completionDomainIdentitySourceFace\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.sourceFace
+      << ","
+      << "\"completionDomainIdentityComponent\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.sourceComponent
+      << ","
+      << "\"completionDomainIdentitySheet\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.sourceSheet
+      << ","
+      << "\"completionOwnershipRejectionAvailable\":"
+      << (result.surfaceCellContext.firstCompletionOwnershipRejection.active
+              ? "true"
+              : "false")
+      << ",";
+  const geometry::PureQuadCompletionOwnershipRejection &ownershipRejection =
+      result.surfaceCellContext.firstCompletionOwnershipRejection;
+  const char *ownershipSupportKind = "invalid";
+  int ownershipSourceVertex = -1;
+  std::array<int, 2> ownershipSourceEdge{{-1, -1}};
+  if (ownershipRejection.sourceSupport.has_value()) {
+    if (const auto *vertex =
+            std::get_if<authority::SourceVertexSupport>(
+                &ownershipRejection.sourceSupport.value())) {
+      ownershipSupportKind = "source-vertex";
+      ownershipSourceVertex = static_cast<int>(vertex->vertex.index());
+    } else if (const auto *edge =
+                   std::get_if<authority::SourceEdgeSupport>(
+                       &ownershipRejection.sourceSupport.value())) {
+      ownershipSupportKind = "source-edge";
+      ownershipSourceEdge = {static_cast<int>(edge->edge.first().index()),
+                             static_cast<int>(edge->edge.second().index())};
+    } else {
+      ownershipSupportKind = "face-interior";
+    }
+  }
+  out << "\"completionOwnershipFailure\":\""
+      << escape_json(ownershipRejection.failure) << "\","
+      << "\"completionOwnershipSourcePatch\":"
+      << ownershipRejection.sourcePatch << ","
+      << "\"completionOwnershipLocalVertex\":"
+      << ownershipRejection.localVertex << ","
+      << "\"completionOwnershipBoundaryVertex\":"
+      << (ownershipRejection.boundaryVertex ? "true" : "false") << ","
+      << "\"completionOwnershipBackend\":\""
+      << geometry::pure_quad_completion_backend_name(ownershipRejection.backend)
+      << "\","
+      << "\"completionOwnershipVariant\":"
+      << ownershipRejection.completionVariant << ","
+      << "\"completionOwnershipStoredFace\":"
+      << ownershipRejection.storedFace << ","
+      << "\"completionOwnershipBarycentric\":["
+      << ownershipRejection.barycentric(0) << ","
+      << ownershipRejection.barycentric(1) << ","
+      << ownershipRejection.barycentric(2) << "],"
+      << "\"completionOwnershipEntityKind\":\""
+      << ownershipSupportKind << "\","
+      << "\"completionOwnershipSourceVertex\":"
+      << ownershipSourceVertex << ","
+      << "\"completionOwnershipSourceEdge\":["
+      << ownershipSourceEdge[0] << "," << ownershipSourceEdge[1] << "],"
+      << "\"completionOwnershipComponent\":"
+      << source_component_for_face(ownershipRejection.storedFace) << ","
+      << "\"completionOwnershipSheet\":"
+      << source_sheet_for_face(ownershipRejection.storedFace) << ","
+      << "\"completionOwnershipCandidateFaces\":[";
+  for (std::size_t faceIndex = 0;
+       faceIndex < ownershipRejection.candidateSupportedFaces.size();
+       ++faceIndex) {
+    if (faceIndex > 0U) out << ",";
+    out << ownershipRejection.candidateSupportedFaces[faceIndex].index();
+  }
+  out << "],\"completionOwnershipPatchFaces\":[";
+  for (std::size_t faceIndex = 0;
+       faceIndex < ownershipRejection.patchSourceFaces.size(); ++faceIndex) {
+    if (faceIndex > 0U) out << ",";
+    out << ownershipRejection.patchSourceFaces[faceIndex];
+  }
+  const geometry::PureQuadEmbeddingFailure &embeddingFailure =
+      result.surfaceCellContext.firstCompletionEmbeddingFailure;
+  const auto embeddingScope = source_scope_for_faces(embeddingFailure.sourceFaces);
+  out << "],"
+      << "\"completionEmbeddingFailureAvailable\":"
+      << (embeddingFailure.active ? "true" : "false") << ","
+      << "\"completionEmbeddingFailureKind\":\""
+      << geometry::pure_quad_embedding_failure_name(embeddingFailure.kind)
+      << "\","
+      << "\"completionEmbeddingSourcePatch\":"
+      << embeddingFailure.sourcePatch << ","
+      << "\"completionEmbeddingBackend\":\""
+      << geometry::pure_quad_completion_backend_name(embeddingFailure.backend)
+      << "\","
+      << "\"completionEmbeddingVariant\":"
+      << embeddingFailure.completionVariant << ","
+      << "\"completionEmbeddingLocalQuad\":"
+      << embeddingFailure.localQuad << ","
+      << "\"completionEmbeddingVertices\":["
+      << embeddingFailure.localVertices[0] << ","
+      << embeddingFailure.localVertices[1] << ","
+      << embeddingFailure.localVertices[2] << ","
+      << embeddingFailure.localVertices[3] << "],"
+      << "\"completionEmbeddingComponent\":"
+      << embeddingScope.first << ","
+      << "\"completionEmbeddingSheet\":"
+      << embeddingScope.second << ","
+      << "\"completionEmbeddingSourceFaces\":[";
+  for (std::size_t faceIndex = 0;
+       faceIndex < embeddingFailure.sourceFaces.size(); ++faceIndex) {
+    if (faceIndex > 0U) out << ",";
+    out << embeddingFailure.sourceFaces[faceIndex];
+  }
+  out << "],"
+      << "\"completionUnresolvedSingularVertexCount\":"
+      << result.surfaceCellContext.completionUnresolvedSingularVertices.size()
+      << ","
+      << "\"completionPatchDescriptorCount\":"
+      << result.surfaceCellContext.patchDescriptors.size() << ","
+      << "\"completionCompletedPatchCount\":"
+      << result.surfaceCellContext.productSnapshots.completedPatches.size() << ","
+      << "\"completionOutputLineageValid\":"
+      << (result.surfaceCellContext.productSnapshots.outputLineageValidation.valid ? "true"
+                                                                : "false")
+      << ","
+      << "\"completionOutputLineageFailure\":\""
+      << escape_json(result.surfaceCellContext.productSnapshots.outputLineageValidation.failure)
+      << "\",\"completionRejectedDescriptors\":[";
+  using FlowRepEndpointIdentity = std::tuple<int, int, std::uint64_t>;
+  std::map<FlowRepEndpointIdentity, int> retainedFlowRepEndpointDegree;
+  std::map<int, const geometry::FlowRepArc *> flowRepArcById;
+  std::map<int, const geometry::SurfaceArrangementArc *> arrangementArcById;
+  std::set<int> retainedFlowRepArcIds;
+  for (const geometry::FlowRepArc &arc :
+       result.surfaceCellContext.productSnapshots.flowRepArcs) {
+    flowRepArcById.emplace(arc.id, &arc);
+  }
+  for (const geometry::SurfaceArrangementArc &arc :
+       result.surfaceCellContext.productSnapshots.embeddedArrangementArcs) {
+    arrangementArcById.emplace(arc.id, &arc);
+  }
+  for (const int arcId :
+       result.surfaceCellContext.productSnapshots.flowRepNetwork.retainedArcIds) {
+    const auto foundArc = flowRepArcById.find(arcId);
+    if (foundArc == flowRepArcById.end()) {
+      continue;
+    }
+    retainedFlowRepArcIds.insert(arcId);
+    const geometry::FlowRepArc &arc = *foundArc->second;
+    if (arc.startIntrinsicEndpointKeyValid) {
+      ++retainedFlowRepEndpointDegree[{
+          source_component_for_region(arc.sourceTopologyRegion),
+          typed_sheet_index(arc.sourceIsolationSheet),
+          arc.startIntrinsicEndpointKey}];
+    }
+    if (arc.endIntrinsicEndpointKeyValid) {
+      ++retainedFlowRepEndpointDegree[{
+          source_component_for_region(arc.sourceTopologyRegion),
+          typed_sheet_index(arc.sourceIsolationSheet),
+          arc.endIntrinsicEndpointKey}];
+    }
+  }
+  const auto retained_endpoint_degree =
+      [&](const geometry::FlowRepArc &arc, const bool start) {
+        const bool valid = start ? arc.startIntrinsicEndpointKeyValid
+                                 : arc.endIntrinsicEndpointKeyValid;
+        if (!valid) {
+          return -1;
+        }
+        const std::uint64_t key = start ? arc.startIntrinsicEndpointKey
+                                        : arc.endIntrinsicEndpointKey;
+        const auto found = retainedFlowRepEndpointDegree.find(
+            {source_component_for_region(arc.sourceTopologyRegion),
+             typed_sheet_index(arc.sourceIsolationSheet), key});
+        return found == retainedFlowRepEndpointDegree.end() ? 0
+                                                            : found->second;
+      };
+  std::vector<int> completionArrangementNodeDegree;
+  if (result.surfaceCellContext.hasCompletionComplex) {
+    completionArrangementNodeDegree.assign(
+        result.surfaceCellContext.completionComplex.nodes.size(), 0);
+    for (const geometry::SurfaceArrangementHalfedge &halfedge :
+         result.surfaceCellContext.completionComplex.halfedges) {
+      if (halfedge.from >= 0 &&
+          halfedge.from < static_cast<int>(
+                              completionArrangementNodeDegree.size())) {
+        ++completionArrangementNodeDegree[
+            static_cast<std::size_t>(halfedge.from)];
+      }
+    }
+  }
+  const auto arrangement_node_degree = [&](const int node) {
+    return node >= 0 &&
+                   node < static_cast<int>(completionArrangementNodeDegree.size())
+               ? completionArrangementNodeDegree[static_cast<std::size_t>(node)]
+               : -1;
+  };
+  const auto complex_node_degrees_by_key = [&](
+      const geometry::SurfaceCellComplex &complex) {
+    std::vector<int> nodeDegree(complex.nodes.size(), 0);
+    for (const geometry::SurfaceArrangementHalfedge &halfedge :
+         complex.halfedges) {
+      if (halfedge.from >= 0 &&
+          halfedge.from < static_cast<int>(nodeDegree.size())) {
+        ++nodeDegree[static_cast<std::size_t>(halfedge.from)];
+      }
+    }
+    std::map<geometry::surface_arrangement_detail::NodeKey, int> byKey;
+    const Eigen::MatrixXi &sourceFaces =
+        result.surfaceCellContext.sourceMesh.F;
+    for (std::size_t nodeIndex = 0; nodeIndex < complex.nodes.size();
+         ++nodeIndex) {
+      const geometry::SurfaceArrangementNode &node = complex.nodes[nodeIndex];
+      const auto add_occurrence = [&](const int sourceFace,
+                                      const Eigen::RowVector3d &barycentric) {
+        if (sourceFace < 0 || sourceFace >= sourceFaces.rows() ||
+            !barycentric.allFinite()) {
+          return;
+        }
+        const auto key = geometry::surface_arrangement_detail::make_node_key(
+            sourceFaces, sourceFace,
+            geometry::surface_arrangement_detail::bary_to_uv(barycentric));
+        byKey[key] = std::max(byKey[key], nodeDegree[nodeIndex]);
+      };
+      add_occurrence(node.sourceFace, node.barycentric);
+      for (const geometry::SurfaceArrangementNodeOccurrence &occurrence :
+           node.occurrences) {
+        add_occurrence(occurrence.sourceFace, occurrence.barycentric);
+      }
+    }
+    return byKey;
+  };
+  const auto arrangementDegreesByKey =
+      complex_node_degrees_by_key(result.surfaceCellContext.productSnapshots.arrangement);
+  const auto simplifiedDegreesByKey =
+      complex_node_degrees_by_key(result.surfaceCellContext.simplifiedComplex);
+  const auto completionDegreesByKey =
+      complex_node_degrees_by_key(result.surfaceCellContext.completionComplex);
+  const auto endpoint_complex_degree = [&](
+      const geometry::FlowRepArc &arc, const bool start,
+      const std::map<geometry::surface_arrangement_detail::NodeKey, int>
+          &degrees) {
+    const Eigen::MatrixXi &sourceFaces =
+        result.surfaceCellContext.sourceMesh.F;
+    if (arc.sourceFace < 0 || arc.sourceFace >= sourceFaces.rows()) {
+      return -1;
+    }
+    const Eigen::RowVector3d &barycentric =
+        start ? arc.startBarycentric : arc.endBarycentric;
+    if (!barycentric.allFinite()) {
+      return -1;
+    }
+    const auto key = geometry::surface_arrangement_detail::make_node_key(
+        sourceFaces, arc.sourceFace,
+        geometry::surface_arrangement_detail::bary_to_uv(barycentric));
+    const auto found = degrees.find(key);
+    return found == degrees.end() ? 0 : found->second;
+  };
+  const auto support_trace_result = [&](const geometry::FlowRepArc &arc)
+      -> const geometry::SurfaceTraceResult * {
+    if (!result.surfaceCellContext.hasTraceNetwork || arc.supportTraceId < 0) {
+      return nullptr;
+    }
+    const geometry::SurfaceCellNetwork &network =
+        result.surfaceCellContext.productSnapshots.traceNetwork;
+    const int genericTraceCount = static_cast<int>(4U * network.seeds.size());
+    if (arc.supportTraceId < genericTraceCount &&
+        arc.supportTraceId < static_cast<int>(network.traces.size())) {
+      return &network.traces[static_cast<std::size_t>(arc.supportTraceId)];
+    }
+    const int separatrixIndex = arc.supportTraceId - genericTraceCount;
+    if (separatrixIndex >= 0 &&
+        separatrixIndex <
+            static_cast<int>(network.singularSeparatrices.size())) {
+      return &network.singularSeparatrices
+                  [static_cast<std::size_t>(separatrixIndex)]
+                      .trace;
+    }
+    return nullptr;
+  };
+  bool wroteRejectedDescriptor = false;
+  for (const geometry::PatchDescriptor &descriptor :
+       result.surfaceCellContext.patchDescriptors) {
+    const bool boundedFallbackAdmissible =
+        descriptor.feasibility.reason ==
+            geometry::PureQuadPatchRejectReason::SideInequality ||
+        descriptor.feasibility.reason ==
+            geometry::PureQuadPatchRejectReason::HexParity;
+    if (descriptor.boundaryCycleValid &&
+        (descriptor.feasibility.admissible || boundedFallbackAdmissible)) {
+      continue;
+    }
+    if (wroteRejectedDescriptor) {
+      out << ",";
+    }
+    wroteRejectedDescriptor = true;
+    const geometry::SurfaceArrangementCell *cell = nullptr;
+    if (result.surfaceCellContext.hasCompletionComplex) {
+      const auto foundCell = std::find_if(
+          result.surfaceCellContext.completionComplex.cells.begin(),
+          result.surfaceCellContext.completionComplex.cells.end(),
+          [&](const geometry::SurfaceArrangementCell &candidate) {
+            return candidate.id == descriptor.cellId;
+          });
+      if (foundCell !=
+          result.surfaceCellContext.completionComplex.cells.end()) {
+        cell = &*foundCell;
+      }
+    }
+    out << "{"
+        << "\"cellId\":" << descriptor.cellId << ","
+        << "\"boundaryCycleValid\":"
+        << (descriptor.boundaryCycleValid ? "true" : "false") << ","
+        << "\"admissible\":"
+        << (descriptor.feasibility.admissible ? "true" : "false") << ","
+        << "\"rejectReason\":"
+        << static_cast<int>(descriptor.feasibility.reason) << ","
+        << "\"boundaryVertexCount\":"
+        << descriptor.patch.boundaryVertices.size() << ","
+        << "\"boundaryLoopCount\":"
+        << descriptor.patch.boundaryLoopCount << ","
+        << "\"diskTopology\":"
+        << (descriptor.patch.diskTopology ? "true" : "false") << ","
+        << "\"simple\":"
+        << (descriptor.patch.simple ? "true" : "false") << ","
+        << "\"sideCount\":" << descriptor.sides.size() << ","
+        << "\"singularityCount\":"
+        << descriptor.patch.singularityCount << ","
+        << "\"singularIndexNumerator\":"
+        << descriptor.patch.singularIndexNumerator << ","
+        << "\"cellClosed\":"
+        << (cell != nullptr && cell->closed ? "true" : "false") << ","
+        << "\"cellDisk\":"
+        << (cell != nullptr && cell->disk ? "true" : "false") << ","
+        << "\"cellBoundaryComponentCount\":"
+        << (cell != nullptr ? cell->boundaryComponentCount : -1) << ","
+        << "\"cellEulerCharacteristic\":"
+        << (cell != nullptr ? cell->eulerCharacteristic : -1) << ","
+        << "\"cellRejectReason\":"
+        << (cell != nullptr ? static_cast<int>(cell->rejectReason) : -1) << ","
+        << "\"cellHalfedges\":[";
+    if (cell != nullptr) {
+      for (std::size_t halfedgeIndex = 0;
+           halfedgeIndex < cell->halfedges.size(); ++halfedgeIndex) {
+        if (halfedgeIndex > 0) {
+          out << ",";
+        }
+        const int halfedgeId = cell->halfedges[halfedgeIndex];
+        const geometry::SurfaceArrangementHalfedge *halfedge =
+            halfedgeId >= 0 &&
+                    halfedgeId < static_cast<int>(
+                                     result.surfaceCellContext
+                                         .completionComplex.halfedges.size())
+                ? &result.surfaceCellContext.completionComplex.halfedges
+                       [static_cast<std::size_t>(halfedgeId)]
+                : nullptr;
+        out << "{"
+            << "\"id\":" << halfedgeId << ","
+            << "\"from\":"
+            << (halfedge != nullptr ? halfedge->from : -1) << ","
+            << "\"to\":"
+            << (halfedge != nullptr ? halfedge->to : -1) << ","
+            << "\"twin\":"
+            << (halfedge != nullptr ? halfedge->twin : -1) << ","
+            << "\"sourceArc\":"
+            << (halfedge != nullptr ? halfedge->sourceArc : -1) << ","
+            << "\"family\":"
+            << (halfedge != nullptr ? halfedge->family : -1) << ","
+            << "\"hardFeature\":"
+            << (halfedge != nullptr && halfedge->hardFeature ? "true"
+                                                            : "false")
+            << ","
+            << "\"layoutSupport\":"
+            << (halfedge != nullptr && halfedge->layoutSupport ? "true"
+                                                              : "false")
+            << ","
+            << "\"singularitySupport\":"
+            << (halfedge != nullptr && halfedge->singularitySupport
+                    ? "true"
+                    : "false")
+            << ","
+            << "\"railId\":"
+            << (halfedge != nullptr && halfedge->railId.has_value()
+                    ? static_cast<std::int64_t>(halfedge->railId->index())
+                    : -1)
+            << ","
+            << "\"fromDegree\":"
+            << arrangement_node_degree(halfedge != nullptr ? halfedge->from
+                                                            : -1)
+            << ","
+            << "\"toDegree\":"
+            << arrangement_node_degree(halfedge != nullptr ? halfedge->to
+                                                            : -1)
+            << ",\"provenance\":[";
+        if (halfedge != nullptr) {
+          for (std::size_t provenanceIndex = 0;
+               provenanceIndex < halfedge->provenance.size();
+               ++provenanceIndex) {
+            if (provenanceIndex > 0) {
+              out << ",";
+            }
+            const geometry::SurfaceArrangementProvenance &provenance =
+                halfedge->provenance[provenanceIndex];
+            out << "{"
+                << "\"sourceArc\":" << provenance.sourceArc << ","
+                << "\"flowRepArc\":" << provenance.provenance << ","
+                << "\"sourceFace\":" << provenance.sourceFace << ","
+                << "\"family\":" << provenance.family << ","
+                << "\"layoutSupport\":"
+                << (provenance.layoutSupport ? "true" : "false") << ","
+                << "\"singularitySupport\":"
+                << (provenance.singularitySupport ? "true" : "false") << ","
+                << "\"sourceComponent\":"
+                << source_component_for_region(provenance.sourceTopologyRegion) << ","
+                << "\"sourceSheet\":"
+                << source_sheet_for_face(provenance.sourceFace) << ","
+                << "\"sourceT0\":";
+            write_json_number(out, provenance.sourceT0);
+            out << ",\"sourceT1\":";
+            write_json_number(out, provenance.sourceT1);
+            out << "}";
+          }
+        }
+        out << "]}";
+      }
+    }
+    out << "],\"sourceArcDetails\":[";
+    std::set<int> cellSourceArcIds;
+    if (cell != nullptr) {
+      for (const int halfedgeId : cell->halfedges) {
+        if (halfedgeId < 0 ||
+            halfedgeId >= static_cast<int>(
+                                result.surfaceCellContext.completionComplex
+                                    .halfedges.size())) {
+          continue;
+        }
+        const int sourceArc =
+            result.surfaceCellContext.completionComplex.halfedges
+                [static_cast<std::size_t>(halfedgeId)]
+                    .sourceArc;
+        if (sourceArc >= 0) {
+          cellSourceArcIds.insert(sourceArc);
+        }
+      }
+    }
+    bool wroteSourceArc = false;
+    for (const int sourceArcId : cellSourceArcIds) {
+      const auto foundArrangementArc = arrangementArcById.find(sourceArcId);
+      if (foundArrangementArc == arrangementArcById.end()) {
+        continue;
+      }
+      const geometry::SurfaceArrangementArc &arrangementArc =
+          *foundArrangementArc->second;
+      const auto foundArc = flowRepArcById.find(arrangementArc.provenance);
+      if (foundArc == flowRepArcById.end()) {
+        continue;
+      }
+      if (wroteSourceArc) {
+        out << ",";
+      }
+      wroteSourceArc = true;
+      const geometry::FlowRepArc &arc = *foundArc->second;
+      const geometry::SurfaceTraceResult *supportTrace =
+          support_trace_result(arc);
+      out << "{"
+          << "\"id\":" << sourceArcId << ","
+          << "\"flowRepArcId\":" << arc.id << ","
+          << "\"retained\":"
+          << (retainedFlowRepArcIds.count(arc.id) != 0U ? "true"
+                                                       : "false")
+          << ","
+          << "\"sourceFace\":" << arrangementArc.sourceFace << ","
+          << "\"sourceComponent\":"
+          << source_component_for_region(arrangementArc.sourceTopologyRegion) << ","
+          << "\"sourceSheet\":"
+          << source_sheet_for_face(arrangementArc.sourceFace) << ","
+          << "\"family\":" << arrangementArc.family << ","
+          << "\"layoutSupport\":"
+          << (arc.layoutSupport ? "true" : "false") << ","
+          << "\"singularitySupport\":"
+          << (arc.singularitySupport ? "true" : "false") << ","
+          << "\"hardFeatureRail\":"
+          << (arc.hardFeatureRail ? "true" : "false") << ","
+          << "\"supportTraceId\":" << arc.supportTraceId << ","
+          << "\"supportSeedId\":" << arc.supportSeedId << ","
+          << "\"supportSegment\":" << arc.supportSegment << ","
+          << "\"supportTermination\":"
+          << (supportTrace != nullptr
+                  ? static_cast<int>(supportTrace->termination)
+                  : -1)
+          << ","
+          << "\"supportTraceSegmentCount\":"
+          << (supportTrace != nullptr
+                  ? static_cast<int>(supportTrace->segments.size())
+                  : -1)
+          << ","
+          << "\"startEmbeddedAnchor\":"
+          << (arc.startEmbeddedAnchor ? "true" : "false") << ","
+          << "\"endEmbeddedAnchor\":"
+          << (arc.endEmbeddedAnchor ? "true" : "false") << ","
+          << "\"startIntrinsicEndpointKeyValid\":"
+          << (arc.startIntrinsicEndpointKeyValid ? "true" : "false") << ","
+          << "\"endIntrinsicEndpointKeyValid\":"
+          << (arc.endIntrinsicEndpointKeyValid ? "true" : "false") << ","
+          << "\"startIntrinsicEndpointKey\":"
+          << arc.startIntrinsicEndpointKey << ","
+          << "\"endIntrinsicEndpointKey\":"
+          << arc.endIntrinsicEndpointKey << ","
+          << "\"startRetainedDegree\":"
+          << retained_endpoint_degree(arc, true) << ","
+          << "\"endRetainedDegree\":"
+          << retained_endpoint_degree(arc, false) << ","
+          << "\"startArrangementDegree\":"
+          << endpoint_complex_degree(arc, true, arrangementDegreesByKey) << ","
+          << "\"endArrangementDegree\":"
+          << endpoint_complex_degree(arc, false, arrangementDegreesByKey) << ","
+          << "\"startSimplifiedDegree\":"
+          << endpoint_complex_degree(arc, true, simplifiedDegreesByKey) << ","
+          << "\"endSimplifiedDegree\":"
+          << endpoint_complex_degree(arc, false, simplifiedDegreesByKey) << ","
+          << "\"startCompletionDegree\":"
+          << endpoint_complex_degree(arc, true, completionDegreesByKey) << ","
+          << "\"endCompletionDegree\":"
+          << endpoint_complex_degree(arc, false, completionDegreesByKey) << ","
+          << "\"startBarycentric\":[";
+      write_json_number(out, arc.startBarycentric[0]);
+      out << ",";
+      write_json_number(out, arc.startBarycentric[1]);
+      out << ",";
+      write_json_number(out, arc.startBarycentric[2]);
+      out << "],\"endBarycentric\":[";
+      write_json_number(out, arc.endBarycentric[0]);
+      out << ",";
+      write_json_number(out, arc.endBarycentric[1]);
+      out << ",";
+      write_json_number(out, arc.endBarycentric[2]);
+      out << "],\"supportTerminalBarycentric\":[";
+      if (supportTrace != nullptr && !supportTrace->segments.empty()) {
+        const Eigen::RowVector3d &terminal =
+            supportTrace->segments.back().endBarycentric;
+        write_json_number(out, terminal[0]);
+        out << ",";
+        write_json_number(out, terminal[1]);
+        out << ",";
+        write_json_number(out, terminal[2]);
+      } else {
+        out << "null,null,null";
+      }
+      out << "]}";
+    }
+    out << "]}";
+  }
+  out << "],"
       << "\"componentSplitSeconds\":" << diagnostics.componentSplitSeconds
       << ","
       << "\"componentParallelWallSeconds\":"
@@ -1316,6 +2799,211 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << diagnostics.surfaceCellOptimizationSeconds << ","
       << "\"surfaceCellValidationSeconds\":"
       << diagnostics.surfaceCellValidationSeconds << ","
+      << "\"surfaceCellTracingCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellTracingCurrentOwnedBytes << ","
+      << "\"surfaceCellTracingPeakOwnedBytes\":"
+      << diagnostics.surfaceCellTracingPeakOwnedBytes << ","
+      << "\"surfaceCellFlowRepCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellFlowRepCurrentOwnedBytes << ","
+      << "\"surfaceCellFlowRepPeakOwnedBytes\":"
+      << diagnostics.surfaceCellFlowRepPeakOwnedBytes << ","
+      << "\"surfaceCellArrangementCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellArrangementCurrentOwnedBytes << ","
+      << "\"surfaceCellArrangementPeakOwnedBytes\":"
+      << diagnostics.surfaceCellArrangementPeakOwnedBytes << ","
+      << "\"surfaceCellSimplificationCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellSimplificationCurrentOwnedBytes << ","
+      << "\"surfaceCellSimplificationPeakOwnedBytes\":"
+      << diagnostics.surfaceCellSimplificationPeakOwnedBytes << ","
+      << "\"surfaceCellMaxSimultaneousLiveLargeStructures\":"
+      << diagnostics.surfaceCellMaxSimultaneousLiveLargeStructures << ","
+      << "\"surfaceCellTraceStorageReleasedAfterFlowRep\":"
+      << (diagnostics.surfaceCellTraceStorageReleasedAfterFlowRep ? "true"
+                                                                  : "false")
+      << ","
+      << "\"surfaceCellFlowRepSelectionStorageReleasedAfterSelection\":"
+      << (diagnostics.surfaceCellFlowRepSelectionStorageReleasedAfterSelection
+              ? "true"
+              : "false")
+      << ","
+      << "\"surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement\":"
+      << (diagnostics
+                  .surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement
+              ? "true"
+              : "false")
+      << ","
+      << "\"surfaceCellTracingLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellTracingLogicalPayloadBytes << ","
+      << "\"surfaceCellTracingRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellTracingRetainedCapacityBytes << ","
+      << "\"surfaceCellFlowRepLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellFlowRepLogicalPayloadBytes << ","
+      << "\"surfaceCellFlowRepRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellFlowRepRetainedCapacityBytes << ","
+      << "\"surfaceCellArrangementLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellArrangementLogicalPayloadBytes << ","
+      << "\"surfaceCellArrangementRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellArrangementRetainedCapacityBytes << ","
+      << "\"surfaceCellSimplificationLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellSimplificationLogicalPayloadBytes << ","
+      << "\"surfaceCellSimplificationRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellSimplificationRetainedCapacityBytes << ","
+      << "\"surfaceCellCompletionLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellCompletionLogicalPayloadBytes << ","
+      << "\"surfaceCellCompletionRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellCompletionRetainedCapacityBytes << ","
+      << "\"surfaceCellEstimatedPeakSimultaneousOwnedBytes\":"
+      << diagnostics.surfaceCellEstimatedPeakSimultaneousOwnedBytes << ","
+      << "\"surfaceCellMemoryOwnershipTimeline\":[";
+  for (std::size_t eventIndex = 0;
+       eventIndex < diagnostics.surfaceCellMemoryOwnershipTimeline.size();
+       ++eventIndex) {
+    if (eventIndex > 0U) out << ",";
+    const SurfaceCellMemoryOwnershipEvent &event =
+        diagnostics.surfaceCellMemoryOwnershipTimeline[eventIndex];
+    out << "{\"stage\":\"" << escape_json(event.stage)
+        << "\",\"action\":\"" << escape_json(event.action)
+        << "\",\"logicalPayloadBytes\":" << event.logicalPayloadBytes
+        << ",\"retainedCapacityBytes\":" << event.retainedCapacityBytes
+        << ",\"simultaneousOwnedBytes\":" << event.simultaneousOwnedBytes
+        << "}";
+  }
+  out << "],"
+      << "\"surfaceCellCompletionParityScopeFailureAvailable\":"
+      << (diagnostics.surfaceCellCompletionParityScopeFailureAvailable
+              ? "true"
+              : "false")
+      << ",\"surfaceCellCompletionParityOriginalCell\":"
+      << diagnostics.surfaceCellCompletionParityOriginalCell
+      << ",\"surfaceCellCompletionParityReplacementCell\":"
+      << diagnostics.surfaceCellCompletionParityReplacementCell
+      << ",\"surfaceCellCompletionParityHalfedge\":"
+      << diagnostics.surfaceCellCompletionParityHalfedge
+      << ",\"surfaceCellCompletionParityTwin\":"
+      << diagnostics.surfaceCellCompletionParityTwin
+      << ",\"surfaceCellCompletionParitySelectedComponent\":"
+      << diagnostics.surfaceCellCompletionParitySelectedComponent
+      << ",\"surfaceCellCompletionParitySelectedSheet\":"
+      << diagnostics.surfaceCellCompletionParitySelectedSheet
+      << ",\"surfaceCellCompletionParityAvailableComponents\":[";
+  for (std::size_t componentIndex = 0;
+       componentIndex <
+       diagnostics.surfaceCellCompletionParityAvailableComponents.size();
+       ++componentIndex) {
+    if (componentIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellCompletionParityAvailableComponents[
+        componentIndex];
+  }
+  out << "],\"surfaceCellCompletionParityAvailableSheets\":[";
+  for (std::size_t sheetIndex = 0;
+       sheetIndex < diagnostics.surfaceCellCompletionParityAvailableSheets.size();
+       ++sheetIndex) {
+    if (sheetIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellCompletionParityAvailableSheets[sheetIndex];
+  }
+  out << "],\"surfaceCellCompletionParityMutationPhase\":\""
+      << escape_json(diagnostics.surfaceCellCompletionParityMutationPhase)
+      << "\","
+      << "\"surfaceCellAuthoritativeProducerDisposition\":\""
+      << escape_json(diagnostics.surfaceCellAuthoritativeProducerDisposition)
+      << "\","
+      << "\"surfaceCellTopologyRegionCount\":"
+      << diagnostics.surfaceCellTopologyRegionCount << ","
+      << "\"surfaceCellInternalIsolationSeamCount\":"
+      << diagnostics.surfaceCellInternalIsolationSeamCount << ","
+      << "\"surfaceCellConsumedTopologyRegionCount\":"
+      << diagnostics.surfaceCellConsumedTopologyRegionCount << ","
+      << "\"surfaceCellConsumedInternalIsolationSeamCount\":"
+      << diagnostics.surfaceCellConsumedInternalIsolationSeamCount << ","
+      << "\"surfaceCellConsumedPeriodicHolonomyCount\":"
+      << diagnostics.surfaceCellConsumedPeriodicHolonomyCount << ","
+      << "\"surfaceCellMaterializedConnectedComponentCount\":"
+      << diagnostics.surfaceCellMaterializedConnectedComponentCount << ","
+      << "\"surfaceCellMaterializedBoundaryLoopCount\":"
+      << diagnostics.surfaceCellMaterializedBoundaryLoopCount << ","
+      << "\"surfaceCellMaterializedEulerCharacteristic\":"
+      << diagnostics.surfaceCellMaterializedEulerCharacteristic << ","
+      << "\"surfaceCellTopologyRegionHashes\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionHashes.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionHashes[regionIndex];
+  }
+  out << "],\"surfaceCellTopologyRegionEulerCharacteristics\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionEulerCharacteristics.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionEulerCharacteristics[regionIndex];
+  }
+  out << "],\"surfaceCellTopologyRegionBoundaryLoopCounts\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts[regionIndex];
+  }
+  out << "],\"surfaceCellTopologyRegionIsolationSheetCounts\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionIsolationSheetCounts.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionIsolationSheetCounts[regionIndex];
+  }
+  out << "],"
+      << "\"surfaceCellBoundedDiskBoundaryPhaseCount\":"
+      << diagnostics.surfaceCellBoundedDiskBoundaryPhaseCount << ","
+      << "\"surfaceCellBoundedDiskBoundaryRunCount\":"
+      << diagnostics.surfaceCellBoundedDiskBoundaryRunCount << ","
+      << "\"surfaceCellPolygonalBoundedDiskBoundaryPhaseCount\":"
+      << diagnostics.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount << ","
+      << "\"surfaceCellBoundedDiskConstructedChartCount\":"
+      << diagnostics.surfaceCellBoundedDiskConstructedChartCount << ","
+      << "\"surfaceCellBoundedDiskBoundaryPhaseHashes\":[";
+  for (std::size_t phaseIndex = 0;
+       phaseIndex < diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes.size();
+       ++phaseIndex) {
+    if (phaseIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes[phaseIndex];
+  }
+  out << "],"
+      << "\"surfaceCellPeriodicHolonomyRelationCount\":"
+      << diagnostics.surfaceCellPeriodicHolonomies.size() << ","
+      << "\"surfaceCellPeriodicHolonomyAvailable\":"
+      << (diagnostics.surfaceCellPeriodicHolonomyAvailable ? "true" : "false") << ","
+      << "\"surfaceCellPeriodicHolonomyQuarterTurnRotation\":"
+      << diagnostics.surfaceCellPeriodicHolonomyQuarterTurnRotation << ","
+      << "\"surfaceCellPeriodicHolonomyTranslationU\":"
+      << diagnostics.surfaceCellPeriodicHolonomyTranslationU << ","
+      << "\"surfaceCellPeriodicHolonomyTranslationV\":"
+      << diagnostics.surfaceCellPeriodicHolonomyTranslationV << ","
+      << "\"surfaceCellPeriodicHolonomyRouteEdgeCount\":"
+      << diagnostics.surfaceCellPeriodicHolonomyRouteEdgeCount << ","
+      << "\"surfaceCellPeriodicCutEdgeCount\":"
+      << diagnostics.surfaceCellPeriodicCutEdgeCount << ","
+      << "\"surfaceCellFirstInvalidProducerStage\":\""
+      << escape_json(diagnostics.surfaceCellFirstInvalidProducerStage)
+      << "\","
+      << "\"surfaceCellFirstInvalidProducerReason\":\""
+      << escape_json(diagnostics.surfaceCellFirstInvalidProducerReason)
+      << "\","
+      << "\"surfaceCellFirstInvalidProducerCell\":"
+      << diagnostics.surfaceCellFirstInvalidProducerCell << ","
+      << "\"surfaceCellFirstInvalidProducerHalfedge\":"
+      << diagnostics.surfaceCellFirstInvalidProducerHalfedge << ","
+      << "\"surfaceCellFirstInvalidProducerTwin\":"
+      << diagnostics.surfaceCellFirstInvalidProducerTwin << ","
+      << "\"surfaceCellFirstInvalidProducerNode\":"
+      << diagnostics.surfaceCellFirstInvalidProducerNode << ","
+      << "\"surfaceCellFirstInvalidProducerFace\":"
+      << diagnostics.surfaceCellFirstInvalidProducerFace << ","
+      << "\"surfaceCellFirstInvalidProducerVertex\":"
+      << diagnostics.surfaceCellFirstInvalidProducerVertex << ","
+      << "\"surfaceCellFirstInvalidProducerEdgeFirst\":"
+      << diagnostics.surfaceCellFirstInvalidProducerEdgeFirst << ","
+      << "\"surfaceCellFirstInvalidProducerEdgeSecond\":"
+      << diagnostics.surfaceCellFirstInvalidProducerEdgeSecond << ","
       << "\"surfaceCellValidationFailures\":"
       << diagnostics.surfaceCellValidationFailures << ","
       << "\"surfaceCellProvenanceVertexCount\":"
@@ -1620,7 +3308,40 @@ void write_results_json(const Options &options,
       out << "        {\"success\": " << (run.success ? "true" : "false")
           << ", \"wallSeconds\": " << run.wallSeconds
           << ", \"peakWorkingSetBytes\": " << run.peakWorkingSetBytes
-          << ", \"reviewImagePath\": \""
+          << ", \"estimatedPeakSimultaneousOwnedBytes\": "
+          << run.result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes
+          << ", \"categorizedPeakOwnedBytes\": "
+          << run.result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes
+          << ", \"sameSampleOwnershipMeasurementAvailable\": "
+          << (run.sameSampleOwnershipMeasurementAvailable ? "true" : "false")
+          << ", \"sameSampleWorkingSetBytes\": "
+          << run.sameSampleWorkingSetBytes
+          << ", \"sameSampleCategorizedOwnedBytes\": "
+          << run.sameSampleCategorizedOwnedBytes
+          << ", \"sameSampleSequence\": " << run.sameSampleSequence
+          << ", \"peakReconciliationRemainderBytes\": "
+          << run.sameSampleReconciliationRemainderBytes
+          << ", \"unexplainedPeakWorkingSetBytes\": "
+          << run.sameSampleReconciliationRemainderBytes
+          << ", \"sameSampleOwnedToWorkingSetRatio\": ";
+      write_json_number(
+          out,
+          run.sameSampleOwnershipMeasurementAvailable &&
+                  run.sameSampleWorkingSetBytes > 0U
+              ? static_cast<double>(run.sameSampleCategorizedOwnedBytes) /
+                    static_cast<double>(run.sameSampleWorkingSetBytes)
+              : 0.0);
+      out
+          << ", \"ownedToPeakWorkingSetRatio\": ";
+      write_json_number(
+          out,
+          run.peakWorkingSetBytes > 0U
+              ? static_cast<double>(
+                    run.result.surfaceCellContext
+                        .estimatedPeakSimultaneousOwnedBytes) /
+                    static_cast<double>(run.peakWorkingSetBytes)
+              : 0.0);
+      out << ", \"reviewImagePath\": \""
           << escape_json(run.reviewImagePath) << "\""
           << ", \"diagnostics\": ";
       write_remesh_diagnostics_json(out, run.result);

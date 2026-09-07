@@ -2,14 +2,46 @@
 
 namespace directional::geometry::surface_optimization_rail_detail {
 
-bool source_face_contains_vertex(const Eigen::MatrixXi &faces,
-                                        const int face,
-                                        const int vertex) {
-  if (face < 0 || face >= faces.rows() || faces.cols() != 3) {
+namespace {
+
+std::optional<surface_optimizer_detail::SourceProjectionScope> source_face_scope(
+    const SurfaceOptimizationConstraints &constraints, const int face) {
+  if (constraints.sourceAuthority == nullptr || face < 0 ||
+      face >= constraints.sourceFaces.rows() ||
+      !constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
+    return std::nullopt;
+  }
+  const auto row = authority::SourceFaceId::from_index(
+      face, constraints.sourceAuthority->face_count());
+  if (!row) return std::nullopt;
+  const auto component =
+      constraints.sourceAuthority->component_for_row(row.value());
+  const auto sheet =
+      constraints.sourceAuthority->sheet_for_row(row.value());
+  return surface_optimizer_detail::SourceProjectionScope{component, sheet};
+}
+
+} // namespace
+
+bool source_face_contains_vertex(
+    const Eigen::MatrixXi &faces, authority::SourceFaceId face,
+    authority::SourceVertexId vertex) {
+  if (faces.cols() != 3 ||
+      (face).index() >=
+          static_cast<std::size_t>(faces.rows())) {
     return false;
   }
-  return faces(face, 0) == vertex || faces(face, 1) == vertex ||
-         faces(face, 2) == vertex;
+  const auto matches = [&](const int corner) {
+    return static_cast<std::int64_t>(faces(
+               static_cast<Eigen::Index>(
+                   (face).index()),
+               corner)) ==
+           static_cast<std::int64_t>(
+               (vertex).index());
+  };
+  return matches(0) || matches(1) || matches(2);
 }
 
 } // namespace directional::geometry::surface_optimization_rail_detail
@@ -20,60 +52,72 @@ bool provenance_supports_interval_sheet(
     const SurfacePoint &provenance,
     const SurfaceFeatureCurveInterval &interval,
     const SurfaceOptimizationConstraints &constraints) {
-  if (provenance.component >= 0 && interval.component >= 0 &&
-      provenance.component != interval.component) {
-    return false;
-  }
-  if (provenance.sheet < 0 || interval.sheet < 0 ||
-      provenance.sheet == interval.sheet) {
-    return true;
-  }
+  using authority::SourceFaceId;
+  using authority::SourceVertexId;
   if (!provenance.valid() || provenance.face < 0 ||
       provenance.face >= constraints.sourceFaces.rows() ||
       interval.sourceFace < 0 ||
       interval.sourceFace >= constraints.sourceFaces.rows() ||
       constraints.sourceFaces.cols() != 3 ||
+      constraints.sourceVertices.rows() <= 0 ||
       !provenance.barycentric.allFinite()) {
     return false;
   }
+  const auto provenanceScope = source_face_scope(constraints, provenance.face);
+  const auto intervalScope = source_face_scope(constraints, interval.sourceFace);
+  if (!provenanceScope.has_value() || !intervalScope.has_value() ||
+      provenanceScope->component != intervalScope->component) {
+    return false;
+  }
+  if (provenanceScope->sheet == intervalScope->sheet) {
+    return true;
+  }
+
+  const std::size_t sourceFaceExtent =
+      static_cast<std::size_t>(constraints.sourceFaces.rows());
+  const auto provenanceFaceResult = directional::authority::SourceFaceId::from_index(
+      provenance.face, sourceFaceExtent);
+  const auto intervalFaceResult = directional::authority::SourceFaceId::from_index(
+      interval.sourceFace, sourceFaceExtent);
+  if (!provenanceFaceResult || !intervalFaceResult) {
+    return false;
+  }
+  const SourceFaceId provenanceFace = provenanceFaceResult.value();
+  const SourceFaceId intervalFace = intervalFaceResult.value();
 
   // A point on a source edge or vertex legitimately belongs to every
   // incident local sheet. Its stored provenance face is only one valid chart.
   // Accept a rail interval from another sheet only when both charts share the
   // exact source entity supporting the point; interior points remain confined
   // to their authoritative sheet.
-  std::vector<int> supportVertices;
+  std::vector<SourceVertexId> supportVertices;
   for (int corner = 0; corner < 3; ++corner) {
     if (provenance.barycentric(corner) > 1.0e-8) {
-      supportVertices.push_back(
-          constraints.sourceFaces(provenance.face, corner));
+      const int sourceVertexIndex = constraints.sourceFaces(
+          static_cast<Eigen::Index>(
+              (provenanceFace).index()),
+          corner);
+      if (sourceVertexIndex < 0) {
+        return false;
+      }
+      const auto sourceVertexResult = directional::authority::SourceVertexId::from_index(
+          sourceVertexIndex, static_cast<std::size_t>(constraints.sourceVertices.rows()));
+      if (!sourceVertexResult) {
+        return false;
+      }
+      supportVertices.push_back(sourceVertexResult.value());
     }
   }
   if (supportVertices.empty() || supportVertices.size() >= 3U) {
     return false;
   }
-  for (const int sourceVertex : supportVertices) {
-    if (sourceVertex < 0 ||
-        !source_face_contains_vertex(constraints.sourceFaces,
-                                     interval.sourceFace, sourceVertex)) {
+  for (const SourceVertexId sourceVertex : supportVertices) {
+    if (!source_face_contains_vertex(constraints.sourceFaces, intervalFace,
+                                     sourceVertex)) {
       return false;
     }
   }
 
-  if (interval.component >= 0 &&
-      constraints.sourceFaceComponent.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
-      constraints.sourceFaceComponent[static_cast<std::size_t>(
-          interval.sourceFace)] != interval.component) {
-    return false;
-  }
-  if (interval.sheet >= 0 &&
-      constraints.sourceFaceSheet.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
-      constraints.sourceFaceSheet[static_cast<std::size_t>(
-          interval.sourceFace)] != interval.sheet) {
-    return false;
-  }
   return true;
 }
 
@@ -87,7 +131,6 @@ void fill_surface_optimization_rail_constraints(
     const std::vector<SurfacePoint> &outputProvenance,
     SurfaceOptimizationConstraints &constraints) {
   constraints.featureCurveIntervals.clear();
-  constraints.featureIntervals.clear();
   constraints.featureVertices.clear();
   constraints.orderedFeatureVertices.clear();
   constraints.authoritativeBoundaryEdges.clear();
@@ -99,7 +142,7 @@ void fill_surface_optimization_rail_constraints(
   constraints.featureRailAuthorityProvided = true;
   int nextIntervalId = 0;
   for (const SurfaceCellRail &rail : rails) {
-    const int curveId = rail.curveId >= 0 ? rail.curveId : rail.id;
+    const int curveId = rail.curveId;
     for (int sampleIndex = 0;
          sampleIndex + 1 < static_cast<int>(rail.samples.size());
          sampleIndex += 2) {
@@ -113,14 +156,6 @@ void fill_surface_optimization_rail_constraints(
       interval.railId = rail.id;
       interval.order = sampleIndex / 2;
       interval.sourceFace = start.sourceFace;
-      interval.component = rail.component;
-      interval.sheet =
-          start.sourceFace >= 0 &&
-                  start.sourceFace <
-                      static_cast<int>(constraints.sourceFaceSheet.size())
-              ? constraints.sourceFaceSheet[static_cast<std::size_t>(
-                    start.sourceFace)]
-              : -1;
       interval.parameterStart = start.railParameter;
       interval.parameterEnd = end.railParameter;
       interval.curveClosed = rail.closed;
@@ -135,8 +170,8 @@ void fill_surface_optimization_rail_constraints(
 
   constraints.featureCurveIds =
       Eigen::VectorXi::Constant(outputVertices.rows(), -1);
-  constraints.featureRailIds =
-      Eigen::VectorXi::Constant(outputVertices.rows(), -1);
+  constraints.featureRailIds.assign(
+      static_cast<std::size_t>(outputVertices.rows()), std::nullopt);
   constraints.featureIntervalIds =
       Eigen::VectorXi::Constant(outputVertices.rows(), -1);
   constraints.featureParameters = Eigen::VectorXd::Zero(outputVertices.rows());
@@ -151,10 +186,14 @@ void fill_surface_optimization_rail_constraints(
   struct FeatureAssignment {
     int vertex = -1;
     int curveId = -1;
-    int sequenceId = -1;
+    SurfaceFeatureSequenceKey sequence;
     int order = -1;
     double parameter = 0.0;
     double localParameter = 0.0;
+  };
+  const auto sequence_key = [](const SurfaceFeatureCurveInterval &interval) {
+    return SurfaceFeatureSequenceKey{
+        interval.railId, interval.railId.has_value() ? -1 : interval.curveId};
   };
   std::vector<FeatureAssignment> assignments;
   // Authority membership is many-to-many at feature junctions. The optimizer
@@ -209,9 +248,7 @@ void fill_surface_optimization_rail_constraints(
     for (const IncidentInterval &incident : incidentIntervals) {
       const SurfaceFeatureCurveInterval &interval = *incident.interval;
       authorityAssignments.push_back(
-          {vertex, interval.curveId,
-           interval.railId >= 0 ? interval.railId : interval.curveId,
-           interval.order,
+          {vertex, interval.curveId, sequence_key(interval), interval.order,
            interval.parameterStart +
                incident.localParameter *
                    (interval.parameterEnd - interval.parameterStart),
@@ -219,14 +256,13 @@ void fill_surface_optimization_rail_constraints(
     }
     constraints.featureVertices.push_back(vertex);
     constraints.featureCurveIds(vertex) = best->curveId;
-    constraints.featureRailIds(vertex) = best->railId;
+    constraints.featureRailIds[static_cast<std::size_t>(vertex)] = best->railId;
     constraints.featureIntervalIds(vertex) = best->intervalId;
     constraints.featureParameters(vertex) =
         best->parameterStart +
         bestLocalParameter * (best->parameterEnd - best->parameterStart);
     assignments.push_back(
-        {vertex, best->curveId,
-         best->railId >= 0 ? best->railId : best->curveId, best->order,
+        {vertex, best->curveId, sequence_key(*best), best->order,
          constraints.featureParameters(vertex), bestLocalParameter});
     bool fixed = false;
     for (std::size_t first = 0; first < incidentIntervals.size() && !fixed;
@@ -267,8 +303,8 @@ void fill_surface_optimization_rail_constraints(
   }
   std::stable_sort(assignments.begin(), assignments.end(),
                    [](const FeatureAssignment &a, const FeatureAssignment &b) {
-                     if (a.sequenceId != b.sequenceId) {
-                       return a.sequenceId < b.sequenceId;
+                     if (a.sequence != b.sequence) {
+                       return a.sequence < b.sequence;
                      }
                      if (a.curveId != b.curveId) {
                        return a.curveId < b.curveId;
@@ -288,8 +324,8 @@ void fill_surface_optimization_rail_constraints(
                    authorityAssignments.end(),
                    [](const FeatureAssignment &a,
                       const FeatureAssignment &b) {
-                     if (a.sequenceId != b.sequenceId) {
-                       return a.sequenceId < b.sequenceId;
+                     if (a.sequence != b.sequence) {
+                       return a.sequence < b.sequence;
                      }
                      if (a.order != b.order) {
                        return a.order < b.order;
@@ -309,7 +345,8 @@ void fill_surface_optimization_rail_constraints(
   for (const SurfaceCellRail &rail : rails) {
     std::vector<int> sequence;
     for (const FeatureAssignment &assignment : authorityAssignments) {
-      if (assignment.sequenceId != rail.id) {
+      if (assignment.sequence !=
+          SurfaceFeatureSequenceKey{rail.id, -1}) {
         continue;
       }
       if (sequence.empty() || sequence.back() != assignment.vertex) {

@@ -127,6 +127,8 @@ endif()
 
 add_library(
   directional_core
+  src/authority/AuthorityKernel.cpp
+  src/authority/FieldTransportAtlas.cpp
   src/core/Library.cpp
   src/diagnostics/RemeshDiagnostics.cpp
   src/fields/CompareCrossFields.cpp
@@ -159,6 +161,9 @@ add_library(
   src/geometry/CutMesh.cpp
   src/geometry/FaceCurvature.cpp
   src/geometry/FlowRepStrands.cpp
+  src/geometry/EmbeddedGraphTopology.cpp
+  src/geometry/GlobalTopologyPlan.cpp
+  src/geometry/SurfaceCutGraph.cpp
   src/geometry/GeneralGraphMatching.cpp
   src/geometry/MeshComponents.cpp
   src/geometry/MeshTopology.cpp
@@ -308,13 +313,15 @@ elseif(DIRECTIONAL_ENABLE_SUITESPARSE)
     foreach(_target IN LISTS SUITESPARSE_TARGETS)
       if(TARGET ${_target})
         message(
-          STATUS "SuiteSparse target found for Directional core: ${_target}")
+          STATUS
+          "SuiteSparse target found for Directional core: ${_target}")
         target_link_libraries(directional_core PUBLIC ${_target})
       endif()
     endforeach()
   else()
     message(FATAL_ERROR "SuiteSparse not found for Directional core."
-    "Please install SuiteSparse or disable DIRECTIONAL_ENABLE_SUITESPARSE.")
+                        "Please install SuiteSparse or disable "
+                        "DIRECTIONAL_ENABLE_SUITESPARSE.")
   endif()
 endif()
 
@@ -333,18 +340,17 @@ if(DIRECTIONAL_ENABLE_GMP)
     message(STATUS "GMP found for Directional core")
 
     target_compile_definitions(
-      directional_core PUBLIC DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
-                          GMP_ENABLED ENABLE_GMP)
+      directional_core
+      PUBLIC DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED GMP_ENABLED
+             ENABLE_GMP)
 
     target_link_libraries(directional_core PUBLIC GMP::GMP)
-
     target_link_libraries(directional_core PUBLIC GMP::GMPXX)
   else()
     message(
       WARNING
-        "GMP not found for Directional core. Continuing without DIRECTIONAL_ENABLE_GMP."
-        "Please install GMP and try again."
-    )
+      "GMP not found for Directional core. Continuing without "
+      "DIRECTIONAL_ENABLE_GMP. Please install GMP and try again.")
 
     set(DIRECTIONAL_ENABLE_GMP
         OFF
@@ -366,447 +372,7 @@ if(BUILD_TUTORIALS)
 endif()
 
 if(DIRECTIONAL_BUILD_TESTS)
-  enable_testing()
-  set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
-  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-  add_subdirectory(external/googletest EXCLUDE_FROM_ALL)
-
-  add_executable(
-    directional_compiled_api_tests
-    tests/CompiledLibraryTests.cpp)
-  target_link_libraries(
-    directional_compiled_api_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_compiled_api_tests PRIVATE cxx_std_20)
-
-  add_executable(
-    directional_phase1_tests
-    src/bench/BenchmarkCases.cpp
-    src/bench/BenchmarkQuality.cpp
-    tests/AdaptiveFeatureMapPhase11Tests.cpp
-    tests/AdaptiveTargetSizePhase12Tests.cpp
-    tests/AdaptiveIntegrationSolverTests.cpp
-    tests/BoundedMeshPreconditionerTests.cpp
-    tests/ComponentParallelismTests.cpp
-    tests/CrossFieldTransferTests.cpp
-    tests/DiagnosticsTests.cpp
-    tests/FlowRepStrandsPhase15Tests.cpp
-    tests/FunctionSkeletonTests.cpp
-    tests/IntegerBatchSelectorTests.cpp
-    tests/IntegerTransitionBasisTests.cpp
-    tests/LocalPatchValidatorTests.cpp
-    tests/MilestoneFP19IntegrationTests.cpp
-    tests/MilestoneGP23Tests.cpp
-    tests/MilestoneGP24Tests.cpp
-    tests/MilestoneGP25Tests.cpp
-    tests/MilestoneGP26Tests.cpp
-    tests/MilestoneGP27Tests.cpp
-    tests/MilestoneBClosureTests.cpp
-    tests/MilestoneCClosureTests.cpp
-    tests/MilestoneDClosureTests.cpp
-    tests/ParametrizationQualityTests.cpp
-    tests/PatchDescriptorMilestoneETests.cpp
-    tests/PatchQuadrangulatorTests.cpp
-    tests/PureQuadCompletionPhase18Tests.cpp
-    tests/RemeshRegressionTests.cpp
-    tests/RegularizedCurvaturePhase1Tests.cpp
-    tests/SurfaceArrangementPhase16Tests.cpp
-    tests/SurfaceComplexSimplificationPhase17Tests.cpp
-    tests/SurfaceCellPipelinePhase20Tests.cpp
-    tests/SurfaceMeshOptimizerPhase19Tests.cpp
-    tests/SurfaceMeshOptimizerPhase20Tests.cpp
-    tests/SurfaceMeshOptimizerPhase21Tests.cpp
-    tests/SurfaceMeshOptimizerPhase22Tests.cpp
-    tests/ReliefTopologyPhase13Tests.cpp
-    tests/SurfaceCellTracingPhase14Tests.cpp
-    tests/SurfaceCellsPhase10Tests.cpp
-    tests/TargetedStiffeningTests.cpp)
-  target_link_libraries(
-    directional_phase1_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_phase1_tests PRIVATE cxx_std_20)
-  target_compile_definitions(
-    directional_phase1_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-  target_include_directories(
-    directional_phase1_tests
-    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
-  if(MSVC)
-    target_compile_options(directional_phase1_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    target_link_libraries(directional_phase1_tests PRIVATE Psapi)
-  endif()
-  if(WIN32)
-    add_custom_command(
-      TARGET directional_phase1_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_phase1_tests>
-        $<TARGET_FILE_DIR:directional_phase1_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_g_p23_tests
-    src/bench/BenchmarkCases.cpp
-    tests/MilestoneGP23Tests.cpp
-    tests/SurfaceCellPipelinePhase20Tests.cpp)
-  target_link_libraries(
-    directional_milestone_g_p23_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_g_p23_tests PRIVATE cxx_std_20)
-  target_compile_definitions(
-    directional_milestone_g_p23_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-  target_include_directories(
-    directional_milestone_g_p23_tests
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
-  if(MSVC)
-    target_compile_options(directional_milestone_g_p23_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32 AND BUILD_SHARED_LIBS)
-    add_custom_command(
-      TARGET directional_milestone_g_p23_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p23_tests>
-        $<TARGET_FILE_DIR:directional_milestone_g_p23_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_g_p27_tests
-    src/bench/BenchmarkCases.cpp
-    src/bench/BenchmarkQuality.cpp
-    tests/MilestoneGP27Tests.cpp)
-  target_link_libraries(
-    directional_milestone_g_p27_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_g_p27_tests PRIVATE cxx_std_20)
-  target_compile_definitions(
-    directional_milestone_g_p27_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-  target_include_directories(
-    directional_milestone_g_p27_tests
-    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
-  if(MSVC)
-    target_compile_options(directional_milestone_g_p27_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    target_link_libraries(directional_milestone_g_p27_tests PRIVATE Psapi)
-  endif()
-
-  add_executable(
-    directional_milestone_g_p24_tests
-    src/bench/BenchmarkCases.cpp
-    tests/DiagnosticsTests.cpp
-    tests/MilestoneGP24Tests.cpp
-    tests/SurfaceCellPipelinePhase20Tests.cpp)
-  target_link_libraries(
-    directional_milestone_g_p24_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_g_p24_tests PRIVATE cxx_std_20)
-  target_compile_definitions(
-    directional_milestone_g_p24_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-  target_include_directories(
-    directional_milestone_g_p24_tests
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
-  if(MSVC)
-    target_compile_options(directional_milestone_g_p24_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32 AND BUILD_SHARED_LIBS)
-    add_custom_command(
-      TARGET directional_milestone_g_p24_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p24_tests>
-        $<TARGET_FILE_DIR:directional_milestone_g_p24_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_g_p25_tests
-    src/bench/BenchmarkCases.cpp
-    tests/ComponentParallelismTests.cpp
-    tests/MilestoneGP25Tests.cpp
-    tests/SurfaceCellPipelinePhase20Tests.cpp)
-  target_link_libraries(
-    directional_milestone_g_p25_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_g_p25_tests PRIVATE cxx_std_20)
-  target_compile_definitions(
-    directional_milestone_g_p25_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-  target_include_directories(
-    directional_milestone_g_p25_tests
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
-  if(MSVC)
-    target_compile_options(directional_milestone_g_p25_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32 AND BUILD_SHARED_LIBS)
-    add_custom_command(
-      TARGET directional_milestone_g_p25_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p25_tests>
-        $<TARGET_FILE_DIR:directional_milestone_g_p25_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_g_p26_tests
-    src/bench/BenchmarkCases.cpp
-    tests/MilestoneGP26Tests.cpp
-    tests/SurfaceCellPipelinePhase20Tests.cpp)
-  target_link_libraries(
-    directional_milestone_g_p26_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_g_p26_tests PRIVATE cxx_std_20)
-  target_compile_definitions(
-    directional_milestone_g_p26_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-  target_include_directories(
-    directional_milestone_g_p26_tests
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
-  if(MSVC)
-    target_compile_options(directional_milestone_g_p26_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32 AND BUILD_SHARED_LIBS)
-    add_custom_command(
-      TARGET directional_milestone_g_p26_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p26_tests>
-        $<TARGET_FILE_DIR:directional_milestone_g_p26_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_c_tests
-    tests/MilestoneCClosureTests.cpp
-    tests/SurfaceCellTracingPhase14Tests.cpp
-    tests/FlowRepStrandsPhase15Tests.cpp)
-  target_link_libraries(
-    directional_milestone_c_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_c_tests PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_c_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    add_custom_command(
-      TARGET directional_milestone_c_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_c_tests>
-        $<TARGET_FILE_DIR:directional_milestone_c_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_d_tests
-    tests/MilestoneDClosureTests.cpp
-    tests/SurfaceArrangementPhase16Tests.cpp
-    tests/SurfaceComplexSimplificationPhase17Tests.cpp)
-  target_link_libraries(
-    directional_milestone_d_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_d_tests PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_d_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    add_custom_command(
-      TARGET directional_milestone_d_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_d_tests>
-        $<TARGET_FILE_DIR:directional_milestone_d_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-
-  add_executable(
-    directional_milestone_e_tests
-    tests/PatchDescriptorMilestoneETests.cpp
-    tests/PureQuadCompletionPhase18Tests.cpp)
-  target_link_libraries(
-    directional_milestone_e_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_compile_features(directional_milestone_e_tests PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_e_tests PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    add_custom_command(
-      TARGET directional_milestone_e_tests
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_e_tests>
-        $<TARGET_FILE_DIR:directional_milestone_e_tests>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_f_tests
-    tests/SurfaceMeshOptimizerPhase19Tests.cpp
-    tests/SurfaceMeshOptimizerPhase20Tests.cpp
-    tests/SurfaceMeshOptimizerPhase21Tests.cpp
-    tests/SurfaceMeshOptimizerPhase22Tests.cpp
-    tests/MilestoneFP19IntegrationTests.cpp
-    tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
-  target_link_libraries(
-    directional_milestone_f_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_include_directories(
-    directional_milestone_f_tests
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
-  target_compile_features(directional_milestone_f_tests PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_f_tests PRIVATE /bigobj)
-  endif()
-
-  add_executable(
-    directional_milestone_f_optimizer_tests
-    tests/SurfaceMeshOptimizerPhase19Tests.cpp
-    tests/SurfaceMeshOptimizerPhase20Tests.cpp
-    tests/SurfaceMeshOptimizerPhase21Tests.cpp
-    tests/SurfaceMeshOptimizerPhase22Tests.cpp
-    tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
-  target_link_libraries(
-    directional_milestone_f_optimizer_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_include_directories(
-    directional_milestone_f_optimizer_tests
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
-  target_compile_features(directional_milestone_f_optimizer_tests PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_f_optimizer_tests PRIVATE /bigobj)
-  endif()
-
-  add_executable(
-    directional_milestone_f_validator_tests
-    tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
-  target_link_libraries(
-    directional_milestone_f_validator_tests
-    PRIVATE Directional::directional GTest::gtest_main)
-  target_include_directories(
-    directional_milestone_f_validator_tests
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
-  target_compile_features(directional_milestone_f_validator_tests PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_f_validator_tests PRIVATE /bigobj)
-  endif()
-
-  add_executable(
-    directional_milestone_f_benchmark
-    tests/MilestoneFBenchmark.cpp)
-  target_link_libraries(
-    directional_milestone_f_benchmark
-    PRIVATE Directional::directional)
-  target_include_directories(
-    directional_milestone_f_benchmark
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
-  target_compile_features(directional_milestone_f_benchmark PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_f_benchmark PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    target_link_libraries(directional_milestone_f_benchmark PRIVATE Psapi)
-  endif()
-
-  add_executable(
-    directional_milestone_d_benchmark
-    tests/MilestoneDBenchmark.cpp)
-  target_link_libraries(
-    directional_milestone_d_benchmark
-    PRIVATE Directional::directional)
-  target_compile_features(directional_milestone_d_benchmark PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_d_benchmark PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    add_custom_command(
-      TARGET directional_milestone_d_benchmark
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_d_benchmark>
-        $<TARGET_FILE_DIR:directional_milestone_d_benchmark>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  add_executable(
-    directional_milestone_c_benchmark
-    tests/MilestoneCBenchmark.cpp)
-  target_link_libraries(
-    directional_milestone_c_benchmark
-    PRIVATE Directional::directional)
-  target_compile_features(directional_milestone_c_benchmark PRIVATE cxx_std_20)
-  if(MSVC)
-    target_compile_options(directional_milestone_c_benchmark PRIVATE /bigobj)
-  endif()
-  if(WIN32)
-    add_custom_command(
-      TARGET directional_milestone_c_benchmark
-      POST_BUILD
-      COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_RUNTIME_DLLS:directional_milestone_c_benchmark>
-        $<TARGET_FILE_DIR:directional_milestone_c_benchmark>
-      COMMAND_EXPAND_LISTS
-      VERBATIM)
-  endif()
-
-  include(GoogleTest)
-  gtest_discover_tests(directional_compiled_api_tests)
-  gtest_discover_tests(directional_phase1_tests)
-  gtest_discover_tests(directional_milestone_g_p23_tests TEST_PREFIX "P23Focused.")
-  gtest_discover_tests(directional_milestone_g_p24_tests TEST_PREFIX "P24Focused.")
-  gtest_discover_tests(directional_milestone_g_p25_tests TEST_PREFIX "P25Focused.")
-  gtest_discover_tests(directional_milestone_g_p26_tests TEST_PREFIX "P26Focused.")
-  gtest_discover_tests(directional_milestone_c_tests)
-  gtest_discover_tests(directional_milestone_d_tests)
-  gtest_discover_tests(directional_milestone_e_tests)
+  include(cmake/DirectionalTests.cmake)
 endif()
 
 if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
@@ -822,7 +388,9 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
   set_target_properties(directional_cli_io PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_link_libraries(directional_cli_io PUBLIC Directional::directional)
   target_compile_features(directional_cli_io PUBLIC cxx_std_20)
-  target_compile_definitions(directional_cli_io INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+  target_compile_definitions(
+    directional_cli_io
+    INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON)
     add_library(
       directional_cli_backend STATIC
@@ -833,17 +401,19 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
       src/cli/SimplifyCommand.cpp
       src/cli/RemeshCommand.cpp)
     add_library(Directional::directional_cli_backend ALIAS directional_cli_backend)
-    set_target_properties(directional_cli_backend PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    set_target_properties(
+      directional_cli_backend PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_link_libraries(
       directional_cli_backend
-      PUBLIC
-        Directional::directional_cli_io)
+      PUBLIC Directional::directional_cli_io)
     target_compile_features(directional_cli_backend PUBLIC cxx_std_20)
     target_compile_definitions(
-      directional_cli_backend PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+      directional_cli_backend
+      PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
 
     # Keep MSVC's expanded COFF section limit scoped to the two translation
-    # units that instantiate Directional's template-heavy field and pipeline APIs.
+    # units that instantiate Directional's template-heavy field and pipeline
+    # APIs.
     if(MSVC)
       set_source_files_properties(
         src/cli/CliBackend.cpp
@@ -869,7 +439,8 @@ if(DIRECTIONAL_BUILD_BENCHMARKS)
   target_link_libraries(directional_benchmarks PRIVATE Directional::directional)
   target_compile_features(directional_benchmarks PRIVATE cxx_std_20)
   target_compile_definitions(
-    directional_benchmarks PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+    directional_benchmarks
+    PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(MSVC)
     target_compile_options(directional_benchmarks PRIVATE /bigobj)
   endif()
@@ -882,9 +453,12 @@ if(DIRECTIONAL_BUILD_CLI)
   add_executable(directional_cli src/cli/Main.cpp)
   add_executable(Directional::directional_cli ALIAS directional_cli)
   set_target_properties(directional_cli PROPERTIES OUTPUT_NAME directional)
-  target_link_libraries(directional_cli PRIVATE Directional::directional_cli_backend)
+  target_link_libraries(
+    directional_cli PRIVATE Directional::directional_cli_backend)
   target_compile_features(directional_cli PRIVATE cxx_std_20)
-  target_compile_definitions(directional_cli PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+  target_compile_definitions(
+    directional_cli
+    PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(DIRECTIONAL_ENABLE_PARDISO)
     _directional_copy_pardiso_runtime_to_target(directional_cli)
   endif()
@@ -895,8 +469,9 @@ if(DIRECTIONAL_BUILD_GUI)
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/polyscope/CMakeLists.txt")
       set(_directional_saved_build_shared_libs "${BUILD_SHARED_LIBS}")
       set(BUILD_SHARED_LIBS OFF)
-      add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/polyscope"
-                     "${CMAKE_BINARY_DIR}/polyscope")
+      add_subdirectory(
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/polyscope"
+        "${CMAKE_BINARY_DIR}/polyscope")
 
       set(BUILD_SHARED_LIBS "${_directional_saved_build_shared_libs}")
       unset(_directional_saved_build_shared_libs)
@@ -931,23 +506,23 @@ if(DIRECTIONAL_BUILD_GUI)
   unset(_directional_gui_sources)
   add_executable(Directional::directional_gui ALIAS directional_gui)
   set_target_properties(directional_gui PROPERTIES OUTPUT_NAME directional-ui)
-  target_compile_definitions(directional_gui PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+  target_compile_definitions(
+    directional_gui
+    PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   target_link_libraries(
     directional_gui
-    PRIVATE
-      Directional::directional_cli_io
-      polyscope)
+    PRIVATE Directional::directional_cli_io polyscope)
 
   if(WIN32)
     target_link_libraries(directional_gui PRIVATE ole32 shell32 uuid)
   elseif(APPLE)
     find_library(DIRECTIONAL_APPKIT_FRAMEWORK AppKit REQUIRED)
-    find_library(DIRECTIONAL_UTTYPE_FRAMEWORK UniformTypeIdentifiers REQUIRED)
+    find_library(
+      DIRECTIONAL_UTTYPE_FRAMEWORK UniformTypeIdentifiers REQUIRED)
     target_link_libraries(
       directional_gui
-      PRIVATE
-        ${DIRECTIONAL_APPKIT_FRAMEWORK}
-        ${DIRECTIONAL_UTTYPE_FRAMEWORK})
+      PRIVATE ${DIRECTIONAL_APPKIT_FRAMEWORK}
+              ${DIRECTIONAL_UTTYPE_FRAMEWORK})
   elseif(UNIX)
     find_package(PkgConfig QUIET)
     if(PkgConfig_FOUND)
@@ -960,23 +535,21 @@ if(DIRECTIONAL_BUILD_GUI)
       target_link_libraries(
         directional_gui PRIVATE PkgConfig::DIRECTIONAL_GIO)
     else()
-      message(WARNING
+      message(
+        WARNING
         "GIO/GDBus was not found. directional-ui will use its ImGui file "
         "picker instead of the XDG Desktop Portal on Linux.")
     endif()
   endif()
   target_include_directories(
     directional_gui
-    PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/cli")
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/cli")
   target_compile_features(directional_gui PRIVATE cxx_std_20)
   if(APPLE)
     set_target_properties(
       directional_gui
-      PROPERTIES
-        OBJCXX_STANDARD 20
-        OBJCXX_STANDARD_REQUIRED YES
-        OBJCXX_EXTENSIONS NO)
+      PROPERTIES OBJCXX_STANDARD 20 OBJCXX_STANDARD_REQUIRED YES
+                 OBJCXX_EXTENSIONS NO)
   endif()
   if(MSVC)
     target_compile_options(directional_gui PRIVATE /bigobj)
@@ -1005,10 +578,12 @@ if(BUILD_PYTHON)
 
   pybind11_add_module(_directional MODULE python/src/bindings.cpp)
   target_link_libraries(
-    _directional PRIVATE Directional::directional
-                         Directional::directional_cli_backend)
+    _directional
+    PRIVATE Directional::directional Directional::directional_cli_backend)
   target_compile_features(_directional PRIVATE cxx_std_20)
-  target_compile_definitions(_directional INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+  target_compile_definitions(
+    _directional
+    INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(DIRECTIONAL_ENABLE_PARDISO)
     _directional_copy_pardiso_runtime_to_target(_directional)
   endif()
@@ -1018,8 +593,9 @@ if(BUILD_PYTHON)
     LIBRARY DESTINATION directional
     RUNTIME DESTINATION directional)
 
-  install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/python/directional/__init__.py
-          DESTINATION directional)
+  install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/python/directional/__init__.py
+    DESTINATION directional)
 endif()
 
 install(
@@ -1046,40 +622,48 @@ endif()
 
 if(WIN32)
   if(BUILD_SHARED_LIBS)
-    install(FILES $<TARGET_RUNTIME_DLLS:directional_core>
-                  $<TARGET_RUNTIME_DLLS:directional_pipeline>
-            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(
+      FILES $<TARGET_RUNTIME_DLLS:directional_core>
+            $<TARGET_RUNTIME_DLLS:directional_pipeline>
+      DESTINATION "${CMAKE_INSTALL_BINDIR}")
   endif()
   if(DIRECTIONAL_BUILD_CLI)
-    install(FILES $<TARGET_RUNTIME_DLLS:directional_cli>
-            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(
+      FILES $<TARGET_RUNTIME_DLLS:directional_cli>
+      DESTINATION "${CMAKE_INSTALL_BINDIR}")
   endif()
   if(DIRECTIONAL_BUILD_GUI)
-    install(FILES $<TARGET_RUNTIME_DLLS:directional_gui>
-            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(
+      FILES $<TARGET_RUNTIME_DLLS:directional_gui>
+      DESTINATION "${CMAKE_INSTALL_BINDIR}")
   endif()
   if(BUILD_PYTHON)
     # Keep ordinary linked DLLs, including directional.dll and mkl_rt, next
     # to the Python extension. Explicit PARDISO deployment above adds the
     # oneMKL modules that mkl_rt loads dynamically.
-    install(FILES $<TARGET_RUNTIME_DLLS:_directional>
-            DESTINATION directional)
+    install(
+      FILES $<TARGET_RUNTIME_DLLS:_directional>
+      DESTINATION directional)
   endif()
 endif()
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Directional exposes Eigen types throughout its public API and uses the
 # vendored Eigen checkout directly in the build tree. Install the matching
 # header set so the exported target remains self-contained and ABI-consistent.
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/Eigen
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/Polynomials
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen)
-install(DIRECTORY
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/src/Polynomials
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen/src)
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/Eigen
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/Polynomials
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen)
+install(
+  DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/src/Polynomials
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen/src)
 install(
   FILES ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.APACHE
         ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.BSD
@@ -1105,10 +689,12 @@ write_basic_package_version_file(
   VERSION ${CMAKE_PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/DirectionalConfig.cmake
-              ${CMAKE_CURRENT_BINARY_DIR}/DirectionalConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Directional)
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/DirectionalConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/DirectionalConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Directional)
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindCUDSS.cmake
-              ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindGMP.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Directional)
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindCUDSS.cmake
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindGMP.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Directional)

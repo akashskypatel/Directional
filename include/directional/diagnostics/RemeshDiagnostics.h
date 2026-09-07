@@ -10,9 +10,11 @@
 #ifndef DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 #define DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -40,6 +42,7 @@ struct ComponentRemeshDiagnostics {
 enum class SurfaceCellOutputOrigin {
   None,
   CompletedSurfaceCells,
+  SourceGridRecovery,
   LegacyFallback,
   InputMeshFallback,
   Mixed
@@ -56,6 +59,12 @@ enum class SurfaceCellConsumptionKind {
   Discontinuous
 };
 
+enum class SurfaceCellFeatureOptionRemapIssue {
+  None,
+  UnassignedHardEdge,
+  UnassignedSoftEdge
+};
+
 const char *surface_cell_consumption_kind_name(
     const SurfaceCellConsumptionKind kind);
 
@@ -63,6 +72,384 @@ struct SurfaceCellObjectIdentity {
   std::string type;
   std::uint64_t structuralHash = 0U;
   std::size_t elementCount = 0;
+};
+
+struct SurfaceCellMemoryOwnershipEvent {
+  std::string stage;
+  std::string action;
+  std::uint64_t logicalPayloadBytes = 0U;
+  std::uint64_t retainedCapacityBytes = 0U;
+  std::uint64_t simultaneousOwnedBytes = 0U;
+};
+
+struct SurfaceCellPeriodicHolonomyDiagnostics {
+  int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
+  int sourceSheet = -1;
+  std::vector<int> sourceIsolationSheets;
+  int quarterTurnRotation = 0;
+  int translationU = 0;
+  int translationV = 0;
+  std::vector<int> routeTransitionIndices;
+  std::vector<std::uint64_t> routeTopologyKeys;
+  std::vector<int> cutSourceEdges;
+  std::vector<std::uint64_t> cutSourceTopology;
+};
+
+struct SurfaceCellVertexTransitStateDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  int branch = 0;
+  std::string outcome;
+  std::vector<std::string> representativeDirection;
+  std::vector<std::string> incomingDirection;
+  std::optional<std::array<std::size_t, 2>> transportEdge;
+  std::vector<std::array<std::size_t, 2>> transportPath;
+  int composedQuarterTurn = 0;
+  bool eligibleForElection = false;
+  bool representativeInSector = false;
+  bool incomingInSector = false;
+};
+
+struct SurfaceCellTraceStepDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  int branch = 0;
+  std::optional<std::array<std::size_t, 2>> incomingCarrier;
+  std::string entryParameter;
+};
+
+struct SurfaceCellRotationRayDiagnostics {
+  std::string kind;
+  std::size_t primary = 0U;
+  std::size_t secondary = 0U;
+  bool secondaryAvailable = true;
+  std::size_t arc = 0U;
+  std::optional<std::size_t> trace;
+  std::string orientation;
+  std::optional<std::array<std::size_t, 3>> sourceFace;
+  std::optional<std::size_t> fanSlot;
+  std::optional<int> originPortOrdinal;
+  std::optional<std::size_t> originPortSourceVertex;
+};
+
+struct SurfaceCellRotationFanCensusDiagnostics {
+  std::vector<SurfaceCellRotationRayDiagnostics> rays;
+  std::size_t totalRayCount = 0U;
+  bool truncated = false;
+};
+
+struct SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics {
+  std::size_t trace = 0U;
+  std::size_t arc = 0U;
+  std::size_t segmentIndex = 0U;
+  std::string orientation;
+  std::optional<std::array<std::size_t, 2>> incomingCarrier;
+  std::array<std::size_t, 2> outgoingCarrier{};
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  bool forwardOrbitDroppedByExteriorFilter = false;
+  bool reverseOrbitDroppedByExteriorFilter = false;
+};
+
+struct SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics {
+  std::array<std::size_t, 2> sourceEdge{};
+  std::vector<std::size_t> orbitIds;
+  std::size_t totalOrbitCount = 0U;
+  bool truncated = false;
+};
+
+struct SurfaceCellTraceCutFaceFragmentOwnerEvidenceDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::optional<std::size_t> localFragmentCount;
+  std::size_t ownerCount = 0U;
+  std::size_t expectedFragmentCount = 0U;
+  std::size_t ownerDeficit = 0U;
+  std::size_t traceChordCount = 0U;
+  bool chordsCrossInside = false;
+  bool localArrangementEvaluated = false;
+  std::vector<SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics>
+      sharedOwnerChords;
+  std::size_t sharedOwnerChordCount = 0U;
+  bool sharedOwnerChordsTruncated = false;
+};
+
+struct SurfaceCellTraceArcOwnerCensusDiagnostics {
+  std::size_t arc = 0U;
+  std::optional<std::size_t> trace;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  bool sharesOrbit = false;
+};
+
+struct SurfaceCellTraceTerminalSlitCensusDiagnostics {
+  std::size_t trace = 0U;
+  bool terminatesInTerminalSlit = false;
+};
+
+struct SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics {
+  std::array<std::size_t, 2> sourceEdge{};
+  std::optional<std::array<std::size_t, 3>> componentFace;
+  std::optional<std::array<std::size_t, 3>> labeledFace;
+  bool otherSideLabeled = false;
+  std::size_t labeledFaceOwnerCount = 0U;
+  std::string barrierClass;
+  std::optional<std::size_t> contributedSeed;
+  std::string seedRule;
+  std::string noSeedReason;
+  bool minoritySeedOrbit = false;
+  std::optional<std::size_t> componentSideCertifiedFace;
+  std::optional<std::size_t> labeledSideCertifiedFace;
+};
+
+struct SurfaceCellUncutFaceCertificatePairDiagnostics {
+  std::array<std::size_t, 2> sourceEdge{};
+  std::array<std::size_t, 3> firstFace{};
+  std::array<std::size_t, 3> secondFace{};
+  std::optional<std::size_t> firstCertifiedFace;
+  std::optional<std::size_t> secondCertifiedFace;
+};
+
+struct SurfaceCellUncutComponentArcFaceDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::optional<std::size_t> certifierComponent;
+  std::optional<std::size_t> planComponent;
+  std::string notTraceCutReason;
+};
+
+struct SurfaceCellUncutComponentArcIncidenceDiagnostics {
+  std::size_t arc = 0U;
+  std::string kind;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  std::size_t crossedFaceCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcFaceDiagnostics> crossedFaces;
+  bool crossedFacesTruncated = false;
+};
+
+struct SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics {
+  std::size_t certifiedFace = 0U;
+  std::size_t sourceFaceCount = 0U;
+};
+
+struct SurfaceCellUncutFaceComponentCertifiedFaceObservationDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::size_t certifiedFace = 0U;
+};
+
+struct SurfaceCellUncutComponentPartitionIdentityDiagnostics {
+  std::string domainRule;
+  bool cutGraphCutEdges = false;
+  bool networkMandatoryEdges = false;
+  bool embeddedMandatoryArcSourceEdges = false;
+  bool embeddedCutArcSourceEdges = false;
+  bool nonTerminalTraceCarrierEdges = false;
+};
+
+struct SurfaceCellRegionFrontierComponentEvidenceDiagnostics {
+  std::size_t component = 0U;
+  SurfaceCellUncutComponentPartitionIdentityDiagnostics partitionIdentity;
+  std::uint64_t faceSetDigest = 0U;
+  std::string censusCorrespondence;
+  std::optional<std::size_t> censusComponent;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      censusPartitionIdentity;
+  std::optional<std::uint64_t> censusFaceSetDigest;
+  bool componentSubsetOfCensusComponent = false;
+};
+
+struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
+  std::size_t orbit = 0U;
+  std::size_t boundaryEdgeCount = 0U;
+};
+
+struct SurfaceCellUncutFaceComponentSeedCensusDiagnostics {
+  std::size_t component = 0U;
+  std::size_t faceCount = 0U;
+  std::size_t seedCount = 0U;
+  std::string seedState;
+  std::vector<std::size_t> seedOrbitIds;
+  std::size_t seedOrbitCount = 0U;
+  bool seedOrbitsTruncated = false;
+};
+
+struct SurfaceCellTraceFragmentOwnerEvidenceDiagnostics {
+  std::vector<SurfaceCellTraceCutFaceFragmentOwnerEvidenceDiagnostics> faces;
+  std::size_t faceCount = 0U;
+  bool facesTruncated = false;
+  std::vector<SurfaceCellTraceArcOwnerCensusDiagnostics> arcs;
+  std::size_t arcCount = 0U;
+  bool arcsTruncated = false;
+  std::vector<SurfaceCellTraceTerminalSlitCensusDiagnostics> traces;
+  std::size_t traceCount = 0U;
+  bool tracesTruncated = false;
+  std::size_t totalOrbitCount = 0U;
+  std::size_t exteriorOrbitCount = 0U;
+  std::size_t nonExteriorOrbitCount = 0U;
+  std::vector<SurfaceCellUncutFaceComponentSeedCensusDiagnostics> components;
+  std::size_t componentCount = 0U;
+  bool componentsTruncated = false;
+};
+
+struct SurfaceCellFailureLocusDiagnostics {
+  std::optional<std::size_t> sourceVertex;
+  std::optional<std::array<std::size_t, 2>> sourceEdge;
+  std::optional<std::size_t> rail;
+  std::optional<std::size_t> singularity;
+  std::optional<std::array<std::size_t, 3>> sourceFace;
+  std::optional<std::array<std::size_t, 3>> relatedSourceFace;
+  std::optional<int> branch;
+  std::optional<int> relatedBranch;
+  std::optional<std::size_t> topologyRegion;
+  std::string networkErrorCondition;
+  std::string rotationSystemInconsistencyReason;
+  std::string vertexTraceSecondaryParameterFailureReason;
+  std::string edgeTraceSecondaryRankFailureReason;
+  std::string rotationTraceOrientation;
+  std::optional<std::size_t> traceFirstSegment;
+  std::optional<std::size_t> traceOnePastLastSegment;
+  std::optional<std::array<std::size_t, 2>> traceIncomingCarrier;
+  std::optional<std::array<std::size_t, 2>> traceOutgoingCarrier;
+  std::string traceSegmentOrientation;
+  std::optional<std::size_t> traceSegmentIndex;
+  std::optional<bool> traceSegmentIsFirst;
+  std::optional<std::size_t> traceSourcePort;
+  std::optional<std::size_t> traceBoundCorner;
+  std::string traceBoundCornerProvenance;
+  std::string traceEntrySupport;
+  std::string traceExitSupport;
+  std::optional<std::size_t> edgeTraceContactIndex;
+  std::optional<std::array<std::size_t, 2>> edgeTraceOtherCarrier;
+  std::optional<std::array<std::size_t, 3>> edgeTraceFaceCorners;
+  std::optional<std::size_t> arc;
+  std::optional<std::size_t> secondArc;
+  std::optional<std::size_t> trace;
+  std::optional<std::size_t> secondTrace;
+  std::optional<std::size_t> fragmentOrbitCount;
+  std::optional<std::size_t> tracePieceCount;
+  std::optional<std::size_t> expectedFragmentCount;
+  bool embeddedGraphEulerCensusComplete = false;
+  std::optional<std::size_t> embeddedGraphNodeCount;
+  std::optional<std::size_t> embeddedGraphArcCount;
+  std::optional<std::size_t> embeddedGraphFaceWalkOrbitCount;
+  std::optional<std::size_t> embeddedGraphComponentCount;
+  std::optional<std::int64_t> embeddedGraphSourceEulerCharacteristic;
+  std::optional<std::int64_t> embeddedGraphEulerResidual;
+  std::vector<SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics>
+      fragmentIncidences;
+  std::size_t fragmentIncidenceCount = 0U;
+  bool fragmentIncidencesTruncated = false;
+  std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
+      fragmentEdgeOrbitEvidence;
+  std::string regionBoundaryWalkReason;
+  std::string regionFrontierFailureStage;
+  std::size_t regionFrontierComponentCount = 0U;
+  std::vector<SurfaceCellRegionFrontierComponentEvidenceDiagnostics>
+      regionFrontierComponents;
+  bool regionFrontierComponentsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponent;
+  std::optional<std::size_t> uncutFaceComponentSeedCount;
+  std::string uncutFaceComponentSeedState;
+  std::string sourceFaceLocusKind;
+  std::size_t uncutFaceComponentFaceCount = 0U;
+  std::vector<std::array<std::size_t, 3>> uncutFaceComponentFaces;
+  bool uncutFaceComponentFacesTruncated = false;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      uncutFaceComponentPartitionIdentity;
+  std::optional<std::uint64_t> uncutFaceComponentFaceSetDigest;
+  std::optional<std::size_t> uncutComponentCensusComponent;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      uncutComponentCensusPartitionIdentity;
+  std::optional<std::uint64_t> uncutComponentCensusFaceSetDigest;
+  std::optional<bool> uncutComponentCensusMatchesFailingComponent;
+  std::optional<bool> uncutFaceComponentSubsetOfCensusComponent;
+  bool uncutFaceComponentInteriorArcCensusPublished = false;
+  std::size_t uncutFaceComponentInteriorArcCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcIncidenceDiagnostics>
+      uncutFaceComponentInteriorArcIncidences;
+  bool uncutFaceComponentInteriorArcIncidencesTruncated = false;
+  std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
+  std::vector<SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics>
+      uncutFaceComponentBoundaryEdges;
+  bool uncutFaceComponentBoundaryEdgesTruncated = false;
+  std::size_t uncutFaceComponentBoundaryOrbitCount = 0U;
+  std::vector<SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics>
+      uncutFaceComponentBoundaryOrbits;
+  bool uncutFaceComponentBoundaryOrbitsTruncated = false;
+  std::optional<std::size_t> uncutFaceCertificatePairExaminedCount;
+  std::optional<std::size_t> uncutFaceCertificatePairDifferingCount;
+  std::vector<SurfaceCellUncutFaceCertificatePairDiagnostics>
+      uncutFaceCertificatePairs;
+  bool uncutFaceCertificatePairsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceObservationCount;
+  std::vector<SurfaceCellUncutFaceComponentCertifiedFaceObservationDiagnostics>
+      uncutFaceComponentCertifiedFaceObservations;
+  bool uncutFaceComponentCertifiedFaceObservationsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceUnavailableCount;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceDistinctCount;
+  std::vector<SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics>
+      uncutFaceComponentCertifiedFaceMultiset;
+  bool uncutFaceComponentCertifiedFaceMultisetTruncated = false;
+  SurfaceCellTraceFragmentOwnerEvidenceDiagnostics fragmentOwnerEvidence;
+  std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
+  std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;
+  SurfaceCellRotationFanCensusDiagnostics rotationFanCensus;
+  std::optional<std::size_t> traceEventIndex;
+  std::string traceEventPositionFailureReason;
+  std::string traceEventPositionPass;
+  std::optional<std::size_t> cutCandidateCount;
+  std::optional<std::size_t> nonDiscComponentCount;
+  std::optional<std::size_t> remainingAdmissibleEdgeCount;
+  std::optional<std::size_t> certificationAttemptIndex;
+  std::optional<std::size_t> certificationCutEdgeCount;
+  std::optional<int> signedLift;
+  std::optional<std::string> parameter;
+  std::vector<std::string> exactValues;
+  std::vector<std::array<std::size_t, 2>> publishedEdges;
+  std::vector<std::array<std::size_t, 3>> publishedFaces;
+  std::optional<std::size_t> traceSeedVertex;
+  std::optional<std::size_t> traceSeedSingularity;
+  std::vector<SurfaceCellTraceStepDiagnostics> traceHistory;
+  std::size_t traceHistoryCount = 0U;
+  bool traceHistoryTruncated = false;
+  std::optional<std::size_t> traceSteps;
+  std::optional<std::size_t> traceStepBudget;
+  std::optional<std::size_t> traceCombinatorialVisits;
+  std::optional<std::size_t> traceCombinatorialVisitAllowance;
+  std::string vertexArrivalMode;
+  std::optional<bool> barrierAbsorbed;
+  std::optional<bool> barrierIncident;
+  std::optional<std::size_t> barrierDegree;
+  std::optional<std::size_t> transportStarComponentCount;
+
+  // Amendment 22/23 vertex-star transit projection. Exact rationals remain
+  // exact reduced strings; no topological value is re-expressed as floating point.
+  std::optional<std::array<std::size_t, 3>> vertexStarArrivalFace;
+  std::optional<int> vertexStarArrivalBranch;
+  std::vector<std::string> vertexStarArrivalRay;
+  bool vertexStarArrivalOnRadialRay = false;
+  std::optional<std::size_t> vertexStarArrivalRadialRay;
+  std::optional<std::size_t> vertexStarProvenanceTrace;
+  std::optional<std::size_t> vertexStarProvenanceEvent;
+  std::string vertexStarKernelRoute;
+  std::string vertexStarState;
+  std::size_t vertexStarFanLength = 0U;
+  std::size_t vertexStarExactFanLengthBudget = 0U;
+  bool vertexStarClosedFan = false;
+  std::string vertexStarTruncationReason;
+  std::string vertexStarConeAngleDefinition;
+  std::vector<std::array<std::size_t, 3>> vertexStarFanFaces;
+  std::vector<int> vertexStarFanBranches;
+  std::vector<std::size_t> vertexStarFanNextRadialVertices;
+  std::vector<std::size_t> vertexStarFanPreviousRadialVertices;
+  std::vector<std::array<std::string, 3>> vertexStarSectorExactDPQ;
+  std::vector<bool> vertexStarSectorEligibleForElection;
+  std::vector<bool> vertexStarSectorContainsContinuation;
+  std::vector<bool> vertexStarCandidateRepresentativeInOwnSector;
+  std::size_t vertexStarOwnerCardinality = 0U;
+  std::optional<std::array<std::size_t, 3>> vertexStarOwnerFace;
+  std::optional<int> vertexStarOwnerBranch;
+  bool vertexStarOnRadialRay = false;
+  std::optional<std::size_t> vertexStarRadialRay;
+  std::vector<SurfaceCellVertexTransitStateDiagnostics> vertexTransitStates;
 };
 
 struct SurfaceCellStageLineage {
@@ -91,8 +478,12 @@ struct RemeshDiagnostics {
   std::string surfaceCellFallbackCause;
   std::string originalSurfaceCellFailureCode = "None";
   std::string originalSurfaceCellFailureStage;
+  std::string originalSurfaceCellFailureDetailCode = "None";
+  SurfaceCellFailureLocusDiagnostics originalSurfaceCellFailureLocus;
   std::string terminalFailureCode = "None";
   std::string terminalFailureStage;
+  std::string terminalFailureDetailCode = "None";
+  SurfaceCellFailureLocusDiagnostics terminalFailureLocus;
   bool surfaceCellFallbackAttempted = false;
   bool surfaceCellUsedLegacyFallback = false;
   bool surfaceCellReturnedInputMeshFallback = false;
@@ -114,6 +505,31 @@ struct RemeshDiagnostics {
   double surfaceCellCompletionSeconds = 0.0;
   double surfaceCellOptimizationSeconds = 0.0;
   double surfaceCellValidationSeconds = 0.0;
+  std::uint64_t surfaceCellTracingCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellTracingPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellFlowRepCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellFlowRepPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellArrangementCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellArrangementPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellSimplificationCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellSimplificationPeakOwnedBytes = 0U;
+  std::size_t surfaceCellMaxSimultaneousLiveLargeStructures = 0;
+  bool surfaceCellTraceStorageReleasedAfterFlowRep = false;
+  bool surfaceCellFlowRepSelectionStorageReleasedAfterSelection = false;
+  bool surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement = false;
+  std::uint64_t surfaceCellTracingLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellTracingRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellFlowRepLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellFlowRepRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellArrangementLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellArrangementRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellSimplificationLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellSimplificationRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellCompletionLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellCompletionRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellEstimatedPeakSimultaneousOwnedBytes = 0U;
+  std::vector<SurfaceCellMemoryOwnershipEvent>
+      surfaceCellMemoryOwnershipTimeline;
 
   std::size_t surfaceCellValidationFailures = 0;
   std::size_t surfaceCellProvenanceVertexCount = 0;
@@ -124,6 +540,120 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellArrangementCellCount = 0;
   std::size_t surfaceCellSimplifiedCellCount = 0;
   std::size_t surfaceCellCompletedQuadCount = 0;
+  std::size_t surfaceCellCompletionOwnershipRepairAttempts = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralRepairAttempts = 0;
+  std::size_t surfaceCellCompletionOwnershipInsertedBoundaryVertices = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralCandidateBudget = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralCandidatesConsumed = 0;
+  std::size_t surfaceCellCompletionOwnershipVisitedStateCount = 0;
+  std::size_t surfaceCellCompletionOwnershipFullRecomputationPasses = 0;
+  std::size_t surfaceCellCompletionOwnershipIncrementalRecomputationPasses = 0;
+  std::size_t surfaceCellCompletionOwnershipPreConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipPostConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipRetainedConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipRemovedConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipIntroducedConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipConflictComponentCount = 0;
+  std::size_t surfaceCellCompletionOwnershipIndependentComponentCount = 0;
+  std::size_t surfaceCellCompletionOwnershipReusedPatchCompletions = 0;
+  std::size_t surfaceCellCompletionOwnershipRecomputedPatchCompletions = 0;
+  std::uint64_t surfaceCellCompletionOwnershipPreConflictInventoryHash = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipPostConflictInventoryHash = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipConflictFrontierOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipProductCacheOwnedBytes = 0U;
+  std::size_t surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes = 0;
+  std::size_t surfaceCellCompletionOwnershipPeakLiveCandidateComplexes = 0;
+  int surfaceCellCompletionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> surfaceCellCompletionOwnershipLastCandidateHalfedges;
+  std::vector<int> surfaceCellCompletionOwnershipLastAffectedPatches;
+  std::size_t surfaceCellCompletionOwnershipRouteCandidateCount = 0;
+  std::uint64_t surfaceCellCompletionOwnershipRollbackOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCandidateOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipDescriptorOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCompletedPatchOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipAssemblyOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCurrentStructuralOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipPeakStructuralOwnedBytes = 0U;
+  std::string surfaceCellCompletionOwnershipStructuralExhaustionReason =
+      "none";
+  bool surfaceCellCompletionParityScopeFailureAvailable = false;
+  int surfaceCellCompletionParityOriginalCell = -1;
+  int surfaceCellCompletionParityReplacementCell = -1;
+  int surfaceCellCompletionParityHalfedge = -1;
+  int surfaceCellCompletionParityTwin = -1;
+  int surfaceCellCompletionParitySelectedComponent = -1;
+  int surfaceCellCompletionParitySelectedSheet = -1;
+  std::vector<int> surfaceCellCompletionParityAvailableComponents;
+  std::vector<int> surfaceCellCompletionParityAvailableSheets;
+  std::string surfaceCellCompletionParityMutationPhase;
+  std::string surfaceCellAuthoritativeProducerDisposition;
+  bool surfaceCellUniformPhaseFrontProducerDeclined = false;
+  bool surfaceCellPeriodicPhaseFrontProducerDeclined = false;
+  bool surfaceCellBoundedDiskPhaseFrontProducerDeclined = false;
+  std::size_t surfaceCellTopologyRegionCount = 0U;
+  std::size_t surfaceCellInternalIsolationSeamCount = 0U;
+  std::size_t surfaceCellConsumedTopologyRegionCount = 0U;
+  std::size_t surfaceCellConsumedInternalIsolationSeamCount = 0U;
+  std::size_t surfaceCellConsumedPeriodicHolonomyCount = 0U;
+  int surfaceCellMaterializedConnectedComponentCount = 0;
+  int surfaceCellMaterializedBoundaryLoopCount = 0;
+  int surfaceCellMaterializedEulerCharacteristic = 0;
+  std::vector<std::uint64_t> surfaceCellTopologyRegionHashes;
+  std::vector<int> surfaceCellTopologyRegionEulerCharacteristics;
+  std::vector<int> surfaceCellTopologyRegionBoundaryLoopCounts;
+  std::vector<std::size_t> surfaceCellTopologyRegionIsolationSheetCounts;
+  std::size_t surfaceCellBoundedDiskBoundaryPhaseCount = 0U;
+  std::size_t surfaceCellBoundedDiskBoundaryRunCount = 0U;
+  std::size_t surfaceCellPolygonalBoundedDiskBoundaryPhaseCount = 0U;
+  std::size_t surfaceCellBoundedDiskConstructedChartCount = 0U;
+  std::vector<std::uint64_t> surfaceCellBoundedDiskBoundaryPhaseHashes;
+  std::vector<SurfaceCellPeriodicHolonomyDiagnostics>
+      surfaceCellPeriodicHolonomies;
+  bool surfaceCellPeriodicHolonomyAvailable = false;
+  int surfaceCellPeriodicHolonomyQuarterTurnRotation = 0;
+  int surfaceCellPeriodicHolonomyTranslationU = 0;
+  int surfaceCellPeriodicHolonomyTranslationV = 0;
+  std::size_t surfaceCellPeriodicHolonomyRouteEdgeCount = 0U;
+  std::size_t surfaceCellPeriodicCutEdgeCount = 0U;
+  std::string surfaceCellFirstInvalidProducerStage;
+  std::string surfaceCellFirstInvalidProducerReason;
+  std::string surfaceCellFirstInvalidProducerValidationIssue;
+  std::vector<std::string> surfaceCellFinalSourceAuthorityValidationIssues;
+  int surfaceCellFirstInvalidProducerCell = -1;
+  int surfaceCellFirstInvalidProducerHalfedge = -1;
+  int surfaceCellFirstInvalidProducerTwin = -1;
+  int surfaceCellFirstInvalidProducerNode = -1;
+  int surfaceCellFirstInvalidProducerFace = -1;
+  int surfaceCellFirstInvalidProducerVertex = -1;
+  int surfaceCellFirstInvalidProducerEdgeFirst = -1;
+  int surfaceCellFirstInvalidProducerEdgeSecond = -1;
+  std::size_t surfaceCellAggregateIdentityBoundaryCacheRebuildCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeRequestedCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeRemappedCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeUnassignedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeRequestedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeRemappedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeUnassignedCount = 0U;
+  SurfaceCellFeatureOptionRemapIssue surfaceCellFeatureOptionFirstIssue =
+      SurfaceCellFeatureOptionRemapIssue::None;
+  std::array<int, 2> surfaceCellFirstUnassignedFeatureEdge{{-1, -1}};
+  bool surfaceCellCompletionOwnershipRejectionAvailable = false;
+  std::string surfaceCellCompletionOwnershipFailure;
+  int surfaceCellCompletionOwnershipSourcePatch = -1;
+  int surfaceCellCompletionOwnershipLocalVertex = -1;
+  bool surfaceCellCompletionOwnershipBoundaryVertex = false;
+  int surfaceCellCompletionOwnershipBackend = -1;
+  int surfaceCellCompletionOwnershipVariant = 0;
+  int surfaceCellCompletionOwnershipStoredFace = -1;
+  std::array<double, 3> surfaceCellCompletionOwnershipBarycentric{{0.0, 0.0,
+                                                                  0.0}};
+  int surfaceCellCompletionOwnershipEntityKind = 0;
+  int surfaceCellCompletionOwnershipSourceVertex = -1;
+  std::array<int, 2> surfaceCellCompletionOwnershipSourceEdge{{-1, -1}};
+  std::vector<int> surfaceCellCompletionOwnershipCandidateFaces;
+  std::vector<int> surfaceCellCompletionOwnershipPatchFaces;
+  int surfaceCellCompletionOwnershipComponent = -1;
+  int surfaceCellCompletionOwnershipSheet = -1;
   std::size_t surfaceCellOptimizationIterationCount = 0;
   bool surfaceCellValidationFailureCountAvailable = false;
   bool surfaceCellProvenanceVertexCountAvailable = false;
@@ -134,6 +664,9 @@ struct RemeshDiagnostics {
   bool surfaceCellArrangementCountAvailable = false;
   bool surfaceCellSimplifiedCountAvailable = false;
   bool surfaceCellCompletedQuadCountAvailable = false;
+  bool surfaceCellCompletionOwnershipRepairAttemptsAvailable = false;
+  bool surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable = false;
+  bool surfaceCellCompletionOwnershipStructuralLedgerAvailable = false;
   bool surfaceCellOptimizationIterationCountAvailable = false;
   std::vector<std::size_t> faceDegreeHistogram;
 
