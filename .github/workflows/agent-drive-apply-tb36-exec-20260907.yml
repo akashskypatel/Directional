@@ -1,0 +1,48 @@
+name: Agent Drive Apply TB36 EXEC 20260907
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/google-drive/tb36-exec-20260907.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-drive-apply-tb36-exec-20260907
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb36-exec-drive-apply-20260907
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-drive-apply-tb36-exec-20260907.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1mmYntPcrFzwJCVmEvL9mkBn2L4GLEj55
+      patch_sha256: c3e92d651b025d5c6d4df8f97626c455583b05aea51a331753d526c37feabbc9
+      base_sha: 3318bc5c68de75d88fb8886ee24c3d6e8341c9ae
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3-CP4c-3 TB36 artifact-only EXEC"
+      retention_days: 14
+    secrets: inherit
