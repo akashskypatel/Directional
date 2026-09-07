@@ -101,7 +101,7 @@ jobs:
       - name: Checkout exact source
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.source_ref != '' && inputs.source_ref || (github.event_name == 'push' && 'f0c56e4e6f6c33d2e266e575234d57b569562719' || github.sha) }}
+          ref: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
           fetch-depth: 1
           submodules: false
           lfs: false
@@ -134,7 +134,7 @@ jobs:
       - name: Verify source authority
         id: metadata
         env:
-          REQUESTED_REF: ${{ inputs.source_ref != '' && inputs.source_ref || (github.event_name == 'push' && 'f0c56e4e6f6c33d2e266e575234d57b569562719' || github.sha) }}
+          REQUESTED_REF: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
           ARTIFACT_PREFIX: ${{ inputs.artifact_prefix != '' && inputs.artifact_prefix || 'agent-source-snapshot' }}
         shell: bash
         run: |
