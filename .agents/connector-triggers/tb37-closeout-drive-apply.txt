@@ -1,4 +1,5 @@
 turn=M3-CP4c-3-TB37-EXEC
 file_id=1l5JQAmn7WA-E2u_B93kA7AOeotO_oCBG
 patch_sha256=eb738ad3deb1311cbfa0999ee689eb4725932ae6954a1bce4dae1c21c2756a62
-caller_install=9bad7869f64e03849aa225f2714e2c98e6947f4e
+caller_install=1f7d3df94aa84d50c7c32bf9a648a980da886751
+retry=diagnosed-yaml-scalar
