@@ -1,5 +1,0 @@
-M3-CP4c-3-TB36-EXEC artifact-only execution trigger
-caller_commit=ae80ad65db077974aa032c64e6118dffc5666638
-package_artifact=10029250324
-semantic_source=14aa1368523580444929bc65cab0b65449240ec2
-purpose=execute-frozen-selector409-on-immutable-package101-no-benchmarks

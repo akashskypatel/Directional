@@ -1,6 +1,0 @@
-turn=M3-CP4c-3-TB36-EXEC
-purpose=apply durable closeout documentation patch from Google Drive
-file_id=1mmYntPcrFzwJCVmEvL9mkBn2L4GLEj55
-patch_sha256=c3e92d651b025d5c6d4df8f97626c455583b05aea51a331753d526c37feabbc9
-base_sha=3318bc5c68de75d88fb8886ee24c3d6e8341c9ae
-runtimeExecution=false
