@@ -26,40 +26,51 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB36-REV` — INDEPENDENT PACKAGE101 EVIDENCE REVIEW
+## Current focus — `M3-CP4c-3-CB42` (Code + Build, runtime-free) — MEASUREMENT ONLY
 
-`M3-CP4c-3-TB36-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Immutable package101 artifact
-`10029250324` / source `14aa1368523580444929bc65cab0b65449240ec2` executed selector409 exactly once per identity
-in workflow run `34153857590` with **402 PASS / 7 RED**, accepted **1–365 = 365/365 PASS**, RED
-`[366,367,368,369,370,374,398]`, every row selected, zero timeouts, and identical package/source/execution-view
-censuses. Result artifact `10030367614`; persistent log artifact `10030367857`.
+`M3-CP4c-3-TB36-REV` promoted TB36 to **current valid semantic runtime authority**:
 
-Raw TB36 evidence advances ordinals **366/367** to `RegionEulerCharacteristicNotOne` with
-`regionBoundaryProvenance=FaceWalkOrbit`, `regionBoundaryWalkReason=ClosedBeforeEnd`, and the complete CX5 census:
-arc occurrences/distinct `40/22`, node occurrences/distinct `40/22`, repeated-node occurrences `18`, early start
-revisits `1`, and `V/E/F/chi = 100/353/250/-3`. Protected 312, 390, 393, 404, 406, 407, 408 and 409 PASS;
-certified ownership remains **300/0/0**; both retired codes remain absent. Carried 368/369/370/374/398 remain RED.
+- selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
+- immutable CB41 package `10029250324` / source `14aa1368523580444929bc65cab0b65449240ec2`; run `34153857590`;
+- certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
 
-TB36-EXEC is raw evidence only. **TB35 remains current valid semantic runtime authority until independent TB36-REV
-adjudicates package101.** Stable accounting therefore remains **45 events / 14 categories / 31 recurrences**,
-produced-witness debt **5**, semantic package count **101**.
+**The provenance contract is runtime confirmed, in both directions.** 366/367 advanced past `ClosedBeforeEnd` on
+`regionBoundaryProvenance=FaceWalkOrbit` — CX8's falsifier, not triggered — while ordinals 312/409, which mutate a
+**copy** of a real plan region, stayed PASS on `Unguaranteed`. `M3-CP4c3-TB35-REV-CAND-01` is **CLOSED / RUNTIME
+PROVED**.
 
-### Exact next turn — `M3-CP4c-3-TB36-REV`
+**The frozen CX5 measurement was in the wrong domain.** It censuses the **network graph**
+(`NetworkArcId`/`NetworkNodeId`) while χ counts a **sub-mesh of whole source triangles**, and a network arc may be
+a trace chord that is not a source edge at all. `22 = 22` says nothing about whether the boundary terms cancel.
 
-- [ ] Independently verify TB36 run/artifact provenance, 409-row completeness, accepted 365/365, protected greens,
-      ownership 300/0/0, retired-code silence, and pre/post immutability.
-- [ ] Adjudicate `M3-CP4c3-TB35-REV-CAND-01`: determine whether the 366/367 advance is sufficient runtime proof of
-      the Part IX derived-provenance correction without weakening synthetic negatives 312/409.
-- [ ] Independently adjudicate the separate Euler branch `M3-CP4c3-TB34-REV-CAND-03` from the frozen CX5
-      multiplicity evidence. Do not infer or implement an Euler correction from EXEC alone.
-- [ ] Confirm carried 368/369/370/374/398 remain separately owned and are not reclassified merely because they
-      recur in the same selector.
-- [ ] Decide whether package101 can be promoted to current semantic runtime authority and whether stable accounting
-      changes. Record an explicit rationale either way.
-- [ ] Freeze the next bounded measure and update durable authority documents.
+**The open question reduces to one integer.** With `B_int` = barrier edges having both faces in the region and `X`
+= sub-mesh vertices excluded from `interiorVertices`, **χ_true = X + B_int − 47**. Published χ = −3 means
+`X + B_int = 44` — premise holds, region is **not** a disc. A disc needs 48 — premise false by exactly 4. **The
+certificate cannot both cancel its boundary terms and certify discs.** New candidate
+`M3-CP4c3-TB36-REV-CAND-01`.
 
-**Must not in review:** execute runtime/benchmarks, compile, mutate product/test/fixture/selector content, or perform
-the corrective implementation that the review may prescribe.
+Stable accounting remains **45 events / 14 categories / 31 recurrences** — no accepted green was lost, so **no new
+event** — produced-witness debt **5**, semantic M3 package count **101**. CP4c-3 remains **OPEN**.
+
+### Exact next turn
+
+Run **`M3-CP4c-3-CB42`**, a runtime-free **Code + Build** turn under **CY6.1–CY6.6**. **Diagnostics only:**
+
+- [ ] **CY6.1** publish `regionInteriorBarrierEdgeCount` (`B_int`) and `regionExcludedVertexCount` (`X`), with `X`
+      split into mesh-boundary / `boundaryVertices` / `allOwned` causes;
+- [ ] **CY6.2** publish the **sub-mesh** boundary counts in their own domain — source edges with exactly one
+      incident face in the region, and their distinct source vertices;
+- [ ] **CY6.3** publish `V_total`, `E_total` and `chiFull` beside the reduced value, **without changing the formula
+      or forcing χ to 1**;
+- [ ] **CY6.4** mark the network census as network-domain; retire or flag the redundant occurrence field;
+- [ ] **CY6.5** keep ordinals 312/409 byte-identical and selector 409 byte-frozen; grep the corpus for
+      `RegionEulerCharacteristicNotOne` first;
+- [ ] **CY6.6** hand off to `M3-CP4c-3-TB37`.
+
+**Must not:** correct the Euler formula, region construction or disc acceptance; decide the frontier from the
+network census; publish a predicted χ for the mechanical fixture; weaken ordinal 398; touch 368/369/370/374;
+re-open ownership or any retired guard. **Accepted prefix 365/365 and ordinals 312/409 PASS are stop conditions,
+and since CB42 adds diagnostics only, any behaviour change at all is a defect in the turn.**
 
 ## Carried forward from M1
 
@@ -97,7 +108,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB35 is current semantic runtime authority pending independent TB36-REV** at **402 PASS / 7 RED**, accepted 365/365, selector409. TB36 package101 raw evidence is mechanically valid at the same **402 / 7**, with 366/367 advanced to the measured Euler frontier; exact next is static independent **`M3-CP4c-3-TB36-REV`**.
+  CP4c-3 remains open. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409 / package101. The provenance contract is runtime proved; the Euler question reduces to `χ_true = X + B_int − 47`, which the frozen network-domain census could not measure. Exact next is runtime-free **`M3-CP4c-3-CB42`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -137,4 +148,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **101**. **`M3-CP4c-3-TB35` remains the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** until TB36 package101 raw evidence is independently adjudicated. TB36-EXEC is complete/mechanically valid; exact next is static independent `M3-CP4c-3-TB36-REV`. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **101**. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**, promoted at TB36-REV. Exact next is runtime-free `M3-CP4c-3-CB42` under CY6.1–CY6.6, measurement only. PR #8 remains open, draft, and unmerged.

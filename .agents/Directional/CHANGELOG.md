@@ -1,3 +1,57 @@
+## 2026-09-07 — `M3-CP4c-3-TB36-REV`: TB36 promoted; provenance proved; the frozen measurement was in the wrong domain
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 14aa1368523580444929bc65cab0b65449240ec2` passed — source is an
+ancestor of HEAD with no code drift, so static reading of the working tree is valid evidence about the package.
+
+**CY0 — TB36 is promoted to current valid semantic runtime authority; packages advance to 101.** Selector **409**,
+**402 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; run `34153857590`, package
+`10029250324`, source `14aa1368523580444929bc65cab0b65449240ec2`. 409 rows, every row `selected=1`, zero timeouts,
+all three censuses identical pre/post, failure-detail digest table published, `SHA256SUMS` 28/28, executables
+`0755`. Ownership `300 / 0 / 0`; both retired codes silent. Two procedural misses (a `READ_MODE` ordering miss
+corrected by snapshot `34153210096`, an unresolvable external `TB-EXEC.md` reference) are control-plane facts and
+do not invalidate artifact-only evidence.
+
+**CY1 — Part IX's provenance contract is runtime confirmed in both directions.** Ordinals 366/367 advanced **past**
+`ClosedBeforeEnd` publishing `regionBoundaryProvenance=FaceWalkOrbit` — CX8's stated falsifier for DEFN-R5.2/R5.3,
+not triggered. Ordinals **312 and 409 stayed PASS**: both take `plan.validation_candidate()`, a **copy of a real
+plan region**, and mutate its boundary (`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253`, `:3276–3279`), so the
+derived relation resolves them to `Unguaranteed` and both still reject. **A stored construction-time flag would
+have survived that copy and suppressed both** — the runtime disproof of the competing DEFN-R5 draft, exactly as
+Part IX-A §A.1 predicted. `M3-CP4c3-TB35-REV-CAND-01` is **CLOSED / RUNTIME PROVED**.
+
+**CY2 — the finding of the turn: the frozen CX5 census is in the wrong domain.** χ counts a **sub-mesh of whole
+source triangles** — faces partitioned one-per-region (`GlobalTopologyPlan.cpp:1400–1433`), `edgeCount` over
+**source edges** (`:1847–1860`), `interiorVertices` over **source vertices** (`:2048–2094`). CX5 counts the
+**network graph** — `std::set<authority::NetworkArcId>` and `std::set<authority::NetworkNodeId>` (`:2122–2123`) —
+and a network arc may be a **trace segment**, a chord through face interiors that is not a source edge at all
+(`:1905`, `:1934`, `:1951`). **So `22 = 22` is not evidence that the boundary terms cancel**, and DEFN-R5.5's
+question is still open after the turn frozen to close it. Recorded as a recurrence of `RP-01 /
+AUTHORITY_DOMAIN_CONFLATION` carrying **no stable event**, since no accepted green was lost. Two caveats:
+`regionBoundaryNodeOccurrenceCount` is assigned the same expression as `regionBoundaryArcOccurrenceCount`
+(`:2142` vs `:2120`), so eight fields carry at most six independent values; and 366/367 share one failure-detail
+digest on `regionBoundaryOrbit=0` — **one datum, two witnesses**.
+
+**CY3 — what the census does establish.** 40 arc occurrences over 22 distinct arcs with 22 distinct nodes gives
+`V − E = 0`: the network boundary is connected with exactly one independent cycle — a **4-arc cycle carrying an
+18-arc tree** (`18·2 + 4·1 = 40`), the bridge/terminal-slit structure Part IX predicted, now measured. And every
+source face is a triangle (`EmbeddedGraphTopology.h:25–32`), so 250 faces give exactly 750 face-edge incidences;
+with `B_int` = barrier edges having both faces in the region (skipped at `:1848–1850`) and `X` = sub-mesh vertices
+excluded from `interiorVertices`, **χ_true = X + B_int − 47**. Published `χ = −3` ⟺ `X + B_int = 44` ⟺ the premise
+holds and **the region is not a disc**; a disc ⟺ `X + B_int = 48` ⟺ **the premise is false by exactly 4**. **The
+certificate cannot both cancel its boundary terms and certify discs**, and one integer decides which. Neither term
+is published; both sit in loops that already exist.
+
+**CY4/CY5 — classification and accounting.** 366/367 are the frontier (one datum); 368/369/370/374/398 are carried
+unchanged under prior owners. No new RED ordinal and no accepted-prefix loss, therefore **no stable event**: totals
+remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **101**. New candidate
+**`M3-CP4c3-TB36-REV-CAND-01`** (ACTIVE / GATING); `M3-CP4c3-TB34-REV-CAND-03` is **ACTIVE / RE-SCOPED** onto it.
+`LESSONS.md` **150** added: *a frozen measurement specifies a domain, not just a quantity.*
+
+**Exact next: `M3-CP4c-3-CB42`** — Code + Build, runtime-free, GMP/GMPXX linked, under **CY6.1–CY6.6**,
+**measurement only**. Accepted prefix 365/365 and ordinals 312/409 PASS are stop conditions, and since CB42 adds
+diagnostics only, any behaviour change at all is a defect in the turn.
+
 ## 2026-09-07 — `M3-CP4c-3-TB36-EXEC`: package101 reaches the measured Euler frontier; independent review required
 
 Artifact-only Test + Benchmark EXEC, **no benchmarks**. Immutable package101 source

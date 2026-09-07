@@ -1878,6 +1878,19 @@ building any conclusion on it.**
      it collapsed. The surviving turn froze a **measurement** instead, requiring occurrence *and* distinct counts
      for arcs *and* nodes separately. **When a correction depends on a multiplicity, measure every multiplicity it
      could depend on before writing the formula down.**
+150. **A frozen measurement specifies a domain, not just a quantity - and an implementation that gets the domain
+     wrong still looks complete.** DEFN-R5.5 froze eight exact boundary multiplicity fields to decide whether a
+     region's boundary vertices and edges cancel out of `chi = V_int - E_int + F`. CB41 implemented every field
+     faithfully and published all of them. But it counted over the **network graph**
+     (`std::set<authority::NetworkArcId>`, `std::set<authority::NetworkNodeId>`) while `chi` is computed over a
+     **sub-mesh of whole source triangles** (`SourceEdgeTopologyKey`, `SourceVertexId`) - and a network arc may be
+     a **trace chord through face interiors**, which is not a source edge at all. Distinct arcs and distinct nodes
+     both came out 22, and the clean equality read as the cancellation premise holding when it bore on a different
+     curve entirely. Two obligations follow. **When freezing a measurement, name the domain of every count and the
+     identity it must satisfy**, not only its exactness and its field name. And **when a census returns a
+     suspiciously clean equality, verify that both sides are cardinalities of the same space** before reading
+     anything into it. Related: the recurring `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category, which cost this
+     checkpoint an accepted-green regression once already.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

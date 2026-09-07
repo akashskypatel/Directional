@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-TB36-EXEC` raw evidence):** current valid semantic runtime authority remains **TB35** on selector **409** at **402 PASS / 7 RED**, accepted **365/365**, until independent TB36-REV. Package101 source `14aa1368523580444929bc65cab0b65449240ec2` / artifact `10029250324` executed selector409 in run `34153857590` at the same **402 / 7** set, with 366/367 advanced to `RegionEulerCharacteristicNotOne` under `FaceWalkOrbit` provenance and complete CX5 multiplicity evidence; 312/409 and 390/393/404/406/407/408 remain PASS, ownership remains **300/0/0**, and retired-code silence holds. Part IX remains operative; Euler is measured, not corrected. Stable accounting remains **45 / 14 / 31**. **Exact next is static independent `M3-CP4c-3-TB36-REV`.**
+> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-TB36-REV`):** **TB36 is promoted** — selector **409**, **402 PASS / 7 RED**, accepted **365/365**, packages **101**. **Part IX's provenance contract is runtime confirmed:** 366/367 advanced past `ClosedBeforeEnd` on `regionBoundaryProvenance=FaceWalkOrbit`, while ordinals 312/409 — which mutate a **copy** of a real region — stayed PASS on `Unguaranteed`. **But the frozen CX5 measurement is in the wrong domain:** it censuses the **network graph** while χ is computed over a **sub-mesh of whole source triangles**, so `22 = 22` says nothing about whether the boundary terms cancel. What the numbers *do* settle is an identity — **χ_true = X + B_int − 47** — under which **the certificate cannot both cancel its boundary terms and certify discs**. Exact next is **`M3-CP4c-3-CB42`**, measurement-only. Stable accounting unchanged: **45 / 14 / 31**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -33,108 +33,36 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB36-EXEC` raw-evidence closeout. TB35 remains current semantic authority pending independent TB36-REV; package101 has executed and reached the predicted measured Euler frontier without accepted-prefix loss.
+**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB36-REV`. Runtime authority is **TB36** (package 101,
+source `14aa1368523580444929bc65cab0b65449240ec2`, run `34153857590`), selector **409**, **402 PASS / 7 RED**,
+accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
 
-**The invariant is unsound as an equality.** `GlobalTopologyPlan.cpp:779` compares
-`fragmentOrbits[face].size()` against `tracePieceCount[face] + 1`. Each real chord contributes **one** to
-`tracePieceCount` and **two** insertions of *global orbit ids* into a `std::set`. Equality with `k+1` requires the
-local-fragment → global-owner map to be **injective**, which nothing establishes and which is false in general on
-a closed surface. `add_fragment_orbit` additionally **drops** any orbit in `exteriorOrbits`, unconditionally.
+**Where the frontier is.** Ordinals 366/367 first-red at `RegionEulerCharacteristicNotOne`, publishing
+`V/E/F/χ = 100/353/250/−3` on `regionBoundaryProvenance=FaceWalkOrbit`. The boundary-walk question is **closed**:
+Part IX's derived provenance relation works, and CB41 proved it both ways — the plan region advanced, and the two
+synthetic negatives that mutate a **copy** of a real region still reject.
 
-**Three mechanisms break it, in opposite directions.** A shared global owner (fails low — two locally separated
-fragments joined elsewhere); exterior filtering (fails low); non-collapsing chord sides or duplicated orbit
-evidence (fails high). For `k = 1` the check is trivially satisfiable, so the first face that can expose this has
-**two or more chords**.
+**The frozen measurement cannot decide what remains.** χ is computed over a **sub-mesh of whole source triangles**
+— faces are partitioned one-per-region (`GlobalTopologyPlan.cpp:1400–1433`), `edgeCount` counts source edges
+(`:1847–1860`), `interiorVertices` holds source vertices (`:2048–2094`). CX5's census is over the **network
+graph** (`std::set<authority::NetworkArcId>` / `NetworkNodeId`, `:2122–2123`), and a network arc may be a **trace
+chord through face interiors** that is not a source edge at all. So the published `22 = 22` is not evidence that
+`V_boundary == E_boundary`.
 
-**The deciding numbers already exist and are thrown away.** The same function fills `diagnostics->fragmentOrbits`,
-`tracePieceCount` and `edgeOrbitEvidence` and prints `fragment_orbit_count`, `trace_piece_count` and
-`expected_fragment_count` **for every face** — thirty lines *below* the early `return failure`, so the failing run
-never emits them. The instrumentation was written for exactly this failure and cannot be reached by it.
+**What the numbers do settle.** Every source face is a triangle (`EmbeddedGraphTopology.h:25–32`), so 250 faces
+give exactly 750 face-edge incidences. With `B_int` = barrier edges having **both** faces in the region (skipped
+at `:1848–1850`) and `X` = sub-mesh vertices excluded from `interiorVertices`:
 
-**Owner class named, corrective contract not provable.** It is a product local-fragment/orbit **representation**
-defect — but the three mechanisms imply different corrections, and no accepted-boundary argument exists for a
-stage the torus and sphere currently pass. Diagnostic-only is therefore mandatory under BRQ6, and unusually cheap.
+> **χ_true = X + B_int − 47.**
 
-One bounded successor is authorized: **`M3-CP4c-3-CB20`** under **BS0–BS9**, **diagnostic-only** — put actual /
-expected / `tracePieceCount` on the error, retain the failing face's per-chord incidences and both orbit ids, make
-the existing `fragment_reconciliation` record reachable on the failing path, and change **no** semantics. Selector
-**382** stays byte-frozen; selector 383 is conditional on BS6. Stable accounting **44 / 14 / 30**, debt **5**,
-semantic M3 packages **84**. **Vertex 30 is still not reached.**
+The published χ = −3 means `X + B_int = 44` — the cancellation premise holds and **the region is not a disc**. A
+disc needs `X + B_int = 48` — the premise is false by exactly 4. **These are mutually exclusive**, and one integer
+decides which. Neither term is published; both sit in loops that already exist. Owner:
+**`M3-CP4c-3-CB42`** under CY6.1–CY6.6, measurement only.
 
-**Document layout changed this turn.** The CP4c family is now two documents plus normative authority:
-`M3_CP4c_Current_And_Forward.md` (current state, frozen successor, candidate index) and
-`M3_CP4c_Consolidated_Record.md` (history, with a **folded document index** resolving all 35 folded per-turn
-plans/reports/records), plus `M3_CP4c_Frozen_Definitions.md` — the six frozen-definition documents merged
-**verbatim** into one normative file with a citation map. Every selector file is untouched.
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB16-REV` proved the `(9,11,17)` failing segment was a **terminal
-slit**, and CB19's correction cleared it. The v47 five-ray re-proof and CB18 closure were achieved at TB16 and are
-**not** reopened.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB15-REV` proved the edge-locus fallback bound `trace.sourceVertex`
-instead of the ray's far-end support, and derived a second latent defect — the fallback ranked corners absolutely
-while the carrier branch ranked them relative to the contact edge, agreeing only at `contactIndex == 2`. CB18
-implemented both.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB14-REV` proved the edge locus was newly reachable — contact nodes
-are appended after every vertex node — and that the helper's five `nullopt` branches were collapsed into one
-untyped result, so the branch could not be attributed. CB17's typed split produced the evidence above.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB13-REV` determined the vertex-10 emitter — CB15's
-`vertex_locus_secondary_parameter == nullopt`, not the legacy port branch — and proved the cause was a missing
-**vertex-exit** case in `vertex_trace_ray_second_point`'s Forward chain. CB16 implemented it and split the
-collapsed reason, closing `M3-CP4c3-TB13-CAND-01` and `M3-CP4c3-TB13-REV-CAND-01`.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB12-REV` proved the v47 collision was BI2 alternative 2 — two
-valid rays collapsed because `RayOrderKey::secondary` was the ray's **origin** port ordinal rather than a
-locus-relative within-wedge rank — and froze the CB15 correction that produced the state above.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB11-REV` proved the collision was underdetermined because the
-emitter retained neither operand, and froze the diagnostic-only CB14 that produced the evidence above. Its
-predicted mechanism — lesson 85, "an identifier is only a discriminator inside the scope that makes it unique" —
-is now runtime-confirmed.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB10-REV` proved the firing site was one of **28**
-`RotationSystemInconsistent` emission sites publishing neither a reason nor a locus, making the phase undecidable;
-CB13 discharged that diagnostic owner. `M3-CP4c-3-CB13` was diagnostic-only and build-green on package 81.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB9-REV` classified TB9's first red as a **genuine product ownership
-defect on a valid witness** — a `FieldAlignedSingularityPort`, an *origin* credential, was being used as an
-*arrival* credential, and a `BarrierAbsorbed` singularity has no ports by design although its network node is
-allocated unconditionally. It froze `M3-CP4c-3-CB12` under BD0–BD9, which TB10 has now runtime-proved.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB8-REV` reduced the twelve `InvalidNetworkTerminalOwnership`
-emission sites to **two** and classified the red as **diagnostic insufficiency**, because the two survivors emitted
-an identical rendered locus while every discriminating field of `FieldAlignedCurveNetworkError` was dropped at the
-pipeline projection — and accepted ordinal 329's losslessness guarantee turned out to assert against a
-**test-local** renderer. CB11 discharged BB0–BB9 diagnostically: the discriminator was added as a **field**, so
-accepted ordinal 328 still asserts `InvalidNetworkTerminalOwnership` unchanged.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-TB7-REV` proved ordinal 366 was a **CB9-introduced** product defect —
-CB9's fifth seed guard reused the **half-open ownership convention** as an admissibility test on one incoming ray,
-making every edge-collinear vertex arrival unresolvable in `FaceInterior` mode — and classified ordinal 374 as an
-**invalid witness**: the folded cone has `Θ = 3π/2`, so Gauss–Bonnet forces `exactLift = 1` against
-`make_zero_transport_field`'s declared `effort ≡ 0`, and that helper carries an unstated precondition — the mesh
-must be **intrinsically flat at every interior vertex**. Amendments 22 and 23 survived intact. Ordinal 374 remains
-deferred as `M3-CP4c3-TB7-CAND-02` and the atlas must not be weakened for it.)*
-
-*(Prior turn, retained for lineage: `M3-CP4c-3-DEFN-R2` discharged CB8-REV's AX1–AX8 and froze the vertex-star
-continuation semantics. **Amendment 22:** a curve continues through a source vertex along the **straightest
-geodesic** of the intrinsic vertex star — one exact arrival-anchored ray, one isometric development of the fan,
-continuation at `β = α + Θ/2`, the *unchanged* half-open sector convention applied to developed sectors, one typed
-certificate. Choosing `Θ/2` over `π` makes the gap/overlap pathology of a non-flat star **impossible** rather than
-adjudicated, and coincides with the ordinary straight line at every flat vertex. **Amendment 23:** the exact
-election is the sign of a sum of arccosines, degree up to `4^k` in fan length, so the architecture owes a certified
-filter, an implemented exact fallback, and a **published budget** with a typed fail-closed state. Vertex 30 is
-proved exactly there: four rational identities give `Θ(v30) = 2π` with no factorization and no floating point, the
-developed sectors give `sector(209) ∪ sector(208) = [π, 3π/2)`, so the owner is row 209 `(30,119,123)` or row 208
-`(30,31,119)` split at `α = θ₂₀₉`, and **row 41 `(25,30,31)` is unreachable by any continuation**.)*
-
-*(Prior turns, retained for lineage: `CB8-REV` upheld CB8's architectural stop and proved the missing authority was
-definition-level; `TB3-R1-REV` confirmed Amendment 16/P2 effective and ordered the typed failure-locus channel CB5
-delivered; `TB4-REV` falsified all three enumerated mechanisms and declared **Amendment 17**.)*
-
----
+**The likely culprit, named but not decided.** A barrier edge with both faces inside the region is **interior** to
+the sub-mesh, yet it is dropped from `E_int` and its endpoints are pushed into `boundaryVertices` and so out of
+`V_int`. A terminal slit is exactly that, and this fixture has ten.
 
 ## 1. What the project is
 
@@ -178,15 +106,16 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB35`.** Selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**,
-reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership remains **300 / 0 / 0**; ordinals 312, 390, 393, 404,
-406, 407, 408 and 409 all PASS.
+**Runtime authority — `M3-CP4c-3-TB36`** (package 101, promoted at TB36-REV). Selector **409**,
+**402 PASS / 7 RED**, **accepted 1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership
+remains **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408 and 409 all PASS.
 
-**TB36 package101 raw evidence — review pending.** Source `14aa1368523580444929bc65cab0b65449240ec2` / artifact
-`10029250324`, run `34153857590`, repeats **402 PASS / 7 RED** with accepted 365/365 and the same RED set. The raw
-delta is 366/367: both now reach `RegionEulerCharacteristicNotOne` with `FaceWalkOrbit`, arc occurrence/distinct
-40/22, node occurrence/distinct 40/22, repeated-node occurrence 18, early-start revisit 1, and `V/E/F/chi =
-100/353/250/-3`. This is not yet semantic-authority promotion; independent TB36-REV owns that verdict.
+**TB36 is promoted.** Source `14aa1368523580444929bc65cab0b65449240ec2` / artifact `10029250324`, run
+`34153857590`; 409 rows, every row `selected=1`, zero timeouts, all three censuses identical pre/post, a
+failure-detail digest table published. 366/367 now reach `RegionEulerCharacteristicNotOne` on `FaceWalkOrbit` with
+arc occurrence/distinct 40/22, node occurrence/distinct 40/22, repeated-node occurrence 18, early-start revisit 1,
+and `V/E/F/χ = 100/353/250/−3`. **366 and 367 share one failure-detail digest on `regionBoundaryOrbit=0` — one
+datum, two witnesses.**
 
 **The accepted prefix is restored.** CB40's CV2 restored the rejection **with** its typed reason, so ordinal 312 is
 satisfied *and* the reason is named; CV3's re-aimed ordinal 409 reaches its oracle and passes, proving the
@@ -206,62 +135,11 @@ which ordinals 312 and 409 construct, it is the only check that catches a genuin
 are unaffected and stay in force for all boundaries. TB33-REV and TB34-REV were each right about the input they
 read. `LESSONS.md` 146.
 
-**Still unknown:** `RegionEulerCharacteristicNotOne`, seen at TB34 once the rejection was bypassed, is a
-**separate** question — χ over a walk that may revisit nodes — and is not decided.
-
-**Definition authority — `M3-CP4c-3-DEFN-R5`, Part IX of `M3_CP4c_Frozen_Definitions.md`.** It supersedes earlier CP4c-3 definitions where they conflict.
-
-- **DEFN-R5.1 — face-walk guarantee.** Each authoritative orbit is one ordered closed successor walk; cyclic canonicalization only rotates it. A closed walk may revisit nodes.
-- **DEFN-R5.2 — derived provenance.** `FaceWalkOrbit(orbit)` exists only when exactly one current authoritative orbit equals the current ordered region boundary. A region does not self-certify provenance; a copied mutable flag is prohibited.
-- **DEFN-R5.3 — reason scope.** `ClosedBeforeEnd` rejects only `Unguaranteed`; for `FaceWalkOrbit` it is observation-only and traversal continues. `ArcChainBroken` and `WalkNotClosed` remain rejecting for all. Resolve optional provenance before the structural check, but require a missing owning orbit only afterward so 312/409 remain load-bearing negatives.
-- **DEFN-R5.4 — 312/409 unchanged.** They are exact falsifiers of provenance overreach and stay gating with selector409 byte-identical.
-- **DEFN-R5.5 — Euler measured, not corrected.** Current region χ is `V_int - E_int + F`; the boundary-term cancellation premise is not established for repeated-node walks. CB41 publishes exact boundary multiplicity counts on the Euler failure and changes no Euler semantics.
-
-**Definition authority — `M3-CP4c-3-DEFN-R4`, Part VIII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Part VII where they conflict.
-
-- **DEFN-R4.1 — `FragmentCornerIncidence` is an ownership map.** `fragmentCorners[face][orbit]` is the set of `face`'s corners **owned by certified face `orbit`** — keyed by owning region, not by fragment. Both consumers use it that way (`:1893–1906` asks *"which corners are mine?"*; `:1927–1945` classifies mine-versus-another's), and the `FragmentKey` at `:1693–1699` carries `owningOrbit` as a **constant tag**. TB31-REV's description of `(face, orbit)` as a *fragment identity* is **withdrawn**.
-- **DEFN-R4.2 — a bridge chord yields one entry with all three corners, and that is correct.** Both sides are owned by the same certified face, so the merge at `:541–548` is the right answer, not a collision.
-- **DEFN-R4.3 — `TraceArcDoesNotSeparateItsSides` is RETIRED** from the emission path (enum entry stays declared). Its premise is refuted by the TB18 fact measured on arc 15; it contradicts the separating-arc rule that deliberately leaves arcs 20 and 24 alone; and **the same function already accepts equal orbits on its ray path** (`:608–615`). An internal inconsistency, not a protection.
-- **DEFN-R4.4 — frontier evidence must not hang off one failure code.** The failing-component digest, census identity and `censusCorrespondence` publish on **every** region-construction and region-certification failure locus.
-- **DEFN-R4.5 — witnesses assert the evidence, not which failure produced it.** Ordinals 390/393/406/407 are replaced in place, retained and gating.
-- **Established from source (CR8):** `build_fragment_corner_incidence` is called from `build_region_certificates`, which runs **after** `build_regions` — so the guard is **downstream** of the seed guard and became reachable only because the pipeline advanced. **CB36 did not change the walk.** `LESSONS.md` 139.
-
-**Definition authority — `M3-CP4c-3-DEFN-R3`, Part VII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Parts
-IV–VI where they conflict, and only there. Its decisions:
-
-- **DEFN-R3.1 — the certifier must publish a total source-face owner map.** The question every recent diagnostic
-  tried to answer — *which certified face contains this source triangle* — is not answerable from
-  `SurfaceCutGraphFaceCertificate`, which publishes an orbit id and three counts. But
-  `certify_actual_embedded_graph` **already builds the whole embedded topology and face walk**
-  (calling the same `build_embedded_graph_topology` the plan calls) and then publishes counts only.
-  `proves_cellularity()` is extended to require the map to be total with ids drawn from the certificate's own
-  faces. **The decision stands. Its justification — "a publication decision, not a new computation" — was
-  WITHDRAWN at `M3-CP4c-3-TB24-REV`:** the face walk's darts are darts of *network and cut arcs*, so a source face
-  has a directly readable orbit only if it is arc-incident or trace-crossed. Every other face — including most of
-  component 0's 191 — still needs its owner **propagated**, which is the seeding algorithm R3.2 set out to delete.
-  CB27 duly re-implemented that propagation inside the certifier and reproduced `[0,1,3]` at `(0,1,2)` exactly.
-  `M3-CP4c3-TB24-REV-CAND-02`, `LESSONS.md` 121.
-- **DEFN-R3.2 — ownership is read, not seeded.** With a total map, `componentBarriers`, the unlabeled-face
-  partition, `seedOrbits` and the per-edge seed rule are **replaced by a lookup**.
-  `UncutFaceComponentOrbitSeedNotUnique` is **relocated**, not weakened, into a consistency check that names the
-  component and the conflicting owners.
-- **DEFN-R3.3 — a derived partition must be at least as fine as the one it adjudicates**; any retained projection
-  must use the full `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`.
-- **DEFN-R3.4 — the fragment-count prohibition is LIFTED, with reasons.** `|owners| = k+1` is false on a certified
-  cellular complex containing a bridge, which TB18 measured (arc 15, `forwardOrbit = reverseOrbit = 0`). CB21
-  stands and is not reverted. The `proves_cellularity()` and seed-guard prohibitions remain in force.
-- **DEFN-R3.5 — the discriminator was a lookup, and it was defeated by its own precondition.** TB24 reported
-  **0 observed / 191 unavailable** because publication was gated on the derivation succeeding. Its replacement,
-  TB24-REV's CH8 conflict census, was defeated the *same way* — it reads only established owners, and on the
-  component under investigation nothing is established. **Two measurement designs in a row failed on the
-  precondition, not on the geometry.** `LESSONS.md` 120 and 122.
-- **DEFN-R3.6 / R3.7 — ordinal 397 must be FIXED** (relaxing its expectation is prohibited) and **ordinal 393's
-  assertions are REPLACED in place**, retained and gating, because its seed-relative expectation becomes
-  meaningless once the seed ceases to exist.
-
-Stable accounting is **45 / 14 / 31** — **one new stable event at TB34**, category `RP-01 / AUTHORITY_DOMAIN_CONFLATION` — produced-witness debt **5**, semantic M3 packages **99**. Sphere 368,
-saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence contract
-remain deferred under their own owners. **Vertex 30 is still not reached.**
+**The boundary-walk question is closed and the Euler question is re-aimed.** TB36 confirmed Part IX at runtime.
+The remaining failure is `RegionEulerCharacteristicNotOne` at `V/E/F/χ = 100/353/250/−3`, and TB36-REV showed the
+frozen CX5 census measures the **network** boundary while χ counts a **source-mesh** sub-complex. The open question
+is now the single identity **χ_true = X + B_int − 47**: `X + B_int = 44` means the region is genuinely not a disc,
+`= 48` means the reduced formula is wrong by exactly 4. `LESSONS.md` 150.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -370,7 +248,20 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Region boundary provenance — the validator cannot see the guarantee it is checking.**
+1. **The region certificate makes two claims that cannot both be true.** — `M3-CP4c3-TB36-REV-CAND-01`
+
+   - χ is computed as `V_int − E_int + F` on the stated premise that the boundary terms cancel
+     (`GlobalTopologyPlan.cpp:2099–2100`), and the same certificate is what establishes disc topology.
+   - Every source face is a triangle, so 250 faces give exactly 750 face-edge incidences, and with `B_int` =
+     barrier edges having both faces in the region and `X` = sub-mesh vertices excluded from `interiorVertices`,
+     **χ_true = X + B_int − 47**. The published χ = −3 requires `X + B_int = 44`; a disc requires 48.
+   - **So either the boundary terms do not cancel, or the region is not a disc.** One integer decides it, and
+     neither term is published.
+   - **The frozen CX5 census cannot decide it** — it measures the network boundary walk, not the source-mesh
+     sub-complex χ counts. `LESSONS.md` 150.
+   - **Owner: `M3-CP4c-3-CB42`** under CY6.1–CY6.6 — measurement only, no correction.
+
+2. **Region boundary provenance — the validator cannot see the guarantee it is checking. — RESOLVED**
 
    - **Proved from source.** A plan region's boundary **is** `walk.orbits[orbit]`
      (`GlobalTopologyPlan.cpp:986`, `:1450`, relied on at `:379`), and a face-walk orbit is an ordered **single
@@ -381,17 +272,16 @@ features first, then threads them through source authority *and* atlas). Copy on
      `WalkNotClosed` are unaffected and stay in force for all boundaries.
    - **The defect is provenance blindness**, not the presence or absence of the check. This reconciles TB33-REV and
      TB34-REV, which were each right about the input they read.
-   - **Separate and undecided:** `RegionEulerCharacteristicNotOne`, seen at TB34 with the rejection bypassed — χ
-     over a walk that may revisit nodes.
-   - **Part IX now resolves the contract.** Provenance is the exact unique face-walk-orbit equality, not a stored flag; reason scope follows it.
-   - **Owner:** CB41 implementation is complete and TB36 raw runtime measurement is complete; **independent `M3-CP4c-3-TB36-REV`** owns the semantic verdict and any later Euler decision.
+   - **CLOSED / RUNTIME PROVED at TB36.** Part IX's derived provenance relation works in both directions: the
+     plan region advanced past `ClosedBeforeEnd`, and ordinals 312/409 — which mutate a **copy** of a real region —
+     still reject on `Unguaranteed`. A stored construction-time flag would have suppressed both. `LESSONS.md` 148.
 
-2. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
+3. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
    `censusCorrespondence`. Whether to unify remains a **`DEFN`** question and is not required by the current
    frontier. Owners: `M3-CP4c3-TB26-REV-CAND-04`, `M3-CP4c3-DEFN-R3-CAND-01`.
 
-3. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
+4. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
    path: the `VertexStarTransitAudit` is constructed **after** all five seed guards, so every seed failure publishes
    `std::nullopt`; `VertexStarTransitState::SeedUnavailable` is therefore **dead by construction**; and the 26 AX8
    fields CB9 added to `SurfaceCellFailureLocusDiagnostics` have **no reader** — `append_cp4c_failure_locus`, the
@@ -399,7 +289,7 @@ features first, then threads them through source authority *and* atlas). Copy on
    Third consecutive turn in which an ordered measurement was built and discarded at a stage boundary. Owned by
    **AZ4–AZ5**, with the consumer set found **by search against a predicate**.
 
-4. **Minimal transit witness / selector governance — ACTIVE, still conditional.** Selector 374 stays byte-immutable.
+5. **Minimal transit witness / selector governance — ACTIVE, still conditional.** Selector 374 stays byte-immutable.
    The gate covers only `FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection`; the boundary-ray and
    radial-arrival companion instances are **ungated**, and the radial one was written in `EdgeTransit` mode
    specifically because CB9's guards block `FaceInterior` — so no gated identity covers the case production actually
@@ -407,20 +297,20 @@ features first, then threads them through source authority *and* atlas). Copy on
    arrival already proved exact), instantiate **both** radial orientations, and show it failing under CB9 and
    passing under the correction. Ordinal **375** is appended only then.
 
-5. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB7 reproduces
+6. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB7 reproduces
    `CellularityNotEstablished` (4) where `EmptyNetworkOnClosedSurface` (6) is required, with the `sourceFace` locus
    absent. Independent owner; deferred until the mechanical path clears; must not be combined with vertex transit.
 
-6. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 reproduces `NoCarrierMatch / SourceEdgeUnavailable` at
+7. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 reproduces `NoCarrierMatch / SourceEdgeUnavailable` at
    trace 2 / event 30. Preserve AL4: no sphere semantic correction while the mechanical gate owns the critical path.
 
-7. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
+8. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
    `certificate.saturationUsed=true`. Amendment-14 representation is proved; ordinary-proposal coverage is debt.
 
-8. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
+9. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
    witness. `M3-CP4c3-DEFN-R1-CAND-01` stays open until production publishes `unboundSingularityCount=0`.
 
-9. **Report-only 367, 371, 372 — UNMEASURED, and 371/372 are blocked by a fixture helper rather than by their own
+10. **Report-only 367, 371, 372 — UNMEASURED, and 371/372 are blocked by a fixture helper rather than by their own
    contracts.** All three abort inside the shared `cp4c_mechanical_fixture()` constructor, which throws unless *all
    five* of `sourceAuthority`, `atlas`, `network`, `cutGraph` and `plan` are retained — so their TB10 reds are one
    upstream cause, not three. But **371 and 372 read only `fixture.atlas`**, an A1 product that is available and
@@ -431,13 +321,22 @@ features first, then threads them through source authority *and* atlas). Copy on
    deferred**: clearing ordinal 366 unblocks 371/372 automatically, so the candidate exists to make the coupling's
    cost visible if it does not.
 
-10. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
+11. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
     `double` and exactifies them before the flow classification reads their signs) and `M3-CP4c3-CB9-AUDIT-02`
     (`integer_sqrt_floor` has no published bit-width budget). Worth knowing: AUDIT-01 is the mechanism that produced
     the exact zero item 1 turns on, and on that witness it produced the **right** answer — the field genuinely is
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A measurement freezes a domain as well as a quantity — say which one, in the definition.** A definition turn
+froze an exact multiplicity census to test whether a boundary's vertices and edges cancel out of an Euler formula.
+The implementation counted them over the **network graph**; the formula counts a **sub-mesh of source triangles**,
+and a network arc can be a trace chord that is not a source edge at all. Both counts came out 22, the report read
+that as the premise holding, and the question the turn existed to answer was untouched. The definition named the
+fields and their exactness but never named the **domain**, so a faithful implementation measured the wrong object.
+When freezing a measurement, state the domain of every count and the identity it must satisfy — and when a census
+returns a suspiciously clean equality, check that both sides live in the same space. `LESSONS.md` §4 150.
 
 **A property established at construction is not established after a copy — and the tests copy.** Two drafts of one
 definition turn proposed opposite provenance rules: a flag set in `build_regions` and stored on the region, versus

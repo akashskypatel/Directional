@@ -1,3 +1,66 @@
+## M3-CP4c3-TB36-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / TB36 PROMOTED**
+
+- **Record:** `Architecture_M3_CP4c3_TB36_Independent_Review_Record.md`, measures **CY0–CY6**. Evidence-only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
+  `review_check.py authority 14aa1368523580444929bc65cab0b65449240ec2` — ALL CHECKS PASSED.
+
+- **CY0 — TB36 promoted to current valid semantic runtime authority; packages advance to 101.** Selector **409**,
+  **402 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Run `34153857590`;
+  immutable CB41 package `10029250324` / source `14aa1368523580444929bc65cab0b65449240ec2`; 409 rows, every row
+  `selected=1`, zero timeouts, all three censuses identical pre/post, failure-detail digest table published,
+  `SHA256SUMS` 28/28, executables `0755`. Two procedural misses (a `READ_MODE` ordering miss corrected by snapshot
+  `34153210096`, and an unresolvable external `TB-EXEC.md` reference) are control-plane facts and do not invalidate
+  artifact-only evidence.
+
+- **CY1 — DEFN-R5.2 and R5.3 are runtime confirmed, and so is Part IX-A's negative.** 366/367 advanced **past**
+  `ClosedBeforeEnd` publishing `regionBoundaryProvenance=FaceWalkOrbit`, which was CX8's stated falsifier for the
+  provenance rule. Ordinals **312 and 409 stayed PASS**: both mutate a **copy of a real plan region**
+  (`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253`, `:3276–3279`), the derived relation resolves the mutated
+  boundary to `Unguaranteed`, and both still reject. **This is the runtime disproof of the construction-time
+  provenance rule** the competing DEFN-R5 draft proposed. `M3-CP4c3-TB35-REV-CAND-01` is **CLOSED / RUNTIME
+  PROVED**. `LESSONS.md` 148.
+
+- **CY2 — the finding of the turn: the frozen CX5 measurement is in the wrong domain.** The counted complex is a
+  sub-mesh of **whole source triangles** — faces are partitioned one-per-region (`GlobalTopologyPlan.cpp:1400–1433`),
+  `edgeCount` counts **source edges** (`:1847–1860`), `interiorVertices` holds **source vertices**
+  (`:2048–2094`). But CX5's census is over the **network graph**: `std::set<authority::NetworkArcId>` and
+  `std::set<authority::NetworkNodeId>` (`:2122–2123`), and a network arc may be a **trace segment** — a chord
+  through face interiors, not a source edge at all (`:1905`, `:1934`, `:1951`). **`22 = 22` is therefore not
+  evidence that the boundary terms cancel**, and DEFN-R5.5's question is still open after the turn frozen to close
+  it. This is a recurrence of **`RP-01 / AUTHORITY_DOMAIN_CONFLATION`** carrying **no stable event**, because no
+  accepted green was lost. `LESSONS.md` 150.
+
+- **CY2.1/CY2.2 — two caveats on the census.** `regionBoundaryNodeOccurrenceCount` is assigned
+  `region.boundary.size()` (`:2142`), the same expression as `regionBoundaryArcOccurrenceCount` (`:2120`), so the
+  eight published fields carry at most six independent values. And 366/367 share failure-detail SHA-256
+  `82548091…` on `regionBoundaryOrbit=0` — **one datum, two witnesses**, not corroboration.
+
+- **CY3 — what the census does establish, and the identity that decides the frontier.** 40 arc occurrences over 22
+  distinct arcs with 22 distinct nodes gives `V − E = 0`, so the network boundary is connected with exactly one
+  independent cycle: a **4-arc cycle carrying an 18-arc tree** (`18·2 + 4·1 = 40`), the bridge/slit shape Part IX
+  predicted. Separately, every source face is a triangle (`EmbeddedGraphTopology.h:25–32`), so 250 faces give
+  exactly **750 face-edge incidences**, and with `B_int` = barrier edges having both faces in the region and `X` =
+  sub-mesh vertices excluded from `interiorVertices`:
+
+  > **χ_true = X + B_int − 47.**
+
+  The published `χ = −3` follows from `X + B_int = 44`; a disc requires `X + B_int = 48`. **The certificate's two
+  claims — that the boundary terms cancel, and that regions are discs — cannot both be true, and one integer
+  decides which.** Neither `B_int` nor `X` is published, and both sit in loops that already exist.
+
+- **CY4 — RED classification.** 366/367 are the frontier (one datum). 368/369/370/374/398 are carried, unchanged,
+  under their prior owners. No new RED ordinal, no accepted-prefix loss, no re-owning.
+
+- **CY5 — accounting.** No accepted-green loss, therefore **no stable event**. Totals remain **45 events / 14
+  categories / 31 recurrences**, debt **5**; packages advance to **101**. New candidate
+  **`M3-CP4c3-TB36-REV-CAND-01`** (ACTIVE / GATING): the certificate asserts both cancellation and disc topology,
+  and CY3 shows those are mutually exclusive. `M3-CP4c3-TB34-REV-CAND-03` is **ACTIVE / RE-SCOPED** onto that
+  identity.
+
+- **CY6 — exact successor `M3-CP4c-3-CB42`**, runtime-free, **measurement only**.
+
+---
+
 ## M3-CP4c3-DEFN-R5 — boundary provenance contract — **CURRENT DEFINITION AUTHORITY / STATIC / NON-STABLE / PART IX**
 
 - **No runtime, compile, package or semantic mutation.** Runtime authority remains TB35: selector409,
@@ -5982,16 +6045,39 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current valid semantic runtime authority remains **M3-CP4c-3-TB35** pending independent review: source
-`23a753a83f0eda0447172ce96bcd3180bf95ae8a`, CB40 artifact `10003613409`, selector409, run `34084955954`,
-**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300/0/0**.
+Current valid semantic runtime authority is **M3-CP4c-3-TB36**: semantic source
+`14aa1368523580444929bc65cab0b65449240ec2`, immutable CB41 package `10029250324`, selector409, run `34153857590`,
+**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, reds `[366,367,368,369,370,374,398]`, ownership
+**300 / 0 / 0**. Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages
+**101**. Definition authority remains Part IX (`M3-CP4c-3-DEFN-R5`) with Part IX-A amending it.
 
-TB36 package101 raw evidence is mechanically complete at run `34153857590` and is the sole evidence set for the
-next review. Part IX definition authority remains `M3-CP4c-3-DEFN-R5`.
+`M3-CP4c-3-TB36-REV` promoted that ledger and **confirmed the Part IX provenance contract at runtime**: 366/367
+advanced past `ClosedBeforeEnd` on `regionBoundaryProvenance=FaceWalkOrbit` while ordinals 312 and 409 - which
+mutate a **copy** of a real plan region - stayed PASS on `Unguaranteed`.
 
-`M3-CP4c3-TB35-REV-CAND-01` is **RUNTIME OBSERVED / REVIEW PENDING**. `M3-CP4c3-TB34-REV-CAND-03` is **ACTIVE /
-MEASUREMENT COMPLETE / REVIEW PENDING**. Stable totals remain **45 / 14 / 31**, debt **5**, packages **101**.
+**The frontier moved, and the frozen measurement did not reach it.** CX5's census is taken over the **network
+graph** while chi is computed over a **sub-mesh of whole source triangles**, and a network arc may be a trace
+chord that is not a source edge at all. What the numbers do settle is an identity: with `B_int` the barrier edges
+having both faces in the region and `X` the sub-mesh vertices excluded from `interiorVertices`,
+**chi_true = X + B_int - 47**. The published chi = -3 means `X + B_int = 44`; a disc means `X + B_int = 48`.
+**The certificate cannot both cancel its boundary terms and certify discs**, and one integer decides which.
 
-**Exact next: independent `M3-CP4c-3-TB36-REV`.** Static evidence review only: verify the immutable TB36 evidence,
-adjudicate the provenance and Euler candidates, decide package101 semantic-authority promotion, and freeze the next
-bounded measure. Execute no runtime/benchmark/compile and perform no corrective implementation inside the review.
+**Exact next: `M3-CP4c-3-CB42` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
+**CY6.1-CY6.6**: publish `B_int` and `X` with `X` split into its three disjoint causes (CY6.1); publish the
+**sub-mesh** boundary counts in their own domain - source edges with exactly one incident face in the region, and
+their distinct source vertices (CY6.2); publish `V_total`, `E_total` and `chiFull` alongside the existing reduced
+value **without changing the formula or forcing chi to 1** (CY6.3); mark the network census as network-domain and
+retire or flag the redundant occurrence field (CY6.4); keep ordinals 312/409 byte-identical and selector409
+byte-frozen, first grepping the corpus for every accepted identity asserting `RegionEulerCharacteristicNotOne`
+(CY6.5); `M3-CP4c-3-TB37` re-executes (CY6.6).
+
+**Falsification, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
+conditions; CB42 adds diagnostics only, so any behaviour change at all is a defect in the turn. If
+`X + B_int = 44` the cancellation premise holds, chi = -3 is correct, and **the frontier is region construction**.
+If `X + B_int = 48` the premise is false by exactly 4 and **the frontier is the certificate's arithmetic**. If it
+is neither, one of the three exclusion causes is miscounting and the split names it.
+
+**Prohibited:** correcting the Euler formula, region construction or disc acceptance in CB42; deciding the frontier
+from the network census; publishing a predicted chi for the mechanical fixture; weakening ordinal 398; touching
+368/369/370/374; re-opening source-face ownership or any retired guard; any accepted-identity or selector byte
+change; any Directional runtime in CB42.

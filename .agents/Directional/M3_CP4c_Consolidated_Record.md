@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-DEFN-R5`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The frontier is **provenance blindness in the boundary validator**: a plan region's boundary is a face-walk orbit and therefore a single closed walk by construction, so `ClosedBeforeEnd` on it is a false rejection, while on a synthetic boundary it is the only check that catches a real multi-walk. **DEFN-R5 (Part IX) froze the contract:** provenance is a **derived exact relation** to the authoritative face-walk orbits, never a stored flag; `ClosedBeforeEnd` rejects only an `Unguaranteed` boundary; and `RegionEulerCharacteristicNotOne` is **measured, not corrected**. **Part IX-A** adds that the Euler *causation* is settled — χ drops the boundary terms because of the no-pinch condition — so 366/367 advancing to it under CB41 is predicted, not new evidence. Stable accounting **45 / 14 / 31** — the TB34 event stands — debt **5**, semantic M3 packages **100**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB36-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36: 366/367 advanced past `ClosedBeforeEnd` on `FaceWalkOrbit` while ordinals 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. **The frontier is now the region certificate's two mutually exclusive claims** — that the boundary terms cancel out of χ, and that regions are discs. The frozen CX5 census could not decide it because it counts the **network graph** while χ counts a **sub-mesh of whole source triangles**; what the numbers do settle is **χ_true = X + B_int − 47**, so `X + B_int = 44` means the region is not a disc and `= 48` means the reduced formula is wrong by exactly 4. Runtime authority is **TB36** on selector 409 at **402 PASS / 7 RED**, accepted **365/365**, packages **101**. Stable accounting **45 / 14 / 31** — no new event, no accepted green lost — debt **5**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -892,6 +892,34 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
+
+### Consolidated on 2026-09-07 at `M3-CP4c-3-TB36-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB36_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in CY0–CY6 of the
+TB36 review record:** the promotion evidence, the two-directional runtime proof of Part IX's provenance relation,
+the domain mismatch between the CX5 census and the χ computation, the measured boundary shape, and the derivation
+of **χ_true = X + B_int − 47**.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` | 251 | superseded review authority - CW0-CW5. Established the face-walk single-walk guarantee from source and froze DEFN-R5. Its §2.4 framing of the Euler result as a **second, independent finding** was already withdrawn by Part IX-A §A.2 and is now runtime-superseded |
+| `Architecture_M3_CP4c3_TB35_EXEC_Report.md` | 154 | superseded runtime authority - TB35, 402 PASS / 7 RED on selector 409 with the accepted prefix restored to 365/365 |
+| `Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` | 151 | consumed contract |
+
+**Folded here:** 3 documents, 556 lines. **Running total: 109 documents, 21,524 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB36_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 402 PASS / 7 RED, accepted 365/365, package101),
+`Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` (this review and the frozen CY6 measure),
+`Architecture_M3_CP4c3_CB41_Code_Build_Report.md` (**the build that produced the current package**, and the static
+audit proving ordinals 312/409 byte-identical), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md` (**Part IX operative, amended by Part IX-A**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
 
 ### Consolidated on 2026-09-07 at `M3-CP4c-3-DEFN-R5` — nothing folded, and a divergence resolved
 

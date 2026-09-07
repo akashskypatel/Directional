@@ -528,13 +528,19 @@ forward:
 **365/365**, and ordinal **409 PASS** on its re-aimed shared-start oracle. Ordinals 390/393/404/406/407/408 stayed
 green.
 
-**Exact successor:** `M3-CP4c-3-CB41` under **CX0–CX8** of `M3_CP4c_Frozen_Definitions.md` Part IX (DEFN-R5).
-**It authors no selector: 409 stays byte-identical**, and CX4 forbids editing ordinals **312** or **409** — their
-fixtures, names, assertions, order or selector membership. Both mutate a copy of a real plan region
-(`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253` and `:3276–3279`), so under Part IX's derived relation their
-boundaries resolve to `Unguaranteed` and must still reject with `RegionBoundaryNotSingleWalk / ClosedBeforeEnd`.
-**Part IX-A §A.1 records why:** a construction-time provenance flag would survive that copy and re-break accepted
-ordinal 312. **Accepted prefix 365/365 is a stop condition.**
+**CB41 discharged that successor and TB36 proved it at runtime.** CB41's static audit recorded ordinal 312's and
+ordinal 409's test blocks as **byte-identical before and after** (`94724bef…`, `ea574dab…`) and selector409
+unchanged at `eea6d8c2…`; TB36 then held both **PASS** while 366/367 advanced past `ClosedBeforeEnd`. The derived
+provenance relation resolves their mutated copies (`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253`,
+`:3276–3279`) to `Unguaranteed`, so **Part IX-A §A.1 is confirmed**: a construction-time flag would have survived
+the copy and re-broken accepted ordinal 312.
+
+**Exact successor:** `M3-CP4c-3-CB42` under **CY6.1–CY6.6** of
+`Architecture_M3_CP4c3_TB36_Independent_Review_Record.md`. **It authors no selector: 409 stays byte-frozen**, and
+CY6.5 keeps ordinals **312** and **409** byte-identical — fixtures, names, assertions, order and selector
+membership. CB42 adds **diagnostics only**, so **any behaviour change at all is a defect in the turn**, and before
+implementing it must grep the corpus for every accepted identity asserting `RegionEulerCharacteristicNotOne`.
+**Accepted prefix 365/365 is a stop condition.**
 
 ## Separate lineage — M1
 
