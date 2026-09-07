@@ -1,0 +1,4 @@
+# M3-CP4c-3-TB36-EXEC temporary-state cleanup
+.agents/connector-triggers/source-snapshot/tb36-20260907.txt
+.agents/connector-triggers/tb36-exec.txt
+.agents/connector-triggers/google-drive/tb36-exec-20260907.txt
