@@ -89,11 +89,13 @@ struct GlobalTopologyRegionDiscCertificate {
   bool sourceFacesConnected = false;
   int eulerCharacteristic = 0;
   // Number of source vertices strictly interior to the region (V_int).
-  // The validated single boundary walk and no-pinch condition make
-  // V_boundary == E_boundary, licensing their cancellation from chi.
   std::size_t vertexCount = 0U;
   // Number of interior fragment adjacencies (E_int) in the region dual graph.
   std::size_t edgeCount = 0U;
+  // Number of distinct source vertices in the whole-face region sub-mesh (V_total).
+  std::size_t totalVertexCount = 0U;
+  // Number of distinct source edges in the whole-face region sub-mesh (E_total).
+  std::size_t totalEdgeCount = 0U;
   // Number of owned (SourceFaceTopologyKey, orbit) fragments (F).
   std::size_t faceCount = 0U;
   bool interiorSingularityFree = false;

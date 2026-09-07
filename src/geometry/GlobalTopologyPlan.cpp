@@ -1810,6 +1810,34 @@ void emit_fragment_euler_diagnostics(
   std::cerr << out.str() << '\n';
 }
 
+void emit_region_euler_certificate_diagnostics(
+    const GlobalTopologyRegion &region,
+    const GlobalTopologyRegionDiscCertificate &certificate,
+    const std::size_t excludedVertexCount,
+    const std::size_t submeshBoundaryEdgeCount,
+    const std::size_t interiorBarrierEdgeCount,
+    const std::int64_t fullMinusReducedEulerCharacteristic) {
+  const std::int64_t reducedEulerCharacteristic =
+      static_cast<std::int64_t>(certificate.vertexCount) -
+      static_cast<std::int64_t>(certificate.edgeCount) +
+      static_cast<std::int64_t>(certificate.faceCount);
+  std::ostringstream out;
+  out << "M3_CP4AB_FRAGMENT_DIAG record=euler_certificate"
+      << " region=" << region.id.index()
+      << " X=" << excludedVertexCount
+      << " E_one=" << submeshBoundaryEdgeCount
+      << " B_int=" << interiorBarrierEdgeCount
+      << " fullMinusReduced=" << fullMinusReducedEulerCharacteristic
+      << " V_int=" << certificate.vertexCount
+      << " E_int=" << certificate.edgeCount
+      << " V_total=" << certificate.totalVertexCount
+      << " E_total=" << certificate.totalEdgeCount
+      << " F=" << certificate.faceCount
+      << " chiReduced=" << reducedEulerCharacteristic
+      << " chiFull=" << certificate.eulerCharacteristic;
+  std::cerr << out.str() << '\n';
+}
+
 RegionCertificateBuildResult build_region_certificate(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,
@@ -2017,6 +2045,8 @@ RegionCertificateBuildResult build_region_certificate(
 
   std::set<authority::SourceVertexId> candidateVertices;
   std::set<authority::SourceVertexId> interiorVertices;
+  std::set<authority::SourceVertexId> submeshVertices;
+  std::set<authority::SourceEdgeTopologyKey> submeshEdges;
   const std::set<authority::SourceFaceTopologyKey> regionFaces(
       region.sourceFaces.begin(), region.sourceFaces.end());
   for (const auto &faceKey : region.sourceFaces) {
@@ -2028,6 +2058,9 @@ RegionCertificateBuildResult build_region_certificate(
       failure.sourceFace = faceKey;
       return failure;
     }
+    submeshVertices.insert(face->second.vertices.begin(),
+                           face->second.vertices.end());
+    submeshEdges.insert(face->second.edges.begin(), face->second.edges.end());
     const auto cutFace = fragmentCorners.find(faceKey);
     if (cutFace == fragmentCorners.end()) {
       candidateVertices.insert(face->second.vertices.begin(),
@@ -2094,12 +2127,41 @@ RegionCertificateBuildResult build_region_certificate(
   }
   certificate.vertexCount = interiorVertices.size();
   certificate.faceCount = fragments.size();
-  // The validated single boundary walk and no-pinch condition give
-  // V_boundary == E_boundary, so the boundary terms cancel from chi.
+  certificate.totalVertexCount = submeshVertices.size();
+  certificate.totalEdgeCount = submeshEdges.size();
+
+  std::size_t interiorBarrierEdgeCount = 0U;
+  std::set<authority::SourceEdgeTopologyKey> submeshBoundaryEdges;
+  for (const auto &[edge, incident] : topology.incidentFaces) {
+    const std::size_t regionIncidentCount = static_cast<std::size_t>(
+        std::count_if(incident.begin(), incident.end(), [&](const auto &face) {
+          return regionFaces.count(face) != 0U;
+        }));
+    if (regionIncidentCount == 1U) {
+      submeshBoundaryEdges.insert(edge);
+    }
+    if (incident.size() == 2U && regionIncidentCount == 2U &&
+        (mandatoryEdges.count(edge) != 0U || cutEdges.count(edge) != 0U)) {
+      ++interiorBarrierEdgeCount;
+    }
+  }
+  const std::size_t excludedVertexCount =
+      certificate.totalVertexCount - certificate.vertexCount;
+  const std::int64_t fullMinusReducedEulerCharacteristic =
+      static_cast<std::int64_t>(excludedVertexCount) -
+      static_cast<std::int64_t>(submeshBoundaryEdges.size()) -
+      static_cast<std::int64_t>(interiorBarrierEdgeCount);
+
+  // Euler characteristic is counted on the whole-face source sub-mesh.
   certificate.eulerCharacteristic =
-      static_cast<int>(certificate.vertexCount) -
-      static_cast<int>(certificate.edgeCount) +
+      static_cast<int>(certificate.totalVertexCount) -
+      static_cast<int>(certificate.totalEdgeCount) +
       static_cast<int>(certificate.faceCount);
+  if (diagnostics != nullptr) {
+    emit_region_euler_certificate_diagnostics(
+        region, certificate, excludedVertexCount, submeshBoundaryEdges.size(),
+        interiorBarrierEdgeCount, fullMinusReducedEulerCharacteristic);
+  }
   if (certificate.eulerCharacteristic != 1) {
     if (diagnostics != nullptr) {
       emit_fragment_euler_diagnostics(
@@ -2146,35 +2208,11 @@ RegionCertificateBuildResult build_region_certificate(
     failure.regionBoundaryStartRevisitBeforeEndCount =
         startRevisitBeforeEndCount;
 
-    // CB42 / CY6 measurement only.  These counts are in the same source
-    // sub-mesh domain as V_int/E_int/F above.  They are diagnostics only:
-    // no acceptance or Euler formula depends on them.
-    std::size_t interiorBarrierEdgeCount = 0U;
-    for (const auto &[edge, incident] : topology.incidentFaces) {
-      if (incident.size() != 2U ||
-          (mandatoryEdges.count(edge) == 0U && cutEdges.count(edge) == 0U)) {
-        continue;
-      }
-      if (regionFaces.count(incident[0]) != 0U &&
-          regionFaces.count(incident[1]) != 0U) {
-        ++interiorBarrierEdgeCount;
-      }
-    }
-
-    std::set<authority::SourceVertexId> submeshVertices;
+    // CB42 / CY6 failure diagnostics, now derived from the same whole-face
+    // sub-mesh census that owns the certificate criterion.
     std::size_t excludedMeshBoundaryVertexCount = 0U;
     std::size_t excludedBoundaryVertexCount = 0U;
-
-    std::set<authority::SourceEdgeTopologyKey> submeshEdges;
-    std::set<authority::SourceEdgeTopologyKey> submeshBoundaryEdges;
     std::set<authority::SourceVertexId> submeshBoundaryVertices;
-    for (const auto &faceKey : region.sourceFaces) {
-      const auto face = topology.faces.find(faceKey);
-      if (face == topology.faces.end()) continue;
-      submeshVertices.insert(face->second.vertices.begin(),
-                             face->second.vertices.end());
-      submeshEdges.insert(face->second.edges.begin(), face->second.edges.end());
-    }
     for (const auto vertex : submeshVertices) {
       if (interiorVertices.count(vertex) != 0U) continue;
       if (meshBoundaryVertices.count(vertex) != 0U) {
@@ -2183,19 +2221,11 @@ RegionCertificateBuildResult build_region_certificate(
         ++excludedBoundaryVertexCount;
       }
     }
-    const std::size_t excludedVertexCount =
-        submeshVertices.size() - interiorVertices.size();
     const std::size_t excludedAllOwnedVertexCount =
         excludedVertexCount - excludedMeshBoundaryVertexCount -
         excludedBoundaryVertexCount;
 
-    for (const auto &[edge, incident] : topology.incidentFaces) {
-      const std::size_t regionIncidentCount = static_cast<std::size_t>(
-          std::count_if(incident.begin(), incident.end(), [&](const auto &face) {
-            return regionFaces.count(face) != 0U;
-          }));
-      if (regionIncidentCount != 1U) continue;
-      submeshBoundaryEdges.insert(edge);
+    for (const auto &edge : submeshBoundaryEdges) {
       submeshBoundaryVertices.insert(edge.first());
       submeshBoundaryVertices.insert(edge.second());
     }
@@ -2208,12 +2238,9 @@ RegionCertificateBuildResult build_region_certificate(
     failure.regionExcludedAllOwnedVertexCount = excludedAllOwnedVertexCount;
     failure.regionSubmeshBoundaryEdgeCount = submeshBoundaryEdges.size();
     failure.regionSubmeshBoundaryVertexCount = submeshBoundaryVertices.size();
-    failure.regionTotalVertexCount = submeshVertices.size();
-    failure.regionTotalEdgeCount = submeshEdges.size();
-    failure.regionFullEulerCharacteristic =
-        static_cast<std::int64_t>(submeshVertices.size()) -
-        static_cast<std::int64_t>(submeshEdges.size()) +
-        static_cast<std::int64_t>(certificate.faceCount);
+    failure.regionTotalVertexCount = certificate.totalVertexCount;
+    failure.regionTotalEdgeCount = certificate.totalEdgeCount;
+    failure.regionFullEulerCharacteristic = certificate.eulerCharacteristic;
     return failure;
   }
   return certificate;
@@ -2392,6 +2419,8 @@ std::uint64_t candidate_semantic_digest(
                            static_cast<std::int64_t>(certificate.eulerCharacteristic)));
     hash_consume(hash, certificate.vertexCount);
     hash_consume(hash, certificate.edgeCount);
+    hash_consume(hash, certificate.totalVertexCount);
+    hash_consume(hash, certificate.totalEdgeCount);
     hash_consume(hash, certificate.faceCount);
     hash_consume(hash, certificate.interiorSingularityFree);
     hash_consume(hash, certificate.boundarySingularities.size());
