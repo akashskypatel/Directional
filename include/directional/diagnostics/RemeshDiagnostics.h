@@ -340,6 +340,18 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
       fragmentEdgeOrbitEvidence;
   std::string regionBoundaryWalkReason;
+  std::string regionBoundaryProvenance;
+  std::optional<std::size_t> regionBoundaryOrbit;
+  std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctArcCount;
+  std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctNodeCount;
+  std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
+  std::optional<int> eulerCharacteristic;
+  std::optional<std::size_t> vertexCount;
+  std::optional<std::size_t> edgeCount;
+  std::optional<std::size_t> faceCount;
   std::string regionFrontierFailureStage;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<SurfaceCellRegionFrontierComponentEvidenceDiagnostics>

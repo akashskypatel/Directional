@@ -3708,6 +3708,37 @@ void append_cp4c_failure_locus(
   if (!locus.regionBoundaryWalkReason.empty()) {
     report << ";regionBoundaryWalkReason=" << locus.regionBoundaryWalkReason;
   }
+  if (!locus.regionBoundaryProvenance.empty()) {
+    report << ";regionBoundaryProvenance=" << locus.regionBoundaryProvenance;
+  }
+  if (locus.regionBoundaryOrbit.has_value())
+    report << ";regionBoundaryOrbit=" << *locus.regionBoundaryOrbit;
+  if (locus.regionBoundaryArcOccurrenceCount.has_value())
+    report << ";regionBoundaryArcOccurrenceCount="
+           << *locus.regionBoundaryArcOccurrenceCount;
+  if (locus.regionBoundaryDistinctArcCount.has_value())
+    report << ";regionBoundaryDistinctArcCount="
+           << *locus.regionBoundaryDistinctArcCount;
+  if (locus.regionBoundaryNodeOccurrenceCount.has_value())
+    report << ";regionBoundaryNodeOccurrenceCount="
+           << *locus.regionBoundaryNodeOccurrenceCount;
+  if (locus.regionBoundaryDistinctNodeCount.has_value())
+    report << ";regionBoundaryDistinctNodeCount="
+           << *locus.regionBoundaryDistinctNodeCount;
+  if (locus.regionBoundaryRepeatedNodeOccurrenceCount.has_value())
+    report << ";regionBoundaryRepeatedNodeOccurrenceCount="
+           << *locus.regionBoundaryRepeatedNodeOccurrenceCount;
+  if (locus.regionBoundaryStartRevisitBeforeEndCount.has_value())
+    report << ";regionBoundaryStartRevisitBeforeEndCount="
+           << *locus.regionBoundaryStartRevisitBeforeEndCount;
+  if (locus.vertexCount.has_value())
+    report << ";vertexCount=" << *locus.vertexCount;
+  if (locus.edgeCount.has_value())
+    report << ";edgeCount=" << *locus.edgeCount;
+  if (locus.faceCount.has_value())
+    report << ";faceCount=" << *locus.faceCount;
+  if (locus.eulerCharacteristic.has_value())
+    report << ";eulerCharacteristic=" << *locus.eulerCharacteristic;
   if (!locus.regionFrontierFailureStage.empty() ||
       locus.regionFrontierComponentCount != 0U ||
       !locus.regionFrontierComponents.empty() ||

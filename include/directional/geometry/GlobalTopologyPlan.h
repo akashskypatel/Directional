@@ -164,6 +164,11 @@ enum class RegionBoundaryWalkReason : std::uint8_t {
   WalkNotClosed = 2,
 };
 
+enum class RegionBoundaryProvenance : std::uint8_t {
+  Unguaranteed = 0,
+  FaceWalkOrbit = 1,
+};
+
 enum class RegionFrontierFailureStage : std::uint8_t {
   UncutComponent = 0,
   RegionConstruction = 1,
@@ -516,6 +521,14 @@ struct GlobalTopologyPlanError {
   std::vector<TraceCutFaceEdgeOrbitEvidenceDiagnostic>
       fragmentEdgeOrbitEvidence;
   std::optional<RegionBoundaryWalkReason> regionBoundaryWalkReason;
+  std::optional<RegionBoundaryProvenance> regionBoundaryProvenance;
+  std::optional<std::size_t> regionBoundaryOrbit;
+  std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctArcCount;
+  std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctNodeCount;
+  std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
   std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<RegionFrontierComponentEvidenceDiagnostic>
@@ -737,6 +750,8 @@ private:
     UncutFaceComponentSeedState state) noexcept;
 [[nodiscard]] const char *region_boundary_walk_reason_name(
     RegionBoundaryWalkReason reason) noexcept;
+[[nodiscard]] const char *region_boundary_provenance_name(
+    RegionBoundaryProvenance provenance) noexcept;
 [[nodiscard]] const char *region_frontier_failure_stage_name(
     RegionFrontierFailureStage stage) noexcept;
 [[nodiscard]] const char *region_frontier_census_correspondence_name(

@@ -698,6 +698,27 @@ project_global_topology_plan_failure_locus(
     locus.regionBoundaryWalkReason = geometry::region_boundary_walk_reason_name(
         *error.regionBoundaryWalkReason);
   }
+  if (error.regionBoundaryProvenance.has_value()) {
+    locus.regionBoundaryProvenance =
+        geometry::region_boundary_provenance_name(
+            *error.regionBoundaryProvenance);
+  }
+  locus.regionBoundaryOrbit = error.regionBoundaryOrbit;
+  locus.regionBoundaryArcOccurrenceCount =
+      error.regionBoundaryArcOccurrenceCount;
+  locus.regionBoundaryDistinctArcCount = error.regionBoundaryDistinctArcCount;
+  locus.regionBoundaryNodeOccurrenceCount =
+      error.regionBoundaryNodeOccurrenceCount;
+  locus.regionBoundaryDistinctNodeCount =
+      error.regionBoundaryDistinctNodeCount;
+  locus.regionBoundaryRepeatedNodeOccurrenceCount =
+      error.regionBoundaryRepeatedNodeOccurrenceCount;
+  locus.regionBoundaryStartRevisitBeforeEndCount =
+      error.regionBoundaryStartRevisitBeforeEndCount;
+  locus.eulerCharacteristic = error.eulerCharacteristic;
+  locus.vertexCount = error.vertexCount;
+  locus.edgeCount = error.edgeCount;
+  locus.faceCount = error.faceCount;
   if (error.regionFrontierFailureStage.has_value()) {
     locus.regionFrontierFailureStage =
         geometry::region_frontier_failure_stage_name(

@@ -1508,6 +1508,7 @@ oriented_arc_nodes(const GlobalTopologyArc &arc,
 std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
     const GlobalTopologyRegion &region,
     const std::map<authority::NetworkArcId, const GlobalTopologyArc *> &arcById,
+    const RegionBoundaryProvenance provenance,
     bool *closedBeforeEndObserved = nullptr) {
   if (closedBeforeEndObserved != nullptr) *closedBeforeEndObserved = false;
   if (region.boundary.empty()) {
@@ -1544,13 +1545,15 @@ std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
       if (closedBeforeEndObserved != nullptr) {
         *closedBeforeEndObserved = true;
       }
-      GlobalTopologyPlanError failure =
-          error(GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk);
-      failure.region = region.id;
-      failure.arc = region.boundary[index].arc;
-      failure.regionBoundaryWalkReason =
-          RegionBoundaryWalkReason::ClosedBeforeEnd;
-      return failure;
+      if (provenance == RegionBoundaryProvenance::Unguaranteed) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk);
+        failure.region = region.id;
+        failure.arc = region.boundary[index].arc;
+        failure.regionBoundaryWalkReason =
+            RegionBoundaryWalkReason::ClosedBeforeEnd;
+        return failure;
+      }
     }
     if (next.first != current) {
       GlobalTopologyPlanError failure =
@@ -1818,11 +1821,6 @@ RegionCertificateBuildResult build_region_certificate(
     std::vector<authority::FieldSingularityId> boundarySingularities,
     const FragmentCornerIncidence &fragmentCorners,
     const FragmentDiagnosticEvidence *diagnostics) {
-  if (const auto failure = validate_single_boundary_walk(region, arcById);
-      failure.has_value()) {
-    return *failure;
-  }
-
   GlobalTopologyRegionDiscCertificate certificate(region.id);
   certificate.boundaryWalkCount = 1U;
   certificate.faceCount = region.sourceFaces.size();
@@ -2116,6 +2114,37 @@ RegionCertificateBuildResult build_region_certificate(
     failure.vertexCount = certificate.vertexCount;
     failure.edgeCount = certificate.edgeCount;
     failure.faceCount = certificate.faceCount;
+    failure.regionBoundaryProvenance =
+        RegionBoundaryProvenance::FaceWalkOrbit;
+    failure.regionBoundaryOrbit = owningOrbit;
+    failure.regionBoundaryArcOccurrenceCount = region.boundary.size();
+
+    std::set<authority::NetworkArcId> distinctBoundaryArcs;
+    std::set<authority::NetworkNodeId> distinctBoundaryNodes;
+    const auto firstBoundaryArc = arcById.at(region.boundary.front().arc);
+    const authority::NetworkNodeId boundaryStart =
+        oriented_arc_nodes(*firstBoundaryArc,
+                           region.boundary.front().orientation)
+            .first;
+    std::size_t startRevisitBeforeEndCount = 0U;
+    for (std::size_t index = 0U; index < region.boundary.size(); ++index) {
+      const auto incidence = region.boundary[index];
+      distinctBoundaryArcs.insert(incidence.arc);
+      const auto arc = arcById.at(incidence.arc);
+      const authority::NetworkNodeId node =
+          oriented_arc_nodes(*arc, incidence.orientation).first;
+      distinctBoundaryNodes.insert(node);
+      if (index != 0U && node == boundaryStart) {
+        ++startRevisitBeforeEndCount;
+      }
+    }
+    failure.regionBoundaryDistinctArcCount = distinctBoundaryArcs.size();
+    failure.regionBoundaryNodeOccurrenceCount = region.boundary.size();
+    failure.regionBoundaryDistinctNodeCount = distinctBoundaryNodes.size();
+    failure.regionBoundaryRepeatedNodeOccurrenceCount =
+        region.boundary.size() - distinctBoundaryNodes.size();
+    failure.regionBoundaryStartRevisitBeforeEndCount =
+        startRevisitBeforeEndCount;
     return failure;
   }
   return certificate;
@@ -2167,9 +2196,13 @@ RegionCertificatesBuildResult build_region_certificates(
             std::get_if<GlobalTopologyPlanError>(&singularities)) {
       return *failure;
     }
+    const auto orbit = region_orbit(region, walk);
+    const RegionBoundaryProvenance boundaryProvenance =
+        orbit.has_value() ? RegionBoundaryProvenance::FaceWalkOrbit
+                          : RegionBoundaryProvenance::Unguaranteed;
     bool closedBeforeEndObserved = false;
     if (const auto failure = validate_single_boundary_walk(
-            region, arcById, &closedBeforeEndObserved);
+            region, arcById, boundaryProvenance, &closedBeforeEndObserved);
         failure.has_value()) {
       return *failure;
     }
@@ -2182,7 +2215,6 @@ RegionCertificatesBuildResult build_region_certificates(
           }
           return failure;
         };
-    const auto orbit = region_orbit(region, walk);
     if (!orbit.has_value()) {
       GlobalTopologyPlanError failure =
           rotation_error(RotationSystemInconsistencyReason::RegionOrbitMissing);
@@ -2874,6 +2906,17 @@ const char *region_boundary_walk_reason_name(
     return "ClosedBeforeEnd";
   case RegionBoundaryWalkReason::WalkNotClosed:
     return "WalkNotClosed";
+  }
+  return "Unknown";
+}
+
+const char *region_boundary_provenance_name(
+    const RegionBoundaryProvenance provenance) noexcept {
+  switch (provenance) {
+  case RegionBoundaryProvenance::Unguaranteed:
+    return "Unguaranteed";
+  case RegionBoundaryProvenance::FaceWalkOrbit:
+    return "FaceWalkOrbit";
   }
   return "Unknown";
 }
