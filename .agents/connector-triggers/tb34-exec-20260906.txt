@@ -1,5 +1,0 @@
-TB34 artifact-only EXEC trigger retry 1
-artifact_id=9997560649
-semantic_source=7711b9c2c20d284823911aa4ca067bd33244f4e6
-selector_count=409
-reason=bootstrap source-tar harness mode is umask-dependent; byte hash remains authority

@@ -1,5 +1,0 @@
-TB34 EXEC closeout Drive apply trigger retry 1
-patch_file_id=1TLDno6qbxHLhWRyCBTizZkUhaYqrodVU
-patch_sha256=9399fd68b3cad0f982de46604ead200252273fc85b4b394a1e8d6a77279ed3d6
-base_sha=ac61ac58f8825dfb94ad5c8dee5df89d4677c70d
-reason=correct Drive-applier patch metadata contract and refreshed durable pointers

@@ -1,4 +1,0 @@
-# M3-CP4c-3-TB34-EXEC final temporary-state cleanup
-.agents/connector-triggers/tb34-source-snapshot-20260906.txt
-.agents/connector-triggers/tb34-exec-20260906.txt
-.agents/connector-triggers/tb34-closeout-drive-apply-20260906.txt
