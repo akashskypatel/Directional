@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-CB42
-patch_sha256=fac1c5bde17e6421f44a72c4d8841fc9fe568935374ffaef9ea127f18a21c85a
-base_sha=b7f7c651af597cae2d427157454c3c4d0bf78a69
