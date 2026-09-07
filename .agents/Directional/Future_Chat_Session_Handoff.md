@@ -116,86 +116,90 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB36-EXEC` — EXACT NEXT / Test + Benchmark EXEC / artifact-only
+## Mandatory next turn — `M3-CP4c-3-TB36-REV` — EXACT NEXT / Independent Review / static
 
-`M3-CP4c-3-CB41` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. Part IX / CX0-CX8 is implemented at exact
-semantic/evidence source `14aa1368523580444929bc65cab0b65449240ec2` and frozen into immutable package101.
+`M3-CP4c-3-TB36-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Do not rerun it in the review.
 
-### Current authority
+### Current authority and raw evidence
 
-- Semantic runtime authority remains **`M3-CP4c-3-TB35`** — selector **409**, **402 PASS / 7 RED**, accepted
-  **1-365 = 365/365**, RED `[366,367,368,369,370,374,398]`; CB40 artifact `10003613409`, source
-  `23a753a83f0eda0447172ce96bcd3180bf95ae8a`, run `34084955954`.
-- Certified ownership remains **300 / 0 / 0**; protected 312, 390, 393, 404, 406, 407, 408, 409 PASS at TB35.
-- Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**. Semantic package count is
-  now **101**.
-- Package101 authority: source `14aa1368523580444929bc65cab0b65449240ec2`; build run/job
-  `34150409018 / 101831355500`; artifact `10029250324` / `cb41-result-34150409018`; ZIP SHA-256
-  `9af49dd6dd0278225e8373b76e68f74c2ec263129f2c18ed2229135d0c6a5c55`; compile-log artifact `10029250820`
-  SHA-256 `8611ad75e51b037244f179739559f6cd2d42eb825543d143ebe5a619306f6e80`.
-- CB41 compile/package proof: required preflight `directional_core` PASS, complete eight-target GMP/GMPXX compile
-  PASS, clean source state, package manifest 28/28 PASS, `runtimeExecution=false`.
+- **Current valid semantic runtime authority remains TB35 until this review adjudicates TB36:** source
+  `23a753a83f0eda0447172ce96bcd3180bf95ae8a`, artifact `10003613409`, run `34084955954`, selector409,
+  **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`.
+- **TB36 raw package101 evidence:** semantic source `14aa1368523580444929bc65cab0b65449240ec2`, immutable artifact
+  `10029250324`, run `34153857590`, execute job `101841532059`, **402 PASS / 7 RED**, accepted 365/365, same RED
+  set, 409/409 selected, zero timeout, all package/source/execution-view censuses identical.
+- TB36 result artifact `10030367614` digest
+  `sha256:310e58bee64c59e8583e671eecaba0f8d3df1d961608162765487d2d6d295721`.
+- TB36 persistent log artifact `10030367857` digest
+  `sha256:d32ff72401e843a87eefec4ff750a8ca329a89c6e14aa7fd92de8804cb0c9370`.
+- Certified ownership remains **300 / 0 / 0**; retired `TraceArcDoesNotSeparateItsSides` and
+  `UncutFaceComponentOrbitSeedNotUnique` remain absent.
+- Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**, packages **101** until
+  independent review explicitly adjudicates otherwise.
 
-The earlier compile run `34150366902` is invalid orchestration provenance only: temporary-caller permission ceiling
-was too narrow for the static reusable graph. The correction changed only that temporary caller ceiling; reusable
-workflow permissions were not changed.
+### TB36 raw semantic transition to review
 
-### Package101 implementation contract to adjudicate
+Protected 312, 390, 393, 404, 406, 407, 408, 409 all PASS. Carried 368/369/370/374/398 remain RED under their prior
+owners.
 
-1. `FaceWalkOrbit` provenance is **derived**, not stored, from the exact current ordered boundary/orbit equality.
-2. `ClosedBeforeEnd` rejects only `Unguaranteed`; `ArcChainBroken` and `WalkNotClosed` remain universal.
-3. Optional provenance resolves before structural validation; the existing missing-orbit rejection remains after
-   the structural check, preserving synthetic negatives 312/409.
-4. Selector409 and protected ordinal312/409 test bodies are byte-identical to the frozen source.
-5. `RegionEulerCharacteristicNotOne` now publishes exact provenance/orbit plus arc/node
-   occurrence/distinct/repeat/start-revisit counts and existing V/E/F/chi; Euler/disc semantics are unchanged.
+Ordinals 366/367 now both fail `RegionEulerCharacteristicNotOne` rather than the TB35
+`RegionBoundaryNotSingleWalk / ClosedBeforeEnd` stop. Their frozen CX5 evidence is complete and identical:
 
-### TB36-EXEC execution contract
+```text
+regionBoundaryWalkReason=ClosedBeforeEnd
+regionBoundaryProvenance=FaceWalkOrbit
+regionBoundaryOrbit=0
+regionBoundaryArcOccurrenceCount=40
+regionBoundaryDistinctArcCount=22
+regionBoundaryNodeOccurrenceCount=40
+regionBoundaryDistinctNodeCount=22
+regionBoundaryRepeatedNodeOccurrenceCount=18
+regionBoundaryStartRevisitBeforeEndCount=1
+vertexCount=100
+edgeCount=353
+faceCount=250
+eulerCharacteristic=-3
+```
 
-The sole execution authority is
-`.agents/Directional/Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c3-TB35-REV-CAND-01` is now **RUNTIME OBSERVED / REVIEW PENDING**. The separate Euler candidate
+`M3-CP4c3-TB34-REV-CAND-03` is **ACTIVE / MEASUREMENT COMPLETE / REVIEW PENDING**. EXEC intentionally did not
+adjudicate either one.
 
-- Fetch and verify exact artifact **10029250324**; no rebuild/repackage/substitution.
-- Run selector409 exactly once through the frozen artifact-only harness, one identity per fresh process.
-- Hard accepted boundary: **1-365 = 365/365 PASS**.
-- Protected greens: 312/409 and 390/393/404/406/407/408 PASS.
-- Carried separately owned failures: 368/369/370/374/398 remain RED.
-- Ownership remains 300/0/0; retired-code silence remains.
-- If 366/367 still fail `RegionBoundaryNotSingleWalk` with `ClosedBeforeEnd`, Part IX is falsified.
-- If 366/367 advance to `RegionEulerCharacteristicNotOne`, this confirms only the provenance correction and the
-  evidence must contain every frozen CX5 field; missing measurement is itself a falsifier.
-- Preserve full raw ledger, failure details, run/resource metadata and pre/post package/source/execution-view
-  byte+mode censuses. A timeout or zero-selection is orchestration failure, never semantic PASS/RED.
-- **Do not execute benchmarks. Do not correct Euler or any semantic failure in EXEC.**
+### Review contract
+
+1. Independently verify run/artifact/source/selector provenance and the full 409-row execution boundary.
+2. Verify accepted 365/365, protected greens, ownership 300/0/0, retired-code silence, and immutable pre/post
+   censuses.
+3. Adjudicate whether 366/367 plus 312/409 prove the Part IX derived-provenance correction without synthetic
+   overreach.
+4. Independently interpret the CX5 Euler multiplicity evidence. Do not assume that reaching Euler means the Euler
+   formula is either correct or wrong; prove the review conclusion from frozen definition/source/evidence authority.
+5. Keep 368/369/370/374/398 separately owned unless evidence proves an ownership change.
+6. Decide whether TB36/package101 may be promoted to current semantic runtime authority and whether stable
+   accounting changes; state the rationale explicitly.
+7. Freeze the exact next bounded measure and update durable current/forward/tracker/TODO/handoff/changelog records.
+
+**Review prohibition:** no Directional runtime, benchmark, compile, package operation, product/test/fixture/selector
+mutation, or corrective implementation. The review may prescribe a correction but may not implement it.
 
 ### Context Load Plan
 
 `load_next`:
-- turn-based skill `references/turns/TB-EXEC.md`.
-
-`conditional_modules`:
-- GitHub connector module only when required for Actions/artifact execution and evidence collection.
+- independent review/planning turn guidance from the turn-based skill when resolvable; do not loop on unavailable
+  external skill access.
 
 Project context, in order:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md` — **exact execution authority**.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB41_Code_Build_Report.md` — package101 provenance.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part IX / CX0-CX8.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` and
-   `.agents/Directional/Architecture_M3_CP4c3_TB35_EXEC_Report.md` — current runtime background only.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`,
-   `CHANGELOG.md`, `LESSONS.md`.
-7. `.agents/Directional/GitHub_Workflow_Policy.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
-   `TOOL_USE_CONSERVATION_POLICY.md`.
+0. `.agents/Directional/ORIENTATION.md`.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB36_EXEC_Report.md` — **raw execution report**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md` — frozen execution contract.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part IX / CX0-CX8 definition authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` — predecessor review and candidate.
+6. `.agents/Directional/Architecture_M3_CP4c3_CB41_Code_Build_Report.md` — package101 implementation/compile provenance.
+7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`, and mandatory project policies.
 
-`do_not_preload`: sibling turn files, historical reports not cited above, research/provenance material, or unrelated
-module references.
-
-**Stop after TB36-EXEC raw evidence is preserved.** If semantic RED remains, exact next becomes independent
-`M3-CP4c-3-TB36-REV`; no corrective CB, source/test/fixture/selector mutation, compile, or retry is allowed in the
-same turn.
+**Stop after independent TB36-REV is formally closed.** Do not begin its prescribed successor in the same turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -1,3 +1,29 @@
+## 2026-09-07 — `M3-CP4c-3-TB36-EXEC`: package101 reaches the measured Euler frontier; independent review required
+
+Artifact-only Test + Benchmark EXEC, **no benchmarks**. Immutable package101 source
+`14aa1368523580444929bc65cab0b65449240ec2` / artifact `10029250324` executed selector409 in workflow run
+`34153857590`. Schema validation and execute job `101841532059` passed; no configure/compile/relink/package repair,
+mode repair, generated discovery, source/test/fixture/selector mutation, or local Directional runtime occurred.
+
+Raw result: **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; 409/409 selected,
+zero timeout, identical package/source/execution-view censuses. Protected 312/390/393/404/406/407/408/409 PASS;
+ownership **300/0/0**; both retired codes absent. Result/log artifacts are `10030367614 / 10030367857` with digests
+`sha256:310e58bee64c59e8583e671eecaba0f8d3df1d961608162765487d2d6d295721` and
+`sha256:d32ff72401e843a87eefec4ff750a8ca329a89c6e14aa7fd92de8804cb0c9370`.
+
+366/367 advance to `RegionEulerCharacteristicNotOne` with `regionBoundaryProvenance=FaceWalkOrbit`, non-rejecting
+`regionBoundaryWalkReason=ClosedBeforeEnd`, arc occurrence/distinct `40/22`, node occurrence/distinct `40/22`,
+repeated-node occurrence `18`, early-start revisit `1`, and `V/E/F/chi=100/353/250/-3`. This is the predicted raw
+Part IX branch transition; EXEC does not adjudicate the separate Euler question. 368/369/370/374/398 remain carried
+RED under prior owners.
+
+**Accounting:** mandatory tracker classification records no new RED ordinal or accepted-prefix loss. Until
+independent review, stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **101**,
+and TB35 remains current valid semantic runtime authority.
+
+**Exact next:** static independent **`M3-CP4c-3-TB36-REV`**. No runtime/benchmark/compile or corrective
+implementation is authorized in that review.
+
 ## 2026-09-07 — `M3-CP4c-3-CB41`: derived face-walk provenance compiles; package101 frozen for TB36
 
 Code + Build, **runtime-free**. Exact semantic/evidence source

@@ -26,42 +26,40 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB36-EXEC` — PACKAGE101 PROVENANCE VERDICT
+## Current focus — `M3-CP4c-3-TB36-REV` — INDEPENDENT PACKAGE101 EVIDENCE REVIEW
 
-`M3-CP4c-3-CB41` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE** under Part IX / CX0-CX8.
+`M3-CP4c-3-TB36-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Immutable package101 artifact
+`10029250324` / source `14aa1368523580444929bc65cab0b65449240ec2` executed selector409 exactly once per identity
+in workflow run `34153857590` with **402 PASS / 7 RED**, accepted **1–365 = 365/365 PASS**, RED
+`[366,367,368,369,370,374,398]`, every row selected, zero timeouts, and identical package/source/execution-view
+censuses. Result artifact `10030367614`; persistent log artifact `10030367857`.
 
-- semantic/evidence source: `14aa1368523580444929bc65cab0b65449240ec2`;
-- compile run/job: `34150409018 / 101831355500`;
-- immutable package101 artifact: `10029250324` / `cb41-result-34150409018`;
-- package ZIP SHA-256: `9af49dd6dd0278225e8373b76e68f74c2ec263129f2c18ed2229135d0c6a5c55`;
-- compile-log artifact: `10029250820`, SHA-256 `8611ad75e51b037244f179739559f6cd2d42eb825543d143ebe5a619306f6e80`;
-- packaged source archive SHA-256: `f090d8f66d37f2d5f9c02e67a63a5c4c0c4db596a54341a9675c1b545052a6ec`;
-- exact GMP/GMPXX eight-target compile PASS, 28/28 package manifest PASS, `runtimeExecution=false`.
+Raw TB36 evidence advances ordinals **366/367** to `RegionEulerCharacteristicNotOne` with
+`regionBoundaryProvenance=FaceWalkOrbit`, `regionBoundaryWalkReason=ClosedBeforeEnd`, and the complete CX5 census:
+arc occurrences/distinct `40/22`, node occurrences/distinct `40/22`, repeated-node occurrences `18`, early start
+revisits `1`, and `V/E/F/chi = 100/353/250/-3`. Protected 312, 390, 393, 404, 406, 407, 408 and 409 PASS;
+certified ownership remains **300/0/0**; both retired codes remain absent. Carried 368/369/370/374/398 remain RED.
 
-Runtime authority remains **TB35** until TB36 evidence is independently adjudicated: selector **409**, **402 PASS / 7 RED**,
-accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; ownership **300 / 0 / 0**. Stable
-accounting remains **45 events / 14 categories / 31 recurrences**, produced-witness debt **5**. Semantic package
-count is now **101**.
+TB36-EXEC is raw evidence only. **TB35 remains current valid semantic runtime authority until independent TB36-REV
+adjudicates package101.** Stable accounting therefore remains **45 events / 14 categories / 31 recurrences**,
+produced-witness debt **5**, semantic package count **101**.
 
-CB41 implemented exact derived `FaceWalkOrbit` provenance from the existing orbit equality, scoped only
-`ClosedBeforeEnd` to unguaranteed boundaries, kept `ArcChainBroken` / `WalkNotClosed` universal, preserved the
-missing-orbit ordering, and added the frozen CX5 Euler multiplicity measurement without changing χ or disc
-acceptance. Selector409 and protected ordinal312/409 test bodies are byte-identical to the frozen source.
+### Exact next turn — `M3-CP4c-3-TB36-REV`
 
-### Exact next turn — `M3-CP4c-3-TB36-EXEC`
+- [ ] Independently verify TB36 run/artifact provenance, 409-row completeness, accepted 365/365, protected greens,
+      ownership 300/0/0, retired-code silence, and pre/post immutability.
+- [ ] Adjudicate `M3-CP4c3-TB35-REV-CAND-01`: determine whether the 366/367 advance is sufficient runtime proof of
+      the Part IX derived-provenance correction without weakening synthetic negatives 312/409.
+- [ ] Independently adjudicate the separate Euler branch `M3-CP4c3-TB34-REV-CAND-03` from the frozen CX5
+      multiplicity evidence. Do not infer or implement an Euler correction from EXEC alone.
+- [ ] Confirm carried 368/369/370/374/398 remain separately owned and are not reclassified merely because they
+      recur in the same selector.
+- [ ] Decide whether package101 can be promoted to current semantic runtime authority and whether stable accounting
+      changes. Record an explicit rationale either way.
+- [ ] Freeze the next bounded measure and update durable authority documents.
 
-- [ ] Execute **only** immutable package101 artifact `10029250324` with the frozen artifact-only selector409 plan in
-      `Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md`.
-- [ ] Require accepted **365/365** and protected 312/409, 390/393/404/406/407/408 PASS.
-- [ ] Require carried 368/369/370/374/398 to remain RED and ownership **300 / 0 / 0**.
-- [ ] Treat 366/367 still failing `RegionBoundaryNotSingleWalk / ClosedBeforeEnd` as a hard Part IX falsifier.
-- [ ] If 366/367 advance to `RegionEulerCharacteristicNotOne`, require the complete CX5 provenance/orbit and
-      arc/node occurrence/distinct/repeat/start-revisit fields; this confirms only the provenance correction.
-- [ ] Preserve full 409-row raw evidence and immutable pre/post byte+mode censuses; no semantic retry.
-- [ ] Stop after raw EXEC evidence. Any semantic RED routes to independent `M3-CP4c-3-TB36-REV`.
-
-**Must not:** configure, compile, relink, repair the package, edit product/test/fixture/selector content, run
-benchmarks, correct Euler semantics, or perform later-turn corrective work inside TB36-EXEC.
+**Must not in review:** execute runtime/benchmarks, compile, mutate product/test/fixture/selector content, or perform
+the corrective implementation that the review may prescribe.
 
 ## Carried forward from M1
 
@@ -99,7 +97,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB35 is current semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365, selector409. **CB41 is complete / compile-green / runtime-free** and freezes package101 artifact `10029250324` from exact source `14aa1368523580444929bc65cab0b65449240ec2`; exact next is artifact-only **`M3-CP4c-3-TB36-EXEC`**.
+  CP4c-3 remains open. **TB35 is current semantic runtime authority pending independent TB36-REV** at **402 PASS / 7 RED**, accepted 365/365, selector409. TB36 package101 raw evidence is mechanically valid at the same **402 / 7**, with 366/367 advanced to the measured Euler frontier; exact next is static independent **`M3-CP4c-3-TB36-REV`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -139,4 +137,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **101**. **`M3-CP4c-3-TB35` remains the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** until package101 is executed and independently adjudicated. CB41 is complete / compile-green / runtime-free. Exact next is artifact-only `M3-CP4c-3-TB36-EXEC` on artifact `10029250324`. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **101**. **`M3-CP4c-3-TB35` remains the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** until TB36 package101 raw evidence is independently adjudicated. TB36-EXEC is complete/mechanically valid; exact next is static independent `M3-CP4c-3-TB36-REV`. PR #8 remains open, draft, and unmerged.

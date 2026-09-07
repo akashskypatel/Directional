@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-DEFN-R5`):** runtime authority remains **TB35** on selector **409** at **402 PASS / 7 RED**, accepted **365/365**. **Part IX is now the operative definition authority:** a region earns `FaceWalkOrbit(orbit)` only from an exact unique equality to the current face-walk orbit; provenance is derived, never a copied flag. `ClosedBeforeEnd` rejects only an `Unguaranteed` boundary, while `ArcChainBroken` and `WalkNotClosed` remain universal. The separate Euler result is **not corrected**; CB41 measures the repeated-node cancellation premise. Exact next is **`M3-CP4c-3-CB41`** under CX0–CX8. **Part IX-A** amends Part IX from a concurrent second execution of the turn: the Euler *causation* is settled even though the correction is not — χ drops the boundary terms *because* of the no-pinch condition (`GlobalTopologyPlan.cpp:2099–2100`), so 366/367 advancing to `RegionEulerCharacteristicNotOne` under CB41 is a **predicted** outcome, not a discovery. Stable accounting remains **45 / 14 / 31**.
+> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-TB36-EXEC` raw evidence):** current valid semantic runtime authority remains **TB35** on selector **409** at **402 PASS / 7 RED**, accepted **365/365**, until independent TB36-REV. Package101 source `14aa1368523580444929bc65cab0b65449240ec2` / artifact `10029250324` executed selector409 in run `34153857590` at the same **402 / 7** set, with 366/367 advanced to `RegionEulerCharacteristicNotOne` under `FaceWalkOrbit` provenance and complete CX5 multiplicity evidence; 312/409 and 390/393/404/406/407/408 remain PASS, ownership remains **300/0/0**, and retired-code silence holds. Part IX remains operative; Euler is measured, not corrected. Stable accounting remains **45 / 14 / 31**. **Exact next is static independent `M3-CP4c-3-TB36-REV`.**
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -33,7 +33,7 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-DEFN-R5`. Part IX freezes the exact derived provenance contract and the next runtime-free implementation boundary; no semantic runtime authority changed.
+**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB36-EXEC` raw-evidence closeout. TB35 remains current semantic authority pending independent TB36-REV; package101 has executed and reached the predicted measured Euler frontier without accepted-prefix loss.
 
 **The invariant is unsound as an equality.** `GlobalTopologyPlan.cpp:779` compares
 `fragmentOrbits[face].size()` against `tracePieceCount[face] + 1`. Each real chord contributes **one** to
@@ -181,6 +181,12 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 **Runtime authority — `M3-CP4c-3-TB35`.** Selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**,
 reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership remains **300 / 0 / 0**; ordinals 312, 390, 393, 404,
 406, 407, 408 and 409 all PASS.
+
+**TB36 package101 raw evidence — review pending.** Source `14aa1368523580444929bc65cab0b65449240ec2` / artifact
+`10029250324`, run `34153857590`, repeats **402 PASS / 7 RED** with accepted 365/365 and the same RED set. The raw
+delta is 366/367: both now reach `RegionEulerCharacteristicNotOne` with `FaceWalkOrbit`, arc occurrence/distinct
+40/22, node occurrence/distinct 40/22, repeated-node occurrence 18, early-start revisit 1, and `V/E/F/chi =
+100/353/250/-3`. This is not yet semantic-authority promotion; independent TB36-REV owns that verdict.
 
 **The accepted prefix is restored.** CB40's CV2 restored the rejection **with** its typed reason, so ordinal 312 is
 satisfied *and* the reason is named; CV3's re-aimed ordinal 409 reaches its oracle and passes, proving the
@@ -378,7 +384,7 @@ features first, then threads them through source authority *and* atlas). Copy on
    - **Separate and undecided:** `RegionEulerCharacteristicNotOne`, seen at TB34 with the rejection bypassed — χ
      over a walk that may revisit nodes.
    - **Part IX now resolves the contract.** Provenance is the exact unique face-walk-orbit equality, not a stored flag; reason scope follows it.
-   - **Owner: `M3-CP4c-3-CB41`** for implementation and exact Euler multiplicity measurement; TB36-REV owns the runtime verdict and any later Euler decision.
+   - **Owner:** CB41 implementation is complete and TB36 raw runtime measurement is complete; **independent `M3-CP4c-3-TB36-REV`** owns the semantic verdict and any later Euler decision.
 
 2. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via

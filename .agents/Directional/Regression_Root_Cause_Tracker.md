@@ -5956,25 +5956,42 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `TA-11` | existing topology/lineage oracle foundation accepted; M3 network, M7 disposition, and T5 quality mutation evidence remain open |
 | `TA-12` | `tests/TESTING_STRATEGY.md` normative only |
 
+## M3-CP4c-3-TB36-EXEC classification — RAW EVIDENCE / NON-STABLE UNTIL INDEPENDENT REVIEW
+
+- **Execution authority:** immutable package101 source `14aa1368523580444929bc65cab0b65449240ec2`, artifact
+  `10029250324`, selector409, workflow run `34153857590`, result/log artifacts `10030367614 / 10030367857`.
+- **Observed set:** **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; no new RED
+  ordinal, no accepted-prefix loss, no timeout, no selection mismatch, and all three pre/post censuses identical.
+- **366/367 classification:** continuation of `M3-CP4c3-TB35-REV-CAND-01`, now **RUNTIME OBSERVED / REVIEW PENDING**.
+  Both advance past the prior `RegionBoundaryNotSingleWalk / ClosedBeforeEnd` rejection to
+  `RegionEulerCharacteristicNotOne` with `regionBoundaryProvenance=FaceWalkOrbit`, orbit 0, arc occurrence/distinct
+  `40/22`, node occurrence/distinct `40/22`, repeated-node occurrence `18`, early start revisit `1`, and
+  `V/E/F/chi=100/353/250/-3`. Accepted 312 and gating 409 remain PASS. This is raw evidence for the frozen Part IX
+  provenance correction, not an EXEC-time semantic adjudication.
+- **Euler classification:** existing `M3-CP4c3-TB34-REV-CAND-03` is **ACTIVE / MEASUREMENT COMPLETE / REVIEW
+  PENDING**. The CX5 evidence contract is complete; independent review owns the interpretation. No Euler formula or
+  disc-acceptance change is authorized by this record.
+- **Carried failures:** 368/369/370/374/398 remain their prior separately owned regressions/candidates with the same
+  failure surfaces. Recurrence in TB36 does not create a new owner or stable event.
+- **Protected evidence:** 312/390/393/404/406/407/408/409 PASS; ordinal385 publishes ownership
+  `sourceFaceCount=300;established=300;unavailable=0;conflicting=0`; both retired codes are absent.
+- **Stable-count rationale:** TB36-EXEC is the mandatory raw Test + Benchmark classification point, not the
+  independent authority review. It neither introduces a new RED ordinal nor proves a new accepted loss, so it does
+  not create/merge/close/reprice stable events. Totals remain **45 events / 14 categories / 31 recurrences**, debt
+  **5**, packages **101** pending TB36-REV.
+
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB35**: semantic source
-`23a753a83f0eda0447172ce96bcd3180bf95ae8a`, immutable CB40 package `10003613409`, selector 409, run
-`34084955954`, **402 PASS / 7 RED**, **accepted 1-365 = 365/365 PASS**, reds
-`[366,367,368,369,370,374,398]`. Certified ownership remains **300 / 0 / 0**. Stable totals remain **45 events /
-14 categories / 31 recurrences**, debt **5**, M3 packages **100**.
+Current valid semantic runtime authority remains **M3-CP4c-3-TB35** pending independent review: source
+`23a753a83f0eda0447172ce96bcd3180bf95ae8a`, CB40 artifact `10003613409`, selector409, run `34084955954`,
+**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300/0/0**.
 
-**Current definition authority is `M3-CP4c-3-DEFN-R5`, Part IX.** The face-walk guarantee is normative and its
-provenance is an exact derived relation to the current `FaceWalkResult`, not a copied region claim. `ClosedBeforeEnd`
-rejects only `Unguaranteed`; `ArcChainBroken` and `WalkNotClosed` remain universal. Accepted ordinal312 and gating
-ordinal409 stay byte-frozen falsifiers of provenance overreach.
+TB36 package101 raw evidence is mechanically complete at run `34153857590` and is the sole evidence set for the
+next review. Part IX definition authority remains `M3-CP4c-3-DEFN-R5`.
 
-`M3-CP4c3-TB35-REV-CAND-01` is **DEFINED / CORRECTION FROZEN**, pending CB41 implementation and TB36 runtime.
-`M3-CP4c3-TB34-REV-CAND-03` remains **ACTIVE / SPLIT**: the boundary-walk branch is definition-resolved; the Euler
-branch remains unexplained. Current source computes `V_int - E_int + F`; Part IX authorizes exact boundary
-multiplicity measurement only and no Euler correction.
+`M3-CP4c3-TB35-REV-CAND-01` is **RUNTIME OBSERVED / REVIEW PENDING**. `M3-CP4c3-TB34-REV-CAND-03` is **ACTIVE /
+MEASUREMENT COMPLETE / REVIEW PENDING**. Stable totals remain **45 / 14 / 31**, debt **5**, packages **101**.
 
-**Exact next: `M3-CP4c-3-CB41` — runtime-free Code + Build under CX0–CX8.** Keep ordinals 312/409 and selector409
-unchanged; implement the derived provenance resolver/reason scope/order; publish the exact Euler measurement if
-reached; compile through the mandatory GMP/GMPXX reusable workflow; produce the immutable TB36-EXEC plan; execute
-no Directional runtime.
+**Exact next: independent `M3-CP4c-3-TB36-REV`.** Static evidence review only: verify the immutable TB36 evidence,
+adjudicate the provenance and Euler candidates, decide package101 semantic-authority promotion, and freeze the next
+bounded measure. Execute no runtime/benchmark/compile and perform no corrective implementation inside the review.
