@@ -1,0 +1,47 @@
+name: M3 CP4c3 CB43 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb43-drive-apply-20260907.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m3-cp4c3-cb43-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb43-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb43-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1506NhJiyxaR_wUlXB72oQO55VLZzEvn0
+      patch_sha256: bc84c2f642539f86c90d5bac89b6efcf987d5f7e9a5f1f8d26d5ff4d14e215fe
+      base_sha: 8038251fc04e041b9aceab4a9248d2fb394c4f26
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "fix: certify region Euler from full source submesh"
+    secrets: inherit
