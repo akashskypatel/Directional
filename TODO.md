@@ -26,41 +26,42 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB41` — DERIVED REGION-BOUNDARY PROVENANCE
+## Current focus — `M3-CP4c-3-TB36-EXEC` — PACKAGE101 PROVENANCE VERDICT
 
-`M3-CP4c-3-DEFN-R5` is **COMPLETE / DEFINITION-ONLY**. Part IX of
-`M3_CP4c_Frozen_Definitions.md` is operative. Runtime authority remains TB35:
+`M3-CP4c-3-CB41` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE** under Part IX / CX0-CX8.
 
-- selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
-- immutable CB40 package `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a`; run `34084955954`;
-- certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 PASS;
-- stable accounting **45 events / 14 categories / 31 recurrences**, produced-witness debt **5**, packages **100**.
+- semantic/evidence source: `14aa1368523580444929bc65cab0b65449240ec2`;
+- compile run/job: `34150409018 / 101831355500`;
+- immutable package101 artifact: `10029250324` / `cb41-result-34150409018`;
+- package ZIP SHA-256: `9af49dd6dd0278225e8373b76e68f74c2ec263129f2c18ed2229135d0c6a5c55`;
+- compile-log artifact: `10029250820`, SHA-256 `8611ad75e51b037244f179739559f6cd2d42eb825543d143ebe5a619306f6e80`;
+- packaged source archive SHA-256: `f090d8f66d37f2d5f9c02e67a63a5c4c0c4db596a54341a9675c1b545052a6ec`;
+- exact GMP/GMPXX eight-target compile PASS, 28/28 package manifest PASS, `runtimeExecution=false`.
 
-**Part IX decision.** A plan boundary does not carry a mutable provenance flag. `FaceWalkOrbit(orbit)` is derived
-only when exactly one current `walk.orbits[orbit]` equals the current ordered `region.boundary`; otherwise it is
-`Unguaranteed`. `ClosedBeforeEnd` rejects only `Unguaranteed`; `ArcChainBroken` and `WalkNotClosed` reject all.
-Resolve optional provenance before boundary validation but defer the existing missing-orbit failure until after the
-structural check, so synthetic ordinals 312/409 keep their negative contract.
+Runtime authority remains **TB35** until TB36 evidence is independently adjudicated: selector **409**, **402 PASS / 7 RED**,
+accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; ownership **300 / 0 / 0**. Stable
+accounting remains **45 events / 14 categories / 31 recurrences**, produced-witness debt **5**. Semantic package
+count is now **101**.
 
-**Euler remains separate.** Current χ uses the reduced `V_int - E_int + F` formula. Part IX does not establish its
-boundary-term cancellation for repeated-node walks and authorizes only exact multiplicity measurement.
+CB41 implemented exact derived `FaceWalkOrbit` provenance from the existing orbit equality, scoped only
+`ClosedBeforeEnd` to unguaranteed boundaries, kept `ArcChainBroken` / `WalkNotClosed` universal, preserved the
+missing-orbit ordering, and added the frozen CX5 Euler multiplicity measurement without changing χ or disc
+acceptance. Selector409 and protected ordinal312/409 test bodies are byte-identical to the frozen source.
 
-### Exact next turn — `M3-CP4c-3-CB41`
+### Exact next turn — `M3-CP4c-3-TB36-EXEC`
 
-- [ ] **CX0–CX3:** implement one exact derived provenance authority and provenance-aware boundary validation/order.
-- [ ] **CX4:** keep ordinals 312/409, their fixtures/assertions/order, and selector409 byte-identical.
-- [ ] **CX5:** on `RegionEulerCharacteristicNotOne`, publish exact provenance plus boundary arc/node occurrence,
-      distinctness, repeat, and early-start-revisit counts; **do not change χ or disc acceptance**.
-- [ ] **CX6:** no work on accepted 1–365, 398, 368/369/370/374, ownership, partitions, retired guards or other
-      deferred surfaces.
-- [ ] **CX7:** compile only with mandatory reusable GMP/GMPXX workflow; produce immutable package and complete
-      artifact-only `M3-CP4c-3-TB36-EXEC` plan; execute no Directional runtime.
-- [ ] **CX8 TB falsifiers:** 365/365; 312/409 and 390/393/404/406/407/408 PASS; 368/369/370/374/398 RED; ownership
-      300/0/0. 366/367 still `ClosedBeforeEnd` falsifies Part IX; advancing to Euler confirms the provenance
-      correction but authorizes no Euler fix.
+- [ ] Execute **only** immutable package101 artifact `10029250324` with the frozen artifact-only selector409 plan in
+      `Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md`.
+- [ ] Require accepted **365/365** and protected 312/409, 390/393/404/406/407/408 PASS.
+- [ ] Require carried 368/369/370/374/398 to remain RED and ownership **300 / 0 / 0**.
+- [ ] Treat 366/367 still failing `RegionBoundaryNotSingleWalk / ClosedBeforeEnd` as a hard Part IX falsifier.
+- [ ] If 366/367 advance to `RegionEulerCharacteristicNotOne`, require the complete CX5 provenance/orbit and
+      arc/node occurrence/distinct/repeat/start-revisit fields; this confirms only the provenance correction.
+- [ ] Preserve full 409-row raw evidence and immutable pre/post byte+mode censuses; no semantic retry.
+- [ ] Stop after raw EXEC evidence. Any semantic RED routes to independent `M3-CP4c-3-TB36-REV`.
 
-**Must not:** modify Euler semantics, weaken any negative, edit selector409, touch carried/deferred surfaces, or run
-runtime in CB41.
+**Must not:** configure, compile, relink, repair the package, edit product/test/fixture/selector content, run
+benchmarks, correct Euler semantics, or perform later-turn corrective work inside TB36-EXEC.
 
 ## Carried forward from M1
 
@@ -98,7 +99,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB35 is current semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365, selector409. **DEFN-R5 / Part IX is complete**; exact next is runtime-free **`M3-CP4c-3-CB41`** under CX0–CX8.
+  CP4c-3 remains open. **TB35 is current semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365, selector409. **CB41 is complete / compile-green / runtime-free** and freezes package101 artifact `10029250324` from exact source `14aa1368523580444929bc65cab0b65449240ec2`; exact next is artifact-only **`M3-CP4c-3-TB36-EXEC`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -110,7 +111,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  TB35-REV adjudicated the recovered prefix and proved the 366/367 frontier is provenance blindness. Part IX now freezes the correction. CB41 implements exact derived face-walk provenance and measures, but does not correct, the separate Euler frontier.
+  TB35-REV adjudicated the recovered prefix and proved the 366/367 frontier is provenance blindness. Part IX froze the correction. CB41 has now implemented and compiled exact derived face-walk provenance in package101 and added measurement-only evidence for the separate Euler frontier; TB36 owns the runtime verdict.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -138,4 +139,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **100**. **`M3-CP4c-3-TB35` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** — the accepted prefix is restored and the TB34 stable event stands. Part IX / DEFN-R5 is complete. Exact next is runtime-free `M3-CP4c-3-CB41` under CX0–CX8. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **101**. **`M3-CP4c-3-TB35` remains the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** until package101 is executed and independently adjudicated. CB41 is complete / compile-green / runtime-free. Exact next is artifact-only `M3-CP4c-3-TB36-EXEC` on artifact `10029250324`. PR #8 remains open, draft, and unmerged.

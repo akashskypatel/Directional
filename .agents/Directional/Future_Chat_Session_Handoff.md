@@ -116,70 +116,86 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB41` — EXACT NEXT / Code + Build / runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB36-EXEC` — EXACT NEXT / Test + Benchmark EXEC / artifact-only
 
-`M3-CP4c-3-DEFN-R5` is **COMPLETE / DEFINITION-ONLY**. **Part IX** of
-`M3_CP4c_Frozen_Definitions.md` is operative and freezes the implementing measures **CX0–CX8**.
+`M3-CP4c-3-CB41` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. Part IX / CX0-CX8 is implemented at exact
+semantic/evidence source `14aa1368523580444929bc65cab0b65449240ec2` and frozen into immutable package101.
 
 ### Current authority
 
-- Runtime authority remains **`M3-CP4c-3-TB35`** — selector **409**, **402 PASS / 7 RED**, accepted
-  **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; immutable CB40 package `10003613409`, source
+- Semantic runtime authority remains **`M3-CP4c-3-TB35`** — selector **409**, **402 PASS / 7 RED**, accepted
+  **1-365 = 365/365**, RED `[366,367,368,369,370,374,398]`; CB40 artifact `10003613409`, source
   `23a753a83f0eda0447172ce96bcd3180bf95ae8a`, run `34084955954`.
-- Certified ownership **300 / 0 / 0**; 312, 390, 393, 404, 406, 407, 408, 409 PASS.
-- Stable accounting **45 events / 14 categories / 31 recurrences**, debt **5**, semantic packages **100**.
-- CP4c-3 remains **OPEN**. No runtime, compile or semantic package was produced by DEFN-R5.
+- Certified ownership remains **300 / 0 / 0**; protected 312, 390, 393, 404, 406, 407, 408, 409 PASS at TB35.
+- Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**. Semantic package count is
+  now **101**.
+- Package101 authority: source `14aa1368523580444929bc65cab0b65449240ec2`; build run/job
+  `34150409018 / 101831355500`; artifact `10029250324` / `cb41-result-34150409018`; ZIP SHA-256
+  `9af49dd6dd0278225e8373b76e68f74c2ec263129f2c18ed2229135d0c6a5c55`; compile-log artifact `10029250820`
+  SHA-256 `8611ad75e51b037244f179739559f6cd2d42eb825543d143ebe5a619306f6e80`.
+- CB41 compile/package proof: required preflight `directional_core` PASS, complete eight-target GMP/GMPXX compile
+  PASS, clean source state, package manifest 28/28 PASS, `runtimeExecution=false`.
 
-### Part IX contract
+The earlier compile run `34150366902` is invalid orchestration provenance only: temporary-caller permission ceiling
+was too narrow for the static reusable graph. The correction changed only that temporary caller ceiling; reusable
+workflow permissions were not changed.
 
-1. **Face-walk guarantee:** an authoritative `walk.orbits[orbit]` is one ordered closed successor walk;
-   canonicalization only rotates. It may revisit nodes.
-2. **Derived provenance:** `FaceWalkOrbit(orbit)` exists only when exactly one current authoritative orbit equals
-   the current ordered `region.boundary`; otherwise provenance is `Unguaranteed`. No copied mutable region flag is
-   authority.
-3. **Reason scope:** `ClosedBeforeEnd` rejects only `Unguaranteed`; on `FaceWalkOrbit` it is observation-only and
-   traversal continues. `ArcChainBroken` and `WalkNotClosed` reject all boundaries.
-4. **Ordering:** resolve optional provenance before structural boundary validation, but defer the existing
-   missing-owning-orbit failure until after that check. This preserves accepted ordinal312 and gating ordinal409.
-5. **Euler is separate:** current χ is reduced to `V_int - E_int + F`; repeated-node boundary cancellation is not
-   established. CB41 measures exact boundary multiplicities and changes no Euler or disc semantics.
+### Package101 implementation contract to adjudicate
 
-### CB41 — CX0–CX8
+1. `FaceWalkOrbit` provenance is **derived**, not stored, from the exact current ordered boundary/orbit equality.
+2. `ClosedBeforeEnd` rejects only `Unguaranteed`; `ArcChainBroken` and `WalkNotClosed` remain universal.
+3. Optional provenance resolves before structural validation; the existing missing-orbit rejection remains after
+   the structural check, preserving synthetic negatives 312/409.
+4. Selector409 and protected ordinal312/409 test bodies are byte-identical to the frozen source.
+5. `RegionEulerCharacteristicNotOne` now publishes exact provenance/orbit plus arc/node
+   occurrence/distinct/repeat/start-revisit counts and existing V/E/F/chi; Euler/disc semantics are unchanged.
 
-- **CX0:** stay inside boundary-provenance validation plus directly necessary diagnostic/test plumbing; compile
-  only via mandatory reusable GMP/GMPXX workflow; `runtimeExecution=false`.
-- **CX1:** reuse/refactor the exact `region_orbit(region, walk)` equality as the single provenance resolver.
-- **CX2:** implement the provenance-aware validation order; preserve the existing typed missing-orbit path after
-  structural validation.
-- **CX3:** scope `ClosedBeforeEnd` exactly; leave `ArcChainBroken` / `WalkNotClosed` universal and preserve typed
-  reason/locus projection.
-- **CX4:** **do not edit ordinals 312/409 or selector409**; audit both as hard negatives before compile closeout.
-- **CX5:** on `RegionEulerCharacteristicNotOne`, publish exact provenance, owning orbit, arc occurrence/distinct
-  counts, node occurrence/distinct/repeat counts, early-start revisit count, plus the existing V/E/F/χ.
-  Measurement only — no Euler correction.
-- **CX6:** no accepted-boundary change; no work on 398, 368/369/370/374, ownership, partition unification, retired
-  guards or other deferred surfaces.
-- **CX7:** build/package immutably and write the comprehensive artifact-only `M3-CP4c-3-TB36-EXEC` plan.
-- **CX8 falsifiers:** TB36 requires accepted 365/365; 312/409 and 390/393/404/406/407/408 PASS;
-  368/369/370/374/398 RED; ownership 300/0/0. 366/367 still `ClosedBeforeEnd` falsifies Part IX; moving to Euler
-  confirms only the provenance correction and must include all CX5 fields. Any accepted RED stops.
+### TB36-EXEC execution contract
+
+The sole execution authority is
+`.agents/Directional/Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md`.
+
+- Fetch and verify exact artifact **10029250324**; no rebuild/repackage/substitution.
+- Run selector409 exactly once through the frozen artifact-only harness, one identity per fresh process.
+- Hard accepted boundary: **1-365 = 365/365 PASS**.
+- Protected greens: 312/409 and 390/393/404/406/407/408 PASS.
+- Carried separately owned failures: 368/369/370/374/398 remain RED.
+- Ownership remains 300/0/0; retired-code silence remains.
+- If 366/367 still fail `RegionBoundaryNotSingleWalk` with `ClosedBeforeEnd`, Part IX is falsified.
+- If 366/367 advance to `RegionEulerCharacteristicNotOne`, this confirms only the provenance correction and the
+  evidence must contain every frozen CX5 field; missing measurement is itself a falsifier.
+- Preserve full raw ledger, failure details, run/resource metadata and pre/post package/source/execution-view
+  byte+mode censuses. A timeout or zero-selection is orchestration failure, never semantic PASS/RED.
+- **Do not execute benchmarks. Do not correct Euler or any semantic failure in EXEC.**
 
 ### Context Load Plan
 
-`load_next`: turn-based skill `references/turns/CB.md` plus the GitHub-connector and engineering modules it routes
-to for this Code + Build turn.
+`load_next`:
+- turn-based skill `references/turns/TB-EXEC.md`.
+
+`conditional_modules`:
+- GitHub connector module only when required for Actions/artifact execution and evidence collection.
+
+Project context, in order:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part IX operative; CX0–CX8 are the implementation contract**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` — CW0–CW5 provenance.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB35_EXEC_Report.md` — current immutable runtime evidence.
-5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector409/frozen prefixes.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
-7. `.agents/Directional/GMP_COMPILE_POLICY.md`, `GitHub_Workflow_Policy.md`, `RETENTION_POLICY.md`,
-   `CLEAN_UP_POLICY.md`, `TOOL_USE_CONSERVATION_POLICY.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md` — **exact execution authority**.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB41_Code_Build_Report.md` — package101 provenance.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part IX / CX0-CX8.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` and
+   `.agents/Directional/Architecture_M3_CP4c3_TB35_EXEC_Report.md` — current runtime background only.
+6. `.agents/Directional/Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`,
+   `CHANGELOG.md`, `LESSONS.md`.
+7. `.agents/Directional/GitHub_Workflow_Policy.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
+   `TOOL_USE_CONSERVATION_POLICY.md`.
 
-**Stop after CB41 closeout.** Do not execute TB36 runtime in the same canonical Code + Build turn.
+`do_not_preload`: sibling turn files, historical reports not cited above, research/provenance material, or unrelated
+module references.
+
+**Stop after TB36-EXEC raw evidence is preserved.** If semantic RED remains, exact next becomes independent
+`M3-CP4c-3-TB36-REV`; no corrective CB, source/test/fixture/selector mutation, compile, or retry is allowed in the
+same turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

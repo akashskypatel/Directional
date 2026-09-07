@@ -1,3 +1,38 @@
+## 2026-09-07 — `M3-CP4c-3-CB41`: derived face-walk provenance compiles; package101 frozen for TB36
+
+Code + Build, **runtime-free**. Exact semantic/evidence source
+`14aa1368523580444929bc65cab0b65449240ec2`. Part IX is implemented without changing Euler/disc semantics:
+`FaceWalkOrbit` is derived from the exact current boundary/orbit relation; `ClosedBeforeEnd` is scoped only to
+unguaranteed boundaries; `ArcChainBroken` / `WalkNotClosed` remain universal; the missing-orbit rejection remains
+after structural validation. `RegionEulerCharacteristicNotOne` now publishes the frozen provenance and arc/node
+occurrence/distinct/repeat/start-revisit measurements only.
+
+**Protected audit:** selector409 remains byte-identical at
+`eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; ordinal312 and ordinal409 exact test
+blocks are byte-identical before/after (`94724bef...0847`, `ea574dab...004a`). No accepted/protected test was edited
+to obtain success.
+
+**Compile/package:** initial run `34150366902` was an invalid `startup_failure` caused solely by a temporary-caller
+permission ceiling that was narrower than the statically referenced reusable graph; it produced no compile/runtime
+evidence. The diagnosed retry changed only the temporary caller ceiling — no reusable workflow permission changed.
+Authoritative run/job **`34150409018 / 101831355500`** then passed schema validation and compiled exact source
+`14aa1368523580444929bc65cab0b65449240ec2` through the durable GMP/GMPXX workflow: preflight `directional_core`
+PASS, all eight approved targets PASS, clean source status, `runtimeExecution=false`.
+
+Immutable **package101** artifact `10029250324` / `cb41-result-34150409018` has provider ZIP SHA-256
+`9af49dd6dd0278225e8373b76e68f74c2ec263129f2c18ed2229135d0c6a5c55`; compile-log artifact `10029250820` has
+SHA-256 `8611ad75e51b037244f179739559f6cd2d42eb825543d143ebe5a619306f6e80`; packaged source archive SHA-256 is
+`f090d8f66d37f2d5f9c02e67a63a5c4c0c4db596a54341a9675c1b545052a6ec`. Package `SHA256SUMS` verifies **28/28
+PASS** and contains both libraries plus all six compiled executables.
+
+**Accounting:** +0 runtime events / +0 recurrences; totals remain **45 events / 14 categories / 31 recurrences**,
+debt **5**. Semantic package count advances to **101**. TB35 remains current semantic runtime authority until TB36
+is independently adjudicated.
+
+**Exact next:** artifact-only **`M3-CP4c-3-TB36-EXEC`** on package101 under
+`Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md`; do not rebuild, mutate, benchmark, correct Euler,
+or perform later-turn corrective work in EXEC.
+
 ## 2026-09-07 — `M3-CP4c-3-DEFN-R5`: Part IX freezes derived boundary provenance; Part IX-A reconciles a concurrent second execution
 
 Definition turn (`DEFN` absorbs REVIEW + PLAN), static. No runtime, no compile, no package operation, no
