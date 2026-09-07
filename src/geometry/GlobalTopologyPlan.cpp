@@ -1540,8 +1540,17 @@ std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
     }
     const auto next =
         oriented_arc_nodes(*nextArc->second, region.boundary[index].orientation);
-    if (current == start && closedBeforeEndObserved != nullptr) {
-      *closedBeforeEndObserved = true;
+    if (current == start) {
+      if (closedBeforeEndObserved != nullptr) {
+        *closedBeforeEndObserved = true;
+      }
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk);
+      failure.region = region.id;
+      failure.arc = region.boundary[index].arc;
+      failure.regionBoundaryWalkReason =
+          RegionBoundaryWalkReason::ClosedBeforeEnd;
+      return failure;
     }
     if (next.first != current) {
       GlobalTopologyPlanError failure =

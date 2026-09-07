@@ -269,6 +269,11 @@ remain deferred under their own owners. **Vertex 30 is still not reached.**
 
 ## 5. The central theorem of CP4c-2
 
+**Authority-domain distinction.** A certified face of the embedded graph and a plan region are different objects.
+The certificate's disc topology, `F`, `componentCount`, and Euler residual are claims about certified faces. They
+license **no** conclusion about whether a plan region is a disc. `RegionEulerCharacteristicNotOne` and
+`RegionBoundaryNotSingleWalk` are the region-level tests and are authoritative for plan-region topology.
+
 For a graph embedded in a closed surface with every complement component an open disc, Euler gives
 `V − E + F = χ`. The torus network has `V = 48`, `E = 48`, `χ = 0`, so `F = 0` — impossible, since the
 complement is non-empty. **At least one component is not a disc.**

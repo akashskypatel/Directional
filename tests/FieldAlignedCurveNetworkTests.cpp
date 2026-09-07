@@ -3271,66 +3271,36 @@ TEST(GlobalTopologyPlan, RegionBoundaryWithTwoDisjointLoopsIsStillRejected) {
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
-  ASSERT_GT(plan.regions().size(), 1U);
-
-  const auto boundary_nodes = [&](const auto &region) {
-    std::set<directional::authority::NetworkNodeId> nodes;
-    for (const auto incidence : region.boundary) {
-      const auto *arc = plan.find_arc(incidence.arc);
-      EXPECT_NE(nullptr, arc);
-      if (arc == nullptr) continue;
-      const auto endpoints = oriented_endpoints(*arc, incidence);
-      nodes.insert(endpoints.first);
-      nodes.insert(endpoints.second);
-    }
-    return nodes;
-  };
-
-  std::optional<std::pair<std::size_t, std::size_t>> disjointRegions;
-  for (std::size_t first = 0U;
-       first < plan.regions().size() && !disjointRegions.has_value(); ++first) {
-    const auto firstNodes = boundary_nodes(plan.regions()[first]);
-    for (std::size_t second = first + 1U; second < plan.regions().size();
-         ++second) {
-      const auto secondNodes = boundary_nodes(plan.regions()[second]);
-      std::vector<directional::authority::NetworkNodeId> shared;
-      std::set_intersection(firstNodes.begin(), firstNodes.end(),
-                            secondNodes.begin(), secondNodes.end(),
-                            std::back_inserter(shared));
-      if (shared.empty()) {
-        disjointRegions = std::make_pair(first, second);
-        break;
-      }
-    }
-  }
-  ASSERT_TRUE(disjointRegions.has_value())
-      << "constructed negative requires two node-disjoint closed region loops";
+  ASSERT_FALSE(plan.regions().empty());
 
   auto candidate = plan.validation_candidate();
-  auto &firstRegion = candidate.regions[disjointRegions->first];
-  const auto &secondRegion = candidate.regions[disjointRegions->second];
-  ASSERT_FALSE(firstRegion.boundary.empty());
-  ASSERT_FALSE(secondRegion.boundary.empty());
-  firstRegion.boundary.insert(firstRegion.boundary.end(),
-                              secondRegion.boundary.begin(),
-                              secondRegion.boundary.end());
+  auto &region = candidate.regions.front();
+  ASSERT_FALSE(region.boundary.empty());
+  const auto secondLoop = region.boundary;
+  const auto secondLoopArc = secondLoop.front().arc;
+  region.boundary.insert(region.boundary.end(), secondLoop.begin(),
+                         secondLoop.end());
 
   auto rejected = rebuild_topology_plan(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
       std::move(candidate));
-  ASSERT_FALSE(rejected);
+  ASSERT_FALSE(rejected)
+      << "reachable multi-walk negative is two closed boundary walks meeting "
+         "at their shared start node; node-disjoint loops are not constructible "
+         "through this production entry path";
   EXPECT_EQ(
       directional::geometry::GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk,
       rejected.error().code)
       << directional::geometry::global_topology_plan_error_code_name(
              rejected.error().code);
   ASSERT_TRUE(rejected.error().regionBoundaryWalkReason.has_value());
-  EXPECT_EQ(directional::geometry::RegionBoundaryWalkReason::ArcChainBroken,
+  EXPECT_EQ(directional::geometry::RegionBoundaryWalkReason::ClosedBeforeEnd,
             *rejected.error().regionBoundaryWalkReason);
   ASSERT_TRUE(rejected.error().arc.has_value());
+  EXPECT_EQ(secondLoopArc, *rejected.error().arc);
   const auto locus = directional::pipeline::remesh_pipeline_detail::
       project_global_topology_plan_failure_locus(rejected.error());
-  EXPECT_EQ("ArcChainBroken", locus.regionBoundaryWalkReason);
+  EXPECT_EQ("ClosedBeforeEnd", locus.regionBoundaryWalkReason);
 }
 
 TEST(GlobalTopologyPlan, RejectsRegionWithWrongEulerCharacteristicOrInteriorSingularity) {

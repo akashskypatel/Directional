@@ -128,6 +128,10 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 5. Settled facts a successor must not reopen
 
+- **A certified face of the embedded graph and a plan region are different objects.** The certificate's disc
+  topology, `F`, `componentCount`, and Euler residual are claims about certified faces and license **no**
+  conclusion about whether a plan region is a disc. `RegionEulerCharacteristicNotOne` and
+  `RegionBoundaryNotSingleWalk` are the region-level authorities for that question.
 - **`projectionFaithfulnessResidual = 0` is a structural zero** — the predicate is unsatisfiable by construction.
   It never ruled anything out and must not be cited as evidence.
 - **The minority rows' certificate-face columns are the seed value re-printed.** Their agreement is a tautology.
