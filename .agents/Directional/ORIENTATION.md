@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-TB37-REV`):** **TB37 is promoted** — selector **409**, **402 PASS / 7 RED**, accepted **365/365**, packages **102**. **The Euler question is decided: the region is a disc and the certificate's arithmetic is wrong by exactly 4.** `D = X + B_int = 48`, `chiFull = 1` on `V/E/F = 136/385/250`, against the reduced certificate's `−3`. The gap decomposes as `(20 − 20) + (16 − 12)`: **the boundary terms do cancel**, and the whole error is that **12 interior barrier edges** are dropped from `E_int` while **16 further vertices** are dropped from `V_int`, asymmetrically. A terminal slit — a barrier with **both** faces inside the region — is an **interior** cell being misclassified as boundary. Exact next is **`M3-CP4c-3-DEFN-R6`**, appending Part X. Stable accounting unchanged: **45 / 14 / 31**.
+> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-DEFN-R6`):** runtime authority remains **TB37** — selector **409**, **402 PASS / 7 RED**, accepted **365/365**, packages **102**. **Part X decides the Euler question**, superseding Part IX §5 only. The cancellation premise is **not** the defect — the sub-mesh boundary cancels exactly, 20 against 20. **Interior barrier edges are interior cells**, and the certificate misclassifies them: it drops **12** from `E_int` against **16** vertices from `V_int`, which is the whole 4-point error. The certified complex is the **whole-face source sub-mesh**, and the criterion is **χ = V_total − E_total + F = 1**, with the reduced form withdrawn. The withdrawn premise has **two** comment sites — `GlobalTopologyPlan.cpp:2097–2098` and `GlobalTopologyPlan.h:91–93` — and both must go. Exact next is **`M3-CP4c-3-CB43`** under CZ7.1–CZ7.7. Stable accounting unchanged: **45 / 14 / 31**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -33,12 +33,12 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB37-REV`. Runtime authority is **TB37** (package 102,
-source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`), selector **409**, **402 PASS / 7 RED**,
-accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
+**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-DEFN-R6`. Runtime authority is **TB37** (package 102, source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`), selector **409**, **402 PASS / 7 RED**, accepted
+**365/365**, RED `[366,367,368,369,370,374,398]`.
 
-**Where the frontier is.** Ordinals 366/367 fail `RegionEulerCharacteristicNotOne`. **The cause is now known to
-the cell.** TB37 published the source-sub-mesh domain the previous census lacked:
+**Where the frontier is.** Ordinals 366/367 fail `RegionEulerCharacteristicNotOne`, and **the cause is known to
+the cell**:
 
 ```text
 X (excluded vertices) = 36  =  0 mesh-boundary + 20 boundaryVertices + 16 allOwned
@@ -48,25 +48,29 @@ V_total / E_total / F / chiFull = 136 / 385 / 250 / 1
 reduced certificate             = 100 / 353 / 250 / −3
 ```
 
-**The region is a genuine triangulated disc**, and the certificate rejects it. The 4-point gap decomposes exactly:
+**The region is a genuine triangulated disc and the certificate rejects it.** The gap decomposes exactly:
 
-> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12)`
+> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 0 + 4`
 
-**The cancellation premise is correct.** The sub-mesh boundary proper cancels, 20 against 20, just as the comment
-at `GlobalTopologyPlan.cpp:2097–2098` claims. The entire error is the residual: the certificate additionally drops
-**12 interior barrier edges** from `E_int` (`:1848–1850`) and **16 further vertices** from `V_int` via `allOwned`,
-and those two exclusions do not balance. **A barrier edge with both incident faces in the region — a terminal slit,
-of which this fixture has ten — is an interior cell of the counted complex, misclassified as boundary.** The defect
-is that the certificate's "boundary" is the **network's barrier set**, not the sub-mesh's actual boundary.
-`LESSONS.md` 153.
+**The cancellation premise is correct** — the sub-mesh boundary cancels, 20 against 20. **The defect is that a
+barrier edge with both incident faces in the region is an interior cell being classified as boundary.** The
+certificate drops 12 such edges from `E_int` (`:1848–1850`) and 16 further vertices from `V_int` via `allOwned`
+(`:2048–2094`), and the two exclusions do not balance. A terminal slit is exactly such an edge, and this fixture
+has ten. `LESSONS.md` 153.
 
-**What the correction does not settle.** Both formulas count the **whole-face** sub-mesh (`:2168–2177`), while the
-region the plan built is bounded by a walk that includes **trace chords through face interiors**; a trace-cut face
-is assigned wholly to one region (`:1405`, `:1432`). So `chiFull = 1` certifies the **rounding**, not the traced
-region. That does not block the correction — `V_int`, `E_int` and `F` are already whole-face quantities — but it
-must be written down. `M3-CP4c3-TB37-REV-CAND-01`.
+**Part X (DEFN-R6) freezes the correction.** The certified complex is the **whole-face source sub-mesh** of
+`region.sourceFaces` — so `χ = 1` is a claim about that **rounding**, not about the traced region, whose boundary
+includes trace chords through face interiors. The criterion is **χ = V_total − E_total + F = 1**; the reduced form
+is withdrawn. `vertexCount`/`edgeCount` keep their meanings because `edgeCount` feeds the connectivity BFS behind
+`RegionInteriorDisconnected`, so the totals are new fields. **The withdrawn premise has two comment sites** —
+`GlobalTopologyPlan.cpp:2097–2098` and `include/directional/geometry/GlobalTopologyPlan.h:91–93` — and deleting
+only one re-seeds it. `LESSONS.md` 154.
 
-**Owner: `M3-CP4c-3-DEFN-R6`**, appending Part X, then `M3-CP4c-3-CB43`.
+**The proof obligation.** Reduced and full agree exactly when `X = E_one + B_int`; the measured region violates it
+by 4. **CB43 may not assume it anywhere** — it must show, per region on every accepted fixture, either the identity
+or an unchanged verdict.
+
+**Owner: `M3-CP4c-3-CB43`** under CZ7.1–CZ7.7, then `M3-CP4c-3-TB38`.
 
 ## 1. What the project is
 
@@ -122,6 +126,21 @@ turn where that second digest earns its keep in the positive direction. `LESSONS
 **The Euler question is decided.** `D = X + B_int = 48` and `chiFull = 1`: the region's sub-mesh is a genuine
 triangulated disc and the reduced certificate publishes `−3`. Every check closes, including two the previous review
 predicted before the numbers existed — `E_one = 44 − 2·B_int = 20`, and `2(E_int + B_int) + E_one = 750`.
+
+**Definition authority — `M3-CP4c-3-DEFN-R6`, Part X of `M3_CP4c_Frozen_Definitions.md`.** It supersedes **Part IX
+§5 only**; every other Part IX clause and all of Part IX-A stand.
+
+- **R6.1** — the cancellation premise is **not** the defect; the sub-mesh boundary cancels 20 against 20. Part
+  IX-A §A.2's implication that the premise fails is **withdrawn**.
+- **R6.2** — a barrier edge with **both** incident faces in the region is an **interior** cell; misclassifying it
+  is the whole 4-point error.
+- **R6.3** — the certified complex is the **whole-face source sub-mesh**; `χ = 1` is a claim about that rounding,
+  not the traced region.
+- **R6.4** — the criterion is **`χ = V_total − E_total + F = 1`**; the reduced form is withdrawn.
+- **R6.5** — the premise has **two** comment sites and both must be deleted.
+- **R6.6** — `vertexCount`/`edgeCount` keep their meanings; `edgeCount` feeds the connectivity BFS.
+- **R6.7** — reduced and full agree iff `X = E_one + B_int`, **with a per-region proof obligation** on every
+  accepted fixture.
 
 **The accepted prefix is restored.** CB40's CV2 restored the rejection **with** its typed reason, so ordinal 312 is
 satisfied *and* the reason is named; CV3's re-aimed ordinal 409 reaches its oracle and passes, proving the
@@ -263,10 +282,13 @@ features first, then threads them through source authority *and* atlas). Copy on
      — the boundary terms cancel exactly as claimed, and the error is entirely in the residual.
    - **12 interior barrier edges** are dropped from `E_int` (`:1848–1850`) and **16 further vertices** from
      `V_int` via `allOwned`, asymmetrically. A terminal slit is precisely such an edge and this fixture has ten.
-   - **Fix:** adopt `χ = V_total − E_total + F = 1` and withdraw the reduction, deleting the comment at
-     `:2097–2098` with it. **Region construction is correct and must not change.**
-   - **Prove, do not assume, the blast radius:** reduced and full agree exactly when `X = E_one + B_int`; the
-     implementing turn must show that per region on every accepted fixture. `LESSONS.md` 153.
+   - **Fix frozen as Part X (DEFN-R6):** adopt `χ = V_total − E_total + F = 1` and withdraw the reduction,
+     deleting **both** premise comments — `GlobalTopologyPlan.cpp:2097–2098` **and**
+     `include/directional/geometry/GlobalTopologyPlan.h:91–93`. **Region construction is correct and must not
+     change**, and `vertexCount`/`edgeCount` must not be repurposed because `edgeCount` feeds the connectivity BFS.
+   - **Prove, do not assume, the blast radius:** reduced and full agree exactly when `X = E_one + B_int`; CB43
+     must show that per region on every accepted fixture. `LESSONS.md` 153, 154.
+   - **Owner: `M3-CP4c-3-CB43`** under CZ7.1–CZ7.7, then `M3-CP4c-3-TB38`.
 
 2. **Region boundary provenance — the validator cannot see the guarantee it is checking. — RESOLVED**
 
@@ -335,6 +357,14 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Withdrawing an assumption means deleting every statement of it, not the one the failure pointed at.** The Euler
+cancellation premise appeared twice — above the χ assignment in the `.cpp`, and again on the certificate's
+`vertexCount` field in the header, restated verbatim. The review that ordered the withdrawal named only the first,
+because that is where the failure surfaced. One deletion would have left the assumption fully documented for the
+next reader and, a turn later, indistinguishable from never having withdrawn it — which is how this premise
+survived from TB34 to TB37. **Grep the assumption's wording, not the file, and name every site in the frozen
+definition.** `LESSONS.md` §4 154, and §4 53 for the same obligation on implementing a rule.
 
 **A "boundary" defined by a barrier set is not the boundary of the complex you are counting.** A region
 certificate computed χ over a source sub-mesh but took its boundary from the **network's** barrier set — mandatory

@@ -1919,6 +1919,16 @@ building any conclusion on it.**
      another subsystem's cells, check the classification on the cells that belong to both** - the disagreement
      lives exactly there. Related: the `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category, and lesson 150 on naming a
      measurement's domain.
+154. **An assumption stated in a comment is stated in every comment that repeats it - grep the phrase, not the
+     file.** The Euler cancellation premise lived in **two** places: above the chi assignment in
+     `GlobalTopologyPlan.cpp`, and again on the `vertexCount` field of
+     `GlobalTopologyRegionDiscCertificate` in the header, where its second and third lines restate it verbatim. The
+     review that ordered the withdrawal named only the `.cpp` site, because that is the one the failure pointed at.
+     Deleting one of two identical statements leaves the assumption fully documented for the next reader and is
+     indistinguishable, later, from never having withdrawn it - which is how this premise survived from TB34 to
+     TB37. **When withdrawing a stated assumption, search the corpus for the assumption's own wording and name
+     every site in the frozen definition**, the same obligation lesson 53 already imposes on implementing a rule.
+     A withdrawal is a rule too.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

@@ -26,47 +26,46 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-DEFN-R6` (definition turn, static) — PART X, THE EULER CRITERION
+## Current focus — `M3-CP4c-3-CB43` (Code + Build, runtime-free) — CORRECT THE EULER CRITERION
 
-`M3-CP4c-3-TB37-REV` promoted TB37 to **current valid semantic runtime authority** and **decided the Euler
-question**:
+`M3-CP4c-3-DEFN-R6` appended **Part X**. Runtime authority is unchanged:
 
 - selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
 - immutable CB42 package `10032277517` / source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`; run `34161464783`;
 - certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
 
-**CB42 changed no behaviour, proved by artifact:** `ledger.tsv` and `identity-map.tsv` hash identical to TB36's
-while the failure-detail digest table differs — "same verdicts, richer evidence".
+**The cancellation premise is NOT the defect.** The sub-mesh boundary cancels exactly, 20 against 20. **The defect
+is that a barrier edge with both incident faces in the region is an interior cell being classified as boundary**:
+12 such edges are dropped from `E_int` against 16 vertices from `V_int`, and `(20 − 20) + (16 − 12) = 4` is the
+whole error. Measured `V/E/F/chiFull = 136/385/250/1` — **the region is a disc.**
 
-**The region is a disc and the certificate's arithmetic is wrong by exactly 4.** `X = 36` (`0 + 20 + 16`),
-`B_int = 12`, sub-mesh boundary `20 / 20`, `V/E/F/chiFull = 136/385/250/1`, against the reduced certificate's
-`100/353/250/−3`. The gap decomposes as `(20 − 20) + (16 − 12)`: **the boundary terms do cancel**, and the whole
-error is that **12 interior barrier edges** are dropped from `E_int` while **16 further vertices** are dropped from
-`V_int`, asymmetrically. A terminal slit — a barrier with **both** faces inside the region — is an **interior**
-cell being misclassified as boundary. `M3-CP4c3-TB34-REV-CAND-03` **CLOSED**; `M3-CP4c3-TB36-REV-CAND-01`
-**DECIDED**.
+**Part X freezes:** the certified complex is the **whole-face source sub-mesh** (so `χ = 1` is about that
+rounding, not the traced region); the criterion is **`χ = V_total − E_total + F = 1`**, reduced form withdrawn;
+the premise has **two** comment sites and both must go; `vertexCount`/`edgeCount` must not be repurposed because
+`edgeCount` feeds the connectivity BFS; and reduced/full agree iff `X = E_one + B_int`, **which CB43 must prove
+per region on every accepted fixture rather than assume**.
 
-Stable accounting remains **45 events / 14 categories / 31 recurrences** — no accepted green lost, so **no new
-event** — produced-witness debt **5**, semantic M3 package count **102**. CP4c-3 remains **OPEN**.
+Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**, packages **102**. CP4c-3
+remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-DEFN-R6`**, a static **definition** turn appending **Part X** — not a Code + Build turn, because
-the change alters a certificate acceptance criterion on which `proves_disc_topology()` depends and this checkpoint
-has already paid one accepted-green event for correcting without a written contract.
+Run **`M3-CP4c-3-CB43`**, a runtime-free **Code + Build** turn under **CZ7.1–CZ7.7**:
 
-- [ ] name the counted complex — the **whole-face source sub-mesh** — and state that χ = 1 is a claim about that
-      rounding, not the traced region;
-- [ ] adopt `χ = V_total − E_total + F = 1` and **withdraw the reduction**, deleting the comment at `:2097–2098`;
-- [ ] record **why** the reduction failed — interior barrier edges misclassified as boundary — so it cannot return;
-- [ ] state the equivalence condition `X = E_one + B_int` and **require the implementing turn to prove it per
-      region on every accepted fixture**;
-- [ ] fix the unchanged surface, including **no change to region construction** — the region is correct.
+- [ ] **CZ7.1** hoist CB42's sub-mesh accumulation out of the `eulerCharacteristic != 1` failure branch;
+- [ ] **CZ7.2** add `V_total`/`E_total` certificate fields and compute χ from them;
+- [ ] **CZ7.3** delete **both** premise comments — `GlobalTopologyPlan.cpp:2097–2098` and
+      `include/directional/geometry/GlobalTopologyPlan.h:91–93`;
+- [ ] **CZ7.4** discharge the `X = E_one + B_int` obligation **per region on every accepted fixture**;
+- [ ] **CZ7.5** state the certificate-ordering / plan-hash decision and confirm by grep that no identity pins a
+      hash literal;
+- [ ] **CZ7.6** keep ordinals 312/409 byte-identical, selector 409 byte-frozen, region construction unchanged;
+- [ ] **CZ7.7** hand off to `M3-CP4c-3-TB38`.
 
-**Must not:** correct region construction; change ownership or the whole-face rounding while fixing the arithmetic;
-force χ to 1 or special-case a fixture; weaken ordinal 398; touch 368/369/370/374; re-open ownership or any retired
-guard; change any accepted identity or selector byte; run any Directional runtime in the definition turn.
-**Accepted prefix 365/365 and ordinals 312/409 PASS remain stop conditions for the implementing turn `CB43`.**
+**Must not:** correct region construction; change ownership or the whole-face rounding; repurpose
+`vertexCount`/`edgeCount`; weaken `proves_disc_topology()`; force χ to 1 or special-case a fixture; delete only one
+premise comment; weaken ordinal 398; touch 368/369/370/374; change any accepted identity or selector byte.
+**Accepted prefix 365/365 and ordinals 312/409 PASS are stop conditions.**
 
 ## Carried forward from M1
 
@@ -104,7 +103,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB37` is the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409 / package102. TB37 decided the Euler question: the region is a disc (`chiFull=1`) and the reduced certificate is wrong by exactly 4. Exact next is static **`M3-CP4c-3-DEFN-R6`** appending Part X.
+  CP4c-3 remains open. **`M3-CP4c-3-TB37` is the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409 / package102. TB37 decided the Euler question: the region is a disc (`chiFull=1`) and the reduced certificate is wrong by exactly 4. Part X is frozen; exact next is runtime-free **`M3-CP4c-3-CB43`** under CZ7.1–CZ7.7.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -144,4 +143,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **102**. **`M3-CP4c-3-TB37` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**, promoted at TB37-REV. Exact next is static `M3-CP4c-3-DEFN-R6` appending Part X. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **102**. **`M3-CP4c-3-TB37` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**, promoted at TB37-REV. Part X is frozen; exact next is runtime-free `M3-CP4c-3-CB43` under CZ7.1–CZ7.7. PR #8 remains open, draft, and unmerged.

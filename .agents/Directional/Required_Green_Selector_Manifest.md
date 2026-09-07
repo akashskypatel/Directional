@@ -541,13 +541,16 @@ the copy and re-broken accepted ordinal 312.
 TB36's** while the failure-detail digest table changed — the artifact proof that a diagnostics-only turn changed
 no behaviour.
 
-**Exact successor:** `M3-CP4c-3-DEFN-R6` — a **static definition turn** appending **Part X**, which authors no
-selector and touches no source. The implementing turn it freezes, `M3-CP4c-3-CB43`, corrects the region Euler
-criterion to `χ = V_total − E_total + F = 1`. **Selector 409 stays byte-frozen and ordinals 312/409 stay
-byte-identical.** Because no accepted identity asserts `RegionEulerCharacteristicNotOne`, the selector risk is not
-a direct assertion — it is that a region which currently fails Euler will now pass and reach stages never executed
-on it, so CB43 must prove the equivalence `X = E_one + B_int` **per region on every accepted fixture**.
-**Accepted prefix 365/365 is a stop condition.**
+**DEFN-R6 discharged that successor**, appending **Part X** without authoring a selector or touching source.
+
+**Exact successor:** `M3-CP4c-3-CB43` under **CZ7.1–CZ7.7** of Part X. It corrects the region Euler criterion to
+`χ = V_total − E_total + F = 1` and **authors no selector: 409 stays byte-frozen**, with ordinals **312** and
+**409** byte-identical (CZ7.6). Because no accepted identity asserts `RegionEulerCharacteristicNotOne` — confirmed
+by CB42's grep — the selector risk is **not** a direct assertion; it is that a region which currently fails Euler
+will now pass and reach stages never executed on it. CZ7.4 therefore requires the equivalence `X = E_one + B_int`
+to be **proved per region on every accepted fixture**, not assumed. CZ7.5 additionally requires a stated decision
+on certificate ordering and the plan hash, since new certificate fields change `operator<=>` and
+`global_topology_plan_hash` consumes the certificate. **Accepted prefix 365/365 is a stop condition.**
 
 ## Separate lineage — M1
 

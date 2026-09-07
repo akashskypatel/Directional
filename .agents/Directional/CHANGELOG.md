@@ -1,3 +1,60 @@
+## 2026-09-07 — `M3-CP4c-3-DEFN-R6`: Part X corrects the region Euler criterion
+
+Definition turn (`DEFN` absorbs REVIEW + PLAN), static. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority is unchanged and remains
+**`M3-CP4c-3-TB37`**: selector **409**, **402 PASS / 7 RED**, accepted **1–365 = 365/365**, package **102**.
+
+**Appended Part X to `M3_CP4c_Frozen_Definitions.md`.** It supersedes **Part IX §5 (DEFN-R5.5) only**, which froze
+`RegionEulerCharacteristicNotOne` as measurement-only and deferred the decision to "a later review/DEFN". Every
+other Part IX clause, and all of Part IX-A, stands.
+
+**R6.1 — the cancellation premise is NOT the defect.** The sub-mesh boundary cancels exactly, **20 edges against
+20 vertices**, so the comment at `GlobalTopologyPlan.cpp:2097–2098` was right about the boundary. **Part IX-A
+§A.2's implication that the premise itself fails is withdrawn**, and so is the DEFN-R5 draft claim that a pinch
+stops the boundary terms cancelling. Recording this matters: a correction aimed at the premise would have been
+aimed at the wrong thing, and two turns nearly were.
+
+**R6.2 — interior barrier edges are interior cells.** A mandatory or cut edge with **both** incident faces in the
+region is an interior cell of the certified complex. The certificate drops **12** of them from `E_int`
+(`:1848–1850`) and **16** further vertices from `V_int` via `allOwned` (`:2048–2094`), and the exclusions do not
+balance: `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 4`. A terminal slit is exactly
+such an edge, and this fixture publishes ten.
+
+**R6.3 — the certified complex, named.** The whole-face source sub-mesh of `region.sourceFaces`; faces are
+partitioned one per region (`:1405`, `:1432`). **`χ = 1` is a claim about that rounding**, not about the traced
+region, whose boundary includes trace chords through face interiors. Non-blocking; stated so it cannot be silently
+assumed.
+
+**R6.4 — the criterion.** `χ = V_total − E_total + F = 1`; the reduced form is withdrawn. For a connected compact
+surface with boundary `χ = 2 − 2g − b`, so `χ = 1` together with `sourceFacesConnected` and
+`boundaryWalkCount == 1` is a disc. `proves_disc_topology()` keeps its shape.
+
+**R6.5 — the withdrawn premise has TWO sites, and this turn found the second.**
+`src/geometry/GlobalTopologyPlan.cpp:2097–2098` **and**
+`include/directional/geometry/GlobalTopologyPlan.h:91–93`, whose comment on
+`GlobalTopologyRegionDiscCertificate::vertexCount` repeats the premise verbatim. TB37-REV named only the first.
+Deleting one leaves the assumption fully documented for the next reader — which is how it survived from TB34 to
+TB37. `LESSONS.md` 154.
+
+**R6.6 — do not repurpose `vertexCount`/`edgeCount`.** `edgeCount` is incremented in the same loop that builds
+`neighbors` for the connectivity BFS behind `RegionInteriorDisconnected` (`:1847–1860`, BFS `:1862–1873`, check
+`:1874`); redefining it would silently change which regions are reported disconnected. The sub-mesh totals become
+new certificate fields, so the published triple explains the published χ.
+
+**R6.7 — the equivalence carries a proof obligation.** Reduced and full agree exactly when `X = E_one + B_int`;
+the measured region violates it by 4 (`36` vs `20 + 12`). **CB43 may not assume it anywhere** — it must establish,
+per region on every accepted fixture, either the identity or an unchanged verdict. *"Accepted fixtures have no
+slits"* is an explanation, not a discharge.
+
+**Accounting.** Static turn: **+0 events / +0 recurrences**. Totals remain **45 events / 14 categories / 31
+recurrences**, debt **5**, packages **102**. `LESSONS.md` 154 added: *withdrawing an assumption means deleting
+every statement of it, not the one the failure pointed at.*
+
+**Exact next: `M3-CP4c-3-CB43`** — Code + Build, runtime-free, GMP/GMPXX linked, under **CZ7.1–CZ7.7**. Accepted
+prefix 365/365 and ordinals 312/409 PASS are stop conditions; the real risk is that a region which currently fails
+Euler now passes and reaches stages never executed on it, so a new failure at a later stage is a **new frontier,
+not a regression**.
+
 ## 2026-09-07 — `M3-CP4c-3-TB37-REV`: TB37 promoted; the Euler question decided — the region is a disc
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

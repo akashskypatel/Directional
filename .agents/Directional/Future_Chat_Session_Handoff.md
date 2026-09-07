@@ -116,98 +116,97 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-DEFN-R6` — EXACT NEXT / definition turn, static, appends Part X
+## Mandatory next turn — `M3-CP4c-3-CB43` — EXACT NEXT / Code + Build, runtime-free
 
-`M3-CP4c-3-TB37-REV` adjudicated TB37, promoted it, and **decided the Euler question**.
+`M3-CP4c-3-DEFN-R6` appended **Part X** and froze CB43. Runtime authority is unchanged.
 
 ### Current authority
 
 - **`M3-CP4c-3-TB37`** — selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED
   `[366,367,368,369,370,374,398]`; immutable CB42 package `10032277517`, source
-  `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`; 409 rows, every row `selected=1`, zero timeouts,
-  censuses identical pre/post, `SHA256SUMS` 28/28, executables `0755`.
+  `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`.
 - Certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
-- **Stable accounting 45 events / 14 categories / 31 recurrences** — **no new event** — debt **5**, packages
-  **102**.
-- Definition authority is **Part IX (DEFN-R5)**, amended by **Part IX-A**. **Part X appends next.**
+- **Stable accounting 45 events / 14 categories / 31 recurrences**, debt **5**, packages **102**.
+- Definition authority: **Part X (DEFN-R6)** for the Euler criterion; **Part IX**, amended by **Part IX-A**, for
+  everything else. Part X supersedes **Part IX §5 only**.
 
-### What TB37 established
+### What DEFN-R6 established
 
-**CB42 changed no behaviour, proved by artifact.** `ledger.tsv` and `identity-map.tsv` hash **identical to TB36's**
-(`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs** (`2b6ca8d2…` vs `02734fd9…`) — the
-exact signature of "same verdicts, richer evidence". `LESSONS.md` 151.
+**The cancellation premise is NOT the defect (R6.1).** The sub-mesh boundary cancels exactly — 20 edges against
+20 vertices — so `GlobalTopologyPlan.cpp:2097–2098` was right about the boundary. Part IX-A §A.2's implication
+that the premise itself fails is **withdrawn**.
 
-**The Euler question is decided: the region is a disc and the certificate is wrong by exactly 4.**
+**The defect is a misclassification (R6.2).** A mandatory or cut edge with **both** incident faces in the region is
+an **interior** cell of the certified complex. The certificate drops **12** such edges from `E_int`
+(`:1848–1850`) and **16** further vertices from `V_int` via `allOwned` (`:2048–2094`), and those exclusions do not
+balance:
 
-```text
-X (excluded vertices)          = 36  =  0 mesh-boundary + 20 boundaryVertices + 16 allOwned
-B_int (interior barrier edges) = 12
-sub-mesh boundary              = 20 edges / 20 vertices
-V_total / E_total / F / chiFull = 136 / 385 / 250 / 1
-reduced certificate             = 100 / 353 / 250 / −3
-```
+> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 0 + 4`
 
-`D = X + B_int = 48`, so TB36-REV's identity `χ_true = X + B_int − 47` gives **1**, and the direct count agrees.
-Two values TB36-REV predicted before they existed both land: `E_one = 44 − 2·B_int = 20`, and
-`2(E_int + B_int) + E_one = 750 = 3F`.
+A terminal slit is exactly such an edge, and this fixture has ten. Measured:
+`V_total/E_total/F/chiFull = 136/385/250/1` against the reduced `100/353/250/−3` — **the region is a disc.**
 
-**The diagnosis, sharper than "the premise is false":**
+**The criterion (R6.3, R6.4).** The certified complex is the **whole-face source sub-mesh** of
+`region.sourceFaces`, so `χ = 1` is a claim about that **rounding**, not about the traced region. The criterion is
+**`χ = V_total − E_total + F = 1`**; the reduced form is withdrawn.
 
-> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12)`
+**Two premise sites, not one (R6.5).** `GlobalTopologyPlan.cpp:2097–2098` **and**
+`include/directional/geometry/GlobalTopologyPlan.h:91–93`, whose `vertexCount` comment repeats the premise
+verbatim. TB37-REV named only the first. **Deleting one re-seeds the assumption** — which is how it survived from
+TB34 to TB37. `LESSONS.md` 154.
 
-**The boundary terms do cancel** — 20 against 20, exactly as `GlobalTopologyPlan.cpp:2097–2098` claims. The whole
-error is the residual: **12 interior barrier edges** are dropped from `E_int` (`:1848–1850`) and **16 further
-vertices** from `V_int` via `allOwned`, asymmetrically. **A barrier edge with both incident faces in the region — a
-terminal slit, of which this fixture has ten — is an interior cell of the counted complex being misclassified as
-boundary.** `LESSONS.md` 153.
+**Do not repurpose the existing counts (R6.6).** `edgeCount` is incremented in the loop that builds `neighbors` for
+the connectivity BFS behind `RegionInteriorDisconnected` (`:1847–1860`, BFS `:1862–1873`, check `:1874`).
 
-**What it does not settle.** Both formulas count the **whole-face** sub-mesh (`:2168–2177`) while the region's
-boundary includes **trace chords through face interiors**, and a trace-cut face is assigned wholly to one region
-(`:1405`, `:1432`). `chiFull = 1` certifies the **rounding**, not the traced region. Non-blocking, but must be
-written down: `M3-CP4c3-TB37-REV-CAND-01`.
+**The proof obligation (R6.7).** Reduced and full agree iff **`X = E_one + B_int`**; the measured region violates
+it by 4. **CB43 may not assume it anywhere.**
 
-### DEFN-R6 boundary — Part X
+### CB43 boundary — CZ7.1–CZ7.7
 
-**A definition turn, not a Code + Build turn.** The change alters a **certificate acceptance criterion** on which
-`proves_disc_topology()` depends; DEFN-R5.5 named a later review/DEFN as the deciding authority; and this
-checkpoint has already paid one accepted-green event for correcting without a written contract (`LESSONS.md` 144).
+**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`.
 
-**Decide, and no more:**
+- **CZ7.1** — hoist CB42's `submeshVertices` / `submeshEdges` accumulation **out of the failure branch**, where it
+  currently sits, so the criterion can use it. Code motion, no behaviour of its own.
+- **CZ7.2** — add `V_total` / `E_total` certificate fields and compute `eulerCharacteristic` from them.
+- **CZ7.3** — delete **both** premise comments, replacing them with what is actually counted.
+- **CZ7.4** — **discharge R6.7 per region on every accepted fixture**: publish `X`, `E_one`, `B_int` and the
+  reduced-versus-full difference, and show either the identity or an unchanged verdict. *"Accepted fixtures have no
+  slits"* is not a discharge.
+- **CZ7.5** — state the certificate-ordering and plan-hash decision explicitly. New fields change `operator<=>`
+  and `global_topology_plan_hash` consumes the certificate (`:2386–2400`). **Confirm by grep** that no identity
+  pins a hash literal; the hash changes regardless, since corrected regions publish a different
+  `eulerCharacteristic`.
+- **CZ7.6** — ordinals **312/409** byte-identical, selector **409** byte-frozen, accepted **1–365** untouched, no
+  work on 368/369/370/374/398, no ownership/partition/retired-guard/sphere/saturation/folded-cone/finalize-contact
+  change, and **region construction unchanged**.
+- **CZ7.7** — `M3-CP4c-3-TB38` re-executes selector 409, one identity per fresh process, accepted prefix first.
 
-1. **Name the counted complex** — the whole-face source sub-mesh: all distinct vertices and edges of
-   `region.sourceFaces`, with `F = |region.sourceFaces|`. State that `χ = 1` is a claim about that rounding.
-2. **Adopt `χ = V_total − E_total + F = 1`** and **withdraw the reduction**, deleting the comment at
-   `:2097–2098` with it.
-3. **Record why the reduction failed** — interior barrier edges misclassified as boundary — so it cannot return.
-4. **State the equivalence condition** `X = E_one + B_int`, and **require the implementing turn to prove it per
-   region on every accepted fixture** rather than assume it.
-5. **Fix the unchanged surface**: ordinals **312**/**409** byte-identical, selector **409** byte-frozen, accepted
-   **1–365** untouched, no work on 368/369/370/374/398, no ownership/partition/retired-guard/sphere/saturation/
-   folded-cone/finalize-contact change, and **no change to region construction** — the region is correct.
+**Falsifiers, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
+conditions. The risk is **not** a direct assertion — no test asserts `RegionEulerCharacteristicNotOne` — it is that
+a region which currently fails Euler now passes and reaches stages never executed on it. If 366/367 clear region
+certification, R6.1–R6.4 are confirmed and **a new failure at a later stage is a new frontier, not a regression**.
+If 366/367 still fail Euler under the full count, measurement and implementation disagree and the turn halts. If
+any accepted-fixture region changes verdict, R6.7 is refuted there. If a region elsewhere newly fails Euler,
+R6.3's counted complex becomes the live question.
 
-**Falsifiers to carry into `M3-CP4c-3-CB43`.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
-conditions. No accepted identity asserts `RegionEulerCharacteristicNotOne`, so the risk is **not** a direct
-assertion — it is that a region which currently fails Euler will now pass and reach stages never executed on it.
-If 366/367 clear region certification the correction is confirmed and **a new failure at a later stage is a new
-frontier, not a regression**. If 366/367 still fail Euler under the full count, measurement and implementation
-disagree and the turn halts. If any accepted-fixture region changes verdict, the equivalence claim is refuted
-there.
-
-**Must not:** correct region construction; change ownership or the whole-face rounding while fixing the
-arithmetic; force χ to 1 or special-case a fixture; change any accepted identity 1–365 or any byte of selector
-397–409; execute any Directional runtime in the definition turn.
+**Must not:** correct region construction; change ownership or the whole-face rounding; repurpose `vertexCount` or
+`edgeCount`; weaken `proves_disc_topology()`, `sourceFacesConnected` or `boundaryWalkCount`; force χ to 1 or
+special-case a fixture; delete only one premise comment; weaken ordinal 398; touch 368/369/370/374; change any
+accepted identity 1–365 or any byte of selector 397–409.
 
 ### Context Load Plan
 
-`load_next`: definition-turn guidance (DEFN absorbs REVIEW + PLAN).
+`load_next`: Code + Build guidance.
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.4 and §3.5.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` — **CZ0–CZ6**.
-3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part IX operative**, amended by Part IX-A; Part X appends.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.4, §3.5, §3.6.
+2. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part X operative for the Euler criterion**; Part IX
+   (amended by Part IX-A) for everything else.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` — **CZ0–CZ6**, the evidence.
 4. `.agents/Directional/Architecture_M3_CP4c3_TB37_EXEC_Report.md` — current runtime authority.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-6. `.agents/Directional/LESSONS.md` — mandatory; **144, 150, 151, 152, 153** are this turn's.
+6. `.agents/Directional/LESSONS.md` — mandatory; **53, 144, 153, 154** govern this change.
+7. `.agents/Directional/AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

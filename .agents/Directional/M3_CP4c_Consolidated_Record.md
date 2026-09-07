@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB37-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36, and **the Euler frontier is decided at TB37**: `D = X + B_int = 48` and `chiFull = 1`, so the region's source sub-mesh is a genuine triangulated disc while the reduced certificate publishes `−3`. The gap decomposes as `(20 − 20) + (16 − 12)` — the boundary terms **do** cancel, and the entire error is that **12 interior barrier edges** are dropped from `E_int` while **16 further vertices** are dropped from `V_int`, asymmetrically. A terminal slit is an **interior** cell being misclassified as boundary. Runtime authority is **TB37** on selector 409 at **402 PASS / 7 RED**, accepted **365/365**, packages **102**. Stable accounting **45 / 14 / 31** — no new event — debt **5**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-DEFN-R6`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36, and **the Euler frontier is decided at TB37 and corrected in definition at DEFN-R6 (Part X)**: the cancellation premise is *not* the defect — the sub-mesh boundary cancels 20 against 20 — and the error is that a barrier edge with **both** incident faces in the region is an **interior** cell being classified as boundary, so 12 edges are dropped against 16 vertices and `(20−20)+(16−12) = 4`. Measured `V/E/F/chiFull = 136/385/250/1`: **the region is a disc**. Part X names the certified complex as the **whole-face source sub-mesh**, adopts **χ = V_total − E_total + F = 1**, requires **both** premise comment sites deleted, forbids repurposing `vertexCount`/`edgeCount`, and imposes a **per-region proof obligation** on `X = E_one + B_int`. Runtime authority is **TB37** on selector 409 at **402 PASS / 7 RED**, accepted **365/365**, packages **102**. Stable accounting **45 / 14 / 31**, debt **5**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -892,6 +892,30 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
+
+### Consolidated on 2026-09-07 at `M3-CP4c-3-DEFN-R6` — nothing folded, and why
+
+Mandatory REVIEW consolidation performed (`DEFN` absorbs REVIEW + PLAN). **No document was folded**, and that is
+the correct outcome rather than an omission:
+
+- `M3-CP4c-3-DEFN-R6` was **authored in place** as **Part X** of `M3_CP4c_Frozen_Definitions.md`, per the standing
+  practice since Part VII, so it created no per-turn document to retire.
+- `Architecture_M3_CP4c3_TB37_EXEC_Report.md` remains the **current valid semantic runtime authority** — DEFN-R6
+  ran no runtime and did not displace it — and
+  `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` is the contract that produced it.
+- `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` is the review DEFN-R6 consumes and **extends** at its
+  CZ6 — Part X adds the second premise site the review did not have — so it is retained for its provenance.
+- `Architecture_M3_CP4c3_CB42_Code_Build_Report.md` is the build that produced the current package and carries the
+  grep proving no accepted identity asserts `RegionEulerCharacteristicNotOne`.
+
+Consolidation is a preservation procedure, not a reduction target. **Running total unchanged: 113 documents,
+22,254 lines** (the last folding turn was `M3-CP4c-3-TB37-REV`, which folded 4 documents / 730 lines).
+
+**Definition-authority note.** The operative CP4c-3 definitions are now **Part VI together with Parts VII, VIII,
+IX and X**; Part IX-A amends Part IX without overriding it, and **Part X supersedes Part IX §5 (DEFN-R5.5) only**,
+replacing its measurement-only disposition with the decided Euler criterion. Part X also **withdraws Part IX-A
+§A.2's implication that the cancellation premise itself fails** — the premise is correct about the boundary, and
+the defect is the misclassification of interior barrier edges.
 
 ### Consolidated on 2026-09-07 at `M3-CP4c-3-TB37-REV`
 
