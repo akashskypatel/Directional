@@ -1,0 +1,2 @@
+source_sha=f0c56e4e6f6c33d2e266e575234d57b569562719
+purpose=cb41-exact-source-snapshot
