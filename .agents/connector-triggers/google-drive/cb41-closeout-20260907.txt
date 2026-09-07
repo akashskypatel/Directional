@@ -1,6 +1,0 @@
-CB41 closeout Drive patch trigger retry 1 after diagnosed missing transport-metadata header.
-file_id=1B0T4VKDBoFZq9pDZ75KIRwLOVEx2VZh1
-patch_sha256=df5b520d9651f72e084e2e45e864c32fdd5f44634f5546fb1469651dff48db5e
-base_sha=3fff4fab53bd9f50a6acbf55a126579156649905
-invalid_attempt_run=34151332231
-runtimeExecution=false
