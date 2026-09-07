@@ -1,4 +1,0 @@
-M3-CP4c-3-CB43 closeout Drive apply trigger.
-caller_install_commit=ddc3b41834107aeec6154824427b862ab151799c
-base_sha=7fcd04139c53d8d66855c8d3c32d0e9e0861de14
-patch_sha256=d05bb3b36c69ae2e78e007d83758db22bf7b46ad75a40ad9e89e10d0ce080735

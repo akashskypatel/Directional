@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-CB43
-purpose=compile exact pushed semantic source with mandatory GMP/GMPXX
-source_sha=2fcde465b1de2e42a348d224f5165ce8b87e4fbe
-runtimeExecution=false
-retry=0

@@ -1,5 +1,0 @@
-.agents/connector-triggers/m3-cp4c3-cb43-compile-20260907.txt
-.agents/connector-triggers/m3-cp4c3-cb43-drive-apply-20260907.txt
-.agents/connector-triggers/m3-cp4c3-cb43-closeout-drive-20260907.txt
-.agents/connector-triggers/source-snapshot/8038251fc04e041b9aceab4a9248d2fb394c4f26.txt
-.agents/connector-triggers/source-snapshot/cb43-resume-c2a0c136.txt

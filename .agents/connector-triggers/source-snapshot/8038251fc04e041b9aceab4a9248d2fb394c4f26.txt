@@ -1,2 +1,0 @@
-semantic_source_sha=8038251fc04e041b9aceab4a9248d2fb394c4f26
-purpose=M3-CP4c-3-CB43 source snapshot
