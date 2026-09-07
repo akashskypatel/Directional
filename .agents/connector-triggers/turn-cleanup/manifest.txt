@@ -1,5 +1,0 @@
-# M3-CP4c-3-TB38-EXEC temporary-state cleanup
-.agents/connector-triggers/source-snapshot/tb38-exec-f825c2443af3.txt
-.agents/Directional/turn-payloads/tb38_measurement_checks.py
-.agents/connector-triggers/tb38-exec.txt
-.agents/connector-triggers/tb38-closeout-drive.txt
