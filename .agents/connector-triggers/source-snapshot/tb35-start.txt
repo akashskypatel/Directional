@@ -1,3 +1,0 @@
-M3-CP4c-3-TB35-EXEC source snapshot bootstrap
-initial_authority=aee7c669b87e3d0293bc885a055f2aac919d5054
-read_mode=snapshot
