@@ -17,15 +17,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  observe:
-    uses: ./.github/workflows/agent-run-observer-reusable.yml
-    with:
-      pr_number: 8
-      label: source-snapshot-cb41-exact-20260907
-      commit_run_file: false
-      trim_stale_comments: true
-    secrets: inherit
-
   validate:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
@@ -41,4 +32,15 @@ jobs:
       source_ref: f0c56e4e6f6c33d2e266e575234d57b569562719
       artifact_prefix: cb41-exact-source-snapshot
       retention_days: 7
+    secrets: inherit
+
+  observe:
+    needs: snapshot
+    if: ${{ always() }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: source-snapshot-cb41-exact-20260907
+      commit_run_file: false
+      trim_stale_comments: false
     secrets: inherit
