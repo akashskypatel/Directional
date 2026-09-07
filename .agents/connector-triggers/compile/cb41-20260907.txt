@@ -1,3 +1,4 @@
-CB41 compile trigger.
+CB41 compile trigger retry 1 after diagnosed caller permission-ceiling correction.
 semantic_source=14aa1368523580444929bc65cab0b65449240ec2
 runtimeExecution=false
+invalid_attempt_run=34150366902
