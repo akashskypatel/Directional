@@ -1,0 +1,3 @@
+M3-CP4c-3-TB36-EXEC start-of-turn source snapshot.
+READ_MODE=snapshot after mandatory policy-read gate miss was detected and recorded.
+Snapshot current working-branch control/document authority; TB36 runtime remains immutable package101 artifact-only.
