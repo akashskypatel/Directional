@@ -3731,6 +3731,38 @@ void append_cp4c_failure_locus(
   if (locus.regionBoundaryStartRevisitBeforeEndCount.has_value())
     report << ";regionBoundaryStartRevisitBeforeEndCount="
            << *locus.regionBoundaryStartRevisitBeforeEndCount;
+  if (!locus.regionBoundaryCensusDomain.empty())
+    report << ";regionBoundaryCensusDomain="
+           << locus.regionBoundaryCensusDomain;
+  if (locus.regionBoundaryNodeOccurrenceCountDerived)
+    report << ";regionBoundaryNodeOccurrenceCountDerived=true";
+  if (locus.regionInteriorBarrierEdgeCount.has_value())
+    report << ";regionInteriorBarrierEdgeCount="
+           << *locus.regionInteriorBarrierEdgeCount;
+  if (locus.regionExcludedVertexCount.has_value())
+    report << ";regionExcludedVertexCount="
+           << *locus.regionExcludedVertexCount;
+  if (locus.regionExcludedMeshBoundaryVertexCount.has_value())
+    report << ";regionExcludedMeshBoundaryVertexCount="
+           << *locus.regionExcludedMeshBoundaryVertexCount;
+  if (locus.regionExcludedBoundaryVertexCount.has_value())
+    report << ";regionExcludedBoundaryVertexCount="
+           << *locus.regionExcludedBoundaryVertexCount;
+  if (locus.regionExcludedAllOwnedVertexCount.has_value())
+    report << ";regionExcludedAllOwnedVertexCount="
+           << *locus.regionExcludedAllOwnedVertexCount;
+  if (locus.regionSubmeshBoundaryEdgeCount.has_value())
+    report << ";regionSubmeshBoundaryEdgeCount="
+           << *locus.regionSubmeshBoundaryEdgeCount;
+  if (locus.regionSubmeshBoundaryVertexCount.has_value())
+    report << ";regionSubmeshBoundaryVertexCount="
+           << *locus.regionSubmeshBoundaryVertexCount;
+  if (locus.regionTotalVertexCount.has_value())
+    report << ";regionVTotal=" << *locus.regionTotalVertexCount;
+  if (locus.regionTotalEdgeCount.has_value())
+    report << ";regionETotal=" << *locus.regionTotalEdgeCount;
+  if (locus.regionFullEulerCharacteristic.has_value())
+    report << ";regionChiFull=" << *locus.regionFullEulerCharacteristic;
   if (locus.vertexCount.has_value())
     report << ";vertexCount=" << *locus.vertexCount;
   if (locus.edgeCount.has_value())

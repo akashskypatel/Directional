@@ -2145,6 +2145,75 @@ RegionCertificateBuildResult build_region_certificate(
         region.boundary.size() - distinctBoundaryNodes.size();
     failure.regionBoundaryStartRevisitBeforeEndCount =
         startRevisitBeforeEndCount;
+
+    // CB42 / CY6 measurement only.  These counts are in the same source
+    // sub-mesh domain as V_int/E_int/F above.  They are diagnostics only:
+    // no acceptance or Euler formula depends on them.
+    std::size_t interiorBarrierEdgeCount = 0U;
+    for (const auto &[edge, incident] : topology.incidentFaces) {
+      if (incident.size() != 2U ||
+          (mandatoryEdges.count(edge) == 0U && cutEdges.count(edge) == 0U)) {
+        continue;
+      }
+      if (regionFaces.count(incident[0]) != 0U &&
+          regionFaces.count(incident[1]) != 0U) {
+        ++interiorBarrierEdgeCount;
+      }
+    }
+
+    std::set<authority::SourceVertexId> submeshVertices;
+    std::size_t excludedMeshBoundaryVertexCount = 0U;
+    std::size_t excludedBoundaryVertexCount = 0U;
+
+    std::set<authority::SourceEdgeTopologyKey> submeshEdges;
+    std::set<authority::SourceEdgeTopologyKey> submeshBoundaryEdges;
+    std::set<authority::SourceVertexId> submeshBoundaryVertices;
+    for (const auto &faceKey : region.sourceFaces) {
+      const auto face = topology.faces.find(faceKey);
+      if (face == topology.faces.end()) continue;
+      submeshVertices.insert(face->second.vertices.begin(),
+                             face->second.vertices.end());
+      submeshEdges.insert(face->second.edges.begin(), face->second.edges.end());
+    }
+    for (const auto vertex : submeshVertices) {
+      if (interiorVertices.count(vertex) != 0U) continue;
+      if (meshBoundaryVertices.count(vertex) != 0U) {
+        ++excludedMeshBoundaryVertexCount;
+      } else if (boundaryVertices.count(vertex) != 0U) {
+        ++excludedBoundaryVertexCount;
+      }
+    }
+    const std::size_t excludedVertexCount =
+        submeshVertices.size() - interiorVertices.size();
+    const std::size_t excludedAllOwnedVertexCount =
+        excludedVertexCount - excludedMeshBoundaryVertexCount -
+        excludedBoundaryVertexCount;
+
+    for (const auto &[edge, incident] : topology.incidentFaces) {
+      const std::size_t regionIncidentCount = static_cast<std::size_t>(
+          std::count_if(incident.begin(), incident.end(), [&](const auto &face) {
+            return regionFaces.count(face) != 0U;
+          }));
+      if (regionIncidentCount != 1U) continue;
+      submeshBoundaryEdges.insert(edge);
+      submeshBoundaryVertices.insert(edge.first());
+      submeshBoundaryVertices.insert(edge.second());
+    }
+
+    failure.regionInteriorBarrierEdgeCount = interiorBarrierEdgeCount;
+    failure.regionExcludedVertexCount = excludedVertexCount;
+    failure.regionExcludedMeshBoundaryVertexCount =
+        excludedMeshBoundaryVertexCount;
+    failure.regionExcludedBoundaryVertexCount = excludedBoundaryVertexCount;
+    failure.regionExcludedAllOwnedVertexCount = excludedAllOwnedVertexCount;
+    failure.regionSubmeshBoundaryEdgeCount = submeshBoundaryEdges.size();
+    failure.regionSubmeshBoundaryVertexCount = submeshBoundaryVertices.size();
+    failure.regionTotalVertexCount = submeshVertices.size();
+    failure.regionTotalEdgeCount = submeshEdges.size();
+    failure.regionFullEulerCharacteristic =
+        static_cast<std::int64_t>(submeshVertices.size()) -
+        static_cast<std::int64_t>(submeshEdges.size()) +
+        static_cast<std::int64_t>(certificate.faceCount);
     return failure;
   }
   return certificate;

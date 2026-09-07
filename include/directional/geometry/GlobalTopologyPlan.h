@@ -529,6 +529,16 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> regionBoundaryDistinctNodeCount;
   std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
   std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
+  std::optional<std::size_t> regionInteriorBarrierEdgeCount;
+  std::optional<std::size_t> regionExcludedVertexCount;
+  std::optional<std::size_t> regionExcludedMeshBoundaryVertexCount;
+  std::optional<std::size_t> regionExcludedBoundaryVertexCount;
+  std::optional<std::size_t> regionExcludedAllOwnedVertexCount;
+  std::optional<std::size_t> regionSubmeshBoundaryEdgeCount;
+  std::optional<std::size_t> regionSubmeshBoundaryVertexCount;
+  std::optional<std::size_t> regionTotalVertexCount;
+  std::optional<std::size_t> regionTotalEdgeCount;
+  std::optional<std::int64_t> regionFullEulerCharacteristic;
   std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<RegionFrontierComponentEvidenceDiagnostic>

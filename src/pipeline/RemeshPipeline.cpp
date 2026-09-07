@@ -715,6 +715,31 @@ project_global_topology_plan_failure_locus(
       error.regionBoundaryRepeatedNodeOccurrenceCount;
   locus.regionBoundaryStartRevisitBeforeEndCount =
       error.regionBoundaryStartRevisitBeforeEndCount;
+  if (error.regionBoundaryArcOccurrenceCount.has_value() ||
+      error.regionBoundaryDistinctArcCount.has_value() ||
+      error.regionBoundaryNodeOccurrenceCount.has_value() ||
+      error.regionBoundaryDistinctNodeCount.has_value()) {
+    locus.regionBoundaryCensusDomain = "NetworkGraph";
+  }
+  locus.regionBoundaryNodeOccurrenceCountDerived =
+      error.regionBoundaryNodeOccurrenceCount.has_value();
+  locus.regionInteriorBarrierEdgeCount =
+      error.regionInteriorBarrierEdgeCount;
+  locus.regionExcludedVertexCount = error.regionExcludedVertexCount;
+  locus.regionExcludedMeshBoundaryVertexCount =
+      error.regionExcludedMeshBoundaryVertexCount;
+  locus.regionExcludedBoundaryVertexCount =
+      error.regionExcludedBoundaryVertexCount;
+  locus.regionExcludedAllOwnedVertexCount =
+      error.regionExcludedAllOwnedVertexCount;
+  locus.regionSubmeshBoundaryEdgeCount =
+      error.regionSubmeshBoundaryEdgeCount;
+  locus.regionSubmeshBoundaryVertexCount =
+      error.regionSubmeshBoundaryVertexCount;
+  locus.regionTotalVertexCount = error.regionTotalVertexCount;
+  locus.regionTotalEdgeCount = error.regionTotalEdgeCount;
+  locus.regionFullEulerCharacteristic =
+      error.regionFullEulerCharacteristic;
   locus.eulerCharacteristic = error.eulerCharacteristic;
   locus.vertexCount = error.vertexCount;
   locus.edgeCount = error.edgeCount;
