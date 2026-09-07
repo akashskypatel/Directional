@@ -116,81 +116,61 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB37-EXEC` — EXACT NEXT / Test + Benchmark, artifact-only
+## Mandatory next turn — `M3-CP4c-3-TB37-REV` — EXACT NEXT / independent static REVIEW
 
-`M3-CP4c-3-CB42` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. It added only the CY6 source-submesh
-measurement surface and created immutable package102. It did not execute Directional runtime or change acceptance
-semantics.
+`M3-CP4c-3-TB37-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. It executed immutable package102
+artifact `10032277517` from semantic source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` in workflow run
+`34161464783` with no configure, compile, relink, benchmark, repair, or source/test/fixture/selector mutation.
 
 ### Current authority
 
-- **Current semantic runtime:** `M3-CP4c-3-TB36` — selector **409**, **402 PASS / 7 RED**, accepted
-  **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; package101 `10029250324`, source
-  `14aa1368523580444929bc65cab0b65449240ec2`, run `34153857590`.
-- **Next immutable execution package:** package102 artifact `10032277517` /
-  `m3-cp4c3-cb42-result-34159743881`, evidence source
-  `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, compile `34159743881 / 101858898702`, result SHA-256
-  `ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`, packaged source SHA-256
-  `84b2624f425d9870ff8079403a468bca41c584c139752e9f7e5e6b00758da42f`.
-- Certified ownership remains **300 / 0 / 0** at last runtime. Stable accounting remains **45 events / 14
-  categories / 31 recurrences**, debt **5**. Semantic package count is now **102**.
-- Definition authority remains **Part IX (DEFN-R5)**, amended by **Part IX-A**.
+- **Current valid semantic runtime remains `M3-CP4c-3-TB36` pending review** — selector409, **402 PASS / 7 RED**,
+  accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300/0/0**.
+- **TB37 raw ledger:** exactly the same **402 / 7** set and accepted prefix on package102; all 409 selected exactly
+  once, zero timeout, protected 312/390/393/404/406/407/408/409 PASS, ownership **300/0/0**, retired codes absent,
+  and all three pre/post censuses identical.
+- Result artifact `10032812538`, digest
+  `sha256:53c7d8236c1eb3a196ece1091f5048e4ea7d04447af5f7f19c48dfdd95430f8e`; persistent log artifact
+  `10032812978`, digest `sha256:36f8296a6ee5d62e3e3cdc026ed3015628b6d91711027c88a69c86e00019a8de`.
+- Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**, packages **102** pending
+  independent review. Definition authority remains Part IX / Part IX-A.
 
-### What CB42 changed — measurement only
+### What TB37 measured
 
-On `RegionEulerCharacteristicNotOne`, package102 publishes:
-
-- `regionInteriorBarrierEdgeCount` (`B_int`);
-- `regionExcludedVertexCount` (`X`) and its mesh-boundary / `boundaryVertices` / `allOwned` split;
-- source-submesh boundary edge and vertex counts;
-- `regionVTotal`, `regionETotal`, `regionChiFull`;
-- `regionBoundaryCensusDomain=NetworkGraph`;
-- `regionBoundaryNodeOccurrenceCountDerived=true`.
-
-The existing reduced `vertexCount`, `edgeCount`, `faceCount`, `eulerCharacteristic`, the Euler formula, region
-construction, disc acceptance, ownership, and deferred product surfaces are unchanged. Selector409, selector408
-prefix, the artifact-only harness, and ordinal 312/409 test blocks remain byte-frozen.
-
-### TB37 boundary
-
-Execute `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` exactly against package102. No configure,
-compile, relink, regeneration, repair, fixture/test/selector mutation, benchmark, or package mutation is permitted.
-
-**Behavioral hard gate:** CB42 is diagnostic-only, therefore TB37 must reproduce TB36 exactly: **402 PASS / 7
-RED**, RED `[366,367,368,369,370,374,398]`, accepted **365/365**, protected
-**312/390/393/404/406/407/408/409 PASS**, ownership **300/0/0**, retired-code silence. Any movement is a CB42 scope
-falsifier.
-
-For ordinals 366/367, preserve the existing `RegionEulerCharacteristicNotOne` /
-`regionBoundaryProvenance=FaceWalkOrbit` evidence and require the complete new source-submesh fields. Verify:
+Ordinals 366/367 remain byte-identical `RegionEulerCharacteristicNotOne` failures with
+`regionBoundaryProvenance=FaceWalkOrbit`, `regionBoundaryCensusDomain=NetworkGraph`, and the full CY6
+source-submesh evidence:
 
 ```text
-X = excludedMeshBoundary + excludedBoundaryVertices + excludedAllOwned
-regionChiFull = regionVTotal - regionETotal + faceCount
-regionChiFull = X + B_int - 47    # frozen mechanical witness, faceCount=250
-D = X + B_int
+X = 36 = 0 mesh-boundary + 20 boundaryVertices + 16 allOwned-failure
+B_int = 12
+submesh boundary edges / vertices = 20 / 20
+V_total / E_total / F / chiFull = 136 / 385 / 250 / 1
+reduced V / E / F / chi = 100 / 353 / 250 / -3
+D = X + B_int = 48
 ```
 
-The already-frozen discriminator is evidence only:
+All frozen identities hold: `chiFull = V_total - E_total + F = 1` and
+`chiFull = X + B_int - 47 = 1`. The pre-authored discriminator therefore records **`CERTIFICATE_ARITHMETIC`**,
+not region construction and not measurement inconsistency. This is raw EXEC evidence, not a correction decision.
 
-- `D = 44` → cancellation premise holds; χ_full = −3; review owns the **region-construction** frontier.
-- `D = 48` → χ_full = 1; review owns the **certificate arithmetic/cancellation** frontier.
-- otherwise → the new measurement/derivation is inconsistent; review diagnoses the census first.
+### Review boundary
 
-Do not infer the discriminator from network arc/node counts, and do not implement a correction in TB37.
+Independent TB37-REV must verify the evidence, adjudicate the active Euler/certificate candidate, decide package102
+semantic promotion, update `ORIENTATION.md`, perform mandatory REVIEW consolidation, and freeze the smallest next
+measure. It must execute **no runtime, benchmark, configure, compile or corrective implementation**.
 
 ### Context Load Plan
 
-`load_next`: Test + Benchmark / TB-EXEC guidance.
+`load_next`: `references/turns/REVIEW.md` from the turn-based-coding-agent skill.
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` — **executable authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB42_Code_Build_Report.md` — package102 build/evidence authority.
-3. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current frontier and frozen discriminator.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB36_EXEC_Report.md` — current semantic baseline.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-6. `.agents/Directional/LESSONS.md` — mandatory; 144, 148 and 150 remain relevant.
-7. `.agents/Directional/AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — TB mechanics.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during REVIEW.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB37_EXEC_Report.md` — raw execution authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` — frozen discriminator.
+3. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current frontier.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` — derivation that TB37 measures.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, selector manifest, `LESSONS.md` 148/150.
+6. `CLEAN_UP_POLICY.md` — mandatory REVIEW consolidation authority.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -6043,41 +6043,43 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
   not create/merge/close/reprice stable events. Totals remain **45 events / 14 categories / 31 recurrences**, debt
   **5**, packages **101** pending TB36-REV.
 
+## M3-CP4c-3-TB37-EXEC classification — RAW D=48 EVIDENCE / NON-STABLE UNTIL INDEPENDENT REVIEW
+
+- **Execution authority:** immutable package102 source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, artifact
+  `10032277517`, selector409, workflow run `34161464783`, result/log artifacts `10032812538 / 10032812978`.
+- **Observed set:** **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; no new RED
+  ordinal, no accepted-prefix loss, no timeout, no selection mismatch, and all three pre/post censuses identical.
+- **366/367 source-submesh measurement:** existing `M3-CP4c3-TB36-REV-CAND-01` is **ACTIVE / D=48 RAW-MEASURED /
+  REVIEW PENDING**. Both remain `RegionEulerCharacteristicNotOne` / `FaceWalkOrbit` and publish `X=36` with split
+  `0+20+16`, `B_int=12`, submesh boundary `20 edges / 20 vertices`, `V_total/E_total/F/chiFull=136/385/250/1`.
+  `X+B_int=48`; the frozen TB37 discriminator labels the raw frontier **`CERTIFICATE_ARITHMETIC`**.
+- **Euler/certificate classification:** re-scoped `M3-CP4c3-TB34-REV-CAND-03` remains attached to the same owning
+  question. TB37 proves the source-submesh census is internally consistent and that the reduced `100/353/250/-3`
+  certificate differs from full Euler `136/385/250/1`; EXEC does not decide the correction.
+- **Carried failures:** 368/369/370/374/398 remain their prior separately owned regressions/candidates at unchanged
+  failure surfaces. Recurrence in TB37 does not create a new owner or stable event.
+- **Protected evidence:** 312/390/393/404/406/407/408/409 PASS; ordinal385 publishes ownership
+  `sourceFaceCount=300;established=300;unavailable=0;conflicting=0`; both retired codes are absent.
+- **Control-plane miss:** premature cleanup run `34161412687`, caused by publishing the cleanup manifest during setup,
+  is non-semantic process provenance only. It preceded the TB37 caller and touched no package/product/test/fixture/
+  selector state; it creates no regression event.
+- **Stable-count rationale:** TB37-EXEC is raw Test + Benchmark evidence, not the independent authority review. It
+  introduces no new RED ordinal or accepted loss, so it does not create/merge/close/reprice stable events. Totals
+  remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **102** pending TB37-REV.
+
 ## Authoritative next step
 
-Current valid semantic runtime authority is **M3-CP4c-3-TB36**: semantic source
-`14aa1368523580444929bc65cab0b65449240ec2`, immutable CB41 package `10029250324`, selector409, run `34153857590`,
-**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, reds `[366,367,368,369,370,374,398]`, ownership
-**300 / 0 / 0**. Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages
-**101**. Definition authority remains Part IX (`M3-CP4c-3-DEFN-R5`) with Part IX-A amending it.
+Current valid semantic runtime authority remains **M3-CP4c-3-TB36** pending independent review: source
+`14aa1368523580444929bc65cab0b65449240ec2`, package101 `10029250324`, selector409, run `34153857590`,
+**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300/0/0**.
 
-`M3-CP4c-3-TB36-REV` promoted that ledger and **confirmed the Part IX provenance contract at runtime**: 366/367
-advanced past `ClosedBeforeEnd` on `regionBoundaryProvenance=FaceWalkOrbit` while ordinals 312 and 409 - which
-mutate a **copy** of a real plan region - stayed PASS on `Unguaranteed`.
+TB37-EXEC is mechanically valid raw evidence on package102 and reproduces that exact ledger while measuring the
+source-submesh discriminator **D=48** (`X=36`, `B_int=12`, `chiFull=1`). Under the frozen pre-execution matrix this
+selects the **certificate arithmetic/cancellation** frontier, but EXEC cannot promote package102 or choose a fix.
 
-**The frontier moved, and the frozen measurement did not reach it.** CX5's census is taken over the **network
-graph** while chi is computed over a **sub-mesh of whole source triangles**, and a network arc may be a trace
-chord that is not a source edge at all. What the numbers do settle is an identity: with `B_int` the barrier edges
-having both faces in the region and `X` the sub-mesh vertices excluded from `interiorVertices`,
-**chi_true = X + B_int - 47**. The published chi = -3 means `X + B_int = 44`; a disc means `X + B_int = 48`.
-**The certificate cannot both cancel its boundary terms and certify discs**, and one integer decides which.
+Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages **102**.
 
-**Exact next: `M3-CP4c-3-CB42` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
-**CY6.1-CY6.6**: publish `B_int` and `X` with `X` split into its three disjoint causes (CY6.1); publish the
-**sub-mesh** boundary counts in their own domain - source edges with exactly one incident face in the region, and
-their distinct source vertices (CY6.2); publish `V_total`, `E_total` and `chiFull` alongside the existing reduced
-value **without changing the formula or forcing chi to 1** (CY6.3); mark the network census as network-domain and
-retire or flag the redundant occurrence field (CY6.4); keep ordinals 312/409 byte-identical and selector409
-byte-frozen, first grepping the corpus for every accepted identity asserting `RegionEulerCharacteristicNotOne`
-(CY6.5); `M3-CP4c-3-TB37` re-executes (CY6.6).
-
-**Falsification, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
-conditions; CB42 adds diagnostics only, so any behaviour change at all is a defect in the turn. If
-`X + B_int = 44` the cancellation premise holds, chi = -3 is correct, and **the frontier is region construction**.
-If `X + B_int = 48` the premise is false by exactly 4 and **the frontier is the certificate's arithmetic**. If it
-is neither, one of the three exclusion causes is miscounting and the split names it.
-
-**Prohibited:** correcting the Euler formula, region construction or disc acceptance in CB42; deciding the frontier
-from the network census; publishing a predicted chi for the mechanical fixture; weakening ordinal 398; touching
-368/369/370/374; re-opening source-face ownership or any retired guard; any accepted-identity or selector byte
-change; any Directional runtime in CB42.
+**Exact next: independent `M3-CP4c-3-TB37-REV`.** Static evidence review only: verify package102/TB37 authority,
+adjudicate the D=48 certificate candidate, decide semantic-authority promotion, update `ORIENTATION.md`, perform
+mandatory REVIEW document consolidation, and freeze the next bounded measure. Execute no runtime/benchmark/compile
+and perform no corrective implementation inside the review.

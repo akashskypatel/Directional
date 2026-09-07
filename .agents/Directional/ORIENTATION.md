@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-TB36-REV`):** **TB36 is promoted** — selector **409**, **402 PASS / 7 RED**, accepted **365/365**, packages **101**. **Part IX's provenance contract is runtime confirmed:** 366/367 advanced past `ClosedBeforeEnd` on `regionBoundaryProvenance=FaceWalkOrbit`, while ordinals 312/409 — which mutate a **copy** of a real region — stayed PASS on `Unguaranteed`. **But the frozen CX5 measurement is in the wrong domain:** it censuses the **network graph** while χ is computed over a **sub-mesh of whole source triangles**, so `22 = 22` says nothing about whether the boundary terms cancel. What the numbers *do* settle is an identity — **χ_true = X + B_int − 47** — under which **the certificate cannot both cancel its boundary terms and certify discs**. Exact next is **`M3-CP4c-3-CB42`**, measurement-only. Stable accounting unchanged: **45 / 14 / 31**.
+> **Current CP4c-3 position (2026-09-07, `M3-CP4c-3-TB37-EXEC` raw evidence):** semantic authority remains **TB36** pending independent review — selector **409**, **402 PASS / 7 RED**, accepted **365/365**. TB37 package102 reproduces that ledger exactly and publishes the source-submesh discriminator: `X=36`, `B_int=12`, `chiFull=1`, so **D=48**. Under the frozen discriminator this selects the **certificate-arithmetic/cancellation frontier**; the old reduced certificate remains `100/353/250/-3`. No accepted green moved. Stable accounting remains **45 / 14 / 31**. **Exact next is independent `M3-CP4c-3-TB37-REV`.**
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -33,14 +33,16 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB36-REV`. Runtime authority is **TB36** (package 101,
-source `14aa1368523580444929bc65cab0b65449240ec2`, run `34153857590`), selector **409**, **402 PASS / 7 RED**,
-accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
+**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB37-EXEC` raw-evidence closeout. Current valid semantic
+runtime authority remains **TB36** pending independent review. TB37 executed package102 source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` / artifact `10032277517` in run `34161464783`: selector **409**,
+**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
 
-**Where the frontier is.** Ordinals 366/367 first-red at `RegionEulerCharacteristicNotOne`, publishing
-`V/E/F/χ = 100/353/250/−3` on `regionBoundaryProvenance=FaceWalkOrbit`. The boundary-walk question is **closed**:
-Part IX's derived provenance relation works, and CB41 proved it both ways — the plan region advanced, and the two
-synthetic negatives that mutate a **copy** of a real region still reject.
+**Where the frontier is.** Ordinals 366/367 remain `RegionEulerCharacteristicNotOne` on
+`regionBoundaryProvenance=FaceWalkOrbit`. TB37 now supplies the missing source-submesh domain: `X=36` split
+`0+20+16`, `B_int=12`, boundary `20 edges / 20 vertices`, and `V_total/E_total/F/chiFull=136/385/250/1`.
+Thus **D=X+B_int=48**, while the reduced certificate remains `100/353/250/-3`. The pre-authored discriminator
+moves the evidence frontier to **certificate arithmetic/cancellation**, subject to independent review.
 
 **The frozen measurement cannot decide what remains.** χ is computed over a **sub-mesh of whole source triangles**
 — faces are partitioned one-per-region (`GlobalTopologyPlan.cpp:1400–1433`), `edgeCount` counts source edges

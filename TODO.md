@@ -26,45 +26,38 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB37-EXEC` (artifact-only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB37-REV` (independent static REVIEW)
 
-`M3-CP4c-3-CB42` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE / MEASUREMENT ONLY**:
+`M3-CP4c-3-TB37-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED** on immutable package102:
 
-- exact semantic/evidence source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`;
-- compile `34159743881 / 101858898702`;
-- immutable package102 `10032277517` / `m3-cp4c3-cb42-result-34159743881`, SHA-256
-  `ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`;
-- source archive SHA-256 `84b2624f425d9870ff8079403a468bca41c584c139752e9f7e5e6b00758da42f`;
-- manifest **28/28 PASS**, GMP/GMPXX linked, `runtimeExecution=false`;
-- semantic M3 package count **102**; no new runtime event.
+- exact semantic source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, artifact `10032277517`;
+- run/job `34161464783 / 101864038796`, result/log artifacts `10032812538 / 10032812978`;
+- selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
+- protected 312/390/393/404/406/407/408/409 PASS, ownership **300/0/0**, retired-code silence;
+- 409/409 selected, zero timeouts, all package/source/execution-view censuses identical pre/post;
+- no configure, compile, relink, repair, benchmark, or source/test/fixture/selector mutation.
 
-CY6.1-CY6.5 are complete: the Euler-failure evidence now publishes `B_int`, `X` plus the three exclusion causes,
-source-submesh boundary edge/vertex counts, `V_total`, `E_total`, `chiFull`; the older multiplicity census is
-explicitly `NetworkGraph` and its node-occurrence count is flagged derived. The Euler formula, region construction,
-disc acceptance, accepted tests, selector and deferred surfaces are unchanged.
+The CY6 measurement is complete on byte-identical ordinals 366/367: `X=36`, split `0+20+16`, `B_int=12`,
+source-submesh boundary `20/20`, `V_total/E_total/F/chiFull=136/385/250/1`. Therefore **`D=X+B_int=48`**, which
+the frozen TB37 discriminator labels **`CERTIFICATE_ARITHMETIC`**. The existing reduced certificate remains
+`100/353/250/-3`.
 
-`M3-CP4c-3-TB36` remains current semantic runtime authority: **402 PASS / 7 RED**, accepted **365/365**, RED
-`366,367,368,369,370,374,398`, ownership **300/0/0**.
+TB37-EXEC does not promote package102 or choose a correction. TB36 remains current valid semantic runtime authority
+until independent review.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB37-EXEC`** exactly from
-`Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md`:
+Run **`M3-CP4c-3-TB37-REV`** as an independent, static REVIEW:
 
-- [ ] fail-closed preflight exact package102/source/digests/GMP/manifest/selector/harness/modes;
-- [ ] execute all 409 selector identities once, in order, one fresh process per identity;
-- [ ] require exact behavioral preservation: **402 PASS / 7 RED**, accepted **365/365**, same RED ordinals,
-      protected 312/390/393/404/406/407/408/409 PASS, ownership 300/0/0;
-- [ ] on 366/367 require the complete old + CB42 diagnostic set and
-      `regionBoundaryCensusDomain=NetworkGraph`, `regionBoundaryNodeOccurrenceCountDerived=true`;
-- [ ] verify `X` equals its three causes, `chiFull = V_total - E_total + F`, and for the frozen 250-face witness
-      `chiFull = X + B_int - 47`;
-- [ ] classify `D=X+B_int`: **44 -> region-construction frontier; 48 -> certificate-arithmetic frontier; otherwise
-      measurement inconsistency**;
-- [ ] preserve raw evidence and stop at independent `M3-CP4c-3-TB37-REV`; do not patch or retry a semantic RED.
+- [ ] verify TB37 artifact/source/selector/ledger/census authority and the exact 402/7 behavioral preservation;
+- [ ] independently verify 366/367 `X`, `B_int`, split, full Euler identity, and **D=48** from preserved evidence;
+- [ ] adjudicate `M3-CP4c3-TB36-REV-CAND-01` and the re-scoped Euler candidate without changing implementation;
+- [ ] decide whether package102/TB37 becomes current semantic runtime authority;
+- [ ] update `ORIENTATION.md` and perform mandatory REVIEW document consolidation;
+- [ ] freeze the smallest evidence-backed successor measure/plan and stop.
 
-**Must not:** configure, compile, relink, repair package/source/tests/fixtures/selector, execute benchmarks, infer the
-discriminator from network counts, or implement any Euler/region correction inside TB37.
+**Must not:** execute Directional runtime or benchmarks, configure/compile/relink, mutate source/tests/fixtures/
+selector/build logic, or implement the certificate correction inside REVIEW.
 
 ## Carried forward from M1
 

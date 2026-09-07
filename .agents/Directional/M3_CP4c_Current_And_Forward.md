@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-07** at `M3-CP4c-3-CB42` closeout.
+Last updated **2026-09-07** at `M3-CP4c-3-TB37-EXEC` closeout.
 
 ---
 
@@ -28,7 +28,7 @@ Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable acc
 **CB42 is compile-green / runtime-free.** Package102 artifact `10032277517` was built from exact semantic source
 `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` in run/job `34159743881 / 101858898702`; result SHA-256
 `ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`. It adds only the CY6 source-submesh
-measurement fields. Exact next is artifact-only `M3-CP4c-3-TB37-EXEC`.
+measurement fields. TB37-EXEC has now executed that immutable package and is mechanically valid; independent review is next.
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -120,33 +120,29 @@ sub-mesh, yet `:1848–1850` drops it from `E_int` and `:1919`/`:1925`/`:1947` p
 `boundaryVertices`, which `:2048–2051` then excludes from `V_int`. A terminal slit is exactly such an edge, and
 this fixture publishes ten. **This review names that suspicion; it does not conclude it.**
 
-## 3.4 CB42 is complete; exact next is `M3-CP4c-3-TB37-EXEC`
+## 3.4 TB37 measures D=48; independent review owns the certificate frontier
 
-CB42 implemented CY6 as **measurement only** and compiled package102. On the existing Euler-failure path it now
-publishes `B_int`, `X` plus its three exclusion causes, source-submesh boundary edge/vertex counts, `V_total`,
-`E_total` and `chiFull`. The older multiplicity census is explicitly `NetworkGraph`, and its node occurrence field
-is flagged derived. The reduced Euler formula and all acceptance behavior remain untouched.
+TB37 executed package102 artifact-only and reproduced TB36 exactly: **402 PASS / 7 RED**, accepted **365/365**,
+RED `[366,367,368,369,370,374,398]`, protected 312/390/393/404/406/407/408/409 PASS, ownership **300/0/0**, zero
+timeouts, and identical package/source/execution-view censuses. Because EXEC does not promote semantic authority,
+TB36 remains current valid runtime authority until independent review.
 
-Static protection remained frozen: selector409 `eea6d8c…`, selector408-prefix `2a742ba9…`, harness `aaadab35…`,
-ordinal 312 block `94724bef…`, ordinal 409 block `ea574dab…`. No test-source assertion of
-`RegionEulerCharacteristicNotOne` was found by the required corpus grep.
+The source-submesh measure is complete and internally consistent on byte-identical 366/367:
 
-**TB37 is the sole next semantic operation.** It executes package102 / selector409 artifact-only, one identity per
-fresh process. Since CB42 added diagnostics only, the semantic result must be byte-for-byte compatible in outcome
-with TB36: **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, protected
-312/390/393/404/406/407/408/409 PASS, ownership 300/0/0.
-
-For 366/367, TB37 must verify the published source-submesh arithmetic:
-
-> `X = X_meshBoundary + X_boundaryVertices + X_allOwnedFailure`
+> `X = 36 = 0 + 20 + 16`
 >
-> `chiFull = V_total - E_total + F`
+> `B_int = 12`
 >
-> for the frozen 250-face witness, `chiFull = X + B_int - 47`.
+> `V_total - E_total + F = 136 - 385 + 250 = 1`
+>
+> `X + B_int - 47 = 36 + 12 - 47 = 1`
+>
+> **`D = X + B_int = 48`.**
 
-Then compute `D = X + B_int` only from those source-submesh counts. `D=44` moves review to region construction;
-`D=48` moves review to the certificate arithmetic/cancellation premise; any other value means the measurement
-derivation itself must be reviewed first. **TB37 may not correct any branch.**
+The old reduced certificate still publishes `100 - 353 + 250 = -3`. Under the discriminator frozen before
+execution, **D=48 selects the certificate-arithmetic/cancellation frontier**; it does not authorize a fix.
+`M3-CP4c-3-TB37-REV` must independently adjudicate the evidence and decide package102 promotion before any Code +
+Build correction is planned.
 
 ## 4. Open candidates
 
@@ -163,7 +159,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB34-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 409 re-aimed at the constructible shared-start shape and PASSes its oracle. |
 | `M3-CP4c3-TB34-REV-CAND-03` | **ACTIVE / RE-SCOPED** — the CX5 census was taken over the network graph, not the source sub-mesh χ counts, so it does not bear on the cancellation premise. Superseded as the owning question by `M3-CP4c3-TB36-REV-CAND-01`. |
 | `M3-CP4c3-TB35-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — TB36 advanced 366/367 past `ClosedBeforeEnd` on `FaceWalkOrbit` while 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. Part IX's derived relation is confirmed in both directions. |
-| `M3-CP4c3-TB36-REV-CAND-01` | **ACTIVE / GATING** — the region certificate asserts both that the boundary terms cancel and that regions are discs; χ_true = X + B_int − 47 makes those mutually exclusive. One integer decides it. Owner: `M3-CP4c-3-TB37` measurement/adjudication on package102; correction remains unassigned until review. |
+| `M3-CP4c3-TB36-REV-CAND-01` | **ACTIVE / GATING / D=48 RAW-MEASURED** — TB37 publishes `X=36`, `B_int=12`, `chiFull=1`; the frozen discriminator selects the certificate-arithmetic/cancellation frontier. Independent TB37-REV owns adjudication and correction remains unassigned until review. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
@@ -276,17 +272,15 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, CB42 loads only the minimum authority:
+After the durable start-of-turn checklist, independent TB37-REV loads only the minimum authority:
 
-1. `ORIENTATION.md` — read first.
-2. **this file** — §3.2, §3.3 and §3.4 carry the frontier and the frozen measure.
-3. `Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` — **CY0–CY6**, the adjudication and the derivation.
-4. `M3_CP4c_Frozen_Definitions.md` — **Part IX operative**, amended by Part IX-A; DEFN-R5.5's measurement-only
-   disposition still governs.
-5. `Regression_Root_Cause_Tracker.md` — the TB36-REV section and the authoritative next step.
-6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (148 and 150 govern this change).
-7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
+1. `ORIENTATION.md` — read first and update during REVIEW.
+2. `Architecture_M3_CP4c3_TB37_EXEC_Report.md` — exact raw package102 execution evidence.
+3. `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` — frozen D discriminator.
+4. `Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` — source-domain derivation under review.
+5. **this file** — §3.2–§3.4 preserve the frontier history and D=48 result.
+6. `Regression_Root_Cause_Tracker.md`, selector manifest, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` 148/150.
+7. `CLEAN_UP_POLICY.md` — REVIEW document consolidation is mandatory.
 
-Exact next is **`M3-CP4c-3-CB42`**, a runtime-free Code + Build turn under **CY6.1–CY6.6**. It adds diagnostics
-only: **accepted prefix 365/365, and ordinals 312 and 409 PASS, are stop conditions, and any behaviour change at
-all is a defect in the turn.**
+Exact next is **`M3-CP4c-3-TB37-REV`**, independent/static. It may adjudicate and plan only; it must not execute
+runtime/benchmarks, configure/compile, mutate implementation/tests/fixtures/selector, or implement the correction.

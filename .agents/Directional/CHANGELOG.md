@@ -1,3 +1,31 @@
+## 2026-09-07 — `M3-CP4c-3-TB37-EXEC`: package102 preserves 402/7; source-submesh discriminator is D=48
+
+Artifact-only Test + Benchmark EXEC, **no benchmarks**. Immutable package102 source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` / artifact `10032277517` executed selector409 in run
+`34161464783`. Schema validation and execute job `101864038796` passed; no configure/compile/relink/package repair,
+mode repair, generated discovery, source/test/fixture/selector mutation, reusable-workflow mutation, or local
+Directional runtime occurred.
+
+Raw result reproduces TB36 exactly: **402 PASS / 7 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`; 409/409 selected, zero timeout, identical package/source/execution-view censuses.
+Protected 312/390/393/404/406/407/408/409 PASS; ownership **300/0/0**; both retired codes absent. Result/log
+artifacts are `10032812538 / 10032812978`, digests
+`sha256:53c7d8236c1eb3a196ece1091f5048e4ea7d04447af5f7f19c48dfdd95430f8e` and
+`sha256:36f8296a6ee5d62e3e3cdc026ed3015628b6d91711027c88a69c86e00019a8de`.
+
+366/367 publish the complete CY6 source-submesh measurement and share digest `d27c5179…`: `X=36`, split
+`0+20+16`, `B_int=12`, submesh boundary `20 edges / 20 vertices`, `V_total/E_total/F/chiFull=136/385/250/1`.
+Thus `D=X+B_int=48`, and the pre-authored discriminator records **`CERTIFICATE_ARITHMETIC`**. The old reduced
+certificate remains `100/353/250/-3`. EXEC preserves this evidence but does not adjudicate or correct it.
+
+A setup-order miss created the cleanup manifest too early and caused premature cleanup run `34161412687` before
+the TB37 caller existed. It touched only temporary control/comment state and did not participate in semantic runtime;
+it is recorded as non-stable control-plane provenance. Final cleanup still follows workflow-first caller removal.
+
+Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **102** pending
+independent review. TB36 remains current valid semantic runtime authority until review. **Exact next:** static
+independent `M3-CP4c-3-TB37-REV`; no retry, patch, benchmark, compile, or corrective implementation in EXEC.
+
 ## 2026-09-07 — `M3-CP4c-3-CB42`: source-submesh Euler diagnostics compile; package102 frozen for TB37
 
 Code + Build, **runtime-free**, measurement only. Exact semantic/evidence source

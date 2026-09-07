@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-07 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** **`M3-CP4c-3-TB36` is now the current valid semantic runtime authority**, promoted at `M3-CP4c-3-TB36-REV`: selector409, **402 PASS / 7 RED**, accepted **365/365**, package101 / source `14aa1368523580444929bc65cab0b65449240ec2`, run `34153857590`; ownership **300/0/0**; protected greens green. **Part IX's provenance contract is runtime proved in both directions** - 366/367 advanced past `ClosedBeforeEnd` on `FaceWalkOrbit`, while ordinals 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. **But the frozen CX5 census was implemented in the wrong domain**: it counts the **network graph** while chi counts a **sub-mesh of whole source triangles**, so `22 = 22` says nothing about whether the boundary terms cancel. What the numbers do settle is **chi_true = X + B_int - 47**, under which **the certificate cannot both cancel its boundary terms and certify discs** - one integer decides which. No accepted green was lost, so **no new stable event**; accounting remains **45 / 14 / 31**, packages **101**. **NEXT:** runtime-free `M3-CP4c-3-CB42` under CY6.1-CY6.6, **measurement only**.)
+**Status date:** 2026-09-07 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** Current valid semantic runtime authority remains **TB36** pending review: selector409 **402 PASS / 7 RED**, accepted **365/365**, ownership **300/0/0**. TB37 package102 raw execution reproduces that exact ledger and measures `X=36`, `B_int=12`, `chiFull=1`, so **D=48**; the frozen discriminator selects the **certificate-arithmetic/cancellation frontier**. No accepted green was lost; stable accounting remains **45 / 14 / 31**, packages **102**. **NEXT:** independent static `M3-CP4c-3-TB37-REV`.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB36 promoted** at 402 PASS / 7 RED, accepted 365/365, selector409/package101; provenance contract runtime proved, Euler reduces to `chi_true = X + B_int - 47`; **CB42 next** |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB36 remains semantic authority pending review; TB37 package102 raw evidence is 402/7 with **D=48**, selecting the certificate-arithmetic frontier; **TB37-REV next** |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
