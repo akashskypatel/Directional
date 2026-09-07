@@ -1,0 +1,4 @@
+.agents/connector-triggers/pinned-source-snapshot-20260907-1311.txt
+.agents/connector-triggers/cb42-drive-apply-20260907-1330.txt
+.agents/connector-triggers/cb42-compile-20260907-1335.txt
+.agents/connector-triggers/cb42-closeout-drive-apply-20260907-2046.txt
