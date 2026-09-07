@@ -1,0 +1,3 @@
+turn=M3-CP4c-3-TB37-EXEC
+source=ce53329e60dff2d77c6ea0cdb49c4c654479adfc
+purpose=start-of-turn snapshot
