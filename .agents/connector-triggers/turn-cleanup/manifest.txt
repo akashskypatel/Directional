@@ -1,5 +1,0 @@
-# M3-CP4c-3-CB40 end-of-turn temporary-state cleanup
-.agents/connector-triggers/cb40-closeout-drive-apply.txt
-.agents/connector-triggers/cb40-compile.txt
-.agents/connector-triggers/cb40-drive-apply.txt
-.agents/connector-triggers/tb34rev-source-snapshot.txt

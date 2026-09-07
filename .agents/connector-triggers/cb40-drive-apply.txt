@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-CB40
-caller_install_sha=d4f4d63dda1b26a5f9083ab73690fc8735a965b2
-patch_file_id=1woQ-oUDCUNOHDTOMy2HETnQjiics0QQI
-patch_sha256=f62c9df4d61449ccc9e9d965489ebba301bf17debc916dd20cfd035a0ab57ca3
-base_sha=48cfd3ba5e832d5bab58455fcc76a3f18b8aa42b
