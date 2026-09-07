@@ -1841,6 +1841,16 @@ building any conclusion on it.**
      neither validates the other", and had re-proved it at runtime. **When invoking a proof, name the object it is
      about and check it is the object in front of you.**
 
+146. **When a checker flips twice, the missing artefact is the contract, not the verdict.** One boundary predicate
+     was removed by one review as a false rejection, restored by the next after it cost an accepted-green
+     regression, and only then was the deciding fact established: the production input carries a
+     **single-closed-walk guarantee by construction** - it is a face-walk orbit - while the synthetic input an
+     accepted witness constructs carries none. Both reviews were right about the input they had read and neither
+     could see the other's from where it stood, because **nothing in the code or the documents recorded which
+     guarantee a boundary carried**. The remedy for a predicate that oscillates is not a more careful verdict; it
+     is to write the guarantee down where the checker can see it, and scope the rejection to the provenance that
+     lacks it.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

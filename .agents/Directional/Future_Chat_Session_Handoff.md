@@ -116,44 +116,87 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB35-REV` — EXACT NEXT / independent evidence-only review
+## Mandatory next turn — `M3-CP4c-3-DEFN-R5` — EXACT NEXT / definition turn (absorbs REVIEW + PLAN)
 
-`M3-CP4c-3-TB35-EXEC` is **COMPLETE / MECHANICALLY VALID / RAW EVIDENCE PRESERVED / SEMANTICALLY UNADJUDICATED**. No semantic promotion, candidate closure, or corrective implementation is authorized by EXEC itself.
+`M3-CP4c-3-TB35-REV` has adjudicated TB35 and promoted it to **current valid semantic runtime authority**.
 
 ### Current authority
 
-- **Current semantic runtime authority remains `M3-CP4c-3-TB34` pending review:** selector409, **400 PASS / 9 RED**, accepted **364/365**, RED `[312,366,367,368,369,370,374,398,409]`.
-- **TB35 raw execution authority:** run/job `34084955954 / 101627127649` on immutable package100 artifact `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / selector409. Raw aggregate **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; 409 identities executed exactly once, zero selection mismatches/timeouts.
-- Result artifact `10004965026`, SHA-256 `67ce321acb3fa1106f967f0652d599f320952daf58ca43ad1babb3e986ba4ff`; diagnostic log artifact `10004965268`, SHA-256 `c03d59f7946d2c2c50d8ee94e4c247bc23311491b371b98755a44134333091f4`.
-- Ledger SHA-256 `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`; failure-detail table SHA-256 `b316db6e6c74bae653a2b29523ef9b8c1728967ad32fa1f31b44102669d985b1`; result report: `Architecture_M3_CP4c3_TB35_EXEC_Report.md`.
-- Package/source/execution-view byte+mode censuses are identical pre/post. No configure, compile, relink, generated discovery, repair, benchmark, or package/source/test/fixture/selector mutation occurred.
-- Stable accounting is still **45 events / 14 categories / 31 recurrences**, debt **5**, packages **100**. EXEC made no stable change.
+- **`M3-CP4c-3-TB35`** — selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED
+  `[366,367,368,369,370,374,398]`; immutable CB40 package `10003613409`, source
+  `23a753a83f0eda0447172ce96bcd3180bf95ae8a`; run `34084955954`; 409 rows, every row `selected=1`, zero timeouts,
+  all three byte+mode censuses identical pre/post.
+- Certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
+- **Stable accounting 45 events / 14 categories / 31 recurrences** — the TB34 event stands — debt **5**, packages
+  **100**.
+- Definition authority is **Part VIII (DEFN-R4)**; **DEFN-R5 appends as Part IX**.
 
-### Raw facts the review must adjudicate
+### What TB35 established
 
-1. **CV2 raw recovery:** ordinal312 PASS and accepted rows 1–365 are 365/365. `M3-CP4c3-TB34-REV-CAND-01` remains open until review decides closure/promotion.
-2. **CV3 raw recovery:** ordinal409 PASSes the reachable shared-start negative. Its test requires `RegionBoundaryNotSingleWalk`, typed `ClosedBeforeEnd`, second-loop first-arc locus, and projected `ClosedBeforeEnd`. `M3-CP4c3-TB34-REV-CAND-02` remains open until review.
-3. **366/367 discriminator:** both RED at restored `RegionBoundaryNotSingleWalk`, `regionFrontierFailureStage=RegionCertification`, `regionBoundaryWalkReason=ClosedBeforeEnd`, arc 3. TB34 had advanced them later to `RegionEulerCharacteristicNotOne`. Review must reconcile this evidence under `M3-CP4c3-TB34-REV-CAND-03`; EXEC does not claim the product diagnosis proved or disproved.
-4. **Protected invariants held:** 390/393/404/406/407/408 PASS; both retired codes absent; ownership publication 300 established / 0 unavailable / 0 conflicting.
-5. **Carried surfaces remain RED:** 368/369/370/374/398. Their exact retained failure bytes and per-ordinal hashes are in the TB35 EXEC report; no scope was weakened.
+**The accepted prefix is restored.** CV2 restored the rejection **with** its typed reason, so ordinal 312 is
+satisfied *and* `regionBoundaryWalkReason=ClosedBeforeEnd` is named. CV3's re-aimed ordinal **409 PASSes** its
+oracle, proving the **shared-start multi-walk shape is constructible**. CV6's falsifier is settled: 366/367 report
+`ClosedBeforeEnd`, **not** `ArcChainBroken`.
 
-### TB35-REV boundary
+**The frontier is proved from source.** `build_regions` creates each draft as
+`RegionDraft{orbit, walk.orbits[orbit]}` (`GlobalTopologyPlan.cpp:986`), moves that boundary in unmodified
+(`:1450`), and identifies a region by `walk.orbits[orbit] == region.boundary` (`:379`). The orbit is a
+`successor`-traversal to closure followed by rotation-only canonicalization
+(`EmbeddedGraphTopology.cpp:1746–1774`). **A plan region's boundary is therefore an ordered single closed walk by
+construction and may revisit nodes.**
 
-Independent **Review + Plan only**. **Do not configure, compile, run new Directional runtime, benchmark, or mutate product/test/fixture/selector semantics.** Review the immutable TB35 evidence, promote or reject it as semantic authority, adjudicate every open TB34-REV candidate and the seven raw RED surfaces, update stable accounting only if the evidence warrants it, update `ORIENTATION.md`, perform mandatory REVIEW document consolidation, and freeze exactly one successor edge. Stop at that successor; do not execute it in the same turn.
+- **On a plan region, `ClosedBeforeEnd` is always a false rejection.**
+- **On a synthetic boundary — ordinals 312 and 409 — it is the only check that catches a genuine multi-walk.**
+- **The defect is that `validate_single_boundary_walk` cannot see provenance.** `ArcChainBroken` and
+  `WalkNotClosed` are unaffected.
+
+This **reconciles** TB33-REV and TB34-REV: each was right about the input it read. `LESSONS.md` 146.
+
+**Still unknown:** `RegionEulerCharacteristicNotOne`, seen at TB34 once the rejection was bypassed — χ over a walk
+that may revisit nodes. Not decided.
+
+### DEFN-R5 boundary
+
+A **definition** turn appending **Part IX**. Two Code + Build turns have flipped this one predicate in opposite
+directions and one cost an accepted-green regression, so the contract is written before the next change.
+
+**Decide:**
+
+1. **The face-walk guarantee**, as normative: `walk.orbits[orbit]` is an ordered **single closed walk** —
+   `successor` traversal to closure, rotation-only canonicalization — and a plan region built from one inherits it.
+   Cite `EmbeddedGraphTopology.cpp:1746–1774`, `GlobalTopologyPlan.cpp:986`, `:1450`, `:379`.
+2. **Provenance on the boundary** — how a region declares whether its boundary came from a face-walk orbit, so the
+   validator can see it. This is `M3-CP4c3-TB35-REV-CAND-01`.
+3. **The scope of each typed reason** — `ClosedBeforeEnd` rejects **only** an unguaranteed boundary;
+   `ArcChainBroken` and `WalkNotClosed` stay in force for **all** boundaries.
+4. **What must not change** — ordinal **312** keeps its contract (synthetic multi-walk still rejected with
+   `ClosedBeforeEnd`) and ordinal **409** keeps its shared-start oracle. Neither may be weakened, re-scoped, or
+   made conditional on the fixture.
+5. **The Euler question is separate.** State whether χ is computed over a walk that may revisit nodes; if that is
+   not established, freeze a **measurement**, not a correction.
+
+**Must not:** change product behaviour in the definition turn; weaken or re-scope **ordinal 398**; touch
+368/369/370/374; re-open source-face ownership or any retired guard; correct the Euler result before it is
+measured; change any accepted identity 1–365 or any byte of selector 397–409.
+
+**Falsifiers to carry into the implementing turn.** If 366/367 still reject at `ClosedBeforeEnd` once provenance is
+honoured, the face-walk premise is wrong for that region. If they clear and the plan stops at
+`RegionEulerCharacteristicNotOne`, the second finding is confirmed and becomes the frontier. If ordinal 312 or 409
+goes RED, the provenance rule was applied to a synthetic boundary and must be narrowed. **Accepted prefix 365/365
+is a stop condition, not a finding.**
 
 ### Context Load Plan
 
-`load_next`: independent **REVIEW + PLAN** guidance only; no implementation, compile, or runtime execution module.
+`load_next`: definition-turn guidance (DEFN absorbs REVIEW + PLAN).
 
-0. `.agents/Directional/ORIENTATION.md` — read first and update during this REVIEW turn.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current authority/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB35_EXEC_Report.md` — complete mechanically valid raw TB35 evidence, including every RED focused failure detail.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` — CV0–CV6, candidate ownership, and the interpretation TB35 now tests.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB35 contract/falsifiers.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — candidate/stable-accounting intake.
-6. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII operative.
-7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector409/prefix authority.
-8. `TODO.md`, `CHANGELOG.md`, `LESSONS.md`, `CLEAN_UP_POLICY.md` — task/history/lessons/consolidation authority.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` — **CW0–CW5**, the adjudication and the frozen DEFN-R5 scope.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB35_EXEC_Report.md` — current runtime authority, with verbatim failure text for every RED focused ordinal.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part VIII operative; DEFN-R5 appends as Part IX**.
+5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 409 and the frozen prefixes.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

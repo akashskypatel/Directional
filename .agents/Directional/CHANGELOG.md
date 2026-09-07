@@ -1,3 +1,55 @@
+## 2026-09-06 — `M3-CP4c-3-TB35-REV`: accepted prefix restored; the frontier proved from source; DEFN-R5 frozen
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 23a753a83f0eda0447172ce96bcd3180bf95ae8a` passed.
+
+**TB35 is promoted to current valid semantic runtime authority:** selector **409**, **402 PASS / 7 RED**,
+**accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; 409 rows, every row `selected=1`, zero timeouts,
+all three byte+mode censuses identical pre/post.
+
+**CV2 and CV3 are discharged.** Ordinal **312 PASS** and the accepted prefix is restored to **365/365** — the
+rejection is back and now raises `RegionBoundaryNotSingleWalk` **with** `regionBoundaryWalkReason=ClosedBeforeEnd`,
+so the accepted witness is satisfied *and* the reason is named. Ordinal **409 PASS**, reaching its re-aimed oracle,
+which proves the **shared-start multi-walk shape is constructible**. CV6's falsifier is settled: 366/367 report
+`ClosedBeforeEnd`, **not** `ArcChainBroken`. **The TB34 stable event stands** — repairing a regression does not
+erase its incidence.
+
+**The frontier is now proved from source, and it reconciles the two prior reviews.** `build_regions` creates each
+draft as `RegionDraft{orbit, walk.orbits[orbit]}` (`GlobalTopologyPlan.cpp:986`), moves that boundary into the
+region unmodified (`:1450`), and elsewhere identifies a region by `walk.orbits[orbit] == region.boundary` (`:379`).
+The orbit is built by following `successor[current]` until it returns to `start`, then `canonicalize_cycle`, which
+only rotates (`EmbeddedGraphTopology.cpp:1746–1774`). **A plan region's boundary is therefore an ordered single
+closed walk by construction and may revisit nodes** — which bridges, cut vertices and this fixture's ten terminal
+slits routinely produce.
+
+- **On a plan region, `ClosedBeforeEnd` is always a false rejection.**
+- **On a synthetic boundary — ordinals 312 and 409 — it is the only check that catches a genuine multi-walk.**
+- **The defect is that `validate_single_boundary_walk` cannot see provenance.** `ArcChainBroken` and
+  `WalkNotClosed` are unaffected and stay in force for all boundaries.
+
+TB33-REV and TB34-REV were each right about the input they read, and nothing recorded which guarantee a boundary
+carried. `LESSONS.md` 146.
+
+**Still unknown:** `RegionEulerCharacteristicNotOne`, seen at TB34 once the rejection was bypassed, is a **separate**
+question — χ over a walk that may revisit nodes — and this review does not decide it.
+
+**Accounting: no stable change, and none removed.** Totals remain **45 / 14 / 31**, debt **5**, packages **100**.
+
+**Candidates.** Closed runtime-proved: `M3-CP4c3-TB34-REV-CAND-01` and `-CAND-02`. Split: `-CAND-03` — the
+`ClosedBeforeEnd` rejection is explained, the Euler result is not. Reconciled: `M3-CP4c3-TB33-REV-CAND-01`, whose
+TB34-REV refutation was right about the synthetic region and wrong as a general statement. New:
+`M3-CP4c3-TB35-REV-CAND-01` — the validator cannot distinguish a guaranteed boundary from an unguaranteed one.
+
+**Lesson 146** added. **Consolidation:** the TB34 review record, EXEC report and plan, plus the CB40 build report,
+were folded; the restored prefix, ordinal 409's oracle, the discriminator outcome and the source proof are
+preserved in the TB35 review record.
+
+**Exact successor: `M3-CP4c-3-DEFN-R5`** — a definition turn appending **Part IX**: record the face-walk
+single-walk guarantee, decide how a region boundary declares its provenance, scope each typed reason accordingly,
+keep ordinals 312 and 409 unchanged, and separate the Euler question. **Two Code + Build turns have flipped this
+predicate in opposite directions and one cost an accepted-green regression; the contract gets written before the
+next change.**
+
 ## 2026-09-06 — `M3-CP4c-3-TB35-EXEC`: accepted prefix and ordinal409 mechanically recover; raw selector409 is 402/7; review required
 
 Artifact-only Test + Benchmark **EXEC**, no build or semantic mutation. Immutable CB40 package100 artifact `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / selector409 ran in `34084955954 / 101627127649`. All 409 identities executed exactly once, every row selected once, zero timeouts. Raw aggregate is **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Result artifact `10004965026` is SHA-256 `67ce321acb3fa1106f967f0652d599f320952daf58ca43ad1babb3e986ba4ff`; diagnostic log artifact `10004965268` is SHA-256 `c03d59f7946d2c2c50d8ee94e4c247bc23311491b371b98755a44134333091f4`. Ledger SHA-256 `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`; failure-detail table SHA-256 `b316db6e6c74bae653a2b29523ef9b8c1728967ad32fa1f31b44102669d985b1`.

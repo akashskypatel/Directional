@@ -1,3 +1,73 @@
+## M3-CP4c3-TB35-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / ACCEPTED PREFIX RESTORED**
+
+- **Record:** `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md`, measures **CW0–CW5**. Evidence-only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
+  `review_check.py authority 23a753a83f0eda0447172ce96bcd3180bf95ae8a` — ALL CHECKS PASSED.
+
+- **TB35 promoted to current valid semantic runtime authority.** Selector **409**, **402 PASS / 7 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Run `34084955954`; immutable CB40 package
+  `10003613409`; source `23a753a83f0eda0447172ce96bcd3180bf95ae8a`; 409 rows, every row `selected=1`, zero
+  timeouts, all three byte+mode censuses identical pre/post; `baseline-authority.txt` names the executing run.
+
+- **CW0 — CV2 and CV3 discharged.** **Ordinal 312 PASS and the accepted prefix is back to 365/365**; the restored
+  rejection now raises `RegionBoundaryNotSingleWalk` **with** `regionBoundaryWalkReason=ClosedBeforeEnd`, so the
+  accepted witness is satisfied *and* the reason is named. **Ordinal 409 PASS**, reaching its re-aimed oracle —
+  typed `ClosedBeforeEnd`, the second-loop first arc locus, projected reason — which proves the **shared-start
+  multi-walk shape is constructible**. 390/393/404/406/407/408 PASS; retired-code silence held; ownership
+  **300 / 0 / 0**. **CV6's falsifier is settled**: 366/367 report `ClosedBeforeEnd`, **not** `ArcChainBroken`, so
+  the pinch reading is confirmed and the chain reading refuted. **The TB34 stable event stands — repairing a
+  regression does not erase its incidence.**
+
+- **CW1 — the frontier is now PROVED FROM SOURCE, and it reconciles the two prior reviews.**
+  `build_regions` creates each draft as `RegionDraft{orbit, walk.orbits[orbit]}` (`:986`), moves that boundary into
+  the region unmodified (`:1450`), and elsewhere *identifies* a region by `walk.orbits[orbit] == region.boundary`
+  (`:379`). `walk.orbits[orbit]` is built by following `successor[current]` until it returns to `start`, then
+  `canonicalize_cycle`, which only **rotates** (`EmbeddedGraphTopology.cpp:1746–1774`). **A plan region's boundary
+  is therefore an ordered single closed walk by construction, and may revisit nodes** — which bridges, cut vertices
+  and this fixture's ten terminal slits routinely produce. **On a plan region, `ClosedBeforeEnd` is always a false
+  rejection.** On a **synthetic** region — ordinal 312's, and ordinal 409's shared-start variant — nothing
+  guarantees single-walk-ness and the same check is the only thing that catches it.
+
+- **CW1.1 — the defect is that the predicate cannot see provenance.** `validate_single_boundary_walk` is handed
+  both kinds of boundary and treats them identically. That is the defect: not the presence of the check, and not
+  its absence. `ArcChainBroken` and `WalkNotClosed` are unaffected — a face-walk orbit satisfies both by
+  construction, so retaining them costs nothing and still catches corruption. **TB33-REV and TB34-REV were each
+  right about the input they read**; neither could see the other's from where it stood. `LESSONS.md` 146.
+
+- **CW1.2 — what remains genuinely unknown.** TB34 showed that with the rejection bypassed the plan reached
+  **`RegionEulerCharacteristicNotOne`**. If CW1 is right that is a **second, independent** finding — χ computed
+  over a boundary walk that may revisit nodes — not a restatement of the first. **This review does not decide it.**
+
+- **CW2 — seven REDs.** 366/367 the frontier (a **false rejection** of a face-walk orbit); **398** the carried
+  sphere surface, not an ownership gate; 368/369/370/374 unchanged carried surfaces. Accepted **365/365**, and
+  ordinals **312, 390, 393, 404, 406, 407, 408, 409** all PASS.
+
+- **Accounting — no stable change, and none removed.** Totals remain **45 events / 14 categories / 31
+  recurrences**, debt **5**, packages **100**. Ordinal 312's recovery **does not decrement the TB34 incidence**;
+  ordinal 409 recovered by re-aiming its fixture in place with nothing it legitimately owns relaxed; 366/367's
+  change back from `RegionEulerCharacteristicNotOne` is the expected consequence of the CV2 restore.
+
+- **Candidates. Closed, runtime-proved:** `M3-CP4c3-TB34-REV-CAND-01` (the rejection is load-bearing — restored,
+  312 PASS, prefix 365/365) and `-CAND-02` (ordinal 409 re-aimed at a constructible shape, PASS).
+  **Re-scoped:** `M3-CP4c3-TB34-REV-CAND-03` is **split** — the `ClosedBeforeEnd` rejection is now **explained**,
+  the Euler result is **not**. **Reconciled:** `M3-CP4c3-TB33-REV-CAND-01` was recorded refuted at TB34-REV; that
+  was right about the synthetic region and wrong as a general statement, and CW1 supplies the missing distinction.
+  **New:** `M3-CP4c3-TB35-REV-CAND-01` (**GATING / ARCHITECTURAL** — the validator cannot distinguish a boundary
+  that carries the face-walk guarantee from one that does not).
+
+- **Successor frozen: `M3-CP4c-3-DEFN-R5`** — **a definition turn**, appending **Part IX**. The question is *what
+  guarantees a region boundary carries and who may assume them*, a contract between the face walk that produces
+  boundaries and the validator that checks them. **It is also the safeguard this frontier has earned:** two Code +
+  Build turns have flipped this one predicate in opposite directions and one cost an accepted-green regression, so
+  the next change is made by a turn whose job is to write the contract first. **Decide:** the face-walk
+  single-walk guarantee as normative; how a region declares its boundary provenance; the scope of each typed
+  reason — `ClosedBeforeEnd` rejects **only** an unguaranteed boundary while `ArcChainBroken` and `WalkNotClosed`
+  stay in force for all; ordinals **312 and 409 keep their contracts unchanged**; and whether χ is computed over a
+  walk that may revisit nodes, freezing a **measurement** rather than a correction if that is not established.
+  **Must not:** change product behaviour itself, weaken ordinal 398, touch 368/369/370/374, re-open ownership or
+  any retired guard, or correct the Euler result before it is measured. **Accepted prefix 365/365 is a stop
+  condition, not a finding.**
+
 ## M3-CP4c3-TB35-EXEC — artifact-only raw execution — **MECHANICALLY VALID / 402 PASS / 7 RED / SEMANTIC REVIEW PENDING / NON-STABLE TURN**
 
 - Immutable package100 artifact `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / selector409 executed in run/job `34084955954 / 101627127649`. Result artifact `10004965026` is `sha256:67ce321acb3fa1106f967f0652d599f320952daf58ca43ad1babb3e986ba4ff`; log artifact `10004965268` is `sha256:c03d59f7946d2c2c50d8ee94e4c247bc23311491b371b98755a44134333091f4`. All 409 identities executed exactly once, every row selected once, zero timeouts, no benchmark, and all package/source/execution-view byte+mode censuses are unchanged.
@@ -22,7 +92,8 @@
 
 ## M3-CP4c3-TB34-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / ACCEPTED-PREFIX REGRESSION / +1 STABLE EVENT**
 
-- **Record:** `Architecture_M3_CP4c3_TB34_Independent_Review_Record.md`, measures **CV0–CV6**. Evidence-only: no
+- **Record:** `Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB35-REV`), measures **CV0–CV6**.
+  Evidence-only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
   `review_check.py authority 7711b9c2c20d284823911aa4ca067bd33244f4e6` — ALL CHECKS PASSED.
 
@@ -97,7 +168,7 @@
 
 ## M3-CP4c3-TB34-EXEC — artifact-only runtime intake — **MECHANICALLY VALID / RAW HARD FALSIFIERS / SEMANTICALLY UNADJUDICATED / NON-STABLE**
 
-- **Record:** `Architecture_M3_CP4c3_TB34_EXEC_Report.md`. Immutable CB39 artifact `9997560649`, source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector 409. Corrected run/job `34066225065 / 101575358433`; result/log artifacts `9999073820 / 9999074092`; no configure, compile, relink, discovery, benchmark, repair, or package/source/test/fixture/selector mutation occurred.
+- **Record:** `Architecture_M3_CP4c3_TB34_EXEC_Report.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB35-REV`). Immutable CB39 artifact `9997560649`, source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector 409. Corrected run/job `34066225065 / 101575358433`; result/log artifacts `9999073820 / 9999074092`; no configure, compile, relink, discovery, benchmark, repair, or package/source/test/fixture/selector mutation occurred.
 - **Invalid attempt provenance:** `34066163471 / 101575197341` started no Directional runtime. Frozen artifact/source/harness byte authority verified, then an extra umask-sensitive bootstrap mode assertion failed. Diagnostic artifact `9998996499` preserves that orchestration-only attempt; the corrected retry removed only the control-plane assertion and reused the immutable package unchanged.
 - **Mechanical ledger:** **400 PASS / 9 RED**, RED `[312,366,367,368,369,370,374,398,409]`; all 409 rows present in order, every row `selected=1`, zero timeouts. Accepted prefix is **364/365**, with sole accepted-prefix RED **312**. Ledger SHA-256 `1704550db48f56657013b56dbde19820babfd708c3efb757a0f24b0ee800b1a0`; failure-detail table SHA-256 `829fc30926dcd3006065777936f64174dabf2a71278acf65b9c0d5413d21efda`. All three byte+mode censuses are equal pre/post.
 - **`M3-CP4c3-TB34-EXEC-CAND-01`: NEW / HARD-FALSIFIER INTAKE / NON-STABLE.** Accepted-prefix ordinal **312**, `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is RED. The retained assertion expected `RegionBoundaryNotSingleWalk` but observed `RotationSystemInconsistent`; `arc.has_value()` is false. TB33 accepted all 1–365, so this is raw new-regression evidence. EXEC does not decide product versus test ownership.
@@ -5868,23 +5939,32 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 **semantic runtime authority remains M3-CP4c-3-TB34**: semantic source
-`7711b9c2c20d284823911aa4ca067bd33244f4e6`, CB39 package99 artifact `9997560649`, selector409, run
-`34066225065`, **400 PASS / 9 RED**, accepted 1–365 **364/365 PASS**, RED
-`[312,366,367,368,369,370,374,398,409]`. Certified ownership remains **300 / 0 / 0**. Stable totals remain
-**45 events / 14 categories / 31 recurrences**, debt **5**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB35**: semantic source
+`23a753a83f0eda0447172ce96bcd3180bf95ae8a`, immutable CB40 package `10003613409`, selector 409, run
+`34084955954`, **402 PASS / 7 RED**, **accepted 1-365 = 365/365 PASS**, reds
+`[366,367,368,369,370,374,398]`. 409 rows, every row `selected=1`, zero timeouts, all three byte+mode censuses
+identical pre/post. Certified ownership remains **300 / 0 / 0**. Stable totals remain **45 events / 14 categories /
+31 recurrences**, debt **5**, M3 packages **100**.
 
-CB40 is **IMPLEMENTED / COMPILE-GREEN / RUNTIME-UNADJUDICATED** at source
-`23a753a83f0eda0447172ce96bcd3180bf95ae8a`. It restores the load-bearing `current == start` rejection as
-`RegionBoundaryNotSingleWalk` with typed `ClosedBeforeEnd`, leaves accepted ordinal312 untouched, re-aims frozen
-ordinal409 at the reachable shared-node multi-walk, and records the certified-face versus plan-region authority
-distinction. Compile run/job `34080675952 / 101615243724` produced immutable package100 artifact `10003613409`
-with ZIP SHA-256 `bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f`; root checksums are 28/28 PASS,
-all eight required targets compile/link with GMP/GMPXX, source is clean, and `runtimeExecution=false`.
+`M3-CP4c-3-TB35-REV` promoted that ledger. **CV2 and CV3 are discharged**: ordinal **312 PASS** with the accepted
+prefix restored to **365/365**, and ordinal **409 PASS** reaching its re-aimed shared-start oracle. **CV6's
+falsifier is settled** - 366/367 report `ClosedBeforeEnd`, not `ArcChainBroken`. **The TB34 stable event stands.**
 
-**Exact next: `M3-CP4c-3-TB35-EXEC`**, artifact-only on `10003613409`, under
-`Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md`. Required gates: ordinal312 PASS and accepted
-1–365 = 365/365; ordinal409 reaches and PASSes `RegionBoundaryNotSingleWalk / ClosedBeforeEnd`; protected
-390/393/404/406/407/408 stay PASS; retired codes remain absent; 366/367 do not move earlier and are preserved as
-discriminator evidence. No attempt to make 366/367 green is authorized. After raw EXEC evidence is durably
-preserved, stop completely at independent `M3-CP4c-3-TB35-REV`.
+**The frontier is now proved from source.** A plan region's boundary **is** `walk.orbits[orbit]`
+(`GlobalTopologyPlan.cpp:986`, `:1450`, relied on at `:379`), and a face-walk orbit is an ordered **single closed
+walk by construction** (`EmbeddedGraphTopology.cpp:1746-1774`, canonicalization is rotation-only). So
+`ClosedBeforeEnd` on a plan region is **always a false rejection**, while on a **synthetic** boundary - ordinal
+312's and 409's - it is the only thing that catches a genuine multi-walk. **The defect is that
+`validate_single_boundary_walk` cannot see provenance.** TB33-REV and TB34-REV were each right about the input they
+read.
+
+**Exact next: `M3-CP4c-3-DEFN-R5` - a definition turn appending Part IX.** Record the face-walk single-walk
+guarantee as normative; decide how a region boundary declares its provenance; scope `ClosedBeforeEnd` to
+unguaranteed boundaries while `ArcChainBroken` and `WalkNotClosed` stay in force for all; keep ordinals 312 and 409
+unchanged; and separate the **Euler question** - `RegionEulerCharacteristicNotOne`, seen at TB34 once the rejection
+was bypassed - freezing a measurement rather than a correction if it is not established.
+
+**Prohibited:** changing product behaviour in the definition turn; weakening or re-scoping ordinal 398; touching
+368/369/370/374; re-opening source-face ownership or any retired guard; correcting the Euler result before it is
+measured; any accepted-identity or selector byte change. **Accepted prefix 365/365 is a stop condition.** No
+Directional runtime before the CB that DEFN-R5 freezes.
