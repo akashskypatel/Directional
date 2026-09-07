@@ -1,0 +1,4 @@
+purpose=resume ongoing M3-CP4c-3 work
+frozen_source_sha=7dae2e5c1139f5bf7884ea5de3c21d1e78eb8bb0
+observer_label=resume-source-snapshot-20260906
+retry=1
