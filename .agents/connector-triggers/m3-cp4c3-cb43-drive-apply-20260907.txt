@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-CB43
+purpose=apply verified source patch from Google Drive
+base_sha=8038251fc04e041b9aceab4a9248d2fb394c4f26
+patch_sha256=bc84c2f642539f86c90d5bac89b6efcf987d5f7e9a5f1f8d26d5ff4d14e215fe
+retry=0
