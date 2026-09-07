@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-07** at `M3-CP4c-3-DEFN-R6` closeout.
+Last updated **2026-09-07** at `M3-CP4c-3-TB38-EXEC` closeout.
 
 ---
 
@@ -22,7 +22,7 @@ Last updated **2026-09-07** at `M3-CP4c-3-DEFN-R6` closeout.
 `selected=1`, zero timeouts, all three censuses identical pre/post, `SHA256SUMS` 28/28, executables `0755`.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting **45 events / 14 categories
-/ 31 recurrences** — **no new event**, no accepted green was lost — debt **5**, packages **102**.
+/ 31 recurrences** — **no new event**, no accepted green was lost — debt **5**, packages **103**.
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -184,7 +184,7 @@ Part X supersedes **Part IX §5 only**; every other Part IX clause and all of Pa
 - **R6.7 — the equivalence carries a proof obligation.** Reduced and full agree iff **`X = E_one + B_int`**; the
   measured region violates it by 4 (`36` vs `20 + 12`). **CB43 may not assume it anywhere.**
 
-## 3.6 CB43 compiled Part X; exact next is `M3-CP4c-3-TB38-EXEC`
+## 3.6 CB43 compiled Part X; TB38 was the frozen runtime proof
 
 CB43 source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` compiles green as package103 (`10034608071`, run/job `34167182718 / 101880462158`) without Directional runtime. It adds total source-submesh counts, computes full χ, removes both obsolete premise comments, publishes per-region reduced/full proof data, and includes the new totals in certificate ordering/hash while leaving region construction and accepted test/selector source unchanged.
 
@@ -198,7 +198,30 @@ fullMinusReduced = chiFull - chiReduced = X - E_one - B_int
 
 Zero difference proves equivalence; nonzero difference with an unchanged accepted verdict discharges the obligation without the forbidden blanket assumption. For 366/367, TB37 predicts `36-20-12=4` and `136-385+250=1`; if preserved, terminal Euler rejection is a correction failure and a later-stage RED is a new frontier. Accepted 365/365 and 312/409 PASS are hard falsifiers; 368/369/370/374/398 remain separately owned.
 
-**Exact next:** artifact-only TB38-EXEC using package103 and `Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md`; no benchmark. Raw evidence stops at TB38-REV / independent review.
+**Frozen successor at CB43 closeout:** artifact-only TB38-EXEC using package103 and `Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md`; TB38 has now executed and its raw result is recorded in §3.7.
+
+## 3.7 TB38-EXEC is mechanically valid but fails the frozen hard gate; independent review is next
+
+Package103 executed selector409 exactly once per identity in run `34169783183` with zero mismatch/timeout and no
+build, repair, mutation or benchmark. Raw result: **395 PASS / 14 RED**, accepted **362/365**, RED
+`[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`.
+
+Relative to TB37, accepted 356/357/362 and protected 390/393/406/407 newly RED. 312/404/408/409 remain PASS.
+356/357/362 share the same torus Euler failure with `V_total/E_total/F/chiFull=24/48/24/0`; 390/393/406/407 share
+the same component-count assertion with actual 0. Ordinal366 moves to `RegionInteriorDisconnected`; ordinal367 no
+longer reproduces TB37's `D=48 / chiFull=1` region and instead publishes the torus `chiFull=0` failure. The carried
+368/369/370/374/398 failure details are byte-identical to TB37.
+
+DEFN-R6.7 is **not runtime-discharged**: zero raw `record=euler_certificate` rows were emitted, leaving the generated
+accepted-certificate table empty. That is an evidence-emission/test-authority gap, not evidence that the four frozen
+identities held. Raw EXEC therefore creates two review-pending non-stable candidates and stops; it does not assign a
+correction or reprice stable history.
+
+Current valid semantic runtime remains **TB37** pending independent review. Stable accounting stays **45 / 14 / 31**,
+debt **5**, packages **103**.
+
+**Exact next:** independent evidence-only `M3-CP4c-3-TB38-REV`; no new runtime, compile, benchmark or semantic
+mutation before review.
 
 ## 4. Open candidates
 
@@ -206,6 +229,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
+| `M3-CP4c3-TB38-EXEC-CAND-01` | **NEW / ACCEPTED+PROTECTED REGRESSION / REVIEW PENDING / NON-STABLE** — TB37 PASS ordinals 356/357/362/390/393/406/407 are TB38 RED. EXEC preserves two exact repeated failure-byte families but does not assign root-cause ownership. |
+| `M3-CP4c3-TB38-EXEC-CAND-02` | **NEW / R6.7 EVIDENCE-EMISSION GAP / REVIEW PENDING / NON-STABLE** — zero accepted-region `euler_certificate` rows emitted; the required reduced/full equivalence proof is undischarged. |
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |
 | `M3-CP4c3-TB31-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — 390/393/406/407 PASS with selector 408 byte-unchanged and nothing they legitimately own relaxed. |
 | `M3-CP4c3-TB31-REV-CAND-03` | **CLOSED / IMPLEMENTED** — frontier evidence publishes at both annotation sites. Its **over-reach** is carried forward as `M3-CP4c3-TB32-REV-CAND-01` rather than left inside a closed candidate. |
@@ -329,4 +354,4 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-Resume from `M3-CP4c-3-TB38-EXEC`. Current semantic runtime is TB37; immutable execution input is CB43 package103, artifact `10034608071`, source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`. Read the frozen TB38 plan first and do not rebuild.
+Resume at independent `M3-CP4c-3-TB38-REV`. Current valid semantic runtime remains TB37. TB38 raw evidence is run `34169783183`, result/log artifacts `10035390901 / 10035391184`: 395/14, accepted 362/365, newly RED 356/357/362/390/393/406/407, and zero accepted `euler_certificate` rows. Review existing evidence only; do not rebuild or execute new runtime.

@@ -1,3 +1,16 @@
+## 2026-09-07 — `M3-CP4c-3-TB38-EXEC`: package103 artifact-only runtime 395/14; accepted/protected regressions and missing R6.7 emission require independent review
+
+TB38-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB43 package103,
+source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`. Run/job `34169783183 / 101887783834` executed all 409 selector
+identities exactly once with zero selection mismatch/timeout and no build, repair, mutation or benchmark. Raw result
+is **395 PASS / 14 RED**, accepted **362/365**, RED `[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`.
+Compared with TB37, accepted 356/357/362 and protected 390/393/406/407 newly RED; 312/404/408/409 remain PASS.
+366 moves to `RegionInteriorDisconnected`; 367 publishes a different torus Euler failure with `chiFull=0`;
+368/369/370/374/398 remain byte-identical. No accepted-region `record=euler_certificate` line was emitted, so the
+frozen R6.7 equivalence proof is undischarged. Result/log artifacts are `10035390901 / 10035391184`. Stable totals
+remain **45 / 14 / 31**, debt **5**, packages **103** pending independent `M3-CP4c-3-TB38-REV`; EXEC does not
+assign corrective ownership or promote TB38 semantic authority.
+
 ## 2026-09-07 — `M3-CP4c-3-DEFN-R5`: Part IX freezes derived boundary provenance; Euler measurement only
 
 DEFN-R5 is **COMPLETE / DEFINITION-ONLY / NO RUNTIME / NO COMPILE / NON-STABLE**. Part IX of

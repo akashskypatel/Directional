@@ -116,50 +116,59 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB38-EXEC` — EXACT NEXT / artifact-only runtime
+## Mandatory next turn — `M3-CP4c-3-TB38-REV` — EXACT NEXT / independent evidence-only review
 
-`M3-CP4c-3-CB43` is **COMPLETE / COMPILE-GREEN / IMMUTABLE PACKAGE 103 / RUNTIME-FREE**. It implements DEFN-R6 Part X; no Directional runtime was executed in CB43.
+`M3-CP4c-3-TB38-EXEC` is **COMPLETE / MECHANICALLY VALID ARTIFACT-ONLY RUNTIME / RAW RED EVIDENCE PRESERVED /
+SEMANTICALLY UNADJUDICATED**. No rebuild, benchmark, repair or semantic mutation occurred.
 
-### Current authority
+### Raw TB38 authority
 
-- Current valid semantic runtime: **TB37**, selector409, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, run `34161464783`.
-- TB38 immutable input: package **103**, source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, artifact `10034608071` / `m3-cp4c3-cb43-result-34167182718`, compile run/job `34167182718 / 101880462158`.
-- Artifact SHA-256 `426622beb03208d2e6b0cc77479942a92f2aca9967e3bf6251f5034ac533008e`; source archive `1d4c59d8482ffc240f93119ea04e57541930241a73ff3bb8bdd4154f40fe5a28`; selector409 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`; harness `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
-- Stable accounting **45 events / 14 categories / 31 recurrences**, debt **5**; CB43 adds one package and no runtime event/recurrence.
-- Definition authority: Part X (DEFN-R6) for Euler; Part IX/IX-A otherwise.
+- Immutable package103 source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, artifact `10034608071`.
+- Execution run/job `34169783183 / 101887783834` — success; result/log artifacts `10035390901 / 10035391184`.
+- All 409 identities selected exactly once; zero mismatch and zero timeout.
+- Raw aggregate **395 PASS / 14 RED**, accepted **362/365**, RED
+  `[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`.
+- Newly RED versus TB37: accepted **356/357/362** and protected **390/393/406/407**. 312/404/408/409 remain PASS.
+- 356/357/362 share one torus `RegionEulerCharacteristicNotOne` detail (`chiFull=0`); 390/393/406/407 share the
+  `regionFrontierComponentCount > 0` assertion with actual 0.
+- 366 moves to `RegionInteriorDisconnected`; 367 is a different torus Euler row and does not reproduce TB37's
+  `D=48 / chiFull=1` measurement. 368/369/370/374/398 remain byte-identical to TB37.
+- DEFN-R6.7 runtime discharge is **missing**: zero `record=euler_certificate` rows were emitted, so the accepted
+  certificate table has zero data rows. Do not treat the verifier's vacuous arithmetic flag as proof.
+- Ownership remains **300/0/0** where published; retired-code silence holds; all pre/post censuses are identical.
+- Current **valid semantic runtime authority remains TB37** until independent review promotes or rejects TB38.
+- Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**, packages **103** pending
+  review; EXEC created no stable event or repricing.
 
-### CB43 result
+Exact report: `.agents/Directional/Architecture_M3_CP4c3_TB38_EXEC_Report.md`.
 
-CB43 adds `totalVertexCount` / `totalEdgeCount`, computes `eulerCharacteristic = V_total - E_total + F`, preserves existing `vertexCount` / `edgeCount`, deletes both withdrawn premise comments, emits per-region `record=euler_certificate` proof data, and intentionally includes the new totals in certificate ordering/hash. Region construction, tests, fixtures, selectors, ownership/partition logic, 368/369/370/374/398 surfaces, and retired guards are unchanged. `tests/FieldAlignedCurveNetworkTests.cpp` and selector409 are byte-identical at the Code + Build boundary.
+### TB38-REV boundary
 
-Exact report: `.agents/Directional/Architecture_M3_CP4c3_CB43_Code_Build_Report.md`.
+Independent review must adjudicate, from existing evidence only:
 
-### TB38-EXEC boundary
+1. accepted-prefix regressions 356/357/362 and protected regressions 390/393/406/407;
+2. the zero-row R6.7 evidence-emission gap and whether CZ7.4 is unproved because of production emission, test
+   authority, or an earlier semantic stop;
+3. movement at 366/367 relative to TB37 and whether either belongs to the same owner as the new torus failures;
+4. exact recurrence ownership for unchanged 368/369/370/374/398;
+5. stable event/category/recurrence accounting and the justified successor plan.
 
-Execute `.agents/Directional/Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md` exactly against package103:
-
-1. fail-closed package/source/selector/harness/GMP/mode preflight before runtime;
-2. run selector409 in order, one fresh process per identity, accepted 1-365 first; no benchmarks;
-3. accepted **365/365** and ordinals **312/409 PASS** are hard stops; preserve 390/393/404/406/407/408;
-4. verify every accepted-region `euler_certificate`: `chiReduced=V_int-E_int+F`, `chiFull=V_total-E_total+F`, `fullMinusReduced=chiFull-chiReduced=X-E_one-B_int`, then record zero-difference or unchanged-verdict discharge;
-5. 366/367 frozen expectation is `X=36`, `E_one=20`, `B_int=12`, `V_total/E_total/F=136/385/250`, `chiReduced=-3`, `chiFull=1`, difference `4`; if preserved, Euler rejection must no longer be terminal and any later RED is a new frontier;
-6. 368/369/370/374/398 remain separately owned; movement is review-required;
-7. no configure/compile/relink/regeneration/discovery/repair/mutation.
-
-TB38-EXEC preserves raw evidence only. TB38-REV / the independent review boundary owns diagnosis/classification and planning.
+Do **not** compile, execute new runtime, benchmark, or mutate product/test/fixture/selector semantics before that
+review decides the next edge. Per orchestration policy the implementation loop stops completely at this independent
+review boundary.
 
 ### Context Load Plan
 
-`load_next`: TB-EXEC guidance.
+`load_next`: turn-based-coding-agent `references/turns/REVIEW.md`.
 
 0. `.agents/Directional/ORIENTATION.md`.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB43_Code_Build_Report.md`.
-3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part X for Euler; Part IX/IX-A otherwise.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` and `Architecture_M3_CP4c3_TB37_EXEC_Report.md`.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB38_EXEC_Report.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md`.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` and `Architecture_M3_CP4c3_TB37_EXEC_Report.md`.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part X for Euler; Part IX/IX-A otherwise.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `M3_CP4c_Current_And_Forward.md`, `Required_Green_Selector_Manifest.md`.
 6. `.agents/Directional/LESSONS.md`, `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md` per start checklist.
-7. turn-based-coding-agent `references/turns/TB-EXEC.md`; GitHub connector module only for Actions/artifact work.
+7. The immutable TB38 result/log artifacts above. Do not run them; review preserved evidence only.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

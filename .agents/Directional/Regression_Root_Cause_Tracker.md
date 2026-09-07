@@ -1,11 +1,11 @@
-## M3-CP4c3-CB43 — Part X Euler correction — **IMPLEMENTED / COMPILE-PROVED / RUNTIME PENDING TB38 / NON-STABLE TURN**
+## M3-CP4c3-CB43 — Part X Euler correction — **IMPLEMENTED / COMPILE-PROVED / TB38 RAW RUNTIME COMPLETE / NON-STABLE TURN**
 
 - Semantic source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`; two production files, 78 insertions / 47 deletions. Full source-submesh Euler authority and DEFN-R6.7 proof diagnostics are compiled; region construction, tests, fixtures, selectors, ownership/partition semantics and carried 368/369/370/374/398 surfaces are unchanged.
 - Compile/package run/job `34167182718 / 101880462158` success; package103 artifact `10034608071` / `m3-cp4c3-cb43-result-34167182718`, ZIP `426622beb03208d2e6b0cc77479942a92f2aca9967e3bf6251f5034ac533008e`; 28/28 checksums; GMP/GMPXX; `runtimeExecution=false`.
 - Protected static authority: selector409 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, harness `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`, test source `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`.
 - No runtime: no candidate/event/recurrence is opened, closed, merged or repriced; `M3-CP4c3-TB37-REV-CAND-01` remains non-blocking and existing carried owners remain unchanged.
 - Accounting: **+0 events / +0 recurrences**; totals **45 events / 14 categories / 31 recurrences**, debt **5**, packages **103**.
-- Exact successor: `M3-CP4c-3-TB38-EXEC`; semantic classification is deferred to TB38-REV / independent review.
+- TB38 raw runtime is complete; exact successor is independent `M3-CP4c-3-TB38-REV`, which owns semantic classification.
 
 ---
 
@@ -6182,8 +6182,42 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
   introduces no new RED ordinal or accepted loss, so it does not create/merge/close/reprice stable events. Totals
   remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **102** pending TB37-REV.
 
+## M3-CP4c-3-TB38-EXEC classification — RAW REGRESSION EVIDENCE / NON-STABLE UNTIL INDEPENDENT REVIEW
+
+- **Execution authority:** immutable package103 source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, artifact
+  `10034608071`, selector409, workflow run `34169783183`, result/log artifacts `10035390901 / 10035391184`.
+- **Observed set:** **395 PASS / 14 RED**, accepted **362/365**, RED
+  `[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`; zero selection mismatch and timeout, all three
+  pre/post censuses identical, and all build/repair/mutation/benchmark flags false.
+- **`M3-CP4c3-TB38-EXEC-CAND-01` — ACTIVE / ACCEPTED+PROTECTED REGRESSION / REVIEW PENDING / NON-STABLE.** TB37
+  PASS ordinals 356/357/362/390/393/406/407 are now RED. Accepted 356/357/362 share exact failure-detail SHA-256
+  `d976514dddcc97b35ff68d541be9ead30e53daeb9967232ab939e73bbcf1f55a`: torus
+  `RegionEulerCharacteristicNotOne`, `V_total/E_total/F/chiFull=24/48/24/0`, `regionFrontierComponentCount=0`.
+  Protected 390/393/406/407 share exact SHA-256 `104512bc90012169377dea766d755bf2eddf3d9c258f5af2dbcadf9743a8227a`
+  at the frozen `regionFrontierComponentCount > 0` assertion, actual 0. EXEC does not decide whether these are one
+  root cause, multiple product regressions, or a test/diagnostic-authority interaction.
+- **`M3-CP4c3-TB38-EXEC-CAND-02` — ACTIVE / TEST_AUTHORITY_COVERAGE_GAP / R6.7 EVIDENCE EMISSION / REVIEW PENDING /
+  NON-STABLE.** The frozen plan required accepted-region `record=euler_certificate` rows and four arithmetic/
+  equivalence identities. Raw logs emit **zero** such rows; the generated table has only its header. Therefore the
+  proof obligation is undischarged. `accepted_euler_arithmetic_ok=true` is vacuous and must not be promoted as proof.
+- **366/367 movement:** 366 changes from TB37 `RegionEulerCharacteristicNotOne` to `RegionInteriorDisconnected`.
+  367 remains Euler RED but now matches the torus `chiFull=0` row, not TB37's `X=36,E_one=20,B_int=12,
+  V_total/E_total/F/chiFull=136/385/250/1`. This updates raw candidate evidence only; review owns reclassification.
+- **Carried exact recurrences:** 368/369/370/374/398 failure-detail bytes are identical to TB37 and retain their
+  existing owners pending review.
+- **Preserved controls:** 312/404/408/409 PASS; ordinal385 ownership `300/0/0`; both retired codes absent.
+- **Stable-count rationale:** TB38-EXEC is raw evidence and independent review is mandatory before semantic
+  promotion/repricing. EXEC therefore creates only candidate/non-stable intake and does not merge, close or reprice
+  stable history. Totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **103** pending
+  TB38-REV.
+
 ## Authoritative next step
 
-Current valid semantic runtime remains TB37: source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, selector409, run `34161464783`, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300/0/0** where published.
+Current valid semantic runtime remains TB37: source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, selector409, run
+`34161464783`, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership
+**300/0/0** where published.
 
-CB43 is compile-proved but not runtime-promoted: source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, package103 artifact `10034608071`, run/job `34167182718 / 101880462158`. Exact next is **`M3-CP4c-3-TB38-EXEC`**, artifact-only: preserve accepted 365/365 and 312/409 PASS, prove DEFN-R6.7 per accepted-region certificate, determine whether 366/367 advance beyond Euler, and preserve separately owned 368/369/370/374/398. No benchmark, rebuild, mutation, semantic retry, or validator weakening. Raw EXEC evidence stops at TB38-REV / independent review.
+TB38 raw EXEC on package103 is mechanically valid but unadjudicated: run `34169783183`, **395 PASS / 14 RED**,
+accepted **362/365**, with newly RED 356/357/362/390/393/406/407 and zero accepted Euler-certificate emission rows.
+Exact next is independent evidence-only **`M3-CP4c-3-TB38-REV`**. No new runtime, compile, benchmark, semantic retry,
+product/test/fixture/selector mutation, or validator weakening before that review.
