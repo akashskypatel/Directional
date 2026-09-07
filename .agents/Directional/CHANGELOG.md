@@ -1,3 +1,11 @@
+## 2026-09-06 — `M3-CP4c-3-CB40`: boundary-walk rejection restored; ordinal409 re-aimed; package100 compile-green
+
+Code + Build only, **runtime-free**. Exact semantic source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` restores the load-bearing `current == start` rejection as `RegionBoundaryNotSingleWalk` while keeping typed `regionBoundaryWalkReason=ClosedBeforeEnd`; accepted ordinal312 is unchanged. Frozen ordinal409 keeps its name/ordinal but now constructs the reachable shared-node multi-walk and requires the same typed rejection. `ORIENTATION.md` and current-forward authority record now state that certified embedded-graph faces and plan regions are different objects.
+
+Compile-only run/job `34080675952 / 101615243724` succeeded through the durable reusable GMP workflow. Immutable package **100** artifact `10003613409` (`m3-cp4c3-cb40-result-34080675952`) has provider/download ZIP SHA-256 `bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f`; log artifact `10003613693` has SHA-256 `3a7b50e4e011f8fb425807486abcd9a74db70939433efbe4bdd3156be27ccc56`; packaged source archive SHA-256 `56dc4a0ba09797bb08374abc15d4eaf472d19bcd8bcfa5d2ca3db361182257b4`. Root checksums are **28/28 PASS**, all eight required targets compile/link, GMP/GMPXX link evidence is present, source status is clean, and `runtimeExecution=false`. No test, benchmark, or produced Directional binary executed.
+
+No semantic accounting changes in CB40: stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**; package count becomes **100**. TB34 remains semantic runtime authority at 400 PASS / 9 RED, accepted 364/365 until artifact-only TB35. Exact next is **`M3-CP4c-3-TB35-EXEC`** on artifact `10003613409`, then a complete stop at independent `TB35-REV`.
+
 ## 2026-09-06 — `M3-CP4c-3-TB34-REV`: accepted-prefix regression at ordinal 312; the CU4 correction is reverted; one new stable event
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

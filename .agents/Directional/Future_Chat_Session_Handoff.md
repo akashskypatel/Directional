@@ -116,81 +116,53 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB40` — EXACT NEXT / restore the rejection, re-aim ordinal 409
+## Mandatory next turn — `M3-CP4c-3-TB35-EXEC` — EXACT NEXT / artifact-only validation of CB40
 
-`M3-CP4c-3-TB34-REV` has adjudicated TB34 and promoted it to **current valid semantic runtime authority**. It
-carries an **accepted-prefix regression** and **one new stable event**.
+`M3-CP4c-3-CB40` is **IMPLEMENTED / COMPILE-GREEN / RUNTIME-UNADJUDICATED**. It restores the TB34-REV CV2 rejection, re-aims ordinal409 at a reachable negative, records the face-versus-region authority distinction, and changes no topology/barrier/ownership/retired-guard rule.
 
 ### Current authority
 
-- **`M3-CP4c-3-TB34`** — selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365** with accepted RED
-  ordinal **312**, RED `[312,366,367,368,369,370,374,398,409]`; immutable CB39 package `9997560649`, source
-  `7711b9c2c20d284823911aa4ca067bd33244f4e6`; run `34066225065`; 409 rows, every row `selected=1`, zero timeouts,
-  all three byte+mode censuses identical pre/post.
-- Certified ownership remains **300 / 0 / 0**; 390/393/404/406/407/408 PASS; zero emissions of either retired code.
-- **Stable accounting is now 45 events / 14 categories / 31 recurrences**, debt **5**, packages **99**.
+- **Current semantic runtime authority remains `M3-CP4c-3-TB34`**: selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365**, RED `[312,366,367,368,369,370,374,398,409]`; run `34066225065`, immutable package99 artifact `9997560649`, semantic source `7711b9c2c20d284823911aa4ca067bd33244f4e6`.
+- **CB40 compile authority:** source `23a753a83f0eda0447172ce96bcd3180bf95ae8a`; run/job `34080675952 / 101615243724`; immutable package100 artifact `10003613409`, ZIP SHA-256 `bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f`; log artifact `10003613693`, SHA-256 `3a7b50e4e011f8fb425807486abcd9a74db70939433efbe4bdd3156be27ccc56`; packaged source SHA-256 `56dc4a0ba09797bb08374abc15d4eaf472d19bcd8bcfa5d2ca3db361182257b4`.
+- Compile package checksums **28/28 PASS**; all eight targets compiled; GMP/GMPXX linked; source clean; `runtimeExecution=false`.
+- Selector remains **409** with SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; first 408 lines unchanged.
+- Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**; packages **100**.
 
-### What TB34 established
+### What CB40 changed
 
-**The CU4 correction was wrong and is reverted.** Ordinal 312,
-`GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is an **accepted** identity encoding the contract that
-a multi-walk region must be rejected. TB33-REV argued the removed `current == start` disjunct caught only a
-legitimate pinch; the code appears **exactly twice** in the test file — at 312 and at the ordinal 409 the same
-review added — and one grep before the freeze would have found it. `LESSONS.md` 144.
+1. `validate_single_boundary_walk` again rejects `current == start` before complete boundary consumption as `RegionBoundaryNotSingleWalk`, carrying `regionBoundaryWalkReason=ClosedBeforeEnd` and the failing region/arc. `ArcChainBroken` and `WalkNotClosed` are unchanged.
+2. Accepted ordinal **312 is unchanged**. It is the runtime recovery gate for TB35.
+3. Ordinal **409 keeps its frozen identity/name** but now duplicates one reachable region boundary, creating two closed walks sharing the start node; it requires `RegionBoundaryNotSingleWalk` / `ClosedBeforeEnd`. The test explicitly records that node-disjoint loops are unconstructible through this entry path.
+4. Durable architecture state now states the settled authority-domain distinction: certified embedded-graph face evidence is not plan-region evidence.
 
-**The supporting certificate argument was an authority-domain conflation** — `F=6`, `componentCount=1`,
-`eulerResidual=0` are claims about **certified faces of the embedded graph**, not about a **plan region**.
-`LESSONS.md` 145.
+### TB35-EXEC boundary
 
-**The product independently agrees the region is not a disc.** With the rejection removed, 366/367 advanced to
-**`RegionEulerCharacteristicNotOne`** while publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`** — two
-independent region-level tests, same object, same conclusion.
+Artifact-only Test + Benchmark. **Do not configure, compile, relink, repair, regenerate discovery, benchmark, or mutate package/source/test/fixture/selector bytes.** Execute the exact packaged harness against artifact `10003613409` under `Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md`.
 
-**CU5 is upheld and kept**; only the removal of the rejection is reverted. **Ordinal 409 never reached its
-oracle** — `disjointRegions.has_value()` is false — so the only reachable multi-walk shape is the pinch that
-ordinal 312 constructs.
+Hard gates:
 
-### CB40 boundary — CV2–CV6
+- ordinal **312 PASS** and accepted prefix **365/365 PASS**; otherwise CV2 is incomplete and semantic promotion stops;
+- ordinal **409 PASS and reach its re-aimed `ClosedBeforeEnd` oracle**; fixture/precondition failure is a CV3 hard falsifier;
+- 390/393/404/406/407/408 remain PASS;
+- both retired codes stay absent; ownership remains 300/0/0 whenever published;
+- 366/367 may not move earlier. `RegionBoundaryNotSingleWalk + ClosedBeforeEnd` supports the TB34 pinch reading; `ArcChainBroken` falsifies it. They are **not** to be made green in EXEC;
+- preserve all changes to 368/369/370/374/398 exactly, with no scope weakening.
 
-Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked. **Restore, then re-aim. No new product behaviour.**
-
-1. **CV2** — restore the `current == start` rejection in `validate_single_boundary_walk`, **keeping the typed
-   reason**: it raises `RegionBoundaryNotSingleWalk` with `regionBoundaryWalkReason = ClosedBeforeEnd`.
-   `ArcChainBroken` and `WalkNotClosed` keep their meanings; the reason plumbing, observation flag and diagnostics
-   field all stay. **Required outcome: ordinal 312 returns to PASS and the accepted prefix returns to 365/365.**
-2. **CV3** — re-aim ordinal **409 in place** at the **reachable** negative: two boundary loops meeting at a shared
-   node, rejected with reason `ClosedBeforeEnd`. Ordinal, name and the first 408 selector lines unchanged. If that
-   shape is also unconstructible through the production entry path, the identity must **say so explicitly** and
-   assert the property it can reach. **An identity may never be left asserting an unconstructible fixture.**
-3. **CV4** — record the settled distinction in `ORIENTATION.md` §5 and `M3_CP4c_Current_And_Forward.md`: **a
-   certified face of the embedded graph and a plan region are different objects**, and the certificate licenses no
-   conclusion about regions.
-4. **CV5** — mandatory pre-freeze check, owned by the **review**: before any measure removes, weakens or re-scopes
-   a rejection, grep the corpus for the error code and name every accepted identity (1–365) that asserts it.
-
-**Falsifiers, stated before the build.** If ordinal **312** does not return to PASS, the revert is incomplete —
-that is a stop condition, not a finding. If **366/367** return to `RegionBoundaryNotSingleWalk` with reason
-`ClosedBeforeEnd`, the pinch reading is confirmed and the frontier is `M3-CP4c3-TB34-REV-CAND-03`. If they report
-`ArcChainBroken` instead, the pinch reading is wrong. If ordinal **409** still cannot construct its fixture, CV3's
-fallback applies.
-
-**Prohibited:** any attempt to make 366/367 green — **the region-is-not-a-disc finding is diagnosed, not
-patched**; **restoring ordinal 312 by editing the witness instead of fixing the product**; any topology, barrier,
-ownership or previously-retired-guard change; weakening or re-scoping ordinal 398, or touching 368/369/370/374;
-relaxing anything 390/393/404/406/407/408 legitimately own; executing any Directional runtime.
+TB35-EXEC records raw evidence only, then **stops completely at independent `M3-CP4c-3-TB35-REV`**.
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
+`load_next`: Test + Benchmark **EXEC** guidance only; no implementation/review module unless later routed by the independent review boundary.
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` — **CV0–CV6**, the adjudication and the frozen CB40 scope.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB34_EXEC_Report.md` — current runtime authority, with verbatim failure text for every RED focused ordinal and for ordinal 312.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part VIII operative**.
-5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 409 and the frozen prefixes.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current authority/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB40_Code_Build_Report.md` — exact implementation/compile/package authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` — **the complete executable TB35 contract**.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` — CV0–CV6 and TB35 falsifiers.
+5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII operative.
+6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector409/prefix authority.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
+8. `.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh` — immutable execution instrument.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

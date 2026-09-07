@@ -1,3 +1,13 @@
+## M3-CP4c3-CB40 — CV2/CV3 correction — **IMPLEMENTED / COMPILE-PROVED / RUNTIME PENDING TB35 / NON-STABLE TURN**
+
+- Exact semantic source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` restores `current == start` as `RegionBoundaryNotSingleWalk` with typed `ClosedBeforeEnd`, leaves accepted ordinal312 unchanged, and re-aims frozen ordinal409 at the reachable shared-node multi-walk.
+- Compile-only run/job `34080675952 / 101615243724` is GREEN. Immutable package100 artifact `10003613409` has ZIP SHA-256 `bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f`; all 28 package checksums pass; all eight targets compile/link with GMP/GMPXX; `runtimeExecution=false`.
+- `M3-CP4c3-TB34-REV-CAND-01`: **IMPLEMENTED / COMPILE-PROVED / runtime pending TB35**. The stable event already recorded at TB34-REV remains counted; CB40 creates no new event.
+- `M3-CP4c3-TB34-REV-CAND-02`: **IMPLEMENTED / COMPILE-PROVED / runtime pending TB35**. Selector409 identity/order is unchanged; runtime must prove the re-aimed fixture reaches its oracle.
+- `M3-CP4c3-TB34-REV-CAND-03`: **ACTIVE / GATING / PRODUCT / unchanged**. No region-topology correction was authorized; 366/367 remain diagnosis targets only.
+- Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**; packages become **100**. Current semantic runtime authority remains TB34 until TB35.
+- Exact next: artifact-only `M3-CP4c-3-TB35-EXEC` on artifact `10003613409`, then independent `TB35-REV`.
+
 ## M3-CP4c3-TB34-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / ACCEPTED-PREFIX REGRESSION / +1 STABLE EVENT**
 
 - **Record:** `Architecture_M3_CP4c3_TB34_Independent_Review_Record.md`, measures **CV0–CV6**. Evidence-only: no
@@ -55,9 +65,8 @@
   uses to measure itself.**
 
 - **Candidates. Reopened and REFUTED:** `M3-CP4c3-TB33-REV-CAND-01` — the disjunct does not reject a legitimate
-  configuration. **New:** `M3-CP4c3-TB34-REV-CAND-01` (**GATING / PRODUCT / stable-event owner** — the rejection is
-  load-bearing; reverted by CV2), `-CAND-02` (**GATING / TEST AUTHORITY** — ordinal 409 asserts an unconstructible
-  fixture), `-CAND-03` (**GATING / PRODUCT** — the mechanical plan builds a region that is not a disc; **the first
+  configuration. **New:** `M3-CP4c3-TB34-REV-CAND-01` (**IMPLEMENTED / COMPILE-PROVED / runtime pending TB35 / stable-event owner** — the rejection is
+  restored by CB40), `-CAND-02` (**IMPLEMENTED / COMPILE-PROVED / runtime pending TB35 / TEST AUTHORITY** — ordinal409 is re-aimed at the reachable shared-node multi-walk), `-CAND-03` (**GATING / PRODUCT** — the mechanical plan builds a region that is not a disc; **the first
   frontier on this path that is not a guard defect**, and no correction is authorized before it is diagnosed).
 
 - **Successor frozen: `M3-CP4c-3-CB40`** under **CV2–CV6**, runtime-free. **CV2** restore the `current == start`
@@ -5847,30 +5856,23 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB34**: semantic source
-`7711b9c2c20d284823911aa4ca067bd33244f4e6`, immutable CB39 package `9997560649`, selector 409, run
-`34066225065`, **400 PASS / 9 RED**, accepted 1-365 **364/365 PASS** with accepted RED ordinal **312**, reds
-`[312,366,367,368,369,370,374,398,409]`. 409 rows, every row `selected=1`, zero timeouts, all three byte+mode
-censuses identical pre/post. Certified ownership remains **300 / 0 / 0**. Stable totals are now
-**45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages **99**.
+Current immutable CP4c-3 **semantic runtime authority remains M3-CP4c-3-TB34**: semantic source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`, CB39 package99 artifact `9997560649`, selector409, run
+`34066225065`, **400 PASS / 9 RED**, accepted 1–365 **364/365 PASS**, RED
+`[312,366,367,368,369,370,374,398,409]`. Certified ownership remains **300 / 0 / 0**. Stable totals remain
+**45 events / 14 categories / 31 recurrences**, debt **5**.
 
-`M3-CP4c-3-TB34-REV` adjudicated it. **The CU4 correction was wrong and is reverted.** Ordinal 312,
-`GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is an **accepted** identity encoding the contract that
-a multi-walk region must be rejected; the code appears exactly twice in the test file and one grep before the
-freeze would have found it. The supporting certificate argument was an **authority-domain conflation** - certified
-faces are not plan regions. With the rejection removed, 366/367 advanced to **`RegionEulerCharacteristicNotOne`**
-while publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`**, so **two independent checks now agree that the
-plan builds a region that is not a disc**. CU5's typed reason is upheld and kept; only the removal is reverted.
+CB40 is **IMPLEMENTED / COMPILE-GREEN / RUNTIME-UNADJUDICATED** at source
+`23a753a83f0eda0447172ce96bcd3180bf95ae8a`. It restores the load-bearing `current == start` rejection as
+`RegionBoundaryNotSingleWalk` with typed `ClosedBeforeEnd`, leaves accepted ordinal312 untouched, re-aims frozen
+ordinal409 at the reachable shared-node multi-walk, and records the certified-face versus plan-region authority
+distinction. Compile run/job `34080675952 / 101615243724` produced immutable package100 artifact `10003613409`
+with ZIP SHA-256 `bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f`; root checksums are 28/28 PASS,
+all eight required targets compile/link with GMP/GMPXX, source is clean, and `runtimeExecution=false`.
 
-**Exact next: `M3-CP4c-3-CB40` - Code + Build, runtime-free**, under
-`Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` **CV2-CV6**: restore the `current == start` rejection
-carrying `regionBoundaryWalkReason=ClosedBeforeEnd`; re-aim ordinal 409 **in place** at the reachable negative;
-record that a certified face and a plan region are different objects; and adopt the mandatory pre-freeze grep
-before any future measure removes a rejection.
-
-**Required outcome: ordinal 312 returns to PASS and the accepted prefix returns to 365/365.** **Falsifiers:** if
-366/367 return to `RegionBoundaryNotSingleWalk` with `ClosedBeforeEnd`, the pinch reading is confirmed; if they
-report `ArcChainBroken` it is wrong. **Prohibited:** any attempt to make 366/367 green - the region-is-not-a-disc
-finding is diagnosed, not patched; editing ordinal 312 instead of fixing the product; any topology, barrier,
-ownership or retired-guard change; weakening ordinal 398 or touching 368/369/370/374. No Directional runtime before
-`M3-CP4c-3-TB35`.
+**Exact next: `M3-CP4c-3-TB35-EXEC`**, artifact-only on `10003613409`, under
+`Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md`. Required gates: ordinal312 PASS and accepted
+1–365 = 365/365; ordinal409 reaches and PASSes `RegionBoundaryNotSingleWalk / ClosedBeforeEnd`; protected
+390/393/404/406/407/408 stay PASS; retired codes remain absent; 366/367 do not move earlier and are preserved as
+discriminator evidence. No attempt to make 366/367 green is authorized. After raw EXEC evidence is durably
+preserved, stop completely at independent `M3-CP4c-3-TB35-REV`.
