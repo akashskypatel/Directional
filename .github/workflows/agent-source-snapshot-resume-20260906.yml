@@ -5,15 +5,15 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/source-snapshot/resume-20260906-2344.txt
+      - .agents/connector-triggers/source-snapshot/cb41-exact-20260907-1040.txt
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: write
 
 concurrency:
-  group: agent-source-snapshot-resume-20260906
+  group: agent-source-snapshot-cb41-exact-20260907
   cancel-in-progress: false
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: resume-source-snapshot-20260906
+      label: source-snapshot-cb41-exact-20260907
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -38,7 +38,7 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-source-snapshot.yml
     with:
-      source_ref: 7dae2e5c1139f5bf7884ea5de3c21d1e78eb8bb0
-      artifact_prefix: resume-source-snapshot
+      source_ref: f0c56e4e6f6c33d2e266e575234d57b569562719
+      artifact_prefix: cb41-exact-source-snapshot
       retention_days: 7
     secrets: inherit
