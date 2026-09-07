@@ -1,3 +1,79 @@
+## M3-CP4c3-TB34-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / ACCEPTED-PREFIX REGRESSION / +1 STABLE EVENT**
+
+- **Record:** `Architecture_M3_CP4c3_TB34_Independent_Review_Record.md`, measures **CV0–CV6**. Evidence-only: no
+  runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
+  `review_check.py authority 7711b9c2c20d284823911aa4ca067bd33244f4e6` — ALL CHECKS PASSED.
+
+- **TB34 promoted to current valid semantic runtime authority, and it carries an accepted-prefix regression.**
+  Selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365**, RED
+  `[312,366,367,368,369,370,374,398,409]`. Run/job `34066225065 / …`; package `9997560649`; source
+  `7711b9c2c20d284823911aa4ca067bd33244f4e6`; 409 rows, exact ordinal sequence, every row `selected=1`, zero
+  timeouts, all three byte+mode censuses identical pre/post, `baseline-authority.txt` naming the executing run.
+
+- **CV0 — the CU4 derivation was wrong, and an accepted identity already said so.** TB33-REV §3.2 claimed the
+  removed `current == start` disjunct uniquely caught only "two loops meeting at the start node — a legitimate
+  pinch". **Ordinal 312 is an accepted identity named `RejectsRegionWithMultipleBoundaryWalks`** and encodes the
+  opposite contract. Its retained failure: expected `RegionBoundaryNotSingleWalk`, observed
+  `RotationSystemInconsistent`, `arc.has_value()` false. **`RegionBoundaryNotSingleWalk` appears exactly twice in
+  the test file** — at 312 and at the ordinal 409 the same review added. One grep before freezing CU4 would have
+  found it. `LESSONS.md` 144.
+
+- **CV0.1 — the certificate argument was an authority-domain conflation.** TB33-REV §3.1 cited `F=6`,
+  `componentCount=1`, `eulerResidual=0` and "all six faces established as discs" against the rejection. Those are
+  claims about **certified faces of the embedded graph**; a **plan region** is a different object over a different
+  partition — the distinction this checkpoint has held since TB21 and re-proved at TB27 with
+  `matchesFailingComponent=false`. Category `RP-01 / AUTHORITY_DOMAIN_CONFLATION`. `LESSONS.md` 145.
+
+- **CV0.2 — the product independently says the region is not a disc.** With the rejection removed, 366/367 did not
+  clear: they advanced to **`RegionEulerCharacteristicNotOne`**, still `regionFrontierFailureStage=RegionCertification`,
+  both publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`**. χ(region)=1 is the disc test. **Two independent
+  checks now agree on the same object.** The `current == start` disjunct was the earlier and clearer of two correct
+  statements, not a spurious guard.
+
+- **CV1 — CU5 is the measure that worked and it stays.** The typed reason turned TB33-REV's derivation into an
+  observation: the mechanical fixture really does take the `ClosedBeforeEnd` branch. The reason plumbing,
+  observation flag and diagnostics field are **not** reverted; only the removal of the rejection is.
+
+- **CV2 — ordinal 409 never reached its oracle.** `disjointRegions.has_value()` is false —
+  `constructed negative requires two node-disjoint closed region loops`. If node-disjoint loops are unconstructible
+  through the production entry path, the only reachable multi-walk shape is **the pinch**, which is exactly what
+  ordinal 312 constructs and what CU4 stopped rejecting. CU6 asked for a witness of the unreachable case while the
+  reachable case already had an accepted one.
+
+- **CV3 — nine REDs.** **312** the accepted-prefix regression (reverted by CV2); **409** an unconstructible fixture
+  (re-aimed by CV3); **366/367 the real frontier** — the plan builds a region that is **not a disc**, said twice
+  independently; **398** the carried sphere surface; **368/369/370/374** unchanged carried surfaces. **Held:**
+  390/393/404/406/407/408 PASS, retired-code silence, ownership **300 / 0 / 0**.
+
+- **Accounting — ONE NEW STABLE EVENT.** **44 / 14 / 30 → 45 events / 14 categories / 31 recurrences**;
+  produced-witness debt **5**; packages **99**. Accepted ordinal **312 went PASS → RED**, which is **accepted-green
+  behaviour loss** — every prior PASS→RED in this sequence was outside 1–365 and classified as evidence-contract
+  loss. Primary category **`RP-01 / AUTHORITY_DOMAIN_CONFLATION`** (existing, so categories stay 14). **Detection
+  escape: none** — the accepted prefix caught it on the first runtime after the change, which is what that boundary
+  is for; the escape was upstream, in a freeze published without checking the accepted witnesses for the code it
+  removed. **Classifying this as non-stable because it was caught quickly would corrupt the one number this project
+  uses to measure itself.**
+
+- **Candidates. Reopened and REFUTED:** `M3-CP4c3-TB33-REV-CAND-01` — the disjunct does not reject a legitimate
+  configuration. **New:** `M3-CP4c3-TB34-REV-CAND-01` (**GATING / PRODUCT / stable-event owner** — the rejection is
+  load-bearing; reverted by CV2), `-CAND-02` (**GATING / TEST AUTHORITY** — ordinal 409 asserts an unconstructible
+  fixture), `-CAND-03` (**GATING / PRODUCT** — the mechanical plan builds a region that is not a disc; **the first
+  frontier on this path that is not a guard defect**, and no correction is authorized before it is diagnosed).
+
+- **Successor frozen: `M3-CP4c-3-CB40`** under **CV2–CV6**, runtime-free. **CV2** restore the `current == start`
+  rejection **keeping the typed reason**, so it raises `RegionBoundaryNotSingleWalk` with
+  `regionBoundaryWalkReason=ClosedBeforeEnd`; **required outcome: ordinal 312 returns to PASS and the accepted
+  prefix returns to 365/365**. **CV3** re-aim ordinal 409 **in place** at the reachable negative — two loops sharing
+  a node, rejected with reason `ClosedBeforeEnd`; if that is also unconstructible the identity must **say so** and
+  assert what it can reach. **An identity may never be left asserting an unconstructible fixture.** **CV4** record
+  the settled distinction: a certified face and a plan region are different objects, and the certificate licenses
+  no conclusion about regions. **CV5** a mandatory pre-freeze check — before any measure removes or weakens a
+  rejection, the **review** must grep the corpus for the code and name every accepted identity that asserts it.
+  **CV6** falsifiers: if 312 does not return to PASS the revert is incomplete; if 366/367 return to
+  `RegionBoundaryNotSingleWalk` with `ClosedBeforeEnd`, CV0.2 is confirmed; if they report `ArcChainBroken` the
+  pinch reading is wrong. **Prohibited:** any attempt to make 366/367 green — the region-is-not-a-disc finding is
+  **diagnosed, not patched** — and **ordinal 312 is restored by fixing the product, never by editing the witness**.
+
 ## M3-CP4c3-TB34-EXEC — artifact-only runtime intake — **MECHANICALLY VALID / RAW HARD FALSIFIERS / SEMANTICALLY UNADJUDICATED / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB34_EXEC_Report.md`. Immutable CB39 artifact `9997560649`, source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector 409. Corrected run/job `34066225065 / 101575358433`; result/log artifacts `9999073820 / 9999074092`; no configure, compile, relink, discovery, benchmark, repair, or package/source/test/fixture/selector mutation occurred.
@@ -36,7 +112,8 @@
 
 ## M3-CP4c3-TB33-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / ALL CT MEASURES DISCHARGED**
 
-- **Record:** `Architecture_M3_CP4c3_TB33_Independent_Review_Record.md`, measures **CU0–CU6**. Evidence-only: no
+- **Record:** `Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB34-REV`), measures **CU0–CU6**.
+  Evidence-only: no
   runtime, no compile, no package operation, no product/test/fixture/benchmark/build/selector mutation.
   `review_check.py authority 0d03edb07388c56b592a74e2e7fc5f3edde8cea4` — ALL CHECKS PASSED.
 
@@ -118,7 +195,7 @@
 
 ## M3-CP4c3-TB33-EXEC — artifact-only runtime intake — **MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED / NON-STABLE**
 
-- **Record:** `Architecture_M3_CP4c3_TB33_EXEC_Report.md`. Immutable CB38 artifact `9994997588`, source
+- **Record:** `Architecture_M3_CP4c3_TB33_EXEC_Report.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB34-REV`). Immutable CB38 artifact `9994997588`, source
   `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`, selector 408. Run/job `34054234216 / 101543088114`; result/log
   artifacts `9995528719 / 9995529075`. No configure, compile, relink, discovery, benchmark, repair or packaged-byte
   mutation occurred.
@@ -5770,19 +5847,30 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current valid semantic runtime authority remains **M3-CP4c-3-TB33**: semantic source
-`0d03edb07388c56b592a74e2e7fc5f3edde8cea4`, immutable CB38 package `9994997588`, selector 408, run/job
-`34054234216 / 101543088114`, **401 PASS / 7 RED**, accepted 1-365 **365/365 PASS**, reds
-`[366,367,368,369,370,374,398]`. Certified ownership remains **300 / 0 / 0** and all nine plan components
-remain uniquely seeded. Stable totals remain **44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **99**.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB34**: semantic source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`, immutable CB39 package `9997560649`, selector 409, run
+`34066225065`, **400 PASS / 9 RED**, accepted 1-365 **364/365 PASS** with accepted RED ordinal **312**, reds
+`[312,366,367,368,369,370,374,398,409]`. 409 rows, every row `selected=1`, zero timeouts, all three byte+mode
+censuses identical pre/post. Certified ownership remains **300 / 0 / 0**. Stable totals are now
+**45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages **99**.
 
-TB34-EXEC mechanically executed immutable CB39 artifact `9997560649` from semantic source
-`7711b9c2c20d284823911aa4ca067bd33244f4e6` with selector 409. Corrected run/job
-`34066225065 / 101575358433` produced raw **400 PASS / 9 RED**, accepted **364/365**, reds
-`[312,366,367,368,369,370,374,398,409]`. Ordinals 366/367 moved later to
-`RegionEulerCharacteristicNotOne` with `regionBoundaryWalkReason=ClosedBeforeEnd`; protected greens
-390/393/404/406/407/408 PASS; retired-code silence and ownership 300/0/0 held. Hard raw falsifiers are
-accepted-prefix ordinal 312 and gating ordinal 409. EXEC makes no semantic/root-cause adjudication.
+`M3-CP4c-3-TB34-REV` adjudicated it. **The CU4 correction was wrong and is reverted.** Ordinal 312,
+`GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is an **accepted** identity encoding the contract that
+a multi-walk region must be rejected; the code appears exactly twice in the test file and one grep before the
+freeze would have found it. The supporting certificate argument was an **authority-domain conflation** - certified
+faces are not plan regions. With the rejection removed, 366/367 advanced to **`RegionEulerCharacteristicNotOne`**
+while publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`**, so **two independent checks now agree that the
+plan builds a region that is not a disc**. CU5's typed reason is upheld and kept; only the removal is reverted.
 
-**Exact next is independent `M3-CP4c-3-TB34-REV`**, evidence-only. It must adjudicate the raw TB34 evidence,
-including 312/409 and the later 366/367 frontier, before any new runtime, compile, or corrective source change.
+**Exact next: `M3-CP4c-3-CB40` - Code + Build, runtime-free**, under
+`Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` **CV2-CV6**: restore the `current == start` rejection
+carrying `regionBoundaryWalkReason=ClosedBeforeEnd`; re-aim ordinal 409 **in place** at the reachable negative;
+record that a certified face and a plan region are different objects; and adopt the mandatory pre-freeze grep
+before any future measure removes a rejection.
+
+**Required outcome: ordinal 312 returns to PASS and the accepted prefix returns to 365/365.** **Falsifiers:** if
+366/367 return to `RegionBoundaryNotSingleWalk` with `ClosedBeforeEnd`, the pinch reading is confirmed; if they
+report `ArcChainBroken` it is wrong. **Prohibited:** any attempt to make 366/367 green - the region-is-not-a-disc
+finding is diagnosed, not patched; editing ordinal 312 instead of fixing the product; any topology, barrier,
+ownership or retired-guard change; weakening ordinal 398 or touching 368/369/370/374. No Directional runtime before
+`M3-CP4c-3-TB35`.

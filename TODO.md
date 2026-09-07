@@ -26,21 +26,50 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB34-REV` (independent evidence-only review)
+## Current focus — `M3-CP4c-3-CB40` (Code + Build, runtime-free) — RESTORE THE REJECTION
 
-`M3-CP4c-3-TB34-EXEC` is **CLOSED / MECHANICALLY VALID / RAW-RED / SEMANTICALLY UNADJUDICATED**. Corrected run/job **`34066225065 / 101575358433`** consumed immutable CB39 artifact **`9997560649`** from semantic source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector **409**, without rebuilding or mutating immutable bytes. Result/log artifacts **`9999073820 / 9999074092`** have SHA-256 `348edc1d170b68d698acda32a39686e33e7a6a88608d1396cc91a85e3b7a34b7 / 20bf7b7d8d4f61ae51e483b66a37d8a21f6febfb869e8e19b2b900d726efabde`.
+`M3-CP4c-3-TB34-REV` promoted TB34 to **current valid semantic runtime authority**. It carries an
+**accepted-prefix regression** and **one new stable event**.
 
-Mechanical ledger: **400 PASS / 9 RED**, RED `[312,366,367,368,369,370,374,398,409]`; every row `selected=1`, zero timeouts, accepted prefix **364/365** because ordinal **312** is RED. Ordinal **409** is also RED. All package/source/execution-view byte+mode censuses are identical pre/post; configure/compile/relink/discovery/benchmark/repair/mutation flags are all false.
+- selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365** with accepted RED **312**, RED
+  `312,366,367,368,369,370,374,398,409`;
+- immutable CB39 package `9997560649` / source `7711b9c2c20d284823911aa4ca067bd33244f4e6`; run `34066225065`;
+- certified ownership **300 / 0 / 0**; 390/393/404/406/407/408 PASS.
 
-Raw hard-check evidence: 312 expected `RegionBoundaryNotSingleWalk` but observed `RotationSystemInconsistent` with no arc locus; 409 fails before the intended chain-guard oracle because `disjointRegions.has_value()` is false. 366/367 move later to `RegionEulerCharacteristicNotOne` at `RegionCertification` and publish non-rejecting `regionBoundaryWalkReason=ClosedBeforeEnd`; 390/393/404/406/407/408 PASS; both retired codes remain absent; ownership remains **300 / 0 / 0** when published.
+**The CU4 correction was wrong and is reverted.** Ordinal **312**,
+`GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is an **accepted** identity encoding the contract that
+a multi-walk region must be rejected. `RegionBoundaryNotSingleWalk` appears **exactly twice** in the test file —
+one grep before the freeze would have found it. The supporting certificate argument was an **authority-domain
+conflation**: certified faces are not plan regions.
 
-The first caller attempt `34066163471 / 101575197341` was orchestration-only and started no Directional runtime: artifact/source/harness hashes verified, then an invalid umask-sensitive bootstrap mode assertion failed. Corrected retry changed only that control-plane assertion and reused the immutable package unchanged.
+**The product independently agrees the region is not a disc.** 366/367 advanced to
+`RegionEulerCharacteristicNotOne` while publishing `regionBoundaryWalkReason=ClosedBeforeEnd` — two independent
+region-level tests, same conclusion. **CU5's typed reason is upheld and kept.**
 
-**Semantic runtime authority is unchanged:** TB33 remains current valid semantic authority at selector 408, **401 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; package count **99**.
+**Stable accounting: 44 / 14 / 30 → 45 events / 14 categories / 31 recurrences**, category
+`RP-01 / AUTHORITY_DOMAIN_CONFLATION`. Produced-witness debt **5**, packages **99**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Independent **`M3-CP4c-3-TB34-REV`**. Execute no runtime or compile. Adjudicate the raw TB34 result, especially accepted-prefix ordinal 312, gating ordinal 409, and 366/367's later `ClosedBeforeEnd`/Euler frontier. Update semantic authority, candidates, ORIENTATION, and consolidated records only if justified. Do not start any successor CB or runtime before that review closes.
+Run **`M3-CP4c-3-CB40`**, Code + Build, runtime-free, under **CV2–CV6** of
+`Architecture_M3_CP4c3_TB34_Independent_Review_Record.md`:
+
+- [ ] **CV2** restore the `current == start` rejection, **keeping the typed reason** so it raises
+      `RegionBoundaryNotSingleWalk` with `regionBoundaryWalkReason=ClosedBeforeEnd`. **Required outcome: ordinal
+      312 returns to PASS and the accepted prefix returns to 365/365.**
+- [ ] **CV3** re-aim ordinal **409 in place** at the reachable negative — two loops sharing a node, rejected with
+      reason `ClosedBeforeEnd`. If unconstructible, the identity must say so. **Never leave an identity asserting
+      an unconstructible fixture.**
+- [ ] **CV4** record the settled distinction: a certified face and a plan region are different objects.
+- [ ] **CV5** mandatory pre-freeze grep, owned by the review, before any measure removes a rejection.
+
+**Falsifiers:** if 312 does not return to PASS the revert is incomplete; if 366/367 return to
+`RegionBoundaryNotSingleWalk` with `ClosedBeforeEnd` the pinch reading is confirmed; if they report
+`ArcChainBroken` it is wrong.
+
+**Must not:** attempt to make 366/367 green — **the region-is-not-a-disc finding is diagnosed, not patched**;
+restore 312 by editing the witness instead of fixing the product; change topology, barriers, ownership or any
+retired guard; weaken ordinal 398 or touch 368/369/370/374.
 
 ## Carried forward from M1
 
@@ -118,4 +147,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **44 events / 14 categories / 30 recurrences**, unchanged by TB34-EXEC raw intake. Produced-witness debt remains **5**. Authoritative M3 package count is **99**. **`M3-CP4c-3-TB33` remains the current valid semantic runtime authority at 401 PASS / 7 RED, accepted 365/365 on selector 408, with ownership total and all nine plan components uniquely seeded.** TB34-EXEC mechanically produced raw **400 PASS / 9 RED**, accepted **364/365**, selector 409, with hard falsifiers at 312 and 409; no semantic promotion is made. Exact next is independent evidence-only `M3-CP4c-3-TB34-REV`. PR #8 remains open, draft, and unmerged.
+Current totals are **45 events / 14 categories / 31 recurrences** after `M3-CP4c-3-TB34-REV` recorded **one new stable event** — accepted ordinal 312 went PASS → RED, category `RP-01 / AUTHORITY_DOMAIN_CONFLATION`. Produced-witness debt remains **5**. Authoritative M3 package count is **99**. **`M3-CP4c-3-TB34` is the current valid semantic runtime authority at 400 PASS / 9 RED, accepted 364/365 on selector 409.** Exact next is `M3-CP4c-3-CB40` under CV2–CV6, which must restore the accepted prefix to 365/365. PR #8 remains open, draft, and unmerged.

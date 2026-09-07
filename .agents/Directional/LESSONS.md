@@ -1825,6 +1825,22 @@ building any conclusion on it.**
      as discs. **When a traversal check has both a chain test and an early "we're back at the start" test, the
      second one is usually rejecting a legitimate degeneracy the first already handles.**
 
+144. **Before removing a rejection, grep the accepted corpus for the code it raises.** A review derived from source
+     that a guard rejected only a legitimate configuration and froze its removal. An **accepted** identity named
+     `RejectsRegionWithMultipleBoundaryWalks` had asserted the opposite contract all along, and the error code
+     appeared exactly **twice** in the whole test file - once in that witness, once in the new one the review was
+     adding. The first runtime after the change lost accepted green. **A rejection's real specification is the set
+     of accepted witnesses that assert it**, and that set is one search away; the obligation belongs to the review
+     that freezes the removal, not to the turn that implements it.
+
+145. **A certificate's claim about one object is not a claim about another object built from it.** A cellularity
+     certificate established disc topology for the **certified faces of an embedded graph**, and a review cited it
+     to argue that a **plan region** - a different construction over a different partition - could not be a
+     non-disc. The product then said the region was not a disc **twice**, by two independent tests. The same
+     checkpoint had already recorded that the certificate and the consumer's guard "test different objects;
+     neither validates the other", and had re-proved it at runtime. **When invoking a proof, name the object it is
+     about and check it is the object in front of you.**
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

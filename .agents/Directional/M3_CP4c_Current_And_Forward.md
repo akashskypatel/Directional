@@ -10,75 +10,78 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-06** at `M3-CP4c-3-TB34-EXEC` closeout.
+Last updated **2026-09-06** at `M3-CP4c-3-TB34-REV` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB33` remains the current valid semantic runtime authority pending independent TB34 review.** TB33 is selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB38 package `9994997588` / source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`.
+**`M3-CP4c-3-TB34` is the current valid semantic runtime authority, and it carries an accepted-prefix
+regression.** Selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365** with accepted RED ordinal
+**312**, RED `[312,366,367,368,369,370,374,398,409]`, on immutable CB39 package `9997560649` / source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`. Run `34066225065`; 409 rows, every row `selected=1`, zero timeouts,
+all three byte+mode censuses identical pre/post.
 
-**TB34-EXEC is mechanically valid raw intake, not semantic authority.** Corrected run/job `34066225065 / 101575358433` consumed immutable CB39 artifact `9997560649` / source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector **409**, and produced **400 PASS / 9 RED** with RED `[312,366,367,368,369,370,374,398,409]`. Every row selected exactly once, zero timeouts, all package/source/execution-view byte+mode censuses are equal pre/post, and every configure/compile/relink/discovery/benchmark/repair/mutation flag is false. Result/log artifacts are `9999073820 / 9999074092`.
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting is now
+**45 events / 14 categories / 31 recurrences** — **one new stable event** — debt **5**, packages **99**.
 
-Two frozen hard conditions are raw-falsified: accepted prefix is **364/365** because ordinal **312** is RED, and new gating ordinal **409** is RED. Ordinal 312 expected `RegionBoundaryNotSingleWalk` but observed `RotationSystemInconsistent` with no arc locus. Ordinal 409 fails before its intended chain-guard oracle because `disjointRegions.has_value()` is false. EXEC does not decide fixture versus product ownership.
+## 2. The CU4 correction was wrong and is reverted
 
-The frontier pair **366/367 advances later** to `RegionEulerCharacteristicNotOne`, still at `RegionCertification`, and both publish `regionBoundaryWalkReason=ClosedBeforeEnd`; protected greens 390/393/404/406/407/408 PASS, both retired codes remain absent, and certified ownership remains **300 established / 0 unavailable / 0 conflicting** when published.
+**Ordinal 312, `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is an accepted identity** that encodes
+the contract a multi-walk region must be rejected with `RegionBoundaryNotSingleWalk`. Its retained failure:
+expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, `arc.has_value()` false.
 
-CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, debt **5**, packages **99**. Independent `M3-CP4c-3-TB34-REV` owns every semantic/root-cause disposition.
+TB33-REV §3.2 argued the removed `current == start` disjunct uniquely caught only "two loops meeting at the start
+node — a legitimate pinch". **`RegionBoundaryNotSingleWalk` appears exactly twice in the test file** — at ordinal
+312 and at the ordinal 409 the same review added. One grep before the freeze would have found the accepted witness
+that contradicted the derivation.
 
-## 2. TB33 semantic baseline entering TB34 — every CT measure discharged
+**The supporting certificate argument was an authority-domain conflation.** TB33-REV §3.1 cited `F=6`,
+`componentCount=1`, `eulerResidual=0` — claims about **certified faces of the embedded graph** — against a
+**plan region**, a different object over a different partition. Category `RP-01 / AUTHORITY_DOMAIN_CONFLATION`.
 
-| Measure | Outcome |
-|---|---|
-| **CT3** stage-labelled evidence | 366/367 publish `regionFrontierFailureStage=RegionCertification`; **no legacy `uncutFaceComponent*` fields** remain in their detail bytes. |
-| **CT4** justified cleared-stage outcome | **390/393/406/407 PASS**, selector 408 byte-unchanged. |
-| **CT5** failure-detail digest | `failure-detail-digests.tsv` covers all 408 rows. |
-| **CT6** turn-agnostic harness | `tools/m3_cp4c3_artifact_only_harness.sh`; `baseline-authority.txt` records the executing run exactly. |
-| **CT7** transcription | Verbatim failure text for **every** RED focused ordinal, each with a detail SHA-256. |
+**The product independently agrees.** With the rejection removed, 366/367 did not clear; they advanced to
+**`RegionEulerCharacteristicNotOne`** while publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`**. χ(region)=1
+is the disc test. **Two independent checks now say the same thing about the same object**, and the removed
+disjunct was the earlier and clearer of them.
 
-**Both standing falsifiers held:** zero `TraceArcDoesNotSeparateItsSides` and zero
-`UncutFaceComponentOrbitSeedNotUnique` across 408 logs, and no move to an earlier stage.
+**CU5 is upheld and kept.** The typed reason turned a derivation into an observation and made the attribution a
+single step. Only the removal of the rejection is reverted.
 
-**CT5 justified itself on the run that introduced it.** TB33's ledger SHA-256 is **byte-identical to TB30's** —
-same pass/fail vector, entirely different product, package and failure reasons. Second collision in three turns.
-The failure-detail table is what separates them.
+**Ordinal 409 never reached its oracle** — `disjointRegions.has_value()` is false,
+`constructed negative requires two node-disjoint closed region loops`. If that shape is unconstructible through the
+production entry path, the only reachable multi-walk shape is the **pinch**, which is what ordinal 312 constructs.
 
-**The RED set is now the frontier pair plus four independently owned carried surfaces — no diagnostic scaffolding
-remains.** Ordinals 404 and 408 have survived four consecutive forward steps.
+## 3. The frontier is now a real product defect
 
-## 3. TB33 diagnosis that CB39 tested — a boundary walk pinched at its start node
+366/367 are no longer blocked by a guard that rejects a legitimate configuration. **The plan builds a region that
+is not a disc**, and the product says so twice — `ClosedBeforeEnd` and `RegionEulerCharacteristicNotOne`, both at
+`regionFrontierFailureStage=RegionCertification`.
 
-366/367 publish `RegionBoundaryNotSingleWalk; arc=3; regionFrontierFailureStage=RegionCertification;
-V=22;E=26;F=6;componentCount=1;sourceChi=2;eulerResidual=0; regionFrontierComponentCount=6`, every component
-`censusCorrespondence=Superset` with `componentSubsetOfCensusComponent=true`.
+This ends a run of eight guard retirements. **It is to be diagnosed, not patched**, and no correction to it is
+authorized in the next turn.
 
-`validate_single_boundary_walk` rejects in-loop on `current == start || next.first != current`, and `failure.arc`
-is set only there — **arc 3 is where the loop rejected**. The second disjunct is the real chain check; **the first
-rejects a walk that passes through its own start node**. This fixture reports **`terminalSlits=10`** across twelve
-traces, and a slit arc appears **twice** in a face boundary — out and back — so a boundary legitimately revisits the
-slit's base node. **The certificate contradicts the rejection**, publishing six faces, componentCount 1 and
-**residual 0**, all established as discs.
+## 3.1 Exact next turn — `M3-CP4c-3-CB40`
 
-**Removing the disjunct loses nothing.** Two node-disjoint loops still fail `next.first != current`; the only case
-it uniquely caught is two loops meeting at the start node, which is the legitimate pinch. The trailing
-`current != start` still requires closure.
+Code + Build, runtime-free, GMP/GMPXX linked. **Restore, then re-aim. No new product behaviour.**
 
-This is a **source derivation, not a measurement** — the published `arc=3` does not say which disjunct fired, which
-is why CU5 requires a typed reason.
+- **CV2** — restore the `current == start` rejection, **keeping the typed reason**: it raises
+  `RegionBoundaryNotSingleWalk` with `regionBoundaryWalkReason=ClosedBeforeEnd`. Nothing else from CB39 is
+  reverted. **Required outcome: ordinal 312 returns to PASS and the accepted prefix returns to 365/365.**
+- **CV3** — re-aim ordinal **409 in place** at the **reachable** negative: two boundary loops meeting at a shared
+  node, rejected with reason `ClosedBeforeEnd`. If that is also unconstructible, the identity must **say so** and
+  assert what it can reach. **An identity may never be left asserting an unconstructible fixture.**
+- **CV4** — record the settled distinction: a certified face and a plan region are different objects.
+- **CV5** — mandatory pre-freeze check: before any measure removes or weakens a rejection, the **review** greps the
+  corpus for the code and names every accepted identity that asserts it.
 
-## 3.1 Exact next turn — `M3-CP4c-3-TB34-REV`
+**Falsifiers.** If 312 does not return to PASS the revert is incomplete — a stop condition, not a finding. If
+366/367 return to `RegionBoundaryNotSingleWalk` with `ClosedBeforeEnd`, §2 is confirmed; if they report
+`ArcChainBroken`, the pinch reading is wrong.
 
-Independent evidence-only review of the mechanically valid TB34 raw artifacts. Review must consume `Architecture_M3_CP4c3_TB34_EXEC_Report.md`, result/log artifacts `9999073820 / 9999074092`, the frozen TB34 plan, CB39 compile report, and TB33 semantic/review authority. It must execute **no** runtime or compile and mutate no product/test/fixture/selector/build semantics.
-
-The review must adjudicate, without pre-classifying them in EXEC:
-
-1. accepted-prefix regression ordinal **312** (`RejectsRegionWithMultipleBoundaryWalks`), which now observes `RotationSystemInconsistent` rather than the frozen `RegionBoundaryNotSingleWalk`;
-2. gating ordinal **409**, which is RED because the constructed negative fails to establish `disjointRegions` before the intended `ArcChainBroken` oracle;
-3. whether 366/367's later `RegionEulerCharacteristicNotOne` rejection plus non-rejecting `ClosedBeforeEnd` evidence validates the CB39 diagnosis or exposes a further issue;
-4. whether carried REDs 368/369/370/374/398 remain under their existing owners;
-5. semantic authority/candidate/accounting promotion only if the evidence justifies it.
-
-The implementation/orchestration loop **stops at TB34-REV**. No successor CB, new runtime, or acceptance claim is authorized before that independent review.
+**Prohibited:** any attempt to make 366/367 green; **editing ordinal 312 instead of fixing the product**; any
+topology, barrier, ownership or retired-guard change; weakening or re-scoping ordinal 398; touching
+368/369/370/374; relaxing anything 390/393/404/406/407/408 legitimately own.
 
 ## 4. Open candidates
 
@@ -90,7 +93,10 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB31-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — 390/393/406/407 PASS with selector 408 byte-unchanged and nothing they legitimately own relaxed. |
 | `M3-CP4c3-TB31-REV-CAND-03` | **CLOSED / IMPLEMENTED** — frontier evidence publishes at both annotation sites. Its **over-reach** is carried forward as `M3-CP4c3-TB32-REV-CAND-01` rather than left inside a closed candidate. |
 | `M3-CP4c3-TB32-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — 366/367 publish `regionFrontierFailureStage=RegionCertification` and their detail bytes contain **no legacy `uncutFaceComponent*` fields**. |
-| `M3-CP4c3-TB33-REV-CAND-01` | **RUNTIME-MEASURED / REVIEW-PENDING / NON-STABLE** — raw TB34 moves 366/367 later to `RegionEulerCharacteristicNotOne` with `ClosedBeforeEnd` evidence; EXEC does not close or promote the candidate. |
+| `M3-CP4c3-TB33-REV-CAND-01` | **REOPENED / REFUTED** — the `current == start` disjunct does not reject a legitimate configuration; accepted ordinal 312 is the witness that it must reject. Superseded by `M3-CP4c3-TB34-REV-CAND-01`. |
+| `M3-CP4c3-TB34-REV-CAND-01` | **NEW / ACTIVE / GATING / PRODUCT / stable-event owner** — the boundary-walk rejection is load-bearing; its removal lost accepted green at ordinal 312. Reverted by CV2. |
+| `M3-CP4c3-TB34-REV-CAND-02` | **NEW / ACTIVE / GATING / TEST AUTHORITY** — ordinal 409 asserts a fixture the production entry path does not appear to permit. Owner: CV3. |
+| `M3-CP4c3-TB34-REV-CAND-03` | **NEW / ACTIVE / GATING / PRODUCT** — the mechanical plan builds a region that is **not a disc**; `ClosedBeforeEnd` and `RegionEulerCharacteristicNotOne` agree. **The first frontier on this path that is not a guard defect.** To be diagnosed, not patched. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
@@ -205,11 +211,13 @@ After the durable start-of-turn checklist, independent TB34-REV loads only the m
 2. **this file** — current raw intake and candidate ownership.
 3. `Architecture_M3_CP4c3_TB34_EXEC_Report.md` — complete immutable raw TB34 execution evidence, including focused failure transcriptions and the accepted-prefix hard failure.
 4. `Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md` — the frozen contract TB34 executed.
-5. `Architecture_M3_CP4c3_CB39_Code_Build_Report.md` — immutable package/source authority.
-6. `Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` — current semantic/root-cause authority entering TB34.
-7. `M3_CP4c_Frozen_Definitions.md` — **Part VIII operative**.
-8. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
-9. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
-10. `tools/m3_cp4c3_artifact_only_harness.sh` — the immutable execution instrument.
+5. `Architecture_M3_CP4c3_CB39_Code_Build_Report.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB34-REV`) — immutable package/source authority.
+6. `M3_CP4c_Frozen_Definitions.md` — **Part VIII operative**.
+7. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
+8. `M3_CP4c_Consolidated_Record.md` — folded-document resolver.
+9. `tools/m3_cp4c3_artifact_only_harness.sh` — the immutable execution instrument.
 
-Exact next is independent **`M3-CP4c-3-TB34-REV`**. It executes no runtime or compile, adjudicates raw TB34 400/9 evidence and the hard falsifiers at 312/409, updates semantic authority only if justified, performs mandatory REVIEW orientation/consolidation work, and freezes exactly one successor. The implementation/orchestration loop stops there.
+Exact next is **`M3-CP4c-3-CB40`** under **CV2–CV6**: restore the boundary-walk rejection carrying its typed
+reason, re-aim ordinal 409 at the reachable negative, and record that a certified face and a plan region are
+different objects. **Ordinal 312 is restored by fixing the product, never by editing the witness**, and the
+region-is-not-a-disc frontier is diagnosed rather than patched.

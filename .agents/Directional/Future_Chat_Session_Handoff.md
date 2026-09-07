@@ -116,56 +116,81 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB34-REV` — EXACT NEXT / independent evidence-only review
+## Mandatory next turn — `M3-CP4c-3-CB40` — EXACT NEXT / restore the rejection, re-aim ordinal 409
 
-`M3-CP4c-3-TB34-EXEC` is **CLOSED / MECHANICALLY VALID / RAW-RED / SEMANTICALLY UNADJUDICATED**. The implementation/orchestration loop stops here. Do not execute new runtime, compile, repair the package, or mutate product/test/fixture/selector/build semantics before independent review.
+`M3-CP4c-3-TB34-REV` has adjudicated TB34 and promoted it to **current valid semantic runtime authority**. It
+carries an **accepted-prefix regression** and **one new stable event**.
 
-### Current semantic runtime authority
+### Current authority
 
-- **TB33 remains semantic authority:** selector 408, **401 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; source `0d03edb07388c56b592a74e2e7fc5f3edde8cea4`, package `9994997588`, run/job `34054234216 / 101543088114`.
-- Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic package count **99**.
+- **`M3-CP4c-3-TB34`** — selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365** with accepted RED
+  ordinal **312**, RED `[312,366,367,368,369,370,374,398,409]`; immutable CB39 package `9997560649`, source
+  `7711b9c2c20d284823911aa4ca067bd33244f4e6`; run `34066225065`; 409 rows, every row `selected=1`, zero timeouts,
+  all three byte+mode censuses identical pre/post.
+- Certified ownership remains **300 / 0 / 0**; 390/393/404/406/407/408 PASS; zero emissions of either retired code.
+- **Stable accounting is now 45 events / 14 categories / 31 recurrences**, debt **5**, packages **99**.
 
-### TB34 raw execution authority
+### What TB34 established
 
-- Immutable CB39 package **`9997560649`** / source **`7711b9c2c20d284823911aa4ca067bd33244f4e6`** / selector **409**.
-- Corrected run/job **`34066225065 / 101575358433`**.
-- Result artifact **`9999073820`**, SHA-256 `348edc1d170b68d698acda32a39686e33e7a6a88608d1396cc91a85e3b7a34b7`.
-- Log artifact **`9999074092`**, SHA-256 `20bf7b7d8d4f61ae51e483b66a37d8a21f6febfb869e8e19b2b900d726efabde`.
-- Mechanical ledger **400 PASS / 9 RED**, RED `[312,366,367,368,369,370,374,398,409]`; accepted **364/365** because ordinal 312 is RED; every row selected exactly once; zero timeouts.
-- Ledger SHA-256 `1704550db48f56657013b56dbde19820babfd708c3efb757a0f24b0ee800b1a0`; failure-detail table SHA-256 `829fc30926dcd3006065777936f64174dabf2a71278acf65b9c0d5413d21efda`.
-- Package/source/execution-view byte+mode censuses are identical pre/post; configure/compile/relink/discovery/benchmark/repair/mutation flags all false.
+**The CU4 correction was wrong and is reverted.** Ordinal 312,
+`GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is an **accepted** identity encoding the contract that
+a multi-walk region must be rejected. TB33-REV argued the removed `current == start` disjunct caught only a
+legitimate pinch; the code appears **exactly twice** in the test file — at 312 and at the ordinal 409 the same
+review added — and one grep before the freeze would have found it. `LESSONS.md` 144.
 
-### Raw hard-falsifier intake
+**The supporting certificate argument was an authority-domain conflation** — `F=6`, `componentCount=1`,
+`eulerResidual=0` are claims about **certified faces of the embedded graph**, not about a **plan region**.
+`LESSONS.md` 145.
 
-1. **Accepted-prefix 312 RED.** `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks` expected `RegionBoundaryNotSingleWalk` but observed `RotationSystemInconsistent`; no arc locus published. TB33 had 365/365 accepted PASS.
-2. **Gating 409 RED.** `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected` fails before its intended `ArcChainBroken` oracle because `disjointRegions.has_value()` is false. The frozen plan required PASS. EXEC does not decide fixture versus product ownership.
-3. **366/367 advance later:** both reject at `RegionEulerCharacteristicNotOne`, stage `RegionCertification`, with `regionBoundaryWalkReason=ClosedBeforeEnd`.
-4. **Protected greens hold:** 390/393/404/406/407/408 PASS. Both retired codes remain absent. Ownership remains **300/0/0** when published.
+**The product independently agrees the region is not a disc.** With the rejection removed, 366/367 advanced to
+**`RegionEulerCharacteristicNotOne`** while publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`** — two
+independent region-level tests, same object, same conclusion.
 
-The first caller attempt `34066163471 / 101575197341` is invalid-attempt provenance only: no Directional runtime started; frozen byte hashes verified; then an extra umask-sensitive bootstrap mode assertion failed. Corrected retry changed only that control-plane assertion and reused the immutable package unchanged.
+**CU5 is upheld and kept**; only the removal of the rejection is reverted. **Ordinal 409 never reached its
+oracle** — `disjointRegions.has_value()` is false — so the only reachable multi-walk shape is the pinch that
+ordinal 312 constructs.
 
-### Independent TB34-REV duties
+### CB40 boundary — CV2–CV6
 
-- Read `ORIENTATION.md` first and update it before review closeout.
-- Consume `Architecture_M3_CP4c3_TB34_EXEC_Report.md`, raw result/log artifacts `9999073820 / 9999074092`, `Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md`, CB39 compile report, TB33 independent review record, `M3_CP4c_Frozen_Definitions.md`, selector manifest, tracker, TODO, changelog, and consolidated record.
-- Execute **no** runtime or compile and perform no package operation or product/test/fixture/selector/build mutation.
-- Adjudicate `M3-CP4c3-TB34-EXEC-CAND-01` (accepted-prefix 312), `M3-CP4c3-TB34-EXEC-CAND-02` (gating 409), and existing frontier candidate `M3-CP4c3-TB33-REV-CAND-01`.
-- Decide whether raw 366/367 later-stage evidence supports the CB39 diagnosis and whether 312/409 failures are product, fixture/test-authority, or another class; do not inherit EXEC labels as semantic verdicts.
-- Update semantic authority/stable accounting only if justified. Perform mandatory REVIEW document consolidation and freeze exactly one successor.
+Code + Build only. `runtimeExecution=false`, GMP/GMPXX linked. **Restore, then re-aim. No new product behaviour.**
+
+1. **CV2** — restore the `current == start` rejection in `validate_single_boundary_walk`, **keeping the typed
+   reason**: it raises `RegionBoundaryNotSingleWalk` with `regionBoundaryWalkReason = ClosedBeforeEnd`.
+   `ArcChainBroken` and `WalkNotClosed` keep their meanings; the reason plumbing, observation flag and diagnostics
+   field all stay. **Required outcome: ordinal 312 returns to PASS and the accepted prefix returns to 365/365.**
+2. **CV3** — re-aim ordinal **409 in place** at the **reachable** negative: two boundary loops meeting at a shared
+   node, rejected with reason `ClosedBeforeEnd`. Ordinal, name and the first 408 selector lines unchanged. If that
+   shape is also unconstructible through the production entry path, the identity must **say so explicitly** and
+   assert the property it can reach. **An identity may never be left asserting an unconstructible fixture.**
+3. **CV4** — record the settled distinction in `ORIENTATION.md` §5 and `M3_CP4c_Current_And_Forward.md`: **a
+   certified face of the embedded graph and a plan region are different objects**, and the certificate licenses no
+   conclusion about regions.
+4. **CV5** — mandatory pre-freeze check, owned by the **review**: before any measure removes, weakens or re-scopes
+   a rejection, grep the corpus for the error code and name every accepted identity (1–365) that asserts it.
+
+**Falsifiers, stated before the build.** If ordinal **312** does not return to PASS, the revert is incomplete —
+that is a stop condition, not a finding. If **366/367** return to `RegionBoundaryNotSingleWalk` with reason
+`ClosedBeforeEnd`, the pinch reading is confirmed and the frontier is `M3-CP4c3-TB34-REV-CAND-03`. If they report
+`ArcChainBroken` instead, the pinch reading is wrong. If ordinal **409** still cannot construct its fixture, CV3's
+fallback applies.
+
+**Prohibited:** any attempt to make 366/367 green — **the region-is-not-a-disc finding is diagnosed, not
+patched**; **restoring ordinal 312 by editing the witness instead of fixing the product**; any topology, barrier,
+ownership or previously-retired-guard change; weakening or re-scoping ordinal 398, or touching 368/369/370/374;
+relaxing anything 390/393/404/406/407/408 legitimately own; executing any Directional runtime.
 
 ### Context Load Plan
 
-`load_next`: independent review guidance.
+`load_next`: Code + Build guidance, plus `GMP_COMPILE_POLICY.md` per start-checklist item 5.
 
-0. `.agents/Directional/ORIENTATION.md`.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB34_EXEC_Report.md` — authoritative raw execution record.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md` — frozen contract.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB39_Code_Build_Report.md` — immutable package authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` — semantic authority entering TB34.
-6. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII operative.
-7. `.agents/Directional/Required_Green_Selector_Manifest.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `.agents/Directional/CHANGELOG.md`.
-8. `.agents/Directional/M3_CP4c_Consolidated_Record.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state/candidates.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` — **CV0–CV6**, the adjudication and the frozen CB40 scope.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB34_EXEC_Report.md` — current runtime authority, with verbatim failure text for every RED focused ordinal and for ordinal 312.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part VIII operative**.
+5. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector 409 and the frozen prefixes.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — folded document index.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

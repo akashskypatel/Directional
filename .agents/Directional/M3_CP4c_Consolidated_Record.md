@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB33-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 408 at **401 PASS / 7 RED**, accepted authority **365/365**. Certified ownership is total at **300/300** with **all nine plan components uniquely seeded**; both retired codes appear in **no** raw log; **the RED set is the frontier pair plus four independently owned carried surfaces, with no diagnostic scaffolding left**. The current stop is **`RegionBoundaryNotSingleWalk`** at arc 3. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **98**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB34-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **400 PASS / 9 RED**, and **the accepted prefix is broken at 364/365** by ordinal 312 — one new stable event, category `RP-01 / AUTHORITY_DOMAIN_CONFLATION`. Certified ownership is total at **300/300**. The frontier is now a **real product defect**: the plan builds a region that is not a disc, and `ClosedBeforeEnd` and `RegionEulerCharacteristicNotOne` agree. Stable accounting **45 / 14 / 31**, debt **5**, semantic M3 packages **99**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -892,6 +892,32 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
+
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB34-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB34_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in §§1–4 of the
+TB34 review record:** ordinal 312's verbatim failure, the `ClosedBeforeEnd` / `RegionEulerCharacteristicNotOne`
+pair on 366/367, ordinal 409's unconstructible-fixture message, and the ownership census `300 / 0 / 0`.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` | 294 | superseded review authority - CU0-CU6. Discharged every CT measure and recorded the cleanest RED set of the checkpoint, but its **§3.1/§3.2 derivation is refuted**: the `current == start` disjunct is load-bearing, accepted ordinal 312 encodes it, and the certificate argument conflated certified faces with plan regions. **CU4 is reverted; CU5 is upheld** |
+| `Architecture_M3_CP4c3_TB33_EXEC_Report.md` | 144 | superseded runtime authority - TB33, 401 PASS / 7 RED on selector 408, accepted 365/365; the last run before the accepted prefix broke |
+| `Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md` | 181 | consumed contract |
+| `Architecture_M3_CP4c3_CB39_Code_Build_Report.md` | 65 | consumed build report - it implemented CU4/CU5/CU6 faithfully. **The defect was in the frozen measure, not the implementation** |
+
+**Folded here:** 4 documents, 684 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB34_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 400 PASS / 9 RED with accepted prefix **364/365**),
+`Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` (this review and the frozen CB40 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part VIII operative**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
 
 ### Consolidated on 2026-09-06 at `M3-CP4c-3-TB33-REV`
 

@@ -1,3 +1,58 @@
+## 2026-09-06 — `M3-CP4c-3-TB34-REV`: accepted-prefix regression at ordinal 312; the CU4 correction is reverted; one new stable event
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 7711b9c2c20d284823911aa4ca067bd33244f4e6` passed.
+
+**TB34 is promoted to current valid semantic runtime authority, and it carries an accepted-prefix regression:**
+selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365** with accepted RED ordinal **312**, RED
+`[312,366,367,368,369,370,374,398,409]`. The run is mechanically valid — 409 rows, every row `selected=1`, zero
+timeouts, all three byte+mode censuses identical pre/post.
+
+**The CU4 correction was wrong and is reverted.** Ordinal 312,
+`GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, is an **accepted** identity encoding the contract that
+a multi-walk region must be rejected with `RegionBoundaryNotSingleWalk`; its retained failure shows
+`RotationSystemInconsistent` substituted and no arc locus. TB33-REV argued the removed `current == start` disjunct
+uniquely caught only "two loops meeting at the start node — a legitimate pinch". **`RegionBoundaryNotSingleWalk`
+appears exactly twice in the test file** — at ordinal 312 and at the ordinal 409 the same review added — and one
+grep before the freeze would have found the accepted witness that contradicted the derivation.
+
+**The supporting certificate argument was an authority-domain conflation.** `F=6`, `componentCount=1` and
+`eulerResidual=0` are claims about **certified faces of the embedded graph**; a **plan region** is a different
+object over a different partition — a distinction this checkpoint has held since TB21 and re-proved at TB27.
+
+**The product independently agrees the region is not a disc.** With the rejection removed, 366/367 did not clear;
+they advanced to **`RegionEulerCharacteristicNotOne`** while publishing
+**`regionBoundaryWalkReason=ClosedBeforeEnd`**. χ(region)=1 is the disc test, so two independent region-level
+checks now say the same thing about the same object, and the removed disjunct was the earlier and clearer of them.
+
+**CU5 is upheld and kept.** The typed reason turned TB33-REV's derivation into an observation and made the
+attribution a single step; only the removal of the rejection is reverted. **Ordinal 409 never reached its oracle** —
+`disjointRegions.has_value()` is false — so the only reachable multi-walk shape is the pinch that ordinal 312
+constructs.
+
+**Accounting: ONE NEW STABLE EVENT.** **44 / 14 / 30 → 45 events / 14 categories / 31 recurrences**;
+produced-witness debt **5**; packages **99**. Accepted ordinal 312 lost accepted-green behaviour — every prior
+PASS → RED in this sequence was outside 1–365 and was evidence-contract loss. Primary category
+`RP-01 / AUTHORITY_DOMAIN_CONFLATION`; existing, so categories stay 14. **Detection escape: none** — the accepted
+prefix caught it on the first runtime after the change; the escape was upstream, in a freeze published without
+checking the accepted witnesses for the code it removed.
+
+**The frontier is now a real product defect.** This ends a run of eight guard retirements: the plan builds a region
+that is not a disc, and the product says so twice. It is to be **diagnosed, not patched**.
+
+**Candidates.** Reopened and refuted: `M3-CP4c3-TB33-REV-CAND-01`. New: `M3-CP4c3-TB34-REV-CAND-01` (the rejection
+is load-bearing; stable-event owner), `-CAND-02` (ordinal 409 asserts an unconstructible fixture), `-CAND-03` (the
+plan builds a non-disc region — the first frontier here that is not a guard defect).
+
+**Lessons 144 and 145** added. **Consolidation:** the TB33 review record, EXEC report and plan, plus the CB39 build
+report, were folded; ordinal 312's verbatim failure and the `ClosedBeforeEnd` / `RegionEulerCharacteristicNotOne`
+pair are preserved in the TB34 review record.
+
+**Exact successor: `M3-CP4c-3-CB40`** under **CV2–CV6** — restore the rejection carrying its typed reason, re-aim
+ordinal 409 at the reachable negative, record that a certified face and a plan region are different objects, and
+adopt a mandatory pre-freeze grep before any future measure removes a rejection. **Ordinal 312 is restored by
+fixing the product, never by editing the witness.**
+
 ## 2026-09-06 — `M3-CP4c-3-TB34-EXEC`: selector409 mechanically 400/9; accepted-prefix 312 and gating 409 are raw hard falsifiers; review required
 
 Artifact-only runtime on immutable CB39 package `9997560649` / source `7711b9c2c20d284823911aa4ca067bd33244f4e6`, selector 409. Corrected run/job `34066225065 / 101575358433` completed all **409/409** rows exactly once, zero timeouts, and preserved package/source/execution-view byte+mode censuses. Result/log artifacts `9999073820 / 9999074092` have SHA-256 `348edc1d170b68d698acda32a39686e33e7a6a88608d1396cc91a85e3b7a34b7 / 20bf7b7d8d4f61ae51e483b66a37d8a21f6febfb869e8e19b2b900d726efabde`. No configure, compile, relink, generated discovery, benchmark, repair, or source/test/fixture/selector mutation occurred.

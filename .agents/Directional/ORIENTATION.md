@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-TB33-REV`):** runtime authority is **TB33** on selector **408** at **401 PASS / 7 RED**, accepted **365/365**. **Every CT measure discharged** — stage labels with no back-fill, **390/393/406/407 back to PASS**, a per-row failure-detail digest, a turn-agnostic harness, and verbatim failure transcription for every RED focused ordinal. **The RED set is now the frontier pair plus four independently owned carried surfaces — no diagnostic scaffolding remains.** Ownership is total and **all nine plan components have a unique seed**. The frontier is `RegionBoundaryNotSingleWalk` at **arc 3**, whose guard rejects a walk that **passes through its own start node** — the configuration this fixture's **ten terminal slits** produce. Exact next is `M3-CP4c-3-CB39` under **CU4–CU6**.
+> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-TB34-REV`):** runtime authority is **TB34** on selector **409** at **400 PASS / 9 RED**, and **the accepted prefix is BROKEN at 364/365** — ordinal **312**, `RejectsRegionWithMultipleBoundaryWalks`, went PASS → RED. **The CU4 correction was wrong and is reverted.** An accepted identity already encoded the contract the review's derivation denied, and the supporting certificate argument was an **authority-domain conflation** — certified faces are not plan regions. **One new stable event: 45 / 14 / 31.** With the rejection removed, 366/367 advanced to **`RegionEulerCharacteristicNotOne`** while publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`** — **two independent checks now agree the plan builds a region that is not a disc**, the first frontier on this path that is **not** a guard defect. Exact next is `M3-CP4c-3-CB40` under **CV2–CV6**: restore the rejection, keep the typed reason, re-aim ordinal 409.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -185,27 +185,32 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB33`.** Selector **408**, **401 PASS / 7 RED**, accepted **1–365 = 365/365**,
-reds {366, 367, 368, 369, 370, 374, 398}. Certified source-face ownership is **300 / 0 / 0**, and **all nine** plan
-components publish `seedCount=1, seedState=Unique` — component 0 at 189 faces `[0]`, component 4 at 30 faces `[2]`,
-seven singletons — with `fragmentOwnerOrbitCount=6` matching the certificate's `F=6`.
+**Runtime authority — `M3-CP4c-3-TB34`.** Selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365**
+with accepted RED ordinal **312**, reds {312, 366, 367, 368, 369, 370, 374, 398, 409}. Certified ownership remains
+**300 / 0 / 0**; 390/393/404/406/407/408 all PASS; zero emissions of either retired code.
 
-**Every CT measure is discharged.** 366/367 publish `regionFrontierFailureStage=RegionCertification` with **no
-legacy `uncutFaceComponent*` back-fill**; **390/393/406/407 returned to PASS** with selector 408 byte-unchanged; a
-`failure-detail-digests.tsv` covers all 408 rows; the harness is turn-agnostic and `baseline-authority.txt` records
-the executing run; and the report transcribes verbatim failure text for **every** RED focused ordinal. Both standing
-falsifiers held — zero emissions of either retired code across 408 logs.
+**The accepted prefix is broken, and the cause is a review measure.** Ordinal 312,
+`GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, expected `RegionBoundaryNotSingleWalk` and observed
+`RotationSystemInconsistent` with no arc locus. TB33-REV's CU4 removed the `current == start` rejection on the
+argument that it caught only a legitimate pinch; **that accepted identity encodes the opposite contract**, and the
+error code appears exactly twice in the test file — once there, once in the ordinal 409 the same review added.
+`LESSONS.md` 144.
 
-**The ledger digest collided again.** TB33's ledger SHA-256 is byte-identical to **TB30's**, on a different product,
-package and set of failure reasons — the second collision in three turns. The new failure-detail table is what
-separates them. `LESSONS.md` 141.
+**The supporting argument was an authority-domain conflation.** The certificate's `F=6`, `componentCount=1` and
+`eulerResidual=0` are claims about **certified faces of the embedded graph**; a **plan region** is a different
+object over a different partition. `LESSONS.md` 145.
 
-**The frontier is a pinched boundary walk.** 366/367 stop at `RegionBoundaryNotSingleWalk`, **arc 3**.
-`validate_single_boundary_walk` rejects in-loop on `current == start || next.first != current`. The second disjunct
-is the real chain check; **the first rejects a walk that passes through its own start node** — and this fixture
-reports **`terminalSlits=10`**, each slit arc appearing twice in a face boundary, out and back. The certificate
-independently contradicts the rejection by publishing `F=6`, `componentCount=1`, **`eulerResidual=0`** with all six
-faces established as discs. Same family as the two guards already retired here. `LESSONS.md` 143.
+**The product independently agrees the region is not a disc.** With the rejection removed, 366/367 advanced to
+**`RegionEulerCharacteristicNotOne`** — χ(region) ≠ 1 — while publishing
+**`regionBoundaryWalkReason=ClosedBeforeEnd`**. Two independent tests, one object, same conclusion. The removed
+disjunct was the **earlier and clearer** of them.
+
+**CU5 is upheld and kept.** The typed reason turned a derivation into an observation and is what made the
+attribution a single step. Only the removal of the rejection is reverted.
+
+**Ordinal 409 never reached its oracle** — `disjointRegions.has_value()` is false. If node-disjoint boundary loops
+are unconstructible through the production entry path, the only reachable multi-walk shape is the **pinch**, which
+is what ordinal 312 constructs.
 
 **Definition authority — `M3-CP4c-3-DEFN-R4`, Part VIII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Part VII where they conflict.
 
@@ -249,7 +254,7 @@ IV–VI where they conflict, and only there. Its decisions:
   assertions are REPLACED in place**, retained and gating, because its seed-relative expectation becomes
   meaningless once the seed ceases to exist.
 
-Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **98**. Sphere 368,
+Stable accounting is **45 / 14 / 31** — **one new stable event at TB34**, category `RP-01 / AUTHORITY_DOMAIN_CONFLATION` — produced-witness debt **5**, semantic M3 packages **99**. Sphere 368,
 saturation 369, ordinal 370, folded-cone 374, the finalize/contact fall-through and the vertex-30 evidence contract
 remain deferred under their own owners. **Vertex 30 is still not reached.**
 
@@ -260,7 +265,7 @@ remain deferred under their own owners. **Vertex 30 is still not reached.**
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path.** Certified ownership is **total (300/300)** and **all nine plan components have a unique seed**. Three guards have been cleared in as many corrections; neither `UncutFaceComponentOrbitSeedNotUnique` nor `TraceArcDoesNotSeparateItsSides` appears in any of 408 raw logs. The pipeline now stops at **`RegionBoundaryNotSingleWalk`, arc 3**, stage `RegionCertification` — a boundary walk that revisits its own start node, which this fixture's **ten terminal slits** produce. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current owner of the critical path.** Certified ownership is **total (300/300)** and uniquely seeded across all nine plan components. The frontier is no longer a guard defect: with the boundary-walk rejection temporarily removed, the plan reached **`RegionEulerCharacteristicNotOne`** while publishing **`regionBoundaryWalkReason=ClosedBeforeEnd`** — **two independent checks agree the plan builds a region that is not a disc**. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -355,21 +360,19 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Region boundary — a walk pinched at its start node.**
+1. **The plan builds a region that is not a disc — the first frontier here that is not a guard defect.**
 
-   - **Cleared and closed:** source-face ownership (300/300, **all nine components unique**), the seed guard, and
-     `TraceArcDoesNotSeparateItsSides`. Neither retired code appears in any of the 408 raw logs.
-   - **The current stop** is `RegionBoundaryNotSingleWalk`, **arc 3**, stage `RegionCertification`.
-     `validate_single_boundary_walk` rejects in-loop on `current == start || next.first != current`. The second
-     disjunct is the chain check; **the first rejects a walk that passes through its own start node** — exactly
-     what a terminal slit produces, and this fixture reports **ten** of them.
-   - **The certificate contradicts the rejection**: the same failure publishes `F=6`, `componentCount=1`,
-     `eulerResidual=0`, all six faces established as discs.
-   - **Removing the disjunct loses nothing**: two node-disjoint loops still fail the chain test, and the trailing
-     `current != start` still requires closure. `M3-CP4c-3-CB39` (CU4–CU6) makes the change, publishes a typed
-     reason so the next runtime says which disjunct fired, and adds a constructed negative at selector **409**.
-   - **The witnesses are all green.** 390/393/406/407 recovered once "this stage was cleared" became a
-     first-class, justified outcome; 404 and 408 have now survived four consecutive forward steps.
+   - **Two independent checks agree.** `regionBoundaryWalkReason=ClosedBeforeEnd` (the walk closes before its arcs
+     are consumed) and `RegionEulerCharacteristicNotOne` (χ ≠ 1). Both are region-level tests and both are the
+     authority on regions.
+   - **The rejection is load-bearing and is being restored.** Accepted ordinal **312**,
+     `RejectsRegionWithMultipleBoundaryWalks`, encodes the contract; removing it lost accepted green and produced
+     this checkpoint's first stable event.
+   - **Do not cite the certificate here.** Its disc claim is about **certified faces of the embedded graph**, not
+     about plan regions. That conflation is what produced the bad measure.
+   - **Not to be patched.** `M3-CP4c-3-CB40` restores the rejection and re-aims ordinal 409; the
+     region-is-not-a-disc finding is **diagnosed** in a later turn, and ordinal 312 is restored by fixing the
+     product, never by editing the witness.
 
 2. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
@@ -423,6 +426,16 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Before removing a rejection, grep the accepted corpus for the code it raises.** A review froze the removal of a
+guard on a source derivation; an accepted identity named `RejectsRegionWithMultipleBoundaryWalks` had asserted the
+opposite contract all along, and the code appeared exactly twice in the whole test file. The first runtime after the
+change lost accepted green. The obligation belongs to the review that freezes the removal. `LESSONS.md` §4 144.
+
+**A certificate's claim about one object is not a claim about another object built from it.** The cellularity
+certificate proves disc topology for **certified faces**; it says nothing about whether a **plan region** is a
+disc. This checkpoint had already recorded that those are different objects and re-proved it at runtime.
+`LESSONS.md` §4 145.
 
 **A walk may pass through its own start node.** A boundary validator treated "returned to the start with arcs
 remaining" as proof of a second loop. With ten terminal slits, a face boundary traverses each slit twice and

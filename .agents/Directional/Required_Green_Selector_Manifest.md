@@ -510,8 +510,23 @@ CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen sel
 with GMP/GMPXX linked; root package `SHA256SUMS` is 28/28 PASS; command boundary records `runtimeExecution=false`.
 This is compile authority only. Selector 409 is not semantically accepted until TB34. Package count is **99**.
 
-**Exact successor:** artifact-only `M3-CP4c-3-TB34-EXEC` on immutable artifact `9997560649`; do not rebuild.
-Ordinal 409 is a hard falsifier and must PASS; ordinals 390/393/404/406/407/408 keep their contracts.
+**Executed at `M3-CP4c-3-TB34`** — run `34066225065`, **400 PASS / 9 RED**, RED
+`[312,366,367,368,369,370,374,398,409]`, **accepted 1–365 = 364/365**. Two results this selector must carry
+forward:
+
+- **Ordinal 312 — `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks` — regressed inside the accepted
+  prefix.** It is the accepted witness for `RegionBoundaryNotSingleWalk`, and the code appears **exactly twice** in
+  the test corpus: at 312 and at 409. **Before any future measure removes or weakens a rejection, grep for its
+  error code and name every accepted identity that asserts it.** This selector's accepted prefix is restored by
+  fixing the product at `M3-CP4c-3-CB40`, **never** by editing ordinal 312.
+- **Ordinal 409 never reached its oracle** — `disjointRegions.has_value()` is false. Two **node-disjoint** boundary
+  loops appear to be unconstructible through the production entry path, so the identity is **re-aimed in place** at
+  the reachable negative — two loops meeting at a shared node, rejected with reason `ClosedBeforeEnd`. Its name,
+  ordinal and the first 408 selector lines do not change.
+
+**Exact successor:** `M3-CP4c-3-CB40` under CV2–CV6. It authors no selector; selector 409 stays byte-frozen while
+ordinal 409's assertions are replaced in place. **Required outcome: ordinal 312 returns to PASS and the accepted
+prefix returns to 365/365.** Ordinals 390/393/404/406/407/408 keep their contracts and must stay green.
 
 ## Separate lineage — M1
 
