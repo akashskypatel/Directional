@@ -535,11 +535,18 @@ provenance relation resolves their mutated copies (`tests/FieldAlignedCurveNetwo
 `:3276–3279`) to `Unguaranteed`, so **Part IX-A §A.1 is confirmed**: a construction-time flag would have survived
 the copy and re-broken accepted ordinal 312.
 
-**Exact successor:** `M3-CP4c-3-CB42` under **CY6.1–CY6.6** of
-`Architecture_M3_CP4c3_TB36_Independent_Review_Record.md`. **It authors no selector: 409 stays byte-frozen**, and
-CY6.5 keeps ordinals **312** and **409** byte-identical — fixtures, names, assertions, order and selector
-membership. CB42 adds **diagnostics only**, so **any behaviour change at all is a defect in the turn**, and before
-implementing it must grep the corpus for every accepted identity asserting `RegionEulerCharacteristicNotOne`.
+**CB42 discharged that successor and TB37 proved it.** CB42's grep found **no test-source assertion** of
+`RegionEulerCharacteristicNotOne`, and ordinals 312/409 and selector409 stayed byte-identical
+(`94724bef…`, `ea574dab…`, `eea6d8c2…`). TB37 then hashed `ledger.tsv` and `identity-map.tsv` **identical to
+TB36's** while the failure-detail digest table changed — the artifact proof that a diagnostics-only turn changed
+no behaviour.
+
+**Exact successor:** `M3-CP4c-3-DEFN-R6` — a **static definition turn** appending **Part X**, which authors no
+selector and touches no source. The implementing turn it freezes, `M3-CP4c-3-CB43`, corrects the region Euler
+criterion to `χ = V_total − E_total + F = 1`. **Selector 409 stays byte-frozen and ordinals 312/409 stay
+byte-identical.** Because no accepted identity asserts `RegionEulerCharacteristicNotOne`, the selector risk is not
+a direct assertion — it is that a region which currently fails Euler will now pass and reach stages never executed
+on it, so CB43 must prove the equivalence `X = E_one + B_int` **per region on every accepted fixture**.
 **Accepted prefix 365/365 is a stop condition.**
 
 ## Separate lineage — M1

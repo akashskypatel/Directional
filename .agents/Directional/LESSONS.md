@@ -1891,6 +1891,34 @@ building any conclusion on it.**
      suspiciously clean equality, verify that both sides are cardinalities of the same space** before reading
      anything into it. Related: the recurring `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category, which cost this
      checkpoint an accepted-green regression once already.
+151. **A pass/fail ledger that is byte-identical to its predecessor is the *desired* result for a diagnostics-only
+     turn - but only a second digest makes that provable.** TB32 and TB33 each produced ledger hashes identical to
+     a predecessor and the turn could not be distinguished from a stalled one, which is why a failure-detail digest
+     table was added. CB42 then made the opposite kind of change: diagnostics only, no behaviour. TB37's
+     `ledger.tsv` and `identity-map.tsv` hashed **identical** to TB36's while the failure-detail digest table
+     **differed** - and that pair of facts is a proof of "same verdicts, richer evidence" that neither hash could
+     give alone. **When a turn's contract is `no behaviour change`, name the artifact that must stay identical and
+     the artifact that must change**, and check both. An unexplained identical hash is a warning; an identical
+     hash next to a changed evidence digest is a receipt.
+152. **When a setup step writes to a path some workflow triggers on, the turn has already started before its own
+     ordering gate.** Two consecutive EXEC turns missed process order the same way. One read project documents
+     before choosing `READ_MODE`; the next created the turn-cleanup manifest during setup, and because the durable
+     cleanup workflow is push-triggered on that exact path, cleanup fired before the execution caller existed.
+     Neither touched semantic evidence, but neither was caught by the turn's own checklist either - because the
+     checklist governs what the agent does deliberately, not what a path write does automatically. **Before writing
+     any file under a trigger-watched directory, check whether that write is itself an action**, and order
+     trigger-bearing writes last.
+153. **A "boundary" defined by one subsystem's barrier set is not the boundary of another subsystem's complex.**
+     A region certificate computed `chi` over a source sub-mesh of whole triangles but took its boundary from the
+     **network's** barrier set - mandatory and cut edges. A barrier edge with **both** incident faces inside the
+     region, which is precisely what a terminal slit is, is an **interior** cell of that sub-mesh. The certificate
+     dropped 12 such edges from the edge count and 16 further vertices from the vertex count, the two exclusions
+     did not balance, and `chi` came out **4 low on a region that is a genuine disc** (`V/E/F = 136/385/250`,
+     `chi = 1`). The stated cancellation premise was never the defect: the true sub-mesh boundary cancelled
+     exactly, 20 edges against 20 vertices. **When one subsystem's notion of "boundary" is used to classify
+     another subsystem's cells, check the classification on the cells that belong to both** - the disagreement
+     lives exactly there. Related: the `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category, and lesson 150 on naming a
+     measurement's domain.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB36-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36: 366/367 advanced past `ClosedBeforeEnd` on `FaceWalkOrbit` while ordinals 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. **The frontier is now the region certificate's two mutually exclusive claims** — that the boundary terms cancel out of χ, and that regions are discs. The frozen CX5 census could not decide it because it counts the **network graph** while χ counts a **sub-mesh of whole source triangles**; what the numbers do settle is **χ_true = X + B_int − 47**, so `X + B_int = 44` means the region is not a disc and `= 48` means the reduced formula is wrong by exactly 4. Runtime authority is **TB36** on selector 409 at **402 PASS / 7 RED**, accepted **365/365**, packages **101**. Stable accounting **45 / 14 / 31** — no new event, no accepted green lost — debt **5**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB37-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36, and **the Euler frontier is decided at TB37**: `D = X + B_int = 48` and `chiFull = 1`, so the region's source sub-mesh is a genuine triangulated disc while the reduced certificate publishes `−3`. The gap decomposes as `(20 − 20) + (16 − 12)` — the boundary terms **do** cancel, and the entire error is that **12 interior barrier edges** are dropped from `E_int` while **16 further vertices** are dropped from `V_int`, asymmetrically. A terminal slit is an **interior** cell being misclassified as boundary. Runtime authority is **TB37** on selector 409 at **402 PASS / 7 RED**, accepted **365/365**, packages **102**. Stable accounting **45 / 14 / 31** — no new event — debt **5**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -892,6 +892,35 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
+
+### Consolidated on 2026-09-07 at `M3-CP4c-3-TB37-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB37_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in CZ0–CZ6 of the
+TB37 review record:** the promotion evidence, the artifact proof that CB42 changed no behaviour, the seven
+independent checks on `D = 48`, the decomposition `(20 − 20) + (16 − 12)` that locates the defect in interior
+barrier edges, and the whole-face rounding caveat.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` | 245 | superseded review authority - CY0-CY6. Promoted TB36, proved Part IX's provenance relation in both directions, showed the CX5 census was taken in the wrong domain, and **derived the identity chi_true = X + B_int - 47** that this turn resolved. Its two pre-measurement predictions both landed |
+| `Architecture_M3_CP4c3_TB36_EXEC_Report.md` | 185 | superseded runtime authority - TB36, 402 PASS / 7 RED on selector 409, accepted 365/365, package101 |
+| `Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md` | 170 | consumed contract |
+| `Architecture_M3_CP4c3_CB41_Code_Build_Report.md` | 130 | consumed build report - CX0-CX8. Implemented the derived provenance relation and the first (network-domain) Euler census; superseded as package authority by CB42 |
+
+**Folded here:** 4 documents, 730 lines. **Running total: 113 documents, 22,254 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB37_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 402 PASS / 7 RED, accepted 365/365, package102),
+`Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` (this review and the frozen DEFN-R6 scope),
+`Architecture_M3_CP4c3_CB42_Code_Build_Report.md` (**the build that produced the current package**, and the grep
+proving no accepted identity asserts `RegionEulerCharacteristicNotOne`), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md` (**Part IX operative, amended by Part IX-A; Part X appends next**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
 
 ### Consolidated on 2026-09-07 at `M3-CP4c-3-TB36-REV`
 

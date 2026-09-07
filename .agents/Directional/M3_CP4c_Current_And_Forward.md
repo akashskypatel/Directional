@@ -10,25 +10,19 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-07** at `M3-CP4c-3-TB37-EXEC` closeout.
+Last updated **2026-09-07** at `M3-CP4c-3-TB37-REV` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB36` is the current valid semantic runtime authority**, promoted at TB36-REV. Selector **409**,
-**402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB41 package
-`10029250324` / source `14aa1368523580444929bc65cab0b65449240ec2`. Run `34153857590`; 409 rows, every row
-`selected=1`, zero timeouts, all three censuses identical pre/post, failure-detail digest table published,
-`SHA256SUMS` 28/28, executables `0755`.
+**`M3-CP4c-3-TB37` is the current valid semantic runtime authority**, promoted at TB37-REV. Selector **409**,
+**402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB42 package
+`10032277517` / source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`. Run `34161464783`; 409 rows, every row
+`selected=1`, zero timeouts, all three censuses identical pre/post, `SHA256SUMS` 28/28, executables `0755`.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting **45 events / 14 categories
-/ 31 recurrences** — **no new event**, because no accepted green was lost — debt **5**, packages **102**.
-
-**CB42 is compile-green / runtime-free.** Package102 artifact `10032277517` was built from exact semantic source
-`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` in run/job `34159743881 / 101858898702`; result SHA-256
-`ca33be401dba11b1007258bd127948e03168cf2cd42231307d54d506028dc5ee`. It adds only the CY6 source-submesh
-measurement fields. TB37-EXEC has now executed that immutable package and is mechanically valid; independent review is next.
+/ 31 recurrences** — **no new event**, no accepted green was lost — debt **5**, packages **102**.
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -120,29 +114,77 @@ sub-mesh, yet `:1848–1850` drops it from `E_int` and `:1919`/`:1925`/`:1947` p
 `boundaryVertices`, which `:2048–2051` then excludes from `V_int`. A terminal slit is exactly such an edge, and
 this fixture publishes ten. **This review names that suspicion; it does not conclude it.**
 
-## 3.4 TB37 measures D=48; independent review owns the certificate frontier
+## 3.4 TB37 decided it — the region is a disc and the certificate's arithmetic is wrong by 4
 
-TB37 executed package102 artifact-only and reproduced TB36 exactly: **402 PASS / 7 RED**, accepted **365/365**,
-RED `[366,367,368,369,370,374,398]`, protected 312/390/393/404/406/407/408/409 PASS, ownership **300/0/0**, zero
-timeouts, and identical package/source/execution-view censuses. Because EXEC does not promote semantic authority,
-TB36 remains current valid runtime authority until independent review.
+TB36-REV reduced the frontier to one integer. CB42 published the terms; TB37 measured them.
 
-The source-submesh measure is complete and internally consistent on byte-identical 366/367:
+```text
+X (excluded vertices)          = 36  =  0 mesh-boundary + 20 boundaryVertices + 16 allOwned
+B_int (interior barrier edges) = 12
+sub-mesh boundary              = 20 edges / 20 vertices
+V_total / E_total / F / chiFull = 136 / 385 / 250 / 1
+reduced certificate             = 100 / 353 / 250 / −3
+```
 
-> `X = 36 = 0 + 20 + 16`
->
-> `B_int = 12`
->
-> `V_total - E_total + F = 136 - 385 + 250 = 1`
->
-> `X + B_int - 47 = 36 + 12 - 47 = 1`
->
-> **`D = X + B_int = 48`.**
+**`D = X + B_int = 48`**, so `χ_true = 48 − 47 = 1` — and the direct count agrees, `136 − 385 + 250 = 1`. Every
+cross-check closes, **including two TB36-REV predicted before the numbers existed**: `E_one = 44 − 2·B_int = 20`
+matches `regionSubmeshBoundaryEdgeCount`, and `2(E_int + B_int) + E_one = 750 = 3F`.
 
-The old reduced certificate still publishes `100 - 353 + 250 = -3`. Under the discriminator frozen before
-execution, **D=48 selects the certificate-arithmetic/cancellation frontier**; it does not authorize a fix.
-`M3-CP4c-3-TB37-REV` must independently adjudicate the evidence and decide package102 promotion before any Code +
-Build correction is planned.
+**The region is a genuine triangulated disc, and the certificate rejects it.**
+
+### The diagnosis is sharper than "the premise is false"
+
+> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 0 + 4`
+
+**The cancellation premise is correct about the actual boundary** — the sub-mesh boundary proper cancels, 20
+against 20, exactly as `GlobalTopologyPlan.cpp:2097–2098` claims. The whole error is the residual: the certificate
+additionally drops **12 interior barrier edges** from `E_int` (`:1848–1850`) and **16 further vertices** from
+`V_int` via `allOwned`, and those exclusions do not balance.
+
+**A barrier edge with both incident faces in the region is an interior cell**, not a boundary one — a terminal
+slit is precisely that, and this fixture publishes ten. The defect is that the certificate's notion of "boundary"
+is the **network's barrier set** rather than the sub-mesh's actual boundary. `LESSONS.md` 153.
+
+This closes `M3-CP4c3-TB34-REV-CAND-03`, open since TB34, and decides `M3-CP4c3-TB36-REV-CAND-01`.
+
+### What it does not settle
+
+Both formulas count the **whole-face** sub-mesh (`:2168–2177`), while the region the plan built is bounded by a
+network walk that includes **trace chords through face interiors**; a trace-cut face is assigned wholly to one
+region (`:1405`, `:1432`). So `chiFull = 1` certifies the **rounding**, not the traced region. The correction is
+still bounded — `V_int`, `E_int` and `F` are already whole-face quantities, so it fixes arithmetic over the object
+already counted — but that must be stated normatively. New candidate `M3-CP4c3-TB37-REV-CAND-01` (ACTIVE /
+ARCHITECTURAL, non-blocking).
+
+## 3.5 Exact next turn — `M3-CP4c-3-DEFN-R6`, appending Part X
+
+**A definition turn, not a Code + Build turn** — the change alters a **certificate acceptance criterion** on which
+`proves_disc_topology()` depends, DEFN-R5.5 named a later review/DEFN as the deciding authority, and this
+checkpoint has already paid one accepted-green event for correcting without a written contract
+(`LESSONS.md` 144).
+
+Part X must decide, and no more:
+
+1. **Name the counted complex** — the whole-face source sub-mesh — and state that `χ = 1` is a claim about that
+   rounding, not about the traced region.
+2. **Adopt `χ = V_total − E_total + F = 1`** and **withdraw the reduction**, deleting the comment at
+   `:2097–2098` with it rather than leaving it to be re-derived.
+3. **Record why the reduction failed** — interior barrier edges misclassified as boundary — so it cannot return.
+4. **State the equivalence condition** `X = E_one + B_int`, and **require the implementing turn to prove it per
+   region on every accepted fixture** rather than assume it.
+5. **Fix the unchanged surface**: ordinals 312/409 byte-identical, selector 409 byte-frozen, accepted 1–365
+   untouched, no work on 368/369/370/374/398, and **no change to region construction** — the region is correct.
+
+**Falsifiers for the implementing turn `M3-CP4c-3-CB43`.** Accepted prefix **365/365** and ordinals **312/409
+PASS** are stop conditions. No accepted identity asserts `RegionEulerCharacteristicNotOne` (CB42's grep), so the
+risk is not a direct assertion — it is that a region which currently fails Euler will now pass and reach stages
+never executed on it. If 366/367 clear region certification the correction is confirmed, and **a new failure at a
+later stage is a new frontier, not a regression of this one**. If 366/367 still fail Euler under the full count,
+measurement and implementation disagree and the turn halts. If any accepted-fixture region changes verdict, the
+equivalence claim is refuted there.
+
+**Must not:** correct region construction; change ownership or the whole-face rounding while fixing the
+arithmetic; force χ to 1 or special-case a fixture; change any accepted identity or selector byte.
 
 ## 4. Open candidates
 
@@ -157,9 +199,10 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB33-REV-CAND-01` | **RECONCILED** — recorded refuted at TB34-REV, which was right about the synthetic region and wrong as a general statement. Superseded by `M3-CP4c3-TB35-REV-CAND-01`. |
 | `M3-CP4c3-TB34-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the rejection is restored; ordinal 312 PASS and the accepted prefix is 365/365. |
 | `M3-CP4c3-TB34-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 409 re-aimed at the constructible shared-start shape and PASSes its oracle. |
-| `M3-CP4c3-TB34-REV-CAND-03` | **ACTIVE / RE-SCOPED** — the CX5 census was taken over the network graph, not the source sub-mesh χ counts, so it does not bear on the cancellation premise. Superseded as the owning question by `M3-CP4c3-TB36-REV-CAND-01`. |
+| `M3-CP4c3-TB34-REV-CAND-03` | **CLOSED** — open since TB34, now diagnosed to the cell: the region is a disc (`chiFull=1`) and the certificate drops 12 interior barrier edges against 16 vertices, netting −4. |
 | `M3-CP4c3-TB35-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — TB36 advanced 366/367 past `ClosedBeforeEnd` on `FaceWalkOrbit` while 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. Part IX's derived relation is confirmed in both directions. |
-| `M3-CP4c3-TB36-REV-CAND-01` | **ACTIVE / GATING / D=48 RAW-MEASURED** — TB37 publishes `X=36`, `B_int=12`, `chiFull=1`; the frozen discriminator selects the certificate-arithmetic/cancellation frontier. Independent TB37-REV owns adjudication and correction remains unassigned until review. |
+| `M3-CP4c3-TB36-REV-CAND-01` | **DECIDED** — `D = X + B_int = 48`, `chiFull = 1`. The two claims were mutually exclusive and the measurement chose: the region is a disc and the certificate's arithmetic is wrong by exactly 4. Correction owned by `M3-CP4c-3-DEFN-R6` (Part X), then `CB43`. |
+| `M3-CP4c3-TB37-REV-CAND-01` | **ACTIVE / ARCHITECTURAL / NON-BLOCKING** — the certified object is the region **rounded to whole faces**, not the traced region: both formulas count `region.sourceFaces` while the region's boundary includes trace chords through face interiors. Must be stated in Part X before it is silently assumed. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
@@ -272,15 +315,15 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, independent TB37-REV loads only the minimum authority:
+After the durable start-of-turn checklist, DEFN-R6 loads only the minimum authority:
 
-1. `ORIENTATION.md` — read first and update during REVIEW.
-2. `Architecture_M3_CP4c3_TB37_EXEC_Report.md` — exact raw package102 execution evidence.
-3. `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` — frozen D discriminator.
-4. `Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` — source-domain derivation under review.
-5. **this file** — §3.2–§3.4 preserve the frontier history and D=48 result.
-6. `Regression_Root_Cause_Tracker.md`, selector manifest, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` 148/150.
-7. `CLEAN_UP_POLICY.md` — REVIEW document consolidation is mandatory.
+1. `ORIENTATION.md` — read first.
+2. **this file** — §3.4 and §3.5 carry the decision and the frozen scope.
+3. `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` — **CZ0–CZ6**, the adjudication and the checks.
+4. `M3_CP4c_Frozen_Definitions.md` — **Part IX operative**, amended by Part IX-A; **Part X appends here**.
+5. `Regression_Root_Cause_Tracker.md` — the TB37-REV section and the authoritative next step.
+6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (**144, 150, 153** govern).
 
-Exact next is **`M3-CP4c-3-TB37-REV`**, independent/static. It may adjudicate and plan only; it must not execute
-runtime/benchmarks, configure/compile, mutate implementation/tests/fixtures/selector, or implement the correction.
+Exact next is **`M3-CP4c-3-DEFN-R6`**, a static definition turn appending **Part X**. No runtime, no compile, no
+product change. **Accepted prefix 365/365, and ordinals 312 and 409 PASS, remain stop conditions for the
+implementing turn it freezes.**

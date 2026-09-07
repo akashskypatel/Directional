@@ -26,38 +26,47 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB37-REV` (independent static REVIEW)
+## Current focus — `M3-CP4c-3-DEFN-R6` (definition turn, static) — PART X, THE EULER CRITERION
 
-`M3-CP4c-3-TB37-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED** on immutable package102:
+`M3-CP4c-3-TB37-REV` promoted TB37 to **current valid semantic runtime authority** and **decided the Euler
+question**:
 
-- exact semantic source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, artifact `10032277517`;
-- run/job `34161464783 / 101864038796`, result/log artifacts `10032812538 / 10032812978`;
-- selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
-- protected 312/390/393/404/406/407/408/409 PASS, ownership **300/0/0**, retired-code silence;
-- 409/409 selected, zero timeouts, all package/source/execution-view censuses identical pre/post;
-- no configure, compile, relink, repair, benchmark, or source/test/fixture/selector mutation.
+- selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
+- immutable CB42 package `10032277517` / source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`; run `34161464783`;
+- certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
 
-The CY6 measurement is complete on byte-identical ordinals 366/367: `X=36`, split `0+20+16`, `B_int=12`,
-source-submesh boundary `20/20`, `V_total/E_total/F/chiFull=136/385/250/1`. Therefore **`D=X+B_int=48`**, which
-the frozen TB37 discriminator labels **`CERTIFICATE_ARITHMETIC`**. The existing reduced certificate remains
-`100/353/250/-3`.
+**CB42 changed no behaviour, proved by artifact:** `ledger.tsv` and `identity-map.tsv` hash identical to TB36's
+while the failure-detail digest table differs — "same verdicts, richer evidence".
 
-TB37-EXEC does not promote package102 or choose a correction. TB36 remains current valid semantic runtime authority
-until independent review.
+**The region is a disc and the certificate's arithmetic is wrong by exactly 4.** `X = 36` (`0 + 20 + 16`),
+`B_int = 12`, sub-mesh boundary `20 / 20`, `V/E/F/chiFull = 136/385/250/1`, against the reduced certificate's
+`100/353/250/−3`. The gap decomposes as `(20 − 20) + (16 − 12)`: **the boundary terms do cancel**, and the whole
+error is that **12 interior barrier edges** are dropped from `E_int` while **16 further vertices** are dropped from
+`V_int`, asymmetrically. A terminal slit — a barrier with **both** faces inside the region — is an **interior**
+cell being misclassified as boundary. `M3-CP4c3-TB34-REV-CAND-03` **CLOSED**; `M3-CP4c3-TB36-REV-CAND-01`
+**DECIDED**.
+
+Stable accounting remains **45 events / 14 categories / 31 recurrences** — no accepted green lost, so **no new
+event** — produced-witness debt **5**, semantic M3 package count **102**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB37-REV`** as an independent, static REVIEW:
+Run **`M3-CP4c-3-DEFN-R6`**, a static **definition** turn appending **Part X** — not a Code + Build turn, because
+the change alters a certificate acceptance criterion on which `proves_disc_topology()` depends and this checkpoint
+has already paid one accepted-green event for correcting without a written contract.
 
-- [ ] verify TB37 artifact/source/selector/ledger/census authority and the exact 402/7 behavioral preservation;
-- [ ] independently verify 366/367 `X`, `B_int`, split, full Euler identity, and **D=48** from preserved evidence;
-- [ ] adjudicate `M3-CP4c3-TB36-REV-CAND-01` and the re-scoped Euler candidate without changing implementation;
-- [ ] decide whether package102/TB37 becomes current semantic runtime authority;
-- [ ] update `ORIENTATION.md` and perform mandatory REVIEW document consolidation;
-- [ ] freeze the smallest evidence-backed successor measure/plan and stop.
+- [ ] name the counted complex — the **whole-face source sub-mesh** — and state that χ = 1 is a claim about that
+      rounding, not the traced region;
+- [ ] adopt `χ = V_total − E_total + F = 1` and **withdraw the reduction**, deleting the comment at `:2097–2098`;
+- [ ] record **why** the reduction failed — interior barrier edges misclassified as boundary — so it cannot return;
+- [ ] state the equivalence condition `X = E_one + B_int` and **require the implementing turn to prove it per
+      region on every accepted fixture**;
+- [ ] fix the unchanged surface, including **no change to region construction** — the region is correct.
 
-**Must not:** execute Directional runtime or benchmarks, configure/compile/relink, mutate source/tests/fixtures/
-selector/build logic, or implement the certificate correction inside REVIEW.
+**Must not:** correct region construction; change ownership or the whole-face rounding while fixing the arithmetic;
+force χ to 1 or special-case a fixture; weaken ordinal 398; touch 368/369/370/374; re-open ownership or any retired
+guard; change any accepted identity or selector byte; run any Directional runtime in the definition turn.
+**Accepted prefix 365/365 and ordinals 312/409 PASS remain stop conditions for the implementing turn `CB43`.**
 
 ## Carried forward from M1
 
@@ -95,7 +104,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409 / package101. CB42 package102 now publishes the source-submesh CY6 measurements without changing semantics. Exact next is artifact-only **`M3-CP4c-3-TB37-EXEC`** on package102.
+  CP4c-3 remains open. **`M3-CP4c-3-TB37` is the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409 / package102. TB37 decided the Euler question: the region is a disc (`chiFull=1`) and the reduced certificate is wrong by exactly 4. Exact next is static **`M3-CP4c-3-DEFN-R6`** appending Part X.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -107,7 +116,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  TB36 proved the derived provenance contract and exposed the separate Euler frontier. CB42 package102 adds only the source-submesh `B_int` / `X` / boundary / full-Euler measurements needed to adjudicate it. TB37 owns the next runtime measurement; no correction is authorized before review.
+  TB36 proved the derived provenance contract; TB37 decided the Euler frontier. The certificate misclassifies interior barrier edges as boundary, dropping 12 edges against 16 vertices and rejecting a genuine disc. `DEFN-R6` writes the criterion; `CB43` implements it under a per-region equivalence proof on every accepted fixture.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -135,4 +144,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **102**. **`M3-CP4c-3-TB36` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**, promoted at TB36-REV. CB42 is compile-green/runtime-free; exact next is artifact-only `M3-CP4c-3-TB37-EXEC` on package102. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **102**. **`M3-CP4c-3-TB37` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**, promoted at TB37-REV. Exact next is static `M3-CP4c-3-DEFN-R6` appending Part X. PR #8 remains open, draft, and unmerged.

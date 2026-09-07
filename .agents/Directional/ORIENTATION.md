@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 position (2026-09-07, `M3-CP4c-3-TB37-EXEC` raw evidence):** semantic authority remains **TB36** pending independent review — selector **409**, **402 PASS / 7 RED**, accepted **365/365**. TB37 package102 reproduces that ledger exactly and publishes the source-submesh discriminator: `X=36`, `B_int=12`, `chiFull=1`, so **D=48**. Under the frozen discriminator this selects the **certificate-arithmetic/cancellation frontier**; the old reduced certificate remains `100/353/250/-3`. No accepted green moved. Stable accounting remains **45 / 14 / 31**. **Exact next is independent `M3-CP4c-3-TB37-REV`.**
+> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-TB37-REV`):** **TB37 is promoted** — selector **409**, **402 PASS / 7 RED**, accepted **365/365**, packages **102**. **The Euler question is decided: the region is a disc and the certificate's arithmetic is wrong by exactly 4.** `D = X + B_int = 48`, `chiFull = 1` on `V/E/F = 136/385/250`, against the reduced certificate's `−3`. The gap decomposes as `(20 − 20) + (16 − 12)`: **the boundary terms do cancel**, and the whole error is that **12 interior barrier edges** are dropped from `E_int` while **16 further vertices** are dropped from `V_int`, asymmetrically. A terminal slit — a barrier with **both** faces inside the region — is an **interior** cell being misclassified as boundary. Exact next is **`M3-CP4c-3-DEFN-R6`**, appending Part X. Stable accounting unchanged: **45 / 14 / 31**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -33,38 +33,40 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB37-EXEC` raw-evidence closeout. Current valid semantic
-runtime authority remains **TB36** pending independent review. TB37 executed package102 source
-`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` / artifact `10032277517` in run `34161464783`: selector **409**,
-**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
+**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-TB37-REV`. Runtime authority is **TB37** (package 102,
+source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`), selector **409**, **402 PASS / 7 RED**,
+accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
 
-**Where the frontier is.** Ordinals 366/367 remain `RegionEulerCharacteristicNotOne` on
-`regionBoundaryProvenance=FaceWalkOrbit`. TB37 now supplies the missing source-submesh domain: `X=36` split
-`0+20+16`, `B_int=12`, boundary `20 edges / 20 vertices`, and `V_total/E_total/F/chiFull=136/385/250/1`.
-Thus **D=X+B_int=48**, while the reduced certificate remains `100/353/250/-3`. The pre-authored discriminator
-moves the evidence frontier to **certificate arithmetic/cancellation**, subject to independent review.
+**Where the frontier is.** Ordinals 366/367 fail `RegionEulerCharacteristicNotOne`. **The cause is now known to
+the cell.** TB37 published the source-sub-mesh domain the previous census lacked:
 
-**The frozen measurement cannot decide what remains.** χ is computed over a **sub-mesh of whole source triangles**
-— faces are partitioned one-per-region (`GlobalTopologyPlan.cpp:1400–1433`), `edgeCount` counts source edges
-(`:1847–1860`), `interiorVertices` holds source vertices (`:2048–2094`). CX5's census is over the **network
-graph** (`std::set<authority::NetworkArcId>` / `NetworkNodeId`, `:2122–2123`), and a network arc may be a **trace
-chord through face interiors** that is not a source edge at all. So the published `22 = 22` is not evidence that
-`V_boundary == E_boundary`.
+```text
+X (excluded vertices) = 36  =  0 mesh-boundary + 20 boundaryVertices + 16 allOwned
+B_int (interior barrier edges) = 12
+sub-mesh boundary = 20 edges / 20 vertices
+V_total / E_total / F / chiFull = 136 / 385 / 250 / 1
+reduced certificate             = 100 / 353 / 250 / −3
+```
 
-**What the numbers do settle.** Every source face is a triangle (`EmbeddedGraphTopology.h:25–32`), so 250 faces
-give exactly 750 face-edge incidences. With `B_int` = barrier edges having **both** faces in the region (skipped
-at `:1848–1850`) and `X` = sub-mesh vertices excluded from `interiorVertices`:
+**The region is a genuine triangulated disc**, and the certificate rejects it. The 4-point gap decomposes exactly:
 
-> **χ_true = X + B_int − 47.**
+> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12)`
 
-The published χ = −3 means `X + B_int = 44` — the cancellation premise holds and **the region is not a disc**. A
-disc needs `X + B_int = 48` — the premise is false by exactly 4. **These are mutually exclusive**, and one integer
-decides which. Neither term is published; both sit in loops that already exist. Owner:
-**`M3-CP4c-3-CB42`** under CY6.1–CY6.6, measurement only.
+**The cancellation premise is correct.** The sub-mesh boundary proper cancels, 20 against 20, just as the comment
+at `GlobalTopologyPlan.cpp:2097–2098` claims. The entire error is the residual: the certificate additionally drops
+**12 interior barrier edges** from `E_int` (`:1848–1850`) and **16 further vertices** from `V_int` via `allOwned`,
+and those two exclusions do not balance. **A barrier edge with both incident faces in the region — a terminal slit,
+of which this fixture has ten — is an interior cell of the counted complex, misclassified as boundary.** The defect
+is that the certificate's "boundary" is the **network's barrier set**, not the sub-mesh's actual boundary.
+`LESSONS.md` 153.
 
-**The likely culprit, named but not decided.** A barrier edge with both faces inside the region is **interior** to
-the sub-mesh, yet it is dropped from `E_int` and its endpoints are pushed into `boundaryVertices` and so out of
-`V_int`. A terminal slit is exactly that, and this fixture has ten.
+**What the correction does not settle.** Both formulas count the **whole-face** sub-mesh (`:2168–2177`), while the
+region the plan built is bounded by a walk that includes **trace chords through face interiors**; a trace-cut face
+is assigned wholly to one region (`:1405`, `:1432`). So `chiFull = 1` certifies the **rounding**, not the traced
+region. That does not block the correction — `V_int`, `E_int` and `F` are already whole-face quantities — but it
+must be written down. `M3-CP4c3-TB37-REV-CAND-01`.
+
+**Owner: `M3-CP4c-3-DEFN-R6`**, appending Part X, then `M3-CP4c-3-CB43`.
 
 ## 1. What the project is
 
@@ -108,16 +110,18 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB36`** (package 101, promoted at TB36-REV). Selector **409**,
+**Runtime authority — `M3-CP4c-3-TB37`** (package 102, promoted at TB37-REV). Selector **409**,
 **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership
 remains **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408 and 409 all PASS.
 
-**TB36 is promoted.** Source `14aa1368523580444929bc65cab0b65449240ec2` / artifact `10029250324`, run
-`34153857590`; 409 rows, every row `selected=1`, zero timeouts, all three censuses identical pre/post, a
-failure-detail digest table published. 366/367 now reach `RegionEulerCharacteristicNotOne` on `FaceWalkOrbit` with
-arc occurrence/distinct 40/22, node occurrence/distinct 40/22, repeated-node occurrence 18, early-start revisit 1,
-and `V/E/F/χ = 100/353/250/−3`. **366 and 367 share one failure-detail digest on `regionBoundaryOrbit=0` — one
-datum, two witnesses.**
+**CB42 changed no behaviour, and that is proved by artifact.** TB37's `ledger.tsv` and `identity-map.tsv` hash
+**identical to TB36's** (`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs**
+(`2b6ca8d2…` vs `02734fd9…`) — exactly what added diagnostics on an unchanged failure produce. This is the first
+turn where that second digest earns its keep in the positive direction. `LESSONS.md` 151.
+
+**The Euler question is decided.** `D = X + B_int = 48` and `chiFull = 1`: the region's sub-mesh is a genuine
+triangulated disc and the reduced certificate publishes `−3`. Every check closes, including two the previous review
+predicted before the numbers existed — `E_one = 44 − 2·B_int = 20`, and `2(E_int + B_int) + E_one = 750`.
 
 **The accepted prefix is restored.** CB40's CV2 restored the rejection **with** its typed reason, so ordinal 312 is
 satisfied *and* the reason is named; CV3's re-aimed ordinal 409 reaches its oracle and passes, proving the
@@ -250,18 +254,19 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The region certificate makes two claims that cannot both be true.** — `M3-CP4c3-TB36-REV-CAND-01`
+1. **The region certificate misclassifies interior barrier edges as boundary, and rejects a disc.** —
+   `M3-CP4c3-TB36-REV-CAND-01` **DECIDED**; correction owned by `M3-CP4c-3-DEFN-R6` then `CB43`.
 
-   - χ is computed as `V_int − E_int + F` on the stated premise that the boundary terms cancel
-     (`GlobalTopologyPlan.cpp:2099–2100`), and the same certificate is what establishes disc topology.
-   - Every source face is a triangle, so 250 faces give exactly 750 face-edge incidences, and with `B_int` =
-     barrier edges having both faces in the region and `X` = sub-mesh vertices excluded from `interiorVertices`,
-     **χ_true = X + B_int − 47**. The published χ = −3 requires `X + B_int = 44`; a disc requires 48.
-   - **So either the boundary terms do not cancel, or the region is not a disc.** One integer decides it, and
-     neither term is published.
-   - **The frozen CX5 census cannot decide it** — it measures the network boundary walk, not the source-mesh
-     sub-complex χ counts. `LESSONS.md` 150.
-   - **Owner: `M3-CP4c-3-CB42`** under CY6.1–CY6.6 — measurement only, no correction.
+   - **Measured:** `X = 36` (`0 + 20 + 16`), `B_int = 12`, sub-mesh boundary `20 / 20`,
+     `V/E/F/chiFull = 136/385/250/1`, reduced certificate `100/353/250/−3`.
+   - **The region is a disc.** The gap is `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12)`
+     — the boundary terms cancel exactly as claimed, and the error is entirely in the residual.
+   - **12 interior barrier edges** are dropped from `E_int` (`:1848–1850`) and **16 further vertices** from
+     `V_int` via `allOwned`, asymmetrically. A terminal slit is precisely such an edge and this fixture has ten.
+   - **Fix:** adopt `χ = V_total − E_total + F = 1` and withdraw the reduction, deleting the comment at
+     `:2097–2098` with it. **Region construction is correct and must not change.**
+   - **Prove, do not assume, the blast radius:** reduced and full agree exactly when `X = E_one + B_int`; the
+     implementing turn must show that per region on every accepted fixture. `LESSONS.md` 153.
 
 2. **Region boundary provenance — the validator cannot see the guarantee it is checking. — RESOLVED**
 
@@ -330,6 +335,15 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A "boundary" defined by a barrier set is not the boundary of the complex you are counting.** A region
+certificate computed χ over a source sub-mesh but took its boundary from the **network's** barrier set — mandatory
+and cut edges. A barrier edge with **both** incident faces inside the region, which is exactly what a terminal slit
+is, is an **interior** cell of that sub-mesh; the certificate dropped it from the edge count and dropped its
+endpoints from the vertex count, asymmetrically, and χ came out 4 low on a region that is a genuine disc. The
+stated cancellation premise was never the problem — the true boundary cancelled exactly, 20 against 20. **When one
+subsystem's "boundary" is used to classify another subsystem's cells, check the classification on the cells that
+belong to both.** `LESSONS.md` §4 153 and the `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category.
 
 **A measurement freezes a domain as well as a quantity — say which one, in the definition.** A definition turn
 froze an exact multiplicity census to test whether a boundary's vertices and edges cancel out of an Euler formula.

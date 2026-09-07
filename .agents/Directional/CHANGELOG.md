@@ -1,3 +1,60 @@
+## 2026-09-07 — `M3-CP4c-3-TB37-REV`: TB37 promoted; the Euler question decided — the region is a disc
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` passed.
+
+**CZ0 — TB37 promoted to current valid semantic runtime authority; packages advance to 102.** Selector **409**,
+**402 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`; run `34161464783`,
+package `10032277517`, source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`. 409 rows, every row `selected=1`, zero
+timeouts, censuses identical pre/post, `SHA256SUMS` 28/28, executables `0755`, ownership `300 / 0 / 0`.
+
+**CZ1 — CB42's "diagnostics only" claim is proved by artifact, not asserted.** `ledger.tsv` and `identity-map.tsv`
+are **byte-identical to TB36's** (`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs**
+(`2b6ca8d2…` vs `02734fd9…`) — exactly what added diagnostics on an unchanged failure should produce. First time
+that second digest earns its keep in the positive direction, after TB32/TB33 showed a bare ledger hash cannot
+distinguish "unchanged" from "stalled". `LESSONS.md` 151.
+
+**CZ2 — the discriminator resolved to `D = X + B_int = 48`, and every independent check closes.** `X = 36`
+(`0 mesh-boundary + 20 boundaryVertices + 16 allOwned`), `B_int = 12`, sub-mesh boundary `20 edges / 20 vertices`,
+`V/E/F = 136/385/250`, `chiFull = 1`. TB36-REV's identity `χ_true = X + B_int − 47` gives 1; the direct count
+agrees; `V_total = V_int + X = 136`; `E_total − E_int = 32 = B_int + E_one`. **Two values TB36-REV predicted
+before they existed both land exactly**: `E_one = 44 − 2·B_int = 20` matches `regionSubmeshBoundaryEdgeCount`, and
+`2(E_int + B_int) + E_one = 750 = 3F`.
+
+**CZ3 — VERDICT: the region is a disc and the reduced certificate is wrong by exactly 4.** The region's source
+sub-mesh is a genuine triangulated disc while the certificate publishes `−3` and rejects it. And the diagnosis is
+sharper than "the premise is false":
+
+`(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 0 + 4`
+
+**The cancellation premise is correct about the actual boundary** — the sub-mesh boundary proper cancels, 20
+against 20, exactly as the comment at `GlobalTopologyPlan.cpp:2097–2098` claims. The entire error is the residual:
+the certificate additionally drops **12 interior barrier edges** from `E_int` (`:1848–1850`) and **16 further
+vertices** from `V_int` via `allOwned`, and those exclusions do not balance. **A barrier edge with both incident
+faces in the region — a terminal slit, of which this fixture has ten — is an interior cell of the counted complex
+being misclassified as boundary.** The defect is that the certificate's "boundary" is the **network's barrier
+set**, not the sub-mesh's actual boundary. `M3-CP4c3-TB34-REV-CAND-03` is **CLOSED** after being open since TB34;
+`M3-CP4c3-TB36-REV-CAND-01` is **DECIDED**. `LESSONS.md` 153.
+
+**CZ4 — what the correction does not resolve.** Both formulas count the **whole-face** sub-mesh (`:2168–2177`),
+while the region the plan built is bounded by a walk including **trace chords through face interiors**, and a
+trace-cut face is assigned wholly to one region (`:1405`, `:1432`). So `chiFull = 1` certifies the **rounding**,
+not the traced region. Non-blocking — `V_int`, `E_int` and `F` are already whole-face quantities — but it must be
+stated normatively. New candidate **`M3-CP4c3-TB37-REV-CAND-01`**.
+
+**CZ5 — accounting.** No new RED, no accepted-prefix loss, therefore **no stable event**. Totals remain **45
+events / 14 categories / 31 recurrences**, debt **5**; packages **102**. A **second consecutive EXEC process-order
+miss** is recorded: TB36 read documents before its `READ_MODE` gate; TB37 published the turn-cleanup manifest
+during setup and fired the push-triggered cleanup run `34161412687` early. That run touched no Directional binary
+and not package102 — control-plane only. `LESSONS.md` 152.
+
+**Exact next: `M3-CP4c-3-DEFN-R6`** — a static definition turn appending **Part X**, not a Code + Build turn,
+because the change alters a certificate acceptance criterion on which `proves_disc_topology()` depends and this
+checkpoint has already paid one accepted-green event for correcting without a written contract (`LESSONS.md` 144).
+Part X must name the counted complex, adopt `χ = V_total − E_total + F = 1` and withdraw the reduction, record why
+the reduction failed, state the equivalence condition `X = E_one + B_int` **with a per-region proof obligation on
+every accepted fixture**, and fix the unchanged surface — including **no change to region construction**.
+
 ## 2026-09-07 — `M3-CP4c-3-TB37-EXEC`: package102 preserves 402/7; source-submesh discriminator is D=48
 
 Artifact-only Test + Benchmark EXEC, **no benchmarks**. Immutable package102 source

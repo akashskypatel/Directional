@@ -1,3 +1,55 @@
+## M3-CP4c3-TB37-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / TB37 PROMOTED / EULER DECIDED**
+
+- **Record:** `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md`, measures **CZ0–CZ6**. Evidence-only.
+  `review_check.py authority 89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` — ALL CHECKS PASSED.
+
+- **CZ0 — TB37 promoted; packages advance to 102.** Selector **409**, **402 PASS / 7 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Run `34161464783`; package `10032277517` / source
+  `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`; 409 rows, all `selected=1`, zero timeouts, censuses identical
+  pre/post, `SHA256SUMS` 28/28, executables `0755`, ownership `300 / 0 / 0`.
+
+- **CZ1 — CB42's "diagnostics only" is proved by artifact.** `ledger.tsv` and `identity-map.tsv` are
+  **byte-identical to TB36's** (`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs**
+  (`2b6ca8d2…` vs `02734fd9…`) — exactly what added diagnostics on an unchanged failure should produce. This is
+  the first time that second digest earns its keep in the **positive** direction, after TB32/TB33 showed a bare
+  ledger hash cannot distinguish "unchanged" from "stalled". `LESSONS.md` 151.
+
+- **CZ2 — the discriminator resolved to `D = X + B_int = 48`, and every independent check closes.** `X = 36`
+  (`0 + 20 + 16`), `B_int = 12`, sub-mesh boundary `20 edges / 20 vertices`, `V/E/F = 136/385/250`,
+  `chiFull = 1`. TB36-REV's identity `χ_true = X + B_int − 47` gives 1; `V_total = V_int + X = 136`;
+  `E_total − E_int = 32 = B_int + E_one`; and **two values TB36-REV predicted before they existed** — the
+  incidence prediction `E_one = 44 − 2·B_int = 20` and the triangle total `2(E_int + B_int) + E_one = 750` — both
+  land exactly.
+
+- **CZ3 — VERDICT: the region is a disc and the reduced certificate is wrong by exactly 4.** The frontier is
+  `CERTIFICATE_ARITHMETIC`. And the diagnosis is sharper than "the premise is false":
+  `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12)`. **The boundary terms do cancel** —
+  20 against 20 — exactly as the comment at `GlobalTopologyPlan.cpp:2097–2098` claims. The whole error is the
+  residual: the certificate drops **12 interior barrier edges** from `E_int` (`:1848–1850`) and **16 further
+  vertices** from `V_int` via `allOwned`, and those exclusions do not balance. **A barrier edge with both incident
+  faces in the region — a terminal slit, of which this fixture has ten — is an interior cell being misclassified
+  as boundary.** `M3-CP4c3-TB34-REV-CAND-03` is **CLOSED**; `M3-CP4c3-TB36-REV-CAND-01` is **DECIDED**.
+
+- **CZ4 — what the correction does not resolve.** Both formulas count the **whole-face** sub-mesh
+  (`:2168–2177`), while the region the plan built is bounded by the network walk including **trace chords through
+  face interiors**; a trace-cut face is assigned wholly to one region (`:1405`, `:1432`). So `chiFull = 1`
+  certifies the **rounding**, not the traced region. This does not block the correction — `V_int`, `E_int` and `F`
+  are already whole-face quantities — but it must be stated normatively. New candidate
+  **`M3-CP4c3-TB37-REV-CAND-01`** (ACTIVE / ARCHITECTURAL, non-blocking).
+
+- **CZ5 — accounting.** No new RED, no accepted-prefix loss, therefore **no stable event**. Totals remain
+  **45 events / 14 categories / 31 recurrences**, debt **5**; packages **102**. A **second consecutive EXEC
+  process-order miss** is recorded: TB36 read documents before its `READ_MODE` gate, TB37 published
+  `.agents/connector-triggers/turn-cleanup/manifest.txt` during setup and fired the push-triggered cleanup run
+  `34161412687` early. That run touched no Directional binary and not package102; control-plane only.
+  `LESSONS.md` 152.
+
+- **CZ6 — exact successor `M3-CP4c-3-DEFN-R6`, appending Part X.** A definition turn because the change alters a
+  **certificate acceptance criterion** on which `proves_disc_topology()` depends, and this checkpoint has already
+  paid one accepted-green event for correcting without a written contract (`LESSONS.md` 144).
+
+---
+
 ## M3-CP4c3-TB36-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / TB36 PROMOTED**
 
 - **Record:** `Architecture_M3_CP4c3_TB36_Independent_Review_Record.md`, measures **CY0–CY6**. Evidence-only: no
@@ -6069,17 +6121,38 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current valid semantic runtime authority remains **M3-CP4c-3-TB36** pending independent review: source
-`14aa1368523580444929bc65cab0b65449240ec2`, package101 `10029250324`, selector409, run `34153857590`,
-**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300/0/0**.
+Current valid semantic runtime authority is **M3-CP4c-3-TB37**: semantic source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, immutable CB42 package `10032277517`, selector409, run `34161464783`,
+**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, reds `[366,367,368,369,370,374,398]`, ownership
+**300 / 0 / 0**. Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages
+**102**. Definition authority remains Part IX (`M3-CP4c-3-DEFN-R5`) with Part IX-A amending it.
 
-TB37-EXEC is mechanically valid raw evidence on package102 and reproduces that exact ledger while measuring the
-source-submesh discriminator **D=48** (`X=36`, `B_int=12`, `chiFull=1`). Under the frozen pre-execution matrix this
-selects the **certificate arithmetic/cancellation** frontier, but EXEC cannot promote package102 or choose a fix.
+**The Euler question is decided.** `D = X + B_int = 48`, `chiFull = 1`: the region's source sub-mesh is a genuine
+triangulated disc (`V/E/F = 136/385/250`) and the reduced certificate publishes `-3`. The gap decomposes as
+`(20 - 20) + (16 - 12)`: the boundary terms **do** cancel, and the entire error is that **12 interior barrier
+edges** are dropped from `E_int` while **16 further vertices** are dropped from `V_int`, asymmetrically. A barrier
+edge with both incident faces in the region - a terminal slit - is an **interior** cell of the certified complex,
+not a boundary one.
 
-Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages **102**.
+**Exact next: `M3-CP4c-3-DEFN-R6` - a definition turn, static, appending Part X to
+`M3_CP4c_Frozen_Definitions.md`.** It must decide, and no more: (1) name the counted complex as the **whole-face
+source sub-mesh** and state that chi = 1 is a claim about that rounding, not the traced region; (2) adopt
+`chi = V_total - E_total + F = 1` and **withdraw the reduction**, deleting the comment at `:2097-2098` with it;
+(3) record why the reduction failed - interior barrier edges misclassified as boundary - so it cannot be
+reintroduced; (4) state the equivalence condition `X = E_one + B_int` and **require the implementing turn to prove
+it per region on every accepted fixture rather than assume it**; (5) fix the unchanged surface - ordinals 312/409
+byte-identical, selector409 byte-frozen, accepted 1-365 untouched, and **no change to region construction**, since
+CZ3 shows the region is correct and the certificate is not.
 
-**Exact next: independent `M3-CP4c-3-TB37-REV`.** Static evidence review only: verify package102/TB37 authority,
-adjudicate the D=48 certificate candidate, decide semantic-authority promotion, update `ORIENTATION.md`, perform
-mandatory REVIEW document consolidation, and freeze the next bounded measure. Execute no runtime/benchmark/compile
-and perform no corrective implementation inside the review.
+**Falsifiers to carry into the implementing turn `M3-CP4c-3-CB43`.** Accepted prefix **365/365** and ordinals
+**312/409 PASS** are stop conditions. No accepted identity asserts `RegionEulerCharacteristicNotOne` (CB42's grep),
+so the risk is not a direct assertion - it is that a region which currently fails Euler will now pass and reach
+stages never executed on it. If 366/367 clear region certification the correction is confirmed and **a new failure
+at a later stage is a new frontier, not a regression**. If 366/367 still fail Euler under the full count, the
+measurement and the implementation disagree and the turn halts. If any accepted-fixture region changes verdict,
+the equivalence claim is refuted there.
+
+**Prohibited:** correcting region construction; changing ownership or the whole-face rounding while fixing the
+arithmetic; forcing chi to 1 or special-casing a fixture; weakening ordinal 398; touching 368/369/370/374;
+re-opening source-face ownership or any retired guard; any accepted-identity or selector byte change; any
+Directional runtime in the definition turn.
