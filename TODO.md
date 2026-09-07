@@ -26,34 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB35-EXEC` (artifact-only Test + Benchmark) — VALIDATE THE RESTORED REJECTION
+## Current focus — `M3-CP4c-3-TB35-REV` (independent Review + Plan) — ADJUDICATE RAW TB35 EVIDENCE
 
-`M3-CP4c-3-CB40` is **implemented and compile-green** at exact semantic source
-`23a753a83f0eda0447172ce96bcd3180bf95ae8a`. It restores `current == start` as
-`RegionBoundaryNotSingleWalk` with typed `ClosedBeforeEnd`, leaves accepted ordinal312 untouched, and re-aims frozen
-ordinal409 at the reachable shared-node multi-walk. No topology/barrier/ownership/retired-guard behavior changed.
+`M3-CP4c-3-TB35-EXEC` is mechanically complete on immutable package100 artifact `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a`.
+Run/job `34084955954 / 101627127649` executed all 409 selector identities exactly once with zero selection mismatches/timeouts and
+produced raw **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Result/log artifacts:
+`10004965026` / `10004965268` with SHA-256 `67ce321acb3fa1106f967f0652d599f320952daf58ca43ad1babb3e986ba4ff` / `c03d59f7946d2c2c50d8ee94e4c247bc23311491b371b98755a44134333091f4`. No configure, compile, relink, generated
+discovery, repair, benchmark, or semantic mutation occurred.
 
-Compile-only run/job `34080675952 / 101615243724` succeeded. Immutable package **100** artifact `10003613409`
-(`m3-cp4c3-cb40-result-34080675952`) has ZIP SHA-256
-`bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f`; all **28/28** package checksums pass,
-all eight required targets compile/link with GMP/GMPXX, source is clean, and `runtimeExecution=false`.
+Raw frozen gates held: ordinal312 PASS; ordinal409 PASS through its re-aimed `RegionBoundaryNotSingleWalk /
+ClosedBeforeEnd` negative; 390/393/404/406/407/408 PASS; retired codes absent; ownership 300/0/0. 366/367 are RED
+at restored `RegionBoundaryNotSingleWalk`, typed `ClosedBeforeEnd`, stage `RegionCertification`, arc 3. Carried
+368/369/370/374/398 remain RED.
 
-Current semantic runtime authority remains **TB34** until TB35: selector409, **400 PASS / 9 RED**, accepted **364/365**,
-RED `[312,366,367,368,369,370,374,398,409]`. Stable accounting remains **45 events / 14 categories / 31
-recurrences**, debt **5**; packages are now **100**.
+Current semantic runtime authority remains **TB34** until independent review. Stable accounting remains **45 events /
+14 categories / 31 recurrences**, debt **5**, packages **100**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB35-EXEC`** artifact-only on immutable artifact `10003613409` under
-`.agents/Directional/Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md`.
+Run **`M3-CP4c-3-TB35-REV`** as evidence-only Review + Plan.
 
-- **312 must PASS** and accepted 1–365 must return to **365/365**; otherwise stop — CV2 is incomplete.
-- **409 must PASS and reach** `RegionBoundaryNotSingleWalk / ClosedBeforeEnd`; another fixture-construction failure is a CV3 hard falsifier.
-- 390/393/404/406/407/408 must remain PASS; retired codes remain absent; ownership remains 300/0/0 when published.
-- 366/367 are discriminator evidence, not a green target: `ClosedBeforeEnd` supports the pinch reading; `ArcChainBroken` falsifies it; earlier-stage movement is a hard regression.
-- 368/369/370/374/398 remain carried review surfaces and may not be weakened or re-scoped.
-- No configure/compile/relink/repair/generated discovery/benchmark/package mutation is allowed in TB35.
-- After mechanically valid EXEC evidence is preserved, **stop at independent `M3-CP4c-3-TB35-REV`**.
+- Promote or reject the mechanically valid TB35 raw evidence as semantic authority.
+- Adjudicate `M3-CP4c3-TB34-REV-CAND-01`, `-02`, and `-03`; EXEC observed raw recovery for 01/02 but did not close them.
+- Reconcile 366/367's restored early `RegionBoundaryNotSingleWalk / ClosedBeforeEnd` rejection with TB34's later `RegionEulerCharacteristicNotOne` evidence before authorizing any product correction.
+- Classify all seven raw RED surfaces in the regression tracker and update stable accounting only if review evidence warrants it.
+- Update `ORIENTATION.md` and perform mandatory REVIEW document consolidation.
+- Freeze exactly one successor edge and **stop there**. No compile, runtime, benchmark, or semantic mutation belongs in TB35-REV.
 
 ## Carried forward from M1
 
@@ -91,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB34 is current semantic runtime authority** at **400 PASS / 9 RED**, accepted 364/365, selector 409. CB40 is compile-green at source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / package100 artifact `10003613409`; artifact-only **`M3-CP4c-3-TB35-EXEC`** is exact next, followed by independent TB35-REV.
+  CP4c-3 remains open. **TB34 remains current semantic runtime authority** at **400 PASS / 9 RED**, accepted 364/365, selector409 pending review. TB35-EXEC is mechanically complete at **402 PASS / 7 RED**, accepted 365/365 on package100; independent **`M3-CP4c-3-TB35-REV`** is exact next.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -103,7 +101,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  TB34-REV adjudicated the accepted-prefix regression and froze CB40. CB40 has now restored the rejection and re-aimed ordinal409 with compile-only proof. TB35 must prove ordinal312 / accepted 365-of-365 recovery and the re-aimed 409 oracle; 366/367 remain the region-frontier discriminator, not a green target.
+  TB35-EXEC mechanically recovered ordinal312 / accepted 365-of-365 and PASSed the re-aimed ordinal409 oracle. Independent TB35-REV must adjudicate those recoveries and the 366/367 region-frontier discriminator before any further corrective implementation.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -131,4 +129,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **100** after compile-green CB40 source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / artifact `10003613409`. **`M3-CP4c-3-TB34` remains the current valid semantic runtime authority at 400 PASS / 9 RED, accepted 364/365 on selector 409 until TB35.** Exact next is artifact-only `M3-CP4c-3-TB35-EXEC`, which must restore ordinal312 and the accepted prefix to 365/365, then stop at independent TB35-REV. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **100** after compile-green CB40 source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / artifact `10003613409`. **`M3-CP4c-3-TB34` remains the current valid semantic runtime authority at 400 PASS / 9 RED, accepted 364/365 on selector409 pending independent review.** TB35-EXEC is mechanically valid raw evidence at 402 PASS / 7 RED, accepted 365/365. Exact next is `M3-CP4c-3-TB35-REV`; no further runtime or implementation is authorized before it. PR #8 remains open, draft, and unmerged.

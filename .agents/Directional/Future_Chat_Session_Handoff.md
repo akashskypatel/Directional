@@ -116,53 +116,44 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB35-EXEC` — EXACT NEXT / artifact-only validation of CB40
+## Mandatory next turn — `M3-CP4c-3-TB35-REV` — EXACT NEXT / independent evidence-only review
 
-`M3-CP4c-3-CB40` is **IMPLEMENTED / COMPILE-GREEN / RUNTIME-UNADJUDICATED**. It restores the TB34-REV CV2 rejection, re-aims ordinal409 at a reachable negative, records the face-versus-region authority distinction, and changes no topology/barrier/ownership/retired-guard rule.
+`M3-CP4c-3-TB35-EXEC` is **COMPLETE / MECHANICALLY VALID / RAW EVIDENCE PRESERVED / SEMANTICALLY UNADJUDICATED**. No semantic promotion, candidate closure, or corrective implementation is authorized by EXEC itself.
 
 ### Current authority
 
-- **Current semantic runtime authority remains `M3-CP4c-3-TB34`**: selector **409**, **400 PASS / 9 RED**, accepted **1–365 = 364/365**, RED `[312,366,367,368,369,370,374,398,409]`; run `34066225065`, immutable package99 artifact `9997560649`, semantic source `7711b9c2c20d284823911aa4ca067bd33244f4e6`.
-- **CB40 compile authority:** source `23a753a83f0eda0447172ce96bcd3180bf95ae8a`; run/job `34080675952 / 101615243724`; immutable package100 artifact `10003613409`, ZIP SHA-256 `bb5ee6afc1601d8d339d4fbdba32596e7b9a72b747f1510e4221b54d0776b94f`; log artifact `10003613693`, SHA-256 `3a7b50e4e011f8fb425807486abcd9a74db70939433efbe4bdd3156be27ccc56`; packaged source SHA-256 `56dc4a0ba09797bb08374abc15d4eaf472d19bcd8bcfa5d2ca3db361182257b4`.
-- Compile package checksums **28/28 PASS**; all eight targets compiled; GMP/GMPXX linked; source clean; `runtimeExecution=false`.
-- Selector remains **409** with SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; first 408 lines unchanged.
-- Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**; packages **100**.
+- **Current semantic runtime authority remains `M3-CP4c-3-TB34` pending review:** selector409, **400 PASS / 9 RED**, accepted **364/365**, RED `[312,366,367,368,369,370,374,398,409]`.
+- **TB35 raw execution authority:** run/job `34084955954 / 101627127649` on immutable package100 artifact `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / selector409. Raw aggregate **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; 409 identities executed exactly once, zero selection mismatches/timeouts.
+- Result artifact `10004965026`, SHA-256 `67ce321acb3fa1106f967f0652d599f320952daf58ca43ad1babb3e986ba4ff`; diagnostic log artifact `10004965268`, SHA-256 `c03d59f7946d2c2c50d8ee94e4c247bc23311491b371b98755a44134333091f4`.
+- Ledger SHA-256 `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`; failure-detail table SHA-256 `b316db6e6c74bae653a2b29523ef9b8c1728967ad32fa1f31b44102669d985b1`; result report: `Architecture_M3_CP4c3_TB35_EXEC_Report.md`.
+- Package/source/execution-view byte+mode censuses are identical pre/post. No configure, compile, relink, generated discovery, repair, benchmark, or package/source/test/fixture/selector mutation occurred.
+- Stable accounting is still **45 events / 14 categories / 31 recurrences**, debt **5**, packages **100**. EXEC made no stable change.
 
-### What CB40 changed
+### Raw facts the review must adjudicate
 
-1. `validate_single_boundary_walk` again rejects `current == start` before complete boundary consumption as `RegionBoundaryNotSingleWalk`, carrying `regionBoundaryWalkReason=ClosedBeforeEnd` and the failing region/arc. `ArcChainBroken` and `WalkNotClosed` are unchanged.
-2. Accepted ordinal **312 is unchanged**. It is the runtime recovery gate for TB35.
-3. Ordinal **409 keeps its frozen identity/name** but now duplicates one reachable region boundary, creating two closed walks sharing the start node; it requires `RegionBoundaryNotSingleWalk` / `ClosedBeforeEnd`. The test explicitly records that node-disjoint loops are unconstructible through this entry path.
-4. Durable architecture state now states the settled authority-domain distinction: certified embedded-graph face evidence is not plan-region evidence.
+1. **CV2 raw recovery:** ordinal312 PASS and accepted rows 1–365 are 365/365. `M3-CP4c3-TB34-REV-CAND-01` remains open until review decides closure/promotion.
+2. **CV3 raw recovery:** ordinal409 PASSes the reachable shared-start negative. Its test requires `RegionBoundaryNotSingleWalk`, typed `ClosedBeforeEnd`, second-loop first-arc locus, and projected `ClosedBeforeEnd`. `M3-CP4c3-TB34-REV-CAND-02` remains open until review.
+3. **366/367 discriminator:** both RED at restored `RegionBoundaryNotSingleWalk`, `regionFrontierFailureStage=RegionCertification`, `regionBoundaryWalkReason=ClosedBeforeEnd`, arc 3. TB34 had advanced them later to `RegionEulerCharacteristicNotOne`. Review must reconcile this evidence under `M3-CP4c3-TB34-REV-CAND-03`; EXEC does not claim the product diagnosis proved or disproved.
+4. **Protected invariants held:** 390/393/404/406/407/408 PASS; both retired codes absent; ownership publication 300 established / 0 unavailable / 0 conflicting.
+5. **Carried surfaces remain RED:** 368/369/370/374/398. Their exact retained failure bytes and per-ordinal hashes are in the TB35 EXEC report; no scope was weakened.
 
-### TB35-EXEC boundary
+### TB35-REV boundary
 
-Artifact-only Test + Benchmark. **Do not configure, compile, relink, repair, regenerate discovery, benchmark, or mutate package/source/test/fixture/selector bytes.** Execute the exact packaged harness against artifact `10003613409` under `Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md`.
-
-Hard gates:
-
-- ordinal **312 PASS** and accepted prefix **365/365 PASS**; otherwise CV2 is incomplete and semantic promotion stops;
-- ordinal **409 PASS and reach its re-aimed `ClosedBeforeEnd` oracle**; fixture/precondition failure is a CV3 hard falsifier;
-- 390/393/404/406/407/408 remain PASS;
-- both retired codes stay absent; ownership remains 300/0/0 whenever published;
-- 366/367 may not move earlier. `RegionBoundaryNotSingleWalk + ClosedBeforeEnd` supports the TB34 pinch reading; `ArcChainBroken` falsifies it. They are **not** to be made green in EXEC;
-- preserve all changes to 368/369/370/374/398 exactly, with no scope weakening.
-
-TB35-EXEC records raw evidence only, then **stops completely at independent `M3-CP4c-3-TB35-REV`**.
+Independent **Review + Plan only**. **Do not configure, compile, run new Directional runtime, benchmark, or mutate product/test/fixture/selector semantics.** Review the immutable TB35 evidence, promote or reject it as semantic authority, adjudicate every open TB34-REV candidate and the seven raw RED surfaces, update stable accounting only if the evidence warrants it, update `ORIENTATION.md`, perform mandatory REVIEW document consolidation, and freeze exactly one successor edge. Stop at that successor; do not execute it in the same turn.
 
 ### Context Load Plan
 
-`load_next`: Test + Benchmark **EXEC** guidance only; no implementation/review module unless later routed by the independent review boundary.
+`load_next`: independent **REVIEW + PLAN** guidance only; no implementation, compile, or runtime execution module.
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during this REVIEW turn.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current authority/candidates.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB40_Code_Build_Report.md` — exact implementation/compile/package authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` — **the complete executable TB35 contract**.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` — CV0–CV6 and TB35 falsifiers.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII operative.
-6. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector409/prefix authority.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
-8. `.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh` — immutable execution instrument.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB35_EXEC_Report.md` — complete mechanically valid raw TB35 evidence, including every RED focused failure detail.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` — CV0–CV6, candidate ownership, and the interpretation TB35 now tests.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB35 contract/falsifiers.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — candidate/stable-accounting intake.
+6. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII operative.
+7. `.agents/Directional/Required_Green_Selector_Manifest.md` — selector409/prefix authority.
+8. `TODO.md`, `CHANGELOG.md`, `LESSONS.md`, `CLEAN_UP_POLICY.md` — task/history/lessons/consolidation authority.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

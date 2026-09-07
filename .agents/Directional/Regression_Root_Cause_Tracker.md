@@ -1,3 +1,15 @@
+## M3-CP4c3-TB35-EXEC — artifact-only raw execution — **MECHANICALLY VALID / 402 PASS / 7 RED / SEMANTIC REVIEW PENDING / NON-STABLE TURN**
+
+- Immutable package100 artifact `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` / selector409 executed in run/job `34084955954 / 101627127649`. Result artifact `10004965026` is `sha256:67ce321acb3fa1106f967f0652d599f320952daf58ca43ad1babb3e986ba4ff`; log artifact `10004965268` is `sha256:c03d59f7946d2c2c50d8ee94e4c247bc23311491b371b98755a44134333091f4`. All 409 identities executed exactly once, every row selected once, zero timeouts, no benchmark, and all package/source/execution-view byte+mode censuses are unchanged.
+- Raw aggregate is **402 PASS / 7 RED**, accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`. Ledger SHA-256 `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`; failure-detail table SHA-256 `b316db6e6c74bae653a2b29523ef9b8c1728967ad32fa1f31b44102669d985b1`.
+- `M3-CP4c3-TB34-REV-CAND-01`: **RAW RUNTIME RECOVERY OBSERVED / REVIEW PENDING / stable-event owner unchanged** — ordinal312 PASS and the accepted prefix recovers to 365/365. EXEC does not close the candidate.
+- `M3-CP4c3-TB34-REV-CAND-02`: **RAW RUNTIME RECOVERY OBSERVED / REVIEW PENDING / TEST AUTHORITY** — ordinal409 PASSes the reachable shared-start multi-walk oracle requiring `RegionBoundaryNotSingleWalk / ClosedBeforeEnd`. EXEC does not close the candidate.
+- `M3-CP4c3-TB34-REV-CAND-03`: **ACTIVE / GATING / PRODUCT / REVIEW PENDING** — 366/367 are RED at restored `RegionBoundaryNotSingleWalk`, `regionFrontierFailureStage=RegionCertification`, typed `ClosedBeforeEnd`, arc 3. This is frozen correction/discriminator evidence, not a new stable regression. Independent review owns whether the TB34 region-topology diagnosis is confirmed, refined, or superseded.
+- Carried surfaces **368/369/370/374/398 remain RED under their existing owners**. No test scope was weakened and no new candidate/category is created merely because they remain red.
+- Protected 390/393/404/406/407/408 PASS; both retired codes are absent; ownership publishes **300 established / 0 unavailable / 0 conflicting**.
+- **Accounting unchanged:** no new accepted-green loss or newly attributable product/test regression is introduced by this EXEC. Stable totals remain **45 events / 14 categories / 31 recurrences**, produced-witness debt **5**, packages **100**. Current semantic runtime authority remains TB34 until TB35-REV.
+- Exact next: independent evidence-only `M3-CP4c-3-TB35-REV`. No compile/runtime/semantic mutation before review.
+
 ## M3-CP4c3-CB40 — CV2/CV3 correction — **IMPLEMENTED / COMPILE-PROVED / RUNTIME PENDING TB35 / NON-STABLE TURN**
 
 - Exact semantic source `23a753a83f0eda0447172ce96bcd3180bf95ae8a` restores `current == start` as `RegionBoundaryNotSingleWalk` with typed `ClosedBeforeEnd`, leaves accepted ordinal312 unchanged, and re-aims frozen ordinal409 at the reachable shared-node multi-walk.
