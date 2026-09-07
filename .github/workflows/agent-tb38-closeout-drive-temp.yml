@@ -1,0 +1,46 @@
+name: Agent TB38 Closeout Drive Apply
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/tb38-closeout-drive.txt]
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-tb38-closeout-drive
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb38-closeout-drive-temp.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb38-closeout-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1_8rAkn1CUAXLW7xna8YDwGj-oyGxZ9r1
+      patch_sha256: 48599df5c31b5f7cfc18630080647b3cbecdf65a1e59230e3e0da5960ff214dc
+      base_sha: 687e16a5282ca41f1d65722729503cc8d32d594e
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close TB38 EXEC and hand off independent review"
+      retention_days: 14
+    secrets: inherit
