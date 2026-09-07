@@ -1,4 +1,0 @@
-.agents/connector-triggers/source-snapshot/tb37-start-20260907.txt
-.agents/connector-triggers/tb37-exec.txt
-.agents/Directional/turn-payloads/tb37_measurement_checks.py
-.agents/connector-triggers/tb37-closeout-drive-apply.txt
