@@ -116,97 +116,50 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB43` — EXACT NEXT / Code + Build, runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB38-EXEC` — EXACT NEXT / artifact-only runtime
 
-`M3-CP4c-3-DEFN-R6` appended **Part X** and froze CB43. Runtime authority is unchanged.
+`M3-CP4c-3-CB43` is **COMPLETE / COMPILE-GREEN / IMMUTABLE PACKAGE 103 / RUNTIME-FREE**. It implements DEFN-R6 Part X; no Directional runtime was executed in CB43.
 
 ### Current authority
 
-- **`M3-CP4c-3-TB37`** — selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED
-  `[366,367,368,369,370,374,398]`; immutable CB42 package `10032277517`, source
-  `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`.
-- Certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
-- **Stable accounting 45 events / 14 categories / 31 recurrences**, debt **5**, packages **102**.
-- Definition authority: **Part X (DEFN-R6)** for the Euler criterion; **Part IX**, amended by **Part IX-A**, for
-  everything else. Part X supersedes **Part IX §5 only**.
+- Current valid semantic runtime: **TB37**, selector409, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, run `34161464783`.
+- TB38 immutable input: package **103**, source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, artifact `10034608071` / `m3-cp4c3-cb43-result-34167182718`, compile run/job `34167182718 / 101880462158`.
+- Artifact SHA-256 `426622beb03208d2e6b0cc77479942a92f2aca9967e3bf6251f5034ac533008e`; source archive `1d4c59d8482ffc240f93119ea04e57541930241a73ff3bb8bdd4154f40fe5a28`; selector409 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`; harness `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
+- Stable accounting **45 events / 14 categories / 31 recurrences**, debt **5**; CB43 adds one package and no runtime event/recurrence.
+- Definition authority: Part X (DEFN-R6) for Euler; Part IX/IX-A otherwise.
 
-### What DEFN-R6 established
+### CB43 result
 
-**The cancellation premise is NOT the defect (R6.1).** The sub-mesh boundary cancels exactly — 20 edges against
-20 vertices — so `GlobalTopologyPlan.cpp:2097–2098` was right about the boundary. Part IX-A §A.2's implication
-that the premise itself fails is **withdrawn**.
+CB43 adds `totalVertexCount` / `totalEdgeCount`, computes `eulerCharacteristic = V_total - E_total + F`, preserves existing `vertexCount` / `edgeCount`, deletes both withdrawn premise comments, emits per-region `record=euler_certificate` proof data, and intentionally includes the new totals in certificate ordering/hash. Region construction, tests, fixtures, selectors, ownership/partition logic, 368/369/370/374/398 surfaces, and retired guards are unchanged. `tests/FieldAlignedCurveNetworkTests.cpp` and selector409 are byte-identical at the Code + Build boundary.
 
-**The defect is a misclassification (R6.2).** A mandatory or cut edge with **both** incident faces in the region is
-an **interior** cell of the certified complex. The certificate drops **12** such edges from `E_int`
-(`:1848–1850`) and **16** further vertices from `V_int` via `allOwned` (`:2048–2094`), and those exclusions do not
-balance:
+Exact report: `.agents/Directional/Architecture_M3_CP4c3_CB43_Code_Build_Report.md`.
 
-> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 0 + 4`
+### TB38-EXEC boundary
 
-A terminal slit is exactly such an edge, and this fixture has ten. Measured:
-`V_total/E_total/F/chiFull = 136/385/250/1` against the reduced `100/353/250/−3` — **the region is a disc.**
+Execute `.agents/Directional/Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md` exactly against package103:
 
-**The criterion (R6.3, R6.4).** The certified complex is the **whole-face source sub-mesh** of
-`region.sourceFaces`, so `χ = 1` is a claim about that **rounding**, not about the traced region. The criterion is
-**`χ = V_total − E_total + F = 1`**; the reduced form is withdrawn.
+1. fail-closed package/source/selector/harness/GMP/mode preflight before runtime;
+2. run selector409 in order, one fresh process per identity, accepted 1-365 first; no benchmarks;
+3. accepted **365/365** and ordinals **312/409 PASS** are hard stops; preserve 390/393/404/406/407/408;
+4. verify every accepted-region `euler_certificate`: `chiReduced=V_int-E_int+F`, `chiFull=V_total-E_total+F`, `fullMinusReduced=chiFull-chiReduced=X-E_one-B_int`, then record zero-difference or unchanged-verdict discharge;
+5. 366/367 frozen expectation is `X=36`, `E_one=20`, `B_int=12`, `V_total/E_total/F=136/385/250`, `chiReduced=-3`, `chiFull=1`, difference `4`; if preserved, Euler rejection must no longer be terminal and any later RED is a new frontier;
+6. 368/369/370/374/398 remain separately owned; movement is review-required;
+7. no configure/compile/relink/regeneration/discovery/repair/mutation.
 
-**Two premise sites, not one (R6.5).** `GlobalTopologyPlan.cpp:2097–2098` **and**
-`include/directional/geometry/GlobalTopologyPlan.h:91–93`, whose `vertexCount` comment repeats the premise
-verbatim. TB37-REV named only the first. **Deleting one re-seeds the assumption** — which is how it survived from
-TB34 to TB37. `LESSONS.md` 154.
-
-**Do not repurpose the existing counts (R6.6).** `edgeCount` is incremented in the loop that builds `neighbors` for
-the connectivity BFS behind `RegionInteriorDisconnected` (`:1847–1860`, BFS `:1862–1873`, check `:1874`).
-
-**The proof obligation (R6.7).** Reduced and full agree iff **`X = E_one + B_int`**; the measured region violates
-it by 4. **CB43 may not assume it anywhere.**
-
-### CB43 boundary — CZ7.1–CZ7.7
-
-**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`.
-
-- **CZ7.1** — hoist CB42's `submeshVertices` / `submeshEdges` accumulation **out of the failure branch**, where it
-  currently sits, so the criterion can use it. Code motion, no behaviour of its own.
-- **CZ7.2** — add `V_total` / `E_total` certificate fields and compute `eulerCharacteristic` from them.
-- **CZ7.3** — delete **both** premise comments, replacing them with what is actually counted.
-- **CZ7.4** — **discharge R6.7 per region on every accepted fixture**: publish `X`, `E_one`, `B_int` and the
-  reduced-versus-full difference, and show either the identity or an unchanged verdict. *"Accepted fixtures have no
-  slits"* is not a discharge.
-- **CZ7.5** — state the certificate-ordering and plan-hash decision explicitly. New fields change `operator<=>`
-  and `global_topology_plan_hash` consumes the certificate (`:2386–2400`). **Confirm by grep** that no identity
-  pins a hash literal; the hash changes regardless, since corrected regions publish a different
-  `eulerCharacteristic`.
-- **CZ7.6** — ordinals **312/409** byte-identical, selector **409** byte-frozen, accepted **1–365** untouched, no
-  work on 368/369/370/374/398, no ownership/partition/retired-guard/sphere/saturation/folded-cone/finalize-contact
-  change, and **region construction unchanged**.
-- **CZ7.7** — `M3-CP4c-3-TB38` re-executes selector 409, one identity per fresh process, accepted prefix first.
-
-**Falsifiers, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
-conditions. The risk is **not** a direct assertion — no test asserts `RegionEulerCharacteristicNotOne` — it is that
-a region which currently fails Euler now passes and reaches stages never executed on it. If 366/367 clear region
-certification, R6.1–R6.4 are confirmed and **a new failure at a later stage is a new frontier, not a regression**.
-If 366/367 still fail Euler under the full count, measurement and implementation disagree and the turn halts. If
-any accepted-fixture region changes verdict, R6.7 is refuted there. If a region elsewhere newly fails Euler,
-R6.3's counted complex becomes the live question.
-
-**Must not:** correct region construction; change ownership or the whole-face rounding; repurpose `vertexCount` or
-`edgeCount`; weaken `proves_disc_topology()`, `sourceFacesConnected` or `boundaryWalkCount`; force χ to 1 or
-special-case a fixture; delete only one premise comment; weaken ordinal 398; touch 368/369/370/374; change any
-accepted identity 1–365 or any byte of selector 397–409.
+TB38-EXEC preserves raw evidence only. TB38-REV / the independent review boundary owns diagnosis/classification and planning.
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance.
+`load_next`: TB-EXEC guidance.
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.4, §3.5, §3.6.
-2. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part X operative for the Euler criterion**; Part IX
-   (amended by Part IX-A) for everything else.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` — **CZ0–CZ6**, the evidence.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB37_EXEC_Report.md` — current runtime authority.
+0. `.agents/Directional/ORIENTATION.md`.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md`.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB43_Code_Build_Report.md`.
+3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part X for Euler; Part IX/IX-A otherwise.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` and `Architecture_M3_CP4c3_TB37_EXEC_Report.md`.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-6. `.agents/Directional/LESSONS.md` — mandatory; **53, 144, 153, 154** govern this change.
-7. `.agents/Directional/AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
+6. `.agents/Directional/LESSONS.md`, `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md` per start checklist.
+7. turn-based-coding-agent `references/turns/TB-EXEC.md`; GitHub connector module only for Actions/artifact work.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -1,3 +1,14 @@
+## M3-CP4c3-CB43 — Part X Euler correction — **IMPLEMENTED / COMPILE-PROVED / RUNTIME PENDING TB38 / NON-STABLE TURN**
+
+- Semantic source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`; two production files, 78 insertions / 47 deletions. Full source-submesh Euler authority and DEFN-R6.7 proof diagnostics are compiled; region construction, tests, fixtures, selectors, ownership/partition semantics and carried 368/369/370/374/398 surfaces are unchanged.
+- Compile/package run/job `34167182718 / 101880462158` success; package103 artifact `10034608071` / `m3-cp4c3-cb43-result-34167182718`, ZIP `426622beb03208d2e6b0cc77479942a92f2aca9967e3bf6251f5034ac533008e`; 28/28 checksums; GMP/GMPXX; `runtimeExecution=false`.
+- Protected static authority: selector409 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, harness `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`, test source `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`.
+- No runtime: no candidate/event/recurrence is opened, closed, merged or repriced; `M3-CP4c3-TB37-REV-CAND-01` remains non-blocking and existing carried owners remain unchanged.
+- Accounting: **+0 events / +0 recurrences**; totals **45 events / 14 categories / 31 recurrences**, debt **5**, packages **103**.
+- Exact successor: `M3-CP4c-3-TB38-EXEC`; semantic classification is deferred to TB38-REV / independent review.
+
+---
+
 ## M3-CP4c3-DEFN-R6 — frozen definitions Part X — **CURRENT DEFINITION AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** Part X of `M3_CP4c_Frozen_Definitions.md`. Definition turn (absorbs REVIEW + PLAN). No runtime, no
@@ -6173,38 +6184,6 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current valid semantic runtime authority is **M3-CP4c-3-TB37**: semantic source
-`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, immutable CB42 package `10032277517`, selector409, run `34161464783`,
-**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, reds `[366,367,368,369,370,374,398]`, ownership
-**300 / 0 / 0**. Stable totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, M3 packages
-**102**.
+Current valid semantic runtime remains TB37: source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, selector409, run `34161464783`, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership **300/0/0** where published.
 
-`M3-CP4c-3-DEFN-R6` is the current definition authority, appended as **Part X**. It supersedes **Part IX §5 only**
-and decides the Euler question: the cancellation premise is **not** the defect (the sub-mesh boundary cancels 20
-against 20); **interior barrier edges are interior cells** and the certificate misclassifies them, dropping 12
-edges against 16 vertices; the certified complex is the **whole-face source sub-mesh**; and the criterion is
-**chi = V_total - E_total + F = 1**, with the reduced form withdrawn. The withdrawn premise has **two** comment
-sites - `GlobalTopologyPlan.cpp:2097-2098` and `GlobalTopologyPlan.h:91-93` - and both must be deleted.
-
-**Exact next: `M3-CP4c-3-CB43` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
-**CZ7.1-CZ7.7**: hoist CB42's sub-mesh accumulation above the chi test, where it currently sits inside the failure
-branch (CZ7.1); add `V_total`/`E_total` certificate fields and compute chi from them (CZ7.2); delete both premise
-comments and replace them with what is actually counted (CZ7.3); **discharge DEFN-R6.7 per region on every
-accepted fixture** - a blanket claim that accepted fixtures have no slits is not a discharge (CZ7.4); state the
-certificate-ordering and plan-hash decision explicitly and confirm by grep that no identity pins a hash literal
-(CZ7.5); keep ordinals 312/409 byte-identical, selector409 byte-frozen, and **region construction unchanged**
-(CZ7.6); `M3-CP4c-3-TB38` re-executes (CZ7.7).
-
-**Falsification, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
-conditions. The risk is **not** a direct assertion - no test asserts `RegionEulerCharacteristicNotOne` - it is that
-a region which currently fails Euler now passes and reaches stages never executed on it. If 366/367 clear region
-certification, DEFN-R6.1-R6.4 are confirmed and **a new failure at a later stage is a new frontier, not a
-regression**. If 366/367 still fail Euler under the full count, measurement and implementation disagree and the
-turn halts. If any accepted-fixture region changes verdict, DEFN-R6.7's identity is refuted there. If a region
-elsewhere newly fails Euler, DEFN-R6.3's counted complex becomes the live question.
-
-**Prohibited:** correcting region construction; changing ownership or the whole-face rounding while fixing the
-arithmetic; repurposing `vertexCount` or `edgeCount`; weakening `proves_disc_topology()`, `sourceFacesConnected`
-or `boundaryWalkCount`; forcing chi to 1 or special-casing a fixture; deleting only one of the two premise
-comments; weakening ordinal 398; touching 368/369/370/374; re-opening any retired guard; any accepted-identity or
-selector byte change; any Directional runtime in the definition turn.
+CB43 is compile-proved but not runtime-promoted: source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, package103 artifact `10034608071`, run/job `34167182718 / 101880462158`. Exact next is **`M3-CP4c-3-TB38-EXEC`**, artifact-only: preserve accepted 365/365 and 312/409 PASS, prove DEFN-R6.7 per accepted-region certificate, determine whether 366/367 advance beyond Euler, and preserve separately owned 368/369/370/374/398. No benchmark, rebuild, mutation, semantic retry, or validator weakening. Raw EXEC evidence stops at TB38-REV / independent review.

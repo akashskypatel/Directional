@@ -184,37 +184,21 @@ Part X supersedes **Part IX §5 only**; every other Part IX clause and all of Pa
 - **R6.7 — the equivalence carries a proof obligation.** Reduced and full agree iff **`X = E_one + B_int`**; the
   measured region violates it by 4 (`36` vs `20 + 12`). **CB43 may not assume it anywhere.**
 
-## 3.6 Exact next turn — `M3-CP4c-3-CB43`
+## 3.6 CB43 compiled Part X; exact next is `M3-CP4c-3-TB38-EXEC`
 
-**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`, under **CZ7.1–CZ7.7**.
+CB43 source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` compiles green as package103 (`10034608071`, run/job `34167182718 / 101880462158`) without Directional runtime. It adds total source-submesh counts, computes full χ, removes both obsolete premise comments, publishes per-region reduced/full proof data, and includes the new totals in certificate ordering/hash while leaving region construction and accepted test/selector source unchanged.
 
-- **CZ7.1** — hoist CB42's `submeshVertices` / `submeshEdges` accumulation **out of the
-  `if (certificate.eulerCharacteristic != 1)` failure branch**, where it currently sits, so the criterion can use
-  it. Code motion with no behaviour of its own.
-- **CZ7.2** — add `V_total` / `E_total` certificate fields per R6.6 and compute `eulerCharacteristic` from them.
-- **CZ7.3** — delete **both** premise comments per R6.5, replacing them with what is actually counted.
-- **CZ7.4** — **discharge R6.7 per region on every accepted fixture.** Publish `X`, `E_one`, `B_int` and the
-  reduced-versus-full difference, and show either the identity or an unchanged verdict. *"Accepted fixtures have
-  no slits"* is an explanation, not a discharge.
-- **CZ7.5** — state the certificate-ordering and plan-hash decision explicitly. New fields change
-  `operator<=>`, and `global_topology_plan_hash` consumes the certificate (`:2386–2400`). **Confirm by grep** that
-  no identity pins a hash literal; note the hash changes regardless, since corrected regions publish a different
-  `eulerCharacteristic`.
-- **CZ7.6** — ordinals **312/409** byte-identical, selector **409** byte-frozen, accepted **1–365** untouched, no
-  work on 368/369/370/374/398, and **region construction unchanged**.
-- **CZ7.7** — `M3-CP4c-3-TB38` re-executes.
+TB38-EXEC is the runtime proof of CZ7.4. Every emitted accepted-region certificate must satisfy:
 
-**Falsifiers, stated before the build.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop
-conditions. The risk is **not** a direct assertion — no test asserts `RegionEulerCharacteristicNotOne` — it is that
-a region which currently fails Euler now passes and reaches stages never executed on it. If 366/367 clear region
-certification, R6.1–R6.4 are confirmed and **a new failure at a later stage is a new frontier, not a regression**.
-If 366/367 still fail Euler under the full count, measurement and implementation disagree and the turn halts. If
-any accepted-fixture region changes verdict, R6.7 is refuted there. If a region elsewhere newly fails Euler, R6.3's
-counted complex becomes the live question.
+```text
+chiReduced = V_int - E_int + F
+chiFull = V_total - E_total + F
+fullMinusReduced = chiFull - chiReduced = X - E_one - B_int
+```
 
-**Must not:** correct region construction; change ownership or the whole-face rounding; repurpose `vertexCount` or
-`edgeCount`; weaken `proves_disc_topology()`, `sourceFacesConnected` or `boundaryWalkCount`; force χ to 1 or
-special-case a fixture; delete only one premise comment; change any accepted identity or selector byte.
+Zero difference proves equivalence; nonzero difference with an unchanged accepted verdict discharges the obligation without the forbidden blanket assumption. For 366/367, TB37 predicts `36-20-12=4` and `136-385+250=1`; if preserved, terminal Euler rejection is a correction failure and a later-stage RED is a new frontier. Accepted 365/365 and 312/409 PASS are hard falsifiers; 368/369/370/374/398 remain separately owned.
+
+**Exact next:** artifact-only TB38-EXEC using package103 and `Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md`; no benchmark. Raw evidence stops at TB38-REV / independent review.
 
 ## 4. Open candidates
 
@@ -345,16 +329,4 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, CB43 loads only the minimum authority:
-
-1. `ORIENTATION.md` — read first.
-2. **this file** — §3.4 (the measurement and finding), §3.5 (Part X), §3.6 (the frozen measures).
-3. `M3_CP4c_Frozen_Definitions.md` — **Part X operative for the Euler criterion**; Part IX (amended by Part IX-A)
-   operative for everything else. Part X supersedes **Part IX §5 only**.
-4. `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` — **CZ0–CZ6**, the evidence and the checks.
-5. `Regression_Root_Cause_Tracker.md` — the DEFN-R6 section and the authoritative next step.
-6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (**53, 144, 153, 154** govern).
-7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
-
-Exact next is **`M3-CP4c-3-CB43`** under **CZ7.1–CZ7.7**. **Accepted prefix 365/365, and ordinals 312 and 409
-PASS, are stop conditions**, and DEFN-R6.7's per-region equivalence must be **proved, not assumed**.
+Resume from `M3-CP4c-3-TB38-EXEC`. Current semantic runtime is TB37; immutable execution input is CB43 package103, artifact `10034608071`, source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`. Read the frozen TB38 plan first and do not rebuild.

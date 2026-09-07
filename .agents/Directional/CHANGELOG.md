@@ -1,3 +1,11 @@
+## 2026-09-07 — `M3-CP4c-3-CB43`: full source-submesh Euler certificate compiled as package103
+
+Code + Build, runtime-free. Source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` changes exactly two production files (**78 insertions / 47 deletions**): adds total source-submesh counts, computes `V_total-E_total+F`, removes both withdrawn premise comments, emits per-region reduced/full proof diagnostics, and includes total counts in certificate ordering/hash. Existing interior counts, region construction, tests, fixtures, selectors, ownership/partition semantics, carried 368/369/370/374/398 surfaces and retired guards are unchanged.
+
+Compile run/job `34167182718 / 101880462158` succeeded with GMP/GMPXX and `runtimeExecution=false`. Package103 artifact `10034608071` (`m3-cp4c3-cb43-result-34167182718`), ZIP `426622beb03208d2e6b0cc77479942a92f2aca9967e3bf6251f5034ac533008e`, source archive `1d4c59d8482ffc240f93119ea04e57541930241a73ff3bb8bdd4154f40fe5a28`, checksums **28/28 PASS**. Selector409 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, harness `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`, test source `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b` remain frozen.
+
+No runtime event/recurrence: totals remain **45 / 14 / 31**, debt **5**; packages **102 → 103**. Current runtime remains TB37. Exact next is artifact-only TB38-EXEC; accepted 365/365 and 312/409 PASS are hard stops, R6.7 is per-region, and later-stage 366/367 RED after clearing Euler is a new frontier.
+
 ## 2026-09-07 — `M3-CP4c-3-DEFN-R6`: Part X corrects the region Euler criterion
 
 Definition turn (`DEFN` absorbs REVIEW + PLAN), static. No runtime, no compile, no package operation, no

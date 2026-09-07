@@ -543,14 +543,9 @@ no behaviour.
 
 **DEFN-R6 discharged that successor**, appending **Part X** without authoring a selector or touching source.
 
-**Exact successor:** `M3-CP4c-3-CB43` under **CZ7.1–CZ7.7** of Part X. It corrects the region Euler criterion to
-`χ = V_total − E_total + F = 1` and **authors no selector: 409 stays byte-frozen**, with ordinals **312** and
-**409** byte-identical (CZ7.6). Because no accepted identity asserts `RegionEulerCharacteristicNotOne` — confirmed
-by CB42's grep — the selector risk is **not** a direct assertion; it is that a region which currently fails Euler
-will now pass and reach stages never executed on it. CZ7.4 therefore requires the equivalence `X = E_one + B_int`
-to be **proved per region on every accepted fixture**, not assumed. CZ7.5 additionally requires a stated decision
-on certificate ordering and the plan hash, since new certificate fields change `operator<=>` and
-`global_topology_plan_hash` consumes the certificate. **Accepted prefix 365/365 is a stop condition.**
+**CB43 discharged the Code + Build successor without authoring a selector.** Source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` compiles green as package103 artifact `10034608071`. Selector409 stays `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, and `tests/FieldAlignedCurveNetworkTests.cpp` stays `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`. CB43 adds full source-submesh Euler authority and proof diagnostics without editing 312, 409, any accepted identity, or region construction.
+
+**Exact successor:** `M3-CP4c-3-TB38-EXEC`. It re-executes this same selector409 from package103. Accepted **365/365** and **312/409 PASS** are hard stops. It must discharge DEFN-R6.7 per accepted-region certificate and verify 366/367 no longer terminate at Euler when `chiFull=1`; later RED is a new frontier. 368/369/370/374/398 remain separately owned.
 
 ## Separate lineage — M1
 

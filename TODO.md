@@ -26,46 +26,34 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB43` (Code + Build, runtime-free) — CORRECT THE EULER CRITERION
+## Current focus — `M3-CP4c-3-TB38-EXEC` — ARTIFACT-ONLY VALIDATION OF THE FULL EULER CERTIFICATE
 
-`M3-CP4c-3-DEFN-R6` appended **Part X**. Runtime authority is unchanged:
+CB43 is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**: source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run/job `34167182718 / 101880462158`, package103 artifact `10034608071`, ZIP `426622beb03208d2e6b0cc77479942a92f2aca9967e3bf6251f5034ac533008e`, selector409 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`. Semantic patch is exactly two production files, **78 insertions / 47 deletions**; no Directional runtime.
 
-- selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
-- immutable CB42 package `10032277517` / source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`; run `34161464783`;
-- certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
+CB43 Code + Build CZ7 status:
 
-**The cancellation premise is NOT the defect.** The sub-mesh boundary cancels exactly, 20 against 20. **The defect
-is that a barrier edge with both incident faces in the region is an interior cell being classified as boundary**:
-12 such edges are dropped from `E_int` against 16 vertices from `V_int`, and `(20 − 20) + (16 − 12) = 4` is the
-whole error. Measured `V/E/F/chiFull = 136/385/250/1` — **the region is a disc.**
+- [x] CZ7.1 hoist source-submesh accumulation before Euler;
+- [x] CZ7.2 add total counts and compute full χ;
+- [x] CZ7.3 delete both premise comments;
+- [x] CZ7.4-authoring publish per-region reduced/full proof data; TB38 owns runtime discharge;
+- [x] CZ7.5 include totals in comparison/hash; no test hash literal pin;
+- [x] CZ7.6 tests/selectors byte-frozen and region construction unchanged;
+- [x] CZ7.7 freeze TB38 plan against package103.
 
-**Part X freezes:** the certified complex is the **whole-face source sub-mesh** (so `χ = 1` is about that
-rounding, not the traced region); the criterion is **`χ = V_total − E_total + F = 1`**, reduced form withdrawn;
-the premise has **two** comment sites and both must go; `vertexCount`/`edgeCount` must not be repurposed because
-`edgeCount` feeds the connectivity BFS; and reduced/full agree iff `X = E_one + B_int`, **which CB43 must prove
-per region on every accepted fixture rather than assume**.
-
-Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**, packages **102**. CP4c-3
-remains **OPEN**.
+Current semantic runtime remains TB37: **402 PASS / 7 RED**, accepted **365/365**, RED `366,367,368,369,370,374,398`, ownership **300/0/0** where published. Stable accounting remains **45 / 14 / 31**, debt **5**; packages **103**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB43`**, a runtime-free **Code + Build** turn under **CZ7.1–CZ7.7**:
+Run `M3-CP4c-3-TB38-EXEC` exactly from `.agents/Directional/Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md` using artifact `10034608071` without rebuild.
 
-- [ ] **CZ7.1** hoist CB42's sub-mesh accumulation out of the `eulerCharacteristic != 1` failure branch;
-- [ ] **CZ7.2** add `V_total`/`E_total` certificate fields and compute χ from them;
-- [ ] **CZ7.3** delete **both** premise comments — `GlobalTopologyPlan.cpp:2097–2098` and
-      `include/directional/geometry/GlobalTopologyPlan.h:91–93`;
-- [ ] **CZ7.4** discharge the `X = E_one + B_int` obligation **per region on every accepted fixture**;
-- [ ] **CZ7.5** state the certificate-ordering / plan-hash decision and confirm by grep that no identity pins a
-      hash literal;
-- [ ] **CZ7.6** keep ordinals 312/409 byte-identical, selector 409 byte-frozen, region construction unchanged;
-- [ ] **CZ7.7** hand off to `M3-CP4c-3-TB38`.
-
-**Must not:** correct region construction; change ownership or the whole-face rounding; repurpose
-`vertexCount`/`edgeCount`; weaken `proves_disc_topology()`; force χ to 1 or special-case a fixture; delete only one
-premise comment; weaken ordinal 398; touch 368/369/370/374; change any accepted identity or selector byte.
-**Accepted prefix 365/365 and ordinals 312/409 PASS are stop conditions.**
+- [ ] preflight package103 authority, checksums, GMP/GMPXX, selector/harness hashes and modes;
+- [ ] execute all 409 identities, fresh process each, accepted 1-365 first;
+- [ ] require accepted 365/365 and 312/409 PASS;
+- [ ] validate every accepted-region `euler_certificate` equality and discharge classification;
+- [ ] verify 366/367 advance past Euler when `chiFull=1`; later RED is a new frontier;
+- [ ] carry 368/369/370/374/398 under existing owners; movement is review-required;
+- [ ] preserve raw evidence and stop at TB38-REV / independent review;
+- [ ] no benchmarks, rebuild, mutation, semantic retry, or validator weakening.
 
 ## Carried forward from M1
 
