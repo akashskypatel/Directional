@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-06, `M3-CP4c-3-TB35-REV`):** runtime authority is **TB35** on selector **409** at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365** — ordinal 312 PASS, ordinal 409 PASS on its re-aimed shared-start oracle. **The frontier is now proved from source:** a plan region's boundary **is** `walk.orbits[orbit]`, and a face-walk orbit is an ordered **single closed walk by construction**, so `ClosedBeforeEnd` on a plan region is **always a false rejection** — while on a **synthetic** boundary it is the only thing that catches a real multi-walk. **The defect is that the validator cannot see provenance**, which reconciles TB33-REV and TB34-REV rather than choosing between them. Exact next is **`M3-CP4c-3-DEFN-R5`**, a definition turn appending **Part IX**. The TB34 stable event stands: **45 / 14 / 31**.
+> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-DEFN-R5`):** runtime authority remains **TB35** on selector **409** at **402 PASS / 7 RED**, accepted **365/365**. **Part IX is now the operative definition authority:** a region earns `FaceWalkOrbit(orbit)` only from an exact unique equality to the current face-walk orbit; provenance is derived, never a copied flag. `ClosedBeforeEnd` rejects only an `Unguaranteed` boundary, while `ArcChainBroken` and `WalkNotClosed` remain universal. The separate Euler result is **not corrected**; CB41 measures the repeated-node cancellation premise. Exact next is **`M3-CP4c-3-CB41`** under CX0–CX8. Stable accounting remains **45 / 14 / 31**.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -33,14 +33,7 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-03 at `M3-CP4c-3-TB17-REV`. CB19 cleared the region source-port frontier; the
-review **falsified the fragment-count invariant** but could not adjudicate its correction, because the deciding
-numbers are computed and then discarded.
-
-**Where the frontier is.** TB17 (package 87, source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`, run/job
-`33770523736 / 100699356052`) is **374 PASS / 8 RED**, accepted **365/365**. Ordinal 366 now first-reds at
-`TraceCutFaceFragmentCountMismatch`, source face **`(0,1,102)`** = mesh row **259** — published with `sourceFace`
-and **nothing else**.
+**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-DEFN-R5`. Part IX freezes the exact derived provenance contract and the next runtime-free implementation boundary; no semantic runtime authority changed.
 
 **The invariant is unsound as an equality.** `GlobalTopologyPlan.cpp:779` compares
 `fragmentOrbits[face].size()` against `tracePieceCount[face] + 1`. Each real chord contributes **one** to
@@ -210,6 +203,14 @@ read. `LESSONS.md` 146.
 **Still unknown:** `RegionEulerCharacteristicNotOne`, seen at TB34 once the rejection was bypassed, is a
 **separate** question — χ over a walk that may revisit nodes — and is not decided.
 
+**Definition authority — `M3-CP4c-3-DEFN-R5`, Part IX of `M3_CP4c_Frozen_Definitions.md`.** It supersedes earlier CP4c-3 definitions where they conflict.
+
+- **DEFN-R5.1 — face-walk guarantee.** Each authoritative orbit is one ordered closed successor walk; cyclic canonicalization only rotates it. A closed walk may revisit nodes.
+- **DEFN-R5.2 — derived provenance.** `FaceWalkOrbit(orbit)` exists only when exactly one current authoritative orbit equals the current ordered region boundary. A region does not self-certify provenance; a copied mutable flag is prohibited.
+- **DEFN-R5.3 — reason scope.** `ClosedBeforeEnd` rejects only `Unguaranteed`; for `FaceWalkOrbit` it is observation-only and traversal continues. `ArcChainBroken` and `WalkNotClosed` remain rejecting for all. Resolve optional provenance before the structural check, but require a missing owning orbit only afterward so 312/409 remain load-bearing negatives.
+- **DEFN-R5.4 — 312/409 unchanged.** They are exact falsifiers of provenance overreach and stay gating with selector409 byte-identical.
+- **DEFN-R5.5 — Euler measured, not corrected.** Current region χ is `V_int - E_int + F`; the boundary-term cancellation premise is not established for repeated-node walks. CB41 publishes exact boundary multiplicity counts on the Euler failure and changes no Euler semantics.
+
 **Definition authority — `M3-CP4c-3-DEFN-R4`, Part VIII of `M3_CP4c_Frozen_Definitions.md`.** It supersedes Part VII where they conflict.
 
 - **DEFN-R4.1 — `FragmentCornerIncidence` is an ownership map.** `fragmentCorners[face][orbit]` is the set of `face`'s corners **owned by certified face `orbit`** — keyed by owning region, not by fragment. Both consumers use it that way (`:1893–1906` asks *"which corners are mine?"*; `:1927–1945` classifies mine-versus-another's), and the `FragmentKey` at `:1693–1699` carries `owningOrbit` as a **constant tag**. TB31-REV's description of `(face, orbit)` as a *fragment identity* is **withdrawn**.
@@ -376,9 +377,8 @@ features first, then threads them through source authority *and* atlas). Copy on
      TB34-REV, which were each right about the input they read.
    - **Separate and undecided:** `RegionEulerCharacteristicNotOne`, seen at TB34 with the rejection bypassed — χ
      over a walk that may revisit nodes.
-   - **Owner: `M3-CP4c-3-DEFN-R5`**, appending Part IX. Two Code + Build turns have flipped this predicate in
-     opposite directions and one cost an accepted-green regression; the contract gets written before the next
-     change.
+   - **Part IX now resolves the contract.** Provenance is the exact unique face-walk-orbit equality, not a stored flag; reason scope follows it.
+   - **Owner: `M3-CP4c-3-CB41`** for implementation and exact Euler multiplicity measurement; TB36-REV owns the runtime verdict and any later Euler decision.
 
 2. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via

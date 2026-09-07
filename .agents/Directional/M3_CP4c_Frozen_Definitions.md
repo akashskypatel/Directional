@@ -1,14 +1,15 @@
 # M3 CP4c — Frozen Definitions
 
 **Purpose — DURABLE, DO NOT DELETE.** This is the single normative definitions document for the `M3-CP4c` family.
-It carries the **complete, unaltered text** of the six frozen-definition documents, consolidated on **2026-09-03**
-at `M3-CP4c-3-TB17-REV`. Nothing was summarized, shortened or reworded: each part below is its source document
-verbatim, with heading levels demoted by two so the parts nest under one hierarchy.
+It carries the **complete, unaltered text** of the six original frozen-definition documents, consolidated on
+**2026-09-03** at `M3-CP4c-3-TB17-REV`, followed by later definition revisions authored directly in this durable
+authority. Nothing in Parts I–VI was summarized, shortened or reworded; Parts VII onward are the original authored
+text of their definition turns.
 
 **Supersession.** Within each checkpoint the revisions supersede in order — `DEFN` → `DEFN-R1` → `DEFN-R2`. The
 earlier revisions are retained because `DESIGN.md` and the regression tracker cite the amendment lineage directly,
 and because an amendment's provenance is part of its authority. **The operative definitions for CP4c-2 are Part
-III; for CP4c-3 they are Part VI together with Parts VII and VIII, each superseding the earlier where they
+III; for CP4c-3 they are Part VI together with Parts VII, VIII and IX, each superseding the earlier where they
 conflict.** Where an earlier part conflicts with a later revision of the same checkpoint,
 the later revision governs.
 
@@ -29,6 +30,7 @@ Citations written against the former filenames resolve here:
 | `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` | Part VI — M3-CP4c-3 DEFN-R2 |
 | *(no prior file — authored in place)* | **Part VII — M3-CP4c-3 DEFN-R3** |
 | *(no prior file — authored in place)* | **Part VIII — M3-CP4c-3 DEFN-R4** |
+| *(no prior file — authored in place)* | **Part IX — M3-CP4c-3 DEFN-R5** |
 
 Section numbering inside each part is unchanged, so a citation such as "`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". Full text of the originals also remains in git history.
 
@@ -2960,5 +2962,185 @@ categories / 30 recurrences**, produced-witness debt **5**, semantic M3 package 
 remains **365/365**; CP4c-3 remains **OPEN**.
 
 **Exact next turn: `M3-CP4c-3-CB37` — Code + Build, runtime-free, GMP/GMPXX linked, under CS1–CS6.**
+
+---
+## Part IX — M3-CP4c-3 DEFN-R5
+
+**Turn:** `M3-CP4c-3-DEFN-R5` — definition turn (absorbs REVIEW + PLAN).
+**Frozen owner:** CW5 of `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md`.
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+
+Runtime authority entering this turn: `M3-CP4c-3-TB35`, selector **409**, **402 PASS / 7 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, immutable CB40 package `10003613409` / source
+`23a753a83f0eda0447172ce96bcd3180bf95ae8a`, run `34084955954`. Certified source-face ownership is
+**300 established / 0 unavailable / 0 conflicting**. Stable accounting is **45 events / 14 categories / 31
+recurrences**, produced-witness debt **5**, semantic M3 packages **100**.
+
+### 1. DEFN-R5.1 — a face-walk orbit is an ordered single closed walk
+
+> **Normative guarantee.** `FaceWalkResult::orbits[orbit]` is one **ordered single closed walk**. It is constructed by
+> choosing one unvisited directed halfedge, repeatedly following the unique `successor[current]`, and ending the
+> orbit only when the traversal returns to its starting directed halfedge. `canonicalize_cycle` then changes only
+> the cyclic starting position; it does not split, splice or otherwise alter the walk.
+
+Source authority: `EmbeddedGraphTopology.cpp:1746–1774`.
+
+A single closed walk is **not** required to be a simple cycle. It may revisit a network node before its final arc;
+bridges, slits and cut vertices can make that necessary. Therefore the fact that an in-progress boundary traversal
+reaches its start node while entries remain does **not** prove that the boundary contains multiple walks.
+
+### 2. DEFN-R5.2 — a plan region inherits that guarantee, but does not self-certify it
+
+`build_regions` creates a region draft as `RegionDraft{orbit, walk.orbits[orbit]}`
+(`GlobalTopologyPlan.cpp:986`) and publishes the same boundary unmodified (`:1450`). Existing source already
+resolves the relation in the other direction by comparing `walk.orbits[orbit] == region.boundary`
+(`region_orbit`, `GlobalTopologyPlan.cpp:379`).
+
+> **Normative provenance rule.** Boundary provenance is a **derived relation to the current authoritative
+> `FaceWalkResult`**, not a mutable claim stored on `GlobalTopologyRegion`.
+>
+> A current region boundary carries provenance **`FaceWalkOrbit(orbit)`** iff **exactly one** authoritative
+> `walk.orbits[orbit]` equals the current ordered `region.boundary` exactly. If there is zero match or more than one
+> match, provenance is **`Unguaranteed`**.
+
+The existing `region_orbit(region, walk)` equality is the single authority for this relation and may be refactored
+into a typed resolver, but no second mutable boolean/enum may be copied into `GlobalTopologyRegion` as independent
+truth. This is required for the validation-candidate surface: tests deliberately copy a valid region and mutate its
+boundary. A copied "came from face walk" flag would become stale while the exact relation correctly disappears.
+
+**Prohibited provenance shortcuts:** region id, fixture name, source-face set, caller identity, a production-only
+boolean, positional similarity, or any inference weaker than the exact ordered-boundary equality above.
+
+### 3. DEFN-R5.3 — boundary-walk reasons are scoped by provenance
+
+`validate_single_boundary_walk` has three typed structural reasons. Their authority is frozen as follows.
+
+1. **`ArcChainBroken` applies to every boundary.** Consecutive oriented arcs must join exactly.
+2. **`WalkNotClosed` applies to every boundary.** After all entries are consumed, the final node must equal the
+   initial node.
+3. **`ClosedBeforeEnd` is rejecting only for `Unguaranteed` boundaries.** Without an authoritative single-walk
+   producer guarantee, returning to the initial node while entries remain is not accepted as one walk; validation
+   fails closed at `ClosedBeforeEnd`. This remains the required negative for the synthetic multi-walk witnesses.
+4. **`ClosedBeforeEnd` is non-rejecting observation for `FaceWalkOrbit(orbit)`.** The validator continues through
+   the remaining entries and still applies `ArcChainBroken` and `WalkNotClosed`. The observation may remain on a
+   later failure for continuity, but it must be accompanied by the derived provenance so it cannot be mistaken for
+   a rejection authority.
+
+The implementation order is part of the contract because it preserves the synthetic negatives:
+
+1. resolve the **optional** exact `FaceWalkOrbit` relation without rejecting a missing match;
+2. validate the boundary under DEFN-R5.3 using that provenance;
+3. only after structural boundary validation, require the owning orbit for region certification and use the
+   existing typed missing-orbit failure if no unique authoritative orbit exists.
+
+Resolving a missing orbit **before** the boundary validator and immediately failing it is prohibited: that would
+turn ordinals 312/409 into a different failure and erase the negative that owns `ClosedBeforeEnd`.
+
+### 4. DEFN-R5.4 — ordinals 312 and 409 are immutable falsifiers of provenance overreach
+
+Ordinal **312**, `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, and ordinal **409**,
+`GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected` (legacy name; current body is the reachable
+shared-start multi-walk), remain **gating and unchanged**. Their synthetic boundary mutations no longer equal an
+authoritative face-walk orbit, so both are `Unguaranteed` and must still reject with
+`RegionBoundaryNotSingleWalk / ClosedBeforeEnd` at their existing loci.
+
+No fixture branch, test-name special case, or "synthetic" flag is authorized. The exact relation of DEFN-R5.2 is
+what distinguishes these cases from plan regions.
+
+### 5. DEFN-R5.5 — Euler is a separate, unresolved question; measure the cancellation premise
+
+Current source computes the region certificate as
+
+`eulerCharacteristic = vertexCount - edgeCount + faceCount`
+
+where `vertexCount = V_int`, `edgeCount = E_int`, and `faceCount = F` (`GlobalTopologyPlan.cpp:2097–2104`). The
+source comment at `:2099–2100` justifies removing all boundary terms with
+`V_boundary == E_boundary`, citing the validated single boundary walk and no-pinch condition. DEFN-R5.1 establishes
+that the authoritative boundary is a **walk that may revisit nodes**; it does **not** establish that the distinct
+boundary vertices/edges of the counted cell complex cancel under that reduction.
+
+> **Normative disposition.** `RegionEulerCharacteristicNotOne` is **not corrected in the provenance turn**. The
+> successor measures the exact multiplicity facts needed to decide whether the reduced Euler formula is valid for
+> the current face-walk boundary. No value is forced to 1 and no region is accepted because its provenance is a
+> face-walk orbit.
+
+If 366/367 advance to `RegionEulerCharacteristicNotOne`, the failure detail must retain the existing exact
+`vertexCount`, `edgeCount`, `faceCount`, `eulerCharacteristic` and additionally publish, without truncation for the
+failing region:
+
+- `regionBoundaryProvenance` = `FaceWalkOrbit` or `Unguaranteed`;
+- `regionBoundaryOrbit` when provenance is `FaceWalkOrbit`;
+- `regionBoundaryArcOccurrenceCount` — ordered oriented-arc entries;
+- `regionBoundaryDistinctArcCount` — distinct underlying network arc ids represented by those entries;
+- `regionBoundaryNodeOccurrenceCount` — cyclic boundary node occurrences, one start node per oriented entry;
+- `regionBoundaryDistinctNodeCount`;
+- `regionBoundaryRepeatedNodeOccurrenceCount = occurrenceCount - distinctCount`;
+- `regionBoundaryStartRevisitBeforeEndCount`.
+
+All counts are exact combinatorial counts from the authoritative boundary and arc endpoints; no float, tolerance,
+approximation or reconstructed geometry is admissible. These fields are **measurement only**. A later review/DEFN
+must decide whether the Euler reduction, the counted complex, or neither is wrong.
+
+### 6. DEFN-R5.6 — candidate adjudication
+
+- `M3-CP4c3-TB35-REV-CAND-01` becomes **DEFINED / GATING / ARCHITECTURAL / CORRECTION FROZEN**. The missing
+  contract is DEFN-R5.1–R5.3; implementation owner is `M3-CP4c-3-CB41`, runtime verdict owner is TB36.
+- `M3-CP4c3-TB34-REV-CAND-03` remains **ACTIVE / GATING / SPLIT**. Its `ClosedBeforeEnd` branch is now
+  **definition-resolved** by DEFN-R5.1–R5.3; its `RegionEulerCharacteristicNotOne` branch remains open and is owned
+  only by the measurement in DEFN-R5.5.
+- The TB34 stable event remains counted. This definition changes **no** historical event/category/recurrence.
+
+### 7. Successor — CX0–CX8, `M3-CP4c-3-CB41`
+
+Code + Build, runtime-free, mandatory GMP/GMPXX linkage, `runtimeExecution=false`.
+
+- **CX0 — boundary and compile discipline.** Change only the provenance/region-boundary validation and the bounded
+  Euler measurement required below, plus directly necessary test/diagnostic plumbing. Compile the same eight
+  standard targets required by the current CP4c Code + Build contract through `agent-compile-reusable.yml`; execute
+  no Directional binary. Accepted runtime authority remains TB35.
+- **CX1 — one provenance authority.** Reuse/refactor `region_orbit(region, walk)` as the exact resolver in
+  DEFN-R5.2. Do **not** add a trusted mutable provenance flag to `GlobalTopologyRegion`.
+- **CX2 — provenance-aware validation order.** Resolve optional provenance before boundary validation but do not
+  fail a missing orbit yet; validate under CX3; only then require the owning orbit for certification. Preserve the
+  existing typed missing-orbit path after structural validation.
+- **CX3 — scope the reasons exactly.** `ArcChainBroken` and `WalkNotClosed` reject all boundaries.
+  `ClosedBeforeEnd` rejects only `Unguaranteed`; on `FaceWalkOrbit` it is observation-only and traversal continues.
+  Preserve exact typed reason/locus projection.
+- **CX4 — hard negative preservation.** **Do not edit ordinals 312 or 409, their fixtures, names, assertions, order,
+  or selector membership.** Selector 409 remains byte-identical. Audit the implementation against both before
+  compile closeout.
+- **CX5 — Euler measurement only.** Add the exact DEFN-R5.5 provenance/multiplicity fields to the
+  `RegionEulerCharacteristicNotOne` evidence path and its production failure projection. Do not change the Euler
+  formula, disc acceptance, `proves_disc_topology()`, region topology, or any correction outside that measurement.
+- **CX6 — accepted and carried-surface safety.** No accepted identity 1–365 may change except that none is expected
+  to change at all; no work on ordinal 398 or 368/369/370/374; no source-face ownership, partition-unification,
+  retired-guard, sphere, saturation, ordinal-370, folded-cone, vertex-30 or finalize/contact change.
+- **CX7 — Code + Build report must carry the TB plan.** Freeze immutable package/source/selector identities and a
+  comprehensive artifact-only `M3-CP4c-3-TB36-EXEC` plan. TB36 executes selector 409 one identity per fresh
+  process, accepted prefix first, no rebuild/repair/mutation, then stops for independent `TB36-REV` on semantic red.
+- **CX8 — TB36 falsifiers.** Required credibility: accepted **1–365 = 365/365**; 312 and 409 PASS unchanged;
+  390/393/404/406/407/408 PASS; 368/369/370/374/398 remain RED; ownership remains 300/0/0 and retired-code silence
+  holds. For 366/367: a stop at `ClosedBeforeEnd` **falsifies** DEFN-R5.2/R5.3; advance to
+  `RegionEulerCharacteristicNotOne` **confirms the provenance correction but does not authorize an Euler fix** and
+  must publish all CX5 fields; advancement beyond Euler is raw frontier evidence for TB36-REV, not automatic
+  checkpoint acceptance. Any accepted RED halts semantic advancement.
+
+### 8. Prohibited
+
+A mutable self-certifying provenance flag on `GlobalTopologyRegion`; fixture/test-name special casing; removing
+`ClosedBeforeEnd` globally; weakening `ArcChainBroken` or `WalkNotClosed`; moving the missing-orbit failure ahead of
+the synthetic boundary negative; editing ordinals 312 or 409; changing selector 409; changing the Euler formula or
+forcing χ=1; weakening `proves_disc_topology()`; touching ordinal 398, 368/369/370/374, ownership, partition
+unification, any retired guard, sphere/saturation/ordinal-370/folded-cone/vertex-30/finalize-contact work; any
+float/tolerance-derived topological decision; any runtime in CB41.
+
+### 9. Accounting and exact next turn
+
+This definition turn runs no Directional runtime, compile, package, test or benchmark and creates no semantic
+package. **+0 stable events / +0 recurrences.** Totals remain **45 events / 14 categories / 31 recurrences**;
+produced-witness debt **5**; semantic M3 packages **100**; accepted runtime authority remains **TB35 365/365**;
+CP4c-3 remains **OPEN**.
+
+**Exact next turn: `M3-CP4c-3-CB41` — Code + Build, runtime-free, GMP/GMPXX linked, under CX0–CX8.**
 
 ---

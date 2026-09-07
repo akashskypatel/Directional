@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-06** at `M3-CP4c-3-TB35-REV` closeout.
+Last updated **2026-09-07** at `M3-CP4c-3-DEFN-R5` closeout.
 
 ---
 
@@ -58,23 +58,37 @@ guarantee a boundary carried.
 **Still unknown:** `RegionEulerCharacteristicNotOne`, seen at TB34 once the rejection was bypassed, is a
 **separate** question — χ over a walk that may revisit nodes — and this review does not decide it.
 
-## 3.1 Exact next turn — `M3-CP4c-3-DEFN-R5`
+## 3.1 DEFN-R5 frozen; exact next turn — `M3-CP4c-3-CB41`
 
-**A definition turn**, appending **Part IX** to `M3_CP4c_Frozen_Definitions.md`. The question is *what guarantees a
-region boundary carries and who may assume them* — a contract between the face walk that produces boundaries and
-the validator that checks them. Two Code + Build turns have flipped this predicate in opposite directions and one
-cost an accepted-green regression; the contract gets written before the next change.
+**Part IX of `M3_CP4c_Frozen_Definitions.md` is now operative.** It freezes the missing boundary-provenance
+contract without changing runtime behaviour:
 
-**Decide:** the face-walk single-walk guarantee as normative; how a region declares its boundary provenance; the
-scope of each typed reason — `ClosedBeforeEnd` rejects **only** an unguaranteed boundary, `ArcChainBroken` and
-`WalkNotClosed` stay in force for all; ordinals **312 and 409 keep their contracts unchanged**; and whether χ is
-computed over a walk that may revisit nodes, freezing a **measurement** rather than a correction if that is not
-established.
+- a face-walk orbit is an ordered **single closed walk**, but it may revisit nodes;
+- provenance is **derived**, never self-declared: `FaceWalkOrbit(orbit)` exists only when exactly one current
+  `walk.orbits[orbit]` equals the current ordered `region.boundary`; otherwise the boundary is `Unguaranteed`;
+- `ClosedBeforeEnd` rejects only `Unguaranteed`; `ArcChainBroken` and `WalkNotClosed` reject all boundaries;
+- exact provenance must be resolved before boundary validation, but an absent orbit is not rejected until after
+  the structural boundary check, preserving ordinals 312 and 409;
+- the Euler result is a **separate open question**. The current reduced formula `V_int - E_int + F` cancels
+  boundary terms under an assumption not established for repeated-node walks. CB41 measures exact boundary
+  multiplicities; it does not change χ or disc acceptance.
 
-**Must not:** change product behaviour in the definition turn; weaken or re-scope ordinal 398; touch
-368/369/370/374; re-open source-face ownership or any retired guard; correct the Euler result before it is
-measured; change any accepted identity or selector byte. **Accepted prefix 365/365 is a stop condition, not a
-finding.**
+`M3-CP4c3-TB35-REV-CAND-01` is **DEFINED / CORRECTION FROZEN** under Part IX; its runtime verdict is still owed.
+`M3-CP4c3-TB34-REV-CAND-03` remains **ACTIVE / SPLIT**: boundary rejection definition-resolved, Euler unresolved.
+
+### Exact next
+
+Run **`M3-CP4c-3-CB41`**, Code + Build, under **CX0–CX8** in Part IX:
+
+- implement the exact derived provenance resolver and provenance-aware validator ordering;
+- scope `ClosedBeforeEnd` without weakening `ArcChainBroken` or `WalkNotClosed`;
+- keep ordinals **312/409** and selector **409** byte-identical;
+- add only the exact non-corrective Euler multiplicity measurement frozen by DEFN-R5.5;
+- compile only through the mandatory reusable GMP/GMPXX workflow; **no runtime**;
+- close with the immutable artifact-only **TB36-EXEC** plan and its falsifiers.
+
+**Must not:** alter Euler semantics, accepted tests, carried RED surfaces, source-face ownership, partitions or any
+retired guard. Accepted 365/365 remains a hard safety boundary.
 
 ## 4. Open candidates
 
@@ -89,8 +103,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB33-REV-CAND-01` | **RECONCILED** — recorded refuted at TB34-REV, which was right about the synthetic region and wrong as a general statement. Superseded by `M3-CP4c3-TB35-REV-CAND-01`. |
 | `M3-CP4c3-TB34-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the rejection is restored; ordinal 312 PASS and the accepted prefix is 365/365. |
 | `M3-CP4c3-TB34-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 409 re-aimed at the constructible shared-start shape and PASSes its oracle. |
-| `M3-CP4c3-TB34-REV-CAND-03` | **ACTIVE / GATING / SPLIT** — the `ClosedBeforeEnd` rejection is **explained** as a false rejection of a face-walk orbit; the `RegionEulerCharacteristicNotOne` result is **not yet explained** and stays open. Owner: DEFN-R5. |
-| `M3-CP4c3-TB35-REV-CAND-01` | **NEW / ACTIVE / GATING / ARCHITECTURAL** — `validate_single_boundary_walk` cannot distinguish a boundary carrying the face-walk single-walk guarantee from one that does not, and applies `ClosedBeforeEnd` to both. Owner: DEFN-R5. |
+| `M3-CP4c3-TB34-REV-CAND-03` | **ACTIVE / GATING / SPLIT** — Part IX definition-resolves the `ClosedBeforeEnd` branch; `RegionEulerCharacteristicNotOne` remains unexplained. Owner: CB41 measurement → TB36-REV. |
+| `M3-CP4c3-TB35-REV-CAND-01` | **DEFINED / GATING / ARCHITECTURAL / CORRECTION FROZEN** — Part IX freezes exact derived `FaceWalkOrbit` provenance and reason scope. Owner: CB41 implementation → TB36 runtime verdict. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
@@ -203,18 +217,18 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, TB35-REV loads only the minimum review authority:
+After the durable start-of-turn checklist, CB41 loads only the minimum Code + Build authority:
 
-1. `ORIENTATION.md` — read first and update during REVIEW.
-2. **this file** — current authority/candidate ownership.
-3. `Architecture_M3_CP4c3_TB35_EXEC_Report.md` — complete mechanically valid raw TB35 evidence.
-4. `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` — **CW0–CW5**, the adjudication and the frozen DEFN-R5 scope.
-5. `Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB35 contract/falsifiers.
-6. `M3_CP4c_Frozen_Definitions.md` — **Part VIII operative**.
-7. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
-8. `CLEAN_UP_POLICY.md` — mandatory REVIEW consolidation authority.
+1. `ORIENTATION.md` — read first.
+2. **this file** — current runtime/candidate state and exact scope.
+3. `M3_CP4c_Frozen_Definitions.md` — **Part IX operative; CX0–CX8 are binding**.
+4. `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` — CW0–CW5 provenance for the freeze.
+5. `Architecture_M3_CP4c3_TB35_EXEC_Report.md` — current immutable runtime evidence.
+6. `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
+7. `GMP_COMPILE_POLICY.md`, `GitHub_Workflow_Policy.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
+   `TOOL_USE_CONSERVATION_POLICY.md`.
 
-Exact next is **`M3-CP4c-3-DEFN-R5`**, a definition turn appending **Part IX**: record the face-walk single-walk
-guarantee, decide how a region boundary declares its provenance, scope each typed reason to the provenance it
-applies to, keep ordinals 312 and 409 unchanged, and separate the Euler question from the boundary-walk one.
-**Accepted prefix 365/365 is a stop condition.**
+Exact next is **`M3-CP4c-3-CB41`**, runtime-free Code + Build under **CX0–CX8**: implement exact derived
+face-walk provenance, scope `ClosedBeforeEnd` without weakening the universal chain/closure checks, preserve
+ordinals 312/409 and selector409 byte-identically, and add only the exact Euler multiplicity measurement frozen in
+Part IX. Close with the immutable TB36-EXEC plan; do not execute runtime in CB41.

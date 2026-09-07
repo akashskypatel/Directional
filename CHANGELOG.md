@@ -1,3 +1,22 @@
+## 2026-09-07 — `M3-CP4c-3-DEFN-R5`: Part IX freezes derived boundary provenance; Euler measurement only
+
+DEFN-R5 is **COMPLETE / DEFINITION-ONLY / NO RUNTIME / NO COMPILE / NON-STABLE**. Part IX of
+`M3_CP4c_Frozen_Definitions.md` is now operative. It records the source-proved face-walk guarantee and makes
+provenance a derived exact relation: a boundary is `FaceWalkOrbit(orbit)` only when exactly one current
+`walk.orbits[orbit]` equals the current ordered `region.boundary`; otherwise it is `Unguaranteed`. A mutable copied
+region flag is expressly not authority. `ClosedBeforeEnd` rejects only `Unguaranteed`; on a face-walk orbit it is
+non-rejecting observation while `ArcChainBroken` and `WalkNotClosed` remain universal. Optional provenance is
+resolved before the boundary check, but missing-orbit rejection remains after it so ordinals 312/409 keep their
+unchanged synthetic negative contracts.
+
+The separate `RegionEulerCharacteristicNotOne` frontier is **not corrected**. Current source reduces χ to
+`V_int - E_int + F` by cancelling boundary terms; Part IX freezes exact arc/node multiplicity and provenance
+measurement to decide whether that reduction is valid for repeated-node face-walk boundaries.
+`M3-CP4c3-TB35-REV-CAND-01` is **DEFINED / CORRECTION FROZEN**; `M3-CP4c3-TB34-REV-CAND-03` remains split with
+Euler open. Runtime authority remains TB35 at **402 PASS / 7 RED**, accepted **365/365**, selector409; stable
+accounting **45 / 14 / 31**, debt 5, packages100. Exact next is runtime-free `M3-CP4c-3-CB41` under CX0–CX8,
+followed by immutable artifact-only TB36-EXEC and independent TB36-REV.
+
 ## 2026-09-06 — `M3-CP4c-3-TB31-EXEC`: artifact-only selector408 mechanically 397/11; four newly RED; review required
 
 TB31-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB36 artifact

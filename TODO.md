@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-06 UTC
+Last updated: 2026-09-07 UTC
 
 ## Purpose
 
@@ -26,43 +26,41 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-DEFN-R5` (definition turn) — REGION BOUNDARY PROVENANCE
+## Current focus — `M3-CP4c-3-CB41` — DERIVED REGION-BOUNDARY PROVENANCE
 
-`M3-CP4c-3-TB35-REV` promoted TB35 to **current valid semantic runtime authority**.
+`M3-CP4c-3-DEFN-R5` is **COMPLETE / DEFINITION-ONLY**. Part IX of
+`M3_CP4c_Frozen_Definitions.md` is operative. Runtime authority remains TB35:
 
 - selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `366,367,368,369,370,374,398`;
 - immutable CB40 package `10003613409` / source `23a753a83f0eda0447172ce96bcd3180bf95ae8a`; run `34084955954`;
-- certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 all PASS.
+- certified ownership **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408, 409 PASS;
+- stable accounting **45 events / 14 categories / 31 recurrences**, produced-witness debt **5**, packages **100**.
 
-**The accepted prefix is restored.** CV2 restored the rejection **with** its typed reason; CV3's re-aimed ordinal
-409 PASSes its oracle, proving the shared-start multi-walk shape is constructible. **CV6's falsifier is settled** —
-366/367 report `ClosedBeforeEnd`, not `ArcChainBroken`. **The TB34 stable event stands.**
+**Part IX decision.** A plan boundary does not carry a mutable provenance flag. `FaceWalkOrbit(orbit)` is derived
+only when exactly one current `walk.orbits[orbit]` equals the current ordered `region.boundary`; otherwise it is
+`Unguaranteed`. `ClosedBeforeEnd` rejects only `Unguaranteed`; `ArcChainBroken` and `WalkNotClosed` reject all.
+Resolve optional provenance before boundary validation but defer the existing missing-orbit failure until after the
+structural check, so synthetic ordinals 312/409 keep their negative contract.
 
-**The frontier is proved from source.** A plan region's boundary **is** `walk.orbits[orbit]`, and a face-walk orbit
-is an ordered **single closed walk by construction** that may revisit nodes. So `ClosedBeforeEnd` on a plan region
-is **always a false rejection**, while on a **synthetic** boundary it is the only check that catches a real
-multi-walk. **The defect is that the validator cannot see provenance** — which reconciles TB33-REV and TB34-REV.
+**Euler remains separate.** Current χ uses the reduced `V_int - E_int + F` formula. Part IX does not establish its
+boundary-term cancellation for repeated-node walks and authorizes only exact multiplicity measurement.
 
-**Still unknown:** `RegionEulerCharacteristicNotOne`, seen at TB34 with the rejection bypassed. Separate question.
+### Exact next turn — `M3-CP4c-3-CB41`
 
-Stable accounting remains **45 events / 14 categories / 31 recurrences**, produced-witness debt **5**, semantic M3
-package count **100**. CP4c-3 remains **OPEN**.
+- [ ] **CX0–CX3:** implement one exact derived provenance authority and provenance-aware boundary validation/order.
+- [ ] **CX4:** keep ordinals 312/409, their fixtures/assertions/order, and selector409 byte-identical.
+- [ ] **CX5:** on `RegionEulerCharacteristicNotOne`, publish exact provenance plus boundary arc/node occurrence,
+      distinctness, repeat, and early-start-revisit counts; **do not change χ or disc acceptance**.
+- [ ] **CX6:** no work on accepted 1–365, 398, 368/369/370/374, ownership, partitions, retired guards or other
+      deferred surfaces.
+- [ ] **CX7:** compile only with mandatory reusable GMP/GMPXX workflow; produce immutable package and complete
+      artifact-only `M3-CP4c-3-TB36-EXEC` plan; execute no Directional runtime.
+- [ ] **CX8 TB falsifiers:** 365/365; 312/409 and 390/393/404/406/407/408 PASS; 368/369/370/374/398 RED; ownership
+      300/0/0. 366/367 still `ClosedBeforeEnd` falsifies Part IX; advancing to Euler confirms the provenance
+      correction but authorizes no Euler fix.
 
-### Exact next turn
-
-Run **`M3-CP4c-3-DEFN-R5`**, a **definition** turn appending **Part IX**, under **CW5** of
-`Architecture_M3_CP4c3_TB35_Independent_Review_Record.md`:
-
-- [ ] record the **face-walk single-walk guarantee** as normative, with its source citations;
-- [ ] decide how a region **declares its boundary provenance** so the validator can see it;
-- [ ] scope each typed reason — `ClosedBeforeEnd` rejects **only** an unguaranteed boundary; `ArcChainBroken` and
-      `WalkNotClosed` stay in force for all;
-- [ ] keep ordinals **312** and **409** unchanged;
-- [ ] separate the **Euler question** and freeze a **measurement**, not a correction, if it is not established.
-
-**Must not:** change product behaviour in the definition turn; weaken or re-scope ordinal 398; touch
-368/369/370/374; re-open ownership or any retired guard; correct the Euler result before it is measured.
-**Accepted prefix 365/365 is a stop condition, not a finding.**
+**Must not:** modify Euler semantics, weaken any negative, edit selector409, touch carried/deferred surfaces, or run
+runtime in CB41.
 
 ## Carried forward from M1
 
@@ -100,7 +98,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB34 remains current semantic runtime authority** at **400 PASS / 9 RED**, accepted 364/365, selector409 pending review. TB35-EXEC is mechanically complete at **402 PASS / 7 RED**, accepted 365/365 on package100; independent **`M3-CP4c-3-TB35-REV`** is exact next.
+  CP4c-3 remains open. **TB35 is current semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365, selector409. **DEFN-R5 / Part IX is complete**; exact next is runtime-free **`M3-CP4c-3-CB41`** under CX0–CX8.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -112,7 +110,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  TB35-EXEC mechanically recovered ordinal312 / accepted 365-of-365 and PASSed the re-aimed ordinal409 oracle. Independent TB35-REV must adjudicate those recoveries and the 366/367 region-frontier discriminator before any further corrective implementation.
+  TB35-REV adjudicated the recovered prefix and proved the 366/367 frontier is provenance blindness. Part IX now freezes the correction. CB41 implements exact derived face-walk provenance and measures, but does not correct, the separate Euler frontier.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -140,4 +138,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **100**. **`M3-CP4c-3-TB35` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** — the accepted prefix is restored and the TB34 stable event stands. Exact next is `M3-CP4c-3-DEFN-R5`, a definition turn on region boundary provenance. PR #8 remains open, draft, and unmerged.
+Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **100**. **`M3-CP4c-3-TB35` is the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** — the accepted prefix is restored and the TB34 stable event stands. Part IX / DEFN-R5 is complete. Exact next is runtime-free `M3-CP4c-3-CB41` under CX0–CX8. PR #8 remains open, draft, and unmerged.
