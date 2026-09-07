@@ -1,0 +1,3 @@
+source_sha=b7f7c651af597cae2d427157454c3c4d0bf78a69
+caller=.github/workflows/agent-source-snapshot-caller-20260907-1311.yml
+purpose=chatgpt-web-pinned-source-snapshot
