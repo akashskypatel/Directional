@@ -8821,3 +8821,14 @@ authorization and applies it to CP2b.
 ### Changed — retained evidence and handoff policy established
 
 - Durable project authority, cleanup/retention rules, and mandatory handoff start/end checklists were established under `.agents/Directional/`.
+
+
+## 2026-09-08 — M3-CP4c-3-CB47 compile-green frontier-census population instrumentation
+
+- Completed runtime-free CB47 under EC7.1–EC7.7 on exact built source `5dacce6019ea34316c48743f3033d2bb5c26281a`.
+- Added typed diagnostics for unlabeled-face population, frontier partition component count, owner-consistency row count, selected locator/guard outcome, and failing source-face/region membership in `componentByFace`.
+- Preserved the frontier partition, locator semantics, guard, oracle, region construction, production binding, `region_orbit`, orbit-key lookup, content anchor, protected owners and selector409 bytes.
+- Compile run `34262805758` succeeded: changed-owner job `102184784612`, full-package job `102186267545`; package107 artifact `10070788592` / `directional-m3-cp4c3-cb47-result-34262805758`; `runtimeExecution=false`; GMP/GMPXX linked; `28/28` package checksums verified.
+- No Directional runtime, test or benchmark executed. Semantic runtime authority remains TB41 at 398 PASS / 11 RED, accepted 365/365, ownership 300/0/0; stable accounting remains 47 / 14 / 33, debt 5; package count advances 106→107.
+- Exact successor is artifact-only `M3-CP4c-3-TB42-EXEC`; 390/393/406/407 are expected to remain RED while publishing the new EC7 fields. EXEC hands off to independent `M3-CP4c-3-TB42-REV`, which owns `DEFN-R8`.
+- Process note: the web session selected `READ_MODE=snapshot` only after initial repository/doc connector reads; it corrected the sequencing before semantic source work and used the exact durable source snapshot thereafter. This records the lesson-152 compliance miss without changing evidence authority.

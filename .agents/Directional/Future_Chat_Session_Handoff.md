@@ -116,85 +116,84 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB47` — EXACT NEXT / Code + Build, runtime-free — MEASUREMENT ONLY
+## Mandatory next turn — `M3-CP4c-3-TB42-EXEC` — EXACT NEXT / Test + Benchmark, artifact-only
 
-`M3-CP4c-3-TB41-REV` adjudicated TB41 and **promoted it**.
+`M3-CP4c-3-CB47` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**.
 
 ### Current authority
 
-- **`M3-CP4c-3-TB41`** — selector **409**, **398 PASS / 11 RED**, **accepted 1–365 = 365/365**, RED
-  `[366,367,368,369,370,374,390,393,398,406,407]`; CB46 package `10066942690` / source
-  `4cdffe5514ab9f747da38e74c57663ee8806efa6`, run `34256568679`.
-- Ordinals **311, 312, 314, 315, 356, 357, 404, 408, 409 PASS**; ownership **300 / 0 / 0**.
-- **Stable accounting 47 events / 14 categories / 33 recurrences — no new event**, debt **5**, packages **106**.
-- Definition authority: **Part XI, amended by Part XI-A.** The binding and the content anchor stand.
+- **Semantic runtime authority:** promoted `M3-CP4c-3-TB41`, selector **409**, **398 PASS / 11 RED**, accepted
+  **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`; ownership **300 / 0 / 0**.
+- **Immutable build authority:** package107, exact source `5dacce6019ea34316c48743f3033d2bb5c26281a`, compile run
+  `34262805758`, package artifact `10070788592` / `directional-m3-cp4c3-cb47-result-34262805758`.
+- Build package records `runtimeExecution=false`, `exactArithmeticBackend=GMP`, GMPXX+GMP link evidence, and
+  `28/28` verified package checksums.
+- Selector409 SHA-256 remains `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **107**.
+- Definition authority remains **Part XI, amended by Part XI-A**. The binding and content anchor stand.
 
-### What TB41 established
+### What CB47 changed — measurement only
 
-**The content-anchor repair worked (EB7.1).** 311/314/356/357 recovered. The certificate carries
-`canonical_cycle_anchor` and the oracle re-derives it independently, over four distinct oriented anchors —
-`(0,Reverse)`, `(0,Forward)`, `(12,Reverse)`, `(24,Reverse)`. `arc 0` appears in **both** orientations, so the
-census is non-uniform and orientation is load-bearing (**EB7.4 discharged**), and arc counts now differ across rows
-(26/50/50/26) so that control is no longer blind. **The region 0 ↔ orbit 1 transposition is still present and is
-now correctly a non-event** — confirming the TB40 diagnosis. **EB7.3 preserved**: 312/315/409 PASS, binding
-untouched.
+CB47 publishes the exact frontier-census population/domain evidence required by TB41-REV:
 
-**The four protected identities were never asserting (EC2).** 390/393/406/407 all guard
-`expect_later_region_frontier_evidence` (`tests:4411`) behind an `UncutComponent` early return (`:11910`,
-`:12122`, `:14943`, `:14987`). The oracle had **never executed**; the pipeline advancing to `RegionCertification`
-ran it for the first time and it found `regionFrontierComponentCount = 0`. **That is an assertion reaching its
-subject, not a behaviour loss — there is nothing to restore.** `LESSONS.md` 160.
+- `unlabeledFaceCount`;
+- `frontierPartitionComponentCount`;
+- `ownerConsistencyRowCount`;
+- locator kind (`uncutFaceComponent` / `sourceFace` / `regionSweep` / `singleComponentFallback`);
+- whether the selected locator survived the existing guard;
+- whether `failure.sourceFace` is present in `componentByFace`;
+- failing-region source-face total and count present in `componentByFace`.
 
-**CB46's correction was right and could not have worked (EC3).** All three locators in
-`region_frontier_components` (`GlobalTopologyPlan.cpp:667–706`) resolve through one object,
-`frontier.partition.componentByFace`. Verified: the guard is **benign**
-(`CertifiedSourceFaceOwnerConsistency.h:38–44`), the success path carries the **real** frontier (`:1505`), and the
-annotation **does** run on the certification path (`:2418–2420`). **Two live candidates:** the partition may be
-**empty** — built over `unlabeledFaces` (`:1341–1353`), which `:1338` calls "only a consistency guard" now that
-ownership is total — or the failing object may be **outside its domain**, since
-`RegionSourceFaceOwningFragmentMissing` fires only on a labelled trace-cut face (`:2020–2028`). Neither is
-statically decidable. **Three turns have now repaired a census without counting its population.** `LESSONS.md` 159.
+The implementation does **not** change the frontier partition, census contract, locator precedence/semantics, guard,
+region construction, certification oracle, production binding, `region_orbit`, orbit-key lookup, content anchor,
+selector identities, or protected failure owners. No Directional runtime/test/benchmark ran in CB47.
 
-### CB47 boundary — EC7.1–EC7.7
+### TB42-EXEC boundary
 
-**Code + Build**, runtime-free, GMP/GMPXX linked. **Measurement only.**
+Use only `Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md` and immutable package107.
 
-- **EC7.1** — publish `unlabeledFaceCount`, `frontierPartitionComponentCount`, `ownerConsistencyRowCount`.
-- **EC7.2** — publish **which locator resolved** (`uncutFaceComponent` / `sourceFace` / `regionSweep` /
-  `singleComponentFallback`) and whether it survived the guard.
-- **EC7.3** — publish whether `failure.sourceFace`, and how many of the failing region's source faces, are in
-  `componentByFace`.
-- **EC7.4** — **do not change the oracle, the partition or the census contract**, and do not re-hide the oracle
-  behind an early return.
-- **EC7.5** — do not touch the binding, `region_orbit`, the orbit-keyed lookup or the content anchor.
-- **EC7.6** — accepted stays **365/365**; 311/314/356/357 stay PASS; selector **409** byte-frozen; no work on
-  366/367/368/369/370/374/398; no change to region construction, ownership, `fragmentCorners`, cut selection or
-  A2a′ cellularity semantics.
-- **EC7.7** — `M3-CP4c-3-TB42` re-executes; **`M3-CP4c-3-DEFN-R8`** is pre-named and owns whether a non-empty
-  frontier census is legitimate at `RegionCertification` at all.
+- Verify source/package/checksums/selector/harness before execution; no configure, build, relink, regeneration or mutation.
+- Execute all 409 identities exactly once, one fresh process per identity.
+- **Hard stop:** accepted 1–365 must remain 365/365; 311/314/356/357 and 312/315/409 must remain PASS.
+- 390/393/406/407 are **expected to remain RED** and must publish all CB47 EC7 measurement fields.
+- 404/408 remain PASS; ownership remains 300/0/0; 366/367/368/369/370/374/398 retain their existing owners.
+- Aggregate 398/11 equality is not sufficient; preserve exact identity-level evidence and measurement rows.
+- EXEC does not promote, redefine, or plan a correction. Its exact successor is **independent `M3-CP4c-3-TB42-REV`**.
+  The implementation/orchestration loop stops completely at that boundary.
 
-**Falsifiers, stated before the build.** Accepted **365/365** and 311/314/356/357 PASS are stop conditions.
-**CB47 adds diagnostics only, so 390/393/406/407 are expected to remain RED** — a turn that makes them pass has
-weakened the oracle. If `frontierPartitionComponentCount == 0`, the census has no subject and DEFN-R8 decides
-legitimacy rather than publication. If it is non-zero and no locator resolves, the fix is a domain question. If a
-locator resolves but the guard rejects it, EC3's guard analysis is wrong.
+Review-owned classification is frozen by the TB42 plan: zero partition population routes to `M3-CP4c-3-DEFN-R8`;
+nonzero population with no locator is a domain/locator mismatch; a locator rejected by the guard refutes EC3; a
+surviving locator with zero published component count is a diagnostic contradiction. TB42-EXEC only measures.
 
-**Must not:** weaken `expect_later_region_frontier_evidence` or restore an early return that re-hides it; change
-the binding, `region_orbit`, the orbit-keyed lookup or the content anchor; widen `unlabeledFaces` or alter the
-frontier partition's domain; correct `RegionSourceFaceOwningFragmentMissing`; weaken ordinals 312/315/409/398;
-touch 368/369/370/374; remove an accepted identity or change a selector byte; execute any Directional runtime.
+### Process note
+
+This CB47 web session began repository/doc connector reads before explicitly selecting the mandatory `READ_MODE`.
+The miss was detected and corrected to `READ_MODE=snapshot` before semantic source work. The exact source snapshot
+was then resolved/frozen and used for all implementation. This is a lesson-152 compliance miss, not semantic/build
+or runtime evidence.
 
 ### Context Load Plan
 
-`load_next`: Code + Build guidance.
-
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.10 and §3.11.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB41_Independent_Review_Record.md` — **EC0–EC7**.
-3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB41_EXEC_Report.md` — **current runtime authority**.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-6. `.agents/Directional/LESSONS.md` — mandatory; **155, 157, 159, 160** govern this change.
+```yaml
+load_next:
+  - references/turns/TB-EXEC.md
+conditional_modules:
+  - trigger: github_connector / artifact-only workflow execution
+    path: modules/github-connector/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_CB47_Code_Build_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB41_EXEC_Report.md
+  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - .agents/Directional/Required_Green_Selector_Manifest.md
+  - .agents/Directional/LESSONS.md
+  - .agents/Directional/TOOL_USE_CONSERVATION_POLICY.md
+do_not_preload:
+  - sibling turn files
+  - uncited historical reports
+  - research/provenance/examples
+```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
