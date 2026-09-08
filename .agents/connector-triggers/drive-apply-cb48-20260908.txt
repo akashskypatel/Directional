@@ -1,0 +1,4 @@
+purpose=apply M3-CP4c-3-CB48 Part XII domain-owned evidence patch
+base_sha=62a4bf49d0d41f9ea4b1c2690ff938f10d167348
+patch_sha256=91ebd35b8b583ea2cbbf6eb24f028e88c4aa7b65c8d0399013391272cbd5cec1
+retry=0
