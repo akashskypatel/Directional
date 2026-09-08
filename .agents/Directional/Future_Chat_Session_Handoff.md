@@ -116,54 +116,50 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB42-EXEC` — EXACT NEXT / Test + Benchmark, artifact-only
+## Mandatory next turn — `M3-CP4c-3-TB42-REV` — EXACT NEXT / independent evidence-only review
 
-`M3-CP4c-3-CB47` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**.
+`M3-CP4c-3-TB42-EXEC` is **COMPLETE / ARTIFACT-ONLY / EVIDENCE PRESERVED / NOT PROMOTED BY EXEC**.
+The implementation/orchestration loop stops completely at this independent-review boundary.
 
-### Current authority
+### Current authority and latest raw evidence
 
-- **Semantic runtime authority:** promoted `M3-CP4c-3-TB41`, selector **409**, **398 PASS / 11 RED**, accepted
-  **1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`; ownership **300 / 0 / 0**.
+- **Promoted semantic runtime authority remains TB41** pending independent review: selector 409, **398 PASS / 11 RED**,
+  accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`; ownership **300 / 0 / 0**.
 - **Immutable build authority:** package107, exact source `5dacce6019ea34316c48743f3033d2bb5c26281a`, compile run
-  `34262805758`, package artifact `10070788592` / `directional-m3-cp4c3-cb47-result-34262805758`.
-- Build package records `runtimeExecution=false`, `exactArithmeticBackend=GMP`, GMPXX+GMP link evidence, and
-  `28/28` verified package checksums.
-- Selector409 SHA-256 remains `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **107**.
-- Definition authority remains **Part XI, amended by Part XI-A**. The binding and content anchor stand.
+  `34262805758`, package artifact `10070788592`.
+- **Latest raw runtime evidence:** TB42-EXEC run `34265561941`, workload job `102193966106`, result artifact
+  `10071763480` (`sha256:a862d93b34be4439919be56938f3318b551b902484f6f8ede7776d0f41b3f86f`), log artifact
+  `10071764085` (`sha256:57dcfdbddd6e571c11d565a1ffaaa3bc3014ea4fb299e48bb9cea2f644598336`).
+- TB42-EXEC selector result: **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, exact RED set unchanged from TB41.
+- Protected controls 311/314/356/357, 312/315/409, 404/408 PASS; certified owner publication is
+  **300 established / 0 unavailable / 0 conflicting**.
+- Stable accounting is unchanged by EXEC: **47 events / 14 categories / 33 recurrences**, debt **5**, packages **107**.
+  TB42-REV owns any accounting disposition.
 
-### What CB47 changed — measurement only
+### TB42-EXEC EC7 evidence — raw measurements only
 
-CB47 publishes the exact frontier-census population/domain evidence required by TB41-REV:
+For each of 390/393/406/407, the existing protected assertion records `regionFrontierComponentCount=0` and CB47
+publishes the same complete row:
 
-- `unlabeledFaceCount`;
-- `frontierPartitionComponentCount`;
-- `ownerConsistencyRowCount`;
-- locator kind (`uncutFaceComponent` / `sourceFace` / `regionSweep` / `singleComponentFallback`);
-- whether the selected locator survived the existing guard;
-- whether `failure.sourceFace` is present in `componentByFace`;
-- failing-region source-face total and count present in `componentByFace`.
+`unlabeledFaceCount=226;frontierPartitionComponentCount=9;ownerConsistencyRowCount=9;regionFrontierLocator=none;regionFrontierLocatorSurvivedGuard=none;regionFrontierFailureSourceFaceInPartition=false;regionFrontierFailureRegionSourceFaceCount=10;regionFrontierFailureRegionSourceFacesInPartitionCount=0`
 
-The implementation does **not** change the frontier partition, census contract, locator precedence/semantics, guard,
-region construction, certification oracle, production binding, `region_orbit`, orbit-key lookup, content anchor,
-selector identities, or protected failure owners. No Directional runtime/test/benchmark ran in CB47.
+TB42-EXEC made **no interpretation** of this row and did not promote, redefine, weaken, correct, or reclassify the
+oracle. Exact identity-level evidence and digests are retained in
+`Architecture_M3_CP4c3_TB42_EXEC_Report.md` and artifacts `10071763480` / `10071764085`.
 
-### TB42-EXEC boundary
+### TB42-REV boundary
 
-Use only `Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md` and immutable package107.
+Independent TB42-REV must review the immutable TB42 evidence and the classification matrix frozen in
+`Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md`. It owns:
 
-- Verify source/package/checksums/selector/harness before execution; no configure, build, relink, regeneration or mutation.
-- Execute all 409 identities exactly once, one fresh process per identity.
-- **Hard stop:** accepted 1–365 must remain 365/365; 311/314/356/357 and 312/315/409 must remain PASS.
-- 390/393/406/407 are **expected to remain RED** and must publish all CB47 EC7 measurement fields.
-- 404/408 remain PASS; ownership remains 300/0/0; 366/367/368/369/370/374/398 retain their existing owners.
-- Aggregate 398/11 equality is not sufficient; preserve exact identity-level evidence and measurement rows.
-- EXEC does not promote, redefine, or plan a correction. Its exact successor is **independent `M3-CP4c-3-TB42-REV`**.
-  The implementation/orchestration loop stops completely at that boundary.
+- interpretation of the four EC7 rows and the pre-named `M3-CP4c-3-DEFN-R8` decision;
+- whether TB42 evidence is promoted or remains non-authoritative relative to TB41;
+- regression-accounting disposition and any candidate/stable tracker updates;
+- required `ORIENTATION.md` review-turn currency update;
+- mandatory review-turn document consolidation;
+- any successor corrective/definition plan.
 
-Review-owned classification is frozen by the TB42 plan: zero partition population routes to `M3-CP4c-3-DEFN-R8`;
-nonzero population with no locator is a domain/locator mismatch; a locator rejected by the guard refutes EC3; a
-surviving locator with zero published component count is a diagnostic contradiction. TB42-EXEC only measures.
+No additional implementation, compile, runtime execution, or orchestration is authorized before that independent review.
 
 ### Process note
 
@@ -176,12 +172,13 @@ or runtime evidence.
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/TB-REVIEW.md
 conditional_modules:
-  - trigger: github_connector / artifact-only workflow execution
+  - trigger: github_connector / evidence inspection / review documentation
     path: modules/github-connector/MODULE.md
 deep_references:
   - .agents/Directional/Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB42_EXEC_Report.md
   - .agents/Directional/Architecture_M3_CP4c3_CB47_Code_Build_Report.md
   - .agents/Directional/Architecture_M3_CP4c3_TB41_EXEC_Report.md
   - .agents/Directional/M3_CP4c_Frozen_Definitions.md

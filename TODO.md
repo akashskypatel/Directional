@@ -26,41 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB42-EXEC` (Test + Benchmark, artifact-only) — MEASURED CENSUS SUBJECT RUNTIME
+## Current focus — `M3-CP4c-3-TB42-REV` (independent evidence-only review) — EXEC COMPLETE
 
-`M3-CP4c-3-CB47` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**.
+`M3-CP4c-3-TB42-EXEC` is **COMPLETE / ARTIFACT-ONLY / EVIDENCE PRESERVED / NOT PROMOTED BY EXEC**.
 
-- Exact built source: `5dacce6019ea34316c48743f3033d2bb5c26281a`.
-- Compile run: `34262805758`; changed-owner job `102184784612`; package job `102186267545`.
-- Immutable package107 artifact: `10070788592` / `directional-m3-cp4c3-cb47-result-34262805758`.
-- `runtimeExecution=false`; GMP/GMPXX authoritative link; package checksum manifest `28/28` PASS.
-- Selector409 remains byte-frozen at `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
-- CB47 changed only additive diagnostics. No Directional runtime, test or benchmark executed.
+- Exact semantic source: `5dacce6019ea34316c48743f3033d2bb5c26281a`; immutable package107 artifact `10070788592`.
+- Runtime run `34265561941`, workload job `102193966106` completed successfully as orchestration.
+- Result artifact `10071763480`; log artifact `10071764085`.
+- Selector409: **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`.
+- Protected controls 311/314/356/357, 312/315/409, and 404/408 all PASS; ownership publication remains
+  **300 established / 0 unavailable / 0 conflicting**.
+- 390/393/406/407 each remain RED with `regionFrontierComponentCount=0` and publish the complete CB47 EC7 row:
+  `unlabeledFaceCount=226`, `frontierPartitionComponentCount=9`, `ownerConsistencyRowCount=9`,
+  `regionFrontierLocator=none`, `regionFrontierLocatorSurvivedGuard=none`,
+  `regionFrontierFailureSourceFaceInPartition=false`, failing-region source-face count `10`, in-partition count `0`.
+- No configure, compile, relink, generated discovery, package repair, selector/fixture/source mutation, or benchmark ran.
 
-CB47 now publishes the population/domain evidence required by EC7.1–EC7.3: `unlabeledFaceCount`,
-`frontierPartitionComponentCount`, `ownerConsistencyRowCount`, locator kind, locator guard survival,
-`failure.sourceFace` membership, and failing-region source-face membership in `componentByFace`. The existing
-partition, locator behavior, guard, frontier oracle, binding, `region_orbit`, orbit-key lookup and content anchor are
-unchanged.
-
-**Current semantic runtime authority remains promoted TB41:** selector **409**, **398 PASS / 11 RED**, accepted
-**365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, ownership **300 / 0 / 0**. Stable accounting
-remains **47 events / 14 categories / 33 recurrences**, debt **5**; package count is now **107**.
+The promoted semantic authority remains TB41 until independent review decides otherwise. TB42-EXEC made no
+classification, promotion, regression-accounting change, definition change, or corrective plan.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB42-EXEC`** against immutable package107 only. No rebuild or source/selector/fixture mutation.
-
-- [ ] Verify exact source/artifact/package checksums and selector409 identity/hash.
-- [ ] Execute all 409 identities once, one fresh process each, using the packaged artifact-only harness.
-- [ ] Accepted ordinals 1–365 must remain **365/365 PASS**; 311/314/356/357 and 312/315/409 are hard stop gates.
-- [ ] 390/393/406/407 are **expected to remain RED** and must publish every EC7 census population/domain field.
-- [ ] 404/408 remain PASS; ownership remains **300 / 0 / 0**; existing owners for 366/367/368/369/370/374/398 remain untouched.
-- [ ] Record exact identity-level evidence; aggregate 398/11 equality alone is not sufficient.
-- [ ] Do not promote or plan a correction in EXEC. Exact successor is independent **`M3-CP4c-3-TB42-REV`**; stop the implementation loop at that boundary.
-
-`M3-CP4c-3-DEFN-R8` remains pre-named and review-owned. If `frontierPartitionComponentCount == 0`, review decides
-whether this census is legitimate at `RegionCertification`; EXEC must not widen the partition or weaken the oracle.
+Run independent **`M3-CP4c-3-TB42-REV`** against the preserved TB42-EXEC evidence. The implementation/orchestration
+loop stops completely at this boundary. Review owns the frozen EC7 classification matrix, `M3-CP4c-3-DEFN-R8`
+decision, regression-accounting disposition, required `ORIENTATION.md` currency update, document consolidation, and
+any successor plan. Do not run additional runtime, compile, or implementation work before that review.
 
 ## Carried forward from M1
 
@@ -98,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB41` is promoted semantic runtime authority** on package106: **398 PASS / 11 RED**, accepted 365/365. **CB47 package107 is compile-green and runtime-free**; exact next is artifact-only `M3-CP4c-3-TB42-EXEC`, followed by independent `M3-CP4c-3-TB42-REV`.
+  CP4c-3 remains open. **`M3-CP4c-3-TB41` remains promoted semantic runtime authority** pending independent review. **TB42-EXEC is complete** on package107 with **398 PASS / 11 RED**, accepted 365/365; exact next is independent `M3-CP4c-3-TB42-REV`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -109,7 +100,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and adds the EC7 population/domain measurements without changing the oracle. TB42-EXEC owns artifact-only measurement; independent TB42-REV owns interpretation and `DEFN-R8`. 366/367 remain under their separate missing-fragment/orbit owner.
+- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and adds the EC7 population/domain measurements without changing the oracle. TB42-EXEC artifact-only measurement is complete; independent TB42-REV now owns interpretation and `DEFN-R8`. 366/367 remain under their separate missing-fragment/orbit owner.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 

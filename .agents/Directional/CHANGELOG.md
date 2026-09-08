@@ -1,3 +1,23 @@
+## 2026-09-08 — `M3-CP4c-3-TB42-EXEC`: package107 executed artifact-only; evidence preserved for independent review
+
+Execution-only Test + Benchmark subturn. No configure, compile, relink, generated discovery, package repair,
+source/test/fixture/selector mutation, benchmark, diagnosis, promotion, definition change, regression-accounting
+change, or corrective plan.
+
+Exact semantic source `5dacce6019ea34316c48743f3033d2bb5c26281a`; immutable package107 artifact `10070788592`.
+Run `34265561941`, workload `102193966106`, result artifact `10071763480`, log artifact `10071764085`.
+Artifact/source/checksum/GMP/selector/harness preflight passed; package root `28/28` checksums passed; 409 identities
+executed exactly once in fresh processes with zero timeouts and zero nonzero process exits.
+
+Raw result: **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED
+`[366,367,368,369,370,374,390,393,398,406,407]`; 311/314/356/357, 312/315/409, 404/408 PASS; owner publication
+`300 established / 0 unavailable / 0 conflicting`. For 390/393/406/407 the protected assertion records
+`regionFrontierComponentCount=0`; each CB47 row is
+`unlabeledFaceCount=226;frontierPartitionComponentCount=9;ownerConsistencyRowCount=9;regionFrontierLocator=none;regionFrontierLocatorSurvivedGuard=none;regionFrontierFailureSourceFaceInPartition=false;regionFrontierFailureRegionSourceFaceCount=10;regionFrontierFailureRegionSourceFacesInPartitionCount=0`.
+
+EXEC performed no interpretation. Exact next boundary is independent **`M3-CP4c-3-TB42-REV`**; implementation and
+orchestration stop there.
+
 ## 2026-09-08 — `M3-CP4c-3-TB41-REV`: TB41 promoted, accepted prefix restored; the frontier oracle never had a subject
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
