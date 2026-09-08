@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 authority (2026-09-07, `M3-CP4c-3-DEFN-R6`):** runtime authority remains **TB37** — selector **409**, **402 PASS / 7 RED**, accepted **365/365**, packages **102**. **Part X decides the Euler question**, superseding Part IX §5 only. The cancellation premise is **not** the defect — the sub-mesh boundary cancels exactly, 20 against 20. **Interior barrier edges are interior cells**, and the certificate misclassifies them: it drops **12** from `E_int` against **16** vertices from `V_int`, which is the whole 4-point error. The certified complex is the **whole-face source sub-mesh**, and the criterion is **χ = V_total − E_total + F = 1**, with the reduced form withdrawn. The withdrawn premise has **two** comment sites — `GlobalTopologyPlan.cpp:2097–2098` and `GlobalTopologyPlan.h:91–93` — and both must go. Exact next is **`M3-CP4c-3-CB43`** under CZ7.1–CZ7.7. Stable accounting unchanged: **45 / 14 / 31**.
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB38-REV`):** **TB38 broke the accepted prefix and is NOT promoted** — 395 PASS / 14 RED, accepted **362/365**. Runtime authority remains **TB37** at **402 PASS / 7 RED**, accepted **365/365**. **The cause is `DEFN-R6.4`, not CB43**, which implemented Part X exactly as frozen. The torus region measures `V/E/F = 24/48/24` → **χ_full = 0** (a one-triangle-wide annular band) while the reduced form gives **1** by dropping its single interior barrier edge — which is what the trace along it does. Against the mechanical region's **+4**, the torus discrepancy is **−1**: **opposite signs, so neither formula is correct on both fixtures.** The older defect: `faceCount` counts **whole faces** while `V_int`'s `allOwned` exclusion only means anything for **split** faces — the certificate has always mixed two regions, and the traced/split reading has **never been computed**. **DEFN-R6.4 is withdrawn; DEFN-R6.3 is the live question.** DEFN-R6.7's safeguard discharged **vacuously** over zero rows. **One new stable event: 46 / 14 / 32.** Exact next is **`M3-CP4c-3-CB44`** — restore first, measure second, decide nothing.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -33,44 +33,44 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-07 at `M3-CP4c-3-DEFN-R6`. Runtime authority is **TB37** (package 102, source
-`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`), selector **409**, **402 PASS / 7 RED**, accepted
-**365/365**, RED `[366,367,368,369,370,374,398]`.
+**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-TB38-REV`. Runtime authority remains **TB37** (package 102,
+source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`), selector **409**, **402 PASS / 7 RED**, accepted **365/365**.
+**TB38 (package 103) is mechanically valid but semantically RED at 395 PASS / 14 RED, accepted 362/365, and is not
+promoted.**
 
-**Where the frontier is.** Ordinals 366/367 fail `RegionEulerCharacteristicNotOne`, and **the cause is known to
-the cell**:
+**What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
+CB43 implemented it exactly. On the torus fixture that criterion is false:
 
 ```text
-X (excluded vertices) = 36  =  0 mesh-boundary + 20 boundaryVertices + 16 allOwned
-B_int (interior barrier edges) = 12
-sub-mesh boundary = 20 edges / 20 vertices
-V_total / E_total / F / chiFull = 136 / 385 / 250 / 1
-reduced certificate             = 100 / 353 / 250 / −3
+torus region:   X = 24   E_one = 24   B_int = 1
+                V_total/E_total/F = 24/48/24   → chiFull    = 0
+                V_int  /E_int  /F =  0/23/24   → chiReduced = 1
+mechanical:     X = 36   E_one = 20   B_int = 12  → chiReduced −3, chiFull 1
 ```
 
-**The region is a genuine triangulated disc and the certificate rejects it.** The gap decomposes exactly:
+`X − E_one − B_int` is **+4** on the mechanical region and **−1** on the torus. **Opposite signs: neither formula
+is correct on both fixtures**, and DEFN-R6 had one fixture's numbers. `LESSONS.md` 156.
 
-> `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 0 + 4`
+**Why the reduced form wins on the torus.** That region is 24 triangles, 24 vertices, 48 edges, 24 boundary edges,
+**zero interior vertices** — a one-triangle-wide closed band, χ = 0, an annulus. It has exactly **one** interior
+barrier edge, and the reduced form drops it; removing one edge raises χ by 1, opening the annulus into a disc.
+**That is topologically what the trace along that edge does.**
 
-**The cancellation premise is correct** — the sub-mesh boundary cancels, 20 against 20. **The defect is that a
-barrier edge with both incident faces in the region is an interior cell being classified as boundary.** The
-certificate drops 12 such edges from `E_int` (`:1848–1850`) and 16 further vertices from `V_int` via `allOwned`
-(`:2048–2094`), and the two exclusions do not balance. A terminal slit is exactly such an edge, and this fixture
-has ten. `LESSONS.md` 153.
+**The real defect is older than Part X.** `certificate.faceCount` counts **whole faces** even where a trace splits
+one, while `V_int`'s `allOwned` exclusion only has meaning for **split** faces and `E_int`'s barrier exclusion is
+the cut. **The certificate has always been a mixture of the whole-face rounding and a partial model of the traced
+region.** The third complex — the traced/split region, using the `fragmentCorners` ownership map DEFN-R4 built —
+**has never been computed**. **DEFN-R6.4 is withdrawn; DEFN-R6.3 (the counted complex) is the live question**,
+exactly as Part X §9's own falsifier predicted.
 
-**Part X (DEFN-R6) freezes the correction.** The certified complex is the **whole-face source sub-mesh** of
-`region.sourceFaces` — so `χ = 1` is a claim about that **rounding**, not about the traced region, whose boundary
-includes trace chords through face interiors. The criterion is **χ = V_total − E_total + F = 1**; the reduced form
-is withdrawn. `vertexCount`/`edgeCount` keep their meanings because `edgeCount` feeds the connectivity BFS behind
-`RegionInteriorDisconnected`, so the totals are new fields. **The withdrawn premise has two comment sites** —
-`GlobalTopologyPlan.cpp:2097–2098` and `include/directional/geometry/GlobalTopologyPlan.h:91–93` — and deleting
-only one re-seeds it. `LESSONS.md` 154.
+**The safeguard failed vacuously.** DEFN-R6.7 required a per-region equivalence proof on every accepted fixture.
+The `euler_certificate` emission sits behind `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`
+(`GlobalTopologyPlan.cpp:86–89`, `:2460–2462`), which accepted identities never set, so the table had **zero rows**
+and the verifier reported success. Part X named the check and its identities but **never a non-emptiness
+condition**. `LESSONS.md` 155.
 
-**The proof obligation.** Reduced and full agree exactly when `X = E_one + B_int`; the measured region violates it
-by 4. **CB43 may not assume it anywhere** — it must show, per region on every accepted fixture, either the identity
-or an unchanged verdict.
-
-**Owner: `M3-CP4c-3-CB43`** under CZ7.1–CZ7.7, then `M3-CP4c-3-TB38`.
+**Owner: `M3-CP4c-3-CB44`** under DA7.1–DA7.7 — restore the reduced criterion, keep and **ungate** the diagnostics,
+measure the traced/split reading, then `TB39` and `DEFN-R7`.
 
 ## 1. What the project is
 
@@ -114,9 +114,15 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB37`** (package 102, promoted at TB37-REV). Selector **409**,
-**402 PASS / 7 RED**, **accepted 1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership
-remains **300 / 0 / 0**; ordinals 312, 390, 393, 404, 406, 407, 408 and 409 all PASS.
+**Runtime authority — `M3-CP4c-3-TB37`** (package 102). Selector **409**, **402 PASS / 7 RED**, **accepted
+1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership **300 / 0 / 0**.
+
+**TB38 is NOT promoted.** Package 103 / source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run `34169783183`, is
+mechanically valid — 409 identities once each, zero mismatch, zero timeout, censuses identical — but semantically
+**395 PASS / 14 RED, accepted 362/365**. Accepted **356/357/362** and protected **390/393/406/407** regressed.
+**One new stable event: 46 / 14 / 32.** Ordinal **366's** move to `RegionInteriorDisconnected` is the **predicted
+advance**, not a regression — the mechanical region passed χ and certification reached a stage never previously
+executed.
 
 **CB42 changed no behaviour, and that is proved by artifact.** TB37's `ledger.tsv` and `identity-map.tsv` hash
 **identical to TB36's** (`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs**
@@ -273,24 +279,28 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The region certificate misclassifies interior barrier edges as boundary, and rejects a disc.** —
-   `M3-CP4c3-TB36-REV-CAND-01` **DECIDED**; correction owned by `M3-CP4c-3-DEFN-R6` then `CB43`.
+1. **The region certificate has never counted one object.** — `M3-CP4c3-TB37-REV-CAND-01`, promoted to
+   **GATING** by TB38; owner `M3-CP4c-3-CB44` then `DEFN-R7`.
 
-   - **Measured:** `X = 36` (`0 + 20 + 16`), `B_int = 12`, sub-mesh boundary `20 / 20`,
-     `V/E/F/chiFull = 136/385/250/1`, reduced certificate `100/353/250/−3`.
-   - **The region is a disc.** The gap is `(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12)`
-     — the boundary terms cancel exactly as claimed, and the error is entirely in the residual.
-   - **12 interior barrier edges** are dropped from `E_int` (`:1848–1850`) and **16 further vertices** from
-     `V_int` via `allOwned`, asymmetrically. A terminal slit is precisely such an edge and this fixture has ten.
-   - **Fix frozen as Part X (DEFN-R6):** adopt `χ = V_total − E_total + F = 1` and withdraw the reduction,
-     deleting **both** premise comments — `GlobalTopologyPlan.cpp:2097–2098` **and**
-     `include/directional/geometry/GlobalTopologyPlan.h:91–93`. **Region construction is correct and must not
-     change**, and `vertexCount`/`edgeCount` must not be repurposed because `edgeCount` feeds the connectivity BFS.
-   - **Prove, do not assume, the blast radius:** reduced and full agree exactly when `X = E_one + B_int`; CB43
-     must show that per region on every accepted fixture. `LESSONS.md` 153, 154.
-   - **Owner: `M3-CP4c-3-CB43`** under CZ7.1–CZ7.7, then `M3-CP4c-3-TB38`.
+   - `faceCount` counts **whole faces** even where a trace splits one; `V_int`'s `allOwned` exclusion only has
+     meaning for **split** faces; `E_int`'s barrier exclusion is the cut. **The certificate is a mixture.**
+   - **Three candidate complexes, none of them established.** Whole-face rounding (χ_full): right on the mechanical
+     region, wrong on the torus. The current reduced mixture: right on the torus, wrong on the mechanical region.
+     **The traced/split region — the one `fragmentCorners` was built for — has never been computed.**
+   - `X − E_one − B_int` is **+4** on the mechanical region and **−1** on the torus. **A discrepancy that changes
+     sign is proof that neither candidate is the right object.** `LESSONS.md` 156.
+   - **DEFN-R6.4 is withdrawn** — it cost accepted ordinals 356/357/362. **DEFN-R6.3 is the live question.**
+   - **CB44 must restore first and decide nothing**: revert the criterion to the reduced form, keep and **ungate**
+     every diagnostic, and publish the split reading alongside. `DEFN-R7` decides only with rows from **both**
+     fixtures.
 
-2. **Region boundary provenance — the validator cannot see the guarantee it is checking. — RESOLVED**
+2. **Frontier evidence still hangs off which failure code was raised.** Ordinals 390/393/406/407 all failed the
+   frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
+   because the plan stopped at a stage carrying no frontier annotation. This is the **DEFN-R4 pattern** recurring:
+   a witness that asserts evidence should not be coupled to which failure produced it. Not independently owned —
+   restoring the criterion clears it — but it will recur on the next stage change.
+
+3. **Region boundary provenance — the validator cannot see the guarantee it is checking. — RESOLVED**
 
    - **Proved from source.** A plan region's boundary **is** `walk.orbits[orbit]`
      (`GlobalTopologyPlan.cpp:986`, `:1450`, relied on at `:379`), and a face-walk orbit is an ordered **single
@@ -305,12 +315,12 @@ features first, then threads them through source authority *and* atlas). Copy on
      plan region advanced past `ClosedBeforeEnd`, and ordinals 312/409 — which mutate a **copy** of a real region —
      still reject on `Unguaranteed`. A stored construction-time flag would have suppressed both. `LESSONS.md` 148.
 
-3. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
+4. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
    `censusCorrespondence`. Whether to unify remains a **`DEFN`** question and is not required by the current
    frontier. Owners: `M3-CP4c3-TB26-REV-CAND-04`, `M3-CP4c3-DEFN-R3-CAND-01`.
 
-4. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
+5. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
    path: the `VertexStarTransitAudit` is constructed **after** all five seed guards, so every seed failure publishes
    `std::nullopt`; `VertexStarTransitState::SeedUnavailable` is therefore **dead by construction**; and the 26 AX8
    fields CB9 added to `SurfaceCellFailureLocusDiagnostics` have **no reader** — `append_cp4c_failure_locus`, the
@@ -318,7 +328,7 @@ features first, then threads them through source authority *and* atlas). Copy on
    Third consecutive turn in which an ordered measurement was built and discarded at a stage boundary. Owned by
    **AZ4–AZ5**, with the consumer set found **by search against a predicate**.
 
-5. **Minimal transit witness / selector governance — ACTIVE, still conditional.** Selector 374 stays byte-immutable.
+6. **Minimal transit witness / selector governance — ACTIVE, still conditional.** Selector 374 stays byte-immutable.
    The gate covers only `FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection`; the boundary-ray and
    radial-arrival companion instances are **ungated**, and the radial one was written in `EdgeTransit` mode
    specifically because CB9's guards block `FaceInterior` — so no gated identity covers the case production actually
@@ -326,20 +336,20 @@ features first, then threads them through source authority *and* atlas). Copy on
    arrival already proved exact), instantiate **both** radial orientations, and show it failing under CB9 and
    passing under the correction. Ordinal **375** is appended only then.
 
-6. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB7 reproduces
+7. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB7 reproduces
    `CellularityNotEstablished` (4) where `EmptyNetworkOnClosedSurface` (6) is required, with the `sourceFace` locus
    absent. Independent owner; deferred until the mechanical path clears; must not be combined with vertex transit.
 
-7. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 reproduces `NoCarrierMatch / SourceEdgeUnavailable` at
+8. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 reproduces `NoCarrierMatch / SourceEdgeUnavailable` at
    trace 2 / event 30. Preserve AL4: no sphere semantic correction while the mechanical gate owns the critical path.
 
-8. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
+9. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
    `certificate.saturationUsed=true`. Amendment-14 representation is proved; ordinary-proposal coverage is debt.
 
-9. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
+10. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
    witness. `M3-CP4c3-DEFN-R1-CAND-01` stays open until production publishes `unboundSingularityCount=0`.
 
-10. **Report-only 367, 371, 372 — UNMEASURED, and 371/372 are blocked by a fixture helper rather than by their own
+11. **Report-only 367, 371, 372 — UNMEASURED, and 371/372 are blocked by a fixture helper rather than by their own
    contracts.** All three abort inside the shared `cp4c_mechanical_fixture()` constructor, which throws unless *all
    five* of `sourceAuthority`, `atlas`, `network`, `cutGraph` and `plan` are retained — so their TB10 reds are one
    upstream cause, not three. But **371 and 372 read only `fixture.atlas`**, an A1 product that is available and
@@ -350,13 +360,25 @@ features first, then threads them through source authority *and* atlas). Copy on
    deferred**: clearing ordinal 366 unblocks 371/372 automatically, so the candidate exists to make the coupling's
    cost visible if it does not.
 
-11. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
+12. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
     `double` and exactifies them before the flow classification reads their signs) and `M3-CP4c3-CB9-AUDIT-02`
     (`integer_sqrt_floor` has no published bit-width budget). Worth knowing: AUDIT-01 is the mechanism that produced
     the exact zero item 1 turns on, and on that witness it produced the **right** answer — the field genuinely is
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A frozen proof obligation needs a witness count, or it passes over an empty table.** A definition turn required
+a per-region equivalence proof on every accepted fixture and explicitly refused the hand-wave excuse. The
+implementing turn emitted the record correctly — behind an environment-variable gate the accepted identities never
+set. Zero rows; verifier reported success; the regression the obligation existed to prevent happened anyway.
+**Specify "at least one row per X" and make the verifier fail on zero.** `LESSONS.md` §4 155.
+
+**One fixture cannot tell "correct" from "coincidentally agrees".** A region Euler criterion was corrected from a
+single mechanical region where the full count was right and the reduced count was wrong by 4. On the torus the same
+change was wrong the other way — reduced 1, full 0 — because that region is a one-triangle-wide annular band whose
+one interior barrier edge the reduced form drops, which is what the trace along it does. **A discrepancy that
+changes sign between fixtures is proof that neither candidate is the right object.** `LESSONS.md` §4 156.
 
 **Withdrawing an assumption means deleting every statement of it, not the one the failure pointed at.** The Euler
 cancellation premise appeared twice — above the χ assignment in the `.cpp`, and again on the certificate's

@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-DEFN-R6`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36, and **the Euler frontier is decided at TB37 and corrected in definition at DEFN-R6 (Part X)**: the cancellation premise is *not* the defect — the sub-mesh boundary cancels 20 against 20 — and the error is that a barrier edge with **both** incident faces in the region is an **interior** cell being classified as boundary, so 12 edges are dropped against 16 vertices and `(20−20)+(16−12) = 4`. Measured `V/E/F/chiFull = 136/385/250/1`: **the region is a disc**. Part X names the certified complex as the **whole-face source sub-mesh**, adopts **χ = V_total − E_total + F = 1**, requires **both** premise comment sites deleted, forbids repurposing `vertexCount`/`edgeCount`, and imposes a **per-region proof obligation** on `X = E_one + B_int`. Runtime authority is **TB37** on selector 409 at **402 PASS / 7 RED**, accepted **365/365**, packages **102**. Stable accounting **45 / 14 / 31**, debt **5**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB38-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36. **The Euler correction frozen at DEFN-R6 (Part X) was refuted at TB38 and cost accepted green.** TB38 is mechanically valid, semantically RED at **395 PASS / 14 RED, accepted 362/365**, and **not promoted**; TB37 remains authority at **402 PASS / 7 RED**, accepted **365/365**, packages 102 (103 is a build fact only). The torus region is a one-triangle-wide annular band (`V/E/F = 24/48/24`, χ_full **0**) that the reduced form opens into a disc by dropping its single interior barrier edge — what the trace along it does — so `X − E_one − B_int` is **+4** on the mechanical region and **−1** on the torus: **opposite signs, neither formula correct on both**. The older defect is that `faceCount` counts **whole faces** while `V_int` excludes corners owned elsewhere — **the certificate has never counted one object**, and the traced/split reading has never been computed. DEFN-R6.7's safeguard discharged **vacuously** over zero rows. **One new stable event: 46 / 14 / 32**, debt **5**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -892,6 +892,31 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB38-REV` — nothing folded, and why
+
+Mandatory REVIEW consolidation. **No document was folded, and that is the correct outcome**, because the usual
+trigger — a new runtime authority superseding the old — did not occur:
+
+- **`M3-CP4c-3-TB38` was not promoted.** It broke the accepted prefix, so
+  `Architecture_M3_CP4c3_TB37_EXEC_Report.md` **remains the current valid semantic runtime authority** and
+  `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` is retained with it.
+- `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` is the adjudication **of the still-current
+  authority**, and its CZ0–CZ6 derivation remains live even though the Part X clause it froze is withdrawn. Folding
+  the review of the current authority while keeping that authority would leave the ledger incoherent.
+- `Architecture_M3_CP4c3_CB42_Code_Build_Report.md` is the build that produced the current package 102.
+- `Architecture_M3_CP4c3_CB43_Code_Build_Report.md` is **retained deliberately**: it is the provenance for the
+  regression, and it records that CB43 implemented Part X faithfully. Discarding it would leave the impression
+  that the implementation was at fault. `Architecture_M3_CP4c3_TB38_EXEC_Report.md` and its plan are the evidence
+  CB44 must work from.
+
+**Running total unchanged: 113 documents, 22,254 lines** (the last folding turn was `M3-CP4c-3-TB37-REV`, which
+folded 4 documents / 730 lines).
+
+**Definition-authority note.** **`DEFN-R6.4` is withdrawn** — the whole-face criterion `χ = V_total − E_total + F
+= 1` is refuted on the torus fixture and cost accepted ordinals 356/357/362. **`DEFN-R6.3` — the counted complex —
+is the live question**, exactly as Part X §9's own falsifier predicted. R6.1, R6.2, R6.5, R6.6 and R6.7 stand,
+with R6.7 amended in practice by `LESSONS.md` 155: a proof obligation must carry a **non-emptiness condition**.
 
 ### Consolidated on 2026-09-07 at `M3-CP4c-3-DEFN-R6` — nothing folded, and why
 

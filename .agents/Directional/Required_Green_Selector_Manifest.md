@@ -545,7 +545,20 @@ no behaviour.
 
 **CB43 discharged the Code + Build successor without authoring a selector.** Source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` compiles green as package103 artifact `10034608071`. Selector409 stays `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, and `tests/FieldAlignedCurveNetworkTests.cpp` stays `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`. CB43 adds full source-submesh Euler authority and proof diagnostics without editing 312, 409, any accepted identity, or region construction.
 
-**Exact successor:** `M3-CP4c-3-TB38-EXEC`. It re-executes this same selector409 from package103. Accepted **365/365** and **312/409 PASS** are hard stops. It must discharge DEFN-R6.7 per accepted-region certificate and verify 366/367 no longer terminate at Euler when `chiFull=1`; later RED is a new frontier. 368/369/370/374/398 remain separately owned.
+**TB38-EXEC discharged that successor, and its result refuted the definition CB43 implemented.** Selector409
+stayed byte-frozen at `eea6d8c2…` and ordinals **312/409 stayed PASS**, but **accepted 356/357/362 and protected
+390/393/406/407 regressed**, taking the accepted prefix to **362/365**. The cause is `DEFN-R6.4`, not the
+implementation. **TB38 is not promoted; `M3-CP4c-3-TB37` remains this selector's accepted authority at 365/365.**
+DEFN-R6.7's per-region proof also discharged over an **empty table**, because the certificate emission sits behind
+`DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`.
+
+**Exact successor:** `M3-CP4c-3-CB44` under **DA7.1–DA7.7** of
+`Architecture_M3_CP4c3_TB38_Independent_Review_Record.md`. It authors no selector — **409 stays byte-frozen** —
+and ordinals **312** and **409** stay byte-identical. **Required outcome is a restoration:** accepted **1–365 back
+to 365/365** and ordinals **390/393/406/407 back to PASS**, by reverting the region Euler criterion to the reduced
+form **and nothing else**. CB44 must additionally **ungate** the `euler_certificate` emission and publish its row
+count — **a verifier that passes on zero rows is a failed turn.** 368/369/370/374/398 remain separately owned.
+**Accepted prefix 365/365 is a stop condition.**
 
 ## Separate lineage — M1
 

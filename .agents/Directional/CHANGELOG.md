@@ -1,3 +1,62 @@
+## 2026-09-08 — `M3-CP4c-3-TB38-REV`: TB38 not promoted; DEFN-R6.4 cost the accepted prefix — one new stable event
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 2fcde465b1de2e42a348d224f5165ce8b87e4fbe` passed.
+
+**DA0 — TB38 is mechanically valid, semantically RED, and NOT promoted.** Selector **409**, run `34169783183`,
+package103 `10034608071`: **395 PASS / 14 RED**, accepted **1–365 = 362/365**, RED
+`[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`. **`M3-CP4c-3-TB37` remains the current valid semantic
+runtime authority.** Package 103 is a build fact only.
+
+**DA1 — CB43 is not at fault; `DEFN-R6.4` is.** CB43 implemented Part X exactly as frozen: hoisted the sub-mesh
+accumulation, added `totalVertexCount`/`totalEdgeCount`, computed χ from them, deleted **both** premise comments
+(the obligation Part X added over TB37-REV), did not repurpose `vertexCount`/`edgeCount`, did not touch region
+construction, extended `candidate_semantic_digest`. **The definition chose the wrong counted complex.**
+
+**DA2 — neither formula is correct on both fixtures.** Torus region (356/357/362/367, detail `d976514d…`):
+`X=24, E_one=24, B_int=1`, `V_total/E_total/F = 24/48/24` → **chiFull = 0**; `V_int/E_int/F = 0/23/24` →
+**chiReduced = 1**. Cross-checks close (`E_both=24`, `E_int=23`, `2·E_both + E_one = 72 = 3F`). Against the
+mechanical region's `X=36, E_one=20, B_int=12` → chiReduced −3, chiFull 1: **`X − E_one − B_int` is +4 on
+mechanical and −1 on the torus — opposite signs.** A single fixture cannot distinguish "correct" from
+"coincidentally agrees", and DEFN-R6 had one. `LESSONS.md` 156.
+
+**DA2.1 — why reduced wins on the torus.** That region is 24 triangles, 24 vertices, 48 edges, 24 boundary edges
+and **zero interior vertices** — a one-triangle-wide closed band, χ = 0, an annulus. It has exactly **one**
+interior barrier edge; the reduced form drops it, raising χ by 1 and opening the annulus into a disc. **That is
+topologically what the trace along that edge does.**
+
+**DA3 — the real defect is older than Part X: the certificate has never counted one object.**
+`certificate.faceCount = fragments.size()` is one entry per `region.sourceFaces` element, so **F counts whole faces
+even where a trace splits one**, while `V_int`'s `allOwned` exclusion only has meaning for **split** faces and
+`E_int`'s barrier exclusion is the cut. **The certificate mixes the whole-face rounding with a partial model of the
+traced region.** Part X resolved that mixture toward whole faces; TB38 refutes it. **The traced/split reading — the
+one `fragmentCorners` was built for — has never been computed.** `DEFN-R6.4` is **withdrawn**; `DEFN-R6.3` is the
+live question, exactly as Part X §9's own falsifier predicted.
+
+**DA4 — the DEFN-R6.7 proof obligation discharged over an empty set.** `emit_region_euler_certificate_diagnostics`
+is correctly placed before the χ test but guarded by `if (diagnostics != nullptr)`, non-null only under
+`DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` (`GlobalTopologyPlan.cpp:86–89`, `:2460–2462`), which accepted
+identities never set. Zero data rows; `accepted_euler_arithmetic_ok=true` is **vacuous**. **Part X named the check,
+its four identities and the inadmissible excuse — and never said how many rows must exist.** Third
+vacuous-verification instance in this checkpoint, and the first where the vacuous check was written specifically to
+prevent the failure that then occurred. It also blocks naming which region drives ordinal 366's
+`RegionInteriorDisconnected`. `LESSONS.md` 155.
+
+**DA5 — classification.** 356/357/362 accepted-green loss (the event). 390/393/406/407 protected-green loss on the
+frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) — a
+**DEFN-R4 pattern recurrence**. 367 moved to the torus region. **366's move to `RegionInteriorDisconnected` is the
+predicted advance, not a regression.** 368/369/370/374/398 byte-identical carried. 312/404/408/409 PASS, ownership
+`300 / 0 / 0`, retired codes silent.
+
+**DA6 — accounting: ONE NEW STABLE EVENT.** Events **45 → 46**; category `RP-01 / AUTHORITY_DOMAIN_CONFLATION`
+(existing, so categories remain **14**); recurrences **31 → 32**. **Totals: 46 / 14 / 32**, debt **5**, packages
+**103**. DA4's vacuity is **not** counted as a second event — it caused no separate accepted-green loss.
+
+**Exact next: `M3-CP4c-3-CB44`** — Code + Build, runtime-free, under **DA7.1–DA7.7**. **Restore first, measure
+second, decide nothing:** revert the criterion to the reduced form, keep and **ungate** every diagnostic, publish
+the row count with any verifier failing on zero rows, measure the traced/split reading per region, and publish
+`fullMinusReduced` on every region. Accepted must return to **365/365** and 390/393/406/407 to PASS.
+
 ## 2026-09-07 — `M3-CP4c-3-CB43`: full source-submesh Euler certificate compiled as package103
 
 Code + Build, runtime-free. Source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` changes exactly two production files (**78 insertions / 47 deletions**): adds total source-submesh counts, computes `V_total-E_total+F`, removes both withdrawn premise comments, emits per-region reduced/full proof diagnostics, and includes total counts in certificate ordering/hash. Existing interior counts, region construction, tests, fixtures, selectors, ownership/partition semantics, carried 368/369/370/374/398 surfaces and retired guards are unchanged.

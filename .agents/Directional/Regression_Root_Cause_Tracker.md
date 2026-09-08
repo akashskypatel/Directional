@@ -1,3 +1,65 @@
+## M3-CP4c3-TB38-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STABLE — ONE NEW EVENT / ACCEPTED PREFIX BROKEN / TB38 NOT PROMOTED**
+
+- **Record:** `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md`, measures **DA0–DA7**. Evidence-only.
+  `review_check.py authority 2fcde465b1de2e42a348d224f5165ce8b87e4fbe` — ALL CHECKS PASSED.
+
+- **DA0 — TB38 is mechanically valid, semantically RED, and NOT promoted.** Selector409, run `34169783183`,
+  package103 `10034608071` / source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`: **395 PASS / 14 RED**, accepted
+  **1–365 = 362/365**, RED `[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`. **`M3-CP4c-3-TB37`
+  remains current valid semantic runtime authority.** Package count 103 is a build fact only.
+
+- **DA1 — CB43 is not at fault. `DEFN-R6.4` is.** CB43 implemented Part X exactly as frozen, including deleting
+  **both** premise comments, not repurposing `vertexCount`/`edgeCount`, not touching region construction, and
+  extending the semantic digest. **The definition chose the wrong counted complex**, and that choice cost the
+  accepted prefix.
+
+- **DA2 — neither formula is correct on both fixtures.** Torus region (356/357/362/367, detail `d976514d…`):
+  `X=24, E_one=24, B_int=1`, `V_total/E_total/F = 24/48/24` → **chiFull = 0**, `V_int/E_int/F = 0/23/24` →
+  **chiReduced = 1**. Cross-checks close (`E_both=24`, `E_int=23`, `2·E_both + E_one = 72 = 3F`). Against the
+  mechanical region: `X=36, E_one=20, B_int=12`, chiReduced −3, chiFull 1.
+  **`X − E_one − B_int` is +4 on mechanical and −1 on torus — opposite signs.** A single fixture could not
+  distinguish "correct" from "coincidentally agrees", and DEFN-R6 had one fixture.
+
+- **DA2.1 — why reduced wins on the torus.** The region is a one-triangle-wide closed band: 24 triangles, 24
+  vertices, 48 edges, 24 boundary edges, **zero interior vertices** — an annulus. It has `B_int = 1`, and the
+  reduced form drops that one barrier edge, raising χ by exactly 1 and opening the annulus into a disc. **That is
+  topologically what the trace along that edge does.** Where the reduced form drops interior barrier edges it is
+  modelling the cut correctly; where it additionally drops 16 vertices against 12 edges via `allOwned` on the
+  mechanical fixture, it over-removes.
+
+- **DA3 — the certificate has never counted one object.** `faceCount = fragments.size()` is one entry per
+  `region.sourceFaces` element, so **F counts whole faces even where a trace splits one**, while `V_int`'s
+  `allOwned` exclusion only has meaning for **split** faces and `E_int`'s barrier exclusion is the cut. **The
+  certificate is a mixture of the whole-face rounding and a partial model of the traced region.** Part X resolved
+  that mixture toward whole faces; TB38 refutes it. **A third complex — the traced/split region, using the
+  `fragmentCorners` ownership map DEFN-R4 established — has never been computed.** `DEFN-R6.4` is **withdrawn**;
+  `DEFN-R6.3` is the live question, exactly as Part X §9's own falsifier predicted.
+
+- **DA4 — the DEFN-R6.7 proof obligation discharged over an empty set.** `emit_region_euler_certificate_diagnostics`
+  is correctly placed before the χ test but guarded by `if (diagnostics != nullptr)`, and `diagnostics` is non-null
+  only under `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` (`GlobalTopologyPlan.cpp:86–89`, `:2460–2462`). Accepted
+  identities do not set it, so `accepted-region-euler-certificates.tsv` has **zero data rows** and
+  `accepted_euler_arithmetic_ok=true` is **vacuous**. **Part X named the check, its four identities and the
+  inadmissible excuse — and never said how many rows must exist.** Third vacuous-verification instance in this
+  checkpoint, and the first where the vacuous check was written specifically to prevent the failure that then
+  occurred. It also blocks naming which region drives ordinal 366's `RegionInteriorDisconnected`.
+  `LESSONS.md` 155.
+
+- **DA5 — classification.** 356/357/362 accepted-green loss (the event); 390/393/406/407 protected-green loss on
+  the frozen `regionFrontierComponentCount > 0` assertion at `FieldAlignedCurveNetworkTests.cpp:4364`, actual 0 —
+  a **DEFN-R4 pattern recurrence**, frontier evidence hanging off which failure code was raised; 367 moved to the
+  torus region; **366's move to `RegionInteriorDisconnected` is the predicted advance, not a regression**;
+  368/369/370/374/398 byte-identical carried. 312/404/408/409 PASS, ownership 300/0/0, retired codes silent.
+
+- **DA6 — accounting: ONE NEW STABLE EVENT.** Accepted 356/357/362 were TB37 PASS and are TB38 RED.
+  **Events 45 → 46**; category **`RP-01 / AUTHORITY_DOMAIN_CONFLATION`** (existing, so **categories remain 14**);
+  **recurrences 31 → 32**. **Totals: 46 events / 14 categories / 32 recurrences**, debt **5**, packages **103**.
+  DA4's vacuity is **not** a second event — it caused no separate accepted-green loss.
+
+- **DA7 — exact successor `M3-CP4c-3-CB44`**, runtime-free: **restore first, measure second, decide nothing.**
+
+---
+
 ## M3-CP4c3-CB43 — Part X Euler correction — **IMPLEMENTED / COMPILE-PROVED / TB38 RAW RUNTIME COMPLETE / NON-STABLE TURN**
 
 - Semantic source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`; two production files, 78 insertions / 47 deletions. Full source-submesh Euler authority and DEFN-R6.7 proof diagnostics are compiled; region construction, tests, fixtures, selectors, ownership/partition semantics and carried 368/369/370/374/398 surfaces are unchanged.
@@ -6213,11 +6275,50 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current valid semantic runtime remains TB37: source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, selector409, run
-`34161464783`, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership
-**300/0/0** where published.
+Current valid semantic runtime authority is **M3-CP4c-3-TB37** — unchanged, because **TB38 broke the accepted
+prefix and is not promoted**: semantic source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, CB42 package
+`10032277517`, selector409, run `34161464783`, **402 PASS / 7 RED**, accepted **1-365 = 365/365**, ownership
+**300 / 0 / 0**. Stable totals are now **46 events / 14 categories / 32 recurrences**, debt **5**, M3 packages
+**103** (a build fact only).
 
-TB38 raw EXEC on package103 is mechanically valid but unadjudicated: run `34169783183`, **395 PASS / 14 RED**,
-accepted **362/365**, with newly RED 356/357/362/390/393/406/407 and zero accepted Euler-certificate emission rows.
-Exact next is independent evidence-only **`M3-CP4c-3-TB38-REV`**. No new runtime, compile, benchmark, semantic retry,
-product/test/fixture/selector mutation, or validator weakening before that review.
+**TB38 regressed accepted ordinals 356/357/362 and protected ordinals 390/393/406/407.** The cause is
+**`DEFN-R6.4`**, not CB43, which implemented Part X exactly as frozen. The torus region measures
+`V_total/E_total/F = 24/48/24` -> **chiFull = 0** while `V_int/E_int/F = 0/23/24` -> **chiReduced = 1**: a
+one-triangle-wide annular band that the reduced form opens into a disc by dropping its single interior barrier
+edge, which is what the trace along that edge does. Against the mechanical region's `+4`, the torus discrepancy is
+**-1** - **opposite signs, so neither formula is correct on both fixtures.**
+
+**The underlying defect is older than Part X.** `faceCount` counts whole faces even where a trace splits one,
+while `V_int`'s `allOwned` exclusion only means anything for split faces. **The certificate has always mixed the
+whole-face rounding with a partial model of the traced region**, and the traced/split reading - the one
+`fragmentCorners` was built for - has never been computed. `DEFN-R6.4` is **withdrawn**; `DEFN-R6.3` is the live
+question.
+
+**The safeguard failed vacuously.** DEFN-R6.7's per-region proof produced **zero rows**, because the
+`euler_certificate` emission sits behind `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`, and the verifier reported
+success over the empty table. Part X specified the check and its identities but never a **non-emptiness
+condition**. `LESSONS.md` 155.
+
+**Exact next: `M3-CP4c-3-CB44` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
+**DA7.1-DA7.7**. **Restore first, measure second, decide nothing.** Revert `certificate.eulerCharacteristic` to the
+reduced form - a restoration to a known-wrong formula, done because the accepted baseline is the stop condition and
+the correct complex is not established (DA7.1); keep every diagnostic CB43 added (DA7.2); **ungate the
+`euler_certificate` emission and publish its row count, with any verifier over it failing on zero rows** (DA7.3);
+publish the **traced/split** reading per region - trace-cut face count, split fragment count, `fragmentCorners`
+corner attribution, and interior barrier edges split by how many sides the region owns (DA7.4); publish
+`fullMinusReduced` on **every** region, not only failing ones (DA7.5); restore accepted **365/365** and
+390/393/406/407 to PASS with ordinals 312/409 byte-identical and selector409 byte-frozen (DA7.6); `TB39`
+re-executes and `DEFN-R7` decides the counted complex **only with rows from both fixtures in hand** (DA7.7).
+
+**Falsification, stated before the build.** Accepted prefix must return to **365/365** and 390/393/406/407 to
+**PASS**, or the revert is incomplete and the turn halts. **The euler_certificate table must contain at least one
+row per certified region on every accepted fixture; zero rows - or a verifier that passes on zero rows - is a
+failed turn.** If 366/367 do not return to their TB37 surfaces, something other than the criterion changed. If the
+torus region's split-reading fragment count equals its whole-face count, DA3's hypothesis is wrong for it. If
+`fullMinusReduced` is zero on every accepted region, the accepted corpus cannot discriminate the three complexes
+and DEFN-R7 needs a new fixture first.
+
+**Prohibited:** choosing a counted complex in CB44; correcting region construction; changing ownership or
+`fragmentCorners`; weakening `proves_disc_topology()`, `sourceFacesConnected`, `boundaryWalkCount` or the
+`regionFrontierComponentCount` assertion at `FieldAlignedCurveNetworkTests.cpp:4364`; editing ordinals 312/409 or
+any accepted identity; any selector byte change; any Directional runtime in CB44.

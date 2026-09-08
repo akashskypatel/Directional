@@ -1929,6 +1929,26 @@ building any conclusion on it.**
      TB37. **When withdrawing a stated assumption, search the corpus for the assumption's own wording and name
      every site in the frozen definition**, the same obligation lesson 53 already imposes on implementing a rule.
      A withdrawal is a rule too.
+155. **A proof obligation without a non-emptiness condition discharges itself over the empty set.** A definition
+     turn froze the strongest safeguard it knew how to write: prove, **per region on every accepted fixture**,
+     either the equivalence identity or an unchanged verdict - and it explicitly refused the excuse "accepted
+     fixtures do not have that structure". The implementing turn emitted the certificate record faithfully and
+     placed it correctly. But the emission sat behind `if (diagnostics != nullptr)`, which is non-null only under
+     an environment variable the accepted identities never set, so the table had **zero data rows** and the
+     verifier reported `ok=true` over it. The obligation named the check, its four identities and the inadmissible
+     excuse - and never said **how many rows must exist**. **Every frozen proof obligation needs a witness count:
+     "at least one row per X", and a verifier that fails on zero.** This is the same shape as exit 0 from a filter
+     that matched no tests, and as a conflict census over an all-`Unavailable` map (lesson 122) - but worse,
+     because this check was written specifically to prevent the failure that then occurred, and its vacuous PASS
+     is what let that failure through.
+156. **One fixture cannot distinguish "this formula is correct" from "this formula happens to agree here".** A
+     region Euler criterion was corrected on a single mechanical region where the full count gave the right answer
+     (`chi = 1`) and the reduced count gave `-3`. On the torus fixture the same change was wrong in the opposite
+     direction: reduced `1`, full `0`, because that region is a one-triangle-wide annular band whose single
+     interior barrier edge the reduced form drops - which is topologically what the trace along it does. The error
+     term `X - E_one - B_int` was **+4** on one fixture and **-1** on the other. **Before promoting a measurement
+     from one fixture into a criterion for all regions, get the same measurement from a structurally different
+     fixture** - and treat a discrepancy that changes sign as proof that neither candidate is the right object.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

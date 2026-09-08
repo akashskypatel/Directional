@@ -10,19 +10,24 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-07** at `M3-CP4c-3-TB38-EXEC` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB38-REV` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB37` is the current valid semantic runtime authority**, promoted at TB37-REV. Selector **409**,
-**402 PASS / 7 RED**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable CB42 package
-`10032277517` / source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`. Run `34161464783`; 409 rows, every row
-`selected=1`, zero timeouts, all three censuses identical pre/post, `SHA256SUMS` 28/28, executables `0755`.
+**`M3-CP4c-3-TB37` remains the current valid semantic runtime authority.** Selector **409**, **402 PASS / 7 RED**,
+**accepted 1–365 = 365/365**, on CB42 package `10032277517` / source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`.
 
-Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting **45 events / 14 categories
-/ 31 recurrences** — **no new event**, no accepted green was lost — debt **5**, packages **103**.
+**`M3-CP4c-3-TB38` is mechanically valid, semantically RED, and NOT promoted.** Package 103 / source
+`2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run `34169783183`: **395 PASS / 14 RED**, **accepted 362/365**, RED
+`[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`. Accepted **356/357/362** and protected
+**390/393/406/407** regressed.
+
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting is now
+**46 events / 14 categories / 32 recurrences** — **one new event**, the accepted-green loss — debt **5**, packages
+**103** (a build fact only).
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -184,44 +189,103 @@ Part X supersedes **Part IX §5 only**; every other Part IX clause and all of Pa
 - **R6.7 — the equivalence carries a proof obligation.** Reduced and full agree iff **`X = E_one + B_int`**; the
   measured region violates it by 4 (`36` vs `20 + 12`). **CB43 may not assume it anywhere.**
 
-## 3.6 CB43 compiled Part X; TB38 was the frozen runtime proof
+## 3.6 TB38 refuted DEFN-R6.4, and the fault is the definition's
 
-CB43 source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` compiles green as package103 (`10034608071`, run/job `34167182718 / 101880462158`) without Directional runtime. It adds total source-submesh counts, computes full χ, removes both obsolete premise comments, publishes per-region reduced/full proof data, and includes the new totals in certificate ordering/hash while leaving region construction and accepted test/selector source unchanged.
+CB43 implemented Part X **exactly as frozen** — hoisted the sub-mesh accumulation, added the total fields, computed
+χ from them, deleted **both** premise comments, did not repurpose `vertexCount`/`edgeCount`, did not touch region
+construction, extended the semantic digest. **`DEFN-R6.4` is what cost the accepted prefix.**
 
-TB38-EXEC is the runtime proof of CZ7.4. Every emitted accepted-region certificate must satisfy:
+### The measurement
 
 ```text
-chiReduced = V_int - E_int + F
-chiFull = V_total - E_total + F
-fullMinusReduced = chiFull - chiReduced = X - E_one - B_int
+torus region (356/357/362/367, detail d976514d…):
+    X = 24   E_one = 24   B_int = 1
+    V_total/E_total/F = 24/48/24   → chiFull    = 0
+    V_int  /E_int  /F =  0/23/24   → chiReduced = 1
+mechanical region (TB37, ordinals 366/367):
+    X = 36   E_one = 20   B_int = 12  → chiReduced = −3, chiFull = 1
 ```
 
-Zero difference proves equivalence; nonzero difference with an unchanged accepted verdict discharges the obligation without the forbidden blanket assumption. For 366/367, TB37 predicts `36-20-12=4` and `136-385+250=1`; if preserved, terminal Euler rejection is a correction failure and a later-stage RED is a new frontier. Accepted 365/365 and 312/409 PASS are hard falsifiers; 368/369/370/374/398 remain separately owned.
+Cross-checks close on the torus: `E_both = 48 − 24 = 24`, `E_int = 24 − 1 = 23`,
+`2·E_both + E_one = 72 = 3F`.
 
-**Frozen successor at CB43 closeout:** artifact-only TB38-EXEC using package103 and `Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md`; TB38 has now executed and its raw result is recorded in §3.7.
+| Fixture | `X − E_one − B_int` | χ_reduced | χ_full |
+|---|---:|---:|---:|
+| mechanical | **+4** | −3 | **1** |
+| torus | **−1** | **1** | 0 |
 
-## 3.7 TB38-EXEC is mechanically valid but fails the frozen hard gate; independent review is next
+> **Opposite signs. Neither formula is correct on both fixtures**, and DEFN-R6 had exactly one fixture's numbers.
+> `LESSONS.md` 156.
 
-Package103 executed selector409 exactly once per identity in run `34169783183` with zero mismatch/timeout and no
-build, repair, mutation or benchmark. Raw result: **395 PASS / 14 RED**, accepted **362/365**, RED
-`[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`.
+### Why the reduced form wins on the torus
 
-Relative to TB37, accepted 356/357/362 and protected 390/393/406/407 newly RED. 312/404/408/409 remain PASS.
-356/357/362 share the same torus Euler failure with `V_total/E_total/F/chiFull=24/48/24/0`; 390/393/406/407 share
-the same component-count assertion with actual 0. Ordinal366 moves to `RegionInteriorDisconnected`; ordinal367 no
-longer reproduces TB37's `D=48 / chiFull=1` region and instead publishes the torus `chiFull=0` failure. The carried
-368/369/370/374/398 failure details are byte-identical to TB37.
+That region is 24 triangles, 24 vertices, 48 edges, 24 boundary edges and **zero interior vertices** — a
+one-triangle-wide closed band, χ = 0, an **annulus**. It has exactly **one** interior barrier edge, and the reduced
+form drops it. Removing one edge raises χ by 1, opening the annulus into a disc. **That is topologically what the
+trace along that edge does** — so where the reduced form drops interior barrier edges it is modelling the cut
+correctly, and where it additionally drops 16 vertices against 12 edges via `allOwned` on the mechanical fixture it
+over-removes.
 
-DEFN-R6.7 is **not runtime-discharged**: zero raw `record=euler_certificate` rows were emitted, leaving the generated
-accepted-certificate table empty. That is an evidence-emission/test-authority gap, not evidence that the four frozen
-identities held. Raw EXEC therefore creates two review-pending non-stable candidates and stops; it does not assign a
-correction or reprice stable history.
+### The real defect is older than Part X
 
-Current valid semantic runtime remains **TB37** pending independent review. Stable accounting stays **45 / 14 / 31**,
-debt **5**, packages **103**.
+`certificate.faceCount = fragments.size()` is one entry per `region.sourceFaces` element, so **F counts whole faces
+even where a trace splits one**. Meanwhile `V_int`'s `allOwned` exclusion only has meaning if that face is
+**split**, and `E_int`'s barrier exclusion is the cut.
 
-**Exact next:** independent evidence-only `M3-CP4c-3-TB38-REV`; no new runtime, compile, benchmark or semantic
-mutation before review.
+> **The certificate has always mixed the whole-face rounding with a partial model of the traced region.**
+
+Part X resolved that mixture toward whole faces; TB38 refutes it. **The third complex — the traced/split region,
+using the `fragmentCorners` ownership map DEFN-R4 established — has never been computed.** `DEFN-R6.4` is
+**withdrawn**; **`DEFN-R6.3` is the live question**, exactly as Part X §9's own falsifier said it would be.
+
+### The safeguard discharged over an empty set
+
+DEFN-R6.7 required a per-region equivalence proof on every accepted fixture and explicitly refused the hand-wave
+excuse. It produced **zero rows**: `emit_region_euler_certificate_diagnostics` is correctly placed before the χ
+test but guarded by `if (diagnostics != nullptr)`, non-null only under `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`
+(`GlobalTopologyPlan.cpp:86–89`, `:2460–2462`), which the accepted identities never set. The verifier reported
+`accepted_euler_arithmetic_ok=true` over the empty table. **Part X named the check, its four identities and the
+inadmissible excuse — and never said how many rows must exist.** `LESSONS.md` 155. It also blocks naming which
+region drives ordinal 366's `RegionInteriorDisconnected`.
+
+### Ordinal 366 is the predicted advance, not a regression
+
+The mechanical region passed χ under the full count and certification reached a stage never previously executed.
+Part X's falsifier called this "a new frontier, not a regression of this one". Ordinals 390/393/406/407 fail the
+frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
+because the plan now stops where no frontier annotation is attached — a **DEFN-R4 pattern recurrence**.
+
+## 3.7 Exact next turn — `M3-CP4c-3-CB44`
+
+**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`. **Restore first, measure second, decide
+nothing.**
+
+- **DA7.1** — revert `certificate.eulerCharacteristic` to the reduced form. **A restoration to a known-wrong
+  formula**, done because the accepted baseline is the stop condition and the correct complex is not established.
+  Revert nothing else.
+- **DA7.2** — keep every diagnostic CB43 added: `totalVertexCount`, `totalEdgeCount`, the `euler_certificate`
+  record, the extended digest. Only the **criterion** reverts.
+- **DA7.3** — **ungate the emission and publish its row count.** Any verifier over that table must **fail on zero
+  rows**.
+- **DA7.4** — measure the **third complex**: per region, the trace-cut face count, the split fragment count, the
+  `fragmentCorners` corner attribution, and interior barrier edges separated by how many sides the region owns.
+  **Publish, do not certify.**
+- **DA7.5** — publish `fullMinusReduced` on **every** region, not only failing ones.
+- **DA7.6** — accepted must return to **365/365** and 390/393/406/407 to PASS; ordinals 312/409 byte-identical;
+  selector 409 byte-frozen; region construction unchanged.
+- **DA7.7** — `M3-CP4c-3-TB39` re-executes; `DEFN-R7` decides the counted complex **only with rows from both
+  fixtures in hand**.
+
+**Falsifiers, stated before the build.** Accepted **365/365** and 390/393/406/407 PASS, or the revert is incomplete
+and the turn halts. **The euler_certificate table must contain at least one row per certified region on every
+accepted fixture — zero rows, or a verifier that passes on zero, is a failed turn.** If 366/367 do not return to
+their TB37 surfaces, something other than the criterion changed. If the torus region's split fragment count equals
+its whole-face count, the split hypothesis is wrong for it. If `fullMinusReduced` is zero on every accepted region,
+the accepted corpus cannot discriminate the three complexes and DEFN-R7 needs a new fixture first.
+
+**Must not:** choose a counted complex in CB44; correct region construction; change ownership or `fragmentCorners`;
+weaken `proves_disc_topology()`, `sourceFacesConnected`, `boundaryWalkCount` or the `regionFrontierComponentCount`
+assertion; edit ordinals 312/409 or any accepted identity; change any selector byte.
 
 ## 4. Open candidates
 
@@ -229,8 +293,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB38-EXEC-CAND-01` | **NEW / ACCEPTED+PROTECTED REGRESSION / REVIEW PENDING / NON-STABLE** — TB37 PASS ordinals 356/357/362/390/393/406/407 are TB38 RED. EXEC preserves two exact repeated failure-byte families but does not assign root-cause ownership. |
-| `M3-CP4c3-TB38-EXEC-CAND-02` | **NEW / R6.7 EVIDENCE-EMISSION GAP / REVIEW PENDING / NON-STABLE** — zero accepted-region `euler_certificate` rows emitted; the required reduced/full equivalence proof is undischarged. |
+| `M3-CP4c3-TB38-EXEC-CAND-01` | **OWNED / STABLE** — root cause is **`DEFN-R6.4`**, not CB43, which implemented Part X exactly as frozen. One new stable event; accounting 46 / 14 / 32. Owner: `M3-CP4c-3-CB44` (restore), then `DEFN-R7` (decide). |
+| `M3-CP4c3-TB38-EXEC-CAND-02` | **OWNED / NON-STABLE** — the emission sits behind `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`, which accepted identities never set, so the verifier passed over an empty table. DEFN-R6.7 lacked a non-emptiness condition. Owner: `CB44` DA7.3. `LESSONS.md` 155. |
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |
 | `M3-CP4c3-TB31-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — 390/393/406/407 PASS with selector 408 byte-unchanged and nothing they legitimately own relaxed. |
 | `M3-CP4c3-TB31-REV-CAND-03` | **CLOSED / IMPLEMENTED** — frontier evidence publishes at both annotation sites. Its **over-reach** is carried forward as `M3-CP4c3-TB32-REV-CAND-01` rather than left inside a closed candidate. |
@@ -240,8 +304,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB34-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — ordinal 409 re-aimed at the constructible shared-start shape and PASSes its oracle. |
 | `M3-CP4c3-TB34-REV-CAND-03` | **CLOSED** — open since TB34, now diagnosed to the cell: the region is a disc (`chiFull=1`) and the certificate drops 12 interior barrier edges against 16 vertices, netting −4. |
 | `M3-CP4c3-TB35-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — TB36 advanced 366/367 past `ClosedBeforeEnd` on `FaceWalkOrbit` while 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. Part IX's derived relation is confirmed in both directions. |
-| `M3-CP4c3-TB36-REV-CAND-01` | **DECIDED** — `D = X + B_int = 48`, `chiFull = 1`. The two claims were mutually exclusive and the measurement chose: the region is a disc and the certificate's arithmetic is wrong by exactly 4. Correction owned by `M3-CP4c-3-DEFN-R6` (Part X), then `CB43`. |
-| `M3-CP4c3-TB37-REV-CAND-01` | **ACTIVE / ARCHITECTURAL / NON-BLOCKING** — the certified object is the region **rounded to whole faces**, not the traced region: both formulas count `region.sourceFaces` while the region's boundary includes trace chords through face interiors. Must be stated in Part X before it is silently assumed. |
+| `M3-CP4c3-TB36-REV-CAND-01` | **REOPENED** — "the region is a disc" holds for the mechanical region under the **whole-face** reading only, and TB38 refutes that reading as a general criterion. Subsumed by `TB37-REV-CAND-01`. |
+| `M3-CP4c3-TB37-REV-CAND-01` | **PROMOTED TO GATING** — recorded non-blocking at TB37-REV; TB38 proves it blocking. `faceCount` counts whole faces while `V_int` excludes corners owned elsewhere, so **the certificate has never counted one object**. Three candidate complexes; the traced/split one has never been computed. Owner: `CB44` DA7.4, then `DEFN-R7`. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
@@ -354,4 +418,17 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-Resume at independent `M3-CP4c-3-TB38-REV`. Current valid semantic runtime remains TB37. TB38 raw evidence is run `34169783183`, result/log artifacts `10035390901 / 10035391184`: 395/14, accepted 362/365, newly RED 356/357/362/390/393/406/407, and zero accepted `euler_certificate` rows. Review existing evidence only; do not rebuild or execute new runtime.
+After the durable start-of-turn checklist, CB44 loads only the minimum authority:
+
+1. `ORIENTATION.md` — read first.
+2. **this file** — §3.6 (what broke and why) and §3.7 (the frozen measures).
+3. `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — **DA0–DA7**, the adjudication.
+4. `M3_CP4c_Frozen_Definitions.md` — **Part X's DEFN-R6.4 is withdrawn**; R6.1–R6.3 and R6.5–R6.7 stand, and
+   Part IX (amended by Part IX-A) governs boundary provenance.
+5. `Regression_Root_Cause_Tracker.md` — the TB38-REV section and the authoritative next step.
+6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (**122, 144, 155, 156** govern).
+7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
+
+Exact next is **`M3-CP4c-3-CB44`** under **DA7.1–DA7.7**: **restore first, measure second, decide nothing.**
+**Accepted prefix must return to 365/365**, ordinals 390/393/406/407 to PASS, and the euler-certificate table must
+contain **at least one row per certified region** — a verifier that passes on zero rows is a failed turn.

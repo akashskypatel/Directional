@@ -26,40 +26,51 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB38-REV` — INDEPENDENT EVIDENCE-ONLY REVIEW
+## Current focus — `M3-CP4c-3-CB44` (Code + Build, runtime-free) — RESTORE THE ACCEPTED PREFIX
 
-TB38-EXEC is **COMPLETE / MECHANICALLY VALID / RAW SEMANTIC RED / UNADJUDICATED** on immutable package103.
-Run/job `34169783183 / 101887783834` succeeded as artifact-only execution; result/log artifacts
-`10035390901 / 10035391184`. No configure, compile, relink, repair, mutation or benchmark occurred.
+`M3-CP4c-3-TB38-REV` adjudicated TB38 and **did not promote it: the accepted prefix broke.**
 
-Raw TB38 result:
+- **`M3-CP4c-3-TB37` remains current valid semantic runtime authority** — selector **409**, **402 PASS / 7 RED**,
+  accepted **365/365**, package102.
+- **TB38 (package103) is mechanically valid, semantically RED, NOT promoted** — **395 PASS / 14 RED**, accepted
+  **362/365**; accepted 356/357/362 and protected 390/393/406/407 regressed.
 
-- [x] 409/409 identities executed exactly once; zero selection mismatch and zero timeout;
-- [x] aggregate **395 PASS / 14 RED**;
-- [x] accepted prefix **362/365**, newly RED **356/357/362**;
-- [x] protected 312/404/408/409 PASS, but **390/393/406/407 RED**;
-- [x] 366 moved to `RegionInteriorDisconnected`; 367 moved to a torus Euler row with `chiFull=0`;
-- [x] 368/369/370/374/398 failure details byte-identical to TB37;
-- [x] ownership remains **300/0/0** where published; retired codes absent;
-- [x] package/source/execution-view censuses identical pre/post;
-- [x] **zero** accepted-region `record=euler_certificate` rows emitted — CZ7.4/R6.7 proof obligation undischarged;
-- [x] raw candidates entered into regression tracker without stable repricing.
+**CB43 is not at fault** — it implemented Part X exactly as frozen. **`DEFN-R6.4` cost the accepted prefix.** The
+torus region is a one-triangle-wide annular band (`V/E/F = 24/48/24`, χ_full = **0**) that the reduced form opens
+into a disc by dropping its single interior barrier edge — which is what the trace along it does. Against the
+mechanical region's **+4**, the torus discrepancy is **−1**: **opposite signs, so neither formula is correct on
+both fixtures.**
 
-Current valid semantic runtime remains **TB37: 402 PASS / 7 RED, accepted 365/365**, until TB38-REV adjudicates the
-new evidence. Stable accounting remains **45 events / 14 categories / 31 recurrences**, debt **5**; packages **103**.
+**The real defect is older.** `faceCount` counts whole faces even where a trace splits one, while `V_int`'s
+`allOwned` exclusion only means anything for split faces — **the certificate has never counted one object**, and
+the traced/split reading has never been computed. **DEFN-R6.4 is withdrawn; DEFN-R6.3 is the live question.**
 
-### Exact next — independent TB38-REV
+**DEFN-R6.7's safeguard discharged vacuously** — zero `euler_certificate` rows, because the emission sits behind
+`DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`, and the verifier passed over the empty table.
 
-- [ ] consume TB38 result/log artifacts without new runtime;
-- [ ] adjudicate accepted regressions 356/357/362 and protected regressions 390/393/406/407;
-- [ ] adjudicate the missing R6.7 evidence-emission surface; do not call zero rows a passing proof;
-- [ ] classify 366/367 movement and preserve exact owners for unchanged 368/369/370/374/398;
-- [ ] decide stable event/category/recurrence accounting from evidence;
-- [ ] update ORIENTATION and perform required durable consolidation/cleanup for the review turn;
-- [ ] freeze the justified successor and stop/route according to the review verdict.
+Stable accounting is now **46 events / 14 categories / 32 recurrences** — **one new event** — debt **5**, packages
+**103** (a build fact only). CP4c-3 remains **OPEN**.
 
-**Boundary:** no compile, new runtime, benchmark, or product/test/fixture/selector semantic mutation before independent
-review. The implementation loop stops completely at this boundary.
+### Exact next turn
+
+Run **`M3-CP4c-3-CB44`**, a runtime-free **Code + Build** turn under **DA7.1–DA7.7**. **Restore first, measure
+second, decide nothing:**
+
+- [ ] **DA7.1** revert `certificate.eulerCharacteristic` to the reduced form — and revert nothing else;
+- [ ] **DA7.2** keep every diagnostic CB43 added; only the criterion reverts;
+- [ ] **DA7.3** **ungate the `euler_certificate` emission and publish its row count**; any verifier over it must
+      **fail on zero rows**;
+- [ ] **DA7.4** measure the **third complex** per region — trace-cut faces, split fragment count,
+      `fragmentCorners` attribution, interior barrier edges by owned sides. Publish, do not certify;
+- [ ] **DA7.5** publish `fullMinusReduced` on **every** region;
+- [ ] **DA7.6** accepted back to **365/365**, 390/393/406/407 back to PASS, 312/409 byte-identical, selector409
+      byte-frozen;
+- [ ] **DA7.7** hand off to `M3-CP4c-3-TB39`; `DEFN-R7` decides only with rows from **both** fixtures.
+
+**Must not:** choose a counted complex in CB44; correct region construction; change ownership or `fragmentCorners`;
+weaken `proves_disc_topology()` or the `regionFrontierComponentCount` assertion; edit any accepted identity or
+selector byte. **Accepted prefix 365/365 is a stop condition, and a verifier that passes on zero rows is a failed
+turn.**
 
 ## Carried forward from M1
 
@@ -137,4 +148,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **45 events / 14 categories / 31 recurrences**; produced-witness debt remains **5**. Authoritative M3 package count is **103**. **`M3-CP4c-3-TB37` remains the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409** pending review. TB38 raw EXEC is 395/14, accepted 362/365; exact next is independent `M3-CP4c-3-TB38-REV`. PR #8 remains open, draft, and unmerged.
+Current totals are now **46 events / 14 categories / 32 recurrences** — TB38 lost accepted green; produced-witness debt remains **5**. Authoritative M3 package count is **103**. **`M3-CP4c-3-TB37` remains the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**; TB38 is not promoted. Exact next is runtime-free `M3-CP4c-3-CB44` under DA7.1–DA7.7. PR #8 remains open, draft, and unmerged.
