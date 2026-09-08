@@ -1,7 +1,0 @@
-{
-  "turn": "M3-CP4c-3-DEFN-R7",
-  "purpose": "Apply verified DEFN-R7 documentation and successor-plan patch from Google Drive",
-  "caller_install_sha": "09d9bc6b4b992d9be7383ae13e8430664c28340f",
-  "patch_sha256": "e6dfe37d9b4f4f7f1c8aff3a296683e024903120430375b3ddd81e0b93f53e6f",
-  "retry": 0
-}
