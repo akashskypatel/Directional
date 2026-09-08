@@ -1,7 +1,0 @@
-{
-  "turn": "M3-CP4c-3-TB39-EXEC-CLOSEOUT",
-  "purpose": "apply-durable-closeout-docs",
-  "patch_file_id": "1xvCuALNWZY7FRGX3mEqKkWajFVHSkX8J",
-  "patch_sha256": "03631405f09336a8816836125ea00af2077370c2f472283af9ce090794eff8c1",
-  "base_sha": "b56c742db960070b73aecb0e651520fd53cb43e3"
-}
