@@ -1,0 +1,4 @@
+.agents/connector-triggers/m3-cp4c3-tb39-closeout/trigger.json
+.agents/connector-triggers/m3-cp4c3-tb39-exec/trigger.json
+.agents/connector-triggers/m3-cp4c3-tb39-exec/verifier.py
+.agents/connector-triggers/source-snapshot/tb39-b56c742d.json
