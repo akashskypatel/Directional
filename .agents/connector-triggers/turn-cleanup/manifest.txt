@@ -1,0 +1,13 @@
+# M3-CP4c-3-CB48 temporary-file ledger
+# Workflow callers were retired workflow-first before this manifest:
+# .github/workflows/agent-source-snapshot-cb48-62a4bf49.yml
+# .github/workflows/agent-drive-apply-cb48.yml
+# .github/workflows/agent-compile-cb48.yml
+# .github/workflows/agent-drive-apply-cb48-closeout.yml
+# .github/workflows/agent-delete-accidental-cb48-branch.yml
+# Non-workflow temporary paths (already retired individually where applicable):
+.agents/connector-triggers/source-snapshot/cb48-62a4bf49-20260908.txt
+.agents/connector-triggers/drive-apply-cb48-20260908.txt
+.agents/connector-triggers/compile-cb48-20260908.txt
+.agents/connector-triggers/drive-apply-cb48-closeout-20260908.txt
+.agents/connector-triggers/delete-accidental-cb48-branch-20260908.txt
