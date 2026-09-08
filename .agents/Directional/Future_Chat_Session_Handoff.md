@@ -116,83 +116,78 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB45` — EXACT NEXT / Code + Build / NO RUNTIME
+## Mandatory next turn — `M3-CP4c-3-TB40-EXEC` — EXACT NEXT / Artifact-Only Test + Benchmark
 
-DEFN-R7 is **CLOSED / STATIC / ACTUAL-EMBEDDED FACE BINDING FROZEN**. No runtime, compile, package or stable
-repricing occurred in the definition turn.
+CB45 is **CLOSED / COMPILE-GREEN / RUNTIME-FREE**. It implemented DEFN-R7 Part XI / Part XI-A actual-embedded face
+binding and froze immutable package105. No Directional runtime, test execution, benchmark, discovery/list/help/version
+command, or artifact-only gate ran in CB45.
 
-### Current immutable authority
+### Current immutable authorities
 
-- semantic runtime authority: **TB39**, package104 source `8756cfe983bf7e05209f560d59a522a6b5b0674a`;
-- EXEC run/job `34177823202 / 101910682975`; result/log `10037931111 / 10037931384`;
+- semantic runtime authority remains **TB39**, package104 source
+  `8756cfe983bf7e05209f560d59a522a6b5b0674a`;
+- TB39 EXEC run/job `34177823202 / 101910682975`; result/log `10037931111 / 10037931384`;
 - selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
 - 312/409 and 390/393/404/406/407/408 PASS; ownership **300/0/0**; retired codes absent;
-- stable accounting **46 / 14 / 32**, debt **5**, packages **104**.
+- current immutable build authority is **CB45 package105**, source
+  `0f09439893182235c382492583b82aa35f25045c`;
+- package105 result artifact `10057456162` / `m3-cp4c3-cb45-result-34229976475`, ZIP SHA-256
+  `c9cd0397d22b7cc0c343838a90fdcfe649137fa37a985453778c04731049b99e`;
+- CB45 compile run/job `34229976475 / 102073447794`; persistent log artifact `10057456585`, ZIP SHA-256
+  `69c193b501dddfda1966106ec5c6ff5a3ca6e303e1598a9ea0030ef2660cb64f`;
+- packaged source archive SHA-256 `7d1cb457d1101e6addbadd732d783efdae956f61b9732b492c1b9063828a6472`;
+- stable accounting **46 / 14 / 32**, debt **5**, semantic packages **105**.
 
-### Part XI-A — read this before implementing the binding
+### What CB45 changed
 
-A verification pass upheld Part XI's decision and verified its structural claims from source (identical
-`build_embedded_graph_topology(...)` arguments at `GlobalTopologyPlan.cpp:2500–2502` and `SurfaceCutGraph.cpp:863`;
-shared `exterior_boundary_orbits(...)` at `:869`/`:866`; one face certificate per non-exterior orbit at `:883`
-against one region draft per non-exterior orbit at `GlobalTopologyPlan.cpp:986`). **The 1:1 binding is real.**
+`GlobalTopologyRegionDiscCertificate` now carries the exact matching upstream
+`SurfaceCutGraphFaceCertificate actualEmbeddedFace` plus separate field-regularity evidence. Region certification
+re-derives the current face-walk orbit from exact ordered boundary equality, requires unique upstream consumption,
+and the semantic digest consumes that authority. Checked candidates repeat the derivation after copy/mutation.
 
-But **the face certificate does not carry per-face evidence**, and Part XI describes it as though it does:
+`RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are no longer canonical A2b region-disc
+producers. Source-support connectivity/Euler/split/barrier values survive only as domain-explicit diagnostics.
+Part XI-A complex-level cellularity inputs are emitted once per complex; one independent binding row is emitted per
+region. Ordinal315 tampers a varying binding field.
 
-- `discTopologyEstablished` is the **same value on every non-exterior face** — `discEmbeddingEstablished`, computed
-  once at `SurfaceCutGraph.cpp:879` and stamped identically at `:883`. The binding is still sound, because that
-  conjunction is the standard cellularity criterion, which **is** the theorem that every non-exterior face is a
-  disc — but the authority is **complex-level**, not per-face.
-- `boundaryWalkCount` is the **literal `1U`**, so Part XI §2 item 6's `boundaryWalkCount == 1` conjunct **cannot
-  fail**. It is **withdrawn as evidence** and retained only as a structural assertion.
+The first CB45 compile failed only because one test diagnostic formatter still referenced removed certificate
+members. No runtime had started. A bounded formatter-only repair produced final semantic source
+`0f09439893182235c382492583b82aa35f25045c`; the retry compiled/package-green with GMP/GMPXX.
 
-**Three amendments to CB45:** publish the complex-level inputs (`graphComponents`, `sourceComponentCount`,
-`exterior.size()`, `boundaryLoops`, `graphEuler`, `sourceEuler`) **once per complex** rather than one bit per
-region; make ordinal 315's tamper target a field that **varies** (`orbit` or `boundaryArcCount`); and treat a
-census whose every row carries the same value for the field under test as **not a measurement**. `LESSONS.md` 157.
+### Frozen TB40 contract
 
-### Frozen definition authority
+Read `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md` and execute **only** immutable package105
+through the byte-frozen artifact-only harness, one selector identity per fresh process. TB40 must:
 
-`M3_CP4c_Frozen_Definitions.md` **Part XI / DEFN-R7** supersedes Part X R6.3/R6.4 as region-disc authority.
+- verify package/source/harness/selector hashes and pre-runtime byte+mode census;
+- execute all 409 selector identities exactly once in ordinal order;
+- require accepted **365/365**, ordinals **312/409 PASS**, and **390/393/404/406/407/408 PASS**;
+- require ownership **300/0/0**, retired-code silence, and unchanged owners for 368/369/370/374/398;
+- require a non-empty 1:1 region/upstream-face binding census for every creditable A2b witness;
+- require exactly one complex-level cellularity row per complex with
+  `graphComponents/sourceComponentCount/exteriorSize/boundaryLoops/graphEuler/sourceEuler`;
+- establish that 366/367 are not rejected solely by retired region-disc proxy producers;
+- prove package/source/execution-view bytes and modes are unchanged after runtime.
 
-- A2a′ and A2b both call the same deterministic `build_embedded_graph_topology(...)` on the same
-  source/network/cut edges.
-- A2a′ publishes one `SurfaceCutGraphFaceCertificate` per non-exterior face-walk orbit.
-- A2b builds each region from one non-exterior orbit and `region_orbit()` re-derives the current binding by exact
-  ordered boundary equality.
-- `GlobalTopologyRegionDiscCertificate` becomes a binding/consumption certificate for the exact matching upstream
-  face certificate plus separate field-regularity evidence.
-- reduced/full/source-support connectivity/Euler/split/barrier values are diagnostics, not a second topology proof.
-- `RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are retired as canonical region-disc producers;
-  pinch/support proxies may not override A2a′.
-- `regionChiFull`, if retained, must be whole-source-face Euler or be renamed; reduced→full assignment is forbidden.
-- 312/409 remain copy/mutation falsifiers; 315 retargets the new binding; selector409 remains byte-frozen.
-
-### CB45 scope
-
-Read `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` and implement EA0–EA9 only. Expected production/test surfaces
-are `GlobalTopologyPlan.h/.cpp`, region failure diagnostics/projection if required for domain naming, and existing
-`FieldAlignedCurveNetworkTests.cpp` assertions. Region construction, cut selection/ownership, fragment ownership,
-selectors and separately owned 368/369/370/374/398 are prohibited.
-
-Compile/package only through `.github/workflows/agent-compile-reusable.yml` with mandatory GMP/GMPXX.
-**`runtimeExecution=false` is mandatory.** A successful CB45 freezes immutable artifact-only `M3-CP4c-3-TB40-EXEC`
-with accepted365/365 and a non-vacuous 1:1 region/upstream-face binding census. CB45 does not execute that gate.
+TB40 records raw artifact-only evidence. It does **not** configure, compile, relink, repair, mutate source/tests/
+fixtures/selectors/package bytes, or semantically promote/reprice its own result.
 
 ### Resume load order
 
-1. `M3_CP4c_Frozen_Definitions.md` Part XI — normative R7 contract.
-2. `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` — exact EA0–EA9 scope.
-3. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current runtime authority.
-4. `Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — current package104 build authority.
-5. `ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`.
-6. `DESIGN.md` §7.2 / Amendment 13 and `EmbeddedGraphTopology.*`.
-7. `LESSONS.md` 118/145/148/150/152/155/156 plus mandatory policies/start checklist; for this CB also
-   `GMP_COMPILE_POLICY.md`.
+1. `ORIENTATION.md` — read first.
+2. `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md` — exact execution contract.
+3. `Architecture_M3_CP4c3_CB45_Code_Build_Report.md` — immutable package105 authority.
+4. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current semantic runtime authority.
+5. `M3_CP4c_Frozen_Definitions.md` Part XI / Part XI-A — normative region-disc authority.
+6. `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `Required_Green_Selector_Manifest.md`, `LESSONS.md` 118/145/148/150/152/155/156/157.
+8. mandatory policies/start checklist.
 
 ### Hard boundary
 
-This is Code + Build. **No Directional runtime, test execution, benchmark, discovery/list/help/version command, or
-artifact-only gate is allowed in CB45.** Stop after compile/package and durable handoff to TB40.
+This next turn is artifact-only Test + Benchmark. **No configure, compile, relink, package repair, source/test/
+fixture/selector mutation, or gate weakening is allowed.** Execute only the immutable CB45 package/harness and
+stop after preserving TB40 raw evidence for independent review/adjudication.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -1,3 +1,40 @@
+## 2026-09-08 — `M3-CP4c-3-CB45`: actual-embedded face binding implemented and package105 compile-green
+
+Runtime-free Code + Build under DEFN-R7 Part XI / Part XI-A. CB45 implements the exact A2b
+region→face-walk-orbit→A2a′ `SurfaceCutGraphFaceCertificate` binding without changing region construction, cut
+selection/ownership, selector bytes, or separately owned 368/369/370/374/398 semantics.
+
+`GlobalTopologyRegionDiscCertificate` now consumes the exact upstream face certificate and delegates disc topology
+to it; field regularity stays separate. Checked candidate validation re-derives the current binding after mutation,
+the semantic digest consumes the bound face authority, and ordinal315 tampers a varying binding field. The retired
+source-support connectivity/Euler theorem was removed from canonical A2b rejection:
+`RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are no longer region-disc producers. Support
+arithmetic survives only as `RegionSupportProjectionDiagnostics`. Part XI-A complex-level cellularity inputs are
+emitted once per complex, with one independently derived binding row per region for TB40's non-vacuous census.
+
+Initial implementation commit `e03c29a42c4528013476292333a84c6af1d6aff4` applied the verified five-file source
+patch (`09f6c778f45874e555f9c5e60a917471bcfb9d970d515a4850152f6bd69bc78b`, diff body
+`731c76913dd2c5a0d54b87423fbc03c5587fe70915f5b48ad918d479565d167f`). First compile
+`34229136762 / 102070613610` was compile-only RED because one test diagnostic formatter still referenced four
+removed certificate members; **no Directional runtime started**. The bounded formatter-only repair produced final
+semantic source `0f09439893182235c382492583b82aa35f25045c`.
+
+Authoritative retry `34229976475 / 102073447794` is **compile-green** with mandatory GMP/GMPXX and
+`runtimeExecution=false`. Immutable package105 is artifact `10057456162` /
+`m3-cp4c3-cb45-result-34229976475`, ZIP SHA-256
+`c9cd0397d22b7cc0c343838a90fdcfe649137fa37a985453778c04731049b99e`; persistent log artifact
+`10057456585`, ZIP SHA-256 `69c193b501dddfda1966106ec5c6ff5a3ca6e303e1598a9ea0030ef2660cb64f`.
+Packaged source archive SHA-256 is `7d1cb457d1101e6addbadd732d783efdae956f61b9732b492c1b9063828a6472`.
+Selector409, selector408-prefix, and the artifact-only harness remain byte-identical at
+`eea6d8c2…`, `2a742ba9…`, and `aaadab35…`.
+
+**Accounting:** CB45 adds **one semantic package, zero runtime events, zero recurrences**. Stable totals remain
+**46 events / 14 categories / 32 recurrences**, debt **5**; packages advance **104 → 105**. TB39 package104 remains
+semantic runtime authority at **402 PASS / 7 RED**, accepted **365/365**.
+
+**Exact next:** artifact-only `M3-CP4c-3-TB40-EXEC` against immutable package105 under
+`Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`. CB45 does not execute that runtime gate.
+
 ## 2026-09-08 — `M3-CP4c-3-DEFN-R7` verification pass: Part XI upheld, Part XI-A corrects what its certificate proves
 
 Static verification of the delegated `M3-CP4c-3-TB39-REV` and `M3-CP4c-3-DEFN-R7` work. No runtime, no compile, no

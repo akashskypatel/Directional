@@ -26,31 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB45` (Code + Build, runtime-free) — IMPLEMENT ACTUAL-EMBEDDED FACE BINDING
+## Current focus — `M3-CP4c-3-TB40-EXEC` (artifact-only Test + Benchmark) — PROVE CB45 BINDING AT RUNTIME
 
-DEFN-R7 Part XI is frozen. The A2b region topology object is the exact non-exterior actual-embedded face-walk orbit
-already certified by A2a′. `GlobalTopologyRegionDiscCertificate` becomes a binding/consumption certificate for the
-matching `SurfaceCutGraphFaceCertificate`; reduced/full/source-support connectivity and Euler arithmetic are
-diagnostics, not a second disc-topology authority.
+CB45 is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. Immutable package105 is source
+`0f09439893182235c382492583b82aa35f25045c`, artifact `10057456162`, package ZIP SHA-256
+`c9cd0397d22b7cc0c343838a90fdcfe649137fa37a985453778c04731049b99e`. Selector409 and the artifact-only harness
+remain byte-frozen.
 
-Current semantic runtime remains TB39: package104 / selector409 **402 PASS / 7 RED**, accepted **365/365**, RED
-`[366,367,368,369,370,374,398]`; ownership **300/0/0**; stable accounting **46 / 14 / 32**, debt **5**, packages
-**104**.
+Current semantic runtime authority remains TB39: package104 / selector409 **402 PASS / 7 RED**, accepted
+**365/365**, RED `[366,367,368,369,370,374,398]`; ownership **300/0/0**. Stable accounting remains
+**46 / 14 / 32**, debt **5**; semantic package count is now **105**.
 
-**Exact next turn: `M3-CP4c-3-CB45`.** Runtime-free Code + Build must:
+**Exact next turn: `M3-CP4c-3-TB40-EXEC`.** Execute only immutable package105 under
+`Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`:
 
-- [ ] implement exact current region boundary → face-walk orbit → unique upstream face-certificate binding;
-- [ ] reshape the region disc certificate to consume that upstream proof and keep field regularity separate;
-- [ ] retire `RegionEulerCharacteristicNotOne`, `RegionInteriorDisconnected`, and pinch/source-support proxies as
-      independent disc-topology producers while preserving useful observations as diagnostics only;
-- [ ] preserve checked candidate re-derivation so copied/mutated 312/409 candidates cannot retain stale authority;
-- [ ] update semantic digest and existing test oracles 311/314/315/356/357/366 without changing selector identities;
-- [ ] repair/domain-name `regionChiFull` and every reduced/full/split/barrier diagnostic surface;
-- [ ] compile/package only through the mandatory reusable GMP/GMPXX workflow with `runtimeExecution=false`;
-- [ ] freeze artifact-only `M3-CP4c-3-TB40-EXEC` with accepted365/365 and a non-vacuous 1:1 binding census.
+- [ ] verify package/result/source/harness/selector hashes and pre-runtime byte+mode census;
+- [ ] execute selector409 once in ordinal order, one identity per fresh process, through the immutable harness;
+- [ ] require accepted **365/365**, ordinals **312/409 PASS**, and **390/393/404/406/407/408 PASS**;
+- [ ] require ownership **300/0/0**, retired-code silence, and unchanged owners for 368/369/370/374/398;
+- [ ] require a non-empty 1:1 region/upstream-face binding census for every creditable A2b witness;
+- [ ] require exactly one complex-level cellularity row per complex with the Part XI-A inputs;
+- [ ] verify 366/367 are not rejected solely by retired region-disc proxy producers;
+- [ ] prove package/source/execution-view bytes and modes are unchanged after runtime.
 
-**Must not:** execute Directional runtime in CB45; change region construction, SurfaceCutGraph cut selection/ownership,
-fragment ownership, selector bytes, or semantics owned by 368/369/370/374/398.
+**Must not:** configure, compile, relink, repair, mutate source/tests/fixtures/selectors/package bytes, or weaken a
+frozen identity in TB40. TB40 records raw artifact-only evidence; semantic promotion and repricing belong to its
+review/adjudication edge.
 
 ## Carried forward from M1
 
@@ -88,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB39` is the current valid semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. Exact next is runtime-free **`M3-CP4c-3-CB45`** under frozen DEFN-R7 Part XI.
+  CP4c-3 remains open. **`M3-CP4c-3-TB39` remains semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. CB45 package105 is compile-green and runtime-free; exact next is artifact-only **`M3-CP4c-3-TB40-EXEC`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -99,7 +100,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 region-disc authority:** source-face ownership remains **300 / 0 / 0**. TB39-REV established that the A2b topology region is the actual-embedded face-walk orbit already disc-certified by A2a′; the downstream reduced/full Euler certificate is a source-support projection over a different object. `DEFN-R7` has frozen the binding contract; `CB45` owns the bounded implementation before any runtime.
+- [ ] **CP4c-3 region-disc authority runtime proof:** source-face ownership remains **300 / 0 / 0**. DEFN-R7 froze the actual-embedded face binding and CB45 implemented/compiled it into package105 without runtime. TB40 now owns the non-vacuous runtime proof that every creditable A2b region consumes exactly one upstream A2a′ face certificate and that retired source-support proxies no longer own rejection.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -127,4 +128,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count **104**. `M3-CP4c-3-TB39` is semantic runtime authority at 402/7, accepted 365/365. Exact next is runtime-free **`M3-CP4c-3-CB45`** under `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` and Part XI. PR #8 remains open, draft, and unmerged.
+Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count is **105**. `M3-CP4c-3-TB39` remains semantic runtime authority at 402/7, accepted 365/365. Current immutable build authority is CB45 package105 source `0f09439893182235c382492583b82aa35f25045c`; exact next is artifact-only **`M3-CP4c-3-TB40-EXEC`** under `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`. PR #8 remains open, draft, and unmerged.

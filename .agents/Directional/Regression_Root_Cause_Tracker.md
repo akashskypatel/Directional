@@ -1,23 +1,48 @@
+## M3-CP4c3-CB45 — actual-embedded face binding implementation — **COMPILE-GREEN / RUNTIME PENDING TB40 / NON-STABLE**
+
+- **Runtime authority is unchanged.** TB39 remains package104 / selector409 **402/7**, accepted **365/365**; stable
+  totals remain **46 / 14 / 32**, debt **5**. CB45 adds immutable semantic package **105** without runtime.
+- **Build authority:** package105 source `0f09439893182235c382492583b82aa35f25045c`, result artifact
+  `10057456162`, package ZIP SHA-256
+  `c9cd0397d22b7cc0c343838a90fdcfe649137fa37a985453778c04731049b99e`; compile run/job
+  `34229976475 / 102073447794` is green with GMP/GMPXX and `runtimeExecution=false`.
+- **`M3-CP4c3-TB37-REV-CAND-01` — IMPLEMENTED / RUNTIME PENDING TB40 / RP-01.** The downstream region certificate
+  now carries the exact matching upstream `SurfaceCutGraphFaceCertificate`; checked candidates re-derive
+  boundary→orbit→face binding, and the semantic digest consumes that authority.
+- **Proxy theorem retired in source.** `RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are no
+  longer canonical A2b region-disc producers. Source-support connectivity/Euler/split/barrier values are
+  `RegionSupportProjectionDiagnostics`; field regularity remains separate.
+- **`M3-CP4c3-TB39-EXEC-CAND-01` — IMPLEMENTED / RUNTIME PENDING TB40 / NON-STABLE / RP-01.** The misleading
+  reduced→full certificate path is gone from disc authority; whole-source-face/reduced values survive only under
+  domain-explicit diagnostic names.
+- **Part XI-A evidence seam implemented:** one complex row emits `graphComponents`, `sourceComponentCount`,
+  `exteriorSize`, `boundaryLoops`, `graphEuler`, `sourceEuler`; per-region rows independently derive and uniquely
+  consume upstream orbits. Ordinal315 tampers a varying binding field.
+- **Exact successor:** artifact-only `M3-CP4c-3-TB40-EXEC` under
+  `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`; no configure/compile/repair/mutation is allowed.
+
+---
+
 ## M3-CP4c3-DEFN-R7 — actual-embedded face binding — **CURRENT DEFINITION / REVIEW AUTHORITY / NON-STABLE**
 
 - **No runtime / no repricing.** TB39 remains semantic runtime authority at package104 / selector409 **402/7**,
   accepted **365/365**; stable totals stay **46 / 14 / 32**, debt **5**, packages **104**.
-- **`M3-CP4c3-TB37-REV-CAND-01` — DEFINITION CLOSED / IMPLEMENTATION PENDING / RP-01.** Part XI freezes one exact
-  semantic object: A2b region boundary -> current face-walk orbit -> unique matching A2a′
+- **`M3-CP4c3-TB37-REV-CAND-01` — DEFINITION CLOSED / IMPLEMENTED IN CB45 / RUNTIME PENDING TB40 / RP-01.** Part XI
+  freezes one exact semantic object: A2b region boundary -> current face-walk orbit -> unique matching A2a′
   `SurfaceCutGraphFaceCertificate`. Source-support connectivity/Euler/split/barrier projections lose region-disc
-  authority. Runtime closure requires CB45 + TB40; this static turn creates no stable event.
+  authority. CB45 implements the contract; runtime closure now requires TB40.
 - **Structural proof of binding:** A2a′ and A2b both call `build_embedded_graph_topology(...)` on the same
   source/network/cut edges. A2a′ publishes one certificate per non-exterior orbit; A2b builds one region per
   non-exterior orbit; `region_orbit()` derives the current relation by exact ordered boundary equality.
 - **Proxy producers retired by definition:** `RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` may
   remain enum/history spellings but cannot be the canonical A2b disc theorem; pinch/source-support checks may not
   override the upstream certified face. Field regularity remains separate.
-- **`M3-CP4c3-TB39-EXEC-CAND-01` — FROZEN FOR CB45 / NON-STABLE / RP-01.** A full-labelled diagnostic must contain
-  whole-source-face `V_total-E_total+F` or be renamed. The reduced->full assignment is forbidden.
+- **`M3-CP4c3-TB39-EXEC-CAND-01` — IMPLEMENTED IN CB45 / RUNTIME PENDING TB40 / NON-STABLE / RP-01.** Full/reduced
+  source-support values are now domain-explicit diagnostics and no longer region-disc certificate authority.
 - **Tamper/gate controls:** 312/409 retain derived copy/mutation falsification; 315 retargets the new consumed face
   binding; 311/314/produced-witness proof helpers assert 1:1 upstream binding. Selector409 stays byte-frozen.
-- **Exact successor:** runtime-free `M3-CP4c-3-CB45` under Part XI and
-  `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md`; later TB40 owns semantic runtime classification.
+- **Exact successor:** artifact-only `M3-CP4c-3-TB40-EXEC` against immutable package105 under
+  `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`; TB40 owns raw runtime evidence.
 
 ---
 
@@ -6414,14 +6439,13 @@ the theorem that every non-exterior face is a disc - but the authority is **comp
 inputs once rather than one bit N times, and ordinal 315's tamper target must be a field that varies (`orbit` or
 `boundaryArcCount`). `LESSONS.md` 157.
 
-**Exact next: `M3-CP4c-3-CB45` - Code + Build, runtime-free, GMP/GMPXX linked**, under **EA0-EA9** of
-`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` **as amended by Part XI-A A.3**. Implement the binding seam,
-retire the source-support proxies as topology gates, keep them as domain-named diagnostics, and freeze the
-artifact-only `M3-CP4c-3-TB40-EXEC` gate.
+**CB45 implementation result:** package105 source `0f09439893182235c382492583b82aa35f25045c` implements the binding
+seam, retires source-support proxies as topology gates, keeps them as domain-named diagnostics, and freezes the
+artifact-only `M3-CP4c-3-TB40-EXEC` gate. **Exact next is TB40-EXEC** under the frozen artifact-only plan.
 
-**Falsification.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop conditions. 366/367 must stop
-being rejected by the retired proxy - if they remain at `RegionEulerCharacteristicNotOne`, the proxy still owns the
-gate and CB45 is incomplete. **Ordinal 356 must stay PASS even though whole-source-face chi is 0 on its torus
+**TB40 falsification.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop conditions. 366/367 must
+stop being rejected solely by the retired proxy - if they remain at `RegionEulerCharacteristicNotOne`, the proxy
+still owns the gate and CB45 is not runtime-proved. **Ordinal 356 must stay PASS even though whole-source-face chi is 0 on its torus
 region**; if it goes RED on that measurement the proxy was not actually retired. The later binding census must be
 non-empty, 1:1 per region, **and able to disagree with itself**. No CB45 diff may touch region construction, cut
 selection or source ownership.

@@ -1,16 +1,13 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-DEFN-R7`):** TB39 remains runtime authority —
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-CB45`):** TB39 remains semantic runtime authority —
 > package104, selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
-> DEFN-R7 Part XI now freezes the topology relation itself: A2a′ and A2b rebuild the same deterministic actual
-> embedded graph; each A2b region boundary is one non-exterior face-walk orbit and consumes that orbit's exact
-> `SurfaceCutGraphFaceCertificate`. Reduced/full/source-support connectivity/Euler/split/barrier values are
-> diagnostics, not a second disc theorem. **Part XI-A** (verification pass) upholds that decision — the shared
-> builder and shared exterior-orbit computation make the 1:1 correspondence real — but corrects what the face
-> certificate *proves*: `discTopologyEstablished` is a **single complex-level cellularity bit** stamped identically
-> onto every face (`SurfaceCutGraph.cpp:879`, `:883`) and `boundaryWalkCount` is the **literal `1U`**, so that
-> conjunct is withdrawn as evidence and the census must publish the complex-level inputs once instead of one bit N
-> times. Stable accounting remains **46 / 14 / 32**, debt **5**, packages **104**.
-> Exact next is runtime-free **`M3-CP4c-3-CB45`** to implement the binding; no R7 runtime exists yet.
-
+> **CB45 is complete / compile-green / runtime-free** and creates immutable package105 from source
+> `0f09439893182235c382492583b82aa35f25045c`, artifact `10057456162`. The Part XI actual-embedded face binding is
+> implemented: each downstream A2b region certificate consumes the unique matching A2a′
+> `SurfaceCutGraphFaceCertificate`, checked candidates re-derive the binding, and field regularity remains separate.
+> Source-support connectivity/Euler/split/barrier values are diagnostics only. Part XI-A complex-level cellularity
+> inputs are emitted once per complex for the later non-vacuous census.
+> Stable accounting remains **46 / 14 / 32**, debt **5**; semantic packages are **105**.
+> Exact next is artifact-only **`M3-CP4c-3-TB40-EXEC`** against package105; no CB45 runtime exists.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -42,15 +39,16 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-DEFN-R7`. Runtime authority is **TB39** (package104,
+**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-CB45`. Semantic runtime authority remains **TB39** (package104,
 source `8756cfe983bf7e05209f560d59a522a6b5b0674a`), selector **409**, **402 PASS / 7 RED**, accepted **365/365**.
-TB38 remains historical regression evidence; its one stable event remains counted.
+Current immutable build authority is CB45 package105, source `0f09439893182235c382492583b82aa35f25045c`, artifact
+`10057456162`. TB38 remains historical regression evidence; its one stable event remains counted.
 
 **Current definition resolution.** Part XI now freezes the exact producer/consumer relation: derive the current
 region's face-walk orbit from exact boundary equality, require the unique matching non-exterior A2a′ face
 certificate, and carry that exact certificate as the downstream disc-proof payload. Candidate validation must
 re-derive the relation after copy/mutation. Field regularity stays separate; source-support proxies are diagnostic.
-`CB45` owns implementation and TB40 owns runtime proof.
+CB45 has implemented and compiled the binding into package105; TB40 owns runtime proof.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -84,7 +82,7 @@ and the verifier reported success. Part X named the check and its identities but
 condition**. `LESSONS.md` 155.
 
 **Historical owner: `M3-CP4c-3-CB44`** under DA7.1–DA7.7 — restoration and measurement were discharged by TB39.
-**Current owner: `M3-CP4c-3-CB45`** — implement the Part XI actual-embedded face binding; TB40 then proves it at runtime.
+**Current owner: `M3-CP4c-3-TB40-EXEC`** — prove the implemented Part XI actual-embedded face binding at runtime from immutable package105.
 
 ## 1. What the project is
 
@@ -295,8 +293,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Region disc authority binding is DEFINED; implementation/runtime proof remain open.** —
-   `M3-CP4c3-TB37-REV-CAND-01`, **DEFINITION CLOSED / RP-01 / IMPLEMENTATION OWNER CB45**.
+1. **Region disc authority binding is IMPLEMENTED; runtime proof remains open.** —
+   `M3-CP4c3-TB37-REV-CAND-01`, **IMPLEMENTED IN CB45 / RP-01 / RUNTIME OWNER TB40**.
 
    - Part XI freezes the A2a′ face certificate as the sole disc-topology authority for the exact A2b face-walk
      orbit. Both stages use the same `build_embedded_graph_topology(...)`; `region_orbit()` re-derives the binding
@@ -307,7 +305,7 @@ features first, then threads them through source authority *and* atlas). Copy on
      a pinch/support proxy may not override A2a′.
    - 312/409 remain copy/mutation falsifiers; 315 retargets the consumed binding; later TB40 requires a non-vacuous
      1:1 region/upstream-face census.
-   - 366/367 remain RED in current TB39 only because CB45 has not implemented the definition yet.
+   - 366/367 remain RED in current TB39; package105 removes the retired proxy ownership statically, and TB40 must measure the later runtime frontier.
 
 2. **Frontier evidence still hangs off which failure code was raised.** Ordinals 390/393/406/407 all failed the
    frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
