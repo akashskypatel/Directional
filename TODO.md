@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-07 UTC
+Last updated: 2026-09-08 UTC
 
 ## Purpose
 
@@ -26,51 +26,28 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB44` (Code + Build, runtime-free) — RESTORE THE ACCEPTED PREFIX
+## Current focus — `M3-CP4c-3-TB39-REV` (independent Review + Plan, evidence-only) — ADJUDICATE PACKAGE104 RUNTIME
 
-`M3-CP4c-3-TB38-REV` adjudicated TB38 and **did not promote it: the accepted prefix broke.**
+`M3-CP4c-3-TB39-EXEC` is mechanically valid and raw-gate green on immutable package104:
 
-- **`M3-CP4c-3-TB37` remains current valid semantic runtime authority** — selector **409**, **402 PASS / 7 RED**,
-  accepted **365/365**, package102.
-- **TB38 (package103) is mechanically valid, semantically RED, NOT promoted** — **395 PASS / 14 RED**, accepted
-  **362/365**; accepted 356/357/362 and protected 390/393/406/407 regressed.
+- selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
+- 312/409 and protected 390/393/406/407 PASS; 404/408 preserved;
+- **513 nonempty `euler_certificate` rows**, zero missing fields, all five arithmetic relations true;
+- torus: `fullMinusReduced=-1`, `trace_cut_faces=0`, `split_fragments==F`, corners 0;
+- mechanical: `fullMinusReduced=+4`, `trace_cut_faces=36`, `split_fragments=288`, corners 86;
+- ownership 300/0/0, retired codes absent; no build or benchmark.
 
-**CB43 is not at fault** — it implemented Part X exactly as frozen. **`DEFN-R6.4` cost the accepted prefix.** The
-torus region is a one-triangle-wide annular band (`V/E/F = 24/48/24`, χ_full = **0**) that the reduced form opens
-into a disc by dropping its single interior barrier edge — which is what the trace along it does. Against the
-mechanical region's **+4**, the torus discrepancy is **−1**: **opposite signs, so neither formula is correct on
-both fixtures.**
+**Exact next turn: `M3-CP4c-3-TB39-REV`.** Evidence-only independent review must:
 
-**The real defect is older.** `faceCount` counts whole faces even where a trace splits one, while `V_int`'s
-`allOwned` exclusion only means anything for split faces — **the certificate has never counted one object**, and
-the traced/split reading has never been computed. **DEFN-R6.4 is withdrawn; DEFN-R6.3 is the live question.**
+- [ ] decide whether TB39 supersedes TB37 as semantic runtime authority and adjudicate TB38 recovery;
+- [ ] adjudicate `TB38-EXEC-CAND-01` and `TB38-EXEC-CAND-02` from the non-vacuous TB39 evidence;
+- [ ] adjudicate `M3-CP4c3-TB39-EXEC-CAND-01`: `regionChiFull=-3` in 366/367 error payload versus emitted full `+1`;
+- [ ] interpret both fixtures' third-complex measurements without choosing a formula from one witness;
+- [ ] decide whether the evidence is sufficient for a later `DEFN-R7`, and freeze the exact successor;
+- [ ] update `ORIENTATION.md` and perform mandatory REVIEW document consolidation before close.
 
-**DEFN-R6.7's safeguard discharged vacuously** — zero `euler_certificate` rows, because the emission sits behind
-`DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`, and the verifier passed over the empty table.
-
-Stable accounting is now **46 events / 14 categories / 32 recurrences** — **one new event** — debt **5**, packages
-**103** (a build fact only). CP4c-3 remains **OPEN**.
-
-### Exact next turn
-
-Run **`M3-CP4c-3-CB44`**, a runtime-free **Code + Build** turn under **DA7.1–DA7.7**. **Restore first, measure
-second, decide nothing:**
-
-- [ ] **DA7.1** revert `certificate.eulerCharacteristic` to the reduced form — and revert nothing else;
-- [ ] **DA7.2** keep every diagnostic CB43 added; only the criterion reverts;
-- [ ] **DA7.3** **ungate the `euler_certificate` emission and publish its row count**; any verifier over it must
-      **fail on zero rows**;
-- [ ] **DA7.4** measure the **third complex** per region — trace-cut faces, split fragment count,
-      `fragmentCorners` attribution, interior barrier edges by owned sides. Publish, do not certify;
-- [ ] **DA7.5** publish `fullMinusReduced` on **every** region;
-- [ ] **DA7.6** accepted back to **365/365**, 390/393/406/407 back to PASS, 312/409 byte-identical, selector409
-      byte-frozen;
-- [ ] **DA7.7** hand off to `M3-CP4c-3-TB39`; `DEFN-R7` decides only with rows from **both** fixtures.
-
-**Must not:** choose a counted complex in CB44; correct region construction; change ownership or `fragmentCorners`;
-weaken `proves_disc_topology()` or the `regionFrontierComponentCount` assertion; edit any accepted identity or
-selector byte. **Accepted prefix 365/365 is a stop condition, and a verifier that passes on zero rows is a failed
-turn.**
+**Must not:** execute new runtime, compile, patch product/test/fixture/selector semantics, or make a counted-complex
+implementation change before the review adjudicates the evidence.
 
 ## Carried forward from M1
 
@@ -108,7 +85,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB37` remains the current valid semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 on selector409, pending TB38 independent review. TB38 raw EXEC on package103 is 395/14 with accepted 362/365 and newly RED 356/357/362/390/393/406/407; exact next is **`M3-CP4c-3-TB38-REV`**.
+  CP4c-3 remains open. **`M3-CP4c-3-TB37` remains the current valid semantic runtime authority** pending TB39 independent review. TB39 raw EXEC on package104 restores **402 PASS / 7 RED**, accepted 365/365 with RED `[366,367,368,369,370,374,398]`; exact next is **`M3-CP4c-3-TB39-REV`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -148,4 +125,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are now **46 events / 14 categories / 32 recurrences** — TB38 lost accepted green; produced-witness debt remains **5**. Authoritative M3 package count is **103**. **`M3-CP4c-3-TB37` remains the current valid semantic runtime authority at 402 PASS / 7 RED, accepted 365/365 on selector 409**; TB38 is not promoted. Exact next is runtime-free `M3-CP4c-3-CB44` under DA7.1–DA7.7. PR #8 remains open, draft, and unmerged.
+Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count **104**. `M3-CP4c-3-TB37` remains semantic runtime authority until independent review; TB39 raw EXEC exactly restores its 402/7 colour vector and accepted 365/365 with 513 non-vacuous certificate rows. Exact next is evidence-only **`M3-CP4c-3-TB39-REV`**. PR #8 remains open, draft, and unmerged.

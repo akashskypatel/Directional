@@ -116,76 +116,50 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB39-EXEC` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB39-REV` — EXACT NEXT / independent Review + Plan / NO RUNTIME
 
-CB44 is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**.
+TB39-EXEC is **MECHANICALLY VALID / RAW RESTORATION GATE GREEN / REVIEW PENDING**.
 
-### Current authority
+### Immutable runtime evidence
 
-- **Current valid semantic runtime authority:** `M3-CP4c-3-TB37`, selector409, **402 PASS / 7 RED**, accepted
-  **365/365**, RED `[366,367,368,369,370,374,398]`.
-- **TB38:** mechanically valid, semantically RED, **NOT promoted**; 395 PASS / 14 RED, accepted 362/365.
-- **CB44 semantic source:** `8756cfe983bf7e05209f560d59a522a6b5b0674a`.
-- **Package104:** artifact `10036808934` / `m3-cp4c3-cb44-result-34174521296`, ZIP
-  `8944f1d16c1cab8884e7c39da236df7a3ec5846ae1fc085b8272440c8941b519`, source archive
-  `5ec4b65a576b081b91f2f487fce9eea9b2188f72bbc969ec124135e8d986cf20`.
-- **Compile run/job:** `34174521296 / 101901200478`, GMP/GMPXX, 28/28 checksums,
-  `runtimeExecution=false`, final source status clean.
-- Stable accounting remains **46 / 14 / 32**, debt **5**; package count is **104**.
+- package104 semantic source: `8756cfe983bf7e05209f560d59a522a6b5b0674a`;
+- EXEC run/job: `34177823202 / 101910682975`;
+- result artifact `10037931111`, SHA-256 `8b84cfec3b735d10511c4ca11c40d34180ed134122e885a4fd431e17d1b63b4f`;
+- log artifact `10037931384`, SHA-256 `4353665ba54dd8cff63904388195ff3f795a03b9d1937a8dd56fce5ffdcd3a09`;
+- selector409: **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
+- ledger SHA `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`, identical to TB37;
+- 312/409 and 390/393/404/406/407/408 PASS; zero selection mismatch/timeout;
+- 513 certificate rows, zero missing fields, every reduced/full relation true;
+- ownership 300/0/0; retired codes absent; package/source/execution censuses identical; no build/benchmark.
 
-### What CB44 changed
+`M3-CP4c-3-TB37` remains the current valid semantic runtime authority until this review decides promotion. Stable
+accounting remains **46 / 14 / 32**, debt **5**, packages **104**; EXEC repriced nothing.
 
-1. restored only `certificate.eulerCharacteristic = V_int - E_int + F`;
-2. retained CB43's total counts and reduced/full diagnostic equations;
-3. ungated canonical `euler_certificate` emission from `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`;
-4. added publication-only `trace_cut_faces`, `split_fragments`, `fragment_corner_attributions`,
-   `B_int_one_side`, and `B_int_both_sides`;
-5. left region construction, ownership, `fragmentCorners`, tests, fixtures, selectors, and reusable workflows
-   semantically unchanged;
-6. made **no decision** about the final counted complex.
+### Review questions
 
-The implementation changes exactly `src/geometry/GlobalTopologyPlan.cpp` (**66 insertions / 17 deletions**).
-Preserved code patch SHA-256: `aeae17b6c2b1a4ce5d5df07f20bad85624fe0ed453e72983a872f335fe75508f`.
+1. adjudicate TB39's raw recovery of TB38 accepted 356/357/362 and protected 390/393/406/407;
+2. adjudicate the formerly vacuous R6.7 proof now that 513 rows exist;
+3. interpret both decisive fixtures: torus `fullMinusReduced=-1`, `trace_cut_faces=0`, `split_fragments==F`, corners 0;
+   mechanical `fullMinusReduced=+4`, `trace_cut_faces=36`, `split_fragments=288`, corners 86;
+4. adjudicate new non-stable `M3-CP4c3-TB39-EXEC-CAND-01`: 366/367 error payload says `regionChiFull=-3` while
+   emitted `V_total-E_total+F` and `chiFull` are +1; static assignment ties the full-labelled field to the reduced criterion;
+5. preserve existing owners for 368/369/370/374/398 unless evidence requires reclassification;
+6. decide whether a later `DEFN-R7` has enough evidence, freeze exactly one successor, update `ORIENTATION.md`, and
+   perform mandatory REVIEW document consolidation.
 
-### Frozen package/test authority
+### Hard boundary
 
-- selector409: `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, 409 identities;
-- selector408 prefix: `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`;
-- harness: `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`;
-- test source: `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`.
-
-### TB39-EXEC boundary
-
-Read and execute `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` exactly.
-
-Required outcomes/evidence:
-
-- accepted 1–365 **365/365 PASS**;
-- 312/409 PASS and 390/393/406/407 PASS;
-- one fresh process per selector identity, accepted prefix first;
-- no configure/compile/relink/benchmark/package repair;
-- nonzero `euler_certificate_row_count`; zero rows or empty-table arithmetic PASS is failure;
-- row-by-row reduced/full arithmetic and `B_int == B_int_both_sides`;
-- all five new third-complex fields preserved for every emitted row;
-- direct torus/mechanical region rows;
-- separately owned 368/369/370/374/398 preserved without retry;
-- no counted-complex decision in EXEC.
-
-After raw evidence is durably preserved, **STOP at `M3-CP4c-3-TB39-REV`**. Independent review owns semantic
-classification, tracker repricing, and whether a `DEFN-R7` turn is required. Do not proceed to implementation from
-TB39-EXEC.
+This turn is review/evidence only. **Do not run runtime, compile, or patch product/test/fixture/selector semantics
+before adjudication.** The review may freeze a later CB/DEFN plan but must not execute it in the same turn.
 
 ### Resume load order
 
-`load_next`: Test + Benchmark EXEC guidance.
-
-1. `.agents/Directional/Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` — executable authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — immutable package/build evidence.
-3. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.6–§3.7.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — DA0–DA7 provenance.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — DEFN-R6.4 withdrawn; no replacement definition yet.
-6. `TODO.md`, `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `LESSONS.md` 122/144/155/156.
-7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md`.
+1. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — exact raw runtime evidence and digests.
+2. `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` — frozen obligations TB39 executed.
+3. `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — DA0–DA7 provenance and TB38 classifications.
+4. `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+5. `M3_CP4c_Frozen_Definitions.md` — withdrawn R6.4 and unresolved counted-complex question.
+6. `ORIENTATION.md`, `LESSONS.md` 122/144/155/156, and mandatory policies/start checklist.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

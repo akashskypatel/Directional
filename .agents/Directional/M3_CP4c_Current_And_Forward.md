@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-CB44` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB39-EXEC` closeout.
 
 ---
 
@@ -23,12 +23,14 @@ Last updated **2026-09-08** at `M3-CP4c-3-CB44` closeout.
 **TB38 remains mechanically valid, semantically RED, and NOT promoted.** Package103 / source
 `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run `34169783183`: 395 PASS / 14 RED, accepted 362/365.
 
-**CB44 is compile-green and runtime-free.** Semantic source `8756cfe983bf7e05209f560d59a522a6b5b0674a` restores the
-reduced Euler criterion and publishes non-vacuous diagnostic/third-complex evidence. Package104 artifact
-`10036808934` is the exact next runtime input. No TB result has yet been produced from it.
+**TB39-EXEC is mechanically valid and raw-gate green, but remains unadjudicated.** Package104 / source
+`8756cfe983bf7e05209f560d59a522a6b5b0674a`, run `34177823202`: **402 PASS / 7 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`. Its ledger SHA is byte-identical to TB37. It emits **513** complete certificate
+rows and all five frozen arithmetic relations hold on every row. `M3-CP4c-3-TB37` remains semantic runtime authority
+until TB39-REV decides promotion.
 
-Certified ownership last-runtime remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
-**46 events / 14 categories / 32 recurrences**, debt **5**; packages advance to **104** as a build fact.
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
+**46 events / 14 categories / 32 recurrences**, debt **5**; packages are **104**.
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -256,28 +258,24 @@ Part X's falsifier called this "a new frontier, not a regression of this one". O
 frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
 because the plan now stops where no frontier annotation is attached — a **DEFN-R4 pattern recurrence**.
 
-## 3.7 Exact next turn — `M3-CP4c-3-TB39-EXEC`
+## 3.7 Exact next turn — `M3-CP4c-3-TB39-REV`
 
-CB44 completed DA7.1–DA7.5 without runtime: the reduced criterion is restored, CB43 diagnostics remain, canonical
-`euler_certificate` emission is ungated, and the traced/split census is publication-only. Package104 is compile-green
-at semantic source `8756cfe983bf7e05209f560d59a522a6b5b0674a`.
+TB39 restores every frozen runtime control and supplies the non-vacuous data CB44 was built to expose. It does not
+itself promote authority or choose a counted complex.
 
-TB39-EXEC is artifact-only and must execute selector409 once from artifact `10036808934`:
+Raw evidence to adjudicate:
 
-- accepted 1–365 must be **365/365 PASS**;
-- 312/409 and protected 390/393/406/407 must PASS;
-- `euler_certificate_row_count > 0` is mandatory; no arithmetic verifier may pass on an empty table;
-- every row must verify the reduced/full equations plus `B_int == B_int_both_sides`;
-- every row must preserve `trace_cut_faces`, `split_fragments`, `fragment_corner_attributions`,
-  `B_int_one_side`, and `B_int_both_sides`;
-- torus and mechanical region rows must both be directly inspectable;
-- 368/369/370/374/398 remain separately owned and are not retried;
-- no benchmark, build, source mutation, validator weakening, region-construction change, or counted-complex decision.
+- exact TB37 colour vector: **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
+- 513 complete Euler rows, all reduced/full equations exact;
+- torus `fullMinusReduced=-1`, `trace_cut_faces=0`, `split_fragments==F`, corners 0;
+- mechanical `fullMinusReduced=+4`, `trace_cut_faces=36`, `split_fragments=288`, corners 86;
+- 366/367 still Euler RED, but their error payload's `regionChiFull=-3` conflicts with emitted full +1 because the
+  full-labelled failure field is assigned from restored reduced `certificate.eulerCharacteristic`;
+- carried 368/369/370/374/398 unchanged in ownership; ownership census 300/0/0; retired codes silent.
 
-The exact executable plan is `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md`.
-
-**TB39-EXEC must stop at `M3-CP4c-3-TB39-REV` after raw evidence preservation.** The independent review decides
-semantic promotion/repricing and whether `DEFN-R7` has enough non-vacuous evidence to choose a counted complex.
+**Independent TB39-REV is the exact next turn.** It decides promotion/repricing, the TB38 candidate dispositions,
+what the third-complex measurements actually establish, whether `DEFN-R7` is warranted, and the next bounded edge.
+It executes no runtime or implementation. REVIEW obligations include `ORIENTATION.md` update and document consolidation.
 
 ## 4. Open candidates
 
@@ -285,6 +283,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
+| `M3-CP4c3-TB39-EXEC-CAND-01` | **NEW / ACTIVE / DIAGNOSTIC CONTRACT / RP-01 / NON-STABLE** — 366/367 error payload labels the reduced value `-3` as `regionChiFull`, while the same run’s complete certificate row proves full `chiFull=+1`. Static source assigns the full-labelled field from the restored reduced criterion. No gate-colour loss; TB39-REV owns adjudication/correction. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **OWNED / STABLE** — root cause is **`DEFN-R6.4`**, not CB43, which implemented Part X exactly as frozen. One new stable event; accounting 46 / 14 / 32. Owner: `M3-CP4c-3-CB44` (restore), then `DEFN-R7` (decide). |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **OWNED / NON-STABLE** — the emission sits behind `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`, which accepted identities never set, so the verifier passed over an empty table. DEFN-R6.7 lacked a non-emptiness condition. Owner: `CB44` DA7.3. `LESSONS.md` 155. |
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |

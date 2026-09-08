@@ -1,3 +1,30 @@
+## M3-CP4c3-TB39-EXEC — package104 restoration runtime — **MECHANICALLY VALID / RAW GATE GREEN / REVIEW PENDING / NON-STABLE EXEC**
+
+- Run/job `34177823202 / 101910682975`, package104 artifact `10036808934`, source
+  `8756cfe983bf7e05209f560d59a522a6b5b0674a`, selector409. **402 PASS / 7 RED**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,398]`; 312/409 and 390/393/404/406/407/408 PASS. Zero selection mismatch/timeout;
+  package/source/execution censuses identical; no build or benchmark.
+- **TB38 raw recovery:** accepted 356/357/362 and protected 390/393/406/407 are green again. EXEC records recovery
+  only; `M3-CP4c3-TB38-EXEC-CAND-01` remains review-owned until TB39-REV adjudicates it.
+- **R6.7 evidence gap mechanically discharged:** 513 nonempty certificate rows, zero missing fields, all five
+  reduced/full equations true on every row. `M3-CP4c3-TB38-EXEC-CAND-02` records raw recovery only; review decides
+  closure.
+- **Third-complex evidence:** torus has `trace_cut_faces=0`, `split_fragments==F` on all rows and
+  `fragment_corner_attributions=0`; mechanical region has `trace_cut_faces=36`, `split_fragments=288`,
+  `fragment_corner_attributions=86`. Publication only; no formula selected.
+- **Carried RED:** 368/369/370/374/398 stay on their existing owners. 366/367 remain
+  `RegionEulerCharacteristicNotOne / RegionCertification`; ownership is 300/0/0; retired codes remain absent.
+- **`M3-CP4c3-TB39-EXEC-CAND-01` — NEW / ACTIVE / DIAGNOSTIC CONTRACT / RP-01 / NON-STABLE.** 366/367 error text
+  publishes `regionChiFull=-3`, while the emitted row independently proves `chiFull=1` from `136-385+250`.
+  Static cause is `failure.regionFullEulerCharacteristic = certificate.eulerCharacteristic` after CB44 restored
+  `certificate.eulerCharacteristic` to the reduced `-3`. This conflates reduced criterion authority with the field
+  explicitly named full Euler. No gate colour changes because of this diagnostic defect; corrective ownership is
+  deferred to TB39-REV.
+- **Accounting:** EXEC does not create/close/reprice stable events. Totals remain **46 / 14 / 32**, debt **5**,
+  packages **104**. TB37 remains semantic runtime authority until `M3-CP4c-3-TB39-REV`.
+
+---
+
 ## M3-CP4c3-CB44 — DA7 restoration + split census — **IMPLEMENTED / COMPILE-PROVED / RUNTIME PENDING / NON-STABLE TURN**
 
 - Semantic source `8756cfe983bf7e05209f560d59a522a6b5b0674a`; exactly one production file, 66 insertions / 17 deletions.

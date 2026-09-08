@@ -559,10 +559,14 @@ remains `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, sele
 `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`. CB44 restores only the reduced criterion,
 ungates the certificate rows, and adds publication-only traced/split measurements.
 
-**Exact successor:** `M3-CP4c-3-TB39-EXEC` on immutable package104. Required restoration is accepted **1–365 =
-365/365**, ordinals **312/409 PASS**, and protected **390/393/406/407 PASS**. The certificate table must be
-non-empty and row-arithmetic exact. TB39-EXEC authors no selector and makes no counted-complex decision; it stops at
-independent `M3-CP4c-3-TB39-REV`.
+**TB39-EXEC discharged that successor without changing selector bytes.** Run `34177823202` on immutable package104
+records **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; 312/409 and
+390/393/404/406/407/408 PASS, zero selection mismatch/timeout. Ledger SHA `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`
+is identical to TB37. The non-vacuous certificate table contains 513 complete rows and all frozen arithmetic
+relations pass. Selector409 remains byte-frozen.
+
+**Exact successor:** independent `M3-CP4c-3-TB39-REV`. EXEC does not promote TB39 or make a counted-complex
+decision; review owns the TB38 recovery, new diagnostic candidate, third-complex interpretation and next edge.
 
 ## Separate lineage — M1
 

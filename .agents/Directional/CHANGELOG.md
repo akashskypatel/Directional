@@ -1,3 +1,23 @@
+## 2026-09-08 — `M3-CP4c-3-TB39-EXEC`: package104 restores the frozen gate; 513 non-vacuous Euler rows
+
+Artifact-only Test + Benchmark. Run/job `34177823202 / 101910682975` on package104 source
+`8756cfe983bf7e05209f560d59a522a6b5b0674a` executes selector409 exactly once: **402 PASS / 7 RED**, accepted
+**365/365**, RED `[366,367,368,369,370,374,398]`, zero selection mismatch/timeout. 312/409 and
+390/393/404/406/407/408 PASS. This exactly restores TB37's ledger SHA `058c5460…`; TB38 is still not promoted and
+TB37 remains semantic authority until independent review.
+
+Certificate evidence is non-vacuous: **513 rows / 64 ordinals**, zero missing fields, and all five frozen equations
+hold on every row. Torus rows have `fullMinusReduced=-1`, `trace_cut_faces=0`, `split_fragments==F`, corners 0;
+mechanical has `fullMinusReduced=+4`, `trace_cut_faces=36`, `split_fragments=288`, corners 86. Ownership is 300/0/0;
+retired codes are absent. A new non-stable diagnostic candidate records 366/367's error payload mislabelling reduced
+`-3` as `regionChiFull` while the row correctly publishes full `+1`; static cause is the full-field assignment to the
+restored reduced `certificate.eulerCharacteristic`. No patch or definition decision occurs in EXEC.
+
+Result/log artifacts `10037931111 / 10037931384`, SHA-256
+`8b84cfec3b735d10511c4ca11c40d34180ed134122e885a4fd431e17d1b63b4f` /
+`4353665ba54dd8cff63904388195ff3f795a03b9d1937a8dd56fce5ffdcd3a09`. No build or benchmark. Stable accounting
+remains **46 / 14 / 32**, debt **5**, packages **104**. Exact next is independent `M3-CP4c-3-TB39-REV`.
+
 ## 2026-09-08 — `M3-CP4c-3-TB38-REV`: TB38 not promoted; DEFN-R6.4 cost the accepted prefix — one new stable event
 
 ## 2026-09-08 — `M3-CP4c-3-CB44`: accepted criterion restored; package104 compile-green
