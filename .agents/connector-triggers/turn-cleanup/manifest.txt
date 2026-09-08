@@ -1,0 +1,5 @@
+# M3-CP4c-3-CB46 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/cb46-20260908.txt
+.agents/connector-triggers/google-drive/cb46-20260908.txt
+.agents/connector-triggers/compile/cb46-20260908.txt
+.agents/connector-triggers/google-drive/cb46-closeout-20260908.txt
