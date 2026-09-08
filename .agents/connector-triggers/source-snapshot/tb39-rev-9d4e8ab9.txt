@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB39-REV
-purpose=obtain exact source/document snapshot for independent evidence-only review
-pre_marker_head=9d4e8ab933634e9b8e425c2d2e1f31345dbcfbf9
-read_mode=snapshot

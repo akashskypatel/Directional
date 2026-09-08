@@ -1,7 +1,0 @@
-{
-  "turn": "M3-CP4c-3-TB39-REV",
-  "purpose": "apply verified review closeout documentation patch from Google Drive",
-  "caller_install_sha": "e66272e28a2b7bee62391303d631b0d74a8b061c",
-  "patch_sha256": "9573694a7d9171a772793515bd3bb26e047c9abe3b8c29c04dcb4ab5d8a7d04a",
-  "base_sha": "7253a1b93fa4d09f74846850502e31020799ff0a"
-}
