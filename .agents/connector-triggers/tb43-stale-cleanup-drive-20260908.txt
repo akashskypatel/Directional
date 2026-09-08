@@ -1,0 +1,4 @@
+purpose=apply TB43 start-of-turn stale-evidence cleanup
+base_sha=f604b3e10fe2ddadc58e2942ee9ad041fc44257c
+file_id=10XTdExQHqmNLCpaqgUL_pkM4arnNjXVy
+retry=0
