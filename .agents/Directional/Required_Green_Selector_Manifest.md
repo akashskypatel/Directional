@@ -552,13 +552,17 @@ implementation. **TB38 is not promoted; `M3-CP4c-3-TB37` remains this selector's
 DEFN-R6.7's per-region proof also discharged over an **empty table**, because the certificate emission sits behind
 `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`.
 
-**Exact successor:** `M3-CP4c-3-CB44` under **DA7.1–DA7.7** of
-`Architecture_M3_CP4c3_TB38_Independent_Review_Record.md`. It authors no selector — **409 stays byte-frozen** —
-and ordinals **312** and **409** stay byte-identical. **Required outcome is a restoration:** accepted **1–365 back
-to 365/365** and ordinals **390/393/406/407 back to PASS**, by reverting the region Euler criterion to the reduced
-form **and nothing else**. CB44 must additionally **ungate** the `euler_certificate` emission and publish its row
-count — **a verifier that passes on zero rows is a failed turn.** 368/369/370/374/398 remain separately owned.
-**Accepted prefix 365/365 is a stop condition.**
+**CB44 discharged that Code + Build successor without authoring a selector.** Semantic source
+`8756cfe983bf7e05209f560d59a522a6b5b0674a` compiles green as package104 artifact `10036808934`. Selector409
+remains `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix remains
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, and test source remains
+`913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`. CB44 restores only the reduced criterion,
+ungates the certificate rows, and adds publication-only traced/split measurements.
+
+**Exact successor:** `M3-CP4c-3-TB39-EXEC` on immutable package104. Required restoration is accepted **1–365 =
+365/365**, ordinals **312/409 PASS**, and protected **390/393/406/407 PASS**. The certificate table must be
+non-empty and row-arithmetic exact. TB39-EXEC authors no selector and makes no counted-complex decision; it stops at
+independent `M3-CP4c-3-TB39-REV`.
 
 ## Separate lineage — M1
 

@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-TB38-REV` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-CB44` closeout.
 
 ---
 
@@ -20,14 +20,15 @@ Last updated **2026-09-08** at `M3-CP4c-3-TB38-REV` closeout.
 **accepted 1–365 = 365/365**, on CB42 package `10032277517` / source
 `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`.
 
-**`M3-CP4c-3-TB38` is mechanically valid, semantically RED, and NOT promoted.** Package 103 / source
-`2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run `34169783183`: **395 PASS / 14 RED**, **accepted 362/365**, RED
-`[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`. Accepted **356/357/362** and protected
-**390/393/406/407** regressed.
+**TB38 remains mechanically valid, semantically RED, and NOT promoted.** Package103 / source
+`2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run `34169783183`: 395 PASS / 14 RED, accepted 362/365.
 
-Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting is now
-**46 events / 14 categories / 32 recurrences** — **one new event**, the accepted-green loss — debt **5**, packages
-**103** (a build fact only).
+**CB44 is compile-green and runtime-free.** Semantic source `8756cfe983bf7e05209f560d59a522a6b5b0674a` restores the
+reduced Euler criterion and publishes non-vacuous diagnostic/third-complex evidence. Package104 artifact
+`10036808934` is the exact next runtime input. No TB result has yet been produced from it.
+
+Certified ownership last-runtime remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
+**46 events / 14 categories / 32 recurrences**, debt **5**; packages advance to **104** as a build fact.
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -255,37 +256,28 @@ Part X's falsifier called this "a new frontier, not a regression of this one". O
 frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
 because the plan now stops where no frontier annotation is attached — a **DEFN-R4 pattern recurrence**.
 
-## 3.7 Exact next turn — `M3-CP4c-3-CB44`
+## 3.7 Exact next turn — `M3-CP4c-3-TB39-EXEC`
 
-**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`. **Restore first, measure second, decide
-nothing.**
+CB44 completed DA7.1–DA7.5 without runtime: the reduced criterion is restored, CB43 diagnostics remain, canonical
+`euler_certificate` emission is ungated, and the traced/split census is publication-only. Package104 is compile-green
+at semantic source `8756cfe983bf7e05209f560d59a522a6b5b0674a`.
 
-- **DA7.1** — revert `certificate.eulerCharacteristic` to the reduced form. **A restoration to a known-wrong
-  formula**, done because the accepted baseline is the stop condition and the correct complex is not established.
-  Revert nothing else.
-- **DA7.2** — keep every diagnostic CB43 added: `totalVertexCount`, `totalEdgeCount`, the `euler_certificate`
-  record, the extended digest. Only the **criterion** reverts.
-- **DA7.3** — **ungate the emission and publish its row count.** Any verifier over that table must **fail on zero
-  rows**.
-- **DA7.4** — measure the **third complex**: per region, the trace-cut face count, the split fragment count, the
-  `fragmentCorners` corner attribution, and interior barrier edges separated by how many sides the region owns.
-  **Publish, do not certify.**
-- **DA7.5** — publish `fullMinusReduced` on **every** region, not only failing ones.
-- **DA7.6** — accepted must return to **365/365** and 390/393/406/407 to PASS; ordinals 312/409 byte-identical;
-  selector 409 byte-frozen; region construction unchanged.
-- **DA7.7** — `M3-CP4c-3-TB39` re-executes; `DEFN-R7` decides the counted complex **only with rows from both
-  fixtures in hand**.
+TB39-EXEC is artifact-only and must execute selector409 once from artifact `10036808934`:
 
-**Falsifiers, stated before the build.** Accepted **365/365** and 390/393/406/407 PASS, or the revert is incomplete
-and the turn halts. **The euler_certificate table must contain at least one row per certified region on every
-accepted fixture — zero rows, or a verifier that passes on zero, is a failed turn.** If 366/367 do not return to
-their TB37 surfaces, something other than the criterion changed. If the torus region's split fragment count equals
-its whole-face count, the split hypothesis is wrong for it. If `fullMinusReduced` is zero on every accepted region,
-the accepted corpus cannot discriminate the three complexes and DEFN-R7 needs a new fixture first.
+- accepted 1–365 must be **365/365 PASS**;
+- 312/409 and protected 390/393/406/407 must PASS;
+- `euler_certificate_row_count > 0` is mandatory; no arithmetic verifier may pass on an empty table;
+- every row must verify the reduced/full equations plus `B_int == B_int_both_sides`;
+- every row must preserve `trace_cut_faces`, `split_fragments`, `fragment_corner_attributions`,
+  `B_int_one_side`, and `B_int_both_sides`;
+- torus and mechanical region rows must both be directly inspectable;
+- 368/369/370/374/398 remain separately owned and are not retried;
+- no benchmark, build, source mutation, validator weakening, region-construction change, or counted-complex decision.
 
-**Must not:** choose a counted complex in CB44; correct region construction; change ownership or `fragmentCorners`;
-weaken `proves_disc_topology()`, `sourceFacesConnected`, `boundaryWalkCount` or the `regionFrontierComponentCount`
-assertion; edit ordinals 312/409 or any accepted identity; change any selector byte.
+The exact executable plan is `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md`.
+
+**TB39-EXEC must stop at `M3-CP4c-3-TB39-REV` after raw evidence preservation.** The independent review decides
+semantic promotion/repricing and whether `DEFN-R7` has enough non-vacuous evidence to choose a counted complex.
 
 ## 4. Open candidates
 
@@ -418,17 +410,16 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, CB44 loads only the minimum authority:
+After the durable start-of-turn checklist, TB39-EXEC loads only the minimum authority:
 
 1. `ORIENTATION.md` — read first.
-2. **this file** — §3.6 (what broke and why) and §3.7 (the frozen measures).
-3. `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — **DA0–DA7**, the adjudication.
-4. `M3_CP4c_Frozen_Definitions.md` — **Part X's DEFN-R6.4 is withdrawn**; R6.1–R6.3 and R6.5–R6.7 stand, and
-   Part IX (amended by Part IX-A) governs boundary provenance.
-5. `Regression_Root_Cause_Tracker.md` — the TB38-REV section and the authoritative next step.
-6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (**122, 144, 155, 156** govern).
-7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
+2. `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` — executable next plan.
+3. `Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — exact immutable package/build evidence.
+4. **this file** — §3.6 for the defect and §3.7 for the frozen execution boundary.
+5. `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — DA0–DA7 provenance.
+6. `M3_CP4c_Frozen_Definitions.md` — DEFN-R6.4 is withdrawn; no replacement definition is authorized in EXEC.
+7. `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`,
+   `LESSONS.md` (**122, 144, 155, 156** govern).
+8. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md` — artifact-only mechanics.
 
-Exact next is **`M3-CP4c-3-CB44`** under **DA7.1–DA7.7**: **restore first, measure second, decide nothing.**
-**Accepted prefix must return to 365/365**, ordinals 390/393/406/407 to PASS, and the euler-certificate table must
-contain **at least one row per certified region** — a verifier that passes on zero rows is a failed turn.
+Exact next is **`M3-CP4c-3-TB39-EXEC`**, then hard stop at independent **`M3-CP4c-3-TB39-REV`**.

@@ -1,3 +1,22 @@
+## M3-CP4c3-CB44 — DA7 restoration + split census — **IMPLEMENTED / COMPILE-PROVED / RUNTIME PENDING / NON-STABLE TURN**
+
+- Semantic source `8756cfe983bf7e05209f560d59a522a6b5b0674a`; exactly one production file, 66 insertions / 17 deletions.
+  Restores reduced `eulerCharacteristic`; retains/ungates CB43 Euler rows; adds publication-only third-complex and
+  one-side/both-side barrier counts. Region construction, ownership, `fragmentCorners`, tests, fixtures, selectors,
+  and carried 368/369/370/374/398 surfaces are unchanged.
+- Compile/package run/job `34174521296 / 101901200478` success; package104 artifact `10036808934`, ZIP
+  `8944f1d16c1cab8884e7c39da236df7a3ec5846ae1fc085b8272440c8941b519`; 28/28 checksums; GMP/GMPXX;
+  `runtimeExecution=false`.
+- First caller attempt `34174442452` was control-plane-only `startup_failure` because the observer reusable's
+  skipped branch-file job required a `contents: write` caller ceiling. No job, build, runtime, or semantic source
+  mutation occurred; caller permission was corrected without changing reusable workflow permissions.
+- No runtime event/candidate/recurrence is opened, closed, merged, or repriced. Totals remain **46 / 14 / 32**,
+  debt **5**, packages **104**. `M3-CP4c-3-TB37` remains semantic runtime authority.
+- Exact successor: `M3-CP4c-3-TB39-EXEC`; nonzero certificate rows and accepted 365/365 are hard gates. Then stop
+  at independent `M3-CP4c-3-TB39-REV`.
+
+---
+
 ## M3-CP4c3-TB38-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STABLE — ONE NEW EVENT / ACCEPTED PREFIX BROKEN / TB38 NOT PROMOTED**
 
 - **Record:** `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md`, measures **DA0–DA7**. Evidence-only.

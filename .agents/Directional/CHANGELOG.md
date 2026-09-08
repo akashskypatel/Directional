@@ -1,5 +1,23 @@
 ## 2026-09-08 — `M3-CP4c-3-TB38-REV`: TB38 not promoted; DEFN-R6.4 cost the accepted prefix — one new stable event
 
+## 2026-09-08 — `M3-CP4c-3-CB44`: accepted criterion restored; package104 compile-green
+
+Code + Build, runtime-free. Semantic source `8756cfe983bf7e05209f560d59a522a6b5b0674a` changes only
+`src/geometry/GlobalTopologyPlan.cpp` (**66 insertions / 17 deletions**): restores the reduced Euler criterion,
+retains CB43 reduced/full diagnostics, ungates canonical `euler_certificate` emission, and adds publication-only
+third-complex fields (`trace_cut_faces`, `split_fragments`, `fragment_corner_attributions`, `B_int_one_side`,
+`B_int_both_sides`). No counted-complex decision, region-construction/ownership/`fragmentCorners` semantic change,
+or test/fixture/selector edit.
+
+Compile run/job `34174521296 / 101901200478` succeeded with GMP/GMPXX and `runtimeExecution=false`. Package104
+artifact `10036808934` (`m3-cp4c3-cb44-result-34174521296`), ZIP
+`8944f1d16c1cab8884e7c39da236df7a3ec5846ae1fc085b8272440c8941b519`, source archive
+`5ec4b65a576b081b91f2f487fce9eea9b2188f72bbc969ec124135e8d986cf20`, checksums **28/28 PASS**. Selector409,
+selector408 prefix, harness, and test source remain byte-frozen. Stable runtime authority remains TB37; accounting
+stays **46 / 14 / 32**, debt **5**, packages **104**. Exact next is artifact-only `M3-CP4c-3-TB39-EXEC`, then
+mandatory independent `TB39-REV`.
+
+
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
 build/selector mutation. `review_check.py authority 2fcde465b1de2e42a348d224f5165ce8b87e4fbe` passed.
 

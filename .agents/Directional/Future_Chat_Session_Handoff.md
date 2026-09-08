@@ -116,107 +116,76 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB44` — EXACT NEXT / Code + Build, runtime-free — RESTORE FIRST
+## Mandatory next turn — `M3-CP4c-3-TB39-EXEC` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-3-TB38-REV` adjudicated TB38. **It did not promote it: TB38 broke the accepted prefix.**
+CB44 is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**.
 
 ### Current authority
 
-- **`M3-CP4c-3-TB37` remains the current valid semantic runtime authority** — selector **409**,
-  **402 PASS / 7 RED**, accepted **365/365**, CB42 package `10032277517` / source
-  `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`.
-- **`M3-CP4c-3-TB38` is mechanically valid, semantically RED, NOT promoted** — package 103 / source
-  `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run `34169783183`: **395 PASS / 14 RED**, **accepted 362/365**.
-- Certified ownership **300 / 0 / 0**; ordinals 312, 404, 408, 409 PASS.
-- **Stable accounting 46 events / 14 categories / 32 recurrences — ONE NEW EVENT** — debt **5**, packages **103**
-  (a build fact only).
-- Definition authority: **Part X's DEFN-R6.4 is WITHDRAWN**; R6.1–R6.3 and R6.5–R6.7 stand. Part IX, amended by
-  Part IX-A, governs boundary provenance.
+- **Current valid semantic runtime authority:** `M3-CP4c-3-TB37`, selector409, **402 PASS / 7 RED**, accepted
+  **365/365**, RED `[366,367,368,369,370,374,398]`.
+- **TB38:** mechanically valid, semantically RED, **NOT promoted**; 395 PASS / 14 RED, accepted 362/365.
+- **CB44 semantic source:** `8756cfe983bf7e05209f560d59a522a6b5b0674a`.
+- **Package104:** artifact `10036808934` / `m3-cp4c3-cb44-result-34174521296`, ZIP
+  `8944f1d16c1cab8884e7c39da236df7a3ec5846ae1fc085b8272440c8941b519`, source archive
+  `5ec4b65a576b081b91f2f487fce9eea9b2188f72bbc969ec124135e8d986cf20`.
+- **Compile run/job:** `34174521296 / 101901200478`, GMP/GMPXX, 28/28 checksums,
+  `runtimeExecution=false`, final source status clean.
+- Stable accounting remains **46 / 14 / 32**, debt **5**; package count is **104**.
 
-### What TB38 established
+### What CB44 changed
 
-**CB43 is not at fault.** It implemented Part X exactly as frozen — hoisted the sub-mesh accumulation, added the
-total fields, computed χ from them, deleted **both** premise comments, did not repurpose `vertexCount`/`edgeCount`,
-did not touch region construction, extended the semantic digest. **`DEFN-R6.4` cost the accepted prefix.**
+1. restored only `certificate.eulerCharacteristic = V_int - E_int + F`;
+2. retained CB43's total counts and reduced/full diagnostic equations;
+3. ungated canonical `euler_certificate` emission from `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`;
+4. added publication-only `trace_cut_faces`, `split_fragments`, `fragment_corner_attributions`,
+   `B_int_one_side`, and `B_int_both_sides`;
+5. left region construction, ownership, `fragmentCorners`, tests, fixtures, selectors, and reusable workflows
+   semantically unchanged;
+6. made **no decision** about the final counted complex.
 
-```text
-torus region (356/357/362/367):  X=24  E_one=24  B_int=1
-    V_total/E_total/F = 24/48/24   → chiFull    = 0
-    V_int  /E_int  /F =  0/23/24   → chiReduced = 1
-mechanical region (TB37):        X=36  E_one=20  B_int=12  → chiReduced −3, chiFull 1
-```
+The implementation changes exactly `src/geometry/GlobalTopologyPlan.cpp` (**66 insertions / 17 deletions**).
+Preserved code patch SHA-256: `aeae17b6c2b1a4ce5d5df07f20bad85624fe0ed453e72983a872f335fe75508f`.
 
-`X − E_one − B_int` is **+4** on the mechanical region and **−1** on the torus. **Opposite signs: neither formula
-is correct on both fixtures**, and DEFN-R6 had one fixture's numbers. `LESSONS.md` 156.
+### Frozen package/test authority
 
-**Why reduced wins on the torus.** That region is 24 triangles, 24 vertices, 48 edges, 24 boundary edges, **zero
-interior vertices** — a one-triangle-wide closed band, χ = 0, an annulus. It has exactly **one** interior barrier
-edge; the reduced form drops it, raising χ by 1 and opening the annulus into a disc. **That is what the trace along
-that edge does.**
+- selector409: `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, 409 identities;
+- selector408 prefix: `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`;
+- harness: `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`;
+- test source: `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`.
 
-**The real defect is older than Part X.** `faceCount` counts **whole faces** even where a trace splits one, while
-`V_int`'s `allOwned` exclusion only has meaning for **split** faces. **The certificate has never counted one
-object**, and the traced/split reading — the one `fragmentCorners` was built for — **has never been computed**.
-`DEFN-R6.3` is the live question.
+### TB39-EXEC boundary
 
-**The safeguard failed vacuously.** DEFN-R6.7 produced **zero rows**: the `euler_certificate` emission sits behind
-`DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` (`GlobalTopologyPlan.cpp:86–89`, `:2460–2462`), which accepted
-identities never set, and the verifier reported success over the empty table. **Part X named the check and its
-identities but never a non-emptiness condition.** `LESSONS.md` 155.
+Read and execute `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` exactly.
 
-**Ordinal 366 is the predicted advance, not a regression** — the mechanical region passed χ and certification
-reached a stage never previously executed. Ordinals 390/393/406/407 fail the frozen
-`regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely because
-the plan stops where no frontier annotation is attached — a **DEFN-R4 pattern recurrence**.
+Required outcomes/evidence:
 
-### CB44 boundary — DA7.1–DA7.7
+- accepted 1–365 **365/365 PASS**;
+- 312/409 PASS and 390/393/406/407 PASS;
+- one fresh process per selector identity, accepted prefix first;
+- no configure/compile/relink/benchmark/package repair;
+- nonzero `euler_certificate_row_count`; zero rows or empty-table arithmetic PASS is failure;
+- row-by-row reduced/full arithmetic and `B_int == B_int_both_sides`;
+- all five new third-complex fields preserved for every emitted row;
+- direct torus/mechanical region rows;
+- separately owned 368/369/370/374/398 preserved without retry;
+- no counted-complex decision in EXEC.
 
-**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`. **Restore first, measure second, decide
-nothing.**
+After raw evidence is durably preserved, **STOP at `M3-CP4c-3-TB39-REV`**. Independent review owns semantic
+classification, tracker repricing, and whether a `DEFN-R7` turn is required. Do not proceed to implementation from
+TB39-EXEC.
 
-- **DA7.1** — revert `certificate.eulerCharacteristic` to the reduced form `V_int − E_int + F`. **A restoration to
-  a known-wrong formula**, done because the accepted baseline is the stop condition and the correct complex is not
-  established. **Revert nothing else.**
-- **DA7.2** — keep every diagnostic CB43 added: `totalVertexCount`, `totalEdgeCount`, the `euler_certificate`
-  record, the extended digest. Only the **criterion** reverts.
-- **DA7.3** — **ungate the emission** so the accepted-fixture proof does not depend on
-  `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`, and **publish the row count**. Any verifier over that table must
-  **fail on zero rows**.
-- **DA7.4** — measure the **third complex**: per region, trace-cut face count, split fragment count,
-  `fragmentCorners` corner attribution, and interior barrier edges separated by how many sides the region owns.
-  **Publish, do not certify.**
-- **DA7.5** — publish `fullMinusReduced` on **every** region, not only failing ones.
-- **DA7.6** — accepted must return to **365/365** and 390/393/406/407 to PASS; ordinals **312/409**
-  byte-identical; selector **409** byte-frozen; region construction, ownership and `fragmentCorners` unchanged; no
-  work on 368/369/370/374/398.
-- **DA7.7** — `M3-CP4c-3-TB39` re-executes; `DEFN-R7` decides the counted complex **only with rows from both
-  fixtures in hand**.
+### Resume load order
 
-**Falsifiers, stated before the build.** Accepted **365/365** and 390/393/406/407 PASS, or the revert is incomplete
-and the turn halts. **The euler-certificate table must contain at least one row per certified region on every
-accepted fixture — zero rows, or a verifier that passes on zero, is a failed turn, not a passed one.** If 366/367
-do not return to their TB37 surfaces, something other than the criterion changed. If the torus region's split
-fragment count equals its whole-face count, the split hypothesis is wrong for it. If `fullMinusReduced` is zero on
-every accepted region, the accepted corpus cannot discriminate the three complexes and DEFN-R7 needs a new fixture
-first.
+`load_next`: Test + Benchmark EXEC guidance.
 
-**Must not:** choose a counted complex in CB44; correct region construction; change ownership or `fragmentCorners`;
-weaken `proves_disc_topology()`, `sourceFacesConnected`, `boundaryWalkCount` or the `regionFrontierComponentCount`
-assertion; edit ordinals 312/409 or any accepted identity 1–365; change any byte of selector 397–409; execute any
-Directional runtime in CB44.
-
-### Context Load Plan
-
-`load_next`: Code + Build guidance.
-
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.6 and §3.7.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — **DA0–DA7**.
-3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part X DEFN-R6.4 withdrawn**; the rest stands.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB38_EXEC_Report.md` — the regressed ledger.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB37_EXEC_Report.md` — **current runtime authority**.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-7. `.agents/Directional/LESSONS.md` — mandatory; **122, 144, 155, 156** govern this change.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` — executable authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — immutable package/build evidence.
+3. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.6–§3.7.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — DA0–DA7 provenance.
+5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — DEFN-R6.4 withdrawn; no replacement definition yet.
+6. `TODO.md`, `Required_Green_Selector_Manifest.md`, `Regression_Root_Cause_Tracker.md`, `LESSONS.md` 122/144/155/156.
+7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
