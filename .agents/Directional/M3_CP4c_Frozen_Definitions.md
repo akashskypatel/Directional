@@ -9,12 +9,13 @@ text of their definition turns.
 **Supersession.** Within each checkpoint the revisions supersede in order — `DEFN` → `DEFN-R1` → `DEFN-R2`. The
 earlier revisions are retained because `DESIGN.md` and the regression tracker cite the amendment lineage directly,
 and because an amendment's provenance is part of its authority. **The operative definitions for CP4c-2 are Part
-III; for CP4c-3 they are Part VI together with Parts VII, VIII, IX, X and XI, each superseding the earlier where
-they conflict. Part IX-A amends Part IX without overriding any of it; **Part X supersedes Part IX §5 (DEFN-R5.5)**
+III; for CP4c-3 they are Part VI together with Parts VII, VIII, IX, X, XI and XII, each superseding the earlier
+where they conflict. Part IX-A amends Part IX without overriding any of it; **Part X supersedes Part IX §5 (DEFN-R5.5)**
 while leaving every other Part IX clause in force; **Part XI supersedes Part X's DEFN-R6.3 and DEFN-R6.4 as region
 disc-topology authority** — Part X's measurements, domain findings and withdrawn-assumption record remain evidence
-— and **Part XI-A amends Part XI without overriding any of its decisions**, correcting what its face certificate
-proves.** Where an earlier part conflicts with a later revision of the same checkpoint,
+— **Part XI-A amends Part XI without overriding any of its decisions**, correcting what its face certificate
+proves; and **Part XII adds the census-domain authority** (`DEFN-R8`), which changes nothing in Part XI or XI-A and
+retires only the stage-name domain guard.** Where an earlier part conflicts with a later revision of the same checkpoint,
 the later revision governs.
 
 This file is normative authority, not history. History lives in `M3_CP4c_Consolidated_Record.md`; current state and
@@ -39,6 +40,7 @@ Citations written against the former filenames resolve here:
 | *(no prior file — authored in place)* | **Part X — M3-CP4c-3 DEFN-R6** |
 | *(no prior file — authored in place)* | **Part XI — M3-CP4c-3 DEFN-R7** |
 | *(no prior file — authored in place)* | **Part XI-A — DEFN-R7 evidentiary amendment** |
+| *(no prior file — authored in place)* | **Part XII — M3-CP4c-3 DEFN-R8** |
 
 Section numbering inside each part is unchanged, so a citation such as "`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". Full text of the originals also remains in git history.
 

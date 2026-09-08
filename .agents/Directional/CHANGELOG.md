@@ -1,3 +1,38 @@
+## 2026-09-08 — `M3-CP4c-3-DEFN-R8` verification pass: Part XII upheld; index and supersession repaired
+
+Static verification of the delegated `M3-CP4c-3-DEFN-R8`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **`M3-CP4c-3-TB42`**, package
+**107**, selector **409**, **398 PASS / 11 RED**, accepted **365/365**. Accounting unchanged: **47 / 14 / 33**.
+
+**Part XII is upheld and discharges ED7.1–ED7.7 in full.** Verified:
+
+- **R8.1** states the census domain normatively with the TB42 numbers (226 unlabelled faces, 9 components, 9 rows,
+  failing region 10 faces / 0 in partition), and adds a four-valued subject relation — `Inside` / `Outside` /
+  `Partial` / `Unresolved` — with `Unresolved` failing closed. That is stronger than ED7.1 asked for.
+- **R8.2** retires the `regionFrontierFailureStage == "UncutComponent"` comparison as a domain decision and states
+  the general rule, as ED7.3 required.
+- **R8.3** names the object a `RegionCertification` failure must publish and seeds it with the existing
+  `regionOwningFragmentOrbit`, as ED7.2 anticipated — and correctly requires the **complete owner-orbit set**, not
+  a count. **The justification checks out against the record**: the failing face reports `localFragmentCount=3`,
+  `ownerCount=3`, `expectedFragmentCount=3`, `ownerDeficit=0` while the expected region orbit is still missing, so
+  cardinality genuinely cannot adjudicate it.
+- **R8.4** restates each of the four identities around its own producer and imposes a **non-vacuity** obligation —
+  each owned predicate must reject a deliberately corrupted same-domain copy. That is `LESSONS.md` 155/157
+  discipline applied correctly, and **EE5's branch receipts** discharge `LESSONS.md` 160.
+- **R8.5** adjudicates the two-partitions question without unification: the domains are lawfully distinct and the
+  defect was **cross-domain substitution**. `M3-CP4c3-DEFN-R3-CAND-01` is correctly held separable.
+- The predicted TB43 vector (**402 PASS / 7 RED**, accepted 365/365, carried RED
+  `[366,367,368,369,370,374,398]`) is arithmetically consistent with recovering exactly 390/393/406/407, and is
+  correctly framed as a falsifier rather than permission to synthesize success.
+
+**Repaired.** Part XII had **no citation-map row** and the **Supersession** paragraph still ended the operative
+CP4c-3 set at Part XI — the same omission this session repaired for Part XI at the DEFN-R7 verification pass. A
+cold-start agent reads that paragraph to learn which parts are operative, so an unlisted Part is authority nobody
+is told to obey. Both are now corrected, and `LESSONS.md` **162** records that appending a Part is three edits, not
+one.
+
+**Exact next: `M3-CP4c-3-CB48`** — Code + Build, runtime-free, under **EE0–EE8**, unchanged.
+
 ## 2026-09-08 — `M3-CP4c-3-DEFN-R8`: Part XII freezes domain-owned census evidence; CB48 next
 
 Static Definition turn; no runtime, compile, package, selector mutation or stable repricing. TB42 remains semantic

@@ -2009,6 +2009,13 @@ building any conclusion on it.**
      hold. And when a census comes back empty, ask whether the failing object is even in its domain before asking
      why the lookup failed: lesson 159 says count the population, and this one adds - check that it is the right
      population.
+162. **A new normative part is not in force until the index and the supersession paragraph say so.** Two
+     consecutive definition turns appended a fully-formed Part to the frozen definitions and left the document's
+     own **Supersession** paragraph ending at the previous Part, with no citation-map row for the new one. Both
+     were caught only by a later verification pass. A cold-start agent reads that paragraph to learn which parts
+     are operative, so an unlisted Part is authority that nobody is told to obey. The boundary gate does not check
+     this, which is precisely why it must be a closeout step: **appending a Part is three edits - the body, the
+     citation map, and the supersession sentence - and the turn is not complete after the first.**
 
 ## 5. Cross-field, cycle, and orientation conventions
 
