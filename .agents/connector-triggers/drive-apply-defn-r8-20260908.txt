@@ -2,4 +2,4 @@ purpose=apply DEFN-R8 documentation patch from Google Drive
 semantic_base_sha=b664f13776b6cb79a6cd605936836e69d9fc471e
 patch_sha256=4518e2dc68009711d3ee7cdc9931013b4c0ae6a644bbce98579d5868b46183b8
 file_id=126h89roy2YIH3vjv5ND-Ofh_XvHI5RiB
-retry=0
+retry=1
