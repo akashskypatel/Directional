@@ -116,36 +116,97 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB40-REV` — EXACT NEXT / Independent Evidence-Only Review
+## Mandatory next turn — `M3-CP4c-3-CB46` — EXACT NEXT / Code + Build, runtime-free
 
-Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
+`M3-CP4c-3-TB40-REV` adjudicated TB40. **It did not promote it: the accepted prefix broke.**
 
-### Review-critical evidence
+### Current authority
 
-- Accepted 311/314/356/357 are RED. 356/357 each publish complete non-vacuous rows, but regions0/1 have derived orbits `0/1` against certificate orbits `1/0`; regions2/3 match. 311 independently observes an orbit/certificate mismatch; 314's `PublishedCertificate` proof fails.
-- 366/367 advance beyond retired `RegionEulerCharacteristicNotOne` / `RegionInteriorDisconnected` to `RegionSourceFaceOwningFragmentMissing / RegionCertification`, but remain RED.
-- Protected 390/393/406/407 regress at `regionFrontierComponentCount=0`; 404/408 remain PASS.
-- Carried 368/369/370/374/398 stay on their existing raw owner surfaces.
-- Result/log artifacts `10064213251` (`c165ce0dda2c0bb7742ea6f9a6fd2580932596448892f5bd76f6d585ea031012`) / `10064214144` (`990a8f5f41ed5bfd21d5c818fd94240d6e6082c9548fb3561061debf59fa779c`).
-- Stable accounting is not repriced by EXEC: **46 / 14 / 32**, debt **5**, packages **105**.
+- **`M3-CP4c-3-TB39` remains the current valid semantic runtime authority** — selector **409**,
+  **402 PASS / 7 RED**, accepted **365/365**, CB44 package `10036808934`.
+- **`M3-CP4c-3-TB40` is mechanically valid, semantically RED, NOT promoted** — package 105 / source
+  `0f09439893182235c382492583b82aa35f25045c`, run `34246144235`: **394 PASS / 15 RED**, accepted **361/365**.
+- Certified ownership **300 / 0 / 0**; ordinals 312, 315, 404, 408, 409 PASS.
+- **Stable accounting 47 events / 14 categories / 33 recurrences — ONE NEW EVENT** — debt **5**, packages **105**
+  (build fact only).
+- Definition authority: **Part XI, amended by Part XI-A.** The binding **stands**; only the oracles change.
 
-### Mandatory review scope
+### What TB40 established
 
-Read `Architecture_M3_CP4c3_TB40_EXEC_Report.md`, the frozen TB40 plan, CB45 package authority, TB39 runtime authority, and Part XI/XI-A definitions. Adjudicate `M3-CP4c3-TB40-EXEC-CAND-01` and `M3-CP4c3-TB40-EXEC-CAND-02`, classify product-vs-test-vs-definition ownership, decide stable accounting, and freeze one exact successor. **Do not rerun TB40, compile, repair package105, or mutate product/test/fixture/selector semantics before review.**
+**The binding is runtime confirmed.** The census on 356/357 publishes 4 regions against 4 face certificates,
+`upstreamMatchCount == 1` on every row, an injective map, matching boundary-arc counts,
+`discTopologyEstablished=true` and `fieldRegularity=true` throughout, and the complex row published once per
+Part XI-A §A.3 — **non-empty and non-uniform**, so R7.7 is discharged.
 
-### Resume load order
+**Only the orbit label disagrees**, on two rows that transpose:
 
-1. `ORIENTATION.md`.
-2. `Architecture_M3_CP4c3_TB40_EXEC_Report.md`.
-3. `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`.
-4. `Architecture_M3_CP4c3_CB45_Code_Build_Report.md`.
-5. `Architecture_M3_CP4c3_TB39_EXEC_Report.md`.
-6. `M3_CP4c_Frozen_Definitions.md` Part XI / XI-A.
-7. current-forward, tracker, TODO, changelog, selector manifest, lessons, mandatory policies.
+```text
+region 0: derivedOrbit=0  certificateOrbit=1  upstreamMatchCount=1
+region 1: derivedOrbit=1  certificateOrbit=0  upstreamMatchCount=1
+region 2: derivedOrbit=2  certificateOrbit=2  upstreamMatchCount=1
+region 3: derivedOrbit=3  certificateOrbit=3  upstreamMatchCount=1
+```
 
-### Hard boundary
+`derivedOrbit` and `certificateOrbit` index **two different enumerations of one partition**: production numbers
+orbits by **dart index** (`EmbeddedGraphTopology.cpp:1742`); the test oracle numbers them by **sorted-incidence
+order** (`tests/FieldAlignedCurveNetworkTests.cpp:1871`, iterated `:1880`). **CB45's lookup is correct** —
+`faceCertificate.orbit == owningOrbit`, exactly one match, arc count, disc. The defect is four re-aimed
+assertions: 311 (`:3254`), 314, 356, 357. `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`; `LESSONS.md` 158.
 
-Independent evidence-only review. No new Directional runtime, compile, package repair, or semantic source/test/fixture/selector mutation before adjudication.
+**The arc-count control was blind** — regions 0 and 1 have equal arc counts, so it could not fail on the
+permutation under test.
+
+**The label is not independently checkable.** `SurfaceCutGraphFaceCertificate` publishes `orbit`,
+`boundaryWalkCount`, `boundaryArcCount`, `discTopologyEstablished` (`SurfaceCutGraph.h:53–63`) — nothing
+content-derived. An independent consumer can verify the **bijection**, never **which face**.
+
+**366/367 advanced** off both retired proxies to `RegionSourceFaceOwningFragmentMissing` — Part XI §10 prediction 4
+confirmed; **a new frontier, not a regression**. **390/393/406/407 regress on `regionFrontierComponentCount == 0`
+for the second consecutive turn** — the DEFN-R4 pattern, now permanent.
+
+### CB46 boundary — EB7.1–EB7.7
+
+**Code + Build**, runtime-free, GMP/GMPXX linked. **Restore the accepted prefix; do not touch the binding.**
+
+- **EB7.1** — re-aim the four oracles at content, not an index. Choose and justify **(a)** narrow to bijection +
+  arc count + disc, or **(b) preferred** publish one content-derived field on `SurfaceCutGraphFaceCertificate` so
+  the label becomes checkable. (b) adds evidence and does not change cut selection or cellularity semantics, so it
+  is inside Part XI §R7.8 — but it changes a published certificate and its digest, and the report must say so.
+- **EB7.2** — decouple `regionFrontierComponentCount` from the retired failure codes so 390/393/406/407 return to
+  PASS.
+- **EB7.3** — **do not touch the binding**: `region_orbit`, the orbit-keyed lookup, the derived-not-stored rule,
+  ordinals 312/409/315.
+- **EB7.4** — the census must be able to **disagree with itself** on the field under test.
+- **EB7.5** — accepted back to **365/365**; 390/393/406/407 to PASS; selector **409** byte-frozen; no change to
+  region construction, ownership, `fragmentCorners`, cut selection or A2a′ cellularity semantics; no work on
+  368/369/370/374/398.
+- **EB7.6** — **measure, do not correct**, `RegionSourceFaceOwningFragmentMissing`: publish the source face, the
+  orbit whose owning fragment is missing, and that face's ownership census.
+- **EB7.7** — `M3-CP4c-3-TB41` re-executes selector 409, one identity per fresh process, accepted prefix first.
+
+**Falsifiers, stated before the build.** Accepted **365/365** and 390/393/406/407 PASS are stop conditions.
+**312, 409 and 315 must stay PASS** — if 315 stops failing on a tampered `actualEmbeddedFace.orbit`, the repair
+weakened the binding rather than the oracle. If 356/357's census still shows `derivedOrbit != certificateOrbit`
+under repair (a), the assertion was narrowed but the census was not. If 366/367 move off
+`RegionSourceFaceOwningFragmentMissing`, CB46 exceeded EB7.6. If any repair requires touching `region_orbit` or
+the orbit-keyed lookup, EB7.3 is violated and the turn halts.
+
+**Must not:** change the binding, `region_orbit` or the orbit-keyed lookup; reintroduce a source-support Euler or
+connectivity proxy as a topology gate; correct `RegionSourceFaceOwningFragmentMissing`; weaken ordinals
+312/409/315/398; touch 368/369/370/374; remove any accepted identity or change any selector byte; execute any
+Directional runtime in CB46.
+
+### Context Load Plan
+
+`load_next`: Code + Build guidance.
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.9 and §3.10.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB40_Independent_Review_Record.md` — **EB0–EB7**.
+3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB40_EXEC_Report.md` — the regressed ledger and the census.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+6. `.agents/Directional/LESSONS.md` — mandatory; **155, 157, 158** govern this change.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

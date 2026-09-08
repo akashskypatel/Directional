@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-DEFN-R7`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **TB39 is current semantic runtime authority** on package104 / selector409 at **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; certified ownership is **300/300**. Stable accounting remains **46 events / 14 categories / 32 recurrences**, debt **5**, packages **104**. TB38 remains historical regression evidence only. TB39 emitted **513** non-vacuous certificate rows and proved the reduced/full projection arithmetic, including the decisive opposite-sign `fullMinusReduced` values on torus and mechanical. **DEFN-R7 Part XI supersedes DEFN-R6.3/R6.4 as region-disc authority:** the A2b region is the exact non-exterior actual-embedded face-walk orbit already certified by A2a′, and the downstream certificate consumes the matching `SurfaceCutGraphFaceCertificate`; source-support Euler/connectivity/split/barrier values are diagnostics. Exact next is runtime-free **`M3-CP4c-3-CB45`** to implement that frozen binding; later TB40 owns semantic runtime proof.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB40-REV`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **TB39 is current semantic runtime authority** on package104 / selector409 at **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; certified ownership is **300/300**. Stable accounting remains **46 events / 14 categories / 32 recurrences**, debt **5**, packages **104**. TB38 remains historical regression evidence only. TB39 emitted **513** non-vacuous certificate rows and proved the reduced/full projection arithmetic, including the decisive opposite-sign `fullMinusReduced` values on torus and mechanical. **DEFN-R7 Part XI supersedes DEFN-R6.3/R6.4 as region-disc authority:** the A2b region is the exact non-exterior actual-embedded face-walk orbit already certified by A2a′, and the downstream certificate consumes the matching `SurfaceCutGraphFaceCertificate`; source-support Euler/connectivity/split/barrier values are diagnostics. CB45 implemented that binding and **TB40 confirmed it** — 4 regions against 4 face certificates, one upstream match each, injective, arc counts matching, disc established throughout — but **TB40 is not promoted**: accepted 311/314/356/357 and protected 390/393/406/407 regressed because four re-aimed oracles compare the production orbit ordinal against their own independent enumeration's index. Two enumerations of one partition; **one new stable event, 47 / 14 / 33** (`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`), packages 105. Exact next is runtime-free **`M3-CP4c-3-CB46`** — re-aim the oracles, do **not** touch the binding.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -1492,6 +1492,33 @@ indexes and every byte-frozen selector.
 DEFN-R6.3/R6.4 cannot remain the region-disc authority and freezes `M3-CP4c-3-DEFN-R7` to append the replacement
 contract. Until that definition is written, current runtime evidence remains TB39's restored reduced rejection at
 366/367; no proxy is silently promoted by documentation cleanup.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB40-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB40_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in EB0–EB7:** the
+four-row census and its reading as a permutation, the two enumerations and their exact sites, the blind arc-count
+control, the unverifiable orbit label, and 366/367's advance.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` | 207 | consumed build contract — EA0-EA9 plus the Part XI-A amendments; discharged by the CB45 report and adjudicated at TB40 |
+| `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md` | — | consumed evidence contract — the frozen TB40 gate, discharged by the TB40 EXEC report |
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB39_EXEC_Report.md` (**the valid semantic runtime
+authority** — TB40 was not promoted), `Architecture_M3_CP4c3_TB40_EXEC_Report.md` (the regressed ledger and the
+decisive census, which CB46 must work from), `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB45_Code_Build_Report.md` (**retained deliberately** — it is the provenance for the
+regression and records that CB45's binding lookup was correct, so discarding it would leave the impression the
+implementation was at fault), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part XI
+operative, amended by Part XI-A**), `Required_Green_Selector_Manifest.md`, this record, and every
+`Required_Green_Selector_*.txt`.
+
+**Definition-authority note.** Part XI is **unchanged and confirmed**: TB40 proved the binding is a bijection onto
+certified disc faces with matching arc counts. Part XI-A's reading is reinforced a third way — the face
+certificate's `orbit` is meaningful only inside the producer's own enumeration, so an independent consumer cannot
+verify **which** face a certificate holds. `M3-CP4c3-TB40-REV-CAND-01`.
 
 ### Consolidated on 2026-09-08 at `M3-CP4c-3-DEFN-R7`
 

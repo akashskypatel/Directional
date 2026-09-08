@@ -1,3 +1,60 @@
+## 2026-09-08 — `M3-CP4c-3-TB40-REV`: the binding is confirmed, the oracles are wrong — one new stable event
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 0f09439893182235c382492583b82aa35f25045c` passed.
+
+**EB0 — TB40 is mechanically valid, semantically RED, and NOT promoted.** Selector **409**, run `34246144235`,
+package105 `10057456162`: **394 PASS / 15 RED**, accepted **361/365**, RED
+`[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. **`M3-CP4c-3-TB39` remains the current valid
+semantic runtime authority.**
+
+**EB1 — the census CONFIRMS the binding.** Read correctly, the four rows on 356/357 are a **permutation**, not a
+mismatch: 4 regions against 4 face certificates, `upstreamMatchCount == 1` on every row, the map injective,
+boundary-arc counts matching, `discTopologyEstablished=true` and `fieldRegularity=true` throughout, and the complex
+row published once per Part XI-A §A.3 — **non-empty and non-uniform**, so R7.7 is discharged. **Everything
+DEFN-R7.1 asserts holds.**
+
+**EB2 — the defect: four accepted oracles were re-aimed at a representation-dependent label.** Production numbers
+orbits by **dart index** (`EmbeddedGraphTopology.cpp:1742`), inherited by both A2a′ and A2b from the shared
+builder. The test oracle numbers them by **sorted-incidence order** — `std::set<Incidence> all`
+(`tests/FieldAlignedCurveNetworkTests.cpp:1871`), iterated at `:1880`. Two enumerations of one partition; orbits 0
+and 1 transpose. **CB45's binding lookup is correct** — `faceCertificate.orbit == owningOrbit`, exactly one match,
+arc count, disc. The error is entirely in the assertions: 311 (`:3254`), 314 via
+`IndependentDiscProofClause::PublishedCertificate`, 356/357 in the census. `ORIENTATION.md` §8 already carried the
+rule — **never match two partitions by index** — recorded from ordinal 390's `censusCorrespondence`. **The
+arc-count check did not catch it** because regions 0 and 1 have equal arc counts: a control insensitive to the case
+under test is not a control. `LESSONS.md` 158.
+
+**EB3 — the orbit label is not independently checkable.** `SurfaceCutGraphFaceCertificate` publishes `orbit`,
+`boundaryWalkCount`, `boundaryArcCount`, `discTopologyEstablished` (`SurfaceCutGraph.h:53–63`) — an ordinal
+meaningful only inside the producer's enumeration, a constant, a length, and a complex-level bit. An independent
+consumer can verify the **bijection**; it cannot verify **which face** a certificate holds. Third way the bound
+certificate carries less evidence than its name suggests, after Part XI-A §A.1 and §A.2.
+`M3-CP4c3-TB40-REV-CAND-01`.
+
+**EB4 — what else moved.** **366/367 advanced** off both retired proxies to `RegionSourceFaceOwningFragmentMissing`
+at `RegionCertification` — Part XI §10 prediction 4 confirmed; **a new frontier, not a regression**
+(`M3-CP4c3-TB40-REV-CAND-02`). **390/393/406/407 regress on `regionFrontierComponentCount == 0` for the second
+consecutive turn** — the DEFN-R4 pattern, now **permanent**, because the codes that carried the annotation are
+retired by design rather than bypassed.
+
+**EB5 — preserved.** **312/409 PASS** — no sticky construction-time binding. **315 PASS**, tampering
+`actualEmbeddedFace.orbit`, a field that **varies**: Part XI-A §A.3's tamper amendment was honoured. 404/408 PASS;
+ownership `300 / 0 / 0`; retired legacy codes absent.
+
+**EB6 — accounting: ONE NEW STABLE EVENT.** Accepted 311/314/356/357 were TB39 PASS and are TB40 RED. Events
+**46 → 47**; category **`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`** (existing, so categories remain **14**);
+recurrences **32 → 33**. **Totals: 47 / 14 / 33**, debt **5**, packages **105** (build fact only).
+`M3-CP4c3-TB37-REV-CAND-01` is **CLOSED** — the counted-complex question is resolved by the binding.
+
+**Consolidation.** Folded the consumed CB45 build plan and TB40 test plan.
+**`Architecture_M3_CP4c3_CB45_Code_Build_Report.md` is retained deliberately** — it is the provenance for the
+regression and records that CB45's lookup was correct.
+
+**Exact next: `M3-CP4c-3-CB46`** — Code + Build, runtime-free, under **EB7.1–EB7.7**. **Re-aim the oracles at
+content; do not touch the binding.** Accepted must return to **365/365** and 390/393/406/407 to PASS; 312/409/315
+must stay PASS.
+
 ## 2026-09-08 — `M3-CP4c-3-TB40-EXEC`: package105 mechanically valid, binding gate RED
 
 Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.

@@ -1,3 +1,56 @@
+## M3-CP4c3-TB40-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STABLE — ONE NEW EVENT / ACCEPTED PREFIX BROKEN / TB40 NOT PROMOTED**
+
+- **Record:** `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md`, measures **EB0–EB7**. Evidence-only.
+  `review_check.py authority 0f09439893182235c382492583b82aa35f25045c` — ALL CHECKS PASSED.
+
+- **EB0 — TB40 is mechanically valid, semantically RED, NOT promoted.** Selector409, run `34246144235`,
+  package105 `10057456162` / source `0f09439893182235c382492583b82aa35f25045c`: **394 PASS / 15 RED**, accepted
+  **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. **`M3-CP4c-3-TB39` remains
+  current valid semantic runtime authority.**
+
+- **EB1 — the census CONFIRMS the binding; it is a permutation, not a mismatch.** 4 regions / 4 face certificates,
+  `upstreamMatchCount == 1` on every row, the map injective, **boundary-arc counts matching**,
+  `discTopologyEstablished=true` and `fieldRegularity=true` throughout, and the complex row published once as
+  Part XI-A §A.3 required. **Only the orbit label disagrees, on the two rows that transpose.** DEFN-R7.1's
+  substance is **runtime confirmed**.
+
+- **EB2 — the defect: four accepted oracles were re-aimed at a representation-dependent label.** Production numbers
+  orbits by **dart index** (`EmbeddedGraphTopology.cpp:1742`), inherited by both A2a′ and A2b from the shared
+  builder. The test oracle numbers them by **sorted-incidence order** — `std::set<Incidence> all`
+  (`tests/FieldAlignedCurveNetworkTests.cpp:1871`), iterated at `:1880`. Two enumerations of one partition; orbits
+  0 and 1 transpose. **CB45's binding lookup is correct** (`faceCertificate.orbit == owningOrbit`, exactly one
+  match, arc count, disc). The error is entirely in the assertions — 311 at `:3254`, 314 via
+  `IndependentDiscProofClause::PublishedCertificate`, 356/357 in the census. **`ORIENTATION.md` §8 already carries
+  the rule: never match two partitions by index.** The arc-count check did not catch it because regions 0 and 1
+  have equal arc counts — **a control insensitive to the permutation under test is not a control.**
+
+- **EB3 — the orbit label is not independently checkable.** `SurfaceCutGraphFaceCertificate` publishes only
+  `orbit`, `boundaryWalkCount`, `boundaryArcCount`, `discTopologyEstablished`
+  (`include/directional/geometry/SurfaceCutGraph.h:53–63`) — an ordinal meaningful only inside the producer's
+  enumeration, a constant, a length, and a complex-level bit. An independent consumer can verify the **bijection**;
+  it cannot verify the **label**. Third way the bound certificate carries less evidence than its name suggests,
+  after Part XI-A §A.1 and §A.2. New candidate `M3-CP4c3-TB40-REV-CAND-01`.
+
+- **EB4 — what else moved.** **366/367 advanced off both retired proxies** to
+  `RegionSourceFaceOwningFragmentMissing` at `RegionCertification` — Part XI §10 prediction 4 confirmed; a **new
+  frontier, not a regression** (`M3-CP4c3-TB40-REV-CAND-02`). **390/393/406/407 regress on
+  `regionFrontierComponentCount == 0` for the second consecutive turn** — the DEFN-R4 pattern, now **permanent**
+  because the codes that carried the annotation are retired by design rather than bypassed.
+
+- **EB5 — preserved.** **312/409 PASS** — no sticky construction-time binding. **315 PASS**, tampering
+  `actualEmbeddedFace.orbit`, a field that **varies**: Part XI-A §A.3's tamper amendment was honoured. 404/408
+  PASS; ownership `300 / 0 / 0`; retired legacy codes absent.
+
+- **EB6 — accounting: ONE NEW STABLE EVENT.** Accepted 311/314/356/357 were TB39 PASS and are TB40 RED.
+  **Events 46 → 47**; category **`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`** (existing, so **categories remain
+  14**); **recurrences 32 → 33**. **Totals: 47 / 14 / 33**, debt **5**, packages **105** (build fact only).
+  `M3-CP4c3-TB37-REV-CAND-01` is **CLOSED** — the counted-complex question is resolved by the binding.
+
+- **EB7 — exact successor `M3-CP4c-3-CB46`**, runtime-free: **restore the accepted prefix; do not touch the
+  binding.**
+
+---
+
 ## M3-CP4c3-TB40-EXEC — package105 binding runtime — **MECHANICALLY VALID / SEMANTIC GATE RED / REVIEW PENDING / NOT PROMOTED**
 
 - Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
@@ -6413,53 +6466,42 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 ## Authoritative next step
 
 Current valid semantic runtime authority is **M3-CP4c-3-TB39**: semantic source
-`8756cfe983bf7e05209f560d59a522a6b5b0674a`, immutable CB44 package `10036808934`, selector409, run `34177823202`,
-**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, reds `[366,367,368,369,370,374,398]`, ownership
-**300 / 0 / 0**. CB44's restoration reproduced TB37's colour vector and its ledger SHA-256
-`058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366` exactly. Stable totals remain
-**46 events / 14 categories / 32 recurrences** - the TB38 event stands, repairing a regression does not erase it -
-debt **5**, M3 packages **104**.
+`8756cfe983bf7e05209f560d59a522a6b5b0674a`, CB44 package `10036808934`, selector409, run `34177823202`,
+**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, ownership **300 / 0 / 0**. **TB40 broke the accepted
+prefix and is not promoted.** Stable totals are now **47 events / 14 categories / 33 recurrences**, debt **5**, M3
+packages **105** (a build fact only).
 
-**DA7.3 was discharged non-vacuously**, which is what DEFN-R6.7 failed to do: TB39 emitted **513
-`euler_certificate` rows across 64 selector ordinals, 45 of them accepted-prefix**, with **zero** missing-field
-rows, every row satisfying all five frozen equations. Accepted rows do **not** all have `fullMinusReduced=0`, so
-the corpus discriminates the readings.
+**The binding is confirmed. The oracles are wrong.** TB40's census publishes 4 regions against 4 face
+certificates, `upstreamMatchCount == 1` on every row, an injective map, matching boundary-arc counts, and
+`discTopologyEstablished=true` throughout - everything DEFN-R7.1 asserts. **Only the orbit label disagrees**, on
+two rows that transpose, because production numbers orbits by **dart index**
+(`EmbeddedGraphTopology.cpp:1742`) while the test oracle numbers them by **sorted-incidence order**
+(`tests/FieldAlignedCurveNetworkTests.cpp:1871`, iterated `:1880`). Two enumerations of one partition. CB45's
+lookup by `faceCertificate.orbit == owningOrbit` is correct; the re-aimed assertions at ordinals 311 (`:3254`),
+314, 356 and 357 are not. This is `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`, and `ORIENTATION.md` §8 already
+carries the rule: **never match two partitions by index.**
 
-**The split hypothesis was falsified on the torus, as the frozen falsifier required.** That region publishes
-`trace_cut_faces=0` and `split_fragments == F == 24`, so the traced/split reading is **identical** to the
-whole-face reading there and cannot rescue it. The mechanical region publishes `trace_cut_faces=36`,
-`split_fragments=288`, `fragment_corner_attributions=86`.
+**And the label cannot be checked independently.** `SurfaceCutGraphFaceCertificate` publishes an ordinal, a
+constant, a length and a complex-level bit - nothing content-derived - so an independent oracle can verify the
+bijection but not which face it holds.
 
-**Definition authority is `M3-CP4c-3-DEFN-R7`, Part XI, amended by Part XI-A.** Part XI supersedes Part X's
-DEFN-R6.3/R6.4 as region disc-topology authority and replaces the search for a third Euler formula with a
-**binding**: an A2b region's topology object is the non-exterior actual-embedded face-walk orbit whose ordered
-boundary equals `region.boundary`, and its disc authority is that orbit's `SurfaceCutGraphFaceCertificate`.
-Source-support reduced/full/split/barrier values become diagnostics; `RegionEulerCharacteristicNotOne` and
-`RegionInteriorDisconnected` are retired as producers of disc-topology rejection.
+**Exact next: `M3-CP4c-3-CB46` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
+**EB7.1-EB7.7**. Re-aim the four oracles at content rather than an index, choosing and justifying either
+**(a)** narrowing to the bijection + arc count + disc, or **(b) preferred** publishing one content-derived field on
+the face certificate so the label becomes checkable (EB7.1); **decouple `regionFrontierComponentCount` from the
+retired failure codes** so 390/393/406/407 return to PASS - the DEFN-R4 rule applied to its last site (EB7.2);
+**do not touch the binding**, `region_orbit`, the orbit-keyed lookup, or ordinals 312/409/315 (EB7.3); ensure the
+census **can disagree with itself** on the field under test, since equal arc counts on regions 0 and 1 made that
+control blind (EB7.4); restore accepted **365/365** and 390/393/406/407 to PASS (EB7.5); **measure, do not
+correct**, `RegionSourceFaceOwningFragmentMissing` (EB7.6); `TB41` re-executes (EB7.7).
 
-**Part XI-A - evidentiary amendment from the verification pass.** Part XI's decision is upheld and its structural
-claims verify from source: both stages call `build_embedded_graph_topology(...)` with identical arguments
-(`GlobalTopologyPlan.cpp:2500-2502`, `SurfaceCutGraph.cpp:863`) and share `exterior_boundary_orbits(...)`
-(`:869`, `:866`), so the 1:1 correspondence is real. But **the face certificate does not carry per-face
-evidence**: `discTopologyEstablished` is the single complex-level `discEmbeddingEstablished` computed at
-`SurfaceCutGraph.cpp:879` and stamped identically onto every face at `:883`, and `boundaryWalkCount` is written as
-the **literal `1U`**. The binding stays sound - that conjunction is the standard cellularity criterion, which *is*
-the theorem that every non-exterior face is a disc - but the authority is **complex-level**, the
-`boundaryWalkCount == 1` conjunct is **withdrawn as evidence**, the binding census must publish the complex-level
-inputs once rather than one bit N times, and ordinal 315's tamper target must be a field that varies (`orbit` or
-`boundaryArcCount`). `LESSONS.md` 157.
+**Falsification.** Accepted prefix **365/365** and **390/393/406/407 PASS** are stop conditions. **312, 409 and 315
+must stay PASS** - if 315 stops failing on a tampered `actualEmbeddedFace.orbit`, the repair weakened the binding
+instead of the oracle. If 356/357's census still shows `derivedOrbit != certificateOrbit` under repair (a), the
+assertion was narrowed but the census was not. If 366/367 move off `RegionSourceFaceOwningFragmentMissing`, CB46
+exceeded EB7.6. If any repair requires touching `region_orbit` or the orbit-keyed lookup, EB7.3 is violated.
 
-**CB45 implementation result:** package105 source `0f09439893182235c382492583b82aa35f25045c` implements the binding
-seam, retires source-support proxies as topology gates, keeps them as domain-named diagnostics, and freezes the
-artifact-only `M3-CP4c-3-TB40-EXEC` gate. **Exact next is TB40-EXEC** under the frozen artifact-only plan.
-
-**TB40 falsification.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop conditions. 366/367 must
-stop being rejected solely by the retired proxy - if they remain at `RegionEulerCharacteristicNotOne`, the proxy
-still owns the gate and CB45 is not runtime-proved. **Ordinal 356 must stay PASS even though whole-source-face chi is 0 on its torus
-region**; if it goes RED on that measurement the proxy was not actually retired. The later binding census must be
-non-empty, 1:1 per region, **and able to disagree with itself**. No CB45 diff may touch region construction, cut
-selection or source ownership.
-
-**Prohibited:** a second disc theorem in A2b; a stored construction-time binding flag; counting a literal conjunct
-or a uniform bit as evidence; weakening ordinals 312/409/398; touching 368/369/370/374; any selector byte change;
-any Directional runtime in CB45.
+**Prohibited:** changing the binding, `region_orbit` or the orbit-keyed lookup; reintroducing a source-support
+Euler or connectivity proxy as a topology gate; correcting `RegionSourceFaceOwningFragmentMissing`; weakening
+ordinals 312/409/315/398; touching 368/369/370/374; any accepted-identity removal or selector byte change; any
+Directional runtime in CB46.

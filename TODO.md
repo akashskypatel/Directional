@@ -26,19 +26,43 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB40-REV` (independent evidence-only review) — ADJUDICATE PACKAGE105 RED
+## Current focus — `M3-CP4c-3-CB46` (Code + Build, runtime-free) — RE-AIM THE ORACLES, NOT THE BINDING
 
-Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
+`M3-CP4c-3-TB40-REV` adjudicated TB40 and **did not promote it: the accepted prefix broke.**
 
-**Exact next turn: `M3-CP4c-3-TB40-REV`.** Review must:
+- **`M3-CP4c-3-TB39` remains current valid semantic runtime authority** — **402 PASS / 7 RED**, accepted
+  **365/365**, package104.
+- **TB40 (package105) is mechanically valid, semantically RED, NOT promoted** — **394 PASS / 15 RED**, accepted
+  **361/365**; accepted 311/314/356/357 and protected 390/393/406/407 regressed.
 
-- [ ] adjudicate accepted regressions 311/314/356/357 and the direct 356/357 orbit-binding falsifier;
-- [ ] adjudicate protected regressions 390/393/406/407 at `regionFrontierComponentCount=0`;
-- [ ] preserve the fact that 366/367 advanced beyond retired region-disc proxies without treating them as green;
-- [ ] preserve carried owners 368/369/370/374/398 unless evidence supports a disposition change;
-- [ ] classify product-vs-test-vs-definition ownership, stable accounting, and one exact successor.
+**The binding is runtime confirmed and the oracles are wrong.** The census publishes 4 regions against 4 face
+certificates with one upstream match each, injective, arc counts matching, disc established throughout. **Only the
+orbit label disagrees**, on two rows that transpose, because production numbers orbits by **dart index** while the
+test oracle numbers them by **sorted-incidence order** — two enumerations of one partition. CB45's lookup is
+correct; four re-aimed assertions are not. `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`; `LESSONS.md` 158.
 
-**Must not:** compile, rerun Directional, repair package105, mutate product/tests/fixtures/selectors, or promote TB40 before review.
+**366/367 advanced** off both retired proxies to `RegionSourceFaceOwningFragmentMissing` — a new frontier, not a
+regression. **390/393/406/407** regress on `regionFrontierComponentCount == 0` for the second consecutive turn.
+
+Stable accounting is now **47 events / 14 categories / 33 recurrences** — **one new event** — debt **5**, packages
+**105** (build fact only). CP4c-3 remains **OPEN**.
+
+### Exact next turn
+
+Run **`M3-CP4c-3-CB46`**, a runtime-free **Code + Build** turn under **EB7.1–EB7.7**:
+
+- [ ] **EB7.1** re-aim ordinals 311/314/356/357 at content, not an index — narrow to bijection + arc count + disc,
+      or (preferred) publish one content-derived field on the face certificate so the label becomes checkable;
+- [ ] **EB7.2** decouple `regionFrontierComponentCount` from the retired failure codes;
+- [ ] **EB7.3** **do not touch the binding** — `region_orbit`, the orbit-keyed lookup, ordinals 312/409/315;
+- [ ] **EB7.4** make the census able to disagree with itself on the field under test;
+- [ ] **EB7.5** accepted back to **365/365**, 390/393/406/407 to PASS, selector409 byte-frozen;
+- [ ] **EB7.6** **measure, do not correct**, `RegionSourceFaceOwningFragmentMissing`;
+- [ ] **EB7.7** hand off to `M3-CP4c-3-TB41`.
+
+**Must not:** change the binding or the orbit-keyed lookup; reintroduce a source-support proxy as a topology gate;
+correct `RegionSourceFaceOwningFragmentMissing`; weaken 312/409/315/398; touch 368/369/370/374; remove an accepted
+identity or change a selector byte. **Accepted prefix 365/365 is a stop condition.**
 
 ## Carried forward from M1
 
@@ -115,4 +139,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **46 events / 14 categories / 32 recurrences** pending TB40 review; debt **5**, packages **105**. TB39 remains semantic runtime authority at 402/7, accepted 365/365. TB40 package105 raw runtime is 394/15, accepted 361/365, and is not promoted. Exact next is independent **`M3-CP4c-3-TB40-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals are now **47 events / 14 categories / 33 recurrences** — TB40 lost accepted green; debt **5**, packages **105**. TB39 remains semantic runtime authority at 402/7, accepted 365/365; TB40 is not promoted. The Part XI binding is runtime confirmed; the failure is four accepted oracles asserting a foreign orbit label. Exact next is runtime-free **`M3-CP4c-3-CB46`** under EB7.1–EB7.7. PR #8 remains open, draft, and unmerged.

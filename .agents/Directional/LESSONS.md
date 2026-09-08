@@ -1963,6 +1963,21 @@ building any conclusion on it.**
      it once rather than the conclusion many times. Same family as lesson 155 (a verifier passing over an empty
      table) and lesson 122 (a census over values nothing has established) - and this instance appeared **inside the
      contract written to prevent 155**.
+158. **An "independent" oracle that re-enumerates a partition invents a third labeling, and must match by content
+     or not at all.** A contract bound one stage's regions 1:1 to another stage's certified faces, and the runtime
+     census proved the binding exactly: 4 regions, 4 faces, one upstream match each, injective, matching arc
+     counts, disc established on every row. Four accepted identities still went RED, because they compared the
+     production **orbit ordinal** against the index the test's own independent re-derivation had assigned.
+     Production numbers orbits by dart index; the oracle numbered them by iterating a `std::set` of oriented arcs.
+     Same partition, different labels, two orbits transposed. **The independence that makes an oracle valuable is
+     exactly what makes its ordinals foreign** - so an independent re-derivation may assert cardinality,
+     bijectivity and per-element content, but never an ordinal it did not receive from the producer. Two further
+     obligations: check whether the producer publishes anything **content-derived** by which its own label could
+     be confirmed - here it did not, so the label was unverifiable in principle - and make sure the accompanying
+     controls can fail, because the arc-count check passed on the transposed rows for the sole reason that those
+     two regions had equal arc counts. Same family as `ORIENTATION.md` §8's "never match two partitions by index",
+     recorded from ordinal 390's `censusCorrespondence`, and reproduced here **inside the contract written to stop
+     one stage re-deriving what another already owns**.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

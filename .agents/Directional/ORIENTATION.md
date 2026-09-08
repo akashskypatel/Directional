@@ -1,13 +1,4 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-CB45`):** TB39 remains semantic runtime authority —
-> package104, selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
-> **CB45 is complete / compile-green / runtime-free** and creates immutable package105 from source
-> `0f09439893182235c382492583b82aa35f25045c`, artifact `10057456162`. The Part XI actual-embedded face binding is
-> implemented: each downstream A2b region certificate consumes the unique matching A2a′
-> `SurfaceCutGraphFaceCertificate`, checked candidates re-derive the binding, and field regularity remains separate.
-> Source-support connectivity/Euler/split/barrier values are diagnostics only. Part XI-A complex-level cellularity
-> inputs are emitted once per complex for the later non-vacuous census.
-> Stable accounting remains **46 / 14 / 32**, debt **5**; semantic packages are **105**.
-> Exact next is artifact-only **`M3-CP4c-3-TB40-EXEC`** against package105; no CB45 runtime exists.
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB40-REV`):** **TB40 broke the accepted prefix and is NOT promoted** — 394 PASS / 15 RED, accepted **361/365**. Runtime authority remains **TB39** at **402 PASS / 7 RED**, accepted **365/365**, package 104. **The binding is runtime CONFIRMED, and the oracles are wrong.** TB40's census publishes 4 regions against 4 face certificates, `upstreamMatchCount == 1` on every row, injective, arc counts matching, `discTopologyEstablished=true` throughout — everything DEFN-R7.1 asserts. **Only the orbit label disagrees**, on two rows that transpose, because production numbers orbits by **dart index** (`EmbeddedGraphTopology.cpp:1742`) while the test oracle numbers them by **sorted-incidence order** (`tests:1871`, iterated `:1880`). Two enumerations of one partition. Accepted 311/314/356/357 assert the foreign label; **`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`, one new stable event: 47 / 14 / 33.** 366/367 advanced off both retired proxies to `RegionSourceFaceOwningFragmentMissing` — a new frontier. Exact next is **`M3-CP4c-3-CB46`**: re-aim the oracles, do **not** touch the binding.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -127,8 +118,20 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 ## 3. Where we are
 
 **Runtime authority — `M3-CP4c-3-TB39`** (package 104). Selector **409**, **402 PASS / 7 RED**, **accepted
-1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership **300 / 0 / 0**. TB39 exactly
-restores TB37's colour vector and ledger while adding 513 non-vacuous region-certificate rows.
+1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership **300 / 0 / 0**.
+
+**TB40 is NOT promoted.** Package 105 / source `0f09439893182235c382492583b82aa35f25045c`, run `34246144235`, is
+mechanically valid — 409/409 once each, zero mismatch, zero timeout, censuses identical — but semantically
+**394 PASS / 15 RED, accepted 361/365**. Accepted **311/314/356/357** and protected **390/393/406/407** regressed.
+**One new stable event: 47 / 14 / 33.**
+
+**The binding itself is runtime confirmed.** 4 regions ↔ 4 face certificates, one upstream match each, injective,
+arc counts matching, `discTopologyEstablished=true` and `fieldRegularity=true` on every row, complex inputs
+published once per Part XI-A §A.3. **Only the orbit label disagrees** — the oracles compare the production ordinal
+against their own independent enumeration's index. `LESSONS.md` 158.
+
+**312, 409 and 315 PASS.** No sticky construction-time binding, and 315 tampers `actualEmbeddedFace.orbit` — a
+field that **varies**, so Part XI-A §A.3's tamper amendment was honoured.
 
 **TB38 remains historical regression evidence, not runtime authority.** Package103 was mechanically valid at
 395/14, accepted 362/365. CB44/TB39 recover accepted 356/357/362 and protected 390/393/406/407, but the one stable
@@ -293,27 +296,41 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Region disc authority binding is IMPLEMENTED; runtime proof remains open.** —
-   `M3-CP4c3-TB37-REV-CAND-01`, **IMPLEMENTED IN CB45 / RP-01 / RUNTIME OWNER TB40**.
+1. **Four accepted oracles assert a foreign orbit label.** — `M3-CP4c3-TB40-EXEC-CAND-01`, **STABLE / RP-05**;
+   owner `M3-CP4c-3-CB46` EB7.1.
 
-   - Part XI freezes the A2a′ face certificate as the sole disc-topology authority for the exact A2b face-walk
-     orbit. Both stages use the same `build_embedded_graph_topology(...)`; `region_orbit()` re-derives the binding
-     from current exact boundary equality.
-   - The downstream certificate becomes a consumption/binding certificate for that upstream face plus separate
-     field regularity. Reduced/full/source-support connectivity/Euler values are diagnostics only.
-   - `RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are retired as A2b disc-theorem producers;
-     a pinch/support proxy may not override A2a′.
-   - 312/409 remain copy/mutation falsifiers; 315 retargets the consumed binding; later TB40 requires a non-vacuous
-     1:1 region/upstream-face census.
-   - 366/367 remain RED in current TB39; package105 removes the retired proxy ownership statically, and TB40 must measure the later runtime frontier.
+   - The binding is **correct and runtime confirmed** (bijection, one match each, arc counts, disc established).
+   - Production numbers orbits by **dart index** (`EmbeddedGraphTopology.cpp:1742`); the test oracle numbers them
+     by **sorted-incidence order** (`tests:1871`, `:1880`). Orbits 0 and 1 transpose.
+   - Ordinals **311** (`:3254`), **314**, **356**, **357** compare the two. **Never match two partitions by
+     index** — the rule was already in §8, from ordinal 390's `censusCorrespondence`.
+   - **The arc-count control was blind**: regions 0 and 1 have equal arc counts. A control that cannot fail on the
+     case under test is not a control.
+   - **Fix:** re-aim at content — either narrow to bijection + arc count + disc, or (preferred) publish one
+     content-derived field on the face certificate so the label becomes checkable. `LESSONS.md` 158.
 
-2. **Frontier evidence still hangs off which failure code was raised.** Ordinals 390/393/406/407 all failed the
+2. **A face certificate's orbit ordinal is not independently checkable.** — `M3-CP4c3-TB40-REV-CAND-01`,
+   **ACTIVE / ARCHITECTURAL**.
+
+   `SurfaceCutGraphFaceCertificate` publishes `orbit`, `boundaryWalkCount`, `boundaryArcCount`,
+   `discTopologyEstablished` (`SurfaceCutGraph.h:53–63`) — an ordinal meaningful only inside the producer's
+   enumeration, a constant, a length, and a complex-level bit. An independent consumer can verify the **bijection**
+   but not **which face** it holds. Third way the bound certificate carries less than its name suggests, after
+   Part XI-A §A.1 and §A.2.
+
+3. **`RegionSourceFaceOwningFragmentMissing` is the live A2b frontier.** — `M3-CP4c3-TB40-REV-CAND-02`,
+   **ACTIVE / GATING**.
+
+   366/367 advanced off both retired proxies exactly as Part XI §10 prediction 4 required. This is a **new
+   frontier, not a regression**. CB46 **measures** it; correcting it needs its own turn.
+
+4. **Frontier evidence still hangs off which failure code was raised.** Ordinals 390/393/406/407 all failed the
    frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
    because the plan stopped at a stage carrying no frontier annotation. This is the **DEFN-R4 pattern** recurring:
    a witness that asserts evidence should not be coupled to which failure produced it. Not independently owned —
    restoring the criterion clears it — but it will recur on the next stage change.
 
-3. **Region boundary provenance — the validator cannot see the guarantee it is checking. — RESOLVED**
+5. **Region boundary provenance — the validator cannot see the guarantee it is checking. — RESOLVED**
 
    - **Proved from source.** A plan region's boundary **is** `walk.orbits[orbit]`
      (`GlobalTopologyPlan.cpp:986`, `:1450`, relied on at `:379`), and a face-walk orbit is an ordered **single
@@ -328,12 +345,12 @@ features first, then threads them through source authority *and* atlas). Copy on
      plan region advanced past `ClosedBeforeEnd`, and ordinals 312/409 — which mutate a **copy** of a real region —
      still reject on `Unguaranteed`. A stored construction-time flag would have suppressed both. `LESSONS.md` 148.
 
-4. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
+6. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
    unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
    `censusCorrespondence`. Whether to unify remains a **`DEFN`** question and is not required by the current
    frontier. Owners: `M3-CP4c3-TB26-REV-CAND-04`, `M3-CP4c3-DEFN-R3-CAND-01`.
 
-5. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
+7. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
    path: the `VertexStarTransitAudit` is constructed **after** all five seed guards, so every seed failure publishes
    `std::nullopt`; `VertexStarTransitState::SeedUnavailable` is therefore **dead by construction**; and the 26 AX8
    fields CB9 added to `SurfaceCellFailureLocusDiagnostics` have **no reader** — `append_cp4c_failure_locus`, the
@@ -341,7 +358,7 @@ features first, then threads them through source authority *and* atlas). Copy on
    Third consecutive turn in which an ordered measurement was built and discarded at a stage boundary. Owned by
    **AZ4–AZ5**, with the consumer set found **by search against a predicate**.
 
-6. **Minimal transit witness / selector governance — ACTIVE, still conditional.** Selector 374 stays byte-immutable.
+8. **Minimal transit witness / selector governance — ACTIVE, still conditional.** Selector 374 stays byte-immutable.
    The gate covers only `FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection`; the boundary-ray and
    radial-arrival companion instances are **ungated**, and the radial one was written in `EdgeTransit` mode
    specifically because CB9's guards block `FaceInterior` — so no gated identity covers the case production actually
@@ -349,20 +366,20 @@ features first, then threads them through source authority *and* atlas). Copy on
    arrival already proved exact), instantiate **both** radial orientations, and show it failing under CB9 and
    passing under the correction. Ordinal **375** is appended only then.
 
-7. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB7 reproduces
+9. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB7 reproduces
    `CellularityNotEstablished` (4) where `EmptyNetworkOnClosedSurface` (6) is required, with the `sourceFace` locus
    absent. Independent owner; deferred until the mechanical path clears; must not be combined with vertex transit.
 
-8. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 reproduces `NoCarrierMatch / SourceEdgeUnavailable` at
+10. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 reproduces `NoCarrierMatch / SourceEdgeUnavailable` at
    trace 2 / event 30. Preserve AL4: no sphere semantic correction while the mechanical gate owns the critical path.
 
-9. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
+11. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
    `certificate.saturationUsed=true`. Amendment-14 representation is proved; ordinary-proposal coverage is debt.
 
-10. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
+12. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
    witness. `M3-CP4c3-DEFN-R1-CAND-01` stays open until production publishes `unboundSingularityCount=0`.
 
-11. **Report-only 367, 371, 372 — UNMEASURED, and 371/372 are blocked by a fixture helper rather than by their own
+13. **Report-only 367, 371, 372 — UNMEASURED, and 371/372 are blocked by a fixture helper rather than by their own
    contracts.** All three abort inside the shared `cp4c_mechanical_fixture()` constructor, which throws unless *all
    five* of `sourceAuthority`, `atlas`, `network`, `cutGraph` and `plan` are retained — so their TB10 reds are one
    upstream cause, not three. But **371 and 372 read only `fixture.atlas`**, an A1 product that is available and
@@ -373,13 +390,23 @@ features first, then threads them through source authority *and* atlas). Copy on
    deferred**: clearing ordinal 366 unblocks 371/372 automatically, so the candidate exists to make the coupling's
    cost visible if it does not.
 
-12. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
+14. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
     `double` and exactifies them before the flow classification reads their signs) and `M3-CP4c3-CB9-AUDIT-02`
     (`integer_sqrt_floor` has no published bit-width budget). Worth knowing: AUDIT-01 is the mechanism that produced
     the exact zero item 1 turns on, and on that witness it produced the **right** answer — the field genuinely is
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**An independent oracle's ordinals are foreign — it may assert content, cardinality and bijectivity, never an
+index.** A binding contract paired regions 1:1 with certified faces, and the census proved it: 4 against 4, one
+match each, injective, arc counts equal, disc established everywhere. Four accepted identities still went RED,
+because they compared the production orbit ordinal (assigned by dart index) against the index the test's own
+re-derivation had assigned (by iterating a sorted set of oriented arcs). Same partition, different labels, two
+orbits transposed. **The independence that makes the oracle valuable is what makes its ordinals meaningless
+outside itself.** Check too whether the producer publishes anything content-derived that could confirm its own
+label — here it did not — and whether the accompanying controls can fail: the arc-count check passed on the
+transposed rows only because those two regions had equal arc counts. `LESSONS.md` §4 158.
 
 **Read where the producer writes a field before requiring it as proof.** A contract bound one stage's disc proof to
 another stage's per-face certificate and required `boundaryWalkCount == 1 && boundaryArcCount == n &&
