@@ -1,5 +1,0 @@
-# M3-CP4c-3-CB45 turn cleanup
-.agents/connector-triggers/compile/cb45-compile-20260908.txt
-.agents/connector-triggers/drive-patch/cb45-closeout-20260908.txt
-.agents/connector-triggers/drive-patch/cb45-compile-fix1-20260908.txt
-.agents/connector-triggers/source-snapshot/tb34-rev-20260907.txt

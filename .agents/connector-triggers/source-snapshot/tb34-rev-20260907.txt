@@ -1,3 +1,0 @@
-purpose=materialize exact source snapshot for M3-CP4c-3-TB34-REV
-source_sha=512ba0388f83a6c5f111f034a11ad03b456483a5
-retry=0

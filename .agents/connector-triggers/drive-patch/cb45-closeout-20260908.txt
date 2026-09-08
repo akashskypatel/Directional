@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB45 durable closeout
-expected_base=0f09439893182235c382492583b82aa35f25045c
-caller_install=4f47c978595d85cd9168b9dbe74d3138f328bf35
-retry=1
