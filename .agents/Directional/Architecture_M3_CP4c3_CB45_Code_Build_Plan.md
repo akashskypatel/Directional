@@ -34,7 +34,10 @@ For each canonical/current region require:
 1. exact current region-boundary equality with exactly one face-walk orbit `o`;
 2. exactly one `cutGraph.certificate().faces` entry with `orbit == o`;
 3. the face certificate is non-exterior by publication membership;
-4. `boundaryWalkCount == 1`, `boundaryArcCount == region.boundary.size()`, and `proves_disc_topology()`;
+4. `boundaryArcCount == region.boundary.size()` and `proves_disc_topology()`. **Per Part XI-A §A.2,
+   `boundaryWalkCount == 1` is a structural assertion, not evidence** — `SurfaceCutGraph.cpp:883` writes it as the
+   literal `1U` for every face, so the conjunct cannot fail. Retain it as an assertion; do not count it toward the
+   binding proof;
 5. current source/network/cut-graph semantic bindings already required by the checked seam remain intact.
 
 A missing/duplicate/mismatched upstream face binding fails closed as `InvalidRegionCertificateBinding` (or the
@@ -175,6 +178,27 @@ semantic ambiguity or need to touch a prohibited domain stops for Review.
 - The implementation needs a source-support Euler/connectivity proxy to make `proves_disc_topology()` true.
 - The diff changes region construction, cut selection/ownership, a selector, or another RED owner's semantics.
 - The compile cannot be produced with mandatory GMP/GMPXX and `runtimeExecution=false`.
+
+### Part XI-A amendments to this plan
+
+**Verified before implementation:** both stages call `build_embedded_graph_topology(...)` with identical arguments
+(`GlobalTopologyPlan.cpp:2500–2502`, `SurfaceCutGraph.cpp:863`) and share `exterior_boundary_orbits(...)`
+(`:869`, `:866`), so the 1:1 region ↔ non-exterior-face correspondence is real. Three corrections follow from
+reading the producer:
+
+1. **`discTopologyEstablished` is a complex-level bit, not per-face evidence.** `SurfaceCutGraph.cpp:879` computes
+   `discEmbeddingEstablished` once — `graphComponents == sourceComponentCount && exterior.size() == *boundaryLoops
+   && graphEuler == sourceEuler` — and `:883` stamps it identically onto every face. That conjunction is the
+   standard cellularity criterion, so the binding is **sound**; but the authority A2b consumes is a
+   **certified-cellular-complex** authority restricted to one orbit, not independent per-face evidence.
+2. **The binding census must publish the complex-level inputs.** A census of N regions each carrying the same
+   `proves_disc_topology` bit publishes one bit N times while reading as N observations. Each creditable witness
+   must publish `graphComponents`, `sourceComponentCount`, `exterior.size()`, `boundaryLoops`, `graphEuler` and
+   `sourceEuler` **once per complex**, alongside the per-region rows. The non-vacuity rule generalizes: **a census
+   whose every row carries the same value for the field under test is not a measurement.**
+3. **Ordinal 315's tamper target must vary.** `boundaryWalkCount` is a constant and `discTopologyEstablished` is
+   uniform across faces; the tamper must use **`orbit`** or **`boundaryArcCount`**, or the consumed complex-level
+   authority itself.
 
 Any of these stops CB45 without a runtime attempt.
 

@@ -129,6 +129,27 @@ repricing occurred in the definition turn.
 - 312/409 and 390/393/404/406/407/408 PASS; ownership **300/0/0**; retired codes absent;
 - stable accounting **46 / 14 / 32**, debt **5**, packages **104**.
 
+### Part XI-A — read this before implementing the binding
+
+A verification pass upheld Part XI's decision and verified its structural claims from source (identical
+`build_embedded_graph_topology(...)` arguments at `GlobalTopologyPlan.cpp:2500–2502` and `SurfaceCutGraph.cpp:863`;
+shared `exterior_boundary_orbits(...)` at `:869`/`:866`; one face certificate per non-exterior orbit at `:883`
+against one region draft per non-exterior orbit at `GlobalTopologyPlan.cpp:986`). **The 1:1 binding is real.**
+
+But **the face certificate does not carry per-face evidence**, and Part XI describes it as though it does:
+
+- `discTopologyEstablished` is the **same value on every non-exterior face** — `discEmbeddingEstablished`, computed
+  once at `SurfaceCutGraph.cpp:879` and stamped identically at `:883`. The binding is still sound, because that
+  conjunction is the standard cellularity criterion, which **is** the theorem that every non-exterior face is a
+  disc — but the authority is **complex-level**, not per-face.
+- `boundaryWalkCount` is the **literal `1U`**, so Part XI §2 item 6's `boundaryWalkCount == 1` conjunct **cannot
+  fail**. It is **withdrawn as evidence** and retained only as a structural assertion.
+
+**Three amendments to CB45:** publish the complex-level inputs (`graphComponents`, `sourceComponentCount`,
+`exterior.size()`, `boundaryLoops`, `graphEuler`, `sourceEuler`) **once per complex** rather than one bit per
+region; make ordinal 315's tamper target a field that **varies** (`orbit` or `boundaryArcCount`); and treat a
+census whose every row carries the same value for the field under test as **not a measurement**. `LESSONS.md` 157.
+
 ### Frozen definition authority
 
 `M3_CP4c_Frozen_Definitions.md` **Part XI / DEFN-R7** supersedes Part X R6.3/R6.4 as region-disc authority.

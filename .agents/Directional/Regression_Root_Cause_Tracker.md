@@ -6377,50 +6377,55 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current valid semantic runtime authority is **M3-CP4c-3-TB37** — unchanged, because **TB38 broke the accepted
-prefix and is not promoted**: semantic source `89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, CB42 package
-`10032277517`, selector409, run `34161464783`, **402 PASS / 7 RED**, accepted **1-365 = 365/365**, ownership
-**300 / 0 / 0**. Stable totals are now **46 events / 14 categories / 32 recurrences**, debt **5**, M3 packages
-**103** (a build fact only).
+Current valid semantic runtime authority is **M3-CP4c-3-TB39**: semantic source
+`8756cfe983bf7e05209f560d59a522a6b5b0674a`, immutable CB44 package `10036808934`, selector409, run `34177823202`,
+**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, reds `[366,367,368,369,370,374,398]`, ownership
+**300 / 0 / 0**. CB44's restoration reproduced TB37's colour vector and its ledger SHA-256
+`058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366` exactly. Stable totals remain
+**46 events / 14 categories / 32 recurrences** - the TB38 event stands, repairing a regression does not erase it -
+debt **5**, M3 packages **104**.
 
-**TB38 regressed accepted ordinals 356/357/362 and protected ordinals 390/393/406/407.** The cause is
-**`DEFN-R6.4`**, not CB43, which implemented Part X exactly as frozen. The torus region measures
-`V_total/E_total/F = 24/48/24` -> **chiFull = 0** while `V_int/E_int/F = 0/23/24` -> **chiReduced = 1**: a
-one-triangle-wide annular band that the reduced form opens into a disc by dropping its single interior barrier
-edge, which is what the trace along that edge does. Against the mechanical region's `+4`, the torus discrepancy is
-**-1** - **opposite signs, so neither formula is correct on both fixtures.**
+**DA7.3 was discharged non-vacuously**, which is what DEFN-R6.7 failed to do: TB39 emitted **513
+`euler_certificate` rows across 64 selector ordinals, 45 of them accepted-prefix**, with **zero** missing-field
+rows, every row satisfying all five frozen equations. Accepted rows do **not** all have `fullMinusReduced=0`, so
+the corpus discriminates the readings.
 
-**The underlying defect is older than Part X.** `faceCount` counts whole faces even where a trace splits one,
-while `V_int`'s `allOwned` exclusion only means anything for split faces. **The certificate has always mixed the
-whole-face rounding with a partial model of the traced region**, and the traced/split reading - the one
-`fragmentCorners` was built for - has never been computed. `DEFN-R6.4` is **withdrawn**; `DEFN-R6.3` is the live
-question.
+**The split hypothesis was falsified on the torus, as the frozen falsifier required.** That region publishes
+`trace_cut_faces=0` and `split_fragments == F == 24`, so the traced/split reading is **identical** to the
+whole-face reading there and cannot rescue it. The mechanical region publishes `trace_cut_faces=36`,
+`split_fragments=288`, `fragment_corner_attributions=86`.
 
-**The safeguard failed vacuously.** DEFN-R6.7's per-region proof produced **zero rows**, because the
-`euler_certificate` emission sits behind `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`, and the verifier reported
-success over the empty table. Part X specified the check and its identities but never a **non-emptiness
-condition**. `LESSONS.md` 155.
+**Definition authority is `M3-CP4c-3-DEFN-R7`, Part XI, amended by Part XI-A.** Part XI supersedes Part X's
+DEFN-R6.3/R6.4 as region disc-topology authority and replaces the search for a third Euler formula with a
+**binding**: an A2b region's topology object is the non-exterior actual-embedded face-walk orbit whose ordered
+boundary equals `region.boundary`, and its disc authority is that orbit's `SurfaceCutGraphFaceCertificate`.
+Source-support reduced/full/split/barrier values become diagnostics; `RegionEulerCharacteristicNotOne` and
+`RegionInteriorDisconnected` are retired as producers of disc-topology rejection.
 
-**Exact next: `M3-CP4c-3-CB44` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
-**DA7.1-DA7.7**. **Restore first, measure second, decide nothing.** Revert `certificate.eulerCharacteristic` to the
-reduced form - a restoration to a known-wrong formula, done because the accepted baseline is the stop condition and
-the correct complex is not established (DA7.1); keep every diagnostic CB43 added (DA7.2); **ungate the
-`euler_certificate` emission and publish its row count, with any verifier over it failing on zero rows** (DA7.3);
-publish the **traced/split** reading per region - trace-cut face count, split fragment count, `fragmentCorners`
-corner attribution, and interior barrier edges split by how many sides the region owns (DA7.4); publish
-`fullMinusReduced` on **every** region, not only failing ones (DA7.5); restore accepted **365/365** and
-390/393/406/407 to PASS with ordinals 312/409 byte-identical and selector409 byte-frozen (DA7.6); `TB39`
-re-executes and `DEFN-R7` decides the counted complex **only with rows from both fixtures in hand** (DA7.7).
+**Part XI-A - evidentiary amendment from the verification pass.** Part XI's decision is upheld and its structural
+claims verify from source: both stages call `build_embedded_graph_topology(...)` with identical arguments
+(`GlobalTopologyPlan.cpp:2500-2502`, `SurfaceCutGraph.cpp:863`) and share `exterior_boundary_orbits(...)`
+(`:869`, `:866`), so the 1:1 correspondence is real. But **the face certificate does not carry per-face
+evidence**: `discTopologyEstablished` is the single complex-level `discEmbeddingEstablished` computed at
+`SurfaceCutGraph.cpp:879` and stamped identically onto every face at `:883`, and `boundaryWalkCount` is written as
+the **literal `1U`**. The binding stays sound - that conjunction is the standard cellularity criterion, which *is*
+the theorem that every non-exterior face is a disc - but the authority is **complex-level**, the
+`boundaryWalkCount == 1` conjunct is **withdrawn as evidence**, the binding census must publish the complex-level
+inputs once rather than one bit N times, and ordinal 315's tamper target must be a field that varies (`orbit` or
+`boundaryArcCount`). `LESSONS.md` 157.
 
-**Falsification, stated before the build.** Accepted prefix must return to **365/365** and 390/393/406/407 to
-**PASS**, or the revert is incomplete and the turn halts. **The euler_certificate table must contain at least one
-row per certified region on every accepted fixture; zero rows - or a verifier that passes on zero rows - is a
-failed turn.** If 366/367 do not return to their TB37 surfaces, something other than the criterion changed. If the
-torus region's split-reading fragment count equals its whole-face count, DA3's hypothesis is wrong for it. If
-`fullMinusReduced` is zero on every accepted region, the accepted corpus cannot discriminate the three complexes
-and DEFN-R7 needs a new fixture first.
+**Exact next: `M3-CP4c-3-CB45` - Code + Build, runtime-free, GMP/GMPXX linked**, under **EA0-EA9** of
+`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` **as amended by Part XI-A A.3**. Implement the binding seam,
+retire the source-support proxies as topology gates, keep them as domain-named diagnostics, and freeze the
+artifact-only `M3-CP4c-3-TB40-EXEC` gate.
 
-**Prohibited:** choosing a counted complex in CB44; correcting region construction; changing ownership or
-`fragmentCorners`; weakening `proves_disc_topology()`, `sourceFacesConnected`, `boundaryWalkCount` or the
-`regionFrontierComponentCount` assertion at `FieldAlignedCurveNetworkTests.cpp:4364`; editing ordinals 312/409 or
-any accepted identity; any selector byte change; any Directional runtime in CB44.
+**Falsification.** Accepted prefix **365/365** and ordinals **312/409 PASS** are stop conditions. 366/367 must stop
+being rejected by the retired proxy - if they remain at `RegionEulerCharacteristicNotOne`, the proxy still owns the
+gate and CB45 is incomplete. **Ordinal 356 must stay PASS even though whole-source-face chi is 0 on its torus
+region**; if it goes RED on that measurement the proxy was not actually retired. The later binding census must be
+non-empty, 1:1 per region, **and able to disagree with itself**. No CB45 diff may touch region construction, cut
+selection or source ownership.
+
+**Prohibited:** a second disc theorem in A2b; a stored construction-time binding flag; counting a literal conjunct
+or a uniform bit as evidence; weakening ordinals 312/409/398; touching 368/369/370/374; any selector byte change;
+any Directional runtime in CB45.

@@ -1951,6 +1951,18 @@ building any conclusion on it.**
      term `X - E_one - B_int` was **+4** on one fixture and **-1** on the other. **Before promoting a measurement
      from one fixture into a criterion for all regions, get the same measurement from a structurally different
      fixture** - and treat a discrepancy that changes sign as proof that neither candidate is the right object.
+157. **A conjunct that asserts a literal is not a check, and a census whose rows cannot differ is not a
+     measurement.** A contract bound one stage's proof to another stage's per-face certificate and required
+     `boundaryWalkCount == 1 && boundaryArcCount == n && proves_disc_topology()`. Reading the producer showed
+     `boundaryWalkCount` is written as the **literal `1U`** for every face, so that conjunct can never fail; and
+     `discTopologyEstablished` is a **single complex-level boolean** stamped identically onto every face, so a
+     census of N regions publishes one bit N times while looking like N observations. The binding was still sound -
+     complex-level cellularity *is* the theorem that every non-exterior face is a disc - but the evidence had to be
+     renamed for what it is. **Before requiring a field as proof, read where the producer writes it**: if it is a
+     constant it is structure, not evidence; if it is uniform across the population, publish the inputs that decide
+     it once rather than the conclusion many times. Same family as lesson 155 (a verifier passing over an empty
+     table) and lesson 122 (a census over values nothing has established) - and this instance appeared **inside the
+     contract written to prevent 155**.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

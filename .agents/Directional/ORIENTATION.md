@@ -3,7 +3,12 @@
 > DEFN-R7 Part XI now freezes the topology relation itself: A2a′ and A2b rebuild the same deterministic actual
 > embedded graph; each A2b region boundary is one non-exterior face-walk orbit and consumes that orbit's exact
 > `SurfaceCutGraphFaceCertificate`. Reduced/full/source-support connectivity/Euler/split/barrier values are
-> diagnostics, not a second disc theorem. Stable accounting remains **46 / 14 / 32**, debt **5**, packages **104**.
+> diagnostics, not a second disc theorem. **Part XI-A** (verification pass) upholds that decision — the shared
+> builder and shared exterior-orbit computation make the 1:1 correspondence real — but corrects what the face
+> certificate *proves*: `discTopologyEstablished` is a **single complex-level cellularity bit** stamped identically
+> onto every face (`SurfaceCutGraph.cpp:879`, `:883`) and `boundaryWalkCount` is the **literal `1U`**, so that
+> conjunct is withdrawn as evidence and the census must publish the complex-level inputs once instead of one bit N
+> times. Stable accounting remains **46 / 14 / 32**, debt **5**, packages **104**.
 > Exact next is runtime-free **`M3-CP4c-3-CB45`** to implement the binding; no R7 runtime exists yet.
 
 
@@ -377,6 +382,15 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Read where the producer writes a field before requiring it as proof.** A contract bound one stage's disc proof to
+another stage's per-face certificate and required `boundaryWalkCount == 1 && boundaryArcCount == n &&
+proves_disc_topology()`. The producer writes `boundaryWalkCount` as the **literal `1U`** for every face, so that
+conjunct can never fail; and `discTopologyEstablished` is a **single complex-level boolean** stamped identically
+onto every face, so a census of N regions publishes one bit N times while reading as N observations. The binding was
+still correct — complex-level cellularity *is* the theorem that every non-exterior face is a disc — but the evidence
+had to be renamed. **A constant is structure, not evidence; a uniform value should be published once with its
+inputs, not repeated per row.** `LESSONS.md` §4 157, and §4 155 for the empty-table form of the same error.
 
 **Do not re-certify an upstream semantic object by counting a downstream support projection.** A2a′ already
 certifies each actual-embedded face-walk orbit as a disc, and A2b emits exactly those faces as regions. The later

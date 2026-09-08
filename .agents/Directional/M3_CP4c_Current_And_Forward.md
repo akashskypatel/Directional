@@ -287,6 +287,32 @@ byte-frozen.
 `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` and Part XI. A later TB40 must require a non-vacuous 1:1
 region/upstream-face binding census in addition to accepted365/365 and protected identities.
 
+## 3.8 Part XI-A — what the bound certificate actually proves
+
+A verification pass over the delegated TB39-REV/DEFN-R7 work **upheld Part XI** and verified its structural claims
+from source: both stages call `build_embedded_graph_topology(...)` with identical arguments
+(`GlobalTopologyPlan.cpp:2500–2502`, `SurfaceCutGraph.cpp:863`), share `exterior_boundary_orbits(...)`
+(`:869`, `:866`), and publish one face certificate per non-exterior orbit (`:883`) against one region draft per
+non-exterior orbit (`:986`). **The 1:1 correspondence is real.**
+
+**But the certificate carries no per-face evidence.**
+
+- **A.1** — `discTopologyEstablished` is the **same value on every non-exterior face**: `discEmbeddingEstablished`,
+  computed once at `SurfaceCutGraph.cpp:879` as
+  `graphComponents == sourceComponentCount && exterior.size() == *boundaryLoops && graphEuler == sourceEuler`, and
+  stamped identically at `:883`. **The binding stays sound** — that is the standard cellularity criterion, which
+  *is* the theorem that every non-exterior face is a disc — but the authority is **complex-level**, and a face
+  certificate is that authority restricted to one orbit, not an independent observation about it.
+- **A.2** — `boundaryWalkCount` is the **literal `1U`**, so Part XI §2 item 6's `boundaryWalkCount == 1` conjunct
+  **cannot fail** and is **withdrawn as evidence**. It is correct-by-construction (Part IX DEFN-R5.1), which is
+  precisely why it carries no information. **The `LESSONS.md` 155 failure mode, inside the contract written to
+  prevent it.**
+- **A.3** — CB45 must publish the complex-level inputs **once per complex** rather than one bit per region; ordinal
+  315's tamper target must **vary** (`orbit` or `boundaryArcCount`); and **a census whose every row carries the
+  same value for the field under test is not a measurement.** `LESSONS.md` 157.
+
+Part XI's decisions, consumer inventory, tamper contract and CB45 boundary are otherwise unchanged.
+
 ## 4. Open candidates
 
 Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the index.

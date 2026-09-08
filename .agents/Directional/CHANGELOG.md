@@ -1,3 +1,56 @@
+## 2026-09-08 — `M3-CP4c-3-DEFN-R7` verification pass: Part XI upheld, Part XI-A corrects what its certificate proves
+
+Static verification of the delegated `M3-CP4c-3-TB39-REV` and `M3-CP4c-3-DEFN-R7` work. No runtime, no compile, no
+package operation, no product/test/fixture/benchmark/build/selector mutation. Runtime authority remains
+**`M3-CP4c-3-TB39`**, package **104**, selector **409**, **402 PASS / 7 RED**, accepted **365/365**.
+
+**Verified correct and left standing.**
+
+- CB44's restoration reproduced TB37's colour vector **and its ledger SHA-256** `058c5460…` exactly; accepted is
+  back to **365/365** and protected 390/393/406/407 to PASS.
+- **DA7.3 was discharged non-vacuously** — the obligation DEFN-R6.7 failed. TB39 emitted **513
+  `euler_certificate` rows across 64 ordinals, 45 accepted-prefix**, zero missing-field rows, all five frozen
+  equations satisfied on every row, and accepted rows do **not** all have `fullMinusReduced=0`.
+- The torus falsifier **fired as frozen**: `trace_cut_faces=0` and `split_fragments == F == 24`, so the traced/split
+  reading is identical to the whole-face reading there and cannot rescue it. Correctly recorded as an observation,
+  not a decision.
+- Part XI's structural claims **verify from source**: both stages call
+  `build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network, cutEdges)` with identical
+  arguments (`GlobalTopologyPlan.cpp:2500–2502`, `SurfaceCutGraph.cpp:863`) and share
+  `exterior_boundary_orbits(...)` (`:869`, `:866`); one face certificate per non-exterior orbit (`:883`) against one
+  region draft per non-exterior orbit (`GlobalTopologyPlan.cpp:986`). **The 1:1 binding is real.**
+- The stable event from TB38 was correctly preserved through the restoration: **46 / 14 / 32** unchanged.
+
+**Part XI-A — the correction.** Part XI describes the bound `SurfaceCutGraphFaceCertificate` as per-face evidence.
+It is not.
+
+- **A.1** — `discTopologyEstablished` is the **same value on every non-exterior face**: `discEmbeddingEstablished`,
+  computed once at `SurfaceCutGraph.cpp:879` as
+  `graphComponents == sourceComponentCount && exterior.size() == *boundaryLoops && graphEuler == sourceEuler`, and
+  stamped identically at `:883`. **The binding stays sound** — that conjunction is the standard cellularity
+  criterion, which *is* the theorem that every non-exterior face is a disc — but the authority is **complex-level**
+  and must be named as one. A face certificate is that authority restricted to one orbit, not independent evidence.
+- **A.2** — `boundaryWalkCount` is the **literal `1U`**, so Part XI §2 item 6's `boundaryWalkCount == 1` conjunct
+  **cannot fail** and is **withdrawn as evidence**. It is correct-by-construction (Part IX DEFN-R5.1), which is
+  exactly why it carries no information. **This is the `LESSONS.md` 155 failure mode inside the contract written to
+  prevent it.**
+- **A.3** — consequences for CB45: the binding census must publish the **complex-level inputs**
+  (`graphComponents`, `sourceComponentCount`, `exterior.size()`, `boundaryLoops`, `graphEuler`, `sourceEuler`)
+  **once per complex** rather than one bit per region; ordinal 315's tamper target must be a field that **varies**
+  (`orbit` or `boundaryArcCount`), not a constant or a uniform bit; and the non-vacuity rule generalizes — **a
+  census whose every row carries the same value for the field under test is not a measurement**.
+
+**Also corrected.** The **Supersession** paragraph of `M3_CP4c_Frozen_Definitions.md` had not been updated for
+Part XI and still ended the operative CP4c-3 set at Part X. The **"Authoritative next step"** block of
+`Regression_Root_Cause_Tracker.md` was stale — it still named TB37 as runtime authority and CB44 as the next turn,
+two turns after both had been superseded. Both now read TB39 / Part XI + XI-A / CB45.
+
+**Accounting.** Static verification turn: **+0 events / +0 recurrences**. Totals remain **46 events / 14 categories
+/ 32 recurrences**, debt **5**, packages **104**. `LESSONS.md` **157** added.
+
+**Exact next: `M3-CP4c-3-CB45`** — Code + Build, runtime-free, GMP/GMPXX linked, under **EA0–EA9 as amended by
+Part XI-A §A.3**.
+
 ## 2026-09-08 — `M3-CP4c-3-DEFN-R7`: actual-embedded face certificate is frozen as the single region-disc authority
 
 Static Definition / Review + Plan. No Directional runtime, compile, benchmark, package, product/test/fixture/selector

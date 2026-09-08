@@ -9,9 +9,12 @@ text of their definition turns.
 **Supersession.** Within each checkpoint the revisions supersede in order — `DEFN` → `DEFN-R1` → `DEFN-R2`. The
 earlier revisions are retained because `DESIGN.md` and the regression tracker cite the amendment lineage directly,
 and because an amendment's provenance is part of its authority. **The operative definitions for CP4c-2 are Part
-III; for CP4c-3 they are Part VI together with Parts VII, VIII, IX and X, each superseding the earlier where they
-conflict; Part IX-A amends Part IX without overriding any of it, and **Part X supersedes Part IX §5 (DEFN-R5.5)**
-while leaving every other Part IX clause in force.** Where an earlier part conflicts with a later revision of the same checkpoint,
+III; for CP4c-3 they are Part VI together with Parts VII, VIII, IX, X and XI, each superseding the earlier where
+they conflict. Part IX-A amends Part IX without overriding any of it; **Part X supersedes Part IX §5 (DEFN-R5.5)**
+while leaving every other Part IX clause in force; **Part XI supersedes Part X's DEFN-R6.3 and DEFN-R6.4 as region
+disc-topology authority** — Part X's measurements, domain findings and withdrawn-assumption record remain evidence
+— and **Part XI-A amends Part XI without overriding any of its decisions**, correcting what its face certificate
+proves.** Where an earlier part conflicts with a later revision of the same checkpoint,
 the later revision governs.
 
 This file is normative authority, not history. History lives in `M3_CP4c_Consolidated_Record.md`; current state and
@@ -34,6 +37,8 @@ Citations written against the former filenames resolve here:
 | *(no prior file — authored in place)* | **Part IX — M3-CP4c-3 DEFN-R5** |
 | *(no prior file — authored in place)* | **Part IX-A — DEFN-R5 reconciliation amendment** |
 | *(no prior file — authored in place)* | **Part X — M3-CP4c-3 DEFN-R6** |
+| *(no prior file — authored in place)* | **Part XI — M3-CP4c-3 DEFN-R7** |
+| *(no prior file — authored in place)* | **Part XI-A — DEFN-R7 evidentiary amendment** |
 
 Section numbering inside each part is unchanged, so a citation such as "`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". Full text of the originals also remains in git history.
 
@@ -3660,5 +3665,84 @@ Definition / Review + Plan only: no runtime, no compile, no package, no selector
 semantic runtime authority at **402/7**, accepted **365/365**.
 
 **Exact next turn: `M3-CP4c-3-CB45` — Code + Build, runtime-free, GMP/GMPXX linked.**
+
+---
+
+## Part XI-A — DEFN-R7 evidentiary amendment
+
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE. **Amends Part XI; overrides none of its decisions.**
+**Origin:** verification pass over the delegated `M3-CP4c-3-TB39-REV` / `M3-CP4c-3-DEFN-R7` work.
+
+Part XI's decision is **upheld**. Binding A2b's region disc proof to the A2a′ actual-embedded face authority is
+correct, and the structural claims it rests on verify from source:
+
+- both stages call `build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network,
+  cutEdges)` with the same arguments — `GlobalTopologyPlan.cpp:2500–2502` passes `cutGraph.cut_edges()`, and
+  `SurfaceCutGraph.cpp:863` passes the same `cutEdges`;
+- both derive exterior orbits from the same `exterior_boundary_orbits(...)`
+  (`GlobalTopologyPlan.cpp:869`, `SurfaceCutGraph.cpp:866`);
+- `SurfaceCutGraph.cpp:883` pushes one face certificate per **non-exterior** orbit and
+  `GlobalTopologyPlan.cpp:986` drafts one region per **non-exterior** orbit.
+
+**The 1:1 region ↔ face correspondence is real.** What follows corrects what that certificate *proves*, because
+Part XI describes it as per-face evidence and it is not.
+
+### A.1 — `discTopologyEstablished` is a complex-level bit, not a per-face measurement
+
+> **Normative.** `SurfaceCutGraphFaceCertificate::discTopologyEstablished` is **the same value on every
+> non-exterior face**. It is `discEmbeddingEstablished`, computed once at `SurfaceCutGraph.cpp:879` as
+>
+> `graphComponents == sourceComponentCount && exterior.size() == *boundaryLoops && graphEuler == sourceEuler`
+>
+> and stamped identically onto every face at `:883`. **No per-face topology is measured anywhere.**
+
+This does **not** weaken Part XI's decision, and the reason matters: that conjunction is the **standard cellularity
+criterion** for a graph embedded in a surface, and cellularity is exactly the theorem *"every non-exterior face is
+a disc"*. The authority is sound. **It is a complex-level theorem, and it must be named as one.**
+
+> **Therefore: A2b consumes a certified-cellular-complex authority, and a face certificate is that authority
+> restricted to one orbit — not independent evidence about that orbit.** No turn may cite a face certificate as
+> per-face evidence, and no turn may treat two face certificates as two observations.
+
+### A.2 — `boundaryWalkCount == 1` is vacuous and is withdrawn as a check
+
+> **Normative.** `boundaryWalkCount` is the **literal `1U`** at `SurfaceCutGraph.cpp:883`; it is never measured.
+> Part XI §2 item 6's conjunct `boundaryWalkCount == 1` therefore **cannot fail**, and it is **withdrawn as
+> evidence**. It may be retained as a structural assertion, but it must not be counted toward the binding proof.
+
+The literal is *correct* — a face-walk orbit is a single closed walk by construction (Part IX, DEFN-R5.1) — and
+that is precisely why it carries no information. **This is the `LESSONS.md` 155 failure mode appearing inside the
+contract written to prevent it**: a check that passes because it asserts a constant, exactly as DEFN-R6.7's
+verifier passed because it read an empty table. `LESSONS.md` 157.
+
+Of Part XI §2 item 6's three conjuncts, only **`boundaryArcCount == region.boundary.size()`** is a real comparison,
+and it is a consistency check between two derivations of one orbit — not a topology proof.
+
+### A.3 — consequences for the frozen successor
+
+These amend `CB45`'s measures without enlarging its scope.
+
+1. **The R7.7 binding census must publish the complex-level inputs**, not only the per-region bit. A census of N
+   regions each carrying the same `proves_disc_topology` value publishes **one** bit N times and reads as N pieces
+   of evidence. Alongside region, derived orbit, upstream orbit and boundary-arc count, each creditable witness
+   must publish `graphComponents`, `sourceComponentCount`, `exterior.size()`, `boundaryLoops`, `graphEuler` and
+   `sourceEuler` **once per complex**, so the real evidence is visible and falsifiable.
+2. **Ordinal 315's tamper target must be a field that varies.** Tampering `boundaryWalkCount` tampers a constant,
+   and tampering `discTopologyEstablished` tampers a value uniform across every face. The tamper must use
+   **`orbit`** or **`boundaryArcCount`**, or the consumed complex-level authority itself, and the plan's
+   *"one of its exact face-certificate fields"* is narrowed accordingly.
+3. **`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md:37`** carries Part XI §2 item 6 verbatim and inherits this
+   correction; its `boundaryWalkCount == 1` clause is a structural assertion, not part of the proof.
+4. **The non-vacuity rule generalizes.** R7.7 already forbids a zero-row census. It must equally forbid a census
+   whose every row carries the same value for the field under test: **a census must be able to disagree with
+   itself, or it is not a measurement.**
+
+### A.4 — what this amendment does not change
+
+Part XI governs. **R7.1–R7.9, the consumer inventory, the tamper contract, the accepted-prefix stop condition and
+the CB45 boundary are unchanged.** Runtime authority remains **TB39** at 402 PASS / 7 RED, accepted **365/365**,
+package **104**. Accounting is unchanged at **46 events / 14 categories / 32 recurrences**, debt **5** — this is a
+static amendment and creates no event. **Exact next turn remains `M3-CP4c-3-CB45`, Code + Build, runtime-free,
+under EA0–EA9 as amended by A.3.**
 
 ---
