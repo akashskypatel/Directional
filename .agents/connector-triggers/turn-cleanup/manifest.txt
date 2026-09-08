@@ -1,0 +1,5 @@
+# M3-CP4c-3-TB43-EXEC final temporary-state cleanup
+.agents/connector-triggers/m3-cp4c3-tb43-exec-20260908.txt
+.agents/connector-triggers/source-snapshot/tb43-f604b3e1-20260908.txt
+.agents/connector-triggers/tb43-closeout-drive-20260908.txt
+.agents/connector-triggers/tb43-stale-cleanup-drive-20260908.txt
