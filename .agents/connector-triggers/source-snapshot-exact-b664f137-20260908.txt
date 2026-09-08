@@ -1,0 +1,3 @@
+purpose=exact source snapshot for start-of-turn inspection
+semantic_source_sha=b664f13776b6cb79a6cd605936836e69d9fc471e
+retry=0
