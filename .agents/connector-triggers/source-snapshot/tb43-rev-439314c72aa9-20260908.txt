@@ -1,0 +1,3 @@
+M3-CP4c-3-TB43-REV exact source snapshot trigger.
+Pre-trigger authority: 439314c72aa92fb25ca0b683f2dc2b01ea183059.
+Purpose: mandatory READ_MODE=snapshot materialization for independent evidence-only review.
