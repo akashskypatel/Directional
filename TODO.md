@@ -26,29 +26,28 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB43-EXEC` (Test + Benchmark) — ARTIFACT-ONLY PACKAGE108
+## Current focus — `M3-CP4c-3-TB43-REV` — INDEPENDENT EVIDENCE-ONLY REVIEW
 
-`M3-CP4c-3-CB48` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. The bounded Part XII implementation is
-semantic source `531b517fb129425f113b5f811215f1d2b1939ee2`; immutable package108 is artifact `10076272909`
-(`sha256:a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`). Compile run `34276935866`
-succeeded for the changed-owner target and the full eight-target package with GMP/GMPXX and
-`runtimeExecution=false`. No Directional runtime has measured CB48 yet.
+`M3-CP4c-3-TB43-EXEC` is **COMPLETE / ARTIFACT-ONLY / RAW EVIDENCE PRESERVED / NOT PROMOTED BY EXEC**. Immutable
+package108 artifact `10076272909` ran selector409 exactly once per identity without rebuild, relink, package repair,
+source/test/fixture/selector mutation, benchmark, selection mismatch, or timeout.
 
-Promoted semantic runtime authority therefore remains TB42: selector **409**, **398 PASS / 11 RED / 0 SKIP**,
-accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, ownership 300/0/0. Stable
-accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**; packages advance **107 → 108**.
+Raw TB43 result: **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`. Run/job `34280642422 / 102244347209`; result/log artifacts
+`10077594302 / 10077595162`. 390/393/406/407 PASS with the required `UncutCensus` execution, `Outside` typed
+terminal relation, same-domain corruption rejection and RegionCertification evidence receipts. 366/367 remain RED at
+`RegionSourceFaceOwningFragmentMissing` with exact expected-orbit/present-owner-set evidence. 368/369/370/374/398 remain
+carried under separate owners.
+
+Promoted runtime authority remains **TB42/package107** until independent review. Stable accounting remains
+**47 events / 14 categories / 33 recurrences**, debt **5**, packages **108**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB43-EXEC`** exactly from
-`Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md`. It must consume package108 unchanged, execute
-selector409 one identity per fresh process, impose no repository elapsed-time cutoff on the full gate, and rebuild
-nothing. 390/393/406/407 may PASS only if their real `P_U` census predicate executes, their deliberately corrupted
-same-domain copy is rejected, and the typed terminal-domain receipt is present.
-
-The frozen falsifier, if only the defined oracle repair changes color, is **402 PASS / 7 RED / 0 SKIP**, accepted
-365/365, RED `[366,367,368,369,370,374,398]`. TB43 must measure rather than assume it. A semantic RED routes to
-independent `M3-CP4c-3-TB43-REV`; EXEC does not interpret or promote raw evidence.
+Run **`M3-CP4c-3-TB43-REV`** as an independent evidence-only review of
+`Architecture_M3_CP4c3_TB43_EXEC_Report.md` plus immutable TB43 result/log artifacts. Adjudicate the protected Part XII
+recovery, 366/367 exact owner-orbit evidence, carried RED ownership, candidate/stable accounting, and successor plan.
+Do **not** compile, execute new runtime, or mutate product/test/fixture/selector semantics before review decides the next edge.
 
 ## Carried forward from M1
 
@@ -86,7 +85,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB42` remains promoted semantic runtime authority** at **398 PASS / 11 RED**, accepted 365/365. CB48 is compile-green as package108; exact next is artifact-only `M3-CP4c-3-TB43-EXEC`.
+  CP4c-3 remains open. **`M3-CP4c-3-TB42` remains promoted semantic runtime authority** at **398 PASS / 11 RED**, accepted 365/365. TB43 raw artifact-only execution measured **402 PASS / 7 RED**, accepted 365/365 on package108; exact next is independent `M3-CP4c-3-TB43-REV`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -97,7 +96,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and TB42 promoted its EC7 measurement. DEFN-R8 Part XII defined the domain contract and CB48 compiled its bounded implementation in package108. TB43 owns runtime validation; 366/367 remain under their separate missing-fragment/orbit owner.
+- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and TB42 promoted its EC7 measurement. DEFN-R8 Part XII defined the domain contract, CB48 compiled it in package108, and TB43 raw runtime recovered 390/393/406/407 with non-vacuity receipts. Independent TB43-REV owns promotion/adjudication; 366/367 remain under their separate missing-fragment/orbit owner.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -125,4 +124,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences** — no runtime event in CB48 — debt **5**, packages **108**. **`M3-CP4c-3-TB42` remains promoted semantic runtime authority** at 398/11 with accepted **365/365**. CB48 package108 is compile-green on source `531b517fb129425f113b5f811215f1d2b1939ee2`; exact next is artifact-only **`M3-CP4c-3-TB43-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **108**. **`M3-CP4c-3-TB42` remains promoted semantic runtime authority** at 398/11 with accepted **365/365** pending review. TB43 raw package108 runtime measured **402/7**, accepted **365/365**; exact next is independent **`M3-CP4c-3-TB43-REV`**. PR #8 remains open, draft, and unmerged.

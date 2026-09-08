@@ -1,3 +1,32 @@
+## M3-CP4c3-TB43-EXEC — raw artifact-only classification — **CURRENT RAW RUNTIME / REVIEW PENDING / NON-STABLE**
+
+- **Execution authority:** immutable package108 source `531b517fb129425f113b5f811215f1d2b1939ee2`, artifact `10076272909`,
+  selector409, run/job `34280642422 / 102244347209`, result/log artifacts `10077594302 / 10077595162`.
+- **Observed set:** **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
+  zero selection mismatch, zero timeout, and all package/source/execution-view byte+mode censuses identical pre/post.
+- **`M3-CP4c3-TB40-EXEC-CAND-02` — RAW RECOVERED / REVIEW PENDING / NON-STABLE.** 390/393/406/407 all PASS and
+  each proves `branch=UncutCensus`, `censusPredicateExecuted=yes`, `terminalSubjectRelation=Outside`,
+  `sameDomainCorruptionRejected=yes`, `regionCertificationEvidenceBranchExecuted=yes`. This discharges the EXEC
+  non-vacuity measurement but does not semantically close the candidate before TB43-REV.
+- **366/367 owner — ACTIVE / RAW RECONFIRMED / REVIEW PENDING.** Both remain
+  `RegionSourceFaceOwningFragmentMissing`; expected orbit 1 is absent from complete present owner-orbit set `[2,3]`,
+  `regionOwningFragmentOrbitPresent=false`, terminal relation `Outside`. The producer census remains independently
+  non-empty (226 unlabelled faces / 9 components / 9 rows). No ownership/product correction occurred.
+- **Carried REDs:** 368 (`CellularityNotEstablished/origin=RotationSystemInconsistent`), 369 (`saturationUsed=true`),
+  370 (empty-network typed rejection mismatch), 374 (`atlasBuild=false`), and 398 (prescribed-sphere
+  `CellularityNotEstablished`) remain their prior separately owned regressions/candidates. TB43 recurrence creates no
+  new owner.
+- **Protected controls:** 311/312/314/315/356/357/404/408/409 PASS; ordinal385 publishes 300 established / 0
+  unavailable / 0 conflicting; retired `TraceArcDoesNotSeparateItsSides`, `UncutFaceComponentOrbitSeedNotUnique`,
+  and `RegionEulerCharacteristicNotOne` are absent.
+- **Stable-count rationale:** TB43 introduces no new RED ordinal and no accepted-prefix loss; the four protected
+  identities recovered mechanically while the remaining REDs are carried. EXEC is not independent semantic review,
+  so it does not create/merge/close/reprice stable events. Totals remain **47 events / 14 categories / 33 recurrences**,
+  debt **5**, packages **108**. Promoted runtime authority remains TB42 pending TB43-REV.
+- **Exact successor:** independent `M3-CP4c-3-TB43-REV`, evidence-only; no compile/new runtime/semantic source mutation first.
+
+---
+
 ## M3-CP4c3-CB48 — compile closeout — **CURRENT BUILD AUTHORITY / NON-STABLE / PACKAGE108 / TB43 NEXT**
 
 CB48 is runtime-free: no semantic ledger, event, category, recurrence, acceptance result or regression repricing was

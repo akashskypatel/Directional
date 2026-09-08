@@ -1,3 +1,26 @@
+## 2026-09-08 — `M3-CP4c-3-TB43-EXEC`: package108 raw runtime measures frozen 402/7 vector
+
+Artifact-only Test + Benchmark EXEC. Immutable package108 artifact `10076272909`, source
+`531b517fb129425f113b5f811215f1d2b1939ee2`, selector409. Authoritative run/job `34280642422 / 102244347209`
+succeeded; result/log artifacts `10077594302 / 10077595162`.
+
+Raw result is **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`, zero selection mismatch and zero timeout. 390/393/406/407 all PASS with Part XII
+non-vacuity receipts proving the real `P_U` census predicate executed, the terminal subject relation is `Outside`, the
+same-domain corruption was rejected, and the RegionCertification evidence branch executed. 366/367 remain RED at
+`RegionSourceFaceOwningFragmentMissing`, now with exact expected-orbit/present-owner-set evidence; the other five REDs remain
+carried under separate owners.
+
+No configure, compile, relink, generated discovery, benchmark, package/mode repair, or source/test/fixture/selector mutation
+occurred. Package/source/execution-view byte+mode censuses are identical before/after. EXEC does not promote itself or reprice
+stable accounting: totals remain **47 / 14 / 33**, debt **5**, packages **108**, and TB42 remains promoted pending review.
+
+Consumed stale-evidence cleanup before runtime removed superseded CB44/CB47 reports, CB48 plan, and TB39 EXEC report after their
+durable facts were retained. TB43 closeout retires the consumed TB43 execution plan and superseded CB48 build report. Exact
+next is independent evidence-only **`M3-CP4c-3-TB43-REV`**.
+
+---
+
 ## 2026-09-08 — `M3-CP4c-3-DEFN-R8` verification pass: Part XII upheld; index and supersession repaired
 
 Static verification of the delegated `M3-CP4c-3-DEFN-R8`. No runtime, no compile, no package operation, no

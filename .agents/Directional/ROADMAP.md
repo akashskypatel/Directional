@@ -12,16 +12,13 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 
 **Status date:** 2026-09-08 (**CP4c-2 CLOSED / ACCEPTED at 365/365; CP4c-3 OPEN.** TB42 remains promoted
 runtime authority: selector409, **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, package107, ownership 300/0/0.
-CB48 is compile-green as immutable package108 on source `531b517fb129425f113b5f811215f1d2b1939ee2`; no CB48 runtime has
-executed. Stable accounting remains 47 / 14 / 33, debt 5, packages 108. **NEXT: `M3-CP4c-3-TB43-EXEC`**,
-artifact-only on package108.)
+CB48 is compile-green as immutable package108 on source `531b517fb129425f113b5f811215f1d2b1939ee2`. TB43 raw artifact-only runtime measured **402 PASS / 7 RED**, accepted **365/365**, recovering 390/393/406/407 with Part XII receipts while 366/367/368/369/370/374/398 remain RED. Stable accounting remains 47 / 14 / 33, debt 5, packages 108 pending review. **NEXT: `M3-CP4c-3-TB43-REV`**, independent evidence-only review.)
 
 ---
 
 **Current CP4c-3 definition authority (2026-09-08):** `M3-CP4c-3-DEFN-R8` Part XII is frozen. TB42 remains
 runtime authority at selector409 **398 PASS / 11 RED**, accepted 365/365, package107. Part XII remains current
-definition authority. CB48 compiled the bounded domain-owned evidence correction as package108 without runtime or
-partition/builder unification. Exact next is **`M3-CP4c-3-TB43-EXEC`**, artifact-only on package108.
+definition authority. CB48 compiled the bounded domain-owned evidence correction as package108 without partition/builder unification. TB43 raw runtime measured the frozen 402/7 falsifier exactly and recovered the four protected census identities with non-vacuity receipts. Exact next is independent **`M3-CP4c-3-TB43-REV`**.
 
 ## 1. Where the project actually is
 
@@ -30,7 +27,7 @@ partition/builder unification. Exact next is **`M3-CP4c-3-TB43-EXEC`**, artifact
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB42 promoted** at 398 PASS / 11 RED, accepted **365/365**, selector409/package107. CB48/package108 is compile-green; **TB43-EXEC next** artifact-only |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB42 promoted** at 398 PASS / 11 RED, accepted **365/365**, selector409/package107. TB43 raw package108 runtime is **402 PASS / 7 RED**, accepted **365/365**; **TB43-REV next** |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -84,7 +81,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN.** Runtime authority **TB42**: **398 PASS / 11 RED**, accepted **365/365** on package107. CB48/package108 is compile-green with the Part XII evidence-domain correction and no runtime. **NEXT:** artifact-only `M3-CP4c-3-TB43-EXEC` on package108. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN.** Promoted runtime authority **TB42**: **398 PASS / 11 RED**, accepted **365/365** on package107. TB43 raw package108 runtime measured **402 PASS / 7 RED**, accepted **365/365** with 390/393/406/407 recovered under Part XII receipts. **NEXT:** independent `M3-CP4c-3-TB43-REV`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

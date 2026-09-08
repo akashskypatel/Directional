@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-CB48` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB43-EXEC` raw closeout.
 
 ---
 
@@ -29,6 +29,8 @@ Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable acc
 `531b517fb129425f113b5f811215f1d2b1939ee2`: compile run `34276935866` succeeded, package artifact
 `10076272909` has digest `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`, GMP/GMPXX is linked, and
 `runtimeExecution=false`. This build evidence does not supersede TB42 runtime authority.
+
+**Latest raw runtime is TB43-EXEC on package108**: run/job `34280642422 / 102244347209`, **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. This raw EXEC evidence is not promoted until independent TB43-REV.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -473,20 +475,20 @@ The frozen unchanged surface is accepted **365/365**, ordinals **311/312/314/315
 `fragmentCorners`, `fragmentOrbits`, cut selection and A2a′ cellularity semantics. 366/367 remain owned by the
 missing-fragment relation; Part XII adds observation only.
 
-### CB48 result and exact next turn — `M3-CP4c-3-TB43-EXEC`
+### TB43 raw result and exact next review — `M3-CP4c-3-TB43-REV`
 
-CB48 completed EE0–EE8 as a runtime-free Code + Build turn. The five-path patch introduced the typed
-`Inside | Outside | Partial | Unresolved` domain relation, exact failing-face owner-orbit membership evidence,
-producer-owned census predicates, same-domain corruption falsifiers, and deterministic non-vacuity receipts. It
-left selector409 and the frozen product/accepted surfaces unchanged.
+TB43 consumed immutable package108 unchanged and measured selector409 at **402 PASS / 7 RED / 0 SKIP**, accepted
+**365/365**, RED `[366,367,368,369,370,374,398]`. Run/job `34280642422 / 102244347209`; result/log artifacts
+`10077594302 / 10077595162`. No configure, compile, relink, generated discovery, package/mode repair, benchmark, or
+source/test/fixture/selector mutation occurred; package/source/execution-view censuses are identical pre/post.
 
-Compile run `34276935866` is green on exact source `531b517fb129425f113b5f811215f1d2b1939ee2`; package108 artifact
-`10076272909` is immutable build authority. No Directional runtime ran.
+390/393/406/407 all PASS with deterministic Part XII receipts proving the real `P_U` census predicate executed,
+`terminalSubjectRelation=Outside`, the same-domain corruption was rejected, and the RegionCertification evidence branch ran.
+366/367 remain RED at `RegionSourceFaceOwningFragmentMissing` with expected orbit 1 absent from present owner-orbit set `[2,3]`.
+The other five REDs remain carried separately.
 
-Exact next is artifact-only **`M3-CP4c-3-TB43-EXEC`** from
-`Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md`. TB43 must consume package108 unchanged and
-measure selector409. The **402 PASS / 7 RED / 0 SKIP** vector with carried RED
-`[366,367,368,369,370,374,398]` is only a falsifier; runtime must establish or refute it.
+This exactly matches the frozen TB43 falsifier, but EXEC does not promote or adjudicate it. **Exact next is independent
+`M3-CP4c-3-TB43-REV`**, evidence-only and runtime/compile-free.
 
 ## 4. Open candidates
 
@@ -495,8 +497,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | Candidate | State |
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
-| `M3-CP4c3-TB40-EXEC-CAND-02` | **IMPLEMENTED / COMPILE-GREEN IN CB48 / RUNTIME PENDING TB43 / NON-STABLE GATING** — producer-owned `P_U` predicates, typed subject relation and same-domain corruption falsifiers are compiled in package108; runtime has not yet proved recovery. |
-| `M3-CP4c3-TB39-EXEC-CAND-01` | **TB41 RAW RECONFIRMED / REVIEW PENDING / NON-STABLE / RP-01** — 366/367 stay beyond retired proxies at `RegionSourceFaceOwningFragmentMissing`; TB41 now names source face/orbit and owner census. |
+| `M3-CP4c3-TB40-EXEC-CAND-02` | **TB43 RAW RECOVERED / REVIEW PENDING / NON-STABLE GATING** — 390/393/406/407 PASS with producer-owned `P_U` predicate execution, typed `Outside` relation, same-domain corruption rejection and deterministic receipts; independent review owns semantic closure. |
+| `M3-CP4c3-TB39-EXEC-CAND-01` | **TB43 RAW RECONFIRMED / REVIEW PENDING / NON-STABLE / RP-01** — 366/367 remain at `RegionSourceFaceOwningFragmentMissing`; Part XII now proves expected orbit 1 is absent from present owner-orbit set `[2,3]` and classifies the terminal subject `Outside` the producer census. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |
@@ -620,8 +622,4 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, execute **`M3-CP4c-3-TB43-EXEC`** from
-`Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md` on immutable package108 artifact
-`10076272909` / source `531b517fb129425f113b5f811215f1d2b1939ee2`. This is artifact-only Test + Benchmark: rebuild nothing,
-repair nothing, preserve selector409, run every identity once per fresh process, and preserve raw RED evidence for
-independent review.
+After the durable start-of-turn checklist, perform independent **`M3-CP4c-3-TB43-REV`** from `Architecture_M3_CP4c3_TB43_EXEC_Report.md` and immutable result/log artifacts `10077594302 / 10077595162`. Review is evidence-only: no compile, no new runtime, no product/test/fixture/selector mutation. Adjudicate the protected Part XII recovery, 366/367 exact owner-orbit evidence, carried RED ownership, stable accounting and the exact successor.
