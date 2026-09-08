@@ -3631,3 +3631,4 @@ benchmarks/fixtures/*
 **/*.patch
 **/.obsidian/*
 **/.cache/*
+.playwright-cli
