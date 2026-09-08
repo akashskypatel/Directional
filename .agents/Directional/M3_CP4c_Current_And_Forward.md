@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-CB45` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB40-EXEC` raw closeout.
 
 ---
 
@@ -30,10 +30,11 @@ graph construction; each region boundary is one non-exterior face-walk orbit and
 `SurfaceCutGraphFaceCertificate`. **CB45 implements that contract in immutable package105**, source
 `0f09439893182235c382492583b82aa35f25045c`: the downstream certificate carries the exact upstream face authority,
 checked candidates re-derive it, source-support arithmetic is diagnostic only, and field regularity remains
-separate. Runtime proof is still pending TB40.
+separate. **TB40 mechanically executed package105 and falsified the required binding gate; independent review is pending.**
 
-Certified ownership remains **300 / 0 / 0** at current runtime authority. CP4c-3 remains **OPEN**. Stable accounting
-remains **46 events / 14 categories / 32 recurrences**, debt **5**; semantic packages are **105**.
+Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
+
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains last-adjudicated **46 events / 14 categories / 32 recurrences**, debt **5**; semantic packages **105**.
 
 ## 2. The accepted prefix is restored, and both CV measures are discharged
 
@@ -285,11 +286,7 @@ binding. This preserves 312/409. Ordinal315 moves its tamper target from proxy E
 311/314 and produced-witness proof helpers assert the exact 1:1 producer/consumer relation. Selector409 stays
 byte-frozen.
 
-**CB45 is complete / compile-green / runtime-free.** Package105 is immutable artifact `10057456162`, source
-`0f09439893182235c382492583b82aa35f25045c`; selector409 and the artifact-only harness remain byte-frozen.
-**Exact next turn: `M3-CP4c-3-TB40-EXEC`**, artifact-only Test + Benchmark under
-`Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`. It must require a non-vacuous 1:1
-region/upstream-face binding census in addition to accepted365/365 and protected identities.
+**TB40-EXEC has now exercised immutable package105.** The mechanically valid runtime is semantically RED: accepted 311/314/356/357 and protected 390/393/406/407 regress; 356/357 directly falsify exact region/upstream-face binding on regions 0/1. **Exact next: `M3-CP4c-3-TB40-REV`**, independent evidence-only adjudication. No compile/new runtime/semantic correction precedes it.
 
 ## 3.8 Part XI-A — what the bound certificate actually proves
 
@@ -323,7 +320,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB39-EXEC-CAND-01` | **IMPLEMENTED IN CB45 / RUNTIME PENDING TB40 / NON-STABLE / RP-01** — source-support Euler/connectivity fields are domain-explicit diagnostics and no longer region-disc authority; TB40 owns runtime verification. |
+| `M3-CP4c3-TB40-EXEC-CAND-01` | **NEW / HARD-GATE REGRESSION / REVIEW REQUIRED / UNPRICED** — accepted 311/314/356/357 RED; 356/357 falsify exact binding on regions 0/1. |
+| `M3-CP4c3-TB40-EXEC-CAND-02` | **NEW / PROTECTED-SURFACE REGRESSION / REVIEW REQUIRED / UNPRICED** — 390/393/406/407 RED at `regionFrontierComponentCount=0`. |
+| `M3-CP4c3-TB39-EXEC-CAND-01` | **IMPLEMENTED IN CB45 / TB40 RAW SUBCONDITION CONFIRMED / REVIEW PENDING / NON-STABLE / RP-01** — 366/367 no longer stop on retired region-disc proxy producers; review owns final disposition. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |
@@ -336,7 +335,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB34-REV-CAND-03` | **CLOSED** — open since TB34, now diagnosed to the cell: the region is a disc (`chiFull=1`) and the certificate drops 12 interior barrier edges against 16 vertices, netting −4. |
 | `M3-CP4c3-TB35-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — TB36 advanced 366/367 past `ClosedBeforeEnd` on `FaceWalkOrbit` while 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. Part IX's derived relation is confirmed in both directions. |
 | `M3-CP4c3-TB36-REV-CAND-01` | **REOPENED** — "the region is a disc" holds for the mechanical region under the **whole-face** reading only, and TB38 refutes that reading as a general criterion. Subsumed by `TB37-REV-CAND-01`. |
-| `M3-CP4c3-TB37-REV-CAND-01` | **IMPLEMENTED IN CB45 / RUNTIME PENDING TB40 / RP-01** — package105 binds each A2b region to the exact matching A2a′ face certificate and withdraws source-support proxy authority. Runtime resolution awaits TB40. |
+| `M3-CP4c3-TB37-REV-CAND-01` | **IMPLEMENTED IN CB45 / TB40 RAW FALSIFIER OBSERVED / REVIEW PENDING / RP-01** — 356/357 observe derived orbits 0/1 consuming certificate orbits 1/0; review owns classification/correction. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
@@ -451,22 +450,4 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, `M3-CP4c-3-TB40-EXEC` loads only the minimum authority:
-
-1. `ORIENTATION.md` — read first.
-2. `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md` — exact immutable execution contract.
-3. `Architecture_M3_CP4c3_CB45_Code_Build_Report.md` — package105 build/source authority.
-4. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current semantic runtime evidence.
-5. `M3_CP4c_Frozen_Definitions.md` Part XI / Part XI-A — normative region-disc binding authority.
-6. **this file** — §3.7/§3.8 and §4 for current candidate dispositions.
-7. `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`,
-   `LESSONS.md` (**118, 145, 148, 150, 152, 155, 156, 157** govern).
-8. `DESIGN.md` §7.2 / Amendment 13 and `EmbeddedGraphTopology.*` — producer authority and shared graph construction.
-9. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md`.
-
-The TB39 review record and consumed DEFN-R7 plan are historical and resolve through the folded-document index in
-`M3_CP4c_Consolidated_Record.md`. The superseded CB44 report and consumed CB45 plan were retired after their durable
-facts were preserved in the CB45 report and current records; the next REVIEW indexes those filenames.
-
-Exact next is artifact-only **`M3-CP4c-3-TB40-EXEC`** against immutable package105. TB40 may execute only the
-packaged binaries/harness and may not configure, compile, relink, repair or mutate source/test/fixture/selector bytes.
+After the durable start-of-turn checklist, exact next is independent **`M3-CP4c-3-TB40-REV`**. Load `ORIENTATION.md`, `Architecture_M3_CP4c3_TB40_EXEC_Report.md`, the frozen TB40 plan, CB45 report, TB39 EXEC report, Part XI/XI-A definitions, this file, tracker/TODO/changelog/selector manifest/lessons, and mandatory policies. Review the preserved raw TB40 evidence only; no compile, new runtime, package repair, or semantic source/test/fixture/selector mutation is authorized first.

@@ -116,78 +116,36 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB40-EXEC` — EXACT NEXT / Artifact-Only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB40-REV` — EXACT NEXT / Independent Evidence-Only Review
 
-CB45 is **CLOSED / COMPILE-GREEN / RUNTIME-FREE**. It implemented DEFN-R7 Part XI / Part XI-A actual-embedded face
-binding and froze immutable package105. No Directional runtime, test execution, benchmark, discovery/list/help/version
-command, or artifact-only gate ran in CB45.
+Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
 
-### Current immutable authorities
+### Review-critical evidence
 
-- semantic runtime authority remains **TB39**, package104 source
-  `8756cfe983bf7e05209f560d59a522a6b5b0674a`;
-- TB39 EXEC run/job `34177823202 / 101910682975`; result/log `10037931111 / 10037931384`;
-- selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
-- 312/409 and 390/393/404/406/407/408 PASS; ownership **300/0/0**; retired codes absent;
-- current immutable build authority is **CB45 package105**, source
-  `0f09439893182235c382492583b82aa35f25045c`;
-- package105 result artifact `10057456162` / `m3-cp4c3-cb45-result-34229976475`, ZIP SHA-256
-  `c9cd0397d22b7cc0c343838a90fdcfe649137fa37a985453778c04731049b99e`;
-- CB45 compile run/job `34229976475 / 102073447794`; persistent log artifact `10057456585`, ZIP SHA-256
-  `69c193b501dddfda1966106ec5c6ff5a3ca6e303e1598a9ea0030ef2660cb64f`;
-- packaged source archive SHA-256 `7d1cb457d1101e6addbadd732d783efdae956f61b9732b492c1b9063828a6472`;
-- stable accounting **46 / 14 / 32**, debt **5**, semantic packages **105**.
+- Accepted 311/314/356/357 are RED. 356/357 each publish complete non-vacuous rows, but regions0/1 have derived orbits `0/1` against certificate orbits `1/0`; regions2/3 match. 311 independently observes an orbit/certificate mismatch; 314's `PublishedCertificate` proof fails.
+- 366/367 advance beyond retired `RegionEulerCharacteristicNotOne` / `RegionInteriorDisconnected` to `RegionSourceFaceOwningFragmentMissing / RegionCertification`, but remain RED.
+- Protected 390/393/406/407 regress at `regionFrontierComponentCount=0`; 404/408 remain PASS.
+- Carried 368/369/370/374/398 stay on their existing raw owner surfaces.
+- Result/log artifacts `10064213251` (`c165ce0dda2c0bb7742ea6f9a6fd2580932596448892f5bd76f6d585ea031012`) / `10064214144` (`990a8f5f41ed5bfd21d5c818fd94240d6e6082c9548fb3561061debf59fa779c`).
+- Stable accounting is not repriced by EXEC: **46 / 14 / 32**, debt **5**, packages **105**.
 
-### What CB45 changed
+### Mandatory review scope
 
-`GlobalTopologyRegionDiscCertificate` now carries the exact matching upstream
-`SurfaceCutGraphFaceCertificate actualEmbeddedFace` plus separate field-regularity evidence. Region certification
-re-derives the current face-walk orbit from exact ordered boundary equality, requires unique upstream consumption,
-and the semantic digest consumes that authority. Checked candidates repeat the derivation after copy/mutation.
-
-`RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are no longer canonical A2b region-disc
-producers. Source-support connectivity/Euler/split/barrier values survive only as domain-explicit diagnostics.
-Part XI-A complex-level cellularity inputs are emitted once per complex; one independent binding row is emitted per
-region. Ordinal315 tampers a varying binding field.
-
-The first CB45 compile failed only because one test diagnostic formatter still referenced removed certificate
-members. No runtime had started. A bounded formatter-only repair produced final semantic source
-`0f09439893182235c382492583b82aa35f25045c`; the retry compiled/package-green with GMP/GMPXX.
-
-### Frozen TB40 contract
-
-Read `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md` and execute **only** immutable package105
-through the byte-frozen artifact-only harness, one selector identity per fresh process. TB40 must:
-
-- verify package/source/harness/selector hashes and pre-runtime byte+mode census;
-- execute all 409 selector identities exactly once in ordinal order;
-- require accepted **365/365**, ordinals **312/409 PASS**, and **390/393/404/406/407/408 PASS**;
-- require ownership **300/0/0**, retired-code silence, and unchanged owners for 368/369/370/374/398;
-- require a non-empty 1:1 region/upstream-face binding census for every creditable A2b witness;
-- require exactly one complex-level cellularity row per complex with
-  `graphComponents/sourceComponentCount/exteriorSize/boundaryLoops/graphEuler/sourceEuler`;
-- establish that 366/367 are not rejected solely by retired region-disc proxy producers;
-- prove package/source/execution-view bytes and modes are unchanged after runtime.
-
-TB40 records raw artifact-only evidence. It does **not** configure, compile, relink, repair, mutate source/tests/
-fixtures/selectors/package bytes, or semantically promote/reprice its own result.
+Read `Architecture_M3_CP4c3_TB40_EXEC_Report.md`, the frozen TB40 plan, CB45 package authority, TB39 runtime authority, and Part XI/XI-A definitions. Adjudicate `M3-CP4c3-TB40-EXEC-CAND-01` and `M3-CP4c3-TB40-EXEC-CAND-02`, classify product-vs-test-vs-definition ownership, decide stable accounting, and freeze one exact successor. **Do not rerun TB40, compile, repair package105, or mutate product/test/fixture/selector semantics before review.**
 
 ### Resume load order
 
-1. `ORIENTATION.md` — read first.
-2. `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md` — exact execution contract.
-3. `Architecture_M3_CP4c3_CB45_Code_Build_Report.md` — immutable package105 authority.
-4. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current semantic runtime authority.
-5. `M3_CP4c_Frozen_Definitions.md` Part XI / Part XI-A — normative region-disc authority.
-6. `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `Required_Green_Selector_Manifest.md`, `LESSONS.md` 118/145/148/150/152/155/156/157.
-8. mandatory policies/start checklist.
+1. `ORIENTATION.md`.
+2. `Architecture_M3_CP4c3_TB40_EXEC_Report.md`.
+3. `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`.
+4. `Architecture_M3_CP4c3_CB45_Code_Build_Report.md`.
+5. `Architecture_M3_CP4c3_TB39_EXEC_Report.md`.
+6. `M3_CP4c_Frozen_Definitions.md` Part XI / XI-A.
+7. current-forward, tracker, TODO, changelog, selector manifest, lessons, mandatory policies.
 
 ### Hard boundary
 
-This next turn is artifact-only Test + Benchmark. **No configure, compile, relink, package repair, source/test/
-fixture/selector mutation, or gate weakening is allowed.** Execute only the immutable CB45 package/harness and
-stop after preserving TB40 raw evidence for independent review/adjudication.
+Independent evidence-only review. No new Directional runtime, compile, package repair, or semantic source/test/fixture/selector mutation before adjudication.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

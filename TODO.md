@@ -26,32 +26,19 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB40-EXEC` (artifact-only Test + Benchmark) — PROVE CB45 BINDING AT RUNTIME
+## Current focus — `M3-CP4c-3-TB40-REV` (independent evidence-only review) — ADJUDICATE PACKAGE105 RED
 
-CB45 is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. Immutable package105 is source
-`0f09439893182235c382492583b82aa35f25045c`, artifact `10057456162`, package ZIP SHA-256
-`c9cd0397d22b7cc0c343838a90fdcfe649137fa37a985453778c04731049b99e`. Selector409 and the artifact-only harness
-remain byte-frozen.
+Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
 
-Current semantic runtime authority remains TB39: package104 / selector409 **402 PASS / 7 RED**, accepted
-**365/365**, RED `[366,367,368,369,370,374,398]`; ownership **300/0/0**. Stable accounting remains
-**46 / 14 / 32**, debt **5**; semantic package count is now **105**.
+**Exact next turn: `M3-CP4c-3-TB40-REV`.** Review must:
 
-**Exact next turn: `M3-CP4c-3-TB40-EXEC`.** Execute only immutable package105 under
-`Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`:
+- [ ] adjudicate accepted regressions 311/314/356/357 and the direct 356/357 orbit-binding falsifier;
+- [ ] adjudicate protected regressions 390/393/406/407 at `regionFrontierComponentCount=0`;
+- [ ] preserve the fact that 366/367 advanced beyond retired region-disc proxies without treating them as green;
+- [ ] preserve carried owners 368/369/370/374/398 unless evidence supports a disposition change;
+- [ ] classify product-vs-test-vs-definition ownership, stable accounting, and one exact successor.
 
-- [ ] verify package/result/source/harness/selector hashes and pre-runtime byte+mode census;
-- [ ] execute selector409 once in ordinal order, one identity per fresh process, through the immutable harness;
-- [ ] require accepted **365/365**, ordinals **312/409 PASS**, and **390/393/404/406/407/408 PASS**;
-- [ ] require ownership **300/0/0**, retired-code silence, and unchanged owners for 368/369/370/374/398;
-- [ ] require a non-empty 1:1 region/upstream-face binding census for every creditable A2b witness;
-- [ ] require exactly one complex-level cellularity row per complex with the Part XI-A inputs;
-- [ ] verify 366/367 are not rejected solely by retired region-disc proxy producers;
-- [ ] prove package/source/execution-view bytes and modes are unchanged after runtime.
-
-**Must not:** configure, compile, relink, repair, mutate source/tests/fixtures/selectors/package bytes, or weaken a
-frozen identity in TB40. TB40 records raw artifact-only evidence; semantic promotion and repricing belong to its
-review/adjudication edge.
+**Must not:** compile, rerun Directional, repair package105, mutate product/tests/fixtures/selectors, or promote TB40 before review.
 
 ## Carried forward from M1
 
@@ -89,7 +76,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB39` remains semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. CB45 package105 is compile-green and runtime-free; exact next is artifact-only **`M3-CP4c-3-TB40-EXEC`**.
+  CP4c-3 remains open. **`M3-CP4c-3-TB39` remains semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. TB40 package105 raw runtime is mechanically valid but not promoted; exact next is independent **`M3-CP4c-3-TB40-REV`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -100,7 +87,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 region-disc authority runtime proof:** source-face ownership remains **300 / 0 / 0**. DEFN-R7 froze the actual-embedded face binding and CB45 implemented/compiled it into package105 without runtime. TB40 now owns the non-vacuous runtime proof that every creditable A2b region consumes exactly one upstream A2a′ face certificate and that retired source-support proxies no longer own rejection.
+- [ ] **CP4c-3 region-disc authority adjudication:** TB40 falsified the package105 region→face binding on accepted torus witnesses while proving 366/367 no longer stop on retired source-support proxy producers. TB40-REV owns classification and successor definition/correction.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -128,4 +115,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count is **105**. `M3-CP4c-3-TB39` remains semantic runtime authority at 402/7, accepted 365/365. Current immutable build authority is CB45 package105 source `0f09439893182235c382492583b82aa35f25045c`; exact next is artifact-only **`M3-CP4c-3-TB40-EXEC`** under `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md`. PR #8 remains open, draft, and unmerged.
+Current totals remain **46 events / 14 categories / 32 recurrences** pending TB40 review; debt **5**, packages **105**. TB39 remains semantic runtime authority at 402/7, accepted 365/365. TB40 package105 raw runtime is 394/15, accepted 361/365, and is not promoted. Exact next is independent **`M3-CP4c-3-TB40-REV`**. PR #8 remains open, draft, and unmerged.

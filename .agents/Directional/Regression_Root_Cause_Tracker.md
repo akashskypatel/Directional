@@ -1,3 +1,13 @@
+## M3-CP4c3-TB40-EXEC — package105 binding runtime — **MECHANICALLY VALID / SEMANTIC GATE RED / REVIEW PENDING / NOT PROMOTED**
+
+- Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
+- **`M3-CP4c3-TB40-EXEC-CAND-01` — NEW / HARD-GATE REGRESSION / REVIEW REQUIRED / UNPRICED.** 311/314/356/357 regress. 356/357 publish complete non-vacuous rows but regions 0/1 observe derived orbits `0/1` against consumed certificate orbits `1/0`; regions 2/3 match. 311 independently observes an orbit/certificate mismatch; 314's published-certificate proof fails.
+- **`M3-CP4c3-TB40-EXEC-CAND-02` — NEW / PROTECTED-SURFACE REGRESSION / REVIEW REQUIRED / UNPRICED.** 390/393/406/407 regress on `regionFrontierComponentCount > 0`, observed 0.
+- 366/367 advance to `RegionSourceFaceOwningFragmentMissing / RegionCertification`; retired region-disc proxies no longer solely reject them. 368/369/370/374/398 remain carried.
+- No promotion/repricing: stable accounting stays **46 / 14 / 32**, debt **5**, packages **105**. Exact successor: independent `M3-CP4c-3-TB40-REV`; no compile/new runtime/semantic correction first.
+
+---
+
 ## M3-CP4c3-CB45 — actual-embedded face binding implementation — **COMPILE-GREEN / RUNTIME PENDING TB40 / NON-STABLE**
 
 - **Runtime authority is unchanged.** TB39 remains package104 / selector409 **402/7**, accepted **365/365**; stable

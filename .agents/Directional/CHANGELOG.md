@@ -1,3 +1,11 @@
+## 2026-09-08 — `M3-CP4c-3-TB40-EXEC`: package105 mechanically valid, binding gate RED
+
+Run/job `34246144235 / 102128633623` on immutable CB45 package105 source `0f09439893182235c382492583b82aa35f25045c` executed all **409/409** selector identities exactly once with zero selection mismatch/timeout. Raw result: **394 PASS / 15 RED**, accepted **361/365**, RED `[311,314,356,357,366,367,368,369,370,374,390,393,398,406,407]`. 312/409 and 404/408 PASS; ownership **300/0/0**; retired legacy codes are absent. TB40 is mechanically valid but **not promoted**; TB39 package104 remains semantic runtime authority pending independent review.
+
+The non-empty, non-uniform 356/357 binding census falsifies the exact relation on regions 0/1 (`derivedOrbit=0/1`, `certificateOrbit=1/0`); regions 2/3 match. 311 independently observes a published orbit mismatch and 314's published-certificate proof fails. Protected 390/393/406/407 regress at `regionFrontierComponentCount=0`. 366/367 advance past retired region-disc proxy producers to `RegionSourceFaceOwningFragmentMissing`; carried 368/369/370/374/398 remain unchanged.
+
+Result/log artifacts `10064213251` (`c165ce0d…1012`) / `10064214144` (`990a8f5f…779c`); ledger `b4ca8fc0…1f75`; failure-detail table `26b44b1d…16a8`. EXEC does not promote/reprice. Stable accounting stays **46 / 14 / 32**, debt **5**, packages **105**. Exact next: independent **`M3-CP4c-3-TB40-REV`**.
+
 ## 2026-09-08 — `M3-CP4c-3-CB45`: actual-embedded face binding implemented and package105 compile-green
 
 Runtime-free Code + Build under DEFN-R7 Part XI / Part XI-A. CB45 implements the exact A2b
