@@ -568,7 +568,20 @@ relations pass. Selector409 remains byte-frozen.
 **TB39-REV promotion:** independent review promotes this TB39 execution to the **current valid semantic runtime
 authority**. Selector409 bytes remain frozen; accepted authority is **365/365**, with current full selector colour
 vector **402 PASS / 7 RED** and RED `[366,367,368,369,370,374,398]`. Stable accounting remains 46 / 14 / 32.
-The review makes no selector membership change. **Exact successor:** static `M3-CP4c-3-DEFN-R7`.
+The review makes no selector membership change.
+
+**DEFN-R7 / CB45 / TB40 / CB46 / TB41 have since run on this same byte-frozen selector409.** CB45 implemented the
+Part XI actual-embedded face binding; TB40 confirmed the binding but lost accepted 311/314/356/357 because four
+oracles compared the production orbit ordinal against an independent enumeration's index; CB46 replaced that with a
+**content anchor** (`canonical_cycle_anchor`); and **TB41 recovered all four**, with `arc 0` appearing in both
+orientations so the census is non-uniform. **`M3-CP4c-3-TB41` is the promoted authority at 398 PASS / 11 RED,
+accepted 365/365, package106.** Ordinals 312/315/409 stayed PASS throughout.
+
+**Exact successor:** `M3-CP4c-3-CB47` under **EC7.1–EC7.7** of
+`Architecture_M3_CP4c3_TB41_Independent_Review_Record.md`. It authors no selector — **409 stays byte-frozen** — and
+is **measurement only**: publish the frontier partition's population, which locator resolved, and the failing face's
+domain membership. **Ordinals 390/393/406/407 are expected to remain RED**, because their oracle had never executed
+before and CB47 may not re-hide it behind an early return. **Accepted prefix 365/365 is a stop condition.**
 
 ## Separate lineage — M1
 

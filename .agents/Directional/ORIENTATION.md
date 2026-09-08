@@ -1,4 +1,4 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB40-REV`):** **TB40 broke the accepted prefix and is NOT promoted** — 394 PASS / 15 RED, accepted **361/365**. Runtime authority remains **TB39** at **402 PASS / 7 RED**, accepted **365/365**, package 104. **The binding is runtime CONFIRMED, and the oracles are wrong.** TB40's census publishes 4 regions against 4 face certificates, `upstreamMatchCount == 1` on every row, injective, arc counts matching, `discTopologyEstablished=true` throughout — everything DEFN-R7.1 asserts. **Only the orbit label disagrees**, on two rows that transpose, because production numbers orbits by **dart index** (`EmbeddedGraphTopology.cpp:1742`) while the test oracle numbers them by **sorted-incidence order** (`tests:1871`, iterated `:1880`). Two enumerations of one partition. Accepted 311/314/356/357 assert the foreign label; **`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`, one new stable event: 47 / 14 / 33.** 366/367 advanced off both retired proxies to `RegionSourceFaceOwningFragmentMissing` — a new frontier. Exact next is **`M3-CP4c-3-CB46`**: re-aim the oracles, do **not** touch the binding.
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB41-REV`):** **TB41 is PROMOTED** — selector **409**, **398 PASS / 11 RED**, **accepted 365/365 restored**, package **106**. **The content-anchor repair worked:** 311/314/356/357 recovered; the certificate carries `canonical_cycle_anchor` and the oracle re-derives it independently, over four distinct oriented anchors with `arc 0` in **both** orientations. **The region 0 ↔ orbit 1 transposition is still there and is now correctly a non-event**, confirming the TB40 diagnosis. **The four protected identities 390/393/406/407 were never asserting**: all guard their oracle behind an `UncutComponent` early return, so it had **never executed** — the pipeline advancing to `RegionCertification` ran it for the first time and it found `regionFrontierComponentCount = 0`. That is an assertion reaching its subject, **not a behaviour loss**, so there is nothing to restore. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB47`** — measure the census's population before repairing it again.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -117,13 +117,15 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB39`** (package 104). Selector **409**, **402 PASS / 7 RED**, **accepted
-1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership **300 / 0 / 0**.
+**Runtime authority — `M3-CP4c-3-TB41`** (package 106, promoted at TB41-REV). Selector **409**,
+**398 PASS / 11 RED**, **accepted 1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}.
+Certified ownership **300 / 0 / 0**; ordinals 311, 312, 314, 315, 356, 357, 404, 408, 409 PASS.
 
-**TB40 is NOT promoted.** Package 105 / source `0f09439893182235c382492583b82aa35f25045c`, run `34246144235`, is
-mechanically valid — 409/409 once each, zero mismatch, zero timeout, censuses identical — but semantically
-**394 PASS / 15 RED, accepted 361/365**. Accepted **311/314/356/357** and protected **390/393/406/407** regressed.
-**One new stable event: 47 / 14 / 33.**
+**Promotion reasoning, since it is a judgement call.** The operative rule — applied at TB39 and withheld at TB38
+and TB40 — is **mechanical validity plus an intact accepted prefix**; TB39 itself was promoted at 402/7, so an
+all-green ledger has never been required. TB41 satisfies both. Leaving authority on TB39 would point it at a source
+that no longer exists in the tree, making static review invalid evidence about the authority. **Promotion does not
+close or excuse the four protected REDs.**
 
 **The binding itself is runtime confirmed.** 4 regions ↔ 4 face certificates, one upstream match each, injective,
 arc counts matching, `discTopologyEstablished=true` and `fieldRegularity=true` on every row, complex inputs
@@ -296,33 +298,31 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Four accepted oracles assert a foreign orbit label.** — `M3-CP4c3-TB40-EXEC-CAND-01`, **STABLE / RP-05**;
-   owner `M3-CP4c-3-CB46` EB7.1.
+1. **The frontier census may have no subject at all.** — `M3-CP4c3-TB40-EXEC-CAND-02`, **RE-SCOPED / GATING**;
+   owner `M3-CP4c-3-CB47` (measure), then `M3-CP4c-3-DEFN-R8` (decide).
 
-   - The binding is **correct and runtime confirmed** (bijection, one match each, arc counts, disc established).
-   - Production numbers orbits by **dart index** (`EmbeddedGraphTopology.cpp:1742`); the test oracle numbers them
-     by **sorted-incidence order** (`tests:1871`, `:1880`). Orbits 0 and 1 transpose.
-   - Ordinals **311** (`:3254`), **314**, **356**, **357** compare the two. **Never match two partitions by
-     index** — the rule was already in §8, from ordinal 390's `censusCorrespondence`.
-   - **The arc-count control was blind**: regions 0 and 1 have equal arc counts. A control that cannot fail on the
-     case under test is not a control.
-   - **Fix:** re-aim at content — either narrow to bijection + arc count + disc, or (preferred) publish one
-     content-derived field on the face certificate so the label becomes checkable. `LESSONS.md` 158.
+   - **390/393/406/407 were never asserting.** All four guard `expect_later_region_frontier_evidence`
+     (`tests:4411`) behind an `UncutComponent` early return (`:11910`, `:12122`, `:14943`, `:14987`). The oracle
+     had **never executed**; the pipeline advancing to `RegionCertification` ran it for the first time.
+     **Not a behaviour loss — nothing to restore.** `LESSONS.md` 160.
+   - **CB46's locator broadening was right and could not have worked.** All three locators in
+     `region_frontier_components` (`GlobalTopologyPlan.cpp:667–706`) resolve through one object,
+     `frontier.partition.componentByFace`. Verified: the guard is benign, the success path carries the real
+     frontier (`:1505`), and the annotation does run on the certification path (`:2418–2420`).
+   - **Two live candidates, neither statically decidable.** Either the partition is **empty** — it is built over
+     `unlabeledFaces` (`:1341–1353`) and `:1338` calls it "only a consistency guard" now that ownership is total —
+     or the failing object is **outside its domain**, since `RegionSourceFaceOwningFragmentMissing` fires only on a
+     labelled trace-cut face (`:2020–2028`).
+   - **Three turns have now repaired a census without counting its population.** `LESSONS.md` 159.
+   - **CB47 measures**: `unlabeledFaceCount`, `frontierPartitionComponentCount`, `ownerConsistencyRowCount`, which
+     locator resolved, and the failing face's domain membership. **DEFN-R8** then decides whether a non-empty
+     census is even legitimate at `RegionCertification`.
 
-2. **A face certificate's orbit ordinal is not independently checkable.** — `M3-CP4c3-TB40-REV-CAND-01`,
-   **ACTIVE / ARCHITECTURAL**.
+2. **`RegionSourceFaceOwningFragmentMissing` is the live A2b frontier.** — `M3-CP4c3-TB40-REV-CAND-02`,
+   **ACTIVE / GATING**. 366/367 stop there, now publishing `regionOwningFragmentOrbit`. Measured, not corrected.
 
-   `SurfaceCutGraphFaceCertificate` publishes `orbit`, `boundaryWalkCount`, `boundaryArcCount`,
-   `discTopologyEstablished` (`SurfaceCutGraph.h:53–63`) — an ordinal meaningful only inside the producer's
-   enumeration, a constant, a length, and a complex-level bit. An independent consumer can verify the **bijection**
-   but not **which face** it holds. Third way the bound certificate carries less than its name suggests, after
-   Part XI-A §A.1 and §A.2.
-
-3. **`RegionSourceFaceOwningFragmentMissing` is the live A2b frontier.** — `M3-CP4c3-TB40-REV-CAND-02`,
-   **ACTIVE / GATING**.
-
-   366/367 advanced off both retired proxies exactly as Part XI §10 prediction 4 required. This is a **new
-   frontier, not a regression**. CB46 **measures** it; correcting it needs its own turn.
+3. **Ordinal 315 tampers only the orbit.** — `M3-CP4c3-TB41-REV-CAND-02`, **ACTIVE / HARDENING**. With a content
+   anchor now on the certificate, an **anchor** tamper is the stronger negative.
 
 4. **Frontier evidence still hangs off which failure code was raised.** Ordinals 390/393/406/407 all failed the
    frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
@@ -397,6 +397,20 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Before repairing a census, count its population.** Three consecutive turns fixed the wrong half of an evidence
+census: a proof obligation whose verifier passed over zero rows; a per-face certificate whose deciding field was one
+complex-level bit repeated N times; and a locator broadening over a partition that may contain nothing. Each time
+the consumption was debugged and **the population was never counted**. When a census comes back empty or uniform,
+measure how many things there were to find and whether the failing objects are inside that set's domain — before
+changing a lookup. `LESSONS.md` §4 159.
+
+**A guarded oracle that returns early is green without asserting, and the ledger cannot tell the difference.** Four
+protected identities wrapped their real check in `if (stage != "UncutComponent") { … return; }`. The stage was
+always `UncutComponent`, so the check never ran and all four reported PASS for the whole checkpoint. When an
+unrelated correction advanced the pipeline, they went RED together — **an assertion reaching its subject for the
+first time, not a behaviour loss**. Don't classify that as a regression, and make guarded oracles publish which
+branch they took. `LESSONS.md` §4 160.
 
 **An independent oracle's ordinals are foreign — it may assert content, cardinality and bijectivity, never an
 index.** A binding contract paired regions 1:1 with certified faces, and the census proved it: 4 against 4, one

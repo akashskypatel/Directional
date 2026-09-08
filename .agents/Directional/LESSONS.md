@@ -1978,6 +1978,25 @@ building any conclusion on it.**
      two regions had equal arc counts. Same family as `ORIENTATION.md` §8's "never match two partitions by index",
      recorded from ordinal 390's `censusCorrespondence`, and reproduced here **inside the contract written to stop
      one stage re-deriving what another already owns**.
+159. **Before repairing a census, establish that it has a subject.** Three consecutive turns tried to fix an
+     evidence census and each fixed the wrong half. The first froze a per-region proof obligation and the verifier
+     passed over a table with zero rows. The second bound a proof to a per-face certificate whose deciding field is
+     one complex-level bit stamped identically onto every face, so N rows carried one observation. The third
+     broadened which locator a frontier census consults - correctly, and for the right reason - while every locator
+     still resolved through a single partition that may contain nothing at all. **In each case the consumption was
+     debugged and the population was never counted.** Whenever a census comes back empty or uniform, the first
+     measurement is not "which lookup failed" but **"how many things were there to find, and are the failing
+     objects inside that set's domain"** - publish the population size, the domain rule, and which locator
+     resolved, before changing a single lookup.
+160. **An identity that returns early on a branch is green without asserting anything, and nothing distinguishes
+     that from a passing proof.** Four protected identities guarded their real oracle behind
+     `if (stage != "UncutComponent") { expect_...(); return; }`. For the whole checkpoint the stage *was*
+     `UncutComponent`, so the oracle never executed; the identities reported PASS throughout. The moment an
+     unrelated correction advanced the pipeline to a later stage, all four went RED at once - not because behaviour
+     broke, but because **an assertion reached its subject for the first time and found nothing there**. Two
+     consequences: a review must not classify such a transition as a regression, because there is no prior
+     behaviour to restore; and a guarded oracle should **publish which branch it took**, so "passed" and "did not
+     run" are distinguishable in the ledger rather than identical.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

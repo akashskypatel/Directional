@@ -1,3 +1,58 @@
+## M3-CP4c3-TB41-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / NON-STABLE / TB41 PROMOTED / ACCEPTED PREFIX RESTORED**
+
+- **Record:** `Architecture_M3_CP4c3_TB41_Independent_Review_Record.md`, measures **EC0–EC7**. Evidence-only.
+  `review_check.py authority 4cdffe5514ab9f747da38e74c57663ee8806efa6` — ALL CHECKS PASSED.
+
+- **EC0 — TB41 promoted; packages advance to 106.** Selector409, run `34256568679`, package106 `10066942690` /
+  source `4cdffe5514ab9f747da38e74c57663ee8806efa6`: **398 PASS / 11 RED**, **accepted 1–365 = 365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`. Promotion follows the project's operative rule — mechanical
+  validity plus an intact accepted prefix, the same rule applied at TB39 (402/7) and withheld at TB38/TB40. **It
+  does not close or excuse the four protected REDs**, which remain owned by the TB40 event.
+
+- **EC1 — EB7.1 discharged, and the repair is good.** 311/314/356/357 PASS via a **content anchor**
+  (`canonical_cycle_anchor`) carried on the certificate and independently re-derived. Four distinct oriented
+  anchors — `(0,Reverse)`, `(0,Forward)`, `(12,Reverse)`, `(24,Reverse)` — so **orientation is load-bearing** and
+  the census can disagree with itself (**EB7.4 discharged**). Arc counts now differ across rows (26/50/50/26), so
+  that control is no longer blind as it was at TB40. **The region 0 ↔ orbit 1 transposition is still present and
+  is now correctly a non-event** — direct confirmation of the TB40 diagnosis. **EB7.3 preserved**: 312/315/409
+  PASS, binding untouched.
+
+- **EC2 — the decisive reframe: those four oracles had never run.** 390/393/406/407 all take an early return when
+  `regionFrontierFailureStage == "UncutComponent"` (`tests:11910`, `:12122`, `:14943`, `:14987`), so
+  `expect_later_region_frontier_evidence` (`:4411`) **never executed in this checkpoint**. They were green **by not
+  asserting**. Now that the mechanical terminal failure moved to `RegionCertification`, the oracle ran for the
+  first time and found `regionFrontierComponentCount = 0`. **This is an assertion reaching its subject for the
+  first time, not a behaviour loss** — so "restore the previous behaviour" is not an available remedy.
+
+- **EC3 — why CB46 could not have worked.** CB46 correctly changed `region_frontier_components`
+  (`GlobalTopologyPlan.cpp:667–706`) from `if / else if` to three independent `if`s. But **all three locators
+  resolve through one object**, `frontier.partition.componentByFace`. Verified from source: the guard is **benign**
+  (`CertifiedSourceFaceOwnerConsistency.h:38–44` fills one row per partition component); the success path **does**
+  carry the real frontier (`:1505`); and the annotation **is** applied on the certification path (`:2418–2420`).
+  So the remaining candidates both concern the **censused set**: either `frontier.partition` is empty — it is
+  built over `unlabeledFaces` (`:1341–1353`) and the source comment at `:1338` says it is now only a consistency
+  guard since ownership is total at 300/300 — or the failing objects are outside its domain, since
+  `RegionSourceFaceOwningFragmentMissing` fires only on a **labelled, trace-cut** face (`:2020–2028`), which
+  `unlabeledFaces` excludes by construction. **This review does not choose; neither is decidable statically.**
+  What is established is the shape: **CB46 corrected which locator is consulted without establishing that the set
+  being censused is non-empty** — the third consecutive turn with that shape, after DEFN-R6.7's empty table
+  (`LESSONS.md` 155) and Part XI's uniform-bit census (`LESSONS.md` 157). `LESSONS.md` 159.
+
+- **EC4 — live frontier.** 366/367 remain at `RegionSourceFaceOwningFragmentMissing`, now publishing
+  `regionOwningFragmentOrbit`. Ownership controls hold: 404/408 PASS, `established=300 / unavailable=0 /
+  conflicting=0`.
+
+- **EC6 — accounting: NO NEW EVENT.** Accepted prefix is **365/365**; the four protected identities are above it,
+  were already inside the TB40 event's scope, and EC2 shows their assertion had never executed — repricing would
+  double-count TB40 and mis-describe it. **Totals remain 47 events / 14 categories / 33 recurrences**, debt **5**,
+  packages **106**. `M3-CP4c3-TB40-EXEC-CAND-01` and `M3-CP4c3-TB40-REV-CAND-01` are **CLOSED**;
+  `M3-CP4c3-TB40-EXEC-CAND-02` is **RE-SCOPED**.
+
+- **EC7 — exact successor `M3-CP4c-3-CB47`**, runtime-free, **measurement only**: measure the subject before
+  changing the census again.
+
+---
+
 ## M3-CP4c3-TB41-EXEC — package106 artifact-only runtime — **MECHANICALLY VALID / SEMANTIC GATE RED / REVIEW PENDING / NOT PROMOTED**
 
 - **Authority:** run/job `34256568679 / 102164030279`, immutable CB46 package106 artifact `10066942690`,
@@ -6516,43 +6571,52 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Current valid semantic runtime authority is **M3-CP4c-3-TB39**: semantic source
-`8756cfe983bf7e05209f560d59a522a6b5b0674a`, CB44 package `10036808934`, selector409, run `34177823202`,
-**402 PASS / 7 RED**, accepted **1-365 = 365/365 PASS**, ownership **300 / 0 / 0**. **TB40 broke the accepted
-prefix and is not promoted.** Stable totals are now **47 events / 14 categories / 33 recurrences**, debt **5**, M3
-packages **105** (a build fact only).
+Current valid semantic runtime authority is **M3-CP4c-3-TB41**: semantic source
+`4cdffe5514ab9f747da38e74c57663ee8806efa6`, immutable CB46 package `10066942690`, selector409, run `34256568679`,
+**398 PASS / 11 RED**, **accepted 1-365 = 365/365 PASS**, reds
+`[366,367,368,369,370,374,390,393,398,406,407]`, ownership **300 / 0 / 0**. Stable totals remain
+**47 events / 14 categories / 33 recurrences** - no new event, the accepted prefix is intact - debt **5**, M3
+packages **106**.
 
-**The binding is confirmed. The oracles are wrong.** TB40's census publishes 4 regions against 4 face
-certificates, `upstreamMatchCount == 1` on every row, an injective map, matching boundary-arc counts, and
-`discTopologyEstablished=true` throughout - everything DEFN-R7.1 asserts. **Only the orbit label disagrees**, on
-two rows that transpose, because production numbers orbits by **dart index**
-(`EmbeddedGraphTopology.cpp:1742`) while the test oracle numbers them by **sorted-incidence order**
-(`tests/FieldAlignedCurveNetworkTests.cpp:1871`, iterated `:1880`). Two enumerations of one partition. CB45's
-lookup by `faceCertificate.orbit == owningOrbit` is correct; the re-aimed assertions at ordinals 311 (`:3254`),
-314, 356 and 357 are not. This is `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`, and `ORIENTATION.md` §8 already
-carries the rule: **never match two partitions by index.**
+**The content-anchor repair worked.** Ordinals 311/314/356/357 recovered: the certificate now carries
+`canonical_cycle_anchor` and the oracle re-derives it independently. Four distinct oriented anchors, with `arc 0`
+appearing in **both** orientations, so the census is non-uniform and orientation is load-bearing. **The region 0 <->
+orbit 1 transposition is still present and is now correctly a non-event**, confirming the TB40 diagnosis. The
+binding, `region_orbit` and the orbit-keyed lookup were untouched, and 312/315/409 still reject.
 
-**And the label cannot be checked independently.** `SurfaceCutGraphFaceCertificate` publishes an ordinal, a
-constant, a length and a complex-level bit - nothing content-derived - so an independent oracle can verify the
-bijection but not which face it holds.
+**The four protected identities were never asserting.** 390/393/406/407 all take an early return when
+`regionFrontierFailureStage == "UncutComponent"`, so `expect_later_region_frontier_evidence` had **never executed**
+in this checkpoint. The mechanical terminal failure moving to `RegionCertification` ran it for the first time, and
+it found `regionFrontierComponentCount = 0`. **That is an oracle reaching its subject, not a behaviour loss**, so
+there is no previous behaviour to restore.
 
-**Exact next: `M3-CP4c-3-CB46` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
-**EB7.1-EB7.7**. Re-aim the four oracles at content rather than an index, choosing and justifying either
-**(a)** narrowing to the bijection + arc count + disc, or **(b) preferred** publishing one content-derived field on
-the face certificate so the label becomes checkable (EB7.1); **decouple `regionFrontierComponentCount` from the
-retired failure codes** so 390/393/406/407 return to PASS - the DEFN-R4 rule applied to its last site (EB7.2);
-**do not touch the binding**, `region_orbit`, the orbit-keyed lookup, or ordinals 312/409/315 (EB7.3); ensure the
-census **can disagree with itself** on the field under test, since equal arc counts on regions 0 and 1 made that
-control blind (EB7.4); restore accepted **365/365** and 390/393/406/407 to PASS (EB7.5); **measure, do not
-correct**, `RegionSourceFaceOwningFragmentMissing` (EB7.6); `TB41` re-executes (EB7.7).
+**CB46's correction could not have worked.** It rightly made `region_frontier_components` consume every locator
+instead of the first, but all three locators resolve through one object - `frontier.partition.componentByFace`.
+The guard is benign, the success path carries the real frontier, and the annotation does run on the certification
+path; so the open question is the **censused set**: either the partition is empty now that ownership is total, or
+the failing trace-cut face lies outside a partition built over `unlabeledFaces`. **CB46 changed which locator is
+consulted without establishing that the set being censused is non-empty** - the third consecutive turn with that
+shape. `LESSONS.md` 159.
 
-**Falsification.** Accepted prefix **365/365** and **390/393/406/407 PASS** are stop conditions. **312, 409 and 315
-must stay PASS** - if 315 stops failing on a tampered `actualEmbeddedFace.orbit`, the repair weakened the binding
-instead of the oracle. If 356/357's census still shows `derivedOrbit != certificateOrbit` under repair (a), the
-assertion was narrowed but the census was not. If 366/367 move off `RegionSourceFaceOwningFragmentMissing`, CB46
-exceeded EB7.6. If any repair requires touching `region_orbit` or the orbit-keyed lookup, EB7.3 is violated.
+**Exact next: `M3-CP4c-3-CB47` - Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`**, under
+**EC7.1-EC7.7**, **measurement only**: publish `unlabeledFaceCount`, `frontierPartitionComponentCount` and
+`ownerConsistencyRowCount` - the number three turns of census repair have never established (EC7.1); publish
+**which locator resolved** and whether it survived the guard, because a census that cannot say why it is empty is
+not a diagnostic (EC7.2); publish whether the failing source face, and how many of its region's faces, are in
+`componentByFace` (EC7.3); **do not change the oracle, the partition or the census contract**, and in particular do
+not re-hide the oracle behind an early return (EC7.4); **do not touch the binding or the content anchor** (EC7.5);
+keep accepted at 365/365 and 311/314/356/357 PASS (EC7.6); `TB42` re-executes and **`DEFN-R8`** is pre-named to
+decide whether a non-empty frontier census is even legitimate at `RegionCertification` (EC7.7).
 
-**Prohibited:** changing the binding, `region_orbit` or the orbit-keyed lookup; reintroducing a source-support
-Euler or connectivity proxy as a topology gate; correcting `RegionSourceFaceOwningFragmentMissing`; weakening
-ordinals 312/409/315/398; touching 368/369/370/374; any accepted-identity removal or selector byte change; any
-Directional runtime in CB46.
+**Falsification.** Accepted prefix **365/365** and 311/314/356/357 PASS are stop conditions. **CB47 adds
+diagnostics only, so 390/393/406/407 are expected to remain RED** - a turn that makes them pass has weakened the
+oracle. If `frontierPartitionComponentCount == 0`, the census has no subject once ownership is total and DEFN-R8
+must decide whether the oracle is legitimate rather than whether publication is broken. If it is non-zero and no
+locator resolves, the fix is a domain question. If a locator resolves but the guard rejects it, EC3's guard
+analysis is wrong and must be re-derived.
+
+**Prohibited:** weakening `expect_later_region_frontier_evidence` or restoring an early return that re-hides it;
+changing the binding, `region_orbit`, the orbit-keyed lookup or the content anchor; widening `unlabeledFaces` or
+altering the frontier partition's domain; correcting `RegionSourceFaceOwningFragmentMissing`; weakening ordinals
+312/315/409/398; touching 368/369/370/374; any accepted-identity or selector byte change; any Directional runtime
+in CB47.

@@ -116,71 +116,85 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB41-REV` — EXACT NEXT / Independent Review + Plan
+## Mandatory next turn — `M3-CP4c-3-CB47` — EXACT NEXT / Code + Build, runtime-free — MEASUREMENT ONLY
 
-`M3-CP4c-3-TB41-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC GATE RED / NOT PROMOTED**. Do not retry it.
+`M3-CP4c-3-TB41-REV` adjudicated TB41 and **promoted it**.
 
 ### Current authority
 
-- **Promoted semantic runtime authority remains `M3-CP4c-3-TB39`** — package104 / selector409,
-  **402 PASS / 7 RED**, accepted **365/365**.
-- **TB41 mechanical runtime authority:** immutable CB46 package106 semantic source
-  `4cdffe5514ab9f747da38e74c57663ee8806efa6`, run/job `34256568679 / 102164030279`,
-  result/log artifacts `10068290377 / 10068291332`, selector409 **398 PASS / 11 RED**, accepted **365/365**,
-  RED `[366,367,368,369,370,374,390,393,398,406,407]`.
-- Selector409 LF SHA-256:
-  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
-- TB41 ledger SHA-256:
-  `5b1e663e2855d453cf461847ed463b7539f9d0e945b4c40468eab64ae3e57a99`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**,
-  packages **106**, pending review.
+- **`M3-CP4c-3-TB41`** — selector **409**, **398 PASS / 11 RED**, **accepted 1–365 = 365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`; CB46 package `10066942690` / source
+  `4cdffe5514ab9f747da38e74c57663ee8806efa6`, run `34256568679`.
+- Ordinals **311, 312, 314, 315, 356, 357, 404, 408, 409 PASS**; ownership **300 / 0 / 0**.
+- **Stable accounting 47 events / 14 categories / 33 recurrences — no new event**, debt **5**, packages **106**.
+- Definition authority: **Part XI, amended by Part XI-A.** The binding and the content anchor stand.
 
-Owning execution report:
-`.agents/Directional/Architecture_M3_CP4c3_TB41_EXEC_Report.md`.
+### What TB41 established
 
-### What TB41 established mechanically
+**The content-anchor repair worked (EB7.1).** 311/314/356/357 recovered. The certificate carries
+`canonical_cycle_anchor` and the oracle re-derives it independently, over four distinct oriented anchors —
+`(0,Reverse)`, `(0,Forward)`, `(12,Reverse)`, `(24,Reverse)`. `arc 0` appears in **both** orientations, so the
+census is non-uniform and orientation is load-bearing (**EB7.4 discharged**), and arc counts now differ across rows
+(26/50/50/26) so that control is no longer blind. **The region 0 ↔ orbit 1 transposition is still present and is
+now correctly a non-event** — confirming the TB40 diagnosis. **EB7.3 preserved**: 312/315/409 PASS, binding
+untouched.
 
-- 311/314/356/357 all recover under CB46's content-derived oriented-anchor contract.
-- 356/357 publish four unique, non-uniform oriented anchors, exactly one upstream match each, matching boundary
-  counts, disc=true and field=true.
-- 312/315/409 PASS; the production binding falsifiers remain live.
-- **390/393/406/407 remain RED**, all because `regionFrontierComponentCount > 0` observes **0**. CB46's broader
-  frontier-evidence collection did not recover the protected surface.
-- 366/367 remain `RegionSourceFaceOwningFragmentMissing / RegionCertification` and publish
-  `sourceFace=10,11,79`, `regionOwningFragmentOrbit=1`, 74 face-owner rows. The named face row itself is 3 local
-  fragments / 3 owners / expected 3 / deficit 0.
-- 404/408 PASS; ownership remains 300 established / 0 unavailable / 0 conflicting.
-- 368/369/370/374/398 remain separately owned carried RED surfaces.
-- Retired region-disc and legacy proxy codes remain absent.
-- No build/relink/repair/benchmark/source/test/fixture/selector mutation occurred.
+**The four protected identities were never asserting (EC2).** 390/393/406/407 all guard
+`expect_later_region_frontier_evidence` (`tests:4411`) behind an `UncutComponent` early return (`:11910`,
+`:12122`, `:14943`, `:14987`). The oracle had **never executed**; the pipeline advancing to `RegionCertification`
+ran it for the first time and it found `regionFrontierComponentCount = 0`. **That is an assertion reaching its
+subject, not a behaviour loss — there is nothing to restore.** `LESSONS.md` 160.
 
-Two preceding workflow attempts (`34256050160`, `34256247287`) were control-plane failures before Directional
-runtime and are not semantic evidence. Attempt 3 reused immutable package106 unchanged.
+**CB46's correction was right and could not have worked (EC3).** All three locators in
+`region_frontier_components` (`GlobalTopologyPlan.cpp:667–706`) resolve through one object,
+`frontier.partition.componentByFace`. Verified: the guard is **benign**
+(`CertifiedSourceFaceOwnerConsistency.h:38–44`), the success path carries the **real** frontier (`:1505`), and the
+annotation **does** run on the certification path (`:2418–2420`). **Two live candidates:** the partition may be
+**empty** — built over `unlabeledFaces` (`:1341–1353`), which `:1338` calls "only a consistency guard" now that
+ownership is total — or the failing object may be **outside its domain**, since
+`RegionSourceFaceOwningFragmentMissing` fires only on a labelled trace-cut face (`:2020–2028`). Neither is
+statically decidable. **Three turns have now repaired a census without counting its population.** `LESSONS.md` 159.
 
-### TB41-REV boundary
+### CB47 boundary — EC7.1–EC7.7
 
-Perform **independent evidence-only review and planning**:
+**Code + Build**, runtime-free, GMP/GMPXX linked. **Measurement only.**
 
-1. verify the raw TB41 ledger/artifacts and frozen-plan witness requirements independently;
-2. adjudicate why 390/393/406/407 still have zero frontier components after CB46 and assign the exact owner;
-3. adjudicate the 366/367 source-face/orbit/owner-census relation; do not treat the 3/3 face-level count as proof
-   that the required region-owned fragment exists;
-4. decide whether any new stable event/category/recurrence is justified and whether TB41 can be promoted;
-5. preserve the separate owners of 368/369/370/374/398;
-6. update review-owned `ORIENTATION.md`, regression/current/forward/handoff records, and perform mandatory REVIEW
-   document consolidation;
-7. issue the exact next bounded corrective turn.
+- **EC7.1** — publish `unlabeledFaceCount`, `frontierPartitionComponentCount`, `ownerConsistencyRowCount`.
+- **EC7.2** — publish **which locator resolved** (`uncutFaceComponent` / `sourceFace` / `regionSweep` /
+  `singleComponentFallback`) and whether it survived the guard.
+- **EC7.3** — publish whether `failure.sourceFace`, and how many of the failing region's source faces, are in
+  `componentByFace`.
+- **EC7.4** — **do not change the oracle, the partition or the census contract**, and do not re-hide the oracle
+  behind an early return.
+- **EC7.5** — do not touch the binding, `region_orbit`, the orbit-keyed lookup or the content anchor.
+- **EC7.6** — accepted stays **365/365**; 311/314/356/357 stay PASS; selector **409** byte-frozen; no work on
+  366/367/368/369/370/374/398; no change to region construction, ownership, `fragmentCorners`, cut selection or
+  A2a′ cellularity semantics.
+- **EC7.7** — `M3-CP4c-3-TB42` re-executes; **`M3-CP4c-3-DEFN-R8`** is pre-named and owns whether a non-empty
+  frontier census is legitimate at `RegionCertification` at all.
 
-**No compile, new runtime, product/source/test/fixture/selector mutation, or retry is authorized before this
-review.** The review must stop after adjudication/plan closeout.
+**Falsifiers, stated before the build.** Accepted **365/365** and 311/314/356/357 PASS are stop conditions.
+**CB47 adds diagnostics only, so 390/393/406/407 are expected to remain RED** — a turn that makes them pass has
+weakened the oracle. If `frontierPartitionComponentCount == 0`, the census has no subject and DEFN-R8 decides
+legitimacy rather than publication. If it is non-zero and no locator resolves, the fix is a domain question. If a
+locator resolves but the guard rejects it, EC3's guard analysis is wrong.
+
+**Must not:** weaken `expect_later_region_frontier_evidence` or restore an early return that re-hides it; change
+the binding, `region_orbit`, the orbit-keyed lookup or the content anchor; widen `unlabeledFaces` or alter the
+frontier partition's domain; correct `RegionSourceFaceOwningFragmentMissing`; weaken ordinals 312/315/409/398;
+touch 368/369/370/374; remove an accepted identity or change a selector byte; execute any Directional runtime.
 
 ### Context Load Plan
 
-`load_next`: Independent review + plan guidance. Read `ORIENTATION.md`, this handoff,
-`M3_CP4c_Current_And_Forward.md`, `Architecture_M3_CP4c3_TB41_EXEC_Report.md`,
-`Architecture_M3_CP4c3_CB46_Code_Build_Report.md`, the frozen TB41 plan, TB40 independent review record,
-`M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, and governing
-review/consolidation policies.
+`load_next`: Code + Build guidance.
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.10 and §3.11.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB41_Independent_Review_Record.md` — **EC0–EC7**.
+3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB41_EXEC_Report.md` — **current runtime authority**.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+6. `.agents/Directional/LESSONS.md` — mandatory; **155, 157, 159, 160** govern this change.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

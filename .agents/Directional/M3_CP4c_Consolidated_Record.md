@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB40-REV`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **TB39 is current semantic runtime authority** on package104 / selector409 at **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; certified ownership is **300/300**. Stable accounting remains **46 events / 14 categories / 32 recurrences**, debt **5**, packages **104**. TB38 remains historical regression evidence only. TB39 emitted **513** non-vacuous certificate rows and proved the reduced/full projection arithmetic, including the decisive opposite-sign `fullMinusReduced` values on torus and mechanical. **DEFN-R7 Part XI supersedes DEFN-R6.3/R6.4 as region-disc authority:** the A2b region is the exact non-exterior actual-embedded face-walk orbit already certified by A2a′, and the downstream certificate consumes the matching `SurfaceCutGraphFaceCertificate`; source-support Euler/connectivity/split/barrier values are diagnostics. CB45 implemented that binding and **TB40 confirmed it** — 4 regions against 4 face certificates, one upstream match each, injective, arc counts matching, disc established throughout — but **TB40 is not promoted**: accepted 311/314/356/357 and protected 390/393/406/407 regressed because four re-aimed oracles compare the production orbit ordinal against their own independent enumeration's index. Two enumerations of one partition; **one new stable event, 47 / 14 / 33** (`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`), packages 105. Exact next is runtime-free **`M3-CP4c-3-CB46`** — re-aim the oracles, do **not** touch the binding.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB41-REV`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **`M3-CP4c-3-TB41` is the current valid semantic runtime authority** — selector 409, **398 PASS / 11 RED**, **accepted 365/365**, package **106**, ownership **300/300**. The Part XI actual-embedded face binding is runtime confirmed, and CB46's **content anchor** (`canonical_cycle_anchor`) makes the bound face identifiable to an independent consumer, answering Part XI-A §A.1. The four remaining protected REDs are **not a behaviour loss**: 390/393/406/407 guard their frontier oracle behind an `UncutComponent` early return, so it had never executed until the pipeline advanced to `RegionCertification`, where it found `regionFrontierComponentCount = 0`. The live A2b frontier is `RegionSourceFaceOwningFragmentMissing` at 366/367. Stable accounting **47 events / 14 categories / 33 recurrences** — no new event — debt **5**. Exact next is runtime-free **`M3-CP4c-3-CB47`**, measurement only, then `TB42` and the pre-named `DEFN-R8`.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -1492,6 +1492,35 @@ indexes and every byte-frozen selector.
 DEFN-R6.3/R6.4 cannot remain the region-disc authority and freezes `M3-CP4c-3-DEFN-R7` to append the replacement
 contract. Until that definition is written, current runtime evidence remains TB39's restored reduced rejection at
 366/367; no proxy is silently promoted by documentation cleanup.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB41-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB41_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in EC0–EC7:** the
+promotion reasoning, the content-anchor census with its four oriented anchors, the reframe of 390/393/406/407 as a
+never-executed oracle, and the three verified facts that rule out the locator/guard/annotation explanations.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md` | 212 | superseded review authority — EB0-EB7. Diagnosed the orbit-label defect, priced the stable event, and froze the content-anchor repair that TB41 confirmed |
+| `Architecture_M3_CP4c3_TB40_EXEC_Report.md` | 42 | superseded runtime evidence — package105, 394 PASS / 15 RED, accepted 361/365; never promoted |
+| `Architecture_M3_CP4c3_CB45_Code_Build_Report.md` | 179 | consumed build report — implemented the Part XI binding correctly; its deliberate retention at TB40-REV has served its purpose now that TB41 proved the binding |
+| `Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md` | 160 | consumed evidence contract — the frozen TB41 gate, discharged by the TB41 EXEC report |
+
+**Folded here:** 4 documents, 593 lines. **Running total: 130 documents, 24,944 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB41_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 398 PASS / 11 RED with accepted 365/365 on package106),
+`Architecture_M3_CP4c3_TB41_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB46_Code_Build_Report.md` (**the build that produced the current package**, and the record
+that CB46's locator broadening was correct in itself), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md` (**Part XI operative, amended by Part XI-A**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Definition-authority note.** Part XI and Part XI-A are **unchanged and further confirmed**: the content anchor
+answers Part XI-A §A.1's complaint that the face certificate carried nothing content-derived by which an
+independent consumer could identify a face. `M3-CP4c3-TB40-REV-CAND-01` is **CLOSED** on that basis.
 
 ### Consolidated on 2026-09-08 at `M3-CP4c-3-TB40-REV`
 
