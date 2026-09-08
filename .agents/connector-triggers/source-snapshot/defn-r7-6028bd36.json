@@ -1,0 +1,6 @@
+{
+  "turn": "M3-CP4c-3-DEFN-R7",
+  "purpose": "Trigger exact source snapshot for static definition/review analysis",
+  "pre_marker_authority": "6028bd3611ea1a82e8632f829635555fd59e2faa",
+  "runtimeExecution": false
+}
