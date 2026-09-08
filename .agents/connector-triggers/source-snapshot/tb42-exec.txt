@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB42-EXEC
-requested_head=406307e1c28f72d5e331f76ebc69906be2de38f0
-purpose=exact start-of-turn source snapshot
-runtime_execution=false

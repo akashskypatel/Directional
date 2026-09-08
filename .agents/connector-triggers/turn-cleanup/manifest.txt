@@ -1,4 +1,0 @@
-# M3-CP4c-3-TB42-EXEC temporary-state inventory
-.agents/connector-triggers/source-snapshot/tb42-exec.txt
-.agents/connector-triggers/tb42-exec/trigger.txt
-.agents/connector-triggers/tb42-exec-closeout/apply.txt
