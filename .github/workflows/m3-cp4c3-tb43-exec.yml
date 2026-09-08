@@ -1,0 +1,153 @@
+name: M3 CP4c3 TB43 Artifact Only Runtime
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-tb43-exec-20260908.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb43-exec
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-tb43-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb43-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact harness authority
+        uses: actions/checkout@v4
+        with:
+          ref: 531b517fb129425f113b5f811215f1d2b1939ee2
+          fetch-depth: 1
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Materialize TB43 no-timeout harness
+        shell: bash
+        env:
+          EXPECTED_HARNESS_SHA256: aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3
+        run: |
+          set -euo pipefail
+          source_harness=.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh
+          test "$(sha256sum "$source_harness" | awk '{print $1}')" = "$EXPECTED_HARNESS_SHA256"
+          target="${RUNNER_TEMP}/m3-cp4c3-tb43-harness.sh"
+          cp "$source_harness" "$target"
+          python3 - "$target" <<'PY'
+          from pathlib import Path
+          import sys
+          p = Path(sys.argv[1])
+          text = p.read_text()
+          timeout_line = '      timeout -k 5s 180s \\\n'
+          if text.count(timeout_line) != 1:
+              raise SystemExit('expected per-identity timeout line not found exactly once')
+          text = text.replace(timeout_line, '')
+          source_need = ': "${EXPECTED_SOURCE_SHA:?}"\n'
+          source_add = source_need + ': "${EXPECTED_SOURCE_ARCHIVE_SHA256:?}"\n'
+          if text.count(source_need) != 1:
+              raise SystemExit('source authority insertion point mismatch')
+          text = text.replace(source_need, source_add)
+          archive_need = '[[ -f "$source_archive" ]] || fail_orchestration \'source archive absent\'\n'
+          archive_add = archive_need + '[[ "$(sha_file "$source_archive")" == "$EXPECTED_SOURCE_ARCHIVE_SHA256" ]] || fail_orchestration \'source archive digest mismatch\'\n'
+          if text.count(archive_need) != 1:
+              raise SystemExit('source archive check insertion point mismatch')
+          text = text.replace(archive_need, archive_add)
+          selector_need = '[[ "$selector_sha" == "$EXPECTED_SELECTOR_SHA256" ]] || fail_orchestration "selector digest mismatch: $selector_sha"\n'
+          selector_add = selector_need + '''accepted_selector="$SOURCE/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt"\n[[ -f "$accepted_selector" ]] || fail_orchestration 'accepted selector absent'\n[[ "$(grep -cve '^[[:space:]]*$' "$accepted_selector")" -eq "$ACCEPTED_PREFIX_COUNT" ]] || fail_orchestration 'accepted selector count mismatch'\nhead -n "$ACCEPTED_PREFIX_COUNT" "$selector" > "${ROOT}/selector-prefix.txt"\ncmp -s "${ROOT}/selector-prefix.txt" "$accepted_selector" || fail_orchestration 'accepted selector prefix mismatch'\n'''
+          if text.count(selector_need) != 1:
+              raise SystemExit('selector insertion point mismatch')
+          text = text.replace(selector_need, selector_add)
+          p.write_text(text)
+          PY
+          chmod 700 "$target"
+          ! grep -Fq 'timeout -k 5s 180s' "$target"
+          sha256sum "$target" | tee "${RUNNER_TEMP}/tb43-tailored-harness.sha256"
+
+      - name: Execute immutable package108 selector409
+        id: runtime
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+          TURN_ID: M3-CP4c-3-TB43-EXEC
+          ARTIFACT_ID: '10076272909'
+          EXPECTED_ARTIFACT_NAME: m3-cp4c3-cb48-package108-result-34276935866
+          EXPECTED_PROVIDER_DIGEST: sha256:a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612
+          EXPECTED_ZIP_SHA256: a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612
+          EXPECTED_SOURCE_SHA: 531b517fb129425f113b5f811215f1d2b1939ee2
+          EXPECTED_SOURCE_ARCHIVE_SHA256: 2bce00134c172973225bbe44e87a2708477bde5fed2d531b8d0b9636945fb7c3
+          SELECTOR_RELATIVE_PATH: .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+          EXPECTED_SELECTOR_COUNT: '409'
+          EXPECTED_SELECTOR_SHA256: eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e
+          ACCEPTED_PREFIX_COUNT: '365'
+        run: |
+          set -euo pipefail
+          bash "${RUNNER_TEMP}/m3-cp4c3-tb43-harness.sh" --execute
+
+      - name: Verify protected Part XII PASS receipts
+        if: always() && steps.runtime.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="${RUNNER_TEMP}/M3-CP4c-3-TB43-EXEC-result"
+          ledger="$result/ledger.tsv"
+          test -f "$ledger"
+          out="$result/protected-part-xii-receipts.tsv"
+          printf 'ordinal\tresult\treceipt_present\texpected_receipt\n' > "$out"
+          for ordinal in 390 393 406 407; do
+            row="$(awk -F '\t' -v o="$ordinal" 'NR>1 && $1==o {print; exit}' "$ledger")"
+            test -n "$row"
+            status="$(printf '%s\n' "$row" | cut -f6)"
+            raw="$result/raw/ordinal-$(printf '%03d' "$ordinal").log"
+            expected="m3Cp4c3R8Receipt;ordinal=${ordinal};branch=UncutCensus;censusPredicateExecuted=yes;terminalSubjectRelation=Outside;sameDomainCorruptionRejected=yes;regionCertificationEvidenceBranchExecuted=yes"
+            present=no
+            grep -Fxq "$expected" "$raw" && present=yes
+            printf '%s\t%s\t%s\t%s\n' "$ordinal" "$status" "$present" "$expected" >> "$out"
+            if [[ "$status" == PASS && "$present" != yes ]]; then
+              echo "invalid PASS without required Part XII receipt at ordinal $ordinal" >&2
+              exit 91
+            fi
+          done
+          cat "$out"
+
+      - name: Upload TB43 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb43-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M3-CP4c-3-TB43-EXEC-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB43 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb43-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/M3-CP4c-3-TB43-EXEC.log
+            ${{ runner.temp }}/tb43-tailored-harness.sha256
+          if-no-files-found: error
+          retention-days: 14
