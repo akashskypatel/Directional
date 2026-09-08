@@ -1,5 +1,7 @@
 {
   "turn": "M3-CP4c-3-CB44",
   "operation": "compile-only",
-  "source_sha": "8756cfe983bf7e05209f560d59a522a6b5b0674a"
+  "source_sha": "8756cfe983bf7e05209f560d59a522a6b5b0674a",
+  "attempt": 2,
+  "reason": "caller permission ceiling corrected to match observer reusable"
 }
