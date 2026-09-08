@@ -26,32 +26,45 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB42-REV` (independent evidence-only review) — EXEC COMPLETE
+## Current focus — `M3-CP4c-3-DEFN-R8` (definition turn, static) — PART XII, THE CENSUS'S DOMAIN
 
-`M3-CP4c-3-TB42-EXEC` is **COMPLETE / ARTIFACT-ONLY / EVIDENCE PRESERVED / NOT PROMOTED BY EXEC**.
+`M3-CP4c-3-TB42-REV` adjudicated TB42, **promoted it**, and closed the frontier-census question to further
+measurement.
 
-- Exact semantic source: `5dacce6019ea34316c48743f3033d2bb5c26281a`; immutable package107 artifact `10070788592`.
-- Runtime run `34265561941`, workload job `102193966106` completed successfully as orchestration.
-- Result artifact `10071763480`; log artifact `10071764085`.
-- Selector409: **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED
-  `[366,367,368,369,370,374,390,393,398,406,407]`.
-- Protected controls 311/314/356/357, 312/315/409, and 404/408 all PASS; ownership publication remains
-  **300 established / 0 unavailable / 0 conflicting**.
-- 390/393/406/407 each remain RED with `regionFrontierComponentCount=0` and publish the complete CB47 EC7 row:
-  `unlabeledFaceCount=226`, `frontierPartitionComponentCount=9`, `ownerConsistencyRowCount=9`,
-  `regionFrontierLocator=none`, `regionFrontierLocatorSurvivedGuard=none`,
-  `regionFrontierFailureSourceFaceInPartition=false`, failing-region source-face count `10`, in-partition count `0`.
-- No configure, compile, relink, generated discovery, package repair, selector/fixture/source mutation, or benchmark ran.
+- **`M3-CP4c-3-TB42` is the current valid semantic runtime authority** — selector **409**,
+  **398 PASS / 11 RED / 0 SKIP**, **accepted 365/365**, package107. RED set and ledger hash identical to TB41.
+- Ordinals **311, 312, 314, 315, 356, 357, 404, 408, 409 PASS**; ownership **300 / 0 / 0**.
 
-The promoted semantic authority remains TB41 until independent review decides otherwise. TB42-EXEC made no
-classification, promotion, regression-accounting change, definition change, or corrective plan.
+**CB47 was diagnostics-only, proved by artifact** (identical ledger hash, changed failure-detail digest).
+
+**The measurement settles it.** `unlabeledFaceCount=226`, `frontierPartitionComponentCount=9`,
+`ownerConsistencyRowCount=9`, `regionFrontierLocator=none`, failure source face in partition `false`, failing
+region **10** source faces of which **0** are in the partition. **The partition is not empty — it is disjoint from
+the failing object.** No locator can resolve, the guard is never reached, and the benign-guard prediction is
+confirmed by `9 == 9`. **A domain mismatch, not an empty set or a locator bug.**
+
+**Three of the four identities name the uncut-component census explicitly**, and that partition covers unlabelled
+faces by construction. **The `UncutComponent` early return was the domain guard, written as a stage check.**
+
+Stable accounting remains **47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**, packages
+**107**. CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run independent **`M3-CP4c-3-TB42-REV`** against the preserved TB42-EXEC evidence. The implementation/orchestration
-loop stops completely at this boundary. Review owns the frozen EC7 classification matrix, `M3-CP4c-3-DEFN-R8`
-decision, regression-accounting disposition, required `ORIENTATION.md` currency update, document consolidation, and
-any successor plan. Do not run additional runtime, compile, or implementation work before that review.
+Run **`M3-CP4c-3-DEFN-R8`**, a static **definition** turn appending **Part XII**:
+
+- [ ] **ED7.1** state the uncut-component census's **domain** normatively;
+- [ ] **ED7.2** decide what a `RegionCertification` failure must publish instead;
+- [ ] **ED7.3** require a **domain predicate, never a stage string**;
+- [ ] **ED7.4** restate each identity's obligation so each still **fails** within its own domain;
+- [ ] **ED7.5** decide together with the two-partitions candidates, or say why separable;
+- [ ] **ED7.6** fix the unchanged surface;
+- [ ] **ED7.7** freeze `M3-CP4c-3-CB48` and the `TB43-EXEC` gate.
+
+**Must not:** weaken the four identities into unconditional passes; widen the early return; change the partition's
+domain; correct `RegionSourceFaceOwningFragmentMissing`; **spend another CB measuring what TB42 already measured**;
+change an accepted identity or selector byte; run any Directional runtime. **Accepted prefix 365/365 is a stop
+condition.**
 
 ## Carried forward from M1
 
@@ -128,4 +141,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences** — CB47 introduced no runtime event — debt **5**, packages **107**. **`M3-CP4c-3-TB41` remains the promoted semantic runtime authority** at 398/11 with accepted **365/365**; package107 is compile-green and runtime-free. Exact next is artifact-only **`M3-CP4c-3-TB42-EXEC`**, followed by independent **`M3-CP4c-3-TB42-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences** — no new event at TB42 — debt **5**, packages **107**. **`M3-CP4c-3-TB42` is the promoted semantic runtime authority** at 398/11 with accepted **365/365**, on package107. The frontier census is measured and the remaining question is normative. Exact next is static **`M3-CP4c-3-DEFN-R8`** appending Part XII. PR #8 remains open, draft, and unmerged.

@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB41-REV`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **`M3-CP4c-3-TB41` is the current valid semantic runtime authority** — selector 409, **398 PASS / 11 RED**, **accepted 365/365**, package **106**, ownership **300/300**. The Part XI actual-embedded face binding is runtime confirmed, and CB46's **content anchor** (`canonical_cycle_anchor`) makes the bound face identifiable to an independent consumer, answering Part XI-A §A.1. The four remaining protected REDs are **not a behaviour loss**: 390/393/406/407 guard their frontier oracle behind an `UncutComponent` early return, so it had never executed until the pipeline advanced to `RegionCertification`, where it found `regionFrontierComponentCount = 0`. The live A2b frontier is `RegionSourceFaceOwningFragmentMissing` at 366/367. Stable accounting **47 events / 14 categories / 33 recurrences** — no new event — debt **5**. Exact next is runtime-free **`M3-CP4c-3-CB47`**, measurement only, then `TB42` and the pre-named `DEFN-R8`.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB42-REV`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **`M3-CP4c-3-TB42` is the current valid semantic runtime authority** — selector 409, **398 PASS / 11 RED / 0 SKIP**, **accepted 365/365**, package **107**, ownership **300/300**; RED set and ledger hash identical to TB41. The Part XI actual-embedded face binding and CB46's content anchor are runtime confirmed. **The remaining frontier is a domain mismatch:** the uncut-component census holds **226 unlabelled faces in 9 components** while the failing region holds **10 faces, 0 of them in the partition**, so no locator resolves and the guard is never reached. Three of the four affected identities name that census explicitly, and their `UncutComponent` early return was a **domain guard written as a stage check**. The live A2b frontier remains `RegionSourceFaceOwningFragmentMissing` at 366/367. Stable accounting **47 events / 14 categories / 33 recurrences** — no new event — debt **5**. Exact next is static **`M3-CP4c-3-DEFN-R8`** appending Part XII; **no further CB may be spent measuring the census**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -1492,6 +1492,35 @@ indexes and every byte-frozen selector.
 DEFN-R6.3/R6.4 cannot remain the region-disc authority and freezes `M3-CP4c-3-DEFN-R7` to append the replacement
 contract. Until that definition is written, current runtime evidence remains TB39's restored reduced rejection at
 366/367; no proxy is silently promoted by documentation cleanup.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB42-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB42_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in ED0–ED7:** the
+promotion evidence, the EC7 measurement row (226 / 9 / 9, locator `none`, 0-of-10), the refutation of the
+empty-partition candidate, the confirmation of the domain mismatch, and the reading of the `UncutComponent` early
+return as a domain guard written as a stage check.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB41_Independent_Review_Record.md` | 236 | superseded review authority — EC0-EC7. Promoted TB41, confirmed the content-anchor repair, reframed 390/393/406/407 as a never-executed oracle, and froze the EC7 measurement that TB42 answered |
+| `Architecture_M3_CP4c3_TB41_EXEC_Report.md` | 202 | superseded runtime authority — TB41, 398 PASS / 11 RED, accepted 365/365, package106 |
+| `Architecture_M3_CP4c3_CB46_Code_Build_Report.md` | 157 | consumed build report — the content-anchor repair and the locator broadening; both adjudicated, the first confirmed and the second shown correct but insufficient |
+| `Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md` | 137 | consumed evidence contract — the frozen TB42 gate, discharged by the TB42 EXEC report |
+
+**Folded here:** 4 documents, 732 lines. **Running total: 134 documents, 25,676 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB42_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 398 PASS / 11 RED with accepted 365/365 on package107, and the EC7 measurement rows
+that DEFN-R8 must reason from), `Architecture_M3_CP4c3_TB42_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB47_Code_Build_Report.md` (**the build that produced the current package**),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part XI operative, amended by Part XI-A**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Definition-authority note.** Part XI and Part XI-A are unchanged. **Part XII appends next**, and its subject is
+not the binding but the **domain of the uncut-component frontier census** and what a `RegionCertification` failure
+must publish instead.
 
 ### Consolidated on 2026-09-08 at `M3-CP4c-3-TB41-REV`
 

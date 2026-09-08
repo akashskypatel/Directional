@@ -1,3 +1,56 @@
+## 2026-09-08 — `M3-CP4c-3-TB42-REV`: TB42 promoted; the frontier census is disjoint from the failing object
+
+Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
+build/selector mutation. `review_check.py authority 5dacce6019ea34316c48743f3033d2bb5c26281a` passed.
+
+**ED0 — TB42 promoted; packages advance to 107.** Selector **409**, run `34265561941`, package107 `10070788592`:
+**398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED
+`[366,367,368,369,370,374,390,393,398,406,407]` — **identical to the promoted TB41 baseline**, same ledger SHA-256
+`5b1e663e…`. **EC7.4 discharged by artifact**: an identical ledger hash beside a changed failure-detail digest
+(`f2b3cb59…` vs `82b7a0e8…`) is the "same verdicts, richer evidence" receipt, and the oracle was not re-hidden.
+
+**ED1 — the measurement settles EC3 completely.** All four protected identities published the identical row:
+`unlabeledFaceCount=226`, `frontierPartitionComponentCount=9`, `ownerConsistencyRowCount=9`,
+`regionFrontierLocator=none`, `regionFrontierLocatorSurvivedGuard=none`, failure source face in partition `false`,
+failing-region source faces **10**, of which **0** are in the partition.
+
+- **"The partition is empty" is REFUTED** — 226 unlabelled faces across 9 components.
+- **"The failing object is outside the domain" is CONFIRMED and is stronger than stated** — not just the face,
+  **the entire failing region** is absent, all 10 of its faces being labelled.
+- **The guard analysis is confirmed** — `ownerConsistencyRowCount == frontierPartitionComponentCount == 9`, the
+  one-row-per-component relation predicted from `CertifiedSourceFaceOwnerConsistency.h:38–44`; the guard is benign
+  and was never reached.
+- **No locator resolved**: `uncutFaceComponent` unset, `sourceFace` misses (labelled), the region sweep misses (all
+  10 labelled), and the single-component fallback cannot fire at 9 components.
+
+**The census subject exists and is disjoint from the failing object — a domain mismatch, not an empty set, not a
+locator bug, not a guard bug.**
+
+**ED2 — the identities' names disclose their domain.** 390 `UncutFaceComponentBoundaryOrbitAttribution…`, 406
+`UncutComponentCensusNamesThePartitionItDescribes…`, 407
+`InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`, 393
+`MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual`. The uncut-component partition covers
+**unlabelled faces by construction** (`GlobalTopologyPlan.cpp:1341–1353`). **The `UncutComponent` early return was
+the domain guard, expressed as a stage check** — the pipeline advancing to `RegionCertification` removed the
+**precondition**, not the guard. `LESSONS.md` 161. Ordinal 407 spans **both partitions**, placing these four inside
+the long-open two-partitions-of-one-mesh problem.
+
+**ED3 — nothing left to measure.** The remaining question is normative and belongs to `DEFN-R8`, pre-named at
+TB41-REV: is the uncut-component census the right evidence for a certification-stage failure at all; if not, what
+is; how is the domain expressed as a **predicate rather than a stage string**; and what must the four identities
+assert instead **without becoming vacuous**.
+
+**ED6 — accounting: NO NEW EVENT.** Accepted prefix 365/365 and the RED set identical to TB41 — nothing changed
+state. **Totals remain 47 events / 14 categories / 33 recurrences**, debt **5**, packages **107**.
+`M3-CP4c3-TB40-EXEC-CAND-02` is **MEASURED / DEFINITION PENDING** and **no further CB may be spent measuring it**;
+`M3-CP4c3-TB41-REV-CAND-01` is **PROMOTED TO THE DECIDING QUESTION**; the two-partitions candidates are
+**RE-LINKED** to it.
+
+**Consolidation.** Folded the TB41 review record and EXEC report, the CB46 build report, and the consumed TB42
+plan — 4 documents, 732 lines.
+
+**Exact next: `M3-CP4c-3-DEFN-R8`** — a static definition turn appending **Part XII**, under ED7.1–ED7.7.
+
 ## 2026-09-08 — `M3-CP4c-3-TB42-EXEC`: package107 executed artifact-only; evidence preserved for independent review
 
 Execution-only Test + Benchmark subturn. No configure, compile, relink, generated discovery, package repair,

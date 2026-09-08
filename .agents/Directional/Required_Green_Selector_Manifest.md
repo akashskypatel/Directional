@@ -577,11 +577,23 @@ oracles compared the production orbit ordinal against an independent enumeration
 orientations so the census is non-uniform. **`M3-CP4c-3-TB41` is the promoted authority at 398 PASS / 11 RED,
 accepted 365/365, package106.** Ordinals 312/315/409 stayed PASS throughout.
 
-**Exact successor:** `M3-CP4c-3-CB47` under **EC7.1–EC7.7** of
-`Architecture_M3_CP4c3_TB41_Independent_Review_Record.md`. It authors no selector — **409 stays byte-frozen** — and
-is **measurement only**: publish the frontier partition's population, which locator resolved, and the failing face's
-domain membership. **Ordinals 390/393/406/407 are expected to remain RED**, because their oracle had never executed
-before and CB47 may not re-hide it behind an early return. **Accepted prefix 365/365 is a stop condition.**
+**CB47 discharged that successor and TB42 answered it.** Selector409 stayed byte-frozen at `eea6d8c2…`; TB42's
+ledger hash is **identical to TB41's** while the failure-detail digest changed, so CB47 was diagnostics-only as
+required and the oracle was not re-hidden. **`M3-CP4c-3-TB42` is the promoted authority at 398 PASS / 11 RED,
+accepted 365/365, package107.**
+
+**The frontier census is measured and closed to further measurement.** The uncut-component partition holds **226
+unlabelled faces in 9 components**; the failing region holds **10** source faces of which **0** are in the
+partition. **A domain mismatch, not an empty set** — three of the four affected identities name that census
+explicitly, and their `UncutComponent` early return was a **domain guard written as a stage check**.
+
+**Exact successor:** `M3-CP4c-3-DEFN-R8` — a **static definition turn** appending **Part XII**, which authors no
+selector and touches no source. It states the census's domain, decides what a `RegionCertification` failure must
+publish instead, requires a **domain predicate rather than a stage string**, and restates ordinals
+**390/393/406/407** so each still **fails** when its own census is broken within its own domain. **Widening the
+early return to make them pass is prohibited**, and the implementing turn it freezes, `M3-CP4c-3-CB48`, must
+publish per identity **which branch it took** so "passed" and "did not run" stay distinguishable. **Selector 409
+stays byte-frozen and accepted prefix 365/365 is a stop condition.**
 
 ## Separate lineage — M1
 

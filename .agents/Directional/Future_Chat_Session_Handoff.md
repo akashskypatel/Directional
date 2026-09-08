@@ -116,81 +116,85 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB42-REV` — EXACT NEXT / independent evidence-only review
+## Mandatory next turn — `M3-CP4c-3-DEFN-R8` — EXACT NEXT / definition turn, static, appends Part XII
 
-`M3-CP4c-3-TB42-EXEC` is **COMPLETE / ARTIFACT-ONLY / EVIDENCE PRESERVED / NOT PROMOTED BY EXEC**.
-The implementation/orchestration loop stops completely at this independent-review boundary.
+`M3-CP4c-3-TB42-REV` adjudicated TB42, **promoted it**, and closed the frontier-census question to further
+measurement.
 
-### Current authority and latest raw evidence
+### Current authority
 
-- **Promoted semantic runtime authority remains TB41** pending independent review: selector 409, **398 PASS / 11 RED**,
-  accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`; ownership **300 / 0 / 0**.
-- **Immutable build authority:** package107, exact source `5dacce6019ea34316c48743f3033d2bb5c26281a`, compile run
-  `34262805758`, package artifact `10070788592`.
-- **Latest raw runtime evidence:** TB42-EXEC run `34265561941`, workload job `102193966106`, result artifact
-  `10071763480` (`sha256:a862d93b34be4439919be56938f3318b551b902484f6f8ede7776d0f41b3f86f`), log artifact
-  `10071764085` (`sha256:57dcfdbddd6e571c11d565a1ffaaa3bc3014ea4fb299e48bb9cea2f644598336`).
-- TB42-EXEC selector result: **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, exact RED set unchanged from TB41.
-- Protected controls 311/314/356/357, 312/315/409, 404/408 PASS; certified owner publication is
-  **300 established / 0 unavailable / 0 conflicting**.
-- Stable accounting is unchanged by EXEC: **47 events / 14 categories / 33 recurrences**, debt **5**, packages **107**.
-  TB42-REV owns any accounting disposition.
+- **`M3-CP4c-3-TB42`** — selector **409**, **398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`; CB47 package `10070788592` / source
+  `5dacce6019ea34316c48743f3033d2bb5c26281a`, run `34265561941`. RED set and ledger hash **identical to TB41**.
+- Ordinals **311, 312, 314, 315, 356, 357, 404, 408, 409 PASS**; ownership **300 / 0 / 0**.
+- **Stable accounting 47 events / 14 categories / 33 recurrences — no new event**, debt **5**, packages **107**.
+- Definition authority: **Part XI, amended by Part XI-A.** **Part XII appends next.**
 
-### TB42-EXEC EC7 evidence — raw measurements only
+### What TB42 established
 
-For each of 390/393/406/407, the existing protected assertion records `regionFrontierComponentCount=0` and CB47
-publishes the same complete row:
+**CB47 was diagnostics-only, proved by artifact** — ledger hash identical to TB41's while the failure-detail digest
+changed. The oracle was not re-hidden; 390/393/406/407 stayed RED as required.
 
-`unlabeledFaceCount=226;frontierPartitionComponentCount=9;ownerConsistencyRowCount=9;regionFrontierLocator=none;regionFrontierLocatorSurvivedGuard=none;regionFrontierFailureSourceFaceInPartition=false;regionFrontierFailureRegionSourceFaceCount=10;regionFrontierFailureRegionSourceFacesInPartitionCount=0`
+**The EC7 measurement, identical on all four identities:**
 
-TB42-EXEC made **no interpretation** of this row and did not promote, redefine, weaken, correct, or reclassify the
-oracle. Exact identity-level evidence and digests are retained in
-`Architecture_M3_CP4c3_TB42_EXEC_Report.md` and artifacts `10071763480` / `10071764085`.
+```text
+unlabeledFaceCount = 226   frontierPartitionComponentCount = 9   ownerConsistencyRowCount = 9
+regionFrontierLocator = none   survivedGuard = none   failure source face in partition = false
+failing-region source faces = 10   of which in partition = 0
+```
 
-### TB42-REV boundary
+- **"The partition is empty" is REFUTED** — 226 unlabelled faces in 9 components.
+- **"Outside the domain" is CONFIRMED and stronger** — **the entire failing region** is absent, all 10 of its
+  faces being labelled.
+- **The guard is benign**, confirmed by `9 == 9` (`CertifiedSourceFaceOwnerConsistency.h:38–44`), and was never
+  reached. No locator resolved; the single-component fallback cannot fire at 9 components.
 
-Independent TB42-REV must review the immutable TB42 evidence and the classification matrix frozen in
-`Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md`. It owns:
+> **The census subject exists and is disjoint from the failing object — a domain mismatch, not an empty set, not a
+> locator bug, not a guard bug.**
 
-- interpretation of the four EC7 rows and the pre-named `M3-CP4c-3-DEFN-R8` decision;
-- whether TB42 evidence is promoted or remains non-authoritative relative to TB41;
-- regression-accounting disposition and any candidate/stable tracker updates;
-- required `ORIENTATION.md` review-turn currency update;
-- mandatory review-turn document consolidation;
-- any successor corrective/definition plan.
+**The identities' names disclose their domain.** Three of the four name the **uncut-component** census explicitly,
+and that partition covers unlabelled faces by construction (`GlobalTopologyPlan.cpp:1341–1353`). **The
+`UncutComponent` early return was the domain guard, written as a stage check**; the pipeline advancing removed the
+precondition, not the guard. `LESSONS.md` 161. Ordinal 407 spans **both partitions**, placing these inside the
+long-open two-partitions problem.
 
-No additional implementation, compile, runtime execution, or orchestration is authorized before that independent review.
+### DEFN-R8 boundary — Part XII
 
-### Process note
+**Static.** No runtime, no compile, no package, no selector or product mutation.
 
-This CB47 web session began repository/doc connector reads before explicitly selecting the mandatory `READ_MODE`.
-The miss was detected and corrected to `READ_MODE=snapshot` before semantic source work. The exact source snapshot
-was then resolved/frozen and used for all implementation. This is a lesson-152 compliance miss, not semantic/build
-or runtime evidence.
+- **ED7.1** — state the uncut-component census's **domain** normatively; cite `:1341–1353` and the TB42 numbers.
+- **ED7.2** — decide what a `RegionCertification` failure must publish instead, naming object and fields;
+  `regionOwningFragmentOrbit` is the likely seed.
+- **ED7.3** — require a **domain predicate, never a stage string**. General rule, not a local fix.
+- **ED7.4** — restate each identity's obligation so each still **fails** when its own census is broken within its
+  own domain. **Widening the early return is prohibited.**
+- **ED7.5** — decide with `M3-CP4c3-TB26-REV-CAND-04` / `M3-CP4c3-DEFN-R3-CAND-01`, or say why separable.
+- **ED7.6** — unchanged: accepted 365/365; ordinals 311/312/314/315/356/357/404/408/409; selector 409 byte-frozen;
+  the Part XI binding, `region_orbit`, the orbit-keyed lookup and the content anchor; the partition's domain;
+  region construction, ownership, `fragmentCorners`, cut selection, A2a′ cellularity semantics.
+- **ED7.7** — freeze `M3-CP4c-3-CB48` with falsifiers, then the artifact-only `M3-CP4c-3-TB43-EXEC` gate.
+
+**Falsifiers to carry into CB48.** Accepted **365/365** and 311/312/314/315/356/357/404/408/409 PASS are stop
+conditions. **If 390/393/406/407 pass because the assertion no longer runs on any input, the oracle was hidden
+again, not repaired** — CB48 must publish per identity which branch it took and why (`LESSONS.md` 160). If any of
+the four cannot be made to fail on a deliberately broken census within its own domain, the restatement is vacuous
+and the turn halts. If the repair needs `unlabeledFaces` widened, the question returns to definition.
+
+**Must not:** weaken the four identities into unconditional passes; widen the early return; change the frontier
+partition's domain; correct `RegionSourceFaceOwningFragmentMissing`; **spend another CB measuring what TB42 has
+already measured**; change any accepted identity or selector byte; execute any Directional runtime.
 
 ### Context Load Plan
 
-```yaml
-load_next:
-  - references/turns/TB-REVIEW.md
-conditional_modules:
-  - trigger: github_connector / evidence inspection / review documentation
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB42_EXEC_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_CB47_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB41_EXEC_Report.md
-  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - .agents/Directional/Required_Green_Selector_Manifest.md
-  - .agents/Directional/LESSONS.md
-  - .agents/Directional/TOOL_USE_CONSERVATION_POLICY.md
-do_not_preload:
-  - sibling turn files
-  - uncited historical reports
-  - research/provenance/examples
-```
+`load_next`: definition-turn guidance (DEFN absorbs REVIEW + PLAN).
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.11 and §3.12.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB42_Independent_Review_Record.md` — **ED0–ED7**.
+3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**; Part XII appends.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB42_EXEC_Report.md` — current runtime authority and the EC7 rows.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+6. `.agents/Directional/LESSONS.md` — mandatory; **159, 160, 161** govern this turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

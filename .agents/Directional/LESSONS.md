@@ -1997,6 +1997,18 @@ building any conclusion on it.**
      consequences: a review must not classify such a transition as a regression, because there is no prior
      behaviour to restore; and a guarded oracle should **publish which branch it took**, so "passed" and "did not
      run" are distinguishable in the ledger rather than identical.
+161. **A stage name used as a domain guard is a proxy, and proxies stop tracking what they stood for.** Four
+     identities checked a census that describes an **unlabelled-face** partition, and guarded it with
+     `if (stage != "UncutComponent")`. That comparison stood in for a real condition - *does the failing object lie
+     inside the partition this census describes?* - and while the pipeline always failed at that stage the two
+     agreed. When an unrelated correction advanced the pipeline, the proxy and the condition parted company, and
+     the assertion demanded evidence about an object disjoint from the failure. The measurement was unambiguous:
+     the partition held **226 faces in 9 components** while the failing region held **10 faces, 0 of them in the
+     partition**. **Not an empty set, not a broken lookup - a domain mismatch.** When a guard's purpose is "this
+     evidence applies here", write the membership test, not the name of the stage where membership happened to
+     hold. And when a census comes back empty, ask whether the failing object is even in its domain before asking
+     why the lookup failed: lesson 159 says count the population, and this one adds - check that it is the right
+     population.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

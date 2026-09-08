@@ -10,20 +10,20 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-CB47` compile-green closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB42-REV` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB41` is the current valid semantic runtime authority**, promoted at TB41-REV. Selector **409**,
-**398 PASS / 11 RED**, **accepted 1–365 = 365/365**, RED
-`[366,367,368,369,370,374,390,393,398,406,407]`, on immutable CB46 package `10066942690` / source
-`4cdffe5514ab9f747da38e74c57663ee8806efa6`, run `34256568679`.
+**`M3-CP4c-3-TB42` is the current valid semantic runtime authority**, promoted at TB42-REV. Selector **409**,
+**398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED
+`[366,367,368,369,370,374,390,393,398,406,407]`, on immutable CB47 package `10070788592` / source
+`5dacce6019ea34316c48743f3033d2bb5c26281a`, run `34265561941`. The RED set and ledger hash are **identical to the
+promoted TB41 baseline**.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
-**47 events / 14 categories / 33 recurrences** — **no new runtime event**, the accepted prefix is intact — debt **5**,
-packages **107**. Package106 remains semantic runtime authority; package107 is compile-only build authority.
+**47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**, packages **107**.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -398,36 +398,76 @@ failing object may be **outside its domain**, since `RegionSourceFaceOwningFragm
 **366/367** remain at `RegionSourceFaceOwningFragmentMissing`, now publishing `regionOwningFragmentOrbit` —
 measured as EB7.6 required, not corrected.
 
-## 3.11 CB47 complete; exact next turn — `M3-CP4c-3-TB42-EXEC`
+## 3.11 TB42 measured it: the census is disjoint from the failing object
 
-CB47 is **compile-green and runtime-free** on exact source `5dacce6019ea34316c48743f3033d2bb5c26281a`.
-It measures the frontier census's subject without changing the subject, the oracle, or any topology semantics.
+CB47 was diagnostics-only and **proved it by artifact** — TB42's ledger SHA-256 is identical to TB41's
+(`5b1e663e…`) while the failure-detail digest changed (`f2b3cb59…` vs `82b7a0e8…`). The oracle was not re-hidden
+and 390/393/406/407 stayed RED, exactly as EC7.4 required.
 
-The added failure-locus evidence is exactly EC7.1–EC7.3:
+The EC7 row, published identically on all four protected identities:
 
-- `unlabeledFaceCount`;
-- `frontierPartitionComponentCount`;
-- `ownerConsistencyRowCount`;
-- selected locator kind and guard-survival state;
-- failing source-face membership in `componentByFace`;
-- failing-region source-face total and in-partition count.
+```text
+unlabeledFaceCount                       = 226
+frontierPartitionComponentCount          =   9
+ownerConsistencyRowCount                 =   9
+regionFrontierLocator                    = none
+regionFrontierLocatorSurvivedGuard       = none
+failure source face in partition         = false
+failing-region source faces              =  10
+failing-region source faces in partition =   0
+```
 
-The existing locator probes all still consume the same `frontier.partition.componentByFace`; their precedence and
-fallback condition are unchanged. The guard remains `component < ownerConsistency.components.size()`. The
-protected assertion remains non-empty frontier evidence. The production binding, `region_orbit`, orbit-key lookup,
-canonical content anchor, region construction, ownership, and selector409 are unchanged.
+This settles TB41-REV's EC3 completely:
 
-**Exact next is TB42-EXEC against package107.** Accepted 365/365 and ordinals 311/314/356/357 plus 312/315/409 are
-hard stop gates. 390/393/406/407 are **expected to remain RED** and now must expose enough typed population/domain
-evidence for independent TB42-REV to choose among the frozen branches:
+- **"The partition is empty" is REFUTED** — 226 unlabelled faces across 9 components.
+- **"The failing object is outside the domain" is CONFIRMED, and is stronger than stated.** Not just the face:
+  **the entire failing region is absent**, all 10 of its source faces being labelled.
+- **The guard analysis is confirmed** — `ownerConsistencyRowCount == frontierPartitionComponentCount == 9`, the
+  one-row-per-component relation predicted from `CertifiedSourceFaceOwnerConsistency.h:38–44`. The guard is benign
+  and was never reached.
+- **No locator resolved**: `uncutFaceComponent` unset; `sourceFace` misses because the face is labelled; the region
+  sweep misses because all 10 faces are labelled; the single-component fallback cannot fire at 9 components.
 
-1. partition population zero → census has no subject; `DEFN-R8` owns legitimacy at `RegionCertification`;
-2. population nonzero but no locator → domain/locator mismatch;
-3. locator resolves but guard rejects → EC3 guard premise refuted;
-4. locator survives but component count remains zero → diagnostic collection contradiction.
+> **The census subject exists and is disjoint from the failing object — a domain mismatch, not an empty set, not a
+> locator bug, not a guard bug.**
 
-TB42-EXEC measures only and cannot promote or plan a correction. Its exact successor is independent
-`M3-CP4c-3-TB42-REV`, where the implementation loop stops.
+**The identities' names disclose the domain they were written for.** 390
+`UncutFaceComponentBoundaryOrbitAttribution…`, 406 `UncutComponentCensusNamesThePartitionItDescribes…`, 407
+`InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`, 393
+`MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual`. The uncut-component partition covers
+**unlabelled faces by construction** (`GlobalTopologyPlan.cpp:1341–1353`). **The `UncutComponent` early return was
+the domain guard, expressed as a stage check** — the pipeline advancing to `RegionCertification` removed the
+**precondition**, not the guard. `LESSONS.md` 161.
+
+Ordinal 407's name spans **both partitions**, placing these four inside the long-open two-partitions-of-one-mesh
+problem (§7). The successor should decide them together or say why they are separable.
+
+## 3.12 Exact next turn — `M3-CP4c-3-DEFN-R8`
+
+**A definition turn**, static, appending **Part XII**. **Nothing is left to measure; the question is normative.**
+
+- **ED7.1** — state the uncut-component census's **domain** normatively: it describes the unlabelled-face
+  partition and is meaningful only for a failure whose object lies inside it. Cite `:1341–1353` and the TB42
+  numbers (226 / 9 / 9, and 0-of-10).
+- **ED7.2** — decide what a `RegionCertification` failure must publish instead, naming the object and fields;
+  `regionOwningFragmentOrbit` already exists at the failing site and is the likely seed.
+- **ED7.3** — require the condition to be a **domain predicate, never a stage string.** The current guard compares
+  a stage name; that proxy stopped tracking what it stood for. This is the general rule, not a local fix.
+- **ED7.4** — restate each of the four identities' obligations so each still **fails** when its own census is
+  broken within its own domain. **Widening the early return to make all four pass is prohibited.**
+- **ED7.5** — decide together with `M3-CP4c3-TB26-REV-CAND-04` / `M3-CP4c3-DEFN-R3-CAND-01`, or state why
+  separable.
+- **ED7.6** — unchanged surface: accepted 365/365; ordinals 311/312/314/315/356/357/404/408/409 keep their
+  contracts; selector 409 byte-frozen; the Part XI binding, `region_orbit`, the orbit-keyed lookup and the content
+  anchor untouched; no change to the partition's domain, region construction, ownership, `fragmentCorners`, cut
+  selection or A2a′ cellularity semantics.
+- **ED7.7** — freeze `M3-CP4c-3-CB48` with falsifiers, then the artifact-only `M3-CP4c-3-TB43-EXEC` gate.
+
+**Falsifiers to carry into CB48.** Accepted **365/365** and 311/312/314/315/356/357/404/408/409 PASS are stop
+conditions. **If 390/393/406/407 pass because the assertion no longer runs on any input, the oracle was hidden
+again, not repaired** — CB48 must publish per identity which branch it took and why (`LESSONS.md` 160). If any of
+the four cannot be made to fail on a deliberately broken census within its own domain, the restatement is vacuous.
+If the repair needs `unlabeledFaces` widened, the question returns to definition.
 
 ## 4. Open candidates
 
@@ -565,17 +605,15 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, TB42-EXEC loads only the minimum authority:
+After the durable start-of-turn checklist, DEFN-R8 loads only the minimum authority:
 
 1. `ORIENTATION.md` — read first.
-2. **this file** — §3.11 for CB47 completion and the frozen TB42 measurement branches.
-3. `Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md` — exact artifact-only execution contract.
-4. `Architecture_M3_CP4c3_CB47_Code_Build_Report.md` — package107 compile provenance and frozen invariants.
-5. `M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**. The binding and content anchor stand.
-6. `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md`.
-7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, and `TOOL_USE_CONSERVATION_POLICY.md` for artifact-only workflow mechanics.
+2. **this file** — §3.11 (the measurement and what it settles) and §3.12 (the frozen scope).
+3. `Architecture_M3_CP4c3_TB42_Independent_Review_Record.md` — **ED0–ED7**, the adjudication.
+4. `M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**; **Part XII appends here**.
+5. `Regression_Root_Cause_Tracker.md` — the TB42-REV section and the authoritative next step.
+6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (**159, 160, 161** govern).
 
-Exact next is **`M3-CP4c-3-TB42-EXEC`** against immutable package107. **Accepted prefix must remain 365/365**;
-390/393/406/407 are **expected to remain RED** while publishing the new EC7 measurement fields. TB42-EXEC must not
-promote, redefine, or issue the correction. Its exact successor is independent **`M3-CP4c-3-TB42-REV`**, where the
-implementation/orchestration loop stops.
+Exact next is **`M3-CP4c-3-DEFN-R8`**, static, appending **Part XII**. **No further CB may be spent measuring the
+frontier census** — TB42 measured it. The remaining question is what evidence a certification-stage failure should
+carry, and how to express the domain as a predicate rather than a stage name.

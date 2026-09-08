@@ -1,4 +1,4 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB41-REV`):** **TB41 is PROMOTED** — selector **409**, **398 PASS / 11 RED**, **accepted 365/365 restored**, package **106**. **The content-anchor repair worked:** 311/314/356/357 recovered; the certificate carries `canonical_cycle_anchor` and the oracle re-derives it independently, over four distinct oriented anchors with `arc 0` in **both** orientations. **The region 0 ↔ orbit 1 transposition is still there and is now correctly a non-event**, confirming the TB40 diagnosis. **The four protected identities 390/393/406/407 were never asserting**: all guard their oracle behind an `UncutComponent` early return, so it had **never executed** — the pipeline advancing to `RegionCertification` ran it for the first time and it found `regionFrontierComponentCount = 0`. That is an assertion reaching its subject, **not a behaviour loss**, so there is nothing to restore. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB47`** — measure the census's population before repairing it again.
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB42-REV`):** **TB42 is PROMOTED** — selector **409**, **398 PASS / 11 RED**, **accepted 365/365**, package **107**; RED set and ledger hash **identical to TB41**, so CB47 was diagnostics-only exactly as required. **The frontier-census question is now measured and closed to further measurement.** The partition is **not empty** — 226 unlabelled faces in 9 components — it is **disjoint from the failing object**: the failing region holds **10** source faces of which **0** are in the partition, so no locator resolves and the guard is never reached. `ownerConsistencyRowCount == frontierPartitionComponentCount == 9` confirms the guard is benign, as predicted statically. **This is a domain mismatch, not an empty set or a locator bug** — and three of the four identities name the uncut-component census explicitly, so the `UncutComponent` early return **was** the domain guard, written as a stage check. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-DEFN-R8`**, appending Part XII — the question is now normative, and **no further CB may be spent measuring it**.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -117,9 +117,14 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB41`** (package 106, promoted at TB41-REV). Selector **409**,
-**398 PASS / 11 RED**, **accepted 1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}.
-Certified ownership **300 / 0 / 0**; ordinals 311, 312, 314, 315, 356, 357, 404, 408, 409 PASS.
+**Runtime authority — `M3-CP4c-3-TB42`** (package 107, promoted at TB42-REV). Selector **409**,
+**398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, reds
+{366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. Certified ownership **300 / 0 / 0**; ordinals 311, 312,
+314, 315, 356, 357, 404, 408, 409 PASS.
+
+**CB47 was diagnostics-only, proved by artifact.** TB42's ledger SHA-256 is **identical to TB41's**
+(`5b1e663e…`) while the failure-detail digest **changed** (`f2b3cb59…` vs `82b7a0e8…`) — the "same verdicts,
+richer evidence" receipt, and the oracle was not re-hidden.
 
 **Promotion reasoning, since it is a judgement call.** The operative rule — applied at TB39 and withheld at TB38
 and TB40 — is **mechanical validity plus an intact accepted prefix**; TB39 itself was promoted at 402/7, so an
@@ -298,25 +303,22 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The frontier census may have no subject at all.** — `M3-CP4c3-TB40-EXEC-CAND-02`, **RE-SCOPED / GATING**;
-   owner `M3-CP4c-3-CB47` (measure), then `M3-CP4c-3-DEFN-R8` (decide).
+1. **The frontier census is disjoint from the failing object — a domain mismatch.** —
+   `M3-CP4c3-TB40-EXEC-CAND-02`, **MEASURED / DEFINITION PENDING**; owner **`M3-CP4c-3-DEFN-R8`**.
 
-   - **390/393/406/407 were never asserting.** All four guard `expect_later_region_frontier_evidence`
-     (`tests:4411`) behind an `UncutComponent` early return (`:11910`, `:12122`, `:14943`, `:14987`). The oracle
-     had **never executed**; the pipeline advancing to `RegionCertification` ran it for the first time.
-     **Not a behaviour loss — nothing to restore.** `LESSONS.md` 160.
-   - **CB46's locator broadening was right and could not have worked.** All three locators in
-     `region_frontier_components` (`GlobalTopologyPlan.cpp:667–706`) resolve through one object,
-     `frontier.partition.componentByFace`. Verified: the guard is benign, the success path carries the real
-     frontier (`:1505`), and the annotation does run on the certification path (`:2418–2420`).
-   - **Two live candidates, neither statically decidable.** Either the partition is **empty** — it is built over
-     `unlabeledFaces` (`:1341–1353`) and `:1338` calls it "only a consistency guard" now that ownership is total —
-     or the failing object is **outside its domain**, since `RegionSourceFaceOwningFragmentMissing` fires only on a
-     labelled trace-cut face (`:2020–2028`).
-   - **Three turns have now repaired a census without counting its population.** `LESSONS.md` 159.
-   - **CB47 measures**: `unlabeledFaceCount`, `frontierPartitionComponentCount`, `ownerConsistencyRowCount`, which
-     locator resolved, and the failing face's domain membership. **DEFN-R8** then decides whether a non-empty
-     census is even legitimate at `RegionCertification`.
+   - **Measured at TB42, identically on all four identities:** `unlabeledFaceCount=226`,
+     `frontierPartitionComponentCount=9`, `ownerConsistencyRowCount=9`, `regionFrontierLocator=none`, failure
+     source face in partition `false`, failing region **10** source faces of which **0** are in the partition.
+   - **The partition is not empty.** The "empty set" candidate is **refuted**; the "outside the domain" candidate
+     is **confirmed and stronger** — the whole failing region is labelled, so no locator can resolve and the guard
+     is never reached. The benign-guard prediction is confirmed by `9 == 9`.
+   - **Three of the four identities name the uncut-component census explicitly**, and that partition covers
+     unlabelled faces by construction (`GlobalTopologyPlan.cpp:1341–1353`). **The `UncutComponent` early return was
+     the domain guard, written as a stage check**; the pipeline advancing removed the precondition, not the guard.
+     `LESSONS.md` 161.
+   - **Nothing left to measure.** `DEFN-R8` decides the census's domain, what a certification-stage failure must
+     publish instead, and how to express the condition as a **domain predicate rather than a stage string** —
+     without weakening the four identities into unconditional passes.
 
 2. **`RegionSourceFaceOwningFragmentMissing` is the live A2b frontier.** — `M3-CP4c3-TB40-REV-CAND-02`,
    **ACTIVE / GATING**. 366/367 stop there, now publishing `regionOwningFragmentOrbit`. Measured, not corrected.
@@ -397,6 +399,14 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A stage name used as a domain guard is a proxy, and proxies drift.** Four identities checked a census over an
+**unlabelled-face** partition and guarded it with `if (stage != "UncutComponent")`. That stood in for the real
+condition — *is the failing object inside the partition this census describes?* — and the two agreed only while the
+pipeline always stopped at that stage. Once it advanced, the assertion demanded evidence about a disjoint object:
+the partition held **226 faces in 9 components**, the failing region held **10 faces, 0 in the partition**. **Write
+the membership test, not the name of the stage where membership happened to hold** — and when a census is empty,
+ask whether the failing object is in its domain before asking why the lookup missed. `LESSONS.md` §4 161.
 
 **Before repairing a census, count its population.** Three consecutive turns fixed the wrong half of an evidence
 census: a proof obligation whose verifier passed over zero rows; a per-face certificate whose deciding field was one
