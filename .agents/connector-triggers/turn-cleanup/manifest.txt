@@ -1,0 +1,4 @@
+# M3-CP4c-3-TB40-EXEC temporary control-plane state
+.agents/connector-triggers/drive-patch
+.agents/connector-triggers/m3-cp4c3-tb40-exec
+.agents/connector-triggers/source-snapshot
