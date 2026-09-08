@@ -1,0 +1,3 @@
+# M3-CP4c-3-TB43-REV temporary-state cleanup
+.agents/connector-triggers/source-snapshot/tb43-rev-439314c72aa9-20260908.txt
+.agents/connector-triggers/drive-apply/tb43-rev-closeout-20260908.txt
