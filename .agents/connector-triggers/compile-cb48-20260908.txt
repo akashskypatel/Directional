@@ -1,0 +1,5 @@
+purpose=compile M3-CP4c-3-CB48 exact source
+source_sha=531b517fb129425f113b5f811215f1d2b1939ee2
+owner_target=directional_surface_cell_producer_tests
+package=108
+retry=0
