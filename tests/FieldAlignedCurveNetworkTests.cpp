@@ -2269,7 +2269,8 @@ std::optional<IndependentFragmentPartition> independent_fragment_partition(
 
 IndependentDiscProofResult independent_disc_proof_oracle(
     const directional::geometry::GlobalTopologyPlan &plan, const TriMesh &mesh,
-    const FieldAlignedCurveNetwork &network) {
+    const FieldAlignedCurveNetwork &network,
+    const directional::geometry::SurfaceCutGraph &cutGraph) {
   IndependentDiscProofResult result;
   const auto orbits = independent_plan_face_orbits(plan);
   if (!orbits.has_value()) {
@@ -2324,8 +2325,19 @@ IndependentDiscProofResult independent_disc_proof_oracle(
       return result;
     }
     const auto *certificate = plan.find_region_certificate(region.id);
-    if (certificate == nullptr || !certificate->proves_disc_topology() ||
-        certificate->boundaryWalkCount != 1U) {
+    const auto upstream = std::find_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) { return candidate.orbit == *matched; });
+    const auto upstreamCount = static_cast<std::size_t>(std::count_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) { return candidate.orbit == *matched; }));
+    if (certificate == nullptr || upstreamCount != 1U ||
+        upstream == cutGraph.certificate().faces.end() ||
+        certificate->actualEmbeddedFace != *upstream ||
+        certificate->actualEmbeddedFace.orbit != *matched ||
+        certificate->actualEmbeddedFace.boundaryArcCount !=
+            region.boundary.size() ||
+        !certificate->proves_disc_topology()) {
       result.clause = IndependentDiscProofClause::PublishedCertificate;
       return result;
     }
@@ -3218,19 +3230,40 @@ TEST(GlobalTopologyPlan, RegionAuthorityIsInvariantToEnumerationOrderAndBranchRe
 TEST(GlobalTopologyPlan, ProvesDiscTopologyForEveryEmittedRegion) {
   Cp3bEventFixture fixture = build_cp3b_event_fixture();
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
   ASSERT_TRUE(fixture.network.has_value());
-  const auto plan = build_topology_plan(
+  const auto cutGraph = build_surface_cut_graph(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  const auto planBuild = directional::geometry::GlobalTopologyPlan::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.network, cutGraph);
+  ASSERT_TRUE(planBuild);
+  const auto &plan = planBuild.value();
+  const auto orbits = independent_plan_face_orbits(plan);
+  ASSERT_TRUE(orbits.has_value());
 
   ASSERT_EQ(plan.regions().size(), plan.region_certificates().size());
   for (const auto &region : plan.regions()) {
     const auto *certificate = plan.find_region_certificate(region.id);
     ASSERT_NE(nullptr, certificate);
     EXPECT_EQ(region.id, certificate->region);
-    EXPECT_EQ(1U, certificate->boundaryWalkCount);
-    EXPECT_TRUE(certificate->sourceFacesConnected);
-    EXPECT_EQ(1, certificate->eulerCharacteristic);
-    EXPECT_EQ(region.sourceFaces.size(), certificate->faceCount);
+    const auto orbit = std::find(orbits->begin(), orbits->end(), region.boundary);
+    ASSERT_NE(orbits->end(), orbit);
+    const std::size_t orbitIndex =
+        static_cast<std::size_t>(std::distance(orbits->begin(), orbit));
+    EXPECT_EQ(orbitIndex, certificate->actualEmbeddedFace.orbit);
+    const auto upstreamCount = std::count_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) { return candidate.orbit == orbitIndex; });
+    EXPECT_EQ(1, upstreamCount);
+    const auto upstream = std::find_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) { return candidate.orbit == orbitIndex; });
+    ASSERT_NE(cutGraph.certificate().faces.end(), upstream);
+    EXPECT_EQ(*upstream, certificate->actualEmbeddedFace);
+    EXPECT_EQ(1U, certificate->actualEmbeddedFace.boundaryWalkCount);
+    EXPECT_EQ(region.boundary.size(),
+              certificate->actualEmbeddedFace.boundaryArcCount);
     EXPECT_TRUE(certificate->proves_disc_topology());
     EXPECT_TRUE(certificate->proves_field_regularity());
   }
@@ -3348,12 +3381,18 @@ TEST(GlobalTopologyPlan, RejectsRegionWithWrongEulerCharacteristicOrInteriorSing
 TEST(GlobalTopologyPlan, IndependentDiscProofOracleAgreesWithPublishedCertificates) {
   Cp3bEventFixture fixture = build_cp3b_event_fixture();
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
   ASSERT_TRUE(fixture.network.has_value());
-  const auto plan = build_topology_plan(
+  const auto cutGraph = build_surface_cut_graph(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  const auto planBuild = directional::geometry::GlobalTopologyPlan::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.network, cutGraph);
+  ASSERT_TRUE(planBuild);
+  const auto &plan = planBuild.value();
   ASSERT_FALSE(plan.regions().empty());
-  const auto proof =
-      independent_disc_proof_oracle(plan, fixture.mesh, *fixture.network);
+  const auto proof = independent_disc_proof_oracle(
+      plan, fixture.mesh, *fixture.network, cutGraph);
   EXPECT_TRUE(proof.passed)
       << "clause=" << independent_disc_proof_clause_name(proof.clause)
       << " embedded_graph_chi=" << proof.embeddedGraphChi
@@ -3367,9 +3406,19 @@ TEST(GlobalTopologyPlan, RejectsTamperedDiscProofCertificate) {
   const auto plan = build_topology_plan(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
   auto candidate = plan.validation_candidate();
-  ASSERT_FALSE(candidate.regionCertificates.empty());
+  ASSERT_GT(candidate.regionCertificates.size(), 1U);
   const auto tamperedRegion = candidate.regionCertificates.front().region;
-  ++candidate.regionCertificates.front().eulerCharacteristic;
+  const auto replacement = std::find_if(
+      candidate.regionCertificates.begin() + 1,
+      candidate.regionCertificates.end(), [&](const auto &certificate) {
+        return certificate.actualEmbeddedFace.orbit !=
+               candidate.regionCertificates.front().actualEmbeddedFace.orbit;
+      });
+  ASSERT_NE(candidate.regionCertificates.end(), replacement)
+      << "tamper witness must expose at least two distinct actual-embedded "
+         "face-orbit bindings";
+  candidate.regionCertificates.front().actualEmbeddedFace.orbit =
+      replacement->actualEmbeddedFace.orbit;
   auto rejected = rebuild_topology_plan(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
       std::move(candidate));
@@ -3736,33 +3785,6 @@ void append_cp4c_failure_locus(
            << locus.regionBoundaryCensusDomain;
   if (locus.regionBoundaryNodeOccurrenceCountDerived)
     report << ";regionBoundaryNodeOccurrenceCountDerived=true";
-  if (locus.regionInteriorBarrierEdgeCount.has_value())
-    report << ";regionInteriorBarrierEdgeCount="
-           << *locus.regionInteriorBarrierEdgeCount;
-  if (locus.regionExcludedVertexCount.has_value())
-    report << ";regionExcludedVertexCount="
-           << *locus.regionExcludedVertexCount;
-  if (locus.regionExcludedMeshBoundaryVertexCount.has_value())
-    report << ";regionExcludedMeshBoundaryVertexCount="
-           << *locus.regionExcludedMeshBoundaryVertexCount;
-  if (locus.regionExcludedBoundaryVertexCount.has_value())
-    report << ";regionExcludedBoundaryVertexCount="
-           << *locus.regionExcludedBoundaryVertexCount;
-  if (locus.regionExcludedAllOwnedVertexCount.has_value())
-    report << ";regionExcludedAllOwnedVertexCount="
-           << *locus.regionExcludedAllOwnedVertexCount;
-  if (locus.regionSubmeshBoundaryEdgeCount.has_value())
-    report << ";regionSubmeshBoundaryEdgeCount="
-           << *locus.regionSubmeshBoundaryEdgeCount;
-  if (locus.regionSubmeshBoundaryVertexCount.has_value())
-    report << ";regionSubmeshBoundaryVertexCount="
-           << *locus.regionSubmeshBoundaryVertexCount;
-  if (locus.regionTotalVertexCount.has_value())
-    report << ";regionVTotal=" << *locus.regionTotalVertexCount;
-  if (locus.regionTotalEdgeCount.has_value())
-    report << ";regionETotal=" << *locus.regionTotalEdgeCount;
-  if (locus.regionFullEulerCharacteristic.has_value())
-    report << ";regionChiFull=" << *locus.regionFullEulerCharacteristic;
   if (locus.vertexCount.has_value())
     report << ";vertexCount=" << *locus.vertexCount;
   if (locus.edgeCount.has_value())
@@ -8886,17 +8908,61 @@ void expect_cp4c_plan_disc_proofs(const Cp4cProductionFixture &fixture) {
   EXPECT_EQ(network.source_digest(), fixture.cutGraph->source_digest());
   EXPECT_EQ(network.semantic_digest(), fixture.cutGraph->network_digest());
   EXPECT_EQ(fixture.cutGraph->semantic_digest(), plan.cut_graph_digest());
+  const auto orbits = independent_plan_face_orbits(plan);
+  ASSERT_TRUE(orbits.has_value());
+  const auto &cutCertificate = fixture.cutGraph->certificate();
+  ASSERT_FALSE(plan.regions().empty());
   ASSERT_EQ(plan.regions().size(), plan.region_certificates().size());
+  ASSERT_EQ(plan.regions().size(), cutCertificate.faces.size());
+  std::cout << "M3_CP4C3_FACE_BINDING_CENSUS record=complex"
+            << " graphComponents=" << cutCertificate.graphComponentCount
+            << " sourceComponentCount=" << cutCertificate.sourceComponentCount
+            << " exteriorSize=" << cutCertificate.excludedBoundaryOrbitCount
+            << " boundaryLoops=" << cutCertificate.sourceBoundaryLoopCount
+            << " graphEuler=" << cutCertificate.eulerCharacteristic
+            << " sourceEuler=" << cutCertificate.sourceEulerCharacteristic
+            << '\n';
+  std::set<std::size_t> consumedUpstreamOrbits;
   for (const auto &region : plan.regions()) {
     const auto *certificate = plan.find_region_certificate(region.id);
     ASSERT_NE(nullptr, certificate);
     EXPECT_EQ(region.id, certificate->region);
-    EXPECT_EQ(1U, certificate->boundaryWalkCount);
-    EXPECT_TRUE(certificate->sourceFacesConnected);
-    EXPECT_EQ(1, certificate->eulerCharacteristic);
+    const auto orbit = std::find(orbits->begin(), orbits->end(), region.boundary);
+    ASSERT_NE(orbits->end(), orbit);
+    const std::size_t derivedOrbit =
+        static_cast<std::size_t>(std::distance(orbits->begin(), orbit));
+    const auto upstreamCount = static_cast<std::size_t>(std::count_if(
+        cutCertificate.faces.begin(), cutCertificate.faces.end(),
+        [&](const auto &candidate) { return candidate.orbit == derivedOrbit; }));
+    ASSERT_EQ(1U, upstreamCount);
+    const auto upstream = std::find_if(
+        cutCertificate.faces.begin(), cutCertificate.faces.end(),
+        [&](const auto &candidate) { return candidate.orbit == derivedOrbit; });
+    ASSERT_NE(cutCertificate.faces.end(), upstream);
+    EXPECT_TRUE(consumedUpstreamOrbits.insert(derivedOrbit).second);
+    EXPECT_EQ(derivedOrbit, certificate->actualEmbeddedFace.orbit);
+    EXPECT_EQ(*upstream, certificate->actualEmbeddedFace);
+    EXPECT_EQ(region.boundary.size(),
+              certificate->actualEmbeddedFace.boundaryArcCount);
     EXPECT_TRUE(certificate->proves_disc_topology());
     EXPECT_TRUE(certificate->proves_field_regularity());
+    std::cout << "M3_CP4C3_FACE_BINDING_CENSUS record=region"
+              << " region=" << region.id.index()
+              << " derivedOrbit=" << derivedOrbit
+              << " certificateOrbit=" << certificate->actualEmbeddedFace.orbit
+              << " upstreamMatchCount=" << upstreamCount
+              << " regionBoundaryArcCount=" << region.boundary.size()
+              << " certificateBoundaryArcCount="
+              << certificate->actualEmbeddedFace.boundaryArcCount
+              << " discTopologyEstablished="
+              << (certificate->actualEmbeddedFace.discTopologyEstablished
+                      ? "true"
+                      : "false")
+              << " fieldRegularity="
+              << (certificate->proves_field_regularity() ? "true" : "false")
+              << '\n';
   }
+  EXPECT_EQ(plan.regions().size(), consumedUpstreamOrbits.size());
 }
 
 void expect_rotation_face_walk_agreement(

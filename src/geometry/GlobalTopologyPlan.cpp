@@ -1578,86 +1578,6 @@ std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
   return std::nullopt;
 }
 
-std::optional<GlobalTopologyPlanError> validate_no_region_fragment_pinch(
-    const SourceTopologyIndex &topology,
-    const std::map<authority::NetworkNodeId, NodeLocus> &loci,
-    const std::vector<GlobalTopologyNodeRotation> &rotations,
-    const FaceWalkResult &walk, const GlobalTopologyRegion &region,
-    const std::size_t owningOrbit) {
-  const std::set<authority::SourceFaceTopologyKey> regionFaces(
-      region.sourceFaces.begin(), region.sourceFaces.end());
-
-  for (const auto &rotation : rotations) {
-    const auto locus = loci.find(rotation.node);
-    if (locus == loci.end() || rotation.counterClockwise.empty()) continue;
-
-    const std::size_t count = rotation.counterClockwise.size();
-    std::vector<bool> ownsSector(count, false);
-    bool anyOwned = false;
-    bool allOwned = true;
-    for (std::size_t index = 0U; index < count; ++index) {
-      const std::size_t incomingDart =
-          dart_index(reversed(rotation.counterClockwise[index]));
-      if (incomingDart >= walk.orbitByDart.size()) {
-        GlobalTopologyPlanError failure =
-            rotation_error(RotationSystemInconsistencyReason::RegionFragmentIncomingDartOutOfRange);
-        failure.region = region.id;
-        failure.sourceVertex = locus->second.vertex;
-        failure.sourceEdge = locus->second.edge;
-        return failure;
-      }
-      ownsSector[index] = walk.orbitByDart[incomingDart] == owningOrbit;
-      anyOwned = anyOwned || ownsSector[index];
-      allOwned = allOwned && ownsSector[index];
-    }
-    if (!anyOwned || allOwned) continue;
-
-    std::size_t runCount = 0U;
-    for (std::size_t index = 0U; index < count; ++index) {
-      const std::size_t previous = (index + count - 1U) % count;
-      if (ownsSector[index] && !ownsSector[previous]) ++runCount;
-    }
-    if (runCount <= 1U) continue;
-
-    GlobalTopologyPlanError failure =
-        error(GlobalTopologyPlanErrorCode::RegionFragmentPinchedAtVertex);
-    failure.region = region.id;
-    failure.sourceVertex = locus->second.vertex;
-    failure.sourceEdge = locus->second.edge;
-
-    std::vector<authority::SourceFaceTopologyKey> witnesses;
-    if (locus->second.vertex.has_value()) {
-      const auto incident =
-          topology.incidentFacesByVertex.find(*locus->second.vertex);
-      if (incident != topology.incidentFacesByVertex.end()) {
-        for (const auto &face : incident->second) {
-          if (regionFaces.count(face) != 0U) witnesses.push_back(face);
-        }
-        if (witnesses.empty() && !incident->second.empty()) {
-          witnesses.push_back(incident->second.front());
-        }
-      }
-    } else if (locus->second.edge.has_value()) {
-      const auto incident = topology.incidentFaces.find(*locus->second.edge);
-      if (incident != topology.incidentFaces.end()) {
-        for (const auto &face : incident->second) {
-          if (regionFaces.count(face) != 0U) witnesses.push_back(face);
-        }
-        if (witnesses.empty() && !incident->second.empty()) {
-          witnesses.push_back(incident->second.front());
-        }
-      }
-    }
-    if (!witnesses.empty()) {
-      failure.sourceFace = witnesses.front();
-      failure.secondSourceFace =
-          witnesses.size() > 1U ? witnesses[1] : witnesses.front();
-    }
-    return failure;
-  }
-  return std::nullopt;
-}
-
 using RegionCertificateBuildResult =
     std::variant<GlobalTopologyRegionDiscCertificate, GlobalTopologyPlanError>;
 
@@ -1724,6 +1644,17 @@ RegionSingularityValidationResult validate_region_interior_singularities(
   return boundarySingularities;
 }
 
+struct RegionSupportProjectionDiagnostics {
+  bool sourceFacesConnected = false;
+  std::size_t interiorVertexCount = 0U;
+  std::size_t interiorAdjacencyCount = 0U;
+  std::size_t totalVertexCount = 0U;
+  std::size_t totalEdgeCount = 0U;
+  std::size_t fragmentCount = 0U;
+  int reducedEulerCharacteristic = 0;
+  int wholeSourceFaceEulerCharacteristic = 0;
+};
+
 void emit_fragment_euler_diagnostics(
     const FragmentDiagnosticEvidence &diagnostics,
     const GlobalTopologyRegion &region, const std::size_t owningOrbit,
@@ -1731,7 +1662,7 @@ void emit_fragment_euler_diagnostics(
     const std::set<authority::SourceVertexId> &mandatoryBoundaryEndpoints,
     const std::set<authority::SourceVertexId> &tracePortBoundaryVertices,
     const std::set<authority::SourceVertexId> &interiorVertices,
-    const GlobalTopologyRegionDiscCertificate &certificate) {
+    const RegionSupportProjectionDiagnostics &support) {
   {
     std::ostringstream out;
     out << "M3_CP4AB_FRAGMENT_DIAG record=exterior_orbits orbits="
@@ -1762,7 +1693,7 @@ void emit_fragment_euler_diagnostics(
   }
 
   std::ostringstream out;
-  out << "M3_CP4AB_FRAGMENT_DIAG record=euler_rejection"
+  out << "M3_CP4AB_FRAGMENT_DIAG record=region_support_projection_detail"
       << " region=" << region.id.index()
       << " owning_orbit=" << owningOrbit
       << " support_faces=[";
@@ -1805,16 +1736,16 @@ void emit_fragment_euler_diagnostics(
       << " trace_port_boundary_vertices="
       << diagnostic_values(tracePortBoundaryVertices)
       << " interior_vertices=" << diagnostic_values(interiorVertices)
-      << " V_int=" << certificate.vertexCount
-      << " E_int=" << certificate.edgeCount
-      << " F=" << certificate.faceCount
-      << " chi=" << certificate.eulerCharacteristic;
+      << " support_V_int=" << support.interiorVertexCount
+      << " support_E_int=" << support.interiorAdjacencyCount
+      << " support_F=" << support.fragmentCount
+      << " support_chi_reduced=" << support.reducedEulerCharacteristic;
   std::cerr << out.str() << '\n';
 }
 
 void emit_region_euler_certificate_diagnostics(
     const GlobalTopologyRegion &region,
-    const GlobalTopologyRegionDiscCertificate &certificate,
+    const RegionSupportProjectionDiagnostics &support,
     const std::size_t excludedVertexCount,
     const std::size_t submeshBoundaryEdgeCount,
     const std::size_t interiorBarrierOneSideCount,
@@ -1823,33 +1754,27 @@ void emit_region_euler_certificate_diagnostics(
     const std::size_t splitFragmentCount,
     const std::size_t fragmentCornerAttributionCount,
     const std::int64_t fullMinusReducedEulerCharacteristic) {
-  const std::int64_t reducedEulerCharacteristic =
-      static_cast<std::int64_t>(certificate.vertexCount) -
-      static_cast<std::int64_t>(certificate.edgeCount) +
-      static_cast<std::int64_t>(certificate.faceCount);
-  const std::int64_t fullEulerCharacteristic =
-      static_cast<std::int64_t>(certificate.totalVertexCount) -
-      static_cast<std::int64_t>(certificate.totalEdgeCount) +
-      static_cast<std::int64_t>(certificate.faceCount);
   std::ostringstream out;
-  out << "M3_CP4AB_FRAGMENT_DIAG record=euler_certificate"
+  out << "M3_CP4AB_FRAGMENT_DIAG record=region_support_projection"
       << " region=" << region.id.index()
-      << " X=" << excludedVertexCount
-      << " E_one=" << submeshBoundaryEdgeCount
-      << " B_int=" << interiorBarrierBothSidesCount
-      << " B_int_one_side=" << interiorBarrierOneSideCount
-      << " B_int_both_sides=" << interiorBarrierBothSidesCount
-      << " trace_cut_faces=" << traceCutFaceCount
-      << " split_fragments=" << splitFragmentCount
+      << " source_faces_connected="
+      << (support.sourceFacesConnected ? "true" : "false")
+      << " excluded_source_vertices=" << excludedVertexCount
+      << " source_submesh_boundary_edges=" << submeshBoundaryEdgeCount
+      << " interior_barrier_edges_one_side=" << interiorBarrierOneSideCount
+      << " interior_barrier_edges_both_sides=" << interiorBarrierBothSidesCount
+      << " trace_cut_source_faces=" << traceCutFaceCount
+      << " split_source_fragments=" << splitFragmentCount
       << " fragment_corner_attributions=" << fragmentCornerAttributionCount
-      << " fullMinusReduced=" << fullMinusReducedEulerCharacteristic
-      << " V_int=" << certificate.vertexCount
-      << " E_int=" << certificate.edgeCount
-      << " V_total=" << certificate.totalVertexCount
-      << " E_total=" << certificate.totalEdgeCount
-      << " F=" << certificate.faceCount
-      << " chiReduced=" << reducedEulerCharacteristic
-      << " chiFull=" << fullEulerCharacteristic;
+      << " whole_minus_reduced_euler=" << fullMinusReducedEulerCharacteristic
+      << " support_V_int=" << support.interiorVertexCount
+      << " support_E_int=" << support.interiorAdjacencyCount
+      << " support_V_total=" << support.totalVertexCount
+      << " support_E_total=" << support.totalEdgeCount
+      << " support_F=" << support.fragmentCount
+      << " support_chi_reduced=" << support.reducedEulerCharacteristic
+      << " support_chi_whole_source_faces="
+      << support.wholeSourceFaceEulerCharacteristic;
   std::cerr << out.str() << '\n';
 }
 
@@ -1857,7 +1782,6 @@ RegionCertificateBuildResult build_region_certificate(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,
     const SurfaceCutGraph &cutGraph,
-    const std::vector<GlobalTopologyArc> &arcs,
     const GlobalTopologyRegion &region, const std::size_t owningOrbit,
     const std::map<authority::NetworkArcId, const GlobalTopologyArc *> &arcById,
     const std::map<authority::NetworkNodeId, NodeLocus> &nodeLoci,
@@ -1868,11 +1792,29 @@ RegionCertificateBuildResult build_region_certificate(
     const bool emitEulerDiagnostics,
     const FragmentDiagnosticEvidence *diagnostics) {
   GlobalTopologyRegionDiscCertificate certificate(region.id);
-  certificate.boundaryWalkCount = 1U;
-  certificate.faceCount = region.sourceFaces.size();
+  const SurfaceCutGraphFaceCertificate *actualEmbeddedFace = nullptr;
+  std::size_t matchingFaceCertificateCount = 0U;
+  for (const auto &faceCertificate : cutGraph.certificate().faces) {
+    if (faceCertificate.orbit != owningOrbit) continue;
+    ++matchingFaceCertificateCount;
+    actualEmbeddedFace = &faceCertificate;
+  }
+  if (matchingFaceCertificateCount != 1U || actualEmbeddedFace == nullptr ||
+      actualEmbeddedFace->boundaryWalkCount != 1U ||
+      actualEmbeddedFace->boundaryArcCount != region.boundary.size() ||
+      !actualEmbeddedFace->proves_disc_topology()) {
+    GlobalTopologyPlanError failure =
+        error(GlobalTopologyPlanErrorCode::InvalidRegionCertificateBinding);
+    failure.region = region.id;
+    return failure;
+  }
+  certificate.actualEmbeddedFace = *actualEmbeddedFace;
 
   certificate.boundarySingularities = std::move(boundarySingularities);
   certificate.interiorSingularityFree = true;
+
+  RegionSupportProjectionDiagnostics support;
+  support.fragmentCount = region.sourceFaces.size();
 
   using FragmentKey =
       std::pair<authority::SourceFaceTopologyKey, std::size_t>;
@@ -1902,7 +1844,7 @@ RegionCertificateBuildResult build_region_certificate(
     }
     neighbors[first].push_back(second);
     neighbors[second].push_back(first);
-    ++certificate.edgeCount;
+    ++support.interiorAdjacencyCount;
   }
 
   std::set<FragmentKey> visited;
@@ -1917,22 +1859,7 @@ RegionCertificateBuildResult build_region_certificate(
       if (visited.insert(next).second) queue.push_back(next);
     }
   }
-  if (visited.size() != fragments.size()) {
-    GlobalTopologyPlanError failure =
-        error(GlobalTopologyPlanErrorCode::RegionInteriorDisconnected);
-    failure.region = region.id;
-    failure.sourceFace = region.sourceFaces.front();
-    const auto disconnected = std::find_if(
-        region.sourceFaces.begin(), region.sourceFaces.end(),
-        [&](const auto &face) {
-          return visited.count(FragmentKey{face, owningOrbit}) == 0U;
-        });
-    if (disconnected != region.sourceFaces.end()) {
-      failure.secondSourceFace = *disconnected;
-    }
-    return failure;
-  }
-  certificate.sourceFacesConnected = true;
+  support.sourceFacesConnected = visited.size() == fragments.size();
 
   std::set<authority::SourceVertexId> boundaryVertices;
   std::set<authority::SourceVertexId> mandatoryBoundaryEndpoints;
@@ -2143,10 +2070,10 @@ RegionCertificateBuildResult build_region_certificate(
     }
     if (allOwned) interiorVertices.insert(vertex);
   }
-  certificate.vertexCount = interiorVertices.size();
-  certificate.faceCount = fragments.size();
-  certificate.totalVertexCount = submeshVertices.size();
-  certificate.totalEdgeCount = submeshEdges.size();
+  support.interiorVertexCount = interiorVertices.size();
+  support.fragmentCount = fragments.size();
+  support.totalVertexCount = submeshVertices.size();
+  support.totalEdgeCount = submeshEdges.size();
 
   std::size_t interiorBarrierOneSideCount = 0U;
   std::size_t interiorBarrierEdgeCount = 0U;
@@ -2189,105 +2116,32 @@ RegionCertificateBuildResult build_region_certificate(
   }
 
   const std::size_t excludedVertexCount =
-      certificate.totalVertexCount - certificate.vertexCount;
+      support.totalVertexCount - support.interiorVertexCount;
   const std::int64_t fullMinusReducedEulerCharacteristic =
       static_cast<std::int64_t>(excludedVertexCount) -
       static_cast<std::int64_t>(submeshBoundaryEdges.size()) -
       static_cast<std::int64_t>(interiorBarrierEdgeCount);
 
-  // The acceptance criterion is restored to the reduced certificate while the
-  // full source-submesh and traced/split readings remain diagnostic authority.
-  certificate.eulerCharacteristic =
-      static_cast<int>(certificate.vertexCount) -
-      static_cast<int>(certificate.edgeCount) +
-      static_cast<int>(certificate.faceCount);
+  support.reducedEulerCharacteristic =
+      static_cast<int>(support.interiorVertexCount) -
+      static_cast<int>(support.interiorAdjacencyCount) +
+      static_cast<int>(support.fragmentCount);
+  support.wholeSourceFaceEulerCharacteristic =
+      static_cast<int>(support.totalVertexCount) -
+      static_cast<int>(support.totalEdgeCount) +
+      static_cast<int>(support.fragmentCount);
   if (emitEulerDiagnostics) {
     emit_region_euler_certificate_diagnostics(
-        region, certificate, excludedVertexCount, submeshBoundaryEdges.size(),
+        region, support, excludedVertexCount, submeshBoundaryEdges.size(),
         interiorBarrierOneSideCount, interiorBarrierEdgeCount,
         traceCutFaceCount, splitFragmentCount, fragmentCornerAttributionCount,
         fullMinusReducedEulerCharacteristic);
   }
-  if (certificate.eulerCharacteristic != 1) {
-    if (diagnostics != nullptr) {
-      emit_fragment_euler_diagnostics(
-          *diagnostics, region, owningOrbit, candidateVertices,
-          mandatoryBoundaryEndpoints, tracePortBoundaryVertices,
-          interiorVertices, certificate);
-    }
-    GlobalTopologyPlanError failure =
-        error(GlobalTopologyPlanErrorCode::RegionEulerCharacteristicNotOne);
-    failure.region = region.id;
-    failure.eulerCharacteristic = certificate.eulerCharacteristic;
-    failure.vertexCount = certificate.vertexCount;
-    failure.edgeCount = certificate.edgeCount;
-    failure.faceCount = certificate.faceCount;
-    failure.regionBoundaryProvenance =
-        RegionBoundaryProvenance::FaceWalkOrbit;
-    failure.regionBoundaryOrbit = owningOrbit;
-    failure.regionBoundaryArcOccurrenceCount = region.boundary.size();
-
-    std::set<authority::NetworkArcId> distinctBoundaryArcs;
-    std::set<authority::NetworkNodeId> distinctBoundaryNodes;
-    const auto firstBoundaryArc = arcById.at(region.boundary.front().arc);
-    const authority::NetworkNodeId boundaryStart =
-        oriented_arc_nodes(*firstBoundaryArc,
-                           region.boundary.front().orientation)
-            .first;
-    std::size_t startRevisitBeforeEndCount = 0U;
-    for (std::size_t index = 0U; index < region.boundary.size(); ++index) {
-      const auto incidence = region.boundary[index];
-      distinctBoundaryArcs.insert(incidence.arc);
-      const auto arc = arcById.at(incidence.arc);
-      const authority::NetworkNodeId node =
-          oriented_arc_nodes(*arc, incidence.orientation).first;
-      distinctBoundaryNodes.insert(node);
-      if (index != 0U && node == boundaryStart) {
-        ++startRevisitBeforeEndCount;
-      }
-    }
-    failure.regionBoundaryDistinctArcCount = distinctBoundaryArcs.size();
-    failure.regionBoundaryNodeOccurrenceCount = region.boundary.size();
-    failure.regionBoundaryDistinctNodeCount = distinctBoundaryNodes.size();
-    failure.regionBoundaryRepeatedNodeOccurrenceCount =
-        region.boundary.size() - distinctBoundaryNodes.size();
-    failure.regionBoundaryStartRevisitBeforeEndCount =
-        startRevisitBeforeEndCount;
-
-    // CB42 / CY6 failure diagnostics, now derived from the same whole-face
-    // sub-mesh census that owns the certificate criterion.
-    std::size_t excludedMeshBoundaryVertexCount = 0U;
-    std::size_t excludedBoundaryVertexCount = 0U;
-    std::set<authority::SourceVertexId> submeshBoundaryVertices;
-    for (const auto vertex : submeshVertices) {
-      if (interiorVertices.count(vertex) != 0U) continue;
-      if (meshBoundaryVertices.count(vertex) != 0U) {
-        ++excludedMeshBoundaryVertexCount;
-      } else if (boundaryVertices.count(vertex) != 0U) {
-        ++excludedBoundaryVertexCount;
-      }
-    }
-    const std::size_t excludedAllOwnedVertexCount =
-        excludedVertexCount - excludedMeshBoundaryVertexCount -
-        excludedBoundaryVertexCount;
-
-    for (const auto &edge : submeshBoundaryEdges) {
-      submeshBoundaryVertices.insert(edge.first());
-      submeshBoundaryVertices.insert(edge.second());
-    }
-
-    failure.regionInteriorBarrierEdgeCount = interiorBarrierEdgeCount;
-    failure.regionExcludedVertexCount = excludedVertexCount;
-    failure.regionExcludedMeshBoundaryVertexCount =
-        excludedMeshBoundaryVertexCount;
-    failure.regionExcludedBoundaryVertexCount = excludedBoundaryVertexCount;
-    failure.regionExcludedAllOwnedVertexCount = excludedAllOwnedVertexCount;
-    failure.regionSubmeshBoundaryEdgeCount = submeshBoundaryEdges.size();
-    failure.regionSubmeshBoundaryVertexCount = submeshBoundaryVertices.size();
-    failure.regionTotalVertexCount = certificate.totalVertexCount;
-    failure.regionTotalEdgeCount = certificate.totalEdgeCount;
-    failure.regionFullEulerCharacteristic = certificate.eulerCharacteristic;
-    return failure;
+  if (diagnostics != nullptr && support.reducedEulerCharacteristic != 1) {
+    emit_fragment_euler_diagnostics(
+        *diagnostics, region, owningOrbit, candidateVertices,
+        mandatoryBoundaryEndpoints, tracePortBoundaryVertices,
+        interiorVertices, support);
   }
   return certificate;
 }
@@ -2301,7 +2155,6 @@ RegionCertificatesBuildResult build_region_certificates(
     const FieldAlignedCurveNetwork &network,
     const SurfaceCutGraph &cutGraph,
     const CutNodeBindings &cutNodes,
-    const std::vector<GlobalTopologyNodeRotation> &rotations,
     const std::vector<GlobalTopologyArc> &arcs,
     const FaceWalkResult &walk,
     const std::vector<GlobalTopologyRegion> &regions,
@@ -2366,14 +2219,8 @@ RegionCertificatesBuildResult build_region_certificates(
       failure.region = region.id;
       return annotate_boundary_walk_evidence(std::move(failure));
     }
-    if (const auto pinch = validate_no_region_fragment_pinch(
-            topology, nodeLoci, rotations, walk, region, *orbit);
-        pinch.has_value()) {
-      return annotate_boundary_walk_evidence(*pinch);
-    }
     const auto built = build_region_certificate(
-        topology, network, cutGraph, arcs, region, *orbit, arcById,
-        nodeLoci,
+        topology, network, cutGraph, region, *orbit, arcById, nodeLoci,
         std::get<std::vector<authority::FieldSingularityId>>(singularities),
         fragmentCorners, tracePieceCounts, emitEulerDiagnostics, diagnostics);
     if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&built)) {
@@ -2462,15 +2309,10 @@ std::uint64_t candidate_semantic_digest(
   hash_consume(hash, candidate.regionCertificates.size());
   for (const auto &certificate : candidate.regionCertificates) {
     hash_id(hash, certificate.region);
-    hash_consume(hash, certificate.boundaryWalkCount);
-    hash_consume(hash, certificate.sourceFacesConnected);
-    hash_consume(hash, static_cast<std::uint64_t>(
-                           static_cast<std::int64_t>(certificate.eulerCharacteristic)));
-    hash_consume(hash, certificate.vertexCount);
-    hash_consume(hash, certificate.edgeCount);
-    hash_consume(hash, certificate.totalVertexCount);
-    hash_consume(hash, certificate.totalEdgeCount);
-    hash_consume(hash, certificate.faceCount);
+    hash_consume(hash, certificate.actualEmbeddedFace.orbit);
+    hash_consume(hash, certificate.actualEmbeddedFace.boundaryWalkCount);
+    hash_consume(hash, certificate.actualEmbeddedFace.boundaryArcCount);
+    hash_consume(hash, certificate.actualEmbeddedFace.discTopologyEstablished);
     hash_consume(hash, certificate.interiorSingularityFree);
     hash_consume(hash, certificate.boundarySingularities.size());
     for (const auto singularity : certificate.boundarySingularities) {
@@ -2554,8 +2396,8 @@ CandidateBuildResult canonical_candidate(
   const RegionCertificatesBuildResult certificateBuild =
       build_region_certificates(
           embedded.sourceTopology, network, cutGraph, embedded.cutNodes,
-          candidate.rotations, candidate.arcs, embedded.faceWalk,
-          candidate.regions, &regionSuccess.tracePieceCount, true, diagnostics);
+          candidate.arcs, embedded.faceWalk, candidate.regions,
+          &regionSuccess.tracePieceCount, true, diagnostics);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
     GlobalTopologyPlanError annotated = *failure;
@@ -2727,9 +2569,9 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
   const RegionCertificatesBuildResult certificateBuild =
       build_region_certificates(
           *topology, network, cutGraph,
-          std::get<CutNodeBindings>(validationCutNodes), candidate.rotations,
-          candidate.arcs, std::get<FaceWalkResult>(validationFaceWalk),
-          candidate.regions, nullptr, false, nullptr);
+          std::get<CutNodeBindings>(validationCutNodes), candidate.arcs,
+          std::get<FaceWalkResult>(validationFaceWalk), candidate.regions,
+          nullptr, false, nullptr);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
     return *failure;

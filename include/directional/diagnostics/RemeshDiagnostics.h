@@ -350,16 +350,6 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
   std::string regionBoundaryCensusDomain;
   bool regionBoundaryNodeOccurrenceCountDerived = false;
-  std::optional<std::size_t> regionInteriorBarrierEdgeCount;
-  std::optional<std::size_t> regionExcludedVertexCount;
-  std::optional<std::size_t> regionExcludedMeshBoundaryVertexCount;
-  std::optional<std::size_t> regionExcludedBoundaryVertexCount;
-  std::optional<std::size_t> regionExcludedAllOwnedVertexCount;
-  std::optional<std::size_t> regionSubmeshBoundaryEdgeCount;
-  std::optional<std::size_t> regionSubmeshBoundaryVertexCount;
-  std::optional<std::size_t> regionTotalVertexCount;
-  std::optional<std::size_t> regionTotalEdgeCount;
-  std::optional<std::int64_t> regionFullEulerCharacteristic;
   std::optional<int> eulerCharacteristic;
   std::optional<std::size_t> vertexCount;
   std::optional<std::size_t> edgeCount;

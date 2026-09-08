@@ -76,34 +76,21 @@ struct GlobalTopologyRegion {
 };
 
 /**
- * Exact per-region CP4b proof.  Conditions 1-3 are the necessary-and-
- * sufficient topological-disc proof; interiorSingularityFree is the separate
- * field-regularity requirement for quadrangulability.
+ * Exact per-region CP4b binding/consumption proof. The topology authority is
+ * the A2a' actual-embedded face certificate consumed by this region;
+ * interiorSingularityFree is the separate A2b field-regularity requirement.
  */
 struct GlobalTopologyRegionDiscCertificate {
   explicit GlobalTopologyRegionDiscCertificate(authority::NetworkRegionId regionId)
       : region(regionId) {}
 
   authority::NetworkRegionId region;
-  std::size_t boundaryWalkCount = 0U;
-  bool sourceFacesConnected = false;
-  int eulerCharacteristic = 0;
-  // Number of source vertices strictly interior to the region (V_int).
-  std::size_t vertexCount = 0U;
-  // Number of interior fragment adjacencies (E_int) in the region dual graph.
-  std::size_t edgeCount = 0U;
-  // Number of distinct source vertices in the whole-face region sub-mesh (V_total).
-  std::size_t totalVertexCount = 0U;
-  // Number of distinct source edges in the whole-face region sub-mesh (E_total).
-  std::size_t totalEdgeCount = 0U;
-  // Number of owned (SourceFaceTopologyKey, orbit) fragments (F).
-  std::size_t faceCount = 0U;
+  SurfaceCutGraphFaceCertificate actualEmbeddedFace;
   bool interiorSingularityFree = false;
   std::vector<authority::FieldSingularityId> boundarySingularities;
 
   [[nodiscard]] bool proves_disc_topology() const noexcept {
-    return boundaryWalkCount == 1U && sourceFacesConnected &&
-           eulerCharacteristic == 1;
+    return actualEmbeddedFace.proves_disc_topology();
   }
   [[nodiscard]] bool proves_field_regularity() const noexcept {
     return interiorSingularityFree;
@@ -531,16 +518,6 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> regionBoundaryDistinctNodeCount;
   std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
   std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
-  std::optional<std::size_t> regionInteriorBarrierEdgeCount;
-  std::optional<std::size_t> regionExcludedVertexCount;
-  std::optional<std::size_t> regionExcludedMeshBoundaryVertexCount;
-  std::optional<std::size_t> regionExcludedBoundaryVertexCount;
-  std::optional<std::size_t> regionExcludedAllOwnedVertexCount;
-  std::optional<std::size_t> regionSubmeshBoundaryEdgeCount;
-  std::optional<std::size_t> regionSubmeshBoundaryVertexCount;
-  std::optional<std::size_t> regionTotalVertexCount;
-  std::optional<std::size_t> regionTotalEdgeCount;
-  std::optional<std::int64_t> regionFullEulerCharacteristic;
   std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<RegionFrontierComponentEvidenceDiagnostic>
