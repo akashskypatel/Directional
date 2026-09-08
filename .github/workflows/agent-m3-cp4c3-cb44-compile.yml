@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/m3-cp4c3-cb44-compile/trigger.json
 
 permissions:
-  contents: read
+  contents: write
   actions: write
   issues: write
   pull-requests: write
