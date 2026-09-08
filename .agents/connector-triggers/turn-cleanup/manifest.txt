@@ -1,0 +1,4 @@
+# M3-CP4c-3-CB47 temporary-state cleanup manifest
+.agents/connector-triggers/cb47-compile/trigger.txt
+.agents/connector-triggers/cb47-closeout-apply/trigger.txt
+.agents/connector-triggers/source-snapshot/20260908T1104-703c8f33.txt
