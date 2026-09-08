@@ -1,0 +1,3 @@
+semantic_source_sha=703c8f33069a7d2a5ce0854b5ee5fa691c8d1f66
+purpose=M3-CP4c-3-CB47-start-snapshot
+requested_by=chatgpt-web
