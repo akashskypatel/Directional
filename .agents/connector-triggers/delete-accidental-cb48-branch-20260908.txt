@@ -1,4 +1,0 @@
-purpose=remove accidental zero-work CB48 side branch
-branch=__invalid_never_use__
-expected_sha=966b06bfe2ffe7cc4ec6127cc4a24b861eaadadf
-retry=0
