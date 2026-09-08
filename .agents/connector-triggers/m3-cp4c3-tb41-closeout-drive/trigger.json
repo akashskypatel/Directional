@@ -1,8 +1,0 @@
-{
-  "turn": "M3-CP4c-3-TB41-EXEC-closeout",
-  "action": "apply-durable-closeout",
-  "attempt": 3,
-  "base_sha": "f953bf179009cc8786a902379e8588272ad924d6",
-  "patch_sha256": "4339e7f121c7e3442fd7e8393e00c20f397b58493465a47077f17c39530c285f",
-  "drive_file_id": "1QuNxx525b8uVAsGKGBm4EeoiY33VAlua"
-}
