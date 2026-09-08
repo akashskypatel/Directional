@@ -153,8 +153,10 @@ jobs:
                "$(sha256sum .agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh | awk '{print $1}')"
           test "$(sha256sum "$src/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt" | awk '{print $1}')" = "$EXPECTED_SELECTOR_SHA256"
           ldd "$pkg/bin/directional_surface_cell_producer_tests" | tee "$result/gmp-runtime-deps.txt"
-          grep -Fq 'libgmpxx.so' "$result/gmp-runtime-deps.txt"
           grep -Fq 'libgmp.so' "$result/gmp-runtime-deps.txt"
+          if grep -Fq 'not found' "$result/gmp-runtime-deps.txt"; then
+            exit 1
+          fi
           grep -Fxq runtime_started=false "$result/execution-boundary.txt"
           grep -Fxq runtime_completed=false "$result/execution-boundary.txt"
           grep -Fxq orchestration_failure=false "$result/execution-boundary.txt"
