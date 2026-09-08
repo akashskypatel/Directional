@@ -1,3 +1,38 @@
+## 2026-09-08 — `M3-CP4c-3-TB43-REV` verification pass: adjudication upheld; third rule site and a vacuous control recorded
+
+Static verification of the delegated `M3-CP4c-3-TB43-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **TB43** (promoted), accounting
+unchanged at **47 / 14 / 33**, packages **108**.
+
+**The adjudication is upheld, and the Part XII recovery is real.** TB43 hit DEFN-R8's predicted vector exactly —
+**402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, carried RED `[366,367,368,369,370,374,398]` — and the four
+protected identities each published the required receipt: `censusPredicateExecuted=yes`,
+`terminalSubjectRelation=Outside`, `sameDomainCorruptionRejected=yes`. **Part XII falsifiers 4 and 5 are cleared by
+artifact**: they recovered because the predicate ran and rejected a corrupted same-domain copy, not because a
+branch skipped it.
+
+**Every EF3 citation verifies from source.** `is_terminal_slit` is `!terminalBarrier && final segment`
+(`GlobalTopologyPlan.cpp:285–290`); the corner-incidence path computes `forwardOrbit`/`reverseOrbit` at `:452–453`,
+drops **every** terminal-slit segment at `:467`, and its comment claiming `build_regions()` applies the same
+predicate is false — `build_regions` additionally requires `!separatesCertifiedFaces` (`:1170`, `:1195`).
+
+**EF10.1 — this is the third site of the separating-arc barrier rule, and it was never named.** The predicate lives
+at `SurfaceCutGraph.cpp:538`/`:549` (CB34) and `GlobalTopologyPlan.cpp:1170`/`:1195` (CB36); the corner-incidence
+consumer derives both orbits two lines before the skip and discards them. That is `LESSONS.md` **53** recurring —
+a frozen rule with an incomplete site list — not merely a drifted comment. It also **narrows CB49**: the fix needs
+**no new derivation**, only the conjunct, so a CB49 diff that adds one is out of scope by that measure alone.
+CB49's report must now **enumerate all three sites** and correct the false comment.
+
+**EF10.2 — `timeout 0` is a vacuous control for TB43.** The execution view removed the per-identity timeout
+(`TB43_EXEC_Report.md:44`), so that value is structurally guaranteed while being cited as a mechanical-validity
+control. **Promotion stands** — 409/409 executed once each, package unmodified, frozen harness SHA unchanged, and
+the receipts prove the predicates ran — but the control is **not evidence for this turn**, and no retained document
+authorizes the removal. **TB44 must restore the timeout or authorize it in the plan before execution.**
+`LESSONS.md` **163**.
+
+**Exact next: `M3-CP4c-3-CB49`** — unchanged in scope, with EF10.1's three-site enumeration and comment correction
+added to its report obligations.
+
 ## 2026-09-08 — `M3-CP4c-3-TB43-REV`: TB43 promoted; 366/367 root-caused to corner-ownership predicate drift
 
 Independent evidence-only review. No runtime, compile, package operation, product/test/fixture/selector mutation or

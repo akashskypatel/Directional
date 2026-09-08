@@ -180,3 +180,53 @@ checklist names many durable documents is a snapshot turn **before the first doc
 
 **`M3-CP4c-3-CB49` — Code + Build, runtime-free, under the frozen plan
 `Architecture_M3_CP4c3_CB49_Code_Build_Plan.md`.**
+
+---
+
+## EF10 — verification-pass addenda (static, appended after adjudication)
+
+A verification pass re-derived EF0–EF9 from source. **The adjudication stands and every EF3 citation verifies
+exactly**: `is_terminal_slit` is `!terminalBarrier && final segment` (`GlobalTopologyPlan.cpp:285–290`); the
+corner-incidence path computes `forwardOrbit`/`reverseOrbit` at `:452–453`; it drops **every** `is_terminal_slit`
+segment at `:467`; and the comment there claiming *"build_regions() applies the same predicate"* is false, because
+`build_regions` additionally requires `!separatesCertifiedFaces` (`:1170`, `:1195`). Two additions follow.
+
+### EF10.1 — this is the **third site** of the separating-arc barrier rule, and it was never named
+
+The rule `separatesCertifiedFaces = forwardOrbit != reverseOrbit` exists at exactly three places in the tree:
+
+| Site | Predicate present? | Applied by |
+|---|---|---|
+| `SurfaceCutGraph.cpp:538` / `:549` | **yes** | CB34 |
+| `GlobalTopologyPlan.cpp:1170` / `:1195` | **yes** | CB36 |
+| `build_fragment_corner_incidence()` `:452–453` / `:467` | **computed, then discarded for the skip** | *never* |
+
+So EF3's "predicate drift" understates it. The rule was **frozen and deliberately applied at two named sites**, and
+a third consumer — which already derives both orbits two lines earlier — was missed. That is `LESSONS.md` **53**
+recurring: *when a rule is frozen, name every site that implements it.* The false comment is the visible symptom;
+the missed site is the defect.
+
+**This strengthens EF5's bounded-scope claim.** Because `forwardOrbit` and `reverseOrbit` are **already computed at
+`:452–453`** and simply not consulted by the `:467` skip, CB49 needs **no new derivation, no new traversal and no
+new state** — only the conjunct. A CB49 diff that adds a derivation is out of scope by that measure alone.
+
+**Added to CB49 (EF5, non-optional):** the CB49 report must **enumerate all three sites and state the predicate at
+each**, so the next turn inherits the site list rather than rediscovering it. Correcting the false comment at
+`:467–470` is part of the change, not a nicety.
+
+### EF10.2 — `timeout 0` is a vacuous control for this turn
+
+The EXEC report records that the workflow materialized a runner-temporary execution view which **removed the
+per-identity timeout** (`Architecture_M3_CP4c3_TB43_EXEC_Report.md:44`). EF0 then cites "timeout 0" among the
+mechanical-validity controls. **With the timeout removed, `timeout_count = 0` is structurally guaranteed and
+carries no information** — the same shape as a verifier passing over an empty table (`LESSONS.md` 155) and a census
+whose rows cannot differ (157).
+
+**This does not invalidate TB43.** All 409 identities executed exactly once in ordinal order with zero selection
+mismatch, the package was unmodified, the frozen harness SHA is unchanged, and the Part XII receipts prove the
+census predicate executed and rejected a corrupted copy. Promotion stands. But the control must be recorded as
+**not evidence for this turn**, and no retained document authorizes its removal.
+
+**Added to the TB44 gate:** either restore the per-identity timeout, or state the authorization and the replacement
+control explicitly in the TB44 plan **before** execution. A TB report may not list `timeout 0` as a control in any
+turn whose execution view removed the timeout. `LESSONS.md` 163.

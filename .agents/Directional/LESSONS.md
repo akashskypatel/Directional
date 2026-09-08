@@ -2016,6 +2016,15 @@ building any conclusion on it.**
      are operative, so an unlisted Part is authority that nobody is told to obey. The boundary gate does not check
      this, which is precisely why it must be a closeout step: **appending a Part is three edits - the body, the
      citation map, and the supersession sentence - and the turn is not complete after the first.**
+163. **A control removed from the execution view is not a control, and must stop being cited as one.** A TB turn
+     materialized a runner-temporary execution view that **removed the per-identity timeout**, then reported
+     `timeout 0` among its mechanical-validity controls. With no timeout configured that value is structurally
+     guaranteed - a hung identity would hang rather than be counted - so the line reads as evidence while proving
+     nothing. The run was otherwise sound and the promotion stood, which is exactly why this is easy to miss.
+     **When an execution view weakens or removes a control, say so where the control is reported, not only where
+     the view is described** - and get the removal authorized in the frozen plan before execution, so a later
+     reviewer is not left inferring it from two paragraphs that never reference each other. Same family as lesson
+     155 (a verifier passing over an empty table) and 157 (a census whose rows cannot differ).
 
 ## 5. Cross-field, cycle, and orientation conventions
 

@@ -6710,6 +6710,24 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**Verification-pass addenda (EF10).** Every EF3 citation verifies from source. Two additions bind on the successor:
+
+- **EF10.1 — `build_fragment_corner_incidence` is the THIRD site of the separating-arc barrier rule, and it was
+  never named.** The predicate `separatesCertifiedFaces = forwardOrbit != reverseOrbit` is present at
+  `SurfaceCutGraph.cpp:538`/`:549` (CB34) and `GlobalTopologyPlan.cpp:1170`/`:1195` (CB36); the corner-incidence
+  path **computes both orbits at `:452-453` and then discards them** for the `:467` skip. This is `LESSONS.md` 53
+  recurring - a frozen rule whose site list was incomplete - not merely a drifted comment. It also **narrows
+  CB49**: the correct predicate needs **no new derivation**, only the conjunct, so a CB49 diff that adds a
+  derivation is out of scope. **CB49's report must enumerate all three sites and state the predicate at each**, and
+  correct the false comment at `:467-470`.
+- **EF10.2 — `timeout 0` is a vacuous control for TB43.** The execution view removed the per-identity timeout
+  (`Architecture_M3_CP4c3_TB43_EXEC_Report.md:44`), so that value is structurally guaranteed. Promotion stands -
+  409/409 executed once each, package unmodified, frozen harness SHA unchanged, and the Part XII receipts prove the
+  census predicate executed and rejected a corrupted copy - but the control is **not evidence for this turn** and
+  no retained document authorizes its removal. **TB44 must either restore the per-identity timeout or state the
+  authorization and replacement control in its plan before execution**, and no TB report may cite `timeout 0` in a
+  turn whose execution view removed it. `LESSONS.md` 163.
+
 Current valid semantic runtime authority is **M3-CP4c-3-TB42**: semantic source
 `5dacce6019ea34316c48743f3033d2bb5c26281a`, immutable CB47 package `10070788592`, selector409, run `34265561941`,
 **398 PASS / 11 RED / 0 SKIP**, **accepted 1-365 = 365/365 PASS**, reds
