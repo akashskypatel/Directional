@@ -1,6 +1,0 @@
-{
-  "turn": "M3-CP4c-3-CB44",
-  "operation": "apply-code-patch",
-  "patch_sha256": "aeae17b6c2b1a4ce5d5df07f20bad85624fe0ed453e72983a872f335fe75508f",
-  "base_sha": "952186cbf14e8c826b0ad3b489a8d8be52232b04"
-}
