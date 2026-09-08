@@ -676,6 +676,12 @@ project_global_topology_plan_failure_locus(
 
   SurfaceCellFailureLocusDiagnostics locus =
       project_surface_cut_graph_failure_locus(projected);
+  if (error.code ==
+          geometry::GlobalTopologyPlanErrorCode::
+              RegionSourceFaceOwningFragmentMissing &&
+      error.region.has_value()) {
+    locus.topologyRegion = error.region->index();
+  }
   locus.fragmentOrbitCount = error.fragmentOrbitCount;
   locus.tracePieceCount = error.tracePieceCount;
   locus.expectedFragmentCount = error.expectedFragmentCount;
@@ -705,6 +711,10 @@ project_global_topology_plan_failure_locus(
   }
   locus.regionBoundaryOrbit = error.regionBoundaryOrbit;
   locus.regionOwningFragmentOrbit = error.regionOwningFragmentOrbit;
+  locus.regionOwningFragmentOrbitIds = error.regionOwningFragmentOrbitIds;
+  locus.regionOwningFragmentOrbitCount = error.regionOwningFragmentOrbitCount;
+  locus.regionOwningFragmentOrbitPresent =
+      error.regionOwningFragmentOrbitPresent;
   locus.regionBoundaryArcOccurrenceCount =
       error.regionBoundaryArcOccurrenceCount;
   locus.regionBoundaryDistinctArcCount = error.regionBoundaryDistinctArcCount;
@@ -733,6 +743,11 @@ project_global_topology_plan_failure_locus(
         geometry::region_frontier_failure_stage_name(
             *error.regionFrontierFailureStage);
   }
+  if (error.regionFrontierSubjectDomainRelation.has_value()) {
+    locus.regionFrontierSubjectDomainRelation =
+        geometry::region_frontier_subject_domain_relation_name(
+            *error.regionFrontierSubjectDomainRelation);
+  }
   locus.regionFrontierUnlabeledFaceCount =
       error.regionFrontierUnlabeledFaceCount;
   locus.regionFrontierPartitionComponentCount =
@@ -758,6 +773,9 @@ project_global_topology_plan_failure_locus(
   for (const auto &component : error.regionFrontierComponents) {
     SurfaceCellRegionFrontierComponentEvidenceDiagnostics row;
     row.component = component.component;
+    row.faces.reserve(component.faces.size());
+    for (const auto &face : component.faces)
+      row.faces.push_back(topology_face_locus(face));
     row.partitionIdentity =
         partition_identity_locus(component.partitionIdentity);
     row.faceSetDigest = component.faceSetDigest;
@@ -772,6 +790,14 @@ project_global_topology_plan_failure_locus(
     row.censusFaceSetDigest = component.censusFaceSetDigest;
     row.componentSubsetOfCensusComponent =
         component.componentSubsetOfCensusComponent;
+    row.interiorArcIncidenceCensusPublished =
+        component.interiorArcIncidenceCensusPublished;
+    row.interiorArcIncidenceCount = component.interiorArcIncidenceCount;
+    row.interiorArcIncidences.reserve(component.interiorArcIncidences.size());
+    for (const auto &arc : component.interiorArcIncidences)
+      row.interiorArcIncidences.push_back(uncut_arc_locus(arc));
+    row.interiorArcIncidencesTruncated =
+        component.interiorArcIncidencesTruncated;
     locus.regionFrontierComponents.push_back(std::move(row));
   }
   locus.uncutFaceComponent = error.uncutFaceComponent;

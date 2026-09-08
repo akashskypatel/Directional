@@ -164,6 +164,13 @@ enum class RegionFrontierFailureStage : std::uint8_t {
   RegionCertification = 2,
 };
 
+enum class RegionFrontierSubjectDomainRelation : std::uint8_t {
+  Inside = 0,
+  Outside = 1,
+  Partial = 2,
+  Unresolved = 3,
+};
+
 enum class RegionFrontierCensusCorrespondence : std::uint8_t {
   None = 0,
   Exact = 1,
@@ -448,6 +455,7 @@ struct UncutFaceComponentSeedCensusDiagnostic {
 
 struct RegionFrontierComponentEvidenceDiagnostic {
   std::size_t component = 0U;
+  std::vector<authority::SourceFaceTopologyKey> faces;
   UncutComponentPartitionIdentity partitionIdentity;
   std::uint64_t faceSetDigest = 0U;
   RegionFrontierCensusCorrespondence censusCorrespondence =
@@ -456,6 +464,11 @@ struct RegionFrontierComponentEvidenceDiagnostic {
   std::optional<UncutComponentPartitionIdentity> censusPartitionIdentity;
   std::optional<std::uint64_t> censusFaceSetDigest;
   bool componentSubsetOfCensusComponent = false;
+  bool interiorArcIncidenceCensusPublished = false;
+  std::size_t interiorArcIncidenceCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcIncidenceCensus>
+      interiorArcIncidences;
+  bool interiorArcIncidencesTruncated = false;
 
   auto operator<=>(const RegionFrontierComponentEvidenceDiagnostic &) const =
       default;
@@ -522,6 +535,9 @@ struct GlobalTopologyPlanError {
   // Region owner expected for a source face that is missing the corresponding
   // fragment-corner ownership row. Diagnostic only; never a repair input.
   std::optional<std::size_t> regionOwningFragmentOrbit;
+  std::vector<std::size_t> regionOwningFragmentOrbitIds;
+  std::optional<std::size_t> regionOwningFragmentOrbitCount;
+  std::optional<bool> regionOwningFragmentOrbitPresent;
   std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
   std::optional<std::size_t> regionBoundaryDistinctArcCount;
   std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;
@@ -529,6 +545,8 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
   std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
   std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
+  std::optional<RegionFrontierSubjectDomainRelation>
+      regionFrontierSubjectDomainRelation;
   std::size_t regionFrontierUnlabeledFaceCount = 0U;
   std::size_t regionFrontierPartitionComponentCount = 0U;
   std::size_t regionFrontierOwnerConsistencyRowCount = 0U;
@@ -762,6 +780,8 @@ private:
     RegionBoundaryProvenance provenance) noexcept;
 [[nodiscard]] const char *region_frontier_failure_stage_name(
     RegionFrontierFailureStage stage) noexcept;
+[[nodiscard]] const char *region_frontier_subject_domain_relation_name(
+    RegionFrontierSubjectDomainRelation relation) noexcept;
 [[nodiscard]] const char *region_frontier_census_correspondence_name(
     RegionFrontierCensusCorrespondence correspondence) noexcept;
 [[nodiscard]] const char *region_frontier_locator_kind_name(

@@ -246,6 +246,7 @@ struct SurfaceCellUncutComponentPartitionIdentityDiagnostics {
 
 struct SurfaceCellRegionFrontierComponentEvidenceDiagnostics {
   std::size_t component = 0U;
+  std::vector<std::array<std::size_t, 3>> faces;
   SurfaceCellUncutComponentPartitionIdentityDiagnostics partitionIdentity;
   std::uint64_t faceSetDigest = 0U;
   std::string censusCorrespondence;
@@ -254,6 +255,11 @@ struct SurfaceCellRegionFrontierComponentEvidenceDiagnostics {
       censusPartitionIdentity;
   std::optional<std::uint64_t> censusFaceSetDigest;
   bool componentSubsetOfCensusComponent = false;
+  bool interiorArcIncidenceCensusPublished = false;
+  std::size_t interiorArcIncidenceCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcIncidenceDiagnostics>
+      interiorArcIncidences;
+  bool interiorArcIncidencesTruncated = false;
 };
 
 struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
@@ -343,6 +349,9 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::string regionBoundaryProvenance;
   std::optional<std::size_t> regionBoundaryOrbit;
   std::optional<std::size_t> regionOwningFragmentOrbit;
+  std::vector<std::size_t> regionOwningFragmentOrbitIds;
+  std::optional<std::size_t> regionOwningFragmentOrbitCount;
+  std::optional<bool> regionOwningFragmentOrbitPresent;
   std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
   std::optional<std::size_t> regionBoundaryDistinctArcCount;
   std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;
@@ -356,6 +365,7 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> edgeCount;
   std::optional<std::size_t> faceCount;
   std::string regionFrontierFailureStage;
+  std::string regionFrontierSubjectDomainRelation;
   std::size_t regionFrontierUnlabeledFaceCount = 0U;
   std::size_t regionFrontierPartitionComponentCount = 0U;
   std::size_t regionFrontierOwnerConsistencyRowCount = 0U;

@@ -674,6 +674,53 @@ plan_uncut_component_partition_identity() {
   return identity;
 }
 
+[[nodiscard]] RegionFrontierSubjectDomainRelation
+region_frontier_subject_domain_relation(
+    const GlobalTopologyPlanError &failure,
+    const RegionFrontierEvidence &frontier,
+    const std::vector<GlobalTopologyRegion> *regions) {
+  if (failure.region.has_value()) {
+    if (regions == nullptr) {
+      return RegionFrontierSubjectDomainRelation::Unresolved;
+    }
+    const auto region = std::find_if(
+        regions->begin(), regions->end(), [&](const auto &candidate) {
+          return candidate.id == *failure.region;
+        });
+    if (region == regions->end() || region->sourceFaces.empty()) {
+      return RegionFrontierSubjectDomainRelation::Unresolved;
+    }
+    std::size_t insideCount = 0U;
+    for (const auto &face : region->sourceFaces) {
+      insideCount += frontier.partition.componentByFace.count(face);
+    }
+    if (insideCount == 0U) {
+      return RegionFrontierSubjectDomainRelation::Outside;
+    }
+    if (insideCount == region->sourceFaces.size()) {
+      return RegionFrontierSubjectDomainRelation::Inside;
+    }
+    return RegionFrontierSubjectDomainRelation::Partial;
+  }
+
+  if (failure.uncutFaceComponent.has_value()) {
+    const std::size_t component = *failure.uncutFaceComponent;
+    if (component >= frontier.partition.components.size() ||
+        frontier.partition.components[component].empty()) {
+      return RegionFrontierSubjectDomainRelation::Unresolved;
+    }
+    return RegionFrontierSubjectDomainRelation::Inside;
+  }
+
+  if (failure.sourceFace.has_value()) {
+    return frontier.partition.componentByFace.count(*failure.sourceFace) != 0U
+               ? RegionFrontierSubjectDomainRelation::Inside
+               : RegionFrontierSubjectDomainRelation::Outside;
+  }
+
+  return RegionFrontierSubjectDomainRelation::Unresolved;
+}
+
 [[nodiscard]] RegionFrontierComponentSelection region_frontier_components(
     const GlobalTopologyPlanError &failure,
     const RegionFrontierEvidence &frontier,
@@ -752,6 +799,8 @@ void annotate_region_frontier_evidence(
     const SurfaceCutGraphCellularityCertificate &certificate,
     const std::vector<GlobalTopologyRegion> *regions = nullptr) {
   failure.regionFrontierFailureStage = stage;
+  failure.regionFrontierSubjectDomainRelation =
+      region_frontier_subject_domain_relation(failure, frontier, regions);
   failure.regionFrontierComponents.clear();
   failure.regionFrontierUnlabeledFaceCount = frontier.unlabeledFaceCount;
   failure.regionFrontierPartitionComponentCount =
@@ -771,12 +820,19 @@ void annotate_region_frontier_evidence(
   failure.regionFrontierFailureRegionSourceFacesInPartitionCount =
       selection.failureRegionSourceFacesInPartitionCount;
 
+  // Part XII makes this vector the producer-owned P_U census. Failure-local
+  // applicability is carried separately by regionFrontierSubjectDomainRelation;
+  // a terminal object outside P_U must not erase the census it does not own.
   const UncutComponentPartitionIdentity planPartitionIdentity =
       plan_uncut_component_partition_identity();
-  for (const std::size_t component : selection.components) {
+  failure.regionFrontierComponents.reserve(
+      frontier.ownerConsistency.components.size());
+  for (std::size_t component = 0U;
+       component < frontier.ownerConsistency.components.size(); ++component) {
     const auto &row = frontier.ownerConsistency.components[component];
     RegionFrontierComponentEvidenceDiagnostic evidence;
     evidence.component = component;
+    evidence.faces = row.faces;
     evidence.partitionIdentity = planPartitionIdentity;
     evidence.faceSetDigest = detail::source_face_set_digest(row.faces);
 
@@ -792,6 +848,22 @@ void annotate_region_frontier_evidence(
       evidence.censusFaceSetDigest = census->faceSetDigest;
       evidence.componentSubsetOfCensusComponent =
           contains_all_faces(census->faces, row.faces);
+      evidence.interiorArcIncidenceCensusPublished =
+          census->interiorArcIncidenceCensusPublished;
+      evidence.interiorArcIncidenceCount =
+          census->interiorArcIncidenceCount;
+      evidence.interiorArcIncidences = census->interiorArcIncidences;
+      evidence.interiorArcIncidencesTruncated =
+          census->interiorArcIncidencesTruncated;
+      for (auto &arc : evidence.interiorArcIncidences) {
+        for (auto &crossedFace : arc.crossedFaces) {
+          const auto planComponent =
+              frontier.partition.componentByFace.find(crossedFace.sourceFace);
+          if (planComponent != frontier.partition.componentByFace.end()) {
+            crossedFace.planComponent = planComponent->second;
+          }
+        }
+      }
     }
     failure.regionFrontierComponents.push_back(std::move(evidence));
   }
@@ -2082,6 +2154,17 @@ RegionCertificateBuildResult build_region_certificate(
       failure.region = region.id;
       failure.sourceFace = faceKey;
       failure.regionOwningFragmentOrbit = owningOrbit;
+      failure.regionOwningFragmentOrbitIds.reserve(cutFace->second.size());
+      for (const auto &[orbit, corners] : cutFace->second) {
+        (void)corners;
+        failure.regionOwningFragmentOrbitIds.push_back(orbit);
+      }
+      failure.regionOwningFragmentOrbitCount =
+          failure.regionOwningFragmentOrbitIds.size();
+      failure.regionOwningFragmentOrbitPresent =
+          std::binary_search(failure.regionOwningFragmentOrbitIds.begin(),
+                             failure.regionOwningFragmentOrbitIds.end(),
+                             owningOrbit);
       return failure;
     }
     candidateVertices.insert(fragment->second.begin(), fragment->second.end());
@@ -2446,7 +2529,9 @@ CandidateBuildResult canonical_candidate(
             GlobalTopologyPlanErrorCode::TraceCutFaceFragmentCountMismatch &&
         (has_owner_deficit() ||
          failure.code ==
-             GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique)) {
+             GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique ||
+         failure.code ==
+             GlobalTopologyPlanErrorCode::RegionSourceFaceOwningFragmentMissing)) {
       failure.fragmentOwnerEvidence = ownerEvidence;
     }
     return failure;
@@ -2989,6 +3074,21 @@ const char *region_frontier_failure_stage_name(
     return "RegionConstruction";
   case RegionFrontierFailureStage::RegionCertification:
     return "RegionCertification";
+  }
+  return "Unknown";
+}
+
+const char *region_frontier_subject_domain_relation_name(
+    const RegionFrontierSubjectDomainRelation relation) noexcept {
+  switch (relation) {
+  case RegionFrontierSubjectDomainRelation::Inside:
+    return "Inside";
+  case RegionFrontierSubjectDomainRelation::Outside:
+    return "Outside";
+  case RegionFrontierSubjectDomainRelation::Partial:
+    return "Partial";
+  case RegionFrontierSubjectDomainRelation::Unresolved:
+    return "Unresolved";
   }
   return "Unknown";
 }
