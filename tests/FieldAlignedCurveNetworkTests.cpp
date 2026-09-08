@@ -3831,7 +3831,38 @@ void append_cp4c_failure_locus(
            << (locus.regionFrontierFailureStage.empty()
                    ? "none"
                    : locus.regionFrontierFailureStage)
-           << ";regionFrontierComponentCount="
+           << ";unlabeledFaceCount="
+           << locus.regionFrontierUnlabeledFaceCount
+           << ";frontierPartitionComponentCount="
+           << locus.regionFrontierPartitionComponentCount
+           << ";ownerConsistencyRowCount="
+           << locus.regionFrontierOwnerConsistencyRowCount
+           << ";regionFrontierLocator="
+           << (locus.regionFrontierLocator.empty()
+                   ? "none"
+                   : locus.regionFrontierLocator)
+           << ";regionFrontierLocatorSurvivedGuard=";
+    if (locus.regionFrontierLocatorSurvivedGuard.has_value())
+      report << (*locus.regionFrontierLocatorSurvivedGuard ? "true" : "false");
+    else
+      report << "none";
+    report << ";regionFrontierFailureSourceFaceInPartition=";
+    if (locus.regionFrontierFailureSourceFaceInPartition.has_value())
+      report << (*locus.regionFrontierFailureSourceFaceInPartition ? "true"
+                                                                   : "false");
+    else
+      report << "none";
+    report << ";regionFrontierFailureRegionSourceFaceCount=";
+    if (locus.regionFrontierFailureRegionSourceFaceCount.has_value())
+      report << *locus.regionFrontierFailureRegionSourceFaceCount;
+    else
+      report << "none";
+    report << ";regionFrontierFailureRegionSourceFacesInPartitionCount=";
+    if (locus.regionFrontierFailureRegionSourceFacesInPartitionCount.has_value())
+      report << *locus.regionFrontierFailureRegionSourceFacesInPartitionCount;
+    else
+      report << "none";
+    report << ";regionFrontierComponentCount="
            << locus.regionFrontierComponentCount
            << ";regionFrontierComponentsTruncated="
            << (locus.regionFrontierComponentsTruncated ? "true" : "false");
@@ -4413,7 +4444,34 @@ void expect_later_region_frontier_evidence(
   ASSERT_TRUE(locus.regionFrontierFailureStage == "RegionConstruction" ||
               locus.regionFrontierFailureStage == "RegionCertification")
       << "regionFrontierFailureStage=" << locus.regionFrontierFailureStage;
-  ASSERT_GT(locus.regionFrontierComponentCount, 0U);
+  ASSERT_GT(locus.regionFrontierComponentCount, 0U)
+      << "unlabeledFaceCount="
+      << locus.regionFrontierUnlabeledFaceCount
+      << ";frontierPartitionComponentCount="
+      << locus.regionFrontierPartitionComponentCount
+      << ";ownerConsistencyRowCount="
+      << locus.regionFrontierOwnerConsistencyRowCount
+      << ";regionFrontierLocator="
+      << (locus.regionFrontierLocator.empty() ? "none"
+                                               : locus.regionFrontierLocator)
+      << ";regionFrontierLocatorSurvivedGuard="
+      << (locus.regionFrontierLocatorSurvivedGuard.has_value()
+              ? (*locus.regionFrontierLocatorSurvivedGuard ? "true" : "false")
+              : "none")
+      << ";regionFrontierFailureSourceFaceInPartition="
+      << (locus.regionFrontierFailureSourceFaceInPartition.has_value()
+              ? (*locus.regionFrontierFailureSourceFaceInPartition ? "true"
+                                                                    : "false")
+              : "none")
+      << ";regionFrontierFailureRegionSourceFaceCount="
+      << (locus.regionFrontierFailureRegionSourceFaceCount.has_value()
+              ? std::to_string(*locus.regionFrontierFailureRegionSourceFaceCount)
+              : "none")
+      << ";regionFrontierFailureRegionSourceFacesInPartitionCount="
+      << (locus.regionFrontierFailureRegionSourceFacesInPartitionCount.has_value()
+              ? std::to_string(
+                    *locus.regionFrontierFailureRegionSourceFacesInPartitionCount)
+              : "none");
   EXPECT_EQ(locus.regionFrontierComponentCount,
             locus.regionFrontierComponents.size());
   EXPECT_FALSE(locus.regionFrontierComponentsTruncated);

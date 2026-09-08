@@ -622,6 +622,16 @@ struct RegionDraft {
 struct RegionFrontierEvidence {
   detail::SourceFaceComponentPartition partition;
   detail::CertifiedSourceFaceOwnerConsistency ownerConsistency;
+  std::size_t unlabeledFaceCount = 0U;
+};
+
+struct RegionFrontierComponentSelection {
+  std::vector<std::size_t> components;
+  std::optional<RegionFrontierLocatorKind> locator;
+  std::optional<bool> locatorSurvivedGuard;
+  std::optional<bool> failureSourceFaceInPartition;
+  std::optional<std::size_t> failureRegionSourceFaceCount;
+  std::optional<std::size_t> failureRegionSourceFacesInPartitionCount;
 };
 
 struct RegionBuildSuccess {
@@ -664,28 +674,45 @@ plan_uncut_component_partition_identity() {
   return identity;
 }
 
-[[nodiscard]] std::vector<std::size_t> region_frontier_components(
+[[nodiscard]] RegionFrontierComponentSelection region_frontier_components(
     const GlobalTopologyPlanError &failure,
     const RegionFrontierEvidence &frontier,
     const std::vector<GlobalTopologyRegion> *regions = nullptr) {
+  RegionFrontierComponentSelection selection;
   std::set<std::size_t> components;
   const auto add_component = [&](const std::size_t component) {
-    if (component < frontier.ownerConsistency.components.size())
-      components.insert(component);
+    if (component >= frontier.ownerConsistency.components.size()) return false;
+    components.insert(component);
+    return true;
+  };
+  const auto note_locator = [&](const RegionFrontierLocatorKind locator,
+                                const bool survivedGuard) {
+    if (selection.locator.has_value()) return;
+    selection.locator = locator;
+    selection.locatorSurvivedGuard = survivedGuard;
   };
 
   // Frontier evidence belongs to the region-construction/certification state,
   // not to whichever typed failure happened to terminate that state. Consume
   // every available locator so retiring or advancing one failure code cannot
-  // silence the census (DEFN-R4.4).
-  if (failure.uncutFaceComponent.has_value())
-    add_component(*failure.uncutFaceComponent);
+  // silence the census (DEFN-R4.4). The first available locator candidate is
+  // published separately so CB47 can measure whether it survives the existing
+  // guard and why the census is
+  // empty without changing any ownership or census rule.
+  if (failure.uncutFaceComponent.has_value()) {
+    note_locator(RegionFrontierLocatorKind::UncutFaceComponent,
+                 add_component(*failure.uncutFaceComponent));
+  }
 
   if (failure.sourceFace.has_value()) {
     const auto component =
         frontier.partition.componentByFace.find(*failure.sourceFace);
-    if (component != frontier.partition.componentByFace.end())
-      add_component(component->second);
+    selection.failureSourceFaceInPartition =
+        component != frontier.partition.componentByFace.end();
+    if (component != frontier.partition.componentByFace.end()) {
+      const bool survived = add_component(component->second);
+      note_locator(RegionFrontierLocatorKind::SourceFace, survived);
+    }
   }
 
   if (regions != nullptr && failure.region.has_value()) {
@@ -694,17 +721,29 @@ plan_uncut_component_partition_identity() {
           return candidate.id == *failure.region;
         });
     if (region != regions->end()) {
+      selection.failureRegionSourceFaceCount = region->sourceFaces.size();
+      std::size_t facesInPartition = 0U;
+      bool resolved = false;
+      bool survived = false;
       for (const auto &face : region->sourceFaces) {
         const auto found = frontier.partition.componentByFace.find(face);
-        if (found != frontier.partition.componentByFace.end())
-          add_component(found->second);
+        if (found == frontier.partition.componentByFace.end()) continue;
+        ++facesInPartition;
+        resolved = true;
+        survived = add_component(found->second) || survived;
       }
+      selection.failureRegionSourceFacesInPartitionCount = facesInPartition;
+      if (resolved)
+        note_locator(RegionFrontierLocatorKind::RegionSweep, survived);
     }
   }
 
-  if (components.empty() && frontier.partition.components.size() == 1U)
-    add_component(0U);
-  return {components.begin(), components.end()};
+  if (components.empty() && frontier.partition.components.size() == 1U) {
+    const bool survived = add_component(0U);
+    note_locator(RegionFrontierLocatorKind::SingleComponentFallback, survived);
+  }
+  selection.components.assign(components.begin(), components.end());
+  return selection;
 }
 
 void annotate_region_frontier_evidence(
@@ -714,11 +753,27 @@ void annotate_region_frontier_evidence(
     const std::vector<GlobalTopologyRegion> *regions = nullptr) {
   failure.regionFrontierFailureStage = stage;
   failure.regionFrontierComponents.clear();
+  failure.regionFrontierUnlabeledFaceCount = frontier.unlabeledFaceCount;
+  failure.regionFrontierPartitionComponentCount =
+      frontier.partition.components.size();
+  failure.regionFrontierOwnerConsistencyRowCount =
+      frontier.ownerConsistency.components.size();
+
+  const RegionFrontierComponentSelection selection =
+      region_frontier_components(failure, frontier, regions);
+  failure.regionFrontierLocator = selection.locator;
+  failure.regionFrontierLocatorSurvivedGuard =
+      selection.locatorSurvivedGuard;
+  failure.regionFrontierFailureSourceFaceInPartition =
+      selection.failureSourceFaceInPartition;
+  failure.regionFrontierFailureRegionSourceFaceCount =
+      selection.failureRegionSourceFaceCount;
+  failure.regionFrontierFailureRegionSourceFacesInPartitionCount =
+      selection.failureRegionSourceFacesInPartitionCount;
 
   const UncutComponentPartitionIdentity planPartitionIdentity =
       plan_uncut_component_partition_identity();
-  for (const std::size_t component :
-       region_frontier_components(failure, frontier, regions)) {
+  for (const std::size_t component : selection.components) {
     const auto &row = frontier.ownerConsistency.components[component];
     RegionFrontierComponentEvidenceDiagnostic evidence;
     evidence.component = component;
@@ -1383,7 +1438,8 @@ RegionBuildResult build_regions(
         ownerEvidence->componentCount > ownerEvidence->components.size();
   }
 
-  const RegionFrontierEvidence frontier{componentPartition, ownerConsistency};
+  const RegionFrontierEvidence frontier{componentPartition, ownerConsistency,
+                                        unlabeledFaces.size()};
   const auto annotate_frontier = [&](GlobalTopologyPlanError failure) {
     annotate_region_frontier_evidence(
         failure, RegionFrontierFailureStage::RegionConstruction, frontier,
@@ -2948,6 +3004,21 @@ const char *region_frontier_census_correspondence_name(
     return "Superset";
   }
   return "Unknown";
+}
+
+const char *region_frontier_locator_kind_name(
+    const RegionFrontierLocatorKind kind) noexcept {
+  switch (kind) {
+  case RegionFrontierLocatorKind::UncutFaceComponent:
+    return "uncutFaceComponent";
+  case RegionFrontierLocatorKind::SourceFace:
+    return "sourceFace";
+  case RegionFrontierLocatorKind::RegionSweep:
+    return "regionSweep";
+  case RegionFrontierLocatorKind::SingleComponentFallback:
+    return "singleComponentFallback";
+  }
+  return "unknown";
 }
 
 const char *uncut_face_component_barrier_class_name(

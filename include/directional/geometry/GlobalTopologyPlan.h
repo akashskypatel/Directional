@@ -170,6 +170,13 @@ enum class RegionFrontierCensusCorrespondence : std::uint8_t {
   Superset = 2,
 };
 
+enum class RegionFrontierLocatorKind : std::uint8_t {
+  UncutFaceComponent = 0,
+  SourceFace = 1,
+  RegionSweep = 2,
+  SingleComponentFallback = 3,
+};
+
 enum class UncutFaceComponentBarrierClass : std::uint8_t {
   None = 0,
   Mandatory = 1,
@@ -522,6 +529,15 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
   std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
   std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
+  std::size_t regionFrontierUnlabeledFaceCount = 0U;
+  std::size_t regionFrontierPartitionComponentCount = 0U;
+  std::size_t regionFrontierOwnerConsistencyRowCount = 0U;
+  std::optional<RegionFrontierLocatorKind> regionFrontierLocator;
+  std::optional<bool> regionFrontierLocatorSurvivedGuard;
+  std::optional<bool> regionFrontierFailureSourceFaceInPartition;
+  std::optional<std::size_t> regionFrontierFailureRegionSourceFaceCount;
+  std::optional<std::size_t>
+      regionFrontierFailureRegionSourceFacesInPartitionCount;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<RegionFrontierComponentEvidenceDiagnostic>
       regionFrontierComponents;
@@ -748,6 +764,8 @@ private:
     RegionFrontierFailureStage stage) noexcept;
 [[nodiscard]] const char *region_frontier_census_correspondence_name(
     RegionFrontierCensusCorrespondence correspondence) noexcept;
+[[nodiscard]] const char *region_frontier_locator_kind_name(
+    RegionFrontierLocatorKind kind) noexcept;
 [[nodiscard]] const char *uncut_face_component_barrier_class_name(
     UncutFaceComponentBarrierClass barrierClass) noexcept;
 [[nodiscard]] const char *uncut_face_component_no_seed_reason_name(

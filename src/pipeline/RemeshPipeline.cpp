@@ -733,6 +733,24 @@ project_global_topology_plan_failure_locus(
         geometry::region_frontier_failure_stage_name(
             *error.regionFrontierFailureStage);
   }
+  locus.regionFrontierUnlabeledFaceCount =
+      error.regionFrontierUnlabeledFaceCount;
+  locus.regionFrontierPartitionComponentCount =
+      error.regionFrontierPartitionComponentCount;
+  locus.regionFrontierOwnerConsistencyRowCount =
+      error.regionFrontierOwnerConsistencyRowCount;
+  if (error.regionFrontierLocator.has_value()) {
+    locus.regionFrontierLocator = geometry::region_frontier_locator_kind_name(
+        *error.regionFrontierLocator);
+  }
+  locus.regionFrontierLocatorSurvivedGuard =
+      error.regionFrontierLocatorSurvivedGuard;
+  locus.regionFrontierFailureSourceFaceInPartition =
+      error.regionFrontierFailureSourceFaceInPartition;
+  locus.regionFrontierFailureRegionSourceFaceCount =
+      error.regionFrontierFailureRegionSourceFaceCount;
+  locus.regionFrontierFailureRegionSourceFacesInPartitionCount =
+      error.regionFrontierFailureRegionSourceFacesInPartitionCount;
   locus.regionFrontierComponentCount = error.regionFrontierComponentCount;
   locus.regionFrontierComponentsTruncated =
       error.regionFrontierComponentsTruncated;

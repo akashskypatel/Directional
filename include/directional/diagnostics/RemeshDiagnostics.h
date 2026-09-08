@@ -356,6 +356,15 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> edgeCount;
   std::optional<std::size_t> faceCount;
   std::string regionFrontierFailureStage;
+  std::size_t regionFrontierUnlabeledFaceCount = 0U;
+  std::size_t regionFrontierPartitionComponentCount = 0U;
+  std::size_t regionFrontierOwnerConsistencyRowCount = 0U;
+  std::string regionFrontierLocator;
+  std::optional<bool> regionFrontierLocatorSurvivedGuard;
+  std::optional<bool> regionFrontierFailureSourceFaceInPartition;
+  std::optional<std::size_t> regionFrontierFailureRegionSourceFaceCount;
+  std::optional<std::size_t>
+      regionFrontierFailureRegionSourceFacesInPartitionCount;
   std::size_t regionFrontierComponentCount = 0U;
   std::vector<SurfaceCellRegionFrontierComponentEvidenceDiagnostics>
       regionFrontierComponents;
