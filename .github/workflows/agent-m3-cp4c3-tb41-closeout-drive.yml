@@ -39,8 +39,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1AOiRocSvJP2WcDDCAxoz1WabeHk2fgdA
-      patch_sha256: 371d922f9f24efd10b565200c2704b6ea43e8f5be49f75675006c4224c7909f6
+      file_id: 1QuNxx525b8uVAsGKGBm4EeoiY33VAlua
+      patch_sha256: 4339e7f121c7e3442fd7e8393e00c20f397b58493465a47077f17c39530c285f
       base_sha: f953bf179009cc8786a902379e8588272ad924d6
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M3-CP4c-3-TB41-EXEC and freeze TB41-REV boundary"
