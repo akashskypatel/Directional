@@ -464,11 +464,11 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
         failure.sourceFace = segment.sourceFace;
         return failure;
       }
-      if (is_terminal_slit(*trace, segmentIndex)) {
-        // The retained outgoing carrier is only a hypothetical continuation.
-        // A terminal slit is not a real face chord and contributes no fragment
-        // separation. build_regions() applies the same predicate before any
-        // fragment count, touched-edge, or orbit-evidence mutation.
+      if (is_terminal_slit(*trace, segmentIndex) &&
+          forwardOrbit == reverseOrbit) {
+        // The retained outgoing carrier is only a hypothetical continuation
+        // when both certified face-walk sides share one orbit. Distinct-orbit
+        // terminal sides are separating ownership and must be retained.
         continue;
       }
       // FragmentCornerIncidence is an ownership map keyed by certified face
