@@ -1,1 +1,1 @@
-TB43-REV Drive caller schema-validation phase. No patch apply is authorized by this trigger commit.
+TB43-REV Drive patch apply phase. Exact staged patch File ID and SHA are frozen in the validated caller.
