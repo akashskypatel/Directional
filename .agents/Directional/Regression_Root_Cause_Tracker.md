@@ -1,21 +1,42 @@
-## M3-CP4c3-DEFN-R8 — definition closeout — **CURRENT DEFINITION AUTHORITY / NON-STABLE / PART XII FROZEN / CB48 NEXT**
+## M3-CP4c3-CB48 — compile closeout — **CURRENT BUILD AUTHORITY / NON-STABLE / PACKAGE108 / TB43 NEXT**
+
+CB48 is runtime-free: no semantic ledger, event, category, recurrence, acceptance result or regression repricing was
+produced. TB42 remains promoted at 398 PASS / 11 RED, accepted 365/365. Stable totals remain **47 events / 14
+categories / 33 recurrences**, debt **5**; package count advances **107 → 108**.
+
+- `M3-CP4c3-TB40-EXEC-CAND-02` is **IMPLEMENTED / COMPILE-GREEN / RUNTIME PENDING TB43**. Package108 contains
+  producer-owned `P_U` predicates, typed `Inside|Outside|Partial|Unresolved` subject relation, same-domain corruption
+  falsifiers and non-vacuity receipts for 390/393/406/407. No runtime recovery is credited yet.
+- `M3-CP4c3-TB41-REV-CAND-01` is **IMPLEMENTED / COMPILE-GREEN / RUNTIME PENDING TB43**: the
+  `RegionSourceFaceOwningFragmentMissing` locus publishes the complete failing-face owner-orbit set and exact
+  expected-orbit membership, diagnostic only.
+- `M3-CP4c3-TB40-REV-CAND-02` remains **ACTIVE / GATING** at 366/367; CB48 did not correct its product behavior.
+- `M3-CP4c3-TB26-REV-CAND-04` remains **ADJUDICATED BY DEFINITION**; distinct plan/certifier domains were not
+  unified. `M3-CP4c3-DEFN-R3-CAND-01` remains **SEPARABLE / ARCHITECTURAL / NON-GATING**.
+
+Compile authority: exact source `531b517fb129425f113b5f811215f1d2b1939ee2`, run `34276935866`, package108
+artifact `10076272909` / digest `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`,
+GMP/GMPXX, `runtimeExecution=false`. Exact next: artifact-only `M3-CP4c-3-TB43-EXEC`.
+
+---
+
+## M3-CP4c3-DEFN-R8 — definition closeout — **CURRENT DEFINITION AUTHORITY / NON-STABLE / PART XII FROZEN / CB48 IMPLEMENTED / TB43 NEXT**
 
 DEFN-R8 is static: no runtime, compile, package, selector mutation, event or recurrence. TB42 remains promoted at
-398 PASS / 11 RED, accepted 365/365, packages 107, accounting 47 / 14 / 33.
+398 PASS / 11 RED, accepted 365/365, packages 108 after CB48 compile, accounting 47 / 14 / 33.
 
-- `M3-CP4c3-TB40-EXEC-CAND-02` / the four protected frontier identities are **DEFINED / IMPLEMENTATION PENDING
-  CB48**. The uncut census owns exactly `P_U`; applicability is a typed domain relation, never a stage string.
-- `M3-CP4c3-TB41-REV-CAND-01` is **DEFINED / IMPLEMENTATION PENDING CB48**: the current terminal region is
+- `M3-CP4c3-TB40-EXEC-CAND-02` / the four protected frontier identities are **IMPLEMENTED / COMPILE-GREEN / RUNTIME PENDING TB43**. The uncut census owns exactly `P_U`; applicability is a typed domain relation, never a stage string.
+- `M3-CP4c3-TB41-REV-CAND-01` is **IMPLEMENTED / COMPILE-GREEN / RUNTIME PENDING TB43**: the current terminal region is
   `Outside` `P_U`; RegionCertification must publish exact region/fragment owner-orbit evidence instead.
 - `M3-CP4c3-TB26-REV-CAND-04` is **ADJUDICATED BY DEFINITION**: distinct plan/certifier partitions are lawful;
   cross-domain substitution was the defect. No unification is authorized.
 - `M3-CP4c3-DEFN-R3-CAND-01` is **SEPARABLE / ACTIVE ARCHITECTURAL NON-GATING**: duplicate actual-embedded graph
-  construction is not this gate and CB48 must not unify builders.
+  construction is not this gate and CB48 did not unify builders.
 - `M3-CP4c3-TB40-REV-CAND-02` remains **ACTIVE / GATING** at 366/367
-  `RegionSourceFaceOwningFragmentMissing`; CB48 may add exact owner-orbit evidence only and must not correct it.
+  `RegionSourceFaceOwningFragmentMissing`; CB48 added exact owner-orbit evidence only and did not correct it.
 
 Part XII requires 390/393/406/407 to validate the producer census on real same-domain data and reject a corrupted
-same-domain copy. A PASS that merely skips the oracle is invalid. Exact next: `M3-CP4c-3-CB48` EE0–EE8.
+same-domain copy. A PASS that merely skips the oracle is invalid. CB48 compiled the required non-vacuity contract in package108; exact next is artifact-only `M3-CP4c-3-TB43-EXEC`.
 
 ---
 

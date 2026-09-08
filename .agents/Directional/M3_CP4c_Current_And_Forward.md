@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-DEFN-R8` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-CB48` closeout.
 
 ---
 
@@ -23,7 +23,12 @@ Last updated **2026-09-08** at `M3-CP4c-3-DEFN-R8` closeout.
 promoted TB41 baseline**.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
-**47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**, packages **107**.
+**47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**, packages **108**.
+
+**Current build/package authority is CB48/package108** on exact source
+`531b517fb129425f113b5f811215f1d2b1939ee2`: compile run `34276935866` succeeded, package artifact
+`10076272909` has digest `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`, GMP/GMPXX is linked, and
+`runtimeExecution=false`. This build evidence does not supersede TB42 runtime authority.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -468,23 +473,20 @@ The frozen unchanged surface is accepted **365/365**, ordinals **311/312/314/315
 `fragmentCorners`, `fragmentOrbits`, cut selection and A2a′ cellularity semantics. 366/367 remain owned by the
 missing-fragment relation; Part XII adds observation only.
 
-### Exact next turn — `M3-CP4c-3-CB48`
+### CB48 result and exact next turn — `M3-CP4c-3-TB43-EXEC`
 
-CB48 is **Code + Build only** under `Architecture_M3_CP4c3_CB48_Code_Build_Plan.md`:
+CB48 completed EE0–EE8 as a runtime-free Code + Build turn. The five-path patch introduced the typed
+`Inside | Outside | Partial | Unresolved` domain relation, exact failing-face owner-orbit membership evidence,
+producer-owned census predicates, same-domain corruption falsifiers, and deterministic non-vacuity receipts. It
+left selector409 and the frozen product/accepted surfaces unchanged.
 
-- **EE0:** typed domain predicate from authoritative face membership, never a stage string;
-- **EE1:** exact failing-face owner-orbit set + `regionOwningFragmentOrbitPresent`, diagnostic only;
-- **EE2:** project/render the new evidence without perturbing unrelated loci;
-- **EE3–EE5:** producer-owned census predicates for 390/393/406/407, same-domain corruption falsifiers, and
-  deterministic branch receipts proving the oracle actually ran;
-- **EE6:** frozen-surface audit, including byte-frozen selector409 and unchanged 366/367 control flow;
-- **EE7:** compile only through the durable reusable workflow with GMP/GMPXX and `runtimeExecution=false`;
-- **EE8:** freeze one immutable package-bound `M3-CP4c-3-TB43-EXEC` plan; execute no runtime in CB48.
+Compile run `34276935866` is green on exact source `531b517fb129425f113b5f811215f1d2b1939ee2`; package108 artifact
+`10076272909` is immutable build authority. No Directional runtime ran.
 
-If the correction requires widening/unifying a partition, changing ownership/fragment behavior, modifying selector
-bytes, or allowing a protected identity to pass without executing its census predicate, CB48 stops and returns to
-review. The TB43 expected color vector, if only the defined oracle repair takes effect, is **402 PASS / 7 RED / 0
-SKIP** with carried RED `[366,367,368,369,370,374,398]`; this is a falsifier, not a synthetic target.
+Exact next is artifact-only **`M3-CP4c-3-TB43-EXEC`** from
+`Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md`. TB43 must consume package108 unchanged and
+measure selector409. The **402 PASS / 7 RED / 0 SKIP** vector with carried RED
+`[366,367,368,369,370,374,398]` is only a falsifier; runtime must establish or refute it.
 
 ## 4. Open candidates
 
@@ -493,7 +495,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | Candidate | State |
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
-| `M3-CP4c3-TB40-EXEC-CAND-02` | **DEFINED / IMPLEMENTATION PENDING CB48 / NON-STABLE GATING** — Part XII proves the terminal region is `Outside` `P_U`, keeps the producer census oracle live, and forbids stage-string applicability. |
+| `M3-CP4c3-TB40-EXEC-CAND-02` | **IMPLEMENTED / COMPILE-GREEN IN CB48 / RUNTIME PENDING TB43 / NON-STABLE GATING** — producer-owned `P_U` predicates, typed subject relation and same-domain corruption falsifiers are compiled in package108; runtime has not yet proved recovery. |
 | `M3-CP4c3-TB39-EXEC-CAND-01` | **TB41 RAW RECONFIRMED / REVIEW PENDING / NON-STABLE / RP-01** — 366/367 stay beyond retired proxies at `RegionSourceFaceOwningFragmentMissing`; TB41 now names source face/orbit and owner census. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
@@ -518,7 +520,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB27-REV-CAND-02` | **ACTIVE / ARCHITECTURAL / NON-GATING** — the plan excludes from its component domain exactly the faces carrying a direct certified read (`GlobalTopologyPlan.cpp:702`, `:750`), then fails to seed that component. |
 | `M3-CP4c3-TB26-REV-CAND-04` | **ADJUDICATED BY DEFN-R8 / DISTINCT DOMAINS LAWFUL** — plan `P_U` and certifier domains may differ; cross-domain substitution is prohibited; no unification in CB48. |
 | `M3-CP4c3-TB25-REV-CAND-02` | **ACTIVE / GATING / UNDECIDED FOR THE FAILING OBJECT** — the certifier component contains two separating arcs, but it is not the 191-face failing plan component. **TB28-R2 supplied no admissible evidence about it.** CL8 is nonetheless discharged: the correction is frozen and does not depend on this being decided first. |
-| `M3-CP4c3-DEFN-R3-CAND-01` | **SEPARABLE / ACTIVE ARCHITECTURAL / NON-GATING** — duplicated actual-embedded topology construction remains debt, but Part XII proves it is not this census-domain gate; CB48 must not unify builders. |
+| `M3-CP4c3-DEFN-R3-CAND-01` | **SEPARABLE / ACTIVE ARCHITECTURAL / NON-GATING** — duplicated actual-embedded topology construction remains debt; CB48 did not unify builders or partitions. |
 | `M3-CP4c3-TB24-REV-CAND-02` | **ACTIVE / ARCHITECTURAL** — ownership of non-arc-incident faces is a derivation, not a read. |
 | `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY** — earlier vacuous diagnostic surfaces remain historical architectural debt; ordinal393's current contract itself is runtime-proved. |
 | `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED**; `localFragmentCount` stays non-fatal. |
@@ -618,8 +620,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, execute **`M3-CP4c-3-CB48`** from Part XII and
-`Architecture_M3_CP4c3_CB48_Code_Build_Plan.md`. This is a Code + Build turn: surgical diagnostic/test-oracle
-implementation plus compile-only evidence. Do not run Directional runtime, alter selector409, widen partitions,
-unify embedded-graph builders, or correct 366/367 ownership semantics. The immutable CB48 package must carry one
-artifact-only TB43-EXEC plan.
+After the durable start-of-turn checklist, execute **`M3-CP4c-3-TB43-EXEC`** from
+`Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md` on immutable package108 artifact
+`10076272909` / source `531b517fb129425f113b5f811215f1d2b1939ee2`. This is artifact-only Test + Benchmark: rebuild nothing,
+repair nothing, preserve selector409, run every identity once per fresh process, and preserve raw RED evidence for
+independent review.

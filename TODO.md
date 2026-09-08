@@ -26,36 +26,29 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB48` (Code + Build) — IMPLEMENT PART XII DOMAIN-OWNED EVIDENCE
+## Current focus — `M3-CP4c-3-TB43-EXEC` (Test + Benchmark) — ARTIFACT-ONLY PACKAGE108
 
-`M3-CP4c-3-DEFN-R8` is **COMPLETE / STATIC / NON-STABLE**. It appended Part XII and discharged ED7.1–ED7.7
-without runtime or compile. `M3-CP4c-3-TB42` remains current semantic runtime authority: selector **409**, **398
-PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, package107.
+`M3-CP4c-3-CB48` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. The bounded Part XII implementation is
+semantic source `531b517fb129425f113b5f811215f1d2b1939ee2`; immutable package108 is artifact `10076272909`
+(`sha256:a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`). Compile run `34276935866`
+succeeded for the changed-owner target and the full eight-target package with GMP/GMPXX and
+`runtimeExecution=false`. No Directional runtime has measured CB48 yet.
 
-Part XII freezes:
-
-- [x] **ED7.1** `P_U` is exactly the unlabelled-face (`fragmentOrbits` absent/empty) partition with existing
-  mandatory/trace/cut barriers;
-- [x] **ED7.2** `RegionCertification` uses region/fragment evidence; missing-fragment failures require the complete
-  failing-face owner-orbit set and expected-orbit membership;
-- [x] **ED7.3** applicability is `Inside | Outside | Partial | Unresolved`, never a stage string;
-- [x] **ED7.4** 390/393/406/407 remain producer-owned census gates and each requires a same-domain corruption
-  falsifier so a skipped oracle cannot pass;
-- [x] **ED7.5** the plan/certifier partitions are lawfully distinct; cross-domain substitution is prohibited;
-  duplicated embedded-graph builders are separable architectural debt and are not unified by CB48;
-- [x] **ED7.6** accepted 365/365, named control ordinals, selector409, Part XI/Part XI-A, `P_U`, region construction,
-  ownership, fragment/cut/cellularity semantics remain frozen;
-- [x] **ED7.7** `Architecture_M3_CP4c3_CB48_Code_Build_Plan.md` freezes EE0–EE8 and the later artifact-only TB43 gate.
+Promoted semantic runtime authority therefore remains TB42: selector **409**, **398 PASS / 11 RED / 0 SKIP**,
+accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, ownership 300/0/0. Stable
+accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**; packages advance **107 → 108**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB48`** under EE0–EE8. It may make only the bounded diagnostic/test-oracle correction and compile
-through the durable reusable workflow with GMP/GMPXX. It must execute **no Directional runtime**. Stop if the patch
-would widen/unify a partition, change owner/fragment behavior, alter selector409 or accepted contracts, or allow
-390/393/406/407 to pass without executing and falsifying their census-owned predicate.
+Run **`M3-CP4c-3-TB43-EXEC`** exactly from
+`Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md`. It must consume package108 unchanged, execute
+selector409 one identity per fresh process, impose no repository elapsed-time cutoff on the full gate, and rebuild
+nothing. 390/393/406/407 may PASS only if their real `P_U` census predicate executes, their deliberately corrupted
+same-domain copy is rejected, and the typed terminal-domain receipt is present.
 
-If only the defined correction lands, TB43's frozen falsifier is **402 PASS / 7 RED / 0 SKIP**, accepted 365/365,
-RED `[366,367,368,369,370,374,398]`. TB43 must measure rather than assume that vector.
+The frozen falsifier, if only the defined oracle repair changes color, is **402 PASS / 7 RED / 0 SKIP**, accepted
+365/365, RED `[366,367,368,369,370,374,398]`. TB43 must measure rather than assume it. A semantic RED routes to
+independent `M3-CP4c-3-TB43-REV`; EXEC does not interpret or promote raw evidence.
 
 ## Carried forward from M1
 
@@ -93,7 +86,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB42` is promoted semantic runtime authority** on package107 with **398 PASS / 11 RED**, accepted 365/365. DEFN-R8 is complete; exact next is `M3-CP4c-3-CB48`.
+  CP4c-3 remains open. **`M3-CP4c-3-TB42` remains promoted semantic runtime authority** at **398 PASS / 11 RED**, accepted 365/365. CB48 is compile-green as package108; exact next is artifact-only `M3-CP4c-3-TB43-EXEC`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -104,7 +97,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and TB42 promoted its EC7 measurement. DEFN-R8 Part XII has now defined the domain contract; CB48 owns the bounded implementation/compile proof. 366/367 remain under their separate missing-fragment/orbit owner.
+- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and TB42 promoted its EC7 measurement. DEFN-R8 Part XII defined the domain contract and CB48 compiled its bounded implementation in package108. TB43 owns runtime validation; 366/367 remain under their separate missing-fragment/orbit owner.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -132,4 +125,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences** — no new event at TB42 — debt **5**, packages **107**. **`M3-CP4c-3-TB42` is the promoted semantic runtime authority** at 398/11 with accepted **365/365**, on package107. The frontier census is measured and Part XII has resolved its domain semantics. Exact next is **`M3-CP4c-3-CB48`** Code + Build under EE0–EE8. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences** — no runtime event in CB48 — debt **5**, packages **108**. **`M3-CP4c-3-TB42` remains promoted semantic runtime authority** at 398/11 with accepted **365/365**. CB48 package108 is compile-green on source `531b517fb129425f113b5f811215f1d2b1939ee2`; exact next is artifact-only **`M3-CP4c-3-TB43-EXEC`**. PR #8 remains open, draft, and unmerged.

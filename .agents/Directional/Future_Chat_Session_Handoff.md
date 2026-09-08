@@ -116,68 +116,63 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB48` — EXACT NEXT / Code + Build / runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB43-EXEC` — EXACT NEXT / Test + Benchmark / artifact-only
 
-`M3-CP4c-3-DEFN-R8` is complete. It appended **Part XII** to `M3_CP4c_Frozen_Definitions.md` and froze the
-implementation boundary. No runtime or compile occurred in DEFN-R8.
+`M3-CP4c-3-CB48` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. It implemented Part XII's domain-owned evidence
+contract and produced immutable package108. No Directional runtime ran in CB48.
 
 ### Current authority
 
 - **Runtime:** promoted `M3-CP4c-3-TB42` — selector **409**, **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**,
   RED `[366,367,368,369,370,374,390,393,398,406,407]`, package107 artifact `10070788592`, source
   `5dacce6019ea34316c48743f3033d2bb5c26281a`.
-- **Build/package:** `M3-CP4c-3-CB47` / package107; CB47 is diagnostics-only by identical TB41/TB42 ledger hash.
+- **Build/package:** `M3-CP4c-3-CB48` / package108, exact source
+  `531b517fb129425f113b5f811215f1d2b1939ee2`, compile run `34276935866`, artifact `10076272909`, digest
+  `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`; GMP/GMPXX linked;
+  `runtimeExecution=false`.
 - **Definition:** Part XI/Part XI-A remain binding; **Part XII** is current evidence-domain authority.
-- **Accounting:** 47 events / 14 categories / 33 recurrences; debt 5; packages 107; ownership 300 / 0 / 0.
+- **Accounting:** 47 events / 14 categories / 33 recurrences; debt 5; packages 108; ownership 300 / 0 / 0.
 
-### What Part XII decided
+### What CB48 changed
 
-1. The plan uncut census owns exactly `P_U`, the unlabelled-face (`fragmentOrbits` absent/empty) partition with the
-   existing mandatory/trace/cut barriers.
-2. Applicability is a typed subject/domain relation `Inside | Outside | Partial | Unresolved`; a stage string is
-   never a domain predicate. TB42's current terminal region is `Outside` (0 of 10 faces in `P_U`).
-3. A `RegionCertification` failure owns its region/fragment evidence. For `RegionSourceFaceOwningFragmentMissing`,
-   publish the complete failing-face owner-orbit set and exact membership of `regionOwningFragmentOrbit`; counts
-   alone are insufficient.
-4. Ordinals 390/393/406/407 remain producer-owned census gates. Each must execute on real `P_U` data and reject a
-   deliberately corrupted same-domain copy, so a skipped oracle cannot masquerade as recovery.
-5. The plan and certifier partitions are lawfully distinct. `TB26-REV-CAND-04` is adjudicated as cross-domain
-   substitution; `DEFN-R3-CAND-01` remains separate architectural/non-gating builder-duplication debt.
+1. `P_U` remains unchanged and producer-owned. Census applicability is now the typed subject/domain relation
+   `Inside | Outside | Partial | Unresolved`, never a stage string.
+2. `RegionSourceFaceOwningFragmentMissing` publishes the complete deterministic failing-face owner-orbit set and
+   exact expected-orbit membership without changing ownership or control flow.
+3. Ordinals 390/393/406/407 consume real producer census rows, reject a deliberately corrupted same-domain copy,
+   and emit deterministic receipts proving the census predicate executed.
+4. Selector409 and frozen accepted/control bodies 311/312/314/315/356/357/366/367/404/408/409 remain unchanged;
+   partitions/builders, region/fragment semantics, cuts and A2a′ cellularity were not widened or unified.
 
-### CB48 boundary — EE0–EE8
+### TB43 boundary
 
-Use `Architecture_M3_CP4c3_CB48_Code_Build_Plan.md` exactly:
+Use `Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md` exactly:
 
-- EE0 typed domain predicate;
-- EE1 exact failing-face owner-orbit relation, diagnostic only;
-- EE2 projection/rendering with unrelated diagnostics unchanged;
-- EE3–EE5 producer-owned predicates, same-domain corruption negatives and branch receipts for 390/393/406/407;
-- EE6 frozen-surface audit: selector409 and accepted controls unchanged; no partition/region/owner/fragment/cut
-  semantic change; 366/367 control flow unchanged;
-- EE7 compile-only through durable reusable workflow with GMP/GMPXX and `runtimeExecution=false`;
-- EE8 freeze one exact immutable-package-bound `M3-CP4c-3-TB43-EXEC` plan; run no TB43 runtime in CB48.
+- consume immutable package108 artifact `10076272909`; rebuild/configure/relink/repair nothing;
+- verify package digest, 28/28 root `SHA256SUMS`, source `531b517f…`, packaged source archive
+  `2bce00134c172973225bbe44e87a2708477bde5fed2d531b8d0b9636945fb7c3`, GMP/GMPXX evidence and selector409 hash;
+- preserve executable modes during extraction; never `chmod` or repair the package;
+- execute all 409 identities exactly once, one fresh process each, with mutation flags false and no repository
+  elapsed-time cutoff on the full gate;
+- require the Part XII non-vacuity receipts for 390/393/406/407;
+- treat **402 PASS / 7 RED / 0 SKIP**, accepted 365/365, RED `[366,367,368,369,370,374,398]` only as a frozen
+  falsifier. TB43 must measure the actual vector.
 
-Hard-stop and return to review if the implementation needs partition widening/unification, owner/fragment mutation,
-selector changes, accepted-contract edits, or if a protected identity can pass without executing/falsifying its
-owned predicate.
+TB43-EXEC is raw execution only. Any semantic RED routes to independent `M3-CP4c-3-TB43-REV`; orchestration failure
+routes to the bounded orchestration-correction CB edge.
 
 ### Context Load Plan
 
-`load_next`: Code + Build turn guidance.
+`load_next`: artifact-only Test + Benchmark guidance.
 
-1. `.agents/Directional/ORIENTATION.md` — current substance and open-problem ordering.
-2. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — §3.11–§3.12.
-3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part XII**, with Part XI/Part XI-A retained as binding
-   dependencies.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB48_Code_Build_Plan.md` — exact EE0–EE8 plan and falsifiers.
-5. `.agents/Directional/Architecture_M3_CP4c3_CB47_Code_Build_Report.md` and
-   `.agents/Directional/Architecture_M3_CP4c3_TB42_EXEC_Report.md` only for current package/evidence provenance.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `Required_Green_Selector_Manifest.md` for candidate
-   and selector authority.
-7. `LESSONS.md` 159–161 plus the durable retention/workflow/tool-conservation policies.
-8. Turn-based coding agent `references/turns/CB.md` (and only capability modules it routes to).
-
-Do not preload retired TB42 review text; its durable conclusions are folded into Part XII/current records.
+1. `.agents/Directional/ORIENTATION.md` — current substance/open-problem ordering.
+2. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current package/runtime authority and resume pointer.
+3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part XII, with Part XI/Part XI-A dependencies.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB48_Code_Build_Report.md` — package108 compile provenance.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md` — exact execution contract.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `Required_Green_Selector_Manifest.md`.
+7. `LESSONS.md` plus durable retention/workflow/tool-conservation policies.
+8. Turn-based coding agent Test + Benchmark guidance.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

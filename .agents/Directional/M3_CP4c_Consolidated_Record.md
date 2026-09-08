@@ -3,12 +3,12 @@
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
 **Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**.
-As of `M3-CP4c-3-DEFN-R8`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN. **TB42 remains promoted runtime
-authority** — selector409, **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, package107, ownership 300/300.
-**Part XII is current definition authority**: the uncut census owns `P_U`, applicability is a typed domain
-relation, RegionCertification owns exact region/fragment evidence, and the two partitions may remain lawfully
-distinct. Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5. Exact next is
-**`M3-CP4c-3-CB48`** under EE0–EE8; no further census measurement or partition/builder unification is authorized.
+As of `M3-CP4c-3-CB48`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN. **TB42 remains promoted runtime
+authority** — selector409, **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, package107, ownership 300/0/0.
+**Part XII is current definition authority**. CB48 compiled its bounded domain-owned evidence correction as
+package108 artifact `10076272909` on source `531b517fb129425f113b5f811215f1d2b1939ee2`, with no Directional runtime.
+Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 108. Exact next is artifact-only
+**`M3-CP4c-3-TB43-EXEC`**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -50,7 +50,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB42/package107 is current runtime authority at 398 PASS / 11 RED, accepted 365/365. Part XII is current definition authority; exact next is CB48 EE0–EE8.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB42/package107 remains runtime authority at 398 PASS / 11 RED, accepted 365/365. CB48/package108 is compile-green under Part XII; exact next is artifact-only TB43-EXEC.** |
 
 ### 2.1 CP4c-0
 
