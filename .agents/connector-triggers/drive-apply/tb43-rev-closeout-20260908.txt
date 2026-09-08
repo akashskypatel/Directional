@@ -1,1 +1,0 @@
-TB43-REV Drive patch apply phase. Exact staged patch File ID and SHA are frozen in the validated caller.
