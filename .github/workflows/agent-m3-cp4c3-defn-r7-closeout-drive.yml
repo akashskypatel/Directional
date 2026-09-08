@@ -1,0 +1,48 @@
+name: M3 CP4c3 DEFN-R7 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-defn-r7-closeout/trigger.json
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-defn-r7-closeout-drive
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-defn-r7-closeout-drive.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-defn-r7-closeout-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply-drive-patch:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1g_toeS1HSTKNdeN2akiyEaFecWf0V6rH
+      patch_sha256: e6dfe37d9b4f4f7f1c8aff3a296683e024903120430375b3ddd81e0b93f53e6f
+      base_sha: 7f8b36413aeb5af808979a106b7b2557c81e8865
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: freeze DEFN-R7 actual-embedded face binding"
+      retention_days: 14
+    secrets: inherit
