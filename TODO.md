@@ -26,28 +26,33 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB39-REV` (independent Review + Plan, evidence-only) — ADJUDICATE PACKAGE104 RUNTIME
+## Current focus — `M3-CP4c-3-DEFN-R7` (Definition / Review + Plan, static) — REBIND REGION DISC AUTHORITY
 
-`M3-CP4c-3-TB39-EXEC` is mechanically valid and raw-gate green on immutable package104:
+TB39-REV promotes TB39 to current semantic runtime authority: package104 / selector409 **402 PASS / 7 RED**,
+accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Stable accounting remains **46 / 14 / 32**, debt **5**,
+packages **104**.
 
-- selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
-- 312/409 and protected 390/393/406/407 PASS; 404/408 preserved;
-- **513 nonempty `euler_certificate` rows**, zero missing fields, all five arithmetic relations true;
-- torus: `fullMinusReduced=-1`, `trace_cut_faces=0`, `split_fragments==F`, corners 0;
-- mechanical: `fullMinusReduced=+4`, `trace_cut_faces=36`, `split_fragments=288`, corners 86;
-- ownership 300/0/0, retired codes absent; no build or benchmark.
+The review re-derived the semantic topology object from architecture and source: A2a′ already certifies each
+non-exterior face of the **ActualEmbeddedGraph** as a disc, and A2b constructs each topology region from exactly one
+of those face-walk orbits. The later Euler certificate independently re-counts source-support/projection data.
+Neither reduced nor whole-face Euler proxy is a universal region criterion; CB44's split/barrier publication is also
+diagnostic rather than an exact per-region actual-embedded cell complex.
 
-**Exact next turn: `M3-CP4c-3-TB39-REV`.** Evidence-only independent review must:
+**Exact next turn: `M3-CP4c-3-DEFN-R7`.** Static definition work must:
 
-- [ ] decide whether TB39 supersedes TB37 as semantic runtime authority and adjudicate TB38 recovery;
-- [ ] adjudicate `TB38-EXEC-CAND-01` and `TB38-EXEC-CAND-02` from the non-vacuous TB39 evidence;
-- [ ] adjudicate `M3-CP4c3-TB39-EXEC-CAND-01`: `regionChiFull=-3` in 366/367 error payload versus emitted full `+1`;
-- [ ] interpret both fixtures' third-complex measurements without choosing a formula from one witness;
-- [ ] decide whether the evidence is sufficient for a later `DEFN-R7`, and freeze the exact successor;
-- [ ] update `ORIENTATION.md` and perform mandatory REVIEW document consolidation before close.
+- [ ] supersede DEFN-R6.3/R6.4 as region-disc authority without replacing one proxy formula by another;
+- [ ] bind each canonical region to the matching upstream `SurfaceCutGraphFaceCertificate` for its actual-embedded
+      face-walk orbit;
+- [ ] freeze a provenance relation that copy/mutation negatives can invalidate; no sticky trust flag;
+- [ ] give `GlobalTopologyRegionDiscCertificate` one semantic object and separate topology proof from field regularity;
+- [ ] domain-name reduced/full/split/barrier diagnostics exactly and resolve the `regionChiFull` misbinding contract;
+- [ ] enumerate every consumer/digest/validator/failure surface before implementation;
+- [ ] preserve accepted 365/365, 312/409, protected 390/393/404/406/407/408, ownership 300/0/0, selectors, region
+      construction, and existing owners for 368/369/370/374/398;
+- [ ] freeze exactly one bounded runtime-free Code + Build successor, then stop.
 
-**Must not:** execute new runtime, compile, patch product/test/fixture/selector semantics, or make a counted-complex
-implementation change before the review adjudicates the evidence.
+**Must not:** run Directional runtime/compile/benchmark/package or implement product/test/fixture/selector changes in
+DEFN-R7.
 
 ## Carried forward from M1
 
@@ -85,7 +90,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB37` remains the current valid semantic runtime authority** pending TB39 independent review. TB39 raw EXEC on package104 restores **402 PASS / 7 RED**, accepted 365/365 with RED `[366,367,368,369,370,374,398]`; exact next is **`M3-CP4c-3-TB39-REV`**.
+  CP4c-3 remains open. **`M3-CP4c-3-TB39` is the current valid semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. Exact next is static **`M3-CP4c-3-DEFN-R7`**.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -96,8 +101,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 region-frontier runtime proof:** source-face ownership is closed at last-runtime **300 / 0 / 0**.
-  TB36 proved the derived provenance contract; TB37 decided the Euler frontier. The certificate misclassifies interior barrier edges as boundary, dropping 12 edges against 16 vertices and rejecting a genuine disc. `DEFN-R6` writes the criterion; `CB43` implements it under a per-region equivalence proof on every accepted fixture.
+- [ ] **CP4c-3 region-disc authority:** source-face ownership remains **300 / 0 / 0**. TB39-REV established that the A2b topology region is the actual-embedded face-walk orbit already disc-certified by A2a′; the downstream reduced/full Euler certificate is a source-support projection over a different object. `DEFN-R7` owns the binding contract before any implementation.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -125,4 +129,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count **104**. `M3-CP4c-3-TB37` remains semantic runtime authority until independent review; TB39 raw EXEC exactly restores its 402/7 colour vector and accepted 365/365 with 513 non-vacuous certificate rows. Exact next is evidence-only **`M3-CP4c-3-TB39-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count **104**. `M3-CP4c-3-TB39` is semantic runtime authority at 402/7, accepted 365/365. Exact next is static **`M3-CP4c-3-DEFN-R7`** under `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md`. PR #8 remains open, draft, and unmerged.

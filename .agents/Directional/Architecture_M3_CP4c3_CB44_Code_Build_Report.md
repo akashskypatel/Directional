@@ -12,9 +12,10 @@
 
 ## 1. Scope and boundary
 
-CB44 implements exactly DA7.1–DA7.5 from `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` and prepares DA7.6–DA7.7 for artifact-only TB39. It restores the accepted criterion first, retains and ungates CB43's diagnostic surface, and publishes the third-complex measurements without choosing a new certified complex.
+CB44 implements exactly DA7.1–DA7.5 from the historical TB38 review (DA0–DA7, now resolved through
+`M3_CP4c_Consolidated_Record.md`) and prepares DA7.6–DA7.7 for artifact-only TB39. It restores the accepted criterion first, retains and ungates CB43's diagnostic surface, and publishes the third-complex measurements without choosing a new certified complex.
 
-No Directional runtime, test, benchmark, generated discovery/list/help/version command, fuzzer, or produced binary was executed in CB44. `M3-CP4c-3-TB37` remains the current valid semantic runtime authority until package104 is executed and independently reviewed.
+No Directional runtime, test, benchmark, generated discovery/list/help/version command, fuzzer, or produced binary was executed in CB44. **At CB44 closeout**, `M3-CP4c-3-TB37` remained the valid semantic runtime authority pending package104 execution/review; TB39-REV has since promoted package104/TB39.
 
 ## 2. Implementation result
 
@@ -103,7 +104,7 @@ Frozen packaged authority remains byte-identical:
 
 CB44 creates one new semantic package and no runtime event or recurrence:
 
-- current valid semantic runtime authority: **unchanged at `M3-CP4c-3-TB37`**;
+- runtime authority **at CB44 closeout**: unchanged at `M3-CP4c-3-TB37`; TB39-REV later promotes TB39/package104;
 - TB37: selector409, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
 - TB38 remains mechanically valid but semantically RED and unpromoted;
 - stable accounting remains **46 events / 14 categories / 32 recurrences**;
@@ -115,7 +116,8 @@ No runtime verdict is promoted by this compile.
 
 ## 6. DA7.6–DA7.7 closeout and next boundary
 
-Package104 is the immutable execution input for `M3-CP4c-3-TB39-EXEC`. The executable plan is `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md`.
+Package104 was the immutable execution input for `M3-CP4c-3-TB39-EXEC`. The consumed executable plan is now
+resolved through the folded-document index in `M3_CP4c_Consolidated_Record.md`; the resulting current runtime evidence is `Architecture_M3_CP4c3_TB39_EXEC_Report.md`.
 
 TB39 must restore accepted **1–365 = 365/365**, restore 390/393/406/407 to PASS, keep 312/409 PASS and byte-identical, execute selector409 exactly once in fresh processes, and produce a non-empty `euler_certificate` table. It must verify every row's reduced/full arithmetic and publish all new third-complex fields without deciding which complex is authoritative. The separately owned 368/369/370/374/398 surfaces remain carried.
 

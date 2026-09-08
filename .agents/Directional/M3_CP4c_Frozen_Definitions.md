@@ -3237,7 +3237,8 @@ unchanged.** No stable event, category or recurrence changes: totals remain **45
 ## Part X — M3-CP4c-3 DEFN-R6
 
 **Turn:** `M3-CP4c-3-DEFN-R6` — definition turn (absorbs REVIEW + PLAN).
-**Frozen owner:** CZ6 of `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md`.
+**Frozen owner:** CZ6 of the historical TB37 review, resolved through the folded-document index in
+`M3_CP4c_Consolidated_Record.md`.
 **Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
 
 Runtime authority entering this turn: `M3-CP4c-3-TB37`, selector **409**, **402 PASS / 7 RED**, accepted

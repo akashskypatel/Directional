@@ -1,3 +1,27 @@
+## 2026-09-08 — `M3-CP4c-3-TB39-REV`: TB39 promoted; region disc authority re-derived from the actual embedded face
+
+Independent evidence-only review. **TB39 is promoted** to current semantic runtime authority: package104,
+selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. TB38's one stable
+accepted-green-loss event remains historical; recovery does not erase it. Accounting stays **46 events / 14
+categories / 32 recurrences**, debt **5**, packages **104**.
+
+The 513 non-empty TB39 certificate rows close `M3-CP4c3-TB38-EXEC-CAND-02` as runtime-proved; all reduced/full
+arithmetic identities hold. They also confirm the sign-changing torus/mechanical discrepancy, so neither reduced nor
+whole-face source-support Euler proxy is a universal region-disc criterion. Static review then re-derived the
+normative object from `DESIGN.md` and source: A2a′ certifies the `ActualEmbeddedGraph`, each non-exterior face-walk
+orbit already carries a `SurfaceCutGraphFaceCertificate::proves_disc_topology()`, and A2b constructs each region
+directly from one such orbit. `region.sourceFaces` and CB44's split/barrier fields are support/projection diagnostics,
+not topology-cell authority. `M3-CP4c3-TB37-REV-CAND-01` is adjudicated as gating `RP-01` with root cause established.
+
+`M3-CP4c3-TB39-EXEC-CAND-01` is **OWNED / NON-STABLE / DIAGNOSTIC CONTRACT / RP-01**: 366/367's
+`regionChiFull` field receives restored reduced `certificate.eulerCharacteristic=-3` even though full is +1. No gate
+colour loss, so no stable repricing. Separately owned 368/369/370/374/398 remain unchanged.
+
+Exact successor is static **`M3-CP4c-3-DEFN-R7`**, bound by
+`Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md`: rebind downstream region-disc authority to the matching upstream
+actual-embedded face certificate, preserve copy/mutation tamper falsifiers, domain-name diagnostics exactly, and stop
+before implementation. No runtime/compile/product/test/fixture/selector mutation occurred in this review.
+
 ## 2026-09-08 — `M3-CP4c-3-TB39-EXEC`: package104 restores the frozen gate; 513 non-vacuous Euler rows
 
 Artifact-only Test + Benchmark. Run/job `34177823202 / 101910682975` on package104 source

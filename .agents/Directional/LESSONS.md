@@ -1901,13 +1901,15 @@ building any conclusion on it.**
      the artifact that must change**, and check both. An unexplained identical hash is a warning; an identical
      hash next to a changed evidence digest is a receipt.
 152. **When a setup step writes to a path some workflow triggers on, the turn has already started before its own
-     ordering gate.** Two consecutive EXEC turns missed process order the same way. One read project documents
-     before choosing `READ_MODE`; the next created the turn-cleanup manifest during setup, and because the durable
-     cleanup workflow is push-triggered on that exact path, cleanup fired before the execution caller existed.
-     Neither touched semantic evidence, but neither was caught by the turn's own checklist either - because the
-     checklist governs what the agent does deliberately, not what a path write does automatically. **Before writing
-     any file under a trigger-watched directory, check whether that write is itself an action**, and order
-     trigger-bearing writes last.
+     ordering gate.** Three turns have now missed process order in this family. One read project documents before
+     choosing `READ_MODE`; the next created the turn-cleanup manifest during setup, and because the durable cleanup
+     workflow is push-triggered on that exact path, cleanup fired before the execution caller existed; TB39-REV
+     repeated the first shape by beginning direct document reads before explicitly selecting `READ_MODE`, then
+     stopped piecemeal access and recovered onto an exact snapshot once detected. None touched semantic evidence,
+     but the checklist did not prevent them because it governs what the agent does deliberately, not what a path
+     write or an already-started inspection does automatically. **Select `READ_MODE` before the first source/doc
+     read, and before writing any file under a trigger-watched directory check whether that write is itself an
+     action**; order trigger-bearing writes last.
 153. **A "boundary" defined by one subsystem's barrier set is not the boundary of another subsystem's complex.**
      A region certificate computed `chi` over a source sub-mesh of whole triangles but took its boundary from the
      **network's** barrier set - mandatory and cut edges. A barrier edge with **both** incident faces inside the

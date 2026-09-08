@@ -116,50 +116,62 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB39-REV` — EXACT NEXT / independent Review + Plan / NO RUNTIME
+## Mandatory next turn — `M3-CP4c-3-DEFN-R7` — EXACT NEXT / Definition + Review + Plan / NO RUNTIME / NO COMPILE
 
-TB39-EXEC is **MECHANICALLY VALID / RAW RESTORATION GATE GREEN / REVIEW PENDING**.
+TB39-REV is **CLOSED / TB39 PROMOTED / ACTUAL-EMBEDDED-FACE AUTHORITY RE-DERIVED**.
 
-### Immutable runtime evidence
+### Current immutable authority
 
-- package104 semantic source: `8756cfe983bf7e05209f560d59a522a6b5b0674a`;
-- EXEC run/job: `34177823202 / 101910682975`;
-- result artifact `10037931111`, SHA-256 `8b84cfec3b735d10511c4ca11c40d34180ed134122e885a4fd431e17d1b63b4f`;
-- log artifact `10037931384`, SHA-256 `4353665ba54dd8cff63904388195ff3f795a03b9d1937a8dd56fce5ffdcd3a09`;
-- selector409: **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
-- ledger SHA `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`, identical to TB37;
-- 312/409 and 390/393/404/406/407/408 PASS; zero selection mismatch/timeout;
-- 513 certificate rows, zero missing fields, every reduced/full relation true;
-- ownership 300/0/0; retired codes absent; package/source/execution censuses identical; no build/benchmark.
+- semantic runtime authority: **TB39**, package104 source `8756cfe983bf7e05209f560d59a522a6b5b0674a`;
+- EXEC run/job `34177823202 / 101910682975`;
+- result/log artifacts `10037931111 / 10037931384`;
+- selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
+- 312/409 and 390/393/404/406/407/408 PASS; ownership 300/0/0; retired codes absent;
+- 513 non-empty Euler rows, all five reduced/full arithmetic relations true;
+- stable accounting **46 / 14 / 32**, debt **5**, packages **104**.
 
-`M3-CP4c-3-TB37` remains the current valid semantic runtime authority until this review decides promotion. Stable
-accounting remains **46 / 14 / 32**, debt **5**, packages **104**; EXEC repriced nothing.
+TB38's accepted-green-loss event remains counted even though CB44/TB39 recovered the gate.
+`M3-CP4c3-TB38-EXEC-CAND-02` is closed runtime-proved. `M3-CP4c3-TB39-EXEC-CAND-01` is owned non-stable RP-01.
 
-### Review questions
+### Review finding that DEFN-R7 must freeze
 
-1. adjudicate TB39's raw recovery of TB38 accepted 356/357/362 and protected 390/393/406/407;
-2. adjudicate the formerly vacuous R6.7 proof now that 513 rows exist;
-3. interpret both decisive fixtures: torus `fullMinusReduced=-1`, `trace_cut_faces=0`, `split_fragments==F`, corners 0;
-   mechanical `fullMinusReduced=+4`, `trace_cut_faces=36`, `split_fragments=288`, corners 86;
-4. adjudicate new non-stable `M3-CP4c3-TB39-EXEC-CAND-01`: 366/367 error payload says `regionChiFull=-3` while
-   emitted `V_total-E_total+F` and `chiFull` are +1; static assignment ties the full-labelled field to the reduced criterion;
-5. preserve existing owners for 368/369/370/374/398 unless evidence requires reclassification;
-6. decide whether a later `DEFN-R7` has enough evidence, freeze exactly one successor, update `ORIENTATION.md`, and
-   perform mandatory REVIEW document consolidation.
+`DESIGN.md` §7.2 / Amendment 13 and current source agree: A2a′ certifies the **ActualEmbeddedGraph**, each
+non-exterior face-walk orbit already carries a disc-topology face certificate, and A2b regions are built directly
+from those orbits. The downstream Euler certificate instead counts `region.sourceFaces` support/projection data and
+has mixed domains across `F`, reduced V/E, whole-face V/E, and split/source-edge diagnostics.
+
+Torus `fullMinusReduced=-1` and mechanical `+4` prove neither reduced nor full proxy is a universal criterion.
+CB44's third-complex fields are diagnostics, not an exact actual-embedded per-region cell decomposition.
+
+### Binding plan
+
+Read `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` after the TB39 review record. DEFN-R7 must freeze:
+
+1. region disc authority as the matching non-exterior actual-embedded face-walk orbit +
+   `SurfaceCutGraphFaceCertificate`;
+2. an exact derived binding that fails after copy/mutation, not a sticky trusted flag;
+3. one semantic object for `GlobalTopologyRegionDiscCertificate`;
+4. exact domain names/contracts for reduced/full/split/barrier diagnostics, including the mislabelled
+   `regionFullEulerCharacteristic` field;
+5. all consumers/digests/validators/failure surfaces before implementation;
+6. preservation of 312/409, accepted 365/365, protected 390/393/404/406/407/408, ownership 300/0/0, and existing
+   owners for 368/369/370/374/398.
 
 ### Hard boundary
 
-This turn is review/evidence only. **Do not run runtime, compile, or patch product/test/fixture/selector semantics
-before adjudication.** The review may freeze a later CB/DEFN plan but must not execute it in the same turn.
+This is a static definition turn. **Do not execute Directional runtime, compile, benchmark, package, or product/test/
+fixture/selector implementation.** DEFN-R7 may append normative Part XI and freeze one bounded Code + Build
+successor; it stops before that implementation.
 
 ### Resume load order
 
-1. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — exact raw runtime evidence and digests.
-2. `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` — frozen obligations TB39 executed.
-3. `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — DA0–DA7 provenance and TB38 classifications.
-4. `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-5. `M3_CP4c_Frozen_Definitions.md` — withdrawn R6.4 and unresolved counted-complex question.
-6. `ORIENTATION.md`, `LESSONS.md` 122/144/155/156, and mandatory policies/start checklist.
+1. `Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` — DB0–DB8 adjudication.
+2. `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` — binding decisions R7.1–R7.9.
+3. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current runtime evidence.
+4. `Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — current package104 build authority.
+5. `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
+6. `M3_CP4c_Frozen_Definitions.md` Part X plus `DESIGN.md` §7.2 / Amendment 13.
+7. `ORIENTATION.md`, `LESSONS.md` 118/145/150/152/155/156, and mandatory policies/start checklist.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -10,24 +10,24 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-TB39-EXEC` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB39-REV` closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB37` remains the current valid semantic runtime authority.** Selector **409**, **402 PASS / 7 RED**,
-**accepted 1–365 = 365/365**, on CB42 package `10032277517` / source
-`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`.
+**`M3-CP4c-3-TB39` is the current valid semantic runtime authority.** Package104 / source
+`8756cfe983bf7e05209f560d59a522a6b5b0674a`, selector **409**, **402 PASS / 7 RED**, **accepted 1–365 = 365/365**,
+RED `[366,367,368,369,370,374,398]`. Its ledger SHA is byte-identical to TB37 while its certificate surface is
+strictly richer: **513** complete rows with all five frozen arithmetic relations true.
 
-**TB38 remains mechanically valid, semantically RED, and NOT promoted.** Package103 / source
-`2fcde465b1de2e42a348d224f5165ce8b87e4fbe`, run `34169783183`: 395 PASS / 14 RED, accepted 362/365.
+**TB37 is superseded as runtime authority, not invalidated historically.** **TB38 remains historical regression
+evidence**: package103 was mechanically valid at 395/14, accepted 362/365, and its one stable accepted-green-loss
+`RP-01` event remains counted even though CB44/TB39 recover the gate.
 
-**TB39-EXEC is mechanically valid and raw-gate green, but remains unadjudicated.** Package104 / source
-`8756cfe983bf7e05209f560d59a522a6b5b0674a`, run `34177823202`: **402 PASS / 7 RED**, accepted **365/365**, RED
-`[366,367,368,369,370,374,398]`. Its ledger SHA is byte-identical to TB37. It emits **513** complete certificate
-rows and all five frozen arithmetic relations hold on every row. `M3-CP4c-3-TB37` remains semantic runtime authority
-until TB39-REV decides promotion.
+TB39-REV additionally establishes that A2a′ already certifies the actual-embedded face-walk orbit that A2b emits as
+the topology region. Reduced/full/split/source-edge counts in the downstream region certificate are support or
+diagnostic projections, not substitute topology authority. `DEFN-R7` owns the exact rebinding contract.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
 **46 events / 14 categories / 32 recurrences**, debt **5**; packages are **104**.
@@ -42,7 +42,7 @@ Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable acc
 - **CV6's falsifier is settled:** 366/367 report `ClosedBeforeEnd`, **not** `ArcChainBroken`.
 - 390/393/404/406/407/408 PASS; retired-code silence held; ownership published.
 
-**Repairing the regression does not erase it.** The TB34 stable event stays on the books.
+**Repairing the regression does not erase it.** The TB38 stable event stays on the books.
 
 ## 3. The frontier, proved from source
 
@@ -239,7 +239,7 @@ even where a trace splits one**. Meanwhile `V_int`'s `allOwned` exclusion only h
 
 Part X resolved that mixture toward whole faces; TB38 refutes it. **The third complex — the traced/split region,
 using the `fragmentCorners` ownership map DEFN-R4 established — has never been computed.** `DEFN-R6.4` is
-**withdrawn**; **`DEFN-R6.3` is the live question**, exactly as Part X §9's own falsifier said it would be.
+**withdrawn**; **at TB38-REV, `DEFN-R6.3` became the live question**, exactly as Part X §9's own falsifier said it would be. TB39-REV now resolves that question toward the upstream actual-embedded face authority.
 
 ### The safeguard discharged over an empty set
 
@@ -258,24 +258,34 @@ Part X's falsifier called this "a new frontier, not a regression of this one". O
 frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
 because the plan now stops where no frontier annotation is attached — a **DEFN-R4 pattern recurrence**.
 
-## 3.7 Exact next turn — `M3-CP4c-3-TB39-REV`
+## 3.7 TB39-REV promoted TB39 and found the topology authority upstream
 
-TB39 restores every frozen runtime control and supplies the non-vacuous data CB44 was built to expose. It does not
-itself promote authority or choose a counted complex.
+TB39 is now the current valid semantic runtime authority: package104, selector409 **402 PASS / 7 RED**, accepted
+**365/365**, RED `[366,367,368,369,370,374,398]`. The accepted/protected losses introduced by TB38 are recovered,
+but TB38's one stable event remains historical. Accounting stays **46 / 14 / 32**, debt **5**, packages **104**.
 
-Raw evidence to adjudicate:
+The 513-row R6.7 evidence surface is now non-vacuous and arithmetically exact. It does **not** choose a proxy:
+torus `fullMinusReduced=-1`, mechanical `+4`. CB44's split/corner/source-edge measurements also remain projection
+diagnostics rather than an exact per-region cell complex.
 
-- exact TB37 colour vector: **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
-- 513 complete Euler rows, all reduced/full equations exact;
-- torus `fullMinusReduced=-1`, `trace_cut_faces=0`, `split_fragments==F`, corners 0;
-- mechanical `fullMinusReduced=+4`, `trace_cut_faces=36`, `split_fragments=288`, corners 86;
-- 366/367 still Euler RED, but their error payload's `regionChiFull=-3` conflicts with emitted full +1 because the
-  full-labelled failure field is assigned from restored reduced `certificate.eulerCharacteristic`;
-- carried 368/369/370/374/398 unchanged in ownership; ownership census 300/0/0; retired codes silent.
+The decisive static finding is stronger. `DESIGN.md` §7.2 + Amendment 13 define the region as a face of the
+**actual embedded graph**. Current source implements that contract: `SurfaceCutGraph` certifies each non-exterior
+face-walk orbit as a disc; `GlobalTopologyPlan` refuses an uncertified cut graph; `build_regions()` builds region
+boundaries directly from those orbits; `region_orbit()` re-derives the binding by exact boundary equality. The
+later region Euler certificate instead counts `region.sourceFaces` support/projection data. It is a second topology
+checker over a different object.
 
-**Independent TB39-REV is the exact next turn.** It decides promotion/repricing, the TB38 candidate dispositions,
-what the third-complex measurements actually establish, whether `DEFN-R7` is warranted, and the next bounded edge.
-It executes no runtime or implementation. REVIEW obligations include `ORIENTATION.md` update and document consolidation.
+Therefore `DEFN-R6.3/R6.4` no longer have region-disc authority. The next definition must **rebind** the downstream
+region certificate to the matching upstream actual-embedded face certificate, preserve copy/mutation tamper
+falsifiers, and keep source-support Euler/split/barrier counts diagnostic unless they are explicitly redefined over
+the actual embedded object.
+
+`M3-CP4c3-TB39-EXEC-CAND-01` is owned non-stable RP-01: the full-labelled failure field receives the restored
+reduced value. `TB38-EXEC-CAND-02` is closed runtime-proved; `TB38-EXEC-CAND-01` is recovered at current runtime but
+its stable event remains counted.
+
+**Exact next turn: `M3-CP4c-3-DEFN-R7`**, static Definition / Review + Plan, no runtime/compile, bound by
+`Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md`.
 
 ## 4. Open candidates
 
@@ -283,9 +293,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB39-EXEC-CAND-01` | **NEW / ACTIVE / DIAGNOSTIC CONTRACT / RP-01 / NON-STABLE** — 366/367 error payload labels the reduced value `-3` as `regionChiFull`, while the same run’s complete certificate row proves full `chiFull=+1`. Static source assigns the full-labelled field from the restored reduced criterion. No gate-colour loss; TB39-REV owns adjudication/correction. |
-| `M3-CP4c3-TB38-EXEC-CAND-01` | **OWNED / STABLE** — root cause is **`DEFN-R6.4`**, not CB43, which implemented Part X exactly as frozen. One new stable event; accounting 46 / 14 / 32. Owner: `M3-CP4c-3-CB44` (restore), then `DEFN-R7` (decide). |
-| `M3-CP4c3-TB38-EXEC-CAND-02` | **OWNED / NON-STABLE** — the emission sits behind `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`, which accepted identities never set, so the verifier passed over an empty table. DEFN-R6.7 lacked a non-emptiness condition. Owner: `CB44` DA7.3. `LESSONS.md` 155. |
+| `M3-CP4c3-TB39-EXEC-CAND-01` | **OWNED / NON-STABLE / DIAGNOSTIC CONTRACT / RP-01** — static cause established: the full-labelled failure field is assigned from restored reduced `certificate.eulerCharacteristic`. No gate-colour loss. DEFN-R7 freezes the contract before correction. |
+| `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
+| `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |
 | `M3-CP4c3-TB31-REV-CAND-02` | **CLOSED / RUNTIME PROVED** — 390/393/406/407 PASS with selector 408 byte-unchanged and nothing they legitimately own relaxed. |
 | `M3-CP4c3-TB31-REV-CAND-03` | **CLOSED / IMPLEMENTED** — frontier evidence publishes at both annotation sites. Its **over-reach** is carried forward as `M3-CP4c3-TB32-REV-CAND-01` rather than left inside a closed candidate. |
@@ -296,7 +306,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB34-REV-CAND-03` | **CLOSED** — open since TB34, now diagnosed to the cell: the region is a disc (`chiFull=1`) and the certificate drops 12 interior barrier edges against 16 vertices, netting −4. |
 | `M3-CP4c3-TB35-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — TB36 advanced 366/367 past `ClosedBeforeEnd` on `FaceWalkOrbit` while 312/409, which mutate a **copy** of a real region, stayed PASS on `Unguaranteed`. Part IX's derived relation is confirmed in both directions. |
 | `M3-CP4c3-TB36-REV-CAND-01` | **REOPENED** — "the region is a disc" holds for the mechanical region under the **whole-face** reading only, and TB38 refutes that reading as a general criterion. Subsumed by `TB37-REV-CAND-01`. |
-| `M3-CP4c3-TB37-REV-CAND-01` | **PROMOTED TO GATING** — recorded non-blocking at TB37-REV; TB38 proves it blocking. `faceCount` counts whole faces while `V_int` excludes corners owned elsewhere, so **the certificate has never counted one object**. Three candidate complexes; the traced/split one has never been computed. Owner: `CB44` DA7.4, then `DEFN-R7`. |
+| `M3-CP4c3-TB37-REV-CAND-01` | **ADJUDICATED / GATING ROOT CAUSE ESTABLISHED / RP-01** — A2b region topology is the actual-embedded face-walk orbit already disc-certified by A2a′; the later Euler certificate re-derives topology over source-support projection data. Owner: `DEFN-R7`. |
 | `M3-CP4c3-TB34-EXEC-CAND-01` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — accepted-prefix ordinal 312 regresses to RED: expected `RegionBoundaryNotSingleWalk`, observed `RotationSystemInconsistent`, no arc locus. Review owns product/test classification. |
 | `M3-CP4c3-TB34-EXEC-CAND-02` | **NEW / HARD-FALSIFIER INTAKE / NON-STABLE** — new gating ordinal 409 is RED before its intended `ArcChainBroken` oracle because `disjointRegions` construction fails. Review owns fixture/product discrimination; EXEC may not weaken the gate. |
 | `M3-CP4c3-TB32-REV-CAND-02` | **CLOSED / RUNTIME PROVED and vindicated on the same run** — the failure-detail digest table now separates runs; TB33's ledger hash collided with TB30's. |
@@ -409,16 +419,20 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, TB39-EXEC loads only the minimum authority:
+After the durable start-of-turn checklist, `M3-CP4c-3-DEFN-R7` loads only the minimum authority:
 
 1. `ORIENTATION.md` — read first.
-2. `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` — executable next plan.
-3. `Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — exact immutable package/build evidence.
-4. **this file** — §3.6 for the defect and §3.7 for the frozen execution boundary.
-5. `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` — DA0–DA7 provenance.
-6. `M3_CP4c_Frozen_Definitions.md` — DEFN-R6.4 is withdrawn; no replacement definition is authorized in EXEC.
-7. `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`,
-   `LESSONS.md` (**122, 144, 155, 156** govern).
-8. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md` — artifact-only mechanics.
+2. `Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` — DB0–DB8 current review authority.
+3. `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` — exact static definition plan.
+4. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current semantic runtime evidence.
+5. `Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — current package104 build evidence.
+6. **this file** — §3.7 for the authority rebinding and current candidate dispositions.
+7. `M3_CP4c_Frozen_Definitions.md` Part X plus `DESIGN.md` §7.2 / Amendment 13.
+8. `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`,
+   `LESSONS.md` (**118, 145, 150, 152, 155, 156** govern).
+9. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md` — process authority.
 
-Exact next is **`M3-CP4c-3-TB39-EXEC`**, then hard stop at independent **`M3-CP4c-3-TB39-REV`**.
+Historical TB37/TB38 review/runtime documents and the consumed TB39 execution plan are resolved through the
+folded-document index in `M3_CP4c_Consolidated_Record.md`.
+
+Exact next is static **`M3-CP4c-3-DEFN-R7`**. It stops before implementation/runtime/compile.

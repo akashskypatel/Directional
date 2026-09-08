@@ -1,3 +1,33 @@
+## M3-CP4c3-TB39-REV — promotion + actual-embedded-face authority adjudication — **CURRENT REVIEW AUTHORITY / NON-STABLE REVIEW**
+
+- **TB39 PROMOTED.** Package104 / selector409: **402 PASS / 7 RED**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,398]`. TB37 is superseded as semantic runtime authority. Stable totals stay
+  **46 events / 14 categories / 32 recurrences**, debt **5**, packages **104**.
+- **`M3-CP4c3-TB38-EXEC-CAND-01` — RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED.** CB44 restoration + TB39
+  recover 356/357/362 and 390/393/406/407. The TB38 event remains counted; recovery does not delete history.
+- **`M3-CP4c3-TB38-EXEC-CAND-02` — CLOSED / RUNTIME-PROVED / NON-STABLE.** TB39 emits 513 non-empty rows, zero
+  missing fields, all five frozen arithmetic relations true. The proof is arithmetic over published proxies, not
+  semantic selection of a counted complex.
+- **`M3-CP4c3-TB37-REV-CAND-01` — ADJUDICATED / GATING ROOT CAUSE ESTABLISHED / RP-01.** `DESIGN.md` Amendment 13
+  already makes the actual embedded graph authoritative. `SurfaceCutGraph` certifies each non-exterior face-walk
+  orbit as a disc before A2b; `GlobalTopologyPlan` regions are built directly from those orbits. The separate
+  reduced/full/source-support Euler certificate re-derives topology over a different proxy object. The corrective
+  edge is `DEFN-R7`, not a third proxy formula.
+- **`M3-CP4c3-TB39-EXEC-CAND-01` — OWNED / NON-STABLE / DIAGNOSTIC CONTRACT / RP-01.** 366/367 publish
+  `regionChiFull=-3` because `failure.regionFullEulerCharacteristic = certificate.eulerCharacteristic` after CB44
+  restored the reduced criterion; the same runtime row proves full +1. No accepted-green loss, so no stable event
+  or recurrence. DEFN-R7 freezes the diagnostic contract before any code change.
+- **Proxy evidence adjudication.** Torus `fullMinusReduced=-1`; mechanical `+4`. CB44's `split_fragments`,
+  `fragment_corner_attributions`, and source-edge barrier counts are useful diagnostics but do not construct a
+  per-region actual-embedded cell complex. Neither reduced, full, nor those publication fields gain topology
+  authority from TB39.
+- **Carried RED unchanged:** 368/369/370/374/398 remain on existing owners. No sphere/empty-network/atlas/other
+  corrective is authorized.
+- **Exact successor:** `M3-CP4c-3-DEFN-R7`, static, no runtime/compile, under
+  `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md`.
+
+---
+
 ## M3-CP4c3-TB39-EXEC — package104 restoration runtime — **MECHANICALLY VALID / RAW GATE GREEN / REVIEW PENDING / NON-STABLE EXEC**
 
 - Run/job `34177823202 / 101910682975`, package104 artifact `10036808934`, source
@@ -46,7 +76,8 @@
 
 ## M3-CP4c3-TB38-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STABLE — ONE NEW EVENT / ACCEPTED PREFIX BROKEN / TB38 NOT PROMOTED**
 
-- **Record:** `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md`, measures **DA0–DA7**. Evidence-only.
+- **Historical record:** TB38-REV measures **DA0–DA7**, now resolved through the folded-document index in
+  `M3_CP4c_Consolidated_Record.md`. Evidence-only.
   `review_check.py authority 2fcde465b1de2e42a348d224f5165ce8b87e4fbe` — ALL CHECKS PASSED.
 
 - **DA0 — TB38 is mechanically valid, semantically RED, and NOT promoted.** Selector409, run `34169783183`,
@@ -171,7 +202,8 @@
 
 ## M3-CP4c3-TB37-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / TB37 PROMOTED / EULER DECIDED**
 
-- **Record:** `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md`, measures **CZ0–CZ6**. Evidence-only.
+- **Historical record:** TB37-REV measures **CZ0–CZ6**, now resolved through the folded-document index in
+  `M3_CP4c_Consolidated_Record.md`. Evidence-only.
   `review_check.py authority 89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d` — ALL CHECKS PASSED.
 
 - **CZ0 — TB37 promoted; packages advance to 102.** Selector **409**, **402 PASS / 7 RED**, accepted

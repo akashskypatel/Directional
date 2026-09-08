@@ -565,8 +565,10 @@ records **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,37
 is identical to TB37. The non-vacuous certificate table contains 513 complete rows and all frozen arithmetic
 relations pass. Selector409 remains byte-frozen.
 
-**Exact successor:** independent `M3-CP4c-3-TB39-REV`. EXEC does not promote TB39 or make a counted-complex
-decision; review owns the TB38 recovery, new diagnostic candidate, third-complex interpretation and next edge.
+**TB39-REV promotion:** independent review promotes this TB39 execution to the **current valid semantic runtime
+authority**. Selector409 bytes remain frozen; accepted authority is **365/365**, with current full selector colour
+vector **402 PASS / 7 RED** and RED `[366,367,368,369,370,374,398]`. Stable accounting remains 46 / 14 / 32.
+The review makes no selector membership change. **Exact successor:** static `M3-CP4c-3-DEFN-R7`.
 
 ## Separate lineage — M1
 

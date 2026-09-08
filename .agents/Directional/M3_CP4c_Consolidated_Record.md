@@ -1461,3 +1461,34 @@ documents a CB or TB turn retired between reviews. Each document's durable facts
 
 **Retained as current authority:** `Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` (review and the frozen CB24 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
 
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB39-REV`
+
+Mandatory REVIEW consolidation. TB39 is promoted, so TB37 ceases to be current runtime authority; TB38's rejected
+runtime/review chain and the consumed TB39 execution plan are now historical. Durable facts were preserved first in
+`Architecture_M3_CP4c3_TB39_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md`, `Required_Green_Selector_Manifest.md` and `CHANGELOG.md`.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` | 194 | consumed TB37 artifact-only contract; TB37 is superseded as runtime authority by promoted TB39 |
+| `Architecture_M3_CP4c3_TB37_EXEC_Report.md` | 197 | superseded runtime authority — selector409 402/7, accepted365/365, package102; colour vector later restored exactly by TB39 |
+| `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` | 207 | superseded review authority — CZ0–CZ6; established whole-face +1 vs reduced -3 mechanical discrepancy and opened the counted-complex candidate |
+| `Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md` | 150 | consumed TB38 contract implementing the DEFN-R6.4 trial |
+| `Architecture_M3_CP4c3_TB38_EXEC_Report.md` | 145 | rejected historical runtime — 395/14, accepted362/365; source of the one stable RP-01 event retained in accounting |
+| `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` | 244 | superseded review authority — DA0–DA7; blamed DEFN-R6.4, withdrew its universal criterion, froze CB44 restoration/non-vacuous measurement |
+| `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` | 225 | consumed TB39 restoration/non-vacuity contract; discharged by promoted TB39 |
+| `Architecture_M3_CP4c3_CB42_Code_Build_Report.md` | 135 | superseded package102 build authority; diagnostics-only behavior preservation proved by TB37 |
+| `Architecture_M3_CP4c3_CB43_Code_Build_Report.md` | 112 | superseded package103 build authority; faithful implementation of DEFN-R6.4, whose regression remains historical evidence |
+
+**Folded here:** 9 documents, **1,609 lines**. **Running total: 122 documents, 23,863 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB39_EXEC_Report.md` (current semantic runtime),
+`Architecture_M3_CP4c3_CB44_Code_Build_Report.md` (current package104 build authority),
+`Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` (current review), and
+`Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` (single exact next-turn plan), together with durable definitions,
+indexes and every byte-frozen selector.
+
+**Definition-authority note.** This review does not edit normative Part X in place. It establishes that
+DEFN-R6.3/R6.4 cannot remain the region-disc authority and freezes `M3-CP4c-3-DEFN-R7` to append the replacement
+contract. Until that definition is written, current runtime evidence remains TB39's restored reduced rejection at
+366/367; no proxy is silently promoted by documentation cleanup.
