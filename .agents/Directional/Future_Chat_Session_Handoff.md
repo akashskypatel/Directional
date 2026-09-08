@@ -116,54 +116,56 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB43-REV` — EXACT NEXT / independent evidence-only review
+## Mandatory next turn — `M3-CP4c-3-CB49` — EXACT NEXT / Code + Build / runtime-free
 
-`M3-CP4c-3-TB43-EXEC` is **COMPLETE / ARTIFACT-ONLY / RAW EVIDENCE PRESERVED / NOT PROMOTED BY EXEC**. It executed
-immutable package108 without rebuild, relink, regeneration, package repair, source/test/fixture/selector mutation, or benchmark.
+`M3-CP4c-3-TB43-REV` is **COMPLETE / EVIDENCE-ONLY**. It promotes TB43/package108 as semantic runtime authority and
+freezes one narrow correction for 366/367. No compile or runtime occurred in the review.
 
 ### Current authority
 
-- **Promoted runtime:** `M3-CP4c-3-TB42` — selector **409**, **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**,
-  RED `[366,367,368,369,370,374,390,393,398,406,407]`, package107 artifact `10070788592`, source
-  `5dacce6019ea34316c48743f3033d2bb5c26281a`. TB43-EXEC is raw until independent review.
-- **Raw TB43 measurement:** run/job `34280642422 / 102244347209`, immutable package108 artifact `10076272909`,
-  **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, result/log artifacts
+- **Promoted runtime:** TB43/package108, selector409 **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,398]`; run/job `34280642422 / 102244347209`; result/log artifacts
   `10077594302 / 10077595162`.
-- **Build/package:** CB48/package108, exact source `531b517fb129425f113b5f811215f1d2b1939ee2`, package digest
-  `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`, GMP/GMPXX linked.
-- **Definition:** Part XI/Part XI-A remain binding; Part XII is current evidence-domain authority.
-- **Accounting:** unchanged by EXEC at 47 events / 14 categories / 33 recurrences; debt 5; packages 108; ownership
-  300 established / 0 unavailable / 0 conflicting.
+- **Immutable package:** artifact `10076272909`, digest
+  `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`, exact source
+  `531b517fb129425f113b5f811215f1d2b1939ee2`, GMP/GMPXX linked.
+- **Definition:** Part VIII R4.1/R4.2 + Part XI/Part XI-A own region/corner orbit semantics; Part XII is runtime-proved
+  evidence-domain authority.
+- **Accounting:** 47 events / 14 categories / 33 recurrences, debt 5, packages 108, ownership 300/0/0.
 
-### TB43 raw facts the review owns
+### Review adjudication
 
-1. The frozen falsifier measured exactly: **402/7/0**, accepted 365/365, no selection mismatch and no timeout.
-2. 390/393/406/407 all PASS and each proves `branch=UncutCensus`, `censusPredicateExecuted=yes`,
-   `terminalSubjectRelation=Outside`, `sameDomainCorruptionRejected=yes`, and
-   `regionCertificationEvidenceBranchExecuted=yes`. This is raw recovery evidence, not EXEC-time semantic closure.
-3. 366/367 remain RED at `RegionSourceFaceOwningFragmentMissing`; Part XII now publishes the expected orbit 1,
-   present owner-orbit set `[2,3]`, `regionOwningFragmentOrbitPresent=false`, and typed relation `Outside` while the
-   producer census remains 226 unlabelled faces / 9 components / 9 rows.
-4. 368/369/370/374/398 remain their separately owned carried RED surfaces; no new RED ordinal or accepted loss appeared.
-5. 311/312/314/315/356/357/404/408/409 PASS; ordinal385 remains 300/0/0; retired-code silence holds.
-6. Package/source/execution-view byte+mode censuses are identical before and after runtime; configure/compile/relink/
-   generated discovery/package or mode repair/mutation flags are all false.
+1. 390/393/406/407 are semantically recovered and `M3-CP4c3-TB40-EXEC-CAND-02` is CLOSED / RUNTIME-PROVED /
+   NON-STABLE. Their producer census executed, terminal relation was `Outside`, and same-domain corruption was rejected.
+2. `M3-CP4c3-TB41-REV-CAND-01` is CLOSED / RUNTIME-PROVED / NON-STABLE: TB43 publishes expected orbit 1 and complete
+   present owner set `[2,3]` with membership false.
+3. 366/367 remain under `M3-CP4c3-TB40-REV-CAND-02`, now ROOT-CAUSED. Their 3/3/3 owner cardinality rules out a
+   count deficit. `build_fragment_corner_incidence()` drops every final no-barrier segment; `build_regions()` drops
+   only same-orbit/non-separating cases. This projection predicate drift can omit the region's expected owner row.
+4. Existing Part VIII + Part XI authority decides the correction; no new definition turn is required.
+5. 368/369/370/374/398 remain separately owned and CB49 may not alter them.
 
-### TB43-REV boundary
+### CB49 boundary
 
-Read `Architecture_M3_CP4c3_TB43_EXEC_Report.md` and the immutable result/log artifacts. Review must adjudicate the
-protected Part XII recovery, the 366/367 exact owner-orbit evidence, carried RED ownership, candidate/stable accounting,
-and the exact successor. It is evidence-only: **no compile, no new runtime, no semantic source/test/fixture/selector mutation**.
+Consume `Architecture_M3_CP4c3_CB49_Code_Build_Plan.md` exactly. Align only the `FragmentCornerIncidence` skip:
+`is_terminal_slit && forwardOrbit == reverseOrbit` remains skipped; a final no-barrier segment with distinct
+certified face-walk sides is retained. Preserve region construction, `fragmentOrbits`, `region_orbit`, actual
+embedded graph, cut selection, ownership, both partitions, selector409 and accepted oracles. Compile changed owner
+first and then the normal package through the durable reusable compile workflow with GMP/GMPXX. Execute no
+Directional binary. On package success author exactly one artifact-only TB44 plan; do not execute it in CB49.
+
+TB44 must not be pre-synthesized: 366/367 may PASS or expose a later guard. Reproducing the exact current missing
+owner locus falsifies CB49. Accepted 365/365 and 390/393/406/407 Part XII PASS receipts must remain; the five carried
+REDs must not move under this correction.
 
 ### Context Load Plan
 
-1. `.agents/Directional/ORIENTATION.md` — update it during this REVIEW turn.
-2. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current raw/promoted authority and resume pointer.
-3. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part XII with Part XI/Part XI-A dependencies.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB43_EXEC_Report.md` — exact raw runtime evidence.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `Required_Green_Selector_Manifest.md`.
-6. `LESSONS.md` plus durable retention/workflow/tool-conservation/cleanup policies.
-7. Turn-based coding agent REVIEW guidance; perform mandatory REVIEW document consolidation before closeout.
+1. `.agents/Directional/Architecture_M3_CP4c3_CB49_Code_Build_Plan.md` — exact EG0–EG9 boundary.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB43_Independent_Review_Record.md` — EF0–EF9 adjudication/root cause.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB43_EXEC_Report.md` — promoted runtime evidence.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII, Part XI/Part XI-A, Part XII.
+5. `.agents/Directional/M3_CP4c_Current_And_Forward.md`, `TODO.md`, tracker and ORIENTATION.
+6. Before compile, `GMP_COMPILE_POLICY.md`, workflow/tool/retention/cleanup policies and `LESSONS.md` in full.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

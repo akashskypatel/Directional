@@ -1,4 +1,5 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-DEFN-R8`):** **TB42 remains PROMOTED** — selector **409**, **398 PASS / 11 RED**, accepted **365/365**, package **107**. Part XII now freezes the missing semantic boundary: the uncut census describes `P_U` (unlabelled faces) and a failure may consume it only through an explicit `Inside | Outside | Partial | Unresolved` domain relation. The current terminal region is `Outside` (0 of 10 faces in `P_U`). `RegionCertification` instead owns exact region/fragment evidence, including the failing face's complete owner-orbit set. 390/393/406/407 remain non-vacuous producer-owned census gates. Distinct plan/certifier partitions are lawful; cross-domain substitution is forbidden. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB48`**, Code + Build only under EE0–EE8.
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB43-REV`):** **TB43/package108 is PROMOTED** — selector **409**, **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`, ownership 300/0/0. Part XII is runtime-proved: 390/393/406/407 execute their producer-owned `P_U` census and reject same-domain corruption. 366/367 are root-caused as predicate drift between region ownership and `FragmentCornerIncidence`: the latter drops every final no-barrier segment while the former drops only same-orbit/non-separating ones. Existing Part VIII + Part XI authority decides the bounded correction. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB49`**, Code + Build only.
+
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,17 +31,17 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-DEFN-R8`. Semantic runtime authority is **TB42**
-(package107, source `5dacce6019ea34316c48743f3033d2bb5c26281a`), selector **409**, **398 PASS / 11 RED**,
-accepted **365/365**. Current immutable build/package authority remains **CB47/package107**, artifact `10070788592`.
-DEFN-R8 is documentation-only and creates no package or runtime evidence.
+**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-TB43-REV`. Semantic runtime authority is **TB43**
+(package108, source `531b517fb129425f113b5f811215f1d2b1939ee2`), selector **409**, **402 PASS / 7 RED**, accepted **365/365**.
+Immutable build/package authority is the same CB48/package108 artifact `10076272909`. Stable accounting is
+**47 / 14 / 33**, debt 5, packages 108.
 
-**Current definition resolution.** Part XI/Part XI-A remain the actual-embedded face/certificate authority. **Part
-XII** now governs evidence-domain applicability: the plan uncut census owns exactly `P_U`; applicability is a typed
-face-membership relation, never a stage string. A `RegionCertification` failure publishes its own region/fragment
-relation, including exact owner-orbit membership for `RegionSourceFaceOwningFragmentMissing`. The two partitions
-may remain distinct. 390/393/406/407 must still exercise and falsify their census-owned predicates. **CB48** owns
-the bounded implementation/compile proof; 366/367 ownership semantics remain untouched.
+**Current definition resolution.** Part XI/Part XI-A remain the actual-embedded face/certificate authority and Part
+XII's evidence-domain contract is now runtime-proved. The next defect needs no new definition: `build_regions()`
+retains a final no-barrier segment when its two certified face-walk sides differ, while `FragmentCornerIncidence`
+currently drops every such final segment. That projection mismatch omits region orbit 1 from the 366/367 corner
+ownership map even though owner cardinality is complete. **CB49** owns only predicate alignment in the corner
+projection; region construction, actual embedded topology, partitions, selectors and carried REDs stay frozen.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -118,20 +119,9 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB42`** (package 107, promoted at TB42-REV). Selector **409**,
-**398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, reds
-{366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. Certified ownership **300 / 0 / 0**; ordinals 311, 312,
-314, 315, 356, 357, 404, 408, 409 PASS.
+**Runtime authority — `M3-CP4c-3-TB43` / package108**, promoted at TB43-REV. Selector **409**, **402 PASS / 7 RED / 0 SKIP**, **accepted 1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 398}. Certified ownership **300 / 0 / 0**; 390/393/406/407 are recovered Part XII PASSes and 311/312/314/315/356/357/404/408/409 remain PASS controls.
 
-**CB47 was diagnostics-only, proved by artifact.** TB42's ledger SHA-256 is **identical to TB41's**
-(`5b1e663e…`) while the failure-detail digest **changed** (`f2b3cb59…` vs `82b7a0e8…`) — the "same verdicts,
-richer evidence" receipt, and the oracle was not re-hidden.
-
-**Promotion reasoning, since it is a judgement call.** The operative rule — applied at TB39 and withheld at TB38
-and TB40 — is **mechanical validity plus an intact accepted prefix**; TB39 itself was promoted at 402/7, so an
-all-green ledger has never been required. TB41 satisfies both. Leaving authority on TB39 would point it at a source
-that no longer exists in the tree, making static review invalid evidence about the authority. **Promotion does not
-close or excuse the four protected REDs.**
+**Promotion reasoning.** TB43 is mechanically valid, preserves accepted 365/365 and measures the frozen Part XII falsifier exactly. Its result/log artifacts and immutable pre/post byte+mode censuses are valid; no build/package repair or semantic mutation occurred. An all-green ledger is not required for runtime authority, but every remaining RED must stay explicitly owned.
 
 **The binding itself is runtime confirmed.** 4 regions ↔ 4 face certificates, one upstream match each, injective,
 arc counts matching, `discTopologyEstablished=true` and `fieldRegularity=true` on every row, complex inputs
@@ -142,8 +132,8 @@ against their own independent enumeration's index. `LESSONS.md` 158.
 field that **varies**, so Part XI-A §A.3's tamper amendment was honoured.
 
 **TB38 remains historical regression evidence, not runtime authority.** Package103 was mechanically valid at
-395/14, accepted 362/365. CB44/TB39 recover accepted 356/357/362 and protected 390/393/406/407, but the one stable
-TB38 event remains counted. **Current accounting is 47 / 14 / 33**, debt 5, packages 107; the TB38 event remains historical within those totals.
+395/14, accepted 362/365. Later repairs recover its accepted losses, but the one stable TB38 event remains counted.
+**Current accounting is 47 / 14 / 33**, debt 5, packages 108; the TB38 event remains historical within those totals.
 
 **CB42 changed no behaviour, and that is proved by artifact.** TB37's `ledger.tsv` and `identity-map.tsv` hash
 **identical to TB36's** (`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs**
@@ -201,7 +191,7 @@ is now the single identity **χ_true = X + B_int − 47**: `X + B_int = 44` mean
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current critical path.** Certified ownership is **300/300** and accepted prefix **365/365**. Part XI/Part XI-A bind the canonical topology region to its actual-embedded face certificate; TB42 now stops 366/367 at `RegionSourceFaceOwningFragmentMissing`. Part XII separately defines the frontier-census domain contract. **CB48** owns only the bounded evidence-domain implementation and compile proof; it must not correct 366/367 ownership semantics. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current critical path.** Certified ownership is **300/300** and accepted prefix **365/365**. TB43 recovers the Part XII census gates and leaves 366/367 at `RegionSourceFaceOwningFragmentMissing`. Their expected region orbit 1 is absent from corner-owner set `[2,3]` despite complete 3/3/3 cardinality. TB43-REV root-causes the omission to corner-ownership predicate drift; **CB49** owns only that bounded correction. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -304,20 +294,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Part XII domain contract — DEFINED / implementation pending CB48.** —
-   `M3-CP4c3-TB40-EXEC-CAND-02`, owner **`M3-CP4c-3-CB48`**.
+1. **`RegionSourceFaceOwningFragmentMissing` is the live A2b frontier.** — `M3-CP4c3-TB40-REV-CAND-02`, **ROOT-CAUSED / ACTIVE / CB49 ASSIGNED**. TB43 publishes expected orbit 1 absent from present owner set `[2,3]` with complete 3/3/3 cardinality. The corner-incidence projection drops every final no-barrier segment while region ownership drops only same-orbit/non-separating cases. CB49 aligns that predicate and nothing broader.
 
-   - TB42 measured `P_U`: **226** unlabelled faces, **9** components, **9** owner rows; terminal region: **10**
-     faces, **0** in `P_U`.
-   - DEFN-R8 freezes the relation `Inside | Outside | Partial | Unresolved`; the current region is `Outside`.
-   - Stage labels are chronology only. 390/393/406/407 remain producer-owned census gates and each must reject a
-     corrupted same-domain census copy.
-   - RegionCertification owns exact region/fragment evidence instead; CB48 adds the failing face's complete
-     owner-orbit set and expected-orbit membership without changing 366/367 behavior.
-   - **Nothing remains to define or measure before CB48.**
-
-2. **`RegionSourceFaceOwningFragmentMissing` is the live A2b frontier.** — `M3-CP4c3-TB40-REV-CAND-02`,
-   **ACTIVE / GATING**. 366/367 stop there, now publishing `regionOwningFragmentOrbit`. Measured, not corrected.
+2. **The Part XII census-domain problem is resolved.** — 390/393/406/407 PASS non-vacuously in promoted TB43; `M3-CP4c3-TB40-EXEC-CAND-02` and `M3-CP4c3-TB41-REV-CAND-01` are CLOSED / RUNTIME-PROVED / NON-STABLE. Keep their receipts as regression controls; do not reopen the producer census merely because 366/367 remain RED in a different domain.
 
 3. **Ordinal 315 tampers only the orbit.** — `M3-CP4c3-TB41-REV-CAND-02`, **ACTIVE / HARDENING**. With a content
    anchor now on the certificate, an **anchor** tamper is the stronger negative.
@@ -395,6 +374,16 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+### Ownership projections must share the same separation predicate
+
+TB43-REV found a new instance of representation drift: two consumers used the same actual embedded face-walk
+orbits but disagreed about whether a final no-barrier segment separates owners. Region construction checked the
+certified dart-side orbits; corner ownership inferred non-separation from terminal metadata alone. When a derived
+ownership map and the region it certifies are both keyed by the same upstream face-walk authority, their separation
+predicate must be shared or re-derived identically. Absence of `terminalBarrier` is not itself proof that a final
+segment is non-separating.
+
 
 **A stage name used as a domain guard is a proxy, and proxies drift.** Four identities checked a census over an
 **unlabelled-face** partition and guarded it with `if (stage != "UncutComponent")`. That stood in for the real

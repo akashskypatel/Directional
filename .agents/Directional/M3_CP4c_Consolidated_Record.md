@@ -655,6 +655,32 @@ failure, and required a static definition turn rather than more measurement. Par
 and freezes CB48. Fold accounting advances from **134 documents / 25,676 lines** to **135 documents / 25,888
 lines**. Git history remains exact-byte recovery authority for the retired review record.
 
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB43-REV`
+
+Mandatory REVIEW consolidation. Durable TB42 runtime facts are retained in this record, the tracker, CHANGELOG and
+Git history before the superseded TB42 EXEC report is folded. TB43 is the current runtime report and remains live.
+The already-consumed TB43 artifact-only plan is retrospectively indexed here because TB43 closeout retired it
+between REVIEW turns.
+
+| Folded/indexed document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB42_EXEC_Report.md` | 78 | superseded runtime authority — selector409 398 PASS / 11 RED, accepted 365/365, package107; its domain-mismatch measurement led to Part XII and is now superseded by promoted TB43 |
+| `Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md` | — | retrospectively indexed consumed evidence contract — frozen package108/selector409 Part XII falsifier discharged by promoted TB43; exact bytes remain in Git history at `f604b3e10fe2` |
+
+**Folded here:** 1 currently retained document, **78 lines**. **Running total: 136 documents, 25,966 lines.** The
+retrospective TB43 plan index is accounting-neutral because the file was already retired between REVIEW turns and
+was not part of the 135-document retained fold count.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB43_EXEC_Report.md` (promoted runtime, package108,
+402 PASS / 7 RED, accepted 365/365), `Architecture_M3_CP4c3_TB43_Independent_Review_Record.md` (current review),
+`Architecture_M3_CP4c3_CB49_Code_Build_Plan.md` (single exact next-turn plan), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record and every byte-frozen selector.
+
+**Review conclusion retained here.** Part XII is runtime-proved and its protected candidate is closed. 366/367 are
+root-caused to predicate drift between `build_regions()` and `build_fragment_corner_incidence()`: the latter drops
+every final no-barrier segment while region ownership drops only same-orbit/non-separating cases. Existing Part VIII
+and Part XI authority decide a bounded CB49 correction; no new definition is required.
+
 ## 6. Historical retirement
 
 All files below are historical-only after consolidation. Their exact bytes remain recoverable from Git history; current/future authority does not depend on them except where selector lineage is explicitly retained in §1.

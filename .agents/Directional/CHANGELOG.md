@@ -1,3 +1,36 @@
+## 2026-09-08 — `M3-CP4c-3-TB43-REV`: TB43 promoted; 366/367 root-caused to corner-ownership predicate drift
+
+Independent evidence-only review. No runtime, compile, package operation, product/test/fixture/selector mutation or
+stable repricing.
+
+**TB43/package108 is promoted semantic runtime authority:** selector409 **402 PASS / 7 RED / 0 SKIP**, accepted
+**365/365**, RED `[366,367,368,369,370,374,398]`; run/job `34280642422 / 102244347209`; result/log artifacts
+`10077594302 / 10077595162`. The artifacts were independently re-downloaded/hash-verified in review and the frozen
+402/7 Part XII falsifier was measured exactly.
+
+390/393/406/407 are semantically recovered with real `UncutCensus` execution, typed `Outside` terminal relation and
+same-domain corruption rejection. `M3-CP4c3-TB40-EXEC-CAND-02` is CLOSED / RUNTIME-PROVED / NON-STABLE.
+`M3-CP4c3-TB41-REV-CAND-01` is likewise CLOSED: expected orbit 1 and complete present owner set `[2,3]` are now
+runtime-proved evidence.
+
+366/367 remain RED but are now root-caused. Their 3 local fragments / 3 owners / 3 expected fragments rule out a
+count deficit. Source shows two projections disagree: `build_fragment_corner_incidence()` unconditionally skips
+every final segment lacking `terminalBarrier`, whereas `build_regions()` skips only when the certified forward and
+reverse face-walk sides are the same orbit. The corner projection can therefore omit an owner row that region
+ownership lawfully retained. Existing Part VIII R4.1/R4.2 and Part XI/Part XI-A decide the correction; no DEFN-R9 is
+needed.
+
+Frozen exact successor: **`M3-CP4c-3-CB49`**, Code + Build only. Align the corner-incidence skip with the region
+separation predicate, preserve all region/graph/partition/selector semantics and carried RED owners, compile/package
+with GMP/GMPXX without runtime, then bind exactly one TB44 artifact-only plan. Stable accounting remains
+**47 events / 14 categories / 33 recurrences**, debt **5**, packages **108**.
+
+Review also records one control-plane sequencing miss: initial direct document reads preceded the mandatory
+snapshot declaration. It was caught before semantic adjudication and corrected by switching to one exact source
+snapshot; it has no semantic effect.
+
+---
+
 ## 2026-09-08 — `M3-CP4c-3-TB43-EXEC`: package108 raw runtime measures frozen 402/7 vector
 
 Artifact-only Test + Benchmark EXEC. Immutable package108 artifact `10076272909`, source

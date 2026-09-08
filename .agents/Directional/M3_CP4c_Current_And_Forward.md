@@ -10,27 +10,24 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-TB43-EXEC` raw closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB43-REV` independent review.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB42` is the current valid semantic runtime authority**, promoted at TB42-REV. Selector **409**,
-**398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED
-`[366,367,368,369,370,374,390,393,398,406,407]`, on immutable CB47 package `10070788592` / source
-`5dacce6019ea34316c48743f3033d2bb5c26281a`, run `34265561941`. The RED set and ledger hash are **identical to the
-promoted TB41 baseline**.
+**`M3-CP4c-3-TB43` is the current valid semantic runtime authority**, promoted at TB43-REV. Selector **409**,
+**402 PASS / 7 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable
+CB48/package108 artifact `10076272909` / source `531b517fb129425f113b5f811215f1d2b1939ee2`, run/job
+`34280642422 / 102244347209`. Result/log artifacts are `10077594302 / 10077595162`.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
 **47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**, packages **108**.
 
-**Current build/package authority is CB48/package108** on exact source
-`531b517fb129425f113b5f811215f1d2b1939ee2`: compile run `34276935866` succeeded, package artifact
-`10076272909` has digest `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`, GMP/GMPXX is linked, and
-`runtimeExecution=false`. This build evidence does not supersede TB42 runtime authority.
-
-**Latest raw runtime is TB43-EXEC on package108**: run/job `34280642422 / 102244347209`, **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. This raw EXEC evidence is not promoted until independent TB43-REV.
+TB43-REV closes the Part XII protected-census candidate: 390/393/406/407 are non-vacuous PASSes. It root-causes
+366/367 as **predicate drift in the orbit-keyed fragment-corner ownership projection**: corner incidence drops every
+final no-barrier segment while region ownership drops only a non-separating one (`forwardOrbit == reverseOrbit`).
+Existing Part VIII and Part XI authority decides the correction. Exact next is bounded runtime-free **CB49**.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -475,20 +472,26 @@ The frozen unchanged surface is accepted **365/365**, ordinals **311/312/314/315
 `fragmentCorners`, `fragmentOrbits`, cut selection and A2a′ cellularity semantics. 366/367 remain owned by the
 missing-fragment relation; Part XII adds observation only.
 
-### TB43 raw result and exact next review — `M3-CP4c-3-TB43-REV`
+### TB43 review adjudication — Part XII recovered; 366/367 owner is predicate drift
 
 TB43 consumed immutable package108 unchanged and measured selector409 at **402 PASS / 7 RED / 0 SKIP**, accepted
-**365/365**, RED `[366,367,368,369,370,374,398]`. Run/job `34280642422 / 102244347209`; result/log artifacts
-`10077594302 / 10077595162`. No configure, compile, relink, generated discovery, package/mode repair, benchmark, or
-source/test/fixture/selector mutation occurred; package/source/execution-view censuses are identical pre/post.
+**365/365**, RED `[366,367,368,369,370,374,398]`. Independent TB43-REV promotes it as current semantic authority.
 
-390/393/406/407 all PASS with deterministic Part XII receipts proving the real `P_U` census predicate executed,
-`terminalSubjectRelation=Outside`, the same-domain corruption was rejected, and the RegionCertification evidence branch ran.
-366/367 remain RED at `RegionSourceFaceOwningFragmentMissing` with expected orbit 1 absent from present owner-orbit set `[2,3]`.
-The other five REDs remain carried separately.
+390/393/406/407 are now **semantically recovered**: their deterministic receipts prove the producer-owned `P_U`
+predicate executed, `terminalSubjectRelation=Outside`, the same-domain corruption was rejected, and the
+RegionCertification evidence branch ran. `M3-CP4c3-TB40-EXEC-CAND-02` is CLOSED / RUNTIME-PROVED / NON-STABLE.
 
-This exactly matches the frozen TB43 falsifier, but EXEC does not promote or adjudicate it. **Exact next is independent
-`M3-CP4c-3-TB43-REV`**, evidence-only and runtime/compile-free.
+366/367 remain RED at `RegionSourceFaceOwningFragmentMissing`: expected orbit 1 is absent from complete present set
+`[2,3]` despite local fragment/owner/expected counts 3/3/3. Source re-derivation resolves the owner. The
+`FragmentCornerIncidence` projection unconditionally skips every final segment with no `terminalBarrier`, but
+`build_regions()` skips that class only when its certified forward/reverse face-walk sides are the same orbit. A
+separating terminal event can therefore create region ownership without the corresponding corner-owner row. This
+is **ownership-projection predicate drift**, not a missing region, count deficit, `P_U` defect or new topology
+definition.
+
+Existing Part VIII R4.1/R4.2 and Part XI/Part XI-A decide the correction. **Exact next is `M3-CP4c-3-CB49`**:
+align only the corner-incidence skip predicate with the region predicate, compile/package runtime-free, and bind one
+artifact-only TB44 plan. 368/369/370/374/398 remain separately owned.
 
 ## 4. Open candidates
 
@@ -497,8 +500,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | Candidate | State |
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
-| `M3-CP4c3-TB40-EXEC-CAND-02` | **TB43 RAW RECOVERED / REVIEW PENDING / NON-STABLE GATING** — 390/393/406/407 PASS with producer-owned `P_U` predicate execution, typed `Outside` relation, same-domain corruption rejection and deterministic receipts; independent review owns semantic closure. |
-| `M3-CP4c3-TB39-EXEC-CAND-01` | **TB43 RAW RECONFIRMED / REVIEW PENDING / NON-STABLE / RP-01** — 366/367 remain at `RegionSourceFaceOwningFragmentMissing`; Part XII now proves expected orbit 1 is absent from present owner-orbit set `[2,3]` and classifies the terminal subject `Outside` the producer census. |
+| `M3-CP4c3-TB40-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 proves 390/393/406/407 execute the producer-owned `P_U` predicate, classify the terminal subject `Outside`, and reject same-domain corruption. |
+| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / ACTIVE / NON-STABLE / CB49 ASSIGNED** — 366/367 expose predicate drift: `FragmentCornerIncidence` drops every final no-barrier segment while region ownership drops only same-orbit/non-separating cases. Expected orbit 1 is absent from present set `[2,3]`; CB49 owns the bounded correction. |
+| `M3-CP4c3-TB41-REV-CAND-01` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 publishes the complete owner-orbit set and expected-orbit membership required by Part XII; it served its diagnostic purpose. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
 | `M3-CP4c3-TB31-REV-CAND-01` | **CLOSED / RUNTIME PROVED** — the guard is retired and the authorized merge causes no downstream failure; `TraceArcDoesNotSeparateItsSides` appears in none of the 408 raw logs. |

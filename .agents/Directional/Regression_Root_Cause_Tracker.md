@@ -1,4 +1,17 @@
-## M3-CP4c3-TB43-EXEC — raw artifact-only classification — **CURRENT RAW RUNTIME / REVIEW PENDING / NON-STABLE**
+## M3-CP4c3-TB43-REV — independent adjudication — **CURRENT REVIEW / TB43 PROMOTED / CB49 ASSIGNED**
+
+- **Promoted authority:** TB43/package108, selector409, run/job `34280642422 / 102244347209`, **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Result/log artifacts `10077594302 / 10077595162` are hash-verified; immutable pre/post censuses match and mutation/build flags are false.
+- **`M3-CP4c3-TB40-EXEC-CAND-02` — CLOSED / RUNTIME-PROVED / NON-STABLE.** 390/393/406/407 each execute `UncutCensus`, classify the terminal subject `Outside`, reject same-domain corruption and execute the RegionCertification evidence branch. Part XII recovery is non-vacuous.
+- **`M3-CP4c3-TB41-REV-CAND-01` — CLOSED / RUNTIME-PROVED / NON-STABLE.** TB43 publishes the exact evidence it requested: expected orbit 1, complete present owner-orbit set `[2,3]`, count 2 and `regionOwningFragmentOrbitPresent=false`.
+- **`M3-CP4c3-TB40-REV-CAND-02` — ROOT-CAUSED / ACTIVE / NON-STABLE / CB49.** 366/367 have complete local fragment/owner cardinality (3/3/3, deficit 0) but region orbit 1 is absent from `FragmentCornerIncidence`. Source proves predicate drift: `build_fragment_corner_incidence()` unconditionally drops every final segment with no `terminalBarrier`; `build_regions()` drops it only when the certified forward/reverse face-walk sides share one orbit. The corner projection can therefore omit an owner that region ownership lawfully retained. Existing Part VIII R4.1/R4.2 and Part XI decide the correction; no DEFN-R9 is needed.
+- **Corrective measure:** CB49 aligns only the corner-incidence skip with the region separation predicate (`is_terminal_slit && forwardOrbit == reverseOrbit` is skipped; distinct-orbit sides are retained), preserves genuine fail-closed certification, compiles/package runtime-free, and freezes TB44. Region construction, `fragmentOrbits`, actual embedded graph, cut selection, partitions, selectors and carried RED owners are frozen.
+- **Carried REDs:** 368, 369, 370, 374 and 398 remain under their existing owners; no merge/repricing is justified.
+- **Stable-count rationale:** no new RED ordinal, no accepted loss and no newly independent root-cause event. Totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **108**.
+- **Exact successor:** `M3-CP4c-3-CB49`, Code + Build, runtime-free.
+
+---
+
+## M3-CP4c3-TB43-EXEC — raw artifact-only classification — **HISTORICAL RAW INTAKE / PROMOTED BY TB43-REV / NON-STABLE EXEC**
 
 - **Execution authority:** immutable package108 source `531b517fb129425f113b5f811215f1d2b1939ee2`, artifact `10076272909`,
   selector409, run/job `34280642422 / 102244347209`, result/log artifacts `10077594302 / 10077595162`.
@@ -22,7 +35,7 @@
 - **Stable-count rationale:** TB43 introduces no new RED ordinal and no accepted-prefix loss; the four protected
   identities recovered mechanically while the remaining REDs are carried. EXEC is not independent semantic review,
   so it does not create/merge/close/reprice stable events. Totals remain **47 events / 14 categories / 33 recurrences**,
-  debt **5**, packages **108**. Promoted runtime authority remains TB42 pending TB43-REV.
+  debt **5**, packages **108**. This was EXEC-time intake; TB43-REV subsequently promoted TB43 without repricing.
 - **Exact successor:** independent `M3-CP4c-3-TB43-REV`, evidence-only; no compile/new runtime/semantic source mutation first.
 
 ---
