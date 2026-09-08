@@ -346,29 +346,25 @@ pattern, now permanent because the codes that carried the annotation are retired
 **312, 409 and 315 PASS.** No sticky construction-time binding, and 315 tampers `actualEmbeddedFace.orbit`, a field
 that **varies** — Part XI-A §A.3's tamper amendment was honoured.
 
-## 3.10 Exact next turn — `M3-CP4c-3-CB46`
+## 3.10 CB46 complete; exact next turn — `M3-CP4c-3-TB41-EXEC`
 
-**Code + Build**, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`. **Restore the accepted prefix; do not
-touch the binding.**
+CB46 is **compile-green / runtime-free** at semantic source
+`4cdffe5514ab9f747da38e74c57663ee8806efa6`, package106, compile run/job
+`34253044050 / 102152247907` (attempt 2). It chose EB7.1(b): face certificates now publish a canonical oriented
+boundary anchor; the four independent oracles bind by that content rather than by a foreign orbit ordinal. It also
+decouples frontier evidence from terminal error codes and adds measurement-only `regionOwningFragmentOrbit` for
+the 366/367 missing-fragment frontier. `region_orbit`, the orbit-keyed production lookup, selector409, and the
+separately owned 368/369/370/374/398 surfaces were not changed.
 
-- **EB7.1** — re-aim the four oracles at content, not an index. Choose and justify **(a)** narrowing to bijection +
-  arc count + disc, or **(b) preferred** publishing one content-derived field on the face certificate so the label
-  becomes checkable. (b) changes a published certificate and its digest — say so explicitly.
-- **EB7.2** — decouple `regionFrontierComponentCount` from the retired failure codes so 390/393/406/407 return to
-  PASS. The DEFN-R4 rule applied to its last site.
-- **EB7.3** — **do not touch the binding**: `region_orbit`, the orbit-keyed lookup, the derived-not-stored rule,
-  and ordinals 312/409/315 stay as they are.
-- **EB7.4** — the census must be able to **disagree with itself** on the field under test.
-- **EB7.5** — accepted back to **365/365**, 390/393/406/407 to PASS, selector 409 byte-frozen, no change to region
-  construction, ownership, `fragmentCorners`, cut selection or A2a′ cellularity semantics.
-- **EB7.6** — **measure, do not correct**, `RegionSourceFaceOwningFragmentMissing`.
-- **EB7.7** — `M3-CP4c-3-TB41` re-executes.
+No Directional runtime occurred. **TB39 remains semantic runtime authority** at package104 / selector409
+**402 PASS / 7 RED, accepted 365/365**. TB40 remains not promoted. Stable accounting remains
+**47 / 14 / 33**, debt **5**; packages **106**.
 
-**Falsifiers.** Accepted **365/365** and 390/393/406/407 PASS are stop conditions. **312/409/315 must stay PASS** —
-if 315 stops failing on a tampered orbit, the repair weakened the binding rather than the oracle. If 356/357's
-census still shows `derivedOrbit != certificateOrbit` under repair (a), the assertion was narrowed but the census
-was not. If 366/367 move off `RegionSourceFaceOwningFragmentMissing`, CB46 exceeded EB7.6. If any repair needs
-`region_orbit` or the orbit-keyed lookup, EB7.3 is violated.
+Exact next is artifact-only **`M3-CP4c-3-TB41-EXEC`** under
+`Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md`. Hard gates are accepted **365/365**,
+311/314/356/357 content-anchor PASS, 312/315/409 PASS, 390/393/406/407 PASS with frontier evidence,
+404/408 PASS, ownership 300/0/0, and EB7.6 measurement of 366/367 without repair. TB41-EXEC stops at independent
+`M3-CP4c-3-TB41-REV` and cannot promote itself.
 
 ## 4. Open candidates
 
@@ -376,8 +372,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB40-EXEC-CAND-01` | **NEW / HARD-GATE REGRESSION / REVIEW REQUIRED / UNPRICED** — accepted 311/314/356/357 RED; 356/357 falsify exact binding on regions 0/1. |
-| `M3-CP4c3-TB40-EXEC-CAND-02` | **NEW / PROTECTED-SURFACE REGRESSION / REVIEW REQUIRED / UNPRICED** — 390/393/406/407 RED at `regionFrontierComponentCount=0`. |
+| `M3-CP4c3-TB40-EXEC-CAND-01` | **IMPLEMENTED IN CB46 / RUNTIME PENDING TB41 / STABLE RP-05** — content-anchor oracle repair compiled; runtime recovery is not yet proved. |
+| `M3-CP4c3-TB40-EXEC-CAND-02` | **IMPLEMENTED IN CB46 / RUNTIME PENDING TB41 / NON-STABLE GATING** — frontier evidence is decoupled from terminal code; 390/393/406/407 runtime recovery is pending. |
 | `M3-CP4c3-TB39-EXEC-CAND-01` | **IMPLEMENTED IN CB45 / TB40 RAW SUBCONDITION CONFIRMED / REVIEW PENDING / NON-STABLE / RP-01** — 366/367 no longer stop on retired region-disc proxy producers; review owns final disposition. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
@@ -506,17 +502,17 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, CB46 loads only the minimum authority:
+After the durable start-of-turn checklist, TB41-EXEC loads only the minimum authority:
 
 1. `ORIENTATION.md` — read first.
-2. **this file** — §3.9 (what TB40 proved and what it refuted) and §3.10 (the frozen measures).
-3. `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md` — **EB0–EB7**, the adjudication.
-4. `M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**. The binding stands; only the
-   oracles change.
-5. `Regression_Root_Cause_Tracker.md` — the TB40-REV section and the authoritative next step.
-6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (**155, 157, 158** govern).
-7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md` — CB mechanics.
+2. **this file** — §3.9 (TB40 adjudication) and §3.10 (CB46 build authority / exact next).
+3. `Architecture_M3_CP4c3_CB46_Code_Build_Report.md` — package106 source/run/artifact authority.
+4. `Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md` — exact immutable execution contract.
+5. `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md` — EB0–EB7 falsifiers.
+6. `M3_CP4c_Frozen_Definitions.md` — Part XI operative, amended by Part XI-A.
+7. `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`,
+   `LESSONS.md` (155, 157, 158 govern).
+8. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md` — artifact-only runtime mechanics.
 
-Exact next is **`M3-CP4c-3-CB46`** under **EB7.1–EB7.7**. **Accepted prefix must return to 365/365**, ordinals
-390/393/406/407 to PASS, and **the binding must not be touched** — TB40 confirmed it, and changing it now would
-discard the one thing that turn proved.
+Exact next is **`M3-CP4c-3-TB41-EXEC`** against immutable package106. It must not rebuild or mutate the package and
+must stop at independent **`M3-CP4c-3-TB41-REV`**.

@@ -1,3 +1,18 @@
+## M3-CP4c3-CB46 — content-anchor oracle repair and frontier evidence decoupling — **COMPILE-GREEN / RUNTIME PENDING TB41 / PACKAGE106**
+
+- **No runtime / no repricing.** TB39 remains semantic runtime authority at package104 / selector409 **402 PASS / 7 RED**, accepted **365/365**. TB40 remains not promoted. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**; packages advance **105 → 106** as a build fact only.
+- **Build authority:** semantic source `4cdffe5514ab9f747da38e74c57663ee8806efa6`, compile run/job
+  `34253044050 / 102152247907` (attempt 2), result artifact `10066942690`, log artifact `10066943120`,
+  GMP/GMPXX linked, `runtimeExecution=false`.
+- **`M3-CP4c3-TB40-EXEC-CAND-01` — IMPLEMENTED / RUNTIME PENDING TB41 / STABLE RP-05.** The four accepted oracles now compare a canonical oriented boundary anchor derived from face content instead of comparing the independent enumeration index with the producer-local orbit ordinal. The production binding itself is unchanged.
+- **`M3-CP4c3-TB40-REV-CAND-01` — IMPLEMENTED / RUNTIME PENDING TB41 / ARCHITECTURAL.** `SurfaceCutGraphFaceCertificate` now publishes the content-derived `(NetworkArcId, Orientation)` anchor and the candidate digest consumes it, making face identity independently checkable without promoting the anchor to a production binding key.
+- **`M3-CP4c3-TB40-EXEC-CAND-02` — IMPLEMENTED / RUNTIME PENDING TB41 / NON-STABLE GATING.** Frontier component evidence is collected from every available construction locator instead of being conditional on a named terminal failure code. Runtime recovery of 390/393/406/407 remains to be proved by TB41.
+- **`M3-CP4c3-TB40-REV-CAND-02` — ACTIVE / GATING / MEASUREMENT EXTENDED.** CB46 deliberately does **not** correct `RegionSourceFaceOwningFragmentMissing`; it adds `regionOwningFragmentOrbit` to the failure locus so TB41 can publish the exact source-face/orbit/owner census and TB41-REV can assign the next owner.
+- **Exact successor:** artifact-only `M3-CP4c-3-TB41-EXEC` under
+  `Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md`. Compilation alone closes none of these runtime dispositions.
+
+---
+
 ## M3-CP4c3-TB40-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STABLE — ONE NEW EVENT / ACCEPTED PREFIX BROKEN / TB40 NOT PROMOTED**
 
 - **Record:** `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md`, measures **EB0–EB7**. Evidence-only.

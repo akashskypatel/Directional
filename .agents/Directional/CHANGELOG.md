@@ -1,3 +1,31 @@
+## 2026-09-08 — `M3-CP4c-3-CB46`: content-derived face identity + frontier evidence compile-green as package106
+
+Runtime-free Code + Build under TB40-REV **EB7.1–EB7.7**. CB46 chose EB7.1(b):
+`SurfaceCutGraphFaceCertificate` now publishes a canonical oriented boundary anchor derived from face-walk content,
+and 311/314/356/357 independently bind by that content rather than comparing two foreign orbit ordinals. The
+production `region_orbit` relation and orbit-keyed upstream lookup are unchanged. The certificate/candidate digest
+now consumes the anchor, and the binding census publishes independent/certificate anchors with a non-vacuity check.
+
+Frontier component evidence is now collected from every available construction locator rather than being coupled
+to one terminal error code, addressing the repeated 390/393/406/407 `regionFrontierComponentCount=0` mechanism.
+`RegionSourceFaceOwningFragmentMissing` remains unchanged as a rejection; CB46 only adds
+`regionOwningFragmentOrbit` to its diagnostics for EB7.6 measurement of 366/367. Separately owned
+368/369/370/374/398 and all selector bytes remain untouched.
+
+Semantic source `4cdffe5514ab9f747da38e74c57663ee8806efa6`; authoritative compile run/job
+`34253044050 / 102152247907` (attempt 2) is **GREEN** with mandatory GMP/GMPXX and
+`runtimeExecution=false`. Immutable package106 result/log artifacts `10066942690 / 10066943120`; ZIP SHA-256
+`aae9da4b2b237c7ebda82af2d7153c0e766f24455f1a45ab4a2685e9961a3d24` /
+`58db7093e7a97d13875560d37336ad1fa7274117ed2f89d5e65e3cc2ad30fc63`; packaged source archive
+`d355ea6bb13ee0d7e174edc214070cfbd81cf278ce44ad7a4f77bacc17bee004`. Root manifest verifies **28/28**.
+
+**Accounting:** one new semantic package, zero runtime events/recurrences. Totals remain
+**47 events / 14 categories / 33 recurrences**, debt **5**, packages **106**. TB39 remains semantic runtime
+authority at 402 PASS / 7 RED, accepted 365/365; TB40 remains not promoted.
+
+**Exact next:** artifact-only `M3-CP4c-3-TB41-EXEC` against package106 under the precommitted
+`Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md`. CB46 executes no selector identity.
+
 ## 2026-09-08 — `M3-CP4c-3-TB40-REV`: the binding is confirmed, the oracles are wrong — one new stable event
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/
