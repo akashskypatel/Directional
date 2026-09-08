@@ -1,3 +1,0 @@
-source_sha=d01333c3812cb01ea6854449cd59bdb2e19ea431
-caller_install_sha=797eecabdc59187e59b7d5ad931469ff2cdf2baf
-purpose=M3-CP4c-3-CB46 exact-source snapshot
