@@ -3412,3 +3412,253 @@ Accepted authority remains **365/365**; runtime authority remains **TB37**; CP4c
 **Exact next turn: `M3-CP4c-3-CB43` — Code + Build, runtime-free, GMP/GMPXX linked, under CZ7.1–CZ7.7.**
 
 ---
+
+## Part XI — M3-CP4c-3 DEFN-R7
+
+### Actual-embedded face certificate binding replaces region support proxies
+
+**Turn:** `M3-CP4c-3-DEFN-R7` — Definition turn (absorbs REVIEW + PLAN).
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+**Runtime authority entering and leaving this turn:** promoted `M3-CP4c-3-TB39`, package104, selector **409**,
+**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Ownership remains
+**300 / 0 / 0**. Stable accounting remains **46 events / 14 categories / 32 recurrences**, produced-witness debt
+**5**, semantic package count **104**.
+
+This part is the replacement contract ordered by TB39-REV. It **supersedes Part X DEFN-R6.3 and DEFN-R6.4 as
+region-disc-topology authority**. Part X's measurements, domain findings, withdrawn-assumption record and historical
+falsifiers remain evidence; they are not deleted. The correction is not a third Euler formula. The correction is to
+consume the certificate already owned by the stage that constructs and certifies the actual embedded graph.
+
+### 1. DEFN-R7.1 — one topology object, one owner
+
+> **Normative.** The topology object of an A2b `GlobalTopologyRegion` is the **non-exterior face-walk orbit of the
+> A2a′ `ActualEmbeddedGraph` whose ordered oriented-arc cycle is exactly `region.boundary`**. Its disc-topology
+> authority is the matching `SurfaceCutGraphFaceCertificate` published by A2a′. A2b does not independently infer
+> disc topology from `region.sourceFaces`, a source-edge barrier partition, fragment counts, corner ownership, or
+> any Euler proxy over those projections.
+
+The relation is not aspirational; current source already constructs both stages from the same deterministic graph
+builder. `SurfaceCutGraph::certify_actual_embedded_graph()` and `GlobalTopologyPlan::canonical_candidate()` both call
+`build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network, cutEdges)`. That shared
+builder owns arcs, rotations and `FaceWalkResult`. `SurfaceCutGraph` publishes one face certificate for every
+non-exterior orbit. `GlobalTopologyPlan::build_regions()` drafts one region for every non-exterior orbit and copies
+that orbit's ordered boundary. The orbit ordinal is content-derived because canonical arc IDs and face-walk order are
+content-derived; `SurfaceCutGraph` already includes the ordinal in its semantic digest.
+
+Therefore the A2a′ face certificate is not evidence about a merely related object. It is evidence about the **same
+actual-embedded face** that A2b publishes as the region.
+
+### 2. DEFN-R7.2 — the binding key and exact relation
+
+> **Normative.** The binding key is the current actual-embedded **face-walk orbit ordinal** `o`, derived on demand
+> from exact equality `walk.orbits[o] == region.boundary`. It is never a stored "trusted at construction" region
+> flag.
+
+For a current candidate, one region is bound iff all of the following hold:
+
+1. candidate source/network/cut-graph semantic bindings are current (`sourceDigest`, `networkDigest`,
+   `cutGraphDigest` agree with their producers);
+2. the candidate arcs/rotations yield a valid current `FaceWalkResult`;
+3. exact `region_orbit(region, walk)` resolves **exactly one** orbit `o`; the ordered, oriented boundary is equal to
+   `walk.orbits[o]`, not merely cyclically similar after a stale construction-time claim;
+4. exactly one `cutGraph.certificate().faces` entry has `face.orbit == o`;
+5. that entry is therefore non-exterior, because A2a′ publishes `faces` only for non-exterior orbits;
+6. the entry has `boundaryWalkCount == 1`, `boundaryArcCount == region.boundary.size()`, and
+   `face.proves_disc_topology() == true`;
+7. the downstream region certificate contains the **exact consumed A2a′ face-certificate value** for that orbit;
+8. candidate validation re-derives items 1–7 from the *current* candidate and current producers and compares the
+   resulting certificate exactly before publication.
+
+Items 3 and 8 are the copy/mutation control. Ordinals 312 and 409 start from `plan.validation_candidate()`, copy a
+real region, and then mutate its boundary. A stored provenance/proof boolean would survive that copy. The derived
+relation does not: once the boundary is no longer an exact current face-walk orbit, there is no binding.
+
+### 3. DEFN-R7.3 — downstream certificate representation
+
+> **Normative.** `GlobalTopologyRegionDiscCertificate` is a **binding/consumption certificate**, not a second
+> topological certifier. Its semantic topology payload is one exact consumed `SurfaceCutGraphFaceCertificate`,
+> associated with the region ID. The preferred concrete representation is an embedded value such as
+> `SurfaceCutGraphFaceCertificate actualEmbeddedFace`; an equivalent representation is admissible only if it
+> preserves the same four upstream fields exactly and cannot become a second writer of them.
+
+The certificate retains the separate field-regularity payload (`interiorSingularityFree` and
+`boundarySingularities`). Its methods have disjoint meanings:
+
+- `proves_disc_topology()` delegates to the **consumed upstream actual-embedded face certificate**;
+- `proves_field_regularity()` remains the A2b field/singularity predicate.
+
+`proves_disc_topology()` must not consult source-support connectivity or any reduced/full/split/barrier Euler
+measurement. Conversely, the upstream face certificate does not prove field regularity; A2b still owns that
+separate check.
+
+A copied mutable candidate may contain a copied face-certificate value. That copy is not publication authority by
+itself. `make_from_candidate()` remains the checked seam and must rebuild the binding from the current region,
+current face walk and current `SurfaceCutGraph`, then require exact equality with the candidate certificate.
+
+### 4. DEFN-R7.4 — source-support proxies are diagnostics, not topology gates
+
+> **Normative.** The following current `GlobalTopologyRegionDiscCertificate` members do **not** describe one
+> actual-embedded cell complex and therefore leave the semantic disc certificate:
+>
+> `sourceFacesConnected`, `eulerCharacteristic`, `vertexCount`, `edgeCount`, `totalVertexCount`,
+> `totalEdgeCount`, and `faceCount`.
+
+Their present domains are intentionally recorded before removal:
+
+- `sourceFacesConnected` — connectivity of the owned source-face/fragment support through non-barrier adjacency;
+- `vertexCount` — source vertices surviving the reduced/projection exclusion (`V_int`);
+- `edgeCount` — interior fragment/source-support adjacencies (`E_int`), not actual-embedded graph edges;
+- `faceCount` — owned `(SourceFaceTopologyKey, orbit)` support fragments;
+- `totalVertexCount` / `totalEdgeCount` — distinct vertices/edges of the whole-source-face rounding;
+- reduced/full Euler values — arithmetic over those two different source-support projections.
+
+These values may continue to be computed as **diagnostic observations** where useful, but they must not be part of
+`GlobalTopologyRegionDiscCertificate::proves_disc_topology()`, must not be a second semantic certificate in
+`candidate_semantic_digest`, and must not reject an otherwise bound A2a′ face as non-disc.
+
+Consequences:
+
+- `RegionEulerCharacteristicNotOne` is **retired as a producer of A2b disc-topology rejection**. Its enum/string may
+  remain for source/API/history compatibility, but canonical region certification no longer raises it.
+- `RegionInteriorDisconnected` is likewise **retired as a producer of disc-topology rejection**. The old support
+  connectivity measurement may remain diagnostic; ownership/canonical fragment binding is already enforced by
+  `build_regions()` and candidate reconstruction.
+- `validate_no_region_fragment_pinch()` may not remain an independent disc-topology authority. If retained, it is a
+  non-gating consistency diagnostic. A contradiction with a current certified actual-embedded face is an
+  implementation/authority-binding defect, not permission to override A2a′ with a second region theorem.
+- `validate_single_boundary_walk()` remains useful as **candidate/binding structure validation** and for the typed
+  312/409 tamper falsifiers. It is not the source of the canonical region's disc proof.
+
+This is the explicit withdrawal of the proxy authority that Part X accidentally installed.
+
+### 5. DEFN-R7.5 — exact diagnostic domains and the `regionChiFull` contract
+
+> **Normative.** A diagnostic name that says *full* must contain the whole-source-face value and no other value.
+> If a field cannot be made unambiguous, rename it to include its domain.
+
+For the existing support-projection measurements:
+
+- **reduced support Euler** = `sourceSupportInteriorVertexCount - sourceSupportInteriorAdjacencyCount +
+  sourceSupportFragmentCount`;
+- **whole-source-face Euler** = `wholeSourceFaceVertexCount - wholeSourceFaceEdgeCount +
+  wholeSourceFaceFaceCount`;
+- `fullMinusReduced` is only the difference of those two named projection domains;
+- `traceCutFaceCount`, `splitFragmentCount`, `fragmentCornerAttributionCount`,
+  `interiorBarrierOneSideCount`, and `interiorBarrierBothSidesCount` remain diagnostics about their explicitly
+  named support/projection domains; they are not cells of the canonical actual-embedded region unless a future
+  definition constructs and proves such a complex.
+
+`GlobalTopologyPlanError::regionFullEulerCharacteristic` / projected `regionChiFull` currently receive the reduced
+`certificate.eulerCharacteristic` on 366/367. **That assignment is forbidden.** If the field survives, it must be
+computed from whole-source-face `V_total - E_total + F`. The generic `eulerCharacteristic/vertexCount/edgeCount/
+faceCount` failure fields must not silently carry the region-support proxy after the topology rejection that owned
+them is retired; any retained publication gets a domain-explicit region-support name.
+
+The stderr record currently named `record=euler_certificate` is not a certificate after this turn. A successor may
+keep its data only under a diagnostic/projection name and with domain-explicit columns. Historical TB39 artifacts
+remain valid evidence under the names they emitted at that time.
+
+### 6. DEFN-R7.6 — complete consumer inventory frozen before implementation
+
+The implementation successor may not discover a new consumer after changing the representation and then improvise
+its semantics. This is the frozen census from exact source `7f8b36413aeb5af808979a106b7b2557c81e8865`:
+
+| Consumer/surface | Current role | Required R7 treatment |
+|---|---|---|
+| `include/directional/geometry/GlobalTopologyPlan.h` `GlobalTopologyRegionDiscCertificate` | product fields + `proves_disc_topology()` | replace proxy proof payload with exact consumed A2a′ face certificate; retain field regularity separately |
+| `build_region_certificates()` / `region_orbit()` | current exact boundary→face-walk derivation | keep derived relation; add unique upstream face-certificate lookup/binding |
+| `build_region_certificate()` | computes support connectivity/Euler and raises region topology errors | consume bound face cert; stop using support proxies/pinch as disc authority; keep only explicitly diagnostic measurements |
+| `canonical_candidate()` | creates region certificates and binds `cutGraphDigest` | produce the new binding certificate from current cut graph |
+| `validate_candidate_structure()` | rebuilds expected certificates and compares exact equality | preserve this checked seam; re-derive current boundary/orbit/upstream cert so stale copied candidates fail |
+| `candidate_semantic_digest()` | hashes every current proxy field | hash region ID + exact consumed face-certificate semantics + field-regularity semantics; do not hash retired support diagnostics as topology semantics |
+| `GlobalTopologyPlan::region_certificates()` / `find_region_certificate()` | public accessors | expose the new binding certificate without a second proof interpretation |
+| `GlobalTopologyPlanError` region Euler/support fields | typed failure payload | retire topology producer; domain-name any retained support diagnostics; fix full/reduced misbinding |
+| `RemeshDiagnostics.h` + `project_global_topology_plan_failure_locus()` | serialization/projection | mirror the domain-explicit contract; never project reduced as full |
+| `emit_fragment_euler_diagnostics()` / `emit_region_euler_certificate_diagnostics()` | stderr measurements | retain only as diagnostics with explicit domains; no `certificate` claim for proxy arithmetic |
+| `tests/FieldAlignedCurveNetworkTests.cpp` ordinal 311 | published per-region disc proof | assert 1:1 region↔upstream face-cert binding and field regularity, not proxy χ |
+| ordinal 312 | accepted copy/mutation boundary falsifier | byte/semantic intent preserved; mutated boundary must lose derived orbit binding and remain rejected |
+| ordinal 313 | historical name, active interior-singularity negative | keep the interior-singularity oracle; do not resurrect a region-Euler rejection to satisfy the test name |
+| ordinal 314 | independent disc proof oracle | keep actual-embedded face/orbit checks; published-certificate clause must agree with upstream face authority |
+| ordinal 315 | tampered region certificate negative | tamper the new binding certificate and require `InvalidRegionCertificateBinding`; do not keep an Euler-only tamper merely to preserve old fields |
+| ordinals 356/357/366 and shared `expect_cp4c_plan_disc_proofs()` | produced torus/mechanical proof assertions | assert exact upstream face binding; 366 may advance beyond the retired proxy rejection |
+| ordinal 367 | produced face-walk agreement | preserve; no proxy-Euler dependency may be added |
+| ordinal 368 | prescribed-sphere carried owner | no semantic correction; if it reaches A2b later, the same binding contract applies |
+| ordinal 409 | gating copy/mutation boundary falsifier | preserve current typed rejection semantics and exact derived-provenance behavior |
+| test failure formatter `append_plan_error()` | human/machine diagnostic serialization | use domain-explicit names consistent with product/pipeline projection |
+
+No other production use of `GlobalTopologyRegionDiscCertificate`, its current proxy fields, or
+`regionFullEulerCharacteristic` exists in the exact snapshot. Later stages' unrelated Euler fields are different
+objects and are outside this correction.
+
+### 7. DEFN-R7.7 — gate and tamper contract
+
+The selector file remains **byte-frozen**. R7 changes assertions inside existing identities where required; it does
+not change the identity set.
+
+- **Ordinal 311** becomes the primary static/runtime proof that every published region has exactly one matching
+  upstream certified actual-embedded face, the exact consumed certificate agrees, and field regularity remains true.
+- **Ordinal 315** tampers the new consumed binding certificate (orbit or one of its exact face-certificate fields)
+  and must still fail the checked publication seam with `InvalidRegionCertificateBinding`.
+- **Ordinals 312 and 409** remain the hard falsifiers against sticky construction-time provenance. Their region
+  boundary mutations must not inherit a valid face binding from the copied candidate.
+- **Ordinals 356, 357, 366, 367, 390, 393, 404, 406, 407, 408** remain protected. The region-authority correction
+  may change 366/367 only by removing the proxy topology rejection they currently encounter; no assertion owned by
+  another mechanism is weakened.
+- Accepted prefix **1–365 must remain 365/365** on the later artifact-only TB. Any accepted RED is a stop condition.
+- Certified source-face ownership must remain **300 established / 0 unavailable / 0 conflicting**; the retired
+  `TraceArcDoesNotSeparateItsSides` and `UncutFaceComponentOrbitSeedNotUnique` codes remain absent.
+- Separately owned 368/369/370/374/398 are not reclassified or corrected by R7.
+
+The later TB must publish a **non-vacuous 1:1 binding census**: at least one row and exactly one row per emitted
+region on each creditable produced witness that reaches A2b, naming region, derived orbit, upstream face-cert orbit,
+boundary-arc count, and upstream `proves_disc_topology` result. Zero rows cannot pass this obligation.
+
+### 8. DEFN-R7.8 — successor implementation boundary
+
+The correction is bounded to the authority seam. It does **not** authorize changes to:
+
+- `build_regions()` region construction, region IDs, face-walk generation, rotations or arc semantics;
+- `SurfaceCutGraph` cut selection/cellularity semantics or source-face ownership;
+- fragment ownership, `fragmentCorners`, source-face partitioning, trace geometry or cut-edge selection;
+- selector bytes or identity membership;
+- prescribed sphere 368, saturation 369, empty-network typed error 370, folded-cone 374, or ownership witness 398;
+- any A3+ stage.
+
+A source-support diagnostic may be renamed or moved only to make its observational domain explicit; that does not
+make the diagnostic a new authority.
+
+### 9. DEFN-R7.9 — frozen Code + Build successor
+
+**Exact next turn: `M3-CP4c-3-CB45` — Code + Build, runtime-free, GMP/GMPXX linked.** It is governed by
+`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` and measures **EA0–EA9**.
+
+The successor must implement the binding contract, compile/package without executing Directional runtime, preserve
+selector409 and all unrelated owners, and freeze the following artifact-only `M3-CP4c-3-TB40-EXEC` gate. DEFN-R7
+itself does not compile or execute anything.
+
+### 10. Falsifiable predictions frozen before implementation
+
+1. A canonical region's derived orbit has exactly one A2a′ face certificate, and its boundary-arc count equals the
+   current region boundary length. Any miss, duplicate or mismatch is an authority-binding defect and fails closed.
+2. 312/409 remain rejected after copy/mutation because the current boundary no longer equals a current face-walk
+   orbit; no copied proof value can rescue them.
+3. 315 remains a valid tamper negative after its target moves from proxy Euler to the consumed face binding.
+4. 366/367 no longer stop at `RegionEulerCharacteristicNotOne` solely because the reduced source-support proxy is
+   `-3`. If they remain at the same code after R7 implementation, the old proxy still owns the gate and CB45 is
+   incomplete.
+5. The torus remains valid even though whole-source-face χ is 0, because that projection is not the actual-embedded
+   face certificate. If R7 makes ordinal 356 RED on that measurement, the proxy was not actually retired.
+6. The later binding census is non-empty and 1:1 for every region that reaches A2b. A zero-row verifier result is
+   failure, not proof.
+7. No change to source ownership, cut selection or region construction is necessary. A CB45 diff in those domains
+   falsifies the bounded-correction claim and requires review before runtime.
+
+### 11. Accounting
+
+Definition / Review + Plan only: no runtime, no compile, no package, no selector mutation and no stable repricing.
+**+0 events / +0 recurrences.** Totals remain **46 / 14 / 32**, debt **5**, packages **104**. TB39 remains current
+semantic runtime authority at **402/7**, accepted **365/365**.
+
+**Exact next turn: `M3-CP4c-3-CB45` — Code + Build, runtime-free, GMP/GMPXX linked.**
+
+---

@@ -1,3 +1,33 @@
+## 2026-09-08 — `M3-CP4c-3-DEFN-R7`: actual-embedded face certificate is frozen as the single region-disc authority
+
+Static Definition / Review + Plan. No Directional runtime, compile, benchmark, package, product/test/fixture/selector
+implementation, or stable repricing occurred. Current semantic runtime remains promoted TB39: package104 / selector409
+**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; ownership **300/0/0**. Stable
+accounting remains **46 events / 14 categories / 32 recurrences**, debt **5**, packages **104**.
+
+Part XI of `M3_CP4c_Frozen_Definitions.md` now supersedes DEFN-R6.3/R6.4 as region-disc authority. Exact source
+inspection proves A2a′ and A2b both invoke the same deterministic `build_embedded_graph_topology(...)` over the same
+source/network/cut edges. A2a′ publishes one `SurfaceCutGraphFaceCertificate` for every non-exterior face-walk
+orbit; A2b constructs each region boundary from that orbit, and `region_orbit()` re-derives the relation by exact
+ordered boundary equality. The downstream region certificate is therefore frozen as a **binding/consumption
+certificate** carrying the exact matching upstream face certificate plus separate field-regularity evidence.
+
+The reduced/full/source-support Euler and connectivity fields are explicitly removed from disc-topology authority.
+`RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are retired as producers of the A2b disc theorem;
+`validate_no_region_fragment_pinch()` may not override the upstream face certificate. Diagnostic support arithmetic
+may survive only with domain-explicit names and no semantic topology role. The non-stable `regionChiFull` defect is
+frozen for correction: a full-labelled field may never receive the reduced value.
+
+The complete consumer census is frozen across product fields, builder, checked candidate validator, semantic digest,
+public accessors, failure projection, stderr serialization and gate tests. Ordinals 312/409 remain hard copy/mutation
+falsifiers; 311/314/315 and the produced-witness proof helper are re-aimed to exact upstream-face binding without
+changing selector identity. The later TB must publish a **non-vacuous 1:1 region/upstream-face binding census**.
+
+Mandatory REVIEW consolidation folds the superseded `Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` and
+consumed `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` into the CP4c consolidated index after their durable facts
+were preserved here, Part XI, the tracker, orientation and current-forward record. Exact next is
+**`M3-CP4c-3-CB45`**, runtime-free Code + Build under `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` (EA0–EA9).
+
 ## 2026-09-08 — `M3-CP4c-3-TB39-REV`: TB39 promoted; region disc authority re-derived from the actual embedded face
 
 Independent evidence-only review. **TB39 is promoted** to current semantic runtime authority: package104,

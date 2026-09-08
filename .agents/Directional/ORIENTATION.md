@@ -1,11 +1,10 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB39-REV`):** **TB39 is PROMOTED** — package104,
-selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. The 513-row R6.7
-surface is non-vacuous and exact, but the torus/mechanical discrepancy remains opposite-signed; neither reduced nor
-whole-face source-support Euler proxy is the region topology object. Static review re-derived the object from
-`DESIGN.md` and source: A2a′ already certifies each non-exterior face-walk orbit of the **ActualEmbeddedGraph** as
-a disc, and A2b regions are built directly from those orbits. The later Euler certificate is a second checker over
-`region.sourceFaces` support/projection data. Stable accounting remains **46 / 14 / 32**, debt **5**, packages
-**104**. Exact next is static **`M3-CP4c-3-DEFN-R7`** — freeze the binding, not another proxy formula.
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-DEFN-R7`):** TB39 remains runtime authority —
+> package104, selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
+> DEFN-R7 Part XI now freezes the topology relation itself: A2a′ and A2b rebuild the same deterministic actual
+> embedded graph; each A2b region boundary is one non-exterior face-walk orbit and consumes that orbit's exact
+> `SurfaceCutGraphFaceCertificate`. Reduced/full/source-support connectivity/Euler/split/barrier values are
+> diagnostics, not a second disc theorem. Stable accounting remains **46 / 14 / 32**, debt **5**, packages **104**.
+> Exact next is runtime-free **`M3-CP4c-3-CB45`** to implement the binding; no R7 runtime exists yet.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -38,14 +37,15 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-TB39-REV`. Runtime authority is **TB39** (package104,
+**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-DEFN-R7`. Runtime authority is **TB39** (package104,
 source `8756cfe983bf7e05209f560d59a522a6b5b0674a`), selector **409**, **402 PASS / 7 RED**, accepted **365/365**.
 TB38 remains historical regression evidence; its one stable event remains counted.
 
-**Current review resolution.** A2a′ already owns disc topology for the actual-embedded face-walk orbit that A2b
-emits as the region. Reduced/full/split/source-edge values in the downstream region certificate are support or
-diagnostic projections and cannot replace that object. `DEFN-R7` must bind the downstream certificate to the
-matching upstream face certificate while preserving synthetic tamper rejection.
+**Current definition resolution.** Part XI now freezes the exact producer/consumer relation: derive the current
+region's face-walk orbit from exact boundary equality, require the unique matching non-exterior A2a′ face
+certificate, and carry that exact certificate as the downstream disc-proof payload. Candidate validation must
+re-derive the relation after copy/mutation. Field regularity stays separate; source-support proxies are diagnostic.
+`CB45` owns implementation and TB40 owns runtime proof.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -79,7 +79,7 @@ and the verifier reported success. Part X named the check and its identities but
 condition**. `LESSONS.md` 155.
 
 **Historical owner: `M3-CP4c-3-CB44`** under DA7.1–DA7.7 — restoration and measurement were discharged by TB39.
-**Current owner: `M3-CP4c-3-DEFN-R7`** — bind region disc authority to the actual-embedded face certificate.
+**Current owner: `M3-CP4c-3-CB45`** — implement the Part XI actual-embedded face binding; TB40 then proves it at runtime.
 
 ## 1. What the project is
 
@@ -187,14 +187,17 @@ is now the single identity **χ_true = X + B_int − 47**: `X + B_int = 44` mean
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current critical path.** Certified ownership is **300/300** and accepted prefix **365/365**. The canonical topology region is a non-exterior face-walk orbit already disc-certified by A2a′, but the downstream region certificate re-counts its source-support projection and currently stops 366/367 at restored reduced `RegionEulerCharacteristicNotOne` (`chiReduced=-3`, full source-submesh `+1`). TB39-REV assigns the binding correction to **DEFN-R7**. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current critical path.** Certified ownership is **300/300** and accepted prefix **365/365**. The canonical topology region is a non-exterior face-walk orbit already disc-certified by A2a′; DEFN-R7 Part XI now freezes that exact producer/consumer binding and demotes the source-support Euler projection. **CB45** owns implementation; current TB39 still stops 366/367 at the old reduced `RegionEulerCharacteristicNotOne` until that implementation is compiled and later tested. |
 
 ## 5. The central theorem of CP4c-2
 
-**Authority-domain distinction.** A certified face of the embedded graph and a plan region are different objects.
-The certificate's disc topology, `F`, `componentCount`, and Euler residual are claims about certified faces. They
-license **no** conclusion about whether a plan region is a disc. `RegionEulerCharacteristicNotOne` and
-`RegionBoundaryNotSingleWalk` are the region-level tests and are authoritative for plan-region topology.
+**Authority-domain distinction, refined by DEFN-R7.** A certificate claim transfers only through an exact identity
+binding. Here A2a′ and A2b rebuild the same deterministic `ActualEmbeddedGraph`; an A2b region boundary is exactly
+one non-exterior face-walk orbit, so the matching `SurfaceCutGraphFaceCertificate` and the plan region refer to the
+**same actual-embedded face**. `region.sourceFaces`, reduced/full source-mesh Euler counts, and split/barrier counts
+are different support/projection domains and cannot replace or override that face certificate.
+`RegionBoundaryNotSingleWalk` remains a current-candidate/synthetic tamper validator for 312/409, not an independent
+second disc theorem; `RegionEulerCharacteristicNotOne` is retired from normative disc authority by Part XI.
 
 For a graph embedded in a closed surface with every complement component an open disc, Euler gives
 `V − E + F = χ`. The torus network has `V = 48`, `E = 48`, `χ = 0`, so `F = 0` — impossible, since the
@@ -287,21 +290,19 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Region disc authority must be rebound to the actual embedded face.** — `M3-CP4c3-TB37-REV-CAND-01`,
-   **GATING / ROOT CAUSE ESTABLISHED / RP-01**; owner `M3-CP4c-3-DEFN-R7`.
+1. **Region disc authority binding is DEFINED; implementation/runtime proof remain open.** —
+   `M3-CP4c3-TB37-REV-CAND-01`, **DEFINITION CLOSED / RP-01 / IMPLEMENTATION OWNER CB45**.
 
-   - A2a′ already certifies every non-exterior face-walk orbit of the `ActualEmbeddedGraph` as a disc; A2b derives
-     each region directly from one such orbit. That is the normative object from `DESIGN.md` Amendment 13.
-   - The downstream `GlobalTopologyRegionDiscCertificate` independently computes reduced/full Euler values over
-     `region.sourceFaces` support/projection data. It has therefore been checking a different object.
-   - TB39's **513** rows make the proxy arithmetic non-vacuous, but torus `fullMinusReduced=-1` versus mechanical
-     `+4` proves neither reduced nor whole-face proxy is universal. CB44's split/corner/source-edge publication is
-     diagnostic, not an exact actual-embedded cell decomposition.
-   - **DEFN-R7 must bind rather than re-infer**: region boundary/orbit -> matching upstream face certificate, with a
-     relation that copied/mutated negatives can invalidate. Source-support counts remain diagnostics unless defined
-     over the same actual embedded object.
-   - 366/367 stay RED in current TB39 runtime until that definition is implemented; this review did not waive a
-     gate or patch the product.
+   - Part XI freezes the A2a′ face certificate as the sole disc-topology authority for the exact A2b face-walk
+     orbit. Both stages use the same `build_embedded_graph_topology(...)`; `region_orbit()` re-derives the binding
+     from current exact boundary equality.
+   - The downstream certificate becomes a consumption/binding certificate for that upstream face plus separate
+     field regularity. Reduced/full/source-support connectivity/Euler values are diagnostics only.
+   - `RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are retired as A2b disc-theorem producers;
+     a pinch/support proxy may not override A2a′.
+   - 312/409 remain copy/mutation falsifiers; 315 retargets the consumed binding; later TB40 requires a non-vacuous
+     1:1 region/upstream-face census.
+   - 366/367 remain RED in current TB39 only because CB45 has not implemented the definition yet.
 
 2. **Frontier evidence still hangs off which failure code was raised.** Ordinals 390/393/406/407 all failed the
    frozen `regionFrontierComponentCount > 0` assertion (`FieldAlignedCurveNetworkTests.cpp:4364`, actual 0) purely
@@ -383,8 +384,10 @@ region certificate nevertheless rebuilt a topological verdict from `region.sourc
 whole-face, reduced, split-corner and source-edge notions until two fixtures required opposite formulas. The bug is
 not that one count is off; it is that **support/provenance data became a second authority for an object whose owner
 already published the proof**. Bind to producer authority when the producer already computes the semantic fact;
-measure projections only as diagnostics. This is `RP-01 / AUTHORITY_DOMAIN_CONFLATION` and an instance of
-`LESSONS.md` 118, 145, 150 and 156.
+measure projections only as diagnostics. DEFN-R7 makes the repair structural: both stages rebuild the same canonical
+face walk, so the consumer binds by current orbit equality and exact upstream face-certificate value rather than
+copying a trust flag or inventing another formula. This is `RP-01 / AUTHORITY_DOMAIN_CONFLATION` and an instance of
+`LESSONS.md` 118, 145, 148, 150 and 156.
 
 **A frozen proof obligation needs a witness count, or it passes over an empty table.** A definition turn required
 a per-region equivalence proof on every accepted fixture and explicitly refused the hand-wave excuse. The
@@ -458,10 +461,11 @@ guard on a source derivation; an accepted identity named `RejectsRegionWithMulti
 opposite contract all along, and the code appeared exactly twice in the whole test file. The first runtime after the
 change lost accepted green. The obligation belongs to the review that freezes the removal. `LESSONS.md` §4 144.
 
-**A certificate's claim about one object is not a claim about another object built from it.** The cellularity
-certificate proves disc topology for **certified faces**; it says nothing about whether a **plan region** is a
-disc. This checkpoint had already recorded that those are different objects and re-proved it at runtime.
-`LESSONS.md` §4 145.
+**A certificate's claim transfers only through an exact identity binding.** The earlier warning was correct about
+unbound objects but its application here is now refined: DEFN-R7 proves the A2a′ certified face and A2b region are
+the **same actual-embedded face** because both stages rebuild the same canonical graph and the current ordered
+region boundary exactly equals one face-walk orbit. The producer certificate transfers through that relation;
+`region.sourceFaces` remains a different support projection and cannot inherit the claim. `LESSONS.md` §4 145.
 
 **A walk may pass through its own start node.** A boundary validator treated "returned to the start with arcs
 remaining" as proof of a second loop. With ten terminal slits, a face boundary traverses each slit twice and

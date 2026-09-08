@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB38-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 409 at **402 PASS / 7 RED**, and **the accepted prefix is restored to 365/365**. Certified ownership is total at **300/300**. The boundary-provenance frontier is **closed and runtime proved** at TB36. **The Euler correction frozen at DEFN-R6 (Part X) was refuted at TB38 and cost accepted green.** TB38 is mechanically valid, semantically RED at **395 PASS / 14 RED, accepted 362/365**, and **not promoted**; TB37 remains authority at **402 PASS / 7 RED**, accepted **365/365**, packages 102 (103 is a build fact only). The torus region is a one-triangle-wide annular band (`V/E/F = 24/48/24`, χ_full **0**) that the reduced form opens into a disc by dropping its single interior barrier edge — what the trace along it does — so `X − E_one − B_int` is **+4** on the mechanical region and **−1** on the torus: **opposite signs, neither formula correct on both**. The older defect is that `faceCount` counts **whole faces** while `V_int` excludes corners owned elsewhere — **the certificate has never counted one object**, and the traced/split reading has never been computed. DEFN-R6.7's safeguard discharged **vacuously** over zero rows. **One new stable event: 46 / 14 / 32**, debt **5**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-DEFN-R7`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **TB39 is current semantic runtime authority** on package104 / selector409 at **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; certified ownership is **300/300**. Stable accounting remains **46 events / 14 categories / 32 recurrences**, debt **5**, packages **104**. TB38 remains historical regression evidence only. TB39 emitted **513** non-vacuous certificate rows and proved the reduced/full projection arithmetic, including the decisive opposite-sign `fullMinusReduced` values on torus and mechanical. **DEFN-R7 Part XI supersedes DEFN-R6.3/R6.4 as region-disc authority:** the A2b region is the exact non-exterior actual-embedded face-walk orbit already certified by A2a′, and the downstream certificate consumes the matching `SurfaceCutGraphFaceCertificate`; source-support Euler/connectivity/split/barrier values are diagnostics. Exact next is runtime-free **`M3-CP4c-3-CB45`** to implement that frozen binding; later TB40 owns semantic runtime proof.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -1492,3 +1492,23 @@ indexes and every byte-frozen selector.
 DEFN-R6.3/R6.4 cannot remain the region-disc authority and freezes `M3-CP4c-3-DEFN-R7` to append the replacement
 contract. Until that definition is written, current runtime evidence remains TB39's restored reduced rejection at
 366/367; no proxy is silently promoted by documentation cleanup.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-DEFN-R7`
+
+Mandatory REVIEW consolidation for the Definition turn. Part XI now carries the normative replacement contract, so
+the TB39 review record and consumed DEFN-R7 plan are historical. Their durable findings were preserved first in
+Part XI, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md`, `CHANGELOG.md` and
+the frozen successor plan.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` | 203 | superseded review authority — promoted TB39, established upstream actual-embedded-face ownership, ordered DEFN-R7 |
+| `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` | 125 | consumed definition contract — R7.1–R7.9 discharged into normative Part XI and frozen CB45 EA0–EA9 |
+
+**Folded here:** 2 documents, **328 lines**. **Running total: 124 documents, 24,191 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB39_EXEC_Report.md` (current semantic runtime),
+`Architecture_M3_CP4c3_CB44_Code_Build_Report.md` (current package104 build authority until CB45),
+`M3_CP4c_Frozen_Definitions.md` Part XI (current Definition/Review authority), and
+`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` (single exact next-turn plan), together with durable indexes and every
+byte-frozen selector.

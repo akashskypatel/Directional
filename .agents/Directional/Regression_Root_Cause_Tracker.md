@@ -1,3 +1,26 @@
+## M3-CP4c3-DEFN-R7 — actual-embedded face binding — **CURRENT DEFINITION / REVIEW AUTHORITY / NON-STABLE**
+
+- **No runtime / no repricing.** TB39 remains semantic runtime authority at package104 / selector409 **402/7**,
+  accepted **365/365**; stable totals stay **46 / 14 / 32**, debt **5**, packages **104**.
+- **`M3-CP4c3-TB37-REV-CAND-01` — DEFINITION CLOSED / IMPLEMENTATION PENDING / RP-01.** Part XI freezes one exact
+  semantic object: A2b region boundary -> current face-walk orbit -> unique matching A2a′
+  `SurfaceCutGraphFaceCertificate`. Source-support connectivity/Euler/split/barrier projections lose region-disc
+  authority. Runtime closure requires CB45 + TB40; this static turn creates no stable event.
+- **Structural proof of binding:** A2a′ and A2b both call `build_embedded_graph_topology(...)` on the same
+  source/network/cut edges. A2a′ publishes one certificate per non-exterior orbit; A2b builds one region per
+  non-exterior orbit; `region_orbit()` derives the current relation by exact ordered boundary equality.
+- **Proxy producers retired by definition:** `RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` may
+  remain enum/history spellings but cannot be the canonical A2b disc theorem; pinch/source-support checks may not
+  override the upstream certified face. Field regularity remains separate.
+- **`M3-CP4c3-TB39-EXEC-CAND-01` — FROZEN FOR CB45 / NON-STABLE / RP-01.** A full-labelled diagnostic must contain
+  whole-source-face `V_total-E_total+F` or be renamed. The reduced->full assignment is forbidden.
+- **Tamper/gate controls:** 312/409 retain derived copy/mutation falsification; 315 retargets the new consumed face
+  binding; 311/314/produced-witness proof helpers assert 1:1 upstream binding. Selector409 stays byte-frozen.
+- **Exact successor:** runtime-free `M3-CP4c-3-CB45` under Part XI and
+  `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md`; later TB40 owns semantic runtime classification.
+
+---
+
 ## M3-CP4c3-TB39-REV — promotion + actual-embedded-face authority adjudication — **CURRENT REVIEW AUTHORITY / NON-STABLE REVIEW**
 
 - **TB39 PROMOTED.** Package104 / selector409: **402 PASS / 7 RED**, accepted **365/365**, RED
@@ -23,8 +46,9 @@
   authority from TB39.
 - **Carried RED unchanged:** 368/369/370/374/398 remain on existing owners. No sphere/empty-network/atlas/other
   corrective is authorized.
-- **Exact successor:** `M3-CP4c-3-DEFN-R7`, static, no runtime/compile, under
-  `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md`.
+- **Historical successor from TB39-REV:** `M3-CP4c-3-DEFN-R7`, static, no runtime/compile. Its consumed plan is
+  resolved through the `M3_CP4c_Consolidated_Record.md` folded-document index; the discharged definition is now
+  normative Part XI of `M3_CP4c_Frozen_Definitions.md`.
 
 ---
 

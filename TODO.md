@@ -26,33 +26,31 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-DEFN-R7` (Definition / Review + Plan, static) — REBIND REGION DISC AUTHORITY
+## Current focus — `M3-CP4c-3-CB45` (Code + Build, runtime-free) — IMPLEMENT ACTUAL-EMBEDDED FACE BINDING
 
-TB39-REV promotes TB39 to current semantic runtime authority: package104 / selector409 **402 PASS / 7 RED**,
-accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Stable accounting remains **46 / 14 / 32**, debt **5**,
-packages **104**.
+DEFN-R7 Part XI is frozen. The A2b region topology object is the exact non-exterior actual-embedded face-walk orbit
+already certified by A2a′. `GlobalTopologyRegionDiscCertificate` becomes a binding/consumption certificate for the
+matching `SurfaceCutGraphFaceCertificate`; reduced/full/source-support connectivity and Euler arithmetic are
+diagnostics, not a second disc-topology authority.
 
-The review re-derived the semantic topology object from architecture and source: A2a′ already certifies each
-non-exterior face of the **ActualEmbeddedGraph** as a disc, and A2b constructs each topology region from exactly one
-of those face-walk orbits. The later Euler certificate independently re-counts source-support/projection data.
-Neither reduced nor whole-face Euler proxy is a universal region criterion; CB44's split/barrier publication is also
-diagnostic rather than an exact per-region actual-embedded cell complex.
+Current semantic runtime remains TB39: package104 / selector409 **402 PASS / 7 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,398]`; ownership **300/0/0**; stable accounting **46 / 14 / 32**, debt **5**, packages
+**104**.
 
-**Exact next turn: `M3-CP4c-3-DEFN-R7`.** Static definition work must:
+**Exact next turn: `M3-CP4c-3-CB45`.** Runtime-free Code + Build must:
 
-- [ ] supersede DEFN-R6.3/R6.4 as region-disc authority without replacing one proxy formula by another;
-- [ ] bind each canonical region to the matching upstream `SurfaceCutGraphFaceCertificate` for its actual-embedded
-      face-walk orbit;
-- [ ] freeze a provenance relation that copy/mutation negatives can invalidate; no sticky trust flag;
-- [ ] give `GlobalTopologyRegionDiscCertificate` one semantic object and separate topology proof from field regularity;
-- [ ] domain-name reduced/full/split/barrier diagnostics exactly and resolve the `regionChiFull` misbinding contract;
-- [ ] enumerate every consumer/digest/validator/failure surface before implementation;
-- [ ] preserve accepted 365/365, 312/409, protected 390/393/404/406/407/408, ownership 300/0/0, selectors, region
-      construction, and existing owners for 368/369/370/374/398;
-- [ ] freeze exactly one bounded runtime-free Code + Build successor, then stop.
+- [ ] implement exact current region boundary → face-walk orbit → unique upstream face-certificate binding;
+- [ ] reshape the region disc certificate to consume that upstream proof and keep field regularity separate;
+- [ ] retire `RegionEulerCharacteristicNotOne`, `RegionInteriorDisconnected`, and pinch/source-support proxies as
+      independent disc-topology producers while preserving useful observations as diagnostics only;
+- [ ] preserve checked candidate re-derivation so copied/mutated 312/409 candidates cannot retain stale authority;
+- [ ] update semantic digest and existing test oracles 311/314/315/356/357/366 without changing selector identities;
+- [ ] repair/domain-name `regionChiFull` and every reduced/full/split/barrier diagnostic surface;
+- [ ] compile/package only through the mandatory reusable GMP/GMPXX workflow with `runtimeExecution=false`;
+- [ ] freeze artifact-only `M3-CP4c-3-TB40-EXEC` with accepted365/365 and a non-vacuous 1:1 binding census.
 
-**Must not:** run Directional runtime/compile/benchmark/package or implement product/test/fixture/selector changes in
-DEFN-R7.
+**Must not:** execute Directional runtime in CB45; change region construction, SurfaceCutGraph cut selection/ownership,
+fragment ownership, selector bytes, or semantics owned by 368/369/370/374/398.
 
 ## Carried forward from M1
 
@@ -90,7 +88,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB39` is the current valid semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. Exact next is static **`M3-CP4c-3-DEFN-R7`**.
+  CP4c-3 remains open. **`M3-CP4c-3-TB39` is the current valid semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. Exact next is runtime-free **`M3-CP4c-3-CB45`** under frozen DEFN-R7 Part XI.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -101,7 +99,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 region-disc authority:** source-face ownership remains **300 / 0 / 0**. TB39-REV established that the A2b topology region is the actual-embedded face-walk orbit already disc-certified by A2a′; the downstream reduced/full Euler certificate is a source-support projection over a different object. `DEFN-R7` owns the binding contract before any implementation.
+- [ ] **CP4c-3 region-disc authority:** source-face ownership remains **300 / 0 / 0**. TB39-REV established that the A2b topology region is the actual-embedded face-walk orbit already disc-certified by A2a′; the downstream reduced/full Euler certificate is a source-support projection over a different object. `DEFN-R7` has frozen the binding contract; `CB45` owns the bounded implementation before any runtime.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -129,4 +127,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count **104**. `M3-CP4c-3-TB39` is semantic runtime authority at 402/7, accepted 365/365. Exact next is static **`M3-CP4c-3-DEFN-R7`** under `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md`. PR #8 remains open, draft, and unmerged.
+Current totals remain **46 events / 14 categories / 32 recurrences**; produced-witness debt remains **5** and package count **104**. `M3-CP4c-3-TB39` is semantic runtime authority at 402/7, accepted 365/365. Exact next is runtime-free **`M3-CP4c-3-CB45`** under `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` and Part XI. PR #8 remains open, draft, and unmerged.

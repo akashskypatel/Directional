@@ -116,62 +116,62 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-DEFN-R7` — EXACT NEXT / Definition + Review + Plan / NO RUNTIME / NO COMPILE
+## Mandatory next turn — `M3-CP4c-3-CB45` — EXACT NEXT / Code + Build / NO RUNTIME
 
-TB39-REV is **CLOSED / TB39 PROMOTED / ACTUAL-EMBEDDED-FACE AUTHORITY RE-DERIVED**.
+DEFN-R7 is **CLOSED / STATIC / ACTUAL-EMBEDDED FACE BINDING FROZEN**. No runtime, compile, package or stable
+repricing occurred in the definition turn.
 
 ### Current immutable authority
 
 - semantic runtime authority: **TB39**, package104 source `8756cfe983bf7e05209f560d59a522a6b5b0674a`;
-- EXEC run/job `34177823202 / 101910682975`;
-- result/log artifacts `10037931111 / 10037931384`;
+- EXEC run/job `34177823202 / 101910682975`; result/log `10037931111 / 10037931384`;
 - selector409 **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`;
-- 312/409 and 390/393/404/406/407/408 PASS; ownership 300/0/0; retired codes absent;
-- 513 non-empty Euler rows, all five reduced/full arithmetic relations true;
+- 312/409 and 390/393/404/406/407/408 PASS; ownership **300/0/0**; retired codes absent;
 - stable accounting **46 / 14 / 32**, debt **5**, packages **104**.
 
-TB38's accepted-green-loss event remains counted even though CB44/TB39 recovered the gate.
-`M3-CP4c3-TB38-EXEC-CAND-02` is closed runtime-proved. `M3-CP4c3-TB39-EXEC-CAND-01` is owned non-stable RP-01.
+### Frozen definition authority
 
-### Review finding that DEFN-R7 must freeze
+`M3_CP4c_Frozen_Definitions.md` **Part XI / DEFN-R7** supersedes Part X R6.3/R6.4 as region-disc authority.
 
-`DESIGN.md` §7.2 / Amendment 13 and current source agree: A2a′ certifies the **ActualEmbeddedGraph**, each
-non-exterior face-walk orbit already carries a disc-topology face certificate, and A2b regions are built directly
-from those orbits. The downstream Euler certificate instead counts `region.sourceFaces` support/projection data and
-has mixed domains across `F`, reduced V/E, whole-face V/E, and split/source-edge diagnostics.
+- A2a′ and A2b both call the same deterministic `build_embedded_graph_topology(...)` on the same
+  source/network/cut edges.
+- A2a′ publishes one `SurfaceCutGraphFaceCertificate` per non-exterior face-walk orbit.
+- A2b builds each region from one non-exterior orbit and `region_orbit()` re-derives the current binding by exact
+  ordered boundary equality.
+- `GlobalTopologyRegionDiscCertificate` becomes a binding/consumption certificate for the exact matching upstream
+  face certificate plus separate field-regularity evidence.
+- reduced/full/source-support connectivity/Euler/split/barrier values are diagnostics, not a second topology proof.
+- `RegionEulerCharacteristicNotOne` and `RegionInteriorDisconnected` are retired as canonical region-disc producers;
+  pinch/support proxies may not override A2a′.
+- `regionChiFull`, if retained, must be whole-source-face Euler or be renamed; reduced→full assignment is forbidden.
+- 312/409 remain copy/mutation falsifiers; 315 retargets the new binding; selector409 remains byte-frozen.
 
-Torus `fullMinusReduced=-1` and mechanical `+4` prove neither reduced nor full proxy is a universal criterion.
-CB44's third-complex fields are diagnostics, not an exact actual-embedded per-region cell decomposition.
+### CB45 scope
 
-### Binding plan
+Read `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` and implement EA0–EA9 only. Expected production/test surfaces
+are `GlobalTopologyPlan.h/.cpp`, region failure diagnostics/projection if required for domain naming, and existing
+`FieldAlignedCurveNetworkTests.cpp` assertions. Region construction, cut selection/ownership, fragment ownership,
+selectors and separately owned 368/369/370/374/398 are prohibited.
 
-Read `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` after the TB39 review record. DEFN-R7 must freeze:
-
-1. region disc authority as the matching non-exterior actual-embedded face-walk orbit +
-   `SurfaceCutGraphFaceCertificate`;
-2. an exact derived binding that fails after copy/mutation, not a sticky trusted flag;
-3. one semantic object for `GlobalTopologyRegionDiscCertificate`;
-4. exact domain names/contracts for reduced/full/split/barrier diagnostics, including the mislabelled
-   `regionFullEulerCharacteristic` field;
-5. all consumers/digests/validators/failure surfaces before implementation;
-6. preservation of 312/409, accepted 365/365, protected 390/393/404/406/407/408, ownership 300/0/0, and existing
-   owners for 368/369/370/374/398.
-
-### Hard boundary
-
-This is a static definition turn. **Do not execute Directional runtime, compile, benchmark, package, or product/test/
-fixture/selector implementation.** DEFN-R7 may append normative Part XI and freeze one bounded Code + Build
-successor; it stops before that implementation.
+Compile/package only through `.github/workflows/agent-compile-reusable.yml` with mandatory GMP/GMPXX.
+**`runtimeExecution=false` is mandatory.** A successful CB45 freezes immutable artifact-only `M3-CP4c-3-TB40-EXEC`
+with accepted365/365 and a non-vacuous 1:1 region/upstream-face binding census. CB45 does not execute that gate.
 
 ### Resume load order
 
-1. `Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` — DB0–DB8 adjudication.
-2. `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` — binding decisions R7.1–R7.9.
-3. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current runtime evidence.
+1. `M3_CP4c_Frozen_Definitions.md` Part XI — normative R7 contract.
+2. `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` — exact EA0–EA9 scope.
+3. `Architecture_M3_CP4c3_TB39_EXEC_Report.md` — current runtime authority.
 4. `Architecture_M3_CP4c3_CB44_Code_Build_Report.md` — current package104 build authority.
-5. `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-6. `M3_CP4c_Frozen_Definitions.md` Part X plus `DESIGN.md` §7.2 / Amendment 13.
-7. `ORIENTATION.md`, `LESSONS.md` 118/145/150/152/155/156, and mandatory policies/start checklist.
+5. `ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`.
+6. `DESIGN.md` §7.2 / Amendment 13 and `EmbeddedGraphTopology.*`.
+7. `LESSONS.md` 118/145/148/150/152/155/156 plus mandatory policies/start checklist; for this CB also
+   `GMP_COMPILE_POLICY.md`.
+
+### Hard boundary
+
+This is Code + Build. **No Directional runtime, test execution, benchmark, discovery/list/help/version command, or
+artifact-only gate is allowed in CB45.** Stop after compile/package and durable handoff to TB40.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
