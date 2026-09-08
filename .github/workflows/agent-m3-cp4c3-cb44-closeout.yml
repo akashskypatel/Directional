@@ -44,6 +44,6 @@ jobs:
       patch_sha256: a9039344d55a4023c3db150623b3e6389649f5dd20ad5307c84319137d3a87ac
       base_sha: 8756cfe983bf7e05209f560d59a522a6b5b0674a
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close CB44 and freeze TB39 plan
+      commit_message: "docs: close CB44 and freeze TB39 plan"
       retention_days: 1
     secrets: inherit
