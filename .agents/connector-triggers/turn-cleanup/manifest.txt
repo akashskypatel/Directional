@@ -1,0 +1,3 @@
+# M3-CP4c-3-DEFN-R7 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/defn-r7-6028bd36.json
+.agents/connector-triggers/m3-cp4c3-defn-r7-closeout/trigger.json
