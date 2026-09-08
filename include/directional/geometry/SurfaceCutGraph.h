@@ -55,11 +55,196 @@ struct SurfaceCutGraphFaceCertificate {
   std::size_t boundaryWalkCount = 0U;
   std::size_t boundaryArcCount = 0U;
   bool discTopologyEstablished = false;
+  // Content-derived identity of this face walk. Unlike orbit, which is only
+  // meaningful inside the producer's own face-walk enumeration, this anchor
+  // can be independently re-derived from the oriented boundary incidences.
+  std::optional<authority::NetworkArcId> boundaryAnchorArc;
+  authority::Orientation boundaryAnchorOrientation =
+      authority::Orientation::Forward;
   [[nodiscard]] bool proves_disc_topology() const noexcept {
     return boundaryWalkCount == 1U && boundaryArcCount > 0U &&
            discTopologyEstablished;
   }
   auto operator<=>(const SurfaceCutGraphFaceCertificate &) const = default;
+};
+
+struct SurfaceCutGraphTraceFragmentSideOwner {
+  authority::TraceId trace;
+  std::size_t segmentIndex = 0U;
+  authority::Orientation orientation = authority::Orientation::Forward;
+  std::size_t orbit = 0U;
+  auto operator<=>(const SurfaceCutGraphTraceFragmentSideOwner &) const = default;
+};
+
+enum class SurfaceCutGraphSourceFaceOwnershipStatus : std::uint8_t {
+  Established = 0,
+  Unavailable = 1,
+  Conflicting = 2,
+};
+
+enum class SurfaceCutGraphCertifiedOwnerConflictBarrierClass : std::uint8_t {
+  None = 0,
+  TraceOutgoingCarrier = 1,
+  TraceIncomingCarrier = 2,
+  MandatoryEdge = 3,
+  CutEdge = 4,
+};
+
+struct SurfaceCutGraphSourceFaceOwnership {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::vector<std::size_t> certifiedFaceOrbits;
+  std::vector<SurfaceCutGraphTraceFragmentSideOwner> traceFragmentSides;
+  SurfaceCutGraphSourceFaceOwnershipStatus status =
+      SurfaceCutGraphSourceFaceOwnershipStatus::Established;
+  [[nodiscard]] bool trace_crossed() const noexcept {
+    return !traceFragmentSides.empty();
+  }
+  [[nodiscard]] bool established() const noexcept {
+    return status == SurfaceCutGraphSourceFaceOwnershipStatus::Established;
+  }
+  auto operator<=>(const SurfaceCutGraphSourceFaceOwnership &) const = default;
+};
+
+struct SurfaceCutGraphCertifiedOwnerConflict {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey firstFace;
+  std::size_t firstOwner = 0U;
+  authority::SourceFaceTopologyKey secondFace;
+  std::size_t secondOwner = 0U;
+  SurfaceCutGraphCertifiedOwnerConflictBarrierClass barrierClass =
+      SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None;
+  auto operator<=>(const SurfaceCutGraphCertifiedOwnerConflict &) const =
+      default;
+};
+
+enum class UncutComponentPartitionDomainRule : std::uint8_t {
+  NotTraceCut = 0,
+  EmptyFragmentOrbits = 1,
+};
+
+struct UncutComponentPartitionBarrierComposition {
+  bool cutGraphCutEdges = false;
+  bool networkMandatoryEdges = false;
+  bool embeddedMandatoryArcSourceEdges = false;
+  bool embeddedCutArcSourceEdges = false;
+  bool nonTerminalTraceCarrierEdges = false;
+  auto operator<=>(const UncutComponentPartitionBarrierComposition &) const =
+      default;
+};
+
+struct UncutComponentPartitionIdentity {
+  UncutComponentPartitionDomainRule domainRule =
+      UncutComponentPartitionDomainRule::NotTraceCut;
+  UncutComponentPartitionBarrierComposition barriers;
+  auto operator<=>(const UncutComponentPartitionIdentity &) const = default;
+};
+
+enum class SurfaceCutGraphUncutComponentArcKind : std::uint8_t {
+  Mandatory = 0,
+  Trace = 1,
+  Cut = 2,
+};
+
+enum class SurfaceCutGraphUncutComponentSeedRule : std::uint8_t {
+  SingleFaceOwner = 0,
+  EdgeSideOwner = 1,
+};
+
+enum class SurfaceCutGraphTraceCutExclusionReason : std::uint8_t {
+  TerminalSlit = 0,
+  SegmentRangeInvalid = 1,
+  TraceNotFound = 2,
+  DartOutOfRange = 3,
+  FaceNotFound = 4,
+  Other = 5,
+};
+
+struct SurfaceCutGraphUncutComponentBoundaryEdgeCensus {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey componentFace;
+  std::optional<authority::SourceFaceTopologyKey> oppositeFace;
+  SurfaceCutGraphCertifiedOwnerConflictBarrierClass barrierClass =
+      SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None;
+  bool barrierPresent = false;
+  bool oppositeFaceTraceCut = false;
+  bool sideOwnerExists = false;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentBoundaryEdgeCensus &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentArcFaceCensus {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::optional<std::size_t> certifierComponent;
+  std::optional<std::size_t> planComponent;
+  std::optional<SurfaceCutGraphTraceCutExclusionReason> notTraceCutReason;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentArcFaceCensus &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentArcIncidenceCensus {
+  authority::NetworkArcId arc;
+  SurfaceCutGraphUncutComponentArcKind kind =
+      SurfaceCutGraphUncutComponentArcKind::Mandatory;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  std::size_t crossedFaceCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcFaceCensus> crossedFaces;
+  bool crossedFacesTruncated = false;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentArcIncidenceCensus &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentVertexTransitCensus {
+  authority::TraceId trace;
+  std::size_t segmentIndex = 0U;
+  authority::SourceVertexId sourceVertex;
+  std::vector<authority::SourceFaceTopologyKey> incidentUncutFaces;
+  bool adjacentAcrossNonBarrierEdge = false;
+  std::optional<authority::SourceEdgeTopologyKey> adjacentNonBarrierEdge;
+  std::optional<authority::SourceFaceTopologyKey> firstAdjacentFace;
+  std::optional<authority::SourceFaceTopologyKey> secondAdjacentFace;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentVertexTransitCensus &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentSeedAttribution {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey componentFace;
+  authority::SourceFaceTopologyKey oppositeFace;
+  std::size_t orbit = 0U;
+  SurfaceCutGraphUncutComponentSeedRule rule =
+      SurfaceCutGraphUncutComponentSeedRule::SingleFaceOwner;
+  auto operator<=>(
+      const SurfaceCutGraphUncutComponentSeedAttribution &) const = default;
+};
+
+struct SurfaceCutGraphUncutComponentCensus {
+  std::size_t component = 0U;
+  std::vector<authority::SourceFaceTopologyKey> faces;
+  UncutComponentPartitionIdentity partitionIdentity;
+  std::uint64_t faceSetDigest = 0U;
+  bool boundaryCensusPublished = false;
+  std::size_t boundaryEdgeCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentBoundaryEdgeCensus> boundaryEdges;
+  bool boundaryEdgesTruncated = false;
+  bool interiorArcIncidenceCensusPublished = false;
+  std::size_t interiorArcIncidenceCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcIncidenceCensus>
+      interiorArcIncidences;
+  bool interiorArcIncidencesTruncated = false;
+  bool vertexTransitCensusPublished = false;
+  std::size_t vertexTransitCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentVertexTransitCensus> vertexTransits;
+  bool vertexTransitsTruncated = false;
+  SurfaceCutGraphSourceFaceOwnershipStatus ownershipStatus =
+      SurfaceCutGraphSourceFaceOwnershipStatus::Unavailable;
+  std::vector<std::size_t> seedOrbitMultiset;
+  std::vector<std::size_t> seedOrbits;
+  std::size_t seedAttributionCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentSeedAttribution> seedAttributions;
+  bool seedAttributionsTruncated = false;
+  auto operator<=>(const SurfaceCutGraphUncutComponentCensus &) const =
+      default;
 };
 
 struct SurfaceCutGraphCellularityCertificate {
@@ -85,8 +270,18 @@ struct SurfaceCutGraphCellularityCertificate {
   std::optional<authority::SourceFaceTopologyKey> saturationLocus;
   std::size_t saturationPromotedEdgeCount = 0U;
   std::vector<SurfaceCutGraphFaceCertificate> faces;
+  std::size_t sourceFaceCount = 0U;
+  std::vector<SurfaceCutGraphSourceFaceOwnership> sourceFaceOwners;
+  bool certifiedOwnerConflictCensusPublished = false;
+  std::vector<SurfaceCutGraphCertifiedOwnerConflict>
+      certifiedOwnerConflictCensus;
+  bool uncutComponentCensusPublished = false;
+  std::vector<SurfaceCutGraphUncutComponentCensus> uncutComponentCensuses;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
+  [[nodiscard]] bool proves_embedded_cellularity() const noexcept;
   [[nodiscard]] bool proves_cellularity() const noexcept;
+  [[nodiscard]] const SurfaceCutGraphSourceFaceOwnership *
+  find_source_face_owner(const authority::SourceFaceTopologyKey &sourceFace) const noexcept;
   auto operator<=>(const SurfaceCutGraphCellularityCertificate &) const = default;
 };
 
@@ -98,6 +293,7 @@ enum class SurfaceCutGraphErrorCode : std::uint8_t {
   CellularityNotEstablished = 4,
   CutSearchExhaustedBeforeCellularity = 5,
   EmptyNetworkOnClosedSurface = 6,
+  SourceFaceOwnershipNotEstablished = 7,
 };
 
 struct SurfaceCutGraphTraceEventPositionCandidate {
@@ -234,6 +430,18 @@ private:
 [[nodiscard]] const char *surface_cut_graph_error_code_name(SurfaceCutGraphErrorCode code) noexcept;
 [[nodiscard]] const char *surface_cut_candidate_class_name(SurfaceCutCandidateClass classification) noexcept;
 [[nodiscard]] const char *surface_cut_graph_complex_kind_name(SurfaceCutGraphComplexKind kind) noexcept;
+[[nodiscard]] const char *surface_cut_graph_source_face_ownership_status_name(
+    SurfaceCutGraphSourceFaceOwnershipStatus status) noexcept;
+[[nodiscard]] const char *surface_cut_graph_certified_owner_conflict_barrier_class_name(
+    SurfaceCutGraphCertifiedOwnerConflictBarrierClass barrierClass) noexcept;
+[[nodiscard]] const char *uncut_component_partition_domain_rule_name(
+    UncutComponentPartitionDomainRule rule) noexcept;
+[[nodiscard]] const char *surface_cut_graph_uncut_component_arc_kind_name(
+    SurfaceCutGraphUncutComponentArcKind kind) noexcept;
+[[nodiscard]] const char *surface_cut_graph_uncut_component_seed_rule_name(
+    SurfaceCutGraphUncutComponentSeedRule rule) noexcept;
+[[nodiscard]] const char *surface_cut_graph_trace_cut_exclusion_reason_name(
+    SurfaceCutGraphTraceCutExclusionReason reason) noexcept;
 [[nodiscard]] std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept;
 
 } // namespace directional::geometry

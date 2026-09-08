@@ -10,9 +10,15 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-03 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB21` on selector **391** is current runtime authority at **384 PASS / 7 RED** with accepted **365/365**; ordinals **371 and 372 now pass**, reaching their own assertions for the first time. **The mechanical actual embedded complex is CELLULAR** - `V=22, E=26, F=6, componentCount=1, chi=2, residual=0`, every face certified a disc - so **`M3-CP4c-3-TB20-REV`'s conclusion that the network is not a cut graph is withdrawn**: it applied Part I section 3's conclusion without carrying its premise, and Part I proves non-cellularity for the torus independently. The surviving question is sharper and smaller: the seed guard's source-face components are an **unvalidated projection** of the certified complex - the certificate counts faces of the embedded graph on the surface, the guard counts whole uncut triangles joined across non-barrier edges, and neither validates the other. Component 0's boundary attribution is **81 / 1 / 1** over 97 edges: one dominant orbit and two single-edge outliers whose deciding rows are **already in the artifact** but were summarized into counts. 368/369/370/374 remain unchanged independent surfaces, ordinal 391 is a self-inflicted diagnostic dependency on 368, and vertex 30 is still not reached. Selector **391 stays byte-frozen**. **NEXT:** `M3-CP4c-3-CB24` under BY0-BY9, **diagnostic-only** - retain evidence by distinctness rather than position, publish the two minority rows in full, and publish the projection faithfulness residual that names the owner.)
+**Status date:** 2026-09-08 (**CP4c-2 CLOSED / ACCEPTED at 365/365; CP4c-3 OPEN.** TB42 remains promoted
+runtime authority: selector409, **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, package107, ownership 300/0/0.
+CB48 is compile-green as immutable package108 on source `531b517fb129425f113b5f811215f1d2b1939ee2`. TB43 raw artifact-only runtime measured **402 PASS / 7 RED**, accepted **365/365**, recovering 390/393/406/407 with Part XII receipts while 366/367/368/369/370/374/398 remain RED. Stable accounting remains 47 / 14 / 33, debt 5, packages 108 pending review. **NEXT: `M3-CP4c-3-TB43-REV`**, independent evidence-only review.)
 
 ---
+
+**Current CP4c-3 definition authority (2026-09-08):** `M3-CP4c-3-DEFN-R8` Part XII is frozen. TB42 remains
+runtime authority at selector409 **398 PASS / 11 RED**, accepted 365/365, package107. Part XII remains current
+definition authority. CB48 compiled the bounded domain-owned evidence correction as package108 without partition/builder unification. TB43 raw runtime measured the frozen 402/7 falsifier exactly and recovered the four protected census identities with non-vacuity receipts. Exact next is independent **`M3-CP4c-3-TB43-REV`**.
 
 ## 1. Where the project actually is
 
@@ -21,7 +27,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB17/package87 current runtime **374 PASS / 8 RED**, accepted **365/365**, first red 366 `TraceCutFaceFragmentCountMismatch` at `(0,1,102)`; TB17-REV exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB42 promoted** at 398 PASS / 11 RED, accepted **365/365**, selector409/package107. TB43 raw package108 runtime is **402 PASS / 7 RED**, accepted **365/365**; **TB43-REV next** |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +81,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 382** | **OPEN.** TB17/package87 current runtime: **374 PASS / 8 RED**, accepted 365/365; first red 366 `TraceCutFaceFragmentCountMismatch` at face `(0,1,102)` after CB19 cleared the prior source-port branch. **NEXT:** independent `M3-CP4c-3-TB17-REV`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN.** Promoted runtime authority **TB42**: **398 PASS / 11 RED**, accepted **365/365** on package107. TB43 raw package108 runtime measured **402 PASS / 7 RED**, accepted **365/365** with 390/393/406/407 recovered under Part XII receipts. **NEXT:** independent `M3-CP4c-3-TB43-REV`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

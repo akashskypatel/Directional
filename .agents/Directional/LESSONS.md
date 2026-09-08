@@ -1573,6 +1573,450 @@ building any conclusion on it.**
      disproved the antecedent. When citing a frozen finding, restate its premise and verify it holds for the
      witness in hand.
 
+109. **A diagnostic measure must name its source of truth, not just its output field.** A frozen measure said
+     "attribute each edge's two sides to certificate faces". The implementation added a helper named
+     `certificate_side_orbit` that reads the seed machinery and never touches the certificate, so three columns of
+     the resulting report were one number printed three times. Specify which authority the diagnostic must read
+     from, and require its witness to prove it read from there.
+
+110. **A measurement that cannot vary is not evidence - state what would falsify it.** A "faithfulness residual"
+     quantified over a set intersected with the complement of one of its own supersets: empty by construction, so
+     the residual was zero on every mesh forever. Its required-green witness passed because the field was
+     published, never because it could have been non-zero. Every diagnostic contract should state the condition
+     under which it would report a different value, and the witness should exercise that condition.
+
+111. **Two mechanisms for one quantity means the reachable one is probably the wrong one.** One file computed
+     certificate side orbits twice - once genuinely from the face-walk darts on mandatory/cut arcs, once from the
+     seed lookups. The genuine producer was consulted only inside unreachable code; the circular one fed every
+     published row. When a value has two producers, check which one the shipped path actually calls.
+
+112. **A resolver for a required precondition must fail closed.** A fixture-path helper checked two candidate
+     locations and, when neither existed, returned one of them anyway. A harness slip that should have produced a
+     single typed stop instead produced a complete 397-process ledger with 38 accepted-prefix failures, all of
+     which then had to be argued away as non-semantic. A helper that resolves a required precondition must report
+     when it cannot, not hand back a path it has just established is absent.
+
+113. **A preflight must check the path the consumer resolves, not a path that merely holds the same bytes.** The
+     harness verified fixtures in the extracted source workspace while the packaged binaries resolve their fixture
+     tree relative to their own executable directory. Both locations held identical files, so the check looked
+     correct and proved nothing. Verify a precondition through the consumer's own resolution rule.
+
+114. **When several turns pass on an arrangement no artifact records, that arrangement is an undocumented
+     dependency.** Five consecutive gates worked because their harnesses staged fixtures into an
+     executable-relative view; nothing in the package, the reusable compile workflow, or any durable document said
+     that staging was required. The first harness that omitted it had no way to know. Write the required runtime
+     layout into the frozen plan.
+
+115. **If three independent measurement attempts collapse the same way, stop measuring and check whether the datum
+     exists.** A residual was unsatisfiable by construction, per-side "certificate" columns were aliased to the
+     seed, and a certified-face projection re-derived the seed's own dart orbit - all because the certificate
+     published an orbit id and three counts and no source-face membership. The question was never measurable; each
+     contract was a new way of reconstructing an answer the system does not record. Check the producer's published
+     contract before specifying a fourth measurement.
+
+116. **A falsifiability witness earns its keep by splitting "can" from "does".** A unit witness proving a
+     measurement *can* report a non-zero result passed, while the production witness proving it *does not* in this
+     configuration red. Without that pair, a zero would have been reported as a clean result - exactly as an
+     earlier structural zero was. Require both a mechanism witness and a production witness.
+
+117. **A derived partition must be at least as fine as the one whose property it is testing.** A certified-face
+     projection united faces across everything except mandatory and cut edges, omitting trace-crossed edges, so its
+     components were strictly coarser than the partition under adjudication - guaranteeing multi-owner sets and an
+     unavailable answer for every face. State the required barrier set in the definition, not only in the code.
+
+118. **A consumer must never re-derive a partition its producer already computed.** A certifier built an entire
+     embedded topology and its face walk, then published four scalars per face; the consumer rebuilt the identical
+     structure and tried to reconstruct ownership from fragments of it. Four successive diagnostic contracts failed
+     on that reconstruction. When a value proves hard to measure downstream, check whether the producer computed
+     and discarded it - publishing it is usually cheaper than any measurement.
+
+119. **A prohibition inherits the premise of the finding that motivated it.** "Do not weaken the fragment-count
+     invariant" was written when the only observed instance was a witness where non-cellularity had been
+     independently proved. On a certified cellular witness containing a bridge the invariant is simply false, so
+     the prohibition could not be honoured as written; it had to be lifted with stated reasons by the definition
+     authority rather than quietly worked around. Re-check a prohibition's premise before treating it as binding
+     on a new witness.
+
+120. **A diagnostic must not be gated on the success of the thing it diagnoses.** A discriminator was defined to
+     read a published owner map, and the same turn made publication conditional on the ownership derivation
+     succeeding. The only executions in which the discriminator could report were the ones in which there was
+     nothing left to decide; on the failing case it returned "unavailable" for all 191 faces. The same ordering
+     defect cost four more surfaces: the producer's typed error replaced the certificate, so five witnesses built
+     to observe the consumer's failure never got a subject to observe, and the consumer's complete, correct
+     evidence census sat one stage downstream of a return statement. **When authoring a measurement, ask which
+     code path runs when the thing being measured is broken, and put the measurement on that path.** Publish the
+     partial result with an explicit per-item status and let the proof predicate fail; do not replace the object
+     with an error.
+
+121. **Moving a computation to the correct authority does not give it more information.** A definition turn found
+     that a consumer was reconstructing ownership its producer had already computed, and ruled that the producer
+     must publish it - correctly. But the justification, "this is a publication decision, not a new computation",
+     was false for most of the data: the producer held a dart only for faces incident to an arc, and every other
+     face still needed the same propagation the ruling set out to delete. The relocated code reproduced the
+     original ambiguity at the identical locus with the identical orbit ids. **Before ruling that a value should
+     move, check that the destination can derive it from data the source lacked. If both sides need the same
+     propagation, the boundary was never the defect** - and say so when withdrawing the reason while keeping the
+     decision.
+
+122. **A census over "established" values is vacuous exactly where nothing is established.** A conflict census was
+     built to compare the certified owners on the two sides of every non-barrier edge, with an exhaustive branch
+     table written before the code. It emitted a row only when **both** faces had an established singleton owner -
+     and on the 191-face component under investigation every face was `Unavailable`, so no row was possible whatever
+     the geometry did. The reported zero was structural, the third such zero this project has paid for. Checking
+     that a measurement runs on the failure path is not enough: **check that its inputs survive the failure too.**
+     The branch table saved the turn; the census contributed nothing.
+
+123. **A required-green assertion must never encode a hypothesis still under investigation.** A witness named for
+     publishing boundary-orbit attribution carried `ASSERT_GT(distinctCount, 1U)` - authored when the observed count
+     was 3, under the then-current belief that the component spanned several certified faces. When a later
+     measurement returned 0, the gate failed on the *hypothesis*, not on the contract the identity owns, and its RED
+     said nothing about the product. A witness asserts what its identity is responsible for; the live hypothesis
+     belongs in a diagnostic that is allowed to report either answer.
+
+124. **A falsification condition that bundles several witnesses fails on the first one with a second cause.** A
+     review froze "measure X is falsified unless ordinals A, B and C return to PASS". A recovered, B and C did not -
+     because B and C each additionally asserted an unrelated predicate that the measure was never meant to address.
+     The measure was right and the condition was wrong. **State the falsification against the mechanism, and name
+     per-witness exceptions when a witness carries assertions outside the mechanism's scope.**
+
+125. **An incidence count is not a separation - publish the field that carries the distinction.** A frozen
+     discriminator asked whether a **separating** arc meets a component's interior; the runtime reported
+     `interiorArcs=4` and the turn read that as the horn being selected. An arc separates two faces only if its two
+     darts lie in different face-walk orbits, and the census computed and stored both orbits per row while
+     serializing only the count - so the aggregate that was read could not carry the answer either way. Worse, the
+     same report admitted it could not name the four arcs. **When a measure is defined by a predicate, the
+     published evidence must contain the predicate's operands, not their cardinality**, and a horn nobody can name
+     is not selected.
+
+126. **A diagnostic must be computed on the object that failed.** Two partitions of the same mesh existed - the
+     consumer's, over faces with no fragment orbits and barriers `mandatory u traceTouched u cut`, and the
+     producer's, over faces not crossed by a trace with a narrower barrier set. The failure was raised on the
+     first; the entire diagnostic census was computed on the second, and their boundary counts differed (97 versus
+     76) precisely because they are different objects. Nothing in the evidence established that the two "component
+     0"s were even the same faces. **Before trusting a census about a failure, check that the census's domain is
+     the failure's domain** - and publish the identity of the partition each number belongs to.
+
+127. **A per-segment property cannot decide a per-arc or per-face classification.** A trace's *last segment* being a
+     terminal slit was used to exclude that segment's **face** from the trace-cut set and its carriers from the
+     barrier set - and a review then reasoned from the same flag that the whole **arc** must be a bridge separating
+     nothing. Runtime found two of four such arcs with different forward and reverse face-walk orbits: an arc runs
+     between two consecutive graph nodes and can contain a terminal-slit segment while still separating certified
+     faces. **Before a per-item flag is used to classify a larger object, state the quantifier - does the property
+     hold of every constituent, or only the last one** - and check the larger object directly.
+
+128. **When a measurement chain reaches its third turn, freeze the stop rule and pre-name the corrections.** Six
+     successive turns measured one ownership frontier, each correctly identifying why the previous measurement could
+     not answer the question. Every individual step was justified; the sequence was the largest risk in the
+     checkpoint. The escape is not to guess earlier - it is to write, in the review that authorizes the next
+     measurement, **the exhaustive outcome list, the correction each outcome selects, and the default correction if
+     the measurement returns ambiguous**, so that "insufficient evidence" stops being an available finding.
+
+129. **A status change with no behaviour change is a harness result, not a product result.** A gate that had
+     reported 7 RED reported 407 PASS / 0 RED one turn later, on a package whose only source change was
+     diagnostic - every touched line read the ownership state and none wrote it. The three previously red
+     identities were present in the selector and provably still failing conditions. **Before recording a status
+     change, name the behaviour change that caused it.** If none exists, the instrument moved, not the product, and
+     the run is orchestration-invalid however clean its summary looks. A green that arrives without a cause is the
+     most expensive kind of evidence, because everything downstream is built on it.
+
+130. **"Exit 0 is PASS" needs proof that something ran.** GoogleTest exits 0 when a `--gtest_filter` matches no
+     tests. A harness that routes every selector identity to one binary, when the identities are spread across five,
+     will see the four-fifths it cannot match exit 0 and record them all as passing. **Require a per-row selection
+     count and treat "zero tests selected" as a failure**, never as a pass; a plan that specifies a `selected`
+     column is stating this requirement, and a report that omits the column has not met it.
+
+131. **Evidence that exists only inside an artifact is not in the record.** Three consecutive turns produced a
+     required datum and failed to put it where a reviewer reads: one computed per-arc orbits and serialized only
+     their count; one published nothing and asserted a summary; one published correctly into a runtime log inside an
+     immutable artifact and deferred the assessment to a review that had no copy. Each was a smaller failure than
+     the last, and each cost the same turn. **A retained document must carry the values a downstream decision
+     depends on**, not a pointer to bytes nobody downstream can open.
+
+132. **A control run is worth more than a clever measurement.** After eight turns of increasingly elaborate
+     diagnostics, the turn that settled which of two contradictory gates was measuring the product changed **one**
+     variable - the harness - against an unchanged package, and compared the ledger line-for-line with its
+     predecessor: same seven RED ordinals, the only delta the one appended identity. Deliberately **not**
+     recompiling was what made the comparison mean anything, since a new package would have created a second
+     changed variable. When two results disagree, reproduce the older one before explaining the newer one.
+
+133. **A witness that asserts a defect is still present cannot be told apart from a correct one until the defect is
+     fixed - and then it blocks the fix.** A publication-and-completeness gate was strengthened with a loop
+     requiring that **no** face of the component had established ownership. Its frozen contract said "publication
+     and completeness only, never a value"; requiring a value to be *absent* is the same violation pointed the
+     other way. It passed for four turns because ownership genuinely was failing, so it was **vacuously true**, and
+     the first turn the product improved it fired and was reported as a regression. **When a review says "never
+     assert a value", read the implementation for assertions that the broken state persists** - they are invisible
+     while the state is broken, and they turn the fix into a red.
+
+134. **Never match two partitions by index.** A witness located a producer-side census by
+     `row.component == locus.component`, matching an index in one partition against an index in another with a
+     different domain and a different face set. It passed while both happened to be `0` with equal counts; a
+     correction that changed the two partitions differently broke the coincidence and the witness failed on its own
+     defect. **Match objects by identity - a face-set digest, an explicit correspondence, a published subset
+     relation - never by an integer that two independent constructions both happen to start at zero.**
+
+135. **When a rule is frozen, name every site that implements it.** A review froze one correction - "an arc whose
+     two darts lie in different face-walk orbits must induce a barrier" - and named the function it had been
+     diagnosing. The identical guard existed in a second file governing a second partition, and the correction went
+     in at one site only. The certifier's ownership went from 74/300 established to **300/300**, and the failing
+     production ordinals did not move by a single field: same component, same 191 faces, same seeds `[0,1,3]`,
+     same locus. **Before freezing a rule, grep for the predicate it replaces** and list the sites in the freeze;
+     a rule stated once and implemented twice will be corrected once.
+
+136. **A gate's name outlives the reason it was red.** One ordinal was described for many turns as "the honest gate
+     on ownership totality" and was cited that way in every handoff. When ownership finally became total the gate
+     stayed red - on an unrelated deferred fixture it had always also covered - and the description would have led
+     the next reader to conclude the correction had failed. **Re-read what a long-red gate actually asserts, and
+     which of its assertions is failing, before using its colour as evidence about anything.**
+
+137. **A witness that hard-codes which failure the product currently makes reds on every forward step.** Six
+     identities across two successive corrections went red for one reason: each asserted a specific terminal
+     failure code - "expected `UncutFaceComponentOrbitSeedNotUnique`" - and the product stopped producing it,
+     which was the goal. The two identities that stayed green through both steps were the two written to assert
+     **publication and completeness** rather than an outcome. **Pin a witness to the contract it owns, not to the
+     defect it currently observes**; if a witness must reference a failure code, it should assert that *some*
+     typed failure carried the required evidence, not *which* one.
+
+138. **A key that has been injective on every witness so far is not an identity.** Fragments were identified as
+     `(face, orbit)` throughout region certification. That is unique only while no arc has its two darts in the
+     same face-walk orbit - and a bridge does exactly that, which the same checkpoint had twice established is
+     legitimate topology. The guard rejecting such arcs was not gratuitous: it was protecting a non-injective key,
+     and deleting it would have merged two distinct fragments silently. **When a guard forbids a legitimate
+     configuration, look at the representation it is defending before removing it** - the defect is usually the key,
+     not the check.
+
+139. **Line order is not call order.** A review inferred that one guard sat *upstream* of another because its line
+     number was smaller, then recorded the guard's sudden reachability as unexplained and demanded a log
+     transcription to settle it. The two guards live in different functions: the "earlier" one is called from a
+     helper that the "later" one's caller invokes **afterwards**, so it had been unreachable for as long as the
+     other fired. Clearing the first guard let the pipeline advance and the second fired for the first time - a
+     complete explanation available from `grep` for the call sites. **Establish call order from callers, not from
+     file position**, and prefer that to ordering evidence you cannot open.
+
+140. **A guard that contradicts another path in its own function is an inconsistency, not a protection.** One
+     branch of a builder rejected a configuration outright while a second branch of the *same* builder accepted it
+     silently and handled it correctly. That asymmetry is the strongest available evidence that the rejection is
+     defending nothing: if the representation could not survive the configuration, the tolerant branch would be
+     corrupting it. **Before removing or preserving a guard, check whether its own function already accepts what it
+     forbids.**
+
+141. **A pass/fail ledger digest is not a semantic fingerprint.** Two consecutive runs produced **byte-identical**
+     ledger SHA-256 values while every failure reason differed - one stopped at a guard that the next turn retired,
+     the other at a stage further along. The ledger's columns were `ordinal, identity, binary, exit, selected,
+     result, raw_log`, none of which encodes *why* a row failed, so identical pass/fail vectors hash identically.
+     The digest had been quoted turn after turn as the run's semantic identity. **Either put a failure-detail
+     digest in the ledger or publish one beside it**, and until then treat artifact digests and censuses - not the
+     ledger hash - as the proof that two runs differ.
+
+142. **When a stage stops failing, a witness of that stage needs a justified *cleared* outcome, not a deleted
+     assertion.** Four identities existed to prove that a particular production stage publishes its evidence when
+     it fails. A correction removed their hard-coded failure-code assertion - the letter of the instruction - and
+     they still red, because their remaining assertions demand evidence that only that stage's failure produces.
+     **Removing the name of the failure does not help when the subject is the failure.** Give such a witness two
+     admissible outcomes: the stage failed and published, or the stage was cleared **and the later failure
+     published its own labelled evidence**. Absence of evidence must never be a pass on its own.
+
+143. **A walk may pass through its own start node; "reached the start" is not "closed the loop".** A boundary
+     validator rejected a region as soon as its traversal returned to the starting node with arcs still unconsumed,
+     treating that as proof of a second loop. On a surface with terminal slits - this fixture had **ten** - a face
+     boundary traverses each slit arc twice, out and back, and legitimately revisits the node at the slit's base.
+     The chain test `next.first != current` already rejects genuinely disconnected loops; the early-return added
+     only the rejection of walks pinched at a node, which the cellularity certificate had independently established
+     as discs. **When a traversal check has both a chain test and an early "we're back at the start" test, the
+     second one is usually rejecting a legitimate degeneracy the first already handles.**
+
+144. **Before removing a rejection, grep the accepted corpus for the code it raises.** A review derived from source
+     that a guard rejected only a legitimate configuration and froze its removal. An **accepted** identity named
+     `RejectsRegionWithMultipleBoundaryWalks` had asserted the opposite contract all along, and the error code
+     appeared exactly **twice** in the whole test file - once in that witness, once in the new one the review was
+     adding. The first runtime after the change lost accepted green. **A rejection's real specification is the set
+     of accepted witnesses that assert it**, and that set is one search away; the obligation belongs to the review
+     that freezes the removal, not to the turn that implements it.
+
+145. **A certificate's claim about one object is not a claim about another object built from it.** A cellularity
+     certificate established disc topology for the **certified faces of an embedded graph**, and a review cited it
+     to argue that a **plan region** - a different construction over a different partition - could not be a
+     non-disc. The product then said the region was not a disc **twice**, by two independent tests. The same
+     checkpoint had already recorded that the certificate and the consumer's guard "test different objects;
+     neither validates the other", and had re-proved it at runtime. **When invoking a proof, name the object it is
+     about and check it is the object in front of you.**
+
+146. **When a checker flips twice, the missing artefact is the contract, not the verdict.** One boundary predicate
+     was removed by one review as a false rejection, restored by the next after it cost an accepted-green
+     regression, and only then was the deciding fact established: the production input carries a
+     **single-closed-walk guarantee by construction** - it is a face-walk orbit - while the synthetic input an
+     accepted witness constructs carries none. Both reviews were right about the input they had read and neither
+     could see the other's from where it stood, because **nothing in the code or the documents recorded which
+     guarantee a boundary carried**. The remedy for a predicate that oscillates is not a more careful verdict; it
+     is to write the guarantee down where the checker can see it, and scope the rejection to the provenance that
+     lacks it.
+147. **A comment naming an assumption is a dependency edge; grep for the prose before you delete the code.**
+     Region Euler characteristic was computed as `V_interior - E_interior + F`, and the comment directly above the
+     site said the boundary terms were dropped **because** the validated single boundary walk and no-pinch
+     condition give `V_boundary == E_boundary`. A turn removed the no-pinch guard, saw
+     `RegionEulerCharacteristicNotOne` appear behind it, and recorded it as a **second, independent** finding the
+     guard had been masking. It was neither: the arithmetic had lost its own stated premise. Before removing a
+     predicate, search the surrounding source for prose citing its **postcondition**, not only for code that calls
+     it. And when a failure appears *behind* a guard you just removed, the first hypothesis is that you invalidated
+     a downstream premise - not that you uncovered a new defect.
+148. **A property established at construction is not established after a copy - and the tests copy.**
+     Two drafts of one definition turn proposed opposite provenance rules. The rejected draft set a "this boundary
+     came from a face walk" flag in `build_regions` and stored it on the region. The accepted draft made provenance
+     a **derived exact relation** - recomputed by comparing the current ordered boundary against the authoritative
+     face-walk orbits. The deciding fact is in the test file: the synthetic negatives take
+     `plan.validation_candidate()`, which hands back a **copy of a real region**, and then mutate its boundary. A
+     stored flag survives that copy and goes stale; the derived relation correctly disappears. The construction-time
+     rule would have re-broken accepted ordinal 312 by a second route, months after the first. **When a trusted
+     property can be carried across a copy into a mutated object, derive it on demand instead of storing it** - and
+     read how the negatives are actually built before choosing.
+149. **Do not freeze a closed-form correction whose formula you have only checked on the easy case.**
+     A draft argued that a boundary walk revisiting a node k extra times gives `V_bnd - E_bnd = -k`, hence
+     `chi = 1 - k`, and proposed a generalized Euler formula coupled to the guard change so neither could land
+     alone. The identity holds only when every boundary **edge** is traversed once - and a bridge is traversed once
+     per dart, which is exactly what the ten terminal slits in this fixture produce. Repeated edges make the deficit
+     underdetermined by the node-revisit count, so the correction was underivable and the coupling argument built on
+     it collapsed. The surviving turn froze a **measurement** instead, requiring occurrence *and* distinct counts
+     for arcs *and* nodes separately. **When a correction depends on a multiplicity, measure every multiplicity it
+     could depend on before writing the formula down.**
+150. **A frozen measurement specifies a domain, not just a quantity - and an implementation that gets the domain
+     wrong still looks complete.** DEFN-R5.5 froze eight exact boundary multiplicity fields to decide whether a
+     region's boundary vertices and edges cancel out of `chi = V_int - E_int + F`. CB41 implemented every field
+     faithfully and published all of them. But it counted over the **network graph**
+     (`std::set<authority::NetworkArcId>`, `std::set<authority::NetworkNodeId>`) while `chi` is computed over a
+     **sub-mesh of whole source triangles** (`SourceEdgeTopologyKey`, `SourceVertexId`) - and a network arc may be
+     a **trace chord through face interiors**, which is not a source edge at all. Distinct arcs and distinct nodes
+     both came out 22, and the clean equality read as the cancellation premise holding when it bore on a different
+     curve entirely. Two obligations follow. **When freezing a measurement, name the domain of every count and the
+     identity it must satisfy**, not only its exactness and its field name. And **when a census returns a
+     suspiciously clean equality, verify that both sides are cardinalities of the same space** before reading
+     anything into it. Related: the recurring `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category, which cost this
+     checkpoint an accepted-green regression once already.
+151. **A pass/fail ledger that is byte-identical to its predecessor is the *desired* result for a diagnostics-only
+     turn - but only a second digest makes that provable.** TB32 and TB33 each produced ledger hashes identical to
+     a predecessor and the turn could not be distinguished from a stalled one, which is why a failure-detail digest
+     table was added. CB42 then made the opposite kind of change: diagnostics only, no behaviour. TB37's
+     `ledger.tsv` and `identity-map.tsv` hashed **identical** to TB36's while the failure-detail digest table
+     **differed** - and that pair of facts is a proof of "same verdicts, richer evidence" that neither hash could
+     give alone. **When a turn's contract is `no behaviour change`, name the artifact that must stay identical and
+     the artifact that must change**, and check both. An unexplained identical hash is a warning; an identical
+     hash next to a changed evidence digest is a receipt.
+152. **When a setup step writes to a path some workflow triggers on, the turn has already started before its own
+     ordering gate.** Three turns have now missed process order in this family. One read project documents before
+     choosing `READ_MODE`; the next created the turn-cleanup manifest during setup, and because the durable cleanup
+     workflow is push-triggered on that exact path, cleanup fired before the execution caller existed; TB39-REV
+     repeated the first shape by beginning direct document reads before explicitly selecting `READ_MODE`, then
+     stopped piecemeal access and recovered onto an exact snapshot once detected. None touched semantic evidence,
+     but the checklist did not prevent them because it governs what the agent does deliberately, not what a path
+     write or an already-started inspection does automatically. **Select `READ_MODE` before the first source/doc
+     read, and before writing any file under a trigger-watched directory check whether that write is itself an
+     action**; order trigger-bearing writes last.
+153. **A "boundary" defined by one subsystem's barrier set is not the boundary of another subsystem's complex.**
+     A region certificate computed `chi` over a source sub-mesh of whole triangles but took its boundary from the
+     **network's** barrier set - mandatory and cut edges. A barrier edge with **both** incident faces inside the
+     region, which is precisely what a terminal slit is, is an **interior** cell of that sub-mesh. The certificate
+     dropped 12 such edges from the edge count and 16 further vertices from the vertex count, the two exclusions
+     did not balance, and `chi` came out **4 low on a region that is a genuine disc** (`V/E/F = 136/385/250`,
+     `chi = 1`). The stated cancellation premise was never the defect: the true sub-mesh boundary cancelled
+     exactly, 20 edges against 20 vertices. **When one subsystem's notion of "boundary" is used to classify
+     another subsystem's cells, check the classification on the cells that belong to both** - the disagreement
+     lives exactly there. Related: the `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category, and lesson 150 on naming a
+     measurement's domain.
+154. **An assumption stated in a comment is stated in every comment that repeats it - grep the phrase, not the
+     file.** The Euler cancellation premise lived in **two** places: above the chi assignment in
+     `GlobalTopologyPlan.cpp`, and again on the `vertexCount` field of
+     `GlobalTopologyRegionDiscCertificate` in the header, where its second and third lines restate it verbatim. The
+     review that ordered the withdrawal named only the `.cpp` site, because that is the one the failure pointed at.
+     Deleting one of two identical statements leaves the assumption fully documented for the next reader and is
+     indistinguishable, later, from never having withdrawn it - which is how this premise survived from TB34 to
+     TB37. **When withdrawing a stated assumption, search the corpus for the assumption's own wording and name
+     every site in the frozen definition**, the same obligation lesson 53 already imposes on implementing a rule.
+     A withdrawal is a rule too.
+155. **A proof obligation without a non-emptiness condition discharges itself over the empty set.** A definition
+     turn froze the strongest safeguard it knew how to write: prove, **per region on every accepted fixture**,
+     either the equivalence identity or an unchanged verdict - and it explicitly refused the excuse "accepted
+     fixtures do not have that structure". The implementing turn emitted the certificate record faithfully and
+     placed it correctly. But the emission sat behind `if (diagnostics != nullptr)`, which is non-null only under
+     an environment variable the accepted identities never set, so the table had **zero data rows** and the
+     verifier reported `ok=true` over it. The obligation named the check, its four identities and the inadmissible
+     excuse - and never said **how many rows must exist**. **Every frozen proof obligation needs a witness count:
+     "at least one row per X", and a verifier that fails on zero.** This is the same shape as exit 0 from a filter
+     that matched no tests, and as a conflict census over an all-`Unavailable` map (lesson 122) - but worse,
+     because this check was written specifically to prevent the failure that then occurred, and its vacuous PASS
+     is what let that failure through.
+156. **One fixture cannot distinguish "this formula is correct" from "this formula happens to agree here".** A
+     region Euler criterion was corrected on a single mechanical region where the full count gave the right answer
+     (`chi = 1`) and the reduced count gave `-3`. On the torus fixture the same change was wrong in the opposite
+     direction: reduced `1`, full `0`, because that region is a one-triangle-wide annular band whose single
+     interior barrier edge the reduced form drops - which is topologically what the trace along it does. The error
+     term `X - E_one - B_int` was **+4** on one fixture and **-1** on the other. **Before promoting a measurement
+     from one fixture into a criterion for all regions, get the same measurement from a structurally different
+     fixture** - and treat a discrepancy that changes sign as proof that neither candidate is the right object.
+157. **A conjunct that asserts a literal is not a check, and a census whose rows cannot differ is not a
+     measurement.** A contract bound one stage's proof to another stage's per-face certificate and required
+     `boundaryWalkCount == 1 && boundaryArcCount == n && proves_disc_topology()`. Reading the producer showed
+     `boundaryWalkCount` is written as the **literal `1U`** for every face, so that conjunct can never fail; and
+     `discTopologyEstablished` is a **single complex-level boolean** stamped identically onto every face, so a
+     census of N regions publishes one bit N times while looking like N observations. The binding was still sound -
+     complex-level cellularity *is* the theorem that every non-exterior face is a disc - but the evidence had to be
+     renamed for what it is. **Before requiring a field as proof, read where the producer writes it**: if it is a
+     constant it is structure, not evidence; if it is uniform across the population, publish the inputs that decide
+     it once rather than the conclusion many times. Same family as lesson 155 (a verifier passing over an empty
+     table) and lesson 122 (a census over values nothing has established) - and this instance appeared **inside the
+     contract written to prevent 155**.
+158. **An "independent" oracle that re-enumerates a partition invents a third labeling, and must match by content
+     or not at all.** A contract bound one stage's regions 1:1 to another stage's certified faces, and the runtime
+     census proved the binding exactly: 4 regions, 4 faces, one upstream match each, injective, matching arc
+     counts, disc established on every row. Four accepted identities still went RED, because they compared the
+     production **orbit ordinal** against the index the test's own independent re-derivation had assigned.
+     Production numbers orbits by dart index; the oracle numbered them by iterating a `std::set` of oriented arcs.
+     Same partition, different labels, two orbits transposed. **The independence that makes an oracle valuable is
+     exactly what makes its ordinals foreign** - so an independent re-derivation may assert cardinality,
+     bijectivity and per-element content, but never an ordinal it did not receive from the producer. Two further
+     obligations: check whether the producer publishes anything **content-derived** by which its own label could
+     be confirmed - here it did not, so the label was unverifiable in principle - and make sure the accompanying
+     controls can fail, because the arc-count check passed on the transposed rows for the sole reason that those
+     two regions had equal arc counts. Same family as `ORIENTATION.md` §8's "never match two partitions by index",
+     recorded from ordinal 390's `censusCorrespondence`, and reproduced here **inside the contract written to stop
+     one stage re-deriving what another already owns**.
+159. **Before repairing a census, establish that it has a subject.** Three consecutive turns tried to fix an
+     evidence census and each fixed the wrong half. The first froze a per-region proof obligation and the verifier
+     passed over a table with zero rows. The second bound a proof to a per-face certificate whose deciding field is
+     one complex-level bit stamped identically onto every face, so N rows carried one observation. The third
+     broadened which locator a frontier census consults - correctly, and for the right reason - while every locator
+     still resolved through a single partition that may contain nothing at all. **In each case the consumption was
+     debugged and the population was never counted.** Whenever a census comes back empty or uniform, the first
+     measurement is not "which lookup failed" but **"how many things were there to find, and are the failing
+     objects inside that set's domain"** - publish the population size, the domain rule, and which locator
+     resolved, before changing a single lookup.
+160. **An identity that returns early on a branch is green without asserting anything, and nothing distinguishes
+     that from a passing proof.** Four protected identities guarded their real oracle behind
+     `if (stage != "UncutComponent") { expect_...(); return; }`. For the whole checkpoint the stage *was*
+     `UncutComponent`, so the oracle never executed; the identities reported PASS throughout. The moment an
+     unrelated correction advanced the pipeline to a later stage, all four went RED at once - not because behaviour
+     broke, but because **an assertion reached its subject for the first time and found nothing there**. Two
+     consequences: a review must not classify such a transition as a regression, because there is no prior
+     behaviour to restore; and a guarded oracle should **publish which branch it took**, so "passed" and "did not
+     run" are distinguishable in the ledger rather than identical.
+161. **A stage name used as a domain guard is a proxy, and proxies stop tracking what they stood for.** Four
+     identities checked a census that describes an **unlabelled-face** partition, and guarded it with
+     `if (stage != "UncutComponent")`. That comparison stood in for a real condition - *does the failing object lie
+     inside the partition this census describes?* - and while the pipeline always failed at that stage the two
+     agreed. When an unrelated correction advanced the pipeline, the proxy and the condition parted company, and
+     the assertion demanded evidence about an object disjoint from the failure. The measurement was unambiguous:
+     the partition held **226 faces in 9 components** while the failing region held **10 faces, 0 of them in the
+     partition**. **Not an empty set, not a broken lookup - a domain mismatch.** When a guard's purpose is "this
+     evidence applies here", write the membership test, not the name of the stage where membership happened to
+     hold. And when a census comes back empty, ask whether the failing object is even in its domain before asking
+     why the lookup failed: lesson 159 says count the population, and this one adds - check that it is the right
+     population.
+162. **A new normative part is not in force until the index and the supersession paragraph say so.** Two
+     consecutive definition turns appended a fully-formed Part to the frozen definitions and left the document's
+     own **Supersession** paragraph ending at the previous Part, with no citation-map row for the new one. Both
+     were caught only by a later verification pass. A cold-start agent reads that paragraph to learn which parts
+     are operative, so an unlisted Part is authority that nobody is told to obey. The boundary gate does not check
+     this, which is precisely why it must be a closeout step: **appending a Part is three edits - the body, the
+     citation map, and the supersession sentence - and the turn is not complete after the first.**
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
@@ -1890,6 +2334,21 @@ a reset window to hold that information.
 77. **Reusable-workflow caller permissions are the union of every nested job, not only the path you expect to execute.** A reusable observer may contain a conditionally skipped branch-write job; GitHub still validates the caller permission ceiling against that transitive job graph. Before publishing a caller, inspect the reusable workflow's complete permissions and grant the narrow union required by all nested jobs. A permission-ceiling failure before generated runtime is orchestration-only evidence, never a diagnostic or acceptance result.
 
 78. **Actions artifact round-trips preserve bytes but not executable permission.** `actions/download-artifact@v4` documents that artifact downloads normalize files to mode `0644`; a later `upload-artifact` therefore faithfully re-uploads non-executable files even when every SHA-256 is unchanged. `M3-CP4c3-TB3-ORCH-01` proved the failure end to end: raw CB3 artifact 9750227619 stored all six exact runtime binaries as `100755`, fixture packaging materialized them through `download-artifact`, and final package 71 stored the same hashes as `100644`. **When executable mode is part of package authority, carry the package tree inside a mode-preserving archive such as tar before crossing an Actions artifact boundary, and verify the modes after a clean archive round-trip. Never repair modes in TB.**
+
+79. **`git push origin <branch>` pushes the local ref of that name, not `HEAD` — and it succeeds silently when
+    they differ.** A turn's work was committed on `agent/surface_cell_quad/p5-recover-bridge-healing` and pushed
+    with `git push origin master`. Git resolved `master` to a stale local branch, pushed nothing new, exited 0, and
+    the turn was reported complete. The commit existed only locally and the next session could not find it.
+    **Push with `git push origin HEAD` or verify with `git status -sb` afterwards** — an "ahead 1" line after a
+    push that claimed success is the whole tell. Never treat a quiet exit 0 from `push` as proof that the intended
+    commit reached the remote.
+80. **Two agents can execute the same named turn concurrently, and the workflow does not prevent it.** `DEFN-R5`
+    was authored twice from the same frozen scope - once locally, once through the Drive-patch pipeline - and the
+    drafts reached opposite rules on the load-bearing question. The remote push landed first and is authoritative;
+    the local draft had to be reset away. **Before starting a turn, fetch and check whether the successor the last
+    turn froze has already been executed on the remote branch you are on** - which is the branch the work belongs
+    to, not `master`. When it has, the correct action is to reconcile into an amendment that preserves only what
+    the landed version lacks, never to merge two competing normative documents.
 
 ### Trigger commits must descend from the installed caller
 

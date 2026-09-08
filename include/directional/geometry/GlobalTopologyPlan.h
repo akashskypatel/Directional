@@ -76,32 +76,21 @@ struct GlobalTopologyRegion {
 };
 
 /**
- * Exact per-region CP4b proof.  Conditions 1-3 are the necessary-and-
- * sufficient topological-disc proof; interiorSingularityFree is the separate
- * field-regularity requirement for quadrangulability.
+ * Exact per-region CP4b binding/consumption proof. The topology authority is
+ * the A2a' actual-embedded face certificate consumed by this region;
+ * interiorSingularityFree is the separate A2b field-regularity requirement.
  */
 struct GlobalTopologyRegionDiscCertificate {
   explicit GlobalTopologyRegionDiscCertificate(authority::NetworkRegionId regionId)
       : region(regionId) {}
 
   authority::NetworkRegionId region;
-  std::size_t boundaryWalkCount = 0U;
-  bool sourceFacesConnected = false;
-  int eulerCharacteristic = 0;
-  // Number of source vertices strictly interior to the region (V_int).
-  // The validated single boundary walk and no-pinch condition make
-  // V_boundary == E_boundary, licensing their cancellation from chi.
-  std::size_t vertexCount = 0U;
-  // Number of interior fragment adjacencies (E_int) in the region dual graph.
-  std::size_t edgeCount = 0U;
-  // Number of owned (SourceFaceTopologyKey, orbit) fragments (F).
-  std::size_t faceCount = 0U;
+  SurfaceCutGraphFaceCertificate actualEmbeddedFace;
   bool interiorSingularityFree = false;
   std::vector<authority::FieldSingularityId> boundarySingularities;
 
   [[nodiscard]] bool proves_disc_topology() const noexcept {
-    return boundaryWalkCount == 1U && sourceFacesConnected &&
-           eulerCharacteristic == 1;
+    return actualEmbeddedFace.proves_disc_topology();
   }
   [[nodiscard]] bool proves_field_regularity() const noexcept {
     return interiorSingularityFree;
@@ -158,6 +147,43 @@ enum class UncutFaceComponentSeedState : std::uint8_t {
   Multiple = 2,
 };
 
+enum class RegionBoundaryWalkReason : std::uint8_t {
+  ArcChainBroken = 0,
+  ClosedBeforeEnd = 1,
+  WalkNotClosed = 2,
+};
+
+enum class RegionBoundaryProvenance : std::uint8_t {
+  Unguaranteed = 0,
+  FaceWalkOrbit = 1,
+};
+
+enum class RegionFrontierFailureStage : std::uint8_t {
+  UncutComponent = 0,
+  RegionConstruction = 1,
+  RegionCertification = 2,
+};
+
+enum class RegionFrontierSubjectDomainRelation : std::uint8_t {
+  Inside = 0,
+  Outside = 1,
+  Partial = 2,
+  Unresolved = 3,
+};
+
+enum class RegionFrontierCensusCorrespondence : std::uint8_t {
+  None = 0,
+  Exact = 1,
+  Superset = 2,
+};
+
+enum class RegionFrontierLocatorKind : std::uint8_t {
+  UncutFaceComponent = 0,
+  SourceFace = 1,
+  RegionSweep = 2,
+  SingleComponentFallback = 3,
+};
+
 enum class UncutFaceComponentBarrierClass : std::uint8_t {
   None = 0,
   Mandatory = 1,
@@ -172,6 +198,11 @@ enum class UncutFaceComponentNoSeedReason : std::uint8_t {
   LabeledFaceHasNoOwner = 3,
   EdgeOrbitEvidenceMissing = 4,
   EdgeOrbitEvidenceNotUnique = 5,
+};
+
+enum class UncutFaceComponentSeedRule : std::uint8_t {
+  SingleFaceOwner = 0,
+  EdgeOrbitEvidence = 1,
 };
 
 enum class UncutFaceSourceFaceLocusKind : std::uint8_t {
@@ -356,14 +387,48 @@ struct TraceTerminalSlitCensusDiagnostic {
 
 struct UncutFaceComponentBoundaryEdgeDiagnostic {
   authority::SourceEdgeTopologyKey sourceEdge;
+  std::optional<authority::SourceFaceTopologyKey> componentFace;
+  std::optional<authority::SourceFaceTopologyKey> labeledFace;
   bool otherSideLabeled = false;
   std::size_t labeledFaceOwnerCount = 0U;
   UncutFaceComponentBarrierClass barrierClass =
       UncutFaceComponentBarrierClass::None;
   std::optional<std::size_t> contributedSeed;
+  std::optional<UncutFaceComponentSeedRule> seedRule;
   std::optional<UncutFaceComponentNoSeedReason> noSeedReason;
+  bool minoritySeedOrbit = false;
+  std::optional<std::size_t> componentSideCertifiedFace;
+  std::optional<std::size_t> labeledSideCertifiedFace;
 
   auto operator<=>(const UncutFaceComponentBoundaryEdgeDiagnostic &) const =
+      default;
+};
+
+struct UncutFaceCertificatePairDiagnostic {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey firstFace;
+  authority::SourceFaceTopologyKey secondFace;
+  std::optional<std::size_t> firstCertifiedFace;
+  std::optional<std::size_t> secondCertifiedFace;
+
+  auto operator<=>(const UncutFaceCertificatePairDiagnostic &) const = default;
+};
+
+struct UncutFaceComponentCertifiedFaceMultiplicityDiagnostic {
+  std::size_t certifiedFace = 0U;
+  std::size_t sourceFaceCount = 0U;
+
+  auto operator<=>(
+      const UncutFaceComponentCertifiedFaceMultiplicityDiagnostic &) const =
+      default;
+};
+
+struct UncutFaceComponentCertifiedFaceObservationDiagnostic {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::size_t certifiedFace = 0U;
+
+  auto operator<=>(
+      const UncutFaceComponentCertifiedFaceObservationDiagnostic &) const =
       default;
 };
 
@@ -385,6 +450,27 @@ struct UncutFaceComponentSeedCensusDiagnostic {
   bool seedOrbitsTruncated = false;
 
   auto operator<=>(const UncutFaceComponentSeedCensusDiagnostic &) const =
+      default;
+};
+
+struct RegionFrontierComponentEvidenceDiagnostic {
+  std::size_t component = 0U;
+  std::vector<authority::SourceFaceTopologyKey> faces;
+  UncutComponentPartitionIdentity partitionIdentity;
+  std::uint64_t faceSetDigest = 0U;
+  RegionFrontierCensusCorrespondence censusCorrespondence =
+      RegionFrontierCensusCorrespondence::None;
+  std::optional<std::size_t> censusComponent;
+  std::optional<UncutComponentPartitionIdentity> censusPartitionIdentity;
+  std::optional<std::uint64_t> censusFaceSetDigest;
+  bool componentSubsetOfCensusComponent = false;
+  bool interiorArcIncidenceCensusPublished = false;
+  std::size_t interiorArcIncidenceCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcIncidenceCensus>
+      interiorArcIncidences;
+  bool interiorArcIncidencesTruncated = false;
+
+  auto operator<=>(const RegionFrontierComponentEvidenceDiagnostic &) const =
       default;
 };
 
@@ -443,6 +529,37 @@ struct GlobalTopologyPlanError {
   bool fragmentIncidencesTruncated = false;
   std::vector<TraceCutFaceEdgeOrbitEvidenceDiagnostic>
       fragmentEdgeOrbitEvidence;
+  std::optional<RegionBoundaryWalkReason> regionBoundaryWalkReason;
+  std::optional<RegionBoundaryProvenance> regionBoundaryProvenance;
+  std::optional<std::size_t> regionBoundaryOrbit;
+  // Region owner expected for a source face that is missing the corresponding
+  // fragment-corner ownership row. Diagnostic only; never a repair input.
+  std::optional<std::size_t> regionOwningFragmentOrbit;
+  std::vector<std::size_t> regionOwningFragmentOrbitIds;
+  std::optional<std::size_t> regionOwningFragmentOrbitCount;
+  std::optional<bool> regionOwningFragmentOrbitPresent;
+  std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctArcCount;
+  std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctNodeCount;
+  std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
+  std::optional<RegionFrontierFailureStage> regionFrontierFailureStage;
+  std::optional<RegionFrontierSubjectDomainRelation>
+      regionFrontierSubjectDomainRelation;
+  std::size_t regionFrontierUnlabeledFaceCount = 0U;
+  std::size_t regionFrontierPartitionComponentCount = 0U;
+  std::size_t regionFrontierOwnerConsistencyRowCount = 0U;
+  std::optional<RegionFrontierLocatorKind> regionFrontierLocator;
+  std::optional<bool> regionFrontierLocatorSurvivedGuard;
+  std::optional<bool> regionFrontierFailureSourceFaceInPartition;
+  std::optional<std::size_t> regionFrontierFailureRegionSourceFaceCount;
+  std::optional<std::size_t>
+      regionFrontierFailureRegionSourceFacesInPartitionCount;
+  std::size_t regionFrontierComponentCount = 0U;
+  std::vector<RegionFrontierComponentEvidenceDiagnostic>
+      regionFrontierComponents;
+  bool regionFrontierComponentsTruncated = false;
   std::optional<std::size_t> uncutFaceComponent;
   std::optional<std::size_t> uncutFaceComponentSeedCount;
   std::optional<UncutFaceComponentSeedState> uncutFaceComponentSeedState;
@@ -450,6 +567,20 @@ struct GlobalTopologyPlanError {
   std::size_t uncutFaceComponentFaceCount = 0U;
   std::vector<authority::SourceFaceTopologyKey> uncutFaceComponentFaces;
   bool uncutFaceComponentFacesTruncated = false;
+  std::optional<UncutComponentPartitionIdentity>
+      uncutFaceComponentPartitionIdentity;
+  std::optional<std::uint64_t> uncutFaceComponentFaceSetDigest;
+  std::optional<std::size_t> uncutComponentCensusComponent;
+  std::optional<UncutComponentPartitionIdentity>
+      uncutComponentCensusPartitionIdentity;
+  std::optional<std::uint64_t> uncutComponentCensusFaceSetDigest;
+  std::optional<bool> uncutComponentCensusMatchesFailingComponent;
+  std::optional<bool> uncutFaceComponentSubsetOfCensusComponent;
+  bool uncutFaceComponentInteriorArcCensusPublished = false;
+  std::size_t uncutFaceComponentInteriorArcCount = 0U;
+  std::vector<SurfaceCutGraphUncutComponentArcIncidenceCensus>
+      uncutFaceComponentInteriorArcIncidences;
+  bool uncutFaceComponentInteriorArcIncidencesTruncated = false;
   std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
   std::vector<UncutFaceComponentBoundaryEdgeDiagnostic>
       uncutFaceComponentBoundaryEdges;
@@ -458,6 +589,19 @@ struct GlobalTopologyPlanError {
   std::vector<UncutFaceComponentBoundaryOrbitDiagnostic>
       uncutFaceComponentBoundaryOrbits;
   bool uncutFaceComponentBoundaryOrbitsTruncated = false;
+  std::optional<std::size_t> uncutFaceCertificatePairExaminedCount;
+  std::optional<std::size_t> uncutFaceCertificatePairDifferingCount;
+  std::vector<UncutFaceCertificatePairDiagnostic> uncutFaceCertificatePairs;
+  bool uncutFaceCertificatePairsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceObservationCount;
+  std::vector<UncutFaceComponentCertifiedFaceObservationDiagnostic>
+      uncutFaceComponentCertifiedFaceObservations;
+  bool uncutFaceComponentCertifiedFaceObservationsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceUnavailableCount;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceDistinctCount;
+  std::vector<UncutFaceComponentCertifiedFaceMultiplicityDiagnostic>
+      uncutFaceComponentCertifiedFaceMultiset;
+  bool uncutFaceComponentCertifiedFaceMultisetTruncated = false;
   TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
@@ -630,10 +774,24 @@ private:
     GlobalTopologyPlanErrorCode code) noexcept;
 [[nodiscard]] const char *uncut_face_component_seed_state_name(
     UncutFaceComponentSeedState state) noexcept;
+[[nodiscard]] const char *region_boundary_walk_reason_name(
+    RegionBoundaryWalkReason reason) noexcept;
+[[nodiscard]] const char *region_boundary_provenance_name(
+    RegionBoundaryProvenance provenance) noexcept;
+[[nodiscard]] const char *region_frontier_failure_stage_name(
+    RegionFrontierFailureStage stage) noexcept;
+[[nodiscard]] const char *region_frontier_subject_domain_relation_name(
+    RegionFrontierSubjectDomainRelation relation) noexcept;
+[[nodiscard]] const char *region_frontier_census_correspondence_name(
+    RegionFrontierCensusCorrespondence correspondence) noexcept;
+[[nodiscard]] const char *region_frontier_locator_kind_name(
+    RegionFrontierLocatorKind kind) noexcept;
 [[nodiscard]] const char *uncut_face_component_barrier_class_name(
     UncutFaceComponentBarrierClass barrierClass) noexcept;
 [[nodiscard]] const char *uncut_face_component_no_seed_reason_name(
     UncutFaceComponentNoSeedReason reason) noexcept;
+[[nodiscard]] const char *uncut_face_component_seed_rule_name(
+    UncutFaceComponentSeedRule rule) noexcept;
 [[nodiscard]] const char *uncut_face_source_face_locus_kind_name(
     UncutFaceSourceFaceLocusKind kind) noexcept;
 [[nodiscard]] const char *rotation_system_inconsistency_reason_name(

@@ -1,14 +1,21 @@
 # M3 CP4c — Frozen Definitions
 
 **Purpose — DURABLE, DO NOT DELETE.** This is the single normative definitions document for the `M3-CP4c` family.
-It carries the **complete, unaltered text** of the six frozen-definition documents, consolidated on **2026-09-03**
-at `M3-CP4c-3-TB17-REV`. Nothing was summarized, shortened or reworded: each part below is its source document
-verbatim, with heading levels demoted by two so the parts nest under one hierarchy.
+It carries the **complete, unaltered text** of the six original frozen-definition documents, consolidated on
+**2026-09-03** at `M3-CP4c-3-TB17-REV`, followed by later definition revisions authored directly in this durable
+authority. Nothing in Parts I–VI was summarized, shortened or reworded; Parts VII onward are the original authored
+text of their definition turns.
 
 **Supersession.** Within each checkpoint the revisions supersede in order — `DEFN` → `DEFN-R1` → `DEFN-R2`. The
 earlier revisions are retained because `DESIGN.md` and the regression tracker cite the amendment lineage directly,
 and because an amendment's provenance is part of its authority. **The operative definitions for CP4c-2 are Part
-III; for CP4c-3 they are Part VI.** Where an earlier part conflicts with a later revision of the same checkpoint,
+III; for CP4c-3 they are Part VI together with Parts VII, VIII, IX, X, XI and XII, each superseding the earlier
+where they conflict. Part IX-A amends Part IX without overriding any of it; **Part X supersedes Part IX §5 (DEFN-R5.5)**
+while leaving every other Part IX clause in force; **Part XI supersedes Part X's DEFN-R6.3 and DEFN-R6.4 as region
+disc-topology authority** — Part X's measurements, domain findings and withdrawn-assumption record remain evidence
+— **Part XI-A amends Part XI without overriding any of its decisions**, correcting what its face certificate
+proves; and **Part XII adds the census-domain authority** (`DEFN-R8`), which changes nothing in Part XI or XI-A and
+retires only the stage-name domain guard.** Where an earlier part conflicts with a later revision of the same checkpoint,
 the later revision governs.
 
 This file is normative authority, not history. History lives in `M3_CP4c_Consolidated_Record.md`; current state and
@@ -26,6 +33,14 @@ Citations written against the former filenames resolve here:
 | `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` | Part IV — M3-CP4c-3 DEFN |
 | `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` | Part V — M3-CP4c-3 DEFN-R1 |
 | `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` | Part VI — M3-CP4c-3 DEFN-R2 |
+| *(no prior file — authored in place)* | **Part VII — M3-CP4c-3 DEFN-R3** |
+| *(no prior file — authored in place)* | **Part VIII — M3-CP4c-3 DEFN-R4** |
+| *(no prior file — authored in place)* | **Part IX — M3-CP4c-3 DEFN-R5** |
+| *(no prior file — authored in place)* | **Part IX-A — DEFN-R5 reconciliation amendment** |
+| *(no prior file — authored in place)* | **Part X — M3-CP4c-3 DEFN-R6** |
+| *(no prior file — authored in place)* | **Part XI — M3-CP4c-3 DEFN-R7** |
+| *(no prior file — authored in place)* | **Part XI-A — DEFN-R7 evidentiary amendment** |
+| *(no prior file — authored in place)* | **Part XII — M3-CP4c-3 DEFN-R8** |
 
 Section numbering inside each part is unchanged, so a citation such as "`…_DEFN_R2_…` §Amendment 22" reads as "Part VI §Amendment 22". Full text of the originals also remains in git history.
 
@@ -2479,3 +2494,1491 @@ Accepted 365 green in the last authoritative run; every finding on an unaccepted
 selector 374 is conditional on AY5. CP4c-2 remains **CLOSED / ACCEPTED at 365/365**; CP4c-3 remains **OPEN**.
 
 ---
+
+## Part VII — M3-CP4c-3 DEFN-R3
+
+*Authored in place on 2026-09-04 at `M3-CP4c-3-DEFN-R3`. This part is a **DEFN turn**, and under the project's turn
+workflow **`DEFN` absorbs `REVIEW + PLAN`**: it freezes definitions, adjudicates the inherited candidates, and
+issues its successor's measures in one turn. It supersedes Parts IV–VI where they conflict, and only there.*
+
+**Boundary.** No Directional runtime, configure, compile, link, package, or product/test/fixture/selector mutation
+occurred in this turn. Accepted selector **365** is untouched; selector **397** is byte-frozen. Measures
+**CF0–CF9**, frozen by `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` §8 (folded into
+`M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB24-REV`).
+
+---
+
+### 1. CF0 — the state this part inherits
+
+Current runtime authority is `M3-CP4c-3-TB23-R1` on selector 397: **389 PASS / 8 RED**, accepted **1–365 =
+365/365**, reds `{366, 367, 368, 369, 370, 374, 393, 397}`. The mechanical actual embedded complex is **certified
+cellular** — `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`, every face proving disc topology.
+
+Ordinal 366 has stopped at `UncutFaceComponentOrbitSeedNotUnique` since TB19: source-face component **0**, **191**
+faces, `seedState=Multiple`, seed orbits `[0,1,3]`, boundary attribution **81 / 1 / 1** over 97 edges. Four
+successive turns tried to determine whether that is a missing barrier or a mis-read seed. **None succeeded**, and
+`M3-CP4c3-TB21-CAND-01`'s two branches have never been discriminated.
+
+---
+
+### 2. CF1 — what a certified face must publish
+
+#### 2.1 The finding that decides it
+
+`SurfaceCutGraphFaceCertificate` publishes exactly four fields per certified face:
+
+```cpp
+std::size_t orbit; std::size_t boundaryWalkCount;
+std::size_t boundaryArcCount; bool discTopologyEstablished;
+```
+
+There is **no source-face membership and no boundary arc list**. The question every recent diagnostic has tried to
+answer — *which certified face contains this source triangle* — is therefore not answerable by reading the
+certificate. Each attempt had to **reconstruct** it from `walk.orbitByDart`, which is the seed quantity, and each
+collapsed identically:
+
+| Turn | Intended measurement | Why it reported nothing |
+|---|---|---|
+| CB24 | projection faithfulness residual | predicate **unsatisfiable by construction** |
+| CB24 | per-side certificate faces | **aliased to the seed** |
+| CB25 | certified-face ownership | edge-side path **re-derives the seed's dart orbit**; whole-face path collapses on "exactly one element" over a **coarser** partition |
+
+#### 2.2 The certifier already computes the answer and discards it
+
+`certify_actual_embedded_graph` (`src/geometry/SurfaceCutGraph.cpp:356–380`) begins by calling
+**`build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network, cutEdges)`** — the
+identical function `GlobalTopologyPlan` calls at `:2364` — and derives `embedded.faceWalk` from it. The certifier
+holds the complete embedded topology, its arcs, its source topology and its face walk. It then publishes **counts
+only**, and the plan rebuilds the identical structure to re-derive what the certifier already had.
+
+**This is therefore a publication decision, not a new computation.**
+
+> **AMENDMENT — WITHDRAWN AT `M3-CP4c-3-TB24-REV`.** The sentence immediately above is **false for the faces that
+> matter** and is withdrawn. It is retained, struck, so a reader can see what was believed and why the successor
+> failed. The face walk's darts are darts of *network and cut arcs*: a source face has a directly readable
+> certified orbit **only if it is incident to an arc or crossed by a trace**. Every other source face — including
+> most of component 0's 191 — has no dart of its own, and its owner must still be **propagated** across
+> non-barrier edges from a face that does. That propagation is exactly the seeding algorithm DEFN-R3.2 set out to
+> delete. CB27 implemented DEFN-R3.1 faithfully, re-implemented the propagation inside the certifier because it
+> had to, and reproduced the identical failure — component 0, owner orbits `[0,1,3]`, locus `(0,1,2)`.
+>
+> **The normative decision of DEFN-R3.1 below is UNCHANGED and remains in force.** The certifier is the right
+> authority. What is withdrawn is only the claim that it already knows the answer. See
+> `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` §4 (folded into `M3_CP4c_Consolidated_Record.md` at
+> `M3-CP4c-3-TB25-REV`), `M3-CP4c3-TB24-REV-CAND-02` and `LESSONS.md` 121.
+
+#### 2.3 Normative decision — DEFN-R3.1
+
+> **The owner map of a certified complex is a property of certification, and must be produced by the certifier.**
+> `SurfaceCutGraphCellularityCertificate` **must publish a total source-face owner map**:
+>
+> - for a source face the network does **not** cross: the **single** certified-face id whose interior contains it;
+> - for a source face the network **does** cross: the **set** of certified-face ids owning its local fragments,
+>   keyed so that a consumer can attribute each fragment side without re-deriving it;
+> - every published id must be one of that same certificate's `faces[].orbit` values;
+> - the map must be **total** over the source faces of the certified complex.
+>
+> **Proof obligation.** `proves_cellularity()` is extended to require the map to be total and its ids to be drawn
+> from the certificate's own faces. A certificate that cannot produce a total map does **not** prove cellularity —
+> it reports a typed failure naming the first unowned source face.
+
+**Rationale.** A consumer must never re-derive a partition its producer already computed. Re-derivation from
+partial evidence is precisely what produced the aliasing, the unsatisfiable predicate and the coarse projection.
+
+**What this does not decide.** Whether the two `build_embedded_graph_topology` invocations are unified into one is
+an implementation question, not a definition. It is recorded as `M3-CP4c3-DEFN-R3-CAND-01` and left to the
+successor's judgement; **two sources of truth for one object is a standing hazard**, and any unification must keep
+the certifier's result authoritative.
+
+---
+
+### 3. CF2 — is the seed guard's premise checkable, and what replaces it
+
+**Today: no.** The guard requires each connected component of uncut source faces to receive exactly one orbit seed
+from its labeled neighbours. Whether that holds is a statement about **certified faces**, and certified faces do
+not say which source faces they contain. The premise is unverifiable as the system publishes today, which is why
+`seedState=Multiple` has been neither confirmed nor refuted for four turns.
+
+**Under DEFN-R3.1: yes, and the guard's present form becomes unnecessary.**
+
+> **DEFN-R3.2 — ownership is read, not seeded.** With a total owner map published, a source face's certified owner
+> is a **lookup**. The seeding construction — `componentBarriers`, the unlabeled-face component partition,
+> `seedOrbits`, and the per-edge seed rule with its `SingleFaceOwner` / `edgeOrbitEvidence` disjunction — is
+> **replaced** by that lookup. `UncutFaceComponentOrbitSeedNotUnique` is **not weakened and not deleted**: it is
+> **relocated** into a consistency check on the published map, failing closed when a component's faces do not all
+> carry the same certified owner, and naming the component and the conflicting owners.
+
+**This satisfies Parts IV and V.** Those parts prohibit *weakening* `UncutFaceComponentOrbitSeedNotUnique`. The
+replacement is **strictly stronger**: it decides the same property from an authoritative total map instead of
+reconstructing it from partial neighbour evidence, and it can name its own failure. A prohibition on weakening is
+not a prohibition on replacing with something that decides more.
+
+---
+
+### 4. CF3 — the barrier set for any retained projection
+
+`resolve_certificate_face_projection` unites source faces across every edge **not** in `embeddedGraphSourceEdges`,
+which holds **mandatory and cut source edges only**. It therefore merges across trace-crossed edges, making its
+components strictly coarser than the seed construction's — and a coarser component necessarily collects owners
+from several certified faces, which is why all 191 faces reported `unavailable`.
+
+> **DEFN-R3.3 — a derived partition must be at least as fine as the partition whose property it adjudicates.** Any
+> source-face projection used to reason about certified ownership **must** use the full barrier set
+> `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`. A projection over a strict subset of that set is **not**
+> admissible evidence about ownership and may not be published as such.
+
+Under DEFN-R3.2 no such projection is required at all. This clause binds any projection that is nevertheless
+retained for cross-checking, so the omission cannot recur.
+
+---
+
+### 5. CF4 — adjudication of `M3-CP4c3-TB20-REV-CAND-02`
+
+Parts IV and V each prohibit *"relaxing / weakening `proves_cellularity()`, the fragment-count invariant, or
+`UncutFaceComponentOrbitSeedNotUnique`."* `M3-CP4c-3-CB21` made the fragment-count invariant's **low side**
+non-fatal, and `M3-CP4c-3-TB18-REV` authorized that without consulting those lists.
+
+**Both facts are accepted, and the substantive question has since been settled against the prohibition.**
+
+- `|owners| = k + 1` equates a **local** fragment count with the cardinality of a set of **global** face-walk orbit
+  owners. Equality requires the local-fragment → global-owner map to be injective.
+- TB18 **measured** a counterexample on a witness whose complex is **certified cellular**: arc 15 with
+  `forwardOrbit = reverseOrbit = 0`. On a cellular complex containing a bridge, the two sides of an arc genuinely
+  share a face. The invariant is therefore **false**, not merely unproven.
+- Part I §3's reasoning — which is what made the sibling guard "correct" — turns on a premise (**non-cellularity**)
+  that TB21 measured false for the mechanical witness. The prohibition was authored when the only observed
+  instance was the torus, where non-cellularity was independently proved.
+
+> **DEFN-R3.4 — the prohibition on the fragment-count invariant is LIFTED, for stated reasons, and only for it.**
+> `|owners| = k + 1` is not an invariant of a valid cellular complex, so a check asserting it cannot be preserved
+> as written. `M3-CP4c-3-CB21`'s one-sided relaxation **stands and is not reverted**: its accepted-boundary safety
+> was proved by construction — the validation loop is pure, and `>` holds on a strict subset of `!=`, so the
+> failing set only shrinks and no previously-passing input changes.
+>
+> **The prohibitions on `proves_cellularity()` and `UncutFaceComponentOrbitSeedNotUnique` remain in force**, and
+> DEFN-R3.1 *strengthens* the former while DEFN-R3.2 *relocates* rather than weakens the latter.
+
+`M3-CP4c3-TB20-REV-CAND-02` is therefore **CLOSED — prohibition lifted with reasons**. Recorded so no successor
+re-opens it by citing Parts IV/V alone: **Part VII governs where it conflicts with Parts IV–VI.**
+
+---
+
+### 6. CF5 — carried forward unweakened
+
+`proves_cellularity()` (strengthened by DEFN-R3.1, never relaxed); the accepted **1–365** boundary; the certified
+cellularity evidence `V=22, E=26, F=6, componentCount=1, χ=2, residual=0`; **CB21's correction**; the closure of
+ordinals 371/372/391/392; and the separate ownership of **367/368/369/370/374**, vertex-30 and the
+finalize/contact fall-through. **There is still no vertex-30 discriminator.**
+
+Also carried: Part I §3 is an **implication with a premise** and licenses "the network is not a cut graph" only
+where non-cellularity is independently established; the face walk is a validated total permutation; shared orbit
+ownership by the two sides of one arc is legitimate topology.
+
+---
+
+### 7. CF6 — the undiscriminated branches, and what would discriminate them
+
+**Recorded plainly: neither branch of `M3-CP4c3-TB21-CAND-01` has ever been discriminated.** The two readings of
+component 0's `[0,1,3]` remain:
+
+- **(a) missing barrier** — two boundary edges genuinely separate certified faces and are absent from
+  `componentBarriers`;
+- **(b) mis-read seed** — the edges are ordinary and the seed rule reported an orbit that does not face the
+  component.
+
+> **DEFN-R3.5 — the discriminator.** Under DEFN-R3.1 the question is decided by **one lookup, not a measurement**:
+> take the certified owners of the 191 member faces of component 0 from the published map.
+> **If they are not all equal, reading (a) holds** — the component spans certified faces, and the barrier set is
+> missing the separations between them, which the differing pairs name directly.
+> **If they are all equal, reading (b) holds** — the component lies in one certified face and the two minority
+> seeds were mis-reads.
+>
+> No further diagnostic instrumentation is authorized to answer this. If the published map cannot be produced,
+> that is a DEFN-R3.1 failure and is reported as one.
+
+---
+
+### 8. CF7 — disposition of ordinals 393 and 397
+
+**Ordinal 397 — `UnrelatedTopologyErrorLocusRemainsByteIdenticalAfterCertificateDiagnostics` — must be FIXED.**
+CB25 appended `;cutCandidateCount=0` to the rendered locus of an **unrelated** topology error; the witness expected
+`;sourceFace=2,4,6` and received `;sourceFace=2,4,6;cutCandidateCount=0`. The defect is in the product's locus
+rendering, not in the expectation.
+
+> **DEFN-R3.6.** Restore byte-identical rendering for errors the diagnostic work does not own. **Relaxing or
+> re-scoping ordinal 397's expectation is prohibited.** A byte-identical regression witness that is edited to
+> match a regression has been converted into its opposite.
+
+**Ordinal 393 — `MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual` — is SUPERSEDED, and its
+assertions are REPLACED in place.** Its expectations (`differing > 0`, `certifiedFaceDiffersFromSeed`) were written
+to falsify a *reconstruction*. Under DEFN-R3.2 the reconstruction and its seed both cease to exist, so those
+expectations are not merely unsatisfiable but **meaningless** — there is no seed for a certified face to differ
+from.
+
+> **DEFN-R3.7.** The successor Code + Build **replaces ordinal 393's assertions** with the DEFN-R3.1 contract: the
+> published owner map is total, its ids are drawn from the certificate's own faces, and the certified owners of a
+> named component are reported. **The ordinal is retained and stays gating**; the identity name may be updated to
+> match its new contract. It is **not** deleted, **not** reordered, and **not** made non-gating.
+>
+> This is the correct route rather than a permanent non-gating carve-out: the identity's *purpose* — falsifiable
+> evidence about certified ownership — is preserved, while only the obsolete mechanism it referenced is replaced.
+> The change must be recorded in the successor's report with the before and after assertions.
+
+**Selector governance.** Selector 397 stays byte-frozen through the successor; identities are appended only, never
+removed or reordered. Replacing an identity's assertions is a test-source change, not a selector change.
+
+---
+
+### 9. CF8 — successor gate
+
+#### `M3-CP4c-3-CB27` — Code + Build, measures **CG0–CG9**, runtime-free, GMP/GMPXX linked
+
+- **CG0** — accepted 365 untouched; selector **397** byte-frozen and republished unchanged; the eight standard
+  compile targets with **mandatory GMP/GMPXX linkage**; **no runtime**; no acceptance claimed.
+- **CG1** — implement **DEFN-R3.1**: publish the total source-face owner map on
+  `SurfaceCutGraphCellularityCertificate`, produced by the certifier from the topology it already builds, with ids
+  drawn from its own `faces[].orbit`.
+- **CG2** — extend `proves_cellularity()` with DEFN-R3.1's proof obligation: the map is total over source faces and
+  its ids are certificate face ids. A certificate that cannot produce it reports a typed failure naming the first
+  unowned source face.
+- **CG3** — implement **DEFN-R3.2**: replace the seeding construction with a lookup, and relocate
+  `UncutFaceComponentOrbitSeedNotUnique` into a consistency check over the published map that names the component
+  and the conflicting owners on failure.
+- **CG4** — implement **DEFN-R3.6**: restore byte-identical locus rendering for unrelated errors.
+- **CG5** — implement **DEFN-R3.7**: replace ordinal 393's assertions with the new contract, recording before and
+  after; keep the ordinal gating.
+- **CG6** — discharge the two carried debts, both of which require source changes and so belong here:
+  `M3-CP4c3-TB23-REV-CAND-01` — make `tests/TestFixturePaths.h`'s `test_data_root()` **fail closed** rather than
+  return a non-existent path; and `M3-CP4c3-TB23-R1-REV-CAND-01`, which CG4 covers.
+- **CG7** — witnesses: one per new published field through the **production** path; a witness that the owner map is
+  total on all three fixtures; a witness that the relocated guard **names its component and conflicting owners**;
+  and — per the standing rule that a diagnostic must be falsifiable — a **unit** witness proving the consistency
+  check *can* fail and a **production** witness proving whether it *does*. Append the next selector **named by its
+  resulting identity count**; 397 stays an exact prefix; regenerate
+  `Required_Green_Selector_Manifest.md` with `tools/selector_manifest.py`.
+- **CG8** — audit by assumption; prove accepted ordinals **1–365** unaffected by construction, and that
+  `proves_cellularity()` is only strengthened.
+- **CG9** — publish the `M3-CP4c-3-TB24` discriminators: **(1)** 1–365 stay 365/365; **(2)** the owner map is
+  published and total on the mechanical witness; **(3)** **the certified owners of component 0's 191 faces are
+  reported — all-equal or not, which decides `M3-CP4c3-TB21-CAND-01` per DEFN-R3.5**; **(4)** ordinal 366 either
+  clears or fails with the relocated guard naming its component and conflicting owners; **(5)** ordinals **393 and
+  397 are green**; **(6)** carried surfaces 367/368/369/370/374 unchanged and 371/372/391/392 still PASS.
+
+---
+
+### 10. CF9 — prohibited
+
+Inventing a certificate field without naming its producer and its proof obligation. Weakening
+`proves_cellularity()` or `UncutFaceComponentOrbitSeedNotUnique` — DEFN-R3.1 strengthens the first and DEFN-R3.2
+relocates the second; neither may be softened. Relaxing or re-scoping **ordinal 397's** expectation. Deleting,
+reordering or de-gating **ordinal 393**. Publishing a source-face projection built on a strict subset of
+`mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` as ownership evidence. Any further **diagnostic-only** turn on the
+ownership surface — DEFN-R3.5 makes it a lookup. Any fixture-specific branch, tolerance, float-derived topological
+decision, or accepted-boundary relaxation. Reverting `M3-CP4c-3-CB21`. Any sphere / saturation / ordinal-370 /
+folded-cone / vertex-30 / finalize-contact work.
+
+---
+
+### 11. Falsifiable predictions
+
+1. The owner map is producible from what the certifier already computes, without a new traversal — CG1 lands
+   without adding a face walk.
+2. `proves_cellularity()` continues to hold on all three fixtures after CG2 strengthens it; if it does not, the
+   certificate was over-claiming and the failure names the first unowned source face.
+3. Component 0's 191 certified owners are **not all equal**, making reading (a) — missing barrier — the live
+   branch. *This is a prediction, not an authorization*: CG9-3 reports the fact either way, and a correction is
+   frozen only by the review that reads it.
+4. Ordinals 393 and 397 both go green under CG4/CG5; 397 going green requires no expectation change.
+
+---
+
+### 12. Accounting and exact next turn
+
+`M3-CP4c3-TB20-REV-CAND-02` **CLOSES** (prohibition lifted with reasons, §5). New `M3-CP4c3-DEFN-R3-CAND-01` —
+`build_embedded_graph_topology` is invoked independently by both the certifier and the plan, giving two sources of
+truth for one object; **ACTIVE / ARCHITECTURAL / NON-GATING**, owner CG1's judgement.
+`M3-CP4c3-TB21-CAND-01` remains **ACTIVE / GATING**, now with a stated discriminator (§7).
+`M3-CP4c3-TB23-REV-CAND-01` and `M3-CP4c3-TB23-R1-REV-CAND-01` are assigned to **CG6/CG4**.
+`M3-CP4c3-TB23-R1-REV-CAND-02` is assigned to **CG5**.
+
+This is a definition turn: no runtime, no gate, **+0 stable events / +0 recurrences**. Totals remain **44 events /
+14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **88**. Accepted authority
+remains **365/365**; CP4c-3 remains **OPEN**.
+
+**Exact next turn: `M3-CP4c-3-CB27` — Code + Build, runtime-free, GMP/GMPXX linked, under CG0–CG9.**
+
+---
+
+## Part VIII — M3-CP4c-3 DEFN-R4
+
+**Turn:** `M3-CP4c-3-DEFN-R4` — definition turn (absorbs REVIEW + PLAN).
+**Frozen owner:** CR6–CR8 of `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` (folded into `M3_CP4c_Consolidated_Record.md` at `M3-CP4c-3-TB32-REV`).
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+
+Runtime authority entering this turn: `M3-CP4c-3-TB31`, selector 408, **397 PASS / 11 RED**, accepted
+**1–365 = 365/365**, certified source-face ownership **300 established / 0 unavailable / 0 conflicting**, plan
+component 0 at **189 faces / seedCount 1 / `Unique` / `[0]`**. Stable accounting **44 / 14 / 30**, debt **5**,
+packages **96**.
+
+### 1. CR8 — why the guard became reachable, established from source
+
+TB31-REV recorded that it could not determine this statically and required transcription from the retained log.
+**It is determinable from source, and the transcription is unnecessary.**
+
+- `build_regions` is defined at `GlobalTopologyPlan.cpp:629` and called at `:2212`. It contains
+  `UncutFaceComponentOrbitSeedNotUnique`.
+- `build_fragment_corner_incidence` is defined at `:405` and called at `:2014`, **from
+  `build_region_certificates`** (`:1988`), which takes the already-built `regions` as a parameter.
+- `build_region_certificates` therefore runs **after** `build_regions`.
+
+**`TraceArcDoesNotSeparateItsSides` is strictly downstream of `UncutFaceComponentOrbitSeedNotUnique`.** It was
+unreachable for as long as the seed guard fired. CB36 cleared the seed guard, the mechanical fixture reached region
+certificate construction for the first time, and the next guard on that path fired.
+
+**This corrects TB31-REV §2.2**, which inferred from line numbers that the guard sat *upstream* of the seed guard
+and treated its reachability as unexplained. It is downstream, and its reachability is fully explained by the
+pipeline advancing. **CB36 did not change the walk this function observes**, which removes the risk TB31-REV
+flagged as the reason the transcription mattered.
+
+`M3-CP4c3-TB31-REV-CAND-03`'s evidence-attachment concern is unaffected and is decided at §5 below.
+
+### 2. What `FragmentCornerIncidence` actually is — DEFN-R4.1
+
+TB31-REV called `(face, orbit)` a **fragment identity** and concluded the key was not injective. That description
+is withdrawn. The structure is not a fragment index.
+
+> **DEFN-R4.1 — normative.** `FragmentCornerIncidence`, `map<SourceFaceTopologyKey, map<orbit, set<SourceVertexId>>>`
+> (`GlobalTopologyPlan.cpp:399–401`), is an **ownership map**: `fragmentCorners[face][orbit]` is the set of `face`'s
+> corner vertices owned by **certified face `orbit`**. It is keyed by owning region, not by fragment, and it is not
+> required to distinguish two fragments that share an owner.
+
+Both consumers use it exactly that way:
+
+- `:1893–1906` — `cutFace->second.find(owningOrbit)`: *"which of this face's corners belong to **my** region?"*,
+  failing with `RegionSourceFaceOwningFragmentMissing` when the region owns none.
+- `:1927–1945` — iterating `(orbit, corners)` to classify a vertex as `ownedByRegion` when `orbit == owningOrbit`
+  and `ownedByOtherRegion` otherwise: *"mine, or another region's?"*
+
+Neither asks how many fragments a face has, nor which geometric fragment a corner lies in. The `FragmentKey` used
+for region interior connectivity (`:1693–1699`) carries `owningOrbit` as a **constant tag** for every face of the
+region, so it too is region-scoped rather than fragment-scoped.
+
+### 3. A bridge chord — DEFN-R4.2
+
+> **DEFN-R4.2 — normative.** When a trace arc's two darts lie in the **same** face-walk orbit, both sides of its
+> chord are owned by that one certified face. The correct value of `fragmentCorners[face]` is then a **single entry
+> containing every corner of the face**. This is the correct answer under DEFN-R4.1, not a key collision.
+
+The full-chord branch already produces it: `result[face][cornerOrbit].insert(sharedCorner)` (`:541–543`) and
+`result[face][sideOrbit].insert(other corners)` (`:544–548`) merge into one entry when
+`cornerOrbit == sideOrbit`, yielding all three corners under the single owning orbit. Both consumers then answer
+correctly — the region owns all three, and no vertex is misattributed to another region.
+
+### 4. `TraceArcDoesNotSeparateItsSides` is RETIRED — DEFN-R4.3
+
+> **DEFN-R4.3 — normative.** `GlobalTopologyPlanErrorCode::TraceArcDoesNotSeparateItsSides` is **retired from the
+> emission path**. `build_fragment_corner_incidence` must not reject a trace segment because its arc's two darts
+> share a face-walk orbit. The enum entry remains declared so the typed-error surface and ledger history stay
+> stable; it becomes unreachable.
+
+Three reasons, each independently sufficient and all checkable:
+
+1. **Its premise is refuted by a settled fact.** *"Shared orbit ownership by the two sides of one arc is legitimate
+   topology; BS9-5 remains retired"* has stood since TB18, and DEFN-R3.4 measured exactly that on **arc 15**,
+   `forwardOrbit = reverseOrbit = 0`, on a certified cellular complex.
+2. **It contradicts the correction this checkpoint just proved.** The separating-arc barrier rule keys on
+   `forwardOrbit != reverseOrbit` precisely because equal orbits mean *does not separate*, and deliberately leaves
+   arcs 20 and 24 (`0/0`) alone. A guard that then rejects those arcs asserts the opposite of the rule that
+   depends on them.
+3. **The same function already accepts equal orbits on its other path.** The ray branch writes
+   `result[face][ray.forwardOrbit]` and `result[face][ray.reverseOrbit]` (`:608–615`) with no guard, merging
+   silently and correctly when they coincide. **The rejection is an internal inconsistency within one function, not
+   a protection of the representation.**
+
+This retirement is **a consequence of DEFN-R4.1 and R4.2, not a relaxation**. TB31-REV's caution — that deleting
+the guard would merge two distinct fragments — was correct about the mechanism and wrong about the consequence:
+the merge is what DEFN-R4.1 requires. The successor must record the merge as intended behaviour at the site, so a
+later reader does not reintroduce the guard.
+
+**Prohibited:** removing the guard without recording DEFN-R4.1's contract in the code, and re-deriving fragment
+identity from the orbit anywhere downstream.
+
+### 5. Frontier evidence must not hang off one failure code — DEFN-R4.4
+
+> **DEFN-R4.4 — normative.** The plan-side failing-component **face-set digest**, the certifier census identity and
+> the `censusCorrespondence` / subset relation are properties of the plan's state, not of any particular typed
+> failure. They must be published on the failure locus **whenever the plan terminates during region construction or
+> region certification**, independently of which typed code terminates it.
+
+They vanished at TB31 solely because the terminal code changed, which is the defect
+`M3-CP4c3-TB31-REV-CAND-03` names.
+
+### 6. Witnesses must not name the failure — DEFN-R4.5
+
+> **DEFN-R4.5 — normative.** A witness whose contract is *"this evidence is published when the production path
+> fails"* must assert the **evidence**, not **which** typed failure produced it. Ordinals **390, 393, 406 and 407**
+> have their assertions **replaced in place**: each keeps every contract it legitimately owns, and each stops
+> asserting `terminalFailureDetailCode == "UncutFaceComponentOrbitSeedNotUnique"`. Ordinals, names and selector
+> bytes are unchanged; all four remain **gating**.
+
+Where an identity genuinely needs a typed failure to exist, it asserts that the failure **carries the required
+evidence fields**, not its name. This is the disposition CB35 applied to ordinals 390 and 404 and TB30 proved
+correct, generalized.
+
+**This is a restoration, not a weakening.** Six identities across two forward steps have redded because they pinned
+the failure the product used to make; the two that survived both steps — **404 and 408** — assert publication and
+completeness instead. That is the standard.
+
+### 7. What DEFN-R4 does not decide
+
+1. **Source-face ownership is CLOSED** — 300/300 certified, component 0 unique at `[0]`. The separating-arc barrier
+   rule stands **at both sites** and is not re-opened.
+2. **Ordinal 398 is untouched.** It fails on the prescribed sphere
+   (`NotProductionReady/CellularityNotEstablished`), owned by `M3-CP4c2-TB-X2-CAND-04`. It is **not** an ownership
+   gate and must not be re-scoped to exclude the sphere.
+3. **Ordinals 368, 369, 370 and 374** keep their separate owners and are untouched.
+4. **The two partitions are not unified.** `M3-CP4c3-TB26-REV-CAND-04` / `M3-CP4c3-DEFN-R3-CAND-01` stay open; the
+   plan's partition now yields a unique owner, so the divergence does not hold the frontier and its resolution is
+   not required here.
+5. **No new diagnostic contract** on ownership or on fragments. Everything above is decided from source.
+
+### 8. Successor — CS0–CS6, `M3-CP4c-3-CB37`
+
+Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`.
+
+- **CS1** — retire the `TraceArcDoesNotSeparateItsSides` emission in `build_fragment_corner_incidence`
+  (`:474–479`), per DEFN-R4.3. Record DEFN-R4.1's ownership contract at the site so the merge reads as intended.
+  The enum entry stays declared.
+- **CS2** — publish the plan-side failing-component digest, the certifier census identity and the
+  `censusCorrespondence` / subset relation on every region-construction and region-certification failure locus, per
+  DEFN-R4.4.
+- **CS3** — replace in place the assertions of ordinals **390, 393, 406, 407** per DEFN-R4.5. Ordinals, names and
+  selector bytes unchanged; all remain gating. **Nothing any of them legitimately owns may be relaxed.**
+- **CS4** — **accepted-prefix safety by construction.** CS1's only reachable behaviour change is on a trace segment
+  whose arc has equal dart orbits; enumerate what differs there and show every other path is identical.
+- **CS5** — selector **408 unchanged**. If the ownership contract needs a witness, it appends as **409** with 408 as
+  an exact 408-line prefix, asserting **publication and completeness** — that a face crossed by a bridge chord
+  publishes exactly one owning-orbit entry containing all of its corners — and **never** a predicted owner value.
+- **CS6** — `M3-CP4c-3-TB32` re-executes. **Credibility gate: 368, 369, 370, 374 and 398 must remain RED**, since
+  none is touched. **Required outcome: 390, 393, 406 and 407 return to PASS.** For 366/367, either the plan
+  proceeds past region certification or it stops at a **further** guard; a stop at
+  `TraceArcDoesNotSeparateItsSides` falsifies DEFN-R4.3, and a stop reproducing
+  `UncutFaceComponentOrbitSeedNotUnique` with component 0 at 189/1/`[0]` would falsify DEFN-R4.1.
+
+### 9. Accounting
+
+Definition turn: no runtime, no compile, no gate. **+0 events / +0 recurrences.** Totals remain **44 events / 14
+categories / 30 recurrences**, produced-witness debt **5**, semantic M3 package count **96**. Accepted authority
+remains **365/365**; CP4c-3 remains **OPEN**.
+
+**Exact next turn: `M3-CP4c-3-CB37` — Code + Build, runtime-free, GMP/GMPXX linked, under CS1–CS6.**
+
+---
+## Part IX — M3-CP4c-3 DEFN-R5
+
+**Turn:** `M3-CP4c-3-DEFN-R5` — definition turn (absorbs REVIEW + PLAN).
+**Frozen owner:** CW5 of `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md`.
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+
+Runtime authority entering this turn: `M3-CP4c-3-TB35`, selector **409**, **402 PASS / 7 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, immutable CB40 package `10003613409` / source
+`23a753a83f0eda0447172ce96bcd3180bf95ae8a`, run `34084955954`. Certified source-face ownership is
+**300 established / 0 unavailable / 0 conflicting**. Stable accounting is **45 events / 14 categories / 31
+recurrences**, produced-witness debt **5**, semantic M3 packages **100**.
+
+### 1. DEFN-R5.1 — a face-walk orbit is an ordered single closed walk
+
+> **Normative guarantee.** `FaceWalkResult::orbits[orbit]` is one **ordered single closed walk**. It is constructed by
+> choosing one unvisited directed halfedge, repeatedly following the unique `successor[current]`, and ending the
+> orbit only when the traversal returns to its starting directed halfedge. `canonicalize_cycle` then changes only
+> the cyclic starting position; it does not split, splice or otherwise alter the walk.
+
+Source authority: `EmbeddedGraphTopology.cpp:1746–1774`.
+
+A single closed walk is **not** required to be a simple cycle. It may revisit a network node before its final arc;
+bridges, slits and cut vertices can make that necessary. Therefore the fact that an in-progress boundary traversal
+reaches its start node while entries remain does **not** prove that the boundary contains multiple walks.
+
+### 2. DEFN-R5.2 — a plan region inherits that guarantee, but does not self-certify it
+
+`build_regions` creates a region draft as `RegionDraft{orbit, walk.orbits[orbit]}`
+(`GlobalTopologyPlan.cpp:986`) and publishes the same boundary unmodified (`:1450`). Existing source already
+resolves the relation in the other direction by comparing `walk.orbits[orbit] == region.boundary`
+(`region_orbit`, `GlobalTopologyPlan.cpp:379`).
+
+> **Normative provenance rule.** Boundary provenance is a **derived relation to the current authoritative
+> `FaceWalkResult`**, not a mutable claim stored on `GlobalTopologyRegion`.
+>
+> A current region boundary carries provenance **`FaceWalkOrbit(orbit)`** iff **exactly one** authoritative
+> `walk.orbits[orbit]` equals the current ordered `region.boundary` exactly. If there is zero match or more than one
+> match, provenance is **`Unguaranteed`**.
+
+The existing `region_orbit(region, walk)` equality is the single authority for this relation and may be refactored
+into a typed resolver, but no second mutable boolean/enum may be copied into `GlobalTopologyRegion` as independent
+truth. This is required for the validation-candidate surface: tests deliberately copy a valid region and mutate its
+boundary. A copied "came from face walk" flag would become stale while the exact relation correctly disappears.
+
+**Prohibited provenance shortcuts:** region id, fixture name, source-face set, caller identity, a production-only
+boolean, positional similarity, or any inference weaker than the exact ordered-boundary equality above.
+
+### 3. DEFN-R5.3 — boundary-walk reasons are scoped by provenance
+
+`validate_single_boundary_walk` has three typed structural reasons. Their authority is frozen as follows.
+
+1. **`ArcChainBroken` applies to every boundary.** Consecutive oriented arcs must join exactly.
+2. **`WalkNotClosed` applies to every boundary.** After all entries are consumed, the final node must equal the
+   initial node.
+3. **`ClosedBeforeEnd` is rejecting only for `Unguaranteed` boundaries.** Without an authoritative single-walk
+   producer guarantee, returning to the initial node while entries remain is not accepted as one walk; validation
+   fails closed at `ClosedBeforeEnd`. This remains the required negative for the synthetic multi-walk witnesses.
+4. **`ClosedBeforeEnd` is non-rejecting observation for `FaceWalkOrbit(orbit)`.** The validator continues through
+   the remaining entries and still applies `ArcChainBroken` and `WalkNotClosed`. The observation may remain on a
+   later failure for continuity, but it must be accompanied by the derived provenance so it cannot be mistaken for
+   a rejection authority.
+
+The implementation order is part of the contract because it preserves the synthetic negatives:
+
+1. resolve the **optional** exact `FaceWalkOrbit` relation without rejecting a missing match;
+2. validate the boundary under DEFN-R5.3 using that provenance;
+3. only after structural boundary validation, require the owning orbit for region certification and use the
+   existing typed missing-orbit failure if no unique authoritative orbit exists.
+
+Resolving a missing orbit **before** the boundary validator and immediately failing it is prohibited: that would
+turn ordinals 312/409 into a different failure and erase the negative that owns `ClosedBeforeEnd`.
+
+### 4. DEFN-R5.4 — ordinals 312 and 409 are immutable falsifiers of provenance overreach
+
+Ordinal **312**, `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks`, and ordinal **409**,
+`GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected` (legacy name; current body is the reachable
+shared-start multi-walk), remain **gating and unchanged**. Their synthetic boundary mutations no longer equal an
+authoritative face-walk orbit, so both are `Unguaranteed` and must still reject with
+`RegionBoundaryNotSingleWalk / ClosedBeforeEnd` at their existing loci.
+
+No fixture branch, test-name special case, or "synthetic" flag is authorized. The exact relation of DEFN-R5.2 is
+what distinguishes these cases from plan regions.
+
+### 5. DEFN-R5.5 — Euler is a separate, unresolved question; measure the cancellation premise
+
+Current source computes the region certificate as
+
+`eulerCharacteristic = vertexCount - edgeCount + faceCount`
+
+where `vertexCount = V_int`, `edgeCount = E_int`, and `faceCount = F` (`GlobalTopologyPlan.cpp:2097–2104`). The
+source comment at `:2099–2100` justifies removing all boundary terms with
+`V_boundary == E_boundary`, citing the validated single boundary walk and no-pinch condition. DEFN-R5.1 establishes
+that the authoritative boundary is a **walk that may revisit nodes**; it does **not** establish that the distinct
+boundary vertices/edges of the counted cell complex cancel under that reduction.
+
+> **Normative disposition.** `RegionEulerCharacteristicNotOne` is **not corrected in the provenance turn**. The
+> successor measures the exact multiplicity facts needed to decide whether the reduced Euler formula is valid for
+> the current face-walk boundary. No value is forced to 1 and no region is accepted because its provenance is a
+> face-walk orbit.
+
+If 366/367 advance to `RegionEulerCharacteristicNotOne`, the failure detail must retain the existing exact
+`vertexCount`, `edgeCount`, `faceCount`, `eulerCharacteristic` and additionally publish, without truncation for the
+failing region:
+
+- `regionBoundaryProvenance` = `FaceWalkOrbit` or `Unguaranteed`;
+- `regionBoundaryOrbit` when provenance is `FaceWalkOrbit`;
+- `regionBoundaryArcOccurrenceCount` — ordered oriented-arc entries;
+- `regionBoundaryDistinctArcCount` — distinct underlying network arc ids represented by those entries;
+- `regionBoundaryNodeOccurrenceCount` — cyclic boundary node occurrences, one start node per oriented entry;
+- `regionBoundaryDistinctNodeCount`;
+- `regionBoundaryRepeatedNodeOccurrenceCount = occurrenceCount - distinctCount`;
+- `regionBoundaryStartRevisitBeforeEndCount`.
+
+All counts are exact combinatorial counts from the authoritative boundary and arc endpoints; no float, tolerance,
+approximation or reconstructed geometry is admissible. These fields are **measurement only**. A later review/DEFN
+must decide whether the Euler reduction, the counted complex, or neither is wrong.
+
+### 6. DEFN-R5.6 — candidate adjudication
+
+- `M3-CP4c3-TB35-REV-CAND-01` becomes **DEFINED / GATING / ARCHITECTURAL / CORRECTION FROZEN**. The missing
+  contract is DEFN-R5.1–R5.3; implementation owner is `M3-CP4c-3-CB41`, runtime verdict owner is TB36.
+- `M3-CP4c3-TB34-REV-CAND-03` remains **ACTIVE / GATING / SPLIT**. Its `ClosedBeforeEnd` branch is now
+  **definition-resolved** by DEFN-R5.1–R5.3; its `RegionEulerCharacteristicNotOne` branch remains open and is owned
+  only by the measurement in DEFN-R5.5.
+- The TB34 stable event remains counted. This definition changes **no** historical event/category/recurrence.
+
+### 7. Successor — CX0–CX8, `M3-CP4c-3-CB41`
+
+Code + Build, runtime-free, mandatory GMP/GMPXX linkage, `runtimeExecution=false`.
+
+- **CX0 — boundary and compile discipline.** Change only the provenance/region-boundary validation and the bounded
+  Euler measurement required below, plus directly necessary test/diagnostic plumbing. Compile the same eight
+  standard targets required by the current CP4c Code + Build contract through `agent-compile-reusable.yml`; execute
+  no Directional binary. Accepted runtime authority remains TB35.
+- **CX1 — one provenance authority.** Reuse/refactor `region_orbit(region, walk)` as the exact resolver in
+  DEFN-R5.2. Do **not** add a trusted mutable provenance flag to `GlobalTopologyRegion`.
+- **CX2 — provenance-aware validation order.** Resolve optional provenance before boundary validation but do not
+  fail a missing orbit yet; validate under CX3; only then require the owning orbit for certification. Preserve the
+  existing typed missing-orbit path after structural validation.
+- **CX3 — scope the reasons exactly.** `ArcChainBroken` and `WalkNotClosed` reject all boundaries.
+  `ClosedBeforeEnd` rejects only `Unguaranteed`; on `FaceWalkOrbit` it is observation-only and traversal continues.
+  Preserve exact typed reason/locus projection.
+- **CX4 — hard negative preservation.** **Do not edit ordinals 312 or 409, their fixtures, names, assertions, order,
+  or selector membership.** Selector 409 remains byte-identical. Audit the implementation against both before
+  compile closeout.
+- **CX5 — Euler measurement only.** Add the exact DEFN-R5.5 provenance/multiplicity fields to the
+  `RegionEulerCharacteristicNotOne` evidence path and its production failure projection. Do not change the Euler
+  formula, disc acceptance, `proves_disc_topology()`, region topology, or any correction outside that measurement.
+- **CX6 — accepted and carried-surface safety.** No accepted identity 1–365 may change except that none is expected
+  to change at all; no work on ordinal 398 or 368/369/370/374; no source-face ownership, partition-unification,
+  retired-guard, sphere, saturation, ordinal-370, folded-cone, vertex-30 or finalize/contact change.
+- **CX7 — Code + Build report must carry the TB plan.** Freeze immutable package/source/selector identities and a
+  comprehensive artifact-only `M3-CP4c-3-TB36-EXEC` plan. TB36 executes selector 409 one identity per fresh
+  process, accepted prefix first, no rebuild/repair/mutation, then stops for independent `TB36-REV` on semantic red.
+- **CX8 — TB36 falsifiers.** Required credibility: accepted **1–365 = 365/365**; 312 and 409 PASS unchanged;
+  390/393/404/406/407/408 PASS; 368/369/370/374/398 remain RED; ownership remains 300/0/0 and retired-code silence
+  holds. For 366/367: a stop at `ClosedBeforeEnd` **falsifies** DEFN-R5.2/R5.3; advance to
+  `RegionEulerCharacteristicNotOne` **confirms the provenance correction but does not authorize an Euler fix** and
+  must publish all CX5 fields; advancement beyond Euler is raw frontier evidence for TB36-REV, not automatic
+  checkpoint acceptance. Any accepted RED halts semantic advancement.
+
+### 8. Prohibited
+
+A mutable self-certifying provenance flag on `GlobalTopologyRegion`; fixture/test-name special casing; removing
+`ClosedBeforeEnd` globally; weakening `ArcChainBroken` or `WalkNotClosed`; moving the missing-orbit failure ahead of
+the synthetic boundary negative; editing ordinals 312 or 409; changing selector 409; changing the Euler formula or
+forcing χ=1; weakening `proves_disc_topology()`; touching ordinal 398, 368/369/370/374, ownership, partition
+unification, any retired guard, sphere/saturation/ordinal-370/folded-cone/vertex-30/finalize-contact work; any
+float/tolerance-derived topological decision; any runtime in CB41.
+
+### 9. Accounting and exact next turn
+
+This definition turn runs no Directional runtime, compile, package, test or benchmark and creates no semantic
+package. **+0 stable events / +0 recurrences.** Totals remain **45 events / 14 categories / 31 recurrences**;
+produced-witness debt **5**; semantic M3 packages **100**; accepted runtime authority remains **TB35 365/365**;
+CP4c-3 remains **OPEN**.
+
+**Exact next turn: `M3-CP4c-3-CB41` — Code + Build, runtime-free, GMP/GMPXX linked, under CX0–CX8.**
+
+---
+
+## Part IX-A — M3-CP4c-3 DEFN-R5 reconciliation amendment
+
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE. **Amends Part IX; overrides nothing in it.**
+
+Part IX was frozen from one execution of `M3-CP4c-3-DEFN-R5`. A second, independent execution of the same turn ran
+concurrently and reached three findings that Part IX does not carry. Two of them **confirm Part IX against a
+competing draft that was wrong**, and recording *why* the competing rule fails is the load-bearing content here —
+it is the same failure mode that already cost this checkpoint an accepted-green regression once.
+
+### A.1 — DEFN-R5.2's derived relation is not a stylistic preference; the alternative loses accepted green
+
+The competing draft made provenance **established at construction**: set the guaranteed value in `build_regions`
+where the boundary is taken from `walk.orbits[orbit]`, default unguaranteed, and store it on the region.
+
+**That rule breaks accepted ordinal 312**, and the test says so directly
+(`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253`):
+
+```cpp
+auto candidate = plan.validation_candidate();
+const auto duplicateWalk = candidate.regions[0].boundary;
+candidate.regions[0].boundary.insert(candidate.regions[0].boundary.end(),
+                                     duplicateWalk.begin(), duplicateWalk.end());
+```
+
+The synthetic region is a **copy of a real plan region**, whose boundary is then doubled. A stored construction-time
+flag is copied with the struct and **survives the mutation**, so the region would present as `FaceWalkOrbit`,
+`ClosedBeforeEnd` would be suppressed, and ordinal 312 would go RED — reproducing the `CB39` / `CU4` accepted-green
+loss by a different route. Ordinal 409 mutates the same way (`:3276–3279`) and would fail identically.
+
+DEFN-R5.2's derived exact relation has no such failure: the doubled boundary equals no authoritative
+`walk.orbits[orbit]`, so it resolves to `Unguaranteed` and stays rejected. **DEFN-R5.2 and its prohibition on a
+mutable region flag are confirmed, and the prohibition is the reason the rule is correct, not a note attached to
+it.** `LESSONS.md` 148.
+
+### A.2 — the Euler *causation* is settled even though the *correction* is not
+
+Part IX §5 calls `RegionEulerCharacteristicNotOne` "a separate, unresolved question". The **correction** is
+unresolved; the **causation** is not, and TB35-REV's framing of it as a *"second, independent finding"* is
+**withdrawn**.
+
+`GlobalTopologyPlan.cpp:2097–2104` computes `χ = V_int − E_int + F`, `certificate.edgeCount` counts interior edges
+only (`:1861`, published as `E_int` at `:1804`), and `boundaryVertices` (`:1893–1969`) is consulted only to
+**exclude** vertices from `interiorVertices` (`:2052`) — never counted. The comment at `:2099–2100` names the
+no-pinch condition as the premise for dropping the boundary terms. **TB34 removed that premise's guard, so the
+Euler failure it then observed was produced by the removal, not exposed by it.**
+
+This does not change Part IX's disposition — it strengthens it. Under CX3 the guard stops rejecting face-walk
+boundaries, so **366/367 advancing to `RegionEulerCharacteristicNotOne` is a predicted outcome of CB41, not a
+discovery**, and CX8 already treats that advance as confirmation-without-authorization. CB41 must not read it as
+new evidence, and TB36-REV must not count it as a new finding.
+
+### A.3 — the naive Euler correction is refuted, which is why CX5 measures instead of correcting
+
+The competing draft asserted that a boundary walk with k extra node revisits gives `V_bnd − E_bnd = −k`, hence
+χ = 1 − k, and proposed generalizing χ to `(V_int + V_bnd) − (E_int + E_bnd) + F = 1` **coupled** to the scoping
+change so that neither could land alone.
+
+**The arithmetic is wrong.** It holds only when every boundary edge is traversed once. A **bridge is traversed
+once per dart**, so a boundary walk of length L over a face containing a bridge has *both* `V_bnd < L` and
+`E_bnd < L`, and the deficit is not determined by the node-revisit count alone. With ten terminal slits in this
+fixture, repeated **edges** are expected, not exceptional. So no closed-form correction is derivable from the
+revisit count, and the coupling argument built on it does not hold.
+
+**This independently vindicates DEFN-R5.5.** The measurement it freezes is exactly the set that decides the
+question — `regionBoundaryArcOccurrenceCount` **and** `regionBoundaryDistinctArcCount`, `…NodeOccurrenceCount`
+**and** `…DistinctNodeCount` — because occurrence-versus-distinct must be resolved separately for arcs and for
+nodes. A correction frozen on the revisit count alone would have been wrong. `LESSONS.md` 149.
+
+### A.4 — fixture evidence for DEFN-R5.1
+
+Part IX proves the single-closed-walk guarantee from construction. The fixture independently shows the guarantee is
+**load-bearing rather than theoretical**: it publishes `terminalSlits=10` across twelve traces on a complex
+certified cellular with `V=22, E=26, F=6, componentCount=1, χ=2, residual=0` and **every face established as a
+disc**. A face containing a bridge necessarily revisits that bridge's base node, so rejecting repeated-node
+boundaries would reject a decomposition the certifier has already established as cellular, and no change to region
+construction avoids producing them for this input.
+
+### A.5 — what this amendment does not change
+
+Part IX governs. **DEFN-R5.1 through R5.6, CX0–CX8, the prohibited list, and the ordinals 312/409 contracts are
+unchanged.** No stable event, category or recurrence changes: totals remain **45 / 14 / 31**, debt **5**, packages
+**100**. Runtime authority remains **TB35** at 402 PASS / 7 RED, accepted **365/365**. **Exact next turn remains
+`M3-CP4c-3-CB41` — Code + Build, runtime-free, GMP/GMPXX linked, under CX0–CX8.**
+
+---
+
+## Part X — M3-CP4c-3 DEFN-R6
+
+**Turn:** `M3-CP4c-3-DEFN-R6` — definition turn (absorbs REVIEW + PLAN).
+**Frozen owner:** CZ6 of the historical TB37 review, resolved through the folded-document index in
+`M3_CP4c_Consolidated_Record.md`.
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+
+Runtime authority entering this turn: `M3-CP4c-3-TB37`, selector **409**, **402 PASS / 7 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, immutable CB42 package `10032277517` / source
+`89cbf1ff5e2b064a0a4652c6cdb9e32b6f4b001d`, run `34161464783`. Ownership **300 / 0 / 0**. Stable accounting
+**45 events / 14 categories / 31 recurrences**, debt **5**, packages **102**.
+
+This part supersedes Part IX §5 (DEFN-R5.5), which froze `RegionEulerCharacteristicNotOne` as **measurement only**
+and deferred the decision to "a later review/DEFN". TB37 supplied the measurement and TB37-REV made the finding;
+Part X is that decision. **Every other clause of Part IX, and all of Part IX-A, stands unchanged.**
+
+### 1. The measurement, and what it proved
+
+```text
+X     (sub-mesh vertices excluded from interiorVertices) = 36  = 0 + 20 + 16
+B_int (barrier edges with both incident faces in region) = 12
+E_one (sub-mesh boundary edges)                          = 20
+      (sub-mesh boundary vertices)                       = 20
+V_total / E_total / F / chi_full                         = 136 / 385 / 250 / 1
+reduced certificate V_int / E_int / F / chi              = 100 / 353 / 250 / -3
+```
+
+> **The region's source sub-mesh is a genuine triangulated disc, and the certificate rejects it.**
+
+The gap decomposes exactly:
+
+> **(V_total − V_int) − (E_total − E_int) = 36 − 32 = (20 − 20) + (16 − 12) = 0 + 4**
+
+### 2. DEFN-R6.1 — the cancellation premise is NOT the defect
+
+> **DEFN-R6.1 — normative, and the correction of record.** The premise *"the validated single boundary walk and
+> no-pinch condition give `V_boundary == E_boundary`"* is **true of the sub-mesh boundary**: 20 edges against 20
+> vertices, measured. **Part IX-A §A.2's implication that the premise itself fails is withdrawn**, and so is the
+> DEFN-R5 draft claim that a pinch makes the boundary terms stop cancelling.
+
+The reduction failed for an unrelated reason, and recording that reason is the point of this clause: **a
+correction aimed at the premise would have been aimed at the wrong thing.**
+
+### 3. DEFN-R6.2 — interior barrier edges are interior cells
+
+> **DEFN-R6.2 — normative.** A **barrier edge** — mandatory or cut — **with both incident faces in the region is an
+> interior cell of the certified complex**, not a boundary cell. The certificate currently drops **12** such edges
+> from `E_int` (`GlobalTopologyPlan.cpp:1848–1850`) and drops **16** further vertices from `V_int` through the
+> `allOwned` test (`:2048–2094`), and those two exclusions do not balance. **The certificate's notion of "boundary"
+> is the network's barrier set rather than the sub-mesh's actual boundary, and that misclassification is the whole
+> of the 4-point error.**
+
+A **terminal slit** is exactly such an edge — a barrier that dangles into a region rather than separating two — and
+this fixture publishes ten of them.
+
+### 4. DEFN-R6.3 — the certified complex, named
+
+> **DEFN-R6.3 — normative.** The object a region certificate certifies is the **whole-face source sub-mesh** of
+> `region.sourceFaces`: all distinct source vertices and all distinct source edges of those faces, with
+> `F = |region.sourceFaces|`. Each source face belongs to exactly one region, because `fragmentOrbits[face]` is
+> rejected unless `certifiedFaceOrbits.size() == 1` (`:1405`, applied at `:1432`), so the faces are partitioned.
+
+> **This is the region rounded to whole faces, not the traced region.** The region the plan builds is bounded by
+> the network walk, which includes **trace arcs — chords through face interiors** that are not source edges. A
+> trace-cut face is assigned wholly to one side. **`χ = 1` is therefore a claim about the rounding**, and no turn
+> may cite it as a statement about the traced region.
+
+This is stated so it cannot be silently assumed later; it is **not** a defect finding, and it does not block the
+correction. `M3-CP4c3-TB37-REV-CAND-01` remains **ACTIVE / ARCHITECTURAL / NON-BLOCKING**.
+
+### 5. DEFN-R6.4 — the Euler criterion
+
+> **DEFN-R6.4 — normative.** A region's Euler characteristic is
+>
+> **χ = V_total − E_total + F**, and disc topology requires **χ = 1**.
+>
+> **The reduced form `V_int − E_int + F` is withdrawn.** For a connected compact surface with boundary,
+> `χ = 2 − 2g − b`, so `χ = 1` forces `g = 0, b = 1`; together with the already-checked `sourceFacesConnected` and
+> `boundaryWalkCount == 1`, that is a disc. `proves_disc_topology()` keeps its present shape and only the value of
+> `eulerCharacteristic` changes.
+
+### 6. DEFN-R6.5 — the withdrawn premise has TWO sites, and both must go
+
+> **DEFN-R6.5 — normative.** The withdrawn cancellation premise is stated in **two** places, and the implementing
+> turn must remove **both**:
+>
+> 1. `src/geometry/GlobalTopologyPlan.cpp:2097–2098` — the comment above the χ assignment;
+> 2. `include/directional/geometry/GlobalTopologyPlan.h:91–93` — the comment on
+>    `GlobalTopologyRegionDiscCertificate::vertexCount`, whose second and third lines repeat it verbatim.
+
+TB37-REV named only the first. The header site was found by this turn. **Leaving either in place re-seeds the
+withdrawn assumption for the next reader** — which is exactly how the assumption survived from TB34 to TB37 in the
+first place. `LESSONS.md` 53 and 147.
+
+### 7. DEFN-R6.6 — do not repurpose `vertexCount` and `edgeCount`
+
+> **DEFN-R6.6 — normative.** `certificate.vertexCount` and `certificate.edgeCount` **keep their present meanings**:
+> `V_int`, and the count of **interior fragment adjacencies in the region dual graph**. `edgeCount` is incremented
+> in the same loop that builds `neighbors` for the connectivity BFS behind `RegionInteriorDisconnected`
+> (`:1847–1860`, consumed by the BFS at `:1862–1873` and the check at `:1874`); redefining it would silently change which regions are reported disconnected, which is **outside
+> this correction**.
+>
+> The sub-mesh totals must be **added as new certificate fields**, so the published triple explains the published
+> χ rather than contradicting it. Their comments must state their domain.
+
+### 8. DEFN-R6.7 — the equivalence condition carries a proof obligation
+
+> **DEFN-R6.7 — normative.** Reduced and full agree exactly when
+>
+> **X = E_one + B_int**
+>
+> and they differ by `X − (E_one + B_int)` otherwise. **The implementing turn may not assume this holds anywhere.**
+> It must establish, per region on every accepted fixture, either that the identity holds or that the region's
+> verdict is unchanged.
+
+The measured region violates it by 4 (`36` against `20 + 12`). A region with **no interior barrier edges**, whose
+excluded-vertex set is exactly its sub-mesh boundary vertex set, and whose sub-mesh boundary is a disjoint union of
+cycles, satisfies it — which is why the accepted corpus has not previously exposed the defect. **That is an
+explanation, not a proof, and DEFN-R6.7 requires the proof.**
+
+### 9. Successor — CZ7 measures, `M3-CP4c-3-CB43`
+
+Code + Build, runtime-free, GMP/GMPXX linked, `runtimeExecution=false`.
+
+- **CZ7.1 — hoist the sub-mesh accumulation.** CB42 computes `submeshVertices` / `submeshEdges` **inside the
+  `if (certificate.eulerCharacteristic != 1)` failure branch**, so they are unavailable to the criterion. Move
+  them above the χ computation. This is a code-motion step with no behaviour of its own.
+- **CZ7.2 — add the certificate fields** for `V_total` and `E_total` per DEFN-R6.6, documented with their domain,
+  and compute `certificate.eulerCharacteristic` from them per DEFN-R6.4.
+- **CZ7.3 — delete both premise comments** per DEFN-R6.5. Replace them with a statement of what is actually
+  counted; do not leave a bare deletion.
+- **CZ7.4 — discharge DEFN-R6.7.** Publish, for every region on every accepted fixture, `X`, `E_one`, `B_int` and
+  the reduced-versus-full difference, and show either the identity or an unchanged verdict. **A blanket assertion
+  that "accepted fixtures have no slits" is not a discharge.**
+- **CZ7.5 — state the hash and ordering decision explicitly.** New certificate fields change
+  `GlobalTopologyRegionDiscCertificate::operator<=>`, and `global_topology_plan_hash` consumes the certificate
+  (`:2386–2400`). Say whether the new fields enter the hash. No identity pins a plan-hash literal today — **confirm
+  that by grep, do not assume it** — and note that the hash changes regardless, because corrected regions publish a
+  different `eulerCharacteristic`.
+- **CZ7.6 — protected surface unchanged.** Ordinals **312** and **409** byte-identical; selector **409**
+  byte-frozen; accepted **1–365** untouched; no work on 368/369/370/374/398; no ownership, partition-unification,
+  retired-guard, sphere, saturation, folded-cone or finalize/contact change. **Region construction must not
+  change** — TB37 established the region is correct and the certificate is not.
+- **CZ7.7 — `M3-CP4c-3-TB38` re-executes** selector 409, one identity per fresh process, accepted prefix first.
+
+**Falsification, stated before the build.**
+
+- **Accepted prefix 365/365, and ordinals 312 and 409 PASS, are stop conditions.** Any accepted RED halts the turn.
+- **The risk is not a direct assertion.** CB42's grep found no test-source assertion of
+  `RegionEulerCharacteristicNotOne`. The risk is that a region which currently fails Euler now passes and reaches
+  stages never executed on it.
+- If 366/367 clear region certification, DEFN-R6.1–R6.4 are confirmed. **A new failure at a later stage is a new
+  frontier, not a regression of this one**, and TB38-REV must classify it as such.
+- If 366/367 still fail Euler under the full count, the measurement and the implementation disagree and the turn
+  halts without a correction.
+- If any accepted-fixture region changes verdict, **DEFN-R6.7's identity is refuted there** and the correction is
+  not safe as written.
+- If 366/367 clear Euler but a region elsewhere newly fails it, DEFN-R6.4 is too strong for some region the reduced
+  form happened to pass, and the counted complex — DEFN-R6.3 — becomes the live question.
+
+### 10. Prohibited
+
+Correcting region construction; changing source-face ownership or the whole-face rounding while fixing the
+arithmetic; repurposing `vertexCount` or `edgeCount`; weakening `proves_disc_topology()`, `sourceFacesConnected` or
+`boundaryWalkCount`; forcing χ to 1, special-casing a fixture, or accepting a region on any ground other than the
+criterion; deleting only one of the two premise comments; weakening or re-scoping ordinal 398; touching
+368/369/370/374; re-opening any retired guard; any accepted-identity or selector byte change; any Directional
+runtime in the definition turn.
+
+### 11. Accounting
+
+Definition turn: no runtime, no compile, no package, no gate. **+0 events / +0 recurrences.** Totals remain
+**45 events / 14 categories / 31 recurrences**, produced-witness debt **5**, semantic M3 package count **102**.
+Accepted authority remains **365/365**; runtime authority remains **TB37**; CP4c-3 remains **OPEN**.
+
+**Exact next turn: `M3-CP4c-3-CB43` — Code + Build, runtime-free, GMP/GMPXX linked, under CZ7.1–CZ7.7.**
+
+---
+
+## Part XI — M3-CP4c-3 DEFN-R7
+
+### Actual-embedded face certificate binding replaces region support proxies
+
+**Turn:** `M3-CP4c-3-DEFN-R7` — Definition turn (absorbs REVIEW + PLAN).
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+**Runtime authority entering and leaving this turn:** promoted `M3-CP4c-3-TB39`, package104, selector **409**,
+**402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Ownership remains
+**300 / 0 / 0**. Stable accounting remains **46 events / 14 categories / 32 recurrences**, produced-witness debt
+**5**, semantic package count **104**.
+
+This part is the replacement contract ordered by TB39-REV. It **supersedes Part X DEFN-R6.3 and DEFN-R6.4 as
+region-disc-topology authority**. Part X's measurements, domain findings, withdrawn-assumption record and historical
+falsifiers remain evidence; they are not deleted. The correction is not a third Euler formula. The correction is to
+consume the certificate already owned by the stage that constructs and certifies the actual embedded graph.
+
+### 1. DEFN-R7.1 — one topology object, one owner
+
+> **Normative.** The topology object of an A2b `GlobalTopologyRegion` is the **non-exterior face-walk orbit of the
+> A2a′ `ActualEmbeddedGraph` whose ordered oriented-arc cycle is exactly `region.boundary`**. Its disc-topology
+> authority is the matching `SurfaceCutGraphFaceCertificate` published by A2a′. A2b does not independently infer
+> disc topology from `region.sourceFaces`, a source-edge barrier partition, fragment counts, corner ownership, or
+> any Euler proxy over those projections.
+
+The relation is not aspirational; current source already constructs both stages from the same deterministic graph
+builder. `SurfaceCutGraph::certify_actual_embedded_graph()` and `GlobalTopologyPlan::canonical_candidate()` both call
+`build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network, cutEdges)`. That shared
+builder owns arcs, rotations and `FaceWalkResult`. `SurfaceCutGraph` publishes one face certificate for every
+non-exterior orbit. `GlobalTopologyPlan::build_regions()` drafts one region for every non-exterior orbit and copies
+that orbit's ordered boundary. The orbit ordinal is content-derived because canonical arc IDs and face-walk order are
+content-derived; `SurfaceCutGraph` already includes the ordinal in its semantic digest.
+
+Therefore the A2a′ face certificate is not evidence about a merely related object. It is evidence about the **same
+actual-embedded face** that A2b publishes as the region.
+
+### 2. DEFN-R7.2 — the binding key and exact relation
+
+> **Normative.** The binding key is the current actual-embedded **face-walk orbit ordinal** `o`, derived on demand
+> from exact equality `walk.orbits[o] == region.boundary`. It is never a stored "trusted at construction" region
+> flag.
+
+For a current candidate, one region is bound iff all of the following hold:
+
+1. candidate source/network/cut-graph semantic bindings are current (`sourceDigest`, `networkDigest`,
+   `cutGraphDigest` agree with their producers);
+2. the candidate arcs/rotations yield a valid current `FaceWalkResult`;
+3. exact `region_orbit(region, walk)` resolves **exactly one** orbit `o`; the ordered, oriented boundary is equal to
+   `walk.orbits[o]`, not merely cyclically similar after a stale construction-time claim;
+4. exactly one `cutGraph.certificate().faces` entry has `face.orbit == o`;
+5. that entry is therefore non-exterior, because A2a′ publishes `faces` only for non-exterior orbits;
+6. the entry has `boundaryWalkCount == 1`, `boundaryArcCount == region.boundary.size()`, and
+   `face.proves_disc_topology() == true`;
+7. the downstream region certificate contains the **exact consumed A2a′ face-certificate value** for that orbit;
+8. candidate validation re-derives items 1–7 from the *current* candidate and current producers and compares the
+   resulting certificate exactly before publication.
+
+Items 3 and 8 are the copy/mutation control. Ordinals 312 and 409 start from `plan.validation_candidate()`, copy a
+real region, and then mutate its boundary. A stored provenance/proof boolean would survive that copy. The derived
+relation does not: once the boundary is no longer an exact current face-walk orbit, there is no binding.
+
+### 3. DEFN-R7.3 — downstream certificate representation
+
+> **Normative.** `GlobalTopologyRegionDiscCertificate` is a **binding/consumption certificate**, not a second
+> topological certifier. Its semantic topology payload is one exact consumed `SurfaceCutGraphFaceCertificate`,
+> associated with the region ID. The preferred concrete representation is an embedded value such as
+> `SurfaceCutGraphFaceCertificate actualEmbeddedFace`; an equivalent representation is admissible only if it
+> preserves the same four upstream fields exactly and cannot become a second writer of them.
+
+The certificate retains the separate field-regularity payload (`interiorSingularityFree` and
+`boundarySingularities`). Its methods have disjoint meanings:
+
+- `proves_disc_topology()` delegates to the **consumed upstream actual-embedded face certificate**;
+- `proves_field_regularity()` remains the A2b field/singularity predicate.
+
+`proves_disc_topology()` must not consult source-support connectivity or any reduced/full/split/barrier Euler
+measurement. Conversely, the upstream face certificate does not prove field regularity; A2b still owns that
+separate check.
+
+A copied mutable candidate may contain a copied face-certificate value. That copy is not publication authority by
+itself. `make_from_candidate()` remains the checked seam and must rebuild the binding from the current region,
+current face walk and current `SurfaceCutGraph`, then require exact equality with the candidate certificate.
+
+### 4. DEFN-R7.4 — source-support proxies are diagnostics, not topology gates
+
+> **Normative.** The following current `GlobalTopologyRegionDiscCertificate` members do **not** describe one
+> actual-embedded cell complex and therefore leave the semantic disc certificate:
+>
+> `sourceFacesConnected`, `eulerCharacteristic`, `vertexCount`, `edgeCount`, `totalVertexCount`,
+> `totalEdgeCount`, and `faceCount`.
+
+Their present domains are intentionally recorded before removal:
+
+- `sourceFacesConnected` — connectivity of the owned source-face/fragment support through non-barrier adjacency;
+- `vertexCount` — source vertices surviving the reduced/projection exclusion (`V_int`);
+- `edgeCount` — interior fragment/source-support adjacencies (`E_int`), not actual-embedded graph edges;
+- `faceCount` — owned `(SourceFaceTopologyKey, orbit)` support fragments;
+- `totalVertexCount` / `totalEdgeCount` — distinct vertices/edges of the whole-source-face rounding;
+- reduced/full Euler values — arithmetic over those two different source-support projections.
+
+These values may continue to be computed as **diagnostic observations** where useful, but they must not be part of
+`GlobalTopologyRegionDiscCertificate::proves_disc_topology()`, must not be a second semantic certificate in
+`candidate_semantic_digest`, and must not reject an otherwise bound A2a′ face as non-disc.
+
+Consequences:
+
+- `RegionEulerCharacteristicNotOne` is **retired as a producer of A2b disc-topology rejection**. Its enum/string may
+  remain for source/API/history compatibility, but canonical region certification no longer raises it.
+- `RegionInteriorDisconnected` is likewise **retired as a producer of disc-topology rejection**. The old support
+  connectivity measurement may remain diagnostic; ownership/canonical fragment binding is already enforced by
+  `build_regions()` and candidate reconstruction.
+- `validate_no_region_fragment_pinch()` may not remain an independent disc-topology authority. If retained, it is a
+  non-gating consistency diagnostic. A contradiction with a current certified actual-embedded face is an
+  implementation/authority-binding defect, not permission to override A2a′ with a second region theorem.
+- `validate_single_boundary_walk()` remains useful as **candidate/binding structure validation** and for the typed
+  312/409 tamper falsifiers. It is not the source of the canonical region's disc proof.
+
+This is the explicit withdrawal of the proxy authority that Part X accidentally installed.
+
+### 5. DEFN-R7.5 — exact diagnostic domains and the `regionChiFull` contract
+
+> **Normative.** A diagnostic name that says *full* must contain the whole-source-face value and no other value.
+> If a field cannot be made unambiguous, rename it to include its domain.
+
+For the existing support-projection measurements:
+
+- **reduced support Euler** = `sourceSupportInteriorVertexCount - sourceSupportInteriorAdjacencyCount +
+  sourceSupportFragmentCount`;
+- **whole-source-face Euler** = `wholeSourceFaceVertexCount - wholeSourceFaceEdgeCount +
+  wholeSourceFaceFaceCount`;
+- `fullMinusReduced` is only the difference of those two named projection domains;
+- `traceCutFaceCount`, `splitFragmentCount`, `fragmentCornerAttributionCount`,
+  `interiorBarrierOneSideCount`, and `interiorBarrierBothSidesCount` remain diagnostics about their explicitly
+  named support/projection domains; they are not cells of the canonical actual-embedded region unless a future
+  definition constructs and proves such a complex.
+
+`GlobalTopologyPlanError::regionFullEulerCharacteristic` / projected `regionChiFull` currently receive the reduced
+`certificate.eulerCharacteristic` on 366/367. **That assignment is forbidden.** If the field survives, it must be
+computed from whole-source-face `V_total - E_total + F`. The generic `eulerCharacteristic/vertexCount/edgeCount/
+faceCount` failure fields must not silently carry the region-support proxy after the topology rejection that owned
+them is retired; any retained publication gets a domain-explicit region-support name.
+
+The stderr record currently named `record=euler_certificate` is not a certificate after this turn. A successor may
+keep its data only under a diagnostic/projection name and with domain-explicit columns. Historical TB39 artifacts
+remain valid evidence under the names they emitted at that time.
+
+### 6. DEFN-R7.6 — complete consumer inventory frozen before implementation
+
+The implementation successor may not discover a new consumer after changing the representation and then improvise
+its semantics. This is the frozen census from exact source `7f8b36413aeb5af808979a106b7b2557c81e8865`:
+
+| Consumer/surface | Current role | Required R7 treatment |
+|---|---|---|
+| `include/directional/geometry/GlobalTopologyPlan.h` `GlobalTopologyRegionDiscCertificate` | product fields + `proves_disc_topology()` | replace proxy proof payload with exact consumed A2a′ face certificate; retain field regularity separately |
+| `build_region_certificates()` / `region_orbit()` | current exact boundary→face-walk derivation | keep derived relation; add unique upstream face-certificate lookup/binding |
+| `build_region_certificate()` | computes support connectivity/Euler and raises region topology errors | consume bound face cert; stop using support proxies/pinch as disc authority; keep only explicitly diagnostic measurements |
+| `canonical_candidate()` | creates region certificates and binds `cutGraphDigest` | produce the new binding certificate from current cut graph |
+| `validate_candidate_structure()` | rebuilds expected certificates and compares exact equality | preserve this checked seam; re-derive current boundary/orbit/upstream cert so stale copied candidates fail |
+| `candidate_semantic_digest()` | hashes every current proxy field | hash region ID + exact consumed face-certificate semantics + field-regularity semantics; do not hash retired support diagnostics as topology semantics |
+| `GlobalTopologyPlan::region_certificates()` / `find_region_certificate()` | public accessors | expose the new binding certificate without a second proof interpretation |
+| `GlobalTopologyPlanError` region Euler/support fields | typed failure payload | retire topology producer; domain-name any retained support diagnostics; fix full/reduced misbinding |
+| `RemeshDiagnostics.h` + `project_global_topology_plan_failure_locus()` | serialization/projection | mirror the domain-explicit contract; never project reduced as full |
+| `emit_fragment_euler_diagnostics()` / `emit_region_euler_certificate_diagnostics()` | stderr measurements | retain only as diagnostics with explicit domains; no `certificate` claim for proxy arithmetic |
+| `tests/FieldAlignedCurveNetworkTests.cpp` ordinal 311 | published per-region disc proof | assert 1:1 region↔upstream face-cert binding and field regularity, not proxy χ |
+| ordinal 312 | accepted copy/mutation boundary falsifier | byte/semantic intent preserved; mutated boundary must lose derived orbit binding and remain rejected |
+| ordinal 313 | historical name, active interior-singularity negative | keep the interior-singularity oracle; do not resurrect a region-Euler rejection to satisfy the test name |
+| ordinal 314 | independent disc proof oracle | keep actual-embedded face/orbit checks; published-certificate clause must agree with upstream face authority |
+| ordinal 315 | tampered region certificate negative | tamper the new binding certificate and require `InvalidRegionCertificateBinding`; do not keep an Euler-only tamper merely to preserve old fields |
+| ordinals 356/357/366 and shared `expect_cp4c_plan_disc_proofs()` | produced torus/mechanical proof assertions | assert exact upstream face binding; 366 may advance beyond the retired proxy rejection |
+| ordinal 367 | produced face-walk agreement | preserve; no proxy-Euler dependency may be added |
+| ordinal 368 | prescribed-sphere carried owner | no semantic correction; if it reaches A2b later, the same binding contract applies |
+| ordinal 409 | gating copy/mutation boundary falsifier | preserve current typed rejection semantics and exact derived-provenance behavior |
+| test failure formatter `append_plan_error()` | human/machine diagnostic serialization | use domain-explicit names consistent with product/pipeline projection |
+
+No other production use of `GlobalTopologyRegionDiscCertificate`, its current proxy fields, or
+`regionFullEulerCharacteristic` exists in the exact snapshot. Later stages' unrelated Euler fields are different
+objects and are outside this correction.
+
+### 7. DEFN-R7.7 — gate and tamper contract
+
+The selector file remains **byte-frozen**. R7 changes assertions inside existing identities where required; it does
+not change the identity set.
+
+- **Ordinal 311** becomes the primary static/runtime proof that every published region has exactly one matching
+  upstream certified actual-embedded face, the exact consumed certificate agrees, and field regularity remains true.
+- **Ordinal 315** tampers the new consumed binding certificate (orbit or one of its exact face-certificate fields)
+  and must still fail the checked publication seam with `InvalidRegionCertificateBinding`.
+- **Ordinals 312 and 409** remain the hard falsifiers against sticky construction-time provenance. Their region
+  boundary mutations must not inherit a valid face binding from the copied candidate.
+- **Ordinals 356, 357, 366, 367, 390, 393, 404, 406, 407, 408** remain protected. The region-authority correction
+  may change 366/367 only by removing the proxy topology rejection they currently encounter; no assertion owned by
+  another mechanism is weakened.
+- Accepted prefix **1–365 must remain 365/365** on the later artifact-only TB. Any accepted RED is a stop condition.
+- Certified source-face ownership must remain **300 established / 0 unavailable / 0 conflicting**; the retired
+  `TraceArcDoesNotSeparateItsSides` and `UncutFaceComponentOrbitSeedNotUnique` codes remain absent.
+- Separately owned 368/369/370/374/398 are not reclassified or corrected by R7.
+
+The later TB must publish a **non-vacuous 1:1 binding census**: at least one row and exactly one row per emitted
+region on each creditable produced witness that reaches A2b, naming region, derived orbit, upstream face-cert orbit,
+boundary-arc count, and upstream `proves_disc_topology` result. Zero rows cannot pass this obligation.
+
+### 8. DEFN-R7.8 — successor implementation boundary
+
+The correction is bounded to the authority seam. It does **not** authorize changes to:
+
+- `build_regions()` region construction, region IDs, face-walk generation, rotations or arc semantics;
+- `SurfaceCutGraph` cut selection/cellularity semantics or source-face ownership;
+- fragment ownership, `fragmentCorners`, source-face partitioning, trace geometry or cut-edge selection;
+- selector bytes or identity membership;
+- prescribed sphere 368, saturation 369, empty-network typed error 370, folded-cone 374, or ownership witness 398;
+- any A3+ stage.
+
+A source-support diagnostic may be renamed or moved only to make its observational domain explicit; that does not
+make the diagnostic a new authority.
+
+### 9. DEFN-R7.9 — frozen Code + Build successor
+
+**Exact next turn: `M3-CP4c-3-CB45` — Code + Build, runtime-free, GMP/GMPXX linked.** It is governed by
+`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` and measures **EA0–EA9**.
+
+The successor must implement the binding contract, compile/package without executing Directional runtime, preserve
+selector409 and all unrelated owners, and freeze the following artifact-only `M3-CP4c-3-TB40-EXEC` gate. DEFN-R7
+itself does not compile or execute anything.
+
+### 10. Falsifiable predictions frozen before implementation
+
+1. A canonical region's derived orbit has exactly one A2a′ face certificate, and its boundary-arc count equals the
+   current region boundary length. Any miss, duplicate or mismatch is an authority-binding defect and fails closed.
+2. 312/409 remain rejected after copy/mutation because the current boundary no longer equals a current face-walk
+   orbit; no copied proof value can rescue them.
+3. 315 remains a valid tamper negative after its target moves from proxy Euler to the consumed face binding.
+4. 366/367 no longer stop at `RegionEulerCharacteristicNotOne` solely because the reduced source-support proxy is
+   `-3`. If they remain at the same code after R7 implementation, the old proxy still owns the gate and CB45 is
+   incomplete.
+5. The torus remains valid even though whole-source-face χ is 0, because that projection is not the actual-embedded
+   face certificate. If R7 makes ordinal 356 RED on that measurement, the proxy was not actually retired.
+6. The later binding census is non-empty and 1:1 for every region that reaches A2b. A zero-row verifier result is
+   failure, not proof.
+7. No change to source ownership, cut selection or region construction is necessary. A CB45 diff in those domains
+   falsifies the bounded-correction claim and requires review before runtime.
+
+### 11. Accounting
+
+Definition / Review + Plan only: no runtime, no compile, no package, no selector mutation and no stable repricing.
+**+0 events / +0 recurrences.** Totals remain **46 / 14 / 32**, debt **5**, packages **104**. TB39 remains current
+semantic runtime authority at **402/7**, accepted **365/365**.
+
+**Exact next turn: `M3-CP4c-3-CB45` — Code + Build, runtime-free, GMP/GMPXX linked.**
+
+---
+
+## Part XI-A — DEFN-R7 evidentiary amendment
+
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE. **Amends Part XI; overrides none of its decisions.**
+**Origin:** verification pass over the delegated `M3-CP4c-3-TB39-REV` / `M3-CP4c-3-DEFN-R7` work.
+
+Part XI's decision is **upheld**. Binding A2b's region disc proof to the A2a′ actual-embedded face authority is
+correct, and the structural claims it rests on verify from source:
+
+- both stages call `build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network,
+  cutEdges)` with the same arguments — `GlobalTopologyPlan.cpp:2500–2502` passes `cutGraph.cut_edges()`, and
+  `SurfaceCutGraph.cpp:863` passes the same `cutEdges`;
+- both derive exterior orbits from the same `exterior_boundary_orbits(...)`
+  (`GlobalTopologyPlan.cpp:869`, `SurfaceCutGraph.cpp:866`);
+- `SurfaceCutGraph.cpp:883` pushes one face certificate per **non-exterior** orbit and
+  `GlobalTopologyPlan.cpp:986` drafts one region per **non-exterior** orbit.
+
+**The 1:1 region ↔ face correspondence is real.** What follows corrects what that certificate *proves*, because
+Part XI describes it as per-face evidence and it is not.
+
+### A.1 — `discTopologyEstablished` is a complex-level bit, not a per-face measurement
+
+> **Normative.** `SurfaceCutGraphFaceCertificate::discTopologyEstablished` is **the same value on every
+> non-exterior face**. It is `discEmbeddingEstablished`, computed once at `SurfaceCutGraph.cpp:879` as
+>
+> `graphComponents == sourceComponentCount && exterior.size() == *boundaryLoops && graphEuler == sourceEuler`
+>
+> and stamped identically onto every face at `:883`. **No per-face topology is measured anywhere.**
+
+This does **not** weaken Part XI's decision, and the reason matters: that conjunction is the **standard cellularity
+criterion** for a graph embedded in a surface, and cellularity is exactly the theorem *"every non-exterior face is
+a disc"*. The authority is sound. **It is a complex-level theorem, and it must be named as one.**
+
+> **Therefore: A2b consumes a certified-cellular-complex authority, and a face certificate is that authority
+> restricted to one orbit — not independent evidence about that orbit.** No turn may cite a face certificate as
+> per-face evidence, and no turn may treat two face certificates as two observations.
+
+### A.2 — `boundaryWalkCount == 1` is vacuous and is withdrawn as a check
+
+> **Normative.** `boundaryWalkCount` is the **literal `1U`** at `SurfaceCutGraph.cpp:883`; it is never measured.
+> Part XI §2 item 6's conjunct `boundaryWalkCount == 1` therefore **cannot fail**, and it is **withdrawn as
+> evidence**. It may be retained as a structural assertion, but it must not be counted toward the binding proof.
+
+The literal is *correct* — a face-walk orbit is a single closed walk by construction (Part IX, DEFN-R5.1) — and
+that is precisely why it carries no information. **This is the `LESSONS.md` 155 failure mode appearing inside the
+contract written to prevent it**: a check that passes because it asserts a constant, exactly as DEFN-R6.7's
+verifier passed because it read an empty table. `LESSONS.md` 157.
+
+Of Part XI §2 item 6's three conjuncts, only **`boundaryArcCount == region.boundary.size()`** is a real comparison,
+and it is a consistency check between two derivations of one orbit — not a topology proof.
+
+### A.3 — consequences for the frozen successor
+
+These amend `CB45`'s measures without enlarging its scope.
+
+1. **The R7.7 binding census must publish the complex-level inputs**, not only the per-region bit. A census of N
+   regions each carrying the same `proves_disc_topology` value publishes **one** bit N times and reads as N pieces
+   of evidence. Alongside region, derived orbit, upstream orbit and boundary-arc count, each creditable witness
+   must publish `graphComponents`, `sourceComponentCount`, `exterior.size()`, `boundaryLoops`, `graphEuler` and
+   `sourceEuler` **once per complex**, so the real evidence is visible and falsifiable.
+2. **Ordinal 315's tamper target must be a field that varies.** Tampering `boundaryWalkCount` tampers a constant,
+   and tampering `discTopologyEstablished` tampers a value uniform across every face. The tamper must use
+   **`orbit`** or **`boundaryArcCount`**, or the consumed complex-level authority itself, and the plan's
+   *"one of its exact face-certificate fields"* is narrowed accordingly.
+3. **`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md:37`** carries Part XI §2 item 6 verbatim and inherits this
+   correction; its `boundaryWalkCount == 1` clause is a structural assertion, not part of the proof.
+4. **The non-vacuity rule generalizes.** R7.7 already forbids a zero-row census. It must equally forbid a census
+   whose every row carries the same value for the field under test: **a census must be able to disagree with
+   itself, or it is not a measurement.**
+
+### A.4 — what this amendment does not change
+
+Part XI governs. **R7.1–R7.9, the consumer inventory, the tamper contract, the accepted-prefix stop condition and
+the CB45 boundary are unchanged.** Runtime authority remains **TB39** at 402 PASS / 7 RED, accepted **365/365**,
+package **104**. Accounting is unchanged at **46 events / 14 categories / 32 recurrences**, debt **5** — this is a
+static amendment and creates no event. **Exact next turn remains `M3-CP4c-3-CB45`, Code + Build, runtime-free,
+under EA0–EA9 as amended by A.3.**
+
+---
+
+## Part XII — M3-CP4c-3 DEFN-R8
+
+### A census may speak only about its own domain
+
+**Turn:** `M3-CP4c-3-DEFN-R8` — Definition turn (absorbs REVIEW + PLAN).
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+**Runtime authority entering and leaving this turn:** promoted `M3-CP4c-3-TB42`, package107, selector **409**,
+**398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`.
+Ownership remains **300 / 0 / 0**. Stable accounting remains **47 events / 14 categories / 33 recurrences**,
+produced-witness debt **5**, semantic package count **107**.
+
+This part discharges ED7.1–ED7.7 from the promoted TB42 review. It does **not** change Part XI or Part XI-A.
+It decides which object the uncut-component census describes, what evidence a later `RegionCertification` failure
+must carry instead, and how the four protected identities remain falsifiable without demanding evidence about a
+disjoint object.
+
+### 1. DEFN-R8.1 — the uncut-component census domain is the unlabelled-face partition
+
+> **Normative.** The `GlobalTopologyPlan` uncut-component frontier census describes exactly the partition
+> `P_U` constructed from the current **unlabelled-face set**
+>
+> `U = { f | fragmentOrbits[f] is absent or empty }`
+>
+> using the existing barrier set
+>
+> `B = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`.
+>
+> `P_U` is the connected-component partition of `U` across source edges not in `B`. The owner-consistency census
+> contains one row per component of that same partition. No region, labelled trace-cut face, certified face, or
+> `RegionCertification` failure is implicitly a member of `P_U` merely because it occurs later in the same plan.
+
+This is the construction already present at `GlobalTopologyPlan.cpp:1341–1353`; this turn changes no byte of that
+construction. TB42 measured the mechanical witness at **226** unlabelled faces, **9** partition components and
+**9** owner-consistency rows. The failing region contains **10** source faces, **0** of which are in `P_U`.
+Therefore the census exists and is healthy while being wholly unrelated to the failing region.
+
+For any assertion that wants to use `P_U` as failure-local evidence, the **subject** is the object named by the
+failure contract, not whichever locator happens to resolve first:
+
+- an uncut-component failure owns that component's face set;
+- a source-face failure owns that source face;
+- a region failure owns the current region's complete `region.sourceFaces` set.
+
+The relation of that subject `S` to `P_U` is typed as:
+
+- **Inside** — `S` is non-empty and every face in `S` belongs to `U`;
+- **Outside** — `S` is non-empty and no face in `S` belongs to `U`;
+- **Partial** — some but not all faces in `S` belong to `U`;
+- **Unresolved** — the subject itself cannot be identified from current authoritative data.
+
+Only **Inside** licenses a claim that the uncut-component census describes the complete failure object. `Partial`
+may be reported as cross-domain evidence but may not be collapsed to one component. `Outside` expressly forbids a
+failure-local uncut-component assertion. `Unresolved` fails closed if a test or diagnostic requires a domain
+classification.
+
+### 2. DEFN-R8.2 — domain applicability is a predicate, never a stage name
+
+> **Normative.** No census-owned invariant may be enabled or disabled by comparing
+> `regionFrontierFailureStage` to a literal such as `"UncutComponent"`. Applicability is determined from the
+> subject-to-domain relation in R8.1.
+
+A stage name may remain diagnostic chronology. It is **not** proof of set membership and is not a test oracle.
+The current `if (regionFrontierFailureStage != "UncutComponent") ...` shape is therefore retired as a domain
+decision. This is the general rule: **a diagnostic or test that quantifies over a set must establish that its
+subject belongs to that set before drawing a failure-local conclusion from the census**.
+
+The existing CB47 measurements — source-face membership, region face count and region faces-in-partition count —
+are valid domain-adjudication diagnostics and may be retained. They are not positive frontier evidence when the
+relation is `Outside`.
+
+### 3. DEFN-R8.3 — `RegionCertification` owns region/fragment evidence, not the uncut census
+
+> **Normative.** When a failure is raised while certifying a current `GlobalTopologyRegion`, its failure-local
+> evidence is the **current region's derived actual-embedded face-walk orbit and the fragment-owner relation for
+> the failing source face**. It is not the uncut-component partition.
+
+Part XI remains the prerequisite authority: `region_orbit(region, walk)` derives the current region's owning
+face-walk orbit from exact boundary equality. R8 does not create a second topology certificate and does not alter
+the Part XI binding.
+
+For `RegionSourceFaceOwningFragmentMissing`, the diagnostic contract is:
+
+1. `region` — the current region ID;
+2. `sourceFace` — the source face whose fragment-owner lookup failed;
+3. `regionOwningFragmentOrbit` — the **expected** owner orbit already published at the failing site;
+4. the complete, deterministic set of fragment-owner orbit IDs actually published for that `sourceFace`;
+5. the count of that set and an explicit `regionOwningFragmentOrbitPresent` membership result;
+6. the existing face-local fragment-count controls (`localFragmentCount`, `ownerCount`, `expectedFragmentCount`,
+   `ownerDeficit`) may accompany the relation but do not substitute for item 4.
+
+The orbit set is the missing datum. TB41 already proved why cardinality is insufficient: the failing face reports
+three local fragments, three owners, expected three and deficit zero, yet the expected region orbit is missing.
+Therefore a count-only diagnostic cannot adjudicate this failure.
+
+The owner-orbit set is **diagnostic only** in CB48. Publishing it must not add an owner, choose a winner, mutate
+`fragmentCorners`, change `fragmentOrbits`, alter region construction, or move 366/367 past their current
+`RegionSourceFaceOwningFragmentMissing` gate.
+
+### 4. DEFN-R8.4 — the four protected identities are census-owned, not terminal-failure-owned
+
+The four selector identities remain byte-frozen and gating. Their production fixture may end outside `P_U`; that
+must not make the census oracle disappear. Each identity is restated around the producer that owns the datum.
+
+#### Ordinal 390 — boundary-orbit attribution
+
+`UncutFaceComponentBoundaryOrbitAttributionPublishesThroughMechanicalProductionFailure` must:
+
+- validate a real published `P_U` component's boundary/seed attribution against the matching uncut-component
+  census, including completeness/truncation and owner-count relations it already owns;
+- classify the terminal failure subject with the R8.1 predicate;
+- when that subject is `Outside`, assert the `Outside` receipt and the R8.3 region/fragment evidence instead of
+  demanding a non-empty failure-local frontier component.
+
+The identity may not pass merely because the terminal stage is later.
+
+#### Ordinal 393 — projection/owner-map coverage
+
+`MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual` must validate the uncut-component
+owner/projection publication **from a component in `P_U`**, not from a component inferred from the terminal failure.
+Its coverage invariant remains distinct-source-face coverage rather than raw row arity. If the terminal region is
+`Outside`, that is a separate domain receipt and does not waive the producer-owned census check.
+
+#### Ordinal 406 — partition identity and correspondence
+
+`UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent` must publish and validate
+both partition identities and the explicit R8.1 relation. Equality is never required across different domains.
+For an `Outside` region the correct result is **not-applicable as a failing-component correspondence**, accompanied
+by the explicit `Outside` relation; it is not permission to invent a matching component. For an `Inside` subject,
+the existing exact/superset correspondence rules remain live and must be checked.
+
+#### Ordinal 407 — interior-arc census across both partitions
+
+`InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions` remains a cross-partition publication
+identity. It must select an actual uncut-component census subject from `P_U`, publish each crossed source face and
+its component in each named partition where defined, and preserve typed reasons for absent membership. It must not
+use an `Outside` terminal region as though it were a plan uncut component.
+
+**Non-vacuity requirement for all four.** CB48 must factor each identity's owned invariant into a deterministic
+predicate/check that is applied to real production census data **and** to a deliberately corrupted copy of that
+same-domain data. The real data must satisfy it; the corrupted copy must not. This negative is test-local and does
+not create a selector identity. If any owned check cannot be falsified this way, CB48 stops before compile.
+
+### 5. DEFN-R8.5 — the two-partitions question is adjudicated without unification
+
+`M3-CP4c3-TB26-REV-CAND-04` is **ADJUDICATED BY DEFINITION**: the plan's `EmptyFragmentOrbits`/unlabelled-face
+partition and the certifier's `NotTraceCut` partition are lawfully distinct domains. Their different face sets,
+component counts and digests are not by themselves a product defect. The defect was **cross-domain substitution**:
+a census over one partition was cited as failure-local evidence about an object in the other domain.
+
+Therefore:
+
+- no partition is widened or unified by CB48;
+- ordinal 407 may compare the two only after naming both domains and preserving absent membership as data;
+- a failure-local assertion may consume only a census whose domain predicate admits the failure object.
+
+`M3-CP4c3-DEFN-R3-CAND-01` is **SEPARABLE and remains architectural / non-gating**. It concerns two independent
+constructions of the same actual embedded topology and the danger of foreign orbit ordinals. Part XI plus CB46's
+content anchor already prevents that foreign-ordinal comparison from owning this gate. It is not the reason `P_U`
+and the certifier partition have different membership rules. **CB48 must not unify the two embedded-graph builders.**
+That candidate remains open for a later architectural turn unless it becomes independently gating again.
+
+### 6. DEFN-R8.6 — unchanged surface
+
+The following are frozen:
+
+- accepted **1–365 = 365/365**;
+- ordinals **311/312/314/315/356/357/404/408/409** remain PASS contracts;
+- selector **409** bytes and all selector membership are unchanged;
+- Part XI and XI-A, `region_orbit`, orbit-keyed lookup, content anchor and actual-embedded face binding;
+- source-face ownership, region construction, `fragmentCorners`, `fragmentOrbits`, cut selection, the `P_U` domain
+  and its barrier set, and A2a′ cellularity semantics;
+- 366/367 remain owned by `M3-CP4c3-TB40-REV-CAND-02`; R8.3 adds evidence only and does not correct them;
+- 368/369/370/374/398 remain under their existing owners.
+
+No accepted identity may be edited. No selector byte may change.
+
+### 7. DEFN-R8.7 — frozen Code + Build successor: `M3-CP4c-3-CB48`
+
+CB48 is **Code + Build only**, runtime-free, GMP/GMPXX linked. It implements only R8.1–R8.6 under the following
+measures:
+
+- **EE0 — domain predicate:** add one typed subject/domain relation (`Inside`, `Outside`, `Partial`, `Unresolved`)
+  derived from authoritative face membership; do not branch on `regionFrontierFailureStage`.
+- **EE1 — region fragment relation:** at `RegionSourceFaceOwningFragmentMissing`, publish the complete actual owner
+  orbit set for `sourceFace`, its count, and whether `regionOwningFragmentOrbit` is present. Diagnostic only.
+- **EE2 — projection/rendering:** carry EE0/EE1 through `RemeshPipeline` and the existing failure-locus renderer
+  without changing unrelated error bytes.
+- **EE3 — producer-owned census helpers:** replace `expect_later_region_frontier_evidence` as the four identities'
+  gate with helpers that validate the census producer directly and separately validate the terminal subject's
+  domain receipt.
+- **EE4 — four protected identities:** restate only 390/393/406/407 as R8.4 specifies. For each, execute a
+  deliberately corrupted same-domain copy and prove its owned predicate rejects it.
+- **EE5 — branch receipts:** each of 390/393/406/407 prints one deterministic receipt naming the branch it
+  actually exercised (`UncutCensus` plus terminal-domain relation) and why; "PASS" must remain distinguishable
+  from "oracle did not run".
+- **EE6 — frozen surface audit:** selector409, accepted test blocks, Part XI binding/content anchor, partition
+  construction, region construction, ownership, `fragmentCorners`, cut selection and 366/367 control flow are
+  byte/semantic unchanged as applicable.
+- **EE7 — compile gate:** compile the changed owner target first, then the standard immutable package through the
+  durable reusable workflow. Execute no Directional binary.
+- **EE8 — successor plan:** author one artifact-only `M3-CP4c-3-TB43-EXEC` plan bound to the exact compile-green
+  CB48 package; no rebuild, no test/benchmark definition edits in TB43.
+
+Expected implementation surface is limited to the existing frontier/failure diagnostic contracts and the four
+test bodies/helpers. A need to widen `unlabeledFaces`, change barriers, mutate owners, or correct the missing
+fragment relation violates this definition and returns to review rather than expanding CB48.
+
+### 8. Falsifiers and TB43 acceptance gate
+
+The following falsify CB48 immediately:
+
+1. accepted prefix is not **365/365**;
+2. any of **311/312/314/315/356/357/404/408/409** loses its current contract;
+3. selector409 bytes change;
+4. any protected identity passes solely because a stage/branch skips its census-owned predicate;
+5. any deliberately corrupted same-domain census still satisfies the corresponding owned predicate;
+6. EE1 reports only counts and omits the exact owner-orbit membership needed to distinguish the observed
+   three-of-three-but-wrong-owner case;
+7. 366/367 advance because CB48 mutates ownership/fragment behavior rather than only publishing evidence;
+8. any partition or embedded-graph construction is unified or widened to make the tests pass.
+
+`M3-CP4c-3-TB43-EXEC` executes selector409 artifact-only from the exact CB48 package. If CB48 is correct and no
+carried owner changes, the expected color vector is **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, with
+390/393/406/407 recovered and the carried RED set `[366,367,368,369,370,374,398]`. The expectation is a falsifier,
+not permission to synthesize success; TB43 records the actual ledger and stops for review on any discrepancy.
+
+### 9. Accounting and exact next turn
+
+Definition / Review + Plan only: no runtime, no compile, no package, no selector mutation and no stable repricing.
+**+0 events / +0 recurrences.** Totals remain **47 / 14 / 33**, debt **5**, packages **107**. TB42 remains current
+semantic runtime authority at **398 PASS / 11 RED**, accepted **365/365**.
+
+**Exact next turn: `M3-CP4c-3-CB48` — Code + Build, runtime-free, under EE0–EE8.**

@@ -1,3 +1,107 @@
+## 2026-09-07 — `M3-CP4c-3-TB38-EXEC`: package103 artifact-only runtime 395/14; accepted/protected regressions and missing R6.7 emission require independent review
+
+TB38-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB43 package103,
+source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe`. Run/job `34169783183 / 101887783834` executed all 409 selector
+identities exactly once with zero selection mismatch/timeout and no build, repair, mutation or benchmark. Raw result
+is **395 PASS / 14 RED**, accepted **362/365**, RED `[356,357,362,366,367,368,369,370,374,390,393,398,406,407]`.
+Compared with TB37, accepted 356/357/362 and protected 390/393/406/407 newly RED; 312/404/408/409 remain PASS.
+366 moves to `RegionInteriorDisconnected`; 367 publishes a different torus Euler failure with `chiFull=0`;
+368/369/370/374/398 remain byte-identical. No accepted-region `record=euler_certificate` line was emitted, so the
+frozen R6.7 equivalence proof is undischarged. Result/log artifacts are `10035390901 / 10035391184`. Stable totals
+remain **45 / 14 / 31**, debt **5**, packages **103** pending independent `M3-CP4c-3-TB38-REV`; EXEC does not
+assign corrective ownership or promote TB38 semantic authority.
+
+## 2026-09-07 — `M3-CP4c-3-DEFN-R5`: Part IX freezes derived boundary provenance; Euler measurement only
+
+DEFN-R5 is **COMPLETE / DEFINITION-ONLY / NO RUNTIME / NO COMPILE / NON-STABLE**. Part IX of
+`M3_CP4c_Frozen_Definitions.md` is now operative. It records the source-proved face-walk guarantee and makes
+provenance a derived exact relation: a boundary is `FaceWalkOrbit(orbit)` only when exactly one current
+`walk.orbits[orbit]` equals the current ordered `region.boundary`; otherwise it is `Unguaranteed`. A mutable copied
+region flag is expressly not authority. `ClosedBeforeEnd` rejects only `Unguaranteed`; on a face-walk orbit it is
+non-rejecting observation while `ArcChainBroken` and `WalkNotClosed` remain universal. Optional provenance is
+resolved before the boundary check, but missing-orbit rejection remains after it so ordinals 312/409 keep their
+unchanged synthetic negative contracts.
+
+The separate `RegionEulerCharacteristicNotOne` frontier is **not corrected**. Current source reduces χ to
+`V_int - E_int + F` by cancelling boundary terms; Part IX freezes exact arc/node multiplicity and provenance
+measurement to decide whether that reduction is valid for repeated-node face-walk boundaries.
+`M3-CP4c3-TB35-REV-CAND-01` is **DEFINED / CORRECTION FROZEN**; `M3-CP4c3-TB34-REV-CAND-03` remains split with
+Euler open. Runtime authority remains TB35 at **402 PASS / 7 RED**, accepted **365/365**, selector409; stable
+accounting **45 / 14 / 31**, debt 5, packages100. Exact next is runtime-free `M3-CP4c-3-CB41` under CX0–CX8,
+followed by immutable artifact-only TB36-EXEC and independent TB36-REV.
+
+## 2026-09-06 — `M3-CP4c-3-TB31-EXEC`: artifact-only selector408 mechanically 397/11; four newly RED; review required
+
+TB31-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB36 artifact
+`9982174864` / source `90bf8430f54c8b81fb90a6bda820cf8edebce6e9` / selector 408. Authoritative R2 run/job
+`34011402843 / 101427791582` executed all 408 identities once in fresh processes/execution views, every row selected
+one test, zero timeouts, accepted **365/365**, and raw aggregate **397 PASS / 11 RED** with
+`[366,367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts are `9982618043 / 9982618174`; package,
+source and execution-view byte+mode censuses are unchanged, with no configure/compile/relink/repair/discovery/
+benchmark/mutation.
+
+The old 366/367 191-face Multiple `[0,1,3]` fingerprint no longer appears; both terminate at
+`TraceArcDoesNotSeparateItsSides`, with retained fragment-owner component 0 at 189 faces / Unique / orbit `[0]`.
+No `TraceCutFaceFragmentCountMismatch` occurs. Raw owner publication remains 300/0/0. Newly-RED 390/393/406/407
+expected `UncutFaceComponentOrbitSeedNotUnique` but received the new detail. EXEC does not classify these changes;
+semantic authority remains TB30 at **401/7** until evidence-only **`M3-CP4c-3-TB31-REV`** updates the regression
+tracker and ORIENTATION, performs mandatory document consolidation, and freezes the justified successor.
+
+## 2026-09-05 — `M3-CP4c-3-TB30-EXEC`: selector408 artifact-only runtime mechanically 401/7; review required
+
+TB30-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB35 artifact
+`9980764888` / source `ab86747bdfdb94c7c383bf5d2893ced4207eb555` / selector 408. Run/job
+`34008104497 / 101418934144` executed all 408 identities one per fresh process/workdir with every row `selected=1`,
+no timeout, accepted rows 1–365 mechanically 365/365 PASS, and raw aggregate **401 PASS / 7 RED** with
+`[366,367,368,369,370,374,398]`. Corrected witnesses 390/404 mechanically PASS; credibility controls 366/367/398
+remain RED. Result/log artifacts are `9981641004` (`40f58d136073e08392701eafd189a4f6b45e1907a4381393ab3d4673cc6b2913`)
+/ `9981641260` (`dde276e2b448f9ba58b36dbe554bed7b7f4fa6ab2bff90df5ac15ee5af8cbd6d`). Package/source/execution-view
+byte+mode censuses are identical pre/post; no configure/compile/relink/repair/discovery/benchmark/mutation occurred.
+
+This is raw EXEC evidence only. Semantic authority remains TB29 at 399 PASS / 9 RED until **`M3-CP4c-3-TB30-REV`**
+consumes the immutable artifacts, adjudicates the two changed witnesses and credibility controls, classifies every
+semantic RED/change in the regression tracker, and reads the retained census. No corrective CB is authorized before
+that review.
+
+## 2026-09-05 — `M3-CP4c-3-CB35`: test-authority witnesses restored; CO7 census transcribed; package 95 compile-green
+
+CB35 is **COMPLETE / BUILD + PACKAGE GREEN / TEST-AUTHORITY ONLY / RUNTIME-FREE**. It changes only
+`tests/FieldAlignedCurveNetworkTests.cpp`: ordinal 404 removes the out-of-contract assertion that every owner must
+remain non-`Established`; ordinal 390 stops matching the plan and certifier partitions by numeric component index
+and instead uses face-set digest / the published subset relation, comparing cross-partition counts only on exact
+semantic correspondence. Ordinals, names, gating membership, selector 408 bytes, accepted identities 1–365,
+ordinal 398, 366 and 367 are unchanged; there is **no product change**.
+
+CO7 transcribed the existing immutable TB29 log (`9980019636`) rather than measuring anything new: failing plan
+component `0 / EmptyFragmentOrbits / 191 faces / digest 17919102493633069558 / seeds [0,1,3]`; comparison census
+`0 / NotTraceCut / 212 faces / digest 835099723348023536`, with neither exact match nor subset relation; only
+equal-orbit arcs 20 and 24 remain interior; certified owner publication is **300 established / 0 unavailable /
+0 conflicting**. The CB35 report retains the exact first failing assertion text for every TB29 RED ordinal.
+
+Semantic test-authority commit is `7bcf578984a1c650df58abbccb73ed8e1ed0a395`; the semantically equivalent clean
+built source is `ab86747bdfdb94c7c383bf5d2893ced4207eb555`. Authoritative GMP/GMPXX compile run `34005311571`
+succeeded with `runtimeExecution=false`, clean source, root `SHA256SUMS` **28/28**, and all eight required targets,
+producing immutable package **95** artifact `9980764888` (`m3-cp4c3-cb35-result-34005311571`, provider ZIP SHA-256
+`ebae13c53b7430a256865465cff640b460b45299cd5c17db0ce3582d38cb58e0`) and packaged source archive SHA-256
+`64801a38ccbe9de282dbec261cad6c2b6575403ed38e93b514c893c22f03684a`. Stable accounting remains
+**44 / 14 / 30**, debt **5**. Current semantic runtime authority remains TB29 at **399 PASS / 9 RED**, accepted
+365/365. Exact next: artifact-only **`M3-CP4c-3-TB30-EXEC`** on package `9980764888` / selector 408, requiring
+390/404 PASS and credibility controls 366/367/398 RED, then stopping at evidence-only `TB30-REV`.
+
+## 2026-09-05 — `M3-CP4c-3-TB28`: artifact-only selector407 green; CL6/CL7 partition mismatch measured; review required
+
+TB28 R2 is **COMPLETE / VALID ARTIFACT-ONLY RUNTIME / 407-of-407 SELECTOR GREEN / SEMANTICALLY UNACCEPTED PENDING REVIEW** on immutable CB32 artifact `9975737868` / source `098ac7d93ea203222dd0ac50cdb68667744f0fd4` / selector407 (`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`). Run `33990951740`, execution/verification jobs `101373825038 / 101374345712`, produced result/log artifacts `9976662518` (`970573beb31bc43bb2cbcd4dee957edfb2f23c0c543edfe9997c5dcfc487053d`) / `9976662690` (`4272bd5fc1750d19c9fceb94daf3be8367b05d6fa9e13828fc6a97c1c6fe44d`). All 407 identities passed; all mutation flags remained false and package/binary/selector postflight was unchanged. R1 `33990315861` is pre-runtime orchestration-invalid only and carries no semantic evidence.
+
+CL6/CL7 now measures candidate-set subset=true/equality=false with 101/101 untruncated failing-plan interior-arc rows. The decisive row is `arc=(0,2):sourceFace=0:certifierComponent=0:planComponent=1:notTraceCutReason=TerminalSlit`. This closes the missing evidence surface but does not authorize a product correction. Stable accounting remains **44 / 14 / 30**, debt **5**. Exact next: `M3-CP4c-3-TB28-INDEPENDENT-REVIEW`; CL8 forbids another standalone ownership diagnostic and requires that review to freeze the correction.
+
+## 2026-09-03 — `M3-CP4c-3-TB22`: selector 393 closes at 387/6; projection residual zero; ordinal 391 dependency cleared
+
+TB22 is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / ARTIFACT IMMUTABLE** on source `d69729a69a40b020968ed6ef1fbc1bc788284518`, immutable package artifact `9919225745` (`sha256:7955c243d7968e51e62f0f8d4b0cc96da313a2356ee8bf2eeba7c995b856e87d`), and selector 393 (`ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d`). Run/job `33826248118 / 100879465830` completed all 393 identities one-per-fresh-process at **387 PASS / 6 RED**, accepted **365/365**, reds `366,367,368,369,370,374`; result/log artifacts are `9920122224 / 9920122598`, ledger SHA-256 `4998ca25b1477c2a32299bc3eb3d552e3ea9b0e2ccbf0eb4894393964f29dbbe`, and package pre/post byte+mode census is identical at `7e0c552c79281f97b7553406acd44383ff867197f36da54cd306ac9258fa2b74`.
+
+Ordinal 366 remains `UncutFaceComponentOrbitSeedNotUnique`, component 0, 191 faces, exact seed orbits `[0,1,3]`, while the actual graph remains certified cellular (`V=22,E=26,F=6,componentCount=1,sourceChi=2,residual=0`). CB24's new evidence measures `projectionFaithfulnessResidual=0`, zero witnesses, untruncated. The two minority rows are source edge `10-79` → seed 3 by `edgeOrbitEvidence`, certificate faces `3/3`, and `29-35` → seed 1 by `edgeOrbitEvidence`, certificate faces `1/1`. This narrows `M3-CP4c3-TB21-CAND-01` toward review of the seed/ownership rule without authorizing a correction. Ordinal 391 PASSes with its prescribed-sphere half explicitly skipped because ordinal 368 remains open, closing `M3-CP4c3-TB21-CAND-02` as runtime-proved/non-stable; 392/393 and 371/372 PASS. Stable accounting remains **44 / 14 / 30**, debt **5**, packages **87**. No configure/compile/relink/repair/mutation/benchmark occurred. Exact next: independent static `M3-CP4c-3-TB22-REV` under BZ0–BZ8.
+
+An early cleanup-manifest trigger failed closed before removal because temporary workflows were still present; repository-removal and PR-comment deletion steps were skipped. It did not alter semantic/runtime evidence. Final cleanup follows workflow-first retirement after durable TB22 closeout.
+
 ## 2026-09-03 — `M3-CP4c-3-CB23`: Euler cellularity evidence and 371/372 test decoupling build green
 
 CB23 is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY PRODUCT EVIDENCE + TEST-ONLY DECOUPLING / RUNTIME-FREE** at semantic source `fa5646106ccaa23770b84a935c6d1d6007928640`. Production failures now retain the embedded graph's `V/E/F`, connected-component count, source `χ(S)`, `V−E+F−χ` residual, and bounded per-orbit boundary-edge attribution; the evidence projects through the mechanical failure and is carried to torus/prescribed-sphere paths. Existing ordinals 371/372 switch only to an additive atlas-scoped fixture accessor; their assertions, ordinals and selector membership are unchanged. New selector **391** has 391 identities, SHA-256 `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`, extending frozen 388-identity selector 385 and accepted 365 exactly. Authoritative GMP/GMPXX compile/package run `33815475590`, jobs `100846561708 / 100847694307`, is GREEN; immutable package artifact `9916511617` has digest `sha256:8378a108811740cff5fd1a0fc9db66f9e3334d7048ea9e7c7d6e8e1cbd852050`, log `9916511915`, `manifest_self_verification=pass`, clean source, `runtimeExecution=false`. No product semantic guard, cut/barrier partition, face walk, rotation system, CB21 comparison or `proves_cellularity()` behavior changed. Accepted runtime authority stays **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic packages **86**. Exact next: artifact-only `M3-CP4c-3-TB21` on package `9916511617` / selector 391.

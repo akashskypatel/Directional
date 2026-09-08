@@ -2,13 +2,19 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB21-REV`: CP4c-2 CLOSED / ACCEPTED at selector 365, CP4c-3 OPEN on selector 391, accepted authority **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **86**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**.
+As of `M3-CP4c-3-CB48`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN. **TB42 remains promoted runtime
+authority** — selector409, **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, package107, ownership 300/0/0.
+**Part XII is current definition authority**. CB48 compiled its bounded domain-owned evidence correction as
+package108 artifact `10076272909` on source `531b517fb129425f113b5f811215f1d2b1939ee2`, with no Directional runtime.
+Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 108. Exact next is artifact-only
+**`M3-CP4c-3-TB43-EXEC`**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
 - the CP4c-2 and CP4c-3 frozen `DEFN*` contracts and all frozen `Required_Green_Selector_*` lineage files;
 - `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`, which closes CP4c-2 and supplies live CP4c-3 carry-forward authority;
-- `Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB21_Independent_Review_Record.md`, which retain the current runtime boundary and the frozen CB24 scope; `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` remains CB19 rationale lineage;
+- `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`, which retain the current runtime boundary and the frozen CB25 scope; `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` remains CB19 rationale lineage;
 - historical review/plan records still referenced by `DESIGN.md`, `LESSONS.md`, `ROADMAP.md`, `Regression_Root_Cause_Tracker.md`, or by a retained frozen definition/review authority. Their transitive dependency chain remains exact-byte authority and was deliberately excluded from this retirement.
 
 All other superseded CP4c-3 per-turn files that had no live current/future dependency were folded into §§4/6 below and retired from the working tree. Git history remains the exact-byte recovery source for every retired file.
@@ -44,7 +50,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB17/package87 is current runtime authority at 374 PASS / 8 RED, accepted 365/365. First red 366 is `TraceCutFaceFragmentCountMismatch` at `(0,1,102)`. Exact next is independent `M3-CP4c-3-TB17-REV`.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB42/package107 remains runtime authority at 398 PASS / 11 RED, accepted 365/365. CB48/package108 is compile-green under Part XII; exact next is artifact-only TB43-EXEC.** |
 
 ### 2.1 CP4c-0
 
@@ -638,6 +644,17 @@ measures AX0–AX9 in `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
 - A test-local reconstruction of production authority is not equivalent to consuming the production authority.
 - When a representation changes from one arc per source edge to multiple sub-arcs, every consumer must be re-derived by intent; fixing the producer alone is insufficient.
 
+### Consolidated on 2026-09-08 at `M3-CP4c-3-DEFN-R8`
+
+The completed `Architecture_M3_CP4c3_TB42_Independent_Review_Record.md` (**212 lines**) was folded after its durable
+conclusions were promoted into Part XII, Current/Forward, ORIENTATION, TODO, tracker, handoff and changelog.
+Historical content retained here: TB42 was mechanically valid and promoted; its EC7 row proved a healthy 226-face /
+9-component uncut census wholly disjoint from the 10-face terminal region (0 overlap), with no locator and a benign
+9-row owner guard. The review therefore classified the defect as a **domain mismatch**, not emptiness/lookup/guard
+failure, and required a static definition turn rather than more measurement. Part XII now resolves that requirement
+and freezes CB48. Fold accounting advances from **134 documents / 25,676 lines** to **135 documents / 25,888
+lines**. Git history remains exact-byte recovery authority for the retired review record.
+
 ## 6. Historical retirement
 
 All files below are historical-only after consolidation. Their exact bytes remain recoverable from Git history; current/future authority does not depend on them except where selector lineage is explicitly retained in §1.
@@ -893,6 +910,554 @@ stale-evidence cleanup had already retired without an index entry. **Running tot
 *A Code + Build or Test + Benchmark turn's stale-evidence cleanup does not write this index; the next REVIEW turn
 indexes anything it retired, so a filename retired between reviews still resolves here.*
 
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB38-REV` — nothing folded, and why
+
+Mandatory REVIEW consolidation. **No document was folded, and that is the correct outcome**, because the usual
+trigger — a new runtime authority superseding the old — did not occur:
+
+- **`M3-CP4c-3-TB38` was not promoted.** It broke the accepted prefix, so
+  `Architecture_M3_CP4c3_TB37_EXEC_Report.md` **remains the current valid semantic runtime authority** and
+  `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` is retained with it.
+- `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` is the adjudication **of the still-current
+  authority**, and its CZ0–CZ6 derivation remains live even though the Part X clause it froze is withdrawn. Folding
+  the review of the current authority while keeping that authority would leave the ledger incoherent.
+- `Architecture_M3_CP4c3_CB42_Code_Build_Report.md` is the build that produced the current package 102.
+- `Architecture_M3_CP4c3_CB43_Code_Build_Report.md` is **retained deliberately**: it is the provenance for the
+  regression, and it records that CB43 implemented Part X faithfully. Discarding it would leave the impression
+  that the implementation was at fault. `Architecture_M3_CP4c3_TB38_EXEC_Report.md` and its plan are the evidence
+  CB44 must work from.
+
+**Running total unchanged: 113 documents, 22,254 lines** (the last folding turn was `M3-CP4c-3-TB37-REV`, which
+folded 4 documents / 730 lines).
+
+**Definition-authority note.** **`DEFN-R6.4` is withdrawn** — the whole-face criterion `χ = V_total − E_total + F
+= 1` is refuted on the torus fixture and cost accepted ordinals 356/357/362. **`DEFN-R6.3` — the counted complex —
+is the live question**, exactly as Part X §9's own falsifier predicted. R6.1, R6.2, R6.5, R6.6 and R6.7 stand,
+with R6.7 amended in practice by `LESSONS.md` 155: a proof obligation must carry a **non-emptiness condition**.
+
+### Consolidated on 2026-09-07 at `M3-CP4c-3-DEFN-R6` — nothing folded, and why
+
+Mandatory REVIEW consolidation performed (`DEFN` absorbs REVIEW + PLAN). **No document was folded**, and that is
+the correct outcome rather than an omission:
+
+- `M3-CP4c-3-DEFN-R6` was **authored in place** as **Part X** of `M3_CP4c_Frozen_Definitions.md`, per the standing
+  practice since Part VII, so it created no per-turn document to retire.
+- `Architecture_M3_CP4c3_TB37_EXEC_Report.md` remains the **current valid semantic runtime authority** — DEFN-R6
+  ran no runtime and did not displace it — and
+  `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` is the contract that produced it.
+- `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` is the review DEFN-R6 consumes and **extends** at its
+  CZ6 — Part X adds the second premise site the review did not have — so it is retained for its provenance.
+- `Architecture_M3_CP4c3_CB42_Code_Build_Report.md` is the build that produced the current package and carries the
+  grep proving no accepted identity asserts `RegionEulerCharacteristicNotOne`.
+
+Consolidation is a preservation procedure, not a reduction target. **Running total unchanged: 113 documents,
+22,254 lines** (the last folding turn was `M3-CP4c-3-TB37-REV`, which folded 4 documents / 730 lines).
+
+**Definition-authority note.** The operative CP4c-3 definitions are now **Part VI together with Parts VII, VIII,
+IX and X**; Part IX-A amends Part IX without overriding it, and **Part X supersedes Part IX §5 (DEFN-R5.5) only**,
+replacing its measurement-only disposition with the decided Euler criterion. Part X also **withdraws Part IX-A
+§A.2's implication that the cancellation premise itself fails** — the premise is correct about the boundary, and
+the defect is the misclassification of interior barrier edges.
+
+### Consolidated on 2026-09-07 at `M3-CP4c-3-TB37-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB37_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in CZ0–CZ6 of the
+TB37 review record:** the promotion evidence, the artifact proof that CB42 changed no behaviour, the seven
+independent checks on `D = 48`, the decomposition `(20 − 20) + (16 − 12)` that locates the defect in interior
+barrier edges, and the whole-face rounding caveat.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` | 245 | superseded review authority - CY0-CY6. Promoted TB36, proved Part IX's provenance relation in both directions, showed the CX5 census was taken in the wrong domain, and **derived the identity chi_true = X + B_int - 47** that this turn resolved. Its two pre-measurement predictions both landed |
+| `Architecture_M3_CP4c3_TB36_EXEC_Report.md` | 185 | superseded runtime authority - TB36, 402 PASS / 7 RED on selector 409, accepted 365/365, package101 |
+| `Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md` | 170 | consumed contract |
+| `Architecture_M3_CP4c3_CB41_Code_Build_Report.md` | 130 | consumed build report - CX0-CX8. Implemented the derived provenance relation and the first (network-domain) Euler census; superseded as package authority by CB42 |
+
+**Folded here:** 4 documents, 730 lines. **Running total: 113 documents, 22,254 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB37_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 402 PASS / 7 RED, accepted 365/365, package102),
+`Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` (this review and the frozen DEFN-R6 scope),
+`Architecture_M3_CP4c3_CB42_Code_Build_Report.md` (**the build that produced the current package**, and the grep
+proving no accepted identity asserts `RegionEulerCharacteristicNotOne`), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md` (**Part IX operative, amended by Part IX-A; Part X appends next**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
+
+### Consolidated on 2026-09-07 at `M3-CP4c-3-TB36-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB36_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in CY0–CY6 of the
+TB36 review record:** the promotion evidence, the two-directional runtime proof of Part IX's provenance relation,
+the domain mismatch between the CX5 census and the χ computation, the measured boundary shape, and the derivation
+of **χ_true = X + B_int − 47**.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` | 251 | superseded review authority - CW0-CW5. Established the face-walk single-walk guarantee from source and froze DEFN-R5. Its §2.4 framing of the Euler result as a **second, independent finding** was already withdrawn by Part IX-A §A.2 and is now runtime-superseded |
+| `Architecture_M3_CP4c3_TB35_EXEC_Report.md` | 154 | superseded runtime authority - TB35, 402 PASS / 7 RED on selector 409 with the accepted prefix restored to 365/365 |
+| `Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` | 151 | consumed contract |
+
+**Folded here:** 3 documents, 556 lines. **Running total: 109 documents, 21,524 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB36_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 402 PASS / 7 RED, accepted 365/365, package101),
+`Architecture_M3_CP4c3_TB36_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB36_Independent_Review_Record.md` (this review and the frozen CY6 measure),
+`Architecture_M3_CP4c3_CB41_Code_Build_Report.md` (**the build that produced the current package**, and the static
+audit proving ordinals 312/409 byte-identical), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md` (**Part IX operative, amended by Part IX-A**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
+
+### Consolidated on 2026-09-07 at `M3-CP4c-3-DEFN-R5` — nothing folded, and a divergence resolved
+
+Mandatory REVIEW consolidation performed (`DEFN` absorbs REVIEW + PLAN). **No document was folded**, and that is
+the correct outcome rather than an omission:
+
+- `M3-CP4c-3-DEFN-R5` was **authored in place** as **Part IX** of `M3_CP4c_Frozen_Definitions.md`, per the standing
+  practice since Part VII, so it created no per-turn document to retire.
+- `Architecture_M3_CP4c3_TB35_EXEC_Report.md` remains the **current valid semantic runtime authority** — DEFN-R5
+  ran no runtime and did not displace it — and
+  `Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md` is the contract that produced it.
+- `Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` is the review DEFN-R5 consumes and **corrects** — Part
+  IX-A §A.2 withdraws its "second, independent finding" framing of the Euler result — so it is retained for its
+  provenance, exactly as Part VIII retained the TB31 record it corrected.
+
+**Divergence resolved.** `M3-CP4c-3-DEFN-R5` was executed **twice concurrently** and produced two Part IX drafts.
+The Drive-patch execution's draft is **authoritative and unmodified**; the second execution's draft was **not**
+merged into it. Only the three findings it contributed that Part IX does not carry were preserved, as
+**Part IX-A**, which amends without overriding. The rejected draft's construction-time provenance rule is recorded
+there **because it was wrong in a load-bearing way** — it would have re-broken accepted ordinal 312 through the
+copy the synthetic negatives perform — and that reasoning is worth more preserved than discarded. `LESSONS.md`
+148.
+
+Consolidation is a preservation procedure, not a reduction target. **Running total unchanged: 106 documents,
+20,968 lines** (the last folding turn was `M3-CP4c-3-TB35-REV`, which folded 4 documents / 753 lines).
+
+**Definition-authority note.** The operative CP4c-3 definitions are **Part VI together with Parts VII, VIII and
+IX**, each superseding the earlier where they conflict; **Part IX-A amends Part IX without overriding any of it.**
+
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB35-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB35_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in §§1–3 of the
+TB35 review record:** the restored accepted prefix, ordinal 409's re-aimed oracle, the `ClosedBeforeEnd`
+discriminator outcome, the ownership census `300 / 0 / 0`, and the **source proof that a plan region's boundary is
+a face-walk orbit**.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` | 278 | superseded review authority - CV0-CV6. Recorded this checkpoint's **first accepted-green loss** and its stable event, reverted CU4, and named the authority-domain conflation. **Its stable event stands**; its refutation of `TB33-REV-CAND-01` is **reconciled** rather than upheld - that reading was right about the synthetic region and wrong as a general statement |
+| `Architecture_M3_CP4c3_TB34_EXEC_Report.md` | 197 | superseded runtime authority - TB34, 400 PASS / 9 RED on selector 409 with **accepted 364/365**; the run that caught the regression on its first execution |
+| `Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md` | 157 | consumed contract |
+| `Architecture_M3_CP4c3_CB40_Code_Build_Report.md` | 121 | consumed build report - CV2 restored the rejection **with** its typed reason and CV3 re-aimed ordinal 409 at the reachable shape; both discharged at TB35 |
+
+**Folded here:** 4 documents, 753 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB35_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 402 PASS / 7 RED with the accepted prefix restored to 365/365),
+`Architecture_M3_CP4c3_TB35_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB35_Independent_Review_Record.md` (this review and the frozen DEFN-R5 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part VIII operative; DEFN-R5 appends as Part
+IX**), `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
+
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB34-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB34_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in §§1–4 of the
+TB34 review record:** ordinal 312's verbatim failure, the `ClosedBeforeEnd` / `RegionEulerCharacteristicNotOne`
+pair on 366/367, ordinal 409's unconstructible-fixture message, and the ownership census `300 / 0 / 0`.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` | 294 | superseded review authority - CU0-CU6. Discharged every CT measure and recorded the cleanest RED set of the checkpoint, but its **§3.1/§3.2 derivation is refuted**: the `current == start` disjunct is load-bearing, accepted ordinal 312 encodes it, and the certificate argument conflated certified faces with plan regions. **CU4 is reverted; CU5 is upheld** |
+| `Architecture_M3_CP4c3_TB33_EXEC_Report.md` | 144 | superseded runtime authority - TB33, 401 PASS / 7 RED on selector 408, accepted 365/365; the last run before the accepted prefix broke |
+| `Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md` | 181 | consumed contract |
+| `Architecture_M3_CP4c3_CB39_Code_Build_Report.md` | 65 | consumed build report - it implemented CU4/CU5/CU6 faithfully. **The defect was in the frozen measure, not the implementation** |
+
+**Folded here:** 4 documents, 684 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB34_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 400 PASS / 9 RED with accepted prefix **364/365**),
+`Architecture_M3_CP4c3_TB34_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB34_Independent_Review_Record.md` (this review and the frozen CB40 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part VIII operative**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
+
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB33-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB33_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in §§1–3 of the
+TB33 review record:** the ownership census `300 / 0 / 0`, the **nine-component unique-seed** publication, the
+absence of both retired codes from 408 logs, the stage-labelled frontier detail, and the second ledger-hash
+collision.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` | 326 | superseded review authority - CT0-CT7. Upheld both DEFN-R4 falsifiers, found CS3 unmet and DEFN-R4.5 under-specified, and named the back-fill, ledger-digest and harness-relabelling defects. **All five CT measures are now discharged** |
+| `Architecture_M3_CP4c3_TB32_EXEC_Report.md` | 117 | superseded runtime authority - TB32, 397 PASS / 11 RED on selector 408, accepted 365/365; the run whose ledger hash collided with TB31's |
+| `Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md` | 170 | consumed contract |
+| `Architecture_M3_CP4c3_CB38_Code_Build_Report.md` | 113 | consumed build report - stage labels, the justified cleared-stage outcome for four witnesses, the failure-detail digest, and the turn-agnostic harness; every measure verified against TB33 evidence |
+
+**Folded here:** 4 documents, 726 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB33_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 408 at 401 PASS / 7 RED, accepted 365/365 — and the first report carrying verbatim failure
+transcription for every RED focused ordinal), `Architecture_M3_CP4c3_TB33_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB33_Independent_Review_Record.md` (this review and the frozen CB39 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part VIII operative**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_artifact_only_harness.sh` is the instrument, not a document.
+
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB32-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB32_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in §§1–2 of the
+TB32 review record:** the ownership census `300 / 0 / 0`, the component-0 fingerprint `189 / 1 / Unique / [0]`, and
+the fact that **neither `UncutFaceComponentOrbitSeedNotUnique` nor `TraceArcDoesNotSeparateItsSides` appears in any
+of the 408 raw logs**.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` | 293 | superseded review authority - CR0-CR8. Closed the seed frontier, diagnosed the fragment-key guard, and froze DEFN-R4. Its §2.2 line-number inference was corrected by DEFN-R4, and its CAND-01 is now **closed / runtime-proved** |
+| `Architecture_M3_CP4c3_TB31_EXEC_Report.md` | 118 | superseded runtime authority - TB31, 397 PASS / 11 RED on selector 408, accepted 365/365; the run whose ledger hash TB32 later reproduced byte-for-byte |
+| `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` | 247 | consumed contract |
+| `Architecture_M3_CP4c3_CB37_Code_Build_Report.md` | 90 | consumed build report - CS1/CS2/CS3-letter/CS5, each verified in source by TB32-REV: the guard retired with the ownership contract recorded at the site, frontier evidence annotated at two loci, four failure-code assertions removed, selector 408 byte-unchanged |
+
+**Folded here:** 4 documents, 748 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB32_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 408 at 397 PASS / 11 RED, accepted 365/365),
+`Architecture_M3_CP4c3_TB32_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB32_Independent_Review_Record.md` (this review and the frozen CB38 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part VIII operative**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** the artifact-only harness scripts are the instrument, not documents.
+
+### Consolidated on 2026-09-06 at `M3-CP4c-3-DEFN-R4` — nothing folded, and why
+
+Mandatory REVIEW consolidation performed (`DEFN` absorbs REVIEW + PLAN). **No document was folded**, and that is
+the correct outcome rather than an omission:
+
+- `M3-CP4c-3-DEFN-R4` was **authored in place** as **Part VIII** of `M3_CP4c_Frozen_Definitions.md`, per the
+  standing practice since Part VII, so it created no per-turn document to retire.
+- `Architecture_M3_CP4c3_TB31_EXEC_Report.md` is the **current runtime authority** and
+  `Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` is the review DEFN-R4 consumes and **corrects** at its
+  §2.2 — neither is superseded.
+- `Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md` is the contract that produced the current
+  runtime authority and is retained with it.
+
+Consolidation is a preservation procedure, not a reduction target; there was nothing whose durable facts needed a
+new home this turn. **Running total unchanged: 98 documents, 19,494 lines.** *(Advanced to 102 documents, 20,242 lines at `M3-CP4c-3-TB32-REV`; 106 documents, 20,968 lines at `M3-CP4c-3-TB33-REV`.)*
+
+**Definition-authority note.** The operative CP4c-3 definitions are now **Part VI together with Parts VII and
+VIII**, each superseding the earlier where they conflict. Part VIII withdraws TB31-REV's description of
+`(face, orbit)` as a *fragment identity* and replaces it with the **ownership map** reading.
+
+### Consolidated on 2026-09-06 at `M3-CP4c-3-TB31-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB31_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **The certified-owner census
+`300 / 0 / 0` and the closing component-0 fingerprint `189 faces / seedCount 1 / Unique / [0]` are preserved in
+§§1–2 of the TB31 review record.**
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` | 313 | superseded review authority - CQ0-CQ8. Found ownership total at 300/300, diagnosed the frozen rule as applied at one of two sites, and reclassified ordinal 398 off the ownership frontier. Its `M3-CP4c3-TB30-REV-CAND-01` is **runtime-proved and closed**, and **both its stated falsifiers were checked and neither reproduced** |
+| `Architecture_M3_CP4c3_TB30_EXEC_Report.md` | 102 | superseded runtime authority - TB30, 401 PASS / 7 RED on selector 408, accepted 365/365 |
+| `Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md` | 177 | consumed contract |
+| `Architecture_M3_CP4c3_CB36_Code_Build_Report.md` | 162 | consumed build report - **the second application of the frozen separating-arc rule**, one guard plus a comment correction, runtime-proved at TB31: component 0 collapsed from 3 seeds to a unique `[0]` |
+
+**Folded here:** 4 documents, 754 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB31_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 408 at 397 PASS / 11 RED, accepted 365/365),
+`Architecture_M3_CP4c3_TB31_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB31_Independent_Review_Record.md` (this review and the frozen DEFN-R4 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** the artifact-only harness scripts are the instrument, not documents.
+
+### Consolidated on 2026-09-05 at `M3-CP4c-3-TB30-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB30_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **CB34's CN7 transcription and
+CB35's CO7 transcription are both preserved in §§1–4 of the TB30 review record** — including the three numbers that
+close the certifier half of the frontier, `established=300 / unavailable=0 / conflicting=0`, and ordinal 398's
+prescribed-sphere failing locus.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB29_Independent_Review_Record.md` | 319 | superseded review authority - CO0-CO8. Diagnosed both new REDs as test authority from the test source; **both diagnoses are confirmed verbatim by the transcribed failing assertions** |
+| `Architecture_M3_CP4c3_TB29_EXEC_Report.md` | 99 | superseded runtime authority - TB29, 399 PASS / 9 RED on selector 408, accepted 365/365; the first runtime after a product correction on this frontier |
+| `Architecture_M3_CP4c3_TB29_Artifact_Only_Test_Benchmark_Plan.md` | 169 | consumed contract |
+| `Architecture_M3_CP4c3_CB34_Code_Build_Report.md` | 245 | consumed build report - **the separating-arc barrier correction**, seven lines, runtime-proved at TB29; carried the CN7 census transcription that decided the CL6 dichotomy |
+| `Architecture_M3_CP4c3_CB35_Code_Build_Report.md` | 280 | consumed build report - the two test-authority repairs and the **CO7 transcription that recorded `established=300 / unavailable=0 / conflicting=0`** and every RED ordinal's failing assertion text |
+
+**Folded here:** 5 documents, 1,112 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB30_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 408 at 401 PASS / 7 RED, accepted 365/365),
+`Architecture_M3_CP4c3_TB30_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_TB30_Independent_Review_Record.md` (this review and the frozen CB36 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** the artifact-only harness scripts are the instrument, not documents.
+
+### Consolidated on 2026-09-05 at `M3-CP4c-3-TB29-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB29_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. CB34's §4 **CN7 census
+transcription is preserved in §2 of the TB29 review record**, and CB34's report is retained rather than folded so
+the full 46-row transcription stays readable.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md` | 253 | superseded review authority - CN0-CN8. Adjudicated the control run, restated the frozen correction verbatim, and authorized CB34; the correction it carried is now **implemented and runtime-proved** |
+| `Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md` | 86 | superseded runtime authority - TB28-R3, 400 PASS / 7 RED on selector 407, accepted 365/365. **The control run** that settled the TB28-R2 false green and restored the accepted-prefix statement |
+| `Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` | 241 | consumed contract - the first plan to require per-identity routing and per-row selection proof |
+| `Architecture_M3_CP4c3_CB32_Code_Build_Report.md` | 144 | consumed build report - CL6/CL7 crossed-face and partition-identity publication; superseded as package authority by CB34 |
+| `Architecture_M3_CP4c3_CB33_Code_Build_Report.md` | 130 | consumed build report - the orchestration correction that repaired identity routing and selection proof without recompiling, deliberately preserving the control |
+
+**Folded here:** 5 documents, 854 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB29_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 408 at 399 PASS / 9 RED, accepted 365/365),
+`Architecture_M3_CP4c3_TB29_Artifact_Only_Test_Benchmark_Plan.md`,
+`Architecture_M3_CP4c3_CB34_Code_Build_Report.md` (**the package under test and the retained CN7 transcription**),
+`Architecture_M3_CP4c3_TB29_Independent_Review_Record.md` (this review and the frozen CB35 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_tb28_r3_harness.sh` and its TB29 successor are the instrument, not documents.
+
+### Consolidated on 2026-09-05 at `M3-CP4c-3-TB28-R3-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`,
+`ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. The frozen
+separating-arc barrier correction was **restated verbatim** in §7 of the review record before its source document
+was folded.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` | 275 | superseded review authority - CM0-CM9. Rejected TB28-R2 as orchestration-invalid on a provable contradiction, and **discharged CL8 by freezing the separating-arc barrier correction**, which is restated in the TB28-R3 review record and applied at CB34 |
+| `Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` | 132 | superseded runtime authority - TB27-R1, 399 PASS / 7 RED on selector 406, accepted 365/365. Deliberately retained through TB28 because TB28-R2 was rejected; **validly superseded by TB28-R3**, which reproduced its ledger exactly |
+| `Architecture_M3_CP4c3_TB28_R2_Artifact_Only_Test_Benchmark_Report.md` | 114 | **rejected attempt** - `407 PASS / 0 RED` on an unchanged ownership path, orchestration-invalid, no semantic credit. Its rejection and reasons are preserved here, in the tracker and in the folded TB28 review record |
+| `Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md` | 136 | consumed contract - superseded by the R3 plan, which added per-identity routing and selection proof |
+
+**Folded here:** 4 documents, 657 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB28_R3_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 407 at 400 PASS / 7 RED, accepted 365/365),
+`Architecture_M3_CP4c3_TB28_R3_Artifact_Only_Test_Benchmark_Plan.md` (the contract it executed),
+`Architecture_M3_CP4c3_CB33_Code_Build_Report.md` and `Architecture_M3_CP4c3_CB32_Code_Build_Report.md`,
+`Architecture_M3_CP4c3_TB28_R3_Independent_Review_Record.md` (this review and the restated frozen correction),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+**Never folded:** `tools/m3_cp4c3_tb28_r3_harness.sh` is the instrument, not a document. It is product-adjacent
+evidence and a reviewer must be able to read it rather than a summary of it.
+
+### Consolidated on 2026-09-05 at `M3-CP4c-3-TB28-INDEPENDENT-REVIEW`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB28_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` | 319 | superseded review authority - CL0-CL9. Recorded the refutation of its own predecessor's all-bridges prediction, confirmed the partition mismatch, and set the **CL8 hard stop rule**, which is **discharged** by §4 of the TB28 review record |
+| `Architecture_M3_CP4c3_CB31_Code_Build_Report.md` | 172 | consumed build report - CK8/CK9 serialization and partition identity; superseded as package authority by CB32 |
+
+**Folded here:** 2 documents, 491 lines.
+
+**Retained deliberately, and not as "superseded":**
+`Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md` is **the current valid semantic runtime
+authority**, because `M3-CP4c-3-TB28-R2` was rejected as orchestration-invalid. It must not be folded until a valid
+successor runtime exists. `Architecture_M3_CP4c3_TB28_R2_Artifact_Only_Test_Benchmark_Report.md` is retained as
+**invalid-attempt provenance** and `Architecture_M3_CP4c3_TB28_Artifact_Only_Test_Benchmark_Plan.md` as the frozen
+contract TB28-R3 re-executes; `Architecture_M3_CP4c3_CB32_Code_Build_Report.md` is the package under test.
+
+**Also retained as current authority:** `Architecture_M3_CP4c3_TB28_Independent_Review_Record.md` (this review, the
+frozen correction and the CB33/TB28-R3/CB34 sequence), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every
+`Required_Green_Selector_*.txt`.
+
+### Consolidated on 2026-09-05 at `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB27_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md`, `Regression_Root_Cause_Tracker.md`,
+`ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` | 343 | superseded review authority - CK0-CK9. Its two load-bearing claims are **runtime-confirmed** (an incidence count is not a separation; the census described a different object). Its §1.2 static all-bridges prediction is **refuted** - arcs 14 and 22 separate |
+| `Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md` | 93 | superseded runtime authority - TB26-R1, 397 PASS / 8 RED on selector 405, accepted 365/365; the ledger the CK measures were frozen against |
+| `Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md` | 220 | superseded runtime authority - TB25-R1, 393 PASS / 10 RED on selector 403; retained one turn longer as the `established=74 / unavailable=226` baseline, now carried by the TB27 review record and this index |
+
+**Folded here:** 3 documents, 656 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB27_R1_Artifact_Only_Test_Benchmark_Report.md`
+(**authoritative semantic runtime**), `Architecture_M3_CP4c3_CB31_Code_Build_Report.md` (the package under review),
+`Architecture_M3_CP4c3_TB27_Independent_Review_Record.md` (this review and the frozen CB32 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+### Consolidated on 2026-09-04 at `M3-CP4c-3-TB26-INDEPENDENT-REVIEW`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md`, `Regression_Root_Cause_Tracker.md`,
+`ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` | 344 | superseded review authority - CJ0-CJ9; diagnosed the starved seed rule, closed `M3-CP4c3-TB21-CAND-01` as ill-formed, and froze CB30. CJ7/CJ8/CJ9 are runtime-proved at TB26-R1; **CJ6's censuses are superseded as inadmissible about the failing component** - they are computed on the certifier's partition |
+| `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` | 96 | consumed build report - publication survives ownership failure, `proves_embedded_cellularity()` introduced, conflict census added; superseded as package authority by CB30 |
+| `Architecture_M3_CP4c3_TB26_Independent_Review_Intake.md` | 36 | consumed task brief - the seven mandatory review questions and stop rules for this review; its first premise (that `interiorArcs=4` selects the separating-arc horn) was **declined with reasons** in §1 of the review record |
+
+**Folded here:** 3 documents, 476 lines.
+
+**Noted:** `M3-CP4c-3-CB30` has no retained standalone Code + Build report. Its package authority
+(`9957324848`) is carried by the TB26-R1 report and the CHANGELOG. A successor CB should restore the per-turn build
+report so the package under test has a first-class provenance document.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB26_R1_Artifact_Only_Test_Benchmark_Report.md`
+(**authoritative semantic runtime and current package provenance**),
+`Architecture_M3_CP4c3_TB26_Independent_Review_Record.md` (this review and the frozen CB31 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+### Consolidated on 2026-09-04 at `M3-CP4c-3-TB25-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB25_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md`, `Regression_Root_Cause_Tracker.md`,
+`ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` | 370 | superseded review authority - CH0-CH9; found the ordering defect behind seven REDs, withdrew DEFN-R3.1's publication-not-computation clause, and froze CB28. CH6/CH7 are runtime-proved at TB25-R1 (384/385 recovered); **CH8's conflict census is superseded as vacuous** - it reads only established owners |
+| `Architecture_M3_CP4c3_CB27_Code_Build_Report.md` | 128 | consumed build report - published the owner map, fixed ordinal 397, replaced 393 in place, made fixture resolution fail closed; superseded as package authority by CB28 |
+
+**Indexed retrospectively under clause 3**, having been retired by `M3-CP4c-3-TB25-R1`'s stale-evidence cleanup
+between reviews:
+
+| Retired document | Verdict it carried |
+|---|---|
+| `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` | superseded runtime authority - TB24, 389 PASS / 12 RED on selector 401, accepted 365/365; the ledger TB24-REV adjudicated |
+| `Architecture_M3_CP4c3_TB25_Artifact_Only_Test_Benchmark_Plan.md` | consumed evidence contract - the frozen TB25 execution boundary and its four-branch interpretation contract, preserved verbatim in the TB25-R1 report and applied by TB25-REV |
+| `Architecture_M3_CP4c3_CB29_Code_Build_Report.md` | consumed control-only report - the pre-runtime harness correction after TB25's selector-injection failure; runtime-proved by TB25-R1 and closed as `M3-CP4c3-TB25-ORCH-01` |
+
+**Folded here:** 2 documents, 498 lines, plus 3 retrospectively indexed.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB25_R1_Artifact_Only_Test_Benchmark_Report.md`
+(**authoritative semantic runtime**), `Architecture_M3_CP4c3_CB28_Code_Build_Report.md` (the package under review),
+`Architecture_M3_CP4c3_TB25_Independent_Review_Record.md` (this review and the frozen CB30 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+### Consolidated on 2026-09-04 at `M3-CP4c-3-TB24-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB24_Independent_Review_Record.md`, `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md`,
+`Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md`
+**before** any file was folded.
+
+| Folded document | Lines | Verdict it carried |
+|---|---|---|
+| `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` | 213 | superseded runtime authority - TB23-R1, 389 PASS / 8 RED on selector 397, accepted 365/365; the corrected execution view that proved CB26's harness fix. Superseded by TB24 on selector 401 |
+| `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` | 269 | superseded review authority - CE0-CE8; confirmed the harness fix, proved certified ownership absent from the published contract, and froze DEFN-R3, which DEFN-R3 discharged |
+| `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Plan.md` | 131 | consumed evidence contract - the frozen TB24 execution boundary and discriminators D1-D6; fully executed and reported by TB24-EXEC, adjudicated by this review |
+
+**Folded here:** 3 documents, 613 lines. Every durable fact each carried is retained above, in the TB24 review
+record, or in the tracker.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB24_Artifact_Only_Test_Benchmark_Report.md` (**authoritative
+semantic runtime**), `Architecture_M3_CP4c3_CB27_Code_Build_Report.md` (the package under review),
+`Architecture_M3_CP4c3_TB24_Independent_Review_Record.md` (this review and the frozen CB28 scope),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this
+record, and every `Required_Green_Selector_*.txt`.
+
+### Consolidated on 2026-09-04 at `M3-CP4c-3-TB23-R1-REV`
+
+Seventh application of the standing REVIEW-turn consolidation rule, including retrospective indexing of the **five**
+per-turn files `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup retired between reviews. Durable facts were verified
+present in `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`,
+`ORIENTATION.md`, `LESSONS.md` and `CHANGELOG.md` before folding.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB23_Independent_Review_Record.md` | 264 | superseded review authority - CC0-CC8; upheld the orchestration-invalid classification, located the harness defect and froze CB26/CD0-CD8, which CB26 discharged (folded by this review) |
+| `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` | 112 | superseded runtime authority - TB22 387/6 at selector 393. **Retired by `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup, indexed here at TB23-R1-REV** |
+| `Architecture_M3_CP4c3_CB25_Code_Build_Report.md` | 115 | consumed build report - the certificate-face diagnostics; CA1 partially met, CA2 met, CA3 satisfiable. **Retired by `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup, indexed here at TB23-R1-REV** |
+| `Architecture_M3_CP4c3_CB26_Code_Build_Report.md` | 111 | consumed build report - the control-plane orchestration correction; confirmed at TB23-R1. **Retired by `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup, indexed here at TB23-R1-REV** |
+| `Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` | 200 | consumed evidence contract - re-executed by TB23-R1. **Retired by `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup, indexed here at TB23-R1-REV** |
+| `Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md` | 100 | invalid-attempt provenance - orchestration-invalid, no semantic ledger. **Retired by `M3-CP4c-3-TB23-R1`'s stale-evidence cleanup, indexed here at TB23-R1-REV** |
+
+**Total folded this turn:** 6 documents, 902 lines — 1 folded by this review, plus 5 retired by
+`M3-CP4c-3-TB23-R1` without an index entry. **Running total:** 98 documents, 19494 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB23_R1_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB23_R1_Independent_Review_Record.md` (review and the frozen DEFN-R3 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+### Consolidated on 2026-09-04 at `M3-CP4c-3-TB23-REV`
+
+Sixth application of the standing REVIEW-turn consolidation rule. **No document was retired between reviews**, so
+nothing needed retrospective indexing. Only one document was superseded — consolidation is not a quota, and the
+TB22 report, the CB25 build report, the frozen TB23 plan and the TB23-EXEC report are all **retained** because each
+remains live authority for the orchestration correction and its re-execution.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` | 326 | superseded review authority - BZ0-BZ8; proved both CB24 measurements vacuous and froze CB25/CA0-CA9, which CB25 statically discharged |
+
+**Total folded this turn:** 1 document, 326 lines. **Running total:** 58 documents, 12481 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` (**authoritative semantic runtime**), `Architecture_M3_CP4c3_CB25_Code_Build_Report.md` (the package under re-execution), `Architecture_M3_CP4c3_TB23_Artifact_Only_Test_Benchmark_Plan.md` (the frozen plan), `Architecture_M3_CP4c3_TB23_EXEC_Artifact_Only_Test_Benchmark_Report.md` (invalid-attempt provenance), `Architecture_M3_CP4c3_TB23_Independent_Review_Record.md` (this review and the frozen CB26 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+### Consolidated on 2026-09-04 at `M3-CP4c-3-TB22-REV`
+
+Fifth application of the standing REVIEW-turn consolidation rule, including retrospective indexing of documents a
+CB or TB turn retired between reviews. Durable facts verified present in
+`Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`LESSONS.md` and `CHANGELOG.md` **before** folding.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` | 330 | superseded review authority - BX0-BX8; withdrew the non-cellularity conclusion and froze CB24/BY0-BY9, whose BY3/BY4 wording TB22-REV found underspecified |
+| `Architecture_M3_CP4c3_TB22_Independent_Review_Plan.md` | 80 | consumed binding review plan - measures BZ0-BZ8, all discharged in the TB22-REV record |
+| `Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md` | 142 | superseded runtime authority - TB21 384/7 at selector 391. **Retired by `M3-CP4c-3-TB22`'s stale-evidence cleanup (`4207907c`), indexed here at TB22-REV** |
+| `Architecture_M3_CP4c3_CB24_Code_Build_Report.md` | 88 | consumed build report - the projection diagnostics; **TB22-REV proved both of its measurements vacuous**. Retired by `M3-CP4c-3-TB22`'s stale-evidence cleanup (`4207907c`), indexed here at TB22-REV |
+
+**Total folded this turn:** 4 documents, 640 lines — 2 folded by this review, plus 2 retired by
+`M3-CP4c-3-TB22` without an index entry. **Running total:** 57 documents, 12155 lines.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md` (review and the frozen CB25 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
 ### Consolidated on 2026-09-03 at `M3-CP4c-3-TB21-REV`
 
 Fourth application of the standing REVIEW-turn consolidation rule, including the retrospective indexing of
@@ -913,3 +1478,139 @@ documents a CB or TB turn retired between reviews. Each document's durable facts
 
 **Retained as current authority:** `Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Report.md` (runtime), `Architecture_M3_CP4c3_TB21_Independent_Review_Record.md` (review and the frozen CB24 scope), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
 
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB39-REV`
+
+Mandatory REVIEW consolidation. TB39 is promoted, so TB37 ceases to be current runtime authority; TB38's rejected
+runtime/review chain and the consumed TB39 execution plan are now historical. Durable facts were preserved first in
+`Architecture_M3_CP4c3_TB39_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md`, `Required_Green_Selector_Manifest.md` and `CHANGELOG.md`.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB37_Artifact_Only_Test_Benchmark_Plan.md` | 194 | consumed TB37 artifact-only contract; TB37 is superseded as runtime authority by promoted TB39 |
+| `Architecture_M3_CP4c3_TB37_EXEC_Report.md` | 197 | superseded runtime authority — selector409 402/7, accepted365/365, package102; colour vector later restored exactly by TB39 |
+| `Architecture_M3_CP4c3_TB37_Independent_Review_Record.md` | 207 | superseded review authority — CZ0–CZ6; established whole-face +1 vs reduced -3 mechanical discrepancy and opened the counted-complex candidate |
+| `Architecture_M3_CP4c3_TB38_Artifact_Only_Test_Benchmark_Plan.md` | 150 | consumed TB38 contract implementing the DEFN-R6.4 trial |
+| `Architecture_M3_CP4c3_TB38_EXEC_Report.md` | 145 | rejected historical runtime — 395/14, accepted362/365; source of the one stable RP-01 event retained in accounting |
+| `Architecture_M3_CP4c3_TB38_Independent_Review_Record.md` | 244 | superseded review authority — DA0–DA7; blamed DEFN-R6.4, withdrew its universal criterion, froze CB44 restoration/non-vacuous measurement |
+| `Architecture_M3_CP4c3_TB39_Artifact_Only_Test_Benchmark_Plan.md` | 225 | consumed TB39 restoration/non-vacuity contract; discharged by promoted TB39 |
+| `Architecture_M3_CP4c3_CB42_Code_Build_Report.md` | 135 | superseded package102 build authority; diagnostics-only behavior preservation proved by TB37 |
+| `Architecture_M3_CP4c3_CB43_Code_Build_Report.md` | 112 | superseded package103 build authority; faithful implementation of DEFN-R6.4, whose regression remains historical evidence |
+
+**Folded here:** 9 documents, **1,609 lines**. **Running total: 122 documents, 23,863 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB39_EXEC_Report.md` (current semantic runtime),
+`Architecture_M3_CP4c3_CB44_Code_Build_Report.md` (current package104 build authority),
+`Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` (current review), and
+`Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` (single exact next-turn plan), together with durable definitions,
+indexes and every byte-frozen selector.
+
+**Definition-authority note.** This review does not edit normative Part X in place. It establishes that
+DEFN-R6.3/R6.4 cannot remain the region-disc authority and freezes `M3-CP4c-3-DEFN-R7` to append the replacement
+contract. Until that definition is written, current runtime evidence remains TB39's restored reduced rejection at
+366/367; no proxy is silently promoted by documentation cleanup.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB42-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB42_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in ED0–ED7:** the
+promotion evidence, the EC7 measurement row (226 / 9 / 9, locator `none`, 0-of-10), the refutation of the
+empty-partition candidate, the confirmation of the domain mismatch, and the reading of the `UncutComponent` early
+return as a domain guard written as a stage check.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB41_Independent_Review_Record.md` | 236 | superseded review authority — EC0-EC7. Promoted TB41, confirmed the content-anchor repair, reframed 390/393/406/407 as a never-executed oracle, and froze the EC7 measurement that TB42 answered |
+| `Architecture_M3_CP4c3_TB41_EXEC_Report.md` | 202 | superseded runtime authority — TB41, 398 PASS / 11 RED, accepted 365/365, package106 |
+| `Architecture_M3_CP4c3_CB46_Code_Build_Report.md` | 157 | consumed build report — the content-anchor repair and the locator broadening; both adjudicated, the first confirmed and the second shown correct but insufficient |
+| `Architecture_M3_CP4c3_TB42_Artifact_Only_Test_Benchmark_Plan.md` | 137 | consumed evidence contract — the frozen TB42 gate, discharged by the TB42 EXEC report |
+
+**Folded here:** 4 documents, 732 lines. **Running total: 134 documents, 25,676 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB42_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 398 PASS / 11 RED with accepted 365/365 on package107, and the EC7 measurement rows
+that DEFN-R8 must reason from), `Architecture_M3_CP4c3_TB42_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB47_Code_Build_Report.md` (**the build that produced the current package**),
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part XI operative, amended by Part XI-A**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Definition-authority note.** Part XI and Part XI-A are unchanged. **Part XII appends next**, and its subject is
+not the binding but the **domain of the uncut-component frontier census** and what a `RegionCertification` failure
+must publish instead.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB41-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB41_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in EC0–EC7:** the
+promotion reasoning, the content-anchor census with its four oriented anchors, the reframe of 390/393/406/407 as a
+never-executed oracle, and the three verified facts that rule out the locator/guard/annotation explanations.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md` | 212 | superseded review authority — EB0-EB7. Diagnosed the orbit-label defect, priced the stable event, and froze the content-anchor repair that TB41 confirmed |
+| `Architecture_M3_CP4c3_TB40_EXEC_Report.md` | 42 | superseded runtime evidence — package105, 394 PASS / 15 RED, accepted 361/365; never promoted |
+| `Architecture_M3_CP4c3_CB45_Code_Build_Report.md` | 179 | consumed build report — implemented the Part XI binding correctly; its deliberate retention at TB40-REV has served its purpose now that TB41 proved the binding |
+| `Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md` | 160 | consumed evidence contract — the frozen TB41 gate, discharged by the TB41 EXEC report |
+
+**Folded here:** 4 documents, 593 lines. **Running total: 130 documents, 24,944 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB41_EXEC_Report.md` (**the valid semantic runtime
+authority**, selector 409 at 398 PASS / 11 RED with accepted 365/365 on package106),
+`Architecture_M3_CP4c3_TB41_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB46_Code_Build_Report.md` (**the build that produced the current package**, and the record
+that CB46's locator broadening was correct in itself), `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md` (**Part XI operative, amended by Part XI-A**),
+`Required_Green_Selector_Manifest.md`, this record, and every `Required_Green_Selector_*.txt`.
+
+**Definition-authority note.** Part XI and Part XI-A are **unchanged and further confirmed**: the content anchor
+answers Part XI-A §A.1's complaint that the face certificate carried nothing content-derived by which an
+independent consumer could identify a face. `M3-CP4c3-TB40-REV-CAND-01` is **CLOSED** on that basis.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB40-REV`
+
+Mandatory REVIEW consolidation. Durable facts were verified present in
+`Architecture_M3_CP4c3_TB40_Independent_Review_Record.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`,
+`M3_CP4c_Current_And_Forward.md` and `CHANGELOG.md` **before** any file was folded. **Preserved in EB0–EB7:** the
+four-row census and its reading as a permutation, the two enumerations and their exact sites, the blind arc-count
+control, the unverifiable orbit label, and 366/367's advance.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` | 207 | consumed build contract — EA0-EA9 plus the Part XI-A amendments; discharged by the CB45 report and adjudicated at TB40 |
+| `Architecture_M3_CP4c3_TB40_Artifact_Only_Test_Benchmark_Plan.md` | — | consumed evidence contract — the frozen TB40 gate, discharged by the TB40 EXEC report |
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB39_EXEC_Report.md` (**the valid semantic runtime
+authority** — TB40 was not promoted), `Architecture_M3_CP4c3_TB40_EXEC_Report.md` (the regressed ledger and the
+decisive census, which CB46 must work from), `Architecture_M3_CP4c3_TB40_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB45_Code_Build_Report.md` (**retained deliberately** — it is the provenance for the
+regression and records that CB45's binding lookup was correct, so discarding it would leave the impression the
+implementation was at fault), `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md` (**Part XI
+operative, amended by Part XI-A**), `Required_Green_Selector_Manifest.md`, this record, and every
+`Required_Green_Selector_*.txt`.
+
+**Definition-authority note.** Part XI is **unchanged and confirmed**: TB40 proved the binding is a bijection onto
+certified disc faces with matching arc counts. Part XI-A's reading is reinforced a third way — the face
+certificate's `orbit` is meaningful only inside the producer's own enumeration, so an independent consumer cannot
+verify **which** face a certificate holds. `M3-CP4c3-TB40-REV-CAND-01`.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-DEFN-R7`
+
+Mandatory REVIEW consolidation for the Definition turn. Part XI now carries the normative replacement contract, so
+the TB39 review record and consumed DEFN-R7 plan are historical. Their durable findings were preserved first in
+Part XI, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md`, `CHANGELOG.md` and
+the frozen successor plan.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB39_Independent_Review_Record.md` | 203 | superseded review authority — promoted TB39, established upstream actual-embedded-face ownership, ordered DEFN-R7 |
+| `Architecture_M3_CP4c3_DEFN_R7_Definition_Plan.md` | 125 | consumed definition contract — R7.1–R7.9 discharged into normative Part XI and frozen CB45 EA0–EA9 |
+
+**Folded here:** 2 documents, **328 lines**. **Running total: 124 documents, 24,191 lines.**
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB39_EXEC_Report.md` (current semantic runtime),
+`Architecture_M3_CP4c3_CB44_Code_Build_Report.md` (current package104 build authority until CB45),
+`M3_CP4c_Frozen_Definitions.md` Part XI (current Definition/Review authority), and
+`Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` (single exact next-turn plan), together with durable indexes and every
+byte-frozen selector.

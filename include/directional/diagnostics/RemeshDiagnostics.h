@@ -187,11 +187,79 @@ struct SurfaceCellTraceTerminalSlitCensusDiagnostics {
 
 struct SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics {
   std::array<std::size_t, 2> sourceEdge{};
+  std::optional<std::array<std::size_t, 3>> componentFace;
+  std::optional<std::array<std::size_t, 3>> labeledFace;
   bool otherSideLabeled = false;
   std::size_t labeledFaceOwnerCount = 0U;
   std::string barrierClass;
   std::optional<std::size_t> contributedSeed;
+  std::string seedRule;
   std::string noSeedReason;
+  bool minoritySeedOrbit = false;
+  std::optional<std::size_t> componentSideCertifiedFace;
+  std::optional<std::size_t> labeledSideCertifiedFace;
+};
+
+struct SurfaceCellUncutFaceCertificatePairDiagnostics {
+  std::array<std::size_t, 2> sourceEdge{};
+  std::array<std::size_t, 3> firstFace{};
+  std::array<std::size_t, 3> secondFace{};
+  std::optional<std::size_t> firstCertifiedFace;
+  std::optional<std::size_t> secondCertifiedFace;
+};
+
+struct SurfaceCellUncutComponentArcFaceDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::optional<std::size_t> certifierComponent;
+  std::optional<std::size_t> planComponent;
+  std::string notTraceCutReason;
+};
+
+struct SurfaceCellUncutComponentArcIncidenceDiagnostics {
+  std::size_t arc = 0U;
+  std::string kind;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  std::size_t crossedFaceCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcFaceDiagnostics> crossedFaces;
+  bool crossedFacesTruncated = false;
+};
+
+struct SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics {
+  std::size_t certifiedFace = 0U;
+  std::size_t sourceFaceCount = 0U;
+};
+
+struct SurfaceCellUncutFaceComponentCertifiedFaceObservationDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::size_t certifiedFace = 0U;
+};
+
+struct SurfaceCellUncutComponentPartitionIdentityDiagnostics {
+  std::string domainRule;
+  bool cutGraphCutEdges = false;
+  bool networkMandatoryEdges = false;
+  bool embeddedMandatoryArcSourceEdges = false;
+  bool embeddedCutArcSourceEdges = false;
+  bool nonTerminalTraceCarrierEdges = false;
+};
+
+struct SurfaceCellRegionFrontierComponentEvidenceDiagnostics {
+  std::size_t component = 0U;
+  std::vector<std::array<std::size_t, 3>> faces;
+  SurfaceCellUncutComponentPartitionIdentityDiagnostics partitionIdentity;
+  std::uint64_t faceSetDigest = 0U;
+  std::string censusCorrespondence;
+  std::optional<std::size_t> censusComponent;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      censusPartitionIdentity;
+  std::optional<std::uint64_t> censusFaceSetDigest;
+  bool componentSubsetOfCensusComponent = false;
+  bool interiorArcIncidenceCensusPublished = false;
+  std::size_t interiorArcIncidenceCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcIncidenceDiagnostics>
+      interiorArcIncidences;
+  bool interiorArcIncidencesTruncated = false;
 };
 
 struct SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics {
@@ -277,6 +345,40 @@ struct SurfaceCellFailureLocusDiagnostics {
   bool fragmentIncidencesTruncated = false;
   std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
       fragmentEdgeOrbitEvidence;
+  std::string regionBoundaryWalkReason;
+  std::string regionBoundaryProvenance;
+  std::optional<std::size_t> regionBoundaryOrbit;
+  std::optional<std::size_t> regionOwningFragmentOrbit;
+  std::vector<std::size_t> regionOwningFragmentOrbitIds;
+  std::optional<std::size_t> regionOwningFragmentOrbitCount;
+  std::optional<bool> regionOwningFragmentOrbitPresent;
+  std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctArcCount;
+  std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryDistinctNodeCount;
+  std::optional<std::size_t> regionBoundaryRepeatedNodeOccurrenceCount;
+  std::optional<std::size_t> regionBoundaryStartRevisitBeforeEndCount;
+  std::string regionBoundaryCensusDomain;
+  bool regionBoundaryNodeOccurrenceCountDerived = false;
+  std::optional<int> eulerCharacteristic;
+  std::optional<std::size_t> vertexCount;
+  std::optional<std::size_t> edgeCount;
+  std::optional<std::size_t> faceCount;
+  std::string regionFrontierFailureStage;
+  std::string regionFrontierSubjectDomainRelation;
+  std::size_t regionFrontierUnlabeledFaceCount = 0U;
+  std::size_t regionFrontierPartitionComponentCount = 0U;
+  std::size_t regionFrontierOwnerConsistencyRowCount = 0U;
+  std::string regionFrontierLocator;
+  std::optional<bool> regionFrontierLocatorSurvivedGuard;
+  std::optional<bool> regionFrontierFailureSourceFaceInPartition;
+  std::optional<std::size_t> regionFrontierFailureRegionSourceFaceCount;
+  std::optional<std::size_t>
+      regionFrontierFailureRegionSourceFacesInPartitionCount;
+  std::size_t regionFrontierComponentCount = 0U;
+  std::vector<SurfaceCellRegionFrontierComponentEvidenceDiagnostics>
+      regionFrontierComponents;
+  bool regionFrontierComponentsTruncated = false;
   std::optional<std::size_t> uncutFaceComponent;
   std::optional<std::size_t> uncutFaceComponentSeedCount;
   std::string uncutFaceComponentSeedState;
@@ -284,6 +386,20 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::size_t uncutFaceComponentFaceCount = 0U;
   std::vector<std::array<std::size_t, 3>> uncutFaceComponentFaces;
   bool uncutFaceComponentFacesTruncated = false;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      uncutFaceComponentPartitionIdentity;
+  std::optional<std::uint64_t> uncutFaceComponentFaceSetDigest;
+  std::optional<std::size_t> uncutComponentCensusComponent;
+  std::optional<SurfaceCellUncutComponentPartitionIdentityDiagnostics>
+      uncutComponentCensusPartitionIdentity;
+  std::optional<std::uint64_t> uncutComponentCensusFaceSetDigest;
+  std::optional<bool> uncutComponentCensusMatchesFailingComponent;
+  std::optional<bool> uncutFaceComponentSubsetOfCensusComponent;
+  bool uncutFaceComponentInteriorArcCensusPublished = false;
+  std::size_t uncutFaceComponentInteriorArcCount = 0U;
+  std::vector<SurfaceCellUncutComponentArcIncidenceDiagnostics>
+      uncutFaceComponentInteriorArcIncidences;
+  bool uncutFaceComponentInteriorArcIncidencesTruncated = false;
   std::size_t uncutFaceComponentBoundaryEdgeCount = 0U;
   std::vector<SurfaceCellUncutFaceComponentBoundaryEdgeDiagnostics>
       uncutFaceComponentBoundaryEdges;
@@ -292,6 +408,20 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::vector<SurfaceCellUncutFaceComponentBoundaryOrbitDiagnostics>
       uncutFaceComponentBoundaryOrbits;
   bool uncutFaceComponentBoundaryOrbitsTruncated = false;
+  std::optional<std::size_t> uncutFaceCertificatePairExaminedCount;
+  std::optional<std::size_t> uncutFaceCertificatePairDifferingCount;
+  std::vector<SurfaceCellUncutFaceCertificatePairDiagnostics>
+      uncutFaceCertificatePairs;
+  bool uncutFaceCertificatePairsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceObservationCount;
+  std::vector<SurfaceCellUncutFaceComponentCertifiedFaceObservationDiagnostics>
+      uncutFaceComponentCertifiedFaceObservations;
+  bool uncutFaceComponentCertifiedFaceObservationsTruncated = false;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceUnavailableCount;
+  std::optional<std::size_t> uncutFaceComponentCertifiedFaceDistinctCount;
+  std::vector<SurfaceCellUncutFaceComponentCertifiedFaceMultiplicityDiagnostics>
+      uncutFaceComponentCertifiedFaceMultiset;
+  bool uncutFaceComponentCertifiedFaceMultisetTruncated = false;
   SurfaceCellTraceFragmentOwnerEvidenceDiagnostics fragmentOwnerEvidence;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;

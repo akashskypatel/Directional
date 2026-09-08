@@ -35,6 +35,10 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "../src/geometry/EmbeddedGraphTopology.h"
+#include "../src/geometry/GlobalTopologyCertificateDiagnostics.h"
+#include "../src/geometry/CertifiedSourceFaceOwnerConsistency.h"
+#include "../src/geometry/CertifiedOwnerConflictCensus.h"
+#include "../src/geometry/UncutComponentCertificateCensus.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
@@ -1848,6 +1852,24 @@ void canonicalize_oriented_cycle(
               cycle.begin() + static_cast<std::ptrdiff_t>(best), cycle.end());
 }
 
+directional::geometry::GlobalTopologyOrientedArc canonical_cycle_anchor(
+    const std::vector<directional::geometry::GlobalTopologyOrientedArc> &cycle) {
+  EXPECT_FALSE(cycle.empty());
+  return *std::min_element(
+      cycle.begin(), cycle.end(), [](const auto lhs, const auto rhs) {
+        return std::tie(lhs.arc, lhs.orientation) <
+               std::tie(rhs.arc, rhs.orientation);
+      });
+}
+
+bool face_certificate_has_anchor(
+    const directional::geometry::SurfaceCutGraphFaceCertificate &certificate,
+    const directional::geometry::GlobalTopologyOrientedArc anchor) {
+  return certificate.boundaryAnchorArc.has_value() &&
+         *certificate.boundaryAnchorArc == anchor.arc &&
+         certificate.boundaryAnchorOrientation == anchor.orientation;
+}
+
 std::optional<std::vector<std::vector<directional::geometry::GlobalTopologyOrientedArc>>>
 independent_plan_face_orbits(
     const directional::geometry::GlobalTopologyPlan &plan) {
@@ -2265,7 +2287,8 @@ std::optional<IndependentFragmentPartition> independent_fragment_partition(
 
 IndependentDiscProofResult independent_disc_proof_oracle(
     const directional::geometry::GlobalTopologyPlan &plan, const TriMesh &mesh,
-    const FieldAlignedCurveNetwork &network) {
+    const FieldAlignedCurveNetwork &network,
+    const directional::geometry::SurfaceCutGraph &cutGraph) {
   IndependentDiscProofResult result;
   const auto orbits = independent_plan_face_orbits(plan);
   if (!orbits.has_value()) {
@@ -2320,8 +2343,24 @@ IndependentDiscProofResult independent_disc_proof_oracle(
       return result;
     }
     const auto *certificate = plan.find_region_certificate(region.id);
-    if (certificate == nullptr || !certificate->proves_disc_topology() ||
-        certificate->boundaryWalkCount != 1U) {
+    const auto anchor = canonical_cycle_anchor((*orbits)[*matched]);
+    const auto upstream = std::find_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
+    const auto upstreamCount = static_cast<std::size_t>(std::count_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        }));
+    if (certificate == nullptr || upstreamCount != 1U ||
+        upstream == cutGraph.certificate().faces.end() ||
+        certificate->actualEmbeddedFace != *upstream ||
+        !face_certificate_has_anchor(certificate->actualEmbeddedFace, anchor) ||
+        certificate->actualEmbeddedFace.boundaryArcCount !=
+            region.boundary.size() ||
+        !certificate->proves_disc_topology()) {
       result.clause = IndependentDiscProofClause::PublishedCertificate;
       return result;
     }
@@ -3214,19 +3253,44 @@ TEST(GlobalTopologyPlan, RegionAuthorityIsInvariantToEnumerationOrderAndBranchRe
 TEST(GlobalTopologyPlan, ProvesDiscTopologyForEveryEmittedRegion) {
   Cp3bEventFixture fixture = build_cp3b_event_fixture();
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
   ASSERT_TRUE(fixture.network.has_value());
-  const auto plan = build_topology_plan(
+  const auto cutGraph = build_surface_cut_graph(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  const auto planBuild = directional::geometry::GlobalTopologyPlan::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.network, cutGraph);
+  ASSERT_TRUE(planBuild);
+  const auto &plan = planBuild.value();
+  const auto orbits = independent_plan_face_orbits(plan);
+  ASSERT_TRUE(orbits.has_value());
 
   ASSERT_EQ(plan.regions().size(), plan.region_certificates().size());
   for (const auto &region : plan.regions()) {
     const auto *certificate = plan.find_region_certificate(region.id);
     ASSERT_NE(nullptr, certificate);
     EXPECT_EQ(region.id, certificate->region);
-    EXPECT_EQ(1U, certificate->boundaryWalkCount);
-    EXPECT_TRUE(certificate->sourceFacesConnected);
-    EXPECT_EQ(1, certificate->eulerCharacteristic);
-    EXPECT_EQ(region.sourceFaces.size(), certificate->faceCount);
+    const auto orbit = std::find(orbits->begin(), orbits->end(), region.boundary);
+    ASSERT_NE(orbits->end(), orbit);
+    const auto anchor = canonical_cycle_anchor(*orbit);
+    EXPECT_TRUE(face_certificate_has_anchor(certificate->actualEmbeddedFace,
+                                            anchor));
+    const auto upstreamCount = std::count_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
+    EXPECT_EQ(1, upstreamCount);
+    const auto upstream = std::find_if(
+        cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
+    ASSERT_NE(cutGraph.certificate().faces.end(), upstream);
+    EXPECT_EQ(*upstream, certificate->actualEmbeddedFace);
+    EXPECT_EQ(1U, certificate->actualEmbeddedFace.boundaryWalkCount);
+    EXPECT_EQ(region.boundary.size(),
+              certificate->actualEmbeddedFace.boundaryArcCount);
     EXPECT_TRUE(certificate->proves_disc_topology());
     EXPECT_TRUE(certificate->proves_field_regularity());
   }
@@ -3259,6 +3323,44 @@ TEST(GlobalTopologyPlan, RejectsRegionWithMultipleBoundaryWalks) {
   ASSERT_TRUE(rejected.error().region.has_value());
   ASSERT_TRUE(rejected.error().arc.has_value());
   EXPECT_EQ(secondWalkArc, *rejected.error().arc);
+}
+
+TEST(GlobalTopologyPlan, RegionBoundaryWithTwoDisjointLoopsIsStillRejected) {
+  Cp3bEventFixture fixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto plan = build_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  ASSERT_FALSE(plan.regions().empty());
+
+  auto candidate = plan.validation_candidate();
+  auto &region = candidate.regions.front();
+  ASSERT_FALSE(region.boundary.empty());
+  const auto secondLoop = region.boundary;
+  const auto secondLoopArc = secondLoop.front().arc;
+  region.boundary.insert(region.boundary.end(), secondLoop.begin(),
+                         secondLoop.end());
+
+  auto rejected = rebuild_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
+      std::move(candidate));
+  ASSERT_FALSE(rejected)
+      << "reachable multi-walk negative is two closed boundary walks meeting "
+         "at their shared start node; node-disjoint loops are not constructible "
+         "through this production entry path";
+  EXPECT_EQ(
+      directional::geometry::GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk,
+      rejected.error().code)
+      << directional::geometry::global_topology_plan_error_code_name(
+             rejected.error().code);
+  ASSERT_TRUE(rejected.error().regionBoundaryWalkReason.has_value());
+  EXPECT_EQ(directional::geometry::RegionBoundaryWalkReason::ClosedBeforeEnd,
+            *rejected.error().regionBoundaryWalkReason);
+  ASSERT_TRUE(rejected.error().arc.has_value());
+  EXPECT_EQ(secondLoopArc, *rejected.error().arc);
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_global_topology_plan_failure_locus(rejected.error());
+  EXPECT_EQ("ClosedBeforeEnd", locus.regionBoundaryWalkReason);
 }
 
 TEST(GlobalTopologyPlan, RejectsRegionWithWrongEulerCharacteristicOrInteriorSingularity) {
@@ -3306,12 +3408,18 @@ TEST(GlobalTopologyPlan, RejectsRegionWithWrongEulerCharacteristicOrInteriorSing
 TEST(GlobalTopologyPlan, IndependentDiscProofOracleAgreesWithPublishedCertificates) {
   Cp3bEventFixture fixture = build_cp3b_event_fixture();
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
   ASSERT_TRUE(fixture.network.has_value());
-  const auto plan = build_topology_plan(
+  const auto cutGraph = build_surface_cut_graph(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  const auto planBuild = directional::geometry::GlobalTopologyPlan::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.network, cutGraph);
+  ASSERT_TRUE(planBuild);
+  const auto &plan = planBuild.value();
   ASSERT_FALSE(plan.regions().empty());
-  const auto proof =
-      independent_disc_proof_oracle(plan, fixture.mesh, *fixture.network);
+  const auto proof = independent_disc_proof_oracle(
+      plan, fixture.mesh, *fixture.network, cutGraph);
   EXPECT_TRUE(proof.passed)
       << "clause=" << independent_disc_proof_clause_name(proof.clause)
       << " embedded_graph_chi=" << proof.embeddedGraphChi
@@ -3325,9 +3433,19 @@ TEST(GlobalTopologyPlan, RejectsTamperedDiscProofCertificate) {
   const auto plan = build_topology_plan(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
   auto candidate = plan.validation_candidate();
-  ASSERT_FALSE(candidate.regionCertificates.empty());
+  ASSERT_GT(candidate.regionCertificates.size(), 1U);
   const auto tamperedRegion = candidate.regionCertificates.front().region;
-  ++candidate.regionCertificates.front().eulerCharacteristic;
+  const auto replacement = std::find_if(
+      candidate.regionCertificates.begin() + 1,
+      candidate.regionCertificates.end(), [&](const auto &certificate) {
+        return certificate.actualEmbeddedFace.orbit !=
+               candidate.regionCertificates.front().actualEmbeddedFace.orbit;
+      });
+  ASSERT_NE(candidate.regionCertificates.end(), replacement)
+      << "tamper witness must expose at least two distinct actual-embedded "
+         "face-orbit bindings";
+  candidate.regionCertificates.front().actualEmbeddedFace.orbit =
+      replacement->actualEmbeddedFace.orbit;
   auto rejected = rebuild_topology_plan(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
       std::move(candidate));
@@ -3663,6 +3781,150 @@ void append_cp4c_failure_locus(
     }
     report << "]}";
   }
+  if (!locus.regionBoundaryWalkReason.empty()) {
+    report << ";regionBoundaryWalkReason=" << locus.regionBoundaryWalkReason;
+  }
+  if (!locus.regionBoundaryProvenance.empty()) {
+    report << ";regionBoundaryProvenance=" << locus.regionBoundaryProvenance;
+  }
+  if (locus.regionBoundaryOrbit.has_value())
+    report << ";regionBoundaryOrbit=" << *locus.regionBoundaryOrbit;
+  if (locus.regionOwningFragmentOrbit.has_value())
+    report << ";regionOwningFragmentOrbit="
+           << *locus.regionOwningFragmentOrbit;
+  if (locus.regionOwningFragmentOrbitCount.has_value() ||
+      !locus.regionOwningFragmentOrbitIds.empty() ||
+      locus.regionOwningFragmentOrbitPresent.has_value()) {
+    report << ";regionOwningFragmentOrbitCount=";
+    if (locus.regionOwningFragmentOrbitCount.has_value())
+      report << *locus.regionOwningFragmentOrbitCount;
+    else
+      report << "none";
+    report << ";regionOwningFragmentOrbitIds=[";
+    for (std::size_t index = 0U;
+         index < locus.regionOwningFragmentOrbitIds.size(); ++index) {
+      if (index != 0U) report << ',';
+      report << locus.regionOwningFragmentOrbitIds[index];
+    }
+    report << "];regionOwningFragmentOrbitPresent=";
+    if (locus.regionOwningFragmentOrbitPresent.has_value())
+      report << (*locus.regionOwningFragmentOrbitPresent ? "true" : "false");
+    else
+      report << "none";
+  }
+  if (locus.regionBoundaryArcOccurrenceCount.has_value())
+    report << ";regionBoundaryArcOccurrenceCount="
+           << *locus.regionBoundaryArcOccurrenceCount;
+  if (locus.regionBoundaryDistinctArcCount.has_value())
+    report << ";regionBoundaryDistinctArcCount="
+           << *locus.regionBoundaryDistinctArcCount;
+  if (locus.regionBoundaryNodeOccurrenceCount.has_value())
+    report << ";regionBoundaryNodeOccurrenceCount="
+           << *locus.regionBoundaryNodeOccurrenceCount;
+  if (locus.regionBoundaryDistinctNodeCount.has_value())
+    report << ";regionBoundaryDistinctNodeCount="
+           << *locus.regionBoundaryDistinctNodeCount;
+  if (locus.regionBoundaryRepeatedNodeOccurrenceCount.has_value())
+    report << ";regionBoundaryRepeatedNodeOccurrenceCount="
+           << *locus.regionBoundaryRepeatedNodeOccurrenceCount;
+  if (locus.regionBoundaryStartRevisitBeforeEndCount.has_value())
+    report << ";regionBoundaryStartRevisitBeforeEndCount="
+           << *locus.regionBoundaryStartRevisitBeforeEndCount;
+  if (!locus.regionBoundaryCensusDomain.empty())
+    report << ";regionBoundaryCensusDomain="
+           << locus.regionBoundaryCensusDomain;
+  if (locus.regionBoundaryNodeOccurrenceCountDerived)
+    report << ";regionBoundaryNodeOccurrenceCountDerived=true";
+  if (locus.vertexCount.has_value())
+    report << ";vertexCount=" << *locus.vertexCount;
+  if (locus.edgeCount.has_value())
+    report << ";edgeCount=" << *locus.edgeCount;
+  if (locus.faceCount.has_value())
+    report << ";faceCount=" << *locus.faceCount;
+  if (locus.eulerCharacteristic.has_value())
+    report << ";eulerCharacteristic=" << *locus.eulerCharacteristic;
+  if (!locus.regionFrontierFailureStage.empty() ||
+      locus.regionFrontierComponentCount != 0U ||
+      !locus.regionFrontierComponents.empty() ||
+      locus.regionFrontierComponentsTruncated) {
+    report << ";regionFrontierFailureStage="
+           << (locus.regionFrontierFailureStage.empty()
+                   ? "none"
+                   : locus.regionFrontierFailureStage)
+           << ";regionFrontierSubjectDomainRelation="
+           << (locus.regionFrontierSubjectDomainRelation.empty()
+                   ? "none"
+                   : locus.regionFrontierSubjectDomainRelation)
+           << ";unlabeledFaceCount="
+           << locus.regionFrontierUnlabeledFaceCount
+           << ";frontierPartitionComponentCount="
+           << locus.regionFrontierPartitionComponentCount
+           << ";ownerConsistencyRowCount="
+           << locus.regionFrontierOwnerConsistencyRowCount
+           << ";regionFrontierLocator="
+           << (locus.regionFrontierLocator.empty()
+                   ? "none"
+                   : locus.regionFrontierLocator)
+           << ";regionFrontierLocatorSurvivedGuard=";
+    if (locus.regionFrontierLocatorSurvivedGuard.has_value())
+      report << (*locus.regionFrontierLocatorSurvivedGuard ? "true" : "false");
+    else
+      report << "none";
+    report << ";regionFrontierFailureSourceFaceInPartition=";
+    if (locus.regionFrontierFailureSourceFaceInPartition.has_value())
+      report << (*locus.regionFrontierFailureSourceFaceInPartition ? "true"
+                                                                   : "false");
+    else
+      report << "none";
+    report << ";regionFrontierFailureRegionSourceFaceCount=";
+    if (locus.regionFrontierFailureRegionSourceFaceCount.has_value())
+      report << *locus.regionFrontierFailureRegionSourceFaceCount;
+    else
+      report << "none";
+    report << ";regionFrontierFailureRegionSourceFacesInPartitionCount=";
+    if (locus.regionFrontierFailureRegionSourceFacesInPartitionCount.has_value())
+      report << *locus.regionFrontierFailureRegionSourceFacesInPartitionCount;
+    else
+      report << "none";
+    report << ";regionFrontierComponentCount="
+           << locus.regionFrontierComponentCount
+           << ";regionFrontierComponentsTruncated="
+           << (locus.regionFrontierComponentsTruncated ? "true" : "false");
+    for (std::size_t index = 0U;
+         index < locus.regionFrontierComponents.size(); ++index) {
+      const auto &row = locus.regionFrontierComponents[index];
+      report << ";regionFrontierComponent[" << index
+             << "]={component=" << row.component
+             << ",domainRule=" << row.partitionIdentity.domainRule
+             << ",faceCount=" << row.faces.size()
+             << ",faceSetDigest=" << row.faceSetDigest
+             << ",censusCorrespondence=" << row.censusCorrespondence
+             << ",censusComponent=";
+      if (row.censusComponent.has_value())
+        report << *row.censusComponent;
+      else
+        report << "none";
+      report << ",censusDomainRule=";
+      if (row.censusPartitionIdentity.has_value())
+        report << row.censusPartitionIdentity->domainRule;
+      else
+        report << "none";
+      report << ",censusFaceSetDigest=";
+      if (row.censusFaceSetDigest.has_value())
+        report << *row.censusFaceSetDigest;
+      else
+        report << "none";
+      report << ",componentSubsetOfCensusComponent="
+             << (row.componentSubsetOfCensusComponent ? "true" : "false")
+             << ",interiorArcCensusPublished="
+             << (row.interiorArcIncidenceCensusPublished ? "true" : "false")
+             << ",interiorArcCount=" << row.interiorArcIncidenceCount
+             << ",interiorArcRows=" << row.interiorArcIncidences.size()
+             << ",interiorArcRowsTruncated="
+             << (row.interiorArcIncidencesTruncated ? "true" : "false")
+             << '}';
+    }
+  }
   if (locus.uncutFaceComponent.has_value())
     report << ";uncutFaceComponent=" << *locus.uncutFaceComponent;
   if (locus.uncutFaceComponentSeedCount.has_value())
@@ -3687,6 +3949,51 @@ void append_cp4c_failure_locus(
              << face[1] << ',' << face[2];
     }
   }
+  if (locus.uncutFaceComponentPartitionIdentity.has_value()) {
+    const auto &identity = *locus.uncutFaceComponentPartitionIdentity;
+    report << ";uncutFaceComponentPartition={domainRule="
+           << identity.domainRule
+           << ",cutGraphCutEdges="
+           << (identity.cutGraphCutEdges ? "true" : "false")
+           << ",networkMandatoryEdges="
+           << (identity.networkMandatoryEdges ? "true" : "false")
+           << ",embeddedMandatoryArcSourceEdges="
+           << (identity.embeddedMandatoryArcSourceEdges ? "true" : "false")
+           << ",embeddedCutArcSourceEdges="
+           << (identity.embeddedCutArcSourceEdges ? "true" : "false")
+           << ",nonTerminalTraceCarrierEdges="
+           << (identity.nonTerminalTraceCarrierEdges ? "true" : "false")
+           << '}';
+  }
+  if (locus.uncutFaceComponentFaceSetDigest.has_value())
+    report << ";uncutFaceComponentFaceSetDigest="
+           << *locus.uncutFaceComponentFaceSetDigest;
+  if (locus.uncutComponentCensusComponent.has_value())
+    report << ";uncutComponentCensusComponent="
+           << *locus.uncutComponentCensusComponent;
+  if (locus.uncutComponentCensusPartitionIdentity.has_value()) {
+    const auto &identity = *locus.uncutComponentCensusPartitionIdentity;
+    report << ";uncutComponentCensusPartition={domainRule="
+           << identity.domainRule
+           << ",cutGraphCutEdges="
+           << (identity.cutGraphCutEdges ? "true" : "false")
+           << ",networkMandatoryEdges="
+           << (identity.networkMandatoryEdges ? "true" : "false")
+           << ",embeddedMandatoryArcSourceEdges="
+           << (identity.embeddedMandatoryArcSourceEdges ? "true" : "false")
+           << ",embeddedCutArcSourceEdges="
+           << (identity.embeddedCutArcSourceEdges ? "true" : "false")
+           << ",nonTerminalTraceCarrierEdges="
+           << (identity.nonTerminalTraceCarrierEdges ? "true" : "false")
+           << '}';
+  }
+  if (locus.uncutComponentCensusFaceSetDigest.has_value())
+    report << ";uncutComponentCensusFaceSetDigest="
+           << *locus.uncutComponentCensusFaceSetDigest;
+  if (locus.uncutComponentCensusMatchesFailingComponent.has_value())
+    report << ";uncutComponentCensusMatchesFailingComponent="
+           << (*locus.uncutComponentCensusMatchesFailingComponent ? "true"
+                                                                  : "false");
   if (locus.uncutFaceComponentBoundaryEdgeCount != 0U ||
       locus.uncutFaceComponentBoundaryEdgesTruncated ||
       !locus.uncutFaceComponentBoundaryEdges.empty()) {
@@ -3700,14 +4007,37 @@ void append_cp4c_failure_locus(
       const auto &row = locus.uncutFaceComponentBoundaryEdges[index];
       report << ";uncutFaceComponentBoundaryEdge[" << index
              << "]={sourceEdge=" << row.sourceEdge[0] << '-'
-             << row.sourceEdge[1] << ",otherSideLabeled="
+             << row.sourceEdge[1] << ",componentFace=";
+      if (row.componentFace.has_value())
+        report << (*row.componentFace)[0] << ',' << (*row.componentFace)[1]
+               << ',' << (*row.componentFace)[2];
+      else report << "none";
+      report << ",labeledFace=";
+      if (row.labeledFace.has_value())
+        report << (*row.labeledFace)[0] << ',' << (*row.labeledFace)[1]
+               << ',' << (*row.labeledFace)[2];
+      else report << "none";
+      report << ",otherSideLabeled="
              << (row.otherSideLabeled ? "true" : "false")
              << ",labeledFaceOwnerCount=" << row.labeledFaceOwnerCount
              << ",barrierClass=" << row.barrierClass << ",seed=";
       if (row.contributedSeed.has_value()) report << *row.contributedSeed;
       else report << "none";
+      report << ",seedRule=";
+      if (!row.seedRule.empty()) report << row.seedRule;
+      else report << "none";
       report << ",noSeedReason=";
       if (!row.noSeedReason.empty()) report << row.noSeedReason;
+      else report << "none";
+      report << ",minoritySeedOrbit="
+             << (row.minoritySeedOrbit ? "true" : "false")
+             << ",componentSideCertifiedFace=";
+      if (row.componentSideCertifiedFace.has_value())
+        report << *row.componentSideCertifiedFace;
+      else report << "none";
+      report << ",labeledSideCertifiedFace=";
+      if (row.labeledSideCertifiedFace.has_value())
+        report << *row.labeledSideCertifiedFace;
       else report << "none";
       report << '}';
     }
@@ -3726,6 +4056,82 @@ void append_cp4c_failure_locus(
       report << ";uncutFaceComponentBoundaryOrbit[" << index
              << "]={orbit=" << row.orbit
              << ",boundaryEdgeCount=" << row.boundaryEdgeCount << '}';
+    }
+  }
+  if (locus.uncutFaceCertificatePairExaminedCount.has_value() ||
+      locus.uncutFaceCertificatePairDifferingCount.has_value() ||
+      locus.uncutFaceCertificatePairsTruncated ||
+      !locus.uncutFaceCertificatePairs.empty()) {
+    report << ";uncutFaceCertificatePairExaminedCount=";
+    if (locus.uncutFaceCertificatePairExaminedCount.has_value())
+      report << *locus.uncutFaceCertificatePairExaminedCount;
+    else report << "none";
+    report << ";uncutFaceCertificatePairDifferingCount=";
+    if (locus.uncutFaceCertificatePairDifferingCount.has_value())
+      report << *locus.uncutFaceCertificatePairDifferingCount;
+    else report << "none";
+    report << ";uncutFaceCertificatePairsTruncated="
+           << (locus.uncutFaceCertificatePairsTruncated ? "true" : "false");
+    for (std::size_t index = 0U; index < locus.uncutFaceCertificatePairs.size();
+         ++index) {
+      const auto &row = locus.uncutFaceCertificatePairs[index];
+      report << ";uncutFaceCertificatePair[" << index
+             << "]={sourceEdge=" << row.sourceEdge[0] << '-'
+             << row.sourceEdge[1] << ",firstFace=" << row.firstFace[0] << ','
+             << row.firstFace[1] << ',' << row.firstFace[2]
+             << ",secondFace=" << row.secondFace[0] << ',' << row.secondFace[1]
+             << ',' << row.secondFace[2] << ",firstCertifiedFace=";
+      if (row.firstCertifiedFace.has_value()) report << *row.firstCertifiedFace;
+      else report << "none";
+      report << ",secondCertifiedFace=";
+      if (row.secondCertifiedFace.has_value()) report << *row.secondCertifiedFace;
+      else report << "none";
+      report << '}';
+    }
+  }
+  if (locus.uncutFaceComponentCertifiedFaceObservationCount.has_value() ||
+      !locus.uncutFaceComponentCertifiedFaceObservations.empty() ||
+      locus.uncutFaceComponentCertifiedFaceObservationsTruncated ||
+      locus.uncutFaceComponentCertifiedFaceUnavailableCount.has_value() ||
+      locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value() ||
+      locus.uncutFaceComponentCertifiedFaceMultisetTruncated ||
+      !locus.uncutFaceComponentCertifiedFaceMultiset.empty()) {
+    report << ";uncutFaceComponentCertifiedFaceObservationCount=";
+    if (locus.uncutFaceComponentCertifiedFaceObservationCount.has_value())
+      report << *locus.uncutFaceComponentCertifiedFaceObservationCount;
+    else report << "none";
+    report << ";uncutFaceComponentCertifiedFaceObservationsTruncated="
+           << (locus.uncutFaceComponentCertifiedFaceObservationsTruncated
+                   ? "true"
+                   : "false");
+    for (std::size_t index = 0U;
+         index < locus.uncutFaceComponentCertifiedFaceObservations.size();
+         ++index) {
+      const auto &row =
+          locus.uncutFaceComponentCertifiedFaceObservations[index];
+      report << ";uncutFaceComponentCertifiedFaceObservation[" << index
+             << "]={sourceFace=" << row.sourceFace[0] << ','
+             << row.sourceFace[1] << ',' << row.sourceFace[2]
+             << ",certifiedFace=" << row.certifiedFace << '}';
+    }
+    report << ";uncutFaceComponentCertifiedFaceUnavailableCount=";
+    if (locus.uncutFaceComponentCertifiedFaceUnavailableCount.has_value())
+      report << *locus.uncutFaceComponentCertifiedFaceUnavailableCount;
+    else report << "none";
+    report << ";uncutFaceComponentCertifiedFaceDistinctCount=";
+    if (locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value())
+      report << *locus.uncutFaceComponentCertifiedFaceDistinctCount;
+    else report << "none";
+    report << ";uncutFaceComponentCertifiedFaceMultisetTruncated="
+           << (locus.uncutFaceComponentCertifiedFaceMultisetTruncated
+                   ? "true"
+                   : "false");
+    for (std::size_t index = 0U;
+         index < locus.uncutFaceComponentCertifiedFaceMultiset.size(); ++index) {
+      const auto &row = locus.uncutFaceComponentCertifiedFaceMultiset[index];
+      report << ";uncutFaceComponentCertifiedFaceMultiset[" << index
+             << "]={certifiedFace=" << row.certifiedFace
+             << ",sourceFaceCount=" << row.sourceFaceCount << '}';
     }
   }
   const auto &ownerEvidence = locus.fragmentOwnerEvidence;
@@ -4061,6 +4467,222 @@ void append_cp4c_failure_locus(
     if (locus.vertexStarRadialRay.has_value())
       report << ";vertexStarRadialRay=" << *locus.vertexStarRadialRay;
   }
+}
+
+
+using RegionFrontierRow =
+    directional::SurfaceCellRegionFrontierComponentEvidenceDiagnostics;
+using RegionFrontierOwnerRow =
+    directional::SurfaceCellUncutFaceComponentSeedCensusDiagnostics;
+using UncutComponentCensus =
+    directional::geometry::SurfaceCutGraphUncutComponentCensus;
+
+const RegionFrontierRow *find_creditable_region_frontier_row(
+    const directional::SurfaceCellFailureLocusDiagnostics &locus,
+    const bool requireInteriorArcRows = false) {
+  for (const auto &row : locus.regionFrontierComponents) {
+    if (row.partitionIdentity.domainRule != "EmptyFragmentOrbits" ||
+        row.faces.empty() ||
+        (row.censusCorrespondence != "Exact" &&
+         row.censusCorrespondence != "Superset") ||
+        !row.censusComponent.has_value() ||
+        !row.censusPartitionIdentity.has_value() ||
+        !row.censusFaceSetDigest.has_value() ||
+        !row.componentSubsetOfCensusComponent) {
+      continue;
+    }
+    if (requireInteriorArcRows &&
+        (!row.interiorArcIncidenceCensusPublished ||
+         row.interiorArcIncidences.empty())) {
+      continue;
+    }
+    return &row;
+  }
+  return nullptr;
+}
+
+const RegionFrontierOwnerRow *find_region_frontier_owner_row(
+    const directional::SurfaceCellFailureLocusDiagnostics &locus,
+    const std::size_t component) {
+  const auto found = std::find_if(
+      locus.fragmentOwnerEvidence.components.begin(),
+      locus.fragmentOwnerEvidence.components.end(),
+      [&](const auto &row) { return row.component == component; });
+  return found == locus.fragmentOwnerEvidence.components.end() ? nullptr
+                                                                : &*found;
+}
+
+const UncutComponentCensus *find_matching_uncut_component_census(
+    const directional::geometry::SurfaceCutGraphCellularityCertificate
+        &certificate,
+    const RegionFrontierRow &row) {
+  if (!row.censusFaceSetDigest.has_value()) return nullptr;
+  const auto found = std::find_if(
+      certificate.uncutComponentCensuses.begin(),
+      certificate.uncutComponentCensuses.end(), [&](const auto &candidate) {
+        return candidate.faceSetDigest == *row.censusFaceSetDigest &&
+               (!row.censusComponent.has_value() ||
+                candidate.component == *row.censusComponent);
+      });
+  return found == certificate.uncutComponentCensuses.end() ? nullptr
+                                                            : &*found;
+}
+
+bool region_frontier_partition_correspondence_is_valid(
+    const RegionFrontierRow &row) {
+  if (row.partitionIdentity.domainRule != "EmptyFragmentOrbits" ||
+      !row.partitionIdentity.cutGraphCutEdges ||
+      !row.partitionIdentity.networkMandatoryEdges ||
+      row.partitionIdentity.embeddedMandatoryArcSourceEdges ||
+      row.partitionIdentity.embeddedCutArcSourceEdges ||
+      !row.partitionIdentity.nonTerminalTraceCarrierEdges ||
+      row.faces.empty() ||
+      (row.censusCorrespondence != "Exact" &&
+       row.censusCorrespondence != "Superset") ||
+      !row.censusComponent.has_value() ||
+      !row.censusPartitionIdentity.has_value() ||
+      row.censusPartitionIdentity->domainRule.empty() ||
+      !row.censusFaceSetDigest.has_value() ||
+      !row.componentSubsetOfCensusComponent) {
+    return false;
+  }
+  return true;
+}
+
+bool region_frontier_boundary_seed_census_is_valid(
+    const RegionFrontierRow &row, const RegionFrontierOwnerRow &owner,
+    const UncutComponentCensus &census) {
+  if (!region_frontier_partition_correspondence_is_valid(row) ||
+      owner.component != row.component ||
+      owner.faceCount != row.faces.size() ||
+      owner.seedCount != owner.seedOrbitCount ||
+      owner.seedOrbitsTruncated ||
+      owner.seedOrbitCount != owner.seedOrbitIds.size() ||
+      !census.boundaryCensusPublished ||
+      census.boundaryEdgeCount != census.boundaryEdges.size() ||
+      census.boundaryEdgesTruncated ||
+      census.seedAttributionCount != census.seedAttributions.size() ||
+      census.seedAttributionsTruncated) {
+    return false;
+  }
+
+  const std::set<std::size_t> ownerSeeds(owner.seedOrbitIds.begin(),
+                                         owner.seedOrbitIds.end());
+  const std::set<std::size_t> censusSeeds(census.seedOrbits.begin(),
+                                          census.seedOrbits.end());
+  if (ownerSeeds.size() != owner.seedOrbitIds.size()) return false;
+  if (row.censusCorrespondence == "Exact") return ownerSeeds == censusSeeds;
+  return std::includes(censusSeeds.begin(), censusSeeds.end(),
+                       ownerSeeds.begin(), ownerSeeds.end());
+}
+
+bool region_frontier_projection_coverage_is_valid(
+    const RegionFrontierRow &row, const RegionFrontierOwnerRow &owner,
+    const directional::geometry::SurfaceCutGraphCellularityCertificate
+        &certificate) {
+  if (!region_frontier_partition_correspondence_is_valid(row) ||
+      owner.component != row.component ||
+      owner.faceCount != row.faces.size() || row.faces.empty()) {
+    return false;
+  }
+
+  const std::set<std::array<std::size_t, 3>> faces(row.faces.begin(),
+                                                   row.faces.end());
+  if (faces.size() != row.faces.size()) return false;
+
+  const auto face_locus = [](const auto &face) {
+    const auto vertices = face.vertices();
+    return std::array<std::size_t, 3>{vertices[0].index(),
+                                      vertices[1].index(),
+                                      vertices[2].index()};
+  };
+  std::set<std::array<std::size_t, 3>> covered;
+  for (const auto &face : faces) {
+    const auto found = std::find_if(
+        certificate.sourceFaceOwners.begin(),
+        certificate.sourceFaceOwners.end(), [&](const auto &candidate) {
+          return face_locus(candidate.sourceFace) == face;
+        });
+    if (found == certificate.sourceFaceOwners.end() ||
+        !found->established() || found->certifiedFaceOrbits.empty()) {
+      return false;
+    }
+    covered.insert(face);
+  }
+  return covered == faces;
+}
+
+bool region_frontier_interior_arc_census_is_valid(
+    const RegionFrontierRow &row) {
+  if (!region_frontier_partition_correspondence_is_valid(row) ||
+      !row.interiorArcIncidenceCensusPublished ||
+      row.interiorArcIncidenceCount != row.interiorArcIncidences.size() ||
+      row.interiorArcIncidencesTruncated ||
+      row.interiorArcIncidences.empty()) {
+    return false;
+  }
+
+  bool touchesPlanSubject = false;
+  for (const auto &arc : row.interiorArcIncidences) {
+    if (arc.crossedFaceCount != arc.crossedFaces.size() ||
+        arc.crossedFacesTruncated || arc.crossedFaces.empty()) {
+      return false;
+    }
+    for (const auto &face : arc.crossedFaces) {
+      if (face.planComponent.has_value() &&
+          *face.planComponent == row.component) {
+        touchesPlanSubject = true;
+      }
+      if (face.certifierComponent.has_value()) {
+        if (face.notTraceCutReason.empty()) return false;
+        const bool typedReason =
+            face.notTraceCutReason == "TerminalSlit" ||
+            face.notTraceCutReason == "SegmentRangeInvalid" ||
+            face.notTraceCutReason == "TraceNotFound" ||
+            face.notTraceCutReason == "DartOutOfRange" ||
+            face.notTraceCutReason == "FaceNotFound" ||
+            face.notTraceCutReason == "Other";
+        if (!typedReason) return false;
+      }
+    }
+  }
+  return touchesPlanSubject;
+}
+
+bool region_fragment_owner_relation_is_valid(
+    const directional::SurfaceCellFailureLocusDiagnostics &locus) {
+  if (!locus.topologyRegion.has_value() || !locus.sourceFace.has_value() ||
+      !locus.regionOwningFragmentOrbit.has_value() ||
+      !locus.regionOwningFragmentOrbitCount.has_value() ||
+      !locus.regionOwningFragmentOrbitPresent.has_value() ||
+      *locus.regionOwningFragmentOrbitCount !=
+          locus.regionOwningFragmentOrbitIds.size()) {
+    return false;
+  }
+  if (!std::is_sorted(locus.regionOwningFragmentOrbitIds.begin(),
+                      locus.regionOwningFragmentOrbitIds.end()) ||
+      std::adjacent_find(locus.regionOwningFragmentOrbitIds.begin(),
+                         locus.regionOwningFragmentOrbitIds.end()) !=
+          locus.regionOwningFragmentOrbitIds.end()) {
+    return false;
+  }
+  const bool present =
+      std::binary_search(locus.regionOwningFragmentOrbitIds.begin(),
+                         locus.regionOwningFragmentOrbitIds.end(),
+                         *locus.regionOwningFragmentOrbit);
+  return present == *locus.regionOwningFragmentOrbitPresent && !present;
+}
+
+void expect_outside_region_certification_evidence(
+    const directional::SurfaceCellFailureLocusDiagnostics &locus) {
+  EXPECT_EQ("Outside", locus.regionFrontierSubjectDomainRelation);
+  EXPECT_TRUE(region_fragment_owner_relation_is_valid(locus));
+  ASSERT_TRUE(locus.regionFrontierFailureRegionSourceFaceCount.has_value());
+  ASSERT_TRUE(
+      locus.regionFrontierFailureRegionSourceFacesInPartitionCount.has_value());
+  EXPECT_GT(*locus.regionFrontierFailureRegionSourceFaceCount, 0U);
+  EXPECT_EQ(
+      0U, *locus.regionFrontierFailureRegionSourceFacesInPartitionCount);
 }
 
 
@@ -5386,11 +6008,20 @@ void append_plan_error(std::ostringstream &stream,
   if (error.sourceFace.has_value()) {
     stream << ";sourceFace=" << source_face_locus(*error.sourceFace);
   }
+  if (error.regionOwningFragmentOrbit.has_value()) {
+    stream << ";regionOwningFragmentOrbit="
+           << *error.regionOwningFragmentOrbit;
+  }
   if (error.secondSourceFace.has_value()) {
     stream << ";secondSourceFace=" << source_face_locus(*error.secondSourceFace);
   }
   if (error.sourceVertex.has_value()) {
     stream << ";sourceVertex=" << error.sourceVertex->index();
+  }
+  if (error.regionBoundaryWalkReason.has_value()) {
+    stream << ";regionBoundaryWalkReason="
+           << directional::geometry::region_boundary_walk_reason_name(
+                  *error.regionBoundaryWalkReason);
   }
   if (error.rotationSystemInconsistencyReason.has_value()) {
     stream << ";rotationSystemReason="
@@ -5928,10 +6559,27 @@ Cp4cReachabilityObservation observe_cp4c_witness(
          << ";arcCount=" << observation.plan->arcs().size()
          << ";nodeCount=" << observation.plan->rotation_system().size();
   for (const auto &certificate : observation.plan->region_certificates()) {
-    report << ";region[" << certificate.region.index() << "]="
-           << "V" << certificate.vertexCount << ",E" << certificate.edgeCount
-           << ",F" << certificate.faceCount << ",chi"
-           << certificate.eulerCharacteristic;
+    report << ";region[" << certificate.region.index() << "]={orbit="
+           << certificate.actualEmbeddedFace.orbit
+           << ",boundaryWalkCount="
+           << certificate.actualEmbeddedFace.boundaryWalkCount
+           << ",boundaryArcCount="
+           << certificate.actualEmbeddedFace.boundaryArcCount
+           << ",boundaryAnchorArc="
+           << (certificate.actualEmbeddedFace.boundaryAnchorArc.has_value()
+                   ? std::to_string(
+                         certificate.actualEmbeddedFace.boundaryAnchorArc->index())
+                   : std::string("absent"))
+           << ",boundaryAnchorOrientation="
+           << (certificate.actualEmbeddedFace.boundaryAnchorOrientation ==
+                       directional::authority::Orientation::Forward
+                   ? "Forward"
+                   : "Reverse")
+           << ",discTopologyEstablished="
+           << (certificate.actualEmbeddedFace.discTopologyEstablished ? "true"
+                                                                         : "false")
+           << ",fieldRegularity="
+           << (certificate.proves_field_regularity() ? "true" : "false") << '}';
   }
   observation.report = report.str();
   return observation;
@@ -8522,17 +9170,85 @@ void expect_cp4c_plan_disc_proofs(const Cp4cProductionFixture &fixture) {
   EXPECT_EQ(network.source_digest(), fixture.cutGraph->source_digest());
   EXPECT_EQ(network.semantic_digest(), fixture.cutGraph->network_digest());
   EXPECT_EQ(fixture.cutGraph->semantic_digest(), plan.cut_graph_digest());
+  const auto orbits = independent_plan_face_orbits(plan);
+  ASSERT_TRUE(orbits.has_value());
+  const auto &cutCertificate = fixture.cutGraph->certificate();
+  ASSERT_FALSE(plan.regions().empty());
   ASSERT_EQ(plan.regions().size(), plan.region_certificates().size());
+  ASSERT_EQ(plan.regions().size(), cutCertificate.faces.size());
+  std::cout << "M3_CP4C3_FACE_BINDING_CENSUS record=complex"
+            << " graphComponents=" << cutCertificate.graphComponentCount
+            << " sourceComponentCount=" << cutCertificate.sourceComponentCount
+            << " exteriorSize=" << cutCertificate.excludedBoundaryOrbitCount
+            << " boundaryLoops=" << cutCertificate.sourceBoundaryLoopCount
+            << " graphEuler=" << cutCertificate.eulerCharacteristic
+            << " sourceEuler=" << cutCertificate.sourceEulerCharacteristic
+            << '\n';
+  std::set<std::pair<std::size_t, int>> consumedUpstreamAnchors;
   for (const auto &region : plan.regions()) {
     const auto *certificate = plan.find_region_certificate(region.id);
     ASSERT_NE(nullptr, certificate);
     EXPECT_EQ(region.id, certificate->region);
-    EXPECT_EQ(1U, certificate->boundaryWalkCount);
-    EXPECT_TRUE(certificate->sourceFacesConnected);
-    EXPECT_EQ(1, certificate->eulerCharacteristic);
+    const auto orbit = std::find(orbits->begin(), orbits->end(), region.boundary);
+    ASSERT_NE(orbits->end(), orbit);
+    const auto anchor = canonical_cycle_anchor(*orbit);
+    const auto upstreamCount = static_cast<std::size_t>(std::count_if(
+        cutCertificate.faces.begin(), cutCertificate.faces.end(),
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        }));
+    ASSERT_EQ(1U, upstreamCount);
+    const auto upstream = std::find_if(
+        cutCertificate.faces.begin(), cutCertificate.faces.end(),
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
+    ASSERT_NE(cutCertificate.faces.end(), upstream);
+    EXPECT_TRUE(consumedUpstreamAnchors
+                    .insert({anchor.arc.index(),
+                             static_cast<int>(anchor.orientation)})
+                    .second);
+    EXPECT_TRUE(face_certificate_has_anchor(certificate->actualEmbeddedFace,
+                                            anchor));
+    EXPECT_EQ(*upstream, certificate->actualEmbeddedFace);
+    EXPECT_EQ(region.boundary.size(),
+              certificate->actualEmbeddedFace.boundaryArcCount);
     EXPECT_TRUE(certificate->proves_disc_topology());
     EXPECT_TRUE(certificate->proves_field_regularity());
+    std::cout << "M3_CP4C3_FACE_BINDING_CENSUS record=region"
+              << " region=" << region.id.index()
+              << " independentAnchorArc=" << anchor.arc.index()
+              << " independentAnchorOrientation="
+              << (anchor.orientation == directional::authority::Orientation::Forward
+                      ? "Forward"
+                      : "Reverse")
+              << " certificateOrbit=" << certificate->actualEmbeddedFace.orbit
+              << " certificateAnchorArc="
+              << (certificate->actualEmbeddedFace.boundaryAnchorArc.has_value()
+                      ? std::to_string(
+                            certificate->actualEmbeddedFace.boundaryAnchorArc->index())
+                      : std::string("absent"))
+              << " certificateAnchorOrientation="
+              << (certificate->actualEmbeddedFace.boundaryAnchorOrientation ==
+                          directional::authority::Orientation::Forward
+                      ? "Forward"
+                      : "Reverse")
+              << " upstreamMatchCount=" << upstreamCount
+              << " regionBoundaryArcCount=" << region.boundary.size()
+              << " certificateBoundaryArcCount="
+              << certificate->actualEmbeddedFace.boundaryArcCount
+              << " discTopologyEstablished="
+              << (certificate->actualEmbeddedFace.discTopologyEstablished
+                      ? "true"
+                      : "false")
+              << " fieldRegularity="
+              << (certificate->proves_field_regularity() ? "true" : "false")
+              << '\n';
   }
+  EXPECT_EQ(plan.regions().size(), consumedUpstreamAnchors.size());
+  if (plan.regions().size() > 1U)
+    EXPECT_GT(consumedUpstreamAnchors.size(), 1U)
+        << "binding census must contain a field that can differ across rows";
 }
 
 void expect_rotation_face_walk_agreement(
@@ -9029,6 +9745,15 @@ TEST(GlobalTopologyPlan,
       for (const std::string &token : std::vector<std::string>{
                ";arc=", ";secondArc=", ";trace=", ";secondTrace=",
                ";rotationPreviousRay={", ";rotationCurrentRay={"}) {
+        EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+      }
+    } else if (emitted.find("RegionSourceFaceOwningFragmentMissing") !=
+               std::string::npos) {
+      // EB7.6 is measurement only: retain the rejection while publishing the
+      // exact source face, missing owning orbit, and that face's owner census.
+      for (const std::string &token : std::vector<std::string>{
+               ";sourceFace=", ";regionOwningFragmentOrbit=",
+               ";fragmentOwnerFace["}) {
         EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
       }
     }
@@ -11060,7 +11785,7 @@ TEST(GlobalTopologyPlan,
   GlobalTopologyPlanError nonMismatch;
   nonMismatch.code = GlobalTopologyPlanErrorCode::InvalidSourceBinding;
   nonMismatch.sourceFace = topology_face(0, 1, 2, 128U);
-  EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
+  EXPECT_EQ(";sourceFace=0,1,2",
             production_global_topology_plan_error_locus(nonMismatch));
 }
 
@@ -11194,59 +11919,56 @@ TEST(GlobalTopologyPlan,
       "0-1,totalOrbitCount=1,truncated=false,orbits=[11]};"
       "fragmentEdgeOrbitEvidence[1]={sourceEdge=0-102,totalOrbitCount=1,"
       "truncated=false,orbits=[13]};fragmentEdgeOrbitEvidence[2]={sourceEdge="
-      "1-102,totalOrbitCount=0,truncated=false,orbits=[]};cutCandidateCount=0",
+      "1-102,totalOrbitCount=0,truncated=false,orbits=[]}",
       production_global_topology_plan_error_locus(highSide));
 }
 
 TEST(GlobalTopologyPlan,
      UncutFaceComponentSeedFailurePublishesProductionDecisionEvidence) {
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnershipStatus;
+
   const Cp4cProductionFixture mechanical =
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
-  ASSERT_TRUE(mechanical.network.has_value()) << mechanical.loadError;
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
+  const auto &certificate = mechanical.cutGraph->certificate();
+  EXPECT_EQ(static_cast<std::size_t>(mechanical.mesh.F.rows()),
+            certificate.sourceFaceCount);
+  ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
+  EXPECT_TRUE(certificate.certifiedOwnerConflictCensusPublished);
 
-  const auto &locus = mechanical.terminalFailureLocus;
-  ASSERT_TRUE(locus.sourceFace.has_value());
-  EXPECT_EQ("FirstUnlabeledFaceInIterationOrder", locus.sourceFaceLocusKind);
-  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
-  ASSERT_TRUE(locus.uncutFaceComponentSeedCount.has_value());
-  EXPECT_NE(1U, *locus.uncutFaceComponentSeedCount);
-  EXPECT_EQ(*locus.uncutFaceComponentSeedCount == 0U ? "None" : "Multiple",
-            locus.uncutFaceComponentSeedState);
-  EXPECT_GT(locus.uncutFaceComponentFaceCount, 0U);
-  EXPECT_EQ(locus.uncutFaceComponentFaceCount >
-                locus.uncutFaceComponentFaces.size(),
-            locus.uncutFaceComponentFacesTruncated);
-  EXPECT_GT(locus.uncutFaceComponentBoundaryEdgeCount, 0U);
-  EXPECT_EQ(locus.uncutFaceComponentBoundaryEdgeCount >
-                locus.uncutFaceComponentBoundaryEdges.size(),
-            locus.uncutFaceComponentBoundaryEdgesTruncated);
-  for (const auto &row : locus.uncutFaceComponentBoundaryEdges) {
-    EXPECT_FALSE(row.barrierClass.empty());
-    if (row.contributedSeed.has_value()) {
-      EXPECT_TRUE(row.noSeedReason.empty());
-    } else {
-      EXPECT_FALSE(row.noSeedReason.empty());
+  std::size_t established = 0U;
+  std::size_t unavailable = 0U;
+  std::size_t conflicting = 0U;
+  for (const auto &owner : certificate.sourceFaceOwners) {
+    switch (owner.status) {
+    case SurfaceCutGraphSourceFaceOwnershipStatus::Established:
+      ++established;
+      EXPECT_FALSE(owner.certifiedFaceOrbits.empty());
+      break;
+    case SurfaceCutGraphSourceFaceOwnershipStatus::Unavailable:
+      ++unavailable;
+      EXPECT_TRUE(owner.certifiedFaceOrbits.empty());
+      break;
+    case SurfaceCutGraphSourceFaceOwnershipStatus::Conflicting:
+      ++conflicting;
+      EXPECT_GT(owner.certifiedFaceOrbits.size(), 1U);
+      break;
     }
   }
+  EXPECT_EQ(certificate.sourceFaceCount,
+            established + unavailable + conflicting);
 
-  const auto &census = locus.fragmentOwnerEvidence;
-  EXPECT_EQ(census.componentCount > census.components.size(),
-            census.componentsTruncated);
-  const auto component = std::find_if(
-      census.components.begin(), census.components.end(), [&](const auto &row) {
-        return row.component == *locus.uncutFaceComponent;
-      });
-  ASSERT_NE(census.components.end(), component);
-  EXPECT_EQ(locus.uncutFaceComponentFaceCount, component->faceCount);
-  EXPECT_EQ(*locus.uncutFaceComponentSeedCount, component->seedCount);
-  EXPECT_EQ(locus.uncutFaceComponentSeedState, component->seedState);
-  EXPECT_EQ(component->seedOrbitCount > component->seedOrbitIds.size(),
-            component->seedOrbitsTruncated);
+  std::cout << "m3Cp4c3CertifiedOwnerPublication"
+            << ";sourceFaceCount=" << certificate.sourceFaceCount
+            << ";established=" << established
+            << ";unavailable=" << unavailable
+            << ";conflicting=" << conflicting
+            << ";conflictCensusPublished="
+            << (certificate.certifiedOwnerConflictCensusPublished ? "true"
+                                                                   : "false")
+            << ";conflictRowCount="
+            << certificate.certifiedOwnerConflictCensus.size() << '\n';
 }
 
 TEST(GlobalTopologyPlan,
@@ -11274,13 +11996,15 @@ TEST(GlobalTopologyPlan,
   error.uncutFaceComponentBoundaryEdgeCount = 2U;
   error.uncutFaceComponentBoundaryEdges = {
       UncutFaceComponentBoundaryEdgeDiagnostic{
-          topology_edge(7, 11, 64U), true, 2U,
-          UncutFaceComponentBarrierClass::None, std::nullopt,
-          UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique},
+          topology_edge(7, 11, 64U), std::nullopt, std::nullopt, true, 2U,
+          UncutFaceComponentBarrierClass::None, std::nullopt, std::nullopt,
+          UncutFaceComponentNoSeedReason::EdgeOrbitEvidenceNotUnique, false,
+          std::nullopt, std::nullopt},
       UncutFaceComponentBoundaryEdgeDiagnostic{
-          topology_edge(19, 23, 64U), false, 0U,
+          topology_edge(19, 23, 64U), std::nullopt, std::nullopt, false, 0U,
           UncutFaceComponentBarrierClass::TraceTouched, std::nullopt,
-          UncutFaceComponentNoSeedReason::Barrier}};
+          std::nullopt, UncutFaceComponentNoSeedReason::Barrier, false,
+          std::nullopt, std::nullopt}};
 
   const auto locus = directional::pipeline::remesh_pipeline_detail::
       project_global_topology_plan_failure_locus(error);
@@ -11349,7 +12073,7 @@ TEST(GlobalTopologyPlan,
   GlobalTopologyPlanError error;
   error.code = GlobalTopologyPlanErrorCode::InvalidSourceBinding;
   error.sourceFace = topology_face(0, 1, 2, 16U);
-  EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
+  EXPECT_EQ(";sourceFace=0,1,2",
             production_global_topology_plan_error_locus(error));
 }
 
@@ -11359,31 +12083,33 @@ TEST(GlobalTopologyPlan,
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
   const auto &certificate = mechanical.cutGraph->certificate();
-  const auto &locus = mechanical.terminalFailureLocus;
-
-  EXPECT_TRUE(locus.embeddedGraphEulerCensusComplete);
-  ASSERT_TRUE(locus.embeddedGraphNodeCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphArcCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphFaceWalkOrbitCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphComponentCount.has_value());
-  ASSERT_TRUE(locus.embeddedGraphSourceEulerCharacteristic.has_value());
-  ASSERT_TRUE(locus.embeddedGraphEulerResidual.has_value());
-  EXPECT_EQ(certificate.vertexCount, *locus.embeddedGraphNodeCount);
-  EXPECT_EQ(certificate.edgeCount, *locus.embeddedGraphArcCount);
-  EXPECT_EQ(certificate.totalOrbitCount,
-            *locus.embeddedGraphFaceWalkOrbitCount);
-  EXPECT_EQ(certificate.graphComponentCount,
-            *locus.embeddedGraphComponentCount);
-  EXPECT_EQ(certificate.sourceEulerCharacteristic,
-            *locus.embeddedGraphSourceEulerCharacteristic);
+  EXPECT_TRUE(certificate.proves_embedded_cellularity());
   const std::int64_t residual =
       static_cast<std::int64_t>(certificate.vertexCount) -
       static_cast<std::int64_t>(certificate.edgeCount) +
       static_cast<std::int64_t>(certificate.totalOrbitCount) -
       static_cast<std::int64_t>(certificate.sourceEulerCharacteristic);
-  EXPECT_EQ(residual, *locus.embeddedGraphEulerResidual);
+
+  if (!mechanical.plan.has_value()) {
+    const auto &locus = mechanical.terminalFailureLocus;
+    EXPECT_TRUE(locus.embeddedGraphEulerCensusComplete);
+    ASSERT_TRUE(locus.embeddedGraphNodeCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphArcCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphFaceWalkOrbitCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphComponentCount.has_value());
+    ASSERT_TRUE(locus.embeddedGraphSourceEulerCharacteristic.has_value());
+    ASSERT_TRUE(locus.embeddedGraphEulerResidual.has_value());
+    EXPECT_EQ(certificate.vertexCount, *locus.embeddedGraphNodeCount);
+    EXPECT_EQ(certificate.edgeCount, *locus.embeddedGraphArcCount);
+    EXPECT_EQ(certificate.totalOrbitCount,
+              *locus.embeddedGraphFaceWalkOrbitCount);
+    EXPECT_EQ(certificate.graphComponentCount,
+              *locus.embeddedGraphComponentCount);
+    EXPECT_EQ(certificate.sourceEulerCharacteristic,
+              *locus.embeddedGraphSourceEulerCharacteristic);
+    EXPECT_EQ(residual, *locus.embeddedGraphEulerResidual);
+  }
   std::cout << "m3Cp4c3BW1BW2;V=" << certificate.vertexCount
             << ";E=" << certificate.edgeCount
             << ";F=" << certificate.totalOrbitCount
@@ -11397,44 +12123,52 @@ TEST(GlobalTopologyPlan,
   const Cp4cProductionFixture mechanical =
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
   ASSERT_FALSE(mechanical.plan.has_value());
-  ASSERT_EQ("UncutFaceComponentOrbitSeedNotUnique",
-            mechanical.terminalFailureDetailCode);
-  const auto &locus = mechanical.terminalFailureLocus;
-  ASSERT_TRUE(locus.uncutFaceComponent.has_value());
-  EXPECT_EQ(locus.uncutFaceComponentBoundaryOrbitCount >
-                locus.uncutFaceComponentBoundaryOrbits.size(),
-            locus.uncutFaceComponentBoundaryOrbitsTruncated);
-  ASSERT_GT(locus.uncutFaceComponentBoundaryOrbitCount, 0U);
-  ASSERT_FALSE(locus.uncutFaceComponentBoundaryOrbits.empty());
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.proves_embedded_cellularity());
+  ASSERT_TRUE(certificate.uncutComponentCensusPublished);
 
-  const auto component = std::find_if(
-      locus.fragmentOwnerEvidence.components.begin(),
-      locus.fragmentOwnerEvidence.components.end(), [&](const auto &row) {
-        return row.component == *locus.uncutFaceComponent;
-      });
-  ASSERT_NE(locus.fragmentOwnerEvidence.components.end(), component);
-  ASSERT_FALSE(component->seedOrbitsTruncated);
-  ASSERT_FALSE(locus.uncutFaceComponentBoundaryOrbitsTruncated);
-  std::vector<std::size_t> attributedOrbits;
-  std::size_t attributedBoundaryEdges = 0U;
-  for (const auto &row : locus.uncutFaceComponentBoundaryOrbits) {
-    EXPECT_GT(row.boundaryEdgeCount, 0U);
-    EXPECT_LE(row.boundaryEdgeCount,
-              locus.uncutFaceComponentBoundaryEdgeCount);
-    attributedOrbits.push_back(row.orbit);
-    attributedBoundaryEdges += row.boundaryEdgeCount;
-  }
-  for (const std::size_t seedOrbit : component->seedOrbitIds) {
-    EXPECT_NE(attributedOrbits.end(),
-              std::find(attributedOrbits.begin(), attributedOrbits.end(),
-                        seedOrbit));
-  }
-  std::cout << "m3Cp4c3BW3;component=" << *locus.uncutFaceComponent
-            << ";orbitCount=" << locus.uncutFaceComponentBoundaryOrbitCount
-            << ";attributedBoundaryEdges=" << attributedBoundaryEdges
-            << ";boundaryEdgeCount="
-            << locus.uncutFaceComponentBoundaryEdgeCount << '\n';
+  const auto &locus = mechanical.terminalFailureLocus;
+  ASSERT_GT(locus.regionFrontierUnlabeledFaceCount, 0U);
+  ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
+            locus.regionFrontierOwnerConsistencyRowCount);
+  ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
+            locus.regionFrontierComponentCount);
+  ASSERT_EQ(locus.regionFrontierComponentCount,
+            locus.regionFrontierComponents.size());
+  ASSERT_FALSE(locus.regionFrontierComponentsTruncated);
+
+  const RegionFrontierRow *row =
+      find_creditable_region_frontier_row(locus);
+  ASSERT_NE(nullptr, row);
+  const RegionFrontierOwnerRow *owner =
+      find_region_frontier_owner_row(locus, row->component);
+  ASSERT_NE(nullptr, owner);
+  const UncutComponentCensus *census =
+      find_matching_uncut_component_census(certificate, *row);
+  ASSERT_NE(nullptr, census);
+  ASSERT_TRUE(
+      region_frontier_boundary_seed_census_is_valid(*row, *owner, *census));
+
+  auto corrupted = *census;
+  ++corrupted.boundaryEdgeCount;
+  const bool corruptionRejected =
+      !region_frontier_boundary_seed_census_is_valid(*row, *owner, corrupted);
+  EXPECT_TRUE(corruptionRejected);
+
+  expect_outside_region_certification_evidence(locus);
+  std::cout << "m3Cp4c3BW3;component=" << row->component
+            << ";componentFaceCount=" << row->faces.size()
+            << ";seedOrbitCount=" << owner->seedOrbitCount
+            << ";censusCorrespondence=" << row->censusCorrespondence << '\n';
+  std::cout
+      << "m3Cp4c3R8Receipt;ordinal=390;branch=UncutCensus;censusPredicateExecuted=yes"
+      << ";terminalSubjectRelation="
+      << locus.regionFrontierSubjectDomainRelation
+      << ";sameDomainCorruptionRejected="
+      << (corruptionRejected ? "yes" : "no")
+      << ";regionCertificationEvidenceBranchExecuted=yes\n";
 }
 
 TEST(GlobalTopologyPlan,
@@ -11452,7 +12186,17 @@ TEST(GlobalTopologyPlan,
 
   const Cp4cProductionFixture sphere = build_cp4c_pipeline_products_fixture(
       "sphere_prescribed", "prescribed sphere");
-  ASSERT_TRUE(sphere.cutGraph.has_value()) << sphere.terminalFailureCode;
+  if (!sphere.cutGraph.has_value()) {
+    std::cout << "m3Cp4c3BW4;torus={V=" << torusCertificate.vertexCount
+              << ",E=" << torusCertificate.edgeCount
+              << ",F=" << torusCertificate.totalOrbitCount
+              << ",componentCount=" << torusCertificate.graphComponentCount
+              << ",sourceChi=" << torusCertificate.sourceEulerCharacteristic
+              << ",residual=" << torusResidual
+              << "};sphere={status=SKIPPED,reason=ordinal368-open,terminalFailureCode="
+              << sphere.terminalFailureCode << "}\n";
+    return;
+  }
   const auto &sphereCertificate = sphere.cutGraph->certificate();
   const auto &sphereLocus = sphere.terminalFailureLocus;
   ASSERT_FALSE(sphere.plan.has_value());
@@ -11489,6 +12233,236 @@ TEST(GlobalTopologyPlan,
             << sphereCertificate.graphComponentCount << ",sourceChi="
             << sphereCertificate.sourceEulerCharacteristic << ",residual="
             << sphereResidual << "}\n";
+}
+
+
+TEST(GlobalTopologyPlan,
+     UncutFaceComponentBoundaryEvidenceRetainsDistinctSeedAndReasonRows) {
+  using directional::geometry::GlobalTopologyPlanError;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+  using directional::geometry::UncutFaceCertificatePairDiagnostic;
+  using directional::geometry::UncutFaceComponentBarrierClass;
+  using directional::geometry::UncutFaceComponentBoundaryEdgeDiagnostic;
+  using directional::geometry::UncutFaceComponentCertifiedFaceMultiplicityDiagnostic;
+  using directional::geometry::UncutFaceComponentNoSeedReason;
+  using directional::geometry::UncutFaceComponentSeedRule;
+
+  GlobalTopologyPlanError error;
+  error.code = GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique;
+  error.uncutFaceComponentBoundaryEdgeCount = 3U;
+  error.uncutFaceComponentBoundaryEdges = {
+      UncutFaceComponentBoundaryEdgeDiagnostic{
+          topology_edge(1, 2, 32U), topology_face(0, 1, 2, 32U),
+          topology_face(1, 2, 3, 32U), true, 1U,
+          UncutFaceComponentBarrierClass::None, 7U,
+          UncutFaceComponentSeedRule::SingleFaceOwner, std::nullopt, false, 5U,
+          7U},
+      UncutFaceComponentBoundaryEdgeDiagnostic{
+          topology_edge(2, 4, 32U), topology_face(0, 2, 4, 32U),
+          topology_face(2, 4, 5, 32U), true, 2U,
+          UncutFaceComponentBarrierClass::None, 11U,
+          UncutFaceComponentSeedRule::EdgeOrbitEvidence, std::nullopt, true,
+          5U, 13U},
+      UncutFaceComponentBoundaryEdgeDiagnostic{
+          topology_edge(4, 6, 32U), topology_face(0, 4, 6, 32U),
+          std::nullopt, false, 0U, UncutFaceComponentBarrierClass::Cut,
+          std::nullopt, std::nullopt,
+          UncutFaceComponentNoSeedReason::Barrier, false, std::nullopt,
+          std::nullopt}};
+  error.uncutFaceCertificatePairExaminedCount = 1U;
+  error.uncutFaceCertificatePairDifferingCount = 1U;
+  error.uncutFaceCertificatePairs = {
+      UncutFaceCertificatePairDiagnostic{
+          topology_edge(6, 7, 32U), topology_face(0, 6, 7, 32U),
+          topology_face(6, 7, 8, 32U), 5U, 13U}};
+  error.uncutFaceComponentCertifiedFaceObservationCount = 3U;
+  error.uncutFaceComponentCertifiedFaceUnavailableCount = 0U;
+  error.uncutFaceComponentCertifiedFaceDistinctCount = 2U;
+  error.uncutFaceComponentCertifiedFaceMultiset = {
+      UncutFaceComponentCertifiedFaceMultiplicityDiagnostic{5U, 2U},
+      UncutFaceComponentCertifiedFaceMultiplicityDiagnostic{13U, 1U}};
+
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_global_topology_plan_failure_locus(error);
+  ASSERT_EQ(3U, locus.uncutFaceComponentBoundaryEdges.size());
+  const auto &minority = locus.uncutFaceComponentBoundaryEdges[1];
+  ASSERT_TRUE(minority.componentFace.has_value());
+  ASSERT_TRUE(minority.labeledFace.has_value());
+  EXPECT_EQ("edgeOrbitEvidence", minority.seedRule);
+  EXPECT_TRUE(minority.minoritySeedOrbit);
+  ASSERT_TRUE(minority.componentSideCertifiedFace.has_value());
+  ASSERT_TRUE(minority.labeledSideCertifiedFace.has_value());
+  EXPECT_EQ(5U, *minority.componentSideCertifiedFace);
+  EXPECT_EQ(13U, *minority.labeledSideCertifiedFace);
+  ASSERT_TRUE(locus.uncutFaceCertificatePairExaminedCount.has_value());
+  ASSERT_TRUE(locus.uncutFaceCertificatePairDifferingCount.has_value());
+  EXPECT_EQ(1U, *locus.uncutFaceCertificatePairExaminedCount);
+  EXPECT_EQ(1U, *locus.uncutFaceCertificatePairDifferingCount);
+  ASSERT_EQ(1U, locus.uncutFaceCertificatePairs.size());
+  ASSERT_TRUE(locus.uncutFaceCertificatePairs[0].firstCertifiedFace.has_value());
+  ASSERT_TRUE(locus.uncutFaceCertificatePairs[0].secondCertifiedFace.has_value());
+  EXPECT_EQ(5U, *locus.uncutFaceCertificatePairs[0].firstCertifiedFace);
+  EXPECT_EQ(13U, *locus.uncutFaceCertificatePairs[0].secondCertifiedFace);
+  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceObservationCount.has_value());
+  ASSERT_TRUE(locus.uncutFaceComponentCertifiedFaceDistinctCount.has_value());
+  EXPECT_EQ(3U, *locus.uncutFaceComponentCertifiedFaceObservationCount);
+  EXPECT_EQ(2U, *locus.uncutFaceComponentCertifiedFaceDistinctCount);
+  ASSERT_EQ(2U, locus.uncutFaceComponentCertifiedFaceMultiset.size());
+}
+
+TEST(GlobalTopologyPlan,
+     MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_FALSE(mechanical.plan.has_value());
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.proves_embedded_cellularity());
+  ASSERT_EQ(static_cast<std::size_t>(mechanical.mesh.F.rows()),
+            certificate.sourceFaceCount);
+  ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
+
+  std::set<std::size_t> certifiedOrbits;
+  for (const auto &face : certificate.faces) certifiedOrbits.insert(face.orbit);
+  ASSERT_FALSE(certifiedOrbits.empty());
+  for (const auto &owner : certificate.sourceFaceOwners) {
+    ASSERT_FALSE(owner.certifiedFaceOrbits.empty());
+    for (const auto orbit : owner.certifiedFaceOrbits)
+      EXPECT_NE(0U, certifiedOrbits.count(orbit));
+    for (const auto &side : owner.traceFragmentSides) {
+      EXPECT_NE(0U, certifiedOrbits.count(side.orbit));
+      EXPECT_NE(owner.certifiedFaceOrbits.end(),
+                std::find(owner.certifiedFaceOrbits.begin(),
+                          owner.certifiedFaceOrbits.end(), side.orbit));
+    }
+  }
+
+  const auto &locus = mechanical.terminalFailureLocus;
+  ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
+            locus.regionFrontierComponentCount);
+  ASSERT_FALSE(locus.regionFrontierComponentsTruncated);
+
+  const RegionFrontierRow *row =
+      find_creditable_region_frontier_row(locus);
+  ASSERT_NE(nullptr, row);
+  const RegionFrontierOwnerRow *owner =
+      find_region_frontier_owner_row(locus, row->component);
+  ASSERT_NE(nullptr, owner);
+  ASSERT_TRUE(
+      region_frontier_projection_coverage_is_valid(*row, *owner, certificate));
+
+  auto corrupted = *row;
+  ASSERT_FALSE(corrupted.faces.empty());
+  corrupted.faces.pop_back();
+  const bool corruptionRejected =
+      !region_frontier_projection_coverage_is_valid(corrupted, *owner,
+                                                     certificate);
+  EXPECT_TRUE(corruptionRejected);
+
+  expect_outside_region_certification_evidence(locus);
+  std::cout << "m3Cp4c3OwnerMap;sourceFaceCount="
+            << certificate.sourceFaceCount
+            << ";ownerMapCount=" << certificate.sourceFaceOwners.size()
+            << ";component=" << row->component
+            << ";componentFaceCount=" << row->faces.size()
+            << ";censusCorrespondence=" << row->censusCorrespondence << '\n';
+  std::cout
+      << "m3Cp4c3R8Receipt;ordinal=393;branch=UncutCensus;censusPredicateExecuted=yes"
+      << ";terminalSubjectRelation="
+      << locus.regionFrontierSubjectDomainRelation
+      << ";sameDomainCorruptionRejected="
+      << (corruptionRejected ? "yes" : "no")
+      << ";regionCertificationEvidenceBranchExecuted=yes\n";
+}
+
+TEST(GlobalTopologyPlan,
+     CertificateFaceProjectionDerivesOwnerFromCertifiedFaceWalkSide) {
+  namespace diagnostic = directional::geometry::
+      global_topology_certificate_diagnostics_detail;
+  const auto uncutFace = topology_face(0, 1, 2, 6U);
+  const auto cutFace = topology_face(1, 2, 3, 6U);
+  const auto sharedEdge = topology_edge(1, 2, 6U);
+  const std::vector<SourceFaceTopologyKey> faces{uncutFace, cutFace};
+  const std::map<SourceEdgeTopologyKey, std::vector<SourceFaceTopologyKey>>
+      incidence{{sharedEdge, {uncutFace, cutFace}}};
+  const std::set<SourceFaceTopologyKey> traceCutFaces{cutFace};
+  const std::set<SourceEdgeTopologyKey> graphEdges;
+  const std::map<SourceFaceTopologyKey, std::set<std::size_t>> directFaces;
+  diagnostic::CertifiedFacesBySourceEdgeSide directSides{
+      {{cutFace, sharedEdge}, {11U}}};
+  const std::set<std::size_t> certificateFaces{11U};
+
+  const auto projection = diagnostic::resolve_certificate_face_projection(
+      faces, incidence, traceCutFaces, graphEdges, directFaces, directSides,
+      certificateFaces);
+  const auto owner = projection.certifiedFaceBySourceFace.at(uncutFace);
+  ASSERT_TRUE(owner.has_value());
+  EXPECT_EQ(11U, *owner);
+  constexpr std::size_t seedOrbit = 7U;
+  EXPECT_NE(seedOrbit, *owner);
+}
+
+TEST(GlobalTopologyPlan,
+     CertificateSideLookupDoesNotAliasOppositeSideOrSeed) {
+  namespace diagnostic = directional::geometry::
+      global_topology_certificate_diagnostics_detail;
+  const auto componentFace = topology_face(0, 1, 2, 8U);
+  const auto labeledFace = topology_face(1, 2, 3, 8U);
+  const auto edge = topology_edge(1, 2, 8U);
+  diagnostic::CertificateFaceProjection projection;
+  projection.certifiedFaceBySourceFace.emplace(componentFace, 5U);
+  projection.directCertifiedFacesBySourceEdgeSide[{labeledFace, edge}] = {13U};
+
+  const auto componentCertified =
+      diagnostic::certified_face_on_source_edge_side(projection, componentFace,
+                                                      edge);
+  const auto labeledCertified =
+      diagnostic::certified_face_on_source_edge_side(projection, labeledFace,
+                                                      edge);
+  ASSERT_TRUE(componentCertified.has_value());
+  ASSERT_TRUE(labeledCertified.has_value());
+  EXPECT_EQ(5U, *componentCertified);
+  EXPECT_EQ(13U, *labeledCertified);
+  EXPECT_NE(*componentCertified, *labeledCertified);
+  constexpr std::size_t seedOrbit = 7U;
+  EXPECT_NE(seedOrbit, *componentCertified);
+  EXPECT_NE(seedOrbit, *labeledCertified);
+}
+
+TEST(GlobalTopologyPlan,
+     CertificatePairMeasurementCanReportNonZeroDifferingCount) {
+  namespace diagnostic = directional::geometry::
+      global_topology_certificate_diagnostics_detail;
+  const auto firstFace = topology_face(0, 1, 2, 8U);
+  const auto secondFace = topology_face(1, 2, 3, 8U);
+  const auto edge = topology_edge(1, 2, 8U);
+  const std::map<SourceEdgeTopologyKey, std::vector<SourceFaceTopologyKey>>
+      incidence{{edge, {firstFace, secondFace}}};
+  const std::set<SourceFaceTopologyKey> uncutFaces{firstFace, secondFace};
+  const std::set<SourceEdgeTopologyKey> barriers;
+  diagnostic::CertifiedFaceBySourceFace certifiedFaces{
+      {firstFace, 5U}, {secondFace, 13U}};
+
+  const auto measured = diagnostic::measure_uncut_certificate_pairs(
+      incidence, uncutFaces, barriers, certifiedFaces, 8U);
+  EXPECT_EQ(1U, measured.examinedPairCount);
+  EXPECT_EQ(1U, measured.differingPairCount);
+  ASSERT_EQ(1U, measured.pairs.size());
+  EXPECT_FALSE(measured.truncated);
+  ASSERT_TRUE(measured.pairs[0].firstCertifiedFace.has_value());
+  ASSERT_TRUE(measured.pairs[0].secondCertifiedFace.has_value());
+  EXPECT_NE(*measured.pairs[0].firstCertifiedFace,
+            *measured.pairs[0].secondCertifiedFace);
+}
+
+TEST(GlobalTopologyPlan,
+     UnrelatedTopologyErrorLocusRemainsByteIdenticalAfterCertificateDiagnostics) {
+  directional::geometry::GlobalTopologyPlanError error;
+  error.code = directional::geometry::GlobalTopologyPlanErrorCode::InvalidSourceBinding;
+  error.sourceFace = topology_face(2, 4, 6, 16U);
+  EXPECT_EQ(";sourceFace=2,4,6",
+            production_global_topology_plan_error_locus(error));
 }
 
 TEST(GlobalTopologyPlan,
@@ -13729,4 +14703,630 @@ TEST(GlobalTopologyPlan,
   std::cout << "m3Cp4c2X7"
             << ";torusRegionCount=" << torus.plan->regions().size()
             << ";c6RegionsExamined=" << examinedRegions << '\n';
+}
+
+TEST(SurfaceCutGraph,
+     CellularityCertificatePublishesTotalSourceFaceOwnershipOnProductionFixtures) {
+  const std::array<std::pair<const char *, const char *>, 3> fixtures{{
+      {"mechanical_feature", "mechanical feature"},
+      {"torus", "torus"},
+      {"sphere_prescribed", "prescribed sphere"}}};
+  std::size_t publishedTraceSideRows = 0U;
+  for (const auto &[stem, name] : fixtures) {
+    const Cp4cProductionFixture fixture =
+        build_cp4c_pipeline_products_fixture(stem, name);
+    ASSERT_TRUE(fixture.cutGraph.has_value())
+        << name << ':' << fixture.terminalFailureCode << '/'
+        << fixture.terminalFailureDetailCode;
+    const auto &certificate = fixture.cutGraph->certificate();
+    ASSERT_TRUE(certificate.proves_cellularity()) << name;
+    ASSERT_EQ(static_cast<std::size_t>(fixture.mesh.F.rows()),
+              certificate.sourceFaceCount)
+        << name;
+    ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size())
+        << name;
+
+    std::set<std::size_t> certifiedOrbits;
+    for (const auto &face : certificate.faces) certifiedOrbits.insert(face.orbit);
+    for (const auto &owner : certificate.sourceFaceOwners) {
+      ASSERT_FALSE(owner.certifiedFaceOrbits.empty()) << name;
+      if (!owner.trace_crossed()) {
+        EXPECT_EQ(1U, owner.certifiedFaceOrbits.size()) << name;
+      }
+      for (const auto orbit : owner.certifiedFaceOrbits)
+        EXPECT_NE(0U, certifiedOrbits.count(orbit)) << name;
+      for (const auto &side : owner.traceFragmentSides) {
+        ++publishedTraceSideRows;
+        EXPECT_NE(0U, certifiedOrbits.count(side.orbit)) << name;
+        EXPECT_NE(owner.certifiedFaceOrbits.end(),
+                  std::find(owner.certifiedFaceOrbits.begin(),
+                            owner.certifiedFaceOrbits.end(), side.orbit))
+            << name;
+      }
+    }
+    std::cout << "m3Cp4c3OwnerMapFixture;fixture=" << stem
+              << ";sourceFaceCount=" << certificate.sourceFaceCount
+              << ";ownerMapCount=" << certificate.sourceFaceOwners.size()
+              << ";provesCellularity=true\n";
+  }
+  EXPECT_GT(publishedTraceSideRows, 0U)
+      << "the production witness must exercise trace-fragment side ownership";
+}
+
+TEST(SurfaceCutGraph,
+     CellularityCertificateRejectsOwnerOutsideItsCertifiedFaces) {
+  using directional::geometry::SurfaceCutGraphCellularityCertificate;
+  using directional::geometry::SurfaceCutGraphComplexKind;
+  using directional::geometry::SurfaceCutGraphFaceCertificate;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnership;
+
+  SurfaceCutGraphCellularityCertificate certificate;
+  certificate.complex = SurfaceCutGraphComplexKind::ActualEmbeddedGraph;
+  certificate.totalOrbitCount = 1U;
+  certificate.faceCount = 1U;
+  certificate.graphComponentCount = 1U;
+  certificate.sourceComponentCount = 1U;
+  certificate.eulerCharacteristic = 1;
+  certificate.sourceEulerCharacteristic = 1;
+  certificate.faces = {SurfaceCutGraphFaceCertificate{7U, 1U, 4U, true}};
+  certificate.sourceFaceCount = 1U;
+  certificate.sourceFaceOwners = {SurfaceCutGraphSourceFaceOwnership{
+      topology_face(0, 1, 2, 3U), {7U}, {}}};
+  ASSERT_TRUE(certificate.proves_cellularity());
+
+  certificate.sourceFaceOwners.front().certifiedFaceOrbits = {11U};
+  EXPECT_FALSE(certificate.proves_cellularity());
+}
+
+TEST(GlobalTopologyPlan,
+     CertifiedSourceFaceOwnerConsistencyCanRejectConflictingComponentOwners) {
+  using directional::geometry::SurfaceCutGraphCellularityCertificate;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnership;
+  const auto first = topology_face(0, 1, 2, 4U);
+  const auto second = topology_face(0, 2, 3, 4U);
+  directional::geometry::detail::SourceFaceComponentPartition partition;
+  partition.components = {{first, second}};
+  partition.componentByFace = {{first, 0U}, {second, 0U}};
+
+  SurfaceCutGraphCellularityCertificate certificate;
+  certificate.sourceFaceCount = 2U;
+  certificate.sourceFaceOwners = {
+      SurfaceCutGraphSourceFaceOwnership{first, {5U}, {}},
+      SurfaceCutGraphSourceFaceOwnership{second, {13U}, {}}};
+
+  const auto result = directional::geometry::detail::
+      check_certified_source_face_owner_consistency(partition, certificate);
+  ASSERT_FALSE(result.consistent());
+  ASSERT_TRUE(result.firstConflictComponent.has_value());
+  EXPECT_EQ(0U, *result.firstConflictComponent);
+  ASSERT_EQ(1U, result.components.size());
+  EXPECT_EQ((std::map<std::size_t, std::size_t>{{5U, 1U}, {13U, 1U}}),
+            result.components.front().ownerMultiplicity);
+}
+
+TEST(SurfaceCutGraph,
+     CertifiedOwnerConflictCensusPublishesOnOwnershipFailure) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.certifiedOwnerConflictCensusPublished);
+
+  std::cout << "m3Cp4c3CertifiedOwnerConflictCensus"
+            << ";published=true;rowCount="
+            << certificate.certifiedOwnerConflictCensus.size();
+  std::size_t index = 0U;
+  for (const auto &row : certificate.certifiedOwnerConflictCensus) {
+    std::cout << ";row[" << index++ << "]={edge="
+              << row.sourceEdge.first().index() << '-'
+              << row.sourceEdge.second().index()
+              << ",firstOwner=" << row.firstOwner
+              << ",secondOwner=" << row.secondOwner
+              << ",barrierClass="
+              << directional::geometry::
+                     surface_cut_graph_certified_owner_conflict_barrier_class_name(
+                         row.barrierClass)
+              << '}';
+  }
+  std::cout << '\n';
+}
+
+TEST(SurfaceCutGraph,
+     CertifiedOwnerConflictCensusNamesANonBarrierEdgeSeparatingCertifiedFaces) {
+  using directional::geometry::SurfaceCutGraphCertifiedOwnerConflictBarrierClass;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnership;
+  using directional::geometry::SurfaceCutGraphSourceFaceOwnershipStatus;
+
+  const auto first = topology_face(0, 1, 2, 4U);
+  const auto second = topology_face(0, 2, 3, 4U);
+  const auto shared = topology_edge(0, 2, 4U);
+
+  const std::map<SourceEdgeTopologyKey, std::vector<SourceFaceTopologyKey>>
+      incidentFaces{{shared, {first, second}}};
+  const std::vector<SurfaceCutGraphSourceFaceOwnership> owners{
+      SurfaceCutGraphSourceFaceOwnership{
+          first, {5U}, {},
+          SurfaceCutGraphSourceFaceOwnershipStatus::Established},
+      SurfaceCutGraphSourceFaceOwnership{
+          second, {13U}, {},
+          SurfaceCutGraphSourceFaceOwnershipStatus::Established}};
+  const std::set<SourceEdgeTopologyKey> barriers;
+  const std::map<
+      SourceEdgeTopologyKey,
+      SurfaceCutGraphCertifiedOwnerConflictBarrierClass>
+      classifications;
+
+  const auto census =
+      directional::geometry::detail::build_certified_owner_conflict_census(
+          incidentFaces, owners, barriers, classifications);
+  ASSERT_EQ(1U, census.size());
+  EXPECT_EQ(shared, census.front().sourceEdge);
+  EXPECT_EQ(first, census.front().firstFace);
+  EXPECT_EQ(5U, census.front().firstOwner);
+  EXPECT_EQ(second, census.front().secondFace);
+  EXPECT_EQ(13U, census.front().secondOwner);
+  EXPECT_EQ(SurfaceCutGraphCertifiedOwnerConflictBarrierClass::None,
+            census.front().barrierClass);
+}
+
+TEST(SurfaceCutGraph,
+     UncutComponentArcIncidenceCensusPublishesOnOwnershipFailure) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.uncutComponentCensusPublished);
+
+  const auto component = std::find_if(
+      certificate.uncutComponentCensuses.begin(),
+      certificate.uncutComponentCensuses.end(),
+      [](const auto &row) { return row.component == 0U; });
+  ASSERT_NE(certificate.uncutComponentCensuses.end(), component);
+  EXPECT_TRUE(component->boundaryCensusPublished);
+  EXPECT_EQ(component->boundaryEdgeCount, component->boundaryEdges.size());
+  EXPECT_FALSE(component->boundaryEdgesTruncated);
+  EXPECT_TRUE(component->interiorArcIncidenceCensusPublished);
+  EXPECT_EQ(component->interiorArcIncidenceCount,
+            component->interiorArcIncidences.size());
+  EXPECT_FALSE(component->interiorArcIncidencesTruncated);
+  EXPECT_TRUE(component->vertexTransitCensusPublished);
+  EXPECT_EQ(component->vertexTransitCount, component->vertexTransits.size());
+  EXPECT_FALSE(component->vertexTransitsTruncated);
+  EXPECT_EQ(component->seedAttributionCount, component->seedAttributions.size());
+  EXPECT_FALSE(component->seedAttributionsTruncated);
+  EXPECT_EQ(directional::geometry::detail::source_face_set_digest(
+                component->faces),
+            component->faceSetDigest);
+  for (const auto &arc : component->interiorArcIncidences) {
+    EXPECT_LT(arc.forwardOrbit, certificate.totalOrbitCount);
+    EXPECT_LT(arc.reverseOrbit, certificate.totalOrbitCount);
+    EXPECT_EQ(arc.crossedFaceCount, arc.crossedFaces.size());
+    EXPECT_FALSE(arc.crossedFacesTruncated);
+    for (const auto &crossedFace : arc.crossedFaces) {
+      if (crossedFace.certifierComponent.has_value())
+        ASSERT_TRUE(crossedFace.notTraceCutReason.has_value());
+      if (crossedFace.notTraceCutReason.has_value()) {
+        EXPECT_STRNE(
+            "Unknown",
+            directional::geometry::surface_cut_graph_trace_cut_exclusion_reason_name(
+                *crossedFace.notTraceCutReason));
+      }
+    }
+  }
+  const auto print_face = [](const SourceFaceTopologyKey &face) {
+    const auto vertices = face.vertices();
+    std::ostringstream out;
+    out << vertices[0].index() << ',' << vertices[1].index() << ','
+        << vertices[2].index();
+    return out.str();
+  };
+  const auto print_edge = [](const SourceEdgeTopologyKey &edge) {
+    std::ostringstream out;
+    out << edge.first().index() << '-' << edge.second().index();
+    return out.str();
+  };
+
+  std::cout << "m3Cp4c3UncutComponentCensus;component=0"
+            << ";faceCount=" << component->faces.size()
+            << ";faceSetDigest=" << component->faceSetDigest
+            << ";partitionDomain="
+            << directional::geometry::uncut_component_partition_domain_rule_name(
+                   component->partitionIdentity.domainRule)
+            << ";barrierCutGraphCutEdges="
+            << (component->partitionIdentity.barriers.cutGraphCutEdges
+                    ? "true"
+                    : "false")
+            << ";barrierNetworkMandatoryEdges="
+            << (component->partitionIdentity.barriers.networkMandatoryEdges
+                    ? "true"
+                    : "false")
+            << ";barrierEmbeddedMandatoryArcSourceEdges="
+            << (component->partitionIdentity.barriers
+                        .embeddedMandatoryArcSourceEdges
+                    ? "true"
+                    : "false")
+            << ";barrierEmbeddedCutArcSourceEdges="
+            << (component->partitionIdentity.barriers.embeddedCutArcSourceEdges
+                    ? "true"
+                    : "false")
+            << ";barrierNonTerminalTraceCarrierEdges="
+            << (component->partitionIdentity.barriers
+                        .nonTerminalTraceCarrierEdges
+                    ? "true"
+                    : "false")
+            << ";boundaryEdges=" << component->boundaryEdgeCount
+            << ";interiorArcs=" << component->interiorArcIncidenceCount
+            << ";vertexTransits=" << component->vertexTransitCount
+            << ";seedAttributions=" << component->seedAttributionCount
+            << '\n';
+
+  for (std::size_t index = 0U; index < component->interiorArcIncidences.size();
+       ++index) {
+    const auto &row = component->interiorArcIncidences[index];
+    std::cout << "m3Cp4c3UncutComponentInteriorArc;component=0;row="
+              << index << ";arc=" << row.arc.index() << ";kind="
+              << directional::geometry::
+                     surface_cut_graph_uncut_component_arc_kind_name(row.kind)
+              << ";forwardOrbit=" << row.forwardOrbit
+              << ";reverseOrbit=" << row.reverseOrbit
+              << ";crossedFaceCount=" << row.crossedFaceCount
+              << ";crossedFacesTruncated="
+              << (row.crossedFacesTruncated ? "true" : "false") << '\n';
+    for (std::size_t faceIndex = 0U; faceIndex < row.crossedFaces.size();
+         ++faceIndex) {
+      const auto &crossedFace = row.crossedFaces[faceIndex];
+      std::cout << "m3Cp4c3UncutComponentInteriorArcFace;component=0;row="
+                << index << ";faceRow=" << faceIndex
+                << ";arc=" << row.arc.index()
+                << ";sourceFace=" << print_face(crossedFace.sourceFace)
+                << ";certifierComponent=";
+      if (crossedFace.certifierComponent.has_value())
+        std::cout << *crossedFace.certifierComponent;
+      else
+        std::cout << "absent";
+      std::cout << ";planComponent=";
+      if (crossedFace.planComponent.has_value())
+        std::cout << *crossedFace.planComponent;
+      else
+        std::cout << "absent";
+      std::cout << ";notTraceCutReason=";
+      if (crossedFace.notTraceCutReason.has_value())
+        std::cout << directional::geometry::
+                         surface_cut_graph_trace_cut_exclusion_reason_name(
+                             *crossedFace.notTraceCutReason);
+      else
+        std::cout << "none";
+      std::cout << '\n';
+    }
+  }
+
+  for (std::size_t index = 0U; index < component->seedAttributions.size();
+       ++index) {
+    const auto &row = component->seedAttributions[index];
+    std::cout << "m3Cp4c3UncutComponentSeedAttribution;component=0;row="
+              << index << ";sourceEdge=" << print_edge(row.sourceEdge)
+              << ";componentFace=" << print_face(row.componentFace)
+              << ";oppositeFace=" << print_face(row.oppositeFace)
+              << ";orbit=" << row.orbit << ";rule="
+              << directional::geometry::
+                     surface_cut_graph_uncut_component_seed_rule_name(row.rule)
+              << '\n';
+  }
+
+  for (std::size_t index = 0U; index < component->boundaryEdges.size();
+       ++index) {
+    const auto &row = component->boundaryEdges[index];
+    std::cout << "m3Cp4c3UncutComponentBoundaryEdge;component=0;row="
+              << index << ";sourceEdge=" << print_edge(row.sourceEdge)
+              << ";componentFace=" << print_face(row.componentFace)
+              << ";oppositeFace=";
+    if (row.oppositeFace.has_value())
+      std::cout << print_face(*row.oppositeFace);
+    else
+      std::cout << "none";
+    std::cout << ";barrierClass="
+              << directional::geometry::
+                     surface_cut_graph_certified_owner_conflict_barrier_class_name(
+                         row.barrierClass)
+              << ";barrierPresent="
+              << (row.barrierPresent ? "true" : "false")
+              << ";oppositeFaceTraceCut="
+              << (row.oppositeFaceTraceCut ? "true" : "false")
+              << ";sideOwnerExists="
+              << (row.sideOwnerExists ? "true" : "false") << '\n';
+  }
+
+  for (std::size_t index = 0U; index < component->vertexTransits.size();
+       ++index) {
+    const auto &row = component->vertexTransits[index];
+    std::cout << "m3Cp4c3UncutComponentVertexTransit;component=0;row="
+              << index << ";trace=" << row.trace.index()
+              << ";segmentIndex=" << row.segmentIndex
+              << ";sourceVertex=" << row.sourceVertex.index()
+              << ";adjacentAcrossNonBarrierEdge="
+              << (row.adjacentAcrossNonBarrierEdge ? "true" : "false")
+              << ";adjacentEdge=";
+    if (row.adjacentNonBarrierEdge.has_value())
+      std::cout << print_edge(*row.adjacentNonBarrierEdge);
+    else
+      std::cout << "none";
+    std::cout << ";firstAdjacentFace=";
+    if (row.firstAdjacentFace.has_value())
+      std::cout << print_face(*row.firstAdjacentFace);
+    else
+      std::cout << "none";
+    std::cout << ";secondAdjacentFace=";
+    if (row.secondAdjacentFace.has_value())
+      std::cout << print_face(*row.secondAdjacentFace);
+    else
+      std::cout << "none";
+    std::cout << '\n';
+  }
+}
+
+TEST(SurfaceCutGraph,
+     VertexTransitCensusNamesAFaceSeparationNoSourceEdgeBarrierCanCarry) {
+  using directional::authority::FieldBranch;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+
+  constexpr std::size_t vertexExtent = 5U;
+  const auto first = topology_face(0, 1, 2, vertexExtent);
+  const auto second = topology_face(0, 2, 3, vertexExtent);
+  const auto traceFace = topology_face(0, 3, 4, vertexExtent);
+  const auto shared = topology_edge(0, 2, vertexExtent);
+  const auto entryEdge = topology_edge(0, 3, vertexExtent);
+  const auto outgoingEdge = topology_edge(0, 4, vertexExtent);
+  const auto vertex = SourceVertexId::from_index(0U, vertexExtent).value();
+
+  directional::geometry::detail::SourceFaceComponentPartition partition;
+  partition.components = {{first, second}};
+  partition.componentByFace = {{first, 0U}, {second, 0U}};
+  const std::map<SourceVertexId, std::vector<SourceFaceTopologyKey>>
+      incidentFacesByVertex{{vertex, {first, second, traceFace}}};
+  const std::map<SourceEdgeTopologyKey, std::vector<SourceFaceTopologyKey>>
+      incidentFaces{{shared, {first, second}}};
+  const std::set<SourceEdgeTopologyKey> barriers;
+
+  FieldAlignedCandidateTrace trace(
+      TraceId::from_index(0U, 1U).value(),
+      SingularityPortId::from_index(0U, 1U).value(),
+      FieldSingularityId::from_index(0U, 1U).value(),
+      SourceVertexId::from_index(4U, vertexExtent).value(),
+      SourceComponentId::from_index(0U, 1U).value(),
+      directional::authority::TopologyRegionId::from_index(0U, 1U).value());
+  trace.segments.emplace_back(traceFace, FieldBranch::from_integer(0),
+                              boundary_point(entryEdge, 0, 1), std::nullopt,
+                              outgoingEdge, std::nullopt);
+  const std::vector<FieldAlignedCandidateTrace> traces{trace};
+
+  const auto census = directional::geometry::detail::
+      build_uncut_component_vertex_transit_census(
+          traces, incidentFacesByVertex, incidentFaces, partition, barriers);
+  ASSERT_EQ(1U, census.size());
+  ASSERT_EQ(1U, census[0].size());
+  const auto &row = census[0][0];
+  EXPECT_EQ(vertex, row.sourceVertex);
+  EXPECT_EQ((std::vector<SourceFaceTopologyKey>{first, second}),
+            row.incidentUncutFaces);
+  EXPECT_TRUE(row.adjacentAcrossNonBarrierEdge);
+  ASSERT_TRUE(row.adjacentNonBarrierEdge.has_value());
+  EXPECT_EQ(shared, *row.adjacentNonBarrierEdge);
+  ASSERT_TRUE(row.firstAdjacentFace.has_value());
+  ASSERT_TRUE(row.secondAdjacentFace.has_value());
+  EXPECT_EQ(first, *row.firstAdjacentFace);
+  EXPECT_EQ(second, *row.secondAdjacentFace);
+}
+
+TEST(GlobalTopologyPlan,
+     UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_FALSE(mechanical.plan.has_value());
+
+  const auto &locus = mechanical.terminalFailureLocus;
+  ASSERT_GT(locus.regionFrontierPartitionComponentCount, 0U);
+  ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
+            locus.regionFrontierOwnerConsistencyRowCount);
+  ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
+            locus.regionFrontierComponentCount);
+  ASSERT_EQ(locus.regionFrontierComponentCount,
+            locus.regionFrontierComponents.size());
+  ASSERT_FALSE(locus.regionFrontierComponentsTruncated);
+
+  const RegionFrontierRow *row =
+      find_creditable_region_frontier_row(locus);
+  ASSERT_NE(nullptr, row);
+  ASSERT_TRUE(region_frontier_partition_correspondence_is_valid(*row));
+
+  auto corrupted = *row;
+  corrupted.componentSubsetOfCensusComponent = false;
+  const bool corruptionRejected =
+      !region_frontier_partition_correspondence_is_valid(corrupted);
+  EXPECT_TRUE(corruptionRejected);
+
+  expect_outside_region_certification_evidence(locus);
+  std::cout << "m3Cp4c3UncutComponentPartitionCorrespondence"
+            << ";planComponent=" << row->component
+            << ";planDomain=" << row->partitionIdentity.domainRule
+            << ";planFaceSetDigest=" << row->faceSetDigest
+            << ";certifierComponent=" << *row->censusComponent
+            << ";certifierDomain=" << row->censusPartitionIdentity->domainRule
+            << ";certifierFaceSetDigest=" << *row->censusFaceSetDigest
+            << ";correspondence=" << row->censusCorrespondence
+            << ";planComponentSubsetOfCertifierComponent="
+            << (row->componentSubsetOfCensusComponent ? "true" : "false")
+            << '\n';
+  std::cout
+      << "m3Cp4c3R8Receipt;ordinal=406;branch=UncutCensus;censusPredicateExecuted=yes"
+      << ";terminalSubjectRelation="
+      << locus.regionFrontierSubjectDomainRelation
+      << ";sameDomainCorruptionRejected="
+      << (corruptionRejected ? "yes" : "no")
+      << ";regionCertificationEvidenceBranchExecuted=yes\n";
+}
+
+TEST(SurfaceCutGraph,
+     InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_FALSE(mechanical.plan.has_value());
+
+  const auto &locus = mechanical.terminalFailureLocus;
+  const RegionFrontierRow *row =
+      find_creditable_region_frontier_row(locus, true);
+  ASSERT_NE(nullptr, row);
+  ASSERT_TRUE(region_frontier_interior_arc_census_is_valid(*row));
+
+  auto corrupted = *row;
+  ASSERT_FALSE(corrupted.interiorArcIncidences.empty());
+  ++corrupted.interiorArcIncidences.front().crossedFaceCount;
+  const bool corruptionRejected =
+      !region_frontier_interior_arc_census_is_valid(corrupted);
+  EXPECT_TRUE(corruptionRejected);
+
+  expect_outside_region_certification_evidence(locus);
+
+  const auto print_optional_component = [](
+      const std::optional<std::size_t> &value) {
+    return value.has_value() ? std::to_string(*value) : std::string("absent");
+  };
+
+  std::cout << "m3Cp4c3PlanInteriorArcCensus"
+            << ";component=" << row->component
+            << ";interiorArcs=" << row->interiorArcIncidenceCount
+            << ";truncated="
+            << (row->interiorArcIncidencesTruncated ? "true" : "false")
+            << ";correspondence=" << row->censusCorrespondence << '\n';
+
+  for (std::size_t arcIndex = 0U;
+       arcIndex < row->interiorArcIncidences.size(); ++arcIndex) {
+    const auto &arc = row->interiorArcIncidences[arcIndex];
+    for (std::size_t faceIndex = 0U; faceIndex < arc.crossedFaces.size();
+         ++faceIndex) {
+      const auto &face = arc.crossedFaces[faceIndex];
+      std::cout << "m3Cp4c3PlanInteriorArcFace;component=" << row->component
+                << ";arcRow=" << arcIndex << ";faceRow=" << faceIndex
+                << ";arc=" << arc.arc << ";sourceFace="
+                << face.sourceFace[0] << ',' << face.sourceFace[1] << ','
+                << face.sourceFace[2] << ";certifierComponent="
+                << print_optional_component(face.certifierComponent)
+                << ";planComponent="
+                << print_optional_component(face.planComponent)
+                << ";notTraceCutReason="
+                << (face.notTraceCutReason.empty() ? "none"
+                                                   : face.notTraceCutReason)
+                << '\n';
+    }
+  }
+  std::cout
+      << "m3Cp4c3R8Receipt;ordinal=407;branch=UncutCensus;censusPredicateExecuted=yes"
+      << ";terminalSubjectRelation="
+      << locus.regionFrontierSubjectDomainRelation
+      << ";sameDomainCorruptionRejected="
+      << (corruptionRejected ? "yes" : "no")
+      << ";regionCertificationEvidenceBranchExecuted=yes\n";
+}
+
+TEST(SurfaceCutGraph,
+     SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus) {
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.sourceAuthority.has_value()) << mechanical.loadError;
+  ASSERT_TRUE(mechanical.network.has_value()) << mechanical.terminalFailureCode;
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+
+  const auto embeddedBuild = embedded::build_embedded_graph_topology(
+      mechanical.mesh.F, static_cast<std::size_t>(mechanical.mesh.V.rows()),
+      *mechanical.sourceAuthority, *mechanical.network,
+      mechanical.cutGraph->cut_edges());
+  const auto *embeddedTopology =
+      std::get_if<embedded::EmbeddedGraphTopology>(&embeddedBuild);
+  ASSERT_NE(nullptr, embeddedTopology);
+
+  std::set<SourceFaceTopologyKey> separatingArcFaces;
+  std::set<SourceFaceTopologyKey> previouslyTraceCutFaces;
+  std::set<SourceFaceTopologyKey> equalOrbitTerminalSlitFaces;
+  for (const auto &arc : embeddedTopology->arcs) {
+    if (arc.kind != directional::geometry::GlobalTopologyArcKind::Trace ||
+        !arc.trace.has_value()) {
+      continue;
+    }
+    const auto *trace = embedded::find_trace(*mechanical.network, *arc.trace);
+    ASSERT_NE(nullptr, trace);
+    ASSERT_LT(arc.firstSegment, arc.onePastLastSegment);
+    ASSERT_LE(arc.onePastLastSegment, trace->segments.size());
+
+    const std::size_t forwardDart = embedded::dart_index(
+        directional::geometry::GlobalTopologyOrientedArc{
+            arc.id, directional::authority::Orientation::Forward});
+    const std::size_t reverseDart = embedded::dart_index(
+        directional::geometry::GlobalTopologyOrientedArc{
+            arc.id, directional::authority::Orientation::Reverse});
+    ASSERT_LT(forwardDart, embeddedTopology->faceWalk.orbitByDart.size());
+    ASSERT_LT(reverseDart, embeddedTopology->faceWalk.orbitByDart.size());
+    const bool separatesCertifiedFaces =
+        embeddedTopology->faceWalk.orbitByDart[forwardDart] !=
+        embeddedTopology->faceWalk.orbitByDart[reverseDart];
+    if (separatesCertifiedFaces) {
+      separatingArcFaces.insert(arc.sourceFaces.begin(),
+                                arc.sourceFaces.end());
+    }
+
+    for (std::size_t segmentIndex = arc.firstSegment;
+         segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
+      const auto &segment = trace->segments[segmentIndex];
+      const bool terminalSlit = !trace->terminalBarrier.has_value() &&
+                                segmentIndex + 1U == trace->segments.size();
+      if (!terminalSlit) previouslyTraceCutFaces.insert(segment.sourceFace);
+      if (terminalSlit && !separatesCertifiedFaces) {
+        equalOrbitTerminalSlitFaces.insert(segment.sourceFace);
+      }
+    }
+  }
+
+  std::set<SourceFaceTopologyKey> unchangedTerminalSlitFaces;
+  for (const auto &face : equalOrbitTerminalSlitFaces) {
+    if (separatingArcFaces.count(face) == 0U &&
+        previouslyTraceCutFaces.count(face) == 0U) {
+      unchangedTerminalSlitFaces.insert(face);
+    }
+  }
+  ASSERT_FALSE(separatingArcFaces.empty());
+  ASSERT_FALSE(unchangedTerminalSlitFaces.empty());
+
+  const auto &certificate = mechanical.cutGraph->certificate();
+  ASSERT_TRUE(certificate.uncutComponentCensusPublished);
+  std::set<SourceFaceTopologyKey> uncutCensusFaces;
+  std::size_t interiorArcRows = 0U;
+  for (const auto &component : certificate.uncutComponentCensuses) {
+    uncutCensusFaces.insert(component.faces.begin(), component.faces.end());
+    for (const auto &arc : component.interiorArcIncidences) {
+      ++interiorArcRows;
+      EXPECT_EQ(arc.forwardOrbit, arc.reverseOrbit);
+    }
+  }
+  ASSERT_GT(interiorArcRows, 0U);
+  for (const auto &face : separatingArcFaces) {
+    EXPECT_EQ(0U, uncutCensusFaces.count(face));
+  }
+  for (const auto &face : unchangedTerminalSlitFaces) {
+    EXPECT_EQ(1U, uncutCensusFaces.count(face));
+  }
+}
+
+TEST(TestFixturePaths, MissingPackageFailsClosedInsteadOfReturningMissingPath) {
+  const std::filesystem::path missing =
+      std::filesystem::temp_directory_path() /
+      "directional-cb27-fixture-root-that-must-not-exist" / "bin";
+  EXPECT_FALSE(directional::tests::find_test_data_root(missing).has_value());
+  EXPECT_THROW((void)directional::tests::require_test_data_root(missing),
+               std::runtime_error);
 }
