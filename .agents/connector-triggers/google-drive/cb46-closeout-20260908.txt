@@ -1,0 +1,5 @@
+trigger=cb46-closeout-drive-patch
+base_sha=a0ceffaaed85726b43044fe0ab97574c653ab380
+patch_sha256=dc8e94ded57e1f8be985deb7b0ec49970bd55e8f9da5200452e456021fac1c7d
+file_id=1s14KHK5XMHIkT2u716lyrvABaF2SeG1Q
+runtimeExecution=false
