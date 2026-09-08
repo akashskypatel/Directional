@@ -6314,10 +6314,17 @@ Cp4cReachabilityObservation observe_cp4c_witness(
          << ";arcCount=" << observation.plan->arcs().size()
          << ";nodeCount=" << observation.plan->rotation_system().size();
   for (const auto &certificate : observation.plan->region_certificates()) {
-    report << ";region[" << certificate.region.index() << "]="
-           << "V" << certificate.vertexCount << ",E" << certificate.edgeCount
-           << ",F" << certificate.faceCount << ",chi"
-           << certificate.eulerCharacteristic;
+    report << ";region[" << certificate.region.index() << "]={orbit="
+           << certificate.actualEmbeddedFace.orbit
+           << ",boundaryWalkCount="
+           << certificate.actualEmbeddedFace.boundaryWalkCount
+           << ",boundaryArcCount="
+           << certificate.actualEmbeddedFace.boundaryArcCount
+           << ",discTopologyEstablished="
+           << (certificate.actualEmbeddedFace.discTopologyEstablished ? "true"
+                                                                         : "false")
+           << ",fieldRegularity="
+           << (certificate.proves_field_regularity() ? "true" : "false") << '}';
   }
   observation.report = report.str();
   return observation;
