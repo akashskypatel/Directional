@@ -1,3 +1,0 @@
-purpose=materialize exact current branch snapshot for M3-CP4c-3-TB40-EXEC planning
-source_sha=ed93dbda2dce8f254bda647995d12f16bf8827a5
-label=tb40-exec
