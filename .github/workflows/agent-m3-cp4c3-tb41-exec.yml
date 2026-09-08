@@ -113,7 +113,7 @@ jobs:
           selector=".agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt"
           harness=".agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh"
           test -f "$plan" -a -f "$selector" -a -f "$harness"
-          selector_sha="$(awk '/selector409 bytes have SHA-256/{getline; gsub(/[`[:space:]]/, ""); print; exit}' "$plan")"
+          selector_sha="$(awk '/selector409 bytes have SHA-256/{getline; gsub(/[`[:space:].]/, ""); print; exit}' "$plan")"
           test "${#selector_sha}" -eq 64
           actual_selector_sha="$(sha256sum "$selector" | awk '{print $1}')"
           test "$actual_selector_sha" = "$selector_sha"
@@ -129,16 +129,16 @@ jobs:
       - name: Run explicit no-runtime package preflight
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
-          EXPECTED_PROVIDER_DIGEST: sha256:${{ env.RESULT_ZIP_SHA }}
-          EXPECTED_ZIP_SHA256: ${{ env.RESULT_ZIP_SHA }}
-          EXPECTED_SOURCE_SHA: ${{ env.SOURCE_SHA }}
-          SELECTOR_RELATIVE_PATH: .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
-          EXPECTED_SELECTOR_COUNT: '409'
-          ACCEPTED_PREFIX_COUNT: '365'
-          TURN_ID: M3-CP4c-3-TB41-PREFLIGHT
         shell: bash
         run: |
           set -euo pipefail
+          export EXPECTED_PROVIDER_DIGEST="sha256:${RESULT_ZIP_SHA}"
+          export EXPECTED_ZIP_SHA256="$RESULT_ZIP_SHA"
+          export EXPECTED_SOURCE_SHA="$SOURCE_SHA"
+          export SELECTOR_RELATIVE_PATH=.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+          export EXPECTED_SELECTOR_COUNT=409
+          export ACCEPTED_PREFIX_COUNT=365
+          export TURN_ID=M3-CP4c-3-TB41-PREFLIGHT
           cd semantic
           bash .agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh --preflight-only
           root="${RUNNER_TEMP}/M3-CP4c-3-TB41-PREFLIGHT"
@@ -163,16 +163,16 @@ jobs:
         id: execute
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
-          EXPECTED_PROVIDER_DIGEST: sha256:${{ env.RESULT_ZIP_SHA }}
-          EXPECTED_ZIP_SHA256: ${{ env.RESULT_ZIP_SHA }}
-          EXPECTED_SOURCE_SHA: ${{ env.SOURCE_SHA }}
-          SELECTOR_RELATIVE_PATH: .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
-          EXPECTED_SELECTOR_COUNT: '409'
-          ACCEPTED_PREFIX_COUNT: '365'
-          TURN_ID: M3-CP4c-3-TB41-EXEC
         shell: bash
         run: |
           set +e
+          export EXPECTED_PROVIDER_DIGEST="sha256:${RESULT_ZIP_SHA}"
+          export EXPECTED_ZIP_SHA256="$RESULT_ZIP_SHA"
+          export EXPECTED_SOURCE_SHA="$SOURCE_SHA"
+          export SELECTOR_RELATIVE_PATH=.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+          export EXPECTED_SELECTOR_COUNT=409
+          export ACCEPTED_PREFIX_COUNT=365
+          export TURN_ID=M3-CP4c-3-TB41-EXEC
           cd semantic
           bash .agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh --execute
           status=$?
