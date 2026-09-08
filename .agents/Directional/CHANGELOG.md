@@ -1,3 +1,21 @@
+## 2026-09-08 — `M3-CP4c-3-DEFN-R8`: Part XII freezes domain-owned census evidence; CB48 next
+
+Static Definition turn; no runtime, compile, package, selector mutation or stable repricing. TB42 remains semantic
+runtime authority at selector409 **398 PASS / 11 RED**, accepted **365/365**, package107; accounting remains
+**47 / 14 / 33**, debt 5.
+
+Part XII defines the uncut census domain as `P_U` (unlabelled faces), replaces stage-string applicability with the
+typed `Inside | Outside | Partial | Unresolved` relation, and assigns later RegionCertification failures exact
+region/fragment evidence. `RegionSourceFaceOwningFragmentMissing` must publish the failing face's complete
+owner-orbit set and expected-orbit membership; counts alone are insufficient. 390/393/406/407 remain producer-owned
+census gates and must each reject a corrupted same-domain copy. Distinct plan/certifier partitions are lawful;
+cross-domain substitution is prohibited; duplicate embedded-graph builders remain separable architectural debt.
+
+Frozen successor: `Architecture_M3_CP4c3_CB48_Code_Build_Plan.md`, EE0–EE8, compile-only. The expected later TB43
+falsifier is 402 PASS / 7 RED with `[366,367,368,369,370,374,398]` carried, but only runtime may establish it.
+
+---
+
 ## 2026-09-08 — `M3-CP4c-3-TB42-REV`: TB42 promoted; the frontier census is disjoint from the failing object
 
 Evidence-only review, static. No runtime, no compile, no package operation, no product/test/fixture/benchmark/

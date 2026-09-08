@@ -2,7 +2,13 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**. Current authority, the frozen successor, the open-candidate index and the resume pointer live in `M3_CP4c_Current_And_Forward.md`; normative definitions live in the frozen-definition chain; per-turn documents folded on 2026-09-03 are resolved by the **Folded document index** at the end of this file. As of `M3-CP4c-3-TB42-REV`: CP4c-2 is CLOSED / ACCEPTED at selector365; CP4c-3 remains OPEN. **`M3-CP4c-3-TB42` is the current valid semantic runtime authority** — selector 409, **398 PASS / 11 RED / 0 SKIP**, **accepted 365/365**, package **107**, ownership **300/300**; RED set and ledger hash identical to TB41. The Part XI actual-embedded face binding and CB46's content anchor are runtime confirmed. **The remaining frontier is a domain mismatch:** the uncut-component census holds **226 unlabelled faces in 9 components** while the failing region holds **10 faces, 0 of them in the partition**, so no locator resolves and the guard is never reached. Three of the four affected identities name that census explicitly, and their `UncutComponent` early return was a **domain guard written as a stage check**. The live A2b frontier remains `RegionSourceFaceOwningFragmentMissing` at 366/367. Stable accounting **47 events / 14 categories / 33 recurrences** — no new event — debt **5**. Exact next is static **`M3-CP4c-3-DEFN-R8`** appending Part XII; **no further CB may be spent measuring the census**.
+**Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**.
+As of `M3-CP4c-3-DEFN-R8`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN. **TB42 remains promoted runtime
+authority** — selector409, **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, package107, ownership 300/300.
+**Part XII is current definition authority**: the uncut census owns `P_U`, applicability is a typed domain
+relation, RegionCertification owns exact region/fragment evidence, and the two partitions may remain lawfully
+distinct. Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5. Exact next is
+**`M3-CP4c-3-CB48`** under EE0–EE8; no further census measurement or partition/builder unification is authorized.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -44,7 +50,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB17/package87 is current runtime authority at 374 PASS / 8 RED, accepted 365/365. First red 366 is `TraceCutFaceFragmentCountMismatch` at `(0,1,102)`. Exact next is independent `M3-CP4c-3-TB17-REV`.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB42/package107 is current runtime authority at 398 PASS / 11 RED, accepted 365/365. Part XII is current definition authority; exact next is CB48 EE0–EE8.** |
 
 ### 2.1 CP4c-0
 
@@ -637,6 +643,17 @@ measures AX0–AX9 in `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
 - Cut completeness is proved by saturation with the source 1-skeleton.
 - A test-local reconstruction of production authority is not equivalent to consuming the production authority.
 - When a representation changes from one arc per source edge to multiple sub-arcs, every consumer must be re-derived by intent; fixing the producer alone is insufficient.
+
+### Consolidated on 2026-09-08 at `M3-CP4c-3-DEFN-R8`
+
+The completed `Architecture_M3_CP4c3_TB42_Independent_Review_Record.md` (**212 lines**) was folded after its durable
+conclusions were promoted into Part XII, Current/Forward, ORIENTATION, TODO, tracker, handoff and changelog.
+Historical content retained here: TB42 was mechanically valid and promoted; its EC7 row proved a healthy 226-face /
+9-component uncut census wholly disjoint from the 10-face terminal region (0 overlap), with no locator and a benign
+9-row owner guard. The review therefore classified the defect as a **domain mismatch**, not emptiness/lookup/guard
+failure, and required a static definition turn rather than more measurement. Part XII now resolves that requirement
+and freezes CB48. Fold accounting advances from **134 documents / 25,676 lines** to **135 documents / 25,888
+lines**. Git history remains exact-byte recovery authority for the retired review record.
 
 ## 6. Historical retirement
 

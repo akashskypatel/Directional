@@ -1,4 +1,4 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB42-REV`):** **TB42 is PROMOTED** — selector **409**, **398 PASS / 11 RED**, **accepted 365/365**, package **107**; RED set and ledger hash **identical to TB41**, so CB47 was diagnostics-only exactly as required. **The frontier-census question is now measured and closed to further measurement.** The partition is **not empty** — 226 unlabelled faces in 9 components — it is **disjoint from the failing object**: the failing region holds **10** source faces of which **0** are in the partition, so no locator resolves and the guard is never reached. `ownerConsistencyRowCount == frontierPartitionComponentCount == 9` confirms the guard is benign, as predicted statically. **This is a domain mismatch, not an empty set or a locator bug** — and three of the four identities name the uncut-component census explicitly, so the `UncutComponent` early return **was** the domain guard, written as a stage check. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-DEFN-R8`**, appending Part XII — the question is now normative, and **no further CB may be spent measuring it**.
+> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-DEFN-R8`):** **TB42 remains PROMOTED** — selector **409**, **398 PASS / 11 RED**, accepted **365/365**, package **107**. Part XII now freezes the missing semantic boundary: the uncut census describes `P_U` (unlabelled faces) and a failure may consume it only through an explicit `Inside | Outside | Partial | Unresolved` domain relation. The current terminal region is `Outside` (0 of 10 faces in `P_U`). `RegionCertification` instead owns exact region/fragment evidence, including the failing face's complete owner-orbit set. 390/393/406/407 remain non-vacuous producer-owned census gates. Distinct plan/certifier partitions are lawful; cross-domain substitution is forbidden. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB48`**, Code + Build only under EE0–EE8.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,16 +30,17 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-CB45`. Semantic runtime authority remains **TB39** (package104,
-source `8756cfe983bf7e05209f560d59a522a6b5b0674a`), selector **409**, **402 PASS / 7 RED**, accepted **365/365**.
-Current immutable build authority is CB45 package105, source `0f09439893182235c382492583b82aa35f25045c`, artifact
-`10057456162`. TB38 remains historical regression evidence; its one stable event remains counted.
+**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-DEFN-R8`. Semantic runtime authority is **TB42**
+(package107, source `5dacce6019ea34316c48743f3033d2bb5c26281a`), selector **409**, **398 PASS / 11 RED**,
+accepted **365/365**. Current immutable build/package authority remains **CB47/package107**, artifact `10070788592`.
+DEFN-R8 is documentation-only and creates no package or runtime evidence.
 
-**Current definition resolution.** Part XI now freezes the exact producer/consumer relation: derive the current
-region's face-walk orbit from exact boundary equality, require the unique matching non-exterior A2a′ face
-certificate, and carry that exact certificate as the downstream disc-proof payload. Candidate validation must
-re-derive the relation after copy/mutation. Field regularity stays separate; source-support proxies are diagnostic.
-CB45 has implemented and compiled the binding into package105; TB40 owns runtime proof.
+**Current definition resolution.** Part XI/Part XI-A remain the actual-embedded face/certificate authority. **Part
+XII** now governs evidence-domain applicability: the plan uncut census owns exactly `P_U`; applicability is a typed
+face-membership relation, never a stage string. A `RegionCertification` failure publishes its own region/fragment
+relation, including exact owner-orbit membership for `RegionSourceFaceOwningFragmentMissing`. The two partitions
+may remain distinct. 390/393/406/407 must still exercise and falsify their census-owned predicates. **CB48** owns
+the bounded implementation/compile proof; 366/367 ownership semantics remain untouched.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -142,7 +143,7 @@ field that **varies**, so Part XI-A §A.3's tamper amendment was honoured.
 
 **TB38 remains historical regression evidence, not runtime authority.** Package103 was mechanically valid at
 395/14, accepted 362/365. CB44/TB39 recover accepted 356/357/362 and protected 390/393/406/407, but the one stable
-TB38 event remains counted. **Accounting stays 46 / 14 / 32.**
+TB38 event remains counted. **Current accounting is 47 / 14 / 33**, debt 5, packages 107; the TB38 event remains historical within those totals.
 
 **CB42 changed no behaviour, and that is proved by artifact.** TB37's `ledger.tsv` and `identity-map.tsv` hash
 **identical to TB36's** (`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs**
@@ -200,7 +201,7 @@ is now the single identity **χ_true = X + B_int − 47**: `X + B_int = 44` mean
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current critical path.** Certified ownership is **300/300** and accepted prefix **365/365**. The canonical topology region is a non-exterior face-walk orbit already disc-certified by A2a′; DEFN-R7 Part XI now freezes that exact producer/consumer binding and demotes the source-support Euler projection. **CB45** owns implementation; current TB39 still stops 366/367 at the old reduced `RegionEulerCharacteristicNotOne` until that implementation is compiled and later tested. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, the entire edge-locus rotation frontier since CB18, and the region source-port branch since CB19 | **Current critical path.** Certified ownership is **300/300** and accepted prefix **365/365**. Part XI/Part XI-A bind the canonical topology region to its actual-embedded face certificate; TB42 now stops 366/367 at `RegionSourceFaceOwningFragmentMissing`. Part XII separately defines the frontier-census domain contract. **CB48** owns only the bounded evidence-domain implementation and compile proof; it must not correct 366/367 ownership semantics. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -303,22 +304,17 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **The frontier census is disjoint from the failing object — a domain mismatch.** —
-   `M3-CP4c3-TB40-EXEC-CAND-02`, **MEASURED / DEFINITION PENDING**; owner **`M3-CP4c-3-DEFN-R8`**.
+1. **Part XII domain contract — DEFINED / implementation pending CB48.** —
+   `M3-CP4c3-TB40-EXEC-CAND-02`, owner **`M3-CP4c-3-CB48`**.
 
-   - **Measured at TB42, identically on all four identities:** `unlabeledFaceCount=226`,
-     `frontierPartitionComponentCount=9`, `ownerConsistencyRowCount=9`, `regionFrontierLocator=none`, failure
-     source face in partition `false`, failing region **10** source faces of which **0** are in the partition.
-   - **The partition is not empty.** The "empty set" candidate is **refuted**; the "outside the domain" candidate
-     is **confirmed and stronger** — the whole failing region is labelled, so no locator can resolve and the guard
-     is never reached. The benign-guard prediction is confirmed by `9 == 9`.
-   - **Three of the four identities name the uncut-component census explicitly**, and that partition covers
-     unlabelled faces by construction (`GlobalTopologyPlan.cpp:1341–1353`). **The `UncutComponent` early return was
-     the domain guard, written as a stage check**; the pipeline advancing removed the precondition, not the guard.
-     `LESSONS.md` 161.
-   - **Nothing left to measure.** `DEFN-R8` decides the census's domain, what a certification-stage failure must
-     publish instead, and how to express the condition as a **domain predicate rather than a stage string** —
-     without weakening the four identities into unconditional passes.
+   - TB42 measured `P_U`: **226** unlabelled faces, **9** components, **9** owner rows; terminal region: **10**
+     faces, **0** in `P_U`.
+   - DEFN-R8 freezes the relation `Inside | Outside | Partial | Unresolved`; the current region is `Outside`.
+   - Stage labels are chronology only. 390/393/406/407 remain producer-owned census gates and each must reject a
+     corrupted same-domain census copy.
+   - RegionCertification owns exact region/fragment evidence instead; CB48 adds the failing face's complete
+     owner-orbit set and expected-orbit membership without changing 366/367 behavior.
+   - **Nothing remains to define or measure before CB48.**
 
 2. **`RegionSourceFaceOwningFragmentMissing` is the live A2b frontier.** — `M3-CP4c3-TB40-REV-CAND-02`,
    **ACTIVE / GATING**. 366/367 stop there, now publishing `regionOwningFragmentOrbit`. Measured, not corrected.
@@ -347,11 +343,11 @@ features first, then threads them through source authority *and* atlas). Copy on
      plan region advanced past `ClosedBeforeEnd`, and ordinals 312/409 — which mutate a **copy** of a real region —
      still reject on `Unguaranteed`. A stored construction-time flag would have suppressed both. `LESSONS.md` 148.
 
-6. **Two partitions of one mesh — still open, no longer the blocking cause.** The plan's partition now yields a
-   unique owner, so the divergence is not what holds the frontier. Corrected ordinal 390 measures it via
-   `censusCorrespondence`. Whether to unify remains a **`DEFN`** question and is not required by the current
-   frontier. Owners: `M3-CP4c3-TB26-REV-CAND-04`, `M3-CP4c3-DEFN-R3-CAND-01`.
-
+6. **Two partitions of one mesh — definition adjudicated; builder duplication remains architectural/non-gating.**
+   Part XII declares the plan `EmptyFragmentOrbits`/`P_U` domain and certifier `NotTraceCut` domain lawfully
+   distinct. `M3-CP4c3-TB26-REV-CAND-04` is therefore closed as a domain-definition question: the defect was
+   cross-domain substitution. `M3-CP4c3-DEFN-R3-CAND-01` remains separable architectural debt about duplicated
+   actual-embedded topology construction. CB48 must not unify either partition or builder.
 7. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
    path: the `VertexStarTransitAudit` is constructed **after** all five seed guards, so every seed failure publishes
    `std::nullopt`; `VertexStarTransitState::SeedUnavailable` is therefore **dead by construction**; and the 26 AX8

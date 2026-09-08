@@ -3746,3 +3746,237 @@ static amendment and creates no event. **Exact next turn remains `M3-CP4c-3-CB45
 under EA0–EA9 as amended by A.3.**
 
 ---
+
+## Part XII — M3-CP4c-3 DEFN-R8
+
+### A census may speak only about its own domain
+
+**Turn:** `M3-CP4c-3-DEFN-R8` — Definition turn (absorbs REVIEW + PLAN).
+**Status:** STATIC / NO RUNTIME / NO COMPILE / NON-STABLE.
+**Runtime authority entering and leaving this turn:** promoted `M3-CP4c-3-TB42`, package107, selector **409**,
+**398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`.
+Ownership remains **300 / 0 / 0**. Stable accounting remains **47 events / 14 categories / 33 recurrences**,
+produced-witness debt **5**, semantic package count **107**.
+
+This part discharges ED7.1–ED7.7 from the promoted TB42 review. It does **not** change Part XI or Part XI-A.
+It decides which object the uncut-component census describes, what evidence a later `RegionCertification` failure
+must carry instead, and how the four protected identities remain falsifiable without demanding evidence about a
+disjoint object.
+
+### 1. DEFN-R8.1 — the uncut-component census domain is the unlabelled-face partition
+
+> **Normative.** The `GlobalTopologyPlan` uncut-component frontier census describes exactly the partition
+> `P_U` constructed from the current **unlabelled-face set**
+>
+> `U = { f | fragmentOrbits[f] is absent or empty }`
+>
+> using the existing barrier set
+>
+> `B = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges`.
+>
+> `P_U` is the connected-component partition of `U` across source edges not in `B`. The owner-consistency census
+> contains one row per component of that same partition. No region, labelled trace-cut face, certified face, or
+> `RegionCertification` failure is implicitly a member of `P_U` merely because it occurs later in the same plan.
+
+This is the construction already present at `GlobalTopologyPlan.cpp:1341–1353`; this turn changes no byte of that
+construction. TB42 measured the mechanical witness at **226** unlabelled faces, **9** partition components and
+**9** owner-consistency rows. The failing region contains **10** source faces, **0** of which are in `P_U`.
+Therefore the census exists and is healthy while being wholly unrelated to the failing region.
+
+For any assertion that wants to use `P_U` as failure-local evidence, the **subject** is the object named by the
+failure contract, not whichever locator happens to resolve first:
+
+- an uncut-component failure owns that component's face set;
+- a source-face failure owns that source face;
+- a region failure owns the current region's complete `region.sourceFaces` set.
+
+The relation of that subject `S` to `P_U` is typed as:
+
+- **Inside** — `S` is non-empty and every face in `S` belongs to `U`;
+- **Outside** — `S` is non-empty and no face in `S` belongs to `U`;
+- **Partial** — some but not all faces in `S` belong to `U`;
+- **Unresolved** — the subject itself cannot be identified from current authoritative data.
+
+Only **Inside** licenses a claim that the uncut-component census describes the complete failure object. `Partial`
+may be reported as cross-domain evidence but may not be collapsed to one component. `Outside` expressly forbids a
+failure-local uncut-component assertion. `Unresolved` fails closed if a test or diagnostic requires a domain
+classification.
+
+### 2. DEFN-R8.2 — domain applicability is a predicate, never a stage name
+
+> **Normative.** No census-owned invariant may be enabled or disabled by comparing
+> `regionFrontierFailureStage` to a literal such as `"UncutComponent"`. Applicability is determined from the
+> subject-to-domain relation in R8.1.
+
+A stage name may remain diagnostic chronology. It is **not** proof of set membership and is not a test oracle.
+The current `if (regionFrontierFailureStage != "UncutComponent") ...` shape is therefore retired as a domain
+decision. This is the general rule: **a diagnostic or test that quantifies over a set must establish that its
+subject belongs to that set before drawing a failure-local conclusion from the census**.
+
+The existing CB47 measurements — source-face membership, region face count and region faces-in-partition count —
+are valid domain-adjudication diagnostics and may be retained. They are not positive frontier evidence when the
+relation is `Outside`.
+
+### 3. DEFN-R8.3 — `RegionCertification` owns region/fragment evidence, not the uncut census
+
+> **Normative.** When a failure is raised while certifying a current `GlobalTopologyRegion`, its failure-local
+> evidence is the **current region's derived actual-embedded face-walk orbit and the fragment-owner relation for
+> the failing source face**. It is not the uncut-component partition.
+
+Part XI remains the prerequisite authority: `region_orbit(region, walk)` derives the current region's owning
+face-walk orbit from exact boundary equality. R8 does not create a second topology certificate and does not alter
+the Part XI binding.
+
+For `RegionSourceFaceOwningFragmentMissing`, the diagnostic contract is:
+
+1. `region` — the current region ID;
+2. `sourceFace` — the source face whose fragment-owner lookup failed;
+3. `regionOwningFragmentOrbit` — the **expected** owner orbit already published at the failing site;
+4. the complete, deterministic set of fragment-owner orbit IDs actually published for that `sourceFace`;
+5. the count of that set and an explicit `regionOwningFragmentOrbitPresent` membership result;
+6. the existing face-local fragment-count controls (`localFragmentCount`, `ownerCount`, `expectedFragmentCount`,
+   `ownerDeficit`) may accompany the relation but do not substitute for item 4.
+
+The orbit set is the missing datum. TB41 already proved why cardinality is insufficient: the failing face reports
+three local fragments, three owners, expected three and deficit zero, yet the expected region orbit is missing.
+Therefore a count-only diagnostic cannot adjudicate this failure.
+
+The owner-orbit set is **diagnostic only** in CB48. Publishing it must not add an owner, choose a winner, mutate
+`fragmentCorners`, change `fragmentOrbits`, alter region construction, or move 366/367 past their current
+`RegionSourceFaceOwningFragmentMissing` gate.
+
+### 4. DEFN-R8.4 — the four protected identities are census-owned, not terminal-failure-owned
+
+The four selector identities remain byte-frozen and gating. Their production fixture may end outside `P_U`; that
+must not make the census oracle disappear. Each identity is restated around the producer that owns the datum.
+
+#### Ordinal 390 — boundary-orbit attribution
+
+`UncutFaceComponentBoundaryOrbitAttributionPublishesThroughMechanicalProductionFailure` must:
+
+- validate a real published `P_U` component's boundary/seed attribution against the matching uncut-component
+  census, including completeness/truncation and owner-count relations it already owns;
+- classify the terminal failure subject with the R8.1 predicate;
+- when that subject is `Outside`, assert the `Outside` receipt and the R8.3 region/fragment evidence instead of
+  demanding a non-empty failure-local frontier component.
+
+The identity may not pass merely because the terminal stage is later.
+
+#### Ordinal 393 — projection/owner-map coverage
+
+`MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual` must validate the uncut-component
+owner/projection publication **from a component in `P_U`**, not from a component inferred from the terminal failure.
+Its coverage invariant remains distinct-source-face coverage rather than raw row arity. If the terminal region is
+`Outside`, that is a separate domain receipt and does not waive the producer-owned census check.
+
+#### Ordinal 406 — partition identity and correspondence
+
+`UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent` must publish and validate
+both partition identities and the explicit R8.1 relation. Equality is never required across different domains.
+For an `Outside` region the correct result is **not-applicable as a failing-component correspondence**, accompanied
+by the explicit `Outside` relation; it is not permission to invent a matching component. For an `Inside` subject,
+the existing exact/superset correspondence rules remain live and must be checked.
+
+#### Ordinal 407 — interior-arc census across both partitions
+
+`InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions` remains a cross-partition publication
+identity. It must select an actual uncut-component census subject from `P_U`, publish each crossed source face and
+its component in each named partition where defined, and preserve typed reasons for absent membership. It must not
+use an `Outside` terminal region as though it were a plan uncut component.
+
+**Non-vacuity requirement for all four.** CB48 must factor each identity's owned invariant into a deterministic
+predicate/check that is applied to real production census data **and** to a deliberately corrupted copy of that
+same-domain data. The real data must satisfy it; the corrupted copy must not. This negative is test-local and does
+not create a selector identity. If any owned check cannot be falsified this way, CB48 stops before compile.
+
+### 5. DEFN-R8.5 — the two-partitions question is adjudicated without unification
+
+`M3-CP4c3-TB26-REV-CAND-04` is **ADJUDICATED BY DEFINITION**: the plan's `EmptyFragmentOrbits`/unlabelled-face
+partition and the certifier's `NotTraceCut` partition are lawfully distinct domains. Their different face sets,
+component counts and digests are not by themselves a product defect. The defect was **cross-domain substitution**:
+a census over one partition was cited as failure-local evidence about an object in the other domain.
+
+Therefore:
+
+- no partition is widened or unified by CB48;
+- ordinal 407 may compare the two only after naming both domains and preserving absent membership as data;
+- a failure-local assertion may consume only a census whose domain predicate admits the failure object.
+
+`M3-CP4c3-DEFN-R3-CAND-01` is **SEPARABLE and remains architectural / non-gating**. It concerns two independent
+constructions of the same actual embedded topology and the danger of foreign orbit ordinals. Part XI plus CB46's
+content anchor already prevents that foreign-ordinal comparison from owning this gate. It is not the reason `P_U`
+and the certifier partition have different membership rules. **CB48 must not unify the two embedded-graph builders.**
+That candidate remains open for a later architectural turn unless it becomes independently gating again.
+
+### 6. DEFN-R8.6 — unchanged surface
+
+The following are frozen:
+
+- accepted **1–365 = 365/365**;
+- ordinals **311/312/314/315/356/357/404/408/409** remain PASS contracts;
+- selector **409** bytes and all selector membership are unchanged;
+- Part XI and XI-A, `region_orbit`, orbit-keyed lookup, content anchor and actual-embedded face binding;
+- source-face ownership, region construction, `fragmentCorners`, `fragmentOrbits`, cut selection, the `P_U` domain
+  and its barrier set, and A2a′ cellularity semantics;
+- 366/367 remain owned by `M3-CP4c3-TB40-REV-CAND-02`; R8.3 adds evidence only and does not correct them;
+- 368/369/370/374/398 remain under their existing owners.
+
+No accepted identity may be edited. No selector byte may change.
+
+### 7. DEFN-R8.7 — frozen Code + Build successor: `M3-CP4c-3-CB48`
+
+CB48 is **Code + Build only**, runtime-free, GMP/GMPXX linked. It implements only R8.1–R8.6 under the following
+measures:
+
+- **EE0 — domain predicate:** add one typed subject/domain relation (`Inside`, `Outside`, `Partial`, `Unresolved`)
+  derived from authoritative face membership; do not branch on `regionFrontierFailureStage`.
+- **EE1 — region fragment relation:** at `RegionSourceFaceOwningFragmentMissing`, publish the complete actual owner
+  orbit set for `sourceFace`, its count, and whether `regionOwningFragmentOrbit` is present. Diagnostic only.
+- **EE2 — projection/rendering:** carry EE0/EE1 through `RemeshPipeline` and the existing failure-locus renderer
+  without changing unrelated error bytes.
+- **EE3 — producer-owned census helpers:** replace `expect_later_region_frontier_evidence` as the four identities'
+  gate with helpers that validate the census producer directly and separately validate the terminal subject's
+  domain receipt.
+- **EE4 — four protected identities:** restate only 390/393/406/407 as R8.4 specifies. For each, execute a
+  deliberately corrupted same-domain copy and prove its owned predicate rejects it.
+- **EE5 — branch receipts:** each of 390/393/406/407 prints one deterministic receipt naming the branch it
+  actually exercised (`UncutCensus` plus terminal-domain relation) and why; "PASS" must remain distinguishable
+  from "oracle did not run".
+- **EE6 — frozen surface audit:** selector409, accepted test blocks, Part XI binding/content anchor, partition
+  construction, region construction, ownership, `fragmentCorners`, cut selection and 366/367 control flow are
+  byte/semantic unchanged as applicable.
+- **EE7 — compile gate:** compile the changed owner target first, then the standard immutable package through the
+  durable reusable workflow. Execute no Directional binary.
+- **EE8 — successor plan:** author one artifact-only `M3-CP4c-3-TB43-EXEC` plan bound to the exact compile-green
+  CB48 package; no rebuild, no test/benchmark definition edits in TB43.
+
+Expected implementation surface is limited to the existing frontier/failure diagnostic contracts and the four
+test bodies/helpers. A need to widen `unlabeledFaces`, change barriers, mutate owners, or correct the missing
+fragment relation violates this definition and returns to review rather than expanding CB48.
+
+### 8. Falsifiers and TB43 acceptance gate
+
+The following falsify CB48 immediately:
+
+1. accepted prefix is not **365/365**;
+2. any of **311/312/314/315/356/357/404/408/409** loses its current contract;
+3. selector409 bytes change;
+4. any protected identity passes solely because a stage/branch skips its census-owned predicate;
+5. any deliberately corrupted same-domain census still satisfies the corresponding owned predicate;
+6. EE1 reports only counts and omits the exact owner-orbit membership needed to distinguish the observed
+   three-of-three-but-wrong-owner case;
+7. 366/367 advance because CB48 mutates ownership/fragment behavior rather than only publishing evidence;
+8. any partition or embedded-graph construction is unified or widened to make the tests pass.
+
+`M3-CP4c-3-TB43-EXEC` executes selector409 artifact-only from the exact CB48 package. If CB48 is correct and no
+carried owner changes, the expected color vector is **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, with
+390/393/406/407 recovered and the carried RED set `[366,367,368,369,370,374,398]`. The expectation is a falsifier,
+not permission to synthesize success; TB43 records the actual ledger and stops for review on any discrepancy.
+
+### 9. Accounting and exact next turn
+
+Definition / Review + Plan only: no runtime, no compile, no package, no selector mutation and no stable repricing.
+**+0 events / +0 recurrences.** Totals remain **47 / 14 / 33**, debt **5**, packages **107**. TB42 remains current
+semantic runtime authority at **398 PASS / 11 RED**, accepted **365/365**.
+
+**Exact next turn: `M3-CP4c-3-CB48` — Code + Build, runtime-free, under EE0–EE8.**

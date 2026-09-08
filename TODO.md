@@ -26,45 +26,36 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-DEFN-R8` (definition turn, static) — PART XII, THE CENSUS'S DOMAIN
+## Current focus — `M3-CP4c-3-CB48` (Code + Build) — IMPLEMENT PART XII DOMAIN-OWNED EVIDENCE
 
-`M3-CP4c-3-TB42-REV` adjudicated TB42, **promoted it**, and closed the frontier-census question to further
-measurement.
+`M3-CP4c-3-DEFN-R8` is **COMPLETE / STATIC / NON-STABLE**. It appended Part XII and discharged ED7.1–ED7.7
+without runtime or compile. `M3-CP4c-3-TB42` remains current semantic runtime authority: selector **409**, **398
+PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, package107.
 
-- **`M3-CP4c-3-TB42` is the current valid semantic runtime authority** — selector **409**,
-  **398 PASS / 11 RED / 0 SKIP**, **accepted 365/365**, package107. RED set and ledger hash identical to TB41.
-- Ordinals **311, 312, 314, 315, 356, 357, 404, 408, 409 PASS**; ownership **300 / 0 / 0**.
+Part XII freezes:
 
-**CB47 was diagnostics-only, proved by artifact** (identical ledger hash, changed failure-detail digest).
-
-**The measurement settles it.** `unlabeledFaceCount=226`, `frontierPartitionComponentCount=9`,
-`ownerConsistencyRowCount=9`, `regionFrontierLocator=none`, failure source face in partition `false`, failing
-region **10** source faces of which **0** are in the partition. **The partition is not empty — it is disjoint from
-the failing object.** No locator can resolve, the guard is never reached, and the benign-guard prediction is
-confirmed by `9 == 9`. **A domain mismatch, not an empty set or a locator bug.**
-
-**Three of the four identities name the uncut-component census explicitly**, and that partition covers unlabelled
-faces by construction. **The `UncutComponent` early return was the domain guard, written as a stage check.**
-
-Stable accounting remains **47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**, packages
-**107**. CP4c-3 remains **OPEN**.
+- [x] **ED7.1** `P_U` is exactly the unlabelled-face (`fragmentOrbits` absent/empty) partition with existing
+  mandatory/trace/cut barriers;
+- [x] **ED7.2** `RegionCertification` uses region/fragment evidence; missing-fragment failures require the complete
+  failing-face owner-orbit set and expected-orbit membership;
+- [x] **ED7.3** applicability is `Inside | Outside | Partial | Unresolved`, never a stage string;
+- [x] **ED7.4** 390/393/406/407 remain producer-owned census gates and each requires a same-domain corruption
+  falsifier so a skipped oracle cannot pass;
+- [x] **ED7.5** the plan/certifier partitions are lawfully distinct; cross-domain substitution is prohibited;
+  duplicated embedded-graph builders are separable architectural debt and are not unified by CB48;
+- [x] **ED7.6** accepted 365/365, named control ordinals, selector409, Part XI/Part XI-A, `P_U`, region construction,
+  ownership, fragment/cut/cellularity semantics remain frozen;
+- [x] **ED7.7** `Architecture_M3_CP4c3_CB48_Code_Build_Plan.md` freezes EE0–EE8 and the later artifact-only TB43 gate.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-DEFN-R8`**, a static **definition** turn appending **Part XII**:
+Run **`M3-CP4c-3-CB48`** under EE0–EE8. It may make only the bounded diagnostic/test-oracle correction and compile
+through the durable reusable workflow with GMP/GMPXX. It must execute **no Directional runtime**. Stop if the patch
+would widen/unify a partition, change owner/fragment behavior, alter selector409 or accepted contracts, or allow
+390/393/406/407 to pass without executing and falsifying their census-owned predicate.
 
-- [ ] **ED7.1** state the uncut-component census's **domain** normatively;
-- [ ] **ED7.2** decide what a `RegionCertification` failure must publish instead;
-- [ ] **ED7.3** require a **domain predicate, never a stage string**;
-- [ ] **ED7.4** restate each identity's obligation so each still **fails** within its own domain;
-- [ ] **ED7.5** decide together with the two-partitions candidates, or say why separable;
-- [ ] **ED7.6** fix the unchanged surface;
-- [ ] **ED7.7** freeze `M3-CP4c-3-CB48` and the `TB43-EXEC` gate.
-
-**Must not:** weaken the four identities into unconditional passes; widen the early return; change the partition's
-domain; correct `RegionSourceFaceOwningFragmentMissing`; **spend another CB measuring what TB42 already measured**;
-change an accepted identity or selector byte; run any Directional runtime. **Accepted prefix 365/365 is a stop
-condition.**
+If only the defined correction lands, TB43's frozen falsifier is **402 PASS / 7 RED / 0 SKIP**, accepted 365/365,
+RED `[366,367,368,369,370,374,398]`. TB43 must measure rather than assume that vector.
 
 ## Carried forward from M1
 
@@ -102,7 +93,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB41` remains promoted semantic runtime authority** pending independent review. **TB42-EXEC is complete** on package107 with **398 PASS / 11 RED**, accepted 365/365; exact next is independent `M3-CP4c-3-TB42-REV`.
+  CP4c-3 remains open. **`M3-CP4c-3-TB42` is promoted semantic runtime authority** on package107 with **398 PASS / 11 RED**, accepted 365/365. DEFN-R8 is complete; exact next is `M3-CP4c-3-CB48`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -113,7 +104,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and adds the EC7 population/domain measurements without changing the oracle. TB42-EXEC artifact-only measurement is complete; independent TB42-REV now owns interpretation and `DEFN-R8`. 366/367 remain under their separate missing-fragment/orbit owner.
+- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`. CB47 is compile-green and TB42 promoted its EC7 measurement. DEFN-R8 Part XII has now defined the domain contract; CB48 owns the bounded implementation/compile proof. 366/367 remain under their separate missing-fragment/orbit owner.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -141,4 +132,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences** — no new event at TB42 — debt **5**, packages **107**. **`M3-CP4c-3-TB42` is the promoted semantic runtime authority** at 398/11 with accepted **365/365**, on package107. The frontier census is measured and the remaining question is normative. Exact next is static **`M3-CP4c-3-DEFN-R8`** appending Part XII. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences** — no new event at TB42 — debt **5**, packages **107**. **`M3-CP4c-3-TB42` is the promoted semantic runtime authority** at 398/11 with accepted **365/365**, on package107. The frontier census is measured and Part XII has resolved its domain semantics. Exact next is **`M3-CP4c-3-CB48`** Code + Build under EE0–EE8. PR #8 remains open, draft, and unmerged.

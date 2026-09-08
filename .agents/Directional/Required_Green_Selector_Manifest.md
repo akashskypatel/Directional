@@ -600,6 +600,15 @@ stays byte-frozen and accepted prefix 365/365 is a stop condition.**
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full
 selector and is **not** part of the CP4c prefix chain above. It is retained under `M1_Closure_Record.md`.
 
+## Current CP4c-3 selector authority after DEFN-R8
+
+Selector **409** remains byte-frozen at
+`eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`. DEFN-R8 changed no selector bytes or
+membership. TB42 remains runtime authority at **398 PASS / 11 RED**, accepted **365/365**. Part XII freezes CB48
+without adding an identity: 390/393/406/407 must be made non-vacuous inside their existing identities by a
+producer-data positive and deliberately corrupted same-domain negative. The later TB43 expected falsifier is
+**402 PASS / 7 RED**, carried RED `[366,367,368,369,370,374,398]`; runtime must measure it rather than assume it.
+
 ## Regenerating this manifest
 
 Every column is derived. `tools/selector_probe.py` computes counts, LF hashes, prefix relations and appended

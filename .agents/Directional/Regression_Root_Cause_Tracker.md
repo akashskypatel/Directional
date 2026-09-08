@@ -1,3 +1,24 @@
+## M3-CP4c3-DEFN-R8 — definition closeout — **CURRENT DEFINITION AUTHORITY / NON-STABLE / PART XII FROZEN / CB48 NEXT**
+
+DEFN-R8 is static: no runtime, compile, package, selector mutation, event or recurrence. TB42 remains promoted at
+398 PASS / 11 RED, accepted 365/365, packages 107, accounting 47 / 14 / 33.
+
+- `M3-CP4c3-TB40-EXEC-CAND-02` / the four protected frontier identities are **DEFINED / IMPLEMENTATION PENDING
+  CB48**. The uncut census owns exactly `P_U`; applicability is a typed domain relation, never a stage string.
+- `M3-CP4c3-TB41-REV-CAND-01` is **DEFINED / IMPLEMENTATION PENDING CB48**: the current terminal region is
+  `Outside` `P_U`; RegionCertification must publish exact region/fragment owner-orbit evidence instead.
+- `M3-CP4c3-TB26-REV-CAND-04` is **ADJUDICATED BY DEFINITION**: distinct plan/certifier partitions are lawful;
+  cross-domain substitution was the defect. No unification is authorized.
+- `M3-CP4c3-DEFN-R3-CAND-01` is **SEPARABLE / ACTIVE ARCHITECTURAL NON-GATING**: duplicate actual-embedded graph
+  construction is not this gate and CB48 must not unify builders.
+- `M3-CP4c3-TB40-REV-CAND-02` remains **ACTIVE / GATING** at 366/367
+  `RegionSourceFaceOwningFragmentMissing`; CB48 may add exact owner-orbit evidence only and must not correct it.
+
+Part XII requires 390/393/406/407 to validate the producer census on real same-domain data and reject a corrupted
+same-domain copy. A PASS that merely skips the oracle is invalid. Exact next: `M3-CP4c-3-CB48` EE0–EE8.
+
+---
+
 ## M3-CP4c3-TB42-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / NON-STABLE / TB42 PROMOTED / DOMAIN MISMATCH ESTABLISHED**
 
 - **Record:** `Architecture_M3_CP4c3_TB42_Independent_Review_Record.md`, measures **ED0–ED7**. Evidence-only.

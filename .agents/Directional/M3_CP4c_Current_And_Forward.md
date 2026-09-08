@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-TB42-REV` closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-DEFN-R8` closeout.
 
 ---
 
@@ -442,32 +442,49 @@ the domain guard, expressed as a stage check** — the pipeline advancing to `Re
 Ordinal 407's name spans **both partitions**, placing these four inside the long-open two-partitions-of-one-mesh
 problem (§7). The successor should decide them together or say why they are separable.
 
-## 3.12 Exact next turn — `M3-CP4c-3-DEFN-R8`
+## 3.12 DEFN-R8 decided it — Part XII makes census applicability a domain relation
 
-**A definition turn**, static, appending **Part XII**. **Nothing is left to measure; the question is normative.**
+`M3-CP4c-3-DEFN-R8` is complete as a **static definition turn**. Part XII is now normative and discharges
+ED7.1–ED7.7 without runtime, compile, selector mutation or stable repricing.
 
-- **ED7.1** — state the uncut-component census's **domain** normatively: it describes the unlabelled-face
-  partition and is meaningful only for a failure whose object lies inside it. Cite `:1341–1353` and the TB42
-  numbers (226 / 9 / 9, and 0-of-10).
-- **ED7.2** — decide what a `RegionCertification` failure must publish instead, naming the object and fields;
-  `regionOwningFragmentOrbit` already exists at the failing site and is the likely seed.
-- **ED7.3** — require the condition to be a **domain predicate, never a stage string.** The current guard compares
-  a stage name; that proxy stopped tracking what it stood for. This is the general rule, not a local fix.
-- **ED7.4** — restate each of the four identities' obligations so each still **fails** when its own census is
-  broken within its own domain. **Widening the early return to make all four pass is prohibited.**
-- **ED7.5** — decide together with `M3-CP4c3-TB26-REV-CAND-04` / `M3-CP4c3-DEFN-R3-CAND-01`, or state why
-  separable.
-- **ED7.6** — unchanged surface: accepted 365/365; ordinals 311/312/314/315/356/357/404/408/409 keep their
-  contracts; selector 409 byte-frozen; the Part XI binding, `region_orbit`, the orbit-keyed lookup and the content
-  anchor untouched; no change to the partition's domain, region construction, ownership, `fragmentCorners`, cut
-  selection or A2a′ cellularity semantics.
-- **ED7.7** — freeze `M3-CP4c-3-CB48` with falsifiers, then the artifact-only `M3-CP4c-3-TB43-EXEC` gate.
+The decisions are:
 
-**Falsifiers to carry into CB48.** Accepted **365/365** and 311/312/314/315/356/357/404/408/409 PASS are stop
-conditions. **If 390/393/406/407 pass because the assertion no longer runs on any input, the oracle was hidden
-again, not repaired** — CB48 must publish per identity which branch it took and why (`LESSONS.md` 160). If any of
-the four cannot be made to fail on a deliberately broken census within its own domain, the restatement is vacuous.
-If the repair needs `unlabeledFaces` widened, the question returns to definition.
+- the uncut-component census describes exactly the `P_U` partition of faces whose `fragmentOrbits` are
+  absent/empty, with the existing `mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` barriers;
+- a failure subject is classified against that domain as `Inside | Outside | Partial | Unresolved`; stage names are
+  chronology only and may never stand in for domain membership;
+- a later `RegionCertification` failure owns **region/fragment evidence**, not `P_U`; for
+  `RegionSourceFaceOwningFragmentMissing` the missing evidence is the complete deterministic owner-orbit set for
+  the failing source face plus exact membership of `regionOwningFragmentOrbit`;
+- ordinals 390/393/406/407 remain census-owned and must exercise their producer-side oracle even when the terminal
+  region is `Outside`; each must also reject a deliberately corrupted copy of same-domain census data;
+- `M3-CP4c3-TB26-REV-CAND-04` is adjudicated: the plan and certifier partitions are lawfully distinct; the defect
+  was cross-domain substitution, not their difference;
+- `M3-CP4c3-DEFN-R3-CAND-01` is separable and remains architectural/non-gating. CB48 must not unify either embedded
+  graph builder or partition.
+
+The frozen unchanged surface is accepted **365/365**, ordinals **311/312/314/315/356/357/404/408/409**, selector
+409 bytes, Part XI/Part XI-A, `region_orbit`, the content anchor, `P_U`, region construction, ownership,
+`fragmentCorners`, `fragmentOrbits`, cut selection and A2a′ cellularity semantics. 366/367 remain owned by the
+missing-fragment relation; Part XII adds observation only.
+
+### Exact next turn — `M3-CP4c-3-CB48`
+
+CB48 is **Code + Build only** under `Architecture_M3_CP4c3_CB48_Code_Build_Plan.md`:
+
+- **EE0:** typed domain predicate from authoritative face membership, never a stage string;
+- **EE1:** exact failing-face owner-orbit set + `regionOwningFragmentOrbitPresent`, diagnostic only;
+- **EE2:** project/render the new evidence without perturbing unrelated loci;
+- **EE3–EE5:** producer-owned census predicates for 390/393/406/407, same-domain corruption falsifiers, and
+  deterministic branch receipts proving the oracle actually ran;
+- **EE6:** frozen-surface audit, including byte-frozen selector409 and unchanged 366/367 control flow;
+- **EE7:** compile only through the durable reusable workflow with GMP/GMPXX and `runtimeExecution=false`;
+- **EE8:** freeze one immutable package-bound `M3-CP4c-3-TB43-EXEC` plan; execute no runtime in CB48.
+
+If the correction requires widening/unifying a partition, changing ownership/fragment behavior, modifying selector
+bytes, or allowing a protected identity to pass without executing its census predicate, CB48 stops and returns to
+review. The TB43 expected color vector, if only the defined oracle repair takes effect, is **402 PASS / 7 RED / 0
+SKIP** with carried RED `[366,367,368,369,370,374,398]`; this is a falsifier, not a synthetic target.
 
 ## 4. Open candidates
 
@@ -476,7 +493,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | Candidate | State |
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
-| `M3-CP4c3-TB40-EXEC-CAND-02` | **ACTIVE / TB41 RECONFIRMED / NON-STABLE GATING / REVIEW REQUIRED** — 390/393/406/407 remain RED at `regionFrontierComponentCount=0` after CB46's broader collection. |
+| `M3-CP4c3-TB40-EXEC-CAND-02` | **DEFINED / IMPLEMENTATION PENDING CB48 / NON-STABLE GATING** — Part XII proves the terminal region is `Outside` `P_U`, keeps the producer census oracle live, and forbids stage-string applicability. |
 | `M3-CP4c3-TB39-EXEC-CAND-01` | **TB41 RAW RECONFIRMED / REVIEW PENDING / NON-STABLE / RP-01** — 366/367 stay beyond retired proxies at `RegionSourceFaceOwningFragmentMissing`; TB41 now names source face/orbit and owner census. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
@@ -499,9 +516,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB27-REV-CAND-01` | **CORRECTED / RUNTIME-PROVED** — CB34's separating-arc barrier rule excludes the crossed faces and preserves equal-orbit slits; ordinal 408 passes on all three properties. |
 | `M3-CP4c3-TB26-REV-CAND-02` | **RESOLVED / LAWFUL DOMAIN DIFFERENCE** — 76 and 97 belong to different partitions; TB27 additionally exposes 214-vs-191 faces and distinct digests. |
 | `M3-CP4c3-TB27-REV-CAND-02` | **ACTIVE / ARCHITECTURAL / NON-GATING** — the plan excludes from its component domain exactly the faces carrying a direct certified read (`GlobalTopologyPlan.cpp:702`, `:750`), then fails to seed that component. |
-| `M3-CP4c3-TB26-REV-CAND-04` | **ACTIVE / NO LONGER THE BLOCKING CAUSE** — the plan's partition now yields a unique owner, so the divergence does not hold the frontier. Unification remains a **`DEFN`** question. |
+| `M3-CP4c3-TB26-REV-CAND-04` | **ADJUDICATED BY DEFN-R8 / DISTINCT DOMAINS LAWFUL** — plan `P_U` and certifier domains may differ; cross-domain substitution is prohibited; no unification in CB48. |
 | `M3-CP4c3-TB25-REV-CAND-02` | **ACTIVE / GATING / UNDECIDED FOR THE FAILING OBJECT** — the certifier component contains two separating arcs, but it is not the 191-face failing plan component. **TB28-R2 supplied no admissible evidence about it.** CL8 is nonetheless discharged: the correction is frozen and does not depend on this being decided first. |
-| `M3-CP4c3-DEFN-R3-CAND-01` | **RUNTIME-PROVED / GATING / ARCHITECTURAL** — duplicated constructions yield different partition objects on the witness; diagnostic census runs on the non-failing one. |
+| `M3-CP4c3-DEFN-R3-CAND-01` | **SEPARABLE / ACTIVE ARCHITECTURAL / NON-GATING** — duplicated actual-embedded topology construction remains debt, but Part XII proves it is not this census-domain gate; CB48 must not unify builders. |
 | `M3-CP4c3-TB24-REV-CAND-02` | **ACTIVE / ARCHITECTURAL** — ownership of non-arc-incident faces is a derivation, not a read. |
 | `M3-CP4c3-TB22-REV-CAND-01` | **ACTIVE / EVIDENCE INTEGRITY** — earlier vacuous diagnostic surfaces remain historical architectural debt; ordinal393's current contract itself is runtime-proved. |
 | `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / SCOPE REFUTED / DERIVATION REQUIRED**; `localFragmentCount` stays non-fatal. |
@@ -513,10 +530,6 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — ordinal 370. **No correction authorized.** |
 | finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
-**Nothing is discharged by TB28-R2** — an invalid gate discharges nothing, and every candidate keeps the status it
-held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAND-01` and
-`M3-CP4c3-TB26-REV-CAND-03`. `M3-CP4c3-TB26-REV-CAND-02` remains RESOLVED as a lawful domain difference.
-`M3-CP4c3-TB26-REV-CAND-04` and `M3-CP4c3-DEFN-R3-CAND-01` are **confirmed at runtime and gating**.
 
 ---
 
@@ -605,15 +618,8 @@ held at TB27-REV. **Closed at TB27-REV, runtime-proved:** `M3-CP4c3-TB26-REV-CAN
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, DEFN-R8 loads only the minimum authority:
-
-1. `ORIENTATION.md` — read first.
-2. **this file** — §3.11 (the measurement and what it settles) and §3.12 (the frozen scope).
-3. `Architecture_M3_CP4c3_TB42_Independent_Review_Record.md` — **ED0–ED7**, the adjudication.
-4. `M3_CP4c_Frozen_Definitions.md` — **Part XI operative, amended by Part XI-A**; **Part XII appends here**.
-5. `Regression_Root_Cause_Tracker.md` — the TB42-REV section and the authoritative next step.
-6. `Required_Green_Selector_Manifest.md`, `TODO.md`, `CHANGELOG.md`, `LESSONS.md` (**159, 160, 161** govern).
-
-Exact next is **`M3-CP4c-3-DEFN-R8`**, static, appending **Part XII**. **No further CB may be spent measuring the
-frontier census** — TB42 measured it. The remaining question is what evidence a certification-stage failure should
-carry, and how to express the domain as a predicate rather than a stage name.
+After the durable start-of-turn checklist, execute **`M3-CP4c-3-CB48`** from Part XII and
+`Architecture_M3_CP4c3_CB48_Code_Build_Plan.md`. This is a Code + Build turn: surgical diagnostic/test-oracle
+implementation plus compile-only evidence. Do not run Directional runtime, alter selector409, widen partitions,
+unify embedded-graph builders, or correct 366/367 ownership semantics. The immutable CB48 package must carry one
+artifact-only TB43-EXEC plan.
