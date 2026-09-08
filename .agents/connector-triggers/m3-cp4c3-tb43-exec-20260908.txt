@@ -1,5 +1,0 @@
-purpose=execute artifact-only M3-CP4c-3-TB43 on immutable package108
-package_artifact_id=10076272909
-semantic_source=531b517fb129425f113b5f811215f1d2b1939ee2
-selector_count=409
-retry=0
