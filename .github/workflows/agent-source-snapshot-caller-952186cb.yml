@@ -1,0 +1,32 @@
+name: Agent Source Snapshot Caller 952186cb
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/source-snapshot/952186cb.json
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-source-snapshot-caller-952186cb.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 1
+    secrets: inherit
+
+  snapshot:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: 952186cbf14e8c826b0ad3b489a8d8be52232b04
+      artifact_prefix: directional-source-snapshot
+      retention_days: 1
+    secrets: inherit
