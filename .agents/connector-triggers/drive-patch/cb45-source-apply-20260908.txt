@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB45 source patch apply
-expected_base=512ba0388f83a6c5f111f034a11ad03b456483a5
-caller_install=fc0ed4ef7775e269a8daae6c652d0dd76fb418bf
-retry=0
