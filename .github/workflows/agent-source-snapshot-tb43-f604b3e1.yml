@@ -1,0 +1,35 @@
+name: Agent Source Snapshot TB43 f604b3e1
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/source-snapshot/tb43-f604b3e1-20260908.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-source-snapshot-tb43-f604b3e1
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-source-snapshot-tb43-f604b3e1.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  snapshot:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: f604b3e10fe2ddadc58e2942ee9ad041fc44257c
+      artifact_prefix: agent-source-snapshot-tb43-f604b3e1
+      retention_days: 7
+    secrets: inherit
