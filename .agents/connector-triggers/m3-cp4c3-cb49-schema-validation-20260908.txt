@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-CB49
-purpose=validate-drive-caller-draft
-retry=0
