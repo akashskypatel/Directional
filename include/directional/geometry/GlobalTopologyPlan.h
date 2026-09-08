@@ -512,6 +512,9 @@ struct GlobalTopologyPlanError {
   std::optional<RegionBoundaryWalkReason> regionBoundaryWalkReason;
   std::optional<RegionBoundaryProvenance> regionBoundaryProvenance;
   std::optional<std::size_t> regionBoundaryOrbit;
+  // Region owner expected for a source face that is missing the corresponding
+  // fragment-corner ownership row. Diagnostic only; never a repair input.
+  std::optional<std::size_t> regionOwningFragmentOrbit;
   std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
   std::optional<std::size_t> regionBoundaryDistinctArcCount;
   std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;

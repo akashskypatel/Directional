@@ -1852,6 +1852,24 @@ void canonicalize_oriented_cycle(
               cycle.begin() + static_cast<std::ptrdiff_t>(best), cycle.end());
 }
 
+directional::geometry::GlobalTopologyOrientedArc canonical_cycle_anchor(
+    const std::vector<directional::geometry::GlobalTopologyOrientedArc> &cycle) {
+  EXPECT_FALSE(cycle.empty());
+  return *std::min_element(
+      cycle.begin(), cycle.end(), [](const auto lhs, const auto rhs) {
+        return std::tie(lhs.arc, lhs.orientation) <
+               std::tie(rhs.arc, rhs.orientation);
+      });
+}
+
+bool face_certificate_has_anchor(
+    const directional::geometry::SurfaceCutGraphFaceCertificate &certificate,
+    const directional::geometry::GlobalTopologyOrientedArc anchor) {
+  return certificate.boundaryAnchorArc.has_value() &&
+         *certificate.boundaryAnchorArc == anchor.arc &&
+         certificate.boundaryAnchorOrientation == anchor.orientation;
+}
+
 std::optional<std::vector<std::vector<directional::geometry::GlobalTopologyOrientedArc>>>
 independent_plan_face_orbits(
     const directional::geometry::GlobalTopologyPlan &plan) {
@@ -2325,16 +2343,21 @@ IndependentDiscProofResult independent_disc_proof_oracle(
       return result;
     }
     const auto *certificate = plan.find_region_certificate(region.id);
+    const auto anchor = canonical_cycle_anchor((*orbits)[*matched]);
     const auto upstream = std::find_if(
         cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
-        [&](const auto &candidate) { return candidate.orbit == *matched; });
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
     const auto upstreamCount = static_cast<std::size_t>(std::count_if(
         cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
-        [&](const auto &candidate) { return candidate.orbit == *matched; }));
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        }));
     if (certificate == nullptr || upstreamCount != 1U ||
         upstream == cutGraph.certificate().faces.end() ||
         certificate->actualEmbeddedFace != *upstream ||
-        certificate->actualEmbeddedFace.orbit != *matched ||
+        !face_certificate_has_anchor(certificate->actualEmbeddedFace, anchor) ||
         certificate->actualEmbeddedFace.boundaryArcCount !=
             region.boundary.size() ||
         !certificate->proves_disc_topology()) {
@@ -3249,16 +3272,20 @@ TEST(GlobalTopologyPlan, ProvesDiscTopologyForEveryEmittedRegion) {
     EXPECT_EQ(region.id, certificate->region);
     const auto orbit = std::find(orbits->begin(), orbits->end(), region.boundary);
     ASSERT_NE(orbits->end(), orbit);
-    const std::size_t orbitIndex =
-        static_cast<std::size_t>(std::distance(orbits->begin(), orbit));
-    EXPECT_EQ(orbitIndex, certificate->actualEmbeddedFace.orbit);
+    const auto anchor = canonical_cycle_anchor(*orbit);
+    EXPECT_TRUE(face_certificate_has_anchor(certificate->actualEmbeddedFace,
+                                            anchor));
     const auto upstreamCount = std::count_if(
         cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
-        [&](const auto &candidate) { return candidate.orbit == orbitIndex; });
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
     EXPECT_EQ(1, upstreamCount);
     const auto upstream = std::find_if(
         cutGraph.certificate().faces.begin(), cutGraph.certificate().faces.end(),
-        [&](const auto &candidate) { return candidate.orbit == orbitIndex; });
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
     ASSERT_NE(cutGraph.certificate().faces.end(), upstream);
     EXPECT_EQ(*upstream, certificate->actualEmbeddedFace);
     EXPECT_EQ(1U, certificate->actualEmbeddedFace.boundaryWalkCount);
@@ -3762,6 +3789,9 @@ void append_cp4c_failure_locus(
   }
   if (locus.regionBoundaryOrbit.has_value())
     report << ";regionBoundaryOrbit=" << *locus.regionBoundaryOrbit;
+  if (locus.regionOwningFragmentOrbit.has_value())
+    report << ";regionOwningFragmentOrbit="
+           << *locus.regionOwningFragmentOrbit;
   if (locus.regionBoundaryArcOccurrenceCount.has_value())
     report << ";regionBoundaryArcOccurrenceCount="
            << *locus.regionBoundaryArcOccurrenceCount;
@@ -5767,6 +5797,10 @@ void append_plan_error(std::ostringstream &stream,
   if (error.sourceFace.has_value()) {
     stream << ";sourceFace=" << source_face_locus(*error.sourceFace);
   }
+  if (error.regionOwningFragmentOrbit.has_value()) {
+    stream << ";regionOwningFragmentOrbit="
+           << *error.regionOwningFragmentOrbit;
+  }
   if (error.secondSourceFace.has_value()) {
     stream << ";secondSourceFace=" << source_face_locus(*error.secondSourceFace);
   }
@@ -6320,6 +6354,16 @@ Cp4cReachabilityObservation observe_cp4c_witness(
            << certificate.actualEmbeddedFace.boundaryWalkCount
            << ",boundaryArcCount="
            << certificate.actualEmbeddedFace.boundaryArcCount
+           << ",boundaryAnchorArc="
+           << (certificate.actualEmbeddedFace.boundaryAnchorArc.has_value()
+                   ? std::to_string(
+                         certificate.actualEmbeddedFace.boundaryAnchorArc->index())
+                   : std::string("absent"))
+           << ",boundaryAnchorOrientation="
+           << (certificate.actualEmbeddedFace.boundaryAnchorOrientation ==
+                       directional::authority::Orientation::Forward
+                   ? "Forward"
+                   : "Reverse")
            << ",discTopologyEstablished="
            << (certificate.actualEmbeddedFace.discTopologyEstablished ? "true"
                                                                          : "false")
@@ -8929,25 +8973,32 @@ void expect_cp4c_plan_disc_proofs(const Cp4cProductionFixture &fixture) {
             << " graphEuler=" << cutCertificate.eulerCharacteristic
             << " sourceEuler=" << cutCertificate.sourceEulerCharacteristic
             << '\n';
-  std::set<std::size_t> consumedUpstreamOrbits;
+  std::set<std::pair<std::size_t, int>> consumedUpstreamAnchors;
   for (const auto &region : plan.regions()) {
     const auto *certificate = plan.find_region_certificate(region.id);
     ASSERT_NE(nullptr, certificate);
     EXPECT_EQ(region.id, certificate->region);
     const auto orbit = std::find(orbits->begin(), orbits->end(), region.boundary);
     ASSERT_NE(orbits->end(), orbit);
-    const std::size_t derivedOrbit =
-        static_cast<std::size_t>(std::distance(orbits->begin(), orbit));
+    const auto anchor = canonical_cycle_anchor(*orbit);
     const auto upstreamCount = static_cast<std::size_t>(std::count_if(
         cutCertificate.faces.begin(), cutCertificate.faces.end(),
-        [&](const auto &candidate) { return candidate.orbit == derivedOrbit; }));
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        }));
     ASSERT_EQ(1U, upstreamCount);
     const auto upstream = std::find_if(
         cutCertificate.faces.begin(), cutCertificate.faces.end(),
-        [&](const auto &candidate) { return candidate.orbit == derivedOrbit; });
+        [&](const auto &candidate) {
+          return face_certificate_has_anchor(candidate, anchor);
+        });
     ASSERT_NE(cutCertificate.faces.end(), upstream);
-    EXPECT_TRUE(consumedUpstreamOrbits.insert(derivedOrbit).second);
-    EXPECT_EQ(derivedOrbit, certificate->actualEmbeddedFace.orbit);
+    EXPECT_TRUE(consumedUpstreamAnchors
+                    .insert({anchor.arc.index(),
+                             static_cast<int>(anchor.orientation)})
+                    .second);
+    EXPECT_TRUE(face_certificate_has_anchor(certificate->actualEmbeddedFace,
+                                            anchor));
     EXPECT_EQ(*upstream, certificate->actualEmbeddedFace);
     EXPECT_EQ(region.boundary.size(),
               certificate->actualEmbeddedFace.boundaryArcCount);
@@ -8955,8 +9006,22 @@ void expect_cp4c_plan_disc_proofs(const Cp4cProductionFixture &fixture) {
     EXPECT_TRUE(certificate->proves_field_regularity());
     std::cout << "M3_CP4C3_FACE_BINDING_CENSUS record=region"
               << " region=" << region.id.index()
-              << " derivedOrbit=" << derivedOrbit
+              << " independentAnchorArc=" << anchor.arc.index()
+              << " independentAnchorOrientation="
+              << (anchor.orientation == directional::authority::Orientation::Forward
+                      ? "Forward"
+                      : "Reverse")
               << " certificateOrbit=" << certificate->actualEmbeddedFace.orbit
+              << " certificateAnchorArc="
+              << (certificate->actualEmbeddedFace.boundaryAnchorArc.has_value()
+                      ? std::to_string(
+                            certificate->actualEmbeddedFace.boundaryAnchorArc->index())
+                      : std::string("absent"))
+              << " certificateAnchorOrientation="
+              << (certificate->actualEmbeddedFace.boundaryAnchorOrientation ==
+                          directional::authority::Orientation::Forward
+                      ? "Forward"
+                      : "Reverse")
               << " upstreamMatchCount=" << upstreamCount
               << " regionBoundaryArcCount=" << region.boundary.size()
               << " certificateBoundaryArcCount="
@@ -8969,7 +9034,10 @@ void expect_cp4c_plan_disc_proofs(const Cp4cProductionFixture &fixture) {
               << (certificate->proves_field_regularity() ? "true" : "false")
               << '\n';
   }
-  EXPECT_EQ(plan.regions().size(), consumedUpstreamOrbits.size());
+  EXPECT_EQ(plan.regions().size(), consumedUpstreamAnchors.size());
+  if (plan.regions().size() > 1U)
+    EXPECT_GT(consumedUpstreamAnchors.size(), 1U)
+        << "binding census must contain a field that can differ across rows";
 }
 
 void expect_rotation_face_walk_agreement(
@@ -9466,6 +9534,15 @@ TEST(GlobalTopologyPlan,
       for (const std::string &token : std::vector<std::string>{
                ";arc=", ";secondArc=", ";trace=", ";secondTrace=",
                ";rotationPreviousRay={", ";rotationCurrentRay={"}) {
+        EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+      }
+    } else if (emitted.find("RegionSourceFaceOwningFragmentMissing") !=
+               std::string::npos) {
+      // EB7.6 is measurement only: retain the rejection while publishing the
+      // exact source face, missing owning orbit, and that face's owner census.
+      for (const std::string &token : std::vector<std::string>{
+               ";sourceFace=", ";regionOwningFragmentOrbit=",
+               ";fragmentOwnerFace["}) {
         EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
       }
     }

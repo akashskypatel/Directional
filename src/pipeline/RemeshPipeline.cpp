@@ -704,6 +704,7 @@ project_global_topology_plan_failure_locus(
             *error.regionBoundaryProvenance);
   }
   locus.regionBoundaryOrbit = error.regionBoundaryOrbit;
+  locus.regionOwningFragmentOrbit = error.regionOwningFragmentOrbit;
   locus.regionBoundaryArcOccurrenceCount =
       error.regionBoundaryArcOccurrenceCount;
   locus.regionBoundaryDistinctArcCount = error.regionBoundaryDistinctArcCount;

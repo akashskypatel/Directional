@@ -674,14 +674,21 @@ plan_uncut_component_partition_identity() {
       components.insert(component);
   };
 
-  if (failure.uncutFaceComponent.has_value()) {
+  // Frontier evidence belongs to the region-construction/certification state,
+  // not to whichever typed failure happened to terminate that state. Consume
+  // every available locator so retiring or advancing one failure code cannot
+  // silence the census (DEFN-R4.4).
+  if (failure.uncutFaceComponent.has_value())
     add_component(*failure.uncutFaceComponent);
-  } else if (failure.sourceFace.has_value()) {
+
+  if (failure.sourceFace.has_value()) {
     const auto component =
         frontier.partition.componentByFace.find(*failure.sourceFace);
     if (component != frontier.partition.componentByFace.end())
       add_component(component->second);
-  } else if (regions != nullptr && failure.region.has_value()) {
+  }
+
+  if (regions != nullptr && failure.region.has_value()) {
     const auto region = std::find_if(
         regions->begin(), regions->end(), [&](const auto &candidate) {
           return candidate.id == *failure.region;
@@ -2018,6 +2025,7 @@ RegionCertificateBuildResult build_region_certificate(
           error(GlobalTopologyPlanErrorCode::RegionSourceFaceOwningFragmentMissing);
       failure.region = region.id;
       failure.sourceFace = faceKey;
+      failure.regionOwningFragmentOrbit = owningOrbit;
       return failure;
     }
     candidateVertices.insert(fragment->second.begin(), fragment->second.end());
@@ -2313,6 +2321,12 @@ std::uint64_t candidate_semantic_digest(
     hash_consume(hash, certificate.actualEmbeddedFace.boundaryWalkCount);
     hash_consume(hash, certificate.actualEmbeddedFace.boundaryArcCount);
     hash_consume(hash, certificate.actualEmbeddedFace.discTopologyEstablished);
+    hash_consume(hash,
+                 certificate.actualEmbeddedFace.boundaryAnchorArc.has_value());
+    if (certificate.actualEmbeddedFace.boundaryAnchorArc.has_value())
+      hash_id(hash, *certificate.actualEmbeddedFace.boundaryAnchorArc);
+    hash_consume(hash, static_cast<std::uint64_t>(
+                           certificate.actualEmbeddedFace.boundaryAnchorOrientation));
     hash_consume(hash, certificate.interiorSingularityFree);
     hash_consume(hash, certificate.boundarySingularities.size());
     for (const auto singularity : certificate.boundarySingularities) {

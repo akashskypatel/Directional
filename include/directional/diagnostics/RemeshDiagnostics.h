@@ -342,6 +342,7 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::string regionBoundaryWalkReason;
   std::string regionBoundaryProvenance;
   std::optional<std::size_t> regionBoundaryOrbit;
+  std::optional<std::size_t> regionOwningFragmentOrbit;
   std::optional<std::size_t> regionBoundaryArcOccurrenceCount;
   std::optional<std::size_t> regionBoundaryDistinctArcCount;
   std::optional<std::size_t> regionBoundaryNodeOccurrenceCount;

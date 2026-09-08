@@ -55,6 +55,12 @@ struct SurfaceCutGraphFaceCertificate {
   std::size_t boundaryWalkCount = 0U;
   std::size_t boundaryArcCount = 0U;
   bool discTopologyEstablished = false;
+  // Content-derived identity of this face walk. Unlike orbit, which is only
+  // meaningful inside the producer's own face-walk enumeration, this anchor
+  // can be independently re-derived from the oriented boundary incidences.
+  std::optional<authority::NetworkArcId> boundaryAnchorArc;
+  authority::Orientation boundaryAnchorOrientation =
+      authority::Orientation::Forward;
   [[nodiscard]] bool proves_disc_topology() const noexcept {
     return boundaryWalkCount == 1U && boundaryArcCount > 0U &&
            discTopologyEstablished;

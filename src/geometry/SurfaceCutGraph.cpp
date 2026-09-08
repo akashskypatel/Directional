@@ -880,7 +880,20 @@ CertificateResult certify_actual_embedded_graph(
   SurfaceCutGraphCellularityCertificate certificate;
   certificate.vertexCount=embedded.cutNodes.combinedNodeExtent; certificate.edgeCount=embedded.arcs.size(); certificate.totalOrbitCount=totalOrbits; certificate.excludedBoundaryOrbitCount=exterior.size(); certificate.sourceBoundaryLoopCount=*boundaryLoops; certificate.faceCount=countedFaces; certificate.graphComponentCount=graphComponents; certificate.sourceComponentCount=sourceComponentCount; certificate.disconnectedComponentCorrection=correction; certificate.eulerCharacteristic=graphEuler; certificate.sourceEulerCharacteristic=sourceEuler; certificate.cutCandidates=cutCandidates;
   certificate.faces.reserve(countedFaces);
-  for(std::size_t orbit=0;orbit<totalOrbits;++orbit){if(exterior.count(orbit))continue;certificate.faces.push_back({orbit,1U,embedded.faceWalk.orbits[orbit].size(),discEmbeddingEstablished});}
+  for (std::size_t orbit = 0U; orbit < totalOrbits; ++orbit) {
+    if (exterior.count(orbit) != 0U) continue;
+    const auto &boundary = embedded.faceWalk.orbits[orbit];
+    if (boundary.empty())
+      return cut_error(SurfaceCutGraphErrorCode::CellularityNotEstablished);
+    const auto anchor = *std::min_element(
+        boundary.begin(), boundary.end(), [](const auto lhs, const auto rhs) {
+          return std::tie(lhs.arc, lhs.orientation) <
+                 std::tie(rhs.arc, rhs.orientation);
+        });
+    certificate.faces.push_back(
+        {orbit, 1U, boundary.size(), discEmbeddingEstablished, anchor.arc,
+         anchor.orientation});
+  }
   certificate.sourceFaceCount = embedded.sourceTopology.faces.size();
   if (discEmbeddingEstablished) {
     std::set<std::size_t> certificateFaceOrbits;
@@ -904,7 +917,7 @@ CertificateResult certify_actual_embedded_graph(
 
 std::uint64_t candidate_hash(const SurfaceCutGraphCandidate &candidate) noexcept {
   std::uint64_t hash=kFnvOffset; hash_consume(hash,candidate.sourceDigest);hash_consume(hash,candidate.atlasDigest);hash_consume(hash,candidate.networkDigest);hash_consume(hash,candidate.cutEdges.size());for(const auto &edge:candidate.cutEdges)hash_edge(hash,edge);
-  const auto &c=candidate.certificate; hash_consume(hash,static_cast<std::uint64_t>(c.complex));hash_consume(hash,c.vertexCount);hash_consume(hash,c.edgeCount);hash_consume(hash,c.totalOrbitCount);hash_consume(hash,c.excludedBoundaryOrbitCount);hash_consume(hash,c.sourceBoundaryLoopCount);hash_consume(hash,c.faceCount);hash_consume(hash,c.graphComponentCount);hash_consume(hash,c.sourceComponentCount);hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.disconnectedComponentCorrection)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.eulerCharacteristic)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.sourceEulerCharacteristic)));hash_consume(hash,c.saturationUsed?1U:0U);if(c.saturationLocus.has_value()){for(const auto vertex:c.saturationLocus->vertices())hash_id(hash,vertex);}else{hash_consume(hash,0U);}hash_consume(hash,c.saturationPromotedEdgeCount);hash_consume(hash,c.faces.size());for(const auto &face:c.faces){hash_consume(hash,face.orbit);hash_consume(hash,face.boundaryWalkCount);hash_consume(hash,face.boundaryArcCount);hash_consume(hash,face.discTopologyEstablished?1U:0U);}hash_consume(hash,c.sourceFaceCount);hash_consume(hash,c.sourceFaceOwners.size());for(const auto &owner:c.sourceFaceOwners){hash_face(hash,owner.sourceFace);hash_consume(hash,owner.certifiedFaceOrbits.size());for(const auto orbit:owner.certifiedFaceOrbits)hash_consume(hash,orbit);hash_consume(hash,owner.traceFragmentSides.size());for(const auto &side:owner.traceFragmentSides){hash_id(hash,side.trace);hash_consume(hash,side.segmentIndex);hash_consume(hash,static_cast<std::uint64_t>(side.orientation));hash_consume(hash,side.orbit);}}hash_consume(hash,c.cutCandidates.size());for(const auto &e:c.cutCandidates){hash_edge(hash,e.sourceEdge);hash_consume(hash,static_cast<std::uint64_t>(e.classification));hash_consume(hash,e.selected?1U:0U);}hash_owner_status_and_conflicts(hash, c);return hash;
+  const auto &c=candidate.certificate; hash_consume(hash,static_cast<std::uint64_t>(c.complex));hash_consume(hash,c.vertexCount);hash_consume(hash,c.edgeCount);hash_consume(hash,c.totalOrbitCount);hash_consume(hash,c.excludedBoundaryOrbitCount);hash_consume(hash,c.sourceBoundaryLoopCount);hash_consume(hash,c.faceCount);hash_consume(hash,c.graphComponentCount);hash_consume(hash,c.sourceComponentCount);hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.disconnectedComponentCorrection)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.eulerCharacteristic)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.sourceEulerCharacteristic)));hash_consume(hash,c.saturationUsed?1U:0U);if(c.saturationLocus.has_value()){for(const auto vertex:c.saturationLocus->vertices())hash_id(hash,vertex);}else{hash_consume(hash,0U);}hash_consume(hash,c.saturationPromotedEdgeCount);hash_consume(hash,c.faces.size());for(const auto &face:c.faces){hash_consume(hash,face.orbit);hash_consume(hash,face.boundaryWalkCount);hash_consume(hash,face.boundaryArcCount);hash_consume(hash,face.discTopologyEstablished?1U:0U);hash_consume(hash,face.boundaryAnchorArc.has_value()?1U:0U);if(face.boundaryAnchorArc.has_value())hash_id(hash,*face.boundaryAnchorArc);hash_consume(hash,static_cast<std::uint64_t>(face.boundaryAnchorOrientation));}hash_consume(hash,c.sourceFaceCount);hash_consume(hash,c.sourceFaceOwners.size());for(const auto &owner:c.sourceFaceOwners){hash_face(hash,owner.sourceFace);hash_consume(hash,owner.certifiedFaceOrbits.size());for(const auto orbit:owner.certifiedFaceOrbits)hash_consume(hash,orbit);hash_consume(hash,owner.traceFragmentSides.size());for(const auto &side:owner.traceFragmentSides){hash_id(hash,side.trace);hash_consume(hash,side.segmentIndex);hash_consume(hash,static_cast<std::uint64_t>(side.orientation));hash_consume(hash,side.orbit);}}hash_consume(hash,c.cutCandidates.size());for(const auto &e:c.cutCandidates){hash_edge(hash,e.sourceEdge);hash_consume(hash,static_cast<std::uint64_t>(e.classification));hash_consume(hash,e.selected?1U:0U);}hash_owner_status_and_conflicts(hash, c);return hash;
 }
 
 
@@ -935,16 +948,16 @@ std::uint64_t candidate_semantic_hash(
                          certificate.sourceEulerCharacteristic)));
   hash_consume(hash, certificate.faces.size());
   for (const auto &face : certificate.faces) {
-    // EmbeddedGraphTopology assigns NetworkArcId from a total sort over
-    // semantic arc descriptors, then walk_graph_faces visits darts in that
-    // canonical ID/orientation order. The orbit ordinal is therefore a
-    // content-derived rank, not source-row, container, or gauge enumeration.
-    // Proved by ordinal 359
-    // SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration.
+    // The orbit ordinal is producer-local enumeration. The boundary anchor is
+    // the independently re-derivable content identity for this face walk.
     hash_consume(hash, face.orbit);
     hash_consume(hash, face.boundaryWalkCount);
     hash_consume(hash, face.boundaryArcCount);
     hash_consume(hash, face.discTopologyEstablished ? 1U : 0U);
+    hash_consume(hash, face.boundaryAnchorArc.has_value() ? 1U : 0U);
+    if (face.boundaryAnchorArc.has_value()) hash_id(hash, *face.boundaryAnchorArc);
+    hash_consume(hash,
+                 static_cast<std::uint64_t>(face.boundaryAnchorOrientation));
   }
   hash_consume(hash, certificate.sourceFaceCount);
   hash_consume(hash, certificate.sourceFaceOwners.size());
