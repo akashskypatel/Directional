@@ -116,77 +116,71 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB41-EXEC` — EXACT NEXT / Test + Benchmark, artifact-only
+## Mandatory next turn — `M3-CP4c-3-TB41-REV` — EXACT NEXT / Independent Review + Plan
 
-`M3-CP4c-3-CB46` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. It implemented EB7.1–EB7.7 without changing
-the production region→orbit→upstream-face binding and froze the successor runtime contract before execution.
+`M3-CP4c-3-TB41-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC GATE RED / NOT PROMOTED**. Do not retry it.
 
 ### Current authority
 
-- **Current valid semantic runtime authority remains `M3-CP4c-3-TB39`** — package104 / selector409,
-  **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`.
-- **TB40 remains mechanically valid, semantically RED, and NOT promoted** — package105, **394 PASS / 15 RED**,
-  accepted **361/365**. Its review established the stable `RP-05` event and confirmed the production binding.
-- **Current immutable build authority is CB46 package106** — semantic source
-  `4cdffe5514ab9f747da38e74c57663ee8806efa6`, compile run/job
-  `34253044050 / 102152247907` (attempt 2), result artifact `10066942690`, persistent log artifact
-  `10066943120`. Result/log ZIP SHA-256 are
-  `aae9da4b2b237c7ebda82af2d7153c0e766f24455f1a45ab4a2685e9961a3d24` and
-  `58db7093e7a97d13875560d37336ad1fa7274117ed2f89d5e65e3cc2ad30fc63`; packaged source archive SHA-256 is
-  `d355ea6bb13ee0d7e174edc214070cfbd81cf278ce44ad7a4f77bacc17bee004`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**;
-  packages **106**. CB46 itself executed no Directional runtime.
+- **Promoted semantic runtime authority remains `M3-CP4c-3-TB39`** — package104 / selector409,
+  **402 PASS / 7 RED**, accepted **365/365**.
+- **TB41 mechanical runtime authority:** immutable CB46 package106 semantic source
+  `4cdffe5514ab9f747da38e74c57663ee8806efa6`, run/job `34256568679 / 102164030279`,
+  result/log artifacts `10068290377 / 10068291332`, selector409 **398 PASS / 11 RED**, accepted **365/365**,
+  RED `[366,367,368,369,370,374,390,393,398,406,407]`.
+- Selector409 LF SHA-256:
+  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+- TB41 ledger SHA-256:
+  `5b1e663e2855d453cf461847ed463b7539f9d0e945b4c40468eab64ae3e57a99`.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**,
+  packages **106**, pending review.
 
-### What CB46 changed
+Owning execution report:
+`.agents/Directional/Architecture_M3_CP4c3_TB41_EXEC_Report.md`.
 
-- **EB7.1(b):** `SurfaceCutGraphFaceCertificate` publishes a content-derived canonical oriented boundary anchor;
-  independent oracles 311/314/356/357 bind by that content rather than comparing foreign orbit ordinals.
-- **EB7.4:** the binding census publishes independently derived and certificate anchors and requires a varying
-  content field when multiple regions exist.
-- **EB7.2:** frontier-component evidence is collected from every available locator rather than being coupled to a
-  specific terminal error code.
-- **EB7.3:** `region_orbit`, the orbit-keyed production lookup, derived-not-stored binding, and selector bytes were
-  not changed.
-- **EB7.6:** `RegionSourceFaceOwningFragmentMissing` remains a rejection; CB46 only publishes the missing
-  `regionOwningFragmentOrbit` needed to interpret the existing owner census.
+### What TB41 established mechanically
 
-Owning report: `.agents/Directional/Architecture_M3_CP4c3_CB46_Code_Build_Report.md`.
+- 311/314/356/357 all recover under CB46's content-derived oriented-anchor contract.
+- 356/357 publish four unique, non-uniform oriented anchors, exactly one upstream match each, matching boundary
+  counts, disc=true and field=true.
+- 312/315/409 PASS; the production binding falsifiers remain live.
+- **390/393/406/407 remain RED**, all because `regionFrontierComponentCount > 0` observes **0**. CB46's broader
+  frontier-evidence collection did not recover the protected surface.
+- 366/367 remain `RegionSourceFaceOwningFragmentMissing / RegionCertification` and publish
+  `sourceFace=10,11,79`, `regionOwningFragmentOrbit=1`, 74 face-owner rows. The named face row itself is 3 local
+  fragments / 3 owners / expected 3 / deficit 0.
+- 404/408 PASS; ownership remains 300 established / 0 unavailable / 0 conflicting.
+- 368/369/370/374/398 remain separately owned carried RED surfaces.
+- Retired region-disc and legacy proxy codes remain absent.
+- No build/relink/repair/benchmark/source/test/fixture/selector mutation occurred.
 
-### TB41-EXEC boundary
+Two preceding workflow attempts (`34256050160`, `34256247287`) were control-plane failures before Directional
+runtime and are not semantic evidence. Attempt 3 reused immutable package106 unchanged.
 
-Execute **only** `Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md` against immutable package106.
-No rebuild, relink, package repair, source/test/fixture/selector mutation, fallback, or source-grid recovery is
-authorized.
+### TB41-REV boundary
 
-Hard requirements include:
+Perform **independent evidence-only review and planning**:
 
-- verify package/source/selector/harness checksums and compile evidence before runtime;
-- execute **one selector identity per fresh process**, in selector order;
-- require accepted ordinals **1–365 = 365/365 PASS**;
-- require **311/314/356/357 PASS** through the non-vacuous content-anchor census;
-- require **312/315/409 PASS** and preserve the production binding falsifiers;
-- require **390/393/406/407 PASS** with frontier evidence independent of terminal enum;
-- require **404/408 PASS** and ownership **300 established / 0 unavailable / 0 conflicting**;
-- **measure, do not repair, 366/367** at `RegionSourceFaceOwningFragmentMissing`, including source face,
-  `regionOwningFragmentOrbit`, and fragment-owner evidence;
-- carry 368/369/370/374/398 under their existing owners;
-- update `Regression_Root_Cause_Tracker.md` for every TB41 observation before EXEC closes.
+1. verify the raw TB41 ledger/artifacts and frozen-plan witness requirements independently;
+2. adjudicate why 390/393/406/407 still have zero frontier components after CB46 and assign the exact owner;
+3. adjudicate the 366/367 source-face/orbit/owner-census relation; do not treat the 3/3 face-level count as proof
+   that the required region-owned fragment exists;
+4. decide whether any new stable event/category/recurrence is justified and whether TB41 can be promoted;
+5. preserve the separate owners of 368/369/370/374/398;
+6. update review-owned `ORIENTATION.md`, regression/current/forward/handoff records, and perform mandatory REVIEW
+   document consolidation;
+7. issue the exact next bounded corrective turn.
 
-`M3-CP4c-3-TB41-EXEC` **does not promote itself**. Its exact successor is independent
-**`M3-CP4c-3-TB41-REV`**. Stop completely at that review boundary.
+**No compile, new runtime, product/source/test/fixture/selector mutation, or retry is authorized before this
+review.** The review must stop after adjudication/plan closeout.
 
 ### Context Load Plan
 
-`load_next`: Test + Benchmark EXEC guidance.
-
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_CB46_Code_Build_Report.md` — immutable package/source/build authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md` — exact execution contract.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB40_Independent_Review_Record.md` — EB0–EB7 and falsifiers.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part XI operative, amended by Part XI-A.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `Required_Green_Selector_Manifest.md`.
-6. `.agents/Directional/LESSONS.md` — mandatory; 155, 157, 158 govern the binding/oracle distinction.
-7. `AGENT_POLICY.md`, `GitHub_Workflow_Policy.md`, `TOOL_USE_CONSERVATION_POLICY.md` — runtime/artifact mechanics.
+`load_next`: Independent review + plan guidance. Read `ORIENTATION.md`, this handoff,
+`M3_CP4c_Current_And_Forward.md`, `Architecture_M3_CP4c3_TB41_EXEC_Report.md`,
+`Architecture_M3_CP4c3_CB46_Code_Build_Report.md`, the frozen TB41 plan, TB40 independent review record,
+`M3_CP4c_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, and governing
+review/consolidation policies.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

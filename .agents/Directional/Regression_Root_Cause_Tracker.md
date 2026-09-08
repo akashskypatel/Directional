@@ -1,3 +1,39 @@
+## M3-CP4c3-TB41-EXEC — package106 artifact-only runtime — **MECHANICALLY VALID / SEMANTIC GATE RED / REVIEW PENDING / NOT PROMOTED**
+
+- **Authority:** run/job `34256568679 / 102164030279`, immutable CB46 package106 artifact `10066942690`,
+  semantic source `4cdffe5514ab9f747da38e74c57663ee8806efa6`, selector409 SHA
+  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+  Result/log artifacts are `10068290377 / 10068291332`.
+- **Mechanical result:** **398 PASS / 11 RED**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`; zero selection mismatch/timeout; no build/relink/repair/
+  benchmark/source/test/fixture/selector mutation.
+- **`M3-CP4c3-TB40-EXEC-CAND-01` — RUNTIME RECOVERED / STABLE RP-05 EVENT RETAINED.** 311/314/356/357 all
+  return PASS under the content-derived oriented-anchor contract. 356/357 publish four unique anchors,
+  `upstreamMatchCount=1` throughout, matching arc counts, disc=true and field=true. Recovery does not erase the
+  already counted TB40 `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY` event.
+- **`M3-CP4c3-TB40-EXEC-CAND-02` — ACTIVE / GATING / NON-STABLE / REVIEW REQUIRED.** 390/393/406/407 all remain
+  RED at the same frozen assertion: `regionFrontierComponentCount > 0`, actual 0. CB46 broadened collection to all
+  available construction locators, but this runtime proves no usable frontier component reaches these failure
+  loci. The runtime-local mechanism is established; source-level root cause/owner is not yet justified and is
+  explicitly deferred to TB41-REV.
+- **366/367 measurement — `M3-CP4c3-TB40-REV-CAND-02` remains ACTIVE / NON-STABLE.** Both now publish
+  `RegionSourceFaceOwningFragmentMissing`, `sourceFace=10,11,79`, `regionOwningFragmentOrbit=1`,
+  `fragmentOwnerFaceCount=74`. The named face row reports `localFragmentCount=3`, `ownerCount=3`,
+  `expectedFragmentCount=3`, `ownerDeficit=0`; therefore the observed missing ownership is not a simple cardinality
+  deficit. Review must identify the missing fragment/orbit relation before any correction.
+- **Preserved controls:** 312/315/409 PASS; 404/408 PASS; certified ownership **300 established / 0 unavailable /
+  0 conflicting**. `RegionEulerCharacteristicNotOne`, `RegionInteriorDisconnected`,
+  `TraceArcDoesNotSeparateItsSides`, and `UncutFaceComponentOrbitSeedNotUnique` occur in no raw log.
+- **Carried owners:** 368/369/370/374/398 remain RED under their pre-existing owners; EXEC does not reclassify
+  them.
+- **Accounting:** no new stable ID/count change is justified by this execution record. Stable totals remain
+  **47 events / 14 categories / 33 recurrences**, debt **5**, packages **106**, pending independent review.
+  TB39 remains promoted runtime authority until TB41-REV.
+
+**Exact successor:** independent `M3-CP4c-3-TB41-REV`; no retry, compile, or semantic patch first.
+
+---
+
 ## M3-CP4c3-CB46 — content-anchor oracle repair and frontier evidence decoupling — **COMPILE-GREEN / RUNTIME PENDING TB41 / PACKAGE106**
 
 - **No runtime / no repricing.** TB39 remains semantic runtime authority at package104 / selector409 **402 PASS / 7 RED**, accepted **365/365**. TB40 remains not promoted. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**; packages advance **105 → 106** as a build fact only.

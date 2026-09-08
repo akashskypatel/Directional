@@ -26,45 +26,47 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB41-EXEC` (Test + Benchmark, artifact-only) — VERIFY CB46; DO NOT REBUILD
+## Current focus — `M3-CP4c-3-TB41-REV` (Independent Review + Plan) — TB41 IS RED; DO NOT RETRY
 
-`M3-CP4c-3-CB46` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**.
+`M3-CP4c-3-TB41-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC GATE RED / NOT PROMOTED**.
 
 - **Immutable package106 source:** `4cdffe5514ab9f747da38e74c57663ee8806efa6`.
-- **Compile run/job:** `34253044050 / 102152247907` (attempt 2), GMP/GMPXX linked,
-  `runtimeExecution=false`.
-- **Result/log artifacts:** `10066942690 / 10066943120`.
-- **Current valid semantic runtime authority remains TB39:** package104 / selector409, **402 PASS / 7 RED**,
-  accepted **365/365**.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **106**.
-
-CB46 chose EB7.1(b): publish a content-derived oriented boundary anchor on each
-`SurfaceCutGraphFaceCertificate`, re-aim 311/314/356/357 at that content, decouple frontier evidence from terminal
-error codes, preserve the production binding, and add measurement-only `regionOwningFragmentOrbit` evidence for
-`RegionSourceFaceOwningFragmentMissing`.
+- **Runtime run/job:** `34256568679 / 102164030279`; result/log artifacts
+  `10068290377 / 10068291332`.
+- **Selector409:** **398 PASS / 11 RED**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`.
+- **311/314/356/357 recovered** under the content-derived anchor contract; 312/315/409 remain PASS.
+- **390/393/406/407 remain RED** at `regionFrontierComponentCount == 0`; CB46's frontier-evidence decoupling did
+  not recover these protected identities.
+- **366/367 remain measurement-only RED** at `RegionSourceFaceOwningFragmentMissing`, now naming
+  `sourceFace=10,11,79`, `regionOwningFragmentOrbit=1`, and a 74-row owner census. The named face itself reports
+  3/3 fragment owners with owner deficit 0.
+- 404/408 PASS; certified ownership remains **300 / 0 / 0**.
+- Retired proxy/legacy codes remain absent.
+- Stable accounting is **not repriced by EXEC**: **47 events / 14 categories / 33 recurrences**, debt **5**,
+  packages **106**, pending review.
+- **Current promoted runtime authority remains TB39**: package104 / selector409, **402 PASS / 7 RED**, accepted
+  **365/365**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB41-EXEC`** exactly as frozen in
-`Architecture_M3_CP4c3_TB41_Artifact_Only_Test_Benchmark_Plan.md`:
+Run independent **`M3-CP4c-3-TB41-REV`** against
+`Architecture_M3_CP4c3_TB41_EXEC_Report.md` and the immutable raw TB41 artifacts:
 
-- [ ] Verify package106 root manifest, packaged source SHA, selector409 SHA
-      `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, harness bytes, GMP evidence, and empty
-      packaged source status **before runtime**.
-- [ ] Execute exactly one selector identity per fresh process, preserving selector order; no rebuild/relink/repair.
-- [ ] Require accepted ordinals **1–365 = 365/365 PASS**.
-- [ ] Require **311/314/356/357 PASS** through a unique, injective, non-vacuous content-anchor census.
-- [ ] Require **312/315/409 PASS**; do not reinterpret or weaken the production binding.
-- [ ] Require **390/393/406/407 PASS** with non-empty frontier evidence independent of terminal enum.
-- [ ] Require **404/408 PASS** and ownership **300/0/0**.
-- [ ] Measure **366/367** at `RegionSourceFaceOwningFragmentMissing`; require source face,
-      `regionOwningFragmentOrbit`, and fragment-owner census; **do not repair**.
-- [ ] Carry 368/369/370/374/398 under their existing owners; retired proxy codes remain absent.
-- [ ] Update `Regression_Root_Cause_Tracker.md` for every observed regression/candidate before EXEC closes.
-- [ ] Stop at independent **`M3-CP4c-3-TB41-REV`**; TB41-EXEC does not promote itself.
+- [ ] Independently verify the 409-row ledger, accepted 365/365 recovery, content-anchor census, binding
+      falsifiers, ownership 300/0/0, and retired-code silence.
+- [ ] Adjudicate `M3-CP4c3-TB40-EXEC-CAND-02`: why 390/393/406/407 still publish zero frontier components after
+      CB46; assign the exact owner and bounded corrective measure.
+- [ ] Adjudicate the 366/367 measurement: the named source face has 3/3 owners yet the region's owning fragment
+      orbit is missing; determine which relation/identity is absent rather than treating this as a count deficit.
+- [ ] Decide TB41 promotion and stable regression accounting. Do not infer a new stable event merely from EXEC.
+- [ ] Preserve separately owned 368/369/370/374/398; do not broaden the correction.
+- [ ] Update review-owned `ORIENTATION.md`, current/forward/handoff/tracker documents, and perform mandatory REVIEW
+      document consolidation before closeout.
+- [ ] Issue the exact next bounded turn. No compile, new runtime, or semantic mutation occurs inside the review.
 
-**Must not:** rebuild or relink package106; mutate product/source/test/fixture/selector bytes; use fallback or source-grid
-recovery; change `region_orbit`/orbit-keyed binding; correct 366/367; touch the separately owned
+**Must not:** retry TB41; rebuild or relink package106; mutate product/source/test/fixture/selector bytes; weaken
+390/393/406/407; reinterpret the production binding; repair 366/367 before review; or touch the separately owned
 368/369/370/374/398 surfaces.
 
 ## Carried forward from M1
@@ -103,7 +105,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB39` remains semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365, RED `[366,367,368,369,370,374,398]`. TB40 package105 remains mechanically valid but not promoted. **CB46 package106 is compile-green and runtime-free; exact next is artifact-only `M3-CP4c-3-TB41-EXEC`.**
+  CP4c-3 remains open. **`M3-CP4c-3-TB39` remains promoted semantic runtime authority** on package104: **402 PASS / 7 RED**, accepted 365/365. **TB41 package106 is mechanically valid but semantic-gate RED** at **398 PASS / 11 RED**, accepted 365/365; exact next is independent `M3-CP4c-3-TB41-REV`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -114,7 +116,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 region-disc authority adjudication:** TB40 falsified the package105 region→face binding on accepted torus witnesses while proving 366/367 no longer stop on retired source-support proxy producers. TB40-REV owns classification and successor definition/correction.
+- [ ] **CP4c-3 protected frontier evidence:** TB41 restored the accepted content-anchor oracles but 390/393/406/407 remain RED with `regionFrontierComponentCount=0`; independent TB41-REV owns classification and the next bounded correction. 366/367 separately publish the new missing-fragment/orbit measurement.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -142,4 +144,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **106**. TB39 remains semantic runtime authority at 402/7, accepted 365/365; TB40 is not promoted. CB46 package106 is compile-green and runtime-free, with content-anchor oracle repair and frontier evidence decoupling implemented. Exact next is artifact-only **`M3-CP4c-3-TB41-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **106**. TB39 remains promoted semantic runtime authority at 402/7, accepted 365/365. TB41 package106 is mechanically valid at 398/11, accepted 365/365, but semantic-gate RED / not promoted because 390/393/406/407 remain RED. Exact next is independent **`M3-CP4c-3-TB41-REV`**. PR #8 remains open, draft, and unmerged.

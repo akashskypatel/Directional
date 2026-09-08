@@ -1,3 +1,24 @@
+## 2026-09-08 — `M3-CP4c-3-TB41-EXEC`: accepted anchor repair recovers; protected frontier evidence remains RED
+
+Artifact-only package106 runtime. Authoritative run/job `34256568679 / 102164030279` executed selector409 exactly
+once per fresh process with zero selection mismatch/timeout and no build/relink/repair/benchmark/source mutation.
+Result: **398 PASS / 11 RED**, accepted **365/365**, RED
+`[366,367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts:
+`10068290377 / 10068291332`.
+
+CB46's content-anchor correction is runtime-proved on 311/314/356/357: all PASS; 356/357 publish four unique,
+non-uniform oriented anchors with one upstream match each, matching boundary counts, disc=true and field=true.
+312/315/409 remain PASS. 404/408 PASS and ownership remains **300/0/0**.
+
+The protected frontier correction is not recovered: 390/393/406/407 all remain RED because
+`regionFrontierComponentCount == 0`. 366/367 remain at `RegionSourceFaceOwningFragmentMissing` and now publish
+`sourceFace=10,11,79`, `regionOwningFragmentOrbit=1`, and 74 face-owner rows; the named face itself has 3/3 owners
+and owner deficit 0. Carried 368/369/370/374/398 remain under existing owners; retired proxy/legacy codes stay
+absent.
+
+EXEC does not promote or reprice. Stable totals remain **47 / 14 / 33**, debt **5**, packages **106**; TB39 remains
+promoted runtime authority. Exact next: independent **`M3-CP4c-3-TB41-REV`**.
+
 ## 2026-09-08 — `M3-CP4c-3-CB46`: content-derived face identity + frontier evidence compile-green as package106
 
 Runtime-free Code + Build under TB40-REV **EB7.1–EB7.7**. CB46 chose EB7.1(b):
