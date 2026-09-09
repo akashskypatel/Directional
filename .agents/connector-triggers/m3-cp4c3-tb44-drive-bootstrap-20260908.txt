@@ -1,4 +1,4 @@
 turn=M3-CP4c-3-TB44-EXEC
-purpose=create-service-account-drive-staging-file
-reason=recreated-user-staging-folder-no-longer-shared-with-workflow-principal
-retry=1
+purpose=delete-service-account-bootstrap-staging-file
+file_id=1xoANjd-JPvwFN48tME7uOJcLOfeqGYlt
+retry=2
