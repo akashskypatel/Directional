@@ -1,3 +1,13 @@
+## 2026-09-09 — `M3-CP4c-3-TB48-EXEC`: package113 mechanically valid at 405 PASS / 4 RED; ordinal370 raw-recovered; review required
+
+Artifact-only Test + Benchmark. TB48-EXEC consumed immutable package113 source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, artifact `10125000895`, and unchanged selector409/harness. Run/job `34409262512 / 102659650326` completed successfully with all 409 identities executed exactly once in fresh processes, zero selection mismatches/timeouts, equal package/source/execution-view pre/post censuses, and all build/repair/mutation/benchmark flags false.
+
+Raw result is **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Result artifact `10126711178` has SHA-256 `07961a2339204b80f83feac8916e93578176363f9bdf0317ea85bdc095de5747`; log artifact `10126711588` has SHA-256 `1aab2f5f9b0d23f41ffd04a1467894f572604774ee2ee6ce9e42ee4b8f6dbd7d`. Ledger/failure-detail/resource hashes are `e450efbcc359ef544ab97c6fb9f0cb23b097e59b9680569390fe7a45a9350566`, `511f3c0bc6a4f971849b3c339e848a598905dd4af892cefe1506905ad82f5b4d`, and `1f85af61168f36ca9171b6e43b6f99e9165d26616c0f3f2e290e4c0e9a3cc79c`.
+
+CB54's falsifiable prediction is met exactly: ordinal370 alone changes RED→PASS. The immutable identity asserts `EmptyNetworkOnClosedSurface = 6` plus a non-empty `sourceFace` locus. Protected 390/393/406/407 remain non-vacuously PASS and ordinal385 publishes ownership 300/0/0. Four REDs reproduce their existing separate owners: 368 prescribed-sphere event binding, 369 proposal saturation, 374 folded-cone invalid fixture/precondition, and 398 downstream of 368.
+
+EXEC makes no promotion or stable repricing. Stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**; TB47/package112 remains reviewed semantic runtime authority pending mandatory independent review. **Exact next:** `M3-CP4c-3-TB48-REV`, independent REVIEW + PLAN / runtime-free. No retry, patch, compile or new runtime before review.
+
 ## 2026-09-09 — `M3-CP4c-3-CB54`: empty-closed-network typed rejection compile-green; package113 frozen
 
 Code + Build only. No Directional runtime, test, benchmark, discovery/list/help command, or packaged executable was

@@ -10,45 +10,33 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-09** at `M3-CP4c-3-CB54` closeout.
+Last updated **2026-09-09** at `M3-CP4c-3-TB48-EXEC` raw closeout.
 
-**Reviewed semantic runtime authority remains TB47 / package112 / selector409:** **404 PASS / 5 RED / 0 SKIP**,
-accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300 / 0 / 0**.
+**Reviewed semantic runtime authority remains TB47 / package112 / selector409 pending independent review:** **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300 / 0 / 0**.
 
-**CB54/package113 is the exact compile/package successor.** Semantic source
-`6dae3f6959551f6dcdd81f153aedb5f38411a96b` changes only `src/geometry/SurfaceCutGraph.cpp`, adding the one frozen
-AK5 early `EmptyNetworkOnClosedSurface` producer. Immutable package artifact `10125000895`, SHA-256
-`e5fb50f92bbf4c4ffae5afeb203d6738490f6410b3a7e49245607e1b2e7835e9`, compiled in run/job
-`34404928469 / 102645952921` after changed-owner job `102645552394`; package manifest is 28/28, exact arithmetic is
-GMP/GMPXX, and `runtimeExecution=false`.
+**TB48/package113 is mechanically valid raw successor evidence, not yet promoted.** Immutable semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, package artifact `10125000895`, SHA-256 `e5fb50f92bbf4c4ffae5afeb203d6738490f6410b3a7e49245607e1b2e7835e9`, executed selector409 in run/job `34409262512 / 102659650326`. Raw result is **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**, with zero timeout/mismatch and immutable pre/post censuses. Result/log artifacts are `10126711178 / 10126711588`, SHA-256 `07961a2339204b80f83feac8916e93578176363f9bdf0317ea85bdc095de5747` / `1aab2f5f9b0d23f41ffd04a1467894f572604774ee2ee6ce9e42ee4b8f6dbd7d`.
 
-Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**.
-CP4c-3 remains **OPEN pending package113 runtime validation and independent review**.
+Ordinal370 alone moved RED→PASS exactly as CB54 predicted; the frozen identity asserts code 6 `EmptyNetworkOnClosedSurface` plus non-empty `sourceFace`. EXEC records raw recovery only. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113** pending review.
 
-**Exact next: `M3-CP4c-3-TB48-EXEC`**, artifact-only, under
-`Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md`.
+CP4c-3 remains **OPEN pending independent `M3-CP4c-3-TB48-REV`**. The AU0–AU9 mechanical-witness exit criterion remains met; review decides package113 promotion, ordinal370 closure and formal checkpoint closure.
+
+**Exact next: `M3-CP4c-3-TB48-REV`**, independent REVIEW + PLAN / runtime-free.
 
 ## 1. Where the checkpoint stands
 
-TB47 remains runtime authority because CB54 executed no Directional binary. CB54 satisfied its compile-time contract:
+TB48 is mechanically valid raw runtime evidence. It does not self-promote. Current raw facts are:
 
-- source/atlas/network binding validation remains ahead of the new branch;
-- a truly empty network on a closed non-empty source now returns existing error code 6,
-  `EmptyNetworkOnClosedSurface`, with deterministic `sourceFace` locus;
-- unavailable/malformed source topology remains fail-closed as `NonManifoldSource`;
-- static producer census is **zero → exactly one**;
-- tests, fixtures, selector409, enum numbering, certifier/proposal semantics and 368/369/374/398 owner bytes are
-  untouched;
-- changed-owner and full eight-target package compiles are green under mandatory GMP/GMPXX authority;
-- package113 is immutable compile evidence, not runtime evidence.
+- package113 root authority and selector/harness/source hashes matched frozen TB48 preflight;
+- all 409 identities executed exactly once in ordinal order with fresh processes;
+- **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`;
+- ordinal370 PASSes the typed empty-closed-network error+locus identity;
+- protected 390/393/406/407 remain non-vacuously PASS through `PlanFrontier`;
+- ordinal385 publishes ownership **300 established / 0 unavailable / 0 conflicting**;
+- package/source/execution-view pre/post censuses are equal; timeout/mismatch counts are zero;
+- configure/compile/relink/discovery/repair/mutation/benchmark flags remain false;
+- four REDs reproduce their already-owned sphere/proposal/folded-cone/downstream surfaces.
 
-Current reviewed runtime evidence remains:
-
-- TB47 run/job `34397425632 / 102620523147`;
-- result artifact `10122211479`, SHA-256 `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366`;
-- log artifact `10122212347`, SHA-256 `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`;
-- **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`;
-- ownership **300 established / 0 unavailable / 0 conflicting**.
+Reviewed TB47 remains promotion authority until TB48-REV completes.
 
 ### 1.1 AU0–AU9 mechanical-witness exit criterion — restored and evaluated
 
@@ -620,7 +608,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB6-CAND-01` | **ACTIVE** — vertex-30 evidence contract. **There is still no vertex-30 discriminator.** |
 | `M3-CP4c2-TB-X2-CAND-04` | **ACTIVE** — prescribed sphere 368. |
 | `M3-CP4c2-TB-X2-R10-CAND-01` | **ACTIVE / QUALITY / COVERAGE** — saturation, ordinal 369. |
-| `M3-CP4c2-TB-X2-R8-CAND-02` | **COMPILE-CORRECTED IN CB54 / RUNTIME VALIDATION PENDING** — semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` now has exactly one AK5 typed empty-network producer; package113 is frozen for TB48. |
+| `M3-CP4c2-TB-X2-R8-CAND-02` | **RAW RUNTIME RECOVERED IN TB48 / INDEPENDENT REVIEW PENDING** — package113 ordinal370 PASSes the frozen typed error+locus identity; EXEC does not close or price the owner. |
 | finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
 
@@ -711,12 +699,6 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-Perform **`M3-CP4c-3-TB48-EXEC`** exactly as frozen in
-`Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md`.
+Perform **`M3-CP4c-3-TB48-REV`** as an independent REVIEW + PLAN / runtime-free turn.
 
-Use immutable package113 artifact `10125000895` from semantic source
-`6dae3f6959551f6dcdd81f153aedb5f38411a96b`; verify its SHA-256 and manifest before execution. Execute selector409
-artifact-only with the generic harness, fresh process/work directory per identity, established 180-second
-per-identity control and **no outer elapsed cutoff**. Do not configure, compile, relink, regenerate, chmod/repair,
-mutate package/source/test/fixture/selector bytes, or run benchmarks. TB48-EXEC records raw evidence only and stops
-at independent **`M3-CP4c-3-TB48-REV`** regardless of the semantic vector.
+Use raw TB48 report `Architecture_M3_CP4c3_TB48_EXEC_Report.md`, package113 result/log artifacts `10126711178 / 10126711588`, and the retained TB47 review as comparison authority. Adjudicate ordinal370's raw recovery, the four carried RED owners, protected non-vacuity, stable accounting, package113 promotion and whether formal CP4c-3 closure follows from the already-met AU0–AU9 criterion. Perform mandatory REVIEW consolidation and update `ORIENTATION.md`. Do not execute new runtime, compile, or mutate implementation/test/fixture/selector logic.

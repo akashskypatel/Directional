@@ -1,3 +1,11 @@
+## M3-CP4c3-TB48-EXEC classification — **CURRENT RAW INTAKE / REVIEW REQUIRED / NON-STABLE EXEC**
+
+- Mechanically valid raw execution: **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**; run/job `34409262512 / 102659650326`. Result/log artifacts `10126711178 / 10126711588` are hash-verified and 409/409 identities executed exactly once with zero selection mismatches/timeouts and immutable pre/post censuses.
+- **`M3-CP4c3-TB48-EXEC-CAND-01` — RAW PRODUCT-CORRECTION RECOVERY / REVIEW REQUIRED / NON-STABLE / UNPRICED.** Ordinal370 is PASS under immutable package113; its frozen identity asserts existing error code 6 `EmptyNetworkOnClosedSurface` and a non-empty `sourceFace` locus. EXEC does not close the owning `M3-CP4c2-TB-X2-R8-CAND-02`; independent review owns closure and package113 promotion.
+- **Four REDs are carried existing surfaces, not new candidates:** 368 remains prescribed-sphere `TraceEventPositionInvalid / NoCarrierMatch / SourceEdgeUnavailable` under `M3-CP4c2-TB-X2-CAND-04`; 369 remains proposal saturation under `M3-CP4c2-TB-X2-R10-CAND-01`; 374 remains the folded-cone invalid-fixture/precondition surface under `M3-CP4c3-TB7-CAND-02`; 398 remains downstream prescribed-sphere failure blocked by 368.
+- EXEC makes no stable-pricing claim. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113** pending independent review.
+- **Exact next:** `M3-CP4c-3-TB48-REV`, independent REVIEW + PLAN / runtime-free.
+
 ## M3-CP4c3-TB47-REV — independent adjudication — **CURRENT REVIEW / TB47 PROMOTED / ORDINAL367 RECOVERY CLOSED / CB54 FROZEN**
 
 - **Verdict:** `approved_with_amendments`. Package112/TB47 is promoted as reviewed semantic runtime authority at
