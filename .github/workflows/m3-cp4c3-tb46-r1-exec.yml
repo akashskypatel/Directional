@@ -1,0 +1,203 @@
+name: M3 CP4c3 TB46 R1 Artifact Only Execute
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb46-r1-exec/tb46-r1-exec-20260909.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb46-r1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-tb46-r1-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb46-r1
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+    env:
+      TURN_ID: M3-CP4c-3-TB46-R1
+      ARTIFACT_ID: '10112532452'
+      EXPECTED_ARTIFACT_NAME: m3-cp4c3-cb51-package111-result-34372482691
+      EXPECTED_PROVIDER_DIGEST: sha256:62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da
+      EXPECTED_ZIP_SHA256: 62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da
+      EXPECTED_SOURCE_SHA: 4f0663ef3468996abce6f59109f1c67f5be5f604
+      SELECTOR_RELATIVE_PATH: .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+      EXPECTED_SELECTOR_COUNT: '409'
+      EXPECTED_SELECTOR_SHA256: eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e
+      ACCEPTED_PREFIX_COUNT: '365'
+      EXPECTED_HARNESS_SHA256: aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3
+      GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+    steps:
+      - name: Initialize caller evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller.log"
+          result="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller-result"
+          mkdir -p "$result"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "turn_id=${TURN_ID}"
+            echo "artifact_id=${ARTIFACT_ID}"
+            echo "runtimeExecution=planned-artifact-only"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Verify bootstrap and frozen harness
+        id: bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller.log"
+          exec > >(tee -a "$log") 2>&1
+          harness='.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh'
+          required=(GITHUB_REPOSITORY GITHUB_RUN_ID GH_TOKEN TURN_ID ARTIFACT_ID EXPECTED_ARTIFACT_NAME EXPECTED_PROVIDER_DIGEST EXPECTED_ZIP_SHA256 EXPECTED_SOURCE_SHA SELECTOR_RELATIVE_PATH EXPECTED_SELECTOR_COUNT EXPECTED_SELECTOR_SHA256 ACCEPTED_PREFIX_COUNT)
+          for name in "${required[@]}"; do
+            [[ -n "${!name:-}" ]] || { echo "required bootstrap variable missing: ${name}" >&2; exit 2; }
+          done
+          actual_harness_sha="$(sha256sum "$harness" | awk '{print $1}')"
+          [[ "$actual_harness_sha" == "$EXPECTED_HARNESS_SHA256" ]]
+          bash -n "$harness"
+          printf 'bootstrap_present=true\nharness_sha256=%s\nbash_n=pass\n' "$actual_harness_sha" \
+            > "${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller-result/bootstrap.txt"
+          echo 'bootstrap_verified=true'
+
+      - name: Execute frozen artifact-only harness and capture child status
+        id: invoke
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          log="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller.log"
+          caller_result="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller-result"
+          harness='.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh'
+          set +e
+          "$harness" --execute
+          child=$?
+          set -e
+          {
+            echo "harness_exit=${child}"
+            echo "captured_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log" | tee "${caller_result}/child-status.txt"
+          echo "harness_exit=${child}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Independently verify harness execution boundary
+        id: boundary
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          log="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller.log"
+          caller_result="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller-result"
+          boundary="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-result/execution-boundary.txt"
+          child='${{ steps.invoke.outputs.harness_exit }}'
+          ok=true
+          reason=ok
+          if [[ -z "$child" ]]; then
+            ok=false; reason=missing-child-status
+          elif [[ ! -f "$boundary" ]]; then
+            ok=false; reason=missing-harness-boundary
+          else
+            grep -Fxq "script_exit=${child}" "$boundary" || { ok=false; reason=script-exit-mismatch; }
+            grep -Fxq 'turn_id=M3-CP4c-3-TB46-R1' "$boundary" || { ok=false; reason=turn-id-mismatch; }
+            grep -Fxq 'mode=--execute' "$boundary" || { ok=false; reason=mode-mismatch; }
+          fi
+          {
+            echo "boundary_ok=${ok}"
+            echo "boundary_reason=${reason}"
+            echo "harness_exit=${child:-missing}"
+          } | tee -a "$log" | tee "${caller_result}/caller-boundary.txt"
+          echo "boundary_ok=${ok}" >> "$GITHUB_OUTPUT"
+          [[ "$ok" == true ]]
+
+      - name: Record final caller status before evidence upload
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/M3-CP4c-3-TB46-R1-caller.log"
+          {
+            echo "invoke_outcome=${{ steps.invoke.outcome }}"
+            echo "harness_exit=${{ steps.invoke.outputs.harness_exit }}"
+            echo "boundary_outcome=${{ steps.boundary.outcome }}"
+            echo "boundary_ok=${{ steps.boundary.outputs.boundary_ok }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload TB46-R1 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb46-r1-result-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/M3-CP4c-3-TB46-R1-result
+            ${{ runner.temp }}/M3-CP4c-3-TB46-R1-caller-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB46-R1 diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb46-r1-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/M3-CP4c-3-TB46-R1.log
+            ${{ runner.temp }}/M3-CP4c-3-TB46-R1-caller.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Propagate captured execution failure after evidence upload
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          child='${{ steps.invoke.outputs.harness_exit }}'
+          boundary_ok='${{ steps.boundary.outputs.boundary_ok }}'
+          if [[ -z "$child" || "$child" != '0' || "$boundary_ok" != 'true' ]]; then
+            echo "TB46-R1 execution failed or lacked a verified boundary: child=${child:-missing}; boundary_ok=${boundary_ok:-missing}" >&2
+            exit 1
+          fi
