@@ -1,3 +1,23 @@
+## 2026-09-09 — `M3-CP4c-3-CB50`: source-corner fan + typed terminal-subject corrections compile; package110 frozen
+
+CB50 is **COMPLETE / COMPILE + PACKAGE GREEN / RUNTIME-FREE** on exact source
+`46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`. Product code now validates carrierless fragment-corner rays per
+`(sourceFace, sourceCorner)` fan instead of imposing one source corner on an entire face, preserving duplicate-ordinal,
+orbit-chain and set-valued owner guards. Protected test identities 390/393/406/407 retain their real Part XII
+`P_U` predicates and corruption negatives while terminal evidence now follows the authoritative `Region` or
+`SourceFace` subject and fails closed when unresolved.
+
+Compile run/job `34330825605 / 102398794843` used the durable GMP/GMPXX reusable and compiled all eight approved
+targets without executing any Directional binary. Immutable package110 artifact `10095738820` has provider
+SHA-256 `7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`; log artifact `10095739319` has SHA-256 `614d440b76ce16fb9965a08008f6d76880e0f016f79c4ef6084f03c38f2876ed`; packaged source archive SHA-256
+is `8ae8fcd115c5b150642ad090272a001de89520d28ba69c2564cd476473374e80`; recursive manifest is **28/28 verified**; source status is clean and
+`runtimeExecution=false`.
+
+Runtime authority remains TB44/package109/selector409 at **398 PASS / 11 RED**, accepted **365/365**. Stable
+accounting remains **47 / 14 / 33**, debt **5**, ownership **300/0/0**; package count advances **109 → 110**.
+Exact next is artifact-only `M3-CP4c-3-TB45-EXEC` under
+`Architecture_M3_CP4c3_TB45_Artifact_Only_Test_Benchmark_Plan.md`; no runtime occurred in CB50.
+
 ## 2026-09-08 — `M3-CP4c-3-TB44-REV` verification pass: adjudication upheld; a fourth predicate consumer recorded
 
 Static verification of the delegated `M3-CP4c-3-TB44-REV`. No runtime, no compile, no package operation, no

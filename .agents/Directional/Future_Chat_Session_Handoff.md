@@ -116,40 +116,85 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB50` — EXACT NEXT / Code + Build / runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB45-EXEC` — EXACT NEXT / Test + Benchmark / artifact-only
 
-`M3-CP4c-3-TB44-REV` is **COMPLETE / EVIDENCE-ONLY**. It promotes TB44/package109/selector409 as current semantic runtime authority and freezes exactly one successor plan.
+`M3-CP4c-3-CB50` is **COMPLETE / COMPILE + PACKAGE GREEN / RUNTIME-FREE**. It implements the two corrections
+frozen by TB44-REV and produces immutable package110. It does not change semantic runtime authority.
 
 ### Current authorities
 
-- **Promoted semantic runtime:** TB44/package109/selector409, **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`.
+- **Promoted semantic runtime:** TB44/package109/selector409, **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**,
+  RED `[366,367,368,369,370,374,390,393,398,406,407]`.
 - Runtime run/job `34295565963 / 102291328376`; result/log artifacts `10083047547 / 10083047938`.
-- Package109 source `cf969597bda5c49e734b98db0c0165b421c4ee12`, artifact `10081938891`, provider SHA-256 `285ee15784ea29468c367fa9e4778fd835f1e9582370fdcb26a5050a15c4d617`, packaged source archive SHA-256 `7dead808562e8faf0a90e242532e2965bc9260f24505958eb5f242c19b1273ca`.
-- Stable accounting **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**, ownership **300 / 0 / 0**.
+- **CB50 compile authority:** exact source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, compile run/job `34330825605 / 102398794843`.
+- Immutable package110 artifact `10095738820`, provider SHA-256 `7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`, packaged source archive
+  SHA-256 `8ae8fcd115c5b150642ad090272a001de89520d28ba69c2564cd476473374e80`, recursive manifest **28/28 verified**.
+- Compile log artifact `10095739319`, provider SHA-256 `614d440b76ce16fb9965a08008f6d76880e0f016f79c4ef6084f03c38f2876ed`.
+- Compile boundary: `runtimeExecution=false`, `exactArithmeticBackend=GMP`, authoritative link contains GMPXX + GMP.
+- Selector409 remains byte-frozen at SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+- Stable accounting **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**, ownership
+  **300 / 0 / 0**.
 
-### Review adjudication
+### CB50 result
 
-1. **366/367 — product-side continuation, not a CB49 rollback.** The exact TB43 owner-missing locus is gone. `build_fragment_corner_incidence()` retains exact `sourceCorner` on each carrierless ray but aggregates the whole face into one ray chain and rejects different corners. The failing face has 3/3/3 fragment-owner cardinality and two non-crossing trace chords. CB50 partitions/validates by `(sourceFace, sourceCorner)` and merges through the existing set-valued owner map.
-2. **390/393/406/407 — test-authority RED, producer oracle still valid.** Their real `P_U` predicates execute and deliberately corrupted same-domain copies are rejected. Package109 fails in `build_fragment_corner_incidence()` before `build_region_certificates()` enters the current-region loop, so the authoritative terminal subject is a source face and region-only fields are correctly absent. CB50 makes the terminal helper follow Part XII R8.1/R8.3 without weakening the census oracle.
-3. **No DEFN-R9.** Existing Part VIII, Part XI/Part XI-A and Part XII decide the corrections.
-4. **Carried REDs 368/369/370/374/398 remain separately owned.** No merge/repricing.
+1. **366/367 producer correction compiled:** carrierless fragment-corner rays are partitioned by
+   `(sourceFace, sourceCorner)` before ordinal/orbit-chain validation. Existing per-fan duplicate-ordinal and chain
+   guards and set-valued owner publication remain fail-closed.
+2. **390/393/406/407 protected helper correction compiled:** real `P_U` predicates and corrupted-copy negatives
+   remain before terminal evidence. The helper now selects authoritative `Region` or `SourceFace` terminal evidence,
+   requires `Outside`, rejects fabricated region-only fields on source-face failures and fails closed when unresolved.
+3. Semantic patch changed exactly the two authorized files, 75 insertions / 36 deletions. No fixture, selector,
+   partition, graph, carried RED owner or ownership policy changed.
+4. Mandatory compile/package is green on all eight approved targets with GMP/GMPXX; no generated Directional
+   executable was run.
 
-### CB50 boundary
+### TB45-EXEC boundary
 
-Execute only the frozen plan `.agents/Directional/Architecture_M3_CP4c3_CB50_Code_Build_Plan.md`.
+Execute only the frozen
+`.agents/Directional/Architecture_M3_CP4c3_TB45_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB50 may change the fragment-corner ray grouping/owner projection and the protected tests' typed terminal-subject helper/receipts. It must preserve selector409, fixtures, region/graph/partition semantics and carried RED owners. Compile/package only through the durable reusable workflow with GMP/GMPXX; **execute no Directional binary**.
+TB45-EXEC must consume package110 unchanged, verify package/source/selector/harness provenance, execute selector409
+all **409 identities exactly once** in fresh processes, preserve raw evidence, and perform no build/repair/source/test/
+fixture/selector mutation.
 
-On successful compile/package, author exactly one artifact-only `M3-CP4c-3-TB45-EXEC` plan bound to the immutable package. Do not execute TB45 during CB50.
+Direct falsifiers:
+
+- 366/367 must not reproduce TB44 `FragmentCornerSourceCornerMismatch` on source faces `10,11,79`; PASS or a
+  later/different fail-closed guard is reviewable evidence.
+- 390/393/406/407 must preserve `UncutCensus`, real census predicate execution, same-domain corruption rejection and
+  `Outside`, and must publish a valid `terminalSubjectBranch` (`Region` or `SourceFace`).
+- accepted 1–365 remains 365/365; carried 368/369/370/374/398 stay separately owned; 311/312/314/315/356/357/
+  404/408/409 remain frozen controls; ownership remains 300/0/0; retired-code silence remains.
+- Do not assert a synthetic aggregate. If the six targeted identities recover, 404/5 is only arithmetic.
+
+After mechanically valid execution, exact next is **independent `M3-CP4c-3-TB45-REV`**. The orchestrator stops at
+that boundary.
 
 ### Context Load Plan
 
-1. `references/turns/CB.md` from the turn-based-coding-agent skill; load engineering-guidelines and unit-testing modules because both product and protected-test source changes are authorized.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB50_Code_Build_Plan.md` — exact frozen scope and TB45 falsifiers.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB44_Independent_Review_Record.md` — EG0–EG9 adjudication.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB44_EXEC_Report.md` plus immutable TB44 artifacts `10083047547 / 10083047938` — current runtime evidence.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VIII, Part XI/Part XI-A and Part XII; `Regression_Root_Cause_Tracker.md`; `ORIENTATION.md`; `TODO.md`; current/forward state.
-6. `[ChatGPT Web]` Re-read mandatory policies, choose start-of-turn `READ_MODE` before repository inspection, and use the durable GMP compile reusable. No runtime in CB50.
+```yaml
+load_next:
+  - references/turns/TB-EXEC.md
+conditional_modules:
+  - trigger: remote artifact/workflow operation
+    path: modules/github-connector/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c3_TB45_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_CB50_Code_Build_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+  - .agents/Directional/Architecture_M3_CP4c3_TB44_Independent_Review_Record.md
+  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
+templates_when_producing:
+  - TB45 EXEC report only
+do_not_preload:
+  - engineering-guidelines module
+  - unit-testing module
+  - TB-REVIEW or TB-PLAN turn files
+  - uncited historical reports
+```
+
+`M3-CP4c-3-TB45-EXEC` must not compile a replacement source revision or plan a corrective implementation.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

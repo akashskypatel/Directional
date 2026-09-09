@@ -10,19 +10,26 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-TB44-REV` independent adjudication.
+Last updated **2026-09-09** at `M3-CP4c-3-CB50` compile/package closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB44` / package109 / selector409 is the current valid semantic runtime authority**, promoted at TB44-REV: **398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, run/job `34295565963 / 102291328376`, result/log artifacts `10083047547 / 10083047938`, exact package source `cf969597bda5c49e734b98db0c0165b421c4ee12`.
+**`M3-CP4c-3-TB44` / package109 / selector409 remains the current valid semantic runtime authority**, promoted at TB44-REV: **398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, run/job `34295565963 / 102291328376`, result/log artifacts `10083047547 / 10083047938`.
 
-Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**.
+**CB50/package110 is the current compile authority**: exact source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, compile run/job
+`34330825605 / 102398794843`, immutable artifact `10095738820` at SHA-256 `7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`. The
+28/28 manifest verifies, GMP/GMPXX link evidence is present, source status is clean and `runtimeExecution=false`.
 
-TB44-REV resolves both new raw surfaces without a definition turn. 366/367 are a product-side continuation of the fragment-corner ownership projection: the consumer aggregates carrierless rays per face and assumes one source corner, while each ray already carries exact source-corner authority. 390/393/406/407 are test-authority REDs: their real `P_U` predicates and corrupted-copy negatives still pass, but a shared helper unconditionally requires R8.3 current-region evidence even when failure occurs before the region loop and the authoritative subject is only a source face.
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**.
 
-**Exact next: `M3-CP4c-3-CB50`**, runtime-free, under `Architecture_M3_CP4c3_CB50_Code_Build_Plan.md`. No DEFN-R9.
+CB50 compiles the bounded per-`(sourceFace, sourceCorner)` carrierless-ray fan projection and the typed
+Region/SourceFace terminal-evidence helper while preserving the real Part XII producer predicates and corruption
+negatives. No semantic runtime result is promoted until package110 is executed.
+
+**Exact next: `M3-CP4c-3-TB45-EXEC`**, artifact-only, under
+`Architecture_M3_CP4c3_TB45_Artifact_Only_Test_Benchmark_Plan.md`. No DEFN-R9.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
