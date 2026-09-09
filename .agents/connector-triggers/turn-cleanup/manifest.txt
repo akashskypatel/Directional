@@ -1,0 +1,8 @@
+# M3-CP4c-3-TB48-EXEC temporary-state cleanup
+.agents/connector-triggers/source-snapshot/tb48-20260909.txt
+.agents/connector-triggers/tb48-schema/tb48-schema-20260909.txt
+.agents/connector-triggers/tb48-exec/tb48-exec-20260909.txt
+.agents/connector-triggers/tb48-drive-schema/tb48-drive-schema-20260909.txt
+.agents/connector-triggers/tb48-drive/tb48-drive-20260909.txt
+.agents/Directional/turn-payloads/m3-cp4c3-tb48-exec.yml
+.agents/Directional/turn-payloads/m3-cp4c3-tb48-drive-apply.yml
