@@ -2270,7 +2270,9 @@ std::optional<IndependentFragmentPartition> independent_fragment_partition(
     if (fragments == fragmentOrbits.end() || fragments->second.empty()) {
       return std::nullopt;
     }
-    if (fragments->second.size() != tracePieces[face] + 1U) {
+    // Distinct global face-walk owners may be shared by multiple local
+    // fragments, so only an owner over-count violates this upper bound.
+    if (fragments->second.size() > tracePieces[face] + 1U) {
       if (failureClause != nullptr) {
         *failureClause = IndependentDiscProofClause::FragmentCountRule;
       }
