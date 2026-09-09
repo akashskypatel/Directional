@@ -90,3 +90,32 @@ under `Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`.
 CB52 must localize and correct only the pre-trap harness bootstrap/control-plane defect, preserve package111 and
 selector409 byte-for-byte, execute no Directional runtime, and prove the corrected artifact-only preflight before
 routing to `M3-CP4c-3-TB46-R1`.
+
+## 6. Closeout, preservation, and cleanup
+
+TB46 closeout was preserved before remote application as
+`Directional__M3-CP4c-3-TB46-EXEC__base-8722285baa14__work-preservation.patch`, SHA-256
+`f884bf12934e880fcc1424ebb12db4c852d8b4af0ae70f4398c58e66335325f9`; its diff-body SHA-256 is
+`605edc8eefddd96fe9211e0597152dfca3b1c5f317fd6ef2063deeebc1715e25`. Local `git apply --check` and
+`git diff --check` both passed before transport.
+
+The verified closeout patch was applied through the durable Google Drive patch workflow:
+
+- apply run/job: `34376266662 / 102549814675` — success;
+- applied closeout commit: `e91c192fcaecd04eb859430945ca8e8fd04962da`;
+- the workflow independently verified the patch, base, diff-body digest, intended-path isolation and `git diff --check`;
+- the Drive service identity could not trash the staged file, so owner-authorized control-plane cleanup permanently
+  deleted it after successful application;
+- temporary closeout caller deletion commit: `0c2922295e84eb817e0f617995c6e971f4d71f47`.
+
+Final repository cleanup then ran through the durable turn-cleanup workflow:
+
+- cleanup run/job: `34376416343 / 102550244200` — success;
+- cleanup commit: `8e8f28e14f4a4067a19ea38ed109a413e3688211`;
+- durable workflow inventory validated as exactly the seven allowed workflows;
+- the source-snapshot, TB46-exec and closeout-apply trigger markers plus cleanup manifest were removed;
+- PR conversation/review comments were verified empty before the cleanup observer republished its run marker;
+- cleanup recorded `runtimeExecution=false`.
+
+No closeout or cleanup operation changes TB45 semantic runtime authority, package111 bytes, selector409 bytes, stable
+regression accounting, or the exact next boundary above.
