@@ -3,7 +3,7 @@ name: M3 CP4c3 CB52 Exact Bootstrap
 on:
   push:
     branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
-    paths: [.agents/connector-triggers/cb52-exact-bootstrap-4/cb52-exact-bootstrap-4-20260909.txt]
+    paths: [.agents/connector-triggers/cb52-original-trace/cb52-original-trace-20260909.txt]
 
 permissions:
   actions: read
@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c3-cb52-exact-bootstrap-4
+      label: m3-cp4c3-cb52-original-trace
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -37,10 +37,10 @@ jobs:
           fetch-depth: 1
           submodules: false
           lfs: false
-      - name: Execute instrumented immutable preflight only
+      - name: Trace original harness line numbers during immutable preflight
         env:
           GH_TOKEN: ${{ github.token }}
-          TURN_ID: M3-CP4c-3-CB52-LOCALIZE4
+          TURN_ID: M3-CP4c-3-CB52
           ARTIFACT_ID: '10112532452'
           EXPECTED_ARTIFACT_NAME: m3-cp4c3-cb51-package111-result-34372482691
           EXPECTED_PROVIDER_DIGEST: sha256:62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da
@@ -50,35 +50,36 @@ jobs:
           EXPECTED_SELECTOR_COUNT: '409'
           EXPECTED_SELECTOR_SHA256: eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e
           ACCEPTED_PREFIX_COUNT: '365'
+          EXPECTED_HARNESS_SHA256: aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3
         shell: bash
         run: |
-          set -euo pipefail
-          out="$RUNNER_TEMP/exact-bootstrap-4.log"
-          src=.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh
-          dst="$RUNNER_TEMP/instrumented-preflight.sh"
-          python3 - "$src" "$dst" <<'PY'
-          from pathlib import Path
-          import sys
-          src, dst = map(Path, sys.argv[1:])
-          lines = src.read_text().splitlines()
-          markers = {145:'environment',151:'artifact-metadata-curl',153:'artifact-metadata-parse',155:'artifact-authority-compare',161:'artifact-zip-curl',163:'zip-digest',166:'artifact-authority-file',168:'unzip',170:'root-manifest',173:'build-metadata',179:'gmp-evidence',196:'executables',198:'package-census',201:'source-extract',210:'selector-authority',211:'source-census',261:'identity-map',266:'identity-map-verify',275:'execution-view-census',277:'preflight-flags',291:'postflight-function-defined'}
-          out=[]
-          for n,line in enumerate(lines[:297],1):
-              out.append(line)
-              if n in markers:
-                  out.append(f"echo CB52_PREFLIGHT_AFTER={markers[n]}")
-          dst.write_text('\n'.join(out)+'\n')
-          PY
-          bash -n "$dst"
-          if bash "$dst" --preflight-only >"$out" 2>&1; then rc=0; else rc=$?; fi
-          cat "$out"
-          echo "instrumented_exit=$rc"
+          set -u -o pipefail
+          harness=.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh
+          trace="$RUNNER_TEMP/cb52-original-line-trace.log"
+          envfile="$RUNNER_TEMP/cb52-bash-env.sh"
+          actual="$(sha256sum "$harness" | awk '{print $1}')"
+          echo "harness_sha256=$actual"
+          test "$actual" = "$EXPECTED_HARNESS_SHA256"
+          cat > "$envfile" <<'EOF'
+          exec 9>>"$RUNNER_TEMP/cb52-original-line-trace.log"
+          trap 'printf "%s:%s\n" "${BASH_SOURCE[0]}" "$LINENO" >&9' DEBUG
+          set -T
+          EOF
+          : > "$trace"
+          set +e
+          BASH_ENV="$envfile" bash "$harness" --preflight-only
+          rc=$?
+          set -e
+          echo "original_harness_exit=$rc" | tee -a "$trace"
           exit "$rc"
-      - name: Upload localization log
+      - name: Upload original-harness trace and evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m3-cp4c3-cb52-exact-bootstrap-4-log-${{ github.run_id }}
-          path: ${{ runner.temp }}/exact-bootstrap-4.log
-          if-no-files-found: error
+          name: m3-cp4c3-cb52-original-trace-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/cb52-original-line-trace.log
+            ${{ runner.temp }}/M3-CP4c-3-CB52.log
+            ${{ runner.temp }}/M3-CP4c-3-CB52-result
+          if-no-files-found: warn
           retention-days: 7
