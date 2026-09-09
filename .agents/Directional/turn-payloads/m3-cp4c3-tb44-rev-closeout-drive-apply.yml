@@ -34,5 +34,5 @@ jobs:
       patch_sha256: c102656cb4ac012844b21e0fa6701cf5745c71337aaed2f08349318d2a2776bb
       base_sha: 5f5022c78de1ce8c7771d1cf12d1db97050d2498
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: adjudicate M3 CP4c3 TB44 review and freeze CB50
+      commit_message: "docs: adjudicate M3 CP4c3 TB44 review and freeze CB50"
     secrets: inherit
