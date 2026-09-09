@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-CB49-CLOSEOUT
-purpose=apply-closeout-docs-patch
-retry=1
