@@ -1,4 +1,0 @@
-# M3-CP4c-3-TB47-EXEC closeout temporary-state cleanup
-.agents/connector-triggers/source-snapshot/tb47-20260909-1239.txt
-.agents/connector-triggers/tb47-exec/tb47-exec-20260909.txt
-.agents/connector-triggers/tb47-closeout-drive/tb47-closeout-drive-20260909.txt
