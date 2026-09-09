@@ -1,0 +1,47 @@
+name: M3 CP4c3 CB54 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb54-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb54-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb54-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb54-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1JYWi0lXDllm4ouYiKVKvPVK0t4oB_lK1
+      patch_sha256: 6298b81e2e0a9849b08547321508be551ab7f82925e6463f48d557e24462fda9
+      base_sha: c873b54587e8fcac37a8877a6f6ea22fe70aec47
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-CB54: reject empty closed networks with typed error"
+    secrets: inherit
