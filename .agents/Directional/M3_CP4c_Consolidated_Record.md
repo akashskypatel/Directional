@@ -1,27 +1,36 @@
 # M3 CP4c — Consolidated Historical Record
 
-**Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
+**Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports,
+review records, and diagnostic selector records are folded into this file once they are no longer required for
+current or future work. Normative definitions, frozen selector lineage, current review authority, and the active
+CP4c-3 gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
 **Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**.
-As of `M3-CP4c-3-TB45-REV`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN. **TB45/package110 is promoted
-runtime authority** — selector409, **399 PASS / 10 RED / 0 SKIP**, accepted 365/365, ownership 300/0/0. Stable
-accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 110. Exact next is runtime-free
-**`M3-CP4c-3-CB51`** under `Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`.
+As of `M3-CP4c-3-TB46-R1-REV`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN.
+**TB46-R1/package111/selector409 is promoted runtime authority** — **403 PASS / 6 RED / 0 SKIP**, accepted 365/365,
+ownership 300/0/0. Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 111. Exact
+next is runtime-free **`M3-CP4c-3-CB53`** under
+`Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`.
 
 Current/future CP4c authority intentionally remains outside this history record:
 
-- `Architecture_M3_CP4c3_TB45_EXEC_Report.md` — current runtime report;
-- `Architecture_M3_CP4c3_TB45_Independent_Review_Record.md` — current review authority;
-- `Architecture_M3_CP4c3_CB51_Code_Build_Plan.md` — the single exact next-turn plan;
+- `Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md` — current runtime report;
+- `Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md` — current review authority;
+- `Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md` — single exact next-turn plan;
 - `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`,
   `Required_Green_Selector_Manifest.md`, and every byte-frozen `Required_Green_Selector_*.txt`;
 - durable closure/architecture/tracker/lesson records cited by those current authorities.
 
-All other superseded CP4c-3 per-turn files that had no live current/future dependency were folded into §§4/6 below and retired from the working tree. Git history remains the exact-byte recovery source for every retired file.
+All other superseded CP4c-3 per-turn files with no live current/future dependency are folded below and retired from
+the working tree. Git history remains the exact-byte recovery source for every retired file.
 
-`DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
+`DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and
+orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`,
+`Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
 
-The retained selector lineage is intentional. DEFN-R2 AG0 requires the superseded 357 and withdrawn 358 files to remain historical authority, and CP4c-3 verifies frozen prefix continuity. Current frozen hashes are:
+The retained selector lineage is intentional. DEFN-R2 AG0 requires superseded/withdrawn selector files to remain
+historical authority, and CP4c-3 verifies frozen prefix continuity. Current hashes remain recorded in the durable
+selector table below.
 
 | Authority | SHA-256 |
 |---|---|
@@ -697,6 +706,42 @@ Mandatory REVIEW consolidation. Durable TB43/CB49/TB44-plan facts are preserved 
 
 **Review conclusion retained here.** TB44/package109 is promoted at 398 PASS / 11 RED, accepted 365/365. CB49 is not reverted: its exact owner-missing locus disappeared. The next product defect is whole-face aggregation of carrierless rays that already carry exact source-corner authority. The four protected census identities still prove their producer predicates; their RED is a shared test helper broadening R8.3 current-region evidence to a source-face failure raised before the region loop. Existing Part VIII/Part XI/Part XII decide CB50; no DEFN-R9. Stable accounting remains 47 / 14 / 33, debt 5, packages 109.
 
+### Consolidated on 2026-09-09 at `M3-CP4c-3-TB46-R1-REV`
+
+Mandatory REVIEW consolidation. TB46-R1/package111 is promoted as current semantic runtime authority. The review
+adjudicates ordinal367 as a recurrence of the DEFN-R3.4-disproved local-fragment/global-owner injectivity
+assumption, closes protected 390/393/406/407 success-path observability as runtime-proved, retains the five carried
+RED owners, and freezes CB53 as the single next plan.
+
+The following **8 live superseded documents / 1,040 lines** were folded after their durable facts were preserved:
+
+| folded document | lines | role / verdict preserved |
+|---|---:|---|
+| `Architecture_M3_CP4c3_CB51_Code_Build_Report.md` | 123 | consumed package111 Code + Build report |
+| `Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md` | 67 | consumed runtime-free control-plane correction plan |
+| `Architecture_M3_CP4c3_CB52_Orchestration_Correction_Report.md` | 121 | consumed preflight/failure-containment proof; generic harness remained byte-identical |
+| `Architecture_M3_CP4c3_TB45_EXEC_Report.md` | 150 | superseded package110 runtime report, 399/10 historical authority |
+| `Architecture_M3_CP4c3_TB45_Independent_Review_Record.md` | 262 | superseded review authority; CB51 measures and TB44 EG10.3 disposition preserved |
+| `Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md` | 108 | consumed initial package111 artifact-only contract |
+| `Architecture_M3_CP4c3_TB46_EXEC_Report.md` | 121 | orchestration-invalid 0/409 attempt; no semantic ledger |
+| `Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md` | 88 | consumed re-execution contract that produced current TB46-R1 evidence |
+
+One additional plan was retired between REVIEW turns and is retrospectively indexed here without changing the
+folded-document running total:
+
+| retrospectively indexed document | lines | role / verdict preserved |
+|---|---:|---|
+| `Architecture_M3_CP4c3_CB51_Code_Build_Plan.md` | 157 | consumed TB45-REV successor plan; exact bytes at commit `104b631f01cd5a1be0c5369fb5a8a743651f5bce`, deletion visible in `e91c192fcaecd04eb859430945ca8e8fd04962da` |
+
+**Running consolidation total:** prior **146 documents / 27,829 lines** + this review's **8 / 1,040** =
+**154 documents / 28,869 lines**. The retrospective index is accounting-neutral.
+
+**Review conclusion retained here.** Package111 is promoted at 403/6, accepted 365/365. DEFN-R3.4 already forbids
+the ordinal367 equality assumption: distinct global face-walk owners may be fewer than local fragments, while an
+over-count remains invalid. CB53 changes only the independent oracle's `!=` guard to `>`. Protected
+390/393/406/407 are runtime-proved on `PlanFrontier`; 368/369/370/374/398 retain separate owners. Stable accounting
+stays 47 / 14 / 33, debt 5, packages 111.
+
 ### Consolidated on 2026-09-09 at `M3-CP4c-3-TB45-REV`
 
 Mandatory REVIEW consolidation. TB45/package110 is promoted as current semantic runtime authority. Durable TB44,
@@ -847,29 +892,22 @@ Their durable semantic, runtime, build/package, reversal, and selector-lineage f
 
 ## 7. Resume pointer
 
-After the durable start-of-turn checklist, load:
+After the durable start-of-turn checklist, load current authority from:
 
-1. `ORIENTATION.md` — read first.
-2. `Future_Chat_Session_Handoff.md`
-3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` — **current review authority and the BR0–BR9 measures.**
-5. `Architecture_M3_CP4c3_TB16_Artifact_Only_Test_Benchmark_Report.md`
-6. `Architecture_M3_CP4c3_Required_Green_Selector_382.txt`
-7. `Regression_Root_Cause_Tracker.md`
-8. `tools/README.md` — the read-only review helpers; run `review_check.py authority <sha>` first every turn.
-9. `src/geometry/GlobalTopologyPlan.cpp` (`build_fragment_corner_incidence` `:180`, `build_regions` `:409`),
-   `src/geometry/SurfaceCellTracing.cpp` (`incomingCarrier.reset()` at `:2335`, `:2432`).
-10. this consolidated record only when historical lineage is needed.
+1. `ORIENTATION.md` — read first;
+2. `Future_Chat_Session_Handoff.md`;
+3. `TODO.md`;
+4. `Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md` — promoted package111 runtime evidence;
+5. `Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md` — current review authority;
+6. `Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md` — exact next plan;
+7. `M3_CP4c_Frozen_Definitions.md` — especially DEFN-R3.4 and DEFN-R4.1;
+8. `Regression_Root_Cause_Tracker.md`;
+9. this consolidated record only when historical lineage is required.
 
-**Exact next:** **`M3-CP4c-3-CB19` — product correction, Code + Build, runtime-free, GMP/GMPXX linked.** Follow
-**BR0–BR9** in `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §8. Bind the carrier-less branch to the
-segment's own entry support in **both** loops and keep it fail-closed; settle the terminal-slit contract once and
-apply it in both; **re-derive** the fragment-count invariant rather than assume it; publish the full incidence at
-the emitter; and **demonstrate** accepted-boundary safety with pinned before/after values across the torus,
-two-ring and mechanical witnesses. Selector 382 keeps every byte; ordinal 383 only on demonstrated falsification.
-Prohibited: importing CB18's datum fix without settling the terminal-slit contract, or scoping the repair to the
-source-port branch alone. The prescribed sphere, ordinal 370, saturation, the folded-cone witness, vertex 30, the
-finalize/contact fall-through and the 371/372 fixture coupling all remain deferred and separately owned.
+**Exact next:** **`M3-CP4c-3-CB53` — test-authority correction, Code + Build, runtime-free, GMP/GMPXX linked.**
+Change only the independent fragment-count oracle's final two-sided `!=` rejection to the frozen one-sided `>`
+over-count rejection. Preserve CB51 terminal separation, independent orbit derivation, selector409 and all product,
+fixture and carried-RED authority.
 
 ---
 ## Folded document index — DURABLE, DO NOT DELETE
@@ -1684,3 +1722,29 @@ the frozen successor plan.
 `M3_CP4c_Frozen_Definitions.md` Part XI (current Definition/Review authority), and
 `Architecture_M3_CP4c3_CB45_Code_Build_Plan.md` (single exact next-turn plan), together with durable indexes and every
 byte-frozen selector.
+
+### Consolidated on 2026-09-09 at `M3-CP4c-3-TB46-R1-REV` — folded-index entry
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_CB51_Code_Build_Report.md` | 123 | consumed package111 Code + Build report |
+| `Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md` | 67 | consumed runtime-free orchestration correction plan |
+| `Architecture_M3_CP4c3_CB52_Orchestration_Correction_Report.md` | 121 | consumed control-plane preflight/failure-containment report |
+| `Architecture_M3_CP4c3_TB45_EXEC_Report.md` | 150 | superseded package110 runtime report — 399/10 historical evidence |
+| `Architecture_M3_CP4c3_TB45_Independent_Review_Record.md` | 262 | superseded TB45 review authority |
+| `Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md` | 108 | consumed initial package111 artifact-only contract |
+| `Architecture_M3_CP4c3_TB46_EXEC_Report.md` | 121 | orchestration-invalid 0/409 attempt; no semantic ledger |
+| `Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md` | 88 | consumed re-execution contract |
+
+**Total folded this review:** 8 documents, 1,040 lines. **Running total:** 154 documents, 28,869 lines.
+
+**Retrospective, accounting-neutral index:** `Architecture_M3_CP4c3_CB51_Code_Build_Plan.md` — 157 lines,
+consumed successor plan already retired between reviews; exact bytes at
+`104b631f01cd5a1be0c5369fb5a8a743651f5bce`, deletion visible in
+`e91c192fcaecd04eb859430945ca8e8fd04962da`.
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md`,
+`Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`,
+`M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`,
+`Required_Green_Selector_Manifest.md`, this record, and every byte-frozen selector.

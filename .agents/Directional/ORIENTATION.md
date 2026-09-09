@@ -1,4 +1,4 @@
-> **Current CP4c-3 authority (2026-09-09, `M3-CP4c-3-TB45-REV`):** **TB45/package110 is PROMOTED** — selector **409**, **399 PASS / 10 RED**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`, ownership 300/0/0. Ordinal366 confirms CB50 cleared the whole-face source-corner mismatch. Ordinal367 is now a stale independent-oracle terminal-slit rule; protected 390/393/406/407 are stale failure-required test authority after the mechanical plan succeeds. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB51`**, Code + Build only.
+> **Current CP4c-3 authority (2026-09-09, `M3-CP4c-3-TB46-R1-REV`):** **TB46-R1/package111 is PROMOTED** — selector **409**, **403 PASS / 6 RED**, accepted **365/365**, RED `[367,368,369,370,374,398]`, ownership 300/0/0. Ordinal367 is a non-stable stale independent-oracle cardinality invariant prohibited by DEFN-R3.4; protected 390/393/406/407 are runtime-proved PASS through successful-plan `PlanFrontier`. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB53`**, Code + Build only.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,16 +30,16 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-09 at `M3-CP4c-3-TB45-REV`. Semantic runtime authority is **TB45**
-(package110, source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`), selector **409**, **399 PASS / 10 RED**, accepted **365/365**.
-Stable accounting is **47 / 14 / 33**, debt 5, packages 110, ownership 300/0/0.
+**Currency.** Last updated 2026-09-09 at `M3-CP4c-3-TB46-R1-REV`. Semantic runtime authority is **TB46-R1**
+(package111, source `4f0663ef3468996abce6f59109f1c67f5be5f604`), selector **409**, **403 PASS / 6 RED**, accepted **365/365**.
+Stable accounting is **47 / 14 / 33**, debt 5, packages 111, ownership 300/0/0.
 
-**Current definition resolution.** No DEFN-R9 is needed. Part VIII/Part XI still own fragment-corner and
-actual-embedded-face authority; Part XII still owns the unlabelled-face partition and protected census. TB45
-settles two test-authority transitions: the independent partition oracle retained the retired unconditional
-terminal-slit skip, and the protected Part XII tests still required a mechanical production failure after the plan
-became successful. CB51 corrects those observation surfaces and one failure-only diagnostic incidence list; it does
-not change topology semantics, fixtures or selector409.
+**Current definition resolution.** No new DEFN turn is needed. DEFN-R3.4 already proves that local fragments may map
+many-to-one onto global face-walk owners, so distinct owner count may be lower than `tracePieces + 1`; only an
+over-count is forbidden. TB46-R1's ordinal367 `FragmentCountRule` is therefore a stale independent test-oracle
+equality, not a new topology rule. Part XII success-path producer evidence is runtime-proved at 390/393/406/407.
+CB53 corrects only the independent oracle's two-sided count rejection; topology semantics, fixtures and selector409
+remain frozen.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -117,15 +117,15 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB45` / package110**, promoted at TB45-REV. Selector **409**, **399 PASS / 10 RED / 0 SKIP**, **accepted 1–365 = 365/365**, reds {367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. Certified ownership **300 / 0 / 0**; 311/312/314/315/356/357/404/408/409 remain PASS controls.
+**Runtime authority — `M3-CP4c-3-TB46-R1` / package111**, promoted at TB46-R1-REV. Selector **409**,
+**403 PASS / 6 RED / 0 SKIP**, **accepted 1–365 = 365/365**, reds {367, 368, 369, 370, 374, 398}. Certified
+ownership **300 / 0 / 0**; 311/312/314/315/356/357/404/408/409 remain PASS controls.
 
-**Promotion reasoning.** TB45 is mechanically valid and preserves the accepted floor. Ordinal366 recovers after
-CB50's source-corner fan correction. Ordinal367's later `FragmentPartition` failure is an independent-oracle
-contract drift: it drops all terminal no-barrier segments rather than only independently proven non-separating
-ones. Protected 390/393/406/407 now stop on the obsolete expectation that the mechanical plan must fail; package110
-lawfully succeeds. Those four therefore do not re-prove Part XII in TB45 — TB43 remains the latest runtime proof of
-their producer census — and CB51 restores success-path observability without forcing a product failure.
-
+**Promotion reasoning.** TB46-R1 is mechanically valid and preserves the accepted floor. 390/393/406/407 recover
+non-vacuously on successful-plan `PlanFrontier` producer evidence. The five carried REDs retain their prior owners.
+Ordinal367 reaches a later independent-oracle cardinality equality already invalidated by DEFN-R3.4: a set of
+distinct global owners is not a local-fragment identity set. This is test-authority recurrence, not a product
+regression, so no stable repricing is warranted.
 
 **The binding itself is runtime confirmed.** 4 regions ↔ 4 face certificates, one upstream match each, injective,
 arc counts matching, `discTopologyEstablished=true` and `fieldRegularity=true` on every row, complex inputs
@@ -137,7 +137,7 @@ field that **varies**, so Part XI-A §A.3's tamper amendment was honoured.
 
 **TB38 remains historical regression evidence, not runtime authority.** Package103 was mechanically valid at
 395/14, accepted 362/365. Later repairs recover its accepted losses, but the one stable TB38 event remains counted.
-**Current accounting is 47 / 14 / 33**, debt 5, packages 109; the TB38 event remains historical within those totals.
+**Current accounting is 47 / 14 / 33**, debt 5, packages 111; the TB38 event remains historical within those totals.
 
 **CB42 changed no behaviour, and that is proved by artifact.** TB37's `ledger.tsv` and `identity-map.tsv` hash
 **identical to TB36's** (`058c5460…`, `f33cd349…`) while the **failure-detail digest table differs**
@@ -195,7 +195,7 @@ is now the single identity **χ_true = X + B_int − 47**: `X + B_int = 44` mean
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit, A2a, vertex/edge rotation frontiers, and reaches A2b certification | **Current critical path.** Accepted prefix **365/365**, ownership **300/300**. TB45 confirms the per-source-corner fan correction: 366 PASSes and the old mismatch is absent. 367 now exposes stale independent-oracle terminal-slit semantics. The production plan succeeds, so 390/393/406/407 need success-path producer-census observability rather than a forced terminal failure. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit, A2a, vertex/edge rotation frontiers, and reaches A2b certification | **Current critical path.** Accepted prefix **365/365**, ownership **300/300**. TB46-R1/package111 is promoted at 403/6. Protected 390/393/406/407 PASS through successful-plan `PlanFrontier`. Ordinal367 reaches `FragmentCountRule`; review identifies its remaining equality as stale test authority because distinct global owners may be fewer than local fragments. CB53 changes only `!=` to normative over-count `>`. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -298,57 +298,53 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Ordinal367 independent partition oracle — CB51.** TB45 clears the former
-   `FragmentCornerSourceCornerMismatch`; ordinal366 PASSes. The remaining ordinal367 `FragmentPartition` RED is
-   test-authority: `independent_fragment_partition()` still drops every terminal no-barrier segment, even when the
-   oracle's own forward/reverse face-walk orbits differ. CB51 uses that independent orbit equality as the
-   separation predicate; it must not consume the product partition.
+1. **Ordinal367 independent fragment-count oracle — CB53.** TB46-R1 advances through CB51's corrected terminal
+   separation and fails only at the later `FragmentCountRule`. The helper compares a set of distinct global
+   face-walk owners with a local fragment count using equality, reintroducing the injectivity assumption already
+   disproved by DEFN-R3.4. CB53 changes only the two-sided `!= tracePieces + 1` rejection to the normative
+   over-count `> tracePieces + 1`, while preserving independent derivation and every other oracle clause.
 
-2. **Protected Part XII success-path observability — CB51.** 390/393/406/407 now stop because the mechanical plan
-   succeeds while the tests require `!plan.has_value()`. Their producer-census contract does not require failure.
-   CB51 publishes the already-computed `RegionBuildSuccess.frontier` evidence on the immutable successful plan,
-   reuses one producer-side row construction for success/failure, and preserves every real-data predicate and
-   same-domain corruption negative. TB43 remains the latest runtime proof until TB46.
-
-3. **TB44 EG10.3 diagnostic consistency — CB51.** The syntactic terminal-slit trace census is intentional and
-   remains unchanged. The failure-only `TraceCutFaceFragmentCountMismatch.fragmentIncidences` list must stop
-   dropping a terminal segment when `forwardOrbit != reverseOrbit`; that is a diagnostic-only correction.
-
-4. **Ordinal 315 tampers only the orbit.** — `M3-CP4c3-TB41-REV-CAND-02`, **ACTIVE / HARDENING**. With a content
+2. **Ordinal 315 tampers only the orbit.** — `M3-CP4c3-TB41-REV-CAND-02`, **ACTIVE / HARDENING**. With a content
    anchor now on the certificate, an **anchor** tamper is the stronger negative.
 
-5. **Two partitions of one mesh — definition adjudicated; builder duplication remains architectural/non-gating.**
+3. **Two partitions of one mesh — definition adjudicated; builder duplication remains architectural/non-gating.**
    Part XII declares the plan `EmptyFragmentOrbits`/`P_U` domain and certifier `NotTraceCut` domain lawfully
    distinct. `M3-CP4c3-TB26-REV-CAND-04` is closed as a domain-definition question;
    `M3-CP4c3-DEFN-R3-CAND-01` remains separate architectural debt about duplicated actual-embedded topology
-   construction. CB51 must not unify either partition or builder.
+   construction. CB53 must not unify either partition or builder.
 
-6. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** The audit is constructed
+2. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** The audit is constructed
    after seed guards, `SeedUnavailable` is dead by construction, and projection fields still lack a consumer.
-   Owned by AZ4–AZ5; separate from CB51.
+   Owned by AZ4–AZ5; separate from CB53.
 
-7. **Minimal transit witness / selector governance — ACTIVE, conditional.** Selector 374 stays byte-immutable.
+3. **Minimal transit witness / selector governance — ACTIVE, conditional.** Selector 374 stays byte-immutable.
    AZ6 must eventually derive the witness from the mechanical vertex-11 star and prove the precondition before any
    selector growth.
 
-8. **Ordinal 370 empty closed network — ACTIVE / independent product red.** It still returns
+2. **Ordinal 370 empty closed network — ACTIVE / independent product red.** It still returns
    `CellularityNotEstablished` where `EmptyNetworkOnClosedSurface` is required, with sourceFace absent. Do not mix
-   with CB51.
+   with CB53.
 
-9. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 remains
+3. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 remains
    `TraceEventPositionInvalid → NoCarrierMatch / SourceEdgeUnavailable`, trace 2/event 30. AL4 still forbids a
    sphere semantic correction on this frontier.
 
-10. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still uses saturation; ordinary
+2. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still uses saturation; ordinary
     proposal reachability remains separately owned.
 
-11. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal373 is green only on a synthetic barrier-arc
+3. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal373 is green only on a synthetic barrier-arc
     witness. `M3-CP4c3-DEFN-R1-CAND-01` remains open until production publishes the zero count.
 
-12. **CB9 static audit debt — ACTIVE / separate.** Exactification of double-derived flow parameters and the
-    `integer_sqrt_floor` input-size budget remain outside CB51.
+2. **CB9 static audit debt — ACTIVE / separate.** Exactification of double-derived flow parameters and the
+    `integer_sqrt_floor` input-size budget remain outside CB53.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Independent derivation does not authorize a stale normative predicate.** TB46-R1 is a new instance of lesson 96:
+the oracle independently re-derives global face-walk owners correctly, then equates their set cardinality to a
+local fragment count. DEFN-R3.4 had already measured the many-to-one case and retired that equality. After repairing
+one independent-oracle clause, audit every later clause against the frozen definitions; independence of data
+derivation does not make an obsolete invariant valid.
 
 ### Ownership projections must share the same separation predicate
 

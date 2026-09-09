@@ -26,34 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB46-R1-REV` — REVIEW + PLAN / EVIDENCE-ONLY FIRST
+## Current focus — `M3-CP4c-3-CB53` — CODE + BUILD / RUNTIME-FREE
 
-`M3-CP4c-3-TB46-R1` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED** on immutable package111 + selector409.
-Run/job `34382143529 / 102569425154`; result/log artifacts `10116449887 / 10116450375` have SHA-256
-`9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842` /
-`321da1297d65de858fa6191dc01e581e58587217c6f3b9aa515fc6bfe33a65ef`.
+`M3-CP4c-3-TB46-R1-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**. TB46-R1/package111/selector409 is promoted
+semantic runtime authority at **403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, RED
+`[367,368,369,370,374,398]`.
 
-Observed result is **403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, RED
-`[367,368,369,370,374,398]`. All 409 selector identities executed exactly once in fresh processes, with zero
-selection mismatches/timeouts and equal package/source/execution-view pre/post censuses. No build, repair,
-mutation, discovery or benchmark path executed.
+Ordinal367 is now adjudicated **TEST-AUTHORITY / STALE TWO-SIDED CARDINALITY / DEFN-R3.4 VIOLATION /
+NON-STABLE**. The independent oracle compares a set of distinct global face-walk owners against a local fragment
+count with `!=`, silently requiring local-fragment -> global-owner injectivity. DEFN-R3.4 already disproved that
+invariant and froze the one-sided rule: reject only an owner over-count. The missing current face/count pair is not
+needed to decide the generalized correction.
 
-Ordinal367 advances from TB45's `FragmentPartition` surface to **`FragmentCountRule`**. The immediate independent
-oracle failure is the per-face equation `fragmentOrbits[face].size() == tracePieces[face] + 1`; retained runtime
-evidence does not expose the failing face/count pair, so semantic ownership is review-pending. Protected
-390/393/406/407 all PASS and each emits the successful-plan `PlanFrontier` Part XII receipt with the real census
-predicate and corrupted same-domain negative executed. Carried 368/369/370/374/398 reproduce their prior separate
-owners.
+Protected 390/393/406/407 are **CLOSED / RUNTIME-PROVED SUCCESS-PATH OBSERVABILITY / NON-STABLE**: all PASS through
+`PlanFrontier`, execute the real Part XII census predicates, reject same-domain corruptions and emit non-vacuous
+receipts. Carried 368/369/370/374/398 retain their separate owners.
 
 Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, ownership **300/0/0**,
-packages **111**. TB45/package110 remains promoted semantic runtime authority until review adjudicates TB46-R1.
+packages **111**.
 
 ### Exact next turn
 
-Perform **`M3-CP4c-3-TB46-R1-REV`** as the required independent REVIEW + PLAN turn. Adjudicate ordinal367's
-`FragmentCountRule` surface, protected-success recovery, the five carried RED owners, stable accounting and runtime
-promotion. Perform mandatory REVIEW-turn document consolidation and update `ORIENTATION.md`. Do **not** retry,
-patch, compile, or execute new runtime before the review.
+Perform **`M3-CP4c-3-CB53`** under
+`Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`. Change only
+`independent_fragment_partition()`'s final cardinality rejection from `!= tracePieces + 1` to
+`> tracePieces + 1`, preserve independent orbit derivation and CB51 terminal separation, then compile/package with
+mandatory GMP/GMPXX and **no Directional runtime**.
 
 ## Carried forward from M1
 
@@ -91,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB45/package110 remains promoted semantic runtime authority** pending review. TB46-R1/package111 is mechanically valid raw evidence at **403 PASS / 6 RED**, accepted 365/365; exact next is independent `M3-CP4c-3-TB46-R1-REV`.
+  CP4c-3 remains open. **TB46-R1/package111 is promoted semantic runtime authority** at **403 PASS / 6 RED**, accepted 365/365; ordinal367 is a non-stable stale test-oracle cardinality rule. Exact next is runtime-free `M3-CP4c-3-CB53`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -103,8 +101,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43: 390/393/406/407 executed the producer-owned census predicates and rejected same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE. TB45 is current runtime authority overall, but does not re-prove these four receipts because its successful plan trips the stale failure-required test precondition.
-- [x] **CP4c-3 protected Part XII success-path observability — TB46-R1 runtime re-proof observed:** package111 ordinals 390/393/406/407 all PASS on `PlanFrontier`, execute the real census predicates, reject same-domain corruption and emit non-vacuous receipts. Independent TB46-R1-REV owns semantic closure/promotion.
-- [ ] **CP4c-3 ordinal367 independent oracle — TB46-R1 `FragmentCountRule`:** CB51's corrected terminal rule advances the oracle beyond TB45 `FragmentPartition`, but package111 still fails the later per-face equation `fragmentOrbits.size() == tracePieces + 1`. TB46-R1-REV must establish the missing failing face/count witness and adjudicate test vs product ownership before any correction.
+- [x] **CP4c-3 protected Part XII success-path observability — CLOSED / RUNTIME-PROVED:** package111 ordinals 390/393/406/407 all PASS on `PlanFrontier`, execute the real census predicates, reject same-domain corruption and emit non-vacuous receipts.
+- [ ] **CP4c-3 ordinal367 independent oracle — CB53:** TB46-R1 reaches `FragmentCountRule`. Review proves the two-sided `fragmentOrbits.size() == tracePieces + 1` test is stale under DEFN-R3.4 because distinct global owner count need not equal local fragment count. CB53 changes only the independent oracle's `!=` rejection to the authoritative over-count `>` rejection.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -132,4 +130,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**. **`M3-CP4c-3-TB45`/package110 is promoted semantic runtime authority** at **399/10**, accepted **365/365**; exact next is runtime-free **`M3-CP4c-3-CB51`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **111**. **`M3-CP4c-3-TB46-R1`/package111 is promoted semantic runtime authority** at **403/6**, accepted **365/365**; exact next is runtime-free **`M3-CP4c-3-CB53`**. PR #8 remains open, draft, and unmerged.

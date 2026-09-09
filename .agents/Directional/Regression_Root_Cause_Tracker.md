@@ -1,4 +1,29 @@
-## M3-CP4c3-TB46-R1-EXEC classification — **CURRENT RAW INTAKE / SEMANTIC RED / REVIEW REQUIRED / NON-STABLE EXEC**
+## M3-CP4c3-TB46-R1-REV — independent adjudication — **CURRENT REVIEW / TB46-R1 PROMOTED / CB53 FROZEN**
+
+- **Promoted authority:** TB46-R1/package111/selector409, run/job `34382143529 / 102569425154`, **403 PASS / 6 RED /
+  0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,398]`. Result/log artifacts
+  `10116449887 / 10116450375` are hash-verified; 409/409 fresh processes executed, zero timeout/mismatch, immutable
+  postflight matches, and all build/repair/mutation/benchmark flags are false.
+- **`M3-CP4c3-TB46-R1-EXEC-CAND-01` — CLOSED / TEST-AUTHORITY STALE TWO-SIDED CARDINALITY / DEFN-R3.4 VIOLATION /
+  INCORRECT EXPECTATION / NON-STABLE / CB53.** `independent_fragment_partition()` stores distinct global face-walk
+  owner IDs but rejects unless that set cardinality equals local `tracePieces + 1`. DEFN-R3.4 already measured the
+  non-injective local-fragment -> global-owner case and froze the one-sided `owners <= tracePieces + 1` rule;
+  DEFN-R4.1 confirms `(face, orbit)` is ownership, not fragment identity. Product code already rejects only the
+  over-count. The missing current face/count pair cannot change this generalized adjudication.
+- **Protected Part XII recovery — CLOSED / RUNTIME-PROVED SUCCESS-PATH OBSERVABILITY / NON-STABLE.** 390/393/406/407
+  all PASS through `PlanFrontier`, execute the real census predicate, reject the same-domain corrupted copy and emit
+  non-vacuous receipts. This completes runtime proof for the TB45 observability transition and closes
+  `M3-CP4c3-TB45-EXEC-CAND-02`.
+- **Carried REDs:** 368/369/370/374/398 retain their prior separate owners; no merge or repricing.
+- **Accounting:** ordinal367 recurs on the already-disproved local-count/global-owner injectivity assumption above
+  the accepted boundary: **+0 stable events / +0 recurrences**. Totals remain **47 events / 14 categories /
+  33 recurrences**, debt **5**, packages **111**, ownership **300/0/0**.
+- **Exact successor:** `M3-CP4c-3-CB53`, runtime-free Code + Build under
+  `Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`.
+
+---
+
+## M3-CP4c3-TB46-R1-EXEC classification — **HISTORICAL RAW INTAKE / PROMOTED BY TB46-R1-REV / NON-STABLE EXEC**
 
 - **Execution authority:** immutable package111 source `4f0663ef3468996abce6f59109f1c67f5be5f604`, artifact
   `10112532452`, selector409, run/job `34382143529 / 102569425154`, result/log artifacts
@@ -68,7 +93,7 @@
 
 ---
 
-## M3-CP4c3-TB45-REV — independent adjudication — **CURRENT REVIEW / TB45 PROMOTED / CB51 FROZEN**
+## M3-CP4c3-TB45-REV — independent adjudication — **HISTORICAL REVIEW / SUPERSEDED BY TB46-R1-REV**
 
 - **Promoted authority:** TB45/package110/selector409, run/job `34357709483 / 102486495110`, **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts `10106632656 / 10106633518` are hash-verified; immutable pre/post censuses match; zero timeouts and selection mismatches; build/repair/mutation flags are false.
 - **`M3-CP4c3-TB45-EXEC-CAND-01` — CLOSED / TEST-AUTHORITY ORACLE DRIFT / INCORRECT EXPECTATION / NON-STABLE / CB51.** CB50's old `FragmentCornerSourceCornerMismatch` is gone and ordinal366 PASSes. Ordinal367 reaches `independent_fragment_partition`, whose independent face-walk owners are correct but whose terminal rule still drops every final no-barrier segment. Part VIII/CB49 require retaining a terminal segment when its independently derived forward/reverse orbits differ. CB51 changes only the independent test oracle to use its own orbit equality as the separation discriminator.

@@ -116,64 +116,77 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB46-R1-REV` — EXACT NEXT / REVIEW + PLAN / evidence-only first
+## Mandatory next turn — `M3-CP4c-3-CB53` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
 
-`M3-CP4c-3-TB46-R1` is **COMPLETE / ARTIFACT-ONLY RUNTIME / MECHANICALLY VALID / SEMANTIC RED**.
+`M3-CP4c-3-TB46-R1-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**.
 
 ### Current authorities
 
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - PR #8 remains open, draft, and unmerged.
-- **Promoted semantic runtime authority remains TB45/package110/selector409 pending review:** **399 PASS / 10 RED /
-  0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`.
-- **Raw TB46-R1 execution evidence:** package111/selector409, run/job `34382143529 / 102569425154`,
-  **403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,398]`.
-- TB46-R1 result artifact `10116449887` SHA-256
+- **Promoted semantic runtime authority:** TB46-R1/package111/selector409, **403 PASS / 6 RED / 0 SKIP**, accepted
+  **365/365**, RED `[367,368,369,370,374,398]`.
+- Runtime run/job `34382143529 / 102569425154`; result artifact `10116449887` SHA-256
   `9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842`; log artifact `10116450375` SHA-256
   `321da1297d65de858fa6191dc01e581e58587217c6f3b9aa515fc6bfe33a65ef`.
-- Immutable package111 remains artifact `10112532452`, semantic source
-  `4f0663ef3468996abce6f59109f1c67f5be5f604`, provider/download SHA-256
-  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`.
+- Immutable package111 artifact `10112532452`, semantic source `4f0663ef3468996abce6f59109f1c67f5be5f604`,
+  provider/download SHA-256 `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`.
 - Selector409 remains 409 rows at SHA-256
   `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
 - Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, ownership
   **300 established / 0 unavailable / 0 conflicting**, accepted package count **111**.
 
-### TB46-R1 evidence that the review must adjudicate
+### Review decisions that CB53 must preserve
 
-1. **Ordinal367:** RED at `partition.has_value()==false / FragmentCountRule`, failure-detail SHA-256
-   `73e3b627e6704240bc85ef3ca8c4d61f29c2ae53f8545e0c4b83ad983e2354a8`. Frozen source assigns
-   `FragmentCountRule` only when a source face violates
-   `fragmentOrbits[face].size() == tracePieces[face] + 1` after the corrected terminal-separation branch. Runtime
-   evidence does not name the failing face/count pair; do not guess ownership.
-2. **390/393/406/407:** all PASS and each exact `m3Cp4c3R8Receipt` records `branch=UncutCensus`,
-   `censusPredicateExecuted=yes`, `sameDomainCorruptionRejected=yes`,
-   `terminalSubjectRelation=NotApplicable`, `terminalSubjectBranch=PlanFrontier`,
-   `planFrontierEvidenceBranchExecuted=yes`; supporting producer rows are non-empty.
-3. **Carried REDs:** 368 remains prescribed-sphere `RotationSystemInconsistent / TraceEventPositionInvalid`,
-   trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains
-   typed code 4 vs expected 6 plus missing source-face locus; 374 remains `atlasBuild=false`; 398 remains
-   prescribed-sphere `NotProductionReady/CellularityNotEstablished`.
-4. **Controls:** 311/312/314/315/356/357/404/408/409 PASS; ordinal385 publishes ownership 300/0/0.
-5. **Mechanics:** all 409 identities executed once in fresh processes, no selection mismatch/timeout, package/source/
-   execution-view censuses equal, and all build/repair/mutation/benchmark flags false.
+1. **Ordinal367 is test-authority, not product ownership.** The independent helper stores distinct global
+   face-walk owners but requires equality with the local-fragment count. DEFN-R3.4 already disproves the injectivity
+   premise and authorizes only the over-count rejection `distinctOwners > tracePieces + 1`. The retained runtime
+   face/count pair is unnecessary to decide that generalized rule.
+2. **390/393/406/407 are CLOSED / RUNTIME-PROVED SUCCESS-PATH OBSERVABILITY / NON-STABLE.** All PASS through
+   `PlanFrontier`, execute the real Part XII predicates and reject same-domain corruptions.
+3. **368/369/370/374/398 remain carried REDs** under their prior separate owners.
+4. TB46-R1/package111 is promoted; TB45/package110 is historical runtime evidence.
+5. Stable accounting is unchanged; ordinal367 is a recurrence of the already-disproved local-count/global-owner
+   injectivity assumption.
 
 ### Exact work
 
-Perform independent **`M3-CP4c-3-TB46-R1-REV`** under the standing REVIEW + PLAN rules:
+Perform **`M3-CP4c-3-CB53`** under
+`Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`.
 
-- consume `Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md`, the TB46-R1 result/log evidence, current tracker,
-  frozen definitions, lessons and current-forward record;
-- adjudicate the ordinal367 `FragmentCountRule` failure from evidence before prescribing a correction;
-- decide semantic closure of the 390/393/406/407 success-path recovery;
-- keep 368/369/370/374/398 separate unless evidence independently proves a shared owner;
-- decide TB46-R1 promotion and stable accounting;
-- perform mandatory REVIEW-turn document consolidation and update `ORIENTATION.md`;
-- freeze exactly one successor plan if a CB is required.
+- Edit only `tests/FieldAlignedCurveNetworkTests.cpp` semantic test authority.
+- In `independent_fragment_partition()`, change the final `FragmentCountRule` rejection from
+  `fragmentOrbits[face].size() != tracePieces[face] + 1U` to `> tracePieces[face] + 1U`.
+- Preserve independent orbit derivation, CB51 terminal separation and all other independent bookkeeping.
+- Do not change product source, fixtures, selector409, carried RED expectations or frozen definitions.
+- Perform static checks, then compile/package through the durable GMP/GMPXX workflow with **no Directional runtime**.
+- Package count advances only on an accepted immutable package; if compile/package fails, remain in CB53.
 
-**Do not compile, execute new runtime, retry TB46-R1, or mutate product/test/fixture/selector semantics before review
-adjudication.**
+### Context Load Plan for `M3-CP4c-3-CB53`
 
+```yaml
+load_next:
+  - turn-based-coding-agent/references/turns/CB.md
+conditional_modules:
+  - trigger: unit-test source is changed by the frozen plan
+    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
+  - trigger: GitHub connector/Actions is used for patch application or compile
+    path: turn-based-coding-agent/modules/github-connector/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md
+  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - tests/FieldAlignedCurveNetworkTests.cpp
+templates_when_producing:
+  - turn-based-coding-agent/templates/CODE_BUILD_REPORT.md
+  - turn-based-coding-agent/templates/TEST_PLAN.md
+do_not_preload:
+  - superseded per-turn reports/plans
+  - unrelated product source
+  - research/provenance/examples
+```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

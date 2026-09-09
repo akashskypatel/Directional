@@ -1,5 +1,24 @@
 ## 2026-09-09 — `M3-CP4c-3-TB46-R1`: package111 mechanically valid at 403 PASS / 6 RED; review required
 
+## 2026-09-09 — `M3-CP4c-3-TB46-R1-REV`: package111 promoted; ordinal367 stale cardinality oracle root-caused; CB53 frozen
+
+Independent review promotes TB46-R1/package111/selector409 as current semantic runtime authority at **403 PASS /
+6 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,398]`, run/job
+`34382143529 / 102569425154`. Protected 390/393/406/407 are runtime-proved PASS through successful-plan
+`PlanFrontier`, including real Part XII predicates and same-domain corruption negatives.
+
+Ordinal367 is adjudicated **TEST-AUTHORITY / STALE TWO-SIDED CARDINALITY / DEFN-R3.4 VIOLATION / NON-STABLE**.
+The independent helper correctly derives global face-walk owners but equates their set cardinality with the local
+fragment count. DEFN-R3.4 already disproved the required injectivity and froze only the over-count prohibition;
+DEFN-R4.1 likewise makes `(face, orbit)` ownership rather than fragment identity. The raw report's missing current
+face/count pair is therefore not required to select the generalized correction.
+
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, ownership **300/0/0**,
+packages **111**. Mandatory REVIEW consolidation folds **8 live superseded documents / 1,040 lines** and
+retrospectively indexes two already-retired plans (157 + 67 lines) without changing folded-count totals. Exact next
+is runtime-free **`M3-CP4c-3-CB53`**, changing only the independent oracle's final `!=` count rejection to normative
+`>` before compile/package with mandatory GMP/GMPXX.
+
 TB46-R1 executes immutable package111/selector409 in run/job `34382143529 / 102569425154`. All 409 identities run
 exactly once in fresh processes. Result artifact `10116449887` has SHA-256
 `9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842`; log artifact `10116450375` has SHA-256
