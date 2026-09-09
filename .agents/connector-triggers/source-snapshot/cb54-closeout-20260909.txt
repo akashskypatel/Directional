@@ -1,5 +1,0 @@
-purpose=M3-CP4c-3-CB54 closeout documentation snapshot
-semantic_source_sha=6dae3f6959551f6dcdd81f153aedb5f38411a96b
-compile_run_id=34404928469
-package_artifact_id=10125000895
-retry=0

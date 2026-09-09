@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-CB54-CLOSEOUT
-purpose=apply verified documentation closeout patch from Google Drive
-base_sha=5f302fc242086fa0d3613f16de030b06b3303d69
-retry=0
