@@ -116,64 +116,64 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB52` — EXACT NEXT / Code + Build / orchestration correction
+## Mandatory next turn — `M3-CP4c-3-TB46-R1` — EXACT NEXT / Test + Benchmark / artifact-only
 
-`M3-CP4c-3-TB46-EXEC` is **COMPLETE / ORCHESTRATION FAILURE / PRE-RUNTIME / NO SEMANTIC LEDGER**.
+`M3-CP4c-3-CB52` is **COMPLETE / CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE**. No Directional runtime executed.
 
 ### Current authorities
 
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - PR #8 remains open, draft, and unmerged.
-- Semantic runtime authority remains **TB45/package110/selector409**:
-  **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED
-  `[367,368,369,370,374,390,393,398,406,407]`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt **5**;
-  ownership **300 established / 0 unavailable / 0 conflicting**.
-- Immutable build/package authority remains CB51 package111:
-  artifact `10112532452`, semantic source `4f0663ef3468996abce6f59109f1c67f5be5f604`, provider/download SHA-256
-  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`, selector409 SHA-256
+- Semantic runtime authority remains **TB45/package110/selector409**: **399 PASS / 10 RED / 0 SKIP**, accepted
+  **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt **5**; ownership
+  **300 established / 0 unavailable / 0 conflicting**.
+- Immutable build/package authority remains CB51 package111: artifact `10112532452`, semantic source
+  `4f0663ef3468996abce6f59109f1c67f5be5f604`, provider/download SHA-256
+  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`; selector409 is 409 rows at SHA-256
   `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
 
-### TB46 invalid-attempt evidence
+### CB52 correction evidence
 
-- run/job: `34374946991 / 102545334482`;
-- event SHA: `b44c936e799f08cc72fe1c36a52f4eef45a880ce`;
-- workflow schema validation: success;
-- frozen generic harness hash verification: success at
-  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`;
-- nested harness exit: `1` before its first harness-owned environment record/result directory;
-- retained log artifact: `10113449239`, SHA-256
-  `7910fbe8fa6c0c397dfcef37aeaac0abd398d2a41dc527a9e3c2afe231bc6b42`;
-- result artifact: absent;
-- selector execution: **0/409**;
-- Directional runtime: **not started**.
+- `M3-CP4c3-TB46-ORCH-01` is CLOSED / control-plane failure-containment / non-stable. The invalid TB46 attempt remains
+  0/409 and contributes no semantic ledger.
+- CB52 found no reproducible defect in the byte-identical generic harness. Required variables/paths and `bash -n`
+  pass; instrumented and safe line-traced runs complete immutable preflight.
+- Final clean original-harness preflight run/job: `34378914278 / 102558671063`.
+- Result artifact `10115026374` SHA-256
+  `bf39ea4737e5597c95d72b783738a193de6f20bac4d90a7b79d13a57fe4af9e6`; log artifact `10115027211` SHA-256
+  `5c10c81effb698054a203079fab811c2c5be69b9634c961e10ba3decb74af25b`.
+- Generic harness remains byte-identical at SHA-256
+  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
+- Final preflight verifies package111 digest, 28/28 root manifest, source SHA, GMP/GMPXX, all six executables,
+  selector409, 409-entry identity map and equal package/source/execution-view pre/post censuses.
+- Boundary records `runtime_started=false`, `runtime_completed=false`, `preflight_completed=true`,
+  `orchestration_failure=false`, and all benchmark/build/repair/mutation flags false.
 
-The exact failing pre-trap bootstrap command is not localized by the retained evidence. Do not guess it.
+The exact earlier bootstrap command that returned `1` was not reproduced; do not invent a narrower root cause. The
+proven correction is caller-side failure containment: explicit child exit capture, independent boundary validation,
+and always-uploaded child result/log evidence.
 
-### CB52 boundary
+### TB46-R1 boundary
 
-Consume `.agents/Directional/Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`.
+Consume `.agents/Directional/Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB52 must:
+TB46-R1 must execute all 409 selector identities exactly once from ordinal 1 in fresh processes against immutable
+package111, with selector409 as the exact list. Preserve the corrected caller failure-containment path, per-identity
+`timeout -k 5s 180s`, immutable pre/post censuses, accepted-prefix measurement, ordinal367 corrected oracle,
+protected 390/393/406/407 `PlanFrontier` receipts, carried owners and controls. Freeze no expected aggregate.
 
-1. use control-plane-only diagnostics to localize the first failing harness bootstrap command without printing
-   `GH_TOKEN` or another secret;
-2. correct only the proven bootstrap/caller defect;
-3. preserve package111, semantic product/test/fixture bytes and selector409 exactly;
-4. run only the corrected generic harness `--preflight-only` proof against package111;
-5. retain `runtime_started=false`, no benchmark execution, and every build/repair/mutation flag false;
-6. upload result/log evidence and freeze exact successor `M3-CP4c-3-TB46-R1` only on green preflight.
-
-Do **not** execute selector409 or any generated Directional binary in CB52.
+A semantic RED routes to REVIEW + PLAN. An orchestration failure creates no semantic ledger and routes to the bounded
+CB orchestration-correction edge. Do not rebuild, repair, mutate or substitute package/source/test/fixture/selector
+bytes in TB46-R1.
 
 ### Context Load Plan
 
 After the mandatory start-of-turn policy read, use snapshot mode. Read this handoff, `TODO.md`,
-`Architecture_M3_CP4c3_TB46_EXEC_Report.md`,
-`Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`, the live TB46 artifact-only plan,
+`Architecture_M3_CP4c3_CB52_Orchestration_Correction_Report.md`,
+`Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`, the historical TB46 EXEC report,
 `Architecture_M3_CP4c3_CB51_Code_Build_Report.md`, `Regression_Root_Cause_Tracker.md`, and the generic
-`tools/m3_cp4c3_artifact_only_harness.sh`. Do not re-open semantic product history unless localization demonstrates
-a semantic dependency, which CB52 itself does not authorize changing.
+`tools/m3_cp4c3_artifact_only_harness.sh`. Do not rebuild package111.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

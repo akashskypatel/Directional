@@ -1,23 +1,28 @@
-## M3-CP4c3-TB46-ORCH-01 — pre-trap generic-harness bootstrap exits before result publication — **ACTIVE / PRE-RUNTIME / ORCHESTRATION / NON-STABLE / CB52**
+## M3-CP4c3-TB46-ORCH-01 — pre-runtime generic-harness attempt lost nested evidence — **CLOSED / CONTROL-PLANE FAILURE-CONTAINMENT / NON-STABLE / CB52**
 
 - **Invalid attempt:** `M3-CP4c-3-TB46-EXEC` run/job `34374946991 / 102545334482`, event
-  `b44c936e799f08cc72fe1c36a52f4eef45a880ce`. Workflow schema validation passes and the caller verifies exact
-  generic-harness SHA-256 `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
-- **Observed orchestration surface:** immediately after that hash receipt, nested harness invocation returns `1`
-  before its own first environment record, `finish`/`execution-boundary` publication, result directory, artifact
-  download/preflight, identity map, or selector ledger. Result upload therefore finds no
-  `M3-CP4c-3-TB46-result`; retained log artifact `10113449239` has provider SHA-256
+  `b44c936e799f08cc72fe1c36a52f4eef45a880ce`; 0/409 identities and no Directional runtime. The caller verified
+  exact generic-harness SHA-256 `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`, then
+  lost nested result publication after exit `1`. Retained log artifact `10113449239` is
   `7910fbe8fa6c0c397dfcef37aeaac0abd398d2a41dc527a9e3c2afe231bc6b42`.
-- **Classification:** orchestration/control-plane only and **not root-caused more narrowly by this TB**. The retained
-  evidence bounds the defect to the pre-trap bootstrap but does not identify which bootstrap command returns `1`.
-  `0/409` Directional identities executed and no semantic ledger exists.
+- **CB52 localization:** required variables, `RUNNER_TEMP`, safe-turn path creation and `bash -n` are all good.
+  Instrumented temporary copies complete the full immutable preflight. Safe line-number tracing then executes the
+  byte-identical original harness successfully in `34378770299 / 102558194990`. The final uninstrumented original
+  harness proof `34378914278 / 102558671063` also exits `0`, verifies package111/selector409/identity mapping and
+  immutable postflight, and records every runtime/build/repair/mutation flag false.
+- **Adjudication:** no durable generic-harness, package, selector or semantic-source defect is reproduced. The exact
+  earlier command that returned `1` remains unsupported and must not be guessed. The proved correction is
+  caller/control-plane failure containment: explicit child-status capture plus independent boundary verification and
+  always-uploaded result/log evidence. The generic harness bytes remain unchanged.
+- **CB52 proof artifacts:** result `10115026374` SHA-256
+  `bf39ea4737e5597c95d72b783738a193de6f20bac4d90a7b79d13a57fe4af9e6`; log `10115027211` SHA-256
+  `5c10c81effb698054a203079fab811c2c5be69b9634c961e10ba3decb74af25b`.
 - **Authority/accounting:** TB45/package110 remains semantic runtime authority at **399 PASS / 10 RED**, accepted
-  **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Stable totals remain
-  **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, ownership **300/0/0**, accepted
-  package count **111**. Package111 and selector409 remain byte-frozen.
-- **Exact successor:** `M3-CP4c-3-CB52`, control-plane-only orchestration correction under
-  `Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`, followed only after green runtime-free preflight by
-  `M3-CP4c-3-TB46-R1`.
+  **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Stable totals remain **47 events / 14 categories /
+  33 recurrences**, produced-witness debt **5**, ownership **300/0/0**, accepted package count **111**. Package111
+  and selector409 remain byte-frozen.
+- **Exact successor:** `M3-CP4c-3-TB46-R1`, artifact-only Test + Benchmark under
+  `Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ---
 

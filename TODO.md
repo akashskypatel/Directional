@@ -26,29 +26,33 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB52` — CODE + BUILD / ORCHESTRATION CORRECTION
+## Current focus — `M3-CP4c-3-TB46-R1` — TEST + BENCHMARK / ARTIFACT-ONLY
 
-`M3-CP4c-3-TB46-EXEC` is **COMPLETE / ORCHESTRATION-INVALID / PRE-RUNTIME / NO SEMANTIC LEDGER**. Run/job
-`34374946991 / 102545334482` schema-validated and verified the frozen generic harness SHA-256
-`aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`, then the nested harness returned `1`
-before its own environment/result/finalization publication. Result upload had no result directory; retained log
-artifact `10113449239` has SHA-256 `7910fbe8fa6c0c397dfcef37aeaac0abd398d2a41dc527a9e3c2afe231bc6b42`.
-No package preflight or Directional runtime started; selector execution is **0/409**.
+`M3-CP4c-3-CB52` is **COMPLETE / CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE**. CB52 proved the exact frozen
+generic harness is healthy and completed its `--preflight-only` path on unchanged package111 + selector409. Final
+run/job `34378914278 / 102558671063`; result/log artifacts `10115026374 / 10115027211` have SHA-256
+`bf39ea4737e5597c95d72b783738a193de6f20bac4d90a7b79d13a57fe4af9e6` /
+`5c10c81effb698054a203079fab811c2c5be69b9634c961e10ba3decb74af25b`. No Directional runtime, configure,
+compile, relink, package repair or semantic mutation occurred.
 
-TB45/package110/selector409 therefore remains semantic runtime authority: **399 PASS / 10 RED / 0 SKIP**,
-accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Stable accounting remains
-**47 events / 14 categories / 33 recurrences**, debt **5**, ownership **300/0/0**. Immutable CB51 package111
-artifact `10112532452` remains build/package authority and accepted package count remains **111**.
+`M3-CP4c3-TB46-ORCH-01` is CLOSED as control-plane failure-containment/non-stable. The earlier TB46 attempt remains
+0/409 and contributes no semantic result. Its exact `exit 1` command was not reproducible; no durable harness defect
+is asserted.
+
+TB45/package110/selector409 remains semantic runtime authority at **399 PASS / 10 RED / 0 SKIP**, accepted
+**365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Stable accounting remains **47 events / 14
+categories / 33 recurrences**, debt **5**, ownership **300/0/0**. Package111 artifact `10112532452`, exact source
+`4f0663ef3468996abce6f59109f1c67f5be5f604`, and selector409 remain immutable; package count remains **111**.
 
 ### Exact next turn
 
-Execute **`M3-CP4c-3-CB52`** under
-`.agents/Directional/Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`.
+Execute **`M3-CP4c-3-TB46-R1`** under
+`.agents/Directional/Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB52 is control-plane-only where possible: localize the pre-trap harness bootstrap failure without exposing
-credentials, correct only the proven orchestration cause, and prove the generic harness `--preflight-only` path
-against unchanged package111 + selector409. No Directional runtime, semantic source/test/fixture/selector mutation,
-rebuild, or repackage is authorized. Green CB52 routes to artifact-only `M3-CP4c-3-TB46-R1`.
+Run all 409 selector identities exactly once in fresh processes from immutable package111. Preserve the CB52 caller
+failure-containment correction, immutable pre/post controls, the accepted-prefix and focused ordinal measurements,
+and do not pre-freeze the aggregate PASS/RED count. A semantic RED routes to REVIEW + PLAN; an orchestration failure
+routes to bounded CB correction.
 
 ## Carried forward from M1
 
@@ -86,7 +90,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB45/package110 remains semantic runtime authority** at **399 PASS / 10 RED**, accepted 365/365. TB46-EXEC was pre-runtime orchestration-invalid; package111 remains immutable build authority and exact next is control-plane-only `M3-CP4c-3-CB52`.
+  CP4c-3 remains open. **TB45/package110 remains semantic runtime authority** at **399 PASS / 10 RED**, accepted 365/365. CB52 closed the pre-runtime TB46 orchestration candidate without runtime; package111 remains immutable build authority and exact next is artifact-only `M3-CP4c-3-TB46-R1`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.

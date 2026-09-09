@@ -1,3 +1,28 @@
+## 2026-09-09 — `M3-CP4c-3-CB52`: generic-harness preflight proved green; TB46 orchestration candidate closed
+
+CB52 completed the bounded runtime-free orchestration correction without changing the generic harness, product,
+tests, fixtures, selector409 or package111. Presence/writability and safe line-localization runs proved the pre-trap
+bootstrap, while full instrumented and safe line-traced runs proved the complete immutable `--preflight-only` path.
+The byte-identical original harness then passed a final clean proof in run/job `34378914278 / 102558671063`.
+
+Final result artifact `10115026374` is SHA-256
+`bf39ea4737e5597c95d72b783738a193de6f20bac4d90a7b79d13a57fe4af9e6`; log artifact `10115027211` is
+`5c10c81effb698054a203079fab811c2c5be69b9634c961e10ba3decb74af25b`. Package111 provider/download digest,
+28/28 root manifest, semantic source, GMP/GMPXX evidence, six executables, selector409 409-row hash, 409-entry
+identity map and immutable package/source/execution-view postflight all verify. The boundary is
+`runtime_started=false`, `runtime_completed=false`, with all benchmark/configure/compile/relink/discovery/repair/
+mutation flags false.
+
+The specific earlier `exit 1` bootstrap command is not reproducible and is not guessed. The proved correction is
+caller failure containment/observability: explicit nested status capture, independent boundary verification and
+always-uploaded result/log evidence. `M3-CP4c3-TB46-ORCH-01` is CLOSED / control-plane / non-stable. TB45/package110
+remains semantic runtime authority at 399 PASS / 10 RED, accepted 365/365; stable accounting stays 47 / 14 / 33,
+debt 5, ownership 300/0/0, packages 111.
+
+**Exact next:** artifact-only `M3-CP4c-3-TB46-R1` under
+`Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`, reusing immutable package111 and selector409
+from ordinal 1. CB52 executed no Directional runtime.
+
 ## 2026-09-09 — `M3-CP4c-3-TB46-EXEC`: orchestration-invalid before package preflight; semantic authority remains TB45
 
 TB46's temporary caller schema-validated and triggered exactly one attempt, run/job
