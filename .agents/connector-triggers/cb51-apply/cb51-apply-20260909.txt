@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-CB51
-purpose=apply verified Drive-staged CB51 patch
-retry=0

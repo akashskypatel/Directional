@@ -1,3 +1,0 @@
-purpose=Acquire ChatGPT Web source snapshot for M3-CP4c-3-CB51
-semantic_source_sha=5ba7145638178b10ef48b81a54de34675ab2f808
-retry=0
