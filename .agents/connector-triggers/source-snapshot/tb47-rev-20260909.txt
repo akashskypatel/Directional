@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB47-REV
+purpose=obtain exact current source snapshot for independent review
+source_head=df27add7f90ecdc694c01e8a26d7d09e09d1e2bc
+retry=0
