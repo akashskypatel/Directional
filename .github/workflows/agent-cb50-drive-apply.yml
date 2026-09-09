@@ -1,0 +1,48 @@
+name: M3 CP4c3 CB50 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-apply/cb50.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb50-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb50-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb50-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1tHEu97fYNaFFNEjuFRQSZKZ0PkaCg7ME
+      patch_sha256: 70b9dc51638b75a7c2af6e9a785cf814aa111e0a2c227e962ddce0da2d01460e
+      base_sha: a17f6ce14635dcdbbb81a80ac215a4cbd60d3ffb
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M3-CP4c-3-CB50: partition fragment-corner fans and type terminal evidence'
+      retention_days: 14
+    secrets: inherit
