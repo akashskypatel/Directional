@@ -1,0 +1,4 @@
+# M3-CP4c-3-TB46-R1 final temporary-state cleanup
+.agents/connector-triggers/source-snapshot
+.agents/connector-triggers/tb46-r1-exec
+.agents/connector-triggers/tb46-r1-closeout-apply
