@@ -26,33 +26,34 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB46-R1` — TEST + BENCHMARK / ARTIFACT-ONLY
+## Current focus — `M3-CP4c-3-TB46-R1-REV` — REVIEW + PLAN / EVIDENCE-ONLY FIRST
 
-`M3-CP4c-3-CB52` is **COMPLETE / CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE**. CB52 proved the exact frozen
-generic harness is healthy and completed its `--preflight-only` path on unchanged package111 + selector409. Final
-run/job `34378914278 / 102558671063`; result/log artifacts `10115026374 / 10115027211` have SHA-256
-`bf39ea4737e5597c95d72b783738a193de6f20bac4d90a7b79d13a57fe4af9e6` /
-`5c10c81effb698054a203079fab811c2c5be69b9634c961e10ba3decb74af25b`. No Directional runtime, configure,
-compile, relink, package repair or semantic mutation occurred.
+`M3-CP4c-3-TB46-R1` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED** on immutable package111 + selector409.
+Run/job `34382143529 / 102569425154`; result/log artifacts `10116449887 / 10116450375` have SHA-256
+`9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842` /
+`321da1297d65de858fa6191dc01e581e58587217c6f3b9aa515fc6bfe33a65ef`.
 
-`M3-CP4c3-TB46-ORCH-01` is CLOSED as control-plane failure-containment/non-stable. The earlier TB46 attempt remains
-0/409 and contributes no semantic result. Its exact `exit 1` command was not reproducible; no durable harness defect
-is asserted.
+Observed result is **403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, RED
+`[367,368,369,370,374,398]`. All 409 selector identities executed exactly once in fresh processes, with zero
+selection mismatches/timeouts and equal package/source/execution-view pre/post censuses. No build, repair,
+mutation, discovery or benchmark path executed.
 
-TB45/package110/selector409 remains semantic runtime authority at **399 PASS / 10 RED / 0 SKIP**, accepted
-**365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Stable accounting remains **47 events / 14
-categories / 33 recurrences**, debt **5**, ownership **300/0/0**. Package111 artifact `10112532452`, exact source
-`4f0663ef3468996abce6f59109f1c67f5be5f604`, and selector409 remain immutable; package count remains **111**.
+Ordinal367 advances from TB45's `FragmentPartition` surface to **`FragmentCountRule`**. The immediate independent
+oracle failure is the per-face equation `fragmentOrbits[face].size() == tracePieces[face] + 1`; retained runtime
+evidence does not expose the failing face/count pair, so semantic ownership is review-pending. Protected
+390/393/406/407 all PASS and each emits the successful-plan `PlanFrontier` Part XII receipt with the real census
+predicate and corrupted same-domain negative executed. Carried 368/369/370/374/398 reproduce their prior separate
+owners.
+
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, ownership **300/0/0**,
+packages **111**. TB45/package110 remains promoted semantic runtime authority until review adjudicates TB46-R1.
 
 ### Exact next turn
 
-Execute **`M3-CP4c-3-TB46-R1`** under
-`.agents/Directional/Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`.
-
-Run all 409 selector identities exactly once in fresh processes from immutable package111. Preserve the CB52 caller
-failure-containment correction, immutable pre/post controls, the accepted-prefix and focused ordinal measurements,
-and do not pre-freeze the aggregate PASS/RED count. A semantic RED routes to REVIEW + PLAN; an orchestration failure
-routes to bounded CB correction.
+Perform **`M3-CP4c-3-TB46-R1-REV`** as the required independent REVIEW + PLAN turn. Adjudicate ordinal367's
+`FragmentCountRule` surface, protected-success recovery, the five carried RED owners, stable accounting and runtime
+promotion. Perform mandatory REVIEW-turn document consolidation and update `ORIENTATION.md`. Do **not** retry,
+patch, compile, or execute new runtime before the review.
 
 ## Carried forward from M1
 
@@ -90,7 +91,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB45/package110 remains semantic runtime authority** at **399 PASS / 10 RED**, accepted 365/365. CB52 closed the pre-runtime TB46 orchestration candidate without runtime; package111 remains immutable build authority and exact next is artifact-only `M3-CP4c-3-TB46-R1`.
+  CP4c-3 remains open. **TB45/package110 remains promoted semantic runtime authority** pending review. TB46-R1/package111 is mechanically valid raw evidence at **403 PASS / 6 RED**, accepted 365/365; exact next is independent `M3-CP4c-3-TB46-R1-REV`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -102,8 +103,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 ## Active product blockers
 
 - [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43: 390/393/406/407 executed the producer-owned census predicates and rejected same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE. TB45 is current runtime authority overall, but does not re-prove these four receipts because its successful plan trips the stale failure-required test precondition.
-- [ ] **CP4c-3 protected Part XII success-path observability — TB46 runtime re-proof:** CB51 now exposes the already-computed producer frontier evidence on successful plans and 390/393/406/407 retain the real predicates + same-domain corruption negatives. Package111 compile/package is green; TB43 remains the most recent runtime proof until TB46 executes the new success path.
-- [ ] **CP4c-3 ordinal367 independent oracle — TB46 runtime re-proof:** CB51 corrected the stale terminal-slit oracle to use independently derived forward/reverse orbit equality without consuming product partition authority. Package111 compiles; TB46 must execute the corrected oracle and report the result.
+- [x] **CP4c-3 protected Part XII success-path observability — TB46-R1 runtime re-proof observed:** package111 ordinals 390/393/406/407 all PASS on `PlanFrontier`, execute the real census predicates, reject same-domain corruption and emit non-vacuous receipts. Independent TB46-R1-REV owns semantic closure/promotion.
+- [ ] **CP4c-3 ordinal367 independent oracle — TB46-R1 `FragmentCountRule`:** CB51's corrected terminal rule advances the oracle beyond TB45 `FragmentPartition`, but package111 still fails the later per-face equation `fragmentOrbits.size() == tracePieces + 1`. TB46-R1-REV must establish the missing failing face/count witness and adjudicate test vs product ownership before any correction.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 

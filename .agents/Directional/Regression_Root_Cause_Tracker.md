@@ -1,3 +1,45 @@
+## M3-CP4c3-TB46-R1-EXEC classification — **CURRENT RAW INTAKE / SEMANTIC RED / REVIEW REQUIRED / NON-STABLE EXEC**
+
+- **Execution authority:** immutable package111 source `4f0663ef3468996abce6f59109f1c67f5be5f604`, artifact
+  `10112532452`, selector409, run/job `34382143529 / 102569425154`, result/log artifacts
+  `10116449887 / 10116450375` with provider/download SHA-256
+  `9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842` /
+  `321da1297d65de858fa6191dc01e581e58587217c6f3b9aa515fc6bfe33a65ef`.
+- **Observed set:** **403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, RED
+  `[367,368,369,370,374,398]`; all 409 identities execute once in fresh processes; zero selection mismatch and
+  timeout; package/source/execution-view byte+mode censuses are equal pre/post; build/repair/mutation/benchmark
+  flags are false.
+- **`M3-CP4c3-TB46-R1-EXEC-CAND-01` — RAW ORACLE CARDINALITY SURFACE / REVIEW REQUIRED / NON-STABLE / UNPRICED.**
+  Ordinal367 advances from TB45's `FragmentPartition` clause to `FragmentCountRule`. Its failure detail is
+  `partition.has_value()==false / FragmentCountRule`. Frozen source assigns that clause only when a source face
+  violates `fragmentOrbits[face].size() == tracePieces[face] + 1` after the CB51 terminal rule has retained
+  distinct-orbit final no-barrier segments. This bounds the immediate root cause to the independent oracle's
+  per-face cardinality equation, but the retained runtime evidence does not name the face or both counts. Review
+  must obtain/derive that witness before deciding test-authority vs product ownership; EXEC does not guess.
+- **Protected Part XII recovery — RAW RUNTIME PROVED / REVIEW PENDING / NON-STABLE.** 390/393/406/407 all PASS.
+  Each exact `m3Cp4c3R8Receipt` records `branch=UncutCensus`, `censusPredicateExecuted=yes`,
+  `sameDomainCorruptionRejected=yes`, `terminalSubjectRelation=NotApplicable`,
+  `terminalSubjectBranch=PlanFrontier`, and `planFrontierEvidenceBranchExecuted=yes`. Non-empty BW3/owner-map/
+  partition-correspondence/interior-arc rows are retained. This supplies the CB51 success-path runtime measurement;
+  semantic closure/promotion belongs to review.
+- **Carried REDs — separate owners retained:** 368 remains prescribed-sphere
+  `CellularityNotEstablished/origin=RotationSystemInconsistent`, `TraceEventPositionInvalid`, trace 2/event 30,
+  `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains typed code 4
+  `CellularityNotEstablished` vs expected code 6 `EmptyNetworkOnClosedSurface` with no source-face locus; 374
+  remains `atlasBuild=false` on the pre-classified folded-cone witness; 398 remains prescribed-sphere
+  `NotProductionReady/CellularityNotEstablished`. No merge/repricing is justified in EXEC.
+- **Controls/ownership/retired silence:** 311/312/314/315/356/357/404/408/409 PASS; ordinal385 publishes
+  300 established / 0 unavailable / 0 conflicting; retired `TraceArcDoesNotSeparateItsSides`,
+  `UncutFaceComponentOrbitSeedNotUnique`, and `RegionEulerCharacteristicNotOne` occur zero times in all raw logs.
+- **Stable-count rationale:** accepted remains 365/365. The only new surface is ordinal367's later oracle-count
+  clause, while five REDs are carried and four protected identities recover. Independent review is required before
+  promotion or stable pricing. Totals remain **47 events / 14 categories / 33 recurrences**, produced-witness debt
+  **5**, packages **111**, ownership **300/0/0**. TB45/package110 remains promoted semantic runtime authority
+  pending review.
+- **Exact successor:** `M3-CP4c-3-TB46-R1-REV`, independent REVIEW + PLAN; no retry/CB/runtime first.
+
+---
+
 ## M3-CP4c3-TB46-ORCH-01 — pre-runtime generic-harness attempt lost nested evidence — **CLOSED / CONTROL-PLANE FAILURE-CONTAINMENT / NON-STABLE / CB52**
 
 - **Invalid attempt:** `M3-CP4c-3-TB46-EXEC` run/job `34374946991 / 102545334482`, event

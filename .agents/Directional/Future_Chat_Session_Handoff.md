@@ -116,64 +116,64 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB46-R1` — EXACT NEXT / Test + Benchmark / artifact-only
+## Mandatory next turn — `M3-CP4c-3-TB46-R1-REV` — EXACT NEXT / REVIEW + PLAN / evidence-only first
 
-`M3-CP4c-3-CB52` is **COMPLETE / CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE**. No Directional runtime executed.
+`M3-CP4c-3-TB46-R1` is **COMPLETE / ARTIFACT-ONLY RUNTIME / MECHANICALLY VALID / SEMANTIC RED**.
 
 ### Current authorities
 
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - PR #8 remains open, draft, and unmerged.
-- Semantic runtime authority remains **TB45/package110/selector409**: **399 PASS / 10 RED / 0 SKIP**, accepted
-  **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt **5**; ownership
-  **300 established / 0 unavailable / 0 conflicting**.
-- Immutable build/package authority remains CB51 package111: artifact `10112532452`, semantic source
+- **Promoted semantic runtime authority remains TB45/package110/selector409 pending review:** **399 PASS / 10 RED /
+  0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`.
+- **Raw TB46-R1 execution evidence:** package111/selector409, run/job `34382143529 / 102569425154`,
+  **403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,398]`.
+- TB46-R1 result artifact `10116449887` SHA-256
+  `9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842`; log artifact `10116450375` SHA-256
+  `321da1297d65de858fa6191dc01e581e58587217c6f3b9aa515fc6bfe33a65ef`.
+- Immutable package111 remains artifact `10112532452`, semantic source
   `4f0663ef3468996abce6f59109f1c67f5be5f604`, provider/download SHA-256
-  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`; selector409 is 409 rows at SHA-256
+  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`.
+- Selector409 remains 409 rows at SHA-256
   `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, ownership
+  **300 established / 0 unavailable / 0 conflicting**, accepted package count **111**.
 
-### CB52 correction evidence
+### TB46-R1 evidence that the review must adjudicate
 
-- `M3-CP4c3-TB46-ORCH-01` is CLOSED / control-plane failure-containment / non-stable. The invalid TB46 attempt remains
-  0/409 and contributes no semantic ledger.
-- CB52 found no reproducible defect in the byte-identical generic harness. Required variables/paths and `bash -n`
-  pass; instrumented and safe line-traced runs complete immutable preflight.
-- Final clean original-harness preflight run/job: `34378914278 / 102558671063`.
-- Result artifact `10115026374` SHA-256
-  `bf39ea4737e5597c95d72b783738a193de6f20bac4d90a7b79d13a57fe4af9e6`; log artifact `10115027211` SHA-256
-  `5c10c81effb698054a203079fab811c2c5be69b9634c961e10ba3decb74af25b`.
-- Generic harness remains byte-identical at SHA-256
-  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
-- Final preflight verifies package111 digest, 28/28 root manifest, source SHA, GMP/GMPXX, all six executables,
-  selector409, 409-entry identity map and equal package/source/execution-view pre/post censuses.
-- Boundary records `runtime_started=false`, `runtime_completed=false`, `preflight_completed=true`,
-  `orchestration_failure=false`, and all benchmark/build/repair/mutation flags false.
+1. **Ordinal367:** RED at `partition.has_value()==false / FragmentCountRule`, failure-detail SHA-256
+   `73e3b627e6704240bc85ef3ca8c4d61f29c2ae53f8545e0c4b83ad983e2354a8`. Frozen source assigns
+   `FragmentCountRule` only when a source face violates
+   `fragmentOrbits[face].size() == tracePieces[face] + 1` after the corrected terminal-separation branch. Runtime
+   evidence does not name the failing face/count pair; do not guess ownership.
+2. **390/393/406/407:** all PASS and each exact `m3Cp4c3R8Receipt` records `branch=UncutCensus`,
+   `censusPredicateExecuted=yes`, `sameDomainCorruptionRejected=yes`,
+   `terminalSubjectRelation=NotApplicable`, `terminalSubjectBranch=PlanFrontier`,
+   `planFrontierEvidenceBranchExecuted=yes`; supporting producer rows are non-empty.
+3. **Carried REDs:** 368 remains prescribed-sphere `RotationSystemInconsistent / TraceEventPositionInvalid`,
+   trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains
+   typed code 4 vs expected 6 plus missing source-face locus; 374 remains `atlasBuild=false`; 398 remains
+   prescribed-sphere `NotProductionReady/CellularityNotEstablished`.
+4. **Controls:** 311/312/314/315/356/357/404/408/409 PASS; ordinal385 publishes ownership 300/0/0.
+5. **Mechanics:** all 409 identities executed once in fresh processes, no selection mismatch/timeout, package/source/
+   execution-view censuses equal, and all build/repair/mutation/benchmark flags false.
 
-The exact earlier bootstrap command that returned `1` was not reproduced; do not invent a narrower root cause. The
-proven correction is caller-side failure containment: explicit child exit capture, independent boundary validation,
-and always-uploaded child result/log evidence.
+### Exact work
 
-### TB46-R1 boundary
+Perform independent **`M3-CP4c-3-TB46-R1-REV`** under the standing REVIEW + PLAN rules:
 
-Consume `.agents/Directional/Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`.
+- consume `Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md`, the TB46-R1 result/log evidence, current tracker,
+  frozen definitions, lessons and current-forward record;
+- adjudicate the ordinal367 `FragmentCountRule` failure from evidence before prescribing a correction;
+- decide semantic closure of the 390/393/406/407 success-path recovery;
+- keep 368/369/370/374/398 separate unless evidence independently proves a shared owner;
+- decide TB46-R1 promotion and stable accounting;
+- perform mandatory REVIEW-turn document consolidation and update `ORIENTATION.md`;
+- freeze exactly one successor plan if a CB is required.
 
-TB46-R1 must execute all 409 selector identities exactly once from ordinal 1 in fresh processes against immutable
-package111, with selector409 as the exact list. Preserve the corrected caller failure-containment path, per-identity
-`timeout -k 5s 180s`, immutable pre/post censuses, accepted-prefix measurement, ordinal367 corrected oracle,
-protected 390/393/406/407 `PlanFrontier` receipts, carried owners and controls. Freeze no expected aggregate.
+**Do not compile, execute new runtime, retry TB46-R1, or mutate product/test/fixture/selector semantics before review
+adjudication.**
 
-A semantic RED routes to REVIEW + PLAN. An orchestration failure creates no semantic ledger and routes to the bounded
-CB orchestration-correction edge. Do not rebuild, repair, mutate or substitute package/source/test/fixture/selector
-bytes in TB46-R1.
-
-### Context Load Plan
-
-After the mandatory start-of-turn policy read, use snapshot mode. Read this handoff, `TODO.md`,
-`Architecture_M3_CP4c3_CB52_Orchestration_Correction_Report.md`,
-`Architecture_M3_CP4c3_TB46_R1_Artifact_Only_Test_Benchmark_Plan.md`, the historical TB46 EXEC report,
-`Architecture_M3_CP4c3_CB51_Code_Build_Report.md`, `Regression_Root_Cause_Tracker.md`, and the generic
-`tools/m3_cp4c3_artifact_only_harness.sh`. Do not rebuild package111.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

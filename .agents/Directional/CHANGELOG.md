@@ -1,3 +1,30 @@
+## 2026-09-09 — `M3-CP4c-3-TB46-R1`: package111 mechanically valid at 403 PASS / 6 RED; review required
+
+TB46-R1 executes immutable package111/selector409 in run/job `34382143529 / 102569425154`. All 409 identities run
+exactly once in fresh processes. Result artifact `10116449887` has SHA-256
+`9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842`; log artifact `10116450375` has SHA-256
+`321da1297d65de858fa6191dc01e581e58587217c6f3b9aa515fc6bfe33a65ef`.
+
+Raw result is **403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,398]`. There are zero
+selection mismatches/timeouts; package/source/execution-view pre/post censuses are equal; all build/repair/mutation/
+benchmark flags are false. CB52's corrected caller boundary captures `harness_exit=0` and independently verifies the
+harness boundary.
+
+**Ordinal367 advances but remains RED.** CB51's independent terminal-orbit rule moves the oracle from TB45's
+`FragmentPartition` clause to later `FragmentCountRule`; frozen source assigns that clause only at
+`fragmentOrbits[face].size() == tracePieces[face] + 1`. The failing face/count pair is not published, so review must
+establish that witness before assigning test vs product ownership.
+
+**Protected recovery succeeds:** 390/393/406/407 all PASS through successful-plan `PlanFrontier`; every retained
+receipt records the real census predicate and same-domain corruption negative executed, with supporting non-empty
+producer evidence. Carried 368/369/370/374/398 reproduce their established separate surfaces. Controls
+311/312/314/315/356/357/404/408/409 PASS; ownership remains 300/0/0; retired failure tokens remain silent.
+
+Stable accounting is unchanged in EXEC at **47 / 14 / 33**, debt **5**, packages **111**. TB45/package110 remains
+promoted runtime authority pending independent adjudication.
+
+**Exact next:** `M3-CP4c-3-TB46-R1-REV`, REVIEW + PLAN. No retry, patch, compile, or new runtime first.
+
 ## 2026-09-09 — `M3-CP4c-3-CB52`: generic-harness preflight proved green; TB46 orchestration candidate closed
 
 CB52 completed the bounded runtime-free orchestration correction without changing the generic harness, product,
