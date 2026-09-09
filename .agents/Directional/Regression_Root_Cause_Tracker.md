@@ -6930,6 +6930,27 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**TB47-REV verification-pass addenda.** The adjudication stands. CB53's change is exactly DEFN-R3.4's one-sided form
+(`!=` -> `>` at `tests:2273`), so the oracle keeps teeth on the over-count direction; ordinal 307 was explicitly
+held out of scope twice; §4's non-vacuity is evidenced per identity. Three additions:
+
+- **§6 is stronger than stated: `EmptyNetworkOnClosedSurface` has ZERO producers.** Declared at
+  `SurfaceCutGraph.h:295` and named in `surface_cut_graph_error_code_name`, it is **returned nowhere**, so ordinal
+  370 asserts a code the product cannot emit. **CB54's acceptance criterion is zero producers -> exactly one, with
+  ordinal 370 reaching it.** Zero after CB54 is a failed turn; more than one is an unbounded change.
+  `source_boundary_loop_count()` already exists and is consumed at `SurfaceCutGraph.cpp:869`, so no new derivation
+  is needed.
+- **The exit condition has not been re-asked.** `ROADMAP.md:392` says *"CP4c-3 closes on the mechanical witness
+  under AU0-AU9, unchanged."* With 366 and 367 cleared and 390/393/406/407 green, **the mechanical-witness surface
+  is green**, and all five remaining REDs are the *inherited* sphere/quality/empty-network debt named separately in
+  CP4c-3's domain row - **370 included**. **No assertion of closure is made here**, but **CB54's closeout must
+  state, against AU0-AU9 by criterion, whether the exit condition is met**, and whether closure precedes or follows
+  the inherited-debt corrections. If AU0-AU9 cannot be located in the retained set, say so and restore it.
+  `LESSONS.md` 167.
+- **`ROADMAP.md` was two promotions stale and untouched by this turn** (status line and CP4c-3 row still named
+  TB45/package110 and "NEXT: CB52, then TB46-R1"). Corrected. **It has now lagged three times and is not in the
+  review consolidation's standing-doc set; add it.**
+
 **TB46-R1-REV verification-pass addenda.** The adjudication stands; §3's protected recovery is genuinely
 non-vacuous (receipts add `terminalSubjectBranch=PlanFrontier` and `planFrontierEvidenceBranchExecuted=yes` beside
 `censusPredicateExecuted=yes` / `sameDomainCorruptionRejected=yes`, with non-empty supporting rows), which properly

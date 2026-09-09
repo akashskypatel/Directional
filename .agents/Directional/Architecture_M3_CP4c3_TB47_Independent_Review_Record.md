@@ -180,3 +180,73 @@ The miss affected efficiency only; source/evidence authority and the review boun
 `Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`.
 
 No Directional runtime, compile, implementation mutation, or test mutation was executed in this review.
+
+---
+
+## 12. Verification-pass addenda (static, appended after adjudication)
+
+A verification pass re-derived §§1–11 from source. **The adjudication stands.**
+
+### 12.1 — confirmed
+
+- **The correction is exactly DEFN-R3.4's one-sided form.** CB53 changed `!=` to `>` at
+  `tests/FieldAlignedCurveNetworkTests.cpp:2273` with an accurate comment, and nothing else. `>` is a strict subset
+  of `!=`, so the failing set only shrinks and the oracle **retains teeth on the over-count direction** — it is not
+  vacated, only relieved of the disproved under-count assertion.
+- **Ordinal 307 was held out of scope explicitly**, twice, in the CB53 report — the obligation is discharged. That
+  report was then folded, but the TB46-R1-REV mirror into `Regression_Root_Cause_Tracker.md` kept the record in the
+  retained set. **The mechanism worked as designed.**
+- **§4's non-vacuity is properly evidenced per identity** — 390 non-empty `m3Cp4c3BW3` rows, 393 a non-empty owner
+  map, 406 non-empty partition correspondence, 407 `interiorArcs=2` — rather than a blanket claim.
+
+### 12.2 — §6's grounding is stronger than stated: the code has **zero** producers
+
+`EmptyNetworkOnClosedSurface` is declared at `include/directional/geometry/SurfaceCutGraph.h:295` and named in
+`surface_cut_graph_error_code_name`, and **it is returned nowhere in the tree**. Ordinal 370 therefore asserts a
+code the product **cannot currently emit** — which confirms §6's diagnosis in the strongest available form and
+makes the CB54 acceptance criterion crisper than the review states it:
+
+> **CB54 must take `EmptyNetworkOnClosedSurface` from zero producers to exactly one, and ordinal 370 must reach
+> it.** Zero producers after CB54 is a failed turn; more than one is an unbounded change.
+
+`source_boundary_loop_count()` exists (`EmbeddedGraphTopology.h:217`, defined `:1890`) and is already consumed at
+`SurfaceCutGraph.cpp:869`, so the closed-source predicate needs no new derivation — the same bounded-scope test that
+narrowed CB49.
+
+### 12.3 — the exit condition has not been re-asked, and it should be
+
+`ROADMAP.md:392` states: *"CP4c-3 closes on the mechanical witness under **AU0–AU9**, unchanged."*
+
+With ordinal 366 cleared at TB45, ordinal 367 cleared here, and 390/393/406/407 green on the successful-plan
+subject, **the mechanical-witness surface is green.** Every one of the five remaining REDs is the *inherited* debt
+named in CP4c-3's own domain row — *"plus inherited sphere/quality/empty-network debt"* — and **ordinal 370 is the
+empty-network member of exactly that list.**
+
+So CB54 clears inherited debt. **Whether it is a closure step is a different question, and no turn has asked it
+since the mechanical witness went green.**
+
+**This review does not assert that CP4c-3 closes** — AU0–AU9's ten criteria are not restated in the retained set and
+must be read, not assumed. What it requires is that the question be **answered rather than deferred**:
+
+> **Added to CB54's closeout (non-optional):** state, against AU0–AU9 by criterion, whether CP4c-3's exit condition
+> is now met; and if it is, whether closure precedes or follows the inherited sphere / quality / empty-network
+> corrections. If AU0–AU9 cannot be located in the retained set, say so and restore it — an exit condition that
+> cannot be read is not an exit condition.
+
+Picking the next RED is not the same as checking whether the gate is open. `LESSONS.md` 167.
+
+### 12.4 — `ROADMAP.md` is two promotions stale and was not updated by this turn
+
+The review's consolidation touched ORIENTATION, the tracker, Current-and-Forward, the handoff, TODO, CHANGELOG and
+the consolidated record — but **not `ROADMAP.md`**, whose status line and CP4c-3 row still name **TB45 / package110
+at 399 PASS / 10 RED** and *"NEXT: control-plane CB52, then TB46-R1."* That is two promotions behind. Corrected in
+this pass.
+
+**`ROADMAP.md` has now lagged three times** (also caught at TB40-REV, two cycles stale). It is not in the review
+consolidation's standing-doc set and should be added to it.
+
+### 12.5 — accounting and promotion confirmed
+
+Accepted held at **365/365** with **404 PASS / 5 RED**; ordinal 367's recovery is a test-authority correction of an
+already-disproved premise, so **+0 events / +0 recurrences** is correct. Totals remain **47 / 14 / 33**, debt **5**,
+packages **112**. Promotion of TB47 / package112 follows the operative rule.

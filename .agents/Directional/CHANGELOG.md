@@ -1,3 +1,38 @@
+## 2026-09-09 — `M3-CP4c-3-TB47-REV` verification pass: upheld; the exit condition needs re-asking
+
+Static verification of the delegated `M3-CP4c-3-TB47-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **TB47 / package112** (promoted);
+accounting unchanged at **47 / 14 / 33**.
+
+**Upheld — 404 PASS / 5 RED, accepted 365/365, ordinal 367 cleared.** CB53's change is exactly DEFN-R3.4's one-sided
+form (`!=` → `>` at `tests:2273`) with an accurate comment; `>` is a strict subset of `!=`, so the oracle **keeps
+teeth on the over-count direction** rather than being vacated. Ordinal 307 was held out of scope **explicitly,
+twice**, in the CB53 report — and although that report was folded, the TB46-R1-REV mirror into the tracker kept the
+record in the retained set. **The mechanism worked.** §4's non-vacuity is evidenced per identity (390 BW3 rows, 393
+owner map, 406 partition correspondence, 407 `interiorArcs=2`).
+
+**§6 is stronger than stated.** `EmptyNetworkOnClosedSurface` is declared at `SurfaceCutGraph.h:295` and named in
+the error-code mapping, and is **returned nowhere in the tree** — ordinal 370 asserts a code the product cannot
+emit. That sharpens CB54's acceptance criterion to **zero producers → exactly one, with ordinal 370 reaching it**:
+zero after CB54 is a failed turn, more than one is an unbounded change.
+
+**Amended — the exit condition has not been re-asked.** `ROADMAP.md:392` states *"CP4c-3 closes on the mechanical
+witness under AU0–AU9, unchanged."* With 366 and 367 cleared and the four protected identities green on the
+successful-plan subject, **the mechanical-witness surface is green**, and all five remaining REDs are the
+*inherited* sphere/quality/empty-network debt that CP4c-3's domain row lists **separately** from its exit
+condition — **ordinal 370 among them**. So CB54 clears debt; whether it is a *closure* step is a different question,
+and nobody has asked it since the witness went green. **No closure is asserted here** — AU0–AU9's criteria are not
+in the retained set and must be read, not assumed — but **CB54's closeout must answer it by criterion**, and restore
+AU0–AU9 if it cannot be found. `LESSONS.md` **167**: a red list is not an exit condition, and the two stop agreeing
+exactly when the checkpoint is closest to done.
+
+**Also corrected: `ROADMAP.md` was two promotions stale** and untouched by this turn — status line and CP4c-3 row
+still named TB45/package110 and *"NEXT: CB52, then TB46-R1."* It has now lagged three times and is not in the review
+consolidation's standing-doc set; that should be fixed.
+
+**Exact next: `M3-CP4c-3-CB54`** — unchanged in scope, with the zero-to-one producer criterion and the AU0–AU9
+exit-condition statement added.
+
 ## 2026-09-09 — `M3-CP4c-3-TB47-REV`: package112 promoted; ordinal367 recovery closes; CB54 freezes AK5 ordinal370
 
 Independent REVIEW + PLAN only; no Directional runtime or compile. TB47 primary evidence is upheld and promoted as

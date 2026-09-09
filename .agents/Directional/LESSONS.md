@@ -2056,6 +2056,16 @@ building any conclusion on it.**
      `EXPECT_EQ` forms behind - and record every surviving site even where you must not touch it, because an
      accepted identity is protected and the record is the only thing that will stop the next turn from
      misdiagnosing it.
+167. **When the blocking surface clears, re-ask the exit condition - do not just pick the next red.** A checkpoint
+     whose stated exit was "closes on the mechanical witness" reached the point where every mechanical-witness
+     identity was green. The review correctly chose the smallest next correction from the remaining reds and froze a
+     Code + Build turn for it - and never asked whether the gate had already opened. Every remaining red was the
+     *inherited* debt the checkpoint's own domain row lists separately from its exit condition, so the next turn may
+     have been clearing debt rather than closing anything. **A red list is not an exit condition**, and the two stop
+     agreeing precisely at the moment the checkpoint is closest to done. When the identities named in the exit
+     condition go green, the next turn's first question is whether the condition is met - by criterion, against the
+     frozen text - and if that text cannot be found in the retained set, restoring it is the work. An exit condition
+     that cannot be read is not an exit condition.
 
 ## 5. Cross-field, cycle, and orientation conventions
 
