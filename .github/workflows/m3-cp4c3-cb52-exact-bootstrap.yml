@@ -1,0 +1,85 @@
+name: M3 CP4c3 CB52 Exact Bootstrap
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/cb52-exact-bootstrap/cb52-exact-bootstrap-20260909.txt]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb52-exact-bootstrap.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb52-exact-bootstrap
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+  localize:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Execute exact pre-trap lines with safe markers
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TURN_ID: M3-CP4c-3-CB52-LOCALIZE
+          ARTIFACT_ID: '10112532452'
+          EXPECTED_ARTIFACT_NAME: m3-cp4c3-cb51-package111-result-34372482691
+          EXPECTED_PROVIDER_DIGEST: sha256:62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da
+          EXPECTED_ZIP_SHA256: 62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da
+          EXPECTED_SOURCE_SHA: 4f0663ef3468996abce6f59109f1c67f5be5f604
+          SELECTOR_RELATIVE_PATH: .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+          EXPECTED_SELECTOR_COUNT: '409'
+          EXPECTED_SELECTOR_SHA256: eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e
+          ACCEPTED_PREFIX_COUNT: '365'
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/exact-bootstrap.log"
+          src=.agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh
+          dst="$RUNNER_TEMP/instrumented-bootstrap.sh"
+          python3 - "$src" "$dst" <<'PY'
+          from pathlib import Path
+          import sys
+          src, dst = map(Path, sys.argv[1:])
+          lines = src.read_text().splitlines()
+          markers = {2:'set-options',4:'GITHUB_REPOSITORY',5:'GITHUB_RUN_ID',6:'GH_TOKEN-presence',7:'TURN_ID',8:'ARTIFACT_ID',9:'EXPECTED_ARTIFACT_NAME',10:'EXPECTED_PROVIDER_DIGEST',11:'EXPECTED_ZIP_SHA256',12:'EXPECTED_SOURCE_SHA',13:'SELECTOR_RELATIVE_PATH',14:'EXPECTED_SELECTOR_COUNT',15:'EXPECTED_SELECTOR_SHA256',16:'ACCEPTED_PREFIX_COUNT',25:'mode-case',27:'safe-turn-id',35:'path-assignments',37:'mkdir',38:'log-create',39:'exec-redirection'}
+          out=[]
+          for n,line in enumerate(lines[:39],1):
+              out.append(line)
+              if n in markers:
+                  out.append(f"echo CB52_BOOTSTRAP_AFTER={markers[n]}")
+          out.append("echo CB52_BOOTSTRAP_COMPLETE=yes")
+          out.append("exit 0")
+          dst.write_text('\n'.join(out)+'\n')
+          PY
+          bash -n "$dst"
+          if bash "$dst" --preflight-only >"$out" 2>&1; then rc=0; else rc=$?; fi
+          cat "$out"
+          echo "instrumented_exit=$rc"
+          exit "$rc"
+      - name: Upload localization log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-cb52-exact-bootstrap-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/exact-bootstrap.log
+          if-no-files-found: error
+          retention-days: 7
