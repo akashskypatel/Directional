@@ -1,3 +1,36 @@
+## M3-CP4c3-TB45-EXEC classification — **CURRENT RAW INTAKE / REVIEW REQUIRED / NON-STABLE EXEC**
+
+- **Execution authority:** immutable package110 source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, artifact
+  `10095738820`, selector409, run/job `34357709483 / 102486495110`, result/log artifacts
+  `10106632656 / 10106633518`.
+- **Observed set:** **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED
+  `[367,368,369,370,374,390,393,398,406,407]`; zero selection mismatch, zero timeout, and all
+  package/source/execution-view byte+mode censuses equal pre/post.
+- **`M3-CP4c3-TB45-EXEC-CAND-01` — RAW DOWNSTREAM SURFACE / REVIEW REQUIRED / NON-STABLE / UNPRICED.** Ordinal366
+  changes TB44 RED→PASS. Ordinal367 remains RED, but both raw logs contain zero `FragmentCornerSourceCornerMismatch`,
+  `FragmentCornerRayOrdinalDuplicate`, `FragmentCornerOrbitChainMismatch`, and exact failure-detail token
+  `sourceFace=10,11,79`. Ordinal367 now stops at the independent rotation/face-walk oracle with
+  `partition.has_value()==false`, detail `FragmentPartition`. The frozen CB50 mismatch falsifier is mechanically satisfied;
+  semantic ownership of the later ordinal367 oracle failure belongs to TB45-REV.
+- **`M3-CP4c3-TB45-EXEC-CAND-02` — RAW PROTECTED-SURFACE PATH CHANGE / REVIEW REQUIRED / NON-STABLE / UNPRICED.**
+  390/393/406/407 remain RED but now each stops at `ASSERT_FALSE(mechanical.plan.has_value())` with actual `true` before
+  its Part XII receipt branch. Consequently the retained raw logs contain zero `branch=UncutCensus`,
+  `censusPredicateExecuted=yes`, `sameDomainCorruptionRejected=yes`, `terminalSubjectBranch=...`, and
+  `regionCertificationEvidenceBranchExecuted=yes`. EXEC records only the changed assertion surface; whether this is lawful
+  product progression, a fixture/expectation transition, or another authority issue is review-pending.
+- **Carried REDs:** 368, 369, 370, 374 and 398 remain at their previously visible behavior classes and retain their separate
+  owners pending review. EXEC does not merge or reprice them.
+- **Protected controls:** 311/312/314/315/356/357/404/408/409 PASS; ordinal385 publishes 300 established / 0 unavailable /
+  0 conflicting; retired `TraceArcDoesNotSeparateItsSides`, `UncutFaceComponentOrbitSeedNotUnique`, and
+  `RegionEulerCharacteristicNotOne` are absent across the raw selector logs.
+- **Stable-count rationale:** accepted 365/365 is unchanged. The only color improvement is ordinal366; ordinal367 moves to a
+  later oracle and the four protected identities remain RED on a changed precondition surface. Independent review is required
+  before closing/repricing any candidate. Totals therefore remain **47 events / 14 categories / 33 recurrences**, debt **5**,
+  packages **110**. TB44/package109 remains promoted semantic runtime authority pending TB45-REV.
+- **Exact successor:** independent `M3-CP4c-3-TB45-REV`, evidence-only; no compile, new runtime or semantic source mutation first.
+
+---
+
 ## M3-CP4c3-TB44-REV — independent adjudication — **CURRENT REVIEW / TB44 PROMOTED / CB50 FROZEN**
 
 - **Promoted authority:** TB44/package109/selector409, run/job `34295565963 / 102291328376`, **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts `10083047547 / 10083047938` are hash-verified; immutable pre/post byte+mode censuses match; zero timeouts under the restored 180-second per-identity control; build/repair/mutation flags are false.
