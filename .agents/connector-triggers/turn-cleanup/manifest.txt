@@ -1,3 +1,0 @@
-# M3-CP4c-3-TB45-REV temporary file manifest
-.agents/connector-triggers/source-snapshot/m3-cp4c3-tb45-rev-20260909.txt
-.agents/connector-triggers/turn-cleanup/manifest.txt
