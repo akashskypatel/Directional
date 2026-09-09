@@ -61,7 +61,7 @@ Future selector files are named by their resulting identity count.
 | **406** | 406 | `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0` | 405 | 1 | superseded |
 | **407** | 407 | `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae` | 406 | 1 | superseded |
 | **408** | 408 | `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6` | 407 | 1 | superseded |
-| **409** | 409 | `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` | 408 | 1 | **CURRENT GATE** |
+| **409** | 409 | `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` | 408 | 1 | **M3 FINAL AUDIT / REVIEWED** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -600,14 +600,9 @@ stays byte-frozen and accepted prefix 365/365 is a stop condition.**
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full
 selector and is **not** part of the CP4c prefix chain above. It is retained under `M1_Closure_Record.md`.
 
-## Current CP4c-3 selector authority after DEFN-R8
+## Final M3 selector authority after TB48-REV
 
-Selector **409** remains byte-frozen at
-`eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`. DEFN-R8 changed no selector bytes or
-membership. TB42 remains runtime authority at **398 PASS / 11 RED**, accepted **365/365**. Part XII freezes CB48
-without adding an identity: 390/393/406/407 must be made non-vacuous inside their existing identities by a
-producer-data positive and deliberately corrupted same-domain negative. The later TB43 expected falsifier is
-**402 PASS / 7 RED**, carried RED `[366,367,368,369,370,374,398]`; runtime must measure it rather than assume it.
+Selector **365** remains the **accepted required-green M3 authority**, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, and is the exact predecessor entering M4. Selector **409** remains byte-frozen at `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` as the final CP4c-3 audit/execution surface. Package113/TB48 reviewed execution is **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`. The four audit REDs retain separate owners and are not silently added to accepted authority. No selector bytes changed at TB48-REV.
 
 ## Regenerating this manifest
 

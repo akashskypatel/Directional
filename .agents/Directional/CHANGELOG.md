@@ -1,3 +1,12 @@
+## 2026-09-09 — M3-CP4c-3-TB48-REV promotes package113 and closes CP4c-3 / M3
+
+- Independent review re-opened primary TB48 result/log evidence and package113 source; package113/TB48 is promoted reviewed semantic runtime authority at **405 PASS / 4 RED / 0 SKIP**, accepted selector365 **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**.
+- Ordinal370's frozen `EmptyNetworkOnClosedSurface = 6` plus non-empty `sourceFace` contract is runtime-proved. `M3-CP4c3-TB48-EXEC-CAND-01` and `M3-CP4c2-TB-X2-R8-CAND-02` close non-stably; stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**.
+- The four remaining final-audit REDs retain separate existing owners. AU0–AU9 remains MET; the frozen checkpoint contract therefore closes without redefining its exit criterion as all-green selector409. **CP4c-3 CLOSED / ACCEPTED; M3 CLOSED / ACCEPTED.** Closure authority: `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md` and `M3_Closure_Record.md`.
+- Accepted required-green selector365, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, is the M4 predecessor; selector409 remains retained final-M3 audit evidence.
+- Mandatory REVIEW consolidation folds five superseded CP4c-3 documents (773 lines), bringing the folded index to **161 documents / 30,025 lines**. `ORIENTATION.md` is refreshed.
+- Exact next: **`M4-DEFN`**, planning-only/runtime-free under `Architecture_M4_DEFN_Definition_Plan.md`.
+
 ## 2026-09-09 — `M3-CP4c-3-TB48-EXEC`: package113 mechanically valid at 405 PASS / 4 RED; ordinal370 raw-recovered; review required
 
 Artifact-only Test + Benchmark. TB48-EXEC consumed immutable package113 source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, artifact `10125000895`, and unchanged selector409/harness. Run/job `34409262512 / 102659650326` completed successfully with all 409 identities executed exactly once in fresh processes, zero selection mismatches/timeouts, equal package/source/execution-view pre/post censuses, and all build/repair/mutation/benchmark flags false.

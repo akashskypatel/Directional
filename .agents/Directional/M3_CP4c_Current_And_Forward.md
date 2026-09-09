@@ -10,59 +10,40 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-09** at `M3-CP4c-3-TB48-EXEC` raw closeout.
+Last updated **2026-09-09** at `M3-CP4c-3-TB48-REV` independent closure review.
 
-**Reviewed semantic runtime authority remains TB47 / package112 / selector409 pending independent review:** **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300 / 0 / 0**.
+**Reviewed semantic runtime authority is package113 / TB48 / selector409 audit:** **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300 / 0 / 0**. Semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`; result/log artifacts `10126711178 / 10126711588`.
 
-**TB48/package113 is mechanically valid raw successor evidence, not yet promoted.** Immutable semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, package artifact `10125000895`, SHA-256 `e5fb50f92bbf4c4ffae5afeb203d6738490f6410b3a7e49245607e1b2e7835e9`, executed selector409 in run/job `34409262512 / 102659650326`. Raw result is **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**, with zero timeout/mismatch and immutable pre/post censuses. Result/log artifacts are `10126711178 / 10126711588`, SHA-256 `07961a2339204b80f83feac8916e93578176363f9bdf0317ea85bdc095de5747` / `1aab2f5f9b0d23f41ffd04a1467894f572604774ee2ee6ce9e42ee4b8f6dbd7d`.
+Ordinal370 is CLOSED / RUNTIME-PROVED / NON-STABLE. The AU0–AU9 mechanical-witness exit condition is MET. **CP4c-3 and M3 are CLOSED / ACCEPTED.** Stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**.
 
-Ordinal370 alone moved RED→PASS exactly as CB54 predicted; the frozen identity asserts code 6 `EmptyNetworkOnClosedSurface` plus non-empty `sourceFace`. EXEC records raw recovery only. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113** pending review.
-
-CP4c-3 remains **OPEN pending independent `M3-CP4c-3-TB48-REV`**. The AU0–AU9 mechanical-witness exit criterion remains met; review decides package113 promotion, ordinal370 closure and formal checkpoint closure.
-
-**Exact next: `M3-CP4c-3-TB48-REV`**, independent REVIEW + PLAN / runtime-free.
+**Exact next: `M4-DEFN`**, planning-only/runtime-free under `Architecture_M4_DEFN_Definition_Plan.md`.
 
 ## 1. Where the checkpoint stands
 
-TB48 is mechanically valid raw runtime evidence. It does not self-promote. Current raw facts are:
+**M3-CP4c-3 is CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`; M3 is CLOSED / ACCEPTED.** Package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` and TB48 run/job `34409262512 / 102659650326` are promoted reviewed semantic runtime authority: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted required-green **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**.
 
-- package113 root authority and selector/harness/source hashes matched frozen TB48 preflight;
-- all 409 identities executed exactly once in ordinal order with fresh processes;
-- **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`;
-- ordinal370 PASSes the typed empty-closed-network error+locus identity;
-- protected 390/393/406/407 remain non-vacuously PASS through `PlanFrontier`;
-- ordinal385 publishes ownership **300 established / 0 unavailable / 0 conflicting**;
-- package/source/execution-view pre/post censuses are equal; timeout/mismatch counts are zero;
-- configure/compile/relink/discovery/repair/mutation/benchmark flags remain false;
-- four REDs reproduce their already-owned sphere/proposal/folded-cone/downstream surfaces.
+Ordinal370 is runtime-proved corrected under the frozen `EmptyNetworkOnClosedSurface = 6` plus non-empty `sourceFace` identity. `M3-CP4c2-TB-X2-R8-CAND-02` and `M3-CP4c3-TB48-EXEC-CAND-01` are closed non-stably. Protected 390/393/406/407 remain non-vacuously green through `PlanFrontier`; selector409 executed fully report-only after first RED. The AU0–AU9 mechanical-witness exit criterion is MET.
 
-Reviewed TB47 remains promotion authority until TB48-REV completes.
+The remaining REDs 368/369/374/398 remain separate carried owners. Their existence is not the frozen CP4c-3 exit condition and they are not silently accepted. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**.
 
-### 1.1 AU0–AU9 mechanical-witness exit criterion — restored and evaluated
+The accepted required-green predecessor entering M4 is selector365, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains final M3 audit authority.
 
-These measures were issued in the historical `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` and folded at
-consolidation commit `963a5a143ed1fbad972497f628178d7a36f3d21a`; their exact historical text remains in Git. They are restored here
-as the durable current criterion so future turns do not need to reconstruct them again.
+### 1.1 AU0–AU9 mechanical-witness exit criterion — CLOSED
 
-| Measure | Durable requirement | Current disposition |
+The restored historical AU0–AU9 requirements remain durable below. TB48-REV confirms every one remains MET. Their exact provenance is in the consolidated record and the TB48 independent review record; future M4 work must not reopen them merely because the final audit surface retains separately owned RED rows.
+
+| Measure | Durable requirement | Final disposition |
 |---|---|---|
-| **AU0** | Preserve selector authority/predecessor lineage; no selector mutation; no unauthorized gate execution. | **MET.** Selector409 is frozen and TB47 executed it without changing predecessor authority. |
-| **AU1** | Every transit producer exit that can become a typed failure is reportable; empty seed/walk is not mislabeled as sector election. | **MET by subsequent accepted work.** Mechanical witness no longer stops on an unreportable transit seed/walk and 366/367 are green. |
-| **AU2** | No float-derived value may reach the exact transit topological decision; exact atlas branch transport is authoritative. | **MET/preserved.** Later accepted exact transit authority superseded the float round-trip; CB54 does not touch transit. |
-| **AU3** | Re-run Amendment-17 candidate measurement with exact direction/transport evidence; equal elected directions are a review stop. | **MET by subsequent diagnostic/runtime progression.** The mechanical witness advanced beyond this frontier without the falsifier. |
-| **AU4** | Do not redesign election before AU3 reports. | **MET historically and unchanged.** |
-| **AU5** | Audit for float-derived topological decisions and unreportable producer exits, including sites outside the transit resolver. | **MET historically; resulting exactness/reportability amendments remain binding.** |
-| **AU6** | Localize/schedule the sphere binding owner without fixing it in that bounded turn. | **MET.** Current 368 is separately localized at trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`; 398 is downstream. |
-| **AU7** | Repair only the invalid ordinal370 witness so an atlas-valid closed empty-network contract is measurable; never weaken `NonIntegralCycleLift`. | **MET.** TB47 reaches the SurfaceCutGraph product owner; atlas preconditions remain fail-closed. |
-| **AU8** | Execute/report every remaining ordinal after first RED with zero gate credit and retain the required witness surface. | **MET.** TB47 executes **409/409 exactly once**; accepted prefix remains 365/365 and later rows are report-only after first RED. |
-| **AU9** | Prohibit float-derived topological values, unreportable exits, election shortcuts/tolerances, barrier crossing/closure, atlas weakening, sphere fix leakage, amendment reopening, enum renumbering, selector changes, or report-only gate credit. | **MET/preserved.** CB54 is a five-line `SurfaceCutGraph.cpp` typed rejection only. |
-
-**Criterion result:** the **CP4c-3 mechanical-witness exit condition is MET on promoted TB47 evidence**. Ordinals 366 and
-367 are green and protected 390/393/406/407 are non-vacuously green on the successful-plan subject. The remaining
-TB47 REDs are separately owned inherited surfaces, not a failure of the mechanical witness.
-
-**Formal checkpoint state remains OPEN.** CB54 changed product behavior after TB47, so package113 must first be
-executed artifact-only and independently reviewed. This is evidence hygiene, not a reopening of AU0–AU9.
+| **AU0** | Preserve selector authority/predecessor lineage; no selector mutation; no unauthorized gate execution. | **MET.** Selector365 remains accepted; selector409 stays byte-frozen final audit evidence. |
+| **AU1** | Every transit producer exit reportable; no empty seed/walk mislabeled as sector election. | **MET.** Mechanical continuation advanced with typed/reportable authority. |
+| **AU2** | No float-derived datum reaches exact transit topology; exact atlas branch transport authoritative. | **MET.** Exact transit authority remains accepted. |
+| **AU3** | Exact Amendment-17 transit/election measurement; equal elected exact directions are a review stop. | **MET.** The falsifier did not recur and the mechanical witness advanced. |
+| **AU4** | No election redesign before AU3 evidence. | **MET historically.** |
+| **AU5** | Audit float-derived topological decisions and unreportable producer exits. | **MET; resulting exactness/reportability rules remain binding.** |
+| **AU6** | Localize prescribed-sphere binding owner without leaking its fix into the bounded mechanical turn. | **MET.** Sphere 368 remains separately owned. |
+| **AU7** | Repair only invalid ordinal370 witness/contract so closed empty-network behavior is measurable; never weaken `NonIntegralCycleLift`. | **MET.** Package113 ordinal370 is PASS under the frozen typed error+locus contract. |
+| **AU8** | Full report-only pass over every remaining ordinal after first RED, zero gate credit, preserving minimal witness evidence. | **MET.** TB48 executes 409/409 exactly once; accepted gate remains 365/365. |
+| **AU9** | Preserve prohibitions: no float topology, hidden exits, election/tolerance shortcuts, barrier/atlas weakening, sphere-fix leakage, amendment reopening, enum renumbering, selector change, or report-only gate credit. | **MET.** TB48/CB54 evidence shows no such movement. |
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -608,7 +589,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB6-CAND-01` | **ACTIVE** — vertex-30 evidence contract. **There is still no vertex-30 discriminator.** |
 | `M3-CP4c2-TB-X2-CAND-04` | **ACTIVE** — prescribed sphere 368. |
 | `M3-CP4c2-TB-X2-R10-CAND-01` | **ACTIVE / QUALITY / COVERAGE** — saturation, ordinal 369. |
-| `M3-CP4c2-TB-X2-R8-CAND-02` | **RAW RUNTIME RECOVERED IN TB48 / INDEPENDENT REVIEW PENDING** — package113 ordinal370 PASSes the frozen typed error+locus identity; EXEC does not close or price the owner. |
+| `M3-CP4c2-TB-X2-R8-CAND-02` | **CLOSED / RUNTIME-PROVED PRODUCT CORRECTION / NON-STABLE** — package113 ordinal370 PASSes the frozen typed error+locus identity; TB48-REV closes the candidate without stable repricing. |
 | finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
 
@@ -699,6 +680,4 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-Perform **`M3-CP4c-3-TB48-REV`** as an independent REVIEW + PLAN / runtime-free turn.
-
-Use raw TB48 report `Architecture_M3_CP4c3_TB48_EXEC_Report.md`, package113 result/log artifacts `10126711178 / 10126711588`, and the retained TB47 review as comparison authority. Adjudicate ordinal370's raw recovery, the four carried RED owners, protected non-vacuity, stable accounting, package113 promotion and whether formal CP4c-3 closure follows from the already-met AU0–AU9 criterion. Perform mandatory REVIEW consolidation and update `ORIENTATION.md`. Do not execute new runtime, compile, or mutate implementation/test/fixture/selector logic.
+M3/CP4c is closed. Perform **`M4-DEFN`** as the exact next planning-only/runtime-free turn under `Architecture_M4_DEFN_Definition_Plan.md`. Enter from accepted selector365 and promoted package113/TB48 evidence. Reconcile the two M4 roadmap decompositions, freeze the global schedule product/math/error/oracle/witness/gate contract, carry `G4-B002` debt and adjudicate `G4-B004`, then issue one first Code + Build plan. Do not reopen CP4c, execute runtime, compile, or mutate implementation/test/fixture/selector logic in M4-DEFN.

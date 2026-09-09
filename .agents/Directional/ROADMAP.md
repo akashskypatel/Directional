@@ -10,9 +10,9 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-09 (**CP4c-2 CLOSED / ACCEPTED at 365/365; CP4c-3 OPEN.** TB47/package112 remains promoted runtime authority pending independent review. TB48/package113 is mechanically valid raw evidence at **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**; ordinal370 alone recovered exactly as CB54 predicted. The AU0–AU9 **mechanical-witness exit condition remains MET**. Stable accounting remains 47 / 14 / 33, debt 5, packages 113 pending review. **NEXT: `M3-CP4c-3-TB48-REV`**, independent REVIEW + PLAN / runtime-free.)
+**Status date:** 2026-09-09 (**M3 CLOSED / ACCEPTED at TB48-REV.** Package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` is promoted reviewed runtime authority: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted required-green **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. AU0–AU9 mechanical-witness exit condition is MET; ordinal370 is runtime-proved closed non-stably. Stable accounting **47 / 14 / 33**, debt 5, packages 113. **NEXT: `M4-DEFN`**, runtime-free.)
 
-**Current CP4c-3 authority (2026-09-09):** Part VIII + Part XI/Part XI-A + Part XII remain topology/ownership authority. TB47/package112 is still the reviewed semantic runtime baseline until review; TB48/package113 raw execution confirms ordinal370 recovery and leaves carried owners 368 sphere, 369 proposal quality, 374 folded-cone fixture/precondition, and 398 downstream of 368. Review now decides promotion and checkpoint closure.
+**Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
 ## 1. Where the project actually is
 
@@ -21,8 +21,9 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB47/package112 remains promoted runtime authority pending review**; **TB48/package113 raw execution is 405 PASS / 4 RED**, accepted **365/365**; AU0–AU9 mechanical exit criterion met; **TB48-REV next**. |
-| M4–M8 | not started | — |
+| M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
+| M4 | **definition next** | `M4-DEFN`; accepted predecessor selector365. |
+| M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
 `M3-CP4-DEFN` is complete. CP4a/CP4b are superseded into CP4ab.
@@ -50,9 +51,7 @@ owns it:
 | network selection preserves mandatory topology under tamper | A2b | accepted at CP4ab (A4, A5) |
 | tracing-order and start-port permutation invariance | A2b | accepted at CP4ab (A6) |
 
-**Verdict: the trajectory is correct and the milestone is nearly discharged.** Every M3 criterion has
-an owning identity and all six are green under the cumulative immutable 355 gate. M3 remains open only for the
-production-representative closed-surface scope owned by CP4c-2/3.
+**Verdict: the trajectory is complete and M3 is CLOSED / ACCEPTED.** Every M3 criterion has an owning identity; CP4c-2 established the closed/higher-genus A2b scope and CP4c-3 closed the final mechanical witness under AU0–AU9. Package113/TB48 is the promoted reviewed runtime authority. The accepted required-green boundary remains selector365.
 
 The one substantive gap is not a criterion but a *scope* of proof: all six are proven on **development
 witnesses** (the two-ring skew disc and the four-triangle fan), not on production-representative
@@ -62,12 +61,9 @@ all**. That is exactly and only what CP4c exists to close. See
 
 ---
 
-## 3. M3 exit — the remaining checkpoint
+## 3. M3 exit — CLOSED / ACCEPTED
 
-CP4c's production A2b wiring (CB1) and its two production-path fixtures (CB2) are **built and
-compiled**, and TB-R1 proved the wiring regressed **nothing**: the accepted 316 are green in the same
-immutable run. What remains is split into three checkpoints. Identity names are unchanged from DEFN
-§7.3; only their allocation moved.
+CP4c's production A2b wiring (CB1) and its two production-path fixtures (CB2) were built and compiled, and TB-R1 proved the wiring regressed nothing: the accepted 316 stayed green. The later CP4c decomposition below is now fully adjudicated; identity names remain historical authority and their checkpoint allocation is unchanged.
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
@@ -75,7 +71,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN pending independent review.** Promoted runtime authority remains **TB47/package112** until review; **TB48/package113 raw execution is mechanically valid at 405 PASS / 4 RED**, accepted **365/365**, with ordinal370 recovered and four inherited owners remaining. The **AU0–AU9 mechanical-witness exit criterion remains MET**. **NEXT:** `M3-CP4c-3-TB48-REV`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); inherited sphere/quality/fixture debt remains separately owned | **accepted prefix 365; final audit selector 409** | **CLOSED / ACCEPTED at TB48-REV.** Package113/TB48 promoted at 405 PASS / 4 RED, accepted 365/365. Ordinal370 is runtime-proved corrected; AU0–AU9 exit criterion MET; remaining 368/369/374/398 are separate owners. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval
@@ -421,11 +417,11 @@ been *proven* to reach** — not that its files exist. CP4c's failure was exactl
 
 ### M4 — global conformity plan (`DESIGN.md` §14 M4)
 
-Entering gate **322**.
+Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains the retained final M3 audit surface, not the M4 required-green predecessor.
 
 | Checkpoint | Semantic domain | Notes |
 |---|---|---|
-| `M4-DEFN` | freeze the schedule product, its rejection vocabulary, its independent oracle, and witness provenance | planning only |
+| `M4-DEFN` | **CURRENT NEXT:** freeze the schedule product, rejection vocabulary, exact formulation, independent oracle, witness provenance, and reconcile `M4-CP-COND` / `M4-CP-SCALE` with CP1–CP4 | planning only |
 | `M4-CP1` | shared-rail breakpoint/side-count **schedule product** with one writer | positive + tamper |
 | `M4-CP2` | **assignment positivity certificate** and typed subset-scoped infeasibility | infeasible subsets must not fail the run |
 | `M4-CP3` | producers **consume** the verified schedule; target-size variation cannot change breakpoints | invariance |

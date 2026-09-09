@@ -1776,3 +1776,19 @@ recoverable from Git history.
 `Architecture_M3_CP4c3_TB47_Independent_Review_Record.md`,
 `Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`, `M3_CP4c_Current_And_Forward.md`,
 `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every byte-frozen selector.
+
+### Consolidated on 2026-09-09 at `M3-CP4c-3-TB48-REV` — folded-index entry
+
+Mandatory REVIEW consolidation. TB48/package113 is promoted as reviewed semantic runtime authority; ordinal370 is runtime-proved corrected; the AU0–AU9 mechanical-witness exit criterion is MET; CP4c-3 and M3 close. Durable facts are preserved in `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md`, `M3_Closure_Record.md`, `Architecture_M3_CP4c3_TB48_EXEC_Report.md`, `Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md`, `CHANGELOG.md`, ROADMAP and the M4 definition plan.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB47_EXEC_Report.md` | 148 | superseded runtime authority — package112 404/5, accepted 365/365 |
+| `Architecture_M3_CP4c3_TB47_Independent_Review_Record.md` | 252 | superseded review authority — package112 promotion and CB54 freeze |
+| `Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md` | 138 | consumed AK5 product-correction build contract |
+| `Architecture_M3_CP4c3_CB54_Code_Build_Report.md` | 103 | consumed package113 compile/build authority; TB48 runtime-proved it |
+| `Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md` | 132 | consumed immutable package113/selector409 execution contract |
+
+**Folded this review:** 5 documents, **773 lines**. **Running total: 161 documents, 30,025 lines.** Exact bytes remain recoverable from Git history.
+
+**Retained as final/current M3 authority:** `Architecture_M3_CP4c3_TB48_EXEC_Report.md`, `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md`, `M3_Closure_Record.md`, `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, every byte-frozen selector, and successor plan `Architecture_M4_DEFN_Definition_Plan.md`.

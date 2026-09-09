@@ -72,8 +72,8 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M0 | preserve evidence and accepted baselines | complete |
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
-| M3 | field-aligned curve network | **active** |
-| M4 | global conformity plan | pending |
+| M3 | field-aligned curve network | **complete** |
+| M4 | global conformity plan | **definition next (`M4-DEFN`)** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -210,13 +210,19 @@ Full record — CP0 census, five-checkpoint trajectory, the 11-package cost, rec
 
 ## 7. M3 — field-aligned curve network
 
-**Status: CP0 is compile evidence only; CP1, CP2, CP2b, CP3a, CP3b, and CP4ab are CLOSED / ACCEPTED.** Latest accepted runtime is CP4ab `157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`, TB-R3 `32758293793 / 97530833220`, **316/316**. The V0–V8 corrections and full predecessor interaction are accepted. M3 package cost is **34**, stable accounting **42 / 14 / 28**, debt **5**; `PR8-R042` is resolved stable. Exact next is `M3-CP4c-CB`; CP4c adds six C identities and later gates at 322.
+**Status: CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Closure authority is `M3_Closure_Record.md`. Package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` is promoted reviewed runtime authority at **405 PASS / 4 RED / 0 SKIP** over the final selector409 audit surface, accepted required-green prefix **365/365**, ownership **300/0/0**. The four audit REDs `[368,369,374,398]` retain separate future owners and do not redefine the frozen AU0–AU9 mechanical-witness exit condition, which is MET. Ordinal370 is runtime-proved corrected and closed non-stably. Stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**.
 
-- Construct typed singularity ports from field index.
-- Treat source boundaries and hard features as mandatory graph edges.
-- Trace branch-consistent field-aligned curves intrinsically across source triangles, combinatorially rather than by nearest-direction integration.
-- Terminate only at typed network events; record intersections as explicit nodes.
+The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; selector409 remains retained M3 audit evidence only.
+
+- Typed singularity ports are derived from field index and uniquely owned.
+- Source boundaries and hard features are mandatory graph authority.
+- Branch-consistent field-aligned tracing is intrinsic/combinatorial and exact.
+- Termination is typed and reportable; intersections are explicit network nodes.
+- Actual embedded cut/region authority and disc proofs are accepted through CP4ab/CP4c-2, with the closed mechanical continuation witness closed in CP4c-3.
+
 ## 8. M4 — global conformity plan
+
+**Status: `M4-DEFN` is exact next, planning-only/runtime-free.** Use `Architecture_M4_DEFN_Definition_Plan.md`. Definition must reconcile the roadmap's conditioning/scale proposals with CP1–CP4 before code, freeze one schedule product and exact solver/oracle/error/witness contract, and extend only from accepted selector365.
 
 - Compute one strictly positive shared rail schedule globally before regional production.
 - Use a deterministic polynomial graph/flow formulation for shared counts/constraints.

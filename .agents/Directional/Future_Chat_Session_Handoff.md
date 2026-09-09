@@ -63,7 +63,7 @@ Do not add transcripts, chronological tool history, copied superseded artifact t
    - `[ChatGPT Web]` If the preceding turn was interrupted or reported prepared-but-unapplied local work, search File Library for the newest matching `Directional__...__work-preservation.patch` **before re-deriving that work**; verify its embedded base SHA and diff-body SHA-256, then reconcile it with current branch authority under `RETENTION_POLICY.md`.
 5. **Review `LESSONS.md` in full, and re-read the sections governing this turn's work before authoring any plan, fixture, gate criterion, or corrective measure.** This step is mandatory and is not satisfied by having read it in a prior turn.
    - Before every Code + Build turn, also review `.agents/Directional/GMP_COMPILE_POLICY.md`. GMP/GMPXX linkage is mandatory for every future compile; fallback exact arithmetic is not authoritative build evidence.
-6. Review `TODO.md` (including exact completed/current partial-CB status), `DESIGN.md`, `REORIENTATION_PLAN.md`, `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, the active next-turn plan, and `Regression_Root_Cause_Tracker.md`.
+6. Review `TODO.md` (including exact completed/current partial-CB status), `DESIGN.md`, `REORIENTATION_PLAN.md`, `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, `M3_Closure_Record.md`, the active next-turn plan, and `Regression_Root_Cause_Tracker.md`.
 7. Confirm the configured working branch, branch head, exact implementation/source authority, and requested turn type before any write.
 8. Verify every explicitly durable section required by the documents being touched is present before editing; do not proceed with a destructive rewrite if a durable section would be removed.
 9. `[ChatGPT Web]` For Code + Build workflow work, verify the reusable compile workflow still owns the durable cache namespace/schema and that the caller does not supply a per-turn cache epoch/key.
@@ -116,48 +116,56 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB48-REV` — EXACT NEXT / INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
+## Mandatory next turn — `M4-DEFN` — EXACT NEXT / GLOBAL CONFORMITY DEFINITION / RUNTIME-FREE
 
-`M3-CP4c-3-TB48-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / RAW 405 PASS / 4 RED / REVIEW REQUIRED**.
+`M3-CP4c-3-TB48-REV` is **COMPLETE / APPROVED WITH AMENDMENTS / PACKAGE113 PROMOTED / CP4c-3 CLOSED / M3 CLOSED**.
 
-### Authority entering TB48-REV
+### Authority entering M4-DEFN
 
-- **Reviewed semantic runtime authority remains TB47/package112/selector409 until this review:** **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0**.
-- **Raw TB48/package113 evidence:** run/job `34409262512 / 102659650326`, **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. All 409 selector identities executed exactly once in ordinal order with fresh processes, zero selection mismatches/timeouts and equal package/source/execution-view pre/post censuses. Every build/configure/relink/repair/mutation/benchmark flag is false.
+- **Reviewed semantic runtime authority:** package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, TB48 run/job `34409262512 / 102659650326`, selector409 audit surface, **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**.
 - TB48 result artifact `10126711178`, SHA-256 `07961a2339204b80f83feac8916e93578176363f9bdf0317ea85bdc095de5747`; log artifact `10126711588`, SHA-256 `1aab2f5f9b0d23f41ffd04a1467894f572604774ee2ee6ce9e42ee4b8f6dbd7d`.
-- Raw ledger/failure-detail/resource/identity-map SHA-256 values are `e450efbcc359ef544ab97c6fb9f0cb23b097e59b9680569390fe7a45a9350566`, `511f3c0bc6a4f971849b3c339e848a598905dd4af892cefe1506905ad82f5b4d`, `1f85af61168f36ca9171b6e43b6f99e9165d26616c0f3f2e290e4c0e9a3cc79c`, and `f33cd349fd55e962f4bf22918abbccc04c8744205c62ddbe6122d8b50958290f`.
-- Package113 source remains `6dae3f6959551f6dcdd81f153aedb5f38411a96b`; immutable input artifact `10125000895` retains SHA-256 `e5fb50f92bbf4c4ffae5afeb203d6738490f6410b3a7e49245607e1b2e7835e9`. Selector409 and harness SHA-256 values remain `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` and `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
-- **Ordinal370 is raw runtime recovered:** the immutable identity PASSes and asserts existing code 6 `EmptyNetworkOnClosedSurface` plus a non-empty deterministic `sourceFace` locus. EXEC candidate `M3-CP4c3-TB48-EXEC-CAND-01` is **RAW PRODUCT-CORRECTION RECOVERY / NON-STABLE / UNPRICED / REVIEW REQUIRED**.
-- Four REDs remain on their established distinct surfaces: 368 prescribed-sphere event binding, 369 proposal saturation, 374 folded-cone invalid fixture/precondition, and 398 downstream prescribed-sphere owner. EXEC neither merges nor reprices them.
-- Stable accounting is still **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, packages **113** because EXEC does not price/promote.
+- **Accepted required-green predecessor into M4:** selector365, 365 identities, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains the retained final M3 audit surface and is not silently accepted as the M4 predecessor.
+- Ordinal370 is **CLOSED / RUNTIME-PROVED PRODUCT CORRECTION / NON-STABLE**. The four remaining audit REDs retain their separate owners: 368 prescribed sphere, 369 proposal saturation/quality, 374 folded-cone fixture precondition, 398 downstream of 368.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted packages **113**.
+- The AU0–AU9 mechanical-witness exit condition is MET. `M3-CP4c-3` and milestone M3 are **CLOSED / ACCEPTED**. Closure authority: `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md` and `M3_Closure_Record.md`.
 
-### Checkpoint state entering review
+### Exact M4-DEFN scope
 
-The AU0–AU9 mechanical-witness exit criterion remains **MET**: accepted 365/365, 366/367 green, protected 390/393/406/407 non-vacuously green, full report-only selector execution, and prohibited semantic shortcuts absent. CB54's falsifiable prediction is met exactly in raw TB48 evidence: ordinal370 alone moved RED→PASS.
+Follow `Architecture_M4_DEFN_Definition_Plan.md`. M4-DEFN is planning-only and executes nothing. It must:
 
-This still does **not** close CP4c-3. Independent TB48-REV must decide package113 promotion, ordinal370 closure, stable accounting and whether formal checkpoint closure follows from the already-met mechanical criterion. No retry, product/test patch, compile or new runtime is authorized before the review.
+1. derive M4's global conformity contract from `DESIGN.md` §14 M4 and `REORIENTATION_PLAN.md`;
+2. reconcile the roadmap's `M4-CP-COND` / `M4-CP-SCALE` proposals with the older `M4-CP1..CP4` decomposition into one non-overlapping chain;
+3. freeze the typed single-writer global schedule product, exact deterministic polynomial graph/flow formulation, positivity and subset-infeasibility certificate/error vocabulary, independent oracle/tamper matrix and witness reachability;
+4. extend only from accepted selector365, preserve its exact prefix, and state gating/non-gating status for every new identity;
+5. carry and schedule all three `G4-B002` produced-witness debts, adjudicate `G4-B004` at definition time, and keep M5/M6 work out;
+6. publish exactly one bounded first Code + Build plan with falsifiable build/future-runtime acceptance criteria.
 
-### Context Load Plan for `M3-CP4c-3-TB48-REV`
+No source/test/benchmark/build logic edit, selector mutation, compile, benchmark or Directional runtime is permitted in M4-DEFN.
+
+### Context Load Plan for `M4-DEFN`
 
 ```yaml
 load_next:
   - turn-based-coding-agent/references/turns/REVIEW.md
 conditional_modules:
-  - trigger: GitHub connector/Actions artifact or repository operations are required
-    path: turn-based-coding-agent/modules/github-connector/MODULE.md
-  - trigger: review issues corrective successor planning
+  - trigger: implementation design / corrective planning
     path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
+  - trigger: GitHub connector / workflow / artifact work
+    path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB48_EXEC_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB47_Independent_Review_Record.md
-  - .agents/Directional/Architecture_M3_CP4c3_CB54_Code_Build_Report.md
+  - .agents/Directional/Architecture_M4_DEFN_Definition_Plan.md
+  - .agents/Directional/M3_Closure_Record.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB48_Independent_Review_Record.md
+  - .agents/Directional/ROADMAP.md
+  - .agents/Directional/DESIGN.md
+  - .agents/Directional/REORIENTATION_PLAN.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-templates_when_producing: []
+templates_when_producing:
+  - turn-based-coding-agent/templates/REVIEW_REPORT.md
 do_not_preload:
   - sibling turn files
-  - superseded per-turn plans/reports
-  - unrelated product source
+  - module reference directories
+  - superseded CP4c per-turn reports/plans
   - research/provenance/examples
 ```
 

@@ -6,7 +6,7 @@ Last updated: 2026-09-09 UTC
 
 This is the single durable **task index** — open and blocked work only. It is deliberately forward-looking.
 
-Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, and `M3_CP4ab_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
+Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, `M3_CP4ab_Closure_Record.md`, and `M3_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
 
 **Do not re-accumulate per-checkpoint, per-retry, or per-partial narrative here.** A closed checkpoint gets one line in `ROADMAP.md` §1 and a closure record; it does not stay in this file.
 
@@ -26,22 +26,20 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB48-REV` — INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
+## Current focus — `M4-DEFN` — GLOBAL CONFORMITY DEFINITIONS / RUNTIME-FREE
 
-TB47/package112 remains the **reviewed semantic runtime authority** at **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0** until independent review decides whether raw TB48/package113 is promoted.
+`M3-CP4c-3-TB48-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**. Package113/TB48 is promoted as reviewed semantic runtime authority: source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, run/job `34409262512 / 102659650326`, **405 PASS / 4 RED / 0 SKIP**, accepted required-green prefix **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Ordinal370's `EmptyNetworkOnClosedSurface = 6` plus non-empty `sourceFace` product correction is runtime-proved and closes non-stably.
 
-`M3-CP4c-3-TB48-EXEC` is **COMPLETE / MECHANICALLY VALID / RAW 405 PASS / 4 RED / 0 SKIP / REVIEW REQUIRED**. Immutable package113 source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, artifact `10125000895`, executed selector409 exactly once per identity in run/job `34409262512 / 102659650326`: accepted **365/365**, RED `[368,369,374,398]`, zero selection mismatches/timeouts, ownership **300/0/0**, and all pre/post immutability plus artifact-only boundary checks passed. Result artifact `10126711178` has SHA-256 `07961a2339204b80f83feac8916e93578176363f9bdf0317ea85bdc095de5747`; log artifact `10126711588` has SHA-256 `1aab2f5f9b0d23f41ffd04a1467894f572604774ee2ee6ce9e42ee4b8f6dbd7d`.
+The restored AU0–AU9 mechanical-witness exit criterion is **MET**, including non-vacuous protected 390/393/406/407 evidence and full report-only selector409 execution. The four remaining RED rows retain their existing separate owners and do not redefine the frozen exit criterion. **CP4c-3 is CLOSED / ACCEPTED; M3 is CLOSED / ACCEPTED.** Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, packages **113**.
 
-CB54's falsifiable prediction is met in raw evidence: ordinal370 alone changes RED→PASS; its frozen identity requires `EmptyNetworkOnClosedSurface = 6` plus a non-empty `sourceFace` locus. EXEC records `M3-CP4c3-TB48-EXEC-CAND-01` as non-stable/unpriced recovery evidence only. The four remaining REDs reproduce their existing separate owners. Stable totals remain **47 / 14 / 33**, debt **5**, packages **113** pending review.
+The accepted M3 required-green selector entering M4 is **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains the retained final M3 audit surface; its four carried REDs are visible and separately owned, not silently accepted.
 
-The restored AU0–AU9 mechanical-witness exit criterion remains **MET**. CP4c-3 nevertheless stays **OPEN** until the mandatory independent review adjudicates package113 promotion, ordinal370 closure, stable accounting and checkpoint closure.
+Exact next is **`M4-DEFN`**, planning-only/runtime-free under `Architecture_M4_DEFN_Definition_Plan.md`. It must reconcile the roadmap's `M4-CP-COND` / `M4-CP-SCALE` proposals with the older `M4-CP1..CP4` chain, freeze one global conformity schedule product and its exact formulation/error/oracle/witness contracts, carry the three `G4-B002` produced-witness debts, adjudicate `G4-B004`, and issue one bounded first Code + Build plan. No implementation/test/fixture/selector mutation, compile, benchmark, or runtime is authorized in M4-DEFN.
 
-Exact next is **`M3-CP4c-3-TB48-REV`**, independent REVIEW + PLAN / runtime-free. No retry, implementation/test patch, compile or new runtime is authorized before review.
-
-- [x] Execute TB48 exactly as frozen against immutable package113 and selector409.
-- [x] Preserve 409/409 fresh-process execution, zero timeout/mismatch, exact artifact/selector/harness/source authority, equal package/source/execution-view pre/post censuses, and false build/repair/mutation/benchmark flags.
-- [x] Record raw 405/4 vector and ordinal370 RED→PASS without promotion or stable repricing.
-- [ ] Independently review TB48/package113, adjudicate ordinal370 recovery and four carried RED owners, perform mandatory REVIEW consolidation plus `ORIENTATION.md` update, and decide package113 promotion / formal CP4c-3 closure.
+- [x] Independently promote package113/TB48 and close ordinal370 non-stably.
+- [x] Confirm protected Part XII non-vacuity, stable accounting, four carried RED owners, AU0–AU9 exit condition, CP4c-3 closure and M3 closure.
+- [x] Perform mandatory REVIEW consolidation and update `ORIENTATION.md`.
+- [ ] Execute `M4-DEFN` and freeze one coherent M4 checkpoint chain plus the first Code + Build plan.
 
 ## Carried forward from M1
 
@@ -78,10 +76,9 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB47/package112 remains reviewed semantic runtime authority pending review**; **TB48/package113 raw execution is mechanically valid at 405 PASS / 4 RED**, accepted 365/365. The AU0–AU9 mechanical-witness exit criterion remains met. Exact next is independent `M3-CP4c-3-TB48-REV`.
+- [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-DEFN` NEXT**; also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -90,13 +87,13 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43: 390/393/406/407 executed the producer-owned census predicates and rejected same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE. TB45 is current runtime authority overall, but does not re-prove these four receipts because its successful plan trips the stale failure-required test precondition.
+- [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43: 390/393/406/407 executed the producer-owned census predicates and rejected same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE. TB45 historically exposed the stale failure-required precondition; package113/TB48 now re-proves all four receipts non-vacuously through `PlanFrontier`.
 - [x] **CP4c-3 protected Part XII success-path observability — CLOSED / RUNTIME-PROVED:** package111 ordinals 390/393/406/407 all PASS on `PlanFrontier`, execute the real census predicates, reject same-domain corruption and emit non-vacuous receipts.
 - [x] **CP4c-3 ordinal367 independent oracle — CLOSED / RUNTIME-PROVED / NON-STABLE:** TB47/package112 PASSes ordinal367 under the frozen high-side-only rule; package112 is promoted. Accepted ordinal307 remains a separately recorded latent stale equality and is unchanged.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
-- [ ] **CP4c-3 ordinal370 empty closed network — RAW RUNTIME RECOVERED / REVIEW PENDING:** package113 ordinal370 PASSes under the frozen identity requiring `EmptyNetworkOnClosedSurface = 6` plus a non-empty `sourceFace` locus. Promotion/closure remains withheld until TB48-REV.
+- [x] **CP4c-3 ordinal370 empty closed network — CLOSED / RUNTIME-PROVED / NON-STABLE:** package113 ordinal370 PASSes under the frozen identity requiring `EmptyNetworkOnClosedSurface = 6` plus a non-empty `sourceFace` locus. TB48-REV promotes package113 and closes `M3-CP4c2-TB-X2-R8-CAND-02` without changing stable accounting.
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
@@ -121,4 +118,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113** pending review. **TB47/package112 remains reviewed semantic runtime authority** at **404/5** until review; **TB48/package113 raw execution is mechanically valid at 405/4**, accepted **365/365**. Exact next is independent **`M3-CP4c-3-TB48-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; exact next is planning-only **`M4-DEFN`**. PR #8 remains open, draft, and unmerged.

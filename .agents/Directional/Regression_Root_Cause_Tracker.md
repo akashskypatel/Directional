@@ -1,4 +1,10 @@
-## M3-CP4c3-TB48-EXEC classification — **CURRENT RAW INTAKE / REVIEW REQUIRED / NON-STABLE EXEC**
+## M3-CP4c3-TB48-REV — independent adjudication — **CURRENT REVIEW / PACKAGE113 PROMOTED / ORDINAL370 CLOSED / CP4c-3 CLOSED / M3 CLOSED**
+
+Independent review re-opened TB48's primary result/log evidence and package113 source. TB48 is mechanically valid at **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Ordinal370 directly exercises the frozen `EmptyNetworkOnClosedSurface = 6` plus non-empty `sourceFace` locus and PASSes; static source matches the intended closed-empty-network product branch. `M3-CP4c3-TB48-EXEC-CAND-01` and `M3-CP4c2-TB-X2-R8-CAND-02` are **CLOSED / RUNTIME-PROVED / NON-STABLE**.
+
+The four remaining REDs reproduce existing separate owners (368 prescribed sphere, 369 saturation/quality, 374 folded-cone invalid fixture/precondition, 398 downstream of 368). No new failure surface or stable regression is created. Stable accounting therefore remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, packages **113**. Package113/TB48 is promoted reviewed semantic runtime authority. The AU0–AU9 mechanical-witness exit condition remains MET, so CP4c-3 and M3 close without treating the four carried audit REDs as accepted behavior.
+
+## M3-CP4c3-TB48-EXEC classification — **HISTORICAL RAW INTAKE / PROMOTED BY TB48-REV / NON-STABLE EXEC**
 
 - Mechanically valid raw execution: **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**; run/job `34409262512 / 102659650326`. Result/log artifacts `10126711178 / 10126711588` are hash-verified and 409/409 identities executed exactly once with zero selection mismatches/timeouts and immutable pre/post censuses.
 - **`M3-CP4c3-TB48-EXEC-CAND-01` — RAW PRODUCT-CORRECTION RECOVERY / REVIEW REQUIRED / NON-STABLE / UNPRICED.** Ordinal370 is PASS under immutable package113; its frozen identity asserts existing error code 6 `EmptyNetworkOnClosedSurface` and a non-empty `sourceFace` locus. EXEC does not close the owning `M3-CP4c2-TB-X2-R8-CAND-02`; independent review owns closure and package113 promotion.
@@ -6,7 +12,7 @@
 - EXEC makes no stable-pricing claim. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113** pending independent review.
 - **Exact next:** `M3-CP4c-3-TB48-REV`, independent REVIEW + PLAN / runtime-free.
 
-## M3-CP4c3-TB47-REV — independent adjudication — **CURRENT REVIEW / TB47 PROMOTED / ORDINAL367 RECOVERY CLOSED / CB54 FROZEN**
+## M3-CP4c3-TB47-REV — independent adjudication — **HISTORICAL REVIEW / SUPERSEDED BY TB48-REV / ORDINAL367 RECOVERY CLOSED**
 
 - **Verdict:** `approved_with_amendments`. Package112/TB47 is promoted as reviewed semantic runtime authority at
   **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0**.
@@ -4685,7 +4691,9 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - Execution run `33319546759` stopped in immutable preflight because Python ZIP extraction dropped packaged executable mode bits; zero Directional runtime.
 - The corrected caller was schema-valid on `33319885323`; authoritative run `33319911575` is the sole semantic R9 authority. **+0 stable accounting.**
 
-## M3-CP4c2-TB-X2-R8-CAND-02 — empty closed-network typed rejection is missing in product — **ACTIVE / PRODUCT / GATING AT 370 / CB54 FROZEN / NON-STABLE**
+## M3-CP4c2-TB-X2-R8-CAND-02 — **CLOSED / RUNTIME-PROVED PRODUCT CORRECTION / NON-STABLE**
+
+**TB48-REV closure:** package113/TB48 ordinal370 PASSes the unchanged frozen typed-error+locus identity. The product now emits `EmptyNetworkOnClosedSurface = 6` for a truly empty network on a closed non-empty source with deterministic non-empty `sourceFace`. This closes status only: +0 stable events / +0 stable recurrences.
 **TB47-REV update (2026-09-09).** TB47 again reaches the valid repaired torus witness and returns code 4
 `CellularityNotEstablished` with no source-face locus where frozen AK5 requires code 6 `EmptyNetworkOnClosedSurface`
 plus a locus. Static current-source review finds the enum value and name mapping already appended, but no emission
