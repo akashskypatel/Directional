@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB44-REV
-purpose=source-snapshot
-semantic_source_sha=16c1d234120178f30287c1f0f407a00c4fb48624
-retry=0
