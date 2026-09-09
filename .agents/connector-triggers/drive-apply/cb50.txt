@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-CB50-CLOSEOUT
-caller_install_sha=d9899ee604f20c0104c33a021d84822ddfe3509d
-base_sha=6d3dfd11c5073875494c5431e64f734bf942cb5c
-patch_sha256=bd6d5281bb07ac41076d740fe38a0beb8c5243c71f3078752a5317cfa9789b40
-runtime_execution=false

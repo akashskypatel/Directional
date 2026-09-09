@@ -1,4 +1,0 @@
-# M3-CP4c-3-CB50 temporary state
-.agents/connector-triggers/drive-apply/cb50.txt
-.agents/connector-triggers/compile/cb50.txt
-.agents/connector-triggers/source-snapshot/cb50-a17f6ce14635.txt
