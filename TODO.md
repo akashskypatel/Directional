@@ -26,26 +26,40 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB54` — CODE + BUILD / RUNTIME-FREE
+## Current focus — `M3-CP4c-3-TB48-EXEC` — TEST + BENCHMARK / ARTIFACT-ONLY
 
-TB47/package112 is now reviewed semantic runtime authority at **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**,
-RED `[368,369,370,374,398]`, ownership **300/0/0**. Ordinal367 is closed as runtime-proved non-stable test-authority
-recovery; stable totals remain **47 / 14 / 33**, debt **5**, packages **112**.
+TB47/package112 remains the **reviewed semantic runtime authority** at **404 PASS / 5 RED / 0 SKIP**, accepted
+**365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0**. CB54 is **COMPLETE / BUILD GREEN / PACKAGE113
+FROZEN** on semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`: the product now has exactly one
+`EmptyNetworkOnClosedSurface` producer, and no test, fixture, selector, enum, certifier, or other carried-owner byte
+changed.
 
-Exact next is **`M3-CP4c-3-CB54`** under
-`.agents/Directional/Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`.
+Immutable package113 is artifact `10125000895`, SHA-256
+`e5fb50f92bbf4c4ffae5afeb203d6738490f6410b3a7e49245607e1b2e7835e9`, from compile run/job
+`34404928469 / 102645952921`; the changed-owner compile job is `102645552394`. Package metadata is **28/28** manifest
+clean, `exactArithmeticBackend=GMP`, and `runtimeExecution=false`. Stable totals remain **47 / 14 / 33**, debt **5**,
+packages **113**.
 
-- [ ] Change only `src/geometry/SurfaceCutGraph.cpp`.
-- [ ] For a truly empty network on a closed source, emit existing typed `EmptyNetworkOnClosedSurface` with a
-  deterministic source-face locus before cut proposal/certification.
-- [ ] Preserve source/atlas/network binding validation, malformed-source fail-closed behavior, enum numbering,
-  tests, selector409, fixtures, certifier/proposal logic, and all other carried RED owners.
-- [ ] Compile `directional_surface_cell_producer_tests` first with mandatory GMP/GMPXX reusable workflow; execute no
+The restored AU0–AU9 exit criterion is **MET on promoted TB47 mechanical-witness evidence**: ordinals 366/367 and
+protected 390/393/406/407 are green and the measures' prohibitions remain intact. CP4c-3 nevertheless stays
+**OPEN** until package113 receives runtime evidence and independent review because CB54 changed product semantics after
+the last promoted runtime package.
+
+Exact next is **`M3-CP4c-3-TB48-EXEC`** under
+`.agents/Directional/Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md`.
+
+- [x] Change only `src/geometry/SurfaceCutGraph.cpp` for the semantic correction.
+- [x] Emit existing typed `EmptyNetworkOnClosedSurface` with deterministic source-face locus for a truly empty network
+  on a closed non-empty source, after source/atlas/network binding validation and before cut certification.
+- [x] Preserve malformed-source fail-closed behavior, enum numbering, tests, selector409, fixtures,
+  certifier/proposal logic, and all other carried RED owners.
+- [x] Compile `directional_surface_cell_producer_tests` first with mandatory GMP/GMPXX reusable workflow; execute no
   generated binary.
-- [ ] On green changed-owner compile, compile/package the full durable eight-target set on the same exact semantic
-  source with `runtimeExecution=false`.
-- [ ] If package113 is accepted, freeze exactly one artifact-only full selector409 Test + Benchmark plan at CB54
-  closeout. Do not execute that runtime in CB54.
+- [x] Compile/package the full durable eight-target set on the same exact semantic source with
+  `runtimeExecution=false`; package113 accepted as immutable build authority.
+- [x] Freeze exactly one full selector409 artifact-only TB plan for package113.
+- [ ] Execute TB48 exactly as frozen, preserving package bytes and modes and performing no build/repair/source/test/
+  fixture mutation. EXEC stops at `M3-CP4c-3-TB48-REV` regardless of semantic result.
 
 ## Carried forward from M1
 
@@ -83,7 +97,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB47/package112 is reviewed semantic runtime authority** at **404 PASS / 5 RED**, accepted 365/365. Exact next is runtime-free `M3-CP4c-3-CB54` for ordinal370.
+  CP4c-3 remains open. **TB47/package112 remains reviewed semantic runtime authority** at **404 PASS / 5 RED**, accepted 365/365; **CB54/package113 is compile-green build authority**. The AU0–AU9 mechanical-witness exit criterion is met, but package113 still requires TB48 runtime + independent review. Exact next is artifact-only `M3-CP4c-3-TB48-EXEC`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -100,7 +114,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
-- [ ] **CP4c-3 ordinal370 empty closed network — CB54 exact next:** frozen AK5 product red; current code returns generic `CellularityNotEstablished` instead of typed `EmptyNetworkOnClosedSurface` + locus. Only `SurfaceCutGraph.cpp` is authorized.
+- [ ] **CP4c-3 ordinal370 empty closed network — CB54 COMPILE-CORRECTED / TB48 RUNTIME PENDING:** semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` adds the single frozen AK5 product producer in `SurfaceCutGraph.cpp`; package113 is compile-green. Runtime credit is intentionally withheld until TB48 executes ordinal370 from the immutable package.
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
@@ -125,4 +139,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **112**. **TB47/package112 is reviewed semantic runtime authority** at **404/5**, accepted **365/365**. Exact next is runtime-free **`M3-CP4c-3-CB54`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **TB47/package112 remains reviewed semantic runtime authority** at **404/5**, accepted **365/365**; **CB54/package113 is immutable compile authority**. Exact next is artifact-only **`M3-CP4c-3-TB48-EXEC`**. PR #8 remains open, draft, and unmerged.

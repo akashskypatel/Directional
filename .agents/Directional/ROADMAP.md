@@ -10,16 +10,9 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-09 (**CP4c-2 CLOSED / ACCEPTED at 365/365; CP4c-3 OPEN.** **TB47/package112 is promoted runtime authority**: selector409, **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, ownership 300/0/0. Ordinals 366 and 367 are both cleared and the four protected Part XII identities are green on the successful-plan subject, so **the mechanical-witness surface is green**; the five remaining REDs `[368,369,370,374,398]` are the inherited sphere / quality / empty-network debt named in CP4c-3's own domain. Stable accounting remains 47 / 14 / 33, debt 5, packages 112. **NEXT: `M3-CP4c-3-CB54`**, runtime-free, taking `EmptyNetworkOnClosedSurface` from **zero producers to exactly one** for ordinal 370 — and stating, against **AU0–AU9**, whether CP4c-3's exit condition is now met.)
-promoted semantic runtime authority at **399 PASS / 10 RED**, accepted **365/365**. CB51/package111 is immutable
-build/package authority. TB46-EXEC was pre-runtime orchestration-invalid (`0/409` executed); stable accounting
-remains **47 / 14 / 33**, debt **5**. **NEXT: `M3-CP4c-3-CB52`**, control-plane-only orchestration correction,
-then `TB46-R1` only after green runtime-free preflight.)
+**Status date:** 2026-09-09 (**CP4c-2 CLOSED / ACCEPTED at 365/365; CP4c-3 OPEN.** TB47/package112/selector409 remains promoted runtime authority at **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, ownership **300/0/0**. **CB54/package113 is immutable compile authority** on semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`; package artifact `10125000895` is compile-green with GMP/GMPXX, 28/28 manifest proof and `runtimeExecution=false`. The AU0–AU9 **mechanical-witness exit condition is MET** on promoted TB47 evidence. Formal CP4c-3 closure remains OPEN only because package113 changes product behavior and therefore still needs runtime validation + independent review. Stable accounting remains 47 / 14 / 33, debt 5, packages 113. **NEXT: `M3-CP4c-3-TB48-EXEC`**, artifact-only.)
 
-**Current CP4c-3 authority (2026-09-09):** Part VIII + Part XI/Part XI-A remain topology/ownership authority.
-TB45/package110/selector409 remains promoted semantic runtime authority at 399 PASS / 10 RED, accepted 365/365.
-CB51/package111 compiles the corrected independent terminal-separation oracle plus successful-plan Part XII
-observability. TB46-EXEC failed before package preflight and carries no semantic credit. No DEFN-R9 is required.
+**Current CP4c-3 authority (2026-09-09):** Part VIII + Part XI/Part XI-A + Part XII remain topology/ownership authority. TB47/package112 is the reviewed semantic runtime baseline; CB54/package113 is the exact compile/package successor. The remaining carried owners are 368 sphere, 369 proposal quality, 374 folded-cone fixture/precondition, and 398 downstream of 368 if CB54's ordinal370 prediction is confirmed at runtime.
 
 ## 1. Where the project actually is
 
@@ -28,7 +21,7 @@ observability. TB46-EXEC failed before package preflight and carries no semantic
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB45/package110 remains promoted** at 399 PASS / 10 RED, accepted **365/365**; **package111 immutable; TB46-EXEC pre-runtime orchestration-invalid; CB52 next**. |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB47/package112 remains promoted runtime authority** at 404 PASS / 5 RED, accepted **365/365**; **CB54/package113 compile-green**; AU0–AU9 mechanical exit criterion met; **TB48-EXEC next**. |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -82,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN.** Promoted authority **TB47/package112**: **404 PASS / 5 RED**, accepted **365/365**. Ordinals 366/367 cleared and the protected Part XII identities are green on the successful-plan subject — **the mechanical-witness surface is green**, and the five remaining REDs are this row's own inherited debt. **NEXT:** runtime-free `M3-CP4c-3-CB54` for ordinal 370, which must also state against **AU0–AU9** whether the exit condition is met. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN pending package113 runtime + review.** Promoted runtime authority **TB47/package112**: **404 PASS / 5 RED**, accepted **365/365**. **CB54/package113** adds the frozen ordinal370 product producer and is compile-green only. The **AU0–AU9 mechanical-witness exit criterion is MET** on TB47 evidence; formal closure waits only to validate the changed package. **NEXT:** artifact-only `M3-CP4c-3-TB48-EXEC`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

@@ -1,3 +1,37 @@
+## 2026-09-09 — `M3-CP4c-3-CB54`: empty-closed-network typed rejection compile-green; package113 frozen
+
+Code + Build only. No Directional runtime, test, benchmark, discovery/list/help command, or packaged executable was
+run. Semantic source **`6dae3f6959551f6dcdd81f153aedb5f38411a96b`** changes exactly one product file,
+`src/geometry/SurfaceCutGraph.cpp`, by five added lines. After source/atlas/network binding validation it recognizes a
+truly empty network (`nodes`, `mandatory_edges`, `candidate_traces` all empty); exact source topology proves whether
+the source is closed; malformed topology remains `NonManifoldSource`; a closed non-empty source returns existing
+`EmptyNetworkOnClosedSurface = 6` with deterministic `sourceFace`. Static census moves that error from **zero product
+producers to exactly one**. Tests, fixtures, selector409, enum numbering, certifier/proposal semantics and separately
+owned 368/369/374/398 behavior are unchanged.
+
+Mandatory GMP/GMPXX compile run **`34404928469`** is green. Changed-owner job `102645552394` compiled
+`directional_surface_cell_producer_tests`; package job `102645952921` compiled the full durable eight-target set on
+the same exact semantic source. Immutable **package113** result artifact `10125000895` has SHA-256
+`e5fb50f92bbf4c4ffae5afeb203d6738490f6410b3a7e49245607e1b2e7835e9`; package log artifact `10125001562` has
+SHA-256 `a59d643756dd98ea73829ef6e8fbb212c84bb3cd382b36c1f7859961fceb8227`. Root manifest verifies **28/28**;
+packaged source archive SHA-256 is `321d123d09d5ef65defb76d8361e800dd787628a2b571c6b7d3fd8588f28e730`;
+metadata records `exactArithmeticBackend=GMP` and `runtimeExecution=false`.
+
+TB47/package112 therefore remains reviewed semantic runtime authority at **404 PASS / 5 RED / 0 SKIP**, accepted
+**365/365**, ownership **300/0/0**. Stable accounting stays **47 events / 14 categories / 33 recurrences**, debt
+**5**; accepted package count advances to **113**.
+
+The AU0–AU9 criterion that ROADMAP retained by name has been restored verbatim in substance to
+`M3_CP4c_Current_And_Forward.md` from the folded TB5 review lineage and re-evaluated against promoted TB47 evidence.
+**The mechanical-witness exit condition is MET.** Formal CP4c-3 state nevertheless remains **OPEN** because CB54
+changes product behavior after the last promoted runtime package; package113 must receive artifact-only runtime
+evidence and independent review before closure is asserted.
+
+Frozen exact successor: **`M3-CP4c-3-TB48-EXEC`**, using
+`Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md`. CB54's falsifiable prediction is ordinal370 only
+RED→PASS, aggregate **405 PASS / 4 RED / 0 SKIP**, RED `[368,369,374,398]`; a different runtime result is evidence,
+never permission to weaken the gate. EXEC stops at independent `M3-CP4c-3-TB48-REV`.
+
 ## 2026-09-09 — `M3-CP4c-3-TB47-REV` verification pass: upheld; the exit condition needs re-asking
 
 Static verification of the delegated `M3-CP4c-3-TB47-REV`. No runtime, no compile, no package operation, no

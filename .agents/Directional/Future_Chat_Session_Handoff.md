@@ -116,74 +116,87 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB54` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
+## Mandatory next turn — `M3-CP4c-3-TB48-EXEC` — EXACT NEXT / TEST + BENCHMARK / ARTIFACT-ONLY
 
-`M3-CP4c-3-TB47-REV` is **COMPLETE / APPROVED WITH AMENDMENTS / PACKAGE112 PROMOTED**.
+`M3-CP4c-3-CB54` is **COMPLETE / BUILD GREEN / PACKAGE113 FROZEN / NO RUNTIME EXECUTED**.
 
-### Current authorities
+### Authority entering TB48
 
-- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
-- PR #8 remains open, draft, and unmerged.
-- **Reviewed semantic runtime authority:** TB47/package112/selector409, **404 PASS / 5 RED / 0 SKIP**, accepted
-  **365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0**.
-- TB47 run/job `34397425632 / 102620523147`; result/log artifacts `10122211479 / 10122212347`.
-- Immutable package112 artifact `10119861923`, semantic source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, SHA-256
-  `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
-- Selector409 remains 409 rows at SHA-256
-  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
-- Stable accounting **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted package
-  count **112**.
-- Ordinal367 is **CLOSED / RUNTIME-PROVED TEST-AUTHORITY CORRECTION RECOVERY / NON-STABLE**. Accepted ordinal307
-  remains PASS with its separately recorded latent stale equality unchanged.
-- Five carried REDs retain separate owners; ordinal370 is the exact next product owner.
+- **Reviewed semantic runtime authority remains TB47/package112/selector409:** **404 PASS / 5 RED / 0 SKIP**,
+  accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0**.
+- TB47 run/job `34397425632 / 102620523147`; result artifact `10122211479`, SHA-256
+  `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366`; log artifact `10122212347`, SHA-256
+  `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`.
+- **CB54 semantic evidence commit:** `6dae3f6959551f6dcdd81f153aedb5f38411a96b`. Its only semantic change is five
+  added lines in `src/geometry/SurfaceCutGraph.cpp`, taking `EmptyNetworkOnClosedSurface` from zero product producers
+  to exactly one. Source/atlas/network binding checks still precede the new branch; malformed source remains
+  fail-closed as `NonManifoldSource`; tests, fixtures, selector409, public enum numbering, certifier/proposal logic,
+  and all other RED owners are byte-unchanged.
+- **Immutable package113 build authority:** artifact `10125000895`, SHA-256
+  `e5fb50f92bbf4c4ffae5afeb203d6738490f6410b3a7e49245607e1b2e7835e9`; compile run `34404928469`, changed-owner
+  job `102645552394`, package job `102645952921`. Root manifest **28/28**, packaged source archive SHA-256
+  `321d123d09d5ef65defb76d8361e800dd787628a2b571c6b7d3fd8588f28e730`,
+  `exactArithmeticBackend=GMP`, `runtimeExecution=false`.
+- Package113 log artifact `10125001562`, SHA-256
+  `a59d643756dd98ea73829ef6e8fbb212c84bb3cd382b36c1f7859961fceb8227`. Owner result/log artifacts are
+  `10124966461 / 10124967268` with SHA-256
+  `3fe0ac2eca5cbacb16745e9e2efa21c334813eb73e89318ac6cc4871c6272007` /
+  `2e328b3b5cc35c4a1fd6a89e9b20d60a92725799fe2a1f85301c2161263bf371`.
+- Selector409 SHA-256 is `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; generic
+  artifact-only harness SHA-256 is `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted
+  package count **113**.
 
-### Frozen CB54 work
+### AU0–AU9 exit-condition adjudication
 
-Follow `.agents/Directional/Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md` exactly.
+The AU0–AU9 measures were restored from the historical TB5 review into
+`M3_CP4c_Current_And_Forward.md`. Against promoted TB47 evidence, **the CP4c-3 mechanical-witness exit condition is
+MET**: the accepted prefix is 365/365, ordinals 366/367 are green, protected 390/393/406/407 are non-vacuously green,
+selector409 executes the complete post-first-red report-only surface, exactness/reportability restrictions remain
+intact, and the sphere/quality/folded-cone owners remain separate.
 
-- Edit only `src/geometry/SurfaceCutGraph.cpp`.
-- After source/atlas/network binding validation and before cut proposal/certification, recognize a truly empty network
-  (`nodes`, `mandatory_edges`, `candidate_traces` all empty).
-- Use existing exact source-topology boundary-loop authority; malformed/unavailable topology stays fail-closed.
-- On a closed non-empty source, return existing appended `EmptyNetworkOnClosedSurface` and set deterministic
-  `sourceFace` locus.
-- Do not edit tests, selector409, fixtures, enum numbering, certifier/proposal semantics, sphere 368/398, saturation
-  369, folded-cone 374, accepted ordinal307, or protected 390/393/406/407.
-- Compile changed-owner target `directional_surface_cell_producer_tests` first through mandatory GMP/GMPXX reusable
-  workflow. Execute no Directional runtime/discovery/help/list/ctest/benchmark command.
-- If green, compile/package the full durable eight-target set on the same exact semantic source. Package113 is
-  accepted only with clean source, manifest proof, exact GMP backend and `runtimeExecution=false`.
-- On accepted package, freeze exactly one full selector409 artifact-only TB plan at CB54 closeout; do not run it in
-  CB54.
+This does **not** close CP4c-3 yet. CB54 changed product semantics after the last promoted runtime package, so formal
+checkpoint closure remains **OPEN pending package113 runtime validation and independent review**. The four inherited
+owners that are expected to remain after ordinal370 clears do not themselves falsify the mechanical-witness exit
+criterion.
 
-### Review findings that must not be reopened
+### Frozen TB48-EXEC work
 
-1. TB47 is promoted; TB46-R1/package111 is historical authority.
-2. Ordinal367 recovery adds no stable event/recurrence.
-3. Ordinal307 is latent test-authority debt only; do not pre-emptively modify it in CB54.
-4. 368/369/370/374/398 are separate owners. CB54 owns only 370.
-5. 368 remains blocked at the sphere `TraceEventPositionInvalid` provenance frontier; 398 is downstream of 368.
-6. 369 remains proposal-quality debt; 374 remains a separately deferred invalid-fixture repair.
+Follow `.agents/Directional/Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md` exactly.
 
-### Context Load Plan for `M3-CP4c-3-CB54`
+- Execute only immutable package113 artifact `10125000895`; no configure, compile, relink, regeneration, chmod,
+  package repair, source/test/fixture/selector mutation, or benchmark execution.
+- Extract with an ordinary archive tool that preserves executable mode bits. Python `zipfile.extractall` is
+  prohibited for executable payloads. Missing executable mode is orchestration failure, not permission to repair.
+- Re-verify package SHA-256, root **28/28** manifest, exact source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`,
+  GMP/GMPXX evidence, selector409 and generic-harness hashes, and immutable pre/post censuses.
+- Execute all 409 selector identities exactly once in ordinal order, one fresh process/work directory per identity,
+  using the frozen generic harness and the established `timeout -k 5s 180s` per-identity control. There is **no
+  outer elapsed cutoff** and no suite-level timeout.
+- Accepted prefix 1–365 remains gating. Every identity after the first RED is report-only with zero gate credit.
+- **Falsifiable CB54 prediction:** ordinal370 alone changes RED→PASS by observing existing error code 6 with a
+  non-empty deterministic source-face locus; aggregate becomes **405 PASS / 4 RED / 0 SKIP**, RED
+  `[368,369,374,398]`; 367 and protected 390/393/406/407 remain PASS. This is a prediction, never a reason to weaken
+  or reinterpret a different result.
+- TB48-EXEC preserves raw evidence only. Whether the prediction holds or fails, the exact next boundary is
+  independent **`M3-CP4c-3-TB48-REV`**. EXEC must not patch, recompile, reprice, promote, or declare closure.
+
+### Context Load Plan for `M3-CP4c-3-TB48-EXEC`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
+  - turn-based-coding-agent/references/turns/TB-EXEC.md
 conditional_modules:
-  - trigger: implementation design/corrective work is being applied
-    path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
-  - trigger: GitHub connector/workflow/package operations are required
+  - trigger: GitHub connector/Actions artifact operations are required
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB48_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_CB54_Code_Build_Report.md
   - .agents/Directional/Architecture_M3_CP4c3_TB47_Independent_Review_Record.md
-  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - src/geometry/SurfaceCutGraph.cpp
-  - include/directional/geometry/SurfaceCutGraph.h
 templates_when_producing: []
 do_not_preload:
+  - sibling turn files
   - superseded per-turn plans/reports
   - unrelated product source
   - research/provenance/examples
