@@ -1,0 +1,42 @@
+name: M3 CP4c3 TB46 R1 Closeout Apply
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/tb46-r1-closeout-apply/tb46-r1-closeout-apply-20260909.txt]
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-tb46-r1-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb46-r1-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1SSbp3q0g1GusMdQ03xhqwsL8WtRRhYnF
+      patch_sha256: bf6998edd67740fe1934be35aad2b4ac5644b92abc8f1b992779c626b515de5d
+      base_sha: fd9819d4976f739c29fbf37ef1da65f0780c3e32
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: record M3-CP4c-3-TB46-R1 semantic red"
+      retention_days: 14
+    secrets: inherit
