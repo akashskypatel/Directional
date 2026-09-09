@@ -1,0 +1,4 @@
+# M3-CP4c-3-TB47-REV temporary-state cleanup
+.agents/connector-triggers/source-snapshot/tb47-rev-20260909.txt
+.agents/connector-triggers/tb47-rev-drive/tb47-rev-drive-20260909.txt
+.agents/connector-triggers/tb47-rev-inventory/tb47-rev-inventory-20260909.txt
