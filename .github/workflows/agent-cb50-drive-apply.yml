@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1TB9H4gc2kwzTETgWCiwF3V7dte5Vjbrr
-      patch_sha256: 13f4ba610b797a826a3507422c0ada960fb52f9451439a740995c838101c9a90
-      base_sha: a17f6ce14635dcdbbb81a80ac215a4cbd60d3ffb
+      file_id: 1CaN5aA75DAnFDXqUzmDQcLmPUk0TV0h9
+      patch_sha256: bd6d5281bb07ac41076d740fe38a0beb8c5243c71f3078752a5317cfa9789b40
+      base_sha: 6d3dfd11c5073875494c5431e64f734bf942cb5c
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M3-CP4c-3-CB50: partition fragment-corner fans and type terminal evidence'
+      commit_message: 'docs: close CB50 and freeze TB45 artifact-only plan'
       retention_days: 14
     secrets: inherit
