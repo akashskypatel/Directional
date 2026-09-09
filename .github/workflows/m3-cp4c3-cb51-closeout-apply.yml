@@ -1,0 +1,48 @@
+name: M3 CP4c3 CB51 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb51-closeout-apply/cb51-closeout-20260909.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m3-cp4c3-cb51-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb51-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb51-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 13cSEEPjBbyKqIxDhChoXAhuzvUvB0H9D
+      patch_sha256: 57b1c9b272c0955e404e2fa2221856fd7355f8c23c356cd74af94dfd7d8e3350
+      base_sha: 4f0663ef3468996abce6f59109f1c67f5be5f604
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-CB51: close out package111 and freeze TB46"
+      retention_days: 14
+    secrets: inherit
