@@ -10,27 +10,19 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-TB44-EXEC` raw artifact-only closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB44-REV` independent adjudication.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB43` is the current valid semantic runtime authority**, promoted at TB43-REV. Selector **409**,
-**402 PASS / 7 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, on immutable
-CB48/package108 artifact `10076272909` / source `531b517fb129425f113b5f811215f1d2b1939ee2`, run/job
-`34280642422 / 102244347209`. Result/log artifacts are `10077594302 / 10077595162`.
+**`M3-CP4c-3-TB44` / package109 / selector409 is the current valid semantic runtime authority**, promoted at TB44-REV: **398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, run/job `34295565963 / 102291328376`, result/log artifacts `10083047547 / 10083047938`, exact package source `cf969597bda5c49e734b98db0c0165b421c4ee12`.
 
-Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
-**47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**. Package count is **109** as a build
-fact; TB43/package108 remains semantic runtime authority.
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**.
 
-TB43-REV closed the Part XII protected-census candidate and root-caused 366/367 as predicate drift in the orbit-keyed
-fragment-corner ownership projection. CB49 applied the bounded correction and compiled/package-proved it as package109.
-TB44 has now measured package109 artifact-only at **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, without
-promoting that vector. 366/367 advance to `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch`; 390/393/406/407
-change from PASS to RED while retaining all Part XII non-vacuity receipts. Exact next is independent
-**`M3-CP4c-3-TB44-REV`**.
+TB44-REV resolves both new raw surfaces without a definition turn. 366/367 are a product-side continuation of the fragment-corner ownership projection: the consumer aggregates carrierless rays per face and assumes one source corner, while each ray already carries exact source-corner authority. 390/393/406/407 are test-authority REDs: their real `P_U` predicates and corrupted-copy negatives still pass, but a shared helper unconditionally requires R8.3 current-region evidence even when failure occurs before the region loop and the authoritative subject is only a source face.
+
+**Exact next: `M3-CP4c-3-CB50`**, runtime-free, under `Architecture_M3_CP4c3_CB50_Code_Build_Plan.md`. No DEFN-R9.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -519,6 +511,16 @@ This is raw EXEC intake only. TB43/package108 remains promoted semantic runtime 
 47 / 14 / 33, debt 5, packages 109. **Exact next is independent `M3-CP4c-3-TB44-REV`**. No new runtime or compile is
 authorized before review adjudication.
 
+### TB44 review adjudication — promoted; whole-face ray bucket and terminal-evidence helper root-caused
+
+Independent TB44-REV promotes package109/selector409 at **398 PASS / 11 RED**, accepted **365/365**. The exact CB49 old owner-missing locus is gone, so CB49 stands.
+
+366/367 now fail because `build_fragment_corner_incidence()` stores exact `sourceCorner` per `RayCut` but groups all carrierless rays under one `raysByFace[sourceFace]`, sorts the whole bucket, and rejects any ray whose source corner differs from the first. The failing face is a valid 3-fragment / 3-owner, two-chord, non-crossing local arrangement. Existing Part VIII authority therefore requires per-`(sourceFace, sourceCorner)` fan validation and set-wise publication, not a whole-face single-corner chain.
+
+390/393/406/407 still prove Part XII's producer-owned census predicates and same-domain corruption rejection. Their RED is the region-only helper: `build_fragment_corner_incidence()` fails before `build_region_certificates()` enters `for (const auto &region : regions)`, so no current region exists. R8.1 names the source face as the failure subject; R8.3 requires region/fragment evidence only when a current region exists. CB50 fixes this test-authority applicability without weakening the producer oracle.
+
+Stable accounting remains 47 / 14 / 33, debt 5, packages 109. Five carried RED owners remain unchanged.
+
 ## 4. Open candidates
 
 Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the index.
@@ -527,9 +529,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
 | `M3-CP4c3-TB40-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 proves 390/393/406/407 execute the producer-owned `P_U` predicate, classify the terminal subject `Outside`, and reject same-domain corruption. |
-| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / CORRECTION RUNTIME-ADVANCED / NON-STABLE / TB44-REV PENDING** — CB49 aligned the fragment-corner predicate. TB44 mechanically proves the exact TB43 owner-missing locus no longer reproduces; 366/367 now first-red at `FragmentCornerSourceCornerMismatch`. Review owns whether the downstream guard is lawful or a new/recurring defect. |
-| `M3-CP4c3-TB44-EXEC-CAND-01` | **RAW DOWNSTREAM SURFACE / NON-STABLE / UNPRICED** — 366/367 at `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch`, source face `10,11,79`; semantic owner pending TB44-REV. |
-| `M3-CP4c3-TB44-EXEC-CAND-02` | **RAW PROTECTED-SURFACE COLOR REGRESSION / NON-STABLE / UNPRICED** — 390/393/406/407 RED at owner-relation + missing region-source-face-count assertions while all Part XII non-vacuity receipts remain present; semantic owner pending TB44-REV. |
+| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / SAME OWNER / NON-STABLE / CB50** — CB49 fixed the separation predicate and TB44 proves the old owner-missing locus gone. TB44-REV assigns the downstream `FragmentCornerSourceCornerMismatch` to whole-face vs source-corner-fan authority conflation; CB50 owns the bounded projection correction. |
+| `M3-CP4c3-TB44-EXEC-CAND-01` | **ROOT-CAUSED / PRODUCT-SIDE / RP-01 / NON-STABLE / CB50** — all carrierless rays on a face are wrongly validated as one source-corner fan; partition by `(sourceFace, sourceCorner)` and retain per-fan chain checks. |
+| `M3-CP4c3-TB44-EXEC-CAND-02` | **ROOT-CAUSED / TEST-AUTHORITY / RP-01 / NON-STABLE / CB50** — producer `P_U` predicates remain proved; shared terminal helper wrongly requires current-region fields for a source-face failure raised before the region loop. |
 | `M3-CP4c3-TB41-REV-CAND-01` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 publishes the complete owner-orbit set and expected-orbit membership required by Part XII; it served its diagnostic purpose. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |

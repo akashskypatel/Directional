@@ -1,4 +1,17 @@
-## M3-CP4c3-TB44-EXEC classification — **CURRENT RAW / REVIEW PENDING / NON-STABLE EXEC**
+## M3-CP4c3-TB44-REV — independent adjudication — **CURRENT REVIEW / TB44 PROMOTED / CB50 FROZEN**
+
+- **Promoted authority:** TB44/package109/selector409, run/job `34295565963 / 102291328376`, **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts `10083047547 / 10083047938` are hash-verified; immutable pre/post byte+mode censuses match; zero timeouts under the restored 180-second per-identity control; build/repair/mutation flags are false.
+- **`M3-CP4c3-TB44-EXEC-CAND-01` — ROOT-CAUSED / PRODUCT-SIDE / SAME OWNER / NON-STABLE / CB50.** CB49's exact TB43 owner-missing locus is gone. The new `FragmentCornerSourceCornerMismatch` is caused by `build_fragment_corner_incidence()` grouping all carrierless rays by source face, then requiring the whole bucket to share one `sourceCorner`. Each ray already carries exact `sourceCorner`; the failing face has 3/3/3 fragment-owner cardinality and two non-crossing trace chords. The consumer conflates distinct source-corner fans on one face. Correct by partitioning/validating rays by `(sourceFace, sourceCorner)` and merging the existing orbit→corner set publication. This continues `M3-CP4c3-TB40-REV-CAND-02`; it is not a new stable event and CB49 is not reverted.
+- **`M3-CP4c3-TB44-EXEC-CAND-02` — ROOT-CAUSED / TEST-AUTHORITY / RP-01 / NON-STABLE / CB50.** 390/393/406/407 still execute their real `P_U` predicates and reject same-domain corruption. Their RED is the shared helper's unconditional demand for R8.3 current-region evidence. Package109 now fails inside `build_fragment_corner_incidence()` before `build_region_certificates()` enters its region loop, so the authoritative terminal subject is a source face and region-only fields are correctly absent. Part XII R8.1 names source-face vs region subjects; R8.3 is explicitly conditional on a current `GlobalTopologyRegion`. Correct the helper to require region evidence only when a current region exists, require source-face evidence/absence of fabricated region fields otherwise, and fail closed if neither subject resolves. The producer census closure remains valid.
+- **No DEFN-R9.** Part VIII, Part XI/Part XI-A and Part XII already decide both corrections. R8.2 specifically forbids using stage chronology as set-membership authority.
+- **Carried REDs:** 368, 369, 370, 374 and 398 remain under their prior independent owners; no merge/repricing is justified.
+- **Protected controls:** 311/312/314/315/356/357/404/408/409 PASS; ownership remains 300 established / 0 unavailable / 0 conflicting; retired-code silence remains.
+- **Stable-count rationale:** accepted 365/365 is unchanged. The 366/367 surface is continuation of an existing non-stable projection owner, and 390/393/406/407 are test-authority color changes while their product predicates remain proved. Totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**.
+- **Exact successor:** `M3-CP4c-3-CB50`, Code + Build, runtime-free, under `Architecture_M3_CP4c3_CB50_Code_Build_Plan.md`.
+
+---
+
+## M3-CP4c3-TB44-EXEC classification — **HISTORICAL RAW INTAKE / PROMOTED BY TB44-REV / NON-STABLE EXEC**
 
 - **Execution authority:** immutable package109 source `cf969597bda5c49e734b98db0c0165b421c4ee12`, artifact
   `10081938891`, selector409, run/job `34295565963 / 102291328376`, result/log artifacts

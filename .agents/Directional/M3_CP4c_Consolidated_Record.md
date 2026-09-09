@@ -681,6 +681,22 @@ root-caused to predicate drift between `build_regions()` and `build_fragment_cor
 every final no-barrier segment while region ownership drops only same-orbit/non-separating cases. Existing Part VIII
 and Part XI authority decide a bounded CB49 correction; no new definition is required.
 
+### Consolidated on 2026-09-08 at `M3-CP4c-3-TB44-REV`
+
+Mandatory REVIEW consolidation. Durable TB43/CB49/TB44-plan facts are preserved in this record, the TB44 review record, tracker, ORIENTATION, current/forward state and CHANGELOG before superseded per-turn documents are folded. TB44 EXEC remains the current runtime-authority report; TB44-REV remains the current review record; CB50 is the single retained next-turn plan.
+
+| Folded/indexed document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB43_EXEC_Report.md` | 161 | superseded runtime authority — package108/selector409 402 PASS / 7 RED, accepted 365/365; Part XII recovered and 366/367 retained the owner-missing locus |
+| `Architecture_M3_CP4c3_TB43_Independent_Review_Record.md` | 232 | superseded review authority — promoted TB43, root-caused separation-predicate drift, froze CB49 and restored TB44 timeout control |
+| `Architecture_M3_CP4c3_CB49_Code_Build_Plan.md` | 131 | consumed build plan — align only the corner-incidence separation predicate and preserve graph/region/partition/selector semantics |
+| `Architecture_M3_CP4c3_CB49_Code_Build_Report.md` | 195 | consumed build report — package109 compile-green, exact source `cf969597...`, GMP/GMPXX, runtime-free; CB49 old-locus correction later runtime-advanced in TB44 |
+| `Architecture_M3_CP4c3_TB44_Artifact_Only_Test_Benchmark_Plan.md` | 273 | consumed evidence contract — package109/selector409 full gate with restored per-identity timeout; raw result promoted by TB44-REV |
+
+**Folded here:** 5 documents, **992 lines**. **Running total: 141 documents, 26,958 lines.** Exact bytes remain recoverable from Git history.
+
+**Review conclusion retained here.** TB44/package109 is promoted at 398 PASS / 11 RED, accepted 365/365. CB49 is not reverted: its exact owner-missing locus disappeared. The next product defect is whole-face aggregation of carrierless rays that already carry exact source-corner authority. The four protected census identities still prove their producer predicates; their RED is a shared test helper broadening R8.3 current-region evidence to a source-face failure raised before the region loop. Existing Part VIII/Part XI/Part XII decide CB50; no DEFN-R9. Stable accounting remains 47 / 14 / 33, debt 5, packages 109.
+
 ## 6. Historical retirement
 
 All files below are historical-only after consolidation. Their exact bytes remain recoverable from Git history; current/future authority does not depend on them except where selector lineage is explicitly retained in §1.

@@ -1,3 +1,17 @@
+## 2026-09-08 — `M3-CP4c-3-TB44-REV`: TB44 promoted; two authority-domain collapses root-caused; CB50 frozen
+
+Independent evidence-only review. No compile, runtime, package mutation, product/test/fixture/selector edit or stable repricing occurred in the review itself.
+
+**TB44/package109/selector409 is promoted semantic runtime authority:** **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`; run/job `34295565963 / 102291328376`; result/log artifacts `10083047547 / 10083047938`; exact package source `cf969597bda5c49e734b98db0c0165b421c4ee12`. Immutable pre/post censuses match and zero timeouts occurred under the restored 180-second per-identity control.
+
+**366/367:** CB49 stands because its exact TB43 `RegionSourceFaceOwningFragmentMissing` locus is gone. The new `FragmentCornerSourceCornerMismatch` is root-caused to a whole-face aggregation that discards source-corner grouping authority: each `RayCut` carries exact `sourceCorner`, but `raysByFace[sourceFace]` is sorted/validated as one corner fan. The failing face is 3 fragments / 3 owners / 3 expected, two non-crossing chords. CB50 partitions carrierless rays by `(sourceFace, sourceCorner)`, keeps per-fan duplicate/chain checks and merges only through the existing set-valued corner map.
+
+**390/393/406/407:** their real `P_U` predicates still run and deliberately corrupted same-domain copies are rejected. The RED is test-authority: `expect_outside_region_certification_evidence()` unconditionally requires R8.3 current-region evidence. Package109 fails inside `build_fragment_corner_incidence()` before `build_region_certificates()` enters its region loop, so the authoritative terminal subject is a source face and region-only fields are correctly absent. Part XII already decides this; no DEFN-R9. CB50 types the terminal subject without weakening the producer oracle.
+
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**, ownership **300/0/0**. Carried RED owners 368/369/370/374/398 are unchanged. Exact next: **`M3-CP4c-3-CB50`**, Code + Build, runtime-free.
+
+---
+
 ## 2026-09-08 — `M3-CP4c-3-CB49`: corner-incidence separation predicate aligned; package109 compile-green
 
 Code + Build only; **no Directional runtime executed**. CB49 changes one semantic file,
