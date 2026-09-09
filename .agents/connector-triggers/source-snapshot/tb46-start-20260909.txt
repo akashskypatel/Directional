@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB46-EXEC
+purpose=exact source snapshot for mandatory start-of-turn inspection
+requested_branch_head_before_marker=0ca730f08aa78ca6668e12ab9edc46e3e27040b6
+read_mode=snapshot
