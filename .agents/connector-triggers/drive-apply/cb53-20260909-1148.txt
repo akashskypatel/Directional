@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB53 apply preserved test-authority patch
-caller_install_sha=0cad8f91e4e2f19147ea27b67c30dd10e88eca0d
-patch_sha256=c84b5d727d8e8cb0a31a0655fdc6d9ca20a105bbbfbdd223624d22c8fc767658
-base_sha=2e273f5704c803291882cdf2731f63e406e1c86b

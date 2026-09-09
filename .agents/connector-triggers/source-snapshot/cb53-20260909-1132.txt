@@ -1,3 +1,0 @@
-purpose=M3-CP4c-3-CB53 closeout exact source snapshot
-expected_source=bdb65a83d03acd9aa8f83b064fcfa3379aae3310
-retry=1

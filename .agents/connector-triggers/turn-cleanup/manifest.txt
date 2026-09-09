@@ -1,6 +1,0 @@
-# M3-CP4c-3-CB53 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/cb53-20260909-1132.txt
-.agents/connector-triggers/drive-apply/cb53-20260909-1148.txt
-.agents/connector-triggers/compile/cb53-prepackage-20260909.txt
-.agents/connector-triggers/compile/cb53-package112-20260909.txt
-.agents/connector-triggers/drive-apply/cb53-closeout-20260909.txt
