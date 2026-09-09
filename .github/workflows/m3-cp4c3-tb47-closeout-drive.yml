@@ -31,17 +31,17 @@ jobs:
       pr_number: 8
       label: m3-cp4c3-tb47-closeout-drive
       commit_run_file: false
-      trim_stale_comments: true
+      trim_stale_comments: false
     secrets: inherit
 
   apply:
     needs: validate
-    if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1DjY4Slfb8WwEpEWMHn_J-pGAB57gVK-9
       patch_sha256: 3547f7fa8a4eb999e7387ecf4beea7ac48d7ef39d0c39f7d2d08d265d3880569
       base_sha: 9dcb9c3f953564a8844f1be1a24aefab165a4d59
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close TB47 EXEC and route to independent review
+      commit_message: "docs: close TB47 EXEC and route to independent review"
+      retention_days: 14
     secrets: inherit
