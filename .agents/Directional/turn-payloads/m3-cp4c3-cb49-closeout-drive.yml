@@ -29,8 +29,8 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1fRmw6R0LvAzb5dLYDqWwHHwxCDsgelRG
-      patch_sha256: '2fda9ab2976703bbf41c06847ccbfadef07393c1d6c14f62480608ae9ffa54f1'
+      file_id: 1axp5GqT_R2WXBt_WkapaRJiF1NwY0eKp
+      patch_sha256: '7d9160da7d80a8d30dedc651676f917912d6cb14012965d424bee0f0ad35df5c'
       base_sha: 67f6da673d6ca17f2b3f173384ad048d6d25398d
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: close CB49 and freeze TB44 artifact-only plan'
