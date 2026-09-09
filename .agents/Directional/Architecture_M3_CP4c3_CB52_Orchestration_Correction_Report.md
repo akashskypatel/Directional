@@ -98,3 +98,24 @@ CB52 freezes exactly one successor:
 
 TB46-R1 reuses immutable package111 and selector409 from ordinal 1. The invalid TB46 attempt contributes no
 semantic process result. CB52 does **not** execute TB46-R1.
+
+## 6. Closeout transport and cleanup evidence
+
+The first closeout transport attempt, run/job `34379851949 / 102561777641`, failed closed before mutation because
+the staged patch header named local-only synthetic snapshot baseline `09ce0db33d2f3d83ce811b65962e2d82cd93419d`,
+which is not a repository commit. No repository file was changed and `runtimeExecution=false`. The same documentation
+diff was deliberately rebound to remote snapshot authority `805171da7d8fee6fb1b8dc1e9288f3953f61335c` rather
+than bypassing the base check.
+
+Corrected closeout apply run/job `34380047660 / 102562455977` verified patch SHA-256
+`9049a789c93a9be9ce1f15417ea14d09af17042cac454cd23d6909d5621ca121`, applied exactly the seven intended durable
+document paths, and pushed commit `65e8738eb8fd34221a35d6af5c408089697a857a`. The workflow reported
+`drive_file_retirement_required=true`; the owner-authorized Google Drive control plane then permanently deleted the
+consumed staging file. No runtime executed.
+
+Caller-first cleanup removed all four CB52 temporary workflow callers before publishing the cleanup ledger. Final
+cleanup run/job `34380517057 / 102563941340` validated exactly the seven durable workflow files, removed all ten
+inventoried CB52 trigger directories plus the cleanup manifest in commit
+`267b19a4bc94137095e2f4e3a9d1e0174a22495e`, and left no workflow-observation or turn-payload state. Cleanup result
+artifact `10115651165` has SHA-256 `d611b58e1c7313cd56853a8933778aedbccf65ae4f7fd1e3fa782c5fac8223c8`;
+cleanup log artifact `10115652119` has SHA-256 `5809042482b18286d68f18def629907c3e47847a3f10459da6d5968bfe14e15d`.
