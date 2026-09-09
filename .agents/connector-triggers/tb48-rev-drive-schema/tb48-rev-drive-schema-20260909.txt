@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB48-REV
-purpose=validate staged Drive apply caller
-payload=.agents/Directional/turn-payloads/m3-cp4c3-tb48-rev-drive-apply.yml
-runtimeExecution=false
