@@ -1,0 +1,48 @@
+name: M3 CP4c3 TB46 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb46-closeout-apply/tb46-closeout-apply-20260909.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb46-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-tb46-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb46-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1jkFUY97FqgAmLIKemOH1vul5V-o2y_oW
+      patch_sha256: f884bf12934e880fcc1424ebb12db4c852d8b4af0ae70f4398c58e66335325f9
+      base_sha: 8722285baa14ab989a32cf3a3e7cbc6357947e26
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close TB46 orchestration-invalid and plan CB52'
+      retention_days: 7
+    secrets: inherit
