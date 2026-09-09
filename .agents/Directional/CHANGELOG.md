@@ -1,3 +1,28 @@
+## 2026-09-09 — `M3-CP4c-3-TB46-EXEC`: orchestration-invalid before package preflight; semantic authority remains TB45
+
+TB46's temporary caller schema-validated and triggered exactly one attempt, run/job
+`34374946991 / 102545334482`, event `b44c936e799f08cc72fe1c36a52f4eef45a880ce`. The caller verified frozen
+generic-harness SHA-256 `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`; the
+nested harness then returned `1` before publishing its first harness-owned environment record, before installing
+observable result/finalization evidence, and before creating its result directory. The result upload therefore had
+no files. Persistent log artifact `10113449239` is retained at SHA-256
+`7910fbe8fa6c0c397dfcef37aeaac0abd398d2a41dc527a9e3c2afe231bc6b42`.
+
+This is **`M3-CP4c3-TB46-ORCH-01` — PRE-RUNTIME ORCHESTRATION / NON-STABLE**, not a semantic red. Package111 was
+not downloaded/materialized by the harness, selector execution is **0/409**, and no Directional binary, benchmark,
+configure, compile, relink, repair, generated discovery, or source/test/fixture/selector mutation occurred. The
+evidence bounds the failure to the generic harness's pre-trap bootstrap but does not support naming a narrower root
+cause.
+
+TB45/package110 remains promoted semantic runtime authority at **399 PASS / 10 RED**, accepted **365/365**;
+stable accounting remains **47 / 14 / 33**, debt **5**, ownership **300/0/0**, accepted package count **111**.
+Package111 artifact `10112532452` and selector409 remain immutable and are reused.
+
+**Exact next:** `M3-CP4c-3-CB52`, a bounded runtime-free orchestration correction. It must safely localize the
+pre-trap bootstrap failure, make only the proven control-plane correction, complete the generic harness
+`--preflight-only` path against unchanged package111, and execute no Directional runtime. Only then may
+`M3-CP4c-3-TB46-R1` re-execute selector409 from ordinal 1.
+
 ## 2026-09-09 — `M3-CP4c-3-CB51`: corrected oracle + successful-plan frontier observability compile; package111 frozen
 
 CB51 is **COMPLETE / COMPILE + PACKAGE GREEN / RUNTIME-FREE** on exact semantic source

@@ -1,3 +1,26 @@
+## M3-CP4c3-TB46-ORCH-01 — pre-trap generic-harness bootstrap exits before result publication — **ACTIVE / PRE-RUNTIME / ORCHESTRATION / NON-STABLE / CB52**
+
+- **Invalid attempt:** `M3-CP4c-3-TB46-EXEC` run/job `34374946991 / 102545334482`, event
+  `b44c936e799f08cc72fe1c36a52f4eef45a880ce`. Workflow schema validation passes and the caller verifies exact
+  generic-harness SHA-256 `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
+- **Observed orchestration surface:** immediately after that hash receipt, nested harness invocation returns `1`
+  before its own first environment record, `finish`/`execution-boundary` publication, result directory, artifact
+  download/preflight, identity map, or selector ledger. Result upload therefore finds no
+  `M3-CP4c-3-TB46-result`; retained log artifact `10113449239` has provider SHA-256
+  `7910fbe8fa6c0c397dfcef37aeaac0abd398d2a41dc527a9e3c2afe231bc6b42`.
+- **Classification:** orchestration/control-plane only and **not root-caused more narrowly by this TB**. The retained
+  evidence bounds the defect to the pre-trap bootstrap but does not identify which bootstrap command returns `1`.
+  `0/409` Directional identities executed and no semantic ledger exists.
+- **Authority/accounting:** TB45/package110 remains semantic runtime authority at **399 PASS / 10 RED**, accepted
+  **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Stable totals remain
+  **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, ownership **300/0/0**, accepted
+  package count **111**. Package111 and selector409 remain byte-frozen.
+- **Exact successor:** `M3-CP4c-3-CB52`, control-plane-only orchestration correction under
+  `Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`, followed only after green runtime-free preflight by
+  `M3-CP4c-3-TB46-R1`.
+
+---
+
 ## M3-CP4c3-TB45-REV — independent adjudication — **CURRENT REVIEW / TB45 PROMOTED / CB51 FROZEN**
 
 - **Promoted authority:** TB45/package110/selector409, run/job `34357709483 / 102486495110`, **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts `10106632656 / 10106633518` are hash-verified; immutable pre/post censuses match; zero timeouts and selection mismatches; build/repair/mutation flags are false.

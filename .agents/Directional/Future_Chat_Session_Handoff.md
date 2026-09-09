@@ -116,71 +116,64 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB46-EXEC` — EXACT NEXT / Test + Benchmark / artifact-only
+## Mandatory next turn — `M3-CP4c-3-CB52` — EXACT NEXT / Code + Build / orchestration correction
 
-`M3-CP4c-3-CB51` is **COMPLETE / COMPILE + PACKAGE GREEN / RUNTIME-FREE**. The semantic source is
-`4f0663ef3468996abce6f59109f1c67f5be5f604`. No Directional runtime executed in CB51.
+`M3-CP4c-3-TB46-EXEC` is **COMPLETE / ORCHESTRATION FAILURE / PRE-RUNTIME / NO SEMANTIC LEDGER**.
 
 ### Current authorities
 
-- **Semantic runtime:** TB45/package110/selector409 remains the latest runtime authority at **399 PASS / 10 RED / 0
-  SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`; run/job
-  `34357709483 / 102486495110`, result/log artifacts `10106632656 / 10106633518`.
-- **Package111 build authority:** exact source `4f0663ef3468996abce6f59109f1c67f5be5f604`, compile run/job
-  `34372482691 / 102536964376`, result artifact `10112532452` SHA-256
-  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`, log artifact `10112533158` SHA-256
-  `2fc66875001184207e5ab59c8838eb95bca69219143ea53ce56e4b2a0ca315ff`, source archive SHA-256
-  `813d375e8ca38e65b01ea54a668cd067033def144eefe2f375b98a1a29ae0c37`, manifest **28/28**.
-- **Selector409:** SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
-- **Accounting:** 47 events / 14 categories / 33 recurrences, debt 5, packages **111**, ownership 300/0/0.
+- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
+- PR #8 remains open, draft, and unmerged.
+- Semantic runtime authority remains **TB45/package110/selector409**:
+  **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED
+  `[367,368,369,370,374,390,393,398,406,407]`.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt **5**;
+  ownership **300 established / 0 unavailable / 0 conflicting**.
+- Immutable build/package authority remains CB51 package111:
+  artifact `10112532452`, semantic source `4f0663ef3468996abce6f59109f1c67f5be5f604`, provider/download SHA-256
+  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`, selector409 SHA-256
+  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
 
-### CB51 completed scope
+### TB46 invalid-attempt evidence
 
-1. Ordinal367's independent terminal-slit oracle now skips only independently proven non-separating final
-   no-barrier segments (`forwardOrbit == reverseOrbit`); separating terminal segments retain ordinary oracle
-   bookkeeping.
-2. Successful plans publish the already-computed producer `RegionBuildSuccess.frontier` evidence through one shared
-   observation-only diagnostic construction path. Protected 390/393/406/407 consume that evidence, retain their
-   real Part XII predicates and same-domain corruption negatives, and identify the success subject as
-   `PlanFrontier`.
-3. Failure-only fragment-incidence diagnostics now retain separating terminal segments; the syntactic terminal-slit
-   census remains intentionally unchanged.
-4. Fixtures, selector409, Part VIII/XI/XII normative definitions and carried 368/369/370/374/398 remain unchanged.
+- run/job: `34374946991 / 102545334482`;
+- event SHA: `b44c936e799f08cc72fe1c36a52f4eef45a880ce`;
+- workflow schema validation: success;
+- frozen generic harness hash verification: success at
+  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`;
+- nested harness exit: `1` before its first harness-owned environment record/result directory;
+- retained log artifact: `10113449239`, SHA-256
+  `7910fbe8fa6c0c397dfcef37aeaac0abd398d2a41dc527a9e3c2afe231bc6b42`;
+- result artifact: absent;
+- selector execution: **0/409**;
+- Directional runtime: **not started**.
 
-The first compile attempt omitted required selector409 executables and is invalid packaging-attempt provenance only.
-The diagnosed retry built the complete eight-target set on the same semantic source, with GMP/GMPXX authority,
-clean source status and `runtimeExecution=false`. Package111 is the accepted immutable package.
+The exact failing pre-trap bootstrap command is not localized by the retained evidence. Do not guess it.
 
-Full build evidence:
-`.agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Report.md`.
+### CB52 boundary
 
-Frozen successor:
-`.agents/Directional/Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md`.
+Consume `.agents/Directional/Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`.
 
-### Test + Benchmark boundary
+CB52 must:
 
-TB46 is artifact-only. Re-verify package111 and selector409, then execute all 409 identities exactly once in fresh
-processes using the frozen selector. Do not configure, compile, link, repair, regenerate, mutate source/fixtures/
-selector, or freeze an expected aggregate PASS/RED count. Preserve raw per-identity evidence and immutable pre/post
-controls.
+1. use control-plane-only diagnostics to localize the first failing harness bootstrap command without printing
+   `GH_TOKEN` or another secret;
+2. correct only the proven bootstrap/caller defect;
+3. preserve package111, semantic product/test/fixture bytes and selector409 exactly;
+4. run only the corrected generic harness `--preflight-only` proof against package111;
+5. retain `runtime_started=false`, no benchmark execution, and every build/repair/mutation flag false;
+6. upload result/log evidence and freeze exact successor `M3-CP4c-3-TB46-R1` only on green preflight.
+
+Do **not** execute selector409 or any generated Directional binary in CB52.
 
 ### Context Load Plan
 
-```yaml
-load_next:
-  - references/turns/TB-EXEC.md
-conditional_modules:
-  - trigger: GitHub connector/workflow/artifact work
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-do_not_preload:
-  - sibling turn files
-  - folded historical reports
-```
+After the mandatory start-of-turn policy read, use snapshot mode. Read this handoff, `TODO.md`,
+`Architecture_M3_CP4c3_TB46_EXEC_Report.md`,
+`Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`, the live TB46 artifact-only plan,
+`Architecture_M3_CP4c3_CB51_Code_Build_Report.md`, `Regression_Root_Cause_Tracker.md`, and the generic
+`tools/m3_cp4c3_artifact_only_harness.sh`. Do not re-open semantic product history unless localization demonstrates
+a semantic dependency, which CB52 itself does not authorize changing.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

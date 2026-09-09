@@ -10,9 +10,30 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-09** at completed runtime-free `M3-CP4c-3-CB51` compile/package closeout.
+Last updated **2026-09-09** at `M3-CP4c-3-TB46-EXEC` pre-runtime orchestration closeout.
 
----
+**TB45 / package110 / selector409 remains the current valid semantic runtime authority**: **399 PASS / 10 RED / 0
+SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`.
+
+**CB51 package111 remains the current immutable build/package authority.** Exact semantic source is
+`4f0663ef3468996abce6f59109f1c67f5be5f604`; artifact `10112532452`; provider/download SHA-256
+`62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`; selector409 SHA-256
+`eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+
+**TB46-EXEC did not reach package preflight or Directional runtime.** Run/job `34374946991 / 102545334482`
+verified the frozen generic harness hash, then the nested harness exited `1` before harness-owned result publication.
+`0/409` identities executed; retained log artifact `10113449239` has SHA-256
+`7910fbe8fa6c0c397dfcef37aeaac0abd398d2a41dc527a9e3c2afe231bc6b42`. This is
+`M3-CP4c3-TB46-ORCH-01`, orchestration-only and non-stable.
+
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14
+categories / 33 recurrences**, debt **5**, accepted packages **111**.
+
+**Exact next: `M3-CP4c-3-CB52`**, control-plane orchestration correction under
+`Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`. It must localize/correct only the pre-trap bootstrap
+defect and prove `--preflight-only` on unchanged package111. No Directional runtime is authorized. Green CB52 routes
+to `M3-CP4c-3-TB46-R1`.
+
 
 ## 1. Where the checkpoint stands
 
@@ -35,9 +56,10 @@ selector409, normative Part VIII/XI/XII semantics and carried 368/369/370/374/39
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14
 categories / 33 recurrences**, debt **5**, packages **111**.
 
-**Exact next: `M3-CP4c-3-TB46-EXEC`**, artifact-only, under
-`Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md`. TB46 executes selector409 exactly once per fresh
-process against immutable package111 and freezes no expected aggregate result.
+**Exact next: `M3-CP4c-3-CB52`**, bounded Code + Build / control-plane orchestration correction under
+`Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`. CB52 must localize and correct only the pre-runtime
+harness bootstrap defect, execute no Directional runtime, and reuse immutable package111 unchanged. A green CB52
+routes to `M3-CP4c-3-TB46-R1` under the still-frozen TB46 artifact-only semantic plan.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -673,8 +695,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, execute artifact-only **`M3-CP4c-3-TB46-EXEC`** under
-`Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md`. Consume immutable package111 artifact
+After the durable start-of-turn checklist, execute control-plane **`M3-CP4c-3-CB52`** under
+`Architecture_M3_CP4c3_CB52_Orchestration_Correction_Plan.md`. Preserve immutable package111 artifact
 `10112532452` from semantic source `4f0663ef3468996abce6f59109f1c67f5be5f604` and unchanged selector409. Execute
 all 409 identities exactly once in fresh processes, preserve immutable pre/post controls, perform no build/repair/
 mutation, and report the observed aggregate without pre-frozen expectations. A semantic RED routes to review; an
