@@ -1,0 +1,11 @@
+# M3-CP4c-3-CB52 temporary-state cleanup ledger
+.agents/connector-triggers/cb52-closeout-apply
+.agents/connector-triggers/cb52-exact-bootstrap-2
+.agents/connector-triggers/cb52-exact-bootstrap-3
+.agents/connector-triggers/cb52-exact-bootstrap-4
+.agents/connector-triggers/cb52-exact-bootstrap
+.agents/connector-triggers/cb52-final-preflight
+.agents/connector-triggers/cb52-localize
+.agents/connector-triggers/cb52-original-trace
+.agents/connector-triggers/cb52-preflight
+.agents/connector-triggers/source-snapshot
