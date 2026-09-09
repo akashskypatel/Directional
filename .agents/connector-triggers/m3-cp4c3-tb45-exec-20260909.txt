@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-TB45-EXEC
+purpose=execute frozen artifact-only selector409 plan against immutable package110
+caller_install_sha=d3e4bffb70cb63fa2b69f04ee738668fc57f2186
+package_artifact_id=10095738820
+package_source_sha=46554ef2bc1b36fff100e4de0a274a0fb6d3f26d
