@@ -116,67 +116,67 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB51` — EXACT NEXT / Code + Build / runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB46-EXEC` — EXACT NEXT / Test + Benchmark / artifact-only
 
-`M3-CP4c-3-TB45-REV` is **COMPLETE**. TB45/package110/selector409 is promoted as current semantic runtime
-authority at **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED
-`[367,368,369,370,374,390,393,398,406,407]`.
+`M3-CP4c-3-CB51` is **COMPLETE / COMPILE + PACKAGE GREEN / RUNTIME-FREE**. The semantic source is
+`4f0663ef3468996abce6f59109f1c67f5be5f604`. No Directional runtime executed in CB51.
 
 ### Current authorities
 
-- **Semantic runtime:** TB45/package110 source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, run/job
+- **Semantic runtime:** TB45/package110/selector409 remains the latest runtime authority at **399 PASS / 10 RED / 0
+  SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`; run/job
   `34357709483 / 102486495110`, result/log artifacts `10106632656 / 10106633518`.
-- **Package110:** artifact `10095738820`, provider SHA-256
-  `7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`; source archive SHA-256
-  `8ae8fcd115c5b150642ad090272a001de89520d28ba69c2564cd476473374e80`; manifest 28/28.
+- **Package111 build authority:** exact source `4f0663ef3468996abce6f59109f1c67f5be5f604`, compile run/job
+  `34372482691 / 102536964376`, result artifact `10112532452` SHA-256
+  `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`, log artifact `10112533158` SHA-256
+  `2fc66875001184207e5ab59c8838eb95bca69219143ea53ce56e4b2a0ca315ff`, source archive SHA-256
+  `813d375e8ca38e65b01ea54a668cd067033def144eefe2f375b98a1a29ae0c37`, manifest **28/28**.
 - **Selector409:** SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
-- **Accounting:** 47 events / 14 categories / 33 recurrences, debt 5, packages 110, ownership 300/0/0.
+- **Accounting:** 47 events / 14 categories / 33 recurrences, debt 5, packages **111**, ownership 300/0/0.
 
-### TB45 review decisions
+### CB51 completed scope
 
-1. **366/367:** CB50's old source-corner mismatch is gone and 366 PASSes. 367 is a stale independent-oracle
-   expectation: `independent_fragment_partition()` unconditionally skips terminal no-barrier segments even when its
-   independently derived forward/reverse face-walk orbits differ. CB51 corrects the test oracle without consuming
-   product partition authority.
-2. **390/393/406/407:** the mechanical plan now succeeds, so their frozen `ASSERT_FALSE(plan.has_value())` is an
-   obsolete failure-envelope precondition. CB51 makes the already-computed producer frontier evidence observable on
-   successful plans and preserves each real Part XII predicate plus same-domain corruption negative. TB45 itself
-   does not re-prove those receipts; TB43 remains their most recent runtime proof.
-3. **TB44 EG10.3:** the syntactic terminal-slit trace census is intentionally unchanged. The failure-only
-   `fragmentIncidences` diagnostic must retain separating terminal segments; CB51 applies the separation conjunct.
-4. **Carried:** 368/369/370/374/398 retain their existing owners.
+1. Ordinal367's independent terminal-slit oracle now skips only independently proven non-separating final
+   no-barrier segments (`forwardOrbit == reverseOrbit`); separating terminal segments retain ordinary oracle
+   bookkeeping.
+2. Successful plans publish the already-computed producer `RegionBuildSuccess.frontier` evidence through one shared
+   observation-only diagnostic construction path. Protected 390/393/406/407 consume that evidence, retain their
+   real Part XII predicates and same-domain corruption negatives, and identify the success subject as
+   `PlanFrontier`.
+3. Failure-only fragment-incidence diagnostics now retain separating terminal segments; the syntactic terminal-slit
+   census remains intentionally unchanged.
+4. Fixtures, selector409, Part VIII/XI/XII normative definitions and carried 368/369/370/374/398 remain unchanged.
 
-Full adjudication: `.agents/Directional/Architecture_M3_CP4c3_TB45_Independent_Review_Record.md`. Exact executable
-successor plan: `.agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`.
+The first compile attempt omitted required selector409 executables and is invalid packaging-attempt provenance only.
+The diagnosed retry built the complete eight-target set on the same semantic source, with GMP/GMPXX authority,
+clean source status and `runtimeExecution=false`. Package111 is the accepted immutable package.
 
-### Code + Build boundary
+Full build evidence:
+`.agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Report.md`.
 
-CB51 is runtime-free. It may author the bounded product-diagnostic/test changes in the frozen plan, perform static
-review, compile/link approved targets with mandatory GMP/GMPXX, and package the exact pushed source. It must not
-execute a Directional binary, run tests/benchmarks, alter fixtures/selectors, or touch carried RED owners. After
-accepted compile/package it freezes exactly one artifact-only TB46 plan and stops.
+Frozen successor:
+`.agents/Directional/Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md`.
+
+### Test + Benchmark boundary
+
+TB46 is artifact-only. Re-verify package111 and selector409, then execute all 409 identities exactly once in fresh
+processes using the frozen selector. Do not configure, compile, link, repair, regenerate, mutate source/fixtures/
+selector, or freeze an expected aggregate PASS/RED count. Preserve raw per-identity evidence and immutable pre/post
+controls.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CB-DRAFT.md
+  - references/turns/TB-EXEC.md
 conditional_modules:
-  - trigger: implementation design/corrective work
-    path: modules/engineering-guidelines/MODULE.md
-  - trigger: unit-test source repair
-    path: modules/unit-testing/MODULE.md
   - trigger: GitHub connector/workflow/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB45_Independent_Review_Record.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB45_EXEC_Report.md
-  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-templates_when_producing:
-  - Code + Build report
-  - TB46 artifact-only plan after accepted compile/package
 do_not_preload:
   - sibling turn files
   - folded historical reports

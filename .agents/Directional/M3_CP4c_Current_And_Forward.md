@@ -10,33 +10,34 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-09** at `M3-CP4c-3-TB45-REV` independent adjudication.
+Last updated **2026-09-09** at completed runtime-free `M3-CP4c-3-CB51` compile/package closeout.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB45` / package110 / selector409 is the current valid semantic runtime authority**, promoted at
-TB45-REV: **399 PASS / 10 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED
-`[367,368,369,370,374,390,393,398,406,407]`, run/job `34357709483 / 102486495110`, result/log artifacts
-`10106632656 / 10106633518`.
+**TB45 / package110 / selector409 remains the current valid semantic runtime authority**: **399 PASS / 10 RED / 0
+SKIP**, **accepted 1–365 = 365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`, run/job
+`34357709483 / 102486495110`, result/log artifacts `10106632656 / 10106633518`.
 
-Package110 exact source is `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`; artifact `10095738820` has SHA-256
-`7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`. Certified ownership remains
-**300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14 categories / 33 recurrences**,
-debt **5**, packages **110**.
+**CB51 is complete and package111 is the current build authority.** Exact semantic source is
+`4f0663ef3468996abce6f59109f1c67f5be5f604`; compile run/job `34372482691 / 102536964376`; result artifact
+`10112532452` has SHA-256 `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`; log artifact
+`10112533158` has SHA-256 `2fc66875001184207e5ab59c8838eb95bca69219143ea53ce56e4b2a0ca315ff`; source archive SHA-256 is
+`813d375e8ca38e65b01ea54a668cd067033def144eefe2f375b98a1a29ae0c37`; manifest is **28/28 verified**.
+GMP/GMPXX linkage is authoritative, source status is clean, and `runtimeExecution=false`.
 
-**TB45 adjudication.** Ordinal366 PASSes and the CB50 whole-face source-corner mismatch is gone. Ordinal367's later
-`FragmentPartition` RED is test-authority: its independent oracle still drops every terminal no-barrier segment,
-while the frozen contract distinguishes separating (`forwardOrbit != reverseOrbit`) from non-separating terminal
-segments. The four protected identities 390/393/406/407 are also test-authority REDs: they still require the
-mechanical plan to fail, but package110 lawfully succeeds before their Part XII receipt branches. TB45 therefore
-does not re-prove those four receipts; TB43 remains their most recent runtime proof.
+CB51 corrected ordinal367's independent terminal-separation oracle, published already-computed producer frontier
+evidence on successful plans for 390/393/406/407 while preserving their Part XII predicates + same-domain
+corruption negatives, and corrected the failure-only separating-terminal fragment-incidence diagnostic. Fixtures,
+selector409, normative Part VIII/XI/XII semantics and carried 368/369/370/374/398 are unchanged.
 
-**Exact next: `M3-CP4c-3-CB51`**, runtime-free, under
-`Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`. It corrects the independent oracle, makes already-computed producer
-frontier evidence observable on successful plans, and fixes one failure-only terminal-incidence diagnostic. No
-DEFN-R9 and no fixture/selector/carry-owner change.
+Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14
+categories / 33 recurrences**, debt **5**, packages **111**.
+
+**Exact next: `M3-CP4c-3-TB46-EXEC`**, artifact-only, under
+`Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md`. TB46 executes selector409 exactly once per fresh
+process against immutable package111 and freezes no expected aggregate result.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -672,9 +673,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, execute runtime-free **`M3-CP4c-3-CB51`** under
-`Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`. The bounded scope is: ordinal367 independent terminal-slit
-oracle correction; successful-plan publication/consumption of the already-computed Part XII producer frontier
-evidence for 390/393/406/407; and the failure-only separating-terminal fragment-incidence diagnostic correction.
-Do not change fixtures, selector409, Part VIII/XI/XII semantics, or carried 368/369/370/374/398. Compile/package
-with mandatory GMP/GMPXX, execute no Directional runtime, then freeze exactly one artifact-only TB46 plan.
+After the durable start-of-turn checklist, execute artifact-only **`M3-CP4c-3-TB46-EXEC`** under
+`Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md`. Consume immutable package111 artifact
+`10112532452` from semantic source `4f0663ef3468996abce6f59109f1c67f5be5f604` and unchanged selector409. Execute
+all 409 identities exactly once in fresh processes, preserve immutable pre/post controls, perform no build/repair/
+mutation, and report the observed aggregate without pre-frozen expectations. A semantic RED routes to review; an
+orchestration failure routes to the bounded CB orchestration-correction edge.

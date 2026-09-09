@@ -1,3 +1,29 @@
+## 2026-09-09 — `M3-CP4c-3-CB51`: corrected oracle + successful-plan frontier observability compile; package111 frozen
+
+CB51 is **COMPLETE / COMPILE + PACKAGE GREEN / RUNTIME-FREE** on exact semantic source
+`4f0663ef3468996abce6f59109f1c67f5be5f604`. The bounded implementation corrects ordinal367's independent
+terminal-slit oracle using independently derived forward/reverse orbit equality, publishes the already-computed
+producer frontier evidence on successful `GlobalTopologyPlan` without changing semantic control flow, moves
+390/393/406/407 to their real Part XII predicates + same-domain corruption negatives on the `PlanFrontier` branch,
+and makes the failure-only fragment-incidence diagnostic retain separating terminal segments. The syntactic
+terminal-slit census, fixtures, selector409, Part VIII/XI/XII definitions and carried 368/369/370/374/398 are
+unchanged.
+
+The first compile attempt was build-green but packaging-incomplete because its temporary caller requested only
+core/pipeline/producer targets; that artifact is invalid-attempt provenance and is not package111. The diagnosed
+retry compiled the same semantic source with the complete eight-target selector409 set. Accepted run/job is
+`34372482691 / 102536964376`; package111 artifact `10112532452` has provider SHA-256
+`62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`; log artifact `10112533158` has SHA-256
+`2fc66875001184207e5ab59c8838eb95bca69219143ea53ce56e4b2a0ca315ff`; packaged source archive SHA-256 is
+`813d375e8ca38e65b01ea54a668cd067033def144eefe2f375b98a1a29ae0c37`; root manifest is **28/28 verified**;
+GMP/GMPXX is linked, source status is clean, and `runtimeExecution=false`.
+
+Semantic runtime authority remains TB45/package110 at **399 PASS / 10 RED / 0 SKIP**, accepted **365/365** until
+TB46. Stable accounting remains **47 / 14 / 33**, debt **5**, ownership **300/0/0**; accepted package count advances
+**110 → 111**. Exactly one successor plan is frozen:
+`Architecture_M3_CP4c3_TB46_Artifact_Only_Test_Benchmark_Plan.md`. Exact next is artifact-only
+`M3-CP4c-3-TB46-EXEC`; CB51 executed no runtime.
+
 ## 2026-09-09 — `M3-CP4c-3-TB45-REV` verification pass: upheld; oracle added as a fifth predicate consumer
 
 Static verification of the delegated `M3-CP4c-3-TB45-REV`. No runtime, no compile, no package operation, no
