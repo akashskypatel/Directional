@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-TB48-REV
+purpose=apply preserved independent review and M3 closure documentation
+base_sha=3686823b1a8376e170543e2e5bd2d74dcf66ec4d
+patch_sha256=4b45957d7024e07044408184082c285887e0b7721bfb98bd1eecbc652594402e
+runtimeExecution=false
