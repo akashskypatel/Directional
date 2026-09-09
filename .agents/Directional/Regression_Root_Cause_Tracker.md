@@ -1,48 +1,30 @@
-## M3-CP4c3-TB47-EXEC classification — **CURRENT RAW INTAKE / REVIEW REQUIRED / NON-STABLE EXEC**
+## M3-CP4c3-TB47-REV — independent adjudication — **CURRENT REVIEW / TB47 PROMOTED / ORDINAL367 RECOVERY CLOSED / CB54 FROZEN**
 
-- **Execution authority:** immutable package112 source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, artifact
-  `10119861923`, selector409, run/job `34397425632 / 102620523147`, result/log artifacts
-  `10122211479 / 10122212347` with provider/download SHA-256
-  `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366` /
-  `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`.
-- **Observed set:** **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`; all 409
-  identities execute once in fresh processes; zero selection mismatch and timeout; package/source/execution-view
-  byte+mode censuses are equal pre/post; build/repair/mutation/benchmark flags are false.
-- **`M3-CP4c3-TB47-EXEC-CAND-01` — RAW TEST-AUTHORITY CORRECTION RECOVERY / REVIEW REQUIRED / NON-STABLE /
-  UNPRICED.** Ordinal367 is PASS after CB53 changed only the independent oracle's retired two-sided owner-count
-  equality to the frozen high-side-only rule. `FragmentCountRule` and `FragmentPartition` occur zero times in the
-  current evidence. EXEC records recovery; review owns semantic closure and promotion.
-- **Accepted ordinal307 remains PASS / protected / out of scope.** Its separately recorded stale equality does not
-  fire. No mutation or new disposition is authorized by EXEC.
-- **Protected success-path controls remain non-vacuous:** 390/393/406/407 PASS through `PlanFrontier`, execute the
-  real Part XII census predicates, reject same-domain corruptions and retain non-empty BW3/owner-map/partition/
-  interior-arc evidence. Ordinal385 again publishes ownership **300 established / 0 unavailable / 0 conflicting**.
-- **Every observed RED categorized — carried separate owners, no merge/repricing:**
-  - 368 remains prescribed-sphere `CellularityNotEstablished/origin=RotationSystemInconsistent`,
-    `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`;
-  - 369 remains `saturationUsed=true` on the ordinary-proposal identity;
-  - 370 remains typed code 4 `CellularityNotEstablished` vs expected code 6 `EmptyNetworkOnClosedSurface`, with no
-    source-face locus;
-  - 374 remains `atlasBuild=false` on the pre-classified folded-cone witness;
-  - 398 remains prescribed-sphere `NotProductionReady/CellularityNotEstablished`.
-  These are the same established failure surfaces as the reviewed carried set, so EXEC creates no new stable RED
-  identity or owner. Independent review remains responsible for final semantic recurrence accounting.
-- **Evidence fingerprints:** ledger `093c4f009a800b56fe385e5129a1ee739fc1cb8b6534baa5fcc89896dadd1942`;
-  failure-detail table `c761660aec3ee209c70299ba9d7d53cbb6dc97e04066c402f8a7b901bbbe830a`; resource summary
-  `dc83db754b0c1ff3bd94416ce824c8c0ef8a2ade5b2b1d9fd96b8bbfd731cb26`.
-- **Retired silence:** `TraceArcDoesNotSeparateItsSides`, `UncutFaceComponentOrbitSeedNotUnique`,
-  `RegionEulerCharacteristicNotOne`, `FragmentCountRule` and `FragmentPartition` occur zero times in current
-  result/log evidence.
-- **Stable-count rationale:** accepted remains 365/365; ordinal367 is a recovered non-stable test-authority
-  candidate, while all five RED ordinals are already separately owned carried surfaces. EXEC therefore does not
-  establish a new stable event/category or reprice a recurrence. Totals remain **47 events / 14 categories / 33
-  recurrences**, produced-witness debt **5**, packages **112**, ownership **300/0/0**. Reviewed semantic runtime
-  authority remains TB46-R1/package111 pending TB47-REV.
-- **Exact successor:** `M3-CP4c-3-TB47-REV`, independent REVIEW + PLAN; no retry/CB/runtime first.
+- **Verdict:** `approved_with_amendments`. Package112/TB47 is promoted as reviewed semantic runtime authority at
+  **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0**.
+- **`M3-CP4c3-TB47-EXEC-CAND-01` — CLOSED / RUNTIME-PROVED TEST-AUTHORITY CORRECTION RECOVERY / NON-STABLE.**
+  Ordinal367 PASSes under CB53's frozen high-side-only owner-count rule; both `FragmentCountRule` and
+  `FragmentPartition` are absent from current evidence. This is +0 stable event / +0 recurrence.
+- **Ordinal307 remains PASS and unchanged.** Its separate two-sided equality is recorded latent test-authority debt
+  under DEFN-R3.4; no current product regression and no CB54 edit.
+- **Protected 390/393/406/407 remain non-vacuously PASS** through `PlanFrontier`, executing real Part XII census
+  predicates, same-domain corruption negatives and non-empty evidence.
+- **Five carried REDs retain separate owners:** 368 `M3-CP4c2-TB-X2-CAND-04`; 369
+  `M3-CP4c2-TB-X2-R10-CAND-01`; 370 `M3-CP4c2-TB-X2-R8-CAND-02`; 374 `M3-CP4c3-TB7-CAND-02`; 398 remains
+  downstream of 368. No merge/repricing.
+- **Next owner:** ordinal370. Frozen AK5 already requires typed `EmptyNetworkOnClosedSurface` + locus; the enum/name
+  mapping already exists, while `SurfaceCutGraph::canonical_candidate()` has no branch that emits it. Exact next is
+  runtime-free `M3-CP4c-3-CB54` under the frozen empty-network typed-rejection plan.
+- **Accounting:** stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **112**.
 
----
+## M3-CP4c3-TB47-EXEC classification — **HISTORICAL RAW INTAKE / PROMOTED BY TB47-REV / NON-STABLE EXEC**
 
-## M3-CP4c3-TB46-R1-REV — independent adjudication — **CURRENT REVIEW / TB46-R1 PROMOTED / CB53 FROZEN**
+- Mechanically valid raw execution: **404 PASS / 5 RED / 0 SKIP**, accepted 365/365, RED
+  `[368,369,370,374,398]`; run/job `34397425632 / 102620523147`.
+- `M3-CP4c3-TB47-EXEC-CAND-01` is closed by TB47-REV as runtime-proved test-authority correction recovery.
+- Raw execution made no stable pricing claim; TB47-REV supplies semantic promotion and successor planning.
+
+## M3-CP4c3-TB46-R1-REV — independent adjudication — **HISTORICAL REVIEW / SUPERSEDED BY TB47-REV**
 
 - **Promoted authority:** TB46-R1/package111/selector409, run/job `34382143529 / 102569425154`, **403 PASS / 6 RED /
   0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,398]`. Result/log artifacts
@@ -4695,7 +4677,13 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - Execution run `33319546759` stopped in immutable preflight because Python ZIP extraction dropped packaged executable mode bits; zero Directional runtime.
 - The corrected caller was schema-valid on `33319885323`; authoritative run `33319911575` is the sole semantic R9 authority. **+0 stable accounting.**
 
-## M3-CP4c2-TB-X2-R8-CAND-02 — zero-node / zero-arc closed-surface cut-graph behavior is unresolved — **ACTIVE / PRODUCT-QUESTION / GATING AT 370 / NON-STABLE**
+## M3-CP4c2-TB-X2-R8-CAND-02 — empty closed-network typed rejection is missing in product — **ACTIVE / PRODUCT / GATING AT 370 / CB54 FROZEN / NON-STABLE**
+**TB47-REV update (2026-09-09).** TB47 again reaches the valid repaired torus witness and returns code 4
+`CellularityNotEstablished` with no source-face locus where frozen AK5 requires code 6 `EmptyNetworkOnClosedSurface`
+plus a locus. Static current-source review finds the enum value and name mapping already appended, but no emission
+branch in `SurfaceCutGraph::canonical_candidate()`. This is now the exact next product owner. `M3-CP4c-3-CB54`
+changes only `src/geometry/SurfaceCutGraph.cpp`; tests, selector409, enum numbering, proposal/certifier behavior and
+other carried owners remain frozen. Stable pricing remains +0/+0 until later runtime evidence.
 
 - **`M3-CP4c-3-TB6` measurement — ACTIVE / GENUINE PRODUCT RED.** Repaired ordinal 370 now clears the atlas precondition and reaches the intended closed-surface empty-network assertion. Actual `SurfaceCutGraphErrorCode` is `CellularityNotEstablished` (4), expected `EmptyNetworkOnClosedSurface` (6), and `sourceFace` is absent. This is no longer an invalid witness classification. Root cause/owner must be established at TB6-REV before any correction. Report-only evidence has zero gate credit; **+0/+0**.
 

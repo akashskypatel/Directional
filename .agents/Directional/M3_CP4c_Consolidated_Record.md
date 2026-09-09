@@ -6,17 +6,17 @@ current or future work. Normative definitions, frozen selector lineage, current 
 CP4c-3 gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
 **Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**.
-As of `M3-CP4c-3-TB46-R1-REV`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN.
-**TB46-R1/package111/selector409 is promoted runtime authority** — **403 PASS / 6 RED / 0 SKIP**, accepted 365/365,
-ownership 300/0/0. Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 111. Exact
-next is runtime-free **`M3-CP4c-3-CB53`** under
-`Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`.
+As of `M3-CP4c-3-TB47-REV`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN.
+**TB47/package112/selector409 is promoted runtime authority** — **404 PASS / 5 RED / 0 SKIP**, accepted 365/365,
+ownership 300/0/0. Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 112. Exact
+next is runtime-free **`M3-CP4c-3-CB54`** under
+`Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`.
 
 Current/future CP4c authority intentionally remains outside this history record:
 
-- `Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md` — current runtime report;
-- `Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md` — current review authority;
-- `Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md` — single exact next-turn plan;
+- `Architecture_M3_CP4c3_TB47_EXEC_Report.md` — current runtime report;
+- `Architecture_M3_CP4c3_TB47_Independent_Review_Record.md` — current review authority;
+- `Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md` — single exact next-turn plan;
 - `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`,
   `Required_Green_Selector_Manifest.md`, and every byte-frozen `Required_Green_Selector_*.txt`;
 - durable closure/architecture/tracker/lesson records cited by those current authorities.
@@ -59,7 +59,7 @@ selector table below.
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB42/package107 remains runtime authority at 398 PASS / 11 RED, accepted 365/365. CB48/package108 is compile-green under Part XII; exact next is artifact-only TB43-EXEC.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB47/package112 is reviewed runtime authority at 404 PASS / 5 RED, accepted 365/365. Ordinal367 recovery is closed; exact next is runtime-free CB54 for ordinal370 AK5 typed rejection.** |
 
 ### 2.1 CP4c-0
 
@@ -1748,3 +1748,31 @@ consumed successor plan already retired between reviews; exact bytes at
 `Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`,
 `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`,
 `Required_Green_Selector_Manifest.md`, this record, and every byte-frozen selector.
+
+### Consolidated on 2026-09-09 at `M3-CP4c-3-TB47-REV` — folded-index entry
+
+Mandatory REVIEW consolidation. TB47/package112 is promoted as current semantic runtime authority and the prior
+TB46-R1 runtime/review pair is historical. Durable facts were preserved first in the TB47 review record,
+`Regression_Root_Cause_Tracker.md`, `ORIENTATION.md`, `M3_CP4c_Current_And_Forward.md`, `CHANGELOG.md`, `TODO.md` and
+the frozen CB54 plan.
+
+| Folded document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md` | 186 | superseded runtime authority — package111 403 PASS / 6 RED, accepted 365/365 |
+| `Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md` | 197 | superseded review authority — package111 promotion, ordinal367 stale-oracle diagnosis, CB53 freeze |
+
+**Folded this review:** 2 documents, **383 lines**. **Running total: 156 documents, 29,252 lines.** Exact bytes remain
+recoverable from Git history.
+
+**Retrospective, accounting-neutral index for documents retired between reviews:**
+
+| Retired document | Lines | Recorded role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md` | 96 | consumed test-authority successor plan; CB53 implemented it |
+| `Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Report.md` | 213 | consumed package112 compile authority; TB47 runtime-proved its correction |
+| `Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md` | 196 | consumed immutable package112/selector409 execution contract; TB47-EXEC discharged it |
+
+**Retained as current authority:** `Architecture_M3_CP4c3_TB47_EXEC_Report.md`,
+`Architecture_M3_CP4c3_TB47_Independent_Review_Record.md`,
+`Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`, `M3_CP4c_Current_And_Forward.md`,
+`M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every byte-frozen selector.

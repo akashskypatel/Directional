@@ -1,3 +1,22 @@
+## 2026-09-09 — `M3-CP4c-3-TB47-REV`: package112 promoted; ordinal367 recovery closes; CB54 freezes AK5 ordinal370
+
+Independent REVIEW + PLAN only; no Directional runtime or compile. TB47 primary evidence is upheld and promoted as
+semantic runtime authority: **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`,
+ownership 300/0/0. Ordinal367 is **CLOSED / RUNTIME-PROVED TEST-AUTHORITY CORRECTION RECOVERY / NON-STABLE**; no
+stable event/recurrence is added. Accepted ordinal307 remains PASS with its separately recorded latent stale equality
+unchanged. Protected 390/393/406/407 remain non-vacuously green through `PlanFrontier`.
+
+The five REDs retain separate owners. Review selects ordinal370 as exact next because AK5 already freezes the
+product contract, its appended error code/name mapping already exists, the repaired torus regression is valid, and
+static current source shows `SurfaceCutGraph::canonical_candidate()` lacks the early empty-network/closed-source
+emission. 368 remains blocked by sphere provenance, 398 is downstream of 368, 374 is a separately deferred test
+fixture, and 369 is broader proposal-quality work.
+
+Stable accounting remains **47 / 14 / 33**, debt **5**, packages **112**. Mandatory consolidation folds the two
+live TB46-R1 documents (383 lines) and retrospectively indexes the already-retired CB53 plan/report and TB47 plan.
+Exact next is runtime-free **`M3-CP4c-3-CB54`** under
+`Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`.
+
 ## 2026-09-09 — `M3-CP4c-3-TB47-EXEC`: package112 mechanically valid at 404 PASS / 5 RED; review required
 
 Artifact-only Test + Benchmark. TB47-EXEC consumed immutable package112 source

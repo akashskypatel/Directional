@@ -116,81 +116,73 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB47-REV` — EXACT NEXT / INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
+## Mandatory next turn — `M3-CP4c-3-CB54` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
 
-`M3-CP4c-3-TB47-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / RAW SEMANTIC RED / REVIEW REQUIRED**.
+`M3-CP4c-3-TB47-REV` is **COMPLETE / APPROVED WITH AMENDMENTS / PACKAGE112 PROMOTED**.
 
 ### Current authorities
 
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - PR #8 remains open, draft, and unmerged.
-- **Reviewed semantic runtime authority remains:** TB46-R1/package111/selector409, **403 PASS / 6 RED / 0 SKIP**,
-  accepted **365/365**, RED `[367,368,369,370,374,398]`, pending TB47-REV.
-- **TB47 raw execution evidence:** package112/selector409, run/job `34397425632 / 102620523147`, **404 PASS / 5 RED /
-  0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`.
-- TB47 result artifact `10122211479`, SHA-256
-  `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366`; log artifact `10122212347`, SHA-256
-  `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`.
-- Immutable package112 artifact `10119861923`, semantic source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`,
-  provider/download SHA-256 `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
+- **Reviewed semantic runtime authority:** TB47/package112/selector409, **404 PASS / 5 RED / 0 SKIP**, accepted
+  **365/365**, RED `[368,369,370,374,398]`, ownership **300/0/0**.
+- TB47 run/job `34397425632 / 102620523147`; result/log artifacts `10122211479 / 10122212347`.
+- Immutable package112 artifact `10119861923`, semantic source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, SHA-256
+  `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
 - Selector409 remains 409 rows at SHA-256
-  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; generic harness remains SHA-256
-  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
-- Stable accounting remains provisionally **47 events / 14 categories / 33 recurrences**, produced-witness debt
-  **5**, ownership **300 established / 0 unavailable / 0 conflicting**, accepted package count **112** pending review.
+  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+- Stable accounting **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted package
+  count **112**.
+- Ordinal367 is **CLOSED / RUNTIME-PROVED TEST-AUTHORITY CORRECTION RECOVERY / NON-STABLE**. Accepted ordinal307
+  remains PASS with its separately recorded latent stale equality unchanged.
+- Five carried REDs retain separate owners; ordinal370 is the exact next product owner.
 
-### TB47 raw evidence that review must adjudicate
+### Frozen CB54 work
 
-1. Execution is mechanically valid: all 409 identities ran once in fresh processes, zero timeout/selection mismatch,
-   immutable package/source/execution-view censuses match, and build/repair/mutation/benchmark flags are false.
-2. Ordinal367 is **PASS** after CB53's high-side-only independent owner-count correction. `FragmentCountRule` and
-   `FragmentPartition` occur zero times in current evidence.
-3. Accepted/protected ordinal307 remains **PASS**; its separately recorded stale equality did not fire and remains
-   byte-frozen/out of scope.
-4. Protected 390/393/406/407 remain **PASS through `PlanFrontier` with non-vacuous Part XII receipts**, real census
-   predicates, same-domain corruption negatives and non-empty supporting rows.
-5. The remaining REDs are exactly 368/369/370/374/398 and reproduce their established separate surfaces:
-   prescribed-sphere trace-event-position failure; saturation fallback; empty-network typed-code/locus mismatch;
-   folded-cone atlas precondition; prescribed-sphere cellularity failure.
-6. Ledger SHA-256 `093c4f009a800b56fe385e5129a1ee739fc1cb8b6534baa5fcc89896dadd1942`; failure-detail table
-   `c761660aec3ee209c70299ba9d7d53cbb6dc97e04066c402f8a7b901bbbe830a`; resource summary
-   `dc83db754b0c1ff3bd94416ce824c8c0ef8a2ade5b2b1d9fd96b8bbfd731cb26`.
-7. EXEC has categorized every RED in `Regression_Root_Cause_Tracker.md` but **does not promote or semantically
-   reprice** the run. Independent review owns those decisions.
+Follow `.agents/Directional/Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md` exactly.
 
-### Exact work
+- Edit only `src/geometry/SurfaceCutGraph.cpp`.
+- After source/atlas/network binding validation and before cut proposal/certification, recognize a truly empty network
+  (`nodes`, `mandatory_edges`, `candidate_traces` all empty).
+- Use existing exact source-topology boundary-loop authority; malformed/unavailable topology stays fail-closed.
+- On a closed non-empty source, return existing appended `EmptyNetworkOnClosedSurface` and set deterministic
+  `sourceFace` locus.
+- Do not edit tests, selector409, fixtures, enum numbering, certifier/proposal semantics, sphere 368/398, saturation
+  369, folded-cone 374, accepted ordinal307, or protected 390/393/406/407.
+- Compile changed-owner target `directional_surface_cell_producer_tests` first through mandatory GMP/GMPXX reusable
+  workflow. Execute no Directional runtime/discovery/help/list/ctest/benchmark command.
+- If green, compile/package the full durable eight-target set on the same exact semantic source. Package113 is
+  accepted only with clean source, manifest proof, exact GMP backend and `runtimeExecution=false`.
+- On accepted package, freeze exactly one full selector409 artifact-only TB plan at CB54 closeout; do not run it in
+  CB54.
 
-Perform **`M3-CP4c-3-TB47-REV`** as the independent REVIEW + PLAN boundary.
+### Review findings that must not be reopened
 
-- Review `Architecture_M3_CP4c3_TB47_EXEC_Report.md` against raw evidence, frozen CP4c definitions, TB46-R1 reviewed
-  authority and existing owner records.
-- Adjudicate ordinal367's runtime recovery and whether its non-stable candidate closes.
-- Verify all five REDs retain or change ownership only when evidence supports it; decide stable recurrence pricing.
-- Verify protected 390/393/406/407 remain genuinely non-vacuous and decide package112/TB47 promotion.
-- Perform mandatory REVIEW-turn document consolidation and update `ORIENTATION.md`.
-- Freeze exactly one successor plan required by the review verdict.
-- Execute **no Directional runtime, compile, retry or semantic patch** during the review.
+1. TB47 is promoted; TB46-R1/package111 is historical authority.
+2. Ordinal367 recovery adds no stable event/recurrence.
+3. Ordinal307 is latent test-authority debt only; do not pre-emptively modify it in CB54.
+4. 368/369/370/374/398 are separate owners. CB54 owns only 370.
+5. 368 remains blocked at the sphere `TraceEventPositionInvalid` provenance frontier; 398 is downstream of 368.
+6. 369 remains proposal-quality debt; 374 remains a separately deferred invalid-fixture repair.
 
-### Context Load Plan for `M3-CP4c-3-TB47-REV`
+### Context Load Plan for `M3-CP4c-3-CB54`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/REVIEW.md
+  - turn-based-coding-agent/references/turns/CB.md
 conditional_modules:
-  - trigger: GitHub evidence/artifacts must be inspected
+  - trigger: implementation design/corrective work is being applied
+    path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
+  - trigger: GitHub connector/workflow/package operations are required
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
-  - trigger: unit-test evidence is semantically adjudicated
-    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB47_EXEC_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - .agents/Directional/Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB47_Independent_Review_Record.md
   - .agents/Directional/M3_CP4c_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
-  - .agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh
-templates_when_producing:
-  - turn-based-coding-agent/templates/REVIEW_REPORT.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - src/geometry/SurfaceCutGraph.cpp
+  - include/directional/geometry/SurfaceCutGraph.h
+templates_when_producing: []
 do_not_preload:
   - superseded per-turn plans/reports
   - unrelated product source

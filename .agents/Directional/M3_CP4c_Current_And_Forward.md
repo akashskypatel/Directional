@@ -10,50 +10,50 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-09** at `M3-CP4c-3-TB47-EXEC`.
+Last updated **2026-09-09** at `M3-CP4c-3-TB47-REV`.
 
-**Reviewed semantic runtime authority remains TB46-R1 / package111 / selector409:** **403 PASS / 6 RED / 0 SKIP**,
-accepted **365/365**, RED `[367,368,369,370,374,398]`, pending independent review of TB47.
+**Reviewed semantic runtime authority is now TB47 / package112 / selector409:** **404 PASS / 5 RED / 0 SKIP**,
+accepted **365/365**, RED `[368,369,370,374,398]`.
 
-**TB47-EXEC/package112 is mechanically valid raw evidence:** **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**,
-RED `[368,369,370,374,398]`, run/job `34397425632 / 102620523147`, result/log artifacts
-`10122211479 / 10122212347`. It does not promote itself.
+Package112 is immutable runtime/build authority: semantic source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, artifact
+`10119861923`, SHA-256 `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`. Runtime run/job is
+`34397425632 / 102620523147`; result/log artifacts are `10122211479 / 10122212347`.
 
-Package112 remains immutable build/runtime input authority: source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, artifact
-`10119861923`, provider/download SHA-256 `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
+Ordinal367 is **CLOSED / RUNTIME-PROVED TEST-AUTHORITY RECOVERY / NON-STABLE**. Accepted/protected ordinal307 remains
+PASS and retains its separately recorded latent stale equality; it is not part of the next correction. Protected
+390/393/406/407 remain non-vacuously green through `PlanFrontier`. Certified ownership remains **300 / 0 / 0**.
 
-Ordinal367 is PASS after CB53's high-side-only independent owner-count correction; accepted/protected ordinal307
-also remains PASS. Protected 390/393/406/407 stay non-vacuously green through `PlanFrontier`. Carried
-368/369/370/374/398 retain their separate reviewed owners at raw intake. Certified ownership remains **300 / 0 / 0**.
-CP4c-3 remains **OPEN**. Stable accounting remains provisionally **47 events / 14 categories / 33 recurrences**,
-debt **5**, accepted packages **112** pending review.
+The five REDs retain separate owners. Review selects ordinal370 as the exact next owner because AK5 already freezes
+the product behavior, its typed enum value already exists, the gated regression is valid, and static source shows
+`canonical_candidate()` simply lacks the early empty-network/closed-source emission. 368 is still blocked at the
+sphere provenance frontier, 398 is downstream of 368, 374 remains a separately deferred test-fixture owner, and 369
+is a broader proposal-quality correction.
 
-**Exact next: `M3-CP4c-3-TB47-REV`**, independent REVIEW + PLAN / runtime-free. No retry, patch, compile or new runtime
-before review.
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **112**.
+CP4c-3 remains **OPEN**.
+
+**Exact next: `M3-CP4c-3-CB54`**, Code + Build / runtime-free, under
+`Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`.
 
 ## 1. Where the checkpoint stands
 
-TB47-EXEC completed the full frozen selector409 gate from immutable package112. All 409 identities executed exactly
-once in fresh processes with zero timeouts/selection mismatches. Package/source/execution-view censuses match before
-and after; build/repair/mutation/benchmark flags are false.
+Independent TB47 review approves the mechanically valid package112 run with planning amendments and promotes it as
+semantic runtime authority. All 409 identities executed exactly once in fresh processes; accepted held 365/365;
+ordinal367 recovered exactly as CB53 predicted; protected 390/393/406/407 stayed non-vacuous; and the remaining five
+REDs are unchanged carried surfaces.
 
-Raw execution authority:
+Current runtime evidence:
 
 - run/job `34397425632 / 102620523147`;
 - result artifact `10122211479`, SHA-256 `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366`;
 - log artifact `10122212347`, SHA-256 `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`;
-- result **404 PASS / 5 RED**, accepted **365/365**, RED `[368,369,370,374,398]`;
-- ledger SHA-256 `093c4f009a800b56fe385e5129a1ee739fc1cb8b6534baa5fcc89896dadd1942`;
-- failure-detail table SHA-256 `c761660aec3ee209c70299ba9d7d53cbb6dc97e04066c402f8a7b901bbbe830a`;
-- resource-summary SHA-256 `dc83db754b0c1ff3bd94416ce824c8c0ef8a2ade5b2b1d9fd96b8bbfd731cb26`.
+- **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`;
+- ownership **300 established / 0 unavailable / 0 conflicting**.
 
-Ordinal367's prior `FragmentCountRule` false rejection is gone; both `FragmentCountRule` and `FragmentPartition` are
-silent in current evidence. Ordinal307 remains PASS. Protected 390/393/406/407 preserve their real predicate +
-same-domain corruption receipts and non-empty supporting rows. The five remaining REDs reproduce the same separately
-owned surfaces carried into TB47.
-
-This is raw EXEC evidence only. Independent TB47-REV owns semantic promotion, stable recurrence accounting and the
-next corrective/closure plan.
+Ordinal370 is the next narrow product defect. Frozen DEFN-R1 AK5 requires an empty network on a closed surface to
+fail with `EmptyNetworkOnClosedSurface` plus a locus. The public code and name mapping already exist; current
+`SurfaceCutGraph::canonical_candidate()` has no branch that emits them and falls into generic certification instead.
+CB54 owns only that omission.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -558,7 +558,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB46-R1-EXEC-CAND-01` | **CLOSED / TEST-AUTHORITY STALE TWO-SIDED CARDINALITY / DEFN-R3.4 VIOLATION / NON-STABLE / CB53** — distinct global owner count is not local fragment identity; CB53 changes only `!=` to normative over-count `>`. |
+| `M3-CP4c3-TB47-EXEC-CAND-01` | **CLOSED / RUNTIME-PROVED TEST-AUTHORITY CORRECTION RECOVERY / NON-STABLE** — package112 ordinal367 PASSes under the normative high-side-only rule; +0 stable event / +0 recurrence. |
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
 | `M3-CP4c3-TB40-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 proves 390/393/406/407 execute the producer-owned `P_U` predicate, classify the terminal subject `Outside`, and reject same-domain corruption. |
 | `M3-CP4c3-TB40-REV-CAND-02` | **CLOSED THROUGH TB45 / NON-STABLE** — CB49 fixed separation, CB50 fixed per-source-corner grouping, and TB45 ordinal366 PASSes with the old mismatch absent. |
@@ -599,7 +599,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 | `M3-CP4c3-TB6-CAND-01` | **ACTIVE** — vertex-30 evidence contract. **There is still no vertex-30 discriminator.** |
 | `M3-CP4c2-TB-X2-CAND-04` | **ACTIVE** — prescribed sphere 368. |
 | `M3-CP4c2-TB-X2-R10-CAND-01` | **ACTIVE / QUALITY / COVERAGE** — saturation, ordinal 369. |
-| `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — ordinal 370. **No correction authorized.** |
+| `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT / CB54 FROZEN** — ordinal370 is the exact next owner; implement only AK5 typed empty-network rejection in `SurfaceCutGraph.cpp`. |
 | finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
 
@@ -690,8 +690,11 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-Perform **`M3-CP4c-3-TB47-REV`** as an independent REVIEW + PLAN turn. Consume
-`Architecture_M3_CP4c3_TB47_EXEC_Report.md`, the current regression tracker, reviewed TB46-R1 authority and frozen
-CP4c definitions. Adjudicate package112's mechanically valid **404/5** raw result, ordinal367 recovery, five carried
-RED owners and protected non-vacuity; then perform mandatory REVIEW consolidation and update `ORIENTATION.md`.
-No retry, patch, compile or new runtime is authorized before that review.
+Perform **`M3-CP4c-3-CB54`** as Code + Build / runtime-free under
+`Architecture_M3_CP4c3_CB54_Empty_Network_Typed_Rejection_Code_Build_Plan.md`.
+
+Change only `src/geometry/SurfaceCutGraph.cpp` to emit the already-defined `EmptyNetworkOnClosedSurface` typed
+failure with a deterministic source-face locus for a truly empty network on a closed source. Compile the changed
+owner first, then the full eight-target package on the same exact pushed source, using mandatory GMP/GMPXX reusable
+workflow authority. Do not execute Directional runtime or change tests, selector409, fixtures, enum numbering, or
+other carried owners.
