@@ -1,0 +1,7 @@
+# turn=M3-CP4c-3-CB54
+# purpose=final temporary-state cleanup after package113 closeout
+.agents/connector-triggers/m3-cp4c3-cb54-compile.txt
+.agents/connector-triggers/m3-cp4c3-cb54-drive-apply.txt
+.agents/connector-triggers/m3-cp4c3-cb54-closeout-drive-apply.txt
+.agents/connector-triggers/source-snapshot/cb54-20260909.txt
+.agents/connector-triggers/source-snapshot/cb54-closeout-20260909.txt
