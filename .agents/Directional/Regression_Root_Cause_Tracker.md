@@ -6898,6 +6898,26 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**TB46-R1-REV verification-pass addenda.** The adjudication stands; §3's protected recovery is genuinely
+non-vacuous (receipts add `terminalSubjectBranch=PlanFrontier` and `planFrontierEvidenceBranchExecuted=yes` beside
+`censusPredicateExecuted=yes` / `sameDomainCorruptionRejected=yes`, with non-empty supporting rows), which properly
+discharges the caveat TB45-REV withheld. The TB46 quarantine is correct: 0/409, no process row, CB52 runtime-free,
+package111 unchanged. §2's DEFN-R3.4 citation is a **faithful paraphrase, not a quotation**.
+
+**The retired fragment-count equality survives at a SECOND site, inside an accepted identity.**
+
+| Site | Form | Owner |
+|---|---|---|
+| `tests/FieldAlignedCurveNetworkTests.cpp:2273` | `!= tracePieces[face] + 1U` | `independent_fragment_partition()` - ordinal 367, owned by CB53 |
+| `tests/FieldAlignedCurveNetworkTests.cpp:3100` | `EXPECT_EQ(tracePieces[face] + 1U, ...)` | **ordinal 307**, `CoversEverySourceFaceExactlyOnce` - **accepted prefix, currently PASS** |
+
+Ordinal 307's failure message restates verbatim the injectivity premise DEFN-R3.4 destroyed; it passes only because
+its development witness satisfies the equality. **It is a latent false rejection.** Disposition: **record, do not
+touch** - it is accepted and protected, **CB53 must not modify it**, and **CB53's report must state explicitly that
+it is out of scope** rather than be silent. **If it ever fires it is oracle drift, not a product regression**, and
+any change belongs to a definition turn under DEFN-R3.4. Third distinct predicate whose retirement left live
+test-side re-derivations behind. `LESSONS.md` 166.
+
 **TB45-REV verification-pass addenda (EG10).** The adjudication stands; every load-bearing claim verifies.
 
 - **TB44 EG10.3 is DISCHARGED** - by the TB45 review, not by CB50, which was silent on it. `:1336` is intentionally

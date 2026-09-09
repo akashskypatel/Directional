@@ -2045,6 +2045,17 @@ building any conclusion on it.**
      would destroy the independence that makes the oracle worth having. And note the corollary for site lists
      (lesson 164): a completeness audit over "consumers of the loose predicate" must include **test-side**
      consumers, or it is complete only over the half of the corpus that ships.
+166. **Retiring a rule is not finished until you have found every test that still asserts it - including the ones
+     that are green.** A two-sided cardinality equality was disproved and the product relaxed to a one-sided guard.
+     Two test-side re-derivations kept the equality. One of them failed and cost a turn being misdiagnosed as a
+     product regression. **The other is still green, inside the accepted prefix, and its failure message restates
+     the destroyed premise word for word** - it passes only because its witness happens to satisfy the equality.
+     A green assertion carrying a retired premise is not harmless: it is a false rejection waiting for its subject
+     to change, and when it fires it will look exactly like a new product defect. **When a rule is retired, grep
+     the corpus for its *shape*, not its name** - an equality that became an inequality leaves `==`, `!=` and
+     `EXPECT_EQ` forms behind - and record every surviving site even where you must not touch it, because an
+     accepted identity is protected and the record is the only thing that will stop the next turn from
+     misdiagnosing it.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

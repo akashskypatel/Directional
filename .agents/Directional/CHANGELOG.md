@@ -1,3 +1,38 @@
+## 2026-09-09 — `M3-CP4c-3-TB46-R1-REV` verification pass: upheld; a retired equality found inside an accepted identity
+
+Static verification of the delegated `M3-CP4c-3-TB46-R1-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **TB46-R1 / package111**
+(promoted); accounting unchanged at **47 / 14 / 33**.
+
+**Upheld — 403 PASS / 6 RED, accepted 365/365, and the protected recovery is genuinely non-vacuous.** The receipts
+add `terminalSubjectBranch=PlanFrontier` and `planFrontierEvidenceBranchExecuted=yes` beside the retained
+`censusPredicateExecuted=yes` and `sameDomainCorruptionRejected=yes`, with non-empty supporting rows. That is the
+exact proof TB45-REV withheld when it refused to attribute the Part XII receipts to package110 — **the caveat is
+now properly discharged**.
+
+**The TB46 quarantine is correct.** The orchestration-invalid attempt stands at 0/409 contributing no process row;
+CB52 was a runtime-free orchestration correction, so package111 is unchanged and TB46-R1 consumed the same
+immutable package CB51 froze.
+
+**§2's oracle diagnosis is correct.** Note the DEFN-R3.4 citation is a **faithful paraphrase, not a quotation** —
+the frozen text says *"`|owners| = k + 1` is not an invariant of a valid cellular complex"* and that CB21's
+one-sided relaxation stands because *"`>` holds on a strict subset of `!=`."*
+
+**Amended — the retired equality survives at a second site, inside an accepted identity.**
+`independent_fragment_partition()` (`tests:2273`) is not the only place the two-sided form lives:
+**`tests:3100`, in ordinal 307 `GlobalTopologyPlan.CoversEverySourceFaceExactlyOnce`, is inside the accepted prefix
+and currently PASS**, and its failure message restates verbatim the injectivity premise DEFN-R3.4 destroyed. It
+passes only because its development witness satisfies the equality — a **latent false rejection**, identical in
+kind to the one that just cost ordinal 367 a turn.
+
+**Disposition: record, do not touch.** Ordinal 307 is accepted and protected; **CB53 must not modify it**, and
+**CB53's report must state explicitly that it is out of scope** rather than be silent — the obligation CB50 missed
+and this review discharged for the previous predicate. **If it ever fires it is oracle drift, not a product
+regression**, and any change belongs to a definition turn under DEFN-R3.4. This is the third distinct predicate
+whose retirement left live test-side re-derivations behind. `LESSONS.md` **166**.
+
+**Exact next: `M3-CP4c-3-CB53`** — unchanged in scope, with the ordinal 307 out-of-scope statement added.
+
 ## 2026-09-09 — `M3-CP4c-3-TB46-R1`: package111 mechanically valid at 403 PASS / 6 RED; review required
 
 ## 2026-09-09 — `M3-CP4c-3-TB46-R1-REV`: package111 promoted; ordinal367 stale cardinality oracle root-caused; CB53 frozen
