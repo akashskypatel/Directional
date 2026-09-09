@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-CB49
-purpose=compile-only
-source_sha=cf969597bda5c49e734b98db0c0165b421c4ee12
-retry=0
