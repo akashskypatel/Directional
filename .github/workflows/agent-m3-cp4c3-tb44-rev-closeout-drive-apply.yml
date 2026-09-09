@@ -1,0 +1,38 @@
+name: M3 CP4c3 TB44 REV Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-tb44-rev-closeout-drive-apply-20260908.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb44-rev-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb44-rev-closeout-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1L6OLeoGR7aZJt2AMeAMiN-92jpeipYGe
+      patch_sha256: c102656cb4ac012844b21e0fa6701cf5745c71337aaed2f08349318d2a2776bb
+      base_sha: 5f5022c78de1ce8c7771d1cf12d1db97050d2498
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: adjudicate M3 CP4c3 TB44 review and freeze CB50"
+    secrets: inherit
