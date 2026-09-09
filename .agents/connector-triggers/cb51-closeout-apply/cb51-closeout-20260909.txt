@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-CB51-CLOSEOUT
+purpose=apply verified closeout documentation patch and freeze TB46
+base_sha=4f0663ef3468996abce6f59109f1c67f5be5f604
+patch_sha256=57b1c9b272c0955e404e2fa2221856fd7355f8c23c356cd74af94dfd7d8e3350
