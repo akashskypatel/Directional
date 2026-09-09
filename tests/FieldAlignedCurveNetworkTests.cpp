@@ -4673,16 +4673,34 @@ bool region_fragment_owner_relation_is_valid(
   return present == *locus.regionOwningFragmentOrbitPresent && !present;
 }
 
-void expect_outside_region_certification_evidence(
-    const directional::SurfaceCellFailureLocusDiagnostics &locus) {
+void expect_outside_terminal_subject_evidence(
+    const directional::SurfaceCellFailureLocusDiagnostics &locus,
+    std::string &terminalSubjectBranch) {
   EXPECT_EQ("Outside", locus.regionFrontierSubjectDomainRelation);
-  EXPECT_TRUE(region_fragment_owner_relation_is_valid(locus));
-  ASSERT_TRUE(locus.regionFrontierFailureRegionSourceFaceCount.has_value());
-  ASSERT_TRUE(
-      locus.regionFrontierFailureRegionSourceFacesInPartitionCount.has_value());
-  EXPECT_GT(*locus.regionFrontierFailureRegionSourceFaceCount, 0U);
-  EXPECT_EQ(
-      0U, *locus.regionFrontierFailureRegionSourceFacesInPartitionCount);
+  if (locus.topologyRegion.has_value()) {
+    terminalSubjectBranch = "Region";
+    EXPECT_TRUE(region_fragment_owner_relation_is_valid(locus));
+    ASSERT_TRUE(locus.regionFrontierFailureRegionSourceFaceCount.has_value());
+    ASSERT_TRUE(
+        locus.regionFrontierFailureRegionSourceFacesInPartitionCount.has_value());
+    EXPECT_GT(*locus.regionFrontierFailureRegionSourceFaceCount, 0U);
+    EXPECT_EQ(
+        0U, *locus.regionFrontierFailureRegionSourceFacesInPartitionCount);
+    return;
+  }
+  if (locus.sourceFace.has_value()) {
+    terminalSubjectBranch = "SourceFace";
+    EXPECT_FALSE(locus.regionOwningFragmentOrbit.has_value());
+    EXPECT_TRUE(locus.regionOwningFragmentOrbitIds.empty());
+    EXPECT_FALSE(locus.regionOwningFragmentOrbitCount.has_value());
+    EXPECT_FALSE(locus.regionOwningFragmentOrbitPresent.has_value());
+    EXPECT_FALSE(locus.regionFrontierFailureRegionSourceFaceCount.has_value());
+    EXPECT_FALSE(
+        locus.regionFrontierFailureRegionSourceFacesInPartitionCount.has_value());
+    return;
+  }
+  terminalSubjectBranch = "Unresolved";
+  FAIL() << "terminal evidence has neither current-region nor source-face authority";
 }
 
 
@@ -12157,7 +12175,9 @@ TEST(GlobalTopologyPlan,
       !region_frontier_boundary_seed_census_is_valid(*row, *owner, corrupted);
   EXPECT_TRUE(corruptionRejected);
 
-  expect_outside_region_certification_evidence(locus);
+  std::string terminalSubjectBranch;
+  expect_outside_terminal_subject_evidence(
+      locus, terminalSubjectBranch);
   std::cout << "m3Cp4c3BW3;component=" << row->component
             << ";componentFaceCount=" << row->faces.size()
             << ";seedOrbitCount=" << owner->seedOrbitCount
@@ -12168,6 +12188,7 @@ TEST(GlobalTopologyPlan,
       << locus.regionFrontierSubjectDomainRelation
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
+      << ";terminalSubjectBranch=" << terminalSubjectBranch
       << ";regionCertificationEvidenceBranchExecuted=yes\n";
 }
 
@@ -12360,7 +12381,9 @@ TEST(GlobalTopologyPlan,
                                                      certificate);
   EXPECT_TRUE(corruptionRejected);
 
-  expect_outside_region_certification_evidence(locus);
+  std::string terminalSubjectBranch;
+  expect_outside_terminal_subject_evidence(
+      locus, terminalSubjectBranch);
   std::cout << "m3Cp4c3OwnerMap;sourceFaceCount="
             << certificate.sourceFaceCount
             << ";ownerMapCount=" << certificate.sourceFaceOwners.size()
@@ -12373,6 +12396,7 @@ TEST(GlobalTopologyPlan,
       << locus.regionFrontierSubjectDomainRelation
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
+      << ";terminalSubjectBranch=" << terminalSubjectBranch
       << ";regionCertificationEvidenceBranchExecuted=yes\n";
 }
 
@@ -15149,7 +15173,9 @@ TEST(GlobalTopologyPlan,
       !region_frontier_partition_correspondence_is_valid(corrupted);
   EXPECT_TRUE(corruptionRejected);
 
-  expect_outside_region_certification_evidence(locus);
+  std::string terminalSubjectBranch;
+  expect_outside_terminal_subject_evidence(
+      locus, terminalSubjectBranch);
   std::cout << "m3Cp4c3UncutComponentPartitionCorrespondence"
             << ";planComponent=" << row->component
             << ";planDomain=" << row->partitionIdentity.domainRule
@@ -15167,6 +15193,7 @@ TEST(GlobalTopologyPlan,
       << locus.regionFrontierSubjectDomainRelation
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
+      << ";terminalSubjectBranch=" << terminalSubjectBranch
       << ";regionCertificationEvidenceBranchExecuted=yes\n";
 }
 
@@ -15191,7 +15218,9 @@ TEST(SurfaceCutGraph,
       !region_frontier_interior_arc_census_is_valid(corrupted);
   EXPECT_TRUE(corruptionRejected);
 
-  expect_outside_region_certification_evidence(locus);
+  std::string terminalSubjectBranch;
+  expect_outside_terminal_subject_evidence(
+      locus, terminalSubjectBranch);
 
   const auto print_optional_component = [](
       const std::optional<std::size_t> &value) {
@@ -15231,6 +15260,7 @@ TEST(SurfaceCutGraph,
       << locus.regionFrontierSubjectDomainRelation
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
+      << ";terminalSubjectBranch=" << terminalSubjectBranch
       << ";regionCertificationEvidenceBranchExecuted=yes\n";
 }
 

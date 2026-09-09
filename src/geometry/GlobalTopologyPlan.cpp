@@ -583,32 +583,41 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
     if (faceIt == topology.faces.end()) {
       return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
     }
-    std::sort(rays.begin(), rays.end(), [](const RayCut &first,
-                                            const RayCut &second) {
-      return first.ordinal < second.ordinal;
-    });
-    for (std::size_t index = 0U; index < rays.size(); ++index) {
-      if (rays[index].sourceCorner != rays.front().sourceCorner ||
-          (index > 0U && rays[index - 1U].ordinal == rays[index].ordinal) ||
-          (index > 0U &&
-           rays[index - 1U].forwardOrbit != rays[index].reverseOrbit)) {
-        GlobalTopologyPlanError failure =
-            rotation_error(rays[index].sourceCorner != rays.front().sourceCorner ? RotationSystemInconsistencyReason::FragmentCornerSourceCornerMismatch : ((index > 0U && rays[index - 1U].ordinal == rays[index].ordinal) ? RotationSystemInconsistencyReason::FragmentCornerRayOrdinalDuplicate : RotationSystemInconsistencyReason::FragmentCornerOrbitChainMismatch));
-        failure.sourceFace = faceKey;
-        return failure;
-      }
+    std::map<std::size_t, std::vector<RayCut>> raysByCorner;
+    for (const RayCut &ray : rays) {
+      raysByCorner[ray.sourceCorner].push_back(ray);
     }
     const SourceFaceRecord &face = faceIt->second;
-    const std::size_t sourceCorner = rays.front().sourceCorner;
-    const authority::SourceVertexId sourceVertex = face.vertices[sourceCorner];
-    for (const RayCut &ray : rays) {
-      result[faceKey][ray.forwardOrbit].insert(sourceVertex);
-      result[faceKey][ray.reverseOrbit].insert(sourceVertex);
+    for (auto &[sourceCorner, cornerRays] : raysByCorner) {
+      std::sort(cornerRays.begin(), cornerRays.end(),
+                [](const RayCut &first, const RayCut &second) {
+                  return first.ordinal < second.ordinal;
+                });
+      for (std::size_t index = 1U; index < cornerRays.size(); ++index) {
+        if (cornerRays[index - 1U].ordinal == cornerRays[index].ordinal) {
+          GlobalTopologyPlanError failure = rotation_error(
+              RotationSystemInconsistencyReason::FragmentCornerRayOrdinalDuplicate);
+          failure.sourceFace = faceKey;
+          return failure;
+        }
+        if (cornerRays[index - 1U].forwardOrbit !=
+            cornerRays[index].reverseOrbit) {
+          GlobalTopologyPlanError failure = rotation_error(
+              RotationSystemInconsistencyReason::FragmentCornerOrbitChainMismatch);
+          failure.sourceFace = faceKey;
+          return failure;
+        }
+      }
+      const authority::SourceVertexId sourceVertex = face.vertices[sourceCorner];
+      for (const RayCut &ray : cornerRays) {
+        result[faceKey][ray.forwardOrbit].insert(sourceVertex);
+        result[faceKey][ray.reverseOrbit].insert(sourceVertex);
+      }
+      result[faceKey][cornerRays.front().reverseOrbit].insert(
+          face.vertices[(sourceCorner + 1U) % 3U]);
+      result[faceKey][cornerRays.back().forwardOrbit].insert(
+          face.vertices[(sourceCorner + 2U) % 3U]);
     }
-    result[faceKey][rays.front().reverseOrbit].insert(
-        face.vertices[(sourceCorner + 1U) % 3U]);
-    result[faceKey][rays.back().forwardOrbit].insert(
-        face.vertices[(sourceCorner + 2U) % 3U]);
   }
 
   return result;
