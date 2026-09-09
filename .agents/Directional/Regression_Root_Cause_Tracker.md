@@ -6758,6 +6758,36 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**Verification-pass addenda (EG10).** EG0-EG9 re-derived from source; the adjudication stands.
+
+- **EG10.1 - TB43-REV EF10.2 is DISCHARGED.** The execution view restored `timeout -k 5s 180s` with no outer
+  elapsed cutoff, so `timeout_count = 0` is meaningful evidence again.
+- **EG10.2 - EG5's decisive claim verifies.** `build_fragment_corner_incidence(...)` is invoked **nine lines
+  before** `for (const auto &region : regions)` inside `build_region_certificates`, so that failure genuinely has
+  no current region and R8.3's precondition does not hold. The `RP-01` test-authority classification is correct.
+  CB49 also discharged EF10.1 - its report carried the three-site audit, `:467` now reads
+  `is_terminal_slit(...) && forwardOrbit == reverseOrbit`, and the false parity comment is gone.
+- **EG10.3 - the site list was complete against the WRONG SET.** EF10.1 enumerated three sites of
+  `separatesCertifiedFaces`; the risk surface is **consumers of the over-broad `is_terminal_slit` predicate**, and
+  there are **four**. **Canonical table, recorded here because it must survive report folding:**
+
+  | Site | Separation conjunct? | Role |
+  |---|---|---|
+  | `GlobalTopologyPlan.cpp:467` | **yes** (`forwardOrbit == reverseOrbit`, CB49) | corner-ownership skip |
+  | `GlobalTopologyPlan.cpp:1194` | **yes** (`!separatesCertifiedFaces`, CB36) | region-construction skip |
+  | `GlobalTopologyPlan.cpp:1336` | **no** | per-trace `TraceTerminalSlitCensusDiagnostic` label |
+  | `GlobalTopologyPlan.cpp:1417` | **no** | skips segments building `fragmentIncidences` / `fragmentIncidenceCount` |
+
+  **`:1417` is the one that matters**: it sits in `build_regions` - the same function whose `:1194` was corrected
+  at CB36 - and unconditionally omits terminal-slit segments from the published evidence for
+  `TraceCutFaceFragmentCountMismatch`, the failure class whose fragment-count invariant was the TB17 frontier. **No
+  defect is asserted**; the choice is **unadjudicated**, and two sibling consumers of one predicate in one function
+  now disagree with nothing recording that as intentional. **CB50 must adjudicate `:1336` and `:1417` explicitly -
+  apply the conjunct, or record why the narrow reading is correct. Silent inheritance is not an outcome.**
+  `LESSONS.md` 164.
+- **EG10.5 - accounting and promotion confirmed.** Accepted held at 365/365, so no stable event is correct; the
+  four protected identities are above the prefix and their producer-owned invariants still execute and pass.
+
 **Verification-pass addenda (EF10).** Every EF3 citation verifies from source. Two additions bind on the successor:
 
 - **EF10.1 — `build_fragment_corner_incidence` is the THIRD site of the separating-arc barrier rule, and it was

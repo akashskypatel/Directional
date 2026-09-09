@@ -1,3 +1,44 @@
+## 2026-09-08 — `M3-CP4c-3-TB44-REV` verification pass: adjudication upheld; a fourth predicate consumer recorded
+
+Static verification of the delegated `M3-CP4c-3-TB44-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **TB44** (promoted, package 109),
+accounting unchanged at **47 / 14 / 33**.
+
+**Upheld.** EG5's decisive claim verifies from source: `build_fragment_corner_incidence(...)` is invoked **nine
+lines before** `for (const auto &region : regions)` in `build_region_certificates`, so the
+`FragmentCornerSourceCornerMismatch` failure genuinely has **no current region** and R8.3's *"while certifying a
+current region"* precondition does not hold. The `RP-01` test-authority classification is right, and EG6's rule —
+region fields must remain **absent rather than fabricated** — is the correct disposition. EG4's receipts confirm the
+producer-owned Part XII invariants still execute and pass, so this is not a census regression.
+
+**EG10.1 — EF10.2 discharged.** The execution view restored `timeout -k 5s 180s` with no outer cutoff, so
+`timeout_count = 0` is meaningful evidence again rather than the structurally guaranteed value it was at TB43.
+
+**EG10.2 — CB49 discharged EF10.1.** Its report carried the three-site audit; `:467` now reads
+`is_terminal_slit(...) && forwardOrbit == reverseOrbit`, and the false `build_regions()`-parity comment is gone.
+
+**EG10.3 — but that site list was complete against the wrong set.** EF10.1 enumerated three sites of
+`separatesCertifiedFaces`. The actual risk surface is **consumers of the over-broad `is_terminal_slit` predicate**,
+and there are **four** — `:467` and `:1194` guarded, **`:1336` and `:1417` unguarded**. CB49 audited exactly the set
+it was given and could not have found the others; **the incompleteness is EF10.1's**.
+
+**`:1417` is the one that matters.** It sits inside `build_regions` — the same function whose `:1194` was corrected
+at CB36 — and unconditionally omits terminal-slit segments while assembling the published evidence for
+`TraceCutFaceFragmentCountMismatch`, the failure class whose fragment-count invariant was the TB17 frontier. **No
+defect is asserted**: an evidence path may legitimately want the narrow reading. What is asserted is that two
+sibling consumers of one predicate in one function now disagree and **nothing records that as intentional**.
+**CB50 must adjudicate `:1336` and `:1417` explicitly** — apply the conjunct, or record why the narrow reading is
+correct. `LESSONS.md` **164**.
+
+**EG10.4 — the site table now survives folding.** EF10.1 wanted the list inherited, not rediscovered; CB49 produced
+it and this turn folded that report. The corrected four-consumer table is mirrored into
+`Regression_Root_Cause_Tracker.md`, which is not folded.
+
+**Accounting and promotion confirmed.** Accepted held at 365/365, so no stable event; promotion follows the
+operative rule and is consistent with TB39/TB41/TB42.
+
+**Exact next: `M3-CP4c-3-CB50`** — unchanged in scope, with the `:1336` / `:1417` adjudication added.
+
 ## 2026-09-08 — `M3-CP4c-3-TB44-REV`: TB44 promoted; two authority-domain collapses root-caused; CB50 frozen
 
 Independent evidence-only review. No compile, runtime, package mutation, product/test/fixture/selector edit or stable repricing occurred in the review itself.

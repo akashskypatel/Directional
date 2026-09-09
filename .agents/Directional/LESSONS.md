@@ -2025,6 +2025,16 @@ building any conclusion on it.**
      the view is described** - and get the removal authorized in the frozen plan before execution, so a later
      reviewer is not left inferring it from two paragraphs that never reference each other. Same family as lesson
      155 (a verifier passing over an empty table) and 157 (a census whose rows cannot differ).
+164. **A site list must enumerate consumers of the over-broad predicate, not sites of the corrected rule.** A
+     review froze an obligation to audit "every site of the separation rule" and named three - the places where
+     `separatesCertifiedFaces` already appeared. The implementing turn audited exactly those three, correctly and
+     thoroughly. But the defect class was never "places that use the rule"; it was **places that use the raw,
+     over-broad predicate the rule exists to narrow** - and there were four of those, two of them unguarded, one
+     sitting in the same function as a site that had already been corrected. **An audit is complete only against
+     the set it was given**, so the completeness question belongs to whoever writes the list: enumerate callers of
+     the loose predicate, then ask of each whether it needs the narrowing, rather than enumerating the places the
+     narrowing already reached. This is lesson 53 one level up - naming every site that implements a rule is not
+     enough if the list was drawn from the rule instead of from the hazard.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

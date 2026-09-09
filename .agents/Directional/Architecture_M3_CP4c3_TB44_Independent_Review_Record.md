@@ -217,3 +217,71 @@ this review record becomes current review authority; exactly one next-turn plan,
 
 **Exact successor:** **`M3-CP4c-3-CB50` — Code + Build, runtime-free**, under
 `Architecture_M3_CP4c3_CB50_Code_Build_Plan.md`.
+
+---
+
+## EG10 — verification-pass addenda (static, appended after adjudication)
+
+A verification pass re-derived EG0–EG9 from source. **The adjudication stands.** Additions follow.
+
+### EG10.1 — TB43-REV EF10.2 is discharged
+
+The execution view restored the frozen harness's real per-identity control, `timeout -k 5s 180s`, and imposed no
+outer elapsed cutoff. `timeout_count = 0` is therefore **meaningful evidence again** rather than the structurally
+guaranteed value it was at TB43. The obligation is closed.
+
+### EG10.2 — EG5's decisive claim verifies, and so does CB49's audit
+
+Within `build_region_certificates`, `build_fragment_corner_incidence(...)` is invoked **nine lines before**
+`for (const auto &region : regions)`. A failure raised inside it therefore has **no current region**, exactly as
+EG5 argues, and R8.3's *"while certifying a current `GlobalTopologyRegion`"* precondition genuinely does not hold.
+The `RP-01` test-authority classification is correct, and EG6's instruction to require region fields to remain
+**absent rather than fabricated** is the right disposition.
+
+CB49 also discharged TB43-REV EF10.1: its report carried a *Three-site separation-rule audit*, and the source now
+reads `is_terminal_slit(*trace, segmentIndex) && forwardOrbit == reverseOrbit` at `:467` with an accurate replacement
+comment. **The false `build_regions()`-parity comment is gone.**
+
+### EG10.3 — the site list was complete against the wrong set, and a fourth consumer is unguarded
+
+EF10.1 enumerated three sites of **`separatesCertifiedFaces`**. The actual risk surface is **consumers of the
+over-broad `is_terminal_slit` predicate**, and there are **four**:
+
+| Site | Guarded by a separation conjunct? | Role |
+|---|---|---|
+| `GlobalTopologyPlan.cpp:467` | **yes** — `forwardOrbit == reverseOrbit` (CB49) | corner-ownership skip |
+| `GlobalTopologyPlan.cpp:1194` | **yes** — `!separatesCertifiedFaces` (CB36) | region-construction skip |
+| `GlobalTopologyPlan.cpp:1336` | **no** | publishes the per-trace `TraceTerminalSlitCensusDiagnostic` label |
+| `GlobalTopologyPlan.cpp:1417` | **no** | skips segments while building `fragmentIncidences` / `fragmentIncidenceCount` |
+
+**CB49 audited exactly the set it was given and could not have found the other two.** The incompleteness is
+EF10.1's, not CB49's.
+
+**`:1417` is the one that matters.** It sits inside `build_regions` — the *same function* whose `:1194` was
+corrected at CB36 — and it skips terminal-slit segments **unconditionally** while assembling the published failure
+evidence for `TraceCutFaceFragmentCountMismatch`. A **separating** final segment is therefore omitted from the
+evidence for the exact failure class whose fragment-count invariant was the frontier at TB17.
+
+**This review does not assert a defect there.** An evidence path may legitimately want the narrow reading. What it
+asserts is that the choice is **unadjudicated**: two sibling consumers of one predicate in one function now disagree,
+and nothing records that this is intentional. `:1336` is the softer case — it labels a separating final segment
+`terminalSlit=true` in the owner census, which is a misleading name rather than a wrong decision.
+
+**Added to CB50 (EG6, non-optional):** adjudicate `:1336` and `:1417` explicitly — either apply the separation
+conjunct, or record in the CB50 report why the narrow reading is correct for that consumer. **Silent inheritance is
+not an outcome.** `LESSONS.md` 164.
+
+### EG10.4 — the site table must survive folding
+
+EF10.1 required the site list so the *next* turn would inherit it rather than rediscover it. CB49 produced it and
+**this turn folded that report**, returning the list to git history. The corrected four-consumer table above is
+therefore mirrored into `Regression_Root_Cause_Tracker.md`, which is not folded, so the next turn inherits it by
+construction rather than by luck.
+
+### EG10.5 — accounting and promotion confirmed
+
+Accepted prefix held at **365/365**, so **no stable event** is correct: totals remain **47 / 14 / 33**. The four
+protected identities are above the accepted prefix and their producer-owned invariants still execute and pass —
+receipts show `censusPredicateExecuted=yes` and `sameDomainCorruptionRejected=yes` — so pricing this as a product
+regression would misdescribe it. Promotion follows the operative rule (mechanical validity plus an intact accepted
+prefix) and is consistent with TB39/TB41/TB42.
