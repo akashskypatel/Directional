@@ -1,0 +1,47 @@
+name: Agent CB53 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-apply/cb53-closeout-20260909.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: directional-cb53-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb53-closeout-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb53-closeout-drive-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1ayfccIfu8LFvIx0aCGie33h_BBmNE_JE
+      patch_sha256: 16fe0e0b279e39ccb54781b9069a6d7c2ed7ad6dfa8ce6c727f54d4b46226db2
+      base_sha: 5b982e742318f78f148baff158d95cd25647dada
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close out M3-CP4c-3-CB53 and freeze TB47"
+      retention_days: 14
+    secrets: inherit
