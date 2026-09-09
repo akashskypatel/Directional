@@ -116,95 +116,83 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB47-EXEC` — EXACT NEXT / ARTIFACT-ONLY TEST + BENCHMARK
+## Mandatory next turn — `M3-CP4c-3-TB47-REV` — EXACT NEXT / INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
 
-`M3-CP4c-3-CB53` is **COMPLETE / COMPILE-PROVED / PACKAGE112 ACCEPTED / RUNTIME-FREE**.
+`M3-CP4c-3-TB47-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / RAW SEMANTIC RED / REVIEW REQUIRED**.
 
 ### Current authorities
 
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - PR #8 remains open, draft, and unmerged.
-- **Promoted semantic runtime authority remains:** TB46-R1/package111/selector409, **403 PASS / 6 RED / 0 SKIP**,
-  accepted **365/365**, RED `[367,368,369,370,374,398]`.
-- **New immutable build authority:** package112 artifact `10119861923`,
-  `m3-cp4c3-cb53-package112-result-34391561462`, semantic source
-  `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, provider/download SHA-256
-  `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
-- Package112 root manifest: **28/28 PASS**; packaged source archive SHA-256
-  `07955e1be63d35caf335537ca26e83363202a592fcf2542ac7414ec55857e931`; clean source status; GMP/GMPXX
-  linked; `runtimeExecution=false`.
-- Selector409 remains exactly 409 rows at SHA-256
-  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
-- Generic artifact-only harness remains SHA-256
+- **Reviewed semantic runtime authority remains:** TB46-R1/package111/selector409, **403 PASS / 6 RED / 0 SKIP**,
+  accepted **365/365**, RED `[367,368,369,370,374,398]`, pending TB47-REV.
+- **TB47 raw execution evidence:** package112/selector409, run/job `34397425632 / 102620523147`, **404 PASS / 5 RED /
+  0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`.
+- TB47 result artifact `10122211479`, SHA-256
+  `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366`; log artifact `10122212347`, SHA-256
+  `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`.
+- Immutable package112 artifact `10119861923`, semantic source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`,
+  provider/download SHA-256 `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
+- Selector409 remains 409 rows at SHA-256
+  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; generic harness remains SHA-256
   `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, ownership
-  **300 established / 0 unavailable / 0 conflicting**, accepted package count **112**.
+- Stable accounting remains provisionally **47 events / 14 categories / 33 recurrences**, produced-witness debt
+  **5**, ownership **300 established / 0 unavailable / 0 conflicting**, accepted package count **112** pending review.
 
-### CB53 result that TB47 must preserve
+### TB47 raw evidence that review must adjudicate
 
-1. The exact semantic change is only the final independent `FragmentCountRule` comparison:
-   `fragmentOrbits[face].size() > tracePieces[face] + 1U`. Lower distinct-owner count is allowed; a genuine
-   over-count still fails.
-2. Independent forward/reverse face-walk derivation, CB51 terminal separation, empty-owner rejection and all other
-   helper bookkeeping are unchanged.
-3. `tests/FieldAlignedCurveNetworkTests.cpp` is the only semantic file changed at source
-   `c772b53f1c42e117a948f14f77a33ab3dd2619a2`.
-4. The accepted ordinal307 equality is **out of scope and unchanged**. If it ever fires, the frozen review
-   disposition is oracle drift, not product regression; TB47-EXEC only records raw evidence.
-5. Protected 390/393/406/407 retain their runtime-proved Part XII success-path authority; carried
-   368/369/370/374/398 retain separate owners unless later review proves a change.
-
-### Compile/package proof
-
-- changed-owner pre-package run/job `34391251673 / 102599890497`: success;
-  `directional_surface_cell_producer_tests`, result artifact `10119786323`,
-  SHA-256 `9c519a81c5cd22906768816026a0c2de05d9ae973482e557cb12da98e6d44f10`;
-- complete package112 run/job `34391561462 / 102600894187`: success;
-- package result/log artifacts `10119861923 / 10119862314`, SHA-256
-  `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320` /
-  `9dbe0ddc0ab6b4fda5f2e7edff5dc8721f5e9df44ad28d616b1f8589f455b72f`;
-- all eight required compile targets built; six executable binaries and two libraries are packaged;
-- no generated Directional binary, test, benchmark, discovery, `ctest`, CLI, fuzzer, help/version command, or custom
-  input executed during CB53.
+1. Execution is mechanically valid: all 409 identities ran once in fresh processes, zero timeout/selection mismatch,
+   immutable package/source/execution-view censuses match, and build/repair/mutation/benchmark flags are false.
+2. Ordinal367 is **PASS** after CB53's high-side-only independent owner-count correction. `FragmentCountRule` and
+   `FragmentPartition` occur zero times in current evidence.
+3. Accepted/protected ordinal307 remains **PASS**; its separately recorded stale equality did not fire and remains
+   byte-frozen/out of scope.
+4. Protected 390/393/406/407 remain **PASS through `PlanFrontier` with non-vacuous Part XII receipts**, real census
+   predicates, same-domain corruption negatives and non-empty supporting rows.
+5. The remaining REDs are exactly 368/369/370/374/398 and reproduce their established separate surfaces:
+   prescribed-sphere trace-event-position failure; saturation fallback; empty-network typed-code/locus mismatch;
+   folded-cone atlas precondition; prescribed-sphere cellularity failure.
+6. Ledger SHA-256 `093c4f009a800b56fe385e5129a1ee739fc1cb8b6534baa5fcc89896dadd1942`; failure-detail table
+   `c761660aec3ee209c70299ba9d7d53cbb6dc97e04066c402f8a7b901bbbe830a`; resource summary
+   `dc83db754b0c1ff3bd94416ce824c8c0ef8a2ade5b2b1d9fd96b8bbfd731cb26`.
+7. EXEC has categorized every RED in `Regression_Root_Cause_Tracker.md` but **does not promote or semantically
+   reprice** the run. Independent review owns those decisions.
 
 ### Exact work
 
-Perform **`M3-CP4c-3-TB47-EXEC`** under
-`Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md`.
+Perform **`M3-CP4c-3-TB47-REV`** as the independent REVIEW + PLAN boundary.
 
-- Consume immutable package112 **without rebuilding or repairing it**.
-- Use unchanged selector409 and the frozen generic artifact-only harness.
-- Run all 409 identities exactly once, in ordinal order, one fresh process per identity, with the frozen 180-second
-  per-identity timeout and no outer elapsed cutoff.
-- Preserve the complete ledger, raw logs, resource rows, failure-detail digests, authority records and pre/post
-  immutability censuses.
-- Do not freeze an expected aggregate before execution.
-- Do not edit product/test/fixture/selector source, gate membership or carried owners in EXEC.
-- After mechanically valid execution, stop unconditionally at **`M3-CP4c-3-TB47-REV`**. Independent review owns
-  semantic adjudication, promotion and the next plan.
+- Review `Architecture_M3_CP4c3_TB47_EXEC_Report.md` against raw evidence, frozen CP4c definitions, TB46-R1 reviewed
+  authority and existing owner records.
+- Adjudicate ordinal367's runtime recovery and whether its non-stable candidate closes.
+- Verify all five REDs retain or change ownership only when evidence supports it; decide stable recurrence pricing.
+- Verify protected 390/393/406/407 remain genuinely non-vacuous and decide package112/TB47 promotion.
+- Perform mandatory REVIEW-turn document consolidation and update `ORIENTATION.md`.
+- Freeze exactly one successor plan required by the review verdict.
+- Execute **no Directional runtime, compile, retry or semantic patch** during the review.
 
-### Context Load Plan for `M3-CP4c-3-TB47-EXEC`
+### Context Load Plan for `M3-CP4c-3-TB47-REV`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB.md
+  - turn-based-coding-agent/references/turns/REVIEW.md
 conditional_modules:
-  - trigger: artifact-only GitHub Actions execution is used
+  - trigger: GitHub evidence/artifacts must be inspected
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
-  - trigger: unit-test evidence is interpreted only to record raw execution mechanics
+  - trigger: unit-test evidence is semantically adjudicated
     path: turn-based-coding-agent/modules/unit-testing/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Report.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB47_EXEC_Report.md
   - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md
   - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
   - .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
   - .agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh
 templates_when_producing:
-  - turn-based-coding-agent/templates/TEST_REPORT.md
+  - turn-based-coding-agent/templates/REVIEW_REPORT.md
 do_not_preload:
-  - superseded per-turn reports/plans
+  - superseded per-turn plans/reports
   - unrelated product source
   - research/provenance/examples
 ```

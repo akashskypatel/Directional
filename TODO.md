@@ -26,35 +26,30 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB47-EXEC` — TEST + BENCHMARK / ARTIFACT-ONLY
+## Current focus — `M3-CP4c-3-TB47-REV` — REVIEW + PLAN / RUNTIME-FREE
 
-`M3-CP4c-3-CB53` is **COMPLETE / COMPILE-PROVED / PACKAGE112 ACCEPTED / RUNTIME-FREE**.
+`M3-CP4c-3-TB47-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / RAW SEMANTIC RED / REVIEW REQUIRED**.
 
-CB53 changed only `independent_fragment_partition()`'s final `FragmentCountRule` rejection from two-sided `!=` to
-the frozen high-side-only `>` check. Semantic source
-`c772b53f1c42e117a948f14f77a33ab3dd2619a2` compiled first in its owning
-`directional_surface_cell_producer_tests` target and then in the complete eight-target selector409 package. No
-Directional runtime executed.
+Package112/selector409 measured **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED
+`[368,369,370,374,398]` in run/job `34397425632 / 102620523147`. All 409 identities executed exactly once in fresh
+processes with zero timeout/selection mismatch; package/source/execution-view pre/post censuses match; all
+build/repair/mutation/benchmark flags are false.
 
-Package112 artifact `10119861923` has provider/download SHA-256
-`3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`; root manifest is **28/28 PASS**,
-source status is clean, GMP/GMPXX evidence is present, and `runtimeExecution=false` is recorded. Package count is
-now **112**.
+Ordinal367 is now **PASS** after CB53's frozen high-side-only independent owner-count correction. Accepted/protected
+ordinal307 also remains PASS. Protected 390/393/406/407 remain non-vacuously PASS through `PlanFrontier`; ownership
+remains **300/0/0**. The five RED ordinals reproduce their established separate failure surfaces and retain their
+prior owners at raw EXEC intake.
 
-TB46-R1/package111 remains the **promoted semantic runtime authority** at **403 PASS / 6 RED / 0 SKIP**, accepted
-**365/365**, until package112 execution is independently reviewed. Stable accounting remains **47 events / 14
-categories / 33 recurrences**, debt **5**, ownership **300/0/0**.
-
-Ordinal307's separate stale equality is accepted/protected, byte-unchanged, and explicitly **out of CB53 scope**.
-If it ever fires it is frozen as oracle drift, not a product regression.
+TB47-EXEC does **not** promote itself. TB46-R1/package111 remains the reviewed semantic runtime authority at
+**403 PASS / 6 RED / 0 SKIP**, accepted **365/365**, until TB47-REV adjudicates promotion and stable accounting.
+Stable totals remain provisionally **47 events / 14 categories / 33 recurrences**, debt **5**, packages **112**.
 
 ### Exact next turn
 
-Perform **`M3-CP4c-3-TB47-EXEC`** under
-`Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md`. Consume immutable package112 and unchanged
-selector409/harness, execute all 409 identities exactly once in fresh processes, preserve raw evidence, run no
-benchmark/build/repair/mutation path, and freeze **no expected aggregate**. Then stop unconditionally at
-`M3-CP4c-3-TB47-REV` for independent diagnostic review and planning.
+Perform **`M3-CP4c-3-TB47-REV`** as an independent REVIEW + PLAN turn. Adjudicate ordinal367's runtime recovery,
+all five carried RED owners, protected non-vacuity, stable accounting and whether package112/TB47 becomes promoted
+semantic runtime authority. Perform mandatory REVIEW consolidation and update `ORIENTATION.md`. No retry, patch,
+compile or new runtime is authorized before this review.
 
 ## Carried forward from M1
 
@@ -92,7 +87,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **TB46-R1/package111 remains promoted semantic runtime authority** at **403 PASS / 6 RED**, accepted 365/365; package112 is the compile-proved build authority after CB53. Exact next is artifact-only `M3-CP4c-3-TB47-EXEC`.
+  CP4c-3 remains open. **TB46-R1/package111 remains reviewed semantic runtime authority** pending TB47-REV. TB47-EXEC/package112 is mechanically valid raw evidence at **404 PASS / 5 RED**, accepted 365/365; exact next is independent `M3-CP4c-3-TB47-REV`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -105,7 +100,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43: 390/393/406/407 executed the producer-owned census predicates and rejected same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE. TB45 is current runtime authority overall, but does not re-prove these four receipts because its successful plan trips the stale failure-required test precondition.
 - [x] **CP4c-3 protected Part XII success-path observability — CLOSED / RUNTIME-PROVED:** package111 ordinals 390/393/406/407 all PASS on `PlanFrontier`, execute the real census predicates, reject same-domain corruption and emit non-vacuous receipts.
-- [ ] **CP4c-3 ordinal367 independent oracle — TB47 evidence pending:** CB53 compile-proves the frozen test-authority correction from `!=` to high-side-only `>` in package112. TB47-EXEC must measure ordinal367 inside the unchanged full selector409 gate; TB47-REV owns semantic closure.
+- [ ] **CP4c-3 ordinal367 independent oracle — TB47 runtime recovered / REVIEW pending:** package112 ordinal367 PASSes inside the unchanged selector409 gate after CB53's frozen `!=` -> high-side-only `>` correction. TB47-REV owns semantic closure/promotion.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -133,4 +128,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **112**. **`M3-CP4c-3-TB46-R1`/package111 remains promoted semantic runtime authority** at **403/6**, accepted **365/365**; package112 is the compile-proved build authority and exact next is artifact-only **`M3-CP4c-3-TB47-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current totals remain provisionally **47 events / 14 categories / 33 recurrences**, debt **5**, packages **112**. **`M3-CP4c-3-TB46-R1`/package111 remains reviewed semantic runtime authority** pending TB47-REV; TB47-EXEC/package112 is mechanically valid raw evidence at **404/5**, accepted **365/365**. Exact next is independent **`M3-CP4c-3-TB47-REV`**. PR #8 remains open, draft, and unmerged.

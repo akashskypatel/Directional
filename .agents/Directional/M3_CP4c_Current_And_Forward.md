@@ -10,52 +10,50 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-09** at `M3-CP4c-3-CB53`.
+Last updated **2026-09-09** at `M3-CP4c-3-TB47-EXEC`.
 
-**Semantic runtime authority remains TB46-R1 / package111 / selector409:** **403 PASS / 6 RED / 0 SKIP**,
-accepted **365/365**, RED `[367,368,369,370,374,398]`. CB53 executed no Directional runtime, so it does not replace
-that reviewed runtime authority.
+**Reviewed semantic runtime authority remains TB46-R1 / package111 / selector409:** **403 PASS / 6 RED / 0 SKIP**,
+accepted **365/365**, RED `[367,368,369,370,374,398]`, pending independent review of TB47.
 
-**Package112 is the new immutable build authority:** source
-`c772b53f1c42e117a948f14f77a33ab3dd2619a2`, artifact `10119861923`, provider/download SHA-256
-`3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`, root manifest **28/28 PASS**, clean source,
-GMP/GMPXX, `runtimeExecution=false`.
+**TB47-EXEC/package112 is mechanically valid raw evidence:** **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**,
+RED `[368,369,370,374,398]`, run/job `34397425632 / 102620523147`, result/log artifacts
+`10122211479 / 10122212347`. It does not promote itself.
 
-CB53 corrected only ordinal367's stale independent-oracle cardinality relation from two-sided `!=` to the frozen
-high-side-only `>` rule. Ordinal307's second stale equality is accepted/protected, byte-unchanged and explicitly out
-of scope. Protected 390/393/406/407 and carried 368/369/370/374/398 retain their reviewed ownership.
+Package112 remains immutable build/runtime input authority: source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, artifact
+`10119861923`, provider/download SHA-256 `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
 
-Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14
-categories / 33 recurrences**, debt **5**, accepted packages **112**.
+Ordinal367 is PASS after CB53's high-side-only independent owner-count correction; accepted/protected ordinal307
+also remains PASS. Protected 390/393/406/407 stay non-vacuously green through `PlanFrontier`. Carried
+368/369/370/374/398 retain their separate reviewed owners at raw intake. Certified ownership remains **300 / 0 / 0**.
+CP4c-3 remains **OPEN**. Stable accounting remains provisionally **47 events / 14 categories / 33 recurrences**,
+debt **5**, accepted packages **112** pending review.
 
-**Exact next: `M3-CP4c-3-TB47-EXEC`**, artifact-only under
-`Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md`, followed unconditionally by independent
-`M3-CP4c-3-TB47-REV`.
+**Exact next: `M3-CP4c-3-TB47-REV`**, independent REVIEW + PLAN / runtime-free. No retry, patch, compile or new runtime
+before review.
 
 ## 1. Where the checkpoint stands
 
-CB53 is complete as a runtime-free Code + Build turn. The changed owner target compiled first on the exact semantic
-source, then the same source produced the complete eight-target package112. No test or benchmark executed.
+TB47-EXEC completed the full frozen selector409 gate from immutable package112. All 409 identities executed exactly
+once in fresh processes with zero timeouts/selection mismatches. Package/source/execution-view censuses match before
+and after; build/repair/mutation/benchmark flags are false.
 
-Package112 authority:
+Raw execution authority:
 
-- source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`;
-- artifact `10119861923`, `m3-cp4c3-cb53-package112-result-34391561462`;
-- provider/download SHA-256 `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`;
-- packaged source archive SHA-256 `07955e1be63d35caf335537ca26e83363202a592fcf2542ac7414ec55857e931`;
-- root manifest 28/28 verified, six executables plus two libraries present, source status clean;
-- selector409 remains byte-frozen at
-  `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`;
-- artifact-only harness remains
-  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
+- run/job `34397425632 / 102620523147`;
+- result artifact `10122211479`, SHA-256 `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366`;
+- log artifact `10122212347`, SHA-256 `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`;
+- result **404 PASS / 5 RED**, accepted **365/365**, RED `[368,369,370,374,398]`;
+- ledger SHA-256 `093c4f009a800b56fe385e5129a1ee739fc1cb8b6534baa5fcc89896dadd1942`;
+- failure-detail table SHA-256 `c761660aec3ee209c70299ba9d7d53cbb6dc97e04066c402f8a7b901bbbe830a`;
+- resource-summary SHA-256 `dc83db754b0c1ff3bd94416ce824c8c0ef8a2ade5b2b1d9fd96b8bbfd731cb26`.
 
-The semantic edit affects only the final independent owner-count guard. The helper still independently derives
-face-walk orbits and still applies CB51's final terminal-separation rule. A distinct-owner over-count remains an
-error. The accepted ordinal307 equality was deliberately not touched.
+Ordinal367's prior `FragmentCountRule` false rejection is gone; both `FragmentCountRule` and `FragmentPartition` are
+silent in current evidence. Ordinal307 remains PASS. Protected 390/393/406/407 preserve their real predicate +
+same-domain corruption receipts and non-empty supporting rows. The five remaining REDs reproduce the same separately
+owned surfaces carried into TB47.
 
-TB47 must now measure the full unchanged selector409 gate from package112 with one fresh process per identity and no
-expected aggregate frozen ahead of execution. TB47-EXEC records mechanics and raw evidence only; TB47-REV owns
-promotion, semantic adjudication and any successor plan.
+This is raw EXEC evidence only. Independent TB47-REV owns semantic promotion, stable recurrence accounting and the
+next corrective/closure plan.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -692,7 +690,8 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-Perform **`M3-CP4c-3-TB47-EXEC`** under
-`Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md`. Consume immutable package112 artifact
-`10119861923` and unchanged selector409/harness; execute all 409 identities once in fresh processes with no
-build/repair/mutation and no expected aggregate frozen; preserve raw evidence; then stop at `M3-CP4c-3-TB47-REV`.
+Perform **`M3-CP4c-3-TB47-REV`** as an independent REVIEW + PLAN turn. Consume
+`Architecture_M3_CP4c3_TB47_EXEC_Report.md`, the current regression tracker, reviewed TB46-R1 authority and frozen
+CP4c definitions. Adjudicate package112's mechanically valid **404/5** raw result, ordinal367 recovery, five carried
+RED owners and protected non-vacuity; then perform mandatory REVIEW consolidation and update `ORIENTATION.md`.
+No retry, patch, compile or new runtime is authorized before that review.

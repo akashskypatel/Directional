@@ -1,3 +1,34 @@
+## 2026-09-09 — `M3-CP4c-3-TB47-EXEC`: package112 mechanically valid at 404 PASS / 5 RED; review required
+
+Artifact-only Test + Benchmark. TB47-EXEC consumed immutable package112 source
+`c772b53f1c42e117a948f14f77a33ab3dd2619a2`, artifact `10119861923`, and unchanged selector409/harness. Run/job
+`34397425632 / 102620523147` completed successfully with all 409 identities executed exactly once in fresh
+processes, zero selection mismatches/timeouts, equal package/source/execution-view pre/post censuses, and all
+build/repair/mutation/benchmark flags false.
+
+Raw result is **404 PASS / 5 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,370,374,398]`. Result artifact
+`10122211479` has SHA-256 `e5cc14813173e005a1c14fb6ce9e62d520a9d458de49ee931afe7b6177d56366`; log artifact
+`10122212347` has SHA-256 `d40b560d85c0d8f203091bdadeead1a3eec8a85822f6851500ddde6efa9dddf0`.
+Ledger/failure-detail/resource hashes are `093c4f009a800b56fe385e5129a1ee739fc1cb8b6534baa5fcc89896dadd1942`,
+`c761660aec3ee209c70299ba9d7d53cbb6dc97e04066c402f8a7b901bbbe830a`, and
+`dc83db754b0c1ff3bd94416ce824c8c0ef8a2ade5b2b1d9fd96b8bbfd731cb26`.
+
+Ordinal367 is PASS: CB53's high-side-only independent owner-count correction is runtime-recovered, with
+`FragmentCountRule` and `FragmentPartition` absent from current evidence. Accepted/protected ordinal307 also remains
+PASS. Protected 390/393/406/407 remain non-vacuously green through `PlanFrontier` with real census predicates,
+same-domain corruption negatives and non-empty receipts. Ordinal385 again publishes ownership 300/0/0.
+
+Every RED is categorized as a carried existing surface: 368 prescribed-sphere trace-event-position failure; 369
+`saturationUsed=true`; 370 typed code 4 vs expected code 6 with no locus; 374 folded-cone `atlasBuild=false`; 398
+prescribed-sphere `NotProductionReady/CellularityNotEstablished`. EXEC does not merge/reprice them. Stable accounting
+remains **47 / 14 / 33**, debt **5**, packages **112**, ownership **300/0/0**.
+
+TB47-EXEC is raw evidence only. **Reviewed semantic runtime authority remains TB46-R1/package111** pending mandatory
+independent review.
+
+**Exact next:** `M3-CP4c-3-TB47-REV`, independent REVIEW + PLAN / runtime-free. No retry, patch, compile or new runtime
+before review.
+
 ## 2026-09-09 — `M3-CP4c-3-CB53`: stale FragmentCountRule oracle corrected; package112 compile green; TB47-EXEC frozen
 
 Code + Build only; no Directional runtime. CB53 changes exactly one semantic file,
