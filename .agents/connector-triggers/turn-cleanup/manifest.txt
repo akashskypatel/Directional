@@ -1,5 +1,0 @@
-.agents/connector-triggers/source-snapshot/m3-cp4c3-tb45-rev-20260909.txt
-.agents/connector-triggers/m3-cp4c3-tb45-rev-schema-validation-20260909.txt
-.agents/connector-triggers/m3-cp4c3-tb45-rev-drive-apply-20260909.txt
-.agents/Directional/turn-payloads/m3-cp4c3-tb45-rev-drive-apply.yml
-.agents/connector-triggers/turn-cleanup/manifest.txt

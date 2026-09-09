@@ -1,3 +1,0 @@
-M3-CP4c-3-TB45-REV source snapshot
-Purpose: exact repository snapshot for independent evidence-only review.
-READ_MODE=snapshot
