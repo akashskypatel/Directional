@@ -1,4 +1,4 @@
-> **Current CP4c-3 authority (2026-09-08, `M3-CP4c-3-TB44-REV`):** **TB44/package109 is PROMOTED** — selector **409**, **398 PASS / 11 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, ownership 300/0/0. CB49's owner-missing correction stands. 366/367 now expose a whole-face/single-source-corner assumption inside `FragmentCornerIncidence`; 390/393/406/407 still prove their `P_U` predicates and fail only because a shared helper requires current-region evidence before a current region exists. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB50`**, Code + Build only.
+> **Current CP4c-3 authority (2026-09-09, `M3-CP4c-3-TB45-REV`):** **TB45/package110 is PROMOTED** — selector **409**, **399 PASS / 10 RED**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`, ownership 300/0/0. Ordinal366 confirms CB50 cleared the whole-face source-corner mismatch. Ordinal367 is now a stale independent-oracle terminal-slit rule; protected 390/393/406/407 are stale failure-required test authority after the mechanical plan succeeds. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB51`**, Code + Build only.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,16 +30,16 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-08 at `M3-CP4c-3-TB44-REV`. Semantic runtime authority is **TB44**
-(package109, source `cf969597bda5c49e734b98db0c0165b421c4ee12`), selector **409**, **398 PASS / 11 RED**, accepted **365/365**.
-Stable accounting is **47 / 14 / 33**, debt 5, packages 109, ownership 300/0/0.
+**Currency.** Last updated 2026-09-09 at `M3-CP4c-3-TB45-REV`. Semantic runtime authority is **TB45**
+(package110, source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`), selector **409**, **399 PASS / 10 RED**, accepted **365/365**.
+Stable accounting is **47 / 14 / 33**, debt 5, packages 110, ownership 300/0/0.
 
-**Current definition resolution.** No DEFN-R9 is needed. Part VIII/Part XI continue to own fragment-corner and
-actual-embedded region authority; Part XII already distinguishes source-face from current-region failure subjects.
-The live product defect is a projection-domain collapse: exact `sourceCorner` exists per carrierless ray, but
-`build_fragment_corner_incidence()` groups the entire source face as one fan. The live protected-test defect is the
-same pattern in test authority: producer-owned `P_U` predicates remain valid, while one helper assumes every
-`RegionCertification` chronology has a current region. **CB50** owns exactly those two bounded corrections.
+**Current definition resolution.** No DEFN-R9 is needed. Part VIII/Part XI still own fragment-corner and
+actual-embedded-face authority; Part XII still owns the unlabelled-face partition and protected census. TB45
+settles two test-authority transitions: the independent partition oracle retained the retired unconditional
+terminal-slit skip, and the protected Part XII tests still required a mechanical production failure after the plan
+became successful. CB51 corrects those observation surfaces and one failure-only diagnostic incidence list; it does
+not change topology semantics, fixtures or selector409.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -73,7 +73,7 @@ and the verifier reported success. Part X named the check and its identities but
 condition**. `LESSONS.md` 155.
 
 **Historical owner: `M3-CP4c-3-CB44`** under DA7.1–DA7.7 — restoration and measurement were discharged by TB39.
-**Historical next owner at that time: `M3-CP4c-3-TB40-EXEC`.** That measurement is complete and superseded by the promoted TB44 authority above.
+**Historical next owner at that time: `M3-CP4c-3-TB40-EXEC`.** That measurement is complete and superseded by the promoted TB45 authority above.
 
 ## 1. What the project is
 
@@ -117,9 +117,15 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Runtime authority — `M3-CP4c-3-TB44` / package109**, promoted at TB44-REV. Selector **409**, **398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, reds {366, 367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. Certified ownership **300 / 0 / 0**; 311/312/314/315/356/357/404/408/409 remain PASS controls.
+**Runtime authority — `M3-CP4c-3-TB45` / package110**, promoted at TB45-REV. Selector **409**, **399 PASS / 10 RED / 0 SKIP**, **accepted 1–365 = 365/365**, reds {367, 368, 369, 370, 374, 390, 393, 398, 406, 407}. Certified ownership **300 / 0 / 0**; 311/312/314/315/356/357/404/408/409 remain PASS controls.
 
-**Promotion reasoning.** TB44 is mechanically valid and all eleven REDs have explicit owners. The six target-color changes are root-caused without stable repricing: 366/367 continue the fragment-corner projection owner, and 390/393/406/407 are test-authority failures while their Part XII census predicates remain non-vacuously proved. An all-green ledger is not required for runtime authority; unresolved REDs remain fail-closed and explicitly owned.
+**Promotion reasoning.** TB45 is mechanically valid and preserves the accepted floor. Ordinal366 recovers after
+CB50's source-corner fan correction. Ordinal367's later `FragmentPartition` failure is an independent-oracle
+contract drift: it drops all terminal no-barrier segments rather than only independently proven non-separating
+ones. Protected 390/393/406/407 now stop on the obsolete expectation that the mechanical plan must fail; package110
+lawfully succeeds. Those four therefore do not re-prove Part XII in TB45 — TB43 remains the latest runtime proof of
+their producer census — and CB51 restores success-path observability without forcing a product failure.
+
 
 **The binding itself is runtime confirmed.** 4 regions ↔ 4 face certificates, one upstream match each, injective,
 arc counts matching, `discTopologyEstablished=true` and `fieldRegularity=true` on every row, complex inputs
@@ -189,7 +195,7 @@ is now the single identity **χ_true = X + B_int − 47**: `X + B_int = 44` mean
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit, A2a, vertex/edge rotation frontiers, and reaches A2b certification | **Current critical path.** Accepted prefix **365/365**, ownership **300/300**. TB44 advances 366/367 beyond the TB43 owner-missing locus to `FragmentCornerSourceCornerMismatch`; TB44-REV proves the face owns multiple source-corner ray fans and freezes CB50 per-corner grouping. 390/393/406/407 remain producer-census-valid but need typed source-face/current-region terminal evidence in the tests. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit, A2a, vertex/edge rotation frontiers, and reaches A2b certification | **Current critical path.** Accepted prefix **365/365**, ownership **300/300**. TB45 confirms the per-source-corner fan correction: 366 PASSes and the old mismatch is absent. 367 now exposes stale independent-oracle terminal-slit semantics. The production plan succeeds, so 390/393/406/407 need success-path producer-census observability rather than a forced terminal failure. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -292,59 +298,55 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Fragment-corner ray fan authority is the live A2b frontier.** — `M3-CP4c3-TB44-EXEC-CAND-01`, **ROOT-CAUSED / PRODUCT-SIDE / CB50 ASSIGNED**. CB49 removed the exact owner-missing locus. TB44 now fails because carrierless rays from different source corners are forced into one whole-face chain. Each ray already carries exact `sourceCorner`; CB50 partitions by `(sourceFace, sourceCorner)` and preserves per-fan orbit-chain checks.
+1. **Ordinal367 independent partition oracle — CB51.** TB45 clears the former
+   `FragmentCornerSourceCornerMismatch`; ordinal366 PASSes. The remaining ordinal367 `FragmentPartition` RED is
+   test-authority: `independent_fragment_partition()` still drops every terminal no-barrier segment, even when the
+   oracle's own forward/reverse face-walk orbits differ. CB51 uses that independent orbit equality as the
+   separation predicate; it must not consume the product partition.
 
-2. **Protected terminal evidence is test-authority debt, not a census regression.** — `M3-CP4c3-TB44-EXEC-CAND-02`, **ROOT-CAUSED / TEST-AUTHORITY / CB50 ASSIGNED**. 390/393/406/407 still execute producer-owned `P_U` predicates and reject same-domain corruption. The helper incorrectly requires R8.3 current-region fields when failure occurs before the region loop and only a source-face subject exists. CB50 types the subject and keeps the producer oracle non-vacuous.
+2. **Protected Part XII success-path observability — CB51.** 390/393/406/407 now stop because the mechanical plan
+   succeeds while the tests require `!plan.has_value()`. Their producer-census contract does not require failure.
+   CB51 publishes the already-computed `RegionBuildSuccess.frontier` evidence on the immutable successful plan,
+   reuses one producer-side row construction for success/failure, and preserves every real-data predicate and
+   same-domain corruption negative. TB43 remains the latest runtime proof until TB46.
 
-3. **Ordinal 315 tampers only the orbit.** — `M3-CP4c3-TB41-REV-CAND-02`, **ACTIVE / HARDENING**. With a content
+3. **TB44 EG10.3 diagnostic consistency — CB51.** The syntactic terminal-slit trace census is intentional and
+   remains unchanged. The failure-only `TraceCutFaceFragmentCountMismatch.fragmentIncidences` list must stop
+   dropping a terminal segment when `forwardOrbit != reverseOrbit`; that is a diagnostic-only correction.
+
+4. **Ordinal 315 tampers only the orbit.** — `M3-CP4c3-TB41-REV-CAND-02`, **ACTIVE / HARDENING**. With a content
    anchor now on the certificate, an **anchor** tamper is the stronger negative.
 
-4. **Two partitions of one mesh — definition adjudicated; builder duplication remains architectural/non-gating.**
+5. **Two partitions of one mesh — definition adjudicated; builder duplication remains architectural/non-gating.**
    Part XII declares the plan `EmptyFragmentOrbits`/`P_U` domain and certifier `NotTraceCut` domain lawfully
-   distinct. `M3-CP4c3-TB26-REV-CAND-04` is therefore closed as a domain-definition question: the defect was
-   cross-domain substitution. `M3-CP4c3-DEFN-R3-CAND-01` remains separable architectural debt about duplicated
-   actual-embedded topology construction. CB50 must not unify either partition or builder.
-5. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** Three defects on one
-   path: the `VertexStarTransitAudit` is constructed **after** all five seed guards, so every seed failure publishes
-   `std::nullopt`; `VertexStarTransitState::SeedUnavailable` is therefore **dead by construction**; and the 26 AX8
-   fields CB9 added to `SurfaceCellFailureLocusDiagnostics` have **no reader** — `append_cp4c_failure_locus`, the
-   only renderer the CP4c identities use, prints none of them and `vertexTransitStates` has no projection at all.
-   Third consecutive turn in which an ordered measurement was built and discarded at a stage boundary. Owned by
-   **AZ4–AZ5**, with the consumer set found **by search against a predicate**.
+   distinct. `M3-CP4c3-TB26-REV-CAND-04` is closed as a domain-definition question;
+   `M3-CP4c3-DEFN-R3-CAND-01` remains separate architectural debt about duplicated actual-embedded topology
+   construction. CB51 must not unify either partition or builder.
 
-6. **Minimal transit witness / selector governance — ACTIVE, still conditional.** Selector 374 stays byte-immutable.
-   The gate covers only `FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection`; the boundary-ray and
-   radial-arrival companion instances are **ungated**, and the radial one was written in `EdgeTransit` mode
-   specifically because CB9's guards block `FaceInterior` — so no gated identity covers the case production actually
-   produces. **AZ6** must derive that witness from the mechanical vertex-11 star (coordinates already committed,
-   arrival already proved exact), instantiate **both** radial orientations, and show it failing under CB9 and
-   passing under the correction. Ordinal **375** is appended only then.
+6. **Production transit audit projection — ACTIVE; AY7 was delivered producer-side only.** The audit is constructed
+   after seed guards, `SeedUnavailable` is dead by construction, and projection fields still lack a consumer.
+   Owned by AZ4–AZ5; separate from CB51.
 
-7. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB7 reproduces
-   `CellularityNotEstablished` (4) where `EmptyNetworkOnClosedSurface` (6) is required, with the `sourceFace` locus
-   absent. Independent owner; deferred until the mechanical path clears; must not be combined with vertex transit.
+7. **Minimal transit witness / selector governance — ACTIVE, conditional.** Selector 374 stays byte-immutable.
+   AZ6 must eventually derive the witness from the mechanical vertex-11 star and prove the precondition before any
+   selector growth.
 
-8. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 reproduces `NoCarrierMatch / SourceEdgeUnavailable` at
-   trace 2 / event 30. Preserve AL4: no sphere semantic correction while the mechanical gate owns the critical path.
+8. **Ordinal 370 empty closed network — ACTIVE / independent product red.** It still returns
+   `CellularityNotEstablished` where `EmptyNetworkOnClosedSurface` is required, with sourceFace absent. Do not mix
+   with CB51.
 
-9. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
-   `certificate.saturationUsed=true`. Amendment-14 representation is proved; ordinary-proposal coverage is debt.
+9. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 remains
+   `TraceEventPositionInvalid → NoCarrierMatch / SourceEdgeUnavailable`, trace 2/event 30. AL4 still forbids a
+   sphere semantic correction on this frontier.
 
-10. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
-   witness. `M3-CP4c3-DEFN-R1-CAND-01` stays open until production publishes `unboundSingularityCount=0`.
+10. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still uses saturation; ordinary
+    proposal reachability remains separately owned.
 
-11. **Report-only 371/372 remain ungated by their own contracts because the shared fixture helper requires later-stage products.**
-   Both identities read only `fixture.atlas`, an A1 product, but `cp4c_mechanical_fixture()` still requires retained
-   `network`, `cutGraph` and `plan` products before returning. Their Amendment-15 barrier-cycle/Euler-cut contracts
-   therefore remain deferred test-harness debt under `M3-CP4c3-TB10-REV-CAND-01`. Ordinal 367 is no longer part of
-   this reachability statement: it has long since become a measured plan-level identity and is currently owned with
-   366 by the TB44 fragment-corner projection defect.
+11. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal373 is green only on a synthetic barrier-arc
+    witness. `M3-CP4c3-DEFN-R1-CAND-01` remains open until production publishes the zero count.
 
-12. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
-    `double` and exactifies them before the flow classification reads their signs) and `M3-CP4c3-CB9-AUDIT-02`
-    (`integer_sqrt_floor` has no published bit-width budget). Worth knowing: AUDIT-01 is the mechanism that produced
-    the exact zero item 1 turns on, and on that witness it produced the **right** answer — the field genuinely is
-    tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
+12. **CB9 static audit debt — ACTIVE / separate.** Exactification of double-derived flow parameters and the
+    `integer_sqrt_floor` input-size budget remain outside CB51.
 
 ## 8. Recurring defect patterns — the highest-value section
 
@@ -360,6 +362,12 @@ segment is non-separating.
 **A projection may preserve the right datum and still collapse its authority domain one level later.** TB44 adds a second instance to the same ownership-projection family. `RayCut` already stores exact `sourceCorner`, but the next container is keyed only by `sourceFace` and then asserts every row shares the first corner. The data survived; its grouping authority did not. When a record carries an identity key, audit every aggregation layer that can erase that key before blaming the producer.
 
 **Conditional evidence contracts must preserve their preconditions in shared helpers.** Part XII R8.3 says "when a failure is raised while certifying a current region"; the protected helper silently dropped that clause and keyed behavior to later-stage chronology. TB44 exposed the error when certification failed before the region loop. A shared helper may factor assertions, but it may not broaden the set of subjects for which those assertions are authoritative.
+
+**A protected evidence test must not require the producer to fail merely to expose its census.** TB45 adds the
+success-path form of the same authority mistake. Once the mechanical plan lawfully succeeded, four tests failed at
+`ASSERT_FALSE(plan.has_value())` before their Part XII predicates. If evidence is required across both failure and
+success, publish the already-computed producer evidence on the successful immutable product; do not force a new
+failure or substitute a synthetic fixture.
 
 
 **A stage name used as a domain guard is a proxy, and proxies drift.** Four identities checked a census over an

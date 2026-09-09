@@ -1,3 +1,29 @@
+## 2026-09-09 — `M3-CP4c-3-TB45-REV`: package110 promoted; stale oracle/failure-fixture authority isolated; CB51 frozen
+
+TB45/package110/selector409 is **PROMOTED semantic runtime authority** at **399 PASS / 10 RED / 0 SKIP**,
+accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Exact source is
+`46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`; run/job `34357709483 / 102486495110`; result/log artifacts
+`10106632656 / 10106633518`. Immutable pre/post controls match, zero timeouts/selection mismatches occurred, and
+no build/repair/mutation/benchmark ran in TB45.
+
+**366/367:** ordinal366 PASSes and the CB50 `FragmentCornerSourceCornerMismatch` locus is gone. Ordinal367's later
+`FragmentPartition` RED is test-authority: its independent oracle still unconditionally drops every final
+no-barrier segment even though its own face-walk orbits can prove the segment separating. CB51 corrects the oracle
+using independently derived `forwardOrbit != reverseOrbit`; no product partition result is consumed.
+
+**390/393/406/407:** the mechanical plan now succeeds, so the frozen `ASSERT_FALSE(plan.has_value())` is an
+obsolete failure-envelope precondition, not a Part XII invariant. TB45 does not re-prove those four receipts; TB43
+remains their latest runtime proof. CB51 makes the already-computed producer frontier evidence observable from a
+successful plan and preserves the real predicates plus deliberately corrupted same-domain negatives.
+
+**TB44 EG10.3:** the syntactic terminal-slit trace census is intentionally unchanged. The failure-only
+`fragmentIncidences` evidence wrongly omits separating terminal segments and is corrected in CB51 without changing
+semantic counts/control flow.
+
+Carried 368/369/370/374/398 retain their owners. Stable accounting remains **47 / 14 / 33**, debt **5**, packages
+**110**, ownership **300/0/0**. Exact next is runtime-free `M3-CP4c-3-CB51` under
+`Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`.
+
 ## 2026-09-09 — `M3-CP4c-3-CB50`: source-corner fan + typed terminal-subject corrections compile; package110 frozen
 
 CB50 is **COMPLETE / COMPILE + PACKAGE GREEN / RUNTIME-FREE** on exact source

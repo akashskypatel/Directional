@@ -1,4 +1,16 @@
-## M3-CP4c3-TB45-EXEC classification — **CURRENT RAW INTAKE / REVIEW REQUIRED / NON-STABLE EXEC**
+## M3-CP4c3-TB45-REV — independent adjudication — **CURRENT REVIEW / TB45 PROMOTED / CB51 FROZEN**
+
+- **Promoted authority:** TB45/package110/selector409, run/job `34357709483 / 102486495110`, **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts `10106632656 / 10106633518` are hash-verified; immutable pre/post censuses match; zero timeouts and selection mismatches; build/repair/mutation flags are false.
+- **`M3-CP4c3-TB45-EXEC-CAND-01` — CLOSED / TEST-AUTHORITY ORACLE DRIFT / INCORRECT EXPECTATION / NON-STABLE / CB51.** CB50's old `FragmentCornerSourceCornerMismatch` is gone and ordinal366 PASSes. Ordinal367 reaches `independent_fragment_partition`, whose independent face-walk owners are correct but whose terminal rule still drops every final no-barrier segment. Part VIII/CB49 require retaining a terminal segment when its independently derived forward/reverse orbits differ. CB51 changes only the independent test oracle to use its own orbit equality as the separation discriminator.
+- **`M3-CP4c3-TB45-EXEC-CAND-02` — CLOSED / TEST-AUTHORITY FIXTURE-PRECONDITION + OBSERVABILITY TRANSITION / INCORRECT EXPECTATION / NON-STABLE / CB51.** The four protected identities stop because the mechanical production plan now succeeds. `ASSERT_FALSE(plan.has_value())` was a failure-envelope transport assumption, not a Part XII invariant. CB51 must expose the already-computed producer frontier evidence on successful plan publication and keep the real predicate + same-domain corruption negative. TB45 does **not** re-prove the Part XII receipts; TB43 remains their most recent runtime proof.
+- **TB44 EG10.3 discharge:** the syntactic `TraceTerminalSlitCensusDiagnostic` label remains intentionally unchanged; it does not decide separation. The failure-only `TraceCutFaceFragmentCountMismatch.fragmentIncidences` loop is inconsistent with authoritative `tracePieceCount` because it drops every terminal slit. CB51 must skip only `forwardOrbit == reverseOrbit` terminal segments. This is diagnostic-only and creates no semantic event.
+- **Carried REDs:** 368/369/370/374/398 retain their prior owners and are not merged/repriced.
+- **Stable-count rationale:** accepted remains 365/365 and both TB45 candidates are test-authority/non-stable continuations above the accepted prefix. Totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**, ownership **300/0/0**.
+- **Exact successor:** `M3-CP4c-3-CB51`, Code + Build, runtime-free, under `Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`.
+
+---
+
+## M3-CP4c3-TB45-EXEC classification — **HISTORICAL RAW INTAKE / PROMOTED BY TB45-REV / NON-STABLE EXEC**
 
 - **Execution authority:** immutable package110 source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, artifact
   `10095738820`, selector409, run/job `34357709483 / 102486495110`, result/log artifacts

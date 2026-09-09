@@ -26,31 +26,30 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB45-REV` — INDEPENDENT REVIEW / EVIDENCE-ONLY
+## Current focus — `M3-CP4c-3-CB51` — CODE + BUILD / RUNTIME-FREE
 
-`M3-CP4c-3-TB45-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / RAW EVIDENCE PRESERVED** against
-immutable package110. Run/job `34357709483 / 102486495110` measured **399 PASS / 10 RED / 0 SKIP**, accepted
-**365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`, zero timeout, zero selection mismatch and identical
-package/source/execution-view pre/post censuses. Result/log artifacts are `10106632656 / 10106633518`.
-
-Promoted semantic runtime authority remains TB44/package109 until independent review. Stable accounting remains
-**47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**, ownership **300/0/0**.
+`M3-CP4c-3-TB45-REV` is **COMPLETE**. TB45/package110/selector409 is promoted semantic runtime authority:
+**399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED `[367,368,369,370,374,390,393,398,406,407]`.
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**, ownership
+**300/0/0**.
 
 ### Exact next turn
 
-Execute **independent `M3-CP4c-3-TB45-REV`** using
-`.agents/Directional/Architecture_M3_CP4c3_TB45_EXEC_Report.md` and the immutable TB45 artifacts.
+Execute **`M3-CP4c-3-CB51`** under
+`.agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`.
 
-Review must adjudicate, without new runtime or compile:
+CB51 is bounded to:
 
-- ordinal366 RED→PASS and ordinal367's movement from `FragmentCornerSourceCornerMismatch` to the independent
-  `FragmentPartition` oracle;
-- 390/393/406/407 remaining RED because `mechanical.plan.has_value()` is now true before their Part XII receipt branch;
-- the five separately owned carried REDs 368/369/370/374/398;
-- semantic promotion, stable accounting and the exact successor edge;
-- mandatory REVIEW document consolidation and `ORIENTATION.md` update.
+- correct ordinal367's independent terminal-slit oracle using its independently derived forward/reverse orbit
+  equality;
+- expose already-computed producer frontier evidence from successful `GlobalTopologyPlan` publication and update
+  protected 390/393/406/407 to execute their real Part XII predicates + same-domain corruption negatives without
+  requiring plan failure;
+- fix the failure-only fragment-incidence diagnostic to retain separating terminal segments, while leaving the
+  syntactic terminal-slit census unchanged;
+- compile/package only with mandatory GMP/GMPXX, then freeze TB46. No Directional runtime in CB51.
 
-The orchestrator stops at this boundary. No Code + Build successor begins before TB45-REV closes.
+Fixtures, selector409, Part VIII/XI/XII semantics and carried 368/369/370/374/398 remain frozen.
 
 ## Carried forward from M1
 
@@ -88,7 +87,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB44`/package109 remains promoted semantic runtime authority** pending review at **398 PASS / 11 RED**, accepted 365/365. **TB45/package110 raw EXEC measured 399 PASS / 10 RED, accepted 365/365**; exact next is independent `M3-CP4c-3-TB45-REV`.
+  CP4c-3 remains open. **`M3-CP4c-3-TB45`/package110 is promoted semantic runtime authority** at **399 PASS / 10 RED**, accepted 365/365; exact next is runtime-free `M3-CP4c-3-CB51`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -99,9 +98,9 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43 and remains product-valid in promoted TB44: 390/393/406/407 still execute the producer-owned census predicates and reject same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE; CB50 owns only the separate typed terminal-evidence helper defect.
-- [ ] **CP4c-3 protected terminal-evidence helper — TB45 review pending:** 390/393/406/407 remain RED, but each now stops because `mechanical.plan.has_value()` is true before its Part XII receipt branch. TB45-REV must adjudicate the fixture/product-authority transition before this item can close.
-- [ ] **CP4c-3 366/367 fragment-corner fan projection — TB45 review pending:** TB45-EXEC no longer reproduces `FragmentCornerSourceCornerMismatch`; ordinal366 PASSes and ordinal367 advances to independent `FragmentPartition`. TB45-REV owns semantic adjudication of the later oracle surface.
+- [x] **CP4c-3 protected frontier census evidence:** Part XII was first runtime-proved in TB43: 390/393/406/407 executed the producer-owned census predicates and rejected same-domain corruption. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE. TB45 is current runtime authority overall, but does not re-prove these four receipts because its successful plan trips the stale failure-required test precondition.
+- [ ] **CP4c-3 protected Part XII success-path observability — CB51:** TB45-REV classifies the four REDs as stale failure-required test authority. CB51 must expose the already-computed producer frontier evidence on successful plans and keep the real predicates + same-domain corruption negatives; TB43 remains the most recent runtime proof until TB46.
+- [ ] **CP4c-3 ordinal367 independent oracle — CB51:** ordinal366 PASSes and the old fragment-corner mismatch is gone. TB45-REV classifies ordinal367 `FragmentPartition` as stale independent-oracle terminal-slit semantics; CB51 must use independently derived forward/reverse orbit equality without consuming product partition authority.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -129,4 +128,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**. **`M3-CP4c-3-TB44`/package109 remains promoted semantic runtime authority** pending review at **398/11**, accepted **365/365**. TB45/package110 raw EXEC measured **399/10**, accepted **365/365**; exact next is independent **`M3-CP4c-3-TB45-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**. **`M3-CP4c-3-TB45`/package110 is promoted semantic runtime authority** at **399/10**, accepted **365/365**; exact next is runtime-free **`M3-CP4c-3-CB51`**. PR #8 remains open, draft, and unmerged.

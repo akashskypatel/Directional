@@ -3,19 +3,19 @@
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
 **Current state — see `M3_CP4c_Current_And_Forward.md`.** Since 2026-09-03 this record holds **history only**.
-As of `M3-CP4c-3-CB48`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN. **TB42 remains promoted runtime
-authority** — selector409, **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, package107, ownership 300/0/0.
-**Part XII is current definition authority**. CB48 compiled its bounded domain-owned evidence correction as
-package108 artifact `10076272909` on source `531b517fb129425f113b5f811215f1d2b1939ee2`, with no Directional runtime.
-Stable accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 108. Exact next is artifact-only
-**`M3-CP4c-3-TB43-EXEC`**.
+As of `M3-CP4c-3-TB45-REV`, CP4c-2 is CLOSED / ACCEPTED and CP4c-3 remains OPEN. **TB45/package110 is promoted
+runtime authority** — selector409, **399 PASS / 10 RED / 0 SKIP**, accepted 365/365, ownership 300/0/0. Stable
+accounting is 47 events / 14 categories / 33 recurrences, debt 5, packages 110. Exact next is runtime-free
+**`M3-CP4c-3-CB51`** under `Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`.
 
-These CP4c authorities remain separate because current or future work still depends on them:
+Current/future CP4c authority intentionally remains outside this history record:
 
-- the CP4c-2 and CP4c-3 frozen `DEFN*` contracts and all frozen `Required_Green_Selector_*` lineage files;
-- `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`, which closes CP4c-2 and supplies live CP4c-3 carry-forward authority;
-- `Architecture_M3_CP4c3_TB22_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB22_Independent_Review_Record.md`, which retain the current runtime boundary and the frozen CB25 scope; `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` remains CB19 rationale lineage;
-- historical review/plan records still referenced by `DESIGN.md`, `LESSONS.md`, `ROADMAP.md`, `Regression_Root_Cause_Tracker.md`, or by a retained frozen definition/review authority. Their transitive dependency chain remains exact-byte authority and was deliberately excluded from this retirement.
+- `Architecture_M3_CP4c3_TB45_EXEC_Report.md` — current runtime report;
+- `Architecture_M3_CP4c3_TB45_Independent_Review_Record.md` — current review authority;
+- `Architecture_M3_CP4c3_CB51_Code_Build_Plan.md` — the single exact next-turn plan;
+- `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`,
+  `Required_Green_Selector_Manifest.md`, and every byte-frozen `Required_Green_Selector_*.txt`;
+- durable closure/architecture/tracker/lesson records cited by those current authorities.
 
 All other superseded CP4c-3 per-turn files that had no live current/future dependency were folded into §§4/6 below and retired from the working tree. Git history remains the exact-byte recovery source for every retired file.
 
@@ -696,6 +696,34 @@ Mandatory REVIEW consolidation. Durable TB43/CB49/TB44-plan facts are preserved 
 **Folded here:** 5 documents, **992 lines**. **Running total: 141 documents, 26,958 lines.** Exact bytes remain recoverable from Git history.
 
 **Review conclusion retained here.** TB44/package109 is promoted at 398 PASS / 11 RED, accepted 365/365. CB49 is not reverted: its exact owner-missing locus disappeared. The next product defect is whole-face aggregation of carrierless rays that already carry exact source-corner authority. The four protected census identities still prove their producer predicates; their RED is a shared test helper broadening R8.3 current-region evidence to a source-face failure raised before the region loop. Existing Part VIII/Part XI/Part XII decide CB50; no DEFN-R9. Stable accounting remains 47 / 14 / 33, debt 5, packages 109.
+
+### Consolidated on 2026-09-09 at `M3-CP4c-3-TB45-REV`
+
+Mandatory REVIEW consolidation. TB45/package110 is promoted as current semantic runtime authority. Durable TB44,
+CB50 and consumed TB45-plan facts are preserved in this record, the TB45 review record, tracker, ORIENTATION,
+Current/Forward, TODO and CHANGELOG before superseded per-turn documents are folded. TB45 EXEC remains the current
+runtime-authority report; TB45-REV is the current review record; CB51 is the single retained next-turn plan.
+
+| Folded/indexed document | Lines | Recorded verdict or role |
+|---|---:|---|
+| `Architecture_M3_CP4c3_TB44_EXEC_Report.md` | 179 | superseded runtime authority — package109/selector409 398 PASS / 11 RED, accepted 365/365; root-caused by TB44-REV |
+| `Architecture_M3_CP4c3_TB44_Independent_Review_Record.md` | 287 | superseded review authority — promoted TB44, root-caused source-corner fan and typed terminal-subject defects, plus EG10.3 audit obligation |
+| `Architecture_M3_CP4c3_CB50_Code_Build_Plan.md` | 130 | consumed build plan — bounded source-corner fan + terminal-subject helper corrections |
+| `Architecture_M3_CP4c3_CB50_Code_Build_Report.md` | 114 | consumed compile/package report — package110 exact source `46554ef2...`, GMP/GMPXX, 28/28 manifest, runtime-free |
+| `Architecture_M3_CP4c3_TB45_Artifact_Only_Test_Benchmark_Plan.md` | 161 | consumed artifact-only evidence contract — package110/selector409 full gate; raw result promoted by TB45-REV |
+
+**Folded here:** 5 documents, **871 lines**. **Running total: 146 documents, 27,829 lines.** Exact bytes remain
+recoverable from Git history.
+
+**Review conclusion retained here.** TB45/package110 is promoted at 399 PASS / 10 RED, accepted 365/365. Ordinal366
+proves the CB50 source-corner fan correction moved the intended locus. Ordinal367's later `FragmentPartition` stop
+is a stale independent-oracle unconditional terminal-slit skip; the oracle must use its independently derived
+forward/reverse orbit equality. Protected 390/393/406/407 now fail only because their fixture requires the
+mechanical plan to fail even though it succeeds; Part XII remains historically runtime-proved by TB43, while CB51
+must make the existing producer frontier census observable on successful plans and preserve the corruption
+negatives. TB44 EG10.3 is explicitly settled: the syntactic terminal-slit trace census is intentional, while the
+failure-only fragment-incidence evidence must retain separating terminal segments. Stable accounting remains
+47 / 14 / 33, debt 5, packages 110.
 
 ## 6. Historical retirement
 

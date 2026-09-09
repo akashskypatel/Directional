@@ -116,77 +116,70 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB45-REV` — EXACT NEXT / independent evidence-only review
+## Mandatory next turn — `M3-CP4c-3-CB51` — EXACT NEXT / Code + Build / runtime-free
 
-`M3-CP4c-3-TB45-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / RAW EVIDENCE PRESERVED**. It consumed
-immutable CB50 package110 and unchanged selector409 without compile, relink, repair, source/test/fixture/selector mutation, or
-benchmark execution. Semantic promotion is intentionally deferred to independent review.
+`M3-CP4c-3-TB45-REV` is **COMPLETE**. TB45/package110/selector409 is promoted as current semantic runtime
+authority at **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED
+`[367,368,369,370,374,390,393,398,406,407]`.
 
 ### Current authorities
 
-- **Promoted semantic runtime remains TB44/package109/selector409** pending review: **398 PASS / 11 RED / 0 SKIP**,
-  accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`.
-- **TB45 raw execution:** package110 source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, run/job
-  `34357709483 / 102486495110`, **399 PASS / 10 RED / 0 SKIP**, accepted **365/365**, RED
-  `[367,368,369,370,374,390,393,398,406,407]`.
-- TB45 result/log artifacts `10106632656 / 10106633518`, provider digests
-  `15327d9f3211f9b28b358e380b9b19917813362982f0b8cb94422b4518eff18a` /
-  `2d4a0b0dd975f8f50a3b7e9161f67a71ccf2de5c46494c8c7715228dd3e23db8`.
-- Immutable package110 artifact `10095738820`, provider SHA-256
-  `7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`; packaged source archive SHA-256
-  `8ae8fcd115c5b150642ad090272a001de89520d28ba69c2564cd476473374e80`; manifest **28/28 verified**.
-- Selector409 SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`; generic harness SHA-256
-  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**, ownership
-  **300 / 0 / 0** pending TB45-REV.
+- **Semantic runtime:** TB45/package110 source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, run/job
+  `34357709483 / 102486495110`, result/log artifacts `10106632656 / 10106633518`.
+- **Package110:** artifact `10095738820`, provider SHA-256
+  `7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`; source archive SHA-256
+  `8ae8fcd115c5b150642ad090272a001de89520d28ba69c2564cd476473374e80`; manifest 28/28.
+- **Selector409:** SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+- **Accounting:** 47 events / 14 categories / 33 recurrences, debt 5, packages 110, ownership 300/0/0.
 
-### TB45 raw observations requiring independent review
+### TB45 review decisions
 
-1. **366/367:** ordinal366 is now PASS. Ordinal367 remains RED, but both logs contain zero
-   `FragmentCornerSourceCornerMismatch`, duplicate-ray-ordinal, orbit-chain-mismatch, or exact `sourceFace=10,11,79`
-   failure-detail tokens. Ordinal367 advances to `partition.has_value()==false` / `FragmentPartition` in the independent
-   rotation/face-walk oracle. EXEC does not adjudicate that later surface.
-2. **390/393/406/407:** all four remain RED, but each now stops at the frozen fixture precondition
-   `ASSERT_FALSE(mechanical.plan.has_value())` with actual `true`. Their later Part XII receipt branches therefore do not execute
-   in these identities. EXEC does not decide whether the fixture expectation or product progression owns that transition.
-3. **Carried REDs:** 368/369/370/374/398 remain separately owned at their prior visible behavior classes.
-4. **Controls:** 311/312/314/315/356/357/404/408/409 PASS; ordinal385 publishes ownership 300/0/0; all three
-   retired failure-code strings remain absent. Package/source/execution-view byte+mode censuses are equal pre/post; timeout and
-   selection-mismatch counts are zero.
+1. **366/367:** CB50's old source-corner mismatch is gone and 366 PASSes. 367 is a stale independent-oracle
+   expectation: `independent_fragment_partition()` unconditionally skips terminal no-barrier segments even when its
+   independently derived forward/reverse face-walk orbits differ. CB51 corrects the test oracle without consuming
+   product partition authority.
+2. **390/393/406/407:** the mechanical plan now succeeds, so their frozen `ASSERT_FALSE(plan.has_value())` is an
+   obsolete failure-envelope precondition. CB51 makes the already-computed producer frontier evidence observable on
+   successful plans and preserves each real Part XII predicate plus same-domain corruption negative. TB45 itself
+   does not re-prove those receipts; TB43 remains their most recent runtime proof.
+3. **TB44 EG10.3:** the syntactic terminal-slit trace census is intentionally unchanged. The failure-only
+   `fragmentIncidences` diagnostic must retain separating terminal segments; CB51 applies the separation conjunct.
+4. **Carried:** 368/369/370/374/398 retain their existing owners.
 
-Full raw evidence is retained in `.agents/Directional/Architecture_M3_CP4c3_TB45_EXEC_Report.md` and the immutable Actions
-artifacts above. `.agents/Directional/Regression_Root_Cause_Tracker.md` contains only non-stable EXEC intake; review owns
-promotion and repricing.
+Full adjudication: `.agents/Directional/Architecture_M3_CP4c3_TB45_Independent_Review_Record.md`. Exact executable
+successor plan: `.agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`.
 
-### Independent-review boundary
+### Code + Build boundary
 
-Exact next is **independent `M3-CP4c-3-TB45-REV`**. The orchestrator must stop at this boundary. TB45-REV may inspect the
-frozen package110 runtime evidence and static source, update review/planning records and perform mandatory REVIEW document
-consolidation, but must not compile, execute new Directional runtime, or mutate product/test/fixture/selector semantics.
+CB51 is runtime-free. It may author the bounded product-diagnostic/test changes in the frozen plan, perform static
+review, compile/link approved targets with mandatory GMP/GMPXX, and package the exact pushed source. It must not
+execute a Directional binary, run tests/benchmarks, alter fixtures/selectors, or touch carried RED owners. After
+accepted compile/package it freezes exactly one artifact-only TB46 plan and stops.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB-REVIEW.md
+  - references/turns/CB-DRAFT.md
 conditional_modules:
-  - trigger: existing-test diagnosis/review is material
+  - trigger: implementation design/corrective work
+    path: modules/engineering-guidelines/MODULE.md
+  - trigger: unit-test source repair
     path: modules/unit-testing/MODULE.md
-  - trigger: remote artifact/PR evidence lookup is required
+  - trigger: GitHub connector/workflow/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M3_CP4c3_CB51_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB45_Independent_Review_Record.md
   - .agents/Directional/Architecture_M3_CP4c3_TB45_EXEC_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB45_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c3_CB50_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB44_Independent_Review_Record.md
   - .agents/Directional/M3_CP4c_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
 templates_when_producing:
-  - independent TB45 review record
-  - successor plan only if review authorizes one
+  - Code + Build report
+  - TB46 artifact-only plan after accepted compile/package
 do_not_preload:
   - sibling turn files
-  - uncited historical reports
+  - folded historical reports
 ```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

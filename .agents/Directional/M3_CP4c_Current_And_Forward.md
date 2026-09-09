@@ -10,26 +10,33 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-09** at `M3-CP4c-3-CB50` compile/package closeout.
+Last updated **2026-09-09** at `M3-CP4c-3-TB45-REV` independent adjudication.
 
 ---
 
 ## 1. Where the checkpoint stands
 
-**`M3-CP4c-3-TB44` / package109 / selector409 remains the current valid semantic runtime authority**, promoted at TB44-REV: **398 PASS / 11 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, run/job `34295565963 / 102291328376`, result/log artifacts `10083047547 / 10083047938`.
+**`M3-CP4c-3-TB45` / package110 / selector409 is the current valid semantic runtime authority**, promoted at
+TB45-REV: **399 PASS / 10 RED / 0 SKIP**, **accepted 1–365 = 365/365**, RED
+`[367,368,369,370,374,390,393,398,406,407]`, run/job `34357709483 / 102486495110`, result/log artifacts
+`10106632656 / 10106633518`.
 
-**CB50/package110 is the current compile authority**: exact source `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`, compile run/job
-`34330825605 / 102398794843`, immutable artifact `10095738820` at SHA-256 `7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`. The
-28/28 manifest verifies, GMP/GMPXX link evidence is present, source status is clean and `runtimeExecution=false`.
+Package110 exact source is `46554ef2bc1b36fff100e4de0a274a0fb6d3f26d`; artifact `10095738820` has SHA-256
+`7edc47632dbd863508c97d5716dd9df5e469671e0b327a133848ff3c37142000`. Certified ownership remains
+**300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14 categories / 33 recurrences**,
+debt **5**, packages **110**.
 
-Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **110**.
+**TB45 adjudication.** Ordinal366 PASSes and the CB50 whole-face source-corner mismatch is gone. Ordinal367's later
+`FragmentPartition` RED is test-authority: its independent oracle still drops every terminal no-barrier segment,
+while the frozen contract distinguishes separating (`forwardOrbit != reverseOrbit`) from non-separating terminal
+segments. The four protected identities 390/393/406/407 are also test-authority REDs: they still require the
+mechanical plan to fail, but package110 lawfully succeeds before their Part XII receipt branches. TB45 therefore
+does not re-prove those four receipts; TB43 remains their most recent runtime proof.
 
-CB50 compiles the bounded per-`(sourceFace, sourceCorner)` carrierless-ray fan projection and the typed
-Region/SourceFace terminal-evidence helper while preserving the real Part XII producer predicates and corruption
-negatives. No semantic runtime result is promoted until package110 is executed.
-
-**Exact next: `M3-CP4c-3-TB45-EXEC`**, artifact-only, under
-`Architecture_M3_CP4c3_TB45_Artifact_Only_Test_Benchmark_Plan.md`. No DEFN-R9.
+**Exact next: `M3-CP4c-3-CB51`**, runtime-free, under
+`Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`. It corrects the independent oracle, makes already-computed producer
+frontier evidence observable on successful plans, and fixes one failure-only terminal-incidence diagnostic. No
+DEFN-R9 and no fixture/selector/carry-owner change.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -536,9 +543,11 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
 | `M3-CP4c3-TB40-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 proves 390/393/406/407 execute the producer-owned `P_U` predicate, classify the terminal subject `Outside`, and reject same-domain corruption. |
-| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / SAME OWNER / NON-STABLE / CB50** — CB49 fixed the separation predicate and TB44 proves the old owner-missing locus gone. TB44-REV assigns the downstream `FragmentCornerSourceCornerMismatch` to whole-face vs source-corner-fan authority conflation; CB50 owns the bounded projection correction. |
-| `M3-CP4c3-TB44-EXEC-CAND-01` | **ROOT-CAUSED / PRODUCT-SIDE / RP-01 / NON-STABLE / CB50** — all carrierless rays on a face are wrongly validated as one source-corner fan; partition by `(sourceFace, sourceCorner)` and retain per-fan chain checks. |
-| `M3-CP4c3-TB44-EXEC-CAND-02` | **ROOT-CAUSED / TEST-AUTHORITY / RP-01 / NON-STABLE / CB50** — producer `P_U` predicates remain proved; shared terminal helper wrongly requires current-region fields for a source-face failure raised before the region loop. |
+| `M3-CP4c3-TB40-REV-CAND-02` | **CLOSED THROUGH TB45 / NON-STABLE** — CB49 fixed separation, CB50 fixed per-source-corner grouping, and TB45 ordinal366 PASSes with the old mismatch absent. |
+| `M3-CP4c3-TB44-EXEC-CAND-01` | **CLOSED / PRODUCT CORRECTION RUNTIME-ADVANCED / NON-STABLE** — the CB50 source-corner mismatch is gone; TB45's later ordinal367 oracle surface is owned separately. |
+| `M3-CP4c3-TB44-EXEC-CAND-02` | **CLOSED / TEST-AUTHORITY CORRECTION ADVANCED / NON-STABLE** — typed source-face/current-region handling compiled in CB50; TB45 then exposed the distinct success-path observability precondition. |
+| `M3-CP4c3-TB45-EXEC-CAND-01` | **CLOSED / TEST-AUTHORITY ORACLE DRIFT / NON-STABLE / CB51** — independent partition oracle still uses the retired unconditional terminal-slit skip; correct with independently derived orbit equality. |
+| `M3-CP4c3-TB45-EXEC-CAND-02` | **CLOSED / TEST-AUTHORITY FIXTURE-PRECONDITION + OBSERVABILITY TRANSITION / NON-STABLE / CB51** — mechanical plan success invalidates the failure-required precondition; publish existing producer frontier evidence on success. |
 | `M3-CP4c3-TB41-REV-CAND-01` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 publishes the complete owner-orbit set and expected-orbit membership required by Part XII; it served its diagnostic purpose. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
@@ -663,4 +672,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, perform independent **`M3-CP4c-3-TB44-REV`** from `Architecture_M3_CP4c3_TB44_EXEC_Report.md` and immutable result/log artifacts `10083047547 / 10083047938`. Review is evidence-only: no compile, no new runtime, no product/test/fixture/selector mutation. Adjudicate the 366/367 downstream `FragmentCornerSourceCornerMismatch` surface, the protected 390/393/406/407 color regression with Part XII receipts intact, carried RED ownership, stable accounting and the exact successor.
+After the durable start-of-turn checklist, execute runtime-free **`M3-CP4c-3-CB51`** under
+`Architecture_M3_CP4c3_CB51_Code_Build_Plan.md`. The bounded scope is: ordinal367 independent terminal-slit
+oracle correction; successful-plan publication/consumption of the already-computed Part XII producer frontier
+evidence for 390/393/406/407; and the failure-only separating-terminal fragment-incidence diagnostic correction.
+Do not change fixtures, selector409, Part VIII/XI/XII semantics, or carried 368/369/370/374/398. Compile/package
+with mandatory GMP/GMPXX, execute no Directional runtime, then freeze exactly one artifact-only TB46 plan.
