@@ -802,40 +802,22 @@ region_frontier_subject_domain_relation(
   return selection;
 }
 
-void annotate_region_frontier_evidence(
-    GlobalTopologyPlanError &failure, const RegionFrontierFailureStage stage,
+RegionFrontierEvidenceDiagnostic make_region_frontier_evidence_diagnostic(
     const RegionFrontierEvidence &frontier,
-    const SurfaceCutGraphCellularityCertificate &certificate,
-    const std::vector<GlobalTopologyRegion> *regions = nullptr) {
-  failure.regionFrontierFailureStage = stage;
-  failure.regionFrontierSubjectDomainRelation =
-      region_frontier_subject_domain_relation(failure, frontier, regions);
-  failure.regionFrontierComponents.clear();
-  failure.regionFrontierUnlabeledFaceCount = frontier.unlabeledFaceCount;
-  failure.regionFrontierPartitionComponentCount =
-      frontier.partition.components.size();
-  failure.regionFrontierOwnerConsistencyRowCount =
+    const SurfaceCutGraphCellularityCertificate &certificate) {
+  RegionFrontierEvidenceDiagnostic diagnostic;
+  diagnostic.published = true;
+  diagnostic.unlabeledFaceCount = frontier.unlabeledFaceCount;
+  diagnostic.partitionComponentCount = frontier.partition.components.size();
+  diagnostic.ownerConsistencyRowCount =
       frontier.ownerConsistency.components.size();
 
-  const RegionFrontierComponentSelection selection =
-      region_frontier_components(failure, frontier, regions);
-  failure.regionFrontierLocator = selection.locator;
-  failure.regionFrontierLocatorSurvivedGuard =
-      selection.locatorSurvivedGuard;
-  failure.regionFrontierFailureSourceFaceInPartition =
-      selection.failureSourceFaceInPartition;
-  failure.regionFrontierFailureRegionSourceFaceCount =
-      selection.failureRegionSourceFaceCount;
-  failure.regionFrontierFailureRegionSourceFacesInPartitionCount =
-      selection.failureRegionSourceFacesInPartitionCount;
-
-  // Part XII makes this vector the producer-owned P_U census. Failure-local
-  // applicability is carried separately by regionFrontierSubjectDomainRelation;
-  // a terminal object outside P_U must not erase the census it does not own.
+  // Part XII makes this vector the producer-owned P_U census. The same rows
+  // are published on both failure and successful-plan paths so observation
+  // cannot drift by terminal outcome.
   const UncutComponentPartitionIdentity planPartitionIdentity =
       plan_uncut_component_partition_identity();
-  failure.regionFrontierComponents.reserve(
-      frontier.ownerConsistency.components.size());
+  diagnostic.components.reserve(frontier.ownerConsistency.components.size());
   for (std::size_t component = 0U;
        component < frontier.ownerConsistency.components.size(); ++component) {
     const auto &row = frontier.ownerConsistency.components[component];
@@ -859,8 +841,7 @@ void annotate_region_frontier_evidence(
           contains_all_faces(census->faces, row.faces);
       evidence.interiorArcIncidenceCensusPublished =
           census->interiorArcIncidenceCensusPublished;
-      evidence.interiorArcIncidenceCount =
-          census->interiorArcIncidenceCount;
+      evidence.interiorArcIncidenceCount = census->interiorArcIncidenceCount;
       evidence.interiorArcIncidences = census->interiorArcIncidences;
       evidence.interiorArcIncidencesTruncated =
           census->interiorArcIncidencesTruncated;
@@ -874,10 +855,43 @@ void annotate_region_frontier_evidence(
         }
       }
     }
-    failure.regionFrontierComponents.push_back(std::move(evidence));
+    diagnostic.components.push_back(std::move(evidence));
   }
-  failure.regionFrontierComponentCount = failure.regionFrontierComponents.size();
-  failure.regionFrontierComponentsTruncated = false;
+  diagnostic.componentCount = diagnostic.components.size();
+  diagnostic.componentsTruncated = false;
+  return diagnostic;
+}
+
+void annotate_region_frontier_evidence(
+    GlobalTopologyPlanError &failure, const RegionFrontierFailureStage stage,
+    const RegionFrontierEvidence &frontier,
+    const SurfaceCutGraphCellularityCertificate &certificate,
+    const std::vector<GlobalTopologyRegion> *regions = nullptr) {
+  failure.regionFrontierFailureStage = stage;
+  failure.regionFrontierSubjectDomainRelation =
+      region_frontier_subject_domain_relation(failure, frontier, regions);
+
+  const RegionFrontierEvidenceDiagnostic diagnostic =
+      make_region_frontier_evidence_diagnostic(frontier, certificate);
+  failure.regionFrontierUnlabeledFaceCount = diagnostic.unlabeledFaceCount;
+  failure.regionFrontierPartitionComponentCount =
+      diagnostic.partitionComponentCount;
+  failure.regionFrontierOwnerConsistencyRowCount =
+      diagnostic.ownerConsistencyRowCount;
+  failure.regionFrontierComponents = diagnostic.components;
+  failure.regionFrontierComponentCount = diagnostic.componentCount;
+  failure.regionFrontierComponentsTruncated = diagnostic.componentsTruncated;
+
+  const RegionFrontierComponentSelection selection =
+      region_frontier_components(failure, frontier, regions);
+  failure.regionFrontierLocator = selection.locator;
+  failure.regionFrontierLocatorSurvivedGuard = selection.locatorSurvivedGuard;
+  failure.regionFrontierFailureSourceFaceInPartition =
+      selection.failureSourceFaceInPartition;
+  failure.regionFrontierFailureRegionSourceFaceCount =
+      selection.failureRegionSourceFaceCount;
+  failure.regionFrontierFailureRegionSourceFacesInPartitionCount =
+      selection.failureRegionSourceFacesInPartitionCount;
 }
 
 void annotate_uncut_face_component_seed_evidence(
@@ -1351,8 +1365,9 @@ RegionBuildResult build_regions(
   }
 
   // Validate every directly cut face before extending single-fragment interiors.
-  // A face with k real trace chords has k+1 fragments; a terminal slit is
-  // not a chord and contributes zero to k. A face with no real chord has one.
+  // A face with k real trace chords has k+1 fragments. Only a non-separating
+  // terminal slit is not a chord and contributes zero to k. A face with no
+  // real chord has one.
   for (const auto &[faceKey, record] : topology.faces) {
     (void)record;
     const auto found = fragmentOrbits.find(faceKey);
@@ -1422,8 +1437,9 @@ RegionBuildResult build_regions(
         for (std::size_t segmentIndex = arc.firstSegment;
              segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
           const auto &segment = trace->segments[segmentIndex];
+          const bool terminalSlit = is_terminal_slit(*trace, segmentIndex);
           if (segment.sourceFace != faceKey ||
-              is_terminal_slit(*trace, segmentIndex))
+              (terminalSlit && forwardOrbit == reverseOrbit))
             continue;
           ++failure.fragmentIncidenceCount;
           if (failure.fragmentIncidences.size() >=
@@ -2575,6 +2591,8 @@ CandidateBuildResult canonical_candidate(
   candidate.sourceDigest = network.source_digest();
   candidate.networkDigest = network_binding_digest(network);
   candidate.cutGraphDigest = cutGraph.semantic_digest();
+  candidate.regionFrontierEvidence = make_region_frontier_evidence_diagnostic(
+      regionSuccess.frontier, cutGraph.certificate());
   candidate.fragmentOwnerEvidence = std::move(ownerEvidence);
   canonicalize_candidate(candidate);
   return candidate;
@@ -2911,7 +2929,8 @@ GlobalTopologyPlanBuildResult GlobalTopologyPlan::make_from_candidate(
       std::move(candidate.arcs), std::move(candidate.rotations),
       std::move(candidate.regions), std::move(candidate.regionCertificates),
       candidate.sourceDigest, candidate.networkDigest, candidate.cutGraphDigest,
-      semanticDigest, std::move(candidate.fragmentOwnerEvidence)));
+      semanticDigest, std::move(candidate.regionFrontierEvidence),
+      std::move(candidate.fragmentOwnerEvidence)));
 }
 
 const GlobalTopologyArc *
@@ -2949,6 +2968,7 @@ GlobalTopologyPlanCandidate GlobalTopologyPlan::validation_candidate() const {
   return GlobalTopologyPlanCandidate{arcs_, rotations_, regions_,
                                      regionCertificates_, sourceDigest_,
                                      networkDigest_, cutGraphDigest_,
+                                     regionFrontierEvidence_,
                                      fragmentOwnerEvidence_};
 }
 

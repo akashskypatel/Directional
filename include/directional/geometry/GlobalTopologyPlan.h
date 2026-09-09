@@ -474,6 +474,18 @@ struct RegionFrontierComponentEvidenceDiagnostic {
       default;
 };
 
+struct RegionFrontierEvidenceDiagnostic {
+  bool published = false;
+  std::size_t unlabeledFaceCount = 0U;
+  std::size_t partitionComponentCount = 0U;
+  std::size_t ownerConsistencyRowCount = 0U;
+  std::vector<RegionFrontierComponentEvidenceDiagnostic> components;
+  std::size_t componentCount = 0U;
+  bool componentsTruncated = false;
+
+  auto operator<=>(const RegionFrontierEvidenceDiagnostic &) const = default;
+};
+
 struct TraceFragmentOwnerEvidenceDiagnostic {
   std::vector<TraceCutFaceFragmentOwnerEvidenceDiagnostic> faces;
   std::size_t faceCount = 0U;
@@ -648,6 +660,7 @@ struct GlobalTopologyPlanCandidate {
   std::uint64_t sourceDigest = 0U;
   std::uint64_t networkDigest = 0U;
   std::uint64_t cutGraphDigest = 0U;
+  RegionFrontierEvidenceDiagnostic regionFrontierEvidence;
   TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence;
 };
 
@@ -688,6 +701,10 @@ public:
   region_certificates() const noexcept {
     return regionCertificates_;
   }
+  [[nodiscard]] const RegionFrontierEvidenceDiagnostic &
+  region_frontier_evidence() const noexcept {
+    return regionFrontierEvidence_;
+  }
   [[nodiscard]] const TraceFragmentOwnerEvidenceDiagnostic &
   fragment_owner_evidence() const noexcept {
     return fragmentOwnerEvidence_;
@@ -725,6 +742,7 @@ private:
                      std::uint64_t networkDigest,
                      std::uint64_t cutGraphDigest,
                      std::uint64_t semanticDigest,
+                     RegionFrontierEvidenceDiagnostic regionFrontierEvidence,
                      TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence)
       : arcs_(std::move(arcs)), rotations_(std::move(rotations)),
         regions_(std::move(regions)),
@@ -732,6 +750,7 @@ private:
         sourceDigest_(sourceDigest),
         networkDigest_(networkDigest), cutGraphDigest_(cutGraphDigest),
         semanticDigest_(semanticDigest),
+        regionFrontierEvidence_(std::move(regionFrontierEvidence)),
         fragmentOwnerEvidence_(std::move(fragmentOwnerEvidence)) {}
 
   std::vector<GlobalTopologyArc> arcs_;
@@ -742,6 +761,7 @@ private:
   std::uint64_t networkDigest_ = 0U;
   std::uint64_t cutGraphDigest_ = 0U;
   std::uint64_t semanticDigest_ = 0U;
+  RegionFrontierEvidenceDiagnostic regionFrontierEvidence_;
   TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence_;
 };
 

@@ -2119,10 +2119,10 @@ std::optional<IndependentFragmentPartition> independent_fragment_partition(
       const bool terminalSlit =
           !trace->terminalBarrier.has_value() &&
           segmentIndex + 1U == trace->segments.size();
-      if (terminalSlit) {
-        // Independent oracle contract: the final no-barrier continuation is
-        // hypothetical and is not one of the k real chords that create k+1
-        // fragments in a source triangle.
+      if (terminalSlit && forward->second == reverse->second) {
+        // A final no-barrier continuation is hypothetical only when both
+        // independently derived face-walk sides are the same orbit. A terminal
+        // segment with distinct sides remains a real separating trace piece.
         continue;
       }
       ++tracePieces[segment.sourceFace];
@@ -4477,6 +4477,25 @@ using RegionFrontierOwnerRow =
 using UncutComponentCensus =
     directional::geometry::SurfaceCutGraphUncutComponentCensus;
 
+directional::SurfaceCellFailureLocusDiagnostics
+project_successful_plan_frontier_evidence(
+    const directional::geometry::GlobalTopologyPlan &plan) {
+  directional::geometry::GlobalTopologyPlanError carrier;
+  carrier.code =
+      directional::geometry::GlobalTopologyPlanErrorCode::InvalidSourceBinding;
+  const auto &frontier = plan.region_frontier_evidence();
+  carrier.regionFrontierUnlabeledFaceCount = frontier.unlabeledFaceCount;
+  carrier.regionFrontierPartitionComponentCount =
+      frontier.partitionComponentCount;
+  carrier.regionFrontierOwnerConsistencyRowCount =
+      frontier.ownerConsistencyRowCount;
+  carrier.regionFrontierComponents = frontier.components;
+  carrier.regionFrontierComponentCount = frontier.componentCount;
+  carrier.regionFrontierComponentsTruncated = frontier.componentsTruncated;
+  carrier.fragmentOwnerEvidence = plan.fragment_owner_evidence();
+  return directional::pipeline::remesh_pipeline_detail::
+      project_global_topology_plan_failure_locus(carrier);
+}
 const RegionFrontierRow *find_creditable_region_frontier_row(
     const directional::SurfaceCellFailureLocusDiagnostics &locus,
     const bool requireInteriorArcRows = false) {
@@ -12142,12 +12161,21 @@ TEST(GlobalTopologyPlan,
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_TRUE(mechanical.plan.has_value()) << mechanical.terminalFailureCode;
   const auto &certificate = mechanical.cutGraph->certificate();
   ASSERT_TRUE(certificate.proves_embedded_cellularity());
   ASSERT_TRUE(certificate.uncutComponentCensusPublished);
+  const auto &planFrontier = mechanical.plan->region_frontier_evidence();
+  ASSERT_TRUE(planFrontier.published);
+  ASSERT_GT(planFrontier.componentCount, 0U);
+  ASSERT_EQ(planFrontier.partitionComponentCount,
+            planFrontier.ownerConsistencyRowCount);
+  ASSERT_EQ(planFrontier.partitionComponentCount, planFrontier.componentCount);
+  ASSERT_EQ(planFrontier.componentCount, planFrontier.components.size());
+  ASSERT_FALSE(planFrontier.componentsTruncated);
 
-  const auto &locus = mechanical.terminalFailureLocus;
+  const auto locus =
+      project_successful_plan_frontier_evidence(*mechanical.plan);
   ASSERT_GT(locus.regionFrontierUnlabeledFaceCount, 0U);
   ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
             locus.regionFrontierOwnerConsistencyRowCount);
@@ -12175,21 +12203,18 @@ TEST(GlobalTopologyPlan,
       !region_frontier_boundary_seed_census_is_valid(*row, *owner, corrupted);
   EXPECT_TRUE(corruptionRejected);
 
-  std::string terminalSubjectBranch;
-  expect_outside_terminal_subject_evidence(
-      locus, terminalSubjectBranch);
+  constexpr const char *terminalSubjectBranch = "PlanFrontier";
   std::cout << "m3Cp4c3BW3;component=" << row->component
             << ";componentFaceCount=" << row->faces.size()
             << ";seedOrbitCount=" << owner->seedOrbitCount
             << ";censusCorrespondence=" << row->censusCorrespondence << '\n';
   std::cout
       << "m3Cp4c3R8Receipt;ordinal=390;branch=UncutCensus;censusPredicateExecuted=yes"
-      << ";terminalSubjectRelation="
-      << locus.regionFrontierSubjectDomainRelation
+      << ";terminalSubjectRelation=NotApplicable"
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
       << ";terminalSubjectBranch=" << terminalSubjectBranch
-      << ";regionCertificationEvidenceBranchExecuted=yes\n";
+      << ";planFrontierEvidenceBranchExecuted=yes\n";
 }
 
 TEST(GlobalTopologyPlan,
@@ -12337,9 +12362,17 @@ TEST(GlobalTopologyPlan,
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_TRUE(mechanical.plan.has_value()) << mechanical.terminalFailureCode;
   const auto &certificate = mechanical.cutGraph->certificate();
   ASSERT_TRUE(certificate.proves_embedded_cellularity());
+  const auto &planFrontier = mechanical.plan->region_frontier_evidence();
+  ASSERT_TRUE(planFrontier.published);
+  ASSERT_GT(planFrontier.componentCount, 0U);
+  ASSERT_EQ(planFrontier.partitionComponentCount,
+            planFrontier.ownerConsistencyRowCount);
+  ASSERT_EQ(planFrontier.partitionComponentCount, planFrontier.componentCount);
+  ASSERT_EQ(planFrontier.componentCount, planFrontier.components.size());
+  ASSERT_FALSE(planFrontier.componentsTruncated);
   ASSERT_EQ(static_cast<std::size_t>(mechanical.mesh.F.rows()),
             certificate.sourceFaceCount);
   ASSERT_EQ(certificate.sourceFaceCount, certificate.sourceFaceOwners.size());
@@ -12359,7 +12392,8 @@ TEST(GlobalTopologyPlan,
     }
   }
 
-  const auto &locus = mechanical.terminalFailureLocus;
+  const auto locus =
+      project_successful_plan_frontier_evidence(*mechanical.plan);
   ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
             locus.regionFrontierComponentCount);
   ASSERT_FALSE(locus.regionFrontierComponentsTruncated);
@@ -12381,9 +12415,7 @@ TEST(GlobalTopologyPlan,
                                                      certificate);
   EXPECT_TRUE(corruptionRejected);
 
-  std::string terminalSubjectBranch;
-  expect_outside_terminal_subject_evidence(
-      locus, terminalSubjectBranch);
+  constexpr const char *terminalSubjectBranch = "PlanFrontier";
   std::cout << "m3Cp4c3OwnerMap;sourceFaceCount="
             << certificate.sourceFaceCount
             << ";ownerMapCount=" << certificate.sourceFaceOwners.size()
@@ -12392,12 +12424,11 @@ TEST(GlobalTopologyPlan,
             << ";censusCorrespondence=" << row->censusCorrespondence << '\n';
   std::cout
       << "m3Cp4c3R8Receipt;ordinal=393;branch=UncutCensus;censusPredicateExecuted=yes"
-      << ";terminalSubjectRelation="
-      << locus.regionFrontierSubjectDomainRelation
+      << ";terminalSubjectRelation=NotApplicable"
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
       << ";terminalSubjectBranch=" << terminalSubjectBranch
-      << ";regionCertificationEvidenceBranchExecuted=yes\n";
+      << ";planFrontierEvidenceBranchExecuted=yes\n";
 }
 
 TEST(GlobalTopologyPlan,
@@ -15150,9 +15181,18 @@ TEST(GlobalTopologyPlan,
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_TRUE(mechanical.plan.has_value()) << mechanical.terminalFailureCode;
+  const auto &planFrontier = mechanical.plan->region_frontier_evidence();
+  ASSERT_TRUE(planFrontier.published);
+  ASSERT_GT(planFrontier.componentCount, 0U);
+  ASSERT_EQ(planFrontier.partitionComponentCount,
+            planFrontier.ownerConsistencyRowCount);
+  ASSERT_EQ(planFrontier.partitionComponentCount, planFrontier.componentCount);
+  ASSERT_EQ(planFrontier.componentCount, planFrontier.components.size());
+  ASSERT_FALSE(planFrontier.componentsTruncated);
 
-  const auto &locus = mechanical.terminalFailureLocus;
+  const auto locus =
+      project_successful_plan_frontier_evidence(*mechanical.plan);
   ASSERT_GT(locus.regionFrontierPartitionComponentCount, 0U);
   ASSERT_EQ(locus.regionFrontierPartitionComponentCount,
             locus.regionFrontierOwnerConsistencyRowCount);
@@ -15173,9 +15213,7 @@ TEST(GlobalTopologyPlan,
       !region_frontier_partition_correspondence_is_valid(corrupted);
   EXPECT_TRUE(corruptionRejected);
 
-  std::string terminalSubjectBranch;
-  expect_outside_terminal_subject_evidence(
-      locus, terminalSubjectBranch);
+  constexpr const char *terminalSubjectBranch = "PlanFrontier";
   std::cout << "m3Cp4c3UncutComponentPartitionCorrespondence"
             << ";planComponent=" << row->component
             << ";planDomain=" << row->partitionIdentity.domainRule
@@ -15189,12 +15227,11 @@ TEST(GlobalTopologyPlan,
             << '\n';
   std::cout
       << "m3Cp4c3R8Receipt;ordinal=406;branch=UncutCensus;censusPredicateExecuted=yes"
-      << ";terminalSubjectRelation="
-      << locus.regionFrontierSubjectDomainRelation
+      << ";terminalSubjectRelation=NotApplicable"
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
       << ";terminalSubjectBranch=" << terminalSubjectBranch
-      << ";regionCertificationEvidenceBranchExecuted=yes\n";
+      << ";planFrontierEvidenceBranchExecuted=yes\n";
 }
 
 TEST(SurfaceCutGraph,
@@ -15203,9 +15240,18 @@ TEST(SurfaceCutGraph,
       build_cp4c_pipeline_products_fixture("mechanical_feature",
                                            "mechanical feature");
   ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
-  ASSERT_FALSE(mechanical.plan.has_value());
+  ASSERT_TRUE(mechanical.plan.has_value()) << mechanical.terminalFailureCode;
+  const auto &planFrontier = mechanical.plan->region_frontier_evidence();
+  ASSERT_TRUE(planFrontier.published);
+  ASSERT_GT(planFrontier.componentCount, 0U);
+  ASSERT_EQ(planFrontier.partitionComponentCount,
+            planFrontier.ownerConsistencyRowCount);
+  ASSERT_EQ(planFrontier.partitionComponentCount, planFrontier.componentCount);
+  ASSERT_EQ(planFrontier.componentCount, planFrontier.components.size());
+  ASSERT_FALSE(planFrontier.componentsTruncated);
 
-  const auto &locus = mechanical.terminalFailureLocus;
+  const auto locus =
+      project_successful_plan_frontier_evidence(*mechanical.plan);
   const RegionFrontierRow *row =
       find_creditable_region_frontier_row(locus, true);
   ASSERT_NE(nullptr, row);
@@ -15218,9 +15264,7 @@ TEST(SurfaceCutGraph,
       !region_frontier_interior_arc_census_is_valid(corrupted);
   EXPECT_TRUE(corruptionRejected);
 
-  std::string terminalSubjectBranch;
-  expect_outside_terminal_subject_evidence(
-      locus, terminalSubjectBranch);
+  constexpr const char *terminalSubjectBranch = "PlanFrontier";
 
   const auto print_optional_component = [](
       const std::optional<std::size_t> &value) {
@@ -15256,12 +15300,11 @@ TEST(SurfaceCutGraph,
   }
   std::cout
       << "m3Cp4c3R8Receipt;ordinal=407;branch=UncutCensus;censusPredicateExecuted=yes"
-      << ";terminalSubjectRelation="
-      << locus.regionFrontierSubjectDomainRelation
+      << ";terminalSubjectRelation=NotApplicable"
       << ";sameDomainCorruptionRejected="
       << (corruptionRejected ? "yes" : "no")
       << ";terminalSubjectBranch=" << terminalSubjectBranch
-      << ";regionCertificationEvidenceBranchExecuted=yes\n";
+      << ";planFrontierEvidenceBranchExecuted=yes\n";
 }
 
 TEST(SurfaceCutGraph,
