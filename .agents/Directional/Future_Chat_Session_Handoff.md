@@ -116,56 +116,72 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB49` — EXACT NEXT / Code + Build / runtime-free
+## Mandatory next turn — `M3-CP4c-3-TB44-EXEC` — EXACT NEXT / Test + Benchmark / artifact-only
 
-`M3-CP4c-3-TB43-REV` is **COMPLETE / EVIDENCE-ONLY**. It promotes TB43/package108 as semantic runtime authority and
-freezes one narrow correction for 366/367. No compile or runtime occurred in the review.
+`M3-CP4c-3-CB49` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. It made the one correction frozen by TB43-REV and
+executed no Directional runtime.
 
 ### Current authority
 
-- **Promoted runtime:** TB43/package108, selector409 **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED
-  `[366,367,368,369,370,374,398]`; run/job `34280642422 / 102244347209`; result/log artifacts
+- **Promoted semantic runtime:** TB43/package108, selector409 **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**,
+  RED `[366,367,368,369,370,374,398]`; run/job `34280642422 / 102244347209`; result/log artifacts
   `10077594302 / 10077595162`.
-- **Immutable package:** artifact `10076272909`, digest
-  `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`, exact source
-  `531b517fb129425f113b5f811215f1d2b1939ee2`, GMP/GMPXX linked.
-- **Definition:** Part VIII R4.1/R4.2 + Part XI/Part XI-A own region/corner orbit semantics; Part XII is runtime-proved
-  evidence-domain authority.
-- **Accounting:** 47 events / 14 categories / 33 recurrences, debt 5, packages 108, ownership 300/0/0.
+- **CB49 compile authority / package109:** artifact `10081938891` /
+  `m3-cp4c3-cb49-result-34292599472`, SHA-256
+  `285ee15784ea29468c367fa9e4778fd835f1e9582370fdcb26a5050a15c4d617`; exact source
+  `cf969597bda5c49e734b98db0c0165b421c4ee12`; packaged source archive SHA-256
+  `7dead808562e8faf0a90e242532e2965bc9260f24505958eb5f242c19b1273ca`.
+- **Compile provenance:** run `34292599472`; changed-owner job/artifact `102282187127 / 10081923013`; package job
+  `102282385344`; GMP/GMPXX linked; package manifest **28/28 PASS**; `runtimeExecution=false`.
+- **Definition:** Part VIII R4.1/R4.2 + Part XI/Part XI-A own region/corner orbit semantics; Part XII remains
+  runtime-proved evidence-domain authority.
+- **Accounting:** 47 events / 14 categories / 33 recurrences, debt 5, packages **109** as a build count, ownership
+  300/0/0. Runtime color authority is unchanged until TB44 review.
 
-### Review adjudication
+### CB49 result
 
-1. 390/393/406/407 are semantically recovered and `M3-CP4c3-TB40-EXEC-CAND-02` is CLOSED / RUNTIME-PROVED /
-   NON-STABLE. Their producer census executed, terminal relation was `Outside`, and same-domain corruption was rejected.
-2. `M3-CP4c3-TB41-REV-CAND-01` is CLOSED / RUNTIME-PROVED / NON-STABLE: TB43 publishes expected orbit 1 and complete
-   present owner set `[2,3]` with membership false.
-3. 366/367 remain under `M3-CP4c3-TB40-REV-CAND-02`, now ROOT-CAUSED. Their 3/3/3 owner cardinality rules out a
-   count deficit. `build_fragment_corner_incidence()` drops every final no-barrier segment; `build_regions()` drops
-   only same-orbit/non-separating cases. This projection predicate drift can omit the region's expected owner row.
-4. Existing Part VIII + Part XI authority decides the correction; no new definition turn is required.
-5. 368/369/370/374/398 remain separately owned and CB49 may not alter them.
+1. `build_fragment_corner_incidence()` now skips a terminal no-barrier segment only when
+   `forwardOrbit == reverseOrbit`; distinct certified sides are retained.
+2. No new orbit derivation or topology traversal was added. The stale comment was corrected.
+3. The three known sites of the separating-arc barrier rule now agree: `SurfaceCutGraph.cpp`,
+   `build_regions()`, and `build_fragment_corner_incidence()` all treat equal-orbit terminal slits as
+   non-separating and distinct-orbit terminal sides as separating ownership.
+4. Semantic changed path is only `src/geometry/GlobalTopologyPlan.cpp` (5 additions / 5 deletions). Selector409,
+   tests, fixtures, benchmarks, build logic, region construction, `fragmentOrbits`, `region_orbit`, embedded graph,
+   cut selection and both partitions were not changed.
+5. Compile and package succeeded. CB49 makes **no runtime recovery claim** for 366/367.
 
-### CB49 boundary
+### TB44-EXEC boundary
 
-Consume `Architecture_M3_CP4c3_CB49_Code_Build_Plan.md` exactly. Align only the `FragmentCornerIncidence` skip:
-`is_terminal_slit && forwardOrbit == reverseOrbit` remains skipped; a final no-barrier segment with distinct
-certified face-walk sides is retained. Preserve region construction, `fragmentOrbits`, `region_orbit`, actual
-embedded graph, cut selection, ownership, both partitions, selector409 and accepted oracles. Compile changed owner
-first and then the normal package through the durable reusable compile workflow with GMP/GMPXX. Execute no
-Directional binary. On package success author exactly one artifact-only TB44 plan; do not execute it in CB49.
+Consume `Architecture_M3_CP4c3_TB44_Artifact_Only_Test_Benchmark_Plan.md` exactly against immutable package109.
+Do not configure, compile, relink, alter package bytes/modes, modify source/tests/fixtures/selectors, or repair
+permissions.
 
-TB44 must not be pre-synthesized: 366/367 may PASS or expose a later guard. Reproducing the exact current missing
-owner locus falsifies CB49. Accepted 365/365 and 390/393/406/407 Part XII PASS receipts must remain; the five carried
-REDs must not move under this correction.
+The plan requires full selector409 in ordinal order, one identity per fresh process, accepted 365/365, all mutation
+and recovery flags false, and no outer elapsed-time cutoff. **Restore the frozen generic harness unchanged**, including
+its real `timeout -k 5s 180s` per-identity control; any timeout is orchestration failure, never semantic evidence.
+
+The direct CB49 falsifier is 366/367: neither may reproduce the exact TB43
+`RegionSourceFaceOwningFragmentMissing` locus (`sourceFace=10,11,79`, expected orbit 1, owner set `[2,3]`). PASS or a
+later existing guard are both legitimate measured outcomes. 390/393/406/407 must remain PASS with Part XII
+non-vacuity receipts. 368/369/370/374/398 must remain at their separately owned failure surfaces. Ownership must
+remain 300/0/0 and retired-code evidence silent. Do **not** freeze or synthesize a 404/5 aggregate.
+
+TB44-EXEC preserves raw evidence and regression-tracker intake only. Its exact successor is independent
+**`M3-CP4c-3-TB44-REV`**, regardless of the measured color vector. The implementation loop stops at that review
+boundary.
 
 ### Context Load Plan
 
-1. `.agents/Directional/Architecture_M3_CP4c3_CB49_Code_Build_Plan.md` — exact EG0–EG9 boundary.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB43_Independent_Review_Record.md` — EF0–EF9 adjudication/root cause.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB43_EXEC_Report.md` — promoted runtime evidence.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — Part VIII, Part XI/Part XI-A, Part XII.
-5. `.agents/Directional/M3_CP4c_Current_And_Forward.md`, `TODO.md`, tracker and ORIENTATION.
-6. Before compile, `GMP_COMPILE_POLICY.md`, workflow/tool/retention/cleanup policies and `LESSONS.md` in full.
+1. `references/turns/TB-EXEC.md` from the turn-based-coding-agent skill — exact subturn boundary.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB44_Artifact_Only_Test_Benchmark_Plan.md` — frozen execution contract.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB49_Code_Build_Report.md` — package109 compile/provenance authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB43_Independent_Review_Record.md` — EF8 falsifiers and EF10 controls.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB43_EXEC_Report.md` — exact predecessor runtime loci.
+6. `.agents/Directional/M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`,
+   `Regression_Root_Cause_Tracker.md`, `TODO.md`, and current/forward state.
+7. `[ChatGPT Web]` Before remote artifact/workflow execution, load the GitHub connector module and obey workflow,
+   tool-conservation, retention, cleanup and lessons policies.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

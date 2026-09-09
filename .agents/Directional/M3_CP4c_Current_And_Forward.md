@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-TB43-REV` independent review.
+Last updated **2026-09-08** at `M3-CP4c-3-CB49` compile-green closeout.
 
 ---
 
@@ -22,12 +22,13 @@ CB48/package108 artifact `10076272909` / source `531b517fb129425f113b5f811215f1d
 `34280642422 / 102244347209`. Result/log artifacts are `10077594302 / 10077595162`.
 
 Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable accounting remains
-**47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**, packages **108**.
+**47 events / 14 categories / 33 recurrences** — **no new event** — debt **5**. Package count is **109** as a build
+fact; TB43/package108 remains semantic runtime authority.
 
-TB43-REV closes the Part XII protected-census candidate: 390/393/406/407 are non-vacuous PASSes. It root-causes
-366/367 as **predicate drift in the orbit-keyed fragment-corner ownership projection**: corner incidence drops every
-final no-barrier segment while region ownership drops only a non-separating one (`forwardOrbit == reverseOrbit`).
-Existing Part VIII and Part XI authority decides the correction. Exact next is bounded runtime-free **CB49**.
+TB43-REV closed the Part XII protected-census candidate and root-caused 366/367 as predicate drift in the orbit-keyed
+fragment-corner ownership projection. CB49 has now applied the bounded correction and compiled/package-proved it as
+package109 without runtime. Exact next is artifact-only **`M3-CP4c-3-TB44-EXEC`**; TB44 must measure whether 366/367
+recover or advance without reproducing the exact TB43 owner-missing locus.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -489,9 +490,16 @@ separating terminal event can therefore create region ownership without the corr
 is **ownership-projection predicate drift**, not a missing region, count deficit, `P_U` defect or new topology
 definition.
 
-Existing Part VIII R4.1/R4.2 and Part XI/Part XI-A decide the correction. **Exact next is `M3-CP4c-3-CB49`**:
-align only the corner-incidence skip predicate with the region predicate, compile/package runtime-free, and bind one
-artifact-only TB44 plan. 368/369/370/374/398 remain separately owned.
+Existing Part VIII R4.1/R4.2 and Part XI/Part XI-A decided the correction. **CB49 is now COMPLETE / COMPILE-GREEN /
+RUNTIME-FREE.** `build_fragment_corner_incidence()` skips a terminal no-barrier segment only when the already-derived
+certified sides have `forwardOrbit == reverseOrbit`; distinct-orbit terminal sides are retained. The three known
+separation-rule sites now agree and no new derivation was introduced.
+
+CB49 package109 artifact `10081938891` compiles exact source
+`cf969597bda5c49e734b98db0c0165b421c4ee12` with GMP/GMPXX, 28/28 package checksums and
+`runtimeExecution=false`. Package109 is compile authority only; TB43/package108 remains promoted semantic runtime
+authority until review of TB44. **Exact next is `M3-CP4c-3-TB44-EXEC`**, bound to the one retained artifact-only plan.
+368/369/370/374/398 remain separately owned and CB49 made no runtime claim.
 
 ## 4. Open candidates
 
@@ -501,7 +509,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
 | `M3-CP4c3-TB40-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 proves 390/393/406/407 execute the producer-owned `P_U` predicate, classify the terminal subject `Outside`, and reject same-domain corruption. |
-| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / ACTIVE / NON-STABLE / CB49 ASSIGNED** — 366/367 expose predicate drift: `FragmentCornerIncidence` drops every final no-barrier segment while region ownership drops only same-orbit/non-separating cases. Expected orbit 1 is absent from present set `[2,3]`; CB49 owns the bounded correction. |
+| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / CORRECTION COMPILED IN CB49 / NON-STABLE / TB44 PENDING** — 366/367 expose predicate drift: `FragmentCornerIncidence` dropped every final no-barrier segment while region ownership dropped only same-orbit/non-separating cases. CB49 aligns that predicate in package109; TB44 must prove the exact TB43 owner-missing locus no longer reproduces. |
 | `M3-CP4c3-TB41-REV-CAND-01` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 publishes the complete owner-orbit set and expected-orbit membership required by Part XII; it served its diagnostic purpose. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |

@@ -1,3 +1,32 @@
+## 2026-09-08 — `M3-CP4c-3-CB49`: corner-incidence separation predicate aligned; package109 compile-green
+
+Code + Build only; **no Directional runtime executed**. CB49 changes one semantic file,
+`src/geometry/GlobalTopologyPlan.cpp` (5 additions / 5 deletions). The existing corner-incidence consumer already
+derived `forwardOrbit` and `reverseOrbit`; it now skips a terminal no-barrier segment only when those certified sides
+share one orbit. Distinct-orbit terminal sides are retained as separating ownership. The stale comment claiming
+`build_regions()` used the old unconditional predicate was corrected.
+
+TB43-REV EF10.1's three-site audit is discharged: `SurfaceCutGraph.cpp`, `build_regions()`, and
+`build_fragment_corner_incidence()` now all express the same rule — equal-orbit terminal slits are non-separating;
+distinct-orbit terminal sides are separating. No new derivation, region construction, `fragmentOrbits`, `region_orbit`,
+embedded graph, cut selection, partition, selector, test, fixture, benchmark or build semantics were changed.
+
+Compile run `34292599472` is green. Changed-owner job/artifact `102282187127 / 10081923013` and package job/artifact
+`102282385344 / 10081938891` both compile exact source `cf969597bda5c49e734b98db0c0165b421c4ee12` with GMP/GMPXX and
+`runtimeExecution=false`. Package109 provider SHA-256 is
+`285ee15784ea29468c367fa9e4778fd835f1e9582370fdcb26a5050a15c4d617`; packaged source archive SHA-256 is
+`7dead808562e8faf0a90e242532e2965bc9260f24505958eb5f242c19b1273ca`; recursive package manifest **28/28 PASS**.
+TB43/package108 remains semantic runtime authority at **402 PASS / 7 RED**, accepted **365/365**; package count
+advances to **109** as a build fact only, with stable accounting unchanged at **47 / 14 / 33**, debt **5**.
+
+Exactly one successor plan is frozen:
+`Architecture_M3_CP4c3_TB44_Artifact_Only_Test_Benchmark_Plan.md`. It restores the generic harness's real
+180-second per-identity timeout control while retaining the no-outer-elapsed-cutoff selector409 gate. Exact next is
+**`M3-CP4c-3-TB44-EXEC`**; 366/367 must not reproduce the exact TB43 missing-owner locus, but no aggregate color
+vector is pre-synthesized. EXEC stops at independent **`M3-CP4c-3-TB44-REV`**.
+
+---
+
 ## 2026-09-08 — `M3-CP4c-3-TB43-REV` verification pass: adjudication upheld; third rule site and a vacuous control recorded
 
 Static verification of the delegated `M3-CP4c-3-TB43-REV`. No runtime, no compile, no package operation, no
