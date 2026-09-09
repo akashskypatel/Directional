@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB48-REV
+purpose=exact source snapshot for independent review
+base_head=c94e3c05fe104775ffc1204b96f560c1c42bcc54
+runtimeExecution=false
