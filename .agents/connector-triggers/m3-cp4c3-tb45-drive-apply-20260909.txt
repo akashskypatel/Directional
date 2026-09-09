@@ -1,6 +1,0 @@
-turn=M3-CP4c-3-TB45-EXEC
-purpose=apply exact preserved TB45 EXEC documentation/regression/handoff patch
-caller_install_sha=afa951c8756a43802826fb72d10dc5da0a5062c8
-file_id=1aB6da4onuqhD41zzMMb27CQIUg7Ku4Tk
-patch_sha256=6c456ea11c6c1054304273e553d6e49e64424c70cc23f9ea11b72515ad69907c
-base_sha=4faafa8b0739cfbdb244de09c1ccb70b62ca5a58

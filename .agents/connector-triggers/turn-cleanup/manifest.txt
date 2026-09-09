@@ -1,6 +1,0 @@
-# M3-CP4c-3-TB45-EXEC temporary-state inventory
-.agents/connector-triggers/source-snapshot/tb45-exec-982f5816.txt
-.agents/connector-triggers/m3-cp4c3-tb45-schema-validation-20260909.txt
-.agents/connector-triggers/m3-cp4c3-tb45-exec-20260909.txt
-.agents/connector-triggers/m3-cp4c3-tb45-drive-apply-20260909.txt
-.agents/Directional/turn-payloads/m3-cp4c3-tb45-exec.yml

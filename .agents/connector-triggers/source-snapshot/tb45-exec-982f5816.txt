@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-TB45-EXEC
-source_head=982f58168afb1d99a6bc39c5de901398eeb31579
-purpose=exact current-state snapshot for mandatory TB45-EXEC context review
