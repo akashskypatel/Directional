@@ -1,4 +1,4 @@
 turn=M3-CP4c-3-TB44-EXEC
 purpose=apply-closeout-documentation-patch
 base_sha=88140ef3e3ead60fb8eccaeb34b4f0a3a6ba127d
-retry=0
+retry=1
