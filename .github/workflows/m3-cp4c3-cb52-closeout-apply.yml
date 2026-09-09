@@ -3,7 +3,7 @@ name: M3 CP4c3 CB52 Closeout Apply
 on:
   push:
     branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
-    paths: [.agents/connector-triggers/cb52-closeout-apply/cb52-closeout-apply-20260909.txt]
+    paths: [.agents/connector-triggers/cb52-closeout-apply/cb52-closeout-apply-20260909-r2.txt]
 
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c3-cb52-closeout-apply
+      label: m3-cp4c3-cb52-closeout-apply-r2
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -34,8 +34,8 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1wkGbBd6VMsbBYalnf3YvUXKRK95703lD
-      patch_sha256: 41504680837344b68aaadf47c3def80694a5fe58961eb2efcc10d84209efe12d
-      base_sha: 09ce0db33d2f3d83ce811b65962e2d82cd93419d
+      patch_sha256: 9049a789c93a9be9ce1f15417ea14d09af17042cac454cd23d6909d5621ca121
+      base_sha: 805171da7d8fee6fb1b8dc1e9288f3953f61335c
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M3-CP4c-3-CB52 and freeze TB46-R1"
       retention_days: 14
