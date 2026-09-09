@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB48-EXEC
+purpose=validate staged TB48 artifact-only caller before publication
+caller_install_sha=5056730cda3b0485e69dcba95bc2bc08e29cbfe9
+retry=0
