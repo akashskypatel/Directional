@@ -1,0 +1,3 @@
+# M3-CP4c-3-TB46 temporary repository state
+.agents/connector-triggers/source-snapshot/tb46-start-20260909.txt
+.agents/connector-triggers/tb46-exec/tb46-exec-20260909.txt
