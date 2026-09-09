@@ -1,4 +1,4 @@
-> **Current CP4c-3 authority (2026-09-09, `M3-CP4c-3-TB46-R1-REV`):** **TB46-R1/package111 is PROMOTED** — selector **409**, **403 PASS / 6 RED**, accepted **365/365**, RED `[367,368,369,370,374,398]`, ownership 300/0/0. Ordinal367 is a non-stable stale independent-oracle cardinality invariant prohibited by DEFN-R3.4; protected 390/393/406/407 are runtime-proved PASS through successful-plan `PlanFrontier`. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-CB53`**, Code + Build only.
+> **Current CP4c-3 authority (2026-09-09, `M3-CP4c-3-CB53`):** **TB46-R1/package111 remains PROMOTED semantic runtime authority** — selector **409**, **403 PASS / 6 RED**, accepted **365/365**, RED `[367,368,369,370,374,398]`, ownership 300/0/0. **Package112 is compile-proved build authority** at source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`; no runtime executed. **No new stable event: 47 / 14 / 33.** Exact next is **`M3-CP4c-3-TB47-EXEC`**, artifact-only.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,16 +30,17 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-09 at `M3-CP4c-3-TB46-R1-REV`. Semantic runtime authority is **TB46-R1**
+**Currency.** Last updated 2026-09-09 at `M3-CP4c-3-CB53`. Semantic runtime authority remains **TB46-R1**
 (package111, source `4f0663ef3468996abce6f59109f1c67f5be5f604`), selector **409**, **403 PASS / 6 RED**, accepted **365/365**.
-Stable accounting is **47 / 14 / 33**, debt 5, packages 111, ownership 300/0/0.
+Package112 is compile-proved build authority at source `c772b53f1c42e117a948f14f77a33ab3dd2619a2`; no runtime executed.
+Stable accounting is **47 / 14 / 33**, debt 5, packages 112, ownership 300/0/0.
 
 **Current definition resolution.** No new DEFN turn is needed. DEFN-R3.4 already proves that local fragments may map
 many-to-one onto global face-walk owners, so distinct owner count may be lower than `tracePieces + 1`; only an
 over-count is forbidden. TB46-R1's ordinal367 `FragmentCountRule` is therefore a stale independent test-oracle
 equality, not a new topology rule. Part XII success-path producer evidence is runtime-proved at 390/393/406/407.
-CB53 corrects only the independent oracle's two-sided count rejection; topology semantics, fixtures and selector409
-remain frozen.
+CB53 corrected only the independent oracle's two-sided count rejection; topology semantics, fixtures and selector409
+remain frozen. Package112 now awaits artifact-only TB47 execution and independent review.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:

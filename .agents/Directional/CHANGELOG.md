@@ -1,3 +1,31 @@
+## 2026-09-09 — `M3-CP4c-3-CB53`: stale FragmentCountRule oracle corrected; package112 compile green; TB47-EXEC frozen
+
+Code + Build only; no Directional runtime. CB53 changes exactly one semantic file,
+`tests/FieldAlignedCurveNetworkTests.cpp`, replacing the independent fragment helper's final two-sided
+`fragmentOrbits.size() != tracePieces + 1` rejection with the DEFN-R3.4 high-side-only `>` rule and documenting that
+multiple local fragments may share one global face-walk owner. Independent orbit derivation, CB51 terminal
+separation, all other oracle checks, fixtures, product source, selector409 and carried owners are unchanged.
+
+The accepted ordinal307 equality at `CoversEverySourceFaceExactlyOnce` is **explicitly out of scope and unchanged**.
+It remains a latent false rejection identified by the prior verification pass; if it ever fires, its frozen
+disposition is oracle drift rather than product regression.
+
+Lesson-72/73 build ordering is satisfied. Changed-owner pre-package run/job `34391251673 / 102599890497` compiled
+`directional_surface_cell_producer_tests` successfully from exact source
+`c772b53f1c42e117a948f14f77a33ab3dd2619a2`. Complete package run/job `34391561462 / 102600894187` then compiled
+the same source with all eight required targets. Package112 artifact `10119861923` has provider/download SHA-256
+`3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`; log artifact `10119862314` has SHA-256
+`9dbe0ddc0ab6b4fda5f2e7edff5dc8721f5e9df44ad28d616b1f8589f455b72f`; source archive SHA-256 is
+`07955e1be63d35caf335537ca26e83363202a592fcf2542ac7414ec55857e931`. Root manifest is **28/28 PASS**, source
+status is clean, GMP/GMPXX evidence is present and `runtimeExecution=false`. No test or benchmark executed.
+
+Package count advances **111 -> 112**. Stable accounting remains **47 / 14 / 33**, debt **5**, ownership **300/0/0**.
+TB46-R1/package111 remains promoted semantic runtime authority until package112 is independently reviewed.
+
+**Exact next:** `M3-CP4c-3-TB47-EXEC`, artifact-only under
+`Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md`; full unchanged selector409, no expected aggregate,
+then mandatory `M3-CP4c-3-TB47-REV`.
+
 ## 2026-09-09 — `M3-CP4c-3-TB46-R1-REV` verification pass: upheld; a retired equality found inside an accepted identity
 
 Static verification of the delegated `M3-CP4c-3-TB46-R1-REV`. No runtime, no compile, no package operation, no

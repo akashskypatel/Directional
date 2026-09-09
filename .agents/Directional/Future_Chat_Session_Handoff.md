@@ -116,72 +116,93 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB53` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
+## Mandatory next turn — `M3-CP4c-3-TB47-EXEC` — EXACT NEXT / ARTIFACT-ONLY TEST + BENCHMARK
 
-`M3-CP4c-3-TB46-R1-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**.
+`M3-CP4c-3-CB53` is **COMPLETE / COMPILE-PROVED / PACKAGE112 ACCEPTED / RUNTIME-FREE**.
 
 ### Current authorities
 
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - PR #8 remains open, draft, and unmerged.
-- **Promoted semantic runtime authority:** TB46-R1/package111/selector409, **403 PASS / 6 RED / 0 SKIP**, accepted
-  **365/365**, RED `[367,368,369,370,374,398]`.
-- Runtime run/job `34382143529 / 102569425154`; result artifact `10116449887` SHA-256
-  `9f850944168660ea62060a2e0e7c4b04bd681a966664e124c6a41c87f141b842`; log artifact `10116450375` SHA-256
-  `321da1297d65de858fa6191dc01e581e58587217c6f3b9aa515fc6bfe33a65ef`.
-- Immutable package111 artifact `10112532452`, semantic source `4f0663ef3468996abce6f59109f1c67f5be5f604`,
-  provider/download SHA-256 `62ae325186ef31d2936e1a797c55cef43f8aef62449b33a26e29cb1ecd9185da`.
-- Selector409 remains 409 rows at SHA-256
+- **Promoted semantic runtime authority remains:** TB46-R1/package111/selector409, **403 PASS / 6 RED / 0 SKIP**,
+  accepted **365/365**, RED `[367,368,369,370,374,398]`.
+- **New immutable build authority:** package112 artifact `10119861923`,
+  `m3-cp4c3-cb53-package112-result-34391561462`, semantic source
+  `c772b53f1c42e117a948f14f77a33ab3dd2619a2`, provider/download SHA-256
+  `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320`.
+- Package112 root manifest: **28/28 PASS**; packaged source archive SHA-256
+  `07955e1be63d35caf335537ca26e83363202a592fcf2542ac7414ec55857e931`; clean source status; GMP/GMPXX
+  linked; `runtimeExecution=false`.
+- Selector409 remains exactly 409 rows at SHA-256
   `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`.
+- Generic artifact-only harness remains SHA-256
+  `aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3`.
 - Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, ownership
-  **300 established / 0 unavailable / 0 conflicting**, accepted package count **111**.
+  **300 established / 0 unavailable / 0 conflicting**, accepted package count **112**.
 
-### Review decisions that CB53 must preserve
+### CB53 result that TB47 must preserve
 
-1. **Ordinal367 is test-authority, not product ownership.** The independent helper stores distinct global
-   face-walk owners but requires equality with the local-fragment count. DEFN-R3.4 already disproves the injectivity
-   premise and authorizes only the over-count rejection `distinctOwners > tracePieces + 1`. The retained runtime
-   face/count pair is unnecessary to decide that generalized rule.
-2. **390/393/406/407 are CLOSED / RUNTIME-PROVED SUCCESS-PATH OBSERVABILITY / NON-STABLE.** All PASS through
-   `PlanFrontier`, execute the real Part XII predicates and reject same-domain corruptions.
-3. **368/369/370/374/398 remain carried REDs** under their prior separate owners.
-4. TB46-R1/package111 is promoted; TB45/package110 is historical runtime evidence.
-5. Stable accounting is unchanged; ordinal367 is a recurrence of the already-disproved local-count/global-owner
-   injectivity assumption.
+1. The exact semantic change is only the final independent `FragmentCountRule` comparison:
+   `fragmentOrbits[face].size() > tracePieces[face] + 1U`. Lower distinct-owner count is allowed; a genuine
+   over-count still fails.
+2. Independent forward/reverse face-walk derivation, CB51 terminal separation, empty-owner rejection and all other
+   helper bookkeeping are unchanged.
+3. `tests/FieldAlignedCurveNetworkTests.cpp` is the only semantic file changed at source
+   `c772b53f1c42e117a948f14f77a33ab3dd2619a2`.
+4. The accepted ordinal307 equality is **out of scope and unchanged**. If it ever fires, the frozen review
+   disposition is oracle drift, not product regression; TB47-EXEC only records raw evidence.
+5. Protected 390/393/406/407 retain their runtime-proved Part XII success-path authority; carried
+   368/369/370/374/398 retain separate owners unless later review proves a change.
+
+### Compile/package proof
+
+- changed-owner pre-package run/job `34391251673 / 102599890497`: success;
+  `directional_surface_cell_producer_tests`, result artifact `10119786323`,
+  SHA-256 `9c519a81c5cd22906768816026a0c2de05d9ae973482e557cb12da98e6d44f10`;
+- complete package112 run/job `34391561462 / 102600894187`: success;
+- package result/log artifacts `10119861923 / 10119862314`, SHA-256
+  `3abab0f9d4248c838dc0009d3264fb68ce338a0f20160f7c4b325e28f2c24320` /
+  `9dbe0ddc0ab6b4fda5f2e7edff5dc8721f5e9df44ad28d616b1f8589f455b72f`;
+- all eight required compile targets built; six executable binaries and two libraries are packaged;
+- no generated Directional binary, test, benchmark, discovery, `ctest`, CLI, fuzzer, help/version command, or custom
+  input executed during CB53.
 
 ### Exact work
 
-Perform **`M3-CP4c-3-CB53`** under
-`Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md`.
+Perform **`M3-CP4c-3-TB47-EXEC`** under
+`Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md`.
 
-- Edit only `tests/FieldAlignedCurveNetworkTests.cpp` semantic test authority.
-- In `independent_fragment_partition()`, change the final `FragmentCountRule` rejection from
-  `fragmentOrbits[face].size() != tracePieces[face] + 1U` to `> tracePieces[face] + 1U`.
-- Preserve independent orbit derivation, CB51 terminal separation and all other independent bookkeeping.
-- Do not change product source, fixtures, selector409, carried RED expectations or frozen definitions.
-- Perform static checks, then compile/package through the durable GMP/GMPXX workflow with **no Directional runtime**.
-- Package count advances only on an accepted immutable package; if compile/package fails, remain in CB53.
+- Consume immutable package112 **without rebuilding or repairing it**.
+- Use unchanged selector409 and the frozen generic artifact-only harness.
+- Run all 409 identities exactly once, in ordinal order, one fresh process per identity, with the frozen 180-second
+  per-identity timeout and no outer elapsed cutoff.
+- Preserve the complete ledger, raw logs, resource rows, failure-detail digests, authority records and pre/post
+  immutability censuses.
+- Do not freeze an expected aggregate before execution.
+- Do not edit product/test/fixture/selector source, gate membership or carried owners in EXEC.
+- After mechanically valid execution, stop unconditionally at **`M3-CP4c-3-TB47-REV`**. Independent review owns
+  semantic adjudication, promotion and the next plan.
 
-### Context Load Plan for `M3-CP4c-3-CB53`
+### Context Load Plan for `M3-CP4c-3-TB47-EXEC`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
+  - turn-based-coding-agent/references/turns/TB.md
 conditional_modules:
-  - trigger: unit-test source is changed by the frozen plan
-    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
-  - trigger: GitHub connector/Actions is used for patch application or compile
+  - trigger: artifact-only GitHub Actions execution is used
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
+  - trigger: unit-test evidence is interpreted only to record raw execution mechanics
+    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_TB47_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c3_CB53_Independent_Fragment_Count_Oracle_Code_Build_Report.md
   - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_EXEC_Report.md
   - .agents/Directional/Architecture_M3_CP4c3_TB46_R1_Independent_Review_Record.md
-  - .agents/Directional/M3_CP4c_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - tests/FieldAlignedCurveNetworkTests.cpp
+  - .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_409.txt
+  - .agents/Directional/tools/m3_cp4c3_artifact_only_harness.sh
 templates_when_producing:
-  - turn-based-coding-agent/templates/CODE_BUILD_REPORT.md
-  - turn-based-coding-agent/templates/TEST_PLAN.md
+  - turn-based-coding-agent/templates/TEST_REPORT.md
 do_not_preload:
   - superseded per-turn reports/plans
   - unrelated product source
