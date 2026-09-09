@@ -37,3 +37,9 @@ jobs:
     with:
       workflow_path: .agents/Directional/turn-payloads/m3-cp4c3-tb44-exec.yml
     secrets: inherit
+
+  validate-closeout-drive-draft:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m3-cp4c3-tb44-closeout-drive-apply.yml
+    secrets: inherit
