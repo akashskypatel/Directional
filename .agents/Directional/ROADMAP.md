@@ -11,17 +11,18 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
 **Status date:** 2026-09-08 (**CP4c-2 CLOSED / ACCEPTED at 365/365; CP4c-3 OPEN.** TB43/package108 remains promoted
-runtime authority: selector409, **402 PASS / 7 RED / 0 SKIP**, accepted 365/365, ownership 300/0/0. CB49's bounded
-fragment-corner predicate correction is compile-green as package109, exact source `cf969597…`, with no runtime.
-Stable accounting remains 47 / 14 / 33, debt 5, packages 109 as a build count. **NEXT:
-`M3-CP4c-3-TB44-EXEC`**, artifact-only selector409 validation.)
+runtime authority: selector409, **402 PASS / 7 RED / 0 SKIP**, accepted 365/365. TB44/package109 has now produced
+mechanically valid raw selector409 evidence at **398 PASS / 11 RED / 0 SKIP**, accepted 365/365, ownership 300/0/0,
+with zero timeouts and immutable pre/post censuses. Stable accounting remains 47 / 14 / 33, debt 5, packages 109 pending
+semantic review. **NEXT: `M3-CP4c-3-TB44-REV`**, independent evidence-only review.)
 
 ---
 
 **Current CP4c-3 authority (2026-09-08):** Part VIII + Part XI/Part XI-A remain topology/ownership authority and
-Part XII is runtime-proved. TB43/package108 is promoted at selector409 **402 PASS / 7 RED**, accepted 365/365.
-390/393/406/407 recovered non-vacuously. CB49 has compile-proved the bounded 366/367 corner-ownership predicate
-alignment in package109 without runtime. Exact next is **`M3-CP4c-3-TB44-EXEC`**.
+Part XII was runtime-proved in promoted TB43/package108 at selector409 **402 PASS / 7 RED**, accepted 365/365.
+TB44/package109 raw execution is mechanically valid at **398 PASS / 11 RED**, accepted 365/365: 366/367 advance to
+`FragmentCornerSourceCornerMismatch`, while 390/393/406/407 turn RED despite retaining their non-vacuity receipts.
+Exact next is independent **`M3-CP4c-3-TB44-REV`**.
 
 ## 1. Where the project actually is
 
@@ -30,7 +31,7 @@ alignment in package109 without runtime. Exact next is **`M3-CP4c-3-TB44-EXEC`**
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB43/package108 promoted** at 402 PASS / 7 RED, accepted **365/365**, selector409. **CB49/package109 compile-green; TB44-EXEC next** on the 366/367 corner-ownership correction. |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; **TB43/package108 remains promoted** at 402 PASS / 7 RED, accepted **365/365**. **TB44/package109 raw** is 398 PASS / 11 RED, accepted **365/365**; independent **TB44-REV next**. |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -84,7 +85,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN.** Promoted runtime authority **TB43/package108**: **402 PASS / 7 RED**, accepted **365/365**. CB49/package109 compile-proves the bounded 366/367 corner-ownership correction with no runtime. **NEXT:** artifact-only `M3-CP4c-3-TB44-EXEC`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 409** | **OPEN.** Promoted authority remains **TB43/package108: 402 PASS / 7 RED**, accepted **365/365**. TB44/package109 raw evidence is **398 PASS / 11 RED**, accepted **365/365**, with 366/367 advanced and protected 390/393/406/407 RED. **NEXT:** independent `M3-CP4c-3-TB44-REV`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

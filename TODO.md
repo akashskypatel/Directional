@@ -26,33 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB44-EXEC` — TEST + BENCHMARK / ARTIFACT-ONLY
+## Current focus — `M3-CP4c-3-TB44-REV` — INDEPENDENT REVIEW / EVIDENCE-ONLY
 
-`M3-CP4c-3-CB49` is **COMPLETE / COMPILE-GREEN / RUNTIME-FREE**. The bounded correction aligned
-`build_fragment_corner_incidence()` with the already-authoritative certified-side separation rule: a final
-no-barrier segment is skipped only when `forwardOrbit == reverseOrbit`; distinct certified sides are retained as
-corner ownership. No region construction, `fragmentOrbits`, `region_orbit`, graph/cut selection, partition,
-selector, fixture, test, benchmark or build semantics changed.
+`M3-CP4c-3-TB44-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / SEMANTIC REVIEW PENDING**. Immutable
+package109 / selector409 run `34295565963` measured **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED
+`[366,367,368,369,370,374,390,393,398,406,407]`. Result/log artifacts are `10083047547 / 10083047938`.
+No configure, compile, relink, benchmark, package/mode repair or source/test/fixture/selector mutation occurred; the restored
+180-second per-identity control recorded zero timeouts and the full gate had no outer elapsed cutoff.
 
-CB49 package109 is immutable compile authority: artifact `10081938891`, exact source
-`cf969597bda5c49e734b98db0c0165b421c4ee12`, package SHA-256
-`285ee15784ea29468c367fa9e4778fd835f1e9582370fdcb26a5050a15c4d617`, source-archive SHA-256
-`7dead808562e8faf0a90e242532e2965bc9260f24505958eb5f242c19b1273ca`. Compile run `34292599472` succeeded with
-GMP/GMPXX, clean source, 28/28 package checksums and `runtimeExecution=false`. Package count is now **109** as a
-build fact only. **TB43/package108 remains semantic runtime authority** at selector409 **402 PASS / 7 RED / 0 SKIP**,
-accepted **365/365**, until TB44 is executed and independently reviewed. Stable accounting remains **47 events / 14
-categories / 33 recurrences**, debt **5**.
+TB43/package108 remains promoted semantic runtime authority at **402 PASS / 7 RED**, accepted **365/365**, pending review.
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB44-EXEC`** under
-`Architecture_M3_CP4c3_TB44_Artifact_Only_Test_Benchmark_Plan.md`. Consume package109 unchanged; execute full
-selector409 one identity per fresh process; restore the frozen generic harness's real 180-second per-identity timeout
-while imposing no outer elapsed-time cutoff; preserve accepted 365/365, protected 390/393/406/407 receipts, the five
-carried owners 368/369/370/374/398, ownership 300/0/0 and retired-code silence. 366/367 must not reproduce the exact
-TB43 `RegionSourceFaceOwningFragmentMissing` locus; PASS or a later existing guard are both legitimate measured
-outcomes. Do not synthesize an aggregate. TB44-EXEC records raw evidence and tracker intake only, then stops at
-independent **`M3-CP4c-3-TB44-REV`**.
+Perform independent **`M3-CP4c-3-TB44-REV`** from `Architecture_M3_CP4c3_TB44_EXEC_Report.md` and immutable TB44
+artifacts. Review must adjudicate, without new compile/runtime or semantic mutation:
+
+- 366/367 no longer reproduce the TB43 owner-missing locus and now first-red at
+  `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch` on source face `10,11,79`;
+- 390/393/406/407 changed from PASS to RED while every Part XII non-vacuity receipt remains present, with the immediate
+  assertion surface `region_fragment_owner_relation_is_valid(locus)==false` plus missing
+  `regionFrontierFailureRegionSourceFaceCount`;
+- 368/369/370/374/398 remain carried REDs;
+- accepted 365/365, protected controls, ownership 300/0/0 and retired-code silence remain intact;
+- stable accounting and the exact successor are review decisions, not EXEC decisions.
+
+The implementation loop stops at this independent review boundary.
 
 ## Carried forward from M1
 
@@ -90,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted.
-  CP4c-3 remains open. **`M3-CP4c-3-TB43`/package108 remains promoted semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365. CB49's bounded corner-ownership correction is compile-green as package109; exact next is artifact-only `M3-CP4c-3-TB44-EXEC`.
+  CP4c-3 remains open. **`M3-CP4c-3-TB43`/package108 remains promoted semantic runtime authority** at **402 PASS / 7 RED**, accepted 365/365 pending TB44 review. TB44/package109 raw execution is mechanically valid at **398 PASS / 11 RED**, accepted 365/365; exact next is independent `M3-CP4c-3-TB44-REV`.
 
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
@@ -101,8 +100,9 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [x] **CP4c-3 protected frontier evidence:** Part XII is runtime-proved in promoted TB43; 390/393/406/407 PASS non-vacuously with producer-owned census execution and same-domain corruption rejection. `M3-CP4c3-TB40-EXEC-CAND-02` is CLOSED / RUNTIME-PROVED / NON-STABLE.
-- [ ] **CP4c-3 366/367 fragment-corner ownership predicate drift:** TB43 proves expected region orbit 1 absent from present corner-owner set `[2,3]` despite 3/3/3 fragment-owner cardinality. CB49 applied and compile-proved the bounded predicate alignment in package109 without runtime. TB44 now owns the artifact-only falsifier: the exact TB43 owner-missing locus must not reproduce.
+- [x] **CP4c-3 protected frontier evidence:** Part XII is runtime-proved in promoted TB43; 390/393/406/407 PASS non-vacuously with producer-owned census execution and same-domain corruption rejection. `M3-CP4c3-TB40-EXEC-CAND-02` remains historically CLOSED / RUNTIME-PROVED / NON-STABLE under TB43 authority.
+- [ ] **CP4c-3 TB44 protected-surface raw color regression:** TB44 changes 390/393/406/407 to RED while preserving every Part XII execution/corruption-rejection receipt. Independent TB44-REV must adjudicate the owner-relation / missing-region-source-face-count assertion surface before any prior closure/promotion is revised.
+- [ ] **CP4c-3 366/367 post-CB49 downstream surface:** TB44 mechanically proves the exact TB43 `RegionSourceFaceOwningFragmentMissing` locus no longer reproduces. Both identities remain RED at `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch` on source face `10,11,79`; independent TB44-REV owns semantic classification and next-edge planning.
 - [x] **CP4c-3 ordinals 371/372 test coupling:** TB21's atlas-scoped accessor makes both identities execute their unchanged assertions and **PASS**. `M3-CP4c3-TB10-REV-CAND-01` is CLOSED / runtime proved.
 - [x] **CP4c-3 ordinal 391 diagnostic dependency:** TB22 ordinal 391 PASSes; sphere is explicitly skipped with `reason=ordinal368-open` while mechanical/torus evidence runs. `M3-CP4c3-TB21-CAND-02` is CLOSED / runtime proved / non-stable.
 
@@ -130,4 +130,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109** as a build count. **`M3-CP4c-3-TB43`/package108 remains promoted semantic runtime authority** at **402/7**, accepted **365/365**. CB49/package109 is compile-green only. Exact next is artifact-only **`M3-CP4c-3-TB44-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**. **`M3-CP4c-3-TB43`/package108 remains promoted semantic runtime authority** at **402/7**, accepted **365/365**, pending independent review of TB44. TB44/package109 raw execution is mechanically valid at **398/11**, accepted **365/365**. Exact next is **`M3-CP4c-3-TB44-REV`**. PR #8 remains open, draft, and unmerged.

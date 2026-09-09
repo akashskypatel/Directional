@@ -1,4 +1,39 @@
-## M3-CP4c3-TB43-REV — independent adjudication — **CURRENT REVIEW / TB43 PROMOTED / CB49 ASSIGNED**
+## M3-CP4c3-TB44-EXEC classification — **CURRENT RAW / REVIEW PENDING / NON-STABLE EXEC**
+
+- **Execution authority:** immutable package109 source `cf969597bda5c49e734b98db0c0165b421c4ee12`, artifact
+  `10081938891`, selector409, run/job `34295565963 / 102291328376`, result/log artifacts
+  `10083047547 / 10083047938`.
+- **Observed set:** **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED
+  `[366,367,368,369,370,374,390,393,398,406,407]`; zero selection mismatch, zero timeout, and all
+  package/source/execution-view byte+mode censuses equal pre/post.
+- **`M3-CP4c3-TB44-EXEC-CAND-01` — RAW DOWNSTREAM SURFACE / REVIEW REQUIRED / NON-STABLE / UNPRICED.** 366/367 no
+  longer reproduce `RegionSourceFaceOwningFragmentMissing` or the TB43 expected-orbit 1 / owner-set `[2,3]` locus. Both now
+  first-red at `NotProductionReady/global-topology-plan/RotationSystemInconsistent`, source face `10,11,79`,
+  `rotationSystemReason=FragmentCornerSourceCornerMismatch`. **Mechanical root-cause intake:** the immediate failing predicate
+  is the fragment-corner/source-corner consistency guard; whether that guard is a legitimate later rejection, a new independent
+  defect, or a recurrence under an existing owner is not adjudicated in EXEC and is assigned to TB44-REV.
+- **`M3-CP4c3-TB44-EXEC-CAND-02` — RAW PROTECTED-SURFACE COLOR REGRESSION / REVIEW REQUIRED / NON-STABLE / UNPRICED.**
+  390/393/406/407 changed from TB43 PASS to RED. All four still prove `branch=UncutCensus`,
+  `censusPredicateExecuted=yes`, `terminalSubjectRelation=Outside`, `sameDomainCorruptionRejected=yes`, and
+  `regionCertificationEvidenceBranchExecuted=yes`, so a skipped/vacuous oracle is mechanically excluded. Each reds at
+  `region_fragment_owner_relation_is_valid(locus)==false` together with absent
+  `regionFrontierFailureRegionSourceFaceCount`. **Mechanical root-cause intake:** the immediate assertion relation is identified;
+  the semantic owner/cause remains review-pending and is not stably priced in EXEC.
+- **Carried REDs:** 368, 369, 370, 374 and 398 remain on their prior visible surfaces and retain their TB43 detail digests.
+  EXEC does not merge or reprice them.
+- **Protected controls:** 311/312/314/315/356/357/404/408/409 PASS; ordinal385 publishes 300 established / 0 unavailable /
+  0 conflicting; retired `TraceArcDoesNotSeparateItsSides`, `UncutFaceComponentOrbitSeedNotUnique`, and
+  `RegionEulerCharacteristicNotOne` are absent.
+- **Stable-count rationale:** no accepted-prefix loss occurred, but 366/367 moved surface and 390/393/406/407 changed color.
+  Independent review is required before deciding whether these are new events, recurrences, invalid expectations or lawful
+  downstream fail-closed behavior. EXEC therefore creates no stable event/category/recurrence mutation. Totals remain
+  **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**. TB43/package108 remains promoted semantic
+  runtime authority pending TB44-REV.
+- **Exact successor:** independent `M3-CP4c-3-TB44-REV`, evidence-only; no compile, new runtime or semantic source mutation first.
+
+---
+
+## M3-CP4c3-TB43-REV — independent adjudication — **HISTORICAL REVIEW / TB43 PROMOTED / CB49 COMPLETED**
 
 - **Promoted authority:** TB43/package108, selector409, run/job `34280642422 / 102244347209`, **402 PASS / 7 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`. Result/log artifacts `10077594302 / 10077595162` are hash-verified; immutable pre/post censuses match and mutation/build flags are false.
 - **`M3-CP4c3-TB40-EXEC-CAND-02` — CLOSED / RUNTIME-PROVED / NON-STABLE.** 390/393/406/407 each execute `UncutCensus`, classify the terminal subject `Outside`, reject same-domain corruption and execute the RegionCertification evidence branch. Part XII recovery is non-vacuous.

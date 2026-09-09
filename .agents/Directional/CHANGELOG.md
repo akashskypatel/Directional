@@ -9087,3 +9087,24 @@ authorization and applies it to CP2b.
 - Compile run `34276935866` succeeded: changed-owner job `102232219122`, full-package job `102233583990`; immutable package108 artifact `10076272909` digest `a2578a82e82c3e1bdc5798e0bf96028e3e854ccbeb65c7a111a6489fa1593612`; package log `10076273608` digest `75e7d8eab9b4064d873c69476e5d96afbcee7164e8a057d106c51e16ea9d8987`; GMP/GMPXX linked; root `SHA256SUMS` 28/28 PASS; `runtimeExecution=false`.
 - No Directional runtime, test or benchmark executed. Runtime authority remains TB42 at 398 PASS / 11 RED, accepted 365/365; stable accounting remains 47 / 14 / 33, debt 5; packages advance 107→108.
 - Exact successor is artifact-only `M3-CP4c-3-TB43-EXEC` under `Architecture_M3_CP4c3_TB43_Artifact_Only_Test_Benchmark_Plan.md`. The frozen 402/7 vector is a falsifier only; TB43 must measure it.
+
+## 2026-09-08 — M3-CP4c-3-TB44 artifact-only execution measured package109
+
+- Completed immutable artifact-only TB44 on package109 source `cf969597bda5c49e734b98db0c0165b421c4ee12`, artifact
+  `10081938891`, selector409. Authoritative run/job `34295565963 / 102291328376` produced result/log artifacts
+  `10083047547 / 10083047938`.
+- Mechanical gate validity is complete: 409/409 identities exactly once in fresh processes, 0 selection mismatches, accepted
+  prefix 365/365, restored `timeout -k 5s 180s` with 0 timeouts, no outer full-gate cutoff, and no configure/compile/relink,
+  benchmark, package/mode repair or semantic-input mutation. Package/source/execution-view censuses match pre/post.
+- Raw result is **398 PASS / 11 RED / 0 SKIP**, RED `[366,367,368,369,370,374,390,393,398,406,407]`. This is not yet
+  promoted semantic authority; TB43/package108 remains promoted pending independent review.
+- 366/367 no longer reproduce the TB43 `RegionSourceFaceOwningFragmentMissing` locus; both advance to
+  `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch` on source face `10,11,79`.
+- 390/393/406/407 change from TB43 PASS to RED at owner-relation / missing-region-source-face-count assertions, while every
+  Part XII non-vacuity receipt remains present and proves `UncutCensus` execution, `Outside` terminal relation and same-domain
+  corruption rejection. 368/369/370/374/398 remain carried visible surfaces.
+- Stable accounting is unchanged in EXEC at **47 events / 14 categories / 33 recurrences**, debt **5**, packages **109**.
+  Exact successor is independent `M3-CP4c-3-TB44-REV`; no new compile/runtime or semantic mutation is authorized first.
+- Process note: an early cleanup-manifest write triggered cleanup run `34294735581` before temporary-state inventory was
+  complete. Its compare-and-swap correctly failed after the branch advanced; it made no cleanup commit and executed no
+  Directional runtime. The session also corrected an initial READ_MODE sequencing miss before semantic execution.

@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-08** at `M3-CP4c-3-CB49` compile-green closeout.
+Last updated **2026-09-08** at `M3-CP4c-3-TB44-EXEC` raw artifact-only closeout.
 
 ---
 
@@ -26,9 +26,11 @@ Certified ownership remains **300 / 0 / 0**. CP4c-3 remains **OPEN**. Stable acc
 fact; TB43/package108 remains semantic runtime authority.
 
 TB43-REV closed the Part XII protected-census candidate and root-caused 366/367 as predicate drift in the orbit-keyed
-fragment-corner ownership projection. CB49 has now applied the bounded correction and compiled/package-proved it as
-package109 without runtime. Exact next is artifact-only **`M3-CP4c-3-TB44-EXEC`**; TB44 must measure whether 366/367
-recover or advance without reproducing the exact TB43 owner-missing locus.
+fragment-corner ownership projection. CB49 applied the bounded correction and compiled/package-proved it as package109.
+TB44 has now measured package109 artifact-only at **398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, without
+promoting that vector. 366/367 advance to `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch`; 390/393/406/407
+change from PASS to RED while retaining all Part XII non-vacuity receipts. Exact next is independent
+**`M3-CP4c-3-TB44-REV`**.
 
 ## 2. TB41 mechanical evidence — accepted repair recovered, protected frontier correction did not
 
@@ -497,9 +499,25 @@ separation-rule sites now agree and no new derivation was introduced.
 
 CB49 package109 artifact `10081938891` compiles exact source
 `cf969597bda5c49e734b98db0c0165b421c4ee12` with GMP/GMPXX, 28/28 package checksums and
-`runtimeExecution=false`. Package109 is compile authority only; TB43/package108 remains promoted semantic runtime
-authority until review of TB44. **Exact next is `M3-CP4c-3-TB44-EXEC`**, bound to the one retained artifact-only plan.
-368/369/370/374/398 remain separately owned and CB49 made no runtime claim.
+`runtimeExecution=false`.
+
+### TB44 execution intake — mechanically valid raw evidence, review pending
+
+TB44 run/job `34295565963 / 102291328376` consumed package109 unchanged and measured selector409 at
+**398 PASS / 11 RED / 0 SKIP**, accepted **365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`.
+Result/log artifacts are `10083047547 / 10083047938`; selector identity is unchanged; all package/source/execution-view
+censuses match pre/post; timeout count is 0 under the restored 180-second per-identity control.
+
+The direct CB49 old-locus falsifier is mechanically satisfied: 366/367 no longer publish
+`RegionSourceFaceOwningFragmentMissing` and instead reach `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch`
+at source face `10,11,79`. Protected 390/393/406/407 are now RED, but each still proves the Part XII `UncutCensus`
+predicate executed, terminal subject `Outside`, same-domain corruption rejection, and RegionCertification evidence branch.
+Their common immediate assertion surface is false `region_fragment_owner_relation_is_valid(locus)` plus missing
+`regionFrontierFailureRegionSourceFaceCount`.
+
+This is raw EXEC intake only. TB43/package108 remains promoted semantic runtime authority; stable accounting remains
+47 / 14 / 33, debt 5, packages 109. **Exact next is independent `M3-CP4c-3-TB44-REV`**. No new runtime or compile is
+authorized before review adjudication.
 
 ## 4. Open candidates
 
@@ -509,7 +527,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 |---|---|
 | `M3-CP4c3-TB40-EXEC-CAND-01` | **RUNTIME RECOVERED IN TB41 / STABLE RP-05 EVENT RETAINED** — 311/314/356/357 PASS under unique content-derived anchors; historical event remains counted. |
 | `M3-CP4c3-TB40-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 proves 390/393/406/407 execute the producer-owned `P_U` predicate, classify the terminal subject `Outside`, and reject same-domain corruption. |
-| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / CORRECTION COMPILED IN CB49 / NON-STABLE / TB44 PENDING** — 366/367 expose predicate drift: `FragmentCornerIncidence` dropped every final no-barrier segment while region ownership dropped only same-orbit/non-separating cases. CB49 aligns that predicate in package109; TB44 must prove the exact TB43 owner-missing locus no longer reproduces. |
+| `M3-CP4c3-TB40-REV-CAND-02` | **ROOT-CAUSED / CORRECTION RUNTIME-ADVANCED / NON-STABLE / TB44-REV PENDING** — CB49 aligned the fragment-corner predicate. TB44 mechanically proves the exact TB43 owner-missing locus no longer reproduces; 366/367 now first-red at `FragmentCornerSourceCornerMismatch`. Review owns whether the downstream guard is lawful or a new/recurring defect. |
+| `M3-CP4c3-TB44-EXEC-CAND-01` | **RAW DOWNSTREAM SURFACE / NON-STABLE / UNPRICED** — 366/367 at `RotationSystemInconsistent / FragmentCornerSourceCornerMismatch`, source face `10,11,79`; semantic owner pending TB44-REV. |
+| `M3-CP4c3-TB44-EXEC-CAND-02` | **RAW PROTECTED-SURFACE COLOR REGRESSION / NON-STABLE / UNPRICED** — 390/393/406/407 RED at owner-relation + missing region-source-face-count assertions while all Part XII non-vacuity receipts remain present; semantic owner pending TB44-REV. |
 | `M3-CP4c3-TB41-REV-CAND-01` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB43 publishes the complete owner-orbit set and expected-orbit membership required by Part XII; it served its diagnostic purpose. |
 | `M3-CP4c3-TB38-EXEC-CAND-01` | **RESOLVED AT CURRENT RUNTIME / STABLE EVENT RETAINED** — CB44/TB39 recover the lost greens; the TB38 `RP-01` event remains in 46 / 14 / 32. |
 | `M3-CP4c3-TB38-EXEC-CAND-02` | **CLOSED / RUNTIME-PROVED / NON-STABLE** — TB39 emits 513 non-empty rows and all five equations hold. Arithmetic proof is now non-vacuous; it does not select a semantic proxy. |
@@ -634,4 +654,4 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-After the durable start-of-turn checklist, perform independent **`M3-CP4c-3-TB43-REV`** from `Architecture_M3_CP4c3_TB43_EXEC_Report.md` and immutable result/log artifacts `10077594302 / 10077595162`. Review is evidence-only: no compile, no new runtime, no product/test/fixture/selector mutation. Adjudicate the protected Part XII recovery, 366/367 exact owner-orbit evidence, carried RED ownership, stable accounting and the exact successor.
+After the durable start-of-turn checklist, perform independent **`M3-CP4c-3-TB44-REV`** from `Architecture_M3_CP4c3_TB44_EXEC_Report.md` and immutable result/log artifacts `10083047547 / 10083047938`. Review is evidence-only: no compile, no new runtime, no product/test/fixture/selector mutation. Adjudicate the 366/367 downstream `FragmentCornerSourceCornerMismatch` surface, the protected 390/393/406/407 color regression with Part XII receipts intact, carried RED ownership, stable accounting and the exact successor.
