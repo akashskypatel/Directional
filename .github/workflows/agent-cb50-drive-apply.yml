@@ -39,8 +39,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1tHEu97fYNaFFNEjuFRQSZKZ0PkaCg7ME
-      patch_sha256: 70b9dc51638b75a7c2af6e9a785cf814aa111e0a2c227e962ddce0da2d01460e
+      file_id: 1TB9H4gc2kwzTETgWCiwF3V7dte5Vjbrr
+      patch_sha256: 13f4ba610b797a826a3507422c0ada960fb52f9451439a740995c838101c9a90
       base_sha: a17f6ce14635dcdbbb81a80ac215a4cbd60d3ffb
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'M3-CP4c-3-CB50: partition fragment-corner fans and type terminal evidence'
