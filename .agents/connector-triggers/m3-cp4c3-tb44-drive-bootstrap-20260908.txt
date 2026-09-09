@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB44-EXEC
-purpose=delete-service-account-bootstrap-staging-file
-file_id=1xoANjd-JPvwFN48tME7uOJcLOfeqGYlt
-retry=2

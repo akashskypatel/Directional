@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-TB44-EXEC
-purpose=validate-drive-bootstrap-cleanup-active-and-draft
-retry=4
