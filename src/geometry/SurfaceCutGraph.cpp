@@ -989,6 +989,11 @@ CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std
   const auto topology=build_source_index(sourceFaces,sourceVertexCount,sourceAuthority); if(!topology.has_value())return cut_error(SurfaceCutGraphErrorCode::InvalidSourceBinding);
   if(!fieldTransportAtlas.matches_source_faces(sourceFaces,sourceAuthority,sourceVertexCount)||!fieldTransportAtlas.quadrangulability().established())return cut_error(SurfaceCutGraphErrorCode::InvalidAtlasBinding);
   if(network.source_digest()!=fieldTransportAtlas.quadrangulability().source_digest()||network.atlas_digest()!=authority::field_transport_atlas_hash(fieldTransportAtlas))return cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);
+  if(network.nodes().empty()&&network.mandatory_edges().empty()&&network.candidate_traces().empty()){
+    const auto boundaryLoops=source_boundary_loop_count(*topology);
+    if(!boundaryLoops.has_value())return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);
+    if(*boundaryLoops==0U&&!topology->faces.empty()){auto failure=cut_error(SurfaceCutGraphErrorCode::EmptyNetworkOnClosedSurface);failure.sourceFace=topology->faces.begin()->first;return failure;}
+  }
   const auto mandatory=mandatory_source_edges(network); for(const auto &edge:mandatory)if(topology->incidentFaces.count(edge)==0U){auto failure=cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);failure.sourceEdge=edge;return failure;}
   const auto crossedBuild=trace_crossed_source_edges(*topology,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&crossedBuild))return *failure;const auto &traceCrossed=std::get<std::set<authority::SourceEdgeTopologyKey>>(crossedBuild);
   std::set<authority::SourceEdgeTopologyKey> cuts;
