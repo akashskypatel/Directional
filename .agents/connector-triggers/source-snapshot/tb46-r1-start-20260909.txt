@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB46-R1
+purpose=start-of-turn exact source snapshot
+expected_source=7b6da842e3bd771fdd4103c9a3aa6201a02d8743
+retry=0
