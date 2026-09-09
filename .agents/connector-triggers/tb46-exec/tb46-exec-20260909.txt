@@ -1,7 +1,0 @@
-turn=M3-CP4c-3-TB46-EXEC
-purpose=execute immutable package111 against byte-frozen selector409
-artifact_id=10112532452
-semantic_source_sha=4f0663ef3468996abce6f59109f1c67f5be5f604
-selector_count=409
-selector_sha256=eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e
-harness_sha256=aaadab351c0ba28a39c87aff1948f83ab0c4c71520662177e5cdf6fd08b30ed3
