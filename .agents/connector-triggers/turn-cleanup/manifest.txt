@@ -1,0 +1,5 @@
+# M3-CP4c-3-CB51 temporary-state cleanup
+.agents/connector-triggers/cb51-apply
+.agents/connector-triggers/cb51-compile
+.agents/connector-triggers/cb51-closeout-apply
+.agents/connector-triggers/source-snapshot
