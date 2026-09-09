@@ -1,5 +1,5 @@
 turn=M3-CP4c-3-TB47-EXEC
 purpose=apply verified TB47 EXEC closeout documentation patch from Google Drive
-caller_install_sha=245e82b0b6f46f1cb963fad000bdaa3bd751c15d
+caller_install_sha=53e07c3fe59ae5d6c550088e11364724a8525ac2
 patch_sha256=3547f7fa8a4eb999e7387ecf4beea7ac48d7ef39d0c39f7d2d08d265d3880569
-retry=0
+retry=1
