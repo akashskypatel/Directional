@@ -2035,6 +2035,16 @@ building any conclusion on it.**
      the loose predicate, then ask of each whether it needs the narrowing, rather than enumerating the places the
      narrowing already reached. This is lesson 53 one level up - naming every site that implements a rule is not
      enough if the list was drawn from the rule instead of from the hazard.
+165. **An independent oracle is independent in derivation, not exempt from the contract - so every normative
+     predicate change silently invalidates the oracles that reimplement it.** A product predicate was narrowed
+     (skip a terminal segment only when its two certified sides share an orbit). The independent test oracle kept
+     its own syntactic reimplementation - final segment, no terminal barrier, skip - with a comment restating the
+     retired rule as if it were still true. It then failed, and the failure looked exactly like a product
+     regression. **When a normative predicate changes, enumerate the oracles that re-derive it and re-derive them
+     too**, using the values the oracle already computes for itself rather than calling the product's helper, which
+     would destroy the independence that makes the oracle worth having. And note the corollary for site lists
+     (lesson 164): a completeness audit over "consumers of the loose predicate" must include **test-side**
+     consumers, or it is complete only over the half of the corpus that ships.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

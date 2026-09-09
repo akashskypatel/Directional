@@ -6803,6 +6803,22 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**TB45-REV verification-pass addenda (EG10).** The adjudication stands; every load-bearing claim verifies.
+
+- **TB44 EG10.3 is DISCHARGED** - by the TB45 review, not by CB50, which was silent on it. `:1336` is intentionally
+  narrow (its sibling evidence publishes forward/reverse orbit and `sharesOrbit` separately); `:1417` is corrected,
+  because `tracePieceCount` increments at `:1212` **after** the `:1194` skip, so a **separating** terminal slit does
+  count while the evidence builder omits it. Confirmed from source.
+- **The canonical consumer table gains a FIFTH row.** TB44's table covered **product** consumers; the test oracle
+  re-derives the predicate itself at `tests/FieldAlignedCurveNetworkTests.cpp:2119-2126` and skips unconditionally,
+  with a comment restating the retired rule. **An oracle is independent in derivation, not exempt from the
+  contract**, so a normative predicate change silently invalidates every oracle that reimplements it.
+  `LESSONS.md` 165.
+- **EG3's caveat must not be lost:** TB45 does **not** re-prove the Part XII receipts for 390/393/406/407. **TB43
+  remains the most recent runtime proof** that they execute the producer census and reject same-domain corruption,
+  and that proof is not attributed to package110.
+- **Accounting and promotion confirmed:** accepted held at 365/365, ordinal 366 cleared, no stable event.
+
 **Verification-pass addenda (EG10).** EG0-EG9 re-derived from source; the adjudication stands.
 
 - **EG10.1 - TB43-REV EF10.2 is DISCHARGED.** The execution view restored `timeout -k 5s 180s` with no outer
@@ -6822,6 +6838,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
   | `GlobalTopologyPlan.cpp:1194` | **yes** (`!separatesCertifiedFaces`, CB36) | region-construction skip |
   | `GlobalTopologyPlan.cpp:1336` | **no** | per-trace `TraceTerminalSlitCensusDiagnostic` label |
   | `GlobalTopologyPlan.cpp:1417` | **no** | skips segments building `fragmentIncidences` / `fragmentIncidenceCount` |
+  | `tests/FieldAlignedCurveNetworkTests.cpp:2119` | **no** | independent oracle's own re-derivation (found at TB45-REV EG2) |
 
   **`:1417` is the one that matters**: it sits in `build_regions` - the same function whose `:1194` was corrected
   at CB36 - and unconditionally omits terminal-slit segments from the published evidence for

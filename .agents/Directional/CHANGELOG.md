@@ -1,3 +1,38 @@
+## 2026-09-09 — `M3-CP4c-3-TB45-REV` verification pass: upheld; oracle added as a fifth predicate consumer
+
+Static verification of the delegated `M3-CP4c-3-TB45-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **TB45 / package110** (promoted),
+accounting unchanged at **47 / 14 / 33**.
+
+**Upheld — ordinal 366 cleared and every load-bearing claim verifies.**
+
+- **EG5** — `tracePieceCount` increments at `GlobalTopologyPlan.cpp:1212`, **after** the `:1194` skip, so a
+  *separating* terminal slit does increment the authoritative count while `:1417`'s `fragmentIncidences` builder
+  omits it. The evidence meant to explain `TraceCutFaceFragmentCountMismatch` can omit an incidence the count
+  includes. CB51's conjunct is correct.
+- **EG2** — the independent oracle skips every syntactic terminal slit at
+  `tests/FieldAlignedCurveNetworkTests.cpp:2119–2126`, its comment restating the retired rule verbatim. Oracle
+  drift, not a product regression, is the right classification.
+- **EG3** — `ASSERT_FALSE(mechanical.plan.has_value())` occurs exactly four times, matching the four protected
+  identities.
+
+**TB44 EG10.3 is discharged — by this review, not by CB50, which was silent on it.** `:1336` is intentionally
+narrow; `:1417` is corrected. That is *adjudicate, don't inherit*, which is what the obligation asked for.
+
+**Amended: the canonical consumer table gains a fifth row.** TB44's table covered **product** consumers of the
+over-broad `is_terminal_slit` predicate. The **test oracle re-derives it too** and skips unconditionally. An oracle
+is independent in derivation, not exempt from the contract — so a normative predicate change silently invalidates
+every oracle that reimplements it, and a completeness audit must include test-side consumers or it covers only the
+half of the corpus that ships. `LESSONS.md` **165**.
+
+**Preserved explicitly:** TB45 does **not** re-prove the Part XII receipts for 390/393/406/407 — **TB43 remains
+that proof**, and the review correctly refuses to attribute it to package110. EG4's constraint is also the right
+shape: make the already-computed `RegionBuildSuccess.frontier` observable from a *successful* plan rather than
+manufacturing a failure to reach the diagnostics.
+
+**Exact next: `M3-CP4c-3-CB51`** — unchanged in scope, owning the oracle correction, successful-plan observability,
+and the `:1417` separation conjunct.
+
 ## 2026-09-09 — `M3-CP4c-3-TB45-REV`: package110 promoted; stale oracle/failure-fixture authority isolated; CB51 frozen
 
 TB45/package110/selector409 is **PROMOTED semantic runtime authority** at **399 PASS / 10 RED / 0 SKIP**,

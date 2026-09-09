@@ -204,3 +204,59 @@ known deferred hygiene item remains open; it is not repriced as a semantic event
 
 **`M3-CP4c-3-CB51` — Code + Build / runtime-free.** No runtime, benchmark, selector change, or unrelated carried
 owner work is authorized until CB51 compiles/packages and freezes the next artifact-only TB46 plan.
+
+---
+
+## EG10 — verification-pass addenda (static, appended after adjudication)
+
+A verification pass re-derived EG0–EG9 from source. **The adjudication stands and every load-bearing claim
+verifies.**
+
+### EG10.1 — the three decisive claims, confirmed
+
+- **EG5** — `tracePieceCount` is incremented at `GlobalTopologyPlan.cpp:1212`, **after** the `:1194` skip. A
+  *separating* terminal slit therefore passes the skip and **does** increment the authoritative count, while the
+  `:1417` `fragmentIncidences` builder omits it unconditionally. The inconsistency is real: the evidence intended to
+  explain `TraceCutFaceFragmentCountMismatch` can omit an incidence the count includes. CB51's conjunct is correct.
+- **EG2** — `independent_fragment_partition()` skips every syntactic terminal slit at
+  `tests/FieldAlignedCurveNetworkTests.cpp:2119–2126`, and its comment states the retired rule verbatim: *"the final
+  no-barrier continuation is hypothetical and is not one of the k real chords."* Oracle drift, not a product
+  regression, is the correct classification.
+- **EG3** — `ASSERT_FALSE(mechanical.plan.has_value())` occurs exactly **four** times in the corpus, matching the
+  four protected identities precisely.
+
+### EG10.2 — TB44 EG10.3 is discharged, and discharged well
+
+CB50 was silent on it; **this review settled it instead**, with reasoning rather than assertion: `:1336` is a
+syntactic trace-termination label whose sibling evidence separately publishes forward/reverse orbit and
+`sharesOrbit`, so the narrow reading is intentional; `:1417` is inconsistent with the count it explains and is
+corrected. That is the outcome the obligation asked for — *adjudicate, don't inherit* — and the process finding
+about CB50's silence is correctly kept non-stable.
+
+### EG10.3 — the canonical consumer table needs a fifth row: the independent oracle
+
+TB44 EG10.3's table enumerated **product** consumers of the over-broad `is_terminal_slit` predicate. EG2 has now
+found a **fifth** consumer outside that scope — the test oracle's own re-derivation at
+`tests/FieldAlignedCurveNetworkTests.cpp:2119–2126`, which reimplements the predicate syntactically and skips
+unconditionally.
+
+That the oracle re-derives the predicate independently is exactly why it drifted: **an oracle is independent in
+derivation, not exempt from the current normative contract**, so a change to a normative predicate silently
+invalidates every oracle that reimplements it. The canonical table in `Regression_Root_Cause_Tracker.md` is extended
+to five rows so the next turn inherits a complete list rather than discovering the sixth the same way.
+`LESSONS.md` 165.
+
+### EG10.4 — two dispositions worth preserving explicitly
+
+- **EG3's caveat is right and must not be lost.** TB45 does **not** re-prove the Part XII receipts for
+  390/393/406/407; **TB43 remains the most recent runtime proof** that they execute the producer census and reject
+  same-domain corruption. Refusing to attribute that proof to package110 is the correct call, and precisely the kind
+  of attribution that goes silently wrong later.
+- **EG4's constraint is the right shape.** Making already-computed `RegionBuildSuccess.frontier` evidence observable
+  from a *successful* plan — rather than manufacturing a failure to reach the diagnostics — removes the tests'
+  accidental dependence on failure chronology without inventing a second authority.
+
+### EG10.5 — accounting and promotion confirmed
+
+Accepted prefix held at **365/365** and ordinal **366 cleared**, so **no stable event** is correct; totals remain
+**47 / 14 / 33**. Promotion of TB45 / package110 follows the operative rule and is consistent with TB39 onward.
