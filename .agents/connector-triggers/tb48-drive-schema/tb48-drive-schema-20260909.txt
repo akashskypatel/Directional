@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB48-EXEC
-purpose=validate staged TB48 Drive apply caller before publication
-caller_install_sha=5143a3d21583a3eef60df26bd298c28d2224f0da
-retry=0

@@ -1,3 +1,0 @@
-purpose=M3-CP4c-3-TB48-EXEC source snapshot
-expected_source=6b26b5d1bdfc31c9873846278a2e3a3f66471293
-retry=0

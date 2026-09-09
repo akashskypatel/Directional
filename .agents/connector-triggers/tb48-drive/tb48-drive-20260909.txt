@@ -1,4 +1,0 @@
-M3-CP4c-3-TB48-EXEC Drive apply trigger.
-Validated target caller: .agents/Directional/turn-payloads/m3-cp4c3-tb48-drive-apply.yml
-Patch SHA-256: d79ba71b4816bf60a223763bb75111544a21a7aaa9d2b7e14d5ea5a0c1fb0759
-Base SHA: b4d9d691d0626c0c1fe803d8384baed7e7c9f0d2
