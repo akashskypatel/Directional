@@ -1,3 +1,0 @@
-# M3-CP4c-3-TB46-R1-REV temporary-state cleanup
-.agents/connector-triggers/source-snapshot/tb46-r1-rev-20260909.txt
-.agents/connector-triggers/tb46-r1-rev-closeout/tb46-r1-rev-closeout-20260909.txt

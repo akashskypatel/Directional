@@ -1,2 +1,0 @@
-M3-CP4c-3-TB46-R1-REV source snapshot request
-requested_source_sha=959428f31bb94a3299225eb6df1d7e1246db8e81
