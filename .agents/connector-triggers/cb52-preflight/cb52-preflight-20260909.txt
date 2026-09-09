@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-CB52
-purpose=immutable package111 generic-harness preflight only
-runtimeExecution=false
-packageMutation=false
-selectorMutation=false

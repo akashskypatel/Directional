@@ -1,5 +1,0 @@
-trigger=M3-CP4c-3-CB52-closeout-apply-r2
-patch_file_id=1wkGbBd6VMsbBYalnf3YvUXKRK95703lD
-patch_sha256=9049a789c93a9be9ce1f15417ea14d09af17042cac454cd23d6909d5621ca121
-base_sha=805171da7d8fee6fb1b8dc1e9288f3953f61335c
-runtimeExecution=false

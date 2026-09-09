@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-CB52
-purpose=exact through-trap bootstrap localization
-runtimeExecution=false

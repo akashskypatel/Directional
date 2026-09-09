@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-CB52
-purpose=authoritative runtime-free preflight proof on original generic harness
-runtimeExecution=false
-packageMutation=false
-selectorMutation=false
