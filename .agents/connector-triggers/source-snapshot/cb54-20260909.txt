@@ -1,0 +1,3 @@
+purpose=M3-CP4c-3-CB54 exact semantic source snapshot
+semantic_source_sha=cb7ad10fe3bcf961c8453884c2862e8b3716bc06
+retry=0
