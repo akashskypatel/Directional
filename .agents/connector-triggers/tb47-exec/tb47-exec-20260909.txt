@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB47-EXEC
+purpose=execute immutable package112 against frozen selector409
+caller_install_sha=0ed1a0f1835a64f8547e367c5741ed168d63b43e
+retry=0
