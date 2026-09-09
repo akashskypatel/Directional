@@ -26,6 +26,20 @@ M3 closed through the accepted CP1/CP2/CP2b/CP3a/CP3b/CP4ab chain, then the CP4c
 - **CP4c-2:** closed/higher-genus actual-embedded-graph `SurfaceCutGraph` and region/disc authority; accepted required-green prefix **365**;
 - **CP4c-3:** mechanical closed-surface A1/continuation witness under restored **AU0–AU9**, with selector409 used as a broader audit/report-only execution surface.
 
+### 2.1 CP4c-0's basis, recorded explicitly
+
+`M3-CP4c-0` never ran the `M3-CP4c-0-TB-R9` turn its own roadmap row named as its gate. **Its acceptance is carried
+by cumulative gate inclusion**, which is the roadmap's own stated rule — *"every checkpoint carries the full accepted
+predecessor selector plus its own frozen identities."* CP4c-0's gate **346** is a strict prefix of **353**
+(CP4c-0b), **355** (CP4c-1) and the accepted **365** (CP4c-2), each of which closed green. Every CP4c-0 identity
+therefore lies inside the accepted prefix that has been continuously green since CP4c-2, and `TB-R9` — which would
+have executed gate 346 — was superseded by three later gates closing on strict supersets of it.
+
+This basis is recorded rather than inferred because the alternative reading is that a closed milestone contains an
+open checkpoint. **`M4-DEFN` must confirm it before consuming the 365 baseline**: that no CP4c-0 identity is absent
+from 365, and that Q8 criteria 1, 4 and 5 assert nothing no later gate re-executes. If either fails, M3 closure is
+premature and reopens.
+
 The final CP4c-3 review is `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md`.
 
 ## 3. Why a 405/4 runtime can close M3

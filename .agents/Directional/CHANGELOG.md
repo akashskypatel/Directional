@@ -1,3 +1,38 @@
+## 2026-09-09 — `M3-CP4c-3-TB48-REV` verification pass: M3 closure upheld; CP4c-0's basis recorded
+
+Static verification of the delegated `M3-CP4c-3-TB48-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **TB48 / package113** (promoted);
+accounting unchanged at **47 / 14 / 33**.
+
+**M3 closure is UPHELD.** 405 PASS / 4 RED, accepted 365/365, and every closure condition verifies.
+
+**The TB47-REV obligations are fully discharged.** AU0–AU9 were **restored durably and adjudicated per criterion**
+in `M3_CP4c_Current_And_Forward.md` §1.1 — ten rows, each with an individual MET disposition and its basis, not a
+bulk assertion. Ordinal 370 satisfies the **zero-producers → exactly one** criterion in its strong form: the code
+now has a producer *and* a frozen identity that reaches it, asserting both the typed error and the non-empty
+`sourceFace` locus. And `ROADMAP.md` was updated in-turn, acting on the note that it be added to the consolidation's
+standing-doc set.
+
+**Amended — one open checkpoint sat inside the closed milestone.** §7 states *"CP4c-3 was the final remaining M3
+checkpoint,"* but `ROADMAP.md:70` still read *"Closes on a green `M3-CP4c-0-TB-R9`"* — a turn **never executed** —
+and `M3_Closure_Record.md` listed CP4c-0 in its trajectory **without stating the basis on which it closed**. As
+written, the record showed a closed milestone containing an open checkpoint.
+
+**The reconciliation is sound and is now recorded** in `M3_Closure_Record.md` §2.1, on the roadmap's own stated
+arithmetic: CP4c-0's gate **346** is a strict prefix of **353** (CP4c-0b), **355** (CP4c-1) and the accepted **365**
+(CP4c-2), all of which closed green — so every CP4c-0 identity lies inside the continuously accepted prefix and
+`TB-R9` was **superseded by three later gates closing on strict supersets of it**. Acceptance is carried by
+cumulative inclusion, not by the turn that never ran. The stale instruction is retired from the roadmap row.
+
+**`M4-DEFN` must confirm this before consuming the 365 baseline** — that no CP4c-0 identity is absent from 365, and
+that Q8 criteria 1/4/5 assert nothing no later gate re-executes. **If either fails, M3 closure is premature and
+reopens.** `LESSONS.md` **168**: the last checkpoint's evidence is the loudest; the earlier rows are where
+unreconciled text hides.
+
+**Accounting and promotion confirmed.** Totals remain 47 / 14 / 33, debt 5, packages 113. The accepted required-green
+selector entering M4 is **365**; selector409 is retained byte-frozen as the final CP4c-3 audit surface with its four
+carried reds neither promoted nor deleted.
+
 ## 2026-09-09 — M3-CP4c-3-TB48-REV promotes package113 and closes CP4c-3 / M3
 
 - Independent review re-opened primary TB48 result/log evidence and package113 source; package113/TB48 is promoted reviewed semantic runtime authority at **405 PASS / 4 RED / 0 SKIP**, accepted selector365 **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**.

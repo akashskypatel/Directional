@@ -6946,6 +6946,22 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**TB48-REV verification-pass addenda. M3 closure UPHELD**, with one reconciliation recorded.
+
+- **The TB47-REV obligations are fully discharged.** AU0-AU9 were restored durably and adjudicated **per criterion**
+  in `M3_CP4c_Current_And_Forward.md` §1.1, not asserted in bulk; ordinal370 satisfies the **zero-producers ->
+  exactly one** criterion in its strong form (the code has a producer *and* an identity that reaches it); and
+  `ROADMAP.md` was updated in-turn, acting on the standing-doc-set note.
+- **One open checkpoint sat inside the closed milestone.** §7 said CP4c-3 was the final M3 checkpoint, but
+  `ROADMAP.md:70` still read *"Closes on a green `M3-CP4c-0-TB-R9`"* - a turn **never executed** - and
+  `M3_Closure_Record.md` listed CP4c-0 without stating its closure basis. **The reconciliation is sound and is now
+  recorded** in `M3_Closure_Record.md` §2.1: CP4c-0's gate **346** is a strict prefix of **353**, **355** and the
+  accepted **365**, all green, so acceptance is carried by **cumulative inclusion** and `TB-R9` was superseded by
+  three later gates closing on supersets of it. The stale instruction is retired from the roadmap row.
+- **`M4-DEFN` must confirm it before consuming the 365 baseline**: no CP4c-0 identity absent from 365, and Q8
+  criteria 1/4/5 asserting nothing no later gate re-executes. **If either fails, M3 closure is premature and
+  reopens.** `LESSONS.md` 168.
+
 **TB47-REV verification-pass addenda.** The adjudication stands. CB53's change is exactly DEFN-R3.4's one-sided form
 (`!=` -> `>` at `tests:2273`), so the oracle keeps teeth on the over-count direction; ordinal 307 was explicitly
 held out of scope twice; §4's non-vacuity is evidenced per identity. Three additions:

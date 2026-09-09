@@ -165,3 +165,64 @@ first M4 Code + Build plan. It may not run Directional runtime or compile and ma
 - Directional tests or benchmarks executed in review: **no**.
 - Compile/build executed in review: **no**.
 - Review decision is based on retained primary TB48 evidence plus static package113/source inspection.
+
+---
+
+## 12. Verification-pass addenda (static, appended after adjudication)
+
+A verification pass re-derived §§1–11 from source and from the retained record. **The M3 closure is upheld.** One
+reconciliation is required before the record is self-consistent.
+
+### 12.1 — confirmed, including the TB47-REV obligation
+
+- **AU0–AU9 were restored in durable form and adjudicated per criterion**, not asserted in bulk:
+  `M3_CP4c_Current_And_Forward.md` §1.1 carries all ten with an individual MET disposition and its basis. This is a
+  full discharge of the TB47-REV requirement that the exit condition be answered *by criterion* rather than
+  deferred, and the restoration requirement in the same obligation.
+- **Ordinal 370 is runtime-proved** against the frozen `EmptyNetworkOnClosedSurface = 6` **plus** the non-empty
+  `sourceFace` locus, so the TB47-REV **zero-producers → exactly one** criterion is satisfied in the strong form:
+  the code now has a producer *and* an identity that reaches it.
+- **The four remaining REDs are genuinely separately owned** and the closure record says so explicitly rather than
+  absorbing them.
+- **`ROADMAP.md` was updated in this turn** — status line and M3 row are current. The TB47-REV note about adding it
+  to the consolidation's standing-doc set was acted on.
+
+### 12.2 — the record still contains one open checkpoint inside the closed milestone
+
+§7 states *"CP4c-3 was the final remaining M3 checkpoint."* The retained roadmap does not agree:
+
+> `ROADMAP.md:70` — **`M3-CP4c-0`** … **Contract complete.** … **Closes on a green `M3-CP4c-0-TB-R9`** against Q8
+> criteria **1, 4, 5**.
+
+`M3-CP4c-0-TB-R9` was **never executed** — the last references to it in `CHANGELOG.md` are all forward-looking
+*"Exact next"* lines. `M3_Closure_Record.md` §2 lists CP4c-0 in the trajectory but **never states the basis on which
+it closed**, and `M3_CP4c_Current_And_Forward.md` does not mention it at all.
+
+**So the record as it stands shows a closed milestone containing a checkpoint that awaits a gate turn nobody
+intends to run.** That is not a small inconsistency at the moment a milestone is declared complete.
+
+**The reconciliation is available and almost certainly correct, but it must be written, not inferred.** CP4c-0's
+gate was **346**. The roadmap states its own rule: *"Gate arithmetic is cumulative — every checkpoint carries the
+full accepted predecessor selector plus its own frozen identities."* Therefore
+
+> **346 ⊂ 353 (CP4c-0b) ⊂ 355 (CP4c-1) ⊂ 365 (CP4c-2, accepted).**
+
+Every CP4c-0 identity lies inside the accepted prefix that has been green continuously since CP4c-2, so `TB-R9` —
+which would have executed gate 346 — was **superseded by three later gates closing green on strict supersets of
+it**. Acceptance is carried by cumulative inclusion, not by the turn that was never run.
+
+**Required, and bounded:** record that basis in `M3_Closure_Record.md` and retire the stale `TB-R9` instruction, so
+no future reader finds an open checkpoint under a closed milestone. **If the inclusion argument does not hold — if
+any CP4c-0 identity is absent from 365, or Q8 criteria 1/4/5 assert something no later gate re-executes — then M3
+closure is premature and must be reopened.** That check is cheap and belongs to `M4-DEFN` before it consumes the
+365 baseline.
+
+This review **does not** reopen M3: the argument is sound on the roadmap's own stated arithmetic, and every other
+closure condition verifies. It requires the basis be recorded and confirmed. `LESSONS.md` 168.
+
+### 12.3 — accounting and promotion confirmed
+
+Accepted held at **365/365** with **405 PASS / 4 RED**; ordinal 370's closure is non-stable and changes status, not
+counts. Totals remain **47 / 14 / 33**, debt **5**, packages **113**. Promotion of TB48 / package113 follows the
+operative rule. **The accepted required-green selector entering M4 is 365**, and selector409 is retained byte-frozen
+as the final CP4c-3 audit surface with its four carried reds neither promoted nor deleted.

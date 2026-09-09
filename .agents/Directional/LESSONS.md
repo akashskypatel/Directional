@@ -2066,6 +2066,17 @@ building any conclusion on it.**
      condition go green, the next turn's first question is whether the condition is met - by criterion, against the
      frozen text - and if that text cannot be found in the retained set, restoring it is the work. An exit condition
      that cannot be read is not an exit condition.
+168. **Closing a milestone means reconciling every checkpoint's own stated exit, not just the last one's.** A
+     milestone was declared closed on the strength of its final checkpoint meeting a restored, per-criterion exit
+     condition - correctly, and with real evidence. But an earlier checkpoint's row still read *"closes on a green
+     `TB-R9`"*, that turn had never been executed, and the closure record listed the checkpoint in its trajectory
+     without ever saying on what basis it closed. The reconciliation existed and was sound - its gate was a strict
+     prefix of three later gates that all closed green, so acceptance was carried by cumulative inclusion - but
+     **nobody had written it down**, so the retained record showed an open checkpoint inside a closed milestone.
+     **Before closing a milestone, walk every checkpoint row and require each to state its closure basis in the
+     durable record** - "superseded by inclusion" is a perfectly good basis, and an unrun gate turn is only alarming
+     while the reason it was never needed is missing. The last checkpoint's evidence is the loudest; the earlier
+     ones are where the unreconciled text hides.
 
 ## 5. Cross-field, cycle, and orientation conventions
 
