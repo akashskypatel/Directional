@@ -1,0 +1,47 @@
+name: M3 CP4c3 TB45 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-tb45-drive-apply-20260909.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb45-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb45-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-tb45-drive-apply.yml
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1aB6da4onuqhD41zzMMb27CQIUg7Ku4Tk
+      patch_sha256: 6c456ea11c6c1054304273e553d6e49e64424c70cc23f9ea11b72515ad69907c
+      base_sha: 4faafa8b0739cfbdb244de09c1ccb70b62ca5a58
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: record TB45 EXEC raw evidence and independent review handoff"
+      retention_days: 14
+    secrets: inherit
