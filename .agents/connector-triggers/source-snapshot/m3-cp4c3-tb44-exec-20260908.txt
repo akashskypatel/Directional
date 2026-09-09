@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB44-EXEC
+purpose=start-of-turn-source-snapshot
+semantic_package_source=cf969597bda5c49e734b98db0c0165b421c4ee12
+retry=0
