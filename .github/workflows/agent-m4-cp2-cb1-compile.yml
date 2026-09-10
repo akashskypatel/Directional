@@ -1,0 +1,45 @@
+name: M4 CP2 CB1 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp2-cb1-compile/trigger.txt
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp2-cb1-compile-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp2-cb1-compile.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp2-cb1-compile
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  compile:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 5f348bc6955cd89f794d356c82ae48674521a6e3
+      targets: 'directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks'
+      artifact_prefix: directional-m4-cp2-cb1-package116
+    secrets: inherit
