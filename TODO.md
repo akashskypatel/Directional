@@ -28,15 +28,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP2-TB2-R1-REV` (runtime-free review)
+## Current focus — `M4-CP3-CB1` (runtime-free Code + Build)
 
-`M4-CP2-TB2-R1-EXEC` is **COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / REVIEW PENDING** on unchanged package117. Run/job `34539783373 / 103079623871` produced selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused 374/381/382 **3/3 twice**, owners **30/30 / 236/236 / 75/75 / 41/41**, and zero RED/SKIP/timeout/selection mismatch. Both ordinal374 focused receipts occur exactly once and all package/source/execution-view census pairs are byte-identical.
+`M4-CP2-TB2-R1-REV` is **COMPLETE / PACKAGE117 PROMOTED / SELECTOR382 ACCEPTED / M4-CP2 CLOSED**. Independent review re-opened package117 plus R1 result/log evidence, re-derived selector382 **382/382**, predecessor **373/373**, focused 374/381/382 **3/3 twice**, owners **30/236/75/41**, exact success receipts and immutable package/source/execution-view postflight, and verified the four TB1 contract candidates are recovery-proved. Accepted package authority is now **117**; accepted M4 selector authority is **382**.
 
-Result/log artifacts are `10176889758 / 10176890045` at SHA-256 `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`. `preflight_exit=0`, `gate_exit=0`, `orchestration_failure=false`; no configure/compile/relink/repair/generated-discovery/benchmark occurred.
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**. All CP2 review/orchestration candidates are closed non-stably. `M4_CP2_Closure_Record.md` owns CP2 closure; package116/selector380 remains historical unpromoted evidence.
 
-`M4-CP2-TB2-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / ORCHESTRATION / NON-STABLE**. Package117 remains immutable/unpromoted pending review. Accepted runtime/package authority remains package115 / selector373; stable accounting remains **47 / 14 / 33**, debt **5**.
-
-**Exact next:** `M4-CP2-TB2-R1-REV`. Re-open primary R1 evidence and frozen M4 authority, independently adjudicate package117 promotion and M4-CP2 closure or route to a bounded correction. The review is runtime-free: do not compile, rerun, rebuild, repair, or mutate package117.
+**Exact next:** `M4-CP3-CB1` under `Architecture_M4_CP3_CB1_Code_Build_Plan.md`. First prove a unique source-derived production mapping for every A2b boundary occurrence to conformity span/support/family/sign/orientation; if that cannot be proved without tolerance, approximate geometry or cross-face raw `FieldBranch` comparison, stop before semantic mutation and route to definition review. If it passes, production-wire A3 before A4, make immutable schedule `{span, exactOrdinal}` authority control shared boundaries, and remove local target/grid plus floating `support_key` pairing as shared-boundary semantic authority. Compile/package only; no Directional runtime in CB1.
 
 ## Carried forward from M1
 
@@ -75,7 +73,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1 CLOSED / CP2 OPEN / `M4-CP2-TB2-R1-REV` REVIEW NEXT**. Package115/TB2 selector373 **373/373** remains accepted authority. Package117/selector382 has now completed a mechanically valid immutable R1 gate at **382/382** with focused corrections green and zero process/integrity failures, but TB-EXEC cannot promote it; review must adjudicate promotion/CP2 closure. M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1 CLOSED / CP2 CLOSED / CP3 NEXT (`M4-CP3-CB1`)**. Package117/R1 selector382 **382/382** is accepted authority. CP3 production-wires A3->A4 and removes local target/grid/post-hoc floating pairing authority; CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -94,7 +92,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
-- [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
+- [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; **CP3 current owner**. Remove it through A3 schedule authority, not post-hoc floating support pairing. Its 3 produced-witness debts remain CP4-owned.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.
 - [ ] `G4-B004`: positive multi-isolation quotient witness; M5/M6.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
@@ -115,4 +113,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. **M4-CP1 is CLOSED / ACCEPTED** at package115/TB2. Package117/selector382 is now **MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN** on `M4-CP2-TB2-R1-EXEC` run `34539783373`, but remains unpromoted because TB-EXEC cannot accept its own candidate. Exact next is runtime-free **`M4-CP2-TB2-R1-REV`** to independently adjudicate package117 promotion and M4-CP2 closure or route a bounded correction. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **117**. **M4-CP1 and M4-CP2 are CLOSED / ACCEPTED**; package117/R1 selector382 **382/382** is current accepted M4 authority. Exact next is runtime-free **`M4-CP3-CB1`** for the production A3->A4 conformity-plan cutover. PR #8 remains open, draft, and unmerged.

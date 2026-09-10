@@ -1,11 +1,11 @@
-> **Current milestone authority (2026-09-10, `M4-CP2-TB2-R1-EXEC`):** **M1-M3 are CLOSED / ACCEPTED; M4-CP1 is CLOSED / ACCEPTED; M4-CP2 is OPEN pending review.** package115/TB2 selector373 **373/373** remains accepted M4 runtime authority. package117/selector382 is immutable measured-green candidate evidence after valid corrected R1 run `34539783373`: selector **382/382**, focused **3/3 twice**, zero RED/SKIP/timeout/selection mismatch, immutable postflight. Exact next is runtime-free `M4-CP2-TB2-R1-REV`; package117 is not promoted before review.
+> **Current milestone authority (2026-09-10, `M4-CP2-TB2-R1-REV`):** **M1-M3 are CLOSED / ACCEPTED; M4-CP1 and M4-CP2 are CLOSED / ACCEPTED.** package117/R1 selector382 **382/382** is reviewed accepted M4 runtime authority after the corrected immutable gate and runtime-free promotion review. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **117**. Exact next is runtime-free Code + Build `M4-CP3-CB1`.
 
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap
 **Normative design:** `.agents/Directional/DESIGN.md`
-**Accepted authority:** M4 package115/TB2, selector373 **373/373**; M3 package113/TB48 remains the milestone-closure predecessor authority with accepted selector365 **365/365**.
-**Decision:** **M1, M2, M3, and M4-CP1 are CLOSED / ACCEPTED. M4-CP2 remains OPEN pending R1 review.** package117 passed the corrected immutable R1 gate but remains unpromoted until review. Stable totals remain **47 / 14 / 33**, debt **5**, accepted package authority **115**.
+**Accepted authority:** M4 package117/R1, selector382 **382/382**; package115/TB2 selector373 **373/373** remains the accepted CP1 predecessor; M3 package113/TB48 remains the milestone-closure predecessor authority with accepted selector365 **365/365**.
+**Decision:** **M1, M2, M3, M4-CP1, and M4-CP2 are CLOSED / ACCEPTED.** package117/R1 is promoted reviewed authority at selector382 **382/382**. Stable totals remain **47 / 14 / 33**, debt **5**, accepted package authority **117**. Exact next is `M4-CP3-CB1`.
 
 **Updated 2026-08-26 after `M3-CP4c-0-TB-R2`.** Authoritative retry 1 `32914546494 / 98015432540` passed identities **1–328** and failed ordinal **329**, `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The immutable diagnostic shows numeric branch loci emitted as control characters because `FieldBranch::value()` is `std::uint8_t` and the test/witness stream inserts it directly as a character. Q8 was correctly **NOT RUN** because 338/338 was not green. Exact next is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**; no semantic rerun or correction precedes that review. The checkpoint map is `ROADMAP.md`.
 **M1 exit gate:** retained in section 5.1 as the gate-authoring pattern. **Retry budget: ABOLISHED 2026-08-25.** A diagnosed orchestration defect may be corrected without consuming semantic authority; deterministic semantic red does not rerun inside TB. Cumulative package cost is reported, not gated; M3 has **41 packages**.
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **CP1 CLOSED / CP2 OPEN; package117 R1 measured-green at selector382; exact next runtime-free `M4-CP2-TB2-R1-REV`** |
+| M4 | global conformity plan | **CP1 CLOSED / CP2 CLOSED; package117/R1 accepted at selector382; CP3 NEXT `M4-CP3-CB1`** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -224,13 +224,13 @@ The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c25
 
 ## 8. M4 — global conformity plan
 
-**Status: `M4-DEFN` COMPLETE / AMENDED by `M4-CP1-CB1-REV`. Exact next `M4-CP1-CB2`.** `Architecture_M4_DEFN_Frozen_Definitions.md` freezes one A3 schedule authority and the chain CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4. The review specializes the exact L1 solver to finite-capacity Integral Bi-MCF with theorem-derived lex encoding while preserving the checkpoint/development ordering. Architectural stage order still places conditioning before A0; development order keeps it from becoming a hidden prerequisite for A3 semantics.
+**Status: `M4-DEFN` COMPLETE; M4-CP1 and M4-CP2 CLOSED / ACCEPTED. Exact next `M4-CP3-CB1`.** `Architecture_M4_DEFN_Frozen_Definitions.md` freezes one A3 schedule authority and the chain CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4. Package117/R1 selector382 **382/382** is reviewed accepted CP2 authority. Production optimization is the Heistermann/Warnett/Bommes exact fixed-`M=2` Bi-MDF refinement with theorem-derived finite-convergence assurance and exact lexicographic objective; CP2 adds independently verified carried optimality evidence and typed subset infeasibility. Architectural stage order still places conditioning before A0; development order keeps it from becoming a hidden prerequisite for A3 semantics.
 
 - Compute one strictly positive schedule per full A2b boundary arc globally before regional production; source-simplex support pieces locate exact breakpoints but do not own independent positive counts.
 - Preserve boundary-incidence multiplicity and mandatory even all-quad region parity from the first CP1 schedule.
 - Keep breakpoint identity compact as `{span, exactOrdinal}` and exactify binary64 metric input by bit decomposition.
-- Use a deterministic polynomial graph/flow formulation for shared counts/constraints.
-- Resolve `G4-B002` exact-torus `InvalidHardRailPairing` without post-hoc local pairing.
+- Use the frozen exact fixed-`M=2` Bi-MDF refinement contract for shared counts/constraints; do not relabel the outer solver polynomial.
+- **CP3 current owner:** production-wire the accepted A3 plan and resolve `G4-B002` exact-torus `InvalidHardRailPairing` without post-hoc local/tolerance pairing.
 - Infeasible subsets become typed inputs to later disposition logic; they do not authorize ad-hoc local substitution.
 
 **M4 exit criterion — inherited produced-witness debt.** M4 does not close until all **three** contracts decoupled from produced witnesses by `G4-B002` are re-proven on pipeline-produced witnesses:

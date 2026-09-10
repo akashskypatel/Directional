@@ -1,72 +1,10 @@
-> **Current milestone authority (2026-09-10, `M4-CP2-TB2-R1-EXEC` closeout):** **M4-CP1 is CLOSED / ACCEPTED; M4-CP2 remains OPEN pending review.** Package117/selector382 has completed a valid corrected artifact-only gate at **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused **3/3 twice**, owners **30/236/75/41**, zero RED/SKIP/timeout/selection mismatch, and immutable package/source/execution-view postflight. `M4-CP2-TB2-EXEC-CAND-01` is CLOSED / RECOVERY PROVED / NON-STABLE. Package115/TB2 remains accepted runtime authority at selector373 **373/373** until review; stable accounting remains **47 / 14 / 33**, debt 5, accepted package authority 115. Exact next is runtime-free `M4-CP2-TB2-R1-REV`.
-
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
-**This document is durable project authority.** It may be corrected or extended. It must **not** be deleted,
-renamed away, collapsed into another document, or replaced by a summary without explicit user authorization.
+> **Current milestone authority (2026-09-10, `M4-CP2-TB2-R1-REV`):** **M4-CP1 and M4-CP2 are CLOSED / ACCEPTED.** Package117/R1 is reviewed M4 runtime authority at selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused 374/381/382 **3/3 twice**, owners **30/236/75/41**, zero RED/SKIP/timeout/selection mismatch, and immutable package/source/execution-view postflight. All CP2 review/orchestration candidates are CLOSED / RECOVERY PROVED / NON-STABLE. Stable accounting remains **47 / 14 / 33**, produced-witness debt **5**, accepted package authority **117**. Exact next is runtime-free Code + Build `M4-CP3-CB1`.
 
-**Every REVIEW turn must update this file before closing**, so a cold-start agent is never more than one review
-behind. The required update covers:
+**Currency.** Package117 artifact `10172820820` from semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f` is current accepted M4 authority. R1 run/job `34539783373 / 103079623871` proved selector382 **382/382** with corrected immutable postflight; R1-REV independently re-opened and promoted it. Package116/selector380 is historical unpromoted candidate lineage; package115/selector373 remains accepted CP1 predecessor history. M3 package113/TB48 remains historical M3 closure/final-audit authority at selector409 **405 PASS / 4 RED / 0 SKIP**, ownership 300/0/0.
 
-1. the **currency line** below — turn ID and date;
-2. **§3 Where we are** — selector authority, stable accounting, checkpoint status;
-3. **§4 the witness table** — if any witness's state changed;
-4. **§7 Open problems** — re-ordered by current priority, with resolved items removed;
-5. **§8 Recurring defect patterns** — if the turn found a new pattern or a new instance of an existing one.
-
-The same REVIEW turn also performs **document consolidation** under `CLEAN_UP_POLICY.md`; that is a repository-hygiene duty owned by policy, not by this document.
-
-**Keep it substance-only.** No turn workflow, no policies, no checklists, no transport or connector mechanics.
-That boundary is what makes this document cheap enough to read first, and it is the reason it exists.
-
-Authority for this rule: user instruction, preserved in `M3_CP4c_Consolidated_Record.md` §6.6 and the
-2026-08-29 `M3-CP4c-2-TB-X2-R7-REV` changelog entry.
-
----
-
-**Purpose.** Get an agent from cold start to useful in one read. This is *substance only*: what the system is,
-where it stands, what is broken, and where to look. It deliberately contains **no procedural information** — no
-turn workflow, no policies, no checklists, no transport or connector mechanics. Those live in
-`Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
-`TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
-
-**Currency.** Last updated 2026-09-10 at `M4-CP2-TB2-EXEC` closeout. Current accepted M4 semantic runtime authority remains **package115/TB2** from source `680f9f1573d3c7e56a273366436463e40e196131`, selector373 **373/373**. Corrective package117 from source `534c0d41ae05b31e66711f21f4b4280b59f6483f` is compiled candidate authority at selector382, but its first TB2 attempt is **orchestration-invalid / no semantic credit**. Package117 is independently byte-immutable and retained for retry. Stable accounting is **47 / 14 / 33**, debt 5, accepted package authority 115. **M4-CP1 is CLOSED / ACCEPTED; M4-CP2 is OPEN.** M3 package113/TB48 remains historical M3 closure/final-audit authority at selector409 **405 PASS / 4 RED / 0 SKIP**, ownership 300/0/0.
-
-**Current definition resolution.** `M4-DEFN-R1` preserves `GlobalConformityPlan` as the single A3 writer with one positive exact count per full A2b arc, exact support-piece paths, incidence multiplicity, mandatory parity, compact exact ordinals and bit-exact target binding. The theorem-derived cap remains `U=2D+E^2*2^V` and the exact mixed-radix objective still implements semantic lexicographic `J`. Production optimization is the disclosed **Heistermann/Warnett/Bommes 2023 exact Bi-MDF refinement algorithm with fixed `M=2`**, with exact feasible initialization and exact no-improvement termination. CP1 is runtime-accepted. CP2 corrective semantics are compiled in package117/selector382: the load-bearing success-visible multi-coordinate receipt, complete carried/independently checked WorkLedger assurance/bounds/history, and semantic CP2 outcome digest are present in candidate source. CP2 is **not closed** because the first package117 TB2 attempt was invalidated by its evidence-postflight name contract before a semantic verdict could be accepted. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`.
-
-**Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
-CB43 implemented it exactly. On the torus fixture that criterion is false:
-
-```text
-torus region:   X = 24   E_one = 24   B_int = 1
-                V_total/E_total/F = 24/48/24   → chiFull    = 0
-                V_int  /E_int  /F =  0/23/24   → chiReduced = 1
-mechanical:     X = 36   E_one = 20   B_int = 12  → chiReduced −3, chiFull 1
-```
-
-`X − E_one − B_int` is **+4** on the mechanical region and **−1** on the torus. **Opposite signs: neither formula
-is correct on both fixtures**, and DEFN-R6 had one fixture's numbers. `LESSONS.md` 156.
-
-**Why the reduced form wins on the torus.** That region is 24 triangles, 24 vertices, 48 edges, 24 boundary edges,
-**zero interior vertices** — a one-triangle-wide closed band, χ = 0, an annulus. It has exactly **one** interior
-barrier edge, and the reduced form drops it; removing one edge raises χ by 1, opening the annulus into a disc.
-**That is topologically what the trace along that edge does.**
-
-**The real defect is older than Part X.** `certificate.faceCount` counts **whole faces** even where a trace splits
-one, while `V_int`'s `allOwned` exclusion only has meaning for **split** faces and `E_int`'s barrier exclusion is
-the cut. **The certificate has always been a mixture of the whole-face rounding and a partial model of the traced
-region.** The third complex — the traced/split region, using the `fragmentCorners` ownership map DEFN-R4 built —
-**has never been computed**. **At TB38-REV, DEFN-R6.4 was withdrawn and DEFN-R6.3 (the counted complex) became the live question**,
-exactly as Part X §9's own falsifier predicted.
-
-**The safeguard failed vacuously.** DEFN-R6.7 required a per-region equivalence proof on every accepted fixture.
-The `euler_certificate` emission sits behind `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`
-(`GlobalTopologyPlan.cpp:86–89`, `:2460–2462`), which accepted identities never set, so the table had **zero rows**
-and the verifier reported success. Part X named the check and its identities but **never a non-emptiness
-condition**. `LESSONS.md` 155.
-
-**Historical owner: `M3-CP4c-3-CB44`** under DA7.1–DA7.7 — restoration and measurement were discharged by TB39.
-**Historical next owner at that time: `M3-CP4c-3-TB40-EXEC`.** That measurement is complete and superseded by the promoted TB45 authority above.
+**Current definition resolution.** `M4-DEFN-R1` preserves `GlobalConformityPlan` as the single A3 writer with one positive exact count per full A2b arc, exact support-piece paths, incidence multiplicity, mandatory parity, compact exact ordinals and bit-exact target binding. Production optimization is the disclosed Heistermann/Warnett/Bommes 2023 exact Bi-MDF fixed-`M=2` refinement with exact finite-convergence assurance; CP2 now additionally carries and independently verifies terminal optimality/WorkLedger evidence, typed subset infeasibility, and a semantic outcome digest. CP3, not CP2, production-wires that accepted A3 authority into A4 and removes local target/grid/post-hoc floating support pairing from shared-boundary authority. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`.
 
 ## 1. What the project is
 
@@ -110,11 +48,11 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**M3 is CLOSED / ACCEPTED** and remains historical closure/final-audit authority at package113/TB48: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted selector365 **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. **M4-CP1 is CLOSED / ACCEPTED**: package115/TB2 is accepted M4 authority at selector373 **373/373**. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**.
+**M3 is CLOSED / ACCEPTED** and remains historical closure/final-audit authority at package113/TB48: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted selector365 **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. **M4-CP1 and M4-CP2 are CLOSED / ACCEPTED.** Current accepted M4 authority is package117/R1 at selector382 **382/382**; package115/selector373 is the accepted CP1 predecessor. Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted package authority **117**.
 
-**M4-CP2 corrective candidate is package117/selector382.** CB2 compiled the review-directed receipt, WorkLedger certification, semantic-digest, and load-bearing-`±2` corrections without changing accepted CP1 authority. The first TB2 attempt was orchestration-invalid/no-credit. CB3 changed only the preflight execution-view census basename, and R1 then re-executed the full frozen gate from scratch: **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused **3/3 twice**, owners **30/236/75/41**, zero process failures, and byte-identical package/source/execution-view postflight. The corrected orchestration falsifier is therefore closed.
+**Why CP2 is closed:** R1-REV re-opened package117 plus primary result/log bytes and independently proved focused 374/381/382 **3/3 twice**, exact success receipts, full selector382 **382/382**, owner partition **30/236/75/41**, zero process/integrity failures and byte-identical package/source/execution-view postflight. Source audit then closed all four TB1 review gaps: load-bearing `±2`, success-visible receipt, complete WorkLedger assurance/bounds/history verification, and full CP2 outcome semantic digest. Typed genuine infeasibility remains subset-scoped and independently verified.
 
-**What is next:** runtime-free `M4-CP2-TB2-R1-REV`. Review must re-open the primary R1 result/log and package authority, independently re-derive the decisive evidence, and decide package117 promotion/M4-CP2 closure or route a bounded correction. Package117 remains unpromoted and package115/selector373 remains accepted authority until that adjudication. CP3 remains blocked until CP2 receives review promotion.
+**What is next:** `M4-CP3-CB1`, runtime-free Code + Build. Production currently enters A4 after `GlobalTopologyPlan` without first consuming accepted `GlobalConformityOutcome`, while `SurfaceCellTracing.cpp` still derives shared-region grids from local/mean target and pairs hard-rail copies by floating/quantized `support_key`. CP3 must cut that authority over to immutable A3 schedule identity. Its first guard is to prove family/sign/orientation/support for every A2b boundary occurrence from accepted field/topology authority; raw face-gauge-local `FieldBranch` integers cannot be treated as globally comparable. The exact-torus `InvalidHardRailPairing` blocker is CP3 gating; the three produced-witness re-proof debts remain CP4-owned.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -226,16 +164,16 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP2 package117 promotion adjudication — ACTIVE / NEXT: `M4-CP2-TB2-R1-REV`.**
+1. **M4-CP3 producer cutover / exact-torus `InvalidHardRailPairing` — ACTIVE / NEXT: `M4-CP3-CB1`.**
 
-   - CB2 compiled the four review-directed corrective obligations into package117/selector382.
-   - The first TB2 attempt is permanently no-credit orchestration provenance; CB3 corrected only its census basename contract.
-   - R1 independently re-executed the entire frozen gate and is mechanically green at selector382 **382/382**, focused **3/3 twice**, zero RED/SKIP/timeout/selection mismatch, and immutable package/source/execution-view postflight.
-   - `M4-CP2-TB2-EXEC-CAND-01` is closed/recovery-proved/non-stable. Package117 is still candidate evidence only until runtime-free R1 review promotes it or routes a bounded correction; accepted authority remains package115/selector373.
+   - Package117/selector382 is reviewed accepted A3 semantic authority; CP2 is closed.
+   - Production does not yet build/consume the A3 outcome before A4, so shared boundary authority still leaks through local target-derived `gridU/gridV` and post-hoc floating `support_key` grouping.
+   - CB1 must first prove a unique source-derived `span/support/family/sign/orientation` mapping for every production A2b occurrence. If that cannot be proved without tolerance, approximate geometry or cross-face raw `FieldBranch` comparison, stop before mutation and route to definition review.
+   - Once mapped, A4 must consume exact `{span, exactOrdinal}` authority, including reversed incidence ordinal mapping, and fixed-plan target perturbation must not change shared breakpoints.
 
-2. **`G4-B002` produced-witness debt — M4 exit-critical.** The exact-torus `InvalidHardRailPairing` blocker and its three produced-witness re-proofs are M4-owned. M4 must remove the blocker without post-hoc local pairing and discharge all three debts on produced authority.
+2. **`G4-B002` produced-witness debt — M4 exit-critical, CP4-owned.** CP3 must remove the exact-torus pairing blocker, but the three inherited produced-witness contract re-proofs remain CP4 gating and debt stays 5 until actual CP4 runtime acceptance.
 
-3. **Conditioning/scale coverage — FROZEN LATER M4 CHECKPOINTS.** CP-COND is architecturally pre-A0 but developed after CP3 so it cannot define A3 semantics; CP-SCALE then owns S1–S5 boundedness/scale evidence. Sliver/high-valence/negative-index/boundary-truncated/inadmissible-field and genus>=2 witnesses remain unbuilt coverage obligations, not implicit CP1 gates.
+3. **Conditioning/scale coverage — FROZEN LATER M4 CHECKPOINTS.** CP-COND is architecturally pre-A0 but developed after CP3 so it cannot define A3 semantics; CP-SCALE then owns S1-S5 boundedness/scale evidence. Sliver/high-valence/negative-index/boundary-truncated/inadmissible-field and genus>=2 witnesses remain unbuilt coverage obligations, not implicit CP3 gates.
 
 4. **Ordinal369 ordinary trace-crossed proposal quality — ACTIVE / separate.** The ordinary heuristic still reaches saturation. Its existing proposal-quality/coverage owner remains valid and M4 must not silently reinterpret it as schedule authority.
 
@@ -250,6 +188,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Plan/certifier partition duplication and transit/exactification debt — ACTIVE / non-gating.** The domains may lawfully differ, but duplicated actual-embedded construction, production transit audit projection, minimal transit witness and input-size/exactification audits remain architectural debt outside the closed M3 exit.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**CP2 recovery status.** The four CP2 examples immediately below are now historical recovered patterns: package117/R1 proves the `±2` feature is load-bearing, the receipt is success-visible, WorkLedger field families are independently derived/tampered, and the output has a distinct semantic digest. Keep the patterns because they remain reusable review rules; do not read their present-tense defect language as an open CP2 blocker.
 
 **Structural presence is not behavioural coverage — mutate the feature out and re-solve.** M4-CP2's ordinal374 fixture carried the `±2` bidirected coefficients its obligation demanded, and they cancelled: row 1 forced `x2 = x3`, row 0 collapsed to `2(x0 - x1) = 0`, and the magnitude-1 twin returned the identical optimum. "Contains `±2`" was satisfied literally while the risk the obligation existed to expose stayed untested — and the mandated receipt would have published that inert fact as evidence. The decisive check is cheap: **remove the feature and re-solve; if the answer is unchanged, the feature is decoration.** Build the twin comparison into the identity so the receipt cannot outlive its subject. Same family as the two entries below and `LESSONS.md` 157/160/171.
 

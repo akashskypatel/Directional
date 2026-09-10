@@ -1,11 +1,24 @@
-## M4-CP2-TB2-R1-EXEC classification — **CURRENT RAW INTAKE / MEASURED GREEN / REVIEW PENDING / PACKAGE117 UNPROMOTED**
+## M4-CP2-TB2-R1-REV adjudication — **CURRENT REVIEW / PACKAGE117 PROMOTED / CP2 CLOSED / ALL CP2 CANDIDATES RECOVERY-PROVED**
+
+- Runtime-free review independently re-opened package117 plus R1 result/log evidence and source-audited the frozen CP2 criteria. Accepted package authority advances **115 -> 117**; accepted M4 selector authority advances **373 -> 382** at reviewed **382/382**.
+- R1 evidence upheld: run/job `34539783373 / 103079623871`; focused 374/381/382 **3/3 twice** with exactly one required ordinal374 receipt per phase; selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, owners **30/236/75/41**, zero RED/SKIP/timeout/selection mismatch; package/source/execution-view pre/post censuses byte-identical.
+- **`M4-CP2-TB1-REV-CAND-01` CLOSED / RECOVERY PROVED / NON-STABLE:** success receipt is fixture-derived, visible on PASS and harness-enforced.
+- **`M4-CP2-TB1-REV-CAND-02` CLOSED / RECOVERY PROVED / NON-STABLE:** WorkLedger now carries finite-convergence assurance, dimensions, H/U/Q/L and width/maxima families, complete refinement history/peaks/terminal state/retry state; independent verifier and ordinal381 tamper the families.
+- **`M4-CP2-TB1-REV-CAND-03` CLOSED / RECOVERY PROVED / NON-STABLE:** full CP2 outcome semantic digest binds support paths plus scheduled/infeasible evidence and is independently re-derived/tamper-tested by ordinal382.
+- **`M4-CP2-TB1-REV-CAND-04` CLOSED / RECOVERY PROVED / NON-STABLE:** independent exhaustive check gives `(1,2,2,2)` for the live magnitude-two fixture versus `(1,2,1,1)` for its magnitude-one twin; `±2` is load-bearing.
+- `M4-CP2-TB2-EXEC-CAND-01` remains **CLOSED / RECOVERY PROVED / ORCHESTRATION / NON-STABLE**; R1 completed the corrected census postflight on unchanged package117.
+- **Regression classification:** no new stable event/category/recurrence. Totals remain **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted package authority **117**.
+- **Boundary:** CP2 closure does not claim production A3->A4 cutover. `G4-B002` / exact-torus `InvalidHardRailPairing` is CP3-owned; its three produced-witness debts remain CP4-owned.
+- **Exact successor:** `M4-CP3-CB1` under `Architecture_M4_CP3_CB1_Code_Build_Plan.md`.
+
+## M4-CP2-TB2-R1-EXEC classification — **HISTORICAL RAW INTAKE / MEASURED GREEN / PROMOTED BY R1-REV**
 
 - **Authority:** run/job `34539783373 / 103079623871`, immutable package117 artifact `10172820820`, semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f`. Result/log artifacts `10176889758 / 10176890045`, SHA-256 `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`.
 - **Measured gate:** focused 374/381/382 **3/3 twice** with identical verdict vectors and the required ordinal374 receipt exactly once in each focused raw log; selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, owners **30/30 / 236/236 / 75/75 / 41/41**, zero RED/SKIP/timeout/selection mismatch.
 - **Integrity:** corrected `execution-view-census-before.tsv` / `execution-view-census-after.tsv` contract completed. Package/source/execution-view before/after census bytes are identical at `c45c423e7365887ccc5ef5974d1c61c32c775e9b064d41e47709500721d6938d / 67726528d5e31765005b1fee3360acfed9d23958a754a71aaa62d5ff7507cee2 / 1a5b1de75f2c9ae27c28ea77509e57b5e8c4565a2dd537b789cef03f98505f02`. `preflight_exit=0`, `gate_exit=0`, `orchestration_failure=false`.
 - **Regression classification:** none observed. No new RED/crash/SKIP/timeout/nondeterminism/integrity/orchestration event exists to classify.
-- **Stable-count rationale:** **+0 event / +0 category / +0 recurrence**. Totals remain **47 / 14 / 33**, debt **5**, accepted package authority **115** pending review.
-- **Exact successor:** runtime-free `M4-CP2-TB2-R1-REV`; TB-EXEC does not promote package117.
+- **Stable-count rationale:** **+0 event / +0 category / +0 recurrence**. Totals remain **47 / 14 / 33**, debt **5**; accepted package authority is now **117** after R1 review.
+- **Disposition:** R1-REV subsequently promoted package117 and closed CP2; TB-EXEC itself still did not self-promote.
 
 ## M4-CP2-TB2-EXEC-CAND-01 — **CLOSED / RECOVERY PROVED / ORCHESTRATION / NON-STABLE / HARNESS POSTFLIGHT RECEIPT-NAME MISMATCH**
 
@@ -13,9 +26,9 @@
 - **Correction:** runtime-free `M4-CP2-CB3` changed only the preflight basename to `execution-view-census-before.tsv`; corrected preflight SHA-256 `12090d4b5e01f6c3e55de712b595dff3444b509ba58b040201a2c61f87d805c1`, executor byte-identical at `717a4dd6cda5ba96fb8bd6e16879c422f9b2e1ff561951801dc5658d85480019`.
 - **Required falsifier result:** **PASSED.** R1 run/job `34539783373 / 103079623871` re-executed the entire gate from scratch and completed corrected immutable postflight: focused **3/3 twice**, selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, owners **30/236/75/41**, zero RED/SKIP/timeout/selection mismatch, and byte-identical package/source/execution-view censuses.
 - **Closure:** the orchestration defect is reproducibly absent under the one-name correction; package117 remained unchanged. The invalid attempt remains historical no-credit provenance and is not rehabilitated.
-- **Stable-count rationale:** non-stable orchestration candidate; **+0 event / +0 category / +0 recurrence**. Totals remain **47 / 14 / 33**, debt **5**, accepted package authority **115** until R1 review.
+- **Stable-count rationale:** non-stable orchestration candidate; **+0 event / +0 category / +0 recurrence**. Totals remain **47 / 14 / 33**, debt **5**; accepted package authority is now **117** after R1 review.
 
-## M4-CP2-TB1-REV adjudication — **CURRENT REVIEW / PACKAGE116 NOT PROMOTED / CP2 OPEN / THREE NON-STABLE CONTRACT CANDIDATES**
+## M4-CP2-TB1-REV adjudication — **HISTORICAL REVIEW / PACKAGE116 NOT PROMOTED / FOUR NON-STABLE CONTRACT CANDIDATES**
 
 - Same-agent review is user-authorized; independence is primary-evidence re-opening plus independent source/evidence re-derivation. No Directional runtime or compile occurred in review.
 - Package116/TB1 runtime evidence is upheld: run/job `34515352025 / 102999258938`, selector380 **380/380**, accepted predecessor **373/373**, CP2 **7/7**, focused rows374-380 **7/7 twice**, zero RED/SKIP/timeout/selection mismatch, owners **30/234/75/41**, immutable postflight.
@@ -7373,7 +7386,7 @@ frontier partition's domain; correcting `RegionSourceFaceOwningFragmentMissing`;
 what TB42 has already measured**; any accepted-identity or selector byte change; any Directional runtime in the
 definition turn.
 
-## M4-CP2-TB1-REV-CAND-04 — a bidirected fixture that contains ±2 without exercising it
+## M4-CP2-TB1-REV-CAND-04 — **CLOSED / RECOVERY PROVED / NON-STABLE** — a bidirected fixture that contained ±2 without exercising it
 
 **Owner:** `M4-CP2-CB2` §5 · **Class:** SEMANTIC/OBLIGATION-VACUITY · **Non-stable** (no accepted-green loss;
 accounting stays 47/14/33, debt 5, accepted authority package115/selector373).

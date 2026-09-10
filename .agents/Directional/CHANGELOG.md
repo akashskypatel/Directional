@@ -1,3 +1,11 @@
+## 2026-09-10 — `M4-CP2-TB2-R1-REV`: package117 promoted; M4-CP2 closed
+
+Runtime-free review re-opened immutable package117 artifact `10172820820` plus R1 result/log artifacts `10176889758 / 10176890045` and independently re-derived the decisive evidence rather than inheriting the TB report. R1 is upheld at selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused 374/381/382 **3/3 twice**, owners **30/236/75/41**, zero RED/SKIP/timeout/selection mismatch, exact ordinal374 success receipt once per focused phase, and byte-identical package/source/execution-view postflight.
+
+Source audit closes all four TB1 review candidates **RECOVERY PROVED / NON-STABLE**: ordinal374's `±2` fixture is load-bearing against its magnitude-one twin and its receipt is success-visible; WorkLedger now carries/independently verifies finite-convergence assurance, dimensions, bound/width/maxima families and complete refinement history; and `GlobalConformityOutcome::semanticDigest` independently binds full support paths plus scheduled/infeasible evidence. The earlier TB2 census-name orchestration candidate also remains closed after corrected R1 completed on unchanged bytes.
+
+**Package117 is promoted, selector382 is accepted M4 authority, and M4-CP2 is CLOSED / ACCEPTED.** Accepted package authority advances **115 -> 117**; stable accounting remains **47 / 14 / 33**, produced-witness debt **5**. CP3 remains separate: exact next is runtime-free `M4-CP3-CB1` to production-wire A3->A4 and remove `InvalidHardRailPairing`; the three `G4-B002` produced-witness debts remain CP4-owned.
+
 ## 2026-09-10 — `M4-CP2-TB2-R1-EXEC`: corrected immutable retry measures selector382 382/382 green
 
 Artifact-only R1 run/job `34539783373 / 103079623871` consumed unchanged package117 artifact `10172820820` and completed the corrected preflight, both focused 374/381/382 phases, all 382 frozen selector identities one per fresh process, and immutable postflight. Result/log artifacts `10176889758 / 10176890045` hash to `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`.

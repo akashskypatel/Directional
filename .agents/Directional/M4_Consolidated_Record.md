@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP2-TB2-R1-EXEC` artifact-only retry closeout
+**Last updated:** 2026-09-10 at `M4-CP2-TB2-R1-REV` promotion / CP2 closure
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; latest valid CP2 runtime evidence is `Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`; invalid-attempt and CB3 correction provenance are retained in §§2.12-2.14 plus the regression tracker and changelog; current review authority remains `Architecture_M4_CP2_TB1_Review_Record.md` until the exact-next runtime-free `M4-CP2-TB2-R1-REV` supersedes it. Package115/selector373 remains accepted M4 runtime authority; package117/selector382 is immutable measured-green candidate authority pending review. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`; current reviewed CP2 runtime authority is `Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`; current review authority is `Architecture_M4_CP2_TB2_R1_Review_Record.md`. Package117/selector382 is now accepted M4 authority at **382/382**. Package116/selector380 remains historical unpromoted candidate lineage. Invalid-attempt and CB3 correction provenance remain in §§2.12-2.14, the closure record, tracker and changelog. Exact next is runtime-free Code + Build `M4-CP3-CB1` under `Architecture_M4_CP3_CB1_Code_Build_Plan.md`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -208,6 +208,14 @@ The corrected gate is mechanically green: focused ordinals 374/381/382 are **3/3
 
 `M4-CP2-TB2-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **115**. Package117/selector382 remains unpromoted because TB-EXEC cannot promote its own candidate. Exact next is runtime-free `M4-CP2-TB2-R1-REV` to independently adjudicate package117 promotion and M4-CP2 closure or route a bounded correction.
 
+## 2.15 `M4-CP2-TB2-R1-REV` — package117 promoted; CP2 closed
+
+Runtime-free review re-opened immutable package117 plus R1 result/log evidence and independently re-derived the 382-row process ledger, focused receipt counts, owner partition, package/source/execution-view census equality, and workflow/execution boundaries. It also audited semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f` against the frozen CP2 exit rather than treating the green report as self-proving.
+
+R1 is upheld at selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, correction rows **2/2**, focused 374/381/382 **3/3 twice**, owners **30/236/75/41**, and zero RED/SKIP/timeout/selection mismatch. The four TB1 review candidates are **CLOSED / RECOVERY PROVED / NON-STABLE**: ordinal374 now has a fixture-derived success receipt and a load-bearing `±2` twin discriminator; WorkLedger assurance/bounds/history is carried and independently tamper-checked; and the full CP2 semantic outcome digest is independently re-derived. The prior TB2 orchestration candidate remains closed/recovery-proved/non-stable because corrected R1 completed immutable postflight on unchanged package117.
+
+Package117 is **PROMOTED** and selector382 becomes **ACCEPTED M4 AUTHORITY**. `M4-CP2` is **CLOSED / ACCEPTED**. Stable accounting remains **47 / 14 / 33**, produced-witness debt **5**, accepted package authority **117**. This does not close M4: CP3 still owns production A3->A4 schedule consumption and exact-torus `InvalidHardRailPairing` removal; the three `G4-B002` produced-witness debts remain CP4-owned. Exact next is `M4-CP3-CB1`.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -238,5 +246,15 @@ history.
 | `Architecture_M4_CP2_CB1_Code_Build_Plan.md` | 154 | **FOLDED AFTER CB1 + TB1 REVIEW.** Implemented CP2 scope, deferred-oracle obligation and review-discovered contract requirements are preserved in §§2.8-2.10, the current review record and corrective CB2 plan. |
 | `Architecture_M4_CP2_CB1_Code_Build_Report.md` | 96 | **FOLDED AFTER TB1 REVIEW.** Exact source/compile/package116 authority is preserved in §2.8, the retained TB1 report, current review record, tracker and changelog. |
 | `Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md` | 116 | **FOLDED AFTER EXECUTION + REVIEW.** Immutable package116 gate contract and actual results are preserved in §§2.9-2.10, the retained TB1 runtime report and current review record. |
+
+| `Architecture_M4_CP2_TB1_Test_Benchmark_Report.md` | 107 | **FOLDED AFTER SUPERSESSION BY VALID R1.** Package116 measured-green but unpromoted runtime facts are preserved in §§2.9-2.10, tracker, changelog and `M4_CP2_Closure_Record.md`. |
+| `Architecture_M4_CP2_TB1_Review_Record.md` | 238 | **FOLDED AFTER R1 REVIEW SUPERSESSION.** Four package116 rejection findings and their corrective criteria are preserved in §2.10, the current R1 review, closure record, tracker and changelog. |
+| `Architecture_M4_CP2_CB2_Code_Build_Plan.md` | 213 | **FOLDED AFTER PACKAGE117 PROMOTION.** Four corrective obligations are preserved in §§2.10-2.11 and the current review/closure records. |
+| `Architecture_M4_CP2_CB2_Code_Build_Report.md` | 98 | **FOLDED AFTER PACKAGE117 PROMOTION.** Exact source/compile/package117 authority is preserved in §2.11, current R1 runtime report, closure record and changelog. |
+| `Architecture_M4_CP2_TB2_Artifact_Only_Test_Benchmark_Plan.md` | 129 | **FOLDED AFTER INVALID ATTEMPT + R1 RECOVERY.** Frozen gate and no-credit attempt are preserved in §§2.12-2.14, tracker and closure record. |
+| `Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md` | 77 | **FOLDED AFTER R1 RECOVERY.** One-name census correction is preserved in §§2.12-2.14, tracker and closure record. |
+| `Architecture_M4_CP2_CB3_Orchestration_Correction_Report.md` | 96 | **FOLDED AFTER R1 RECOVERY.** Corrected preflight/executor lineage is preserved in §2.13, tracker, changelog and closure record. |
+| `Architecture_M4_CP2_TB2_Test_Benchmark_Report.md` | 104 | **FOLDED AFTER VALID R1 SUPERSESSION.** Invalid no-credit process/postflight evidence remains preserved in §2.12, tracker and changelog. |
+| `Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md` | 129 | **FOLDED AFTER R1 EXECUTION + REVIEW.** Corrected immutable retry contract is preserved in §2.14, the retained R1 runtime report and current review. |
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.

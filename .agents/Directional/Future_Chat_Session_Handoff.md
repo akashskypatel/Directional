@@ -118,53 +118,48 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 **Same-agent REVIEW/DEFN is allowed — user-authorized 2026-09-10.** The same agent/session may perform a REVIEW, REVIEW + PLAN, or DEFN turn even when it authored or executed an earlier turn in the same chain. "Independent" in review/oracle/verification language means independent **evidence, re-derivation, authority, or implementation path**, not required personnel separation, unless a specific criterion explicitly says otherwise. A same-agent REVIEW must re-open primary evidence and re-derive decisive facts; a same-agent DEFN remains planning/runtime-free. All cadence, stop, validation-integrity, source-authority, compile/runtime, and acceptance boundaries remain unchanged.
 
-## Mandatory next turn — `M4-CP2-TB2-R1-REV` — **EXACT NEXT / RUNTIME-FREE REVIEW**
+## Mandatory next turn — `M4-CP3-CB1` — **EXACT NEXT / RUNTIME-FREE CODE + BUILD**
 
-`M4-CP2-TB2-R1-EXEC` is **COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / REVIEW PENDING**. It reused immutable package117 artifact `10172820820` and independently re-executed the full frozen retry; no result from the invalid first TB2 attempt was stitched into R1.
+`M4-CP2-TB2-R1-REV` is **COMPLETE / PACKAGE117 PROMOTED / SELECTOR382 ACCEPTED / M4-CP2 CLOSED**. Runtime-free review independently re-opened package117 and the R1 evidence, re-derived the full process/receipt/immutability facts and audited source against frozen CP2 criteria. Accepted package authority advances **115 -> 117**; accepted M4 selector authority advances **373 -> 382**.
 
-### Exact R1 evidence
+### Accepted CP2 authority
 
 - semantic source: `534c0d41ae05b31e66711f21f4b4280b59f6483f`
 - package117 artifact: `10172820820`, SHA-256 `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`
-- run/job: `34539783373 / 103079623871`
-- result artifact: `10176889758`, SHA-256 `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0`
-- log artifact: `10176890045`, SHA-256 `b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`
-- selector382: **382/382 PASS**; predecessor: **373/373**; CP2: **7/7**; corrections: **2/2**
-- focused 374/381/382: **3/3 twice**, identical vectors; ordinal374 receipt exactly once in each focused raw log
-- owners: **30/30 / 236/236 / 75/75 / 41/41**
-- RED/SKIP/timeout/selection mismatch: **0 / 0 / 0 / 0**
-- package/source/execution-view postflight: **byte-identical**
-- `preflight_exit=0`, `gate_exit=0`, `orchestration_failure=false`
-- no configure, compile, relink, package/mode repair, generated discovery, source/test/fixture/selector mutation, or benchmark
+- R1 run/job: `34539783373 / 103079623871`
+- R1 result/log artifacts: `10176889758 / 10176890045`, SHA-256 `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`
+- accepted selector382 SHA-256: `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`
+- selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**
+- focused 374/381/382 **3/3 twice**, with one required ordinal374 receipt per phase
+- owners **30/236/75/41**; RED/SKIP/timeout/selection mismatch **0/0/0/0**
+- package/source/execution-view census SHA-256 `c45c423e7365887ccc5ef5974d1c61c32c775e9b064d41e47709500721d6938d / 67726528d5e31765005b1fee3360acfed9d23958a754a71aaa62d5ff7507cee2 / 1a5b1de75f2c9ae27c28ea77509e57b5e8c4565a2dd537b789cef03f98505f02`, byte-identical before/after
+- stable accounting **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted package authority **117**
 
-`M4-CP2-TB2-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / ORCHESTRATION / NON-STABLE**. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**.
+All four TB1 review candidates and the TB2 orchestration candidate are **CLOSED / RECOVERY PROVED / NON-STABLE**. `M4_CP2_Closure_Record.md` is durable CP2 closure authority. Package116/selector380 remains historical unpromoted evidence.
 
-### Review boundary
+### CB1 boundary and stop guard
 
-`M4-CP2-TB2-R1-REV` must be runtime-free. Re-open primary result/log evidence and package117 authority, independently re-derive selector counts, owner partition, focused receipt evidence, and all three immutability comparisons, then audit the corrected CP2 semantics against frozen M4 definitions. Decide whether package117/selector382 is promoted and M4-CP2 closes, or route to a bounded corrective turn. Do not compile, rerun, repair, or mutate package117 before review.
+Execute `Architecture_M4_CP3_CB1_Code_Build_Plan.md`. This is a canonical Code + Build turn: implementation/test/selector edits and GitHub-only compile/package are allowed exactly as that plan authorizes; **Directional runtime tests/benchmarks remain forbidden in CB1**.
 
-Package117 remains **unpromoted** until that review. Accepted runtime authority remains package115 / selector373 `373/373`.
+Before semantic mutation, prove one unique source-derived mapping for every production A2b boundary occurrence to `ConformitySpanId`/exact support path, `ConformityFamily`, `ConformitySign` and orientation. `FieldBranch` integers are face-gauge-local: do not compare them across faces as global branch identity. Do not derive this mapping from tolerance, quantized geometry, A4-produced positions, or `GlobalTopologyArc::sourceFaces` when exact path authority exists elsewhere. **If the mapping is not uniquely representable from accepted A0-A2b authority, stop before semantic mutation and route to definition review.**
+
+If the guard passes, the smallest authorized cutover is:
+
+1. construct/validate generic `GlobalConformityOutcome` after `GlobalTopologyPlan` and before A4;
+2. propagate typed infeasible A3 state without inventing a replacement schedule or M7 disposition;
+3. pass immutable feasible `GlobalConformityPlan` into A4;
+4. consume shared breakpoints as exact `{span, exactOrdinal}` identity, including reversed `j -> x_s-j` incidence mapping;
+5. make A4-local `targetSize/gridU/gridV` interior-only after boundary schedule fixation;
+6. remove floating/tolerance `support_key` grouping as shared-boundary semantic pairing authority;
+7. compile/package append-only CP3 identities only through the mandatory reusable GMP/GMPXX workflow; do not run them in CB1.
+
+The exact-torus `InvalidHardRailPairing` blocker is CP3 gating. The three inherited `G4-B002` produced-witness debts remain CP4-owned and must not be discharged early.
 
 ### Context Load Plan
 
-```yaml
-load_next:
-  - references/turns/TB-REVIEW.md
-conditional_modules:
-  - trigger: GitHub Actions/artifact review
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M4_CP2_TB1_Review_Record.md
-  - .agents/Directional/Required_Green_Selector_Manifest.md
-  - .agents/Directional/M4_Consolidated_Record.md
-do_not_preload:
-  - sibling turn files
-  - module reference directories
-  - research/provenance/examples
-  - uncited historical reports
-```
+Use the current `turn-based-coding-agent` skill. Canonical state is `Code + Build`; load `references/turns/CB.md` plus its required dependencies. Load `modules/unit-testing/MODULE.md` because CP3-CB1 is authorized to author new test identities, and `modules/github-connector/MODULE.md` because compile/package and patch transport use GitHub Actions. Resolve repository state with `READ_MODE=snapshot` if multi-file source inspection is still required by the §2 derivation guard; otherwise use `READ_MODE=direct` only if the guard can be completed with one genuinely bounded file/blob read under the conservation policy. Do not mix modes without recording why.
+
+Current retained M4 role files are: `Architecture_M4_DEFN_Frozen_Definitions.md`, `M4_Consolidated_Record.md`, `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, `Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`, `Architecture_M4_CP2_TB2_R1_Review_Record.md`, byte-frozen M4 selectors, and exactly one next plan `Architecture_M4_CP3_CB1_Code_Build_Plan.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
