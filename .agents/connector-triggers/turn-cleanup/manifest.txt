@@ -1,5 +1,0 @@
-# M4-DEFN closeout cleanup
-.agents/Directional/turn-payloads/m4-defn-drive-apply.yml
-.agents/connector-triggers/m4-defn-drive-schema/m4-defn-drive-schema-20260909.txt
-.agents/connector-triggers/m4-defn-drive/m4-defn-drive-20260909.txt
-.agents/connector-triggers/source-snapshot/m4-defn-20260909.txt

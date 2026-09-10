@@ -1,3 +1,0 @@
-M4-DEFN Drive patch application trigger.
-Applies the verified 16-path documentation-only planning patch from exact base 60670e53f55355146b224e01850ba75526c727cb.
-Attempt: 1
