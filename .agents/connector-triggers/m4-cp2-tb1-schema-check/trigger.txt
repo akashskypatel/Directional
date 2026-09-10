@@ -1,4 +1,4 @@
 turn=M4-CP2-TB1-EXEC
-purpose=validate-closeout-apply-draft
-candidate_draft_sha256=18df494c810675c10c139939424e37df393c0a2a1512b92be83e1cb6c8aa7917
-retry=2
+purpose=validate-corrected-closeout-apply-draft
+candidate_draft_sha256=ffd3ee78b6ada65f754be2ba3203165c05ea12a48ac73bb0522e19f3468720d5
+retry=3
