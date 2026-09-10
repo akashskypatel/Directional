@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-defn-r1-apply
+      label: m4-defn-r1-apply-r2
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1AYIQPmW-57MUJI4Zxli0887s2Qn1S8KE
-      patch_sha256: '4bfc62f72b75baa9d71a1f2308c48614d5723ac995d46604ef4c5116fd3d7852'
+      patch_sha256: 'f1bf5e845343310fabf167fc33206fd9126aa44153479490d57a716c39ba23c0'
       base_sha: 74dbf78fb11a1d989d77d4ccd0c8d07ad25eb69c
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: revise M4 solver authority after CB2 review'
