@@ -26,26 +26,38 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-CP1-CB2-REV` — INDEPENDENT REVIEW / RUNTIME-FREE
+## Current focus — `M4-DEFN-R1` (definition turn, static) — BREAK THE SOLVER DEADLOCK
 
-`M4-DEFN` is **COMPLETE / AMENDED**. Frozen authority: `Architecture_M4_DEFN_Frozen_Definitions.md`, amended by independent `M4-CP1-CB1-REV`. M3 remains CLOSED / ACCEPTED; package113/TB48 remains reviewed runtime authority; the accepted M4 predecessor is selector365, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains final-M3 audit evidence only.
+`M4-CP1-CB2-REV` upheld both solver stops and routed the question to definition. **A Code + Build turn cannot
+repair a definition.**
 
-M4 uses exactly one checkpoint chain: **CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4**. CP-COND is architecturally before A0 but developed after the A3 core; CP4 is cumulative exit, not another writer. `G4-B004` is not M4 work: M5 owns focused positive quotient-relation/certificate production, M6 owns representative occurrence/embedding/verifier consumption.
+- **M3 / package113 / TB48** remains reviewed runtime authority: **405 PASS / 4 RED**, accepted **365/365**.
+- Selector **365** unchanged; **no M4 runtime exists**. Accounting **47 / 14 / 33**, debt 5, packages 113.
 
-`M4-CP1-CB1` correctly stopped before semantic mutation because the original solver contract over-specified a general arbitrary-precision Bi-MDF implementation plus a per-transition polynomial countdown that neither libSatsuma nor the cited exact refinement theorem supplied. Independent `M4-CP1-CB1-REV` resolved that ambiguity without weakening exactness or polynomial complexity: the frozen L1 objective linearizes exactly to Integral Bi-MCF via `x=d+p-n`; feasible components have theorem-derived optimum cap `U=2D+E^2*2^V`; the lexicographic tie is encoded exactly with a proof-derived mixed radix; and the solver primitive is Gabow 1983 arbitrary-capacity minimum-cost biflow with published `O(E'^2 log V' log Cmax)` combinatorial bound. libSatsuma is illustrative only. CP1 uses an independent structural validator plus fixed-small exact optimum test oracles; scalable carried optimality certification remains CP2.
+**Two Code + Build turns stopped on one clause, both correctly.** CB1: the contract demanded a `P(V,E,B)` constant
+no source supplies. CB2: **Gabow STOC 1983 names arbitrary-capacity min-cost biflow as problem (5), gives the
+bound, and explicitly defers the algorithm elsewhere.** No follow-on primary source supplies it; Medvedev et al.
+2011 independently reports it as polynomial but difficult to implement; and no exact bidirected MCF library exists.
+**The primitive can be neither imported nor implemented from its citation.**
 
-`M4-CP1-CB2` **STOPPED BEFORE SEMANTIC MUTATION** at its frozen algorithm-traceability guard. The selected Gabow 1983 source states the arbitrary-capacity minimum-cost biflow complexity claim but explicitly defers problem (5) instead of disclosing the algorithm, so CB2 cannot honestly implement a solver tagged/traced as that algorithm without invention or substitution. Blocker: `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`.
+**The premise that closed this is falsified.** CB1-REV §9 rejected a disclosed iterative Bi-MDF port as weakening
+the polynomial architecture *"unnecessarily"* — but the polynomial route has no implementable primitive.
+**Re-opened for adjudication, not accepted.**
 
-Exact next is **`M4-CP1-CB2-REV`**, independent Review + Plan / runtime-free. No implementation, compile/package, test, benchmark or Directional runtime is authorized before review adjudicates one traceable exact solver authority.
+### Exact next turn
 
-- [x] Reconcile M4 checkpoint decompositions into one chain.
-- [x] Freeze one `GlobalConformityPlan` writer: one count per full A2b arc, exact support path/incidence multiplicity, mandatory parity, compact exact-ordinal breakpoint generation, and bit-exact target binding.
-- [x] Freeze exact rational target energy, global flow objective, work evidence, CP2 typed certificate/subset infeasibility and witness/gate policy.
-- [x] Adjudicate `G4-B004` to M5 focused production + M6 representative consumption.
-- [x] Attempt `M4-CP1-CB1` until its explicit algorithm stop condition; no semantic source/test/build/selector mutation and no compile/runtime occurred.
-- [x] Complete independent `M4-CP1-CB1-REV`: uphold stop, specialize L1 to exact finite-capacity Integral Bi-MCF, freeze Gabow 1983 solver contract, exact lex encoding, WorkLedger correction and CP1/CP2 oracle boundary.
-- [x] Attempt `M4-CP1-CB2` until its explicit algorithm-traceability stop condition; no semantic product/test/build/selector mutation and no compile/package/runtime occurred.
-- [ ] Complete independent `M4-CP1-CB2-REV`: adjudicate a traceable exact solver algorithm/publication and corresponding polynomial work-evidence contract before another CB is authorized.
+Run **`M4-DEFN-R1`**, a static definition turn amending `M4-DEFN` §7's solver clause:
+
+- [ ] **R1** the citation must disclose the **algorithm**, not only the bound;
+- [ ] **R2** no inherited complexity labels — identity and theorem class move together or not at all;
+- [ ] **R3** any drop from polynomial to finite assurance is stated as a definition-level change;
+- [ ] adjudicate in order: **(1) prove reduction to ordinary min-cost flow** — highest payoff, cheapest to test,
+      and the one case where the standing library authorization applies; (2) a disclosed b-matching route;
+      (3) port a disclosed iterative method with exact types; (4) amend the polynomial requirement itself.
+
+**Must not:** invent the undisclosed construction; substitute a solver while keeping Gabow's identity or bound;
+accept `int`/`double` because current meshes are small; use generic ILP/IQP/branch-and-bound, heuristic big-M or
+enumeration up to `U`; re-derive facts FA1 established.
 
 ## Carried forward from M1
 

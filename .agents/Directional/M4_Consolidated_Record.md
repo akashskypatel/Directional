@@ -34,6 +34,26 @@ CB1 subsequently stopped before semantic mutation because its solver contract ha
 
 Exact next is independent `M4-CP1-CB2-REV`.
 
+## 2.1 `M4-CP1` solver deadlock — CB1 and CB2 both stopped, both correctly
+
+`M4-CP1-CB1` stopped on the frozen `P(V,E,B)` transition-budget constant, which no published source supplies.
+`M4-CP1-CB1-REV` repaired that by specializing the L1 objective to an exact Integral Bi-MCF, withdrawing the guessed
+scalar, and naming **Gabow 1983 arbitrary-capacity minimum-cost biflow** as the primitive.
+
+`M4-CP1-CB2` then stopped on algorithm traceability: **Gabow STOC 1983 lists that problem as (5) and supplies the
+result, not the construction.** A bounded search located no follow-on primary source, and **Medvedev et al.,
+*Maximum Likelihood Genome Assembly* (2011) §5.1 independently describes it as polynomial but difficult to
+implement.** Together with `M4-CP1-CB1-REV` §13.2 — **no off-the-shelf exact arbitrary-capacity bidirected MCF
+library exists** — the primitive can be neither imported nor implemented from its citation.
+
+`M4-CP1-CB2-REV` (FA0–FA6) upheld both stops and routed the question to **`M4-DEFN-R1`**, on the ground that a
+Code + Build turn cannot repair a definition. It also re-opened CB1-REV §9's rejection of a disclosed iterative
+Bi-MDF port, whose stated reason — that the polynomial route made it *unnecessary* — is falsified now that the
+polynomial route has no implementable primitive.
+
+**Neither stop is a semantic regression.** No product, test, selector, build or runtime was mutated in either turn;
+both were fail-closed plan guards. Accounting is unchanged at **47 / 14 / 33**.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git

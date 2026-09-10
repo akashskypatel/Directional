@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-09/10, `M4-CP1-CB1-REV`):** **M3 is CLOSED / ACCEPTED; M4 definitions are amended and exact next is `M4-CP1-CB2`.** Package113/TB48 remains reviewed runtime authority; selector365 is the accepted M4 predecessor; selector409 remains final-M3 audit evidence only.
+> **Current milestone authority (2026-09-10, `M4-CP1-CB2-REV`):** **M3 remains CLOSED / ACCEPTED** — reviewed runtime authority is package113 / TB48 at **405 PASS / 4 RED**, accepted **365/365**. **M4-CP1 is deadlocked on its solver primitive, and the deadlock is definition-level.** Two consecutive Code + Build turns stopped fail-closed on the same clause, **both correctly**: CB1 because the contract demanded a `P(V,E,B)` constant no source supplies, CB2 because it names an algorithm its own primary source does not disclose. Gabow STOC 1983 lists arbitrary-capacity minimum-cost biflow as **problem (5)** with the result but not the construction; no follow-on primary source supplies it; **Medvedev et al. 2011 independently reports it as polynomial but difficult to implement**; and no off-the-shelf exact bidirected MCF library exists. **The primitive can be neither imported nor implemented from its citation.** When two implementation turns fail identically on one clause, **the clause is the defect**. Exact next is **`M4-DEFN-R1`**, static. Accounting unchanged: **47 / 14 / 33**.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -226,7 +226,25 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4 global conformity — CURRENT / `M4-CP1-CB2`.** A3 has not yet been implemented. The solver ambiguity is resolved: exact L1 deviation is Integral Bi-MCF with theorem-derived finite capacities, exact mixed-radix canonical tie encoding and Gabow 1983 arbitrary-capacity min-cost biflow. Build one immutable known-feasible `GlobalConformityPlan` writer and independent structural validator from exact A2b authority; CP1 fixed-small test oracles independently check optimum/tie. Do not cut A4 over early; scalable carried optimality/infeasibility is CP2 and producer consumption/post-hoc-pairing removal is CP3.
+1. **M4 solver primitive is neither importable nor implementable — DEADLOCK, DEFINITION-OWNED.** —
+   `M4-CP1-CB2-REV-CAND-01`, **ACTIVE / GATING**; owner **`M4-DEFN-R1`**.
+
+   - **Two Code + Build stops on one clause, both correct.** CB1: the contract required a `P(V,E,B)` constant no
+     published source supplies. CB2: the contract names an algorithm its primary source does not disclose.
+   - **Established, not assumed:** Gabow STOC 1983 (`10.1145/800061.808776`) lists arbitrary-capacity min-cost
+     biflow as **problem (5)** — result, not construction; a bounded search found no follow-on primary source;
+     **Medvedev et al. 2011 §5.1** independently reports it as *polynomial but difficult to implement*; and no
+     exact bidirected MCF library exists (`M4-CP1-CB1-REV` §13.2).
+   - **The premise that closed this is falsified.** CB1-REV §9 rejected a disclosed iterative Bi-MDF port as
+     weakening the polynomial architecture *"unnecessarily"*. The specialization exists mathematically; an
+     implementable primitive for it does not. **Re-opened for adjudication — re-opened, not accepted.**
+   - **`M4-DEFN-R1` decides one implementable, citable path** under three rules: the citation must disclose the
+     **algorithm**, not only the bound; **no inherited complexity labels** — identity and theorem class move
+     together or not at all; any drop from polynomial to finite assurance is **stated, not absorbed**.
+   - **Take the reduction question first.** If the `±2` same-row loops can be eliminated or shown not to arise,
+     the problem leaves the bidirected class and exact ordinary min-cost flow **is** available in libraries — the
+     one case where the standing library authorization applies. It needs a proof, not an observation about current
+     fixtures.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical.** The exact-torus `InvalidHardRailPairing` blocker and its three produced-witness re-proofs are M4-owned. M4 must remove the blocker without post-hoc local pairing and discharge all three debts on produced authority.
 

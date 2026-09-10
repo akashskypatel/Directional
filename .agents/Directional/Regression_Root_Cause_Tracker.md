@@ -6944,7 +6944,72 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
   stable history. Totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **103** pending
   TB38-REV.
 
+## M4-CP1-CB2-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / SECOND SOLVER STOP UPHELD**
+
+- **Record:** `Architecture_M4_CP1_CB2_Independent_Review_Record.md`, measures **FA0-FA6**. Evidence-only: no
+  runtime, no compile, no package, no product/test/selector mutation.
+
+- **FA0 - both stops were correct, and that is the finding.** CB1 stopped because the contract demanded a
+  `P(V,E,B)` constant no source supplies; CB2 stopped because the contract names an algorithm its own primary
+  source does not disclose. **Two consecutive Code + Build turns halted on one frozen clause without either being
+  at fault.** When two implementation turns fail identically on one clause, **the clause is the defect** - and a
+  Code + Build turn cannot repair a definition.
+
+- **FA1 - the deadlock is real and independently corroborated.** Gabow STOC 1983 (`10.1145/800061.808776`) lists
+  arbitrary-capacity minimum-cost biflow as **problem (5)** and supplies the result, not the construction; a
+  bounded search found no follow-on primary source; and **Medvedev et al. 2011 §5.1 independently describes the
+  algorithm as polynomial but difficult to implement** - a separate group hitting the same wall. With CB1-REV
+  §13.2's finding that no exact bidirected MCF library exists, the primitive can be **neither imported nor
+  implemented from its citation**.
+
+- **FA2 - the premise that closed this question is falsified.** CB1-REV §9 rejected porting a disclosed iterative
+  Bi-MDF method because it "weakens the frozen polynomial architecture **unnecessarily**". The specialization does
+  exist mathematically; what does not exist is an implementable primitive for it. The rejection is **re-opened for
+  adjudication** - re-opened, not accepted.
+
+- **FA3/FA4 - exact next is `M4-DEFN-R1`**, a static definition turn amending the solver clause, under three
+  binding rules: **the citation must disclose the algorithm, not only the bound**; **no inherited complexity
+  labels** (identity and theorem class move together or not at all); **any assurance reduction is stated, not
+  absorbed**. Adjudication order: (1) **prove reduction to ordinary min-cost flow** - highest payoff, cheapest to
+  test, and the case where the standing library authorization actually applies; (2) a disclosed b-matching route;
+  (3) port a disclosed iterative method with exact types; (4) amend the polynomial requirement itself.
+
+- **FA6 - accounting: +0 events / +0 recurrences.** No semantic mutation. M3/package113/TB48 remains reviewed
+  runtime authority; selector **365** unchanged. New candidate **`M4-CP1-CB2-REV-CAND-01`** - the frozen solver
+  primitive is neither importable nor implementable from its citation - **ACTIVE / GATING / DEFINITION-OWNED**,
+  owner `M4-DEFN-R1`.
+
+---
+
 ## Authoritative next step
+
+Reviewed semantic runtime authority remains **M3 / package113 / TB48** at selector409 **405 PASS / 4 RED**,
+accepted **365/365**. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages
+**113**. No M4 runtime exists and none is authorized.
+
+**M4-CP1 is deadlocked on its solver primitive, and the deadlock is definition-level.** Two consecutive Code + Build
+turns stopped fail-closed on the same clause, both correctly. Gabow STOC 1983 lists arbitrary-capacity minimum-cost
+biflow as problem (5) without disclosing the construction; no follow-on primary source supplies it; Medvedev et al.
+2011 independently reports it as polynomial but difficult to implement; and no off-the-shelf exact bidirected MCF
+library exists. **The primitive can be neither imported nor implemented from its citation.**
+
+**Exact next: `M4-DEFN-R1`** - a static definition turn amending the solver clause of `M4-DEFN` §7 as amended by
+`M4-CP1-CB1-REV`. Binding rules: **R1** the citation must disclose the algorithm, not only the bound; **R2** no
+inherited complexity labels - a substitute primitive brings its own bound, and `WorkLedger` identity and theorem
+class move together or not at all; **R3** any reduction from polynomial to finite assurance is stated as a
+definition-level change, with its consequences for CP2's certificate named.
+
+**Adjudication order:** (1) **prove the M4 instances reduce to ordinary minimum-cost flow** - if the `+/-2`
+same-row loops can be eliminated or shown not to arise, the problem leaves the bidirected class and exact ordinary
+MCF *is* available in libraries, which is where the standing user authorization applies; it requires a proof, not
+an observation about current fixtures; (2) a disclosed b-matching route, without silently reintroducing the
+capacity gap Gabow was cited to fill; (3) port a disclosed iterative Bi-MDF method with exact types, accepting a
+stated finite bound; (4) amend the frozen polynomial requirement itself.
+
+**Prohibited:** inventing the undisclosed construction; substituting a solver while keeping Gabow's identity or
+bound; `int`/`double` representation justified by current mesh sizes; generic ILP/IQP/branch-and-bound, heuristic
+big-M, or enumerating counts up to `U`; and a fourth turn re-deriving facts this review established.
+
 
 **M4-CP1-CB1-REV verification-pass addenda.** The adjudication is upheld: the CB1 stop was correct (the frozen
 contract required a `P(V,E,B)` constant no published source supplies, so the turn could only have proceeded by

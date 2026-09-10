@@ -1,3 +1,48 @@
+## 2026-09-10 — `M4-CP1-CB2-REV`: both solver stops upheld; the clause is the defect, routed to `M4-DEFN-R1`
+
+Independent review, evidence-only. No runtime, no compile, no package operation, no product/test/fixture/build/
+selector mutation. Reviewed runtime authority remains **M3 / package113 / TB48**; selector **365** unchanged;
+accounting unchanged at **47 / 14 / 33**.
+
+**FA0 — both stops were correct, and that is the finding.** CB1 stopped because the frozen contract demanded a
+`P(V,E,B)` transition-budget constant no published source supplies. CB2 stopped because the contract names an
+algorithm its own primary source does not disclose. **Two consecutive Code + Build turns halted on one frozen
+clause without either being at fault.** When two implementation turns fail identically on one clause, **the clause
+is the defect** — and a Code + Build turn cannot repair a definition. Asking a third to try would be the first
+genuinely wrong move in this sequence.
+
+**FA1 — the deadlock is real and independently corroborated.** Gabow, STOC 1983 (`10.1145/800061.808776`) lists
+arbitrary-capacity minimum-cost biflow as **problem (5)**, gives the bound, and **explicitly defers the algorithm
+elsewhere**. A bounded search located no follow-on primary source. **Medvedev et al., *Maximum Likelihood Genome
+Assembly* (2011) §5.1 independently describes it as polynomial but difficult to implement** — a separate group in a
+separate field hitting the same wall. With `M4-CP1-CB1-REV` §13.2's finding that no off-the-shelf exact
+arbitrary-capacity bidirected MCF library exists, **the primitive can be neither imported nor implemented from its
+citation.**
+
+**FA2 — the premise that closed this question is falsified.** `M4-CP1-CB1-REV` §9 rejected porting a disclosed
+iterative Bi-MDF method because it weakened the polynomial architecture *"unnecessarily, when M4's L1 objective
+admits a linear Bi-MCF specialization."* The rejection rested on that word. The specialization exists mathematically
+— §§4–6 are not withdrawn — but there is no **implementable primitive** for it. **Re-opened for adjudication;
+re-opened, not accepted.** Finite convergence is a real reduction in assurance and must be argued on its own terms.
+
+**FA3/FA4 — exact next is `M4-DEFN-R1`**, a static definition turn amending `M4-DEFN` §7 as amended by
+`M4-CP1-CB1-REV`, under three binding rules: **R1** the citation must disclose the **algorithm**, not only the
+bound; **R2** no inherited complexity labels — a substitute brings its own bound, and `WorkLedger` identity and
+theorem class move together or not at all; **R3** any drop from polynomial to finite assurance is stated as a
+definition-level change with its consequences for CP2's certificate named.
+
+Adjudication order: **(1) prove the M4 instances reduce to ordinary minimum-cost flow** — if the `±2` same-row
+loops can be eliminated or shown not to arise, the problem leaves the bidirected class and exact ordinary MCF *is*
+available in libraries, which is exactly where the standing user authorization applies; it needs a **proof**, not
+an observation about current fixtures. Then (2) a disclosed b-matching route without reintroducing the capacity gap
+Gabow was cited to fill; (3) port a disclosed iterative method with exact types; (4) amend the polynomial
+requirement itself.
+
+**FA6 — accounting: +0 events / +0 recurrences.** Neither stop is a semantic regression; both were fail-closed plan
+guards with no product, test, selector, build or runtime mutation. New candidate **`M4-CP1-CB2-REV-CAND-01`** —
+*the frozen solver primitive is neither importable nor implementable from its citation* — **ACTIVE / GATING /
+DEFINITION-OWNED**, owner `M4-DEFN-R1`.
+
 ## 2026-09-10 — `M4-CP1-CB2` stops at frozen algorithm-traceability guard; no semantic mutation
 
 Canonical Code + Build investigation only; no Directional runtime, compile, package, selector mutation, product/test/fixture/build change, or reusable-workflow permission change. Semantic source was frozen at `075f3c738d8f689437397fe925faa7eb12d72ac3`; source-snapshot run/job `34429824055 / 102722806001` captured control SHA `9c32b5bd932dd17c40a7fe12c2441547e1ecc6a5` (only the source-snapshot marker differs), artifact `10134050428`, provider digest `ca75c3869f3a6e6039fcce3f663887c9748a58b0810a1d062747d991ba221c22`, archive SHA-256 `8c0f21fcb68963a5b96055939162f41aa768ec91aa3a2991eadc412740ab8f5d`, 5222/5222 files verified, `runtimeExecution=false`.
