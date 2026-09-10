@@ -1,0 +1,6 @@
+turn=M4-CP2-TB1-EXEC
+purpose=apply-verified-closeout-docs
+base_sha=f25519542b7bb4202673fa1abe35a5b3359c5135
+file_id=1LSKbTNqJK6uDBDMCKEgWcYqdvEH8qjfp
+patch_sha256=60a112d8ea7896162a9eb7538291cdeb7bf4022ff08c9f480a81a3d8b13b4b67
+attempt=1
