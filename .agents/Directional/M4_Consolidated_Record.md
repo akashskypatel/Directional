@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP2-TB2-EXEC` invalid-attempt closeout
+**Last updated:** 2026-09-10 at `M4-CP2-CB3` orchestration-correction closeout
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; latest **valid semantic** CP2 runtime evidence remains `Architecture_M4_CP2_TB1_Test_Benchmark_Report.md`; current invalid-attempt provenance is `Architecture_M4_CP2_TB2_Test_Benchmark_Report.md`; current review authority is `Architecture_M4_CP2_TB1_Review_Record.md`; and the exact next plan is `Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md`. Package115/selector373 remains accepted M4 runtime authority; package117/selector382 is compiled immutable candidate authority but has no valid TB2 semantic verdict yet. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; latest **valid semantic** CP2 runtime evidence remains `Architecture_M4_CP2_TB1_Test_Benchmark_Report.md`; invalid-attempt provenance is `Architecture_M4_CP2_TB2_Test_Benchmark_Report.md`; current orchestration-correction evidence is `Architecture_M4_CP2_CB3_Orchestration_Correction_Report.md`; current review authority is `Architecture_M4_CP2_TB1_Review_Record.md`; and the exact next plan is `Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`. Package115/selector373 remains accepted M4 runtime authority; package117/selector382 is compiled immutable candidate authority but has no valid TB2 semantic verdict yet. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -192,6 +192,13 @@ Exact semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f` compiled under 
 Artifact-only run/job `34532107988 / 103055098832` validly preflighted immutable package117 and then launched the frozen focused/cumulative process set. Audit-only observations were focused 374/381/382 **3/3 twice** with the required ordinal374 receipt once per focused log and cumulative selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, correction rows **2/2**, owners **30/236/75/41**, zero process RED/SKIP/timeout/selection mismatch.
 
 The attempt has **no semantic credit**. Preflight named the execution-view census `execution-view-before.tsv`; postflight required `execution-view-census-before.tsv` and exited `90` after all processes completed. Independent comparison of the actual before/after census files proves package, extracted source, and execution-view bytes remained identical, so package117 is reusable unchanged. `M4-CP2-TB2-EXEC-CAND-01` is OPEN / ORCHESTRATION / NON-STABLE; stable accounting stays **47 / 14 / 33**, debt **5**, accepted package authority **115**. Exact next is control-plane-only runtime-free `M4-CP2-CB3`; its successful successor must re-execute the same frozen gate as `M4-CP2-TB2-R1-EXEC` against package117.
+
+## 2.13 `M4-CP2-CB3` — orchestration correction frozen without changing package117
+
+CB3 closes the deterministic no-credit TB2 orchestration defect without adding a semantic variable. The invalid preflight payload `af458b58...` wrote `execution-view-before.tsv`; the unchanged executor `717a4dd6...` reads `O/f'{x}-census-before.tsv'`. CB3's corrected preflight `12090d4b...` changes only that literal to `execution-view-census-before.tsv`, so the pre/post pair is `execution-view-census-before.tsv` / `execution-view-census-after.tsv`. The retry caller draft `baf81bf7...` is schema-shape-identical to the schema-validated predecessor apart from scalar retry labels/paths. Python AST, YAML parse, schema-shape, exact one-line diff and executor byte-identity checks are static-green.
+
+No product/test/fixture/selector/CMake/package byte changes, no compile/repackage, and no Directional runtime occurred. Package117 artifact `10172820820` and selector382 remain immutable/unpromoted; package115/selector373 remains accepted authority. `M4-CP2-TB2-EXEC-CAND-01` remains non-stable and moves to **CORRECTION AUTHORED / AWAITING R1**. Stable accounting stays **47 / 14 / 33**, debt **5**. Exact next is `M4-CP2-TB2-R1-EXEC` under `Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`, re-executing the entire frozen gate against package117 from scratch.
+
 
 ## 3. Folded document index
 

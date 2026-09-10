@@ -1,3 +1,11 @@
+## 2026-09-10 — `M4-CP2-CB3`: execution-view census-name contract corrected; package117 held fixed
+
+`M4-CP2-CB3` is **COMPLETE / STATIC-GREEN / RUNTIME-FREE / CONTROL-PLANE-ONLY**. It corrects the sole deterministic orchestration defect from the invalid TB2 attempt: the preflight writer now emits `execution-view-census-before.tsv`, exactly matching the unchanged postflight reader's `*-census-before.tsv` contract and its `execution-view-census-after.tsv` output. Invalid preflight SHA `af458b58...` changes to corrected R1 preflight `12090d4b...`; executor `717a4dd6...` is byte-identical. Retry caller draft `baf81bf7...` preserves the schema/type tree of the schema-validated predecessor and changes only scalar retry labels/paths.
+
+Static-only validation passed Python AST, YAML parse, caller schema-shape comparison, exact one-line preflight diff, unchanged executor bytes, and canonical before/after basename checks. No Directional compile/link, repackage, runtime, benchmark, generated discovery, product/test/fixture/selector/CMake/package mutation, or reusable-workflow-permission change occurred. Package117 artifact `10172820820` at SHA-256 `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725` remains immutable/unpromoted; accepted authority remains package115/selector373 **373/373**. `M4-CP2-TB2-EXEC-CAND-01` is now **CORRECTION AUTHORED / AWAITING R1 / NON-STABLE**; stable accounting stays **47 / 14 / 33**, debt **5**.
+
+Exact next is artifact-only `M4-CP2-TB2-R1-EXEC` under `Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`, reusing package117 and re-executing the frozen gate from scratch; the invalid attempt contributes no semantic rows.
+
 ## 2026-09-10 — `M4-CP2-TB2-EXEC`: package117 process set completes but postflight orchestration invalidates the attempt
 
 Artifact-only TB2 run/job `34532107988 / 103055098832` consumed immutable package117 artifact `10172820820` from semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f`. Preflight verified exact package/source/selector authority, 28/28 package checksums, selector382 and frozen prefixes, executable hashes/modes, package-derived fixture view, and owner partition **30 / 236 / 75 / 41**.

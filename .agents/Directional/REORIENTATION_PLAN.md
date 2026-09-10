@@ -1,15 +1,15 @@
-> **Current milestone authority (2026-09-10, `M4-CP1-TB1-REV`):** **M3 is CLOSED / ACCEPTED.** package113/TB48 remains reviewed runtime authority; accepted predecessor selector365 remains 365/365. M4 CP1 A3 semantics compile at `680f9f15...` and focused package114 runtime is 8/8 PASS twice, but package114 is unpromoted because cumulative selector373 lacked three owner binaries and the artifact execution view omitted the consumer-visible fixture root. Exact next is runtime-free `M4-CP1-CB4`, preserving semantics while package-closing all four owner binaries and pre-authoring the immutable execution view.
+> **Current milestone authority (2026-09-10, `M4-CP2-CB3`):** **M1-M3 are CLOSED / ACCEPTED; M4-CP1 is CLOSED / ACCEPTED; M4-CP2 is OPEN.** package115/TB2 selector373 **373/373** remains accepted M4 runtime authority. package117/selector382 is immutable compiled candidate authority; the first TB2 execution is orchestration-invalid/no-credit, and CB3 statically corrected only its execution-view census-name contract. Exact next is artifact-only `M4-CP2-TB2-R1-EXEC` against the unchanged package117.
 
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap
 **Normative design:** `.agents/Directional/DESIGN.md`
-**Accepted authority:** M3 CP4ab source/package `157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`, immutable TB-R3 `32758293793 / 97530833220` — **316/316 PASS**.
-**Decision:** **M1 and M2 are CLOSED / ACCEPTED. M3 CP1, CP2, CP2b, CP3a, CP3b, and CP4ab are accepted at 316/316.** CP4c-0 remains OPEN. CB2 is build-green at `390e65b373063c667e3c3f5e78b74ed9d859093b / 9586196535`; TB-R2 re-proved the accepted 316 and prior 328 prefix, then hit a valid semantic red at correction identity 329 before Q8. Stable totals remain **42 / 14 / 28**, debt **5**, packages **41**.
+**Accepted authority:** M4 package115/TB2, selector373 **373/373**; M3 package113/TB48 remains the milestone-closure predecessor authority with accepted selector365 **365/365**.
+**Decision:** **M1, M2, M3, and M4-CP1 are CLOSED / ACCEPTED. M4-CP2 remains OPEN.** package117 is unpromoted until a valid immutable TB2 retry and review. Stable totals remain **47 / 14 / 33**, debt **5**, accepted package authority **115**.
 
 **Updated 2026-08-26 after `M3-CP4c-0-TB-R2`.** Authoritative retry 1 `32914546494 / 98015432540` passed identities **1–328** and failed ordinal **329**, `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The immutable diagnostic shows numeric branch loci emitted as control characters because `FieldBranch::value()` is `std::uint8_t` and the test/witness stream inserts it directly as a character. Q8 was correctly **NOT RUN** because 338/338 was not green. Exact next is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**; no semantic rerun or correction precedes that review. The checkpoint map is `ROADMAP.md`.
 **M1 exit gate:** retained in section 5.1 as the gate-authoring pattern. **Retry budget: ABOLISHED 2026-08-25.** A diagnosed orchestration defect may be corrected without consuming semantic authority; deterministic semantic red does not rerun inside TB. Cumulative package cost is reported, not gated; M3 has **41 packages**.
-**Last updated:** 2026-08-26 UTC
+**Last updated:** 2026-09-10 UTC
 
 Repository authority: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8. Keep the PR open, draft, and unmerged until separately authorized.
 
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **CP1 implementation compile-green; focused 8/8 twice; cumulative package gate unaccepted; exact next `M4-CP1-CB4` package closure** |
+| M4 | global conformity plan | **CP1 CLOSED / CP2 OPEN; CB3 orchestration correction static-green; exact next `M4-CP2-TB2-R1-EXEC` on immutable package117** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |

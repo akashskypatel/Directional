@@ -1,0 +1,15 @@
+turn=M4-CP2-CB3
+validation=static-only
+runtimeExecution=false
+compileExecution=false
+packageMutation=false
+preflight_ast=pass
+execute_ast=pass
+caller_yaml_parse=pass
+caller_schema_shape_vs_validated_predecessor=identical
+preflight_delta=single-census-basename-replacement
+execution_view_before=execution-view-census-before.tsv
+execution_view_after=execution-view-census-after.tsv
+preflight_sha256=12090d4b5e01f6c3e55de712b595dff3444b509ba58b040201a2c61f87d805c1
+execute_sha256=717a4dd6cda5ba96fb8bd6e16879c422f9b2e1ff561951801dc5658d85480019
+caller_draft_sha256=baf81bf788f6823d79f3b34431424a1e19e7e45b6eacb6fb788604333a08d6ab

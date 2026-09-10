@@ -118,9 +118,9 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 **Same-agent REVIEW/DEFN is allowed — user-authorized 2026-09-10.** The same agent/session may perform a REVIEW, REVIEW + PLAN, or DEFN turn even when it authored or executed an earlier turn in the same chain. "Independent" in review/oracle/verification language means independent **evidence, re-derivation, authority, or implementation path**, not required personnel separation, unless a specific criterion explicitly says otherwise. A same-agent REVIEW must re-open primary evidence and re-derive decisive facts; a same-agent DEFN remains planning/runtime-free. All cadence, stop, validation-integrity, source-authority, compile/runtime, and acceptance boundaries remain unchanged.
 
-## Mandatory next turn — `M4-CP2-CB3` — **EXACT NEXT / RUNTIME-FREE ORCHESTRATION CORRECTION**
+## Mandatory next turn — `M4-CP2-TB2-R1-EXEC` — **EXACT NEXT / ARTIFACT-ONLY RETRY**
 
-`M4-CP2-TB2-EXEC` is formally complete as an **orchestration-invalid attempt with no semantic credit**.
+`M4-CP2-CB3` is **COMPLETE / STATIC-GREEN / RUNTIME-FREE / CONTROL-PLANE-ONLY**. It corrects only the deterministic execution-view census basename mismatch that invalidated the first TB2 attempt. No Directional compile, repackage, test, benchmark, discovery command, or package mutation occurred in CB3.
 
 ### Immutable package authority
 
@@ -130,40 +130,40 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 - selector382 SHA-256: `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`
 - accepted runtime authority remains package115 / selector373 `373/373`
 
-### Invalid TB2 attempt provenance
+### CB3 correction receipt
 
-- run/job: `34532107988 / 103055098832`
-- result artifact: `10174031432`, SHA-256 `7742a385e5f2f0b408a5a946a836915abf1a636057d7b3fe0c6612f6dce88a44`
-- diagnostic-log artifact: `10174032131`, SHA-256 `d15ecf14508eb49a154bb443df184de0daf892e9d99635d369f1d0f9d283278b`
-- candidate: `M4-CP2-TB2-EXEC-CAND-01` — **OPEN / ORCHESTRATION / NON-STABLE**
-- exact failure: preflight wrote `execution-view-before.tsv`; postflight required `execution-view-census-before.tsv`; `gate_exit=90`
-- audit-only process observations before failure: focused 374/381/382 `3/3` twice with ordinal374 receipt once each; cumulative `382/382`, predecessor `373/373`, rows374-380 `7/7`, rows381-382 `2/2`, owners `30/236/75/41`, zero process RED/SKIP/timeout/selection mismatch
-- those process observations carry **no semantic acceptance credit**
-- independent actual-file census comparison proves package/source/execution-view bytes unchanged, so package117 is reusable without rebuild
+- invalid preflight SHA-256: `af458b58c6ba6c339c80ac64d360dfeaf190f621b13e31de50d49461274f4aaa`
+- corrected R1 preflight SHA-256: `12090d4b5e01f6c3e55de712b595dff3444b509ba58b040201a2c61f87d805c1`
+- executor SHA-256: `717a4dd6cda5ba96fb8bd6e16879c422f9b2e1ff561951801dc5658d85480019` — byte-identical to the invalid attempt
+- R1 caller draft SHA-256: `baf81bf788f6823d79f3b34431424a1e19e7e45b6eacb6fb788604333a08d6ab`
+- exact semantic change: preflight now writes `execution-view-census-before.tsv`; postflight already reads that canonical `*-census-before.tsv` name and writes `execution-view-census-after.tsv`
+- Python AST, YAML parse, caller schema-shape comparison, and one-line diff checks: PASS
+- expected SHA-256-bearing payload was materialized through `write_orchestration_payload.py`
+- `M4-CP2-TB2-EXEC-CAND-01`: **CORRECTION AUTHORED / AWAITING R1 / ORCHESTRATION / NON-STABLE**
 
-### CB3 boundary
+### R1 boundary
 
-Use `.agents/Directional/Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md`. Correct only the artifact-harness execution-view census basename contract. Do not change product source, test definitions/assertions, fixtures, selectors, selector manifest, CMake/build semantics, or package117. Do not compile/repackage and do not execute Directional runtime. Do not change reusable workflow permissions.
+Follow `.agents/Directional/Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md` exactly. Reuse immutable package117 only; do not rebuild, repackage, chmod/repair, or change package/source/test/fixture/selector bytes. Materialize the exact corrected payload hashes above. Preflight must write `execution-view-census-before.tsv`; postflight must compare it with `execution-view-census-after.tsv`.
 
-Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. Package117 remains unpromoted.
+Run correction ordinals **374, 381, 382** twice in frozen order, one identity per fresh process, then all **382** selector identities one per fresh process. Require ordinal374's source-derived receipt exactly once in each focused log, selector **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, owners **30/30 / 236/236 / 75/75 / 41/41**, zero RED/SKIP/timeout/selection mismatch, and byte-identical package/source/execution-view postflight. No benchmark is authorized.
 
-**Exact successor after CB3 green:** `M4-CP2-TB2-R1-EXEC`, reusing immutable package117 artifact `10172820820`.
+The invalid attempt's process observations remain audit-only and may not be stitched into R1. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. Package117 remains unpromoted until valid R1 evidence and review.
+
+**Exact successor after valid R1 execution:** `M4-CP2-TB2-R1-REV`.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB-EXEC.md
 conditional_modules:
-  - trigger: GitHub Actions/artifact-harness orchestration correction
+  - trigger: GitHub Actions/artifact-only package execution
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md
+  - .agents/Directional/Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP2_CB3_Orchestration_Correction_Report.md
   - .agents/Directional/Architecture_M4_CP2_TB2_Test_Benchmark_Report.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
-templates_when_producing:
-  - templates/CODE_BUILD_REPORT.md
-  - templates/TEST_PLAN.md
 do_not_preload:
   - sibling turn files
   - module reference directories
