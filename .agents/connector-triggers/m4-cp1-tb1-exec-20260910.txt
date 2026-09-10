@@ -2,4 +2,4 @@ purpose=M4-CP1-TB1-EXEC artifact-only runtime evidence
 package_artifact_id=10142108806
 semantic_source=680f9f1573d3c7e56a273366436463e40e196131
 selector=Architecture_M4_CP1_Required_Green_Selector_373.txt
-retry=0
+retry=1
