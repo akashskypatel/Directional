@@ -98,6 +98,14 @@ Implement Heistermann et al. §§3.7–3.9 around current feasible `f`:
 
 The terminal criterion is tied explicitly to Heistermann et al. Theorem 3.8; Corollaries 3.7 and 3.9 are the finite-convergence/global-optimality authority. There is no Gabow tag and no inherited Gabow complexity bound.
 
+**Required before any solver source is authored (`M4-DEFN-R1` §R9.2).** Quote **Corollary 3.7, Theorem 3.8 and
+Corollary 3.9 verbatim**, showing their quantification over `M` explicitly, and state which one establishes
+**global** optimality at a non-improving `M=2` iteration. `M4-DEFN-R1` §R3 attributes that to Theorem 3.8 while
+this plan attributes it to Corollaries 3.7/3.9; exactly one mapping survives and CB3 must reconcile them. **If the
+optimality result is conditional on `M`, stop** — `M=2` would then converge finitely to a local fixed point and
+§R6's preserved exactness guarantee would be false. That is a definition question returning to `M4-DEFN`, not a
+Code + Build decision. Two turns have already been stopped by a citation that did not say what the plan needed.
+
 ### CB3.5 — exact weighted-perfect-matching primitive
 
 Use the standing solver-library authorization where it reduces implementation risk. Prefer a mature WPM primitive with an implementation-visible published algorithm. LEMON is an acceptable candidate only if CB3 proves at compile time that its weight/comparison interface can use the selected arbitrary-precision exact adapter without narrowing. Blossom V's `int` cost API and upstream libSatsuma's `int64_t` matching weights are not acceptable semantic paths.

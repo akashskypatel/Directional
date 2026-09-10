@@ -7002,6 +7002,26 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**M4-DEFN-R1 verification-pass addenda (§R9).** The definition is **upheld** and all three FA3 rules are
+discharged: R3 cites a *construction* (Heistermann/Warnett/Bommes 2023 §§3.6-3.9), the Gabow identity and bound
+appear **nowhere**, and R6 states the polynomial-to-finite assurance drop as a definition-level change while R7
+draws the right consequence - **CP2's independent scalable optimality certificate becomes a mandatory semantic
+barrier**, so assurance moves rather than evaporates. R1's ordinary-MCF rejection is **proof-shaped** (the frozen
+contract preserves two incidences of one span, giving `+/-2` entries, which no ordinary incidence column can carry)
+rather than an observation about fixtures, exactly as FA4 required. R5 also scopes the standing library
+authorization better than CB2-REV did - to the **inner weighted-perfect-matching primitive**, where exact-templated
+implementations actually exist.
+
+**One confirmation obligation, added to CB3.** The whole preserved exactness guarantee now rests on a single
+inference: that a zero-improvement fixed point of **`M=2`** refinement is the **global** minimizer. Every statement
+of it is a **paraphrase**, and the documents disagree on which published result carries it - `M4-DEFN-R1` §R3 says
+**Theorem 3.8**, while `Architecture_M4_CP1_CB3_Code_Build_Plan.md:99` says **Corollaries 3.7 and 3.9**. If the
+optimality result is quantified over `M`, then `M=2` converges to a **local** fixed point and R6's exactness claim
+is false. **CB3 must quote Corollary 3.7, Theorem 3.8 and Corollary 3.9 verbatim with their `M`-quantification
+shown, reconcile the two attributions, and stop if optimality is conditional on `M`** - that is a definition
+question returning to `M4-DEFN`, not a CB decision. Two turns have already been stopped by a citation that did not
+say what the plan needed.
+
 Reviewed semantic runtime authority remains **M3 / package113 / TB48** at selector409 **405 PASS / 4 RED**,
 accepted **365/365**. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages
 **113**. No M4 runtime exists.

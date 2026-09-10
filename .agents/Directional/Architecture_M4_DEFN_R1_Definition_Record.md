@@ -96,3 +96,74 @@ Because the outer polynomial runtime claim is withdrawn, **CP2's independent sca
 `M4-CP1-CB2-REV-CAND-01` is **CLOSED / DEFINITION-CORRECTED / NON-STABLE**. It adds **0** stable events and **0** recurrences because it described a planning/definition traceability defect, not runtime product behavior.
 
 The exact next turn is **`M4-CP1-CB3` — canonical Code + Build / runtime-free**, under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. CB3 may implement and compile the amended solver/product surface but may not execute Directional tests or benchmarks. On successful compile/package evidence it must issue the artifact-only `M4-CP1-TB1` plan; later TB execution remains split into EXEC and independent diagnostic/review turns under the active orchestration policy.
+
+---
+
+## R9 — verification-pass addenda (static, appended after the definition)
+
+A verification pass re-derived R0–R8 against the rules frozen in `M4-CP1-CB2-REV` FA3. **The definition is upheld
+and all three rules are discharged.** One load-bearing citation needs verbatim confirmation before CB3 builds on it.
+
+### R9.1 — the three FA3 rules, discharged
+
+- **FA3-R1 (the citation must disclose the algorithm, not only the bound):** discharged. R3 enumerates a
+  *construction* from Heistermann, Warnett and Bommes 2023 §§3.6–3.9 — feasible start via double cover, conversion
+  to a zero-demand bounded Bi-MCF refinement, reduction to capacitated weighted perfect b-matching, reduction to
+  weighted perfect matching, exact repeated refinement — and pins `libSatsuma` to a specific commit as reference
+  material rather than authority.
+- **FA3-R2 (no inherited complexity labels):** discharged completely. `Gabow1983ArbitraryCapacityMinCostBiflow`
+  and `O(E'^2 log V' log Cmax)` appear **nowhere** in this record or the CB3 plan. Identity and theorem class moved
+  together to `HeistermannWarnettBommes2023ExactBiMDFRefinementM2` / `FiniteExactConvergence`, and R6's guard —
+  *"CP-SCALE may measure refinement counts but may not relabel them polynomial"* — blocks the label creeping back.
+- **FA3-R3 (assurance drop stated, not absorbed):** discharged, and better than required. R6 names it a
+  definition-level reduction, and R7 draws the right consequence — **losing the outer polynomial claim makes CP2's
+  independent scalable optimality certificate a mandatory semantic barrier**, so assurance moves rather than
+  evaporates. R6 also correctly separates what did *not* change: the terminal schedule remains the unique exact
+  minimizer of frozen `J`.
+
+**R1 and R2 also answered FA4 in the order it was frozen.** The ordinary-MCF rejection is *proof-shaped* — the
+frozen incidence contract preserves two incidences of one full span, giving `±2` entries, while an ordinary
+directed incidence column has one `+1` and one `−1` — not an observation about current fixtures. That is exactly
+what FA4 item 1 demanded.
+
+**R5's scoping of the standing library authorization is better than the one this reviewer proposed.** CB2-REV
+looked for a library at the *outer* bidirected solver, where none exists. R5 places it at the **inner
+weighted-perfect-matching primitive**, which is precisely where exact-templated implementations do exist. That
+makes the chain buildable without weakening any representation rule.
+
+### R9.2 — the whole optimality guarantee now rests on one paraphrased quantifier
+
+R6 preserves the semantic exactness guarantee: *"the terminal schedule is still the unique exact minimizer of
+frozen `J`."* Under R5 that guarantee is delivered by a single inference — an exactly-zero-improvement fixed point
+of **`M=2`** refinement is the **global** minimizer.
+
+Every statement of that inference in the retained record is a **paraphrase**, and the two documents do not agree on
+which published result carries it:
+
+| Location | Attribution |
+|---|---|
+| R3 | *Corollary 3.7* gives finite convergence for any fixed `M`; **Theorem 3.8** gives global optimality at a non-improving iteration |
+| R6 | theorem class = Corollary 3.7 **+** Theorem 3.8 **+** Corollary 3.9 |
+| `…CB3_Code_Build_Plan.md:99` | terminal criterion tied to Theorem 3.8; **Corollaries 3.7 and 3.9** are the *"finite-convergence/global-optimality authority"* |
+
+R3 assigns global optimality to Theorem 3.8; the CB3 plan assigns it to Corollaries 3.7 and 3.9. **They cannot both
+be the precise mapping**, and the difference matters: if the optimality result is quantified over `M` — holding
+only as `M` grows, or for `M` at least some instance-dependent value — then `M=2` converges finitely to a **local**
+fixed point and R6's preserved exactness guarantee is false.
+
+This project has now been stopped **twice** by a citation that did not say what the plan needed: Gabow's
+`P(V,E,B)` at CB1, and Gabow's deferred problem (5) at CB2. Both times the gap was invisible until implementation.
+
+> **Added to CB3 (non-optional), before any solver source is authored:** quote **Corollary 3.7, Theorem 3.8 and
+> Corollary 3.9 verbatim**, with their quantification over `M` shown explicitly, and state which one establishes
+> **global** optimality at a non-improving `M=2` iteration. Reconcile R3's attribution with the CB3 plan's; exactly
+> one mapping survives. **If the optimality result is conditional on `M`, R6's exactness claim must be revised
+> before implementation, not after** — and that is a definition question returning here, not a CB decision.
+
+This is a confirmation obligation, not a defect finding: nothing in R0–R8 is shown wrong. It is the cheapest
+possible receipt for the one inference the entire semantic guarantee now hangs on.
+
+### R9.3 — accounting
+
+Unchanged. This addendum is static, adds **+0 events / +0 recurrences**, and does not alter the selected algorithm,
+the assurance amendment, the candidate disposition or the successor. **Exact next remains `M4-CP1-CB3`.**

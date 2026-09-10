@@ -1,3 +1,43 @@
+## 2026-09-10 — `M4-DEFN-R1` verification pass: upheld; one paraphrased quantifier must be confirmed verbatim
+
+Static verification of the delegated `M4-DEFN-R1`. No runtime, no compile, no package operation, no
+product/test/fixture/build/selector mutation. Accounting unchanged.
+
+**Upheld — all three `M4-CP1-CB2-REV` FA3 rules are discharged.**
+
+- **R1 (disclose the algorithm, not the bound):** R3 cites a **construction** — Heistermann, Warnett and Bommes
+  2023 §§3.6–3.9: feasible start via double cover, conversion to a zero-demand bounded Bi-MCF refinement, reduction
+  to capacitated weighted perfect b-matching, reduction to weighted perfect matching, exact repeated refinement —
+  with `libSatsuma` pinned to a commit as *reference material*, not authority.
+- **R2 (no inherited complexity labels):** discharged completely. `Gabow1983ArbitraryCapacityMinCostBiflow` and
+  `O(E'^2 log V' log Cmax)` appear **nowhere** in the record or the CB3 plan; identity and theorem class moved
+  together, and R6 blocks `CP-SCALE` from relabelling refinement counts polynomial.
+- **R3 (assurance drop stated, not absorbed):** discharged, and better than required — R7 makes **CP2's independent
+  scalable optimality certificate a mandatory semantic barrier** now that the outer polynomial claim is gone, so
+  assurance moves rather than evaporates. R6 correctly separates what did not change: the terminal schedule remains
+  the unique exact minimizer of `J`.
+
+**The adjudication also took FA4's order.** R1's ordinary-MCF rejection is **proof-shaped** — the frozen incidence
+contract preserves two incidences of one full span, giving `±2` entries, and no ordinary directed incidence column
+can carry that — rather than an observation about current fixtures, which is what FA4 item 1 demanded. R2 declines
+direct b-matching because it would require another untraced general-demand reduction chain: the right instinct.
+
+**R5 scopes the standing library authorization better than this reviewer did.** CB2-REV looked for a library at the
+*outer* bidirected solver, where none exists; R5 places it at the **inner weighted-perfect-matching primitive**,
+which is precisely where exact-templated implementations do exist. That makes the chain buildable without weakening
+any representation rule.
+
+**One confirmation obligation added to CB3.** The preserved exactness guarantee now rests on a single inference —
+that a zero-improvement fixed point of **`M=2`** refinement is the **global** minimizer — and every statement of it
+is a **paraphrase**. The documents also disagree on which result carries it: §R3 says **Theorem 3.8**, while the
+CB3 plan says **Corollaries 3.7 and 3.9**. If the optimality result is quantified over `M`, `M=2` converges to a
+**local** fixed point and R6's exactness claim is false. **CB3 must quote Corollary 3.7, Theorem 3.8 and Corollary
+3.9 verbatim with their `M`-quantification shown, reconcile the attributions, and stop if optimality is conditional
+on `M`** — a definition question returning to `M4-DEFN`, not a CB decision. This project has been stopped twice
+already by a citation that did not say what the plan needed; this is the cheapest possible receipt.
+
+**Exact next remains `M4-CP1-CB3`** — Code + Build, runtime-free, with the verbatim-citation obligation added.
+
 ## 2026-09-10 — `M4-DEFN-R1`: exact solver deadlock resolved by disclosed fixed-`M=2` Bi-MDF refinement
 
 `M4-DEFN-R1` is **COMPLETE / STATIC / NO RUNTIME / NO COMPILE / NO PACKAGE**. It consumes independent
