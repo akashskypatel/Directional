@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1omw9PqrBfWmEyKbinN6msgkfc2FK-3_h
-      patch_sha256: 8da998611c060730e337c5baaaf3654e4121fc5b4cdfad320d69d8383eea60e2
+      patch_sha256: 51d0b3886cada5e88132de691344d5dd0a4d16115ccab5d01e33b8b09c585e17
       base_sha: 29c0b4ba428b0ed31e585314d194524fc6ff691d
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'fix: split heterogeneous CP2 validator auto declarations'
