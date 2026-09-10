@@ -1,3 +1,42 @@
+## 2026-09-09 — `M4-DEFN` verification pass: definition upheld; my CP4c-0 premise was wrong and the artifact is corrected
+
+Static verification of the delegated `M4-DEFN`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation.
+
+**My TB48-REV amendment was wrong, and M4-DEFN was right to refute it.** I claimed `M3-CP4c-0-TB-R9` never
+executed and wrote a "closed by cumulative inclusion" basis into `M3_Closure_Record.md`, the roadmap row, the
+tracker and the published artifact. **`CHANGELOG.md:6514` records the opposite**: TB-R9 ran on 2026-08-27 as
+workflow `33079817998 / 98543736213`, returned **346/346 PASS** with Q8 criteria 1/4/5 PASS and immutable
+pre/postflight green, and closed CP4c-0 directly. The inclusion argument was true but irrelevant — CP4c-0 closed on
+its own gate.
+
+The mechanical cause is worth naming: my scan was `grep … | tail -3` over a **reverse-chronological** changelog, so
+it returned the three *oldest* matches — forward-looking "exact next" lines from before the run — while the
+acceptance entry sat above them. On a newest-first log, `tail` shows the past. `LESSONS.md` 168 (rewritten by
+M4-DEFN) now carries the general rule, extended here with that concrete trap.
+
+**M4-DEFN itself is upheld and is strong.** Verified against every obligation standing on it:
+
+- **§10 witness and reachability matrix** discharges the rule CP4c failed — each witness row states current
+  provenance, its checkpoint, and an explicit **gate status rule**. Unbuilt preconditions are "gating only after
+  independently proved precondition/reachability"; the uncalibrated S1 envelope is **non-gating diagnostic**; the
+  field-admissibility row requires the expectation be *derived, not hand asserted* — the exact defect behind
+  ordinal 374; and genus ≥ 2 is gating "only after a genus≥2 fixture reaches A3", with the genus-1 torus declared
+  insufficient.
+- **§2** collapses the two overlapping decompositions into one chain (CP1 authority → CP2 certification/typed
+  infeasibility → CP3 producer cutover → CP4 debts, plus CP-COND/CP-SCALE), as ORIENTATION §7 required.
+- **§11.2** adjudicates `G4-B004` **out** of M4 — M5 owns the relation/certificate witness, M6 the
+  occurrence/embedding consumption — adding no M4 gate identity and resolving the old M5/M6 ambiguity.
+- **§12** bases M4's selector on **selector365 byte-for-byte** (the stale "entering gate 322" is gone), and §12.8
+  explicitly bars copying the four M3 audit reds into M4's accepted prefix merely because selector409 exists.
+  Ordinal 369 stays under its own owner and is not reinterpreted as schedule authority.
+- Its closing rule is the right one: **"A prose obligation that has no selector identity is not gate-enforced and
+  must be labeled as such."**
+- `ROADMAP.md` was updated in-turn again — the standing-doc-set note has now held twice.
+
+**Artifact corrected.** The published roadmap carried my false claim in three places; all are replaced with the
+TB-R9 346/346 fact, and the page is moved forward to `M4-DEFN` frozen / `M4-CP1-CB1` next.
+
 ## 2026-09-09 — `M3-CP4c-3-TB48-REV` verification pass: M3 closure upheld; CP4c-0's basis recorded
 
 
