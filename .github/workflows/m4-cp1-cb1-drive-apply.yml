@@ -1,0 +1,48 @@
+name: M4 CP1 CB1 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp1-cb1-drive-apply-20260909.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp1-cb1-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp1-cb1-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp1-cb1-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply-drive-patch:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1Z_WiLjvM1FLu5WayiV1TsisXSyWWDeaF
+      patch_sha256: 5ac4748b74902fb385130e15829946c626e6a4a395c30d900153f4b033c9a9b1
+      base_sha: 3ef59b9deeb83040f713055840fd9117c5ea6106
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: record M4-CP1-CB1 solver-contract stop"
+      retention_days: 14
+    secrets: inherit
