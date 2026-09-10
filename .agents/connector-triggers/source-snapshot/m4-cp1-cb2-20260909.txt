@@ -1,4 +1,0 @@
-purpose=M4-CP1-CB2 source snapshot
-semantic_source_sha=075f3c738d8f689437397fe925faa7eb12d72ac3
-read_mode=snapshot
-retry=0

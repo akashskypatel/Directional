@@ -1,6 +1,0 @@
-purpose=M4-CP1-CB2 stop-documentation patch apply
-base_sha=9c32b5bd932dd17c40a7fe12c2441547e1ecc6a5
-patch_sha256=5ce4b67725076cba6267150c524236c44ee7c331dbbdc1cd5fab500c483aa5a5
-drive_file_id=1iOGL4dAYtVq5IWROSCbs8dbBfLi07Gf6
-caller_commit=57e8812162de2555f605e6832e5611e0f5b41fec
-retry=0
