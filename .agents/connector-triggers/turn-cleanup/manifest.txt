@@ -1,4 +1,0 @@
-# M4-CP2-CB1 temporary repository state
-.agents/connector-triggers/m4-cp2-cb1-closeout-apply/trigger.txt
-.agents/connector-triggers/m4-cp2-cb1-compile/trigger.txt
-.agents/connector-triggers/source-snapshot/2026-09-10T1719Z.txt

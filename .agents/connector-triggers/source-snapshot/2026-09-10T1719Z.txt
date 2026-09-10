@@ -1,2 +1,0 @@
-requested_parent_sha=29fc0356d1daab7aa56cf74c8f9fa158c390dcf3
-purpose=chatgpt-web-source-snapshot

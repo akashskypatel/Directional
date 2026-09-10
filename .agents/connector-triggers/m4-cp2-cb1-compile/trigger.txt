@@ -1,5 +1,0 @@
-turn=M4-CP2-CB1
-source_sha=eb23177e6ee9cbb27cf1ee30a299911abc0e1c60
-artifact_prefix=directional-m4-cp2-cb1-package116
-runtimeExecution=false
-attempt=4
