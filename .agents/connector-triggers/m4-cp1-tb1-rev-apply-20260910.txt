@@ -1,3 +1,0 @@
-M4-CP1-TB1-REV durable review/CB4-plan patch application trigger.
-Patch base: 40a6a397f4d4ec4060cb0c79d3913492e38bed30
-Patch SHA-256: 05d2467c55f546aafa5e34ab982a5738c787fc3fcad7cca6787876bddc6cb51c

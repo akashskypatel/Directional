@@ -1,2 +1,0 @@
-.agents/connector-triggers/source-snapshot/m4-cp1-tb1-rev-20260910.txt
-.agents/connector-triggers/m4-cp1-tb1-rev-apply-20260910.txt

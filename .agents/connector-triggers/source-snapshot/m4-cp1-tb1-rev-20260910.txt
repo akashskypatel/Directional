@@ -1,3 +1,0 @@
-M4-CP1-TB1-REV source snapshot trigger.
-Expected semantic parent: 78389a5364e4576f40867e81df4275a4ee170835
-Purpose: runtime-free independent Review + Plan static inspection.
