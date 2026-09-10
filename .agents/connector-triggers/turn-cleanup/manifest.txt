@@ -1,0 +1,8 @@
+# M4-CP1-CB3 temporary state
+.agents/connector-triggers/m4-cp1-cb3-closeout-apply-20260910.txt
+.agents/connector-triggers/m4-cp1-cb3-cmake-fix-apply-20260910.txt
+.agents/connector-triggers/m4-cp1-cb3-compile-20260910.txt
+.agents/connector-triggers/m4-cp1-cb3-plan-fix-apply-20260910.txt
+.agents/connector-triggers/m4-cp1-cb3-validator-apply-20260910.txt
+.agents/connector-triggers/m4-cp1-cb3-wip-apply-20260910.txt
+.agents/connector-triggers/source-snapshot/m4-cp1-cb3-start-20260909.txt
