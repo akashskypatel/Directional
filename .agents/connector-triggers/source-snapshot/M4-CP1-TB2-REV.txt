@@ -1,0 +1,3 @@
+turn=M4-CP1-TB2-REV
+semantic_source=b70d093bfbe20fdfa5f85563b3660ad0609ed0d7
+read_mode=snapshot
