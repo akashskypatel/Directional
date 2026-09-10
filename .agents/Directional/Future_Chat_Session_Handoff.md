@@ -116,55 +116,49 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-CP1-CB2` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
+## Mandatory next turn — `M4-CP1-CB2-REV` — EXACT NEXT / INDEPENDENT REVIEW / RUNTIME-FREE
 
-`M4-CP1-CB1-REV` is COMPLETE. It independently upheld CB1's pre-mutation stop and resolved the solver/complexity contradiction without weakening M4 exactness or polynomial complexity. Exact next is the canonical Code + Build implementation turn `M4-CP1-CB2` under `Architecture_M4_CP1_CB2_Code_Build_Plan.md`.
+`M4-CP1-CB2` **STOPPED BEFORE SEMANTIC MUTATION** at the exact algorithm-traceability guard frozen in `Architecture_M4_CP1_CB2_Code_Build_Plan.md` §CB2.5. The selected Gabow 1983 paper/technical report names arbitrary-capacity minimum-cost biflow as problem (5) and gives the polynomial bound, but explicitly says problem (5) will be discussed elsewhere; it does not disclose the algorithm CB2 is required to trace. Implementing missing details or silently substituting a different solver while retaining the frozen Gabow authority tag/bound would violate the plan. Blocker authority: `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`.
 
-### Authority entering M4-CP1-CB2
+Per the turn boundary, the agent loop stops here. Exact next is independent `M4-CP1-CB2-REV`; no implementation, compile/package, test, benchmark, or Directional runtime is authorized before that review.
+
+### Authority entering M4-CP1-CB2-REV
 
 - reviewed runtime authority remains package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, TB48 `34409262512 / 102659650326`;
 - accepted required-green predecessor remains selector365, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; selector409 remains final-M3 audit evidence only;
-- entering branch authority for the independent review was `0edf8042b5b01d5fef423790669274e8da62ff63`; review source snapshot run/job `34423780205 / 102704615928` captured control SHA `61e5b4394a9e91407a2b084a773c4cafaa8d6b6a`, artifact `10131877788`, provider digest `sha256:38cc234cc3eb46e4d01536979ebb89f43df8bef9fb553ad7207aff872e64046e`, with 5222/5222 manifest files verified and `runtimeExecution=false`;
-- `M4-CP1-CB1` made no semantic product/test/build/selector mutation and no compile/package/runtime occurred; its blocker and consumed plan are folded into `M4_Consolidated_Record.md` by the completed review;
-- current M4 definition authority is `Architecture_M4_DEFN_Frozen_Definitions.md` **as amended by `M4-CP1-CB1-REV`**; review authority is `Architecture_M4_CP1_CB1_Independent_Review_Record.md`;
+- CB2 semantic source was frozen at `075f3c738d8f689437397fe925faa7eb12d72ac3`; ChatGPT-Web snapshot control commit `9c32b5bd932dd17c40a7fe12c2441547e1ecc6a5` differs from it only by `.agents/connector-triggers/source-snapshot/m4-cp1-cb2-20260909.txt`;
+- source-snapshot run/job `34429824055 / 102722806001` produced artifact `10134050428`, provider digest `sha256:ca75c3869f3a6e6039fcce3f663887c9748a58b0810a1d062747d991ba221c22`, archive SHA-256 `8c0f21fcb68963a5b96055939162f41aa768ec91aa3a2991eadc412740ab8f5d`, with 5222/5222 manifest files verified and `runtimeExecution=false`;
+- `M4-CP1-CB2` made no semantic product/test/fixture/selector/build mutation and ran no compile/package/runtime; therefore package count and semantic runtime authority do not advance;
+- current M4 definition authority remains `Architecture_M4_DEFN_Frozen_Definitions.md` as amended by `M4-CP1-CB1-REV`; current CB2 blocker authority is `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`;
 - stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, packages **113**, ownership **300/0/0**;
-- M4 chain remains `M4-CP1 -> M4-CP2 -> M4-CP3 -> M4-CP-COND -> M4-CP-SCALE -> M4-CP4`; M4 still owns the three `G4-B002` produced-witness debts and `G4-B004` remains split M5/M6.
+- M4 chain remains `M4-CP1 -> M4-CP2 -> M4-CP3 -> M4-CP-COND -> M4-CP-SCALE -> M4-CP4`.
 
-### Solver contract now frozen
+### Exact review question
 
-The semantic objective is unchanged: `J(x)=(sum|x_s-d_s|,x_1,...,x_E)` over positive exact full-span counts satisfying exact incidence balance/parity. `M4-CP1-CB1-REV` proves that this L1 special case is exact Integral Bi-MCF under `x=d+p-n`. For a feasible component, an extreme-ray/minor/Hadamard argument gives `H=E*2^V` and optimum cap `U=2D+E*H`; these are arbitrary-precision proof/capacity values, never iteration ranges. `Q=U+1`, `L=Q^E`, and base-`Q` weights provide an exact theorem-derived scalar encoding of the semantic lexicographic tie. The private solver primitive is Gabow 1983 arbitrary-capacity minimum-cost biflow with published `O(E'^2 log V' log Cmax)` combinatorial bound. Heuristic/floating/machine-width big-M remains prohibited; this exact mixed-radix encoding is the sole permitted scalar implementation encoding.
+The review must adjudicate a **traceable exact solver authority**. The currently selected 1983 source supplies a theorem-level complexity claim but defers the arbitrary-capacity minimum-cost algorithm. The review must either locate the missing primary algorithmic publication or freeze another exact combinatorial solver/reduction together with its own representation proof, deterministic tie semantics, and polynomial work-evidence contract. It may not transfer the Gabow 1983 tag/bound to an unrelated implementation by assertion. M4's semantic objective/exactness requirements remain frozen unless the independent review explicitly proves and records a justified amendment.
 
-`libSatsuma` is retained only as an illustrative Bi-MDF/Bi-MCF reference because upstream uses `FlowScalar=int` and `TargetScalar/CostScalar=double`; it is not M4's normative numeric implementation. The old guessed universal `P(V,E,B)` countdown is withdrawn. WorkLedger instead binds the selected polynomial theorem to exact transformed dimensions/capacity/cost bit-widths and implementation phase counters, with every actual loop still finitely bounded and zero retry/reset.
-
-### CP1/CP2 oracle boundary
-
-CP1's production validator independently recomputes structural bindings, exactification, feasibility, parity, objective, cap/radix identities, WorkLedger dimensions/bit-widths and semantic digest, but does not implement a second generic production optimizer. CP1 focused tests use a separate hard-bounded tiny exact oracle to falsify solver optimum/tie behavior. CP2 still adds the scalable carried optimality witness/certificate and its independent production verifier before CP3 may wire A4 to the schedule.
-
-### Exact CB2 scope
-
-`M4-CP1-CB2` must implement the standalone known-feasible A3 product, exact binary64 ingress, exact L1->Bi-MCF normalization, finite-capacity proof values, exact lex encoding, Gabow arbitrary-capacity min-cost biflow solver, independent structural validator, focused compiled CP1 tests, first append-only M4 selector from selector365, and mandatory GMP/GMPXX compile/package evidence. It must not execute a Directional binary/test/benchmark, change M3 selector bytes, cut A4 over, or pull CP2/CP-COND/CP-SCALE/M5/M6 semantics forward.
-
-### Context Load Plan for `M4-CP1-CB2`
+### Context Load Plan for `M4-CP1-CB2-REV`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CODE_BUILD.md
+  - turn-based-coding-agent/references/turns/REVIEW.md
 conditional_modules:
-  - trigger: code implementation / bounded source audit
+  - trigger: independent solver/algorithm adjudication
     path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
-  - trigger: ChatGPT Web GitHub compile/patch orchestration
+  - trigger: ChatGPT Web source/evidence acquisition
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP1_CB2_Algorithm_Blocker.md
   - .agents/Directional/Architecture_M4_CP1_CB2_Code_Build_Plan.md
   - .agents/Directional/Architecture_M4_CP1_CB1_Independent_Review_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
   - .agents/Directional/DESIGN.md
-  - .agents/Directional/GMP_COMPILE_POLICY.md
+  - .agents/Directional/LESSONS.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
 templates_when_producing: []
 do_not_preload:
-  - folded CB1 plan/blocker text; resolve through M4_Consolidated_Record.md if historical detail is needed
   - unrelated M3 per-turn history
+  - implementation source outside the solver/product boundary unless review evidence requires it
 ```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

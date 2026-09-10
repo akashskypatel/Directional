@@ -1,3 +1,11 @@
+## 2026-09-10 — `M4-CP1-CB2` stops at frozen algorithm-traceability guard; no semantic mutation
+
+Canonical Code + Build investigation only; no Directional runtime, compile, package, selector mutation, product/test/fixture/build change, or reusable-workflow permission change. Semantic source was frozen at `075f3c738d8f689437397fe925faa7eb12d72ac3`; source-snapshot run/job `34429824055 / 102722806001` captured control SHA `9c32b5bd932dd17c40a7fe12c2441547e1ecc6a5` (only the source-snapshot marker differs), artifact `10134050428`, provider digest `ca75c3869f3a6e6039fcce3f663887c9748a58b0810a1d062747d991ba221c22`, archive SHA-256 `8c0f21fcb68963a5b96055939162f41aa768ec91aa3a2991eadc412740ab8f5d`, 5222/5222 files verified, `runtimeExecution=false`.
+
+CB2's explicit algorithm-traceability guard fired before implementation. The selected Gabow 1983 STOC/Colorado report identifies arbitrary-capacity minimum-cost biflow as problem (5) and publishes the `O(E^2 log V log C)` bound, but explicitly says problem (5) will be discussed elsewhere; its algorithm is not disclosed in the selected source. CB2 therefore cannot honestly implement and tag a private solver as `Gabow1983ArbitraryCapacityMinCostBiflow`, populate implementation-specific WorkLedger counters, and claim that bound without inventing missing details or silently substituting another algorithm. A bounded source search did not locate a disclosed primary follow-on algorithm; this is recorded as a traceability blocker, not an exhaustive nonexistence claim.
+
+Blocker record: `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`. Exact next is independent runtime-free `M4-CP1-CB2-REV`; no implementation/compile/runtime is authorized first. Stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**, ownership **300/0/0**.
+
 ## 2026-09-10 — `M4-CP1-CB1-REV` verification pass: upheld; solver-library authorization recorded and scoped
 
 Static verification of the delegated `M4-CP1-CB1-REV`. No runtime, no compile, no package operation, no

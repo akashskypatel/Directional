@@ -1,12 +1,12 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-09/10 at `M4-CP1-CB1-REV`
+**Last updated:** 2026-09-10 at `M4-CP1-CB2` pre-mutation stop
 
 This record holds M4 history that has been folded under the review-turn consolidation policy. Normative current M4
 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current independent review authority is
 `Architecture_M4_CP1_CB1_Independent_Review_Record.md`; the exact current successor plan lives in
-`Architecture_M4_CP1_CB2_Code_Build_Plan.md`; task/state pointers live in `TODO.md` and
+`Architecture_M4_CP1_CB2_Code_Build_Plan.md`; current blocker authority is `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`; task/state pointers live in `TODO.md` and
 `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
@@ -30,7 +30,9 @@ that CP4c-0 TB-R9 never ran: run `33079817998` is the direct 346/346 CP4c-0 clos
 
 CB1 subsequently stopped before semantic mutation because its solver contract had no implementable exact polynomial authority. Independent `M4-CP1-CB1-REV` upheld that stop and amended the solver contract: the frozen L1 objective is exact Integral Bi-MCF under `x=d+p-n`; `H=E*2^V` and `U=2D+E*H` provide a theorem-derived finite optimum cap; exact mixed-radix weights preserve the semantic lexicographic tie; Gabow 1983 arbitrary-capacity minimum-cost biflow is the production algorithmic authority; libSatsuma is illustrative only; and CP2 retains scalable carried optimality certification.
 
-Exact next is `M4-CP1-CB2`.
+`M4-CP1-CB2` subsequently stopped before semantic mutation at its frozen algorithm-traceability guard. The selected Gabow 1983 source states the arbitrary-capacity minimum-cost biflow bound but explicitly defers problem (5), so the required implementation cannot be traced to the selected algorithm without invention or substitution. No semantic source/test/selector/build mutation and no compile/package/runtime occurred. Blocker: `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`.
+
+Exact next is independent `M4-CP1-CB2-REV`.
 
 ## 3. Folded document index
 

@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-09/10 (**M3 CLOSED / ACCEPTED at TB48-REV; `M4-DEFN` COMPLETE / AMENDED by `M4-CP1-CB1-REV`.** Package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` is reviewed runtime authority: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted required-green **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Stable accounting **47 / 14 / 33**, debt 5, packages 113. **NEXT: `M4-CP1-CB2`**, runtime-free Code + Build.)
+**Status date:** 2026-09-09/10 (**M3 CLOSED / ACCEPTED at TB48-REV; `M4-DEFN` COMPLETE / AMENDED by `M4-CP1-CB1-REV`.** Package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` is reviewed runtime authority: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted required-green **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Stable accounting **47 / 14 / 33**, debt 5, packages 113. **`M4-CP1-CB2` STOPPED PRE-MUTATION at its algorithm-traceability guard; NEXT: independent `M4-CP1-CB2-REV`**, runtime-free.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -22,7 +22,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **definition complete/amended / CP1 implementation next** | `Architecture_M4_DEFN_Frozen_Definitions.md` amended by `M4-CP1-CB1-REV`; exact next `M4-CP1-CB2`; accepted predecessor selector365. |
+| M4 | **definition complete/amended / CP1 solver authority under review** | `M4-CP1-CB2` stopped before semantic mutation because the selected Gabow 1983 source defers the required arbitrary-capacity minimum-cost algorithm; exact next `M4-CP1-CB2-REV`; accepted predecessor selector365. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -422,7 +422,7 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 | Checkpoint | Semantic domain | Notes |
 |---|---|---|
 | `M4-DEFN` | **COMPLETE:** frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` | planning only / runtime-free |
-| `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling is exact finite-capacity Integral Bi-MCF with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **EXACT NEXT: `M4-CP1-CB2`** |
+| `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling is exact finite-capacity Integral Bi-MCF with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **CB2 STOPPED PRE-MUTATION; EXACT NEXT: `M4-CP1-CB2-REV`** |
 | `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | adds certificates/infeasible alternative without changing CP1 feasible schedule semantics |
 | `M4-CP3` | producers **consume** the verified schedule; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | removes `G4-B002` product blocker |
 | `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with conditioned-source/raw correspondence and typed inadmissibility | developed after A3 core without becoming a hidden schedule precondition |

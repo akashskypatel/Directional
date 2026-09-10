@@ -26,7 +26,7 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-CP1-CB2` — CODE + BUILD / RUNTIME-FREE
+## Current focus — `M4-CP1-CB2-REV` — INDEPENDENT REVIEW / RUNTIME-FREE
 
 `M4-DEFN` is **COMPLETE / AMENDED**. Frozen authority: `Architecture_M4_DEFN_Frozen_Definitions.md`, amended by independent `M4-CP1-CB1-REV`. M3 remains CLOSED / ACCEPTED; package113/TB48 remains reviewed runtime authority; the accepted M4 predecessor is selector365, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains final-M3 audit evidence only.
 
@@ -34,7 +34,9 @@ M4 uses exactly one checkpoint chain: **CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE
 
 `M4-CP1-CB1` correctly stopped before semantic mutation because the original solver contract over-specified a general arbitrary-precision Bi-MDF implementation plus a per-transition polynomial countdown that neither libSatsuma nor the cited exact refinement theorem supplied. Independent `M4-CP1-CB1-REV` resolved that ambiguity without weakening exactness or polynomial complexity: the frozen L1 objective linearizes exactly to Integral Bi-MCF via `x=d+p-n`; feasible components have theorem-derived optimum cap `U=2D+E^2*2^V`; the lexicographic tie is encoded exactly with a proof-derived mixed radix; and the solver primitive is Gabow 1983 arbitrary-capacity minimum-cost biflow with published `O(E'^2 log V' log Cmax)` combinatorial bound. libSatsuma is illustrative only. CP1 uses an independent structural validator plus fixed-small exact optimum test oracles; scalable carried optimality certification remains CP2.
 
-Exact next is **`M4-CP1-CB2`**, canonical Code + Build / runtime-free under `Architecture_M4_CP1_CB2_Code_Build_Plan.md`. No test, benchmark or Directional runtime is authorized in CB2.
+`M4-CP1-CB2` **STOPPED BEFORE SEMANTIC MUTATION** at its frozen algorithm-traceability guard. The selected Gabow 1983 source states the arbitrary-capacity minimum-cost biflow complexity claim but explicitly defers problem (5) instead of disclosing the algorithm, so CB2 cannot honestly implement a solver tagged/traced as that algorithm without invention or substitution. Blocker: `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`.
+
+Exact next is **`M4-CP1-CB2-REV`**, independent Review + Plan / runtime-free. No implementation, compile/package, test, benchmark or Directional runtime is authorized before review adjudicates one traceable exact solver authority.
 
 - [x] Reconcile M4 checkpoint decompositions into one chain.
 - [x] Freeze one `GlobalConformityPlan` writer: one count per full A2b arc, exact support path/incidence multiplicity, mandatory parity, compact exact-ordinal breakpoint generation, and bit-exact target binding.
@@ -42,7 +44,8 @@ Exact next is **`M4-CP1-CB2`**, canonical Code + Build / runtime-free under `Arc
 - [x] Adjudicate `G4-B004` to M5 focused production + M6 representative consumption.
 - [x] Attempt `M4-CP1-CB1` until its explicit algorithm stop condition; no semantic source/test/build/selector mutation and no compile/runtime occurred.
 - [x] Complete independent `M4-CP1-CB1-REV`: uphold stop, specialize L1 to exact finite-capacity Integral Bi-MCF, freeze Gabow 1983 solver contract, exact lex encoding, WorkLedger correction and CP1/CP2 oracle boundary.
-- [ ] Execute `M4-CP1-CB2` exactly as frozen: implement product/solver/structural validator/focused compiled tests/first M4 selector, compile/package with mandatory GMP/GMPXX, and execute no Directional runtime.
+- [x] Attempt `M4-CP1-CB2` until its explicit algorithm-traceability stop condition; no semantic product/test/build/selector mutation and no compile/package/runtime occurred.
+- [ ] Complete independent `M4-CP1-CB2-REV`: adjudicate a traceable exact solver algorithm/publication and corresponding polynomial work-evidence contract before another CB is authorized.
 
 ## Carried forward from M1
 
@@ -81,7 +84,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB2` NEXT**; `M4-DEFN` is amended by the completed CB1 review and M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB2-REV` NEXT**; `M4-DEFN` is amended by the completed CB1 review and M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -121,4 +124,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-DEFN` is COMPLETE / AMENDED and exact next is runtime-free Code + Build **`M4-CP1-CB2`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-DEFN` is COMPLETE / AMENDED, `M4-CP1-CB2` stopped before semantic mutation at the frozen algorithm-traceability guard, and exact next is independent runtime-free **`M4-CP1-CB2-REV`**. PR #8 remains open, draft, and unmerged.
