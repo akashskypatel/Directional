@@ -1,0 +1,146 @@
+name: M4 CP2 TB1 Artifact-Only Execute
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp2-tb1-exec/trigger.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp2-tb1-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp2-tb1-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp2-tb1-control.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" "repository=$GITHUB_REPOSITORY" \
+            'turn=M4-CP2-TB1-EXEC' 'turnBoundary=Test+Benchmark-artifact-only' \
+            'compileExecution=false' 'benchmarkExecution=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Prepare derived CP2 harness
+        shell: bash
+        env:
+          EXPECTED_HELPER_SHA256: 'a4bb700edd04c43167ccaf3d3a58978bbb66166c74c5319423b46f8350f1a522'
+          EXPECTED_HARNESS_SHA256: '2764f41f039574bcee51c06c257af135a2dab77762b579246633417661685d4c'
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp2-tb1-control.log"
+          exec > >(tee -a "$log") 2>&1
+          helper='.agents/Directional/turn-payloads/m4-cp2-tb1-control.py'
+          base='.agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh'
+          harness="${RUNNER_TEMP}/m4-cp2-tb1-artifact-only-harness.sh"
+          test "$(sha256sum "$helper" | awk '{print $1}')" = "$EXPECTED_HELPER_SHA256"
+          python3 "$helper" prepare "$base" "$harness"
+          bash -n "$harness"
+          actual="$(sha256sum "$harness" | awk '{print $1}')"
+          echo "derived_harness_sha256=$actual"
+          test "$actual" = "$EXPECTED_HARNESS_SHA256"
+          git status --short
+
+      - name: Execute immutable package116 gate
+        id: runtime
+        continue-on-error: true
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+          TURN_ID: M4-CP2-TB1-EXEC
+          ARTIFACT_ID: '10166351695'
+          EXPECTED_ARTIFACT_NAME: directional-m4-cp2-cb1-package116-result-34512397141
+          EXPECTED_PROVIDER_DIGEST: 'sha256:c61b9900a2745454594825de81181ce982ec4b7986f40aa3b23c23e12d0e8e61'
+          EXPECTED_ZIP_SHA256: 'c61b9900a2745454594825de81181ce982ec4b7986f40aa3b23c23e12d0e8e61'
+          EXPECTED_SELECTOR_SHA256: '512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4'
+          EXPECTED_PREFIX_SHA256: '6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b'
+        run: |
+          set -o pipefail
+          bash "${RUNNER_TEMP}/m4-cp2-tb1-artifact-only-harness.sh" --execute
+
+      - name: Independently audit semantic ledgers
+        id: audit
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="${RUNNER_TEMP}/M4-CP2-TB1-EXEC-result"
+          if [[ -d "$result" ]]; then
+            python3 .agents/Directional/turn-payloads/m4-cp2-tb1-control.py audit "$result"
+            cat "$result/semantic-audit-summary.txt"
+          else
+            echo 'result directory absent' >&2
+            exit 2
+          fi
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m4-cp2-tb1-control.log"
+          printf '%s\n' \
+            "runtime_step_outcome=${{ steps.runtime.outcome }}" \
+            "audit_step_outcome=${{ steps.audit.outcome }}" \
+            "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)" \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+          git status --short 2>&1 | tee -a "$log" || true
+
+      - name: Upload TB result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m4-cp2-tb1-exec-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M4-CP2-TB1-EXEC-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m4-cp2-tb1-exec-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/M4-CP2-TB1-EXEC.log
+            ${{ runner.temp }}/m4-cp2-tb1-control.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Enforce orchestration status
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ steps.runtime.outcome }}" = success
+          test "${{ steps.audit.outcome }}" = success
