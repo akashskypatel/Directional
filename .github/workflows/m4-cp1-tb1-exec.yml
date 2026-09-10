@@ -321,16 +321,15 @@ jobs:
             semantic_ok="true"
 
             focused_names="${result_dir}/focused-identities.txt"
-            cat > "$focused_names" <<'EOF'
-GlobalConformityPlan.MultiPieceCompactOrdinalsAndReverseIncidenceSymmetry
-GlobalConformityExactSolver.PreservesSameRowBidirectedMultiplicityPositivityAndParity
-GlobalConformityPlan.ExactBinary64IngressCanonicalizesSignedZeroAndSubnormal
-GlobalConformityExactSolver.HugeExactCapRadixAndLexObjectiveNeverNarrow
-GlobalConformityExactSolver.FixedM2RefinementMatchesSeparateTinyExhaustiveOracle
-GlobalConformityExactSolver.GenuinelyBidirectedLoopPermutationAndReversalAreDeterministic
-GlobalConformityPlan.IndependentValidatorRejectsTamperMatrix
-GlobalConformityExactSolver.ExactValuesExceedLibSatsumaAndBlossomScalarWidths
-EOF
+            printf '%s\n' \
+              'GlobalConformityPlan.MultiPieceCompactOrdinalsAndReverseIncidenceSymmetry' \
+              'GlobalConformityExactSolver.PreservesSameRowBidirectedMultiplicityPositivityAndParity' \
+              'GlobalConformityPlan.ExactBinary64IngressCanonicalizesSignedZeroAndSubnormal' \
+              'GlobalConformityExactSolver.HugeExactCapRadixAndLexObjectiveNeverNarrow' \
+              'GlobalConformityExactSolver.FixedM2RefinementMatchesSeparateTinyExhaustiveOracle' \
+              'GlobalConformityExactSolver.GenuinelyBidirectedLoopPermutationAndReversalAreDeterministic' \
+              'GlobalConformityPlan.IndependentValidatorRejectsTamperMatrix' \
+              'GlobalConformityExactSolver.ExactValuesExceedLibSatsumaAndBlossomScalarWidths' > "$focused_names"
 
             run_gtest "focused-run1" "$focused_filter" "8" "$focused_names"
             run_gtest "focused-run2" "$focused_filter" "8" "$focused_names"
