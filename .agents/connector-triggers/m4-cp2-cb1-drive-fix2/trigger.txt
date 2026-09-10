@@ -1,5 +1,0 @@
-turn=M4-CP2-CB1
-base_sha=29c0b4ba428b0ed31e585314d194524fc6ff691d
-file_id=1omw9PqrBfWmEyKbinN6msgkfc2FK-3_h
-patch_sha256=51d0b3886cada5e88132de691344d5dd0a4d16115ccab5d01e33b8b09c585e17
-attempt=2
