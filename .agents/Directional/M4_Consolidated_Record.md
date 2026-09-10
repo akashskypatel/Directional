@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP2-TB1-REV` adjudication
+**Last updated:** 2026-09-10 at `M4-CP2-TB2-EXEC` invalid-attempt closeout
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; current raw runtime evidence is `Architecture_M4_CP2_TB1_Test_Benchmark_Report.md`; current review authority is `Architecture_M4_CP2_TB1_Review_Record.md`; and the exact next plan is `Architecture_M4_CP2_CB2_Code_Build_Plan.md`. Package115/selector373 remains accepted M4 runtime authority; package116/selector380 is retained unpromoted evidence. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; latest **valid semantic** CP2 runtime evidence remains `Architecture_M4_CP2_TB1_Test_Benchmark_Report.md`; current invalid-attempt provenance is `Architecture_M4_CP2_TB2_Test_Benchmark_Report.md`; current review authority is `Architecture_M4_CP2_TB1_Review_Record.md`; and the exact next plan is `Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md`. Package115/selector373 remains accepted M4 runtime authority; package117/selector382 is compiled immutable candidate authority but has no valid TB2 semantic verdict yet. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -185,6 +185,13 @@ These are review-time non-stable contract candidates, not observed runtime produ
 CB2 repaired all four review-directed non-stable contract candidates without runtime execution. Ordinal374 now uses a live parity-obstructed `±2` fixture whose exhaustive optimum `(1,2,2,2)` differs from its magnitude-one twin `(1,2,1,1)` and emits the deterministic success receipt required by CAND-01/04. WorkLedger now carries finite-convergence assurance plus overall maximum exact width and the independent verifier covers initializer dimensions, refinement history/count, width/maxima and peak matching families; ordinal381 guards this tamper surface. `GlobalConformityOutcome` now carries a full CP2 semantic digest over normalized input, ordered supports, canonical component outcomes, certificate/ledger evidence, infeasible subsets and optional CP1 plan identity, with separate independent verifier derivation; ordinal382 guards feasible/infeasible/permutation/tamper semantics.
 
 Exact semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f` compiled under run/job `34529050994 / 103045247639`. Candidate package117 artifact `10172820820` hashes to `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`; compile-log artifact `10172821494` hashes to `9ad32693bebf78fc757dec039598083df15b38defdcb0edfe5fed6060b6337f2`. Selector382 is 382 LF rows at `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`, preserving exact selector380 and accepted selector373 prefixes; static owner partition is **30 / 236 / 75 / 41**. Package `SHA256SUMS` verifies **28/28**, GMP/GMPXX is linked, source status is clean and `runtimeExecution=false`. Package117 remains unpromoted; accepted runtime authority remains package115/selector373. Exact next is artifact-only `M4-CP2-TB2-EXEC`.
+
+
+## 2.12 `M4-CP2-TB2-EXEC` — process set completes; postflight orchestration invalidates attempt
+
+Artifact-only run/job `34532107988 / 103055098832` validly preflighted immutable package117 and then launched the frozen focused/cumulative process set. Audit-only observations were focused 374/381/382 **3/3 twice** with the required ordinal374 receipt once per focused log and cumulative selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, correction rows **2/2**, owners **30/236/75/41**, zero process RED/SKIP/timeout/selection mismatch.
+
+The attempt has **no semantic credit**. Preflight named the execution-view census `execution-view-before.tsv`; postflight required `execution-view-census-before.tsv` and exited `90` after all processes completed. Independent comparison of the actual before/after census files proves package, extracted source, and execution-view bytes remained identical, so package117 is reusable unchanged. `M4-CP2-TB2-EXEC-CAND-01` is OPEN / ORCHESTRATION / NON-STABLE; stable accounting stays **47 / 14 / 33**, debt **5**, accepted package authority **115**. Exact next is control-plane-only runtime-free `M4-CP2-CB3`; its successful successor must re-execute the same frozen gate as `M4-CP2-TB2-R1-EXEC` against package117.
 
 ## 3. Folded document index
 

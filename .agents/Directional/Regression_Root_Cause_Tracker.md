@@ -1,3 +1,12 @@
+## M4-CP2-TB2-EXEC-CAND-01 — **OPEN / ORCHESTRATION / NON-STABLE / HARNESS POSTFLIGHT RECEIPT-NAME MISMATCH / OWNER M4-CP2-CB3**
+
+- **Attempt:** `M4-CP2-TB2-EXEC`, run/job `34532107988 / 103055098832`, immutable package117 artifact `10172820820`, semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f`. Result/log artifacts `10174031432 / 10174032131`, SHA-256 `7742a385e5f2f0b408a5a946a836915abf1a636057d7b3fe0c6612f6dce88a44 / d15ecf14508eb49a154bb443df184de0daf892e9d99635d369f1d0f9d283278b`.
+- **Root cause:** preflight persisted `execution-view-before.tsv`, while postflight attempted to open `execution-view-census-before.tsv`. All runtime processes had finished, but the required postflight contract then failed with `gate_exit=90`. This is deterministic harness orchestration, not product/test/fixture/selector/package semantic RED.
+- **Audit-only observations:** focused 374/381/382 `3/3` twice with the ordinal374 receipt exactly once in each focused raw log; cumulative process loop `382/382`, predecessor `373/373`, CP2 `7/7`, correction `2/2`, owner outcomes `30/236/75/41`, zero process RED/SKIP/timeout/selection mismatch. **No semantic gate credit is assigned** because postflight failed.
+- **Immutability:** actual before/after census bytes are independently equal for package (`c45c423e...`), extracted source (`67726528...`), and execution view (`1a5b1de7...`). Package117 is therefore reusable unchanged; this does not rehabilitate the invalid attempt.
+- **Corrective measure:** `M4-CP2-CB3` must make the execution-view preflight writer and postflight reader use one canonical census basename, without product/test/fixture/selector/CMake/package changes, compile/repackage, or Directional runtime. Then `M4-CP2-TB2-R1-EXEC` re-executes the frozen gate against package117.
+- **Stable-count rationale:** orchestration-invalid/non-stable; **+0 event / +0 category / +0 recurrence**. Totals remain **47 / 14 / 33**, debt **5**, accepted package authority **115**.
+
 ## M4-CP2-TB1-REV adjudication — **CURRENT REVIEW / PACKAGE116 NOT PROMOTED / CP2 OPEN / THREE NON-STABLE CONTRACT CANDIDATES**
 
 - Same-agent review is user-authorized; independence is primary-evidence re-opening plus independent source/evidence re-derivation. No Directional runtime or compile occurred in review.

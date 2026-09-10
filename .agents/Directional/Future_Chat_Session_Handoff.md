@@ -118,46 +118,55 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 **Same-agent REVIEW/DEFN is allowed — user-authorized 2026-09-10.** The same agent/session may perform a REVIEW, REVIEW + PLAN, or DEFN turn even when it authored or executed an earlier turn in the same chain. "Independent" in review/oracle/verification language means independent **evidence, re-derivation, authority, or implementation path**, not required personnel separation, unless a specific criterion explicitly says otherwise. A same-agent REVIEW must re-open primary evidence and re-derive decisive facts; a same-agent DEFN remains planning/runtime-free. All cadence, stop, validation-integrity, source-authority, compile/runtime, and acceptance boundaries remain unchanged.
 
-## Mandatory next turn — `M4-CP2-TB2-EXEC` — EXACT NEXT / ARTIFACT-ONLY TEST + BENCHMARK
+## Mandatory next turn — `M4-CP2-CB3` — **EXACT NEXT / RUNTIME-FREE ORCHESTRATION CORRECTION**
 
-`M4-CP2-CB2` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / PACKAGE117 CANDIDATE**. The corrective semantic source is `534c0d41ae05b31e66711f21f4b4280b59f6483f`. It repairs review candidates CAND-01 through CAND-04 without promoting runtime behavior: ordinal374 now uses a load-bearing `±2` fixture and deterministic success-visible receipt; WorkLedger carries and independently verifies frozen assurance/bounds/history; and `GlobalConformityOutcome` carries an additive semantic digest independently re-derived by the validator.
+`M4-CP2-TB2-EXEC` is formally complete as an **orchestration-invalid attempt with no semantic credit**.
 
-### Candidate and accepted authority
+### Immutable package authority
 
-- accepted M4 runtime/package authority: **package115/TB2**, selector373 **373/373**, semantic source `680f9f1573d3c7e56a273366436463e40e196131`;
-- unpromoted prior candidate: package116 / selector380; its measured TB1 green remains evidence but review rejected promotion;
-- current unpromoted candidate: **package117**, semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f`;
-- compile run/job: `34529050994 / 103045247639`;
-- package117 artifact: `10172820820`, SHA-256 `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`;
-- compile-log artifact: `10172821494`, SHA-256 `9ad32693bebf78fc757dec039598083df15b38defdcb0edfe5fed6060b6337f2`;
-- packaged source archive SHA-256: `a366908f0f52cc7bcdff4123893acbc553201880aa86a07f9418aac2734082f4`;
-- selector382: **382 LF rows**, SHA-256 `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`; exact first380 `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`, exact accepted first373 `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`;
-- static selector ownership: **30 authority-kernel / 236 producer / 75 completion / 41 validation**;
-- package `SHA256SUMS`: **28/28**, GMP/GMPXX present, source clean, `runtimeExecution=false`;
-- stable accounting: **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**.
+- semantic source: `534c0d41ae05b31e66711f21f4b4280b59f6483f`
+- package117 artifact: `10172820820`
+- package ZIP SHA-256: `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`
+- selector382 SHA-256: `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`
+- accepted runtime authority remains package115 / selector373 `373/373`
 
-### `M4-CP2-TB2-EXEC` boundary
+### Invalid TB2 attempt provenance
 
-Follow `.agents/Directional/Architecture_M4_CP2_TB2_Artifact_Only_Test_Benchmark_Plan.md` exactly. Consume immutable package117 artifact `10172820820` only; do not configure, compile, relink, regenerate, repair, chmod, or mutate package/source/test/fixture/selector bytes. Preflight exact package/source/GMP/checksum/selector382/owner authority before runtime. Run correction ordinals **374, 381, 382** twice in frozen order, one identity per fresh process; both ordinal374 focused logs must contain `coordinateCount=4`, `containsBidirectedCoefficientMagnitude2=true`, and `magnitude2LoadBearing=true`. Then run all 382 selector identities one per fresh process with no generated discovery. Require **382/382**, accepted predecessor **373/373**, CP2 rows374-380 **7/7**, correction rows381-382 **2/2**, owners **30/30 / 236/236 / 75/75 / 41/41**, and zero RED/SKIP/timeout/selection mismatch with immutable postflight. No benchmark is authorized.
+- run/job: `34532107988 / 103055098832`
+- result artifact: `10174031432`, SHA-256 `7742a385e5f2f0b408a5a946a836915abf1a636057d7b3fe0c6612f6dce88a44`
+- diagnostic-log artifact: `10174032131`, SHA-256 `d15ecf14508eb49a154bb443df184de0daf892e9d99635d369f1d0f9d283278b`
+- candidate: `M4-CP2-TB2-EXEC-CAND-01` — **OPEN / ORCHESTRATION / NON-STABLE**
+- exact failure: preflight wrote `execution-view-before.tsv`; postflight required `execution-view-census-before.tsv`; `gate_exit=90`
+- audit-only process observations before failure: focused 374/381/382 `3/3` twice with ordinal374 receipt once each; cumulative `382/382`, predecessor `373/373`, rows374-380 `7/7`, rows381-382 `2/2`, owners `30/236/75/41`, zero process RED/SKIP/timeout/selection mismatch
+- those process observations carry **no semantic acceptance credit**
+- independent actual-file census comparison proves package/source/execution-view bytes unchanged, so package117 is reusable without rebuild
 
-TB2-EXEC is evidence-only and cannot promote package117. Its exact successor is `M4-CP2-TB2-REV`.
+### CB3 boundary
+
+Use `.agents/Directional/Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md`. Correct only the artifact-harness execution-view census basename contract. Do not change product source, test definitions/assertions, fixtures, selectors, selector manifest, CMake/build semantics, or package117. Do not compile/repackage and do not execute Directional runtime. Do not change reusable workflow permissions.
+
+Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. Package117 remains unpromoted.
+
+**Exact successor after CB3 green:** `M4-CP2-TB2-R1-EXEC`, reusing immutable package117 artifact `10172820820`.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/CB.md
 conditional_modules:
-  - trigger: GitHub Actions/artifact-only package execution
+  - trigger: GitHub Actions/artifact-harness orchestration correction
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP2_TB2_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M4_CP2_CB2_Code_Build_Report.md
+  - .agents/Directional/Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md
+  - .agents/Directional/Architecture_M4_CP2_TB2_Test_Benchmark_Report.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
 templates_when_producing:
-  - templates/TEST_BENCHMARK_REPORT.md
+  - templates/CODE_BUILD_REPORT.md
+  - templates/TEST_PLAN.md
 do_not_preload:
   - sibling turn files
+  - module reference directories
   - research/provenance/examples
   - uncited historical reports
 ```
