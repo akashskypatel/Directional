@@ -1,0 +1,3 @@
+M4-DEFN Drive schema validation trigger.
+Validates the temporary schema caller and staged Drive-apply payload before activation.
+Attempt: 1
