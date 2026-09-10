@@ -1,4 +1,0 @@
-trigger=m4-cp2-cb2-closeout-apply
-caller_install=bca3c17aa9f027f89def7188241ee49348ba3318
-semantic_base=534c0d41ae05b31e66711f21f4b4280b59f6483f
-patch_sha256=1a4c177a3d23f914ab8ec8f6c96bc161b36dc8a145100ce572c6778828bf978d
