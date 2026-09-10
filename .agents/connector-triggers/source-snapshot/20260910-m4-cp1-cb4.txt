@@ -1,0 +1,3 @@
+turn=M4-CP1-CB4
+purpose=source-snapshot-trigger
+base_sha=5beb56eabadeb77647dda9bcb9d736227d7b0a65
