@@ -1,0 +1,2 @@
+.agents/connector-triggers/source-snapshot/20260910-m4-cp1-tb2-exec-start.txt
+.agents/connector-triggers/turn-cleanup/manifest.txt
