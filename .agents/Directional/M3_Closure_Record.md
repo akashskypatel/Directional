@@ -86,6 +86,7 @@ stable counts. Totals remain **47 / 14 / 33**, debt **5**, ownership **300/0/0**
 
 ## 7. Successor
 
-`M4-DEFN` was the immediate milestone successor and is now complete/amended through `M4-DEFN-R1`. Current exact next is **`M4-CP1-CB3`**,
-runtime-free Code + Build under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`; M4 definitions are frozen/amended in
+`M4-DEFN` was the immediate milestone successor and is now complete/amended through `M4-DEFN-R1`. M4 has since reached
+`M4-CP1-TB1-REV`; current exact next is **`M4-CP1-CB4`**, runtime-free package closure under
+`Architecture_M4_CP1_CB4_Code_Build_Plan.md`; M4 definitions remain frozen/amended in
 `Architecture_M4_DEFN_Frozen_Definitions.md` with adjudication in `Architecture_M4_DEFN_R1_Definition_Record.md`.

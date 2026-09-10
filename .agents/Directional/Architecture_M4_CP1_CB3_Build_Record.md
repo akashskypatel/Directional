@@ -112,5 +112,7 @@ remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **
 Package114 is an immutable compile package but is not an accepted runtime package until the separately scheduled
 artifact-only TB/review path supplies that authority.
 
-**Exact next boundary:** `M4-CP1-TB1-EXEC`, executing the artifact-only plan in
-`Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md`. CB3 itself executes none of that runtime.
+**Post-TB1 review routing:** package114 was executed by TB1 and remains unpromoted. `M4-CP1-TB1-REV` preserves the
+focused CP1 8/8-twice receipt but adjudicates the cumulative failure as package owner-closure plus execution-view
+fixture materialization. Current exact successor is runtime-free `M4-CP1-CB4` under
+`Architecture_M4_CP1_CB4_Code_Build_Plan.md`; CB3 itself remains runtime-free build authority only.

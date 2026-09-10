@@ -1,4 +1,14 @@
-## M4-CP1-TB1-EXEC classification — **CURRENT RAW INTAKE / GATE RED / REVIEW REQUIRED / NON-STABLE EXEC**
+## M4-CP1-TB1-REV — independent adjudication — **CURRENT REVIEW / APPROVED WITH AMENDMENTS / PACKAGE-CLOSURE + EXECUTION-VIEW DEFECTS / NON-STABLE / CB4**
+
+- Re-opened package114/TB1 primary result+log evidence and independently reconstructed selector373 ownership from source. Focused CP1 remains credible **8/8 PASS twice** with identical verdict vectors.
+- The cumulative 373-row result is **not product-semantic RED evidence**: 146 rows never selected and all 38 selected REDs failed before their intended assertions on the same missing fixture-root precondition. The mechanically failed gate remains unaccepted, but package114 is not evidence of 38 product regressions.
+- **`M4-CP1-TB1-EXEC-CAND-01` — ADJUDICATED / PACKAGE CLOSURE / OWNER-TARGET OMISSION / NON-STABLE / CB4.** Static exact mapping is 30 authority-kernel + 227 producer + 75 completion + 41 validation = 373, with zero missing/duplicate source definitions. CB3 built only producer/core, so the three omitted established owners account exactly for `30+75+41=146` MISSING rows. Selector373 and target decomposition are upheld.
+- **`M4-CP1-TB1-EXEC-CAND-02` — ADJUDICATED / EXECUTION-VIEW FIXTURE MATERIALIZATION / NON-STABLE / CB4→TB2.** CMake already creates producer `test-data`; package114's verified source archive contains the fixture source; `TestFixturePaths` requires executable-relative sibling/legacy layout. TB1 launched package binaries without the established source-archive-derived execution view, reproducing the same class resolved previously in M3. No fixture/test/product change is justified.
+- **Correction frozen:** runtime-free `M4-CP1-CB4` rebuilds the unchanged semantic source `680f9f15...` with all four owner binaries and pre-authors an M4 artifact-only harness that exact-maps each selector identity to one owner and materializes the fixture view solely from the package-owned source archive. No selector/test/product/CMake semantic change and no reusable-workflow permission change.
+- **Accounting:** +0 stable events / +0 recurrences. Totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**. package114 remains unpromoted; M3 package113/TB48 remains reviewed runtime authority.
+- **Exact successor:** `M4-CP1-CB4`, runtime-free Code + Build under `Architecture_M4_CP1_CB4_Code_Build_Plan.md`.
+
+## M4-CP1-TB1-EXEC classification — **HISTORICAL RAW INTAKE / REVIEWED BY TB1-REV / NON-STABLE EXEC**
 
 - Mechanically valid artifact-only runtime: run/job `34473066831 / 102857316952`, immutable package114 artifact
   `10142108806`, semantic source `680f9f1573d3c7e56a273366436463e40e196131`; preflight and postflight both PASS.

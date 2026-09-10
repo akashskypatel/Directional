@@ -1,3 +1,20 @@
+## 2026-09-10 — `M4-CP1-TB1-REV`: selector373 upheld; package owner closure and execution-view staging frozen for CB4
+
+Independent review is **COMPLETE / APPROVED WITH AMENDMENTS / RUNTIME-FREE**. Primary TB1 result/log evidence was
+re-opened and selector373 ownership independently reconstructed from source: **30 authority-kernel / 227 producer /
+75 completion / 41 validation = 373**, zero missing/duplicate definitions. CB3 built only producer/core, so the omitted
+three existing owner binaries account exactly for all **146 MISSING** rows. The 38 selected REDs all failed before
+their intended assertions because TB1 launched package binaries without the executable-relative `test-data` view;
+package114's verified source archive already carries the fixture source and the established M3 artifact-only harness
+pattern supplies the correct immutable materialization.
+
+The focused CP1 receipt **8/8 PASS twice** remains credible bounded runtime evidence. The cumulative TB1 result remains
+a failed gate but is amended from product-semantic RED to package/execution-view closure failure; package114 is not
+promoted. No stable regression is added: **47 / 14 / 33**, debt **5**, accepted packages **113**. Exact next is
+runtime-free `M4-CP1-CB4` under `Architecture_M4_CP1_CB4_Code_Build_Plan.md`, rebuilding exact semantic source
+`680f9f1573d3c7e56a273366436463e40e196131` with all four owner binaries and pre-authoring the package-owned execution
+view. No product/test/fixture/selector semantic change is authorized.
+
 ## 2026-09-10 — `M4-CP1-TB1-EXEC`: focused CP1 8/8 twice; cumulative package gate RED; independent review required
 
 TB1 is **COMPLETE / MECHANICALLY VALID / GATE RED / REVIEW REQUIRED** on immutable package114, source

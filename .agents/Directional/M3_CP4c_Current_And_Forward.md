@@ -16,7 +16,7 @@ Last updated **2026-09-09** at `M3-CP4c-3-TB48-REV` independent closure review.
 
 Ordinal370 is CLOSED / RUNTIME-PROVED / NON-STABLE. The AU0–AU9 mechanical-witness exit condition is MET. **CP4c-3 and M3 are CLOSED / ACCEPTED.** Stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**.
 
-**M4-DEFN is COMPLETE / AMENDED through `M4-DEFN-R1`. Exact next: `M4-CP1-CB3`**, runtime-free Code + Build under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`; current solver adjudication is `Architecture_M4_DEFN_R1_Definition_Record.md` and normative M4 definitions remain in `Architecture_M4_DEFN_Frozen_Definitions.md`.
+**M4-DEFN is COMPLETE / AMENDED through `M4-DEFN-R1`; M4-CP1 has reached TB1 review. Exact next: `M4-CP1-CB4`**, runtime-free package closure under `Architecture_M4_CP1_CB4_Code_Build_Plan.md`; current review is `Architecture_M4_CP1_TB1_Independent_Review_Record.md`, solver adjudication remains `Architecture_M4_DEFN_R1_Definition_Record.md`, and normative M4 definitions remain in `Architecture_M4_DEFN_Frozen_Definitions.md`.
 
 ## 1. Where the checkpoint stands
 

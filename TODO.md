@@ -26,25 +26,24 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-CP1-TB1-REV` (independent Review + Plan / runtime-free)
+## Current focus — `M4-CP1-CB4` (runtime-free Code + Build / package closure)
 
-`M4-CP1-TB1-EXEC` is **COMPLETE / MECHANICALLY VALID / GATE RED / REVIEW REQUIRED** on immutable package114.
+`M4-CP1-TB1-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**. package114 remains unpromoted. The focused eight CP1
+identities are credible **8/8 PASS twice**, but the cumulative selector373 result is not product-semantic RED evidence:
+146 rows never selected and all 38 selected REDs failed before their assertions on a missing executable-relative fixture
+root.
 
-- semantic source/package: `680f9f1573d3c7e56a273366436463e40e196131` / artifact `10142108806`;
-- valid execution: run/job `34473066831 / 102857316952`;
-- focused CP1: **8/8 PASS twice**, byte-identical verdict vectors;
-- cumulative selector373: **189 PASS / 38 RED / 0 SKIP / 146 MISSING**, only 227/373 registered/executed;
-- accepted predecessor rows 1-365: **181 PASS / 38 RED / 146 MISSING**; CP1 rows 366-373: **8/8 PASS**;
-- all 38 REDs share one missing adjacent `test-data` exception; 146 MISSING rows are absent from the packaged producer
-  binary; preflight/postflight hashes are intact.
+Independent static reconstruction proves selector373 is correct and has exactly one owner per row: **30 authority-kernel /
+227 producer / 75 completion / 41 validation = 373**. CB3 built only producer/core, explaining exactly 146 missing
+rows. The package-owned source archive already carries the fixture source; the missing `test-data` root is an
+execution-view materialization defect. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted packages **113**.
 
-**Exact next:** independent **`M4-CP1-TB1-REV`** must adjudicate `M4-CP1-TB1-EXEC-CAND-01` (packaged test-target
-coverage mismatch) and `...CAND-02` (packaged test-data absent), decide the authoritative cumulative execution/package
-correction, and issue any successor. **No TB retry, package114 promotion, selector edit, package repair, rebuild, or
-corrective CB is authorized before that review.**
-
-M3 package113/TB48 remains reviewed semantic runtime authority. Stable accounting remains 47 / 14 / 33, debt 5,
-accepted package count 113; package114 is not promoted.
+**Exact next:** execute runtime-free **`M4-CP1-CB4`** under
+`Architecture_M4_CP1_CB4_Code_Build_Plan.md`: rebuild exact semantic source
+`680f9f1573d3c7e56a273366436463e40e196131` with all four selector-owner binaries, pre-author the exact owner-mapped
+artifact-only execution-view harness, compile/package with mandatory GMP/GMPXX, and issue the next immutable TB plan.
+**No product/test/fixture/selector/CMake semantic change, no package114 repair/rerun, no reusable-workflow permission
+change, and no Directional runtime are authorized in CB4.**
 
 ## Carried forward from M1
 
@@ -83,7 +82,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-TB1-REV` NEXT**; TB1 focused CP1 is 8/8 PASS twice but the cumulative package gate is RED (189 PASS / 38 RED / 146 MISSING), and M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB4` NEXT**; CP1 semantics compile and focused runtime is 8/8 twice, while package closure/execution-view correction is required before cumulative selector373 can be accepted; M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -123,4 +122,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-CP1-TB1-EXEC` is mechanically valid but gate RED with focused CP1 8/8 PASS twice and cumulative selector373 at 189 PASS / 38 RED / 146 MISSING. package114 is not promoted; exact next is independent **`M4-CP1-TB1-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-CP1-TB1-REV` retains focused CP1 8/8 twice but classifies package114 cumulative failure as non-semantic package/execution-view closure. package114 is not promoted; exact next is runtime-free **`M4-CP1-CB4`**. PR #8 remains open, draft, and unmerged.

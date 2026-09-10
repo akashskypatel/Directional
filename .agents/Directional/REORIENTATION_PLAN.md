@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-10, `M4-DEFN-R1`):** **M3 is CLOSED / ACCEPTED and M4 definitions are amended.** Package113/TB48 remains reviewed runtime authority; accepted M4 predecessor is selector365. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`; A3 now uses Heistermann/Warnett/Bommes 2023 exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding and finite exact convergence. Exact next is `M4-CP1-CB3` runtime-free Code + Build.
+> **Current milestone authority (2026-09-10, `M4-CP1-TB1-REV`):** **M3 is CLOSED / ACCEPTED.** package113/TB48 remains reviewed runtime authority; accepted predecessor selector365 remains 365/365. M4 CP1 A3 semantics compile at `680f9f15...` and focused package114 runtime is 8/8 PASS twice, but package114 is unpromoted because cumulative selector373 lacked three owner binaries and the artifact execution view omitted the consumer-visible fixture root. Exact next is runtime-free `M4-CP1-CB4`, preserving semantics while package-closing all four owner binaries and pre-authoring the immutable execution view.
 
 # Directional Surface-Cell Reorientation Plan
 
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **definition complete/amended; exact next `M4-CP1-CB2`** |
+| M4 | global conformity plan | **CP1 implementation compile-green; focused 8/8 twice; cumulative package gate unaccepted; exact next `M4-CP1-CB4` package closure** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
