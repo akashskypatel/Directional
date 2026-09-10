@@ -1,0 +1,4 @@
+purpose=M4-CP1-CB3 start source snapshot
+semantic_source_sha=d0a9cb4526079604971afe8081d6d30044941b5f
+read_mode=snapshot
+retry=0
