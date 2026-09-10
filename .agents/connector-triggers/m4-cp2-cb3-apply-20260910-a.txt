@@ -1,4 +1,0 @@
-M4-CP2-CB3 Drive patch apply
-base=52ebea42ec92bd7ca89e76ab89ac45178cc0176f
-patch_sha256=addc70501711abeb752d1eca2352dd402ea18f4fd838d7148eb4ecd7158c47ca
-retry=0
