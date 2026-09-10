@@ -1,11 +1,11 @@
-name: M4 CP2 CB2 Apply
+name: M4 CP2 CB2 Closeout Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m4-cp2-cb2-apply-20260910-a.txt
+      - .agents/connector-triggers/m4-cp2-cb2-closeout-apply-20260910-a.txt
 
 permissions:
   contents: write
@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: m4-cp2-cb2-apply
+  group: m4-cp2-cb2-closeout-apply
   cancel-in-progress: false
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp2-cb2-apply
+      label: m4-cp2-cb2-closeout-apply
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1gdUjKlV_o9_Lu13jje4bK31ghOghJgd6
-      patch_sha256: a2caace911ccc8833c9d7995200d7f679d549995f4a000ce577b43bce17b630a
-      base_sha: 399ea4ecc8f69b107286e2fa66cf8b3c5f51cdb6
+      file_id: 1SjR7NJX5IRlkYbALrajeBJzIQNueax57
+      patch_sha256: 1a4c177a3d23f914ab8ec8f6c96bc161b36dc8a145100ce572c6778828bf978d
+      base_sha: 534c0d41ae05b31e66711f21f4b4280b59f6483f
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M4-CP2-CB2: repair frozen CP2 assurance contracts'
+      commit_message: 'docs: close M4-CP2-CB2 and authorize TB2'
       retention_days: 14
     secrets: inherit
