@@ -440,6 +440,16 @@ public:
     return FieldExactRational(n.value_ / d.value_);
   }
 
+  /** Construct directly from arbitrary-precision exact integer authority. */
+  [[nodiscard]] static std::optional<FieldExactRational>
+  from_exact_fraction(const EInt &numerator, const EInt &denominator) {
+    if (denominator == EInt(0)) return std::nullopt;
+    return FieldExactRational(ENumber(numerator, denominator, true));
+  }
+
+  [[nodiscard]] EInt exact_numerator() const { return enumber_num(value_); }
+  [[nodiscard]] EInt exact_denominator() const { return enumber_den(value_); }
+
   [[nodiscard]] bool is_zero() const { return value_ == ENumber(EInt(0)); }
   [[nodiscard]] long double to_double(const int maxDigits = 18) const {
     return value_.to_double(maxDigits);

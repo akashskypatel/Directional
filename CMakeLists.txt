@@ -120,6 +120,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DirectionalDependencyConfig)
 include(DirectionalVcpkg)
 include(DirectionalRuntime)
+include(DirectionalDependenciesLemon)
 
 if(DIRECTIONAL_ENABLE_SUITESPARSE)
   include(DirectionalDependenciesSuiteSparse)
@@ -163,6 +164,9 @@ add_library(
   src/geometry/FlowRepStrands.cpp
   src/geometry/EmbeddedGraphTopology.cpp
   src/geometry/GlobalTopologyPlan.cpp
+  src/geometry/GlobalConformityExactSolver.cpp
+  src/geometry/GlobalConformityPlan.cpp
+  src/geometry/GlobalConformityValidator.cpp
   src/geometry/SurfaceCutGraph.cpp
   src/geometry/GeneralGraphMatching.cpp
   src/geometry/MeshComponents.cpp
@@ -222,6 +226,7 @@ target_include_directories(
          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_compile_features(directional_core PUBLIC cxx_std_20)
+target_link_libraries(directional_core PRIVATE directional_lemon_headers)
 
 add_library(
   directional_pipeline

@@ -73,6 +73,7 @@ set(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES
   tests/BoundedMeshPreconditionerTests.cpp
   tests/CrossFieldTransferTests.cpp
   tests/FieldAlignedCurveNetworkTests.cpp
+  tests/GlobalConformityPlanTests.cpp
   tests/RegularizedCurvaturePhase1Tests.cpp
   tests/support/SurfaceCellProductOracle.cpp
   tests/SourceGridRecoveryAuthorityTests.cpp
@@ -184,6 +185,35 @@ directional_require_default_packaged_test_contract(
 directional_require_default_packaged_test_contract(
   "tests/SurfaceCellREPackageTests.cpp"
   "ProductionConsumesTypedSkeletonWithoutRawSingularityProjection")
+
+
+# M4-CP1 exact schedule authority is compiled now and executed only by the later
+# artifact-only TB turn. These identities are intentionally part of the default
+# packaged producer target so selector365 can be extended append-only.
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "MultiPieceCompactOrdinalsAndReverseIncidenceSymmetry")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "PreservesSameRowBidirectedMultiplicityPositivityAndParity")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "ExactBinary64IngressCanonicalizesSignedZeroAndSubnormal")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "HugeExactCapRadixAndLexObjectiveNeverNarrow")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "FixedM2RefinementMatchesSeparateTinyExhaustiveOracle")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "GenuinelyBidirectedLoopPermutationAndReversalAreDeterministic")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "IndependentValidatorRejectsTamperMatrix")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "ExactValuesExceedLibSatsumaAndBlossomScalarWidths")
 
 function(directional_require_cp2_typed_network_cutover)
   file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/pipeline/RemeshPipeline.cpp"
