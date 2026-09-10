@@ -1,0 +1,2 @@
+.agents/connector-triggers/source-snapshot/m4-cp1-cb2-20260909.txt
+.agents/connector-triggers/m4-cp1-cb2-stop-apply-20260909.txt
