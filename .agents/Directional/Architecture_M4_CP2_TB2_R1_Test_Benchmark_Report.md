@@ -98,3 +98,11 @@ This TB-EXEC turn does **not** promote package117 or close M4-CP2. Package117/se
 Exact next turn: **`M4-CP2-TB2-R1-REV`**.
 
 That review is runtime-free. It must re-open the immutable package117 authority plus result artifact `10176889758` and log artifact `10176890045`, independently re-derive the decisive selector/process/receipt/immutability facts, audit the corrected source contract against the frozen M4 definitions, and decide package117 promotion and M4-CP2 closure or route to the next corrective turn. No compile, rerun, or package repair precedes that review.
+
+## 9. Remote closeout and cleanup evidence
+
+The durable 14-path closeout patch was applied by GitHub Actions run/job `34540984697 / 103083397797`. The metadata-bearing patch SHA-256 was `f53762878d730066b092ecacdef9ae57e29ad46f66f20902944b4dd2a3365821`, with diff-body SHA-256 `6d060546346df9664a5cdeeca8a959853f207349795feaf70cfc45a291f514ce`; applied commit `693725802876d92fd3db4337d28139cf53d54469`. Apply result/log artifacts are `10177241365 / 10177241785` at SHA-256 `e39462b31cbf8f15dc6be7e419127dfff43406b2442ad19fa3d38b75110f5357 / 89577c4444b49e74c6c1a8f3d86eb01ef261cb88ec67e13afb86fb69c5f302e9`. The workflow correctly reported `runtimeExecution=false` and required owner-side Drive retirement; the staged patch file was then permanently deleted.
+
+The temporary closeout-apply and R1-exec workflow callers were deleted workflow-first. Cleanup run/job `34541111906 / 103083739690` removed all seven inventoried non-workflow temporary paths and produced cleanup commit `bcb493e662b955ea5d62137a0adabf5fa7f59697`. Cleanup result/log artifacts are `10177280592 / 10177280968` at SHA-256 `e860da302d177429e19ae1c829b24e1fcf1df834d10d6671cb4bf8668b69757e / 57447d9498fd7e259b61dc0439e10caa7e63cba95eb9a24385c6b361d9fb763d`. The cleanup result records `runtimeExecution=false` and zero PR comments remaining before the cleanup observer republished its run receipt.
+
+Final repository hygiene: `.github/workflows/` contains exactly the seven durable workflows; `.agents/Directional/turn-payloads/` and `.agents/connector-triggers/` are absent. No temporary R1 execution or closeout caller remains. Package117 remains unchanged and unpromoted. Exact next remains runtime-free `M4-CP2-TB2-R1-REV`.
