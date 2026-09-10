@@ -1,0 +1,3 @@
+# M4-CP1-CB1 temporary state
+.agents/connector-triggers/source-snapshot/m4-cp1-cb1-b523ccb1.txt
+.agents/connector-triggers/m4-cp1-cb1-drive-apply-20260909.txt
