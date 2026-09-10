@@ -1,1 +1,2 @@
 .agents/connector-triggers/source-snapshot/M4-CP1-TB2-REV.txt
+.agents/connector-triggers/m4-cp1-tb2-rev-apply.txt
