@@ -1,3 +1,0 @@
-M4-CP2-TB2 closeout patch apply
-base=a950a9cf1b6ef20131a1cb3ccb91e0d46d830aa2
-retry=0
