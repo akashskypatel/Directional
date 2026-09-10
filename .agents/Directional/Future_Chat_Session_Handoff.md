@@ -118,39 +118,38 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 **Same-agent REVIEW/DEFN is allowed — user-authorized 2026-09-10.** The same agent/session may perform a REVIEW, REVIEW + PLAN, or DEFN turn even when it authored or executed an earlier turn in the same chain. "Independent" in review/oracle/verification language means independent **evidence, re-derivation, authority, or implementation path**, not required personnel separation, unless a specific criterion explicitly says otherwise. A same-agent REVIEW must re-open primary evidence and re-derive decisive facts; a same-agent DEFN remains planning/runtime-free. All cadence, stop, validation-integrity, source-authority, compile/runtime, and acceptance boundaries remain unchanged.
 
-## Mandatory next turn — `M4-CP2-CB1` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
+## Mandatory next turn — `M4-CP2-TB1-EXEC` — EXACT NEXT / ARTIFACT-ONLY RUNTIME
 
-`M4-CP1-TB2-REV` is **COMPLETE / APPROVED / PACKAGE115 PROMOTED / M4-CP1 CLOSED**. The review re-opened TB2 primary evidence and independently re-derived the decisive receipts: package115 artifact `10159019500` has SHA-256 `de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b`; TB2 result/log artifacts `10160450899 / 10160451919` hash to `0b7f1551fe3881a0fd46386e1a45ae043faa307f6cb167e91cb4ef78839b9e38` / `2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`; selector373 is **373/373 PASS**, accepted prefix **365/365**, focused CP1 **8/8 twice** with identical verdict vectors, and all package/source/execution-view postflight censuses equal preflight.
+`M4-CP2-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Exact evidence source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` compiled under run/job `34512397141 / 102989549611`; immutable candidate package116 artifact `10166351695` hashes to `c61b9900a2745454594825de81181ce982ec4b7986f40aa3b23c23e12d0e8e61`, and compile log artifact `10166352142` hashes to `3c3e3658d3f3341f108af5397f681061cb6c77be85e9dd1355fb28dba77e2dd0`. All eight approved targets linked, GMP/GMPXX authority is explicit, package `SHA256SUMS` verified **28/28**, and the package records `runtimeExecution=false`. No Directional runtime, test, benchmark, discovery/listing, CLI/GUI binary, fuzzer, or custom input executed in CB1.
 
 ### Current authority
 
-- **M4-CP1 is CLOSED / ACCEPTED.** Closure authority is `.agents/Directional/M4_CP1_Closure_Record.md`; current review is `.agents/Directional/Architecture_M4_CP1_TB2_Review_Record.md`; retained raw runtime is `.agents/Directional/Architecture_M4_CP1_TB2_EXEC_Report.md`.
-- **package115/TB2** is the current reviewed M4 semantic runtime authority for selector373 **373/373**. M3 package113/TB48 remains the historical M3 closure/final-audit authority at selector409 **405 PASS / 4 RED / 0 SKIP** and accepted selector365 **365/365**.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**; accepted package authority advances to **115**. Package114 remains unpromoted historical failed-gate evidence.
-- `M4-CP1-TB1-EXEC-CAND-01` and `M4-CP1-TB1-EXEC-CAND-02` are **CLOSED / RECOVERY PROVED / NON-STABLE**. Their recovery is established by the unchanged-semantics TB2 control.
-- Frozen M4 definitions remain `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md`. No definition change was needed to close CP1.
+- **M4-CP1 remains CLOSED / ACCEPTED.** package115/TB2 remains the reviewed semantic runtime authority at selector373 **373/373**, accepted prefix **365/365**, focused CP1 **8/8 twice**.
+- **M4-CP2-CB1 is compile/package authority only.** package116 is a candidate and is not promoted before runtime review.
+- Selector380 is **380 LF rows**, SHA-256 `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`; its first 373 rows hash exactly to accepted selector373 `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`. Static owner partition is **30 authority-kernel / 234 producer / 75 completion / 41 validation**. The seven new CP2 identities are compiled but unexecuted.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**.
+- CB1 implementation/report authority is `.agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Report.md`; frozen definitions remain `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md`.
 
-### `M4-CP2-CB1` boundary
+### `M4-CP2-TB1-EXEC` boundary
 
-Execute `.agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Plan.md`. CP2 adds the carried positivity/parity/optimality certificate and typed subset-scoped infeasibility alternative **without changing CP1 feasible schedule semantics**. The first authorized test-source change must also discharge the deferred multi-coordinate bidirected `±2` exhaustive-oracle strengthening from TB1 review.
+Execute `.agents/Directional/Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md` against immutable artifact **10166351695** only. Preflight must verify the artifact ZIP hash, package `SHA256SUMS`, exact evidence source, GMP compile metadata, selector380 hash/prefix, one-owner mapping, owner binaries, and fresh execution view before the first Directional process.
 
-CB1 may change product/test/build integration required by that frozen CP2 scope and may compile/package only through the mandatory GitHub GMP/GMPXX workflow. It executes **no Directional runtime, no generated test discovery, no test/benchmark/CLI binary**. If implementing the frozen CP2 contract exposes a genuine definition ambiguity rather than an implementation problem, stop and route to `M4-CP2-DEFN`; the same-agent authorization above permits the same agent to perform that later DEFN turn, but does not authorize silently inventing semantics inside CB1.
+Run selector rows **374-380 twice** as two focused deterministic phases, then run all **380** selector identities one identity per fresh process. No configure, compile, relink, generated discovery, package/mode repair, fixture/source/test/selector mutation, or benchmark execution is authorized. EXEC preserves raw evidence only and does not promote package116 or close CP2. Its configured successor is `M4-CP2-TB1-REV`, which re-opens primary evidence and owns adjudication.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB-EXEC.md
 conditional_modules:
-  - trigger: implementation design or corrective planning
-    path: modules/engineering-guidelines/MODULE.md
-  - trigger: GitHub connector, compile workflow, package, or artifact work
+  - trigger: GitHub connector, artifact download, artifact-only workflow, or evidence preservation
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Report.md
+  - .agents/Directional/Architecture_M4_CP2_Required_Green_Selector_380.txt
   - .agents/Directional/M4_CP1_Closure_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M4_CP1_Required_Green_Selector_373.txt
   - .agents/Directional/Required_Green_Selector_Manifest.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
 templates_when_producing: []

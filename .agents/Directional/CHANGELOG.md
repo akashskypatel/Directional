@@ -1,3 +1,11 @@
+## 2026-09-10 — `M4-CP2-CB1`: certification/typed-infeasibility source compiles as candidate package116
+
+`M4-CP2-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. The bounded source change adds the frozen CP2 certificate/outcome surface, deterministic typed `BalanceCut | PositivityCut | ParityCut` infeasibility, independent certificate/subset verification, terminal WPM witness carriage, the deferred multi-coordinate bidirected `±2` exhaustive oracle, and the seven prescribed CP2 gating identities while preserving the accepted CP1 API as the regression oracle. Selector380 is 380 LF rows at `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4` with exact selector373 prefix `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`; static owner partition is **30 / 234 / 75 / 41**.
+
+Exact evidence source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` compiled under run/job `34512397141 / 102989549611`. Candidate package116 artifact `10166351695` hashes to `c61b9900a2745454594825de81181ce982ec4b7986f40aa3b23c23e12d0e8e61`; compile-log artifact `10166352142` hashes to `3c3e3658d3f3341f108af5397f681061cb6c77be85e9dd1355fb28dba77e2dd0`. All eight approved targets linked, mandatory GMP/GMPXX evidence is present, package `SHA256SUMS` verifies **28/28**, source status is clean, and `runtimeExecution=false`. Two source compile errors were corrected minimally during the turn; no generated Directional runtime was used for diagnosis.
+
+Package116 is **not accepted runtime authority**. package115/TB2 remains reviewed M4 authority at selector373 373/373; stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **115**. Exact next is artifact-only `M4-CP2-TB1-EXEC` under `Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md`, followed by configured `M4-CP2-TB1-REV`.
+
 ## 2026-09-10 — `M4-CP1-TB2-REV` verification pass: upheld; prefix receipt supplied, one exit referent undefined
 
 Static verification of the delegated `M4-CP1-TB2-REV`. No runtime, no compile, no package operation, no
