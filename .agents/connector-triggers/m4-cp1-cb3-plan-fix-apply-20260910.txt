@@ -1,0 +1,4 @@
+purpose=M4-CP1-CB3 GlobalConformityPlan compile fix apply
+base_sha=05008f7ef6d54769464024301fd7baa9e2c04697
+patch_sha256=61d1108e88a902e37b714ab6423ef3212aa9994e19b40e73849eca386e5cc765
+runtimeExecution=false
