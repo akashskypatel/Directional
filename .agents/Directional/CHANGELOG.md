@@ -1,3 +1,15 @@
+## 2026-09-10 — `M4-CP1-TB1-EXEC`: focused CP1 8/8 twice; cumulative package gate RED; independent review required
+
+TB1 is **COMPLETE / MECHANICALLY VALID / GATE RED / REVIEW REQUIRED** on immutable package114, source
+`680f9f1573d3c7e56a273366436463e40e196131`. Valid run/job `34473066831 / 102857316952` passed immutable preflight
+and postflight. Focused CP1 executed **8/8 PASS twice** with identical verdict vectors. The exact cumulative selector373
+invocation selected only 227 identities and classified the frozen rows as **189 PASS / 38 RED / 0 SKIP / 146 MISSING**;
+all eight CP1 rows are PASS. Every selected RED has the same missing-adjacent-`test-data` exception, while 146 accepted
+selector identities are absent from the packaged producer target. These are recorded as non-stable package-evidence
+candidates `M4-CP1-TB1-EXEC-CAND-01/02`; stable accounting remains **47 / 14 / 33**, debt **5**, accepted packages
+**113**. package114 is not promoted. Exact next is independent runtime-free `M4-CP1-TB1-REV`; no retry or corrective CB
+is authorized before review.
+
 ## 2026-09-10 — `M4-CP1-CB3`: exact A3 implementation compiles with GMP/GMPXX; package114 issued
 
 `M4-CP1-CB3` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Final semantic source

@@ -1,3 +1,30 @@
+## M4-CP1-TB1-EXEC classification — **CURRENT RAW INTAKE / GATE RED / REVIEW REQUIRED / NON-STABLE EXEC**
+
+- Mechanically valid artifact-only runtime: run/job `34473066831 / 102857316952`, immutable package114 artifact
+  `10142108806`, semantic source `680f9f1573d3c7e56a273366436463e40e196131`; preflight and postflight both PASS.
+  Result/log artifacts are `10150408043 / 10150408431` with provider SHA-256
+  `c12e73d69fc33572ca7e324656db257dad3fc0b8d789482b8447fc540ec4c5cf` /
+  `d84daf27417751cee121b28cf062869edfae7e7034b6166bd05c2fe9412ce566`.
+- Focused CP1 is **8/8 PASS twice**, zero RED/SKIP/MISSING, with byte-identical verdict vectors. CP1 rows 366-373 are
+  therefore 8/8 PASS in both focused evidence and the cumulative invocation.
+- Cumulative selector373 is **189 PASS / 38 RED / 0 SKIP / 146 MISSING** because only 227/373 identities are
+  registered in the packaged producer binary. Accepted predecessor rows 1-365 are **181 PASS / 38 RED / 146 MISSING**.
+- **`M4-CP1-TB1-EXEC-CAND-01` — PACKAGE TEST-TARGET COVERAGE MISMATCH / REVIEW REQUIRED / NON-STABLE / UNPRICED.**
+  146 frozen selector identities are absent from `directional_surface_cell_producer_tests`; current CMake gives that
+  target a bounded source list while the accepted selector retains identities from additional test sources. These rows
+  never executed, so no product-event pricing is justified.
+- **`M4-CP1-TB1-EXEC-CAND-02` — PACKAGED TEST-DATA ABSENT / REVIEW REQUIRED / NON-STABLE / UNPRICED.** Every one
+  of the 38 selected REDs throws exactly `Directional test-data package not found adjacent to test executable` before
+  its intended fixture-backed assertion. The package contains no adjacent `test-data` bundle, so these 38 rows are
+  grouped under one package-evidence cause rather than misclassified as 38 product failures.
+- The initial run `34472703151` is invalid orchestration provenance only: malformed caller YAML created zero jobs and
+  zero Directional runtime; the retry changed only caller YAML and reused package114 unchanged.
+- **Stable-count rationale:** CP1's eight new semantics are green; the observed cumulative failures are test-package
+  coverage/evidence surfaces whose product-event status requires independent review. No stable event/category/recurrence
+  is added now. Totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**.
+  package114 is not promoted; M3 package113/TB48 remains reviewed semantic runtime authority.
+- **Exact successor:** `M4-CP1-TB1-REV`, independent REVIEW + PLAN / runtime-free. No retry or corrective CB first.
+
 ## M3-CP4c3-TB48-REV — independent adjudication — **CURRENT REVIEW / PACKAGE113 PROMOTED / ORDINAL370 CLOSED / CP4c-3 CLOSED / M3 CLOSED**
 
 Independent review re-opened TB48's primary result/log evidence and package113 source. TB48 is mechanically valid at **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Ordinal370 directly exercises the frozen `EmptyNetworkOnClosedSurface = 6` plus non-empty `sourceFace` locus and PASSes; static source matches the intended closed-empty-network product branch. `M3-CP4c3-TB48-EXEC-CAND-01` and `M3-CP4c2-TB-X2-R8-CAND-02` are **CLOSED / RUNTIME-PROVED / NON-STABLE**.

@@ -1,12 +1,13 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP1-CB3` compile/package closeout
+**Last updated:** 2026-09-10 at `M4-CP1-TB1-EXEC` raw runtime classification
 
 This record holds M4 history that has been folded under the review-turn consolidation policy. Normative current M4
 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current definition adjudication is
 `Architecture_M4_DEFN_R1_Definition_Record.md`; the retained independent stop authority is
-`Architecture_M4_CP1_CB2_Independent_Review_Record.md`; the current CP1 build authority is `Architecture_M4_CP1_CB3_Build_Record.md`; the exact runtime successor plan is
+`Architecture_M4_CP1_CB2_Independent_Review_Record.md`; the current CP1 build authority is `Architecture_M4_CP1_CB3_Build_Record.md`; raw CP1 runtime evidence is
+`Architecture_M4_CP1_TB1_Execution_Record.md`; the frozen runtime plan is
 `Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md`; task/state pointers live in `TODO.md` and
 `Future_Chat_Session_Handoff.md`.
 
@@ -35,7 +36,7 @@ CB1 subsequently stopped before semantic mutation because its solver contract ha
 
 Independent `M4-CP1-CB2-REV` upheld both stops and routed the solver clause to `M4-DEFN-R1`. `M4-DEFN-R1` then adjudicated the ordered alternatives and selected Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement with fixed `M=2`. Same-row `+/-2` incidence keeps the frozen class genuinely bidirected, so ordinary MCF is not frozen; the simple disclosed one-shot Bi-MCF→b-matching chain is not used because its reviewed form is specialized to zero-demand refinement. The semantic objective, cap `U`, lexicographic order and A3 ownership are unchanged. The outer solver assurance is explicitly amended from polynomial to **finite exact convergence** under Corollary 3.7, Theorem 3.8 and Corollary 3.9. CP2's independent terminal-optimality certificate is mandatory before CP3 cutover.
 
-Exact next is artifact-only `M4-CP1-TB1-EXEC`.
+TB1 has now executed with focused CP1 green but a RED cumulative package gate. Exact next is independent runtime-free `M4-CP1-TB1-REV`.
 
 ## 2.1 `M4-CP1` solver deadlock — CB1 and CB2 both stopped, both correctly
 
@@ -62,7 +63,7 @@ both were fail-closed plan guards. Accounting is unchanged at **47 / 14 / 33**.
 Gabow's polynomial class. Upstream libSatsuma remains reference/control-flow material only because its numeric surface
 is inexact for M4. The closed candidate `M4-CP1-CB2-REV-CAND-01` adds no stable event or recurrence.
 
-## 2.2 `M4-CP1-CB3` — implementation compiles; package114 awaits artifact-only runtime
+## 2.2 `M4-CP1-CB3` — implementation compiles; package114 issued
 
 CB3 consumed the DEFN-R1 fixed-`M=2` authority and implemented the known-feasible A3 product, exact solver,
 LEMON exact-weight adapter, independent validator, focused compiled tests and first M4 selector. Final semantic
@@ -76,10 +77,20 @@ The packaged test binary hashes to `5b1064e6025b052aed7aeee66b8e1c3f6218bc73791d
 
 M4 selector373 has 373 rows, LF SHA-256
 `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`; its first 365 rows are byte-identical
-accepted M3 selector365. Its eight new CP1 identities are compiled but unexecuted.
+accepted M3 selector365. Its eight new CP1 identities were compile authority only at CB3 closeout; runtime disposition is now owned by TB1.
 
-No M4 runtime authority is claimed. M3 package113/TB48 remains reviewed runtime authority and accepted package
-count remains 113. Exact next is `M4-CP1-TB1-EXEC` under the immutable artifact-only plan.
+## 2.3 `M4-CP1-TB1-EXEC` — focused CP1 green; cumulative package gate RED
+
+Mechanically valid run/job `34473066831 / 102857316952` executed immutable package114 with pre/postflight hashes
+intact. Focused CP1 is **8/8 PASS twice** with identical verdict vectors. The cumulative selector373 invocation is
+**189 PASS / 38 RED / 0 SKIP / 146 MISSING**, because only 227 selector identities are present in the packaged
+producer binary and every selected RED throws the same missing adjacent `test-data` exception. CP1 rows 366-373 are
+8/8 PASS; the accepted predecessor cannot be re-proved from this package surface.
+
+Two non-stable review candidates own the failure surface: `M4-CP1-TB1-EXEC-CAND-01` (packaged test-target coverage)
+and `M4-CP1-TB1-EXEC-CAND-02` (packaged test-data absent). No stable event/category/recurrence is added. package114
+is not promoted; M3 package113/TB48 remains reviewed semantic runtime authority, accepted packages remain 113, and
+exact next is independent `M4-CP1-TB1-REV`.
 
 ## 3. Folded document index
 

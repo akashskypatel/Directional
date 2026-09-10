@@ -12,9 +12,9 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 
 **Status date:** 2026-09-10 (**M3 CLOSED / ACCEPTED at TB48-REV.** Package113 remains reviewed runtime authority:
 **405 PASS / 4 RED / 0 SKIP** over selector409, accepted **365/365**, ownership **300/0/0**. Stable accounting
-**47 / 14 / 33**, debt 5, accepted packages 113. **`M4-CP1-CB3` is COMPILE+PACKAGE GREEN / RUNTIME-FREE** at
-semantic source `680f9f1573d3c7e56a273366436463e40e196131`, immutable package114 artifact `10142108806`.
-**NEXT: `M4-CP1-TB1-EXEC`**, artifact-only; no M4 runtime authority exists yet.)
+**47 / 14 / 33**, debt 5, accepted packages 113. `M4-CP1-TB1-EXEC` is mechanically valid but gate RED on package114:
+focused CP1 **8/8 PASS twice**; cumulative selector373 **189 PASS / 38 RED / 0 SKIP / 146 MISSING**. package114 is
+not promoted. **NEXT: `M4-CP1-TB1-REV`**, independent runtime-free review.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -26,7 +26,7 @@ semantic source `680f9f1573d3c7e56a273366436463e40e196131`, immutable package114
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1 compiled / package114 awaits TB1** | `M4-CP1-CB3` implements exact fixed-`M=2` Bi-MDF refinement and compiled with GMP/GMPXX; exact next `M4-CP1-TB1-EXEC`; accepted runtime predecessor remains selector365/package113. |
+| M4 | **CP1 TB1 gate RED / independent review next** | package114 focused CP1 is 8/8 PASS twice, but cumulative selector373 is 189 PASS / 38 RED / 146 MISSING due packaged target/test-data evidence gaps; package114 not promoted; exact next `M4-CP1-TB1-REV`; accepted runtime predecessor remains selector365/package113. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

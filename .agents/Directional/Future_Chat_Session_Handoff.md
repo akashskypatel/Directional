@@ -116,45 +116,49 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-CP1-TB1-EXEC` — EXACT NEXT / TEST + BENCHMARK / ARTIFACT-ONLY
+## Mandatory next turn — `M4-CP1-TB1-REV` — EXACT NEXT / INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
 
-`M4-CP1-CB3` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Its semantic source is
-`680f9f1573d3c7e56a273366436463e40e196131`; mandatory GitHub GMP/GMPXX compile run/job
-`34452123494 / 102790053181` produced immutable package114 artifact `10142108806`, provider SHA-256
-`9a87181f771a1814fa854bc2056050b05880b6ec8dfe4ef9c9346102ee26fa36`. No Directional binary executed in CB3.
+`M4-CP1-TB1-EXEC` is **COMPLETE / MECHANICALLY VALID / GATE RED / REVIEW REQUIRED** on immutable package114,
+semantic source `680f9f1573d3c7e56a273366436463e40e196131`. Valid run/job `34473066831 / 102857316952` passed immutable
+preflight and postflight. The eight CP1 identities are **8/8 PASS twice** with identical verdict vectors. The exact
+cumulative selector373 invocation selected only 227 identities and classified the frozen rows as **189 PASS / 38 RED /
+0 SKIP / 146 MISSING**; accepted predecessor rows 1-365 are 181 PASS / 38 RED / 146 MISSING, while CP1 rows
+366-373 are 8/8 PASS.
 
 ### Current authority
 
 - **M3 / package113 / TB48** remains reviewed semantic runtime authority: selector409 **405 PASS / 4 RED / 0 SKIP**,
   accepted selector365 **365/365**, ownership **300 / 0 / 0**.
 - Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**.
-- package114 is **compile authority only** until TB1 executes/reviews it; no M4 runtime authority exists yet.
-- M4 CP1 candidate selector is `Architecture_M4_CP1_Required_Green_Selector_373.txt`: 373 identities,
-  LF SHA-256 `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`, with the accepted selector365
-  as byte-identical first-365 prefix.
+- package114 is **not promoted**. Its focused CP1 evidence is green, but its frozen cumulative gate is RED.
+- TB1 result/log artifacts: `10150408043 / 10150408431`, provider SHA-256
+  `c12e73d69fc33572ca7e324656db257dad3fc0b8d789482b8447fc540ec4c5cf` /
+  `d84daf27417751cee121b28cf062869edfae7e7034b6166bd05c2fe9412ce566`.
+- `M4-CP1-TB1-EXEC-CAND-01`: 146 selector identities are absent from the packaged producer binary.
+- `M4-CP1-TB1-EXEC-CAND-02`: all 38 selected REDs throw the same missing adjacent `test-data` exception before
+  intended semantic assertions.
 
-### `M4-CP1-TB1-EXEC` boundary
+### `M4-CP1-TB1-REV` boundary
 
-Execute only immutable package114 under `Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md`. Preflight artifact/source,
-GMP/GMPXX mode, `SHA256SUMS`, test-binary digest and selector full/prefix hashes before runtime. Execute the eight
-focused CP1 identities twice for deterministic receipt, then the exact cumulative 373-row selector. Zero-selected
-filters are failures. Re-hash the package/binary after execution.
+Independent review must consume `Architecture_M4_CP1_TB1_Execution_Record.md`, the immutable result/log evidence,
+package114/CB3 build authority, selector373, and current `cmake/DirectionalTests.cmake`. It must adjudicate whether the
+146 absent identities require additional packaged test targets or one unified cumulative gate binary; adjudicate how
+the fixture/test-data bundle becomes immutable package authority; distinguish package-evidence defects from product
+semantic regressions; and issue the exact successor.
 
-**No build, relink, fixture mutation, selector mutation, package mutation, CP2 implementation, or CP3 cutover is
-authorized in TB1.** Every observed regression must be classified in `Regression_Root_Cause_Tracker.md` before the
-TB turn closes. Semantic RED routes to independent review; orchestration-only failure does not authorize rebuilding
-package114.
+**No TB retry, package repair, selector edit, package114 promotion, corrective CB, CP2 implementation, or CP3 cutover
+is authorized before that review.** This agent loop stops at the independent-review boundary.
 
 ### Context Load Plan
 
 0. `.agents/Directional/ORIENTATION.md`.
-1. `.agents/Directional/Architecture_M4_CP1_CB3_Build_Record.md` — exact source/compile/package authority.
-2. `.agents/Directional/Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md` — executable artifact-only runtime plan.
-3. `.agents/Directional/Architecture_M4_DEFN_R1_Definition_Record.md` and
-   `Architecture_M4_DEFN_Frozen_Definitions.md` — fixed `M=2` semantic/theorem authority.
+1. `.agents/Directional/Architecture_M4_CP1_TB1_Execution_Record.md` — exact raw TB1 evidence and classification.
+2. `.agents/Directional/Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md` — frozen gate/stop contract.
+3. `.agents/Directional/Architecture_M4_CP1_CB3_Build_Record.md` — exact package114 authority.
 4. `.agents/Directional/Required_Green_Selector_Manifest.md` and
    `Architecture_M4_CP1_Required_Green_Selector_373.txt`.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `M4_Consolidated_Record.md`.
+5. `cmake/DirectionalTests.cmake` — packaged producer target composition and test-data copy contract.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `M4_Consolidated_Record.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
