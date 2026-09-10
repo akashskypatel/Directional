@@ -139,28 +139,3 @@ the pre-authored harness cannot prove the consumer-visible fixture root from pac
 established owner binaries; the corrected execution view will eliminate the 38 `test-data` setup failures before their
 semantic assertions. Any remaining RED after those controls is not predicted away and must be treated as new runtime
 evidence.
-
----
-
-## Added by `M4-CP1-TB1-REV` §10.2 — multi-coordinate oracle coverage (non-optional)
-
-The eight CP1 identities are non-vacuous but their oracle subject is **one degree of freedom**:
-`tiny_exhaustive_equal_counts_oracle` searches a single scalar `x` and returns `{x, x}`, paired with
-`two_row_equal_counts_problem`. On such an instance `M=1`, `M=2` and plain enumeration all return the same answer.
-
-`M4-DEFN-R1` §R6 traded the outer polynomial bound for `FiniteExactConvergence`, with global optimality resting on
-Theorem 3.8 holding for `M >= 2`. The residual implementation risk is that `M=2` refinement **stalls at a local
-fixed point** where improvement needs a coordinated change across three or more coordinates — which a one-variable
-instance cannot exhibit. `GenuinelyBidirectedLoopPermutationAndReversalAreDeterministic` covers `±2` structure but
-tests **determinism**, not optimality, so structure and optimality are exercised on disjoint instances.
-
-**Required of CB4 and the successor TB:**
-
-1. Extend the exhaustive comparison to at least one **multi-coordinate** instance that **carries the bidirected
-   `±2` structure**, enumerating the full count vector within the already-frozen `E<=6, x_s<=8` envelope
-   (`8^6 = 262,144` vectors — trivially cheap). **No definition change is needed**; `M4-DEFN` §8 already permits it.
-2. Publish, per CP1 identity, a receipt naming the instance's **coordinate count** and whether it contains a `±2`
-   incidence, so *"compared against an oracle"* and *"compared against an oracle that could have disagreed"* stay
-   distinguishable in the ledger.
-3. If the multi-coordinate comparison disagrees with the solver, **stop** — that is evidence about `M=2`
-   sufficiency and returns to `M4-DEFN`, not a CB decision.

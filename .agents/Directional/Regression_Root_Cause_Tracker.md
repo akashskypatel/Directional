@@ -7053,10 +7053,18 @@ searches a single scalar and returns `{x, x}`. `M4-DEFN-R1` §R6 traded the poly
 with global optimality resting on Theorem 3.8 at `M >= 2`; the residual risk is that **`M=2` stalls at a local
 fixed point** needing a coordinated change across three or more coordinates - which a one-variable instance cannot
 exhibit. The bidirected `±2` structure is exercised only by a **determinism** test, so structure and optimality sit
-on disjoint instances. **CB4 must extend the exhaustive comparison to a multi-coordinate instance carrying `±2`
-structure within the already-frozen `E<=6, x_s<=8` envelope** (`8^6` vectors - trivially cheap; no definition change
-needed), publish per-identity receipts naming coordinate count and `±2` presence, and **stop if it disagrees** -
-that is `M=2` sufficiency evidence returning to `M4-DEFN`. **The `M=2` claim is currently carried entirely by a
+on disjoint instances. **The first Code + Build turn authorized to change test source - NOT CB4 - must extend the
+exhaustive comparison to a multi-coordinate instance carrying `±2` structure within the already-frozen
+`E<=6, x_s<=8` envelope** (`8^6` vectors - trivially cheap; no definition change needed), publish per-identity
+receipts naming coordinate count and `±2` presence, and **stop if it disagrees** - that is `M=2` sufficiency
+evidence returning to `M4-DEFN`.
+
+**CORRECTION.** This obligation was first written against **CB4** and that was wrong: CB4's frozen boundary rebuilds
+the **unchanged** source `680f9f15...` and authorizes *"no change under `include/`, `src/`, `tests/`"*, so extending
+the oracle - which edits `tests/GlobalConformityPlanTests.cpp` - is **mutually exclusive** with it. The sequencing
+is also better corrected: **CB4 is a control experiment** whose evidential value comes from holding the source
+fixed, and TB1-REV §7's falsifiable prediction depends on that - a simultaneous test edit would make a changed
+result unattributable. **Establish a valid gate first; strengthen what it measures second.** `LESSONS.md` 170. **The `M=2` claim is currently carried entirely by a
 cited theorem with no runtime witness able to falsify its implementation.**
 
 **M4-DEFN-R1 verification-pass addenda (§R9).** The definition is **upheld** and all three FA3 rules are

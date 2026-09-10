@@ -201,12 +201,25 @@ The gap is also narrower than the definition permits: `M4-DEFN` §8 authorizes t
 feasible graphs* at `E<=6, x_s<=8`. Full enumeration at `E=6` is `8^6 = 262,144` vectors — trivially cheap — so the
 frozen envelope already allows a multi-coordinate oracle. **No definition change is needed.**
 
-> **Added to CB4 / the successor TB (non-optional):** extend the exhaustive comparison to at least one instance
-> that is **multi-coordinate** and **carries the bidirected `±2` structure**, enumerating the full count vector
-> within the frozen `E<=6, x_s<=8` bound and comparing against the solver's terminal schedule. Publish, per CP1
-> identity, a receipt naming the instance's coordinate count and whether it contains a `±2` incidence — so
-> "compared against an oracle" and "compared against an oracle that could have disagreed" remain distinguishable
-> in the ledger.
+> **Obligation — owned by the first Code + Build turn authorized to change test source, NOT by CB4.** Extend the
+> exhaustive comparison to at least one instance that is **multi-coordinate** and **carries the bidirected `±2`
+> structure**, enumerating the full count vector within the frozen `E<=6, x_s<=8` bound and comparing against the
+> solver's terminal schedule. Publish, per CP1 identity, a receipt naming the instance's coordinate count and
+> whether it contains a `±2` incidence — so *"compared against an oracle"* and *"compared against an oracle that
+> could have disagreed"* remain distinguishable in the ledger.
+
+**Correction (this addendum's first draft targeted CB4 and was wrong).** CB4's frozen boundary rebuilds the
+**unchanged** semantic source `680f9f1573d3c7e56a273366436463e40e196131` and authorizes *"no change under
+`include/`, `src/`, `tests/`"*, with package metadata required to identify that exact commit. Extending the oracle
+necessarily edits `tests/GlobalConformityPlanTests.cpp`, so the two requirements are **mutually exclusive**: the
+resulting binary could not be built from `680f9f15…`.
+
+**The sequencing is also substantively better this way, not merely compatible.** CB4 is a **control experiment** —
+same semantics, corrected packaging and execution view — and its evidential value comes precisely from holding the
+source fixed. §7's falsifiable prediction depends on it: if CB4 also changed tests, a changed result could not be
+attributed to the packaging fix rather than the test edit, and the prediction would stop being falsifiable.
+**Establish a valid gate first; strengthen what it measures second.** The obligation therefore attaches to the
+first CB after CB4/TB2 demonstrate package closure and execution-view integrity on unchanged semantics.
 
 This is a coverage obligation, not a defect finding: nothing in §§1–9 is shown wrong, and the eight identities
 remain credible for what they assert. **The `M=2` sufficiency claim is currently carried entirely by a cited

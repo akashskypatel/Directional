@@ -1,3 +1,37 @@
+## 2026-09-10 — correction: the `M4-CP1-TB1-REV` §10.2 oracle obligation was mis-targeted at CB4
+
+Static correction. No runtime, no compile, no package operation, no product/test/fixture/build/selector mutation.
+Accounting unchanged at **47 / 14 / 33**; package114 remains unpromoted; runtime authority remains **M3 /
+package113 / TB48**.
+
+**The contradiction was real and it was mine.** `M4-CP1-TB1-REV` §10.2 required **CB4** to extend the exhaustive
+comparison to a multi-coordinate `±2` instance and publish new per-identity receipts. That necessarily edits
+`tests/GlobalConformityPlanTests.cpp`. But CB4's frozen boundary rebuilds the **unchanged** semantic source
+`680f9f1573d3c7e56a273366436463e40e196131`, states *"No change is authorized under `include/`, `src/`, `tests/`"*,
+and requires the package metadata to identify that exact commit. **The two requirements cannot both hold** — the
+resulting test binary could not be built from `680f9f15…`. CB4 was correctly blocked.
+
+**Corrected: the obligation moves off CB4** to the first Code + Build turn authorized to change test source, i.e.
+after CB4/TB2 demonstrate package closure and execution-view integrity on unchanged semantics. The addendum
+appended to `Architecture_M4_CP1_CB4_Code_Build_Plan.md` is removed and that plan is restored to its frozen
+boundary.
+
+**The sequencing is better this way, not merely compatible.** CB4 is a **control experiment** — same semantics,
+corrected packaging and execution view — and its evidential value comes precisely from holding the source fixed.
+TB1-REV §7's falsifiable prediction depends on that: with a simultaneous test edit, a changed result could not be
+attributed to the packaging fix rather than the oracle change, and the prediction would stop being falsifiable.
+**Establish a valid gate first; strengthen what it measures second.**
+
+The finding itself is unchanged and still stands: the tiny oracle's subject has **one degree of freedom**, so it
+cannot exhibit the local-fixed-point risk that fixing `M=2` introduces, and the bidirected `±2` structure is
+currently exercised only by a determinism test. It remains owned — just not by CB4.
+
+`LESSONS.md` **170** added: never add a variable to a turn whose evidential value comes from holding variables
+fixed — and check an amendment against the turn boundaries the review it amends already froze, especially a
+prediction it endorsed a few paragraphs earlier.
+
+**`M4-CP1-CB4` is unblocked and its frozen boundary is unchanged.**
+
 ## 2026-09-10 — `M4-CP1-TB1-REV` verification pass: upheld; the tiny oracle cannot test what `M=2` risks
 
 Static verification of the delegated `M4-CP1-TB1-REV`. No runtime, no compile, no package operation, no
