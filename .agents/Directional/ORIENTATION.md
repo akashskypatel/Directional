@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-10, `M4-CP1-CB2-REV`):** **M3 remains CLOSED / ACCEPTED** — reviewed runtime authority is package113 / TB48 at **405 PASS / 4 RED**, accepted **365/365**. **M4-CP1 is deadlocked on its solver primitive, and the deadlock is definition-level.** Two consecutive Code + Build turns stopped fail-closed on the same clause, **both correctly**: CB1 because the contract demanded a `P(V,E,B)` constant no source supplies, CB2 because it names an algorithm its own primary source does not disclose. Gabow STOC 1983 lists arbitrary-capacity minimum-cost biflow as **problem (5)** with the result but not the construction; no follow-on primary source supplies it; **Medvedev et al. 2011 independently reports it as polynomial but difficult to implement**; and no off-the-shelf exact bidirected MCF library exists. **The primitive can be neither imported nor implemented from its citation.** When two implementation turns fail identically on one clause, **the clause is the defect**. Exact next is **`M4-DEFN-R1`**, static. Accounting unchanged: **47 / 14 / 33**.
+> **Current milestone authority (2026-09-10, `M4-DEFN-R1`):** **M3 remains CLOSED / ACCEPTED** — reviewed runtime authority is package113/TB48 at **405 PASS / 4 RED**, accepted **365/365**, ownership **300/0/0**. **M4 solver deadlock is definition-resolved.** `M4-DEFN-R1` selects the disclosed Heistermann/Warnett/Bommes 2023 exact fixed-`M=2` Bi-MDF iterative-refinement algorithm, preserving the exact A3 objective/count/incidence/parity contracts while explicitly changing outer assurance from polynomial to **finite exact convergence**. `M4-CP1-CB2-REV-CAND-01` is closed definition-corrected/non-stable. Exact next is **`M4-CP1-CB3`**, runtime-free Code + Build. Accounting unchanged: **47 / 14 / 33**.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,9 +30,9 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-09/10 at `M4-CP1-CB1-REV`. Semantic runtime authority is **package113/TB48** (source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`), selector409 final audit **405 PASS / 4 RED / 0 SKIP**, accepted required-green selector365 **365/365**, RED `[368,369,374,398]`. Stable accounting is **47 / 14 / 33**, debt 5, packages 113, ownership 300/0/0. **M3 is CLOSED / ACCEPTED.**
+**Currency.** Last updated 2026-09-10 at `M4-DEFN-R1`. Semantic runtime authority is **package113/TB48** (source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`), selector409 final audit **405 PASS / 4 RED / 0 SKIP**, accepted required-green selector365 **365/365**, RED `[368,369,374,398]`. Stable accounting is **47 / 14 / 33**, debt 5, packages 113, ownership 300/0/0. **M3 is CLOSED / ACCEPTED.**
 
-**Current definition resolution.** `M4-CP1-CB1-REV` upholds CB1's pre-mutation stop and amends only the A3 solver/oracle staging inside the frozen `M4-DEFN` product. `GlobalConformityPlan` remains the single A3 writer with one positive exact count per full A2b arc, exact support-piece paths, incidence multiplicity, mandatory parity, compact exact ordinals and bit-exact target binding. The exact L1 objective is now specialized to finite-capacity **Integral Bi-MCF**: `x=d+p-n`, theorem-derived cap `U=2D+E^2*2^V`, exact mixed-radix tie encoding, and Gabow 1983 arbitrary-capacity minimum-cost biflow with published `O(E'^2 log V' log Cmax)` combinatorial bound. libSatsuma is illustrative, not the M4 numeric implementation authority. CP1 independently validates structure/feasibility/objective/encoding and uses fixed-small exact test oracles; CP2 still owns scalable carried optimality certification and typed infeasibility before CP3 production cutover. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`; exact next is `M4-CP1-CB2`.
+**Current definition resolution.** `M4-DEFN-R1` preserves `GlobalConformityPlan` as the single A3 writer with one positive exact count per full A2b arc, exact support-piece paths, incidence multiplicity, mandatory parity, compact exact ordinals and bit-exact target binding. The theorem-derived cap remains `U=2D+E^2*2^V` and the exact mixed-radix objective still implements the semantic lexicographic `J`. Production optimization is now the disclosed **Heistermann/Warnett/Bommes 2023 exact Bi-MDF refinement algorithm with fixed `M=2`**: exact feasible initialization, zero-demand Bi-MCF refinement, disclosed WPbM/WPM reductions and exact no-improvement termination. Corollary 3.7 + Theorem 3.8 + Corollary 3.9 provide finite convergence/global optimality; the former Gabow identity/bound is retired. libSatsuma is algorithm/reference material only because its upstream scalar types/tolerance terminal are inexact for M4. CP2's independent terminal-optimality certificate is mandatory before CP3 cutover. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`; exact next is `M4-CP1-CB3`.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -114,7 +114,7 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 **What closed M3:** CP4c-2 already established closed/higher-genus actual-embedded A2a′/A2b authority. CP4c-3's frozen exit was the mechanical witness under AU0–AU9, not an all-green 409-row audit. TB48 preserves accepted 365/365, mechanical 366/367 and protected 390/393/406/407 green, runs every final audit identity report-only after first RED, and proves CB54's ordinal370 typed-error/locus correction. The four remaining REDs retain separate owners and remain visible.
 
-**What is next:** `M4-CP1-CB2` implements the first bounded A3 schedule-authority slice under `Architecture_M4_CP1_CB2_Code_Build_Plan.md`. The accepted predecessor is selector365; selector409 is retained final-M3 audit evidence. CB2 implements the amended exact finite-capacity Integral Bi-MCF solver plus the known-feasible immutable full-arc schedule and independent structural validator; CP2 adds scalable carried optimality certification/infeasibility, and A4 producer cutover remains CP3.
+**What is next:** `M4-CP1-CB3` implements the first bounded A3 schedule-authority slice under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. The accepted predecessor is selector365; selector409 is retained final-M3 audit evidence. CB3 implements exact fixed-`M=2` Bi-MDF refinement plus the known-feasible immutable full-arc schedule and independent structural validator; CP2 adds independently certified terminal optimality/infeasibility, and A4 producer cutover remains CP3.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -226,25 +226,12 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4 solver primitive is neither importable nor implementable — DEADLOCK, DEFINITION-OWNED.** —
-   `M4-CP1-CB2-REV-CAND-01`, **ACTIVE / GATING**; owner **`M4-DEFN-R1`**.
+1. **M4-CP1 implementation of the amended exact solver — ACTIVE / NEXT.** — `M4-CP1-CB3`.
 
-   - **Two Code + Build stops on one clause, both correct.** CB1: the contract required a `P(V,E,B)` constant no
-     published source supplies. CB2: the contract names an algorithm its primary source does not disclose.
-   - **Established, not assumed:** Gabow STOC 1983 (`10.1145/800061.808776`) lists arbitrary-capacity min-cost
-     biflow as **problem (5)** — result, not construction; a bounded search found no follow-on primary source;
-     **Medvedev et al. 2011 §5.1** independently reports it as *polynomial but difficult to implement*; and no
-     exact bidirected MCF library exists (`M4-CP1-CB1-REV` §13.2).
-   - **The premise that closed this is falsified.** CB1-REV §9 rejected a disclosed iterative Bi-MDF port as
-     weakening the polynomial architecture *"unnecessarily"*. The specialization exists mathematically; an
-     implementable primitive for it does not. **Re-opened for adjudication — re-opened, not accepted.**
-   - **`M4-DEFN-R1` decides one implementable, citable path** under three rules: the citation must disclose the
-     **algorithm**, not only the bound; **no inherited complexity labels** — identity and theorem class move
-     together or not at all; any drop from polynomial to finite assurance is **stated, not absorbed**.
-   - **Take the reduction question first.** If the `±2` same-row loops can be eliminated or shown not to arise,
-     the problem leaves the bidirected class and exact ordinary min-cost flow **is** available in libraries — the
-     one case where the standing library authorization applies. It needs a proof, not an observation about current
-     fixtures.
+   - `M4-DEFN-R1` closed the definition deadlock: ordinary MCF is insufficient for the frozen `+2/-2` incidence class; the direct one-shot b-matching chain is not fully traced for the former nonzero-demand form; fixed-`M=2` Heistermann/Warnett/Bommes exact Bi-MDF refinement is selected.
+   - **Assurance is explicit:** semantic optimality remains exact; outer runtime assurance is finite convergence, not polynomial.
+   - **Implementation risk now lives at the exact WPM adapter boundary:** any chosen matching primitive must preserve arbitrary-precision exact weights/comparisons. Upstream libSatsuma/Blossom-V machine-width scalar paths are reference-only.
+   - CB3 must stop rather than substitute an algorithm if that exact adapter or a disclosed reduction cannot represent the frozen M4 cases.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical.** The exact-torus `InvalidHardRailPairing` blocker and its three produced-witness re-proofs are M4-owned. M4 must remove the blocker without post-hoc local pairing and discharge all three debts on produced authority.
 

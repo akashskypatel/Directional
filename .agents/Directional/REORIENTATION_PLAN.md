@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-09/10, `M4-CP1-CB1-REV`):** **M3 is CLOSED / ACCEPTED and M4 definitions are frozen/amended.** Package113/TB48 remains reviewed runtime authority; accepted M4 predecessor is selector365. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`; the A3 solver contract is now exact finite-capacity Integral Bi-MCF with theorem-derived lex encoding and Gabow 1983 arbitrary-capacity min-cost biflow. Exact next is `M4-CP1-CB2`.
+> **Current milestone authority (2026-09-10, `M4-DEFN-R1`):** **M3 is CLOSED / ACCEPTED and M4 definitions are amended.** Package113/TB48 remains reviewed runtime authority; accepted M4 predecessor is selector365. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`; A3 now uses Heistermann/Warnett/Bommes 2023 exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding and finite exact convergence. Exact next is `M4-CP1-CB3` runtime-free Code + Build.
 
 # Directional Surface-Cell Reorientation Plan
 

@@ -3,7 +3,7 @@
 **Turn:** `M4-CP1-CB2-REV` — independent review (absorbs REVIEW + PLAN).
 **Status:** STATIC / EVIDENCE-ONLY / NO RUNTIME / NO COMPILE / **NON-STABLE**.
 **Measures:** **FA0–FA6**.
-**Adjudicated evidence:** `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`, frozen semantic source
+**Adjudicated evidence:** CB2 algorithm-blocker record (folded after this review/DEFN-R1 into `M4_Consolidated_Record.md`; exact bytes retained in git history), frozen semantic source
 `075f3c738d8f689437397fe925faa7eb12d72ac3`, snapshot run `34429824055` / artifact `10134050428`, `5222/5222`
 manifest files verified, `runtimeExecution=false`.
 

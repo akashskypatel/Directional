@@ -116,72 +116,61 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-DEFN-R1` — EXACT NEXT / DEFINITION TURN / STATIC
+## Mandatory next turn — `M4-CP1-CB3` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
 
-`M4-CP1-CB2-REV` upheld both solver stops and routed the question to definition. **A Code + Build turn cannot
-repair a definition**, and asking a third to try would be the first genuinely wrong move in this sequence.
+`M4-DEFN-R1` is **COMPLETE / STATIC**. It resolves the two independently upheld CP1 solver stops by changing only
+the A3 solver/assurance clause: production authority is now the disclosed Heistermann/Warnett/Bommes 2023 exact
+Bi-MDF iterative-refinement algorithm with fixed `M=2`. The outer optimizer has **finite exact convergence**, not a
+claimed polynomial runtime bound. A3 semantic ownership, exact objective `J`, positive full-span counts, incidence
+multiplicity, parity, exact `U` cap, lexicographic order and accepted predecessor selector365 are unchanged.
 
 ### Current authority
 
 - **M3 / package113 / TB48** remains reviewed semantic runtime authority: selector409 **405 PASS / 4 RED**,
-  accepted **365/365**, ownership **300 / 0 / 0**.
-- Selector **365** is the accepted required-green predecessor, byte-unchanged. **No M4 runtime exists.**
-- Stable accounting **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**.
+  accepted selector365 **365/365**, ownership **300 / 0 / 0**.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**.
+- **No M4 runtime exists.** `M4-CP1-CB1` and `M4-CP1-CB2` remain historical correct pre-mutation stops.
+- `M4-CP1-CB2-REV-CAND-01` is **CLOSED / DEFINITION-CORRECTED / NON-STABLE**, +0 events/+0 recurrences.
 
-### Why CP1 is deadlocked
+### Definition amendment that CB3 must consume
 
-Two Code + Build turns stopped fail-closed on one clause, **both correctly**. CB1: the contract demanded a
-`P(V,E,B)` transition-budget constant no published source supplies. CB2: the contract names an algorithm its own
-primary source does not disclose — **Gabow STOC 1983 lists arbitrary-capacity minimum-cost biflow as problem (5),
-gives the bound, and explicitly says problem (5) will be discussed elsewhere.**
+1. **Ordinary MCF is not the frozen route.** Same-row two-end full spans may carry genuine `+2/-2` loop incidence;
+   deleting those cases would narrow M4 semantics.
+2. **Direct one-shot b-matching is not frozen.** The reviewed implementation chain does not yet disclose the
+   general-demand reduction needed by the former one-shot `p/n` Bi-MCF.
+3. **Selected exact route:** Heistermann/Warnett/Bommes, *Min-Deviation-Flow in Bi-directed Graphs for T-Mesh
+   Quantization*, ACM TOG 42(4), 2023, DOI `10.1145/3592437`, §§3.6–3.9. Use exact feasible initialization, exact
+   zero-demand refinement, disclosed Bi-MCF → WPbM → WPM reductions, fixed `M=2`, and exact non-improvement as the
+   terminal. Corollary 3.7 + Theorem 3.8 + Corollary 3.9 are the solver theorem authority.
+4. **Numeric adaptation is mandatory.** Upstream libSatsuma is reference/control-flow material; its `int`, `double`,
+   `int64_t` and epsilon terminal are not M4 numeric authority. A matching library is allowed only if its exact
+   adapter preserves arbitrary-precision semantic comparisons.
+5. **CP2 barrier strengthened.** Before CP3 cutover, the carried independent certificate must verify the terminal
+   zero-improvement `M=2` refinement instance/theorem hypotheses and recompute exact `J`; a producer flag is not proof.
 
-- A bounded search located **no follow-on primary source** supplying the construction.
-- **Medvedev et al., *Maximum Likelihood Genome Assembly* (2011) §5.1** independently describes it as *polynomial
-  but difficult to implement* — a separate group, separate field, same wall.
-- **No off-the-shelf exact arbitrary-capacity bidirected MCF library exists** (`M4-CP1-CB1-REV` §13.2).
+### `M4-CP1-CB3` boundary
 
-**The primitive can be neither imported nor implemented from its citation.**
+Canonical Code + Build under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. It may implement the known-feasible A3
+product, exact fixed-`M=2` solver, independent structural validator, focused test source, selector extension and minimal
+build/dependency integration. **It may compile/package only through the mandatory GitHub Actions reusable compile
+workflow; no local build and no Directional runtime/test/benchmark execution.**
 
-**And the premise that closed this question is falsified.** `M4-CP1-CB1-REV` §9 rejected porting a disclosed
-iterative Bi-MDF method because it weakened the polynomial architecture *"unnecessarily"*. The specialization exists
-mathematically; an implementable primitive for it does not. **Re-opened for adjudication — re-opened, not
-accepted.**
+On successful immutable GMP/GMPXX compile/package evidence, CB3 must author the executable artifact-only
+`M4-CP1-TB1` plan for the exact package. If the selected WPM primitive cannot preserve arbitrary-precision exact
+weights/comparisons, or a disclosed reduction cannot represent a frozen M4 incidence case, stop with a precise
+implementation blocker instead of changing the algorithm or semantics.
 
-### `M4-DEFN-R1` boundary
-
-Static definition turn amending the solver clause of `M4-DEFN` §7 as amended by `M4-CP1-CB1-REV`. No runtime, no
-compile, no package, no product/test/selector mutation. It must decide **one implementable, citable exact path**
-under three binding rules:
-
-- **R1 — the citation must disclose the algorithm, not only the bound.** A complexity result without a
-  construction is what produced this deadlock.
-- **R2 — no inherited complexity labels.** A substitute primitive brings its own bound; `WorkLedger` algorithm
-  identity and theorem class move together or not at all.
-- **R3 — any reduction from polynomial to finite assurance is stated as a definition-level change**, with its
-  consequences for CP2's certificate named.
-
-**Adjudication order:**
-
-1. **Prove the M4 instances reduce to ordinary minimum-cost flow.** Take this first — if the `±2` same-row loops
-   can be eliminated or shown not to arise for admissible inputs, the problem leaves the bidirected class and exact
-   ordinary MCF **is** available in libraries, which is where the standing user authorization applies. Needs a
-   **proof**, not an observation about current fixtures.
-2. **A disclosed b-matching route**, without silently reintroducing the capacity gap Gabow was cited to fill.
-3. **Port a disclosed iterative Bi-MDF method with exact types**, accepting a stated finite bound (R3 governs).
-4. **Amend the frozen polynomial requirement itself**, recording the assurance change.
-
-**Must not:** invent the undisclosed construction; substitute a solver while keeping Gabow's identity or bound;
-accept `int`/`double` because current meshes are small; use generic ILP/IQP/branch-and-bound, heuristic big-M, or
-enumeration up to `U`; or spend a fourth turn re-deriving facts `M4-CP1-CB2-REV` FA1 established.
+**Prohibited:** restoring Gabow's retired tag/bound; generic ILP/IQP/branch-and-bound; floating/tolerance optimization;
+machine-width semantic narrowing; numeric enumeration to `U`; changing fixed `M=2` without definition/review;
+changing A3 positivity/parity/incidence/ownership to fit a solver; or implementing CP2/CP3 early.
 
 ### Context Load Plan
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M4_CP1_CB2_Independent_Review_Record.md` — **FA0–FA6**, this adjudication.
-2. `.agents/Directional/Architecture_M4_CP1_CB2_Algorithm_Blocker.md` — the primary-source audit.
-3. `.agents/Directional/Architecture_M4_CP1_CB1_Independent_Review_Record.md` — the Bi-MCF specialization (§§4–7),
-   §9's rejections, and §13's library findings.
-4. `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` — §7 is the clause being amended.
+1. `.agents/Directional/Architecture_M4_DEFN_R1_Definition_Record.md` — R0–R8 adjudication and assurance change.
+2. `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` — normative amended §7/§8/§13/§15/§16.
+3. `.agents/Directional/Architecture_M4_CP1_CB3_Code_Build_Plan.md` — exact CB3 implementation/compile measures.
+4. `.agents/Directional/Architecture_M4_CP1_CB2_Independent_Review_Record.md` — historical FA0–FA6 stop authority.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `M4_Consolidated_Record.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

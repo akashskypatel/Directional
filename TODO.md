@@ -26,38 +26,31 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-DEFN-R1` (definition turn, static) — BREAK THE SOLVER DEADLOCK
+## Current focus — `M4-CP1-CB3` (canonical Code + Build, runtime-free)
 
-`M4-CP1-CB2-REV` upheld both solver stops and routed the question to definition. **A Code + Build turn cannot
-repair a definition.**
+`M4-DEFN-R1` is **COMPLETE / STATIC** and closes `M4-CP1-CB2-REV-CAND-01` as
+**DEFINITION-CORRECTED / NON-STABLE**. It adjudicated the solver deadlock without changing A3 semantics:
 
-- **M3 / package113 / TB48** remains reviewed runtime authority: **405 PASS / 4 RED**, accepted **365/365**.
-- Selector **365** unchanged; **no M4 runtime exists**. Accounting **47 / 14 / 33**, debt 5, packages 113.
+- ordinary MCF is rejected for the frozen admissible class because same-row two-end spans may produce genuine
+  `+2/-2` bidirected loop incidence;
+- a one-shot direct capacitated b-matching route is not selected because the reviewed implementation chain does not
+  yet disclose the required general-demand reduction for M4's former `p/n` Bi-MCF;
+- production algorithm authority is now **Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement**, fixed
+  to `M=2`, with exact feasible initialization and exact Bi-MCF → WPbM → WPM refinement reductions;
+- the semantic objective `J`, one-count-per-full-span ownership, exact `U` cap, mixed-radix lexicographic order,
+  positivity/parity/incidence semantics and accepted predecessor selector365 are unchanged;
+- outer runtime assurance is explicitly amended from **polynomial** to **finite exact convergence** under Corollary
+  3.7 + Theorem 3.8 + Corollary 3.9; CP2's independent scalable optimality certificate is therefore a mandatory
+  semantic barrier before CP3 cutover.
 
-**Two Code + Build turns stopped on one clause, both correctly.** CB1: the contract demanded a `P(V,E,B)` constant
-no source supplies. CB2: **Gabow STOC 1983 names arbitrary-capacity min-cost biflow as problem (5), gives the
-bound, and explicitly defers the algorithm elsewhere.** No follow-on primary source supplies it; Medvedev et al.
-2011 independently reports it as polynomial but difficult to implement; and no exact bidirected MCF library exists.
-**The primitive can be neither imported nor implemented from its citation.**
+**Exact next:** run **`M4-CP1-CB3`** under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. It may implement the
+known-feasible A3 product, exact fixed-`M=2` solver, independent validator, focused tests and first M4 selector, then
+compile/package them through the mandatory GMP/GMPXX GitHub workflow. **No Directional runtime, test or benchmark
+execution is authorized in CB3.** On compile success, CB3 issues the artifact-only `M4-CP1-TB1` plan.
 
-**The premise that closed this is falsified.** CB1-REV §9 rejected a disclosed iterative Bi-MDF port as weakening
-the polynomial architecture *"unnecessarily"* — but the polynomial route has no implementable primitive.
-**Re-opened for adjudication, not accepted.**
-
-### Exact next turn
-
-Run **`M4-DEFN-R1`**, a static definition turn amending `M4-DEFN` §7's solver clause:
-
-- [ ] **R1** the citation must disclose the **algorithm**, not only the bound;
-- [ ] **R2** no inherited complexity labels — identity and theorem class move together or not at all;
-- [ ] **R3** any drop from polynomial to finite assurance is stated as a definition-level change;
-- [ ] adjudicate in order: **(1) prove reduction to ordinary min-cost flow** — highest payoff, cheapest to test,
-      and the one case where the standing library authorization applies; (2) a disclosed b-matching route;
-      (3) port a disclosed iterative method with exact types; (4) amend the polynomial requirement itself.
-
-**Must not:** invent the undisclosed construction; substitute a solver while keeping Gabow's identity or bound;
-accept `int`/`double` because current meshes are small; use generic ILP/IQP/branch-and-bound, heuristic big-M or
-enumeration up to `U`; re-derive facts FA1 established.
+**Must not:** restore Gabow's algorithm tag/bound; use generic ILP/IQP/branch-and-bound; inherit libSatsuma's
+`int`/`double` or Blossom-V bounded cost path as semantic authority; terminate refinement by tolerance; enumerate to
+`U`; or change M4 semantic ownership/parity/positivity to accommodate the solver.
 
 ## Carried forward from M1
 
@@ -96,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB2-REV` NEXT**; `M4-DEFN` is amended by the completed CB1 review and M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB3` NEXT**; `M4-DEFN-R1` amended only the solver/assurance clause and M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -136,4 +129,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-DEFN` is COMPLETE / AMENDED, `M4-CP1-CB2` stopped before semantic mutation at the frozen algorithm-traceability guard, and exact next is independent runtime-free **`M4-CP1-CB2-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-DEFN-R1` is COMPLETE / STATIC, both CB1/CB2 stops remain upheld as historical guards, and exact next is runtime-free **`M4-CP1-CB3`**. PR #8 remains open, draft, and unmerged.

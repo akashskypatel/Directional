@@ -1,3 +1,51 @@
+## 2026-09-10 — `M4-DEFN-R1`: exact solver deadlock resolved by disclosed fixed-`M=2` Bi-MDF refinement
+
+`M4-DEFN-R1` is **COMPLETE / STATIC / NO RUNTIME / NO COMPILE / NO PACKAGE**. It consumes independent
+`M4-CP1-CB2-REV` FA0-FA6 and closes `M4-CP1-CB2-REV-CAND-01` as **DEFINITION-CORRECTED / NON-STABLE** with
++0 stable events/+0 recurrences. Reviewed M3 authority remains package113/TB48 at selector409 **405 PASS / 4 RED**,
+accepted selector365 **365/365**, ownership **300/0/0**; totals remain **47 / 14 / 33**, debt 5, packages 113.
+
+The ordered solver adjudication is now frozen. Ordinary MCF is rejected for the full M4 admissible class because the
+existing full-span incidence definition deliberately preserves same-row two-end spans and therefore genuine `+2/-2`
+bidirected loops. A direct one-shot capacitated b-matching route is not selected: Miller/Pekny 1995 publishes an
+arbitrary-capacity perfect-b-matching algorithm, but the directly disclosed Heistermann §3.7 Bi-MCF→WPbM reduction
+used by the implementation path is specialized to zero-demand refinement around a feasible flow, whereas the former
+one-shot `p/n` formulation has demand `-A d`. Freezing another untraced general-demand bridge would repeat CB2.
+
+Production algorithm authority is instead **Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement**,
+DOI `10.1145/3592437`, fixed to `M=2`: exact feasible initialization through the disclosed double-cover/T-join path,
+zero-demand bounded Bi-MCF refinement, disclosed reduction to weighted perfect b-matching then weighted perfect
+matching, exact strict-improvement commits, and exact non-improvement termination. Corollary 3.7 supplies finite
+convergence for fixed M; Theorem 3.8 says non-improvement for `M>=2` is globally optimal; Corollary 3.9 supplies exact
+optimality. The former Gabow implementation identity and inherited `O(E'^2 log V' log Cmax)` WorkLedger theorem tag
+are retired. This is an explicit **polynomial → finite exact convergence** runtime-assurance amendment, not a semantic
+weakening: exact objective `J`, theorem-derived cap `U`, mixed-radix lexicographic order, positivity, parity, incidence
+multiplicity and one-count-per-full-span authority are unchanged.
+
+Upstream libSatsuma commit `4e96979ecb11bbfe8d9c05e8f8be1ecb992ca5fd` is now algorithm/reference material,
+not M4 numeric authority: its current code uses `int` flow, `double` target/cost, `int64_t` matching weights and a
+floating refinement tolerance. CB3 must adapt the disclosed algorithm to arbitrary-precision exact arithmetic. The
+standing solver-library authorization applies to a weighted-perfect-matching primitive only if the chosen adapter
+preserves exact M4 comparisons without narrowing.
+
+CP2 is strengthened accordingly: before CP3 cutover, the carried independent certificate must verify the terminating
+zero-improvement `M=2` refinement instance and theorem hypotheses, recompute exact `J`, and independently map the
+matching/refinement witness to the semantic schedule. A producer-emitted no-improvement flag is not a certificate.
+
+Definition inspection used exact snapshot run `34432662583`, source/event `74dbf78fb11a1d989d77d4ccd0c8d07ad25eb69c`,
+artifact `10135052020`, provider digest `sha256:2724d188d2c356a17ccd9906d1a7c29d2f481dd678055ff641a99fb291d438ea`,
+`runtimeExecution=false`; the semantic review authority immediately before its control-only snapshot trigger was
+`fcd70da6dc3abd8c955ed9725a2e6b41133932d0`.
+
+Normative authority is amended in `Architecture_M4_DEFN_Frozen_Definitions.md`; adjudication lives in
+`Architecture_M4_DEFN_R1_Definition_Record.md`. The exact successor plan is
+`Architecture_M4_CP1_CB3_Code_Build_Plan.md`. Reviewed CB2 plan/blocker documents are folded into
+`M4_Consolidated_Record.md`; their full text remains in git history and their independent review record is retained.
+
+**Exact next: `M4-CP1-CB3` — canonical Code + Build / runtime-free.** It may implement/compile/package the amended
+known-feasible A3 solver/product surface and must issue artifact-only `M4-CP1-TB1` on build success. No test, benchmark
+or Directional runtime executes in CB3.
+
 ## 2026-09-10 — `M4-CP1-CB2-REV`: both solver stops upheld; the clause is the defect, routed to `M4-DEFN-R1`
 
 Independent review, evidence-only. No runtime, no compile, no package operation, no product/test/fixture/build/

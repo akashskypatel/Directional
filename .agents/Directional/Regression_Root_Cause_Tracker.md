@@ -6944,7 +6944,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
   stable history. Totals remain **45 events / 14 categories / 31 recurrences**, debt **5**, packages **103** pending
   TB38-REV.
 
-## M4-CP1-CB2-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE / SECOND SOLVER STOP UPHELD**
+## M4-CP1-CB2-REV — independent review adjudication — **RETAINED REVIEW AUTHORITY / STATIC / NON-STABLE / SECOND SOLVER STOP UPHELD**
 
 - **Record:** `Architecture_M4_CP1_CB2_Independent_Review_Record.md`, measures **FA0-FA6**. Evidence-only: no
   runtime, no compile, no package, no product/test/selector mutation.
@@ -6976,45 +6976,47 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 - **FA6 - accounting: +0 events / +0 recurrences.** No semantic mutation. M3/package113/TB48 remains reviewed
   runtime authority; selector **365** unchanged. New candidate **`M4-CP1-CB2-REV-CAND-01`** - the frozen solver
-  primitive is neither importable nor implementable from its citation - **ACTIVE / GATING / DEFINITION-OWNED**,
-  owner `M4-DEFN-R1`.
+  primitive is neither importable nor implementable from its citation - **CLOSED / DEFINITION-CORRECTED / NON-STABLE**,
+  owner `M4-DEFN-R1`; +0 stable events / +0 recurrences.
 
 ---
+
+## M4-DEFN-R1 — solver definition adjudication — **CURRENT DEFINITION AUTHORITY / STATIC / NON-STABLE / RESOLVED**
+
+- **Record:** `Architecture_M4_DEFN_R1_Definition_Record.md`, measures R0-R8. Static only: no runtime, compile,
+  package, product/test/selector mutation.
+- **R1:** ordinary MCF is not selected because frozen admissible incidence includes genuine same-row `+2/-2`
+  bidirected loops; eliminating them would narrow M4 semantics.
+- **R2:** direct one-shot b-matching is not selected because the reviewed source chain does not yet disclose the
+  general-demand reduction needed by the former `p/n` Bi-MCF.
+- **R3-R5:** selected production authority is Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement,
+  fixed `M=2`, using exact feasible initialization and disclosed Bi-MCF -> WPbM -> WPM reductions. Upstream
+  libSatsuma is algorithm/reference material only; its `int`/`double`/`int64_t` and epsilon terminal are not M4
+  numeric authority.
+- **R6:** outer assurance is explicitly amended from polynomial to **finite exact convergence** under Corollary 3.7,
+  Theorem 3.8 and Corollary 3.9. Semantic optimality and canonical lexicographic `J` remain exact.
+- **R7:** CP2 must independently certify the terminal zero-improvement `M=2` refinement instance/theorem hypotheses
+  and recompute exact `J` before CP3 cutover. A producer no-improvement flag alone is not sufficient evidence.
+- **R8 / candidate:** `M4-CP1-CB2-REV-CAND-01` is **CLOSED / DEFINITION-CORRECTED / NON-STABLE**. Stable totals
+  remain **47 / 14 / 33**, debt **5**, packages **113**.
 
 ## Authoritative next step
 
 Reviewed semantic runtime authority remains **M3 / package113 / TB48** at selector409 **405 PASS / 4 RED**,
 accepted **365/365**. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, packages
-**113**. No M4 runtime exists and none is authorized.
+**113**. No M4 runtime exists.
 
-**M4-CP1 is deadlocked on its solver primitive, and the deadlock is definition-level.** Two consecutive Code + Build
-turns stopped fail-closed on the same clause, both correctly. Gabow STOC 1983 lists arbitrary-capacity minimum-cost
-biflow as problem (5) without disclosing the construction; no follow-on primary source supplies it; Medvedev et al.
-2011 independently reports it as polynomial but difficult to implement; and no off-the-shelf exact bidirected MCF
-library exists. **The primitive can be neither imported nor implemented from its citation.**
+**Exact next: `M4-CP1-CB3` — canonical Code + Build / runtime-free.** Implement the amended exact fixed-`M=2`
+Bi-MDF schedule authority under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`, compile/package only through the
+mandatory GMP/GMPXX GitHub reusable workflow, and issue artifact-only `M4-CP1-TB1` on build success. No test,
+benchmark or Directional runtime is authorized in CB3.
 
-**Exact next: `M4-DEFN-R1`** - a static definition turn amending the solver clause of `M4-DEFN` §7 as amended by
-`M4-CP1-CB1-REV`. Binding rules: **R1** the citation must disclose the algorithm, not only the bound; **R2** no
-inherited complexity labels - a substitute primitive brings its own bound, and `WorkLedger` identity and theorem
-class move together or not at all; **R3** any reduction from polynomial to finite assurance is stated as a
-definition-level change, with its consequences for CP2's certificate named.
-
-**Adjudication order:** (1) **prove the M4 instances reduce to ordinary minimum-cost flow** - if the `+/-2`
-same-row loops can be eliminated or shown not to arise, the problem leaves the bidirected class and exact ordinary
-MCF *is* available in libraries, which is where the standing user authorization applies; it requires a proof, not
-an observation about current fixtures; (2) a disclosed b-matching route, without silently reintroducing the
-capacity gap Gabow was cited to fill; (3) port a disclosed iterative Bi-MDF method with exact types, accepting a
-stated finite bound; (4) amend the frozen polynomial requirement itself.
-
-**Prohibited:** inventing the undisclosed construction; substituting a solver while keeping Gabow's identity or
-bound; `int`/`double` representation justified by current mesh sizes; generic ILP/IQP/branch-and-bound, heuristic
-big-M, or enumerating counts up to `U`; and a fourth turn re-deriving facts this review established.
+**Prohibited:** restoring Gabow's retired identity/bound; generic ILP/IQP/branch-and-bound; machine-width or floating
+semantic optimization; epsilon termination; numeric enumeration to `U`; or changing frozen incidence/positivity/parity
+semantics to accommodate a solver.
 
 
-**M4-CP1-CB1-REV verification-pass addenda.** The adjudication is upheld: the CB1 stop was correct (the frozen
-contract required a `P(V,E,B)` constant no published source supplies, so the turn could only have proceeded by
-inventing it), and the review strengthens M4 by specializing to an exact Bi-MCF with a published polynomial bound
-rather than accepting finite convergence.
+**M4-CP1-CB1-REV verification-pass addenda — HISTORICAL; solver selection superseded by `M4-DEFN-R1`.** The CB1 stop remains upheld. Its then-selected Gabow primitive/polynomial assurance was later invalidated by CB2 traceability evidence and replaced by the current fixed-`M=2` exact Bi-MDF finite-convergence definition; the standing library authorization and historical research facts below remain preserved.
 
 - **STANDING USER AUTHORIZATION, recorded so it outlives the conversation:** *adding a solver library instead of
   reimplementing algorithms is approved.* CB2 currently plans to implement Gabow 1983 in-house.
@@ -7043,7 +7045,7 @@ Q8 criteria 1/4/5. Later 353/355/365 prefix inclusion is corroboration only. The
 “M4-DEFN must confirm or reopen M3” branch is retired. M3 remains CLOSED / ACCEPTED; stable accounting remains
 **47 / 14 / 33**, debt **5**, packages **113**.
 
-**Current M4 routing after `M4-CP1-CB1-REV`:** `M4-CP1-CB2`, runtime-free Code + Build under the amended frozen M4 definitions and `Architecture_M4_CP1_CB2_Code_Build_Plan.md`. Stable regression accounting is unchanged.
+**Current M4 routing after `M4-DEFN-R1`:** `M4-CP1-CB3`, runtime-free Code + Build under the amended frozen M4 definitions and `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. Stable regression accounting is unchanged.
 
 **TB47-REV verification-pass addenda.** The adjudication stands. CB53's change is exactly DEFN-R3.4's one-sided form
 (`!=` -> `>` at `tests:2273`), so the oracle keeps teeth on the over-count direction; ordinal 307 was explicitly

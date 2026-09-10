@@ -1,12 +1,13 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP1-CB2` pre-mutation stop
+**Last updated:** 2026-09-10 at `M4-DEFN-R1` definition amendment
 
 This record holds M4 history that has been folded under the review-turn consolidation policy. Normative current M4
-semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current independent review authority is
-`Architecture_M4_CP1_CB1_Independent_Review_Record.md`; the exact current successor plan lives in
-`Architecture_M4_CP1_CB2_Code_Build_Plan.md`; current blocker authority is `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`; task/state pointers live in `TODO.md` and
+semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current definition adjudication is
+`Architecture_M4_DEFN_R1_Definition_Record.md`; the retained independent stop authority is
+`Architecture_M4_CP1_CB2_Independent_Review_Record.md`; the exact current successor plan is
+`Architecture_M4_CP1_CB3_Code_Build_Plan.md`; task/state pointers live in `TODO.md` and
 `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
@@ -30,9 +31,11 @@ that CP4c-0 TB-R9 never ran: run `33079817998` is the direct 346/346 CP4c-0 clos
 
 CB1 subsequently stopped before semantic mutation because its solver contract had no implementable exact polynomial authority. Independent `M4-CP1-CB1-REV` upheld that stop and amended the solver contract: the frozen L1 objective is exact Integral Bi-MCF under `x=d+p-n`; `H=E*2^V` and `U=2D+E*H` provide a theorem-derived finite optimum cap; exact mixed-radix weights preserve the semantic lexicographic tie; Gabow 1983 arbitrary-capacity minimum-cost biflow is the production algorithmic authority; libSatsuma is illustrative only; and CP2 retains scalable carried optimality certification.
 
-`M4-CP1-CB2` subsequently stopped before semantic mutation at its frozen algorithm-traceability guard. The selected Gabow 1983 source states the arbitrary-capacity minimum-cost biflow bound but explicitly defers problem (5), so the required implementation cannot be traced to the selected algorithm without invention or substitution. No semantic source/test/selector/build mutation and no compile/package/runtime occurred. Blocker: `Architecture_M4_CP1_CB2_Algorithm_Blocker.md`.
+`M4-CP1-CB2` subsequently stopped before semantic mutation at its frozen algorithm-traceability guard. The selected Gabow 1983 source states the arbitrary-capacity minimum-cost biflow bound but explicitly defers problem (5), so the required implementation could not be traced to the selected algorithm without invention or substitution. No semantic source/test/selector/build mutation and no compile/package/runtime occurred.
 
-Exact next is independent `M4-CP1-CB2-REV`.
+Independent `M4-CP1-CB2-REV` upheld both stops and routed the solver clause to `M4-DEFN-R1`. `M4-DEFN-R1` then adjudicated the ordered alternatives and selected Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement with fixed `M=2`. Same-row `+/-2` incidence keeps the frozen class genuinely bidirected, so ordinary MCF is not frozen; the simple disclosed one-shot Bi-MCF→b-matching chain is not used because its reviewed form is specialized to zero-demand refinement. The semantic objective, cap `U`, lexicographic order and A3 ownership are unchanged. The outer solver assurance is explicitly amended from polynomial to **finite exact convergence** under Corollary 3.7, Theorem 3.8 and Corollary 3.9. CP2's independent terminal-optimality certificate is mandatory before CP3 cutover.
+
+Exact next is runtime-free `M4-CP1-CB3`.
 
 ## 2.1 `M4-CP1` solver deadlock — CB1 and CB2 both stopped, both correctly
 
@@ -54,6 +57,11 @@ polynomial route has no implementable primitive.
 **Neither stop is a semantic regression.** No product, test, selector, build or runtime was mutated in either turn;
 both were fail-closed plan guards. Accounting is unchanged at **47 / 14 / 33**.
 
+`M4-DEFN-R1` resolves the deadlock at the definition layer. Algorithm identity is now
+`HeistermannWarnettBommes2023ExactBiMDFRefinementM2`; WorkLedger theorem class is finite exact convergence, not
+Gabow's polynomial class. Upstream libSatsuma remains reference/control-flow material only because its numeric surface
+is inexact for M4. The closed candidate `M4-CP1-CB2-REV-CAND-01` adds no stable event or recurrence.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -62,7 +70,9 @@ history.
 | Folded filename | Lines | Verdict / retained home |
 |---|---:|---|
 | `Architecture_M4_DEFN_Definition_Plan.md` | 78 | **FOLDED AFTER EXECUTION.** Entering authority, M4D0–M4D9, prohibited moves, falsifiers and stop condition are discharged/superseded by the frozen definitions in `Architecture_M4_DEFN_Frozen_Definitions.md`; the former CB1 plan it originally routed to is itself indexed below. |
-| `Architecture_M4_CP1_CB1_Code_Build_Plan.md` | 187 | **FOLDED AFTER STOP + REVIEW.** The product/identity/compact-breakpoint scope remains in amended `Architecture_M4_DEFN_Frozen_Definitions.md`; the unsupported solver/WorkLedger clauses triggered CB1's stop and are superseded by `Architecture_M4_CP1_CB1_Independent_Review_Record.md` plus `Architecture_M4_CP1_CB2_Code_Build_Plan.md`. |
+| `Architecture_M4_CP1_CB1_Code_Build_Plan.md` | 187 | **FOLDED AFTER STOP + REVIEW.** The product/identity/compact-breakpoint scope remains in amended `Architecture_M4_DEFN_Frozen_Definitions.md`; the unsupported solver/WorkLedger clauses triggered CB1's stop and are superseded by `Architecture_M4_CP1_CB1_Independent_Review_Record.md`, `Architecture_M4_DEFN_R1_Definition_Record.md`, and current `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. |
 | `Architecture_M4_CP1_CB1_Algorithm_Blocker.md` | 78 | **FOLDED AFTER INDEPENDENT REVIEW.** Its stop verdict is upheld. The exact mismatch, upstream libSatsuma type evidence, research, mathematical adjudication and successor are retained in `Architecture_M4_CP1_CB1_Independent_Review_Record.md`. |
+| `Architecture_M4_CP1_CB2_Code_Build_Plan.md` | 303 | **FOLDED AFTER STOP + REVIEW + DEFN.** The intended A3 product/test/build scope is carried forward in `Architecture_M4_CP1_CB3_Code_Build_Plan.md`; its Gabow-specific solver/WorkLedger clauses are retired by `Architecture_M4_DEFN_R1_Definition_Record.md` and amended normative §7. |
+| `Architecture_M4_CP1_CB2_Algorithm_Blocker.md` | 68 | **FOLDED AFTER INDEPENDENT REVIEW + DEFN.** Its traceability stop is upheld and preserved in `Architecture_M4_CP1_CB2_Independent_Review_Record.md`; the definition-level resolution is `Architecture_M4_DEFN_R1_Definition_Record.md`. |
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.

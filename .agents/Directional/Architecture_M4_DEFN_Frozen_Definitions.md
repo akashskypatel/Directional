@@ -1,8 +1,8 @@
 # M4-DEFN Frozen Definitions — Global Conformity
 
-**Status:** FROZEN / `M4-DEFN` COMPLETE / AMENDED BY `M4-CP1-CB1-REV` / EXACT NEXT = `M4-CP1-CB2` / RUNTIME-FREE
-**Date:** 2026-09-09
-**Definition authority:** latest amended M3 closure state at substantive head `327794a7db3f22e8326ae48bfb78d8a8052a6a0d`, re-materialized by source-snapshot run `34416013987` at event SHA `60670e53f55355146b224e01850ba75526c727cb`.
+**Status:** FROZEN / `M4-DEFN` COMPLETE / AMENDED BY `M4-CP1-CB1-REV` AND `M4-DEFN-R1` / EXACT NEXT = `M4-CP1-CB3` / RUNTIME-FREE
+**Date:** 2026-09-09; solver amendment 2026-09-10
+**Definition authority:** original M4-DEFN materialization is retained below; current solver amendment authority is `Architecture_M4_DEFN_R1_Definition_Record.md`, inspected from source-snapshot run `34432662583` at event SHA `74dbf78fb11a1d989d77d4ccd0c8d07ad25eb69c` after independent review authority `fcd70da6dc3abd8c955ed9725a2e6b41133932d0`.
 
 This document freezes the M4 contract. It does not implement it and creates no runtime evidence.
 
@@ -287,24 +287,21 @@ appear because a local mesher prefers it.
 Malformed side decomposition, contradictory incidence, unbound arc, degenerate path or invalid metric fails before the
 solver. Ordinary exact infeasibility does not become a fatal construction error.
 
-## 7. Deterministic polynomial solver contract — amended by `M4-CP1-CB1-REV`
+## 7. Exact finite-convergence solver contract — amended by `M4-DEFN-R1`
 
-M4 still forbids generic ILP/branch-and-bound and still requires deterministic polynomial exact optimization. The
-reviewed correction is that the already-frozen L1 objective is a **linear Integral Bi-directed Minimum-Cost Flow
-(Bi-MCF)** problem after an exact deviation transformation; CP1 does not need a general separable-convex Bi-MDF
-implementation.
+The semantic scheduling problem and objective are unchanged, but the production solver assurance is amended. M4 still
+forbids generic ILP/branch-and-bound, inexact optimization, machine-width semantic narrowing, numeric-range enumeration,
+and heuristic scalarization. It no longer claims a polynomial bound for the **outer exact optimizer**. The selected
+implementation authority is the exact fixed-`M=2` Bi-MDF iterative-refinement algorithm disclosed by Heistermann,
+Warnett and Bommes, *Min-Deviation-Flow in Bi-directed Graphs for T-Mesh Quantization*, ACM TOG 42(4), 2023,
+DOI `10.1145/3592437`, §§3.6–3.9.
 
-Let `A` be the exact incidence matrix from §6, canonical preferred counts be `d`, and semantic counts be `x`. For every
-span use exact nonnegative deviation variables
+The previous Gabow 1983 primitive and `O(E'^2 log V' log Cmax)` WorkLedger theorem tag are **retired**. Independent
+`M4-CP1-CB2-REV` established that the cited Gabow paper states the arbitrary-capacity minimum-cost biflow result while
+deferring the construction, so that implementation identity could not be traced without invention or substitution.
+`Architecture_M4_DEFN_R1_Definition_Record.md` records the route adjudication and assurance change.
 
-`x_s = d_s + p_s - n_s`, with `0 <= n_s <= d_s-1`.
-
-Then `A x=0` is exactly `A p - A n = -A d`. The `p_s` edge uses incidence column `A_s`; `n_s` uses the reversed
-column `-A_s`. At an optimum `p_s` and `n_s` cannot both be positive, because decreasing both preserves `x`/balance
-and strictly lowers cost. Therefore `sum(p_s+n_s) = sum|x_s-d_s|`. This is the standard L1 deviation-to-flow
-transformation also used by Heistermann/Warnett/Bommes; here every value remains exact.
-
-### 7.1 Input-derived finite optimum cap
+### 7.1 Input-derived finite optimum cap — unchanged semantic proof
 
 For a feasible CP1 component with `V` region/family rows and `E` span columns, every incidence column has at most two
 ends and Euclidean norm at most `2`, including same-row `+/-2` loops. The rational cone `{x>=0 | A x=0}` has primitive
@@ -320,98 +317,101 @@ obeys
 
 `1 <= x_s <= U`, where `U = 2D + E*H = 2D + E^2*2^V`.
 
-`U` is a **proof/capacity value, never an iteration range**. Its encoded bit width is polynomial in input width. The
-transformed deviation capacities are exactly `p_s <= U-d_s` and `n_s <= d_s-1`. No graph expansion, allocation, or
-loop may be linear in the numeric value of `H`, `U`, `D`, `d_s`, or an exact count.
+`U` is a **proof/domain bound, never an iteration range**. Its encoded bit width is polynomial in input width. No graph
+expansion, allocation, or loop may be linear in the numeric value of `H`, `U`, `D`, `d_s`, or an exact count.
 
-### 7.2 Exact lexicographic implementation encoding
+### 7.2 Exact lexicographic objective encoding — semantic order unchanged
 
 The semantic objective remains
 
 `J(x) = (C(x), x_(s_1), ..., x_(s_E))`, `C(x)=sum|x_s-d_s|`,
 
-for canonical span order `s_1..s_E`. The solver may encode that order exactly using the proved finite cap above. Set
-`Q=U+1`, `L=Q^E`, and `q_i=Q^(E-i)`. Since every count is a base-`Q` digit in `1..U`,
-`S(x)=sum_i q_i*x_i` orders count vectors exactly lexicographically and its entire variation is less than `L`. Thus
+for canonical span order `s_1..s_E`. Set `Q=U+1`, `L=Q^E`, and `q_i=Q^(E-i)`. Since every count is a base-`Q`
+digit in `1..U`, `S(x)=sum_i q_i*x_i` orders count vectors exactly lexicographically and its entire variation is less
+than `L`. Thus
 
 `F(x)=L*C(x)+S(x)`
 
-has exactly the same ordering as `J(x)`. On the deviation graph, dropping constant `S(d)`, use exact integer costs
+has exactly the same ordering as `J(x)`. For the production Bi-MDF representation, use the exact separable convex
+integer edge cost
 
-- `cost(p_i)=L+q_i`;
-- `cost(n_i)=L-q_i`.
+`c_i(x) = L*|x-d_i| + q_i*x`, for `1 <= x <= U`.
 
-This is the only scalar implementation encoding frozen by M4. The previous blanket "big-M" prohibition is narrowed:
-**heuristic, machine-width, floating, or otherwise unproved scalarization remains forbidden**. This mixed-radix encoding
-is permitted because every radix/weight is derived exactly from the proved semantic cap and producer/validator can
-recompute the proof. `J` remains semantic authority; `F` is private solver representation. Cost bit width is
-`O(E log(U+1))`, and powers are built by exact arithmetic without numeric-range enumeration.
+The previous `x=d+p-n` linearization remains a valid proof of the L1 deviation identity and finite-cap/radix
+construction, but it is no longer the required production solver representation. `J` remains semantic authority;
+`F` and `c_i` are private solver representations. Powers/weights are built with exact arithmetic without
+numeric-range enumeration.
 
-### 7.3 Bi-MCF normalization and solver primitive
+### 7.3 Selected exact algorithm — Heistermann/Warnett/Bommes fixed-`M=2` refinement
 
-The CP1 solver normalizes deterministically:
+The production algorithm follows the disclosed 2023 construction:
 
-1. canonicalize semantic rows/spans/incidence ends;
-2. form exact node demand `b=-A d`;
-3. create finite-capacity `p/n` deviation edges with original/reversed incidence and exact mixed-radix costs;
-4. omit zero-capacity deviation edges; an aggregated zero semantic column is solved directly at its unique optimum
-   `x_s=d_s`;
-5. preserve parallel edges and same-row `+/-2` loops;
-6. eliminate one-ended outer edges by Heistermann/Warnett/Bommes §3.2.1: add one deterministic solver-only dummy node,
-   second `+1` incidence on each outer edge, parity demand `0|1`, and one zero-cost tail-tail self-loop. CP1 replaces
-   the abstract unbounded loop with finite exact capacity `(2E+1) * U`, a semantic-input bound that dominates the
-   compensation required by any bounded transformed feasible flow.
+1. obtain a feasible integer starting flow using the paper's double-cover/T-join approximation pipeline, adapted to
+   exact M4 arithmetic and independently validate it before refinement;
+2. around current feasible flow `f`, construct the zero-demand bounded Bi-MCF refinement problem of §3.7;
+3. fix maximum node throughflow **`M=2`**;
+4. reduce Bi-MCF to capacitated weighted perfect b-matching using the disclosed node-splitting construction;
+5. reduce weighted perfect b-matching to weighted perfect matching using the disclosed construction;
+6. solve the matching problem with exact arbitrary-precision weights/comparisons and translate the result back through
+   every reduction;
+7. commit only an exact strict objective improvement; terminate on exact non-improvement.
 
-The resulting solver graph has `V' <= V+1`, `E' <= 2E+1` before omission of zero-capacity edges, and largest capacity
-`Cmax <= (2E+1) * U`. Solver-only deviation/dummy/radix representation never enters semantic IDs or plan digests.
+Corollary 3.7 proves finite convergence for fixed `M`; Theorem 3.8 proves that a non-improving iteration with `M>=2`
+is globally optimal; Corollary 3.9 concludes that the refinement algorithm finds an optimum for any Bi-MDF problem.
+These identities are the solver theorem authority. There is no floating epsilon terminal and no inherited Gabow bound.
 
-The implementation primitive is **Gabow 1983 arbitrary-capacity minimum-cost biflow** (*An Efficient Reduction
-Technique for Degree-Constrained Subgraph and Bidirected Network Flow Problems*, STOC 1983, DOI
-`10.1145/800061.808776`). Its published bound for minimum-cost biflow with arbitrary integral capacities is
-`O(E'^2 log V' log Cmax)`. Exact integer costs are a supported specialization of its real-cost comparison surface; CP1
-implements every semantic/reduced-cost decision with arbitrary-precision exact arithmetic.
+The admissible M4 incidence class remains genuinely bidirected: same-row two-end spans may carry one `+2` or `-2`
+coefficient and are not dropped. The ordinary-MCF route is therefore not frozen. A direct one-shot capacitated
+b-matching route is also not frozen because the simple reduction disclosed in Heistermann et al. §3.7 is specialized to
+the zero-demand refinement subproblem, while the previous one-shot `p/n` Bi-MCF carries nonzero demand `-A d`.
 
-`libSatsuma` remains an illustrative reference for Bi-MDF/Bi-MCF problem shape and the 2023 application, but its
-upstream `int` flow and `double` target/cost types are **not** M4 implementation authority.
+The standing user authorization permits adding a solver library for the weighted-perfect-matching primitive. Any such
+primitive must preserve exact arbitrary-precision comparisons. Upstream `libSatsuma` is implementation/reference
+material only: its `int` flow, `double` target/cost, `int64_t` matching weights and floating refinement terminal are not
+M4 semantic authority and must not be inherited as-is.
 
-### 7.4 WorkLedger and monotone evidence — amended
+### 7.4 WorkLedger and assurance class — amended
 
-The polynomial requirement is retained; the old guessed universal countdown `P(V,E,B)` is not. Gabow's theorem plus
-the input-derived capacity/cost-width proofs above are the complexity authority. `WorkLedger` records at minimum:
+The outer optimization assurance class is now **exact finite convergence**, not polynomial runtime. `WorkLedger` records
+at minimum:
 
-- semantic `V,E` and transformed `V',E'`;
-- algorithm identity `Gabow1983ArbitraryCapacityMinCostBiflow`;
-- theorem class `O(E'^2 log V' log Cmax)`;
-- exact `H/U/Cmax` **bit widths**, target/capacity/cost bit widths, and maximum observed exact-integer width;
-- capacity-scale/algorithm-phase counts plus augment/blossom or equivalent primitive counters exposed by the actual
-  implementation;
-- peak residual/solver edge count and retry/reset count (zero).
+- semantic `V,E`, algorithm identity `HeistermannWarnettBommes2023ExactBiMDFRefinementM2`, and theorem class
+  `FiniteExactConvergence(Corollary3.7+Theorem3.8+Corollary3.9,M=2)`;
+- exact `H/U/Q/L` bit widths, target/count/capacity/cost bit widths, and maximum observed exact-integer width;
+- feasible-initialization graph dimensions and independent exact feasibility receipt;
+- `refinementM=2`, exact `refinementCount`, and exact objective before/after every committed refinement;
+- each refinement's Bi-MCF/WPbM/WPM graph dimensions, peak matching vertices/edges, and matching primitive identity;
+- retry/reset count, fixed at zero.
 
 Every implementation loop still has a finite bound derived from graph/container cardinality or encoded bit width. A
-violated local bound is `WorkBoundExceeded`, never permission to truncate, approximate, retry, or switch solvers. The
-former requirement to initialize one `remainingCertifiedSteps=P` and decrement it on every heterogeneous internal
-transition is withdrawn because neither the cited theorem nor `DESIGN.md` §10.2 requires that evidence representation.
-No solver work may depend linearly on exact numeric magnitude. CP-SCALE may calibrate measured resource limits without
-changing this semantic/complexity contract.
+violated local bound is `WorkBoundExceeded`, never permission to truncate, approximate, retry, or switch solvers. No
+solver work may depend linearly on exact numeric magnitude. CP-SCALE may report measured refinement/resource scaling
+but must not relabel it polynomial.
 
 ## 8. Certificates and typed outcomes
 
 ### 8.1 Scheduled-component certificate — CP2 addition
 
 CP1 has no carried final certificate; its separately implemented validator independently recomputes and checks feasible
-plans. CP2 adds the immutable carried certificate without changing the CP1 schedule. For each scheduled component the
-CP2 certificate contains at minimum:
+plans and the fixed-small test oracle independently checks optimum/tie behavior. **Because `M4-DEFN-R1` withdraws the
+outer polynomial-runtime claim, CP2's scalable independent optimality certificate is a mandatory semantic barrier
+before CP3 cutover.**
+
+For each scheduled component the CP2 certificate contains at minimum:
 
 - binding/normalized-problem digest;
-- exact compact `x_s`, preferred `d_s`, objective `C*` and mandatory region/family parity results;
+- exact compact `x_s`, preferred `d_s`, objective `J*` and mandatory region/family parity results;
 - every region-family balance and positivity result;
-- solver-native residual/dual data sufficient to prove no improving admissible move exists;
-- exact lexicographic-vector objective/dual-residual evidence sufficient for independent canonical-minimizer
-  verification;
-- work-ledger bounds and observed maxima.
+- exact terminal `M=2` refinement-problem identity plus a producer-native WPM/refinement witness sufficient to
+  reconstruct the zero-improvement claim;
+- independently checkable mapping from that terminal matching/refinement witness back to the semantic Bi-MDF schedule;
+- exact theorem-hypothesis evidence needed to apply Heistermann/Warnett/Bommes Theorem 3.8;
+- WorkLedger bounds and observed maxima.
 
-The certificate hashes compact schedule/generator data; it never expands O(`x_s`) breakpoint vectors. A certificate is
-evidence carried by the product, not trusted because the producer emitted it.
+The independent CP2 verifier must recompute exact `J`, validate the terminal `M=2` refinement instance and verify that
+no negative-cost admissible refinement exists. A solver-emitted `no improvement` flag alone is not a certificate. The
+certificate proves semantic optimality; it does **not** claim a polynomial bound on outer refinement count. It hashes
+compact schedule/generator data and never expands O(`x_s`) breakpoint vectors.
 
 ### 8.2 Subset-scoped infeasibility — CP2 addition
 
@@ -574,9 +574,9 @@ no selector identity is not gate-enforced and must be labeled as such.
 - **CP1 closes** when one immutable feasible schedule has a single writer, each full A2b span uses one exact positive
   count and one compact exact-ordinal breakpoint generator, region/family balance plus explicit all-quad boundary parity
   are proved, multi-piece/same-region incidence authority is preserved, binary64 exactification is backend-independent,
-  deterministic permutation/reversal invariance is proved, the amended exact L1 Bi-MCF/cap/radix solver contract is
-  compiled, the independent structural oracle rejects binding/feasibility/objective/encoding tamper, and fixed-small
-  test oracles independently reproduce optimum/tie results on the frozen CP1 graph classes.
+  deterministic permutation/reversal invariance is proved, the amended exact fixed-`M=2` Bi-MDF refinement/cap/radix
+  solver contract is compiled, the independent structural oracle rejects binding/feasibility/objective/encoding tamper,
+  and fixed-small test oracles independently reproduce optimum/tie results on the frozen CP1 graph classes.
 - **CP2 closes** when positivity and **scalable production optimality** are independently certified from carried
   algorithm-native evidence and a genuinely infeasible constructed component yields a verified subset-scoped fact
   without ad-hoc schedule substitution or run-wide A3 failure.
@@ -617,6 +617,10 @@ Any later plan or implementation must stop/review if it would require one of the
 - letting two regional producers own separate counts for one shared span;
 - using a generic ILP/branch-and-bound solver, inexact feasibility/reduced-cost comparison, or heuristic/unproved
   scalarization; the exact theorem-derived mixed-radix encoding of §7.2 is the sole permitted scalar solver encoding;
+- restoring the retired Gabow solver identity/bound, inheriting upstream libSatsuma/Blossom-V machine-width scalar
+  semantics, or terminating exact refinement through a floating tolerance;
+- changing fixed refinement `M=2`, hiding a numeric-magnitude loop behind a solver adapter, or claiming the amended
+  outer refinement process has a polynomial runtime bound without a new definition/review and source-backed theorem;
 - activating an unfrozen 2:1 adaptivity constraint without a new authoritative input contract/review;
 - repairing an infeasible component locally instead of publishing its typed obstruction;
 - assigning D0–D4 inside A3;
@@ -628,7 +632,7 @@ Any later plan or implementation must stop/review if it would require one of the
 
 ## 16. Exact successor
 
-**`M4-CP1-CB2` — canonical Code + Build / runtime-free.** Its frozen plan is
-`Architecture_M4_CP1_CB2_Code_Build_Plan.md`, issued by the independent `M4-CP1-CB1-REV` after CB1's correct stop.
-No M4 runtime or benchmark is authorized before that Code + Build turn produces a GMP/GMPXX-linked immutable package
-and the next artifact-only Test + Benchmark plan.
+**`M4-CP1-CB3` — canonical Code + Build / runtime-free.** Its frozen plan is
+`Architecture_M4_CP1_CB3_Code_Build_Plan.md`, issued by `M4-DEFN-R1` after independently reviewed CB1/CB2
+traceability stops. No M4 runtime or benchmark is authorized before that Code + Build turn produces a
+GMP/GMPXX-linked immutable package and the next artifact-only Test + Benchmark plan.
