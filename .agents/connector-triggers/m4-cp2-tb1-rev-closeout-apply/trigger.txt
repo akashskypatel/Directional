@@ -1,3 +1,0 @@
-M4-CP2-TB1-REV durable closeout patch apply.
-Base: c2827fb05b0eec071d5061f69c591f4f39fcff78.
-Patch SHA-256: 82763729d282393b9b9e86f1c1a6d4877f38f26dcc38111e6fb11edbf5ad797b.
