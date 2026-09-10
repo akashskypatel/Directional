@@ -165,6 +165,8 @@ add_library(
   src/geometry/EmbeddedGraphTopology.cpp
   src/geometry/GlobalTopologyPlan.cpp
   src/geometry/GlobalConformityExactSolver.cpp
+  src/geometry/GlobalConformityCP2.cpp
+  src/geometry/GlobalConformityCP2Validator.cpp
   src/geometry/GlobalConformityPlan.cpp
   src/geometry/GlobalConformityValidator.cpp
   src/geometry/SurfaceCutGraph.cpp

@@ -44,6 +44,7 @@ using directional::geometry::ConformitySpanId;
 using directional::geometry::ConformitySpanInput;
 using directional::geometry::ConformitySupportPiece;
 using directional::geometry::FieldAlignedCurveNetwork;
+using directional::geometry::GlobalConformityInput;
 using directional::geometry::GlobalConformityKnownFeasibleInput;
 using directional::geometry::GlobalConformityPlan;
 using directional::geometry::GlobalTopologyPlan;
@@ -265,6 +266,91 @@ std::vector<EInt> tiny_exhaustive_equal_counts_oracle(
   return {EInt(best), EInt(best)};
 }
 
+
+GlobalConformityInput make_cp2_input(
+    const GlobalConformityKnownFeasibleInput &input) {
+  return {input.sourceVertices, input.targetSize, input.spans, input.incidences};
+}
+
+std::vector<SolverSpan> multi_coordinate_bidirected_problem() {
+  return {
+      {0U, {{0U, +1}, {0U, +1}}, EInt(3), EInt(1), EInt(1), EInt(0), true},
+      {1U, {{0U, -1}, {0U, -1}}, EInt(1), EInt(1), EInt(1), EInt(0), true},
+      {2U, {{0U, +1}, {1U, -1}}, EInt(2), EInt(1), EInt(1), EInt(0), true},
+      {3U, {{0U, -1}, {1U, +1}}, EInt(5), EInt(1), EInt(1), EInt(0), true},
+  };
+}
+
+std::vector<EInt> tiny_exhaustive_count_vector_oracle(
+    const std::vector<SolverSpan> &spans, std::size_t rows) {
+  if (spans.empty() || spans.size() > 6U) {
+    throw std::runtime_error("tiny exhaustive oracle requires 1..6 spans");
+  }
+  std::vector<EInt> current(spans.size(), EInt(1));
+  std::vector<EInt> best;
+  EInt bestPrimary;
+  bool haveBest = false;
+  const auto visit = [&](const auto &self, std::size_t index) -> void {
+    if (index != spans.size()) {
+      for (int count = 1; count <= 8; ++count) {
+        current[index] = EInt(count);
+        self(self, index + 1U);
+      }
+      return;
+    }
+    std::vector<EInt> balance(rows, EInt(0));
+    for (std::size_t span = 0; span < spans.size(); ++span) {
+      for (const auto &end : spans[span].ends) {
+        balance[end.row] += EInt(end.sign) * current[span];
+      }
+    }
+    if (std::any_of(balance.begin(), balance.end(),
+                    [](const EInt &value) { return value != EInt(0); })) {
+      return;
+    }
+    EInt primary(0);
+    for (std::size_t span = 0; span < spans.size(); ++span) {
+      primary += (current[span] - spans[span].preferred).abs();
+    }
+    if (!haveBest || primary < bestPrimary ||
+        (primary == bestPrimary && current < best)) {
+      haveBest = true;
+      bestPrimary = primary;
+      best = current;
+    }
+  };
+  visit(visit, 0U);
+  if (!haveBest) throw std::runtime_error("tiny exhaustive oracle found no feasible vector");
+  return best;
+}
+
+GlobalConformityInput make_infeasible_cp2_input(
+    const SquareTopologyFixture &fixture) {
+  auto input = make_cp2_input(make_known_feasible_input(fixture, false));
+  for (auto &incidence : input.incidences) {
+    incidence.family = ConformityFamily::U;
+    incidence.sign = ConformitySign::Positive;
+  }
+  return input;
+}
+
+GlobalConformityInput make_mixed_cp2_input(
+    const SquareTopologyFixture &fixture) {
+  auto input = make_cp2_input(make_known_feasible_input(fixture, false));
+  if (input.incidences.size() != 4U) {
+    throw std::runtime_error("square CP2 fixture must expose four boundary incidences");
+  }
+  input.incidences[0].family = ConformityFamily::U;
+  input.incidences[0].sign = ConformitySign::Positive;
+  input.incidences[1].family = ConformityFamily::U;
+  input.incidences[1].sign = ConformitySign::Negative;
+  input.incidences[2].family = ConformityFamily::V;
+  input.incidences[2].sign = ConformitySign::Positive;
+  input.incidences[3].family = ConformityFamily::V;
+  input.incidences[3].sign = ConformitySign::Positive;
+  return input;
+}
+
 }  // namespace
 
 TEST(GlobalConformityPlan,
@@ -455,4 +541,196 @@ TEST(GlobalConformityExactSolver,
   EXPECT_LT(a, b);
   EXPECT_EQ(EInt(2) * beyondSigned64, (a + a).exact());
   EXPECT_GT((a + a).exact().magnitude_bits(), 64U);
+}
+
+
+TEST(GlobalConformityExactSolver,
+     MultiCoordinateBidirectedM2MatchesExhaustiveOracle) {
+  SCOPED_TRACE("coordinateCount=4; containsBidirectedCoefficientMagnitude2=true");
+  const auto spans = multi_coordinate_bidirected_problem();
+  const auto expected = tiny_exhaustive_count_vector_oracle(spans, 2U);
+  auto result = directional::geometry::global_conformity_detail::solve_exact_schedule(
+      2U, spans);
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(expected, result.counts);
+  EXPECT_EQ(2, result.ledger.refinementM);
+  EXPECT_TRUE(result.ledger.terminalExactNonImprovementValidated);
+  EXPECT_GE(result.ledger.terminalRefinementCostChange, EInt(0));
+}
+
+TEST(GlobalConformityCertificate,
+     CarriesBindingPositivityParityObjectiveAndTerminalWitness) {
+  const auto fixture = make_square_topology_fixture();
+  const auto input = make_cp2_input(make_known_feasible_input(fixture, false));
+  const auto built = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(built) << directional::geometry::global_conformity_plan_error_code_name(
+      built.error().code);
+  const auto &outcome = built.value();
+  ASSERT_TRUE(outcome.feasiblePlan);
+  ASSERT_FALSE(outcome.scheduledComponents.empty());
+  EXPECT_TRUE(outcome.infeasibleSubsets.empty());
+  for (const auto &certificate : outcome.scheduledComponents) {
+    EXPECT_EQ(outcome.sourceDigest, certificate.sourceDigest);
+    EXPECT_EQ(outcome.normalizedProblemDigest, certificate.normalizedProblemDigest);
+    EXPECT_EQ(certificate.schedule.size(), certificate.objective.canonicalCounts.size());
+    for (const auto &entry : certificate.schedule) EXPECT_GE(entry.count, EInt(1));
+    for (const auto &row : certificate.rows) {
+      EXPECT_EQ(EInt(0), row.signedBalance);
+      EXPECT_TRUE(row.parityEven);
+      EXPECT_EQ(EInt(0), row.unsignedBoundaryCount % EInt(2));
+    }
+    EXPECT_EQ(2, certificate.terminalWitness.refinementM);
+    EXPECT_EQ(certificate.workLedger.terminalRefinementCostChange,
+              certificate.terminalWitness.semanticCostChange);
+    EXPECT_GE(certificate.terminalWitness.semanticCostChange, EInt(0));
+    EXPECT_TRUE(certificate.theoremEvidence.perfectMatchingOptimalityCertified);
+  }
+  EXPECT_FALSE(directional::geometry::validate_global_conformity_outcome(
+      fixture.topology, input, outcome));
+}
+
+TEST(GlobalConformityCertificate,
+     IndependentVerifierRejectsTerminalWitnessTamper) {
+  const auto fixture = make_square_topology_fixture();
+  const auto input = make_cp2_input(make_known_feasible_input(fixture, false));
+  const auto built = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(built);
+  ASSERT_FALSE(built.value().scheduledComponents.empty());
+
+  const auto reject = [&](auto mutate) {
+    auto tampered = built.value();
+    mutate(tampered.scheduledComponents.front());
+    EXPECT_TRUE(directional::geometry::validate_global_conformity_outcome(
+        fixture.topology, input, tampered));
+  };
+  reject([](auto &certificate) { certificate.sourceDigest ^= 1U; });
+  reject([](auto &certificate) { certificate.objective.scalarValue += EInt(1); });
+  reject([](auto &certificate) {
+    ASSERT_FALSE(certificate.rows.empty());
+    certificate.rows.front().parityEven = false;
+  });
+  reject([](auto &certificate) {
+    certificate.terminalWitness.matchingDualValue += EInt(1);
+  });
+  reject([](auto &certificate) {
+    certificate.terminalWitness.terminalProblemDigest ^= 1U;
+  });
+  reject([](auto &certificate) {
+    ASSERT_FALSE(certificate.schedule.empty());
+    certificate.schedule.front().count += EInt(1);
+  });
+  reject([](auto &certificate) {
+    certificate.theoremEvidence.perfectMatchingOptimalityCertified = false;
+  });
+  reject([](auto &certificate) { certificate.workLedger.refinementM = 3; });
+}
+
+TEST(GlobalConformityOutcome,
+     FeasibleCP2PathPreservesCP1ScheduleExactly) {
+  const auto fixture = make_square_topology_fixture();
+  const auto known = make_known_feasible_input(fixture, true);
+  const auto cp1 = GlobalConformityPlan::make_known_feasible(fixture.topology, known);
+  ASSERT_TRUE(cp1);
+  const auto input = make_cp2_input(known);
+  const auto cp2 = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(cp2);
+  ASSERT_TRUE(cp2.value().feasiblePlan);
+  const auto &legacy = cp1.value().schedule();
+  const auto &preserved = cp2.value().feasiblePlan->schedule();
+  ASSERT_EQ(legacy.size(), preserved.size());
+  for (std::size_t index = 0; index < legacy.size(); ++index) {
+    EXPECT_EQ(legacy[index].span, preserved[index].span);
+    EXPECT_EQ(legacy[index].preferredCount, preserved[index].preferredCount);
+    EXPECT_EQ(legacy[index].count, preserved[index].count);
+    EXPECT_EQ(legacy[index].supportPieces, preserved[index].supportPieces);
+  }
+  EXPECT_EQ(cp1.value().semantic_digest(),
+            cp2.value().feasiblePlan->semantic_digest());
+}
+
+TEST(GlobalConformityOutcome,
+     InfeasibleComponentReturnsTypedSubsetInsteadOfFatalError) {
+  const auto fixture = make_square_topology_fixture();
+  const auto input = make_infeasible_cp2_input(fixture);
+  const auto built = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(built) << directional::geometry::global_conformity_plan_error_code_name(
+      built.error().code);
+  const auto &outcome = built.value();
+  EXPECT_FALSE(outcome.feasiblePlan);
+  EXPECT_TRUE(outcome.scheduledComponents.empty());
+  ASSERT_EQ(1U, outcome.infeasibleSubsets.size());
+  const auto &subset = outcome.infeasibleSubsets.front();
+  EXPECT_EQ(directional::geometry::ConformityInfeasibilityReason::PositivityCut,
+            subset.reason);
+  EXPECT_LT(subset.witness.cutCapacity, subset.witness.requiredFlow);
+  EXPECT_FALSE(directional::geometry::validate_global_conformity_outcome(
+      fixture.topology, input, outcome));
+}
+
+TEST(GlobalConformityOutcome,
+     InfeasibleSubsetIsCanonicalAndVerifierRejectsWitnessTamper) {
+  const auto fixture = make_square_topology_fixture();
+  auto input = make_infeasible_cp2_input(fixture);
+  const auto baseline = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(baseline);
+  ASSERT_EQ(1U, baseline.value().infeasibleSubsets.size());
+  std::reverse(input.spans.begin(), input.spans.end());
+  std::reverse(input.incidences.begin(), input.incidences.end());
+  const auto reordered = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(reordered);
+  ASSERT_EQ(1U, reordered.value().infeasibleSubsets.size());
+  EXPECT_EQ(baseline.value().normalizedProblemDigest,
+            reordered.value().normalizedProblemDigest);
+  EXPECT_EQ(baseline.value().infeasibleSubsets.front().spans,
+            reordered.value().infeasibleSubsets.front().spans);
+  EXPECT_EQ(baseline.value().infeasibleSubsets.front().incidenceIds,
+            reordered.value().infeasibleSubsets.front().incidenceIds);
+  EXPECT_EQ(baseline.value().infeasibleSubsets.front().reason,
+            reordered.value().infeasibleSubsets.front().reason);
+
+  const auto reject = [&](auto mutate) {
+    auto tampered = reordered.value();
+    mutate(tampered.infeasibleSubsets.front());
+    EXPECT_TRUE(directional::geometry::validate_global_conformity_outcome(
+        fixture.topology, input, tampered));
+  };
+  reject([](auto &subset) { subset.witness.cutCapacity += EInt(1); });
+  reject([](auto &subset) {
+    subset.reason = directional::geometry::ConformityInfeasibilityReason::BalanceCut;
+  });
+  reject([](auto &subset) { subset.targetMetricDigest ^= 1U; });
+  reject([](auto &subset) {
+    ASSERT_FALSE(subset.incidenceIds.empty());
+    subset.incidenceIds.pop_back();
+  });
+}
+
+TEST(GlobalConformityOutcome,
+     MixedComponentsCoverEveryIncidenceExactlyOnce) {
+  const auto fixture = make_square_topology_fixture();
+  const auto input = make_mixed_cp2_input(fixture);
+  const auto built = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(built) << directional::geometry::global_conformity_plan_error_code_name(
+      built.error().code);
+  const auto &outcome = built.value();
+  EXPECT_FALSE(outcome.feasiblePlan);
+  ASSERT_EQ(1U, outcome.scheduledComponents.size());
+  ASSERT_EQ(1U, outcome.infeasibleSubsets.size());
+  std::set<directional::geometry::ConformityBoundaryIncidenceId> covered;
+  for (const auto &certificate : outcome.scheduledComponents) {
+    for (const auto &id : certificate.incidenceIds) EXPECT_TRUE(covered.insert(id).second);
+  }
+  for (const auto &subset : outcome.infeasibleSubsets) {
+    for (const auto &id : subset.incidenceIds) EXPECT_TRUE(covered.insert(id).second);
+  }
+  EXPECT_EQ(input.incidences.size(), covered.size());
+  EXPECT_FALSE(directional::geometry::validate_global_conformity_outcome(
+      fixture.topology, input, outcome));
 }

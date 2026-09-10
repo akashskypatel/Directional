@@ -59,6 +59,8 @@ struct ConformityIncidence {
   auto operator<=>(const ConformityIncidence &) const = default;
 };
 struct GlobalConformityKnownFeasibleInput { Eigen::MatrixXd sourceVertices; Eigen::VectorXd targetSize; std::vector<ConformitySpanInput> spans; std::vector<ConformityIncidence> incidences; };
+struct GlobalConformityInput { Eigen::MatrixXd sourceVertices; Eigen::VectorXd targetSize; std::vector<ConformitySpanInput> spans; std::vector<ConformityIncidence> incidences; };
+struct ConformityConstraintRowId { authority::NetworkRegionId region; ConformityFamily family=ConformityFamily::U; auto operator<=>(const ConformityConstraintRowId &) const = default; };
 struct ConformityBreakpointId { ConformitySpanId span; EInt exactOrdinal; friend bool operator==(const ConformityBreakpointId &a, const ConformityBreakpointId &b) { return a.span == b.span && a.exactOrdinal == b.exactOrdinal; } };
 struct ConformityBreakpointLocation { ConformityBreakpointId id; std::size_t supportPieceIndex = 0U; EInt localNumerator; EInt localDenominator; bool firstEndpoint = false; bool lastEndpoint = false; };
 struct ConformityScheduleEntry { ConformitySpanId span; EInt preferredCount; EInt count; std::vector<ConformitySupportPiece> supportPieces; };
@@ -78,6 +80,58 @@ struct GlobalConformityWorkLedger {
   EInt terminalRefinementCostChange;
   std::size_t retryResetCount=0U;
   std::vector<ConformityRefinementEvidence> refinements;
+};
+
+struct ConformityWpmEdgeWitness { std::size_t first=0U,second=0U; EInt weight; bool matched=false; };
+struct ConformityWpmBlossomWitness { EInt dualValue; std::vector<std::size_t> nodes; };
+struct ConformityTerminalRefinementWitness {
+  int refinementM=2;
+  std::vector<EInt> terminalCounts;
+  std::size_t biMcfEdgeCount=0U,bMatchingNodeCount=0U,bMatchingEdgeCount=0U,wpmNodeCount=0U;
+  std::vector<ConformityWpmEdgeWitness> wpmEdges;
+  std::vector<EInt> nodeDualValues;
+  std::vector<ConformityWpmBlossomWitness> blossoms;
+  EInt matchingPrimalWeight,matchingDualValue,semanticCostChange;
+  int matchingDualScale=4;
+  std::uint64_t terminalProblemDigest=0U;
+};
+struct ConformityRowCertificate { ConformityConstraintRowId row; EInt signedBalance,unsignedBoundaryCount; bool parityEven=false; };
+struct ConformityOptimalityTheoremEvidence {
+  std::string theoremIdentity = "HeistermannWarnettBommes2023-Theorem3.8-fixed-M2";
+  int refinementM=2;
+  bool exactIntegralProblem=false;
+  bool terminalZeroDemand=false;
+  bool perfectMatchingOptimalityCertified=false;
+};
+struct GlobalConformityCertificate {
+  std::size_t componentOrdinal=0U;
+  std::vector<ConformitySpanId> spans;
+  std::vector<ConformityBoundaryIncidenceId> incidenceIds;
+  std::vector<ConformityScheduleEntry> schedule;
+  std::vector<ConformityIncidence> incidences;
+  std::vector<ConformityRowCertificate> rows;
+  ConformityObjectiveValue objective;
+  GlobalConformityWorkLedger workLedger;
+  EInt finiteCapU,radixQ,lexicographicScaleL;
+  ConformityTerminalRefinementWitness terminalWitness;
+  ConformityOptimalityTheoremEvidence theoremEvidence;
+  std::uint64_t sourceDigest=0U,networkDigest=0U,cutGraphDigest=0U,topologyPlanDigest=0U,targetMetricDigest=0U,normalizedProblemDigest=0U;
+};
+enum class ConformityInfeasibilityReason : std::uint8_t { BalanceCut=0,PositivityCut=1,ParityCut=2 };
+struct ConformityInfeasibilityWitness {
+  std::vector<std::size_t> rowOrdinals;
+  std::size_t doubleCoverNodeCount=0U;
+  std::vector<std::size_t> reachableDoubleCoverNodes;
+  EInt requiredFlow,achievedFlow,cutCapacity;
+};
+struct ConformityInfeasibleSubset {
+  std::size_t componentOrdinal=0U;
+  std::vector<authority::NetworkRegionId> regions;
+  std::vector<ConformitySpanId> spans;
+  std::vector<ConformityBoundaryIncidenceId> incidenceIds;
+  ConformityInfeasibilityReason reason=ConformityInfeasibilityReason::BalanceCut;
+  ConformityInfeasibilityWitness witness;
+  std::uint64_t sourceDigest=0U,networkDigest=0U,cutGraphDigest=0U,topologyPlanDigest=0U,targetMetricDigest=0U,normalizedProblemDigest=0U;
 };
 
 struct GlobalConformityPlanValidationCandidate {
@@ -128,6 +182,24 @@ public:
 private: std::variant<GlobalConformityPlan,GlobalConformityPlanError> state_;
 };
 
+struct GlobalConformityOutcome {
+  std::vector<GlobalConformityCertificate> scheduledComponents;
+  std::vector<ConformityInfeasibleSubset> infeasibleSubsets;
+  std::optional<GlobalConformityPlan> feasiblePlan;
+  std::uint64_t sourceDigest=0U,networkDigest=0U,cutGraphDigest=0U,topologyPlanDigest=0U,targetMetricDigest=0U,normalizedProblemDigest=0U;
+};
+class GlobalConformityOutcomeBuildResult {
+public:
+  explicit GlobalConformityOutcomeBuildResult(GlobalConformityOutcome o):state_(std::move(o)){}
+  explicit GlobalConformityOutcomeBuildResult(GlobalConformityPlanError e):state_(std::move(e)){}
+  [[nodiscard]] bool has_value()const noexcept{return std::holds_alternative<GlobalConformityOutcome>(state_);} explicit operator bool()const noexcept{return has_value();}
+  [[nodiscard]] const GlobalConformityOutcome& value()const{return std::get<GlobalConformityOutcome>(state_);} [[nodiscard]] GlobalConformityOutcome& value(){return std::get<GlobalConformityOutcome>(state_);} [[nodiscard]] const GlobalConformityPlanError& error()const{return std::get<GlobalConformityPlanError>(state_);}
+private: std::variant<GlobalConformityOutcome,GlobalConformityPlanError> state_;
+};
+
+[[nodiscard]] GlobalConformityOutcomeBuildResult build_global_conformity_outcome(const GlobalTopologyPlan&,const GlobalConformityInput&);
+[[nodiscard]] std::optional<GlobalConformityPlanError> validate_global_conformity_outcome(const GlobalTopologyPlan&,const GlobalConformityInput&,const GlobalConformityOutcome&);
+[[nodiscard]] const char* global_conformity_infeasibility_reason_name(ConformityInfeasibilityReason) noexcept;
 [[nodiscard]] GlobalConformityPlanBuildResult validate_global_conformity_plan(const GlobalTopologyPlan&,const GlobalConformityKnownFeasibleInput&,const GlobalConformityPlan&);
 [[nodiscard]] std::optional<GlobalConformityPlanError> validate_global_conformity_candidate(const GlobalTopologyPlan&,const GlobalConformityKnownFeasibleInput&,const GlobalConformityPlanValidationCandidate&);
 [[nodiscard]] const char* global_conformity_plan_error_code_name(GlobalConformityPlanErrorCode) noexcept;

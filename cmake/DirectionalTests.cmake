@@ -215,6 +215,30 @@ directional_require_default_packaged_test_contract(
   "tests/GlobalConformityPlanTests.cpp"
   "ExactValuesExceedLibSatsumaAndBlossomScalarWidths")
 
+# M4-CP2 certificate/outcome and strengthened exact-oracle identities. They are
+# compiled in CB1 and executed only by the artifact-only successor TB turn.
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "MultiCoordinateBidirectedM2MatchesExhaustiveOracle")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "CarriesBindingPositivityParityObjectiveAndTerminalWitness")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "IndependentVerifierRejectsTerminalWitnessTamper")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "FeasibleCP2PathPreservesCP1ScheduleExactly")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "InfeasibleComponentReturnsTypedSubsetInsteadOfFatalError")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "InfeasibleSubsetIsCanonicalAndVerifierRejectsWitnessTamper")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "MixedComponentsCoverEveryIncidenceExactlyOnce")
+
 function(directional_require_cp2_typed_network_cutover)
   file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/pipeline/RemeshPipeline.cpp"
        _directional_cp2_pipeline_text)

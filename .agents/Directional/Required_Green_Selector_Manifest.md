@@ -612,6 +612,7 @@ may share an identity count with an older M3 selector while carrying different b
 | Selector file | Identities | LF SHA-256 | Prefix parent | Appended | Role |
 |---|---:|---|---|---:|---|
 | `Architecture_M4_CP1_Required_Green_Selector_373.txt` | 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | M3 accepted 365 | 8 | **ACCEPTED M4-CP1 authority:** package115/TB2 reviewed **373/373**; bytes unchanged |
+| `Architecture_M4_CP2_Required_Green_Selector_380.txt` | 380 | `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4` | accepted M4-CP1 selector373 | 7 | **M4-CP2-CB1 candidate:** exact append-only CP2 certificate/outcome/oracle surface; runtime pending successor TB |
 
 The first 365 LF rows hash to
 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, proving the accepted M3 selector365
@@ -629,3 +630,7 @@ checkout stores CRLF, so a raw file hash will not match.
 
 Regenerate after any turn that appends a selector, and never edit a selector file to make it agree with this one.
 
+
+### M4-CP2-CB1 selector380 publication receipt
+
+`Architecture_M4_CP2_Required_Green_Selector_380.txt` contains **380 LF rows** with LF SHA-256 `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`. Its first **373** LF rows are byte-identical to accepted selector373 and hash to `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`. The seven appended rows are exactly the CP2 identities frozen in `Architecture_M4_CP2_CB1_Code_Build_Plan.md`, in prescribed order. This is a publication/lineage receipt only; no runtime acceptance is claimed before `M4-CP2-TB1-EXEC` and review.

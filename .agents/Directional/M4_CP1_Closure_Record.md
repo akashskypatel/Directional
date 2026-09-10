@@ -39,3 +39,9 @@ CB4 changed only package ownership/execution-view staging while holding semantic
 Stable accounting remains **47 events / 14 categories / 33 recurrences**. Produced-witness debt remains **5**. Accepted package authority advances to **115**; package114 remains unpromoted. M3 package113/TB48 remains the historical M3 closure/final-audit authority.
 
 The deferred multi-coordinate bidirected `±2` oracle-strengthening obligation is carried into the first later test-source-changing Code + Build turn. Exact successor: **`M4-CP2-CB1`** under `Architecture_M4_CP2_CB1_Code_Build_Plan.md`.
+
+## Retroactive CP1 graph-class referent — recorded by M4-CP2-CB1
+
+The phrase **“the frozen CP1 graph classes”** in the ninth CP1 exit conjunct refers to the single two-row, two-span equal-counts class represented by `two_row_equal_counts_problem` and `tiny_exhaustive_equal_counts_oracle`. That was the intended fixed-small optimum/tie class because CP1 used the independent exhaustive oracle specifically to falsify the exact scalar objective and canonical tie rule on the known-feasible producer, while the separate same-row bidirected `±2` fixture was a structural/determinism witness rather than an optimum oracle.
+
+Selector373 therefore did cover the intended CP1 graph-class referent. This clarification does **not** reopen or broaden CP1 acceptance. M4-CP2-CB1 strengthens the later oracle surface additively with a genuinely multi-coordinate instance containing same-row `±2` coefficients and full-vector enumeration, as required by the CP1 review carry-forward.
