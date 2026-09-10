@@ -1,3 +1,9 @@
+## 2026-09-10 — `M4-CP2-CB2`: four corrective contract gaps compile as candidate package117
+
+`M4-CP2-CB2` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE** on exact semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f`. The bounded correction makes ordinal374's four-coordinate `±2` oracle load-bearing and success-visible, completes WorkLedger assurance/bound/history carriage plus independent verification, adds an independently re-derived full CP2 semantic outcome digest, and appends dedicated ordinals 381-382. Selector382 is 382 LF rows at `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`, with exact selector380/selector373 prefixes and static owner partition **30 / 236 / 75 / 41**.
+
+Compile run/job `34529050994 / 103045247639` produced candidate package117 artifact `10172820820`, SHA-256 `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`; log artifact `10172821494` hashes to `9ad32693bebf78fc757dec039598083df15b38defdcb0edfe5fed6060b6337f2`. All approved targets linked with GMP/GMPXX, package `SHA256SUMS` verified **28/28**, source status is clean, and `runtimeExecution=false`. No Directional binary, test or benchmark executed. Package117 remains unpromoted; accepted runtime authority remains package115/selector373, stable accounting **47 / 14 / 33**, debt **5**. Exact next is immutable artifact-only `M4-CP2-TB2-EXEC`.
+
 ## 2026-09-10 — `M4-CP2-TB1-REV`: package116 full-green runtime upheld; promotion rejected on four gaps
 
 Runtime-free review re-opened package116 and TB1 primary bytes and independently re-derived selector380, raw process receipts, owner mapping, focused determinism and immutable postflight. The measured runtime is genuine: selector380 **380/380 PASS**, accepted predecessor **373/373**, CP2 **7/7**, focused rows374-380 **7/7 twice**, owners **30/234/75/41**, and zero RED/SKIP/timeout/selection mismatch.

@@ -180,6 +180,12 @@ Promotion is nevertheless **REJECTED** because source audit against frozen M4 §
 
 These are review-time non-stable contract candidates, not observed runtime product regressions: stable accounting stays **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. Package116 and selector380 remain immutable **unpromoted candidate evidence**; M4-CP2 remains OPEN. Exact next is runtime-free `M4-CP2-CB2` under `Architecture_M4_CP2_CB2_Code_Build_Plan.md`.
 
+## 2.11 `M4-CP2-CB2` — corrective contracts compile as package117
+
+CB2 repaired all four review-directed non-stable contract candidates without runtime execution. Ordinal374 now uses a live parity-obstructed `±2` fixture whose exhaustive optimum `(1,2,2,2)` differs from its magnitude-one twin `(1,2,1,1)` and emits the deterministic success receipt required by CAND-01/04. WorkLedger now carries finite-convergence assurance plus overall maximum exact width and the independent verifier covers initializer dimensions, refinement history/count, width/maxima and peak matching families; ordinal381 guards this tamper surface. `GlobalConformityOutcome` now carries a full CP2 semantic digest over normalized input, ordered supports, canonical component outcomes, certificate/ledger evidence, infeasible subsets and optional CP1 plan identity, with separate independent verifier derivation; ordinal382 guards feasible/infeasible/permutation/tamper semantics.
+
+Exact semantic source `534c0d41ae05b31e66711f21f4b4280b59f6483f` compiled under run/job `34529050994 / 103045247639`. Candidate package117 artifact `10172820820` hashes to `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`; compile-log artifact `10172821494` hashes to `9ad32693bebf78fc757dec039598083df15b38defdcb0edfe5fed6060b6337f2`. Selector382 is 382 LF rows at `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`, preserving exact selector380 and accepted selector373 prefixes; static owner partition is **30 / 236 / 75 / 41**. Package `SHA256SUMS` verifies **28/28**, GMP/GMPXX is linked, source status is clean and `runtimeExecution=false`. Package117 remains unpromoted; accepted runtime authority remains package115/selector373. Exact next is artifact-only `M4-CP2-TB2-EXEC`.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
