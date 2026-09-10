@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-10 (**M4-CP1 CLOSED / ACCEPTED; M4-CP2 OPEN.** Package115/TB2 remains reviewed accepted M4 runtime authority at selector373 **373/373**. Package117/selector382 is compiled immutable candidate authority; the first TB2 attempt was orchestration-invalid/no-credit and CB3 has statically corrected its census-name contract without rebuilding. Stable accounting is **47 / 14 / 33**, debt 5, accepted package authority 115. **NEXT: `M4-CP2-TB2-R1-EXEC`**, artifact-only reuse of package117.)
+**Status date:** 2026-09-10 (**M4-CP1 CLOSED / ACCEPTED; M4-CP2 OPEN pending review.** Package115/TB2 remains reviewed accepted M4 runtime authority at selector373 **373/373**. Package117/selector382 has completed corrected artifact-only R1 at **382/382** with focused **3/3 twice**, zero process/integrity failures, and immutable postflight; it remains unpromoted until review. Stable accounting is **47 / 14 / 33**, debt 5, accepted package authority 115. **NEXT: `M4-CP2-TB2-R1-REV`**, runtime-free promotion/closure adjudication.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -22,7 +22,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1 CLOSED / CP2 OPEN / R1 retry next** | `M4_CP1_Closure_Record.md`; package115/TB2 accepted at selector373 **373/373**; package117/selector382 immutable candidate; CB3 orchestration correction static-green; exact next `M4-CP2-TB2-R1-EXEC`. |
+| M4 | **CP1 CLOSED / CP2 OPEN / R1 review next** | `M4_CP1_Closure_Record.md`; package115/TB2 accepted at selector373 **373/373**; package117/selector382 R1 measured-green **382/382** with immutable postflight but unpromoted; exact next `M4-CP2-TB2-R1-REV`. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

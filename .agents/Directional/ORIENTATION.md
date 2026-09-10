@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-10, `M4-CP2-TB2-EXEC` closeout):** **M4-CP1 is CLOSED / ACCEPTED; M4-CP2 remains OPEN.** CB2 compiled corrective package117/selector382, but its first TB2 attempt is orchestration-invalid and carries no semantic credit because the evidence postflight used inconsistent execution-view census names. The completed process set was audit-only green and independent byte comparison shows package117 remained immutable, so it is retained for retry. Package115/TB2 remains accepted M4 runtime authority at selector373 **373/373**. Stable accounting remains **47 / 14 / 33**, debt 5, accepted package authority 115. Exact next is runtime-free control-plane `M4-CP2-CB3`.
+> **Current milestone authority (2026-09-10, `M4-CP2-TB2-R1-EXEC` closeout):** **M4-CP1 is CLOSED / ACCEPTED; M4-CP2 remains OPEN pending review.** Package117/selector382 has completed a valid corrected artifact-only gate at **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused **3/3 twice**, owners **30/236/75/41**, zero RED/SKIP/timeout/selection mismatch, and immutable package/source/execution-view postflight. `M4-CP2-TB2-EXEC-CAND-01` is CLOSED / RECOVERY PROVED / NON-STABLE. Package115/TB2 remains accepted runtime authority at selector373 **373/373** until review; stable accounting remains **47 / 14 / 33**, debt 5, accepted package authority 115. Exact next is runtime-free `M4-CP2-TB2-R1-REV`.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -112,9 +112,9 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 **M3 is CLOSED / ACCEPTED** and remains historical closure/final-audit authority at package113/TB48: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted selector365 **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. **M4-CP1 is CLOSED / ACCEPTED**: package115/TB2 is accepted M4 authority at selector373 **373/373**. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**.
 
-**M4-CP2 corrective candidate is package117/selector382.** CB2 compiled the review-directed receipt, WorkLedger certification, semantic-digest, and load-bearing-`±2` corrections without changing accepted CP1 authority. The first package117 TB2 attempt validly preflighted the package and completed all frozen processes with audit-only green observations, but its evidence postflight used inconsistent execution-view census names and exited as orchestration-invalid. Those process outcomes carry no semantic credit. Independent actual-file census comparison shows package117 itself did not change.
+**M4-CP2 corrective candidate is package117/selector382.** CB2 compiled the review-directed receipt, WorkLedger certification, semantic-digest, and load-bearing-`±2` corrections without changing accepted CP1 authority. The first TB2 attempt was orchestration-invalid/no-credit. CB3 changed only the preflight execution-view census basename, and R1 then re-executed the full frozen gate from scratch: **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused **3/3 twice**, owners **30/236/75/41**, zero process failures, and byte-identical package/source/execution-view postflight. The corrected orchestration falsifier is therefore closed.
 
-**What is next:** runtime-free, control-plane-only `M4-CP2-CB3` under `Architecture_M4_CP2_CB3_Orchestration_Correction_Plan.md`. It corrects only the evidence-harness census-name contract; package117, product/test/fixture/selector semantics, and accepted package115 authority stay unchanged. A successful CB3 is followed by `M4-CP2-TB2-R1-EXEC` against the same immutable package117. CP3 remains blocked until CP2 obtains a valid TB verdict and review promotion.
+**What is next:** runtime-free `M4-CP2-TB2-R1-REV`. Review must re-open the primary R1 result/log and package authority, independently re-derive the decisive evidence, and decide package117 promotion/M4-CP2 closure or route a bounded correction. Package117 remains unpromoted and package115/selector373 remains accepted authority until that adjudication. CP3 remains blocked until CP2 receives review promotion.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -226,12 +226,12 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP2 valid package117 certification — ACTIVE / NEXT: `M4-CP2-CB3`.**
+1. **M4-CP2 package117 promotion adjudication — ACTIVE / NEXT: `M4-CP2-TB2-R1-REV`.**
 
-   - CB2 has compiled the four review-directed corrective obligations into package117/selector382; they are candidate semantics, not yet reviewed runtime authority.
-   - The first package117 TB2 process set was audit-only green, but the attempt is semantically void because its evidence postflight read a different execution-view census basename than preflight wrote.
-   - Independent before/after byte comparison shows package117, its extracted source, and its execution view were unchanged, so a rebuild or semantic source change is not justified.
-   - `M4-CP2-CB3` owns only that orchestration contract. After it, `M4-CP2-TB2-R1-EXEC` reuses the same package117. Accepted authority stays package115/selector373 until a valid TB run and review promote a successor.
+   - CB2 compiled the four review-directed corrective obligations into package117/selector382.
+   - The first TB2 attempt is permanently no-credit orchestration provenance; CB3 corrected only its census basename contract.
+   - R1 independently re-executed the entire frozen gate and is mechanically green at selector382 **382/382**, focused **3/3 twice**, zero RED/SKIP/timeout/selection mismatch, and immutable package/source/execution-view postflight.
+   - `M4-CP2-TB2-EXEC-CAND-01` is closed/recovery-proved/non-stable. Package117 is still candidate evidence only until runtime-free R1 review promotes it or routes a bounded correction; accepted authority remains package115/selector373.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical.** The exact-torus `InvalidHardRailPairing` blocker and its three produced-witness re-proofs are M4-owned. M4 must remove the blocker without post-hoc local pairing and discharge all three debts on produced authority.
 

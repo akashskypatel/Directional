@@ -28,15 +28,15 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP2-TB2-R1-EXEC` (artifact-only retry)
+## Current focus — `M4-CP2-TB2-R1-REV` (runtime-free review)
 
-`M4-CP2-CB3` is **COMPLETE / STATIC-GREEN / RUNTIME-FREE / CONTROL-PLANE-ONLY**. The invalid TB2 harness wrote `execution-view-before.tsv` while postflight required `execution-view-census-before.tsv`; CB3 changes only that preflight basename to the canonical `execution-view-census-before.tsv`. The postflight executor remains byte-identical.
+`M4-CP2-TB2-R1-EXEC` is **COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / REVIEW PENDING** on unchanged package117. Run/job `34539783373 / 103079623871` produced selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**, focused 374/381/382 **3/3 twice**, owners **30/30 / 236/236 / 75/75 / 41/41**, and zero RED/SKIP/timeout/selection mismatch. Both ordinal374 focused receipts occur exactly once and all package/source/execution-view census pairs are byte-identical.
 
-Frozen correction hashes: preflight `12090d4b5e01f6c3e55de712b595dff3444b509ba58b040201a2c61f87d805c1`, executor `717a4dd6cda5ba96fb8bd6e16879c422f9b2e1ff561951801dc5658d85480019`, R1 caller draft `baf81bf788f6823d79f3b34431424a1e19e7e45b6eacb6fb788604333a08d6ab`. Static Python AST/YAML/schema-shape/diff checks pass. No Directional compile, repackage, runtime, benchmark, generated discovery, product/test/fixture/selector/CMake/package mutation, or reusable-permission change occurred.
+Result/log artifacts are `10176889758 / 10176890045` at SHA-256 `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`. `preflight_exit=0`, `gate_exit=0`, `orchestration_failure=false`; no configure/compile/relink/repair/generated-discovery/benchmark occurred.
 
-`M4-CP2-TB2-EXEC-CAND-01` is **CORRECTION AUTHORED / AWAITING R1 / ORCHESTRATION / NON-STABLE**. The first TB2 attempt remains no-credit provenance; its audit-only process greens may not be stitched into the retry. Package117 remains immutable/unpromoted, accepted runtime/package authority remains package115 / selector373, and stable accounting remains **47 / 14 / 33**, debt **5**.
+`M4-CP2-TB2-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / ORCHESTRATION / NON-STABLE**. Package117 remains immutable/unpromoted pending review. Accepted runtime/package authority remains package115 / selector373; stable accounting remains **47 / 14 / 33**, debt **5**.
 
-**Exact next:** `M4-CP2-TB2-R1-EXEC` under `.agents/Directional/Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`, consuming the same package117 artifact `10172820820`. Do not rebuild or repair it. A valid R1 execution advances to `M4-CP2-TB2-R1-REV`.
+**Exact next:** `M4-CP2-TB2-R1-REV`. Re-open primary R1 evidence and frozen M4 authority, independently adjudicate package117 promotion and M4-CP2 closure or route to a bounded correction. The review is runtime-free: do not compile, rerun, rebuild, repair, or mutate package117.
 
 ## Carried forward from M1
 
@@ -75,7 +75,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1 CLOSED / CP2 OPEN / `M4-CP2-TB2-R1-EXEC` ARTIFACT-ONLY RETRY NEXT**. Package115/TB2 selector373 **373/373** remains accepted authority. Package117 is compiled candidate authority, but TB2 attempt `34532107988` is orchestration-invalid and carries no semantic credit; the bounded harness-name correction is complete and the same immutable package is retained for R1 re-execution. M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1 CLOSED / CP2 OPEN / `M4-CP2-TB2-R1-REV` REVIEW NEXT**. Package115/TB2 selector373 **373/373** remains accepted authority. Package117/selector382 has now completed a mechanically valid immutable R1 gate at **382/382** with focused corrections green and zero process/integrity failures, but TB-EXEC cannot promote it; review must adjudicate promotion/CP2 closure. M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -115,4 +115,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. **M4-CP1 is CLOSED / ACCEPTED** at package115/TB2. Corrective package117 is compiled but unpromoted; `M4-CP2-TB2-EXEC` attempt `34532107988` is **ORCHESTRATION-INVALID / NO SEMANTIC CREDIT** despite audit-only green process observations because its postflight execution-view census filename contract was inconsistent. CB3 has completed the runtime-free control-plane correction. Exact next is **`M4-CP2-TB2-R1-EXEC`** under `.agents/Directional/Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`, reusing the same immutable package117. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. **M4-CP1 is CLOSED / ACCEPTED** at package115/TB2. Package117/selector382 is now **MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN** on `M4-CP2-TB2-R1-EXEC` run `34539783373`, but remains unpromoted because TB-EXEC cannot accept its own candidate. Exact next is runtime-free **`M4-CP2-TB2-R1-REV`** to independently adjudicate package117 promotion and M4-CP2 closure or route a bounded correction. PR #8 remains open, draft, and unmerged.

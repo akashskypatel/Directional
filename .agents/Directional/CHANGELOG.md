@@ -1,10 +1,16 @@
+## 2026-09-10 — `M4-CP2-TB2-R1-EXEC`: corrected immutable retry measures selector382 382/382 green
+
+Artifact-only R1 run/job `34539783373 / 103079623871` consumed unchanged package117 artifact `10172820820` and completed the corrected preflight, both focused 374/381/382 phases, all 382 frozen selector identities one per fresh process, and immutable postflight. Result/log artifacts `10176889758 / 10176890045` hash to `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`.
+
+Measured result is **382/382 selector**, **373/373 predecessor**, **7/7 CP2**, **2/2 corrections**, owners **30/30 / 236/236 / 75/75 / 41/41**, focused **3/3 twice**, both ordinal374 receipts exactly once, and zero RED/SKIP/timeout/selection mismatch. Package/source/execution-view censuses are byte-identical before/after; `preflight_exit=0`, `gate_exit=0`, `orchestration_failure=false`. No configure/compile/relink/repair/generated-discovery/benchmark occurred. `M4-CP2-TB2-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**. Package117 remains unpromoted pending `M4-CP2-TB2-R1-REV`; stable accounting stays **47 / 14 / 33**, debt **5**, accepted package authority **115**.
+
 ## 2026-09-10 — `M4-CP2-CB3`: execution-view census-name contract corrected; package117 held fixed
 
 `M4-CP2-CB3` is **COMPLETE / STATIC-GREEN / RUNTIME-FREE / CONTROL-PLANE-ONLY**. It corrects the sole deterministic orchestration defect from the invalid TB2 attempt: the preflight writer now emits `execution-view-census-before.tsv`, exactly matching the unchanged postflight reader's `*-census-before.tsv` contract and its `execution-view-census-after.tsv` output. Invalid preflight SHA `af458b58...` changes to corrected R1 preflight `12090d4b...`; executor `717a4dd6...` is byte-identical. Retry caller draft `baf81bf7...` preserves the schema/type tree of the schema-validated predecessor and changes only scalar retry labels/paths.
 
 Static-only validation passed Python AST, YAML parse, caller schema-shape comparison, exact one-line preflight diff, unchanged executor bytes, and canonical before/after basename checks. No Directional compile/link, repackage, runtime, benchmark, generated discovery, product/test/fixture/selector/CMake/package mutation, or reusable-workflow-permission change occurred. Package117 artifact `10172820820` at SHA-256 `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725` remains immutable/unpromoted; accepted authority remains package115/selector373 **373/373**. `M4-CP2-TB2-EXEC-CAND-01` is now **CORRECTION AUTHORED / AWAITING R1 / NON-STABLE**; stable accounting stays **47 / 14 / 33**, debt **5**.
 
-Exact next is artifact-only `M4-CP2-TB2-R1-EXEC` under `Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`, reusing package117 and re-executing the frozen gate from scratch; the invalid attempt contributes no semantic rows.
+Exact next at CB3 closeout was artifact-only `M4-CP2-TB2-R1-EXEC`, reusing package117 and re-executing the frozen gate from scratch; the invalid attempt contributes no semantic rows.
 
 ## 2026-09-10 — `M4-CP2-TB2-EXEC`: package117 process set completes but postflight orchestration invalidates the attempt
 
