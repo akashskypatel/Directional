@@ -1,4 +1,0 @@
-turn=M4-CP1-CB1
-purpose=apply verified documentation-only solver-contract stop patch from Google Drive
-patch_base=3ef59b9deeb83040f713055840fd9117c5ea6106
-retry=0
