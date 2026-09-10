@@ -38,7 +38,7 @@ CB4 changed only package ownership/execution-view staging while holding semantic
 
 Stable accounting remains **47 events / 14 categories / 33 recurrences**. Produced-witness debt remains **5**. Accepted package authority advances to **115**; package114 remains unpromoted. M3 package113/TB48 remains the historical M3 closure/final-audit authority.
 
-The deferred multi-coordinate bidirected `±2` oracle-strengthening obligation is carried into the first later test-source-changing Code + Build turn. Exact successor: **`M4-CP2-CB1`** under `Architecture_M4_CP2_CB1_Code_Build_Plan.md`.
+The deferred multi-coordinate bidirected `±2` oracle-strengthening obligation was carried into the first later test-source-changing Code + Build turn, **`M4-CP2-CB1`**. That successor plan is now folded after execution/review; its durable facts and disposition are preserved in `M4_Consolidated_Record.md` §§2.8-2.10 and git history.
 
 ## Retroactive CP1 graph-class referent — recorded by M4-CP2-CB1
 

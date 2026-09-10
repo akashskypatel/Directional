@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP1-TB2-REV` closure
+**Last updated:** 2026-09-10 at `M4-CP2-TB1-REV` adjudication
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; retained raw runtime evidence is `Architecture_M4_CP1_TB2_EXEC_Report.md`; current review authority is `Architecture_M4_CP1_TB2_Review_Record.md`; and the exact next plan is `Architecture_M4_CP2_CB1_Code_Build_Plan.md`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; current raw runtime evidence is `Architecture_M4_CP2_TB1_Test_Benchmark_Report.md`; current review authority is `Architecture_M4_CP2_TB1_Review_Record.md`; and the exact next plan is `Architecture_M4_CP2_CB2_Code_Build_Plan.md`. Package115/selector373 remains accepted M4 runtime authority; package116/selector380 is retained unpromoted evidence. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -156,6 +156,30 @@ Both TB1 candidates are **CLOSED / RECOVERY PROVED / NON-STABLE**. package115 su
 
 Package115/TB2 is promoted to reviewed M4 runtime authority; selector373 becomes accepted M4 required-green authority at **373/373**; `M4-CP1` is **CLOSED / ACCEPTED**. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **115**; package114 remains unpromoted. Exact next is runtime-free `M4-CP2-CB1`.
 
+## 2.8 `M4-CP2-CB1` — package116 compiled with certificate/typed-infeasibility surface
+
+CB1 added the generic CP2 outcome surface on top of accepted CP1 semantics: deterministic connected constraint components, scheduled-component certificates, terminal fixed-`M=2` WPM witnesses, independent certificate/subset verification, and typed `BalanceCut | PositivityCut | ParityCut` outcomes. It also added the deferred four-coordinate same-row bidirected `±2` exhaustive oracle. Selector380 is an append-only selector373 extension at SHA-256 `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`; its first373 hash is the accepted `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`, with static owner partition **30 / 234 / 75 / 41**.
+
+Exact semantic source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` compiled under run/job `34512397141 / 102989549611` into candidate package116 artifact `10166351695`, SHA-256 `c61b9900a2745454594825de81181ce982ec4b7986f40aa3b23c23e12d0e8e61`. Mandatory GMP/GMPXX and all selector-owner targets were present, package `SHA256SUMS` verified 28/28, and `runtimeExecution=false`. CB1 did not promote the package.
+
+## 2.9 `M4-CP2-TB1-EXEC` — runtime gate measured 380/380 green
+
+Artifact-only TB1 run/job `34515352025 / 102999258938` consumed package116 without rebuild or repair. Result/log artifacts `10167558308 / 10167558730` hash to `214c854c0274e1de73b73a3e4fab4906729fda453fe090c60792645edee5fa9a` / `dceafa9801564d16ba27ca1b12d3e9bc79d648363f725fb78ee4ac54624f2bb7`. Focused CP2 rows 374-380 are **7/7 twice** with identical verdict vectors; cumulative selector380 is **380/380**, accepted predecessor **373/373**, and owner outcomes are **30/30 / 234/234 / 75/75 / 41/41** with zero RED/SKIP/timeout/selection mismatch. All package/source/execution-view censuses are immutable.
+
+The raw runtime result is genuine and retained in `Architecture_M4_CP2_TB1_Test_Benchmark_Report.md`. EXEC observed no runtime regression and did not promote package116.
+
+## 2.10 `M4-CP2-TB1-REV` — full-green runtime upheld, promotion rejected on three contract gaps
+
+The review re-opened package116 and the TB1 result/log bytes and independently re-derived the selector, all 394 raw process receipts, owner mapping, focused determinism and immutable postflight. Those runtime claims are upheld exactly.
+
+Promotion is nevertheless **REJECTED** because source audit against frozen M4 §§3.2, 7.4, 8.1 and 9 found three unguarded requirements:
+
+1. `M4-CP2-TB1-REV-CAND-01` — ordinal374's required `coordinateCount=4` / `±2` success receipt is encoded only as `SCOPED_TRACE`, so it does not appear in a passing raw log. The oracle mathematics itself is non-vacuous: four coordinates, same-row coefficient magnitude 2, twelve primary-optimal feasible vectors, lexicographic winner `(1,1,2,2)`.
+2. `M4-CP2-TB1-REV-CAND-02` — the carried WorkLedger lacks an explicit finite-convergence assurance-class field and overall maximum-observed exact-width field, while the independent CP2 verifier ignores initializer dimensions, refinement count/history, all bit-width/maxima families, and peak matching dimensions. Existing tamper coverage changes only `refinementM` for the ledger family.
+3. `M4-CP2-TB1-REV-CAND-03` — `GlobalConformityOutcome` has no semantic digest binding full support paths plus scheduled certificates/infeasible-subset facts. `normalizedProblemDigest` omits support-piece paths and produced outcome evidence and therefore cannot discharge frozen §3.2.
+
+These are review-time non-stable contract candidates, not observed runtime product regressions: stable accounting stays **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. Package116 and selector380 remain immutable **unpromoted candidate evidence**; M4-CP2 remains OPEN. Exact next is runtime-free `M4-CP2-CB2` under `Architecture_M4_CP2_CB2_Code_Build_Plan.md`.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -180,5 +204,11 @@ history.
 | `Architecture_M4_CP1_CB4_Build_Record.md` | 157 | **FOLDED AFTER PACKAGE115 PROMOTION.** Exact compile/package authority is preserved in §§2.5-2.7, `M4_CP1_Closure_Record.md`, the retained TB2 report and changelog. |
 | `Architecture_M4_CP1_TB1_Independent_Review_Record.md` | 232 | **FOLDED AFTER TB2 RECOVERY REVIEW.** Candidate classification, 30/227/75/41 owner proof, fixture-view diagnosis and deferred `±2` oracle obligation are preserved in §§2.4-2.7, closure, tracker and next CP2 plan. |
 | `Architecture_M4_CP1_TB2_Test_Benchmark_Plan.md` | 183 | **FOLDED AFTER EXECUTION + REVIEW.** Frozen TB2 acceptance conditions and exact reviewed outcomes are preserved in §§2.6-2.7, `M4_CP1_Closure_Record.md`, the retained raw TB2 report and current review record. |
+
+| `Architecture_M4_CP1_TB2_EXEC_Report.md` | 143 | **FOLDED AFTER CP2 REVIEW.** CP1 package115/TB2 runtime authority and immutable-gate facts are preserved in §§2.6-2.7, `M4_CP1_Closure_Record.md`, changelog and accepted-authority pointers. |
+| `Architecture_M4_CP1_TB2_Review_Record.md` | 146 | **FOLDED AFTER SUPERSESSION BY CP2 REVIEW.** CP1 promotion, candidate closure and deferred-oracle disposition are preserved in §§2.7-2.10, `M4_CP1_Closure_Record.md`, tracker and changelog. |
+| `Architecture_M4_CP2_CB1_Code_Build_Plan.md` | 154 | **FOLDED AFTER CB1 + TB1 REVIEW.** Implemented CP2 scope, deferred-oracle obligation and review-discovered contract requirements are preserved in §§2.8-2.10, the current review record and corrective CB2 plan. |
+| `Architecture_M4_CP2_CB1_Code_Build_Report.md` | 96 | **FOLDED AFTER TB1 REVIEW.** Exact source/compile/package116 authority is preserved in §2.8, the retained TB1 report, current review record, tracker and changelog. |
+| `Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md` | 116 | **FOLDED AFTER EXECUTION + REVIEW.** Immutable package116 gate contract and actual results are preserved in §§2.9-2.10, the retained TB1 runtime report and current review record. |
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.

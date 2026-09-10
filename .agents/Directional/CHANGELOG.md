@@ -1,3 +1,11 @@
+## 2026-09-10 — `M4-CP2-TB1-REV`: package116 full-green runtime upheld; promotion rejected on three frozen contract gaps
+
+Runtime-free review re-opened package116 and TB1 primary bytes and independently re-derived selector380, raw process receipts, owner mapping, focused determinism and immutable postflight. The measured runtime is genuine: selector380 **380/380 PASS**, accepted predecessor **373/373**, CP2 **7/7**, focused rows374-380 **7/7 twice**, owners **30/234/75/41**, and zero RED/SKIP/timeout/selection mismatch.
+
+Promotion is **REJECTED**. Source audit found three non-stable frozen-contract candidates: `M4-CP2-TB1-REV-CAND-01`, the multi-coordinate `±2` metadata exists only in failure-only `SCOPED_TRACE` and is absent from passing raw logs; `...CAND-02`, CP2 WorkLedger carriage/independent verification omits the assurance class, overall max exact width, initializer dimensions, refinement history/count, width/maxima and peak matching families; `...CAND-03`, the CP2 outcome has no semantic digest binding full support paths plus scheduled certificate/infeasible-subset facts.
+
+Package116/selector380 remains immutable unpromoted evidence; accepted M4 authority remains package115/TB2 selector373 **373/373**. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **115**. Mandatory review consolidation folded superseded CP1 TB2 per-turn reports plus CP2 CB1 plan/report and consumed TB1 plan after preserving their durable facts in `M4_Consolidated_Record.md`, the current review record, tracker and changelog. Exact next is runtime-free `M4-CP2-CB2` under `Architecture_M4_CP2_CB2_Code_Build_Plan.md`.
+
 ## 2026-09-10 — `M4-CP2-TB1-EXEC`: package116 selector380 measured full green; review pending
 
 Artifact-only TB consumed immutable package116 artifact `10166351695` from semantic source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` under run/job `34515352025 / 102999258938`. Result/log artifacts `10167558308 / 10167558730` verify at SHA-256 `214c854c0274e1de73b73a3e4fab4906729fda453fe090c60792645edee5fa9a` / `dceafa9801564d16ba27ca1b12d3e9bc79d648363f725fb78ee4ac54624f2bb7`.
