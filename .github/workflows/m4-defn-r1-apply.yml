@@ -1,0 +1,48 @@
+name: M4 DEFN R1 Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-defn-r1-apply-20260909.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m4-defn-r1-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-defn-r1-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-defn-r1-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1AYIQPmW-57MUJI4Zxli0887s2Qn1S8KE
+      patch_sha256: '4bfc62f72b75baa9d71a1f2308c48614d5723ac995d46604ef4c5116fd3d7852'
+      base_sha: 74dbf78fb11a1d989d77d4ccd0c8d07ad25eb69c
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: revise M4 solver authority after CB2 review'
+      retention_days: 14
+    secrets: inherit
