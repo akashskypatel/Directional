@@ -1,4 +1,0 @@
-turn=M4-CP1-TB2-REV
-purpose=apply reviewed documentation and same-agent REVIEW/DEFN policy update
-patch_base=c033621357b51236f99c04a798f2dd16aa91b772
-retry=0
