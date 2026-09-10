@@ -1,3 +1,42 @@
+## 2026-09-10 — `M4-CP1-TB2-REV` verification pass: upheld; prefix receipt supplied, one exit referent undefined
+
+Static verification of the delegated `M4-CP1-TB2-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/build/selector mutation. **`M4-CP1` remains CLOSED / ACCEPTED**, package115 promoted,
+accounting unchanged at **47 / 14 / 33**.
+
+**Upheld — and the full green is genuine.** TB2 returned **373 PASS / 0 RED / 0 SKIP**, accepted **365/365**, CP1
+**8/8**, with all 373 mapped exact-once to the four owners at **30 / 227 / 75 / 41** — the same partition TB1-REV
+derived independently. The strongest control is the log scan: **389 `[ RUN ]` / 389 `[ OK ]` / 0 `[ SKIPPED ]` /
+0 `[ FAILED ]`** across all 389 process logs, establishing that every identity *executed* rather than that a ledger
+reported PASS.
+
+**The fixture defect was fixed at the right layer.** `TestFixturePaths` was left **unchanged** and resolved through
+its existing **sibling** rule to a package-derived `test-data` tree materialized from package-owned source bytes —
+TB1-REV §5 forbade teaching the resolver a new fallback, and that held. The semantic source stayed
+`680f9f1573d3c7e56a273366436463e40e196131` between CB3 and CB4, so §7's prediction remained falsifiable and was
+met; withdrawing the mis-targeted oracle obligation before CB4 ran is what preserved that.
+
+**A fairness correction to this reviewer's earlier §10.2 framing.** The eight CP1 identities are broader than that
+finding implied: `ExactValuesExceedLibSatsumaAndBlossomScalarWidths` directly guards the `int`/`double` rejection,
+`IndependentValidatorRejectsTamperMatrix` is a real tamper negative, and the oracle identity **does** exercise the
+tie-break — its `(3,1)` instance ties across `x ∈ {1,2,3}` and must resolve to the smallest. The
+one-degree-of-freedom concern applies only to the **optimum** half of that one identity.
+
+**`M4-DEFN` §12's predecessor-prefix receipt was not published; supplied and verified.** §12 mandates recording
+line count, LF SHA-256 **and predecessor-prefix SHA**; TB2 recorded the first two, leaving byte-for-byte
+preservation asserted rather than evidenced while the entire `365/365` claim rests on it. Verified from the
+repository: M4 selector373 = `6d00cafa939a0e89` (matches TB2), selector365 = `6b5b6555d39c250c`, and **the first
+365 rows of selector373 = `6b5b6555d39c250c`**. **The prefix holds exactly** — a missing receipt, not a defect.
+
+**CP1's exit conjunct 9 references a set that was never frozen.** §13 closes CP1 on nine conjuncts; the ninth
+requires *"fixed-small test oracles independently reproduce optimum/tie results on **the frozen CP1 graph
+classes**."* That phrase appears **exactly once in the entire corpus — in the exit condition itself**. **CP1 is
+deliberately not reopened**: eight conjuncts are well-evidenced, the ninth has real evidence, and the gap is
+definitional rather than a contradicted claim. **`M4-CP2-CB1` must freeze the CP1 graph classes retroactively** —
+name the intended set, or state the single two-row class was intended and why — and confirm oracle coverage against
+it, alongside the multi-coordinate obligation it already owns. `LESSONS.md` **167**: an exit condition whose
+referent cannot be read is not an exit condition.
+
 ## 2026-09-10 — `M4-CP1-TB2-REV`: package115 promoted; M4-CP1 closed; same-agent REVIEW/DEFN authorized
 
 User authorization now explicitly permits the same agent/session to perform REVIEW, REVIEW + PLAN, and DEFN turns. Personnel separation is not implied by "independent" review/oracle/verification language unless a criterion explicitly requires it; same-agent review must re-open primary evidence and independently re-derive decisive facts, and all existing cadence/runtime/compile/validation boundaries remain intact. Durable policy was updated in `AGENT_POLICY.md` and the handoff.

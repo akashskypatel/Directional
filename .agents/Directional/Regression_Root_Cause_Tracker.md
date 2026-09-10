@@ -7068,6 +7068,32 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**M4-CP1-TB2-REV verification-pass addenda.** The adjudication is **upheld** and the CP1 closure stands. TB2's
+strongest control is its independent log scan - **389 `[ RUN ]` / 389 `[ OK ]` / 0 `[ SKIPPED ]` / 0 `[ FAILED ]`**
+across all 389 process logs - which establishes every identity *executed* rather than that a ledger reported PASS.
+The fixture defect was fixed at the right layer: `TestFixturePaths` left **unchanged**, resolving through its
+existing sibling rule to a package-derived tree built from package-owned source bytes, exactly as TB1-REV §5
+required. The semantic source stayed `680f9f15...` between CB3 and CB4, so §7's prediction remained falsifiable and
+was met. Both TB1 candidates closed with recovery proved, and the deferred oracle obligation is correctly carried to
+`M4-CP2-CB1`, which is also where §13 places optimality (CP1 conjunct 7 requires only that the solver be
+*compiled*).
+
+- **`M4-DEFN` §12's predecessor-prefix receipt was not published. Supplied and verified here.** §12 requires every
+  selector publication to record line count, LF SHA-256 **and predecessor-prefix SHA**; TB2 recorded the first two
+  only, so byte-for-byte preservation was asserted rather than evidenced - while the whole `365/365` claim depends
+  on it. Verified from the repository: M4 selector373 LF SHA `6d00cafa939a0e89` (matches TB2), selector365 LF SHA
+  `6b5b6555d39c250c`, and **the first 365 rows of selector373 hash to `6b5b6555d39c250c`** - the prefix relation
+  holds exactly. **A missing receipt, not a defect**; the next selector publication must carry it.
+- **CP1's exit conjunct 9 references a set that was never frozen.** §13 closes CP1 on nine conjuncts; the ninth
+  requires *"fixed-small test oracles independently reproduce optimum/tie results on **the frozen CP1 graph
+  classes**."* **That phrase appears exactly once in the entire corpus - in the exit condition itself.** No CP1
+  graph classes are frozen in `M4-DEFN`, `M4-DEFN-R1`, or any CP1 plan or record. **CP1 is deliberately NOT
+  reopened**: eight conjuncts are well-evidenced, the ninth has real evidence (optimum *and* tie - the `(3,1)`
+  instance ties across `x in {1,2,3}` and must resolve to the smallest), and the gap is definitional rather than a
+  contradicted claim. **`M4-CP2-CB1` must freeze the CP1 graph classes retroactively** - name the intended set, or
+  state that the single two-row class was intended and why - and confirm oracle coverage against it, alongside the
+  multi-coordinate obligation it already owns. `LESSONS.md` 167.
+
 **M4-CP1-TB1-REV verification-pass addenda (§10).** The adjudication is **upheld**. Its classification is precisely
 right - 146 rows never selected and the other 38 failing **before** their assertions means the accepted predecessor
 was *"not semantically re-proved or semantically falsified"*, so neither an acceptance nor a regression claim is

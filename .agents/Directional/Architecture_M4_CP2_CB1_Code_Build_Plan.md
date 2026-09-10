@@ -107,3 +107,48 @@ Stop before packaging or TB handoff if:
 - GMP/GMPXX compile authority is absent.
 
 No runtime result may be inferred in CB1.
+
+---
+
+## Added by `M4-CP1-TB2-REV` verification pass (non-optional)
+
+Two obligations land on this turn, the first Code + Build authorized to edit test source after CP1 closed on
+unchanged semantics.
+
+### 1. Multi-coordinate `±2` oracle instance (deferred from `M4-CP1-TB1-REV` §10.2)
+
+`tiny_exhaustive_equal_counts_oracle` searches a **single scalar** `x` and returns `{x, x}`, paired with
+`two_row_equal_counts_problem` — **one degree of freedom**. `M4-DEFN-R1` §R6 traded the outer polynomial bound for
+`FiniteExactConvergence`, with global optimality resting on Theorem 3.8 at **`M >= 2`**. The residual implementation
+risk is that `M=2` refinement **stalls at a local fixed point** where improvement requires a coordinated change
+across three or more coordinates — which a one-variable instance cannot exhibit, so the comparison would pass even
+if `M=2` were insufficient. The bidirected `±2` structure is currently exercised only by a **determinism** test.
+
+- Extend the exhaustive comparison to at least one **multi-coordinate** instance that **carries `±2` structure**,
+  enumerating the full count vector within the frozen `E<=6, x_s<=8` envelope (`8^6 = 262,144` — trivially cheap).
+  **No definition change is needed**; `M4-DEFN` §8 already permits it.
+- Publish, per CP1 identity, a receipt naming the instance's **coordinate count** and whether it contains a `±2`
+  incidence, so *"compared against an oracle"* and *"compared against an oracle that could have disagreed"* stay
+  distinguishable in the ledger.
+- **If the multi-coordinate comparison disagrees with the solver, stop.** That is `M=2` sufficiency evidence and
+  returns to `M4-DEFN`, not a Code + Build decision.
+
+### 2. Freeze the CP1 graph classes retroactively
+
+`M4-DEFN` §13's ninth CP1 exit conjunct requires *"fixed-small test oracles independently reproduce optimum/tie
+results on **the frozen CP1 graph classes**."* **That phrase occurs exactly once in the retained corpus — in the
+exit condition itself.** No such set was ever frozen. CP1 was correctly not reopened over a definitional omission,
+but the referent must be supplied:
+
+- **Name the set** conjunct 9 intended, or **state that the single two-row equal-counts class was the intended set
+  and why**; then confirm oracle coverage against whichever is chosen.
+- Record it where a later reader will find it — an exit condition whose referent cannot be read is not an exit
+  condition (`LESSONS.md` 167).
+
+### Selector receipt
+
+`M4-DEFN` §12 requires every selector publication to record line count, LF SHA-256 **and predecessor-prefix SHA**.
+TB2 omitted the third. Any selector this turn publishes must carry all three. For reference, the verified current
+values are: selector373 `6d00cafa939a0e89…`, selector365 `6b5b6555d39c250c…`, and selector373's first 365 rows
+`6b5b6555d39c250c…` — the prefix relation holds exactly.
+
