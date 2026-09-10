@@ -1,0 +1,5 @@
+turn=M4-CP1-CB1-REV
+purpose=apply reviewed documentation preservation patch
+patch_base=61e5b4394a9e91407a2b084a773c4cafaa8d6b6a
+patch_sha256=41b47f4bca2ff79519c0091d0936f73f75d575b0a0ef0677eadc7c8b176a8156
+retry=0
