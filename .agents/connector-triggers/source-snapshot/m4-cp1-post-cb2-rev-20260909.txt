@@ -1,0 +1,4 @@
+purpose=M4-CP1 post-CB2-REV source snapshot
+semantic_source_sha=fcd70da6dc3abd8c955ed9725a2e6b41133932d0
+read_mode=snapshot
+retry=0
