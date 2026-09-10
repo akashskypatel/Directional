@@ -1,4 +1,0 @@
-purpose=M4-CP1-CB3 validator hardening patch apply
-base_sha=80ef37d29aa2e9dcdde44b72b5efbc7a046fa146
-patch_sha256=b424aec8a7b6a78e8e7928a80bccf1d91c4bd6365e8c20fa3031639fdc5f135d
-runtimeExecution=false

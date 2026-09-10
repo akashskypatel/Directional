@@ -1,5 +1,0 @@
-purpose=M4-CP1-CB3 CMake export fix apply
-base_sha=ca85ec20bb77b3438c32a9d854e11b70c6a6c041
-patch_sha256=175710d6a0def9e86bcdd4d496beb940ab6b2abc2ca886a8486762fc2bd6bbc2
-retry=1
-runtimeExecution=false

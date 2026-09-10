@@ -1,4 +1,0 @@
-purpose=M4-CP1-CB3 WIP patch apply
-base_sha=2a098fbc044eec722168764f949a68f44cae0261
-patch_sha256=5cf618918eeedd85bc028de40ada33357f531de1c6bfbdd2b71537ac15cd75ff
-runtimeExecution=false
