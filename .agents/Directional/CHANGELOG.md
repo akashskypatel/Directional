@@ -1,3 +1,25 @@
+## 2026-09-10 — `M4-CP1-CB4`: unchanged semantics package-closed; candidate package115 issued
+
+`M4-CP1-CB4` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. After the documentation contradiction was
+corrected, a fresh source snapshot re-proved the frozen selector373 ownership as **30 / 227 / 75 / 41**, zero
+missing/duplicate, on unchanged semantic source `680f9f1573d3c7e56a273366436463e40e196131`. No product, test, fixture,
+selector, CMake ownership, solver/validator, or reusable-workflow-permission change was made.
+
+Mandatory GMP/GMPXX compile run/job `34493860436 / 102927319825` succeeded using the reusable default target set and
+produced candidate **package115** artifact `10159019500`, provider/downloaded SHA-256
+`de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b`. All package `SHA256SUMS` entries verify;
+all four selector-owner binaries are present/executable; `runtimeExecution=false`; exact arithmetic is GMP.
+
+The successor artifact-only harness is pre-authored at SHA-256
+`ddfbda2ff626008d3d2e9f6d117b10c98de159c4f9b8a3a36f99e50e24fd22d9` and was syntax/static checked only. It
+re-derives owner mapping, constructs the existing sibling fixture view solely from package-owned source bytes, runs
+focused CP1 twice plus selector373 one identity per fresh process, and proves immutable postflight. **No Directional
+runtime ran in CB4.** Exact next is `M4-CP1-TB2-EXEC` under `Architecture_M4_CP1_TB2_Test_Benchmark_Plan.md`.
+
+Package115 is not accepted yet. Runtime authority remains **M3 / package113 / TB48**; selector365 remains **365/365**;
+stable accounting remains **47 / 14 / 33**, debt **5**, accepted packages **113**. The multi-coordinate bidirected
+`±2` oracle coverage obligation remains assigned to the first later Code + Build turn authorized to change test source.
+
 ## 2026-09-10 — correction: the `M4-CP1-TB1-REV` §10.2 oracle obligation was mis-targeted at CB4
 
 Static correction. No runtime, no compile, no package operation, no product/test/fixture/build/selector mutation.

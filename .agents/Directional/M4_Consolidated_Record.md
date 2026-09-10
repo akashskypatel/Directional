@@ -36,7 +36,7 @@ CB1 subsequently stopped before semantic mutation because its solver contract ha
 
 Independent `M4-CP1-CB2-REV` upheld both stops and routed the solver clause to `M4-DEFN-R1`. `M4-DEFN-R1` then adjudicated the ordered alternatives and selected Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement with fixed `M=2`. Same-row `+/-2` incidence keeps the frozen class genuinely bidirected, so ordinary MCF is not frozen; the simple disclosed one-shot Bi-MCF→b-matching chain is not used because its reviewed form is specialized to zero-demand refinement. The semantic objective, cap `U`, lexicographic order and A3 ownership are unchanged. The outer solver assurance is explicitly amended from polynomial to **finite exact convergence** under Corollary 3.7, Theorem 3.8 and Corollary 3.9. CP2's independent terminal-optimality certificate is mandatory before CP3 cutover.
 
-TB1 review now preserves the focused CP1 green receipt while adjudicating the cumulative failure as package-closure/execution-view evidence rather than product-semantic RED. Exact next is runtime-free `M4-CP1-CB4`.
+TB1 review preserves the focused CP1 green receipt while adjudicating the cumulative failure as package-closure/execution-view evidence rather than product-semantic RED. `M4-CP1-CB4` has now rebuilt unchanged semantics with all four owner binaries and issued candidate package115; exact next is artifact-only `M4-CP1-TB2-EXEC`.
 
 ## 2.1 `M4-CP1` solver deadlock — CB1 and CB2 both stopped, both correctly
 
@@ -110,6 +110,29 @@ credible bounded runtime evidence.
 Both TB1 candidates are adjudicated non-stable. Stable totals remain **47 / 14 / 33**, debt **5**, accepted packages
 **113**; package114 is not promoted. `M4-CP1-CB4` must rebuild unchanged semantic source `680f9f15...` with all four
 selector-owner binaries, pre-author the exact owner-mapped execution-view harness, and execute no Directional runtime.
+
+## 2.5 `M4-CP1-CB4` — package closure compile-green; package115 issued without semantic drift
+
+CB4 executed the review-prescribed control experiment on unchanged semantic source
+`680f9f1573d3c7e56a273366436463e40e196131`. A fresh corrected-docs snapshot re-proved selector373 at SHA-256
+`6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`, with exact owner partition
+**30 authority-kernel / 227 producer / 75 completion / 41 validation**, zero missing/duplicate definitions. No product,
+test, fixture, selector, CMake ownership, or solver/validator semantic source changed.
+
+Mandatory GitHub GMP/GMPXX compile run/job `34493860436 / 102927319825` succeeded with the reusable default target
+set and produced candidate package115 artifact `10159019500`, provider/downloaded SHA-256
+`de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b`. Package `SHA256SUMS` verifies completely;
+all four selector-owner binaries are present and executable; the source archive is packaged; `runtimeExecution=false`
+and `exactArithmeticBackend=GMP`. No Directional runtime executed in CB4.
+
+CB4 pre-authored `m4_cp1_tb2_artifact_only_harness.sh` at SHA-256
+`ddfbda2ff626008d3d2e9f6d117b10c98de159c4f9b8a3a36f99e50e24fd22d9`. Its preflight re-derives owner mapping,
+materializes the existing executable-relative fixture view solely from package-owned source bytes, and records immutable
+package/source/view censuses before any Directional process. Exact next is `M4-CP1-TB2-EXEC`; package115 remains
+unaccepted until runtime. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted packages **113**.
+
+The multi-coordinate `±2` oracle coverage obligation identified by TB1 review remains deferred to the first later Code +
+Build turn authorized to change test source; keeping it outside CB4/TB2 preserves the unchanged-semantics control.
 
 ## 3. Folded document index
 
