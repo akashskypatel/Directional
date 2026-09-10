@@ -1,3 +1,47 @@
+## 2026-09-10 — `M4-CP1-CB1-REV` verification pass: upheld; solver-library authorization recorded and scoped
+
+Static verification of the delegated `M4-CP1-CB1-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/benchmark/build/selector mutation.
+
+**Upheld.** The CB1 stop was correct: the frozen contract required a precomputed scalar `P(V,E,B)` decremented on
+every internal transition, no published source supplies that constant for this algorithm class, and the turn could
+only have proceeded by **inventing** it. §7's withdrawal of that evidence representation — replaced by the
+polynomial theorem, exact bit-width bounds and auditable per-phase counters — is the right repair. The review
+**strengthens** M4 rather than weakening it: the semantic objective is unchanged and the L1 form is specialized to
+an exact Integral Bi-MCF with a *published* polynomial bound, instead of accepting finite convergence. §8's
+CP1/CP2 boundary correction is also right — the old plan had CP1 independently establishing generic optimality
+while deferring the certificate to CP2, duplicating a full hard solver before the checkpoint that owns it.
+
+Worth highlighting from §9: *"floating costs or machine capacities because practical meshes are small"* is
+prohibited because **representation must satisfy the semantic contract, not the current fixtures** — the exact
+failure mode behind the Euler saga and `LESSONS.md` 156.
+
+**Standing user authorization recorded:** *adding a solver library instead of reimplementing algorithms is
+approved.* CB2 currently plans to implement Gabow 1983 in-house, so this is material — but **for this problem shape
+its reach is narrower than it sounds**, and the record must say so rather than let it be rediscovered. §6.5
+preserves same-row `±2` loops as legal bi-directed edges and §7 counts blossom-class primitives, so the problem is
+**genuinely bidirected** — it generalizes non-bipartite matching and does **not** reduce to ordinary min-cost flow.
+LEMON and OR-Tools supply *ordinary* MCF and are not candidates at any precision; `libSatsuma` is the closest real
+implementation and is correctly rejected for `int`/`double`. **No off-the-shelf exact arbitrary-capacity bidirected
+MCF library exists.** §9 must record that search and conclusion — it currently rejects two specific `libSatsuma`
+uses and is silent on the general question, so a later turn holding this authorization will reasonably re-litigate
+it. *Adjudicate, don't inherit.*
+
+**Where the authorization does have teeth — the oracle-coverage gap.** The independent oracle is exhaustive
+enumeration under `E<=6, x_s<=8`, which is the right *kind* of oracle but leaves everything between that cap and
+production unoracled. `libSatsuma` cannot be semantic authority; however `double` is exact for integers below
+`2^53`, so on mid-size instances with provably small capacities and costs it is a legitimate **test-side
+cross-check** in exactly that band — independent codebase and authorship, zero semantic authority, no path into
+product code. Recommended for CB2 with the exactness bound **asserted rather than assumed**; any discrepancy is a
+review stop, never a tie-break.
+
+**For CP2:** §6.6's `(2E+1)*U` dummy-loop cap is asserted as dominating at the normalization step, leaning on §4's
+coordinate cap. CP2's carried optimality certificate should **confirm the cap was never binding**, making it
+evidenced by construction rather than by argument.
+
+**Exact next: `M4-CP1-CB2`** — Code + Build, runtime-free, with the §9 library-search record and the test-side
+cross-check added.
+
 ## 2026-09-09/10 — `M4-CP1-CB1-REV` upholds CB1 stop and freezes exact polynomial Integral Bi-MCF contract
 
 Independent REVIEW + PLAN only; no Directional runtime, compile, package, selector mutation, product/test/fixture/benchmark source change, or reusable-workflow change. Review entered from head `0edf8042b5b01d5fef423790669274e8da62ff63`; exact source snapshot run/job `34423780205 / 102704615928` captured control SHA `61e5b4394a9e91407a2b084a773c4cafaa8d6b6a`, artifact `10131877788`, provider SHA-256 `38cc234cc3eb46e4d01536979ebb89f43df8bef9fb553ad7207aff872e64046e`, 5222/5222 manifest files verified, `runtimeExecution=false`.

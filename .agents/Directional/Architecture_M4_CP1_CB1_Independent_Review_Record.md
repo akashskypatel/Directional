@@ -302,3 +302,77 @@ snapshot. This process miss does not change stable product regression accounting
 
 No implementation, compile, package, selector execution, Directional runtime, test or benchmark belongs to this review
 turn.
+
+---
+
+## 13. Verification-pass addenda (static, appended after adjudication)
+
+A verification pass re-derived §§1–12. **The adjudication is upheld**, and one standing user authorization is
+recorded that changes what a successor may consider.
+
+### 13.1 — confirmed
+
+- **The CB1 stop was correct.** The frozen contract required a precomputed scalar `P(V,E,B)` decremented on every
+  internal transition. No published source supplies that constant for this algorithm class, so the turn could only
+  have proceeded by **inventing** it. Stopping was the right outcome, and §7's withdrawal of that evidence
+  representation — replaced by the polynomial theorem, exact bit-width bounds and auditable per-phase counters — is
+  the correct repair.
+- **The review strengthens rather than weakens M4.** The semantic objective is unchanged; what changed is that the
+  L1 form is specialized to an exact Integral Bi-MCF with input-derived capacities, keeping a *published* polynomial
+  bound instead of accepting finite convergence.
+- **§9's rejections are principled**, and one deserves highlighting: *"floating costs or machine capacities because
+  practical meshes are small"* is prohibited because **representation must satisfy the semantic contract, not the
+  current fixtures.** That is precisely the failure mode that produced the Euler saga and `LESSONS.md` 156.
+- **§8's CP1/CP2 boundary correction is right.** The old plan asked the CP1 validator to independently establish
+  generic optimality while deferring the optimality certificate to CP2 — which duplicates a full hard solver before
+  the checkpoint that owns it.
+
+### 13.2 — standing authorization: a solver library may be used in place of a reimplementation
+
+**The user has authorized, as a standing decision, adding a solver library rather than reimplementing algorithms.**
+This is recorded here because it outlives the conversation it was given in and because CB2 currently plans to
+*"implement one deterministic private solver corresponding to Gabow 1983"* — a research-grade algorithm — in-house.
+
+**The authorization is real, but for this problem shape its reach is narrower than it sounds, and that must be
+written down rather than rediscovered.** §6 item 5 preserves same-row `±2` loops as *legal bi-directed edges*, and
+§7 counts *blossom or equivalent* primitives. The problem is therefore genuinely **bidirected** — it generalizes
+non-bipartite matching — and does **not** reduce to ordinary minimum-cost flow. Consequently:
+
+- **LEMON**, **OR-Tools** and comparable libraries supply *ordinary* min-cost flow (network simplex, cost/capacity
+  scaling). They do not solve bidirected flow, so they are not candidates however exact their value types.
+- **`libSatsuma`** is the closest existing implementation — it is the quad-meshing Bi-MDF solver — and §9 rejects it
+  on correct grounds: machine `int` flow and `double` target/cost violate exact authority.
+- **No off-the-shelf library provides exact arbitrary-capacity bidirected minimum-cost flow.**
+
+> **Added to §9 (non-optional):** record that a library search was performed and that **no exact bidirected MCF
+> library exists**, with the ordinary-MCF libraries named and excluded *for being ordinary*, not merely unexamined.
+> §9 currently rejects two specific `libSatsuma` uses and is silent on the general question — so a later turn, now
+> holding a standing library authorization, will reasonably ask "why was a library not used?" and re-litigate it.
+> **Adjudicate, don't inherit.**
+
+### 13.3 — where the authorization does have teeth: the oracle-coverage gap
+
+The plan's independent oracle is exhaustive enumeration under a hard compile-time cap of `E<=6`, `x_s<=8`. That is
+the right *kind* of oracle — independent in derivation, sharing no algorithm with the solver — but it leaves
+**everything between `E<=6` and production unoracled**.
+
+`libSatsuma` cannot be semantic authority, and that is settled. But `double` represents integers exactly below
+`2^53`, and `int` flow is exact within its range, so on **mid-size instances with small integer capacities and
+costs** it computes the same optimum the exact solver must. That makes it a legitimate **test-side cross-check** in
+exactly the band the plan currently leaves empty — independent codebase, independent authorship, zero semantic
+authority, and no path into product code.
+
+> **Recommended for CB2 (test-side only):** add a bounded `libSatsuma` cross-check over instances larger than the
+> exhaustive cap but small enough that every capacity and cost is provably below the `int`/`2^53` exactness limit,
+> with that bound asserted rather than assumed. If a discrepancy appears, it is a review stop, never a tie-break in
+> either direction.
+
+This is offered as a coverage improvement, not a correction: nothing in §§1–12 is wrong without it.
+
+### 13.4 — one item for CP2 rather than a challenge
+
+§6 item 6 caps the dummy self-loop at `(2E+1) * U`, described as *"a semantic-input bound that dominates the maximum
+compensation any feasible bounded transformed flow can require."* That dominance is asserted at the normalization
+step; the coordinate cap it leans on is proved in §4. **CP2's carried optimality certificate should confirm the cap
+was never binding**, so the bound is evidenced by construction rather than by argument. Not a defect — a cheap
+receipt for a step that would be expensive to doubt later.

@@ -6946,6 +6946,30 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**M4-CP1-CB1-REV verification-pass addenda.** The adjudication is upheld: the CB1 stop was correct (the frozen
+contract required a `P(V,E,B)` constant no published source supplies, so the turn could only have proceeded by
+inventing it), and the review strengthens M4 by specializing to an exact Bi-MCF with a published polynomial bound
+rather than accepting finite convergence.
+
+- **STANDING USER AUTHORIZATION, recorded so it outlives the conversation:** *adding a solver library instead of
+  reimplementing algorithms is approved.* CB2 currently plans to implement Gabow 1983 in-house.
+- **For this problem shape the authorization's reach is narrow, and that must be recorded rather than
+  rediscovered.** §6.5 preserves same-row `+/-2` loops as legal bi-directed edges and §7 counts blossom-class
+  primitives, so the problem is **genuinely bidirected** - it generalizes non-bipartite matching and does **not**
+  reduce to ordinary min-cost flow. LEMON and OR-Tools supply *ordinary* MCF and are therefore not candidates at
+  any precision; `libSatsuma` is the closest real implementation and is correctly rejected for `int`/`double`.
+  **No off-the-shelf exact arbitrary-capacity bidirected MCF library exists.** §9 must record that search and that
+  conclusion - it currently rejects two specific `libSatsuma` uses and is silent on the general question, so a
+  later turn holding this authorization will reasonably re-litigate it.
+- **Where the authorization does have teeth: the oracle-coverage gap.** The oracle is exhaustive enumeration under
+  `E<=6, x_s<=8`; everything between that cap and production is unoracled. `libSatsuma` cannot be semantic
+  authority, but `double` is exact for integers below `2^53`, so on mid-size instances with provably small
+  capacities/costs it is a legitimate **test-side cross-check** in that band - independent codebase, zero semantic
+  authority, no path into product code. Recommended for CB2, with the exactness bound asserted rather than assumed;
+  a discrepancy is a review stop, never a tie-break.
+- **For CP2:** §6.6's `(2E+1)*U` dummy-loop cap is asserted as dominating at the normalization step. CP2's carried
+  optimality certificate should **confirm the cap was never binding**, so it is evidenced by construction.
+
 **M4-DEFN correction to the TB48 verification-pass amendment.** The amendment's statement that
 `M3-CP4c-0-TB-R9` was never executed is refuted by primary and retained evidence. Workflow `33079817998`
 (`M3 CP4c0 TB-R9 Whole-Gate Reproof`) completed successfully; retained job/artifact evidence records
