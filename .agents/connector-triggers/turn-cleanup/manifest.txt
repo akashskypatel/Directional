@@ -1,2 +1,0 @@
-.agents/connector-triggers/m4-defn-r1-apply-20260909.txt
-.agents/connector-triggers/source-snapshot/m4-cp1-post-cb2-rev-20260909.txt
