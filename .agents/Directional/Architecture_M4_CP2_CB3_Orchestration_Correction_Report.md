@@ -86,3 +86,11 @@ The standard compile requirement is inapplicable to this explicitly routed contr
 Exact successor: **`M4-CP2-TB2-R1-EXEC`** under `Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 
 R1 must consume immutable package117 `10172820820`, materialize exactly the corrected payload hashes above, re-run focused ordinals 374/381/382 twice and the entire selector382 one identity per fresh process, and complete the corrected immutable postflight. No rebuild/repair is allowed.
+
+## 9. Remote application and closeout evidence
+
+The complete 13-path CB3 patch was applied by GitHub Actions run/job `34535812321 / 103067070737` from trigger SHA `92b1a2f5035f9027d9e6e4613b536d9355c21658`. Patch SHA-256 was `addc70501711abeb752d1eca2352dd402ea18f4fd838d7148eb4ecd7158c47ca`, with diff-body SHA-256 `96c7a57b8203d5cf705deb5c98ee1ab1c5d5454455bf91b28e443cf6ada986a8`; the applied commit is `16ecec22f2e66afc4064946e2c32726db4fb954b`. Apply result/log artifacts are `10175340071 / 10175340806` at SHA-256 `021aff8d62af28d0b07d4e4877f9d6f3e4215dd424c741037bf47bc168a5caac / a3a99c6e24d9ac9bf7b8329119bd10068cdee4409bbbba79ffc40cc6012dc6dc`. The result records `runtimeExecution=false`.
+
+The workflow identity could not trash the staged Drive patch and correctly reported `drive_file_retirement_required=true`; owner-authorized Drive cleanup then permanently deleted file ID `1NLuSAGP56c6-pXKLcObHFWD-_3TMADN3`. The temporary apply workflow was deleted first. Cleanup run/job `34536098241 / 103067945812` removed the source-snapshot and apply trigger markers, with cleanup commit `8e77a1b2c660e0e6dde213ab333eb47b57c2390f`. Cleanup result/log artifacts are `10175441857 / 10175442749` at SHA-256 `ab9a63882e81a2170916d2cca0c5f44e645318297e22bf36077b3e1876e41cb9 / f31b90816962d6d2a55f2943422e11a53ab42cfdea599685ee677df0f665206a`.
+
+Final hygiene before this report update: `.github/workflows/` contains exactly the seven durable workflows; `.agents/connector-triggers/` and `.agents/workflow-observation/` are absent; the only retained turn-payload state is the four frozen `m4_cp2_tb2_r1_*` files explicitly consumed by the exact successor. No package, product, test, fixture, selector, CMake, reusable-workflow permission, or runtime semantic byte was changed by CB3.
