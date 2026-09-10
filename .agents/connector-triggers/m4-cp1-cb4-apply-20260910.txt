@@ -1,4 +1,0 @@
-turn=M4-CP1-CB4
-purpose=apply-closeout-patch
-patch_sha256=160a3f528236ecf0826fabad1df6f5ce6598fbc8b3be193594e56308b840e06d
-base_sha=577727925f11b5ecac8cab66dec55f6c9641422d
