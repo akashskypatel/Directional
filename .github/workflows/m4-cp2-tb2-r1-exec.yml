@@ -1,0 +1,161 @@
+name: M4 CP2 TB2 R1 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp2-tb2-r1-exec-20260910-a.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp2-tb2-r1-exec
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp2-tb2-r1-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp2-tb2-r1-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/m4-cp2-tb2.log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'turn=M4-CP2-TB2-R1-EXEC' \
+            'artifact_id=10172820820' \
+            'semantic_source=534c0d41ae05b31e66711f21f4b4280b59f6483f' \
+            'compile_execution=false' \
+            'benchmark_execution=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$RUNNER_TEMP/m4-cp2-tb2.log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Artifact-only preflight
+        id: preflight
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+          ARTIFACT_ID: 10172820820
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/m4-cp2-tb2.log") 2>&1
+          mkdir -p "$RUNNER_TEMP/m4-cp2-tb2-result"
+          {
+            uname -a
+            python3 --version
+            unzip -v | head -n 2
+            tar --version | head -n 1
+          } > "$RUNNER_TEMP/m4-cp2-tb2-result/environment.txt"
+          set +e
+          python3 .agents/Directional/turn-payloads/m4_cp2_tb2_r1_preflight.py
+          rc=$?
+          set -e
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          echo "preflight_exit=$rc"
+          exit 0
+
+      - name: Execute frozen focused and selector382 gate
+        id: execute_gate
+        if: ${{ steps.preflight.outputs.rc == '0' }}
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/m4-cp2-tb2.log") 2>&1
+          set +e
+          python3 .agents/Directional/turn-payloads/m4_cp2_tb2_r1_execute.py
+          rc=$?
+          set -e
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          echo "gate_exit=$rc"
+          exit 0
+
+      - name: Record workflow boundary
+        if: always()
+        env:
+          PREFLIGHT_RC: ${{ steps.preflight.outputs.rc }}
+          GATE_RC: ${{ steps.execute_gate.outputs.rc }}
+        shell: bash
+        run: |
+          set +e
+          out="$RUNNER_TEMP/m4-cp2-tb2-result"
+          mkdir -p "$out"
+          printf '%s\n' \
+            "event_sha=$GITHUB_SHA" \
+            'package_artifact_id=10172820820' \
+            'semantic_source=534c0d41ae05b31e66711f21f4b4280b59f6483f' \
+            "preflight_exit=${PREFLIGHT_RC:-unavailable}" \
+            "gate_exit=${GATE_RC:-not-run}" \
+            'generated_discovery=false' \
+            'configure_execution=false' \
+            'compile_execution=false' \
+            'relink_execution=false' \
+            'package_repair=false' \
+            'mode_repair=false' \
+            'benchmark_execution=false' \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$out/workflow-boundary.txt"
+          cat "$out/workflow-boundary.txt" | tee -a "$RUNNER_TEMP/m4-cp2-tb2.log"
+
+      - name: Upload TB2 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m4-cp2-tb2-r1-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp2-tb2-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB2 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m4-cp2-tb2-r1-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp2-tb2.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Propagate TB2 status
+        if: always()
+        env:
+          PREFLIGHT_RC: ${{ steps.preflight.outputs.rc }}
+          GATE_RC: ${{ steps.execute_gate.outputs.rc }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${PREFLIGHT_RC:-}" != 0 ]]; then exit 90; fi
+          if [[ -z "${GATE_RC:-}" ]]; then exit 90; fi
+          exit "$GATE_RC"
