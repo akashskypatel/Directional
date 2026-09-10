@@ -1,0 +1,48 @@
+name: M4 CP1 TB1 Review Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp1-tb1-rev-apply-20260910.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m4-cp1-tb1-rev-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp1-tb1-rev-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp1-tb1-rev-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 17YWpdge53DCWyTDv4q4K_mB84s-3YuAQ
+      patch_sha256: 05d2467c55f546aafa5e34ab982a5738c787fc3fcad7cca6787876bddc6cb51c
+      base_sha: 40a6a397f4d4ec4060cb0c79d3913492e38bed30
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: independent review M4-CP1-TB1 and freeze CB4 package closure"
+      retention_days: 14
+    secrets: inherit
