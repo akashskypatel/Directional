@@ -116,59 +116,55 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-CP1-CB1` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
+## Mandatory next turn — `M4-CP1-CB1-REV` — EXACT NEXT / INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
 
-`M4-DEFN` is **COMPLETE / DEFINITIONS FROZEN / RUNTIME-FREE**. M3 remains CLOSED / ACCEPTED.
+`M4-CP1-CB1` reached the explicit stop condition in its frozen plan **before semantic implementation mutation**. M3 remains CLOSED / ACCEPTED and M4-DEFN remains the current frozen definition authority; the unresolved issue is inside the CP1 solver contract itself.
 
-### Authority entering M4-CP1-CB1
+### Authority entering M4-CP1-CB1-REV
 
 - reviewed runtime authority remains package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, TB48 `34409262512 / 102659650326`;
-- accepted required-green predecessor is selector365, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
-- selector409 remains final-M3 audit evidence only; its carried RED `[368,369,374,398]` are not M4 prefix rows;
+- accepted required-green predecessor remains selector365, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- semantic branch authority inspected by CB1 was `b523ccb1aba56a08f7d6e19a43f7d67e63464190`;
+- source-snapshot run `34421215516` captured control commit `3ef59b9deeb83040f713055840fd9117c5ea6106`, artifact `10130996950`, digest `sha256:b1906692329cc1bc3fba8fa975b263bb0d17153b8b666b286a882098127c7ade`; comparison to `b523ccb1...` contains only the snapshot marker and no semantic source change;
+- no M4 production/test/benchmark/build/selector source was changed by CB1; no compile/package or Directional runtime occurred;
 - stable accounting remains 47 events / 14 categories / 33 recurrences; debt 5; packages 113;
-- M4 definition authority: `Architecture_M4_DEFN_Frozen_Definitions.md`;
-- exact CB plan: `Architecture_M4_CP1_CB1_Code_Build_Plan.md`;
-- M4 chain: `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`;
-- M4 owns three `G4-B002` debts; `G4-B004` is split M5 focused production / M6 representative consumption.
+- selector409 remains retained final-M3 audit surface only; its carried RED rows are not part of the M4 required-green prefix;
+- frozen M4 chain remains `M4-CP1 -> M4-CP2 -> M4-CP3 -> M4-CP-COND -> M4-CP-SCALE -> M4-CP4`;
+- M4 still owns the three `G4-B002` produced-witness debts; `G4-B004` remains split between M5 focused relation/certificate production and M6 representative occurrence/embedding/verifier consumption;
+- historical correction remains durable: `M3-CP4c-0-TB-R9` executed the 346/346 whole-gate proof and did not use the later conditional-closure check;
+- M4 definition authority remains `Architecture_M4_DEFN_Frozen_Definitions.md`;
+- blocked CB plan remains `Architecture_M4_CP1_CB1_Code_Build_Plan.md`;
+- blocker evidence and review questions: `Architecture_M4_CP1_CB1_Algorithm_Blocker.md`.
 
-M4-DEFN corrected a verification-pass history error before selecting the CB: CP4c-0 TB-R9 **did** run as
-`33079817998 / 98543736213` and passed 346/346 including Q8 criteria 1/4/5. No M4 conditional M3-closure check remains.
+### Blocking question
 
-### Exact M4-CP1-CB1 scope
+The frozen CP1 contract simultaneously requires arbitrary-precision counts, exact symbolic lexicographic costs, a dedicated bi-directed minimum-deviation solver, and a proved polynomial `WorkLedger` bound `P(V,E,B)`. The named reference implementation, libSatsuma at upstream `4e96979ecb11bbfe8d9c05e8f8be1ecb992ca5fd`, uses `FlowScalar = int` and `TargetScalar/CostScalar = double`. The cited exact solver's §3.9 proof establishes finite iterative-refinement convergence and optimality after a non-improving `M>=2` step, but does not supply the frozen polynomial iteration bound. The CB plan explicitly forbids substituting a heuristic when that bound is unavailable.
 
-Implement only CP1's known-feasible immutable A3 schedule authority and independent validator: one count per full
-A2b boundary arc, ordered exact support pieces, multiplicity-preserving boundary incidences, mandatory region parity,
-compact arbitrary-precision breakpoint IDs/generators, backend-independent binary64 exactification, and the frozen exact
-minimum-deviation objective/solver. Preserve the accepted 365 prefix byte-for-byte when authoring the first M4 selector.
-CP1 must not expose ordinary infeasibility as a fatal error; CP2 adds the carried certificate/infeasible alternative
-without changing feasible schedule semantics. Compile/package through the mandatory GMP/GMPXX reusable workflow. **Do not execute tests, benchmarks, generated binaries, help/list/version commands, `ctest`, or any
-Directional runtime in Code + Build.** Do not cut regional A4 producers over to the plan; that is CP3.
+`M4-CP1-CB1-REV` must independently decide whether to freeze a specific polynomial exact algorithm plus bound, revise the WorkLedger guarantee and exact libSatsuma adaptation contract, or prove a semantically complete narrower graph class. It must issue one unambiguous executable successor CB plan. **No implementation, compile, test, benchmark, package, or selector mutation before that review.**
 
-### Context Load Plan for `M4-CP1-CB1`
+### Context Load Plan for `M4-CP1-CB1-REV`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
+  - turn-based-coding-agent/references/turns/REVIEW.md
 conditional_modules:
-  - trigger: implementation design / code authoring
+  - trigger: corrective planning / algorithm-contract adjudication
     path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
-  - trigger: test design / test authoring
-    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
-  - trigger: GitHub connector / workflow / artifact work
+  - trigger: GitHub connector / repository documentation work
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP1_CB1_Algorithm_Blocker.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
   - .agents/Directional/Architecture_M4_CP1_CB1_Code_Build_Plan.md
-  - .agents/Directional/M4_Consolidated_Record.md
-  - .agents/Directional/GMP_COMPILE_POLICY.md
-  - .agents/Directional/ROADMAP.md
   - .agents/Directional/DESIGN.md
+  - .agents/Directional/M4_Consolidated_Record.md
+  - .agents/Directional/ROADMAP.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
 templates_when_producing: []
 do_not_preload:
   - sibling turn files
   - uncited M3 per-turn history
-  - research/provenance/examples
+  - unrelated research/provenance/examples
 ```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

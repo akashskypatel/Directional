@@ -1,3 +1,11 @@
+## 2026-09-09 — `M4-CP1-CB1` stops at frozen solver-contract guard; no semantic mutation
+
+Canonical Code + Build investigation only; no Directional runtime, compile, package, selector mutation, product/test/fixture/benchmark/build change, or reusable-workflow change. Exact semantic source inspected: `b523ccb1aba56a08f7d6e19a43f7d67e63464190`, via source-snapshot run `34421215516` / artifact `10130996950`; snapshot control commit `3ef59b9deeb83040f713055840fd9117c5ea6106` differs only by its trigger marker.
+
+CB1's explicit algorithm stop condition fired. Frozen M4 requires an arbitrary-precision exact bi-directed minimum-deviation solver with symbolic lexicographic objective and a proved polynomial `WorkLedger` bound `P(V,E,B)`. The architecture's named reference, libSatsuma at upstream `4e96979ecb11bbfe8d9c05e8f8be1ecb992ca5fd`, exposes `FlowScalar = int` and `TargetScalar/CostScalar = double`; the referenced exact iterative-refinement proof establishes finite convergence/optimality but not the frozen polynomial iteration bound. Shipping that implementation as-is, inventing a heuristic/range scan/big-M encoding, or silently narrowing the graph class would violate the frozen contract.
+
+Blocker record: `Architecture_M4_CP1_CB1_Algorithm_Blocker.md`. Exact next: independent runtime-free `M4-CP1-CB1-REV`; no implementation/compile/runtime before review resolves one implementable solver and complexity contract. Stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**.
+
 ## 2026-09-09 — `M4-DEFN` verification pass: definition upheld; my CP4c-0 premise was wrong and the artifact is corrected
 
 Static verification of the delegated `M4-DEFN`. No runtime, no compile, no package operation, no

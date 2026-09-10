@@ -26,7 +26,7 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-CP1-CB1` — GLOBAL CONFORMITY SCHEDULE AUTHORITY / CODE + BUILD / RUNTIME-FREE
+## Current focus — `M4-CP1-CB1-REV` — INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
 
 `M4-DEFN` is **COMPLETE**. Frozen authority: `Architecture_M4_DEFN_Frozen_Definitions.md`. M3 remains CLOSED / ACCEPTED; package113/TB48 remains reviewed runtime authority; the accepted M4 predecessor is selector365, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains final-M3 audit evidence only.
 
@@ -34,7 +34,9 @@ M4 uses exactly one checkpoint chain: **CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE
 
 M4-DEFN also corrected the independent TB48 verification amendment's historical error: `M3-CP4c-0-TB-R9` **did execute** as `33079817998 / 98543736213` and passed **346/346**, including Q8 criteria 1/4/5. M3 closure therefore requires no M4 conditional inclusion check.
 
-Exact next is **`M4-CP1-CB1`**, canonical Code + Build / runtime-free, under `Architecture_M4_CP1_CB1_Code_Build_Plan.md`. It implements only the known-feasible immutable A3 schedule product: one positive count per full A2b arc, ordered exact support pieces, multiplicity-preserving boundary incidences, mandatory parity, compact arbitrary-precision breakpoint IDs/generation, backend-independent binary64 exactification, deterministic exact minimum-deviation solver, independent validator, focused CP1 tests, and append-only selector from 365. It must compile only through the mandatory GMP/GMPXX reusable workflow and may not execute Directional runtime.
+`M4-CP1-CB1` hit its frozen **algorithm stop condition before semantic mutation**. The named reference solver (`libSatsuma`) exposes machine `int` flows and `double` target/cost scalars, while the cited exact iterative-refinement proof establishes finite convergence/optimality but does not provide the frozen `WorkLedger` polynomial `P(V,E,B)` iteration bound. Implementing a new arbitrary-precision exact lexicographic polynomial solver would therefore invent unresolved definition work inside CB1. See `Architecture_M4_CP1_CB1_Algorithm_Blocker.md`.
+
+Exact next is **`M4-CP1-CB1-REV`**, independent REVIEW + PLAN / runtime-free. It must resolve one explicit implementable solver/complexity contract before another CB. No implementation, compile, test, benchmark, selector, or package operation is authorized first.
 
 - [x] Reconcile M4 checkpoint decompositions into one chain.
 - [x] Freeze one `GlobalConformityPlan` writer: one count per full A2b arc, exact support path/incidence multiplicity, mandatory parity, compact exact-ordinal breakpoint generation, and bit-exact target binding.
@@ -43,7 +45,8 @@ Exact next is **`M4-CP1-CB1`**, canonical Code + Build / runtime-free, under `Ar
 - [x] Adjudicate `G4-B004` to M5 focused production + M6 representative consumption.
 - [x] Correct the false “CP4c-0 TB-R9 never ran” historical premise.
 - [x] Perform M4-DEFN review-turn consolidation and refresh `ORIENTATION.md`.
-- [ ] Execute `M4-CP1-CB1` exactly as frozen; compile/package only, no runtime.
+- [x] Attempt `M4-CP1-CB1` until its frozen algorithm stop condition; no semantic source/test/build/selector mutation and no compile/runtime occurred.
+- [ ] Execute independent `M4-CP1-CB1-REV` to resolve the solver exactness/complexity contract and freeze one implementable successor CB.
 
 ## Carried forward from M1
 
@@ -82,7 +85,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB1` NEXT**; `M4-DEFN` is complete and M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB1-REV` NEXT**; `M4-DEFN` is complete and M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
