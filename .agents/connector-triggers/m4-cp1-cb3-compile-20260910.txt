@@ -1,0 +1,5 @@
+purpose=M4-CP1-CB3 runtime-free compile/package
+source_sha=ca85ec20bb77b3438c32a9d854e11b70c6a6c041
+targets=directional_core directional_surface_cell_producer_tests
+artifact_prefix=m4-cp1-cb3-package114
+runtimeExecution=false
