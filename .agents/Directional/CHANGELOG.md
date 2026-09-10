@@ -1,3 +1,42 @@
+## 2026-09-10 — `M4-CP1-TB1-REV` verification pass: upheld; the tiny oracle cannot test what `M=2` risks
+
+Static verification of the delegated `M4-CP1-TB1-REV`. No runtime, no compile, no package operation, no
+product/test/fixture/build/selector mutation. Package114 remains unpromoted; runtime authority remains **M3 /
+package113 / TB48**; accounting unchanged at **47 / 14 / 33**.
+
+**Upheld, and the classification is precisely right.** §4.2 refuses `SEMANTIC_RED` on the correct grounds — 146
+rows were never selected and the other 38 failed **before** their intended assertions on a missing execution-view
+precondition, so the accepted predecessor was *"not semantically re-proved or semantically falsified."* No
+acceptance claim and no regression claim is drawn from an incomplete run. The static reconstruction is real
+verification rather than narrative: all 373 identities mapped to owning CMake targets — **373 mapped, 0 missing, 0
+duplicate** — yielding the omitted `30 + 75 + 41 = 146` from the three unbuilt owners. §5's refusal to unify
+targets, relocate tests or teach `TestFixturePaths` a new fallback avoids fixing a symptom by widening a resolution
+rule, and §7 is framed as a falsifier that explicitly does **not** predict 373 green. §1's same-conversation
+independence disclosure, with its compensating control, is the right handling of a real limitation.
+
+**My `M4-DEFN-R1` obligation was discharged and resolved favorably.** CB3's build record confirms Theorem 3.8 gives
+global optimality **for `M >= 2`**, so fixed `M=2` sits exactly at the theorem's boundary and the two conflicting
+attributions are reconciled. And the standing library authorization was used where R5 scoped it — **LEMON** at the
+weighted-perfect-matching primitive.
+
+**One coverage obligation added to CB4.** The eight CP1 identities are non-vacuous — the oracle executes and the
+test also asserts `refinementM == 2`, strict per-step scalar decrease and terminal non-improvement validation. **But
+its subject is one degree of freedom:** `tiny_exhaustive_equal_counts_oracle` searches a single scalar `x` and
+returns `{x, x}`. The residual risk created by `M4-DEFN-R1` §R6's assurance trade is that **`M=2` refinement stalls
+at a local fixed point** where improvement requires a coordinated change across three or more coordinates — and a
+one-variable instance cannot exhibit that, so the comparison would pass even if `M=2` were insufficient. The
+bidirected `±2` structure is exercised only by a **determinism** test, leaving structure and optimality on disjoint
+instances.
+
+The frozen envelope already permits the fix: `M4-DEFN` §8 authorizes `E<=6, x_s<=8`, and full enumeration at `E=6`
+is `8^6 = 262,144` vectors. **CB4 must extend the exhaustive comparison to a multi-coordinate instance carrying
+`±2` structure, publish per-identity receipts naming coordinate count and `±2` presence, and stop if it
+disagrees** — that would be `M=2` sufficiency evidence returning to `M4-DEFN`, not a CB decision. **No definition
+change is needed.**
+
+**Exact next remains `M4-CP1-CB4`** — runtime-free package-closure and TB-harness correction, with the
+multi-coordinate oracle obligation added.
+
 ## 2026-09-10 — `M4-CP1-TB1-REV`: selector373 upheld; package owner closure and execution-view staging frozen for CB4
 
 Independent review is **COMPLETE / APPROVED WITH AMENDMENTS / RUNTIME-FREE**. Primary TB1 result/log evidence was

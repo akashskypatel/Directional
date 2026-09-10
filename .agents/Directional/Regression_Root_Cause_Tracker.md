@@ -7039,6 +7039,26 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
+**M4-CP1-TB1-REV verification-pass addenda (§10).** The adjudication is **upheld**. Its classification is precisely
+right - 146 rows never selected and the other 38 failing **before** their assertions means the accepted predecessor
+was *"not semantically re-proved or semantically falsified"*, so neither an acceptance nor a regression claim is
+made from an incomplete run. The static reconstruction is real verification (373 mapped, 0 missing, 0 duplicate,
+yielding `30+75+41 = 146`), §5's refusal to unify targets or widen `TestFixturePaths` avoids fixing a symptom, §7
+is framed as a falsifier and explicitly does **not** predict 373 green, and §1's same-conversation independence
+disclosure with its compensating control is the right handling.
+
+**One coverage obligation added to CB4.** The eight CP1 identities are non-vacuous, but their oracle subject is
+**one degree of freedom**: `tiny_exhaustive_equal_counts_oracle` (`tests/GlobalConformityPlanTests.cpp:248`)
+searches a single scalar and returns `{x, x}`. `M4-DEFN-R1` §R6 traded the polynomial bound for finite convergence
+with global optimality resting on Theorem 3.8 at `M >= 2`; the residual risk is that **`M=2` stalls at a local
+fixed point** needing a coordinated change across three or more coordinates - which a one-variable instance cannot
+exhibit. The bidirected `±2` structure is exercised only by a **determinism** test, so structure and optimality sit
+on disjoint instances. **CB4 must extend the exhaustive comparison to a multi-coordinate instance carrying `±2`
+structure within the already-frozen `E<=6, x_s<=8` envelope** (`8^6` vectors - trivially cheap; no definition change
+needed), publish per-identity receipts naming coordinate count and `±2` presence, and **stop if it disagrees** -
+that is `M=2` sufficiency evidence returning to `M4-DEFN`. **The `M=2` claim is currently carried entirely by a
+cited theorem with no runtime witness able to falsify its implementation.**
+
 **M4-DEFN-R1 verification-pass addenda (§R9).** The definition is **upheld** and all three FA3 rules are
 discharged: R3 cites a *construction* (Heistermann/Warnett/Bommes 2023 §§3.6-3.9), the Gabow identity and bound
 appear **nowhere**, and R6 states the polynomial-to-finite assurance drop as a definition-level change while R7

@@ -149,3 +149,71 @@ after package/execution-view integrity is established is new credible runtime ev
 - Review-approved next plan: `Architecture_M4_CP1_CB4_Code_Build_Plan.md`.
 - Next canonical turn: **`M4-CP1-CB4`**.
 - Runtime authority remains M3 package113/TB48 until a later complete M4 gate is promoted.
+
+---
+
+## 10. Verification-pass addenda (static, appended after adjudication)
+
+A verification pass re-derived §§1–9. **The adjudication is upheld.** One gap in the new identities' evidentiary
+reach is added.
+
+### 10.1 — confirmed, and the §1 disclosure is the right way to handle it
+
+- **The classification is correct and precisely stated.** §4.2 refuses `SEMANTIC_RED` on the right grounds: 146
+  rows were never selected and the other 38 failed **before** their intended assertions on a missing execution-view
+  precondition, so the accepted predecessor was *"not semantically re-proved or semantically falsified."* Neither an
+  acceptance claim nor a regression claim is made from an incomplete run.
+- **The static reconstruction is real verification, not narrative.** Mapping all 373 selector identities to owning
+  CMake targets — **373 mapped, 0 missing, 0 duplicate** — and deriving `30 + 75 + 41 = 146` from the three unbuilt
+  owners establishes the defect independently of the TB1 report.
+- **§5's restraint is correct.** Refusing to unify targets, relocate tests, or teach `TestFixturePaths` a new
+  fallback avoids fixing a symptom by widening a resolution rule. Both defects are recurrences of retained
+  fixture/package lessons, and declining to mint a new one is the right call.
+- **§7 is framed as a falsifier, not a target** — explicitly *not* predicting 373 green, and requiring any
+  remaining assertion-level RED to be classified normally.
+- **The §1 independence disclosure is exactly the right handling.** Naming the same-conversation limitation and
+  describing the compensating control — reopened primary artifacts and independently re-derived source facts — is
+  more useful than an unsupportable claim of separation.
+
+### 10.2 — the tiny oracle cannot exercise the risk that `M=2` was chosen against
+
+§4.1 credits the eight CP1 identities as *"valid bounded semantic evidence."* They are: the oracle at
+`tests/GlobalConformityPlanTests.cpp:248` genuinely executes, and the comparison test additionally asserts
+`refinementM == 2`, refinement-count consistency, strict per-step scalar decrease, and terminal non-improvement
+validation. Nothing here is vacuous in the sense of `LESSONS.md` 155/160.
+
+**But its subject cannot exhibit the failure mode under test.** `tiny_exhaustive_equal_counts_oracle` searches a
+**single scalar** `x ∈ [1,8]` minimizing `|x−d₁| + |x−d₂|` and returns `{x, x}`; the paired fixture is
+`two_row_equal_counts_problem`. That is **one degree of freedom**.
+
+`M4-DEFN-R1` §R6 traded the outer polynomial bound for `FiniteExactConvergence`, and CB3 confirmed Theorem 3.8
+gives global optimality **for `M >= 2`**. The residual implementation risk that trade creates is precisely this:
+that `M=2` refinement **stalls at a local fixed point** on an instance where improvement requires a coordinated
+change across three or more coordinates. **A one-variable instance has no such structure**, so on this fixture any
+correct method — `M=1`, `M=2`, or plain enumeration — returns the same answer. The comparison would pass even if
+`M=2` were insufficient.
+
+`GenuinelyBidirectedLoopPermutationAndReversalAreDeterministic` does exercise the bidirected `±2` structure, but
+for **determinism**, not optimality. So bidirected structure and optimality-against-an-oracle are currently tested
+on **disjoint** instances.
+
+The gap is also narrower than the definition permits: `M4-DEFN` §8 authorizes the tiny oracle over *fixed small
+feasible graphs* at `E<=6, x_s<=8`. Full enumeration at `E=6` is `8^6 = 262,144` vectors — trivially cheap — so the
+frozen envelope already allows a multi-coordinate oracle. **No definition change is needed.**
+
+> **Added to CB4 / the successor TB (non-optional):** extend the exhaustive comparison to at least one instance
+> that is **multi-coordinate** and **carries the bidirected `±2` structure**, enumerating the full count vector
+> within the frozen `E<=6, x_s<=8` bound and comparing against the solver's terminal schedule. Publish, per CP1
+> identity, a receipt naming the instance's coordinate count and whether it contains a `±2` incidence — so
+> "compared against an oracle" and "compared against an oracle that could have disagreed" remain distinguishable
+> in the ledger.
+
+This is a coverage obligation, not a defect finding: nothing in §§1–9 is shown wrong, and the eight identities
+remain credible for what they assert. **The `M=2` sufficiency claim is currently carried entirely by a cited
+theorem, with no runtime witness able to falsify its implementation** — which is exactly the class of assurance
+this project has twice paid to discover late.
+
+### 10.3 — accounting
+
+Unchanged. Static addendum, **+0 events / +0 recurrences**. Package114 remains unpromoted; runtime authority remains
+**M3 / package113 / TB48**; accepted selector **365** unchanged. **Exact next remains `M4-CP1-CB4`.**
