@@ -1,0 +1,4 @@
+M4-CP2-TB2-R1-REV source snapshot
+base=93ac5cd25dafa72a906e4ce0d35d2d7fb131e7c9
+read_mode=snapshot
+retry=0
