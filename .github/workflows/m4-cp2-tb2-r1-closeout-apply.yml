@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1wprMsPODyBwv6zfu9yBDr4cKfq0Z0baW
-      patch_sha256: 6d060546346df9664a5cdeeca8a959853f207349795feaf70cfc45a291f514ce
+      patch_sha256: 0e762628d67c69b5bb361346c37be20528bc729968dc0860adc9b14fdf7965cd
       base_sha: 36286c6a940428e6491e4a1487b193ecd5c4aa2b
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M4-CP2-TB2-R1-EXEC: close out measured-green retry"
