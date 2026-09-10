@@ -136,3 +136,103 @@ Exact next is runtime-free **`M4-CP2-CB2`** under `Architecture_M4_CP2_CB2_Code_
 CB2 must correct only the three review findings while preserving accepted CP1 semantics and the already-proved CP2 behavior. It must extend candidate selector380 append-only to selector382 with two dedicated correction identities, make ordinal 374's success receipt observable, compile/package only through the mandatory GMP/GMPXX reusable workflow, and execute no Directional runtime.
 
 A succeeding artifact-only TB must prove the correction identities plus the cumulative selector without treating package116's earlier 380/380 as promotion evidence.
+
+---
+
+## 10. Independent verification addendum (reviewing agent, M4-CP2-TB1-REV)
+
+Runtime-free. Re-derived from immutable source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` and the
+frozen definitions. The delegated adjudication is **upheld and extended**: package116 stays
+unpromoted, selector380 stays candidate lineage, `M4-CP2` stays OPEN, accounting stays
+**47 events / 14 categories / 33 recurrences**, debt **5**, accepted authority **package115 /
+selector373**. One new blocking finding (V3) is added to the CB2 scope.
+
+### V1 — R1/R2/R3 and the gate adjudication are sound
+
+R1 is technically exact: GoogleTest emits `SCOPED_TRACE` on the failure path only, so a passing
+ordinal 374 publishes nothing. R2's use of the tamper matrix is the correct non-vacuity instrument —
+row 376 tampers only `workLedger.refinementM`, so the remaining ledger families are uncovered by
+construction. R3 is a genuine frozen §3.2 binding gap. Two procedural calls are also right: no TB
+rerun can cure a source-contract gap, and no DEFN is needed because the frozen text is explicit.
+§7's closing logic — upheld surfaces do not cure R1-R3 because the CP2 exit is conjunctive — is the
+correct standard.
+
+### V2 — R1's site list is complete; harden the receipt from derived facts
+
+Verified in `tests/GlobalConformityPlanTests.cpp`: exactly **one** `SCOPED_TRACE` (line 549) and
+**zero** `std::cout` / `RecordProperty` emitters. So no other identity hides a non-emitting receipt,
+and R1's scope is complete. The corrective plan's §2 already fixes the mechanism precisely — stdout
+text present on PASS, gated as required tokens in focused-A, focused-B and cumulative raw logs — and
+that is consistent with how every other gate in this project publishes evidence, so no alternative
+mechanism is prescribed here.
+
+One hardening: §2 requirement 4 asks that receipt facts be derived from the constructed fixture
+"where practical". That should be **mandatory**, not conditional. A hard-coded receipt string is
+exactly the failure V3 documents below — a claim that stays literally true while the fixture it
+describes stops backing it. The emitted `coordinateCount` and coefficient-magnitude facts must be
+computed from the fixture at runtime and asserted, so the receipt cannot outlive its subject.
+
+### V3 — NEW BLOCKING FINDING: ordinal 374's magnitude-2 coefficient is behaviourally inert
+
+**Candidate:** `M4-CP2-TB1-REV-CAND-04`
+**Classification:** SEMANTIC/OBLIGATION-VACUITY — NON-STABLE — CORRECTIVE CB2
+
+`multi_coordinate_bidirected_problem()` (`tests/GlobalConformityPlanTests.cpp:275-282`) is
+structurally bidirected — spans 0 and 1 each carry a same-row equal-sign end pair, giving row 0 the
+coefficients `+2` and `-2`. But the instance never exercises them. Row 1 forces `x2 = x3`, so row 0
+reduces to `2(x0 - x1) = 0`, i.e. `x0 = x1`: the factor 2 divides out.
+
+Exhaustive check over the oracle's own search box confirms it. Replacing both magnitude-2 end pairs
+with single ends (the "magnitude-1 twin") leaves the result bit-identical:
+
+| fixture | optimum | primary cost |
+|---|---|---|
+| shipped `±2` fixture | `(1, 1, 2, 2)` | 5 |
+| magnitude-1 twin | `(1, 1, 2, 2)` | 5 |
+
+The `M4-CP1-TB1-REV` §10.2 obligation required a multi-coordinate `±2` instance **so that the
+local-fixed-point risk introduced by fixed `M=2` is exhibited**. A fixture whose `±2` cancels cannot
+exhibit it, and the receipt R1 mandates — `containsBidirectedCoefficientMagnitude2=true` — would,
+even once made observable, attest to a property that is structurally present and does no work.
+Making an inert claim observable does not discharge the obligation. **§10.2 is not discharged in
+substance**, independently of R1.
+
+**Discriminating criterion for CB2 (falsifiable before the build):** the fixture is adequate only if
+its magnitude-1 twin yields a **different** optimum. A `±2` coefficient earns its keep by imposing a
+**parity obstruction**; where it merely cancels, it is decoration.
+
+**Satisfiability witness** — such fixtures exist and are not scarce (3328 in the searched
+four-span family). One instance, stated so CB2 cannot stop for want of a construction:
+
+    span0: ends {(0,+1),(0,+1)}  preferred 1
+    span1: ends {(0,-1),(0,-1)}  preferred 1
+    span2: ends {(0,+1),(1,-1)}  preferred 1
+    span3: ends {(1,+1)}         preferred 1
+
+Here row 1 gives `x3 = x2` and row 0 gives `x2 = 2(x1 - x0)`, so `x2` is forced **even** — the
+obstruction is live. Optimum `(1,2,2,2)`; magnitude-1 twin `(1,2,1,1)`. CB2 is not obliged to adopt
+this fixture, only to publish one meeting the criterion.
+
+### V4 — oracle search box is non-truncating, and the tie rule is genuinely exercised
+
+`tiny_exhaustive_count_vector_oracle` brute-forces counts in `[1,8]`. A too-small box fails safe (it
+would produce a false RED, never a false green), and here it does not bind at all: the optimum's
+largest coordinate is 2. Separately, the minimum primary cost of 5 is attained on a **12-point tie
+plateau**, so the canonical lexicographic tie rule is really exercised rather than reached vacuously.
+No action; recorded so the box bound is not re-litigated.
+
+### V5 — R2 does not reopen the CP1 closure
+
+R2 concerns `GlobalConformityWorkLedger` fields required by frozen §7.4, which predates CP2. The CP1
+exit conjunct requires only that the solver contract is **compiled**
+(`Architecture_M4_DEFN_Frozen_Definitions.md:578`), while independent certification of **carried**
+algorithm-native evidence is assigned to CP2 (`:580`). The gap is therefore CP2-scoped by
+construction and the CP1 closure stands. Recorded explicitly so a reader does not infer a
+retroactive defect in a closed checkpoint from R2's wording.
+
+### Amended CB2 scope
+
+CB2 corrects **four** findings (R1, R2, R3, V3). V3 changes the fixture that ordinal 374 consumes,
+so ordinal 374's body changes and package116's earlier `380/380` verdict for that row describes a
+superseded body — already handled by the successor's refusal to treat it as promotion evidence.
+Selector380 remains append-only and must not shrink; the correction identities extend it.

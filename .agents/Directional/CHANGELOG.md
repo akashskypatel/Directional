@@ -1,10 +1,25 @@
-## 2026-09-10 — `M4-CP2-TB1-REV`: package116 full-green runtime upheld; promotion rejected on three frozen contract gaps
+## 2026-09-10 — `M4-CP2-TB1-REV`: package116 full-green runtime upheld; promotion rejected on four gaps
 
 Runtime-free review re-opened package116 and TB1 primary bytes and independently re-derived selector380, raw process receipts, owner mapping, focused determinism and immutable postflight. The measured runtime is genuine: selector380 **380/380 PASS**, accepted predecessor **373/373**, CP2 **7/7**, focused rows374-380 **7/7 twice**, owners **30/234/75/41**, and zero RED/SKIP/timeout/selection mismatch.
 
 Promotion is **REJECTED**. Source audit found three non-stable frozen-contract candidates: `M4-CP2-TB1-REV-CAND-01`, the multi-coordinate `±2` metadata exists only in failure-only `SCOPED_TRACE` and is absent from passing raw logs; `...CAND-02`, CP2 WorkLedger carriage/independent verification omits the assurance class, overall max exact width, initializer dimensions, refinement history/count, width/maxima and peak matching families; `...CAND-03`, the CP2 outcome has no semantic digest binding full support paths plus scheduled certificate/infeasible-subset facts.
 
 Package116/selector380 remains immutable unpromoted evidence; accepted M4 authority remains package115/TB2 selector373 **373/373**. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **115**. Mandatory review consolidation folded superseded CP1 TB2 per-turn reports plus CP2 CB1 plan/report and consumed TB1 plan after preserving their durable facts in `M4_Consolidated_Record.md`, the current review record, tracker and changelog. Exact next is runtime-free `M4-CP2-CB2` under `Architecture_M4_CP2_CB2_Code_Build_Plan.md`.
+
+**Verification amendment (reviewing agent, review record §10).** The delegated adjudication is upheld and
+extended by a fourth non-stable candidate, `M4-CP2-TB1-REV-CAND-04`. Ordinal374's fixture is structurally
+bidirected but behaviourally magnitude-1: row 1 forces `x2 = x3`, collapsing row 0 to `2(x0 - x1) = 0`, so the
+`±2` divides out and the magnitude-1 twin returns the identical optimum `(1,1,2,2)` at cost 5. The
+`M4-CP1-TB1-REV` §10.2 obligation is therefore **not discharged in substance**, and `CAND-01` would have made an
+inert claim success-visible. `CAND-04` is folded into CB2 (plan §5) rather than deferred, because the receipt
+`CAND-01` publishes is a claim about exactly this fixture. The corrective criterion is falsifiable before the
+build — the replacement fixture is adequate only if its magnitude-1 twin yields a *different* optimum — and
+satisfiability is settled by witness. Also verified and recorded: R1's site list is complete (one `SCOPED_TRACE`,
+zero success-visible emitters in the file); the oracle box `x_s <= 8` is non-truncating (largest optimal
+coordinate 2) and its 12-point tie plateau genuinely exercises the canonical lexicographic rule; and `CAND-02`
+does **not** reopen the CP1 closure, since the CP1 exit conjunct requires the solver contract *compiled*
+(frozen §578) while certification of carried evidence is assigned to CP2 (§580). Accounting is unchanged at
+**47 / 14 / 33**, debt **5**, accepted authority **package115 / selector373**.
 
 ## 2026-09-10 — `M4-CP2-TB1-EXEC`: package116 selector380 measured full green; review pending
 

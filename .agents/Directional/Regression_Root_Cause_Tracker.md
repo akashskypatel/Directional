@@ -7355,3 +7355,29 @@ halts. If the repair needs `unlabeledFaces` widened, the question returns to def
 frontier partition's domain; correcting `RegionSourceFaceOwningFragmentMissing`; **spending another CB measuring
 what TB42 has already measured**; any accepted-identity or selector byte change; any Directional runtime in the
 definition turn.
+
+## M4-CP2-TB1-REV-CAND-04 — a bidirected fixture that contains ±2 without exercising it
+
+**Owner:** `M4-CP2-CB2` §5 · **Class:** SEMANTIC/OBLIGATION-VACUITY · **Non-stable** (no accepted-green loss;
+accounting stays 47/14/33, debt 5, accepted authority package115/selector373).
+
+**Root cause.** `multi_coordinate_bidirected_problem()` (`tests/GlobalConformityPlanTests.cpp:275-282`) carries
+same-row equal-sign end pairs on spans 0 and 1, so row 0 has coefficients `+2`/`-2`. Row 1 forces `x2 = x3`,
+which reduces row 0 to `2(x0 - x1) = 0` — the factor 2 divides out. Exhaustive check over the oracle's own box:
+the shipped fixture and its magnitude-1 twin both return `(1,1,2,2)` at primary cost 5. The `±2` is structurally
+present and behaviourally inert.
+
+**Why it matters.** `M4-CP1-TB1-REV` §10.2 required a multi-coordinate `±2` instance *so the local-fixed-point
+risk introduced by fixed `M=2` is exhibited*. A cancelling `±2` cannot exhibit it. `CAND-01` would have made the
+claim `containsBidirectedCoefficientMagnitude2=true` success-visible while it did no work — publishing an inert
+receipt rather than discharging the obligation.
+
+**Falsification, to carry into CB2.** The replacement fixture is adequate **only if its magnitude-1 twin yields a
+different optimum**; a `±2` earns its keep by imposing a live parity obstruction. Both optima must stay strictly
+inside the oracle box `x_s <= 8`, so the box is demonstrably not truncating. Satisfiability is already settled —
+3328 such fixtures exist in the searched four-span family; the plan publishes one witness where
+`x2 = 2(x1 - x0)` forces `x2` even (optimum `(1,2,2,2)`, twin `(1,2,1,1)`).
+
+**Prohibited:** publishing the `CAND-01` receipt against the current cancelling fixture; weakening ordinal374 to
+one coordinate or a scalar objective; hard-coding receipt facts instead of deriving them from the fixture;
+deferring `CAND-04` to a later turn, which would spend `CAND-01` certifying a fixture already known to be inert.

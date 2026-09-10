@@ -2415,3 +2415,12 @@ a reset window to hold that information.
 ### Trigger commits must descend from the installed caller
 
 When a temporary workflow caller is assembled with low-level Git objects, creating the commit object does not move the branch. A subsequent Contents-API marker write parents the **current branch head**, not the unattached caller commit. Therefore the safe order is: create caller tree/commit, fast-forward the working ref to the caller-install commit, verify that ref movement if needed, and only then create the separate trigger-marker commit. Marker-only commits made before the caller is on-ref cannot trigger that caller and should be treated as orchestration-only evidence, never as runtime attempts. TB-R4 exposed this control-plane ordering failure before any semantic runtime; the corrected installed caller was SchemaStore-validated and only then triggered.
+
+171. **A fixture can contain a structure without exercising it — require the discriminating twin.** M4-CP2's
+     multi-coordinate fixture carried `±2` bidirected coefficients that cancelled: its magnitude-1 twin returned
+     the identical optimum. The obligation had asked for a `±2` instance so a specific risk would be exhibited,
+     and "contains `±2`" was satisfied literally while the risk stayed untested. Structural presence is not
+     behavioural coverage. The check is cheap and decisive: **mutate the feature out and re-solve — if the answer
+     is unchanged, the feature is decoration.** Build that comparison into the identity rather than asserting the
+     feature is present, and the receipt cannot outlive its subject. Same family as 157 (a census whose rows
+     cannot differ) and 160 ("passed" vs "did not run").
