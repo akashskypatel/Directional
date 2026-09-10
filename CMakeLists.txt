@@ -224,9 +224,10 @@ target_include_directories(
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/eigen>
          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_include_directories(
+  directional_core SYSTEM PRIVATE "${directional_lemon_SOURCE_DIR}/include")
 
 target_compile_features(directional_core PUBLIC cxx_std_20)
-target_link_libraries(directional_core PRIVATE directional_lemon_headers)
 
 add_library(
   directional_pipeline

@@ -17,10 +17,12 @@ FetchContent_Declare(
   GIT_SHALLOW FALSE)
 FetchContent_GetProperties(directional_lemon)
 if(NOT directional_lemon_POPULATED)
+  if(POLICY CMP0169)
+    cmake_policy(PUSH)
+    cmake_policy(SET CMP0169 OLD)
+  endif()
   FetchContent_Populate(directional_lemon)
+  if(POLICY CMP0169)
+    cmake_policy(POP)
+  endif()
 endif()
-
-add_library(directional_lemon_headers INTERFACE)
-target_include_directories(
-  directional_lemon_headers SYSTEM INTERFACE
-  "${directional_lemon_SOURCE_DIR}/include")
