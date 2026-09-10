@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-09 UTC
+Last updated: 2026-09-10 UTC
 
 ## Purpose
 
@@ -26,31 +26,27 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-CP1-CB3` (canonical Code + Build, runtime-free)
+## Current focus — `M4-CP1-TB1-EXEC` (artifact-only Test + Benchmark)
 
-`M4-DEFN-R1` is **COMPLETE / STATIC** and closes `M4-CP1-CB2-REV-CAND-01` as
-**DEFINITION-CORRECTED / NON-STABLE**. It adjudicated the solver deadlock without changing A3 semantics:
+`M4-CP1-CB3` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**.
 
-- ordinary MCF is rejected for the frozen admissible class because same-row two-end spans may produce genuine
-  `+2/-2` bidirected loop incidence;
-- a one-shot direct capacitated b-matching route is not selected because the reviewed implementation chain does not
-  yet disclose the required general-demand reduction for M4's former `p/n` Bi-MCF;
-- production algorithm authority is now **Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement**, fixed
-  to `M=2`, with exact feasible initialization and exact Bi-MCF → WPbM → WPM refinement reductions;
-- the semantic objective `J`, one-count-per-full-span ownership, exact `U` cap, mixed-radix lexicographic order,
-  positivity/parity/incidence semantics and accepted predecessor selector365 are unchanged;
-- outer runtime assurance is explicitly amended from **polynomial** to **finite exact convergence** under Corollary
-  3.7 + Theorem 3.8 + Corollary 3.9; CP2's independent scalable optimality certificate is therefore a mandatory
-  semantic barrier before CP3 cutover.
+- semantic source: `680f9f1573d3c7e56a273366436463e40e196131`;
+- mandatory GMP/GMPXX compile run/job: `34452123494 / 102790053181`;
+- immutable package114 artifact: `10142108806`, provider SHA-256
+  `9a87181f771a1814fa854bc2056050b05880b6ec8dfe4ef9c9346102ee26fa36`;
+- compiled test binary SHA-256:
+  `5b1064e6025b052aed7aeee66b8e1c3f6218bc73791d55fed4675484f4ea2afd`;
+- M4 selector373: 373 identities, LF SHA-256
+  `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`, byte-identical selector365 prefix.
 
-**Exact next:** run **`M4-CP1-CB3`** under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. It may implement the
-known-feasible A3 product, exact fixed-`M=2` solver, independent validator, focused tests and first M4 selector, then
-compile/package them through the mandatory GMP/GMPXX GitHub workflow. **No Directional runtime, test or benchmark
-execution is authorized in CB3.** On compile success, CB3 issues the artifact-only `M4-CP1-TB1` plan.
+**Exact next:** execute **`M4-CP1-TB1-EXEC`** under
+`Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md`. It is artifact-only: verify package/source/GMP/hash authority,
+run the eight focused CP1 identities twice, then run the exact 373-row cumulative selector, classify every observed
+regression, and verify immutable postflight hashes. **No rebuild, relink, fixture/selector/package mutation, CP2
+implementation or CP3 cutover is authorized.**
 
-**Must not:** restore Gabow's algorithm tag/bound; use generic ILP/IQP/branch-and-bound; inherit libSatsuma's
-`int`/`double` or Blossom-V bounded cost path as semantic authority; terminate refinement by tolerance; enumerate to
-`U`; or change M4 semantic ownership/parity/positivity to accommodate the solver.
+M3 package113/TB48 remains reviewed semantic runtime authority until TB1 is executed and reviewed. Accepted package
+count therefore remains 113; package114 is compile authority only.
 
 ## Carried forward from M1
 
@@ -89,7 +85,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB3` NEXT**; `M4-DEFN-R1` amended only the solver/assurance clause and M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-TB1-EXEC` NEXT**; CP1 package114 is compiled but unexecuted, and M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -129,4 +125,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-DEFN-R1` is COMPLETE / STATIC, both CB1/CB2 stops remain upheld as historical guards, and exact next is runtime-free **`M4-CP1-CB3`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-CP1-CB3` is COMPILE+PACKAGE GREEN / RUNTIME-FREE at immutable package114, and exact next is artifact-only **`M4-CP1-TB1-EXEC`**. PR #8 remains open, draft, and unmerged.

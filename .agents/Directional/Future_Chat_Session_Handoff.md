@@ -116,61 +116,44 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-CP1-CB3` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
+## Mandatory next turn — `M4-CP1-TB1-EXEC` — EXACT NEXT / TEST + BENCHMARK / ARTIFACT-ONLY
 
-`M4-DEFN-R1` is **COMPLETE / STATIC**. It resolves the two independently upheld CP1 solver stops by changing only
-the A3 solver/assurance clause: production authority is now the disclosed Heistermann/Warnett/Bommes 2023 exact
-Bi-MDF iterative-refinement algorithm with fixed `M=2`. The outer optimizer has **finite exact convergence**, not a
-claimed polynomial runtime bound. A3 semantic ownership, exact objective `J`, positive full-span counts, incidence
-multiplicity, parity, exact `U` cap, lexicographic order and accepted predecessor selector365 are unchanged.
+`M4-CP1-CB3` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Its semantic source is
+`680f9f1573d3c7e56a273366436463e40e196131`; mandatory GitHub GMP/GMPXX compile run/job
+`34452123494 / 102790053181` produced immutable package114 artifact `10142108806`, provider SHA-256
+`9a87181f771a1814fa854bc2056050b05880b6ec8dfe4ef9c9346102ee26fa36`. No Directional binary executed in CB3.
 
 ### Current authority
 
-- **M3 / package113 / TB48** remains reviewed semantic runtime authority: selector409 **405 PASS / 4 RED**,
+- **M3 / package113 / TB48** remains reviewed semantic runtime authority: selector409 **405 PASS / 4 RED / 0 SKIP**,
   accepted selector365 **365/365**, ownership **300 / 0 / 0**.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**.
-- **No M4 runtime exists.** `M4-CP1-CB1` and `M4-CP1-CB2` remain historical correct pre-mutation stops.
-- `M4-CP1-CB2-REV-CAND-01` is **CLOSED / DEFINITION-CORRECTED / NON-STABLE**, +0 events/+0 recurrences.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**.
+- package114 is **compile authority only** until TB1 executes/reviews it; no M4 runtime authority exists yet.
+- M4 CP1 candidate selector is `Architecture_M4_CP1_Required_Green_Selector_373.txt`: 373 identities,
+  LF SHA-256 `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`, with the accepted selector365
+  as byte-identical first-365 prefix.
 
-### Definition amendment that CB3 must consume
+### `M4-CP1-TB1-EXEC` boundary
 
-1. **Ordinary MCF is not the frozen route.** Same-row two-end full spans may carry genuine `+2/-2` loop incidence;
-   deleting those cases would narrow M4 semantics.
-2. **Direct one-shot b-matching is not frozen.** The reviewed implementation chain does not yet disclose the
-   general-demand reduction needed by the former one-shot `p/n` Bi-MCF.
-3. **Selected exact route:** Heistermann/Warnett/Bommes, *Min-Deviation-Flow in Bi-directed Graphs for T-Mesh
-   Quantization*, ACM TOG 42(4), 2023, DOI `10.1145/3592437`, §§3.6–3.9. Use exact feasible initialization, exact
-   zero-demand refinement, disclosed Bi-MCF → WPbM → WPM reductions, fixed `M=2`, and exact non-improvement as the
-   terminal. Corollary 3.7 + Theorem 3.8 + Corollary 3.9 are the solver theorem authority.
-4. **Numeric adaptation is mandatory.** Upstream libSatsuma is reference/control-flow material; its `int`, `double`,
-   `int64_t` and epsilon terminal are not M4 numeric authority. A matching library is allowed only if its exact
-   adapter preserves arbitrary-precision semantic comparisons.
-5. **CP2 barrier strengthened.** Before CP3 cutover, the carried independent certificate must verify the terminal
-   zero-improvement `M=2` refinement instance/theorem hypotheses and recompute exact `J`; a producer flag is not proof.
+Execute only immutable package114 under `Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md`. Preflight artifact/source,
+GMP/GMPXX mode, `SHA256SUMS`, test-binary digest and selector full/prefix hashes before runtime. Execute the eight
+focused CP1 identities twice for deterministic receipt, then the exact cumulative 373-row selector. Zero-selected
+filters are failures. Re-hash the package/binary after execution.
 
-### `M4-CP1-CB3` boundary
-
-Canonical Code + Build under `Architecture_M4_CP1_CB3_Code_Build_Plan.md`. It may implement the known-feasible A3
-product, exact fixed-`M=2` solver, independent structural validator, focused test source, selector extension and minimal
-build/dependency integration. **It may compile/package only through the mandatory GitHub Actions reusable compile
-workflow; no local build and no Directional runtime/test/benchmark execution.**
-
-On successful immutable GMP/GMPXX compile/package evidence, CB3 must author the executable artifact-only
-`M4-CP1-TB1` plan for the exact package. If the selected WPM primitive cannot preserve arbitrary-precision exact
-weights/comparisons, or a disclosed reduction cannot represent a frozen M4 incidence case, stop with a precise
-implementation blocker instead of changing the algorithm or semantics.
-
-**Prohibited:** restoring Gabow's retired tag/bound; generic ILP/IQP/branch-and-bound; floating/tolerance optimization;
-machine-width semantic narrowing; numeric enumeration to `U`; changing fixed `M=2` without definition/review;
-changing A3 positivity/parity/incidence/ownership to fit a solver; or implementing CP2/CP3 early.
+**No build, relink, fixture mutation, selector mutation, package mutation, CP2 implementation, or CP3 cutover is
+authorized in TB1.** Every observed regression must be classified in `Regression_Root_Cause_Tracker.md` before the
+TB turn closes. Semantic RED routes to independent review; orchestration-only failure does not authorize rebuilding
+package114.
 
 ### Context Load Plan
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M4_DEFN_R1_Definition_Record.md` — R0–R8 adjudication and assurance change.
-2. `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` — normative amended §7/§8/§13/§15/§16.
-3. `.agents/Directional/Architecture_M4_CP1_CB3_Code_Build_Plan.md` — exact CB3 implementation/compile measures.
-4. `.agents/Directional/Architecture_M4_CP1_CB2_Independent_Review_Record.md` — historical FA0–FA6 stop authority.
+0. `.agents/Directional/ORIENTATION.md`.
+1. `.agents/Directional/Architecture_M4_CP1_CB3_Build_Record.md` — exact source/compile/package authority.
+2. `.agents/Directional/Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md` — executable artifact-only runtime plan.
+3. `.agents/Directional/Architecture_M4_DEFN_R1_Definition_Record.md` and
+   `Architecture_M4_DEFN_Frozen_Definitions.md` — fixed `M=2` semantic/theorem authority.
+4. `.agents/Directional/Required_Green_Selector_Manifest.md` and
+   `Architecture_M4_CP1_Required_Green_Selector_373.txt`.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `M4_Consolidated_Record.md`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

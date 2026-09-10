@@ -604,6 +604,21 @@ selector and is **not** part of the CP4c prefix chain above. It is retained unde
 
 Selector **365** remains the **accepted required-green M3 authority**, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, and is the exact predecessor entering M4. Selector **409** remains byte-frozen at `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` as the final CP4c-3 audit/execution surface. Package113/TB48 reviewed execution is **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`. The four audit REDs retain separate owners and are not silently added to accepted authority. No selector bytes changed at TB48-REV.
 
+## M4 selector chain
+
+M4 restarts from the accepted M3 selector365, **not** from the final-M3 audit selector409. The M4 filename therefore
+may share an identity count with an older M3 selector while carrying different bytes; use the full path and hash.
+
+| Selector file | Identities | LF SHA-256 | Prefix parent | Appended | Role |
+|---|---:|---|---|---:|---|
+| `Architecture_M4_CP1_Required_Green_Selector_373.txt` | 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | M3 accepted 365 | 8 | **M4-CP1 COMPILED / AWAITING TB1** |
+
+The first 365 LF rows hash to
+`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, proving the accepted M3 selector365
+is an exact prefix. The eight appended identities are the CP1 `GlobalConformityPlan`/exact-solver/validator tests
+enumerated in `Architecture_M4_CP1_CB3_Build_Record.md`. They have compile authority only until
+`M4-CP1-TB1-EXEC` executes package114.
+
 ## Regenerating this manifest
 
 Every column is derived. `tools/selector_probe.py` computes counts, LF hashes, prefix relations and appended

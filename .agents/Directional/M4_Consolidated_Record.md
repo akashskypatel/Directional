@@ -1,13 +1,13 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-DEFN-R1` definition amendment
+**Last updated:** 2026-09-10 at `M4-CP1-CB3` compile/package closeout
 
 This record holds M4 history that has been folded under the review-turn consolidation policy. Normative current M4
 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current definition adjudication is
 `Architecture_M4_DEFN_R1_Definition_Record.md`; the retained independent stop authority is
-`Architecture_M4_CP1_CB2_Independent_Review_Record.md`; the exact current successor plan is
-`Architecture_M4_CP1_CB3_Code_Build_Plan.md`; task/state pointers live in `TODO.md` and
+`Architecture_M4_CP1_CB2_Independent_Review_Record.md`; the current CP1 build authority is `Architecture_M4_CP1_CB3_Build_Record.md`; the exact runtime successor plan is
+`Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md`; task/state pointers live in `TODO.md` and
 `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
@@ -35,7 +35,7 @@ CB1 subsequently stopped before semantic mutation because its solver contract ha
 
 Independent `M4-CP1-CB2-REV` upheld both stops and routed the solver clause to `M4-DEFN-R1`. `M4-DEFN-R1` then adjudicated the ordered alternatives and selected Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement with fixed `M=2`. Same-row `+/-2` incidence keeps the frozen class genuinely bidirected, so ordinary MCF is not frozen; the simple disclosed one-shot Bi-MCF→b-matching chain is not used because its reviewed form is specialized to zero-demand refinement. The semantic objective, cap `U`, lexicographic order and A3 ownership are unchanged. The outer solver assurance is explicitly amended from polynomial to **finite exact convergence** under Corollary 3.7, Theorem 3.8 and Corollary 3.9. CP2's independent terminal-optimality certificate is mandatory before CP3 cutover.
 
-Exact next is runtime-free `M4-CP1-CB3`.
+Exact next is artifact-only `M4-CP1-TB1-EXEC`.
 
 ## 2.1 `M4-CP1` solver deadlock — CB1 and CB2 both stopped, both correctly
 
@@ -61,6 +61,25 @@ both were fail-closed plan guards. Accounting is unchanged at **47 / 14 / 33**.
 `HeistermannWarnettBommes2023ExactBiMDFRefinementM2`; WorkLedger theorem class is finite exact convergence, not
 Gabow's polynomial class. Upstream libSatsuma remains reference/control-flow material only because its numeric surface
 is inexact for M4. The closed candidate `M4-CP1-CB2-REV-CAND-01` adds no stable event or recurrence.
+
+## 2.2 `M4-CP1-CB3` — implementation compiles; package114 awaits artifact-only runtime
+
+CB3 consumed the DEFN-R1 fixed-`M=2` authority and implemented the known-feasible A3 product, exact solver,
+LEMON exact-weight adapter, independent validator, focused compiled tests and first M4 selector. Final semantic
+source is `680f9f1573d3c7e56a273366436463e40e196131`.
+
+Mandatory GitHub-only GMP/GMPXX compile run/job `34452123494 / 102790053181` compiled and linked
+`directional_core` plus `directional_surface_cell_producer_tests` and produced immutable package114 artifact
+`10142108806`, provider SHA-256
+`9a87181f771a1814fa854bc2056050b05880b6ec8dfe4ef9c9346102ee26fa36`, with `runtimeExecution=false`.
+The packaged test binary hashes to `5b1064e6025b052aed7aeee66b8e1c3f6218bc73791d55fed4675484f4ea2afd`.
+
+M4 selector373 has 373 rows, LF SHA-256
+`6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`; its first 365 rows are byte-identical
+accepted M3 selector365. Its eight new CP1 identities are compiled but unexecuted.
+
+No M4 runtime authority is claimed. M3 package113/TB48 remains reviewed runtime authority and accepted package
+count remains 113. Exact next is `M4-CP1-TB1-EXEC` under the immutable artifact-only plan.
 
 ## 3. Folded document index
 

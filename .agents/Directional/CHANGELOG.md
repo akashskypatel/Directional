@@ -1,3 +1,31 @@
+## 2026-09-10 — `M4-CP1-CB3`: exact A3 implementation compiles with GMP/GMPXX; package114 issued
+
+`M4-CP1-CB3` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Final semantic source
+`680f9f1573d3c7e56a273366436463e40e196131` implements `GlobalConformityPlan`, fixed-`M=2`
+Heistermann/Warnett/Bommes exact refinement, exact LEMON WPM adaptation, independent validation, eight focused
+compiled CP1 tests, and the first M4 selector. The independent DEFN-R1 theorem-quantifier check was discharged
+before solver source was relied upon; fixed `M=2` remains globally exact under the cited results.
+
+The M4 selector contains **373** identities at LF SHA-256
+`6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`; its first 365 rows hash exactly to
+accepted selector365 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
+
+Mandatory GitHub GMP/GMPXX compile run/job `34452123494 / 102790053181` compiled
+`directional_core` and `directional_surface_cell_producer_tests` and produced immutable **package114** artifact
+`10142108806`, provider SHA-256
+`9a87181f771a1814fa854bc2056050b05880b6ec8dfe4ef9c9346102ee26fa36`. Packaged test binary SHA-256 is
+`5b1064e6025b052aed7aeee66b8e1c3f6218bc73791d55fed4675484f4ea2afd`; core library SHA-256 is
+`0325a5d45181014ff45783596c8d952a14f86d383b46d9f6ba43ccfc92315c4b`. `runtimeExecution=false`; no
+Directional executable/test/benchmark/selector ran in CB3.
+
+Build/configure corrections found during CB3 failed closed before runtime and do not change stable regression
+accounting. M3 package113/TB48 remains reviewed semantic runtime authority at **405 PASS / 4 RED / 0 SKIP**,
+accepted selector365 **365/365**. Totals remain **47 / 14 / 33**, debt **5**, accepted packages **113**,
+ownership **300/0/0**.
+
+Exact next is **`M4-CP1-TB1-EXEC`**, artifact-only under
+`Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md`. package114 is compile authority, not runtime acceptance.
+
 ## 2026-09-10 — `M4-DEFN-R1` verification pass: upheld; one paraphrased quantifier must be confirmed verbatim
 
 Static verification of the delegated `M4-DEFN-R1`. No runtime, no compile, no package operation, no
