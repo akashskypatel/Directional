@@ -1,16 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP1-TB2-EXEC` full-green raw execution
+**Last updated:** 2026-09-10 at `M4-CP1-TB2-REV` closure
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live
-in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current definition adjudication remains
-`Architecture_M4_DEFN_R1_Definition_Record.md`; package115 compile authority is
-`Architecture_M4_CP1_CB4_Build_Record.md`; current raw runtime evidence is
-`Architecture_M4_CP1_TB2_EXEC_Report.md`; the preceding independent review remains
-`Architecture_M4_CP1_TB1_Independent_Review_Record.md`; and the exact next boundary is independent
-`M4-CP1-TB2-REV`. Task/state pointers live in `TODO.md` and
-`Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1 durable closure is `M4_CP1_Closure_Record.md`; retained raw runtime evidence is `Architecture_M4_CP1_TB2_EXEC_Report.md`; current review authority is `Architecture_M4_CP1_TB2_Review_Record.md`; and the exact next plan is `Architecture_M4_CP2_CB1_Code_Build_Plan.md`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -37,7 +30,7 @@ CB1 subsequently stopped before semantic mutation because its solver contract ha
 
 Independent `M4-CP1-CB2-REV` upheld both stops and routed the solver clause to `M4-DEFN-R1`. `M4-DEFN-R1` then adjudicated the ordered alternatives and selected Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement with fixed `M=2`. Same-row `+/-2` incidence keeps the frozen class genuinely bidirected, so ordinary MCF is not frozen; the simple disclosed one-shot Bi-MCF→b-matching chain is not used because its reviewed form is specialized to zero-demand refinement. The semantic objective, cap `U`, lexicographic order and A3 ownership are unchanged. The outer solver assurance is explicitly amended from polynomial to **finite exact convergence** under Corollary 3.7, Theorem 3.8 and Corollary 3.9. CP2's independent terminal-optimality certificate is mandatory before CP3 cutover.
 
-TB1 review preserves the focused CP1 green receipt while adjudicating the cumulative failure as package-closure/execution-view evidence rather than product-semantic RED. `M4-CP1-CB4` rebuilt unchanged semantics with all four owner binaries and issued candidate package115. `M4-CP1-TB2-EXEC` then proved the package/execution-view control fully green at selector373 **373/373** plus focused CP1 **8/8 twice** with immutable postflight. Exact next is independent `M4-CP1-TB2-REV`; package115 remains unpromoted until that review.
+TB1 review preserved the focused CP1 green receipt while adjudicating the cumulative failure as package-closure/execution-view evidence rather than product-semantic RED. `M4-CP1-CB4` rebuilt unchanged semantics with all four owner binaries and issued package115. `M4-CP1-TB2-EXEC` proved the package/execution-view control fully green at selector373 **373/373** plus focused CP1 **8/8 twice** with immutable postflight; TB2-REV re-opened the primary evidence, closed both non-stable candidates, promoted package115 and formally closed CP1. Exact next is runtime-free `M4-CP2-CB1`.
 
 ## 2.1 `M4-CP1` solver deadlock — CB1 and CB2 both stopped, both correctly
 
@@ -135,7 +128,7 @@ unaccepted until runtime. Stable accounting remains **47 / 14 / 33**, debt **5**
 The multi-coordinate `±2` oracle coverage obligation identified by TB1 review remains deferred to the first later Code +
 Build turn authorized to change test source; keeping it outside CB4/TB2 preserves the unchanged-semantics control.
 
-## 2.6 `M4-CP1-TB2-EXEC` — package115 full green on unchanged semantics; review pending
+## 2.6 `M4-CP1-TB2-EXEC` — package115 full green on unchanged semantics
 
 Artifact-only run/job `34497233764 / 102938757986` consumed immutable package115 artifact `10159019500` from exact
 semantic source `680f9f1573d3c7e56a273366436463e40e196131`. Preflight proved package identity and checksums, GMP/GMPXX
@@ -153,11 +146,15 @@ Primary result/log artifacts are `10160450899 / 10160451919`, provider/downloade
 `2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`. No configure, compile, relink, repair,
 source/test/fixture/selector mutation or benchmark occurred in TB2.
 
-The CB4 falsifier is therefore met: TB1's 146 owner-target MISSING rows and 38 pre-assertion fixture failures disappear
-when only package ownership and execution view are corrected. This is full-green raw evidence, not review authority.
-No new regression candidate is observed; stable totals remain **47 / 14 / 33**, debt **5**, accepted packages **113**
-pending review. M3 package113/TB48 remains reviewed semantic runtime authority until independent
-`M4-CP1-TB2-REV` adjudicates candidate closure, package115 promotion and formal CP1 closure.
+The CB4 falsifier is met: TB1's 146 owner-target MISSING rows and 38 pre-assertion fixture failures disappear when only package ownership and execution view are corrected. TB2 itself is full-green raw evidence; §2.7 records the review that promotes it. No new regression candidate is observed.
+
+## 2.7 `M4-CP1-TB2-REV` — package115 promoted; CP1 closed
+
+Same-agent review was explicitly user-authorized; independence is evidence/re-derivation rather than personnel separation. Primary package/result/log bytes were re-opened. Independent parsing proves 373 exact selector ordinals, all `selected=1 / exit=0 / PASS`; both focused runs are exact rows 366-373 at 8/8 PASS with identical vectors; 389 raw logs each contain one RUN/OK; and all package/source/execution-view before/after censuses are byte-identical.
+
+Both TB1 candidates are **CLOSED / RECOVERY PROVED / NON-STABLE**. package115 supplied the exact 30/227/75/41 owner closure and package-source-derived consumer-visible fixture view while semantic source/tests/fixtures/selector remained unchanged, so the earlier 146 MISSING and 38 setup REDs disappear for the predicted reasons.
+
+Package115/TB2 is promoted to reviewed M4 runtime authority; selector373 becomes accepted M4 required-green authority at **373/373**; `M4-CP1` is **CLOSED / ACCEPTED**. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **115**; package114 remains unpromoted. Exact next is runtime-free `M4-CP2-CB1`.
 
 ## 3. Folded document index
 
@@ -167,14 +164,21 @@ history.
 | Folded filename | Lines | Verdict / retained home |
 |---|---:|---|
 | `Architecture_M4_DEFN_Definition_Plan.md` | 78 | **FOLDED AFTER EXECUTION.** Entering authority, M4D0–M4D9, prohibited moves, falsifiers and stop condition are discharged/superseded by the frozen definitions in `Architecture_M4_DEFN_Frozen_Definitions.md`; the former CB1 plan it originally routed to is itself indexed below. |
-| `Architecture_M4_CP1_CB1_Code_Build_Plan.md` | 187 | **FOLDED AFTER STOP + REVIEW.** The product/identity/compact-breakpoint scope remains in amended `Architecture_M4_DEFN_Frozen_Definitions.md`; the unsupported solver/WorkLedger stop and its review are retained in §§2-2.1, with the operative correction in `Architecture_M4_DEFN_R1_Definition_Record.md`. |
+| `Architecture_M4_CP1_CB1_Code_Build_Plan.md` | 187 | **FOLDED AFTER STOP + REVIEW.** The product/identity/compact-breakpoint scope remains in amended `Architecture_M4_DEFN_Frozen_Definitions.md`; the unsupported solver/WorkLedger stop and its review are retained in §§2-2.1, with the operative correction retained in §§2-2.1 and the amended `Architecture_M4_DEFN_Frozen_Definitions.md`. |
 | `Architecture_M4_CP1_CB1_Algorithm_Blocker.md` | 78 | **FOLDED AFTER INDEPENDENT REVIEW.** Its stop verdict is upheld; the mismatch, review adjudication and solver-route history are retained in §§2-2.1 and the operative definition record. |
-| `Architecture_M4_CP1_CB2_Code_Build_Plan.md` | 303 | **FOLDED AFTER STOP + REVIEW + DEFN.** The intended A3 scope is retained in §2.2 and `Architecture_M4_CP1_CB3_Build_Record.md`; its Gabow-specific solver/WorkLedger clauses are retired by `Architecture_M4_DEFN_R1_Definition_Record.md` and amended normative §7. |
-| `Architecture_M4_CP1_CB2_Algorithm_Blocker.md` | 68 | **FOLDED AFTER INDEPENDENT REVIEW + DEFN.** Its traceability stop/review are preserved in §§2-2.1; the definition-level resolution is `Architecture_M4_DEFN_R1_Definition_Record.md`. |
-| `Architecture_M4_CP1_CB1_Independent_Review_Record.md` | 378 | **FOLDED AFTER DEFN-R1 + TB1-REV.** Solver-stop findings are retained in §2.1 and the operative definition resolution in `Architecture_M4_DEFN_Frozen_Definitions.md` / `Architecture_M4_DEFN_R1_Definition_Record.md`. |
+| `Architecture_M4_CP1_CB2_Code_Build_Plan.md` | 303 | **FOLDED AFTER STOP + REVIEW + DEFN.** The implemented A3 scope is retained in §§2.2-2.7 and `M4_CP1_Closure_Record.md`; its Gabow-specific solver/WorkLedger clauses are retired by amended `Architecture_M4_DEFN_Frozen_Definitions.md` §7. |
+| `Architecture_M4_CP1_CB2_Algorithm_Blocker.md` | 68 | **FOLDED AFTER REVIEW + DEFN.** Its traceability stop/review are preserved in §§2-2.1; the operative resolution is incorporated into `Architecture_M4_DEFN_Frozen_Definitions.md`. |
+| `Architecture_M4_CP1_CB1_Independent_Review_Record.md` | 378 | **FOLDED AFTER DEFN-R1 + TB1-REV.** Solver-stop findings are retained in §2.1 and the operative definition resolution in `Architecture_M4_DEFN_Frozen_Definitions.md` and §§2-2.1 here. |
 | `Architecture_M4_CP1_CB2_Independent_Review_Record.md` | 116 | **FOLDED AFTER DEFN-R1 + TB1-REV.** Gabow traceability adjudication and routing are retained in §§2-2.1; operative solver authority is the amended frozen definition. |
-| `Architecture_M4_CP1_CB3_Code_Build_Plan.md` | 233 | **FOLDED AFTER CB3 + TB1 REVIEW.** Its implemented semantic scope is retained in §2.2 and `Architecture_M4_CP1_CB3_Build_Record.md`; package-closure correction is now solely `Architecture_M4_CP1_CB4_Code_Build_Plan.md`. |
-| `Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md` | 136 | **FOLDED AFTER EXECUTION + REVIEW.** Immutable gate requirements and raw outcome are retained in §§2.3-2.4 and current `Architecture_M4_CP1_TB1_Independent_Review_Record.md`. |
+| `Architecture_M4_CP1_CB3_Code_Build_Plan.md` | 233 | **FOLDED AFTER CB3 + TB1 REVIEW.** Its implemented semantic scope is retained in §2.2 and `M4_CP1_Closure_Record.md`; package-closure correction and recovery are retained in §§2.4-2.7 and `M4_CP1_Closure_Record.md`. |
+| `Architecture_M4_CP1_TB1_Test_Benchmark_Plan.md` | 136 | **FOLDED AFTER EXECUTION + REVIEW.** Immutable gate requirements and raw outcome are retained in §§2.3-2.4 and §§2.3-2.4 and `M4_CP1_Closure_Record.md`. |
 | `Architecture_M4_CP1_TB1_Execution_Record.md` | 125 | **FOLDED AFTER INDEPENDENT REVIEW.** Exact run/artifact/count evidence and adjudication are retained in §§2.3-2.4, the regression tracker, changelog, and current review record. |
+
+| `Architecture_M4_DEFN_R1_Definition_Record.md` | 169 | **FOLDED AFTER CP1 CLOSURE.** The solver-definition adjudication is fully incorporated into `Architecture_M4_DEFN_Frozen_Definitions.md`; rationale/history remains in §§2-2.1 and git history. |
+| `Architecture_M4_CP1_CB3_Build_Record.md` | 118 | **FOLDED AFTER PACKAGE115 REVIEW/PROMOTION.** Semantic implementation/build lineage and package114 facts are preserved in §§2.2-2.4, `M4_CP1_Closure_Record.md`, changelog and git history. |
+| `Architecture_M4_CP1_CB4_Code_Build_Plan.md` | 141 | **FOLDED AFTER TB2 REVIEW.** Package/execution-view correction contract, no-drift control and falsifier are preserved in §§2.4-2.7 and `M4_CP1_Closure_Record.md`. |
+| `Architecture_M4_CP1_CB4_Build_Record.md` | 157 | **FOLDED AFTER PACKAGE115 PROMOTION.** Exact compile/package authority is preserved in §§2.5-2.7, `M4_CP1_Closure_Record.md`, the retained TB2 report and changelog. |
+| `Architecture_M4_CP1_TB1_Independent_Review_Record.md` | 232 | **FOLDED AFTER TB2 RECOVERY REVIEW.** Candidate classification, 30/227/75/41 owner proof, fixture-view diagnosis and deferred `±2` oracle obligation are preserved in §§2.4-2.7, closure, tracker and next CP2 plan. |
+| `Architecture_M4_CP1_TB2_Test_Benchmark_Plan.md` | 183 | **FOLDED AFTER EXECUTION + REVIEW.** Frozen TB2 acceptance conditions and exact reviewed outcomes are preserved in §§2.6-2.7, `M4_CP1_Closure_Record.md`, the retained raw TB2 report and current review record. |
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.

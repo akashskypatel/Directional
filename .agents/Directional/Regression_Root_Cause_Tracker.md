@@ -1,4 +1,13 @@
-## M4-CP1-TB2-EXEC classification — **CURRENT RAW INTAKE / FULL GREEN / REVIEW REQUIRED / NON-STABLE EXEC**
+## M4-CP1-TB2-REV adjudication — **CURRENT REVIEW / PACKAGE115 PROMOTED / CP1 CLOSED / CANDIDATES CLOSED / NON-STABLE**
+
+- Same-agent review is user-authorized; independence here is primary-evidence re-opening and independent re-derivation, not personnel separation. No runtime or compile occurred in review.
+- Re-opened package115, TB2 result and TB2 log at exact hashes. Independently parsed the 373-row ledger as ordinals 1-373 exactly once, all `selected=1 / exit=0 / PASS`; focused A/B are exact 366-373 **8/8 PASS** with identical verdict vectors; 389 raw process logs each contain one RUN/OK; all three before/after censuses are byte-identical.
+- **`M4-CP1-TB1-EXEC-CAND-01` — CLOSED / RECOVERY PROVED / NON-STABLE.** Package115 carries the exact 30/227/75/41 owner closure and selector373 executes 373/373; no selector/test/product semantic change was required.
+- **`M4-CP1-TB1-EXEC-CAND-02` — CLOSED / RECOVERY PROVED / NON-STABLE.** The package-source-derived executable-relative fixture view removes all 38 pre-assertion setup failures without fixture/test/product semantic change.
+- No new RED, crash, skip, timeout, nondeterminism, integrity failure or failure surface exists to price. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**. Accepted package authority advances to **115**; package114 remains unpromoted.
+- **Authority:** package115/TB2 is reviewed M4 runtime authority at selector373 **373/373**; `M4-CP1` is CLOSED / ACCEPTED. Exact successor is runtime-free `M4-CP2-CB1`.
+
+## M4-CP1-TB2-EXEC classification — **HISTORICAL RAW INTAKE / PROMOTED BY TB2-REV / NON-STABLE EXEC**
 
 - Mechanically valid artifact-only runtime: run/job `34497233764 / 102938757986`, immutable package115 artifact
   `10159019500`, semantic source `680f9f1573d3c7e56a273366436463e40e196131`; full preflight and immutable postflight
@@ -12,14 +21,13 @@
   are identical pre/post runtime.
 - **No regression observed.** TB2 creates no new regression candidate and no stable event/category/recurrence. The
   already-adjudicated `M4-CP1-TB1-EXEC-CAND-01` and `M4-CP1-TB1-EXEC-CAND-02` now have direct raw recovery evidence,
-  but TB-EXEC does not close them; independent review owns final disposition.
+  and TB2-REV closes both as recovery-proved non-stable candidates.
 - **Stable-count rationale:** there is no RED, crash, skip, timeout, nondeterminism, integrity failure or new failure
   surface to price. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages
-  **113** pending review. M3 package113/TB48 remains reviewed semantic runtime authority until review.
-- **Exact successor:** `M4-CP1-TB2-REV`, independent review / runtime-free; validate raw evidence, candidate closure,
-  package115 promotion and formal M4-CP1 closure.
+  **115** after review. Package115/TB2 is reviewed M4 runtime authority; M3 package113/TB48 remains historical M3 closure authority.
+- **Reviewed successor:** `M4-CP1-TB2-REV` promoted package115, closed both candidates, and formally closed M4-CP1; exact next is runtime-free `M4-CP2-CB1`.
 
-## M4-CP1-TB1-REV — independent adjudication — **CURRENT REVIEW / APPROVED WITH AMENDMENTS / PACKAGE-CLOSURE + EXECUTION-VIEW DEFECTS / NON-STABLE / CB4**
+## M4-CP1-TB1-REV — adjudication — **HISTORICAL REVIEW / APPROVED WITH AMENDMENTS / PACKAGE-CLOSURE + EXECUTION-VIEW DEFECTS / NON-STABLE / RECOVERED BY TB2**
 
 - Re-opened package114/TB1 primary result+log evidence and independently reconstructed selector373 ownership from source. Focused CP1 remains credible **8/8 PASS twice** with identical verdict vectors.
 - The cumulative 373-row result is **not product-semantic RED evidence**: 146 rows never selected and all 38 selected REDs failed before their intended assertions on the same missing fixture-root precondition. The mechanically failed gate remains unaccepted, but package114 is not evidence of 38 product regressions.
@@ -27,7 +35,7 @@
 - **`M4-CP1-TB1-EXEC-CAND-02` — ADJUDICATED / EXECUTION-VIEW FIXTURE MATERIALIZATION / NON-STABLE / CB4→TB2.** CMake already creates producer `test-data`; package114's verified source archive contains the fixture source; `TestFixturePaths` requires executable-relative sibling/legacy layout. TB1 launched package binaries without the established source-archive-derived execution view, reproducing the same class resolved previously in M3. No fixture/test/product change is justified.
 - **Correction frozen:** runtime-free `M4-CP1-CB4` rebuilds the unchanged semantic source `680f9f15...` with all four owner binaries and pre-authors an M4 artifact-only harness that exact-maps each selector identity to one owner and materializes the fixture view solely from the package-owned source archive. No selector/test/product/CMake semantic change and no reusable-workflow permission change.
 - **Accounting:** +0 stable events / +0 recurrences. Totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**. package114 remains unpromoted; M3 package113/TB48 remains reviewed runtime authority.
-- **Exact successor:** `M4-CP1-CB4`, runtime-free Code + Build under `Architecture_M4_CP1_CB4_Code_Build_Plan.md`.
+- **Historical successor:** `M4-CP1-CB4`, runtime-free package/execution-view correction; its superseded plan is folded into the M4 consolidated/closure records.
 
 ## M4-CP1-TB1-EXEC classification — **HISTORICAL RAW INTAKE / REVIEWED BY TB1-REV / NON-STABLE EXEC**
 

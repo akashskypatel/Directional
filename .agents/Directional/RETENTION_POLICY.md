@@ -27,6 +27,7 @@ The following records are durable project authority and must be retained unless 
 - `.agents/Directional/M3_CP2_Closure_Record.md`
 - `.agents/Directional/M3_CP2b_Closure_Record.md`
 - `.agents/Directional/M3_CP3_Closure_Record.md`
+- `.agents/Directional/M4_CP1_Closure_Record.md`
 - `.agents/Directional/Architecture_M3_CP4_DEFN_Frozen_Definitions.md`
 - `.agents/Directional/CHANGELOG.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`

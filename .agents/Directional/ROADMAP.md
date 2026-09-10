@@ -10,12 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-10 (**M3 CLOSED / ACCEPTED at TB48-REV.** Package113 remains reviewed runtime authority:
-**405 PASS / 4 RED / 0 SKIP** over selector409, accepted **365/365**, ownership **300/0/0**. Stable accounting
-**47 / 14 / 33**, debt 5, accepted packages 113. `M4-CP1-CB4` is compile/package green on unchanged semantic source:
-candidate package115 carries all four selector-owner binaries for the exact 30/227/75/41 selector373 partition and
-pre-authors the package-source-derived sibling `test-data` execution view. No Directional runtime ran in CB4 and
-package115 is not accepted yet. **NEXT: `M4-CP1-TB2-EXEC`**, artifact-only cumulative gate.)
+**Status date:** 2026-09-10 (**M4-CP1 CLOSED / ACCEPTED at TB2-REV.** Package115/TB2 is reviewed M4 runtime authority at selector373 **373/373**, accepted predecessor **365/365**, focused CP1 **8/8 twice**. Stable accounting is **47 / 14 / 33**, debt 5, accepted package authority 115. M3 package113/TB48 remains historical M3 closure/final-audit authority at **405 PASS / 4 RED / 0 SKIP**, ownership **300/0/0**. **NEXT: `M4-CP2-CB1`**, runtime-free certification and typed-infeasibility implementation.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -27,7 +22,7 @@ package115 is not accepted yet. **NEXT: `M4-CP1-TB2-EXEC`**, artifact-only cumul
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1 artifact-only TB2 next** | CB4 rebuilt unchanged semantics with all four selector373 owners and issued candidate package115 plus a package-source-derived execution-view harness; runtime acceptance remains pending `M4-CP1-TB2-EXEC`; accepted predecessor remains selector365/package113. |
+| M4 | **CP1 CLOSED / CP2 next** | `M4_CP1_Closure_Record.md`; package115/TB2 reviewed at selector373 **373/373**; exact next `M4-CP2-CB1`. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -427,8 +422,8 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 | Checkpoint | Semantic domain | Notes |
 |---|---|---|
 | `M4-DEFN` | **COMPLETE:** frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` | planning only / runtime-free |
-| `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling uses exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **CB4 package closure compile-green on unchanged semantics; candidate package115 issued; `M4-CP1-TB2-EXEC` artifact-only gate next** |
-| `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | adds certificates/infeasible alternative without changing CP1 feasible schedule semantics |
+| `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling uses exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **CLOSED / ACCEPTED:** package115/TB2, selector373 **373/373**, focused CP1 **8/8 twice**; closure `M4_CP1_Closure_Record.md` |
+| `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | **NEXT — `M4-CP2-CB1`:** add certificates/infeasible alternative without changing accepted CP1 feasible schedule semantics |
 | `M4-CP3` | producers **consume** the verified schedule; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | removes `G4-B002` product blocker |
 | `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with conditioned-source/raw correspondence and typed inadmissibility | developed after A3 core without becoming a hidden schedule precondition |
 | `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | uncalibrated S1 measurements start non-gating |

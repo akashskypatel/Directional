@@ -611,16 +611,15 @@ may share an identity count with an older M3 selector while carrying different b
 
 | Selector file | Identities | LF SHA-256 | Prefix parent | Appended | Role |
 |---|---:|---|---|---:|---|
-| `Architecture_M4_CP1_Required_Green_Selector_373.txt` | 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | M3 accepted 365 | 8 | **M4-CP1 TB2-EXEC 373/373 FULL GREEN / REVIEW PENDING; bytes unchanged** |
+| `Architecture_M4_CP1_Required_Green_Selector_373.txt` | 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | M3 accepted 365 | 8 | **ACCEPTED M4-CP1 authority:** package115/TB2 reviewed **373/373**; bytes unchanged |
 
 The first 365 LF rows hash to
 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, proving the accepted M3 selector365
 is an exact prefix. The eight appended identities are the CP1 `GlobalConformityPlan`/exact-solver/validator tests
-enumerated in `Architecture_M4_CP1_CB3_Build_Record.md`. TB1 runtime-proved those eight rows 8/8 PASS twice but its
+preserved in `M4_CP1_Closure_Record.md` and `M4_Consolidated_Record.md` §2.2. TB1 runtime-proved those eight rows 8/8 PASS twice but its
 cumulative package surface was incomplete. CB4 corrected package ownership/execution view without changing selector or
 semantic/test bytes; `M4-CP1-TB2-EXEC` then runtime-proved **373/373 PASS**, accepted predecessor **365/365**, and
-focused CP1 **8/8 twice** with immutable postflight. Selector bytes remain unchanged. Package115/TB2 is full-green raw
-evidence pending independent `M4-CP1-TB2-REV` promotion/closure adjudication.
+focused CP1 **8/8 twice** with immutable postflight. `M4-CP1-TB2-REV` re-opened primary evidence, independently re-derived the receipts, promoted package115 and closed CP1. Selector bytes remain unchanged and selector373 is now accepted M4 authority.
 
 ## Regenerating this manifest
 

@@ -6,7 +6,7 @@ Last updated: 2026-09-10 UTC
 
 This is the single durable **task index** — open and blocked work only. It is deliberately forward-looking.
 
-Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, `M3_CP4ab_Closure_Record.md`, and `M3_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
+Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, `M3_CP4ab_Closure_Record.md`, and `M3_Closure_Record.md`, plus current milestone checkpoint closures such as `.agents/Directional/M4_CP1_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
 
 **Do not re-accumulate per-checkpoint, per-retry, or per-partial narrative here.** A closed checkpoint gets one line in `ROADMAP.md` §1 and a closure record; it does not stay in this file.
 
@@ -26,26 +26,15 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-CP1-TB2-REV` (independent review, runtime-free)
+**Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-`M4-CP1-TB2-EXEC` is **COMPLETE / FULL GREEN / ARTIFACT-ONLY / REVIEW REQUIRED**. Immutable package115 artifact
-`10159019500` executed under run/job `34497233764 / 102938757986` with exact result/log artifacts
-`10160450899 / 10160451919`. Focused rows 366-373 passed **8/8 twice** with identical verdict vectors; cumulative
-selector373 passed **373/373**, including accepted predecessor **365/365**, with zero RED/SKIP/timeout/selection
-mismatch. Package/source/execution-view postflight censuses exactly match preflight.
+## Current focus — `M4-CP2-CB1` (Code + Build, runtime-free)
 
-The complete raw execution record is `Architecture_M4_CP1_TB2_EXEC_Report.md`. No new regression candidate or stable
-event was observed; stable accounting remains **47 / 14 / 33**, debt **5**, accepted packages **113** pending review.
-Package115 is not promoted by TB-EXEC alone; M3 package113/TB48 remains reviewed semantic runtime authority until the
-mandatory review adjudicates the gate.
+`M4-CP1-TB2-REV` is **COMPLETE / APPROVED / PACKAGE115 PROMOTED / M4-CP1 CLOSED**. Reviewed TB2 authority is selector373 **373/373 PASS**, accepted predecessor **365/365**, focused CP1 **8/8 twice**, zero RED/SKIP/timeout/selection mismatch, with immutable package/source/execution-view postflight. Closure authority: `.agents/Directional/M4_CP1_Closure_Record.md`.
 
-**Exact next:** independent **`M4-CP1-TB2-REV`**, runtime-free. Re-open TB2 primary result/log evidence, validate
-package115 provenance and 373/373 + focused 8/8-twice receipts, adjudicate closure of the two TB1 package/control
-candidates, decide package115 promotion and formal M4-CP1 closure, update `ORIENTATION.md`, and perform mandatory
-REVIEW-turn document consolidation. No compile or Directional runtime is authorized.
+Stable accounting remains **47 / 14 / 33**, debt **5**; accepted package authority is **115**. Package114 remains unpromoted historical failed-gate evidence. The two TB1 package/control candidates are CLOSED / RECOVERY PROVED / NON-STABLE.
 
-The multi-coordinate bidirected `±2` oracle coverage obligation remains deferred to the **first later Code + Build turn
-authorized to change test source**. TB2 intentionally held semantic/test bytes fixed.
+**Exact next:** runtime-free **`M4-CP2-CB1`** under `.agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Plan.md`. Implement the carried positivity/parity/terminal-optimality certificate and typed subset-scoped infeasibility alternative without changing accepted CP1 feasible schedule semantics. This turn is also the first authorized test-source change and must discharge the deferred multi-coordinate bidirected `±2` exhaustive-oracle strengthening. No Directional runtime is authorized in CB1.
 
 ## Carried forward from M1
 
@@ -84,7 +73,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-TB2-REV` NEXT**; TB2 raw runtime is fully green at selector373 **373/373** plus focused CP1 **8/8 twice** with immutable postflight; independent review must validate package115 promotion and formal CP1 closure. M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1 CLOSED / `M4-CP2-CB1` NEXT**; package115/TB2 is reviewed authority at selector373 **373/373**, focused CP1 **8/8 twice**. CP2 adds carried optimality/positivity/parity certification and typed subset-scoped infeasibility while preserving CP1 feasible schedule semantics. M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -124,4 +113,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113** pending review. **Package113/TB48 remains reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; package115/TB2 is complete full-green raw runtime evidence at selector373 **373/373** plus focused CP1 **8/8 twice**, with immutable postflight. Exact next is runtime-free independent **`M4-CP1-TB2-REV`**, which owns package115 promotion and formal CP1 closure. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. **M4-CP1 is CLOSED / ACCEPTED** at package115/TB2, selector373 **373/373**, accepted prefix **365/365**. M3 package113/TB48 remains historical M3 closure/final-audit authority at **405/4**. Exact next is runtime-free **`M4-CP2-CB1`** under `Architecture_M4_CP2_CB1_Code_Build_Plan.md`. PR #8 remains open, draft, and unmerged.

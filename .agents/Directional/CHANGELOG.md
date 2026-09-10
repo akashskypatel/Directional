@@ -1,3 +1,13 @@
+## 2026-09-10 — `M4-CP1-TB2-REV`: package115 promoted; M4-CP1 closed; same-agent REVIEW/DEFN authorized
+
+User authorization now explicitly permits the same agent/session to perform REVIEW, REVIEW + PLAN, and DEFN turns. Personnel separation is not implied by "independent" review/oracle/verification language unless a criterion explicitly requires it; same-agent review must re-open primary evidence and independently re-derive decisive facts, and all existing cadence/runtime/compile/validation boundaries remain intact. Durable policy was updated in `AGENT_POLICY.md` and the handoff.
+
+TB2 primary package/result/log bytes were re-opened. package115 artifact `10159019500` verifies at SHA-256 `de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b`; TB2 result/log artifacts `10160450899 / 10160451919` verify at `0b7f1551fe3881a0fd46386e1a45ae043faa307f6cb167e91cb4ef78839b9e38` / `2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`. Independent ledger parsing proves selector373 **373/373 PASS**, predecessor **365/365**, focused CP1 **8/8 twice** with identical vectors; all 389 raw process logs contain exactly one RUN/OK receipt, and package/source/execution-view pre/post censuses are identical. No runtime or compile occurred in review.
+
+`M4-CP1-TB1-EXEC-CAND-01/02` are **CLOSED / RECOVERY PROVED / NON-STABLE**: the unchanged-semantics package115 control supplied all four owner binaries and the package-source-derived consumer-visible fixture view, eliminating all 146 MISSING rows and 38 pre-assertion fixture failures without product/test/fixture/selector semantic change. Stable accounting remains **47 / 14 / 33**, debt **5**. Package115/TB2 is promoted to reviewed M4 runtime authority, selector373 is accepted at **373/373**, accepted package authority advances to **115**, and **M4-CP1 is CLOSED / ACCEPTED**.
+
+Mandatory review consolidation folded superseded CP1 build/plan/review/definition-adjudication documents after preserving their durable facts in `M4_Consolidated_Record.md` and `M4_CP1_Closure_Record.md`; the TB2 raw execution report, new review record, frozen definitions, selectors, closure record and next plan remain retained. Exact next is runtime-free `M4-CP2-CB1` under `Architecture_M4_CP2_CB1_Code_Build_Plan.md`, including the deferred multi-coordinate bidirected `±2` exhaustive-oracle strengthening.
+
 ## 2026-09-10 — `M4-CP1-TB2-EXEC`: package115 full green; package/execution-view control prediction met
 
 Artifact-only Test + Benchmark consumed immutable package115 artifact `10159019500` from semantic source

@@ -116,65 +116,43 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-CP1-TB2-REV` — EXACT NEXT / INDEPENDENT REVIEW / RUNTIME-FREE
+**Same-agent REVIEW/DEFN is allowed — user-authorized 2026-09-10.** The same agent/session may perform a REVIEW, REVIEW + PLAN, or DEFN turn even when it authored or executed an earlier turn in the same chain. "Independent" in review/oracle/verification language means independent **evidence, re-derivation, authority, or implementation path**, not required personnel separation, unless a specific criterion explicitly says otherwise. A same-agent REVIEW must re-open primary evidence and re-derive decisive facts; a same-agent DEFN remains planning/runtime-free. All cadence, stop, validation-integrity, source-authority, compile/runtime, and acceptance boundaries remain unchanged.
 
-`M4-CP1-TB2-EXEC` is **COMPLETE / ARTIFACT-ONLY / MECHANICALLY VALID / FULL GREEN / REVIEW REQUIRED**. It consumed
-immutable package115 without configure, compile, relink, regeneration, package repair, source/test/fixture/selector
-mutation, or performance benchmarking.
+## Mandatory next turn — `M4-CP2-CB1` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
+
+`M4-CP1-TB2-REV` is **COMPLETE / APPROVED / PACKAGE115 PROMOTED / M4-CP1 CLOSED**. The review re-opened TB2 primary evidence and independently re-derived the decisive receipts: package115 artifact `10159019500` has SHA-256 `de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b`; TB2 result/log artifacts `10160450899 / 10160451919` hash to `0b7f1551fe3881a0fd46386e1a45ae043faa307f6cb167e91cb4ef78839b9e38` / `2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`; selector373 is **373/373 PASS**, accepted prefix **365/365**, focused CP1 **8/8 twice** with identical verdict vectors, and all package/source/execution-view postflight censuses equal preflight.
 
 ### Current authority
 
-- **M3 / package113 / TB48** remains reviewed semantic runtime authority until TB2 review: selector409
-  **405 PASS / 4 RED / 0 SKIP**, accepted selector365 **365/365**, ownership **300 / 0 / 0**.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**
-  pending review.
-- CB4 semantic/build evidence source remains exact `680f9f1573d3c7e56a273366436463e40e196131`.
-- Candidate **package115** artifact `10159019500`, `m4-cp1-cb4-package-result-34493860436`, provider/downloaded SHA-256
-  `de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b`.
-- Frozen selector373 is unchanged at SHA-256
-  `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`, exact owner partition
-  **30 authority-kernel / 227 producer / 75 completion / 41 validation**.
-- TB2 runtime run/job: **`34497233764 / 102938757986`**, success.
-- TB2 result artifact `10160450899`, provider/downloaded SHA-256
-  `0b7f1551fe3881a0fd46386e1a45ae043faa307f6cb167e91cb4ef78839b9e38`.
-- TB2 diagnostic log artifact `10160451919`, provider/downloaded SHA-256
-  `2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`.
-- Raw result: focused rows 366-373 **8/8 PASS twice**, identical verdict vectors; full selector373 **373/373 PASS**;
-  accepted predecessor **365/365 PASS**; zero RED/SKIP/timeout/selection mismatch; package/source/execution-view
-  postflight censuses equal preflight.
-- `Architecture_M4_CP1_TB2_EXEC_Report.md` is the retained raw execution record. Package115 is not promoted by
-  TB-EXEC alone.
+- **M4-CP1 is CLOSED / ACCEPTED.** Closure authority is `.agents/Directional/M4_CP1_Closure_Record.md`; current review is `.agents/Directional/Architecture_M4_CP1_TB2_Review_Record.md`; retained raw runtime is `.agents/Directional/Architecture_M4_CP1_TB2_EXEC_Report.md`.
+- **package115/TB2** is the current reviewed M4 semantic runtime authority for selector373 **373/373**. M3 package113/TB48 remains the historical M3 closure/final-audit authority at selector409 **405 PASS / 4 RED / 0 SKIP** and accepted selector365 **365/365**.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**; accepted package authority advances to **115**. Package114 remains unpromoted historical failed-gate evidence.
+- `M4-CP1-TB1-EXEC-CAND-01` and `M4-CP1-TB1-EXEC-CAND-02` are **CLOSED / RECOVERY PROVED / NON-STABLE**. Their recovery is established by the unchanged-semantics TB2 control.
+- Frozen M4 definitions remain `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md`. No definition change was needed to close CP1.
 
-### `M4-CP1-TB2-REV` boundary
+### `M4-CP2-CB1` boundary
 
-Independent review must re-open TB2 primary result/log evidence and package115 provenance, independently validate the
-full 373/373 and focused 8/8-twice receipts plus immutable postflight, adjudicate closure of
-`M4-CP1-TB1-EXEC-CAND-01` and `M4-CP1-TB1-EXEC-CAND-02`, decide package115 promotion and formal M4-CP1 closure, and
-record the next M4 checkpoint boundary. The review is planning/static only: **no compile, no Directional runtime, no
-product/test/fixture/selector/build-logic mutation**.
+Execute `.agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Plan.md`. CP2 adds the carried positivity/parity/optimality certificate and typed subset-scoped infeasibility alternative **without changing CP1 feasible schedule semantics**. The first authorized test-source change must also discharge the deferred multi-coordinate bidirected `±2` exhaustive-oracle strengthening from TB1 review.
 
-The review must update durable `ORIENTATION.md` and perform the mandatory REVIEW-turn document consolidation under
-`CLEAN_UP_POLICY.md`. The multi-coordinate bidirected `±2` exhaustive-oracle coverage obligation remains owned by the
-first later Code + Build turn authorized to change test source; it was intentionally outside the unchanged-semantics
-CB4/TB2 control gate.
+CB1 may change product/test/build integration required by that frozen CP2 scope and may compile/package only through the mandatory GitHub GMP/GMPXX workflow. It executes **no Directional runtime, no generated test discovery, no test/benchmark/CLI binary**. If implementing the frozen CP2 contract exposes a genuine definition ambiguity rather than an implementation problem, stop and route to `M4-CP2-DEFN`; the same-agent authorization above permits the same agent to perform that later DEFN turn, but does not authorize silently inventing semantics inside CB1.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB-REVIEW.md
+  - references/turns/CB.md
 conditional_modules:
-  - trigger: GitHub connector/artifact reads or review closeout workflow cleanup
+  - trigger: implementation design or corrective planning
+    path: modules/engineering-guidelines/MODULE.md
+  - trigger: GitHub connector, compile workflow, package, or artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP1_TB2_EXEC_Report.md
-  - .agents/Directional/Architecture_M4_CP1_TB2_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M4_CP1_CB4_Build_Record.md
-  - .agents/Directional/Architecture_M4_CP1_TB1_Independent_Review_Record.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - .agents/Directional/M4_Consolidated_Record.md
-  - .agents/Directional/Required_Green_Selector_Manifest.md
+  - .agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Plan.md
+  - .agents/Directional/M4_CP1_Closure_Record.md
+  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
   - .agents/Directional/Architecture_M4_CP1_Required_Green_Selector_373.txt
+  - .agents/Directional/Required_Green_Selector_Manifest.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
 templates_when_producing: []
 do_not_preload:
   - sibling turn files
