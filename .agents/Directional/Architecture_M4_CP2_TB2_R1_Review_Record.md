@@ -103,3 +103,88 @@ Subject to that guard, the smallest CP3 cutover is to build the generic A3 outco
 Mandatory REVIEW consolidation is completed with durable CP2 facts preserved in this record, `M4_CP2_Closure_Record.md`, `M4_Consolidated_Record.md`, the regression tracker, `ORIENTATION.md`, the selector manifest and changelog before superseded per-turn documents are folded. Current runtime authority report `Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`, this current review record, frozen M4 definitions/selectors, both CP1/CP2 closure records, the M4 consolidated record, and exactly one successor plan are retained.
 
 **Exact next turn: `M4-CP3-CB1` — canonical Code + Build, runtime-free.** Execute `Architecture_M4_CP3_CB1_Code_Build_Plan.md`. Do not run Directional tests/benchmarks in that turn; compile/package only through the mandatory reusable GMP/GMPXX workflow after the plan's derivation guard passes.
+
+---
+
+## 10. Independent verification addendum (reviewing agent)
+
+Runtime-free. The promotion verdict and CP2 closure are **upheld**. The decisive claims were
+re-derived here rather than read, and one unstated justification is recorded so a closed checkpoint
+cannot be re-litigated later.
+
+### V1 — selector lineage re-derived from the bytes
+
+Hashed directly from `Architecture_M4_CP2_Required_Green_Selector_382.txt` (382 rows):
+
+| slice | SHA-256 | matches |
+|---|---|---|
+| full 382 | `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f` | this record §2 |
+| first 380 | `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4` | candidate selector380 |
+| first 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | **accepted selector373** |
+
+The chain **373 ⊂ 380 ⊂ 382** is byte-exact; rows 381/382 are the two correction identities and
+nothing earlier moved. Owner outcomes independently sum `30 + 236 + 75 + 41 = 382`.
+
+### V2 — CAND-04 is discharged in substance, not merely in form
+
+The shipped fixture is the witness published in the CB2 plan. Re-solved here independently of the
+test binary, over the oracle's own box:
+
+| instance | optimum | primary cost |
+|---|---|---|
+| shipped fixture | `(1, 2, 2, 2)` | 3 |
+| magnitude-1 twin | `(1, 2, 1, 1)` | 1 |
+
+The optima differ, so the `±2` is load-bearing: row 1 gives `x3 = x2` and row 0 gives
+`x2 = 2(x1 - x0)`, forcing `x2` even. The parity obstruction the obligation existed to expose is
+live.
+
+Two implementation choices are stronger than the plan required and are recorded as precedent.
+`magnitudeTwoLoadBearing` is **computed at runtime** (`expected != twinExpected`) and carried by
+`ASSERT_TRUE`, so the identity fails if the fixture ever stops being load-bearing — the receipt
+cannot outlive its subject, which was the whole point of `CAND-01`. And the box guard asserts
+`count < 8` on both optima rather than `<= 8`, so the oracle box is provably non-binding with margin.
+
+### V3 — the two correction identities are non-vacuous
+
+`CAND-02` (ordinal381) tampers **21 WorkLedger field families individually** — assurance class,
+maximum observed exact width, initializer node/arc counts, all `H/U/Q/L` and maximum bit widths,
+refinement count, peak matching sizes, retry/reset, plus two refinement-history injections — each
+required to be rejected with `WorkLedger` in the error detail. That closes the coverage hole R2
+identified, where the matrix tampered `refinementM` alone. The `assuranceClass` and
+`maximumObservedExactIntegerBitWidth` fields R2 reported missing now exist.
+
+`CAND-03` (ordinal382) proves the new digest does work the old one could not: two inputs share a
+`normalizedProblemDigest` while their `semanticDigest` values differ, and the digest is invariant
+under span/incidence reversal on **both** the feasible and the genuinely infeasible branch. That is
+R3's objection answered constructively rather than asserted.
+
+### V4 — why "scalable" is satisfied (recorded, not a defect)
+
+§5 marks *scalable production optimality from carried algorithm-native evidence* PASS and cites the
+terminal witness and primal/dual evidence, but does not say why that discharges the word
+**scalable**. The justification is sound and should not have to be rediscovered:
+
+1. Optimality is certified by **LP duality**, not by enumeration. `GlobalConformityCP2Validator.cpp:228-230`
+   independently recomputes the dual value as `Σ y_i + Σ_B z_B · ⌊|B|/2⌋` and checks dual feasibility
+   `y_a + y_b + Σ_{B ⊇ {a,b}} z_B ≥ scale · w_e` on **every** edge, then pairs it with exact primal
+   equality. Such a certificate is valid at any instance size, and the validator derives it
+   separately from the LEMON producer in `GlobalConformityExactSolver.cpp:190-192`.
+2. This is precisely the scale-independent replacement for CP1's device: the exhaustive oracle is
+   bounded to `E <= 6, x_s <= 8` by construction and cannot certify anything larger. The CP1 exit
+   says *fixed-small test oracles*; the CP2 exit says *carried algorithm-native evidence*. The
+   contrast is the certification method, not the fixture size.
+3. **CP-SCALE is a separate frozen checkpoint** owning instance-scale evidence — certified filters
+   equivalent to exact fallback, typed/bounded limit-cycle and Betti outcomes, published S1
+   measurements. Reading CP2's "scalable" as a large-instance demonstration would duplicate
+   CP-SCALE and leave that checkpoint with nothing to own.
+
+So "scalable" qualifies how optimality is certified, and the conjunct is met on the evidence
+carried. No large-instance runtime was required for CP2 and none is owed retroactively.
+
+### V5 — accounting and scope confirmed
+
+Stable accounting is unchanged at **47 events / 14 categories / 33 recurrences**, debt **5**. The
+first TB2 attempt is orchestration-invalid with no semantic credit, which is correct: it produced no
+accepted-green loss and therefore no stable event. The verdict closes **CP2 only** — CP3 still owns
+the production A3→A4 cutover and the exact-torus `InvalidHardRailPairing` debt.

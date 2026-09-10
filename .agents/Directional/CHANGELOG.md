@@ -6,6 +6,23 @@ Source audit closes all four TB1 review candidates **RECOVERY PROVED / NON-STABL
 
 **Package117 is promoted, selector382 is accepted M4 authority, and M4-CP2 is CLOSED / ACCEPTED.** Accepted package authority advances **115 -> 117**; stable accounting remains **47 / 14 / 33**, produced-witness debt **5**. CP3 remains separate: exact next is runtime-free `M4-CP3-CB1` to production-wire A3->A4 and remove `InvalidHardRailPairing`; the three `G4-B002` produced-witness debts remain CP4-owned.
 
+**Verification amendment (reviewing agent, review record §10).** The promotion and CP2 closure are upheld, with
+the decisive claims re-derived from the bytes rather than read. Selector lineage verified by direct hashing:
+full selector382 `1d59b1f7…`, first 380 rows `512c9ece…` (= candidate selector380), first 373 rows `6d00cafa…`
+(= **accepted selector373**), so the chain 373 ⊂ 380 ⊂ 382 is byte-exact and rows 381/382 are the only
+additions; owner outcomes independently sum 30 + 236 + 75 + 41 = 382. `CAND-04` is discharged in substance, not
+form: re-solving the shipped fixture and its magnitude-1 twin independently of the test binary gives `(1,2,2,2)`
+at cost 3 versus `(1,2,1,1)` at cost 1, so the parity obstruction `x2 = 2(x1 - x0)` is live — and the
+load-bearing fact is computed at runtime under `ASSERT_TRUE` rather than hard-coded, so the receipt cannot
+outlive its subject. `CAND-02`'s ordinal381 tampers 21 WorkLedger field families individually, closing the hole
+where only `refinementM` was covered; `CAND-03`'s ordinal382 proves two inputs can share a
+`normalizedProblemDigest` while differing in `semanticDigest`, answering R3 constructively. One unstated
+justification is now recorded in `M4_CP2_Closure_Record.md` §2: the exit's word *scalable* qualifies the
+certification method, not the instance size — optimality is certified by LP duality (independent dual recompute
+and per-edge dual feasibility in `GlobalConformityCP2Validator.cpp:228-230`), which holds at any size, and
+instance-scale evidence is owned by the separate frozen CP-SCALE checkpoint. Accounting unchanged at
+**47 / 14 / 33**, debt **5**; the orchestration-invalid first attempt correctly carries no semantic credit.
+
 ## 2026-09-10 — `M4-CP2-TB2-R1-EXEC`: corrected immutable retry measures selector382 382/382 green
 
 Artifact-only R1 run/job `34539783373 / 103079623871` consumed unchanged package117 artifact `10172820820` and completed the corrected preflight, both focused 374/381/382 phases, all 382 frozen selector identities one per fresh process, and immutable postflight. Result/log artifacts `10176889758 / 10176890045` hash to `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`.

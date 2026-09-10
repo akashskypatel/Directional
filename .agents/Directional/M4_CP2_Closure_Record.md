@@ -34,6 +34,17 @@ The frozen CP2 exit is met:
 - `GlobalConformityOutcome::semanticDigest` binds full support paths plus scheduled/infeasible evidence and is independently re-derived/tamper-tested by ordinal382;
 - the four-coordinate magnitude-two oracle is behaviourally load-bearing and emits a success-visible fixture-derived receipt.
 
+**Why "scalable" is satisfied.** The exit's word *scalable* qualifies the certification method, not the
+instance size. Optimality is certified by LP duality — `GlobalConformityCP2Validator.cpp:228-230`
+independently recomputes `Σ y_i + Σ_B z_B · ⌊|B|/2⌋` and checks `y_a + y_b + Σ_{B ⊇ {a,b}} z_B ≥ scale · w_e`
+on every edge, paired with exact primal equality, and derives it separately from the LEMON producer. Such a
+certificate is valid at any instance size. That is the scale-independent replacement for CP1's exhaustive
+oracle, which is bounded to `E <= 6, x_s <= 8` and cannot certify anything larger — hence CP1's *fixed-small
+test oracles* versus CP2's *carried algorithm-native evidence*. Instance-scale evidence is owned by the
+separate frozen **CP-SCALE** checkpoint (certified filters, typed/bounded limit-cycle and Betti outcomes,
+published S1 measurements); reading CP2's *scalable* as a large-instance demonstration would duplicate it.
+No large-instance runtime was required for CP2 and none is owed retroactively.
+
 ## 3. Candidate disposition
 
 All CP2 review/orchestration candidates close non-stably:
