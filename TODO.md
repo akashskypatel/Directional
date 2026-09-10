@@ -26,31 +26,26 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-CP1-TB2-EXEC` (artifact-only Test + Benchmark)
+## Current focus — `M4-CP1-TB2-REV` (independent review, runtime-free)
 
-`M4-CP1-CB4` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. It rebuilt the unchanged semantic source
-`680f9f1573d3c7e56a273366436463e40e196131` through the mandatory GMP/GMPXX compile path and produced candidate
-package115 artifact `10159019500`, provider/downloaded SHA-256
-`de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b`. All four selector-owner binaries are
-present and executable; package `SHA256SUMS` verifies completely. The frozen selector373 remains unchanged at
-`6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` with exact owner partition
-**30 authority-kernel / 227 producer / 75 completion / 41 validation**, zero missing/duplicate definitions.
+`M4-CP1-TB2-EXEC` is **COMPLETE / FULL GREEN / ARTIFACT-ONLY / REVIEW REQUIRED**. Immutable package115 artifact
+`10159019500` executed under run/job `34497233764 / 102938757986` with exact result/log artifacts
+`10160450899 / 10160451919`. Focused rows 366-373 passed **8/8 twice** with identical verdict vectors; cumulative
+selector373 passed **373/373**, including accepted predecessor **365/365**, with zero RED/SKIP/timeout/selection
+mismatch. Package/source/execution-view postflight censuses exactly match preflight.
 
-CB4 also pre-authored `.agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh` at SHA-256
-`ddfbda2ff626008d3d2e9f6d117b10c98de159c4f9b8a3a36f99e50e24fd22d9`. It derives an execution view solely from
-package-owned binaries and source-archive fixtures, re-proves the 373-row owner map, verifies the existing
-`TestFixturePaths.h` sibling/legacy contract, and requires immutable package/source/view censuses. The harness was
-syntax/static checked only; **no Directional runtime executed in CB4**.
+The complete raw execution record is `Architecture_M4_CP1_TB2_EXEC_Report.md`. No new regression candidate or stable
+event was observed; stable accounting remains **47 / 14 / 33**, debt **5**, accepted packages **113** pending review.
+Package115 is not promoted by TB-EXEC alone; M3 package113/TB48 remains reviewed semantic runtime authority until the
+mandatory review adjudicates the gate.
 
-**Exact next:** execute **`M4-CP1-TB2-EXEC`** under
-`Architecture_M4_CP1_TB2_Test_Benchmark_Plan.md`, consuming immutable package115. Preflight must prove artifact/source/
-GMP/checksum/owner/binary/fixture integrity before runtime; then run rows 366-373 twice and selector373 one identity
-per fresh process. Package115 is not accepted yet. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted
-packages **113**; M3 package113/TB48 remains reviewed semantic runtime authority.
+**Exact next:** independent **`M4-CP1-TB2-REV`**, runtime-free. Re-open TB2 primary result/log evidence, validate
+package115 provenance and 373/373 + focused 8/8-twice receipts, adjudicate closure of the two TB1 package/control
+candidates, decide package115 promotion and formal M4-CP1 closure, update `ORIENTATION.md`, and perform mandatory
+REVIEW-turn document consolidation. No compile or Directional runtime is authorized.
 
 The multi-coordinate bidirected `±2` oracle coverage obligation remains deferred to the **first later Code + Build turn
-authorized to change test source**. It is intentionally outside CB4/TB2 so the package-closure control experiment holds
-semantic/test bytes fixed.
+authorized to change test source**. TB2 intentionally held semantic/test bytes fixed.
 
 ## Carried forward from M1
 
@@ -89,7 +84,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-TB2-EXEC` NEXT**; CB4 package closure is compile-green on unchanged semantics with all four selector owners present, and artifact-only TB2 now must prove the execution-view correction plus cumulative selector373; M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-TB2-REV` NEXT**; TB2 raw runtime is fully green at selector373 **373/373** plus focused CP1 **8/8 twice** with immutable postflight; independent review must validate package115 promotion and formal CP1 closure. M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -129,4 +124,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-CP1-CB4` is compile/package green on unchanged source and produced candidate package115 with all four selector-owner binaries. Package115 is not runtime-accepted; exact next is artifact-only **`M4-CP1-TB2-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages **113** pending review. **Package113/TB48 remains reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; package115/TB2 is complete full-green raw runtime evidence at selector373 **373/373** plus focused CP1 **8/8 twice**, with immutable postflight. Exact next is runtime-free independent **`M4-CP1-TB2-REV`**, which owns package115 promotion and formal CP1 closure. PR #8 remains open, draft, and unmerged.

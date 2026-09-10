@@ -1,3 +1,18 @@
+## 2026-09-10 — `M4-CP1-TB2-EXEC`: package115 full green; package/execution-view control prediction met
+
+Artifact-only Test + Benchmark consumed immutable package115 artifact `10159019500` from semantic source
+`680f9f1573d3c7e56a273366436463e40e196131` under run/job `34497233764 / 102938757986`. Frozen rows 366-373 passed
+**8/8 twice** with identical verdict vectors; cumulative selector373 passed **373/373**, including accepted predecessor
+**365/365**, with zero RED/SKIP/timeout/selection mismatch. Package, extracted-source and execution-view censuses were
+identical before/after runtime. Result/log artifacts `10160450899 / 10160451919` verify at provider/downloaded SHA-256
+`0b7f1551fe3881a0fd46386e1a45ae043faa307f6cb167e91cb4ef78839b9e38` /
+`2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`.
+
+TB1's 146 owner-target MISSING rows and 38 pre-assertion fixture failures therefore disappear under the CB4 correction
+while semantic/test/fixture/selector bytes remain fixed. No new regression candidate is observed; stable accounting
+remains **47 / 14 / 33**, debt **5**, accepted packages **113** pending review. Package115 remains a candidate; exact
+next is runtime-free independent `M4-CP1-TB2-REV`, which owns promotion and formal CP1 closure.
+
 ## 2026-09-10 — `M4-CP1-CB4`: unchanged semantics package-closed; candidate package115 issued
 
 `M4-CP1-CB4` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. After the documentation contradiction was

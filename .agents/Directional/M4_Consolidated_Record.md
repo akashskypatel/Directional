@@ -1,14 +1,15 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP1-TB1-REV` independent adjudication
+**Last updated:** 2026-09-10 at `M4-CP1-TB2-EXEC` full-green raw execution
 
 This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live
 in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current definition adjudication remains
-`Architecture_M4_DEFN_R1_Definition_Record.md`; package114 compile authority remains
-`Architecture_M4_CP1_CB3_Build_Record.md`; the current review is
-`Architecture_M4_CP1_TB1_Independent_Review_Record.md`; and the single next-turn plan is
-`Architecture_M4_CP1_CB4_Code_Build_Plan.md`. Task/state pointers live in `TODO.md` and
+`Architecture_M4_DEFN_R1_Definition_Record.md`; package115 compile authority is
+`Architecture_M4_CP1_CB4_Build_Record.md`; current raw runtime evidence is
+`Architecture_M4_CP1_TB2_EXEC_Report.md`; the preceding independent review remains
+`Architecture_M4_CP1_TB1_Independent_Review_Record.md`; and the exact next boundary is independent
+`M4-CP1-TB2-REV`. Task/state pointers live in `TODO.md` and
 `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
@@ -36,7 +37,7 @@ CB1 subsequently stopped before semantic mutation because its solver contract ha
 
 Independent `M4-CP1-CB2-REV` upheld both stops and routed the solver clause to `M4-DEFN-R1`. `M4-DEFN-R1` then adjudicated the ordered alternatives and selected Heistermann/Warnett/Bommes 2023 exact Bi-MDF iterative refinement with fixed `M=2`. Same-row `+/-2` incidence keeps the frozen class genuinely bidirected, so ordinary MCF is not frozen; the simple disclosed one-shot Bi-MCF→b-matching chain is not used because its reviewed form is specialized to zero-demand refinement. The semantic objective, cap `U`, lexicographic order and A3 ownership are unchanged. The outer solver assurance is explicitly amended from polynomial to **finite exact convergence** under Corollary 3.7, Theorem 3.8 and Corollary 3.9. CP2's independent terminal-optimality certificate is mandatory before CP3 cutover.
 
-TB1 review preserves the focused CP1 green receipt while adjudicating the cumulative failure as package-closure/execution-view evidence rather than product-semantic RED. `M4-CP1-CB4` has now rebuilt unchanged semantics with all four owner binaries and issued candidate package115; exact next is artifact-only `M4-CP1-TB2-EXEC`.
+TB1 review preserves the focused CP1 green receipt while adjudicating the cumulative failure as package-closure/execution-view evidence rather than product-semantic RED. `M4-CP1-CB4` rebuilt unchanged semantics with all four owner binaries and issued candidate package115. `M4-CP1-TB2-EXEC` then proved the package/execution-view control fully green at selector373 **373/373** plus focused CP1 **8/8 twice** with immutable postflight. Exact next is independent `M4-CP1-TB2-REV`; package115 remains unpromoted until that review.
 
 ## 2.1 `M4-CP1` solver deadlock — CB1 and CB2 both stopped, both correctly
 
@@ -133,6 +134,30 @@ unaccepted until runtime. Stable accounting remains **47 / 14 / 33**, debt **5**
 
 The multi-coordinate `±2` oracle coverage obligation identified by TB1 review remains deferred to the first later Code +
 Build turn authorized to change test source; keeping it outside CB4/TB2 preserves the unchanged-semantics control.
+
+## 2.6 `M4-CP1-TB2-EXEC` — package115 full green on unchanged semantics; review pending
+
+Artifact-only run/job `34497233764 / 102938757986` consumed immutable package115 artifact `10159019500` from exact
+semantic source `680f9f1573d3c7e56a273366436463e40e196131`. Preflight proved package identity and checksums, GMP/GMPXX
+compile provenance, frozen selector373 at SHA-256 `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`,
+exact owner mapping **30 / 227 / 75 / 41**, all four executable owners, and package-source-derived sibling `test-data`
+resolution through unchanged `TestFixturePaths` before runtime.
+
+Focused rows 366-373 are **8/8 PASS twice** with identical verdict vectors. The full selector373 is **373 PASS / 0
+RED / 0 SKIP / 0 timeout**, including accepted predecessor **365/365** and CP1 rows **8/8**, with zero selection
+mismatches. An independent scan of all 389 raw gtest process logs found 389 RUN/OK and zero SKIPPED/FAILED markers.
+Package, extracted-source and execution-view postflight censuses are byte-identical to preflight.
+
+Primary result/log artifacts are `10160450899 / 10160451919`, provider/downloaded SHA-256
+`0b7f1551fe3881a0fd46386e1a45ae043faa307f6cb167e91cb4ef78839b9e38` /
+`2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`. No configure, compile, relink, repair,
+source/test/fixture/selector mutation or benchmark occurred in TB2.
+
+The CB4 falsifier is therefore met: TB1's 146 owner-target MISSING rows and 38 pre-assertion fixture failures disappear
+when only package ownership and execution view are corrected. This is full-green raw evidence, not review authority.
+No new regression candidate is observed; stable totals remain **47 / 14 / 33**, debt **5**, accepted packages **113**
+pending review. M3 package113/TB48 remains reviewed semantic runtime authority until independent
+`M4-CP1-TB2-REV` adjudicates candidate closure, package115 promotion and formal CP1 closure.
 
 ## 3. Folded document index
 

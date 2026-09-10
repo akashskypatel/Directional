@@ -1,3 +1,24 @@
+## M4-CP1-TB2-EXEC classification — **CURRENT RAW INTAKE / FULL GREEN / REVIEW REQUIRED / NON-STABLE EXEC**
+
+- Mechanically valid artifact-only runtime: run/job `34497233764 / 102938757986`, immutable package115 artifact
+  `10159019500`, semantic source `680f9f1573d3c7e56a273366436463e40e196131`; full preflight and immutable postflight
+  passed. Result/log artifacts are `10160450899 / 10160451919` with provider/downloaded SHA-256
+  `0b7f1551fe3881a0fd46386e1a45ae043faa307f6cb167e91cb4ef78839b9e38` /
+  `2feedf2c278e4735d3506afa124f0cad367d2f23be43cd0d5c3aa66d03f9b955`.
+- Focused CP1 rows 366-373 are **8/8 PASS twice** with identical verdict vectors. Cumulative selector373 is **373/373
+  PASS**, accepted predecessor **365/365 PASS**, CP1 rows **8/8 PASS**, zero RED/SKIP/timeout/selection mismatch.
+- Exact owner mapping is **30 authority / 227 producer / 75 completion / 41 validation**. The unchanged
+  `TestFixturePaths` sibling rule resolves package-source-derived `test-data`; package/source/execution-view censuses
+  are identical pre/post runtime.
+- **No regression observed.** TB2 creates no new regression candidate and no stable event/category/recurrence. The
+  already-adjudicated `M4-CP1-TB1-EXEC-CAND-01` and `M4-CP1-TB1-EXEC-CAND-02` now have direct raw recovery evidence,
+  but TB-EXEC does not close them; independent review owns final disposition.
+- **Stable-count rationale:** there is no RED, crash, skip, timeout, nondeterminism, integrity failure or new failure
+  surface to price. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**, accepted packages
+  **113** pending review. M3 package113/TB48 remains reviewed semantic runtime authority until review.
+- **Exact successor:** `M4-CP1-TB2-REV`, independent review / runtime-free; validate raw evidence, candidate closure,
+  package115 promotion and formal M4-CP1 closure.
+
 ## M4-CP1-TB1-REV — independent adjudication — **CURRENT REVIEW / APPROVED WITH AMENDMENTS / PACKAGE-CLOSURE + EXECUTION-VIEW DEFECTS / NON-STABLE / CB4**
 
 - Re-opened package114/TB1 primary result+log evidence and independently reconstructed selector373 ownership from source. Focused CP1 remains credible **8/8 PASS twice** with identical verdict vectors.
