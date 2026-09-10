@@ -1,11 +1,12 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-09 at `M4-DEFN`
+**Last updated:** 2026-09-09/10 at `M4-CP1-CB1-REV`
 
 This record holds M4 history that has been folded under the review-turn consolidation policy. Normative current M4
-semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; the exact current successor plan lives in
-`Architecture_M4_CP1_CB1_Code_Build_Plan.md`; task/state pointers live in `TODO.md` and
+semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; the current independent review authority is
+`Architecture_M4_CP1_CB1_Independent_Review_Record.md`; the exact current successor plan lives in
+`Architecture_M4_CP1_CB2_Code_Build_Plan.md`; task/state pointers live in `TODO.md` and
 `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
@@ -27,7 +28,9 @@ minimum-deviation bi-directed flow, independent validation/certification, typed 
 policy, M4 debt ownership and the M5/M6 split for `G4-B004`. It also corrected the independent TB48 review amendment's false claim
 that CP4c-0 TB-R9 never ran: run `33079817998` is the direct 346/346 CP4c-0 closure evidence.
 
-Exact next is `M4-CP1-CB1`.
+CB1 subsequently stopped before semantic mutation because its solver contract had no implementable exact polynomial authority. Independent `M4-CP1-CB1-REV` upheld that stop and amended the solver contract: the frozen L1 objective is exact Integral Bi-MCF under `x=d+p-n`; `H=E*2^V` and `U=2D+E*H` provide a theorem-derived finite optimum cap; exact mixed-radix weights preserve the semantic lexicographic tie; Gabow 1983 arbitrary-capacity minimum-cost biflow is the production algorithmic authority; libSatsuma is illustrative only; and CP2 retains scalable carried optimality certification.
+
+Exact next is `M4-CP1-CB2`.
 
 ## 3. Folded document index
 
@@ -36,6 +39,8 @@ history.
 
 | Folded filename | Lines | Verdict / retained home |
 |---|---:|---|
-| `Architecture_M4_DEFN_Definition_Plan.md` | 78 | **FOLDED AFTER EXECUTION.** Entering authority, M4D0–M4D9, prohibited moves, falsifiers and stop condition are discharged/superseded by the frozen definitions in `Architecture_M4_DEFN_Frozen_Definitions.md` and exact CP1 plan in `Architecture_M4_CP1_CB1_Code_Build_Plan.md`. |
+| `Architecture_M4_DEFN_Definition_Plan.md` | 78 | **FOLDED AFTER EXECUTION.** Entering authority, M4D0–M4D9, prohibited moves, falsifiers and stop condition are discharged/superseded by the frozen definitions in `Architecture_M4_DEFN_Frozen_Definitions.md`; the former CB1 plan it originally routed to is itself indexed below. |
+| `Architecture_M4_CP1_CB1_Code_Build_Plan.md` | 187 | **FOLDED AFTER STOP + REVIEW.** The product/identity/compact-breakpoint scope remains in amended `Architecture_M4_DEFN_Frozen_Definitions.md`; the unsupported solver/WorkLedger clauses triggered CB1's stop and are superseded by `Architecture_M4_CP1_CB1_Independent_Review_Record.md` plus `Architecture_M4_CP1_CB2_Code_Build_Plan.md`. |
+| `Architecture_M4_CP1_CB1_Algorithm_Blocker.md` | 78 | **FOLDED AFTER INDEPENDENT REVIEW.** Its stop verdict is upheld. The exact mismatch, upstream libSatsuma type evidence, research, mathematical adjudication and successor are retained in `Architecture_M4_CP1_CB1_Independent_Review_Record.md`. |
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.

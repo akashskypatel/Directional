@@ -116,55 +116,55 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-CP1-CB1-REV` — EXACT NEXT / INDEPENDENT REVIEW + PLAN / RUNTIME-FREE
+## Mandatory next turn — `M4-CP1-CB2` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
 
-`M4-CP1-CB1` reached the explicit stop condition in its frozen plan **before semantic implementation mutation**. M3 remains CLOSED / ACCEPTED and M4-DEFN remains the current frozen definition authority; the unresolved issue is inside the CP1 solver contract itself.
+`M4-CP1-CB1-REV` is COMPLETE. It independently upheld CB1's pre-mutation stop and resolved the solver/complexity contradiction without weakening M4 exactness or polynomial complexity. Exact next is the canonical Code + Build implementation turn `M4-CP1-CB2` under `Architecture_M4_CP1_CB2_Code_Build_Plan.md`.
 
-### Authority entering M4-CP1-CB1-REV
+### Authority entering M4-CP1-CB2
 
 - reviewed runtime authority remains package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, TB48 `34409262512 / 102659650326`;
-- accepted required-green predecessor remains selector365, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
-- semantic branch authority inspected by CB1 was `b523ccb1aba56a08f7d6e19a43f7d67e63464190`;
-- source-snapshot run `34421215516` captured control commit `3ef59b9deeb83040f713055840fd9117c5ea6106`, artifact `10130996950`, digest `sha256:b1906692329cc1bc3fba8fa975b263bb0d17153b8b666b286a882098127c7ade`; comparison to `b523ccb1...` contains only the snapshot marker and no semantic source change;
-- no M4 production/test/benchmark/build/selector source was changed by CB1; no compile/package or Directional runtime occurred;
-- stable accounting remains 47 events / 14 categories / 33 recurrences; debt 5; packages 113;
-- selector409 remains retained final-M3 audit surface only; its carried RED rows are not part of the M4 required-green prefix;
-- frozen M4 chain remains `M4-CP1 -> M4-CP2 -> M4-CP3 -> M4-CP-COND -> M4-CP-SCALE -> M4-CP4`;
-- M4 still owns the three `G4-B002` produced-witness debts; `G4-B004` remains split between M5 focused relation/certificate production and M6 representative occurrence/embedding/verifier consumption;
-- historical correction remains durable: `M3-CP4c-0-TB-R9` executed the 346/346 whole-gate proof and did not use the later conditional-closure check;
-- M4 definition authority remains `Architecture_M4_DEFN_Frozen_Definitions.md`;
-- blocked CB plan remains `Architecture_M4_CP1_CB1_Code_Build_Plan.md`;
-- blocker evidence and review questions: `Architecture_M4_CP1_CB1_Algorithm_Blocker.md`.
+- accepted required-green predecessor remains selector365, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; selector409 remains final-M3 audit evidence only;
+- entering branch authority for the independent review was `0edf8042b5b01d5fef423790669274e8da62ff63`; review source snapshot run/job `34423780205 / 102704615928` captured control SHA `61e5b4394a9e91407a2b084a773c4cafaa8d6b6a`, artifact `10131877788`, provider digest `sha256:38cc234cc3eb46e4d01536979ebb89f43df8bef9fb553ad7207aff872e64046e`, with 5222/5222 manifest files verified and `runtimeExecution=false`;
+- `M4-CP1-CB1` made no semantic product/test/build/selector mutation and no compile/package/runtime occurred; its blocker and consumed plan are folded into `M4_Consolidated_Record.md` by the completed review;
+- current M4 definition authority is `Architecture_M4_DEFN_Frozen_Definitions.md` **as amended by `M4-CP1-CB1-REV`**; review authority is `Architecture_M4_CP1_CB1_Independent_Review_Record.md`;
+- stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, packages **113**, ownership **300/0/0**;
+- M4 chain remains `M4-CP1 -> M4-CP2 -> M4-CP3 -> M4-CP-COND -> M4-CP-SCALE -> M4-CP4`; M4 still owns the three `G4-B002` produced-witness debts and `G4-B004` remains split M5/M6.
 
-### Blocking question
+### Solver contract now frozen
 
-The frozen CP1 contract simultaneously requires arbitrary-precision counts, exact symbolic lexicographic costs, a dedicated bi-directed minimum-deviation solver, and a proved polynomial `WorkLedger` bound `P(V,E,B)`. The named reference implementation, libSatsuma at upstream `4e96979ecb11bbfe8d9c05e8f8be1ecb992ca5fd`, uses `FlowScalar = int` and `TargetScalar/CostScalar = double`. The cited exact solver's §3.9 proof establishes finite iterative-refinement convergence and optimality after a non-improving `M>=2` step, but does not supply the frozen polynomial iteration bound. The CB plan explicitly forbids substituting a heuristic when that bound is unavailable.
+The semantic objective is unchanged: `J(x)=(sum|x_s-d_s|,x_1,...,x_E)` over positive exact full-span counts satisfying exact incidence balance/parity. `M4-CP1-CB1-REV` proves that this L1 special case is exact Integral Bi-MCF under `x=d+p-n`. For a feasible component, an extreme-ray/minor/Hadamard argument gives `H=E*2^V` and optimum cap `U=2D+E*H`; these are arbitrary-precision proof/capacity values, never iteration ranges. `Q=U+1`, `L=Q^E`, and base-`Q` weights provide an exact theorem-derived scalar encoding of the semantic lexicographic tie. The private solver primitive is Gabow 1983 arbitrary-capacity minimum-cost biflow with published `O(E'^2 log V' log Cmax)` combinatorial bound. Heuristic/floating/machine-width big-M remains prohibited; this exact mixed-radix encoding is the sole permitted scalar implementation encoding.
 
-`M4-CP1-CB1-REV` must independently decide whether to freeze a specific polynomial exact algorithm plus bound, revise the WorkLedger guarantee and exact libSatsuma adaptation contract, or prove a semantically complete narrower graph class. It must issue one unambiguous executable successor CB plan. **No implementation, compile, test, benchmark, package, or selector mutation before that review.**
+`libSatsuma` is retained only as an illustrative Bi-MDF/Bi-MCF reference because upstream uses `FlowScalar=int` and `TargetScalar/CostScalar=double`; it is not M4's normative numeric implementation. The old guessed universal `P(V,E,B)` countdown is withdrawn. WorkLedger instead binds the selected polynomial theorem to exact transformed dimensions/capacity/cost bit-widths and implementation phase counters, with every actual loop still finitely bounded and zero retry/reset.
 
-### Context Load Plan for `M4-CP1-CB1-REV`
+### CP1/CP2 oracle boundary
+
+CP1's production validator independently recomputes structural bindings, exactification, feasibility, parity, objective, cap/radix identities, WorkLedger dimensions/bit-widths and semantic digest, but does not implement a second generic production optimizer. CP1 focused tests use a separate hard-bounded tiny exact oracle to falsify solver optimum/tie behavior. CP2 still adds the scalable carried optimality witness/certificate and its independent production verifier before CP3 may wire A4 to the schedule.
+
+### Exact CB2 scope
+
+`M4-CP1-CB2` must implement the standalone known-feasible A3 product, exact binary64 ingress, exact L1->Bi-MCF normalization, finite-capacity proof values, exact lex encoding, Gabow arbitrary-capacity min-cost biflow solver, independent structural validator, focused compiled CP1 tests, first append-only M4 selector from selector365, and mandatory GMP/GMPXX compile/package evidence. It must not execute a Directional binary/test/benchmark, change M3 selector bytes, cut A4 over, or pull CP2/CP-COND/CP-SCALE/M5/M6 semantics forward.
+
+### Context Load Plan for `M4-CP1-CB2`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/REVIEW.md
+  - turn-based-coding-agent/references/turns/CODE_BUILD.md
 conditional_modules:
-  - trigger: corrective planning / algorithm-contract adjudication
+  - trigger: code implementation / bounded source audit
     path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
-  - trigger: GitHub connector / repository documentation work
+  - trigger: ChatGPT Web GitHub compile/patch orchestration
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP1_CB1_Algorithm_Blocker.md
+  - .agents/Directional/Architecture_M4_CP1_CB2_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP1_CB1_Independent_Review_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M4_CP1_CB1_Code_Build_Plan.md
   - .agents/Directional/DESIGN.md
-  - .agents/Directional/M4_Consolidated_Record.md
-  - .agents/Directional/ROADMAP.md
+  - .agents/Directional/GMP_COMPILE_POLICY.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
 templates_when_producing: []
 do_not_preload:
-  - sibling turn files
-  - uncited M3 per-turn history
-  - unrelated research/provenance/examples
+  - folded CB1 plan/blocker text; resolve through M4_Consolidated_Record.md if historical detail is needed
+  - unrelated M3 per-turn history
 ```
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-09, `M4-DEFN`):** **M3 is CLOSED / ACCEPTED; M4 definitions are frozen and exact next is `M4-CP1-CB1`.** Package113/TB48 remains reviewed runtime authority; selector365 is the accepted M4 predecessor; selector409 remains final-M3 audit evidence only.
+> **Current milestone authority (2026-09-09/10, `M4-CP1-CB1-REV`):** **M3 is CLOSED / ACCEPTED; M4 definitions are amended and exact next is `M4-CP1-CB2`.** Package113/TB48 remains reviewed runtime authority; selector365 is the accepted M4 predecessor; selector409 remains final-M3 audit evidence only.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,9 +30,9 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-09 at `M4-DEFN`. Semantic runtime authority is **package113/TB48** (source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`), selector409 final audit **405 PASS / 4 RED / 0 SKIP**, accepted required-green selector365 **365/365**, RED `[368,369,374,398]`. Stable accounting is **47 / 14 / 33**, debt 5, packages 113, ownership 300/0/0. **M3 is CLOSED / ACCEPTED.**
+**Currency.** Last updated 2026-09-09/10 at `M4-CP1-CB1-REV`. Semantic runtime authority is **package113/TB48** (source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`), selector409 final audit **405 PASS / 4 RED / 0 SKIP**, accepted required-green selector365 **365/365**, RED `[368,369,374,398]`. Stable accounting is **47 / 14 / 33**, debt 5, packages 113, ownership 300/0/0. **M3 is CLOSED / ACCEPTED.**
 
-**Current definition resolution.** `M4-DEFN` freezes `GlobalConformityPlan` as the single A3 writer between A2b and A4: one positive exact count per full A2b boundary arc, exact ordered support-piece paths, boundary-incidence multiplicity, mandatory region parity, compact arbitrary-precision breakpoint IDs/generation, backend-independent binary64 exactification, an exact rational target-energy objective, deterministic bi-directed minimum-deviation flow, CP2-carried typed subset infeasibility/certification, and an independent oracle. The chain is `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`, with the M5/M6 split for `G4-B004`. Exact next is `M4-CP1-CB1`. The same definition review corrected a historical verification error: CP4c-0 TB-R9 **did** run (`33079817998`) and passed 346/346; M3 remains closed on direct evidence, not an inferred supersession argument.
+**Current definition resolution.** `M4-CP1-CB1-REV` upholds CB1's pre-mutation stop and amends only the A3 solver/oracle staging inside the frozen `M4-DEFN` product. `GlobalConformityPlan` remains the single A3 writer with one positive exact count per full A2b arc, exact support-piece paths, incidence multiplicity, mandatory parity, compact exact ordinals and bit-exact target binding. The exact L1 objective is now specialized to finite-capacity **Integral Bi-MCF**: `x=d+p-n`, theorem-derived cap `U=2D+E^2*2^V`, exact mixed-radix tie encoding, and Gabow 1983 arbitrary-capacity minimum-cost biflow with published `O(E'^2 log V' log Cmax)` combinatorial bound. libSatsuma is illustrative, not the M4 numeric implementation authority. CP1 independently validates structure/feasibility/objective/encoding and uses fixed-small exact test oracles; CP2 still owns scalable carried optimality certification and typed infeasibility before CP3 production cutover. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`; exact next is `M4-CP1-CB2`.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -114,7 +114,7 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 **What closed M3:** CP4c-2 already established closed/higher-genus actual-embedded A2a′/A2b authority. CP4c-3's frozen exit was the mechanical witness under AU0–AU9, not an all-green 409-row audit. TB48 preserves accepted 365/365, mechanical 366/367 and protected 390/393/406/407 green, runs every final audit identity report-only after first RED, and proves CB54's ordinal370 typed-error/locus correction. The four remaining REDs retain separate owners and remain visible.
 
-**What is next:** `M4-CP1-CB1` implements the first bounded A3 schedule-authority slice under `Architecture_M4_CP1_CB1_Code_Build_Plan.md`. The accepted predecessor is selector365; selector409 is retained final-M3 audit evidence. CP1 owns the known-feasible immutable full-arc schedule and independent validator only, including mandatory parity and compact exact breakpoint generation; CP2 adds carried certification/infeasibility, and A4 producer cutover remains CP3.
+**What is next:** `M4-CP1-CB2` implements the first bounded A3 schedule-authority slice under `Architecture_M4_CP1_CB2_Code_Build_Plan.md`. The accepted predecessor is selector365; selector409 is retained final-M3 audit evidence. CB2 implements the amended exact finite-capacity Integral Bi-MCF solver plus the known-feasible immutable full-arc schedule and independent structural validator; CP2 adds scalable carried optimality certification/infeasibility, and A4 producer cutover remains CP3.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -226,7 +226,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4 global conformity — CURRENT / `M4-CP1-CB1`.** Definitions are frozen; A3 has not yet been implemented. Build one immutable known-feasible `GlobalConformityPlan` writer and independent validator from exact A2b authority, with one variable per full arc, incidence multiplicity, parity, exact binary64 ingress and compact exact-ordinal breakpoint generation. Do not cut A4 over early; carried infeasibility/certification is CP2 and producer consumption/post-hoc-pairing removal is CP3.
+1. **M4 global conformity — CURRENT / `M4-CP1-CB2`.** A3 has not yet been implemented. The solver ambiguity is resolved: exact L1 deviation is Integral Bi-MCF with theorem-derived finite capacities, exact mixed-radix canonical tie encoding and Gabow 1983 arbitrary-capacity min-cost biflow. Build one immutable known-feasible `GlobalConformityPlan` writer and independent structural validator from exact A2b authority; CP1 fixed-small test oracles independently check optimum/tie. Do not cut A4 over early; scalable carried optimality/infeasibility is CP2 and producer consumption/post-hoc-pairing removal is CP3.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical.** The exact-torus `InvalidHardRailPairing` blocker and its three produced-witness re-proofs are M4-owned. M4 must remove the blocker without post-hoc local pairing and discharge all three debts on produced authority.
 
@@ -245,6 +245,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Plan/certifier partition duplication and transit/exactification debt — ACTIVE / non-gating.** The domains may lawfully differ, but duplicated actual-embedded construction, production transit audit projection, minimal transit witness and input-size/exactification audits remain architectural debt outside the closed M3 exit.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Specialize the frozen objective before freezing a general solver.** CP1 originally demanded a general exact Bi-MDF implementation plus a literature-backed per-transition polynomial countdown, even though M4 had already frozen the primary objective to `sum|x-d|`. That L1 special case linearizes exactly to Integral Bi-MCF, and a theorem-derived finite optimum cap gives polynomial-width capacities plus an exact lexicographic radix. The blocker was therefore not evidence that polynomial exact scheduling was unavailable; it was evidence that the definition had committed to a more general solver/evidence representation than the objective required. Freeze the semantic objective first, derive the narrowest exact combinatorial problem it actually needs, and only then freeze the implementation theorem and WorkLedger fields.
 
 **Direct gate evidence outranks an inferred supersession story.** M4-DEFN found that a later independent verification amendment had declared CP4c-0 TB-R9 unrun after a narrow history scan. Primary Actions run inventory plus retained changelog/tracker/consolidated history show `33079817998` ran and passed 346/346. When a closure row names a gate, search the complete retained family record and primary run inventory before inventing cumulative-inclusion closure or re-opening the milestone.
 

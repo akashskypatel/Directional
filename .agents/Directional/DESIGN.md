@@ -177,9 +177,9 @@ Two consequences are load-bearing and must not be softened. **A trace's own self
  
 Campen, Bommes, and Kobbelt, *Quantized Global Parametrization* (2015), show that the per-cell consistency conditions — opposite sides of a cell must sum to equal parametric length — form an underdetermined homogeneous linear Diophantine system whose coefficients are drawn from `{-1, 0, 1}` with exactly two non-zeros per column, and that navigating its solution space by generating vectors admits a deterministic Dijkstra-type algorithm rather than branch-and-bound. They further note that for a decomposition without T-junctions the generating vectors are orthogonal, coefficients are chosen independently per dual cycle, and *processing order does not matter*.
  
-Heistermann, Warnett, and Bommes, *Min-Deviation-Flow in Bi-directed Graphs for T-Mesh Quantization* (2023), reformulate the same assignment as a minimum-deviation-flow problem in bi-directed networks, solvable in polynomial time by a dedicated solver rather than a generic branch-and-cut solver.
+Heistermann, Warnett, and Bommes, *Min-Deviation-Flow in Bi-directed Graphs for T-Mesh Quantization* (2023), reformulate the same assignment as a minimum-deviation-flow problem in bi-directed networks and show the standard positive/negative-deviation reduction from an L1 target objective to bi-directed minimum-cost flow. Gabow, *An Efficient Reduction Technique for Degree-Constrained Subgraph and Bidirected Network Flow Problems* (1983), supplies a polynomial minimum-cost biflow algorithm for arbitrary integral capacities.
  
-This is the normative basis for A3. It matters for two independent reasons: the assignment is decided without any linear-algebra factorization, and a polynomial flow or min-weight-cycle formulation supplies the monotone progress measure that §10.2 requires and that a generic ILP cannot.
+This is the normative basis for A3. M4 specializes its exact L1 objective to Integral Bi-MCF with an input-derived finite capacity bound and an exact theorem-derived lexicographic encoding; see `Architecture_M4_DEFN_Frozen_Definitions.md` §7. It matters for two independent reasons: the assignment is decided without any linear-algebra factorization, and a polynomial dedicated flow formulation supplies the bounded progress evidence that §10.2 requires and that a generic ILP cannot.
  
 ### 4.8 Exact combinatorial coordinates supply the support kernel
  
@@ -209,7 +209,7 @@ Gori et al., *FlowRep* (2017), show that robust curve selection depends on globa
  
 - `libQEx` is the reference for explicit extraction entities and an exact-predicate boundary.
 - `QuadWild` is the reference for phase separation and global side-count consistency before local tessellation.
-- `libSatsuma` is the reference implementation for bi-directed min-deviation-flow assignment.
+- `libSatsuma` is an **illustrative formulation/reference implementation** for bi-directed min-deviation-flow assignment, not M4's normative exact numeric backend; its upstream `int` flow and `double` target/cost surface does not satisfy M4's arbitrary-precision contract. M4's production solver contract is the exact finite-capacity Integral Bi-MCF specialization frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` §7, using Gabow 1983 as the algorithmic authority.
 - `geometry-central` is the reference implementation for integer/normal coordinates and intrinsic mollification.
 - `Directional` is the reference for field matching, singularities, and transport metadata.
 - the supplied AutoRemesher implementation is a useful comparison for field/parameterization/extraction staging, but its hole repair, largest-island selection, and triangle/n-gon emission are incompatible with pure-quad authority at any disposition tier.
@@ -670,7 +670,7 @@ Only after the schedule verifies may region producers run. They consume breakpoi
  
 The assignment is **positive**: every rail receives at least one subdivision. Positivity is the validity criterion, it is locally checkable, and it structurally prevents the degeneracy that zero-length rails would imply. The cost is that some coarse configurations otherwise expressible with zero-length edges are excluded; that is an accepted quality trade for a criterion that can be certified without a parametrization.
  
-The scheduler is a deterministic polynomial graph or flow algorithm (§4.7). A generic branch-and-bound integer program is **not** an acceptable implementation, because it supplies neither the monotone progress measure required by §10.2 nor a canonical tie-break among equally-optimal solutions required by §10.1. Solver choice within the polynomial class is replaceable; the certificate and invariants are not.
+The scheduler is a deterministic polynomial graph or flow algorithm (§4.7). A generic branch-and-bound integer program is **not** an acceptable implementation, because it supplies neither the bounded-progress evidence required by §10.2 nor a canonical tie-break among equally-optimal solutions required by §10.1. For M4's frozen L1 objective, `Architecture_M4_DEFN_Frozen_Definitions.md` §7 fixes the implementation class more narrowly: exact finite-capacity Integral Bi-MCF with Gabow 1983 arbitrary-capacity min-cost biflow and a theorem-derived exact lexicographic encoding. A future solver replacement requires review proving the same exact semantic objective, polynomial bound class, and certificate invariants.
  
 If the assignment is infeasible for a subset of rails, the scheduler emits a typed infeasibility naming exactly that subset. It does not relax constraints, does not retry with altered targets, and does not fail the run: the affected regions become non-constructible and the run proceeds toward D3.
  

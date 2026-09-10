@@ -2304,6 +2304,10 @@ in the product, fail closed or add that authority — never manufacture it by re
 
 ## 7. Budget, attempts, and stop rules
 
+### Specialize the semantic objective before freezing the solver budget
+
+M4-CP1 froze a general exact Bi-MDF implementation requirement plus a literature-backed scalar transition countdown even though its semantic objective was already the L1 special case `sum|x-d|`. CB1 correctly stopped because the named implementation did not satisfy arbitrary-precision exactness and the cited iterative-refinement proof did not supply that countdown. Independent review then derived the narrower problem the objective actually needs: L1 deviation linearizes to Integral Bi-MCF, an input-derived finite optimum cap makes capacities polynomial-width, and exact mixed-radix weights preserve the lexicographic tie. The polynomial solver theorem can therefore be named without inventing a generic convex solver or an unsupported hidden constant. **Freeze the semantic objective first; derive the narrowest exact combinatorial problem and its encoded-size bound; only then freeze the implementation theorem and WorkLedger fields.** A proof-only magnitude bound is not permission to iterate to that magnitude.
+
 65. **A stop rule renegotiated every time it fires is not a stop rule.** M3's cumulative ceiling was
     amended under pressure at each binding point (11, `5 -> 6`, `6 -> 7`, `11 -> 12`, a pending
     `12 -> 13`), costing a turn per amendment and changing no decision. Tie the trigger to the

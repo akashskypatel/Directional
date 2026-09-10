@@ -6954,7 +6954,7 @@ Q8 criteria 1/4/5. Later 353/355/365 prefix inclusion is corroboration only. The
 “M4-DEFN must confirm or reopen M3” branch is retired. M3 remains CLOSED / ACCEPTED; stable accounting remains
 **47 / 14 / 33**, debt **5**, packages **113**.
 
-**Exact next after M4-DEFN closeout:** `M4-CP1-CB1`, runtime-free Code + Build under the frozen M4 definitions.
+**Current M4 routing after `M4-CP1-CB1-REV`:** `M4-CP1-CB2`, runtime-free Code + Build under the amended frozen M4 definitions and `Architecture_M4_CP1_CB2_Code_Build_Plan.md`. Stable regression accounting is unchanged.
 
 **TB47-REV verification-pass addenda.** The adjudication stands. CB53's change is exactly DEFN-R3.4's one-sided form
 (`!=` -> `>` at `tests:2273`), so the oracle keeps teeth on the over-count direction; ordinal 307 was explicitly

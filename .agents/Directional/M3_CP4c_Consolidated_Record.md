@@ -1791,7 +1791,7 @@ Mandatory REVIEW consolidation. TB48/package113 is promoted as reviewed semantic
 
 **Folded this review:** 5 documents, **773 lines**. **Running total: 161 documents, 30,025 lines.** Exact bytes remain recoverable from Git history.
 
-**Retained as final/current M3 authority:** `Architecture_M3_CP4c3_TB48_EXEC_Report.md`, `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md`, `M3_Closure_Record.md`, `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every byte-frozen selector. M4 successor authority now lives in `Architecture_M4_DEFN_Frozen_Definitions.md` and `Architecture_M4_CP1_CB1_Code_Build_Plan.md`.
+**Retained as final/current M3 authority:** `Architecture_M3_CP4c3_TB48_EXEC_Report.md`, `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md`, `M3_Closure_Record.md`, `M3_CP4c_Current_And_Forward.md`, `M3_CP4c_Frozen_Definitions.md`, `Required_Green_Selector_Manifest.md`, this record, and every byte-frozen selector. M4 successor authority now lives in `Architecture_M4_DEFN_Frozen_Definitions.md`, `Architecture_M4_CP1_CB1_Independent_Review_Record.md`, and `Architecture_M4_CP1_CB2_Code_Build_Plan.md`.
 
 
 ---

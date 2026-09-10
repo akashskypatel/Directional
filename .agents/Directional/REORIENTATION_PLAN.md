@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-09, `M4-DEFN`):** **M3 is CLOSED / ACCEPTED and M4 definitions are frozen.** Package113/TB48 remains reviewed runtime authority; accepted M4 predecessor is selector365. `M4-DEFN` fixes the single chain `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`, one full-A2b-arc A3 `GlobalConformityPlan` writer, mandatory parity, compact arbitrary-precision breakpoint generation, exact binary64 ingress, deterministic minimum-deviation flow/oracle/infeasibility contracts, and exact next `M4-CP1-CB1`.
+> **Current milestone authority (2026-09-09/10, `M4-CP1-CB1-REV`):** **M3 is CLOSED / ACCEPTED and M4 definitions are frozen/amended.** Package113/TB48 remains reviewed runtime authority; accepted M4 predecessor is selector365. The chain remains `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`; the A3 solver contract is now exact finite-capacity Integral Bi-MCF with theorem-derived lex encoding and Gabow 1983 arbitrary-capacity min-cost biflow. Exact next is `M4-CP1-CB2`.
 
 # Directional Surface-Cell Reorientation Plan
 
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **definition complete; exact next `M4-CP1-CB1`** |
+| M4 | global conformity plan | **definition complete/amended; exact next `M4-CP1-CB2`** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -224,7 +224,7 @@ The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c25
 
 ## 8. M4 — global conformity plan
 
-**Status: `M4-DEFN` COMPLETE. Exact next `M4-CP1-CB1`.** `Architecture_M4_DEFN_Frozen_Definitions.md` freezes one A3 schedule authority and the chain CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4. Architectural stage order still places conditioning before A0; development order keeps it from becoming a hidden prerequisite for A3 semantics.
+**Status: `M4-DEFN` COMPLETE / AMENDED by `M4-CP1-CB1-REV`. Exact next `M4-CP1-CB2`.** `Architecture_M4_DEFN_Frozen_Definitions.md` freezes one A3 schedule authority and the chain CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4. The review specializes the exact L1 solver to finite-capacity Integral Bi-MCF with theorem-derived lex encoding while preserving the checkpoint/development ordering. Architectural stage order still places conditioning before A0; development order keeps it from becoming a hidden prerequisite for A3 semantics.
 
 - Compute one strictly positive schedule per full A2b boundary arc globally before regional production; source-simplex support pieces locate exact breakpoints but do not own independent positive counts.
 - Preserve boundary-incidence multiplicity and mandatory even all-quad region parity from the first CP1 schedule.
