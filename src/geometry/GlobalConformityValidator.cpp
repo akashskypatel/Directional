@@ -340,6 +340,18 @@ std::optional<GlobalConformityPlanError> validate_global_conformity_candidate(
       input.targetSize.size() != input.sourceVertices.rows()) {
     return validation_error("source/target dimensions are inconsistent");
   }
+  for (Eigen::Index row = 0; row < input.sourceVertices.rows(); ++row) {
+    for (Eigen::Index axis = 0; axis < input.sourceVertices.cols(); ++axis) {
+      if (!FieldExactRational::from_double_exact(input.sourceVertices(row, axis))) {
+        return validation_error("source coordinate is not finite exact binary64");
+      }
+    }
+    const auto target =
+        FieldExactRational::from_double_exact(input.targetSize(row));
+    if (!target || *target <= exact_integer(0)) {
+      return validation_error("target metric is not finite and strictly positive");
+    }
+  }
   if (candidate.sourceDigest != topology.source_digest() ||
       candidate.networkDigest != topology.network_digest() ||
       candidate.cutGraphDigest != topology.cut_graph_digest() ||
@@ -430,6 +442,18 @@ std::optional<GlobalConformityPlanError> validate_global_conformity_candidate(
   if (seenOccurrences.size() != expectedOccurrences) {
     return validation_error("not every A2b boundary occurrence is represented exactly once");
   }
+  std::map<ConformitySpanId, std::size_t> incidenceDegree;
+  for (const auto &incidence : candidate.incidences) {
+    ++incidenceDegree[incidence.span];
+  }
+  bool hasOuterBoundarySpan = false;
+  for (const auto &span : spans) {
+    const auto degree = incidenceDegree[span.id];
+    if (degree == 0U || degree > 2U) {
+      return validation_error("span incidence degree is unsupported");
+    }
+    hasOuterBoundarySpan = hasOuterBoundarySpan || degree == 1U;
+  }
   for (const auto &[key, balance] : signedBalance) {
     if (balance != EInt(0)) return validation_error("region/family balance is nonzero");
     if (unsignedBoundary[key] % EInt(2) != EInt(0)) {
@@ -440,6 +464,7 @@ std::optional<GlobalConformityPlanError> validate_global_conformity_candidate(
   const std::size_t E = spans.size();
   const std::size_t V = signedBalance.size();
   if (E == 0U || V == 0U) return validation_error("empty normalized exact problem");
+  const std::size_t solverRows = V + (hasOuterBoundarySpan ? 1U : 0U);
   const EInt exactE = exact_from_size(E);
   const EInt H = exactE * exact_power(EInt(2), V);
   const EInt U = EInt(2) * D + exactE * H;
@@ -481,6 +506,8 @@ std::optional<GlobalConformityPlanError> validate_global_conformity_candidate(
       ledger.matchingPrimitiveRevision !=
           "seqan/lemon@813c63d4f1d603858d941ac6f04abbe57901996a" ||
       ledger.semanticRowCount != V || ledger.semanticSpanCount != E ||
+      ledger.initializerNodeCount != solverRows * 2U ||
+      ledger.initializerArcCount > (E + (hasOuterBoundarySpan ? 1U : 0U)) * 4U ||
       !ledger.initializerExactFeasibilityValidated || ledger.refinementM != 2 ||
       ledger.refinementCount != ledger.refinements.size() ||
       ledger.hBitWidth != H.magnitude_bits() ||
@@ -500,7 +527,9 @@ std::optional<GlobalConformityPlanError> validate_global_conformity_candidate(
     if (!(step.after.scalarValue < step.before.scalarValue) ||
         step.before.canonicalCounts.size() != E ||
         step.after.canonicalCounts.size() != E ||
-        step.biMcfEdgeCount > E * 4U || step.bMatchingNodeCount > V * 2U ||
+        step.biMcfEdgeCount >
+            (E + (hasOuterBoundarySpan ? 1U : 0U)) * 4U ||
+        step.bMatchingNodeCount > solverRows * 2U ||
         step.wpmNodeCount > ledger.peakMatchingNodeCount ||
         step.wpmEdgeCount > ledger.peakMatchingEdgeCount) {
       return validation_error("WorkLedger refinement evidence is inconsistent");
