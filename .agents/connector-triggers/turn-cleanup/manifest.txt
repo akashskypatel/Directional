@@ -1,0 +1,6 @@
+# M4-CP2-TB2-EXEC temporary state
+.agents/Directional/turn-payloads/m4_cp2_tb2_preflight.py
+.agents/Directional/turn-payloads/m4_cp2_tb2_execute.py
+.agents/connector-triggers/m4-cp2-tb2-exec-20260910-a.txt
+.agents/connector-triggers/source-snapshot/m4-cp2-tb2-exec-20260910-a.txt
+.agents/connector-triggers/m4-cp2-tb2-closeout-apply-20260910-a.txt
