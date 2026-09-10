@@ -1,0 +1,48 @@
+name: M4 CP2 CB2 Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp2-cb2-apply-20260910-a.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp2-cb2-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp2-cb2-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp2-cb2-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1gdUjKlV_o9_Lu13jje4bK31ghOghJgd6
+      patch_sha256: a2caace911ccc8833c9d7995200d7f679d549995f4a000ce577b43bce17b630a
+      base_sha: 399ea4ecc8f69b107286e2fa66cf8b3c5f51cdb6
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M4-CP2-CB2: repair frozen CP2 assurance contracts'
+      retention_days: 14
+    secrets: inherit
