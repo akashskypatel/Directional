@@ -28,15 +28,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP2-TB1-EXEC` (artifact-only runtime)
+## Current focus — `M4-CP2-TB1-REV` (review + adjudication, runtime-free)
 
-`M4-CP1-TB2-REV` is **COMPLETE / APPROVED / PACKAGE115 PROMOTED / M4-CP1 CLOSED**. Reviewed TB2 authority is selector373 **373/373 PASS**, accepted predecessor **365/365**, focused CP1 **8/8 twice**, zero RED/SKIP/timeout/selection mismatch, with immutable package/source/execution-view postflight. Closure authority: `.agents/Directional/M4_CP1_Closure_Record.md`.
+`M4-CP2-TB1-EXEC` is **COMPLETE / MEASURED GREEN / REVIEW PENDING** on immutable candidate package116. Run/job `34515352025 / 102999258938` produced result/log artifacts `10167558308 / 10167558730` at SHA-256 `214c854c0274e1de73b73a3e4fab4906729fda453fe090c60792645edee5fa9a` / `dceafa9801564d16ba27ca1b12d3e9bc79d648363f725fb78ee4ac54624f2bb7`. Selector380 is **380/380 PASS**, accepted predecessor **373/373**, CP2 rows **7/7**, focused rows 374-380 are **7/7 twice** with identical vectors, and there are zero RED/SKIP/timeout/selection mismatches. Package/source/execution-view postflight is immutable and the execution boundary records no compile/relink/generated discovery/repair/mutation.
 
-Stable accounting remains **47 / 14 / 33**, debt **5**; accepted package authority is **115**. Package114 remains unpromoted historical failed-gate evidence. The two TB1 package/control candidates are CLOSED / RECOVERY PROVED / NON-STABLE.
+No regression candidate was observed; stable accounting remains **47 / 14 / 33**, debt **5**. Package116 is still a candidate because EXEC does not promote artifacts. Accepted runtime/package authority remains package115 / selector373 until review.
 
-`M4-CP2-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE** on exact evidence source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60`. Compile run/job `34512397141 / 102989549611` produced candidate package116 artifact `10166351695` (SHA-256 `c61b9900a2745454594825de81181ce982ec4b7986f40aa3b23c23e12d0e8e61`) with GMP/GMPXX authority, all eight targets linked, package `SHA256SUMS` **28/28**, and `runtimeExecution=false`. Selector380 is 380 LF rows at `512c9ece…09c4` with exact accepted selector373 prefix `6d00cafa…7d8b`; static owner partition is **30 / 234 / 75 / 41**. Package116 is not accepted runtime authority yet.
-
-**Exact next:** artifact-only **`M4-CP2-TB1-EXEC`** under `.agents/Directional/Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md`. Consume immutable package116; execute CP2 rows 374-380 twice and the complete selector380 one identity per fresh process. No configure/compile/relink, package repair, generated discovery, benchmark, or source/test/fixture/selector mutation is authorized. EXEC preserves raw evidence and hands off to `M4-CP2-TB1-REV`.
+**Exact next:** runtime-free **`M4-CP2-TB1-REV`**. Re-open package116 plus TB1 result/log primary evidence and independently re-derive the decisive selector, raw-process, owner-map, and postflight receipts. Review owns package116 promotion and M4-CP2 closure/adjudication. Do not rerun TB1, compile, rebuild, or mutate source/test/fixture/selector authority before review.
 
 ## Carried forward from M1
 
@@ -75,7 +73,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1 CLOSED / `M4-CP2-TB1-EXEC` NEXT**; package115/TB2 remains reviewed runtime authority at selector373 **373/373**. CP2 CB1 is compile/package green as candidate package116 on `eb23177e…`; selector380 and seven CP2 gates are compiled but runtime-unexecuted. M4 also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1 CLOSED / `M4-CP2-TB1-REV` NEXT**; package115/TB2 remains accepted runtime authority pending review. Package116/TB1-EXEC measured selector380 **380/380**, predecessor **373/373**, CP2 **7/7**, focused **7/7 twice**, with zero RED/SKIP/timeout/selection mismatch and immutable postflight. M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -115,4 +113,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. **M4-CP1 is CLOSED / ACCEPTED** at package115/TB2, selector373 **373/373**, accepted prefix **365/365**. M4-CP2-CB1 is compile/package green only: candidate package116 artifact `10166351695`, evidence source `eb23177e…`, selector380 compiled but not executed. Exact next is artifact-only **`M4-CP2-TB1-EXEC`** under `Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md`. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**. **M4-CP1 is CLOSED / ACCEPTED** at package115/TB2. M4-CP2 candidate package116/TB1-EXEC measured selector380 **380/380**, predecessor **373/373**, CP2 **7/7**, focused **7/7 twice**, zero RED/SKIP/timeout/selection mismatch, immutable postflight; promotion remains review-owned. Exact next is runtime-free **`M4-CP2-TB1-REV`**. PR #8 remains open, draft, and unmerged.

@@ -1,3 +1,12 @@
+## M4-CP2-TB1-EXEC classification — **CURRENT RAW INTAKE / MEASURED GREEN / REVIEW PENDING / NO REGRESSION OBSERVED**
+
+- Mechanically valid artifact-only runtime: run/job `34515352025 / 102999258938`, immutable package116 artifact `10166351695`, semantic source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60`. Result/log artifacts `10167558308 / 10167558730` verify at provider/download SHA-256 `214c854c0274e1de73b73a3e4fab4906729fda453fe090c60792645edee5fa9a` / `dceafa9801564d16ba27ca1b12d3e9bc79d648363f725fb78ee4ac54624f2bb7`.
+- Focused CP2 rows 374-380 are **7/7 PASS twice** with identical verdict vectors. Cumulative selector380 is **380/380 PASS**, accepted predecessor **373/373**, CP2 **7/7**, with **0 RED / 0 SKIP / 0 timeout / 0 selection mismatch**.
+- Exact owner outcomes are **30/30 authority-kernel / 234/234 producer / 75/75 completion / 41/41 validation**. Raw-log audit confirms exactly one selected intended identity per process; package/source/execution-view postflight is immutable.
+- **Regression classification: none observed.** This turn creates no stable regression, recurrence, category, candidate, or unpriced failure surface. There is no RED/crash/skip/timeout/nondeterminism/integrity/orchestration event to classify further.
+- **Stable-count rationale:** +0 events / +0 categories / +0 recurrences. Totals remain **47 / 14 / 33**, debt **5**, accepted package authority **115** pending review. Package116 remains candidate evidence because TB-EXEC does not promote artifacts.
+- **Exact successor:** `M4-CP2-TB1-REV`, runtime-free REVIEW + adjudication. No rerun, compile, package rebuild, or corrective CB before review.
+
 ## M4-CP1-TB2-REV adjudication — **CURRENT REVIEW / PACKAGE115 PROMOTED / CP1 CLOSED / CANDIDATES CLOSED / NON-STABLE**
 
 - Same-agent review is user-authorized; independence here is primary-evidence re-opening and independent re-derivation, not personnel separation. No runtime or compile occurred in review.

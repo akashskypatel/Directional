@@ -118,46 +118,40 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 **Same-agent REVIEW/DEFN is allowed — user-authorized 2026-09-10.** The same agent/session may perform a REVIEW, REVIEW + PLAN, or DEFN turn even when it authored or executed an earlier turn in the same chain. "Independent" in review/oracle/verification language means independent **evidence, re-derivation, authority, or implementation path**, not required personnel separation, unless a specific criterion explicitly says otherwise. A same-agent REVIEW must re-open primary evidence and re-derive decisive facts; a same-agent DEFN remains planning/runtime-free. All cadence, stop, validation-integrity, source-authority, compile/runtime, and acceptance boundaries remain unchanged.
 
-## Mandatory next turn — `M4-CP2-TB1-EXEC` — EXACT NEXT / ARTIFACT-ONLY RUNTIME
+## Mandatory next turn — `M4-CP2-TB1-REV` — EXACT NEXT / REVIEW + ADJUDICATION / RUNTIME-FREE
 
-`M4-CP2-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Exact evidence source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` compiled under run/job `34512397141 / 102989549611`; immutable candidate package116 artifact `10166351695` hashes to `c61b9900a2745454594825de81181ce982ec4b7986f40aa3b23c23e12d0e8e61`, and compile log artifact `10166352142` hashes to `3c3e3658d3f3341f108af5397f681061cb6c77be85e9dd1355fb28dba77e2dd0`. All eight approved targets linked, GMP/GMPXX authority is explicit, package `SHA256SUMS` verified **28/28**, and the package records `runtimeExecution=false`. No Directional runtime, test, benchmark, discovery/listing, CLI/GUI binary, fuzzer, or custom input executed in CB1.
+`M4-CP2-TB1-EXEC` is **COMPLETE / MEASURED GREEN / REVIEW PENDING / NOT PROMOTED**. It consumed immutable package116 artifact `10166351695` from semantic source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` without rebuild, relink, generated discovery, package/mode repair, or source/test/fixture/selector mutation.
 
-### Current authority
+### Current primary evidence
 
-- **M4-CP1 remains CLOSED / ACCEPTED.** package115/TB2 remains the reviewed semantic runtime authority at selector373 **373/373**, accepted prefix **365/365**, focused CP1 **8/8 twice**.
-- **M4-CP2-CB1 is compile/package authority only.** package116 is a candidate and is not promoted before runtime review.
-- Selector380 is **380 LF rows**, SHA-256 `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`; its first 373 rows hash exactly to accepted selector373 `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`. Static owner partition is **30 authority-kernel / 234 producer / 75 completion / 41 validation**. The seven new CP2 identities are compiled but unexecuted.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **115**.
-- CB1 implementation/report authority is `.agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Report.md`; frozen definitions remain `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md`.
+- TB run/job: `34515352025 / 102999258938`, event/control SHA `37f2675d0236a4c0ecfe3caf82995018d85d9829`.
+- Result artifact `10167558308`, provider/download SHA-256 `214c854c0274e1de73b73a3e4fab4906729fda453fe090c60792645edee5fa9a`.
+- Diagnostic-log artifact `10167558730`, provider/download SHA-256 `dceafa9801564d16ba27ca1b12d3e9bc79d648363f725fb78ee4ac54624f2bb7`.
+- Selector380: **380/380 PASS**; accepted predecessor rows 1-373: **373/373 PASS**; CP2 rows 374-380: **7/7 PASS**.
+- Focused CP2 phases A/B: **7/7 PASS twice**, identical verdict vectors.
+- Zero RED, SKIP, timeout, or selection mismatch. Exact owner outcomes are **30/30 authority-kernel, 234/234 producer, 75/75 completion, 41/41 validation**.
+- Package/source/execution-view byte censuses are identical before/after. `execution-boundary.txt` records preflight/runtime complete, orchestration failure false, and compile/relink/generated-discovery/repair/mutation flags false.
+- `Regression_Root_Cause_Tracker.md` records **zero observed regressions/candidates** for TB1-EXEC. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**.
 
-### `M4-CP2-TB1-EXEC` boundary
+### Acceptance boundary
 
-Execute `.agents/Directional/Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md` against immutable artifact **10166351695** only. Preflight must verify the artifact ZIP hash, package `SHA256SUMS`, exact evidence source, GMP compile metadata, selector380 hash/prefix, one-owner mapping, owner binaries, and fresh execution view before the first Directional process.
+TB-EXEC is measurement, not promotion. **Accepted runtime/package authority remains M4-CP1 package115 / selector373** until `M4-CP2-TB1-REV` independently re-opens and adjudicates the primary evidence. Package116 remains a candidate despite the measured green result.
 
-Run selector rows **374-380 twice** as two focused deterministic phases, then run all **380** selector identities one identity per fresh process. No configure, compile, relink, generated discovery, package/mode repair, fixture/source/test/selector mutation, or benchmark execution is authorized. EXEC preserves raw evidence only and does not promote package116 or close CP2. Its configured successor is `M4-CP2-TB1-REV`, which re-opens primary evidence and owns adjudication.
+### `M4-CP2-TB1-REV` boundary
 
-### Context Load Plan
+Review is runtime-free. Re-open package116 and the TB1 result/log artifacts directly and independently re-derive the decisive facts rather than relying on this summary: package/source identity, selector380 and 373-row prefix authority, one-owner mapping, raw per-process execution/selection results, focused A/B determinism, cumulative 380-row ledger, and immutable postflight. Same-agent review is permitted, but independence still requires re-opened primary evidence and re-derivation.
 
-```yaml
-load_next:
-  - references/turns/TB-EXEC.md
-conditional_modules:
-  - trigger: GitHub connector, artifact download, artifact-only workflow, or evidence preservation
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Report.md
-  - .agents/Directional/Architecture_M4_CP2_Required_Green_Selector_380.txt
-  - .agents/Directional/M4_CP1_Closure_Record.md
-  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
-  - .agents/Directional/Required_Green_Selector_Manifest.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-templates_when_producing: []
-do_not_preload:
-  - sibling turn files
-  - module reference directories
-  - uncited historical reports
-```
+If the primary evidence upholds the complete frozen gate, review may promote package116, close M4-CP2, update M4 current authority, perform mandatory REVIEW document consolidation and ORIENTATION update, and select the exact next checkpoint from retained roadmap/architecture authority. If review finds a semantic contradiction, it must issue the corrective REVIEW + PLAN disposition; no retry, patch, or CB may precede that adjudication.
+
+Primary retained references:
+
+- `.agents/Directional/Architecture_M4_CP2_TB1_Test_Benchmark_Report.md`
+- `.agents/Directional/Architecture_M4_CP2_TB1_Test_Benchmark_Plan.md`
+- `.agents/Directional/Architecture_M4_CP2_CB1_Code_Build_Report.md`
+- `.agents/Directional/Architecture_M4_CP2_Required_Green_Selector_380.txt`
+- `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md`
+- `.agents/Directional/M4_CP1_Closure_Record.md`
+- `.agents/Directional/Regression_Root_Cause_Tracker.md`
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

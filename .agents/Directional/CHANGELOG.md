@@ -1,3 +1,11 @@
+## 2026-09-10 — `M4-CP2-TB1-EXEC`: package116 selector380 measured full green; review pending
+
+Artifact-only TB consumed immutable package116 artifact `10166351695` from semantic source `eb23177e6ee9cbb27cf1ee30a299911abc0e1c60` under run/job `34515352025 / 102999258938`. Result/log artifacts `10167558308 / 10167558730` verify at SHA-256 `214c854c0274e1de73b73a3e4fab4906729fda453fe090c60792645edee5fa9a` / `dceafa9801564d16ba27ca1b12d3e9bc79d648363f725fb78ee4ac54624f2bb7`.
+
+Focused CP2 rows 374-380 passed **7/7 twice** with identical verdict vectors. The cumulative selector380 gate passed **380/380**, accepted predecessor **373/373**, CP2 **7/7**, with zero RED/SKIP/timeout/selection mismatch. Exact owner outcomes are **30/30 authority-kernel / 234/234 producer / 75/75 completion / 41/41 validation**. Package, extracted-source, and execution-view censuses are identical before/after; no compile, relink, generated discovery, benchmark, package/mode repair, or source/test/fixture/selector mutation occurred.
+
+No regression candidate was observed; stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **115**. TB-EXEC does not promote package116 despite the measured green gate. Exact next is runtime-free `M4-CP2-TB1-REV`, which must independently re-open primary evidence and owns package116 promotion/M4-CP2 closure.
+
 ## 2026-09-10 — `M4-CP2-CB1`: certification/typed-infeasibility source compiles as candidate package116
 
 `M4-CP2-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. The bounded source change adds the frozen CP2 certificate/outcome surface, deterministic typed `BalanceCut | PositivityCut | ParityCut` infeasibility, independent certificate/subset verification, terminal WPM witness carriage, the deferred multi-coordinate bidirected `±2` exhaustive oracle, and the seven prescribed CP2 gating identities while preserving the accepted CP1 API as the regression oracle. Selector380 is 380 LF rows at `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4` with exact selector373 prefix `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`; static owner partition is **30 / 234 / 75 / 41**.
