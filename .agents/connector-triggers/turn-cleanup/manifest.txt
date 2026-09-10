@@ -1,6 +1,0 @@
-.agents/Directional/turn-payloads/m4-cp2-tb1-control.py
-.agents/Directional/turn-payloads/m4-cp2-tb1-exec-draft.yml
-.agents/connector-triggers/m4-cp2-tb1-exec/trigger.txt
-.agents/connector-triggers/m4-cp2-tb1-schema-check/trigger.txt
-.agents/connector-triggers/source-snapshot/2026-09-10T1820Z.txt
-.agents/connector-triggers/m4-cp2-tb1-closeout-apply/trigger.txt
