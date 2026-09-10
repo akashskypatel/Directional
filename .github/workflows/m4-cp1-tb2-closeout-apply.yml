@@ -1,0 +1,47 @@
+name: M4 CP1 TB2 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp1-tb2-closeout-apply-20260910.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp1-tb2-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp1-tb2-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp1-tb2-closeout-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1xsbGGqntxGFk7CFyDKRixjYO4cuDNVmn
+      patch_sha256: 64700e4928f1b0cf295b548fb6309f3d63d260f596a496e097d24eb59ddfa20c
+      base_sha: c9c43fb5969d7e8ca5200fb02ae94617223c265c
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: record M4-CP1-TB2-EXEC full-green evidence'
+      retention_days: 7
+    secrets: inherit
