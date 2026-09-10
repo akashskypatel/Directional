@@ -1,0 +1,4 @@
+purpose=M4-DEFN-R1 apply preserved definition patch
+base_sha=74dbf78fb11a1d989d77d4ccd0c8d07ad25eb69c
+patch_sha256=4bfc62f72b75baa9d71a1f2308c48614d5723ac995d46604ef4c5116fd3d7852
+runtimeExecution=false
