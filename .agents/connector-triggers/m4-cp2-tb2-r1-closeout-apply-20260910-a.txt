@@ -1,4 +1,0 @@
-M4-CP2-TB2-R1-EXEC closeout Drive patch apply
-base=36286c6a940428e6491e4a1487b193ecd5c4aa2b
-patch_sha256=f53762878d730066b092ecacdef9ae57e29ad46f66f20902944b4dd2a3365821
-retry=2
