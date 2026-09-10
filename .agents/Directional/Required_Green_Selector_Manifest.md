@@ -613,6 +613,7 @@ may share an identity count with an older M3 selector while carrying different b
 |---|---:|---|---|---:|---|
 | `Architecture_M4_CP1_Required_Green_Selector_373.txt` | 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | M3 accepted 365 | 8 | **ACCEPTED M4-CP1 authority:** package115/TB2 reviewed **373/373**; bytes unchanged |
 | `Architecture_M4_CP2_Required_Green_Selector_380.txt` | 380 | `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4` | accepted M4-CP1 selector373 | 7 | **M4-CP2-CB1 candidate:** exact append-only CP2 certificate/outcome/oracle surface; runtime pending successor TB |
+| `Architecture_M4_CP2_Required_Green_Selector_382.txt` | 382 | `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f` | unpromoted M4-CP2 selector380 | 2 | **M4-CP2-CB2 candidate:** corrective WorkLedger + semantic-digest gates; runtime pending successor TB |
 
 The first 365 LF rows hash to
 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, proving the accepted M3 selector365
@@ -634,3 +635,6 @@ Regenerate after any turn that appends a selector, and never edit a selector fil
 ### M4-CP2-CB1 selector380 publication receipt
 
 `Architecture_M4_CP2_Required_Green_Selector_380.txt` contains **380 LF rows** with LF SHA-256 `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`. Its first **373** LF rows are byte-identical to accepted selector373 and hash to `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`. The seven appended rows are exactly the CP2 identities preserved in `M4_Consolidated_Record.md` §§2.8-2.10, in prescribed order. The originating CB1 plan is folded after execution/review and remains recoverable from git history. This is a publication/lineage receipt only; package116/selector380 remains unpromoted after `M4-CP2-TB1-REV`.
+### M4-CP2-CB2 selector382 publication receipt
+
+`Architecture_M4_CP2_Required_Green_Selector_382.txt` contains **382 LF rows** with LF SHA-256 `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`. Its first **380** LF rows are byte-identical to unpromoted selector380 and hash to `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`; its first **373** rows remain byte-identical to accepted M4-CP1 selector373 at `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`. Static source mapping finds **382/382** identities with exactly one definition and zero missing/duplicate definitions, partitioned **30 authority-kernel / 236 producer / 75 completion / 41 validation**. Rows 381-382 are `GlobalConformityCertificate.IndependentVerifierRejectsWorkLedgerBoundHistoryAndAssuranceTamper` and `GlobalConformityOutcome.SemanticDigestBindsFullCP2Outcome`, both producer-owned. This receipt publishes candidate lineage only; runtime authority remains package115/selector373 until successor TB execution and review.

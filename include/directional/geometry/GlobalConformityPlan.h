@@ -68,6 +68,7 @@ struct ConformityObjectiveValue { EInt primaryDeviation; std::vector<EInt> canon
 struct ConformityRefinementEvidence { ConformityObjectiveValue before; ConformityObjectiveValue after; std::size_t biMcfEdgeCount=0U,bMatchingNodeCount=0U,bMatchingEdgeCount=0U,wpmNodeCount=0U,wpmEdgeCount=0U; };
 struct GlobalConformityWorkLedger {
   std::string algorithmIdentity = "HeistermannWarnettBommes2023ExactBiMDFRefinementM2";
+  std::string assuranceClass = "FiniteExactConvergence(Corollary3.7+Theorem3.8+Corollary3.9,M=2)";
   std::string matchingPrimitiveIdentity = "LEMON-1.3.1-MaxWeightedPerfectMatching-exact-EInt-adapter";
   std::string matchingPrimitiveRevision = "seqan/lemon@813c63d4f1d603858d941ac6f04abbe57901996a";
   std::size_t semanticRowCount=0U, semanticSpanCount=0U, initializerNodeCount=0U, initializerArcCount=0U;
@@ -76,6 +77,7 @@ struct GlobalConformityWorkLedger {
   std::size_t refinementCount=0U, peakMatchingNodeCount=0U, peakMatchingEdgeCount=0U;
   std::size_t hBitWidth=0U,uBitWidth=0U,qBitWidth=0U,lBitWidth=0U;
   std::size_t maximumTargetBitWidth=0U,maximumCountBitWidth=0U,maximumCapacityBitWidth=0U,maximumCostBitWidth=0U;
+  std::size_t maximumObservedExactIntegerBitWidth=0U;
   bool terminalExactNonImprovementValidated=false;
   EInt terminalRefinementCostChange;
   std::size_t retryResetCount=0U;
@@ -186,7 +188,7 @@ struct GlobalConformityOutcome {
   std::vector<GlobalConformityCertificate> scheduledComponents;
   std::vector<ConformityInfeasibleSubset> infeasibleSubsets;
   std::optional<GlobalConformityPlan> feasiblePlan;
-  std::uint64_t sourceDigest=0U,networkDigest=0U,cutGraphDigest=0U,topologyPlanDigest=0U,targetMetricDigest=0U,normalizedProblemDigest=0U;
+  std::uint64_t sourceDigest=0U,networkDigest=0U,cutGraphDigest=0U,topologyPlanDigest=0U,targetMetricDigest=0U,normalizedProblemDigest=0U,semanticDigest=0U;
 };
 class GlobalConformityOutcomeBuildResult {
 public:

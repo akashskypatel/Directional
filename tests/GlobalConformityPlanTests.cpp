@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <iostream>
+#include <map>
 #include <optional>
 #include <set>
 #include <string>
@@ -39,6 +41,7 @@ using directional::fields::CrossFieldEdgeTransition;
 using directional::fields::CrossFieldResult;
 using directional::geometry::ConformityFamily;
 using directional::geometry::ConformityIncidence;
+using directional::geometry::ConformityRefinementEvidence;
 using directional::geometry::ConformitySign;
 using directional::geometry::ConformitySpanId;
 using directional::geometry::ConformitySpanInput;
@@ -274,11 +277,37 @@ GlobalConformityInput make_cp2_input(
 
 std::vector<SolverSpan> multi_coordinate_bidirected_problem() {
   return {
-      {0U, {{0U, +1}, {0U, +1}}, EInt(3), EInt(1), EInt(1), EInt(0), true},
+      {0U, {{0U, +1}, {0U, +1}}, EInt(1), EInt(1), EInt(1), EInt(0), true},
       {1U, {{0U, -1}, {0U, -1}}, EInt(1), EInt(1), EInt(1), EInt(0), true},
-      {2U, {{0U, +1}, {1U, -1}}, EInt(2), EInt(1), EInt(1), EInt(0), true},
-      {3U, {{0U, -1}, {1U, +1}}, EInt(5), EInt(1), EInt(1), EInt(0), true},
+      {2U, {{0U, +1}, {1U, -1}}, EInt(1), EInt(1), EInt(1), EInt(0), true},
+      {3U, {{1U, +1}}, EInt(1), EInt(1), EInt(1), EInt(0), true},
   };
+}
+
+bool contains_bidirected_coefficient_magnitude_two(
+    const std::vector<SolverSpan> &spans) {
+  for (const auto &span : spans) {
+    std::map<std::size_t, int> coefficients;
+    for (const auto &end : span.ends) coefficients[end.row] += end.sign;
+    for (const auto &[row, coefficient] : coefficients) {
+      (void)row;
+      if (coefficient == 2 || coefficient == -2) return true;
+    }
+  }
+  return false;
+}
+
+std::vector<SolverSpan> magnitude_one_bidirected_twin(
+    std::vector<SolverSpan> spans) {
+  for (auto &span : spans) {
+    std::set<std::pair<std::size_t, int>> seen;
+    std::vector<SolverIncidenceEnd> unique;
+    for (const auto &end : span.ends) {
+      if (seen.emplace(end.row, end.sign).second) unique.push_back(end);
+    }
+    span.ends = std::move(unique);
+  }
+  return spans;
 }
 
 std::vector<EInt> tiny_exhaustive_count_vector_oracle(
@@ -546,9 +575,22 @@ TEST(GlobalConformityExactSolver,
 
 TEST(GlobalConformityExactSolver,
      MultiCoordinateBidirectedM2MatchesExhaustiveOracle) {
-  SCOPED_TRACE("coordinateCount=4; containsBidirectedCoefficientMagnitude2=true");
   const auto spans = multi_coordinate_bidirected_problem();
+  const auto coordinateCount = spans.size();
+  const bool containsMagnitudeTwo =
+      contains_bidirected_coefficient_magnitude_two(spans);
+  const auto magnitudeOneTwin = magnitude_one_bidirected_twin(spans);
   const auto expected = tiny_exhaustive_count_vector_oracle(spans, 2U);
+  const auto twinExpected =
+      tiny_exhaustive_count_vector_oracle(magnitudeOneTwin, 2U);
+  const bool magnitudeTwoLoadBearing = expected != twinExpected;
+
+  ASSERT_EQ(4U, coordinateCount);
+  ASSERT_TRUE(containsMagnitudeTwo);
+  ASSERT_TRUE(magnitudeTwoLoadBearing);
+  for (const auto &count : expected) EXPECT_LT(count, EInt(8));
+  for (const auto &count : twinExpected) EXPECT_LT(count, EInt(8));
+
   auto result = directional::geometry::global_conformity_detail::solve_exact_schedule(
       2U, spans);
   ASSERT_TRUE(result.success) << result.failure;
@@ -556,6 +598,12 @@ TEST(GlobalConformityExactSolver,
   EXPECT_EQ(2, result.ledger.refinementM);
   EXPECT_TRUE(result.ledger.terminalExactNonImprovementValidated);
   EXPECT_GE(result.ledger.terminalRefinementCostChange, EInt(0));
+
+  std::cout << "M4_CP2_ORACLE_RECEIPT coordinateCount=" << coordinateCount
+            << "; containsBidirectedCoefficientMagnitude2="
+            << (containsMagnitudeTwo ? "true" : "false")
+            << "; magnitude2LoadBearing="
+            << (magnitudeTwoLoadBearing ? "true" : "false") << '\n';
 }
 
 TEST(GlobalConformityCertificate,
@@ -625,6 +673,139 @@ TEST(GlobalConformityCertificate,
     certificate.theoremEvidence.perfectMatchingOptimalityCertified = false;
   });
   reject([](auto &certificate) { certificate.workLedger.refinementM = 3; });
+}
+
+TEST(GlobalConformityCertificate,
+     IndependentVerifierRejectsWorkLedgerBoundHistoryAndAssuranceTamper) {
+  const auto fixture = make_square_topology_fixture();
+  const auto input = make_cp2_input(make_known_feasible_input(fixture, false));
+  const auto built = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(built);
+  ASSERT_FALSE(built.value().scheduledComponents.empty());
+
+  const auto rejectLedger = [&](auto mutate) {
+    auto tampered = built.value();
+    auto &certificate = tampered.scheduledComponents.front();
+    mutate(certificate);
+    const auto error = directional::geometry::validate_global_conformity_outcome(
+        fixture.topology, input, tampered);
+    ASSERT_TRUE(error);
+    EXPECT_NE(std::string::npos, error->detail.find("WorkLedger")) << error->detail;
+  };
+
+  rejectLedger([](auto &c) { c.workLedger.algorithmIdentity += "-tampered"; });
+  rejectLedger([](auto &c) { c.workLedger.assuranceClass += "-tampered"; });
+  rejectLedger([](auto &c) { c.workLedger.matchingPrimitiveIdentity += "-tampered"; });
+  rejectLedger([](auto &c) { c.workLedger.matchingPrimitiveRevision += "-tampered"; });
+  rejectLedger([](auto &c) { ++c.workLedger.initializerNodeCount; });
+  rejectLedger([](auto &c) { ++c.workLedger.initializerArcCount; });
+  rejectLedger([](auto &c) { c.workLedger.initializerExactFeasibilityValidated = false; });
+  rejectLedger([](auto &c) { ++c.workLedger.hBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.uBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.qBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.lBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.maximumTargetBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.maximumCountBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.maximumCapacityBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.maximumCostBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.maximumObservedExactIntegerBitWidth; });
+  rejectLedger([](auto &c) { ++c.workLedger.refinementCount; });
+  rejectLedger([](auto &c) { ++c.workLedger.peakMatchingNodeCount; });
+  rejectLedger([](auto &c) { ++c.workLedger.peakMatchingEdgeCount; });
+  rejectLedger([](auto &c) { c.workLedger.terminalExactNonImprovementValidated = false; });
+  rejectLedger([](auto &c) { c.workLedger.retryResetCount = 1U; });
+
+  rejectLedger([](auto &c) {
+    ConformityRefinementEvidence step;
+    step.before = c.objective;
+    step.after = c.objective;
+    step.after.scalarValue += EInt(1);
+    step.biMcfEdgeCount = c.terminalWitness.biMcfEdgeCount;
+    step.bMatchingNodeCount = c.terminalWitness.bMatchingNodeCount;
+    step.bMatchingEdgeCount = c.terminalWitness.bMatchingEdgeCount;
+    step.wpmNodeCount = c.terminalWitness.wpmNodeCount;
+    step.wpmEdgeCount = c.terminalWitness.wpmEdges.size();
+    c.workLedger.refinements.push_back(std::move(step));
+    c.workLedger.refinementCount = c.workLedger.refinements.size();
+  });
+  rejectLedger([](auto &c) {
+    ConformityRefinementEvidence step;
+    step.before = c.objective;
+    step.after = c.objective;
+    step.biMcfEdgeCount = c.terminalWitness.biMcfEdgeCount + 1U;
+    step.bMatchingNodeCount = c.terminalWitness.bMatchingNodeCount;
+    step.bMatchingEdgeCount = c.terminalWitness.bMatchingEdgeCount;
+    step.wpmNodeCount = c.terminalWitness.wpmNodeCount;
+    step.wpmEdgeCount = c.terminalWitness.wpmEdges.size();
+    c.workLedger.refinements.push_back(std::move(step));
+    c.workLedger.refinementCount = c.workLedger.refinements.size();
+  });
+}
+
+TEST(GlobalConformityOutcome,
+     SemanticDigestBindsFullCP2Outcome) {
+  const auto fixture = make_square_topology_fixture();
+  const auto input = make_cp2_input(make_known_feasible_input(fixture, true));
+  const auto baseline = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, input);
+  ASSERT_TRUE(baseline);
+  ASSERT_NE(0U, baseline.value().semanticDigest);
+  EXPECT_FALSE(directional::geometry::validate_global_conformity_outcome(
+      fixture.topology, input, baseline.value()));
+
+  auto reorderedInput = input;
+  std::reverse(reorderedInput.spans.begin(), reorderedInput.spans.end());
+  std::reverse(reorderedInput.incidences.begin(), reorderedInput.incidences.end());
+  const auto reordered = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, reorderedInput);
+  ASSERT_TRUE(reordered);
+  EXPECT_EQ(baseline.value().semanticDigest, reordered.value().semanticDigest);
+
+  const auto onePieceInput =
+      make_cp2_input(make_known_feasible_input(fixture, false));
+  const auto onePiece = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, onePieceInput);
+  ASSERT_TRUE(onePiece);
+  EXPECT_EQ(baseline.value().normalizedProblemDigest,
+            onePiece.value().normalizedProblemDigest);
+  EXPECT_NE(baseline.value().semanticDigest, onePiece.value().semanticDigest);
+
+  auto badDigest = baseline.value();
+  badDigest.semanticDigest ^= 1U;
+  const auto digestError = directional::geometry::validate_global_conformity_outcome(
+      fixture.topology, input, badDigest);
+  ASSERT_TRUE(digestError);
+  EXPECT_NE(std::string::npos, digestError->detail.find("semantic digest"));
+
+  auto badCertificate = baseline.value();
+  ASSERT_FALSE(badCertificate.scheduledComponents.empty());
+  badCertificate.scheduledComponents.front().workLedger.assuranceClass += "-tampered";
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_outcome(
+      fixture.topology, input, badCertificate));
+
+  const auto infeasibleInput = make_infeasible_cp2_input(fixture);
+  const auto infeasible = directional::geometry::build_global_conformity_outcome(
+      fixture.topology, infeasibleInput);
+  ASSERT_TRUE(infeasible);
+  ASSERT_NE(0U, infeasible.value().semanticDigest);
+  ASSERT_FALSE(infeasible.value().infeasibleSubsets.empty());
+  auto reorderedInfeasibleInput = infeasibleInput;
+  std::reverse(reorderedInfeasibleInput.spans.begin(),
+               reorderedInfeasibleInput.spans.end());
+  std::reverse(reorderedInfeasibleInput.incidences.begin(),
+               reorderedInfeasibleInput.incidences.end());
+  const auto reorderedInfeasible =
+      directional::geometry::build_global_conformity_outcome(
+          fixture.topology, reorderedInfeasibleInput);
+  ASSERT_TRUE(reorderedInfeasible);
+  EXPECT_EQ(infeasible.value().semanticDigest,
+            reorderedInfeasible.value().semanticDigest);
+
+  auto badSubset = infeasible.value();
+  badSubset.infeasibleSubsets.front().witness.cutCapacity += EInt(1);
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_outcome(
+      fixture.topology, infeasibleInput, badSubset));
 }
 
 TEST(GlobalConformityOutcome,

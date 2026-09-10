@@ -238,6 +238,12 @@ directional_require_default_packaged_test_contract(
 directional_require_default_packaged_test_contract(
   "tests/GlobalConformityPlanTests.cpp"
   "MixedComponentsCoverEveryIncidenceExactlyOnce")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "IndependentVerifierRejectsWorkLedgerBoundHistoryAndAssuranceTamper")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityPlanTests.cpp"
+  "SemanticDigestBindsFullCP2Outcome")
 
 function(directional_require_cp2_typed_network_cutover)
   file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/pipeline/RemeshPipeline.cpp"
