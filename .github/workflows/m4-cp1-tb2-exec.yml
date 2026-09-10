@@ -1,0 +1,150 @@
+name: M4 CP1 TB2 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp1-tb2-exec-20260910.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp1-tb2-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp1-tb2-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp1-tb2-exec
+      commit_run_file: false
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp1-tb2-exec-workflow.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "turn=M4-CP1-TB2-EXEC"
+            echo "artifact_id=10159019500"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout orchestration source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ github.token }}
+
+      - name: Verify frozen TB2 harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp1-tb2-exec-workflow.log"
+          harness='.agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh'
+          expected='ddfbda2ff626008d3d2e9f6d117b10c98de159c4f9b8a3a36f99e50e24fd22d9'
+          actual="$(sha256sum "$harness" | awk '{print $1}')"
+          {
+            echo "harness=${harness}"
+            echo "harness_expected_sha256=${expected}"
+            echo "harness_actual_sha256=${actual}"
+          } | tee -a "$log"
+          test "$actual" = "$expected"
+
+      - name: Execute immutable package115 gate
+        id: tb
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TURN_ID: M4-CP1-TB2-EXEC
+          ARTIFACT_ID: '10159019500'
+          EXPECTED_ARTIFACT_NAME: m4-cp1-cb4-package-result-34493860436
+          EXPECTED_PROVIDER_DIGEST: sha256:de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b
+          EXPECTED_ZIP_SHA256: de391c44744d83622dee30cf3a78f781c3b9ad95f0b517a866e7285e77a6b45b
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m4-cp1-tb2-exec-workflow.log"
+          echo 'command=bash .agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh --execute' | tee -a "$log"
+          bash .agents/Directional/tools/m4_cp1_tb2_artifact_only_harness.sh --execute
+          status=$?
+          set -e
+          echo "tb_exit=${status}" | tee -a "$log"
+          echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
+          exit "$status"
+
+      - name: Record final source and execution status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m4-cp1-tb2-exec-workflow.log"
+          {
+            echo "tb_outcome=${{ steps.tb.outcome }}"
+            echo "tb_exit=${{ steps.tb.outputs.exit_code }}"
+            echo "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)"
+            git status --short 2>&1 || true
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload TB2 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp1-tb2-exec-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M4-CP1-TB2-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload TB2 diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp1-tb2-exec-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/M4-CP1-TB2-EXEC.log
+            ${{ runner.temp }}/m4-cp1-tb2-exec-workflow.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Propagate TB2 execution status
+        if: always()
+        env:
+          TB_EXIT: ${{ steps.tb.outputs.exit_code }}
+        shell: bash
+        run: |
+          if [[ -z "${TB_EXIT}" ]]; then
+            echo 'TB2 execution did not publish an exit code.' >&2
+            exit 98
+          fi
+          exit "${TB_EXIT}"
