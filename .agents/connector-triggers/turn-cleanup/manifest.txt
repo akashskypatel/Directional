@@ -1,0 +1,8 @@
+# M4-CP2-TB2-R1-EXEC temporary-state cleanup
+.agents/connector-triggers/m4-cp2-tb2-r1-exec-20260910-a.txt
+.agents/connector-triggers/source-snapshot/m4-cp2-tb2-r1-closeout-20260910-a.txt
+.agents/connector-triggers/m4-cp2-tb2-r1-closeout-apply-20260910-a.txt
+.agents/Directional/turn-payloads/m4_cp2_tb2_r1_exec.yml
+.agents/Directional/turn-payloads/m4_cp2_tb2_r1_execute.py
+.agents/Directional/turn-payloads/m4_cp2_tb2_r1_preflight.py
+.agents/Directional/turn-payloads/m4_cp2_tb2_r1_static_validation.txt
