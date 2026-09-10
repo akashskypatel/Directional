@@ -1,5 +1,33 @@
 ## 2026-09-09 — `M3-CP4c-3-TB48-REV` verification pass: M3 closure upheld; CP4c-0's basis recorded
 
+
+## 2026-09-09 — M4-DEFN complete: global conformity definitions frozen; CP4c-0 history corrected
+
+- Re-fetched/verified latest independently amended head through source-snapshot run `34416013987`; snapshot event
+  `60670e53f55355146b224e01850ba75526c727cb`, runtimeExecution=false, 5219/5219 manifest files verified.
+- Corrected the TB48 verification amendment's false premise that `M3-CP4c-0-TB-R9` never ran. Primary run
+  `33079817998` plus retained changelog/tracker/consolidated evidence prove **346/346 PASS**, including Q8 1/4/5.
+  M3 remains closed on direct gate evidence; later cumulative inclusion is corroboration only.
+- Froze one M4 chain: `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`.
+- Froze `GlobalConformityPlan` as the single A3 writer with one positive exact count per **full A2b boundary arc**;
+  source-simplex pieces remain ordered exact support only. Boundary incidences preserve multiplicity, region parity is
+  mandatory from CP1, and breakpoint identity is compact `{span, exactOrdinal}` with arbitrary-precision ordinals rather
+  than O(`x_s`) storage or `size_t` narrowing. Binary64 coordinate/target ingress is exact bit decomposition.
+- Froze an exact rational full-span target-energy proxy, deterministic bi-directed minimum-deviation flow with
+  magnitude-independent lexicographic canonicalization, WorkLedger, independent oracle, and CP2-added carried
+  positivity/parity/optimality certificate plus typed subset infeasibility. Baseline M4 activates no unfrozen 2:1
+  adaptivity constraint.
+- Adjudicated `G4-B004`: M5 focused positive relation/certificate production; M6 representative
+  occurrence/embedding/verifier consumption; no M4 gate/debt.
+- Review-turn consolidation folded the executed 78-line `Architecture_M4_DEFN_Definition_Plan.md` into
+  `M4_Consolidated_Record.md`; `ORIENTATION.md` refreshed.
+- Exact next: `M4-CP1-CB1`, Code + Build / runtime-free, under `Architecture_M4_CP1_CB1_Code_Build_Plan.md`.
+
+
+**HISTORICAL VERIFICATION AMENDMENT — CP4c-0/TB-R9 PREMISE CORRECTED BY M4-DEFN.** The text below is retained as
+an audit trail; its “TB-R9 never executed” premise is false. See the 2026-09-09 M4-DEFN entry above and the review
+record §13.
+
 Static verification of the delegated `M3-CP4c-3-TB48-REV`. No runtime, no compile, no package operation, no
 product/test/fixture/benchmark/build/selector mutation. Runtime authority remains **TB48 / package113** (promoted);
 accounting unchanged at **47 / 14 / 33**.

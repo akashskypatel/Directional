@@ -6831,7 +6831,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `G4-B001` | Direct torus final `LocalSheetMismatch`. | strict-valid torus 3/3 |
 | `G4-B002` | Exact Phase10 torus `InvalidHardRailPairing`. | shared positive rail schedule; revised M4 |
 | `G4-B003` | Nonzero periodic Z4 production capability. | M5 relation certificate + representative product acceptance |
-| `G4-B004` | Positive multi-isolation quotient witness. | M5/M6 focused + representative certificate evidence |
+| `G4-B004` | Positive multi-isolation quotient witness. | **M5:** focused positive relation/certificate production; **M6:** representative occurrence/embedding/verifier consumption. No M4 gate/debt. |
 
 ## Architecture enforcement register
 
@@ -6946,21 +6946,15 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-**TB48-REV verification-pass addenda. M3 closure UPHELD**, with one reconciliation recorded.
+**M4-DEFN correction to the TB48 verification-pass amendment.** The amendment's statement that
+`M3-CP4c-0-TB-R9` was never executed is refuted by primary and retained evidence. Workflow `33079817998`
+(`M3 CP4c0 TB-R9 Whole-Gate Reproof`) completed successfully; retained job/artifact evidence records
+`98543736213`, selector346 SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, and **346/346 PASS** including
+Q8 criteria 1/4/5. Later 353/355/365 prefix inclusion is corroboration only. The amendment's conditional
+“M4-DEFN must confirm or reopen M3” branch is retired. M3 remains CLOSED / ACCEPTED; stable accounting remains
+**47 / 14 / 33**, debt **5**, packages **113**.
 
-- **The TB47-REV obligations are fully discharged.** AU0-AU9 were restored durably and adjudicated **per criterion**
-  in `M3_CP4c_Current_And_Forward.md` §1.1, not asserted in bulk; ordinal370 satisfies the **zero-producers ->
-  exactly one** criterion in its strong form (the code has a producer *and* an identity that reaches it); and
-  `ROADMAP.md` was updated in-turn, acting on the standing-doc-set note.
-- **One open checkpoint sat inside the closed milestone.** §7 said CP4c-3 was the final M3 checkpoint, but
-  `ROADMAP.md:70` still read *"Closes on a green `M3-CP4c-0-TB-R9`"* - a turn **never executed** - and
-  `M3_Closure_Record.md` listed CP4c-0 without stating its closure basis. **The reconciliation is sound and is now
-  recorded** in `M3_Closure_Record.md` §2.1: CP4c-0's gate **346** is a strict prefix of **353**, **355** and the
-  accepted **365**, all green, so acceptance is carried by **cumulative inclusion** and `TB-R9` was superseded by
-  three later gates closing on supersets of it. The stale instruction is retired from the roadmap row.
-- **`M4-DEFN` must confirm it before consuming the 365 baseline**: no CP4c-0 identity absent from 365, and Q8
-  criteria 1/4/5 asserting nothing no later gate re-executes. **If either fails, M3 closure is premature and
-  reopens.** `LESSONS.md` 168.
+**Exact next after M4-DEFN closeout:** `M4-CP1-CB1`, runtime-free Code + Build under the frozen M4 definitions.
 
 **TB47-REV verification-pass addenda.** The adjudication stands. CB53's change is exactly DEFN-R3.4's one-sided form
 (`!=` -> `>` at `tests:2273`), so the oracle keeps teeth on the over-count direction; ordinal 307 was explicitly

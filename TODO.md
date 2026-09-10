@@ -26,20 +26,24 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M4-DEFN` — GLOBAL CONFORMITY DEFINITIONS / RUNTIME-FREE
+## Current focus — `M4-CP1-CB1` — GLOBAL CONFORMITY SCHEDULE AUTHORITY / CODE + BUILD / RUNTIME-FREE
 
-`M3-CP4c-3-TB48-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**. Package113/TB48 is promoted as reviewed semantic runtime authority: source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, run/job `34409262512 / 102659650326`, **405 PASS / 4 RED / 0 SKIP**, accepted required-green prefix **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Ordinal370's `EmptyNetworkOnClosedSurface = 6` plus non-empty `sourceFace` product correction is runtime-proved and closes non-stably.
+`M4-DEFN` is **COMPLETE**. Frozen authority: `Architecture_M4_DEFN_Frozen_Definitions.md`. M3 remains CLOSED / ACCEPTED; package113/TB48 remains reviewed runtime authority; the accepted M4 predecessor is selector365, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains final-M3 audit evidence only.
 
-The restored AU0–AU9 mechanical-witness exit criterion is **MET**, including non-vacuous protected 390/393/406/407 evidence and full report-only selector409 execution. The four remaining RED rows retain their existing separate owners and do not redefine the frozen exit criterion. **CP4c-3 is CLOSED / ACCEPTED; M3 is CLOSED / ACCEPTED.** Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, packages **113**.
+M4 uses exactly one checkpoint chain: **CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4**. CP-COND is architecturally before A0 but developed after the A3 core; CP4 is cumulative exit, not another writer. `G4-B004` is not M4 work: M5 owns focused positive quotient-relation/certificate production, M6 owns representative occurrence/embedding/verifier consumption.
 
-The accepted M3 required-green selector entering M4 is **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains the retained final M3 audit surface; its four carried REDs are visible and separately owned, not silently accepted.
+M4-DEFN also corrected the independent TB48 verification amendment's historical error: `M3-CP4c-0-TB-R9` **did execute** as `33079817998 / 98543736213` and passed **346/346**, including Q8 criteria 1/4/5. M3 closure therefore requires no M4 conditional inclusion check.
 
-Exact next is **`M4-DEFN`**, planning-only/runtime-free under `Architecture_M4_DEFN_Definition_Plan.md`. It must reconcile the roadmap's `M4-CP-COND` / `M4-CP-SCALE` proposals with the older `M4-CP1..CP4` chain, freeze one global conformity schedule product and its exact formulation/error/oracle/witness contracts, carry the three `G4-B002` produced-witness debts, adjudicate `G4-B004`, and issue one bounded first Code + Build plan. No implementation/test/fixture/selector mutation, compile, benchmark, or runtime is authorized in M4-DEFN.
+Exact next is **`M4-CP1-CB1`**, canonical Code + Build / runtime-free, under `Architecture_M4_CP1_CB1_Code_Build_Plan.md`. It implements only the known-feasible immutable A3 schedule product: one positive count per full A2b arc, ordered exact support pieces, multiplicity-preserving boundary incidences, mandatory parity, compact arbitrary-precision breakpoint IDs/generation, backend-independent binary64 exactification, deterministic exact minimum-deviation solver, independent validator, focused CP1 tests, and append-only selector from 365. It must compile only through the mandatory GMP/GMPXX reusable workflow and may not execute Directional runtime.
 
-- [x] Independently promote package113/TB48 and close ordinal370 non-stably.
-- [x] Confirm protected Part XII non-vacuity, stable accounting, four carried RED owners, AU0–AU9 exit condition, CP4c-3 closure and M3 closure.
-- [x] Perform mandatory REVIEW consolidation and update `ORIENTATION.md`.
-- [ ] Execute `M4-DEFN` and freeze one coherent M4 checkpoint chain plus the first Code + Build plan.
+- [x] Reconcile M4 checkpoint decompositions into one chain.
+- [x] Freeze one `GlobalConformityPlan` writer: one count per full A2b arc, exact support path/incidence multiplicity, mandatory parity, compact exact-ordinal breakpoint generation, and bit-exact target binding.
+- [x] Freeze exact rational target energy, flow/objective/tie-break without count-range enumeration, work ledger, CP2 typed certificate/subset infeasibility, independent oracle/tamper matrix.
+- [x] Freeze witness reachability/gating policy and the three `G4-B002` M4-exit debts.
+- [x] Adjudicate `G4-B004` to M5 focused production + M6 representative consumption.
+- [x] Correct the false “CP4c-0 TB-R9 never ran” historical premise.
+- [x] Perform M4-DEFN review-turn consolidation and refresh `ORIENTATION.md`.
+- [ ] Execute `M4-CP1-CB1` exactly as frozen; compile/package only, no runtime.
 
 ## Carried forward from M1
 
@@ -78,7 +82,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CURRENT / `M4-DEFN` NEXT**; also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CURRENT / `M4-CP1-CB1` NEXT**; `M4-DEFN` is complete and M4 also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -118,4 +122,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; exact next is planning-only **`M4-DEFN`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, packages **113**. **Package113/TB48 is reviewed semantic runtime authority** at **405/4**, accepted required-green **365/365**. M3 is CLOSED / ACCEPTED; `M4-DEFN` is COMPLETE and exact next is runtime-free Code + Build **`M4-CP1-CB1`**. PR #8 remains open, draft, and unmerged.

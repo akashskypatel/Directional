@@ -26,19 +26,17 @@ M3 closed through the accepted CP1/CP2/CP2b/CP3a/CP3b/CP4ab chain, then the CP4c
 - **CP4c-2:** closed/higher-genus actual-embedded-graph `SurfaceCutGraph` and region/disc authority; accepted required-green prefix **365**;
 - **CP4c-3:** mechanical closed-surface A1/continuation witness under restored **AU0–AU9**, with selector409 used as a broader audit/report-only execution surface.
 
-### 2.1 CP4c-0's basis, recorded explicitly
+### 2.1 CP4c-0's direct whole-gate closure basis
 
-`M3-CP4c-0` never ran the `M3-CP4c-0-TB-R9` turn its own roadmap row named as its gate. **Its acceptance is carried
-by cumulative gate inclusion**, which is the roadmap's own stated rule — *"every checkpoint carries the full accepted
-predecessor selector plus its own frozen identities."* CP4c-0's gate **346** is a strict prefix of **353**
-(CP4c-0b), **355** (CP4c-1) and the accepted **365** (CP4c-2), each of which closed green. Every CP4c-0 identity
-therefore lies inside the accepted prefix that has been continuously green since CP4c-2, and `TB-R9` — which would
-have executed gate 346 — was superseded by three later gates closing on strict supersets of it.
+`M3-CP4c-0-TB-R9` **did execute**. Workflow `33079817998` (`M3 CP4c0 TB-R9 Whole-Gate Reproof`) completed
+successfully against selector346, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, with
+**346/346 PASS** including Q8 criteria **1, 4 and 5**. Retained evidence records workload job `98543736213`, result
+artifact `9649625534` / SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af` and log
+artifact `9649626115` / SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`.
 
-This basis is recorded rather than inferred because the alternative reading is that a closed milestone contains an
-open checkpoint. **`M4-DEFN` must confirm it before consuming the 365 baseline**: that no CP4c-0 identity is absent
-from 365, and that Q8 criteria 1, 4 and 5 assert nothing no later gate re-executes. If either fails, M3 closure is
-premature and reopens.
+Later 353/355/365 gates also contain the 346 prefix and remain corroborating cumulative evidence. They are not the
+closure basis and M4 has no conditional obligation to reconstruct a supersession argument. The false “TB-R9 never
+executed” premise appended during the TB48 independent verification pass is corrected in that record's §13.
 
 The final CP4c-3 review is `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md`.
 
@@ -86,6 +84,8 @@ Package113/TB48 is promoted as reviewed runtime authority. `M3-CP4c2-TB-X2-R8-CA
 `M3-CP4c3-TB48-EXEC-CAND-01` close non-stably; closure changes status but does not decrement or add historical
 stable counts. Totals remain **47 / 14 / 33**, debt **5**, ownership **300/0/0**, packages **113**.
 
-## 7. Exact successor
+## 7. Successor
 
-**`M4-DEFN`**, planning-only and runtime-free, under `Architecture_M4_DEFN_Definition_Plan.md`.
+`M4-DEFN` was the immediate milestone successor and is now complete. Current exact next is **`M4-CP1-CB1`**,
+runtime-free Code + Build under `Architecture_M4_CP1_CB1_Code_Build_Plan.md`; M4 definitions are frozen in
+`Architecture_M4_DEFN_Frozen_Definitions.md`.

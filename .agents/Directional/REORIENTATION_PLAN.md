@@ -1,3 +1,5 @@
+> **Current milestone authority (2026-09-09, `M4-DEFN`):** **M3 is CLOSED / ACCEPTED and M4 definitions are frozen.** Package113/TB48 remains reviewed runtime authority; accepted M4 predecessor is selector365. `M4-DEFN` fixes the single chain `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`, one full-A2b-arc A3 `GlobalConformityPlan` writer, mandatory parity, compact arbitrary-precision breakpoint generation, exact binary64 ingress, deterministic minimum-deviation flow/oracle/infeasibility contracts, and exact next `M4-CP1-CB1`.
+
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap
@@ -73,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **definition next (`M4-DEFN`)** |
+| M4 | global conformity plan | **definition complete; exact next `M4-CP1-CB1`** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -222,9 +224,11 @@ The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c25
 
 ## 8. M4 — global conformity plan
 
-**Status: `M4-DEFN` is exact next, planning-only/runtime-free.** Use `Architecture_M4_DEFN_Definition_Plan.md`. Definition must reconcile the roadmap's conditioning/scale proposals with CP1–CP4 before code, freeze one schedule product and exact solver/oracle/error/witness contract, and extend only from accepted selector365.
+**Status: `M4-DEFN` COMPLETE. Exact next `M4-CP1-CB1`.** `Architecture_M4_DEFN_Frozen_Definitions.md` freezes one A3 schedule authority and the chain CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4. Architectural stage order still places conditioning before A0; development order keeps it from becoming a hidden prerequisite for A3 semantics.
 
-- Compute one strictly positive shared rail schedule globally before regional production.
+- Compute one strictly positive schedule per full A2b boundary arc globally before regional production; source-simplex support pieces locate exact breakpoints but do not own independent positive counts.
+- Preserve boundary-incidence multiplicity and mandatory even all-quad region parity from the first CP1 schedule.
+- Keep breakpoint identity compact as `{span, exactOrdinal}` and exactify binary64 metric input by bit decomposition.
 - Use a deterministic polynomial graph/flow formulation for shared counts/constraints.
 - Resolve `G4-B002` exact-torus `InvalidHardRailPairing` without post-hoc local pairing.
 - Infeasible subsets become typed inputs to later disposition logic; they do not authorize ad-hoc local substitution.
@@ -265,6 +269,9 @@ Any turn that decouples a contract from a produced witness must add it to the ow
 
 Both currently prove the materializer **consumes** nonzero-Z4 authority correctly. Neither proves the producer **emits** it — that capability is `G4-B003`, which M5 owns. This criterion mirrors M4's and exists for the same reason: a debt recorded only as a task has nothing enforcing it.
 - Separate certificate authority from compact numeric/index representations.
+
+
+**`G4-B004` ownership after M4-DEFN.** M5 owns the focused positive multi-isolation quotient relation/certificate production witness. M6 owns representative occurrence/embedding/verifier consumption of that produced authority. M4 owns neither half and adds no `G4-B004` gate/debt.
 
 ## 10. M6 — occurrence, embedding, and independent verification
 

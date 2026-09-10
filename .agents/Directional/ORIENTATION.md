@@ -1,4 +1,4 @@
-> **Current milestone authority (2026-09-09, `M3-CP4c-3-TB48-REV`):** **M3 is CLOSED / ACCEPTED.** Package113/TB48 is promoted reviewed semantic runtime authority — selector409 final audit **405 PASS / 4 RED / 0 SKIP**, accepted selector365 **365/365**, RED `[368,369,374,398]`, ownership 300/0/0. Ordinal370 is runtime-proved closed non-stably. Stable accounting **47 / 14 / 33**, debt 5, packages 113. **Exact next: `M4-DEFN`**, planning-only/runtime-free.
+> **Current milestone authority (2026-09-09, `M4-DEFN`):** **M3 is CLOSED / ACCEPTED; M4 definitions are frozen and exact next is `M4-CP1-CB1`.** Package113/TB48 remains reviewed runtime authority; selector365 is the accepted M4 predecessor; selector409 remains final-M3 audit evidence only.
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
@@ -30,9 +30,9 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-09 at `M3-CP4c-3-TB48-REV`. Semantic runtime authority is **package113/TB48** (source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`), selector409 final audit **405 PASS / 4 RED / 0 SKIP**, accepted required-green selector365 **365/365**, RED `[368,369,374,398]`. Stable accounting is **47 / 14 / 33**, debt 5, packages 113, ownership 300/0/0. **M3 is CLOSED / ACCEPTED.**
+**Currency.** Last updated 2026-09-09 at `M4-DEFN`. Semantic runtime authority is **package113/TB48** (source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`), selector409 final audit **405 PASS / 4 RED / 0 SKIP**, accepted required-green selector365 **365/365**, RED `[368,369,374,398]`. Stable accounting is **47 / 14 / 33**, debt 5, packages 113, ownership 300/0/0. **M3 is CLOSED / ACCEPTED.**
 
-**Current definition resolution.** Ordinal370's closed-empty-network product omission is runtime-proved corrected and closed non-stably; accepted ordinal307 remains a latent stale test equality but is green and unchanged. The four remaining final-audit REDs are separately owned surfaces, not M3 exit criteria. M4 now owns the next architectural question: one global positive conformity schedule, with conditioning/scale proposals reconciled before implementation at `M4-DEFN`.
+**Current definition resolution.** `M4-DEFN` freezes `GlobalConformityPlan` as the single A3 writer between A2b and A4: one positive exact count per full A2b boundary arc, exact ordered support-piece paths, boundary-incidence multiplicity, mandatory region parity, compact arbitrary-precision breakpoint IDs/generation, backend-independent binary64 exactification, an exact rational target-energy objective, deterministic bi-directed minimum-deviation flow, CP2-carried typed subset infeasibility/certification, and an independent oracle. The chain is `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`, with the M5/M6 split for `G4-B004`. Exact next is `M4-CP1-CB1`. The same definition review corrected a historical verification error: CP4c-0 TB-R9 **did** run (`33079817998`) and passed 346/346; M3 remains closed on direct evidence, not an inferred supersession argument.
 
 **Historical TB38 finding (retained). What broke.** DEFN-R6 (Part X) adopted `χ = V_total − E_total + F = 1` over the **whole-face source sub-mesh**.
 CB43 implemented it exactly. On the torus fixture that criterion is false:
@@ -114,7 +114,7 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 **What closed M3:** CP4c-2 already established closed/higher-genus actual-embedded A2a′/A2b authority. CP4c-3's frozen exit was the mechanical witness under AU0–AU9, not an all-green 409-row audit. TB48 preserves accepted 365/365, mechanical 366/367 and protected 390/393/406/407 green, runs every final audit identity report-only after first RED, and proves CB54's ordinal370 typed-error/locus correction. The four remaining REDs retain separate owners and remain visible.
 
-**What is next:** `M4-DEFN` freezes the global conformity schedule before any A3 implementation. The accepted predecessor is selector365; selector409 is retained final M3 audit evidence. M4-DEFN must reconcile the two roadmap decompositions and freeze one schedule product, exact solver, typed infeasibility, independent oracle, witness reachability and produced-witness debt plan.
+**What is next:** `M4-CP1-CB1` implements the first bounded A3 schedule-authority slice under `Architecture_M4_CP1_CB1_Code_Build_Plan.md`. The accepted predecessor is selector365; selector409 is retained final-M3 audit evidence. CP1 owns the known-feasible immutable full-arc schedule and independent validator only, including mandatory parity and compact exact breakpoint generation; CP2 adds carried certification/infeasibility, and A4 producer cutover remains CP3.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -226,11 +226,11 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4 global conformity — CURRENT / `M4-DEFN`.** A3 has not been reached. Freeze one strictly positive shared-rail schedule with one writer, exact deterministic polynomial formulation, independent oracle, typed subset-scoped infeasibility, and witness reachability before implementation. Reconcile `M4-CP-COND` / `M4-CP-SCALE` with CP1–CP4 instead of running two overlapping checkpoint chains.
+1. **M4 global conformity — CURRENT / `M4-CP1-CB1`.** Definitions are frozen; A3 has not yet been implemented. Build one immutable known-feasible `GlobalConformityPlan` writer and independent validator from exact A2b authority, with one variable per full arc, incidence multiplicity, parity, exact binary64 ingress and compact exact-ordinal breakpoint generation. Do not cut A4 over early; carried infeasibility/certification is CP2 and producer consumption/post-hoc-pairing removal is CP3.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical.** The exact-torus `InvalidHardRailPairing` blocker and its three produced-witness re-proofs are M4-owned. M4 must remove the blocker without post-hoc local pairing and discharge all three debts on produced authority.
 
-3. **Conditioning/scale coverage — M4 definition decision.** Production-scale/sliver/high-valence and conditioning coverage remain unproven. `M4-CP-COND` / `M4-CP-SCALE` are proposals, not yet frozen checkpoints; M4-DEFN must place them explicitly without making scale coverage a hidden precondition on schedule semantics.
+3. **Conditioning/scale coverage — FROZEN LATER M4 CHECKPOINTS.** CP-COND is architecturally pre-A0 but developed after CP3 so it cannot define A3 semantics; CP-SCALE then owns S1–S5 boundedness/scale evidence. Sliver/high-valence/negative-index/boundary-truncated/inadmissible-field and genus>=2 witnesses remain unbuilt coverage obligations, not implicit CP1 gates.
 
 4. **Ordinal369 ordinary trace-crossed proposal quality — ACTIVE / separate.** The ordinary heuristic still reaches saturation. Its existing proposal-quality/coverage owner remains valid and M4 must not silently reinterpret it as schedule authority.
 
@@ -238,13 +238,16 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 6. **Ordinal374 folded-cone witness — ACTIVE / DEFERRED TEST PRECONDITION.** Its hand-authored flat-star field is invalid on the non-flat cone star and legitimately fails atlas construction. Any future repair must derive matching/effort/singularities from production `principal_matching`; selector374 stays frozen.
 
-7. **`G4-B004` positive multi-isolation quotient witness — M4-DEFN adjudication.** Decide its milestone placement explicitly at definition time; do not silently absorb M5/M6 work into M4.
+7. **`G4-B004` positive multi-isolation quotient witness — ADJUDICATED.** M5 owns focused positive relation/certificate production; M6 owns representative occurrence/embedding/verifier consumption. M4 owns neither half.
 
 8. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** It remains green inside accepted selector365 but restates a retired local-fragment/global-owner injectivity premise. Do not weaken it pre-emptively; if it fires, classify test-authority drift.
 
 9. **Plan/certifier partition duplication and transit/exactification debt — ACTIVE / non-gating.** The domains may lawfully differ, but duplicated actual-embedded construction, production transit audit projection, minimal transit witness and input-size/exactification audits remain architectural debt outside the closed M3 exit.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Direct gate evidence outranks an inferred supersession story.** M4-DEFN found that a later independent verification amendment had declared CP4c-0 TB-R9 unrun after a narrow history scan. Primary Actions run inventory plus retained changelog/tracker/consolidated history show `33079817998` ran and passed 346/346. When a closure row names a gate, search the complete retained family record and primary run inventory before inventing cumulative-inclusion closure or re-opening the milestone.
+
 
 **A red list is not an exit condition.** TB48-REV is the direct application of `LESSONS.md` 167: once a blocking surface clears, re-evaluate the checkpoint's frozen criterion before scheduling another repair. CP4c-3's exit was the mechanical witness under AU0–AU9; package113 proved the last pending ordinal370 correction while the remaining 368/369/374/398 rows stayed under separate owners. Continuing to chase those rows inside CP4c-3 would have replaced the checkpoint contract with "make the audit all green" after the fact. Freeze the exit criterion, keep audit debt visible, and close when the stated criterion is actually met.
 

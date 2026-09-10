@@ -2066,17 +2066,8 @@ building any conclusion on it.**
      condition go green, the next turn's first question is whether the condition is met - by criterion, against the
      frozen text - and if that text cannot be found in the retained set, restoring it is the work. An exit condition
      that cannot be read is not an exit condition.
-168. **Closing a milestone means reconciling every checkpoint's own stated exit, not just the last one's.** A
-     milestone was declared closed on the strength of its final checkpoint meeting a restored, per-criterion exit
-     condition - correctly, and with real evidence. But an earlier checkpoint's row still read *"closes on a green
-     `TB-R9`"*, that turn had never been executed, and the closure record listed the checkpoint in its trajectory
-     without ever saying on what basis it closed. The reconciliation existed and was sound - its gate was a strict
-     prefix of three later gates that all closed green, so acceptance was carried by cumulative inclusion - but
-     **nobody had written it down**, so the retained record showed an open checkpoint inside a closed milestone.
-     **Before closing a milestone, walk every checkpoint row and require each to state its closure basis in the
-     durable record** - "superseded by inclusion" is a perfectly good basis, and an unrun gate turn is only alarming
-     while the reason it was never needed is missing. The last checkpoint's evidence is the loudest; the earlier
-     ones are where the unreconciled text hides.
+168. **Closing a milestone means reconciling every checkpoint's own stated exit against primary retained evidence, not merely the loudest current summary.** A later verification pass saw an earlier checkpoint row naming `TB-R9`, failed to find the run in a narrow history scan, and inferred that the gate had never executed. Primary run inventory and retained evidence showed the opposite: `M3-CP4c-0-TB-R9` was run as `33079817998` and passed 346/346, including Q8 criteria 1/4/5. The general reconciliation instinct was correct; the historical premise was not. **Before inventing a supersession/inclusion argument or reopening a closed milestone, search the complete retained family record and primary run inventory for the named gate. Direct accepting gate evidence outranks an inferred replacement story.** Cumulative-prefix inclusion is useful corroboration, not a reason to erase or misstate direct closure evidence.
+169. **A global scheduling variable must follow the semantic boundary entity, not incidental source triangulation.** M4 definition initially split one A2b boundary arc into independently positive source-simplex pieces, which would force output subdivision to grow merely because the same rail crossed more input triangles. The correction keeps one exact positive count per full A2b arc and carries source-simplex pieces only as an ordered exact support path. The same audit exposed the companion representation trap: an arbitrary-precision count cannot coexist honestly with `SemanticId<size_t>` breakpoint ordinals or an O(count) semantic vector. **When the semantic integer is unbounded, identity and certificates must remain compact and exact; expansion to machine-sized output belongs to the downstream output-sensitive stage after a checked fit/budget boundary.**
 
 ## 5. Cross-field, cycle, and orientation conventions
 

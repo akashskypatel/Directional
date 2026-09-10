@@ -226,3 +226,25 @@ Accepted held at **365/365** with **405 PASS / 4 RED**; ordinal 370's closure is
 counts. Totals remain **47 / 14 / 33**, debt **5**, packages **113**. Promotion of TB48 / package113 follows the
 operative rule. **The accepted required-green selector entering M4 is 365**, and selector409 is retained byte-frozen
 as the final CP4c-3 audit surface with its four carried reds neither promoted nor deleted.
+
+
+---
+
+## 13. M4-DEFN correction to verification-pass §12.2
+
+**Correction date:** 2026-09-09
+**Authority:** primary GitHub Actions run inventory plus retained `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`
+and `M3_CP4c_Consolidated_Record.md`.
+
+Verification-pass §12.2's statement that `M3-CP4c-0-TB-R9` “was never executed” is **factually incorrect**. The gate
+was executed as workflow **`33079817998`**, `M3 CP4c0 TB-R9 Whole-Gate Reproof`, and completed successfully. Retained
+evidence records workload job `98543736213`, selector346 SHA-256
+`20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, and **346/346 PASS**, including Q8 criteria
+1, 4 and 5. CP4c-0 therefore has direct whole-gate acceptance evidence.
+
+The later 353/355/365 strict-prefix inclusion remains true and is useful corroboration, but it is not a substitute or
+supersession basis for an unrun gate because the premise that the gate was unrun is false. The conditional instruction
+in §12.2 to re-check inclusion before M4 consumes selector365 is retired. **M3 remains CLOSED / ACCEPTED; this
+correction changes no runtime result, selector, package, stable count or milestone decision.**
+
+Durable corrected closure basis: `M3_Closure_Record.md` §2.1 and `M3_CP4c_Consolidated_Record.md`.

@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-09 (**M3 CLOSED / ACCEPTED at TB48-REV.** Package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` is promoted reviewed runtime authority: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted required-green **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. AU0–AU9 mechanical-witness exit condition is MET; ordinal370 is runtime-proved closed non-stably. Stable accounting **47 / 14 / 33**, debt 5, packages 113. **NEXT: `M4-DEFN`**, runtime-free.)
+**Status date:** 2026-09-09 (**M3 CLOSED / ACCEPTED at TB48-REV; `M4-DEFN` COMPLETE.** Package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b` is reviewed runtime authority: **405 PASS / 4 RED / 0 SKIP** over selector409, accepted required-green **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**. Stable accounting **47 / 14 / 33**, debt 5, packages 113. **NEXT: `M4-CP1-CB1`**, runtime-free Code + Build.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -22,7 +22,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **definition next** | `M4-DEFN`; accepted predecessor selector365. |
+| M4 | **definition complete / CP1 next** | `Architecture_M4_DEFN_Frozen_Definitions.md`; exact next `M4-CP1-CB1`; accepted predecessor selector365. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -67,7 +67,7 @@ CP4c's production A2b wiring (CB1) and its two production-path fixtures (CB2) we
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **Contract complete.** DEFN froze the continuation rule, DEFN-2 the grazing model, CB8 implemented it, CB9 landed deterministic cost guards. **Superseded by cumulative gate inclusion, not by `TB-R9`** — that turn was never executed. CP4c-0's gate **346** is a strict prefix of **353** (CP4c-0b), **355** (CP4c-1) and the accepted **365** (CP4c-2), all of which closed green, so every CP4c-0 identity sits inside the continuously accepted prefix. **`M4-DEFN` must confirm this before consuming the 365 baseline** — see `M3_Closure_Record.md` §2.1. |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **CLOSED / ACCEPTED.** `M3-CP4c-0-TB-R9` **did execute**: `33079817998 / 98543736213`, **346/346 PASS**, including Q8 criteria 1/4/5. Later 353/355/365 gates preserve the 346 prefix as corroboration. See `M3_Closure_Record.md` §2.1. |
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
@@ -421,13 +421,15 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 
 | Checkpoint | Semantic domain | Notes |
 |---|---|---|
-| `M4-DEFN` | **CURRENT NEXT:** freeze the schedule product, rejection vocabulary, exact formulation, independent oracle, witness provenance, and reconcile `M4-CP-COND` / `M4-CP-SCALE` with CP1–CP4 | planning only |
-| `M4-CP1` | shared-rail breakpoint/side-count **schedule product** with one writer | positive + tamper |
-| `M4-CP2` | **assignment positivity certificate** and typed subset-scoped infeasibility | infeasible subsets must not fail the run |
-| `M4-CP3` | producers **consume** the verified schedule; target-size variation cannot change breakpoints | invariance |
-| `M4-CP4` | M4 exit gate — removes the exact-torus `InvalidHardRailPairing` blocker without post-hoc pairing; work/solver bounds reported with an explicit monotone measure | cumulative |
+| `M4-DEFN` | **COMPLETE:** frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` | planning only / runtime-free |
+| `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress/minimum-deviation objective and independent known-feasible oracle | **EXACT NEXT: `M4-CP1-CB1`** |
+| `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | adds certificates/infeasible alternative without changing CP1 feasible schedule semantics |
+| `M4-CP3` | producers **consume** the verified schedule; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | removes `G4-B002` product blocker |
+| `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with conditioned-source/raw correspondence and typed inadmissibility | developed after A3 core without becoming a hidden schedule precondition |
+| `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | uncalibrated S1 measurements start non-gating |
+| `M4-CP4` | cumulative M4 exit: full gate, all three `G4-B002` produced-witness debt re-proofs, work/bit-width evidence | exit proof only; no second writer |
 
-M4 owns `G4-B002`'s three produced-witness debts.
+M4 owns `G4-B002`'s three produced-witness debts. `G4-B004` is explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 
 ### M5 — certificate-carrying chart and quotient relations (§14 M5)
 
@@ -484,7 +486,7 @@ These are **not** M3 obligations and must not be claimed closed by M3 evidence.
 | `G4-B001` / `PR8-R034` / `G4-R007` | completion/materializer — hard rail promoted into `IsolationSheetId` authority, rejected by `close_completion_lineage_source_authority(...)` | M6 at the earliest; adjudicate at `M6-DEFN` |
 | `G4-B002` | rail scheduling | M4 |
 | `G4-B003` | quotient/chart relations | M5 |
-| `G4-B004` | unassigned | adjudicate at `M4-DEFN` |
+| `G4-B004` | quotient relation/certificate then representative occurrence/verification | M5 focused production + M6 representative consumption; no M4 gate/debt |
 
 Produced-witness debt stands at **5** and is discharged by M4 (3) and M5 (2).
 

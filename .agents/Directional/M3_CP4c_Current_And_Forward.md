@@ -16,7 +16,7 @@ Last updated **2026-09-09** at `M3-CP4c-3-TB48-REV` independent closure review.
 
 Ordinal370 is CLOSED / RUNTIME-PROVED / NON-STABLE. The AU0–AU9 mechanical-witness exit condition is MET. **CP4c-3 and M3 are CLOSED / ACCEPTED.** Stable accounting remains **47 / 14 / 33**, debt **5**, packages **113**.
 
-**Exact next: `M4-DEFN`**, planning-only/runtime-free under `Architecture_M4_DEFN_Definition_Plan.md`.
+**M4-DEFN is COMPLETE. Exact next: `M4-CP1-CB1`**, runtime-free Code + Build under `Architecture_M4_CP1_CB1_Code_Build_Plan.md`; M4 definitions are frozen in `Architecture_M4_DEFN_Frozen_Definitions.md`.
 
 ## 1. Where the checkpoint stands
 
@@ -680,4 +680,6 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 ## 6. Resume pointer
 
-M3/CP4c is closed. Perform **`M4-DEFN`** as the exact next planning-only/runtime-free turn under `Architecture_M4_DEFN_Definition_Plan.md`. Enter from accepted selector365 and promoted package113/TB48 evidence. Reconcile the two M4 roadmap decompositions, freeze the global schedule product/math/error/oracle/witness/gate contract, carry `G4-B002` debt and adjudicate `G4-B004`, then issue one first Code + Build plan. Do not reopen CP4c, execute runtime, compile, or mutate implementation/test/fixture/selector logic in M4-DEFN.
+M3/CP4c is closed and no longer the live planning family. `M4-DEFN` is complete. Resume at **`M4-CP1-CB1`** under
+`Architecture_M4_CP1_CB1_Code_Build_Plan.md`, entering from accepted selector365 and the frozen M4 definitions. Do not
+reopen CP4c, use selector409 as the M4 accepted predecessor, or revive the refuted claim that CP4c-0 TB-R9 never ran.

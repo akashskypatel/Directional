@@ -116,56 +116,58 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M4-DEFN` — EXACT NEXT / GLOBAL CONFORMITY DEFINITION / RUNTIME-FREE
+## Mandatory next turn — `M4-CP1-CB1` — EXACT NEXT / CODE + BUILD / RUNTIME-FREE
 
-`M3-CP4c-3-TB48-REV` is **COMPLETE / APPROVED WITH AMENDMENTS / PACKAGE113 PROMOTED / CP4c-3 CLOSED / M3 CLOSED**.
+`M4-DEFN` is **COMPLETE / DEFINITIONS FROZEN / RUNTIME-FREE**. M3 remains CLOSED / ACCEPTED.
 
-### Authority entering M4-DEFN
+### Authority entering M4-CP1-CB1
 
-- **Reviewed semantic runtime authority:** package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, TB48 run/job `34409262512 / 102659650326`, selector409 audit surface, **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`, ownership **300/0/0**.
-- TB48 result artifact `10126711178`, SHA-256 `07961a2339204b80f83feac8916e93578176363f9bdf0317ea85bdc095de5747`; log artifact `10126711588`, SHA-256 `1aab2f5f9b0d23f41ffd04a1467894f572604774ee2ee6ce9e42ee4b8f6dbd7d`.
-- **Accepted required-green predecessor into M4:** selector365, 365 identities, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains the retained final M3 audit surface and is not silently accepted as the M4 predecessor.
-- Ordinal370 is **CLOSED / RUNTIME-PROVED PRODUCT CORRECTION / NON-STABLE**. The four remaining audit REDs retain their separate owners: 368 prescribed sphere, 369 proposal saturation/quality, 374 folded-cone fixture precondition, 398 downstream of 368.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted packages **113**.
-- The AU0–AU9 mechanical-witness exit condition is MET. `M3-CP4c-3` and milestone M3 are **CLOSED / ACCEPTED**. Closure authority: `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md` and `M3_Closure_Record.md`.
+- reviewed runtime authority remains package113/source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`, TB48 `34409262512 / 102659650326`;
+- accepted required-green predecessor is selector365, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- selector409 remains final-M3 audit evidence only; its carried RED `[368,369,374,398]` are not M4 prefix rows;
+- stable accounting remains 47 events / 14 categories / 33 recurrences; debt 5; packages 113;
+- M4 definition authority: `Architecture_M4_DEFN_Frozen_Definitions.md`;
+- exact CB plan: `Architecture_M4_CP1_CB1_Code_Build_Plan.md`;
+- M4 chain: `CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4`;
+- M4 owns three `G4-B002` debts; `G4-B004` is split M5 focused production / M6 representative consumption.
 
-### Exact M4-DEFN scope
+M4-DEFN corrected a verification-pass history error before selecting the CB: CP4c-0 TB-R9 **did** run as
+`33079817998 / 98543736213` and passed 346/346 including Q8 criteria 1/4/5. No M4 conditional M3-closure check remains.
 
-Follow `Architecture_M4_DEFN_Definition_Plan.md`. M4-DEFN is planning-only and executes nothing. It must:
+### Exact M4-CP1-CB1 scope
 
-1. derive M4's global conformity contract from `DESIGN.md` §14 M4 and `REORIENTATION_PLAN.md`;
-2. reconcile the roadmap's `M4-CP-COND` / `M4-CP-SCALE` proposals with the older `M4-CP1..CP4` decomposition into one non-overlapping chain;
-3. freeze the typed single-writer global schedule product, exact deterministic polynomial graph/flow formulation, positivity and subset-infeasibility certificate/error vocabulary, independent oracle/tamper matrix and witness reachability;
-4. extend only from accepted selector365, preserve its exact prefix, and state gating/non-gating status for every new identity;
-5. carry and schedule all three `G4-B002` produced-witness debts, adjudicate `G4-B004` at definition time, and keep M5/M6 work out;
-6. publish exactly one bounded first Code + Build plan with falsifiable build/future-runtime acceptance criteria.
+Implement only CP1's known-feasible immutable A3 schedule authority and independent validator: one count per full
+A2b boundary arc, ordered exact support pieces, multiplicity-preserving boundary incidences, mandatory region parity,
+compact arbitrary-precision breakpoint IDs/generators, backend-independent binary64 exactification, and the frozen exact
+minimum-deviation objective/solver. Preserve the accepted 365 prefix byte-for-byte when authoring the first M4 selector.
+CP1 must not expose ordinary infeasibility as a fatal error; CP2 adds the carried certificate/infeasible alternative
+without changing feasible schedule semantics. Compile/package through the mandatory GMP/GMPXX reusable workflow. **Do not execute tests, benchmarks, generated binaries, help/list/version commands, `ctest`, or any
+Directional runtime in Code + Build.** Do not cut regional A4 producers over to the plan; that is CP3.
 
-No source/test/benchmark/build logic edit, selector mutation, compile, benchmark or Directional runtime is permitted in M4-DEFN.
-
-### Context Load Plan for `M4-DEFN`
+### Context Load Plan for `M4-CP1-CB1`
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/REVIEW.md
+  - turn-based-coding-agent/references/turns/CB.md
 conditional_modules:
-  - trigger: implementation design / corrective planning
+  - trigger: implementation design / code authoring
     path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
+  - trigger: test design / test authoring
+    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
   - trigger: GitHub connector / workflow / artifact work
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_DEFN_Definition_Plan.md
-  - .agents/Directional/M3_Closure_Record.md
-  - .agents/Directional/Architecture_M3_CP4c3_TB48_Independent_Review_Record.md
+  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M4_CP1_CB1_Code_Build_Plan.md
+  - .agents/Directional/M4_Consolidated_Record.md
+  - .agents/Directional/GMP_COMPILE_POLICY.md
   - .agents/Directional/ROADMAP.md
   - .agents/Directional/DESIGN.md
-  - .agents/Directional/REORIENTATION_PLAN.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-templates_when_producing:
-  - turn-based-coding-agent/templates/REVIEW_REPORT.md
+templates_when_producing: []
 do_not_preload:
   - sibling turn files
-  - module reference directories
-  - superseded CP4c per-turn reports/plans
+  - uncited M3 per-turn history
   - research/provenance/examples
 ```
 
