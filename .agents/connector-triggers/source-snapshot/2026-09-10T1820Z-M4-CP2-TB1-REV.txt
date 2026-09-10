@@ -1,0 +1,3 @@
+M4-CP2-TB1-REV source snapshot trigger.
+Expected semantic authority before control marker: 3d611df13004f06fdc40a5e08af43b789cf9763e.
+Review turn only; no compile or runtime execution.
