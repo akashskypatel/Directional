@@ -1,0 +1,3 @@
+purpose=apply M4-CP3-CB4-R2 STOP-GUARD documentation patch
+base_sha=fc5e59e3f52e30087b1a755e67701318d4a5b128
+retry=0
