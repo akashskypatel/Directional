@@ -28,13 +28,15 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-CB4-R2` (row400 non-vacuity recovery next)
+## Current focus — `M4-CP3-CB4-R2-REV` (row400 recovery STOP-GUARD review next)
 
-`M4-CP3-TB2-REV` is **COMPLETE / PACKAGE120 NOT PROMOTED**. TB2 mechanically executed package120/selector403 fully green (**815/815 processes; selector403 403/403; accepted prefix394 394/394; immutable postflight**), but review found `M4-CP3-TB2-REV-CAND-01`: row400's declared permuted source-face row never participates in the tested barycentric mapping. The frozen §17.12 canonical component-order contract therefore remains unproved. No production defect or accepted-green loss is established. Package119/selector394 remains accepted **394/394**; stable accounting remains **47 / 14 / 33**, debt **5**; CP3 remains open.
+`M4-CP3-CB4-R2` is **HALTED / STOP-GUARD / PRE-MUTATION**. The frozen derivation guard proves a real source row can differ from canonical key order and proves A2a/A2b publishes canonical face-point coordinates, but it cannot prove the required discriminating witness. Existing production contact coordinates are constructed directly in `SourceFaceTopologyKey` order; the path does not consume a raw-row barycentric tuple and remap it. The accepted sphere fixture proves contacts exist but does not independently pin any all-distinct exact contact tuple, while the explicit exact proper-crossing oracle uses repeated `(1/4,1/4,1/2)` components.
 
-`M4-CP3-TB2-PLAN` is **COMPLETE / RUNTIME-FREE** and freezes `Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md`. The recovery is test-authority only: row400 must use an actual noncanonical source-face row with distinct exact barycentric weights, derive the canonical tuple independently by vertex identity, and observe the result through the existing production A2a/A2b path. Product/public-API and selector changes are forbidden; inability to obtain that witness is a STOP-GUARD, not permission to broaden scope.
+No test/product/selector/build source changed, no compile/package ran, and no Directional runtime executed. Full evidence is `.agents/Directional/Architecture_M4_CP3_CB4_R2_Derivation_Guard_Record.md`.
 
-**Exact next:** `M4-CP3-CB4-R2`. Compile/package only after the bounded test correction; no runtime in CB. Future artifact-only `M4-CP3-TB2-R1-EXEC` owns 799-process acceptance. `M4-CP3-TB1-R1-REV-OBS-01` remains carried outside this one-variable recovery.
+Package119/selector394 remains accepted **394/394**. Package120/selector403 remains mechanically green but unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open; A3→A4 cutover remains unauthorized.
+
+**Exact next:** runtime-free `M4-CP3-CB4-R2-REV`. It must independently decide whether an already-existing non-circular raw-row-attached all-distinct witness exists, or whether row400's test-authority contract must be amended/replaced because the production A2a/A2b seam is canonical by construction. No CB retry or TB2-R1 runtime is authorized first.
 
 ## Carried forward from M1
 
