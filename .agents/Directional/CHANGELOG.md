@@ -1,3 +1,9 @@
+## 2026-09-11 — `M4-CP3-CB4-R1`: exact A2b path authority + production A3 binder compile green
+
+`M4-CP3-CB4-R1` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE** at semantic source `3f909a5a2cfd305d423faf7a260bc465c7b06892`. It implements frozen §17.12: every A2b `GlobalTopologyArc` publishes independently validated canonical exact ordered source support; split Mandatory/Cut arcs carry strict subintervals; Trace arcs carry ordered segment support; production A3 copies one path 1:1 into one span and publishes exactly one independently validated baseline immediately after A2b. A4 does not consume the new product yet.
+
+Selector403 is the byte-identical selector394 prefix plus nine new producer-owned contracts (`e8f4fe72...`). The first compile run was green but its artifact omitted three selector-owner executables; no runtime ran. Corrected full package run `34643014511`, job `103407112799`, artifact `10280703200` compiled the unchanged semantic source with GMP/GMPXX, producer-owner preflight, all four selector owners, API and benchmark compile evidence, `runtimeExecution=false`, and a verified 28/28 manifest. Candidate package120 remains unpromoted. Exact next is artifact-only `M4-CP3-TB2-EXEC` under `Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md`, then independent `M4-CP3-TB2-REV`. Stable accounting remains **47 / 14 / 33**, debt **5**.
+
 ## 2026-09-11 — `REVIEW_TURN_POLICY.md`: authoritative review-turn duties and a mandatory closeout block
 
 Added `.agents/Directional/REVIEW_TURN_POLICY.md`, authoritative for every REVIEW, REVIEW + PLAN, TB-REVIEW,

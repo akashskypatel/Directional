@@ -1,94 +1,82 @@
 # Future Chat Session Handoff — Directional
 
-**Status:** `M4-CP3-CB4-REV` COMPLETE / APPROVED WITH AMENDMENTS / EXACT NEXT `M4-CP3-CB4-R1`
+**Status:** `M4-CP3-CB4-R1` COMPLETE / COMPILE GREEN / RUNTIME-FREE / EXACT NEXT `M4-CP3-TB2-EXEC`
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-CB4-R1`, Code + Build / runtime-free
+**Canonical next turn:** `M4-CP3-TB2-EXEC`, artifact-only Test + Benchmark execution
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED.
-- M4 package119 / selector394 **394/394** remains the accepted runtime authority for the §17 production-baseline A3 scheduler/validator proof surface.
-- Stable regression accounting: **47 events / 14 categories / 33 recurrences**.
-- Produced-witness debt: **5**.
-- CP3 remains open.
-- `M4-CP3-CB4` correctly halted at its mandatory pre-mutation derivation guard: accepted public A2a′/A2b products did not publish enough exact split-arc path authority to bind all A3 spans without invention.
-- `M4-CP3-CB4-REV` independently re-derived that gap from exact source and is **APPROVED WITH AMENDMENTS**. The old CB4 cutover plan is superseded.
+- M4 package119 / selector394 **394/394** remains the accepted runtime authority.
+- CB4-R1 semantic source `3f909a5a2cfd305d423faf7a260bc465c7b06892` is compile-green and publishes the reviewed §17.12 A2b exact-source-path authority plus the production A3 1:1 binder/single writer.
+- Candidate package120 is artifact `10280703200` from run/job `34643014511 / 103407112799`, ZIP SHA-256 `3f0ae49f1549ff2f5c4f821ee1db5bc0314405f8f726c04cecaaf5fa3cdf80a4`.
+- Selector403 has 403 rows, SHA-256 `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`; rows 1-394 are byte-identical to accepted selector394 (`6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`).
+- Package120 contains all four selector-owner binaries plus core/pipeline/API/benchmark compile evidence; package manifest verified **28/28**, GMP/GMPXX is authoritative, and `runtimeExecution=false`.
+- Stable regression accounting remains **47 events / 14 categories / 33 recurrences**. Produced-witness debt remains **5**. CB4-R1 executed no runtime, so it creates no runtime regression-accounting update.
+- CP3 remains open. Package120 is candidate/unpromoted until TB2 review acceptance.
 
-## Review decision
+## What CB4-R1 changed
 
-The missing information already exists during A2b construction; the defect is where authority is published.
+Normative §17.12 is now implemented at the A2b→A3 boundary:
 
-New normative §17.12 freezes the correction:
+1. every accepted `GlobalTopologyArc` publishes a canonical non-empty exact ordered source path;
+2. split `Mandatory` and `Cut` arcs publish exact strict subintervals and `Trace` arcs publish exact ordered segment support;
+3. A2b independently reconstructs/validates that support and includes it in semantic identity;
+4. production A3 copies one A2b path 1:1 into one `ConformitySpanInput`, with no family/sign or floating reconstruction;
+5. production constructs/independently validates exactly one `GlobalConformityBaselinePlan` immediately after A2b and publishes it as an immutable stage product;
+6. A4 remains behaviorally unchanged and does not consume the new A3 product yet.
 
-1. every accepted `GlobalTopologyArc` publishes a non-empty canonical exact ordered source path in `firstNode -> secondNode` orientation;
-2. one upstream-neutral exact source-point/support-piece representation is shared by A2b and A3;
-3. split `Mandatory` and `Cut` arcs publish their actual exact subintervals, while `Trace` arcs publish their exact ordered segment-support chain;
-4. A2b candidate validation reconstructs expected support from source + accepted A2a/A2a′ authority and compares exactly; semantic hashing binds the path;
-5. production A3 copies one A2b arc path 1:1 into one `ConformitySpanInput`; it does not reconstruct from parent edge, source faces, synthetic-node numbering, floating geometry or private construction state;
-6. A4 remains unchanged until the new A2b→A3 boundary has artifact-only runtime proof.
+Nine focused identities were appended as selector rows 395-403. Their runtime proof is owned exclusively by TB2.
 
-This is an additive A2b publication/certificate strengthening. It does not change selected cuts, A2b arc IDs/order/topology, rotations, regions, disc certificates or accepted package119 parity-solver semantics. Historical M3 evidence remains valid for those unchanged semantics but does not prove the new support field.
+## Exact next — `M4-CP3-TB2-EXEC`
 
-## Exact next — `M4-CP3-CB4-R1`
+Execute `Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md` exactly against immutable package120 artifact `10280703200`.
 
-Execute `Architecture_M4_CP3_CB4_R1_Code_Build_Plan.md` only.
+Required frozen gates:
 
-R1 scope is deliberately narrower than the superseded CB4 plan:
+- immutable artifact/source/manifest/GMP/mode/selector preflight;
+- focused rows 395-403, pass A: **9/9** expected;
+- focused rows 395-403, pass B: **9/9** expected and deterministic;
+- accepted-prefix selector394 compatibility: **394/394** expected;
+- cumulative selector403: **403/403** expected;
+- immutable postflight with package manifest **28/28** again.
 
-- factor/reuse one upstream-neutral exact source path representation;
-- publish exact support on every A2b `GlobalTopologyArc` for `Mandatory`, `Trace`, and `Cut`;
-- independently validate/digest that support;
-- derive exactly one A3 span per A2b arc by exact copy;
-- construct and independently validate exactly one production `GlobalConformityBaselinePlan` immediately after A2b and publish it as an immutable stage product/diagnostic snapshot;
-- add focused compile-only regression source for split cut/mandatory support, trace support, tamper rejection, canonical face-point mapping, 1:1 binder coverage and single-writer production reachability;
-- append new required-green identities after accepted selector394 without rewriting its prefix;
-- compile only through approved GitHub workflows with mandatory GMP/GMPXX and `runtimeExecution=false`.
+TB2-EXEC is runtime execution and raw-evidence preservation only. It must not compile, patch, repair, diagnose by editing, mutate selectors/fixtures/package bytes, or perform A4 cutover work. After the frozen matrix finishes or blocks, stop at `M4-CP3-TB2-REV`.
 
-**Do not** change A4 shared-boundary behavior, region-domain mapping, `HardRailPairKey`, floating `support_key`, target-derived shared subdivision, or the exact-torus pairing gate in R1. If A4 must change merely to compile the new boundary, stop and return to Review.
+`M4-CP3-TB2-REV` is the independent diagnostics/review boundary. Only that review may promote package120 and authorize a later `M4-CP3-CB5` A3→A4 cutover.
 
-After a green R1 package, freeze/execute artifact-only `M4-CP3-TB2-EXEC` to prove the new A2b publication and production A3 binder. Only after TB2 Review acceptance may a later `M4-CP3-CB5` perform the final A3→A4 exact shared-boundary cutover using the still-valid downstream parts of the superseded CB4 plan.
-
-## Current evidence and planning authority
+## Evidence and planning authority
 
 - normative definition: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §§17 and 17.12
-- accepted runtime authority: package119 / selector394 **394/394**
-- CB4 guard: `.agents/Directional/Architecture_M4_CP3_CB4_Derivation_Guard_Record.md`
-- completed review: `.agents/Directional/Architecture_M4_CP3_CB4_REV_Review_Record.md`
-- authoritative next plan: `.agents/Directional/Architecture_M4_CP3_CB4_R1_Code_Build_Plan.md`
-- superseded plan: `.agents/Directional/Architecture_M4_CP3_CB4_Code_Build_Plan.md`
-- review-entry semantic head: `26c6bbd481debc6f8f6b613aff1bb7e7fae40388`
-- review snapshot control head: `0ac90cd1c1c70d15f99393b4f9b84c4d3246ccc3`
-- review source snapshot run/artifact: `34635857254 / 10277961550`
-- snapshot archive SHA-256: `52d6ea02c7d3936a87ac7362f60bf93e82135fcf51dd08d6f77e177b0f86e5fe`
-- Review executed no compile and no Directional runtime.
+- CB4-R1 frozen plan: `.agents/Directional/Architecture_M4_CP3_CB4_R1_Code_Build_Plan.md`
+- CB4-R1 report: `.agents/Directional/Architecture_M4_CP3_CB4_R1_Code_Build_Report.md`
+- selector403: `.agents/Directional/Architecture_M4_CP3_CB4_R1_Required_Green_Selector_403.txt`
+- TB2 frozen plan: `.agents/Directional/Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md`
+- semantic source: `3f909a5a2cfd305d423faf7a260bc465c7b06892`
+- package120 run/job: `34643014511 / 103407112799`
+- package120 artifact: `10280703200`
+- package120 ZIP SHA-256: `3f0ae49f1549ff2f5c4f821ee1db5bc0314405f8f726c04cecaaf5fa3cdf80a4`
+- compile log artifact: `10280878009`, SHA-256 `637255ac10f42363aed0a2af66b220ab436a0f4612b76ded61101f0cfbedb020`
+- accepted predecessor: package119 / selector394 **394/394**
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
+  - turn-based-coding-agent/references/turns/TB-EXEC.md
 conditional_modules:
-  - trigger: implementation design / exact authority publication
-    path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
-  - trigger: focused regression-source design
-    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
-  - trigger: GitHub connector / workflow / patch transport / compile evidence
+  - trigger: GitHub Actions artifact/runtime orchestration
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP3_CB4_R1_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M4_CP3_CB4_REV_Review_Record.md
-  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md#1712-a2b-must-publish-each-full-arcs-exact-ordered-source-path
-  - include/directional/geometry/GlobalTopologyPlan.h
-  - src/geometry/EmbeddedGraphTopology.cpp
-  - include/directional/geometry/SurfaceCellTracing.h
-  - include/directional/geometry/GlobalConformityPlan.h
-  - include/directional/geometry/GlobalConformityBaseline.h
-  - src/pipeline/RemeshPipeline.cpp
-templates_when_producing: []
+  - .agents/Directional/Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP3_CB4_R1_Code_Build_Report.md
+  - .agents/Directional/Architecture_M4_CP3_CB4_R1_Required_Green_Selector_403.txt
+templates_when_producing:
+  - turn-based-coding-agent/templates/TEST_BENCHMARK_REPORT.md
 do_not_preload:
-  - superseded CB4 implementation details except when checking a downstream carry-forward invariant
-  - historical M3/CP1/CP2 reports
-  - unrelated milestone records
+  - CB4 implementation details unless an execution preflight needs packaged-source ownership mapping
+  - superseded CB4 plan details
+  - unrelated historical milestone records
 ```
