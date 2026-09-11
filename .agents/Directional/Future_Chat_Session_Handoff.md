@@ -1,51 +1,93 @@
 # Future Chat Session Handoff — Directional
 
-**Status:** `M4-CP3-CB4-R1` COMPLETE / COMPILE GREEN / RUNTIME-FREE / EXACT NEXT `M4-CP3-TB2-EXEC`
+**Status:** `M4-CP3-TB2-EXEC` COMPLETE / 815/815 MEASURED GREEN / IMMUTABLE POSTFLIGHT / EXACT NEXT `M4-CP3-TB2-REV`
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-TB2-EXEC`, artifact-only Test + Benchmark execution
+**Canonical next turn:** Test + Benchmark review boundary, granular subturn `M4-CP3-TB2-REV`
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED.
-- M4 package119 / selector394 **394/394** remains the accepted runtime authority.
+- M4 package119 / selector394 **394/394** remains the accepted runtime authority pending TB2 review.
 - CB4-R1 semantic source `3f909a5a2cfd305d423faf7a260bc465c7b06892` is compile-green and publishes the reviewed §17.12 A2b exact-source-path authority plus the production A3 1:1 binder/single writer.
 - Candidate package120 is artifact `10280703200` from run/job `34643014511 / 103407112799`, ZIP SHA-256 `3f0ae49f1549ff2f5c4f821ee1db5bc0314405f8f726c04cecaaf5fa3cdf80a4`.
 - Selector403 has 403 rows, SHA-256 `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`; rows 1-394 are byte-identical to accepted selector394 (`6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`).
-- Package120 contains all four selector-owner binaries plus core/pipeline/API/benchmark compile evidence; package manifest verified **28/28**, GMP/GMPXX is authoritative, and `runtimeExecution=false`.
-- Stable regression accounting remains **47 events / 14 categories / 33 recurrences**. Produced-witness debt remains **5**. CB4-R1 executed no runtime, so it creates no runtime regression-accounting update.
-- CP3 remains open. Package120 is candidate/unpromoted until TB2 review acceptance.
+- Package120 contains all four selector-owner binaries plus core/pipeline/API/benchmark compile evidence; package manifest is **28/28**, GMP/GMPXX authoritative, and its CB command boundary records `runtimeExecution=false`.
+- TB2-EXEC measured package120 green but did not review/promote it. Package120 remains **candidate / unpromoted** until `M4-CP3-TB2-REV` independently adjudicates the evidence.
+- Stable regression accounting remains **47 events / 14 categories / 33 recurrences**. Produced-witness debt remains **5**. TB2-EXEC performs no review-classification update.
+- CP3 remains open. No A3→A4 production cutover is authorized.
 
-## What CB4-R1 changed
+## TB2-EXEC measured evidence
 
-Normative §17.12 is now implemented at the A2b→A3 boundary:
+Frozen plan `Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md` was executed artifact-only against immutable package120 bytes in run/job:
 
-1. every accepted `GlobalTopologyArc` publishes a canonical non-empty exact ordered source path;
-2. split `Mandatory` and `Cut` arcs publish exact strict subintervals and `Trace` arcs publish exact ordered segment support;
-3. A2b independently reconstructs/validates that support and includes it in semantic identity;
-4. production A3 copies one A2b path 1:1 into one `ConformitySpanInput`, with no family/sign or floating reconstruction;
-5. production constructs/independently validates exactly one `GlobalConformityBaselinePlan` immediately after A2b and publishes it as an immutable stage product;
-6. A4 remains behaviorally unchanged and does not consume the new A3 product yet.
+```text
+workflow run = 34647838897
+execute job  = 103422811636
+```
 
-Nine focused identities were appended as selector rows 395-403. Their runtime proof is owned exclusively by TB2.
+Result evidence:
 
-## Exact next — `M4-CP3-TB2-EXEC`
+```text
+result artifact     = 10283220925
+result digest       = sha256:314428caf9b240b992f56a48a471e210c0c8361331004d7a0a268ea9fbca4c6f
+diagnostic artifact = 10283302336
+diagnostic digest   = sha256:369889439612977466961821fb8fd082c37fb9da12525c0f74280beafc7a9c4c
+```
 
-Execute `Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md` exactly against immutable package120 artifact `10280703200`.
+Preflight re-established exact artifact/source/selector authority, manifest **28/28**, packaged executable modes and static selector ownership. Expected and observed owner totals matched:
 
-Required frozen gates:
+```text
+selector394 = 30 authority-kernel / 248 producer / 75 completion / 41 validation
+selector403 = 30 authority-kernel / 257 producer / 75 completion / 41 validation
+```
 
-- immutable artifact/source/manifest/GMP/mode/selector preflight;
-- focused rows 395-403, pass A: **9/9** expected;
-- focused rows 395-403, pass B: **9/9** expected and deterministic;
-- accepted-prefix selector394 compatibility: **394/394** expected;
-- cumulative selector403: **403/403** expected;
-- immutable postflight with package manifest **28/28** again.
+The complete frozen runtime matrix produced **815/815 PASS processes**:
 
-TB2-EXEC is runtime execution and raw-evidence preservation only. It must not compile, patch, repair, diagnose by editing, mutate selectors/fixtures/package bytes, or perform A4 cutover work. After the frozen matrix finishes or blocks, stop at `M4-CP3-TB2-REV`.
+```text
+focused 395-403 pass A =   9/9
+focused 395-403 pass B =   9/9
+selector394 prefix      = 394/394
+selector403 cumulative  = 403/403
+-------------------------------
+total processes         = 815/815
+```
 
-`M4-CP3-TB2-REV` is the independent diagnostics/review boundary. Only that review may promote package120 and authorize a later `M4-CP3-CB5` A3→A4 cutover.
+There were **0 RED, 0 SKIP, 0 selection mismatch and 0 timeout**. Focused pass B produced the same ordered selected-identity/verdict vector as pass A.
+
+Every runtime process was a fresh exact-filter GTest invocation and required one requested `[ RUN ]`, one matching `[ OK ]`, no skip, and no second selected test.
+
+Postflight measured:
+
+```text
+package_immutable=PASS
+source_immutable=PASS
+execution_view_immutable=PASS
+manifest_post=28/28
+configure=false
+compile=false
+relink=false
+generated_discovery=false
+package_repair=false
+```
+
+No benchmark ran; the frozen TB2 plan defines no performance acceptance metric.
+
+## Exact next — `M4-CP3-TB2-REV`
+
+Independently reopen the frozen plan, durable TB2 execution report and raw result artifact `10283220925`.
+
+The review must, at minimum:
+
+1. verify package/artifact/source/selector provenance and the immutable pre/post evidence;
+2. independently inspect the source-definition census for selector rows 395-403 against the plan's non-vacuity obligations;
+3. verify focused A/B determinism and exact single-test process discipline;
+4. verify selector394 **394/394** compatibility and selector403 **403/403** cumulative totals/owner partitions;
+5. determine whether package120 may be promoted and whether regression accounting or produced-witness debt changes;
+6. only if review accepts the candidate, decide whether a later `M4-CP3-CB5` A3→A4 cutover is authorized.
+
+TB2-REV is review/diagnostics only. Do not mutate implementation, tests, fixtures, selectors, build logic, package bytes or accepted evidence during review. Do not treat the green TB2-EXEC result by itself as promotion.
 
 ## Evidence and planning authority
 
@@ -54,29 +96,32 @@ TB2-EXEC is runtime execution and raw-evidence preservation only. It must not co
 - CB4-R1 report: `.agents/Directional/Architecture_M4_CP3_CB4_R1_Code_Build_Report.md`
 - selector403: `.agents/Directional/Architecture_M4_CP3_CB4_R1_Required_Green_Selector_403.txt`
 - TB2 frozen plan: `.agents/Directional/Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md`
+- TB2 execution report: `.agents/Directional/Architecture_M4_CP3_TB2_Test_Benchmark_Report.md`
 - semantic source: `3f909a5a2cfd305d423faf7a260bc465c7b06892`
-- package120 run/job: `34643014511 / 103407112799`
 - package120 artifact: `10280703200`
 - package120 ZIP SHA-256: `3f0ae49f1549ff2f5c4f821ee1db5bc0314405f8f726c04cecaaf5fa3cdf80a4`
-- compile log artifact: `10280878009`, SHA-256 `637255ac10f42363aed0a2af66b220ab436a0f4612b76ded61101f0cfbedb020`
-- accepted predecessor: package119 / selector394 **394/394**
+- TB2 execution run/job: `34647838897 / 103422811636`
+- TB2 result artifact: `10283220925`
+- TB2 diagnostic artifact: `10283302336`
+- durable TB2 execution-report commit: `b19e242214e56eb2d495073cd0032d7a95eaea34`
+- accepted predecessor pending review: package119 / selector394 **394/394**
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB-EXEC.md
+  - turn-based-coding-agent/references/turns/TB-REVIEW.md
 conditional_modules:
-  - trigger: GitHub Actions artifact/runtime orchestration
+  - trigger: GitHub Actions artifact/evidence retrieval
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
   - .agents/Directional/Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M4_CP3_CB4_R1_Code_Build_Report.md
+  - .agents/Directional/Architecture_M4_CP3_TB2_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M4_CP3_CB4_R1_Required_Green_Selector_403.txt
 templates_when_producing:
   - turn-based-coding-agent/templates/TEST_BENCHMARK_REPORT.md
 do_not_preload:
-  - CB4 implementation details unless an execution preflight needs packaged-source ownership mapping
-  - superseded CB4 plan details
+  - CB4 implementation details unless needed to adjudicate a specific TB2 non-vacuity contract
   - unrelated historical milestone records
+  - TB-PLAN or Code + Build successor work before review disposition
 ```
