@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1JpWjr-q5nxVheLbs1hQfh71lEeigAoLK
-      patch_sha256: cbdf7a3eb93b4731d93ca30a762e9d587bf792e275306a076a7766bdee38815e
-      base_sha: 0c95b7e142b0c127691882fcf72b9ec8baaa05f2
+      file_id: 15W9V760mNjsVNB-ieZEWtTl9Wu34G2mc
+      patch_sha256: a959dc8f7fe2583a81039f63acd962b2e4b02ca0d5c6364ffbd776448252ad31
+      base_sha: c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M4-CP3-CB2: add family-free baseline parity A3"
+      commit_message: "M4-CP3-CB2: close compile and issue TB1 plan"
       retention_days: 14
     secrets: inherit
