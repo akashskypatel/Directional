@@ -1,3 +1,11 @@
+## 2026-09-11 — `M4-CP3-CB4`: exact-path derivation guard fails before production cutover
+
+`M4-CP3-CB4` is **HALTED / PRE-MUTATION DERIVATION GUARD / NO SEMANTIC MUTATION / NO COMPILE / NO RUNTIME**. Its mandatory six-class census is complete, but the accepted A2a′/A2b public products cannot derive the exact §17 ordered support of every full split `Cut` arc. A2b construction knows exact cut-crossing parameters and binds them to synthetic `NetworkNodeId`s inside `EmbeddedGraphTopology.cpp`, then publishes `GlobalTopologyArc` without that exact endpoint-parameter binding; `SurfaceCutGraph` likewise exposes cut edges/certificates rather than the exact split points. Split `Mandatory` arcs have the same publication class of problem. CB4 plan §3 therefore requires stop-and-review rather than reconstructing or inventing a convention.
+
+Exact inspected snapshot authority is control head `128f7d738382eb4957b5680de2fbcab8d2953c26`, source-snapshot run/artifact `34630928953 / 10275967628`, provider ZIP SHA-256 `70bd27c9...`, inner source archive `f14658d3...`; semantic predecessor `b315fea406c04fa65ff7c9a19f3886054470b16d` differs only by the snapshot trigger marker. Package119/selector394 remains accepted **394/394**; stable accounting remains **47 / 14 / 33**, debt **5**, CP3 remains open. Full evidence: `Architecture_M4_CP3_CB4_Derivation_Guard_Record.md`.
+
+**Exact next: independent runtime-free `M4-CP3-CB4-REV`** to freeze the exact ordered A2b arc-support publication contract and decide whether §17 or upstream product definitions require amendment before Code + Build resumes. No TB2 or production cutover is authorized before that review.
+
 ## 2026-09-11 — `M4-CP3-TB1-R1-REV`: package119/selector394 promoted; production cutover next
 
 Runtime-free review independently reopened package119 plus raw result/log evidence from `34595754914 / 103251084987` and upheld the complete frozen gate: exactly **800** fresh processes, focused rows383-394 **12/12 twice**, predecessor selector382 **382/382**, cumulative selector394 **394/394**, deterministic success receipts, zero RED/SKIP/timeout/selection mismatch, and immutable pre/postflight. Package119 artifact `10185370005` remains `9fdfe9a1...`; result/log artifacts `10262063263 / 10262438089` remain `73630347... / 81bbb54c...`.

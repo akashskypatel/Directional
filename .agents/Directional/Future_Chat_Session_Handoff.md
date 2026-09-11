@@ -1,10 +1,10 @@
 # Future Chat Session Handoff — Directional
 
-**Status:** `M4-CP3-TB1-R1-REV` COMPLETE / APPROVED WITH AMENDMENTS / PACKAGE119 PROMOTED / SELECTOR394 ACCEPTED 394/394 / EXACT NEXT `M4-CP3-CB4`
+**Status:** `M4-CP3-CB4` HALTED / PRE-MUTATION DERIVATION GUARD / NO SEMANTIC MUTATION / NO COMPILE / NO RUNTIME / EXACT NEXT `M4-CP3-CB4-REV`
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-CB4`, runtime-free Code + Build production A3→A4 exact shared-breakpoint cutover
+**Canonical next turn:** `M4-CP3-CB4-REV`, independent Review + Plan / runtime-free
 
 ## Current authority
 
@@ -16,7 +16,8 @@
 - package118 / selector394 remains immutable historical TB1 evidence at **387/394** and is unpromoted.
 - `M4-CP3-CB3`: complete. Exact semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` changes only `tests/GlobalConformityBaselineTests.cpp` semantically, passes changed-owner preflight and full package compile through mandatory GMP/GMPXX, and executes no Directional runtime.
 - `M4-CP3-TB1-R1-REV` independently upheld package119: focused rows383-394 **12/12 twice**, accepted predecessor **382/382**, cumulative selector394 **394/394**, deterministic corrected receipts, and immutable postflight. Package119 is **promoted** by Review; CP3 itself remains open.
-- production A3→A4 cutover remains blocked.
+- `M4-CP3-CB4` completed its mandatory six-class pre-mutation derivation census and **halted before semantic mutation**: exact split-arc source parameters are construction-private in A2b and are not published by accepted `SurfaceCutGraph` / `GlobalTopologyArc` authority. The frozen plan forbids reconstructing or inventing that convention in CB4.
+- production A3→A4 cutover remains blocked; no compile/package or runtime was executed in CB4.
 
 ## Frozen production A3 contract
 
@@ -89,9 +90,11 @@ Result artifact `10262063263` has SHA-256 `736303476b9287c61534da406ec5ba788df72
 
 `M4-CP3-TB1-R1-REV` is **APPROVED WITH AMENDMENTS**. Raw artifact review corrects stale copied closeout values: ordinal390 is `regionSpanMultiplicities=[1,1,1]`, ordinal394 is `topologyBoundaryIncidences=3 baselineIncidences=3`; authoritative census-file hashes are package `3fd9e6bb...`, source `70834cfc...`, execution view `97449c61...`, manifest `9861b442...`. These corrections do not change the frozen gate outcome. Candidates `M4-CP3-TB1-REV-CAND-01/02` are CLOSED / RECOVERY PROVED / NON-STABLE. Stable accounting remains **47 / 14 / 33** and debt **5**.
 
-## Exact next — `M4-CP3-CB4`
+## Exact next — `M4-CP3-CB4-REV`
 
-Execute the runtime-free production cutover plan in `Architecture_M4_CP3_CB4_Code_Build_Plan.md`. Production must construct/validate one §17 baseline plan after A2b, pass it immutably into A4, consume exact span/ordinal shared-boundary identity, and retire floating `support_key` as semantic hard-rail pairing authority while preserving A4-local field family/sign semantics. CB4 may compile/package through the mandatory GMP workflow but must execute no Directional runtime. Its closeout freezes the artifact-only TB2 plan.
+Execute an **independent runtime-free Review + Plan** over `Architecture_M4_CP3_CB4_Derivation_Guard_Record.md`, the frozen CB4 plan, §17, and the accepted A2a/A2a′/A2b product shapes. Review must decide how exact ordered support for every full A2b arc — including split `Cut` and `Mandatory` arcs — becomes published accepted authority, and whether §17 or an upstream frozen product contract requires amendment. It must then issue the successor Code + Build plan.
+
+Do **not** resume the production cutover, compile/package, author TB2, or execute Directional runtime before that review boundary freezes the missing authority.
 
 ## Current evidence
 
@@ -102,7 +105,8 @@ Execute the runtime-free production cutover plan in `Architecture_M4_CP3_CB4_Cod
 - frozen CB3 plan: `.agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Plan.md`
 - completed CB3 report: `.agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Report.md`
 - completed corrective runtime plan/report/review: `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md`, `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md`, `.agents/Directional/Architecture_M4_CP3_TB1_R1_Review_Record.md`
-- exact next Code + Build plan: `.agents/Directional/Architecture_M4_CP3_CB4_Code_Build_Plan.md`
+- CB4 derivation-guard stop record: `.agents/Directional/Architecture_M4_CP3_CB4_Derivation_Guard_Record.md`
+- halted CB4 plan: `.agents/Directional/Architecture_M4_CP3_CB4_Code_Build_Plan.md`
 - selector: `.agents/Directional/Architecture_M4_CP3_Required_Green_Selector_394.txt`
 - regression classification: `.agents/Directional/Regression_Root_Cause_Tracker.md` candidates `M4-CP3-TB1-REV-CAND-01/02`
 
@@ -110,19 +114,20 @@ Execute the runtime-free production cutover plan in `Architecture_M4_CP3_CB4_Cod
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
+  - turn-based-coding-agent/references/turns/REVIEW.md
 conditional_modules:
-  - trigger: implementation design / production cutover
+  - trigger: review/planning of missing exact upstream authority
     path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
-  - trigger: unit-test authoring or repair
-    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
-  - trigger: GitHub connector / work-preservation / compile workflow handling
+  - trigger: GitHub connector / evidence inspection / documentation handling
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP3_CB4_Derivation_Guard_Record.md
   - .agents/Directional/Architecture_M4_CP3_CB4_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M4_CP3_TB1_R1_Review_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md#17-m4-cp3-defn-r1-amendment--baseline-conformity-is-exact-shared-subdivision-plus-region-parity
+  - include/directional/geometry/SurfaceCutGraph.h
+  - include/directional/geometry/GlobalTopologyPlan.h
+  - src/geometry/EmbeddedGraphTopology.cpp
 do_not_preload:
+  - TB2 runtime harnesses
   - historical package118 repair plans
-  - runtime harnesses from TB1-R1
 ```
