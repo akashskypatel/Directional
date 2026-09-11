@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-10 at `M4-CP2-TB2-R1-REV` promotion / CP2 closure
+**Last updated:** 2026-09-11 at `M4-CP3-TB2-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package117/selector382 remains accepted M4 runtime authority at **382/382**. Package118/selector394 remains unpromoted candidate evidence after `M4-CP3-TB1-REV`, whose current review authority is `Architecture_M4_CP3_TB1_Review_Record.md`. Exact next is `M4-CP3-CB3` under `Architecture_M4_CP3_CB3_Code_Build_Plan.md`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package119/selector394 is the accepted M4 runtime authority at **394/394**. Package120/selector403 is mechanically green but remains unpromoted because `M4-CP3-TB2-REV` found row400 does not exercise its frozen source-row→canonical barycentric mapping obligation. Current review authority is `Architecture_M4_CP3_TB2_Review_Record.md`; exact next is runtime-free `M4-CP3-TB2-PLAN`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -243,6 +243,39 @@ The authoritative successor is `Architecture_M4_CP3_CB3_Code_Build_Plan.md`. CB3
 
 No runtime, compile, test-source mutation, package promotion or A3→A4 cutover occurred during planning. Stable accounting remains **47 / 14 / 33**, debt **5**; accepted authority remains package117/selector382. No additional independent Review is requested because the user-supplied amendment is incorporated. **Exact next: `M4-CP3-CB3`.**
 
+
+## 2.19 `M4-CP3-CB3` + `TB1-R1` + review — package119/selector394 accepted
+
+CB3 performed the bounded test-authority recovery from TB1 without changing product source or selector394. Exact semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` corrected the invalid one-face helper and the unguaranteed breakpoint precondition, strengthened the exhaustive parity oracle and tamper execution evidence, and added success-visible receipts. Candidate package119 artifact `10185370005` hashes to `9fdfe9a1c8f92d52669a82da0ddfca75d58fd8dc7317d5100faff5a85c820fc8`.
+
+Authoritative artifact-only R1 run/job `34595754914 / 103251084987` executed **800** fresh processes: focused rows383-394 **12/12 twice**, predecessor382 **382/382**, cumulative selector394 **394/394**, with deterministic receipts and immutable 28/28 pre/postflight. R1 review independently reopened the raw evidence, corrected copied receipt/census transcription without changing verdicts, promoted package119 and accepted selector394 as the production-baseline A3 runtime authority. Stable accounting remained **47 / 14 / 33**, debt **5**.
+
+R1 review also recorded non-blocking `M4-CP3-TB1-R1-REV-OBS-01`: the oracle's region-incidence multiplicity weighting is structurally present but its live receipt contains only `[1,1,1]`, so the `m=2` path is still unexercised. That obligation remains open and is now explicitly re-carried by TB2 review.
+
+## 2.20 `M4-CP3-CB4` guard + review — exact split-arc support had no accepted publication owner
+
+CB4's production-wiring derivation guard stopped before mutation because split `Cut`/`Mandatory` A2b arcs did not publish the exact sub-edge locus A3 would have to copy. Reconstructing that locus from synthetic-node allocation order, floating geometry or overlap would invent authority. Runtime-free review upheld the stop and amended frozen definitions with §17.12: A2b owns one canonical exact ordered source path per accepted Mandatory/Trace/Cut arc; validation independently reconstructs it; A3 copies it 1:1. The later A3→A4 materialization cutover remained deferred.
+
+## 2.21 `M4-CP3-CB4-R1` — §17.12 compiles as candidate package120
+
+CB4-R1 semantic source `3f909a5a2cfd305d423faf7a260bc465c7b06892` implemented one upstream-neutral exact source-path representation, exact Mandatory/Cut subintervals, ordered Trace support, independent A2b validation/digest binding, one A2b-arc→A3-span binder and one independently validated/published `GlobalConformityBaselinePlan` immediately after A2b. A4 did not consume the new product and remained behaviorally unchanged.
+
+Selector403 is selector394 plus nine producer-owned rows395-403, SHA-256 `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`; first394 hashes exactly to accepted `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`. Corrected compile/package run/job `34643014511 / 103407112799` produced candidate package120 artifact `10280703200`, ZIP SHA-256 `3f0ae49f1549ff2f5c4f821ee1db5bc0314405f8f726c04cecaaf5fa3cdf80a4`, manifest **28/28**, all four selector-owner binaries, GMP/GMPXX and `runtimeExecution=false`.
+
+## 2.22 `M4-CP3-TB2-EXEC` — package120 mechanically 815/815 green
+
+Artifact-only run/job `34647838897 / 103422811636` consumed package120 unchanged. Result artifact `10283220925` has provider digest `314428caf9b240b992f56a48a471e210c0c8361331004d7a0a268ea9fbca4c6f`; diagnostic artifact `10283302336` has provider digest `369889439612977466961821fb8fd082c37fb9da12525c0f74280beafc7a9c4c`.
+
+The frozen matrix completed **815/815 PASS**: rows395-403 focused A **9/9**, focused B **9/9** with identical ordered verdicts, accepted selector394 **394/394**, cumulative selector403 **403/403**, zero RED/SKIP/selection mismatch/timeout. Owner totals independently encoded by the package are selector394 **30/248/75/41** and selector403 **30/257/75/41**. Package/source/execution-view pre/post censuses are identical and the package manifest re-verifies **28/28**. EXEC correctly did not self-promote package120.
+
+## 2.23 `M4-CP3-TB2-REV` — mechanical green upheld; row400 non-vacuity blocks promotion
+
+Runtime-free review independently re-derived the package manifest/path set, 815-row ledger and raw-log count, phase ranges, owner mappings, focused determinism, selector hashes/prefixes, pre/post censuses and deleted execution-caller process discipline. It also compared the current review-head code/test/build surface against package120 source and found all **387/387** files byte-identical.
+
+Eight new identities (395-399, 401-403) satisfy their frozen non-vacuity obligations. Row400 does not. R1 required a face-barycentric test to use a source-face row whose order differs from canonical topology-key order so component remapping is actually exercised. The shipped test creates `sourceRow{2,0,1}` only for a detached `ASSERT_NE`, then passes an already-canonical face key and barycentric array directly to `canonical_exact_source_face_point`. The source row never influences the point or mapping, so a missing/swapped row→canonical conversion would leave the test green. This is `M4-CP3-TB2-REV-CAND-01`, a structurally invalid fixture/missing-scenario test-authority finding, non-stable.
+
+No production defect is established. Package120/selector403 is **not promoted/accepted**; package119/selector394 remains accepted **394/394**. Stable accounting stays **47 / 14 / 33**, debt **5**, CP3 remains open and A3→A4 cutover remains unauthorized. Exact next is `M4-CP3-TB2-PLAN`, which owns the bounded row400 recovery. `M4-CP3-TB1-R1-REV-OBS-01` is explicitly re-carried rather than silently expired.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -288,5 +321,25 @@ history.
 | `Architecture_M4_CP3_CB1_Code_Build_Plan.md` | 141 | **FOLDED AFTER STOP + DEFN.** Guard scope, no-mutation stop and successor routing are preserved in §2.16, frozen definitions §17 and the current DEFN-R1 review. |
 | `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md` | 60 | **FOLDED AFTER DEFN-R1.** The Cut-family/sign derivation failure, 28-cut torus reachability, forbidden fallbacks and bounded A/B/C alternatives are preserved and extended in §2.16, frozen definitions §17 and the current review. |
 | `Architecture_M4_CP3_CB2_Code_Build_Plan.md` | 150 | **FOLDED AFTER CB2 + TB1 REVIEW.** Family-free parity implementation/compile scope and no-cutover boundary are preserved in §2.17, `Architecture_M4_CP3_CB2_Code_Build_Report.md`, frozen definitions §17, current TB1 review, tracker and changelog. |
+
+
+| `Architecture_M4_CP3_CB2_Code_Build_Report.md` | 118 | **FOLDED AFTER PACKAGE119 ACCEPTANCE + TB2 REVIEW. CB2 source/package118 and original TB1 result are preserved in §§2.17-2.19, tracker/changelog and git history.** |
+| `Architecture_M4_CP3_TB1_Test_Benchmark_Plan.md` | 207 | **FOLDED AFTER TB1 REVIEW/R1 RECOVERY. Frozen first-attempt gate and seven blocked contracts are preserved in §§2.17-2.19 and tracker.** |
+| `Architecture_M4_CP3_TB1_Test_Benchmark_Report.md` | 101 | **FOLDED AFTER VALID R1 SUPERSESSION. Package118 387/394 mechanics and test-authority classification are preserved in §2.17, tracker and changelog.** |
+| `Architecture_M4_CP3_TB1_Review_Record.md` | 224 | **FOLDED AFTER R1 ACCEPTANCE. Its two test-authority findings and no-product-defect disposition are preserved in §§2.17-2.19 and tracker.** |
+| `Architecture_M4_CP3_CB3_Code_Build_Plan.md` | 251 | **FOLDED AFTER PACKAGE119 PROMOTION. Bounded test-only recovery contract is preserved in §§2.18-2.19 and accepted R1 evidence.** |
+| `Architecture_M4_CP3_CB3_Code_Build_Report.md` | 183 | **FOLDED AFTER PACKAGE119 PROMOTION. Exact source/package119 compile lineage and test-only scope are preserved in §2.19 and retained accepted R1 runtime report.** |
+| `Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md` | 266 | **FOLDED AFTER R1 EXECUTION/REVIEW. Recovery gate is preserved in §2.19 and retained `Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md`.** |
+| `Architecture_M4_CP3_TB1_R1_Review_Record.md` | 210 | **FOLDED AFTER TB2 REVIEW SUPERSESSION. Package119 promotion and carried multiplicity observation are preserved in §2.19, tracker, selector manifest and current review.** |
+| `Architecture_M4_CP3_DEFN_R1_Review_Record.md` | 214 | **FOLDED AFTER IMPLEMENTATION/RE-PROOF. Family/sign-free rebase rationale is incorporated into frozen definitions §17 and §§2.16-2.19.** |
+| `Architecture_M4_CP3_CB4_Code_Build_Plan.md` | 146 | **FOLDED AFTER GUARD STOP + REVIEW. Production-cutover guard and stop are preserved in §2.20, frozen definitions §17.12 and git history.** |
+| `Architecture_M4_CP3_CB4_Derivation_Guard_Record.md` | 96 | **FOLDED AFTER §17.12 AMENDMENT. Missing exact split-locus publication finding is preserved in §2.20 and frozen definitions §17.12.** |
+| `Architecture_M4_CP3_CB4_REV_Review_Record.md` | 208 | **FOLDED AFTER R1 IMPLEMENTATION + TB2 REVIEW. Stop adjudication and §17.12 ownership amendment are preserved in §2.20 and frozen definitions.** |
+| `Architecture_M4_CP3_CB4_R1_Code_Build_Plan.md` | 139 | **FOLDED AFTER R1 COMPILE + TB2 REVIEW. Exact-path publication/binder contract, including face-row non-vacuity requirement, is preserved in §§2.21-2.23 and current review.** |
+| `Architecture_M4_CP3_CB4_R1_Code_Build_Report.md` | 166 | **FOLDED AFTER TB2 REVIEW. Exact semantic source/package120/selector403 compile authority is preserved in §2.21, selector manifest, current review and changelog.** |
+| `Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md` | 289 | **FOLDED AFTER EXECUTION + REVIEW. Frozen 815-process gate/non-vacuity obligations and reviewed disposition are preserved in §§2.22-2.23 and current review.** |
+| `Architecture_M4_CP3_TB2_Test_Benchmark_Report.md` | 145 | **FOLDED AFTER TB2 REVIEW. Mechanical 815/815 evidence, artifact IDs and immutable postflight are preserved in §2.22, current review, changelog and external immutable artifacts.** |
+
+Historical citations to folded filenames remain resolvable through this index and git history.
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.

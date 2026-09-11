@@ -1,3 +1,13 @@
+## M4-CP3-TB2-REV adjudication — **PACKAGE120 NOT PROMOTED / SELECTOR403 NOT ACCEPTED / ROW400 TEST-AUTHORITY COVERAGE GAP**
+
+- Runtime-free review independently reopened package120 (`10280703200`, source `3f909a5a2cfd305d423faf7a260bc465c7b06892`) plus TB2 result evidence (`10283220925`). Mechanical evidence is upheld: focused395-403 **9/9 twice**, accepted prefix394 **394/394**, cumulative403 **403/403**, total **815/815 PASS**, zero RED/SKIP/selection mismatch/timeout, immutable package/source/execution-view postflight, manifest **28/28**.
+- Selector403 first394 is byte-identical to accepted selector394 at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; selector403 is `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`. Static owner totals re-derive as **30/257/75/41** versus accepted selector394 **30/248/75/41**.
+- Rows395-399 and 401-403 satisfy their frozen non-vacuity obligations. **Row400 does not:** its `sourceRow{2,0,1}` appears only in a detached inequality assertion, while the tested helper receives an already-canonical face key and coordinate array. The frozen source-row→canonical barycentric component mapping can be absent/wrong without changing the test.
+- **`M4-CP3-TB2-REV-CAND-01` OPEN / NON-STABLE / TEST-AUTHORITY:** missing discriminating scenario; no product defect established. Package120/selector403 remains unpromoted; package119/selector394 remains accepted **394/394**.
+- `M4-CP3-TB1-R1-REV-OBS-01` is explicitly re-carried; CB4-R1 touched test source but did not discharge it. Do not confound it with the bounded row400 recovery absent a planning proof of independent falsifiability.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**. CP3 remains open; A3→A4 cutover remains unauthorized.
+- **Exact successor:** runtime-free `M4-CP3-TB2-PLAN`; freeze only the row400 recovery and its later artifact-only proof.
+
 ## M4-CP3-TB1-R1-REV adjudication — **PACKAGE119 PROMOTED / SELECTOR394 ACCEPTED / TWO TEST-AUTHORITY CANDIDATES RECOVERY-PROVED**
 
 - Runtime-free review independently reopened immutable package119 and R1 raw result/log evidence. Authoritative run/job `34595754914 / 103251084987` is upheld at exactly **800** fresh processes: focused rows383-394 **12/12 twice**, predecessor selector382 **382/382**, cumulative selector394 **394/394**, zero RED/SKIP/timeout/selection mismatch, deterministic corrected receipts, and immutable package/source/execution-view postflight.
@@ -6,7 +16,7 @@
 - **`M4-CP3-TB1-REV-CAND-02` CLOSED / RECOVERY PROVED / NON-STABLE:** ordinal392 independently establishes preferred/final count above one and proves forward/reverse exact ordinal consumption with live `4 / 1 / 3 / 4 / 4` receipt values.
 - Accepted package authority advances **117 -> 119** and accepted M4 selector authority advances **382 -> 394**. Package118 remains historical/unpromoted. CP3 remains open because production has not yet wired the accepted A3 plan into A4.
 - Stable accounting remains **47 events / 14 categories / 33 recurrences** and produced-witness debt remains **5**.
-- **Exact successor:** runtime-free Code + Build `M4-CP3-CB4` under `Architecture_M4_CP3_CB4_Code_Build_Plan.md`; no additional R1 runtime precedes it.
+- **Historical successor at that review:** runtime-free Code + Build `M4-CP3-CB4`; that turn later halted at its derivation guard and is superseded by the §17.12/R1/TB2 history above.
 
 ## M4-CP3-TB1-REV-CAND-01 — **CLOSED / RECOVERY PROVED / NON-STABLE / TEST-AUTHORITY INVALID FIXTURE**
 
@@ -7467,9 +7477,23 @@ breakpoint ordinals for 392. Without it, "proved" and "reached a vacuous branch"
 **Prohibited:** citing this TB as partial CP3 progress; weakening any of the six intended semantic contracts to
 make the fixture valid; changing product source in the corrective turn absent new contradicting evidence.
 
+## `M4-CP3-TB2-REV-CAND-01` — row400 names a permuted source face row but never exercises row→canonical barycentric mapping
+
+**Owner:** `M4-CP3-TB2-PLAN` → bounded test-authority recovery · **Class:** TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / MISSING SCENARIO COVERAGE · **Non-stable** — package120 is unpromoted, accepted selector394 remains 394/394, accounting stays 47/14/33, debt 5.
+
+**Observed evidence.** Package120/TB2 is mechanically green: focused rows395-403 9/9 twice, accepted prefix394 394/394, cumulative selector403 403/403, 815/815 exact-filter processes, immutable postflight. Review independently re-derived those counts, owner partitions, hashes and raw process discipline. The failure is not a red process; it is missing proof behind a green identity.
+
+**Root cause.** The frozen R1 plan requires any face-barycentric test to use a source-face row whose vertex order differs from canonical topology-key order **so the component mapping is actually exercised**. Row400 creates `sourceRow{2,0,1}` and only checks that `sourceRow[0]` differs from the canonical first vertex. It then calls `canonical_exact_source_face_point(face, barycentric)` with an already-canonical `SourceFaceTopologyKey` and coordinate array. `sourceRow` never contributes to the mesh/face, coordinate conversion or point construction. Removing every mapping from source-row order to canonical order would leave this identity green.
+
+**Product discrimination.** No production bug is established. Static package-source review shows the trace/contact conversion path uses canonical topology keys and exact boundary/vertex mappings. That makes a product edit unjustified absent new evidence, but it does not satisfy the missing runtime coverage obligation.
+
+**Falsifier.** The corrective identity must derive an exact point from an actual source-face row whose order differs from its canonical topology key, use distinct coordinates so a component permutation changes the result, and fail if row→canonical remapping is removed/swapped. It must then pass through the intended canonical representation/validation path. A detached `sourceRow` variable or canonical-array self-comparison is non-evidence (`LESSONS.md` 171).
+
+**Prohibited:** promoting package120/selector403 from the 815/815 mechanical ledger alone; weakening/removing row400; changing production source without contradicting evidence; making the permuted row decorative again; beginning A3→A4 cutover before corrected artifact-only acceptance.
+
 ## `M4-CP3-TB1-R1-REV-OBS-01` — the oracle's multiplicity weighting is inert
 
-**Owner:** next turn that touches test source — **explicitly not `M4-CP3-CB4`** · **Class:** COVERAGE/OBLIGATION-VACUITY
+**Owner:** re-carried by `M4-CP3-TB2-REV` to the first later test-source turn that can exercise it without confounding the bounded row400 recovery · **Class:** COVERAGE/OBLIGATION-VACUITY
 **Non-blocking** — no accepted-green loss, no stable event; accounting stays 47/14/33, debt 5, accepted authority
 package119/selector394.
 
@@ -7492,8 +7516,7 @@ receipt that contains a `2`. If no such fixture is constructible from current A2
 it would mean same-region double incidence is not production-reachable in available fixtures, which is itself
 worth recording against §17.5.
 
-**Prohibited:** folding this into `M4-CP3-CB4`, whose evidential value depends on being a production-wiring turn
-and nothing else (`LESSONS.md` 170); asserting the multiplicity path by inspection instead of exercising it.
+**Prohibited:** silently expiring this because CB4-R1 touched tests without discharging it; folding it into the row400 recovery unless TB2-PLAN proves independent falsifiability is preserved (`LESSONS.md` 170); asserting the multiplicity path by inspection instead of exercising it.
 
 ## `PROCESS-01` — the durable review-turn rule was deleted and the gate did not notice
 

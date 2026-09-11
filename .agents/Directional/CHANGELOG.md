@@ -1,3 +1,11 @@
+## 2026-09-11 — `M4-CP3-TB2-REV`: package120 mechanically green but not promoted; row400 mapping fixture is non-vacuity-invalid
+
+TB2 review independently reopened package120 (`10280703200`, source `3f909a5a2cfd305d423faf7a260bc465c7b06892`) and result artifact `10283220925`. The mechanical execution is upheld: focused395-403 **9/9 twice**, accepted selector394 **394/394**, cumulative selector403 **403/403**, total **815/815 PASS**, zero RED/SKIP/selection mismatch/timeout, owner totals **30/257/75/41**, immutable package/source/execution-view postflight and manifest **28/28**. Selector403 first394 is byte-identical to accepted selector394 at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; selector403 is `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`.
+
+Promotion is rejected on one non-stable test-authority coverage finding, `M4-CP3-TB2-REV-CAND-01`. R1 explicitly required the face-barycentric test to use a source-face row whose order differs from canonical topology-key order so component remapping is exercised. Row400 declares `sourceRow{2,0,1}` only for a detached `ASSERT_NE`; it then gives the helper an already-canonical face key/coordinate array. The test stays green if row→canonical remapping is missing or swapped. Rows395-399/401-403 satisfy their frozen non-vacuity obligations. No product defect or accepted-green loss is established.
+
+Package119/selector394 remains accepted **394/394**; package120/selector403 remains unpromoted; stable accounting stays **47 events / 14 categories / 33 recurrences**, debt **5**, CP3 open. `M4-CP3-TB1-R1-REV-OBS-01` is explicitly re-carried. Exact next is runtime-free `M4-CP3-TB2-PLAN`; A3→A4 cutover remains unauthorized.
+
 ## 2026-09-11 — `M4-CP3-CB4-R1`: exact A2b path authority + production A3 binder compile green
 
 `M4-CP3-CB4-R1` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE** at semantic source `3f909a5a2cfd305d423faf7a260bc465c7b06892`. It implements frozen §17.12: every A2b `GlobalTopologyArc` publishes independently validated canonical exact ordered source support; split Mandatory/Cut arcs carry strict subintervals; Trace arcs carry ordered segment support; production A3 copies one path 1:1 into one span and publishes exactly one independently validated baseline immediately after A2b. A4 does not consume the new product yet.

@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-11, `M4-CP3-CB4-R1`):** package119/selector394 **394/394** remains accepted §17 production-baseline A3 runtime authority. CB4-R1 is **COMPLETE / COMPILE GREEN / RUNTIME-FREE** at semantic source `3f909a5a2cfd305d423faf7a260bc465c7b06892`: §17.12 exact A2b source-path publication/validation and the 1:1 production A3 binder/single writer are implemented while A4 remains unchanged. Candidate package120 artifact `10280703200` contains the complete selector403 owner surface; selector403 appends nine identities after the byte-identical accepted selector394 prefix. Stable accounting remains **47 / 14 / 33**, debt **5**. CP3 remains open. Exact next: artifact-only `M4-CP3-TB2-EXEC`, then independent `M4-CP3-TB2-REV`; only review acceptance may authorize later `M4-CP3-CB5` A3→A4 cutover.
+> **Current milestone authority (2026-09-11, `M4-CP3-TB2-REV`):** package119/selector394 **394/394** remains accepted M4 runtime authority. Package120/selector403 is mechanically green at **403/403** with accepted prefix **394/394**, but review found `M4-CP3-TB2-REV-CAND-01`: row400's permuted source-face row is detached from the tested barycentric mapping, so the frozen §17.12 canonical component-order contract is unproved. Package120 is not promoted; stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open. Exact next is runtime-free `M4-CP3-TB2-PLAN`; A3→A4 cutover remains unauthorized.
 
-**Currency.** Package119/selector394 is the accepted production-baseline A3 runtime authority; package120/selector403 is the compile-green unpromoted CB4-R1 candidate. Package117/selector382 stays retained as historical framed CP1/CP2 evidence; M3 remains CLOSED / ACCEPTED. The new A2b→A3 exact-source boundary is implemented but not runtime-accepted; A4 cutover remains deferred until TB2 review.
+**Currency.** `M4-CP3-TB2-REV`, 2026-09-11. Package119/selector394 is accepted; package120/selector403 is mechanically green but review-blocked/unpromoted on row400 non-vacuity. Package117/selector382 remains historical framed CP1/CP2 authority; M3 remains CLOSED / ACCEPTED. Exact next is `M4-CP3-TB2-PLAN`.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -70,11 +70,11 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**M3 is CLOSED / ACCEPTED.** **M4-CP1/CP2 remain historical accepted framed closures**, with package117/R1 selector382 **382/382** the latest accepted M4 runtime authority. `M4-CP3-CB1` halted correctly before mutation when its source-derivation guard could not bind family/sign for artificial Cut arcs. DEFN-R1 independently found the same missing authority on arbitrary Mandatory hard-feature/source-boundary arcs and froze a corrected production baseline instead of inventing a frame.
+**M3 is CLOSED / ACCEPTED.** **M4-CP1/CP2 remain historical accepted framed closures.** CP3's family/sign-free baseline is runtime-accepted at package119/selector394 **394/394**. §17.12 A2b exact-path publication plus the production A3 1:1 binder compile in package120 and mechanically execute selector403 **403/403**, but package120 is not accepted.
 
-**Baseline A3 now:** exact full-span support + one positive shared count + compact exact-ordinal breakpoints + per-region all-quad boundary parity. Preferred exact target counts and the L1/lex objective remain unchanged. The optimizer reduces to exact minimum-cardinality T-join on preferred-parity residuals, followed by canonical lex-prefix constrained solves. Because all counts equal to two always satisfy parity, ordinary mathematical infeasibility is not a baseline outcome.
+**TB2 review finding:** row400 does not exercise its advertised source-row→canonical barycentric mapping: `sourceRow{2,0,1}` is used only by a detached inequality assertion, while the tested helper receives an already-canonical face key and coordinate array. The other eight new rows satisfy their frozen non-vacuity obligations. This is a non-stable test-authority coverage gap, not a demonstrated product defect; stable accounting remains **47 / 14 / 33**, debt **5**.
 
-**Exact next:** artifact-only `M4-CP3-TB2-EXEC` consumes package120 artifact `10280703200` under `Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md`. It proves the new §17.12 A2b source-path publication and production A3 binder while rerunning accepted selector394 and cumulative selector403. It must not compile or begin A4 cutover work and stops at `M4-CP3-TB2-REV`.
+**Exact next:** runtime-free `M4-CP3-TB2-PLAN` freezes the smallest bounded row400 recovery. Package119/selector394 remains accepted authority; selector403 bytes stay frozen candidate authority unless planning proves otherwise. No A3→A4 cutover is authorized before corrected artifact-only acceptance.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -186,18 +186,15 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP3 producer cutover — ACTIVE / NEXT: `M4-CP3-TB2-EXEC` artifact-only runtime proof.**
+1. **M4-CP3 exact-path/A3 publication acceptance — ACTIVE / NEXT: `M4-CP3-TB2-PLAN`.**
 
-   - CB1's guard stop is upheld; DEFN-R1 widened the missing-frame finding from Cut to arbitrary Mandatory arcs.
-   - Baseline production A3 is family/sign-free shared subdivision + region parity, solved exactly by minimum-cardinality T-join + lex refinement.
-   - CB2 implements/compiles that semantic core and independent tests only. Runtime TB acceptance comes before production A3->A4 cutover.
-   - CB2 compiled it as package118 and TB1 measured selector394 **387/394** with accepted selector382 still **382/382**; package118 is unpromoted.
-   - TB1's 7 REDs were test-authority only and left 386/388/389/390/391/394 and half of 392 unproven; **that ledger is now discharged** by TB1-R1 — all seven execute with receipts placed after their assertions, including the three §17.7 non-vacuity instruments. Kept as history: TB1 itself is still not citable as CP3 progress.
-   - CB3 is complete/compile-green at `fd532c2...`; TB1-R1 then proved package119 GREEN without rebuild: focused **12/12 twice**, predecessor **382/382**, cumulative **394/394**, exact receipt determinism, and immutable postflight. R1-REV promotes package119/selector394 and closes both package118 test-authority candidates. The review also corrects stale copied receipt/census values from the EXEC closeout without changing the raw outcome.
-   - CB4 now owns the remaining production cutover: construct/validate A3 after `GlobalTopologyPlan`, establish the A2b-to-A4 region authority mapping, remove local target-derived decisions from shared boundaries, retire floating `support_key` pairing in favor of exact `{span, exactOrdinal}` identity, and compile a torus falsifier for later TB2. A4-local family/advance-sign semantics remain independently owned.
-   - CB4 halted pre-mutation: split `Cut` arcs lack published exact sub-edge loci. CB4-REV upheld it and froze §17.12 (additive exact-path publication on every A2b arc); the A4 cutover — region-domain migration, exact shared-boundary materialization, floating `support_key` retirement — is deferred to a later turn.
-   - CB4-R1 is compile-green at `3f909a5...`: every A2b arc now publishes validated exact ordered support, production A3 copies it 1:1 and publishes one independently validated baseline immediately after A2b, selector403 appends nine focused contracts, and package120 artifact `10280703200` contains all selector owners. No runtime executed. TB2-EXEC/REV now owns proof/promotion; A4 remains unchanged.
-   - **Carried, non-blocking (`M4-CP3-TB1-R1-REV-OBS-01`):** the oracle's new region-incidence multiplicity weighting is inert — ordinal390 runs with all multiplicities 1, so deleting the weighting would change no outcome, and ordinal385 only exercises the T-join solver on a synthetic self-loop graph. Discharge in the next turn touching test source, **not CB4**.
+   - Package119/selector394 is accepted **394/394** family/sign-free baseline A3 authority.
+   - CB4-R1 semantic source `3f909a5...` implements §17.12 exact A2b path publication and a 1:1 production A3 binder/single writer while leaving A4 unchanged; package120/selector403 is the candidate.
+   - TB2-EXEC is mechanically green: focused395-403 **9/9 twice**, accepted prefix **394/394**, cumulative **403/403**, total **815/815**, immutable postflight.
+   - TB2-REV independently upheld that mechanical evidence and credited rows395-399/401-403, but **rejected row400's non-vacuity**. Its `sourceRow{2,0,1}` is detached from point construction, so source-row→canonical barycentric component mapping can be wrong or absent while the test stays green (`M4-CP3-TB2-REV-CAND-01`; `LESSONS.md` 171).
+   - Package120/selector403 is therefore **not promoted/accepted**. No product defect is established; planning must recover the missing test scenario without inventing a production fix.
+   - **Carried, non-blocking (`M4-CP3-TB1-R1-REV-OBS-01`):** multiplicity weighting remains unexercised (`[1,1,1]`). CB4-R1 touched test source without discharging it, so TB2 review explicitly re-carries it. Do not confound the bounded row400 control with this unrelated obligation unless planning proves independent falsifiability (`LESSONS.md` 170).
+   - A3→A4 materialization, floating `support_key` retirement and exact-torus pairing work remain deferred until corrected TB acceptance.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical, CP4-owned.** CP3 must remove the exact-torus pairing blocker, but the three inherited produced-witness contract re-proofs remain CP4 gating and debt stays 5 until actual CP4 runtime acceptance.
 
@@ -216,6 +213,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Plan/certifier partition duplication and transit/exactification debt — ACTIVE / non-gating.** The domains may lawfully differ, but duplicated actual-embedded construction, production transit audit projection, minimal transit witness and input-size/exactification audits remain architectural debt outside the closed M3 exit.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A permuted fixture value is not mapping coverage when it never reaches the subject under test.** TB2 row400 declares `sourceRow{2,0,1}` and proves it differs from canonical order, but then hands `canonical_exact_source_face_point` an already-canonical key/coordinate array. The advertised permutation is decoration: deleting or breaking row→canonical component remapping would not change the test. This is a new M4 instance of `LESSONS.md` 171. For order-mapping contracts, use distinct components and derive the tested value through the actual noncanonical representation; the test must fail when that remapping is removed or swapped.
 
 **A guard that counts markers does not protect content.** This file's own "every REVIEW turn must update" rule was deleted by a consolidation in `f6a784cf` while its `DURABLE — DO NOT DELETE` heading survived, and `review_check.py` passed it as `durable markers preserved: 1 -> 1` because that check compares marker counts, not the text beneath them. The rule stayed gone for several turns and this file went stale twice. **If deleting the protected content leaves the check green, the check does not cover that content.** `REVIEW_TURN_POLICY.md` now owns the review duties and the closeout block; the tooling residual is tracked as `PROCESS-01` (`LESSONS.md` 172).
 
