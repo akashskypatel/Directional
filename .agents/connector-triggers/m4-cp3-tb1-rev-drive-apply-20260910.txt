@@ -1,4 +1,0 @@
-purpose=M4-CP3-TB1-REV durable review closeout docs
-base_sha=3ec69ffeb88f6378ca8a7a680ef8f3a7e4be64f4
-patch_sha256=2bd766f5108a90e94c0603ace3118532e979179b8ad074f54d445fd53b23afea
-retry=0
