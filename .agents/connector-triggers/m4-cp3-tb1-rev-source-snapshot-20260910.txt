@@ -1,0 +1,3 @@
+purpose=M4-CP3-TB1-REV source snapshot
+source_ref=3ec69ffeb88f6378ca8a7a680ef8f3a7e4be64f4
+retry=0
