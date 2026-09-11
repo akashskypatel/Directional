@@ -1,0 +1,4 @@
+turn=M4-CP3-CB4-R1
+purpose=apply verified documentation-only closeout and freeze artifact-only TB2 plan
+base_sha=972d8c758139d06e8953b4418bc78f3f1ef7fe2a
+retry=0
