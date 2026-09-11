@@ -164,6 +164,10 @@ add_library(
   src/geometry/FlowRepStrands.cpp
   src/geometry/EmbeddedGraphTopology.cpp
   src/geometry/GlobalTopologyPlan.cpp
+  src/geometry/GlobalConformityBaseline.cpp
+  src/geometry/GlobalConformityBaselineSupport.cpp
+  src/geometry/GlobalConformityBaselineValidator.cpp
+  src/geometry/GlobalConformityParityGraph.cpp
   src/geometry/GlobalConformityExactSolver.cpp
   src/geometry/GlobalConformityCP2.cpp
   src/geometry/GlobalConformityCP2Validator.cpp

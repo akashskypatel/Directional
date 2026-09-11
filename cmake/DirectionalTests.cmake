@@ -73,6 +73,7 @@ set(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES
   tests/BoundedMeshPreconditionerTests.cpp
   tests/CrossFieldTransferTests.cpp
   tests/FieldAlignedCurveNetworkTests.cpp
+  tests/GlobalConformityBaselineTests.cpp
   tests/GlobalConformityPlanTests.cpp
   tests/RegularizedCurvaturePhase1Tests.cpp
   tests/support/SurfaceCellProductOracle.cpp
@@ -186,6 +187,64 @@ directional_require_default_packaged_test_contract(
   "tests/SurfaceCellREPackageTests.cpp"
   "ProductionConsumesTypedSkeletonWithoutRawSingularityProjection")
 
+
+# M4-CP3 baseline parity semantics compile in CB2 and execute only in the
+# immutable artifact-only successor TB. The source-level guard below ensures
+# the family-free binder cannot dispatch to the retained framed CP1/CP2 solver.
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/geometry/GlobalConformityBaseline.cpp"
+     _directional_m4_cp3_baseline_source)
+foreach(_directional_forbidden_baseline_dispatch IN ITEMS
+    "solve_exact_schedule"
+    "make_known_feasible"
+    "build_global_conformity_outcome"
+    "ConformityFamily"
+    "ConformitySign"
+    "GlobalTopologyArcKind")
+  string(FIND "${_directional_m4_cp3_baseline_source}"
+              "${_directional_forbidden_baseline_dispatch}"
+              _directional_forbidden_baseline_dispatch_index)
+  if(NOT _directional_forbidden_baseline_dispatch_index EQUAL -1)
+    message(FATAL_ERROR
+      "M4-CP3 family-free baseline source must not reference retained framed semantics: ${_directional_forbidden_baseline_dispatch}")
+  endif()
+endforeach()
+
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "MixedMandatoryTraceCutKindsUseFamilyFreeParitySemantics")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "RegionParityUsesBoundaryIncidenceMultiplicity")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "SameRegionDoubleIncidenceIsZeroEffectSelfLoop")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "OneEndedTerminalUsesComponentLocalExterior")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "MinimumCardinalityTJoinBeatsLocalGreedyChoice")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "CanonicalLexPrefixChoosesLeastCountVectorAcrossEqualTJoins")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "ParityFlipMapsOneToTwoAndLargerToPredecessor")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "IndependentTinyExhaustiveOracleMatchesParityOptimumAndLexTie")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "IndependentValidatorRejectsParityCertificateTamperMatrix")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "CanonicalPermutationAndReverseOrdinalConsumptionAreInvariant")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "AllEvenConstructiveWitnessHasNoBaselineInfeasibilityOutcome")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "ProductionBaselineBinderIsStructurallySeparateFromFramedSolver")
 
 # M4-CP1 exact schedule authority is compiled now and executed only by the later
 # artifact-only TB turn. These identities are intentionally part of the default
