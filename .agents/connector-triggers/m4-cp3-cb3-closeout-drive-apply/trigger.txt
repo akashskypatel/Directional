@@ -1,4 +1,0 @@
-M4-CP3-CB3 closeout Drive patch apply
-base_sha=2283cf1a9ca1cfd7bb1bcbc70b7d1625e21a22b7
-patch_sha256=bb30c7b54385141b3f08eeb0e62eb596e080b49b7f1d466a1585e83f6892adbd
-retry=1
