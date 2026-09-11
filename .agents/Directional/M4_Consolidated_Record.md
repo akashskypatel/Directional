@@ -216,6 +216,15 @@ R1 is upheld at selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, c
 
 Package117 is **PROMOTED** and selector382 becomes **ACCEPTED M4 AUTHORITY**. `M4-CP2` is **CLOSED / ACCEPTED**. Stable accounting remains **47 / 14 / 33**, produced-witness debt **5**, accepted package authority **117**. This does not close M4: CP3 still owns production A3->A4 schedule consumption and exact-torus `InvalidHardRailPairing` removal; the three `G4-B002` produced-witness debts remain CP4-owned. Exact next is `M4-CP3-CB1`.
 
+## 2.16 `M4-CP3-CB1` stop + `M4-CP3-DEFN-R1` — framed incidence authority corrected before cutover
+
+CB1 executed its mandatory pre-mutation source-derivation guard and stopped correctly: production `Cut` arcs have exact source/support/topology identity but no source-derived U/V/sign frame. No semantic mutation, compile or runtime occurred. DEFN-R1 independently reopened upstream shapes and found the gap is broader: arbitrary `Mandatory` hard-feature/source-boundary arcs also publish no universal global family/sign authority; trace-local branch integers are face-gauge-local.
+
+DEFN-R1 selected expanded Alternative A and rejected B/C. Frozen definitions §17 now defines production baseline A3 as one exact positive count and compact exact-ordinal breakpoint sequence per full A2b arc plus per-region even boundary-incidence parity. Exact target preference/objective is unchanged. Preferred-parity correction reduces to minimum-cardinality T-join and canonical lex-prefix refinement. `x_s=2` for all spans proves baseline mathematical feasibility, so framed CP2 ordinary infeasibility is not a baseline production outcome. A4 owns stronger local constructibility but cannot renegotiate shared breakpoints.
+
+Historical package117/selector382 **382/382** and CP1/CP2 closure facts remain accepted evidence for the old framed domain; their production-sufficiency obligations are superseded/re-opened for CP3 re-proof. Stable accounting remains **47 / 14 / 33**, debt **5**, and M3 is not reopened. Exact next is runtime-free `M4-CP3-CB2`, semantic implementation/compile only; parity TB acceptance precedes later production A3->A4 cutover.
+
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -256,5 +265,9 @@ history.
 | `Architecture_M4_CP2_CB3_Orchestration_Correction_Report.md` | 96 | **FOLDED AFTER R1 RECOVERY.** Corrected preflight/executor lineage is preserved in §2.13, tracker, changelog and closure record. |
 | `Architecture_M4_CP2_TB2_Test_Benchmark_Report.md` | 104 | **FOLDED AFTER VALID R1 SUPERSESSION.** Invalid no-credit process/postflight evidence remains preserved in §2.12, tracker and changelog. |
 | `Architecture_M4_CP2_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md` | 129 | **FOLDED AFTER R1 EXECUTION + REVIEW.** Corrected immutable retry contract is preserved in §2.14, the retained R1 runtime report and current review. |
+
+| `Architecture_M4_CP2_TB2_R1_Review_Record.md` | 190 | **FOLDED AFTER SUPERSESSION BY CP3 DEFN-R1.** Package117 promotion/382-row review facts remain in §2.15, `M4_CP2_Closure_Record.md`, retained R1 runtime report, tracker and changelog. |
+| `Architecture_M4_CP3_CB1_Code_Build_Plan.md` | 141 | **FOLDED AFTER STOP + DEFN.** Guard scope, no-mutation stop and successor routing are preserved in §2.16, frozen definitions §17 and the current DEFN-R1 review. |
+| `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md` | 60 | **FOLDED AFTER DEFN-R1.** The Cut-family/sign derivation failure, 28-cut torus reachability, forbidden fallbacks and bounded A/B/C alternatives are preserved and extended in §2.16, frozen definitions §17 and the current review. |
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.

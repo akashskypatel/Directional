@@ -1,15 +1,15 @@
-> **Current milestone authority (2026-09-10, `M4-CP2-TB2-R1-REV`):** **M1-M3 are CLOSED / ACCEPTED; M4-CP1 and M4-CP2 are CLOSED / ACCEPTED.** package117/R1 selector382 **382/382** is reviewed accepted M4 runtime authority after the corrected immutable gate and runtime-free promotion review. Stable accounting remains **47 / 14 / 33**, debt **5**, accepted package authority **117**. Exact next is runtime-free Code + Build `M4-CP3-CB1`.
+> **Current milestone authority (2026-09-11, `M4-CP3-DEFN-R1`):** M1-M3 remain CLOSED / ACCEPTED. M4 package117/selector382 **382/382** remains latest accepted framed runtime authority, while production-baseline A3 semantics are now family/sign-free exact shared subdivision + region parity under frozen §17. CP3 must re-prove that semantic core before producer cutover. Stable accounting **47 / 14 / 33**, debt **5**. Exact next `M4-CP3-CB2`.
 
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap
 **Normative design:** `.agents/Directional/DESIGN.md`
 **Accepted authority:** M4 package117/R1, selector382 **382/382**; package115/TB2 selector373 **373/373** remains the accepted CP1 predecessor; M3 package113/TB48 remains the milestone-closure predecessor authority with accepted selector365 **365/365**.
-**Decision:** **M1, M2, M3, M4-CP1, and M4-CP2 are CLOSED / ACCEPTED.** package117/R1 is promoted reviewed authority at selector382 **382/382**. Stable totals remain **47 / 14 / 33**, debt **5**, accepted package authority **117**. Exact next is `M4-CP3-CB1`.
+**Decision:** Historical M4-CP1/CP2 closures remain factual, but their production-sufficiency contract is superseded/re-opened for CP3 parity re-proof. M3 is not reopened. Exact next is `M4-CP3-CB2`.
 
 **Updated 2026-08-26 after `M3-CP4c-0-TB-R2`.** Authoritative retry 1 `32914546494 / 98015432540` passed identities **1–328** and failed ordinal **329**, `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The immutable diagnostic shows numeric branch loci emitted as control characters because `FieldBranch::value()` is `std::uint8_t` and the test/witness stream inserts it directly as a character. Q8 was correctly **NOT RUN** because 338/338 was not green. Exact next is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**; no semantic rerun or correction precedes that review. The checkpoint map is `ROADMAP.md`.
 **M1 exit gate:** retained in section 5.1 as the gate-authoring pattern. **Retry budget: ABOLISHED 2026-08-25.** A diagnosed orchestration defect may be corrected without consuming semantic authority; deterministic semantic red does not rerun inside TB. Cumulative package cost is reported, not gated; M3 has **41 packages**.
-**Last updated:** 2026-09-10 UTC
+**Last updated:** 2026-09-11 UTC
 
 Repository authority: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8. Keep the PR open, draft, and unmerged until separately authorized.
 
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **CP1 CLOSED / CP2 CLOSED; package117/R1 accepted at selector382; CP3 NEXT `M4-CP3-CB1`** |
+| M4 | global conformity plan | **historical CP1/CP2 framed closures retained; DEFN-R1 baseline parity amendment frozen; CP3 NEXT `M4-CP3-CB2`** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -224,24 +224,24 @@ The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c25
 
 ## 8. M4 — global conformity plan
 
-**Status: `M4-DEFN` COMPLETE; M4-CP1 and M4-CP2 CLOSED / ACCEPTED. Exact next `M4-CP3-CB1`.** `Architecture_M4_DEFN_Frozen_Definitions.md` freezes one A3 schedule authority and the chain CP1 -> CP2 -> CP3 -> CP-COND -> CP-SCALE -> CP4. Package117/R1 selector382 **382/382** is reviewed accepted CP2 authority. Production optimization is the Heistermann/Warnett/Bommes exact fixed-`M=2` Bi-MDF refinement with theorem-derived finite-convergence assurance and exact lexicographic objective; CP2 adds independently verified carried optimality evidence and typed subset infeasibility. Architectural stage order still places conditioning before A0; development order keeps it from becoming a hidden prerequisite for A3 semantics.
+**Status: `M4-CP3-DEFN-R1` COMPLETE; exact next `M4-CP3-CB2`.** Package117/R1 selector382 **382/382** remains latest accepted runtime evidence for the historical fully framed CP1/CP2 contract. Frozen definitions §17 now supersede that contract as the production baseline because accepted A2b does not universally publish U/V/sign labels for artificial Cut or arbitrary Mandatory arcs.
 
-- Compute one strictly positive schedule per full A2b boundary arc globally before regional production; source-simplex support pieces locate exact breakpoints but do not own independent positive counts.
-- Preserve boundary-incidence multiplicity and mandatory even all-quad region parity from the first CP1 schedule.
-- Keep breakpoint identity compact as `{span, exactOrdinal}` and exactify binary64 metric input by bit decomposition.
-- Use the frozen exact fixed-`M=2` Bi-MDF refinement contract for shared counts/constraints; do not relabel the outer solver polynomial.
-- **CP3 current owner:** production-wire the accepted A3 plan and resolve `G4-B002` exact-torus `InvalidHardRailPairing` without post-hoc local/tolerance pairing.
-- Infeasible subsets become typed inputs to later disposition logic; they do not authorize ad-hoc local substitution.
+Production-baseline A3:
 
-**M4 exit criterion — inherited produced-witness debt.** M4 does not close until all **three** contracts decoupled from produced witnesses by `G4-B002` are re-proven on pipeline-produced witnesses:
+- one strictly positive exact subdivision count per full A2b arc, all arc kinds;
+- exact ordered support and compact `{span, exactOrdinal}` breakpoint identity unchanged;
+- boundary incidences preserve region/span/orientation/multiplicity and carry no baseline family/sign;
+- every region's total scheduled boundary-incidence count is even;
+- exact target preference and `Σ|x-d|` then lexicographic count-vector objective remain authoritative;
+- preferred-parity correction is an exact minimum-cardinality T-join with canonical lex-prefix refinement;
+- all counts equal to two prove mathematical feasibility for any well-formed baseline binding, so ordinary framed CP2 infeasibility is not a production-baseline outcome;
+- A4 owns stronger local field/shape/geometry constructibility and may not alter A3 shared breakpoints.
 
-1. `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on a produced closed complex (from R-B);
-2. `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` through the torus pipeline (from R-B);
-3. `MissingPeriodicRelationOwnerIsRejected` on produced periodic authority rather than `direct_periodic_owner_product()` (from R-C).
+**CP3 sequence.** CB2 implements/compiles and independently test-oracles the parity semantic core while preserving accepted selector382 identities as explicit non-production compatibility coverage. An immutable artifact-only TB must accept that core before a later CP3 CB production-wires it into A4. Only that later cutover removes local `gridU/gridV` / floating `support_key` authority and attacks exact-torus `InvalidHardRailPairing`.
 
-This criterion exists because the debt was incurred by deferring `G4-B002` out of M1; recording it only as a task leaves nothing to enforce it. Re-proof means the contract's original intent is re-established on the produced witness, not that a passing assertion is produced by some other route.
+Historical CP1/CP2 results are retained, but their production-sufficiency obligations are superseded and must be re-proved under §17. No M3 topology/cut authority is reopened.
 
-**The `G4-B002` ledger stands at 3 and did not grow during unit 2.** The section 14 reopen trigger is therefore not fired.
+### Produced-witness debt is tracked per blocker
 
 ### Produced-witness debt is tracked per blocker
 

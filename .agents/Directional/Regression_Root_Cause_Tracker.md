@@ -1,3 +1,11 @@
+## M4-CP3-DEFN-R1-CAND-01 — **RESOLVED BY DEFN-R1 / DEFINITION-AUTHORITY OVERREACH / NON-STABLE**
+
+`M4-CP3-CB1` correctly halted before mutation when accepted A2b Cut arcs could not supply unique `ConformityFamily/ConformitySign`. DEFN-R1 independently re-derived source authority and found the same gap on arbitrary Mandatory hard-feature/source-boundary arcs: accepted upstream products own exact source/support/topology identity but no universal global U/V/sign frame. Trace-local `FieldBranch` is face-gauge-local and cannot repair the general case.
+
+Root cause is the frozen A3 definition, not the A2b products: the historical framed CP1/CP2 contract overreached upstream authority by requiring family/sign on every production incidence. Resolution is frozen definitions §17: family/sign-free production incidences, one exact shared count/breakpoint sequence per full A2b arc, per-region even boundary parity, exact minimum-cardinality T-join + lex refinement, and stronger local constructibility deferred to A4 without shared-boundary repair. Alternatives to field-certify all cuts or invent a combinatorial frame are rejected.
+
+No runtime occurred and no stable regression was observed. Stable totals remain **47 events / 14 categories / 33 recurrences**; produced-witness debt remains **5**. Package117/selector382 remains accepted historical framed runtime authority until replacement parity evidence is accepted. Production-sufficiency proof obligations are re-opened for CP3 re-proof; M3 is not reopened.
+
 ## M4-CP2-TB2-R1-REV adjudication — **CURRENT REVIEW / PACKAGE117 PROMOTED / CP2 CLOSED / ALL CP2 CANDIDATES RECOVERY-PROVED**
 
 - Runtime-free review independently re-opened package117 plus R1 result/log evidence and source-audited the frozen CP2 criteria. Accepted package authority advances **115 -> 117**; accepted M4 selector authority advances **373 -> 382** at reviewed **382/382**.

@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-10 (**M4-CP1 and M4-CP2 CLOSED / ACCEPTED.** Package117/R1 is reviewed accepted M4 runtime authority at selector382 **382/382**, with focused 374/381/382 **3/3 twice**, zero process/integrity failures, and immutable postflight. Stable accounting is **47 / 14 / 33**, debt **5**, accepted package authority **117**. **NEXT: `M4-CP3-CB1`**, runtime-free Code + Build for the production A3->A4 cutover.)
+**Status date:** 2026-09-11 (`M4-CP3-DEFN-R1` COMPLETE, runtime-free. Package117/R1 selector382 **382/382** remains latest accepted framed runtime authority. Production baseline A3 is now family/sign-free shared subdivision + region parity; exact next `M4-CP3-CB2` implements/compiles that semantic rebase before a new TB and later producer cutover. Stable accounting **47 / 14 / 33**, debt **5**.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -22,7 +22,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1 CLOSED / CP2 CLOSED / CP3 NEXT** | `M4_CP1_Closure_Record.md`; `M4_CP2_Closure_Record.md`; package117/R1 accepted at selector382 **382/382**; exact next `M4-CP3-CB1`. |
+| M4 | **CP1/CP2 framed closures retained / CP3 semantic rebase active** | package117/R1 selector382 **382/382** remains historical accepted runtime authority; DEFN-R1 froze the production parity baseline; exact next `M4-CP3-CB2`. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -424,10 +424,15 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 | `M4-DEFN` | **COMPLETE:** frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` | planning only / runtime-free |
 | `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling uses exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **CLOSED / ACCEPTED:** package115/TB2, selector373 **373/373**, focused CP1 **8/8 twice**; closure `M4_CP1_Closure_Record.md` |
 | `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | **CLOSED / ACCEPTED:** package117/R1, selector382 **382/382**; closure `M4_CP2_Closure_Record.md` |
-| `M4-CP3` | producers **consume** the verified schedule; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | **NEXT — `M4-CP3-CB1`:** production A3->A4 cutover; remove `G4-B002` `InvalidHardRailPairing` without local/tolerance fallback |
+| `M4-CP3` | re-prove family-free baseline A3 shared counts/parity, then producers consume the accepted plan; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | **ACTIVE — `M4-CP3-CB2` NEXT:** implement/compile parity semantic core; immutable TB acceptance precedes later production A3->A4 cutover |
 | `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with conditioned-source/raw correspondence and typed inadmissibility | developed after A3 core without becoming a hidden schedule precondition |
 | `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | uncalibrated S1 measurements start non-gating |
 | `M4-CP4` | cumulative M4 exit: full gate, all three `G4-B002` produced-witness debt re-proofs, work/bit-width evidence | exit proof only; no second writer |
+
+#### M4-CP3-DEFN-R1 semantic rebase
+
+CB1 correctly stopped before mutation because production Cut arcs lacked source-derived U/V/sign authority. DEFN-R1 independently widened the finding to arbitrary Mandatory arcs and rejected both field-certifying every artificial cut and inventing a deterministic frame. Frozen §17 makes baseline A3 family/sign-free: exact shared counts/breakpoints plus per-region even boundary parity, optimized by exact minimum-cardinality T-join + lex refinement. `x_s=2` for every span is a constructive feasibility witness. Historical package117/selector382 remains accepted evidence for the superseded framed domain, but production sufficiency is re-proved inside CP3 before cutover.
+
 
 M4 owns `G4-B002`'s three produced-witness debts. `G4-B004` is explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 

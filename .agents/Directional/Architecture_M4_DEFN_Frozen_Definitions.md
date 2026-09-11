@@ -1,8 +1,8 @@
 # M4-DEFN Frozen Definitions — Global Conformity
 
-**Status:** FROZEN / `M4-DEFN` COMPLETE / AMENDED BY `M4-CP1-CB1-REV` AND `M4-DEFN-R1` / EXACT NEXT = `M4-CP1-CB3` / RUNTIME-FREE
-**Date:** 2026-09-09; solver amendment 2026-09-10
-**Definition authority:** original M4-DEFN materialization is retained below; current solver amendment authority is `Architecture_M4_DEFN_R1_Definition_Record.md`, inspected from source-snapshot run `34432662583` at event SHA `74dbf78fb11a1d989d77d4ccd0c8d07ad25eb69c` after independent review authority `fcd70da6dc3abd8c955ed9725a2e6b41133932d0`.
+**Status:** FROZEN / M4 BASELINE A3 SEMANTICS AMENDED BY `M4-CP3-DEFN-R1` / EXACT NEXT = `M4-CP3-CB2` / RUNTIME-FREE
+**Date:** 2026-09-09; solver amendment 2026-09-10; production-baseline incidence amendment 2026-09-11
+**Definition authority:** §§1-16 retain the historical M4-DEFN/M4-DEFN-R1 framed schedule contract and evidence lineage. **§17 is the current production-baseline authority** and supersedes conflicting family/sign, balance, infeasibility, solver, checkpoint-exit, and successor clauses for production A3. Historical CP1/CP2 evidence is not rewritten.
 
 This document freezes the M4 contract. It does not implement it and creates no runtime evidence.
 
@@ -636,3 +636,125 @@ Any later plan or implementation must stop/review if it would require one of the
 `Architecture_M4_CP1_CB3_Code_Build_Plan.md`, issued by `M4-DEFN-R1` after independently reviewed CB1/CB2
 traceability stops. No M4 runtime or benchmark is authorized before that Code + Build turn produces a
 GMP/GMPXX-linked immutable package and the next artifact-only Test + Benchmark plan.
+
+## 17. `M4-CP3-DEFN-R1` amendment — baseline conformity is exact shared subdivision plus region parity
+
+This amendment was forced by the `M4-CP3-CB1` pre-mutation derivation guard and an independent source re-derivation. It is normative for production A3. Earlier family/sign Bi-MDF material in §§3.1, 6-9, 13, 15 and 16 remains historical authority for the already accepted framed CP1/CP2 proof surface only where it does not conflict with this section.
+
+### 17.1 Why the framed incidence contract cannot be the production baseline
+
+A2b publishes three production arc kinds: `Mandatory`, `Trace`, and `Cut`. Exact source/support/topology identity exists for all three, but accepted upstream products do **not** publish a universal global coordinate-frame label for every arc:
+
+- artificial `Cut` arcs are selected from `SurfaceCutGraph` source edges to cellularize the complement; the accepted cut product carries exact edge/support/topology authority but no `ConformityFamily U|V` or `ConformitySign +/-`;
+- `FieldAlignedMandatoryEdge` and `SurfaceCellRail` likewise carry source/rail/topology provenance but no globally comparable family/sign authority for arbitrary hard-feature or source-boundary arcs;
+- trace material may carry face-local branch information, but a raw `FieldBranch` integer is face-gauge-local and is not a globally comparable family identity across arbitrary region boundaries.
+
+Therefore a production binder cannot derive `{family, sign}` for every A2b boundary occurrence without inventing a convention, comparing raw cross-face branch integers, or reintroducing geometric/tolerance matching. All three are prohibited. The accepted torus has 28 artificial cut edges, so the missing authority is production-reachable.
+
+### 17.2 Adjudication of the CB1 alternatives
+
+**Alternative A is selected and expanded:** baseline A3 uses family/sign-free boundary incidences. Artificial cuts and mandatory barriers are ordinary exact shared-boundary seams. A3 owns shared subdivision identity and the all-quad parity invariant; stronger local chart/field constructibility remains an A4 responsibility.
+
+**Alternative B is rejected:** requiring every artificial cellularizing cut to be field-certified would reopen accepted A2a'/A2b semantics and contradict the accepted ability to cellularize with otherwise admissible source edges, including trace-crossed source edges. It would still not manufacture an upstream family/sign certificate for arbitrary mandatory source-boundary or hard-feature arcs.
+
+**Alternative C is rejected:** a deterministic ordinal, raw branch number, or combinatorial labeling rule can create repeatable labels but cannot make them semantic coordinate families. No accepted source product or theorem makes such labels gauge/relabel invariant. Determinism is not authority.
+
+### 17.3 Production A3 product and incidence authority
+
+Production baseline roles are now:
+
+- `ConformitySpanId`: one canonical full A2b arc, regardless of arc kind, with one global subdivision variable;
+- exact ordered support pieces: unchanged and still the only source-location authority for breakpoints;
+- `ConformityBoundaryIncidenceId`: one occurrence of a span in one region boundary walk, preserving multiplicity and incidence orientation;
+- **baseline `ConformityIncidence`: region + span + orientation only. `ConformityFamily` and `ConformitySign` are not production-baseline semantic inputs.**
+
+A valid manifold A2b binding gives every span one or two incidence ends. A same-region two-end span preserves both occurrences. A source-boundary terminal has one region incidence. Any other incidence multiplicity is a malformed binding error.
+
+If the accepted framed CP1/CP2 implementation surface must remain temporarily to keep already accepted selector identities executable, it must be an explicitly separate legacy/framed API or test surface. It may not be selected by production, may not be implicitly activated by populated optional fields, and may not be converted into baseline A3 authority without a future definition that introduces a real upstream frame certificate.
+
+### 17.4 Counts, breakpoints, and exact target preference are unchanged
+
+For canonical spans `s_1..s_E`, production A3 still owns exactly one arbitrary-precision integer count
+
+`x_s >= 1`
+
+and compact breakpoint identities `{ConformitySpanId, exactOrdinal}`. The exact support-piece breakpoint generator, source/metric/topology digest bindings, binary64 exactification rule, and full-span preferred count `d_s >= 1` from §5 remain authoritative.
+
+The semantic objective remains
+
+`J(x) = ( sum_s |x_s-d_s|, x_(s_1), ..., x_(s_E) )`.
+
+No A4-local target, grid, chart, tolerance, floating support key, or geometric nearest-arm rule may change `x_s` or the resulting shared breakpoint sequence.
+
+### 17.5 Baseline feasibility constraint: region all-quad parity
+
+For every A2b region `r`, using **boundary-incidence multiplicity**, production A3 requires
+
+`sum_{i in boundaryIncidences(r)} x_span(i) ≡ 0 (mod 2)`.
+
+There is no baseline `(region,family)` signed-balance row because family/sign are not universally source-derived. Same-region double incidences contribute twice and therefore cancel modulo two while remaining present in the semantic boundary walk.
+
+This is the exact topological boundary-parity condition required by an all-quad disc complex. It is deliberately narrower than local rectangular/parametric constructibility. A4 must independently classify/construct the region under its field, feature, singularity and geometry obligations; it may return the existing typed nonconstructible/degraded outcome, but it may not repair or renegotiate A3 shared counts.
+
+Baseline parity scheduling is **always mathematically feasible for a well-formed binding**: `x_s = 2` for every span is a positive witness. Consequently `ConformityInfeasibleSubset` and `BalanceCut | PositivityCut | ParityCut` are not production-baseline A3 outcomes. They remain historical framed-CP2 evidence only. Production baseline A3 has scheduled output or a malformed/binding/metric/work-bound construction error; a future stronger cross-span validity constraint requires a new definition before it can reintroduce mathematical infeasibility.
+
+### 17.6 Exact minimum-deviation parity scheduler
+
+Let `q_s = d_s mod 2`. Let `y_s = 1` when the selected parity of `x_s` differs from `q_s`, otherwise `0`. For fixed parity, the unique positive count minimizing `|x_s-d_s|` and then `x_s` is:
+
+- `x_s = d_s` when `y_s = 0`;
+- `x_s = d_s - 1` when `y_s = 1` and `d_s > 1`;
+- `x_s = 2` when `y_s = 1` and `d_s = 1`.
+
+Every flip therefore contributes exactly one unit to the primary objective. Region parity becomes a GF(2) incidence problem on a graph whose vertices are A2b regions:
+
+- a two-region span is one graph edge;
+- a same-region two-incidence span is a self-loop with zero parity effect;
+- a one-ended source-boundary span connects its region to a **virtual exterior vertex local to that connected incidence component**.
+
+Compute each region's residual parity under preferred parities `q_s`. On a closed component, residual-demand cardinality is even because every non-loop span contributes to two region rows. On a component with terminals, set the component-local exterior demand to the XOR of region residuals. Then a flip set is feasible exactly when it is a `T`-join for those demanded vertices.
+
+The primary optimum is therefore a **minimum-cardinality T-join**. Production implementation must solve it exactly through an exact graph/matching formulation; no ILP/branch-and-bound, floating cost, tolerance, numeric-magnitude enumeration, or heuristic repair is permitted. Existing exact weighted-perfect-matching infrastructure may be reused only with integer graph-cardinality weights and exact comparisons.
+
+After the minimum flip count `K*` is known, enforce the semantic lexicographic tie-break without huge invented scalar weights. Scan spans in canonical order. For span `s`, first try the parity choice that gives the smaller resulting `x_s` (`flip` when `d_s>1`, `no flip` when `d_s=1`), subject to all previously fixed choices, and recompute the exact minimum achievable T-join cardinality. Keep that choice iff the optimum remains `K*`; otherwise force the other choice. The invariant is that the fixed prefix always extends to at least one primary-optimal solution. This yields exactly the lexicographically least count vector under `J`.
+
+Same-region self-loops never need to flip at primary optimum and therefore retain `x_s=d_s`.
+
+### 17.7 Certificate, validator, and independent-oracle contract
+
+The baseline plan/certificate carries enough exact information to verify, without trusting producer-normalized rows:
+
+1. source/network/cut/topology/metric bindings and full span/support/incidence coverage;
+2. preferred counts/parities and independently reconstructed region residuals;
+3. component/exterior construction and exact demanded-vertex set `T`;
+4. selected flip set and `minimumFlipCount = K*`;
+5. every canonical lex-prefix decision and its constrained optimum receipt;
+6. final positive counts, per-region even boundary sums, compact breakpoint generators, and semantic plan digest.
+
+The independent validator rebuilds the incidence graph from A2b boundary walks, recomputes the minimum-cardinality T-join and each lex-prefix optimum independently of the producer's normalized rows, then checks the final schedule/objective and exact breakpoint generator. Fixed-small tests additionally exhaust parity assignments to reproduce `K*` and the lexicographic optimum without the production matching implementation.
+
+Tamper coverage must separately falsify binding/support, incidence multiplicity/orientation, residual/T construction, flip set, optimum count, lex-prefix receipts, final counts/parity, breakpoint generation and semantic digest.
+
+### 17.8 A4 contract correction
+
+A3 does **not** promise that every region boundary is a convex integer rectangle. It promises an exact immutable shared subdivision and an even boundary-edge count for each disc region. A4 owns the stronger local construction question. Existing `PureQuadCompletion` already distinguishes rectangular/small-side/singularity cases from generic even-boundary combinatorial completion and typed nonconstructibility. A4 may choose among its authorized local constructions but must consume A3 breakpoints unchanged.
+
+Field alignment and geometric quality remain required by their own downstream contracts and verification/disposition. They cannot be back-filled into A3 by fabricating family/sign identity for arbitrary topological seams.
+
+### 17.9 CP1/CP2 evidence and checkpoint impact
+
+Package117 / selector382 **382/382** remains accepted historical runtime evidence for the old fully framed CP1/CP2 problem; package115/selector373 remains its predecessor. Their measured results, closure records, stable regression accounting, and artifacts are not rewritten.
+
+However, the **production-sufficiency** part of those proof obligations is superseded by this amendment. The family/sign balance solver, fixed-`M=2` Bi-MDF production optimization, typed mathematical infeasibility and their CP2 certificates cannot be cited as proof of the new baseline production A3 semantics. CP3 must re-prove the parity scheduler, certificate/validator, compact-breakpoint invariants and production reachability before cutover. This is a semantic re-proof inside CP3; it does not reopen accepted M3 A2a'/A2b authority and does not create a runtime regression event.
+
+Until replacement runtime evidence is accepted, package117/selector382 remains the latest accepted M4 runtime authority. Existing accepted selector identities must not be silently weakened or rewritten; compatibility needed to keep them executable must remain explicitly non-production.
+
+### 17.10 Revised CP3 sequence and successor
+
+`M4-CP3` now proceeds in two evidence-separated stages before the final producer cutover:
+
+1. **`M4-CP3-CB2`** implements the family/sign-free baseline parity A3 scheduler/certificate/validator and compiles new regression identities while preserving existing accepted selector identities as historical compatibility coverage. It does **not** production-wire A3 into A4 yet.
+2. An artifact-only TB turn runtime-proves the new parity semantics and independent oracle/certificate surface.
+3. Only after that runtime acceptance may a later CP3 Code + Build turn perform the production A3->A4 cutover, retire local target/grid and floating `support_key` shared-boundary authority, and attack the exact-torus `InvalidHardRailPairing` gate.
+
+**Exact next: `M4-CP3-CB2` under `Architecture_M4_CP3_CB2_Code_Build_Plan.md`.** No Directional runtime belongs in that Code + Build turn.
