@@ -1,2 +1,0 @@
-.agents/connector-triggers/m4-cp3-cb4-r2-stop-guard-apply.txt
-.agents/connector-triggers/source-snapshot/190cb56e-start-20260911-1606.txt
