@@ -1,0 +1,47 @@
+name: M4 CP3 TB1 Plan Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-tb1-plan-drive-apply-20260911.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp3-tb1-plan-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-tb1-plan-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-tb1-plan-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1rIT9d9R-BunJexnJ5dGwBUv0TKDwjI3C
+      patch_sha256: f5a052a71bd6330fc85e3bbb1be305b548d942fad8c2417bb7ed139b409eeb98
+      base_sha: 2a3dcd3cbfd4a862262f76efc10fbce975b7c154
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: freeze M4 CP3 TB1 corrective plan"
+    secrets: inherit
