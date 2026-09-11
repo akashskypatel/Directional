@@ -1,3 +1,11 @@
+## 2026-09-11 — `M4-CP3-TB1-EXEC`: package118 deterministic semantic red, accepted selector382 preserved
+
+Artifact-only TB1 run/job `34557818974 / 103134172994` consumed unchanged candidate package118 artifact `10182447649` from semantic source `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc`. It completed the frozen plan with exactly **800** fresh test processes: focused rows 383-394 **5 PASS / 7 RED twice** with byte-identical verdict vectors, accepted predecessor selector382 **382/382 PASS**, and cumulative selector394 **387 PASS / 7 RED**. The reproducible RED set is **[386, 388, 389, 390, 391, 392, 394]**; first RED is ordinal386 `OneEndedTerminalUsesComponentLocalExterior`.
+
+Result/log artifacts are `10183361985 / 10183362199` at SHA-256 `9f1b15e00616d487b99edc4f6681c9097dc68ff4091a5432f95f34a5c1ea9cec / 90f9b68699157351532984c176b1aa0c8943becc54a4c75acde24973346d4eda`. Package `SHA256SUMS` verifies **28/28** before and after runtime; package and execution-view censuses are byte-identical pre/post. No configure/compile/relink/generated discovery, package/permission repair, source/test/fixture/selector mutation, benchmark, package promotion or A3→A4 cutover occurred. Earlier runs `34557449252` and `34557611244` are orchestration-only Bash-harness failures and carry no semantic credit.
+
+TB-EXEC assigns no root cause or stable regression identity. Package118 remains unpromoted; package117/selector382 **382/382** remains accepted runtime authority. Stable accounting remains **47 / 14 / 33**, debt **5** pending runtime-free `M4-CP3-TB1-REV`, which owns regression classification, package disposition and successor planning.
+
 ## 2026-09-11 — `M4-CP3-CB2`: family-free parity A3 compiles as candidate package118
 
 `M4-CP3-CB2` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Frozen §17's family/sign-free production-baseline A3 core now exists: exact full-span positive counts, incidence-multiplicity region parity, component-local exterior handling, minimum-cardinality T-join optimization with canonical lex-prefix refinement, compact exact breakpoints, certificate evidence and an independent baseline validator. Twelve prescribed `GlobalConformityBaseline.*` regression/oracle identities compile. Production A3→A4 cutover remains deferred.

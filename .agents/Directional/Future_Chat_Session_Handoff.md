@@ -1,10 +1,10 @@
 # Future Chat Session Handoff — Directional
 
-**Status:** `M4-CP3-CB2` COMPLETE / COMPILE+PACKAGE GREEN / EXACT NEXT `M4-CP3-TB1-EXEC`
+**Status:** `M4-CP3-TB1-EXEC` COMPLETE / DETERMINISTIC SEMANTIC RED / IMMUTABLE POSTFLIGHT GREEN / EXACT NEXT `M4-CP3-TB1-REV`
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-TB1-EXEC`, artifact-only runtime execution
+**Canonical next turn:** `M4-CP3-TB1-REV`, runtime-free evidence review
 
 ## Current authority
 
@@ -15,6 +15,7 @@
 - `M4-CP3-CB1`: HALTED correctly at its pre-mutation derivation guard; no semantic mutation/build/runtime.
 - `M4-CP3-DEFN-R1`: COMPLETE / runtime-free; current production-baseline definition is `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 - `M4-CP3-CB2`: COMPLETE / compile+package green / runtime-free at semantic source `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc`; package118 is candidate only.
+- `M4-CP3-TB1-EXEC`: COMPLETE / deterministic semantic RED / immutable postflight green. Accepted selector382 remains 382/382; candidate selector394 measured 387 PASS / 7 RED and remains unpromoted.
 
 ## DEFN-R1 decision
 
@@ -49,23 +50,33 @@ Candidate package118 authority:
 - package manifest **28/28**, clean source status, exact `runtimeExecution=false`, GMP/GMPXX link evidence, all eight approved targets linked;
 - candidate selector394: **394 rows**, SHA-256 `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; first **382** rows exactly accepted selector382; owner partition **30 / 248 / 75 / 41**.
 
-Package117 / selector382 **382/382** remains accepted runtime authority until TB1 review promotes a successor. Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt remains **5**.
+Package117 / selector382 **382/382** remains accepted runtime authority until TB1 review adjudicates package118. Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt remains **5**.
 
-## Exact next — `M4-CP3-TB1-EXEC`
+## M4-CP3-TB1-EXEC measured result
 
-Execute `.agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Plan.md` exactly against immutable package118 artifact `10182447649`. This is artifact-only runtime execution: no configure/compile/relink, no package/source/test/fixture/selector mutation, no permission repair, no A3→A4 cutover and no package promotion.
+Authoritative artifact-only run/job `34557818974 / 103134172994` consumed immutable package118 artifact `10182447649` and completed the frozen plan. Result artifact `10183361985` hashes to `9f1b15e00616d487b99edc4f6681c9097dc68ff4091a5432f95f34a5c1ea9cec`; diagnostic-log artifact `10183362199` hashes to `90f9b68699157351532984c176b1aa0c8943becc54a4c75acde24973346d4eda`.
 
-TB-EXEC must run the twelve new rows twice, accepted predecessor selector382, cumulative selector394 and immutable postflight, preserve raw evidence, then stop at `M4-CP3-TB1-REV`. TB-REV owns diagnosis, regression-tracker updates, package promotion and successor planning.
+Focused rows 383-394 are **5 PASS / 7 RED twice** with identical ordered verdict vectors. Accepted predecessor selector382 remains **382/382 PASS**. Cumulative selector394 is **387 PASS / 7 RED**; RED ordinals are **386, 388, 389, 390, 391, 392, 394**. Exactly **800** fresh test processes ran. Package and execution-view pre/post censuses are byte-identical and package checksums verify **28/28** before and after execution. No configure, compile, relink, generated discovery, package/permission repair, source/test/fixture/selector mutation, package promotion or A3→A4 cutover occurred.
+
+Two earlier runs (`34557449252`, `34557611244`) were orchestration-only Bash-harness failures and carry no semantic credit. Their bounded correction changed orchestration only.
+
+## Exact next — `M4-CP3-TB1-REV`
+
+Review immutable package118 plus result artifact `10183361985` and diagnostic-log artifact `10183362199`. This review is runtime-free: independently re-derive the selector/process/immutability facts, classify the seven semantic REDs in `Regression_Root_Cause_Tracker.md`, decide package118 disposition, and freeze the justified successor. Do not compile, rerun, repair package118, mutate implementation/tests/fixtures/selectors, promote the package, or perform the A3→A4 production cutover before review adjudication.
 
 ## Current evidence
 
 - normative definition: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §17
 - accepted runtime predecessor: package117 / selector382 **382/382**
 - current compile report: `.agents/Directional/Architecture_M4_CP3_CB2_Code_Build_Report.md`
-- exact TB plan: `.agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Plan.md`
+- completed TB execution report: `.agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Report.md`
+- consumed TB plan retained as execution provenance: `.agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Plan.md`
 - semantic source: `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc`
 - compile run/job: `34555543569 / 103127378612`
 - package118 artifact/SHA-256: `10182447649` / `1e7b260b5175b77e161bede7ec791a305d11550dd392a11b56757c864d9544d5`
+- TB1 authoritative run/job: `34557818974 / 103134172994`
+- TB1 result/log artifacts: `10183361985 / 10183362199`
+- TB1 measured gate: focused **5/12 twice**, predecessor **382/382**, cumulative **387/394**, RED ordinals **386,388,389,390,391,392,394**
 
 ## Consolidation state
 
@@ -75,18 +86,18 @@ DEFN-R1 previously folded superseded CP2/CB1 review material into `M4_Consolidat
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB-EXEC.md
+  - turn-based-coding-agent/references/turns/TB-REVIEW.md
 conditional_modules:
   - trigger: GitHub connector / Actions / immutable artifact handling
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M4_CP3_CB2_Code_Build_Report.md
+  - .agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Report.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md#17-m4-cp3-defn-r1-amendment--baseline-conformity-is-exact-shared-subdivision-plus-region-parity
 templates_when_producing:
-  - TEST_BENCHMARK_REPORT.md
+  - REVIEW.md
 do_not_preload:
   - Code + Build sibling turn files
   - historical M4 per-turn records already folded into M4_Consolidated_Record.md
-  - research/provenance/examples not cited by the TB1 plan
+  - research/provenance/examples not required by TB1 review
 ```
