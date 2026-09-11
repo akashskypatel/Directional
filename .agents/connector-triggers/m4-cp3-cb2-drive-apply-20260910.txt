@@ -1,0 +1,4 @@
+purpose=M4-CP3-CB2 apply verified Drive patch
+patch_sha256=cbdf7a3eb93b4731d93ca30a762e9d587bf792e275306a076a7766bdee38815e
+base_sha=0c95b7e142b0c127691882fcf72b9ec8baaa05f2
+retry=0
