@@ -1,4 +1,0 @@
-purpose=M4-CP3-TB1-PLAN durable closeout
-base_sha=2a3dcd3cbfd4a862262f76efc10fbce975b7c154
-patch_sha256=f5a052a71bd6330fc85e3bbb1be305b548d942fad8c2417bb7ed139b409eeb98
-file_id=1rIT9d9R-BunJexnJ5dGwBUv0TKDwjI3C
