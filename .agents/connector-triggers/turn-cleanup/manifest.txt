@@ -1,5 +1,0 @@
-# M4-CP3-CB3 turn cleanup
-.agents/connector-triggers/m4-cp3-cb3-drive-apply
-.agents/connector-triggers/m4-cp3-cb3-package-compile
-.agents/connector-triggers/m4-cp3-cb3-preflight-compile
-.agents/connector-triggers/source-snapshot
