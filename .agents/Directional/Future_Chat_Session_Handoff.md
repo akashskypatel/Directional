@@ -1,10 +1,10 @@
 # Future Chat Session Handoff — Directional
 
-**Status:** `M4-CP3-CB3` COMPLETE / TEST-ONLY RECOVERY COMPILE+PACKAGE GREEN / PACKAGE119 UNPROMOTED / EXACT NEXT `M4-CP3-TB1-R1-EXEC`
+**Status:** `M4-CP3-TB1-R1-EXEC` COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / PACKAGE119 UNPROMOTED / EXACT NEXT `M4-CP3-TB1-R1-REV`
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-TB1-R1-EXEC`, artifact-only Test + Benchmark execution
+**Canonical next turn:** `M4-CP3-TB1-R1-REV`, runtime-free evidence review and package119 disposition
 
 ## Current authority
 
@@ -15,7 +15,7 @@
 - `M4-CP3-DEFN-R1`: current production-baseline definition is `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 - package118 / selector394 remains immutable historical TB1 evidence at **387/394** and is unpromoted.
 - `M4-CP3-CB3`: complete. Exact semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` changes only `tests/GlobalConformityBaselineTests.cpp` semantically, passes changed-owner preflight and full package compile through mandatory GMP/GMPXX, and executes no Directional runtime.
-- post-build candidate package119 / selector394 is compile-valid but **unpromoted**. Runtime proof belongs to `M4-CP3-TB1-R1-EXEC` and later review.
+- package119 / selector394 is now runtime-proved **394/394 GREEN** by `M4-CP3-TB1-R1-EXEC` with focused rows383-394 **12/12 twice**, accepted predecessor **382/382**, deterministic corrected receipts, and immutable postflight. It remains **unpromoted** pending review.
 - production A3→A4 cutover remains blocked.
 
 ## Frozen production A3 contract
@@ -72,22 +72,22 @@ No product source, selector, fixture file, CMake/build logic, reusable workflow,
 
 No generated Directional binary, test, benchmark, `ctest`, discovery/list, CLI, fuzzer, help/version command, or custom Directional input executed in CB3.
 
-## Exact next — `M4-CP3-TB1-R1-EXEC`
+## TB1-R1 corrective runtime evidence
 
-Execute `Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md` against immutable candidate package119 artifact `10185370005` without rebuild or repair.
+Authoritative artifact-only run/job `34595754914 / 103251084987` consumed package119 artifact `10185370005` without rebuild or repair and completed the frozen 800-process matrix:
 
-Required runtime matrix:
+1. selector rows383-394 focused pass A — **12/12 PASS**;
+2. selector rows383-394 focused pass B — **12/12 PASS**, byte-identical verdict vector;
+3. ordinals 386/388/389/390/391/392/394 — exactly one live receipt per focused process, exact A/B receipt bytes equal, all frozen parsed invariants satisfied;
+4. accepted predecessor selector382 — **382/382 PASS**;
+5. cumulative selector394 — **394/394 PASS**;
+6. package/source/execution-view censuses byte-identical pre/post and `SHA256SUMS` **28/28** before/after.
 
-1. selector rows 383-394 focused pass A — expected **12/12**;
-2. selector rows 383-394 focused pass B — expected **12/12**, identical ordered verdict vector;
-3. for 386/388/389/390/391/392/394, exactly one matching success-visible receipt per focused process, with exact A/B receipt bytes deterministic and plan-defined parsed invariants satisfied;
-4. accepted predecessor selector382 — expected **382/382**;
-5. cumulative selector394 — expected **394/394**;
-6. pre/post package/source/execution-view censuses identical and `SHA256SUMS` **28/28** before/after.
+Result artifact `10262063263` has SHA-256 `736303476b9287c61534da406ec5ba788df72c95165e08dac5fdb7e91b5d4acc`; diagnostic artifact `10262438089` has SHA-256 `81bbb54cdf08bed7957c6e374f7927455099597b64d60e4e90026f4881a99be2`. Three earlier R1 attempts were orchestration-only and carry no semantic credit. No configure, compile, relink, generated discovery, repair, semantic-input mutation, benchmark, promotion, or production A3→A4 cutover occurred.
 
-Expected semantic runtime process count: **800** fresh processes.
+## Exact next — `M4-CP3-TB1-R1-REV`
 
-TB-EXEC is runtime execution and raw evidence preservation only. It must not diagnose by editing, rebuild, mutate package/source/selector bytes, promote package119, or production-wire A3→A4. Stop after evidence at `M4-CP3-TB1-R1-REV`, which owns diagnosis/disposition and any next plan.
+Perform runtime-free independent evidence review of package119 plus `Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md` and artifacts `10262063263 / 10262438089`. Re-derive the decisive process/receipt/selector/immutability facts, decide package119 disposition, update superseded regression-candidate records if justified, and freeze the next plan. Do **not** rerun tests, compile, mutate source/tests, repair the package, promote package119, or production-wire A3→A4 before that review reaches its own disposition.
 
 ## Current evidence
 
@@ -97,7 +97,7 @@ TB-EXEC is runtime execution and raw evidence preservation only. It must not dia
 - historical TB report/review: `.agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Report.md`, `.agents/Directional/Architecture_M4_CP3_TB1_Review_Record.md`
 - frozen CB3 plan: `.agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Plan.md`
 - completed CB3 report: `.agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Report.md`
-- exact next runtime plan: `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md`
+- completed corrective runtime plan/report: `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md`, `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md`
 - selector: `.agents/Directional/Architecture_M4_CP3_Required_Green_Selector_394.txt`
 - regression classification: `.agents/Directional/Regression_Root_Cause_Tracker.md` candidates `M4-CP3-TB1-REV-CAND-01/02`
 
@@ -105,17 +105,16 @@ TB-EXEC is runtime execution and raw evidence preservation only. It must not dia
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB.md
+  - turn-based-coding-agent/references/turns/REVIEW.md
 conditional_modules:
-  - trigger: artifact-only runtime execution
-    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
-  - trigger: GitHub connector / workflow / artifact handling
+  - trigger: GitHub connector / artifact evidence handling
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Report.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md#17-m4-cp3-defn-r1-amendment--baseline-conformity-is-exact-shared-subdivision-plus-region-parity
 do_not_preload:
-  - product implementation files unless runtime review later identifies a product defect
+  - product implementation files unless the review independently establishes a product defect
   - historical M4 plans already consolidated
 ```

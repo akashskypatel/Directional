@@ -1,3 +1,11 @@
+## 2026-09-11 — `M4-CP3-TB1-R1-EXEC`: package119 corrective artifact-only runtime is GREEN
+
+`M4-CP3-TB1-R1-EXEC` is **COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / REVIEW PENDING**. Authoritative run/job `34595754914 / 103251084987` consumed unchanged package119 artifact `10185370005` from semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` and executed exactly **800** fresh processes: focused rows383-394 **12/12 twice** with byte-identical verdict vectors and deterministic receipts for 386/388/389/390/391/392/394; accepted predecessor selector382 **382/382**; cumulative selector394 **394/394**. There were zero REDs, skips, timeouts, or selection mismatches.
+
+Result artifact `10262063263` has SHA-256 `736303476b9287c61534da406ec5ba788df72c95165e08dac5fdb7e91b5d4acc`; diagnostic artifact `10262438089` has SHA-256 `81bbb54cdf08bed7957c6e374f7927455099597b64d60e4e90026f4881a99be2`. `SHA256SUMS` verifies **28/28** before and after runtime, and package/source/execution-view censuses are byte-identical pre/post. Three earlier R1 attempts were orchestration-only and receive no semantic credit. No configure, compile, relink, generated discovery, repair, source/test/fixture/selector mutation, benchmark, package promotion, or A3→A4 cutover occurred.
+
+Package119 remains **unpromoted**; package117/selector382 remains accepted runtime authority pending review. Stable accounting remains **47 / 14 / 33**, debt **5**. **Exact next: runtime-free `M4-CP3-TB1-R1-REV` consuming package119 plus result/diagnostic artifacts `10262063263 / 10262438089`; no rerun or promotion precedes review disposition.**
+
 ## 2026-09-11 — `M4-CP3-CB3`: test-authority recovery compiles as candidate package119
 
 `M4-CP3-CB3` is **COMPLETE / TEST-ONLY REPAIR / PREFLIGHT+PACKAGE COMPILE GREEN / RUNTIME-FREE**. Only `tests/GlobalConformityBaselineTests.cpp` changed semantically: the invalid one-face triangle helper is now the frozen four-vertex/three-face triangular-boundary disk; ordinal392 uses target size `0.25` and asserts preferred count `4`; ordinal390's independent oracle now evaluates live per-region incidence multiplicity; ordinals 389/391 are non-vacuously strengthened; and corrected ordinals 386/388/389/390/391/392/394 emit deterministic live `M4_CP3_BASELINE_RECEIPT` lines.
