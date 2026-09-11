@@ -1,5 +1,27 @@
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
+**This document is durable project authority.** It may be corrected or extended. It must **not** be deleted,
+renamed away, collapsed into another document, or replaced by a summary without explicit user authorization.
+The same protection covers the rule below: consolidating this file may not remove it.
+
+**Every REVIEW turn must update this file before closing**, so a cold-start agent is never more than one review
+behind. The required update covers:
+
+1. the **currency line** below — turn ID and date;
+2. **§3 Where we are** — selector authority, stable accounting, checkpoint status;
+3. **§4 the witness table** — if any witness's state changed;
+4. **§7 Open problems** — re-ordered by current priority, with resolved items removed or explicitly marked
+   discharged. When a turn resolves a warning recorded here, **edit that bullet**; appending the new state
+   below a stale one leaves the file contradicting itself;
+5. **§8 Recurring defect patterns** — if the turn found a new pattern or a new instance of an existing one.
+
+The same REVIEW turn also performs **document consolidation** under `CLEAN_UP_POLICY.md`.
+
+`REVIEW_TURN_POLICY.md` is the authoritative superset of these duties and carries the mandatory closeout block
+every review record must answer. This rule was itself deleted by a consolidation in `f6a784cf` and restored on
+2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
+the content beneath it.
+
 > **Current milestone authority (2026-09-11, `M4-CP3-CB4-REV`):** package119/selector394 **394/394** is accepted §17 production-baseline A3 runtime authority after an APPROVED-WITH-AMENDMENTS review. Package117/selector382 remains retained historical framed CP1/CP2 authority; package118 remains historical unpromoted TB1 evidence. The review corrected stale copied receipt/census values without changing the green raw gate and closed both package118 test-authority candidates as recovery-proved/non-stable. Stable accounting remains **47 / 14 / 33**, debt **5**. CP3 remains open. Exact next: runtime-free Code + Build `M4-CP3-CB4` production A3→A4 cutover. `M4-CP3-CB4` then **halted on a pre-mutation derivation guard**: A2b arcs publish `cutEdge` as a whole source edge, so a split cut arc has no exact sub-interval locus, and the only workarounds were prohibited (parent-edge overbroad, construction-private node numbering, floating reconstruction). CB4-REV upheld the stop and froze **§17.12** — every A2b arc publishes a canonical ordered exact source path, additively. Exact next: `M4-CP3-CB4-R1`, which publishes that authority **without** beginning the A4 cutover.
 
 **Currency.** Package119/selector394 is the accepted production-baseline A3 runtime authority. Package117/selector382 stays retained as historical framed CP1/CP2 evidence; M3 remains CLOSED / ACCEPTED. The accepted A3 semantic core is not yet a production cutover: A4 still needs the CB4 authority handoff.
@@ -193,6 +215,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Plan/certifier partition duplication and transit/exactification debt — ACTIVE / non-gating.** The domains may lawfully differ, but duplicated actual-embedded construction, production transit audit projection, minimal transit witness and input-size/exactification audits remain architectural debt outside the closed M3 exit.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A guard that counts markers does not protect content.** This file's own "every REVIEW turn must update" rule was deleted by a consolidation in `f6a784cf` while its `DURABLE — DO NOT DELETE` heading survived, and `review_check.py` passed it as `durable markers preserved: 1 -> 1` because that check compares marker counts, not the text beneath them. The rule stayed gone for several turns and this file went stale twice. **If deleting the protected content leaves the check green, the check does not cover that content.** `REVIEW_TURN_POLICY.md` now owns the review duties and the closeout block; the tooling residual is tracked as `PROCESS-01` (`LESSONS.md` 172).
 
 **CP2 recovery status.** The four CP2 examples immediately below are now historical recovered patterns: package117/R1 proves the `±2` feature is load-bearing, the receipt is success-visible, WorkLedger field families are independently derived/tampered, and the output has a distinct semantic digest. Keep the patterns because they remain reusable review rules; do not read their present-tense defect language as an open CP2 blocker.
 

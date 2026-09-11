@@ -24,6 +24,31 @@ divergence between two published source-location authorities would propagate wid
 package119/selector394 **394/394**; accounting unchanged at **47 / 14 / 33**, debt **5**. ORIENTATION was stale
 again — currency line and open-problem item 1 still named CB4 as the next turn — and is corrected.
 
+## 2026-09-11 — `REVIEW_TURN_POLICY.md`: authoritative review-turn duties and a mandatory closeout block
+
+Added `.agents/Directional/REVIEW_TURN_POLICY.md`, authoritative for every REVIEW, REVIEW + PLAN, TB-REVIEW,
+CB-REVIEW and DEFN turn, delegated or same-agent, and referenced from `AGENT_POLICY.md` and `ORIENTATION.md`. It
+collects verification duties (re-derive decisive claims from bytes, re-hash the accepted prefix, re-derive any RED
+partition, test non-vacuity, discharge or re-carry prior obligations by id), durable-document duties, successor and
+turn-boundary rules, and a **mandatory closeout block** that each review record must answer row by row — so a
+skipped duty appears as a missing row rather than as an absence nobody notices.
+
+Root cause of the misses it addresses, found while writing it: `ORIENTATION.md`'s durable "every REVIEW turn must
+update this file" rule was **deleted** by the consolidation in `f6a784cf` while its `DURABLE — DO NOT DELETE`
+heading survived, so later turns saw a heading with no instruction. No gate fired, because `review_check.py`
+`DURABLE_FILES` matches the literal marker word and compares occurrence counts — deleting everything beneath the
+heading still reports `1 -> 1`. The observable consequence was `ORIENTATION.md` left stale at `M4-CP3-TB1-REV` and
+again at `M4-CP3-CB4-REV`, plus a resolved warning left standing where it contradicted the bullet below it.
+
+The rule is restored with an explicit clause that consolidation may not remove it, and item 4 now requires editing
+superseded bullets rather than appending beneath them. Recorded as `PROCESS-01` in the tracker and `LESSONS.md`
+172 — *a guard that counts markers does not protect content; if deleting the protected content leaves the check
+green, the check does not cover it*. The `review_check.py` durable check still counts markers rather than content;
+strengthening it is a tooling change outside a review turn's boundary and is left to an authorized turn.
+
+Runtime-free. No product, test, selector, benchmark or build source touched. Accepted authority remains
+package119/selector394 **394/394**; accounting unchanged at **47 / 14 / 33**, debt **5**.
+
 ## 2026-09-11 — `M4-CP3-CB4`: exact-path derivation guard fails before production cutover
 
 `M4-CP3-CB4` is **HALTED / PRE-MUTATION DERIVATION GUARD / NO SEMANTIC MUTATION / NO COMPILE / NO RUNTIME**. Its mandatory six-class census is complete, but the accepted A2a′/A2b public products cannot derive the exact §17 ordered support of every full split `Cut` arc. A2b construction knows exact cut-crossing parameters and binds them to synthetic `NetworkNodeId`s inside `EmbeddedGraphTopology.cpp`, then publishes `GlobalTopologyArc` without that exact endpoint-parameter binding; `SurfaceCutGraph` likewise exposes cut edges/certificates rather than the exact split points. Split `Mandatory` arcs have the same publication class of problem. CB4 plan §3 therefore requires stop-and-review rather than reconstructing or inventing a convention.

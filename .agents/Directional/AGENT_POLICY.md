@@ -10,6 +10,13 @@ References to **independent review**, **independent verification**, or an **inde
 
 This authorization changes only who may perform REVIEW/DEFN. It does **not** relax turn boundaries, runtime/compile prohibitions, evidence provenance, validation integrity, red-TB routing, stop rules, or any explicit criterion that separately demands an independent implementation/oracle/evidence source.
 
+## Review turn duties
+
+`REVIEW_TURN_POLICY.md` is authoritative for every REVIEW, REVIEW + PLAN, TB-REVIEW, CB-REVIEW and DEFN turn,
+delegated or same-agent. It governs verification duties, durable-document updates, successor/boundary rules, and
+the mandatory closeout block that each review record must answer row by row. Where another document lists review
+duties, that policy is the superset.
+
 ## Universal compile requirement
 
 The exemptions below do **not** exempt local agents from `.agents/Directional/GMP_COMPILE_POLICY.md`. GMP/GMPXX linkage is mandatory for every future Directional compile in every execution environment. A fallback exact-arithmetic build is not authoritative compile evidence.

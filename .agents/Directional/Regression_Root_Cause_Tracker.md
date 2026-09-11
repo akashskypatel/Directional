@@ -7494,3 +7494,32 @@ worth recording against §17.5.
 
 **Prohibited:** folding this into `M4-CP3-CB4`, whose evidential value depends on being a production-wiring turn
 and nothing else (`LESSONS.md` 170); asserting the multiplicity path by inspection instead of exercising it.
+
+## `PROCESS-01` — the durable review-turn rule was deleted and the gate did not notice
+
+**Owner:** closed by `REVIEW_TURN_POLICY.md` + restored `ORIENTATION.md` rule, 2026-09-11 · **Class:** PROCESS/GUARD-GAP
+**Non-stable** — no product, test, or accepted-green impact; accounting unchanged at 47/14/33, debt 5.
+
+**Root cause.** `ORIENTATION.md` carried a durable rule requiring every REVIEW turn to update its currency line,
+§3, §4, §7 and §8. A consolidation in `f6a784cf` ("M4-CP2-TB2-R1-REV: promote package117 and close CP2") removed
+the rule's body while leaving the `## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN` heading in place.
+Later turns therefore saw a heading with no instruction under it.
+
+**Why no gate fired.** `review_check.py` `DURABLE_FILES` maps each protected file to the literal marker `"DURABLE"`
+and compares occurrence counts before and after. Deleting everything beneath the heading leaves the count at
+`1 -> 1`, so the boundary check reported "durable markers preserved" and passed (`LESSONS.md` 172).
+
+**Observed consequence.** `ORIENTATION.md` was left stale at `M4-CP3-TB1-REV` (naming CB2 as next after CB2 had
+run) and again at `M4-CP3-CB4-REV` (naming CB4 as next after CB4 had halted and been reviewed); a resolved
+unproven-surface warning was also left standing where it contradicted the bullet directly below it.
+
+**Correction applied.** The rule is restored in `ORIENTATION.md` with an explicit clause that consolidation may
+not remove it, plus item 4 strengthened to require editing superseded bullets rather than appending beneath them.
+`REVIEW_TURN_POLICY.md` now owns the authoritative superset of review duties and the mandatory closeout block.
+
+**Residual, not closed here.** The `review_check.py` durable check still counts markers rather than content, so
+the same class of silent deletion remains possible for any protected section. Strengthening it — pinning a hash
+or a required phrase per protected section — is a tooling change outside a review turn's boundary and is left to
+an explicitly authorized turn.
+
+**Prohibited:** treating a passing `durable markers preserved` line as evidence that protected content survived.

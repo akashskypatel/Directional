@@ -2424,3 +2424,13 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
      is unchanged, the feature is decoration.** Build that comparison into the identity rather than asserting the
      feature is present, and the receipt cannot outlive its subject. Same family as 157 (a census whose rows
      cannot differ) and 160 ("passed" vs "did not run").
+
+172. **A guard that counts markers does not protect content.** `ORIENTATION.md`'s "Every REVIEW turn must
+     update this file" rule was deleted by a consolidation in `f6a784cf` while its `DURABLE — DO NOT DELETE`
+     heading survived. `review_check.py` reported `durable markers preserved: 1 -> 1` and passed, because
+     `DURABLE_FILES` matches the literal marker word and compares occurrence counts, not the text beneath it.
+     The rule stayed gone for several turns and `ORIENTATION.md` went stale twice — a protection that a
+     reader trusted and that had silently stopped protecting anything. **A guard must be falsifiable against
+     the thing it guards:** if deleting the protected content leaves the check green, the check does not
+     cover that content. Same family as 157, 171 — presence is not coverage — applied to process gates
+     rather than to tests.
