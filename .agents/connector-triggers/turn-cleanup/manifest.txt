@@ -1,0 +1,4 @@
+# M4-CP3-TB1-R1-EXEC temporary-state cleanup
+.agents/connector-triggers/m4-cp3-tb1-r1-closeout-drive-apply
+.agents/connector-triggers/m4-cp3-tb1-r1-exec
+.agents/Directional/turn-payloads/m4-cp3-tb1-r1
