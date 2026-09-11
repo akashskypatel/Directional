@@ -1,4 +1,0 @@
-turn=M4-CP3-CB4-R1
-purpose=compile complete selector-owner package after detecting incomplete R1 package target set
-source_sha=3f909a5a2cfd305d423faf7a260bc465c7b06892
-retry=1
