@@ -57,6 +57,10 @@ Planning only. Freeze one bounded recovery for row400 with these constraints:
 - package120 artifact: `10280703200`
 - TB2 result artifact: `10283220925`, provider SHA-256 `314428caf9b240b992f56a48a471e210c0c8361331004d7a0a268ea9fbca4c6f`
 - TB2 diagnostic artifact: `10283302336`
+- review closeout patch apply: run `34653151816`, semantic closeout commit `842137328e66f140839747b625dcd2bb152a48eb`
+- review cleanup: run `34653302681`, cleanup commit `bf6f4fc09e0fd5b0d1aee110c51341e887ca26f9`
+- temporary closeout workflow and markers retired; exactly seven durable workflows remain; `.agents/connector-triggers` contains only the durable `source-snapshot` namespace
+- consumed Google Drive review patch permanently deleted after successful application
 
 ## Context Load Plan
 
