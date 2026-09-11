@@ -45,7 +45,7 @@ jobs:
       EXPECTED_SELECTOR394_SHA256: 6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68
       EXPECTED_SELECTOR382_PREFIX_SHA256: 1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f
       PER_PROCESS_TIMEOUT_SECONDS: '180'
-      PAYLOAD_BLOB_SHA: bb068598a182e70f530288e7299491f3ca626cab
+      PAYLOAD_BLOB_SHA: 25590039091af894d8c5d3d3b3b9320712294a79
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Fetch exact temporary runtime payload
@@ -53,14 +53,22 @@ jobs:
         run: |
           set -euo pipefail
           payload_json="$RUNNER_TEMP/tb-payload.json"
-          gh api --method GET "repos/$GITHUB_REPOSITORY/contents/.agents/Directional/turn-payloads/m4-cp3-tb1-r1/tb_exec.sh?ref=$GITHUB_SHA" > "$payload_json"
+          gh api --method GET "repos/$GITHUB_REPOSITORY/contents/.agents/Directional/turn-payloads/m4-cp3-tb1-r1/tb_exec_r2.sh?ref=$GITHUB_SHA" > "$payload_json"
           test "$(jq -r .sha "$payload_json")" = "$PAYLOAD_BLOB_SHA"
           jq -r .content "$payload_json" | tr -d '\n' | base64 --decode > "$RUNNER_TEMP/tb_exec.sh"
           bash -n "$RUNNER_TEMP/tb_exec.sh"
 
       - name: Execute immutable package119 evidence matrix
         shell: bash
-        run: bash "$RUNNER_TEMP/tb_exec.sh"
+        run: |
+          set +e
+          bash "$RUNNER_TEMP/tb_exec.sh"
+          rc=$?
+          set -e
+          if [ -f "$RUNNER_TEMP/tb-orchestration-retry.txt" ] && [ -d "$RUNNER_TEMP/m4-cp3-tb1-r1-evidence" ]; then
+            cp "$RUNNER_TEMP/tb-orchestration-retry.txt" "$RUNNER_TEMP/m4-cp3-tb1-r1-evidence/"
+          fi
+          exit "$rc"
 
       - name: Upload raw TB evidence
         if: always()
