@@ -2,4 +2,6 @@ turn=M4-CP3-TB1-R1-EXEC
 artifact_id=10185370005
 artifact_sha256=9fdfe9a1c8f92d52669a82da0ddfca75d58fd8dc7317d5100faff5a85c820fc8
 source_sha=fd532c2f768d0ff6493260deb670cb34b6757712
-caller_commit=250bb11f72d9716e53c4526e26b49a9ee317aac9
+caller_commit=a79ba6b6eb987408e028c6984dec009e9487902b
+payload_blob_sha=bb068598a182e70f530288e7299491f3ca626cab
+retry=1
