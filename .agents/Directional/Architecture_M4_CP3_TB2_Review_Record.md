@@ -136,6 +136,81 @@ Exact next is **`M4-CP3-TB2-PLAN`**, runtime-free planning only. It must freeze 
 
 This review does not design or execute the corrective Code + Build turn, does not run new tests, and does not authorize A4 cutover work.
 
+## 9. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld in full**: `CAND-01` is correct, the eight credits are properly
+evidenced, package120 is rightly unpromoted, and the closeout block is complete and honestly answered —
+including `n/a` with a reason for §4. Accepted authority remains package119 / selector394 **394/394**;
+accounting stays **47 / 14 / 33**, debt **5**. Two additions below; neither changes the decision.
+
+### V1 — the finding and the lineage re-derived
+
+Row400 was read at its definition (`tests/FieldAlignedCurveNetworkTests.cpp:3139-3156`) rather than from
+the quotation. `sourceRow{2,0,1}` occurs exactly twice — its declaration at `:3141` and the detached
+`ASSERT_NE` at `:3142` — and is never passed to `canonical_exact_source_face_point`, which takes only
+`face` and `barycentric` at `:3147`. The `ASSERT_NE` compares two literals and says nothing about the
+code under test. The finding is exact.
+
+Lineage re-derived independently: selector403's first 394 rows hash to
+`6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`, byte-identical to accepted
+selector394, and rows 395-403 are the only additions.
+
+### V2 — the vacuity is deeper than detachment, and that sharpens the falsifier
+
+Row400 is not merely missing a discriminator. **Its entire assertion set is satisfied by an
+implementation that performs no reordering at all.** Under a pass-through
+`canonical_exact_source_face_point` that returned its input unchanged: `EXPECT_EQ(face, ...)` holds,
+`EXPECT_EQ(barycentric, ...)` holds by identity, and the canonicality check holds because
+`exact_source_point_is_canonical` (`include/directional/authority/ExactSourcePath.h:105-120`) tests a
+face point for **only** two things — every barycentric coordinate `> 0`, and the coordinates summing to
+`1`. Both are permutation-invariant. That predicate is **order-blind by construction** and cannot
+witness ordering for any input.
+
+Two consequences for `M4-CP3-TB2-PLAN`, beyond §5's falsifier:
+
+1. **State the mutation falsifier.** The corrective identity must go RED when canonicalization is
+   replaced by the identity function. An identity that survives that mutation has not tested
+   canonicalization regardless of what its name says.
+2. **It may not lean on `exact_source_point_is_canonical` to prove ordering.** Since that predicate is
+   order-blind, the corrective identity must compare against an **independently computed expected
+   permutation** — the barycentric triple reordered from source-row order into canonical key order by
+   the test's own derivation — and assert equality against that. Without this constraint the recovery
+   can satisfy §5's falsifier (use a real permuted source row) and still be vacuous in a new way by
+   asserting only positivity, sum and round-trip.
+
+### V3 — disposition of the reviewing agent's CB4-R1 §4 obligation
+
+The `M4-CP3-CB4-REV` addendum required CB4-R1 to reconcile the new exact path against the arc's existing
+`GlobalTopologyArc::sourceFaces`, since an arc would otherwise publish two source-location authorities
+with no stated relation. §7 names `OBS-01` but not this one, so its disposition is recorded here.
+
+**Substantially resolved, by a different and arguably better route.** Frozen §17.12 rule 8 and the
+clause at `Architecture_M4_DEFN_Frozen_Definitions.md:156` settle it by **ownership** rather than by
+agreement: the published path is the sole path authority, and `sourceFaces`, the parent cut edge,
+synthetic-node numbering and floating geometry are explicitly *not* alternate path authorities. That
+removes the ambiguity at its root instead of policing a cross-check, and it is the cleaner fix.
+
+**Residual, carried and low-cost.** Ownership prevents a *consumer* from conflating the two fields; it
+does not detect a *producer* emitting a path inconsistent with the `sourceFaces` it publishes on the same
+arc. Row399's tamper matrix covers five classes — order, kind, carrier, point coordinate, overbroad split
+subinterval — and none covers this. For `Trace` arcs both fields derive from the same
+`[firstSegment, onePastLastSegment)` A2a range, so agreement holds by construction and a failure would be
+diagnostic rather than noisy; `sourceFaces` has 189 consumer sites in `src/geometry`. Add it as a sixth
+tamper class the next time row399 is legitimately touched.
+
+**Not in the row400 recovery.** Same reasoning §7 correctly applied to `OBS-01`: the recovery's evidential
+value depends on changing one variable, and this is an unrelated experiment that merely happens to share
+the test surface (`LESSONS.md` 170).
+
+### V4 — on the closeout block itself
+
+This is the first review under `REVIEW_TURN_POLICY.md` and the block is well used: every row carries a
+concrete value, and the one `n/a` states its reason. The single gap is the one the policy exists to
+catch — "Prior obligations discharged/carried" named `OBS-01` but not the CB4-R1 reconciliation
+requirement. Naming every outstanding obligation by id, including ones issued into a plan that has since
+been consolidated away, is what keeps a carried item from expiring silently. V3 above supplies the
+missing disposition.
+
 ## Review closeout
 
 | Duty | Answer |

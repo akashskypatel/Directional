@@ -4,6 +4,25 @@
 
 Selector403 remains frozen at `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`; accepted selector394 remains its exact 394-row prefix at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`. Future `M4-CP3-TB2-R1-EXEC` is frozen at **799** fresh processes: row400 twice, selector394 394/394, selector403 403/403, plus immutable pre/postflight. `M4-CP3-TB1-R1-REV-OBS-01` is explicitly carried outside CB4-R2 to the first later independently falsifiable test-authority turn. Accepted authority stays package119/selector394 **394/394**; stable accounting remains **47 / 14 / 33**, debt **5**. Exact next: `M4-CP3-CB4-R2`.
 
+**Verification amendment (reviewing agent, review record §9).** The review is upheld in full: `CAND-01` is exact,
+the eight credits are properly evidenced, package120 is rightly unpromoted, and the closeout block — the first
+written under `REVIEW_TURN_POLICY.md` — is complete and honestly answered. Row400 was re-read at its definition
+(`tests/FieldAlignedCurveNetworkTests.cpp:3139-3156`): `sourceRow{2,0,1}` occurs only at its declaration and in the
+detached `ASSERT_NE`, never reaching `canonical_exact_source_face_point`. Lineage re-derived independently —
+selector403's first 394 rows hash to `6c27b3a0…`, byte-identical to accepted selector394. One strengthening for
+`M4-CP3-TB2-PLAN`: the vacuity runs deeper than detachment, because row400's **entire assertion set is satisfied by
+a pass-through implementation** — `exact_source_point_is_canonical`
+(`include/directional/authority/ExactSourcePath.h:105-120`) tests a face point for only positivity and unit sum,
+both permutation-invariant, so it is order-blind by construction and can never witness ordering. The corrective
+identity must therefore go RED when canonicalization is replaced by the identity function, and must compare against
+an independently computed expected permutation rather than leaning on that predicate — otherwise the recovery can
+satisfy §5's falsifier and still be vacuous in a new way. Also recorded: the disposition of the CB4-REV
+path/`sourceFaces` obligation, which §7 did not name. It is substantially resolved by frozen §17.12 rule 8 settling
+the question by ownership rather than agreement — the cleaner fix — with a low-cost residual carried as
+`M4-CP3-CB4-REV-OBS-02`: nothing detects a producer publishing a path inconsistent with the same arc's
+`sourceFaces`, so add it as a sixth row399 tamper class when that identity is next touched, and not in the row400
+recovery. Accounting unchanged at **47 / 14 / 33**, debt **5**; accepted authority package119 / selector394.
+
 ## 2026-09-11 — `M4-CP3-TB2-REV`: package120 mechanically green but not promoted; row400 mapping fixture is non-vacuity-invalid
 
 TB2 review independently reopened package120 (`10280703200`, source `3f909a5a2cfd305d423faf7a260bc465c7b06892`) and result artifact `10283220925`. The mechanical execution is upheld: focused395-403 **9/9 twice**, accepted selector394 **394/394**, cumulative selector403 **403/403**, total **815/815 PASS**, zero RED/SKIP/selection mismatch/timeout, owner totals **30/257/75/41**, immutable package/source/execution-view postflight and manifest **28/28**. Selector403 first394 is byte-identical to accepted selector394 at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; selector403 is `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`.

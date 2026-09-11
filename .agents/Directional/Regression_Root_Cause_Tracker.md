@@ -7547,3 +7547,28 @@ or a required phrase per protected section — is a tooling change outside a rev
 an explicitly authorized turn.
 
 **Prohibited:** treating a passing `durable markers preserved` line as evidence that protected content survived.
+
+## `M4-CP3-CB4-REV-OBS-02` — no detector for path/`sourceFaces` producer divergence
+
+**Owner:** next turn that legitimately touches row399 — **not** the row400 recovery · **Class:** COVERAGE/GUARD-GAP
+**Non-blocking** — no accepted-green impact; accounting unchanged at 47/14/33, debt 5.
+
+**Origin.** The `M4-CP3-CB4-REV` verification addendum required CB4-R1 to reconcile the newly published exact
+source path against the arc's existing `GlobalTopologyArc::sourceFaces`, so one arc would not publish two
+source-location authorities with no stated relation.
+
+**Substantially resolved by ownership, not agreement.** Frozen §17.12 rule 8 and
+`Architecture_M4_DEFN_Frozen_Definitions.md:156` make the published path the sole path authority and declare
+`sourceFaces`, the parent cut edge, synthetic-node numbering and floating geometry explicitly *not* alternate path
+authorities. That removes the ambiguity at its root and is cleaner than the cross-check originally proposed.
+
+**Residual.** Ownership stops a *consumer* conflating the fields; it does not detect a *producer* publishing a path
+inconsistent with the `sourceFaces` on the same arc. Row399's tamper matrix covers order, kind, carrier, point
+coordinate and overbroad split subinterval — five classes, none covering this. For `Trace` arcs both fields derive
+from the same `[firstSegment, onePastLastSegment)` A2a range, so agreement holds by construction, the check is
+cheap, and a failure would be diagnostic. `sourceFaces` has 189 consumer sites in `src/geometry`.
+
+**Discharge.** Add a sixth tamper class to row399 when that identity is next legitimately touched.
+
+**Prohibited:** folding this into the row400 recovery, whose evidential value depends on changing one variable
+(`LESSONS.md` 170); treating frozen rule 8 as a detector rather than an ownership rule.
