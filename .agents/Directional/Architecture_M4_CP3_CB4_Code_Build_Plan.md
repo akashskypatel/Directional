@@ -1,7 +1,8 @@
 # M4-CP3-CB4 Code + Build Plan — production A3→A4 exact shared-breakpoint cutover
 
-**Status:** FROZEN / READY
+**Status:** SUPERSEDED / DO NOT EXECUTE
 **Turn:** `M4-CP3-CB4`
+**Superseded by:** `M4-CP3-CB4-REV`; exact successor is `M4-CP3-CB4-R1` under `Architecture_M4_CP3_CB4_R1_Code_Build_Plan.md`
 **Execution mode:** canonical Code + Build / runtime-free
 **Normative contract:** `Architecture_M4_DEFN_Frozen_Definitions.md` §17
 **Accepted runtime predecessor:** package119 / selector394 **394/394**

@@ -759,6 +759,8 @@ Until replacement runtime evidence is accepted, package117/selector382 remains t
 
 **Exact next: `M4-CP3-CB2` under `Architecture_M4_CP3_CB2_Code_Build_Plan.md`.** No Directional runtime belongs in that Code + Build turn.
 
+**Historical-sequence note:** the CB2 -> artifact-only TB -> corrective CB3/TB1-R1 semantic-proof stages have since completed and package119/selector394 is accepted. Current production-cutover sequencing is further amended by §17.12; `M4-CP3-CB4-R1` is the current successor.
+
 ### 17.11 The removed A3 family/sign is not the A4 hard-rail family/sign
 
 Recorded because §17.3 and the CP3 exit otherwise read as contradictory. CP3 must remove the exact-torus
@@ -778,3 +780,47 @@ The A3-owned conjuncts are the shared-boundary agreements: `support_key` equalit
 that agreement into a guarantee instead of a floating coincidence — which is why §17.10 pairs the cutover with
 retiring floating `support_key` shared-boundary authority. A4 keeps deriving its own `family`/`advanceSign`
 locally and A3 never supplies them.
+
+### 17.12 A2b must publish each full arc's exact ordered source path
+
+`M4-CP3-CB4` proved that the reconstruction wording in §4.1 is not sufficient for the accepted public product surface.
+A2b construction privately knows exact split loci for artificial cuts and mandatory barriers, but the accepted
+`GlobalTopologyArc` product does not publish those loci. After a source edge is split, the parent source-edge key and
+synthetic endpoint node IDs therefore do not identify which exact subinterval belongs to each A2b arc. A3 may not fill
+that publication gap from synthetic-node allocation order, floating geometry, tolerance, source-face overlap, or another
+invented convention.
+
+This subsection supersedes the production reconstruction implication of §4.1 and sharpens §§17.1/17.3:
+
+1. **A2b is the publication owner.** Every accepted `GlobalTopologyArc`, for `Mandatory`, `Trace`, and `Cut`, publishes
+   one non-empty canonical ordered exact source path in `firstNode -> secondNode` orientation. A2b is the first accepted
+   stage that combines A2a trace/terminal authority with A2a′ cut authority into the actual embedded-graph arc
+   decomposition.
+2. **One upstream-neutral exact representation is canonical.** A path point is exactly one source vertex, one source
+   edge plus exact rational parameter, or one source face plus exact barycentric coordinates associated with canonical
+   face-topology vertex order. A support piece binds two exact points to one `SourceSupport` carrier. The existing A3
+   `ConformitySourcePoint` / `ConformitySupportPiece` surface must reuse or alias that representation rather than create a
+   second independently canonicalized encoding.
+3. **Exact canonical path invariants.** Pieces are nondegenerate, carrier-contained and exactly contiguous. Exact edge
+   endpoints canonicalize to source vertices; interior edge points remain edge points; true face-interior points remain
+   face points. The first/last path point is the exact locus of the arc's first/second node. Reverse incidence reverses
+   piece order/endpoints and never creates a second semantic path.
+4. **Mandatory arcs.** Each arc publishes the exact source-edge interval it owns. If A2b splits a mandatory edge at an
+   A2a terminal, the two arcs publish the two exact endpoint-to-terminal intervals; neither may claim the whole parent
+   edge.
+5. **Cut arcs.** Each arc publishes the exact interval between the adjacent exact cut-node parameters already used by
+   A2b construction. Distinct split arcs on one selected cut edge therefore publish distinct exact subintervals.
+6. **Trace arcs.** Each arc publishes the exact ordered support chain for its segment range from accepted A2a exact
+   entry/exit/contact/terminal authority. A missing or contradictory exact endpoint is an A2b construction/binding
+   failure, not permission for geometric reconstruction.
+7. **Validation and digest.** A2b candidate validation reconstructs expected support from source + accepted A2a/A2a′
+   authority and compares it exactly; the candidate cannot authenticate its own support. A2b semantic hashing includes
+   the published path.
+8. **A3 is a copier, not a path reconstructor.** Production creates exactly one `ConformitySpanInput` per canonical A2b
+   arc, with the same ordered exact support path. `GlobalTopologyArc::sourceFaces`, the parent cut edge, synthetic-node
+   numbering and floating geometry are not alternate path authorities.
+
+This is an additive A2b publication/certificate strengthening. It does not change selected cuts, arc IDs/order/topology,
+rotation system, region walks, disc certificates, or accepted package119 parity-scheduler semantics. Historical M3 runtime
+evidence remains authority for those unchanged semantics but does **not** prove the newly published support field. The
+new publication and production A3 binder require artifact-only runtime proof before A4 may consume them.
