@@ -1,0 +1,3 @@
+purpose=M4-CP3-CB1 fresh source snapshot after corrected durable docs
+frozen_semantic_source_sha=02643ac69cc0efabdeb987ea6043d9c5228f45e4
+retry=0
