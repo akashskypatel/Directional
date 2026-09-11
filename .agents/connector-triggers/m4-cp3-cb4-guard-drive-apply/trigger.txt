@@ -1,0 +1,4 @@
+turn=M4-CP3-CB4
+purpose=apply derivation guard documentation patch
+base_sha=128f7d738382eb4957b5680de2fbcab8d2953c26
+patch_sha256=9738abfff7c82df0fb4b75f22e2f3104436c0be685c16861d84008dc48c18fca
