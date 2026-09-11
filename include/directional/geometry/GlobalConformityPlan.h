@@ -19,6 +19,7 @@
 
 #include <Eigen/Core>
 #include <directional/authority/AuthorityIds.h>
+#include <directional/authority/ExactSourcePath.h>
 #include <directional/authority/FieldTransportAtlas.h>
 #include <directional/authority/SourceSupport.h>
 #include <directional/geometry/GlobalTopologyPlan.h>
@@ -45,10 +46,10 @@ struct ConformityBoundaryIncidenceId {
 enum class ConformityFamily : std::uint8_t { U = 0, V = 1 };
 enum class ConformitySign : std::int8_t { Negative = -1, Positive = 1 };
 
-struct ConformityEdgePoint { authority::SourceEdgeTopologyKey edge; authority::FieldExactRational parameter; auto operator<=>(const ConformityEdgePoint &) const = default; };
-struct ConformityFacePoint { authority::SourceFaceTopologyKey face; std::array<authority::FieldExactRational, 3> barycentric; auto operator<=>(const ConformityFacePoint &) const = default; };
-using ConformitySourcePoint = std::variant<authority::SourceVertexId, ConformityEdgePoint, ConformityFacePoint>;
-struct ConformitySupportPiece { authority::SourceSupport carrier; ConformitySourcePoint first; ConformitySourcePoint second; auto operator<=>(const ConformitySupportPiece &) const = default; };
+using ConformityEdgePoint = authority::ExactSourceEdgePoint;
+using ConformityFacePoint = authority::ExactSourceFacePoint;
+using ConformitySourcePoint = authority::ExactSourcePoint;
+using ConformitySupportPiece = authority::ExactSourceSupportPiece;
 struct ConformitySpanInput { ConformitySpanId id; std::vector<ConformitySupportPiece> supportPieces; auto operator<=>(const ConformitySpanInput &) const = default; };
 struct ConformityIncidence {
   ConformityBoundaryIncidenceId id;

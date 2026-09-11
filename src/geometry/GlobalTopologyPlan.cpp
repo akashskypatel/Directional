@@ -64,6 +64,59 @@ void hash_face(std::uint64_t &hash,
   }
 }
 
+void hash_exact(std::uint64_t &hash,
+                const authority::FieldExactRational &value) noexcept {
+  const auto consume_string = [&](const std::string &text) {
+    hash_consume(hash, static_cast<std::uint64_t>(text.size()));
+    for (const unsigned char byte : text) hash_consume(hash, byte);
+  };
+  consume_string(value.exact_numerator().to_string());
+  consume_string(value.exact_denominator().to_string());
+}
+
+void hash_source_support(std::uint64_t &hash,
+                         const authority::SourceSupport &support) noexcept {
+  hash_consume(hash, static_cast<std::uint64_t>(support.index()));
+  if (const auto *vertex =
+          std::get_if<authority::SourceVertexSupport>(&support)) {
+    hash_id(hash, vertex->vertex);
+  } else if (const auto *edge =
+                 std::get_if<authority::SourceEdgeSupport>(&support)) {
+    hash_edge(hash, edge->edge);
+  } else {
+    hash_face(hash,
+              std::get<authority::SourceFaceInteriorSupport>(support).face);
+  }
+}
+
+void hash_exact_source_point(
+    std::uint64_t &hash, const authority::ExactSourcePoint &point) noexcept {
+  hash_consume(hash, static_cast<std::uint64_t>(point.index()));
+  if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+    hash_id(hash, *vertex);
+  } else if (const auto *edge =
+                 std::get_if<authority::ExactSourceEdgePoint>(&point)) {
+    hash_edge(hash, edge->edge);
+    hash_exact(hash, edge->parameter);
+  } else {
+    const auto &face = std::get<authority::ExactSourceFacePoint>(point);
+    hash_face(hash, face.face);
+    for (const auto &coordinate : face.barycentric) {
+      hash_exact(hash, coordinate);
+    }
+  }
+}
+
+void hash_exact_source_path(
+    std::uint64_t &hash, const authority::ExactSourcePath &path) noexcept {
+  hash_consume(hash, static_cast<std::uint64_t>(path.size()));
+  for (const auto &piece : path) {
+    hash_source_support(hash, piece.carrier);
+    hash_exact_source_point(hash, piece.first);
+    hash_exact_source_point(hash, piece.second);
+  }
+}
+
 template <typename Id>
 Id make_id(const std::size_t index, const std::size_t extent) {
   return Id::from_index(static_cast<std::int64_t>(index), extent).value();
@@ -2457,6 +2510,7 @@ std::uint64_t candidate_semantic_digest(
     hash_consume(hash, arc.onePastLastSegment);
     hash_consume(hash, arc.sourceFaces.size());
     for (const auto &face : arc.sourceFaces) hash_face(hash, face);
+    hash_exact_source_path(hash, arc.sourcePath);
   }
   hash_consume(hash, candidate.rotations.size());
   for (const auto &rotation : candidate.rotations) {
@@ -2625,6 +2679,77 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
           error(GlobalTopologyPlanErrorCode::RegionBoundaryArcNotOwnedByNetwork);
       failure.arc = arc.id;
       return failure;
+    }
+    if (!authority::exact_source_path_is_canonical(arc.sourcePath)) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+      failure.arc = arc.id;
+      return failure;
+    }
+    if (arc.kind == GlobalTopologyArcKind::Trace) {
+      if (arc.sourcePath.size() != arc.sourceFaces.size()) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+        failure.arc = arc.id;
+        return failure;
+      }
+      for (std::size_t index = 0U; index < arc.sourcePath.size(); ++index) {
+        const auto *face = std::get_if<authority::SourceFaceInteriorSupport>(
+            &arc.sourcePath[index].carrier);
+        if (face == nullptr || face->face != arc.sourceFaces[index]) {
+          GlobalTopologyPlanError failure =
+              error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+          failure.arc = arc.id;
+          failure.sourceFace = arc.sourceFaces[index];
+          return failure;
+        }
+      }
+    } else {
+      if (arc.sourcePath.size() != 1U) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+        failure.arc = arc.id;
+        return failure;
+      }
+      const auto *edgeSupport = std::get_if<authority::SourceEdgeSupport>(
+          &arc.sourcePath.front().carrier);
+      if (edgeSupport == nullptr) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+        failure.arc = arc.id;
+        return failure;
+      }
+      if (arc.kind == GlobalTopologyArcKind::Cut) {
+        if (!arc.cutEdge.has_value() || edgeSupport->edge != *arc.cutEdge) {
+          GlobalTopologyPlanError failure =
+              error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+          failure.arc = arc.id;
+          failure.sourceEdge = arc.cutEdge;
+          return failure;
+        }
+      } else {
+        if (!arc.mandatoryEdge.has_value()) {
+          GlobalTopologyPlanError failure =
+              error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+          failure.arc = arc.id;
+          return failure;
+        }
+        const auto mandatory = std::find_if(
+            network.mandatory_edges().begin(), network.mandatory_edges().end(),
+            [&](const FieldAlignedMandatoryEdge &edge) {
+              return edge.id == *arc.mandatoryEdge;
+            });
+        if (mandatory == network.mandatory_edges().end() ||
+            edgeSupport->edge != mandatory->sourceEdge) {
+          GlobalTopologyPlanError failure =
+              error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+          failure.arc = arc.id;
+          if (mandatory != network.mandatory_edges().end()) {
+            failure.sourceEdge = mandatory->sourceEdge;
+          }
+          return failure;
+        }
+      }
     }
   }
   for (const auto &region : candidate.regions) {

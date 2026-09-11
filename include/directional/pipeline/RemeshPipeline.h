@@ -46,6 +46,7 @@
 #include <directional/geometry/AdaptiveTargetSize.h>
 #include <directional/geometry/FlowRepStrands.h>
 #include <directional/geometry/GlobalTopologyPlan.h>
+#include <directional/geometry/GlobalConformityBaseline.h>
 #include <directional/geometry/SurfaceCutGraph.h>
 #include <directional/geometry/PatchDescriptor.h>
 #include <directional/geometry/PureQuadCompletion.h>
@@ -309,6 +310,7 @@ struct SurfaceCellDiagnosticProductSnapshots {
   std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedCurveNetwork;
   std::optional<geometry::SurfaceCutGraph> surfaceCutGraph;
   std::optional<geometry::GlobalTopologyPlan> globalTopologyPlan;
+  std::optional<geometry::GlobalConformityBaselinePlan> globalConformityBaseline;
 
   std::vector<geometry::SurfaceCellRail> authoritativeRails;
   bool hasAuthoritativeRails = false;
@@ -1184,12 +1186,18 @@ SurfaceCellFailureLocusDiagnostics
 project_global_topology_plan_failure_locus(
     const geometry::GlobalTopologyPlanError &error);
 
+/** Exact A2b -> baseline-A3 binder. Copies published arc support verbatim. */
+geometry::GlobalConformityBaselineInput make_global_conformity_baseline_input(
+    const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
+    const geometry::GlobalTopologyPlan &topology);
+
 struct SurfaceCellComponentStageProducts {
   std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
   std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;
   std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedCurveNetwork;
   std::optional<geometry::SurfaceCutGraph> surfaceCutGraph;
   std::optional<geometry::GlobalTopologyPlan> globalTopologyPlan;
+  std::optional<geometry::GlobalConformityBaselinePlan> globalConformityBaseline;
   std::vector<geometry::SurfaceCellRail> authoritativeRails;
   std::optional<geometry::SourceSurfaceLabels> sourceSurfaceLabels;
   std::vector<geometry::PureQuadMesh> completedPatches;

@@ -18,6 +18,7 @@
 #include <Eigen/Core>
 
 #include <directional/authority/AuthorityIds.h>
+#include <directional/authority/ExactSourcePath.h>
 #include <directional/authority/SourceSupport.h>
 #include <directional/geometry/SourceTopologyRegions.h>
 #include <directional/geometry/RotationSystemDiagnostics.h>
@@ -51,6 +52,7 @@ struct GlobalTopologyArc {
   std::size_t firstSegment = 0U;
   std::size_t onePastLastSegment = 0U;
   std::vector<authority::SourceFaceTopologyKey> sourceFaces;
+  authority::ExactSourcePath sourcePath;
 
   auto operator<=>(const GlobalTopologyArc &) const = default;
 };

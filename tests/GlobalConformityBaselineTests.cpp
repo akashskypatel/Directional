@@ -23,6 +23,7 @@
 #include <directional/geometry/SourceTopologyRegions.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/geometry/SurfaceCutGraph.h>
+#include <directional/pipeline/RemeshPipeline.h>
 
 #include "../src/geometry/GlobalConformityParityGraph.h"
 
@@ -670,4 +671,53 @@ TEST(GlobalConformityBaseline,
             << topologyBoundaryIncidenceCount
             << " baselineIncidences=" << built.value().incidences().size()
             << '\n';
+}
+
+
+TEST(GlobalConformityBaseline,
+     ProductionBinderCopiesExactA2bSupportOneToOneWithoutFamilyOrSign) {
+  static_assert(!HasCallerSuppliedIncidences<GlobalConformityBaselineInput>);
+  const auto fixture = make_topology_fixture(make_triangle_mesh());
+  const Eigen::VectorXd target =
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.75);
+  const auto input = directional::pipeline::remesh_pipeline_detail::
+      make_global_conformity_baseline_input(fixture.mesh.V, target,
+                                            fixture.topology);
+  ASSERT_EQ(fixture.topology.arcs().size(), input.spans.size());
+  for (std::size_t index = 0U; index < input.spans.size(); ++index) {
+    EXPECT_EQ(ConformitySpanId::from_network_arc(
+                  fixture.topology.arcs()[index].id),
+              input.spans[index].id);
+    EXPECT_EQ(fixture.topology.arcs()[index].sourcePath,
+              input.spans[index].supportPieces);
+  }
+  const auto built = directional::geometry::build_global_conformity_baseline(
+      fixture.topology, input);
+  ASSERT_TRUE(built) << (built ? "" :
+      directional::geometry::global_conformity_plan_error_code_name(
+          built.error().code));
+  EXPECT_EQ(fixture.topology.semantic_digest(),
+            built.value().topology_plan_digest());
+}
+
+TEST(GlobalConformityBaseline,
+     IndependentValidatorRejectsNonCanonicalRedundantExactPointEncoding) {
+  const auto fixture = make_topology_fixture(make_triangle_mesh());
+  auto input = directional::pipeline::remesh_pipeline_detail::
+      make_global_conformity_baseline_input(
+          fixture.mesh.V,
+          Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 1.0),
+          fixture.topology);
+  ASSERT_FALSE(input.spans.empty());
+  ASSERT_FALSE(input.spans.front().supportPieces.empty());
+  auto &piece = input.spans.front().supportPieces.front();
+  const auto *edge =
+      std::get_if<directional::authority::SourceEdgeSupport>(&piece.carrier);
+  ASSERT_NE(nullptr, edge);
+  piece.first = directional::authority::ExactSourceEdgePoint{
+      edge->edge, directional::authority::FieldExactRational::from_integer(0)};
+  const auto built = directional::geometry::build_global_conformity_baseline(
+      fixture.topology, input);
+  EXPECT_FALSE(built)
+      << "A3 must reject endpoint-as-edge-point instead of accepting a redundant exact encoding";
 }

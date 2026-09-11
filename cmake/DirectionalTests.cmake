@@ -246,6 +246,36 @@ directional_require_default_packaged_test_contract(
   "tests/GlobalConformityBaselineTests.cpp"
   "ProductionBaselineBinderIsStructurallySeparateFromFramedSolver")
 
+# M4-CP3 CB4-R1 exact A2b support publication and production baseline A3
+# cutover regressions. Runtime execution is deferred to artifact-only TB2.
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "ExactSourcePathsAreCanonicalForEveryPublishedArcKind")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "SplitMandatoryAndCutArcsPublishExactStrictSubintervalSupport")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "MultiSegmentTracePublishesOrderedCanonicalFaceSupport")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "ReverseIncidenceReversesExactSourcePathWithoutMutatingCanonicalArc")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "IndependentValidationRejectsExactSourcePathTamperMatrix")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "FaceBarycentricCoordinatesUseCanonicalTopologyKeyOrderNotSourceRowOrder")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "ProductionBinderCopiesExactA2bSupportOneToOneWithoutFamilyOrSign")
+directional_require_default_packaged_test_contract(
+  "tests/GlobalConformityBaselineTests.cpp"
+  "IndependentValidatorRejectsNonCanonicalRedundantExactPointEncoding")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "PublishesOneValidatedGlobalConformityBaselineImmediatelyAfterA2b")
+
 # M4-CP1 exact schedule authority is compiled now and executed only by the later
 # artifact-only TB turn. These identities are intentionally part of the default
 # packaged producer target so selector365 can be extended append-only.

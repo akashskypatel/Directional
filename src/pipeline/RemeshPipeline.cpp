@@ -999,6 +999,20 @@ project_global_topology_plan_failure_locus(
   return locus;
 }
 
+geometry::GlobalConformityBaselineInput make_global_conformity_baseline_input(
+    const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
+    const geometry::GlobalTopologyPlan &topology) {
+  geometry::GlobalConformityBaselineInput input;
+  input.sourceVertices = sourceVertices;
+  input.targetSize = targetSize;
+  input.spans.reserve(topology.arcs().size());
+  for (const auto &arc : topology.arcs()) {
+    input.spans.push_back(geometry::ConformitySpanInput{
+        geometry::ConformitySpanId::from_network_arc(arc.id), arc.sourcePath});
+  }
+  return input;
+}
+
 } // namespace directional::pipeline::remesh_pipeline_detail
 
 namespace directional::pipeline {
@@ -6905,6 +6919,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedNetworkProduct;
     std::optional<geometry::SurfaceCutGraph> surfaceCutGraphProduct;
     std::optional<geometry::GlobalTopologyPlan> globalTopologyPlanProduct;
+    std::optional<geometry::GlobalConformityBaselinePlan>
+        globalConformityBaselineProduct;
     std::vector<geometry::PureQuadMesh> completedPatchesProduct;
     bool sourceGridRecoveryUsedProduct = false;
     Eigen::VectorXd sourceGridRecoveryTargetSizeProduct;
@@ -7678,6 +7694,33 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                 globalTopologyPlanProduct->regions().size() +
                 globalTopologyPlanProduct->rotation_system().size()),
         true);
+
+    const geometry::GlobalConformityBaselineInput conformityBaselineInput =
+        remesh_pipeline_detail::make_global_conformity_baseline_input(
+            meshWhole.V, targetSize.targetSize, *globalTopologyPlanProduct);
+    auto conformityBaselineBuild = geometry::build_global_conformity_baseline(
+        *globalTopologyPlanProduct, conformityBaselineInput);
+    if (!conformityBaselineBuild) {
+      const auto &error = conformityBaselineBuild.error();
+      return fail_surface_cells(
+          SurfaceCellFailureCode::NotProductionReady,
+          std::string("global-conformity-baseline/") +
+              geometry::global_conformity_plan_error_code_name(error.code),
+          geometry::global_conformity_plan_error_code_name(error.code));
+    }
+    globalConformityBaselineProduct =
+        std::move(conformityBaselineBuild.value());
+    result.surfaceCellContext.productSnapshots.globalConformityBaseline =
+        globalConformityBaselineProduct;
+    record_surface_cell_context_product(
+        result.surfaceCellContext, "global-conformity-baseline",
+        make_identity(
+            "global-conformity-baseline",
+            globalConformityBaselineProduct->semantic_digest(),
+            globalConformityBaselineProduct->schedule().size() +
+                globalConformityBaselineProduct->incidences().size()),
+        true);
+
     if (targetSize.targetSize.size() > 0) {
       tracingOptions.defaultTargetSize = targetSize.targetSize.mean();
     }
@@ -9656,6 +9699,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           componentProducts->fieldAlignedCurveNetwork = fieldAlignedNetworkProduct;
           componentProducts->surfaceCutGraph = surfaceCutGraphProduct;
           componentProducts->globalTopologyPlan = globalTopologyPlanProduct;
+          componentProducts->globalConformityBaseline =
+              globalConformityBaselineProduct;
           componentProducts->authoritativeRails = authoritativeRails;
           componentProducts->sourceSurfaceLabels = sourceSurfaceLabels;
           componentProducts->completedPatches = completedPatchesProduct;

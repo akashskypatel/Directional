@@ -1812,6 +1812,24 @@ find_mandatory_plan_arcs(
   return result;
 }
 
+std::optional<directional::authority::FieldExactRational>
+exact_edge_parameter(const directional::authority::ExactSourcePoint &point,
+                     const SourceEdgeTopologyKey &edge) {
+  if (const auto *vertex =
+          std::get_if<directional::authority::SourceVertexId>(&point)) {
+    if (*vertex == edge.first())
+      return directional::authority::FieldExactRational::from_integer(0);
+    if (*vertex == edge.second())
+      return directional::authority::FieldExactRational::from_integer(1);
+    return std::nullopt;
+  }
+  if (const auto *edgePoint =
+          std::get_if<directional::authority::ExactSourceEdgePoint>(&point)) {
+    if (edgePoint->edge == edge) return edgePoint->parameter;
+  }
+  return std::nullopt;
+}
+
 std::pair<directional::authority::NetworkNodeId,
           directional::authority::NetworkNodeId>
 oriented_endpoints(
@@ -2881,6 +2899,262 @@ TEST(SurfaceCutGraph, TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs) {
          "edge and the immutable trace in the derived arrangement";
 }
 
+TEST(GlobalTopologyPlan, ExactSourcePathsAreCanonicalForEveryPublishedArcKind) {
+  std::array<bool, 3> sawKind{false, false, false};
+  const auto inspect = [&](const directional::geometry::GlobalTopologyPlan &plan) {
+    for (const auto &arc : plan.arcs()) {
+      ASSERT_FALSE(arc.sourcePath.empty());
+      EXPECT_TRUE(directional::authority::exact_source_path_is_canonical(
+          arc.sourcePath));
+      sawKind[static_cast<std::size_t>(arc.kind)] = true;
+    }
+  };
+
+  Cp3bEventFixture eventFixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(eventFixture.sourceAuthority.has_value());
+  ASSERT_TRUE(eventFixture.atlas.has_value());
+  ASSERT_TRUE(eventFixture.network.has_value());
+  inspect(build_topology_plan(eventFixture.mesh, *eventFixture.sourceAuthority,
+                              *eventFixture.atlas, *eventFixture.network));
+
+  const Cp4cTraceCrossedCutFixture cutFixture =
+      build_cp4c_trace_crossed_cut_fixture();
+  ASSERT_TRUE(cutFixture.sourceAuthority.has_value());
+  ASSERT_TRUE(cutFixture.atlas.has_value());
+  ASSERT_TRUE(cutFixture.network.has_value());
+  inspect(build_topology_plan(cutFixture.mesh, *cutFixture.sourceAuthority,
+                              *cutFixture.atlas, *cutFixture.network));
+
+  EXPECT_TRUE(sawKind[static_cast<std::size_t>(
+      directional::geometry::GlobalTopologyArcKind::Mandatory)]);
+  EXPECT_TRUE(sawKind[static_cast<std::size_t>(
+      directional::geometry::GlobalTopologyArcKind::Trace)]);
+  EXPECT_TRUE(sawKind[static_cast<std::size_t>(
+      directional::geometry::GlobalTopologyArcKind::Cut)]);
+}
+
+TEST(GlobalTopologyPlan,
+     SplitMandatoryAndCutArcsPublishExactStrictSubintervalSupport) {
+  const auto hasStrictSplit = [](const directional::geometry::GlobalTopologyPlan &plan,
+                                 const directional::geometry::GlobalTopologyArcKind kind) {
+    std::map<SourceEdgeTopologyKey,
+             std::vector<const directional::geometry::GlobalTopologyArc *>> groups;
+    for (const auto &arc : plan.arcs()) {
+      if (arc.kind != kind || arc.sourcePath.size() != 1U) continue;
+      const auto *edgeSupport =
+          std::get_if<directional::authority::SourceEdgeSupport>(
+              &arc.sourcePath.front().carrier);
+      if (edgeSupport != nullptr) groups[edgeSupport->edge].push_back(&arc);
+    }
+    for (const auto &[edge, arcs] : groups) {
+      if (arcs.size() < 2U) continue;
+      bool hasInteriorEndpoint = false;
+      for (const auto *arc : arcs) {
+        const auto first = exact_edge_parameter(arc->sourcePath.front().first, edge);
+        const auto second = exact_edge_parameter(arc->sourcePath.front().second, edge);
+        if (!first.has_value() || !second.has_value() || *first == *second) {
+          return false;
+        }
+        const auto zero = directional::authority::FieldExactRational::from_integer(0);
+        const auto one = directional::authority::FieldExactRational::from_integer(1);
+        hasInteriorEndpoint =
+            hasInteriorEndpoint || (*first > zero && *first < one) ||
+            (*second > zero && *second < one);
+      }
+      if (hasInteriorEndpoint) return true;
+    }
+    return false;
+  };
+
+  Cp3bEventFixture eventFixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(eventFixture.sourceAuthority.has_value());
+  ASSERT_TRUE(eventFixture.atlas.has_value());
+  ASSERT_TRUE(eventFixture.network.has_value());
+  const auto eventPlan = build_topology_plan(
+      eventFixture.mesh, *eventFixture.sourceAuthority, *eventFixture.atlas,
+      *eventFixture.network);
+  EXPECT_TRUE(hasStrictSplit(
+      eventPlan, directional::geometry::GlobalTopologyArcKind::Mandatory))
+      << "mandatory-barrier terminal must publish the two exact source-edge subintervals";
+
+  const Cp4cTraceCrossedCutFixture cutFixture =
+      build_cp4c_trace_crossed_cut_fixture();
+  ASSERT_TRUE(cutFixture.sourceAuthority.has_value());
+  ASSERT_TRUE(cutFixture.atlas.has_value());
+  ASSERT_TRUE(cutFixture.network.has_value());
+  const auto cutPlan = build_topology_plan(
+      cutFixture.mesh, *cutFixture.sourceAuthority, *cutFixture.atlas,
+      *cutFixture.network);
+  EXPECT_TRUE(hasStrictSplit(cutPlan,
+                             directional::geometry::GlobalTopologyArcKind::Cut))
+      << "trace-crossed selected cut edge must publish adjacent exact cut-node subintervals";
+}
+
+TEST(GlobalTopologyPlan, MultiSegmentTracePublishesOrderedCanonicalFaceSupport) {
+  Cp3bEventFixture fixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto plan = build_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+
+  const auto trace = std::find_if(
+      plan.arcs().begin(), plan.arcs().end(), [](const auto &arc) {
+        return arc.kind == directional::geometry::GlobalTopologyArcKind::Trace &&
+               arc.sourcePath.size() > 1U;
+      });
+  ASSERT_NE(plan.arcs().end(), trace)
+      << "trace witness must retain at least one multi-segment A2b arc";
+  ASSERT_EQ(trace->sourceFaces.size(), trace->sourcePath.size());
+  EXPECT_TRUE(directional::authority::exact_source_path_is_canonical(
+      trace->sourcePath));
+  for (std::size_t index = 0U; index < trace->sourcePath.size(); ++index) {
+    const auto *carrier =
+        std::get_if<directional::authority::SourceFaceInteriorSupport>(
+            &trace->sourcePath[index].carrier);
+    ASSERT_NE(nullptr, carrier);
+    EXPECT_EQ(trace->sourceFaces[index], carrier->face);
+    if (index != 0U) {
+      EXPECT_EQ(trace->sourcePath[index - 1U].second,
+                trace->sourcePath[index].first);
+    }
+  }
+}
+
+TEST(GlobalTopologyPlan,
+     ReverseIncidenceReversesExactSourcePathWithoutMutatingCanonicalArc) {
+  Cp3bEventFixture fixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto plan = build_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  const auto arc = std::find_if(plan.arcs().begin(), plan.arcs().end(),
+                                [](const auto &candidate) {
+                                  return candidate.sourcePath.size() > 1U;
+                                });
+  ASSERT_NE(plan.arcs().end(), arc);
+  const auto stored = arc->sourcePath;
+  const auto forward = directional::authority::exact_source_path_for_orientation(
+      arc->sourcePath, directional::authority::Orientation::Forward);
+  const auto reverse = directional::authority::exact_source_path_for_orientation(
+      arc->sourcePath, directional::authority::Orientation::Reverse);
+  EXPECT_EQ(stored, arc->sourcePath);
+  EXPECT_EQ(stored, forward);
+  EXPECT_EQ(directional::authority::reverse_exact_source_path(stored), reverse);
+  EXPECT_EQ(stored, directional::authority::reverse_exact_source_path(reverse));
+}
+
+TEST(GlobalTopologyPlan,
+     IndependentValidationRejectsExactSourcePathTamperMatrix) {
+  Cp3bEventFixture fixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto plan = build_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+
+  const auto expectRejected = [&](directional::geometry::GlobalTopologyPlanCandidate candidate,
+                                  const char *label) {
+    auto rejected = rebuild_topology_plan(
+        fixture.mesh, *fixture.sourceAuthority, *fixture.atlas,
+        *fixture.network, std::move(candidate));
+    EXPECT_FALSE(rejected) << label;
+  };
+
+  const auto multi = std::find_if(plan.arcs().begin(), plan.arcs().end(),
+                                  [](const auto &arc) {
+                                    return arc.sourcePath.size() > 1U;
+                                  });
+  ASSERT_NE(plan.arcs().end(), multi);
+  const std::size_t multiIndex =
+      static_cast<std::size_t>(std::distance(plan.arcs().begin(), multi));
+
+  auto orderTamper = plan.validation_candidate();
+  orderTamper.arcs[multiIndex].sourcePath =
+      directional::authority::reverse_exact_source_path(
+          orderTamper.arcs[multiIndex].sourcePath);
+  ASSERT_TRUE(directional::authority::exact_source_path_is_canonical(
+      orderTamper.arcs[multiIndex].sourcePath));
+  expectRejected(std::move(orderTamper), "path order");
+
+  auto kindTamper = plan.validation_candidate();
+  kindTamper.arcs.front().kind =
+      kindTamper.arcs.front().kind ==
+              directional::geometry::GlobalTopologyArcKind::Mandatory
+          ? directional::geometry::GlobalTopologyArcKind::Cut
+          : directional::geometry::GlobalTopologyArcKind::Mandatory;
+  expectRejected(std::move(kindTamper), "arc kind");
+
+  auto carrierTamper = plan.validation_candidate();
+  auto &carrier = carrierTamper.arcs[multiIndex].sourcePath.front().carrier;
+  carrier = directional::authority::SourceVertexSupport{
+      carrierTamper.arcs[multiIndex].sourceFaces.front().vertices().front()};
+  expectRejected(std::move(carrierTamper), "carrier");
+
+  auto coordinateTamper = plan.validation_candidate();
+  auto &point = coordinateTamper.arcs[multiIndex].sourcePath.front().first;
+  if (const auto *edgePoint =
+          std::get_if<directional::authority::ExactSourceEdgePoint>(&point)) {
+    point = directional::authority::ExactSourceEdgePoint{
+        edgePoint->edge,
+        *directional::authority::FieldExactRational::from_ratio(1, 3)};
+  } else {
+    point = coordinateTamper.arcs[multiIndex].sourcePath.front().second;
+  }
+  expectRejected(std::move(coordinateTamper), "point coordinate");
+
+  const auto splitMandatory = std::find_if(
+      plan.arcs().begin(), plan.arcs().end(), [&](const auto &arc) {
+        if (arc.kind != directional::geometry::GlobalTopologyArcKind::Mandatory ||
+            arc.sourcePath.size() != 1U) return false;
+        const auto *support =
+            std::get_if<directional::authority::SourceEdgeSupport>(
+                &arc.sourcePath.front().carrier);
+        if (support == nullptr) return false;
+        const auto first = exact_edge_parameter(arc.sourcePath.front().first,
+                                                support->edge);
+        const auto second = exact_edge_parameter(arc.sourcePath.front().second,
+                                                 support->edge);
+        const auto zero = directional::authority::FieldExactRational::from_integer(0);
+        const auto one = directional::authority::FieldExactRational::from_integer(1);
+        return first.has_value() && second.has_value() &&
+               ((*first > zero && *first < one) ||
+                (*second > zero && *second < one));
+      });
+  ASSERT_NE(plan.arcs().end(), splitMandatory);
+  auto subintervalTamper = plan.validation_candidate();
+  const std::size_t splitIndex = static_cast<std::size_t>(
+      std::distance(plan.arcs().begin(), splitMandatory));
+  const auto *support =
+      std::get_if<directional::authority::SourceEdgeSupport>(
+          &subintervalTamper.arcs[splitIndex].sourcePath.front().carrier);
+  ASSERT_NE(nullptr, support);
+  subintervalTamper.arcs[splitIndex].sourcePath.front().first = support->edge.first();
+  subintervalTamper.arcs[splitIndex].sourcePath.front().second = support->edge.second();
+  expectRejected(std::move(subintervalTamper), "split subinterval");
+}
+
+TEST(ExactSourcePath,
+     FaceBarycentricCoordinatesUseCanonicalTopologyKeyOrderNotSourceRowOrder) {
+  const auto face = topology_face(0, 1, 2, 3U);
+  const std::array<int, 3> sourceRow{2, 0, 1};
+  ASSERT_NE(sourceRow[0], static_cast<int>(face.vertices()[0].index()));
+  const std::array<directional::authority::FieldExactRational, 3> barycentric{
+      *directional::authority::FieldExactRational::from_ratio(1, 2),
+      *directional::authority::FieldExactRational::from_ratio(1, 3),
+      *directional::authority::FieldExactRational::from_ratio(1, 6)};
+  const auto point = directional::authority::canonical_exact_source_face_point(
+      face, barycentric);
+  ASSERT_TRUE(point.has_value());
+  const auto *facePoint =
+      std::get_if<directional::authority::ExactSourceFacePoint>(&*point);
+  ASSERT_NE(nullptr, facePoint);
+  EXPECT_EQ(face, facePoint->face);
+  EXPECT_EQ(barycentric, facePoint->barycentric);
+  EXPECT_TRUE(directional::authority::exact_source_point_is_canonical(*point));
+}
+
 TEST(SurfaceCutGraph, CutCrossingNodeRotationIsDerivedAtDegreeFour) {
   const Cp4cTraceCrossedCutFixture fixture =
       build_cp4c_trace_crossed_cut_fixture();
@@ -3550,6 +3824,10 @@ struct Cp4cProductionFixture {
   std::optional<FieldAlignedCurveNetwork> network;
   std::optional<directional::geometry::SurfaceCutGraph> cutGraph;
   std::optional<directional::geometry::GlobalTopologyPlan> plan;
+  std::optional<directional::geometry::GlobalConformityBaselinePlan> baseline;
+  Eigen::VectorXd targetSize;
+  bool hasTargetSize = false;
+  std::vector<directional::pipeline::SurfaceCellContextProductDebug> debugProducts;
   std::string terminalFailureCode;
   std::string terminalFailureStage;
   std::string terminalFailureDetailCode;
@@ -7100,6 +7378,10 @@ Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
   fixture.network = products.fieldAlignedCurveNetwork;
   fixture.cutGraph = products.surfaceCutGraph;
   fixture.plan = products.globalTopologyPlan;
+  fixture.baseline = products.globalConformityBaseline;
+  fixture.targetSize = result.surfaceCellContext.metricField.targetSize;
+  fixture.hasTargetSize = result.surfaceCellContext.hasMetricField;
+  fixture.debugProducts = result.surfaceCellContext.debugProducts;
   fixture.terminalFailureCode = result.diagnostics.terminalFailureCode;
   fixture.terminalFailureStage = result.diagnostics.terminalFailureStage;
   fixture.terminalFailureDetailCode =
@@ -14744,6 +15026,54 @@ TEST(TraceTerminationCorrection,
       fan, *authority, atlas.value(), rails_from_atlas(fan, atlas.value()));
   (void)fanBuild;
   SUCCEED() << "fan executed only as an excluded non-creditable structural witness";
+}
+
+TEST(RemeshPipeline,
+     PublishesOneValidatedGlobalConformityBaselineImmediatelyAfterA2b) {
+  const Cp4cProductionFixture fixture =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(fixture.plan.has_value()) << fixture.terminalFailureCode;
+  ASSERT_TRUE(fixture.baseline.has_value()) << fixture.terminalFailureCode << '/'
+                                            << fixture.terminalFailureStage;
+  ASSERT_TRUE(fixture.hasTargetSize);
+  ASSERT_EQ(fixture.mesh.V.rows(), fixture.targetSize.size());
+  const auto input = directional::pipeline::remesh_pipeline_detail::
+      make_global_conformity_baseline_input(
+          fixture.mesh.V, fixture.targetSize, *fixture.plan);
+  const auto independentlyValidated =
+      directional::geometry::validate_global_conformity_baseline(
+          *fixture.plan, input, *fixture.baseline);
+  ASSERT_TRUE(independentlyValidated)
+      << (independentlyValidated
+              ? ""
+              : directional::geometry::global_conformity_plan_error_code_name(
+                    independentlyValidated.error().code));
+  EXPECT_EQ(fixture.plan->semantic_digest(),
+            fixture.baseline->topology_plan_digest());
+  EXPECT_EQ(fixture.plan->arcs().size(), fixture.baseline->schedule().size());
+  EXPECT_EQ(input.spans.size(), fixture.plan->arcs().size());
+
+  std::size_t topologyIndex = fixture.debugProducts.size();
+  std::size_t baselineIndex = fixture.debugProducts.size();
+  std::size_t baselineCount = 0U;
+  for (std::size_t index = 0U; index < fixture.debugProducts.size(); ++index) {
+    if (fixture.debugProducts[index].name == "global-topology-plan") {
+      topologyIndex = index;
+    }
+    if (fixture.debugProducts[index].name == "global-conformity-baseline") {
+      baselineIndex = index;
+      ++baselineCount;
+      EXPECT_TRUE(fixture.debugProducts[index].available);
+      EXPECT_EQ(fixture.baseline->semantic_digest(),
+                fixture.debugProducts[index].structuralHash);
+    }
+  }
+  EXPECT_EQ(1U, baselineCount);
+  ASSERT_LT(topologyIndex, fixture.debugProducts.size());
+  ASSERT_LT(baselineIndex, fixture.debugProducts.size());
+  EXPECT_EQ(topologyIndex + 1U, baselineIndex)
+      << "A3 must be constructed and published immediately after A2b, before A4";
 }
 
 TEST(GlobalTopologyPlan,

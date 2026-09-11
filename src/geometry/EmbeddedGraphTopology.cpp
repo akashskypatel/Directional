@@ -228,12 +228,86 @@ struct ArcDraft {
   std::size_t firstSegment = 0U;
   std::size_t onePastLastSegment = 0U;
   std::vector<authority::SourceFaceTopologyKey> sourceFaces;
+  authority::ExactSourcePath sourcePath;
 };
 
 bool exact_interior_parameter(const authority::ExactUnitParameter &parameter) {
   const auto zero = authority::FieldExactRational::from_integer(0);
   const auto one = authority::FieldExactRational::from_integer(1);
   return parameter.value > zero && parameter.value < one;
+}
+
+std::optional<authority::ExactSourcePath> exact_edge_interval_path(
+    const authority::SourceEdgeTopologyKey &edge,
+    const authority::FieldExactRational &firstParameter,
+    const authority::FieldExactRational &secondParameter) {
+  const auto first =
+      authority::canonical_exact_source_edge_point(edge, firstParameter);
+  const auto second =
+      authority::canonical_exact_source_edge_point(edge, secondParameter);
+  if (!first.has_value() || !second.has_value() || *first == *second) {
+    return std::nullopt;
+  }
+  authority::ExactSourcePath path{
+      authority::ExactSourceSupportPiece{
+          authority::SourceEdgeSupport{edge}, *first, *second}};
+  return authority::exact_source_path_is_canonical(path)
+             ? std::optional<authority::ExactSourcePath>{std::move(path)}
+             : std::nullopt;
+}
+
+std::optional<authority::ExactSourcePoint> exact_trace_segment_end(
+    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
+  if (segmentIndex >= trace.segments.size()) return std::nullopt;
+  const auto &segment = trace.segments[segmentIndex];
+  if (segmentIndex + 1U == trace.segments.size()) {
+    if (trace.terminalContact.has_value()) {
+      if (trace.terminalContact->sourceFace != segment.sourceFace) {
+        return std::nullopt;
+      }
+      return authority::canonical_exact_source_face_point(
+          trace.terminalContact->sourceFace,
+          trace.terminalContact->barycentric);
+    }
+    if (trace.terminalPoint.has_value()) {
+      return authority::canonical_exact_source_boundary_point(
+          *trace.terminalPoint);
+    }
+  }
+  if (segment.edgeTransitExit.has_value()) {
+    return authority::canonical_exact_source_boundary_point(
+        *segment.edgeTransitExit);
+  }
+  if (segmentIndex + 1U < trace.segments.size()) {
+    return authority::canonical_exact_source_boundary_point(
+        trace.segments[segmentIndex + 1U].entryPoint);
+  }
+  return std::nullopt;
+}
+
+std::optional<authority::ExactSourcePath> exact_trace_path(
+    const FieldAlignedCandidateTrace &trace, const std::size_t firstSegment,
+    const std::size_t onePastLastSegment) {
+  if (firstSegment >= onePastLastSegment ||
+      onePastLastSegment > trace.segments.size()) {
+    return std::nullopt;
+  }
+  authority::ExactSourcePath path;
+  path.reserve(onePastLastSegment - firstSegment);
+  for (std::size_t segmentIndex = firstSegment;
+       segmentIndex < onePastLastSegment; ++segmentIndex) {
+    const auto &segment = trace.segments[segmentIndex];
+    const auto first = authority::canonical_exact_source_boundary_point(
+        segment.entryPoint);
+    const auto second = exact_trace_segment_end(trace, segmentIndex);
+    if (!first.has_value() || !second.has_value()) return std::nullopt;
+    path.push_back(authority::ExactSourceSupportPiece{
+        authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
+        *second});
+  }
+  return authority::exact_source_path_is_canonical(path)
+             ? std::optional<authority::ExactSourcePath>{std::move(path)}
+             : std::nullopt;
 }
 
 CutNodeBindingResult build_cut_node_bindings(
@@ -356,6 +430,7 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
   struct TerminalBarrierCut {
     authority::TraceId trace;
     authority::NetworkNodeId node;
+    authority::ExactUnitParameter parameter;
   };
 
   std::map<authority::SourceEdgeTopologyKey, std::vector<TerminalBarrierCut>>
@@ -391,8 +466,18 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       result.sourceEdge = trace.terminalBarrier;
       return result;
     }
+    if (!trace.terminalPoint.has_value() ||
+        trace.terminalPoint->edge != *trace.terminalBarrier ||
+        !exact_interior_parameter(trace.terminalPoint->parameter)) {
+      GlobalTopologyPlanError result =
+          error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+      result.trace = trace.id;
+      result.sourceEdge = trace.terminalBarrier;
+      return result;
+    }
     terminalCutsByEdge[*trace.terminalBarrier].push_back(
-        TerminalBarrierCut{trace.id, *terminalNode});
+        TerminalBarrierCut{trace.id, *terminalNode,
+                           trace.terminalPoint->parameter});
   }
 
   for (const auto &[sourceEdge, cuts] : terminalCutsByEdge) {
@@ -415,6 +500,17 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       ArcDraft draft(edge.firstNode, edge.secondNode);
       draft.kind = GlobalTopologyArcKind::Mandatory;
       draft.mandatoryEdge = edge.id;
+      const auto path = exact_edge_interval_path(
+          edge.sourceEdge, authority::FieldExactRational::from_integer(0),
+          authority::FieldExactRational::from_integer(1));
+      if (!path.has_value()) {
+        GlobalTopologyPlanError result =
+            error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+        result.networkEdge = edge.id;
+        result.sourceEdge = edge.sourceEdge;
+        return result;
+      }
+      draft.sourcePath = *path;
       drafts.push_back(std::move(draft));
       continue;
     }
@@ -433,14 +529,31 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
     }
     consumedTerminalEdges.insert(edge.sourceEdge);
 
+    const auto firstPath = exact_edge_interval_path(
+        edge.sourceEdge, authority::FieldExactRational::from_integer(0),
+        cuts->second.front().parameter.value);
+    const auto secondPath = exact_edge_interval_path(
+        edge.sourceEdge, cuts->second.front().parameter.value,
+        authority::FieldExactRational::from_integer(1));
+    if (!firstPath.has_value() || !secondPath.has_value()) {
+      GlobalTopologyPlanError result =
+          error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+      result.networkEdge = edge.id;
+      result.trace = cuts->second.front().trace;
+      result.sourceEdge = edge.sourceEdge;
+      return result;
+    }
+
     ArcDraft first(edge.firstNode, terminal);
     first.kind = GlobalTopologyArcKind::Mandatory;
     first.mandatoryEdge = edge.id;
+    first.sourcePath = *firstPath;
     drafts.push_back(std::move(first));
 
     ArcDraft second(terminal, edge.secondNode);
     second.kind = GlobalTopologyArcKind::Mandatory;
     second.mandatoryEdge = edge.id;
+    second.sourcePath = *secondPath;
     drafts.push_back(std::move(second));
   }
   for (const auto &[sourceEdge, cuts] : terminalCutsByEdge) {
@@ -552,6 +665,16 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
            ++segment) {
         draft.sourceFaces.push_back(trace.segments[segment].sourceFace);
       }
+      const auto path =
+          exact_trace_path(trace, first.position, second.position);
+      if (!path.has_value()) {
+        GlobalTopologyPlanError result =
+            error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+        result.trace = trace.id;
+        result.sourceFace = trace.segments[first.position].sourceFace;
+        return result;
+      }
+      draft.sourcePath = *path;
       drafts.push_back(std::move(draft));
     }
   }
@@ -597,6 +720,16 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
                      orderedPoints[index].second);
       draft.kind = GlobalTopologyArcKind::Cut;
       draft.cutEdge = cutEdge;
+      const auto path = exact_edge_interval_path(
+          cutEdge, orderedPoints[index - 1U].first.value,
+          orderedPoints[index].first.value);
+      if (!path.has_value()) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+        failure.sourceEdge = cutEdge;
+        return failure;
+      }
+      draft.sourcePath = *path;
       drafts.push_back(std::move(draft));
     }
   }
@@ -619,7 +752,7 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
         make_id<authority::NetworkArcId>(index, drafts.size()), draft.kind,
         draft.firstNode, draft.secondNode, draft.mandatoryEdge, draft.trace,
         draft.cutEdge, draft.firstSegment, draft.onePastLastSegment,
-        std::move(draft.sourceFaces)});
+        std::move(draft.sourceFaces), std::move(draft.sourcePath)});
   }
   return arcs;
 }

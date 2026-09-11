@@ -55,6 +55,7 @@ void add_weight(VertexWeights &weights, std::size_t vertex,
 
 std::optional<VertexWeights> point_weights(const ConformitySourcePoint &point,
                                            std::size_t vertexCount) {
+  if (!authority::exact_source_point_is_canonical(point)) return std::nullopt;
   const auto zero = exact_integer(0);
   const auto one = exact_integer(1);
   VertexWeights weights;
