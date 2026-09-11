@@ -1,5 +1,0 @@
-turn=M4-CP3-TB2-PLAN
-purpose=apply verified runtime-free planning documentation patch
-file_id=1DPz-6wEonhoiAkdEzDQoTK418OYawZbV
-patch_sha256=b06e0deca839b00bb954d336e74b0b81f84494210dab04f13f67b8688ddb40af
-base_sha=0eb2c573e0a0843141420fb46c6c71892cafd209
