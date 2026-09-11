@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-11 at `M4-CP3-TB2-REV`
+**Last updated:** 2026-09-11 at `M4-CP3-TB2-PLAN`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package119/selector394 is the accepted M4 runtime authority at **394/394**. Package120/selector403 is mechanically green but remains unpromoted because `M4-CP3-TB2-REV` found row400 does not exercise its frozen source-row→canonical barycentric mapping obligation. Current review authority is `Architecture_M4_CP3_TB2_Review_Record.md`; exact next is runtime-free `M4-CP3-TB2-PLAN`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package119/selector394 is the accepted M4 runtime authority at **394/394**. Package120/selector403 is mechanically green but remains unpromoted because `M4-CP3-TB2-REV` found row400 does not exercise its frozen source-row→canonical barycentric mapping obligation. Current review authority is `Architecture_M4_CP3_TB2_Review_Record.md`; TB2-PLAN has frozen `Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md`; exact next is `M4-CP3-CB4-R2`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -275,6 +275,12 @@ Runtime-free review independently re-derived the package manifest/path set, 815-
 Eight new identities (395-399, 401-403) satisfy their frozen non-vacuity obligations. Row400 does not. R1 required a face-barycentric test to use a source-face row whose order differs from canonical topology-key order so component remapping is actually exercised. The shipped test creates `sourceRow{2,0,1}` only for a detached `ASSERT_NE`, then passes an already-canonical face key and barycentric array directly to `canonical_exact_source_face_point`. The source row never influences the point or mapping, so a missing/swapped row→canonical conversion would leave the test green. This is `M4-CP3-TB2-REV-CAND-01`, a structurally invalid fixture/missing-scenario test-authority finding, non-stable.
 
 No production defect is established. Package120/selector403 is **not promoted/accepted**; package119/selector394 remains accepted **394/394**. Stable accounting stays **47 / 14 / 33**, debt **5**, CP3 remains open and A3→A4 cutover remains unauthorized. Exact next is `M4-CP3-TB2-PLAN`, which owns the bounded row400 recovery. `M4-CP3-TB1-R1-REV-OBS-01` is explicitly re-carried rather than silently expired.
+
+## 2.24 `M4-CP3-TB2-PLAN` — bounded row400 test-authority recovery frozen
+
+Planning converts `M4-CP3-TB2-REV-CAND-01` into exactly one successor, `M4-CP3-CB4-R2`. The correction is restricted to row400 in `tests/FieldAlignedCurveNetworkTests.cpp`: an actual source-face row whose vertex order differs from the canonical topology key must participate in an existing production A2a/A2b face-point path; all three exact barycentric components must be distinct; an independent oracle remaps the row tuple to canonical ordering by vertex identity; and omitted/swapped remapping must make the test fail. Product/public-API/CMake/selector changes are forbidden. If the current production path cannot supply such a witness without broadening scope, CB4-R2 stops before mutation and returns to review.
+
+Selector403 remains byte-frozen at `e8f4fe72...` with exact accepted selector394 prefix `6c27b3a0...`. After runtime-free GMP compile/package, future `M4-CP3-TB2-R1-EXEC` is frozen at **799** processes: row400 twice, selector394 394/394 and selector403 403/403, plus immutable pre/postflight. Promotion remains a later review decision. `M4-CP3-TB1-R1-REV-OBS-01` is deliberately excluded from the one-variable row400 recovery and assigned to the first later independently falsifiable test-authority turn. Stable accounting stays **47 / 14 / 33**, debt **5**. No extra independent Review is requested because TB2-REV already supplied the accepted diagnosis and falsifier. **Exact next: `M4-CP3-CB4-R2`.**
 
 ## 3. Folded document index
 

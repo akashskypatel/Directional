@@ -1,82 +1,90 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP3-TB2-REV` COMPLETE / PACKAGE120 NOT PROMOTED / EXACT NEXT `M4-CP3-TB2-PLAN`
+**Status:** `M4-CP3-TB2-PLAN` COMPLETE / AUTHORITATIVE TEST-ONLY RECOVERY FROZEN / EXACT NEXT `M4-CP3-CB4-R2`
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** Test + Benchmark planning boundary, granular subturn `M4-CP3-TB2-PLAN`
+**Canonical next turn:** Code + Build, `M4-CP3-CB4-R2`
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED.
-- Package119 / selector394 **394/394** is accepted M4 runtime authority.
-- Candidate package120 artifact `10280703200` comes from semantic source `3f909a5a2cfd305d423faf7a260bc465c7b06892`; ZIP SHA-256 `3f0ae49f1549ff2f5c4f821ee1db5bc0314405f8f726c04cecaaf5fa3cdf80a4`.
-- Selector403 has 403 rows, SHA-256 `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`; first394 is byte-identical to accepted selector394 at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`.
-- TB2-EXEC run/job `34647838897 / 103422811636` mechanically measured package120 green: focused395-403 **9/9 twice**, prefix394 **394/394**, cumulative403 **403/403**, total **815/815 PASS**, zero RED/SKIP/selection mismatch/timeout, immutable postflight.
-- TB2-REV independently upheld those mechanics but **did not promote package120** because row400 fails its frozen non-vacuity obligation.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt remains **5**. CP3 is open and A3→A4 cutover is unauthorized.
+- Package119 / selector394 **394/394** remains accepted M4 runtime authority.
+- Package120 / selector403 remains mechanically green but **unpromoted** because `M4-CP3-TB2-REV-CAND-01` found row400 non-vacuous coverage invalid.
+- Package120 semantic source is `3f909a5a2cfd305d423faf7a260bc465c7b06892`; artifact `10280703200`; ZIP SHA-256 `3f0ae49f1549ff2f5c4f821ee1db5bc0314405f8f726c04cecaaf5fa3cdf80a4`.
+- Selector403 remains frozen at SHA-256 `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`; first394 is accepted selector394 at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`.
+- TB2-EXEC mechanics remain valid evidence: 815/815 PASS, selector394 394/394, selector403 403/403, immutable postflight. They do not promote package120 because row400's intended contract is unproved.
+- Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt remains **5**.
+- CP3 is open. A3→A4 cutover remains unauthorized.
 
-## Review finding — `M4-CP3-TB2-REV-CAND-01`
+## Frozen successor — `M4-CP3-CB4-R2`
 
-R1 required face-barycentric coverage to use a source-face row whose vertex order differs from canonical topology-key order so coordinate remapping is actually exercised. Packaged row400 does this only syntactically:
+Authority: `.agents/Directional/Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md`.
 
-```cpp
-const std::array<int, 3> sourceRow{2, 0, 1};
-ASSERT_NE(sourceRow[0], static_cast<int>(face.vertices()[0].index()));
-...
-canonical_exact_source_face_point(face, barycentric);
+The turn is a one-variable test-authority recovery. Before mutation it must prove an existing production path can supply the required witness. Then it may change only row400/test-local support in `tests/FieldAlignedCurveNetworkTests.cpp`:
+
+1. use an actual source-face row whose ordered vertices differ from its canonical `SourceFaceTopologyKey`;
+2. make that row participate in the existing production A2a/A2b face-point path, not a detached assertion;
+3. use three distinct exact barycentric components;
+4. independently derive canonical component order by matching vertex identity;
+5. assert raw tuple != canonical expected tuple and published exact point == canonical expected tuple, so omitted/swapped remapping fails;
+6. emit one deterministic live row400 receipt only after semantic assertions pass.
+
+No production/public-API/CMake/selector/A4 change is authorized. If the existing product path cannot provide the witness without such changes, **STOP-GUARD before mutation and return to review**.
+
+Compile is GitHub Actions/GMP only and runtime-free. The changed producer owner preflights first, then the complete four-owner/API/benchmark package surface compiles. Selector403 bytes must remain frozen.
+
+## Future validation
+
+After compile/package, exact next runtime is `M4-CP3-TB2-R1-EXEC` on the immutable candidate. Frozen semantic matrix is **799** fresh processes:
+
+```text
+row400 focused A      1
+row400 focused B      1
+selector394         394
+selector403         403
+-----------------------
+total               799
 ```
 
-`sourceRow` never contributes to the source face, coordinate conversion or tested point. The helper receives an already-canonical face key and coordinate array. A missing/swapped source-row→canonical conversion therefore leaves the identity green. This is a structurally invalid fixture / missing scenario coverage finding, not a demonstrated production defect.
+Require 799/799 PASS, deterministic row400 receipt, selector394 394/394, selector403 403/403, zero skip/mismatch/timeout, and immutable postflight. `M4-CP3-TB2-R1-REV` alone may promote the package.
 
-Rows395-399 and 401-403 were independently reviewed and satisfy their frozen non-vacuity obligations. Package120's mechanical evidence remains valid evidence about those contracts and about accepted-prefix compatibility; it is insufficient for selector403 acceptance because required row400 proof is missing.
+## Carried obligation
 
-## Exact next — `M4-CP3-TB2-PLAN`
+`M4-CP3-TB1-R1-REV-OBS-01` remains open: multiplicity weighting has only `[1,1,1]` runtime evidence. It is explicitly **out of CB4-R2** to preserve the row400 control experiment. Assign it to the first later independently falsifiable test-authority turn—prefer naturally suitable CP3 cutover test work, otherwise a dedicated bounded test-only turn before CP3 closure.
 
-Planning only. Freeze one bounded recovery for row400 with these constraints:
+## Planning provenance
 
-1. use an actual source-face row whose order differs from canonical topology-key order;
-2. use distinct barycentric components so a permutation is observable;
-3. derive the tested point through the real row→canonical mapping path and require failure if remapping is omitted/swapped;
-4. preserve product source absent contradicting evidence;
-5. preserve selector403 identity/name/order/hash unless planning proves a selector change unavoidable;
-6. require a later immutable artifact-only rerun that re-proves corrected row400 plus accepted selector394 and cumulative selector403 before promotion;
-7. do not begin A3→A4 materialization/cutover work.
-
-`M4-CP3-TB1-R1-REV-OBS-01` is still open: region-incidence multiplicity weighting remains unexercised. It was not discharged by CB4-R1. Per `LESSONS.md` 170, do not automatically combine it with the row400 recovery and destroy the one-variable control; TB2-PLAN must assign it to the first later test-source turn where independent falsifiability is preserved.
-
-## Review evidence
-
-- review record: `.agents/Directional/Architecture_M4_CP3_TB2_Review_Record.md`
-- consolidated history: `.agents/Directional/M4_Consolidated_Record.md` §§2.19-2.23
-- normative definition: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §§17, 17.12
-- accepted runtime report retained: `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md`
-- selector394: `.agents/Directional/Architecture_M4_CP3_Required_Green_Selector_394.txt`
-- selector403: `.agents/Directional/Architecture_M4_CP3_CB4_R1_Required_Green_Selector_403.txt`
-- package120 artifact: `10280703200`
-- TB2 result artifact: `10283220925`, provider SHA-256 `314428caf9b240b992f56a48a471e210c0c8361331004d7a0a268ea9fbca4c6f`
-- TB2 diagnostic artifact: `10283302336`
-- review closeout patch apply: run `34653151816`, semantic closeout commit `842137328e66f140839747b625dcd2bb152a48eb`
-- review cleanup: run `34653302681`, cleanup commit `bf6f4fc09e0fd5b0d1aee110c51341e887ca26f9`
-- temporary closeout workflow and markers retired; exactly seven durable workflows remain; `.agents/connector-triggers` contains only the durable `source-snapshot` namespace
-- consumed Google Drive review patch permanently deleted after successful application
+- reviewed evidence: `.agents/Directional/Architecture_M4_CP3_TB2_Review_Record.md`
+- normative definition: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §17.12
+- authoritative successor plan: `.agents/Directional/Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md`
+- accepted runtime source/package: package119 / selector394 **394/394**
+- blocked candidate source: `3f909a5a2cfd305d423faf7a260bc465c7b06892`
+- TB2 review candidate: `M4-CP3-TB2-REV-CAND-01`
+- planning source snapshot event: `0eb2c573e0a0843141420fb46c6c71892cafd209`
+- planning source snapshot run/artifact: `34653889150 / 10284248466`
+- snapshot ZIP provider SHA-256: `2d11415493e8706c0eb553525d6da57c01aa67773f6b5dd33e333a5e69d5d5db`
+- snapshot archive SHA-256: `1b03307662da9f69923b881bc7b0e9119715d50534f07b489ee4f2469e63d1ac`, 5253/5253 hashes verified, `runtimeExecution=false`
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB-PLAN.md
+  - turn-based-coding-agent/references/turns/CB.md
 conditional_modules:
-  - trigger: test-scenario correction design
+  - trigger: row400 unit/regression test repair
     path: turn-based-coding-agent/modules/unit-testing/MODULE.md
+  - trigger: GitHub Actions compile/package orchestration
+    path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md
   - .agents/Directional/Architecture_M4_CP3_TB2_Review_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - .agents/Directional/M4_Consolidated_Record.md
 do_not_preload:
   - A3-to-A4 cutover implementation
+  - M4-CP3-TB1-R1-REV-OBS-01 fixture work
   - unrelated historical M3 records
-  - new runtime evidence; planning consumes the reviewed evidence already frozen
+  - new runtime evidence before CB4-R2 compiles a candidate
 ```

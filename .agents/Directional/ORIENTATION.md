@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-11, `M4-CP3-TB2-REV`):** package119/selector394 **394/394** remains accepted M4 runtime authority. Package120/selector403 is mechanically green at **403/403** with accepted prefix **394/394**, but review found `M4-CP3-TB2-REV-CAND-01`: row400's permuted source-face row is detached from the tested barycentric mapping, so the frozen §17.12 canonical component-order contract is unproved. Package120 is not promoted; stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open. Exact next is runtime-free `M4-CP3-TB2-PLAN`; A3→A4 cutover remains unauthorized.
+> **Current milestone authority (2026-09-11, `M4-CP3-TB2-PLAN`):** package119/selector394 **394/394** remains accepted M4 runtime authority. Package120/selector403 is mechanically green at **403/403** with accepted prefix **394/394**, but review found `M4-CP3-TB2-REV-CAND-01`: row400's permuted source-face row is detached from the tested barycentric mapping, so the frozen §17.12 canonical component-order contract is unproved. Package120 is not promoted; stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open. TB2-PLAN freezes one test-authority-only recovery. Exact next is `M4-CP3-CB4-R2`; A3→A4 cutover remains unauthorized.
 
-**Currency.** `M4-CP3-TB2-REV`, 2026-09-11. Package119/selector394 is accepted; package120/selector403 is mechanically green but review-blocked/unpromoted on row400 non-vacuity. Package117/selector382 remains historical framed CP1/CP2 authority; M3 remains CLOSED / ACCEPTED. Exact next is `M4-CP3-TB2-PLAN`.
+**Currency.** `M4-CP3-TB2-PLAN`, 2026-09-11. Package119/selector394 is accepted; package120/selector403 is mechanically green but review-blocked/unpromoted on row400 non-vacuity. Package117/selector382 remains historical framed CP1/CP2 authority; M3 remains CLOSED / ACCEPTED. Exact next is `M4-CP3-CB4-R2`.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -74,7 +74,7 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 **TB2 review finding:** row400 does not exercise its advertised source-row→canonical barycentric mapping: `sourceRow{2,0,1}` is used only by a detached inequality assertion, while the tested helper receives an already-canonical face key and coordinate array. The other eight new rows satisfy their frozen non-vacuity obligations. This is a non-stable test-authority coverage gap, not a demonstrated product defect; stable accounting remains **47 / 14 / 33**, debt **5**.
 
-**Exact next:** runtime-free `M4-CP3-TB2-PLAN` freezes the smallest bounded row400 recovery. Package119/selector394 remains accepted authority; selector403 bytes stay frozen candidate authority unless planning proves otherwise. No A3→A4 cutover is authorized before corrected artifact-only acceptance.
+**Exact next:** `M4-CP3-CB4-R2` executes the frozen test-authority-only row400 recovery in `Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md`, then compile/packages without runtime. Package119/selector394 remains accepted authority and selector403 bytes remain frozen. Future `M4-CP3-TB2-R1-EXEC` owns corrected artifact-only acceptance; no A3→A4 cutover is authorized before reviewed promotion.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -186,14 +186,15 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP3 exact-path/A3 publication acceptance — ACTIVE / NEXT: `M4-CP3-TB2-PLAN`.**
+1. **M4-CP3 exact-path/A3 publication acceptance — ACTIVE / NEXT: `M4-CP3-CB4-R2`.**
 
    - Package119/selector394 is accepted **394/394** family/sign-free baseline A3 authority.
    - CB4-R1 semantic source `3f909a5...` implements §17.12 exact A2b path publication and a 1:1 production A3 binder/single writer while leaving A4 unchanged; package120/selector403 is the candidate.
    - TB2-EXEC is mechanically green: focused395-403 **9/9 twice**, accepted prefix **394/394**, cumulative **403/403**, total **815/815**, immutable postflight.
    - TB2-REV independently upheld that mechanical evidence and credited rows395-399/401-403, but **rejected row400's non-vacuity**. Its `sourceRow{2,0,1}` is detached from point construction, so source-row→canonical barycentric component mapping can be wrong or absent while the test stays green (`M4-CP3-TB2-REV-CAND-01`; `LESSONS.md` 171).
+   - TB2-PLAN freezes the correction: the actual noncanonical source row must drive an existing production A2a/A2b face-point path, all three exact weights must be distinct, expected canonical ordering must be independently remapped by vertex identity, and a missing/swapped mapping must fail. Product/API/selector mutation is forbidden; failure to find such an existing path is a STOP-GUARD. Future acceptance is row400 twice + selector394 + selector403 = **799** fresh processes.
    - Package120/selector403 is therefore **not promoted/accepted**. No product defect is established; planning must recover the missing test scenario without inventing a production fix.
-   - **Carried, non-blocking (`M4-CP3-TB1-R1-REV-OBS-01`):** multiplicity weighting remains unexercised (`[1,1,1]`). CB4-R1 touched test source without discharging it, so TB2 review explicitly re-carries it. Do not confound the bounded row400 control with this unrelated obligation unless planning proves independent falsifiability (`LESSONS.md` 170).
+   - **Carried, non-blocking (`M4-CP3-TB1-R1-REV-OBS-01`):** multiplicity weighting remains unexercised (`[1,1,1]`). TB2-PLAN explicitly excludes it from CB4-R2; it transfers to the first later independently falsifiable test-authority turn (prefer later CP3 cutover test work if suitable, otherwise a dedicated bounded test-only turn before CP3 closure).
    - A3→A4 materialization, floating `support_key` retirement and exact-torus pairing work remain deferred until corrected TB acceptance.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical, CP4-owned.** CP3 must remove the exact-torus pairing blocker, but the three inherited produced-witness contract re-proofs remain CP4 gating and debt stays 5 until actual CP4 runtime acceptance.

@@ -28,11 +28,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-TB2-PLAN` (row400 non-vacuity recovery planning next)
+## Current focus — `M4-CP3-CB4-R2` (row400 non-vacuity recovery next)
 
 `M4-CP3-TB2-REV` is **COMPLETE / PACKAGE120 NOT PROMOTED**. TB2 mechanically executed package120/selector403 fully green (**815/815 processes; selector403 403/403; accepted prefix394 394/394; immutable postflight**), but review found `M4-CP3-TB2-REV-CAND-01`: row400's declared permuted source-face row never participates in the tested barycentric mapping. The frozen §17.12 canonical component-order contract therefore remains unproved. No production defect or accepted-green loss is established. Package119/selector394 remains accepted **394/394**; stable accounting remains **47 / 14 / 33**, debt **5**; CP3 remains open.
 
-**Exact next:** runtime-free `M4-CP3-TB2-PLAN`. Freeze the smallest test-authority recovery whose scenario actually derives canonical barycentric components from a noncanonical source-face row with distinct weights and would fail if remapping were omitted/swapped. Do not change product source absent contradicting evidence and do not begin A3→A4 cutover. Re-carry `M4-CP3-TB1-R1-REV-OBS-01` without confounding the bounded row400 recovery.
+`M4-CP3-TB2-PLAN` is **COMPLETE / RUNTIME-FREE** and freezes `Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md`. The recovery is test-authority only: row400 must use an actual noncanonical source-face row with distinct exact barycentric weights, derive the canonical tuple independently by vertex identity, and observe the result through the existing production A2a/A2b path. Product/public-API and selector changes are forbidden; inability to obtain that witness is a STOP-GUARD, not permission to broaden scope.
+
+**Exact next:** `M4-CP3-CB4-R2`. Compile/package only after the bounded test correction; no runtime in CB. Future artifact-only `M4-CP3-TB2-R1-EXEC` owns 799-process acceptance. `M4-CP3-TB1-R1-REV-OBS-01` remains carried outside this one-variable recovery.
 
 ## Carried forward from M1
 
@@ -71,7 +73,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 SELECTOR403 REVIEW-BLOCKED / TB2-PLAN NEXT**. Package119/selector394 **394/394** is accepted family/sign-free A3 baseline authority. Package120 mechanically proves selector403 403/403 but is unpromoted because row400 fails non-vacuity review. Exact next `M4-CP3-TB2-PLAN`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 SELECTOR403 REVIEW-BLOCKED / CB4-R2 NEXT**. Package119/selector394 **394/394** is accepted family/sign-free A3 baseline authority. Package120 mechanically proves selector403 403/403 but is unpromoted because row400 fails non-vacuity review. Exact next `M4-CP3-CB4-R2`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -111,4 +113,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **119**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package119/selector394 **394/394** is accepted §17 baseline runtime authority. Package120/selector403 is mechanically 403/403 but review-blocked/unpromoted on `M4-CP3-TB2-REV-CAND-01`. CP3 remains open. Exact next is runtime-free **`M4-CP3-TB2-PLAN`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **119**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package119/selector394 **394/394** is accepted §17 baseline runtime authority. Package120/selector403 is mechanically 403/403 but review-blocked/unpromoted on `M4-CP3-TB2-REV-CAND-01`. CP3 remains open. `M4-CP3-TB2-PLAN` is complete; exact next is **`M4-CP3-CB4-R2`**. PR #8 remains open, draft, and unmerged.
