@@ -76,7 +76,8 @@ std::optional<EInt> minimum_t_join_cardinality(
   for (std::size_t index = 0U; index < terminals.size(); ++index) {
     nodes.push_back(matchingGraph.addNode());
   }
-  lemon::ListGraph::EdgeMap<ExactWeight> weights(matchingGraph);
+  lemon::ListGraph::EdgeMap<global_conformity_detail::ExactWeight> weights(
+      matchingGraph);
   lemon::ListGraph::EdgeMap<std::size_t> distances(
       matchingGraph, std::numeric_limits<std::size_t>::max());
 
@@ -103,13 +104,14 @@ std::optional<EInt> minimum_t_join_cardinality(
       if (d == kUnreached) continue;
       const auto edge = matchingGraph.addEdge(nodes[sourceOrdinal],
                                               nodes[targetOrdinal]);
-      weights[edge] = ExactWeight(-exact_from_size(d));
+      weights[edge] = global_conformity_detail::ExactWeight(-exact_from_size(d));
       distances[edge] = d;
     }
   }
 
   using Matching = lemon::MaxWeightedPerfectMatching<
-      lemon::ListGraph, lemon::ListGraph::EdgeMap<ExactWeight>>;
+      lemon::ListGraph,
+      lemon::ListGraph::EdgeMap<global_conformity_detail::ExactWeight>>;
   Matching matching(matchingGraph, weights);
   if (!matching.run()) return std::nullopt;
 
