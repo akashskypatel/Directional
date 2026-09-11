@@ -131,3 +131,94 @@ TB1-REV itself authorizes **no** implementation/test mutation, compile, rerun, p
 - current review record: `.agents/Directional/Architecture_M4_CP3_TB1_Review_Record.md`
 - exact next: `M4-CP3-TB1-PLAN`, runtime-free planning only
 - next skill state: `turn-based-coding-agent/references/turns/TB-PLAN.md`
+
+---
+
+## 11. Independent verification addendum (reviewing agent)
+
+Runtime-free. Both findings are **upheld** and their partition was re-derived rather than accepted.
+The disposition — package118 unpromoted, accepted authority unchanged, accounting unchanged — is
+correct. One thing the record does not say is added below, because without it this turn reads as a
+near-miss when in fact most of the §17 contract has no runtime evidence at all.
+
+### V1 — Finding A's partition is exactly right
+
+Re-derived from the test source rather than from the logs. `make_triangle_mesh()`
+(`tests/GlobalConformityBaselineTests.cpp:67-77`) builds a single face `(0,1,2)` over three
+vertices, and calls `mesh.set_mesh(...)` inside the helper — so the throw occurs during helper
+construction, *before* any `build_global_conformity_baseline` call. Exactly six identities consume
+it, and they are exactly Finding A's six:
+
+| ordinal | identity | site |
+|---|---|---|
+| 386 | `OneEndedTerminalUsesComponentLocalExterior` | `:324` |
+| 388 | `CanonicalLexPrefixChoosesLeastCountVectorAcrossEqualTJoins` | `:359` |
+| 389 | `ParityFlipMapsOneToTwoAndLargerToPredecessor` | `:369` |
+| 390 | `IndependentTinyExhaustiveOracleMatchesParityOptimumAndLexTie` | `:386` |
+| 391 | `IndependentValidatorRejectsParityCertificateTamperMatrix` | `:403` |
+| 394 | `ProductionBaselineBinderIsStructurallySeparateFromFramedSolver` | `:513` |
+
+Ordinal 392 does **not** consume it (`:469` uses `make_square_mesh()`), so the two findings are
+genuinely disjoint and no RED is double-counted or mis-binned. The passing square-based identities
+384 and 393 discriminate the diagnosis, as the record says.
+
+### V2 — Finding B's classification is contract-correct
+
+`count == 1` is a legal §17.6 output: positivity requires `x_s >= 1`, not `>= 2`, and the no-flip
+branch with `d_s = 1` yields exactly 1. Nothing in the frozen contract guarantees that
+`schedule().front()` — here the `twoPieceFirst` span built at `:213-219` — carries a count above
+one. A two-piece span with count 1 is also coherent on its own terms: support pieces are the
+source-location decomposition and are independent of the subdivision count (§17.3). So
+`ASSERT_GT(entry.count, EInt(1))` (`:482`) is an unguaranteed precondition, not a product defect.
+
+Worth recording precisely because the record understates it in one direction: ordinal 392's actual
+subject — permutation invariance — **did** pass. `semantic_digest()` equality and `exact_counts`
+equality under span reversal both hold at `:478-479` before the failing line. What is lost is only
+the breakpoint-consumption half at `:484-492`.
+
+### V3 — the unproven-surface ledger, and an execution obligation on the successor
+
+Neither finding is evidence against §17. But "not evidence against" is not evidence for, and seven
+identities produced **no** evidence either way. Recorded explicitly so no later turn cites this TB as
+partial CP3 progress:
+
+**Proven by this package (5):** family-free parity semantics across `Mandatory`/`Trace`/`Cut` (383);
+boundary-incidence multiplicity (384); same-region double incidence as a zero-effect self-loop (385);
+**minimum-cardinality T-join strictly beating a local greedy choice** (387); all-even constructive
+witness yielding no infeasibility outcome (393).
+
+**Unproven — zero runtime evidence (7):** component-local exterior construction (386); canonical
+lex-prefix selection (388); the parity flip map `1 -> 2` and `d_s -> d_s - 1` (389); the independent
+tiny exhaustive oracle (390); the validator tamper matrix (391); reverse-ordinal breakpoint
+consumption and `localDenominator` binding (392, partial); structural separation of the production
+baseline from the framed solver (394).
+
+Three of those — 390, 391 and 388 — are precisely the non-vacuity instruments §17.7 mandates
+(independent recomputation, per-family tamper falsification, per-decision lex receipts). A fourth,
+394, is the structural guarantee §17.3/§17.9 rely on to keep accepted selector382 valid; accepted
+382/382 passing is welcome empirical evidence that nothing broke, but it is not the separation proof.
+The §17 production contract is therefore substantially uncertified, and CP3 is nowhere near closure.
+
+**Obligation on the corrective successor, beyond the record's §8 list.** Repairing a fixture can make
+an identity pass while the intended assertion still never executes — a repaired mesh could yield a
+degenerate case whose loop body runs zero times, or a `count > 1` span that trivially satisfies its
+guard without exercising the breakpoint path. A green rerun alone therefore cannot distinguish
+"proved" from "reached a vacuous branch." The successor TB must publish, per previously-blocked
+identity, a deterministic success-visible receipt derived at runtime showing the intended assertion
+executed and on what — for 391 the tamper-row count actually exercised, for 390 the number of oracle
+comparisons performed, for 392 the `entry.count` and both breakpoint ordinals resolved. This is the
+same discipline already frozen for ordinal 374's receipt and for §17.7's per-decision receipts;
+`LESSONS.md` 160 and 171 are the standing statements of it.
+
+### V4 — lineage and accounting confirmed independently
+
+Hashed directly: selector394's first **382** rows give
+`1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`, byte-identical to accepted
+selector382, and its first **373** rows still give `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`.
+The chain **373 ⊂ 380 ⊂ 382 ⊂ 394** is exact and append-only; rows 383-394 are the only additions.
+No accepted-green loss occurred, so no stable event arises: accounting stays **47 / 14 / 33**, debt
+**5**, accepted authority **package117 / selector382**.
+
+The record's §8 item 4 — hold product source at zero changes unless new evidence contradicts this
+adjudication — is the right call and should be kept: it makes the corrective turn a control
+experiment whose green would isolate the fixture repair as the cause.

@@ -7436,3 +7436,23 @@ inside the oracle box `x_s <= 8`, so the box is demonstrably not truncating. Sat
 **Prohibited:** publishing the `CAND-01` receipt against the current cancelling fixture; weakening ordinal374 to
 one coordinate or a scalar objective; hard-coding receipt facts instead of deriving them from the fixture;
 deferring `CAND-04` to a later turn, which would spend `CAND-01` certifying a fixture already known to be inert.
+
+**Verification amendment to `M4-CP3-TB1-REV-CAND-01/02` (reviewing agent).** Both classifications are upheld;
+the partition was re-derived from test source, not logs. Exactly six identities consume `make_triangle_mesh()`
+(`tests/GlobalConformityBaselineTests.cpp:67-77`, which throws inside the helper before any baseline call), and
+they are exactly CAND-01's six; ordinal392 uses `make_square_mesh()` at `:469`, so the findings are disjoint.
+`count == 1` is a legal §17.6 output — positivity is `x_s >= 1`, not `>= 2` — so CAND-02 is an unguaranteed
+precondition, not a product defect; ordinal392's permutation-invariance subject did pass at `:478-479`, and only
+the breakpoint half at `:484-492` is lost.
+
+**Added obligation, beyond fixture repair.** Seven identities produced no evidence either way, including all
+three §17.7 non-vacuity instruments (independent oracle 390, tamper matrix 391, lex-prefix 388) and the
+production/framed separation guarantee 394. A fixture repair can make an identity pass while the intended
+assertion still never executes. The corrective successor TB must therefore publish, per previously-blocked
+identity, a deterministic success-visible runtime-derived receipt showing the intended assertion executed and on
+what — tamper rows exercised for 391, oracle comparisons performed for 390, `entry.count` and both resolved
+breakpoint ordinals for 392. Without it, "proved" and "reached a vacuous branch" stay indistinguishable
+(`LESSONS.md` 160, 171).
+
+**Prohibited:** citing this TB as partial CP3 progress; weakening any of the six intended semantic contracts to
+make the fixture valid; changing product source in the corrective turn absent new contradicting evidence.

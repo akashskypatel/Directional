@@ -6,6 +6,23 @@ The seven REDs reduce to two non-stable `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` ca
 
 Package118/selector394 is **NOT PROMOTED** because seven intended contracts still lack valid green runtime proof. Package117/selector382 **382/382** remains accepted authority; stable accounting stays **47 / 14 / 33**, debt **5**. Exact next is runtime-free `M4-CP3-TB1-PLAN`, which must freeze the smallest test-only corrective CB scope before any new compile/runtime or A3→A4 cutover. Review authority: `Architecture_M4_CP3_TB1_Review_Record.md`.
 
+**Verification amendment (reviewing agent, review record §11).** Both findings are upheld and their partition
+re-derived from test source rather than logs: exactly six identities consume `make_triangle_mesh()`, which
+throws inside the helper before any baseline call, and they are exactly Finding A's six; ordinal392 uses
+`make_square_mesh()`, so the findings are disjoint and no RED is double-counted. Finding B is contract-correct —
+`count == 1` is legal under §17.6 since positivity is `x_s >= 1`, not `>= 2` — though the record understates that
+ordinal392's actual subject, permutation invariance, *did* pass, with only the breakpoint half lost. Selector
+lineage verified by direct hashing: selector394's first 382 rows are byte-identical to accepted selector382
+(`1d59b1f7…`) and its first 373 to selector373 (`6d00cafa…`), so **373 ⊂ 380 ⊂ 382 ⊂ 394** is exact and
+append-only. Added to the record: an explicit unproven-surface ledger. Five identities are proven (383, 384, 385,
+387 — including minimum-cardinality T-join strictly beating greedy — and 393); seven produced no evidence either
+way, among them all three §17.7 non-vacuity instruments (independent oracle 390, tamper matrix 391, lex-prefix
+388) and the production/framed separation guarantee 394. The §17 contract is therefore substantially
+uncertified and this TB must not be cited as partial CP3 progress. Because a fixture repair can make an identity
+pass while the intended assertion still never executes, the corrective successor TB must publish a per-identity
+runtime-derived execution receipt for each previously-blocked assertion. Accounting unchanged at **47 / 14 / 33**,
+debt **5**, accepted authority **package117 / selector382**.
+
 ## 2026-09-11 — `M4-CP3-TB1-EXEC`: package118 deterministic semantic red, accepted selector382 preserved
 
 Artifact-only TB1 run/job `34557818974 / 103134172994` consumed unchanged candidate package118 artifact `10182447649` from semantic source `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc`. It completed the frozen plan with exactly **800** fresh test processes: focused rows 383-394 **5 PASS / 7 RED twice** with byte-identical verdict vectors, accepted predecessor selector382 **382/382 PASS**, and cumulative selector394 **387 PASS / 7 RED**. The reproducible RED set is **[386, 388, 389, 390, 391, 392, 394]**; first RED is ordinal386 `OneEndedTerminalUsesComponentLocalExterior`.
