@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-10 UTC
+Last updated: 2026-09-11 UTC
 
 ## Purpose
 
@@ -28,13 +28,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-CB1` (runtime-free Code + Build)
+## Current focus — `M4-CP3-DEFN-R1` (runtime-free definition/review)
 
-`M4-CP2-TB2-R1-REV` is **COMPLETE / PACKAGE117 PROMOTED / SELECTOR382 ACCEPTED / M4-CP2 CLOSED**. Independent review re-opened package117 plus R1 result/log evidence, re-derived selector382 **382/382**, predecessor **373/373**, focused 374/381/382 **3/3 twice**, owners **30/236/75/41**, exact success receipts and immutable package/source/execution-view postflight, and verified the four TB1 contract candidates are recovery-proved. Accepted package authority is now **117**; accepted M4 selector authority is **382**.
+`M4-CP3-CB1` is **HALTED / STOP-GUARD / NO SEMANTIC MUTATION**. Its mandatory pre-mutation derivation guard was executed against a fresh exact source snapshot and failed: production A2b includes `GlobalTopologyArcKind::Cut` arcs from `SurfaceCutGraph`, but accepted A0-A2b authority does not publish a unique `ConformityFamily U|V` / `ConformitySign +/-` for those arbitrary cellularizing cuts. The exact torus witness has 28 such cut edges, so this is a real CP3 production occurrence class, not unreachable state. Full evidence and falsifiers are in `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md`.
 
-Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**. All CP2 review/orchestration candidates are closed non-stably. `M4_CP2_Closure_Record.md` owns CP2 closure; package116/selector380 remains historical unpromoted evidence.
+No product/test/selector/CMake semantic change, compile/package, or Directional runtime occurred in CB1. Accepted authority therefore remains package117 / selector382 **382/382**; stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**.
 
-**Exact next:** `M4-CP3-CB1` under `Architecture_M4_CP3_CB1_Code_Build_Plan.md`. First prove a unique source-derived production mapping for every A2b boundary occurrence to conformity span/support/family/sign/orientation; if that cannot be proved without tolerance, approximate geometry or cross-face raw `FieldBranch` comparison, stop before semantic mutation and route to definition review. If it passes, production-wire A3 before A4, make immutable schedule `{span, exactOrdinal}` authority control shared boundaries, and remove local target/grid plus floating `support_key` pairing as shared-boundary semantic authority. Compile/package only; no Directional runtime in CB1.
+**Exact next:** `M4-CP3-DEFN-R1`. Independently re-open A2a'/A2b cut semantics and frozen A3 incidence semantics, then freeze one exact contract for how artificial cellularizing cut arcs participate in conformity. Explicitly adjudicate the bounded alternatives in `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md`; do not invent a boundary-ordinal convention, raw cross-face `FieldBranch` identity, geometric nearest-arm rule, tolerance, or silent cut exclusion. The definition turn must state whether accepted CP1/CP2 proof obligations remain valid or must be re-opened and must issue the exact successor CB scope. No production/test mutation or Directional runtime in DEFN-R1.
 
 ## Carried forward from M1
 
@@ -73,7 +73,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1 CLOSED / CP2 CLOSED / CP3 NEXT (`M4-CP3-CB1`)**. Package117/R1 selector382 **382/382** is accepted authority. CP3 production-wires A3->A4 and removes local target/grid/post-hoc floating pairing authority; CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1 CLOSED / CP2 CLOSED / CP3 BLOCKED ON DEFINITION (`M4-CP3-DEFN-R1` NEXT)**. Package117/R1 selector382 **382/382** remains accepted authority. CB1 proved current accepted A2b cut arcs lack uniquely defined A3 family/sign semantics; DEFN-R1 must freeze that contract before the A3->A4 cutover can resume. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -92,7 +92,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
-- [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; **CP3 current owner**. Remove it through A3 schedule authority, not post-hoc floating support pairing. Its 3 produced-witness debts remain CP4-owned.
+- [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; **CP3 current owner, implementation blocked by A3 cut-incidence definition gap**. DEFN-R1 must first freeze exact conformity semantics for cut-backed A2b spans; only then may CP3 remove the failure through A3 schedule authority rather than post-hoc floating support pairing. Its 3 produced-witness debts remain CP4-owned.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.
 - [ ] `G4-B004`: positive multi-isolation quotient witness; M5/M6.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
@@ -113,4 +113,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **117**. **M4-CP1 and M4-CP2 are CLOSED / ACCEPTED**; package117/R1 selector382 **382/382** is current accepted M4 authority. Exact next is runtime-free **`M4-CP3-CB1`** for the production A3->A4 conformity-plan cutover. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **117**. **M4-CP1 and M4-CP2 are CLOSED / ACCEPTED**; package117/R1 selector382 **382/382** remains current accepted M4 authority. `M4-CP3-CB1` halted at its source-derivation guard with no semantic mutation. Exact next is runtime-free **`M4-CP3-DEFN-R1`** to freeze cut-backed A2b conformity-incidence semantics before implementation resumes. PR #8 remains open, draft, and unmerged.

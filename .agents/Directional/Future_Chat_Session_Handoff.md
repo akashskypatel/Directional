@@ -118,48 +118,52 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 **Same-agent REVIEW/DEFN is allowed — user-authorized 2026-09-10.** The same agent/session may perform a REVIEW, REVIEW + PLAN, or DEFN turn even when it authored or executed an earlier turn in the same chain. "Independent" in review/oracle/verification language means independent **evidence, re-derivation, authority, or implementation path**, not required personnel separation, unless a specific criterion explicitly says otherwise. A same-agent REVIEW must re-open primary evidence and re-derive decisive facts; a same-agent DEFN remains planning/runtime-free. All cadence, stop, validation-integrity, source-authority, compile/runtime, and acceptance boundaries remain unchanged.
 
-## Mandatory next turn — `M4-CP3-CB1` — **EXACT NEXT / RUNTIME-FREE CODE + BUILD**
+## Mandatory next turn — `M4-CP3-DEFN-R1` — **EXACT NEXT / RUNTIME-FREE DEFINITION + REVIEW**
 
-`M4-CP2-TB2-R1-REV` is **COMPLETE / PACKAGE117 PROMOTED / SELECTOR382 ACCEPTED / M4-CP2 CLOSED**. Runtime-free review independently re-opened package117 and the R1 evidence, re-derived the full process/receipt/immutability facts and audited source against frozen CP2 criteria. Accepted package authority advances **115 -> 117**; accepted M4 selector authority advances **373 -> 382**.
+`M4-CP3-CB1` is **HALTED / STOP-GUARD / NO SEMANTIC MUTATION / NO COMPILE / NO RUNTIME**. Its mandatory §2 source-derivation guard was executed against a fresh exact ChatGPT-Web source snapshot and failed before the authorized implementation/test/selector seam was touched.
 
-### Accepted CP2 authority
+### Unchanged accepted authority
 
-- semantic source: `534c0d41ae05b31e66711f21f4b4280b59f6483f`
-- package117 artifact: `10172820820`, SHA-256 `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`
-- R1 run/job: `34539783373 / 103079623871`
-- R1 result/log artifacts: `10176889758 / 10176890045`, SHA-256 `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0 / b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`
-- accepted selector382 SHA-256: `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`
-- selector382 **382/382**, predecessor **373/373**, CP2 **7/7**, corrections **2/2**
-- focused 374/381/382 **3/3 twice**, with one required ordinal374 receipt per phase
-- owners **30/236/75/41**; RED/SKIP/timeout/selection mismatch **0/0/0/0**
-- package/source/execution-view census SHA-256 `c45c423e7365887ccc5ef5974d1c61c32c775e9b064d41e47709500721d6938d / 67726528d5e31765005b1fee3360acfed9d23958a754a71aaa62d5ff7507cee2 / 1a5b1de75f2c9ae27c28ea77509e57b5e8c4565a2dd537b789cef03f98505f02`, byte-identical before/after
-- stable accounting **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted package authority **117**
+- accepted M4 semantic/runtime authority remains package117 / selector382 **382/382** from closed `M4-CP2`;
+- semantic source audited for the guard: `02643ac69cc0efabdeb987ea6043d9c5228f45e4`;
+- snapshot control event SHA: `5898dd5609cb9c4e41fb39a26ab5c8084f61fd09`;
+- snapshot run/artifact: `34544866975 / 10178644987`, outer artifact SHA-256 `1bff74435e7a68fb8b48b359b2d24173783633b641178c4f4e085d7f0406ca3b`;
+- stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**.
 
-All four TB1 review candidates and the TB2 orchestration candidate are **CLOSED / RECOVERY PROVED / NON-STABLE**. `M4_CP2_Closure_Record.md` is durable CP2 closure authority. Package116/selector380 remains historical unpromoted evidence.
+No product, test, selector, CMake/build configuration, A3/A4 behavior, or accepted authority changed. No compile/package workflow and no Directional runtime ran in CB1.
 
-### CB1 boundary and stop guard
+### Why the CB1 guard failed
 
-Execute `Architecture_M4_CP3_CB1_Code_Build_Plan.md`. This is a canonical Code + Build turn: implementation/test/selector edits and GitHub-only compile/package are allowed exactly as that plan authorizes; **Directional runtime tests/benchmarks remain forbidden in CB1**.
+Frozen A3 requires every A2b boundary occurrence to carry exact span/support plus `ConformityFamily U|V`, `ConformitySign +/-`, and orientation. Span and orientation are source-representable, and exact path reconstruction has accepted provenance. The missing conjunct is cut-arc family/sign:
 
-Before semantic mutation, prove one unique source-derived mapping for every production A2b boundary occurrence to `ConformitySpanId`/exact support path, `ConformityFamily`, `ConformitySign` and orientation. `FieldBranch` integers are face-gauge-local: do not compare them across faces as global branch identity. Do not derive this mapping from tolerance, quantized geometry, A4-produced positions, or `GlobalTopologyArc::sourceFaces` when exact path authority exists elsewhere. **If the mapping is not uniquely representable from accepted A0-A2b authority, stop before semantic mutation and route to definition review.**
+- A2b explicitly contains `GlobalTopologyArcKind::Cut`;
+- those arcs are constructed from `SurfaceCutGraph` selected source edges and exact crossing splits, with no selected/bound field branch;
+- `SurfaceCutGraph` publishes cellularizing cut edges/certificates, not U/V or +/- semantics;
+- `FieldTransportAtlas` publishes four canonical local branches, but accepted authority contains no unique rule selecting one branch/family/sign for an arbitrary cellularizing cut edge;
+- the accepted torus has `cutEdgeCount=28`, so CP3's gating production path actually contains this unresolved occurrence class;
+- CP1/CP2's known-feasible test helper assigns U and alternating sign synthetically and therefore is not an independent production derivation.
 
-If the guard passes, the smallest authorized cutover is:
+Any nearest-arm/tolerance rule, raw cross-face `FieldBranch` equality, boundary-ordinal convention, or silent exclusion would invent new semantics and was explicitly forbidden by the CB1 plan. Full source evidence and stop reasoning are in `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md`.
 
-1. construct/validate generic `GlobalConformityOutcome` after `GlobalTopologyPlan` and before A4;
-2. propagate typed infeasible A3 state without inventing a replacement schedule or M7 disposition;
-3. pass immutable feasible `GlobalConformityPlan` into A4;
-4. consume shared breakpoints as exact `{span, exactOrdinal}` identity, including reversed `j -> x_s-j` incidence mapping;
-5. make A4-local `targetSize/gridU/gridV` interior-only after boundary schedule fixation;
-6. remove floating/tolerance `support_key` grouping as shared-boundary semantic pairing authority;
-7. compile/package append-only CP3 identities only through the mandatory reusable GMP/GMPXX workflow; do not run them in CB1.
+### DEFN-R1 boundary
 
-The exact-torus `InvalidHardRailPairing` blocker is CP3 gating. The three inherited `G4-B002` produced-witness debts remain CP4-owned and must not be discharged early.
+Perform one bounded, runtime-free definition/review turn. Independently re-open the relevant A2a'/A2b and frozen A3 authority and settle exactly how **artificial cellularizing cut arcs** participate in global conformity. Adjudicate, rather than silently choose, the three bounded alternatives recorded in the guard record: distinct cut-incidence semantics; field-certified cuts; or a separately frozen exact combinatorial cut frame.
+
+The turn must:
+
+1. prove the chosen semantics are exact, source/topology derived, enumeration/relabeling invariant, and sufficient for shared-boundary count/breakpoint authority;
+2. state explicitly whether accepted CP1/CP2 theorem/certificate/runtime obligations remain valid or must be re-opened;
+3. update `Architecture_M4_DEFN_Frozen_Definitions.md` only if a unique falsifiable contract is established;
+4. issue the smallest exact successor Code + Build scope and guard;
+5. make no production/test semantic mutation and execute no Directional runtime.
+
+If no alternative can be frozen without weakening accepted guarantees, stop DEFN-R1 with the ambiguity open instead of resuming CP3 implementation.
 
 ### Context Load Plan
 
-Use the current `turn-based-coding-agent` skill. Canonical state is `Code + Build`; load `references/turns/CB.md` plus its required dependencies. Load `modules/unit-testing/MODULE.md` because CP3-CB1 is authorized to author new test identities, and `modules/github-connector/MODULE.md` because compile/package and patch transport use GitHub Actions. Resolve repository state with `READ_MODE=snapshot` if multi-file source inspection is still required by the §2 derivation guard; otherwise use `READ_MODE=direct` only if the guard can be completed with one genuinely bounded file/blob read under the conservation policy. Do not mix modes without recording why.
+Use the current `turn-based-coding-agent` skill and the project-specific `DEFN` = review+plan cadence. Re-read mandatory project policies for the new turn, then load only: `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md`, the relevant A3 sections of `Architecture_M4_DEFN_Frozen_Definitions.md`, the exact A2a'/A2b cut definitions/source cited by the guard, `DESIGN.md`/`REORIENTATION_PLAN.md` only where needed to adjudicate the semantic boundary, and current `TODO.md`/this handoff. Do not load CB implementation files or author tests until DEFN-R1 has frozen a replacement contract. Same-agent DEFN is user-authorized; turn boundaries remain unchanged.
 
-Current retained M4 role files are: `Architecture_M4_DEFN_Frozen_Definitions.md`, `M4_Consolidated_Record.md`, `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, `Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`, `Architecture_M4_CP2_TB2_R1_Review_Record.md`, byte-frozen M4 selectors, and exactly one next plan `Architecture_M4_CP3_CB1_Code_Build_Plan.md`.
+Current retained M4 role files are: `Architecture_M4_DEFN_Frozen_Definitions.md`, `M4_Consolidated_Record.md`, `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, `Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`, `Architecture_M4_CP2_TB2_R1_Review_Record.md`, `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md`, byte-frozen M4 selectors, and the blocked implementation plan `Architecture_M4_CP3_CB1_Code_Build_Plan.md` retained pending definition adjudication.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
