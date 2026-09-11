@@ -39,13 +39,7 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     runs-on: ubuntu-24.04
     env:
-      ARTIFACT_ID: '10185370005'
-      EXPECTED_ZIP_SHA256: 9fdfe9a1c8f92d52669a82da0ddfca75d58fd8dc7317d5100faff5a85c820fc8
-      EXPECTED_SOURCE_SHA: fd532c2f768d0ff6493260deb670cb34b6757712
-      EXPECTED_SELECTOR394_SHA256: 6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68
-      EXPECTED_SELECTOR382_PREFIX_SHA256: 1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f
-      PER_PROCESS_TIMEOUT_SECONDS: '180'
-      PAYLOAD_BLOB_SHA: 25590039091af894d8c5d3d3b3b9320712294a79
+      PAYLOAD_BLOB_SHA: 3e46bba9a2ac22ac75fc7b22b63d7be87d982d5d
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Fetch exact temporary runtime payload
@@ -53,28 +47,42 @@ jobs:
         run: |
           set -euo pipefail
           payload_json="$RUNNER_TEMP/tb-payload.json"
-          gh api --method GET "repos/$GITHUB_REPOSITORY/contents/.agents/Directional/turn-payloads/m4-cp3-tb1-r1/tb_exec_r2.sh?ref=$GITHUB_SHA" > "$payload_json"
+          gh api --method GET "repos/$GITHUB_REPOSITORY/contents/.agents/Directional/turn-payloads/m4-cp3-tb1-r1/tb_exec_r3.sh?ref=$GITHUB_SHA" > "$payload_json"
           test "$(jq -r .sha "$payload_json")" = "$PAYLOAD_BLOB_SHA"
           jq -r .content "$payload_json" | tr -d '\n' | base64 --decode > "$RUNNER_TEMP/tb_exec.sh"
           bash -n "$RUNNER_TEMP/tb_exec.sh"
 
       - name: Execute immutable package119 evidence matrix
+        id: tb
+        continue-on-error: true
         shell: bash
-        run: |
-          set +e
-          bash "$RUNNER_TEMP/tb_exec.sh"
-          rc=$?
-          set -e
-          if [ -f "$RUNNER_TEMP/tb-orchestration-retry.txt" ] && [ -d "$RUNNER_TEMP/m4-cp3-tb1-r1-evidence" ]; then
-            cp "$RUNNER_TEMP/tb-orchestration-retry.txt" "$RUNNER_TEMP/m4-cp3-tb1-r1-evidence/"
-          fi
-          exit "$rc"
+        run: bash "$RUNNER_TEMP/tb_exec.sh"
 
       - name: Upload raw TB evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m4-cp3-tb1-r1-raw-${{ github.run_id }}
-          path: ${{ runner.temp }}/m4-cp3-tb1-r1-evidence
+          name: m4-cp3-tb1-r1-result-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/m4-cp3-tb1-r1-exec/result
+            ${{ runner.temp }}/tb-r1-orchestration-retry.txt
           if-no-files-found: error
           retention-days: 30
+
+      - name: Upload TB diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb1-r1-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp3-tb1-r1-exec.log
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Propagate TB result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          code_file="$RUNNER_TEMP/m4-cp3-tb1-r1-exec/result/harness-exit-code.txt"
+          test -f "$code_file" || { echo 'TB1-R1 harness exit code missing' >&2; exit 3; }
+          exit "$(cat "$code_file")"
