@@ -1,3 +1,0 @@
-# M4-CP3-TB1-R1-REV formal turn cleanup
-.agents/connector-triggers/m4-cp3-tb1-r1-rev-drive-apply/trigger.txt
-.agents/connector-triggers/m4-cp3-r1-delete-unused-branch/trigger.txt
