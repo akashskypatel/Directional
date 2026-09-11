@@ -203,7 +203,8 @@ run_one() {
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$phase" "$ordinal" "$identity" "$binary" "$code" "$total" "$exact" "$ok" "$failed" "$skipped" "$timeout_state" "$verdict" "raw/$(basename "$raw")" >> "$RESULT/all-processes.tsv"
 }
 run_range() {
-  local phase="$1" start="$2" end="$3" ledger="$RESULT/${phase}.tsv"
+  local phase="$1" start="$2" end="$3"
+  local ledger="$RESULT/${phase}.tsv"
   printf 'ordinal\tidentity\tbinary\tverdict\n' > "$ledger"
   local ordinal
   for ((ordinal=start; ordinal<=end; ordinal++)); do
