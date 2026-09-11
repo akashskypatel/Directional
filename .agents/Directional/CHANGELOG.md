@@ -6,6 +6,23 @@ Review corrected stale copied EXEC prose from the immutable raw files: ordinal39
 
 Accepted M4 package authority advances **117 -> 119** and accepted selector authority **382 -> 394**. Historical framed CP1/CP2 evidence remains retained; package118 stays historical/unpromoted. Stable accounting remains **47 / 14 / 33**, produced-witness debt **5**. CP3 remains open because production still has no A3→A4 exact shared-breakpoint handoff. **Exact next: runtime-free `M4-CP3-CB4` under `Architecture_M4_CP3_CB4_Code_Build_Plan.md`; no Directional runtime belongs in CB4.**
 
+**Verification amendment (reviewing agent, review record §12).** The decision is upheld — package119 promoted,
+selector394 accepted 394/394, CP3 correctly left OPEN — with authorities re-derived rather than read: selector394
+hashes to `6c27b3a0…`, unchanged from the CB3 pin, and its first 382 rows remain accepted selector382 `1d59b1f7…`.
+The unproven-surface ledger raised at `M4-CP3-TB1-REV` §11 is **discharged**: all seven previously blocked
+identities now execute with receipts placed after their assertions, including the three §17.7 non-vacuity
+instruments. Ordinal390's receipt was verified as internally consistent rather than merely present — with
+multiplicities `[1,1,1]` and unit preferred counts, feasibility requires an odd flip count, giving
+`C(3,1)+C(3,3)=4` of `2³=8` assignments, exactly the reported `parityFeasibleAssignments=4`, with `[1,1,2]` the
+lex-least one-flip solution. The §10 V4 oracle requirement was implemented in the preferred generalized form;
+stated plainly, the conditional risk it guarded **did not fire** — `spanCount=3` and all multiplicities 1 mean the
+interior edges never became spans — but the multiplicity model the oracle applies is now published and auditable
+instead of assumed. One carried, non-blocking obligation recorded as `M4-CP3-TB1-R1-REV-OBS-01`: with every
+multiplicity 1, the new weighting is inert — deleting it would change no outcome — and ordinal385 does not close
+that, since it exercises the T-join solver on a synthetic self-loop graph rather than the end-to-end
+boundary-incidence path. Discharge it in the next turn touching test source, explicitly not CB4. Accounting
+unchanged at **47 / 14 / 33**, debt **5**.
+
 ## 2026-09-11 — `M4-CP3-TB1-R1-EXEC`: package119 corrective artifact-only runtime is GREEN
 
 `M4-CP3-TB1-R1-EXEC` is **COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / REVIEW PENDING**. Authoritative run/job `34595754914 / 103251084987` consumed unchanged package119 artifact `10185370005` from semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` and executed exactly **800** fresh processes: focused rows383-394 **12/12 twice** with byte-identical verdict vectors and deterministic receipts for 386/388/389/390/391/392/394; accepted predecessor selector382 **382/382**; cumulative selector394 **394/394**. There were zero REDs, skips, timeouts, or selection mismatches.

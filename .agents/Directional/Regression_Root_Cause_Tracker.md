@@ -7466,3 +7466,31 @@ breakpoint ordinals for 392. Without it, "proved" and "reached a vacuous branch"
 
 **Prohibited:** citing this TB as partial CP3 progress; weakening any of the six intended semantic contracts to
 make the fixture valid; changing product source in the corrective turn absent new contradicting evidence.
+
+## `M4-CP3-TB1-R1-REV-OBS-01` — the oracle's multiplicity weighting is inert
+
+**Owner:** next turn that touches test source — **explicitly not `M4-CP3-CB4`** · **Class:** COVERAGE/OBLIGATION-VACUITY
+**Non-blocking** — no accepted-green loss, no stable event; accounting stays 47/14/33, debt 5, accepted authority
+package119/selector394.
+
+**Root cause.** CB3 generalized `exhaustive_terminal_parity_oracle` to weight each span by its region-incidence
+multiplicity, testing `Σ_s (m_{r,s} · x_s) mod 2 == 0` per region. Ordinal390's receipt reports
+`regionSpanMultiplicities=[1,1,1]`, so every multiplicity is 1 and replacing `(multiplicities[span] *
+counts[span]) & 1` with `counts[span] & 1` would change no test outcome. The generalization is structurally
+present and behaviourally unexercised — the same shape as `M4-CP2-TB1-REV-CAND-04`, applied here to a change the
+reviewing agent requested.
+
+**Why ordinal385 does not close it.** That identity calls `minimum_t_join_cardinality` on a synthetic
+`ParityGraphProblem` whose single edge is the self-loop `{0,0,0}` (`tests/GlobalConformityBaselineTests.cpp:359-376`).
+It proves the T-join **solver** treats a self-loop as zero-effect. It does not exercise the end-to-end path: a
+same-region double **boundary incidence** yielding `m_s = 2`, the production binder's region parity ignoring it,
+and the independent oracle agreeing.
+
+**Discharge.** Append one identity: a fixture carrying a same-region double incidence, run through both the
+production binder and the independent oracle, asserting agreement and emitting a `regionSpanMultiplicities`
+receipt that contains a `2`. If no such fixture is constructible from current A2b authority, report that instead —
+it would mean same-region double incidence is not production-reachable in available fixtures, which is itself
+worth recording against §17.5.
+
+**Prohibited:** folding this into `M4-CP3-CB4`, whose evidential value depends on being a production-wiring turn
+and nothing else (`LESSONS.md` 170); asserting the multiplicity path by inspection instead of exercising it.

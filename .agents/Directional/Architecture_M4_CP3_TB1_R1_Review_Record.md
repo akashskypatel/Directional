@@ -136,3 +136,75 @@ CB4 must production-wire one validated immutable §17 baseline plan between A2b 
 - package119 promoted by Review: **yes**
 - CP3 closed: **no**
 - production A3→A4 cutover performed: **no**
+
+---
+
+## 12. Independent verification addendum (reviewing agent)
+
+Runtime-free. The decision is **upheld**: package119 promoted, selector394 accepted at 394/394,
+CP3 correctly left OPEN. Authorities re-derived here rather than read — selector394 hashes to
+`6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`, unchanged from what the CB3 plan
+pinned, and its first 382 rows remain accepted selector382 `1d59b1f7…`. Accounting stays
+**47 / 14 / 33**, debt **5**.
+
+### V1 — the unproven-surface ledger from `M4-CP3-TB1-REV` §11 is discharged
+
+All seven previously blocked identities now execute and publish receipts placed after their intended
+assertions. The independent oracle (390), the validator tamper matrix (391) and the lex-prefix
+scheduler (388) — the three §17.7 non-vacuity instruments — now have runtime evidence, as does the
+production/framed separation guarantee (394). The ledger is closed.
+
+Ordinal390's receipt is not merely present; it is internally consistent under independent
+re-derivation. With `regionSpanMultiplicities=[1,1,1]` and preferred counts all 1, each unflipped
+span contributes an odd count and each flipped span an even one, so feasibility requires an odd flip
+count: `C(3,1) + C(3,3) = 4`, exactly the reported `parityFeasibleAssignments=4` out of
+`assignmentsExamined=8 = 2³`. Minimum odd flip count is 1, and among the three one-flip solutions
+`[1,1,2]` is lexicographically least — exactly `winningFlips=1 winningCounts=[1,1,2]`. The identity
+demonstrably computed the right thing rather than merely reaching its end.
+
+### V2 — the §10 V4 oracle requirement was implemented, and the risk it guarded did not fire
+
+CB3 took the preferred generalization: `exhaustive_terminal_parity_oracle` now takes the topology and
+span ids, builds `regionSpanMultiplicities[region][span]` from the actual region boundary walks, and
+tests `Σ_s (m_{r,s} · x_s) mod 2 == 0` for **every** region rather than one global XOR. That is a
+faithful model of §17.5, and same-region double incidences vanish automatically through even `m`.
+
+Stated plainly: the conditional risk did **not** materialize. The receipt shows `spanCount=3` and
+`regionSpanMultiplicities=[1,1,1]`, so the fan triangulation's interior edges did not become spans and
+the original single-XOR oracle would have remained valid here. The hardening still paid for itself,
+but for the secondary reason given when it was raised — the multiplicity model the oracle applied is
+now published and auditable from the log instead of being an unstated assumption, and the identity no
+longer silently depends on a fixture property nobody checks.
+
+### V3 — carried obligation: the multiplicity weighting is currently inert
+
+Applying the standard this project applied to `CAND-04`, to a change this reviewer asked for. With
+every multiplicity equal to 1, replacing `(multiplicities[span] * counts[span]) & 1` with
+`counts[span] & 1` would change no test outcome. The generalization is structurally present and
+behaviourally unexercised.
+
+Ordinal385 does not close this. It calls `minimum_t_join_cardinality` directly on a synthetic
+`ParityGraphProblem` whose single edge is the self-loop `{0,0,0}`
+(`tests/GlobalConformityBaselineTests.cpp:359-376`), proving the **T-join solver** treats a self-loop
+as zero-effect. Nothing exercises the end-to-end path — a same-region double **boundary incidence**
+producing `m_s = 2`, the production binder's region parity correctly ignoring it, and the independent
+oracle agreeing.
+
+**Obligation, non-blocking.** This does not affect package119's promotion: 394/394 is real, and §17.5's
+self-loop rule has genuine partial coverage at the solver level. Discharge it in the next turn that
+touches test source — **explicitly not `M4-CP3-CB4`**, whose evidential value depends on being a
+production-wiring turn and nothing else. The discharge is one identity appended to the selector: a
+fixture carrying a same-region double incidence, run through both the production binder and the
+independent oracle, asserting agreement and emitting a `regionSpanMultiplicities` receipt containing a
+`2`. If no such fixture is constructible from current A2b authority, report that instead — it would
+mean same-region double incidence is not production-reachable in available fixtures, which is itself
+worth recording against §17.5.
+
+### V4 — §8's cutover finding corroborates frozen §17.11
+
+§8 item 5 independently reports that hard-rail pairing still groups chart copies by a
+floating/tolerance `support_key` (`1e-9`, `1e12`) plus route metadata before rejecting on
+`InvalidHardRailPairing`. That is exactly the A3-owned half of the pairing predicate identified in
+§17.11, reached by a separate source reading. It confirms the division recorded there: CB4's job on
+that gate is to replace floating `support_key` agreement with exact span/breakpoint identity, while
+A4's own `family`/`advanceSign` conjuncts stay A4-derived and untouched.
