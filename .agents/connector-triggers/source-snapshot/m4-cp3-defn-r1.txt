@@ -1,0 +1,3 @@
+M4-CP3-DEFN-R1 source snapshot trigger.
+Expected semantic/document authority before marker: 29e79b46b0a71aa5ea42a26e93f036be01643e0c
+Purpose: runtime-free definition/review turn source materialization.
