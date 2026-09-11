@@ -1,3 +1,13 @@
+## 2026-09-11 — `M4-CP3-CB2`: family-free parity A3 compiles as candidate package118
+
+`M4-CP3-CB2` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Frozen §17's family/sign-free production-baseline A3 core now exists: exact full-span positive counts, incidence-multiplicity region parity, component-local exterior handling, minimum-cardinality T-join optimization with canonical lex-prefix refinement, compact exact breakpoints, certificate evidence and an independent baseline validator. Twelve prescribed `GlobalConformityBaseline.*` regression/oracle identities compile. Production A3→A4 cutover remains deferred.
+
+The primary implementation commit `0461cc14d4ebe19a5d4ffddf5dc5a5a8ea944d0e` hit one compile-only namespace error in run/job `34553011994 / 103119678993`: `ExactWeight` belongs to sibling `global_conformity_detail`. The bounded repair qualified exactly the three new uses, yielding semantic source `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc`. Retry run/job `34555543569 / 103127378612` linked all eight approved targets through mandatory GMP/GMPXX with no Directional runtime.
+
+Candidate package118 artifact `10182447649` (`m4-cp3-cb2-package118-result-34555543569`) has SHA-256 `1e7b260b5175b77e161bede7ec791a305d11550dd392a11b56757c864d9544d5`; compile-log artifact `10182448078` hashes to `815b33bd493ff41268c6acc60506ae5b8f4d2987f7378fe29746af33cf018b22`. Package `SHA256SUMS` verifies **28/28**, source status is clean, exact source metadata is `c8d8fc8...`, and command-boundary evidence records `runtimeExecution=false` / `exactArithmeticBackend=GMP`.
+
+Candidate selector394 contains **394** rows at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; accepted selector382 is its exact 382-row prefix at `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`. Static owner partition is **30 / 248 / 75 / 41**. Package118/selector394 is not promoted by compile evidence: package117/selector382 **382/382** remains accepted runtime authority; stable accounting remains **47 / 14 / 33**, debt **5**. Exact next is artifact-only `M4-CP3-TB1-EXEC` under `Architecture_M4_CP3_TB1_Test_Benchmark_Plan.md`.
+
 ## 2026-09-11 — `M4-CP3-DEFN-R1`: production A3 incidence contract rebased to exact shared parity
 
 Runtime-free definition/review upheld the CB1 derivation stop and widened its scope: accepted A2b lacks universal source-derived U/V/sign frame authority not only for artificial Cut arcs but also for arbitrary Mandatory hard-feature/source-boundary arcs. Trace-local branch integers are face-gauge-local. Alternative B (field-certify all artificial cuts) and C (invent a deterministic combinatorial frame) are rejected.

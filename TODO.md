@@ -28,15 +28,15 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-CB2` (runtime-free Code + Build next)
+## Current focus — `M4-CP3-TB1-EXEC` (artifact-only runtime execution next)
 
-`M4-CP3-DEFN-R1` is **COMPLETE / RUNTIME-FREE**. Independent re-derivation upheld the CB1 stop and widened it: accepted A2b does not universally publish U/V/sign frame authority for either artificial `Cut` arcs **or** arbitrary `Mandatory` hard-feature/source-boundary arcs. Alternative B (field-certify all cuts) and C (invent a combinatorial frame) are rejected. The frozen production baseline is now Alternative A: one exact count/breakpoint sequence per full A2b arc plus per-region all-quad boundary parity, with family/sign removed from production-baseline incidence authority.
+`M4-CP3-CB2` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. The family/sign-free baseline parity A3 scheduler, certificate and independent validator required by frozen §17 now compile at semantic source `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc`. Twelve new deterministic `GlobalConformityBaseline.*` regression/oracle identities compile, and candidate selector394 preserves accepted selector382 as an exact 382-row prefix.
 
-The exact L1 target objective reduces to minimum-cardinality T-join over region parity residuals plus canonical lex-prefix refinement. For valid bindings `x_s=2` for every span is a constructive feasible witness, so ordinary CP2-style mathematical infeasibility is not a baseline production A3 outcome. A4 owns stronger local field/shape/geometry constructibility and may not renegotiate A3 breakpoints.
+The first compile exposed only an unqualified sibling-namespace `ExactWeight`; the bounded repair qualified the three uses without semantic/test/selector/build-contract change. Retry run/job `34555543569 / 103127378612` is GREEN under mandatory GMP/GMPXX. Candidate package118 artifact `10182447649` hashes to `1e7b260b5175b77e161bede7ec791a305d11550dd392a11b56757c864d9544d5`; package manifest verifies 28/28 and records `runtimeExecution=false`.
 
-Package117 / selector382 **382/382** remains accepted historical framed runtime authority until replacement parity runtime evidence is accepted. Historical CP1/CP2 closure facts are retained, but their production-sufficiency obligations are superseded/re-opened for re-proof inside CP3. Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**; M3 is not reopened.
+Candidate selector394 is **394 rows** at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; first 382 rows exactly equal accepted selector382 at `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`; static owner partition is **30 authority-kernel / 248 producer / 75 completion / 41 validation**. Package117 / selector382 **382/382** remains accepted runtime authority until TB review. Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**.
 
-**Exact next:** `M4-CP3-CB2` under `Architecture_M4_CP3_CB2_Code_Build_Plan.md`. Implement/compile the family-free baseline parity scheduler, certificate, independent validator and new regression/oracle identities while preserving accepted selector382 identities as explicit historical compatibility coverage. Do **not** production-wire A3 into A4 yet; runtime acceptance of the semantic rebase comes first. No Directional runtime in CB2.
+**Exact next:** `M4-CP3-TB1-EXEC` under `Architecture_M4_CP3_TB1_Test_Benchmark_Plan.md`. Execute immutable package118 only: focused rows 383-394 twice, accepted predecessor382, cumulative394 and immutable postflight. No rebuild/repair/mutation, no package promotion and no A3→A4 cutover. TB-EXEC preserves raw evidence and stops at `M4-CP3-TB1-REV`.
 
 ## Carried forward from M1
 
