@@ -1,0 +1,47 @@
+name: Agent M4 CP3 CB1 Guard Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-cb1-drive-apply/trigger.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp3-cb1-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      report_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_run_file: false
+      label: m4-cp3-cb1-drive-apply
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-cb1-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1XZcOD2Oe1jtPXwn12InjXjk_bbEmXXC4
+      patch_sha256: fd3da9ace30dc63531651cec5356f6403f68dcbfd8c3fced3a919232439b2268
+      base_sha: 5898dd5609cb9c4e41fb39a26ab5c8084f61fd09
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: record M4 CP3 CB1 derivation guard stop"
+      retention_days: 14
+    secrets: inherit
