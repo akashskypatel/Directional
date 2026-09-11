@@ -100,7 +100,7 @@ printf 'artifact_id=%s\nartifact_name=%s\nprovider_digest=%s\ndownloaded_zip_sha
 
 unzip -q "$ZIP" -d "$PKG"
 [[ -f "$PKG/SHA256SUMS" ]] || fail_orchestration 'root SHA256SUMS absent'
-(cd "$PKG" && sha256sum -c SHA256SUMS) | tee "$RESULT/manifest-preflight.txt"
+(cd "$PKG" && sha256sum -c SHA256SUMS) | tee "$RESULT/manifest-preflight.txt" || fail_orchestration 'package manifest verification failed'
 manifest_count="$(wc -l < "$PKG/SHA256SUMS")"
 [[ "$manifest_count" -eq 28 ]] || fail_orchestration "manifest count $manifest_count != 28"
 (cd "$PKG" && awk '{print $2}' SHA256SUMS | LC_ALL=C sort) > "$RESULT/manifest-paths.txt"
@@ -125,9 +125,10 @@ census_tree "$PKG" "$RESULT/package-census-before.tsv"
 
 source_archive="$PKG/source/source-${EXPECTED_SOURCE_SHA}.tar.gz"
 [[ -f "$source_archive" ]] || fail_orchestration 'source archive absent'
-tar -xzf "$source_archive" -C "$SOURCE"
+tar -xzf "$source_archive" -C "$SOURCE" || fail_orchestration 'source archive extraction failed'
 census_tree "$SOURCE" "$RESULT/source-census-before.tsv"
 
+set +e
 python3 - "$SOURCE" "$RESULT/identity-map.tsv" "$RESULT/selector-authority.txt" <<'PY'
 import collections, hashlib, pathlib, re, sys
 root=pathlib.Path(sys.argv[1]); mapout=pathlib.Path(sys.argv[2]); report=pathlib.Path(sys.argv[3])
@@ -163,6 +164,9 @@ if cand!=expected_c or pred!=expected_p: raise SystemExit(f'owner partition mism
 mapout.write_text('ordinal\tidentity\tbinary\tsource\n'+''.join(f'{i}\t{x}\t{t}\t{r}\n' for i,x,t,r in records))
 report.write_text('\n'.join(['selector394_rows=394','selector394_lf_sha256='+hashlib.sha256(b).hexdigest(),'selector382_prefix_rows=382','selector382_prefix_lf_sha256='+hashlib.sha256(prefix).hexdigest(),'candidate_owner_partition=30/248/75/41','predecessor_owner_partition=30/236/75/41','static_definition_count=1_for_every_selector_identity'])+'\n')
 PY
+selector_map_rc=$?
+set -e
+[[ "$selector_map_rc" -eq 0 ]] || fail_orchestration "selector/static-owner preflight failed rc=$selector_map_rc"
 cat "$RESULT/selector-authority.txt"
 
 mkdir -p "$EXEC_VIEW/bin" "$EXEC_VIEW/test-data/benchmarks"
@@ -241,7 +245,7 @@ census_tree "$EXEC_VIEW" "$RESULT/execution-view-census-after.tsv"
 cmp -s "$RESULT/package-census-before.tsv" "$RESULT/package-census-after.tsv" || fail_orchestration 'package census changed'
 cmp -s "$RESULT/source-census-before.tsv" "$RESULT/source-census-after.tsv" || fail_orchestration 'source census changed'
 cmp -s "$RESULT/execution-view-census-before.tsv" "$RESULT/execution-view-census-after.tsv" || fail_orchestration 'execution-view census changed'
-(cd "$PKG" && sha256sum -c SHA256SUMS) | tee "$RESULT/manifest-postflight.txt"
+(cd "$PKG" && sha256sum -c SHA256SUMS) | tee "$RESULT/manifest-postflight.txt" || fail_orchestration 'postflight package manifest verification failed'
 [[ "$(wc -l < "$RESULT/manifest-postflight.txt")" -eq 28 ]] || fail_orchestration 'postflight manifest count not 28'
 postflight_complete=true
 
