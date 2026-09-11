@@ -1,6 +1,0 @@
-# M4-CP3-TB1-EXEC temporary-state cleanup
-.agents/connector-triggers/m4-cp3-tb1-exec-20260910.txt
-.agents/connector-triggers/m4-cp3-tb1-source-snapshot-20260910.txt
-.agents/connector-triggers/m4-cp3-tb1-closeout-apply-20260911.txt
-.agents/Directional/turn-payloads/m4_cp3_tb1_exec_harness.sh
-.agents/connector-triggers/turn-cleanup/manifest.txt

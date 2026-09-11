@@ -1,4 +1,0 @@
-purpose=M4-CP3-TB1-EXEC closeout documentation apply
-base_sha=ec0912f759adbe6bf3c68a363e74e4ee40952962
-patch_sha256=d262bab18d798afd9a6ff9b2fdf291d0288e486b810b014f6cb76caf8fb33a18
-runtimeExecution=false
