@@ -1,7 +1,0 @@
-turn=M4-CP3-TB1-R1-EXEC
-artifact_id=10185370005
-artifact_sha256=9fdfe9a1c8f92d52669a82da0ddfca75d58fd8dc7317d5100faff5a85c820fc8
-source_sha=fd532c2f768d0ff6493260deb670cb34b6757712
-caller_commit=ade0a89d725a644939773926a95e9632d5f190a4
-payload_blob_sha=3e46bba9a2ac22ac75fc7b22b63d7be87d982d5d
-retry=3
