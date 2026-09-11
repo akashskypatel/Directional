@@ -1,3 +1,0 @@
-turn=M4-CP3-TB2-PLAN
-purpose=exact source snapshot for runtime-free planning patch
-base=522cdf8e4d505b57c9fad934c514e2afa5c5ec10
