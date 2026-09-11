@@ -4,6 +4,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <iostream>
 #include <map>
 #include <optional>
 #include <stdexcept>
@@ -65,12 +66,15 @@ TriMesh make_square_mesh() {
 }
 
 TriMesh make_triangle_mesh() {
-  Eigen::MatrixXd vertices(3, 3);
+  Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0,
               1.0, 0.0, 0.0,
-              0.0, 1.0, 0.0;
-  Eigen::MatrixXi faces(1, 3);
-  faces << 0, 1, 2;
+              0.0, 1.0, 0.0,
+              0.25, 0.25, 0.0;
+  Eigen::MatrixXi faces(3, 3);
+  faces << 0, 1, 3,
+           1, 2, 3,
+           2, 0, 3;
   TriMesh mesh;
   mesh.set_mesh(vertices, faces);
   return mesh;
@@ -235,16 +239,45 @@ std::vector<int> exact_counts(const GlobalConformityBaselinePlan &plan) {
 struct ExhaustiveParityAnswer {
   int flips = 0;
   std::vector<int> counts;
+  std::size_t assignmentsExamined = 0U;
+  std::size_t parityFeasibleAssignments = 0U;
+  std::vector<std::vector<int>> regionSpanMultiplicities;
 };
 
 ExhaustiveParityAnswer exhaustive_terminal_parity_oracle(
+    const GlobalTopologyPlan &topology,
+    const std::vector<ConformitySpanId> &spans,
     const std::vector<int> &preferred) {
-  bool haveBest = false;
+  if (spans.size() != preferred.size()) {
+    throw std::runtime_error("exhaustive parity oracle span/count size mismatch");
+  }
+
+  std::map<ConformitySpanId, std::size_t> spanIndex;
+  for (std::size_t index = 0U; index < spans.size(); ++index) {
+    if (!spanIndex.emplace(spans[index], index).second) {
+      throw std::runtime_error("exhaustive parity oracle duplicate span");
+    }
+  }
+
   ExhaustiveParityAnswer best;
+  best.regionSpanMultiplicities.assign(
+      topology.regions().size(), std::vector<int>(spans.size(), 0));
+  for (std::size_t region = 0U; region < topology.regions().size(); ++region) {
+    for (const auto &incidence : topology.regions()[region].boundary) {
+      const auto span = ConformitySpanId::from_network_arc(incidence.arc);
+      const auto found = spanIndex.find(span);
+      if (found == spanIndex.end()) {
+        throw std::runtime_error("exhaustive parity oracle missing boundary span");
+      }
+      ++best.regionSpanMultiplicities[region][found->second];
+    }
+  }
+
+  bool haveBest = false;
   const std::size_t combinations = std::size_t{1} << preferred.size();
   for (std::size_t mask = 0U; mask < combinations; ++mask) {
+    ++best.assignmentsExamined;
     int flipCount = 0;
-    int parity = 0;
     std::vector<int> counts;
     for (std::size_t span = 0U; span < preferred.size(); ++span) {
       const bool flip = ((mask >> span) & 1U) != 0U;
@@ -252,17 +285,40 @@ ExhaustiveParityAnswer exhaustive_terminal_parity_oracle(
       const int count = !flip ? preferred[span]
                               : (preferred[span] > 1 ? preferred[span] - 1 : 2);
       counts.push_back(count);
-      parity ^= count & 1;
     }
-    if (parity != 0) continue;
+
+    bool parityFeasible = true;
+    for (const auto &multiplicities : best.regionSpanMultiplicities) {
+      int parity = 0;
+      for (std::size_t span = 0U; span < counts.size(); ++span) {
+        parity ^= (multiplicities[span] * counts[span]) & 1;
+      }
+      if (parity != 0) {
+        parityFeasible = false;
+        break;
+      }
+    }
+    if (!parityFeasible) continue;
+    ++best.parityFeasibleAssignments;
+
     if (!haveBest || flipCount < best.flips ||
         (flipCount == best.flips && counts < best.counts)) {
-      best = {flipCount, counts};
+      best.flips = flipCount;
+      best.counts = counts;
       haveBest = true;
     }
   }
   if (!haveBest) throw std::runtime_error("exhaustive parity oracle found no witness");
   return best;
+}
+
+void write_int_vector(std::ostream &out, const std::vector<int> &values) {
+  out << '[';
+  for (std::size_t index = 0U; index < values.size(); ++index) {
+    if (index != 0U) out << ',';
+    out << values[index];
+  }
+  out << ']';
 }
 
 template <class T>
@@ -330,6 +386,11 @@ TEST(GlobalConformityBaseline,
   EXPECT_TRUE(component.hasExterior);
   EXPECT_TRUE(component.exteriorDemandOdd);
   EXPECT_EQ(3U, component.terminalSpans.size());
+  std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=386 components="
+            << built.value().certificate().components.size()
+            << " hasExterior=" << component.hasExterior
+            << " exteriorDemandOdd=" << component.exteriorDemandOdd
+            << " terminalSpans=" << component.terminalSpans.size() << '\n';
 }
 
 TEST(GlobalConformityBaseline,
@@ -360,25 +421,48 @@ TEST(GlobalConformityBaseline,
   const auto built = directional::geometry::build_global_conformity_baseline(
       fixture.topology, make_baseline_input(fixture, 1.0));
   ASSERT_TRUE(built);
-  EXPECT_EQ((std::vector<int>{1, 1, 2}), exact_counts(built.value()));
+  const auto counts = exact_counts(built.value());
+  EXPECT_EQ((std::vector<int>{1, 1, 2}), counts);
   EXPECT_EQ(EInt(1), built.value().certificate().minimumFlipCount);
+  std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=388 counts=";
+  write_int_vector(std::cout, counts);
+  std::cout << " minimumFlipCount="
+            << built.value().certificate().minimumFlipCount.to_string()
+            << " lexReceipts=" << built.value().certificate().lexReceipts.size()
+            << '\n';
 }
 
 TEST(GlobalConformityBaseline,
      ParityFlipMapsOneToTwoAndLargerToPredecessor) {
   const auto triangle = make_topology_fixture(make_triangle_mesh());
+  const auto oneInput = make_baseline_input(triangle, 1.0);
   const auto oneBuilt = directional::geometry::build_global_conformity_baseline(
-      triangle.topology, make_baseline_input(triangle, 1.0));
+      triangle.topology, oneInput);
   ASSERT_TRUE(oneBuilt);
-  EXPECT_EQ(2, exact_counts(oneBuilt.value()).back());
+  ASSERT_FALSE(oneBuilt.value().certificate().selectedFlips.empty());
+  const auto *oneEntry = oneBuilt.value().find_schedule(
+      oneBuilt.value().certificate().selectedFlips.front());
+  ASSERT_NE(nullptr, oneEntry);
+  EXPECT_EQ(EInt(1), oneEntry->preferredCount);
+  EXPECT_EQ(EInt(2), oneEntry->count);
 
   const auto square = make_topology_fixture(make_square_mesh());
+  const auto largerInput = make_baseline_input(square, 0.5, 1U);
+  ASSERT_FALSE(largerInput.spans.empty());
   const auto largerBuilt = directional::geometry::build_global_conformity_baseline(
-      square.topology, make_baseline_input(square, 0.5, 1U));
+      square.topology, largerInput);
   ASSERT_TRUE(largerBuilt);
-  ASSERT_GE(largerBuilt.value().schedule().front().preferredCount, EInt(2));
-  EXPECT_EQ(largerBuilt.value().schedule().front().preferredCount - EInt(1),
-            largerBuilt.value().schedule().front().count);
+  const auto *largerEntry =
+      largerBuilt.value().find_schedule(largerInput.spans.front().id);
+  ASSERT_NE(nullptr, largerEntry);
+  EXPECT_EQ(EInt(2), largerEntry->preferredCount);
+  EXPECT_EQ(EInt(1), largerEntry->count);
+
+  std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=389 onePreferred="
+            << oneEntry->preferredCount.to_string()
+            << " oneFinal=" << oneEntry->count.to_string()
+            << " largerPreferred=" << largerEntry->preferredCount.to_string()
+            << " largerFinal=" << largerEntry->count.to_string() << '\n';
 }
 
 TEST(GlobalConformityBaseline,
@@ -388,14 +472,35 @@ TEST(GlobalConformityBaseline,
   const auto built = directional::geometry::build_global_conformity_baseline(
       fixture.topology, input);
   ASSERT_TRUE(built);
+  std::vector<ConformitySpanId> spans;
   std::vector<int> preferred;
   for (const auto &entry : built.value().schedule()) {
+    spans.push_back(entry.span);
     preferred.push_back(std::stoi(entry.preferredCount.to_string()));
   }
-  const auto oracle = exhaustive_terminal_parity_oracle(preferred);
+  const auto oracle =
+      exhaustive_terminal_parity_oracle(fixture.topology, spans, preferred);
+  const std::size_t expectedAssignments = std::size_t{1} << preferred.size();
+  EXPECT_EQ(expectedAssignments, oracle.assignmentsExamined);
+  EXPECT_GT(oracle.parityFeasibleAssignments, 0U);
   EXPECT_EQ(oracle.flips,
             std::stoi(built.value().certificate().minimumFlipCount.to_string()));
-  EXPECT_EQ(oracle.counts, exact_counts(built.value()));
+  const auto counts = exact_counts(built.value());
+  EXPECT_EQ(oracle.counts, counts);
+
+  std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=390 spanCount="
+            << preferred.size()
+            << " assignmentsExamined=" << oracle.assignmentsExamined
+            << " parityFeasibleAssignments=" << oracle.parityFeasibleAssignments
+            << " winningFlips=" << oracle.flips << " winningCounts=";
+  write_int_vector(std::cout, oracle.counts);
+  std::cout << " regionSpanMultiplicities=";
+  for (std::size_t region = 0U;
+       region < oracle.regionSpanMultiplicities.size(); ++region) {
+    if (region != 0U) std::cout << ';';
+    write_int_vector(std::cout, oracle.regionSpanMultiplicities[region]);
+  }
+  std::cout << '\n';
 }
 
 TEST(GlobalConformityBaseline,
@@ -409,11 +514,16 @@ TEST(GlobalConformityBaseline,
   EXPECT_FALSE(directional::geometry::validate_global_conformity_baseline_candidate(
       fixture.topology, input, baseline));
 
+  std::size_t tamperRows = 0U;
+
   auto support = baseline;
   support.schedule.front().supportPieces.front().first =
       support.schedule.front().supportPieces.front().second;
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, support));
+  const auto supportError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, support);
+  ++tamperRows;
+  EXPECT_TRUE(supportError);
 
   auto incidence = baseline;
   incidence.incidences.front().orientation =
@@ -421,53 +531,81 @@ TEST(GlobalConformityBaseline,
               directional::authority::Orientation::Forward
           ? directional::authority::Orientation::Reverse
           : directional::authority::Orientation::Forward;
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, incidence));
+  const auto incidenceError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, incidence);
+  ++tamperRows;
+  EXPECT_TRUE(incidenceError);
 
   auto residual = baseline;
   residual.certificate.regions.front().preferredResidualOdd =
       !residual.certificate.regions.front().preferredResidualOdd;
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, residual));
+  const auto residualError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, residual);
+  ++tamperRows;
+  EXPECT_TRUE(residualError);
 
   auto demand = baseline;
   ASSERT_FALSE(demand.certificate.demandedVertices.empty());
   demand.certificate.demandedVertices.pop_back();
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, demand));
+  const auto demandError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, demand);
+  ++tamperRows;
+  EXPECT_TRUE(demandError);
 
   auto flips = baseline;
   ASSERT_FALSE(flips.certificate.selectedFlips.empty());
   flips.certificate.selectedFlips.clear();
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, flips));
+  const auto flipsError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, flips);
+  ++tamperRows;
+  EXPECT_TRUE(flipsError);
 
   auto optimum = baseline;
   optimum.certificate.minimumFlipCount += EInt(1);
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, optimum));
+  const auto optimumError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, optimum);
+  ++tamperRows;
+  EXPECT_TRUE(optimumError);
 
   auto lex = baseline;
   lex.certificate.lexReceipts.front().selectedFlip =
       !lex.certificate.lexReceipts.front().selectedFlip;
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, lex));
+  const auto lexError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, lex);
+  ++tamperRows;
+  EXPECT_TRUE(lexError);
 
   auto count = baseline;
   count.schedule.front().count += EInt(1);
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, count));
+  const auto countError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, count);
+  ++tamperRows;
+  EXPECT_TRUE(countError);
 
   auto digest = baseline;
   digest.semanticDigest ^= 1U;
-  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
-      fixture.topology, input, digest));
+  const auto digestError =
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, digest);
+  ++tamperRows;
+  EXPECT_TRUE(digestError);
+
+  EXPECT_EQ(9U, tamperRows);
+  std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=391 tamperRows="
+            << tamperRows << '\n';
 }
 
 TEST(GlobalConformityBaseline,
      CanonicalPermutationAndReverseOrdinalConsumptionAreInvariant) {
   const auto fixture = make_topology_fixture(make_square_mesh());
-  auto input = make_baseline_input(fixture, 0.5, 1U, true);
+  auto input = make_baseline_input(fixture, 0.25, 1U, true);
   const auto first = directional::geometry::build_global_conformity_baseline(
       fixture.topology, input);
   ASSERT_TRUE(first);
@@ -479,6 +617,7 @@ TEST(GlobalConformityBaseline,
   EXPECT_EQ(exact_counts(first.value()), exact_counts(permuted.value()));
 
   const auto &entry = first.value().schedule().front();
+  ASSERT_EQ(EInt(4), entry.preferredCount);
   ASSERT_GT(entry.count, EInt(1));
   const EInt one(1);
   const auto forward = first.value().breakpoint_location(entry.span, one);
@@ -490,6 +629,14 @@ TEST(GlobalConformityBaseline,
   EXPECT_EQ(entry.count, reverse->localDenominator);
   EXPECT_EQ(one, forward->id.exactOrdinal);
   EXPECT_EQ(entry.count - one, reverse->id.exactOrdinal);
+  std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=392 preferredCount="
+            << entry.preferredCount.to_string()
+            << " entryCount=" << entry.count.to_string()
+            << " forwardOrdinal=" << forward->id.exactOrdinal.to_string()
+            << " reverseOrdinal=" << reverse->id.exactOrdinal.to_string()
+            << " forwardDenominator=" << forward->localDenominator.to_string()
+            << " reverseDenominator=" << reverse->localDenominator.to_string()
+            << '\n';
 }
 
 TEST(GlobalConformityBaseline,
@@ -514,6 +661,13 @@ TEST(GlobalConformityBaseline,
   const auto built = directional::geometry::build_global_conformity_baseline(
       fixture.topology, make_baseline_input(fixture, 1.0));
   ASSERT_TRUE(built);
-  EXPECT_EQ(fixture.topology.regions().front().boundary.size(),
-            built.value().incidences().size());
+  std::size_t topologyBoundaryIncidenceCount = 0U;
+  for (const auto &region : fixture.topology.regions()) {
+    topologyBoundaryIncidenceCount += region.boundary.size();
+  }
+  EXPECT_EQ(topologyBoundaryIncidenceCount, built.value().incidences().size());
+  std::cout << "M4_CP3_BASELINE_RECEIPT ordinal=394 topologyBoundaryIncidences="
+            << topologyBoundaryIncidenceCount
+            << " baselineIncidences=" << built.value().incidences().size()
+            << '\n';
 }
