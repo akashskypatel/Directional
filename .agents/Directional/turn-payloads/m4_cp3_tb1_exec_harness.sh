@@ -182,7 +182,8 @@ preflight_complete=true
 printf 'phase\tordinal\tidentity\tbinary\texit\trun_count\texact_run\tok_count\tfailed_count\tskipped_count\ttimeout\tverdict\traw_log\n' > "$RESULT/all-processes.tsv"
 run_one() {
   local phase="$1" ordinal="$2" identity="$3" binary="$4"
-  local tag="${phase}-$(printf '%03d' "$ordinal")" raw="$RESULT/raw/${tag}.log" res="$RESULT/resources/${tag}.time.txt" work="$RUNTIME/$tag"
+  local tag="${phase}-$(printf '%03d' "$ordinal")"
+  local raw="$RESULT/raw/${tag}.log" res="$RESULT/resources/${tag}.time.txt" work="$RUNTIME/$tag"
   mkdir -p "$work"
   printf 'phase=%s ordinal=%s identity=%s owner=%s command=%s --gtest_filter=%s\n' "$phase" "$ordinal" "$identity" "$binary" "$EXEC_VIEW/bin/$binary" "$identity" >> "$RESULT/commands.log"
   set +e
