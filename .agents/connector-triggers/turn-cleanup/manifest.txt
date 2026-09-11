@@ -1,4 +1,0 @@
-# M4-CP3-CB2 temporary state
-.agents/connector-triggers/m4-cp3-cb2-source-snapshot-20260910.txt
-.agents/connector-triggers/m4-cp3-cb2-drive-apply-20260910.txt
-.agents/connector-triggers/m4-cp3-cb2-compile-20260910.txt

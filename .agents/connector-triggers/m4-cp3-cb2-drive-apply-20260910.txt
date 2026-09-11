@@ -1,4 +1,0 @@
-purpose=M4-CP3-CB2 apply verified closeout Drive patch
-patch_sha256=a959dc8f7fe2583a81039f63acd962b2e4b02ca0d5c6364ffbd776448252ad31
-base_sha=c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc
-retry=1
