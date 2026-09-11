@@ -1,21 +1,21 @@
 # Future Chat Session Handoff — Directional
 
-**Status:** `M4-CP3-TB1-R1-EXEC` COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / PACKAGE119 UNPROMOTED / EXACT NEXT `M4-CP3-TB1-R1-REV`
+**Status:** `M4-CP3-TB1-R1-REV` COMPLETE / APPROVED WITH AMENDMENTS / PACKAGE119 PROMOTED / SELECTOR394 ACCEPTED 394/394 / EXACT NEXT `M4-CP3-CB4`
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-TB1-R1-REV`, runtime-free evidence review and package119 disposition
+**Canonical next turn:** `M4-CP3-CB4`, runtime-free Code + Build production A3→A4 exact shared-breakpoint cutover
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED.
-- M4 package117 / selector382 **382/382** remains latest accepted runtime authority for historical fully framed CP1/CP2.
+- M4 package119 / selector394 **394/394** is the accepted runtime authority for the §17 production-baseline A3 semantic proof surface; package117 / selector382 **382/382** remains retained historical framed CP1/CP2 authority.
 - Stable regression accounting: **47 events / 14 categories / 33 recurrences**.
 - Produced-witness debt: **5**.
 - `M4-CP3-DEFN-R1`: current production-baseline definition is `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 - package118 / selector394 remains immutable historical TB1 evidence at **387/394** and is unpromoted.
 - `M4-CP3-CB3`: complete. Exact semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` changes only `tests/GlobalConformityBaselineTests.cpp` semantically, passes changed-owner preflight and full package compile through mandatory GMP/GMPXX, and executes no Directional runtime.
-- package119 / selector394 is now runtime-proved **394/394 GREEN** by `M4-CP3-TB1-R1-EXEC` with focused rows383-394 **12/12 twice**, accepted predecessor **382/382**, deterministic corrected receipts, and immutable postflight. It remains **unpromoted** pending review.
+- `M4-CP3-TB1-R1-REV` independently upheld package119: focused rows383-394 **12/12 twice**, accepted predecessor **382/382**, cumulative selector394 **394/394**, deterministic corrected receipts, and immutable postflight. Package119 is **promoted** by Review; CP3 itself remains open.
 - production A3→A4 cutover remains blocked.
 
 ## Frozen production A3 contract
@@ -85,19 +85,24 @@ Authoritative artifact-only run/job `34595754914 / 103251084987` consumed packag
 
 Result artifact `10262063263` has SHA-256 `736303476b9287c61534da406ec5ba788df72c95165e08dac5fdb7e91b5d4acc`; diagnostic artifact `10262438089` has SHA-256 `81bbb54cdf08bed7957c6e374f7927455099597b64d60e4e90026f4881a99be2`. Three earlier R1 attempts were orchestration-only and carry no semantic credit. No configure, compile, relink, generated discovery, repair, semantic-input mutation, benchmark, promotion, or production A3→A4 cutover occurred.
 
-## Exact next — `M4-CP3-TB1-R1-REV`
+## R1 review disposition
 
-Perform runtime-free independent evidence review of package119 plus `Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md` and artifacts `10262063263 / 10262438089`. Re-derive the decisive process/receipt/selector/immutability facts, decide package119 disposition, update superseded regression-candidate records if justified, and freeze the next plan. Do **not** rerun tests, compile, mutate source/tests, repair the package, promote package119, or production-wire A3→A4 before that review reaches its own disposition.
+`M4-CP3-TB1-R1-REV` is **APPROVED WITH AMENDMENTS**. Raw artifact review corrects stale copied closeout values: ordinal390 is `regionSpanMultiplicities=[1,1,1]`, ordinal394 is `topologyBoundaryIncidences=3 baselineIncidences=3`; authoritative census-file hashes are package `3fd9e6bb...`, source `70834cfc...`, execution view `97449c61...`, manifest `9861b442...`. These corrections do not change the frozen gate outcome. Candidates `M4-CP3-TB1-REV-CAND-01/02` are CLOSED / RECOVERY PROVED / NON-STABLE. Stable accounting remains **47 / 14 / 33** and debt **5**.
+
+## Exact next — `M4-CP3-CB4`
+
+Execute the runtime-free production cutover plan in `Architecture_M4_CP3_CB4_Code_Build_Plan.md`. Production must construct/validate one §17 baseline plan after A2b, pass it immutably into A4, consume exact span/ordinal shared-boundary identity, and retire floating `support_key` as semantic hard-rail pairing authority while preserving A4-local field family/sign semantics. CB4 may compile/package through the mandatory GMP workflow but must execute no Directional runtime. Its closeout freezes the artifact-only TB2 plan.
 
 ## Current evidence
 
 - normative definition: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §17
-- accepted runtime predecessor: package117 / selector382 **382/382**
+- accepted runtime authority: package119 / selector394 **394/394**
 - historical candidate compile report: `.agents/Directional/Architecture_M4_CP3_CB2_Code_Build_Report.md`
 - historical TB report/review: `.agents/Directional/Architecture_M4_CP3_TB1_Test_Benchmark_Report.md`, `.agents/Directional/Architecture_M4_CP3_TB1_Review_Record.md`
 - frozen CB3 plan: `.agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Plan.md`
 - completed CB3 report: `.agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Report.md`
-- completed corrective runtime plan/report: `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md`, `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md`
+- completed corrective runtime plan/report/review: `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md`, `.agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md`, `.agents/Directional/Architecture_M4_CP3_TB1_R1_Review_Record.md`
+- exact next Code + Build plan: `.agents/Directional/Architecture_M4_CP3_CB4_Code_Build_Plan.md`
 - selector: `.agents/Directional/Architecture_M4_CP3_Required_Green_Selector_394.txt`
 - regression classification: `.agents/Directional/Regression_Root_Cause_Tracker.md` candidates `M4-CP3-TB1-REV-CAND-01/02`
 
@@ -105,16 +110,19 @@ Perform runtime-free independent evidence review of package119 plus `Architectur
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/REVIEW.md
+  - turn-based-coding-agent/references/turns/CB.md
 conditional_modules:
-  - trigger: GitHub connector / artifact evidence handling
+  - trigger: implementation design / production cutover
+    path: turn-based-coding-agent/modules/engineering-guidelines/MODULE.md
+  - trigger: unit-test authoring or repair
+    path: turn-based-coding-agent/modules/unit-testing/MODULE.md
+  - trigger: GitHub connector / work-preservation / compile workflow handling
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M4_CP3_TB1_R1_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Report.md
+  - .agents/Directional/Architecture_M4_CP3_CB4_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP3_TB1_R1_Review_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md#17-m4-cp3-defn-r1-amendment--baseline-conformity-is-exact-shared-subdivision-plus-region-parity
 do_not_preload:
-  - product implementation files unless the review independently establishes a product defect
-  - historical M4 plans already consolidated
+  - historical package118 repair plans
+  - runtime harnesses from TB1-R1
 ```

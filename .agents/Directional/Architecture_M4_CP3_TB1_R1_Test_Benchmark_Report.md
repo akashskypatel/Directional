@@ -5,6 +5,8 @@
 **Date:** 2026-09-11 UTC
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 
+> **R1-REV evidence correction (2026-09-11):** the immutable result artifact is authoritative over copied closeout prose. Review re-opened the raw receipt ledger and census files and corrected three transcription classes below: ordinal390 `regionSpanMultiplicities=[1,1,1]`, ordinal394 incidence counts `3/3`, and the package/source/execution-view census-file SHA-256 values. These corrections do not change any GTest verdict, frozen-plan predicate, immutability conclusion, or process count. Package119 is promoted only by the separate `M4-CP3-TB1-R1-REV` record; this EXEC report retains its historical no-self-promotion boundary.
+
 ## 1. Frozen authority
 
 This execution consumed the unchanged post-CB3 candidate package119 frozen by `M4-CP3-CB3`:
@@ -65,10 +67,10 @@ All seven corrected identities emitted exactly one success-visible receipt per f
 | 386 | `components=1`, `hasExterior=1`, `exteriorDemandOdd=1`, `terminalSpans=3` |
 | 388 | `counts=[1,1,2]`, `minimumFlipCount=1`, `lexReceipts=3` |
 | 389 | `onePreferred=1`, `oneFinal=2`, `largerPreferred=2`, `largerFinal=1` |
-| 390 | `spanCount=3`, `assignmentsExamined=8`, `parityFeasibleAssignments=4`, `winningFlips=1`, `winningCounts=[1,1,2]`, `regionSpanMultiplicities=[2,2,1]` |
+| 390 | `spanCount=3`, `assignmentsExamined=8`, `parityFeasibleAssignments=4`, `winningFlips=1`, `winningCounts=[1,1,2]`, `regionSpanMultiplicities=[1,1,1]` |
 | 391 | `tamperRows=9` |
 | 392 | `preferredCount=4`, `entryCount=4`, `forwardOrdinal=1`, `reverseOrdinal=3`, both denominators `4` |
-| 394 | `topologyBoundaryIncidences=4`, `baselineIncidences=4` |
+| 394 | `topologyBoundaryIncidences=3`, `baselineIncidences=3` |
 
 This closes the specific runtime-evidence holes identified after package118: the exterior-terminal fixture reaches its intended predicate, the lex-prefix schedule is live, both parity-flip mappings are live, the independent exhaustive oracle evaluates region-incidence multiplicity, all nine validator tamper rows execute, the reverse-breakpoint interior case is real, and production/framed structural separation reaches its runtime identity.
 
@@ -100,11 +102,11 @@ No semantic RED, skip, timeout, owner-map ambiguity, or selection mismatch occur
 
 The required censuses are byte-identical before and after execution:
 
-- package census SHA-256: `1727272c36f1cbe46ecdb51cebd77467fcd00e6824c785deab8fa878ad3e712c` before / same after;
-- source census SHA-256: `90f938c6a6fb1e366a3ad25f00a14c692afb772c2c26e5d9ea0caf16c37738dd` before / same after;
-- execution-view census SHA-256: `b2d58ed6fc18e72e1f4772183014d90b543dbae0de9d98ac80b314dab560359e` before / same after.
+- package census SHA-256: `3fd9e6bbfdc077933a66b9ee5942479887b58db9ba4493451aa5b4648c3ebbd0` before / same after;
+- source census SHA-256: `70834cfc5482b0639f2154125c05c5cb5e430b9e98ec452d591178c65846e790` before / same after;
+- execution-view census SHA-256: `97449c614ac3fb5eb67312dead3dca7474ad441ccafb8b05a17fc6ff529b48d1` before / same after.
 
-`sha256sum -c SHA256SUMS` verifies **28/28** both before and after runtime. Package source, tests, fixtures, selectors, binaries, metadata, manifest, modes, sizes, and contents remained unchanged.
+`sha256sum -c SHA256SUMS` verifies **28/28** both before and after runtime; the byte-identical manifest file itself hashes to `9861b442670f013a9a9e8d34298cdff0630d64dfca9bdeed6f10300f59846440`. Package source, tests, fixtures, selectors, binaries, metadata, manifest, modes, sizes, and contents remained unchanged.
 
 ## 8. Benchmark plan
 

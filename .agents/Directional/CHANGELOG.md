@@ -1,3 +1,11 @@
+## 2026-09-11 — `M4-CP3-TB1-R1-REV`: package119/selector394 promoted; production cutover next
+
+Runtime-free review independently reopened package119 plus raw result/log evidence from `34595754914 / 103251084987` and upheld the complete frozen gate: exactly **800** fresh processes, focused rows383-394 **12/12 twice**, predecessor selector382 **382/382**, cumulative selector394 **394/394**, deterministic success receipts, zero RED/SKIP/timeout/selection mismatch, and immutable pre/postflight. Package119 artifact `10185370005` remains `9fdfe9a1...`; result/log artifacts `10262063263 / 10262438089` remain `73630347... / 81bbb54c...`.
+
+Review corrected stale copied EXEC prose from the immutable raw files: ordinal390 is `regionSpanMultiplicities=[1,1,1]`; ordinal394 is `topologyBoundaryIncidences=3 baselineIncidences=3`; package/source/execution-view census-file SHA-256 values are `3fd9e6bb... / 70834cfc... / 97449c61...`, and the manifest file is `9861b442...`. The frozen predicates were already satisfied, so these are documentation transcription corrections only. `M4-CP3-TB1-REV-CAND-01/02` are CLOSED / RECOVERY PROVED / NON-STABLE.
+
+Accepted M4 package authority advances **117 -> 119** and accepted selector authority **382 -> 394**. Historical framed CP1/CP2 evidence remains retained; package118 stays historical/unpromoted. Stable accounting remains **47 / 14 / 33**, produced-witness debt **5**. CP3 remains open because production still has no A3→A4 exact shared-breakpoint handoff. **Exact next: runtime-free `M4-CP3-CB4` under `Architecture_M4_CP3_CB4_Code_Build_Plan.md`; no Directional runtime belongs in CB4.**
+
 ## 2026-09-11 — `M4-CP3-TB1-R1-EXEC`: package119 corrective artifact-only runtime is GREEN
 
 `M4-CP3-TB1-R1-EXEC` is **COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / REVIEW PENDING**. Authoritative run/job `34595754914 / 103251084987` consumed unchanged package119 artifact `10185370005` from semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` and executed exactly **800** fresh processes: focused rows383-394 **12/12 twice** with byte-identical verdict vectors and deterministic receipts for 386/388/389/390/391/392/394; accepted predecessor selector382 **382/382**; cumulative selector394 **394/394**. There were zero REDs, skips, timeouts, or selection mismatches.

@@ -1,8 +1,8 @@
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
-> **Current milestone authority (2026-09-11, `M4-CP3-TB1-R1-EXEC`):** package117/selector382 **382/382** remains accepted M4 runtime authority pending review. Candidate package119/selector394 at semantic source `fd532c2f768d0ff6493260deb670cb34b6757712` is now runtime-proved GREEN by the frozen corrective matrix: focused rows383-394 **12/12 twice** with deterministic receipts, accepted predecessor **382/382**, cumulative selector394 **394/394**, and immutable package/source/execution-view postflight. Package118 remains historical unpromoted TB1 evidence; package119 remains unpromoted until `M4-CP3-TB1-R1-REV` decides disposition. Stable accounting remains **47 / 14 / 33**, debt **5**. Exact next: runtime-free `M4-CP3-TB1-R1-REV`.
+> **Current milestone authority (2026-09-11, `M4-CP3-TB1-R1-REV`):** package119/selector394 **394/394** is accepted §17 production-baseline A3 runtime authority after an APPROVED-WITH-AMENDMENTS review. Package117/selector382 remains retained historical framed CP1/CP2 authority; package118 remains historical unpromoted TB1 evidence. The review corrected stale copied receipt/census values without changing the green raw gate and closed both package118 test-authority candidates as recovery-proved/non-stable. Stable accounting remains **47 / 14 / 33**, debt **5**. CP3 remains open. Exact next: runtime-free Code + Build `M4-CP3-CB4` production A3→A4 cutover.
 
-**Currency.** Package117 stays accepted runtime authority until a replacement parity package is runtime accepted. M3 remains CLOSED / ACCEPTED. Historical CP1/CP2 evidence is not rewritten; only its sufficiency for the production-baseline A3 contract is superseded and must be re-proved inside CP3.
+**Currency.** Package119/selector394 is the accepted production-baseline A3 runtime authority. Package117/selector382 stays retained as historical framed CP1/CP2 evidence; M3 remains CLOSED / ACCEPTED. The accepted A3 semantic core is not yet a production cutover: A4 still needs the CB4 authority handoff.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -52,7 +52,7 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 **Baseline A3 now:** exact full-span support + one positive shared count + compact exact-ordinal breakpoints + per-region all-quad boundary parity. Preferred exact target counts and the L1/lex objective remain unchanged. The optimizer reduces to exact minimum-cardinality T-join on preferred-parity residuals, followed by canonical lex-prefix constrained solves. Because all counts equal to two always satisfy parity, ordinary mathematical infeasibility is not a baseline outcome.
 
-**Exact next:** runtime-free `M4-CP3-TB1-R1-REV` consumes immutable package119 artifact `10185370005`, result artifact `10262063263`, diagnostic artifact `10262438089`, and the completed R1 report. It must independently re-derive the **12/12 twice + 382/382 + 394/394** result, corrected receipt non-vacuity/determinism, selector authority, and immutable postflight before deciding package119 disposition. No rerun, compile, mutation, promotion, or A3→A4 production cutover precedes review disposition.
+**Exact next:** runtime-free Code + Build `M4-CP3-CB4` consumes the accepted package119/selector394 authority as its predecessor and implements the production A3→A4 handoff frozen in `Architecture_M4_CP3_CB4_Code_Build_Plan.md`. It must construct/validate one A3 baseline plan after A2b, pass exact span/ordinal shared-boundary authority into A4, and retire floating `support_key` as semantic hard-rail pairing authority. CB4 compiles/packages only; runtime proof is deferred to TB2.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -164,15 +164,15 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP3 semantic rebase / producer cutover — ACTIVE / NEXT: `M4-CP3-TB1-R1-REV` runtime-free corrective evidence review.**
+1. **M4-CP3 producer cutover — ACTIVE / NEXT: `M4-CP3-CB4` runtime-free Code + Build.**
 
    - CB1's guard stop is upheld; DEFN-R1 widened the missing-frame finding from Cut to arbitrary Mandatory arcs.
    - Baseline production A3 is family/sign-free shared subdivision + region parity, solved exactly by minimum-cardinality T-join + lex refinement.
    - CB2 implements/compiles that semantic core and independent tests only. Runtime TB acceptance comes before production A3->A4 cutover.
    - CB2 compiled it as package118 and TB1 measured selector394 **387/394** with accepted selector382 still **382/382**; package118 is unpromoted.
    - The 7 REDs are test-authority only, but they left 386/388/389/390/391/394 and half of 392 **unproven** — the independent oracle, the tamper matrix, the lex-prefix scheduler and the production/framed separation guarantee all have zero runtime evidence. Do not cite TB1 as partial CP3 progress.
-   - CB3 is complete/compile-green at `fd532c2...`: the one-face helper is a DCEL-valid triangular-boundary disk; ordinal392 uses independently derived `d=4`; ordinal390 models incidence multiplicity; and seven corrected identities emit success-visible receipts. TB1-R1 then proved package119 GREEN without rebuild: focused **12/12 twice**, predecessor **382/382**, cumulative **394/394**, exact receipt determinism, and immutable postflight. Package119 remains unpromoted until runtime-free review decides disposition.
-   - Later CP3 cutover still must remove local target-derived `gridU/gridV` and floating `support_key` pairing, consume exact `{span, exactOrdinal}` authority, and recover the exact-torus `InvalidHardRailPairing` gate.
+   - CB3 is complete/compile-green at `fd532c2...`; TB1-R1 then proved package119 GREEN without rebuild: focused **12/12 twice**, predecessor **382/382**, cumulative **394/394**, exact receipt determinism, and immutable postflight. R1-REV promotes package119/selector394 and closes both package118 test-authority candidates. The review also corrects stale copied receipt/census values from the EXEC closeout without changing the raw outcome.
+   - CB4 now owns the remaining production cutover: construct/validate A3 after `GlobalTopologyPlan`, establish the A2b-to-A4 region authority mapping, remove local target-derived decisions from shared boundaries, retire floating `support_key` pairing in favor of exact `{span, exactOrdinal}` identity, and compile a torus falsifier for later TB2. A4-local family/advance-sign semantics remain independently owned.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical, CP4-owned.** CP3 must remove the exact-torus pairing blocker, but the three inherited produced-witness contract re-proofs remain CP4 gating and debt stays 5 until actual CP4 runtime acceptance.
 
