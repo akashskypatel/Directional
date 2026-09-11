@@ -130,3 +130,79 @@ The sole authoritative next plan is `Architecture_M4_CP3_CB4_R1_Code_Build_Plan.
 - Accepted package119 / selector394 authority changed: **no**
 - Stable regression accounting changed: **no**, remains **47 / 14 / 33**
 - Produced-witness debt changed: **no**, remains **5**
+
+---
+
+## 9. Independent verification addendum (reviewing agent)
+
+Runtime-free. The decision is **upheld**: the CB4 derivation-guard stop was genuine, the frozen §17.12
+amendment is the right resolution, and splitting the work so CB4-R1 publishes authority without
+beginning the A4 cutover is correct sequencing. Accepted authority remains package119 / selector394
+**394/394**; accounting stays **47 / 14 / 33**, debt **5**.
+
+### V1 — the stop was genuine, verified from the published structure
+
+`GlobalTopologyArc` (`include/directional/geometry/GlobalTopologyPlan.h:43-56`) publishes `cutEdge` as
+a whole `std::optional<SourceEdgeTopologyKey>` — an entire source edge, with no sub-interval endpoints
+and no ordered support pieces. A cut arc split by an interior network node therefore has no published
+exact locus for where it starts and stops along that edge, and §17.3 requires exact ordered support
+pieces as the only source-location authority for breakpoints. The three workarounds CB4 rejected map
+exactly onto the three standing prohibitions: the whole parent edge would overlap neighbouring spans
+and break shared subdivision, construction-private synthetic node numbering violates single-writer,
+and floating reconstruction violates the no-tolerance rule. Stopping was correct, not conservative.
+
+### V2 — the resolution's key move is the right one
+
+The amendment's decisive observation is rule 6: the adjacent exact cut-node parameters are **already
+known during A2b construction** and merely unpublished. That reframes the gap from "missing authority"
+to "unpublished authority", and publishing what the producer already holds is the only resolution
+consistent with both single-writer and exact arithmetic — every alternative requires a downstream
+consumer to re-derive what an upstream stage already knew. Rule 10's "copy the A2b path 1:1, never
+reconstruct" and rule 9's requirement that validation rebuild expected support from source plus
+accepted A2a/A2a′ inputs rather than from the candidate's own vector keep that discipline intact.
+
+CB4-R1 §8 also guards the premise rather than assuming it: if an arc kind lacks exact construction-time
+endpoint authority *before* publication, the turn stops instead of inventing one. That is the right
+place for that check.
+
+### V3 — the "additive" claim is sound, and here is why
+
+Rule 11 asserts the strengthening cannot disturb arc IDs, order, rotations, region walks or disc
+certificates. That holds, for a reason worth recording rather than re-deriving later:
+
+1. `GlobalTopologyOrientedArc` (`:35-40`) carries only `{NetworkArcId arc, Orientation}` — it does not
+   embed the arc struct. Region boundaries and node rotations therefore reference arcs by id, and a new
+   field on `GlobalTopologyArc` cannot reach them.
+2. `GlobalTopologyArc::operator<=>` is defaulted and compares members in declaration order beginning
+   with the unique `id`, so any appended field is unreachable for ordering purposes. Arc sort order is
+   decided by `id` alone.
+
+The rule-9 digest widening is likewise safe for accepted identities: no test asserts a hard-coded digest
+literal, so digests are compared structurally — producer against validator, or one build's outcome
+against another's — and both sides move together when the path joins the hash.
+
+### V4 — REQUIRED ADDITION: reconcile the new path against the arc's existing `sourceFaces`
+
+`GlobalTopologyArc` already publishes `std::vector<SourceFaceTopologyKey> sourceFaces` (`:53`). After
+this amendment the same arc also publishes an exact ordered source path whose pieces carry faces and
+edges. Those are two published source-location authorities for one arc, and §4 of the CB4-R1 plan does
+not require them to agree — item 3 checks path endpoint loci against `firstNode`/`secondNode`, and
+nothing checks traversed faces against `sourceFaces`.
+
+This is not hypothetical drift between unrelated fields. For `Trace` arcs the two are co-derived from
+the *same* upstream range: `sourceFaces` is built from `trace.segments[segment].sourceFace` across
+`[first.position, second.position)` (`src/geometry/EmbeddedGraphTopology.cpp:550-553`), and rule 7
+derives the published chain from the same `[firstSegment, onePastLastSegment)` A2a segment authority.
+They must agree by construction — which is exactly why the check is cheap and why a failure would be
+highly diagnostic rather than noisy. `sourceFaces` has **189** consumer sites in `src/geometry` alone,
+so silent divergence between the two authorities would propagate widely before anyone noticed.
+
+**Required in CB4-R1 §4, before compile acceptance.** Add a validation conjunct: the face set traversed
+by the published exact path must be exactly consistent with the arc's published `sourceFaces` — same
+faces, same order where the path is face-carried — and edge-carried pieces must lie on the arc's
+`cutEdge` / `mandatoryEdge` as applicable. If the intent is instead that `sourceFaces` become a derived
+view of the path, state that and name the single writer; what must not survive this turn is two
+independent authorities for the same geometric fact with no stated relation between them.
+
+This does not change the decision or the scope split. It closes the one place where an additive
+publication can create a contradiction rather than only adding information.

@@ -4,6 +4,26 @@
 
 New normative §17.12 makes A2b the publication owner for one canonical exact path per `Mandatory`, `Trace`, and `Cut` arc, requires independent reconstruction/validation and digest binding, and makes A3 copy each path 1:1 into its span. The old all-in-one CB4 cutover plan is superseded and replaced by narrower `Architecture_M4_CP3_CB4_R1_Code_Build_Plan.md`: publish/validate exact A2b support and construct one production A3 plan only; A4 semantics remain unchanged until artifact-only TB2 proves the new boundary. No product/test/selector/CMake logic changed, and no compile or Directional runtime executed. Package119/selector394 remains accepted **394/394**; stable accounting remains **47 / 14 / 33**, debt **5**. **Exact next: `M4-CP3-CB4-R1`.**
 
+**Verification amendment (reviewing agent, review record §9).** The decision is upheld: the CB4 derivation-guard
+stop was genuine, §17.12 is the right resolution, and deferring the A4 cutover so CB4-R1 only publishes authority
+is correct sequencing. The stop was verified from the published structure rather than the narrative —
+`GlobalTopologyArc` carries `cutEdge` as a whole `SourceEdgeTopologyKey` with no sub-interval endpoints, so a cut
+arc split by an interior network node has no exact locus, and the three rejected workarounds map exactly onto the
+standing prohibitions (parent-edge overbroad, construction-private numbering, floating reconstruction). The
+amendment's decisive move is rule 6: the adjacent exact cut-node parameters are *already known during A2b
+construction* and merely unpublished, so the gap is publication, not derivation — the only resolution consistent
+with single-writer and exact arithmetic. Rule 11's "additive" claim was verified rather than accepted:
+`GlobalTopologyOrientedArc` carries only `{arc id, orientation}` so region walks and rotations reference arcs by
+id, and `GlobalTopologyArc::operator<=>` is defaulted with the unique `id` first, so an appended field is
+unreachable for ordering; separately, no test asserts a hard-coded digest literal, so the rule-9 digest widening
+cannot break accepted identities. One required addition to CB4-R1 §4: the new exact path must be reconciled
+against the arc's existing `sourceFaces`, which the plan left unrelated. For `Trace` arcs both derive from the
+same `[firstSegment, onePastLastSegment)` A2a range (`EmbeddedGraphTopology.cpp:550-553`), so agreement holds by
+construction and a failure would be diagnostic; `sourceFaces` has 189 consumer sites in `src/geometry`, so silent
+divergence between two published source-location authorities would propagate widely. Accepted authority remains
+package119/selector394 **394/394**; accounting unchanged at **47 / 14 / 33**, debt **5**. ORIENTATION was stale
+again — currency line and open-problem item 1 still named CB4 as the next turn — and is corrected.
+
 ## 2026-09-11 — `M4-CP3-CB4`: exact-path derivation guard fails before production cutover
 
 `M4-CP3-CB4` is **HALTED / PRE-MUTATION DERIVATION GUARD / NO SEMANTIC MUTATION / NO COMPILE / NO RUNTIME**. Its mandatory six-class census is complete, but the accepted A2a′/A2b public products cannot derive the exact §17 ordered support of every full split `Cut` arc. A2b construction knows exact cut-crossing parameters and binds them to synthetic `NetworkNodeId`s inside `EmbeddedGraphTopology.cpp`, then publishes `GlobalTopologyArc` without that exact endpoint-parameter binding; `SurfaceCutGraph` likewise exposes cut edges/certificates rather than the exact split points. Split `Mandatory` arcs have the same publication class of problem. CB4 plan §3 therefore requires stop-and-review rather than reconstructing or inventing a convention.

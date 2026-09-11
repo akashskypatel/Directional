@@ -58,6 +58,11 @@ Strengthen the canonical candidate and validator so exact support is not self-au
 3. verify path endpoint loci agree with `firstNode` / `secondNode` bindings;
 4. reject empty, disconnected, degenerate, off-carrier, incorrectly canonicalized or parent-edge-overbroad support;
 5. include exact support in A2b semantic digest/hash and validation candidate coverage.
+6. reconcile the published path against the arc's existing `sourceFaces`: the traversed face set must be exactly
+   consistent with it (same faces, same order where face-carried), and edge-carried pieces must lie on the arc's
+   `cutEdge` / `mandatoryEdge`. Two published source-location authorities on one arc may not go unreconciled —
+   for `Trace` arcs both derive from the same `[firstSegment, onePastLastSegment)` A2a range, so agreement holds
+   by construction and any failure is diagnostic. See the CB4-REV record §9 V4.
 
 Do not infer expected support from the candidate's own support vector and do not use floating geometry/tolerance as an oracle.
 
