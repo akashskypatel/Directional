@@ -1,4 +1,0 @@
-turn=M4-CP3-TB2-REV
-purpose=independent-review exact current-head source snapshot before durable review closeout
-frozen_parent_head=81ad8c66744fc9c68c04d207c451bdc97a2882fd
-runtimeExecution=false
