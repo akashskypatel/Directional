@@ -1,4 +1,0 @@
-turn=M4-CP3-CB4-R1
-purpose=apply preserved exact A2b support publication + production A3 binder patch
-base_sha=c7ed09b42d4a7cd3a5a8b4ea5eacce6683eaa9c8
-retry=0
