@@ -1,4 +1,0 @@
-turn=M4-CP3-CB4-REV
-source_sha=26c6bbd481debc6f8f6b613aff1bb7e7fae40388
-purpose=independent review and plan source snapshot
-runtimeExecution=false
