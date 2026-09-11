@@ -24,6 +24,13 @@ Before semantic mutation prove from current source that:
 4. exact target preference `d_s`, compact `{span, exactOrdinal}` breakpoints and exact digest/support vocabulary can be reused without changing semantics;
 5. any retained old framed CP1/CP2 solver path can be made **explicitly non-production and structurally unreachable** from the new production-baseline binder.
 
+**Not a guard failure.** The A4 hard-rail pairing predicate tests `first.family != second.family ||
+first.advanceSign == second.advanceSign` (`src/geometry/SurfaceCellTracing.cpp:15532-15533`). This is **not**
+the A3 family/sign guard 2 removes, and it must not halt this turn: those are plain `int`s local to A4's phase
+front (`include/directional/geometry/SurfaceCellTracing.h:1269-1270`), and `ConformityFamily` appears zero
+times in that translation unit. Frozen §17.11 records the full division of that predicate into A3-owned and
+A4-owned conjuncts.
+
 If any guard fails, stop before semantic mutation and route back to definition review. Do not invent an optional-family fallback or implicit mode switch.
 
 ## 3. Smallest implementation scope

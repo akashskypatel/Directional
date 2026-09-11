@@ -758,3 +758,23 @@ Until replacement runtime evidence is accepted, package117/selector382 remains t
 3. Only after that runtime acceptance may a later CP3 Code + Build turn perform the production A3->A4 cutover, retire local target/grid and floating `support_key` shared-boundary authority, and attack the exact-torus `InvalidHardRailPairing` gate.
 
 **Exact next: `M4-CP3-CB2` under `Architecture_M4_CP3_CB2_Code_Build_Plan.md`.** No Directional runtime belongs in that Code + Build turn.
+
+### 17.11 The removed A3 family/sign is not the A4 hard-rail family/sign
+
+Recorded because §17.3 and the CP3 exit otherwise read as contradictory. CP3 must remove the exact-torus
+`InvalidHardRailPairing` blocker **through A3 authority**, yet that predicate tests
+`first.family != second.family || first.advanceSign == second.advanceSign`
+(`src/geometry/SurfaceCellTracing.cpp:15532-15533`). No CB turn may treat this as a definition conflict.
+
+`SurfaceFrontEdge::family` and `::advanceSign` are plain `int`s
+(`include/directional/geometry/SurfaceCellTracing.h:1269-1270`), A4-local phase-front values derived from A4's
+own field frame; `ConformityFamily` appears **zero times** in `src/geometry/SurfaceCellTracing.cpp`. The
+phase-front layer never consumed the A3 family type, so §17.3 cannot affect those conjuncts. The same idiom
+recurs at `:11642-11643`, `:13291-13292` and `:14741-14742`.
+
+The A3-owned conjuncts are the shared-boundary agreements: `support_key` equality across the pair
+(`:15527-15528`), route reversal (`:15529`), and the grouping key (`:15503-15505`) that decides
+`pair.size() == 2`. An immutable exact shared subdivision gives both sides identical exact breakpoints, turning
+that agreement into a guarantee instead of a floating coincidence — which is why §17.10 pairs the cutover with
+retiring floating `support_key` shared-boundary authority. A4 keeps deriving its own `family`/`advanceSign`
+locally and A3 never supplies them.

@@ -6,6 +6,25 @@ Frozen definitions §17 now makes baseline production A3 family/sign-free: one e
 
 Package117/selector382 **382/382** remains accepted historical framed runtime authority; stable accounting stays **47 / 14 / 33**, debt **5**. Historical CP1/CP2 closure facts remain, but their production-sufficiency obligations are superseded/re-opened for re-proof inside CP3. No M3 authority is reopened and no runtime/compile occurred. Exact next is runtime-free `M4-CP3-CB2`, which implements/compiles the parity semantic core before a new artifact-only TB and later producer cutover.
 
+**Verification amendment (reviewing agent, review record §10).** The amendment is upheld and the parity
+reduction was re-derived step by step rather than accepted: flip cost is exactly 1 with the `d_s = 1` case
+correctly avoiding `x_s = 0`; same-region self-loops contribute `2·x_s ≡ 0 (mod 2)` so they can never repair a
+residual and are never flipped at primary optimum; residual-demand cardinality is even by the handshake
+argument, so a T-join exists; minimum-cardinality T-join is exactly solvable via shortest paths plus
+minimum-weight perfect matching, which redirects rather than strands the exact matching surface built for
+CP1/CP2; and the lex tie-break is the standard constrained-optimum construction, correct in both branches of
+"smaller resulting `x_s`". One unstated fact is now frozen as **§17.11**: §17.3's removal of
+`ConformityFamily`/`ConformitySign` from the A3 baseline reads as contradicting CP3's exit, which requires the
+exact-torus `InvalidHardRailPairing` blocker be removed *through A3 authority* while that predicate tests
+`first.family != second.family || first.advanceSign == second.advanceSign`. They do not conflict —
+`SurfaceFrontEdge::family`/`advanceSign` are plain `int`s local to A4's phase front and `ConformityFamily`
+appears zero times in `SurfaceCellTracing.cpp`, while the predicate's A3-owned conjuncts (`support_key`
+agreement, route reversal, grouping key) are exactly what an immutable exact shared subdivision guarantees. The
+CP3 exit stays reachable, and the CP3-CB2 guards now say so explicitly so the next turn does not halt on it.
+Also confirmed: CP2's closure is narrowed, not invalidated — §17.5 makes the infeasible-subset outcomes
+unreachable in production, and §17.9 accounts for that honestly as superseded production-sufficiency while
+package117/selector382 remains the accepted runtime authority. Accounting unchanged at **47 / 14 / 33**, debt **5**.
+
 ## 2026-09-11 — `M4-CP3-CB1`: derivation guard fails; semantic mutation stops before build
 
 `M4-CP3-CB1` executed its mandatory source-authority derivation guard against a fresh exact source snapshot and **HALTED / STOP-GUARD** before any product/test/selector/CMake semantic mutation. Frozen A3 requires every production A2b boundary occurrence to carry exact span/support plus U/V family, +/- sign and orientation, but accepted A2b includes artificial `GlobalTopologyArcKind::Cut` arcs whose `SurfaceCutGraph` authority publishes only selected source cut edges/certificates. `EmbeddedGraphTopology::build_arcs` binds those cuts exactly but selects no field branch; the atlas exposes four local branches and no accepted unique family/sign rule for an arbitrary cellularizing cut. The accepted torus has 28 cut edges, so the gap is production-reachable. CP1/CP2's known-feasible fixture assigns U and alternating sign synthetically and does not establish production semantics.

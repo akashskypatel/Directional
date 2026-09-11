@@ -129,3 +129,86 @@ This review supersedes the current-review role of the CP2 R1 review and consumes
 - `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md` — 60 lines.
 
 Full prior text remains recoverable from Git history. No selector, closure record, durable policy, normative definition, or unresolved runtime report is folded.
+
+---
+
+## 10. Independent verification addendum (reviewing agent)
+
+Runtime-free. The amendment is **upheld**: the CB1 stop was genuine, the widened scope is correct,
+and the parity reduction is mathematically sound. One unstated fact is recorded as frozen §17.11
+because without it the next Code + Build turn can reasonably halt on the same guard again.
+
+### V1 — the reduction is correct, checked step by step
+
+Each step of §17.6 was re-derived rather than accepted:
+
+- **Flip cost is exactly 1.** `y_s=1` gives `x_s = d_s - 1` when `d_s > 1` and `x_s = 2` when
+  `d_s = 1`; both are one unit from `d_s`, and the `d_s = 1` case correctly avoids `x_s = 0`, which
+  the positivity rule forbids.
+- **Self-loops have zero parity effect.** A same-region two-incidence span contributes `2·x_s ≡ 0
+  (mod 2)` whatever `x_s` is, so it can never repair a residual — and since flipping still costs 1,
+  it is never flipped at primary optimum. §17.6's closing claim follows from the procedure rather
+  than standing beside it.
+- **Even residual is the handshake argument.** Every non-loop span contributes to exactly two
+  region parities, so on a closed component the residual-demand set has even cardinality and a
+  T-join exists. The virtual exterior vertex, kept local to its connected incidence component, is
+  what makes one-ended source-boundary spans behave the same way.
+- **Minimum-cardinality T-join is the right object**, and it is exactly solvable in polynomial time
+  through shortest paths plus minimum-weight perfect matching. The accepted exact matching surface
+  built for CP1/CP2 therefore remains the correct primitive under integer cardinality weights; this
+  amendment redirects that investment rather than stranding it.
+- **The lexicographic tie-break is the standard constrained-optimum construction.** Fixing a prefix
+  and keeping a choice iff the constrained optimum is still `K*` maintains the stated invariant, and
+  the "smaller resulting `x_s`" branch is right in both directions — flip when `d_s > 1` (giving
+  `d_s - 1 < d_s`), no flip when `d_s = 1` (since flipping would give `2 > 1`).
+
+§17.7's contract also answers the defect class that dominated CP1/CP2: the validator rebuilds the
+incidence graph and recomputes the T-join and each lex-prefix optimum independently of the producer,
+per-decision receipts are published rather than only the final answer, and tamper coverage is
+required per field family rather than per broad noun.
+
+### V2 — the amendment does **not** put CP3's exit out of reach (recorded as §17.11)
+
+This is the gap. §17.3 removes `ConformityFamily` / `ConformitySign` from the production baseline,
+while CP3's frozen exit requires the exact-torus `InvalidHardRailPairing` blocker to be removed
+**through A3 authority** — and that blocker's predicate literally tests
+`first.family != second.family || first.advanceSign == second.advanceSign`
+(`src/geometry/SurfaceCellTracing.cpp:15532-15533`). Read side by side and with nothing connecting
+them, those two statements look like a contradiction, and §17 never addresses the torus gate except
+to defer it.
+
+They are not in contradiction, and the reason is checkable:
+
+1. `SurfaceFrontEdge::family` and `::advanceSign` are plain `int`s
+   (`include/directional/geometry/SurfaceCellTracing.h:1269-1270`) — A4-local phase-front values
+   derived from A4's own field frame. They are not the A3 `ConformityFamily` / `ConformitySign`
+   enums under another name.
+2. `ConformityFamily` appears **zero times** in `src/geometry/SurfaceCellTracing.cpp`. The phase-front
+   layer has never consumed A3's family type, so removing it from the A3 baseline cannot change that
+   predicate. The same `family`/`advanceSign` idiom recurs at lines 11642-11643, 13291-13292 and
+   14741-14742, confirming it is A4's own pervasive local structure.
+3. The conjuncts of the pairing predicate that **are** A3-owned are exactly the ones exact shared
+   subdivision fixes: `support_key(first.from) != support_key(second.to)` and its mirror
+   (`:15527-15528`), `first.route != second.route.reversed()` (`:15529`), and the grouping key
+   (`:15503-15505`) whose collisions decide `pair.size() == 2`. An immutable shared subdivision makes
+   both sides of a shared boundary carry *identical exact breakpoints*, which is precisely what turns
+   that agreement from floating-point coincidence into a guarantee — and is why §17.10 pairs the
+   cutover with retiring floating `support_key` shared-boundary authority.
+
+So the blocker's A3-owned half is addressed by the baseline contract and its A4-owned half was never
+A3's to supply. CP3's exit stays reachable. Recorded as frozen §17.11 so the next CB does not
+re-derive this under a halt.
+
+### V3 — CP2's closure is narrowed, not invalidated
+
+§17.5 makes `ConformityInfeasibleSubset` and the `BalanceCut | PositivityCut | ParityCut` outcomes
+unreachable in the production baseline, since `x_s = 2` everywhere is always a positive witness. The
+CP2 exit conjunct I upheld one turn ago — a genuinely infeasible constructed component yielding a
+verified subset-scoped fact — therefore certifies a surface production will no longer reach. §17.9
+states this honestly: package117/selector382 remains accepted historical runtime evidence and the
+latest accepted M4 runtime authority, while the *production-sufficiency* part of those obligations is
+superseded. That is the correct accounting; the closure was valid for the contract in force when it
+was made, and nothing in it is withdrawn. The framed surface must be kept as an explicitly separate
+layer (§17.3) so accepted selector382 identities stay executable and green.
+
+No stable regression arises from a definition turn: accounting remains **47 / 14 / 33**, debt **5**.
