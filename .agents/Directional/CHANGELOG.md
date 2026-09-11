@@ -6,6 +6,25 @@ CB3 is frozen as a **single-file test-only correction** in `tests/GlobalConformi
 
 No compile/runtime or source/test/build mutation occurred in TB1-PLAN itself. Package118 stays unpromoted; package117/selector382 **382/382** stays accepted; stable accounting remains **47 / 14 / 33**, debt **5**. No further independent review is requested because the user-supplied independent amendment is incorporated directly. **Exact next: `M4-CP3-CB3`.**
 
+**Independent review of the frozen plan (reviewing agent, plan §10).** `Architecture_M4_CP3_CB3_Code_Build_Plan.md`
+is accurate and complete on what it covers, and the turn type is right — test-source repair is Code + Build, not
+artifact-only TB. Verified independently rather than restated: Correction A's replacement mesh is a valid DCEL
+disk (`V - E + F = 4 - 6 + 3 = 1`) with `v3` strictly interior and binary-exact, adding interior edges but no new
+boundary edges, so ordinal386's hard-coded `components.size()==1` and `terminalSpans.size()==3` both survive — which
+is also why the "do not substitute a square" prohibition is substantive rather than stylistic. Correction B's
+derivation matches `derive_preferred_count_exact` exactly (`0.25/0.0625 = 4` per half, `×2` pieces `= 8`, `×
+supportPieces.size() = 16`, and the perfect-square rounding resolves `nearest = 4`), so `d_s = 4` and §17.6 admits
+only `x_s ∈ {3,4}`, making the `count > 1` precondition independent of the parity branch taken; the unit-edge
+premise was checked against `make_square_mesh()`. Both pinned selector authorities hash byte-exact. One required
+addition (plan §10 V4, with a matching stop rule): ordinal390's `exhaustive_terminal_parity_oracle` reduces
+feasibility to a **single global XOR**, valid only while every span has exactly one region incidence — yet the
+identity feeds it *every* schedule entry, and Correction A adds three interior edges whose spans would be
+same-region self-loops with zero parity effect under §17.6. Production would ignore them while the oracle XORs
+them, turning ordinal390 RED again for a new reason. Neither §8's stop rule nor §5's receipts catch this, since
+the fixture instantiates correctly and the oracle counts its assignments correctly while modelling the wrong
+constraint. CB3 must weight each span by region-incidence multiplicity (`(m_s · x_s) mod 2`) or assert the
+single-incidence precondition explicitly, and emit the multiplicities used in the ordinal390 receipt.
+
 ## 2026-09-11 — `M4-CP3-TB1-REV`: seven candidate REDs are test-authority defects; package118 remains unpromoted
 
 Runtime-free review independently re-opened package118 TB1 raw artifact `10183361985` and exact review-source snapshot `3ec69ffeb88f6378ca8a7a680ef8f3a7e4be64f4`. Mechanical evidence is upheld: **800** fresh processes; focused rows383-394 **5/12 twice** with identical vectors; accepted predecessor **382/382**; cumulative **387/394**; zero timeout/skip/selection mismatch; package/source/execution-view pre/post censuses identical. No Directional runtime or compile occurred in review.
