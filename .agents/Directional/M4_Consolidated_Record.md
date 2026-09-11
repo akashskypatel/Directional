@@ -3,7 +3,7 @@
 **Status:** CURRENT M4 FAMILY RECORD
 **Last updated:** 2026-09-10 at `M4-CP2-TB2-R1-REV` promotion / CP2 closure
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package117/selector382 remains accepted M4 runtime authority at **382/382**. Package118/selector394 remains unpromoted candidate evidence after `M4-CP3-TB1-REV`, whose current review authority is `Architecture_M4_CP3_TB1_Review_Record.md`. Exact next is runtime-free `M4-CP3-TB1-PLAN`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package117/selector382 remains accepted M4 runtime authority at **382/382**. Package118/selector394 remains unpromoted candidate evidence after `M4-CP3-TB1-REV`, whose current review authority is `Architecture_M4_CP3_TB1_Review_Record.md`. Exact next is `M4-CP3-CB3` under `Architecture_M4_CP3_CB3_Code_Build_Plan.md`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -233,6 +233,15 @@ TB1 artifact-only execution run/job `34557818974 / 103134172994` completed all *
 
 No production A3 defect is established. Package118 cannot be promoted because seven intended contracts remain without valid green runtime proof. Package117/selector382 stays accepted; stable accounting remains **47 / 14 / 33**, debt **5**. Exact next is `M4-CP3-TB1-PLAN`, runtime-free planning of the smallest test-only correction.
 
+
+
+## 2.18 `M4-CP3-TB1-PLAN` — independent amendment absorbed; test-only recovery CB frozen
+
+TB1-PLAN consumed the independent verification amendment at `2a3dcd3cbfd4a862262f76efc10fbce975b7c154`. Both review findings are upheld, but the evidence boundary is stricter than the original closeout: package118 proves only ordinals **383,384,385,387,393**; **386,388,389,390,391,394** and the breakpoint half of **392** remain uncertified. TB1 is not partial CP3 acceptance.
+
+The authoritative successor is `Architecture_M4_CP3_CB3_Code_Build_Plan.md`. CB3 changes only `tests/GlobalConformityBaselineTests.cpp`: a four-vertex/three-face triangular-boundary disk replaces the invalid one-face helper; ordinal392 uses an independently derived `targetSize=0.25` / preferred count `4` fixture; all seven previously blocked identities emit deterministic success-visible receipts, with explicit exhaustive-oracle comparison count, nine-row tamper execution count, and live breakpoint ordinal/denominator evidence. Selector394 bytes/hash and its accepted selector382 prefix are frozen. Product source remains unchanged.
+
+No runtime, compile, test-source mutation, package promotion or A3→A4 cutover occurred during planning. Stable accounting remains **47 / 14 / 33**, debt **5**; accepted authority remains package117/selector382. No additional independent Review is requested because the user-supplied amendment is incorporated. **Exact next: `M4-CP3-CB3`.**
 
 ## 3. Folded document index
 

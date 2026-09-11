@@ -28,15 +28,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-TB1-PLAN` (runtime-free corrective planning next)
+## Current focus — `M4-CP3-CB3` (test-authority recovery Code + Build next)
 
-`M4-CP3-TB1-REV` is **COMPLETE / PACKAGE118 NOT PROMOTED / TWO NON-STABLE TEST-AUTHORITY CANDIDATES**. Review independently re-opened the raw TB artifact and exact source snapshot and upheld the mechanical facts: focused rows383-394 **5/12 twice** with identical vectors, accepted selector382 **382/382**, cumulative selector394 **387/394**, zero timeout/skip/selection mismatch and immutable package/source/execution-view postflight.
+`M4-CP3-TB1-PLAN` is **COMPLETE / AUTHORITATIVE TEST-ONLY RECOVERY PLAN FROZEN**. The independent amendment at `2a3dcd3c...` upheld both TB1 review findings and sharpened the evidence boundary: only ordinals **383,384,385,387,393** are proved by package118; **386,388,389,390,391,394** plus the breakpoint half of **392** remain unproved. Package118 is still unpromoted; package117/selector382 **382/382** remains accepted. Stable accounting remains **47 / 14 / 33**, debt **5**.
 
-All seven REDs are now classified. `M4-CP3-TB1-REV-CAND-01` covers ordinals **386,388,389,390,391,394**: their shared one-face triangle fixture is rejected by strict `TriMesh` DCEL consistency before any intended baseline assertion. `M4-CP3-TB1-REV-CAND-02` covers ordinal **392**: the test assumes the first schedule count exceeds one even though frozen §17.6 permits/lex-prefers the observed contract-valid count `1`. Both are `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`, non-stable.
-
-Package118/selector394 remains immutable candidate evidence and is **not promoted**. Package117/selector382 **382/382** remains accepted runtime authority. Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**.
-
-**Exact next:** `M4-CP3-TB1-PLAN`. Freeze a test-only corrective Code + Build scope that creates a DCEL-valid three-terminal baseline fixture for CAND-01 and independently guarantees a `count>1` breakpoint entry for CAND-02 while preserving semantic assertions, selector394 identities/order and selector382 exactly. TB-PLAN is planning/documentation only: no compile, runtime, test/source mutation, package promotion or A3→A4 cutover.
+**Exact next:** `M4-CP3-CB3` under `.agents/Directional/Architecture_M4_CP3_CB3_Code_Build_Plan.md`. The CB is limited to `tests/GlobalConformityBaselineTests.cpp`: install the DCEL-valid triangular-boundary disk helper, make ordinal392 independently guarantee an interior breakpoint (`targetSize=0.25`, fixture-derived preferred count `4`), and publish deterministic success-visible receipts for all seven previously blocked identities. Product-source changes, selector changes, CMake/build-logic changes, runtime execution, package promotion and A3→A4 cutover are forbidden. Compile/package only through the mandatory GMP workflow.
 
 ## Carried forward from M1
 
@@ -115,4 +111,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **117**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package117/R1 selector382 **382/382** remains latest accepted M4 runtime authority. Package118/selector394 remains unpromoted after `M4-CP3-TB1-REV` classified its seven REDs as two non-stable test-authority candidates. Exact next is runtime-free **`M4-CP3-TB1-PLAN`**; no rerun, compile, semantic mutation, package promotion or production A3→A4 cutover occurs before that plan. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **117**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package117/R1 selector382 **382/382** remains latest accepted M4 runtime authority. Package118/selector394 remains unpromoted. `M4-CP3-TB1-PLAN` is complete and freezes a zero-product-source, one-test-file recovery. Exact next is **`M4-CP3-CB3`**; compile/package only, with no runtime, selector drift, package promotion or production A3→A4 cutover. PR #8 remains open, draft, and unmerged.

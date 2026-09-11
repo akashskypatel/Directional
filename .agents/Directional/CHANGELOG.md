@@ -1,3 +1,11 @@
+## 2026-09-11 — `M4-CP3-TB1-PLAN`: corrective test-authority recovery plan frozen
+
+Runtime-free TB planning consumed the independently amended review source `2a3dcd3cbfd4a862262f76efc10fbce975b7c154` and issued authoritative `Architecture_M4_CP3_CB3_Code_Build_Plan.md`. Both TB1 findings remain upheld; the amendment's unproven-surface ledger is carried forward: package118 proves only 383/384/385/387/393, while 386/388/389/390/391/394 and the breakpoint half of 392 still require valid runtime evidence.
+
+CB3 is frozen as a **single-file test-only correction** in `tests/GlobalConformityBaselineTests.cpp`: replace the one-face triangle helper with a DCEL-valid four-vertex/three-face triangular-boundary disk; use target size `0.25` in ordinal392 so its two-piece unit span has exact preferred count `4` and final count necessarily `3` or `4`; preserve the semantic assertions while adding success-visible per-identity receipts. Ordinal390 must expose exhaustive assignment/comparison counts, ordinal391 must prove all nine tamper rows executed, and ordinal392 must publish live count/forward/reverse ordinal/denominator evidence. Selector394 and its selector382 prefix remain byte-frozen.
+
+No compile/runtime or source/test/build mutation occurred in TB1-PLAN itself. Package118 stays unpromoted; package117/selector382 **382/382** stays accepted; stable accounting remains **47 / 14 / 33**, debt **5**. No further independent review is requested because the user-supplied independent amendment is incorporated directly. **Exact next: `M4-CP3-CB3`.**
+
 ## 2026-09-11 — `M4-CP3-TB1-REV`: seven candidate REDs are test-authority defects; package118 remains unpromoted
 
 Runtime-free review independently re-opened package118 TB1 raw artifact `10183361985` and exact review-source snapshot `3ec69ffeb88f6378ca8a7a680ef8f3a7e4be64f4`. Mechanical evidence is upheld: **800** fresh processes; focused rows383-394 **5/12 twice** with identical vectors; accepted predecessor **382/382**; cumulative **387/394**; zero timeout/skip/selection mismatch; package/source/execution-view pre/post censuses identical. No Directional runtime or compile occurred in review.

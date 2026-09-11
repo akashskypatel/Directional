@@ -1,6 +1,6 @@
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
-> **Current milestone authority (2026-09-11, `M4-CP3-TB1-REV`):** M4 package117/selector382 **382/382** remains the latest accepted runtime evidence for the historical framed CP1/CP2 contract, but DEFN-R1 supersedes that contract as the **production baseline** before CP3 cutover. Accepted A2b does not universally own U/V/sign frame labels for Cut **or Mandatory** arcs. Baseline A3 now owns one exact count/breakpoint sequence per full A2b arc plus per-region even boundary parity; exact optimization is minimum-cardinality T-join + canonical lex-prefix refinement. Stable accounting remains **47 / 14 / 33**, debt **5**. `M4-CP3-CB2` implemented that baseline and `M4-CP3-TB1` ran it: selector394 measured **387 PASS / 7 RED**, with accepted predecessor selector382 still **382/382**, so package118 is **NOT PROMOTED** and package117/selector382 remains accepted authority. The seven REDs are two non-stable test-authority candidates — six identities share an invalid one-face triangle fixture that throws before any baseline call, and ordinal392 asserts an unguaranteed `count > 1` precondition. **Most of §17 is still uncertified:** 386, 388, 389, 390, 391, 394 and half of 392 produced no evidence either way, including all three §17.7 non-vacuity instruments. Exact next: a runtime-free corrective Code + Build that repairs the two test-authority defects with zero product-source change.
+> **Current milestone authority (2026-09-11, `M4-CP3-TB1-PLAN`):** package117/selector382 **382/382** remains accepted M4 runtime authority; package118/selector394 remains unpromoted. The independently amended TB1 review upholds two non-stable test-authority defects and records that 386/388/389/390/391/394 plus half of 392 have no valid runtime proof. TB1-PLAN freezes a zero-product-source corrective CB in `Architecture_M4_CP3_CB3_Code_Build_Plan.md`: repair only `GlobalConformityBaselineTests.cpp`, preserve selector394/selector382 bytes, compile/package only, then require success-visible receipts in a later artifact-only TB. Stable accounting remains **47 / 14 / 33**, debt **5**. Exact next: `M4-CP3-CB3`.
 
 **Currency.** Package117 stays accepted runtime authority until a replacement parity package is runtime accepted. M3 remains CLOSED / ACCEPTED. Historical CP1/CP2 evidence is not rewritten; only its sufficiency for the production-baseline A3 contract is superseded and must be re-proved inside CP3.
 
@@ -52,7 +52,7 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 **Baseline A3 now:** exact full-span support + one positive shared count + compact exact-ordinal breakpoints + per-region all-quad boundary parity. Preferred exact target counts and the L1/lex objective remain unchanged. The optimizer reduces to exact minimum-cardinality T-join on preferred-parity residuals, followed by canonical lex-prefix constrained solves. Because all counts equal to two always satisfy parity, ordinary mathematical infeasibility is not a baseline outcome.
 
-**Exact next:** `M4-CP3-CB2` implements/compiles this semantic core and new independent tests while keeping selector382 historical identities intact. It does **not** production-wire A3 into A4. An artifact-only TB must accept the parity core before the later producer cutover removes local target/grid and floating `support_key` shared-boundary authority.
+**Exact next:** `M4-CP3-CB3` executes the frozen test-only recovery plan. It changes only `tests/GlobalConformityBaselineTests.cpp`, compiles/packages without runtime, and preserves selector394 plus the accepted selector382 prefix exactly. A corrected artifact-only TB with success-visible receipts must accept the §17 proof surface before any A3→A4 production cutover.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -164,14 +164,14 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP3 semantic rebase / producer cutover — ACTIVE / NEXT: corrective Code + Build after `M4-CP3-TB1-REV`.**
+1. **M4-CP3 semantic rebase / producer cutover — ACTIVE / NEXT: `M4-CP3-CB3` test-authority recovery Code + Build.**
 
    - CB1's guard stop is upheld; DEFN-R1 widened the missing-frame finding from Cut to arbitrary Mandatory arcs.
    - Baseline production A3 is family/sign-free shared subdivision + region parity, solved exactly by minimum-cardinality T-join + lex refinement.
    - CB2 implements/compiles that semantic core and independent tests only. Runtime TB acceptance comes before production A3->A4 cutover.
    - CB2 compiled it as package118 and TB1 measured selector394 **387/394** with accepted selector382 still **382/382**; package118 is unpromoted.
    - The 7 REDs are test-authority only, but they left 386/388/389/390/391/394 and half of 392 **unproven** — the independent oracle, the tamper matrix, the lex-prefix scheduler and the production/framed separation guarantee all have zero runtime evidence. Do not cite TB1 as partial CP3 progress.
-   - The corrective turn repairs the one-face triangle fixture and ordinal392's precondition with **zero product-source change**, and its TB must publish per-identity execution receipts proving the previously-blocked assertions actually ran.
+   - TB1-PLAN is complete and freezes CB3 to one test source file: the one-face helper becomes a DCEL-valid triangular-boundary disk; ordinal392 uses an independently derived `d=4` fixture; **zero product-source change** is allowed. The corrective TB must publish per-identity execution receipts proving the previously-blocked assertions actually ran.
    - Later CP3 cutover still must remove local target-derived `gridU/gridV` and floating `support_key` pairing, consume exact `{span, exactOrdinal}` authority, and recover the exact-torus `InvalidHardRailPairing` gate.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical, CP4-owned.** CP3 must remove the exact-torus pairing blocker, but the three inherited produced-witness contract re-proofs remain CP4 gating and debt stays 5 until actual CP4 runtime acceptance.
