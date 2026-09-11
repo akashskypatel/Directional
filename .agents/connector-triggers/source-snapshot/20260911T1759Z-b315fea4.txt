@@ -1,3 +1,0 @@
-source_authority=b315fea406c04fa65ff7c9a19f3886054470b16d
-purpose=chatgpt-web source snapshot trigger
-created_at=2026-09-11T17:59:00Z
