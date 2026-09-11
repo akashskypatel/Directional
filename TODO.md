@@ -75,7 +75,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 SELECTOR403 REVIEW-BLOCKED / CB4-R2 NEXT**. Package119/selector394 **394/394** is accepted family/sign-free A3 baseline authority. Package120 mechanically proves selector403 403/403 but is unpromoted because row400 fails non-vacuity review. Exact next `M4-CP3-CB4-R2`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 SELECTOR403 REVIEW-BLOCKED / CB4-R2 STOP-GUARD / REVIEW NEXT**. Package119/selector394 **394/394** is accepted family/sign-free A3 baseline authority. Package120 mechanically proves selector403 403/403 but is unpromoted because row400 fails non-vacuity review. Exact next `M4-CP3-CB4-R2-REV`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -115,4 +115,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **119**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package119/selector394 **394/394** is accepted §17 baseline runtime authority. Package120/selector403 is mechanically 403/403 but review-blocked/unpromoted on `M4-CP3-TB2-REV-CAND-01`. CP3 remains open. `M4-CP3-TB2-PLAN` is complete; exact next is **`M4-CP3-CB4-R2`**. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **119**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package119/selector394 **394/394** is accepted §17 baseline runtime authority. Package120/selector403 is mechanically 403/403 but review-blocked/unpromoted on `M4-CP3-TB2-REV-CAND-01`. CP3 remains open. `M4-CP3-CB4-R2` is halted at the derivation STOP-GUARD; exact next is **`M4-CP3-CB4-R2-REV`**. PR #8 remains open, draft, and unmerged.
