@@ -156,4 +156,4 @@ This review does not design or execute the corrective Code + Build turn, does no
 | Successor frozen | exactly one: `M4-CP3-TB2-PLAN`; falsifier stated in §5 and boundary in §8 |
 | Turn boundary held | runtime-free; no product/test/fixture/selector/build mutation and no Directional runtime |
 | review_check.py boundary | **PASS** — no product/test/fixture/build or selector mutation; selector394 explicit hash matched; exact M4 selector403 independently hashed `e8f4fe72...` (numeric-count helper collides with historical M3 selector403, so path-specific SHA was used) |
-| Pushed to origin, branch in sync | **PENDING_REMOTE_CLOSEOUT** |
+| Pushed to origin, branch in sync | **PASS** — exact review closeout patch `f601625ced023c96f1a835f58eb460407cfd2309c7ad1a802e63ce5af5da2192` applied and pushed as `842137328e66f140839747b625dcd2bb152a48eb`; remote review record/handoff read-back verified; subsequent control-plane-only cleanup does not alter review semantics |
