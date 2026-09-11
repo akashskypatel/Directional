@@ -1,3 +1,20 @@
+## M4-CP3-TB1-REV-CAND-01 — **OPEN / NON-STABLE / TEST-AUTHORITY INVALID FIXTURE / SIX IDENTITIES BLOCKED BEFORE BASELINE SEMANTICS**
+
+- **Observed:** package118 TB1 run/job `34557818974 / 103134172994`; ordinals **386, 388, 389, 390, 391, 394** are RED in focused A, focused B and cumulative394 with the identical exception `compute_edge_quantities(): DCEL consistency check failed`.
+- **Primary category:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`. Unit-test review classification: **invalid fixture**.
+- **Root cause:** every affected identity calls `make_topology_fixture(make_triangle_mesh())`; that helper creates one face whose three edges are all source boundary. `TriMesh::compute_edge_quantities()` calls strict `DCEL::check_consistency(..., checkPureBoundary=true)`, which rejects a face composed entirely of boundary edges. The tests therefore fail before returning the fixture and before reaching the intended parity/exterior/oracle/validator/structural-separation assertion.
+- **Product discrimination:** square-based baseline rows **384** and **393** pass and graph-only rows **383/385/387** pass; accepted selector382 remains **382/382**. No production A3 defect is established by these six failures.
+- **Correction owner:** the successor planning/CB must replace the one-face helper with a DCEL-valid triangulated disk that naturally preserves the intended three source-boundary terminals/outer geometry and keeps all semantic assertions at equal or stronger strength. Do not relax DCEL consistency or skip setup.
+- **Stable-count rationale:** package118 is unaccepted candidate evidence and the failures are test-authority setup defects, not loss of accepted behavior. **+0 stable event / +0 category / +0 recurrence**. Totals remain **47 events / 14 categories / 33 recurrences**; produced-witness debt remains **5**; package117 remains accepted authority.
+
+## M4-CP3-TB1-REV-CAND-02 — **OPEN / NON-STABLE / TEST-AUTHORITY INVALID PRECONDITION / ORDINAL392**
+
+- **Observed:** ordinal **392** `GlobalConformityBaseline.CanonicalPermutationAndReverseOrdinalConsumptionAreInvariant` deterministically reaches `GlobalConformityBaselineTests.cpp:482` and fails `ASSERT_GT(entry.count, 1)` with `actual: 1 vs 1`; permutation digest/count equality checks immediately before it pass.
+- **Primary category:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`. Unit-test review classification: **invalid fixture / incorrect expectation**.
+- **Root cause:** the test chooses `schedule().front()` without independently guaranteeing a final count above one. Its first canonical span has unit support with target size `0.5`, hence preferred `d=2`; frozen §17.6 explicitly permits the primary-optimal parity flip to map `d>1` to `d-1`, and canonical lex refinement prefers that smaller count whenever the primary optimum is preserved. Final count `1` is therefore contract-permitted and cannot be rejected merely to make the breakpoint fixture convenient.
+- **Correction owner:** the successor planning/CB must construct or select a schedule entry whose final count is independently guaranteed to exceed one, then retain the exact forward/reverse ordinal and denominator assertions. Do not weaken the oracle or hard-code current implementation output.
+- **Stable-count rationale:** package118 is not accepted, accepted selector382 stays **382/382**, and the failure is a new-test precondition defect rather than accepted-product regression. **+0 stable event / +0 category / +0 recurrence**. Totals remain **47 / 14 / 33**, debt **5**, accepted package authority **117**.
+
 ## M4-CP3-DEFN-R1-CAND-01 — **RESOLVED BY DEFN-R1 / DEFINITION-AUTHORITY OVERREACH / NON-STABLE**
 
 `M4-CP3-CB1` correctly halted before mutation when accepted A2b Cut arcs could not supply unique `ConformityFamily/ConformitySign`. DEFN-R1 independently re-derived source authority and found the same gap on arbitrary Mandatory hard-feature/source-boundary arcs: accepted upstream products own exact source/support/topology identity but no universal global U/V/sign frame. Trace-local `FieldBranch` is face-gauge-local and cannot repair the general case.

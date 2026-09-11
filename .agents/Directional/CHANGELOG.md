@@ -1,3 +1,11 @@
+## 2026-09-11 — `M4-CP3-TB1-REV`: seven candidate REDs are test-authority defects; package118 remains unpromoted
+
+Runtime-free review independently re-opened package118 TB1 raw artifact `10183361985` and exact review-source snapshot `3ec69ffeb88f6378ca8a7a680ef8f3a7e4be64f4`. Mechanical evidence is upheld: **800** fresh processes; focused rows383-394 **5/12 twice** with identical vectors; accepted predecessor **382/382**; cumulative **387/394**; zero timeout/skip/selection mismatch; package/source/execution-view pre/post censuses identical. No Directional runtime or compile occurred in review.
+
+The seven REDs reduce to two non-stable `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` candidates. `CAND-01` covers **386,388,389,390,391,394**: the shared one-face triangle helper is rejected by strict `TriMesh` DCEL consistency because its sole face has only boundary edges, so none reaches its intended baseline assertion. `CAND-02` covers **392**: its valid square baseline returns first-span count `1`, which frozen §17.6 permits under primary-optimal lex refinement; the test failed to guarantee its own `count>1` breakpoint precondition. No production A3 defect is established by these failures.
+
+Package118/selector394 is **NOT PROMOTED** because seven intended contracts still lack valid green runtime proof. Package117/selector382 **382/382** remains accepted authority; stable accounting stays **47 / 14 / 33**, debt **5**. Exact next is runtime-free `M4-CP3-TB1-PLAN`, which must freeze the smallest test-only corrective CB scope before any new compile/runtime or A3→A4 cutover. Review authority: `Architecture_M4_CP3_TB1_Review_Record.md`.
+
 ## 2026-09-11 — `M4-CP3-TB1-EXEC`: package118 deterministic semantic red, accepted selector382 preserved
 
 Artifact-only TB1 run/job `34557818974 / 103134172994` consumed unchanged candidate package118 artifact `10182447649` from semantic source `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc`. It completed the frozen plan with exactly **800** fresh test processes: focused rows 383-394 **5 PASS / 7 RED twice** with byte-identical verdict vectors, accepted predecessor selector382 **382/382 PASS**, and cumulative selector394 **387 PASS / 7 RED**. The reproducible RED set is **[386, 388, 389, 390, 391, 392, 394]**; first RED is ordinal386 `OneEndedTerminalUsesComponentLocalExterior`.

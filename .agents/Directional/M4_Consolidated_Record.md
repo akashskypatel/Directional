@@ -3,7 +3,7 @@
 **Status:** CURRENT M4 FAMILY RECORD
 **Last updated:** 2026-09-10 at `M4-CP2-TB2-R1-REV` promotion / CP2 closure
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`; current reviewed CP2 runtime authority is `Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`; current review authority is `Architecture_M4_CP2_TB2_R1_Review_Record.md`. Package117/selector382 is now accepted M4 authority at **382/382**. Package116/selector380 remains historical unpromoted candidate lineage. Invalid-attempt and CB3 correction provenance remain in §§2.12-2.14, the closure record, tracker and changelog. Exact next is runtime-free Code + Build `M4-CP3-CB1` under `Architecture_M4_CP3_CB1_Code_Build_Plan.md`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package117/selector382 remains accepted M4 runtime authority at **382/382**. Package118/selector394 remains unpromoted candidate evidence after `M4-CP3-TB1-REV`, whose current review authority is `Architecture_M4_CP3_TB1_Review_Record.md`. Exact next is runtime-free `M4-CP3-TB1-PLAN`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -225,6 +225,15 @@ DEFN-R1 selected expanded Alternative A and rejected B/C. Frozen definitions §1
 Historical package117/selector382 **382/382** and CP1/CP2 closure facts remain accepted evidence for the old framed domain; their production-sufficiency obligations are superseded/re-opened for CP3 re-proof. Stable accounting remains **47 / 14 / 33**, debt **5**, and M3 is not reopened. Exact next is runtime-free `M4-CP3-CB2`, semantic implementation/compile only; parity TB acceptance precedes later production A3->A4 cutover.
 
 
+## 2.17 `M4-CP3-CB2` + `M4-CP3-TB1-REV` — parity candidate compiles; runtime red is test-authority, not product, and package118 stays unpromoted
+
+CB2 implemented frozen §17's family/sign-free baseline parity scheduler/certificate/independent validator and compiled twelve new selector identities without production A3→A4 cutover. Semantic source `c8d8fc8ae92c067fce04a365bc8dd3b21ddad8dc` produced immutable package118 artifact `10182447649`; selector394 preserves accepted selector382 as its exact prefix.
+
+TB1 artifact-only execution run/job `34557818974 / 103134172994` completed all **800** planned fresh processes with immutable postflight. Accepted selector382 is **382/382**; candidate selector394 is **387/394** and focused rows383-394 are **5/12 twice** with identical vectors. Runtime-free review re-opened the raw evidence plus exact source and classified all seven REDs as two non-stable test-authority candidates. Six identities (**386,388,389,390,391,394**) share an inadmissible one-face triangle `TriMesh` helper and fail strict DCEL consistency before intended baseline semantics. Ordinal **392** assumes `schedule().front().count>1`, but frozen §17.6 permits the observed lex-minimal count `1`; its breakpoint fixture did not guarantee its own precondition.
+
+No production A3 defect is established. Package118 cannot be promoted because seven intended contracts remain without valid green runtime proof. Package117/selector382 stays accepted; stable accounting remains **47 / 14 / 33**, debt **5**. Exact next is `M4-CP3-TB1-PLAN`, runtime-free planning of the smallest test-only correction.
+
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -269,5 +278,6 @@ history.
 | `Architecture_M4_CP2_TB2_R1_Review_Record.md` | 190 | **FOLDED AFTER SUPERSESSION BY CP3 DEFN-R1.** Package117 promotion/382-row review facts remain in §2.15, `M4_CP2_Closure_Record.md`, retained R1 runtime report, tracker and changelog. |
 | `Architecture_M4_CP3_CB1_Code_Build_Plan.md` | 141 | **FOLDED AFTER STOP + DEFN.** Guard scope, no-mutation stop and successor routing are preserved in §2.16, frozen definitions §17 and the current DEFN-R1 review. |
 | `Architecture_M4_CP3_CB1_Derivation_Guard_Record.md` | 60 | **FOLDED AFTER DEFN-R1.** The Cut-family/sign derivation failure, 28-cut torus reachability, forbidden fallbacks and bounded A/B/C alternatives are preserved and extended in §2.16, frozen definitions §17 and the current review. |
+| `Architecture_M4_CP3_CB2_Code_Build_Plan.md` | 150 | **FOLDED AFTER CB2 + TB1 REVIEW.** Family-free parity implementation/compile scope and no-cutover boundary are preserved in §2.17, `Architecture_M4_CP3_CB2_Code_Build_Report.md`, frozen definitions §17, current TB1 review, tracker and changelog. |
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.
