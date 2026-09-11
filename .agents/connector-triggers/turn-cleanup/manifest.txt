@@ -1,0 +1,2 @@
+.agents/connector-triggers/source-snapshot/M4-CP3-CB4-REV-26c6bbd4.txt
+.agents/connector-triggers/m4-cp3-cb4-rev-drive-apply/trigger.txt
