@@ -205,7 +205,7 @@ jobs:
           name=expected[408].split('.',1)[1]
           assert torus.count(name)==1
           start=torus.index(name); end=torus.find("\nTEST(",start+len(name)); block=torus[start:end if end!=-1 else None]
-          required=["InvalidHardRailPairing","sharedBoundaryInterval","conformityPlanReceipt","globalTopologyPlan","globalConformityBaseline"]
+          required=["InvalidHardRailPairing","sharedBoundaryInterval","conformityPlanReceipt","semantic_digest"]
           assert all(x in block for x in required), [x for x in required if x not in block]
           (evid/"row408-static-proof.txt").write_text("identity="+expected[408]+"\nowner=producer\nchecks=typed-shared-boundary,receipt,accepted-a2b-a3,not-InvalidHardRailPairing\n")
           PY
