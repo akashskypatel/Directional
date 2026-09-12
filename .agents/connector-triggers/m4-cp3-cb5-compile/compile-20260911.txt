@@ -2,3 +2,4 @@ M4-CP3-CB5 compile trigger.
 Exact semantic source: 3c9350d6604b815655baeefca48034e44656c2f5
 Runtime execution: false
 Preflight owner: directional_surface_cell_producer_tests
+Retry: 1 — caller contents ceiling corrected for observer reusable.
