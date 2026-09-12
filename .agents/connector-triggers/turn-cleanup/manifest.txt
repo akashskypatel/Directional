@@ -1,0 +1,4 @@
+# M4-CP3-TB7-EXEC consumed temporary state
+.agents/connector-triggers/drive/m4-cp3-tb7/attempt-1.txt
+.agents/connector-triggers/source-snapshot/m4-cp3-tb7-exec-start-20260912.txt
+.agents/connector-triggers/tb/m4-cp3-tb7/attempt-1.txt
