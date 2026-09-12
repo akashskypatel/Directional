@@ -523,3 +523,9 @@ history.
 Historical citations to folded filenames remain resolvable through this index and git history.
 
 No selector file, durable policy, closure record, normative architecture, or unresolved evidence was folded.
+
+## 2.36 M4-CP3-CB9 — bounded-disc applicability correction compile-green
+
+CB9 proved G1-G3 before mutation and changed only the curved bounded-disk applicability/disposition seam in `SurfaceCellTracing.cpp`: the premature accepted-cut `acceptedSegments.size()<4` rejection is removed so valid total small authority reaches the established common `NotApplicable` gate, while all typed invalid-authority checks remain in force. Semantic source is `47ae78e1e46e7d2dcc230fc617291ca45f2e418e`.
+
+Changed-owner run `34720050597` and frozen eight-target package run `34720182350` are GREEN with GMP/GMPXX, empty source status and `runtimeExecution=false`. Package artifact `10305678151` has SHA-256 `543fd253bf04bde38f16aac8c33a05447bf515f37027a077f6014ff13957a629`; independent manifest verification is 28/28 PASS. No runtime acceptance is claimed. Exact successor is artifact-only `M4-CP3-TB7-EXEC`; accepted runtime authority remains corrected R4 until `M4-CP3-TB7-REV`. Stable totals remain 48/14/34, debt 5.
