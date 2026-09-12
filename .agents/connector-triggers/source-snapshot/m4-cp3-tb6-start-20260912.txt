@@ -1,4 +1,0 @@
-turn=M4-CP3-TB6-EXEC
-purpose=exact source snapshot before TB6 orchestration
-semantic_package_source=6934d9edfb56b44f956fbc64a89a501aaed042af
-package_artifact=10303165017
