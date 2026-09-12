@@ -1,6 +1,0 @@
-turn=M4-CP3-TB7-REV
-purpose=apply-durable-review-docs
-patch_file_id=110_f4PXdXbyF_lTR2uIavpG7Bpp8kZGe
-patch_sha256=9376d15d54a57a8736002ffc5bd5d3e24d331a7f06c2630fbede6d9e34088328
-base_sha=871f0b0f1fa72ee7a3fca79c570cdfe0cdc69bfc
-runtimeExecution=false
