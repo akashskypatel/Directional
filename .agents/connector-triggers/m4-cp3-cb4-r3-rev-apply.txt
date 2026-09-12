@@ -1,5 +1,0 @@
-Purpose: trigger M4-CP3-CB4-R3-REV documentation patch apply.
-Patch Drive file ID: 18ZPb8MuvhX0fAGGQDiwfgkGX3SC63NXU
-Patch SHA-256: 50069bfbe7a975ac28d441f4457aa93116226b7450d8eb3e6c4f67d80ee0cb73
-Base: 1dad640454306e3ed642640a1409168ed26c5920
-Runtime execution: false
