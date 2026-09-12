@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1i6ps8f3rUz2Hsj4Gl6E4zwFGz0ngZwfG
-      patch_sha256: 8b7c9fa4eda23fbea43db5c4ca6cdb7460f44b2e0aec45836d0ca66cebdf0ef7
+      patch_sha256: 3b365f7c572acd7db738fab5c518387d4799e3aa264c46233f8ea6cd57b49b7a
       base_sha: 4e86a7ff59a79f24d77099274d11e17a81681db9
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: adjudicate M4-CP3-TB5 and freeze CB8'
