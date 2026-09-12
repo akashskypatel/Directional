@@ -1,5 +1,0 @@
-M4-CP3-CB5 compile trigger.
-Exact semantic source: 4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e
-Runtime execution: false
-Preflight owner: directional_surface_cell_producer_tests
-Retry: 2 — bounded fixture accessor correction applied.
