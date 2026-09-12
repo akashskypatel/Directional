@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-11 UTC
+Last updated: 2026-09-12 UTC
 
 ## Purpose
 
@@ -28,15 +28,15 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-CB4-R3` (A2b terminal-contact basis correction next)
+## Current focus — `M4-CP3-CB4-R3-REV` (compile-contract scope review next)
 
-`M4-CP3-CB4-R2-REV` is **COMPLETE / RUNTIME-FREE / rejected_and_replaced**. The STOP-GUARD was correct: A2a/A2b exact-path publication has no raw-row barycentric tuple to remap because contact coordinates are formed directly in canonical `SourceFaceTopologyKey` order. The frozen CB4-R2 producer-remap recovery is therefore rejected, not bypassed.
+`M4-CP3-CB4-R3` is **HALTED / STOP-GUARD / POST-MUTATION / CONFIGURE RED / NO RUNTIME**. The source-proved A2b correction itself is preserved at semantic commit `7fdc3c001de9193f8f94591d3e74d1c94c260195`: the terminal-contact tuple is remapped by source-vertex identity into the raw oriented face-row basis consumed by rotation ranking, row400 now exercises the real `[3,0,4]` versus `[0,3,4]` seam with independent `1/3` versus `2/3` discrimination, and the new successor selector403 hashes to `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` with accepted first394 unchanged.
 
-Independent review found the actual raw/canonical seam in A2b rotation ranking: `SourceFaceRecord::vertices` preserves raw oriented face-row order, boundary/vertex second-point branches use that basis, but the terminal-contact branch returns canonical `terminalContact->barycentric` unchanged before `vertex_locus_secondary_parameter` indexes it by raw corner positions. Existing fan row `[3,0,4]` / canonical `[0,3,4]` with distinct canonical weights `[1/6,1/3,1/2]` gives an exact discriminator: correct result `1/3`, current positional interpretation `2/3`. New candidate `M4-CP3-CB4-R2-REV-CAND-01` is source-proved/non-stable; no accepted-green runtime loss is claimed.
+The mandatory compile preflight (`34663130547 / job 103469632631`) failed at CMake configure before target compilation because `cmake/DirectionalTests.cmake` still requires the retired row400 identity `FaceBarycentricCoordinatesUseCanonicalTopologyKeyOrderNotSourceRowOrder`; after row400 replacement it finds zero source definitions. Frozen CB4-R3 scope explicitly excludes build configuration, so the turn did not silently widen scope. The package job was skipped and no Directional runtime executed. Full evidence: `.agents/Directional/Architecture_M4_CP3_CB4_R3_Compile_Guard_Record.md`.
 
-Package119/selector394 remains accepted **394/394**. Package120/historical old selector403 remains mechanically **403/403** but unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open; A3→A4 cutover remains unauthorized.
+Package119/selector394 remains accepted **394/394**. Package120/historical old selector403 remains mechanically **403/403** but unpromoted. The new CB4-R3 selector403 is static candidate authority only. Stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open; A3→A4 cutover remains unauthorized.
 
-**Exact next:** `M4-CP3-CB4-R3` under `.agents/Directional/Architecture_M4_CP3_CB4_R3_Code_Build_Plan.md`: one terminal-contact basis remap in `EmbeddedGraphTopology.cpp`, replace old row400 with the noncanonical-row `1/3` vs `2/3` regression, create a new 403-row successor selector with unchanged accepted first394, then compile/package only through the mandatory GitHub reusable workflow. No runtime in CB.
+**Exact next:** runtime-free `M4-CP3-CB4-R3-REV`. Review must independently decide whether a narrowly frozen mandatory packaged-test-contract identity replacement in `cmake/DirectionalTests.cmake` is the correct derivative build-authority update, or whether CB4-R3 must be rejected/replaced. Review must not compile, run runtime validation, mutate semantic/build source, or promote selector403; it must publish exactly one successor plan.
 
 ## Carried forward from M1
 
@@ -75,7 +75,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 OLD SELECTOR403 UNPROMOTED / CB4-R3 NEXT**. CB4-R2 STOP-GUARD was upheld; review replaced the nonexistent producer-remap premise with the source-proved A2b terminal-contact raw/canonical basis mismatch. Exact next `M4-CP3-CB4-R3`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 OLD SELECTOR403 UNPROMOTED / CB4-R3 SEMANTIC WIP PRESERVED / CB4-R3-REV NEXT**. CB4-R3 implemented the source-proved A2b terminal-contact basis correction at `7fdc3c0`, but configure stopped before compilation because the mandatory packaged-test contract still names the retired row400 identity and frozen scope excludes build configuration. Exact next `M4-CP3-CB4-R3-REV`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
