@@ -1,5 +1,0 @@
-Purpose: apply the verified M4-CP3-CB6 closeout documentation patch from Google Drive.
-Expected control source: caller-install commit 58be76319b00b0244bffe464b9b22f545d03e291 plus this marker commit.
-Patch base: 9f7ed8e0a91a357e5ed9bd58734273b06b4c3ee5
-Turn: M4-CP3-CB6
-Retry: 0
