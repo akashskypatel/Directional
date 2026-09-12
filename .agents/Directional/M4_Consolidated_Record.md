@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-12 at `M4-CP3-TB3-REV`
+**Last updated:** 2026-09-12 at `M4-CP3-TB4-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. CB5 semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e`, package `10290933668` and selector408 `c689c0cd...484` are rejected for promotion after TB3 Review classified row408 as a non-stable test-authority fixture-precondition/reachability defect. Rows404-407 are fresh focused green, but the full candidate gate is incomplete. CP3 and `G4-B002` remain OPEN. Exact next is runtime-free test-only `M4-CP3-CB6`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. CB6 semantic source `9d66fcebe4b91ab74a6d0234c46643a2723ab643`, package `10292005428` and selector408 `c689c0cd...484` are rejected for promotion after TB4 Review classified row408 as a non-stable test-authority fixture-precondition-composition/reachability defect: production composed 48 automatic hard rails with the intended 18 explicit rails and the test failed at A1 before the cutover seam. Rows404-407 retain earlier focused-green evidence, but the full candidate gate remains incomplete. CP3 and `G4-B002` remain OPEN. Exact next is runtime-free test-only `M4-CP3-CB7`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -320,6 +320,69 @@ Review independently reopened the production options and producer disposition lo
 
 CB5 package/selector408 are not promoted; R4 package `10289601000` / selector403 **403/403** remains accepted authority. The bounded successor `M4-CP3-CB6` is test-only: statically verify two explicit fundamental source-edge cycles in committed `torus.obj`, then feed them as `userHardEdges` only to row408 so the witness actually carries hard-rail authority. Production changes or any second dependency are a STOP back to Review.
 
+
+## 2.30 `M4-CP3-CB6` — explicit user-hard torus cut graph compiles, but effective feature authority is not yet proven
+
+CB6 was test-authority-only and runtime-free. Its guard correctly re-derived committed `torus.obj` as a connected
+closed genus-1 mesh with `V/E/F = 72/216/144`, proved every edge of the frozen minor cycle
+`0-3-25-37-49-61-0` and major cycle `0-1-4-6-8-10-12-14-16-18-20-22-0` is a source edge, proved the cycles are
+simple independent generators intersecting only at vertex 0, and proved the 18-edge union has connected disc
+complement (`V/E/F = 91/234/144`, `chi=1`, 36 boundary edges in one degree-2 boundary loop). It also correctly
+proved `userHardEdges` can reach authoritative rails and `tracingOptions.hardFeatureEdges`.
+
+Semantic source `9d66fcebe4b91ab74a6d0234c46643a2723ab643` changed only
+`tests/FieldAlignedCurveNetworkTests.cpp`: `cp4c_torus_hard_rail_remesh_options()` adds those 18 explicit user hard
+edges and row408 alone consumes the options; row408's non-vacuity assertions were strengthened without changing its
+identity. Selector408 remained `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`, exact-prefixing accepted selector403
+`c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`, with owner partition
+**30 / 262 / 75 / 41**.
+
+Mandatory GMP/GMPXX compile/package run/job `34673625938 / 103499484128` was green and runtime-free. Candidate
+artifact `10292005428` hashes to `7723188540182f9515b95efd83c13dd1dbc6f0813532a98cd8df0778a12a882f`; compile-log artifact `10292090424`
+hashes to `80b3950a876b7b5a765f3b95781111f5c7fcefa7e637f96406be96421a580d76`; source archive is
+`3c82e4778ec4ea4631e25d39ed18f7f7ed68a2a24a1ad08e3ebfe298dfe331a9`; 28-entry package manifest is
+`26529a4d12434bc737e4952f09f9790dd8f36d4151e1500154fa7a60497101af`. No generated Directional runtime ran.
+Compilation did not promote the candidate.
+
+TB4 Review later found the guard's topology proof was correct but scoped only to the additive 18-edge user set; §2.31
+records why that was not the effective production hard-feature authority.
+
+## 2.31 `M4-CP3-TB4-EXEC` + Review — automatic feature composition invalidates row408's intended witness
+
+TB4 authoritative run/job `34674553424 / 103501973294` consumed immutable package `10292005428`. Preflight passed.
+The very first exact-filter process was row408,
+`RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity`; it selected exactly one test and
+failed at `fixture.network.has_value()` with top-level terminal code `InvalidFieldTransportAtlas`. Frozen fail-fast
+stopped after **1/821** processes. Immutable postflight passed. Result artifact `10292016472` hashes to
+`6d3992f3faa0f9f925a35f4ed0afcffcfc3ec2910fc48f3c1d88cc1183040a0f`; log artifact `10291946526` hashes to
+`072fa3127455e6f886e41e91f7465d57601168b13055f26bae900a2cb54abb51`. The raw output does not expose the nested
+`FieldTransportAtlas` error, so Review does not invent one.
+
+Review independently re-derived package/source byte identity, selector prefix/hashes and the full 408-way owner
+partition. It then re-ran the production feature-map logic. `AdaptiveFeatureMapBuilder::classify_edges(...)` honors
+user hard tags first but also automatically classifies all other manifold edges; `surface_cell_feature_edge_is_rail`
+admits both Boundary and Hard edges. On the committed torus with default row408 options, production creates **48
+automatically Hard edges**, four disjoint 12-edge curves that survive automatic-hard regularization, with zero overlap
+with CB6's 18 explicit user edges. Effective hard-feature authority is therefore **66 edges**. Removing those rails
+from face adjacency yields five source topology regions with face counts **24 / 24 / 24 / 48 / 24**, not the
+one-region two-generator witness guarded in CB6. The intended 18-edge proof was valid but did not describe the input
+A1 actually received.
+
+`M4-CP3-TB4-REV-CAND-01` is therefore **TEST-AUTHORITY / FIXTURE-PRECONDITION COMPOSITION + REACHABILITY DRIFT /
+NON-STABLE**. The TB4 red is valid evidence about the uncontrolled 66-edge fixture, not evidence that the intended
+18-edge A3→A4 shared-boundary cutover is defective. No accepted-green loss exists; stable accounting remains
+**47 events / 14 categories / 33 recurrences**, debt **5**. Package `10292005428` / selector408 is rejected for
+promotion; corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted authority.
+
+The bounded successor is `M4-CP3-CB7`, test-authority-only and runtime-free. Its pre-mutation guard must apply the
+proposed row408-only CAD+organic absolute dihedral bands `179.0 / 180.0` through the actual production classifier and
+prove **18 user Hard / 0 automatic Hard / exactly 18 effective rails** plus the intended one-region/disc-complement
+topology. The only authorized semantic edit after that proof is those four threshold assignments inside
+`cp4c_torus_hard_rail_remesh_options()`. Existing test precedent uses the same `179/180` isolation idiom while
+preserving an explicit user hard edge. Production source, row408 assertions/identity, rows404-407, selectors and CMake
+semantics are frozen. A green CB7 compiles/packages with GMP/GMPXX and no runtime; later TB5 restarts the complete
+**821-process** gate from process 1 and Review again owns promotion/CP3 closure.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -395,6 +458,17 @@ history.
 | `Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md` | 121 | **FOLDED AFTER SELECTOR403 ACCEPTANCE.** Package119/selector394 predecessor runtime authority remains preserved in §§2.19/2.27, selector manifest and current review. |
 | `Architecture_M4_CP3_TB2_R2_Test_Benchmark_Plan.md` | 173 | **FOLDED AFTER EXECUTION + REVIEW.** Frozen 799-process corrected acceptance gate is preserved in §2.27, retained TB2-R2 report and current review. |
 | `Architecture_M4_CP3_TB2_Review_Record.md` | 234 | **FOLDED AFTER CORRECTED R2 REVIEW SUPERSESSION.** Historical package120 rejection and decorative-row400 finding remain preserved in §§2.22-2.24, tracker and current review. |
+
+| `Architecture_M4_CP3_CB5_Code_Build_Plan.md` | 134 | **FOLDED AFTER TB4 REVIEW.** CB5 semantic cutover scope/guard is preserved in §2.28, selector manifest, tracker and changelog. |
+| `Architecture_M4_CP3_CB5_Compile_Record.md` | 84 | **FOLDED AFTER TB4 REVIEW.** Exact CB5 source/package/compile authority is preserved in §2.28, tracker and changelog. |
+| `Architecture_M4_CP3_CB5_Derivation_Guard_Record.md` | 101 | **FOLDED AFTER TB4 REVIEW.** Exact A3 span/ordinal/orientation guard is preserved in §2.28 and frozen M4 definitions. |
+| `Architecture_M4_CP3_TB3_Artifact_Only_Test_Benchmark_Plan.md` | 181 | **FOLDED AFTER EXECUTION/REVIEW SUPERSESSION.** Frozen 821-process TB3 contract is preserved in §2.29 and reviewed evidence. |
+| `Architecture_M4_CP3_TB3_Test_Benchmark_Report.md` | 92 | **FOLDED AFTER TB4 REVIEW.** TB3 rows404-407 green/row408 NotApplicable evidence and artifact IDs are preserved in §2.29, tracker and changelog. |
+| `Architecture_M4_CP3_TB3_Review_Record.md` | 185 | **FOLDED AFTER TB4 REVIEW SUPERSESSION.** TB3 test-authority adjudication/provenance warning is preserved in §2.29, tracker, ORIENTATION and current review. |
+| `Architecture_M4_CP3_CB6_Code_Build_Plan.md` | 116 | **FOLDED AFTER CB6 + TB4 REVIEW.** Test-only 18-edge correction contract and topology guard are preserved in §2.30 and current review. |
+| `Architecture_M4_CP3_CB6_Compile_Record.md` | 87 | **FOLDED AFTER TB4 REVIEW.** Exact CB6 semantic source/package/manifest/GMP authority is preserved in §2.30 and current review. |
+| `Architecture_M4_CP3_TB4_Artifact_Only_Test_Benchmark_Plan.md` | 125 | **FOLDED AFTER TB4 EXECUTION + REVIEW.** Frozen 821-process gate, fail-fast and immutable pre/postflight contract are preserved in §2.31 and current review. |
+| `Architecture_M4_CP3_TB2_R2_Review_Record.md` | 207 | **FOLDED AFTER TB4 REVIEW SUPERSESSION.** Corrected R4 package/selector403 acceptance remains preserved in §2.27, retained TB2-R2 runtime report, selector manifest and current review. |
 
 Historical citations to folded filenames remain resolvable through this index and git history.
 
