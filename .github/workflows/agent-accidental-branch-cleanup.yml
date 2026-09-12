@@ -1,0 +1,88 @@
+name: Agent Accidental Branch Cleanup
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/accidental-branch-cleanup.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-accidental-branch-cleanup-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-accidental-branch-cleanup.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: accidental-branch-cleanup
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  cleanup:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-accidental-branch-cleanup.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "target_ref=refs/heads/do-not-create"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Delete accidental branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-accidental-branch-cleanup.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "delete_ref_exit=${status}"' EXIT
+          gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/do-not-create"
+          echo "deleted_ref=refs/heads/do-not-create"
+
+      - name: Record final status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/agent-accidental-branch-cleanup.log"
+          {
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-accidental-branch-cleanup-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-accidental-branch-cleanup.log
+          if-no-files-found: error
+          retention-days: 7
