@@ -1,7 +1,0 @@
-Turn: M4-CP3-CB7
-Purpose: apply CB7 closeout record and frozen TB5 artifact-only test plan.
-Patch SHA-256: 0ec47443d6ac1609696525910238ac0eb39fbc257f8c090b699c58625ceb8a0d
-Diff body SHA-256: c5ec435cad5f87efa0a31b03624db414fbab3e687bcb9d9656a2ba7b2dbdc003
-Patch base: 6623e008cfaf093687a14f977252258ee2624097
-Semantic source under test: dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8
-Candidate artifact: 10293750596

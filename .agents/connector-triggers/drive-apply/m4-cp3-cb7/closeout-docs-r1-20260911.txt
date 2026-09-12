@@ -1,6 +1,0 @@
-Turn: M4-CP3-CB7
-Purpose: retry closeout docs apply after intended_paths delimiter correction only.
-Patch SHA-256: f115617bb64cd70ccba63ed64ca2588e8cbf307bb9bf4d6001ec5aeb5f9f5b9b
-Diff body SHA-256: c5ec435cad5f87efa0a31b03624db414fbab3e687bcb9d9656a2ba7b2dbdc003
-Patch base: 6623e008cfaf093687a14f977252258ee2624097
-Prior run: 34678984943 failed before commit because intended_paths was comma-delimited; no repository content was applied.

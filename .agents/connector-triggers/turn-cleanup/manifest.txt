@@ -1,4 +1,0 @@
-# M4-CP3-CB7 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/m4-cp3-cb7-start-20260911.txt
-.agents/connector-triggers/drive-apply/m4-cp3-cb7/
-.agents/connector-triggers/compile/m4-cp3-cb7/
