@@ -7432,7 +7432,7 @@ Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
   fixture.plan = products.globalTopologyPlan;
   fixture.baseline = products.globalConformityBaseline;
   fixture.traceNetwork = products.traceNetwork;
-  fixture.hasTraceNetwork = products.hasTraceNetwork;
+  fixture.hasTraceNetwork = result.surfaceCellContext.hasTraceNetwork;
   fixture.targetSize = result.surfaceCellContext.metricField.targetSize;
   fixture.hasTargetSize = result.surfaceCellContext.hasMetricField;
   fixture.debugProducts = result.surfaceCellContext.debugProducts;
