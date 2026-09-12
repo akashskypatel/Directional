@@ -1,4 +1,0 @@
-Temporary registered-caller trigger for M4-CP3-CB9 frozen eight-target package compile.
-Exact semantic source SHA: 47ae78e1e46e7d2dcc230fc617291ca45f2e418e
-Targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
-Runtime execution: false
