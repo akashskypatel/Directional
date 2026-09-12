@@ -1,0 +1,7 @@
+Purpose: execute frozen M4-CP3-TB5 artifact-only gate.
+Turn: M4-CP3-TB5-EXEC
+Candidate artifact: 10293750596
+Semantic evidence source: dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8
+Frozen plan: .agents/Directional/Architecture_M4_CP3_TB5_Artifact_Only_Test_Benchmark_Plan.md
+Expected processes: 821, fail-fast.
+No configure, compile, relink, generated discovery, benchmark, package repair, or source/fixture mutation authorized.
