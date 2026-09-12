@@ -28,13 +28,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-TB7-EXEC` (artifact-only CB9 compatibility re-proof)
+## Current focus — `M4-CP3-TB7-REV` (adjudicate first cumulative RED after CB9 compatibility recovery)
 
-`M4-CP3-CB9` is **COMPLETE / COMPILE-GREEN / RUNTIME UNADJUDICATED**. Guard G1-G3 proved the ordinal138 valid three-segment bounded-disc case and row408 cut-open torus occurrence-domain case occupy opposite sides of the frozen applicability/authority distinction. Semantic source `47ae78e1e46e7d2dcc230fc617291ca45f2e418e` removes only the premature accepted-cut `<4` rejection; all invalid-authority rejection sites remain intact.
+`M4-CP3-TB7-EXEC` is **COMPLETE / FAIL-FAST RED / REVIEW REQUIRED**. Immutable CB9 package `10305678151` was executed without rebuild or repair. Ordinal138 **2/2 PASS**, row408 **2/2 PASS**, and rows404-407 **8/8 PASS**, so the frozen focused discriminator set is mechanically **12/12 GREEN**. Selector403 then passed ordinals1-210 and REDed at accepted ordinal211 `SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected`, whose body threw `internal-midline hard-rail rectangle producer failed: InvalidHardRailPairing`. Frozen fail-fast stopped at **223 = 222 PASS / 1 RED**; later selector403 rows and selector408 were not reached. Immutable postflight passed.
 
-Changed-owner compile and the frozen eight-target package are GREEN with GMP/GMPXX and no runtime. Immutable package artifact `10305678151` / SHA-256 `543fd253bf04bde38f16aac8c33a05447bf515f37027a077f6014ff13957a629` has **28/28** manifest checks and `runtimeExecution=false`.
-
-**Exact next: `M4-CP3-TB7-EXEC`.** Consume that package without rebuild/repair and fail fast: ordinal138 A/B, row408 A/B, rows404-407 A/B, selector403 403/403, selector408 408/408, with immutable pre/postflight. `M4-CP3-TB7-REV` owns promotion. Accepted runtime authority remains corrected R4 artifact `10289601000` / selector403 **403/403** until Review. Stable totals are **48 events / 14 categories / 34 recurrences**, debt **5**. CP3 and `G4-B002` remain open.
+**Exact next: `M4-CP3-TB7-REV`.** Review must independently validate the focused recovery, re-derive ordinal211's accepted premise and candidate execution path, classify the RED without assuming causality from exposure order, and decide CB9 candidate/package disposition and any bounded successor. No continuation runtime or repair is authorized before Review. Accepted runtime authority remains corrected R4 artifact `10289601000` / selector403 **403/403**. Stable totals remain **48 events / 14 categories / 34 recurrences**, debt **5**, pending Review. CP3 and `G4-B002` remain open.
 
 ## Carried forward from M1
 
