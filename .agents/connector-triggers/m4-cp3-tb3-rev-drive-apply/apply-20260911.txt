@@ -1,6 +1,0 @@
-M4-CP3-TB3-REV durable documentation apply trigger.
-Patch SHA-256: befb0b2983ec4e4c605dccc53232d4fc29b580ad633882b8bfd09d8e68c7a065
-Base authority: e0554f981f4d388e3a0f6131d22d0d9a5f2da814
-Purpose: record TB3 EXEC evidence, independent review decision, and freeze CB6 plan.
-Runtime execution: false
-Retry: 1 — complete patch now includes the three new durable review/report/plan files.
