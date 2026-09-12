@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp3-tb2-r2-closeout
+      label: m4-cp3-tb2-r2-closeout-r2
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -39,8 +39,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1VK6GdiQ3UsDd_T4Vij-1G-6FRJuPoGbI
-      patch_sha256: 6f70e9ce118d0e28869e7e043b2b88d371ab60f6017bef105680f71a67fb8e98
+      file_id: 1UHDc-l2YlCPZfKUmnzTPLIug4wQaeUVX
+      patch_sha256: e534103b268c120054ccf6acbf89e75743ef09255e25677aad0f793c1a248bc4
       base_sha: 1bfecc580c41f7ffa2bcdc4b48f9fe143e46a894
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: record M4-CP3-TB2-R2 green execution and hand off review"
