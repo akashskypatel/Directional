@@ -26,9 +26,9 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1-z7_WZM1XhhbrdxNrnnI5mUjSkDVU1Ey
-      patch_sha256: 5fb96cad093e6896c13f9dc2a785833f76f4609e937cda98d98a86176410079e
-      base_sha: 3c9350d6604b815655baeefca48034e44656c2f5
+      file_id: 1WVKCWGYQ42j8bHsEIzXBNJIjRg3gB1N4
+      patch_sha256: 7c02668fb1f14772707357cd402b8f57429c86f91c2f799400b2397bae26eb66
+      base_sha: 4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M4-CP3-CB5: fix trace-network fixture compile accessor"
+      commit_message: "docs: close M4-CP3-CB5 and freeze TB3 artifact-only gate"
     secrets: inherit
