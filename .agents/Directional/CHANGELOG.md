@@ -6,6 +6,25 @@ Review independently re-derived package/source/selector ownership and the row408
 
 Exact next is `M4-CP3-CB7`, test-only/runtime-free. Its pre-mutation falsifier must prove that row408-only CAD+organic absolute dihedral bands `179.0/180.0` leave exactly the 18 user Hard edges and zero automatic Hard edges, with the intended one-region/disc-complement topology. Only then may four helper threshold assignments be added and the package recompiled with GMP/GMPXX. No production, selector, rows404-407 or CMake semantic change is authorized.
 
+**Verification amendment (reviewing agent, review record §12).** The review is upheld: rejecting package
+`10292005428` / selector408 is correct and the decisive finding is verified at source. Both links of §5's chain were
+read at their definitions — `classify_edges` (`include/directional/geometry/AdaptiveFeatureMap.h:341+`) marks user
+hard edges then **`continue`s**, falling through to automatic dihedral scoring for every other edge, and
+`surface_cell_feature_edge_is_rail` (`src/pipeline/RemeshPipeline.cpp:4352-4356`) admits any `Boundary` or `Hard`
+edge regardless of origin — so the effective rail authority is the union and CB6's premise
+`userHardEdges == intended hard authority` is false for this path. Worth bounding: that conclusion follows from the
+**existence** of at least one automatically-hard edge, not from the counts; the re-derived dihedral statistics, 48
+automatic edges and `24/24/24/48/24` decomposition were not reproduced here and describe how far the fixture drifted
+rather than whether it drifted. The §8 correction was checked for implementability — all four option names exist in
+`AdaptiveFeatureMap.h` and the cited precedent test exists — since this sequence has twice lost a turn to a symbol
+that did not exist. **One required addition, carried into the CB7 plan:** the 179/180 suppression works only because
+this committed torus has ~60.85 degrees maximum dihedral, which is a fixture property rather than an invariant, so a
+pre-mutation falsifier protects CB7 but not later runs. Row408 must itself assert that the hard-feature rail
+authority reaching topology/A1 is exactly the intended 18 explicit edges by identity, not merely by count — the
+check that converts CB6's failure mode from a two-turn diagnosis into an immediate self-describing RED, matching the
+precondition discipline already used by row392 and row400. Obligations are correctly carried, including the TB3
+provenance warning bounding what CP3 closure may claim. Accounting unchanged at **47 / 14 / 33**, debt **5**.
+
 ## 2026-09-12 — `M4-CP3-CB6`: corrected torus hard-rail fixture authority; compile/package green
 
 `M4-CP3-CB6` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic source `9d66fcebe4b91ab74a6d0234c46643a2723ab643`. Before mutation, the frozen torus cycles `0-3-25-37-49-61-0` and `0-1-4-6-8-10-12-14-16-18-20-22-0` were statically re-proved as simple source-edge cycles, independent torus generators intersecting only at vertex 0; cutting their 18-edge union leaves a connected `χ=1`, genus-0 complex with one boundary component, so the complement is a disc. Existing `userHardEdges -> authoritative rails -> tracingOptions.hardFeatureEdges` ingress is sufficient.

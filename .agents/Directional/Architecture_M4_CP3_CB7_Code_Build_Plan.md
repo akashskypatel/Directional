@@ -159,3 +159,20 @@ CB7 is complete only when:
 
 CB7 compile success alone does not promote selector408, close `G4-B002`, close CP3, or change stable regression
 accounting.
+
+## Amendment — assert the effective hard-rail authority inside row408 (CB4-REV reviewer, TB4-REV §12 V3)
+
+Setting the automatic dihedral bands to `179.0 / 180.0` suppresses automatic classification only because this
+committed torus has a maximum dihedral of ~60.85 degrees. That is a property of the fixture mesh, not an invariant:
+if the mesh is regenerated, refined or replaced, automatic rails can silently return and row408 would again test an
+uncontrolled composite input.
+
+The pre-mutation effective-authority falsifier protects this turn. It does not protect later runs. CB7 must
+therefore **also** make row408 assert its own effective precondition — that the hard-feature rail authority
+actually reaching the topology/A1 stage is exactly the intended 18 explicit edges, by identity and not merely by
+count — before it asserts anything about the A3→A4 seam.
+
+CB6's error was proving an input fragment statically while production composed additional authority downstream.
+An in-identity assertion on the effective set turns that failure mode into an immediate, self-describing RED
+instead of a two-turn diagnosis, and matches the precondition discipline already used by row392
+(`preferredCount`) and row400 (pinned raw and canonical orderings).

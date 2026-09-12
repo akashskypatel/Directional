@@ -228,6 +228,76 @@ falsify the CB5 exact shared-boundary cutover.
 **Exact successor:** `M4-CP3-CB7`, governed by
 `Architecture_M4_CP3_CB7_Code_Build_Plan.md`. This Review may freeze that plan but may not enter CB7 implementation.
 
+## 12. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld**. Rejecting package `10292005428` / selector408 is correct, the
+decisive finding is verified at source, and the prescribed correction is implementable as written.
+Accepted authority remains the corrected R4 artifact / selector403 **403/403**; accounting stays
+**47 / 14 / 33**, debt **5**.
+
+### V1 — the decisive mechanism verified, and it is robust to the arithmetic
+
+Both links of §5's chain were read at their definitions:
+
+- `classify_edges` (`include/directional/geometry/AdaptiveFeatureMap.h:341+`) canonicalizes
+  `options.userHardEdges`, marks those edges `Hard` with strength `1.0` and **`continue`s** — then falls
+  through to automatic dihedral/strength scoring for **every other** edge.
+- `surface_cell_feature_edge_is_rail` (`src/pipeline/RemeshPipeline.cpp:4352-4356`) admits any edge whose
+  class is `Boundary` **or** `Hard`, with no regard for whether that class came from a user tag or from
+  automatic scoring.
+
+So the effective rail authority is the union, and CB6's premise `userHardEdges == intended hard authority`
+is false for this path — exactly as §5 concludes.
+
+Worth stating because it bounds what needed proving: this conclusion follows from the **existence** of at
+least one automatically-hard edge, not from the precise counts. The re-derived dihedral statistics, the 48
+automatic edges, the four disjoint 12-edge curves and the resulting `24/24/24/48/24` five-region
+decomposition were not reproduced by this reviewer; they describe *how far* the fixture drifted. The
+adjudication — that the fixture reaching A1 is not the fixture CB6 guarded — stands on the mechanism alone
+and does not depend on that arithmetic being exact.
+
+### V2 — the prescribed correction is implementable
+
+Checked, because this sequence has twice lost a turn to a symbol that did not exist (the nonexistent
+producer remap at CB4-R2, the stale packaged-test identity at CB4-R3). All four options named in §8 —
+`cadAbsoluteLowDegrees`, `cadAbsoluteHighDegrees`, `organicAbsoluteLowDegrees`,
+`organicAbsoluteHighDegrees` — are present in `include/directional/geometry/AdaptiveFeatureMap.h`, and the
+cited precedent `AdaptiveFeatureMapPhase11.DensityDoesNotLeakAcrossDisconnectedCloseSheet` exists in
+`tests/AdaptiveFeatureMapPhase11Tests.cpp`. The technique also composes correctly with V1's mechanism:
+because user tags are classified *before* automatic scoring and skip it via `continue`, raising the
+automatic bands above the mesh's maximum dihedral suppresses the automatic contribution without weakening
+the explicit rails.
+
+### V3 — REQUIRED ADDITION: row408 must assert the effective set, not merely configure it
+
+§8 requires CB7 to run the effective-authority falsifier **before mutation**. That protects CB7. It does
+not protect any later run, and the whole CB6 → TB4 round-trip is the argument for going further.
+
+The 179/180 suppression works *because* this particular torus has a maximum dihedral of ~60.85°. That is a
+property of the committed fixture mesh, not an invariant. If the torus mesh is ever regenerated, refined,
+or replaced, automatic classification can silently resume contributing rails, and row408 would once again
+test an uncontrolled composite input — failing, if it failed at all, for a reason no one would immediately
+recognise as fixture drift.
+
+**Require row408 itself to assert its effective precondition:** that the hard-feature rail authority
+actually reaching the topology/A1 stage is exactly the intended 18 explicit edges — count and identity,
+not just count. CB6's error was proving an input fragment statically while production composed additional
+authority downstream; an assertion on the *effective* set is precisely the check that converts that
+failure mode from a two-turn diagnosis into an immediate, self-describing RED. This is the same discipline
+already used elsewhere in this suite — row392's `preferredCount` precondition, and row400's pinned raw and
+canonical orderings — applied to the one premise that has now broken twice.
+
+A static pre-mutation falsifier and an in-identity assertion are not redundant: the first tells CB7 whether
+to proceed, the second tells every future run whether the fixture still means what it says.
+
+### V4 — obligations correctly carried
+
+`TB1-R1-REV-OBS-01` and `CB4-REV-OBS-02` are carried with honest statements that this turn exercised
+neither. The TB3 provenance warning is retained in substance and correctly bounded: CP3 closure may claim
+only that a production torus path carrying shared hard-rail authority completes without
+`InvalidHardRailPairing`, once runtime-proved. §9's distinction is also exact — row408 is non-vacuous as a
+failure witness but not as evidence about the A3→A4 seam it never reached.
+
 ## 11. Mandatory review closeout
 
 | Review obligation | Disposition |
