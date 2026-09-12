@@ -109,6 +109,71 @@ This geometric/topological list is a **plan input**, not runtime acceptance. CB6
 - Stable totals: **47 / 14 / 33**.
 - Produced-witness debt: **5**.
 
+## 9. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld**: rejecting CB5 package `10290933668` and selector408 is correct,
+the row408 diagnosis is right, and correcting the frozen reachability statement while retaining the
+semantic obligation is the right disposition. Accepted authority remains the corrected R4 artifact /
+selector403 **403/403**; accounting stays **47 / 14 / 33**, debt **5**.
+
+### V1 — the diagnosis re-derived from source
+
+The production chain was checked at its definitions. `hardFeatureRailEdges` is built solely from
+`hard_feature_edge_keys_from_rails(authoritativeRails, …)` where `authoritativeRails` is the rail
+product (`src/pipeline/RemeshPipeline.cpp:7292-7296`), and flows to `tracingOptions.hardFeatureEdges`
+at `:7423`. `cp4c_remesh_options()` sets length ratio, seam flags, backend and SurfaceCells options but
+no feature-map options, so a smooth torus under default feature detection yields no hard rails. The
+subject is unreachable, as §3.1 says.
+
+§3.2's discriminator deserves emphasis because it is stronger than the surrounding argument: the early
+return `if (!anyProduced && options.hardFeatureEdges.empty()) return result;` makes `NotApplicable`
+versus a typed `UnsupportedSourceSheetTopology` rejection a **typed, observed** separation between
+"precondition absent" and "precondition present but failed". That is evidence, not inference, and it is
+what makes the test-authority classification safe rather than convenient.
+
+One detail worth pinning for CB6, checked specifically because the failing line determines the fix.
+Row408's first fatal assertion is `ASSERT_EQ(Produced, fixture.traceNetwork.phaseFront.disposition())`
+(`tests/FieldAlignedCurveNetworkTests.cpp:15143-15146`). With the observed `NotApplicable` the row
+aborts there, so the conformity-receipt digest comparisons at `:15148-15152`, the
+`EXPECT_NE("InvalidHardRailPairing", …)` at `:15153` and the `EXPECT_GT(exactSharedIntervals, 0U)` at
+`:15164` **never executed**. §3.3 states this, and it bears restating concretely: row408 contributed no
+evidence at all about the cutover on the torus — not even negative evidence about the receipt digests.
+
+### V2 — the corrected frozen claim had no cited provenance, and that bounds what closure may assert
+
+§4 corrects `Architecture_M4_DEFN_Frozen_Definitions.md` §10, which states at `:508` that the exact torus
+**"already reaches regional phase-front aggregation and fails at the current post-hoc
+`InvalidHardRailPairing` seam"**. That row cites no run, job, artifact or identity — it is a claim stated
+in a table — and TB3 has now observed the opposite under the fixture's own options: the torus does not
+reach that stage at all.
+
+This is the pattern that produced the `M3-CP4c-0` correction: a claim carried in a frozen document as
+though evidenced, later found false when someone finally looked. Recording the consequence now, while it
+is cheap:
+
+CB6 will construct a torus that **declares** feature cycles so hard rails exist. That is a legitimate and
+correct response to §4's retained obligation, but it produces a **constructed** witness rather than a
+reproduction of an observed historical failure. Nothing in the repository records the exact torus having
+been seen to fail at `InvalidHardRailPairing`. Therefore, when CP3 closes, its exit language — "the
+exact-torus `InvalidHardRailPairing` blocker is removed through A3 authority"
+(`Architecture_M4_DEFN_Frozen_Definitions.md:584`) — must be discharged in the form §4 already states:
+*a production torus path carrying shared hard-rail authority completes without `InvalidHardRailPairing`*.
+It may **not** be reported as reproducing and then fixing a previously observed failure, because no such
+observation is on record. Writing that down now prevents the overclaim at closure, when the distinction
+will be harder to reconstruct.
+
+### V3 — rows 404-407, accounting and successor
+
+The positive side of §5 is worth keeping visible: rows404-407 passed and do give fresh runtime evidence
+that the CB5 cutover compiles into working behaviour for its direct and rectangular hard-rail subjects.
+The gap is specifically the torus seam, not the cutover as a whole.
+
+The four non-promotion reasons are individually sufficient and correctly stated — beyond row408 itself,
+the focused-B repeat was not reached, accepted selector403 was not re-executed on the candidate, and
+selector408 was never run cumulatively. Any one of those blocks promotion on its own. Accounting is
+right: no accepted-green was lost, the candidate arose on unpromoted authority, so no stable event,
+category or recurrence is added, and `G4-B002` correctly stays OPEN / RUNTIME-UNPROVED.
+
 ## 8. Review-policy closeout
 
 - `ORIENTATION.md` is updated in this review: currency, §3 current state, torus witness state, §7 priority list, and §8 recurring pattern.

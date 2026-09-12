@@ -4,6 +4,27 @@ Artifact-only TB3 run/job `34671972132 / 103494923768` verified CB5 package `102
 
 Review independently proves row408's fixture does not construct hard-feature rail authority: `cp4c_remesh_options()` declares no explicit hard edges, and current aggregate phase-front code returns `NotApplicable` after regional decline only when `hardFeatureEdges.empty()`. The row therefore cannot reach the A3-owned hard-rail seam or its later exact shared-interval assertions. `M4-CP3-TB3-REV-CAND-01` is **TEST-AUTHORITY / FIXTURE-PRECONDITION + REACHABILITY DRIFT / INCORRECT EXPECTATION / NON-STABLE**. CB5 package/selector408 are rejected for promotion; accepted R4 artifact `10289601000` / selector403 stays authoritative. Stable totals remain **47 / 14 / 33**, debt **5**; `G4-B002` and CP3 remain open. Exact next is test-only `M4-CP3-CB6`, guarded by the explicit committed torus fundamental cycles frozen in its Code + Build plan.
 
+**Verification amendment (reviewing agent, review record §9).** The review is upheld: rejecting CB5 package
+`10290933668` and selector408 is correct, and correcting the frozen reachability statement while retaining the
+semantic obligation is the right disposition. The diagnosis was re-derived from source — `hardFeatureRailEdges`
+comes solely from `hard_feature_edge_keys_from_rails(authoritativeRails, …)`
+(`src/pipeline/RemeshPipeline.cpp:7292-7296`) and flows to `tracingOptions.hardFeatureEdges` at `:7423`, while
+`cp4c_remesh_options()` sets no feature-map options, so a smooth torus yields no hard rails. §3.2's discriminator
+is the strongest part of the argument: the early return makes `NotApplicable` versus a typed
+`UnsupportedSourceSheetTopology` rejection an **observed typed separation** between "precondition absent" and
+"precondition present but failed". One detail pinned for CB6: row408's first fatal assertion is
+`ASSERT_EQ(Produced, …)` at `tests/FieldAlignedCurveNetworkTests.cpp:15143`, so with `NotApplicable` the row aborts
+there and the receipt-digest comparisons, the `EXPECT_NE("InvalidHardRailPairing", …)` and the
+`EXPECT_GT(exactSharedIntervals, 0U)` never executed — row408 contributed no evidence about the cutover on the
+torus, not even negative evidence. **New provenance finding:** frozen `Architecture_M4_DEFN_Frozen_Definitions.md:508`
+asserts the exact torus already reaches phase-front aggregation and fails at `InvalidHardRailPairing`, but cites no
+run, job, artifact or identity, and TB3 observed the opposite. CB6's featured torus will therefore be a constructed
+witness, not a reproduction of an observed historical failure, so at CP3 closure the `:584` exit conjunct must be
+discharged as *a production torus path carrying shared hard-rail authority completes without
+`InvalidHardRailPairing`* and may not be reported as reproducing and fixing a previously observed failure — the same
+pattern as the `M3-CP4c-0` correction. Rows404-407 do give genuine positive evidence for the direct/rectangular
+hard-rail subjects; the gap is the torus seam specifically. Accounting unchanged at **47 / 14 / 33**, debt **5**.
+
 ## 2026-09-12 — `M4-CP3-CB5`: exact A3→A4 shared-boundary cutover compile/package green
 
 `M4-CP3-CB5` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e`. The mandatory derivation guard passed before mutation: each affected shared bounded A4 hard-rail segment derives from accepted A2b/A3 authority as one stable arc/span identity, exact consecutive A3 breakpoint ordinals and exact orientation, with no tolerance, rounded geometry, local target/grid count, synthetic-node order or post-hoc partner agreement.

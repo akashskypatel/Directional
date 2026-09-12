@@ -6,6 +6,13 @@
 - **Authority/accounting:** CB5 package/selector408 not promoted. Corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**; `G4-B002` and CP3 remain open.
 - **Orchestration note:** first TB3 attempt `34671851965 / 103494592879` ran 0 Directional identities and failed only an over-specific temporary static row408 source-string check. It is a closed orchestration-only/non-stable attempt and has no semantic authority.
 - **Exact successor:** `M4-CP3-CB6`, runtime-free test-authority correction under `Architecture_M4_CP3_CB6_Code_Build_Plan.md`.
+- **Provenance note added by review §9 V2:** frozen `Architecture_M4_DEFN_Frozen_Definitions.md:508` asserts the exact
+  torus "already reaches regional phase-front aggregation and fails at the current post-hoc `InvalidHardRailPairing`
+  seam" but cites **no run, job, artifact or identity**, and TB3 observed the opposite (`NotApplicable`). CB6's featured
+  torus will therefore be a **constructed** witness, not a reproduction of an observed historical failure. At CP3
+  closure the exit conjunct at `:584` must be discharged as *a production torus path carrying shared hard-rail authority
+  completes without `InvalidHardRailPairing`* — it may not be reported as reproducing and fixing a previously observed
+  failure, because no such observation is on record. Same pattern as the `M3-CP4c-0` correction.
 
 ## M4-CP3-CB5 Code + Build — **BUILD GREEN / RUNTIME-FREE / G4-B002 CUTOVER COMPILE-VALID, RUNTIME-UNPROVED**
 
