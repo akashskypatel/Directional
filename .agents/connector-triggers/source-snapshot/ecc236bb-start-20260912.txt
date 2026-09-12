@@ -1,0 +1,5 @@
+Purpose: trigger exact ChatGPT Web source snapshot for artifact-only M4-CP3-TB2-R2-EXEC.
+Built evidence authority: 58521f6d1c4fb5d625da7cde50e002cf4688beee
+Current control head before marker: ecc236bb0fffd59b32ba04661243b6b76824ca12
+Expected snapshot authority: this marker-trigger commit SHA.
+Retry: 0
