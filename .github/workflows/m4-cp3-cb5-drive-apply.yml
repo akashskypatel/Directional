@@ -26,9 +26,9 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1FL3S1_xjuPbea8k1oEHTjGUspSwoKj1s
-      patch_sha256: 3e20ee294a85fd6c66516bc76547ebec4174a5a7e923068d7dbaedb318fc352c
-      base_sha: cc035758d30572c01d99b8c1f73c41270db8139e
+      file_id: 1-z7_WZM1XhhbrdxNrnnI5mUjSkDVU1Ey
+      patch_sha256: 5fb96cad093e6896c13f9dc2a785833f76f4609e937cda98d98a86176410079e
+      base_sha: 3c9350d6604b815655baeefca48034e44656c2f5
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M4-CP3-CB5: cut over exact A3 shared-boundary authority"
+      commit_message: "M4-CP3-CB5: fix trace-network fixture compile accessor"
     secrets: inherit
