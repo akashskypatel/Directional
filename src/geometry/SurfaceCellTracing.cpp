@@ -13911,7 +13911,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
             SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
         return result;
       }
-      OccurrenceSignature signature{*sourceVertexId, supportFaces};
+      OccurrenceSignature signature{sourceVertexId.value(), supportFaces};
       if (!signatureForRoot.emplace(root, signature).second ||
           !occurrenceForSignature.emplace(signature, -1).second) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
