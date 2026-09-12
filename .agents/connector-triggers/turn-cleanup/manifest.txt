@@ -1,0 +1,4 @@
+# M4-CP3-TB6 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m4-cp3-tb6-start-20260912.txt
+.agents/connector-triggers/m4-cp3-tb6-wip-drive-apply.txt
+.agents/connector-triggers/tb/m4-cp3-tb6
