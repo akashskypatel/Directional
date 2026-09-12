@@ -1,6 +1,45 @@
 name: Agent Source Snapshot
 
 on:
+  workflow_call:
+    inputs:
+      source_ref:
+        description: Exact branch, tag, or commit to snapshot. Empty uses the caller event SHA.
+        required: false
+        type: string
+        default: ""
+      artifact_prefix:
+        description: Prefix for the source snapshot artifact.
+        required: false
+        type: string
+        default: agent-source-snapshot
+      retention_days:
+        description: Snapshot/log artifact retention in days.
+        required: false
+        type: number
+        default: 7
+    outputs:
+      snapshot_sha:
+        description: Exact checked-out source commit.
+        value: ${{ jobs.snapshot.outputs.snapshot_sha }}
+      artifact_name:
+        description: Uploaded source snapshot artifact name.
+        value: ${{ jobs.snapshot.outputs.artifact_name }}
+    secrets:
+      GH_TOKEN:
+        required: false
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Exact branch, tag, or commit to snapshot. Empty uses the dispatch SHA.
+        required: false
+        type: string
+        default: ""
+      artifact_prefix:
+        description: Prefix for the source snapshot artifact.
+        required: false
+        type: string
+        default: agent-source-snapshot
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
@@ -9,7 +48,8 @@ on:
 
 permissions:
   contents: write
-  id-token: write
+  issues: write
+  pull-requests: write
 
 concurrency:
   group: agent-source-snapshot-${{ github.ref }}
@@ -23,14 +63,188 @@ jobs:
       source_ref: ${{ github.sha }}
     secrets: inherit
 
-  apply:
+  observe:
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: source-snapshot
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  snapshot:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
-    with:
-      file_id: 1-Zad87Q7MrFT_yFr0fmMAThd14ueJQZb
-      patch_sha256: 6e40743e90264aa708bb940ffc7aab4f071a9b2fb34ac11ff129714bc8626d83
-      base_sha: 405038937fd7d3a5410b9c8bac4d75fbd0b2a426
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "docs: close M4-CP3-CB9 and freeze TB7 execution"
-    secrets: inherit
+    runs-on: ubuntu-24.04
+    outputs:
+      snapshot_sha: ${{ steps.metadata.outputs.snapshot_sha }}
+      artifact_name: ${{ steps.metadata.outputs.artifact_name }}
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Initialize submodules with Eigen backup mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          exec > >(tee -a "$log") 2>&1
+          git submodule sync --recursive
+          if git submodule update --init --force --depth=1 --recursive; then
+            echo "eigen_submodule_transport=canonical"
+          else
+            backup_url="$(git config -f .gitmodules --get submodule.external/eigen.backupUrl)"
+            test -n "$backup_url"
+            echo "canonical submodule update failed; retrying Eigen via backup mirror: $backup_url"
+            rm -rf external/eigen .git/modules/external/eigen
+            git config submodule.external/eigen.url "$backup_url"
+            git submodule update --init --force --depth=1 --recursive
+            echo "eigen_submodule_transport=backup"
+          fi
+          expected_eigen="$(git ls-tree HEAD external/eigen | awk '{print $3}')"
+          actual_eigen="$(git -C external/eigen rev-parse HEAD)"
+          echo "eigen_expected=$expected_eigen"
+          echo "eigen_actual=$actual_eigen"
+          test "$actual_eigen" = "$expected_eigen"
+
+      - name: Verify source authority
+        id: metadata
+        env:
+          REQUESTED_REF: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
+          ARTIFACT_PREFIX: ${{ inputs.artifact_prefix != '' && inputs.artifact_prefix || 'agent-source-snapshot' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "verify_source_exit=${status}"' EXIT
+          snapshot_sha="$(git rev-parse HEAD)"
+          echo "requested_ref=${REQUESTED_REF}"
+          echo "snapshot_sha=${snapshot_sha}"
+          echo "git_version=$(git --version)"
+          echo "tar_version=$(tar --version | head -n 1)"
+          echo "rsync_version=$(rsync --version | head -n 1)"
+          git status --short
+          git submodule status --recursive || true
+          if [[ "${REQUESTED_REF}" =~ ^[0-9a-fA-F]{40}$ ]] && [[ "${snapshot_sha,,}" != "${REQUESTED_REF,,}" ]]; then
+            echo "exact source SHA mismatch: requested=${REQUESTED_REF}; actual=${snapshot_sha}" >&2
+            exit 2
+          fi
+          artifact_name="${ARTIFACT_PREFIX}-${GITHUB_RUN_ID}"
+          echo "snapshot_sha=${snapshot_sha}" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=${artifact_name}" >> "$GITHUB_OUTPUT"
+
+      - name: Build source snapshot archive
+        env:
+          SNAPSHOT_SHA: ${{ steps.metadata.outputs.snapshot_sha }}
+          ARTIFACT_NAME: ${{ steps.metadata.outputs.artifact_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "snapshot_archive_exit=${status}"' EXIT
+          out="${RUNNER_TEMP}/agent-source-snapshot-result"
+          source_dir="${out}/source"
+          rm -rf "$out"
+          mkdir -p "$source_dir"
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.git/**' \
+            "${GITHUB_WORKSPACE}/" "$source_dir/"
+          (
+            cd "$out"
+            find source -type f -print0 \
+              | LC_ALL=C sort -z \
+              | xargs -0 sha256sum > SHA256SUMS
+            tar -czf source.tar.gz source
+            sha256sum source.tar.gz > source.tar.gz.sha256
+          )
+          file_count="$(find "$source_dir" -type f | wc -l | tr -d ' ')"
+          byte_count="$(du -sb "$source_dir" | awk '{print $1}')"
+          archive_sha="$(awk '{print $1}' "${out}/source.tar.gz.sha256")"
+          jq -n \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg event "$GITHUB_EVENT_NAME" \
+            --arg event_sha "$GITHUB_SHA" \
+            --arg snapshot_sha "$SNAPSHOT_SHA" \
+            --arg artifact_name "$ARTIFACT_NAME" \
+            --arg archive_sha256 "$archive_sha" \
+            --arg generated_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --argjson file_count "$file_count" \
+            --argjson byte_count "$byte_count" \
+            '{
+              repository: $repository,
+              event: $event,
+              event_sha: $event_sha,
+              snapshot_sha: $snapshot_sha,
+              artifact_name: $artifact_name,
+              archive_sha256: $archive_sha256,
+              file_count: $file_count,
+              byte_count: $byte_count,
+              submodules_recursive: true,
+              runtimeExecution: false,
+              generated_at: $generated_at
+            }' > "${out}/snapshot-metadata.json"
+          echo "snapshot_file_count=${file_count}"
+          echo "snapshot_byte_count=${byte_count}"
+          echo "archive_sha256=${archive_sha}"
+          cat "${out}/snapshot-metadata.json"
+
+      - name: Upload source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.metadata.outputs.artifact_name }}
+          path: |
+            ${{ runner.temp }}/agent-source-snapshot-result/source.tar.gz
+            ${{ runner.temp }}/agent-source-snapshot-result/source.tar.gz.sha256
+            ${{ runner.temp }}/agent-source-snapshot-result/SHA256SUMS
+            ${{ runner.temp }}/agent-source-snapshot-result/snapshot-metadata.json
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days || 7 }}
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          {
+            echo "final_job_status=${{ job.status }}"
+            echo "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)"
+            git status --short 2>&1 || true
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-source-snapshot-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-source-snapshot.log
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days || 7 }}
