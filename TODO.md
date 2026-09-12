@@ -28,15 +28,15 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-CB4-R2-REV` (row400 recovery STOP-GUARD review next)
+## Current focus — `M4-CP3-CB4-R3` (A2b terminal-contact basis correction next)
 
-`M4-CP3-CB4-R2` is **HALTED / STOP-GUARD / PRE-MUTATION**. The frozen derivation guard proves a real source row can differ from canonical key order and proves A2a/A2b publishes canonical face-point coordinates, but it cannot prove the required discriminating witness. Existing production contact coordinates are constructed directly in `SourceFaceTopologyKey` order; the path does not consume a raw-row barycentric tuple and remap it. The accepted sphere fixture proves contacts exist but does not independently pin any all-distinct exact contact tuple, while the explicit exact proper-crossing oracle uses repeated `(1/4,1/4,1/2)` components.
+`M4-CP3-CB4-R2-REV` is **COMPLETE / RUNTIME-FREE / rejected_and_replaced**. The STOP-GUARD was correct: A2a/A2b exact-path publication has no raw-row barycentric tuple to remap because contact coordinates are formed directly in canonical `SourceFaceTopologyKey` order. The frozen CB4-R2 producer-remap recovery is therefore rejected, not bypassed.
 
-No test/product/selector/build source changed, no compile/package ran, and no Directional runtime executed. Full evidence is `.agents/Directional/Architecture_M4_CP3_CB4_R2_Derivation_Guard_Record.md`.
+Independent review found the actual raw/canonical seam in A2b rotation ranking: `SourceFaceRecord::vertices` preserves raw oriented face-row order, boundary/vertex second-point branches use that basis, but the terminal-contact branch returns canonical `terminalContact->barycentric` unchanged before `vertex_locus_secondary_parameter` indexes it by raw corner positions. Existing fan row `[3,0,4]` / canonical `[0,3,4]` with distinct canonical weights `[1/6,1/3,1/2]` gives an exact discriminator: correct result `1/3`, current positional interpretation `2/3`. New candidate `M4-CP3-CB4-R2-REV-CAND-01` is source-proved/non-stable; no accepted-green runtime loss is claimed.
 
-Package119/selector394 remains accepted **394/394**. Package120/selector403 remains mechanically green but unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open; A3→A4 cutover remains unauthorized.
+Package119/selector394 remains accepted **394/394**. Package120/historical old selector403 remains mechanically **403/403** but unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open; A3→A4 cutover remains unauthorized.
 
-**Exact next:** runtime-free `M4-CP3-CB4-R2-REV`. It must independently decide whether an already-existing non-circular raw-row-attached all-distinct witness exists, or whether row400's test-authority contract must be amended/replaced because the production A2a/A2b seam is canonical by construction. No CB retry or TB2-R1 runtime is authorized first.
+**Exact next:** `M4-CP3-CB4-R3` under `.agents/Directional/Architecture_M4_CP3_CB4_R3_Code_Build_Plan.md`: one terminal-contact basis remap in `EmbeddedGraphTopology.cpp`, replace old row400 with the noncanonical-row `1/3` vs `2/3` regression, create a new 403-row successor selector with unchanged accepted first394, then compile/package only through the mandatory GitHub reusable workflow. No runtime in CB.
 
 ## Carried forward from M1
 
@@ -75,7 +75,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 SELECTOR403 REVIEW-BLOCKED / CB4-R2 STOP-GUARD / REVIEW NEXT**. Package119/selector394 **394/394** is accepted family/sign-free A3 baseline authority. Package120 mechanically proves selector403 403/403 but is unpromoted because row400 fails non-vacuity review. Exact next `M4-CP3-CB4-R2-REV`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 OLD SELECTOR403 UNPROMOTED / CB4-R3 NEXT**. CB4-R2 STOP-GUARD was upheld; review replaced the nonexistent producer-remap premise with the source-proved A2b terminal-contact raw/canonical basis mismatch. Exact next `M4-CP3-CB4-R3`; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
