@@ -69,6 +69,11 @@ turn resolves something you or a predecessor flagged, edit that bullet — do no
 - `ROADMAP.md` — whenever checkpoint status moves. Check it even when the turn did not mention it.
 - `Required_Green_Selector_Manifest.md` — whenever a selector is added or accepted.
 - `LESSONS.md` — a new lesson only for a genuinely new pattern; otherwise cite the existing number.
+- `Architecture_M4_DEFN_Frozen_Definitions.md` and any other normative/frozen document — when a review finds
+  a claim in it false, **edit that file**, do not only record the correction in the review record. A frozen
+  document is what later turns read; a correction that lives only in a review record leaves the false claim
+  in force. Strike the claim, cite the observation that contradicts it, and leave the surrounding semantic
+  obligation explicitly unweakened.
 - Closure records — when a checkpoint closes, including the reasoning for any exit conjunct whose
   satisfaction is not self-evident from the evidence. An unstated justification inside a closed checkpoint
   invites re-litigation later.

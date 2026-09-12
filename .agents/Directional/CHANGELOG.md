@@ -6,6 +6,30 @@ Review independently re-derived that row408 passes the CB7 exact 18-edge effecti
 
 Exact successor is runtime-free `M4-CP3-CB8`. Before mutation it must prove that existing A2b/A3 products uniquely carry the cut-open **boundary occurrence** identity required by A4, including distinct occurrences of repeated source vertex 0, and inventory every raw-source-vertex/raw-one-sided-boundary structure that would collapse the two cut sides. If existing typed authority is insufficient, CB8 stops before mutation and returns to Review/DEFN. Otherwise it may make only the minimum A4 occurrence-domain correction; A2b remains topology writer, A3 remains subdivision writer, selector403/408 bytes and row408 fixture authority stay frozen.
 
+**Verification amendment (reviewing agent, review record §7A).** The review is upheld: rejecting candidate
+`10293750596` / selector408 is correct, the A4 authority-domain defect is real and correctly classified
+product-semantic, and §5's refusal of the one-conditional fix is the right architectural call. The
+`M4-CP3-TB4-REV` §12 V3 obligation is **discharged** — row408 now builds `effectiveHardFeatureEdges` from the
+actual rail product and asserts set equality against the 18 expected edges by identity, fatally
+(`tests/FieldAlignedCurveNetworkTests.cpp:15160-15182`) — and it paid off immediately: TB5 advancing past that
+assertion is what converts CB7's threshold change from a configuration hope into proven fact. The runtime's
+twice-emitted Euler receipt was recomputed rather than read and is mutually consistent: whole source faces
+`72 − 216 + 144 = 0`, reduced/cut support `55 − 198 + 144 = 1`, `support_E_int = 216 − 18`, and
+`whole_minus_reduced_euler = −1`. The diagnosis is therefore observed, not inferred — the runtime publishes both
+sides of the producer/support disagreement. Also recorded: this sequence is monotone progress rather than
+thrashing (TB3 could not reach the subject; TB4 reached production under an uncontrolled 66-edge composite; TB5
+reaches A4 with the intended 18-edge authority proved at runtime and exposes a genuine product defect).
+**Required correction applied:** `M4-CP3-TB3-REV` §4 said it corrected the frozen reachability claim and this
+reviewer recorded that the claim cited no evidence, but neither updated the normative file —
+`Architecture_M4_DEFN_Frozen_Definitions.md:508` still asserted the torus "already reaches regional phase-front
+aggregation and fails at the current post-hoc `InvalidHardRailPairing` seam". TB5 supplies positive
+contradiction: the torus stops at the curved bounded-disk applicability test (`chi_whole=0` vs required `1`)
+before any boundary phase is constructed, so it never reaches hard-rail pairing. That row is struck and annotated
+with runs `34671972132` and `34680334158`, with the semantic obligation left explicitly unweakened.
+`REVIEW_TURN_POLICY.md` §3.2 is amended to require editing normative/frozen files when a review finds a claim in
+them false, rather than recording the correction only in the review record. Accounting unchanged at
+**47 / 14 / 33**, debt **5**.
+
 ## 2026-09-12 — `M4-CP3-CB7`: exact effective torus hard authority isolated; candidate package compile-green
 
 `M4-CP3-CB7` completed runtime-free on semantic source `dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8`. Its pre-mutation guard re-ran effective row408 feature authority: `179/180` CAD+organic absolute bands yield **18 user Hard / 0 automatic Hard / exactly 18 effective HardFeature source edges**, one 144-face torus topology region, and the frozen two-generator disc-complement witness. The semantic patch changes only `tests/FieldAlignedCurveNetworkTests.cpp`: four row-local threshold assignments plus a row408 exact effective-HardFeature source-edge set assertion. Product source, rows404-407, row408 identity, selectors, ownership and CMake semantics remain frozen.

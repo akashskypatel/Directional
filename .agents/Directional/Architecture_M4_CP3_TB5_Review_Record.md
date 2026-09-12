@@ -175,6 +175,74 @@ TB5 is **not** proof of the exact shared-boundary cutover itself because no prod
 - `M4-CP3-CB4-REV-OBS-02`: **CARRIED / NON-BLOCKING**. TB5 does not touch row399's path/`sourceFaces` divergence tamper seam.
 - TB3 provenance warning: **CARRIED.** Row408 is a constructed production torus witness; it is not evidence that `InvalidHardRailPairing` was historically observed. CP3 may later claim only that the exact constructed hard-rail path completes without that failure once runtime-proved.
 
+## 7A. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld**: rejecting candidate `10293750596` / selector408 is correct, the A4
+authority-domain defect is real and correctly classified as product-semantic, and §5's refusal of the
+one-conditional fix is the right architectural call. Accepted authority remains the corrected R4 artifact /
+selector403 **403/403**; accounting stays **47 / 14 / 33**, debt **5**.
+
+### V1 — the `M4-CP3-TB4-REV` §12 V3 obligation is discharged, and it paid off immediately
+
+Row408 now builds `effectiveHardFeatureEdges` from the actual rail product — iterating `fixture.rails`,
+filtering `kind == HardFeature`, walking each rail's vertices including the closed-loop wraparound — and
+asserts set equality against the 18 expected edges **by identity**, fatally
+(`tests/FieldAlignedCurveNetworkTests.cpp:15160-15182`). That is exactly the requirement, implemented well.
+
+Worth stating because it is the point of the exercise: TB5 advancing *past* that assertion is what converts
+CB7's threshold change from a configuration hope into a proven fact. Had the 179/180 suppression not
+produced exactly the intended 18-edge authority, the run would have stopped there with a self-describing
+message instead of failing later for a reason requiring another diagnosis turn.
+
+### V2 — the published Euler receipt is arithmetically self-consistent
+
+The runtime's twice-emitted receipt was recomputed rather than read:
+
+- whole source faces: `72 − 216 + 144 = 0` — a torus, which is why the producer's `euler != 1` test rejects;
+- reduced/cut support: `support_V_int − support_E_int + support_F = 55 − 198 + 144 = 1` — a disc;
+- `support_E_int = 198 = 216 − 18`, consistent with `interior_barrier_edges_both_sides=18`;
+- `whole_minus_reduced_euler = 0 − 1 = −1`, as published.
+
+All four numbers are mutually consistent. The diagnosis is therefore **observed**, not inferred: the
+producer and the accepted support disagree about the domain, and the runtime itself publishes both sides of
+that disagreement.
+
+### V3 — this sequence is monotone progress, not thrashing
+
+Recorded because three consecutive rejections invite the opposite reading. The row408 subject moved
+strictly forward each turn: TB3 could not reach it at all (no hard-rail authority, `NotApplicable`); TB4
+reached production but under an uncontrolled 66-edge composite; TB5 reaches A4 with the intended 18-edge
+authority proved at runtime and exposes a genuine product defect. Each rejection removed a distinct
+obstruction, and the assertion required at TB4-REV locks the gain so the fixture cannot silently regress.
+The four fixture-control turns were the cost of making this seam observable at all.
+
+### V4 — REQUIRED: the frozen exact-torus claim is now positively contradicted, and the file still carried it
+
+`M4-CP3-TB3-REV` §4 stated that it corrected the frozen reachability claim, and this reviewer recorded at
+`M4-CP3-TB3-REV` §9 V2 that the claim cited no evidence. Neither updated the normative file:
+`Architecture_M4_DEFN_Frozen_Definitions.md:508` still asserted that the exact torus **"already reaches
+regional phase-front aggregation and fails at the current post-hoc `InvalidHardRailPairing` seam"**.
+
+TB5 now supplies positive evidence, not merely absence of evidence. With the intended hard-rail authority
+proved at runtime, the torus stops at the curved bounded-disk producer's applicability test — `chi_whole=0`
+against a required `1` — **before any boundary phase is constructed**. It therefore never reaches hard-rail
+pairing, and the frozen claim is false in both of its parts.
+
+That row is corrected in this turn, striking the false reachability statement, citing runs `34671972132`
+and `34680334158`, and leaving the semantic obligation intact and unweakened: CP3 still owes a production
+torus witness that carries shared hard-rail authority and completes without `InvalidHardRailPairing`, and
+may not report it as reproducing a historically observed failure.
+
+The process lesson is small and worth carrying: a review that finds a normative claim false must edit the
+normative file, not only record the correction in its own record. `REVIEW_TURN_POLICY.md` §3.2 lists
+closure records but does not name the frozen definitions; it is amended accordingly.
+
+### V5 — obligations
+
+`TB4-REV-CAND-01` is correctly discharged; `TB1-R1-REV-OBS-01` and `CB4-REV-OBS-02` are carried with honest
+statements that TB5 exercised neither; the TB3 provenance warning is carried and correctly bounds what CP3
+closure may claim.
+
 ## 8. Package / selector / milestone decision
 
 - Candidate artifact `10293750596`: **REJECTED FOR PROMOTION**.
