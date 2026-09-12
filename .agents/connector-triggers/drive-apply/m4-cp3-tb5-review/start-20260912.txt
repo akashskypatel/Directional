@@ -1,0 +1,5 @@
+Purpose: apply M4-CP3-TB5 Review + CB8 plan durable documentation patch.
+Base authority: 4e86a7ff59a79f24d77099274d11e17a81681db9
+Patch SHA-256: 8b7c9fa4eda23fbea43db5c4ca6cdb7460f44b2e0aec45836d0ca66cebdf0ef7
+Turn: M4-CP3-TB5-REV
+Runtime execution: false
