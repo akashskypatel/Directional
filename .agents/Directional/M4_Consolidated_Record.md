@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-12 at `M4-CP3-TB6-EXEC`
+**Last updated:** 2026-09-12 at `M4-CP3-TB6-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. CB8 candidate source/package runtime-proves row408 **2/2** and rows404-407 **8/8**, but TB6 then fails accepted selector403 ordinal138 after 137 cumulative passes. Candidate selector408 remains unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**; CP3 and `G4-B002` remain OPEN. Exact next is Review + Plan `M4-CP3-TB6-REV`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. TB6 Review accepts CB8 row408 **2/2** plus rows404-407 **8/8** as genuine occurrence-domain recovery and closes the TB5 candidate, but rejects candidate promotion because accepted ordinal138 exposes a non-stable product-semantic `<4` bounded-disk applicability/disposition scope widening. Candidate selector408 remains unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**; CP3 and `G4-B002` remain OPEN. Exact next is runtime-free `M4-CP3-CB9`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -414,6 +414,17 @@ The preceding attempt `34711705866` is control-plane-only/no-credit: it executed
 EXEC does not adjudicate ordinal138, promote selector408, close `M4-CP3-TB5-REV-CAND-01`, or change stable accounting. Corrected R4 artifact `10289601000` / selector403 remains accepted runtime authority pending mandatory `M4-CP3-TB6-REV`, which must decide whether ordinal138 is stale test authority, a product-semantic compatibility regression, or evidence CB8 exceeded its reviewed seam. Stable totals remain **47 / 14 / 33**, debt **5**; CP3 and `G4-B002` remain OPEN.
 
 
+
+## 2.35 `M4-CP3-TB6-REV` — torus occurrence-domain recovery accepted; ordinal138 is a product-semantic applicability/disposition regression
+
+Review independently re-opened result/log artifacts `10303393457 / 10303657623`, re-hashed the ZIPs, re-derived the exact **148 = 147 PASS / 1 RED** ledger and re-hashed selector403/408 plus their first403 byte-identical prefix. Row408 PASSes twice with the exact 18-edge torus cut receipt and rows404-407 PASS eight times, so `M4-CP3-TB5-REV-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**. CB8's occurrence-domain mechanism remains required and is not rolled back.
+
+Accepted selector403 ordinal138 is a valid fail-closed compatibility contract, not stale test authority. Its hard diagonal splits the two-triangle square into two valid one-face discs, each with exactly three boundary segments. CB8 activates accepted-cut handling for every planned hard-feature region; the newly introduced early `acceptedSegments.size()<4` check rejects `InvalidFrontBoundaryAuthority` before the producer's existing `<4 => NotApplicable` applicability gate. That converts a valid-but-too-small producer domain into an authority-corruption rejection and prevents aggregate `UnsupportedSourceSheetTopology` / all-three-declined diagnostics.
+
+`M4-CP3-TB6-REV-CAND-01` is **OPEN / PRODUCT-SEMANTIC / A4 ACCEPTED-CUT-DOMAIN APPLICABILITY-DISPOSITION SCOPE WIDENING / NON-STABLE**. Candidate package `10303165017` / selector408 remains rejected/unpromoted; corrected R4 artifact `10289601000` / selector403 remains accepted **403/403** and stable accounting remains **47 / 14 / 33**, debt **5**.
+
+Exact successor `M4-CP3-CB9` is runtime-free and freezes one semantic distinction: actual missing/ambiguous/contradictory occurrence authority remains `Rejected/InvalidFrontBoundaryAuthority`; valid total accepted boundary authority below the curved producer's minimum four-side chart remains `NotApplicable`. G1-G3 must prove ordinal138 and row408 occupy opposite sides of that boundary before mutation. Tests, fixtures, selectors, A2b/A3 writers and aggregate fail-closed semantics remain frozen.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -504,6 +515,10 @@ history.
 | `Architecture_M4_CP3_CB7_Code_Build_Plan.md` | 178 | **FOLDED AFTER CB7 + TB5 REVIEW.** Exact effective-authority guard, test-only scope and frozen selector/build constraints are preserved in §2.32 and current TB5 review. |
 | `Architecture_M4_CP3_CB7_Compile_Record.md` | 145 | **FOLDED AFTER TB5 REVIEW.** Semantic source, authoritative compile/package identities, selector preservation and runtime-free boundary are preserved in §2.32, changelog and current TB5 review. |
 | `Architecture_M4_CP3_TB5_Artifact_Only_Test_Benchmark_Plan.md` | 182 | **FOLDED AFTER TB5 EXECUTION + REVIEW.** Frozen 821-process ordering, fail-fast and immutable pre/postflight contract plus actual stop are preserved in §2.33 and current TB5 review. |
+
+| `Architecture_M4_CP3_TB5_Review_Record.md` | 282 | **FOLDED AFTER TB6 REVIEW SUPERSESSION.** TB5 cut-open authority-domain diagnosis, prior candidate/falsifier and carried obligations are preserved in §§2.33-2.35, tracker, changelog and current TB6 review. The TB5 candidate is now closed recovery-proved by TB6. |
+| `Architecture_M4_CP3_CB8_Code_Build_Plan.md` | 189 | **FOLDED AFTER CB8 EXECUTION + TB6 REVIEW.** Guard G1-G3, occurrence-domain correction boundary, physical-path preservation obligation and frozen selector/runtime gate are preserved in §§2.33-2.35, current review and CB9 plan. |
+| `Architecture_M4_CP3_TB6_Artifact_Only_Test_Benchmark_Plan.md` | 110 | **FOLDED AFTER TB6 EXECUTION + REVIEW.** Frozen focused/control/cumulative order, fail-fast and immutable pre/postflight requirements plus actual stop are preserved in §§2.34-2.35 and retained TB6 runtime report/current review. |
 
 Historical citations to folded filenames remain resolvable through this index and git history.
 
