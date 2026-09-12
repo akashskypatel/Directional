@@ -1,68 +1,60 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP3-CB8` COMPLETE / COMPILE-GREEN / RUNTIME NOT EXECUTED / CP3 OPEN
+**Status:** `M4-CP3-TB6-EXEC` COMPLETE / VALID RED / REVIEW REQUIRED / CP3 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-TB6-EXEC` immutable artifact-only Test + Benchmark
+**Canonical next turn:** `M4-CP3-TB6-REV` Review + Plan
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures.
-- Corrected R4 artifact `10289601000` remains accepted M4-CP3 runtime authority at selector403 **403/403**. Selector403 SHA-256 is `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`.
-- Candidate selector408 remains byte-frozen at `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`, 408 LF identities, first403 byte-identical, owner partition **30 / 262 / 75 / 41**. It is **not promoted**.
+- Corrected R4 artifact `10289601000` remains accepted M4-CP3 runtime authority at selector403 **403/403**; selector403 SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`.
+- Candidate semantic source `6934d9edfb56b44f956fbc64a89a501aaed042af` / package `10303165017` / selector408 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484` remains **unpromoted**.
 - Stable accounting remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**. CP3 and `G4-B002` remain OPEN.
-- `M4-CP3-TB5-REV-CAND-01` remains open/non-stable until the CB8 correction receives immutable runtime evidence and Review.
+- `M4-CP3-TB5-REV-CAND-01` remains open until Review adjudicates the CB8 runtime evidence and the new cumulative RED.
 
-## CB8 completed product correction
+## TB6 authoritative runtime
 
-TB5 proved the repaired 18-edge torus witness reaches A4 but exposed an A4 authority-domain mismatch: curved bounded-disk applicability/chart construction used uncut raw source topology instead of accepted A2b/A3 cut-open disc authority. CB8's G1-G3 guard proved the existing typed products already provide the necessary occurrence identity without creating a second topology or subdivision writer.
+Authoritative retry run/job: `34711826087 / 103601868455`.
 
-CB8 therefore made the bounded A4 consumer correction only. Planned hard-feature curved bounded-disk construction now preserves typed cut-boundary occurrences through chart materialization, including repeated source vertex `0`, while the physical no-plan bounded-disk path remains unchanged. A2b remains topology writer; A3 remains subdivision writer; exact hard-rail pairing remains the only point where opposite cut copies are identified.
+- immutable preflight PASS; package 28/28, source commit/archive, selectors, owners and source-status authority all match;
+- row408 focused recovery **2/2 PASS**;
+- rows404-407 controls **8/8 PASS**;
+- selector403 ordinals1-137 PASS;
+- selector403 ordinal138 RED: `SurfaceCellAuthorityContractCutover.HardFeatureRegionDeclinedByAllPhaseFrontProducersFailsClosedTyped`;
+- actual candidate reason `InvalidFrontBoundaryAuthority`, with uniform/periodic/bounded-disk decline flags false; historical test expected `UnsupportedSourceSheetTopology` and all three decline flags true;
+- fail-fast at **148 processes = 147 PASS / 1 RED**, so selector408 cumulative phase did not run;
+- immutable postflight PASS: package/source/execution-view censuses equal; no configure/compile/relink/discovery/benchmark/package repair/mutation.
 
-Final semantic source: `6934d9edfb56b44f956fbc64a89a501aaed042af`. The initial compile found one compile-only `DomainResult<SourceVertexId>` dereference error; the bounded `.value()` remediation changed no semantics and was applied by run `34708941120`. No Directional runtime executed in CB8.
+Result artifact `10303393457`, SHA-256 `db5770d212befb593d9dd3003c7a399432f4fed4d43aa4b306c117274c21d1d1`; log artifact `10303657623`, SHA-256 `a3297a070dfd340a177287a59efc9f717210425659cf06c539b6321bccc33239`.
 
-## Authoritative compile package
+The preceding run `34711705866` is orchestration-only/no-credit: zero Directional processes, stopped before runtime on a stale TB5-derived `preflight-target` expectation. The retry corrected only that control-plane metadata expectation.
 
-Compile retry run `34709028122` is GREEN:
+## Exact next — `M4-CP3-TB6-REV`
 
-- changed-owner compile: `directional_surface_cell_producer_tests` GREEN;
-- frozen package compile: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks` GREEN;
-- package result artifact `10303165017`, provider SHA-256 `d601e5efc4d6a3cafc34d4a5ead0a5a44040e3026d31b3f75afad59c71b68112`;
-- package log artifact `10303015368`, SHA-256 `2f284cc6b3b67dbbb07d27060c3d94185ba021dc08708bb5f04f54796f65baa1`;
-- package root manifest **28/28** verified; packaged source commit exactly `6934d9ed...`; source archive SHA-256 `7b906b0ad1560d3cb158178ae224d2d391e8fee66d7268f78ba2ed172a0ec5eb`;
-- GMP/GMPXX linked, source-status snapshots empty, `runtimeExecution=false`.
+Review must independently re-open the immutable result/log bundle and semantic source. It must:
 
-Compile/package success does not promote selector408 or close CP3.
+1. verify row408 2/2 and rows404-407 8/8 as genuine CB8 recovery evidence;
+2. re-derive accepted selector403 ordinal138's source/test premise and actual production path;
+3. decide whether the RED is stale test authority, product-semantic compatibility regression, or scope widening beyond the reviewed CB8 seam;
+4. adjudicate `M4-CP3-TB5-REV-CAND-01` and authorize at most one bounded successor path;
+5. preserve accepted R4/selector403 authority unless Review explicitly has sufficient evidence to change it;
+6. do not execute the remaining selector403/408 gate or mutate product/test/selector source in Review.
 
-## Exact next — `M4-CP3-TB6-EXEC`
-
-Authority: `.agents/Directional/Architecture_M4_CP3_TB6_Artifact_Only_Test_Benchmark_Plan.md`.
-
-Consume immutable package artifact `10303165017` directly. Do **not** configure, compile, relink, regenerate discovery, repair package bytes, change source/tests/fixtures/selectors, or substitute another package.
-
-Execution order is frozen:
-
-1. immutable preflight and selector/owner/package authority;
-2. row408 twice in fresh exact-filter processes — both must select exactly one and PASS; any RED/SKIP/crash/timeout/selection mismatch stops the gate immediately;
-3. only after focused **2/2** GREEN, run rows404-407 twice;
-4. then selector403 **403/403** and selector408 **408/408** in fresh per-identity exact-filter processes; total frozen gate remains **821 processes**;
-5. immutable postflight always;
-6. `M4-CP3-TB6-REV` owns promotion, candidate adjudication and CP3/`G4-B002` disposition. EXEC never promotes.
+Primary evidence: `.agents/Directional/Architecture_M4_CP3_TB6_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB-DRAFT.md
+  - turn-based-coding-agent/references/turns/REV-DRAFT.md
 required:
   - turn-based-coding-agent/references/core/turn-boundaries.md
   - turn-based-coding-agent/references/core/evidence.md
-conditional_modules:
-  - trigger: repository/workflow operations through GitHub
-    path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP3_TB6_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M4_CP3_TB6_Artifact_Only_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M4_CP3_CB8_Code_Build_Plan.md
   - .agents/Directional/Architecture_M4_CP3_TB5_Review_Record.md
@@ -71,6 +63,6 @@ deep_references:
   - .agents/Directional/Architecture_M4_CP3_CB4_R3_Required_Green_Selector_403.txt
 do_not_preload:
   - M5/M6 implementation
-  - any source/build mutation in TB6
-  - any selector mutation
+  - any source/build mutation in Review
+  - any selector mutation or TB continuation
 ```

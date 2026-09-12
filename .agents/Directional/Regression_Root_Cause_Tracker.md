@@ -1,3 +1,12 @@
+## M4-CP3-TB6-EXEC — **VALID RED / REVIEW REQUIRED / UNADJUDICATED**
+
+- **Execution:** authoritative retry `34711826087 / 103601868455` against immutable CB8 package `10303165017`; result/log `10303393457 / 10303657623`, SHA-256 `db5770d212befb593d9dd3003c7a399432f4fed4d43aa4b306c117274c21d1d1` / `a3297a070dfd340a177287a59efc9f717210425659cf06c539b6321bccc33239`. Pre/postflight immutable; no build/repair/mutation.
+- **Recovery evidence:** row408 **2/2 PASS**, rows404-407 **8/8 PASS**. CB8's intended A4 occurrence-domain path therefore has direct runtime recovery evidence.
+- **Earliest cumulative RED:** selector403 ordinal138 `SurfaceCellAuthorityContractCutover.HardFeatureRegionDeclinedByAllPhaseFrontProducersFailsClosedTyped`. Ordinals1-137 PASS first. Expected `UnsupportedSourceSheetTopology` plus all producer-declined flags true; actual `InvalidFrontBoundaryAuthority` plus all three flags false. Fail-fast stops at **148 = 147 PASS / 1 RED**; selector408 not reached.
+- **Disposition boundary:** EXEC does not classify this observation as stale-test versus product regression, does not change stable accounting, does not promote selector408 and does not close `M4-CP3-TB5-REV-CAND-01`.
+- **Accepted authority:** corrected R4 artifact `10289601000` / selector403 **403/403** remains entering accepted authority pending Review. Stable totals remain **47 / 14 / 33**, debt **5**; CP3 / `G4-B002` remain open.
+- **Exact successor:** `M4-CP3-TB6-REV`, Review + Plan only.
+
 ## M4-CP3-TB5-REV — **CANDIDATE REJECTED / PRODUCT-SEMANTIC A4 CUT-OPEN AUTHORITY-DOMAIN + APPLICABILITY DRIFT / NON-STABLE / CB8**
 
 - **Execution:** immutable CB7 package `10293750596`, run/job `34680334158 / 103517743371`; result/log artifacts `10293432317 / 10293122816`, SHA-256 `6ac55290bfe17972db9a03c650065485c422955b53898e07ecf73964338615a3` / `6c7d650112a790ac22d8a946a12c4815abdfdea2d0f0150704ffa1a5f1cb613d`. Preflight/postflight PASS; row408 is process 1, selected exactly once, and REDs at A4 phase-front disposition (`Produced` expected, `Rejected` actual); fail-fast stops at 1/821.

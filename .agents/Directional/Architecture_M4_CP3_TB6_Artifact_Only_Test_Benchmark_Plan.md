@@ -1,12 +1,13 @@
 # M4-CP3-TB6 Artifact-Only Test + Benchmark Plan — A4 cut-open occurrence recovery
 
 **Turn:** `M4-CP3-TB6-EXEC`
-**Status:** FROZEN BY `M4-CP3-CB8` / NOT STARTED
+**Status:** EXECUTED / VALID RED / AWAITING `M4-CP3-TB6-REV`
 **Turn type:** Test + Benchmark / immutable artifact-only
 **Candidate semantic source:** `6934d9edfb56b44f956fbc64a89a501aaed042af`
 **Candidate package:** artifact `10303165017`, provider SHA-256 `d601e5efc4d6a3cafc34d4a5ead0a5a44040e3026d31b3f75afad59c71b68112`
 **Entering accepted runtime authority:** R4 artifact `10289601000` / selector403 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` / **403/403**
 **Candidate selector408:** `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484` / unpromoted
+**Execution report:** `.agents/Directional/Architecture_M4_CP3_TB6_Artifact_Only_Test_Benchmark_Report.md`
 **Mandatory successor:** `M4-CP3-TB6-REV`
 
 ## 1. Immutable package authority
@@ -102,3 +103,8 @@ Package one TB6 result artifact and one diagnostic log artifact containing at mi
 - explicit no-build/no-repair/no-source-mutation statement.
 
 EXEC does **not** promote the package, alter stable regression accounting, close `M4-CP3-TB5-REV-CAND-01`, close CP3/`G4-B002`, or amend M4 definitions. Those decisions belong only to `M4-CP3-TB6-REV`. If TB6 is GREEN, Review must independently re-open the evidence before promotion. If TB6 is RED, Review must classify the observed candidate/non-stable or stable regression surface before any successor Code + Build is authorized.
+
+
+## 7. Executed result
+
+Authoritative retry run/job `34711826087 / 103601868455` passed immutable preflight, row408 **2/2**, rows404-407 **8/8**, then failed accepted selector403 ordinal138 after ordinals1-137 passed. Fail-fast stopped at **148 processes: 147 PASS / 1 RED**; selector408 was not reached. Immutable postflight passed for package/source/execution-view censuses. Result/log artifacts are `10303393457 / 10303657623`, SHA-256 `db5770d212befb593d9dd3003c7a399432f4fed4d43aa4b306c117274c21d1d1` / `a3297a070dfd340a177287a59efc9f717210425659cf06c539b6321bccc33239`. The preceding attempt `34711705866` executed zero Directional processes and is orchestration-only/no-credit. EXEC makes no promotion or regression classification; `M4-CP3-TB6-REV` is mandatory.
