@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1v1m7f7tZDet3hWoxdrk6b__9vxdTaDyG
-      patch_sha256: e2a6ca286b22d378f70280dd45a96ec995ee54836ee958edda711770f275c7fe
-      base_sha: 18ef11691bf4cf15e8aedcf22a57dd2372673f9c
+      file_id: 176mE92ixMjcu-PA0iRzO7RV3s5aRjknL
+      patch_sha256: 0ec47443d6ac1609696525910238ac0eb39fbc257f8c090b699c58625ceb8a0d
+      base_sha: 6623e008cfaf093687a14f977252258ee2624097
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'test: constrain CP3 torus hard-rail authority'
+      commit_message: 'docs: close M4-CP3-CB7 and freeze TB5 gate'
       retention_days: 7
     secrets: inherit
