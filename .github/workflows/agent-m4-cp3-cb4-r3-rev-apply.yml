@@ -1,0 +1,45 @@
+name: Agent M4 CP3 CB4 R3 REV Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-cb4-r3-rev-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-cb4-r3-rev-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-cb4-r3-rev-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 18ZPb8MuvhX0fAGGQDiwfgkGX3SC63NXU
+      patch_sha256: 50069bfbe7a975ac28d441f4457aa93116226b7450d8eb3e6c4f67d80ee0cb73
+      base_sha: 1dad640454306e3ed642640a1409168ed26c5920
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4 CP3 CB4 R3 independent review"
+      retention_days: 7
+    secrets: inherit
