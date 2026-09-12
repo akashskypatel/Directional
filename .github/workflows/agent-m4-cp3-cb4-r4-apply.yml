@@ -1,20 +1,20 @@
-name: Agent M4 CP3 CB4 R4 Package Compile
+name: Agent M4 CP3 CB4 R4 Closeout Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m4-cp3-cb4-r4-package.txt
+      - .agents/connector-triggers/m4-cp3-cb4-r4-closeout.txt
 
 permissions:
-  actions: write
   contents: write
+  id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: agent-m4-cp3-cb4-r4-package-${{ github.ref }}
+  group: agent-m4-cp3-cb4-r4-closeout-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -29,17 +29,19 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp3-cb4-r4-package
+      label: m4-cp3-cb4-r4-closeout
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  compile:
+  apply:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-compile-reusable.yml
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      source_sha: 58521f6d1c4fb5d625da7cde50e002cf4688beee
-      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
-      artifact_prefix: m4-cp3-cb4-r4-package
+      file_id: 1zUoXAZfGA8xsz2SrG9Y3dtoCNLM6bizU
+      patch_sha256: bcfeb92a959e04c82ff7e6dc4690c92af9539636731efe138ffcd0edd00936ac
+      base_sha: 58521f6d1c4fb5d625da7cde50e002cf4688beee
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4-CP3-CB4-R4 and freeze TB2-R2 execution plan"
     secrets: inherit
