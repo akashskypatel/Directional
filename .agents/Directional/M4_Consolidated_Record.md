@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-12 at `M4-CP3-TB4-REV`
+**Last updated:** 2026-09-12 at `M4-CP3-CB7`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. CB6 semantic source `9d66fcebe4b91ab74a6d0234c46643a2723ab643`, package `10292005428` and selector408 `c689c0cd...484` are rejected for promotion after TB4 Review classified row408 as a non-stable test-authority fixture-precondition-composition/reachability defect: production composed 48 automatic hard rails with the intended 18 explicit rails and the test failed at A1 before the cutover seam. Rows404-407 retain earlier focused-green evidence, but the full candidate gate remains incomplete. CP3 and `G4-B002` remain OPEN. Exact next is runtime-free test-only `M4-CP3-CB7`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. TB4 rejected CB6 row408 as a non-stable test-authority composition/reachability defect. CB7 has now compile-validly isolated row408 effective hard-feature authority to the exact 18-edge torus witness and produced candidate artifact `10293750596` from semantic source `dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8`; selector408 remains byte-frozen and unpromoted. Rows404-407 retain earlier focused-green evidence, but the full candidate gate remains incomplete. CP3 and `G4-B002` remain OPEN. Exact next is artifact-only `M4-CP3-TB5-EXEC`, then mandatory Review. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -382,6 +382,17 @@ topology. The only authorized semantic edit after that proof is those four thres
 preserving an explicit user hard edge. Production source, row408 assertions/identity, rows404-407, selectors and CMake
 semantics are frozen. A green CB7 compiles/packages with GMP/GMPXX and no runtime; later TB5 restarts the complete
 **821-process** gate from process 1 and Review again owns promotion/CP3 closure.
+
+## 2.32 `M4-CP3-CB7` — effective torus hard authority isolated; candidate package compile-green
+
+CB7 re-ran the actual row408 effective-authority construction before mutation. On the committed torus, the maximum non-user dihedral is `60.852573735971816°`; row-local CAD+organic absolute bands `179/180` therefore leave all automatic scores below the Hard threshold while explicit user Hard tags remain preserved. The exact guard derives **18 user Hard / 0 automatic Hard / 18 effective HardFeature source edges**, one 144-face topology region, and the already-proved two-generator cut graph with disc complement (`V/E/F=91/234/144`, `χ=1`, one 36-edge degree-2 boundary loop).
+
+Semantic source `dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8` changes only `tests/FieldAlignedCurveNetworkTests.cpp`: four authorized threshold assignments in `cp4c_torus_hard_rail_remesh_options()` and a row408 exact effective-hard source-edge set assertion against the frozen 18-edge witness. Product code, rows404-407, row408 identity, selectors, ownership and CMake semantics remain unchanged. Selector403 stays `c3f509af...70cb7`; selector408 stays `c689c0cd...484`, exact-prefixing selector403 with owner partition **30 / 262 / 75 / 41**.
+
+The recovery patch `e2a6ca286b22d378f70280dd45a96ec995ee54836ee958edda711770f275c7fe` was applied by Drive workflow `34678546235 / 103512716658`; the staging file was permanently deleted after successful application. The first compile caller `34678598168` was a zero-job permission-ceiling startup failure. Reusable workflow permissions were not changed. A corrected caller run `34678622666` compiled successfully but repeated the producer target in metadata and is non-authoritative. The eight-unique-target authoritative run/job `34678708800 / 103513182449` is GREEN and packages exact semantic source `dbcc2f1f…` as artifact `10293750596`, digest `f95decac9b059bcc7c7b341ecda1e95e8a5b0028211eaa7f902144a196c60831`; log artifact `10293990184` is `72447200a886c4e07768f8e81a156f0878f400321cddd054341cf68d758863f9`. Source archive is `ca16770d8ceff1da119687284eb7c01b31af9ce237be01753ed4c962305ff18d`; 28-entry manifest is `43e8e4c35712c8b69d4906288390745f2bdb507160cf52c31ad8f7545faa91ed`; root checksums are 28/28 PASS; GMP/GMPXX linked; all source-status snapshots are empty; `runtimeExecution=false`. No Directional runtime executed.
+
+Compilation does not promote selector408 or close CP3/`G4-B002`. Accepted R4 artifact `10289601000` / selector403 **403/403** remains runtime authority. Exact next is immutable `M4-CP3-TB5-EXEC` under `Architecture_M4_CP3_TB5_Artifact_Only_Test_Benchmark_Plan.md`: 821 fresh exact-filter processes, fail-fast, immutable pre/postflight, then mandatory Review. Stable accounting remains **47 / 14 / 33**, debt **5**.
+
 
 ## 3. Folded document index
 
