@@ -1,4 +1,0 @@
-Purpose: freeze exact source for M4-CP3-TB2-R2-REV.
-Frozen semantic branch head before marker: a4227d090f93d5c28056d68a9237d3a63bca083a
-Turn: M4-CP3-TB2-R2-REV
-Runtime execution: false
