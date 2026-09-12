@@ -1271,11 +1271,21 @@ private:
  * they are never reconstructed from A4 floating geometry. `orientation` is the
  * exact direction of the A4 chart copy relative to increasing A3 ordinals.
  */
+struct SurfaceBoundaryOccurrenceId {
+  authority::NetworkRegionId region;
+  std::size_t canonicalBoundaryOccurrenceOrdinal = 0U;
+
+  auto operator<=>(const SurfaceBoundaryOccurrenceId &) const = default;
+};
+
 struct SurfaceSharedBoundaryInterval {
   authority::NetworkArcId span;
   authority::FieldExactRational firstOrdinal;
   authority::FieldExactRational secondOrdinal;
   authority::Orientation orientation = authority::Orientation::Forward;
+  /// Exact A2b/A3 cut-boundary occurrence when this interval is materialized
+  /// from a planned cut-open chart. Physical-boundary producers may leave it unset.
+  std::optional<SurfaceBoundaryOccurrenceId> boundaryOccurrence;
 
   auto operator<=>(const SurfaceSharedBoundaryInterval &) const = default;
 };

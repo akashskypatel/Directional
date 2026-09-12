@@ -7846,7 +7846,12 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             opposite.sharedBoundaryInterval->secondOrdinal !=
                 interval.firstOrdinal ||
             opposite.sharedBoundaryInterval->orientation ==
-                interval.orientation) {
+                interval.orientation ||
+            opposite.sharedBoundaryInterval->boundaryOccurrence.has_value() !=
+                interval.boundaryOccurrence.has_value() ||
+            (interval.boundaryOccurrence.has_value() &&
+             opposite.sharedBoundaryInterval->boundaryOccurrence ==
+                 interval.boundaryOccurrence)) {
           error.code =
               SurfacePhaseFrontProductErrorCode::InvalidSharedBoundaryInterval;
           error.edge = static_cast<int>(edgeIndex);
@@ -13526,34 +13531,36 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
 
   const auto incident = edge_faces(faces, activeFaces);
   const auto &fullIncident = sourceEdgeFaces;
-  std::set<int> activeVertices;
-  std::map<int, std::set<int>> vertexAdjacency;
-  for (const authority::SourceFaceId faceId : activeFaces) {
-    const auto faceRow = source_face_row(faceId, faces.rows());
-    if (!faceRow.has_value()) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      set_phase_front_failure(result.failure,
-                              SurfacePhaseFrontFailureReason::InvalidInput);
-      return result;
-    }
-    const int face = *faceRow;
-    for (int corner = 0; corner < 3; ++corner) {
-      const int a = faces(face, corner);
-      const int b = faces(face, (corner + 1) % 3);
-      if (a < 0 || b < 0 || a >= vertices.rows() || b >= vertices.rows() ||
-          a == b) {
-        result.disposition = SurfaceCellProducerDisposition::Rejected;
-        set_phase_front_failure(
-            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
-            -1, -1, face);
-        return result;
-      }
-      activeVertices.insert(a);
-      activeVertices.insert(b);
-      vertexAdjacency[a].insert(b);
-      vertexAdjacency[b].insert(a);
-    }
+  const bool hasTopologyPlan = options.globalTopologyPlan != nullptr;
+  const bool hasBaselinePlan = options.globalConformityBaselinePlan != nullptr;
+  if (hasTopologyPlan != hasBaselinePlan) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+    return result;
   }
+  const bool useAcceptedConformity = hasTopologyPlan && hasBaselinePlan;
+  const bool regionHasHardFeature = std::any_of(
+      incident.begin(), incident.end(), [&](const auto &entry) {
+        return options.hardFeatureEdges.count(entry.first) != 0U;
+      });
+  const bool useAcceptedCutDomain = useAcceptedConformity && regionHasHardFeature;
+
+  struct AcceptedCutBoundarySegment {
+    ConformityBoundaryIncidenceId incidence;
+    authority::NetworkArcId arc;
+    std::size_t supportPieceIndex = 0U;
+    authority::Orientation orientation = authority::Orientation::Forward;
+    authority::SourceEdgeTopologyKey edge;
+    authority::SourceFaceId sourceFace;
+    int firstSourceVertex = -1;
+    int secondSourceVertex = -1;
+    int firstOccurrence = -1;
+    int secondOccurrence = -1;
+  };
+
+  const std::set<authority::SourceFaceId> activeFaceSet(activeFaces.begin(),
+                                                        activeFaces.end());
   for (const auto &[key, pair] : incident) {
     (void)key;
     if (pair[0] < 0) {
@@ -13564,18 +13571,621 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     }
   }
 
-  const int euler = static_cast<int>(activeVertices.size()) -
-                    static_cast<int>(incident.size()) +
-                    static_cast<int>(activeFaces.size());
-  if (euler != 1) {
-    return result;
+  std::set<int> activeVertices;
+  std::map<int, std::set<int>> vertexAdjacency;
+  std::set<authority::SourceEdgeTopologyKey> boundaryEdgeKeys;
+  std::map<int, std::vector<int>> boundaryAdjacency;
+  std::map<authority::SourceEdgeTopologyKey, authority::SourceFaceId> boundaryFace;
+  std::set<authority::SourceEdgeTopologyKey> acceptedCutEdges;
+  std::vector<int> occurrenceSourceVertex;
+  std::vector<int> faceCornerOccurrence(
+      static_cast<std::size_t>(faces.rows()) * 3U, -1);
+  std::vector<int> boundaryCycle;
+  std::vector<authority::SourceFaceId> boundarySegmentFaces;
+  std::vector<std::optional<AcceptedCutBoundarySegment>> boundaryAcceptedSegments;
+
+  if (useAcceptedCutDomain) {
+    const GlobalTopologyPlan &topology = *options.globalTopologyPlan;
+    const GlobalConformityBaselinePlan &baseline =
+        *options.globalConformityBaselinePlan;
+    if (baseline.topology_plan_digest() != topology.semantic_digest()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+
+    const GlobalTopologyRegion *acceptedRegion = nullptr;
+    for (const GlobalTopologyRegion &candidate : topology.regions()) {
+      std::set<authority::SourceFaceId> candidateRows;
+      bool bindsCurrentA1Region = true;
+      for (const authority::SourceFaceTopologyKey &sourceFace :
+           candidate.sourceFaces) {
+        const auto row = sourceAuthority.row_for_topology(sourceFace);
+        if (!row.has_value() || activeFaceSet.count(*row) == 0U ||
+            sourceAuthority.region_for_row(*row) != region.id()) {
+          bindsCurrentA1Region = false;
+          break;
+        }
+        candidateRows.insert(*row);
+      }
+      if (!bindsCurrentA1Region || candidateRows != activeFaceSet) continue;
+      if (acceptedRegion != nullptr) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      acceptedRegion = &candidate;
+    }
+    if (acceptedRegion == nullptr || acceptedRegion->boundary.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+    const GlobalTopologyRegionDiscCertificate *discCertificate =
+        topology.find_region_certificate(acceptedRegion->id);
+    if (discCertificate == nullptr || !discCertificate->proves_disc_topology() ||
+        discCertificate->actualEmbeddedFace.boundaryWalkCount != 1U ||
+        discCertificate->actualEmbeddedFace.boundaryArcCount !=
+            acceptedRegion->boundary.size()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+
+    std::vector<AcceptedCutBoundarySegment> acceptedSegments;
+    for (std::size_t ordinal = 0U; ordinal < acceptedRegion->boundary.size();
+         ++ordinal) {
+      const GlobalTopologyOrientedArc &orientedArc =
+          acceptedRegion->boundary[ordinal];
+      const GlobalTopologyArc *arc = topology.find_arc(orientedArc.arc);
+      if (arc == nullptr) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      const ConformityBoundaryIncidenceId incidenceId{acceptedRegion->id,
+                                                       ordinal};
+      const BaselineConformityIncidence *incidence = nullptr;
+      for (const BaselineConformityIncidence &candidate : baseline.incidences()) {
+        if (candidate.id != incidenceId) continue;
+        if (incidence != nullptr) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        incidence = &candidate;
+      }
+      const ConformitySpanId span =
+          ConformitySpanId::from_network_arc(orientedArc.arc);
+      const ConformityScheduleEntry *schedule = baseline.find_schedule(span);
+      if (incidence == nullptr || incidence->span != span ||
+          incidence->orientation != orientedArc.orientation ||
+          schedule == nullptr || schedule->supportPieces != arc->sourcePath) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      const authority::ExactSourcePath orientedPath =
+          authority::exact_source_path_for_orientation(arc->sourcePath,
+                                                       orientedArc.orientation);
+      if (orientedPath.empty()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      for (std::size_t pieceIndex = 0U; pieceIndex < orientedPath.size();
+           ++pieceIndex) {
+        const auto &piece = orientedPath[pieceIndex];
+        const auto *carrier =
+            std::get_if<authority::SourceEdgeSupport>(&piece.carrier);
+        const auto *first = std::get_if<authority::SourceVertexId>(&piece.first);
+        const auto *second = std::get_if<authority::SourceVertexId>(&piece.second);
+        if (carrier == nullptr || first == nullptr || second == nullptr ||
+            *first == *second || first->index() >= static_cast<std::size_t>(vertices.rows()) ||
+            second->index() >= static_cast<std::size_t>(vertices.rows())) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        const int firstVertex = static_cast<int>(first->index());
+        const int secondVertex = static_cast<int>(second->index());
+        const auto foundIncident = incident.find(carrier->edge);
+        if (foundIncident == incident.end()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        std::optional<authority::SourceFaceId> owningFace;
+        for (const int candidateFace : foundIncident->second) {
+          if (candidateFace < 0) continue;
+          const auto candidateId = source_face_id(candidateFace, faces.rows());
+          if (!candidateId.has_value() || activeFaceSet.count(*candidateId) == 0U)
+            continue;
+          bool oriented = false;
+          for (int corner = 0; corner < 3; ++corner) {
+            if (faces(candidateFace, corner) == firstVertex &&
+                faces(candidateFace, (corner + 1) % 3) == secondVertex) {
+              oriented = true;
+              break;
+            }
+          }
+          if (!oriented) continue;
+          if (owningFace.has_value()) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+            return result;
+          }
+          owningFace = *candidateId;
+        }
+        if (!owningFace.has_value()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        acceptedCutEdges.insert(carrier->edge);
+        acceptedSegments.push_back(
+            {incidenceId, orientedArc.arc, pieceIndex, orientedArc.orientation,
+             carrier->edge, *owningFace, firstVertex, secondVertex, -1, -1});
+      }
+    }
+    if (acceptedSegments.size() < 4U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+    for (std::size_t index = 0U; index < acceptedSegments.size(); ++index) {
+      const auto &current = acceptedSegments[index];
+      const auto &next = acceptedSegments[(index + 1U) % acceptedSegments.size()];
+      if (current.secondSourceVertex != next.firstSourceVertex) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+    }
+
+    const std::size_t cornerCapacity = activeFaces.size() * 3U;
+    std::vector<int> parent(cornerCapacity, -1);
+    std::vector<int> faceCornerNode(
+        static_cast<std::size_t>(faces.rows()) * 3U, -1);
+    std::size_t nextNode = 0U;
+    for (const authority::SourceFaceId faceId : activeFaces) {
+      const auto faceRow = source_face_row(faceId, faces.rows());
+      if (!faceRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      for (int corner = 0; corner < 3; ++corner) {
+        if (nextNode >= cornerCapacity) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        const std::size_t slot = static_cast<std::size_t>(*faceRow) * 3U +
+                                 static_cast<std::size_t>(corner);
+        faceCornerNode[slot] = static_cast<int>(nextNode);
+        parent[nextNode] = static_cast<int>(nextNode);
+        ++nextNode;
+      }
+    }
+    const auto find_root = [&](int node) {
+      int root = node;
+      while (parent[static_cast<std::size_t>(root)] != root) {
+        root = parent[static_cast<std::size_t>(root)];
+      }
+      while (parent[static_cast<std::size_t>(node)] != node) {
+        const int next = parent[static_cast<std::size_t>(node)];
+        parent[static_cast<std::size_t>(node)] = root;
+        node = next;
+      }
+      return root;
+    };
+    const auto unite = [&](const int firstNode, const int secondNode) {
+      const int firstRoot = find_root(firstNode);
+      const int secondRoot = find_root(secondNode);
+      if (firstRoot == secondRoot) return;
+      const int low = std::min(firstRoot, secondRoot);
+      const int high = std::max(firstRoot, secondRoot);
+      parent[static_cast<std::size_t>(high)] = low;
+    };
+    const auto corner_for_vertex = [&](const int face, const int vertex) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (faces(face, corner) == vertex) return corner;
+      }
+      return -1;
+    };
+    for (const auto &[key, pair] : incident) {
+      if (pair[0] < 0 || pair[1] < 0 ||
+          acceptedCutEdges.count(key) != 0U) {
+        continue;
+      }
+      for (const authority::SourceVertexId endpoint :
+           {key.first(), key.second()}) {
+        const int vertex = static_cast<int>(endpoint.index());
+        const int firstCorner = corner_for_vertex(pair[0], vertex);
+        const int secondCorner = corner_for_vertex(pair[1], vertex);
+        if (firstCorner < 0 || secondCorner < 0) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        const int firstNode = faceCornerNode[
+            static_cast<std::size_t>(pair[0]) * 3U +
+            static_cast<std::size_t>(firstCorner)];
+        const int secondNode = faceCornerNode[
+            static_cast<std::size_t>(pair[1]) * 3U +
+            static_cast<std::size_t>(secondCorner)];
+        if (firstNode < 0 || secondNode < 0) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        unite(firstNode, secondNode);
+      }
+    }
+
+    std::map<int, int> sourceVertexForRoot;
+    std::map<int, std::vector<authority::SourceFaceTopologyKey>> supportFacesForRoot;
+    for (const authority::SourceFaceId faceId : activeFaces) {
+      const auto faceRow = source_face_row(faceId, faces.rows());
+      if (!faceRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      for (int corner = 0; corner < 3; ++corner) {
+        const std::size_t slot = static_cast<std::size_t>(*faceRow) * 3U +
+                                 static_cast<std::size_t>(corner);
+        const int node = faceCornerNode[slot];
+        if (node < 0) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        const int root = find_root(node);
+        const int sourceVertex = faces(*faceRow, corner);
+        const auto [found, inserted] =
+            sourceVertexForRoot.emplace(root, sourceVertex);
+        if (!inserted && found->second != sourceVertex) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        supportFacesForRoot[root].push_back(sourceAuthority.topology_for_row(faceId));
+      }
+    }
+    using OccurrenceSignature =
+        std::pair<authority::SourceVertexId,
+                  std::vector<authority::SourceFaceTopologyKey>>;
+    std::map<int, OccurrenceSignature> signatureForRoot;
+    std::map<OccurrenceSignature, int> occurrenceForSignature;
+    for (auto &[root, supportFaces] : supportFacesForRoot) {
+      std::sort(supportFaces.begin(), supportFaces.end());
+      supportFaces.erase(std::unique(supportFaces.begin(), supportFaces.end()),
+                         supportFaces.end());
+      const int sourceVertex = sourceVertexForRoot.at(root);
+      const auto sourceVertexId = authority::SourceVertexId::from_index(
+          static_cast<std::int64_t>(sourceVertex), source_vertex_extent(faces));
+      if (!sourceVertexId.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      OccurrenceSignature signature{*sourceVertexId, supportFaces};
+      if (!signatureForRoot.emplace(root, signature).second ||
+          !occurrenceForSignature.emplace(signature, -1).second) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+    }
+    int occurrenceOrdinal = 0;
+    for (auto &[signature, occurrence] : occurrenceForSignature) {
+      occurrence = occurrenceOrdinal++;
+      occurrenceSourceVertex.push_back(
+          static_cast<int>(signature.first.index()));
+    }
+    for (const authority::SourceFaceId faceId : activeFaces) {
+      const auto faceRow = source_face_row(faceId, faces.rows());
+      if (!faceRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      for (int corner = 0; corner < 3; ++corner) {
+        const std::size_t slot = static_cast<std::size_t>(*faceRow) * 3U +
+                                 static_cast<std::size_t>(corner);
+        const int node = faceCornerNode[slot];
+        const int root = find_root(node);
+        const auto foundSignature = signatureForRoot.find(root);
+        if (foundSignature == signatureForRoot.end()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        const auto foundOccurrence =
+            occurrenceForSignature.find(foundSignature->second);
+        if (foundOccurrence == occurrenceForSignature.end() ||
+            foundOccurrence->second < 0) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        faceCornerOccurrence[slot] = foundOccurrence->second;
+        activeVertices.insert(foundOccurrence->second);
+      }
+    }
+
+    std::map<std::pair<int, int>, int> chartEdgeMultiplicity;
+    for (const authority::SourceFaceId faceId : activeFaces) {
+      const auto faceRow = source_face_row(faceId, faces.rows());
+      if (!faceRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      for (int corner = 0; corner < 3; ++corner) {
+        const int firstOccurrence = faceCornerOccurrence[
+            static_cast<std::size_t>(*faceRow) * 3U +
+            static_cast<std::size_t>(corner)];
+        const int secondOccurrence = faceCornerOccurrence[
+            static_cast<std::size_t>(*faceRow) * 3U +
+            static_cast<std::size_t>((corner + 1) % 3)];
+        if (firstOccurrence < 0 || secondOccurrence < 0 ||
+            firstOccurrence == secondOccurrence) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        vertexAdjacency[firstOccurrence].insert(secondOccurrence);
+        vertexAdjacency[secondOccurrence].insert(firstOccurrence);
+        const auto chartEdge = std::minmax(firstOccurrence, secondOccurrence);
+        const int multiplicity = ++chartEdgeMultiplicity[chartEdge];
+        if (multiplicity > 2) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+      }
+    }
+    const int cutEuler = static_cast<int>(activeVertices.size()) -
+                         static_cast<int>(chartEdgeMultiplicity.size()) +
+                         static_cast<int>(activeFaces.size());
+    if (cutEuler != 1) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+
+    for (AcceptedCutBoundarySegment &segment : acceptedSegments) {
+      const auto faceRow = source_face_row(segment.sourceFace, faces.rows());
+      if (!faceRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      const int firstCorner =
+          corner_for_vertex(*faceRow, segment.firstSourceVertex);
+      const int secondCorner =
+          corner_for_vertex(*faceRow, segment.secondSourceVertex);
+      if (firstCorner < 0 || secondCorner < 0) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      segment.firstOccurrence = faceCornerOccurrence[
+          static_cast<std::size_t>(*faceRow) * 3U +
+          static_cast<std::size_t>(firstCorner)];
+      segment.secondOccurrence = faceCornerOccurrence[
+          static_cast<std::size_t>(*faceRow) * 3U +
+          static_cast<std::size_t>(secondCorner)];
+      if (segment.firstOccurrence < 0 || segment.secondOccurrence < 0 ||
+          segment.firstOccurrence == segment.secondOccurrence) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      boundaryEdgeKeys.insert(segment.edge);
+      boundaryAdjacency[segment.firstOccurrence].push_back(
+          segment.secondOccurrence);
+      boundaryAdjacency[segment.secondOccurrence].push_back(
+          segment.firstOccurrence);
+      boundaryCycle.push_back(segment.firstOccurrence);
+      boundarySegmentFaces.push_back(segment.sourceFace);
+      boundaryAcceptedSegments.push_back(segment);
+    }
+    for (std::size_t index = 0U; index < acceptedSegments.size(); ++index) {
+      const auto &current = acceptedSegments[index];
+      const auto &next = acceptedSegments[(index + 1U) % acceptedSegments.size()];
+      if (current.secondOccurrence != next.firstOccurrence) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      const auto chartEdge =
+          std::minmax(current.firstOccurrence, current.secondOccurrence);
+      const auto foundMultiplicity = chartEdgeMultiplicity.find(chartEdge);
+      if (foundMultiplicity == chartEdgeMultiplicity.end() ||
+          foundMultiplicity->second != 1) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+    }
+    const std::size_t chartBoundaryEdgeCount =
+        static_cast<std::size_t>(std::count_if(
+            chartEdgeMultiplicity.begin(), chartEdgeMultiplicity.end(),
+            [](const auto &entry) { return entry.second == 1; }));
+    if (chartBoundaryEdgeCount != acceptedSegments.size()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+  } else {
+    occurrenceSourceVertex.resize(static_cast<std::size_t>(vertices.rows()));
+    std::iota(occurrenceSourceVertex.begin(), occurrenceSourceVertex.end(), 0);
+    for (const authority::SourceFaceId faceId : activeFaces) {
+      const auto faceRow = source_face_row(faceId, faces.rows());
+      if (!faceRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidInput);
+        return result;
+      }
+      const int face = *faceRow;
+      for (int corner = 0; corner < 3; ++corner) {
+        const int a = faces(face, corner);
+        const int b = faces(face, (corner + 1) % 3);
+        if (a < 0 || b < 0 || a >= vertices.rows() || b >= vertices.rows() ||
+            a == b) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+              -1, -1, face);
+          return result;
+        }
+        activeVertices.insert(a);
+        activeVertices.insert(b);
+        vertexAdjacency[a].insert(b);
+        vertexAdjacency[b].insert(a);
+        faceCornerOccurrence[static_cast<std::size_t>(face) * 3U +
+                             static_cast<std::size_t>(corner)] = a;
+      }
+    }
+    const int euler = static_cast<int>(activeVertices.size()) -
+                      static_cast<int>(incident.size()) +
+                      static_cast<int>(activeFaces.size());
+    if (euler != 1) return result;
+
+    for (const auto &[key, pair] : incident) {
+      if (pair[1] >= 0) continue;
+      const auto faceId = source_face_id(pair[0], faces.rows());
+      if (!faceId.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+        return result;
+      }
+      const int face = pair[0];
+      const int localEdge = local_edge_for_key(faces, face, key);
+      if (localEdge < 0) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+            -1, -1, face);
+        return result;
+      }
+      const int a = faces(face, (localEdge + 1) % 3);
+      const int b = faces(face, (localEdge + 2) % 3);
+      boundaryEdgeKeys.insert(key);
+      boundaryAdjacency[a].push_back(b);
+      boundaryAdjacency[b].push_back(a);
+      boundaryFace.emplace(key, *faceId);
+
+      const auto full = fullIncident.find(key);
+      if (full == fullIncident.end() ||
+          !source_edge_is_authoritative_local_boundary(
+              options, faces.rows(), face, full->second, key)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+            -1, -1, face);
+        return result;
+      }
+    }
   }
 
-  // A disk producer owns only one connected sheet. Connectivity is proved on
-  // the source-face dual graph with typed face identity; row enumeration is
-  // projected only for direct matrix-edge lookup.
-  const std::set<authority::SourceFaceId> activeFaceSet(activeFaces.begin(),
-                                                        activeFaces.end());
+  if (boundaryEdgeKeys.size() < 4U || boundaryAdjacency.size() < 4U) {
+    return result;
+  }
+  for (auto &[vertex, neighbors] : boundaryAdjacency) {
+    std::sort(neighbors.begin(), neighbors.end());
+    neighbors.erase(std::unique(neighbors.begin(), neighbors.end()),
+                    neighbors.end());
+    if (neighbors.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+          -1, -1, -1, -1,
+          vertex >= 0 && vertex < static_cast<int>(occurrenceSourceVertex.size())
+              ? occurrenceSourceVertex[static_cast<std::size_t>(vertex)]
+              : -1);
+      return result;
+    }
+  }
+
+  // A disk producer owns only one connected cut-open sheet. In planned mode,
+  // hard-rail cut edges are exterior chart sides and cannot reconnect the dual.
   std::set<authority::SourceFaceId> visitedFaces;
   std::queue<authority::SourceFaceId> faceQueue;
   faceQueue.push(activeFaces.front());
@@ -13591,7 +14201,9 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
       return result;
     }
     for (int corner = 0; corner < 3; ++corner) {
-      const auto found = incident.find(local_edge_key(faces, *faceRow, corner));
+      const auto edge = local_edge_key(faces, *faceRow, corner);
+      if (useAcceptedCutDomain && acceptedCutEdges.count(edge) != 0U) continue;
+      const auto found = incident.find(edge);
       if (found == incident.end()) continue;
       for (const int adjacentRow : found->second) {
         if (adjacentRow < 0 || adjacentRow == *faceRow) continue;
@@ -13599,7 +14211,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         if (!adjacent.has_value()) {
           result.disposition = SurfaceCellProducerDisposition::Rejected;
           set_phase_front_failure(
-              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
           return result;
         }
         if (activeFaceSet.count(*adjacent) != 0U &&
@@ -13616,159 +14229,129 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     return result;
   }
 
-  std::set<authority::SourceEdgeTopologyKey> boundaryEdgeKeys;
-  std::map<int, std::vector<int>> boundaryAdjacency;
-  std::map<authority::SourceEdgeTopologyKey, authority::SourceFaceId> boundaryFace;
-  for (const auto &[key, pair] : incident) {
-    if (pair[1] >= 0) continue;
-    const auto faceId = source_face_id(pair[0], faces.rows());
-    if (!faceId.has_value()) {
+  const auto source_vertex_for_occurrence = [&](const int occurrence) {
+    if (occurrence < 0 ||
+        occurrence >= static_cast<int>(occurrenceSourceVertex.size())) {
+      return -1;
+    }
+    return occurrenceSourceVertex[static_cast<std::size_t>(occurrence)];
+  };
+  const auto vertex_geometry_key = [&](const int vertex) {
+    return std::array<double, 3>{vertices(vertex, 0), vertices(vertex, 1),
+                                 vertices(vertex, 2)};
+  };
+
+  if (!useAcceptedCutDomain) {
+    int boundaryStart = -1;
+    std::array<double, 3> startKey{
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity()};
+    bool ambiguousStart = false;
+    for (const auto &[vertex, neighbors] : boundaryAdjacency) {
+      (void)neighbors;
+      const auto key = vertex_geometry_key(vertex);
+      if (key < startKey) {
+        startKey = key;
+        boundaryStart = vertex;
+        ambiguousStart = false;
+      } else if (key == startKey && vertex != boundaryStart) {
+        ambiguousStart = true;
+      }
+    }
+    if (boundaryStart < 0 || ambiguousStart) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
       return result;
     }
-    const int face = pair[0];
-    int localEdge = local_edge_for_key(faces, face, key);
-    if (localEdge < 0) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
-          -1, -1, face);
-      return result;
-    }
-    const int a = faces(face, (localEdge + 1) % 3);
-    const int b = faces(face, (localEdge + 2) % 3);
-    boundaryEdgeKeys.insert(key);
-    boundaryAdjacency[a].push_back(b);
-    boundaryAdjacency[b].push_back(a);
-    boundaryFace.emplace(key, *faceId);
 
-    // A local sheet boundary must be a genuine source boundary or an
-    // authoritative hard-feature/source-sheet rail.  A hidden cut through an
-    // ordinary same-sheet source edge is not a bounded-disk chart boundary.
-    const auto full = fullIncident.find(key);
-    if (full == fullIncident.end()) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
-          -1, -1, face);
-      return result;
-    }
-    if (!source_edge_is_authoritative_local_boundary(
-            options, faces.rows(), face, full->second, key)) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
-          -1, -1, face);
-      return result;
-    }
-  }
-  if (boundaryEdgeKeys.size() < 4U || boundaryAdjacency.size() < 4U) {
-    return result;
-  }
-  for (auto &[vertex, neighbors] : boundaryAdjacency) {
-    (void)vertex;
-    std::sort(neighbors.begin(), neighbors.end());
-    neighbors.erase(std::unique(neighbors.begin(), neighbors.end()), neighbors.end());
-    if (neighbors.size() != 2U) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
-          -1, -1, -1, -1, vertex);
-      return result;
-    }
-  }
-
-  const auto vertex_geometry_key = [&](const int vertex) {
-    return std::array<double, 3>{vertices(vertex, 0), vertices(vertex, 1),
-                                 vertices(vertex, 2)};
-  };
-  int boundaryStart = -1;
-  std::array<double, 3> startKey{
-      std::numeric_limits<double>::infinity(),
-      std::numeric_limits<double>::infinity(),
-      std::numeric_limits<double>::infinity()};
-  bool ambiguousStart = false;
-  for (const auto &[vertex, neighbors] : boundaryAdjacency) {
-    (void)neighbors;
-    const auto key = vertex_geometry_key(vertex);
-    if (key < startKey) {
-      startKey = key;
-      boundaryStart = vertex;
-      ambiguousStart = false;
-    } else if (key == startKey && vertex != boundaryStart) {
-      ambiguousStart = true;
-    }
-  }
-  if (boundaryStart < 0 || ambiguousStart) {
-    result.disposition = SurfaceCellProducerDisposition::Rejected;
-    set_phase_front_failure(
-        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
-    return result;
-  }
-
-  const auto walk_boundary = [&](const int firstNeighbor) {
-    std::vector<int> cycle;
-    cycle.reserve(boundaryAdjacency.size());
-    cycle.push_back(boundaryStart);
-    int previous = boundaryStart;
-    int current = firstNeighbor;
-    while (current != boundaryStart && cycle.size() <= boundaryAdjacency.size()) {
-      cycle.push_back(current);
-      const auto found = boundaryAdjacency.find(current);
-      if (found == boundaryAdjacency.end() || found->second.size() != 2U) {
+    const auto walk_boundary = [&](const int firstNeighbor) {
+      std::vector<int> cycle;
+      cycle.reserve(boundaryAdjacency.size());
+      cycle.push_back(boundaryStart);
+      int previous = boundaryStart;
+      int current = firstNeighbor;
+      while (current != boundaryStart && cycle.size() <= boundaryAdjacency.size()) {
+        cycle.push_back(current);
+        const auto found = boundaryAdjacency.find(current);
+        if (found == boundaryAdjacency.end() || found->second.size() != 2U) {
+          return std::vector<int>{};
+        }
+        const int next = found->second[0] == previous ? found->second[1]
+                                                      : found->second[0];
+        previous = current;
+        current = next;
+      }
+      if (current != boundaryStart || cycle.size() != boundaryAdjacency.size()) {
         return std::vector<int>{};
       }
-      const int next = found->second[0] == previous ? found->second[1]
-                                                    : found->second[0];
-      previous = current;
-      current = next;
+      return cycle;
+    };
+    const auto &startNeighbors = boundaryAdjacency[boundaryStart];
+    std::vector<int> cycleA = walk_boundary(startNeighbors[0]);
+    std::vector<int> cycleB = walk_boundary(startNeighbors[1]);
+    if (cycleA.empty() || cycleB.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+      return result;
     }
-    if (current != boundaryStart || cycle.size() != boundaryAdjacency.size()) {
-      return std::vector<int>{};
-    }
-    return cycle;
-  };
-  const auto &startNeighbors = boundaryAdjacency[boundaryStart];
-  std::vector<int> cycleA = walk_boundary(startNeighbors[0]);
-  std::vector<int> cycleB = walk_boundary(startNeighbors[1]);
-  if (cycleA.empty() || cycleB.empty()) {
-    result.disposition = SurfaceCellProducerDisposition::Rejected;
-    set_phase_front_failure(
-        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
-    return result;
-  }
-  const auto follows_source_orientation = [&](const std::vector<int> &cycle) {
-    for (std::size_t index = 0; index < cycle.size(); ++index) {
-      const int a = cycle[index];
-      const int b = cycle[(index + 1U) % cycle.size()];
-      const authority::SourceEdgeTopologyKey key = edge_key(a, b, source_vertex_extent(faces));
-      const auto foundFace = boundaryFace.find(key);
-      if (foundFace == boundaryFace.end()) return false;
-      const auto faceRow = source_face_row(foundFace->second, faces.rows());
-      if (!faceRow.has_value()) return false;
-      const int face = *faceRow;
-      bool oriented = false;
-      for (int corner = 0; corner < 3; ++corner) {
-        if (faces(face, corner) == a && faces(face, (corner + 1) % 3) == b) {
-          oriented = true;
-          break;
+    const auto follows_source_orientation = [&](const std::vector<int> &cycle) {
+      for (std::size_t index = 0; index < cycle.size(); ++index) {
+        const int a = cycle[index];
+        const int b = cycle[(index + 1U) % cycle.size()];
+        const authority::SourceEdgeTopologyKey key =
+            edge_key(a, b, source_vertex_extent(faces));
+        const auto foundFace = boundaryFace.find(key);
+        if (foundFace == boundaryFace.end()) return false;
+        const auto faceRow = source_face_row(foundFace->second, faces.rows());
+        if (!faceRow.has_value()) return false;
+        bool oriented = false;
+        for (int corner = 0; corner < 3; ++corner) {
+          if (faces(*faceRow, corner) == a &&
+              faces(*faceRow, (corner + 1) % 3) == b) {
+            oriented = true;
+            break;
+          }
         }
+        if (!oriented) return false;
       }
-      if (!oriented) return false;
+      return true;
+    };
+    const bool orientedA = follows_source_orientation(cycleA);
+    const bool orientedB = follows_source_orientation(cycleB);
+    if (orientedA == orientedB) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+      return result;
     }
-    return true;
-  };
-  const bool orientedA = follows_source_orientation(cycleA);
-  const bool orientedB = follows_source_orientation(cycleB);
-  if (orientedA == orientedB) {
+    boundaryCycle = orientedA ? std::move(cycleA) : std::move(cycleB);
+    boundarySegmentFaces.clear();
+    boundaryAcceptedSegments.assign(boundaryCycle.size(), std::nullopt);
+    for (std::size_t index = 0U; index < boundaryCycle.size(); ++index) {
+      const int a = boundaryCycle[index];
+      const int b = boundaryCycle[(index + 1U) % boundaryCycle.size()];
+      const auto foundFace =
+          boundaryFace.find(edge_key(a, b, source_vertex_extent(faces)));
+      if (foundFace == boundaryFace.end()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+        return result;
+      }
+      boundarySegmentFaces.push_back(foundFace->second);
+    }
+  }
+  if (boundaryCycle.size() != boundarySegmentFaces.size() ||
+      boundaryCycle.size() != boundaryAcceptedSegments.size()) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(
-        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+        result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
     return result;
   }
-  std::vector<int> boundaryCycle = orientedA ? std::move(cycleA) : std::move(cycleB);
   result.disposition = SurfaceCellProducerDisposition::Rejected;
 
   // Establish one global 4-RoSy gauge by reciprocal source-edge transport.
@@ -13835,7 +14418,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   std::map<authority::SourceFaceId, std::vector<DualStep>> dual;
   for (const authority::SourceFaceId faceId : activeFaces) dual[faceId] = {};
   for (const auto &[key, pair] : incident) {
-    if (pair[0] < 0 || pair[1] < 0) continue;
+    if (pair[0] < 0 || pair[1] < 0 ||
+        (useAcceptedCutDomain && acceptedCutEdges.count(key) != 0U)) {
+      continue;
+    }
     const auto firstFace = source_face_id(pair[0], faces.rows());
     const auto secondFace = source_face_id(pair[1], faces.rows());
     if (!firstFace.has_value() || !secondFace.has_value() ||
@@ -13961,7 +14547,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   // source edge.  This proves the simply-connected chart has no hidden branch
   // defect before boundary phase or parameterization is considered.
   for (const auto &[key, pair] : incident) {
-    if (pair[0] < 0 || pair[1] < 0) continue;
+    if (pair[0] < 0 || pair[1] < 0 ||
+        (useAcceptedCutDomain && acceptedCutEdges.count(key) != 0U)) {
+      continue;
+    }
     for (const int globalBranch : {0, 1}) {
       const int sourceBranch = normalized_branch(
           faceBranchRotation[static_cast<std::size_t>(pair[0])] + globalBranch);
@@ -14023,17 +14612,25 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   std::vector<int> boundaryBranches(boundaryCycle.size(), -1);
   constexpr double kBoundaryAlignment = 0.7;
   for (std::size_t index = 0; index < boundaryCycle.size(); ++index) {
-    const int a = boundaryCycle[index];
-    const int b = boundaryCycle[(index + 1U) % boundaryCycle.size()];
-    const authority::SourceEdgeTopologyKey key = edge_key(a, b, source_vertex_extent(faces));
-    const auto foundFace = boundaryFace.find(key);
-    if (foundFace == boundaryFace.end()) {
+    const int a = source_vertex_for_occurrence(boundaryCycle[index]);
+    const int b = source_vertex_for_occurrence(
+        boundaryCycle[(index + 1U) % boundaryCycle.size()]);
+    if (a < 0 || b < 0 || a == b || index >= boundarySegmentFaces.size()) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
       return result;
     }
-    const auto faceRow = source_face_row(foundFace->second, faces.rows());
+    const authority::SourceEdgeTopologyKey key =
+        edge_key(a, b, source_vertex_extent(faces));
+    if (boundaryEdgeKeys.count(key) == 0U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+      return result;
+    }
+    const auto faceRow =
+        source_face_row(boundarySegmentFaces[index], faces.rows());
     if (!faceRow.has_value()) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
@@ -14107,32 +14704,53 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     return result;
   }
   int canonicalRun = -1;
-  std::array<double, 3> canonicalRunKey{
-      std::numeric_limits<double>::infinity(),
-      std::numeric_limits<double>::infinity(),
-      std::numeric_limits<double>::infinity()};
-  bool ambiguousRun = false;
-  for (const int start : runStarts) {
-    const auto key = vertex_geometry_key(
-        boundaryCycle[static_cast<std::size_t>(start)]);
-    if (key < canonicalRunKey) {
-      canonicalRunKey = key;
-      canonicalRun = start;
-      ambiguousRun = false;
-    } else if (key == canonicalRunKey && start != canonicalRun) {
-      ambiguousRun = true;
+  if (useAcceptedCutDomain) {
+    // A2b owns the exact oriented boundary occurrence order; occurrence zero is
+    // therefore the deterministic chart anchor for the accepted cut domain.
+    canonicalRun = runStarts.front();
+  } else {
+    std::array<double, 3> canonicalRunKey{
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity()};
+    bool ambiguousRun = false;
+    for (const int start : runStarts) {
+      const int sourceVertex = source_vertex_for_occurrence(
+          boundaryCycle[static_cast<std::size_t>(start)]);
+      if (sourceVertex < 0) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+        return result;
+      }
+      const auto key = vertex_geometry_key(sourceVertex);
+      if (key < canonicalRunKey) {
+        canonicalRunKey = key;
+        canonicalRun = start;
+        ambiguousRun = false;
+      } else if (key == canonicalRunKey && start != canonicalRun) {
+        ambiguousRun = true;
+      }
     }
-  }
-  if (canonicalRun < 0 || ambiguousRun) {
-    result.disposition = SurfaceCellProducerDisposition::Rejected;
-    set_phase_front_failure(
-        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
-    return result;
+    if (canonicalRun < 0 || ambiguousRun) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+      return result;
+    }
   }
   std::rotate(boundaryCycle.begin(),
               boundaryCycle.begin() + canonicalRun, boundaryCycle.end());
   std::rotate(boundaryBranches.begin(),
               boundaryBranches.begin() + canonicalRun, boundaryBranches.end());
+  std::rotate(boundarySegmentFaces.begin(),
+              boundarySegmentFaces.begin() + canonicalRun,
+              boundarySegmentFaces.end());
+  std::rotate(boundaryAcceptedSegments.begin(),
+              boundaryAcceptedSegments.begin() + canonicalRun,
+              boundaryAcceptedSegments.end());
   runStarts = rebuild_run_starts(boundaryBranches);
   if (runStarts.empty() || runStarts.front() != 0) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -14145,6 +14763,12 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   boundaryPhase.chartUBranch = boundaryBranches.front();
   boundaryPhase.runs.reserve(runStarts.size());
 
+  std::vector<std::vector<int>> runChartVertices;
+  std::vector<std::vector<std::optional<AcceptedCutBoundarySegment>>>
+      runAcceptedSegments;
+  runChartVertices.reserve(runStarts.size());
+  runAcceptedSegments.reserve(runStarts.size());
+
   double cumulativeBoundaryLength = 0.0;
   for (int runIndex = 0; runIndex < static_cast<int>(runStarts.size());
        ++runIndex) {
@@ -14155,37 +14779,67 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     if (end <= begin) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
       return result;
     }
 
     SurfaceBoundedDiskBoundaryRun run;
+    std::vector<int> chartVertices;
+    std::vector<std::optional<AcceptedCutBoundarySegment>> acceptedSegments;
     run.branch = boundaryBranches[static_cast<std::size_t>(begin)];
     family_sign_from_branch(run.branch, run.family, run.sign);
-    run.startVertex = boundaryCycle[static_cast<std::size_t>(begin)];
+    run.startVertex = source_vertex_for_occurrence(
+        boundaryCycle[static_cast<std::size_t>(begin)]);
+    if (run.startVertex < 0) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+      return result;
+    }
     run.cumulativeIntrinsicLength = cumulativeBoundaryLength;
     for (int index = begin; index <= end; ++index) {
       const int wrapped = index % static_cast<int>(boundaryCycle.size());
-      const int vertex = boundaryCycle[static_cast<std::size_t>(wrapped)];
-      if (run.sourceVertices.empty() || run.sourceVertices.back() != vertex) {
-        run.sourceVertices.push_back(vertex);
-      }
-      if (index == end) continue;
-      const int nextWrapped =
-          (wrapped + 1) % static_cast<int>(boundaryCycle.size());
-      const int a = boundaryCycle[static_cast<std::size_t>(wrapped)];
-      const int b = boundaryCycle[static_cast<std::size_t>(nextWrapped)];
-      const authority::SourceEdgeTopologyKey edgeTopology = edge_key(a, b, source_vertex_extent(faces));
-      const auto foundFace = boundaryFace.find(edgeTopology);
-      const auto foundFull = fullIncident.find(edgeTopology);
-      if (foundFace == boundaryFace.end() || foundFull == fullIncident.end()) {
+      const int occurrence = boundaryCycle[static_cast<std::size_t>(wrapped)];
+      const int vertex = source_vertex_for_occurrence(occurrence);
+      if (vertex < 0) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure,
             SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
         return result;
       }
-      const auto faceRow = source_face_row(foundFace->second, faces.rows());
+      run.sourceVertices.push_back(vertex);
+      chartVertices.push_back(occurrence);
+      if (index == end) continue;
+      const int nextWrapped =
+          (wrapped + 1) % static_cast<int>(boundaryCycle.size());
+      const int nextOccurrence =
+          boundaryCycle[static_cast<std::size_t>(nextWrapped)];
+      const int a = vertex;
+      const int b = source_vertex_for_occurrence(nextOccurrence);
+      if (b < 0 || wrapped >= static_cast<int>(boundarySegmentFaces.size()) ||
+          wrapped >= static_cast<int>(boundaryAcceptedSegments.size())) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+        return result;
+      }
+      const authority::SourceEdgeTopologyKey edgeTopology =
+          edge_key(a, b, source_vertex_extent(faces));
+      const auto foundFull = fullIncident.find(edgeTopology);
+      if (boundaryEdgeKeys.count(edgeTopology) == 0U ||
+          foundFull == fullIncident.end()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+        return result;
+      }
+      const auto faceRow = source_face_row(
+          boundarySegmentFaces[static_cast<std::size_t>(wrapped)], faces.rows());
       if (!faceRow.has_value()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
@@ -14195,6 +14849,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
       }
       run.sourceFaces.push_back(*faceRow);
       run.sourceEdgeTopology.push_back(edgeTopology);
+      acceptedSegments.push_back(
+          boundaryAcceptedSegments[static_cast<std::size_t>(wrapped)]);
 
       const auto &fullPair = foundFull->second;
       int fullCount = 0;
@@ -14220,17 +14876,22 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
       run.intrinsicLength += edgeLength;
     }
     if (run.sourceVertices.size() < 2U || run.sourceFaces.empty() ||
+        chartVertices.size() != run.sourceVertices.size() ||
         run.sourceEdgeTopology.size() != run.sourceFaces.size() ||
         run.edgeAuthority.size() != run.sourceFaces.size() ||
+        acceptedSegments.size() != run.sourceFaces.size() ||
         !(run.intrinsicLength > 0.0) || !std::isfinite(run.intrinsicLength)) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
       return result;
     }
     run.endVertex = run.sourceVertices.back();
     cumulativeBoundaryLength += run.intrinsicLength;
     boundaryPhase.runs.push_back(std::move(run));
+    runChartVertices.push_back(std::move(chartVertices));
+    runAcceptedSegments.push_back(std::move(acceptedSegments));
   }
   boundaryPhase.totalIntrinsicLength = cumulativeBoundaryLength;
 
@@ -14282,7 +14943,9 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   consume_boundary_i64(boundaryPhase.chartUBranch);
   consume_boundary_i64(boundaryPhase.signedQuarterTurnSum);
   consume_boundary_hash(boundaryPhase.runs.size());
-  for (const auto &run : boundaryPhase.runs) {
+  for (std::size_t runIndex = 0U; runIndex < boundaryPhase.runs.size();
+       ++runIndex) {
+    const auto &run = boundaryPhase.runs[runIndex];
     consume_boundary_i64(run.branch);
     consume_boundary_i64(run.signedQuarterTurnToNext);
     consume_boundary_i64(static_cast<std::int64_t>(
@@ -14303,6 +14966,35 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
       consume_boundary_i64(authority.sourceBoundary ? 1 : 0);
       consume_boundary_i64(authority.hardFeature ? 1 : 0);
       consume_boundary_i64(authority.sourceSheet ? 1 : 0);
+    }
+    if (useAcceptedCutDomain) {
+      if (runIndex >= runAcceptedSegments.size() ||
+          runAcceptedSegments[runIndex].size() != run.sourceEdgeTopology.size()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      for (const auto &accepted : runAcceptedSegments[runIndex]) {
+        if (!accepted.has_value()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        consume_boundary_i64(static_cast<std::int64_t>(
+            accepted->incidence.region.index()));
+        consume_boundary_hash(
+            accepted->incidence.canonicalBoundaryOccurrenceOrdinal);
+        consume_boundary_i64(static_cast<std::int64_t>(accepted->arc.index()));
+        consume_boundary_hash(accepted->supportPieceIndex);
+        consume_boundary_i64(accepted->orientation ==
+                                     authority::Orientation::Forward
+                                 ? 1
+                                 : -1);
+      }
     }
   }
   boundaryPhase.structuralHash = boundaryHash;
@@ -14337,6 +15029,15 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         Eigen::Vector2d(0.0, height), Eigen::Vector2d(0.0, 0.0)};
     for (int side = 0; side < 4; ++side) {
       auto &run = phaseRecord.runs[static_cast<std::size_t>(side)];
+      if (static_cast<std::size_t>(side) >= runChartVertices.size() ||
+          runChartVertices[static_cast<std::size_t>(side)].size() !=
+              run.sourceVertices.size()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+        return result;
+      }
       run.chartStart = sideStart[static_cast<std::size_t>(side)];
       run.chartEnd = sideEnd[static_cast<std::size_t>(side)];
       double cumulative = 0.0;
@@ -14352,7 +15053,9 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         const Eigen::Vector2d uv = run.chartStart +
                                    alpha * (run.chartEnd - run.chartStart);
         const int vertex = run.sourceVertices[index];
-        const auto existing = vertexUv.find(vertex);
+        const int occurrence =
+            runChartVertices[static_cast<std::size_t>(side)][index];
+        const auto existing = vertexUv.find(occurrence);
         if (existing != vertexUv.end() &&
             (existing->second - uv).norm() >
                 1.0e-10 * std::max({1.0, width, height})) {
@@ -14362,7 +15065,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
               -1, -1, -1, -1, vertex);
           return result;
         }
-        vertexUv[vertex] = uv;
+        vertexUv[occurrence] = uv;
       }
     }
     phaseRecord.polygonClosed = true;
@@ -14475,7 +15178,17 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
 
     const double uvTolerance =
         1.0e-10 * std::max({1.0, width, height});
-    for (auto &run : phaseRecord.runs) {
+    for (std::size_t runIndex = 0U; runIndex < phaseRecord.runs.size();
+         ++runIndex) {
+      auto &run = phaseRecord.runs[runIndex];
+      if (runIndex >= runChartVertices.size() ||
+          runChartVertices[runIndex].size() != run.sourceVertices.size()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+        return result;
+      }
       double cumulative = 0.0;
       for (std::size_t index = 0; index < run.sourceVertices.size(); ++index) {
         if (index > 0) {
@@ -14489,7 +15202,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         const Eigen::Vector2d uv = run.chartStart +
                                    alpha * (run.chartEnd - run.chartStart);
         const int vertex = run.sourceVertices[index];
-        const auto existing = vertexUv.find(vertex);
+        const int occurrence = runChartVertices[runIndex][index];
+        const auto existing = vertexUv.find(occurrence);
         if (existing != vertexUv.end() &&
             (existing->second - uv).norm() > uvTolerance) {
           result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -14498,7 +15212,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
               -1, -1, -1, -1, vertex);
           return result;
         }
-        vertexUv[vertex] = uv;
+        vertexUv[occurrence] = uv;
       }
     }
   }
@@ -14523,7 +15237,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
-            -1, -1, -1, -1, vertex);
+            -1, -1, -1, -1, source_vertex_for_occurrence(vertex));
         return result;
       }
       double degree = 0.0;
@@ -14540,7 +15254,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
             set_phase_front_failure(
                 result.failure,
                 SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
-                -1, -1, -1, -1, neighbor);
+                -1, -1, -1, -1, source_vertex_for_occurrence(neighbor));
             return result;
           }
           rhs.row(row) += boundaryUv->second.transpose();
@@ -14550,7 +15264,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
-            -1, -1, -1, -1, vertex);
+            -1, -1, -1, -1, source_vertex_for_occurrence(vertex));
         return result;
       }
       triplets.emplace_back(row, row, degree);
@@ -14596,8 +15310,11 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     PeriodicChartTriangle triangle(faceId);
     triangle.vertices = canonical_face_vertices(faces, face);
     for (int corner = 0; corner < 3; ++corner) {
-      const auto found = vertexUv.find(faces(face, corner));
-      if (found == vertexUv.end()) {
+      const int occurrence = faceCornerOccurrence[
+          static_cast<std::size_t>(face) * 3U +
+          static_cast<std::size_t>(corner)];
+      const auto found = vertexUv.find(occurrence);
+      if (occurrence < 0 || found == vertexUv.end()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
@@ -14643,9 +15360,6 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     std::vector<std::optional<SurfaceSharedBoundaryInterval>> intervals;
   };
   std::array<AcceptedBoundarySubdivision, 4> acceptedBoundary;
-  const bool useAcceptedConformity =
-      options.globalTopologyPlan != nullptr &&
-      options.globalConformityBaselinePlan != nullptr;
 
   const auto exact_count_to_size = [](const EInt &value)
       -> std::optional<std::size_t> {
@@ -14752,18 +15466,12 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           std::size_t count = 0U;
         };
         std::vector<ArcSchedule> arcSchedules;
-        for (const GlobalTopologyArc &arc : topology.arcs()) {
+        std::optional<SurfaceBoundaryOccurrenceId> boundaryOccurrence;
+        const auto append_arc_schedule = [&](const GlobalTopologyArc &arc) {
           if (arc.kind != GlobalTopologyArcKind::Mandatory ||
               !arc.mandatoryEdge.has_value() ||
-              *arc.mandatoryEdge != mandatory->id) {
-            continue;
-          }
-          if (arc.sourcePath.size() != 1U) {
-            result.disposition = SurfaceCellProducerDisposition::Rejected;
-            set_phase_front_failure(
-                result.failure,
-                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
-            return result;
+              *arc.mandatoryEdge != mandatory->id || arc.sourcePath.size() != 1U) {
+            return false;
           }
           const auto *carrier = std::get_if<authority::SourceEdgeSupport>(
               &arc.sourcePath.front().carrier);
@@ -14782,14 +15490,75 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
               schedule->supportPieces != arc.sourcePath || !count ||
               *count == 0U ||
               *count > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+            return false;
+          }
+          arcSchedules.push_back({&arc, schedule, *first, *second, *count});
+          return true;
+        };
+
+        if (useAcceptedCutDomain) {
+          if (static_cast<std::size_t>(side) >= runAcceptedSegments.size() ||
+              edgeIndex >= runAcceptedSegments[static_cast<std::size_t>(side)].size() ||
+              !runAcceptedSegments[static_cast<std::size_t>(side)][edgeIndex]
+                   .has_value()) {
             result.disposition = SurfaceCellProducerDisposition::Rejected;
             set_phase_front_failure(
                 result.failure,
                 SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
             return result;
           }
-          arcSchedules.push_back(
-              {&arc, schedule, *first, *second, *count});
+          const AcceptedCutBoundarySegment &accepted =
+              *runAcceptedSegments[static_cast<std::size_t>(side)][edgeIndex];
+          const GlobalTopologyArc *arc = topology.find_arc(accepted.arc);
+          if (arc == nullptr || accepted.edge != edge ||
+              !append_arc_schedule(*arc)) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+            return result;
+          }
+          const ConformitySpanId span =
+              ConformitySpanId::from_network_arc(accepted.arc);
+          const BaselineConformityIncidence *incidence = nullptr;
+          for (const BaselineConformityIncidence &candidate :
+               baseline.incidences()) {
+            if (candidate.id != accepted.incidence) continue;
+            if (incidence != nullptr) {
+              result.disposition = SurfaceCellProducerDisposition::Rejected;
+              set_phase_front_failure(
+                  result.failure,
+                  SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+              return result;
+            }
+            incidence = &candidate;
+          }
+          if (incidence == nullptr || incidence->span != span ||
+              incidence->orientation != accepted.orientation) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+            return result;
+          }
+          boundaryOccurrence = SurfaceBoundaryOccurrenceId{
+              accepted.incidence.region,
+              accepted.incidence.canonicalBoundaryOccurrenceOrdinal};
+        } else {
+          for (const GlobalTopologyArc &arc : topology.arcs()) {
+            if (arc.kind != GlobalTopologyArcKind::Mandatory ||
+                !arc.mandatoryEdge.has_value() ||
+                *arc.mandatoryEdge != mandatory->id) {
+              continue;
+            }
+            if (!append_arc_schedule(arc)) {
+              result.disposition = SurfaceCellProducerDisposition::Rejected;
+              set_phase_front_failure(
+                  result.failure,
+                  SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+              return result;
+            }
+          }
         }
         std::sort(arcSchedules.begin(), arcSchedules.end(),
                   [](const ArcSchedule &a, const ArcSchedule &b) {
@@ -14816,11 +15585,25 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           }
         }
 
+        if (static_cast<std::size_t>(side) >= runChartVertices.size() ||
+            edgeIndex + 1U >=
+                runChartVertices[static_cast<std::size_t>(side)].size()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
         const int firstVertex = run.sourceVertices[edgeIndex];
         const int secondVertex = run.sourceVertices[edgeIndex + 1U];
+        const int firstOccurrence =
+            runChartVertices[static_cast<std::size_t>(side)][edgeIndex];
+        const int secondOccurrence =
+            runChartVertices[static_cast<std::size_t>(side)][edgeIndex + 1U];
         const auto firstId = authority::SourceVertexId::from_index(
             static_cast<std::int64_t>(firstVertex), source_vertex_extent(faces));
-        if (!firstId) {
+        if (!firstId || firstOccurrence < 0 || secondOccurrence < 0 ||
+            firstOccurrence == secondOccurrence) {
           result.disposition = SurfaceCellProducerDisposition::Rejected;
           set_phase_front_failure(
               result.failure,
@@ -14828,6 +15611,19 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           return result;
         }
         const bool forward = firstId.value() == edge.first();
+        if (useAcceptedCutDomain) {
+          const AcceptedCutBoundarySegment &accepted =
+              *runAcceptedSegments[static_cast<std::size_t>(side)][edgeIndex];
+          const bool acceptedForward =
+              accepted.orientation == authority::Orientation::Forward;
+          if (acceptedForward != forward) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+            return result;
+          }
+        }
         const auto append_point = [&](
             const authority::FieldExactRational &parameter,
             const int sourceFace) -> bool {
@@ -14837,9 +15633,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           const double canonical = static_cast<double>(parameter.to_double());
           const double alpha = forward ? canonical : 1.0 - canonical;
           const Eigen::Vector2d uv =
-              vertexUv.at(firstVertex) +
+              vertexUv.at(firstOccurrence) +
               std::clamp(alpha, 0.0, 1.0) *
-                  (vertexUv.at(secondVertex) - vertexUv.at(firstVertex));
+                  (vertexUv.at(secondOccurrence) -
+                   vertexUv.at(firstOccurrence));
           if (!subdivision.points.empty() &&
               (subdivision.uv.back() - uv).norm() <=
                   1.0e-10 * std::max({1.0, width, height})) {
@@ -14887,7 +15684,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
                         static_cast<std::int64_t>(ordinal)),
                     authority::FieldExactRational::from_integer(
                         static_cast<std::int64_t>(ordinal + 1U)),
-                    authority::Orientation::Forward};
+                    authority::Orientation::Forward, boundaryOccurrence};
               }
               subdivision.intervals.push_back(std::move(interval));
             }
@@ -14909,7 +15706,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
                         static_cast<std::int64_t>(ordinal)),
                     authority::FieldExactRational::from_integer(
                         static_cast<std::int64_t>(ordinal - 1U)),
-                    authority::Orientation::Reverse};
+                    authority::Orientation::Reverse, boundaryOccurrence};
               }
               subdivision.intervals.push_back(std::move(interval));
             }
@@ -16024,7 +16821,16 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         result.edges[static_cast<std::size_t>(pair[0])];
     SurfaceFrontEdge &second =
         result.edges[static_cast<std::size_t>(pair[1])];
-    if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
+    const bool sameSourceRegion =
+        first.sourceTopologyRegion == second.sourceTopologyRegion;
+    const bool exactDistinctCutOccurrences =
+        first.sharedBoundaryInterval.has_value() &&
+        second.sharedBoundaryInterval.has_value() &&
+        first.sharedBoundaryInterval->boundaryOccurrence.has_value() &&
+        second.sharedBoundaryInterval->boundaryOccurrence.has_value() &&
+        first.sharedBoundaryInterval->boundaryOccurrence !=
+            second.sharedBoundaryInterval->boundaryOccurrence;
+    if ((sameSourceRegion && !exactDistinctCutOccurrences) ||
         !first.sharedBoundaryInterval.has_value() ||
         !second.sharedBoundaryInterval.has_value() ||
         first.sharedBoundaryInterval->span != second.sharedBoundaryInterval->span ||
