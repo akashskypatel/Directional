@@ -1,0 +1,7 @@
+turn=M4-CP3-TB7-EXEC
+retry=1
+caller_install=0369a18583e2f9dcfe37af54e6aac3a7fb2bc7fd
+immutable_artifact_id=10305678151
+immutable_artifact_sha256=543fd253bf04bde38f16aac8c33a05447bf515f37027a077f6014ff13957a629
+semantic_source=47ae78e1e46e7d2dcc230fc617291ca45f2e418e
+purpose=artifact-only fail-fast runtime compatibility re-proof; no rebuild or repair
