@@ -235,4 +235,4 @@ Its pre-mutation guards must independently prove both sides before changing sour
 | Successor frozen | PASS — exactly `M4-CP3-CB9`, with G1-G3 falsifiers/stop rules in `Architecture_M4_CP3_CB9_Code_Build_Plan.md` |
 | Turn boundary held | PASS — runtime-free Review + Plan; no product/test/fixture/selector/benchmark/build source mutation |
 | review_check.py boundary | PASS — `ALL CHECKS PASSED` on the documentation-only review delta; no product/test/fixture/build or selector byte changed. M4 selector403/408 hashes were independently path-hashed because the helper ordinal map is milestone-ambiguous. |
-| Pushed to origin, branch in sync | PENDING publication/cleanup confirmation; close only after final branch authority is re-read |
+| Pushed to origin, branch in sync | PASS — reviewed documentation/plan bytes were published; cleanup run `34713713200` succeeded and removed the turn markers; final closeout metadata is being committed directly on the working branch with no local repository work left unpushed. |
