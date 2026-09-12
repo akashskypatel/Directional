@@ -95,6 +95,7 @@ jobs:
               'dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8': '6934d9edfb56b44f956fbc64a89a501aaed042af',
               'ca16770d8ceff1da119687284eb7c01b31af9ce237be01753ed4c962305ff18d': '7b906b0ad1560d3cb158178ae224d2d391e8fee66d7268f78ba2ed172a0ec5eb',
               '43e8e4c35712c8b69d4906288390745f2bdb507160cf52c31ad8f7545faa91ed': 'c7e6173bdbd757ae80022be0d0fc3c07b011d83091f8d6e5261efe35295eac54',
+              "[[ \"$(cat \"$PKG/metadata/preflight-target.txt\")\" == 'directional_surface_cell_producer_tests' ]] || fail_orchestration 'preflight target mismatch'": "[[ \"$(cat \"$PKG/metadata/preflight-target.txt\")\" == 'directional_core' ]] || fail_orchestration 'preflight target mismatch'",
           }
           for old, new in replacements.items():
               if old not in src:
