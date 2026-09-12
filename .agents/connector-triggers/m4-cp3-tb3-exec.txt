@@ -1,7 +1,0 @@
-M4-CP3-TB3-EXEC artifact-only runtime trigger.
-Frozen package artifact: 10290933668
-Frozen semantic source: 4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e
-Frozen selector403: c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7
-Frozen selector408: c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484
-Planned fresh exact-filter processes: 821
-Retry: 1 — orchestration-only row408 static-proof string set corrected; no package/runtime mutation.
