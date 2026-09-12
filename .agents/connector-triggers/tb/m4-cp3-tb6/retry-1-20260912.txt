@@ -1,0 +1,5 @@
+turn=M4-CP3-TB6-EXEC
+retry=1
+reason=orchestration-only preflight metadata expectation corrected; zero Directional runtime executed in prior attempt
+package_artifact=10303165017
+semantic_source=6934d9edfb56b44f956fbc64a89a501aaed042af
