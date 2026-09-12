@@ -1,4 +1,4 @@
-Purpose: trigger exact ChatGPT Web source snapshot for resumed M4-CP3-CB4-R3 Code + Build turn.
-Parent semantic authority: 2dff63cb86fc1cf66019d93bf88c33f33688b349
+Purpose: trigger exact ChatGPT Web source snapshot for runtime-free M4-CP3-CB4-R3-REV.
+Parent semantic authority: 37bcc4fa4d22fae752bb7dea446f2dfd1591c255
 Expected snapshot authority: this marker-trigger commit SHA.
 Retry: 0
