@@ -1,0 +1,4 @@
+Purpose: trigger exact ChatGPT Web source snapshot for M4-CP3-TB6-REV Review + Plan.
+Parent branch authority: 17fb437c7daa93df05f9226ad2354c21c9c819e8
+Turn: M4-CP3-TB6-REV
+Read mode: snapshot
