@@ -1,0 +1,46 @@
+name: M4 CP3 CB8 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-cb8-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp3-cb8-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-cb8-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-cb8-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 16FC0PFoBOY2-2sCo8LSL-SOyWgKNyP0E
+      patch_sha256: '0c8cbc7baeb045bbbe3c1d9181579c8584758f97db5df4128c163e193e0d7d4d'
+      base_sha: f9eefb21ddc3f336441cde3afd023ef1620649a3
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'feat: M4-CP3-CB8 consume cut-open occurrence authority at A4'
+    secrets: inherit
