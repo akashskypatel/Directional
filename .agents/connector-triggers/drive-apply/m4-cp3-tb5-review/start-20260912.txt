@@ -1,7 +1,0 @@
-Purpose: apply corrected M4-CP3-TB5 Review + CB8 plan durable documentation patch.
-Base authority: 4e86a7ff59a79f24d77099274d11e17a81681db9
-Patch SHA-256: 3b365f7c572acd7db738fab5c518387d4799e3aa264c46233f8ea6cd57b49b7a
-Turn: M4-CP3-TB5-REV
-Runtime execution: false
-Retry: 1
-Correction: remove trailing whitespace, duplicate headings, and stale ROADMAP current-state pointers before apply.
