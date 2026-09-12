@@ -1,0 +1,327 @@
+name: Agent M4 CP3 TB2 R2 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-tb2-r2-exec.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp3-tb2-r2-exec
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-tb2-r2-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-tb2-r2-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Initialize persistent diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/m4-cp3-tb2-r2-exec"
+          evid="$root/evidence"
+          mkdir -p "$evid/raw"
+          log="$root/activity.log"
+          : > "$log"
+          {
+            echo "workflow=$GITHUB_WORKFLOW"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "event=$GITHUB_EVENT_NAME"
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            echo "candidate=r4-corrected-selector403"
+            echo "artifact_id=10289601000"
+            echo "source_sha=58521f6d1c4fb5d625da7cde50e002cf4688beee"
+            echo "turnBoundary=Test+Benchmark/TB-EXEC"
+            echo "executionMode=artifact-only"
+            echo "compile=false"
+            echo "benchmark=false"
+            echo "planned_processes=799"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+          {
+            echo "TB_ROOT=$root"
+            echo "TB_EVID=$evid"
+            echo "TB_LOG=$log"
+            echo "TB_PKG=$root/package"
+            echo "TB_SRC=$root/source"
+            echo "TB_VIEW=$root/execution-view"
+          } >> "$GITHUB_ENV"
+
+      - name: Immutable artifact and selector preflight
+        id: preflight
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$TB_LOG") 2>&1
+          trap 'rc=$?; echo "$rc" > "$TB_EVID/preflight-exit-code.txt"; exit "$rc"' EXIT
+          zip="$TB_ROOT/package.zip"
+          meta="$TB_EVID/artifact-provider.json"
+          curl -fsS -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/10289601000" > "$meta"
+          provider_digest="$(jq -r '.digest' "$meta")"
+          provider_size="$(jq -r '.size_in_bytes' "$meta")"
+          test "$provider_digest" = "sha256:ef8c0d87f8dc8ed48269f833ec946f52189f7df63bcdf4c5df6c113f098992b9"
+          test "$provider_size" = "29764498"
+          curl -fL -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/10289601000/zip" -o "$zip"
+          downloaded_digest="$(sha256sum "$zip" | awk '{print $1}')"
+          downloaded_size="$(stat -c %s "$zip")"
+          test "$downloaded_digest" = "ef8c0d87f8dc8ed48269f833ec946f52189f7df63bcdf4c5df6c113f098992b9"
+          test "$downloaded_size" = "29764498"
+          printf 'provider_digest=%s\nprovider_size=%s\ndownloaded_digest=%s\ndownloaded_size=%s\n' \
+            "$provider_digest" "$provider_size" "$downloaded_digest" "$downloaded_size" > "$TB_EVID/artifact-identity.txt"
+
+          mkdir -p "$TB_PKG" "$TB_SRC"
+          unzip -q "$zip" -d "$TB_PKG"
+          test "$(sha256sum "$TB_PKG/SHA256SUMS" | awk '{print $1}')" = "d6d3c5bbad41394177cf4ef7b522cef47660e47b6865eebb98a702df506dc43b"
+          (cd "$TB_PKG" && sha256sum -c SHA256SUMS) | tee "$TB_EVID/manifest-pre.txt"
+          test "$(wc -l < "$TB_PKG/SHA256SUMS")" -eq 28
+          find "$TB_PKG" -type f ! -name SHA256SUMS -printf './%P\n' | sort > "$TB_EVID/package-paths.txt"
+          awk '{print $2}' "$TB_PKG/SHA256SUMS" | sort > "$TB_EVID/manifest-paths.txt"
+          cmp "$TB_EVID/package-paths.txt" "$TB_EVID/manifest-paths.txt"
+          test "$(cat "$TB_PKG/metadata/source-commit.txt")" = "58521f6d1c4fb5d625da7cde50e002cf4688beee"
+          test "$(cat "$TB_PKG/metadata/preflight-exit-code.txt")" = 0
+          test "$(cat "$TB_PKG/metadata/build-exit-code.txt")" = 0
+          for v in runtimeExecution=false turnBoundary=Code+Build-only exactArithmeticBackend=GMP \
+            preflightCompile=true semanticContracts=compiled-not-executed manifestExcludesSelf=true buildLocation=runner-temp-out-of-tree; do
+            grep -Fxq "$v" "$TB_PKG/metadata/command-boundary.txt"
+          done
+          grep -qi gmpxx "$TB_PKG/metadata/gmp-evidence.txt"
+          grep -qi gmp "$TB_PKG/metadata/gmp-evidence.txt"
+          for f in "$TB_PKG"/metadata/source-status-*.txt; do test ! -s "$f"; done
+          test "$(sha256sum "$TB_PKG/source/source-58521f6d1c4fb5d625da7cde50e002cf4688beee.tar.gz" | awk '{print $1}')" = \
+            "b8eb7a8352c587353c0aefda93243050a32f5cd123d6ce50e49a7ca9ce0912f0"
+          test "$(sha256sum "$TB_PKG/bin/directional_surface_cell_authority_kernel_tests" | awk '{print $1}')" = "5efacc3ad52085a8ab76bad451bfc70c337e44a73a8f81a165f06ab1cd3041b3"
+          test "$(sha256sum "$TB_PKG/bin/directional_surface_cell_producer_tests" | awk '{print $1}')" = "50402382ba9052ee593cad7482bbdbf50da62f52f1f0dac133be27257a9fa056"
+          test "$(sha256sum "$TB_PKG/bin/directional_surface_cell_completion_tests" | awk '{print $1}')" = "1701820d85d91fe674cb3dd3496669f0a49ca43e6068a170fb0277227aba094a"
+          test "$(sha256sum "$TB_PKG/bin/directional_surface_cell_validation_tests" | awk '{print $1}')" = "303af6ab231bf88b6b618df03315c9999a27595b8b55871922935f5098a4ca5f"
+          for b in directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests directional_surface_cell_validation_tests; do
+            test "$(stat -c %a "$TB_PKG/bin/$b")" = 755
+          done
+
+          census() {
+            local base="$1" out="$2"
+            find "$base" -type f -print0 | sort -z | while IFS= read -r -d '' f; do
+              rel="${f#"$base"/}"
+              printf '%s\t%s\t%s\t%s\n' "$rel" "$(stat -c %s "$f")" "$(stat -c %a "$f")" "$(sha256sum "$f" | awk '{print $1}')"
+            done > "$out"
+          }
+          census "$TB_PKG" "$TB_EVID/package-census-pre.tsv"
+          tar -xzf "$TB_PKG/source/source-58521f6d1c4fb5d625da7cde50e002cf4688beee.tar.gz" -C "$TB_SRC"
+          census "$TB_SRC" "$TB_EVID/source-census-pre.tsv"
+
+          sel="$TB_SRC/.agents/Directional/Architecture_M4_CP3_CB4_R3_Required_Green_Selector_403.txt"
+          old="$TB_SRC/.agents/Directional/Architecture_M4_CP3_Required_Green_Selector_394.txt"
+          test "$(wc -l < "$sel")" -eq 403
+          test "$(sha256sum "$sel" | awk '{print $1}')" = "c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7"
+          test "$(sha256sum "$old" | awk '{print $1}')" = "6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68"
+          test "$(wc -l < "$old")" -eq 394
+          cmp <(head -n 394 "$sel") "$old"
+          test "$(sed -n '400p' "$sel")" = "EmbeddedGraphTopology.TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking"
+
+          python3 - "$TB_SRC" "$sel" "$TB_EVID" <<'PY'
+          import collections, hashlib, pathlib, re, sys
+          root, selector, evid = map(pathlib.Path, sys.argv[1:])
+          cmake = (root / "cmake/DirectionalTests.cmake").read_text()
+          def body(rx):
+              m = re.search(rx, cmake, re.S); assert m, rx; return m.group(1)
+          owners = {
+              "producer": re.findall(r"(?:tests|src/bench)/[A-Za-z0-9_./-]+\.cpp", body(r"set\(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES\s*(.*?)\)")),
+              "authority-kernel": re.findall(r"tests/[A-Za-z0-9_./-]+\.cpp", body(r"add_executable\(\s*directional_surface_cell_authority_kernel_tests\s*(.*?)\)")),
+              "completion": re.findall(r"tests/[A-Za-z0-9_./-]+\.cpp", body(r"add_executable\(\s*directional_surface_cell_completion_tests\s*(.*?)\)")),
+              "validation": re.findall(r"tests/[A-Za-z0-9_./-]+\.cpp", body(r"add_executable\(\s*directional_surface_cell_validation_tests\s*(.*?)\)")),
+          }
+          bins = {k: "directional_surface_cell_" + ("authority_kernel" if k=="authority-kernel" else k) + "_tests" for k in owners}
+          pat = re.compile(r"\b(?:TEST|TEST_F|TEST_P)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)")
+          defs = collections.defaultdict(list)
+          for owner, paths in owners.items():
+              for rel in paths:
+                  p = root / rel
+                  if not p.exists(): continue
+                  text = p.read_text(); digest = hashlib.sha256(p.read_bytes()).hexdigest()
+                  for m in pat.finditer(text):
+                      defs[f"{m.group(1)}.{m.group(2)}"].append((owner,bins[owner],rel,text.count("\n",0,m.start())+1,digest))
+          rows = selector.read_text().splitlines(); assert len(rows)==403
+          mapped=[]
+          for i, ident in enumerate(rows,1):
+              assert len(defs[ident])==1,(i,ident,defs[ident]); mapped.append((i,ident,*defs[ident][0]))
+          full=collections.Counter(r[2] for r in mapped); prefix=collections.Counter(r[2] for r in mapped[:394])
+          assert full=={"authority-kernel":30,"producer":257,"completion":75,"validation":41},full
+          assert prefix=={"authority-kernel":30,"producer":248,"completion":75,"validation":41},prefix
+          with (evid/"owner-map.tsv").open("w") as f:
+              for row in mapped: f.write("\t".join(map(str,row))+"\n")
+          (evid/"owner-totals.txt").write_text(f"selector403={dict(full)}\nselector394={dict(prefix)}\n")
+          test=(root/"tests/FieldAlignedCurveNetworkTests.cpp").read_text()
+          name="TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking"
+          assert test.count(name)==1
+          start=test.index(name); end=test.find("\nTEST(",start+len(name)); block=test[start:end if end!=-1 else None]
+          required=["ASSERT_EQ(3, mesh.F(3, 0));","ASSERT_EQ(0, mesh.F(3, 1));","ASSERT_EQ(4, mesh.F(3, 2));",
+                    "topology_face(0, 3, 4, 5U)","SourceVertexId::from_index(4, 5)","exact_ratio(1, 6)","exact_ratio(1, 3)","exact_ratio(1, 2)",
+                    "expectedRawOrientedParameter = exact_ratio(1, 3)","wrongDirectPositionalParameter = exact_ratio(2, 3)",
+                    "EXPECT_EQ(expectedRawOrientedParameter, *parameter);","EXPECT_NE(wrongDirectPositionalParameter, *parameter);"]
+          assert all(x in block for x in required)
+          (evid/"row400-static-proof.txt").write_text("raw=[3,0,4]\ncanonical=[0,3,4]\nweights=[1/6,1/3,1/2]\nlocus=4\ncorrect=1/3\nwrong=2/3\nowner=producer\n")
+          PY
+
+          mkdir -p "$TB_VIEW/bin" "$TB_VIEW/test-data/benchmarks"
+          for b in directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests directional_surface_cell_validation_tests; do
+            cp -a "$TB_PKG/bin/$b" "$TB_VIEW/bin/"
+          done
+          cp -a "$TB_SRC/benchmarks/fixtures" "$TB_VIEW/test-data/benchmarks/fixtures"
+          census "$TB_VIEW" "$TB_EVID/execution-view-census-pre.tsv"
+          echo "preflight=PASS" | tee "$TB_EVID/preflight-summary.txt"
+
+      - name: Execute frozen TB2 R2 matrix
+        id: runtime
+        if: ${{ steps.preflight.outcome == 'success' }}
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$TB_LOG") 2>&1
+          map="$TB_EVID/owner-map.tsv"
+          ledger="$TB_EVID/process-ledger.tsv"
+          printf 'phase\tordinal\tidentity\towner\tcommand\texit\telapsed_ms\ttimeout\trun_count\tok_count\tskip_count\tverdict\n' > "$ledger"
+          run_phase() {
+            local phase="$1" first="$2" last="$3" dir="$TB_EVID/raw/$1"
+            mkdir -p "$dir"
+            for ((i=first; i<=last; ++i)); do
+              IFS=$'\t' read -r ord ident owner bin src line digest < <(awk -F '\t' -v n="$i" '$1==n{print; exit}' "$map")
+              raw="$dir/$(printf '%03d' "$ord").log"; cmd="$TB_VIEW/bin/$bin --gtest_filter=$ident"
+              start="$(date +%s%N)"; set +e
+              GTEST_FAIL_IF_NO_TEST_SELECTED=1 "$TB_VIEW/bin/$bin" "--gtest_filter=$ident" 2>&1 | tee "$raw" -a "$TB_LOG"
+              rc=${PIPESTATUS[0]}; set +e; end="$(date +%s%N)"; ms=$(( (end-start)/1000000 ))
+              run_count="$(grep -Fc "[ RUN      ] $ident" "$raw" || true)"; total_run="$(grep -Fc "[ RUN      ]" "$raw" || true)"
+              ok_count="$(grep -Fc "[       OK ] $ident" "$raw" || true)"; skip_count="$(grep -Fc "[  SKIPPED ]" "$raw" || true)"
+              verdict=PASS
+              if [[ "$rc" -ne 0 || "$run_count" -ne 1 || "$total_run" -ne 1 || "$ok_count" -ne 1 || "$skip_count" -ne 0 ]]; then verdict=RED; fi
+              printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\tfalse\t%s\t%s\t%s\t%s\n' "$phase" "$ord" "$ident" "$bin" "$cmd" "$rc" "$ms" "$run_count" "$ok_count" "$skip_count" "$verdict" >> "$ledger"
+              echo "tb_process phase=$phase ordinal=$ord verdict=$verdict exit=$rc elapsed_ms=$ms"
+              if [[ "$verdict" != PASS ]]; then
+                echo "blocker=semantic-or-selection-failure phase=$phase ordinal=$ord identity=$ident" | tee "$TB_EVID/blocker.txt"; return 1
+              fi
+            done
+          }
+          set +e
+          run_phase focused-A 400 400; rc=$?
+          if [[ "$rc" -eq 0 ]]; then run_phase focused-B 400 400; rc=$?; fi
+          if [[ "$rc" -eq 0 ]]; then
+            awk -F '\t' '$1=="focused-A"{print $2"\t"$3"\t"$12}' "$ledger" > "$TB_EVID/focused-A.tsv"
+            awk -F '\t' '$1=="focused-B"{print $2"\t"$3"\t"$12}' "$ledger" > "$TB_EVID/focused-B.tsv"
+            cmp "$TB_EVID/focused-A.tsv" "$TB_EVID/focused-B.tsv" || rc=1
+          fi
+          if [[ "$rc" -eq 0 ]]; then run_phase selector394 1 394; rc=$?; fi
+          if [[ "$rc" -eq 0 ]]; then run_phase selector403 1 403; rc=$?; fi
+          set +e
+          python3 - "$ledger" "$TB_EVID/runtime-totals.txt" <<'PY'
+          import collections,pathlib,sys
+          ledger,out=map(pathlib.Path,sys.argv[1:]); rows=[x.split("\t") for x in ledger.read_text().splitlines()[1:]]
+          lines=[]
+          for phase in ("focused-A","focused-B","selector394","selector403"):
+              part=[r for r in rows if r[0]==phase]; v=collections.Counter(r[11] for r in part); o=collections.Counter(r[3] for r in part)
+              lines.append(f"{phase}: processes={len(part)} verdicts={dict(v)} owners={dict(o)}")
+          out.write_text("\n".join(lines)+"\n")
+          PY
+          echo "$rc" > "$TB_EVID/runtime-exit-code.txt"
+          exit "$rc"
+
+      - name: Immutable postflight
+        id: postflight
+        if: ${{ always() && steps.preflight.outcome == 'success' }}
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$TB_LOG") 2>&1
+          census() {
+            local base="$1" out="$2"
+            find "$base" -type f -print0 | sort -z | while IFS= read -r -d '' f; do
+              rel="${f#"$base"/}"; printf '%s\t%s\t%s\t%s\n' "$rel" "$(stat -c %s "$f")" "$(stat -c %a "$f")" "$(sha256sum "$f" | awk '{print $1}')"
+            done > "$out"
+          }
+          census "$TB_PKG" "$TB_EVID/package-census-post.tsv"; census "$TB_SRC" "$TB_EVID/source-census-post.tsv"; census "$TB_VIEW" "$TB_EVID/execution-view-census-post.tsv"
+          cmp "$TB_EVID/package-census-pre.tsv" "$TB_EVID/package-census-post.tsv"
+          cmp "$TB_EVID/source-census-pre.tsv" "$TB_EVID/source-census-post.tsv"
+          cmp "$TB_EVID/execution-view-census-pre.tsv" "$TB_EVID/execution-view-census-post.tsv"
+          (cd "$TB_PKG" && sha256sum -c SHA256SUMS) | tee "$TB_EVID/manifest-post.txt"
+          printf '%s\n' 'package_immutable=PASS' 'source_immutable=PASS' 'execution_view_immutable=PASS' 'manifest_post=28/28' \
+            'configure=false' 'compile=false' 'relink=false' 'generated_discovery=false' 'package_repair=false' > "$TB_EVID/postflight-summary.txt"
+
+      - name: Write terminal evidence summary
+        if: always()
+        env:
+          PREFLIGHT_OUTCOME: ${{ steps.preflight.outcome }}
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+          POSTFLIGHT_OUTCOME: ${{ steps.postflight.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          { echo "preflight_outcome=$PREFLIGHT_OUTCOME"; echo "runtime_outcome=$RUNTIME_OUTCOME"; echo "postflight_outcome=$POSTFLIGHT_OUTCOME"; echo "expected_processes=799";
+            if [[ -f "$TB_EVID/process-ledger.tsv" ]]; then echo "observed_processes=$(( $(wc -l < "$TB_EVID/process-ledger.tsv") - 1 ))"; else echo "observed_processes=0"; fi
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; } | tee "$TB_EVID/terminal-summary.txt" -a "$TB_LOG"
+          cp "$TB_LOG" "$TB_EVID/activity-copy.log"
+
+      - name: Upload TB2 R2 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb2-r2-exec-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp3-tb2-r2-exec/evidence
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload TB2 R2 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb2-r2-exec-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp3-tb2-r2-exec/activity.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Propagate TB2 R2 status
+        if: always()
+        env:
+          PREFLIGHT_OUTCOME: ${{ steps.preflight.outcome }}
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+          POSTFLIGHT_OUTCOME: ${{ steps.postflight.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$PREFLIGHT_OUTCOME" = success
+          test "$RUNTIME_OUTCOME" = success
+          test "$POSTFLIGHT_OUTCOME" = success
