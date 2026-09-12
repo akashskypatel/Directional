@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-11 at `M4-CP3-TB2-PLAN`
+**Last updated:** 2026-09-12 at `M4-CP3-CB5`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Package119/selector394 is the accepted M4 runtime authority at **394/394**. Package120/historical old selector403 is mechanically green but remains unpromoted; R3 selector403 is static candidate authority only. `M4-CP3-CB4-R3-REV` independently upholds the R3 terminal-contact basis correction and isolates the configure stop to one stale mandatory packaged-test identity. Current review authority is `Architecture_M4_CP3_CB4_R3_Review_Record.md`; exact next is `M4-CP3-CB4-R4` under the one-name CMake contract repair plan. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. CB5 semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e` and package `10290933668` are compile/package-valid candidate authority only; selector408 `c689c0cd...484` is static candidate authority pending TB3. CP3 remains OPEN. Exact next is artifact-only `M4-CP3-TB3-EXEC` under the frozen 821-process plan, followed by Review. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -303,6 +303,14 @@ Artifact-only TB2-R2 run/job `34666794115 / 103480225842` then executed exactly 
 Runtime-free Review independently re-derived package and selector provenance, all 799 ledger/raw-log selections, owner partitions **30/248/75/41** and **30/257/75/41**, current-head code/test/build byte identity **387/387**, and row400's exact real-seam discriminator: raw `[3,0,4]`, canonical `[0,3,4]`, weights `[1/6,1/3,1/2]`, correct remapped `1/3`, wrong positional `2/3`. Corrected R4 artifact `10289601000` and selector403 `c3f509af...70cb7` are **PROMOTED / ACCEPTED** as current M4-CP3 pre-cutover runtime authority. `CB4-R2-REV-CAND-01`, `TB2-REV-CAND-01` and `CB4-R3-REV-CAND-01` close recovery-proved/non-stable; stable accounting remains **47 / 14 / 33**, debt **5**.
 
 CP3 remains open because A4 still ignores the accepted A3 schedule and pairs hard rails using floating `support_key`. Exact next is guard-first `M4-CP3-CB5`: first prove every intended shared hard-rail segment maps uniquely to accepted A3 span+consecutive ordinals/orientation without geometric/local-grid inference; if not, stop before mutation. If proven, wire immutable A3 schedule identity into A4, materialize shared breakpoints unchanged, retire floating pairing authority and preserve A4-local family/advanceSign. Runtime acceptance remains later TB + Review.
+
+## 2.28 `M4-CP3-CB5` — exact A3→A4 shared-boundary cutover compiles; runtime acceptance frozen
+
+The guard-first derivation proved every affected shared bounded A4 hard-rail segment can be named from accepted A2b/A3 products alone by stable span identity, exact consecutive A3 breakpoint ordinals and orientation. CB5 semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e` therefore threads accepted `GlobalTopologyPlan` + `GlobalConformityBaselinePlan` into A4, materializes accepted shared breakpoints unchanged, publishes typed exact shared-boundary interval provenance, removes floating `support_key` as pairing authority, preserves A4-local family/advanceSign and rejects missing/contradictory identity rather than re-solving.
+
+Five producer-owned rows404-408 extend accepted selector403 to candidate selector408 `c689c0cd...484`; rows1-403 remain byte-identical and static ownership is **30 / 262 / 75 / 41**. Mandatory GMP/GMPXX compile/package `34670989680 / 103492183626` is green on exact semantic source, producing package `10290933668` (`3c73ce15c626b9811a0122cccaaa9615f76f1a6b5d6e93692a05fef524a36571`), source archive `f8c3db60c74a7c415fd362e3b9c72d1b9e5f0edd9a49bf86cfce53cb0d474415`, manifest `4f571387dc6ae86ac46161b3072c08e7d5ed7529a677506fe6355b71978bd831` / `28` entries and `runtimeExecution=false`. No Directional runtime executed. The first caller run `34670541648` was a zero-job orchestration startup failure caused only by a caller permission ceiling and is non-authoritative.
+
+Compilation does not promote candidate package/selector408 or close CP3. Corrected R4 package `10289601000` / selector403 **403/403** remains accepted runtime authority. Exact next is immutable artifact-only `M4-CP3-TB3-EXEC` with 821 fresh processes, followed by Review.
 
 ## 3. Folded document index
 

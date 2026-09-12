@@ -1,3 +1,12 @@
+## M4-CP3-CB5 Code + Build — **BUILD GREEN / RUNTIME-FREE / G4-B002 CUTOVER COMPILE-VALID, RUNTIME-UNPROVED**
+
+- Guard-first source derivation passed: accepted A2b/A3 authority supplies a unique stable arc/span identity, exact consecutive breakpoint ordinals and orientation for every shared bounded A4 hard-rail segment changed by CB5. No new upstream convention was required.
+- Semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e` threads accepted topology/baseline plans into A4, materializes accepted A3 breakpoints, publishes exact typed shared-boundary interval identity, removes `support_key` as hard-rail pairing authority, preserves A4-local family/sign checks and rejects missing/tampered identity.
+- Candidate selector408 `c689c0cd...484` appends five producer-owned rows to accepted selector403 with exact prefix preservation; static owners **30 / 262 / 75 / 41**.
+- Compile/package `34670989680 / 103492183626` is green; package `10290933668` / `3c73ce15c626b9811a0122cccaaa9615f76f1a6b5d6e93692a05fef524a36571`, source archive `f8c3db60c74a7c415fd362e3b9c72d1b9e5f0edd9a49bf86cfce53cb0d474415`, manifest `4f571387dc6ae86ac46161b3072c08e7d5ed7529a677506fe6355b71978bd831` / `28` entries, GMP/GMPXX, clean source, `runtimeExecution=false`. No runtime claim is made.
+- `G4-B002` remains **OPEN / CP3 / RUNTIME-UNPROVED**. The exact-torus `InvalidHardRailPairing` blocker is compile-targeted by row408 but is not closed until TB3 executes immutable package evidence and Review adjudicates it. Stable totals remain **47 / 14 / 33**, debt **5**.
+- Exact successor `M4-CP3-TB3-EXEC` under the frozen 821-process artifact-only plan; then `M4-CP3-TB3-REV`.
+
 ## M4-CP3-TB2-R2-REV adjudication — **APPROVED / CORRECTED R4 ARTIFACT + SELECTOR403 ACCEPTED / THREE CANDIDATES CLOSED**
 
 - Runtime-free Review independently re-derived corrected R4 artifact `10289601000`, exact source `58521f6d1c4fb5d625da7cde50e002cf4688beee`, 28-entry manifest/path closure, selector403 `c3f509af...70cb7`, exact first394 predecessor, unique owner partition **30/257/75/41**, and all **799** exact-filter runtime processes from raw evidence.

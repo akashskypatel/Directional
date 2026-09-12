@@ -24,7 +24,7 @@ the content beneath it.
 
 > **Current milestone authority (2026-09-12, `M4-CP3-TB2-R2-REV`):** corrected R4 package artifact `10289601000` and successor selector403 `c3f509af...70cb7` are **ACCEPTED / 403/403** after independent review of the 799-process artifact-only gate. Accepted predecessor selector394 remains byte-identical and 394/394 green on the promoted package. Stable accounting remains **47 / 14 / 33**, debt **5**. CP3 remains OPEN, but the exact-path/A3 publication acceptance prerequisite is discharged and production A3→A4 cutover is now authorized under guard-first `M4-CP3-CB5`.
 
-**Currency.** `M4-CP3-TB2-R2-REV`, 2026-09-12. Review independently re-derived package/selector provenance, 799 exact-filter processes, row400's exact `1/3` versus `2/3` discriminator and immutable postflight, then promoted R4 artifact `10289601000` / selector403. Exact next is `M4-CP3-CB5`, guard-first production A3→A4 cutover; no cutover occurred in Review.
+**Currency.** `M4-CP3-TB2-R2-REV`, 2026-09-12. Review independently re-derived package/selector provenance, 799 exact-filter processes, row400's exact `1/3` versus `2/3` discriminator and immutable postflight, then promoted R4 artifact `10289601000` / selector403. At that review boundary the authorized next turn was `M4-CP3-CB5`, guard-first production A3→A4 cutover; no cutover occurred in Review. Post-review CB5 compile-valid state and current successor are recorded in §3 and §7.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -74,7 +74,7 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 `M4-CP3-TB2-R2-REV` independently upheld all **799/799** frozen processes, zero RED/SKIP/timeout/selection mismatch, package/source/execution-view immutability, and replacement row400's real canonical→raw basis discriminator (`[3,0,4]` raw versus `[0,3,4]` canonical, exact `1/3` correct versus `2/3` positional). The former row400 test-authority gap, product basis mismatch and stale packaged-test identity are **CLOSED / RECOVERY PROVED / NON-STABLE**. Stable accounting therefore stays **47 / 14 / 33**, debt **5**.
 
-CP3 remains open because A4 does not yet consume the accepted A3 shared subdivision. **Exact next: `M4-CP3-CB5`** under `Architecture_M4_CP3_CB5_Code_Build_Plan.md`: first prove exact span+ordinal→A4 hard-rail mapping with no floating/local-grid authority; stop before mutation if that mapping is not derivable; only then wire the immutable A3 schedule into A4, retire floating `support_key` as shared-boundary semantic authority, preserve A4-local family/sign, and compile/package runtime-free.
+CP3 remains open, but `M4-CP3-CB5` has now **compile-validly** wired the accepted A3 shared subdivision into A4 at semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e`: typed exact span+consecutive-ordinal+orientation identity replaces floating `support_key` as shared hard-rail pairing authority while A4-local family/sign semantics remain local. Candidate artifact `10290933668` / selector408 is build-green and runtime-unproved; corrected R4 artifact `10289601000` / selector403 remains accepted runtime authority. **Exact next: `M4-CP3-TB3-EXEC`**, frozen artifact-only at 821 fresh exact-filter processes, followed by mandatory Review.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -186,15 +186,13 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP3 production A3→A4 exact shared-boundary cutover — ACTIVE / NEXT: `M4-CP3-CB5`.**
+1. **M4-CP3 exact A3→A4 shared-boundary cutover — COMPILE-VALID / NEXT: `M4-CP3-TB3-EXEC`.**
 
-   - Corrected R4 artifact `10289601000` / selector403 `c3f509af...70cb7` is accepted **403/403**; predecessor selector394 remains exact-prefix **394/394**.
-   - Exact-path publication, production A3 1:1 binding, terminal-contact basis correction and packaged-test ownership recovery are all reviewed/accepted. The three related candidates are closed non-stable.
-   - Current production already constructs `GlobalConformityBaselinePlan` immediately before A4, but `build_surface_cell_network` receives no A3 plan; hard-rail pairing still groups endpoint geometry with floating/tolerance `support_key`.
-   - `M4-CP3-CB5` is guard-first: every intended shared hard-rail segment must map uniquely to one accepted A3 span and exact consecutive ordinal interval, with exact orientation and no geometric/local-grid inference. Failure to derive that mapping is a pre-mutation STOP.
-   - If the guard passes, CB5 may thread typed A3 authority into A4, materialize accepted shared breakpoints unchanged, retire floating `support_key` as pairing authority, and attack exact-torus `InvalidHardRailPairing` without changing A4-local family/advanceSign.
-   - **Carried, non-blocking (`M4-CP3-TB1-R1-REV-OBS-01`):** multiplicity weighting still lacks a live `m=2` incidence. Keep separate unless a CB5 test naturally and independently exercises it.
-   - **Carried, non-blocking (`M4-CP3-CB4-REV-OBS-02`):** row399 still lacks the direct path/`sourceFaces` divergence tamper; next legitimate row399 touch remains owner.
+   - Corrected R4 artifact `10289601000` / selector403 `c3f509af...70cb7` remains accepted runtime authority **403/403**.
+   - CB5 semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e` passed the guard-first derivation and now consumes accepted A2b/A3 plan identity in A4: exact shared breakpoints and typed span+ordinal+orientation identity replace floating `support_key` hard-rail pairing authority without changing A4-local family/advanceSign semantics.
+   - Candidate selector408 `c689c0cd...484` is an exact selector403 prefix plus five producer-owned cutover tests; package `10290933668` is compile/package green with GMP/GMPXX and `runtimeExecution=false`, but neither is runtime-accepted yet.
+   - Exact next is artifact-only TB3: **821 fresh processes** (`5 + 5 + 403 + 408`), then Review. CP3 and `G4-B002` remain open until review adjudicates exact-torus/fixed-plan evidence.
+   - **Carried, non-blocking:** `M4-CP3-TB1-R1-REV-OBS-01` and `M4-CP3-CB4-REV-OBS-02` remain separate unless frozen TB3 rows naturally expose them.
 
 2. **`G4-B002` produced-witness debt — M4 exit-critical, CP4-owned.** CP3 must remove the exact-torus pairing blocker, but the three inherited produced-witness contract re-proofs remain CP4 gating and debt stays 5 until actual CP4 runtime acceptance.
 
