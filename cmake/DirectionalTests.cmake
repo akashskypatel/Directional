@@ -265,7 +265,7 @@ directional_require_default_packaged_test_contract(
   "IndependentValidationRejectsExactSourcePathTamperMatrix")
 directional_require_default_packaged_test_contract(
   "tests/FieldAlignedCurveNetworkTests.cpp"
-  "FaceBarycentricCoordinatesUseCanonicalTopologyKeyOrderNotSourceRowOrder")
+  "TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking")
 directional_require_default_packaged_test_contract(
   "tests/GlobalConformityBaselineTests.cpp"
   "ProductionBinderCopiesExactA2bSupportOneToOneWithoutFamilyOrSign")
