@@ -1,3 +1,12 @@
+## M4-CP3-TB3-REV — **CANDIDATE REJECTED / TEST-AUTHORITY FIXTURE-PRECONDITION + REACHABILITY DRIFT / NON-STABLE / CB6**
+
+- **Execution:** immutable CB5 package `10290933668`, run/job `34671972132 / 103494923768`; result/log artifacts `10291076362 / 10291146242`, SHA-256 `56158d759bf7827e33a51ce04fcd67bba960f68fea7486893fdf14936d96f388` / `93d56c5c8fc76f4d9ab1210183ce6aa57ecab25479f01b3e31b5ec78c33de5b1`. Preflight/postflight PASS; rows404-407 PASS; row408 RED; fail-fast stops at 5/821.
+- **`M4-CP3-TB3-REV-CAND-01` — OPEN / NON-STABLE / TEST-AUTHORITY.** Row408 expects a produced hard-rail phase front but calls `cp4c_remesh_options()`, which supplies no explicit hard feature. Production's aggregate phase-front returns `NotApplicable` after all regional producers decline only when `hardFeatureEdges.empty()`. The later receipt/shared-interval/`InvalidHardRailPairing` assertions are therefore unreachable and the test does not discriminate the intended CB5 semantic cutover.
+- **Correction:** `M4-CP3-CB6` may change only the row408 fixture after statically proving the committed torus source-edge cycles `0-3-25-37-49-61-0` and `0-1-4-6-8-10-12-14-16-18-20-22-0` are two independent fundamental loops whose union has disc complement. Feed exactly those pairs through `surfaceCells.featureMap.userHardEdges`; keep production source, rows404-407, selector408 identity/order/hash and accepted selector403 frozen. Product changes or a second dependency stop back to Review.
+- **Authority/accounting:** CB5 package/selector408 not promoted. Corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted. Stable totals remain **47 events / 14 categories / 33 recurrences**, debt **5**; `G4-B002` and CP3 remain open.
+- **Orchestration note:** first TB3 attempt `34671851965 / 103494592879` ran 0 Directional identities and failed only an over-specific temporary static row408 source-string check. It is a closed orchestration-only/non-stable attempt and has no semantic authority.
+- **Exact successor:** `M4-CP3-CB6`, runtime-free test-authority correction under `Architecture_M4_CP3_CB6_Code_Build_Plan.md`.
+
 ## M4-CP3-CB5 Code + Build — **BUILD GREEN / RUNTIME-FREE / G4-B002 CUTOVER COMPILE-VALID, RUNTIME-UNPROVED**
 
 - Guard-first source derivation passed: accepted A2b/A3 authority supplies a unique stable arc/span identity, exact consecutive breakpoint ordinals and orientation for every shared bounded A4 hard-rail segment changed by CB5. No new upstream convention was required.

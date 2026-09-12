@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-12 at `M4-CP3-CB5`
+**Last updated:** 2026-09-12 at `M4-CP3-TB3-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. CB5 semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e` and package `10290933668` are compile/package-valid candidate authority only; selector408 `c689c0cd...484` is static candidate authority pending TB3. CP3 remains OPEN. Exact next is artifact-only `M4-CP3-TB3-EXEC` under the frozen 821-process plan, followed by Review. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. CB5 semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e`, package `10290933668` and selector408 `c689c0cd...484` are rejected for promotion after TB3 Review classified row408 as a non-stable test-authority fixture-precondition/reachability defect. Rows404-407 are fresh focused green, but the full candidate gate is incomplete. CP3 and `G4-B002` remain OPEN. Exact next is runtime-free test-only `M4-CP3-CB6`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -311,6 +311,14 @@ The guard-first derivation proved every affected shared bounded A4 hard-rail seg
 Five producer-owned rows404-408 extend accepted selector403 to candidate selector408 `c689c0cd...484`; rows1-403 remain byte-identical and static ownership is **30 / 262 / 75 / 41**. Mandatory GMP/GMPXX compile/package `34670989680 / 103492183626` is green on exact semantic source, producing package `10290933668` (`3c73ce15c626b9811a0122cccaaa9615f76f1a6b5d6e93692a05fef524a36571`), source archive `f8c3db60c74a7c415fd362e3b9c72d1b9e5f0edd9a49bf86cfce53cb0d474415`, manifest `4f571387dc6ae86ac46161b3072c08e7d5ed7529a677506fe6355b71978bd831` / `28` entries and `runtimeExecution=false`. No Directional runtime executed. The first caller run `34670541648` was a zero-job orchestration startup failure caused only by a caller permission ceiling and is non-authoritative.
 
 Compilation does not promote candidate package/selector408 or close CP3. Corrected R4 package `10289601000` / selector403 **403/403** remains accepted runtime authority. Exact next is immutable artifact-only `M4-CP3-TB3-EXEC` with 821 fresh processes, followed by Review.
+
+## 2.29 `M4-CP3-TB3-EXEC` + Review — row408 fixture lacks hard-rail reachability; candidate rejected
+
+TB3 authoritative run/job `34671972132 / 103494923768` verified package `10290933668` and immutable pre/postflight, then executed focused-A rows404-408. Rows404-407 passed; row408 failed at its first phase-front assertion with actual disposition `NotApplicable` and terminal diagnostic `NotProductionReady/tracing/None`. Frozen fail-fast stopped the remaining 816 processes. Result/log artifacts `10291076362 / 10291146242` hash to `56158d75...f388` / `93d56c5c...de5b1`.
+
+Review independently reopened the production options and producer disposition logic. Row408 calls `cp4c_remesh_options()`, which supplies no explicit `userHardEdges`. Production derives `tracingOptions.hardFeatureEdges` only from the authoritative feature rails; aggregate phase-front returns `NotApplicable` after all regional producers decline only when that set is empty. Thus the test never enters the shared hard-rail A3→A4 seam and its later receipt/interval/`InvalidHardRailPairing` assertions are unreachable. `M4-CP3-TB3-REV-CAND-01` is **TEST-AUTHORITY / FIXTURE-PRECONDITION + REACHABILITY DRIFT / INCORRECT EXPECTATION / NON-STABLE**. No accepted-green loss is established, so stable accounting remains **47 / 14 / 33**, debt **5**.
+
+CB5 package/selector408 are not promoted; R4 package `10289601000` / selector403 **403/403** remains accepted authority. The bounded successor `M4-CP3-CB6` is test-only: statically verify two explicit fundamental source-edge cycles in committed `torus.obj`, then feed them as `userHardEdges` only to row408 so the witness actually carries hard-rail authority. Production changes or any second dependency are a STOP back to Review.
 
 ## 3. Folded document index
 
