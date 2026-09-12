@@ -1,0 +1,5 @@
+# M4-CP3-TB5-REV temporary state cleanup
+.agents/connector-triggers/drive-apply/m4-cp3-tb5-review/start-20260912.txt
+.agents/connector-triggers/tb/m4-cp3-tb5/start-20260912.txt
+.agents/connector-triggers/source-snapshot/m4-cp3-tb5-start-20260912.txt
+.agents/Directional/turn-payloads/m4-cp3-tb5-exec-harness.sh
