@@ -1,5 +1,0 @@
-Purpose: trigger M4-CP3-TB4-REV documentation patch application.
-Patch base: dc65e2e5f1383f62e8294ce8561486df4f9d0ab7
-Patch SHA-256: 80160d60d39ef8ce5c8cc61a9a32acef2c9b286300ef159c3feb839c532bc170
-Turn: M4-CP3-TB4-REV
-Retry: 0

@@ -1,3 +1,0 @@
-# M4-CP3-TB4-REV temporary state cleanup
-.agents/connector-triggers/m4-cp3-tb4-rev-apply-20260912.txt
-.agents/connector-triggers/source-snapshot/m4-cp3-tb4-rev-start-20260912.txt

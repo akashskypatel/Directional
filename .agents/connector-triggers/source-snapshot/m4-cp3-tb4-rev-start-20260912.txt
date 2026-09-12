@@ -1,5 +1,0 @@
-Purpose: trigger exact ChatGPT Web source snapshot for M4-CP3-TB4-REV.
-Parent authority: 987b41dc84313584d6f62ba33a110cdc49e1c8bf
-Expected snapshot authority: this marker-trigger commit SHA.
-Turn: M4-CP3-TB4-REV
-Retry: 0
