@@ -1,4 +1,0 @@
-Purpose: apply the verified M4-CP3-CB4-R3 semantic/test/selector patch from Google Drive.
-Patch base: 463bcb9ab35f7b9941e03199c8ca0818b20db84c
-Patch SHA-256: 5fe9f584c081d461d5c8a93569d97147b9c36480b60ee9c300410a03d3eafb38
-Retry: 0
