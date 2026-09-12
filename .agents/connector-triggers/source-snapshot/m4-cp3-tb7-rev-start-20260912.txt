@@ -1,0 +1,4 @@
+turn=M4-CP3-TB7-REV
+purpose=source-snapshot
+prior_authority=8537acf7d24888388ccca818b274dd870d16ecd9
+runtimeExecution=false
