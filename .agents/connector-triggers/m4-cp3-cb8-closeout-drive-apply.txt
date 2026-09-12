@@ -1,0 +1,4 @@
+turn=M4-CP3-CB8
+purpose=apply durable closeout and freeze TB6 artifact-only plan
+base_sha=b6b29e87dc848aa04459ca84d8d0e4822158b931
+patch_sha256=245973963b5116095c49e6724f8724e726602f2c43c28b7e2b2734a54a909392
