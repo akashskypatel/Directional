@@ -1,0 +1,6 @@
+Purpose: apply M4-CP3-TB2-R2 review/acceptance docs and freeze CB5 only.
+Caller install: c09bb5ffb8ff9aa9bf8c85d09033dea3c7d9b310
+Patch file ID: 1qvcuz9EFOsBQQZ-ipZkl8GMtbAppmX1N
+Patch SHA-256: a0cec033d1c8d77b8408d31f5a7826592380a6d5554998938c9a3a60fd0c8846
+Patch base: a4227d090f93d5c28056d68a9237d3a63bca083a
+Runtime execution: false
