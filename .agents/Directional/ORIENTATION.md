@@ -62,8 +62,9 @@ guarantee. The distinguishing commitments:
 | A8 | `VerificationReport` + `OutputDisposition` | independent verifier assigns the tier |
 | A9 | logs and public result | — |
 
-A2a′ was added and closed in CP4c-2. A2b now derives regions with disc proofs on the produced torus. Everything
-from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (§7).
+A2a′ was added and closed in CP4c-2. A2b now derives regions with disc proofs on the produced torus. Current
+M4-CP3 work reaches A4 on the repaired torus witness but has not produced an accepted A4 product; A5 onward remain
+unreached, and the prescribed sphere still cannot reach A2b (§7).
 
 **Disposition ladder** (assigned by A8, never asserted by a producer; a run only moves down):
 `D0 Certified` → `D1 QualityRelaxed` → `D2 LocallyDegraded` → `D3 Partial` → `D4 DiagnosticOnly`.
