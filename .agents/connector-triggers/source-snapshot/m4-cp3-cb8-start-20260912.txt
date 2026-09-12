@@ -1,3 +1,4 @@
-purpose=M4-CP3-CB8 exact source snapshot
-semantic_source_sha=08dde7536103077280a02eb2e67d6c055a41f65e
-retry=0
+turn=M4-CP3-CB8
+purpose=exact source snapshot for CB8 closeout documentation
+semantic_source=6934d9edfb56b44f956fbc64a89a501aaed042af
+phase=closeout
