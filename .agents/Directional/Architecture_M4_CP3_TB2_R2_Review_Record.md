@@ -124,6 +124,66 @@ No new recurring defect pattern was discovered. This turn closes existing instan
 
 The review performed documentation consolidation after durable facts were preserved. Superseded R2/R3/R4 plans/guards/reviews, the superseded package119 runtime report, the consumed TB2-R2 plan and the earlier TB2 review are folded into `M4_Consolidated_Record.md`; selector files remain immutable and the current TB2-R2 runtime report is retained.
 
+## 9. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld**: promotion of the corrected R4 package and acceptance of
+selector403 at **403/403** are justified, CP3 is correctly left OPEN, and the closeout block is complete
+with concrete values. Accounting stays **47 / 14 / 33**, debt **5**.
+
+### V1 — decisive claims re-derived independently
+
+- **Selector lineage.** All three `Selector_403` files in the tree were hashed. The promoted one is the
+  CB4-R3 variant, `c3f509afc823cd73…`, and its first 394 rows hash to
+  `6c27b3a0fc7259c5…` — byte-identical to accepted selector394. The superseded CB4-R1 variant
+  (`e8f4fe72cfbbd458…`) shares that same prefix and correctly remains historical rather than accepted, and
+  the unrelated M3-era `Selector_403` (`60ff6daa…`) is a separate milestone namespace, not a collision.
+- **Process composition.** The 799-row ledger decomposes exactly as the `M4-CP3-CB4-R3-REV` successor
+  contract predicted: 394 accepted-prefix ordinals + 403 cumulative ordinals + the replacement row400 run
+  twice. A prediction frozen before the build and met to the process is stronger evidence than a matching
+  total alone.
+- **The configure blocker raised at `M4-CP3-CB4-R3-REV` §11 V4 is resolved.** At this head the retired
+  identity has 0 definitions under `tests/` and 0 entries in `cmake/DirectionalTests.cmake`, while the
+  replacement has exactly 1 in each. The mandatory packaged-test contract is consistent and the branch
+  configures again.
+
+### V2 — the mutation-discrimination claim is analytic, and should be labelled as such
+
+§5 states that removing the remap "changes the observable outcome and makes the regression RED". That is
+correct and this reviewer re-derived it: with canonical weights `[1/6, 1/3, 1/2]` on key `[0,3,4]` and raw
+row `[3,0,4]`, the vertex-4 ray parameter is `w(v0)/(w(v3)+w(v0)) = 1/3`, and reading the canonical tuple
+as raw-row ordered yields `2/3`. Both values are asserted in the identity.
+
+The distinction worth recording: this is established by **exact arithmetic**, not by an executed mutation
+trial. No run against unfixed code was performed, and none is required — the values are exact, the
+identity asserts both, and running a deliberate mutation is a runtime act outside this turn's boundary.
+Stating it this way keeps a later turn from citing §5 as an empirical demonstration that the unfixed code
+was observed producing `2/3`. The defect itself remains source-proved; what the runtime now proves is the
+corrected behaviour and the identity's ability to discriminate.
+
+### V3 — obligations and classification
+
+All five outstanding items carry a disposition: `CB4-R2-REV-CAND-01`, `TB2-REV-CAND-01` and
+`CB4-R3-REV-CAND-01` closed as recovery-proved; `TB1-R1-REV-OBS-01` and `CB4-REV-OBS-02` carried
+non-blocking with named next owners. The accounting reasoning is correct — all three recovered candidates
+arose on **unpromoted** authority, so no accepted-green was lost and no stable event, category or
+recurrence is added.
+
+### V4 — forward note for `M4-CP3-CB5`
+
+CB5 is the fourth attempt at this cutover region: CB1, CB4 and CB4-R2 each halted on a pre-mutation
+derivation guard, and CB4-R3 halted at configure. Making the guard mandatory and spanning both sides of
+the seam is the right response, and the plan does that.
+
+One pattern from those four halts is worth building into the guard rather than rediscovering. Every halt
+traced to one of two causes: an authority that **existed but was unpublished** (the split-cut sub-interval
+loci), or a **registry that named something the turn changed** (the mandatory packaged-test identity). CB5
+removes floating `support_key` shared-boundary authority, and the CB4 census counted **10** hard-rail
+grouping/pairing/`support_key` consumer sites of which **7** require change. The guard should therefore
+enumerate not only what A4 needs from A3, but every registry, contract list or build-level name that
+refers to the symbols CB5 retires — and authorize those edits in the same turn. A plan that removes a
+registered thing while forbidding the registry edit is unsatisfiable rather than merely incomplete, which
+is what cost `M4-CP3-CB4-R3` its turn.
+
 ## Review closeout
 
 | Duty | Answer |

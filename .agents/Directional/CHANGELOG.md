@@ -25,6 +25,28 @@ the two changes could never have been split across turns — the intermediate st
 state the branch now occupies. §6's obligation ledger names all five items by id and is the strongest in this
 sequence. Accounting unchanged at **47 / 14 / 33**, debt **5**; accepted authority package119 / selector394.
 
+**Verification amendment (reviewing agent, review record §9).** The review is upheld: promotion of the corrected
+R4 package and acceptance of selector403 at **403/403** are justified, CP3 correctly stays OPEN, and the closeout
+block is complete. Decisive claims re-derived independently — all three `Selector_403` files were hashed, and the
+promoted CB4-R3 variant `c3f509af…` has first-394 rows byte-identical to accepted selector394 `6c27b3a0…`, while
+the superseded CB4-R1 variant `e8f4fe72…` shares that prefix and correctly remains historical; the 799-row ledger
+decomposes exactly as the `M4-CP3-CB4-R3-REV` successor contract predicted (394 prefix + 403 cumulative + row400
+twice), a prediction frozen before the build and met to the process. The configure blocker raised at
+`M4-CP3-CB4-R3-REV` §11 V4 is **resolved**: the retired identity now has 0 definitions in `tests/` and 0 entries in
+`cmake/DirectionalTests.cmake`, the replacement exactly 1 in each. One labelling point: §5's claim that removing
+the remap makes the regression RED is established by **exact arithmetic** — re-derived here as `1/3` correct
+versus `2/3` under the bug — not by an executed mutation trial, and none is required; recording that keeps a later
+turn from citing it as empirical observation of the unfixed code. The defect stays source-proved; the runtime now
+proves the corrected behaviour and the identity's discrimination. All five obligations carry dispositions (three
+closed recovery-proved, two carried with named owners), and the no-stable-event reasoning is correct since all
+three recovered candidates arose on unpromoted authority. Forward note for `M4-CP3-CB5`: this is the fourth
+attempt at the cutover region, and every prior halt traced either to an authority that existed but was
+unpublished, or to a registry naming something the turn changed. Since CB5 retires floating `support_key` (the CB4
+census counted 10 consumer sites, 7 requiring change), its guard should enumerate every registry, contract list
+and build-level name referring to the symbols it retires and authorize those edits in the same turn — a plan that
+removes a registered thing while forbidding the registry edit is unsatisfiable, not merely incomplete. Accounting
+unchanged at **47 / 14 / 33**, debt **5**.
+
 ## 2026-09-12 — `M4-CP3-CB4-R3`: semantic correction preserved; configure STOP-GUARD on stale packaged-test identity
 
 `M4-CP3-CB4-R3` is **HALTED / STOP-GUARD / POST-MUTATION / CONFIGURE RED / NO RUNTIME**. Semantic commit `7fdc3c001de9193f8f94591d3e74d1c94c260195` implements the source-proved A2b correction in the terminal-contact branch only, replaces row400 with the real noncanonical fan-row regression (`[3,0,4]` raw versus `[0,3,4]` canonical, correct `1/3` versus wrong-basis `2/3`), and publishes successor selector403 at SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`. Its accepted first394 remains `6c27b3a0...`; owner totals remain `30 / 257 / 75 / 41`.
