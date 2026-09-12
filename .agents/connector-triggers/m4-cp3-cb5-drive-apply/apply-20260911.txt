@@ -1,5 +1,5 @@
 M4-CP3-CB5 Drive patch apply trigger.
-Patch SHA-256: 5fb96cad093e6896c13f9dc2a785833f76f4609e937cda98d98a86176410079e
-Base semantic authority: 3c9350d6604b815655baeefca48034e44656c2f5
-Purpose: compile-only fixture accessor correction after first preflight.
-Retry: 1
+Patch SHA-256: 7c02668fb1f14772707357cd402b8f57429c86f91c2f799400b2397bae26eb66
+Base semantic authority: 4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e
+Purpose: durable CB5 compile closeout and frozen TB3 artifact-only plan.
+Retry: 2
