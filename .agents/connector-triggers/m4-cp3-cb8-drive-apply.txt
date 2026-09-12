@@ -1,0 +1,4 @@
+turn=M4-CP3-CB8
+purpose=apply verified occurrence-authority WIP patch
+base_sha=f9eefb21ddc3f336441cde3afd023ef1620649a3
+retry=0
