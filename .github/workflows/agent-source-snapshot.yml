@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1-Zad87Q7MrFT_yFr0fmMAThd14ueJQZb
-      patch_sha256: 94b780aebc828288da6e5a395068f9fb46d734d3e78e03cc6d2d935ca0905a93
+      patch_sha256: 6e40743e90264aa708bb940ffc7aab4f071a9b2fb34ac11ff129714bc8626d83
       base_sha: 405038937fd7d3a5410b9c8bac4d75fbd0b2a426
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M4-CP3-CB9 and freeze TB7 execution"
