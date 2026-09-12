@@ -1,0 +1,5 @@
+Purpose: compile-only M4-CP3-CB6 test fixture correction through the durable GMP reusable workflow.
+Semantic source: 9d66fcebe4b91ab74a6d0234c46643a2723ab643
+Expected caller authority: 37223499155381b6edffa23829d6a17ceb3d01df plus this marker commit.
+Turn: M4-CP3-CB6
+Retry: 0
