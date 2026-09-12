@@ -1,5 +1,5 @@
 turn=M4-CP3-TB6-EXEC
-purpose=apply preserved TB6 temporary execution workflow
-patch_sha256=de676e99d29a8fc7685efa59c54a38583152cb2544193c5be0bbc3cdc30492af
+purpose=apply durable TB6 execution closeout docs
+patch_sha256=201dd1976cf01c35cb33083051d28722f3cd534f7d78f9d77d627e88457f1595
 base_sha=9345897a73d44ed584bd0e0ae73b4e571ad435b4
-retry=1
+retry=2
