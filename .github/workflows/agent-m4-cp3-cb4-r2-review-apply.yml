@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1cXkwzmFA3vHueFSJb617fV58tjDUYjB5
-      patch_sha256: '413b7eede510b7b90169146e5ddae5cb1b3f348050741f1529d079a88b8f3993'
+      patch_sha256: 'a375d78b6e066f75ac77edef87c8237e46367820b8f8dade5a0e5cc4a6ae736f'
       base_sha: 9329d6610ffbfbb9fe3f638a2aae7ce3be368fa7
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: review M4-CP3 CB4-R2 stop guard and freeze R3'
