@@ -1,5 +1,6 @@
 Purpose: trigger M4-CP3-CB4-R4 changed-owner preflight compile only.
-Caller install: ba6153cd27e7320012a3f6897e944496467ea566
+Caller install: e860ced9a58db00353027c44b31d353cfd5bf6af
 Evidence source: 58521f6d1c4fb5d625da7cde50e002cf4688beee
 Target: directional_surface_cell_producer_tests
 runtimeExecution=false
+Retry: 1 (diagnosed caller permission ceiling: observer branch-file requires contents:write even when skipped)
