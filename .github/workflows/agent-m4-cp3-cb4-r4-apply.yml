@@ -1,11 +1,11 @@
-name: Agent M4 CP3 CB4 R4 Preflight Compile
+name: Agent M4 CP3 CB4 R4 Package Compile
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m4-cp3-cb4-r4-preflight.txt
+      - .agents/connector-triggers/m4-cp3-cb4-r4-package.txt
 
 permissions:
   actions: write
@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: agent-m4-cp3-cb4-r4-preflight-${{ github.ref }}
+  group: agent-m4-cp3-cb4-r4-package-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp3-cb4-r4-preflight
+      label: m4-cp3-cb4-r4-package
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -40,6 +40,6 @@ jobs:
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
       source_sha: 58521f6d1c4fb5d625da7cde50e002cf4688beee
-      targets: directional_surface_cell_producer_tests
-      artifact_prefix: m4-cp3-cb4-r4-preflight
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m4-cp3-cb4-r4-package
     secrets: inherit
