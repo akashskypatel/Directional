@@ -5819,6 +5819,15 @@ struct RectangularHardRailPhaseFrontFixture {
   directional::geometry::SurfaceCellNetwork network;
   std::set<directional::authority::SourceEdgeTopologyKey> hardFeatureEdges;
   std::size_t railCount = 0U;
+  directional::fields::CrossFieldResult crossField;
+  std::optional<directional::geometry::SourceTopologyRegions> sourceAuthority;
+  std::optional<directional::authority::FieldTransportAtlas> atlas;
+  std::optional<directional::geometry::FieldAlignedCurveNetwork> fieldNetwork;
+  std::optional<directional::geometry::GlobalTopologyPlan> topologyPlan;
+  std::optional<directional::geometry::GlobalConformityBaselinePlan>
+      conformityBaseline;
+  std::vector<directional::geometry::SurfaceCellRail> rails;
+  Eigen::VectorXd targetSize;
 };
 
 directional::TriMesh make_reversed_rectangular_feature_pair_mesh() {
@@ -5833,86 +5842,50 @@ directional::TriMesh make_reversed_rectangular_feature_pair_mesh() {
 
 RectangularHardRailPhaseFrontFixture build_rectangular_hard_rail_phase_front(
     const bool reverseFaceRows = false) {
-  namespace detail = directional::geometry::surface_cell_tracing_detail;
   RectangularHardRailPhaseFrontFixture fixture;
   fixture.mesh = reverseFaceRows
                      ? make_reversed_rectangular_feature_pair_mesh()
                      : make_disconnected_rectangular_feature_pair_mesh();
-  const auto crossField =
-      directional::pipeline::finalize_surface_cell_raw_cross_field(
-          fixture.mesh, constant_xy_raw_field(fixture.mesh.F.rows()));
-  const Eigen::VectorXd targetSize =
-      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.2);
-  directional::geometry::SurfaceCellTracingOptions options;
-  options.defaultTargetSize = 0.2;
-  options.sourceFaceComponents.resize(
-      static_cast<std::size_t>(fixture.mesh.F.rows()));
-  options.sourceFaceSheets.assign(
-      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
-  for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
-    options.sourceFaceComponents[static_cast<std::size_t>(face)] =
-        fixture.mesh.F(face, 0) < 9 ? 0 : 1;
-  }
-  const auto sourceEdgeFaces = detail::edge_faces(fixture.mesh.F);
-  const auto appendRailInterval =
-      [&](directional::geometry::SurfaceCellRail &rail, const int a,
-          const int b, const double railT0, const double railT1) {
-        const auto topology = test_source_edge_topology(a, b);
-        const auto incident = sourceEdgeFaces.find(topology);
-        if (incident == sourceEdgeFaces.end() || incident->second[0] < 0) {
-          throw std::runtime_error("Missing test hard-rail source edge.");
-        }
-        const int sourceFace = incident->second[0];
-        const int sourceEdge =
-            detail::local_edge_for_key(fixture.mesh.F, sourceFace, topology);
-        if (sourceEdge < 0) {
-          throw std::runtime_error("Missing test hard-rail local edge.");
-        }
-        const auto makeSample = [&](const int sourceVertex,
-                                    const double parameter,
-                                    const double railParameter) {
-          directional::geometry::SurfaceCellRailSample sample;
-          sample.sourceFace = sourceFace;
-          sample.sourceEdge = sourceEdge;
-          sample.parameter = parameter;
-          sample.railParameter = railParameter;
-          sample.position = fixture.mesh.V.row(sourceVertex);
-          for (int corner = 0; corner < 3; ++corner) {
-            if (fixture.mesh.F(sourceFace, corner) == sourceVertex) {
-              sample.barycentric[corner] = 1.0;
-            }
-          }
-          return sample;
-        };
-        rail.samples.push_back(makeSample(a, 0.0, railT0));
-        rail.samples.push_back(makeSample(b, 1.0, railT1));
-      };
+
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.retainIntermediateGeometry = true;
+  options.lengthRatio = 0.2;
   for (const int component : {0, 1}) {
     const int offset = component * 9;
-    options.hardFeatureEdges.insert(
-        test_source_edge_topology(offset + 1,
-                                                             offset + 4));
-    options.hardFeatureEdges.insert(
-        test_source_edge_topology(offset + 4,
-                                                             offset + 7));
-    const auto railId = directional::authority::HardRailId::from_index(
-        component, 2);
-    if (!railId) {
-      throw std::runtime_error("Invalid test hard-rail ID.");
-    }
-    directional::geometry::SurfaceCellRail rail(railId.value());
-    rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
-    rail.curveId = component;
-    rail.component = component;
-    rail.sourceVertices = {offset + 1, offset + 4, offset + 7};
-    appendRailInterval(rail, offset + 1, offset + 4, 0.0, 0.5);
-    appendRailInterval(rail, offset + 4, offset + 7, 0.5, 1.0);
-    options.authoritativeRails.push_back(std::move(rail));
+    options.surfaceCells.featureMap.userHardEdges.insert(
+        {offset + 1, offset + 4});
+    options.surfaceCells.featureMap.userHardEdges.insert(
+        {offset + 4, offset + 7});
+    fixture.hardFeatureEdges.insert(
+        test_source_edge_topology(offset + 1, offset + 4));
+    fixture.hardFeatureEdges.insert(
+        test_source_edge_topology(offset + 4, offset + 7));
   }
-  fixture.hardFeatureEdges = options.hardFeatureEdges;
-  fixture.railCount = options.authoritativeRails.size();
-  fixture.network = directional::geometry::build_surface_cell_network(
-      fixture.mesh.V, fixture.mesh.F, crossField, targetSize, options);
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      fixture.mesh.V, fixture.mesh.F,
+      constant_xy_raw_field(fixture.mesh.F.rows()), options);
+  fixture.network = result.surfaceCellContext.productSnapshots.traceNetwork;
+  fixture.railCount =
+      result.surfaceCellContext.productSnapshots.authoritativeRails.size();
+  fixture.crossField = result.surfaceCellContext.productSnapshots.crossField;
+  fixture.sourceAuthority =
+      result.surfaceCellContext.productSnapshots.sourceTopologyRegions;
+  fixture.atlas = result.surfaceCellContext.productSnapshots.fieldTransportAtlas;
+  fixture.fieldNetwork =
+      result.surfaceCellContext.productSnapshots.fieldAlignedCurveNetwork;
+  fixture.topologyPlan =
+      result.surfaceCellContext.productSnapshots.globalTopologyPlan;
+  fixture.conformityBaseline =
+      result.surfaceCellContext.productSnapshots.globalConformityBaseline;
+  fixture.rails =
+      result.surfaceCellContext.productSnapshots.authoritativeRails;
+  fixture.targetSize = result.surfaceCellContext.metricField.targetSize;
   return fixture;
 }
 
@@ -5957,13 +5930,53 @@ rebuild_phase_front_with_edges(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
-      product.cells());
+      product.cells(), product.conformityPlanReceipt());
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   if (value == nullptr) {
     throw std::runtime_error("Failed to rebuild structurally valid phase-front product.");
   }
   return std::move(*value);
+}
+
+directional::geometry::SurfaceCellNetwork
+build_fixed_plan_rectangular_hard_rail_network(
+    const RectangularHardRailPhaseFrontFixture &fixture,
+    const double targetScale) {
+  if (!fixture.sourceAuthority.has_value() || !fixture.atlas.has_value() ||
+      !fixture.fieldNetwork.has_value() || !fixture.topologyPlan.has_value() ||
+      !fixture.conformityBaseline.has_value()) {
+    throw std::runtime_error(
+        "Rectangular hard-rail fixture is missing accepted A2b/A3 authority.");
+  }
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceAuthority = &*fixture.sourceAuthority;
+  options.fieldTransportAtlas = &*fixture.atlas;
+  options.fieldAlignedNetwork = &*fixture.fieldNetwork;
+  options.globalTopologyPlan = &*fixture.topologyPlan;
+  options.globalConformityBaselinePlan = &*fixture.conformityBaseline;
+  options.hardFeatureEdges = fixture.hardFeatureEdges;
+  options.authoritativeRails = fixture.rails;
+  const Eigen::VectorXd target = fixture.targetSize * targetScale;
+  if (target.size() > 0) options.defaultTargetSize = target.mean();
+  return directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, fixture.crossField, target, options);
+}
+
+std::vector<directional::geometry::SurfaceSharedBoundaryInterval>
+shared_boundary_intervals(
+    const directional::geometry::SurfacePhaseFrontProduct &product) {
+  std::vector<directional::geometry::SurfaceSharedBoundaryInterval> intervals;
+  for (const auto &edge : product.edges()) {
+    if (edge.boundaryKind !=
+            directional::geometry::SurfaceFrontBoundaryKind::HardRail ||
+        !edge.sharedBoundaryInterval.has_value()) {
+      continue;
+    }
+    intervals.push_back(*edge.sharedBoundaryInterval);
+  }
+  std::sort(intervals.begin(), intervals.end());
+  return intervals;
 }
 
 std::vector<std::vector<directional::authority::TransitionStep>>
@@ -5978,6 +5991,135 @@ hard_rail_route_content_signatures(
   }
   std::sort(signatures.begin(), signatures.end());
   return signatures;
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ProductionA4PublishesAcceptedA2bA3ConformityReceipt) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_TRUE(fixture.topologyPlan.has_value());
+  ASSERT_TRUE(fixture.conformityBaseline.has_value());
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason());
+  const auto &product = fixture.network.phaseFront.product();
+  ASSERT_TRUE(product.conformityPlanReceipt().has_value());
+  const auto &receipt = *product.conformityPlanReceipt();
+  EXPECT_EQ(fixture.topologyPlan->semantic_digest(), receipt.topologyPlanDigest);
+  EXPECT_EQ(fixture.conformityBaseline->semantic_digest(),
+            receipt.baselinePlanDigest);
+  EXPECT_EQ(fixture.conformityBaseline->schedule().size(),
+            receipt.scheduleEntryCount);
+  ASSERT_FALSE(hard_rail_phase_front_pairs(product).empty());
+  for (const auto &[firstIndex, secondIndex] :
+       hard_rail_phase_front_pairs(product)) {
+    EXPECT_TRUE(product.edges()[static_cast<std::size_t>(firstIndex)]
+                    .sharedBoundaryInterval.has_value());
+    EXPECT_TRUE(product.edges()[static_cast<std::size_t>(secondIndex)]
+                    .sharedBoundaryInterval.has_value());
+  }
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  const auto fine =
+      build_fixed_plan_rectangular_hard_rail_network(fixture, 0.5);
+  const auto coarse =
+      build_fixed_plan_rectangular_hard_rail_network(fixture, 2.0);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fine.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fine.phaseFront.rejection_reason());
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            coarse.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             coarse.phaseFront.rejection_reason());
+  ASSERT_TRUE(fine.phaseFront.product().conformityPlanReceipt().has_value());
+  ASSERT_TRUE(coarse.phaseFront.product().conformityPlanReceipt().has_value());
+  EXPECT_EQ(fine.phaseFront.product().conformityPlanReceipt(),
+            coarse.phaseFront.product().conformityPlanReceipt());
+  const auto fineIntervals = shared_boundary_intervals(fine.phaseFront.product());
+  const auto coarseIntervals =
+      shared_boundary_intervals(coarse.phaseFront.product());
+  ASSERT_FALSE(fineIntervals.empty());
+  EXPECT_EQ(fineIntervals, coarseIntervals)
+      << "fixed accepted A3 authority must dominate A4 target/grid perturbation";
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ExactSharedBoundaryIntervalRejectsMissingOrTamperedIdentityWithoutFallback) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition());
+  const auto &product = fixture.network.phaseFront.product();
+  const auto pairs = hard_rail_phase_front_pairs(product);
+  ASSERT_GE(pairs.size(), 2U);
+  ASSERT_TRUE(product.conformityPlanReceipt().has_value());
+
+  auto missingEdges = product.edges();
+  missingEdges[static_cast<std::size_t>(pairs.front().first)]
+      .sharedBoundaryInterval.reset();
+  auto missing = directional::geometry::SurfacePhaseFrontProduct::make(
+      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
+      product.boundedDiskBoundaryPhases(), std::move(missingEdges),
+      product.events(), product.cells(), product.conformityPlanReceipt());
+  const auto *missingError =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&missing);
+  ASSERT_NE(nullptr, missingError);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSharedBoundaryInterval,
+            missingError->code);
+
+  auto tamperedEdges = product.edges();
+  auto &tampered =
+      tamperedEdges[static_cast<std::size_t>(pairs.front().first)];
+  const auto &foreign = product.edges()[static_cast<std::size_t>(
+      pairs.back().first)];
+  ASSERT_TRUE(tampered.sharedBoundaryInterval.has_value());
+  ASSERT_TRUE(foreign.sharedBoundaryInterval.has_value());
+  tampered.sharedBoundaryInterval->span = foreign.sharedBoundaryInterval->span;
+  auto tamperedProduct = directional::geometry::SurfacePhaseFrontProduct::make(
+      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
+      product.boundedDiskBoundaryPhases(), std::move(tamperedEdges),
+      product.events(), product.cells(), product.conformityPlanReceipt());
+  const auto *tamperedError =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
+          &tamperedProduct);
+  ASSERT_NE(nullptr, tamperedError);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSharedBoundaryInterval,
+            tamperedError->code)
+      << "unchanged floating geometry must not restore shared-boundary identity";
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     A3SharedBoundaryCutoverPreservesA4LocalFamilyAndAdvanceSign) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition());
+  const auto &product = fixture.network.phaseFront.product();
+  ASSERT_TRUE(product.conformityPlanReceipt().has_value());
+  const auto pairs = hard_rail_phase_front_pairs(product);
+  ASSERT_FALSE(pairs.empty());
+  for (const auto &[firstIndex, secondIndex] : pairs) {
+    const auto &first = product.edges()[static_cast<std::size_t>(firstIndex)];
+    const auto &second = product.edges()[static_cast<std::size_t>(secondIndex)];
+    ASSERT_TRUE(first.sharedBoundaryInterval.has_value());
+    ASSERT_TRUE(second.sharedBoundaryInterval.has_value());
+    EXPECT_EQ(first.sharedBoundaryInterval->span,
+              second.sharedBoundaryInterval->span);
+    EXPECT_EQ(first.sharedBoundaryInterval->firstOrdinal,
+              second.sharedBoundaryInterval->secondOrdinal);
+    EXPECT_EQ(first.sharedBoundaryInterval->secondOrdinal,
+              second.sharedBoundaryInterval->firstOrdinal);
+    EXPECT_NE(first.sharedBoundaryInterval->orientation,
+              second.sharedBoundaryInterval->orientation);
+    EXPECT_EQ(first.family, second.family);
+    EXPECT_NE(first.advanceSign, second.advanceSign);
+  }
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

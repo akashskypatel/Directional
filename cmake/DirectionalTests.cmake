@@ -276,6 +276,24 @@ directional_require_default_packaged_test_contract(
   "tests/FieldAlignedCurveNetworkTests.cpp"
   "PublishesOneValidatedGlobalConformityBaselineImmediatelyAfterA2b")
 
+# M4-CP3 CB5 production A3->A4 shared-boundary cutover regressions. Runtime
+# execution remains deferred to the immutable artifact-only successor TB.
+directional_require_default_packaged_test_contract(
+  "tests/SurfaceCellsPhase10Tests.cpp"
+  "ProductionA4PublishesAcceptedA2bA3ConformityReceipt")
+directional_require_default_packaged_test_contract(
+  "tests/SurfaceCellsPhase10Tests.cpp"
+  "FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals")
+directional_require_default_packaged_test_contract(
+  "tests/SurfaceCellsPhase10Tests.cpp"
+  "ExactSharedBoundaryIntervalRejectsMissingOrTamperedIdentityWithoutFallback")
+directional_require_default_packaged_test_contract(
+  "tests/SurfaceCellsPhase10Tests.cpp"
+  "A3SharedBoundaryCutoverPreservesA4LocalFamilyAndAdvanceSign")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity")
+
 # M4-CP1 exact schedule authority is compiled now and executed only by the later
 # artifact-only TB turn. These identities are intentionally part of the default
 # packaged producer target so selector365 can be extended append-only.

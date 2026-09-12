@@ -43,6 +43,9 @@ class TriMesh;
 
 namespace directional::geometry {
 
+class GlobalTopologyPlan;
+class GlobalConformityBaselinePlan;
+
 enum class SurfaceSeedProvenance : int {
   Boundary = 0,
   Feature = 1,
@@ -1260,6 +1263,32 @@ private:
   authority::QuarterTurn reverse_;
 };
 
+/**
+ * Exact A3-owned interval on one shared hard-rail boundary.
+ *
+ * `span` is the owning A2b NetworkArcId. Endpoint ordinals are exact integer
+ * values encoded in the already backend-neutral FieldExactRational authority;
+ * they are never reconstructed from A4 floating geometry. `orientation` is the
+ * exact direction of the A4 chart copy relative to increasing A3 ordinals.
+ */
+struct SurfaceSharedBoundaryInterval {
+  authority::NetworkArcId span;
+  authority::FieldExactRational firstOrdinal;
+  authority::FieldExactRational secondOrdinal;
+  authority::Orientation orientation = authority::Orientation::Forward;
+
+  auto operator<=>(const SurfaceSharedBoundaryInterval &) const = default;
+};
+
+/** Immutable receipt proving which accepted A2b/A3 plans A4 consumed. */
+struct SurfaceConformityPlanReceipt {
+  std::uint64_t topologyPlanDigest = 0U;
+  std::uint64_t baselinePlanDigest = 0U;
+  std::size_t scheduleEntryCount = 0U;
+
+  auto operator<=>(const SurfaceConformityPlanReceipt &) const = default;
+};
+
 struct SurfaceFrontEdge {
   SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
       : filledCell(owner), sourceTopologyRegion(region) {}
@@ -1284,6 +1313,8 @@ struct SurfaceFrontEdge {
   std::optional<authority::PeriodicRelationId> periodicRelation;
   /// Optional exact rail owner.
   std::optional<authority::HardRailId> railId;
+  /// Exact A3 shared-boundary owner. Required for production HardRail pairing.
+  std::optional<SurfaceSharedBoundaryInterval> sharedBoundaryInterval;
   /// Canonical source route carrying topology, transition identity, and transport.
   authority::CanonicalRoute route;
 };
@@ -1525,6 +1556,7 @@ enum class SurfacePhaseFrontProductErrorCode : int {
   IsolationCertificateBijectionMismatch = 14,
   InvalidBoundedDiskRegion = 15,
   DuplicateBoundedDiskRegion = 16,
+  InvalidSharedBoundaryInterval = 17,
 };
 
 struct SurfacePhaseFrontProductError {
@@ -1550,7 +1582,9 @@ public:
        std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases,
        std::vector<SurfaceFrontEdge> edges,
        std::vector<SurfaceFrontEvent> events,
-       std::vector<SurfacePhaseFrontCell> cells);
+       std::vector<SurfacePhaseFrontCell> cells,
+       std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt =
+           std::nullopt);
 
   [[nodiscard]] int gridU() const noexcept { return gridU_; }
   [[nodiscard]] int gridV() const noexcept { return gridV_; }
@@ -1578,6 +1612,10 @@ public:
   [[nodiscard]] const std::vector<SurfacePhaseFrontCell> &cells() const noexcept {
     return cells_;
   }
+  [[nodiscard]] const std::optional<SurfaceConformityPlanReceipt> &
+  conformityPlanReceipt() const noexcept {
+    return conformityPlanReceipt_;
+  }
 
 private:
   SurfacePhaseFrontProduct(
@@ -1588,7 +1626,8 @@ private:
       std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases,
       std::vector<SurfaceFrontEdge> edges,
       std::vector<SurfaceFrontEvent> events,
-      std::vector<SurfacePhaseFrontCell> cells)
+      std::vector<SurfacePhaseFrontCell> cells,
+      std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt)
       : gridU_(gridU), gridV_(gridV),
         sourceTopologyRegions_(std::move(sourceTopologyRegions)),
         isolationSeamTransportCertificates_(
@@ -1596,7 +1635,8 @@ private:
         periodicHolonomies_(std::move(periodicHolonomies)),
         boundedDiskBoundaryPhases_(std::move(boundedDiskBoundaryPhases)),
         edges_(std::move(edges)), events_(std::move(events)),
-        cells_(std::move(cells)) {}
+        cells_(std::move(cells)),
+        conformityPlanReceipt_(std::move(conformityPlanReceipt)) {}
 
   int gridU_ = 0;
   int gridV_ = 0;
@@ -1608,6 +1648,7 @@ private:
   std::vector<SurfaceFrontEdge> edges_;
   std::vector<SurfaceFrontEvent> events_;
   std::vector<SurfacePhaseFrontCell> cells_;
+  std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt_;
 };
 
 struct NotApplicable {};
@@ -1850,6 +1891,9 @@ struct SurfaceCellTracingOptions {
   /// singularity membership/index/ports and mandatory rail ownership; raw
   /// singularity vectors remain legacy/focused-test ingress only.
   const FieldAlignedCurveNetwork *fieldAlignedNetwork = nullptr;
+  /// Accepted A2b/A3 authority consumed by the production A4 shared-boundary cutover.
+  const GlobalTopologyPlan *globalTopologyPlan = nullptr;
+  const GlobalConformityBaselinePlan *globalConformityBaselinePlan = nullptr;
   [[nodiscard]] bool has_legacy_raw_singularity_ingress() const noexcept {
     return !singularityVertices.empty() || !singularityIndexNumerators.empty();
   }

@@ -3875,6 +3875,8 @@ struct Cp4cProductionFixture {
   std::optional<directional::geometry::SurfaceCutGraph> cutGraph;
   std::optional<directional::geometry::GlobalTopologyPlan> plan;
   std::optional<directional::geometry::GlobalConformityBaselinePlan> baseline;
+  directional::geometry::SurfaceCellNetwork traceNetwork;
+  bool hasTraceNetwork = false;
   Eigen::VectorXd targetSize;
   bool hasTargetSize = false;
   std::vector<directional::pipeline::SurfaceCellContextProductDebug> debugProducts;
@@ -7429,6 +7431,8 @@ Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
   fixture.cutGraph = products.surfaceCutGraph;
   fixture.plan = products.globalTopologyPlan;
   fixture.baseline = products.globalConformityBaseline;
+  fixture.traceNetwork = products.traceNetwork;
+  fixture.hasTraceNetwork = products.hasTraceNetwork;
   fixture.targetSize = result.surfaceCellContext.metricField.targetSize;
   fixture.hasTargetSize = result.surfaceCellContext.hasMetricField;
   fixture.debugProducts = result.surfaceCellContext.debugProducts;
@@ -15124,6 +15128,40 @@ TEST(RemeshPipeline,
   ASSERT_LT(baselineIndex, fixture.debugProducts.size());
   EXPECT_EQ(topologyIndex + 1U, baselineIndex)
       << "A3 must be constructed and published immediately after A2b, before A4";
+}
+
+TEST(RemeshPipeline,
+     ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity) {
+  const Cp4cProductionFixture fixture =
+      build_cp4c_pipeline_products_fixture("torus", "torus");
+  ASSERT_TRUE(fixture.plan.has_value()) << fixture.terminalFailureCode;
+  ASSERT_TRUE(fixture.baseline.has_value()) << fixture.terminalFailureCode << '/'
+                                            << fixture.terminalFailureStage;
+  ASSERT_TRUE(fixture.hasTraceNetwork) << fixture.terminalFailureCode << '/'
+                                       << fixture.terminalFailureStage << '/'
+                                       << fixture.terminalFailureDetailCode;
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.traceNetwork.phaseFront.disposition())
+      << fixture.terminalFailureCode << '/' << fixture.terminalFailureStage << '/'
+      << fixture.terminalFailureDetailCode;
+  const auto &phaseFront = fixture.traceNetwork.phaseFront.product();
+  ASSERT_TRUE(phaseFront.conformityPlanReceipt().has_value());
+  EXPECT_EQ(fixture.plan->semantic_digest(),
+            phaseFront.conformityPlanReceipt()->topologyPlanDigest);
+  EXPECT_EQ(fixture.baseline->semantic_digest(),
+            phaseFront.conformityPlanReceipt()->baselinePlanDigest);
+  EXPECT_NE("InvalidHardRailPairing", fixture.terminalFailureDetailCode);
+
+  std::size_t exactSharedIntervals = 0U;
+  for (const auto &edge : phaseFront.edges()) {
+    if (edge.boundaryKind !=
+        directional::geometry::SurfaceFrontBoundaryKind::HardRail) {
+      continue;
+    }
+    ASSERT_TRUE(edge.sharedBoundaryInterval.has_value());
+    ++exactSharedIntervals;
+  }
+  EXPECT_GT(exactSharedIntervals, 0U);
 }
 
 TEST(GlobalTopologyPlan,

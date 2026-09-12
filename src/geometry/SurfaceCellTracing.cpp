@@ -1,5 +1,7 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/geometry/SourceChartTransitions.h>
+#include <directional/geometry/GlobalConformityBaseline.h>
+#include <directional/geometry/GlobalTopologyPlan.h>
 
 #include <directional/authority/CanonicalRoute.h>
 #include <directional/authority/GridAutomorphism.h>
@@ -8,6 +10,7 @@
 
 #include <bit>
 #include <cassert>
+#include <charconv>
 #include <cmath>
 #include <exception>
 #include <functional>
@@ -7744,7 +7747,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases,
     std::vector<SurfaceFrontEdge> edges,
     std::vector<SurfaceFrontEvent> events,
-    std::vector<SurfacePhaseFrontCell> cells) {
+    std::vector<SurfacePhaseFrontCell> cells,
+    std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt) {
   SurfacePhaseFrontProductError error;
   if (sourceTopologyRegions.regions().empty() ||
       sourceTopologyRegions.face_count() == 0U) {
@@ -7815,6 +7819,45 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         error.edge = static_cast<int>(edgeIndex);
         return error;
       }
+    }
+    if (edge.sharedBoundaryInterval.has_value()) {
+      const auto &interval = *edge.sharedBoundaryInterval;
+      const auto one = authority::FieldExactRational::from_integer(1);
+      const bool increasing = interval.firstOrdinal < interval.secondOrdinal;
+      const bool decreasing = interval.secondOrdinal < interval.firstOrdinal;
+      if (edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail ||
+          (!increasing && !decreasing) ||
+          (increasing && interval.orientation != authority::Orientation::Forward) ||
+          (decreasing && interval.orientation != authority::Orientation::Reverse) ||
+          (increasing ? interval.secondOrdinal - interval.firstOrdinal
+                      : interval.firstOrdinal - interval.secondOrdinal) != one) {
+        error.code =
+            SurfacePhaseFrontProductErrorCode::InvalidSharedBoundaryInterval;
+        error.edge = static_cast<int>(edgeIndex);
+        return error;
+      }
+      if (edge.oppositeEdge >= 0) {
+        const SurfaceFrontEdge &opposite =
+            edges[static_cast<std::size_t>(edge.oppositeEdge)];
+        if (!opposite.sharedBoundaryInterval.has_value() ||
+            opposite.sharedBoundaryInterval->span != interval.span ||
+            opposite.sharedBoundaryInterval->firstOrdinal !=
+                interval.secondOrdinal ||
+            opposite.sharedBoundaryInterval->secondOrdinal !=
+                interval.firstOrdinal ||
+            opposite.sharedBoundaryInterval->orientation ==
+                interval.orientation) {
+          error.code =
+              SurfacePhaseFrontProductErrorCode::InvalidSharedBoundaryInterval;
+          error.edge = static_cast<int>(edgeIndex);
+          return error;
+        }
+      }
+    } else if (conformityPlanReceipt.has_value() &&
+               edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSharedBoundaryInterval;
+      error.edge = static_cast<int>(edgeIndex);
+      return error;
     }
     if (edge.boundaryKind == SurfaceFrontBoundaryKind::PeriodicCut) {
       if (!edge.periodicRelation.has_value()) {
@@ -7889,7 +7932,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       gridU, gridV, std::move(sourceTopologyRegions),
       std::move(isolationSeamTransportCertificates),
       std::move(periodicHolonomies), std::move(boundedDiskBoundaryPhases),
-      std::move(edges), std::move(events), std::move(cells));
+      std::move(edges), std::move(events), std::move(cells),
+      std::move(conformityPlanReceipt));
 }
 
 } // namespace directional::geometry
@@ -11378,6 +11422,7 @@ struct SurfacePhaseFrontBuildState {
       isolationSeamTransportCertificates;
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
   std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
+  std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt;
   SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
@@ -11411,7 +11456,8 @@ SurfacePhaseFrontResult publish_phase_front_result(
       std::move(state.isolationSeamTransportCertificates),
       std::move(state.periodicHolonomies),
       std::move(state.boundedDiskBoundaryPhases), std::move(state.edges),
-      std::move(state.events), std::move(state.cells));
+      std::move(state.events), std::move(state.cells),
+      std::move(state.conformityPlanReceipt));
   if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
     return SurfacePhaseFrontResult::produced(std::move(*value));
   }
@@ -11443,6 +11489,32 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
   // Unsupported topology is NotApplicable; malformed authoritative metadata
   // on an applicable domain is Rejected and must remain fail-closed.
   if (surface_cell_tracing_detail::tracing_has_singularities(options)) {
+    return result;
+  }
+  // Once the accepted A2b/A3 conformity plan is present, shared hard rails
+  // must be materialized from its exact breakpoint schedule.  The bounded
+  // curved producer owns that cutover; this uniform producer cannot publish
+  // the required typed shared-boundary interval identity.
+  const auto region_has_hard_feature = [&]() {
+    if (options.hardFeatureEdges.empty()) return false;
+    std::set<int> activeRows;
+    for (const authority::SourceFaceId face : activeFaces) {
+      activeRows.insert(static_cast<int>(face.index()));
+    }
+    for (const authority::SourceEdgeTopologyKey &edge : options.hardFeatureEdges) {
+      const auto incident = sourceEdgeFaces.find(edge);
+      if (incident == sourceEdgeFaces.end()) continue;
+      if ((incident->second[0] >= 0 &&
+           activeRows.count(incident->second[0]) != 0U) ||
+          (incident->second[1] >= 0 &&
+           activeRows.count(incident->second[1]) != 0U)) {
+        return true;
+      }
+    }
+    return false;
+  };
+  if (options.globalConformityBaselinePlan != nullptr &&
+      region_has_hard_feature()) {
     return result;
   }
   UniformPhaseFrame applicabilityFrame;
@@ -12181,6 +12253,32 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
   if (!result.attempted ||
       surface_cell_tracing_detail::tracing_has_singularities(options) ||
       activeFaces.empty()) {
+    return result;
+  }
+  // The periodic producer does not publish accepted A3 shared-boundary
+  // interval provenance.  When hard rails are governed by the immutable A3
+  // plan, defer to the bounded curved producer instead of recreating shared
+  // identity from local geometry.
+  const auto region_has_hard_feature = [&]() {
+    if (options.hardFeatureEdges.empty()) return false;
+    std::set<int> activeRows;
+    for (const authority::SourceFaceId face : activeFaces) {
+      activeRows.insert(static_cast<int>(face.index()));
+    }
+    for (const authority::SourceEdgeTopologyKey &edge : options.hardFeatureEdges) {
+      const auto incident = sourceEdgeFaces.find(edge);
+      if (incident == sourceEdgeFaces.end()) continue;
+      if ((incident->second[0] >= 0 &&
+           activeRows.count(incident->second[0]) != 0U) ||
+          (incident->second[1] >= 0 &&
+           activeRows.count(incident->second[1]) != 0U)) {
+        return true;
+      }
+    }
+    return false;
+  };
+  if (options.globalConformityBaselinePlan != nullptr &&
+      region_has_hard_feature()) {
     return result;
   }
   SourceChartTransitionGraph canonicalSourceCharts(
@@ -14539,6 +14637,320 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     return result;
   }
 
+  struct AcceptedBoundarySubdivision {
+    std::vector<SurfaceTracePoint> points;
+    std::vector<Eigen::Vector2d> uv;
+    std::vector<std::optional<SurfaceSharedBoundaryInterval>> intervals;
+  };
+  std::array<AcceptedBoundarySubdivision, 4> acceptedBoundary;
+  const bool useAcceptedConformity =
+      options.globalTopologyPlan != nullptr &&
+      options.globalConformityBaselinePlan != nullptr;
+
+  const auto exact_count_to_size = [](const EInt &value)
+      -> std::optional<std::size_t> {
+    if (value <= EInt(0)) return std::nullopt;
+    const std::string text = value.to_string();
+    std::size_t converted = 0U;
+    const auto parsed =
+        std::from_chars(text.data(), text.data() + text.size(), converted);
+    if (parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size()) {
+      return std::nullopt;
+    }
+    return converted;
+  };
+  const auto exact_edge_parameter = [](
+      const authority::ExactSourcePoint &point,
+      const authority::SourceEdgeTopologyKey &edge)
+      -> std::optional<authority::FieldExactRational> {
+    if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+      if (*vertex == edge.first()) {
+        return authority::FieldExactRational::from_integer(0);
+      }
+      if (*vertex == edge.second()) {
+        return authority::FieldExactRational::from_integer(1);
+      }
+      return std::nullopt;
+    }
+    const auto *edgePoint =
+        std::get_if<authority::ExactSourceEdgePoint>(&point);
+    if (edgePoint == nullptr || edgePoint->edge != edge) return std::nullopt;
+    return edgePoint->parameter;
+  };
+  const auto boundary_trace_point = [&faces](
+      const int face, const int firstVertex, const int secondVertex,
+      const authority::FieldExactRational &canonicalParameter,
+      const authority::SourceEdgeTopologyKey &edge)
+      -> std::optional<SurfaceTracePoint> {
+    const double canonical =
+        static_cast<double>(canonicalParameter.to_double());
+    if (!std::isfinite(canonical)) return std::nullopt;
+    const auto firstId = authority::SourceVertexId::from_index(
+        static_cast<std::int64_t>(firstVertex), source_vertex_extent(faces));
+    if (!firstId) return std::nullopt;
+    const bool forward = firstId.value() == edge.first();
+    const double alpha = forward ? canonical : 1.0 - canonical;
+    if (alpha < -1.0e-12 || alpha > 1.0 + 1.0e-12) return std::nullopt;
+    SurfaceTracePoint point;
+    point.face = face;
+    point.barycentric.setZero();
+    int firstCorner = -1;
+    int secondCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (faces(face, corner) == firstVertex) firstCorner = corner;
+      if (faces(face, corner) == secondVertex) secondCorner = corner;
+    }
+    if (firstCorner < 0 || secondCorner < 0 || firstCorner == secondCorner) {
+      return std::nullopt;
+    }
+    point.barycentric[firstCorner] = 1.0 - std::clamp(alpha, 0.0, 1.0);
+    point.barycentric[secondCorner] = std::clamp(alpha, 0.0, 1.0);
+    return point;
+  };
+
+  if (useAcceptedConformity) {
+    if (options.fieldAlignedNetwork == nullptr) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+    const GlobalTopologyPlan &topology = *options.globalTopologyPlan;
+    const GlobalConformityBaselinePlan &baseline =
+        *options.globalConformityBaselinePlan;
+    const auto zero = authority::FieldExactRational::from_integer(0);
+    const auto one = authority::FieldExactRational::from_integer(1);
+
+    for (int side = 0; side < 4; ++side) {
+      const SurfaceBoundedDiskBoundaryRun &run =
+          phaseRecord.runs[static_cast<std::size_t>(side)];
+      AcceptedBoundarySubdivision &subdivision =
+          acceptedBoundary[static_cast<std::size_t>(side)];
+      for (std::size_t edgeIndex = 0;
+           edgeIndex < run.sourceEdgeTopology.size(); ++edgeIndex) {
+        const authority::SourceEdgeTopologyKey &edge =
+            run.sourceEdgeTopology[edgeIndex];
+        const FieldAlignedMandatoryEdge *mandatory =
+            options.fieldAlignedNetwork->find_mandatory_edge(edge);
+        if (mandatory == nullptr || edgeIndex >= run.sourceFaces.size() ||
+            edgeIndex + 1U >= run.sourceVertices.size()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+
+        struct ArcSchedule {
+          const GlobalTopologyArc *arc = nullptr;
+          const ConformityScheduleEntry *schedule = nullptr;
+          authority::FieldExactRational first =
+              authority::FieldExactRational::from_integer(0);
+          authority::FieldExactRational second =
+              authority::FieldExactRational::from_integer(0);
+          std::size_t count = 0U;
+        };
+        std::vector<ArcSchedule> arcSchedules;
+        for (const GlobalTopologyArc &arc : topology.arcs()) {
+          if (arc.kind != GlobalTopologyArcKind::Mandatory ||
+              !arc.mandatoryEdge.has_value() ||
+              *arc.mandatoryEdge != mandatory->id) {
+            continue;
+          }
+          if (arc.sourcePath.size() != 1U) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+            return result;
+          }
+          const auto *carrier = std::get_if<authority::SourceEdgeSupport>(
+              &arc.sourcePath.front().carrier);
+          const auto first = exact_edge_parameter(arc.sourcePath.front().first,
+                                                  edge);
+          const auto second = exact_edge_parameter(arc.sourcePath.front().second,
+                                                   edge);
+          const ConformitySpanId span =
+              ConformitySpanId::from_network_arc(arc.id);
+          const ConformityScheduleEntry *schedule = baseline.find_schedule(span);
+          const auto count =
+              schedule == nullptr ? std::optional<std::size_t>{}
+                                  : exact_count_to_size(schedule->count);
+          if (carrier == nullptr || carrier->edge != edge || !first || !second ||
+              !(*first < *second) || schedule == nullptr ||
+              schedule->supportPieces != arc.sourcePath || !count ||
+              *count == 0U ||
+              *count > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+            return result;
+          }
+          arcSchedules.push_back(
+              {&arc, schedule, *first, *second, *count});
+        }
+        std::sort(arcSchedules.begin(), arcSchedules.end(),
+                  [](const ArcSchedule &a, const ArcSchedule &b) {
+                    if (a.first != b.first) return a.first < b.first;
+                    return a.second < b.second;
+                  });
+        if (arcSchedules.empty() || arcSchedules.size() > 2U ||
+            arcSchedules.front().first != zero ||
+            arcSchedules.back().second != one) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        for (std::size_t arcIndex = 1U; arcIndex < arcSchedules.size();
+             ++arcIndex) {
+          if (arcSchedules[arcIndex - 1U].second != arcSchedules[arcIndex].first) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+            return result;
+          }
+        }
+
+        const int firstVertex = run.sourceVertices[edgeIndex];
+        const int secondVertex = run.sourceVertices[edgeIndex + 1U];
+        const auto firstId = authority::SourceVertexId::from_index(
+            static_cast<std::int64_t>(firstVertex), source_vertex_extent(faces));
+        if (!firstId) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        const bool forward = firstId.value() == edge.first();
+        const auto append_point = [&](
+            const authority::FieldExactRational &parameter,
+            const int sourceFace) -> bool {
+          const auto point = boundary_trace_point(
+              sourceFace, firstVertex, secondVertex, parameter, edge);
+          if (!point) return false;
+          const double canonical = static_cast<double>(parameter.to_double());
+          const double alpha = forward ? canonical : 1.0 - canonical;
+          const Eigen::Vector2d uv =
+              vertexUv.at(firstVertex) +
+              std::clamp(alpha, 0.0, 1.0) *
+                  (vertexUv.at(secondVertex) - vertexUv.at(firstVertex));
+          if (!subdivision.points.empty() &&
+              (subdivision.uv.back() - uv).norm() <=
+                  1.0e-10 * std::max({1.0, width, height})) {
+            return true;
+          }
+          subdivision.points.push_back(*point);
+          subdivision.uv.push_back(uv);
+          return true;
+        };
+        const bool shared = run.edgeAuthority[edgeIndex].hardFeature;
+
+        const auto append_arc = [&](const ArcSchedule &arcSchedule,
+                                    const bool increasing) -> bool {
+          const ConformitySpanId span =
+              ConformitySpanId::from_network_arc(arcSchedule.arc->id);
+          const auto location_parameter = [&](const std::size_t ordinal)
+              -> std::optional<authority::FieldExactRational> {
+            const EInt exactOrdinal(static_cast<long long>(ordinal));
+            const auto location = baseline.breakpoint_location(span, exactOrdinal);
+            if (!location || location->supportPieceIndex != 0U ||
+                location->localDenominator == EInt(0)) {
+              return std::nullopt;
+            }
+            const auto local = authority::FieldExactRational::from_exact_fraction(
+                location->localNumerator, location->localDenominator);
+            if (!local) return std::nullopt;
+            return arcSchedule.first +
+                   *local * (arcSchedule.second - arcSchedule.first);
+          };
+          if (increasing) {
+            for (std::size_t ordinal = 0U; ordinal < arcSchedule.count;
+                 ++ordinal) {
+              const auto firstParameter = location_parameter(ordinal);
+              const auto secondParameter = location_parameter(ordinal + 1U);
+              if (!firstParameter || !secondParameter ||
+                  !append_point(*firstParameter, run.sourceFaces[edgeIndex]) ||
+                  !append_point(*secondParameter, run.sourceFaces[edgeIndex])) {
+                return false;
+              }
+              std::optional<SurfaceSharedBoundaryInterval> interval;
+              if (shared) {
+                interval = SurfaceSharedBoundaryInterval{
+                    arcSchedule.arc->id,
+                    authority::FieldExactRational::from_integer(
+                        static_cast<std::int64_t>(ordinal)),
+                    authority::FieldExactRational::from_integer(
+                        static_cast<std::int64_t>(ordinal + 1U)),
+                    authority::Orientation::Forward};
+              }
+              subdivision.intervals.push_back(std::move(interval));
+            }
+          } else {
+            for (std::size_t ordinal = arcSchedule.count; ordinal > 0U;
+                 --ordinal) {
+              const auto firstParameter = location_parameter(ordinal);
+              const auto secondParameter = location_parameter(ordinal - 1U);
+              if (!firstParameter || !secondParameter ||
+                  !append_point(*firstParameter, run.sourceFaces[edgeIndex]) ||
+                  !append_point(*secondParameter, run.sourceFaces[edgeIndex])) {
+                return false;
+              }
+              std::optional<SurfaceSharedBoundaryInterval> interval;
+              if (shared) {
+                interval = SurfaceSharedBoundaryInterval{
+                    arcSchedule.arc->id,
+                    authority::FieldExactRational::from_integer(
+                        static_cast<std::int64_t>(ordinal)),
+                    authority::FieldExactRational::from_integer(
+                        static_cast<std::int64_t>(ordinal - 1U)),
+                    authority::Orientation::Reverse};
+              }
+              subdivision.intervals.push_back(std::move(interval));
+            }
+          }
+          return true;
+        };
+
+        if (forward) {
+          for (const ArcSchedule &arcSchedule : arcSchedules) {
+            if (!append_arc(arcSchedule, true)) {
+              result.disposition = SurfaceCellProducerDisposition::Rejected;
+              set_phase_front_failure(
+                  result.failure,
+                  SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+              return result;
+            }
+          }
+        } else {
+          for (auto arc = arcSchedules.rbegin(); arc != arcSchedules.rend(); ++arc) {
+            if (!append_arc(*arc, false)) {
+              result.disposition = SurfaceCellProducerDisposition::Rejected;
+              set_phase_front_failure(
+                  result.failure,
+                  SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+              return result;
+            }
+          }
+        }
+      }
+      if (subdivision.points.size() < 2U ||
+          subdivision.intervals.size() + 1U != subdivision.points.size() ||
+          subdivision.uv.size() != subdivision.points.size()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+    }
+  }
+
   double target = options.defaultTargetSize;
   if (targetSize.size() > 0 && targetSize.allFinite() &&
       targetSize.minCoeff() > 0.0) {
@@ -14550,8 +14962,26 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
                             SurfacePhaseFrontFailureReason::InvalidTargetSize);
     return result;
   }
-  result.gridU = std::max(1, static_cast<int>(std::llround(width / target)));
-  result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
+  if (useAcceptedConformity) {
+    const std::size_t bottom = acceptedBoundary[0].intervals.size();
+    const std::size_t right = acceptedBoundary[1].intervals.size();
+    const std::size_t top = acceptedBoundary[2].intervals.size();
+    const std::size_t left = acceptedBoundary[3].intervals.size();
+    if (bottom == 0U || right == 0U || bottom != top || right != left ||
+        bottom > static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
+        right > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+    result.gridU = static_cast<int>(bottom);
+    result.gridV = static_cast<int>(right);
+  } else {
+    result.gridU = std::max(1, static_cast<int>(std::llround(width / target)));
+    result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
+  }
   const double stepU = width / static_cast<double>(result.gridU);
   const double stepV = height / static_cast<double>(result.gridV);
   if (!(stepU > 0.0) || !(stepV > 0.0)) {
@@ -14564,12 +14994,26 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   const int columns = result.gridU + 1;
   const int rows = result.gridV + 1;
   std::vector<SurfaceTracePoint> points(static_cast<std::size_t>(columns * rows));
+  std::vector<Eigen::Vector2d> latticeUv(static_cast<std::size_t>(columns * rows));
   const auto node_index = [columns](const int u, const int v) {
     return v * columns + u;
   };
   for (int v = 0; v < rows; ++v) {
     for (int u = 0; u < columns; ++u) {
-      const Eigen::Vector2d uv(stepU * u, stepV * v);
+      Eigen::Vector2d uv(stepU * u, stepV * v);
+      if (useAcceptedConformity) {
+        const Eigen::Vector2d bottom = acceptedBoundary[0].uv[static_cast<std::size_t>(u)];
+        const Eigen::Vector2d top = acceptedBoundary[2].uv[
+            static_cast<std::size_t>(result.gridU - u)];
+        const Eigen::Vector2d left = acceptedBoundary[3].uv[
+            static_cast<std::size_t>(result.gridV - v)];
+        const Eigen::Vector2d right = acceptedBoundary[1].uv[static_cast<std::size_t>(v)];
+        const double xi = static_cast<double>(u) / result.gridU;
+        const double eta = static_cast<double>(v) / result.gridV;
+        uv = {(1.0 - eta) * bottom.x() + eta * top.x(),
+              (1.0 - xi) * left.y() + xi * right.y()};
+      }
+      latticeUv[static_cast<std::size_t>(node_index(u, v))] = uv;
       if (!point_on_periodic_chart(
               chartTriangles, uv, faces.rows(),
               points[static_cast<std::size_t>(node_index(u, v))])) {
@@ -14577,6 +15021,23 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
         return result;
+      }
+      if (useAcceptedConformity) {
+        const SurfaceTracePoint *accepted = nullptr;
+        if (v == 0) {
+          accepted = &acceptedBoundary[0].points[static_cast<std::size_t>(u)];
+        } else if (u == result.gridU) {
+          accepted = &acceptedBoundary[1].points[static_cast<std::size_t>(v)];
+        } else if (v == result.gridV) {
+          accepted = &acceptedBoundary[2].points[
+              static_cast<std::size_t>(result.gridU - u)];
+        } else if (u == 0) {
+          accepted = &acceptedBoundary[3].points[
+              static_cast<std::size_t>(result.gridV - v)];
+        }
+        if (accepted != nullptr) {
+          points[static_cast<std::size_t>(node_index(u, v))] = *accepted;
+        }
       }
     }
   }
@@ -14591,10 +15052,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           node_index(u, v), node_index(u + 1, v),
           node_index(u + 1, v + 1), node_index(u, v + 1)};
       const std::array<Eigen::Vector2d, 4> uv{
-          Eigen::Vector2d(stepU * u, stepV * v),
-          Eigen::Vector2d(stepU * (u + 1), stepV * v),
-          Eigen::Vector2d(stepU * (u + 1), stepV * (v + 1)),
-          Eigen::Vector2d(stepU * u, stepV * (v + 1))};
+          latticeUv[static_cast<std::size_t>(nodeIds[0])],
+          latticeUv[static_cast<std::size_t>(nodeIds[1])],
+          latticeUv[static_cast<std::size_t>(nodeIds[2])],
+          latticeUv[static_cast<std::size_t>(nodeIds[3])]};
       const auto cellId = phase_front_cell_id_from_lattice(
           u, v, result.gridU, result.gridV);
       if (!cellId) {
@@ -14834,6 +15295,41 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
                               static_cast<int>(edge.filledCell.index()), side);
       return result;
     }
+    if (useAcceptedConformity) {
+      std::optional<SurfaceSharedBoundaryInterval> acceptedInterval;
+      if (a.y == 0 && b.y == 0 && a.x >= 0 &&
+          a.x < result.gridU && b.x == a.x + 1) {
+        acceptedInterval = acceptedBoundary[0].intervals[
+            static_cast<std::size_t>(a.x)];
+      } else if (a.x == result.gridU && b.x == result.gridU && a.y >= 0 &&
+                 a.y < result.gridV && b.y == a.y + 1) {
+        acceptedInterval = acceptedBoundary[1].intervals[
+            static_cast<std::size_t>(a.y)];
+      } else if (a.y == result.gridV && b.y == result.gridV && a.x > 0 &&
+                 a.x <= result.gridU && b.x == a.x - 1) {
+        acceptedInterval = acceptedBoundary[2].intervals[
+            static_cast<std::size_t>(result.gridU - a.x)];
+      } else if (a.x == 0 && b.x == 0 && a.y > 0 &&
+                 a.y <= result.gridV && b.y == a.y - 1) {
+        acceptedInterval = acceptedBoundary[3].intervals[
+            static_cast<std::size_t>(result.gridV - a.y)];
+      } else {
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+            static_cast<int>(edge.filledCell.index()), side);
+        return result;
+      }
+      edge.sharedBoundaryInterval = std::move(acceptedInterval);
+      if ((edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail) !=
+          edge.sharedBoundaryInterval.has_value()) {
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+            static_cast<int>(edge.filledCell.index()), side);
+        return result;
+      }
+    }
     edge.exterior = true;
     edge.unfilledSide = 0;
     SurfaceFrontEvent event;
@@ -15051,6 +15547,42 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     set_phase_front_failure(result.failure,
                             SurfacePhaseFrontFailureReason::InvalidInput);
     return result;
+  }
+  const bool hasTopologyPlan = options.globalTopologyPlan != nullptr;
+  const bool hasBaselinePlan = options.globalConformityBaselinePlan != nullptr;
+  if (hasTopologyPlan != hasBaselinePlan) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure,
+        SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+    return result;
+  }
+  if (hasTopologyPlan) {
+    const GlobalTopologyPlan &topology = *options.globalTopologyPlan;
+    const GlobalConformityBaselinePlan &baseline =
+        *options.globalConformityBaselinePlan;
+    if (baseline.topology_plan_digest() != topology.semantic_digest() ||
+        baseline.schedule().size() != topology.arcs().size()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+      return result;
+    }
+    for (const GlobalTopologyArc &arc : topology.arcs()) {
+      const ConformitySpanId span = ConformitySpanId::from_network_arc(arc.id);
+      const ConformityScheduleEntry *schedule = baseline.find_schedule(span);
+      if (schedule == nullptr || schedule->supportPieces != arc.sourcePath) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+    }
+    result.conformityPlanReceipt = SurfaceConformityPlanReceipt{
+        topology.semantic_digest(), baseline.semantic_digest(),
+        baseline.schedule().size()};
   }
 
   // All materializer-facing numeric routes share this single source-wide
@@ -15404,72 +15936,25 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   }
 
   // A hard feature separates producer charts, but it does not create an
-  // output boundary. Pair the two chart copies by exact source-simplex
-  // support and ordered rail topology; geometry is never a merge predicate.
+  // output boundary. A3 owns the shared subdivision: A4 pairs chart copies
+  // only by the accepted span/ordinal interval plus retained route topology.
+  // Floating source support remains representation geometry and is never a
+  // shared-boundary identity or fallback.
   struct HardRailPairKey {
     authority::SourceComponentId component;
-    std::vector<std::int64_t> firstEndpoint;
-    std::vector<std::int64_t> secondEndpoint;
+    authority::NetworkArcId span;
+    authority::FieldExactRational lowOrdinal;
+    authority::FieldExactRational highOrdinal;
     // CanonicalRoute::reversed() preserves canonical steps and flips only the
     // route's canonical orientation. Group chart copies by canonical route
     // content; orientation remains a per-edge invariant checked before
     // oppositeEdge is published.
     std::vector<authority::TransitionStep> routeSteps;
     bool operator<(const HardRailPairKey &other) const {
-      return std::tie(component, firstEndpoint, secondEndpoint, routeSteps) <
-             std::tie(other.component, other.firstEndpoint,
-                      other.secondEndpoint, other.routeSteps);
+      return std::tie(component, span, lowOrdinal, highOrdinal, routeSteps) <
+             std::tie(other.component, other.span, other.lowOrdinal,
+                      other.highOrdinal, other.routeSteps);
     }
-  };
-  const auto support_key = [&](const SurfaceTracePoint &point) {
-    std::vector<std::int64_t> key;
-    if (!trace_point_is_valid(point, faces)) return key;
-    constexpr double tolerance = 1.0e-9;
-    constexpr double scale = 1.0e12;
-    int vertexCorner = -1;
-    for (int corner = 0; corner < 3; ++corner) {
-      if (std::abs(point.barycentric[corner] - 1.0) <= tolerance) {
-        vertexCorner = corner;
-      }
-    }
-    if (vertexCorner >= 0) {
-      return std::vector<std::int64_t>{
-          0, faces(point.face, vertexCorner)};
-    }
-    int zeroCorner = -1;
-    for (int corner = 0; corner < 3; ++corner) {
-      if (std::abs(point.barycentric[corner]) <= tolerance) {
-        if (zeroCorner >= 0) return std::vector<std::int64_t>{};
-        zeroCorner = corner;
-      }
-    }
-    if (zeroCorner >= 0) {
-      const int firstCorner = (zeroCorner + 1) % 3;
-      const int secondCorner = (zeroCorner + 2) % 3;
-      const int firstVertex = faces(point.face, firstCorner);
-      const int secondVertex = faces(point.face, secondCorner);
-      const int low = std::min(firstVertex, secondVertex);
-      const int high = std::max(firstVertex, secondVertex);
-      const double highWeight = firstVertex == high
-                                    ? point.barycentric[firstCorner]
-                                    : point.barycentric[secondCorner];
-      return std::vector<std::int64_t>{
-          1, low, high, static_cast<std::int64_t>(std::llround(
-                            std::clamp(highWeight, 0.0, 1.0) * scale))};
-    }
-    std::array<std::pair<int, double>, 3> weightedVertices;
-    for (int corner = 0; corner < 3; ++corner) {
-      weightedVertices[static_cast<std::size_t>(corner)] =
-          {faces(point.face, corner), point.barycentric[corner]};
-    }
-    std::sort(weightedVertices.begin(), weightedVertices.end());
-    key.push_back(2);
-    for (const auto &[vertex, weight] : weightedVertices) {
-      key.push_back(vertex);
-      key.push_back(static_cast<std::int64_t>(
-          std::llround(std::clamp(weight, 0.0, 1.0) * scale)));
-    }
-    return key;
   };
 
   const auto region_for_id = [&](const authority::TopologyRegionId id)
@@ -15486,21 +15971,37 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     const SurfaceFrontEdge &edge =
         result.edges[static_cast<std::size_t>(edgeIndex)];
     if (edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail) continue;
-    std::vector<std::int64_t> from = support_key(edge.from);
-    std::vector<std::int64_t> to = support_key(edge.to);
     const SurfaceTopologyRegion *edgeRegion =
         region_for_id(edge.sourceTopologyRegion);
-    if (edge.oppositeEdge >= 0 || !edge.exterior || from.empty() || to.empty() ||
-        edgeRegion == nullptr || edge.route.empty()) {
+    if (edge.oppositeEdge >= 0 || !edge.exterior || edgeRegion == nullptr ||
+        edge.route.empty() || !edge.sharedBoundaryInterval.has_value()) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
           static_cast<int>(edge.filledCell.index()), edge.filledSide);
       return result;
     }
-    if (to < from) std::swap(from, to);
-    hardRailGroups[{edgeRegion->component(), std::move(from),
-                    std::move(to), edge.route.steps()}]
+    const SurfaceSharedBoundaryInterval &interval =
+        *edge.sharedBoundaryInterval;
+    const bool increasing = interval.firstOrdinal < interval.secondOrdinal;
+    const bool decreasing = interval.secondOrdinal < interval.firstOrdinal;
+    const authority::FieldExactRational one =
+        authority::FieldExactRational::from_integer(1);
+    if ((!increasing && !decreasing) ||
+        (increasing && interval.orientation != authority::Orientation::Forward) ||
+        (decreasing && interval.orientation != authority::Orientation::Reverse) ||
+        (increasing ? interval.secondOrdinal - interval.firstOrdinal
+                    : interval.firstOrdinal - interval.secondOrdinal) != one) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+          static_cast<int>(edge.filledCell.index()), edge.filledSide);
+      return result;
+    }
+    const auto low = increasing ? interval.firstOrdinal : interval.secondOrdinal;
+    const auto high = increasing ? interval.secondOrdinal : interval.firstOrdinal;
+    hardRailGroups[{edgeRegion->component(), interval.span, low, high,
+                    edge.route.steps()}]
         .push_back(edgeIndex);
   }
   std::set<int> pairedHardEdges;
@@ -15524,8 +16025,15 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     SurfaceFrontEdge &second =
         result.edges[static_cast<std::size_t>(pair[1])];
     if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
-        support_key(first.from) != support_key(second.to) ||
-        support_key(first.to) != support_key(second.from) ||
+        !first.sharedBoundaryInterval.has_value() ||
+        !second.sharedBoundaryInterval.has_value() ||
+        first.sharedBoundaryInterval->span != second.sharedBoundaryInterval->span ||
+        first.sharedBoundaryInterval->firstOrdinal !=
+            second.sharedBoundaryInterval->secondOrdinal ||
+        first.sharedBoundaryInterval->secondOrdinal !=
+            second.sharedBoundaryInterval->firstOrdinal ||
+        first.sharedBoundaryInterval->orientation ==
+            second.sharedBoundaryInterval->orientation ||
         first.route != second.route.reversed() ||
         (first.railId.has_value() && second.railId.has_value() &&
          first.railId != second.railId) ||

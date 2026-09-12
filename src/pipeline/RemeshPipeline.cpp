@@ -2029,6 +2029,14 @@ std::uint64_t hash_trace_network(
     }
     hash_combine_i64(seed, phaseFront->gridU());
     hash_combine_i64(seed, phaseFront->gridV());
+    hash_combine_i64(seed,
+                     phaseFront->conformityPlanReceipt().has_value() ? 1 : 0);
+    if (phaseFront->conformityPlanReceipt().has_value()) {
+      const auto &receipt = *phaseFront->conformityPlanReceipt();
+      hash_combine_u64(seed, receipt.topologyPlanDigest);
+      hash_combine_u64(seed, receipt.baselinePlanDigest);
+      hash_combine_u64(seed, receipt.scheduleEntryCount);
+    }
     hash_combine_u64(
         seed, phaseFront->isolationSeamTransportCertificates().size());
     for (const auto &certificate :
@@ -2122,6 +2130,16 @@ std::uint64_t hash_trace_network(
         hash_semantic_id(seed, edge.periodicRelation.value());
       }
       hash_optional_semantic_id(seed, edge.railId);
+      hash_combine_i64(seed, edge.sharedBoundaryInterval.has_value() ? 1 : 0);
+      if (edge.sharedBoundaryInterval.has_value()) {
+        const auto &interval = *edge.sharedBoundaryInterval;
+        hash_semantic_id(seed, interval.span);
+        hash_combine_string(seed, interval.firstOrdinal.numerator_string());
+        hash_combine_string(seed, interval.firstOrdinal.denominator_string());
+        hash_combine_string(seed, interval.secondOrdinal.numerator_string());
+        hash_combine_string(seed, interval.secondOrdinal.denominator_string());
+        hash_combine_i64(seed, static_cast<int>(interval.orientation));
+      }
       hash_canonical_route(seed, edge.route);
     }
     hash_combine_u64(seed, phaseFront->events().size());
@@ -7720,6 +7738,10 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             globalConformityBaselineProduct->schedule().size() +
                 globalConformityBaselineProduct->incidences().size()),
         true);
+
+    tracingOptions.globalTopologyPlan = &*globalTopologyPlanProduct;
+    tracingOptions.globalConformityBaselinePlan =
+        &*globalConformityBaselineProduct;
 
     if (targetSize.targetSize.size() > 0) {
       tracingOptions.defaultTargetSize = targetSize.targetSize.mean();
