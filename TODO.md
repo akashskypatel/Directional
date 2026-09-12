@@ -28,15 +28,17 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-CB4-R4` (one-name packaged-test contract correction + compile/package)
+## Current focus — `M4-CP3-TB2-R2-EXEC` (artifact-only corrected row400 acceptance gate)
 
-`M4-CP3-CB4-R3-REV` is **COMPLETE / RUNTIME-FREE / `approved_with_amendments`**. Review independently upheld the R3 A2b terminal-contact basis correction and replacement row400 (`[3,0,4]` raw vs `[0,3,4]` canonical; correct `1/3` vs wrong positional `2/3`). R3 selector403 remains 403 rows at `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`, accepted first394 remains byte-identical, static ownership re-derives as **30 / 257 / 75 / 41**, and row400 is uniquely producer-owned.
+`M4-CP3-CB4-R4` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. The one authorized build-contract correction replaced only the stale mandatory packaged-test identity in `cmake/DirectionalTests.cmake`; no product, test/fixture or selector semantic changed. Exact built evidence source is `58521f6d1c4fb5d625da7cde50e002cf4688beee`.
 
-The R3 configure stop is independently classified as `M4-CP3-CB4-R3-REV-CAND-01`: **BUILD-CONTRACT / MANDATORY PACKAGED-TEST IDENTITY DRIFT / NON-STABLE / SOURCE-PROVED**. `cmake/DirectionalTests.cmake` still requires the retired row400 name, which now has zero source definitions; the replacement identity exists exactly once in the same packaged producer source. This is existing `LESSONS.md` 49, not a reason to revert or weaken the new test.
+Changed-owner preflight `34665764441 / 103477222022` compiled `directional_surface_cell_producer_tests` green. Full package run `34665925501 / 103477693366` compiled all eight frozen targets green with GMP/GMPXX, clean exact source and `runtimeExecution=false`. Candidate package artifact `10289601000` has provider/ZIP SHA-256 `ef8c0d87f8dc8ed48269f833ec946f52189f7df63bcdf4c5df6c113f098992b9`; its 28-entry self-excluding manifest verifies completely. No test, benchmark, GTest discovery/listing, `ctest` or produced Directional binary executed in R4.
 
-**Exact next:** `M4-CP3-CB4-R4` under `.agents/Directional/Architecture_M4_CP3_CB4_R4_Code_Build_Plan.md`. It may replace only that one CMake identity string, then compile changed-owner preflight and the full selector-owner package through GitHub Actions with GMP/GMPXX and `runtimeExecution=false`. Product/test/selector semantics are frozen. Any second dependency is a STOP-GUARD back to Review.
+Selector authority is unchanged: accepted selector394 is 394 rows at `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; successor selector403 is 403 rows at `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`; first394 remains byte-identical and owner partition remains **30 / 257 / 75 / 41**. Package119/selector394 remains accepted runtime authority; the corrected R4 package is candidate-only until Review.
 
-Package119/selector394 remains accepted **394/394**. Package120/historical old selector403 and R3 selector403 remain unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open; A3->A4 cutover remains unauthorized. Future green-package validation remains exactly **799** fresh processes followed by Review.
+**Exact next:** artifact-only `M4-CP3-TB2-R2-EXEC` under `.agents/Directional/Architecture_M4_CP3_TB2_R2_Test_Benchmark_Plan.md`. Execute exactly **799 fresh processes** against immutable artifact `10289601000`: replacement row400 twice (`1 + 1`), accepted selector394 (`394`), successor selector403 (`403`). Green EXEC must be followed by `M4-CP3-TB2-R2-REV` before any package/selector promotion.
+
+Stable accounting remains **47 / 14 / 33**, debt **5**, CP3 open; A3→A4 cutover remains unauthorized.
 
 ## Carried forward from M1
 
@@ -75,7 +77,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / PACKAGE120 OLD SELECTOR403 UNPROMOTED / R3 SEMANTIC CORRECTION UPHELD / R4 NEXT**. R3 Review upheld the source-proved A2b terminal-contact basis correction and isolated configure RED to one stale mandatory packaged-test identity. Exact next `M4-CP3-CB4-R4`, one-name CMake contract correction + compile/package only; A3→A4 cutover remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / PACKAGE119 SELECTOR394 ACCEPTED / CORRECTED R4 PACKAGE COMPILE-GREEN / TB2-R2-EXEC NEXT**. R4 repaired only the stale mandatory packaged-test identity and compiled/package-verified the reviewed R3 semantic correction at evidence source `58521f6d1c4fb5d625da7cde50e002cf4688beee`, with no runtime. Exact next is artifact-only `M4-CP3-TB2-R2-EXEC` (799 fresh processes), then Review; A3→A4 remains deferred. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -115,4 +117,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **119**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package119/selector394 **394/394** is accepted §17 baseline runtime authority. Package120/historical old selector403 remains mechanically **403/403** but unpromoted; R3 selector403 is static candidate authority only. `M4-CP3-CB4-R3-REV` is complete and exact next is **`M4-CP3-CB4-R4`** under the one-name packaged-test contract correction plan. CP3 remains open; A3->A4 remains unauthorized. PR #8 remains open, draft, and unmerged.
+Current totals are **47 events / 14 categories / 33 recurrences**, debt **5**, accepted package authority **119**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; package119/selector394 **394/394** is accepted §17 baseline runtime authority. The corrected R4 package at artifact `10289601000` is compile/package-green but unpromoted; successor selector403 remains candidate authority only. `M4-CP3-CB4-R4` is complete and exact next is **`M4-CP3-TB2-R2-EXEC`** under the frozen 799-process artifact-only plan, followed by Review. CP3 remains open; A3->A4 remains unauthorized. PR #8 remains open, draft, and unmerged.
