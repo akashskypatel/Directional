@@ -5069,6 +5069,24 @@ directional::pipeline::RemeshOptions cp4c_remesh_options() {
   return options;
 }
 
+directional::pipeline::RemeshOptions cp4c_torus_hard_rail_remesh_options() {
+  directional::pipeline::RemeshOptions options = cp4c_remesh_options();
+  const std::array<int, 7> minorCycle{{0, 3, 25, 37, 49, 61, 0}};
+  const std::array<int, 13> majorCycle{
+      {0, 1, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 0}};
+  const auto addCycle = [&options](const auto &cycle) {
+    for (std::size_t i = 1U; i < cycle.size(); ++i) {
+      const int a = cycle[i - 1U];
+      const int b = cycle[i];
+      options.surfaceCells.featureMap.userHardEdges.insert(
+          {std::min(a, b), std::max(a, b)});
+    }
+  };
+  addCycle(minorCycle);
+  addCycle(majorCycle);
+  return options;
+}
+
 void append_cp4c_terminal_event_report(
     std::ostringstream &report, const FieldAlignedCurveNetwork &network) {
   std::size_t terminalIntersectionCount = 0U;
@@ -7401,7 +7419,8 @@ void append_trace_segment_contract_observation(
 }
 
 Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
-    const std::string &fixtureStem, const std::string &fixtureName) {
+    const std::string &fixtureStem, const std::string &fixtureName,
+    directional::pipeline::RemeshOptions options = cp4c_remesh_options()) {
   Cp4cProductionFixture fixture;
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/" + fixtureStem + ".obj");
@@ -7420,7 +7439,7 @@ Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
   }
 
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
-      fixture.mesh.V, fixture.mesh.F, raw, cp4c_remesh_options());
+      fixture.mesh.V, fixture.mesh.F, raw, options);
   const auto &products = result.surfaceCellContext.productSnapshots;
   fixture.rails = products.authoritativeRails;
   fixture.authoritativeRailsSnapshotAvailable = products.hasAuthoritativeRails;
@@ -15132,8 +15151,18 @@ TEST(RemeshPipeline,
 
 TEST(RemeshPipeline,
      ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity) {
-  const Cp4cProductionFixture fixture =
-      build_cp4c_pipeline_products_fixture("torus", "torus");
+  const Cp4cProductionFixture fixture = build_cp4c_pipeline_products_fixture(
+      "torus", "torus", cp4c_torus_hard_rail_remesh_options());
+  ASSERT_TRUE(fixture.authoritativeRailsSnapshotAvailable);
+  ASSERT_FALSE(fixture.rails.empty());
+  const std::size_t hardFeatureRailCount = static_cast<std::size_t>(
+      std::count_if(fixture.rails.begin(), fixture.rails.end(),
+                    [](const SurfaceCellRail &rail) {
+                      return rail.kind == SurfaceCellRailKind::HardFeature;
+                    }));
+  ASSERT_GT(hardFeatureRailCount, 0U);
+  ASSERT_TRUE(fixture.sourceAuthority.has_value()) << fixture.terminalFailureCode;
+  ASSERT_TRUE(fixture.network.has_value()) << fixture.terminalFailureCode;
   ASSERT_TRUE(fixture.plan.has_value()) << fixture.terminalFailureCode;
   ASSERT_TRUE(fixture.baseline.has_value()) << fixture.terminalFailureCode << '/'
                                             << fixture.terminalFailureStage;
