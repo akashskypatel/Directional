@@ -1089,7 +1089,29 @@ vertex_trace_ray_second_point(
   }
   if (trace.terminalContact.has_value() &&
       trace.terminalContact->sourceFace == face.topology) {
-    return trace.terminalContact->barycentric;
+    const auto canonicalVertices = trace.terminalContact->sourceFace.vertices();
+    auto orientedBarycentric = trace.terminalContact->barycentric;
+    std::array<bool, 3> assigned{false, false, false};
+    for (std::size_t canonicalCorner = 0U; canonicalCorner < 3U;
+         ++canonicalCorner) {
+      bool mapped = false;
+      for (std::size_t orientedCorner = 0U; orientedCorner < 3U;
+           ++orientedCorner) {
+        if (face.vertices[orientedCorner] != canonicalVertices[canonicalCorner])
+          continue;
+        if (assigned[orientedCorner]) return std::nullopt;
+        orientedBarycentric[orientedCorner] =
+            trace.terminalContact->barycentric[canonicalCorner];
+        assigned[orientedCorner] = true;
+        mapped = true;
+        break;
+      }
+      if (!mapped) return std::nullopt;
+    }
+    for (const bool wasAssigned : assigned) {
+      if (!wasAssigned) return std::nullopt;
+    }
+    return orientedBarycentric;
   }
   if (trace.terminalPoint.has_value()) {
     const auto terminal =

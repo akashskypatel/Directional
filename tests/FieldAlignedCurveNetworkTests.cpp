@@ -3135,24 +3135,74 @@ TEST(GlobalTopologyPlan,
   expectRejected(std::move(subintervalTamper), "split subinterval");
 }
 
-TEST(ExactSourcePath,
-     FaceBarycentricCoordinatesUseCanonicalTopologyKeyOrderNotSourceRowOrder) {
-  const auto face = topology_face(0, 1, 2, 3U);
-  const std::array<int, 3> sourceRow{2, 0, 1};
-  ASSERT_NE(sourceRow[0], static_cast<int>(face.vertices()[0].index()));
-  const std::array<directional::authority::FieldExactRational, 3> barycentric{
-      *directional::authority::FieldExactRational::from_ratio(1, 2),
-      *directional::authority::FieldExactRational::from_ratio(1, 3),
-      *directional::authority::FieldExactRational::from_ratio(1, 6)};
-  const auto point = directional::authority::canonical_exact_source_face_point(
-      face, barycentric);
-  ASSERT_TRUE(point.has_value());
-  const auto *facePoint =
-      std::get_if<directional::authority::ExactSourceFacePoint>(&*point);
-  ASSERT_NE(nullptr, facePoint);
-  EXPECT_EQ(face, facePoint->face);
-  EXPECT_EQ(barycentric, facePoint->barycentric);
-  EXPECT_TRUE(directional::authority::exact_source_point_is_canonical(*point));
+TEST(EmbeddedGraphTopology,
+     TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking) {
+  using directional::authority::FieldBranch;
+  using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedTerminalContact;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+
+  const TriMesh mesh = make_four_triangle_fan();
+  ASSERT_EQ(3, mesh.F(3, 0));
+  ASSERT_EQ(0, mesh.F(3, 1));
+  ASSERT_EQ(4, mesh.F(3, 2));
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto topology = embedded::build_source_index(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+
+  const SourceVertexId locus = SourceVertexId::from_index(4, 5).value();
+  const SourceFaceTopologyKey face = topology_face(0, 3, 4, 5U);
+  ASSERT_EQ(SourceVertexId::from_index(0, 5).value(), face.vertices()[0]);
+  ASSERT_EQ(SourceVertexId::from_index(3, 5).value(), face.vertices()[1]);
+  ASSERT_EQ(SourceVertexId::from_index(4, 5).value(), face.vertices()[2]);
+
+  const std::array<directional::authority::FieldExactRational, 3>
+      canonicalWeights{exact_ratio(1, 6), exact_ratio(1, 3),
+                       exact_ratio(1, 2)};
+  const auto expectedRawOrientedParameter = exact_ratio(1, 3);
+  const auto wrongDirectPositionalParameter = exact_ratio(2, 3);
+  ASSERT_NE(expectedRawOrientedParameter, wrongDirectPositionalParameter);
+
+  const auto component = SourceComponentId::from_index(0, 1).value();
+  const auto region = TopologyRegionId::from_index(0, 1).value();
+  const auto singularity = FieldSingularityId::from_index(0, 1).value();
+  const auto port = SingularityPortId::from_index(0, 1).value();
+  const auto branch = FieldBranch::from_integer(0);
+  const auto entryAtLocus = boundary_point(topology_edge(0, 4, 5U), 1, 1);
+  const auto opposite = topology_edge(0, 3, 5U);
+
+  const TraceId traceId = TraceId::from_index(0U, 2U).value();
+  const TraceId contactedTraceId = TraceId::from_index(1U, 2U).value();
+  FieldAlignedCandidateTrace trace(traceId, port, singularity, locus, component,
+                                   region);
+  trace.segments.emplace_back(face, branch, entryAtLocus, std::nullopt,
+                              opposite, std::nullopt);
+  trace.terminalContact = FieldAlignedTerminalContact{
+      face, canonicalWeights, contactedTraceId, 0U};
+
+  const GlobalTopologyArc arc{
+      NetworkArcId::from_index(0U, 1U).value(),
+      GlobalTopologyArcKind::Trace, NetworkNodeId::from_index(0U, 2U).value(),
+      NetworkNodeId::from_index(1U, 2U).value(), std::nullopt, traceId,
+      std::nullopt, 0U, 1U, {face}};
+  const auto parameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, arc, Orientation::Forward, trace);
+  ASSERT_TRUE(parameter.has_value());
+
+  // The contact tuple is canonical [v0,v3,v4] = [1/6,1/3,1/2], while
+  // source row 3 is oriented [v3,v0,v4].  The vertex-4 ray therefore has
+  // exact opposite-edge parameter w(v0)/(w(v3)+w(v0)) = 1/3.  Treating the
+  // canonical tuple as if it were raw-row ordered would instead produce 2/3.
+  EXPECT_EQ(expectedRawOrientedParameter, *parameter);
+  EXPECT_NE(wrongDirectPositionalParameter, *parameter);
 }
 
 TEST(SurfaceCutGraph, CutCrossingNodeRotationIsDerivedAtDegreeFour) {
