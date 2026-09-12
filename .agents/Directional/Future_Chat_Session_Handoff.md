@@ -69,7 +69,7 @@ Future artifact-only gate, if CB4-R3 packages successfully: replacement row400 t
 - first documentation-apply run `34660476095`: failed closed on `git diff --check` trailing whitespace before commit/push; no repository source mutation
 - corrected documentation-apply run/commit: `34660555840 / fefca4c6498a4d147f2af966475fd9356c81c4dc` — success
 - turn cleanup run/head: `34660615718 / 566b813a435e8d0fb604538445b7f73ee04aa242` — success
-- final review-record closeout commit: `73f53e84f3963671e78ca88abb3797fd47315179`; branch head verified through PR #8 before final metadata update
+- final closeout metadata commits after cleanup are documentation-only; branch authority is the latest PR #8 head
 - temporary review caller, review marker and cleanup manifest retired; `.agents/connector-triggers` returned to the durable `source-snapshot` namespace only
 - consumed Google Drive review patch permanently deleted after successful application
 - `runtimeExecution=false`; no compile, test, benchmark or Directional runtime occurred in Review
