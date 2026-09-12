@@ -1,0 +1,32 @@
+name: Agent M4 CP3 CB9 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-cb9-drive-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-cb9-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1YxCf-R7sH2dQ_AlmVTSB62aYW-TblaOn
+      patch_sha256: c0c87dcbb2d0b5b52e3ba18c27384b9c21c0effd1b68c712fc60d4c6a65bae26
+      base_sha: f8005cca5d93a504dfe403370b9747170d532b35
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "fix: restore bounded-disk applicability after cut-domain recovery"
+    secrets: inherit
