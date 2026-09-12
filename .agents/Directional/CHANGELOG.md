@@ -6,6 +6,25 @@ The complete `SurfaceCellTransitionQuotientTests.cpp` is byte-identical across a
 
 Ordinal211 was accepted selector403 PASS and is now RED, so this is one stable event in existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`: totals advance to **49 / 14 / 35**, debt **5**. Five later shared-fixture identities are static at-risk only, not claimed runtime REDs. Exact successor is test-only/runtime-free `M4-CP3-CB10`: migrate the shared fixture to production A2b/A3 authority, preserve all downstream identity bodies/names and selector lists, compile/package the eight CP3 targets with GMP/GMPXX, and author TB8. Corrected R4 remains accepted runtime authority; CP3/`G4-B002` remain open.
 
+**Verification amendment (reviewing agent, review record §11).** The review is upheld: rejecting the candidate is
+correct, §5's causal split is sound and carefully limited (CB5 introduced the precondition drift; CB9 merely
+advanced far enough to expose it), and the blast-radius census is the strongest part of the turn. That census was
+independently enumerated and is **exact** — precisely six identities consume `hard_rail_fixture()`, all in
+`tests/SurfaceCellTransitionQuotientTests.cpp`, matching §7's list with none missing or invented — and its hedging
+is right, since five are called static at-risk consumers rather than claimed failures. The accounting applies the
+durable criterion recorded at `M4-CP3-TB6-REV` exactly as intended, including two easy-to-miss points: a
+test-authority root cause still produces an event, because the criterion turns on an accepted ordinal going
+PASS → RED rather than on fault; and `TB6-REV-CAND-01` closes **STABLE EVENT RETAINED**, since recovery does not
+erase a historical event. Events **48 → 49**, categories hold at **14** on existing
+`RP-02 / TEST_AUTHORITY_COVERAGE_GAP`, recurrences **34 → 35**, debt **5**. **One structural requirement added and
+carried into the CB10 plan:** TB8 must execute accepted selector403 **to completion, without fail-fast**, publishing
+the full set of accepted ordinals that go RED rather than the first casualty. Fail-fast is what has made this a
+one-defect-per-cycle loop — TB3-TB5 each stopped at row408 before reaching ordinal211, TB6 stopped earlier at
+ordinal138, five cycles for five blockers at a full Code + Build plus execution round trip each — and the
+six-consumer census bounds the `hard_rail_fixture()` vector but not the risk class, which is accepted identities
+whose preconditions depend on applicability or disposition behaviour the cutover changed. Fail-fast may be retained
+for candidate rows 404-408 where first-failure attribution still matters.
+
 ## 2026-09-12 — `M4-CP3-TB7-EXEC`: CB9 restores ordinal138 and preserves row408; cumulative selector403 RED at ordinal211
 
 Artifact-only run/job `34721325716 / 103627645766` consumed immutable CB9 package `10305678151` from semantic source `47ae78e1e46e7d2dcc230fc617291ca45f2e418e`. Preflight preserved exact package/source/selector authority. Ordinal138 PASSed **2/2**, row408 PASSed **2/2**, and rows404-407 PASSed **8/8**, so the frozen CB9 focused discriminator set is mechanically **12/12 PASS**. Selector403 then PASSed ordinals1-210 and REDed at ordinal211 `SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected`; the test body threw `internal-midline hard-rail rectangle producer failed: InvalidHardRailPairing`. Frozen fail-fast stopped at **223 processes = 222 PASS / 1 RED**, with zero SKIP/crash/timeout/selection mismatch; remaining selector403 and selector408 cumulative phases were not reached.

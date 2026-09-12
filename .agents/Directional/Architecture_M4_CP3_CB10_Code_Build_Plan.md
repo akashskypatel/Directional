@@ -134,3 +134,18 @@ CB10 is complete only if:
 - mandatory eight-target GMP package is compile-green and runtime-free;
 - a complete TB8 artifact-only plan is committed;
 - no temporary workflow/trigger/Drive staging state remains after closeout.
+
+## Amendment — TB8 execution mode (TB7-REV §11 V3, reviewing agent)
+
+The successor artifact-only turn must execute accepted **selector403 to completion, without fail-fast**, and publish
+the complete set of accepted ordinals that go RED under the candidate.
+
+Rationale: fail-fast is what has turned this into a one-defect-per-cycle loop. TB3-TB5 each stopped at row408 before
+cumulative selector403 could reach ordinal211, and TB6 stopped earlier still at ordinal138 — five TB cycles, one
+blocker each, one full Code + Build plus execution round trip each. The six-consumer census bounds the
+`hard_rail_fixture()` vector but not the risk class, which is *accepted identities whose preconditions depend on
+applicability or disposition behaviour the A3→A4 cutover changed*.
+
+Fail-fast may be retained for candidate rows 404-408, where clean first-failure attribution is still worth more than
+completeness. It is specifically the accepted prefix where completeness is now worth more than early exit.
+

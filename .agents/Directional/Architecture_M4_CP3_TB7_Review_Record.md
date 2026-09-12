@@ -141,3 +141,68 @@ CB10 is **test-authority-only, runtime-free Code + Build**. It must follow `Arch
 The correction is bounded to migrating `make_hard_rail_fixture()` onto accepted production A2b/A3 authority while preserving its mesh, intended hard-rail support and all downstream test identities/assertions. Product source, A2b/A3 writers, hard-rail missing-interval rejection, CB8 occurrence-domain behavior, CB9 applicability behavior, rows404-408 and selector identity lists are frozen.
 
 A product fallback, `support_key` restoration, or weakening of missing A3 interval rejection is an immediate STOP back to Review.
+
+---
+
+## 11. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld**: rejecting the candidate is correct, the causal split is sound, the
+accounting is right, and the blast-radius analysis is the best part of the turn. Accepted authority remains the
+corrected R4 package / selector403 **403/403**. One structural addition below.
+
+### V1 — the blast-radius census is exact
+
+Independently enumerated. Exactly **six** test identities consume `hard_rail_fixture()`, all in
+`tests/SurfaceCellTransitionQuotientTests.cpp`, and they are precisely the six §7 names —
+`ExactHardRailCounterpartsStitchAcrossTopologyRegions`, `MissingHardRailCounterpartIsRejected`,
+`AmbiguousHardRailCounterpartIsRejected`, `ValidHardRailRouteUsesTypedIdentity`,
+`RouteTopologyTransitionMismatchFailsClosed`, `DuplicateSemanticRouteTopologyFailsClosed`. No consumer is
+missing from the list and none is invented.
+
+The hedging is also right: five are called **static at-risk consumers, not claimed runtime failures**. Sharing a
+fixture is not the same as sharing the failing precondition, and the review does not pretend otherwise.
+
+### V2 — the accounting is correctly applied
+
+The durable criterion recorded at `M4-CP3-TB6-REV` is applied here exactly as intended, including two points it
+would have been easy to get wrong:
+
+- a **test-authority** root cause still produces an event — the criterion turns on an accepted ordinal going
+  PASS → RED, not on who is at fault, and the category records the difference;
+- `TB6-REV-CAND-01` is closed **STABLE EVENT RETAINED** — recovery does not erase a historical event.
+
+Events **48 → 49**, categories hold at **14** on existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`, recurrences
+**34 → 35**, debt **5**. Consistent with how DA6 handled category and recurrence.
+
+### V3 — REQUIRED: TB8 must run the accepted prefix without fail-fast
+
+§7 requires TB8 to execute the five at-risk identities explicitly. That is necessary but not sufficient, and the
+gap is structural rather than technical.
+
+**Fail-fast is what has made this a one-defect-per-cycle discovery loop.** §7 states the mechanism plainly:
+TB3-TB5 each stopped at row408 before cumulative selector403 could reach ordinal211, and TB6 stopped earlier
+still at ordinal138. Five TB cycles have now each surfaced exactly one blocker, and each cost a full
+Code + Build plus artifact-only execution round trip. The serial cost is not incidental — it is a direct
+consequence of halting at the first RED inside a prefix that is known to contain latent incompatibilities.
+
+**The six-consumer census bounds one vector, not the surface.** The real risk class is *accepted identities
+whose preconditions depend on applicability or disposition behaviour the A3→A4 cutover changed*. Sharing
+`hard_rail_fixture()` is one way to be in that class; it is not the only way, and no static analysis offered so
+far excludes identities outside that fixture.
+
+**Requirement.** TB8 must execute accepted selector403 **to completion, without fail-fast**, and publish the
+complete set of accepted ordinals that go RED under the candidate — a single census rather than a first
+casualty. Fail-fast may be retained for the candidate rows 404-408, where clean first-failure attribution is
+still worth more than completeness; it is specifically the accepted prefix where the reverse is now true.
+
+One run enumerates everything the cutover broke. Five more cycles enumerate five more things, one at a time,
+and still do not bound what remains. If the full census comes back with only the named consumers, that is a
+strong positive result worth having before CP3 closure; if it returns more, they were going to be found anyway,
+one expensive round trip each.
+
+### V4 — technical findings sound
+
+§5's causal split is correct and carefully limited: CB5 introduced the precondition drift and CB9 merely
+advanced far enough to expose it, so this is not a CB9 product regression. §10's stop rule is the right one — a
+product fallback, `support_key` restoration, or weakening of missing-A3-interval rejection returns immediately
+to Review rather than being absorbed into a test-authority turn.
