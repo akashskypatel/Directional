@@ -1,0 +1,6 @@
+Purpose: trigger artifact-only M4-CP3-TB2-R2-EXEC against immutable R4 package.
+Caller install: 87a6739b92926b7ae5447c841b1f45e979c1b192
+Evidence source: 58521f6d1c4fb5d625da7cde50e002cf4688beee
+Artifact: 10289601000
+Expected fresh processes: 799
+Compile/relink/package repair: forbidden
