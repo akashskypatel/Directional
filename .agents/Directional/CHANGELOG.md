@@ -6,6 +6,28 @@ The review nevertheless found a real raw/canonical basis mismatch in A2b rotatio
 
 `M4-CP3-TB2-REV-CAND-01` remains valid as a test-authority finding, but its correction owner is replaced: old row400 must become a regression for the actual A2b consumer seam rather than a fictitious producer remap. Package119/selector394 remains accepted **394/394**; package120/historical old selector403 remains mechanically **403/403** but unpromoted; stable accounting remains **47 / 14 / 33**, debt **5**. Exact next is `M4-CP3-CB4-R3`: one terminal-contact basis remap, replacement row400, a new 403-row successor selector with accepted first394 byte-identical, then compile/package only. Future artifact-only acceptance is **799** fresh processes followed by review. No compile or Directional runtime occurred in this review.
 
+**Verification amendment (reviewing agent, review record §9).** The review is upheld, including its rejection of a
+plan this reviewing agent's own guidance helped misdirect. Both load-bearing claims of the STOP-GUARD were
+re-derived at their definitions: `SourceFaceTopologyKey::make` sorts its vertex IDs
+(`src/authority/AuthorityKernel.cpp:32`), and `field_boundary_point_barycentric` writes components **at canonical
+positions** inside `sourceFace.vertices()` (`src/geometry/SurfaceCellTracing.cpp:261-262`). Face-interior
+barycentric tuples are therefore built directly in canonical order — canonicalization happens by placement at
+write time, not by a later permutation — so no raw-row face-interior tuple exists for CB4-R2 to remap.
+**The `M4-CP3-TB2-REV` §9 V2 second constraint is withdrawn:** requiring the recovery to compare against "the
+barycentric triple reordered from source-row order into canonical key order" presupposed a remap the producer does
+not perform, and that is what aimed CB4-R2 at a nonexistent seam. The first constraint stands — the corrective
+identity must go RED when canonicalization is replaced by the identity function, and may not lean on the
+order-blind `exact_source_point_is_canonical`. The correction also sharpens the original diagnosis: row400 was
+aimed at a function that does no reordering at all, which is why replacing its subject rather than patching its
+fixture is correct. The replacement finding was verified independently — `make_four_triangle_fan()` row 3 is
+`3, 0, 4` with key `[0,3,4]`, and for locus vertex 4 the raw `next`/`previous` indices 0 and 1 applied to the
+canonical array `[1/6, 1/3, 1/2]` exchange vertices 0 and 3 — and its classification (**PRODUCT / NON-STABLE /
+SOURCE-PROVED, RUNTIME-UNPROVED**) is calibrated correctly. All three prior obligations are named by id with a
+disposition, full compliance with `REVIEW_TURN_POLICY.md` §2.5. One flaw in that policy, introduced by this
+reviewer, is fixed: the closeout's push row asked for a commit hash that cannot be written truthfully inside the
+commit containing it, and now asks for the `git status -sb` confirmation action instead. Accounting unchanged at
+**47 / 14 / 33**, debt **5**; accepted authority package119 / selector394 **394/394**.
+
 ## 2026-09-11 — `M4-CP3-CB4-R2`: row400 recovery stops at mandatory derivation guard
 
 `M4-CP3-CB4-R2` is **HALTED / STOP-GUARD / PRE-MUTATION / NO COMPILE / NO RUNTIME**. Exact source inspection proves that noncanonical source rows exist — prescribed-sphere zero-based face row 3 is `[1,5,2]` while `SourceFaceTopologyKey::make` canonicalizes to `[1,2,5]` — and proves A2a/A2b publishes contact coordinates in canonical topology-key order. `field_boundary_point_barycentric` indexes by canonical face vertices, exact contact intersection stays in those coordinates, and A2b copies `terminalContact->barycentric` directly into `canonical_exact_source_face_point`.

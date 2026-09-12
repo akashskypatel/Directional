@@ -119,6 +119,71 @@ A3->A4 cutover remains unauthorized until this corrected package is runtime-prov
 
 Publication note: first documentation-apply run `34660476095` failed closed at `git diff --check` on Markdown trailing whitespace before any commit/push; the documentation bytes were corrected and the retry used a newly verified patch digest. Corrected documentation apply `34660555840` succeeded and pushed `fefca4c6498a4d147f2af966475fd9356c81c4dc`; cleanup `34660615718` succeeded and produced cleanup head `566b813a435e8d0fb604538445b7f73ee04aa242`. The consumed Drive patch was permanently deleted and temporary caller/marker state was retired. No repository semantic source changed in either publication attempt.
 
+## 9. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld**, including its rejection of a plan this reviewing agent's own
+prior guidance helped misdirect. Accepted authority remains package119 / selector394 **394/394**;
+accounting stays **47 / 14 / 33**, debt **5**.
+
+### V1 — the STOP-GUARD is correct, re-derived from source
+
+Both load-bearing claims were checked at their definitions rather than accepted:
+
+- `SourceFaceTopologyKey::make` sorts its three vertex IDs (`src/authority/AuthorityKernel.cpp:32`), so a
+  raw mesh row order can legitimately differ from topology-key order.
+- `field_boundary_point_barycentric` takes `sourceFace.vertices()` — the sorted key array — locates the
+  edge endpoints within it, and writes components **at those canonical positions**
+  (`src/geometry/SurfaceCellTracing.cpp:261-262`).
+
+So face-interior barycentric tuples are built directly in canonical order. Canonicalization happens by
+**placement at write time**, not by a later permutation of a raw-row tuple, and there is no
+raw-row-attached face-interior tuple for CB4-R2 to remap. Refusing to manufacture a producer mapping to
+satisfy a test was the right call.
+
+### V2 — correcting this reviewer's TB2 guidance
+
+The `M4-CP3-TB2-REV` addendum §9 V2 gave the row400 recovery two constraints. The second was wrong: it
+required the corrective identity to "compare against an independently computed expected permutation — the
+barycentric triple reordered from source-row order into canonical key order." That presupposes a
+raw-row → canonical remap step, which §V1 shows the producer does not perform for face-interior points.
+That constraint is what pointed CB4-R2 at a nonexistent seam, and it is withdrawn.
+
+The first constraint stands unchanged: the corrective identity must go RED when canonicalization is
+replaced by the identity function, and may not lean on `exact_source_point_is_canonical`, which tests only
+positivity and unit sum and is order-blind by construction.
+
+The correction also sharpens the original diagnosis. Row400's problem was not only that its `sourceRow`
+was detached — it was aimed at `canonical_exact_source_face_point`, a function that does no reordering at
+all. The ordering discipline it claimed to test lives at the A2a write site. An identity pointed at the
+wrong function cannot be repaired by improving its fixture, which is precisely why replacing the subject,
+rather than patching row400 in place, is the correct disposition.
+
+### V3 — the replacement finding is real and its falsifier checks out
+
+`make_four_triangle_fan()` row 3 is `3, 0, 4` (`tests/FieldAlignedCurveNetworkTests.cpp:95-98`, mirrored
+at `tests/FieldTransportAtlasTests.cpp:122-125`), whose `SourceFaceTopologyKey` sorts to `[0,3,4]`. With
+vertex 0 → 1/6, 3 → 1/3, 4 → 1/2, the canonical array is `[1/6, 1/3, 1/2]` while raw corner order gives
+`[1/3, 1/6, 1/2]`. For locus vertex 4, raw `next` and `previous` resolve to raw indices 0 and 1; applying
+those to a canonical-ordered array reads `1/6` and `1/3`, attributing vertex 0's component to vertex 3 and
+vertex 3's to vertex 0. The two vertices are exchanged, and the arithmetic is exact, so the mismatch is
+demonstrable rather than probabilistic.
+
+The classification is calibrated correctly: **PRODUCT ... NON-STABLE / SOURCE-PROVED, RUNTIME-UNPROVED**.
+A defect established by reading is a hypothesis until an identity exhibits it, and saying so keeps the
+published falsifier — not the reading — as what CB4-R3 must satisfy.
+
+### V4 — obligations and closeout
+
+All three outstanding obligations are named by id with a disposition: `TB2-REV-CAND-01` carried to CB4-R3
+with its subject replaced, `TB1-R1-REV-OBS-01` carried, `CB4-REV-OBS-02` carried. That is full compliance
+with `REVIEW_TURN_POLICY.md` §2.5 and closes the gap left by the previous turn, where an obligation issued
+into a since-consolidated plan went unnamed.
+
+One flaw in that policy surfaced here and is this reviewer's to fix. The closeout's "Pushed to origin,
+branch in sync" row asks for a commit hash, which cannot be written truthfully inside the document being
+committed; the record worked around it in prose across several corrective commits. §5 of the policy is
+amended to ask for the confirmation action rather than a self-referential identifier.
+
 ## Review closeout
 
 | Duty | Answer |

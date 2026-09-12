@@ -86,6 +86,8 @@ turn resolves something you or a predecessor flagged, edit that bullet — do no
 4. **Run `python3 .agents/Directional/tools/review_check.py boundary`** and record the result.
 5. **Commit and push to `origin` on the working branch**, then verify with `git status -sb` that the branch
    is in sync. Pushing a different ref can exit 0 while landing nothing (`LESSONS.md` mechanics 79).
+   Record this as the confirmation action, not as a commit hash: a record cannot name the commit that
+   contains it, and attempts to do so produce corrective churn rather than evidence.
 
 ## 5. Mandatory closeout block
 
@@ -114,7 +116,7 @@ incomplete regardless of how sound its adjudication is.
 | Successor frozen | <exactly one turn + where its falsifiers are stated> |
 | Turn boundary held | <runtime-free; no product/test/selector mutation> |
 | review_check.py boundary | <result> |
-| Pushed to origin, branch in sync | <commit + git status -sb confirmation> |
+| Pushed to origin, branch in sync | <confirm `git status -sb` showed no ahead/behind after the final push — do not embed a commit hash, which cannot be written truthfully inside the commit it names> |
 ```
 
 ## 6. For the agent reviewing a delegated turn
