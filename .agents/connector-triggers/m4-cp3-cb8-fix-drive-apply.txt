@@ -1,4 +1,0 @@
-turn=M4-CP3-CB8
-purpose=apply bounded compile remediation
-base_sha=0d823b2c83816950f1c30abdd17bcf54845e420b
-retry=0
