@@ -1,0 +1,5 @@
+Turn: M4-CP3-CB7
+Purpose: retry exact guarded test-authority compile after caller permission-ceiling correction only.
+Source SHA: dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8
+Prior run: 34678598168 startup_failure / zero jobs
+Runtime execution: forbidden
