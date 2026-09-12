@@ -1,4 +1,0 @@
-turn=M4-CP3-TB7-EXEC
-semantic_source=a5f351b05d85675d46c0bfdfbd35a0b00077005c
-purpose=exact source snapshot for artifact-only runtime execution planning
-runtime_execution=false
