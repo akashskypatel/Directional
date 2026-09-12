@@ -1,0 +1,5 @@
+Purpose: apply the verified M4-CP3-CB6 test-only fixture patch from Google Drive.
+Expected control source: caller-install commit 5afe58568357e6f64b82cf131c351b33dfb9a2bd plus this marker commit.
+Patch base: 2a2036ebdeb7974f7f2bc6620525e49fb5de22fe
+Turn: M4-CP3-CB6
+Retry: 0
