@@ -1,6 +1,0 @@
-Purpose: compile-only verification for M4-CP3-CB4-R3 exact semantic source.
-Evidence source: 7fdc3c001de9193f8f94591d3e74d1c94c260195
-Preflight: directional_surface_cell_producer_tests
-Package: eight approved targets
-Runtime execution: forbidden
-Retry: 0
