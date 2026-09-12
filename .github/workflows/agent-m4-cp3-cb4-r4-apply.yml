@@ -1,20 +1,20 @@
-name: Agent M4 CP3 CB4 R4 Patch Apply
+name: Agent M4 CP3 CB4 R4 Preflight Compile
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m4-cp3-cb4-r4-apply.txt
+      - .agents/connector-triggers/m4-cp3-cb4-r4-preflight.txt
 
 permissions:
-  contents: write
-  id-token: write
+  actions: write
+  contents: read
   issues: write
   pull-requests: write
 
 concurrency:
-  group: agent-m4-cp3-cb4-r4-apply-${{ github.ref }}
+  group: agent-m4-cp3-cb4-r4-preflight-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -29,19 +29,17 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp3-cb4-r4-apply
+      label: m4-cp3-cb4-r4-preflight
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  apply:
+  compile:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1HoQdtDO-beu0CKTTRotGtqoyEi-WZ6by
-      patch_sha256: c299652699fde4ed65352dc139fc945b7e4b6a557287acf1434cf33e81c129f4
-      base_sha: 4defb0cc7992c669f146f6927e58a393baae8fec
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "build: update mandatory packaged-test identity for M4-CP3-CB4-R4"
+      source_sha: 58521f6d1c4fb5d625da7cde50e002cf4688beee
+      targets: directional_surface_cell_producer_tests
+      artifact_prefix: m4-cp3-cb4-r4-preflight
     secrets: inherit
