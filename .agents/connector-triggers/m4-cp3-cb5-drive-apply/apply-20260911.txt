@@ -1,0 +1,3 @@
+M4-CP3-CB5 Drive patch apply trigger.
+Patch SHA-256: 3e20ee294a85fd6c66516bc76547ebec4174a5a7e923068d7dbaedb318fc352c
+Base semantic/control authority: cc035758d30572c01d99b8c1f73c41270db8139e
