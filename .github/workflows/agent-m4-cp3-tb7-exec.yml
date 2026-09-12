@@ -1,0 +1,217 @@
+name: Agent M4 CP3 TB7 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb/m4-cp3-tb7/**
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp3-tb7-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-tb7-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-tb7-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      TURN_ID: M4-CP3-TB7-EXEC
+      ARTIFACT_ID: '10305678151'
+      EXPECTED_ARTIFACT_NAME: m4-cp3-cb9-package-result-34720182350
+      EXPECTED_PROVIDER_DIGEST: sha256:543fd253bf04bde38f16aac8c33a05447bf515f37027a077f6014ff13957a629
+      EXPECTED_ZIP_SHA256: 543fd253bf04bde38f16aac8c33a05447bf515f37027a077f6014ff13957a629
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp3-tb7-exec-workflow.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "turn_id=${TURN_ID}"
+            echo "artifact_id=${ARTIFACT_ID}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact execution control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Materialize frozen TB7 harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="${RUNNER_TEMP}/m4-cp3-tb5-reviewed-harness.sh"
+          out="${RUNNER_TEMP}/m4-cp3-tb7-exec-harness.sh"
+          curl -L --fail --silent --show-error \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github.raw+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            'https://api.github.com/repos/akashskypatel/Directional/contents/.agents/Directional/turn-payloads/m4-cp3-tb5-exec-harness.sh?ref=4e86a7ff59a79f24d77099274d11e17a81681db9' \
+            -o "$base"
+          test "$(sha256sum "$base" | awk '{print $1}')" = 'ca01dd830cd8c8c867334e2ec8aa1748309ad8b360260b2a02ddf3d5da6d976d'
+          python3 - "$base" "$out" <<'PY'
+          import pathlib, sys
+          src = pathlib.Path(sys.argv[1]).read_text()
+          replacements = {
+              'TB5': 'TB7',
+              'dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8': '47ae78e1e46e7d2dcc230fc617291ca45f2e418e',
+              'ca16770d8ceff1da119687284eb7c01b31af9ce237be01753ed4c962305ff18d': 'be9a3f52332c333bc0d10f9697c33ce35676b462f67bd685e5c227012e4480ff',
+              '43e8e4c35712c8b69d4906288390745f2bdb507160cf52c31ad8f7545faa91ed': 'db4f93e3ccb722c7bbb78277e6df65b45018bfb811b63766cb3725b8dcb115cd',
+              "[[ \"$(cat \"$PKG/metadata/preflight-target.txt\")\" == 'directional_surface_cell_producer_tests' ]] || fail_orchestration 'preflight target mismatch'": "[[ \"$(cat \"$PKG/metadata/preflight-target.txt\")\" == 'directional_core' ]] || fail_orchestration 'preflight target mismatch'",
+              "if len(rows) == 821:": "if len(rows) == 823:",
+              "[[ \"$processes_executed\" -eq 821 ]] || fail_orchestration \"green completion process count mismatch: $processes_executed\"": "[[ \"$processes_executed\" -eq 823 ]] || fail_orchestration \"green completion process count mismatch: $processes_executed\"",
+              "[[ \"$pass_count\" -eq 821 ]] || fail_orchestration \"green completion pass count mismatch: $pass_count\"": "[[ \"$pass_count\" -eq 823 ]] || fail_orchestration \"green completion pass count mismatch: $pass_count\"",
+              "all 821 fresh exact-filter processes PASS; semantic interpretation deferred to M4-CP3-TB7-REV.": "all 823 fresh exact-filter processes PASS; semantic interpretation deferred to M4-CP3-TB7-REV.",
+          }
+          for old, new in replacements.items():
+              if old not in src:
+                  raise SystemExit(f'missing frozen replacement token: {old}')
+              src = src.replace(old, new)
+
+          row408 = "ROW408_IDENTITY='RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity'\n"
+          if src.count(row408) != 1:
+              raise SystemExit('row408 constant anchor drift')
+          src = src.replace(
+              row408,
+              row408 + "ORDINAL138_IDENTITY='SurfaceCellAuthorityContractCutover.HardFeatureRegionDeclinedByAllPhaseFrontProducersFailsClosedTyped'\n",
+              1,
+          )
+
+          gmp_anchor = "for token in 'libgmpxx.so' 'libgmp.so'; do\n  grep -Fq \"$token\" \"$PKG/metadata/gmp-evidence.txt\" || fail_orchestration \"missing GMP evidence: $token\"\ndone\n"
+          if src.count(gmp_anchor) != 1:
+              raise SystemExit('GMP preflight anchor drift')
+          extra = gmp_anchor + (
+              "for status_file in \"$PKG\"/metadata/source-status-*.txt; do\n"
+              "  [[ -f \"$status_file\" ]] || fail_orchestration 'source-status snapshot set absent'\n"
+              "  [[ ! -s \"$status_file\" ]] || fail_orchestration \"non-empty source-status snapshot: $(basename \"$status_file\")\"\n"
+              "done\n"
+              "for exe in directional_benchmarks directional_compiled_api_tests; do\n"
+              "  [[ -f \"$PKG/bin/$exe\" && -x \"$PKG/bin/$exe\" ]] || fail_orchestration \"required packaged executable absent or non-executable: $exe\"\n"
+              "done\n"
+              "for archive in libdirectional_core.a libdirectional_pipeline.a; do\n"
+              "  [[ -f \"$PKG/lib/$archive\" ]] || fail_orchestration \"required packaged archive absent: $archive\"\n"
+              "done\n"
+          )
+          src = src.replace(gmp_anchor, extra, 1)
+
+          runtime_anchor = "runtime_started=true\nstopped=false\n\n"
+          if src.count(runtime_anchor) != 1:
+              raise SystemExit('runtime start anchor drift')
+          src = src.replace(
+              runtime_anchor,
+              runtime_anchor + (
+                  "if ! run_ordinal_or_stop 'A0-ordinal138-focused-A' 138 \"$ORDINAL138_IDENTITY\"; then stopped=true; fi\n"
+                  "if [[ \"$stopped\" == false ]] && ! run_ordinal_or_stop 'A1-ordinal138-focused-B' 138 \"$ORDINAL138_IDENTITY\"; then stopped=true; fi\n"
+              ),
+              1,
+          )
+
+          expected_anchor = "    expected = {\n"
+          if src.count(expected_anchor) != 1:
+              raise SystemExit('full-ledger expected-map anchor drift')
+          src = src.replace(
+              expected_anchor,
+              expected_anchor + "        'A0-ordinal138-focused-A': 1,\n        'A1-ordinal138-focused-B': 1,\n",
+              1,
+          )
+
+          pathlib.Path(sys.argv[2]).write_text(src)
+          PY
+          chmod +x "$out"
+          {
+            echo "frozen_tb5_harness_sha256=ca01dd830cd8c8c867334e2ec8aa1748309ad8b360260b2a02ddf3d5da6d976d"
+            echo "tb7_harness_sha256=$(sha256sum "$out" | awk '{print $1}')"
+          } | tee -a "${RUNNER_TEMP}/m4-cp3-tb7-exec-workflow.log"
+
+      - name: Execute frozen artifact-only TB7 gate
+        id: exec
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set +e
+          harness="${RUNNER_TEMP}/m4-cp3-tb7-exec-harness.sh"
+          test -f "$harness" || exit 91
+          "$harness"
+          status=$?
+          echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
+          echo "harness_exit=${status}" | tee -a "${RUNNER_TEMP}/m4-cp3-tb7-exec-workflow.log"
+          exit 0
+
+      - name: Upload TB7 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb7-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M4-CP3-TB7-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload TB7 diagnostic log
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          cp "${RUNNER_TEMP}/M4-CP3-TB7-EXEC.log" "${RUNNER_TEMP}/m4-cp3-tb7-harness.log" 2>/dev/null || true
+          {
+            echo "harness_exit=${{ steps.exec.outputs.exit_code }}"
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "${RUNNER_TEMP}/m4-cp3-tb7-exec-workflow.log"
+
+      - name: Upload workflow and harness logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb7-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/m4-cp3-tb7-exec-workflow.log
+            ${{ runner.temp }}/m4-cp3-tb7-harness.log
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Propagate TB7 execution status
+        if: always()
+        shell: bash
+        run: |
+          code='${{ steps.exec.outputs.exit_code }}'
+          test -n "$code" || exit 92
+          exit "$code"
