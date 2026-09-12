@@ -1,0 +1,4 @@
+Turn: M4-CP3-CB7
+Purpose: apply guarded test-authority patch from Google Drive.
+Patch SHA-256: e2a6ca286b22d378f70280dd45a96ec995ee54836ee958edda711770f275c7fe
+Base SHA: 18ef11691bf4cf15e8aedcf22a57dd2372673f9c
