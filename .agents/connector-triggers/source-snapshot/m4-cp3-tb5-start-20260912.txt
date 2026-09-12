@@ -1,0 +1,5 @@
+Purpose: trigger exact ChatGPT Web source snapshot for M4-CP3-TB5-EXEC Test + Benchmark.
+Parent semantic authority: e720df29181973ba1cf60cdd95f9ee6c50c851e9
+Expected snapshot authority: this marker-trigger commit SHA.
+Turn: M4-CP3-TB5-EXEC
+Retry: 0
