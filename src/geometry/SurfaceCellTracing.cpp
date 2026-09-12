@@ -13749,12 +13749,6 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
              carrier->edge, *owningFace, firstVertex, secondVertex, -1, -1});
       }
     }
-    if (acceptedSegments.size() < 4U) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
-      return result;
-    }
     for (std::size_t index = 0U; index < acceptedSegments.size(); ++index) {
       const auto &current = acceptedSegments[index];
       const auto &next = acceptedSegments[(index + 1U) % acceptedSegments.size()];
