@@ -1,4 +1,23 @@
-## M4-CP3-TB6-REV — **CANDIDATE REJECTED / PRODUCT-SEMANTIC APPLICABILITY-DISPOSITION SCOPE WIDENING / NON-STABLE / CB9**
+# Regression Root Cause Tracker
+
+## Stable-event criterion — DURABLE, DO NOT DELETE
+
+A **stable event** is recorded when an ordinal inside the **accepted selector prefix** transitions **PASS → RED**,
+regardless of whether the package exhibiting the failure is promoted. Precedent: `M3-CP4c-3-TB38` (DA5/DA6 below)
+counted one event when accepted 356/357/362 went TB37 PASS → TB38 RED on a package that was itself rejected.
+
+Two clarifications, both drawn from turns that got this wrong:
+
+- **A newly appended row that has never been accepted cannot produce a stable event.** Its RED is a candidate
+  defect on unaccepted authority.
+- **"The failing bytes are on an unpromoted package" is not a reason for non-stable.** Promotion requires an
+  all-green cumulative gate, so an accepted ordinal can never be RED on a promoted package; that rationale would
+  make the criterion unfirable by construction.
+
+Recorded 2026-09-12 after `M4-CP3-TB6-REV` initially classified an accepted-ordinal RED as non-stable on the
+unpromoted-package rationale. Corrected there to 48 / 14 / 34.
+
+## M4-CP3-TB6-REV — **CANDIDATE REJECTED / PRODUCT-SEMANTIC APPLICABILITY-DISPOSITION SCOPE WIDENING / STABLE EVENT / CB9**
 
 - **Reviewed execution:** authoritative TB6 retry `34711826087 / 103601868455` against immutable CB8 package `10303165017`; result/log `10303393457 / 10303657623`, SHA-256 `db5770d212befb593d9dd3003c7a399432f4fed4d43aa4b306c117274c21d1d1` / `a3297a070dfd340a177287a59efc9f717210425659cf06c539b6321bccc33239`. Review independently re-hashed bytes and re-derived the 148-row ledger, selector prefix and source path.
 - **Recovery adjudication:** row408 **2/2 PASS** plus rows404-407 **8/8 PASS** closes `M4-CP3-TB5-REV-CAND-01` **RECOVERY PROVED / NON-STABLE**. CB8's cut-open occurrence-domain correction is real and remains required.
@@ -7,7 +26,7 @@
 - **Correction owner:** `M4-CP3-CB9`, runtime-free. G1 must prove ordinal138 reaches exactly the early `<4` branch; G2 must prove row408 remains a distinct cut-open occurrence case; G3 freezes `invalid authority => Rejected` versus `valid <4 => NotApplicable`. Only then may the minimum A4 disposition correction be made.
 - **Falsifier/STOP:** any failure to derive the exact three-segment ordinal138 path, any proposed correction that disables row408 accepted-cut occurrence handling, any weakening of missing/ambiguous/tampered authority rejection, selector/test/fixture drift, public aggregate fail-closed change, or second semantic dependency returns to Review before mutation/build.
 - **Prohibited:** weakening ordinal138, broad `InvalidFrontBoundaryAuthority` remapping, A2b/A3 writer changes, geometry/tolerance fallback, row408 fixture changes, selector changes.
-- **Authority/accounting:** candidate package/selector408 not promoted. Corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted. Stable totals remain **47 / 14 / 33**, debt **5**; CP3 / `G4-B002` remain open.
+- **Authority/accounting:** candidate package/selector408 not promoted. Corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted. **Accounting corrected by the review addendum: ONE NEW STABLE EVENT.** Accepted ordinal138 `SurfaceCellAuthorityContractCutover.HardFeatureRegionDeclinedByAllPhaseFrontProducersFailsClosedTyped` sits inside accepted selector403 and went PASS (TB2-R2 403/403) → RED here, which is accepted-green loss under the criterion at the head of this file and the DA6 precedent. Category is the existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` — a producer's applicability/disposition scope widened to claim regions previously and correctly declined — so categories hold at 14 and recurrences advance. **Totals: 48 events / 14 categories / 34 recurrences**, debt **5**. The original rationale ("the failing bytes are on the unpromoted CB8 package") is withdrawn: promotion requires an all-green gate, so it would make the criterion unfirable.
 - **Exact successor:** `M4-CP3-CB9` under `Architecture_M4_CP3_CB9_Code_Build_Plan.md`.
 
 ## M4-CP3-TB5-REV — **CANDIDATE REJECTED / PRODUCT-SEMANTIC A4 CUT-OPEN AUTHORITY-DOMAIN + APPLICABILITY DRIFT / NON-STABLE / CB8**

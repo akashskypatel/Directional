@@ -6,6 +6,26 @@ Accepted selector403 ordinal138 is not stale test authority. Its hard diagonal s
 
 Candidate package `10303165017` / selector408 remains rejected/unpromoted; corrected R4 artifact `10289601000` / selector403 remains accepted **403/403**. Stable totals remain **47 / 14 / 33**, debt **5**; CP3 and `G4-B002` remain open. Exact successor `M4-CP3-CB9` is runtime-free and guard-first: preserve CB8 row408 occurrence authority, restore valid `<4` planned regions to `NotApplicable`, retain typed rejection for actual authority contradictions, freeze tests/fixtures/selectors, then compile/package only with GMP/GMPXX.
 
+**Verification amendment (reviewing agent, review record addendum).** The **technical** adjudication is upheld —
+CB8's torus recovery is real, the ordinal138 RED is a genuine product-semantic compatibility regression rather than
+an allowed consequence, rejecting candidate `10303165017` is right, and the two-sided CB9 framing (ordinal138
+protects applicability fail-closed compatibility, row408 protects cut-open entry) is the correct shape. **One
+correction, to the accounting: this is ONE NEW STABLE EVENT, 47 → 48.** §1/§9 ruled NON-STABLE because "no accepted
+package lost green authority: the failing bytes are on the unpromoted CB8 package". That is not how this ledger has
+been kept. The operative test in every prior turn is whether an **accepted ordinal** went RED —
+`Regression_Root_Cause_Tracker.md:1443` and `:1565` pair "no accepted RED ordinal" directly with "no accepted-green
+loss", and DA5/DA6 record the controlling precedent, *"Accepted 356/357/362 were TB37 PASS and are TB38 RED. Events
+45 → 46"*, on a package that was likewise rejected. The nearest counter-example, `:65`, ruled non-stable because the
+failing **identities** were newly added rows, not because the package was unpromoted. Ordinal138,
+`SurfaceCellAuthorityContractCutover.HardFeatureRegionDeclinedByAllPhaseFrontProducersFailsClosedTyped`, sits inside
+accepted selector403 and went PASS (TB2-R2 403/403) → RED here. The stated rationale would also make the criterion
+**unfirable**: promotion requires an all-green cumulative gate, so an accepted ordinal can never be RED on a promoted
+package, and the count could never increment again — the same vacuity this project rejects in tests (`LESSONS.md`
+157, 171). Corrected totals: **48 events / 14 categories / 34 recurrences**, debt **5**, category the existing
+`RP-01 / AUTHORITY_DOMAIN_CONFLATION`. Accepted authority is unaffected and the rejection stands unchanged. Because
+this is the second turn to re-derive the criterion from scratch with a different answer, it is now stated durably at
+the head of the tracker.
+
 ## 2026-09-12 — `M4-CP3-TB6-EXEC`: CB8 recovery proves row408; cumulative selector403 RED at ordinal138
 
 Authoritative artifact-only retry run/job `34711826087 / 103601868455` consumed immutable CB8 package `10303165017` from semantic source `6934d9edfb56b44f956fbc64a89a501aaed042af`. Preflight re-proved the package digest, 28/28 root manifest, exact source/source-archive authority, empty source-status snapshots, GMP/GMPXX metadata, selector403/408 hashes/prefix and owner partition. Row408 then PASSed **2/2** in fresh exact-filter processes and rows404-407 PASSed **8/8**, directly runtime-proving the intended CB8 occurrence-domain recovery.

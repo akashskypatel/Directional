@@ -22,7 +22,7 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-12, `M4-CP3-TB6-REV`):** corrected R4 package artifact `10289601000` and selector403 `c3f509af...70cb7` remain **ACCEPTED / 403/403**. CB8 candidate package `10303165017` / selector408 is **REJECTED / NOT PROMOTED**. Review accepts TB6 row408 2/2 + rows404-407 8/8 as genuine recovery and closes the TB5 authority-domain candidate, but classifies accepted selector403 ordinal138 as a new non-stable product-semantic applicability/disposition scope-widening defect. Stable accounting remains **47 / 14 / 33**, debt **5**. CP3 and `G4-B002` remain OPEN; exact next is runtime-free `M4-CP3-CB9`.
+> **Current milestone authority (2026-09-12, `M4-CP3-TB6-REV`):** corrected R4 package artifact `10289601000` and selector403 `c3f509af...70cb7` remain **ACCEPTED / 403/403**. CB8 candidate package `10303165017` / selector408 is **REJECTED / NOT PROMOTED**. Review accepts TB6 row408 2/2 + rows404-407 8/8 as genuine recovery and closes the TB5 authority-domain candidate, but classifies accepted selector403 ordinal138 as a new non-stable product-semantic applicability/disposition scope-widening defect. Stable accounting remains **48 / 14 / 34**, debt **5**. CP3 and `G4-B002` remain OPEN; exact next is runtime-free `M4-CP3-CB9`. **Accounting corrected this turn: TB6's accepted-ordinal138 RED is a stable event — 48 / 14 / 34.** The "unpromoted package" rationale is withdrawn; the criterion now sits at the head of `Regression_Root_Cause_Tracker.md`.
 
 **Currency.** `M4-CP3-TB6-REV`, 2026-09-12. Review independently re-derives the immutable 148-process TB6 evidence, rejects stale-test classification for ordinal138, closes the recovered TB5 candidate and freezes one bounded `M4-CP3-CB9` disposition correction.
 
@@ -71,7 +71,7 @@ unreached, and the prescribed sphere still cannot reach A2b (§7).
 
 ## 3. Where we are
 
-**M3 is CLOSED / ACCEPTED.** **M4-CP1/CP2 remain historical accepted framed closures.** Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority **403/403**; predecessor selector394 remains exact-prefix **394/394**. Stable accounting remains **47 / 14 / 33**, produced-witness debt **5**.
+**M3 is CLOSED / ACCEPTED.** **M4-CP1/CP2 remain historical accepted framed closures.** Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority **403/403**; predecessor selector394 remains exact-prefix **394/394**. Stable accounting remains **48 / 14 / 34**, produced-witness debt **5**.
 
 CB8 candidate semantic source `6934d9edfb56b44f956fbc64a89a501aaed042af` consumes accepted A2b/A3 cut-open occurrence authority inside the curved bounded-disk producer. TB6 independently runtime-proves the intended recovery: row408 PASSes **2/2** under exactly 18 effective torus HardFeature edges and rows404-407 PASS **8/8**. `M4-CP3-TB5-REV-CAND-01` is therefore **CLOSED / RECOVERY PROVED / NON-STABLE**.
 

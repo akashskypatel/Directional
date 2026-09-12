@@ -215,6 +215,74 @@ At Review start, several carried connector/source reads were made before the man
 
 Its pre-mutation guards must independently prove both sides before changing source: ordinal138 is a valid three-segment planned hard-feature disc that currently reaches the early rejection, while row408 is a cut-open torus whose accepted occurrence domain remains necessary. Failure of either proof stops before mutation and returns to Review.
 
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. The **technical** adjudication is upheld: CB8's torus recovery is real, the ordinal138 RED is a
+genuine product-semantic compatibility regression rather than an allowed consequence, rejecting candidate
+`10303165017` is correct, and the two-sided successor framing — ordinal138 protecting applicability
+fail-closed compatibility while row408 protects cut-open entry — is the right shape for CB9.
+
+One correction is required, and it is to the accounting rather than to the engineering.
+
+### V1 — this is ONE NEW STABLE EVENT: 47 → 48
+
+§1 and §9 classify the turn NON-STABLE on the rationale that *"no accepted package lost green authority: the
+failing bytes are on the unpromoted CB8 package."* That rationale does not match how this ledger has been
+kept, and it cannot be applied consistently.
+
+**The operative test in every prior turn is whether an accepted ordinal went RED**, not whether the package
+carrying the failure was promoted:
+
+- `Regression_Root_Cause_Tracker.md:1443` and `:1565` both pair the finding *"no accepted RED ordinal"*
+  directly with *"no accepted-green loss"*;
+- `:966-975` (DA5/DA6) records the controlling precedent: *"Accepted 356/357/362 were TB37 PASS and are TB38
+  RED. **Events 45 → 46**"*. That package was rejected too — TB38 promoted nothing, and the successor CB44
+  was ordered to restore first. The event was grounded in the observed PASS→RED transition on accepted
+  ordinals, not in any promotion;
+- `:65`, the nearest-looking counter-example, rules non-stable because *"the three candidates belonged to
+  unpromoted authority"* — describing the **identities**, which were newly added rows, not the package. No
+  accepted ordinal was RED there.
+
+Ordinal138, `SurfaceCellAuthorityContractCutover.HardFeatureRegionDeclinedByAllPhaseFrontProducersFailsClosedTyped`
+(`tests/SurfaceCellsPhase10Tests.cpp`), sits at position 138 of accepted selector403, which ran **403/403 PASS**
+as accepted authority at TB2-R2. It was PASS then and is RED now. That is accepted-green loss on the operative
+test.
+
+**The stated rationale also makes the rule unfirable.** Promotion requires an all-green cumulative gate, so an
+accepted ordinal can never be RED on a *promoted* package. Read literally, "no accepted package lost green
+authority" is satisfied by construction in every turn, and the stable count could never increment again. A
+criterion that cannot fire is exactly what this project's own non-vacuity discipline rejects (`LESSONS.md`
+157, 171) — applied here to the regression ledger rather than to a test.
+
+**Corrected accounting:** **48 events / 14 categories / 34 recurrences**, produced-witness debt **5**.
+The category is the existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` — CB8 widened a producer's applicability
+and disposition scope so it claims regions that were previously and correctly declined, which is an authority
+domain being conflated, not a new pattern. Categories therefore remain **14** and recurrences advance
+**33 → 34**, exactly as DA6 handled the same situation. Accepted authority is unaffected: the corrected R4
+artifact / selector403 remains accepted at **403/403**, and nothing about the rejection changes.
+
+This does not diminish CB8. An event records that something which worked stopped working; it is a ledger
+entry, not a verdict on the turn. Recording it is what keeps the count meaningful when CP3 closes.
+
+### V2 — the rule should be written down
+
+This is the second turn in this sequence to re-derive the stable-event criterion from scratch, and the two
+derivations disagreed. The criterion is now stated explicitly at the head of
+`Regression_Root_Cause_Tracker.md` so it is applied rather than reconstructed: **a stable event is recorded
+when an ordinal inside the accepted selector prefix transitions PASS → RED, regardless of whether the package
+exhibiting the failure is promoted.** New rows that have never been accepted cannot produce one; a rejected
+candidate can.
+
+### V3 — the technical findings are sound
+
+The three-segment observation in §6 is the substantive content and it is correctly reasoned: ordinal138's
+regions have exactly three boundary segments, CB8's new earlier guard intercepts them as insufficient, and the
+identity's own subject — that a hard-feature region declined by *all* producers fails closed with a typed
+error — is therefore no longer exercised as written. §7's falsifier is the right one: CB9 must statically
+prove the ordinal138 fixture reaches the `< 4` branch under current bytes before changing anything, and must
+hold both controls simultaneously.
+
+
 ## Review closeout
 
 | Duty | Answer |
