@@ -1,3 +1,0 @@
-# M4-CP3-CB4-R3 turn cleanup manifest
-# Temporary workflow callers and per-run markers were already retired connector-first.
-# No additional temporary repository paths remain; this manifest self-removes through agent-turn-cleanup.yml.
