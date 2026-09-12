@@ -294,6 +294,16 @@ Runtime-free Review independently re-opened semantic source, replacement test, s
 
 `M4-CP3-CB4-R3-REV-CAND-01` classifies the configure failure as non-stable **BUILD-CONTRACT / MANDATORY PACKAGED-TEST IDENTITY DRIFT / SOURCE-PROVED**: the retired required identity has zero definitions and the replacement has exactly one in the same packaged producer source. This is the existing `LESSONS.md` 49 pattern. Decision is `approved_with_amendments`; exact successor `M4-CP3-CB4-R4` may replace only that one CMake identity string, then run changed-owner/full package compile with GMP/GMPXX and no runtime. Any second dependency returns to Review. Package119/selector394 remains accepted **394/394**; stable accounting remains **47 / 14 / 33**, debt **5**. Future artifact-only proof remains exactly **799** processes followed by review.
 
+## 2.27 `M4-CP3-CB4-R4` + `TB2-R2` + review — corrected artifact/selector403 accepted; A3→A4 cutover licensed
+
+R4 changed exactly one stale mandatory packaged-test identity in `cmake/DirectionalTests.cmake` and nothing semantic. Changed-owner and full eight-target GMP/GMPXX compiles passed at semantic source `58521f6d1c4fb5d625da7cde50e002cf4688beee`; immutable artifact `10289601000` has ZIP/provider SHA `ef8c0d87...992b9`, source archive `b8eb7a83...912f0`, 28-entry manifest `d6d3c5bb...c43b`, clean source and `runtimeExecution=false`.
+
+Artifact-only TB2-R2 run/job `34666794115 / 103480225842` then executed exactly **799** fresh processes: replacement row400 focused A/B **1/1 + 1/1**, accepted selector394 **394/394**, corrected selector403 **403/403**, zero RED/SKIP/timeout/selection mismatch. Package/source/execution-view censuses are byte-identical pre/post and manifests pass 28/28 twice.
+
+Runtime-free Review independently re-derived package and selector provenance, all 799 ledger/raw-log selections, owner partitions **30/248/75/41** and **30/257/75/41**, current-head code/test/build byte identity **387/387**, and row400's exact real-seam discriminator: raw `[3,0,4]`, canonical `[0,3,4]`, weights `[1/6,1/3,1/2]`, correct remapped `1/3`, wrong positional `2/3`. Corrected R4 artifact `10289601000` and selector403 `c3f509af...70cb7` are **PROMOTED / ACCEPTED** as current M4-CP3 pre-cutover runtime authority. `CB4-R2-REV-CAND-01`, `TB2-REV-CAND-01` and `CB4-R3-REV-CAND-01` close recovery-proved/non-stable; stable accounting remains **47 / 14 / 33**, debt **5**.
+
+CP3 remains open because A4 still ignores the accepted A3 schedule and pairs hard rails using floating `support_key`. Exact next is guard-first `M4-CP3-CB5`: first prove every intended shared hard-rail segment maps uniquely to accepted A3 span+consecutive ordinals/orientation without geometric/local-grid inference; if not, stop before mutation. If proven, wire immutable A3 schedule identity into A4, materialize shared breakpoints unchanged, retire floating pairing authority and preserve A4-local family/advanceSign. Runtime acceptance remains later TB + Review.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
@@ -357,6 +367,18 @@ history.
 | `Architecture_M4_CP3_CB4_R1_Code_Build_Report.md` | 166 | **FOLDED AFTER TB2 REVIEW. Exact semantic source/package120/selector403 compile authority is preserved in §2.21, selector manifest, current review and changelog.** |
 | `Architecture_M4_CP3_TB2_Test_Benchmark_Plan.md` | 289 | **FOLDED AFTER EXECUTION + REVIEW. Frozen 815-process gate/non-vacuity obligations and reviewed disposition are preserved in §§2.22-2.23 and current review.** |
 | `Architecture_M4_CP3_TB2_Test_Benchmark_Report.md` | 145 | **FOLDED AFTER TB2 REVIEW. Mechanical 815/815 evidence, artifact IDs and immutable postflight are preserved in §2.22, current review, changelog and external immutable artifacts.** |
+
+| `Architecture_M4_CP3_CB4_R2_Code_Build_Plan.md` | 185 | **FOLDED AFTER CORRECTED R4 ACCEPTANCE.** Test-authority recovery premise, guard falsifier and later seam replacement are preserved in §§2.24-2.27 and current review. |
+| `Architecture_M4_CP3_CB4_R2_Derivation_Guard_Record.md` | 65 | **FOLDED AFTER R2/R3 RECOVERY.** No-mutation guard proof that the proposed upstream conversion seam did not exist is preserved in §2.25 and tracker. |
+| `Architecture_M4_CP3_CB4_R2_Review_Record.md` | 207 | **FOLDED AFTER TB2-R2 REVIEW.** Real consumer-basis seam derivation, exact `1/3` vs `2/3` falsifier and bounded R3 disposition are preserved in §§2.25-2.27 and tracker. |
+| `Architecture_M4_CP3_CB4_R3_Code_Build_Plan.md` | 214 | **FOLDED AFTER ACCEPTANCE.** Bounded terminal-contact remap/test/selector contract is preserved in §§2.25-2.27 and current review. |
+| `Architecture_M4_CP3_CB4_R3_Compile_Guard_Record.md` | 59 | **FOLDED AFTER R4 RECOVERY.** Configure stop and stale mandatory identity diagnosis are preserved in §§2.25-2.27 and tracker. |
+| `Architecture_M4_CP3_CB4_R3_Review_Record.md` | 224 | **FOLDED AFTER TB2-R2 REVIEW.** Semantic-correction approval and one-name CMake successor are preserved in §2.26-2.27 and tracker. |
+| `Architecture_M4_CP3_CB4_R4_Code_Build_Plan.md` | 139 | **FOLDED AFTER R4 BUILD + TB2-R2 REVIEW.** One-name build-contract scope and 799-process future gate are preserved in §2.27 and current review. |
+| `Architecture_M4_CP3_CB4_R4_Code_Build_Report.md` | 144 | **FOLDED AFTER PACKAGE PROMOTION.** Exact R4 compile/package authority is preserved in §2.27, retained TB2-R2 report, current review and changelog. |
+| `Architecture_M4_CP3_TB1_R1_Test_Benchmark_Report.md` | 121 | **FOLDED AFTER SELECTOR403 ACCEPTANCE.** Package119/selector394 predecessor runtime authority remains preserved in §§2.19/2.27, selector manifest and current review. |
+| `Architecture_M4_CP3_TB2_R2_Test_Benchmark_Plan.md` | 173 | **FOLDED AFTER EXECUTION + REVIEW.** Frozen 799-process corrected acceptance gate is preserved in §2.27, retained TB2-R2 report and current review. |
+| `Architecture_M4_CP3_TB2_Review_Record.md` | 234 | **FOLDED AFTER CORRECTED R2 REVIEW SUPERSESSION.** Historical package120 rejection and decorative-row400 finding remain preserved in §§2.22-2.24, tracker and current review. |
 
 Historical citations to folded filenames remain resolvable through this index and git history.
 

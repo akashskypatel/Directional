@@ -1,3 +1,9 @@
+## 2026-09-12 — `M4-CP3-TB2-R2-REV`: corrected R4 package/selector403 accepted; A3→A4 cutover authorized
+
+Runtime-free Review independently reopened corrected R4 artifact `10289601000` (source `58521f6d1c4fb5d625da7cde50e002cf4688beee`) and TB2-R2 result/log artifacts `10289088800 / 10289438082`. Package identity, 28-entry manifest/path closure, source archive/GMP/owner-binary provenance, selector lineage, all **799** ledger rows and raw logs, focused A/B determinism, owner partitions and immutable pre/post censuses were independently re-derived. Replacement row400 is non-vacuous on raw face `[3,0,4]` versus canonical `[0,3,4]`: canonical weights `[1/6,1/3,1/2]` yield exact `1/3` after the production vertex-identity remap and `2/3` under the historical positional defect, so removing the remap makes the regression fail.
+
+**Decision: APPROVED.** Corrected R4 artifact `10289601000` and selector403 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` become accepted M4-CP3 pre-cutover runtime authority at **403/403**; predecessor selector394 stays byte-identical and **394/394** green. `M4-CP3-CB4-R2-REV-CAND-01`, `M4-CP3-TB2-REV-CAND-01`, and `M4-CP3-CB4-R3-REV-CAND-01` close recovery-proved/non-stable. Stable totals remain **47 / 14 / 33**, debt **5**. CP3 remains open. Exact next is guard-first `M4-CP3-CB5`: prove exact A3 span+ordinal ownership of every shared A4 hard-rail segment before mutation, then if proven wire immutable A3 breakpoints into A4 and retire floating `support_key` shared-boundary authority. No Directional runtime or code/test/selector/build-source mutation occurred in Review.
+
 ## 2026-09-07 — `M3-CP4c-3-TB38-EXEC`: package103 artifact-only runtime 395/14; accepted/protected regressions and missing R6.7 emission require independent review
 
 TB38-EXEC is **COMPLETE / MECHANICALLY VALID / SEMANTICALLY UNADJUDICATED** on immutable CB43 package103,
