@@ -139,4 +139,4 @@ Publication note: first documentation-apply run `34660476095` failed closed at `
 | Successor frozen | `M4-CP3-CB4-R3`; falsifier and stop rules in `Architecture_M4_CP3_CB4_R3_Code_Build_Plan.md` |
 | Turn boundary held | runtime-free; no product/test/fixture/selector/build mutation |
 | review_check.py boundary | **ALL CHECKS PASSED**; no product/test/fixture/build or selector mutation; durable markers preserved |
-| Pushed to origin, branch in sync | corrected documentation apply `34660555840 / fefca4c6498a4d147f2af966475fd9356c81c4dc`; cleanup `34660615718 / 566b813a435e8d0fb604538445b7f73ee04aa242`; successor handoff provenance committed directly after cleanup and final PR head verified before closeout |
+| Pushed to origin, branch in sync | corrected documentation apply `34660555840 / fefca4c6498a4d147f2af966475fd9356c81c4dc`; cleanup `34660615718 / 566b813a435e8d0fb604538445b7f73ee04aa242`; final closeout commits `73f53e84f3963671e78ca88abb3797fd47315179` and `37ab843829c903815fb574478371ddb75413811c` are documentation-only and verified on PR #8 |
