@@ -1,0 +1,6 @@
+Purpose: apply final M4-CP3-TB5-REV orientation-currency correction found by final closeout review.
+Base authority: 5465c449cc07080599b110b05566c9c6a2f15b28
+Patch SHA-256: 4e70d9c43f0cfe47440e05bbf76bfa336e8df734321e7db5932d13429bc05154
+Turn: M4-CP3-TB5-REV
+Runtime execution: false
+Retry: 0
