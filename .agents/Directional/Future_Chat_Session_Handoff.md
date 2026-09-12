@@ -1,76 +1,61 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP3-TB3-REV` COMPLETE / CANDIDATE REJECTED / TEST-AUTHORITY FIXTURE-PRECONDITION / CP3 OPEN
+**Status:** `M4-CP3-CB6` COMPLETE / BUILD GREEN / RUNTIME-FREE / CP3 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** Code + Build, `M4-CP3-CB6`
+**Canonical next turn:** artifact-only Test + Benchmark execution, `M4-CP3-TB4-EXEC`
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED.
 - Corrected R4 artifact `10289601000` at semantic source `58521f6d1c4fb5d625da7cde50e002cf4688beee` remains accepted M4-CP3 runtime authority. Selector403 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` remains accepted **403/403**.
-- CB5 semantic source `4dfd0d9a681be0eec8b9fc6a7ea2bea5c419223e`, package `10290933668` and selector408 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484` are **REJECTED FOR PROMOTION / retained candidate evidence** after TB3 row408 failed its fixture reachability precondition.
-- Rows404-407 passed in fresh focused-A processes. Row408 failed before its A3/A4 assertions because the torus fixture carried no hard-feature rail authority and authoritative phase-front disposition was `NotApplicable`.
-- Stable accounting remains **47 events / 14 categories / 33 recurrences**; produced-witness debt remains **5**. `G4-B002` and CP3 remain OPEN.
+- CB5 package `10290933668` remains rejected for promotion because TB3 proved row408's torus fixture lacked hard-feature rail authority; rows404-407 were green.
+- CB6 corrected only that fixture precondition at semantic source `9d66fcebe4b91ab74a6d0234c46643a2723ab643`. The explicit frozen torus cycles passed the source-edge, independence, one-vertex cut-graph/disc-complement, and production-ingress static guard before mutation.
+- CB6 immutable candidate package is artifact `10292005428` from run/job `34673625938 / 103499484128`, outer SHA-256 `7723188540182f9515b95efd83c13dd1dbc6f0813532a98cd8df0778a12a882f`. Compile-log artifact is `10292090424`, SHA-256 `80b3950a876b7b5a765f3b95781111f5c7fcefa7e637f96406be96421a580d76`.
+- Package source archive SHA-256 is `3c82e4778ec4ea4631e25d39ed18f7f7ed68a2a24a1ad08e3ebfe298dfe331a9`; package manifest SHA-256 is `26529a4d12434bc737e4952f09f9790dd8f36d4151e1500154fa7a60497101af`, 28/28 verified. GMP/GMPXX is linked, source status is clean, all six packaged executables are mode 755, and `runtimeExecution=false`.
+- Selector408 remains byte-frozen at `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`; its first403 remains byte-identical to accepted selector403. Owner partition remains **30 / 262 / 75 / 41** with zero missing/ambiguous identities.
+- No Directional runtime executed in CB6. Package `10292005428` and selector408 are compile-valid candidates only; neither is promoted. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**. `G4-B002` and CP3 remain OPEN.
 
-## TB3 execution and review authority
+## Exact next — `M4-CP3-TB4-EXEC`
 
-```text
-CB5 package artifact       = 10290933668
-CB5 package SHA-256        = 3c73ce15c626b9811a0122cccaaa9615f76f1a6b5d6e93692a05fef524a36571
-TB3 run / execute job      = 34671972132 / 103494923768
-TB3 result artifact / SHA  = 10291076362 / 56158d759bf7827e33a51ce04fcd67bba960f68fea7486893fdf14936d96f388
-TB3 log artifact / SHA     = 10291146242 / 93d56c5c8fc76f4d9ab1210183ce6aa57ecab25479f01b3e31b5ec78c33de5b1
-focused-A rows404-407      = 4/4 PASS
-focused-A row408           = RED
-observed processes         = 5 / 821 planned
-preflight / postflight     = PASS / PASS
-```
+Authority: `.agents/Directional/Architecture_M4_CP3_TB4_Artifact_Only_Test_Benchmark_Plan.md`.
 
-The frozen fail-fast rule correctly stopped after row408, so focused-B, accepted selector403 and candidate selector408 were not executed. Package/source/execution-view remained immutable and no configure/compile/relink/discovery/package repair occurred.
-
-`M4-CP3-TB3-REV-CAND-01` is **TEST-AUTHORITY / FIXTURE-PRECONDITION + REACHABILITY DRIFT / INCORRECT EXPECTATION / NON-STABLE**. Current `cp4c_remesh_options()` declares no explicit hard edges. Production only returns aggregate phase-front `NotApplicable` after all regional producers decline when `hardFeatureEdges.empty()`. Thus row408 never reached the shared hard-rail seam it claimed to test and cannot support promotion or product-regression pricing.
-
-## Exact next — `M4-CP3-CB6`
-
-Authority: `.agents/Directional/Architecture_M4_CP3_CB6_Code_Build_Plan.md`.
-
-CB6 is a **test-authority-only reachability correction**. Before mutation it must statically re-prove two explicit fundamental cycles in committed `torus.obj`:
+Consume only immutable package artifact `10292005428`; no configure, compile, relink, discovery generation, package repair, or unpackaged runtime. Verify immutable package/source/selector/owner authority first, then restart the entire frozen gate from zero as exactly **821 fresh exact-filter processes**:
 
 ```text
-C_minor = 0-3-25-37-49-61-0
-C_major = 0-1-4-6-8-10-12-14-16-18-20-22-0
+corrected row408 focused A   1
+corrected row408 focused B   1
+rows404-407 controls A+B     8
+accepted selector403       403
+candidate selector408      408
+                           ---
+total                      821
 ```
 
-Every pair must remain a source edge; the cycles must be simple, intersect only at vertex 0, represent independent torus directions, and form a disc-complement cut-graph shape. If that guard passes, row408 alone may use those pairs as explicit `surfaceCells.featureMap.userHardEdges`, preserving the row408 identity, selector408 bytes/hash, rows404-407, accepted selector403 and all production semantics. The repaired row must require retained hard-feature rail authority, produced phase-front, exact conformity receipt, at least one HardRail typed shared interval, and absence of `InvalidHardRailPairing`.
-
-**STOP before mutation** if product source/header changes are required or any second dependency appears. Compile/package only via the reusable GMP/GMPXX workflow with `runtimeExecution=false`; no Directional runtime in CB6.
-
-If CB6 packages green, a later artifact-only TB restarts the full **821-process** gate from the beginning, followed by Review. Do not resume from old row408.
+Honor fail-fast at the first RED, preserve immutable postflight regardless of semantic result, and publish raw execution evidence only. `TB4-EXEC` does not diagnose, promote, close CP3, or change stable accounting. Mandatory successor is `M4-CP3-TB4-REV`.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
+  - turn-based-coding-agent/references/turns/TB.md
 conditional_modules:
-  - trigger: bounded test-authority correction
+  - trigger: immutable artifact-only runtime execution
     path: turn-based-coding-agent/modules/unit-testing/MODULE.md
-  - trigger: compile/package through GitHub Actions
+  - trigger: artifact execution through GitHub Actions
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP3_TB3_Review_Record.md
+  - .agents/Directional/Architecture_M4_CP3_TB4_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP3_CB6_Compile_Record.md
   - .agents/Directional/Architecture_M4_CP3_CB6_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP3_TB3_Review_Record.md
   - .agents/Directional/Architecture_M4_CP3_TB3_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M4_CP3_CB5_Compile_Record.md
-  - .agents/Directional/Architecture_M4_CP3_CB5_Derivation_Guard_Record.md
-  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
-  - tests/FieldAlignedCurveNetworkTests.cpp
-  - benchmarks/fixtures/milestone-g/torus.obj
+  - .agents/Directional/Architecture_M4_CP3_CB5_Required_Green_Selector_408.txt
+  - .agents/Directional/Architecture_M4_CP3_CB4_R3_Required_Green_Selector_403.txt
 do_not_preload:
   - M5/M6 implementation
-  - product-source changes; CB6 is test-authority-only unless the guard stops and returns to Review
-  - any runtime executor during CB6
+  - any compile/relink/configure path during TB4-EXEC
+  - product changes or diagnosis; TB4-EXEC is mechanical evidence only
 ```

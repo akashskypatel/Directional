@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-12 (`M4-CP3-TB2-R2-REV` COMPLETE / APPROVED. Corrected R4 artifact `10289601000` / selector403 **403/403** is accepted; predecessor394 remains exact-prefix 394/394 green. Stable accounting **47 / 14 / 33**, debt **5**. CP3 remains OPEN but exact-path/A3 publication acceptance is discharged. Exact next `M4-CP3-CB5`: guard-first production A3→A4 shared-boundary cutover; no Review runtime.)
+**Status date:** 2026-09-12 (`M4-CP3-CB6` COMPLETE / BUILD GREEN / RUNTIME-FREE. Corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted runtime authority; CB6 candidate artifact `10292005428` preserves selector408 after the row408 test-authority hard-rail reachability correction. Stable accounting **47 / 14 / 33**, debt **5**. CP3 remains OPEN. Exact next `M4-CP3-TB4-EXEC`, then mandatory Review.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -22,7 +22,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 production A3→A4 cutover active** | corrected R4 artifact `10289601000` / selector403 **403/403** accepted; exact next `M4-CP3-CB5` guard-first A3→A4 shared-boundary cutover. |
+| M4 | **CP1/CP2 framed closures retained / CP3 A3→A4 runtime acceptance active** | corrected R4 artifact `10289601000` / selector403 **403/403** accepted; CB6 candidate artifact `10292005428` compile-green after test-only torus hard-rail reachability correction; exact next `M4-CP3-TB4-EXEC`. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
