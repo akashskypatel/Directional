@@ -4,6 +4,27 @@
 
 New non-stable `M4-CP3-CB4-R3-REV-CAND-01` isolates the configure failure as **BUILD-CONTRACT / MANDATORY PACKAGED-TEST IDENTITY DRIFT / SOURCE-PROVED**: `cmake/DirectionalTests.cmake` still requires the retired row400 identity with zero definitions while the replacement identity exists exactly once in the same packaged producer source. This is the existing `LESSONS.md` 49 pattern. Exact next is `M4-CP3-CB4-R4`, bounded to replacing that one CMake identity string and re-entering compile/package with no runtime. Package119/selector394 remains accepted **394/394**; no selector is promoted; accounting stays **47 / 14 / 33**, debt **5**; A3->A4 remains unauthorized.
 
+**Verification amendment (reviewing agent, review record §11).** The review is upheld. The correction is right and
+in the right direction — `vertex_trace_ray_second_point`'s other branches all return raw oriented
+`face.vertices` order, so the terminal-contact branch was the outlier, and the patch remaps by vertex identity,
+rejects duplicate/unmatched corners and returns `std::nullopt` rather than a partially filled array. The
+replacement identity discharges the surviving `M4-CP3-TB2-REV` constraint, verified independently: with canonical
+weights `[1/6,1/3,1/2]` on key `[0,3,4]` and raw row `[3,0,4]`, the vertex-4 ray parameter is
+`w(v0)/(w(v3)+w(v0)) = 1/3`, while treating the canonical tuple as raw-row ordered gives `2/3`; the identity
+asserts both, pins both orderings as fixture preconditions, and never touches the order-blind
+`exact_source_point_is_canonical`, so it goes RED under the identity-function mutation. Two additions.
+**Reclassification:** §4 calls the configure failure "one derivative dependency omitted from the R3 plan", but the
+plan was **unsatisfiable as written** — R3 §2 explicitly excluded build configuration while §5 mandated replacing
+row400, and `cmake/DirectionalTests.cmake:268` hard-codes that identity in a contract whose check at `:114`
+FATAL_ERRORs unless exactly one definition exists. The structural rule worth carrying: replacing a registered
+identity is atomically coupled to updating its registry, so a plan mandating one while forbidding the other is
+contradictory regardless of planner diligence — the same class as the `M4-CP1-CB4` block. **Operational fact not
+in §8:** at HEAD the old identity has 0 definitions under `tests/` while `cmake` still lists it once, so the branch
+**cannot currently configure**. `M4-CP3-CB4-R4` is therefore unblocking rather than merely next, and this confirms
+the two changes could never have been split across turns — the intermediate state is un-buildable, and it is the
+state the branch now occupies. §6's obligation ledger names all five items by id and is the strongest in this
+sequence. Accounting unchanged at **47 / 14 / 33**, debt **5**; accepted authority package119 / selector394.
+
 ## 2026-09-12 — `M4-CP3-CB4-R3`: semantic correction preserved; configure STOP-GUARD on stale packaged-test identity
 
 `M4-CP3-CB4-R3` is **HALTED / STOP-GUARD / POST-MUTATION / CONFIGURE RED / NO RUNTIME**. Semantic commit `7fdc3c001de9193f8f94591d3e74d1c94c260195` implements the source-proved A2b correction in the terminal-contact branch only, replaces row400 with the real noncanonical fan-row regression (`[3,0,4]` raw versus `[0,3,4]` canonical, correct `1/3` versus wrong-basis `2/3`), and publishes successor selector403 at SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`. Its accepted first394 remains `6c27b3a0...`; owner totals remain `30 / 257 / 75 / 41`.

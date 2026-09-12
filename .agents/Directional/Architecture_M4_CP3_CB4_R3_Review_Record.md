@@ -133,6 +133,74 @@ This review authorizes no promotion and no A3->A4 cutover. The CMake correction 
 - Tests/benchmarks/Directional runtime executed: **no**
 - Compile executed: **no**
 
+## 11. Independent verification addendum (reviewing agent)
+
+Runtime-free. The review is **upheld**. The semantic correction is right, the replacement identity is
+genuinely discriminating, and the successor is correctly bounded. Accepted authority remains
+package119 / selector394 **394/394**; accounting stays **47 / 14 / 33**, debt **5**. Two additions: one
+reclassification and one operational fact the record does not state.
+
+### V1 — the correction is right, and in the right direction
+
+`vertex_trace_ray_second_point`'s other branches all return arrays in **raw oriented** `face.vertices`
+order, so the terminal-contact branch returning a canonical-key-ordered tuple was the outlier. The patch
+remaps by source-vertex identity into oriented order, rejects duplicate or unmatched corners, and returns
+`std::nullopt` rather than a partially filled array — failing closed, consistent with the project's typed
+failure commitment. It corrects the outlier rather than changing the contract its consumers rely on.
+
+### V2 — the replacement identity discharges the surviving `TB2-REV` constraint
+
+Re-derived independently. `make_four_triangle_fan()` raw row 3 is `[3,0,4]`; its key sorts to `[0,3,4]`.
+With canonical weights `[1/6, 1/3, 1/2]`, the vertex-4 ray's opposite-edge parameter is
+`w(v0) / (w(v3) + w(v0)) = (1/6)/(1/2) = 1/3`. Treating the canonical tuple as raw-row ordered exchanges
+the `v3` and `v0` components, giving `(1/3)/(1/2) = 2/3`.
+
+The identity asserts `EXPECT_EQ(1/3, *parameter)` and `EXPECT_NE(2/3, *parameter)`, pins **both** orderings
+as fixture preconditions (`mesh.F(3,·)` is `3,0,4`; `face.vertices()` is `0,3,4`), and never touches
+`exact_source_point_is_canonical`. It therefore goes RED if the remap is replaced by the identity function,
+which is exactly the surviving constraint from the `M4-CP3-TB2-REV` addendum after its second constraint
+was withdrawn. Pinning the fixture orderings also prevents the silent re-aiming that made the original
+row400 vacuous.
+
+### V3 — the compile stop is an unsatisfiable plan, not an omitted dependency
+
+§4 describes the configure failure as "one derivative dependency omitted from the R3 plan". The stronger
+and more useful classification is that **the plan could not be satisfied as written**. Per the guard
+record, R3 §2 *explicitly excluded build configuration* while §5 *mandated replacing row400* — and
+`cmake/DirectionalTests.cmake:268` hard-codes that identity name in
+`directional_require_default_packaged_test_contract`, whose check at `:114` raises `FATAL_ERROR` unless
+exactly one source definition exists. An active prohibition collided with an active mandate.
+
+The distinction changes what prevents recurrence. "Omission" implies a planner should have listed one more
+file; unsatisfiability implies a structural rule: **replacing a registered identity is atomically coupled
+to updating its registry**, and a plan that mandates the replacement while forbidding the registry edit is
+contradictory no matter how carefully it is written. This is the same class as the `M4-CP1-CB4` block —
+two mutually exclusive requirements in one frozen scope — and naming it that way lets future plans
+authorize the coupled edit up front instead of spending a turn discovering it.
+
+### V4 — the working branch is currently unconfigurable, which §8 does not say
+
+Verified at HEAD: the old identity has **0** definitions under `tests/`, while
+`cmake/DirectionalTests.cmake` still lists it **once**. The mandatory contract therefore fails
+`FATAL_ERROR` at configure, so the branch as it stands cannot configure at all.
+
+Two consequences worth recording alongside §8's risk note:
+
+1. `M4-CP3-CB4-R4` is **unblocking, not merely next**. No turn that needs to configure — any Code + Build,
+   any packaging step — can run until it lands.
+2. This also confirms V3 from the other direction: the identity replacement and the registry update could
+   never have been split across turns even in principle, because the intermediate state is un-buildable.
+   That intermediate state is the one the branch currently occupies.
+
+Neither point changes the decision or the successor's scope, which is already correctly limited to one
+identity name in one build file.
+
+### V5 — obligations
+
+§6 names all five outstanding items by id with a disposition and states that none is silently discharged.
+That is full `REVIEW_TURN_POLICY.md` §2.5 compliance and the strongest obligation ledger in this sequence
+so far.
+
 ## 10. Review closeout
 
 | Duty | Answer |
