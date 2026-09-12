@@ -1,0 +1,40 @@
+name: Agent M4 CP3 CB9 Preflight Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-cb9-preflight/**
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-cb9-preflight.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-cb9-preflight
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  compile:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 47ae78e1e46e7d2dcc230fc617291ca45f2e418e
+      targets: directional_surface_cell_producer_tests
+      artifact_prefix: m4-cp3-cb9-preflight
+    secrets: inherit
