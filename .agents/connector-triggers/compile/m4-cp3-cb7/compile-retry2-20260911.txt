@@ -1,0 +1,7 @@
+Turn: M4-CP3-CB7
+Purpose: authoritative compile/package retry with eight unique frozen targets.
+Source SHA: dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8
+Changed-owner preflight: directional_surface_cell_producer_tests
+Full package targets: producer core pipeline authority completion validation compiled_api benchmarks
+Prior valid-start run 34678622666 used a duplicate producer entry in target metadata and is non-authoritative for packaging.
+Runtime execution: forbidden
