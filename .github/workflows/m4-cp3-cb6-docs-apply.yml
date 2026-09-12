@@ -1,0 +1,47 @@
+name: M4 CP3 CB6 Closeout Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp3-cb6-docs-apply-20260911.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp3-cb6-docs-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-cb6-docs-apply
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp3-cb6-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 19ah9t6B_qL_J3Key2L2z1iVhdVNLszge
+      patch_sha256: '9d744d10df30e0d62cf63c2afcc04ad69c296c04ae3cb2e992f1fc89050eb428'
+      base_sha: 9f7ed8e0a91a357e5ed9bd58734273b06b4c3ee5
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close out M4-CP3-CB6 compile checkpoint'
+      retention_days: 7
+    secrets: inherit
