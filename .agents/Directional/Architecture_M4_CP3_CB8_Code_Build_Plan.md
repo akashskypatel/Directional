@@ -1,7 +1,7 @@
 # M4-CP3-CB8 Code + Build Plan — consume cut-open A2b/A3 occurrence authority at A4
 
 **Turn:** `M4-CP3-CB8`
-**Status:** FROZEN BY `M4-CP3-TB5-REV` / NOT STARTED
+**Status:** COMPLETE / COMPILE-GREEN / RUNTIME NOT EXECUTED
 **Turn type:** product Code + Build / runtime-free
 **Owner:** `M4-CP3-TB5-REV-CAND-01`
 **Entering accepted runtime authority:** R4 artifact `10289601000` / selector403 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` / **403/403**
@@ -168,3 +168,22 @@ Hard STOP and return to Review/DEFN if any of these is required:
 - changing row408 fixture authority or suppressing its failing assertion;
 - adding a second unrelated product correction;
 - selector mutation.
+
+
+## 9. Executed CB8 closeout — compile authority only
+
+CB8 completed the frozen runtime-free product correction without widening the reviewed seam. The pre-mutation G1-G3 guard was preserved as machine-readable recovery evidence and passed before product mutation. The accepted implementation consumes A2b/A3 cut-open boundary **occurrences** in the curved bounded-disk A4 path while leaving the physical raw bounded-disk path intact. `SurfaceBoundaryOccurrenceId` carries typed region + canonical boundary-occurrence ordinal identity through planned shared-boundary intervals; opposite hard-rail cut copies remain distinct until exact A3 span/ordinal/orientation pairing. The final bounded compile remediation only unwraps an already-checked `DomainResult<SourceVertexId>` with `.value()` and does not change product semantics.
+
+Final semantic source is `6934d9edfb56b44f956fbc64a89a501aaed042af`. Selector authority remained byte-frozen:
+
+- selector403: 403 LF identities, SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`;
+- selector408: 408 LF identities, SHA-256 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`;
+- first403 byte-identical; owner partition **30 authority-kernel / 262 producer / 75 completion / 41 validation**.
+
+The first compile run `34708704308` stopped at one compile-only defect in `SurfaceCellTracing.cpp`: `SourceVertexId::from_index(...)` returns `DomainResult<SourceVertexId>`, so the new occurrence signature could not use unary `*`. No generated Directional runtime executed. The one-line `.value()` remediation was applied by Drive workflow `34708941120`, producing the final semantic source above.
+
+Authoritative retry run `34709028122` is GREEN. The changed-owner `directional_surface_cell_producer_tests` compile and the frozen eight-target package compile both succeeded under mandatory GMP/GMPXX. Package result artifact `10303165017` has provider SHA-256 `d601e5efc4d6a3cafc34d4a5ead0a5a44040e3026d31b3f75afad59c71b68112`; package log artifact `10303015368` has SHA-256 `2f284cc6b3b67dbbb07d27060c3d94185ba021dc08708bb5f04f54796f65baa1`. Owner result/log artifacts are `10302114686` / `10302019734`, SHA-256 `25a07df6fa2ffc62c8fb4aa2d671baed5d0eb3d300695eea8376e0c91fd815ed` / `39380717691a2b98a985c3efa9e0f55143349c6cfb8a98cea94e31d895d7ada2`. Local inspection of the immutable package verified all **28/28** root `SHA256SUMS` entries, exact packaged source commit `6934d9ed...`, source archive SHA-256 `7b906b0ad1560d3cb158178ae224d2d391e8fee66d7268f78ba2ed172a0ec5eb`, empty source-status snapshots, exact eight target outputs, `exactArithmeticBackend=GMP`, and `runtimeExecution=false`.
+
+Compile success is **not** runtime acceptance. Corrected R4 artifact `10289601000` / selector403 **403/403** remains reviewed runtime authority. Candidate selector408 is still unpromoted; `M4-CP3-TB5-REV-CAND-01`, CP3 and `G4-B002` remain open pending immutable artifact-only execution and Review.
+
+**Exact successor:** `M4-CP3-TB6-EXEC`, consuming only package artifact `10303165017` under `.agents/Directional/Architecture_M4_CP3_TB6_Artifact_Only_Test_Benchmark_Plan.md`. CB8 authorizes no runtime itself.
