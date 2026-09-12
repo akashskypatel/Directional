@@ -28,11 +28,17 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-TB7-REV` (adjudicate first cumulative RED after CB9 compatibility recovery)
+## Current focus — `M4-CP3-CB10` (test-authority migration after accepted ordinal211 RED)
 
-`M4-CP3-TB7-EXEC` is **COMPLETE / FAIL-FAST RED / REVIEW REQUIRED**. Immutable CB9 package `10305678151` was executed without rebuild or repair. Ordinal138 **2/2 PASS**, row408 **2/2 PASS**, and rows404-407 **8/8 PASS**, so the frozen focused discriminator set is mechanically **12/12 GREEN**. Selector403 then passed ordinals1-210 and REDed at accepted ordinal211 `SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected`, whose body threw `internal-midline hard-rail rectangle producer failed: InvalidHardRailPairing`. Frozen fail-fast stopped at **223 = 222 PASS / 1 RED**; later selector403 rows and selector408 were not reached. Immutable postflight passed.
+`M4-CP3-TB7-REV` is **COMPLETE**. The CB9 correction is recovery-proved: ordinal138 **2/2 PASS**, row408 **2/2 PASS**, rows404-407 **8/8 PASS**. `M4-CP3-TB6-REV-CAND-01` is closed recovery-proved; its stable event remains historical.
 
-**Exact next: `M4-CP3-TB7-REV`.** Review must independently validate the focused recovery, re-derive ordinal211's accepted premise and candidate execution path, classify the RED without assuming causality from exposure order, and decide CB9 candidate/package disposition and any bounded successor. No continuation runtime or repair is authorized before Review. Accepted runtime authority remains corrected R4 artifact `10289601000` / selector403 **403/403**. Stable totals remain **48 events / 14 categories / 34 recurrences**, debt **5**, pending Review. CP3 and `G4-B002` remain open.
+The TB7 cumulative RED at accepted ordinal211 is **TEST-AUTHORITY / FIXTURE-PRECONDITION DRIFT AFTER THE CB5 A3→A4 CUTOVER**, not direct CB9 product causality. The test file is byte-identical between accepted R4, CB5 and current source. CB5 correctly made exact A3 shared-boundary identity mandatory, while `make_hard_rail_fixture()` still constructs manual hard-rail authority without accepted A2b/A3 plans and therefore fails setup at `InvalidHardRailPairing` before the test's intended tamper.
+
+`M4-CP3-TB7-REV-CAND-01` is OPEN. Because ordinal211 was inside accepted selector403 and went PASS → RED, stable accounting advances to **49 events / 14 categories / 35 recurrences**, debt **5**, category existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`.
+
+**Exact next: `M4-CP3-CB10`.** Test-authority-only, runtime-free. Follow `.agents/Directional/Architecture_M4_CP3_CB10_Code_Build_Plan.md`: prove G1-G4 before mutation, migrate only the shared hard-rail fixture onto production A2b/A3 authority, preserve all six downstream identity bodies/names and selector identity lists, compile/package the eight CP3 targets with GMP/GMPXX, and author TB8. No production fallback or runtime is authorized.
+
+Accepted runtime authority remains corrected R4 artifact `10289601000` / selector403 **403/403**. CB9 package `10305678151` is rejected/unpromoted. CP3 and `G4-B002` remain open.
 
 ## Carried forward from M1
 
@@ -71,7 +77,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / CORRECTED R4 ARTIFACT + SELECTOR403 ACCEPTED / CB9 COMPILE-GREEN / CP3 OPEN**. `M4-CP3-TB2-R2-REV` accepted artifact `10289601000` / selector403 **403/403**. CB9 restores the bounded-disc applicability seam at semantic source `47ae78e1e46e7d2dcc230fc617291ca45f2e418e`; runtime re-proof is pending. Exact next is artifact-only `M4-CP3-TB7-EXEC`. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / CORRECTED R4 ARTIFACT + SELECTOR403 ACCEPTED / CP3 OPEN**. `M4-CP3-TB2-R2-REV` accepted artifact `10289601000` / selector403 **403/403**. TB7 proves CB9 recovered ordinal138 while preserving row408/404-407, but accepted ordinal211 exposes CB5-era test-fixture precondition drift; CB9 package stays unpromoted. Exact next is test-only/runtime-free `M4-CP3-CB10`. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -111,4 +117,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **48 events / 14 categories / 34 recurrences**, debt **5**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted current M4-CP3 runtime authority, with selector394 preserved as exact-prefix predecessor. TB6 proves the CB8 row408 occurrence-domain recovery 2/2 and rows404-407 8/8, then fail-fast REDs at accepted selector403 ordinal138 after 137 cumulative passes. Review classifies that RED as non-stable product-semantic `<4` applicability/disposition scope widening. Exact next is **`M4-CP3-TB7-EXEC`**; CP3 remains open and candidate selector408 remains unpromoted until Review. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted current M4-CP3 runtime authority, with selector394 preserved as exact-prefix predecessor. TB7 closes the ordinal138 product regression recovery-proved, then exposes accepted ordinal211 as `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`: its legacy hard-rail fixture lacks mandatory A2b/A3 authority after the CB5 production cutover. Exact next is **`M4-CP3-CB10`** test-only/runtime-free; candidate selector408 remains unpromoted. PR #8 remains open, draft, and unmerged.

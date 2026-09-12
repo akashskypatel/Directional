@@ -1,67 +1,64 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP3-TB7-EXEC` COMPLETE / FAIL-FAST RED / REVIEW REQUIRED / CP3 OPEN
+**Status:** `M4-CP3-TB7-REV` COMPLETE / CANDIDATE REJECTED / TEST-AUTHORITY STABLE EVENT / CP3 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-TB7-REV`
+**Canonical next turn:** `M4-CP3-CB10`
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures.
 - Corrected R4 artifact `10289601000` remains accepted M4-CP3 runtime authority at selector403 **403/403**; selector403 SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`.
-- CB9 candidate semantic source `47ae78e1e46e7d2dcc230fc617291ca45f2e418e` / package `10305678151` remains **UNPROMOTED / REVIEW PENDING** after TB7 fail-fast RED.
-- Stable accounting remains **48 events / 14 categories / 34 recurrences**, produced-witness debt **5** until Review. CP3 and `G4-B002` remain OPEN.
+- CB9 semantic correction is **RECOVERY PROVED / RETAINED**, but package `10305678151` remains **REJECTED / UNPROMOTED** because TB7 reached accepted ordinal211 RED.
+- Stable accounting is now **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. CP3 and `G4-B002` remain OPEN.
 
-## TB7-EXEC completed
+## TB7 Review disposition
 
-Artifact-only run/job `34721325716 / 103627645766` consumed immutable CB9 package `10305678151` with no rebuild, repair, discovery, benchmark, fixture mutation, or selector mutation. Preflight and postflight preserved package/source/execution-view byte+mode authority.
+TB7 mechanically produced **223 = 222 PASS / 1 RED** with immutable postflight. Focused recovery is **12/12 GREEN**: ordinal138 2/2, row408 2/2, rows404-407 8/8. This closes `M4-CP3-TB6-REV-CAND-01` **RECOVERY PROVED**; CB9's bounded-disc applicability correction remains required.
 
-Fresh exact-filter results before fail-fast:
+Ordinal211 `SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected` is a separate accepted-prefix regression. Review proved:
 
-1. ordinal138 A/B: **2/2 PASS**;
-2. row408 A/B: **2/2 PASS**;
-3. rows404-407 A/B: **8/8 PASS**;
-4. selector403 ordinals1-210: **210/210 PASS**;
-5. selector403 ordinal211 `SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected`: **RED**, throwing `internal-midline hard-rail rectangle producer failed: InvalidHardRailPairing`;
-6. remaining selector403 and selector408 cumulative phases: **not reached** by frozen fail-fast.
+1. the entire `SurfaceCellTransitionQuotientTests.cpp` file is byte-identical in accepted R4, CB5 and current/CB9 source (`4372a939...982f25`);
+2. accepted R4 selector403 403/403 therefore proves ordinal211 historical PASS;
+3. CB5 changed production hard-rail pairing to require exact A3 `sharedBoundaryInterval` identity;
+4. the unchanged `hard_rail_fixture()` still supplies manual hard rail authority without `GlobalTopologyPlan` / `GlobalConformityBaselinePlan`;
+5. it now fails fixture production at `InvalidHardRailPairing` before ordinal211's intended reciprocal-opposite tamper;
+6. CB9's one-line change is inside accepted-cut handling and is unreachable from this no-plan fixture.
 
-Total runtime processes: **223 = 222 PASS / 1 RED**, with zero SKIP/crash/timeout/selection mismatch. Result/log artifacts are `10306626902 / 10306557117`, SHA-256 `c9993798e8ce4d30db20beb8b96d219c4d48618cc50b4d8c18838ea76f682165` / `2ecd20e9b2e7eccffb20fd9c52c45b34579de274a57ec89c282ff582700b130e`. Ledger SHA-256 is `d5116d08e4cc08be1d20877008963d04795d7c7dea23a55d725c6da1f22c690e`.
+Classification: `M4-CP3-TB7-REV-CAND-01` **OPEN / TEST-AUTHORITY / FIXTURE-PRECONDITION DRIFT AFTER A3→A4 CUTOVER / STABLE EVENT**. Product fail-closed behavior is correct: frozen M4 authority forbids restoring floating `support_key` or inventing shared subdivisions without A3.
 
-EXEC makes **no semantic classification** of ordinal211 and makes no promotion/rejection decision beyond leaving CB9 unpromoted pending Review.
+Only ordinal211 is a proved runtime RED. Five later accepted identities share the same fixture and are static at-risk consumers: ordinals217, 219, 227, 230 and 231. TB8 must execute all six after correction.
 
-## Exact next — `M4-CP3-TB7-REV`
+## Exact next — `M4-CP3-CB10`
 
-Review `.agents/Directional/Architecture_M4_CP3_TB7_Artifact_Only_Test_Benchmark_Report.md` and independently re-open its immutable evidence. Review must:
+Follow `.agents/Directional/Architecture_M4_CP3_CB10_Code_Build_Plan.md` exactly.
 
-1. validate the focused **12/12 PASS** evidence (ordinal138 2/2, row408 2/2, rows404-407 8/8);
-2. re-derive ordinal211's accepted historical premise and actual candidate path to `InvalidHardRailPairing`;
-3. determine stale-test versus product-semantic versus latent-existing classification without assuming causality from exposure order;
-4. decide CB9 candidate/package disposition and any authorized successor;
-5. update regression/stable accounting only from reviewed evidence;
-6. preserve corrected R4 selector403 as accepted runtime authority unless Review explicitly decides otherwise.
+CB10 is **test-authority-only and runtime-free**. Before mutation it must prove G1-G4: accepted identity/byte continuity, exact missing-A3 fixture path, frozen product strictness, and one authority-complete replacement fixture route. If proven, migrate only `make_hard_rail_fixture()` onto production A2b/A3 authority while preserving the 3×3 mesh, hard support and all six downstream identity bodies/names.
 
-Do not continue selector403/408 runtime before adjudicating the first RED.
+Production source, A2b/A3 writers, hard-rail missing-interval rejection, CB8 occurrence-domain logic, CB9 applicability correction, rows404-408 and selector identity lists are frozen. A product fallback or second semantic dependency is a STOP back to Review.
+
+Compile/package all eight current CP3 owner targets through the mandatory reusable GMP workflow. Execute **no Directional runtime**. CB10 must author the artifact-only TB8 plan; TB8 Review remains promotion owner.
 
 ## Carried obligations
 
 - `M4-CP3-TB1-R1-REV-OBS-01`: multiplicity-2 end-to-end oracle remains carried/non-blocking.
 - `M4-CP3-CB4-REV-OBS-02`: row399 path/`sourceFaces` divergence tamper detector remains carried/non-blocking.
-- TB3 provenance warning remains: row408 is a constructed production torus witness, not proof that `InvalidHardRailPairing` was historically observed.
+- TB3 provenance warning remains: row408 is a constructed production torus witness, not evidence that `InvalidHardRailPairing` was historically observed in that exact path.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP3_TB7_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M4_CP3_CB10_Code_Build_Plan.md
 required:
+  - .agents/Directional/Architecture_M4_CP3_TB7_Review_Record.md
   - .agents/Directional/Architecture_M4_CP3_CB9_Code_Build_Report.md
-  - .agents/Directional/Architecture_M4_CP3_TB6_Review_Record.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - .agents/Directional/Architecture_M4_CP3_CB4_R3_Required_Green_Selector_403.txt
+  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
 do_not_preload:
   - M5/M6 implementation
-  - any repair before TB7-REV adjudication
-  - unreached selector continuation runtime
+  - any product fallback for no-plan hard rails
+  - selector continuation runtime before a new compiled package exists
 ```

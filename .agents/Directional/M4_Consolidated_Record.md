@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-12 at `M4-CP3-TB6-REV`
+**Last updated:** 2026-09-12 at `M4-CP3-TB7-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. TB6 Review accepts CB8 row408 **2/2** plus rows404-407 **8/8** as genuine occurrence-domain recovery and closes the TB5 candidate, but rejects candidate promotion because accepted ordinal138 exposes a non-stable product-semantic `<4` bounded-disk applicability/disposition scope widening. Candidate selector408 remains unpromoted. Stable accounting remains **47 / 14 / 33**, debt **5**; CP3 and `G4-B002` remain OPEN. Exact next is runtime-free `M4-CP3-CB9`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. TB7 proves CB9 recovered the ordinal138 applicability regression while preserving row408/rows404-407, then exposes accepted ordinal211 as CB5-era **TEST-AUTHORITY fixture-precondition drift**: the legacy unit fixture lacks mandatory A2b/A3 authority. CB9 package/selector408 remains unpromoted. Stable accounting is **49 / 14 / 35**, debt **5**; CP3 and `G4-B002` remain OPEN. Exact next is test-only/runtime-free `M4-CP3-CB10`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
 
 ## 1. M4 entering authority
 
@@ -529,3 +529,14 @@ No selector file, durable policy, closure record, normative architecture, or unr
 CB9 proved G1-G3 before mutation and changed only the curved bounded-disk applicability/disposition seam in `SurfaceCellTracing.cpp`: the premature accepted-cut `acceptedSegments.size()<4` rejection is removed so valid total small authority reaches the established common `NotApplicable` gate, while all typed invalid-authority checks remain in force. Semantic source is `47ae78e1e46e7d2dcc230fc617291ca45f2e418e`.
 
 Changed-owner run `34720050597` and frozen eight-target package run `34720182350` are GREEN with GMP/GMPXX, empty source status and `runtimeExecution=false`. Package artifact `10305678151` has SHA-256 `543fd253bf04bde38f16aac8c33a05447bf515f37027a077f6014ff13957a629`; independent manifest verification is 28/28 PASS. No runtime acceptance is claimed. Exact successor is artifact-only `M4-CP3-TB7-EXEC`; accepted runtime authority remains corrected R4 until `M4-CP3-TB7-REV`. Stable totals remain 48/14/34, debt 5.
+
+
+## 2.37 `M4-CP3-TB7-REV` — CB9 recovery retained; accepted ordinal211 exposes CB5-era test-authority drift
+
+TB7's focused discriminator is **12/12 PASS**: ordinal138 2/2, row408 2/2 and rows404-407 8/8. This closes `M4-CP3-TB6-REV-CAND-01` recovery-proved and retains CB9's bounded-disc applicability correction. The CB9 package is nevertheless rejected/unpromoted because cumulative selector403 reaches accepted ordinal211 RED after ordinals1-210 PASS.
+
+Review compared exact accepted R4 (`58521f6d...`), CB5 (`4dfd0d9a...`) and current/CB9 (`47ae78e1...`) sources. `SurfaceCellTransitionQuotientTests.cpp` is byte-identical in all three. Accepted R4 paired hard rails using `support_key`; CB5 correctly cut production pairing over to exact A3 `sharedBoundaryInterval` authority and rejects missing interval identity. The unchanged `hard_rail_fixture()` supplies manual hard edges/rail but no `GlobalTopologyPlan` or `GlobalConformityBaselinePlan`, so after CB5 it cannot populate intervals and rejects `InvalidHardRailPairing` before ordinal211's intended product-tamper oracle. CB8/CB9 are not the direct cause; CB9's edited accepted-cut branch requires plans and is unreachable from this fixture.
+
+`M4-CP3-TB7-REV-CAND-01` is **OPEN / TEST-AUTHORITY / FIXTURE-PRECONDITION DRIFT / STABLE EVENT**. Frozen M4 authority requires A4 to consume A3 and forbids restoring floating/no-plan pairing, so correction is test-only. Accepted ordinal211 PASS→RED advances stable accounting to **49 events / 14 categories / 35 recurrences**, debt 5, category existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`. Corrected R4 package `10289601000` / selector403 403/403 remains accepted.
+
+Exact successor is runtime-free `M4-CP3-CB10`: migrate only the shared hard-rail fixture to a production-valid A2b/A3 path, preserve the six downstream hard-rail identity bodies/names and selector lists, compile/package all eight CP3 targets with GMP/GMPXX, then hand off to artifact-only TB8.
