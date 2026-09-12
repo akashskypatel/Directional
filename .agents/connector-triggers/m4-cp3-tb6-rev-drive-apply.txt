@@ -1,0 +1,4 @@
+turn=M4-CP3-TB6-REV
+purpose=apply reviewed TB6 adjudication and frozen CB9 plan
+patch_sha256=538a20f4fd8dae2a6e2c8c9b6c71b5bec7a9292b4f5191498ca87445bdc36d7e
+base_sha=8da9bd6dd6184870045b30c349c54848e61f9d21
