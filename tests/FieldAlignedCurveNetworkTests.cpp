@@ -5071,6 +5071,10 @@ directional::pipeline::RemeshOptions cp4c_remesh_options() {
 
 directional::pipeline::RemeshOptions cp4c_torus_hard_rail_remesh_options() {
   directional::pipeline::RemeshOptions options = cp4c_remesh_options();
+  options.surfaceCells.featureMap.cadAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.cadAbsoluteHighDegrees = 180.0;
+  options.surfaceCells.featureMap.organicAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.organicAbsoluteHighDegrees = 180.0;
   const std::array<int, 7> minorCycle{{0, 3, 25, 37, 49, 61, 0}};
   const std::array<int, 13> majorCycle{
       {0, 1, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 0}};
@@ -15154,6 +15158,28 @@ TEST(RemeshPipeline,
   const Cp4cProductionFixture fixture = build_cp4c_pipeline_products_fixture(
       "torus", "torus", cp4c_torus_hard_rail_remesh_options());
   ASSERT_TRUE(fixture.authoritativeRailsSnapshotAvailable);
+  const std::set<std::pair<int, int>> expectedHardFeatureEdges{
+      {0, 1},   {0, 3},   {0, 22},  {0, 61},  {1, 4},   {3, 25},
+      {4, 6},   {6, 8},   {8, 10},  {10, 12}, {12, 14}, {14, 16},
+      {16, 18}, {18, 20}, {20, 22}, {25, 37}, {37, 49}, {49, 61}};
+  std::set<std::pair<int, int>> effectiveHardFeatureEdges;
+  for (const SurfaceCellRail &rail : fixture.rails) {
+    if (rail.kind != SurfaceCellRailKind::HardFeature) continue;
+    ASSERT_GE(rail.sourceVertices.size(), 2U);
+    for (std::size_t index = 1U; index < rail.sourceVertices.size(); ++index) {
+      const int a = rail.sourceVertices[index - 1U];
+      const int b = rail.sourceVertices[index];
+      effectiveHardFeatureEdges.insert({std::min(a, b), std::max(a, b)});
+    }
+    if (rail.closed) {
+      const int a = rail.sourceVertices.back();
+      const int b = rail.sourceVertices.front();
+      effectiveHardFeatureEdges.insert({std::min(a, b), std::max(a, b)});
+    }
+  }
+  ASSERT_EQ(expectedHardFeatureEdges, effectiveHardFeatureEdges)
+      << "row408 requires the effective production hard-feature authority "
+         "to equal the 18 explicit torus cut-graph edges";
   ASSERT_FALSE(fixture.rails.empty());
   const std::size_t hardFeatureRailCount = static_cast<std::size_t>(
       std::count_if(fixture.rails.begin(), fixture.rails.end(),
