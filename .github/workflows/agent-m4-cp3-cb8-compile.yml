@@ -38,7 +38,7 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 0d823b2c83816950f1c30abdd17bcf54845e420b
+      source_sha: 6934d9edfb56b44f956fbc64a89a501aaed042af
       targets: directional_surface_cell_producer_tests
       artifact_prefix: m4-cp3-cb8-owner
     secrets: inherit
@@ -48,7 +48,7 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' && needs.owner-compile.result == 'success' }}
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 0d823b2c83816950f1c30abdd17bcf54845e420b
+      source_sha: 6934d9edfb56b44f956fbc64a89a501aaed042af
       targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix: m4-cp3-cb8-package
     secrets: inherit
