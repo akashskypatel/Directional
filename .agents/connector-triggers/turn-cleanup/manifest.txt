@@ -1,0 +1,3 @@
+.agents/connector-triggers/m4-cp3-cb8-compile.txt
+.agents/connector-triggers/m4-cp3-cb8-closeout-drive-apply.txt
+.agents/connector-triggers/source-snapshot/m4-cp3-cb8-start-20260912.txt
