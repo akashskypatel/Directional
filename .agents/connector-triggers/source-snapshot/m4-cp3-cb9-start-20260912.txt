@@ -1,0 +1,3 @@
+M4-CP3-CB9 source snapshot trigger.
+Frozen semantic source SHA: 104b8e3e3821bd6438aed140c5b75377ad34223e
+Purpose: exact source materialization for runtime-free CB9 inspection.
