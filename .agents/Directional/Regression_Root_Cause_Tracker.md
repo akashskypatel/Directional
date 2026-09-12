@@ -1,3 +1,15 @@
+## M4-CP3-CB4-R3-REV adjudication — **APPROVED WITH AMENDMENTS / SEMANTIC CORRECTION UPHELD / BUILD-CONTRACT DRIFT SOURCE-PROVED**
+
+- Review independently re-opened semantic commit `7fdc3c001de9193f8f94591d3e74d1c94c260195`, the failed configure artifact `10287418994`, current CMake packaged-test ownership guards, replacement row400 and selector403.
+- The R3 product correction is upheld: canonical terminal-contact barycentrics are remapped by source-vertex identity into the raw oriented `SourceFaceRecord::vertices` basis before raw-corner rotation ranking. Existing fan row `[3,0,4]` / canonical `[0,3,4]`, locus 4 and weights `[1/6,1/3,1/2]` independently distinguish correct `1/3` from wrong positional `2/3`.
+- R3 selector403 re-hashes to `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`; accepted first394 remains `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; static source mapping is 403/403 unique with owner partition **30/257/75/41** and row400 producer-owned.
+- **`M4-CP3-CB4-R3-REV-CAND-01` OPEN / NON-STABLE / BUILD-CONTRACT / MANDATORY PACKAGED-TEST IDENTITY DRIFT / SOURCE-PROVED.** `cmake/DirectionalTests.cmake` still requires retired row400 name `FaceBarycentricCoordinatesUseCanonicalTopologyKeyOrderNotSourceRowOrder`, which now has zero source definitions. Replacement `TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking` has exactly one definition in the same default packaged producer source. The compile guard therefore stopped on a stale literal ownership marker, an existing `LESSONS.md` 49 pattern.
+- **Falsifier:** after replacing only the mandatory CMake identity string, configure must find exactly one replacement definition in `tests/FieldAlignedCurveNetworkTests.cpp`; any need to change another identity, target, selector, test or product source falsifies the bounded diagnosis.
+- **Corrective owner:** `M4-CP3-CB4-R4`, one build-configuration identity replacement plus compile/package only. Product/test/selector semantic bytes are frozen. Any second dependency returns to Review.
+- `M4-CP3-CB4-R2-REV-CAND-01` and `M4-CP3-TB2-REV-CAND-01` remain runtime-unproved and carry through the later 799-process artifact-only gate; `M4-CP3-TB1-R1-REV-OBS-01` and `M4-CP3-CB4-REV-OBS-02` remain outside R4.
+- Package119/selector394 remains accepted **394/394**; package120/historical old selector403 remains mechanically **403/403** but unpromoted; R3 selector403 remains static candidate authority. Stable accounting remains **47 events / 14 categories / 33 recurrences**, debt **5**. CP3 open; A3->A4 unauthorized.
+- **Exact successor:** `M4-CP3-CB4-R4` under `Architecture_M4_CP3_CB4_R4_Code_Build_Plan.md`. No compile or runtime occurred in Review.
+
 ## M4-CP3-CB4-R2-REV adjudication — **REJECTED/REPLACED / STOP-GUARD UPHELD / REAL A2B BASIS SEAM SOURCE-PROVED**
 
 - `M4-CP3-CB4-R2-REV` independently re-opened the STOP-GUARD against reviewed semantic source `190cb56e680dc02a91c743ccad61ca2ef10a6032`. Drift through review start head `9329d6610ffbfbb9fe3f638a2aae7ce3be368fa7` is documentation-only; no product/test/build/selector source changed.
