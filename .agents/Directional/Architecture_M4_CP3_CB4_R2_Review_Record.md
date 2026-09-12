@@ -117,7 +117,7 @@ Its plan must change only the one A2b terminal-contact basis conversion, replace
 
 A3->A4 cutover remains unauthorized until this corrected package is runtime-proved and reviewed.
 
-Publication note: first documentation-apply run `34660476095` failed closed at `git diff --check` on Markdown trailing whitespace before any commit/push; the documentation bytes were corrected and the retry must use a newly verified patch digest. No repository semantic source changed in that failed attempt.
+Publication note: first documentation-apply run `34660476095` failed closed at `git diff --check` on Markdown trailing whitespace before any commit/push; the documentation bytes were corrected and the retry used a newly verified patch digest. Corrected documentation apply `34660555840` succeeded and pushed `fefca4c6498a4d147f2af966475fd9356c81c4dc`; cleanup `34660615718` succeeded and produced cleanup head `566b813a435e8d0fb604538445b7f73ee04aa242`. The consumed Drive patch was permanently deleted and temporary caller/marker state was retired. No repository semantic source changed in either publication attempt.
 
 ## Review closeout
 
@@ -139,4 +139,4 @@ Publication note: first documentation-apply run `34660476095` failed closed at `
 | Successor frozen | `M4-CP3-CB4-R3`; falsifier and stop rules in `Architecture_M4_CP3_CB4_R3_Code_Build_Plan.md` |
 | Turn boundary held | runtime-free; no product/test/fixture/selector/build mutation |
 | review_check.py boundary | **ALL CHECKS PASSED**; no product/test/fixture/build or selector mutation; durable markers preserved |
-| Pushed to origin, branch in sync | pending publication/closeout |
+| Pushed to origin, branch in sync | corrected documentation apply `34660555840 / fefca4c6498a4d147f2af966475fd9356c81c4dc`; cleanup `34660615718 / 566b813a435e8d0fb604538445b7f73ee04aa242`; successor handoff provenance committed directly after cleanup and final PR head verified before closeout |
