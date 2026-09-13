@@ -269,6 +269,10 @@ jobs:
           pathlib.Path(sys.argv[2]).write_text(src)
           PY
           chmod +x "$out"
+          if ! bash -n "$out"; then
+            nl -ba "$out" | sed -n '500,590p'
+            exit 93
+          fi
           {
             echo "frozen_tb5_harness_sha256=ca01dd830cd8c8c867334e2ec8aa1748309ad8b360260b2a02ddf3d5da6d976d"
             echo "tb8_harness_sha256=$(sha256sum "$out" | awk '{print $1}')"
