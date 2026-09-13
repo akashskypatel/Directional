@@ -1,0 +1,331 @@
+name: Agent M4 CP3 TB8 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb/m4-cp3-tb8/**
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp3-tb8-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-tb8-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-tb8-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      TURN_ID: M4-CP3-TB8-EXEC
+      ARTIFACT_ID: '10307919492'
+      EXPECTED_ARTIFACT_NAME: m4-cp3-cb10-result-34727247774
+      EXPECTED_PROVIDER_DIGEST: sha256:8988a12fa8b2e6476bf3fd91a6a6936eaef8a9ab7c73837b74ea2e980d29b2ec
+      EXPECTED_ZIP_SHA256: 8988a12fa8b2e6476bf3fd91a6a6936eaef8a9ab7c73837b74ea2e980d29b2ec
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "turn_id=${TURN_ID}"
+            echo "artifact_id=${ARTIFACT_ID}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact execution control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Materialize frozen TB8 harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="${RUNNER_TEMP}/m4-cp3-tb5-reviewed-harness.sh"
+          out="${RUNNER_TEMP}/m4-cp3-tb8-exec-harness.sh"
+          curl -L --fail --silent --show-error \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github.raw+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            'https://api.github.com/repos/akashskypatel/Directional/contents/.agents/Directional/turn-payloads/m4-cp3-tb5-exec-harness.sh?ref=4e86a7ff59a79f24d77099274d11e17a81681db9' \
+            -o "$base"
+          test "$(sha256sum "$base" | awk '{print $1}')" = 'ca01dd830cd8c8c867334e2ec8aa1748309ad8b360260b2a02ddf3d5da6d976d'
+          python3 - "$base" "$out" <<'PY'
+          import pathlib, sys
+          src = pathlib.Path(sys.argv[1]).read_text()
+
+          replacements = {
+              'TB5': 'TB8',
+              'dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8': '1611e9ef57bd1437b4422ab2fca7acef20b19a3a',
+              'ca16770d8ceff1da119687284eb7c01b31af9ce237be01753ed4c962305ff18d': '1ff187c6c08d13f5be5e6481f5323541e48fc93e6ffc0ada78af73a7926c205d',
+              '43e8e4c35712c8b69d4906288390745f2bdb507160cf52c31ad8f7545faa91ed': '35e405ba8d72e4a928f1518f74b2ea6b009aa89995bb268d23cb3cc8392b13d3',
+              "[[ \"$(cat \"$PKG/metadata/preflight-target.txt\")\" == 'directional_surface_cell_producer_tests' ]] || fail_orchestration 'preflight target mismatch'": "[[ \"$(cat \"$PKG/metadata/preflight-target.txt\")\" == 'directional_core' ]] || fail_orchestration 'preflight target mismatch'",
+          }
+          for old, new in replacements.items():
+              if old not in src:
+                  raise SystemExit(f'missing frozen replacement token: {old}')
+              src = src.replace(old, new)
+
+          row408 = "ROW408_IDENTITY='RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity'\n"
+          if src.count(row408) != 1:
+              raise SystemExit('row408 constant anchor drift')
+          src = src.replace(
+              row408,
+              row408 + (
+                  "ORDINAL138_IDENTITY='SurfaceCellAuthorityContractCutover.HardFeatureRegionDeclinedByAllPhaseFrontProducersFailsClosedTyped'\n"
+                  "SHARED_FOCUSED_ORDINALS=(211 217 219 227 230 231)\n"
+                  "SHARED_FOCUSED_IDENTITIES=(\n"
+                  "  'SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected'\n"
+                  "  'SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions'\n"
+                  "  'SurfaceCellTransitionQuotient.MissingHardRailCounterpartIsRejected'\n"
+                  "  'SurfaceCellTypedTransportAuthority.DuplicateSemanticRouteTopologyFailsClosed'\n"
+                  "  'SurfaceCellTypedTransportAuthority.RouteTopologyTransitionMismatchFailsClosed'\n"
+                  "  'SurfaceCellTypedTransportAuthority.ValidHardRailRouteUsesTypedIdentity'\n"
+                  ")\n"
+              ),
+              1,
+          )
+
+          gmp_anchor = "for token in 'libgmpxx.so' 'libgmp.so'; do\n  grep -Fq \"$token\" \"$PKG/metadata/gmp-evidence.txt\" || fail_orchestration \"missing GMP evidence: $token\"\ndone\n"
+          if src.count(gmp_anchor) != 1:
+              raise SystemExit('GMP preflight anchor drift')
+          extra = gmp_anchor + (
+              "for status_file in \"$PKG\"/metadata/source-status-*.txt; do\n"
+              "  [[ -f \"$status_file\" ]] || fail_orchestration 'source-status snapshot set absent'\n"
+              "  [[ ! -s \"$status_file\" ]] || fail_orchestration \"non-empty source-status snapshot: $(basename \"$status_file\")\"\n"
+              "done\n"
+              "for exe in directional_benchmarks directional_compiled_api_tests; do\n"
+              "  [[ -f \"$PKG/bin/$exe\" && -x \"$PKG/bin/$exe\" ]] || fail_orchestration \"required packaged executable absent or non-executable: $exe\"\n"
+              "done\n"
+              "for archive in libdirectional_core.a libdirectional_pipeline.a; do\n"
+              "  [[ -f \"$PKG/lib/$archive\" ]] || fail_orchestration \"required packaged archive absent: $archive\"\n"
+              "done\n"
+          )
+          src = src.replace(gmp_anchor, extra, 1)
+
+          # The accepted M4 suite must run organically. Remove the historical per-process
+          # elapsed-time wrapper and classify any signal termination as a crash.
+          timed = "    /usr/bin/time -v -o \"$resource\" \\\n      timeout -k 5s 180s \\\n      env GTEST_FAIL_IF_NO_TEST_SELECTED=1 GTEST_COLOR=no \\\n"
+          untimed = "    /usr/bin/time -v -o \"$resource\" \\\n      env GTEST_FAIL_IF_NO_TEST_SELECTED=1 GTEST_COLOR=no \\\n"
+          if src.count(timed) != 1:
+              raise SystemExit('historical timeout wrapper anchor drift')
+          src = src.replace(timed, untimed, 1)
+          timeout_class = "  elif [[ \"$code\" -eq 124 || \"$code\" -eq 137 ]]; then\n    classification='TIMEOUT'\n    timeout_count=$((timeout_count + 1))\n"
+          if src.count(timeout_class) != 1:
+              raise SystemExit('historical timeout classification anchor drift')
+          src = src.replace(timeout_class, '', 1)
+
+          fn_start = src.index('run_ordinal_or_stop() {')
+          runtime_start = src.index('runtime_started=true', fn_start)
+          new_fn = r'''run_ordinal_census() {
+            local phase="$1" ordinal="$2" expected_identity="${3:-}"
+            local line identity binary classification
+            line="$(map_identity "$ordinal")"
+            identity="$(printf '%s\n' "$line" | cut -f2)"
+            binary="$(printf '%s\n' "$line" | cut -f3)"
+            [[ -n "$identity" && -n "$binary" ]] || fail_orchestration "missing routing at ordinal $ordinal"
+            if [[ -n "$expected_identity" && "$identity" != "$expected_identity" ]]; then
+              fail_orchestration "identity mismatch at ordinal $ordinal: $identity"
+            fi
+            if run_identity "$phase" "$ordinal" "$identity" "$binary"; then
+              return 0
+            fi
+            classification="$(tail -n 1 "$ledger" | cut -f10)"
+            case "$classification" in
+              RED|SKIP)
+                printf '%s\t%s\t%s\t%s\n' "$phase" "$ordinal" "$identity" "$classification" >> "${RESULT}/semantic-red-census.tsv"
+                return 0
+                ;;
+              *)
+                stop_kind="$classification"
+                stop_phase="$phase"
+                stop_ordinal="$ordinal"
+                stop_identity="$identity"
+                return 2
+                ;;
+            esac
+          }
+
+          '''
+          src = src[:fn_start] + new_fn + src[runtime_start:]
+
+          runtime_end = src.index('\nif [[ "$stopped" == false ]]; then\n  runtime_completed=true\nfi\n', runtime_start)
+          runtime_end += len('\nif [[ "$stopped" == false ]]; then\n  runtime_completed=true\nfi\n')
+          new_runtime = r'''runtime_started=true
+          stopped=false
+          printf 'phase\tordinal\tidentity\tclassification\n' > "${RESULT}/semantic-red-census.tsv"
+
+          for rep in A B; do
+            for i in "${!SHARED_FOCUSED_ORDINALS[@]}"; do
+              ordinal="${SHARED_FOCUSED_ORDINALS[$i]}"
+              identity="${SHARED_FOCUSED_IDENTITIES[$i]}"
+              if ! run_ordinal_census "A-shared-${rep}" "$ordinal" "$identity"; then stopped=true; break 2; fi
+            done
+          done
+          if [[ "$stopped" == false ]] && ! run_ordinal_census 'B-ordinal138-A' 138 "$ORDINAL138_IDENTITY"; then stopped=true; fi
+          if [[ "$stopped" == false ]] && ! run_ordinal_census 'B-ordinal138-B' 138 "$ORDINAL138_IDENTITY"; then stopped=true; fi
+          if [[ "$stopped" == false ]] && ! run_ordinal_census 'C-row408-A' 408 "$ROW408_IDENTITY"; then stopped=true; fi
+          if [[ "$stopped" == false ]] && ! run_ordinal_census 'C-row408-B' 408 "$ROW408_IDENTITY"; then stopped=true; fi
+          if [[ "$stopped" == false ]]; then
+            for rep in A B; do
+              for ordinal in 404 405 406 407; do
+                if ! run_ordinal_census "D-controls-${rep}" "$ordinal"; then stopped=true; break 2; fi
+              done
+            done
+          fi
+          if [[ "$stopped" == false ]]; then
+            ordinal=0
+            while IFS= read -r identity || [[ -n "$identity" ]]; do
+              [[ -n "$identity" ]] || continue
+              ordinal=$((ordinal + 1))
+              line="$(map_identity "$ordinal")"
+              mapped_identity="$(printf '%s\n' "$line" | cut -f2)"
+              [[ "$mapped_identity" == "$identity" ]] || fail_orchestration "selector403/map mismatch at ordinal $ordinal"
+              if ! run_ordinal_census 'E-selector403' "$ordinal" "$identity"; then stopped=true; break; fi
+            done < "$selector403"
+            [[ "$stopped" == true || "$ordinal" -eq 403 ]] || fail_orchestration 'selector403 did not enumerate 403 identities'
+          fi
+          if [[ "$stopped" == false ]]; then
+            ordinal=0
+            while IFS= read -r identity || [[ -n "$identity" ]]; do
+              [[ -n "$identity" ]] || continue
+              ordinal=$((ordinal + 1))
+              line="$(map_identity "$ordinal")"
+              mapped_identity="$(printf '%s\n' "$line" | cut -f2)"
+              [[ "$mapped_identity" == "$identity" ]] || fail_orchestration "selector408/map mismatch at ordinal $ordinal"
+              if ! run_ordinal_census 'F-selector408' "$ordinal" "$identity"; then stopped=true; break; fi
+            done < "$selector408"
+            [[ "$stopped" == true || "$ordinal" -eq 408 ]] || fail_orchestration 'selector408 did not enumerate 408 identities'
+          fi
+
+          if [[ "$stopped" == false ]]; then
+            runtime_completed=true
+          fi
+          '''
+          src = src[:runtime_start] + new_runtime + src[runtime_end:]
+
+          old_summary = "if len(rows) == 821:\n    expected = {\n        'A-row408-focused-A': 1,\n        'B-row408-focused-B': 1,\n        'C-controls-A': 4,\n        'C-controls-B': 4,\n        'D-selector403': 403,\n        'E-selector408': 408,\n    }"
+          new_summary = "if len(rows) == 835:\n    expected = {\n        'A-shared-A': 6,\n        'A-shared-B': 6,\n        'B-ordinal138-A': 1,\n        'B-ordinal138-B': 1,\n        'C-row408-A': 1,\n        'C-row408-B': 1,\n        'D-controls-A': 4,\n        'D-controls-B': 4,\n        'E-selector403': 403,\n        'F-selector408': 408,\n    }"
+          if src.count(old_summary) != 1:
+              raise SystemExit('historical semantic-summary coverage anchor drift')
+          src = src.replace(old_summary, new_summary, 1)
+
+          final_start = src.index('if [[ "$selection_integrity" != true ]]; then')
+          new_final = r'''if [[ "$selection_integrity" != true ]]; then
+            orchestration_failure=true
+            stop_kind='ORCHESTRATION_SELECTION_MISMATCH'
+            exit 90
+          fi
+          if [[ "$stopped" == true ]]; then
+            echo "${TURN_ID}_INCOMPLETE: ${stop_kind} at phase=${stop_phase} ordinal=${stop_ordinal} identity=${stop_identity}; processes=${processes_executed}; postflight complete."
+            exit 2
+          fi
+          [[ "$processes_executed" -eq 835 ]] || fail_orchestration "complete process count mismatch: $processes_executed"
+          if [[ "$red_count" -gt 0 || "$skip_count" -gt 0 ]]; then
+            echo "${TURN_ID}_COMPLETE_WITH_REDS: processes=${processes_executed}; pass=${pass_count}; red=${red_count}; skip=${skip_count}; accepted prefix fully censused; semantic interpretation deferred to M4-CP3-TB8-REV."
+            exit 2
+          fi
+          [[ "$pass_count" -eq 835 ]] || fail_orchestration "green completion pass count mismatch: $pass_count"
+          echo "${TURN_ID}_COMPLETE: all 835 fresh exact-filter processes PASS; semantic interpretation deferred to M4-CP3-TB8-REV."
+          '''
+          src = src[:final_start] + new_final
+
+          pathlib.Path(sys.argv[2]).write_text(src)
+          PY
+          chmod +x "$out"
+          {
+            echo "frozen_tb5_harness_sha256=ca01dd830cd8c8c867334e2ec8aa1748309ad8b360260b2a02ddf3d5da6d976d"
+            echo "tb8_harness_sha256=$(sha256sum "$out" | awk '{print $1}')"
+            echo "suite_timeout_policy=none"
+          } | tee -a "${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+
+      - name: Execute frozen artifact-only TB8 gate
+        id: exec
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set +e
+          harness="${RUNNER_TEMP}/m4-cp3-tb8-exec-harness.sh"
+          test -f "$harness" || exit 91
+          "$harness"
+          status=$?
+          echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
+          echo "harness_exit=${status}" | tee -a "${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+          exit 0
+
+      - name: Upload TB8 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb8-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M4-CP3-TB8-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload TB8 diagnostic log
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          cp "${RUNNER_TEMP}/M4-CP3-TB8-EXEC.log" "${RUNNER_TEMP}/m4-cp3-tb8-harness.log" 2>/dev/null || true
+          {
+            echo "harness_exit=${{ steps.exec.outputs.exit_code }}"
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+
+      - name: Upload workflow and harness logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb8-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/m4-cp3-tb8-exec-workflow.log
+            ${{ runner.temp }}/m4-cp3-tb8-harness.log
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Propagate TB8 execution status
+        if: always()
+        shell: bash
+        run: |
+          code='${{ steps.exec.outputs.exit_code }}'
+          test -n "$code" || exit 92
+          exit "$code"
