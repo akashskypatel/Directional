@@ -1,3 +1,0 @@
-purpose=M4-CP-COND-CB1 pre-publication schema validation
-candidate_sha256=63999037fe459c4cc6d3c7b4051453b38a924b4f024483632c448d2b9a7baed1
-retry=2
