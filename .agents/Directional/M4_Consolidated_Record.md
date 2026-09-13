@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-13 at `M4-CP-COND-TB3-EXEC`
+**Last updated:** 2026-09-13 at `M4-CP-COND-TB3-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`. `M4-CP3-TB8-REV` accepts package `10307919492` / selector408 **408/408** and closes CP3. Stable accounting is **49 / 14 / 35**, debt **5**. The main `G4-B002` exact-torus pairing blocker is closed; its three produced-witness debts remain CP4 gating. CP-COND CB3 corrects the negative-index test authority; TB3-EXEC mechanically passes immutable artifact `10325879420` across the frozen 423-process surface with exact postflight. Exact next is mandatory `M4-CP-COND-TB3-REV`; accepted CP3 runtime authority remains unchanged until Review.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`. `M4-CP3-TB8-REV` accepts package `10307919492` / selector408 **408/408** and closes CP3. Stable accounting is **49 / 14 / 35**, debt **5**. The main `G4-B002` exact-torus pairing blocker is closed; its three produced-witness debts remain CP4 gating. CP-COND TB3 Review accepts the corrected negative-index authority and mechanically green artifact `10325879420`, but the checkpoint remains open because its fourteen gates are not yet in the frozen cumulative append-only selector lineage. Exact next is selector-authority/package-only `M4-CP-COND-CB4`; accepted runtime authority remains CP3 package `10307919492` / selector408 until TB4 Review.
 
 ## 1. M4 entering authority
 
@@ -593,7 +593,7 @@ Compile run/job `34785549072 / 103800273458` is GREEN on test-authority source `
 | `Architecture_M4_CP_COND_CB2_Code_Build_Record.md` | 68 | Folded after TB2 Review; package authority retained in §2.41/current TB2 report. |
 | `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` | 96 | Folded after TB2 EXEC/Review; 423-process gate/postflight retained in current TB2 report/Review/CB3 plan. |
 
-Current retained CP-COND authority is the frozen definitions, Review-reconstructed TB2 EXEC report, current TB2 Review record, current TB3-EXEC report, and the executed TB3 plan retained through mandatory Review as its frozen runtime contract. The consumed CB3 Code + Build report is retired by TB3 stale-evidence cleanup; the next REVIEW must add its folded-document index entry together with the earlier retired CB3 plan entry.
+Current retained CP-COND authority after TB3 Review is the frozen definitions, current TB3-EXEC report, current TB3 Review record, and exactly one next plan `Architecture_M4_CP_COND_CB4_Code_Build_Plan.md`. TB2 EXEC/Review and the consumed TB3 plan are folded; the retired CB3 plan/report are indexed below.
 
 
 ## 2.44 `M4-CP-COND-TB3-EXEC` — corrected artifact mechanically green; semantic Review pending
@@ -601,3 +601,23 @@ Current retained CP-COND authority is the frozen definitions, Review-reconstruct
 TB3-EXEC consumed immutable CB3 artifact `10325879420` / source `4d9206cd059d7bb0c10fe3c0a0c91f8af248e675` without rebuild, configure, relink, repair, generated discovery, benchmark or source/test/fixture/selector mutation. The authoritative full attempt executed the complete frozen **423-process** surface: focused **14/14 PASS**, the boundary-truncated separatrix witness **SKIP** with its named report-only/non-selector blocker unchanged, and selector408 **408/408 PASS**. Gating total is **422/422 PASS**, zero RED/crash/timeout/selection mismatch; process-ledger SHA-256 is `bbe96d77a18844f9c050924f4964b8cb052f40f6f1ec75d980ae9c945ae3a034`. Package/source/execution-view byte+mode censuses are exactly equal before/after.
 
 Two preliminary local orchestration attempts receive zero semantic credit: one stopped before any Directional runtime and one was externally interrupted after selector ordinal 114. The authoritative attempt restarted the entire 423-process surface from process 1 and completed all 423 processes plus postflight. Its final shell checker false-counted the headers of the second and third ledgers as selection mismatches; non-runtime `FNR>1` revalidation proves the raw completed census has zero selection mismatch. EXEC is mechanical only: `M4-CP-COND-TB2-REV-CAND-01` remains open/non-stable pending independent Review; artifact `10325879420` is not promoted; accepted runtime authority remains CP3 package `10307919492` / selector408 408/408; stable accounting remains **49 / 14 / 35**, debt **5**. Exact successor is `M4-CP-COND-TB3-REV`.
+
+## 2.45 `M4-CP-COND-TB3-REV` — repaired oracle accepted; cumulative-selector publication still open
+
+Review independently re-derived TB3 from the immutable package/evidence bytes. The corrected negative-index oracle is accepted: it exactifies the actual raw binary64 subject, derives the unique planar closed fan, proves four-branch admissibility, derives exact cross-face Z4 offsets `[3,3,3,3,3]` and signed numerator `-1`, and a one-LSB raw branch mutation invalidates the oracle. `M4-CP-COND-TB2-REV-CAND-01` closes **TEST-AUTHORITY REPAIRED / RUNTIME-PROVED / NON-STABLE**.
+
+TB3 mechanics are also accepted at **14/14 focused PASS + one report-only SKIP + selector408 408/408 PASS**, gating **422/422**, with zero semantic RED/crash/timeout/actual selection mismatch and exact immutable postflight. Artifact `10325879420` is not promoted, however, because frozen CP-COND §12 and M4 selector policy require gate credit on a cumulative append-only selector. The fourteen CP-COND identities were executed only as a focused surface and are absent from selector408. `M4-CP-COND-TB3-REV-CAND-01` opens **SELECTOR-AUTHORITY / NON-STABLE**.
+
+One non-blocking orchestration observation is carried: the TB3 evidence checksum manifest includes its own initially empty output entry, so only the manifest's self-entry fails `sha256sum -c`; all substantive entries verify and the outer archive digest pins the complete evidence bundle. TB4 must exclude its checksum output from its own checksum input set.
+
+CP-COND remains OPEN; accepted authority remains CP3 package `10307919492` / selector408 **408/408**; stable accounting remains **49 / 14 / 35**, debt **5**. Exact successor is `M4-CP-COND-CB4`, selector-authority/package-only: publish selector422 = exact selector408 prefix + the fourteen existing CP-COND gates, compile/package unchanged semantics, no runtime, then TB4-EXEC + mandatory Review.
+
+### TB3 Review folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP_COND_CB3_Code_Build_Plan.md` | 82 | Retired before TB3 Review; exact repair scope/falsifiers retained in §2.43 and current TB3 Review. |
+| `Architecture_M4_CP_COND_CB3_Code_Build_Report.md` | 78 | Retired by TB3 stale-evidence cleanup; compile/source/package authority retained in §2.43 and current TB3 report/Review. |
+| `Architecture_M4_CP_COND_TB2_EXEC_Report.md` | 40 | Folded after repaired TB3 authority superseded it; package-recovery mechanics retained in §§2.41-2.42 and tracker/changelog. |
+| `Architecture_M4_CP_COND_TB2_Review_Record.md` | 172 | Folded after its negative-index candidate was discharged; finding/correction lineage retained in §§2.42-2.45 and current Review. |
+| `Architecture_M4_CP_COND_TB3_EXEC_Plan.md` | 124 | Consumed by TB3 execution; frozen 423-process contract/result retained in current TB3 report and Review. |

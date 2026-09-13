@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-13, `M4-CP-COND-TB3-EXEC`):** M4-CP3 remains **CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**. TB3-EXEC mechanically passes immutable CB3 artifact `10325879420` across the frozen 423-process surface with exact postflight; semantic adjudication remains pending. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is mandatory `M4-CP-COND-TB3-REV`.
+> **Current milestone authority (2026-09-13, `M4-CP-COND-TB3-REV`):** M4-CP3 remains **CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**. Review accepts the corrected negative-index raw oracle and TB3 mechanics, but CP-COND stays OPEN because its fourteen gating identities are not yet in the frozen cumulative append-only selector. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is selector-authority/package-only `M4-CP-COND-CB4`.
 
-**Currency.** `M4-CP-COND-TB3-EXEC`, 2026-09-13. Frozen 423-process runtime is mechanically green/semantically unadjudicated; candidate remains open/non-stable pending Review; accepted CP3 runtime authority unchanged.
+**Currency.** `M4-CP-COND-TB3-REV`, 2026-09-13. Negative-index test authority is accepted and its TB2 candidate is closed; CP-COND remains open on a non-stable cumulative-selector publication gap; accepted CP3 runtime authority unchanged.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -74,7 +74,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 TB8 Review independently re-derived the immutable 835-process result: repaired shared-fixture consumers 12/12 A/B, ordinal138 2/2, row408 2/2, rows404-407 8/8, accepted selector403 403/403 to completion, selector408 408/408 cumulative and an empty accepted RED census. Package/source/execution-view postflight is exact. The stale-fixture event remains historical stable evidence but `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**.
 
-The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **TB3-EXEC mechanically passes the corrected CB3 package across 423 fresh artifact-only processes with exact postflight, but CP-COND remains OPEN pending semantic Review. Exact next is `M4-CP-COND-TB3-REV`.** Accepted authority remains CP3 package `10307919492` / selector408 408/408.
+The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **TB3 Review accepts the corrected negative-index oracle and 422/422 gating runtime, but CP-COND remains OPEN because the fourteen CP-COND gates were executed only as focused tests and are not yet members of the cumulative append-only selector required by frozen CP-COND/M4 authority. Exact next is `M4-CP-COND-CB4`.** Accepted authority remains CP3 package `10307919492` / selector408 408/408.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -186,7 +186,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP-COND negative-index test authority — NEXT: `M4-CP-COND-TB3-EXEC`.** CB3 now derives raw cycle/transport/admissibility exactly from actual binary64 subject bytes and includes a mutation falsifier, with product/selector semantics frozen. Execute immutable artifact `10325879420`; mandatory Review alone may accept the correction or close CP-COND.
+1. **M4-CP-COND cumulative selector authority — NEXT: `M4-CP-COND-CB4`.** TB3 Review accepts the repaired negative-index raw oracle and full mechanical result, but frozen CP-COND §12 requires checkpoint gate credit on a cumulative append-only selector. Append the existing fourteen CP-COND gating identities after exact selector408 as rows 409-422, keep the boundary witness report-only/non-selector, and change no product/test semantics.
 
 2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** The main exact-torus pairing blocker is **CLOSED / RECOVERY PROVED** by CP3. Three inherited produced-witness re-proofs remain CP4 gating; debt stays 5 until actual runtime acceptance.
 
@@ -205,6 +205,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** It remains green inside accepted selector365 but restates a retired local-fragment/global-owner injectivity premise. Do not weaken it pre-emptively; if it fires, classify test-authority drift.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Focused runtime evidence is not cumulative selector credit when the frozen exit says selector.** TB3 proved all fourteen CP-COND identities GREEN and Review accepted the repaired oracle, but selector408 still contains only the predecessor authority. `Architecture_M4_CP_COND_Frozen_Definitions.md` §12 and M4 selector policy require append-only selector publication before checkpoint closure. This is a new instance of the existing explicit-gate/selector-enforcement rule, not a new lesson category: preserve the accepted prefix exactly and publish already-proved gates rather than weakening the exit contract.
 
 **An intended construction is not an independent raw oracle.** CP-COND TB2 passed its negative-index identity, but the expected `-1` was computed from authored sector/degree constants while the raw binary64 branches were merely preserved. The proof obligation requires the answer to be re-derived from the raw subject, with a mutation that changes or invalidates that derivation. This is another instance of existing non-vacuity/oracle lessons (157/160/64j), not a new lesson family.
 

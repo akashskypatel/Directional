@@ -1,3 +1,15 @@
+## 2026-09-13 — `M4-CP-COND-TB3-REV`: negative-index candidate closed; cumulative-selector authority gap opened
+
+- TB3 primary evidence independently re-derived: artifact `10325879420` / source `4d9206cd...e675`, focused 14/14 PASS, report-only boundary SKIP, selector408 408/408 PASS, total gating 422/422, 423 selected processes, exact immutable postflight.
+- `M4-CP-COND-TB2-REV-CAND-01` — **CLOSED / TEST-AUTHORITY REPAIRED / RUNTIME-PROVED / NON-STABLE**. Root defect is gone: the expected negative index is now derived by a test-local exact oracle from actual raw binary64 mesh/branch bytes; a one-LSB raw mutation invalidates admissibility; conditioned output is compared against the independently derived raw oracle.
+- `M4-CP-COND-TB3-REV-CAND-01` — **OPEN / SELECTOR-AUTHORITY / CP-COND GATING IDENTITIES OUTSIDE CUMULATIVE SELECTOR / NON-STABLE**.
+  - **Root cause:** frozen CP-COND §12 and M4 selector policy require accepted checkpoint gate credit on a cumulative append-only selector, but TB3's fourteen CP-COND identities are executed only as a focused surface while selector408 remains the unchanged predecessor.
+  - **Falsifier:** publish selector422 whose first408 is byte-identical selector408 and whose rows409-422 are exactly the fourteen existing CP-COND gates; artifact-only TB4 must prove selector422 422/422 plus the unchanged report-only boundary SKIP with exact postflight.
+  - **Owner:** `M4-CP-COND-CB4 -> TB4-EXEC -> TB4-REV`.
+  - **Prohibited:** no product/test/fixture/CMake semantic edit, no selector408 row mutation, no boundary identity promotion, no package/runtime repair.
+- `M4-CP-COND-TB3-REV-OBS-01` — **OPEN / ORCHESTRATION / EVIDENCE-MANIFEST SELF-HASH / NON-BLOCKING**. TB3 `EVIDENCE_SHA256SUMS` includes a self-entry equal to SHA-256(empty), so only its own self-check fails. All substantive entries verify and outer archive SHA-256 `b24ff247...82b90` pins the bundle. TB4 harness must emit a non-self-referential manifest.
+- Accepted authority remains CP3 package `10307919492` / selector408 408/408; stable accounting remains **49 / 14 / 35**, debt **5**. CP-COND stays OPEN.
+
 # Regression Root Cause Tracker
 
 ## M4-CP-COND-CB3 — **NEGATIVE-INDEX TEST AUTHORITY CORRECTED / COMPILE GREEN / NON-STABLE / TB3 NEXT**

@@ -2,18 +2,17 @@
 
 Last updated: 2026-09-13 UTC
 
-## Current turn — M4-CP-COND-TB3-REV
+## Current turn — M4-CP-COND-CB4
 
-- [x] `M4-CP-COND-TB2-REV`: re-derived TB2; closed package candidate **RECOVERY PROVED / NON-STABLE**.
-- [x] Rejected CB2 promotion because the negative-index gate authors expected `-1` rather than deriving raw cycle/admissibility.
-- [x] Opened `M4-CP-COND-TB2-REV-CAND-01` **TEST-AUTHORITY / NEGATIVE-INDEX RAW-PRECONDITION ORACLE INADEQUATE / NON-VACUOUSNESS GAP / NON-STABLE**. Accounting 49/14/35, debt 5.
-- [x] `M4-CP-COND-CB3`: corrected the negative-index oracle from actual raw binary64 mesh/branch/transport bytes with an exact raw-data mutation discriminator; no product semantic change.
-- [x] Compile/package complete owner set + API/core/pipeline with GMP/GMPXX, `runtimeExecution=false`; run `34785549072`, artifact `10325879420`, no Directional runtime.
-- [x] Freeze TB3 over all 14 focused + report-only boundary + selector408; mandatory TB3 Review.
-- [x] `M4-CP-COND-TB3-EXEC`: immutable artifact `10325879420` completed 423 fresh exact-filter processes mechanically GREEN: 14/14 focused PASS + one expected report-only SKIP + selector408 408/408 PASS; exact postflight. A post-runtime shell checker false-counted two TSV headers as selection mismatches; non-runtime `FNR>1` revalidation proves zero actual mismatches without rerunning semantics.
-- [ ] `M4-CP-COND-TB3-REV`: independently adjudicate the corrected negative-index oracle/non-vacuity candidate, package promotion, accounting, and CP-COND closure.
-- [ ] Keep boundary-truncated separatrix non-gating unless reachability is independently proved.
-- [ ] Carry existing observations/debts with current owners.
+- [x] `M4-CP-COND-TB3-REV`: independently re-derived TB3 mechanics and accepted the corrected negative-index raw oracle/non-vacuity authority.
+- [x] Close `M4-CP-COND-TB2-REV-CAND-01` **TEST-AUTHORITY REPAIRED / RUNTIME-PROVED / NON-STABLE**.
+- [x] Keep boundary-truncated separatrix **report-only / non-selector** because A2a reachability remains unproved.
+- [x] Open `M4-CP-COND-TB3-REV-CAND-01` **SELECTOR-AUTHORITY / CP-COND GATING IDENTITIES OUTSIDE CUMULATIVE SELECTOR / NON-STABLE**; accepted runtime authority remains CP3 package `10307919492` / selector408 408/408.
+- [ ] `M4-CP-COND-CB4`: append the existing fourteen CP-COND gating identities after the exact selector408 prefix to publish selector422; no product/test/fixture/CMake semantic change.
+- [ ] Update `Required_Green_Selector_Manifest.md` with selector422 line count/hash/prefix hash; preserve all older selectors byte-for-byte.
+- [ ] Compile/package the unchanged complete seven-target owner set with GMP/GMPXX and `runtimeExecution=false`; no Directional runtime.
+- [ ] Freeze artifact-only `M4-CP-COND-TB4-EXEC`: selector422 422/422 + one expected report-only boundary SKIP, exact postflight, non-self-referential evidence checksum manifest, mandatory TB4 Review.
+- [ ] CP-SCALE remains blocked until CP-COND selector-authority closure is reviewed and accepted.
 
 ## Purpose
 
@@ -41,11 +40,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-TB3-REV` (mandatory runtime-free Review)
+## Current focus — `M4-CP-COND-CB4` (selector-authority/package-only)
 
-TB3-EXEC is mechanically GREEN on immutable artifact `10325879420`: focused 14/14 PASS, the boundary-truncated separatrix remains an expected report-only SKIP/non-selector, selector408 is 408/408 PASS, and the 423-process package/source/execution-view postflight is exact. Review must independently adjudicate the repaired negative-index raw oracle/non-vacuity authority before any package promotion or CP-COND closure.
-
-Accepted M4 authority remains CP3 package `10307919492` / selector408 408/408. Stable accounting remains **49 / 14 / 35**, debt **5**.
+TB3 Review accepts the repaired negative-index raw oracle and TB3's mechanically green execution, but CP-COND remains OPEN because the fourteen CP-COND gating identities are not yet members of the frozen cumulative append-only selector lineage. CB4 must publish selector422 = exact selector408 prefix + those fourteen existing identities, with no product/test semantic drift, then compile/package only. Boundary-truncated separatrix remains report-only/non-selector. Accepted runtime authority remains CP3 package `10307919492` / selector408 408/408. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -124,4 +121,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. CB3 repairs the negative-index test authority and compiles/packages full owner closure GREEN without runtime as artifact `10325879420`. Exact next is **`M4-CP-COND-TB3-EXEC`** under `Architecture_M4_CP_COND_TB3_EXEC_Plan.md`, followed by mandatory Review. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. CB3 repairs the negative-index test authority and compiles/packages full owner closure GREEN without runtime as artifact `10325879420`. Exact next is **`M4-CP-COND-CB4`** under `Architecture_M4_CP_COND_CB4_Code_Build_Plan.md`, followed by artifact-only TB4-EXEC and mandatory TB4 Review. PR #8 remains open, draft, and unmerged.
