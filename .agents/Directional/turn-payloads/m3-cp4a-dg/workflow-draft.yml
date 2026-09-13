@@ -1,20 +1,20 @@
-name: M4 CP-COND CB2 Compile
+name: M4 CP-COND CB2 Closeout Drive Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/cb/m4-cp-cond-cb2/compile.txt
+      - .agents/connector-triggers/m4-cp-cond-cb2-closeout-drive.txt
 
 permissions:
-  actions: write
   contents: write
+  id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: m4-cp-cond-cb2-${{ github.ref }}
+  group: m4-cp-cond-cb2-closeout-drive-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -22,15 +22,18 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp-cond-cb2
+      label: m4-cp-cond-cb2-closeout-drive
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  compile:
-    uses: ./.github/workflows/agent-compile-reusable.yml
+  apply-drive-patch:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      source_sha: b576d061e23873b7b4193b158138d2097c75a728
-      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests
-      artifact_prefix: m4-cp-cond-cb2
+      file_id: 1LvhffFmKZ89he7Gi1Y4pOvdO048G51_8
+      patch_sha256: 'dd32588c62e11ed3f80b545e32861971a162681cd0cd4d14290dab97a0eeb5e3'
+      base_sha: 36fdb3209341b24aaf0feb604ab6a3c6a38aec2a
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close M4-CP-COND-CB2 and freeze TB2 execution'
+      retention_days: 14
     secrets: inherit
