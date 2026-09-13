@@ -1,6 +1,0 @@
-# M4-CP-COND-CB2 temporary-state cleanup
-.agents/Directional/turn-payloads/m3-cp4a-dg/workflow-draft.yml
-.agents/connector-triggers/m3-cp4a-dg-schema-20260821.txt
-.agents/connector-triggers/cb/m4-cp-cond-cb2/compile.txt
-.agents/connector-triggers/source-snapshot/m4-cp-cond-cb2-start-20260913.txt
-.agents/connector-triggers/m4-cp-cond-cb2-closeout-drive.txt

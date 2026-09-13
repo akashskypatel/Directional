@@ -1,4 +1,0 @@
-turn=M4-CP-COND-CB2-CLOSEOUT
-workflow_draft=.agents/Directional/turn-payloads/m3-cp4a-dg/workflow-draft.yml
-workflow_draft_sha256=7835a42ef5518c3155b8ed565b9d9fdbef99f21478043c5c9917cac5467c0ba2
-runtimeExecution=false
