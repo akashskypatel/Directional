@@ -1,4 +1,0 @@
-turn=M4-CP-COND-TB2-EXEC
-purpose=apply durable TB2 EXEC closeout documentation patch
-patch_sha256=dfed20d76c16669cd3fb89d13f0080d7a608e281c698fb42c52cee5b6255a060
-base_sha=093ca0e86cbf8f936a13cc16186f906f33b0d381
