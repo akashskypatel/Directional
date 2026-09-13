@@ -2,6 +2,7 @@
 
 **Turn:** `M4-CP-COND-DEFN`
 **Type:** Definition / review-plan only
+**Status:** COMPLETE / consumed by `Architecture_M4_CP_COND_DEFN_Record.md` and `Architecture_M4_CP_COND_Frozen_Definitions.md`
 **Runtime:** forbidden
 **Product/test/fixture/selector/build mutation:** forbidden
 

@@ -187,7 +187,7 @@ This is the normative algorithmic basis for A3 after `M4-DEFN-R1`. M4 retains it
  
 Gillespie, Sharp, and Crane, *Integer Coordinates for Intrinsic Geometry Processing* (2021), encode curve/edge crossing structure as one integer per edge, avoiding floating-point data entirely and guaranteeing that the structure always encodes a valid subdivision. Intrinsic mollification adds a bounded slack to edge lengths so that all triangles satisfy the triangle inequality, changing geometry only where a triangle is within tolerance of degenerate.
  
-This is the normative implementation basis for the `SourceSupport` kernel (§6.3) and for A0 sanitization. Mollification is the sanitization boundary; integer coordinates are the exact identity carried afterward.
+This is the normative implementation basis for the `SourceSupport` kernel (§6.3) and for bounded input conditioning. **Amendment 20 supersedes the older A0-sanitization ownership:** value-changing mollification/quantization/regularization, when permitted by the frozen CP-COND policy, occurs only in the pre-A0 `InputConditioner` and is recorded in the raw-to-conditioned certificate. A0 consumes the immutable conditioned product and may validate/canonicalize exact identities, but may not change values. Integer coordinates are the exact identity carried afterward.
  
 ### 4.9 Injective region interiors are available without optimization
  
@@ -221,7 +221,8 @@ Each stage is a pure transformation over immutable inputs. A stage may create di
  
 | Stage | Input | Owned immutable output | Required postcondition |
 |---|---|---|---|
-| A0. Source authority | source mesh and feature metadata | `SourceAuthoritySnapshot` | exact support, incidence, components, sheets, barriers, and stable typed IDs are complete; sanitization is recorded |
+| **Conditioning. Raw-input authority** | raw source mesh, raw cross field, feature metadata, exact `ConditioningPolicy` | `ConditionedSourceProduct` + `ConditioningCertificate`, or typed `ConditioningFailure` | value changes occur at most once; raw→conditioned correspondence is certified and independently falsifiable |
+| A0. Source authority | immutable `ConditionedSourceProduct` | `SourceAuthoritySnapshot` | exact support, incidence, components, sheets, barriers, and stable typed IDs are complete; no value-changing sanitization occurs here |
 | A1. Field transport atlas | A0 and cross field | `FieldTransportAtlas` | every traversable adjacency has a typed transport; cycle and singularity facts are explicit; quadrangulability precondition is decided |
 | A2a. Field-aligned curve network | A0–A1 | `FieldAlignedCurveNetwork` | every required singularity port is owned once; every trace is branch-consistent, non-crossing, and terminates at a typed network event |
 | A2a′. Surface cut graph | A0–A2a | `SurfaceCutGraph` | the immutable field-aligned network plus deterministic source-edge cuts is a certified cellular embedding; already-cellular input publishes an empty cut set |
@@ -238,7 +239,7 @@ No stage may write into an earlier stage's object. Aggregation is a new stage ou
  
 ### 5.1 Stage cost structure
  
-The default path contains **no global linear system and no numeric factorization**. A0 and A1 are linear passes. A2a is combinatorial tracing in exact arithmetic. A2a′, A2b, and A3 are graph and flow problems over an `O(n)` structure. A4 is local and parallel per region. A5–A9 are combinatorial. This property is normative: any proposed change that introduces a global factorization into the default path is a stop condition (§15) and belongs in Pipeline A instead.
+The default path contains **no global linear system and no numeric factorization**. The pre-A0 conditioner is a bounded exact/certified pass over raw authority under its explicit policy; A0 and A1 are linear passes. A2a is combinatorial tracing in exact arithmetic. A2a′, A2b, and A3 are graph and flow problems over an `O(n)` structure. A4 is local and parallel per region. A5–A9 are combinatorial. This property is normative: any proposed change that introduces a global factorization into the default path is a stop condition (§15) and belongs in Pipeline A instead.
  
 ### 5.2 Degradation points
  
@@ -319,7 +320,7 @@ using SourceSupport = std::variant<
  
 It owns canonicalization, rebinding, equality, hashing, and incidence queries. Materialization, hard-rail pairing, chart resolution, ownership, and validation must use this kernel. Consumer-specific `1e-9` tests or `1e12` quantized keys cannot define identity.
  
-Numerical tolerances may decide whether input is sanitizable, and A0 mollification is the single place where they do so. Once sanitized, topology keys are exact and are carried as integer combinatorial coordinates. A tolerance-derived value may be logged as geometry evidence but cannot be an ownership key.
+**Amendment-20 supersession.** A0 is no longer a value-changing sanitization owner. The pre-A0 `InputConditioner` is the sole boundary that may change input values, under the exact/certified `M4-CP-COND` policy. A0 consumes the immutable conditioned product and only validates/canonicalizes exact support authority. A tolerance-derived value may be logged as geometry evidence but cannot decide sanitizability, correspondence, admissibility or ownership after the CP-COND cutover.
  
 ### 6.4 Charts and transport
  
@@ -589,6 +590,8 @@ withdrawn except where an amendment says so explicitly.
   remains prohibited (Amendment 18): a value silently changed between stages corrupts every guarantee already
   published, whereas a value changed once at the boundary and published is a product like any other. Source:
   `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` §§3.1, 4, 5.
+
+  **M4-CP-COND definition freeze (2026-09-13).** `Architecture_M4_CP_COND_Frozen_Definitions.md` makes this boundary concrete: finite binary64 is exactified bit-for-bit before semantic decisions; the initial conditioned product preserves one-to-one face identity, permits only a single explicit exact lattice transform, exact-equality safe vertex merge and uniquely certified discrete `Z4` branch reindex, and initially handles slivers by exact typed refusal rather than topology-changing repair. The current legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization checks are not semantic conditioning authority. A0/A1 may consume and reject the immutable conditioned product but may not mutate it.
 - **Amendment 21 — degeneracy is a typed product state, not only a failure.** The error surface bifurcates:
   `FatalInadmissible` (corrupted or contradictory input no policy can resolve) versus `RegularizableDegeneracy` (a
   discrete-mesh condition with a defined, deterministic resolution). A regularization must be **exact and

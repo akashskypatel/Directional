@@ -10,9 +10,16 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-13 (`M4-CP3-TB8-REV` APPROVED. Package `10307919492` / selector408 **408/408** is accepted; TB8 is 835/835 mechanically green with selector403 403/403 complete census and immutable postflight. M4-CP3 is CLOSED / ACCEPTED and the main exact-torus `G4-B002` pairing blocker is recovery-proved closed. Stable accounting remains **49 / 14 / 35**, debt **5** because the three produced-witness re-proofs remain CP4-owned. Exact next is runtime-free `M4-CP-COND-DEFN`.)
+**Status date:** 2026-09-13 (`M4-CP-COND-DEFN` COMPLETE / DEFINITIONS FROZEN; CP-COND remains OPEN. Package `10307919492` / selector408 **408/408** remains accepted CP3 authority. The pre-A0 conditioner contract now has one value writer, certified raw→conditioned correspondence, typed refusal and independently falsifiable witness preconditions. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP-COND-CB1`.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
+
+### M4-CP-COND definition freeze — 2026-09-13
+
+`M4-CP-COND-DEFN` is COMPLETE / DEFINITIONS FROZEN; the checkpoint remains OPEN. `Architecture_M4_CP_COND_Frozen_Definitions.md` owns the single-writer pre-A0 conditioned product, exact raw→conditioned correspondence, exact-policy operation set, typed refusal, independent certificate validator, idempotence and witness preconditions. The initial contract uses one-to-one face correspondence and exact sliver refusal rather than topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic authority.
+
+Prospective CP-COND gate identities remain conditional on independently proved raw preconditions. The boundary-truncated separatrix stays an explicit blocker/non-selector if reachability cannot be proved; S6 physical-distance metrics remain report-only until threshold authority exists. Stable accounting stays **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP-COND-CB1`; no runtime or selector promotion occurs there.
+
 
 ## 1. Where the project actually is
 
@@ -22,7 +29,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND next** | package `10307919492` / selector408 **408/408** accepted at TB8 Review; exact next `M4-CP-COND-DEFN`; three G4-B002 produced-witness debts remain CP4 gating. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND DEFN complete, checkpoint OPEN** | package `10307919492` / selector408 **408/408** remains accepted; exact next `M4-CP-COND-CB1`; three G4-B002 produced-witness debts remain CP4 gating. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -425,7 +432,7 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 | `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling uses exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **CLOSED / ACCEPTED:** package115/TB2, selector373 **373/373**, focused CP1 **8/8 twice**; closure `M4_CP1_Closure_Record.md` |
 | `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | **CLOSED / ACCEPTED:** package117/R1, selector382 **382/382**; closure `M4_CP2_Closure_Record.md` |
 | `M4-CP3` | re-prove family-free baseline A3 shared counts/parity, publish exact A2b source paths and bind A3, then producers consume the accepted plan; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | **CLOSED / ACCEPTED:** package `10307919492`, selector408 **408/408**, TB8 **835/835**; closure `M4_CP3_Closure_Record.md` |
-| `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with conditioned-source/raw correspondence and typed inadmissibility | **NEXT:** `M4-CP-COND-DEFN`; developed after accepted A3 core without becoming a hidden schedule precondition |
+| `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with one single-writer conditioned source, certified raw correspondence, typed refusal and non-vacuous witness gates | **DEFN COMPLETE / OPEN:** `Architecture_M4_CP_COND_Frozen_Definitions.md`; exact next `M4-CP-COND-CB1` compile-only |
 | `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | uncalibrated S1 measurements start non-gating |
 | `M4-CP4` | cumulative M4 exit: full gate, all three `G4-B002` produced-witness debt re-proofs, work/bit-width evidence | exit proof only; no second writer |
 
@@ -439,7 +446,7 @@ CB3/TB1-R1 promoted package119/selector394 **394/394** as family/sign-free basel
 
 TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: replacement row400 focused A/B **1/1 + 1/1**, predecessor394 **394/394**, successor403 **403/403**, zero RED/SKIP/timeout/selection mismatch, immutable package/source/execution-view postflight. `M4-CP3-TB2-R2-REV` independently re-derived package/selector/source provenance, owner totals `30/257/75/41`, all raw process discipline, and row400's exact raw `[3,0,4]` versus canonical `[0,3,4]` `1/3` correct / `2/3` no-remap discriminator. Review **accepts corrected R4 artifact `10289601000` and selector403** as current pre-cutover authority. The product/test/build-contract candidates are closed recovery-proved/non-stable; stable totals remain **47 / 14 / 33**, debt **5**.
 
-`M4-CP3-TB8-REV` closes CP3 on accepted package `10307919492` / selector408 **408/408**. The reviewed gate is **835/835 PASS**: repaired six-consumer fixture A/B, ordinal138 A/B, row408 A/B, rows404-407 A/B, accepted selector403 403/403 to completion and cumulative selector408 408/408, with empty accepted RED census and immutable postflight. The main exact-torus `InvalidHardRailPairing` blocker is recovery-proved closed without post-hoc pairing. Stable totals remain **49 / 14 / 35**, debt **5**. Exact next is `M4-CP-COND-DEFN`.
+`M4-CP3-TB8-REV` closes CP3 on accepted package `10307919492` / selector408 **408/408**. The reviewed gate is **835/835 PASS**: repaired six-consumer fixture A/B, ordinal138 A/B, row408 A/B, rows404-407 A/B, accepted selector403 403/403 to completion and cumulative selector408 408/408, with empty accepted RED census and immutable postflight. The main exact-torus `InvalidHardRailPairing` blocker is recovery-proved closed without post-hoc pairing. Stable totals remain **49 / 14 / 35**, debt **5**. `M4-CP-COND-DEFN` subsequently froze the pre-A0 conditioning contract; exact next is compile-only `M4-CP-COND-CB1`.
 
 M4 still owns `G4-B002`'s three produced-witness debts; they are not CP3 exit conjuncts and remain CP4 gating. `G4-B004` is explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 

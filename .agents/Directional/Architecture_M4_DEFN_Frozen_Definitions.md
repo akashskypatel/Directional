@@ -824,3 +824,18 @@ This is an additive A2b publication/certificate strengthening. It does not chang
 rotation system, region walks, disc certificates, or accepted package119 parity-scheduler semantics. Historical M3 runtime
 evidence remains authority for those unchanged semantics but does **not** prove the newly published support field. The
 new publication and production A3 binder require artifact-only runtime proof before A4 may consume them.
+
+## 18. `M4-CP-COND-DEFN` amendment — conditioning is one certified pre-A0 product
+
+`Architecture_M4_CP_COND_Frozen_Definitions.md` is the checkpoint-local normative authority for Amendment-20 input conditioning. This section binds it into the M4 definition set without rewriting the accepted CP3 A3/A4 contract.
+
+1. Pipeline B now has one semantic raw-input boundary: `RawSourceInput -> InputConditioner -> ConditionedSourceProduct -> A0`. The conditioner is the only writer permitted to change source geometry or raw cross-field values.
+2. Finite binary64 raw values are exactified bit-for-bit before semantic conditioning decisions. Correspondence/admissibility/merge decisions are exact/certified; epsilon and proximity are not identity authority.
+3. The conditioned product owns raw and conditioned digests, exact policy identity, complete typed correspondence and a recorded operation log. An independent validator recomputes those relations from raw input + policy rather than trusting the candidate.
+4. CB1 freezes a one-to-one face correspondence. Post-quantization vertex merge is allowed only for exact coordinate equality with exact combinatorial safety and canonical minimum-raw-ID ownership; otherwise reject.
+5. The initial permitted value-changing set is one exact bounded-lattice transform plus safe exact-equality merge and unique/canonical discrete `Z4` branch reindex. Sliver handling is exact **refusal** in the first contract; topology-changing repair is not frozen.
+6. The older `DESIGN.md` A0-mollification wording is superseded by Amendment 20: A0 validates/canonicalizes immutable conditioned input and may not become a second value writer. Current legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization checks are not CP-COND semantic authority.
+7. CP-COND selector credit is conditional on independently proved raw witness preconditions and non-vacuous certificate/tamper oracles. Boundary-truncated reachability remains an explicit blocker/non-selector if it cannot be proved; guaranteed-green fixtures are prohibited.
+8. Stable accounting remains 49 events / 14 categories / 35 recurrences, produced-witness debt 5. CP-SCALE thresholds, M5/M6/M7 semantics and CP4 produced-witness debt remain outside this checkpoint.
+
+**Exact successor:** `M4-CP-COND-CB1` under `Architecture_M4_CP_COND_CB1_Code_Build_Plan.md`, compile-only and runtime-free. The historical §16 successor remains part of the earlier M4 sequence but is not the current branch successor.

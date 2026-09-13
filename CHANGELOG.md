@@ -1,3 +1,11 @@
+# 2026-09-13 — M4-CP-COND-DEFN definitions frozen
+
+- Completed runtime-free `M4-CP-COND-DEFN`; CP-COND remains OPEN and exact next is compile-only `M4-CP-COND-CB1`.
+- Froze one pre-A0 `ConditionedSourceProduct` single writer, exact/certified raw→conditioned correspondence, exact dyadic policy/operation authority, typed refusal, independent certificate validator, idempotence and non-vacuous witness preconditions.
+- Reconciled Amendment 20 with older A0 sanitization wording: CP-COND is the sole value-changing boundary; A0/A1 consume immutable conditioned authority. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not CP-COND semantic authority.
+- Initial CB contract keeps one-to-one face correspondence and uses exact sliver refusal rather than topology-changing repair; prospective gates require independently established raw preconditions.
+- Accepted CP3 package `10307919492` / selector408 **408/408**, stable accounting **49 / 14 / 35**, and produced-witness debt **5** are unchanged. No runtime, product/test/fixture/selector/build mutation occurred.
+
 ## 2026-09-13 — `M4-CP3-TB8-EXEC`: artifact-only candidate runtime mechanically green 835/835; Review mandatory
 
 ## 2026-09-13 — `M4-CP3-TB8-REV`: package/selector408 accepted; CP3 closes; CP-COND next

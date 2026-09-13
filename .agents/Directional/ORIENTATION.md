@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-13, `M4-CP3-TB8-REV`):** M4-CP3 is **CLOSED / ACCEPTED**. CB10 package artifact `10307919492` / source `1611e9ef...9a3a` and selector408 `c689c0cd...484` are accepted at **408/408** after TB8 Review independently re-derived **835/835 PASS**, selector403 **403/403** complete census, empty accepted RED census and exact immutable postflight. `M4-CP3-TB7-REV-CAND-01` is CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED. Stable accounting remains **49 / 14 / 35**, debt **5**. The main exact-torus `G4-B002` pairing blocker is closed; its three produced-witness debts remain CP4 gating. Exact next is runtime-free `M4-CP-COND-DEFN`.
+> **Current milestone authority (2026-09-13, `M4-CP-COND-DEFN`):** M4-CP3 remains **CLOSED / ACCEPTED** on CB10 package artifact `10307919492` / source `1611e9ef...9a3a` and selector408 `c689c0cd...484` at **408/408**. `M4-CP-COND-DEFN` is **COMPLETE / DEFINITIONS FROZEN** while CP-COND remains OPEN. The pre-A0 conditioner is now one single-writer `ConditionedSourceProduct` + independently validated certificate or typed refusal; A0 is no longer a second value-changing sanitization owner. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP-COND-CB1`.
 
-**Currency.** `M4-CP3-TB8-REV`, 2026-09-13. Review promotes package `10307919492` / selector408, closes CP3, retains the two non-blocking CP3 observations and freezes `M4-CP-COND-DEFN`.
+**Currency.** `M4-CP-COND-DEFN`, 2026-09-13. Definition/review freezes the Amendment-20 product, exact raw→conditioned correspondence, permitted operations/refusals, non-vacuous witness preconditions and compile-only `M4-CP-COND-CB1`; no runtime or selector authority changed.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -49,7 +49,8 @@ guarantee. The distinguishing commitments:
 
 | Stage | Product | One-line contract |
 |---|---|---|
-| A0 | `SourceAuthoritySnapshot` | exact source support, typed IDs, topology regions |
+| **Conditioning** | `ConditionedSourceProduct` + certificate, or typed refusal | sole value-changing raw-input boundary; exact/certified correspondence |
+| A0 | `SourceAuthoritySnapshot` | exact source support, typed IDs, topology regions; consumes immutable conditioned input |
 | A1 | `FieldTransportAtlas` | per-face cross frame + typed transport across every interior edge; singularities |
 | A2a | `FieldAlignedCurveNetwork` | traces from singularity ports + mandatory edges from features/boundaries |
 | **A2a′** | **`SurfaceCutGraph`** | **added cuts guaranteeing the network's complement is a disjoint union of discs** |
@@ -62,9 +63,7 @@ guarantee. The distinguishing commitments:
 | A8 | `VerificationReport` + `OutputDisposition` | independent verifier assigns the tier |
 | A9 | logs and public result | — |
 
-A2a′ was added and closed in CP4c-2. A2b now derives regions with disc proofs on the produced torus. Current
-M4-CP3 work reaches A4 on the repaired torus witness but has not produced an accepted A4 product; A5 onward remain
-unreached, and the prescribed sphere still cannot reach A2b (§7).
+A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on the produced torus. M4-CP3 is now accepted through A4 on the constructed torus witness. `M4-CP-COND-DEFN` adds the architecturally preceding conditioning boundary: raw input is conditioned once into an immutable certified product before A0. A5 onward remain unreached, and the prescribed sphere still cannot reach A2b (§7).
 
 **Disposition ladder** (assigned by A8, never asserted by a producer; a run only moves down):
 `D0 Certified` → `D1 QualityRelaxed` → `D2 LocallyDegraded` → `D3 Partial` → `D4 DiagnosticOnly`.
@@ -75,7 +74,7 @@ unreached, and the prescribed sphere still cannot reach A2b (§7).
 
 TB8 Review independently re-derived the immutable 835-process result: repaired shared-fixture consumers 12/12 A/B, ordinal138 2/2, row408 2/2, rows404-407 8/8, accepted selector403 403/403 to completion, selector408 408/408 cumulative and an empty accepted RED census. Package/source/execution-view postflight is exact. The stale-fixture event remains historical stable evidence but `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**.
 
-The main exact-torus `G4-B002` `InvalidHardRailPairing` blocker is closed by CP3. Its three inherited produced-witness re-proofs remain CP4-owned and debt is unchanged. **Exact next is `M4-CP-COND-DEFN`**, which freezes Amendment-20 conditioning semantics without changing accepted A3/A4 authority.
+The main exact-torus `G4-B002` `InvalidHardRailPairing` blocker is closed by CP3. Its three inherited produced-witness re-proofs remain CP4-owned and debt is unchanged. **`M4-CP-COND-DEFN` is COMPLETE / definitions frozen; CP-COND remains OPEN. Exact next is compile-only `M4-CP-COND-CB1`.** The conditioner is the sole pre-A0 value writer, with certified raw→conditioned correspondence and typed refusal; accepted A3/A4 authority is unchanged.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -187,7 +186,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP-COND definition — NEXT: `M4-CP-COND-DEFN`.** Freeze the Amendment-20 pre-A0 conditioner, immutable conditioned source, certified raw→conditioned correspondence, typed inadmissibility and independently falsifiable witness preconditions before any implementation. Sliver/anisotropic, high-valence, negative-index singularity, boundary-truncated separatrix, deliberately inadmissible field, correspondence-integrity and idempotence coverage are the named surface. CP-COND may not rewrite accepted CP3 A3/A4 semantics.
+1. **M4-CP-COND implementation — NEXT: `M4-CP-COND-CB1`.** DEFN is complete. Implement the single-writer pre-A0 `ConditionedSourceProduct`, exact/certified raw→conditioned correspondence, typed refusal and independent certificate validator; author the frozen witness/test surface and compile only. Sliver handling is initially exact refusal, not topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic conditioning authority. No runtime or selector promotion belongs in CB1.
 
 2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** The main exact-torus pairing blocker is **CLOSED / RECOVERY PROVED** by CP3. Three inherited produced-witness re-proofs remain CP4 gating; debt stays 5 until actual runtime acceptance.
 

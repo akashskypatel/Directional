@@ -2,6 +2,15 @@
 
 Last updated: 2026-09-13 UTC
 
+## Current turn — M4-CP-COND-CB1
+
+- [x] `M4-CP-COND-DEFN`: freeze single-writer pre-A0 `ConditionedSourceProduct`, exact/certified raw→conditioned correspondence, exact permitted operation set, typed refusal, independent certificate/tamper validation, idempotence and witness preconditions.
+- [ ] `M4-CP-COND-CB1`: implement the frozen conditioner/certificate/validator seam and compile the authored CP-COND test surface only; no Directional runtime.
+- [ ] Preserve accepted CP3 package `10307919492` / selector408 **408/408** as predecessor; no A3/A4 or selector mutation.
+- [ ] Keep boundary-truncated separatrix non-gating unless raw precondition/reachability is independently proved; do not author guaranteed-green evidence.
+- [ ] Keep `M4-CP3-TB1-R1-REV-OBS-01`, `M4-CP3-CB4-REV-OBS-02`, `G4-B002` debt 3 and `G4-B003` debt 2 with their existing owners.
+
+
 ## Purpose
 
 This is the single durable **task index** — open and blocked work only. It is deliberately forward-looking.
@@ -28,13 +37,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-DEFN` (freeze Amendment-20 conditioning contract)
+## Current focus — `M4-CP-COND-CB1` (implement frozen Amendment-20 conditioning boundary)
 
-`M4-CP3-TB8-REV` is **APPROVED**. Candidate package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` and selector408 are promoted as accepted current M4 authority at **408/408**. TB8 independently reopens as **835/835 PASS** with the complete accepted selector403 census **403/403**, all focused A/B discriminators green, empty accepted RED census and exact immutable postflight. `M4-CP3-TB7-REV-CAND-01` closes recovery-proved with its historical stable event retained.
+`M4-CP-COND-DEFN` is **COMPLETE / DEFINITIONS FROZEN** and CP-COND remains OPEN. `Architecture_M4_CP_COND_Frozen_Definitions.md` freezes one pre-A0 `InputConditioner` as the sole value writer, immutable `ConditionedSourceProduct`, independently validated raw→conditioned correspondence, exact policy/operation authority, typed refusal, idempotence and non-vacuous witness preconditions. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not CP-COND semantic authority.
 
-**M4-CP3 is CLOSED / ACCEPTED.** The main exact-torus `G4-B002` pairing blocker is recovery-proved closed; its three inherited produced-witness debts remain **M4-CP4** gates, so produced-witness debt stays **5**. Stable accounting remains **49 events / 14 categories / 35 recurrences**.
+M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 **408/408**. The main exact-torus `G4-B002` pairing blocker remains recovery-proved closed; its three inherited produced-witness debts remain M4-CP4 gates. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
 
-**Exact next: `M4-CP-COND-DEFN`.** Follow `.agents/Directional/Architecture_M4_CP_COND_DEFN_Plan.md`. Freeze the pre-A0 conditioner product, certified raw→conditioned correspondence, typed inadmissibility, exact permitted operations and non-vacuous witness/oracle preconditions. DEFN is runtime-free and may not mutate product/test/fixture/selector/build source or alter accepted CP3 A3/A4 semantics.
+**Exact next: `M4-CP-COND-CB1`.** Follow `.agents/Directional/Architecture_M4_CP_COND_CB1_Code_Build_Plan.md`. Implement the smallest conditioner/certificate/validator seam, author the frozen test surface and artifact-only TB plan, compile affected targets through GitHub Actions with GMP/GMPXX, and execute no Directional runtime. Preserve accepted A3/A4 semantics and selector408 unchanged.
 
 ## Carried forward from M1
 
@@ -113,4 +122,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP3 is CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**; corrected R4 selector403 remains the accepted predecessor. The main exact-torus pairing blocker is recovery-proved, while its three produced-witness debts remain M4-CP4 gating. Exact next is runtime-free **`M4-CP-COND-DEFN`** under the frozen plan. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP3 is CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**; corrected R4 selector403 remains the accepted predecessor. The main exact-torus pairing blocker is recovery-proved, while its three produced-witness debts remain M4-CP4 gating. The runtime-free `M4-CP-COND-DEFN` definition is complete. Exact next is compile-only **`M4-CP-COND-CB1`** under `Architecture_M4_CP_COND_CB1_Code_Build_Plan.md`. PR #8 remains open, draft, and unmerged.

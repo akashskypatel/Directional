@@ -1,11 +1,11 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP3` CLOSED / ACCEPTED at `M4-CP3-TB8-REV`; M4 OPEN
+**Status:** `M4-CP-COND-DEFN` COMPLETE / DEFINITIONS FROZEN; `M4-CP-COND` OPEN; M4 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP-COND-DEFN`
+**Canonical next turn:** `M4-CP-COND-CB1`
 
 ## Current authority
 
@@ -23,11 +23,17 @@
 
 The TB3 provenance bound remains: row408 is a constructed production witness, not proof that the identical historical path previously emitted the blocker.
 
-## Exact next — `M4-CP-COND-DEFN`
+## CP-COND definition freeze
 
-Follow `Architecture_M4_CP_COND_DEFN_Plan.md`. This is a runtime-free definition/review-plan turn. Freeze the Amendment-20 pre-A0 conditioner product, raw->conditioned certified correspondence, typed inadmissibility, permitted exact conditioning operations, witness preconditions/gating and non-vacuous correspondence/idempotence oracles.
+`M4-CP-COND-DEFN` is COMPLETE. `Architecture_M4_CP_COND_Frozen_Definitions.md` is the checkpoint-local authority: one `InputConditioner` before A0 is the sole value writer; it returns immutable `ConditionedSourceProduct` + independently checkable `ConditioningCertificate` or typed `ConditioningFailure`. Binary64 inputs are exactified before semantic decisions; the initial product keeps one-to-one face identity, permits one exact lattice transform, exact-equality safe vertex merge and uniquely certified `Z4` branch reindex, and uses exact sliver refusal instead of topology-changing repair. A0/A1 no longer own value mutation. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization checks are non-authoritative for CP-COND.
 
-STOP if CP-COND changes accepted A3/A4 semantics, creates a second writer, relies on epsilon/floating geometry as semantic authority, repairs inadmissible fields until accepted, invents a gate whose precondition is unproved, or pulls CP-SCALE/M5/M6/CP4 debt into the checkpoint. No product/test/fixture/selector/build/runtime mutation belongs in DEFN.
+Witness gates are conditional on independently proved raw preconditions. Boundary-truncated separatrix is blocked/non-selector if reachability cannot be proved; S6 distance metrics remain report-only until later threshold authority. Accepted CP3 A3/A4 semantics and selector408 are unchanged.
+
+## Exact next — `M4-CP-COND-CB1`
+
+Follow `Architecture_M4_CP_COND_CB1_Code_Build_Plan.md`. Implement the smallest conditioner product/certificate/validator seam, author the frozen CP-COND test surface and artifact-only TB plan, then compile affected targets through GitHub Actions with GMP/GMPXX. Execute **no Directional runtime** in CB1.
+
+STOP on any second value writer/raw-to-A0 bypass, epsilon/proximity authority, topology-changing sliver repair, field perturb-until-pass, hand-asserted/empty witness precondition, A3/A4 or selector mutation, or CP-SCALE/M5/M6/M7/CP4 debt pull-forward.
 
 ## Carried obligations
 
@@ -40,8 +46,10 @@ STOP if CP-COND changes accepted A3/A4 semantics, creates a second writer, relie
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_COND_DEFN_Plan.md
+  - .agents/Directional/Architecture_M4_CP_COND_CB1_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md
 required:
+  - .agents/Directional/Architecture_M4_CP_COND_DEFN_Record.md
   - .agents/Directional/M4_CP3_Closure_Record.md
   - .agents/Directional/Architecture_M4_CP3_TB8_Review_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
