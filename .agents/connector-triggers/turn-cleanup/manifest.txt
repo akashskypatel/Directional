@@ -1,0 +1,2 @@
+# M4-CP-COND-TB2-REV post-correction temporary-state cleanup
+.agents/connector-triggers/m4-cp-cond-tb2-rev-drive
