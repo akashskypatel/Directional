@@ -1,0 +1,43 @@
+name: Agent M4 CP3 CB10 Docs Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive/m4-cp3-cb10-docs.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-cb10-docs-drive.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-cb10-docs-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1VecazKq9knieQT1C5rGOWJoIOTa2j610
+      patch_sha256: 9f9b9fa8f85c8363b54f0a95c1d6849ba55991d3a44fe7f71ac04f01f8c08daa
+      base_sha: 02ef95e894651bcaa933a881181dce57acd32c99
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4-CP3-CB10 and freeze TB8"
+    secrets: inherit
