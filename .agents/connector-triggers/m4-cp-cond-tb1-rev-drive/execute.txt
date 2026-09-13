@@ -1,0 +1,4 @@
+turn=M4-CP-COND-TB1-REV
+purpose=apply reviewed documentation patch through durable Google Drive reusable
+base_sha=052afd8d11e4e7e15b49506d44b2968027c1e61d
+patch_sha256=0f78e164fadaf582b0fad859047b8dd43a9735c478c4dfd447c97e828bdf668d
