@@ -1,5 +1,0 @@
-turn=M4-CP-COND-TB1-EXEC
-purpose=apply durable closeout docs via verified Google Drive recovery patch
-file_id=1MzjMCNr00EtppjFeu9MUy0hQBzcFnNjL
-patch_sha256=c80d9d270c165fe9c5d217f56f9869c12dd091463a6788532f6a56ab6cd885cc
-base_sha=4cb89adb72277e4307c16fa869e2bff1aeb1a590
