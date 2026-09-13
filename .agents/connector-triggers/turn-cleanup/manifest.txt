@@ -1,0 +1,6 @@
+# M4-CP-COND-CB1 temporary-state cleanup
+.agents/Directional/turn-payloads/m3-cp4a-dg
+.agents/connector-triggers/m3-cp4a-dg-schema-20260821.txt
+.agents/connector-triggers/m4-cp-cond-cb1-drive-apply.txt
+.agents/connector-triggers/m4-cp-cond-cb1-compile.txt
+.agents/connector-triggers/source-snapshot/m4-cp-cond-cb1.txt
