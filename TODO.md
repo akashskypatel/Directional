@@ -2,14 +2,16 @@
 
 Last updated: 2026-09-13 UTC
 
-## Current turn — M4-CP-COND-CB2
+## Current turn — M4-CP-COND-TB2-EXEC
 
 - [x] `M4-CP-COND-DEFN`: freeze single-writer pre-A0 `ConditionedSourceProduct`, exact/certified raw→conditioned correspondence, exact permitted operation set, typed refusal, independent certificate/tamper validation, idempotence and witness preconditions.
 - [x] `M4-CP-COND-CB1`: conditioner/certificate/validator seam implemented at semantic source `b576d061e23873b7b4193b158138d2097c75a728`; compile-only run `34740201494` GREEN with GMP/GMPXX and `runtimeExecution=false`.
 - [x] CB1 preserved accepted CP3 package `10307919492` / selector408 **408/408** as predecessor; packaged selector408 remains 408 LF rows at SHA-256 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`, with no A3/A4 or selector mutation.
 - [x] `M4-CP-COND-TB1-EXEC`: authoritative run `34757021728` stopped at package preflight before Directional runtime because immutable artifact `10312168742` omits three selector408 owner executables (`authority_kernel`, `completion`, `validation`) covering 146 accepted identities. Result: **PACKAGE PREFLIGHT RED / 0 semantic processes / zero semantic test credit**; immutable post-stop census is exact.
 - [x] `M4-CP-COND-TB1-REV`: candidate upheld as **PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE**; selector owner census independently re-derived as 30/262/75/41 and stable accounting held at 49/14/35, debt 5.
-- [ ] `M4-CP-COND-CB2`: rebuild/package exact unchanged semantic source `b576d061e23873b7b4193b158138d2097c75a728` with all four selector-owner binaries plus pipeline/API; GMP/GMPXX mandatory; execute no Directional runtime; freeze unchanged semantic gate as TB2-EXEC plan.
+- [x] `M4-CP-COND-CB2`: exact unchanged semantic source `b576d061e23873b7b4193b158138d2097c75a728` compiled/package-closed GREEN in run `34771486767`; artifact `10321878900` contains all four selector owners plus pipeline/core/API, preserves selector408/first403, GMP/GMPXX and `runtimeExecution=false` with no semantic edits.
+- [ ] `M4-CP-COND-TB2-EXEC`: consume immutable artifact `10321878900` only; fail-closed preflight, then 14 focused identities + one report-only boundary blocker + complete fresh-process selector408 census; immutable postflight; no repair/rebuild/mutation.
+- [ ] `M4-CP-COND-TB2-REV`: mandatory semantic/recovery review after TB2 execution.
 - [ ] Keep boundary-truncated separatrix non-gating unless raw precondition/reachability is independently proved; do not author guaranteed-green evidence.
 - [ ] Keep `M4-CP3-TB1-R1-REV-OBS-01`, `M4-CP3-CB4-REV-OBS-02`, `G4-B002` debt 3 and `G4-B003` debt 2 with their existing owners.
 
@@ -40,13 +42,15 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-CB2` (package-closure Code + Build only)
+## Current focus — `M4-CP-COND-TB2-EXEC` (artifact-only Test + Benchmark execution)
 
 `M4-CP-COND-TB1-REV` is **COMPLETE** and upholds `M4-CP-COND-TB1-EXEC-CAND-01` as **PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE**. Review independently re-hashed selector408 at 408 rows / `c689c0cd...484`, first403 `c3f509af...70cb7`, and re-derived owner distribution **30 authority-kernel / 262 producer / 75 completion / 41 validation**. Immutable CB1 artifact `10312168742` packages only the producer owner, leaving 146 accepted rows without their three other executables. TB1 correctly stopped before runtime; no CP-COND semantic gate has an outcome.
 
 Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**; accepted CP3 package `10307919492` / selector408 **408/408** remains runtime authority.
 
-**Exact next: `M4-CP-COND-CB2`.** Follow `Architecture_M4_CP_COND_CB2_Code_Build_Plan.md`: compile/package exact unchanged semantic source `b576d061...` with `directional_core`, `directional_pipeline`, all four selector-owner test executables, and `directional_compiled_api_tests`; GMP/GMPXX mandatory; `runtimeExecution=false`; no semantic/source/test/fixture/selector/CMake/reusable-workflow edits. CB2 freezes an artifact-only `M4-CP-COND-TB2-EXEC` plan preserving TB1's 14 focused + one report-only + 408-selector semantic surface; mandatory runtime adjudication remains `M4-CP-COND-TB2-REV`.
+`M4-CP-COND-CB2` is **COMPLETE / COMPILE-PACKAGE GREEN / OWNER SET CLOSED / NO RUNTIME**. Run `34771486767` built exact unchanged `b576d061...`; immutable artifact `10321878900` contains all four selector-owner executables with executable mode, compiled API, core/pipeline libraries, GMP/GMPXX receipts and unchanged selector408/first403. No semantic source byte changed.
+
+**Exact next: `M4-CP-COND-TB2-EXEC`.** Follow `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` against artifact `10321878900`: fail-closed immutable preflight; 14 focused CP-COND identities; one report-only boundary blocker; complete 408-selector fresh-process census; immutable postflight. No rebuild/configure/relink/package repair/generated discovery/mutation. Mandatory successor remains `M4-CP-COND-TB2-REV`.
 
 ## Carried forward from M1
 
@@ -85,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND TB1 REVIEW COMPLETE, CB2 PACKAGE CLOSURE NEXT**. `M4-CP3-TB8-REV` promotes package `10307919492` / selector408 **408/408** and closes the main exact-torus pairing blocker. CP-COND conditioner implementation is compile-green; TB1 had zero semantic credit because its artifact omitted three selector-owner binaries. Review classifies this pre-semantic/non-stable and freezes exact-source package closure CB2; CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CB2 PACKAGE CLOSED, TB2 EXEC NEXT**. `M4-CP3-TB8-REV` promotes package `10307919492` / selector408 **408/408** and closes the main exact-torus pairing blocker. CP-COND conditioner implementation is compile-green; TB1 had zero semantic credit because its artifact omitted three selector-owner binaries. CB2 has now package-closed the exact unchanged semantic source with the full owner set; TB2 must runtime-prove the unchanged gate before Review; CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -125,4 +129,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP3 is CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**; corrected R4 selector403 remains the accepted predecessor. The main exact-torus pairing blocker is recovery-proved, while its three produced-witness debts remain M4-CP4 gating. `M4-CP-COND-TB1-REV` is complete: the zero-runtime TB1 package failure is classified **PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE**. Exact next is compile/package-only **`M4-CP-COND-CB2`** under `Architecture_M4_CP_COND_CB2_Code_Build_Plan.md`, holding semantic source `b576d061...` and selector408 fixed. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP3 is CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**; corrected R4 selector403 remains the accepted predecessor. The main exact-torus pairing blocker is recovery-proved, while its three produced-witness debts remain M4-CP4 gating. `M4-CP-COND-TB1-REV` is complete: the zero-runtime TB1 package failure is classified **PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE**. CB2 package closure is complete on unchanged semantic source `b576d061...`; exact next is artifact-only **`M4-CP-COND-TB2-EXEC`** under `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md`, followed mandatorily by `M4-CP-COND-TB2-REV`. PR #8 remains open, draft, and unmerged.

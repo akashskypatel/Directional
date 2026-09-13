@@ -1,11 +1,11 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP-COND-TB1-REV` COMPLETE / PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE; `M4-CP-COND` OPEN; M4 OPEN
+**Status:** `M4-CP-COND-CB2` COMPLETE / COMPILE-PACKAGE GREEN / OWNER SET CLOSED / NO RUNTIME; `M4-CP-COND` OPEN; M4 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP-COND-CB2`
+**Canonical next turn:** `M4-CP-COND-TB2-EXEC`
 
 ## Current authority
 
@@ -35,23 +35,25 @@ CB1 compile artifact `10312168742` is compile-green but is **rejected as the TB-
 
 Boundary-truncated separatrix remains report-only/non-selector; no raw reachability precondition was newly proved.
 
-## Exact next — `M4-CP-COND-CB2`
+## CB2 package-closure authority
 
-Follow `Architecture_M4_CP_COND_CB2_Code_Build_Plan.md` exactly. CB2 is a runtime-free package-closure control experiment over **exact unchanged semantic source `b576d061e23873b7b4193b158138d2097c75a728`**.
+`M4-CP-COND-CB2` is COMPLETE / COMPILE-PACKAGE GREEN / NO RUNTIME. `Architecture_M4_CP_COND_CB2_Code_Build_Record.md` owns the evidence.
 
-Compile/package only:
+- semantic source remained exactly `b576d061e23873b7b4193b158138d2097c75a728`;
+- compile run/job `34771486767 / 103761775124` is GREEN;
+- immutable result artifact `10321878900`, ZIP SHA-256 `d8016a8d0b30c8edcbbd64ac96d752ee5087fd35dc568a1b1c9e4cef9a66ee28`;
+- log artifact `10321354949`, SHA-256 `054ff8a2ccfc91837dda77016d08d01594ea60a29d2b6d1d308f0b0ad83ce454`;
+- the package contains all four selector-owner executables plus compiled API, all executable in the raw artifact ZIP, and both required static libraries;
+- preflight/build exits are zero, all source-status receipts are empty, GMP/GMPXX exact-link evidence is present, and `runtimeExecution=false`;
+- selector408 remains exactly 408 LF rows at `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`, first403 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`.
 
-1. `directional_core`
-2. `directional_pipeline`
-3. `directional_surface_cell_authority_kernel_tests`
-4. `directional_surface_cell_producer_tests`
-5. `directional_surface_cell_completion_tests`
-6. `directional_surface_cell_validation_tests`
-7. `directional_compiled_api_tests`
+No product/test/fixture/selector/CMake semantic or reusable-workflow byte changed. CB2 therefore closes the package-owner-set omission mechanically but does not close the recovery candidate because zero Directional identities ran.
 
-GMP/GMPXX and `runtimeExecution=false` are mandatory. No product/test/fixture/selector/CMake/reusable-workflow semantic change is authorized. Any such need, any source/selector drift, missing owner, arithmetic fallback, Directional runtime, or post-freeze package repair is a STOP back to Review.
+## Exact next — `M4-CP-COND-TB2-EXEC`
 
-CB2 must freeze an artifact-only `M4-CP-COND-TB2-EXEC` plan with the **unchanged TB1 semantic surface**: 14 focused gates, one report-only boundary identity, complete fresh-process selector408 census, immutable postflight; mandatory successor `M4-CP-COND-TB2-REV` owns recovery/semantic adjudication.
+Follow `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` exactly against immutable artifact `10321878900`. Preflight fails closed before runtime on any package/source/GMP/GMPXX/selector/owner-set/mode mismatch. If preflight passes, execute the unchanged TB1 semantic surface: all 14 focused prospective CP-COND identities, the boundary-truncated separatrix identity once as report-only/non-selector evidence, and the complete 408 accepted selector identities, each in a fresh exact-filter process, then immutable postflight.
+
+No rebuild/configure/relink/package repair/generated discovery/source-test-fixture-selector mutation is authorized. `M4-CP-COND-TB2-EXEC` is mechanical only; exact successor is mandatory `M4-CP-COND-TB2-REV`, which alone may adjudicate recovery, stable accounting or CP-COND promotion.
 
 ## Carried obligations
 
@@ -64,10 +66,10 @@ CB2 must freeze an artifact-only `M4-CP-COND-TB2-EXEC` plan with the **unchanged
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_COND_CB2_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP_COND_CB2_Code_Build_Record.md
   - .agents/Directional/Architecture_M4_CP_COND_TB1_Review_Record.md
   - .agents/Directional/Architecture_M4_CP_COND_TB1_EXEC_Report.md
-  - .agents/Directional/Architecture_M4_CP_COND_CB1_Code_Build_Record.md
   - .agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md
 required:
   - .agents/Directional/Architecture_M4_CP_COND_CB1_Artifact_Only_Test_Benchmark_Plan.md

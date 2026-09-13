@@ -1,5 +1,13 @@
 # Regression Root Cause Tracker
 
+## M4-CP-COND-CB2 — **PACKAGE OWNER SET CLOSED / COMPILE GREEN / PRE-SEMANTIC / NON-STABLE / TB2 NEXT**
+
+- **Control experiment:** exact unchanged semantic source `b576d061e23873b7b4193b158138d2097c75a728`; run/job `34771486767 / 103761775124` GREEN; artifact `10321878900` SHA-256 `d8016a8d0b30c8edcbbd64ac96d752ee5087fd35dc568a1b1c9e4cef9a66ee28`.
+- **Prediction satisfied:** all four selector408 owner executables now exist in the immutable package with executable mode, alongside compiled API and core/pipeline libraries. Build/preflight exits zero, source status is empty, GMP/GMPXX is linked, selector408/first403 hashes are unchanged, and `runtimeExecution=false`.
+- **`M4-CP-COND-TB1-EXEC-CAND-01` — OPEN / RECOVERY PACKAGE CLOSED / PRE-SEMANTIC / NON-STABLE PENDING TB2 REVIEW.** The packaging mechanism is corrected without semantic changes, but no Directional identity has executed on CB2, so recovery is not yet proved and CP-COND remains open.
+- **Falsifier / next authority:** `M4-CP-COND-TB2-EXEC` must consume artifact `10321878900` without repair and run the unchanged 14-focused + one report-only + selector408 gate; mandatory `TB2-REV` adjudicates any RED and recovery closure.
+- **Accounting:** no accepted ordinal executed in CB2. Totals remain **49 events / 14 categories / 35 recurrences**, debt **5**; accepted runtime package `10307919492` / selector408 **408/408** unchanged.
+
 ## M4-CP-COND-TB1-REV — **CANDIDATE ARTIFACT REJECTED / PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE / CB2**
 
 - **Reviewed execution:** TB1 authoritative retry `34757021728 / 103723061754` against immutable CB1 artifact `10312168742`; result/log `10317417085 / 10317147479`. Package preflight stops before runtime: `runtime_started=false`, `processes_executed=0`, all semantic counters zero, immutable censuses equal.

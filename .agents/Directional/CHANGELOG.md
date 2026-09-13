@@ -1,3 +1,11 @@
+## 2026-09-13 — `M4-CP-COND-CB2`: exact-source package closure GREEN; full selector owner set packaged; TB2 frozen
+
+- Executed the package-closure control experiment frozen by TB1 Review with **no semantic source change**. GitHub Actions run/job `34771486767 / 103761775124` compiled the exact seven-target set from semantic source `b576d061e23873b7b4193b158138d2097c75a728` and finished GREEN.
+- Immutable artifact `10321878900` has ZIP SHA-256 `d8016a8d0b30c8edcbbd64ac96d752ee5087fd35dc568a1b1c9e4cef9a66ee28`; all 27 root manifest entries verify. It contains all four selector408 owner executables, compiled API and core/pipeline libraries; the five binaries retain executable mode in the raw artifact ZIP.
+- GMP/GMPXX exact-link evidence is present, preflight/build exits are zero, all source-status receipts are empty, and `runtimeExecution=false`. The activity log explicitly records that no generated Directional binary/test/benchmark/discovery/CLI/fuzzer/help/version/custom input executed.
+- Packaged selector408 remains exactly 408 LF rows at `c689c0cd...484`, with first403 prefix `c3f509af...70cb7`; semantic source archive SHA-256 remains `31e667a6...70c10`. No product/test/fixture/selector/CMake semantic or reusable-workflow byte changed.
+- `M4-CP-COND-TB1-EXEC-CAND-01` remains open as **RECOVERY PACKAGE CLOSED / PRE-SEMANTIC / NON-STABLE PENDING TB2 REVIEW**. Accounting remains **49 / 14 / 35**, debt **5**. Exact successor is immutable artifact-only `M4-CP-COND-TB2-EXEC`, followed mandatorily by `M4-CP-COND-TB2-REV`.
+
 ## 2026-09-12 — `M4-CP3-CB10`: shared hard-rail fixture migrated to production A2b/A3 authority; eight-target compile GREEN
 
 ## 2026-09-13 — M4-CP-COND-TB1-REV: package-owner preflight upheld / non-stable / CB2 package closure frozen
