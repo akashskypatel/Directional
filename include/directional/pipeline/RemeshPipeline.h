@@ -95,6 +95,7 @@ enum class SurfaceCellFallbackPolicy {
 
 enum class SurfaceCellFailureCode {
   None,
+  InputConditioningRejected,
   InvalidFieldDimensions,
   MissingMatching,
   MissingSingularities,

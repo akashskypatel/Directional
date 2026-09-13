@@ -75,6 +75,7 @@ set(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES
   tests/FieldAlignedCurveNetworkTests.cpp
   tests/GlobalConformityBaselineTests.cpp
   tests/GlobalConformityPlanTests.cpp
+  tests/InputConditionerTests.cpp
   tests/RegularizedCurvaturePhase1Tests.cpp
   tests/support/SurfaceCellProductOracle.cpp
   tests/SourceGridRecoveryAuthorityTests.cpp

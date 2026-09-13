@@ -1,4 +1,5 @@
 #include <directional/pipeline/RemeshPipeline.h>
+#include <directional/pipeline/InputConditioner.h>
 #include <directional/geometry/GeneralGraphMatching.h>
 #include <directional/geometry/SourceChartTransitions.h>
 
@@ -40,6 +41,8 @@ surface_cell_failure_code_name(const SurfaceCellFailureCode code) {
   switch (code) {
   case SurfaceCellFailureCode::None:
     return "None";
+  case SurfaceCellFailureCode::InputConditioningRejected:
+    return "InputConditioningRejected";
   case SurfaceCellFailureCode::InvalidFieldDimensions:
     return "InvalidFieldDimensions";
   case SurfaceCellFailureCode::MissingMatching:
@@ -2784,9 +2787,11 @@ fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
       }
     }
     for (int branch = 0; branch < fields::kCrossFieldDegree; ++branch) {
-      if (rawCrossField.block(face, 3 * branch, 1, 3).norm() <= 1.0e-12) {
+      const auto branchValues =
+          rawCrossField.block(face, 3 * branch, 1, 3).array();
+      if ((branchValues == 0.0).all()) {
         throw std::invalid_argument(
-            "SurfaceCells raw cross field contains a zero-length branch.");
+            "SurfaceCells raw cross field contains an exactly zero branch.");
       }
     }
   }
@@ -2849,10 +2854,13 @@ fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
     }
     const double value = cycleIndices(cycle);
     const double rounded = std::round(value);
-    if (!std::isfinite(value) || std::abs(value - rounded) >= 1.0e-6) {
+    if (!std::isfinite(value)) {
       throw std::runtime_error(
-          "SurfaceCells interior singularity index is not naturally integer.");
+          "SurfaceCells interior singularity index is nonfinite.");
     }
+    // CP-COND owns admissibility. This floating computation is a derived
+    // diagnostic/metadata path only; it must not introduce an independent
+    // epsilon rejection authority after conditioning.
     const int numerator = static_cast<int>(rounded);
     if (numerator != 0) {
       singularVertices.push_back(vertex);
@@ -14105,28 +14113,64 @@ RemeshResult remesh_from_raw_cross_field(
   const bool surfaceCellsRequested =
       options.backend == RemeshBackend::SurfaceCells ||
       options.surfaceCells.enabled;
+
+  std::optional<ConditionedSourceProduct> conditionedSource;
+  const Eigen::MatrixXd *sourceVertices = &vertices;
+  const Eigen::MatrixXi *sourceFaces = &faces;
+  const Eigen::MatrixXd *sourceRawCrossField = &rawCrossField;
+  if (surfaceCellsRequested) {
+    RawSurfaceCellInput rawInput;
+    rawInput.vertices = vertices;
+    rawInput.faces = faces;
+    rawInput.rawCrossField = rawCrossField;
+    ConditioningResult conditioning = condition_surface_cell_input(
+        rawInput, ConditioningPolicy::production_identity());
+    if (const auto *rejected =
+            std::get_if<geometry::Rejected<ConditioningFailure>>(&conditioning)) {
+      RemeshFailure failure;
+      failure.kind = RemeshFailureKind::SurfaceCellRejected;
+      failure.surfaceCellFailure = SurfaceCellFailureCode::InputConditioningRejected;
+      failure.stage = "input-conditioning/" +
+                      conditioning_failure_code_name(rejected->failure.code);
+      RemeshResult rejectedResult = RemeshResult::rejected(std::move(failure));
+      set_overall_pipeline_time(rejectedResult, pipelineStart);
+      return rejectedResult;
+    }
+    auto *produced =
+        std::get_if<geometry::Produced<ConditionedSourceProduct>>(&conditioning);
+    if (produced == nullptr) {
+      throw std::logic_error(
+          "InputConditioner returned no Produced/Rejected authority.");
+    }
+    conditionedSource = std::move(produced->product);
+    sourceVertices = &conditionedSource->vertices;
+    sourceFaces = &conditionedSource->faces;
+    sourceRawCrossField = &conditionedSource->rawCrossField;
+  }
+
   RemeshResult result;
   if (options.parallelizeComponents && surfaceCellsRequested) {
     TriMesh meshWhole;
-    meshWhole.set_mesh(vertices, faces);
+    meshWhole.set_mesh(*sourceVertices, *sourceFaces);
     try {
       const fields::CrossFieldResult crossField =
-          finalize_surface_cell_raw_cross_field(meshWhole, rawCrossField);
+          finalize_surface_cell_raw_cross_field(meshWhole, *sourceRawCrossField);
       result = remesh_surface_cell_components_from_cross_field(
-          vertices, faces, crossField, options);
+          *sourceVertices, *sourceFaces, crossField, options);
     } catch (...) {
       RemeshOptions sequentialOptions = options;
       sequentialOptions.parallelizeComponents = false;
       result = remesh_from_raw_cross_field_impl(
-          meshWhole, rawCrossField, sequentialOptions, nullptr);
+          meshWhole, *sourceRawCrossField, sequentialOptions, nullptr);
     }
   } else if (options.parallelizeComponents) {
     result = remesh_components_from_raw_cross_field(
         vertices, faces, rawCrossField, options);
   } else {
     TriMesh meshWhole;
-    meshWhole.set_mesh(vertices, faces);
-    result = remesh_from_raw_cross_field_impl(meshWhole, rawCrossField, options, nullptr);
+    meshWhole.set_mesh(*sourceVertices, *sourceFaces);
+    result = remesh_from_raw_cross_field_impl(
+        meshWhole, *sourceRawCrossField, options, nullptr);
   }
   set_overall_pipeline_time(result, pipelineStart);
   return result;
@@ -14153,15 +14197,49 @@ remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
         "CrossFieldResult must contain a #F-by-12 degree-4 raw field.");
   }
 
+  std::optional<ConditionedSourceProduct> conditionedSource;
+  fields::CrossFieldResult conditionedCrossField = crossField;
+  const Eigen::MatrixXd *sourceVertices = &vertices;
+  const Eigen::MatrixXi *sourceFaces = &faces;
+  if (surfaceCellsRequested) {
+    RawSurfaceCellInput rawInput;
+    rawInput.vertices = vertices;
+    rawInput.faces = faces;
+    rawInput.rawCrossField = crossField.rawField;
+    ConditioningResult conditioning = condition_surface_cell_input(
+        rawInput, ConditioningPolicy::production_identity());
+    if (const auto *rejected =
+            std::get_if<geometry::Rejected<ConditioningFailure>>(&conditioning)) {
+      RemeshFailure failure;
+      failure.kind = RemeshFailureKind::SurfaceCellRejected;
+      failure.surfaceCellFailure = SurfaceCellFailureCode::InputConditioningRejected;
+      failure.stage = "input-conditioning/" +
+                      conditioning_failure_code_name(rejected->failure.code);
+      RemeshResult rejectedResult = RemeshResult::rejected(std::move(failure));
+      set_overall_pipeline_time(rejectedResult, pipelineStart);
+      return rejectedResult;
+    }
+    auto *produced =
+        std::get_if<geometry::Produced<ConditionedSourceProduct>>(&conditioning);
+    if (produced == nullptr) {
+      throw std::logic_error(
+          "InputConditioner returned no Produced/Rejected authority.");
+    }
+    conditionedSource = std::move(produced->product);
+    sourceVertices = &conditionedSource->vertices;
+    sourceFaces = &conditionedSource->faces;
+    conditionedCrossField.rawField = conditionedSource->rawCrossField;
+  }
+
   RemeshResult result;
   if (surfaceCellsRequested && options.parallelizeComponents) {
     result = remesh_surface_cell_components_from_cross_field(
-        vertices, faces, crossField, options);
+        *sourceVertices, *sourceFaces, conditionedCrossField, options);
   } else if (surfaceCellsRequested) {
     TriMesh meshWhole;
-    meshWhole.set_mesh(vertices, faces);
-    result = remesh_surface_cells_from_cross_field_impl(meshWhole, crossField,
-                                                        options);
+    meshWhole.set_mesh(*sourceVertices, *sourceFaces);
+    result = remesh_surface_cells_from_cross_field_impl(
+        meshWhole, conditionedCrossField, options);
   } else {
     result = remesh_from_raw_cross_field(vertices, faces, crossField.rawField,
                                          options);
@@ -14172,13 +14250,13 @@ remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
       !result.diagnostics.surfaceCellUsedLegacyFallback &&
       crossFieldWasAccepted) {
     RemeshProduct &product = result.product();
-    product.crossFieldMatching = crossField.matching;
-    product.crossFieldEffort = crossField.effort;
-    product.crossFieldSingularCycles = crossField.singularCycles;
-    product.crossFieldSingularIndices = crossField.singularIndices;
+    product.crossFieldMatching = conditionedCrossField.matching;
+    product.crossFieldEffort = conditionedCrossField.effort;
+    product.crossFieldSingularCycles = conditionedCrossField.singularCycles;
+    product.crossFieldSingularIndices = conditionedCrossField.singularIndices;
   }
   if (surfaceCellsRequested && crossFieldWasAccepted) {
-    fields::CrossFieldResult diagnosticCrossField = crossField;
+    fields::CrossFieldResult diagnosticCrossField = conditionedCrossField;
     normalize_surface_cell_cross_field_directions(diagnosticCrossField);
     result.surfaceCellContext.crossFieldHasMatching =
         diagnosticCrossField.matchingComputed;
@@ -14250,7 +14328,10 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
   const auto pipelineStart = RemeshPipelineClock::now();
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
-  if (options.preconditionInputMesh) {
+  const bool surfaceCellsRequested =
+      options.backend == RemeshBackend::SurfaceCells ||
+      options.surfaceCells.enabled;
+  if (options.preconditionInputMesh && !surfaceCellsRequested) {
     const auto preconditionStart = std::chrono::high_resolution_clock::now();
     geometry::BoundedMeshPreconditionerOptions preconditionOptions;
     preconditionOptions.enabled = true;

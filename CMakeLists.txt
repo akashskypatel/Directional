@@ -243,6 +243,7 @@ add_library(
   src/meshing/SetupMesher.cpp
   src/meshing/TriFlowSimplification.cpp
   src/meshing/TriFlowSimplificationDCEL.cpp
+  src/pipeline/InputConditioner.cpp
   src/pipeline/ParallelRemeshPipeline.cpp
   src/pipeline/RemeshPipeline.cpp)
 add_library(Directional::pipeline ALIAS directional_pipeline)
