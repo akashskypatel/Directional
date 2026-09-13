@@ -1,4 +1,0 @@
-# M4-CP-COND-DEFN temporary-state cleanup
-.agents/connector-triggers/patch/m4-cp-cond-defn/apply.txt
-.agents/connector-triggers/patch/m4-cp-cond-defn/apply-r2.txt
-.agents/connector-triggers/source-snapshot/m4-cp-cond-defn-20260913.txt
