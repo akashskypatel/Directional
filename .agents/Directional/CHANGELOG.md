@@ -29,6 +29,26 @@ independent of the producer under test, and asserts the preserved output yields 
 falsifier that perturbing a raw branch byte must change the computed index or break the comparison. Accounting
 holds at **49 / 14 / 35**, debt **5**; accepted authority remains CP3 package `10307919492` / selector408.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld: accepting the corrected
+negative-index authority is right, and refusing to close CP-COND on a selector-publication gap — rather than
+treating fourteen focused PASSes as a cumulative gate — is the correct call. **The CB3 shape constraint is
+discharged and implemented more sharply than required:** `independent_negative_index_oracle(witness.raw)` takes the
+raw bundle rather than the conditioner's output, closing the self-authorizing failure mode; the index is derived
+then compared; and the falsifier at `tests/InputConditionerTests.cpp:493-497` flips a **single bit** of
+`rawCrossField(0,0)` via `bit_cast` and requires the oracle to yield nothing — direct proof it reads the raw bytes,
+which the previous version could not demonstrate. OBS-01 verified independently: `e3b0c442…b855` is indeed the
+SHA-256 of empty input, so `EVIDENCE_SHA256SUMS` carries a self-entry hashing the file before it had content and
+verifies vacuously. That is the **third instance of one class** — a record cannot attest to its own bytes — after
+the review-closeout commit-hash row corrected in `REVIEW_TURN_POLICY.md`; TB4 should ask the same question of every
+self-describing artifact its harness emits. **One constraint required before closure, recorded durably in the
+tracker:** §4 cites the boundary-truncated separatrix as the permitted blocker *because reachability is not
+proved*, but frozen §12 conjunct 4 admits only **independently proved** or **proved genuinely unreachable**, the
+hatch guarding against fabricating a witness. "Not proved reachable" is neither state, and treating it as the
+permitted blocker converts an open question into a satisfied conjunct — the same substitution corrected at
+`Architecture_M4_DEFN_Frozen_Definitions.md:508`. Before CP-COND closes the item must resolve into a produced
+witness or an independent A2a proof of unreachability. Selector422 (`408 + 14`) with a first-408 prefix proof is
+the right successor target. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-13 — `M4-CP-COND-CB2`: exact-source package closure GREEN; full selector owner set packaged; TB2 frozen
 
 - Executed the package-closure control experiment frozen by TB1 Review with **no semantic source change**. GitHub Actions run/job `34771486767 / 103761775124` compiled the exact seven-target set from semantic source `b576d061e23873b7b4193b158138d2097c75a728` and finished GREEN.

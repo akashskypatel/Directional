@@ -134,3 +134,69 @@ This Review folds consumed per-turn CP-COND documents after preserving their dur
 | Turn boundary held | PASS — runtime-free Review; no product/test/fixture/selector/benchmark/build-source mutation |
 | review_check.py boundary | PASS — ALL CHECKS PASSED; no product/test/fixture/build or selector mutation. Accepted M4 selector408 was additionally re-hashed explicitly at `Architecture_M4_CP3_CB5_Required_Green_Selector_408.txt` = `c689c0cd...484` because the repository also retains a historical M3 selector numbered 408. |
 | Pushed to origin, branch in sync | PASS — final publication is verified by re-reading the applied working-branch/PR head through the GitHub connector before closeout; no later repository mutation is permitted before the final summary comment. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Accepting the corrected negative-index authority is right, and refusing to close
+CP-COND on a selector-publication gap — rather than treating fourteen focused PASSes as equivalent to a
+cumulative gate — is the correct call. Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the CB3 shape constraint is discharged, and implemented more sharply than required
+
+The `M4-CP-COND-TB2-REV` addendum required the oracle to read the **raw input**, compute the index by its own
+exact method independent of the producer under test, and be falsifiable by a raw perturbation. All three hold
+in `tests/InputConditionerTests.cpp`:
+
+- `independent_negative_index_oracle(witness.raw)` takes the raw bundle, not the conditioner's output, so the
+  self-authorizing failure mode is closed (`:488`);
+- the index is derived and then compared — `EXPECT_EQ(rawOracle->cycleNumerator, -1)` (`:490`) — rather than
+  asserted from detached builder arithmetic;
+- the falsifier is **stronger than specified**: `:493-497` flips a single bit of `rawCrossField(0,0)` through
+  `bit_cast` and requires `independent_negative_index_oracle(mutated)` to yield nothing. A one-bit change
+  breaking the oracle is direct proof that it reads the raw bytes, which is exactly what the previous version
+  could not demonstrate;
+- the conditioner is then run under `production_identity()` and its preserved output compared (`:499-502`).
+
+### V2 — OBS-01 verified, and it is the third instance of one class
+
+The cited digest is correct: `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` is the SHA-256
+of empty input, recomputed here. So `EVIDENCE_SHA256SUMS` carries a self-entry hashing the file as it stood
+before it had content, and a manifest that lists itself verifies vacuously no matter what it contains. The
+classification — orchestration, non-blocking, owner TB4 — is right.
+
+Worth recording because it has now recurred: this is the same defect class as the review-closeout row that asked
+for the commit hash of the commit containing it, corrected in `REVIEW_TURN_POLICY.md` §4/§5. **A record cannot
+attest to its own bytes.** TB4's evidence harness should exclude the checksum output from its own manifest, and
+the same question is worth asking of any other self-describing artifact the harness emits.
+
+### V3 — REQUIRED before closure: conjunct 4 does not admit "reachability not proved"
+
+§4 lists the boundary-truncated separatrix as *"the explicitly permitted blocked / report-only / non-selector
+item because independent A2a reachability is not proved."* That reads the escape hatch wider than it is.
+
+Frozen `Architecture_M4_CP_COND_Frozen_Definitions.md` §12 conjunct 4 requires *"independently proved
+high-valence, negative-index, and boundary-truncated witness preconditions, **with any genuinely unreachable
+item left as an explicit blocker rather than fabricated**."* The hatch is for an item **proved** genuinely
+unreachable, and the thing it guards against is fabricating a witness that is not real. It does not cover an
+item whose reachability is simply an open question.
+
+"Not proved reachable" is neither of the two states the conjunct admits. Treating it as the permitted blocker
+converts an unresolved question into a satisfied conjunct, which is the same substitution this project
+corrected at `Architecture_M4_DEFN_Frozen_Definitions.md:508` — an assertion standing in for evidence inside a
+normative claim.
+
+This does not affect TB3's adjudication, since CP-COND is open on the selector gap regardless. It is a
+constraint on **closure**: before CP-COND may close, the boundary-truncated item must resolve into one of the
+two evidenced states — a produced witness, or an independent proof from A2a authority that the precondition is
+genuinely unreachable. If neither is obtainable, conjunct 4 is unsatisfied and closure must say so explicitly
+rather than cite the hatch.
+
+### V4 — successor and obligations confirmed
+
+Selector422 is the right target: `408 + 14`, with CB4 required to prove the first 408 rows hash exactly to
+`c689c0cd…484`, which preserves the accepted prefix byte-for-byte as conjunct 8 demands. All carried items keep
+named owners — `TB2-REV-CAND-01` closed runtime-proved, the new `TB3-REV-CAND-01` and `OBS-01` with owners,
+`M4-CP3-TB1-R1-REV-OBS-01` and `CB4-REV-OBS-02` carried, the TB3 provenance warning retained as a
+historical-claim bound, and both `G4-B002` and `G4-B003` debts held at their gating milestones.

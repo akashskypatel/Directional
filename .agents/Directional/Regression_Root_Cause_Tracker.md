@@ -91,6 +91,20 @@ Two clarifications, both drawn from turns that got this wrong:
 Recorded 2026-09-12 after `M4-CP3-TB6-REV` initially classified an accepted-ordinal RED as non-stable on the
 unpromoted-package rationale. Corrected there to 48 / 14 / 34.
 
+
+## Closure constraint — CP-COND conjunct 4 — DURABLE
+
+Frozen `Architecture_M4_CP_COND_Frozen_Definitions.md` §12 conjunct 4 admits exactly two states for the
+high-valence, negative-index and boundary-truncated witness preconditions: **independently proved**, or **proved
+genuinely unreachable** and left as an explicit blocker rather than fabricated. *"Reachability not proved"* is
+neither, and may not be cited as the permitted blocker.
+
+Before CP-COND closes, the boundary-truncated separatrix item must resolve into a produced witness or an
+independent A2a proof of genuine unreachability. If neither is obtainable, conjunct 4 is unsatisfied and the
+closure record must say so rather than invoke the hatch. Recorded 2026-09-13 by the `M4-CP-COND-TB3-REV`
+verification addendum; same substitution class as the corrected `Architecture_M4_DEFN_Frozen_Definitions.md:508`
+torus claim.
+
 ## M4-CP3-TB7-REV — **CANDIDATE REJECTED / TEST-AUTHORITY FIXTURE-PRECONDITION DRIFT / STABLE EVENT / CB10**
 
 - **Reviewed execution:** TB7 run/job `34721325716 / 103627645766` against immutable CB9 package `10305678151`; **223 = 222 PASS / 1 RED**, focused ordinal138/row408/rows404-407 **12/12 PASS**, selector403 ordinals1-210 PASS, ordinal211 RED, immutable postflight PASS.
