@@ -6,7 +6,7 @@ Last updated: 2026-09-13 UTC
 
 This is the single durable **task index** — open and blocked work only. It is deliberately forward-looking.
 
-Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, `M3_CP4ab_Closure_Record.md`, and `M3_Closure_Record.md`, plus current milestone checkpoint closures such as `.agents/Directional/M4_CP1_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
+Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, `M3_CP4ab_Closure_Record.md`, and `M3_Closure_Record.md`, plus current milestone checkpoint closures such as `.agents/Directional/M4_CP1_Closure_Record.md`, `.agents/Directional/M4_CP2_Closure_Record.md`, and `.agents/Directional/M4_CP3_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
 
 **Do not re-accumulate per-checkpoint, per-retry, or per-partial narrative here.** A closed checkpoint gets one line in `ROADMAP.md` §1 and a closure record; it does not stay in this file.
 
@@ -28,15 +28,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-TB8-REV` (mandatory semantic adjudication of mechanically green TB8)
+## Current focus — `M4-CP-COND-DEFN` (freeze Amendment-20 conditioning contract)
 
-`M4-CP3-TB8-EXEC` is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED**. Authoritative run/job `34729562893 / 103649745950` consumed immutable CB10 package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` and completed all **835/835** prescribed fresh processes PASS. The six corrected shared-fixture identities passed A/B, ordinal138 passed A/B, row408 passed A/B, rows404-407 passed A/B, accepted selector403 completed **403/403** with semantic fail-fast disabled, and selector408 completed **408/408**. The complete accepted RED census is empty.
+`M4-CP3-TB8-REV` is **APPROVED**. Candidate package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` and selector408 are promoted as accepted current M4 authority at **408/408**. TB8 independently reopens as **835/835 PASS** with the complete accepted selector403 census **403/403**, all focused A/B discriminators green, empty accepted RED census and exact immutable postflight. `M4-CP3-TB7-REV-CAND-01` closes recovery-proved with its historical stable event retained.
 
-TB8 postflight proves package/source/execution-view byte+mode immutability, with no configure/compile/relink/repair/discovery/benchmark or source/test/fixture/selector mutation. Result artifact `10309365777` is retained in `.agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Report.md`.
+**M4-CP3 is CLOSED / ACCEPTED.** The main exact-torus `G4-B002` pairing blocker is recovery-proved closed; its three inherited produced-witness debts remain **M4-CP4** gates, so produced-witness debt stays **5**. Stable accounting remains **49 events / 14 categories / 35 recurrences**.
 
-**Exact next: `M4-CP3-TB8-REV`.** Review owns promotion/classification/accounting. Until that Review completes, corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted runtime authority and CB10 package `10307919492` remains unpromoted.
-
-Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**. `M4-CP3-TB7-REV-CAND-01`, CP3 and `G4-B002` remain OPEN pending TB8 Review.
+**Exact next: `M4-CP-COND-DEFN`.** Follow `.agents/Directional/Architecture_M4_CP_COND_DEFN_Plan.md`. Freeze the pre-A0 conditioner product, certified raw→conditioned correspondence, typed inadmissibility, exact permitted operations and non-vacuous witness/oracle preconditions. DEFN is runtime-free and may not mutate product/test/fixture/selector/build source or alter accepted CP3 A3/A4 semantics.
 
 ## Carried forward from M1
 
@@ -75,7 +73,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / CORRECTED R4 ARTIFACT + SELECTOR403 ACCEPTED / CP3 OPEN**. `M4-CP3-TB2-R2-REV` accepted artifact `10289601000` / selector403 **403/403**. CB10 corrected only the stale hard-rail fixture authority path; TB8-EXEC is mechanically green at **835/835**, including selector403 **403/403** and selector408 **408/408**, with immutable package/source/execution view. Candidate package `10307919492` remains unpromoted pending exact-next `M4-CP3-TB8-REV`. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND NEXT**. `M4-CP3-TB8-REV` promotes package `10307919492` / selector408 **408/408** and closes the main exact-torus pairing blocker. CP-COND now freezes Amendment-20 conditioning; CP-SCALE follows; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -94,7 +92,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
-- [ ] `G4-B002`: exact torus hard-rail pairing; **CP3 current owner**. Corrected R4 artifact/selector403 remains accepted exact-path/A3 publication authority. CB8 runtime recovery is proved by TB6 row408 2/2 plus rows404-407 8/8. CB9 applies the bounded product-semantic correction and compiles green; candidate selector408 remains unpromoted pending TB7-EXEC/REV. The 3 produced-witness debts remain CP4-owned.
+- [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The **three produced-witness debts remain open and M4-CP4-owned**; this checkbox closes the blocker, not those debt items.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.
 - [ ] `G4-B004`: positive multi-isolation quotient witness; M5/M6.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
@@ -115,4 +113,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted current M4-CP3 runtime authority, with selector394 preserved as exact-prefix predecessor. CB10 corrected the stale fixture authority path without product or selector changes, and TB8-EXEC is mechanically green at **835/835** with selector403 **403/403**, selector408 **408/408**, and immutable package/source/execution view. Exact next is mandatory semantic **`M4-CP3-TB8-REV`**; candidate package `10307919492` remains unpromoted until Review. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP3 is CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**; corrected R4 selector403 remains the accepted predecessor. The main exact-torus pairing blocker is recovery-proved, while its three produced-witness debts remain M4-CP4 gating. Exact next is runtime-free **`M4-CP-COND-DEFN`** under the frozen plan. PR #8 remains open, draft, and unmerged.

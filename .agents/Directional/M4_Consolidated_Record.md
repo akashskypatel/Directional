@@ -3,7 +3,7 @@
 **Status:** CURRENT M4 FAMILY RECORD
 **Last updated:** 2026-09-12 at `M4-CP3-TB7-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2 durable closures are `M4_CP1_Closure_Record.md` and `M4_CP2_Closure_Record.md`. Corrected R4 artifact `10289601000` / selector403 remains accepted M4-CP3 runtime authority at **403/403**. TB7 proves CB9 recovered the ordinal138 applicability regression while preserving row408/rows404-407, then exposes accepted ordinal211 as CB5-era **TEST-AUTHORITY fixture-precondition drift**: the legacy unit fixture lacks mandatory A2b/A3 authority. CB9 package/selector408 remains unpromoted. Stable accounting is **49 / 14 / 35**, debt **5**; CP3 and `G4-B002` remain OPEN. Exact next is test-only/runtime-free `M4-CP3-CB10`. Task/state pointers live in `TODO.md` and `Future_Chat_Session_Handoff.md`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`. `M4-CP3-TB8-REV` accepts package `10307919492` / selector408 **408/408** and closes CP3. Stable accounting is **49 / 14 / 35**, debt **5**. The main `G4-B002` exact-torus pairing blocker is closed; its three produced-witness debts remain CP4 gating. Exact next is `M4-CP-COND-DEFN`.
 
 ## 1. M4 entering authority
 
@@ -540,3 +540,16 @@ Review compared exact accepted R4 (`58521f6d...`), CB5 (`4dfd0d9a...`) and curre
 `M4-CP3-TB7-REV-CAND-01` is **OPEN / TEST-AUTHORITY / FIXTURE-PRECONDITION DRIFT / STABLE EVENT**. Frozen M4 authority requires A4 to consume A3 and forbids restoring floating/no-plan pairing, so correction is test-only. Accepted ordinal211 PASS→RED advances stable accounting to **49 events / 14 categories / 35 recurrences**, debt 5, category existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`. Corrected R4 package `10289601000` / selector403 403/403 remains accepted.
 
 Exact successor is runtime-free `M4-CP3-CB10`: migrate only the shared hard-rail fixture to a production-valid A2b/A3 path, preserve the six downstream hard-rail identity bodies/names and selector lists, compile/package all eight CP3 targets with GMP/GMPXX, then hand off to artifact-only TB8.
+
+
+## 2.38 `M4-CP3-TB8-REV` — selector408 accepted; CP3 closed
+
+CB10 migrated only the six-consumer `make_hard_rail_fixture()` from manual/no-plan authority to the production SurfaceCells A2b/A3 path. TB8 then executed the bounded recovery and complete accepted-prefix census on immutable package `10307919492`: shared-fixture A/B **12/12**, ordinal138 A/B **2/2**, row408 A/B **2/2**, rows404-407 A/B **8/8**, accepted selector403 **403/403** to completion, and selector408 **408/408** cumulative, for **835/835 PASS** with empty accepted RED census and exact immutable postflight.
+
+Review independently re-hashed selector403/408 and the 835-row ledger, re-opened package 28/28/source authority, verified the repaired fixture requires retained production topology/baseline/rail/trace authority + Produced before reaching its downstream oracles, and re-read production hard-rail strictness. No `support_key` or no-plan fallback was restored. Row405 proves fixed-plan target perturbation leaves non-empty shared intervals unchanged; row406 proves missing/tampered exact interval identity fails closed; row408 proves the constructed production torus completes the exact A3->A4 path.
+
+**Disposition:** package `10307919492` / selector408 is accepted current M4 authority; `M4-CP3` is CLOSED / ACCEPTED; `M4-CP3-TB7-REV-CAND-01` is CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED. Stable accounting remains **49 / 14 / 35**, debt **5**. The main exact-torus `G4-B002` blocker is closed, while its three produced-witness debts remain CP4 gates. Exact next is runtime-free `M4-CP-COND-DEFN`.
+
+### CP3 closure-time folded documents
+
+The complete closure-time index is in `M4_CP3_Closure_Record.md` §5. Earlier CP3 folds remain indexed above in this consolidated record. Current TB8 runtime report, current TB8 Review, closure record, frozen definitions and selector files remain retained authority.

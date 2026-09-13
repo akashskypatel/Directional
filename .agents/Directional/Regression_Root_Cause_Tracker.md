@@ -1,5 +1,13 @@
 # Regression Root Cause Tracker
 
+
+## M4-CP3-TB8-REV — APPROVED / selector408 accepted / CP3 closed
+
+Runtime-free Review independently re-opened package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`, result/log artifacts `10309365777 / 10309009858`, selector403/408 and the raw 835-row ledger. The gate is **835/835 PASS**, including repaired shared-fixture A/B 12/12, ordinal138 A/B 2/2, row408 A/B 2/2, rows404-407 A/B 8/8, accepted selector403 **403/403 to completion** and selector408 **408/408**, with empty accepted RED census and immutable package/source/execution-view postflight.
+
+**Decision:** package `10307919492` + selector408 are accepted M4 authority; `M4-CP3` is CLOSED / ACCEPTED. `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**. No new event fires, so stable accounting remains **49 / 14 / 35**, debt **5**. The main `G4-B002` exact-torus pairing blocker is recovery-proved closed; its three produced-witness debts remain M4-CP4 gating. Exact next is `M4-CP-COND-DEFN`.
+
+
 ## Stable-event criterion — DURABLE, DO NOT DELETE
 
 A **stable event** is recorded when an ordinal inside the **accepted selector prefix** transitions **PASS → RED**,
@@ -21,7 +29,7 @@ unpromoted-package rationale. Corrected there to 48 / 14 / 34.
 
 - **Reviewed execution:** TB7 run/job `34721325716 / 103627645766` against immutable CB9 package `10305678151`; **223 = 222 PASS / 1 RED**, focused ordinal138/row408/rows404-407 **12/12 PASS**, selector403 ordinals1-210 PASS, ordinal211 RED, immutable postflight PASS.
 - **Prior recovery:** `M4-CP3-TB6-REV-CAND-01` is **CLOSED / RECOVERY PROVED** by ordinal138 2/2 while row408 2/2 and rows404-407 8/8 preserve the opposed controls. CB9's applicability correction is retained.
-- **`M4-CP3-TB7-REV-CAND-01` — OPEN / TEST-AUTHORITY / STABLE EVENT.** Accepted ordinal211 `SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected` fails during `hard_rail_fixture()` setup with `InvalidHardRailPairing`, before its intended reciprocal-`oppositeEdge` tamper/oracle.
+- **`M4-CP3-TB7-REV-CAND-01` — CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED.** TB8 re-proves accepted ordinal211 and all five other shared-fixture consumers after the CB10 test-authority migration; package `10307919492` / selector408 is accepted by `M4-CP3-TB8-REV`. The original failure was test-authority fixture-precondition drift, and the recorded stable event remains in accounting.
 - **Historical premise:** complete `SurfaceCellTransitionQuotientTests.cpp` SHA-256 is identical in accepted R4, CB5 and CB9/current source (`4372a939fc1bc356e7753fa4c40e4ce269b04fcd59ba037513665add6a982f25`); accepted R4 selector403 was 403/403 PASS.
 - **Root cause:** CB5 correctly cut production hard-rail pairing over to mandatory exact A3 `sharedBoundaryInterval` identity. The unchanged legacy focused `hard_rail_fixture()` supplies hard edges/manual rail but no `GlobalTopologyPlan` or `GlobalConformityBaselinePlan`; intervals are therefore absent and global hard-rail aggregation rejects before the test subject is reached. The missing-interval gate already exists in exact CB5 source. CB9's edited accepted-cut path is unreachable from this fixture.
 - **Product discrimination:** frozen M4 authority requires A4 to consume A3 shared subdivision and forbids floating `support_key`/local re-solving. Restoring a no-plan product fallback would be an architectural regression. Correction is test-only: migrate the fixture onto production A2b/A3 authority and preserve downstream assertions.
@@ -7117,7 +7125,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | ID | Blocker | Required gate |
 |---|---|---|
 | `G4-B001` | Direct torus final `LocalSheetMismatch`. | strict-valid torus 3/3 |
-| `G4-B002` | Exact Phase10 torus `InvalidHardRailPairing`. | shared positive rail schedule; revised M4 |
+| `G4-B002` | **Main exact Phase10 torus `InvalidHardRailPairing` blocker CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV.** Three inherited produced-witness debts remain open. | M4-CP4 cumulative debt re-proofs |
 | `G4-B003` | Nonzero periodic Z4 production capability. | M5 relation certificate + representative product acceptance |
 | `G4-B004` | Positive multi-isolation quotient witness. | **M5:** focused positive relation/certificate production; **M6:** representative occurrence/embedding/verifier consumption. No M4 gate/debt. |
 
@@ -7620,9 +7628,8 @@ make the fixture valid; changing product source in the corrective turn absent ne
 
 ## `M4-CP3-TB1-R1-REV-OBS-01` — the oracle's multiplicity weighting is inert
 
-**Owner:** re-carried by `M4-CP3-TB2-REV` to the first later test-source turn that can exercise it without confounding the bounded row400 recovery · **Class:** COVERAGE/OBLIGATION-VACUITY
-**Non-blocking** — no accepted-green loss, no stable event; accounting stays 47/14/33, debt 5, accepted authority
-package119/selector394.
+**Owner:** re-carried by `M4-CP3-TB8-REV` to the first later independently falsifiable M4 test-authority turn before cumulative M4-CP4; CP-COND only if naturally independent, otherwise a dedicated bounded test-only turn · **Class:** COVERAGE/OBLIGATION-VACUITY
+**Non-blocking** — no accepted-green loss, no stable event; accounting is 49/14/35, debt 5, accepted authority package `10307919492` / selector408.
 
 **Root cause.** CB3 generalized `exhaustive_terminal_parity_oracle` to weight each span by its region-incidence
 multiplicity, testing `Σ_s (m_{r,s} · x_s) mod 2 == 0` per region. Ordinal390's receipt reports
@@ -7677,7 +7684,7 @@ an explicitly authorized turn.
 ## `M4-CP3-CB4-REV-OBS-02` — no detector for path/`sourceFaces` producer divergence
 
 **Owner:** next turn that legitimately touches row399 — **not** the row400 recovery · **Class:** COVERAGE/GUARD-GAP
-**Non-blocking** — no accepted-green impact; accounting unchanged at 47/14/33, debt 5.
+**Non-blocking** — no accepted-green impact; accounting unchanged at 49/14/35, debt 5.
 
 **Origin.** The `M4-CP3-CB4-REV` verification addendum required CB4-R1 to reconcile the newly published exact
 source path against the arc's existing `GlobalTopologyArc::sourceFaces`, so one arc would not publish two
