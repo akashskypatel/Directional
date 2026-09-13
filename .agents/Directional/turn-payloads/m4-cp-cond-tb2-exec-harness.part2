@@ -1,0 +1,249 @@
+    for relative in sources:
+        path = root / relative
+        if not path.is_file():
+            continue
+        for suite, name in pattern.findall(path.read_text(encoding='utf-8', errors='replace')):
+            owners[f'{suite}.{name}'].append((target, relative))
+rows = []
+counts = collections.Counter()
+for ordinal, identity in enumerate(selector, 1):
+    found = owners.get(identity, [])
+    if len(found) != 1:
+        raise SystemExit(f'identity owner count {len(found)} for {ordinal}:{identity}')
+    binary, source = found[0]
+    rows.append((ordinal, identity, binary, source))
+    counts[binary] += 1
+expected = {
+    'directional_surface_cell_authority_kernel_tests': 30,
+    'directional_surface_cell_producer_tests': 262,
+    'directional_surface_cell_completion_tests': 75,
+    'directional_surface_cell_validation_tests': 41,
+}
+if dict(counts) != expected:
+    raise SystemExit(f'owner distribution drift: {dict(counts)!r}')
+out.write_text('ordinal\tidentity\tbinary\tsource\n' + ''.join(
+    f'{ordinal}\t{identity}\t{binary}\t{source}\n' for ordinal, identity, binary, source in rows), encoding='utf-8')
+dist_out.write_text('binary\tcount\n' + ''.join(f'{t}\t{counts[t]}\n' for t in target_names), encoding='utf-8')
+focus = [
+    'InputConditionerCPCondCB1.IdentityProducedSeparatesRawAndSemanticDigests',
+    'InputConditionerCPCondCB1.ExactDyadicQuantizationRecordsNonEmptyOperation',
+    'InputConditionerCPCondCB1.ExactEqualityMergeUsesMinimumRawOwner',
+    'InputConditionerCPCondCB1.UnsafeDisconnectedExactMergeIsTypedRefusal',
+    'InputConditionerCPCondCB1.ExactRationalSliverPredicateRefusesWithoutRepair',
+    'InputConditionerCPCondCB1.HighValenceRawPreconditionIsIndependentAndProduced',
+    'InputConditionerCPCondCB1.NegativeIndexRawPreconditionIsIndependentAndPreserved',
+    'InputConditionerCPCondCB1.ContradictoryExactZ4PairingIsTypedRefusal',
+    'InputConditionerCPCondCB1.CertificateTamperMatrixRejectsEveryAuthorityClass',
+    'InputConditionerCPCondCB1.IdempotenceHoldsForCleanAndNonEmptyOperationProducts',
+    'InputConditionerCPCondCB1.ExactSameLatticeCellPerturbationsShareSemanticDigest',
+    'InputConditionerCPCondCB1.LegacyPreconditionerCannotSubstituteForCertificate',
+    'InputConditionerCPCondCB1.TolerantRawFieldFinalizationCannotReplaceExactCertificate',
+    'InputConditionerCPCondCB1.SurfaceCellsRawEntryRejectsAtConditionerBeforeA0',
+]
+report = 'InputConditionerCPCondCB1.BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker'
+focus_rows=[]
+for kind, identities in [('FOCUSED', focus), ('REPORT_ONLY', [report])]:
+    for idx, identity in enumerate(identities, 1):
+        found=owners.get(identity, [])
+        if len(found) != 1:
+            raise SystemExit(f'{kind} owner count {len(found)} for {identity}')
+        binary, source=found[0]
+        if binary != 'directional_surface_cell_producer_tests':
+            raise SystemExit(f'{kind} identity not producer-owned: {identity}:{binary}')
+        focus_rows.append((kind,idx,identity,binary,source))
+focus_out.write_text('kind\tindex\tidentity\tbinary\tsource\n' + ''.join(
+    f'{kind}\t{idx}\t{identity}\t{binary}\t{source}\n' for kind,idx,identity,binary,source in focus_rows), encoding='utf-8')
+print('identity_count=408')
+print('missing=0')
+print('duplicate=0')
+for target in target_names:
+    print(f'{target}={counts[target]}')
+print('focused_count=14')
+print('report_only_count=1')
+PY
+[[ "$(($(wc -l < "${RESULT}/identity-map.tsv") - 1))" -eq 408 ]] || fail_orchestration 'identity map count mismatch'
+for binary in $(tail -n +2 "${RESULT}/identity-map.tsv" | cut -f3 | LC_ALL=C sort -u); do
+  [[ -x "$PKG/bin/$binary" ]] || fail_orchestration "mapped binary absent/non-executable: $binary"
+done
+
+# Separate execution view; package/source remain immutable. Copy modes without repair.
+cp -a "$PKG/bin/." "$EXEC_VIEW/bin/"
+cp -a "$SOURCE/benchmarks/fixtures/." "$EXEC_VIEW/test-data/benchmarks/fixtures/"
+for exe in "${required_executables[@]}"; do
+  [[ "$(sha_file "$PKG/bin/$exe")" == "$(sha_file "$EXEC_VIEW/bin/$exe")" ]] || fail_orchestration "execution-view binary digest mismatch: $exe"
+  [[ "$(stat -c '%a' "$PKG/bin/$exe")" == "$(stat -c '%a' "$EXEC_VIEW/bin/$exe")" ]] || fail_orchestration "execution-view binary mode mismatch: $exe"
+done
+# Verify packaged tests' fixture-root contract statically.
+grep -Fq 'executableDirectory.parent_path() / "test-data"' "$SOURCE/tests/TestFixturePaths.h" || fail_orchestration 'sibling TestFixturePaths rule drifted'
+probe="$(realpath -e "$EXEC_VIEW/bin/directional_surface_cell_producer_tests")"
+resolved_test_data="$(dirname "$(dirname "$probe")")/test-data"
+[[ -d "$resolved_test_data/benchmarks/fixtures" ]] || fail_orchestration 'consumer fixture root absent'
+printf 'resolved_rule=sibling\nresolved_test_data=%s\n' "$resolved_test_data" > "${RESULT}/execution-view.txt"
+census_tree "$EXEC_VIEW" "${RESULT}/execution-view-census-before.tsv"
+preflight_completed=true
+
+echo "${TURN_ID}_PREFLIGHT_COMPLETE: immutable package/source/GMP/selector/owner-set/mode/execution-view verified; starting frozen runtime surface."
+
+focused_ledger="${RESULT}/focused-ledger.tsv"
+report_ledger="${RESULT}/report-only-ledger.tsv"
+selector_ledger="${RESULT}/selector-ledger.tsv"
+printf 'index\tidentity\tbinary\texit\tselected\tok\tskipped\tfailed\tresult\telapsed_seconds\traw_log\n' > "$focused_ledger"
+printf 'index\tidentity\tbinary\texit\tselected\tok\tskipped\tfailed\tresult\telapsed_seconds\traw_log\n' > "$report_ledger"
+printf 'ordinal\tidentity\tbinary\texit\tselected\tok\tskipped\tfailed\tresult\telapsed_seconds\traw_log\n' > "$selector_ledger"
+
+run_identity() {
+  local phase="$1" index="$2" identity="$3" binary="$4" ledger="$5"
+  local stem="$(printf '%03d' "$index")"
+  local raw="${RESULT}/raw/${phase}/${stem}.log"
+  local resource="${RESULT}/resources/${phase}/${stem}.time.txt"
+  local work="${RUNTIME}/${phase}/${stem}"
+  mkdir -p "$work"
+  echo "${TURN_ID} phase=${phase} index=${index} identity=${identity} owner=${binary}"
+  local start_ns end_ns code selected ok skipped failed result elapsed
+  start_ns="$(date +%s%N)"
+  set +e
+  (
+    cd "$work"
+    /usr/bin/time -v -o "$resource" \
+      env GTEST_FAIL_IF_NO_TEST_SELECTED=1 GTEST_COLOR=no \
+      "$EXEC_VIEW/bin/$binary" --gtest_filter="$identity"
+  ) >"$raw" 2>&1
+  code=$?
+  set -e
+  end_ns="$(date +%s%N)"
+  elapsed="$(python3 - "$start_ns" "$end_ns" <<'PY'
+import sys
+print(f'{(int(sys.argv[2])-int(sys.argv[1]))/1e9:.9f}')
+PY
+)"
+  cat "$raw"
+  selected="$(grep -Ec '^\[ RUN      \] ' "$raw" || true)"
+  ok="$(grep -Ec '^\[       OK \] ' "$raw" || true)"
+  skipped="$(grep -Ec '^\[  SKIPPED \] ' "$raw" || true)"
+  failed="$(grep -Ec '^\[  FAILED  \] ' "$raw" || true)"
+  if [[ "$selected" -ne 1 ]]; then
+    result='SELECTION_MISMATCH'; selection_integrity=false; selection_mismatch_count=$((selection_mismatch_count + 1))
+  elif [[ "$skipped" -ge 1 && "$code" -eq 0 ]]; then
+    result='SKIP'; skip_count=$((skip_count + 1))
+  elif [[ "$ok" -ge 1 && "$failed" -eq 0 && "$code" -eq 0 ]]; then
+    result='PASS'; pass_count=$((pass_count + 1))
+  elif [[ "$code" -ge 128 ]]; then
+    result='CRASH'; crash_count=$((crash_count + 1))
+  else
+    result='RED'; red_count=$((red_count + 1))
+  fi
+  processes_executed=$((processes_executed + 1))
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "$index" "$identity" "$binary" "$code" "$selected" "$ok" "$skipped" "$failed" "$result" "$elapsed" \
+    "raw/${phase}/${stem}.log" >> "$ledger"
+}
+
+runtime_started=true
+# 14 focused identities, unchanged from TB1.
+focus_identities=(
+'InputConditionerCPCondCB1.IdentityProducedSeparatesRawAndSemanticDigests'
+'InputConditionerCPCondCB1.ExactDyadicQuantizationRecordsNonEmptyOperation'
+'InputConditionerCPCondCB1.ExactEqualityMergeUsesMinimumRawOwner'
+'InputConditionerCPCondCB1.UnsafeDisconnectedExactMergeIsTypedRefusal'
+'InputConditionerCPCondCB1.ExactRationalSliverPredicateRefusesWithoutRepair'
+'InputConditionerCPCondCB1.HighValenceRawPreconditionIsIndependentAndProduced'
+'InputConditionerCPCondCB1.NegativeIndexRawPreconditionIsIndependentAndPreserved'
+'InputConditionerCPCondCB1.ContradictoryExactZ4PairingIsTypedRefusal'
+'InputConditionerCPCondCB1.CertificateTamperMatrixRejectsEveryAuthorityClass'
+'InputConditionerCPCondCB1.IdempotenceHoldsForCleanAndNonEmptyOperationProducts'
+'InputConditionerCPCondCB1.ExactSameLatticeCellPerturbationsShareSemanticDigest'
+'InputConditionerCPCondCB1.LegacyPreconditionerCannotSubstituteForCertificate'
+'InputConditionerCPCondCB1.TolerantRawFieldFinalizationCannotReplaceExactCertificate'
+'InputConditionerCPCondCB1.SurfaceCellsRawEntryRejectsAtConditionerBeforeA0'
+)
+idx=0
+for identity in "${focus_identities[@]}"; do
+  idx=$((idx + 1))
+  run_identity focused "$idx" "$identity" directional_surface_cell_producer_tests "$focused_ledger"
+done
+
+report_identity='InputConditionerCPCondCB1.BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker'
+run_identity report-only 1 "$report_identity" directional_surface_cell_producer_tests "$report_ledger"
+
+ordinal=0
+while IFS= read -r identity || [[ -n "$identity" ]]; do
+  [[ -n "$identity" ]] || continue
+  ordinal=$((ordinal + 1))
+  map_line="$(awk -F '\t' -v o="$ordinal" 'NR>1 && $1==o {print; exit}' "${RESULT}/identity-map.tsv")"
+  mapped_identity="$(printf '%s\n' "$map_line" | cut -f2)"
+  binary="$(printf '%s\n' "$map_line" | cut -f3)"
+  [[ "$mapped_identity" == "$identity" && -n "$binary" ]] || fail_orchestration "identity-map mismatch at ordinal $ordinal"
+  run_identity selector "$ordinal" "$identity" "$binary" "$selector_ledger"
+done < "$selector"
+[[ "$ordinal" -eq 408 ]] || fail_orchestration "selector execution count mismatch: $ordinal"
+runtime_completed=true
+
+# Immutable postflight.
+census_tree "$PKG" "${RESULT}/package-census-after.tsv"
+census_tree "$SOURCE" "${RESULT}/source-census-after.tsv"
+census_tree "$EXEC_VIEW" "${RESULT}/execution-view-census-after.tsv"
+sha_file "$selector" > "${RESULT}/selector-sha-after.txt"
+stat -c '%a %s' "$selector" > "${RESULT}/selector-mode-size-after.txt"
+cmp -s "${RESULT}/package-census-before.tsv" "${RESULT}/package-census-after.tsv" || fail_orchestration 'immutable package byte/mode census changed'
+if ! cmp -s "${RESULT}/source-census-before.tsv" "${RESULT}/source-census-after.tsv"; then
+  source_test_fixture_selector_mutation=true
+  fail_orchestration 'immutable packaged source byte/mode census changed'
+fi
+cmp -s "${RESULT}/execution-view-census-before.tsv" "${RESULT}/execution-view-census-after.tsv" || fail_orchestration 'execution view byte/mode census changed'
+cmp -s "${RESULT}/selector-sha-before.txt" "${RESULT}/selector-sha-after.txt" || fail_orchestration 'selector hash changed'
+cmp -s "${RESULT}/selector-mode-size-before.txt" "${RESULT}/selector-mode-size-after.txt" || fail_orchestration 'selector mode/size changed'
+printf 'package_census_equal=true\nsource_census_equal=true\nexecution_view_census_equal=true\nselector_equal=true\n' > "${RESULT}/immutability.txt"
+postflight_completed=true
+
+python3 - "$focused_ledger" "$report_ledger" "$selector_ledger" "${RESULT}/summary.json" "${RESULT}/mechanical-summary.txt" <<'PY'
+import csv, json, pathlib, sys
+focused=list(csv.DictReader(open(sys.argv[1]), delimiter='\t'))
+report=list(csv.DictReader(open(sys.argv[2]), delimiter='\t'))
+selector=list(csv.DictReader(open(sys.argv[3]), delimiter='\t'))
+if len(focused)!=14 or [int(r['index']) for r in focused] != list(range(1,15)):
+    raise SystemExit('focused coverage mismatch')
+if len(report)!=1 or report[0]['identity']!='InputConditionerCPCondCB1.BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker':
+    raise SystemExit('report-only coverage mismatch')
+if len(selector)!=408 or [int(r['ordinal']) for r in selector] != list(range(1,409)):
+    raise SystemExit('selector coverage mismatch')
+def counts(rows):
+    keys=['PASS','RED','SKIP','CRASH','SELECTION_MISMATCH']
+    return {k:sum(r['result']==k for r in rows) for k in keys}
+def nonpass(rows, key):
+    idx='ordinal' if 'ordinal' in rows[0] else 'index'
+    return [{idx:int(r[idx]),'identity':r['identity'],'owner':r['binary'],'result':r['result'],'exit':int(r['exit']),'selected':int(r['selected'])} for r in rows if r['result']!='PASS']
+fc=counts(focused); rc=counts(report); sc=counts(selector)
+summary={
+ 'turn':'M4-CP-COND-TB2-EXEC',
+ 'mechanical_only':True,
+ 'focused_count':14,
+ 'focused_counts':fc,
+ 'focused_nonpass':nonpass(focused,'index'),
+ 'report_only_count':1,
+ 'report_only_counts':rc,
+ 'report_only_outcome':report[0],
+ 'selector_count':408,
+ 'selector_counts':sc,
+ 'selector_nonpass':nonpass(selector,'ordinal'),
+ 'mechanical_green': fc['PASS']==14 and rc['SKIP']==1 and sc['PASS']==408 and all(sc[k]==0 for k in ['RED','SKIP','CRASH','SELECTION_MISMATCH']),
+}
+pathlib.Path(sys.argv[4]).write_text(json.dumps(summary, indent=2, sort_keys=True)+'\n', encoding='utf-8')
+lines=[
+ f"focused={fc['PASS']}/14 PASS; RED={fc['RED']} SKIP={fc['SKIP']} CRASH={fc['CRASH']} SELECTION_MISMATCH={fc['SELECTION_MISMATCH']}",
+ f"report_only={report[0]['result']}",
+ f"selector={sc['PASS']}/408 PASS; RED={sc['RED']} SKIP={sc['SKIP']} CRASH={sc['CRASH']} SELECTION_MISMATCH={sc['SELECTION_MISMATCH']}",
+ f"mechanical_green={str(summary['mechanical_green']).lower()}",
+]
+pathlib.Path(sys.argv[5]).write_text('\n'.join(lines)+'\n', encoding='utf-8')
+print('\n'.join(lines))
+PY
+
+sha256sum "$focused_ledger" "$report_ledger" "$selector_ledger" "${RESULT}/summary.json" > "${RESULT}/ledger-hashes.txt"
+
+if [[ "$selection_integrity" != true ]]; then
+  orchestration_failure=true
+  echo 'ORCHESTRATION_FAILURE: one or more processes did not select exactly one test' >&2
+  exit 90
+fi
+
+echo "${TURN_ID}_COMPLETE: frozen 14 focused + 1 report-only + selector408 execution complete; semantic/recovery adjudication deferred to M4-CP-COND-TB2-REV."
