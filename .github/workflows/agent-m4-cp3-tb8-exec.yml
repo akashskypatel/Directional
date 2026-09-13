@@ -139,8 +139,6 @@ jobs:
           )
           src = src.replace(gmp_anchor, extra, 1)
 
-          # The accepted M4 suite must run organically. Remove the historical per-process
-          # elapsed-time wrapper and classify any signal termination as a crash.
           timed = "    /usr/bin/time -v -o \"$resource\" \\\n      timeout -k 5s 180s \\\n      env GTEST_FAIL_IF_NO_TEST_SELECTED=1 GTEST_COLOR=no \\\n"
           untimed = "    /usr/bin/time -v -o \"$resource\" \\\n      env GTEST_FAIL_IF_NO_TEST_SELECTED=1 GTEST_COLOR=no \\\n"
           if src.count(timed) != 1:
@@ -153,12 +151,12 @@ jobs:
 
           fn_start = src.index('run_ordinal_or_stop() {')
           runtime_start = src.index('runtime_started=true', fn_start)
-          new_fn = r'''run_ordinal_census() {
+          new_fn = '''run_ordinal_census() {
             local phase="$1" ordinal="$2" expected_identity="${3:-}"
             local line identity binary classification
             line="$(map_identity "$ordinal")"
-            identity="$(printf '%s\n' "$line" | cut -f2)"
-            binary="$(printf '%s\n' "$line" | cut -f3)"
+            identity="$(printf '%s\\n' "$line" | cut -f2)"
+            binary="$(printf '%s\\n' "$line" | cut -f3)"
             [[ -n "$identity" && -n "$binary" ]] || fail_orchestration "missing routing at ordinal $ordinal"
             if [[ -n "$expected_identity" && "$identity" != "$expected_identity" ]]; then
               fail_orchestration "identity mismatch at ordinal $ordinal: $identity"
@@ -169,7 +167,7 @@ jobs:
             classification="$(tail -n 1 "$ledger" | cut -f10)"
             case "$classification" in
               RED|SKIP)
-                printf '%s\t%s\t%s\t%s\n' "$phase" "$ordinal" "$identity" "$classification" >> "${RESULT}/semantic-red-census.tsv"
+                printf '%s\\t%s\\t%s\\t%s\\n' "$phase" "$ordinal" "$identity" "$classification" >> "${RESULT}/semantic-red-census.tsv"
                 return 0
                 ;;
               *)
@@ -187,9 +185,9 @@ jobs:
 
           runtime_end = src.index('\nif [[ "$stopped" == false ]]; then\n  runtime_completed=true\nfi\n', runtime_start)
           runtime_end += len('\nif [[ "$stopped" == false ]]; then\n  runtime_completed=true\nfi\n')
-          new_runtime = r'''runtime_started=true
+          new_runtime = '''runtime_started=true
           stopped=false
-          printf 'phase\tordinal\tidentity\tclassification\n' > "${RESULT}/semantic-red-census.tsv"
+          printf 'phase\\tordinal\\tidentity\\tclassification\\n' > "${RESULT}/semantic-red-census.tsv"
 
           for rep in A B; do
             for i in "${!SHARED_FOCUSED_ORDINALS[@]}"; do
@@ -215,7 +213,7 @@ jobs:
               [[ -n "$identity" ]] || continue
               ordinal=$((ordinal + 1))
               line="$(map_identity "$ordinal")"
-              mapped_identity="$(printf '%s\n' "$line" | cut -f2)"
+              mapped_identity="$(printf '%s\\n' "$line" | cut -f2)"
               [[ "$mapped_identity" == "$identity" ]] || fail_orchestration "selector403/map mismatch at ordinal $ordinal"
               if ! run_ordinal_census 'E-selector403' "$ordinal" "$identity"; then stopped=true; break; fi
             done < "$selector403"
@@ -227,7 +225,7 @@ jobs:
               [[ -n "$identity" ]] || continue
               ordinal=$((ordinal + 1))
               line="$(map_identity "$ordinal")"
-              mapped_identity="$(printf '%s\n' "$line" | cut -f2)"
+              mapped_identity="$(printf '%s\\n' "$line" | cut -f2)"
               [[ "$mapped_identity" == "$identity" ]] || fail_orchestration "selector408/map mismatch at ordinal $ordinal"
               if ! run_ordinal_census 'F-selector408' "$ordinal" "$identity"; then stopped=true; break; fi
             done < "$selector408"
@@ -247,7 +245,7 @@ jobs:
           src = src.replace(old_summary, new_summary, 1)
 
           final_start = src.index('if [[ "$selection_integrity" != true ]]; then')
-          new_final = r'''if [[ "$selection_integrity" != true ]]; then
+          new_final = '''if [[ "$selection_integrity" != true ]]; then
             orchestration_failure=true
             stop_kind='ORCHESTRATION_SELECTION_MISMATCH'
             exit 90
@@ -269,10 +267,7 @@ jobs:
           pathlib.Path(sys.argv[2]).write_text(src)
           PY
           chmod +x "$out"
-          if ! bash -n "$out"; then
-            nl -ba "$out" | sed -n '500,590p'
-            exit 93
-          fi
+          bash -n "$out"
           {
             echo "frozen_tb5_harness_sha256=ca01dd830cd8c8c867334e2ec8aa1748309ad8b360260b2a02ddf3d5da6d976d"
             echo "tb8_harness_sha256=$(sha256sum "$out" | awk '{print $1}')"
