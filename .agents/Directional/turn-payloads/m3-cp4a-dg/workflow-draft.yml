@@ -90,7 +90,7 @@ jobs:
         run: |
           set +e
           harness="${GITHUB_WORKSPACE}/.agents/Directional/turn-payloads/m4-cp-cond-tb1-exec-harness.sh"
-          "$harness"
+          bash "$harness"
           status=$?
           echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
           echo "harness_exit=${status}" | tee -a "${RUNNER_TEMP}/m4-cp-cond-tb1-exec-workflow.log"
