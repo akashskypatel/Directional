@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-13, `M4-CP-COND-DEFN`):** M4-CP3 remains **CLOSED / ACCEPTED** on CB10 package artifact `10307919492` / source `1611e9ef...9a3a` and selector408 `c689c0cd...484` at **408/408**. `M4-CP-COND-DEFN` is **COMPLETE / DEFINITIONS FROZEN** while CP-COND remains OPEN. The pre-A0 conditioner is now one single-writer `ConditionedSourceProduct` + independently validated certificate or typed refusal; A0 is no longer a second value-changing sanitization owner. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP-COND-CB1`.
+> **Current milestone authority (2026-09-13, `M4-CP-COND-TB1-REV`):** M4-CP3 remains **CLOSED / ACCEPTED** on CB10 package artifact `10307919492` / source `1611e9ef...9a3a` and selector408 `c689c0cd...484` at **408/408**. CP-COND's conditioner implementation is compile-green, but TB1 produced **zero semantic test credit** because immutable CB1 artifact `10312168742` omitted three selector-owner executables covering 146 accepted rows. Review classifies this as pre-semantic package closure / non-stable; stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile/package-only `M4-CP-COND-CB2` on unchanged semantic source `b576d061...`.
 
-**Currency.** `M4-CP-COND-DEFN`, 2026-09-13. Definition/review freezes the Amendment-20 product, exact raw→conditioned correspondence, permitted operations/refusals, non-vacuous witness preconditions and compile-only `M4-CP-COND-CB1`; no runtime or selector authority changed.
+**Currency.** `M4-CP-COND-TB1-REV`, 2026-09-13. Review independently re-derived selector-owner/package evidence, upheld the TB1 package-preflight candidate as a pre-semantic non-stable owner-set omission, and froze package-closure `M4-CP-COND-CB2`; no conditioner semantic result, selector authority, or stable accounting changed.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -63,7 +63,7 @@ guarantee. The distinguishing commitments:
 | A8 | `VerificationReport` + `OutputDisposition` | independent verifier assigns the tier |
 | A9 | logs and public result | — |
 
-A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on the produced torus. M4-CP3 is now accepted through A4 on the constructed torus witness. `M4-CP-COND-DEFN` adds the architecturally preceding conditioning boundary: raw input is conditioned once into an immutable certified product before A0. A5 onward remain unreached, and the prescribed sphere still cannot reach A2b (§7).
+A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on the produced torus. M4-CP3 is accepted through A4 on the constructed torus witness. CP-COND adds the architecturally preceding conditioning boundary: raw input is conditioned once into an immutable certified product before A0. Its implementation is compile-green, but TB1 has no semantic runtime result because the candidate package lacked three cumulative selector-owner binaries; CB2 now owns package closure only. A5 onward remain unreached, and the prescribed sphere still cannot reach A2b (§7).
 
 **Disposition ladder** (assigned by A8, never asserted by a producer; a run only moves down):
 `D0 Certified` → `D1 QualityRelaxed` → `D2 LocallyDegraded` → `D3 Partial` → `D4 DiagnosticOnly`.
@@ -74,7 +74,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 TB8 Review independently re-derived the immutable 835-process result: repaired shared-fixture consumers 12/12 A/B, ordinal138 2/2, row408 2/2, rows404-407 8/8, accepted selector403 403/403 to completion, selector408 408/408 cumulative and an empty accepted RED census. Package/source/execution-view postflight is exact. The stale-fixture event remains historical stable evidence but `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**.
 
-The main exact-torus `G4-B002` `InvalidHardRailPairing` blocker is closed by CP3. Its three inherited produced-witness re-proofs remain CP4-owned and debt is unchanged. **`M4-CP-COND-DEFN` is COMPLETE / definitions frozen; CP-COND remains OPEN. Exact next is compile-only `M4-CP-COND-CB1`.** The conditioner is the sole pre-A0 value writer, with certified raw→conditioned correspondence and typed refusal; accepted A3/A4 authority is unchanged.
+The main exact-torus `G4-B002` `InvalidHardRailPairing` blocker is closed by CP3. Its three inherited produced-witness re-proofs remain CP4-owned and debt is unchanged. **`M4-CP-COND-TB1-REV` classifies TB1 as PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE; CP-COND remains OPEN. Exact next is compile/package-only `M4-CP-COND-CB2`.** Selector408 remains accepted predecessor authority, and the conditioner/A3/A4 semantics are unadjudicated by TB1 because zero Directional processes ran.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -186,7 +186,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP-COND implementation — NEXT: `M4-CP-COND-CB1`.** DEFN is complete. Implement the single-writer pre-A0 `ConditionedSourceProduct`, exact/certified raw→conditioned correspondence, typed refusal and independent certificate validator; author the frozen witness/test surface and compile only. Sliver handling is initially exact refusal, not topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic conditioning authority. No runtime or selector promotion belongs in CB1.
+1. **M4-CP-COND package closure — NEXT: `M4-CP-COND-CB2`.** CB1 implementation is compile-green, but TB1 cannot begin semantic execution because the immutable package omitted authority-kernel, completion and validation selector owners (146 accepted rows). Rebuild/package exact unchanged semantic source `b576d061...` with all four selector-owner binaries plus pipeline/API; execute nothing. Any semantic/source/test/fixture/selector/CMake correction falsifies the package-only diagnosis and returns to Review.
 
 2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** The main exact-torus pairing blocker is **CLOSED / RECOVERY PROVED** by CP3. Three inherited produced-witness re-proofs remain CP4 gating; debt stays 5 until actual runtime acceptance.
 
@@ -205,6 +205,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** It remains green inside accepted selector365 but restates a retired local-fragment/global-owner injectivity premise. Do not weaken it pre-emptively; if it fires, classify test-authority drift.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Compile-green is not cumulative selector package closure.** CP-COND CB1 compiled every directly affected target it chose, yet its frozen TB successor required accepted selector408 whose identities span four owner executables. TB1 correctly failed before runtime when three owners were absent. This is a new instance, not a new category, of the package-closure rule already captured by `LESSONS.md` 3; the correction must hold all semantic bytes fixed and change only package completeness per Lesson 170.
 
 **The CB5-era test-authority coverage gap is recovery-proved, and the full accepted-prefix census found no hidden sibling regression.** TB7 exposed ordinal211 only after earlier fail-fast blockers were repaired. CB10 migrated the shared fixture onto production A2b/A3 authority, and TB8 then ran all six fixture consumers A/B plus accepted selector403 to completion: **403/403**, empty RED census. This closes the current `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` instance without creating a new defect pattern. The reusable lesson is already present: when an accepted prefix has suffered serial fail-fast discovery, enumerate the complete accepted prefix once after the repair rather than assuming the named blast radius is exhaustive.
 

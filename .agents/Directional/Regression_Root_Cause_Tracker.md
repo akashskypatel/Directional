@@ -1,5 +1,14 @@
 # Regression Root Cause Tracker
 
+## M4-CP-COND-TB1-REV — **CANDIDATE ARTIFACT REJECTED / PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE / CB2**
+
+- **Reviewed execution:** TB1 authoritative retry `34757021728 / 103723061754` against immutable CB1 artifact `10312168742`; result/log `10317417085 / 10317147479`. Package preflight stops before runtime: `runtime_started=false`, `processes_executed=0`, all semantic counters zero, immutable censuses equal.
+- **`M4-CP-COND-TB1-EXEC-CAND-01` — UPHELD / OPEN FOR RECOVERY / NON-STABLE.** Review independently re-hashed selector408 at 408 rows / `c689c0cd...484`, first403 `c3f509af...70cb7`, and re-counted owners **30 authority-kernel / 262 producer / 75 completion / 41 validation**. CB1 packaged only the producer owner (plus compiled API); authority-kernel, completion and validation executables covering **146** accepted identities are absent.
+- **Root cause:** compile-green CB1 packaged directly affected targets rather than the cumulative owner set required by its frozen successor selector. This is the same package-closure mechanism as historical `M2-CP1-TB-CAND-01`, governed by Lessons 3 and 170. No conditioner/A3/A4/test/fixture/selector semantic defect is established because zero Directional identities ran.
+- **Correction:** `M4-CP-COND-CB2` must rebuild/package exact unchanged semantic source `b576d061e23873b7b4193b158138d2097c75a728` with all four selector-owner binaries plus pipeline/API, GMP/GMPXX, `runtimeExecution=false`, and no semantic edits; `TB2-EXEC` reruns the unchanged TB1 gate and `TB2-REV` alone may close recovery.
+- **Falsifier:** source drift, any product/test/fixture/selector/CMake/reusable-workflow semantic edit, any missing owner binary, selector drift, arithmetic fallback, runtime in CB2, post-freeze package repair, or changed TB semantic surface returns to Review.
+- **Accounting:** no accepted ordinal executed, so no PASS→RED exists. **49 events / 14 categories / 35 recurrences**, debt **5**; accepted package `10307919492` / selector408 **408/408** unchanged.
+
 
 ## M4-CP-COND-TB1-EXEC — PACKAGE PREFLIGHT RED / ZERO SEMANTIC TEST CREDIT / REVIEW REQUIRED
 
