@@ -1,4 +1,5 @@
 turn=M4-CP-COND-TB1-EXEC
-purpose=prepublish schema validation of corrected agent-m4-cp-cond-tb1-exec.yml
-retry=2
-workflow_draft_sha256=5b0c8537dabe20ed256bb9eaed5762574b93756a95f6bf7c921a44d1591ee4e1
+purpose=prepublish schema validation of TB1 closeout Google Drive caller
+draft_blob=bb951da5bf1d080b3494380ebc9bab5d0a1edf95
+patch_sha256=c80d9d270c165fe9c5d217f56f9869c12dd091463a6788532f6a56ab6cd885cc
+base_sha=4cb89adb72277e4307c16fa869e2bff1aeb1a590
