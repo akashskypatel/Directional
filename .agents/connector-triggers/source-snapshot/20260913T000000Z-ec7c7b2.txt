@@ -1,0 +1,2 @@
+source_authority=ec7c7b2b4d21f5c66aa6c459390cbff4ad8a6986
+purpose=start-of-turn exact source snapshot
