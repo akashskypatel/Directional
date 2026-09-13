@@ -1,11 +1,11 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP-COND-CB3` COMPLETE / TEST-AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME UNADJUDICATED; `M4-CP-COND` OPEN; M4 OPEN
+**Status:** `M4-CP-COND-TB3-EXEC` COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED; `M4-CP-COND` OPEN; M4 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP-COND-TB3-EXEC`
+**Canonical next turn:** `M4-CP-COND-TB3-REV`
 
 ## Current authority
 
@@ -14,30 +14,24 @@
 - Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
 - CP-COND product semantic source remains `b576d061e23873b7b4193b158138d2097c75a728`; CB3 changes test authority only.
 
-## CB3 result
+## TB3-EXEC result
 
-`M4-CP-COND-CB3` corrects `NegativeIndexRawPreconditionIsIndependentAndPreserved` without product/API/CMake/selector/A3/A4 semantic change. The test-local GMP oracle decodes actual raw binary64 bytes exactly, derives the closed source-face cycle, proves four-branch admissibility, derives unique cross-face Z4 transport and its signed cycle numerator, and independently verifies the conditioner-preserved output. The committed raw witness derives offsets `[3,3,3,3,3]` and numerator `-1`; flipping one raw branch LSB breaks exact opposite-pair admissibility, satisfying the non-vacuity discriminator.
+`M4-CP-COND-TB3-EXEC` consumed immutable CB3 artifact `10325879420` / source `4d9206cd059d7bb0c10fe3c0a0c91f8af248e675` without rebuild, repair, generated discovery, benchmark, or repository/package mutation. The authoritative full attempt completed the frozen 423-process surface: focused **14/14 PASS**, the boundary-truncated separatrix witness **SKIP** with its named report-only/non-selector blocker unchanged, and selector408 **408/408 PASS**. Gating total is **422/422 PASS**, with zero RED, crash, timeout, or selection mismatch and exact immutable postflight. Combined process-ledger SHA-256 is `bbe96d77a18844f9c050924f4964b8cb052f40f6f1ec75d980ae9c945ae3a034`.
 
-Compile run/job `34785549072 / 103800273458` is GREEN on exact source `4d9206cd059d7bb0c10fe3c0a0c91f8af248e675`. Immutable artifact `10325879420` (`sha256:d046b8cbdcfe22af5ca732139612e96673d597fef47b5e36d1a54b1542493b2b`) contains all four selector owners, compiled API, core/pipeline, GMP/GMPXX evidence, clean source receipts and a 27/27 manifest. `runtimeExecution=false`; no Directional test/benchmark/runtime executed.
+The complete run used the packaged Linux executables in the ChatGPT Web local container. Two preliminary harness/orchestration attempts have zero semantic credit: one stopped before Directional runtime; one was externally interrupted after selector ordinal 114. The authoritative attempt restarted the entire 423-process surface from process 1. It completed all 423 processes and immutable postflight; its final shell checker then exited 90 only because `awk NR>1` counted the second and third TSV headers as two false selection mismatches. Static non-runtime revalidation with `FNR>1` proves every ledger row has `selected=1`; no semantic process was rerun.
 
-## Exact next — `M4-CP-COND-TB3-EXEC`
+EXEC makes no semantic adjudication. Accepted runtime authority remains CP3 package `10307919492` / selector408 **408/408**; stable accounting remains **49 / 14 / 35**, debt **5**.
 
-Follow `Architecture_M4_CP_COND_TB3_EXEC_Plan.md` exactly:
+## Exact next — `M4-CP-COND-TB3-REV`
 
-- artifact-only; consume immutable artifact `10325879420` with no configure/build/relink/repair/discovery/mutation;
-- mode-preserving extraction and exact package/source/selector preflight/postflight;
-- execute all 14 focused CP-COND identities once each in fresh exact-filter processes;
-- execute `BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker` once as expected report-only SKIP/non-selector;
-- execute all selector408 identities once each in fresh exact-filter processes;
-- expected complete surface = 423 processes, mechanically GREEN only at 14/14 focused PASS + one expected report-only SKIP + 408/408 selector PASS + exact postflight;
-- then stop at mandatory `M4-CP-COND-TB3-REV`. EXEC cannot promote the package, close the candidate, reprice accounting, or close CP-COND.
+Review must independently re-open the immutable artifact and TB3 raw evidence, decide whether the corrected negative-index raw oracle and mutation discriminator discharge `M4-CP-COND-TB2-REV-CAND-01`, and only then decide package promotion / stable accounting / CP-COND closure. No implementation or runtime is authorized inside Review unless its policy explicitly requires otherwise.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M4_CP_COND_TB3_EXEC_Report.md
   - .agents/Directional/Architecture_M4_CP_COND_TB3_EXEC_Plan.md
-  - .agents/Directional/Architecture_M4_CP_COND_CB3_Code_Build_Report.md
   - .agents/Directional/Architecture_M4_CP_COND_TB2_Review_Record.md
   - .agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md
   - .agents/Directional/M4_Consolidated_Record.md

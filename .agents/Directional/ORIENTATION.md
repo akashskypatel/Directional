@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-13, `M4-CP-COND-CB3`):** M4-CP3 remains **CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**. CB3 corrects the negative-index raw-precondition oracle and compiles the complete owner set GREEN without runtime as artifact `10325879420`. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M4-CP-COND-TB3-EXEC`, then mandatory Review.
+> **Current milestone authority (2026-09-13, `M4-CP-COND-TB3-EXEC`):** M4-CP3 remains **CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**. TB3-EXEC mechanically passes immutable CB3 artifact `10325879420` across the frozen 423-process surface with exact postflight; semantic adjudication remains pending. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is mandatory `M4-CP-COND-TB3-REV`.
 
-**Currency.** `M4-CP-COND-CB3`, 2026-09-13. Negative-index test-authority correction is compile-green/runtime-unadjudicated; candidate remains open/non-stable; accepted CP3 runtime authority unchanged.
+**Currency.** `M4-CP-COND-TB3-EXEC`, 2026-09-13. Frozen 423-process runtime is mechanically green/semantically unadjudicated; candidate remains open/non-stable pending Review; accepted CP3 runtime authority unchanged.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -74,7 +74,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 TB8 Review independently re-derived the immutable 835-process result: repaired shared-fixture consumers 12/12 A/B, ordinal138 2/2, row408 2/2, rows404-407 8/8, accepted selector403 403/403 to completion, selector408 408/408 cumulative and an empty accepted RED census. Package/source/execution-view postflight is exact. The stale-fixture event remains historical stable evidence but `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**.
 
-The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **CB3 corrects the negative-index raw oracle and compiles the full owner package GREEN, but CP-COND remains OPEN until artifact-only TB3 and mandatory Review. Exact next is `M4-CP-COND-TB3-EXEC`.** Accepted authority remains CP3 package `10307919492` / selector408 408/408.
+The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **TB3-EXEC mechanically passes the corrected CB3 package across 423 fresh artifact-only processes with exact postflight, but CP-COND remains OPEN pending semantic Review. Exact next is `M4-CP-COND-TB3-REV`.** Accepted authority remains CP3 package `10307919492` / selector408 408/408.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
