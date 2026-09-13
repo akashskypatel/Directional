@@ -1,6 +1,0 @@
-Turn: M4-CP-COND-TB3-REV
-Purpose: trigger durable Review documentation publication from staged Google Drive patch.
-Base authority: a177969ffd3faee1f603036e81085a9885760f02
-Patch SHA-256: 489fb5a4ef52cd8b951dfeaf0282ad86fdfa77648497f3da6b15a9df51aab90a
-Drive file ID: 1KPhnbhh3duVODVMRTdlrhmpP9HBit_cx
-Runtime execution: false
