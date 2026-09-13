@@ -553,3 +553,37 @@ Review independently re-hashed selector403/408 and the 835-row ledger, re-opened
 ### CP3 closure-time folded documents
 
 The complete closure-time index is in `M4_CP3_Closure_Record.md` §5. Earlier CP3 folds remain indexed above in this consolidated record. Current TB8 runtime report, current TB8 Review, closure record, frozen definitions and selector files remain retained authority.
+
+
+## 2.39 `M4-CP-COND-DEFN` — conditioning authority frozen
+
+CP-COND froze `RawSourceInput -> InputConditioner -> ConditionedSourceProduct -> A0` as the sole pre-A0 value-changing boundary. The product carries exact raw-to-conditioned correspondence/certificate or typed refusal; legacy preconditioning/tolerant raw-field finalization are not CP-COND semantic authority. Accepted CP3 A3/A4 and selector408 remain frozen. Witness gates require independently proved raw preconditions; negative-index requires an independent discrete cycle/index oracle, while unproved boundary-truncated reachability remains an explicit blocker/non-selector. Stable accounting entered CP-COND at **49 / 14 / 35**, debt **5**.
+
+## 2.40 `M4-CP-COND-CB1 + TB1-EXEC + TB1-REV` — package closure failure before runtime
+
+CB1 implemented the conditioner/certificate/validator seam at source `b576d061e23873b7b4193b158138d2097c75a728`. Artifact `10312168742` omitted authority-kernel, completion and validation selector owner executables, covering 146 accepted identities. TB1 run `34757021728` stopped `PACKAGE_PREFLIGHT_RED` before any Directional process. Review classified `M4-CP-COND-TB1-EXEC-CAND-01` as **PACKAGE-CLOSURE OWNER-SET OMISSION / PRE-SEMANTIC / NON-STABLE** and froze an unchanged-source package control.
+
+## 2.41 `M4-CP-COND-CB2 + TB2-EXEC` — package recovery mechanically green
+
+CB2 run `34771486767` produced artifact `10321878900` (`d8016a8d...66ee28`) from the exact unchanged semantic source with all four selector owners, compiled API, core/pipeline, GMP/GMPXX and `runtimeExecution=false`. TB2 run `34772781761 / 103765305047` then completed **14/14 focused PASS + one report-only SKIP + selector408 408/408 PASS**, 423 fresh processes, zero RED/crash/selection mismatch and exact postflight. Result/log artifacts are `10322612282 / 10322677035`.
+
+## 2.42 `M4-CP-COND-TB2-REV` — package recovery accepted; negative-index test authority rejected
+
+Review closes the TB1 package candidate **RECOVERY PROVED / NON-STABLE** but rejects promotion of `10321878900`. The negative-index focused test computes expected `-1` from authored constants `5 * (72 - 90) / 90`, independently of the actual raw binary64 branches, and only checks conditioner preservation. It does not derive raw cross-face transport/cycle index or prove raw field admissibility from that transport. `M4-CP-COND-TB2-REV-CAND-01` is **OPEN / TEST-AUTHORITY / NEGATIVE-INDEX RAW-PRECONDITION ORACLE INADEQUATE / NON-VACUOUSNESS GAP / NON-STABLE**. Accepted authority remains CP3 package `10307919492` / selector408 408/408; accounting remains **49 / 14 / 35**, debt **5**. Exact successor is `M4-CP-COND-CB3`.
+
+### CP-COND review-time folded documents
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP_COND_DEFN_Plan.md` | 38 | Folded after DEFN/TB2 Review; frozen definitions + §§2.39-2.42 retain authority/history. |
+| `Architecture_M4_CP_COND_DEFN_Record.md` | 171 | Folded after TB2 Review; rationale/obligations retained in §2.39/current Review. |
+| `Architecture_M4_CP_COND_CB1_Code_Build_Plan.md` | 82 | Folded after CB1/TB1/CB2/TB2; scope retained in §§2.40-2.42. |
+| `Architecture_M4_CP_COND_CB1_Code_Build_Record.md` | 88 | Folded after TB2 Review; source/build lineage retained in §§2.40-2.42. |
+| `Architecture_M4_CP_COND_CB1_Artifact_Only_Test_Benchmark_Plan.md` | 88 | Folded after TB1/TB2 Review; complete gate and Review boundary retained in current records. |
+| `Architecture_M4_CP_COND_TB1_EXEC_Report.md` | 119 | Folded after recovery Review; zero-runtime stop and owner omission retained in §2.40. |
+| `Architecture_M4_CP_COND_TB1_Review_Record.md` | 128 | Folded after TB2 Review; package adjudication retained in §§2.40-2.42. |
+| `Architecture_M4_CP_COND_CB2_Code_Build_Plan.md` | 85 | Folded after CB2/TB2 Review; unchanged-source package control retained in §2.41. |
+| `Architecture_M4_CP_COND_CB2_Code_Build_Record.md` | 68 | Folded after TB2 Review; package authority retained in §2.41/current TB2 report. |
+| `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` | 96 | Folded after TB2 EXEC/Review; 423-process gate/postflight retained in current TB2 report/Review/CB3 plan. |
+
+Current retained CP-COND authority is the frozen definitions, Review-reconstructed TB2 EXEC report, current TB2 Review record and exactly one next-turn plan (`M4-CP-COND-CB3`). Full folded text remains recoverable from git history.

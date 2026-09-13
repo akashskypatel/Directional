@@ -1,3 +1,12 @@
+## 2026-09-13 — `M4-CP-COND-TB2-REV`: package recovery proved; negative-index gate rejected as test authority
+
+- Re-derived TB2: 14/14 focused PASS, one report-only boundary SKIP, selector408 408/408 PASS, 423 processes, zero RED/crash/selection mismatch, exact immutable postflight.
+- Closed `M4-CP-COND-TB1-EXEC-CAND-01` **RECOVERY PROVED / NON-STABLE**.
+- Rejected promotion of CB2 artifact `10321878900`: the negative-index identity computes expected `-1` from authored constants rather than deriving raw cycle transport/index/admissibility from actual raw branch bytes. Opened `M4-CP-COND-TB2-REV-CAND-01` **TEST-AUTHORITY / NEGATIVE-INDEX RAW-PRECONDITION ORACLE INADEQUATE / NON-VACUOUSNESS GAP / NON-STABLE**.
+- Accounting remains **49 / 14 / 35**, debt **5**; accepted runtime authority remains CP3 package `10307919492` / selector408 408/408. Boundary-truncated separatrix remains report-only/non-selector.
+- Reconstructed the missing TB2 EXEC report from immutable evidence and folded consumed CP-COND historical plans/records into `M4_Consolidated_Record.md`.
+- Exact next is `M4-CP-COND-CB3`: raw-derived exact/discrete negative-index oracle + mutation discriminator, full-owner compile/package with GMP/GMPXX/no runtime, then complete TB3 surface + mandatory Review.
+
 ## 2026-09-13 — `M4-CP-COND-CB2`: exact-source package closure GREEN; full selector owner set packaged; TB2 frozen
 
 - Executed the package-closure control experiment frozen by TB1 Review with **no semantic source change**. GitHub Actions run/job `34771486767 / 103761775124` compiled the exact seven-target set from semantic source `b576d061e23873b7b4193b158138d2097c75a728` and finished GREEN.

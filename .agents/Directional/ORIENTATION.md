@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-13, `M4-CP-COND-CB2`):** M4-CP3 remains **CLOSED / ACCEPTED** on CB10 package artifact `10307919492` / source `1611e9ef...9a3a` and selector408 `c689c0cd...484` at **408/408**. CP-COND CB2 has compile/package-closed exact unchanged semantic source `b576d061...` with the complete four-owner selector executable set in immutable artifact `10321878900`; no Directional runtime has yet executed on that candidate. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M4-CP-COND-TB2-EXEC`, followed by mandatory `TB2-REV`.
+> **Current milestone authority (2026-09-13, `M4-CP-COND-TB2-REV`):** M4-CP3 remains **CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**. TB2 proves package closure (14/14 focused PASS + report-only SKIP + 408/408), but Review rejects CP-COND promotion because the negative-index gate does not derive its raw precondition. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is `M4-CP-COND-CB3`.
 
-**Currency.** `M4-CP-COND-CB2`, 2026-09-13. Package-closure control experiment compiled all seven frozen targets GREEN with GMP/GMPXX, unchanged selector408/first403 and `runtimeExecution=false`; candidate recovery remains pre-semantic pending TB2 runtime and Review.
+**Currency.** `M4-CP-COND-TB2-REV`, 2026-09-13. Package recovery proved; negative-index test-authority candidate open/non-stable; accepted CP3 authority unchanged.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -74,7 +74,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 TB8 Review independently re-derived the immutable 835-process result: repaired shared-fixture consumers 12/12 A/B, ordinal138 2/2, row408 2/2, rows404-407 8/8, accepted selector403 403/403 to completion, selector408 408/408 cumulative and an empty accepted RED census. Package/source/execution-view postflight is exact. The stale-fixture event remains historical stable evidence but `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**.
 
-The main exact-torus `G4-B002` `InvalidHardRailPairing` blocker is closed by CP3. Its three inherited produced-witness re-proofs remain CP4-owned and debt is unchanged. **`M4-CP-COND-CB2` is COMPILE-PACKAGE GREEN / OWNER SET CLOSED / NO RUNTIME; CP-COND remains OPEN. Exact next is artifact-only `M4-CP-COND-TB2-EXEC`, followed by mandatory `M4-CP-COND-TB2-REV`.** Selector408 remains accepted predecessor authority, and conditioner semantics remain unadjudicated because CB2 executed zero Directional processes.
+The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **TB2 package recovery is mechanically proved, but CP-COND remains OPEN on a non-stable negative-index test-authority/non-vacuity gap. Exact next is `M4-CP-COND-CB3`.** Accepted authority remains CP3 package `10307919492` / selector408 408/408.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -186,7 +186,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP-COND package closure — NEXT: `M4-CP-COND-CB2`.** CB1 implementation is compile-green, but TB1 cannot begin semantic execution because the immutable package omitted authority-kernel, completion and validation selector owners (146 accepted rows). Rebuild/package exact unchanged semantic source `b576d061...` with all four selector-owner binaries plus pipeline/API; execute nothing. Any semantic/source/test/fixture/selector/CMake correction falsifies the package-only diagnosis and returns to Review.
+1. **M4-CP-COND negative-index test authority — NEXT: `M4-CP-COND-CB3`.** TB2 proves package closure, but the negative-index gate authors `-1` from constants instead of deriving raw cycle/transport/admissibility. Correct only that oracle with an exact raw-data derivation plus mutation discriminator; product/selector semantics stay frozen.
 
 2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** The main exact-torus pairing blocker is **CLOSED / RECOVERY PROVED** by CP3. Three inherited produced-witness re-proofs remain CP4 gating; debt stays 5 until actual runtime acceptance.
 
@@ -205,6 +205,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** It remains green inside accepted selector365 but restates a retired local-fragment/global-owner injectivity premise. Do not weaken it pre-emptively; if it fires, classify test-authority drift.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**An intended construction is not an independent raw oracle.** CP-COND TB2 passed its negative-index identity, but the expected `-1` was computed from authored sector/degree constants while the raw binary64 branches were merely preserved. The proof obligation requires the answer to be re-derived from the raw subject, with a mutation that changes or invalidates that derivation. This is another instance of existing non-vacuity/oracle lessons (157/160/64j), not a new lesson family.
 
 **Compile-green is not cumulative selector package closure.** CP-COND CB1 compiled every directly affected target it chose, yet its frozen TB successor required accepted selector408 whose identities span four owner executables. TB1 correctly failed before runtime when three owners were absent. This is a new instance, not a new category, of the package-closure rule already captured by `LESSONS.md` 3; the correction must hold all semantic bytes fixed and change only package completeness per Lesson 170.
 

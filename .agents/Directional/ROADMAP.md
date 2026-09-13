@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-13 (`M4-CP-COND-CB2` COMPLETE / COMPILE-PACKAGE GREEN / OWNER SET CLOSED / NO RUNTIME; CP-COND remains OPEN. Package `10307919492` / selector408 **408/408** remains accepted CP3 runtime authority. CB2 artifact `10321878900` package-closes exact unchanged semantic source `b576d061...` with all four selector-owner executables. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is immutable artifact-only `M4-CP-COND-TB2-EXEC`, followed by mandatory `TB2-REV`.)
+**Status date:** 2026-09-13 (`M4-CP-COND-TB2-REV` COMPLETE / PACKAGE RECOVERY PROVED / NEGATIVE-INDEX TEST AUTHORITY OPEN. Accepted authority remains CP3 package `10307919492` / selector408 **408/408**. Stable accounting **49 / 14 / 35**, debt **5**. Exact next `M4-CP-COND-CB3`.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -18,7 +18,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 
 `M4-CP-COND-DEFN` is COMPLETE / DEFINITIONS FROZEN; the checkpoint remains OPEN. `Architecture_M4_CP_COND_Frozen_Definitions.md` owns the single-writer pre-A0 conditioned product, exact raw→conditioned correspondence, exact-policy operation set, typed refusal, independent certificate validator, idempotence and witness preconditions. The initial contract uses one-to-one face correspondence and exact sliver refusal rather than topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic authority.
 
-Prospective CP-COND gate identities remain conditional on independently proved raw preconditions. The boundary-truncated separatrix stays an explicit blocker/non-selector if reachability cannot be proved; S6 physical-distance metrics remain report-only until threshold authority exists. CB1 implemented the conditioner compile-green, TB1 stopped pre-runtime on cumulative selector-owner package incompleteness, and CB2 has now closed that package surface without semantic changes. Stable accounting stays **49 / 14 / 35**, debt **5**. Exact next `M4-CP-COND-TB2-EXEC` runs the unchanged artifact-only semantic gate; no selector promotion occurs before mandatory Review.
+Prospective CP-COND gate identities remain conditional on independently proved raw preconditions. TB2 mechanically passed the full 14 + report-only + selector408 surface, closing the TB1 package-owner recovery. TB2 Review does not promote the package: the negative-index gate authors its expected `-1` from constants rather than deriving raw cycle/index/admissibility from raw branch/transport bytes. Boundary-truncated reachability remains explicit blocker/non-selector. Stable accounting stays **49 / 14 / 35**, debt **5**. Exact next `M4-CP-COND-CB3` is test-authority-only.
 
 
 ## 1. Where the project actually is
@@ -29,7 +29,7 @@ Prospective CP-COND gate identities remain conditional on independently proved r
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND TB1 reviewed pre-semantic package RED, checkpoint OPEN** | package `10307919492` / selector408 **408/408** remains accepted; exact next `M4-CP-COND-CB2` package closure on unchanged source; three G4-B002 produced-witness debts remain CP4 gating. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND OPEN on negative-index test authority** | package `10307919492` / selector408 **408/408** remains accepted; TB2 package recovery proved but CB2 unpromoted; exact next `M4-CP-COND-CB3`; three G4-B002 produced-witness debts remain CP4 gating. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

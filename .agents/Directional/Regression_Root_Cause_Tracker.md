@@ -1,5 +1,14 @@
 # Regression Root Cause Tracker
 
+## M4-CP-COND-TB2-REV — **PACKAGE RECOVERY PROVED / NEGATIVE-INDEX TEST-AUTHORITY GAP / NON-STABLE / CB3 NEXT**
+
+- TB2 run/job `34772781761 / 103765305047` on artifact `10321878900` completes 14/14 focused PASS + one report-only SKIP + selector408 408/408 PASS with exact postflight. `M4-CP-COND-TB1-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**.
+- **`M4-CP-COND-TB2-REV-CAND-01` — OPEN / TEST-AUTHORITY / NEGATIVE-INDEX RAW-PRECONDITION ORACLE INADEQUATE / NON-VACUOUSNESS GAP / NON-STABLE.** Expected `-1` is authored from constants; the test does not derive raw cycle transport/index or admissibility from raw branch bytes.
+- CB2 package is not promoted; CP-COND remains OPEN. Accepted authority remains CP3 package `10307919492` / selector408 408/408.
+- Accounting unchanged **49 / 14 / 35**, debt **5**.
+- Exact successor `M4-CP-COND-CB3`: raw-derived exact/discrete negative-index oracle + mutation discriminator; product/selector/CMake frozen; full-owner compile/package only.
+
+
 ## M4-CP-COND-TB2-EXEC — **MECHANICALLY GREEN / RECOVERY EVIDENCE READY / SEMANTICALLY UNADJUDICATED / REVIEW REQUIRED**
 
 - **Execution:** immutable CB2 artifact `10321878900` / source `b576d061e23873b7b4193b158138d2097c75a728`; authoritative run/job `34772781761 / 103765305047`; result/log artifacts `10322612282 / 10322677035` with SHA-256 `46bcc703d5aa11dc43edaec9e416f22c75d68111802a9d8dbfc4129a9775a5a0` / `725a59a93d91bd267c6531f6d7bd545d17f2867ebbc85f906d4011d3abfdadc5`.
