@@ -1,7 +1,0 @@
-Purpose: retry verified M4-CP-COND-CB3 durable closeout and frozen TB3 plan after correcting the preservation envelope.
-Caller correction authority: 0d8f4ad5efe0808c523cd2cc252f2e8e982e2232
-Patch SHA-256: 5958a503da24a22b11ee4ea0571816ee2dbea2dfa68d675f94799f554beb1aff
-Diff-body SHA-256: 4ca89897f738e1b751ad739980f10fe03e165b3d092d225c5412dc8d5b35146c
-Base semantic/test authority: 4d9206cd059d7bb0c10fe3c0a0c91f8af248e675
-Turn: M4-CP-COND-CB3
-Retry: 1
