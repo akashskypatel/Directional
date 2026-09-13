@@ -99,4 +99,4 @@ Consumed CP-COND DEFN/CB1/TB1/CB2 per-turn plans and records are folded into `M4
 | Successor frozen | PASS — exactly `M4-CP-COND-CB3`, runtime-free compile-only |
 | Turn boundary held | PASS — Review/documentation only; no product/test/fixture/selector/build/runtime mutation |
 | `review_check.py boundary` | PASS — ALL CHECKS PASSED; no product/test/fixture/build or selector mutation; durable markers preserved |
-| Durable publication / cleanup / final authority re-read | PENDING TURN CLOSEOUT |
+| Durable publication / cleanup / final authority re-read | PASS — patch `ac15f316...d33856c` published by Drive run `34775495731` as commit `456bf8782cfce8b7fb76e23cfcb0adba9256e0b1`; staged Drive file permanently deleted; cleanup run/job `34775550382 / 103772892241` succeeded at `b77560d5889f6ee552062eb578b1d87158a811c8`; seven-workflow hygiene, absent turn-payload/workflow-observation state, and protected-only CP3-R4 snapshot marker re-read before final PR closeout |
