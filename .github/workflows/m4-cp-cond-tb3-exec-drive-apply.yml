@@ -1,0 +1,48 @@
+name: M4 CP-COND TB3 EXEC Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/m4-cp-cond-tb3-exec-drive-apply.yml
+      - .agents/connector-triggers/m4-cp-cond-tb3-exec-drive-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-cond-tb3-exec-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-cond-tb3-exec-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-cond-tb3-exec-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: "${{ needs.validate.outputs.valid == 'true' && github.event.head_commit.message == 'chore: trigger M4-CP-COND-TB3-EXEC Drive patch apply' }}"
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 167JbaNYRIU86srSMsRZ95p1J6eWCsnY1
+      patch_sha256: c5e2f0795fc0241b7d124f9d6a50c9afdb358ffbb2c88ea308d000857fdad5f9
+      base_sha: c7ae7f6aa3148f5d9f99c20df92c4c055245f74d
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: record M4-CP-COND-TB3-EXEC mechanical result'
+    secrets: inherit
