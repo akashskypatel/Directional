@@ -1,0 +1,4 @@
+turn=M4-CP-COND-TB2-EXEC
+requested_authority=de1714c356a9d38dfc8b948af6c96b9a3ab2d2b6
+purpose=exact source/document snapshot for artifact-only TB2 execution
+runtimeExecution=false
