@@ -1,0 +1,6 @@
+Purpose: apply verified M4-CP-COND-CB3 test-authority patch from Google Drive.
+Caller install authority: 6ce93be1b95cb3489511bac493697448a04d1ed8
+Patch SHA-256: 0c49975257a55616b5f4d467e8f93f2bc11c455ae233486683ad27bb4d73ac76
+Base source authority: 4d1e2ce06acaa92eed7506c7762e34b60f436381
+Turn: M4-CP-COND-CB3
+Retry: 0
