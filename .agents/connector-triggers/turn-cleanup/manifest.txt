@@ -1,0 +1,4 @@
+.agents/Directional/turn-payloads/m3-cp4a-dg
+.agents/connector-triggers/m3-cp4a-dg-schema-20260821.txt
+.agents/connector-triggers/m4-cp-cond-tb1-rev-drive/execute.txt
+.agents/connector-triggers/source-snapshot/m4-cp-cond-tb1-rev-start-20260913.txt
