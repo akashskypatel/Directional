@@ -1,9 +1,0 @@
-# M4-CP3-TB8-REV closeout temporary-state manifest
-.agents/Directional/turn-payloads/m4-cp3-tb8-exec-harness.sh
-.agents/connector-triggers/drive/m4-cp3-tb8-review/20260913T024000Z-apply.txt
-.agents/connector-triggers/source-snapshot/20260913T001900Z-tb8-exec.txt
-.agents/connector-triggers/source-snapshot/20260913T023200Z-tb8-review.txt
-.agents/connector-triggers/tb/m4-cp3-tb8/20260913T004500Z-exec.txt
-.agents/connector-triggers/tb/m4-cp3-tb8/20260913T005500Z-syntax-diagnostic.txt
-.agents/connector-triggers/tb/m4-cp3-tb8/20260913T010000Z-authoritative.txt
-.agents/connector-triggers/tb/m4-cp3-tb8/20260913T012000Z-authoritative-harness.txt

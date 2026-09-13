@@ -1,5 +1,0 @@
-turn=M4-CP3-TB8-REV
-purpose=apply verified Review closeout patch through durable Google Drive transport
-file_id=1yXxdpHr-gNCN81J2yCTmoaqQBb1K8ZCm
-patch_sha256=9d1eb9c9143fb61887e17fb5b764453824e3d829a335d7f8490a9f3b7f038beb
-base_sha=e272b02ad5e905ecb5fed98eceb008ef2b2095bf
