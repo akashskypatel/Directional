@@ -364,7 +364,6 @@ PhaseFrontFixture make_transition_domain_fixture() {
 }
 
 PhaseFrontFixture make_hard_rail_fixture() {
-  namespace detail = directional::geometry::surface_cell_tracing_detail;
   PhaseFrontFixture fixture;
   Eigen::MatrixXd vertices(9, 3);
   int vertex = 0;
@@ -387,71 +386,35 @@ PhaseFrontFixture make_hard_rail_fixture() {
     }
   }
   fixture.mesh.set_mesh(vertices, faces);
-  fixture.components.assign(8U, 0);
-  fixture.sheets.assign(8U, 0);
-  const auto crossField =
-      directional::pipeline::finalize_surface_cell_raw_cross_field(
-          fixture.mesh, constant_xy_field(faces.rows()));
-  directional::geometry::SurfaceCellTracingOptions options;
-  options.defaultTargetSize = 0.2;
-  options.sourceFaceComponents = fixture.components;
-  options.sourceFaceSheets = fixture.sheets;
-  options.hardFeatureEdges.insert(
-      test_source_edge_topology(1, 4));
-  options.hardFeatureEdges.insert(
-      test_source_edge_topology(4, 7));
 
-  const auto sourceEdgeFaces = detail::edge_faces(fixture.mesh.F);
-  const auto appendRailInterval =
-      [&](directional::geometry::SurfaceCellRail &rail, const int a,
-          const int b, const double railT0, const double railT1) {
-        const auto topology = test_source_edge_topology(
-            a, b, static_cast<std::size_t>(fixture.mesh.V.rows()));
-        const auto incident = sourceEdgeFaces.find(topology);
-        if (incident == sourceEdgeFaces.end() || incident->second[0] < 0) {
-          throw std::runtime_error("Missing test hard-rail source edge.");
-        }
-        const int sourceFace = incident->second[0];
-        const int sourceEdge =
-            detail::local_edge_for_key(fixture.mesh.F, sourceFace, topology);
-        if (sourceEdge < 0) {
-          throw std::runtime_error("Missing test hard-rail local edge.");
-        }
-        const auto makeSample = [&](const int sourceVertex,
-                                    const double parameter,
-                                    const double railParameter) {
-          directional::geometry::SurfaceCellRailSample sample;
-          sample.sourceFace = sourceFace;
-          sample.sourceEdge = sourceEdge;
-          sample.parameter = parameter;
-          sample.railParameter = railParameter;
-          sample.position = fixture.mesh.V.row(sourceVertex);
-          for (int corner = 0; corner < 3; ++corner) {
-            if (fixture.mesh.F(sourceFace, corner) == sourceVertex) {
-              sample.barycentric[corner] = 1.0;
-            }
-          }
-          return sample;
-        };
-        rail.samples.push_back(makeSample(a, 0.0, railT0));
-        rail.samples.push_back(makeSample(b, 1.0, railT1));
-      };
-  const auto railId = directional::authority::HardRailId::from_index(0, 1);
-  if (!railId) {
-    throw std::runtime_error("Invalid test hard-rail ID.");
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.retainIntermediateGeometry = true;
+  options.lengthRatio = 0.2;
+  options.surfaceCells.featureMap.userHardEdges.insert({1, 4});
+  options.surfaceCells.featureMap.userHardEdges.insert({4, 7});
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      fixture.mesh.V, fixture.mesh.F, constant_xy_field(faces.rows()), options);
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (!snapshots.hasSourceSurfaceLabels ||
+      !snapshots.sourceTopologyRegions.has_value() ||
+      !snapshots.fieldAlignedCurveNetwork.has_value() ||
+      !snapshots.globalTopologyPlan.has_value() ||
+      !snapshots.globalConformityBaseline.has_value() ||
+      !snapshots.hasAuthoritativeRails ||
+      !result.surfaceCellContext.hasTraceNetwork) {
+    throw std::runtime_error(
+        "Production hard-rail fixture did not retain A2b/A3 tracing authority.");
   }
-  directional::geometry::SurfaceCellRail rail(railId.value());
-  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
-  rail.curveId = 0;
-  rail.component = 0;
-  rail.sourceVertices = {1, 4, 7};
-  appendRailInterval(rail, 1, 4, 0.0, 0.5);
-  appendRailInterval(rail, 4, 7, 0.5, 1.0);
-  options.authoritativeRails.push_back(std::move(rail));
 
-  fixture.network = directional::geometry::build_surface_cell_network(
-      fixture.mesh.V, fixture.mesh.F, crossField,
-      Eigen::VectorXd::Constant(vertices.rows(), 0.2), options);
+  fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
+  fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
+  fixture.network = snapshots.traceNetwork;
   require_produced(fixture, "internal-midline hard-rail rectangle");
   return fixture;
 }
