@@ -1,0 +1,48 @@
+name: M4 CP-COND TB3 REV Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/m4-cp-cond-tb3-rev-drive-apply.yml
+      - .agents/connector-triggers/m4-cp-cond-tb3-rev-drive-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-cond-tb3-rev-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-cond-tb3-rev-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-cond-tb3-rev-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: "${{ needs.validate.outputs.valid == 'true' && github.event.head_commit.message == 'chore: trigger M4-CP-COND-TB3-REV Drive patch apply' }}"
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1KPhnbhh3duVODVMRTdlrhmpP9HBit_cx
+      patch_sha256: 489fb5a4ef52cd8b951dfeaf0282ad86fdfa77648497f3da6b15a9df51aab90a
+      base_sha: a177969ffd3faee1f603036e81085a9885760f02
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: M4-CP-COND-TB3-REV accept oracle; freeze CB4 selector publication'
+    secrets: inherit
