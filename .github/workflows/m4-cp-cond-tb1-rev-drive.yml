@@ -1,0 +1,39 @@
+name: M4 CP-COND TB1 REV Drive Closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-cond-tb1-rev-drive/**
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-cond-tb1-rev-drive-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-cond-tb1-rev-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1ID2VWiprFEyrtFnv74RZOEbwcYgTnwxH
+      patch_sha256: '0f78e164fadaf582b0fad859047b8dd43a9735c478c4dfd447c97e828bdf668d'
+      base_sha: 052afd8d11e4e7e15b49506d44b2968027c1e61d
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: review M4-CP-COND TB1 package preflight'
+      retention_days: 7
+    secrets: inherit
