@@ -1,20 +1,20 @@
-name: M4 CP-COND TB2 Artifact-Only Execution
+name: M4 CP-COND TB2 EXEC Closeout Drive Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/tb/m4-cp-cond-tb2/execute.txt
+      - .agents/connector-triggers/m4-cp-cond-tb2-exec-closeout-drive/execute.txt
 
 permissions:
-  actions: read
   contents: write
+  id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: m4-cp-cond-tb2-exec-${{ github.ref }}
+  group: m4-cp-cond-tb2-exec-closeout-drive-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -22,101 +22,18 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp-cond-tb2-exec
+      label: m4-cp-cond-tb2-exec-closeout-drive
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  execute:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Initialize persistent activity log
-        shell: bash
-        run: |
-          set -euo pipefail
-          log="${RUNNER_TEMP}/m4-cp-cond-tb2-workflow.log"
-          : > "$log"
-          {
-            echo "workflow=${GITHUB_WORKFLOW}"
-            echo "run_id=${GITHUB_RUN_ID}"
-            echo "event=${GITHUB_EVENT_NAME}"
-            echo "event_sha=${GITHUB_SHA}"
-            echo "ref=${GITHUB_REF}"
-            echo "repository=${GITHUB_REPOSITORY}"
-            echo "runner_os=${RUNNER_OS}"
-            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          } | tee -a "$log"
-
-      - name: Checkout exact control source
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 1
-          submodules: false
-          lfs: false
-
-      - name: Execute immutable artifact-only TB2 harness
-        id: execute
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set +e
-          log="${RUNNER_TEMP}/m4-cp-cond-tb2-workflow.log"
-          part1=".agents/Directional/turn-payloads/m4-cp-cond-tb2-exec-harness.part1"
-          part2=".agents/Directional/turn-payloads/m4-cp-cond-tb2-exec-harness.part2"
-          harness="${RUNNER_TEMP}/m4-cp-cond-tb2-exec-harness.sh"
-          cat "$part1" "$part2" > "$harness"
-          {
-            echo "harness_part1_sha256=$(sha256sum "$part1" | awk '{print $1}')"
-            echo "harness_part2_sha256=$(sha256sum "$part2" | awk '{print $1}')"
-            echo "harness_sha256=$(sha256sum "$harness" | awk '{print $1}')"
-          } | tee -a "$log"
-          bash "$harness" 2>&1 | tee -a "$log"
-          code=${PIPESTATUS[0]}
-          echo "harness_exit=${code}" | tee -a "$log"
-          echo "code=${code}" >> "$GITHUB_OUTPUT"
-          exit 0
-
-      - name: Record final execution status
-        if: always()
-        shell: bash
-        run: |
-          set +e
-          log="${RUNNER_TEMP}/m4-cp-cond-tb2-workflow.log"
-          {
-            echo "execute_step_outcome=${{ steps.execute.outcome }}"
-            echo "harness_exit=${{ steps.execute.outputs.code }}"
-            echo "final_source_status_begin"
-            git status --short 2>&1 || true
-            echo "final_source_status_end"
-            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          } | tee -a "$log"
-
-      - name: Upload TB2 result artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m4-cp-cond-tb2-result-${{ github.run_id }}
-          path: ${{ runner.temp }}/m4-cp-cond-tb2-result
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Upload TB2 detailed log artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m4-cp-cond-tb2-log-${{ github.run_id }}
-          path: ${{ runner.temp }}/m4-cp-cond-tb2-workflow.log
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Propagate harness status
-        if: always()
-        env:
-          HARNESS_EXIT: ${{ steps.execute.outputs.code }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          code="${HARNESS_EXIT:-97}"
-          exit "$code"
+  apply-drive-patch:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1zwwLbyooCbIJm-soc45ks32nN6-8Nb0E
+      patch_sha256: dfed20d76c16669cd3fb89d13f0080d7a608e281c698fb42c52cee5b6255a060
+      base_sha: 093ca0e86cbf8f936a13cc16186f906f33b0d381
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4-CP-COND TB2 execution"
+      retention_days: 14
+    secrets: inherit
