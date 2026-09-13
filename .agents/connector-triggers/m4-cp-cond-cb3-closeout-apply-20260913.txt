@@ -1,0 +1,6 @@
+Purpose: apply verified M4-CP-COND-CB3 durable closeout and frozen TB3 plan from Google Drive.
+Caller install authority: cc4ff6b7dc4b8b28ba3aa298436d9d7a8f058ea7
+Patch SHA-256: 80d394ac26745041bd86dcac48f792bef4aa9a368e732030206c9c17ed1aff59
+Base semantic/test authority: 4d9206cd059d7bb0c10fe3c0a0c91f8af248e675
+Turn: M4-CP-COND-CB3
+Retry: 0
