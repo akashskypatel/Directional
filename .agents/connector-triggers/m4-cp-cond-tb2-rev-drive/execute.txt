@@ -1,5 +1,0 @@
-turn=M4-CP-COND-TB2-REV
-purpose=apply reviewed TODO current-status correction
-file_id=1Gf4aMtFQIBJCsoqy85GkFvyPm4gP1GaD
-patch_sha256=f3d01b96b810b456da150c578d6813892279b486a8c72af3a62c8be78e8cca23
-base_sha=0a367003d05b51123e6252578860b33f50a0ec8e
