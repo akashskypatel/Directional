@@ -1,0 +1,8 @@
+# M4-CP-COND-TB2-EXEC temporary-state cleanup
+.agents/Directional/turn-payloads/m3-cp4a-dg/workflow-draft.yml
+.agents/Directional/turn-payloads/m4-cp-cond-tb2-exec-harness.part1
+.agents/Directional/turn-payloads/m4-cp-cond-tb2-exec-harness.part2
+.agents/connector-triggers/m3-cp4a-dg-schema-20260821.txt
+.agents/connector-triggers/tb/m4-cp-cond-tb2/execute.txt
+.agents/connector-triggers/source-snapshot/m4-cp-cond-tb2-exec-start-20260913.txt
+.agents/connector-triggers/m4-cp-cond-tb2-exec-closeout-drive/execute.txt
