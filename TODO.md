@@ -2,14 +2,15 @@
 
 Last updated: 2026-09-13 UTC
 
-## Current turn — M4-CP-COND-CB3
+## Current turn — M4-CP-COND-TB3-EXEC
 
 - [x] `M4-CP-COND-TB2-REV`: re-derived TB2; closed package candidate **RECOVERY PROVED / NON-STABLE**.
 - [x] Rejected CB2 promotion because the negative-index gate authors expected `-1` rather than deriving raw cycle/admissibility.
 - [x] Opened `M4-CP-COND-TB2-REV-CAND-01` **TEST-AUTHORITY / NEGATIVE-INDEX RAW-PRECONDITION ORACLE INADEQUATE / NON-VACUOUSNESS GAP / NON-STABLE**. Accounting 49/14/35, debt 5.
-- [ ] `M4-CP-COND-CB3`: correct only the negative-index test oracle from actual raw binary64 branch/transport data, with raw-data mutation discriminator.
-- [ ] Compile/package complete owner set + API/core/pipeline with GMP/GMPXX, `runtimeExecution=false`; no Directional runtime.
-- [ ] Freeze TB3 over all 14 focused + report-only boundary + selector408; mandatory TB3 Review.
+- [x] `M4-CP-COND-CB3`: corrected the negative-index oracle from actual raw binary64 mesh/branch/transport bytes with an exact raw-data mutation discriminator; no product semantic change.
+- [x] Compile/package complete owner set + API/core/pipeline with GMP/GMPXX, `runtimeExecution=false`; run `34785549072`, artifact `10325879420`, no Directional runtime.
+- [x] Freeze TB3 over all 14 focused + report-only boundary + selector408; mandatory TB3 Review.
+- [ ] `M4-CP-COND-TB3-EXEC`: execute immutable CB3 artifact `10325879420` in 423 fresh artifact-only exact-filter processes, then stop at mandatory Review.
 - [ ] Keep boundary-truncated separatrix non-gating unless reachability is independently proved.
 - [ ] Carry existing observations/debts with current owners.
 
@@ -39,9 +40,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-CB3` (test-authority-only Code + Build)
+## Current focus — `M4-CP-COND-TB3-EXEC` (artifact-only Test + Benchmark EXEC)
 
-TB2 package closure is mechanically proved, but Review found the negative-index gate semantically vacuous against frozen raw-precondition authority. Correct only that oracle, preserve product/selector semantics, compile/package full owner closure with no runtime, then hand off to TB3.
+CB3 corrects the negative-index gate with an exact source-derived raw oracle and mutation discriminator, while preserving product/selector semantics. Full owner closure compiles GREEN with GMP/GMPXX and no runtime in artifact `10325879420`. Execute the frozen 423-process TB3 surface without rebuild/repair, then stop at mandatory TB3 Review.
 
 Accepted M4 authority remains CP3 package `10307919492` / selector408 408/408. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
@@ -82,7 +83,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND TB2 REVIEW COMPLETE; NEGATIVE-INDEX TEST AUTHORITY OPEN; CB3 NEXT**. `M4-CP3-TB8-REV` promotes package `10307919492` / selector408 **408/408** and closes the main exact-torus pairing blocker. CP-COND package/runtime recovery is mechanically proved on unchanged semantic source; TB2 Review rejects promotion because the negative-index raw-precondition oracle does not derive its result from actual raw branch/transport bytes. CB3 is test-authority-only; CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CB3 COMPILE GREEN; TB3-EXEC NEXT**. `M4-CP3-TB8-REV` promotes package `10307919492` / selector408 **408/408** and closes the main exact-torus pairing blocker. CP-COND package/runtime recovery is mechanically proved; CB3 corrects the negative-index test authority from raw bytes and packages the full owner set without runtime. TB3 must execute and Review must adjudicate before CP-COND can close. CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -122,4 +123,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. TB2 Review closes package recovery but rejects CP-COND promotion on the negative-index test-authority gap. Exact next is **`M4-CP-COND-CB3`** under `Architecture_M4_CP_COND_CB3_Code_Build_Plan.md`. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. CB3 repairs the negative-index test authority and compiles/packages full owner closure GREEN without runtime as artifact `10325879420`. Exact next is **`M4-CP-COND-TB3-EXEC`** under `Architecture_M4_CP_COND_TB3_EXEC_Plan.md`, followed by mandatory Review. PR #8 remains open, draft, and unmerged.

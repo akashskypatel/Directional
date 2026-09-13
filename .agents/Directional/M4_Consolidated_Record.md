@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-12 at `M4-CP3-TB7-REV`
+**Last updated:** 2026-09-13 at `M4-CP-COND-CB3`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`. `M4-CP3-TB8-REV` accepts package `10307919492` / selector408 **408/408** and closes CP3. Stable accounting is **49 / 14 / 35**, debt **5**. The main `G4-B002` exact-torus pairing blocker is closed; its three produced-witness debts remain CP4 gating. Exact next is `M4-CP-COND-DEFN`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md`; CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`. `M4-CP3-TB8-REV` accepts package `10307919492` / selector408 **408/408** and closes CP3. Stable accounting is **49 / 14 / 35**, debt **5**. The main `G4-B002` exact-torus pairing blocker is closed; its three produced-witness debts remain CP4 gating. CP-COND CB3 corrects the negative-index test authority and compiles immutable artifact `10325879420` GREEN without runtime. Exact next is `M4-CP-COND-TB3-EXEC`.
 
 ## 1. M4 entering authority
 
@@ -571,6 +571,13 @@ CB2 run `34771486767` produced artifact `10321878900` (`d8016a8d...66ee28`) from
 
 Review closes the TB1 package candidate **RECOVERY PROVED / NON-STABLE** but rejects promotion of `10321878900`. The negative-index focused test computes expected `-1` from authored constants `5 * (72 - 90) / 90`, independently of the actual raw binary64 branches, and only checks conditioner preservation. It does not derive raw cross-face transport/cycle index or prove raw field admissibility from that transport. `M4-CP-COND-TB2-REV-CAND-01` is **OPEN / TEST-AUTHORITY / NEGATIVE-INDEX RAW-PRECONDITION ORACLE INADEQUATE / NON-VACUOUSNESS GAP / NON-STABLE**. Accepted authority remains CP3 package `10307919492` / selector408 408/408; accounting remains **49 / 14 / 35**, debt **5**. Exact successor is `M4-CP-COND-CB3`.
 
+
+## 2.43 `M4-CP-COND-CB3` — raw-derived negative-index oracle compile-green
+
+CB3 changes only `tests/InputConditionerTests.cpp` semantically. The negative-index identity now exactifies the actual raw binary64 mesh/field bytes with test-local GMP arithmetic, derives the unique interior face cycle, proves branch admissibility, computes unique cross-face Z4 transport and derives signed numerator `-1` from that transport. A one-LSB raw branch mutation invalidates the exact opposite-pair relation, so the oracle cannot retain the answer independently of the subject. Product/API/CMake/selector/A3/A4 semantics are unchanged.
+
+Compile run/job `34785549072 / 103800273458` is GREEN on test-authority source `4d9206cd059d7bb0c10fe3c0a0c91f8af248e675`. Artifact `10325879420` (`sha256:d046b8cbdcfe22af5ca732139612e96673d597fef47b5e36d1a54b1542493b2b`) contains all four selector owners plus compiled API/core/pipeline, GMP/GMPXX evidence, clean source receipts, and a 27/27 manifest; `runtimeExecution=false`. No Directional runtime executed. `M4-CP-COND-TB2-REV-CAND-01` remains open/non-stable pending runtime and Review. Accepted runtime authority stays CP3 package `10307919492` / selector408 408/408; accounting remains **49 / 14 / 35**, debt **5**. Exact next is immutable artifact-only `M4-CP-COND-TB3-EXEC`, then mandatory `M4-CP-COND-TB3-REV`.
+
 ### CP-COND review-time folded documents
 
 | Folded filename | Lines | Verdict / retained home |
@@ -586,4 +593,4 @@ Review closes the TB1 package candidate **RECOVERY PROVED / NON-STABLE** but rej
 | `Architecture_M4_CP_COND_CB2_Code_Build_Record.md` | 68 | Folded after TB2 Review; package authority retained in §2.41/current TB2 report. |
 | `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` | 96 | Folded after TB2 EXEC/Review; 423-process gate/postflight retained in current TB2 report/Review/CB3 plan. |
 
-Current retained CP-COND authority is the frozen definitions, Review-reconstructed TB2 EXEC report, current TB2 Review record and exactly one next-turn plan (`M4-CP-COND-CB3`). Full folded text remains recoverable from git history.
+Current retained CP-COND authority is the frozen definitions, Review-reconstructed TB2 EXEC report, current TB2 Review record, CB3 Code + Build report, and exactly one next-turn plan (`M4-CP-COND-TB3-EXEC`). The consumed CB3 plan is retired by CB3 stale-evidence cleanup and remains recoverable from git history; the next REVIEW must add its folded-document index entry.

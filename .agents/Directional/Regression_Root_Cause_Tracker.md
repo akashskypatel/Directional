@@ -1,5 +1,14 @@
 # Regression Root Cause Tracker
 
+## M4-CP-COND-CB3 — **NEGATIVE-INDEX TEST AUTHORITY CORRECTED / COMPILE GREEN / NON-STABLE / TB3 NEXT**
+
+- Only `tests/InputConditionerTests.cpp` changes semantically. The negative-index oracle now derives exact raw field admissibility, unique cross-face Z4 transport and cycle numerator from actual binary64 mesh/branch bytes using test-local GMP arithmetic; no production oracle/output is consulted.
+- Committed source-side derivation is offsets `[3,3,3,3,3]` -> residue `3` -> signed principal numerator `-1`. A one-LSB raw branch mutation breaks exact opposite-pair admissibility, satisfying the raw-data discriminator.
+- Run/job `34785549072 / 103800273458` compiles the complete seven-target owner/package set GREEN from source `4d9206cd059d7bb0c10fe3c0a0c91f8af248e675`; artifact `10325879420` is 27/27 manifest-clean with GMP/GMPXX and `runtimeExecution=false`. No Directional runtime executed.
+- `M4-CP-COND-TB2-REV-CAND-01` remains **OPEN / TEST-AUTHORITY / NON-STABLE PENDING TB3 REVIEW**. CB3 implements the frozen correction but cannot prove runtime recovery or promote authority.
+- Accepted runtime authority stays CP3 package `10307919492` / selector408 408/408; accounting stays **49 / 14 / 35**, debt **5**.
+- Exact successor `M4-CP-COND-TB3-EXEC`: immutable 423-process artifact-only gate, then mandatory `M4-CP-COND-TB3-REV`.
+
 ## M4-CP-COND-TB2-REV — **PACKAGE RECOVERY PROVED / NEGATIVE-INDEX TEST-AUTHORITY GAP / NON-STABLE / CB3 NEXT**
 
 - TB2 run/job `34772781761 / 103765305047` on artifact `10321878900` completes 14/14 focused PASS + one report-only SKIP + selector408 408/408 PASS with exact postflight. `M4-CP-COND-TB1-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**.

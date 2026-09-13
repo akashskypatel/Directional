@@ -1,47 +1,44 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP-COND-TB2-REV` COMPLETE / PACKAGE RECOVERY PROVED / NEGATIVE-INDEX TEST AUTHORITY OPEN; `M4-CP-COND` OPEN; M4 OPEN
+**Status:** `M4-CP-COND-CB3` COMPLETE / TEST-AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME UNADJUDICATED; `M4-CP-COND` OPEN; M4 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP-COND-CB3`
+**Canonical next turn:** `M4-CP-COND-TB3-EXEC`
 
 ## Current authority
 
 - M1-M3 are CLOSED / ACCEPTED. M4-CP1/CP2 remain historical framed closures. M4-CP3 is CLOSED / ACCEPTED.
 - Accepted M4 runtime authority remains CB10 package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`, selector408 **408/408** (`c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`).
 - Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
-- CP-COND semantic source remains `b576d061e23873b7b4193b158138d2097c75a728`; frozen definitions remain normative.
+- CP-COND product semantic source remains `b576d061e23873b7b4193b158138d2097c75a728`; CB3 changes test authority only.
 
-## TB2 Review decision
+## CB3 result
 
-TB2 mechanically proves the TB1 package-owner diagnosis: artifact `10321878900` and run/job `34772781761 / 103765305047` complete **14/14 focused PASS + one report-only SKIP + selector408 408/408 PASS**, 423 processes, zero RED/crash/selection mismatch and exact immutable postflight. `M4-CP-COND-TB1-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**.
+`M4-CP-COND-CB3` corrects `NegativeIndexRawPreconditionIsIndependentAndPreserved` without product/API/CMake/selector/A3/A4 semantic change. The test-local GMP oracle decodes actual raw binary64 bytes exactly, derives the closed source-face cycle, proves four-branch admissibility, derives unique cross-face Z4 transport and its signed cycle numerator, and independently verifies the conditioner-preserved output. The committed raw witness derives offsets `[3,3,3,3,3]` and numerator `-1`; flipping one raw branch LSB breaks exact opposite-pair admissibility, satisfying the non-vacuity discriminator.
 
-Review rejects package promotion because `NegativeIndexRawPreconditionIsIndependentAndPreserved` authors numerator `-1` from `5*(72-90)/90` rather than deriving raw cycle/transport/admissibility from actual raw binary64 branch data. `M4-CP-COND-TB2-REV-CAND-01` is **OPEN / TEST-AUTHORITY / NEGATIVE-INDEX RAW-PRECONDITION ORACLE INADEQUATE / NON-VACUOUSNESS GAP / NON-STABLE**. CP-COND remains OPEN; accepted CP3 authority is unchanged.
+Compile run/job `34785549072 / 103800273458` is GREEN on exact source `4d9206cd059d7bb0c10fe3c0a0c91f8af248e675`. Immutable artifact `10325879420` (`sha256:d046b8cbdcfe22af5ca732139612e96673d597fef47b5e36d1a54b1542493b2b`) contains all four selector owners, compiled API, core/pipeline, GMP/GMPXX evidence, clean source receipts and a 27/27 manifest. `runtimeExecution=false`; no Directional test/benchmark/runtime executed.
 
-Boundary-truncated separatrix remains report-only/non-selector. The prior EXEC report reference was dangling; Review reconstructed `Architecture_M4_CP_COND_TB2_EXEC_Report.md` from immutable evidence and labels it Review-reconstructed.
+## Exact next — `M4-CP-COND-TB3-EXEC`
 
-## Exact next — `M4-CP-COND-CB3`
+Follow `Architecture_M4_CP_COND_TB3_EXEC_Plan.md` exactly:
 
-Follow `Architecture_M4_CP_COND_CB3_Code_Build_Plan.md` exactly:
-
-- test-authority-only; only the negative-index witness/helper/oracle in `tests/InputConditionerTests.cpp` may change semantically;
-- derive exact/discrete cycle index and field admissibility from actual raw mesh + binary64 branch data;
-- include a raw-data mutation discriminator that changes or invalidates the independent oracle;
-- preserve test identity, product/API/CMake/selector/A3/A4 semantics and boundary blocker;
-- compile/package full selector-owner set + API/core/pipeline with GMP/GMPXX, `runtimeExecution=false`, no runtime;
-- freeze artifact-only `M4-CP-COND-TB3-EXEC` over all 14 focused + report-only + selector408, followed by mandatory `M4-CP-COND-TB3-REV`.
-
-STOP before mutation if the source-derived exact oracle requires a product semantic change.
+- artifact-only; consume immutable artifact `10325879420` with no configure/build/relink/repair/discovery/mutation;
+- mode-preserving extraction and exact package/source/selector preflight/postflight;
+- execute all 14 focused CP-COND identities once each in fresh exact-filter processes;
+- execute `BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker` once as expected report-only SKIP/non-selector;
+- execute all selector408 identities once each in fresh exact-filter processes;
+- expected complete surface = 423 processes, mechanically GREEN only at 14/14 focused PASS + one expected report-only SKIP + 408/408 selector PASS + exact postflight;
+- then stop at mandatory `M4-CP-COND-TB3-REV`. EXEC cannot promote the package, close the candidate, reprice accounting, or close CP-COND.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_COND_CB3_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP_COND_TB3_EXEC_Plan.md
+  - .agents/Directional/Architecture_M4_CP_COND_CB3_Code_Build_Report.md
   - .agents/Directional/Architecture_M4_CP_COND_TB2_Review_Record.md
-  - .agents/Directional/Architecture_M4_CP_COND_TB2_EXEC_Report.md
   - .agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md
   - .agents/Directional/M4_Consolidated_Record.md
 required:
