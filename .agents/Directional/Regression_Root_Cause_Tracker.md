@@ -1,6 +1,16 @@
 # Regression Root Cause Tracker
 
 
+## M4-CP-COND-TB1-EXEC — PACKAGE PREFLIGHT RED / ZERO SEMANTIC TEST CREDIT / REVIEW REQUIRED
+
+- **Execution:** authoritative run/job `34757021728 / 103723061754` against immutable CB1 artifact `10312168742` / semantic source `b576d061e23873b7b4193b158138d2097c75a728`; result/log artifacts `10317417085 / 10317147479`, SHA-256 `2886414c821790721a64c0a026444772e3eee44bf983f30b1d787c385cfcfb74` / `80b38896305af1df6bd6602351733a0899b6a01bdcc9dd52ab72f0b41fac8668`.
+- **`M4-CP-COND-TB1-EXEC-CAND-01` — OPEN / PACKAGE-COMPLETENESS PREFLIGHT / NON-STABLE PENDING REVIEW.** Package/root/source/GMP/selector authority verifies, then static selector408 ownership proves required distribution 30 authority-kernel / 262 producer / 75 completion / 41 validation while the immutable package contains only the producer owner executable (plus compiled-api). Three required owner executables are absent, covering **146 accepted selector identities**.
+- **Fail-closed boundary:** the frozen TB1 plan requires the complete 408/408 accepted selector census and says any package/preflight mismatch stops before Directional runtime. Harness exit is `91 / PACKAGE_PREFLIGHT_RED`; `runtime_started=false`, `processes_executed=0`, and package/source/execution-view census equality is exact. No focused identity, report-only boundary identity, or accepted selector identity executed.
+- **First attempt excluded:** run/job `34756902324 / 103722735152` stopped before harness/runtime with mode-0644 direct-exec exit 126; bounded correction changed only caller invocation to `bash`. It has zero semantic credit.
+- **Mechanical cause candidate:** CB1 compiled/packaged `directional_surface_cell_producer_tests` and `directional_compiled_api_tests` but its own frozen TB1 successor requires all four accepted-selector owner binaries. Review must classify whether this is build-plan/package-surface omission and prescribe the minimum corrective CB scope; EXEC does not assign a permanent root-cause category.
+- **Accounting:** no accepted ordinal executed, so no accepted-prefix PASS→RED transition can be established. **No stable event/category/recurrence change. Totals remain 49 events / 14 categories / 35 recurrences; debt 5.**
+- **Exact successor:** mandatory `M4-CP-COND-TB1-REV`; no repair/rebuild/subset execution is authorized in EXEC.
+
 ## M4-CP3-TB8-REV — APPROVED / selector408 accepted / CP3 closed
 
 Runtime-free Review independently re-opened package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`, result/log artifacts `10309365777 / 10309009858`, selector403/408 and the raw 835-row ledger. The gate is **835/835 PASS**, including repaired shared-fixture A/B 12/12, ordinal138 A/B 2/2, row408 A/B 2/2, rows404-407 A/B 8/8, accepted selector403 **403/403 to completion** and selector408 **408/408**, with empty accepted RED census and immutable package/source/execution-view postflight.

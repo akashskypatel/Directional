@@ -1,11 +1,11 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**  
-**Status:** `M4-CP-COND-CB1` COMPLETE / COMPILE-ONLY GREEN; `M4-CP-COND` OPEN; M4 OPEN  
+**Status:** `M4-CP-COND-TB1-EXEC` COMPLETE / PACKAGE PREFLIGHT RED / ZERO SEMANTIC TEST CREDIT; `M4-CP-COND` OPEN; M4 OPEN
 **Repository:** `akashskypatel/Directional`  
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`  
 **PR:** #8, open / draft / unmerged  
-**Canonical next turn:** `M4-CP-COND-TB1-EXEC`
+**Canonical next turn:** `M4-CP-COND-TB1-REV`
 
 ## Current authority
 
@@ -38,19 +38,23 @@ Witness gates remain conditional on independently proved raw preconditions. Boun
 
 CB1 changed no accepted selector, A3/A4 semantics, stable-event accounting or runtime authority. CP-COND remains OPEN.
 
-## Exact next — `M4-CP-COND-TB1-EXEC`
+## TB1-EXEC mechanical authority
 
-Follow `Architecture_M4_CP_COND_CB1_Artifact_Only_Test_Benchmark_Plan.md` exactly against immutable artifact `10312168742`. No rebuild, configure, relink, package repair, source/test/fixture/selector mutation or benchmark substitution is authorized.
+`M4-CP-COND-TB1-EXEC` is COMPLETE / PACKAGE PREFLIGHT RED / ZERO SEMANTIC TEST CREDIT. `Architecture_M4_CP_COND_TB1_EXEC_Report.md` owns the mechanical evidence.
 
-TB1-EXEC must mechanically:
+- Authoritative run/job: `34757021728 / 103723061754`; result/log artifacts `10317417085 / 10317147479`, SHA-256 `2886414c821790721a64c0a026444772e3eee44bf983f30b1d787c385cfcfb74` / `80b38896305af1df6bd6602351733a0899b6a01bdcc9dd52ab72f0b41fac8668`.
+- Immutable candidate artifact remained CB1 `10312168742`, ZIP SHA-256 `90c5e4c8bd41ced2311d11e1cb1e03cfd6dc71542c862981363aa31df2c03265`, semantic source `b576d061e23873b7b4193b158138d2097c75a728`.
+- Package checksums/source/GMP/GMPXX/`runtimeExecution=false`/selector408 all verified.
+- Static selector408 owner distribution is 30 authority-kernel / 262 producer / 75 completion / 41 validation. The immutable package contains only the producer test executable (plus compiled-api), so three required owner executables covering 146 accepted identities are absent.
+- The frozen TB1 plan requires the complete accepted selector408 census and makes any package mismatch fail closed. The harness stopped with exit `91`, `PACKAGE_PREFLIGHT_RED`, before any Directional process.
+- `runtime_started=false`, `processes_executed=0`; **0/422 semantic gating processes executed**. The report-only boundary identity also did not execute. No semantic PASS/RED/SKIP credit exists.
+- Package/source/execution-view census equality is exact on the stopped path. No rebuild/configure/relink/package repair/generated discovery/benchmark/source-test-fixture-selector mutation occurred.
+- Earlier run/job `34756902324 / 103722735152` is excluded orchestration-only evidence: Contents-API payload mode `0644` caused direct-exec exit 126 before harness/runtime. The retry correction changed only caller invocation to `bash`.
+- `M4-CP-COND-TB1-EXEC-CAND-01` is OPEN / package-completeness preflight / non-stable pending Review. With no Directional identity executed, stable totals remain **49 events / 14 categories / 35 recurrences**, debt **5**.
 
-1. preflight provider/root checksums, semantic source, empty source status, GMP/GMPXX, `runtimeExecution=false` and the byte-frozen selector408;
-2. execute the 14 focused prospective CP-COND identities one fresh exact-filter process each;
-3. execute `BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker` only as report-only blocker evidence, not green credit;
-4. execute all 408 accepted selector identities as a complete fresh-process regression census;
-5. preserve exact package/source/selector/execution-view immutability and emit the complete ledger/evidence artifact.
+## Exact next — `M4-CP-COND-TB1-REV`
 
-EXEC owns mechanical outcomes only. Even if every executable gate is green, the exact successor is mandatory `M4-CP-COND-TB1-REV`; EXEC may not close CP-COND, promote a selector or alter stable-event accounting.
+Review only. Independently re-open `Architecture_M4_CP_COND_TB1_EXEC_Report.md` plus immutable result/log artifacts `10317417085 / 10317147479`, re-derive the missing-owner preflight from the frozen TB1 plan and CB1 package, adjudicate `M4-CP-COND-TB1-EXEC-CAND-01`, and issue the minimum corrective successor plan. Do not repair/rebuild the package, execute the focused identities, mutate selector408, promote CP-COND, or alter stable accounting inside EXEC evidence.
 
 ## Carried obligations
 
@@ -63,6 +67,7 @@ EXEC owns mechanical outcomes only. Even if every executable gate is green, the 
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M4_CP_COND_TB1_EXEC_Report.md
   - .agents/Directional/Architecture_M4_CP_COND_CB1_Artifact_Only_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M4_CP_COND_CB1_Code_Build_Record.md
   - .agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md
