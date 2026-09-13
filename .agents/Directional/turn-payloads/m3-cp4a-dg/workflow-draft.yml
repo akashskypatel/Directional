@@ -37,7 +37,7 @@ jobs:
       patch_sha256: dd641f1245c7aecb73f1db450460305677a52f3fc84e8d9e9995d6133513c780
       base_sha: a64e371bbd2e98b8df0d19f279c27c93a327c444
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: M4-CP-COND-CB1: implement input conditioner seam
+      commit_message: "M4-CP-COND-CB1: implement input conditioner seam"
       retention_days: 14
     secrets: inherit
 
