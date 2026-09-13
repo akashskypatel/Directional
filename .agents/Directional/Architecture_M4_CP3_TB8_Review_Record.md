@@ -155,3 +155,42 @@ Definition-turn falsifiers/STOPs are frozen before any later build:
 | Turn boundary held | PASS — runtime-free Review; no product/test/fixture/selector/benchmark/build source mutation |
 | review_check.py boundary | PASS — plain `boundary` returned `ALL CHECKS PASSED` on the documentation-only Review delta. The helper's count-only selector lookup is milestone-ambiguous for row-count 403 and resolves the M3 selector, so the M4 selector403 expectation was not delegated to that ambiguous lookup; the exact M4 selector path was independently re-hashed to `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`, while the helper independently accepted selector408 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`. |
 | Pushed to origin, branch in sync | PASS — final reviewed documentation/closure bytes and cleanup were published on the working branch; final branch authority was re-read after cleanup before the final PR summary comment |
+
+---
+
+## 11. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** CP3 closure, promotion of the package and selector408, and the accounting are all
+sound, and both requirements this reviewer carried into the turn were honoured.
+
+### V1 — the TB7 no-fail-fast requirement was implemented and it validated the closure
+
+The phase census decomposes exactly: `6 + 6 + 2 + 2 + 8 + 403 + 408 = 835`, all PASS. The accepted prefix ran
+**to completion** — `accepted selector403 complete census 403/403` — and the accepted-prefix semantic RED
+census came back **empty**.
+
+That is the strong positive outcome the requirement existed to obtain. The five static at-risk consumers named
+at TB7 all pass, and because the whole accepted prefix ran rather than halting at a first casualty, CP3 closes
+on a complete census rather than on the absence of a first failure. Had the requirement not been added, this
+closure would have rested on a fail-fast run that stopped at the first green-through point and could not have
+excluded further latent cutover breakage.
+
+### V2 — the provenance bound is honoured exactly
+
+§5 states that row408 is a **constructed** production torus witness — it proves the exit conjunct and is not
+evidence that the exact torus was historically observed to fail at `InvalidHardRailPairing` — and §8 carries
+the TB3 warning as a historical-claim bound rather than a product defect. That is precisely the form required
+at `M4-CP3-TB3-REV` §9 V2 and restated at TB5. §7's scoping is also right: closing the blocker does not
+discharge the three inherited `G4-B002` produced-witness debts.
+
+### V3 — lineage and accounting re-derived
+
+The M4 selector408 (`Architecture_M4_CP3_CB5_Required_Green_Selector_408.txt`) has 408 rows, hashes to
+`c689c0cd8a51f9a8…`, and its **first 403 rows hash to `c3f509afc823cd73…`**, byte-identical to accepted
+selector403. Accounting correctly holds at **49 / 14 / 35**, debt **5**, since no accepted ordinal transitioned
+PASS → RED in TB8.
+
+**Minor hazard worth recording:** `Selector_408` now names two unrelated files — the M3-era
+`Architecture_M3_CP4c3_Required_Green_Selector_408.txt` and this M4 one. A glob-based hash check hits the M3
+file first and yields a prefix that matches nothing. The same collision already exists at `Selector_403`.
+Future selector verification should address the file by its full milestone-qualified name, not by ordinal.

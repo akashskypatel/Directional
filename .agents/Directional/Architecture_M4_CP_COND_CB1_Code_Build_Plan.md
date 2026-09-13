@@ -66,6 +66,14 @@ STOP before compile if implementation requires any of the following:
 - a gate with a hand-asserted or empty raw precondition;
 - CP-SCALE threshold calibration, genus>=2 work, M5/M6/M7 semantics, or CP4 debt;
 - generated Directional runtime during CB.
+- a **production** conditioning policy that is not provably the identity on finite binary64 input. Requirement 6
+  routes the live SurfaceCells entry through the conditioner, and C1 may map distinct raw vertices to the same
+  lattice point (§4.1 merge), so a coarsening production policy moves accepted fixture geometry and can make
+  accepted identities RED — a stable event each — without tripping any other rule here, since A3/A4 semantics and
+  selector408 are untouched. Exercise genuine quantization and merge behaviour only under an explicitly
+  non-default policy on CP-COND's own witness fixtures. If coarsening in production is intended, STOP and return
+  to definition review: it requires re-proving all 408 accepted identities and must be an explicit decision.
+  (Reviewing agent, CP-COND DEFN record §V2.)
 
 If any STOP fires, preserve the patch, record the exact conflict and return to a bounded definition/review correction rather than weakening the contract.
 

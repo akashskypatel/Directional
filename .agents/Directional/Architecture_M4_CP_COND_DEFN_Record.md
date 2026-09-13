@@ -112,3 +112,60 @@ CB1 must implement the single-writer product/certificate/validator seam, author 
 | Turn boundary held | PASS — documentation/definition only; no product/test/fixture/selector/build/runtime mutation |
 | `review_check.py boundary` | PASS — local exact-snapshot working tree reports ALL CHECKS PASSED; independent path hashes additionally prove selector403/selector408 and the first403 prefix exactly because the generic count-only helper has multiple historical 403-row names |
 | Pushed to origin, branch in sync | PASS condition of publication — this record is applied only by the exact-base Drive patch workflow; turn closeout must verify the pushed branch/PR CAS before final comment, without embedding a commit hash in this record |
+
+---
+
+## Independent review addendum (reviewing agent)
+
+Runtime-free. The definition is **upheld and well constructed**, with one required addition before
+`M4-CP-COND-CB1` mutates source.
+
+### V1 — what the definition gets right
+
+The stage boundary is unambiguous — `RawSourceInput -> InputConditioner -> ConditionedSourceProduct -> A0`,
+with one writer permitted to change geometry or raw field values, returning a typed `Produced`/`Rejected`
+exactly once. Naming legacy `BoundedMeshPreconditioner` as explicitly **non-authoritative**, and saying why
+(double-valued thresholds, local flip machinery, no certified correspondence), forecloses the obvious wrong
+implementation instead of leaving it to be discovered.
+
+Three exit conjuncts show the review history has been absorbed rather than merely cited: conjunct 4 requires a
+genuinely unreachable witness to be left as an **explicit blocker** rather than quietly dropped; conjunct 5
+requires **non-vacuous** correspondence-tamper discrimination; conjunct 8 preserves selector408 byte-for-byte
+as predecessor prefix. §5's closed operation list is the right instrument against scope creep, and §11 carries
+`OBS-01`, `OBS-02` and the TB3 provenance bound by name with owners.
+
+### V2 — REQUIRED: production routing plus a coarsening lattice can break accepted identities, and no STOP rule fires
+
+CB1 requirement 6 routes the **production** SurfaceCells raw entry through the conditioner before A0. Operation
+C1 maps geometry and raw field components onto a configured dyadic lattice `k / 2^e`, and §C1 states plainly
+that multiple raw vertices may map to **exactly the same conditioned lattice point**, with §4.1 governing the
+resulting merge. So the transform moves points and can collapse distinct vertices.
+
+Every accepted SurfaceCells identity's fixture geometry now passes through that transform. Nothing in the CB1
+STOP list catches the consequence: A3/A4 semantics are unchanged, selector408 is unedited, there is no second
+writer and no epsilon authority — yet accepted identities can go RED because their **input** moved. Under the
+durable criterion at the head of `Regression_Root_Cause_Tracker.md`, each such transition is a stable event.
+Exit conjunct 8 does not cover it either: preserving the selector file byte-for-byte is a different claim from
+those 408 identities still passing.
+
+No lossless or identity default policy is specified anywhere in the frozen definitions or the CB1 plan. §3's
+assurance that "every conditioned coordinate remains exactly materializable as binary64" constrains the
+*output representation*, not the *displacement*.
+
+**Requirement.** The CB1 **production** policy must be provably the identity on finite binary64 input — every
+already-representable coordinate maps to itself, so conditioning is lossless for existing fixtures and the 408
+accepted identities cannot move. Genuine coarsening and merge behaviour is then exercised only by CP-COND's own
+witness fixtures under an explicitly non-default policy, which is where C1, §4.1 and the S6 same-cell witness
+belong anyway.
+
+If coarsening in the production path is *intended* rather than incidental, that is a legitimate choice but must
+be stated as one, and CB1 must budget for re-proving all 408 accepted identities under the new input. It may not
+arrive as a side effect of requirement 6.
+
+A STOP rule to that effect is added to the CB1 plan.
+
+### V3 — accounting and scope
+
+Accounting correctly holds at **49 / 14 / 35**, debt **5**; a definition turn creates no event. Scope exclusions
+are clean: CP-SCALE keeps expression-swell thresholds, certified-filter scale work and genus>=2 reachability;
+`G4-B002` stays an M4-CP4 gate and `G4-B003` an M5 gate.

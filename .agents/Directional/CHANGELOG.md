@@ -4,6 +4,30 @@ All CB10 guards G1-G4 passed. The stale shared fixture was confirmed to bypass a
 
 Semantic source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` compiled/linked all eight mandatory CP3 targets GREEN with GMP/GMPXX in run/job `34727247774 / 103643462175`. Candidate artifact `10307919492` has provider digest `8988a12fa8b2e6476bf3fd91a6a6936eaef8a9ab7c73837b74ea2e980d29b2ec`; root manifest verification is **28/28**, source status is empty, and `runtimeExecution=false`. No Directional runtime was executed. Corrected R4 artifact `10289601000` remains accepted runtime authority; accounting stays **49 / 14 / 35**, debt **5**. Exact successor is artifact-only `M4-CP3-TB8-EXEC`, whose accepted selector403 phase must run to completion without semantic fail-fast, followed mandatorily by `M4-CP3-TB8-REV`.
 
+**Verification amendment (reviewing agent) — `M4-CP3-TB8-REV` §11 and `M4-CP-COND-DEFN` addendum.** Both turns are
+upheld. **TB8:** CP3 closure and promotion of selector408 are sound, and both requirements this reviewer carried in
+were honoured. The TB7 no-fail-fast requirement was implemented — the phase census decomposes exactly as
+`6 + 6 + 2 + 2 + 8 + 403 + 408 = 835`, the accepted prefix ran **to completion** at `403/403`, and the
+accepted-prefix RED census came back **empty**, so CP3 closes on a complete census rather than on the absence of a
+first failure. The provenance bound is honoured verbatim: row408 is stated to be a **constructed** torus witness
+that proves the exit conjunct and is not evidence of a historically observed `InvalidHardRailPairing`. Lineage
+re-derived: M4 selector408 hashes `c689c0cd…` with first-403 rows `c3f509af…`, byte-identical to accepted
+selector403; accounting correctly holds at **49 / 14 / 35**. Minor hazard recorded: `Selector_403` and
+`Selector_408` each now name two unrelated M3-era and M4 files, so selector verification must address the
+milestone-qualified filename rather than the ordinal. **CP-COND DEFN:** the definition is well constructed — a
+single pre-A0 writer with typed `Produced`/`Rejected`, legacy `BoundedMeshPreconditioner` named explicitly
+non-authoritative with reasons, a closed operation list, and exit conjuncts that absorb this sequence's review
+history (unreachable witnesses must be explicit blockers; correspondence-tamper discrimination must be non-vacuous;
+selector408 preserved byte-for-byte). **One required addition, added as a CB1 STOP rule:** requirement 6 routes the
+live SurfaceCells entry through the conditioner while C1 may map distinct raw vertices to the same lattice point,
+so a coarsening production policy moves accepted fixture geometry and can make accepted identities RED — a stable
+event each — without tripping any existing STOP rule, since A3/A4 semantics and selector408 are untouched, and
+conjunct 8's byte-for-byte selector preservation is a different claim from those 408 identities still passing. No
+lossless default policy is specified anywhere. The production policy must therefore be provably the identity on
+finite binary64 input, with genuine quantization and merge behaviour exercised only under an explicitly non-default
+policy on CP-COND's own witness fixtures; if production coarsening is intended, it must be stated as a decision and
+budget for re-proving all 408 accepted identities.
+
 ## 2026-09-12 — `M4-CP3-TB7-REV`: CB9 recovery upheld; ordinal211 is CB5-era test-fixture precondition drift; CB10 frozen
 
 Review independently re-opened TB7 evidence, accepted R4 package `10289601000`, CB5 package `10290933668`, and CB9 package `10305678151`. The focused **12/12 PASS** closes `M4-CP3-TB6-REV-CAND-01` recovery-proved: CB9 restores ordinal138 without breaking row408/rows404-407. CB9's correction is retained, but its package remains rejected/unpromoted because accepted selector403 is RED at ordinal211.
