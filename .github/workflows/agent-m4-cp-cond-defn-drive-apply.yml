@@ -13,6 +13,10 @@ permissions:
   issues: write
   pull-requests: write
 
+concurrency:
+  group: agent-m4-cp-cond-defn-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   validate:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
@@ -36,8 +40,9 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 19JiD9HSlPiPPLgNj8XeMUwdeXgtMKEsP
-      patch_sha256: f1f20656789414c59c6e3f63427a3b59b57d0d6b912c02efc763bae9018b3d46
+      patch_sha256: 'f1f20656789414c59c6e3f63427a3b59b57d0d6b912c02efc763bae9018b3d46'
       base_sha: ee89687cacc109308265ccaccd161f382f25c1fb
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: freeze M4 CP-COND definition
+      commit_message: 'docs: freeze M4 CP-COND definition'
+      retention_days: 7
     secrets: inherit
