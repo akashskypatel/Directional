@@ -1,0 +1,4 @@
+turn=M4-CP-COND-CB2
+requested_initial_head=2b77866155fe6aa174fcc9dfc3ba2e0c5f6e53c6
+purpose=exact start-of-turn source snapshot for Code+Build inspection
+runtimeExecution=false
