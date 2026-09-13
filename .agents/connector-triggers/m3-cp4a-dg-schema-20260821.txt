@@ -1,0 +1,4 @@
+turn=M4-CP-COND-CB2
+workflow_draft=.agents/Directional/turn-payloads/m3-cp4a-dg/workflow-draft.yml
+workflow_draft_sha256=4c1a238cc004bddc1c31eaf07238e2a3fa07a2d453d3eb427870c5cb3564139f
+runtimeExecution=false
