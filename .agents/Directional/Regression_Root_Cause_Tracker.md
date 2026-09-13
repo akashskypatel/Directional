@@ -1,5 +1,14 @@
 # Regression Root Cause Tracker
 
+## M4-CP-COND-TB2-EXEC — **MECHANICALLY GREEN / RECOVERY EVIDENCE READY / SEMANTICALLY UNADJUDICATED / REVIEW REQUIRED**
+
+- **Execution:** immutable CB2 artifact `10321878900` / source `b576d061e23873b7b4193b158138d2097c75a728`; authoritative run/job `34772781761 / 103765305047`; result/log artifacts `10322612282 / 10322677035` with SHA-256 `46bcc703d5aa11dc43edaec9e416f22c75d68111802a9d8dbfc4129a9775a5a0` / `725a59a93d91bd267c6531f6d7bd545d17f2867ebbc85f906d4011d3abfdadc5`.
+- **Frozen gate:** full immutable preflight passes; **14/14 focused PASS**, boundary-truncated separatrix **SKIP / report-only / non-selector**, accepted selector408 **408/408 PASS**. 423 fresh processes total = 422 PASS + 1 report-only SKIP; zero RED/crash/selection mismatch.
+- **Postflight:** package/source/execution-view/selector are byte+mode equal pre/post; no configure/compile/relink/package repair/mode repair/generated discovery/benchmark/source-test-fixture-selector mutation occurred.
+- **`M4-CP-COND-TB1-EXEC-CAND-01` — OPEN / TB2 MECHANICAL RECOVERY GREEN / REVIEW REQUIRED / NON-STABLE PENDING REVIEW.** CB2 package closure now survives the full frozen runtime surface, but EXEC does not close the candidate or promote package authority; `M4-CP-COND-TB2-REV` owns adjudication.
+- **Accounting:** no accepted PASS→RED transition. EXEC carries totals unchanged at **49 events / 14 categories / 35 recurrences**, debt **5**, pending Review.
+- **Exact successor:** runtime-free `M4-CP-COND-TB2-REV`.
+
 ## M4-CP-COND-CB2 — **PACKAGE OWNER SET CLOSED / COMPILE GREEN / PRE-SEMANTIC / NON-STABLE / TB2 NEXT**
 
 - **Control experiment:** exact unchanged semantic source `b576d061e23873b7b4193b158138d2097c75a728`; run/job `34771486767 / 103761775124` GREEN; artifact `10321878900` SHA-256 `d8016a8d0b30c8edcbbd64ac96d752ee5087fd35dc568a1b1c9e4cef9a66ee28`.

@@ -1,11 +1,11 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP-COND-CB2` COMPLETE / COMPILE-PACKAGE GREEN / OWNER SET CLOSED / NO RUNTIME; `M4-CP-COND` OPEN; M4 OPEN
+**Status:** `M4-CP-COND-TB2-EXEC` COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED; `M4-CP-COND` OPEN; M4 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP-COND-TB2-EXEC`
+**Canonical next turn:** `M4-CP-COND-TB2-REV`
 
 ## Current authority
 
@@ -49,11 +49,21 @@ Boundary-truncated separatrix remains report-only/non-selector; no raw reachabil
 
 No product/test/fixture/selector/CMake semantic or reusable-workflow byte changed. CB2 therefore closes the package-owner-set omission mechanically but does not close the recovery candidate because zero Directional identities ran.
 
-## Exact next — `M4-CP-COND-TB2-EXEC`
+## TB2-EXEC mechanical authority
 
-Follow `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` exactly against immutable artifact `10321878900`. Preflight fails closed before runtime on any package/source/GMP/GMPXX/selector/owner-set/mode mismatch. If preflight passes, execute the unchanged TB1 semantic surface: all 14 focused prospective CP-COND identities, the boundary-truncated separatrix identity once as report-only/non-selector evidence, and the complete 408 accepted selector identities, each in a fresh exact-filter process, then immutable postflight.
+`M4-CP-COND-TB2-EXEC` is COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED. `Architecture_M4_CP_COND_TB2_EXEC_Report.md` owns the execution evidence.
 
-No rebuild/configure/relink/package repair/generated discovery/source-test-fixture-selector mutation is authorized. `M4-CP-COND-TB2-EXEC` is mechanical only; exact successor is mandatory `M4-CP-COND-TB2-REV`, which alone may adjudicate recovery, stable accounting or CP-COND promotion.
+- Authoritative run/job `34772781761 / 103765305047`; result/log artifacts `10322612282 / 10322677035`, ZIP/provider SHA-256 `46bcc703d5aa11dc43edaec9e416f22c75d68111802a9d8dbfc4129a9775a5a0` / `725a59a93d91bd267c6531f6d7bd545d17f2867ebbc85f906d4011d3abfdadc5`.
+- Immutable candidate remained CB2 artifact `10321878900` / semantic source `b576d061e23873b7b4193b158138d2097c75a728`; complete package/source/GMP/GMPXX/selector/owner-set/mode preflight passed.
+- Frozen runtime surface completed in 423 fresh processes: **14/14 focused PASS**, boundary-truncated separatrix **SKIP as explicit report-only/non-selector evidence**, and accepted selector408 **408/408 PASS**. Gating total is **422/422 PASS**, with zero RED/crash/selection mismatch.
+- `runtime_started=true`, `runtime_completed=true`, preflight/postflight complete, orchestration failure false. Package/source/execution-view/selector equality is exact after runtime.
+- No configure/compile/relink/package or mode repair/generated discovery/benchmark/source-test-fixture-selector mutation occurred.
+- `M4-CP-COND-TB1-EXEC-CAND-01` remains **OPEN / TB2 MECHANICAL RECOVERY GREEN / REVIEW REQUIRED / NON-STABLE PENDING REVIEW**. EXEC does not close it or promote CB2.
+- No accepted PASS→RED occurred; stable accounting is carried unchanged at **49 events / 14 categories / 35 recurrences**, debt **5**, pending Review.
+
+## Exact next — `M4-CP-COND-TB2-REV`
+
+Runtime-free Review only. Independently reopen `Architecture_M4_CP_COND_TB2_EXEC_Report.md`, the frozen TB2 plan, CB2 Code+Build record, immutable package `10321878900`, and result/log artifacts `10322612282 / 10322677035`. Re-derive the complete 14/14 + report-only SKIP + 408/408 result and immutable postflight; adjudicate `M4-CP-COND-TB1-EXEC-CAND-01`; decide whether CB2 becomes accepted CP-COND runtime authority and whether CP-COND closes. Do not execute more runtime, alter the report-only boundary blocker, or assign a correction inside EXEC evidence.
 
 ## Carried obligations
 
@@ -66,6 +76,7 @@ No rebuild/configure/relink/package repair/generated discovery/source-test-fixtu
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M4_CP_COND_TB2_EXEC_Report.md
   - .agents/Directional/Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M4_CP_COND_CB2_Code_Build_Record.md
   - .agents/Directional/Architecture_M4_CP_COND_TB1_Review_Record.md

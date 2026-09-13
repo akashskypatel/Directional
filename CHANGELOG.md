@@ -1,3 +1,7 @@
+# 2026-09-13 — M4-CP-COND-TB2-EXEC artifact-only frozen surface mechanically green; Review mandatory
+
+TB2-EXEC is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED** on immutable CB2 artifact `10321878900` / source `b576d061e23873b7b4193b158138d2097c75a728`. Authoritative run/job `34772781761 / 103765305047` completed **423** fresh exact-filter processes: 14 focused CP-COND gates **14/14 PASS**, boundary-truncated separatrix **SKIP as explicit report-only/non-selector evidence**, and accepted selector408 **408/408 PASS**. Gating total is **422/422 PASS** with zero RED/crash/selection mismatch. Result/log artifacts are `10322612282 / 10322677035`, SHA-256 `46bcc703d5aa11dc43edaec9e416f22c75d68111802a9d8dbfc4129a9775a5a0` / `725a59a93d91bd267c6531f6d7bd545d17f2867ebbc85f906d4011d3abfdadc5`. Package/source/execution-view/selector postflight equality is exact and all rebuild/repair/discovery/mutation/benchmark flags are false. EXEC leaves `M4-CP-COND-TB1-EXEC-CAND-01` open pending mandatory runtime-free `M4-CP-COND-TB2-REV`; stable accounting is carried unchanged at **49 / 14 / 35**, debt **5**.
+
 # 2026-09-13 — M4-CP-COND-DEFN definitions frozen
 
 - Completed runtime-free `M4-CP-COND-DEFN`; CP-COND remains OPEN and exact next is compile-only `M4-CP-COND-CB1`.
