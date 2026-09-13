@@ -1,3 +1,0 @@
-turn=M4-CP-COND-TB2-REV
-purpose=fresh review-turn source snapshot
-requested_from=b4ba9f74f05de4a26985ff71b4f1b0ae67a1d780

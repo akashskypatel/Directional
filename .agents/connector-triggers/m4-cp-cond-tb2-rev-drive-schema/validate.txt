@@ -1,3 +1,0 @@
-turn=M4-CP-COND-TB2-REV
-purpose=validate temporary Drive closeout caller
-caller=.agents/Directional/turn-payloads/m4-cp-cond-tb2-rev/drive-caller-draft.yml

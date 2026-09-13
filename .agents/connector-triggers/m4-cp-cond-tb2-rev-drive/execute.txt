@@ -1,5 +1,0 @@
-turn=M4-CP-COND-TB2-REV
-purpose=apply reviewed documentation patch
-file_id=13noYD4mjnzwThBjh5PxW9k_akHwuZXwf
-patch_sha256=ac15f316fe9c4c095184ddef3031169fc9c140830beda981c656d1446d33856c
-base_sha=69e06392a06fda3fdedbd3eaf7c7061737472272

@@ -1,5 +1,0 @@
-# M4-CP-COND-TB2-REV temporary-state cleanup
-.agents/connector-triggers/source-snapshot/m4-cp-cond-tb2-rev-start-20260913.txt
-.agents/connector-triggers/m4-cp-cond-tb2-rev-drive-schema
-.agents/connector-triggers/m4-cp-cond-tb2-rev-drive
-.agents/Directional/turn-payloads/m4-cp-cond-tb2-rev
