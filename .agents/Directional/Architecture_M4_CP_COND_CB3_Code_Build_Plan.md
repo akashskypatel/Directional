@@ -61,3 +61,22 @@ Freeze `M4-CP-COND-TB3-EXEC` against the immutable CB3 package:
 - no rebuild/configure/relink/package repair/generated discovery/source-test-fixture-selector mutation.
 
 Expected process count remains 423. Mechanical green is 14/14 focused PASS + one report-only SKIP + selector408 408/408 PASS, zero RED/crash/selection mismatch, exact postflight. Mandatory successor is `M4-CP-COND-TB3-REV`; only that Review may close the candidate, promote the package, or close CP-COND.
+
+## Amendment — shape constraint and mutation falsifier (TB2-REV addendum §V3, reviewing agent)
+
+The repair has a failure mode on each side of the target:
+
+- deriving the expected index from the **conditioner's output** makes the oracle self-authorizing — the producer
+  would validate itself, which §8 of the frozen definitions forbids for the certificate validator and which applies
+  equally here;
+- leaving it derived from neither input nor output is the present vacuity being corrected.
+
+Required shape: the oracle reads the **raw input**, computes the discrete index by its own exact method independent
+of the conditioner, and asserts that the conditioner's preserved output yields the same index. "Independent" in the
+frozen requirement means independent of the *producer under test*, not independent of the raw data; reading it the
+other way is what produced the current detached degree calculation at `tests/InputConditionerTests.cpp:147`.
+
+**Mutation falsifier, to be satisfied before compile acceptance:** perturbing a raw branch byte must change the
+oracle's computed index or break the comparison. An identity that survives that mutation has not established the
+precondition regardless of its name.
+

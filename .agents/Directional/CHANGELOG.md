@@ -7,6 +7,28 @@
 - Reconstructed the missing TB2 EXEC report from immutable evidence and folded consumed CP-COND historical plans/records into `M4_Consolidated_Record.md`.
 - Exact next is `M4-CP-COND-CB3`: raw-derived exact/discrete negative-index oracle + mutation discriminator, full-owner compile/package with GMP/GMPXX/no runtime, then complete TB3 surface + mandatory Review.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld: the mechanical recovery is genuine
+and rejecting a **green** identity for vacuity is the right call. **The CP-COND CB1 STOP rule this reviewer added
+is discharged, verified at four levels:** `ConditioningPolicy` defaults are all inert
+(`include/directional/pipeline/InputConditioner.h:20-30`) under the explicit comment *"Production remains
+bit-preserving"*; `production_identity()` returns exactly that default (`src/pipeline/InputConditioner.cpp:471`);
+both live call sites use it (`src/pipeline/RemeshPipeline.cpp:14127`, `:14210`), so requirement 6's production
+routing runs through the identity policy rather than a configured lattice; and empirically **accepted selector408
+ran 408/408 PASS** under the conditioner-routed build — the part that actually settles it, since the concern was
+accepted identities going RED because their *input* moved, and the prefix was re-executed rather than assumed. The
+negative-index finding was re-derived and is exact: `witness.exactDiscreteNumerator` is assigned at
+`tests/InputConditionerTests.cpp:147` from `residualDegrees / quarterTurnDegrees` inside the witness **builder**,
+while the raw branches are populated independently from `cos/sin(2πi/5)`, so no raw byte participates in the
+expected value and the assertion cannot discriminate. Recorded for fairness: byte preservation *is* genuinely
+checked at `:285-286` with `isApprox(..., 0.0)`, and the inadmissibility mutation at `:291-299` is a real
+discriminating test — the defect is confined to the negative-index precondition the identity's name advertises.
+**One shape constraint carried into the CB3 plan:** deriving the expected index from the conditioner's *output*
+would make the oracle self-authorizing, which §8 forbids for the certificate validator and which applies equally
+here; the correct shape is that the oracle reads the **raw input**, computes the index by its own exact method
+independent of the producer under test, and asserts the preserved output yields the same index — with the mutation
+falsifier that perturbing a raw branch byte must change the computed index or break the comparison. Accounting
+holds at **49 / 14 / 35**, debt **5**; accepted authority remains CP3 package `10307919492` / selector408.
+
 ## 2026-09-13 — `M4-CP-COND-CB2`: exact-source package closure GREEN; full selector owner set packaged; TB2 frozen
 
 - Executed the package-closure control experiment frozen by TB1 Review with **no semantic source change**. GitHub Actions run/job `34771486767 / 103761775124` compiled the exact seven-target set from semantic source `b576d061e23873b7b4193b158138d2097c75a728` and finished GREEN.

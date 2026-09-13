@@ -100,3 +100,73 @@ Consumed CP-COND DEFN/CB1/TB1/CB2 per-turn plans and records are folded into `M4
 | Turn boundary held | PASS — Review/documentation only; no product/test/fixture/selector/build/runtime mutation |
 | `review_check.py boundary` | PASS — ALL CHECKS PASSED; no product/test/fixture/build or selector mutation; durable markers preserved |
 | Durable publication / cleanup / final authority re-read | PASS — primary patch `ac15f316...d33856c` published by Drive run `34775495731` as commit `456bf8782cfce8b7fb76e23cfcb0adba9256e0b1`, staged file permanently deleted, and cleanup run/job `34775550382 / 103772892241` completed at `b77560d5889f6ee552062eb578b1d87158a811c8`; follow-up TODO correction patch `f3d01b96...8cca23` published by Drive run/job `34775736249 / 103773386924` as commit `8d56a04d363a3ae0d4a88f535c25a42b9ce679d8`, staged file permanently deleted, and post-correction cleanup run/job `34775830834 / 103773638396` completed at `f67f166f026cc219b2c752b9f90131df955557cd`. Final re-read at `f67f166f...557cd` confirms exactly seven durable workflows, absent turn-payload/workflow-observation state, connector-triggers reduced to `source-snapshot` with only the protected CP3-R4 marker, `TODO.md` naming exactly `M4-CP-COND-CB3`, and PR #8 open / draft / unmerged before metadata closeout. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The mechanical recovery is genuine, the negative-index rejection is correct, and
+rejecting a **green** identity for vacuity is the right call rather than a harsh one. Accounting holds at
+**49 / 14 / 35**, debt **5**; accepted authority remains CP3 package `10307919492` / selector408 **408/408**.
+
+### V1 — the CP-COND CB1 STOP rule is discharged, verified at four levels
+
+The `M4-CP-COND-DEFN` addendum required the **production** conditioning policy to be provably the identity on
+finite binary64 input, with genuine quantization and merge behaviour confined to explicitly non-default witness
+policies. That is now implemented and confirmed independently:
+
+1. `ConditioningPolicy` defaults are all inert — `quantizeGeometry=false`, `quantizeField=false`,
+   `mergeExactDuplicates=false`, `canonicalizeFieldBranches=false`, `refuseSlivers=false`
+   (`include/directional/pipeline/InputConditioner.h:20-30`), under the explicit comment *"Production remains
+   bit-preserving. Non-default witness policies may exercise the frozen exact operation set."*
+2. `ConditioningPolicy::production_identity()` returns exactly that default (`src/pipeline/InputConditioner.cpp:471`).
+3. Both production call sites use it — `src/pipeline/RemeshPipeline.cpp:14127` and `:14210` — so requirement 6's
+   live routing runs through the identity policy, not a configured lattice.
+4. Empirically, **accepted selector408 ran 408/408 PASS** under the conditioner-routed build. That is the part
+   that actually settles it: the concern was that accepted identities could go RED because their *input* moved,
+   and the accepted prefix was re-executed rather than assumed.
+
+The `408` owner census (`30 + 262 + 75 + 41`) and the `423 = 422 PASS + 1 report-only SKIP` boundary are
+arithmetically consistent.
+
+### V2 — the negative-index finding is exact
+
+Re-derived from the test source. `witness.exactDiscreteNumerator` is assigned at
+`tests/InputConditionerTests.cpp:147` as `residualDegrees / quarterTurnDegrees` — integer degree arithmetic
+performed inside the witness **builder** — while the raw branches it is supposed to characterise are populated
+independently from `cos/sin(2πi/5)`. The assertion at `:281` then compares that builder-computed value against
+`-1`. The two tracks never meet: no raw branch byte participates in the expected value, so mutating the raw
+field cannot change it, and the assertion cannot discriminate. §2's structural falsifier is therefore correct as
+stated.
+
+Worth noting precisely what is *not* wrong, since the identity is green and parts of it are sound. Byte
+preservation is genuinely checked at `:285-286`, including `isApprox(..., 0.0)` for exactness, and the
+inadmissibility mutation at `:291-299` is a real discriminating test of transport admissibility. The defect is
+confined to the negative-index precondition, which the identity's name advertises and its assertions do not
+establish.
+
+### V3 — shape constraint for the CB3 correction
+
+The obvious repair has two failure modes on either side of the target, and it is worth naming both before the
+build rather than after.
+
+- Deriving the expected index from the **conditioner's output** would make the oracle self-authorizing — the
+  producer would be validating itself, which §8 of the frozen definitions already forbids for the certificate
+  validator and which applies equally here.
+- Leaving it derived from neither input nor output — the present state — is the vacuity being corrected.
+
+The correct shape is the middle one: the oracle reads the **raw input** and computes the discrete index by its
+own exact method, independent of the conditioner, then asserts that the conditioner's preserved output yields
+the same index. "Independent" in the frozen requirement means independent of the *producer under test*, not
+independent of the raw data — and reading that phrase the other way is precisely what produced the current
+detached calculation.
+
+The accompanying falsifier is the one §2 already implies and should be stated in CB3's plan: perturbing a raw
+branch byte must change the oracle's computed index or break the comparison. An identity that survives that
+mutation has not established the precondition regardless of what its name says.
+
+### V4 — obligations and closeout
+
+All three carried items are named with owners — `OBS-01` (multiplicity-2 end-to-end oracle before CP4),
+`OBS-02` (row399 path/`sourceFaces` divergence tamper at the next legitimate row399 touch), and the TB3
+provenance warning as a historical-claim bound. The closeout block is present and complete.
