@@ -1,0 +1,250 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+: "${GITHUB_REPOSITORY:?}"
+: "${GITHUB_RUN_ID:?}"
+: "${GH_TOKEN:?}"
+: "${RUNNER_TEMP:?}"
+
+TURN_ID='M4-CP-COND-TB2-EXEC'
+ARTIFACT_ID='10321878900'
+EXPECTED_ARTIFACT_NAME='m4-cp-cond-cb2-result-34771486767'
+EXPECTED_PROVIDER_DIGEST='sha256:d8016a8d0b30c8edcbbd64ac96d752ee5087fd35dc568a1b1c9e4cef9a66ee28'
+EXPECTED_ZIP_SHA256='d8016a8d0b30c8edcbbd64ac96d752ee5087fd35dc568a1b1c9e4cef9a66ee28'
+EXPECTED_MANIFEST_SHA256='10f45675750aca16d99fbc69a6affc1a75dd5b112977de5fb32da34e47bf37ad'
+EXPECTED_SOURCE_SHA='b576d061e23873b7b4193b158138d2097c75a728'
+EXPECTED_SOURCE_ARCHIVE_SHA256='31e667a6891f9f9d2c938da98c7d23d048c3d60f6960e139e379631e7aa70c10'
+SELECTOR_RELATIVE_PATH='.agents/Directional/Architecture_M4_CP3_CB5_Required_Green_Selector_408.txt'
+EXPECTED_SELECTOR_COUNT=408
+EXPECTED_SELECTOR_SHA256='c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484'
+EXPECTED_PREFIX_COUNT=403
+EXPECTED_PREFIX_SHA256='c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7'
+
+ROOT="${RUNNER_TEMP}/m4-cp-cond-tb2-exec"
+PKG="${ROOT}/package"
+SOURCE="${ROOT}/source"
+EXEC_VIEW="${ROOT}/execution-view"
+RUNTIME="${ROOT}/runtime"
+RESULT="${RUNNER_TEMP}/m4-cp-cond-tb2-result"
+ZIP="${ROOT}/artifact-${ARTIFACT_ID}.zip"
+rm -rf "$ROOT" "$RESULT"
+mkdir -p "$PKG" "$SOURCE" "$EXEC_VIEW/bin" "$EXEC_VIEW/test-data/benchmarks" "$RUNTIME" \
+  "$RESULT/raw/focused" "$RESULT/raw/report-only" "$RESULT/raw/selector" \
+  "$RESULT/resources/focused" "$RESULT/resources/report-only" "$RESULT/resources/selector"
+
+runtime_started=false
+runtime_completed=false
+preflight_completed=false
+postflight_completed=false
+orchestration_failure=false
+selection_integrity=true
+benchmark_execution=false
+configure_execution=false
+compile_execution=false
+relink_execution=false
+generated_discovery=false
+package_repair=false
+mode_repair=false
+source_test_fixture_selector_mutation=false
+processes_executed=0
+pass_count=0
+red_count=0
+skip_count=0
+crash_count=0
+selection_mismatch_count=0
+
+sha_file() { sha256sum "$1" | awk '{print $1}'; }
+
+finish() {
+  status=$?
+  set +e
+  {
+    echo "script_exit=${status}"
+    echo "turn_id=${TURN_ID}"
+    echo "runtime_started=${runtime_started}"
+    echo "runtime_completed=${runtime_completed}"
+    echo "preflight_completed=${preflight_completed}"
+    echo "postflight_completed=${postflight_completed}"
+    echo "orchestration_failure=${orchestration_failure}"
+    echo "selection_integrity=${selection_integrity}"
+    echo "processes_executed=${processes_executed}"
+    echo "pass_count=${pass_count}"
+    echo "red_count=${red_count}"
+    echo "skip_count=${skip_count}"
+    echo "crash_count=${crash_count}"
+    echo "selection_mismatch_count=${selection_mismatch_count}"
+    echo "benchmark_execution=${benchmark_execution}"
+    echo "configure_execution=${configure_execution}"
+    echo "compile_execution=${compile_execution}"
+    echo "relink_execution=${relink_execution}"
+    echo "generated_discovery=${generated_discovery}"
+    echo "package_repair=${package_repair}"
+    echo "mode_repair=${mode_repair}"
+    echo "source_test_fixture_selector_mutation=${source_test_fixture_selector_mutation}"
+  } > "${RESULT}/execution-boundary.txt"
+}
+trap finish EXIT
+
+fail_orchestration() {
+  orchestration_failure=true
+  echo "ORCHESTRATION_FAILURE: $*" >&2
+  exit 90
+}
+
+census_tree() {
+  local root="$1" out="$2"
+  python3 - "$root" "$out" <<'PY'
+import hashlib, os, pathlib, stat, sys
+root = pathlib.Path(sys.argv[1]).resolve()
+out = pathlib.Path(sys.argv[2])
+rows = []
+for path in [root, *sorted(root.rglob('*'), key=lambda p: p.relative_to(root).as_posix())]:
+    rel = '.' if path == root else path.relative_to(root).as_posix()
+    st = path.lstat()
+    mode = format(stat.S_IMODE(st.st_mode), 'o')
+    if stat.S_ISREG(st.st_mode):
+        h = hashlib.sha256()
+        with path.open('rb') as f:
+            for chunk in iter(lambda: f.read(1024 * 1024), b''):
+                h.update(chunk)
+        kind, digest, target = 'file', h.hexdigest(), '-'
+    elif stat.S_ISDIR(st.st_mode):
+        kind, digest, target = 'directory', '-', '-'
+    elif stat.S_ISLNK(st.st_mode):
+        kind, digest, target = 'symlink', '-', os.readlink(path)
+    else:
+        kind, digest, target = 'other', '-', '-'
+    rows.append(f'{rel}\t{kind}\t{mode}\t{st.st_size}\t{digest}\t{target}\n')
+out.write_text(''.join(rows), encoding='utf-8')
+PY
+}
+
+{
+  echo "turn_id=${TURN_ID}"
+  echo "workflow=${GITHUB_WORKFLOW:-unknown}"
+  echo "run_id=${GITHUB_RUN_ID}"
+  echo "event=${GITHUB_EVENT_NAME:-unknown}"
+  echo "event_sha=${GITHUB_SHA:-unknown}"
+  echo "repository=${GITHUB_REPOSITORY}"
+  echo "runner_os=${RUNNER_OS:-unknown}"
+  echo "artifact_id=${ARTIFACT_ID}"
+  echo "expected_source_sha=${EXPECTED_SOURCE_SHA}"
+  echo "selector_relative_path=${SELECTOR_RELATIVE_PATH}"
+  echo "expected_selector_count=${EXPECTED_SELECTOR_COUNT}"
+  echo "harness_sha256=$(sha_file "${BASH_SOURCE[0]}")"
+  echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  uname -a
+  python3 --version
+  unzip -v | head -n 1
+} | tee "${RESULT}/environment.txt"
+
+artifact_json="$(curl --fail --silent --show-error \
+  -H "Authorization: Bearer ${GH_TOKEN}" \
+  -H 'Accept: application/vnd.github+json' \
+  -H 'X-GitHub-Api-Version: 2022-11-28' \
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}")"
+provider_digest="$(printf '%s' "$artifact_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("digest", ""))')"
+artifact_name="$(printf '%s' "$artifact_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("name", ""))')"
+[[ "$provider_digest" == "$EXPECTED_PROVIDER_DIGEST" ]] || fail_orchestration "provider digest mismatch: $provider_digest"
+[[ "$artifact_name" == "$EXPECTED_ARTIFACT_NAME" ]] || fail_orchestration "artifact name mismatch: $artifact_name"
+curl -L --fail --silent --show-error \
+  -H "Authorization: Bearer ${GH_TOKEN}" \
+  -H 'Accept: application/vnd.github+json' \
+  -H 'X-GitHub-Api-Version: 2022-11-28' \
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" \
+  -o "$ZIP"
+zip_sha="$(sha_file "$ZIP")"
+[[ "$zip_sha" == "$EXPECTED_ZIP_SHA256" ]] || fail_orchestration "downloaded ZIP digest mismatch: $zip_sha"
+printf 'artifact_id=%s\nartifact_name=%s\nprovider_digest=%s\ndownloaded_zip_sha256=%s\n' \
+  "$ARTIFACT_ID" "$artifact_name" "$provider_digest" "$zip_sha" > "${RESULT}/artifact-authority.txt"
+
+# Ordinary unzip is required so archived executable mode bits are preserved. No chmod/repair is authorized.
+unzip -q "$ZIP" -d "$PKG"
+[[ -f "$PKG/SHA256SUMS" ]] || fail_orchestration 'root SHA256SUMS absent'
+[[ "$(sha_file "$PKG/SHA256SUMS")" == "$EXPECTED_MANIFEST_SHA256" ]] || fail_orchestration 'root manifest digest mismatch'
+(cd "$PKG" && sha256sum -c SHA256SUMS) | tee "${RESULT}/sha256sums-check.txt"
+[[ "$(wc -l < "$PKG/SHA256SUMS" | tr -d ' ')" -eq 27 ]] || fail_orchestration 'root manifest entry count mismatch'
+[[ "$(tr -d '\r\n' < "$PKG/metadata/source-commit.txt")" == "$EXPECTED_SOURCE_SHA" ]] || fail_orchestration 'source commit mismatch'
+[[ "$(tr -d '\r\n' < "$PKG/metadata/build-exit-code.txt")" == '0' ]] || fail_orchestration 'build exit nonzero'
+[[ "$(tr -d '\r\n' < "$PKG/metadata/preflight-exit-code.txt")" == '0' ]] || fail_orchestration 'compile preflight exit nonzero'
+for status_file in "$PKG"/metadata/source-status-*.txt; do
+  [[ ! -s "$status_file" ]] || fail_orchestration "source-status receipt nonempty: $(basename "$status_file")"
+done
+for token in 'runtimeExecution=false' 'turnBoundary=Code+Build-only' 'exactArithmeticBackend=GMP'; do
+  grep -Fxq "$token" "$PKG/metadata/command-boundary.txt" || fail_orchestration "missing command boundary: $token"
+done
+for token in 'DIRECTIONAL_ENABLE_GMP:BOOL=ON' 'libgmpxx.so' 'libgmp.so'; do
+  grep -Fq "$token" "$PKG/metadata/CMakeCache.txt" "$PKG/metadata/gmp-evidence.txt" || fail_orchestration "missing GMP evidence: $token"
+done
+
+required_executables=(
+  directional_surface_cell_authority_kernel_tests
+  directional_surface_cell_producer_tests
+  directional_surface_cell_completion_tests
+  directional_surface_cell_validation_tests
+  directional_compiled_api_tests
+)
+printf 'binary\tsha256\tmode\tsize\n' > "${RESULT}/package-executables.tsv"
+for exe in "${required_executables[@]}"; do
+  path="$PKG/bin/$exe"
+  [[ -f "$path" && -x "$path" ]] || fail_orchestration "required executable absent or non-executable: $exe"
+  mode="$(stat -c '%a' "$path")"
+  [[ "$mode" == '755' ]] || fail_orchestration "unexpected archived executable mode for $exe: $mode"
+  printf '%s\t%s\t%s\t%s\n' "$exe" "$(sha_file "$path")" "$mode" "$(stat -c '%s' "$path")" \
+    >> "${RESULT}/package-executables.tsv"
+done
+for lib in libdirectional_core.a libdirectional_pipeline.a; do
+  [[ -f "$PKG/lib/$lib" ]] || fail_orchestration "required library absent: $lib"
+done
+
+source_archive="$PKG/source/source-${EXPECTED_SOURCE_SHA}.tar.gz"
+[[ -f "$source_archive" ]] || fail_orchestration 'source archive absent'
+[[ "$(sha_file "$source_archive")" == "$EXPECTED_SOURCE_ARCHIVE_SHA256" ]] || fail_orchestration 'source archive digest mismatch'
+tar -xzf "$source_archive" -C "$SOURCE"
+selector="$SOURCE/$SELECTOR_RELATIVE_PATH"
+[[ -f "$selector" ]] || fail_orchestration "selector absent: $SELECTOR_RELATIVE_PATH"
+[[ "$(wc -l < "$selector" | tr -d ' ')" -eq "$EXPECTED_SELECTOR_COUNT" ]] || fail_orchestration 'selector row count mismatch'
+[[ "$(tr -cd '\r' < "$selector" | wc -c | tr -d ' ')" -eq 0 ]] || fail_orchestration 'selector contains CR bytes'
+[[ "$(sha_file "$selector")" == "$EXPECTED_SELECTOR_SHA256" ]] || fail_orchestration 'selector digest mismatch'
+head -n "$EXPECTED_PREFIX_COUNT" "$selector" > "${RESULT}/selector-first403.txt"
+[[ "$(sha_file "${RESULT}/selector-first403.txt")" == "$EXPECTED_PREFIX_SHA256" ]] || fail_orchestration 'selector first403 digest mismatch'
+printf 'selector_path=%s\nselector_rows=%s\nselector_sha256=%s\nfirst403_sha256=%s\n' \
+  "$SELECTOR_RELATIVE_PATH" "$EXPECTED_SELECTOR_COUNT" "$EXPECTED_SELECTOR_SHA256" "$EXPECTED_PREFIX_SHA256" \
+  > "${RESULT}/selector-authority.txt"
+
+census_tree "$PKG" "${RESULT}/package-census-before.tsv"
+census_tree "$SOURCE" "${RESULT}/source-census-before.tsv"
+sha_file "$selector" > "${RESULT}/selector-sha-before.txt"
+stat -c '%a %s' "$selector" > "${RESULT}/selector-mode-size-before.txt"
+
+python3 - "$SOURCE" "$selector" "${RESULT}/identity-map.tsv" "${RESULT}/owner-distribution.tsv" "${RESULT}/focused-owner-map.tsv" <<'PY'
+import collections, pathlib, re, sys
+root = pathlib.Path(sys.argv[1])
+selector_path = pathlib.Path(sys.argv[2])
+out = pathlib.Path(sys.argv[3])
+dist_out = pathlib.Path(sys.argv[4])
+focus_out = pathlib.Path(sys.argv[5])
+selector = [line.strip() for line in selector_path.read_text(encoding='utf-8').splitlines() if line.strip()]
+if len(selector) != 408 or len(set(selector)) != 408:
+    raise SystemExit('selector uniqueness/count drift')
+cmake = (root / 'cmake/DirectionalTests.cmake').read_text(encoding='utf-8')
+target_names = [
+    'directional_surface_cell_authority_kernel_tests',
+    'directional_surface_cell_producer_tests',
+    'directional_surface_cell_completion_tests',
+    'directional_surface_cell_validation_tests',
+]
+def cpp_lines(text):
+    return [line.strip() for line in text.splitlines() if line.strip().endswith('.cpp')]
+producer = re.search(r'set\(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES(.*?)\)\n\nadd_executable', cmake, re.S)
+if not producer:
+    raise SystemExit('producer source set not found')
+targets = {'directional_surface_cell_producer_tests': cpp_lines(producer.group(1))}
+for target in [t for t in target_names if t != 'directional_surface_cell_producer_tests']:
+    m = re.search(r'add_executable\(\s*' + re.escape(target) + r'(.*?)\)\s*\n', cmake, re.S)
+    if not m:
+        raise SystemExit(f'target source block not found: {target}')
+    targets[target] = cpp_lines(m.group(1))
+pattern = re.compile(r'\bTEST(?:_F|_P)?\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)')
+owners = collections.defaultdict(list)
+for target, sources in targets.items():
