@@ -1,0 +1,48 @@
+name: Agent M4 CP3 TB8 Review Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive/m4-cp3-tb8-review/**
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp3-tb8-review-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-tb8-review-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-tb8-review-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1yXxdpHr-gNCN81J2yCTmoaqQBb1K8ZCm
+      patch_sha256: '9d1eb9c9143fb61887e17fb5b764453824e3d829a335d7f8490a9f3b7f038beb'
+      base_sha: e272b02ad5e905ecb5fed98eceb008ef2b2095bf
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: M4-CP3-TB8 Review and closure'
+      retention_days: 7
+    secrets: inherit
