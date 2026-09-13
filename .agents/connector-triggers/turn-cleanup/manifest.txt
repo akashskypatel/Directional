@@ -1,5 +1,0 @@
-# M4-CP3-CB10 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/20260913T000000Z-ec7c7b2.txt
-.agents/connector-triggers/drive/m4-cp3-cb10-code.txt
-.agents/connector-triggers/compile/m4-cp3-cb10.txt
-.agents/connector-triggers/drive/m4-cp3-cb10-docs.txt
