@@ -30,7 +30,7 @@ jobs:
     secrets: inherit
 
   apply-drive-patch:
-    if: ${{ github.event.head_commit.message == 'chore(agent): trigger M4-CP-COND-CB1 Drive apply' }}
+    if: "${{ github.event.head_commit.message == 'chore(agent): trigger M4-CP-COND-CB1 Drive apply' }}"
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1cfRK5mjj6PCkyEfbzYo9aJAQZPcVQUsk
@@ -42,7 +42,7 @@ jobs:
     secrets: inherit
 
   compile:
-    if: ${{ github.event.head_commit.message == 'chore(agent): trigger M4-CP-COND-CB1 compile' }}
+    if: "${{ github.event.head_commit.message == 'chore(agent): trigger M4-CP-COND-CB1 compile' }}"
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
       source_sha: ${{ github.event.before }}
