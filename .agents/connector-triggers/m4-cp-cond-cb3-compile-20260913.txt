@@ -1,0 +1,5 @@
+Purpose: runtime-free compile/package for M4-CP-COND-CB3 test-authority source.
+Caller install authority: 1b4a6a336d7194ce1592c5ef26428ba96c032d68
+Compile source authority: 4d9206cd059d7bb0c10fe3c0a0c91f8af248e675
+Turn: M4-CP-COND-CB3
+Retry: 0
