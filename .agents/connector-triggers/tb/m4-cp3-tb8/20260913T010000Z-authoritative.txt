@@ -1,0 +1,4 @@
+turn=M4-CP3-TB8-EXEC
+purpose=authoritative artifact-only execution after harness syntax correction
+artifact_id=10307919492
+semantic_source=1611e9ef57bd1437b4422ab2fca7acef20b19a3a
