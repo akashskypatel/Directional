@@ -1,0 +1,3 @@
+turn=M4-CP-COND-TB1-EXEC
+purpose=prepublish schema validation of agent-m4-cp-cond-tb1-exec.yml
+workflow_draft_sha256=61eaffc27873521f94e0994922e253ccf8e762f4f6c216321f978378275a5037
