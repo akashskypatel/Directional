@@ -1,0 +1,5 @@
+turn=M4-CP-COND-TB1-EXEC
+purpose=artifact-only CP-COND focused/selector408 gate; preflight must fail closed on immutable package mismatch
+artifact_id=10312168742
+semantic_source=b576d061e23873b7b4193b158138d2097c75a728
+harness_sha256=34d0445e9575ffa0a68009017cee8521699afd8bcfacaf7fa4da9ec9249cca84
