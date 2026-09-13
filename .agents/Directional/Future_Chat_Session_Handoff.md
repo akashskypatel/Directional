@@ -1,20 +1,21 @@
 # Future Chat Session Handoff — Directional
 
 **DURABLE — live resume authority**
-**Status:** `M4-CP3-CB10` COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED / CP3 OPEN
+**Status:** `M4-CP3-TB8-EXEC` COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED / CP3 OPEN
 **Repository:** `akashskypatel/Directional`
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
 **PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP3-TB8-EXEC`
+**Canonical next turn:** `M4-CP3-TB8-REV`
 
 ## Current authority
 
 - M1-M3: CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures.
 - Corrected R4 artifact `10289601000` remains accepted M4-CP3 runtime authority at selector403 **403/403**; selector403 SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`.
-- CB10 semantic source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` is **COMPILE GREEN / RUNTIME UNADJUDICATED**. Candidate package artifact `10307919492` is not promoted until TB8 Review.
+- CB10 semantic source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` remains **COMPILE GREEN**. Candidate package artifact `10307919492` is now **TB8 MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED** and is not promoted until TB8 Review.
+- Authoritative TB8 run/job `34729562893 / 103649745950` completed all **835/835** prescribed fresh processes PASS with zero RED, skip, crash, or selection mismatch. Accepted selector403 completed **403/403** with semantic fail-fast disabled; cumulative selector408 completed **408/408**.
+- TB8 postflight proves package/source/execution-view byte+mode immutability. Result artifact `10309365777` has provider/download SHA-256 `a8d91cd62cb2c633ed46ab963a13060e903a5043d3941fdea6aaec9c77091c04`; process-ledger SHA-256 is `2700e511a12505dbaf87b87d00bed7f2d2b73e65dd38adb1934682cb72abf63d`.
 - CB10 changed only `tests/SurfaceCellTransitionQuotientTests.cpp`: `make_hard_rail_fixture()` now obtains its hard-rail network through the production SurfaceCells A2b/A3 authority path while preserving the same 3×3 mesh, hard edges `(1,4)` / `(4,7)`, and all six downstream identity names/bodies. No product source or selector changed.
-- Mandatory eight-target GMP/GMPXX compile run/job `34727247774 / 103643462175` is GREEN; package root manifest verified **28/28**, source status is empty, `runtimeExecution=false`.
-- Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. CP3 and `G4-B002` remain OPEN.
+- Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5** until Review. CP3 and `G4-B002` remain OPEN.
 
 ## CB10 disposition
 
@@ -24,11 +25,11 @@ The correction is test-authority-only. The shared fixture now invokes `remesh_fr
 
 Compile result artifact `10307919492` has provider digest `8988a12fa8b2e6476bf3fd91a6a6936eaef8a9ab7c73837b74ea2e980d29b2ec`; compile log artifact `10307949270` has digest `f07c66d168d6baacaf3074f789faa0b5581c2a2eadd72c640577220cfa6e4c8a`. No Directional runtime was executed in CB10.
 
-## Exact next — `M4-CP3-TB8-EXEC`
+## Exact next — `M4-CP3-TB8-REV`
 
-Follow `.agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Plan.md` exactly against immutable candidate package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`.
+Review `.agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Report.md` and reopen the immutable TB8 result/log artifacts. Re-derive package/source/selector authority, the 835-row process ledger, focused A/B discriminators, complete selector403 census, selector408 cumulative result, and pre/post immutability.
 
-TB8-EXEC is mechanical only. It must run the six corrected shared-fixture identities A/B, ordinal138 A/B, row408 A/B, rows404-407 A/B, then execute accepted selector403 **to completion without semantic fail-fast** and publish the complete RED census, followed by selector408 cumulative execution. Immutable pre/postflight is mandatory. `M4-CP3-TB8-REV` is the mandatory promotion/classification owner; no later CB may start before Review if TB8 is RED.
+TB8-REV owns semantic adjudication only: decide whether candidate package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` is promoted, classify/close any inherited candidates justified by the evidence, update stable accounting/root-cause authority if warranted, consolidate REVIEW-family documents under policy, and freeze the exact successor. No code/test/fixture/selector/build/runtime mutation is authorized in Review.
 
 ## Carried obligations
 
@@ -40,6 +41,7 @@ TB8-EXEC is mechanical only. It must run the six corrected shared-fixture identi
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Plan.md
 required:
   - .agents/Directional/Architecture_M4_CP3_CB10_Code_Build_Report.md

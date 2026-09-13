@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-12 UTC
+Last updated: 2026-09-13 UTC
 
 ## Purpose
 
@@ -28,13 +28,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-TB8-EXEC` (artifact-only verification of CB10 fixture-authority migration)
+## Current focus — `M4-CP3-TB8-REV` (mandatory semantic adjudication of mechanically green TB8)
 
-`M4-CP3-CB10` is **COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED**. All G1-G4 guards passed. Only `tests/SurfaceCellTransitionQuotientTests.cpp` changed: the shared `make_hard_rail_fixture()` now uses the production SurfaceCells path to obtain exact A2b/A3 authority for the unchanged 3×3 mesh and hard edges `(1,4)` / `(4,7)`. Product strictness, all six downstream test bodies/names, rows404-408 and selector403/408 identity lists are unchanged.
+`M4-CP3-TB8-EXEC` is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED**. Authoritative run/job `34729562893 / 103649745950` consumed immutable CB10 package `10307919492` / source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` and completed all **835/835** prescribed fresh processes PASS. The six corrected shared-fixture identities passed A/B, ordinal138 passed A/B, row408 passed A/B, rows404-407 passed A/B, accepted selector403 completed **403/403** with semantic fail-fast disabled, and selector408 completed **408/408**. The complete accepted RED census is empty.
 
-Exact semantic source is `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`. The mandatory eight-target GMP/GMPXX compile is GREEN in run/job `34727247774 / 103643462175`. Candidate artifact `10307919492` is compile-valid only; corrected R4 artifact `10289601000` remains accepted runtime authority at selector403 **403/403**.
+TB8 postflight proves package/source/execution-view byte+mode immutability, with no configure/compile/relink/repair/discovery/benchmark or source/test/fixture/selector mutation. Result artifact `10309365777` is retained in `.agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Report.md`.
 
-**Exact next: `M4-CP3-TB8-EXEC`.** Follow `.agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Plan.md`. TB8 must consume the immutable candidate package, run the six shared-fixture identities A/B plus ordinal138, row408 and rows404-407 discriminators, and execute accepted selector403 **to completion without semantic fail-fast** so the complete accepted RED set is known before Review. `M4-CP3-TB8-REV` is mandatory after EXEC and owns promotion/classification.
+**Exact next: `M4-CP3-TB8-REV`.** Review owns promotion/classification/accounting. Until that Review completes, corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted runtime authority and CB10 package `10307919492` remains unpromoted.
 
 Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**. `M4-CP3-TB7-REV-CAND-01`, CP3 and `G4-B002` remain OPEN pending TB8 Review.
 
@@ -75,7 +75,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / CORRECTED R4 ARTIFACT + SELECTOR403 ACCEPTED / CP3 OPEN**. `M4-CP3-TB2-R2-REV` accepted artifact `10289601000` / selector403 **403/403**. TB7 proves CB9 recovered ordinal138 while preserving row408/404-407, but accepted ordinal211 exposes CB5-era test-fixture precondition drift; CB9 package stays unpromoted. Exact next is test-only/runtime-free `M4-CP3-CB10`. CP4 later discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M4** global conformity plan — **CP1/CP2 HISTORICAL FRAMED CLOSURES RETAINED / CORRECTED R4 ARTIFACT + SELECTOR403 ACCEPTED / CP3 OPEN**. `M4-CP3-TB2-R2-REV` accepted artifact `10289601000` / selector403 **403/403**. CB10 corrected only the stale hard-rail fixture authority path; TB8-EXEC is mechanically green at **835/835**, including selector403 **403/403** and selector408 **408/408**, with immutable package/source/execution view. Candidate package `10307919492` remains unpromoted pending exact-next `M4-CP3-TB8-REV`. CP4 later discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -115,4 +115,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted current M4-CP3 runtime authority, with selector394 preserved as exact-prefix predecessor. TB7 closes the ordinal138 product regression recovery-proved, then exposes accepted ordinal211 as `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`: its legacy hard-rail fixture lacks mandatory A2b/A3 authority after the CB5 production cutover. Exact next is **`M4-CP3-CB10`** test-only/runtime-free; candidate selector408 remains unpromoted. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. **M4-CP1 and M4-CP2 remain accepted historical framed closures**; corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted current M4-CP3 runtime authority, with selector394 preserved as exact-prefix predecessor. CB10 corrected the stale fixture authority path without product or selector changes, and TB8-EXEC is mechanically green at **835/835** with selector403 **403/403**, selector408 **408/408**, and immutable package/source/execution view. Exact next is mandatory semantic **`M4-CP3-TB8-REV`**; candidate package `10307919492` remains unpromoted until Review. PR #8 remains open, draft, and unmerged.
