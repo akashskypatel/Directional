@@ -1,11 +1,16 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
+#include <array>
 #include <bit>
 #include <cmath>
+#include <cstdint>
+#include <optional>
 #include <set>
 #include <vector>
 #include <variant>
+
+#include <gmpxx.h>
 
 #include <directional/geometry/BoundedMeshPreconditioner.h>
 #include <directional/pipeline/InputConditioner.h>
@@ -108,16 +113,9 @@ RawSurfaceCellInput make_seven_valence_fan() {
 
 struct NegativeIndexRawWitness {
   RawSurfaceCellInput raw;
-  int exactDiscreteNumerator = 0;
 };
 
 NegativeIndexRawWitness make_negative_index_witness() {
-  // Five planar sectors with a 72-degree CCW representative advance. For a
-  // 4-RoSy field, independently reduce each +72-degree step by one +90-degree
-  // branch relabel, leaving -18 degrees per sector. Five sectors therefore
-  // accumulate exactly -90 degrees = numerator -1. The binary64 branch values
-  // are merely the raw carrier; the expected discrete numerator is derived
-  // from the authored 5 * (72 - 90) degree combinatorics, not production output.
   NegativeIndexRawWitness witness;
   witness.raw.vertices.resize(6, 3);
   witness.raw.vertices.row(0) << 0.0, 0.0, 0.0;
@@ -138,14 +136,223 @@ NegativeIndexRawWitness make_negative_index_witness() {
     witness.raw.rawCrossField.block<1, 3>(face, 6) = -x;
     witness.raw.rawCrossField.block<1, 3>(face, 9) = -y;
   }
-  constexpr int sectors = 5;
-  constexpr int representativeStepDegrees = 72;
-  constexpr int quarterTurnDegrees = 90;
-  constexpr int residualDegrees =
-      sectors * (representativeStepDegrees - quarterTurnDegrees);
-  static_assert(residualDegrees == -90);
-  witness.exactDiscreteNumerator = residualDegrees / quarterTurnDegrees;
   return witness;
+}
+
+struct ExactVec3 {
+  mpq_class x;
+  mpq_class y;
+  mpq_class z;
+};
+
+mpz_class exact_u64(const std::uint64_t value) {
+  mpz_class result;
+  mpz_import(result.get_mpz_t(), 1, 1, sizeof(value), 0, 0, &value);
+  return result;
+}
+
+std::optional<mpq_class> exact_binary64(const double value) {
+  const std::uint64_t bits = std::bit_cast<std::uint64_t>(value);
+  const std::uint64_t exponentBits = (bits >> 52U) & 0x7ffU;
+  const std::uint64_t fractionBits = bits & ((std::uint64_t{1} << 52U) - 1U);
+  if (exponentBits == 0x7ffU) return std::nullopt;
+  if (exponentBits == 0U && fractionBits == 0U) return mpq_class(0);
+
+  const std::uint64_t mantissa = exponentBits == 0U
+      ? fractionBits
+      : ((std::uint64_t{1} << 52U) | fractionBits);
+  const int exponent = exponentBits == 0U
+      ? 1 - 1023 - 52
+      : static_cast<int>(exponentBits) - 1023 - 52;
+  mpz_class numerator = exact_u64(mantissa);
+  if ((bits >> 63U) != 0U) numerator = -numerator;
+  if (exponent >= 0) {
+    mpz_mul_2exp(numerator.get_mpz_t(), numerator.get_mpz_t(),
+                 static_cast<mp_bitcnt_t>(exponent));
+    return mpq_class(numerator);
+  }
+  mpz_class denominator(1);
+  mpz_mul_2exp(denominator.get_mpz_t(), denominator.get_mpz_t(),
+               static_cast<mp_bitcnt_t>(-exponent));
+  mpq_class result(numerator, denominator);
+  result.canonicalize();
+  return result;
+}
+
+std::optional<ExactVec3> exact_vec3(const Eigen::MatrixXd &values,
+                                    const Eigen::Index row,
+                                    const Eigen::Index column) {
+  const auto x = exact_binary64(values(row, column));
+  const auto y = exact_binary64(values(row, column + 1));
+  const auto z = exact_binary64(values(row, column + 2));
+  if (!x || !y || !z) return std::nullopt;
+  return ExactVec3{*x, *y, *z};
+}
+
+ExactVec3 operator-(const ExactVec3 &a, const ExactVec3 &b) {
+  return {a.x - b.x, a.y - b.y, a.z - b.z};
+}
+
+ExactVec3 operator-(const ExactVec3 &v) {
+  return {-v.x, -v.y, -v.z};
+}
+
+bool operator==(const ExactVec3 &a, const ExactVec3 &b) {
+  return a.x == b.x && a.y == b.y && a.z == b.z;
+}
+
+mpq_class exact_dot(const ExactVec3 &a, const ExactVec3 &b) {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+ExactVec3 exact_cross(const ExactVec3 &a, const ExactVec3 &b) {
+  return {a.y * b.z - a.z * b.y,
+          a.z * b.x - a.x * b.z,
+          a.x * b.y - a.y * b.x};
+}
+
+bool exact_zero(const ExactVec3 &v) {
+  return v.x == 0 && v.y == 0 && v.z == 0;
+}
+
+std::optional<std::vector<int>> independent_closed_face_fan(
+    const Eigen::MatrixXi &faces, const int vertexCount) {
+  std::optional<std::vector<int>> uniqueFan;
+  for (int vertex = 0; vertex < vertexCount; ++vertex) {
+    struct Incident { int face; int next; int previous; };
+    std::vector<Incident> incident;
+    for (Eigen::Index face = 0; face < faces.rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (faces(face, corner) != vertex) continue;
+        incident.push_back({static_cast<int>(face),
+                            faces(face, (corner + 1) % 3),
+                            faces(face, (corner + 2) % 3)});
+        break;
+      }
+    }
+    if (incident.size() < 3U) continue;
+
+    const auto startIt = std::min_element(
+        incident.begin(), incident.end(),
+        [](const Incident &a, const Incident &b) { return a.face < b.face; });
+    std::vector<int> cycle;
+    cycle.reserve(incident.size());
+    int currentFace = startIt->face;
+    for (std::size_t step = 0; step < incident.size(); ++step) {
+      const auto current = std::find_if(
+          incident.begin(), incident.end(),
+          [&](const Incident &entry) { return entry.face == currentFace; });
+      if (current == incident.end()) { cycle.clear(); break; }
+      cycle.push_back(current->face);
+      const auto successor = std::find_if(
+          incident.begin(), incident.end(),
+          [&](const Incident &entry) { return entry.next == current->previous; });
+      if (successor == incident.end()) { cycle.clear(); break; }
+      currentFace = successor->face;
+      if (step + 1U < incident.size() &&
+          std::find(cycle.begin(), cycle.end(), currentFace) != cycle.end()) {
+        cycle.clear();
+        break;
+      }
+    }
+    if (cycle.size() != incident.size() || currentFace != startIt->face) continue;
+    if (uniqueFan.has_value()) return std::nullopt;
+    uniqueFan = std::move(cycle);
+  }
+  return uniqueFan;
+}
+
+struct IndependentNegativeIndexOracle {
+  int cycleNumerator = 0;
+  std::vector<int> quarterTurnTransport;
+};
+
+std::optional<IndependentNegativeIndexOracle> independent_negative_index_oracle(
+    const RawSurfaceCellInput &raw) {
+  if (raw.vertices.cols() != 3 || raw.faces.cols() != 3 ||
+      raw.rawCrossField.rows() != raw.faces.rows() ||
+      raw.rawCrossField.cols() != 12) {
+    return std::nullopt;
+  }
+  const auto cycle = independent_closed_face_fan(
+      raw.faces, static_cast<int>(raw.vertices.rows()));
+  if (!cycle || cycle->empty()) return std::nullopt;
+
+  std::vector<std::array<ExactVec3, 4>> branches(
+      static_cast<std::size_t>(raw.faces.rows()));
+  std::optional<ExactVec3> referenceNormal;
+
+  for (Eigen::Index face = 0; face < raw.faces.rows(); ++face) {
+    std::array<ExactVec3, 3> vertices;
+    for (int corner = 0; corner < 3; ++corner) {
+      const int sourceVertex = raw.faces(face, corner);
+      if (sourceVertex < 0 || sourceVertex >= raw.vertices.rows()) return std::nullopt;
+      const auto point = exact_vec3(raw.vertices, sourceVertex, 0);
+      if (!point) return std::nullopt;
+      vertices[static_cast<std::size_t>(corner)] = *point;
+    }
+    const ExactVec3 normal = exact_cross(vertices[1] - vertices[0],
+                                          vertices[2] - vertices[0]);
+    if (exact_zero(normal)) return std::nullopt;
+    if (!referenceNormal) {
+      referenceNormal = normal;
+    } else if (!exact_zero(exact_cross(*referenceNormal, normal)) ||
+               exact_dot(*referenceNormal, normal) <= 0) {
+      return std::nullopt;
+    }
+    auto &faceBranches = branches[static_cast<std::size_t>(face)];
+    for (int branch = 0; branch < 4; ++branch) {
+      const auto exact = exact_vec3(raw.rawCrossField, face, branch * 3);
+      if (!exact || exact_zero(*exact) || exact_dot(*exact, normal) != 0) {
+        return std::nullopt;
+      }
+      faceBranches[static_cast<std::size_t>(branch)] = *exact;
+    }
+    if (!(faceBranches[2] == -faceBranches[0]) ||
+        !(faceBranches[3] == -faceBranches[1]) ||
+        exact_dot(faceBranches[0], faceBranches[1]) != 0 ||
+        exact_dot(faceBranches[0], faceBranches[0]) !=
+            exact_dot(faceBranches[1], faceBranches[1]) ||
+        exact_dot(exact_cross(faceBranches[0], faceBranches[1]), normal) <= 0) {
+      return std::nullopt;
+    }
+  }
+
+  IndependentNegativeIndexOracle oracle;
+  oracle.quarterTurnTransport.reserve(cycle->size());
+  int residue = 0;
+  for (std::size_t index = 0; index < cycle->size(); ++index) {
+    const int fromFace = (*cycle)[index];
+    const int toFace = (*cycle)[(index + 1U) % cycle->size()];
+    const auto &from = branches[static_cast<std::size_t>(fromFace)];
+    const auto &to = branches[static_cast<std::size_t>(toFace)];
+    int commonOffset = -1;
+    for (int branch = 0; branch < 4; ++branch) {
+      int bestTarget = -1;
+      mpq_class bestScore;
+      bool uniqueBest = true;
+      for (int target = 0; target < 4; ++target) {
+        const mpq_class score = exact_dot(
+            from[static_cast<std::size_t>(branch)],
+            to[static_cast<std::size_t>(target)]);
+        if (bestTarget < 0 || score > bestScore) {
+          bestTarget = target;
+          bestScore = score;
+          uniqueBest = true;
+        } else if (score == bestScore) {
+          uniqueBest = false;
+        }
+      }
+      if (!uniqueBest) return std::nullopt;
+      const int offset = (bestTarget - branch + 4) % 4;
+      if (commonOffset < 0) commonOffset = offset;
+      if (offset != commonOffset) return std::nullopt;
+    }
+    oracle.quarterTurnTransport.push_back(commonOffset);
+    residue = (residue + commonOffset) % 4;
+  }
+  oracle.cycleNumerator = residue > 2 ? residue - 4 : residue;
+  return oracle;
 }
 
 bool exact_boundary_truncation_precondition_is_proved_without_a2a() {
@@ -278,12 +485,29 @@ TEST(InputConditionerCPCondCB1, HighValenceRawPreconditionIsIndependentAndProduc
 
 TEST(InputConditionerCPCondCB1, NegativeIndexRawPreconditionIsIndependentAndPreserved) {
   const NegativeIndexRawWitness witness = make_negative_index_witness();
-  ASSERT_EQ(witness.exactDiscreteNumerator, -1);
+  const auto rawOracle = independent_negative_index_oracle(witness.raw);
+  ASSERT_TRUE(rawOracle.has_value());
+  EXPECT_EQ(rawOracle->cycleNumerator, -1);
+  ASSERT_FALSE(rawOracle->quarterTurnTransport.empty());
+
+  RawSurfaceCellInput mutated = witness.raw;
+  std::uint64_t mutatedBits = std::bit_cast<std::uint64_t>(mutated.rawCrossField(0, 0));
+  mutatedBits ^= 1U;
+  mutated.rawCrossField(0, 0) = std::bit_cast<double>(mutatedBits);
+  EXPECT_FALSE(independent_negative_index_oracle(mutated).has_value());
+
   const ConditioningPolicy policy = ConditioningPolicy::production_identity();
   const ConditioningResult result = directional::pipeline::condition_surface_cell_input(witness.raw, policy);
   const ConditionedSourceProduct &product = require_produced(result);
   EXPECT_TRUE((product.faces.array() == witness.raw.faces.array()).all());
   EXPECT_TRUE(product.rawCrossField.isApprox(witness.raw.rawCrossField, 0.0));
+
+  const RawSurfaceCellInput conditioned{
+      product.vertices, product.faces, product.rawCrossField, product.hardFeatures};
+  const auto conditionedOracle = independent_negative_index_oracle(conditioned);
+  ASSERT_TRUE(conditionedOracle.has_value());
+  EXPECT_EQ(conditionedOracle->cycleNumerator, rawOracle->cycleNumerator);
+  EXPECT_EQ(conditionedOracle->quarterTurnTransport, rawOracle->quarterTurnTransport);
 }
 
 TEST(InputConditionerCPCondCB1, ContradictoryExactZ4PairingIsTypedRefusal) {
