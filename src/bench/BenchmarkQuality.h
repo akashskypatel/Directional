@@ -34,6 +34,8 @@ struct BenchmarkQuality {
   std::uint64_t peakWorkingSetBytes = 0;
   std::uint64_t outputStructuralHashValue = 0;
   std::string outputStructuralHash;
+  std::uint64_t outputSemanticHashValue = 0;
+  std::string outputSemanticHash;
   std::string outputMeshPath;
   std::string reviewImagePath;
 };
@@ -58,6 +60,10 @@ private:
 
 [[nodiscard]] std::uint64_t
 benchmark_output_structural_hash(const pipeline::RemeshResult &result);
+
+/** Component/row-order invariant digest over connectivity and exact lineage. */
+[[nodiscard]] std::uint64_t
+benchmark_output_semantic_hash(const pipeline::RemeshResult &result);
 
 [[nodiscard]] std::string benchmark_hash_string(std::uint64_t hash);
 

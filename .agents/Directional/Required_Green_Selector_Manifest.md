@@ -1,0 +1,674 @@
+# Required Green Selector Manifest
+
+**Purpose — DURABLE, DO NOT DELETE.** One auditable index of every byte-frozen `Required_Green_Selector` file:
+its identity count, its LF-normalized SHA-256, its prefix parent, what it appended, and its role.
+
+This file is **derived and additive**. It changes no selector byte and grants no authority. Where it disagrees with
+a selector file, **the selector file wins** — recompute with
+`.agents/Directional/tools/selector_probe.py hash <n>`.
+
+## Why every one of these files is retained
+
+The prefix chain is the project's core safety invariant: every turn re-proves that accepted selector **365** is an
+exact prefix of the current gate. **That check has force only because 365's bytes are stored independently of the
+current gate file.** Collapsing the chain into one file plus line counts would make the check compare a file
+against itself, so it could never fail — deleting the witness while keeping the assertion.
+
+Each file is also hash-pinned in an immutable Test + Benchmark report and a GitHub Actions artifact, and
+`tools/review_check.py boundary` re-verifies every hash against HEAD each turn. Consolidation, renaming, or
+deletion of any selector file requires explicit user authorization; `M3_CP4c_Frozen_Definitions.md` Parts IV and V
+additionally prohibit changing the bytes of 357, 358, 361, 365 and 367.
+
+## Naming — read this before deriving a count from a filename
+
+Selector files **357 through 384** are each named by their identity count. **This no longer holds.**
+`Architecture_M3_CP4c3_Required_Green_Selector_385.txt` is named 385 and contains **388** identities, because
+`M3-CP4c-3-CB22` appended four witnesses under a plan whose wording predicted one file number. Its bytes are
+frozen, hash-verified and correct and it must **not** be renamed.
+
+**Never derive an identity count from a selector filename. Use the `identities` column below.**
+Future selector files are named by their resulting identity count.
+
+## The chain
+
+| Selector | Identities | LF SHA-256 | Prefix parent | Appended | Role |
+|---|---:|---|---|---:|---|
+| **357** | 357 | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` | - | - | superseded |
+| **358** | 358 | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` | **none** | - | withdrawn |
+| **361** | 361 | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` | **none** | - | superseded |
+| **365** | 365 | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` | 361 | 4 | **ACCEPTED AUTHORITY** |
+| **367** | 367 | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` | 365 | 2 | superseded |
+| **370** | 370 | `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525` | 367 | 3 | superseded |
+| **373** | 373 | `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` | 370 | 3 | superseded |
+| **374** | 374 | `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f` | 373 | 1 | superseded |
+| **375** | 375 | `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0` | 374 | 1 | superseded |
+| **376** | 376 | `6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8` | 375 | 1 | superseded |
+| **377** | 377 | `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1` | 376 | 1 | superseded |
+| **378** | 378 | `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8` | 377 | 1 | superseded |
+| **379** | 379 | `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7` | 378 | 1 | superseded |
+| **380** | 380 | `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e` | 379 | 1 | superseded |
+| **381** | 381 | `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90` | 380 | 1 | superseded |
+| **382** | 382 | `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a` | 381 | 1 | superseded |
+| **383** | 383 | `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c` | 382 | 1 | superseded |
+| **384** | 384 | `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564` | 383 | 1 | superseded |
+| **385** | 388 | `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca` | 384 | 4 | superseded |
+| **391** | 391 | `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` | 385 | 3 | superseded |
+| **393** | 393 | `ee8cc03360c30b7ef662c3972b852d8b6f17dddbf5abac29a632e02227644c4d` | 391 | 2 | superseded |
+| **397** | 397 | `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` | 393 | 4 | superseded |
+| **401** | 401 | `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` | 397 | 4 | superseded |
+| **403** | 403 | `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007` | 401 | 2 | superseded |
+| **405** | 405 | `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7` | 403 | 2 | superseded |
+| **406** | 406 | `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0` | 405 | 1 | superseded |
+| **407** | 407 | `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae` | 406 | 1 | superseded |
+| **408** | 408 | `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6` | 407 | 1 | superseded |
+| **409** | 409 | `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` | 408 | 1 | **M3 FINAL AUDIT / REVIEWED** |
+
+`Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
+branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
+
+## Per-file notes and appended identities
+
+### 357 — superseded
+
+`Architecture_M3_CP4c2_Required_Green_Selector_357.txt` — 357 identities, first committed 8cf1ab312 2026-08-28.
+
+CP4c-2 gate before the 358 branch. **Off-chain** - not a prefix of 358.
+
+Chain root in this family.
+
+### 358 — withdrawn
+
+`Architecture_M3_CP4c2_Required_Green_Selector_358.txt` — 358 identities, first committed 8cf1ab312 2026-08-28.
+
+**Off-chain** - not a prefix of 361. Retained as historical authority by DEFN-R2 AG0.
+
+**Off-chain:** not an extension of selector 357. Holds unique bytes.
+
+### 361 — superseded
+
+`Architecture_M3_CP4c2_Required_Green_Selector_361.txt` — 361 identities, first committed 900da3938 2026-08-29.
+
+First file of the current prefix chain.
+
+**Off-chain:** not an extension of selector 358. Holds unique bytes.
+
+### 365 — ACCEPTED AUTHORITY
+
+`Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — 365 identities, first committed 4f0f3ca74 2026-08-30.
+
+The load-bearing boundary. Every acceptance claim cites this hash.
+
+Appended 4 identities to selector 361:
+
+- `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnTorusProducedWitness`
+- `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs`
+- `SurfaceCutGraph.CutCrossingNodeRotationIsDerivedAtDegreeFour`
+- `SurfaceCutGraph.CutSetSaturationProvesCellularityWhenSearchIsExhausted`
+
+### 367 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — 367 identities, first committed 4a4d5f8d0 2026-08-30.
+
+Appended 2 identities to selector 365:
+
+- `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`
+- `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses`
+
+### 370 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_370.txt` — 370 identities, first committed 4250f1bf8 2026-08-31.
+
+Appended 3 identities to selector 367:
+
+- `GlobalTopologyPlan.PrescribedSphereWitnessDerivesRegionsThroughProductionEntryPath`
+- `SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation`
+- `SurfaceCutGraph.EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError`
+
+### 373 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — 373 identities, first committed 4250f1bf8 2026-08-31.
+
+Appended 3 identities to selector 370:
+
+- `FieldTransportAtlas.NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis`
+- `FieldTransportAtlas.CutTransportDomainSatisfiesTheEulerCutIdentity`
+- `FieldTransportAtlas.PrescribedSingularityOnABarrierArcRemainsBoundToACycle`
+
+### 374 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_374.txt` — 374 identities, first committed e5d6ed76c 2026-09-01.
+
+Appended 1 identity to selector 373:
+
+- `ResolvedBranchCorrection.FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection`
+
+### 375 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — 375 identities, first committed 37e18cc58 2026-09-01.
+
+Appended 1 identity to selector 374:
+
+- `ResolvedBranchCorrection.FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries`
+
+### 376 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_376.txt` — 376 identities, first committed d8eb6332e 2026-09-01.
+
+Appended 1 identity to selector 375:
+
+- `ResolvedBranchCorrection.NetworkTerminalOwnershipConditionsSurviveProductionFailureProjection`
+
+### 377 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_377.txt` — 377 identities, first committed a3b6f1a41 2026-09-02.
+
+Appended 1 identity to selector 376:
+
+- `ResolvedBranchCorrection.BarrierAbsorbedMechanicalTerminationUsesNetworkNodeWithoutPort`
+
+### 378 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_378.txt` — 378 identities, first committed 71ece3ca1 2026-09-02.
+
+Appended 1 identity to selector 377:
+
+- `GlobalTopologyPlan.RotationRayOrderCollisionDiagnosticsSurviveProductionFailureProjection`
+
+### 379 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_379.txt` — 379 identities, first committed ab0501de3 2026-09-02.
+
+Appended 1 identity to selector 378:
+
+- `GlobalTopologyPlan.VertexLocusSecondaryRankUsesExactWithinWedgeGeometry`
+
+### 380 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_380.txt` — 380 identities, first committed a2efc8d10 2026-09-02.
+
+Appended 1 identity to selector 379:
+
+- `GlobalTopologyPlan.VertexExitSecondaryParameterUsesExactCornerSupportAndTypedFailure`
+
+### 381 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_381.txt` — 381 identities, first committed 5dcaa8be0 2026-09-02.
+
+Appended 1 identity to selector 380:
+
+- `GlobalTopologyPlan.EdgeLocusSecondaryRankFailuresAreTypedAndProductionVisible`
+
+### 382 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_382.txt` — 382 identities, first committed a01016ca5 2026-09-03.
+
+Appended 1 identity to selector 381:
+
+- `GlobalTopologyPlan.EdgeLocusSecondaryRankUsesSegmentFarEndSupportAndContactRelativeOrdering`
+
+### 383 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_383.txt` — 383 identities, first committed 57635e873 2026-09-03.
+
+Appended 1 identity to selector 382:
+
+- `GlobalTopologyPlan.TraceCutFaceFragmentMismatchDiagnosticsSurviveProductionFailureProjection`
+
+### 384 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_384.txt` — 384 identities, first committed b76d878f4 2026-09-03.
+
+Appended 1 identity to selector 383:
+
+- `GlobalTopologyPlan.FragmentOwnerDeficitPublishesCorrectionEvidenceThroughProductionPath`
+
+### 385 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_385.txt` — 388 identities, first committed 9f6f3794a 2026-09-03.
+
+Name is 385; identity count is **388**. See the naming section above.
+
+Appended 4 identities to selector 384:
+
+- `GlobalTopologyPlan.UncutFaceComponentSeedFailurePublishesProductionDecisionEvidence`
+- `GlobalTopologyPlan.UncutFaceComponentSeedFailureProjectsDecisionAndBoundaryEvidence`
+- `GlobalTopologyPlan.FragmentOwnerEvidenceProjectsUncutComponentSeedCensus`
+- `GlobalTopologyPlan.UnrelatedFailureProjectionIsByteIdenticalWithoutUncutSeedDiagnostics`
+
+### 391 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_391.txt` — 391 identities, first committed by M3-CP4c-3-CB23.
+
+Appended 3 identities to selector 385 (whose frozen file contains 388 identities):
+
+- `GlobalTopologyPlan.EmbeddedGraphEulerCensusPublishesThroughMechanicalProductionFailure`
+- `GlobalTopologyPlan.UncutFaceComponentBoundaryOrbitAttributionPublishesThroughMechanicalProductionFailure`
+- `GlobalTopologyPlan.EmbeddedGraphEulerCensusCarriesAcrossTorusAndPrescribedSphereProductionPaths`
+
+### 393 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_393.txt` — 393 identities, first committed by M3-CP4c-3-CB24.
+
+CB24 appends two diagnostic-only projection witnesses to frozen selector 391; CB25 supersedes the vacuous diagnostic contract without changing these bytes.
+
+Appended 2 identities to selector 391:
+
+- `GlobalTopologyPlan.UncutFaceComponentBoundaryEvidenceRetainsDistinctSeedAndReasonRows`
+- `GlobalTopologyPlan.MechanicalProjectionEvidencePublishesMinorityRowsAndFaithfulnessResidual`
+
+### 397 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_397.txt` — 397 identities, first committed by M3-CP4c-3-CB25.
+
+CB25 appends four diagnostic-only certificate-source and falsifiability witnesses to frozen selector 393. CB27 retains all 397 bytes unchanged.
+
+Appended 4 identities to selector 393:
+
+- `GlobalTopologyPlan.CertificateFaceProjectionDerivesOwnerFromCertifiedFaceWalkSide`
+- `GlobalTopologyPlan.CertificateSideLookupDoesNotAliasOppositeSideOrSeed`
+- `GlobalTopologyPlan.CertificatePairMeasurementCanReportNonZeroDifferingCount`
+- `GlobalTopologyPlan.UnrelatedTopologyErrorLocusRemainsByteIdenticalAfterCertificateDiagnostics`
+
+### 401 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_401.txt` — 401 identities, first committed by M3-CP4c-3-CB27.
+
+CB27 appends four owner-map, consistency-falsifiability, and fail-closed fixture-path witnesses to frozen selector 397.
+
+Appended 4 identities to selector 397:
+
+- `SurfaceCutGraph.CellularityCertificatePublishesTotalSourceFaceOwnershipOnProductionFixtures`
+- `SurfaceCutGraph.CellularityCertificateRejectsOwnerOutsideItsCertifiedFaces`
+- `GlobalTopologyPlan.CertifiedSourceFaceOwnerConsistencyCanRejectConflictingComponentOwners`
+- `TestFixturePaths.MissingPackageFailsClosedInsteadOfReturningMissingPath`
+
+**Executed at `M3-CP4c-3-TB24-EXEC`:** 389 PASS / 12 RED, accepted 1–365 = 365/365. Of the four appended
+identities, 399/400/401 PASS and 398 REDs. `M3-CP4c-3-TB24-REV` classified 398 as **the honest gate** — it states
+the open problem and stays gating. Ordinal **385**'s assertions will be replaced in place by CB28; its name and
+ordinal do not change, so the first 401 lines stay byte-identical.
+
+### 403 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_403.txt` — 403 identities, first authored by M3-CP4c-3-CB28.
+
+CB28 appends two measurement/falsifiability witnesses to frozen selector 401. Selector 401 is its exact
+401-line prefix and selector 397 remains the frozen prefix of that. Two gating identities are appended:
+
+- `SurfaceCutGraph.CertifiedOwnerConflictCensusPublishesOnOwnershipFailure`
+- `SurfaceCutGraph.CertifiedOwnerConflictCensusNamesANonBarrierEdgeSeparatingCertifiedFaces`
+
+The first asserts **publication**, never a particular value; the second is the independent falsifiability witness
+that splits *can* from *does*, as 399/400 did for their rules.
+
+**Executed at `M3-CP4c-3-TB25-R1`:** 393 PASS / 10 RED, accepted 1–365 = 365/365. Both appended identities **PASS**,
+and ordinals **384 and 385 recovered** from TB24's RED. `M3-CP4c-3-TB25-REV` recorded that ordinal 402's
+`rowCount=0` is **structurally unable to be anything else** on the region under investigation — the census reads
+only established owners, and every face of component 0 is `Unavailable`. Ordinals 402/403 stay gating and are not
+withdrawn, but **neither may be cited as evidence about component 0**.
+
+### 405 — SUPERSEDED BY 406
+
+`Architecture_M3_CP4c3_Required_Green_Selector_405.txt` — **405 identities**, authored by M3-CP4c-3-CB30, LF SHA-256 `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7`. Selector 403 is its exact 403-line prefix, selector 401 its exact 401-line prefix, and selector 397 remains byte-frozen. Two gating identities are appended:
+
+- `SurfaceCutGraph.UncutComponentArcIncidenceCensusPublishesOnOwnershipFailure`
+- `SurfaceCutGraph.VertexTransitCensusNamesAFaceSeparationNoSourceEdgeBarrierCanCarry`
+
+The first asserts **publication and completeness** of the three CJ6 censuses with **no established owner
+required** — the defect that made ordinal 402 vacuous must not recur. The second is the independent falsifiability
+witness on a constructed vertex-transit fixture. Ordinal **390**'s assertions were replaced in place by CJ8; its name and ordinal do not change, so the first 403 lines stay byte-identical. CB30 compile authority is source `e045bf7147afc02bd90eff4822e4b609edbaba66`, package `9957324848`.
+
+**Executed at `M3-CP4c-3-TB26-R1`:** 397 PASS / 8 RED, accepted 1–365 = 365/365. Both appended identities **PASS**,
+and ordinals **389 and 390 recovered** from TB25-R1's RED. `M3-CP4c-3-TB26-INDEPENDENT-REVIEW` recorded that
+ordinal **404's PASS proves publication but not readability**: it asserts the in-memory census is complete while
+the runtime serializes only aggregate counts, so the per-arc dart-orbit pair that decides the frozen discriminator
+is not auditable from the immutable log. **Ordinal 404 must not be cited as evidence that the separating-arc horn
+is selected.** CK8 strengthens it in place; the identity is not withdrawn.
+
+### 406 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_406.txt` — **406 identities**, authored by
+`M3-CP4c-3-CB31`, LF SHA-256
+`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`. Selector 405 is its exact
+405-line prefix, with 403/401/397/365 the frozen prefixes of that. One gating identity is appended:
+
+- `GlobalTopologyPlan.UncutComponentCensusNamesThePartitionItDescribesAndWhetherItMatchesTheFailingComponent`
+
+It asserts that both partition identities and both face-set digests are published and that the failure locus states
+**whether they match** — **publication of the correspondence, never equality**, because inequality is a live
+possibility and a gate must not demand a hypothesis be true (`LESSONS.md` 123). Ordinals **404** and **393** have
+their assertions replaced in place by CK8; their names and ordinals do not change, so the first 405 lines stay
+byte-identical.
+
+**Compiled at `M3-CP4c-3-CB31`:** semantic source
+`eaa0ea54355fe6877cb94024fdd3eac5f6bad9cc`; run/job
+`33940038189 / 101235542774`; result/log artifacts `9961564041 / 9961564295` with SHA-256
+`ca1b69de319fba92e0c6accc580e698f2430505eb811e821c03d44e6629263cf` /
+`f05d03dfe8457fe93c49a086915f1a69069ceb50726a02f0463887a734b4d73a`. Release/static `PRE_TEST`
+compiled all eight approved targets with GMP/GMPXX linked; preflight and build exit codes are zero and
+`runtimeExecution=false`. This is compile authority only, not semantic acceptance. Exact successor:
+`M3-CP4c-3-TB27`, artifact-only execution of selector 406.
+
+**Executed at `M3-CP4c-3-TB27-R1`:** formal run/job `33946094875 / 101252363079` on immutable package
+`9961564041` produced **399 PASS / 7 RED**, accepted **1–365 = 365/365**. RED
+`[366,367,368,369,370,374,398]`; ordinal393 recovered to PASS and ordinals404/406 PASS. Result/log artifacts
+`9963419649 / 9963419830`; ledger SHA-256
+`8da2002701437c5d0c4a57d613e24195f4f690d1ae4494da1234d58bb9a24da5`. Ordinal406 publishes
+`matchesFailingComponent=false` between the plan `EmptyFragmentOrbits` failure partition and certifier
+`NotTraceCut` census partition. Selector bytes are unchanged.
+
+**Adjudicated at `M3-CP4c-3-TB27-INDEPENDENT-REVIEW`:** ordinals 404 and 406 are the first diagnostic gates in this
+checkpoint whose PASS is **also readable** — 404 publishes all four interior-arc rows with both dart orbits (arc 14
+`(0,1)` and arc 22 `(0,3)` separating), and 406 proves the census and the failure are different partition objects.
+**Ordinal 404 still may not be cited as evidence about the failing plan component**, because it describes the
+certifier's. Ordinal **393**'s repaired coverage contract is runtime-proved. CL6 strengthens 404 in place; no
+identity is withdrawn.
+
+### 407 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_407.txt` — **407 identities**, authored by
+`M3-CP4c-3-CB32`, LF SHA-256
+`9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae`. Selector 406 is its exact 406-line
+prefix in the CB32 packaged source (LF SHA-256
+`efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0`), with the earlier frozen prefix chain
+retained. One gating identity is appended:
+
+- `SurfaceCutGraph.InteriorArcCensusNamesCrossedFacesAndTheirComponentsInBothPartitions`
+
+CB32 also strengthens ordinal **404** in place so the failing/certifier arc-locus publication is complete and bound
+to crossed source faces, component ids in both partitions, and typed trace-cut miss reasons. Its name and ordinal do
+not change, preserving the selector406 prefix. The appended identity remains a publication/completeness gate; it
+does not require the eventual correction branch to take a hypothesized value.
+
+**Compiled at `M3-CP4c-3-CB32`:** semantic evidence source
+`098ac7d93ea203222dd0ac50cdb68667744f0fd4`; run/job `33987769718 / 101364411259`; result/log artifacts
+`9975737868 / 9975738137` with SHA-256
+`16190a2da150d1e170dbbaa8df8d51437aabdb77e6a54aeab547e0dc0c4d84ec` /
+`ba2a7c97532f328bb50742c2de31dfd106d130b4ec4533e434250bceb9ec36ae`. Release/static Code + Build compiled all
+eight approved targets with GMP/GMPXX linked; preflight/full build succeeded and `runtimeExecution=false`. This is
+compile authority only, not semantic acceptance.
+
+**Execution status.** `M3-CP4c-3-TB28-R1` failed before runtime on a `SHA256SUMS.txt` layout assumption.
+`M3-CP4c-3-TB28-R2` reported `407 PASS / 0 RED` and was **REJECTED as orchestration-invalid** at
+`M3-CP4c-3-TB28-INDEPENDENT-REVIEW`: selector 407 contains ordinals 366/367/398, all RED at TB27-R1, and CB32's
+source diff is diagnostic-only, so **no behaviour change can account for the status change**. The report also
+omitted the ledger, identity map, RED ordinals, accepted-prefix count, censuses and resource evidence this
+selector's frozen plan requires, and recorded one runtime binary hash where the package holds five test
+executables. **Selector 407 has therefore never been validly executed**, and its `407 PASS` figure may not be
+quoted as a gate result or an accepted-prefix result. `LESSONS.md` 129, 130.
+
+**Validly executed at `M3-CP4c-3-TB28-R3`** — run/job `33995961030 / 101386467115` on the same immutable package
+`9975737868`, harness `b3191b314afa22f72e6f720519cfa2f8ad090dce3de5617612ad64c195489fbf`, ledger
+`fa0626b8a28c0f2758e68e2be712fff024197e445be46e46c9491395cc0609ac`: **400 PASS / 7 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, **every row `selected=1`**. Ordinals 404, 406 and the
+appended 407 PASS. Against TB27-R1's 399 PASS / 7 RED on selector 406, **the delta is exactly the appended
+identity** — the control that settled the TB28-R2 false green. Promoted to runtime authority at
+`M3-CP4c-3-TB28-R3-REV`.
+
+**Exact successor:** `M3-CP4c-3-CB34`, which applies the frozen **separating-arc barrier rule** and may require an
+appended witness at selector **408**, with 407 as an exact prefix, asserting the rule's **effect on the census** and
+never a predicted owner value. Ordinals 397–407 keep their contracts and none may be weakened to obtain a green.
+
+### 408 — superseded
+
+`Architecture_M3_CP4c3_Required_Green_Selector_408.txt` — **408 identities**, authored by `M3-CP4c-3-CB34`, LF SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
+
+CB34 appends one separating-arc barrier-rule census-effect witness to frozen selector 407.
+
+Appended 1 identity to selector 407:
+
+- `SurfaceCutGraph.SeparatingArcBarrierRuleExcludesCrossedFacesFromUncutCensus`
+
+**Compiled at `M3-CP4c-3-CB34`:** semantic evidence source
+`25ab3d55697598bde436d1ac811d71e6cf911f2e`; run/job `34001505322 / 101401105075`; result/log artifacts
+`9979639398 / 9979639588` with SHA-256
+`c7e35682b9d38b8e8b7916e6030cc2bd3fd4172d0dfc49be83d09a4b0a45ecf2` /
+`de006914c3874c7d607d4deb34e39f17c08b847d708e96c99a9957d455d40f3c`. All eight approved targets compiled
+with GMP/GMPXX linked and `runtimeExecution=false`; root package `SHA256SUMS` is 28/28 PASS. This is compile
+authority only. Selector 408 is not semantically accepted until TB29.
+
+**Executed at `M3-CP4c-3-TB29`** — run/job `34002726062 / 101404386206`, ledger
+`3199d7117dbed28dd23dd22cefb543ff43f449a5a2aa859075f543a8f6195f51`: **399 PASS / 9 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,390,398,404]`, **every row `selected=1`**. Promoted to runtime
+authority at `M3-CP4c-3-TB29-REV`.
+
+Ordinal **408 PASSes on its first execution** and proves all three properties of the separating-arc barrier rule:
+no separating arc remains interior to any uncut component; every separating-arc crossed face leaves the uncut
+census; and **every equal-orbit terminal-slit face is preserved** — the rule does not over-cut. This is the first
+identity in the checkpoint to assert the *effect* of a product correction and pass on it.
+
+Ordinals **390** and **404** changed PASS → RED and are **test authority, not product**: 404 requires that no face
+has established ownership — an out-of-contract assertion introduced at CB31 that passed vacuously while ownership
+was failing — and 390 matches the plan and certifier partitions **by component index**. Both have their assertions
+replaced in place at **CO6 / CB35**; names, ordinals and selector bytes do not change, so selector 408 stays
+byte-identical and no new selector is authored.
+
+**Re-executed at `M3-CP4c-3-TB30`** — run/job `34008104497 / 101418934144` on immutable CB35 package
+`9980764888`, ledger `974fed9db1958ee7eb07df77097544199deeb61d663b1d366a37b54d64feeab0`: **401 PASS / 7 RED**,
+accepted **1–365 = 365/365**, RED `[366,367,368,369,370,374,398]`, every row `selected=1`. **Ordinals 390 and 404
+returned to PASS** with **no selector byte changed** — CB35 replaced their assertions in place — and the
+credibility controls 366/367/398 stayed RED as required. Promoted to runtime authority at `M3-CP4c-3-TB30-REV`.
+
+Two dispositions this selector must carry forward:
+
+- **Ordinal 398 is not an ownership gate.** It fails on the **prescribed sphere**
+  (`NotProductionReady/CellularityNotEstablished`), ordinal 368's surface. Certified source-face ownership is
+  **total** — 300 established / 0 unavailable / 0 conflicting. **398 must not be re-scoped to exclude the sphere**,
+  and its colour must not be read as an ownership signal.
+- **Ordinals 366 and 367 are the whole remaining ownership frontier**, awaiting the same frozen guard at
+  `GlobalTopologyPlan.cpp:830`.
+
+**Re-executed at `M3-CP4c-3-TB31`** — run/job `34011402843 / 101427791582` on immutable CB36 package `9982174864`,
+ledger `6632f428243788c98c816571f47ef0cf98df25a57274b2df75612674d563250b`: **397 PASS / 11 RED**, accepted
+**1–365 = 365/365**, RED `[366,367,368,369,370,374,390,393,398,406,407]`, every row `selected=1`. **CB36 authored no
+selector change**, so selector 408 has now carried three runtimes unchanged.
+
+What this execution recorded:
+
+- **The seed-uniqueness frontier is CLOSED.** Component 0 moved from 191 faces / seedCount 3 / `Multiple` /
+  `[0,1,3]` to **189 / 1 / `Unique` / `[0]`**; certified ownership remains **300 / 0 / 0**.
+- **Ordinals 404 and 408 stayed PASS** through both product corrections. They are the two identities written to
+  assert **publication and completeness** rather than an outcome, and that is why they survived the frontier
+  moving.
+- **Ordinals 390, 393, 406 and 407 went PASS → RED as pinned witnesses** — each expected
+  `UncutFaceComponentOrbitSeedNotUnique` and received `TraceArcDoesNotSeparateItsSides`. Their assertions are
+  repaired **in place** by `M3-CP4c-3-DEFN-R4`; names, ordinals and selector bytes do not change.
+
+**Selector 408 has now carried five runtimes unchanged** — TB29, TB30, TB31, TB32 and TB33 — across four product
+corrections. At `M3-CP4c-3-TB33` it recorded **401 PASS / 7 RED**, accepted **1–365 = 365/365**, RED
+`[366,367,368,369,370,374,398]`, every row `selected=1`, on immutable CB38 package `9994997588`.
+
+Two facts this selector must carry forward:
+
+- **Ordinals 404 and 408 have never gone RED across four consecutive forward steps.** They are the two identities
+  written to assert **publication and completeness** rather than an outcome, and that is why they survived every
+  frontier move. Treat them as the template.
+- **Ordinals 390, 393, 406 and 407 returned to PASS** once each was given a **justified cleared-stage** outcome —
+  the stage failed and published, or the stage was cleared and the later failure published its labelled evidence.
+  Their assertions were replaced in place; no selector byte changed.
+
+**CB39 result:** selector **409** appends 408 as an exact 408-line prefix and one gating identity,
+`GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected` — a constructed negative proving that two
+node-disjoint boundary loops are still rejected with reason `ArcChainBroken` after the `current == start` disjunct
+is removed. It asserts a constructed rejection, never a value on the production fixture. Ordinals 397–408 keep
+their contracts.
+
+### 409 — CURRENT GATE
+
+`Architecture_M3_CP4c3_Required_Green_Selector_409.txt` — **409 identities**, authored by `M3-CP4c-3-CB39`, LF
+SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`. Selector 408 is its exact 408-line
+prefix, LF SHA-256 `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`.
+
+CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen selector 408:
+
+- `GlobalTopologyPlan.RegionBoundaryWithTwoDisjointLoopsIsStillRejected`
+
+**Compiled at `M3-CP4c-3-CB39`:** semantic evidence source
+`7711b9c2c20d284823911aa4ca067bd33244f4e6`; run/job `34061111130 / 101561719362`; result/log artifacts
+`9997560649 / 9997560940` with SHA-256
+`9a71fe17b789c94f70580116b822b3949dabecda7bf1d736afef10a1e6a9c3d2` /
+`6f11586812cf77cd601f0a2339b573d915d57cb2b1bfbda0cfecfa87066ed645`. All eight approved targets compiled
+with GMP/GMPXX linked; root package `SHA256SUMS` is 28/28 PASS; command boundary records `runtimeExecution=false`.
+This is compile authority only. Selector 409 is not semantically accepted until TB34. Package count is **99**.
+
+**Executed at `M3-CP4c-3-TB34`** — run `34066225065`, **400 PASS / 9 RED**, RED
+`[312,366,367,368,369,370,374,398,409]`, **accepted 1–365 = 364/365**. Two results this selector must carry
+forward:
+
+- **Ordinal 312 — `GlobalTopologyPlan.RejectsRegionWithMultipleBoundaryWalks` — regressed inside the accepted
+  prefix.** It is the accepted witness for `RegionBoundaryNotSingleWalk`, and the code appears **exactly twice** in
+  the test corpus: at 312 and at 409. **Before any future measure removes or weakens a rejection, grep for its
+  error code and name every accepted identity that asserts it.** This selector's accepted prefix is restored by
+  fixing the product at `M3-CP4c-3-CB40`, **never** by editing ordinal 312.
+- **Ordinal 409 never reached its oracle** — `disjointRegions.has_value()` is false. Two **node-disjoint** boundary
+  loops appear to be unconstructible through the production entry path, so the identity is **re-aimed in place** at
+  the reachable negative — two loops meeting at a shared node, rejected with reason `ClosedBeforeEnd`. Its name,
+  ordinal and the first 408 selector lines do not change.
+
+**CB40 discharged that successor.** TB35 recorded ordinal **312 PASS** with the accepted prefix restored to
+**365/365**, and ordinal **409 PASS** on its re-aimed shared-start oracle. Ordinals 390/393/404/406/407/408 stayed
+green.
+
+**CB41 discharged that successor and TB36 proved it at runtime.** CB41's static audit recorded ordinal 312's and
+ordinal 409's test blocks as **byte-identical before and after** (`94724bef…`, `ea574dab…`) and selector409
+unchanged at `eea6d8c2…`; TB36 then held both **PASS** while 366/367 advanced past `ClosedBeforeEnd`. The derived
+provenance relation resolves their mutated copies (`tests/FieldAlignedCurveNetworkTests.cpp:3247–3253`,
+`:3276–3279`) to `Unguaranteed`, so **Part IX-A §A.1 is confirmed**: a construction-time flag would have survived
+the copy and re-broken accepted ordinal 312.
+
+**CB42 discharged that successor and TB37 proved it.** CB42's grep found **no test-source assertion** of
+`RegionEulerCharacteristicNotOne`, and ordinals 312/409 and selector409 stayed byte-identical
+(`94724bef…`, `ea574dab…`, `eea6d8c2…`). TB37 then hashed `ledger.tsv` and `identity-map.tsv` **identical to
+TB36's** while the failure-detail digest table changed — the artifact proof that a diagnostics-only turn changed
+no behaviour.
+
+**DEFN-R6 discharged that successor**, appending **Part X** without authoring a selector or touching source.
+
+**CB43 discharged the Code + Build successor without authoring a selector.** Source `2fcde465b1de2e42a348d224f5165ce8b87e4fbe` compiles green as package103 artifact `10034608071`. Selector409 stays `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, and `tests/FieldAlignedCurveNetworkTests.cpp` stays `913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`. CB43 adds full source-submesh Euler authority and proof diagnostics without editing 312, 409, any accepted identity, or region construction.
+
+**TB38-EXEC discharged that successor, and its result refuted the definition CB43 implemented.** Selector409
+stayed byte-frozen at `eea6d8c2…` and ordinals **312/409 stayed PASS**, but **accepted 356/357/362 and protected
+390/393/406/407 regressed**, taking the accepted prefix to **362/365**. The cause is `DEFN-R6.4`, not the
+implementation. **TB38 is not promoted; `M3-CP4c-3-TB37` remains this selector's accepted authority at 365/365.**
+DEFN-R6.7's per-region proof also discharged over an **empty table**, because the certificate emission sits behind
+`DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`.
+
+**CB44 discharged that Code + Build successor without authoring a selector.** Semantic source
+`8756cfe983bf7e05209f560d59a522a6b5b0674a` compiles green as package104 artifact `10036808934`. Selector409
+remains `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`, selector408 prefix remains
+`2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6`, and test source remains
+`913752b8e869b310e2bcb4d0b81a06c4231acdf0470db4427952958de7b3583b`. CB44 restores only the reduced criterion,
+ungates the certificate rows, and adds publication-only traced/split measurements.
+
+**TB39-EXEC discharged that successor without changing selector bytes.** Run `34177823202` on immutable package104
+records **402 PASS / 7 RED**, accepted **365/365**, RED `[366,367,368,369,370,374,398]`; 312/409 and
+390/393/404/406/407/408 PASS, zero selection mismatch/timeout. Ledger SHA `058c54603bfe4663578d174531932fa9c9716e905f48a1b2feb1b26656171366`
+is identical to TB37. The non-vacuous certificate table contains 513 complete rows and all frozen arithmetic
+relations pass. Selector409 remains byte-frozen.
+
+**TB39-REV promotion:** independent review promotes this TB39 execution to the **current valid semantic runtime
+authority**. Selector409 bytes remain frozen; accepted authority is **365/365**, with current full selector colour
+vector **402 PASS / 7 RED** and RED `[366,367,368,369,370,374,398]`. Stable accounting remains 46 / 14 / 32.
+The review makes no selector membership change.
+
+**DEFN-R7 / CB45 / TB40 / CB46 / TB41 have since run on this same byte-frozen selector409.** CB45 implemented the
+Part XI actual-embedded face binding; TB40 confirmed the binding but lost accepted 311/314/356/357 because four
+oracles compared the production orbit ordinal against an independent enumeration's index; CB46 replaced that with a
+**content anchor** (`canonical_cycle_anchor`); and **TB41 recovered all four**, with `arc 0` appearing in both
+orientations so the census is non-uniform. **`M3-CP4c-3-TB41` is the promoted authority at 398 PASS / 11 RED,
+accepted 365/365, package106.** Ordinals 312/315/409 stayed PASS throughout.
+
+**CB47 discharged that successor and TB42 answered it.** Selector409 stayed byte-frozen at `eea6d8c2…`; TB42's
+ledger hash is **identical to TB41's** while the failure-detail digest changed, so CB47 was diagnostics-only as
+required and the oracle was not re-hidden. **`M3-CP4c-3-TB42` is the promoted authority at 398 PASS / 11 RED,
+accepted 365/365, package107.**
+
+**The frontier census is measured and closed to further measurement.** The uncut-component partition holds **226
+unlabelled faces in 9 components**; the failing region holds **10** source faces of which **0** are in the
+partition. **A domain mismatch, not an empty set** — three of the four affected identities name that census
+explicitly, and their `UncutComponent` early return was a **domain guard written as a stage check**.
+
+**Exact successor:** `M3-CP4c-3-DEFN-R8` — a **static definition turn** appending **Part XII**, which authors no
+selector and touches no source. It states the census's domain, decides what a `RegionCertification` failure must
+publish instead, requires a **domain predicate rather than a stage string**, and restates ordinals
+**390/393/406/407** so each still **fails** when its own census is broken within its own domain. **Widening the
+early return to make them pass is prohibited**, and the implementing turn it freezes, `M3-CP4c-3-CB48`, must
+publish per identity **which branch it took** so "passed" and "did not run" stay distinguishable. **Selector 409
+stays byte-frozen and accepted prefix 365/365 is a stop condition.**
+
+## Separate lineage — M1
+
+`M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full
+selector and is **not** part of the CP4c prefix chain above. It is retained under `M1_Closure_Record.md`.
+
+## Final M3 selector authority after TB48-REV
+
+Selector **365** remains the **accepted required-green M3 authority**, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, and is the exact predecessor entering M4. Selector **409** remains byte-frozen at `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` as the final CP4c-3 audit/execution surface. Package113/TB48 reviewed execution is **405 PASS / 4 RED / 0 SKIP**, accepted **365/365**, RED `[368,369,374,398]`. The four audit REDs retain separate owners and are not silently added to accepted authority. No selector bytes changed at TB48-REV.
+
+## M4 selector chain
+
+M4 restarts from the accepted M3 selector365, **not** from the final-M3 audit selector409. The M4 filename therefore
+may share an identity count with an older M3 selector while carrying different bytes; use the full path and hash.
+
+| Selector file | Identities | LF SHA-256 | Prefix parent | Appended | Role |
+|---|---:|---|---|---:|---|
+| `Architecture_M4_CP1_Required_Green_Selector_373.txt` | 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | M3 accepted 365 | 8 | **ACCEPTED CP1 PREDECESSOR:** package115/TB2 reviewed **373/373**; exact prefix of accepted CP2 selector382 |
+| `Architecture_M4_CP2_Required_Green_Selector_380.txt` | 380 | `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4` | accepted M4-CP1 selector373 | 7 | **HISTORICAL UNPROMOTED CP2 CANDIDATE:** package116 measured 380/380 but failed review contract completeness |
+| `Architecture_M4_CP2_Required_Green_Selector_382.txt` | 382 | `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f` | historical M4-CP2 selector380 | 2 | **ACCEPTED M4-CP2 AUTHORITY:** package117/R1 reviewed **382/382**; CP2 closed at R1-REV |
+| `Architecture_M4_CP3_Required_Green_Selector_394.txt` | 394 | `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68` | accepted M4-CP2 selector382 | 12 | **ACCEPTED CP3 BASELINE AUTHORITY:** package119/TB1-R1 reviewed **394/394**; exact prefix of selector403 |
+| `Architecture_M4_CP3_CB4_R1_Required_Green_Selector_403.txt` | 403 | `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802` | accepted M4-CP3 selector394 | 9 | **UNPROMOTED CB4-R1 CANDIDATE:** package120/TB2 mechanically **403/403**, but TB2-REV blocks acceptance because row400 does not exercise its frozen source-row→canonical barycentric mapping contract |
+| `Architecture_M4_CP3_CB4_R3_Required_Green_Selector_403.txt` | 403 | `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` | accepted M4-CP3 selector394 | 9 | **ACCEPTED M4-CP3 PRE-CUTOVER AUTHORITY:** corrected R4 artifact `10289601000`; TB2-R2 reviewed **403/403**, predecessor394 **394/394**, row400 focused twice, immutable postflight |
+| `Architecture_M4_CP3_CB5_Required_Green_Selector_408.txt` | 408 | `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484` | accepted M4-CP3 selector403 | 5 | **UNPROMOTED CP3 CUTOVER CANDIDATE:** TB6 recovery-proves row408 2/2 and rows404-407 8/8, but accepted selector403 ordinal138 REDs after 137 cumulative passes. TB6 Review closes the prior torus occurrence-domain candidate and rejects promotion on a new non-stable product-semantic `<4` applicability/disposition scope-widening finding. Exact next CB9; selector bytes frozen. |
+
+The first 365 LF rows hash to
+`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, proving the accepted M3 selector365
+is an exact prefix. The eight appended identities are the CP1 `GlobalConformityPlan`/exact-solver/validator tests
+preserved in `M4_CP1_Closure_Record.md` and `M4_Consolidated_Record.md` §2.2. TB1 runtime-proved those eight rows 8/8 PASS twice but its
+cumulative package surface was incomplete. CB4 corrected package ownership/execution view without changing selector or
+semantic/test bytes; `M4-CP1-TB2-EXEC` then runtime-proved **373/373 PASS**, accepted predecessor **365/365**, and
+focused CP1 **8/8 twice** with immutable postflight. `M4-CP1-TB2-REV` re-opened primary evidence, independently re-derived the receipts, promoted package115 and closed CP1. Selector bytes remain unchanged and selector373 is now accepted M4 authority.
+
+## Regenerating this manifest
+
+Every column is derived. `tools/selector_probe.py` computes counts, LF hashes, prefix relations and appended
+identities; hashes here are over **LF-normalized** bytes, which is what the published hashes use — a Windows
+checkout stores CRLF, so a raw file hash will not match.
+
+Regenerate after any turn that appends a selector, and never edit a selector file to make it agree with this one.
+
+
+### M4-CP2-CB1 selector380 publication receipt
+
+`Architecture_M4_CP2_Required_Green_Selector_380.txt` contains **380 LF rows** with LF SHA-256 `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`. Its first **373** LF rows are byte-identical to accepted selector373 and hash to `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`. The seven appended rows are exactly the CP2 identities preserved in `M4_Consolidated_Record.md` §§2.8-2.10, in prescribed order. The originating CB1 plan is folded after execution/review and remains recoverable from git history. This is a publication/lineage receipt only; package116/selector380 remains permanently unpromoted historical evidence after package117/selector382 promotion.
+### M4-CP2-CB2 selector382 publication receipt
+
+`Architecture_M4_CP2_Required_Green_Selector_382.txt` contains **382 LF rows** with LF SHA-256 `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`. Its first **380** LF rows are byte-identical to unpromoted selector380 and hash to `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`; its first **373** rows remain byte-identical to accepted M4-CP1 selector373 at `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`. Static source mapping finds **382/382** identities with exactly one definition and zero missing/duplicate definitions, partitioned **30 authority-kernel / 236 producer / 75 completion / 41 validation**. Rows 381-382 are `GlobalConformityCertificate.IndependentVerifierRejectsWorkLedgerBoundHistoryAndAssuranceTamper` and `GlobalConformityOutcome.SemanticDigestBindsFullCP2Outcome`, both producer-owned. R1 run/job `34539783373 / 103079623871` subsequently proved selector382 **382/382** with predecessor373 **373/373**, focused corrections **3/3 twice**, exact ordinal374 receipts and immutable postflight. `M4-CP2-TB2-R1-REV` independently re-opened that evidence, promoted package117, accepted selector382 as current M4 authority and closed CP2. Selector bytes are unchanged.
+
+### M4-CP3-CB2 selector394 publication receipt
+
+`Architecture_M4_CP3_Required_Green_Selector_394.txt` contains **394 LF rows** with LF SHA-256 `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`. Its first **382** LF rows are byte-identical to accepted selector382 and hash to `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`; the accepted M3/CP1 prefixes remain `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` at 365 rows and `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` at 373 rows. The twelve appended identities are all producer-owned `GlobalConformityBaseline.*` regressions compiled by `directional_surface_cell_producer_tests`; the inherited owner partition therefore becomes **30 authority-kernel / 248 producer / 75 completion / 41 validation**. Package119/TB1-R1 and its review subsequently proved selector394 **394/394** with focused rows383-394 **12/12 twice**, deterministic success receipts and immutable postflight. Selector394 is therefore accepted M4 runtime authority.
+
+
+### M4-CP3-CB4-R1 selector403 publication and TB2 review receipt
+
+`Architecture_M4_CP3_CB4_R1_Required_Green_Selector_403.txt` contains **403 LF rows** with SHA-256 `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`. Its first **394** rows are byte-identical to accepted selector394 and hash to `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`; its first **382** rows retain `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`. The nine appended rows are producer-owned, so the owner partition becomes **30 authority-kernel / 257 producer / 75 completion / 41 validation** from selector394's **30 / 248 / 75 / 41**.
+
+Package120/TB2 run `34647838897` mechanically executed focused rows395-403 **9/9 twice**, accepted prefix394 **394/394** and cumulative selector403 **403/403** with immutable postflight. `M4-CP3-TB2-REV` independently upheld those mechanics but did **not** accept selector403: row400's `sourceRow{2,0,1}` is detached from the barycentric point construction, so the frozen canonical source-row component-mapping obligation is not exercised. Selector403 bytes remain frozen candidate authority pending bounded recovery and a new reviewed artifact-only proof; no selector weakening/reordering is authorized.
+
+### M4-CP3-CB4-R3 selector403 publication receipt
+
+`Architecture_M4_CP3_CB4_R3_Required_Green_Selector_403.txt` contains **403 LF rows** with SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`. Its first **394** rows are byte-identical to accepted selector394 and hash to `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68`. Compared with frozen CB4-R1 selector403 (`e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802`), rows **1-399** and **401-403** are byte-identical; row **400** alone is replaced by `EmbeddedGraphTopology.TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking`. The owner partition remains **30 authority-kernel / 257 producer / 75 completion / 41 validation**. CB4-R3 initially remained static candidate authority because compile run `34663130547` stopped at the stale mandatory row400 identity. R4 repaired exactly that one CMake ownership marker and produced artifact `10289601000` from semantic source `58521f6d1c4fb5d625da7cde50e002cf4688beee`. TB2-R2 run/job `34666794115 / 103480225842` then executed row400 focused A **1/1**, focused B **1/1**, predecessor394 **394/394** and cumulative403 **403/403** = **799/799 PASS** with zero RED/SKIP/timeout/selection mismatch and immutable postflight. `M4-CP3-TB2-R2-REV` independently re-derived the raw `[3,0,4]` / canonical `[0,3,4]` exact `1/3` versus `2/3` discriminator and the full 799-process ledger, then **accepted** this selector and corrected R4 artifact as current M4-CP3 pre-cutover runtime authority. Selector bytes are unchanged.
+
+### M4-CP3-CB5 selector408 publication receipt
+
+`Architecture_M4_CP3_CB5_Required_Green_Selector_408.txt` contains **408 LF rows** with SHA-256 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`. Its first **403** rows are byte-identical to accepted selector403 and retain SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`. Static packaged-source mapping resolves all **408/408** identities uniquely with zero missing/ambiguous packaged definitions and owner partition **30 authority-kernel / 262 producer / 75 completion / 41 validation**. Rows 404-408 are the five producer-owned CB5 cutover witnesses: accepted A2b/A3 receipt, fixed-plan target perturbation, exact shared-interval tamper rejection, A4-local family/sign preservation, and the exact torus production path. TB3 gave focused-green evidence to rows404-407 but rejected row408's no-hard-rail fixture. CB6 preserved these exact selector bytes and added explicit torus user rails test-only; TB4 then failed row408 at A1 because production composed 48 automatic hard rails with those 18 user rails. `M4-CP3-TB4-REV` therefore kept selector408 **UNPROMOTED**. CB7 subsequently repaired only row408 effective fixture authority without changing selector bytes; TB5 proves that repair reaches A4, where a distinct product-semantic authority-domain defect remains.
+### M4-CP3-CB7 selector408 preservation receipt
+
+CB7 authors **no selector bytes**. Packaged semantic source `dbcc2f1fe07b611ce7360cd00e31ae4e6cd157c8` re-hashes `Architecture_M4_CP3_CB4_R3_Required_Green_Selector_403.txt` to `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` at 403 LF rows and `Architecture_M4_CP3_CB5_Required_Green_Selector_408.txt` to `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484` at 408 LF rows; selector408 first403 hashes exactly to selector403. Static ownership remains **30 authority-kernel / 262 producer / 75 completion / 41 validation**, zero missing/ambiguous owners, with row408 producer-owned. Authoritative compile package `10293750596` is build evidence only. TB5 run/job `34680334158 / 103517743371` then passed immutable preflight, executed row408 first, selected it exactly once, and RED at A4 phase-front disposition before any cumulative selector phase; fail-fast stopped at **1/821** and immutable postflight passed. `M4-CP3-TB5-REV` rejects package/selector408 promotion as **PRODUCT-SEMANTIC / A4 CUT-OPEN TOPOLOGY AUTHORITY-DOMAIN + APPLICABILITY DRIFT / NON-STABLE**. The selector bytes remain frozen and unpromoted; exact next `M4-CP3-CB8` may change product A4 occurrence consumption only after its guard, not selector authority.
+
+### M4-CP3-TB5 selector408 review receipt
+
+TB5 independently re-proved selector403 at **403** LF rows / `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` and selector408 at **408** LF rows / `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`; first403 remains byte-identical and static ownership remains **30 / 262 / 75 / 41**, row408 producer-owned. Because row408 was process 1 and RED under fail-fast, TB5 does **not** create a new cumulative selector408 green count. Accepted runtime authority remains corrected R4 selector403 **403/403**. Selector408 remains the byte-frozen candidate discriminator for future CB8/TB recovery.
+
+### M4-CP3-TB6 Review selector408 preservation receipt
+
+TB6 Review independently re-hashes selector403 to **403 LF rows / `c3f509af...70cb7`** and selector408 to **408 LF rows / `c689c0cd...484`**, with selector408 first403 byte-identical to selector403 and ownership **30 / 262 / 75 / 41**. Runtime row408 **2/2** plus rows404-407 **8/8** recovery-proves the prior cut-open occurrence-domain finding, but accepted selector403 ordinal138 REDs after ordinals1-137 PASS. Review therefore keeps selector408 **UNPROMOTED** and freezes its bytes through CB9; no selector is added or accepted in TB6 Review.

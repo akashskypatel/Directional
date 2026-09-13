@@ -1,0 +1,2 @@
+turn=M4-CP3-TB8-EXEC
+purpose=validate generated harness syntax before runtime

@@ -1,0 +1,138 @@
+name: Agent M4 CP3 TB8 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb/m4-cp3-tb8/**
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp3-tb8-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp3-tb8-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp3-tb8-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      TURN_ID: M4-CP3-TB8-EXEC
+      ARTIFACT_ID: '10307919492'
+      EXPECTED_ARTIFACT_NAME: m4-cp3-cb10-result-34727247774
+      EXPECTED_PROVIDER_DIGEST: sha256:8988a12fa8b2e6476bf3fd91a6a6936eaef8a9ab7c73837b74ea2e980d29b2ec
+      EXPECTED_ZIP_SHA256: 8988a12fa8b2e6476bf3fd91a6a6936eaef8a9ab7c73837b74ea2e980d29b2ec
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "turn_id=${TURN_ID}"
+            echo "artifact_id=${ARTIFACT_ID}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact execution control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Verify frozen TB8 harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          harness="${GITHUB_WORKSPACE}/.agents/Directional/turn-payloads/m4-cp3-tb8-exec-harness.sh"
+          test -f "$harness"
+          test "$(sha256sum "$harness" | awk '{print $1}')" = '600d48029adbce345b10867b1cec0b4377e1783a2624de76ada648c535bdca23'
+          bash -n "$harness"
+          echo "tb8_harness_sha256=$(sha256sum "$harness" | awk '{print $1}')" | tee -a "${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+          echo "suite_timeout_policy=none" | tee -a "${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+
+      - name: Execute frozen artifact-only TB8 gate
+        id: exec
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set +e
+          harness="${GITHUB_WORKSPACE}/.agents/Directional/turn-payloads/m4-cp3-tb8-exec-harness.sh"
+          chmod +x "$harness"
+          "$harness"
+          status=$?
+          echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
+          echo "harness_exit=${status}" | tee -a "${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+          exit 0
+
+      - name: Upload TB8 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb8-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M4-CP3-TB8-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Record final execution status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          cp "${RUNNER_TEMP}/M4-CP3-TB8-EXEC.log" "${RUNNER_TEMP}/m4-cp3-tb8-harness.log" 2>/dev/null || true
+          {
+            echo "harness_exit=${{ steps.exec.outputs.exit_code }}"
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "${RUNNER_TEMP}/m4-cp3-tb8-exec-workflow.log"
+
+      - name: Upload workflow and harness logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp3-tb8-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/m4-cp3-tb8-exec-workflow.log
+            ${{ runner.temp }}/m4-cp3-tb8-harness.log
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Propagate TB8 execution status
+        if: always()
+        shell: bash
+        run: |
+          code='${{ steps.exec.outputs.exit_code }}'
+          test -n "$code" || exit 92
+          exit "$code"

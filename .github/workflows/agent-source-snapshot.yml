@@ -1,125 +1,250 @@
-name: Agent Milestone G Checkpoint
+name: Agent Source Snapshot
 
 on:
+  workflow_call:
+    inputs:
+      source_ref:
+        description: Exact branch, tag, or commit to snapshot. Empty uses the caller event SHA.
+        required: false
+        type: string
+        default: ""
+      artifact_prefix:
+        description: Prefix for the source snapshot artifact.
+        required: false
+        type: string
+        default: agent-source-snapshot
+      retention_days:
+        description: Snapshot/log artifact retention in days.
+        required: false
+        type: number
+        default: 7
+    outputs:
+      snapshot_sha:
+        description: Exact checked-out source commit.
+        value: ${{ jobs.snapshot.outputs.snapshot_sha }}
+      artifact_name:
+        description: Uploaded source snapshot artifact name.
+        value: ${{ jobs.snapshot.outputs.artifact_name }}
+    secrets:
+      GH_TOKEN:
+        required: false
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Exact branch, tag, or commit to snapshot. Empty uses the dispatch SHA.
+        required: false
+        type: string
+        default: ""
+      artifact_prefix:
+        description: Prefix for the source snapshot artifact.
+        required: false
+        type: string
+        default: agent-source-snapshot
   push:
     branches:
-      - surface_cell_quad
+      - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .github/workflows/agent-source-snapshot.yml
-  workflow_dispatch:
+      - .agents/connector-triggers/source-snapshot/**
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-source-snapshot-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  validate-and-publish:
-    runs-on: ubuntu-latest
-    timeout-minutes: 240
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-source-snapshot.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: source-snapshot
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  snapshot:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    outputs:
+      snapshot_sha: ${{ steps.metadata.outputs.snapshot_sha }}
+      artifact_name: ${{ steps.metadata.outputs.artifact_name }}
     steps:
-      - name: Checkout shallow source and submodules
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact source
         uses: actions/checkout@v4
         with:
-          ref: surface_cell_quad
+          ref: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
           fetch-depth: 1
-          submodules: recursive
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
 
-      - name: Apply production fixes as separate commits
+      - name: Initialize submodules with Eigen backup mirror
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "OpenAI Agent"
-          git config user.email "noreply@openai.com"
-          base64 --decode .github/agent-patches/0001-retain-partial-singularity-separatrices.patch.b64 > /tmp/0001.patch
-          base64 --decode .github/agent-patches/0002-balance-regular-disk-quadrangulation.patch.b64 > /tmp/0002.patch
-          git am /tmp/0001.patch
-          git am /tmp/0002.patch
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          exec > >(tee -a "$log") 2>&1
+          git submodule sync --recursive
+          if git submodule update --init --force --depth=1 --recursive; then
+            echo "eigen_submodule_transport=canonical"
+          else
+            backup_url="$(git config -f .gitmodules --get submodule.external/eigen.backupUrl)"
+            test -n "$backup_url"
+            echo "canonical submodule update failed; retrying Eigen via backup mirror: $backup_url"
+            rm -rf external/eigen .git/modules/external/eigen
+            git config submodule.external/eigen.url "$backup_url"
+            git submodule update --init --force --depth=1 --recursive
+            echo "eigen_submodule_transport=backup"
+          fi
+          expected_eigen="$(git ls-tree HEAD external/eigen | awk '{print $3}')"
+          actual_eigen="$(git -C external/eigen rev-parse HEAD)"
+          echo "eigen_expected=$expected_eigen"
+          echo "eigen_actual=$actual_eigen"
+          test "$actual_eigen" = "$expected_eigen"
 
-      - name: Add focused test target without changing the commit
-        shell: bash
-        run: |
-          cat >> CMakeLists.txt <<'CMAKE'
-
-          if(DIRECTIONAL_BUILD_TESTS)
-            add_executable(
-              directional_agent_surface_cell_tests
-              tests/FlowRepStrandsPhase15Tests.cpp
-              tests/PureQuadCompletionPhase18Tests.cpp)
-            target_link_libraries(
-              directional_agent_surface_cell_tests
-              PRIVATE Directional::directional GTest::gtest_main)
-            target_compile_features(
-              directional_agent_surface_cell_tests PRIVATE cxx_std_20)
-            target_compile_definitions(
-              directional_agent_surface_cell_tests
-              PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-          endif()
-          CMAKE
-
-      - name: Configure targeted build
-        shell: bash
-        run: |
-          set -o pipefail
-          cmake -S . -B build-agent -G Ninja \
-            -DCMAKE_BUILD_TYPE=Debug \
-            -DCMAKE_CXX_FLAGS_DEBUG="-O0 -g0" \
-            -DBUILD_SHARED_LIBS=OFF \
-            -DBUILD_TUTORIALS=OFF \
-            -DBUILD_PYTHON=OFF \
-            -DDIRECTIONAL_BUILD_CLI=OFF \
-            -DDIRECTIONAL_BUILD_GUI=OFF \
-            -DDIRECTIONAL_BUILD_BENCHMARKS=OFF \
-            -DDIRECTIONAL_BUILD_TESTS=ON \
-            -DDIRECTIONAL_ENABLE_GMP=OFF \
-            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
-            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
-            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
-            2>&1 | tee configure.log
-
-      - name: Build focused and P27 tests
-        shell: bash
-        run: |
-          set -o pipefail
-          cmake --build build-agent --parallel 2 --target \
-            directional_agent_surface_cell_tests \
-            directional_milestone_g_p27_tests \
-            2>&1 | tee build.log
-
-      - name: Run FlowRep and completion tests
-        shell: bash
-        run: |
-          set -o pipefail
-          ./build-agent/directional_agent_surface_cell_tests \
-            --gtest_filter='FlowRepStrandsPhase15.*:PureQuadCompletionPhase18.*' \
-            2>&1 | tee focused-tests.log
-
-      - name: Run Milestone G P27 matrix
-        shell: bash
-        run: |
-          set -o pipefail
-          ./build-agent/directional_milestone_g_p27_tests \
-            2>&1 | tee p27-tests.log
-
-      - name: Publish validated checkpoint commits
+      - name: Verify source authority
+        id: metadata
+        env:
+          REQUESTED_REF: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
+          ARTIFACT_PREFIX: ${{ inputs.artifact_prefix != '' && inputs.artifact_prefix || 'agent-source-snapshot' }}
         shell: bash
         run: |
           set -euo pipefail
-          git checkout -- CMakeLists.txt
-          git rm \
-            .github/workflows/agent-source-snapshot.yml \
-            .github/agent-patches/0001-retain-partial-singularity-separatrices.patch.b64 \
-            .github/agent-patches/0002-balance-regular-disk-quadrangulation.patch.b64
-          git commit -m "Remove temporary Milestone G checkpoint workflow"
-          git push origin HEAD:surface_cell_quad
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "verify_source_exit=${status}"' EXIT
+          snapshot_sha="$(git rev-parse HEAD)"
+          echo "requested_ref=${REQUESTED_REF}"
+          echo "snapshot_sha=${snapshot_sha}"
+          echo "git_version=$(git --version)"
+          echo "tar_version=$(tar --version | head -n 1)"
+          echo "rsync_version=$(rsync --version | head -n 1)"
+          git status --short
+          git submodule status --recursive || true
+          if [[ "${REQUESTED_REF}" =~ ^[0-9a-fA-F]{40}$ ]] && [[ "${snapshot_sha,,}" != "${REQUESTED_REF,,}" ]]; then
+            echo "exact source SHA mismatch: requested=${REQUESTED_REF}; actual=${snapshot_sha}" >&2
+            exit 2
+          fi
+          artifact_name="${ARTIFACT_PREFIX}-${GITHUB_RUN_ID}"
+          echo "snapshot_sha=${snapshot_sha}" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=${artifact_name}" >> "$GITHUB_OUTPUT"
 
-      - name: Upload validation logs
+      - name: Build source snapshot archive
+        env:
+          SNAPSHOT_SHA: ${{ steps.metadata.outputs.snapshot_sha }}
+          ARTIFACT_NAME: ${{ steps.metadata.outputs.artifact_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "snapshot_archive_exit=${status}"' EXIT
+          out="${RUNNER_TEMP}/agent-source-snapshot-result"
+          source_dir="${out}/source"
+          rm -rf "$out"
+          mkdir -p "$source_dir"
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.git/**' \
+            "${GITHUB_WORKSPACE}/" "$source_dir/"
+          (
+            cd "$out"
+            find source -type f -print0 \
+              | LC_ALL=C sort -z \
+              | xargs -0 sha256sum > SHA256SUMS
+            tar -czf source.tar.gz source
+            sha256sum source.tar.gz > source.tar.gz.sha256
+          )
+          file_count="$(find "$source_dir" -type f | wc -l | tr -d ' ')"
+          byte_count="$(du -sb "$source_dir" | awk '{print $1}')"
+          archive_sha="$(awk '{print $1}' "${out}/source.tar.gz.sha256")"
+          jq -n \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg event "$GITHUB_EVENT_NAME" \
+            --arg event_sha "$GITHUB_SHA" \
+            --arg snapshot_sha "$SNAPSHOT_SHA" \
+            --arg artifact_name "$ARTIFACT_NAME" \
+            --arg archive_sha256 "$archive_sha" \
+            --arg generated_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --argjson file_count "$file_count" \
+            --argjson byte_count "$byte_count" \
+            '{
+              repository: $repository,
+              event: $event,
+              event_sha: $event_sha,
+              snapshot_sha: $snapshot_sha,
+              artifact_name: $artifact_name,
+              archive_sha256: $archive_sha256,
+              file_count: $file_count,
+              byte_count: $byte_count,
+              submodules_recursive: true,
+              runtimeExecution: false,
+              generated_at: $generated_at
+            }' > "${out}/snapshot-metadata.json"
+          echo "snapshot_file_count=${file_count}"
+          echo "snapshot_byte_count=${byte_count}"
+          echo "archive_sha256=${archive_sha}"
+          cat "${out}/snapshot-metadata.json"
+
+      - name: Upload source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.metadata.outputs.artifact_name }}
+          path: |
+            ${{ runner.temp }}/agent-source-snapshot-result/source.tar.gz
+            ${{ runner.temp }}/agent-source-snapshot-result/source.tar.gz.sha256
+            ${{ runner.temp }}/agent-source-snapshot-result/SHA256SUMS
+            ${{ runner.temp }}/agent-source-snapshot-result/snapshot-metadata.json
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days || 7 }}
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          {
+            echo "final_job_status=${{ job.status }}"
+            echo "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)"
+            git status --short 2>&1 || true
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload diagnostic log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: milestone-g-checkpoint-validation
-          path: |
-            configure.log
-            build.log
-            focused-tests.log
-            p27-tests.log
-          if-no-files-found: ignore
-          retention-days: 7
+          name: agent-source-snapshot-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-source-snapshot.log
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days || 7 }}

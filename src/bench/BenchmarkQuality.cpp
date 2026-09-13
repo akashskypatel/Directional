@@ -261,7 +261,7 @@ bool boundaries_match(const BenchmarkMesh &source,
   const std::vector<Edge> sourceBoundary =
       boundary_edges(build_edge_incidence(source.faces, sourceDegrees));
   const std::vector<Edge> outputBoundary =
-      boundary_edges(build_edge_incidence(output.faces, output.degrees));
+      boundary_edges(build_edge_incidence(output.product().faces, output.product().degrees));
   if (sourceBoundary.empty() != outputBoundary.empty()) {
     return false;
   }
@@ -271,7 +271,7 @@ bool boundaries_match(const BenchmarkMesh &source,
   const double toleranceSquared = tolerance * tolerance;
   for (const Edge edge : outputBoundary) {
     for (const int vertex : {edge.first, edge.second}) {
-      if (nearest_edge_squared_distance(output.vertices.row(vertex),
+      if (nearest_edge_squared_distance(output.product().vertices.row(vertex),
                                         source.vertices,
                                         sourceBoundary) > toleranceSquared) {
         return false;
@@ -281,7 +281,7 @@ bool boundaries_match(const BenchmarkMesh &source,
   for (const Edge edge : sourceBoundary) {
     for (const int vertex : {edge.first, edge.second}) {
       if (nearest_edge_squared_distance(source.vertices.row(vertex),
-                                        output.vertices,
+                                        output.product().vertices,
                                         outputBoundary) > toleranceSquared) {
         return false;
       }
@@ -416,9 +416,9 @@ int count_self_intersections(const Eigen::MatrixXd &vertices,
 
 Eigen::MatrixXi triangulate_output(const pipeline::RemeshResult &output) {
   std::vector<std::array<int, 3>> triangles;
-  for (int face = 0; face < output.faces.rows(); ++face) {
+  for (int face = 0; face < output.product().faces.rows(); ++face) {
     const std::vector<int> polygon =
-        face_vertices(output.faces, output.degrees, face);
+        face_vertices(output.product().faces, output.product().degrees, face);
     for (std::size_t index = 1; index + 1U < polygon.size(); ++index) {
       triangles.push_back({polygon[0], polygon[index], polygon[index + 1U]});
     }
@@ -496,8 +496,11 @@ double field_alignment_error(const Eigen::Vector3d &direction,
 
 std::vector<Edge> output_edges(const pipeline::RemeshResult &output) {
   std::vector<Edge> edges;
+  if (!output.is_produced()) {
+    return edges;
+  }
   const EdgeIncidence incidence =
-      build_edge_incidence(output.faces, output.degrees);
+      build_edge_incidence(output.product().faces, output.product().degrees);
   edges.reserve(incidence.size());
   for (const auto &[edge, faces] : incidence) {
     (void)faces;
@@ -539,9 +542,9 @@ std::pair<double, double> feature_metrics(const BenchmarkMesh &source,
       double bestAngle = 90.0;
       for (const Edge outputEdge : candidateEdges) {
         const Eigen::Vector3d outputFirst =
-            output.vertices.row(outputEdge.first);
+            output.product().vertices.row(outputEdge.first);
         const Eigen::Vector3d outputSecond =
-            output.vertices.row(outputEdge.second);
+            output.product().vertices.row(outputEdge.second);
         const double distance = std::sqrt(
             point_segment_squared_distance(sample, outputFirst, outputSecond));
         const double angle =
@@ -565,9 +568,9 @@ std::pair<double, double> feature_metrics(const BenchmarkMesh &source,
 void compute_valence(const pipeline::RemeshResult &output,
                      BenchmarkQuality &quality) {
   const EdgeIncidence incidence =
-      build_edge_incidence(output.faces, output.degrees);
+      build_edge_incidence(output.product().faces, output.product().degrees);
   std::vector<std::set<int>> neighbors(
-      static_cast<std::size_t>(output.vertices.rows()));
+      static_cast<std::size_t>(output.product().vertices.rows()));
   std::set<int> boundaryVertices;
   std::map<int, std::vector<int>> boundaryNeighbors;
   for (const auto &[edge, faces] : incidence) {
@@ -580,7 +583,7 @@ void compute_valence(const pipeline::RemeshResult &output,
       boundaryNeighbors[edge.second].push_back(edge.first);
     }
   }
-  for (int vertex = 0; vertex < output.vertices.rows(); ++vertex) {
+  for (int vertex = 0; vertex < output.product().vertices.rows(); ++vertex) {
     const int valence =
         static_cast<int>(neighbors[static_cast<std::size_t>(vertex)].size());
     ++quality.valenceHistogram[valence];
@@ -588,11 +591,11 @@ void compute_valence(const pipeline::RemeshResult &output,
     const auto boundary = boundaryNeighbors.find(vertex);
     if (boundary != boundaryNeighbors.end() && boundary->second.size() == 2U) {
       const Eigen::Vector3d first =
-          output.vertices.row(boundary->second[0]).transpose() -
-          output.vertices.row(vertex).transpose();
+          output.product().vertices.row(boundary->second[0]).transpose() -
+          output.product().vertices.row(vertex).transpose();
       const Eigen::Vector3d second =
-          output.vertices.row(boundary->second[1]).transpose() -
-          output.vertices.row(vertex).transpose();
+          output.product().vertices.row(boundary->second[1]).transpose() -
+          output.product().vertices.row(vertex).transpose();
       if (first.squaredNorm() > 0.0 && second.squaredNorm() > 0.0) {
         const double angle =
             std::acos(std::clamp(first.normalized().dot(second.normalized()),
@@ -618,14 +621,14 @@ void write_obj(const std::filesystem::path &path,
                              path.string());
   }
   stream << std::setprecision(17);
-  for (int vertex = 0; vertex < output.vertices.rows(); ++vertex) {
-    stream << "v " << output.vertices(vertex, 0) << ' '
-           << output.vertices(vertex, 1) << ' ' << output.vertices(vertex, 2)
+  for (int vertex = 0; vertex < output.product().vertices.rows(); ++vertex) {
+    stream << "v " << output.product().vertices(vertex, 0) << ' '
+           << output.product().vertices(vertex, 1) << ' ' << output.product().vertices(vertex, 2)
            << '\n';
   }
-  for (int face = 0; face < output.faces.rows(); ++face) {
+  for (int face = 0; face < output.product().faces.rows(); ++face) {
     stream << 'f';
-    for (const int vertex : face_vertices(output.faces, output.degrees, face)) {
+    for (const int vertex : face_vertices(output.product().faces, output.product().degrees, face)) {
       stream << ' ' << (vertex + 1);
     }
     stream << '\n';
@@ -787,6 +790,7 @@ void write_review_image(const std::filesystem::path &path,
     (void)faces;
     sourceEdges.push_back(edge);
   }
+  const bool hasOutput = output.is_produced();
   const std::vector<Edge> remeshEdges = output_edges(output);
   for (int view = 0; view < 3; ++view) {
     Eigen::Vector2d minimum =
@@ -802,11 +806,15 @@ void write_review_image(const std::filesystem::path &path,
       }
     };
     expand(source.vertices);
-    expand(output.vertices);
+    if (hasOutput) {
+      expand(output.product().vertices);
+    }
     render_edges(bitmap, source.vertices, sourceEdges, view, minimum, maximum,
                  {205, 205, 205});
-    render_edges(bitmap, output.vertices, remeshEdges, view, minimum, maximum,
-                 {25, 95, 175});
+    if (hasOutput) {
+      render_edges(bitmap, output.product().vertices, remeshEdges, view, minimum,
+                   maximum, {25, 95, 175});
+    }
     if (markFailure) {
       const int viewportWidth = bitmap.width / 3;
       const int left = view * viewportWidth + viewportWidth - 42;
@@ -912,26 +920,330 @@ std::uint64_t PeakWorkingSetSampler::finish() {
 std::uint64_t
 benchmark_output_structural_hash(const pipeline::RemeshResult &result) {
   std::uint64_t hash = 1469598103934665603ULL;
-  mix_hash(hash, static_cast<std::uint64_t>(result.vertices.rows()));
-  mix_hash(hash, static_cast<std::uint64_t>(result.vertices.cols()));
-  mix_hash(hash, static_cast<std::uint64_t>(result.faces.rows()));
-  mix_hash(hash, static_cast<std::uint64_t>(result.faces.cols()));
-  for (int row = 0; row < result.vertices.rows(); ++row) {
-    for (int column = 0; column < result.vertices.cols(); ++column) {
+  const pipeline::RemeshProduct emptyProduct;
+  const pipeline::RemeshProduct &product =
+      result.is_produced() ? result.product() : emptyProduct;
+  mix_hash(hash, static_cast<std::uint64_t>(product.vertices.rows()));
+  mix_hash(hash, static_cast<std::uint64_t>(product.vertices.cols()));
+  mix_hash(hash, static_cast<std::uint64_t>(product.faces.rows()));
+  mix_hash(hash, static_cast<std::uint64_t>(product.faces.cols()));
+  for (int row = 0; row < product.vertices.rows(); ++row) {
+    for (int column = 0; column < product.vertices.cols(); ++column) {
       std::uint64_t bits = 0;
-      const double value = result.vertices(row, column);
+      const double value = product.vertices(row, column);
       std::memcpy(&bits, &value, sizeof(bits));
       mix_hash(hash, bits);
     }
   }
-  for (int degree = 0; degree < result.degrees.size(); ++degree) {
+  for (int degree = 0; degree < product.degrees.size(); ++degree) {
     mix_hash(hash, static_cast<std::uint64_t>(
-                       static_cast<std::uint32_t>(result.degrees(degree))));
+                       static_cast<std::uint32_t>(product.degrees(degree))));
   }
-  for (int row = 0; row < result.faces.rows(); ++row) {
-    for (int column = 0; column < result.faces.cols(); ++column) {
+  for (int row = 0; row < product.faces.rows(); ++row) {
+    for (int column = 0; column < product.faces.cols(); ++column) {
       mix_hash(hash, static_cast<std::uint64_t>(static_cast<std::uint32_t>(
-                         result.faces(row, column))));
+                         product.faces(row, column))));
+    }
+  }
+  return hash;
+}
+
+std::uint64_t
+benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
+  if (!result.is_produced()) return 0U;
+  using Record = std::vector<std::int64_t>;
+  if (result.product().vertices.cols() != 3 || result.product().vertices.rows() <= 0 ||
+      result.product().faces.rows() <= 0 ||
+      result.product().degrees.size() != result.product().faces.rows() ||
+      result.product().outputVertexLineage.size() !=
+          static_cast<std::size_t>(result.product().vertices.rows()) ||
+      result.product().outputQuadLineage.size() !=
+          static_cast<std::size_t>(result.product().faces.rows())) {
+    return 0U;
+  }
+  const auto bits = [](const double value) {
+    std::uint64_t unsignedBits = 0U;
+    std::memcpy(&unsignedBits, &value, sizeof(unsignedBits));
+    std::int64_t signedBits = 0;
+    std::memcpy(&signedBits, &unsignedBits, sizeof(signedBits));
+    return signedBits;
+  };
+  const auto append_record = [](Record &target, const Record &record) {
+    target.push_back(static_cast<std::int64_t>(record.size()));
+    target.insert(target.end(), record.begin(), record.end());
+  };
+  const auto append_ints = [](Record &target, std::vector<int> values) {
+    std::sort(values.begin(), values.end());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
+    target.push_back(static_cast<std::int64_t>(values.size()));
+    for (const int value : values) target.push_back(value);
+  };
+  const auto append_semantic_ids = [](Record &target, auto values) {
+    std::sort(values.begin(), values.end());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
+    target.push_back(static_cast<std::int64_t>(values.size()));
+    for (const auto value : values) {
+      target.push_back(static_cast<std::int64_t>(value.index()));
+    }
+  };
+
+  std::vector<const geometry::PureQuadVertexLineage *> lineageByVertex(
+      static_cast<std::size_t>(result.product().vertices.rows()), nullptr);
+  for (const auto &lineage : result.product().outputVertexLineage) {
+    if (lineage.outputVertex < 0 ||
+        lineage.outputVertex >= result.product().vertices.rows() ||
+        lineageByVertex[static_cast<std::size_t>(lineage.outputVertex)] !=
+            nullptr ||
+        !lineage.valid()) {
+      return 0U;
+    }
+    lineageByVertex[static_cast<std::size_t>(lineage.outputVertex)] = &lineage;
+  }
+  std::vector<const geometry::PureQuadFaceLineage *> lineageByFace(
+      static_cast<std::size_t>(result.product().faces.rows()), nullptr);
+  for (const auto &lineage : result.product().outputQuadLineage) {
+    if (lineage.outputQuad < 0 || lineage.outputQuad >= result.product().faces.rows() ||
+        lineageByFace[static_cast<std::size_t>(lineage.outputQuad)] != nullptr ||
+        !lineage.valid()) {
+      return 0U;
+    }
+    lineageByFace[static_cast<std::size_t>(lineage.outputQuad)] = &lineage;
+  }
+
+  std::vector<Record> vertexRecords(
+      static_cast<std::size_t>(result.product().vertices.rows()));
+  for (int vertex = 0; vertex < result.product().vertices.rows(); ++vertex) {
+    const auto &lineage =
+        *lineageByVertex[static_cast<std::size_t>(vertex)];
+    Record &record = vertexRecords[static_cast<std::size_t>(vertex)];
+    record.insert(record.end(),
+                  {bits(result.product().vertices(vertex, 0)),
+                   bits(result.product().vertices(vertex, 1)),
+                   bits(result.product().vertices(vertex, 2)),
+                   static_cast<int>(lineage.kind),
+                   lineage.sourceSupport.has_value() ? 1 : 0});
+    if (lineage.sourceSupport.has_value()) {
+      const auto &support = lineage.sourceSupport.value();
+      record.push_back(static_cast<std::int64_t>(
+          authority::support_kind(support)));
+      if (const auto *vertexSupport =
+              std::get_if<authority::SourceVertexSupport>(&support)) {
+        record.push_back(static_cast<std::int64_t>(
+            vertexSupport->vertex.index()));
+      } else if (const auto *edgeSupport =
+                     std::get_if<authority::SourceEdgeSupport>(&support)) {
+        record.push_back(static_cast<std::int64_t>(
+            edgeSupport->edge.first().index()));
+        record.push_back(static_cast<std::int64_t>(
+            edgeSupport->edge.second().index()));
+      } else if (const auto *faceSupport =
+                     std::get_if<authority::SourceFaceInteriorSupport>(
+                         &support)) {
+        record.push_back(static_cast<std::int64_t>(
+            faceSupport->face.vertices()[0].index()));
+        record.push_back(static_cast<std::int64_t>(
+            faceSupport->face.vertices()[1].index()));
+        record.push_back(static_cast<std::int64_t>(
+            faceSupport->face.vertices()[2].index()));
+      }
+    }
+    append_semantic_ids(record, lineage.sourceTopologyRegions);
+    append_semantic_ids(record, lineage.sourceIsolationSheets);
+    record.push_back(lineage.quotientClass.has_value()
+                         ? static_cast<std::int64_t>(
+                               lineage.quotientClass->index())
+                         : -1);
+    append_semantic_ids(record, lineage.sourceOccurrences);
+
+    std::vector<geometry::SourceProjectionChart> charts =
+        lineage.sourceCharts;
+    std::sort(charts.begin(), charts.end());
+    charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
+    record.push_back(static_cast<std::int64_t>(charts.size()));
+    for (const auto &chart : charts) {
+      record.insert(record.end(),
+                    {static_cast<std::int64_t>(chart.chart.index()),
+                     static_cast<std::int64_t>(chart.face.vertices()[0].index()),
+                     static_cast<std::int64_t>(chart.face.vertices()[1].index()),
+                     static_cast<std::int64_t>(chart.face.vertices()[2].index())});
+    }
+
+    std::vector<Record> equivalenceRecords;
+    for (const auto &equivalence : lineage.equivalences) {
+      Record relation{
+          static_cast<int>(equivalence.kind),
+          static_cast<int>(equivalence.action.rotation.value()),
+          equivalence.action.shift.x, equivalence.action.shift.y,
+          static_cast<std::int64_t>(equivalence.route.steps().size())};
+      for (const authority::TransitionStep &step : equivalence.route.steps()) {
+        relation.push_back(static_cast<std::int64_t>(step.topology().first().index()));
+        relation.push_back(static_cast<std::int64_t>(step.topology().second().index()));
+        relation.push_back(static_cast<std::int64_t>(step.kind()));
+        relation.push_back(step.interior().has_value()
+                               ? static_cast<std::int64_t>(step.interior()->index())
+                               : -1);
+      }
+      relation.push_back(
+          static_cast<std::int64_t>(equivalence.isolationSeams.size()));
+      for (const authority::SourceEdgeTopologyKey &topology :
+           equivalence.isolationSeams) {
+        relation.push_back(static_cast<std::int64_t>(topology.first().index()));
+        relation.push_back(static_cast<std::int64_t>(topology.second().index()));
+      }
+      equivalenceRecords.push_back(std::move(relation));
+    }
+    std::sort(equivalenceRecords.begin(), equivalenceRecords.end());
+    equivalenceRecords.erase(
+        std::unique(equivalenceRecords.begin(), equivalenceRecords.end()),
+        equivalenceRecords.end());
+    record.push_back(static_cast<std::int64_t>(equivalenceRecords.size()));
+    for (const Record &equivalence : equivalenceRecords) {
+      append_record(record, equivalence);
+    }
+
+    if (lineage.kind ==
+        geometry::PureQuadVertexLineageKind::OrderedFeatureInterval) {
+      record.insert(record.end(),
+                    {lineage.featureInterval.railId.has_value()
+                         ? static_cast<std::int64_t>(
+                               lineage.featureInterval.railId->index())
+                         : -1,
+                     lineage.featureInterval.curveId,
+                     bits(lineage.featureInterval.parameter)});
+    }
+  }
+
+  std::vector<int> faceParent(static_cast<std::size_t>(result.product().faces.rows()));
+  std::iota(faceParent.begin(), faceParent.end(), 0);
+  const auto face_root = [&](int face) {
+    int root = face;
+    while (faceParent[static_cast<std::size_t>(root)] != root) {
+      root = faceParent[static_cast<std::size_t>(root)];
+    }
+    while (faceParent[static_cast<std::size_t>(face)] != face) {
+      const int next = faceParent[static_cast<std::size_t>(face)];
+      faceParent[static_cast<std::size_t>(face)] = root;
+      face = next;
+    }
+    return root;
+  };
+  const auto join_faces = [&](const int first, const int second) {
+    const int firstRoot = face_root(first);
+    const int secondRoot = face_root(second);
+    if (firstRoot != secondRoot) {
+      faceParent[static_cast<std::size_t>(secondRoot)] = firstRoot;
+    }
+  };
+  std::vector<std::vector<int>> facesByVertex(
+      static_cast<std::size_t>(result.product().vertices.rows()));
+  std::vector<std::vector<int>> faceVertices(
+      static_cast<std::size_t>(result.product().faces.rows()));
+  for (int face = 0; face < result.product().faces.rows(); ++face) {
+    const int degree = result.product().degrees(face);
+    if (degree < 3 || degree > result.product().faces.cols()) return 0U;
+    for (int corner = 0; corner < degree; ++corner) {
+      const int vertex = result.product().faces(face, corner);
+      if (vertex < 0 || vertex >= result.product().vertices.rows()) return 0U;
+      faceVertices[static_cast<std::size_t>(face)].push_back(vertex);
+      facesByVertex[static_cast<std::size_t>(vertex)].push_back(face);
+    }
+  }
+  for (const auto &incidentFaces : facesByVertex) {
+    for (std::size_t index = 1; index < incidentFaces.size(); ++index) {
+      join_faces(incidentFaces.front(), incidentFaces[index]);
+    }
+  }
+
+  struct ComponentRecords {
+    std::set<int> vertices;
+    std::vector<Record> faces;
+    std::vector<Record> edges;
+  };
+  std::map<int, ComponentRecords> components;
+  std::set<std::pair<int, int>> seenEdges;
+  for (int face = 0; face < result.product().faces.rows(); ++face) {
+    ComponentRecords &component = components[face_root(face)];
+    const auto &vertices = faceVertices[static_cast<std::size_t>(face)];
+    std::vector<Record> cornerRecords;
+    for (const int vertex : vertices) {
+      component.vertices.insert(vertex);
+      cornerRecords.push_back(vertexRecords[static_cast<std::size_t>(vertex)]);
+    }
+    std::vector<Record> canonicalCorners;
+    for (std::size_t offset = 0; offset < cornerRecords.size(); ++offset) {
+      std::vector<Record> rotated;
+      for (std::size_t corner = 0; corner < cornerRecords.size(); ++corner) {
+        rotated.push_back(
+            cornerRecords[(offset + corner) % cornerRecords.size()]);
+      }
+      if (canonicalCorners.empty() || rotated < canonicalCorners) {
+        canonicalCorners = std::move(rotated);
+      }
+    }
+    Record faceRecord;
+    faceRecord.push_back(static_cast<std::int64_t>(canonicalCorners.size()));
+    for (const Record &corner : canonicalCorners) {
+      append_record(faceRecord, corner);
+    }
+    const auto &lineage = *lineageByFace[static_cast<std::size_t>(face)];
+    faceRecord.insert(
+        faceRecord.end(),
+        {static_cast<int>(lineage.operation), lineage.completionVariant,
+         lineage.boundaryOnly ? 1 : 0,
+         static_cast<std::int64_t>(lineage.canonicalStitchCycleHash),
+         static_cast<std::int64_t>(
+             lineage.canonicalAuthoritativeCycleHash)});
+    component.faces.push_back(std::move(faceRecord));
+
+    for (std::size_t corner = 0; corner < vertices.size(); ++corner) {
+      const int first = vertices[corner];
+      const int second = vertices[(corner + 1U) % vertices.size()];
+      const auto edge = canonical_edge(first, second);
+      if (seenEdges.insert(edge).second) {
+        const Record &firstRecord = vertexRecords[static_cast<std::size_t>(first)];
+        const Record &secondRecord =
+            vertexRecords[static_cast<std::size_t>(second)];
+        Record edgeRecord;
+        if (secondRecord < firstRecord) {
+          append_record(edgeRecord, secondRecord);
+          append_record(edgeRecord, firstRecord);
+        } else {
+          append_record(edgeRecord, firstRecord);
+          append_record(edgeRecord, secondRecord);
+        }
+        component.edges.push_back(std::move(edgeRecord));
+      }
+    }
+  }
+
+  std::vector<Record> componentRecords;
+  for (auto &[root, component] : components) {
+    (void)root;
+    std::vector<Record> vertices;
+    for (const int vertex : component.vertices) {
+      vertices.push_back(vertexRecords[static_cast<std::size_t>(vertex)]);
+    }
+    std::sort(vertices.begin(), vertices.end());
+    std::sort(component.edges.begin(), component.edges.end());
+    std::sort(component.faces.begin(), component.faces.end());
+    Record componentRecord;
+    componentRecord.insert(
+        componentRecord.end(),
+        {static_cast<std::int64_t>(vertices.size()),
+         static_cast<std::int64_t>(component.edges.size()),
+         static_cast<std::int64_t>(component.faces.size())});
+    for (const Record &vertex : vertices) append_record(componentRecord, vertex);
+    for (const Record &edge : component.edges) append_record(componentRecord, edge);
+    for (const Record &face : component.faces) append_record(componentRecord, face);
+    componentRecords.push_back(std::move(componentRecord));
+  }
+  std::sort(componentRecords.begin(), componentRecords.end());
+  std::uint64_t hash = 1469598103934665603ULL;
+  mix_hash(hash, static_cast<std::uint64_t>(componentRecords.size()));
+  for (const Record &component : componentRecords) {
+    mix_hash(hash, static_cast<std::uint64_t>(component.size()));
+    for (const std::int64_t value : component) {
+      mix_hash(hash, static_cast<std::uint64_t>(value));
     }
   }
   return hash;
@@ -953,9 +1265,12 @@ BenchmarkQuality evaluate_benchmark_quality(
   quality.outputStructuralHashValue = benchmark_output_structural_hash(result);
   quality.outputStructuralHash =
       benchmark_hash_string(quality.outputStructuralHashValue);
-  if (!result.success || result.vertices.rows() == 0 ||
-      result.faces.rows() == 0 ||
-      result.degrees.size() != result.faces.rows()) {
+  quality.outputSemanticHashValue = benchmark_output_semantic_hash(result);
+  quality.outputSemanticHash =
+      benchmark_hash_string(quality.outputSemanticHashValue);
+  if (!result.is_produced() || result.product().vertices.rows() == 0 ||
+      result.product().faces.rows() == 0 ||
+      result.product().degrees.size() != result.product().faces.rows()) {
     quality.error =
         "Cannot evaluate quality for an unsuccessful or empty mesh.";
     return quality;
@@ -967,17 +1282,17 @@ BenchmarkQuality evaluate_benchmark_quality(
         std::max(1.0e-12, scale * benchmarkCase.lengthRatio);
     const double geometricTolerance = std::max(1.0e-12, scale * 1.0e-9);
     const EdgeIncidence outputIncidence =
-        build_edge_incidence(result.faces, result.degrees);
+        build_edge_incidence(result.product().faces, result.product().degrees);
 
     int quadFaces = 0;
-    for (int face = 0; face < result.degrees.size(); ++face) {
-      if (result.degrees(face) == 4) {
+    for (int face = 0; face < result.product().degrees.size(); ++face) {
+      if (result.product().degrees(face) == 4) {
         ++quadFaces;
       }
     }
     quality.pureQuadRate =
-        result.faces.rows() > 0
-            ? static_cast<double>(quadFaces) / result.faces.rows()
+        result.product().faces.rows() > 0
+            ? static_cast<double>(quadFaces) / result.product().faces.rows()
             : 0.0;
     for (const auto &[edge, incidentFaces] : outputIncidence) {
       (void)edge;
@@ -986,18 +1301,18 @@ BenchmarkQuality evaluate_benchmark_quality(
       }
     }
     quality.tJunctionCount =
-        count_t_junctions(result.vertices, outputIncidence, geometricTolerance);
+        count_t_junctions(result.product().vertices, outputIncidence, geometricTolerance);
     quality.duplicateFaceCount =
-        count_duplicate_faces(result.faces, result.degrees);
+        count_duplicate_faces(result.product().faces, result.product().degrees);
     quality.selfIntersectionCount = count_self_intersections(
-        result.vertices, result.faces, geometricTolerance);
+        result.product().vertices, result.product().faces, geometricTolerance);
 
     const Eigen::VectorXi sourceDegrees =
         Eigen::VectorXi::Constant(sourceMesh.faces.rows(), 3);
     const TopologySummary sourceTopology =
         summarize_topology(sourceMesh.faces, sourceDegrees);
     const TopologySummary outputTopology =
-        summarize_topology(result.faces, result.degrees);
+        summarize_topology(result.product().faces, result.product().degrees);
     quality.topologyPreserved =
         sourceTopology.connectedComponents ==
             outputTopology.connectedComponents &&
@@ -1021,8 +1336,8 @@ BenchmarkQuality evaluate_benchmark_quality(
     std::vector<double> sizeErrors;
     for (const auto &[edge, incidentFaces] : outputIncidence) {
       (void)incidentFaces;
-      const Eigen::Vector3d first = result.vertices.row(edge.first);
-      const Eigen::Vector3d second = result.vertices.row(edge.second);
+      const Eigen::Vector3d first = result.product().vertices.row(edge.first);
+      const Eigen::Vector3d second = result.product().vertices.row(edge.second);
       const Eigen::Vector3d direction = second - first;
       const geometry::SurfacePoint sourcePoint =
           sourceProjection.project(0.5 * (first + second));
@@ -1048,10 +1363,10 @@ BenchmarkQuality evaluate_benchmark_quality(
     quality.relativeSizeErrorP95 = percentile(std::move(sizeErrors), 0.95);
 
     const Eigen::MatrixXi outputTriangles = triangulate_output(result);
-    const geometry::SurfaceProjectionBvh outputProjection(result.vertices,
+    const geometry::SurfaceProjectionBvh outputProjection(result.product().vertices,
                                                           outputTriangles);
     std::vector<double> approximation = directed_surface_errors(
-        surface_samples(result.vertices, result.faces, result.degrees),
+        surface_samples(result.product().vertices, result.product().faces, result.product().degrees),
         sourceProjection, targetLength);
     std::vector<double> reverse = directed_surface_errors(
         surface_samples(sourceMesh.vertices, sourceMesh.faces, sourceDegrees),
@@ -1114,6 +1429,8 @@ void write_benchmark_quality_json(std::ostream &out,
       << "\"peakWorkingSetBytes\":" << quality.peakWorkingSetBytes << ","
       << "\"outputStructuralHash\":\""
       << escape_json(quality.outputStructuralHash) << "\","
+      << "\"outputSemanticHash\":\""
+      << escape_json(quality.outputSemanticHash) << "\","
       << "\"outputMeshPath\":\"" << escape_json(quality.outputMeshPath) << "\","
       << "\"reviewImagePath\":\"" << escape_json(quality.reviewImagePath)
       << "\","

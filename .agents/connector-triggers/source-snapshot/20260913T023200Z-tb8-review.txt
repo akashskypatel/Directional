@@ -1,0 +1,3 @@
+turn=M4-CP3-TB8-REV
+purpose=fresh source snapshot after manually applied TB8-EXEC closeout patch
+expected_head=0e344c8950d1051746313ec1887ebe5b89182741

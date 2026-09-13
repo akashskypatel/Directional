@@ -78,8 +78,16 @@ struct FlowRepArc {
   int sourceFace = -1;
   Eigen::RowVector3d startBarycentric = Eigen::RowVector3d::Zero();
   Eigen::RowVector3d endBarycentric = Eigen::RowVector3d::Zero();
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  /// Canonical intrinsic endpoint identities mirror arrangement node keys.
+  /// They prevent close but distinct surface points from being welded by a
+  /// world-space tolerance while still identifying one source-edge point in
+  /// both incident triangle charts.
+  bool startIntrinsicEndpointKeyValid = false;
+  bool endIntrinsicEndpointKeyValid = false;
+  std::uint64_t startIntrinsicEndpointKey = 0U;
+  std::uint64_t endIntrinsicEndpointKey = 0U;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  std::optional<authority::IsolationSheetId> sourceIsolationSheet;
   int family = 0;
   int featureClass = 0;
   bool mandatoryRail = false;
@@ -87,7 +95,7 @@ struct FlowRepArc {
   bool hardFeatureRail = false;
   int strandProvenance = -1;
   int featureProvenance = -1;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   double railT0 = 0.0;
   double railT1 = 1.0;
@@ -119,8 +127,8 @@ struct FlowRepCoverageSample {
   Eigen::RowVector3d position = Eigen::RowVector3d::Zero();
   int sourceFace = -1;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  std::optional<authority::IsolationSheetId> sourceIsolationSheet;
   double targetSize = 0.0;
   int sourceArcId = -1;
 };
@@ -224,16 +232,158 @@ struct FlowRepEndpointCompletionOptions {
   bool requireAllEndpointsResolved = true;
 };
 
-struct FlowRepEndpointCompletionResult {
-  bool success = false;
-  std::vector<FlowRepArc> arcs;
-  std::vector<int> retainedArcIds;
-  std::vector<FlowRepEndpointTag> endpointTags;
+enum class FlowRepEndpointResolution : int {
+  AlreadyResolved = 0,
+  SegmentIntersection = 1,
+  IntrinsicNode = 2,
+  InvalidSourceFace = 3,
+  DegenerateSource = 4,
+  EmptyTrace = 5,
+  NoNetworkCapture = 6,
+  AddedArcLimit = 7,
+};
+
+struct FlowRepEndpointCompletionDiagnostic {
+  int sourceArcId = -1;
+  bool startEndpoint = false;
+  bool requiredSingularitySupport = false;
+  bool hardFeatureRail = false;
+  int family = -1;
+  int sign = 0;
+  TraceTerminationReason termination = TraceTerminationReason::Budget;
+  int tracedSegments = 0;
+  int skippedDegenerateSegments = 0;
+  int terminalSourceFace = -1;
+  int terminalSourceVertex = -1;
+  int terminalSourceEdge0 = -1;
+  int terminalSourceEdge1 = -1;
+  double terminalSourceEdgeT = -1.0;
+  Eigen::RowVector3d terminalBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  int lastRepresentableSourceFace = -1;
+  int lastRepresentableSourceVertex = -1;
+  int lastRepresentableSourceEdge0 = -1;
+  int lastRepresentableSourceEdge1 = -1;
+  double lastRepresentableSourceEdgeT = -1.0;
+  Eigen::RowVector3d lastRepresentableBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  double terminalDistanceToLastRepresentable = -1.0;
+  int terminalFeatureRailCandidates = 0;
+  int terminalCompatibleFeatureRailCandidates = 0;
+  int generatedSupportTraceId = -1;
+  int captureTargetArcId = -1;
+  int captureTraceSegment = -1;
+  double captureTraceParameter = -1.0;
+  double captureTargetParameter = -1.0;
+  int captureTargetSourceFace = -1;
+  Eigen::RowVector3d captureBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  Eigen::RowVector3d captureTargetStartBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  Eigen::RowVector3d captureTargetEndBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  FlowRepEndpointResolution resolution =
+      FlowRepEndpointResolution::NoNetworkCapture;
+};
+
+enum class FlowRepEndpointCompletionFailureKind : int {
+  None = 0,
+  InvalidOptions = 1,
+  IncompleteCrossFieldAxes = 2,
+  InvalidRetainedArcIdentity = 3,
+  DuplicateRetainedArc = 4,
+  IncompleteRetainedArcProvenance = 5,
+  EndpointTraceLimitExceeded = 6,
+  GeneratedEndpointArcMissingProvenance = 7,
+  UnresolvedRequiredEndpoints = 8,
+};
+
+struct FlowRepEndpointCompletionEvidence {
   int openEndpointsBefore = 0;
   int resolvedEndpoints = 0;
   int unresolvedEndpoints = 0;
+  int unresolvedRequiredEndpoints = 0;
   int addedArcs = 0;
-  std::string failure;
+  std::array<int, 9> traceTerminationCounts{};
+  std::vector<FlowRepEndpointCompletionDiagnostic> diagnostics;
+};
+
+struct FlowRepEndpointCompletionProduct {
+  std::vector<FlowRepArc> arcs;
+  std::vector<int> retainedArcIds;
+  std::vector<FlowRepEndpointTag> endpointTags;
+};
+
+struct FlowRepEndpointCompletionFailure {
+  FlowRepEndpointCompletionFailureKind kind =
+      FlowRepEndpointCompletionFailureKind::None;
+  std::string detail;
+};
+
+class FlowRepEndpointCompletionResult : public FlowRepEndpointCompletionEvidence {
+public:
+  using Product = FlowRepEndpointCompletionProduct;
+  using Failure = FlowRepEndpointCompletionFailure;
+  using Outcome = ProducerOutcome<Product, Failure>;
+
+  FlowRepEndpointCompletionResult() = default;
+  FlowRepEndpointCompletionResult(const FlowRepEndpointCompletionResult &) = default;
+  FlowRepEndpointCompletionResult(FlowRepEndpointCompletionResult &&) noexcept = default;
+  FlowRepEndpointCompletionResult &operator=(const FlowRepEndpointCompletionResult &) = default;
+  FlowRepEndpointCompletionResult &operator=(FlowRepEndpointCompletionResult &&) noexcept = default;
+
+  [[nodiscard]] static FlowRepEndpointCompletionResult produced(
+      FlowRepEndpointCompletionEvidence evidence, Product product) {
+    return FlowRepEndpointCompletionResult(
+        std::move(evidence), Outcome{Produced<Product>{std::move(product)}});
+  }
+
+  [[nodiscard]] static FlowRepEndpointCompletionResult rejected(
+      FlowRepEndpointCompletionEvidence evidence, Failure failure) {
+    if (failure.kind == FlowRepEndpointCompletionFailureKind::None) {
+      throw std::invalid_argument(
+          "Rejected FlowRep endpoint completion requires a typed failure.");
+    }
+    return FlowRepEndpointCompletionResult(
+        std::move(evidence), Outcome{Rejected<Failure>{std::move(failure)}});
+  }
+
+  [[nodiscard]] bool is_produced() const noexcept {
+    return std::holds_alternative<Produced<Product>>(outcome_);
+  }
+  [[nodiscard]] bool is_rejected() const noexcept {
+    return std::holds_alternative<Rejected<Failure>>(outcome_);
+  }
+  [[nodiscard]] bool is_not_applicable() const noexcept {
+    return std::holds_alternative<NotApplicable>(outcome_);
+  }
+  [[nodiscard]] const Product *produced_product() const noexcept {
+    const auto *produced = std::get_if<Produced<Product>>(&outcome_);
+    return produced == nullptr ? nullptr : &produced->product;
+  }
+  [[nodiscard]] Product &product() & {
+    return std::get<Produced<Product>>(outcome_).product;
+  }
+  [[nodiscard]] const Product &product() const & {
+    return std::get<Produced<Product>>(outcome_).product;
+  }
+  [[nodiscard]] Product &&product() && {
+    return std::move(std::get<Produced<Product>>(outcome_).product);
+  }
+  [[nodiscard]] const Failure *rejection() const noexcept {
+    const auto *rejected = std::get_if<Rejected<Failure>>(&outcome_);
+    return rejected == nullptr ? nullptr : &rejected->failure;
+  }
+  [[nodiscard]] const Outcome &outcome() const & noexcept { return outcome_; }
+  [[nodiscard]] Outcome &&outcome() && noexcept { return std::move(outcome_); }
+
+private:
+  FlowRepEndpointCompletionResult(FlowRepEndpointCompletionEvidence evidence,
+                                  Outcome outcome)
+      : FlowRepEndpointCompletionEvidence(std::move(evidence)),
+        outcome_(std::move(outcome)) {}
+
+  Outcome outcome_{NotApplicable{}};
 };
 
 struct FlowRepSelectionInput {
@@ -376,12 +526,24 @@ bool cycle_evaluations_are_valid(
 
 namespace flow_rep_detail {
 
-using FlowRepLogicalStrandKey = std::tuple<int, int, int, int, int>;
+struct FlowRepLogicalStrandKey {
+  int kind = 0;
+  std::optional<authority::HardRailId> rail;
+  int primary = -1;
+  int secondary = -1;
+  int family = 0;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+
+  auto operator<=>(const FlowRepLogicalStrandKey &) const = default;
+};
 
 FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc);
 
 std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
-                                           const bool start);
+                                    const bool start);
+
+void assign_intrinsic_endpoint_keys(FlowRepArc &arc,
+                                    const Eigen::MatrixXi &faces);
 
 std::vector<FlowRepFlowline> extract_transactional_flowlines(
     const std::vector<FlowRepArc> &arcs,
@@ -419,8 +581,8 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &crossField,
     const SurfaceCellTracingOptions &tracingOptions,
-    const std::vector<FlowRepArc> &arcs,
-    const std::vector<int> &retainedArcIds,
+    std::vector<FlowRepArc> arcs,
+    std::vector<int> retainedArcIds,
     const FlowRepEndpointCompletionOptions &options = {});
 
 FlowRepOverlay make_flow_rep_overlay(
