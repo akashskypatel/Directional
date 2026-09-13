@@ -28,17 +28,15 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP3-CB10` (test-authority migration after accepted ordinal211 RED)
+## Current focus — `M4-CP3-TB8-EXEC` (artifact-only verification of CB10 fixture-authority migration)
 
-`M4-CP3-TB7-REV` is **COMPLETE**. The CB9 correction is recovery-proved: ordinal138 **2/2 PASS**, row408 **2/2 PASS**, rows404-407 **8/8 PASS**. `M4-CP3-TB6-REV-CAND-01` is closed recovery-proved; its stable event remains historical.
+`M4-CP3-CB10` is **COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED**. All G1-G4 guards passed. Only `tests/SurfaceCellTransitionQuotientTests.cpp` changed: the shared `make_hard_rail_fixture()` now uses the production SurfaceCells path to obtain exact A2b/A3 authority for the unchanged 3×3 mesh and hard edges `(1,4)` / `(4,7)`. Product strictness, all six downstream test bodies/names, rows404-408 and selector403/408 identity lists are unchanged.
 
-The TB7 cumulative RED at accepted ordinal211 is **TEST-AUTHORITY / FIXTURE-PRECONDITION DRIFT AFTER THE CB5 A3→A4 CUTOVER**, not direct CB9 product causality. The test file is byte-identical between accepted R4, CB5 and current source. CB5 correctly made exact A3 shared-boundary identity mandatory, while `make_hard_rail_fixture()` still constructs manual hard-rail authority without accepted A2b/A3 plans and therefore fails setup at `InvalidHardRailPairing` before the test's intended tamper.
+Exact semantic source is `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`. The mandatory eight-target GMP/GMPXX compile is GREEN in run/job `34727247774 / 103643462175`. Candidate artifact `10307919492` is compile-valid only; corrected R4 artifact `10289601000` remains accepted runtime authority at selector403 **403/403**.
 
-`M4-CP3-TB7-REV-CAND-01` is OPEN. Because ordinal211 was inside accepted selector403 and went PASS → RED, stable accounting advances to **49 events / 14 categories / 35 recurrences**, debt **5**, category existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`.
+**Exact next: `M4-CP3-TB8-EXEC`.** Follow `.agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Plan.md`. TB8 must consume the immutable candidate package, run the six shared-fixture identities A/B plus ordinal138, row408 and rows404-407 discriminators, and execute accepted selector403 **to completion without semantic fail-fast** so the complete accepted RED set is known before Review. `M4-CP3-TB8-REV` is mandatory after EXEC and owns promotion/classification.
 
-**Exact next: `M4-CP3-CB10`.** Test-authority-only, runtime-free. Follow `.agents/Directional/Architecture_M4_CP3_CB10_Code_Build_Plan.md`: prove G1-G4 before mutation, migrate only the shared hard-rail fixture onto production A2b/A3 authority, preserve all six downstream identity bodies/names and selector identity lists, compile/package the eight CP3 targets with GMP/GMPXX, and author TB8. No production fallback or runtime is authorized.
-
-Accepted runtime authority remains corrected R4 artifact `10289601000` / selector403 **403/403**. CB9 package `10305678151` is rejected/unpromoted. CP3 and `G4-B002` remain open.
+Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**. `M4-CP3-TB7-REV-CAND-01`, CP3 and `G4-B002` remain OPEN pending TB8 Review.
 
 ## Carried forward from M1
 
