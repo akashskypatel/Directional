@@ -1,4 +1,0 @@
-purpose=compile M4-CP-SCALE-CB1 exact retained-witness census revision
-source_sha=a359b981f9350139304bc5a654041dfba78609b6
-runtimeExecution=false
-retry=2

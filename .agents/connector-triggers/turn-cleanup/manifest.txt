@@ -1,4 +1,0 @@
-# M4-CP-SCALE-CB1 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/p5-cp-scale-cb1-20260914.txt
-.agents/connector-triggers/drive-apply/p5-cp-scale-cb1-20260914.txt
-.agents/connector-triggers/compile/p5-cp-scale-cb1-20260914.txt
