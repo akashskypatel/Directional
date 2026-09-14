@@ -1,3 +1,12 @@
+## 2026-09-14 — M4-CP-COND-TB5-REV — selector423 accepted; CP-COND CLOSED
+
+- Independently re-opened TB5 primary evidence and re-derived the exact **423/423** cumulative gate: selector422 **422/422**, row423 **1/1**, 423 unique row-for-row identities, owner census **30 / 277 / 75 / 41**, zero RED/SKIP/timeout/selection mismatch, 27/27 package manifest, 440/440 evidence manifest, and exact package/source/execution byte+mode postflight.
+- Independently re-derived the CB5 boundary raw precondition from raw bytes: the five-face fan has quarter-turn offsets `[3,3,3,3,3]` -> cycle numerator `-1`; branch0 on face0 hits genuine source-boundary edge `{1,2}` strictly in its interior. A face0 field mutation preserves the structural carrier but changes the exact boundary parameter, proving non-vacuity before conditioner execution.
+- Verified the frozen production-identity conditioner is bit-preserving for this witness, returns `Produced`, validates its certificate, and reconstructs a raw view on which the same independent oracle is exactly equal. History comparison confirms no `src/`, `include/`, benchmark, fixture, accepted selector row, or later semantic drift was used to obtain the gate.
+- `M4-CP-COND-TB4-REV-CAND-01` is **CLOSED / RECOVERY/TEST-AUTHORITY PROVED / NON-STABLE**. All eight frozen CP-COND §12 exit conjuncts pass in the one immutable package, so **M4-CP-COND is CLOSED / ACCEPTED**.
+- Accepted current M4 runtime authority advances to package `10331193451` / source `07984711db59eaa228820e7d44e5552a652edadf` / selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`. Stable accounting remains **49 / 14 / 35**, debt **5**.
+- Mandatory M4 consolidation indexes the already-retired CB5/TB5 plan/report files and folds superseded CP-COND per-turn records after preserving their durable facts. Exact next is runtime-free **`M4-CP-SCALE-DEFN`** under `Architecture_M4_CP_SCALE_DEFN_Plan.md`.
+
 ## 2026-09-14 — M4-CP-COND-TB5-EXEC
 
 - Immutable artifact-only run/job `34805164109 / 103855521990` consumed CB5 package `10331193451` / source `07984711db59eaa228820e7d44e5552a652edadf` without configure/build/relink/repair or source/test/fixture/selector mutation.

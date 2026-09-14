@@ -593,7 +593,7 @@ Compile run/job `34785549072 / 103800273458` is GREEN on test-authority source `
 | `Architecture_M4_CP_COND_CB2_Code_Build_Record.md` | 68 | Folded after TB2 Review; package authority retained in §2.41/current TB2 report. |
 | `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` | 96 | Folded after TB2 EXEC/Review; 423-process gate/postflight retained in current TB2 report/Review/CB3 plan. |
 
-Current retained CP-COND authority after TB5-EXEC is the frozen definitions, accepted selector422/runtime authority, candidate selector423, the TB4 Review record, current `Architecture_M4_CP_COND_TB5_EXEC_Report.md`, and exactly one next plan `Architecture_M4_CP_COND_TB5_Review_Plan.md`. TB5 stale-evidence cleanup retires `Architecture_M4_CP_COND_CB5_Code_Build_Plan.md` (107 lines), `Architecture_M4_CP_COND_CB5_Code_Build_Report.md` (108 lines), and `Architecture_M4_CP_COND_TB5_Artifact_Only_Test_Benchmark_Plan.md` (127 lines); the mandatory TB5 Review must add those filenames/line counts/verdicts to this folded-document index under the Review-turn consolidation rule.
+Current retained CP-COND authority after TB5 Review is the frozen definitions, accepted selector423/package authority, `Architecture_M4_CP_COND_TB5_Review_Record.md`, `M4_CP_COND_Closure_Record.md`, and the consolidated/selector/tracker/changelog records. The exact successor plan is `Architecture_M4_CP_SCALE_DEFN_Plan.md`. Superseded CP-COND per-turn reports/plans are indexed below and recoverable from git history; selector files, frozen definitions, Review and closure records remain retained.
 
 
 ## 2.44 `M4-CP-COND-TB3-EXEC` — corrected artifact mechanically green; semantic Review pending
@@ -639,3 +639,35 @@ CP-COND remains OPEN on frozen §12 conjunct 4. The report-only boundary placeho
 | `Architecture_M4_CP_COND_TB3_Review_Record.md` | 202 | Folded after its selector candidate/checksum observation were discharged; decisions retained in §§2.45-2.46 and tracker. |
 | `Architecture_M4_CP_COND_CB4_Code_Build_Report.md` | 118 | Folded after TB4 Review promotion; exact source/package/selector publication retained in §2.46, selector manifest and current Review. |
 | `Architecture_M4_CP_COND_TB4_Artifact_Only_Test_Benchmark_Plan.md` | 78 | Folded after TB4 execution/review; frozen gate/result retained in current TB4 EXEC report, Review and §2.46. |
+
+## 2.47 `M4-CP-COND-CB5 + TB5-EXEC + TB5-REV` — independent boundary authority accepted; CP-COND closed
+
+CB5 changed test authority only: a five-face raw boundary fan, exact/discrete test-local boundary-truncation oracle,
+load-bearing raw-field mutation and certificate reconstruction gate. Semantic implementation commit
+`a3653af2e47723bbe2396b27a6da9f2f2db203f0` changed no `src/` or `include/` production semantics. It published
+selector423 = exact selector422 prefix + one producer-owned row423. Authoritative package source
+`07984711db59eaa228820e7d44e5552a652edadf` compiled the seven-owner target set with GMP/GMPXX and no runtime;
+package `10331193451` is 27/27 manifest-clean.
+
+TB5 run/job `34805164109 / 103855521990` then proved selector423 **423/423**, inherited selector422 **422/422** and
+row423 **1/1**, with zero RED/SKIP/timeout/selection mismatch and exact package/source/execution byte+mode postflight.
+TB5 Review independently re-opened the primary artifacts, verified all 440 evidence checksums, re-derived every ledger
+row and raw log, and independently recomputed the raw oracle: offsets `[3,3,3,3,3]` -> `-1`, source face0/branch0,
+genuine boundary edge `{1,2}`, with an exact boundary parameter changed by the prescribed raw-field mutation.
+
+`M4-CP-COND-TB4-REV-CAND-01` closes **RECOVERY/TEST-AUTHORITY PROVED / NON-STABLE**. All eight frozen CP-COND exit
+conjuncts are satisfied without production/fixture semantic weakening, so package `10331193451` / selector423 becomes
+accepted current M4 runtime authority and **M4-CP-COND closes**. Stable accounting remains **49 / 14 / 35**, debt **5**.
+Exact next is runtime-free `M4-CP-SCALE-DEFN`.
+
+### TB5 Review folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP_COND_CB5_Code_Build_Plan.md` | 107 | **FOLDED BY TB5 STALE-EVIDENCE CLEANUP; INDEXED AT REVIEW.** Frozen CB5 test-authority scope/falsifiers are retained in §2.47, TB5 Review and closure record. |
+| `Architecture_M4_CP_COND_CB5_Code_Build_Report.md` | 108 | **FOLDED BY TB5 STALE-EVIDENCE CLEANUP; INDEXED AT REVIEW.** Semantic commit, compile/package and no-runtime authority are retained in §2.47, changelog, Review and closure. |
+| `Architecture_M4_CP_COND_TB5_Artifact_Only_Test_Benchmark_Plan.md` | 127 | **FOLDED BY TB5 STALE-EVIDENCE CLEANUP; INDEXED AT REVIEW.** Frozen 423-process artifact-only gate and immutable criteria are retained in TB5 EXEC/Review and §2.47. |
+| `Architecture_M4_CP_COND_TB4_EXEC_Report.md` | 75 | **FOLDED AFTER CP-COND CLOSURE.** Accepted selector422 predecessor mechanics remain in §2.46, selector manifest, TB5 Review and closure. |
+| `Architecture_M4_CP_COND_TB4_Review_Record.md` | 187 | **FOLDED AFTER TB5 REVIEW SUPERSESSION.** Selector422 promotion, boundary candidate and rejected-unreachability reasoning remain in §§2.46-2.47, tracker, TB5 Review and closure. |
+| `Architecture_M4_CP_COND_TB5_EXEC_Report.md` | 88 | **FOLDED AFTER TB5 REVIEW.** Primary run/package/result identities and 423/423 mechanics remain in §2.47, TB5 Review, closure and changelog. |
+| `Architecture_M4_CP_COND_TB5_Review_Plan.md` | 68 | **CONSUMED/FOLDED AFTER REVIEW.** Frozen independent-evidence/raw-oracle adjudication criteria are answered explicitly in the retained TB5 Review record. |

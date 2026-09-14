@@ -10,15 +10,15 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-13 (`M4-CP-COND-TB4-REV` COMPLETE / SELECTOR422 + PACKAGE ACCEPTED / BOUNDARY RAW-PRECONDITION GAP OPEN. Current runtime authority is package `10327643907` / selector422 **422/422**. Stable accounting **49 / 14 / 35**, debt **5**. Exact next `M4-CP-COND-CB5`.)
+**Status date:** 2026-09-14 (`M4-CP-COND-TB5-REV` COMPLETE / CP-COND CLOSED + ACCEPTED. Current runtime authority is package `10331193451` / selector423 **423/423**. Stable accounting **49 / 14 / 35**, debt **5**. Exact next `M4-CP-SCALE-DEFN`.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
 ### M4-CP-COND definition freeze — 2026-09-13
 
-`M4-CP-COND-DEFN` is COMPLETE / DEFINITIONS FROZEN; the checkpoint remains OPEN. `Architecture_M4_CP_COND_Frozen_Definitions.md` owns the single-writer pre-A0 conditioned product, exact raw→conditioned correspondence, exact-policy operation set, typed refusal, independent certificate validator, idempotence and witness preconditions. The initial contract uses one-to-one face correspondence and exact sliver refusal rather than topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic authority.
+`M4-CP-COND-DEFN` is COMPLETE / DEFINITIONS FROZEN; `M4-CP-COND-TB5-REV` now **CLOSES / ACCEPTS the checkpoint**. `Architecture_M4_CP_COND_Frozen_Definitions.md` owns the single-writer pre-A0 conditioned product, exact raw→conditioned correspondence, exact-policy operation set, typed refusal, independent certificate validator, idempotence and witness preconditions. The initial contract uses one-to-one face correspondence and exact sliver refusal rather than topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic authority.
 
-TB4 Review independently accepts CB4 package `10327643907` and cumulative selector422 **422/422**, closing the selector-publication gap while preserving selector408 byte-for-byte as its prefix. CP-COND nevertheless remains OPEN because frozen §12 conjunct 4 still lacks a pre-production independent raw oracle for a real boundary-truncated separatrix. Existing accepted A2a runtime proves the behavior class is reachable, so genuine-unreachability is not the closure path. Exact next `M4-CP-COND-CB5` adds one independently derived conditioner-preservation gate and selector423 row423 without production changes. Stable accounting stays **49 / 14 / 35**, debt **5**.
+TB4 Review first accepted CB4 package `10327643907` / selector422 **422/422** while leaving the boundary raw-precondition gap explicit. CB5 then added one independent exact/discrete raw boundary oracle as selector423 row423 with no production semantic change; TB5 proved selector423 **423/423**; TB5 Review independently re-derived the oracle, mutation falsifier, certificate preservation and immutable cumulative gate. Package `10331193451` / selector423 is now accepted current M4 runtime authority and CP-COND is CLOSED. Exact next is runtime-free `M4-CP-SCALE-DEFN`. Stable accounting stays **49 / 14 / 35**, debt **5**.
 
 
 ## 1. Where the project actually is
@@ -29,7 +29,7 @@ TB4 Review independently accepts CB4 package `10327643907` and cumulative select
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND selector422 accepted; boundary raw-precondition OPEN** | package `10327643907` / selector422 **422/422** is current runtime authority; selector-publication gap is closed; exact next `M4-CP-COND-CB5` adds the one remaining boundary gate; three G4-B002 produced-witness debts remain CP4 gating. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE NEXT** | package `10331193451` / selector423 **423/423** is current runtime authority; exact next `M4-CP-SCALE-DEFN`; three G4-B002 produced-witness debts remain CP4 gating. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -432,8 +432,8 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 | `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling uses exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **CLOSED / ACCEPTED:** package115/TB2, selector373 **373/373**, focused CP1 **8/8 twice**; closure `M4_CP1_Closure_Record.md` |
 | `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | **CLOSED / ACCEPTED:** package117/R1, selector382 **382/382**; closure `M4_CP2_Closure_Record.md` |
 | `M4-CP3` | re-prove family-free baseline A3 shared counts/parity, publish exact A2b source paths and bind A3, then producers consume the accepted plan; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | **CLOSED / ACCEPTED:** package `10307919492`, selector408 **408/408**, TB8 **835/835**; closure `M4_CP3_Closure_Record.md` |
-| `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with one single-writer conditioned source, certified raw correspondence, typed refusal and non-vacuous witness gates | **TB4 REVIEWED / SELECTOR422 ACCEPTED / OPEN ON BOUNDARY RAW PRECONDITION:** package `10327643907` / selector422 **422/422** is accepted current authority. Exact next `M4-CP-COND-CB5` adds one independent boundary-truncation raw oracle/preservation gate as selector423 row423, then TB5-EXEC + TB5-REV. |
-| `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | uncalibrated S1 measurements start non-gating |
+| `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with one single-writer conditioned source, certified raw correspondence, typed refusal and non-vacuous witness gates | **CLOSED / ACCEPTED:** TB5 Review promotes package `10331193451` / selector423 **423/423** after independently re-deriving the exact boundary-truncated raw precondition, mutation falsifier, conditioner preservation and immutable cumulative evidence. Closure: `M4_CP_COND_Closure_Record.md`. |
+| `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | **NEXT: `M4-CP-SCALE-DEFN`**; planning/runtime-free. Uncalibrated S1 measurements start non-gating; S2-S5 gate only on independently proved preconditions/reachability. |
 | `M4-CP4` | cumulative M4 exit: full gate, all three `G4-B002` produced-witness debt re-proofs, work/bit-width evidence | exit proof only; no second writer |
 
 #### M4-CP3-DEFN-R1 semantic rebase

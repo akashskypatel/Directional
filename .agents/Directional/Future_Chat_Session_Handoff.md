@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-COND-TB5-EXEC
-Status: COMPLETE / MECHANICALLY GREEN 423/423 / REVIEW REQUIRED / NO PROMOTION; M4 OPEN
+Turn: M4-CP-COND-TB5-REV
+Status: COMPLETE / ACCEPTED / SELECTOR423 PROMOTED / CP-COND CLOSED; M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-COND-TB5-REV
+Canonical next turn: M4-CP-SCALE-DEFN
 ---
 
 
@@ -38,24 +38,29 @@ These documents must be read in full at start of every turn.
 - Repository: `akashskypatel/Directional`
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 - PR: #8, open/draft/unmerged.
-- Accepted current M4 runtime authority remains package `10327643907`, packaged semantic source `702d9e10afff1fc3ac2ed3f3458acf8f19b617a5`, selector422 **422/422**, SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`, pending mandatory TB5 Review.
-- TB5 mechanically-green candidate: package `10331193451`, packaged source `07984711db59eaa228820e7d44e5552a652edadf`, selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
+- **Accepted current M4 runtime authority:** package `10331193451`, packaged semantic source `07984711db59eaa228820e7d44e5552a652edadf`, selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
+- Accepted predecessor: package `10327643907` / selector422 **422/422**, SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`.
 - TB5 run/job `34805164109 / 103855521990`; result artifact `10333057375` SHA-256 `240d22578a48570b8ecab26c158d24ccc70f4e5a5c79a53d4bdd9359e1c78bb3`; diagnostic artifact `10332819388` SHA-256 `e2b3262b5188149a8bfe3664e7473c44feeb73ad119216081d1d0889c9d66499`.
-- TB5 result: selector423 **423/423 PASS**, inherited prefix **422/422**, row423 **1/1**, zero RED/SKIP/timeout/selection mismatch, exact immutable postflight, 440-entry evidence manifest verified.
+- TB5 Review independently re-derived selector423 **423/423**, inherited selector422 **422/422**, row423 **1/1**, exact immutable postflight and the boundary raw-precondition oracle/mutation/certificate preservation.
+- `M4-CP-COND-TB4-REV-CAND-01` is **CLOSED / RECOVERY/TEST-AUTHORITY PROVED / NON-STABLE**. `M4-CP-COND` is **CLOSED / ACCEPTED**.
 - Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
-- M4-CP3 is CLOSED / ACCEPTED. M4-CP-COND remains OPEN until `M4-CP-COND-TB5-REV` independently adjudicates candidate promotion and the boundary raw-precondition exit conjunct.
 
-## TB5 execution completion
+## CP-COND closure
 
-TB5 consumed the immutable CB5 candidate without repair and completed the frozen cumulative runtime gate mechanically GREEN: **423/423 PASS**, accepted selector422 prefix **422/422**, appended independent boundary-precondition gate **1/1**, zero RED/SKIP/timeout/selection mismatch. Package/source/execution-view byte+mode postflight exactly matches preflight and the non-self-referential evidence manifest verifies all 440 entries.
+The final missing conditioner exit conjunct is no longer inferred from production. CB5's test-local exact/discrete oracle derives a valid negative-index raw singularity and strict interior termination on a genuine source-boundary edge before conditioner execution; a raw-field mutation changes the exact terminal parameter. The production-identity conditioner emits a validated certificate from which the same raw oracle is reconstructed exactly. TB5 then proves the complete cumulative selector423. No production/fixture semantic weakening or accepted selector-row mutation participates in the result.
 
-EXEC does not promote authority or close CP-COND. `M4-CP-COND-TB4-REV-CAND-01` remains open through this turn because only Review may independently decide whether the packaged CB5 raw oracle satisfies frozen §10/§12.
+Durable authority:
 
-## Exact next — `M4-CP-COND-TB5-REV`
+- `.agents/Directional/Architecture_M4_CP_COND_TB5_Review_Record.md`
+- `.agents/Directional/M4_CP_COND_Closure_Record.md`
+- `.agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md`
+- `.agents/Directional/Architecture_M4_CP_COND_CB5_Required_Green_Selector_423.txt`
 
-Read and obey `.agents/Directional/Architecture_M4_CP_COND_TB5_Review_Plan.md`.
+## Exact next — `M4-CP-SCALE-DEFN`
 
-Review must reopen primary TB5 evidence, independently re-derive the 423-row ledger/owner/selector/immutability receipts, inspect the packaged CB5 raw-oracle test authority itself, and decide whether the boundary-truncated raw precondition plus conditioner preservation satisfy frozen CP-COND. If all authority checks pass, Review may close the open non-stable candidate, promote package `10331193451` / selector423, and decide CP-COND closure. No runtime, compile, product/test/fixture/selector semantic mutation, or CP-SCALE implementation is authorized in the Review turn.
+Read and obey `.agents/Directional/Architecture_M4_CP_SCALE_DEFN_Plan.md`.
+
+This is a **DEFN / review + plan only / runtime-free** turn. It must inventory S1-S5 source/evidence and prove each proposed witness's deepest reached stage, then freeze exact authority boundaries, gate versus diagnostic membership and one bounded first CB plan. It may not execute Directional runtime, configure/compile/package, mutate product/test/fixture/selector semantics, guess S1 thresholds, make filtered predicates alternate semantic authority, use timeouts as S3 semantics, backtrack S4 into A2a', or credit genus1 as S5.
 
 ## Mandatory documents
 
@@ -70,7 +75,9 @@ Review must reopen primary TB5 evidence, independently re-derive the 423-row led
 - `.agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md`
 - `.agents/Directional/Architecture_M4_CP_COND_TB4_Review_Record.md`
 - `.agents/Directional/Architecture_M4_CP_COND_TB5_EXEC_Report.md`
-- `.agents/Directional/Architecture_M4_CP_COND_TB5_Review_Plan.md`
+- `.agents/Directional/Architecture_M4_CP_COND_TB5_Review_Record.md`
+- `.agents/Directional/M4_CP_COND_Closure_Record.md`
+- `.agents/Directional/Architecture_M4_CP_SCALE_DEFN_Plan.md`
 - `.agents/Directional/Required_Green_Selector_Manifest.md`
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - `TODO.md`
@@ -82,4 +89,4 @@ Review must reopen primary TB5 evidence, independently re-derive the 423-row led
 - TB3 row408 provenance: historical-claim bound.
 - `G4-B002`: 3 produced-witness debts, M4-CP4.
 - `G4-B003`: 2 debts, M5.
-- CP-SCALE remains blocked until CP-COND closes.
+- CP-SCALE is now unblocked; exact next is its runtime-free DEFN turn.

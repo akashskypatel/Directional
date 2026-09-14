@@ -2,17 +2,16 @@
 
 Last updated: 2026-09-14 UTC
 
-## Current turn — M4-CP-COND-TB5-REV
+## Current turn — M4-CP-SCALE-DEFN
 
-- [x] `M4-CP-COND-CB4`: publish selector422 as exact selector408 prefix + the fourteen existing CP-COND gating identities; no product/test/fixture/CMake semantic change.
-- [x] Update `Required_Green_Selector_Manifest.md` additively; selector422 is 422 LF rows at `bbd496f3...f7cc`, first408 remains `c689c0cd...484`.
-- [x] Compile/package the complete seven-target owner set with GMP/GMPXX and `runtimeExecution=false`; candidate artifact `10327643907` is compile/package GREEN.
-- [x] Freeze artifact-only `M4-CP-COND-TB4-EXEC` plan: selector422 422/422 + one expected report-only boundary SKIP, exact postflight, non-self-referential evidence checksum manifest, mandatory TB4 Review.
-- [x] `M4-CP-COND-TB4-EXEC`: immutable artifact `10327643907` executed mechanically GREEN at selector422 422/422 + one expected report-only SKIP; exact postflight and corrected evidence manifest verified.
-- [x] `M4-CP-COND-TB4-REV`: accept package `10327643907` / selector422 as current runtime authority; keep CP-COND OPEN on frozen boundary raw-precondition authority.
-- [x] `M4-CP-COND-CB5`: independent exact/discrete raw boundary-truncation oracle + load-bearing mutation falsifier added; conditioner certificate re-proves the same oracle; selector423 published; package `10331193451` compiled GREEN with GMP/GMPXX and `runtimeExecution=false`.
-- [x] `M4-CP-COND-TB5-EXEC`: immutable candidate runtime is mechanically GREEN at selector423 **423/423**, inherited selector422 **422/422**, appended boundary gate **1/1**, with exact immutable postflight.
-- [ ] `M4-CP-COND-TB5-REV`: independently re-open TB5 evidence and CB5 raw-oracle authority; adjudicate selector423/package promotion and CP-COND closure. CP-SCALE remains blocked until Review closes CP-COND.
+- [x] `M4-CP-COND-TB5-REV`: independently re-derived TB5 423/423 evidence and the exact boundary raw oracle; promoted package `10331193451` / selector423 and CLOSED / ACCEPTED CP-COND.
+- [ ] `M4-CP-SCALE-DEFN`: inventory S1-S5 production seams and retained primary reachability evidence without executing runtime.
+- [ ] Freeze S1 exact measurement schema as diagnostic/non-gating; do not guess an acceptance threshold.
+- [ ] Freeze S2 exact-fallback-dominant certified-filter semantics and discriminating equivalence gates.
+- [ ] Freeze S3 exact semantic-state limit-cycle termination; no timeout/iteration/proximity semantics.
+- [ ] Freeze S4 incremental-Betti early rejection as earlier-never-different and non-backtracking.
+- [ ] Freeze S5 genus>=2 fixture/stage precondition; if unconstructed/unreached, keep it explicit non-selector blocker.
+- [ ] Publish one gate/diagnostic membership table from accepted selector423 and one bounded `M4-CP-SCALE-CB1` successor plan, or STOP with a definition amendment.
 
 ## Purpose
 
@@ -40,9 +39,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-TB5-REV` (review + plan only)
+## Current focus — `M4-CP-SCALE-DEFN` (definition / review + plan only)
 
-TB5-EXEC is mechanically GREEN on immutable package `10331193451` / source `07984711db59eaa228820e7d44e5552a652edadf`: selector423 **423/423**, inherited selector422 **422/422**, appended boundary gate **1/1**, zero RED/SKIP/timeout/selection mismatch and exact immutable postflight. Result artifact `10333057375` is `240d2257...8bb3`. Accepted runtime authority nevertheless remains package `10327643907` / selector422 **422/422** until mandatory TB5 Review independently adjudicates the raw-oracle authority and promotion. Stable accounting remains **49 / 14 / 35**, debt **5**.
+TB5 Review independently accepts immutable package `10331193451` / source `07984711db59eaa228820e7d44e5552a652edadf` / selector423 **423/423** as current M4 runtime authority and CLOSES / ACCEPTS CP-COND. Stable accounting remains **49 / 14 / 35**, debt **5**. CP-SCALE is now unblocked, but its first turn is runtime-free DEFN: freeze S1-S5 exact authority, witness reachability and gate membership before any implementation.
 
 ## Carried forward from M1
 
@@ -121,4 +120,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. Accepted current CP-COND runtime authority remains package `10327643907` / selector422 **422/422** pending Review. Candidate package `10331193451` / selector423 is mechanically GREEN at **423/423** in TB5 but is not yet promoted. Exact next is review-only **`M4-CP-COND-TB5-REV`** under `Architecture_M4_CP_COND_TB5_Review_Plan.md`. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority is package `10331193451` / selector423 **423/423**. Exact next is runtime-free **`M4-CP-SCALE-DEFN`** under `Architecture_M4_CP_SCALE_DEFN_Plan.md`. PR #8 remains open, draft, and unmerged.

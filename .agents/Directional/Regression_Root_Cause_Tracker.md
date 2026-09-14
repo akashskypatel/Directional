@@ -1,3 +1,11 @@
+## 2026-09-14 — `M4-CP-COND-TB5-REV`: boundary authority independently proved; CP-COND closes
+
+- TB5 primary evidence independently re-derived: package `10331193451` / source `07984711...03f0`, selector423 **423/423**, inherited selector422 **422/422**, row423 **1/1**, owner census **30/277/75/41**, zero RED/SKIP/timeout/selection mismatch, exact immutable postflight and fully verified 440-entry non-self evidence manifest.
+- `M4-CP-COND-TB4-REV-CAND-01` — **CLOSED / RECOVERY/TEST-AUTHORITY PROVED / NON-STABLE**. The test-local oracle derives a genuine boundary-truncated `-1` singularity route from exactified raw bytes before production; a raw-field mutation changes the exact boundary parameter; conditioner certificate reconstruction re-proves the same oracle exactly.
+- Source-history review finds no production/fixture semantic weakening and selector423 preserves accepted selector422/selector408 byte-for-byte. The old report-only blocker was outside the accepted selector and is replaced by the discriminating gate, not weakened into a pass.
+- No accepted PASS->RED transition exists. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. No new regression candidate is opened.
+- Package `10331193451` / selector423 is **ACCEPTED CURRENT M4 RUNTIME AUTHORITY** and `M4-CP-COND` is **CLOSED / ACCEPTED**. Exact next is planning/runtime-free `M4-CP-SCALE-DEFN`.
+
 ## 2026-09-14 — `M4-CP-COND-TB5-EXEC`: selector423 mechanically GREEN; Review pending
 
 - Immutable candidate package `10331193451` / source `07984711...03f0` executed in run/job `34805164109 / 103855521990`; result/log artifacts `10333057375 / 10332819388` have SHA-256 `240d2257...8bb3` / `e2b3262b...6499`.
