@@ -1,5 +1,0 @@
-# M4-CP-COND-CB4 temporary-state ledger
-.agents/connector-triggers/source-snapshot/M4-CP-COND-CB4-20260913T1706-0700.txt
-.agents/connector-triggers/m4-cp-cond-cb4-drive-apply-20260913.txt
-.agents/connector-triggers/m4-cp-cond-cb4-compile-20260913.txt
-.agents/connector-triggers/m4-cp-cond-cb4-closeout-drive-apply-20260913.txt
