@@ -845,6 +845,102 @@ diagnose_field_aligned_contact_census(
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails);
 
+// M4-CP-SCALE S1 diagnostic-only exact trace-entry scale census. Collection
+// observes the canonical production traversal state after it has been accepted
+// by the existing traversal guard and never participates in a tracing decision.
+enum class FieldAlignedTraceScaleSampleClass : std::uint8_t {
+  ExactZero = 0,
+  Interior = 1,
+  ExactOne = 2,
+};
+
+struct FieldAlignedTraceScaleMeasurement {
+  FieldAlignedTraceScaleSampleClass sampleClass =
+      FieldAlignedTraceScaleSampleClass::Interior;
+  std::size_t numeratorBits = 0U;
+  std::size_t denominatorBits = 0U;
+  std::size_t magnitudeBits = 0U;
+
+  auto operator<=>(const FieldAlignedTraceScaleMeasurement &) const = default;
+};
+
+struct FieldAlignedTraceScaleCensusRow {
+  FieldAlignedTraceScaleCensusRow(
+      authority::TraceId traceValue, std::size_t stepValue,
+      authority::SourceFaceTopologyKey sourceFaceValue,
+      authority::FieldBranch branchValue,
+      std::optional<authority::SourceEdgeTopologyKey> incomingCarrierValue,
+      FieldAlignedTraceScaleMeasurement measurement)
+      : trace(traceValue), step(stepValue), sourceFace(std::move(sourceFaceValue)),
+        branch(branchValue), incomingCarrier(std::move(incomingCarrierValue)),
+        sampleClass(measurement.sampleClass),
+        numeratorBits(measurement.numeratorBits),
+        denominatorBits(measurement.denominatorBits),
+        magnitudeBits(measurement.magnitudeBits) {}
+
+  authority::TraceId trace;
+  std::size_t step = 0U;
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  FieldAlignedTraceScaleSampleClass sampleClass =
+      FieldAlignedTraceScaleSampleClass::Interior;
+  std::size_t numeratorBits = 0U;
+  std::size_t denominatorBits = 0U;
+  std::size_t magnitudeBits = 0U;
+
+  auto operator<=>(const FieldAlignedTraceScaleCensusRow &) const = default;
+};
+
+struct FieldAlignedTraceScaleExactMean {
+  std::uint64_t sum = 0U;
+  std::size_t count = 0U;
+
+  auto operator<=>(const FieldAlignedTraceScaleExactMean &) const = default;
+};
+
+struct FieldAlignedTraceScaleCensusAggregate {
+  std::size_t sampleCount = 0U;
+  std::uint64_t numeratorBitsSum = 0U;
+  std::uint64_t denominatorBitsSum = 0U;
+  std::uint64_t magnitudeBitsSum = 0U;
+  std::size_t numeratorBitsMax = 0U;
+  std::size_t denominatorBitsMax = 0U;
+  std::size_t magnitudeBitsMax = 0U;
+  FieldAlignedTraceScaleExactMean numeratorBitsMean;
+  FieldAlignedTraceScaleExactMean denominatorBitsMean;
+  FieldAlignedTraceScaleExactMean magnitudeBitsMean;
+
+  auto operator<=>(const FieldAlignedTraceScaleCensusAggregate &) const = default;
+};
+
+struct FieldAlignedTraceScaleCensus {
+  std::vector<FieldAlignedTraceScaleCensusRow> rows;
+  FieldAlignedTraceScaleCensusAggregate aggregate;
+
+  auto operator<=>(const FieldAlignedTraceScaleCensus &) const = default;
+};
+
+struct FieldAlignedTraceScaleCensusSuccess {
+  FieldAlignedTraceScaleCensus census;
+  std::uint64_t semanticDigest = 0U;
+};
+
+using FieldAlignedTraceScaleCensusResult =
+    std::variant<FieldAlignedTraceScaleCensusSuccess,
+                 FieldAlignedCurveNetworkError>;
+
+[[nodiscard]] FieldAlignedTraceScaleMeasurement
+measure_field_aligned_trace_parameter_scale(
+    const authority::FieldExactRational &parameter);
+
+[[nodiscard]] FieldAlignedTraceScaleCensusResult
+diagnose_field_aligned_trace_scale_census(
+    const TriMesh &sourceMesh,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails);
+
 enum class FieldBranchExitTimeOrdering : std::int8_t {
   Less = -1,
   Equal = 0,

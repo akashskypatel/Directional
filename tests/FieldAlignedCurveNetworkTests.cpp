@@ -14218,6 +14218,113 @@ TEST(ResolvedBranchCorrection,
   EXPECT_EQ(boundary_point(outgoing, 1, 4), decision->exitPoint);
 }
 
+TEST(M4CPScaleS1,
+     ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const TriMesh mesh = make_cp3a_two_ring_skew_disc();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult field;
+  make_cp3a_two_ring_index_one_field(mesh, field);
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(atlasBuild);
+  const auto rails = rails_from_atlas(mesh, atlasBuild.value());
+
+  const auto withoutCensus = FieldAlignedCurveNetwork::make(
+      mesh, *sourceAuthority, atlasBuild.value(), rails);
+  ASSERT_TRUE(withoutCensus);
+
+  const auto first = diagnose_field_aligned_trace_scale_census(
+      mesh, *sourceAuthority, atlasBuild.value(), rails);
+  const auto second = diagnose_field_aligned_trace_scale_census(
+      mesh, *sourceAuthority, atlasBuild.value(), rails);
+  const auto *firstSuccess =
+      std::get_if<FieldAlignedTraceScaleCensusSuccess>(&first);
+  const auto *secondSuccess =
+      std::get_if<FieldAlignedTraceScaleCensusSuccess>(&second);
+  ASSERT_NE(nullptr, firstSuccess);
+  ASSERT_NE(nullptr, secondSuccess);
+  EXPECT_EQ(withoutCensus.value().semantic_digest(),
+            firstSuccess->semanticDigest);
+  EXPECT_EQ(firstSuccess->semanticDigest, secondSuccess->semanticDigest);
+  EXPECT_EQ(firstSuccess->census, secondSuccess->census);
+
+  const FieldAlignedTraceScaleCensus &census = firstSuccess->census;
+  ASSERT_FALSE(census.rows.empty());
+  EXPECT_EQ(census.rows.size(), census.aggregate.sampleCount);
+  EXPECT_TRUE(std::is_sorted(
+      census.rows.begin(), census.rows.end(), [](const auto &lhs, const auto &rhs) {
+        return std::tie(lhs.trace, lhs.step) < std::tie(rhs.trace, rhs.step);
+      }));
+
+  std::uint64_t numeratorBitsSum = 0U;
+  std::uint64_t denominatorBitsSum = 0U;
+  std::uint64_t magnitudeBitsSum = 0U;
+  std::size_t numeratorBitsMax = 0U;
+  std::size_t denominatorBitsMax = 0U;
+  std::size_t magnitudeBitsMax = 0U;
+  bool sawNontrivial = false;
+  for (const FieldAlignedTraceScaleCensusRow &row : census.rows) {
+    ASSERT_LT(row.trace.index(),
+              withoutCensus.value().candidate_traces().size());
+    const FieldAlignedCandidateTrace &trace =
+        withoutCensus.value().candidate_traces()[row.trace.index()];
+    ASSERT_EQ(row.trace, trace.id);
+    ASSERT_LT(row.step, trace.segments.size());
+    const auto &parameter = trace.segments[row.step].entryPoint.parameter.value;
+    const auto zero = directional::authority::FieldExactRational::from_integer(0);
+    const auto one = directional::authority::FieldExactRational::from_integer(1);
+    const FieldAlignedTraceScaleSampleClass expectedClass =
+        parameter == zero ? FieldAlignedTraceScaleSampleClass::ExactZero
+        : parameter == one ? FieldAlignedTraceScaleSampleClass::ExactOne
+                           : FieldAlignedTraceScaleSampleClass::Interior;
+    EXPECT_EQ(expectedClass, row.sampleClass);
+    EXPECT_EQ(parameter.exact_numerator().magnitude_bits(), row.numeratorBits);
+    EXPECT_EQ(parameter.exact_denominator().magnitude_bits(),
+              row.denominatorBits);
+    EXPECT_EQ(std::max(row.numeratorBits, row.denominatorBits),
+              row.magnitudeBits);
+    numeratorBitsSum += row.numeratorBits;
+    denominatorBitsSum += row.denominatorBits;
+    magnitudeBitsSum += row.magnitudeBits;
+    numeratorBitsMax = std::max(numeratorBitsMax, row.numeratorBits);
+    denominatorBitsMax = std::max(denominatorBitsMax, row.denominatorBits);
+    magnitudeBitsMax = std::max(magnitudeBitsMax, row.magnitudeBits);
+    sawNontrivial = sawNontrivial || expectedClass ==
+                                        FieldAlignedTraceScaleSampleClass::Interior;
+  }
+  EXPECT_TRUE(sawNontrivial);
+  EXPECT_EQ(numeratorBitsSum, census.aggregate.numeratorBitsSum);
+  EXPECT_EQ(denominatorBitsSum, census.aggregate.denominatorBitsSum);
+  EXPECT_EQ(magnitudeBitsSum, census.aggregate.magnitudeBitsSum);
+  EXPECT_EQ(numeratorBitsMax, census.aggregate.numeratorBitsMax);
+  EXPECT_EQ(denominatorBitsMax, census.aggregate.denominatorBitsMax);
+  EXPECT_EQ(magnitudeBitsMax, census.aggregate.magnitudeBitsMax);
+  EXPECT_EQ((FieldAlignedTraceScaleExactMean{numeratorBitsSum, census.rows.size()}),
+            census.aggregate.numeratorBitsMean);
+  EXPECT_EQ((FieldAlignedTraceScaleExactMean{denominatorBitsSum, census.rows.size()}),
+            census.aggregate.denominatorBitsMean);
+  EXPECT_EQ((FieldAlignedTraceScaleExactMean{magnitudeBitsSum, census.rows.size()}),
+            census.aggregate.magnitudeBitsMean);
+
+  const auto baselineMeasurement =
+      measure_field_aligned_trace_parameter_scale(exact_integer(0));
+  const auto changedParameter = exact_ratio(1, 257);
+  const auto changedMeasurement =
+      measure_field_aligned_trace_parameter_scale(changedParameter);
+  EXPECT_EQ(FieldAlignedTraceScaleSampleClass::ExactZero,
+            baselineMeasurement.sampleClass);
+  EXPECT_EQ(FieldAlignedTraceScaleSampleClass::Interior,
+            changedMeasurement.sampleClass);
+  EXPECT_EQ(changedParameter.exact_numerator().magnitude_bits(),
+            changedMeasurement.numeratorBits);
+  EXPECT_EQ(changedParameter.exact_denominator().magnitude_bits(),
+            changedMeasurement.denominatorBits);
+  EXPECT_EQ(changedParameter.magnitude_bits(), changedMeasurement.magnitudeBits);
+  EXPECT_NE(baselineMeasurement, changedMeasurement);
+}
+
 TEST(ResolvedBranchCorrection,
      TraceStepBudgetCannotFireBeforeTheRecurrenceAllowance) {
   using namespace directional::geometry::surface_cell_tracing_detail;

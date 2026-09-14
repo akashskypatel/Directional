@@ -2889,7 +2889,8 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     const std::map<authority::SourceEdgeTopologyKey,
                    const authority::FieldNonTraversableEdge *> &mandatoryByEdge,
     FieldAlignedCandidateTrace &trace,
-    FieldAlignedTraceRuntime &runtime) {
+    FieldAlignedTraceRuntime &runtime,
+    FieldAlignedTraceScaleCensus *scaleCensus) {
   const authority::FieldBranchTopology &topology =
       fieldTransportAtlas.branch_topology();
   const FieldAlignedTraceTraversalState state{
@@ -2905,6 +2906,13 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
   if (traversalStatus != FieldAlignedTraceTraversalStatus::Advanced) {
     return traceError(field_aligned_trace_traversal_error(
         traversalStatus, state, runtime.traversalGuard));
+  }
+  if (scaleCensus != nullptr) {
+    scaleCensus->rows.emplace_back(
+        trace.id, runtime.traversalGuard.steps() - 1U, state.sourceFace,
+        state.branch, state.incomingCarrier,
+        measure_field_aligned_trace_parameter_scale(
+            state.entryPoint.parameter.value));
   }
 
   const authority::FieldFaceBranchFrame *frame =
@@ -3467,7 +3475,8 @@ canonical_field_aligned_traces_and_events(
     const std::map<authority::SourceEdgeTopologyKey,
                    const authority::FieldNonTraversableEdge *> &mandatoryByEdge,
     FieldAlignedCurveNetworkCandidate &candidate,
-    const FieldTraceArrivalPriority priority) {
+    const FieldTraceArrivalPriority priority,
+    FieldAlignedTraceScaleCensus *scaleCensus) {
   const authority::FieldBranchTopology &topology =
       fieldTransportAtlas.branch_topology();
   candidate.arrivalPriority = priority;
@@ -3522,7 +3531,7 @@ canonical_field_aligned_traces_and_events(
     if (!runtime.active || runtime.proposal.has_value()) return std::nullopt;
     auto proposed = field_aligned_next_trace_proposal(
         sourceMesh, fieldTransportAtlas, mandatoryByEdge,
-        candidate.candidateTraces[traceIndex], runtime);
+        candidate.candidateTraces[traceIndex], runtime, scaleCensus);
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&proposed)) {
       return *error;
     }
@@ -4086,7 +4095,9 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
     const std::vector<SurfaceCellRail> &authoritativeRails,
     FieldAlignedContactCensus *contactCensus = nullptr,
     const FieldTraceArrivalPriority priority =
-        FieldTraceArrivalPriority::ArcLengthFiltered) {
+        FieldTraceArrivalPriority::ArcLengthFiltered,
+    FieldAlignedTraceScaleCensus *scaleCensus = nullptr) {
+  if (scaleCensus != nullptr) *scaleCensus = FieldAlignedTraceScaleCensus{};
   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
   const std::size_t sourceVertexCount =
       static_cast<std::size_t>(sourceMesh.V.rows());
@@ -4345,7 +4356,7 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
 
   if (const auto tracingError = canonical_field_aligned_traces_and_events(
           sourceMesh, fieldTransportAtlas, mandatoryByEdge, candidate,
-          priority);
+          priority, scaleCensus);
       tracingError.has_value()) {
     return *tracingError;
   }
@@ -4731,6 +4742,90 @@ FieldAlignedSegmentContactClassification classify_field_aligned_segment_contact(
     const FieldAlignedCandidateTraceSegment &first,
     const FieldAlignedCandidateTraceSegment &second) {
   return classify_field_aligned_segment_contact_impl(topology, first, second);
+}
+
+FieldAlignedTraceScaleMeasurement
+measure_field_aligned_trace_parameter_scale(
+    const authority::FieldExactRational &parameter) {
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  FieldAlignedTraceScaleMeasurement measurement;
+  measurement.sampleClass =
+      parameter == zero ? FieldAlignedTraceScaleSampleClass::ExactZero
+      : parameter == one ? FieldAlignedTraceScaleSampleClass::ExactOne
+                         : FieldAlignedTraceScaleSampleClass::Interior;
+  measurement.numeratorBits = parameter.exact_numerator().magnitude_bits();
+  measurement.denominatorBits = parameter.exact_denominator().magnitude_bits();
+  measurement.magnitudeBits = parameter.magnitude_bits();
+  return measurement;
+}
+
+FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
+    const TriMesh &sourceMesh,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails) {
+  FieldAlignedTraceScaleCensus census;
+  const auto finalize = [&]() {
+    std::sort(census.rows.begin(), census.rows.end(),
+              [](const auto &lhs, const auto &rhs) {
+                return std::tie(lhs.trace, lhs.step) <
+                       std::tie(rhs.trace, rhs.step);
+              });
+    FieldAlignedTraceScaleCensusAggregate aggregate;
+    aggregate.sampleCount = census.rows.size();
+    for (const FieldAlignedTraceScaleCensusRow &row : census.rows) {
+      aggregate.numeratorBitsSum += row.numeratorBits;
+      aggregate.denominatorBitsSum += row.denominatorBits;
+      aggregate.magnitudeBitsSum += row.magnitudeBits;
+      aggregate.numeratorBitsMax =
+          std::max(aggregate.numeratorBitsMax, row.numeratorBits);
+      aggregate.denominatorBitsMax =
+          std::max(aggregate.denominatorBitsMax, row.denominatorBits);
+      aggregate.magnitudeBitsMax =
+          std::max(aggregate.magnitudeBitsMax, row.magnitudeBits);
+    }
+    aggregate.numeratorBitsMean =
+        {aggregate.numeratorBitsSum, aggregate.sampleCount};
+    aggregate.denominatorBitsMean =
+        {aggregate.denominatorBitsSum, aggregate.sampleCount};
+    aggregate.magnitudeBitsMean =
+        {aggregate.magnitudeBitsSum, aggregate.sampleCount};
+    census.aggregate = aggregate;
+  };
+
+  try {
+    const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
+        sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
+        nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, &census);
+    finalize();
+    if (const auto *error =
+            std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+      return *error;
+    }
+    const FieldAlignedCurveNetworkCandidate &candidate =
+        std::get<FieldAlignedCurveNetworkCandidate>(canonical);
+    if (const auto error = validate_field_aligned_candidate(
+            sourceMesh, sourceAuthority, fieldTransportAtlas,
+            authoritativeRails, candidate);
+        error.has_value()) {
+      return *error;
+    }
+    const std::uint64_t sourceDigest =
+        fieldTransportAtlas.quadrangulability().source_digest();
+    const std::uint64_t branchTopologyDigest =
+        fieldTransportAtlas.branch_topology().semantic_digest();
+    return FieldAlignedTraceScaleCensusSuccess{
+        std::move(census),
+        field_aligned_candidate_digest(candidate, sourceAuthority, sourceDigest,
+                                       branchTopologyDigest)};
+  } catch (const std::exception &) {
+    finalize();
+    FieldAlignedCurveNetworkError error;
+    error.code = FieldAlignedCurveNetworkErrorCode::
+        BranchContinuationExactMagnitudeExceeded;
+    return error;
+  }
 }
 
 FieldAlignedContactCensusResult diagnose_field_aligned_contact_census(
