@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-TB2-EXEC
+purpose=start-of-turn exact source snapshot
+base_authority=4419d56543be1bdd08bc022a65eaa7f798ed8bc2
+runtimeExecution=false
