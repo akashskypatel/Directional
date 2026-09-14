@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1gOxG0vfwFU-VUr_2Sab9WN6aTxY3zNj_
-      patch_sha256: b20447dc0357afb06f066fef97a89bec2689bb588907bfe41415108937397a8f
-      base_sha: 2a61c3eb4c75d613da0085252a404cc88f885c42
+      file_id: 1iE7L3wuzbmOC-Q89jXrymYz5VWMrjt11
+      patch_sha256: c7ef9e5413ef33087835d43c220f1534263f5e7911dbf204a6d86021272f4081
+      base_sha: a359b981f9350139304bc5a654041dfba78609b6
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "fix: cover retained S1 census witnesses"
+      commit_message: "docs: close M4-CP-SCALE-CB1 and plan TB1"
       retention_days: 7
     secrets: inherit
