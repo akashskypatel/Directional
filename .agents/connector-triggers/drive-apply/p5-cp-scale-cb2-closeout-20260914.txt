@@ -2,3 +2,4 @@ turn=M4-CP-SCALE-CB2
 operation=closeout-doc-apply
 base_sha=eb4abe276c16161420ad41088b3773659c1db12d
 patch_sha256=add8943496f8604386c981c2904149a08dfefafc7633fb4bc3aafa9972034fde
+retry=1
