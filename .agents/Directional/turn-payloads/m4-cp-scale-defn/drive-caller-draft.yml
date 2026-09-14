@@ -29,8 +29,8 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1gnnP7WiCSLqYVWnzHQmpV8KFskmg00jr
-      patch_sha256: d545d923d23479972cb9f3c0c84bb5a3074bc3a71093b589bfcb7e3e4202d30c
+      file_id: 1W4kMrUxLCfy53OaXCTHfslFcPTf9PmZx
+      patch_sha256: d75d2e65f69336d26c141e8eed1b3ce8423fc55ad299affa5780ea51f019655f
       base_sha: b894a12fa077aff620892174f09805fbc5666b56
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: freeze M4 CP-SCALE definitions'
