@@ -1,0 +1,4 @@
+turn=M4-CP-COND-TB5-EXEC
+purpose=execute immutable selector423 artifact-only gate
+candidate_artifact=10331193451
+retry=0
