@@ -1,9 +1,9 @@
 # M4 Consolidated Record
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-14 at `M4-CP-SCALE-TB1-REV`
+**Last updated:** 2026-09-14 at `M4-CP-SCALE-TB2-REV`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md` plus the active checkpoint frozen-definition record; CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`, and CP-COND closure is `M4_CP_COND_Closure_Record.md`. `M4-CP-SCALE-TB1-REV` accepts package `10360085644` / semantic source `a359b981f9350139304bc5a654041dfba78609b6` as current M4 runtime authority on unchanged selector423 **423/423**. S1 remains diagnostic/non-gating and no numeric calibration threshold is frozen. Stable accounting is **49 / 14 / 35**, debt **5**. CP-SCALE remains OPEN; exact next is bounded `M4-CP-SCALE-CB2`, S2 vertex-star independent exact-oracle test authority + compile/package only.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md` plus the active checkpoint frozen-definition record; CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`, and CP-COND closure is `M4_CP_COND_Closure_Record.md`. Package `10360085644` / semantic source `a359b981f9350139304bc5a654041dfba78609b6` remains current M4 runtime authority on unchanged selector423 **423/423**. `M4-CP-SCALE-TB2-REV` rejects candidate `10367451675` because its S2 test reused a known atlas-invalid non-flat zero-transport helper and never reached the comparator; this is non-stable test authority, not a product defect. S1 remains diagnostic/non-gating and no numeric calibration threshold is frozen. Stable accounting is **49 / 14 / 35**, debt **5**. CP-SCALE remains OPEN; exact next is bounded `M4-CP-SCALE-CB3`, S2 test-authority repair + compile/package only.
 
 ## 1. M4 entering authority
 
@@ -704,4 +704,30 @@ The exact successor is `M4-CP-SCALE-CB2`, limited to S2 vertex-star certified-fi
 | `Architecture_M4_CP_SCALE_CB1_Code_Build_Report.md` | 82 | **FOLDED AFTER TB1 REVIEW PROMOTION.** Exact source/compile/package authority is retained in §2.49, current TB1 runtime report, selector manifest, changelog and current Review. |
 | `Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md` | 103 | **CONSUMED/FOLDED AFTER TB1 EXEC/REVIEW.** Frozen artifact-only gate, exact process contract and postflight are retained in the current TB1 runtime report, §2.49 and current Review. |
 
-Current retained CP-SCALE authority is `Architecture_M4_CP_SCALE_Frozen_Definitions.md`, `Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md`, `Architecture_M4_CP_SCALE_TB1_Review_Record.md`, `Architecture_M4_CP_SCALE_CB2_Code_Build_Plan.md`, this consolidated record, selector authority and the regression tracker/changelogs. Full text of folded documents remains recoverable from git history.
+## 2.50 `M4-CP-SCALE-CB2 + TB2-EXEC + TB2-REV` — S2 candidate rejected; known invalid folded-cone helper
+
+CB2 changed only `tests/FieldAlignedCurveNetworkTests.cpp`, adding `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` plus a seeded folded-cone helper/oracle. Semantic source `63cb20d6ba5393058086c62c6422ac58b75c939e` compiled/package GREEN as candidate artifact `10367451675` with GMP/GMPXX, all eight required owners, clean source receipts and `runtimeExecution=false`. Selector423 remained byte-identical at **423 LF rows** / `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`; first422 remained `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`.
+
+TB2 artifact-only execution passed immutable package/source/GMP/selector preflight, then selected the focused S2 identity exactly **1/1**. Its first `positive-strict-interior` subject RED at `ASSERT_TRUE(atlasBuild)` before the vertex-star comparator or the six-subject diagnostic receipt. Per fail-fast, selector423 was **0/423** and full postflight was not reached. Authoritative runtime run/job was `34898232410 / 104157635232`; result artifact `10370015436` and log artifact `10369796116` preserve the mechanical evidence, including a 12/12 self-excluding nested evidence manifest. No rebuild, repair, mutation, generated discovery or benchmark occurred.
+
+TB2 Review independently re-opened the runtime evidence, candidate source and durable historical root-cause records. The failure is the already-known `M3-CP4c3-TB7-CAND-02` / Lesson 22r fixture precondition: the three-right-angle center has `Theta=3*pi/2` and defect `K=pi/2`; the reused `make_zero_transport_field` authority declares zero effort/no singularity and composes radial matching to `0 mod 4`, while atlas authority derives exact center lift `1`. `FieldTransportAtlas` therefore correctly rejects with `CycleTransportMismatch`; the first seed merely exposes a seed-independent invalid field. All six new S2 subjects inherit that invalid atlas precondition, so the candidate proves nothing about Filter/ExactFallback equivalence. No product defect is established and atlas invariants must not be weakened. Historical ordinal374 remains a separate deferred owner.
+
+Review **REJECTS** candidate `10367451675` / source `63cb20d6...c939e` as **TEST-AUTHORITY PRECONDITION FAILURE / NON-STABLE**. It receives zero promotion, S2, selector or gate credit. Accepted runtime authority remains package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423**; stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+
+`M4-CP-SCALE-TB2-REV-OBS-01` is **OPEN / EXECUTION-EVIDENCE CONTROL / NON-STABLE**: the TB2 harness correctly stopped on semantic RED but failed to materialize the frozen explicit 423-row untouched remainder. The next artifact-only harness must initialize every selector row as `UNEXECUTED` and preserve immutable failure-path census receipts before focused runtime.
+
+Exact successor is `M4-CP-SCALE-CB3`: test-source-only S2 authority repair. It must create an S2-local atlas-admissible regular folded-star field through production matching/effort derivation, assert center-cycle/atlas validity before comparator use, preserve the independent exact positive/negative/near-boundary/exact-boundary/tamper matrix and non-vacuously exercise both `Filter` and `ExactFallback`; no production semantic change, historical ordinal374 side repair or selector append is authorized.
+
+### TB2 Review folded-document index additions
+
+| Exact filename | Lines | Role after fold |
+|---|---:|---|
+| `Architecture_M4_CP_SCALE_TB1_Review_Record.md` | 132 | Superseded Review record; TB1 promotion/S1 amendment authority preserved in §2.49 and retained TB1 runtime report. |
+| `Architecture_M4_CP_SCALE_CB2_Code_Build_Plan.md` | 128 | Consumed S2 CB2 plan; compile/source outcome and its invalid fixture assumption preserved here. |
+| `Architecture_M4_CP_SCALE_CB2_Code_Build_Report.md` | 103 | Superseded candidate build report; semantic source/package/selector facts preserved here. |
+| `Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Plan.md` | 109 | Consumed TB2 execution plan; fail-fast contract and evidence deficiency preserved here/current Review. |
+| `Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Report.md` | 52 | Rejected-candidate runtime report; exact mechanical evidence preserved here, current Review, tracker and changelogs. |
+
+Historical citations remain resolvable through this index and git history. No selector file, durable policy, frozen definition, accepted TB1 runtime-authority report or unresolved evidence was folded.
+
+Current retained CP-SCALE authority is `Architecture_M4_CP_SCALE_Frozen_Definitions.md`, accepted `Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md`, current `Architecture_M4_CP_SCALE_TB2_Review_Record.md`, next `Architecture_M4_CP_SCALE_CB3_Code_Build_Plan.md`, this consolidated record, selector authority and the regression tracker/changelogs. Full text of folded documents remains recoverable from git history.

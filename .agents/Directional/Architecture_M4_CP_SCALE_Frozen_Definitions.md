@@ -85,7 +85,7 @@ Selector423 remains unchanged at 423 LF rows / `4e67e4dc...d89343`; first422 rem
 
 ## 8. First bounded implementation slice
 
-The authorized first Code + Build was `M4-CP-SCALE-CB1`: S1 passive exact trace-parameter measurement only. It did not implement S2-S5, change the 4096 operational guard, add a selector row, or execute runtime; its consumed plan/report are folded into `M4_Consolidated_Record.md` §2.49. `M4-CP-SCALE-TB1-REV` subsequently accepted that diagnostic slice and promoted its package while freezing no threshold. The current bounded successor is `M4-CP-SCALE-CB2` under `Architecture_M4_CP_SCALE_CB2_Code_Build_Plan.md`, limited to the already-eligible S2 vertex-star independent exact-oracle equivalence surface; this routing update does not alter the frozen S1-S5 semantics above.
+The authorized first Code + Build was `M4-CP-SCALE-CB1`: S1 passive exact trace-parameter measurement only. It did not implement S2-S5, change the 4096 operational guard, add a selector row, or execute runtime; its consumed plan/report are folded into `M4_Consolidated_Record.md` §2.49. `M4-CP-SCALE-TB1-REV` subsequently accepted that diagnostic slice and promoted its package while freezing no threshold. CB2/TB2 then attempted the S2 vertex-star independent exact-oracle surface, but `M4-CP-SCALE-TB2-REV` rejected that candidate because the test reused the already-known atlas-invalid non-flat zero-transport helper and never reached the comparator. The current bounded successor is `M4-CP-SCALE-CB3` under `Architecture_M4_CP_SCALE_CB3_Code_Build_Plan.md`, limited to repairing S2 test authority while leaving production semantics and selector423 unchanged; this routing update does not alter the frozen S1-S5 semantics above.
 
 ## 9. Citation / evidence map
 

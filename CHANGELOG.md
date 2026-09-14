@@ -1,5 +1,11 @@
 ## 2026-09-14 — `M4-CP-SCALE-CB2`: independent S2 vertex-star oracle authored; candidate package compile GREEN
 
+## 2026-09-14 — `M4-CP-SCALE-TB2-REV`: S2 candidate rejected; known non-flat helper precondition
+
+- Runtime-free Review independently re-opened TB2 evidence and candidate source, and rejects `10367451675` / `63cb20d6...c939e` as **TEST-AUTHORITY PRECONDITION FAILURE / NON-STABLE**. The S2 identity reused the already-known non-flat `make_zero_transport_field` witness: on the three-right-angle center, exact cycle lift is `1` while hand-authored transport composes to `0 mod 4`, so `FieldTransportAtlas` correctly returns `CycleTransportMismatch` before the comparator.
+- All six S2 subjects inherit the invalid atlas precondition; no product defect or Filter/ExactFallback equivalence is established. Accepted authority remains package `10360085644` / selector423 **423/423**; stable accounting stays **49 / 14 / 35**, debt **5**.
+- Opened `M4-CP-SCALE-TB2-REV-OBS-01`: future fail-fast artifact harnesses must pre-initialize/preserve the full selector remainder. Exact next is `M4-CP-SCALE-CB3`, test-authority repair only; no production semantic change, selector append or historical ordinal374 side repair.
+
 ## 2026-09-14 — `M4-CP-SCALE-TB2-EXEC`: focused S2 semantic RED; Review required
 
 Candidate `10367451675` / source `63cb20d6ba5393058086c62c6422ac58b75c939e` passed exact preflight, then focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` selected exactly once and RED at first `positive-strict-interior` because `FieldTransportAtlas::make` returned false before comparator/receipt execution. Run/job `34898232410 / 104157635232`; result/log `10370015436 / 10369796116`; nested evidence `06e4db5b...18cb61`, manifest 12/12. Harness stopped before selector423/postflight and omitted explicit unexecuted remainder; no retry before Review. Candidate remains unpromoted; accepted package `10360085644` / selector423 423/423 remains authority; stable 49/14/35, debt 5. Exact next: `M4-CP-SCALE-TB2-REV`.
