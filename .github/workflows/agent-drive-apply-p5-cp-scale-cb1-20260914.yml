@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 18Jq-I-9Q8OJJZLyUoNkx0P-VtpjMGrAA
-      patch_sha256: c09c06fe094cb6c22587c102888af8ff62cbe76c4eb77aed70234ec16f062bff
-      base_sha: 0a2e2a23736ab2938ce8f8237147c2a0b9540848
+      file_id: 1_c9l_tddbDaG_ItnM03RK-M-L4Dm6OYO
+      patch_sha256: 3e81437b85c627fe9342b60d70a1038df7cc03017efc1958eb62fec68261b795
+      base_sha: 6a8eed257a047bc70e53cc00dff629f9725c5cad
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "feat: add exact trace parameter scale census"
+      commit_message: "fix: qualify trace type in scale census test"
       retention_days: 7
     secrets: inherit
