@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-DEFN
+purpose=start-of-turn exact source snapshot
+pre_trigger_head=06bf16548979f2fe0980d50a9cc7b385b83faa4b
