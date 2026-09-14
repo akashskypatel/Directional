@@ -1,4 +1,4 @@
-purpose=compile M4-CP-SCALE-CB1 exact fixed pushed evidence revision
-source_sha=2a61c3eb4c75d613da0085252a404cc88f885c42
+purpose=compile M4-CP-SCALE-CB1 exact retained-witness census revision
+source_sha=a359b981f9350139304bc5a654041dfba78609b6
 runtimeExecution=false
-retry=1
+retry=2
