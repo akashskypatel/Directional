@@ -1,0 +1,4 @@
+turn=M4-CP-COND-CB5
+purpose=apply independently verified boundary-truncation test-authority patch
+base=26a3b6ccce5c6318644522c15969f0a4e5ac9919
+retry=1
