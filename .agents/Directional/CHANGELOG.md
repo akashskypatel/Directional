@@ -8,6 +8,29 @@
 - New non-stable preconditions `M4-CP-SCALE-DEFN-OBS-01..04` record arrival fallback, exact-repeat witness, incremental-topology oracle, and genus>=2 coverage debt. Stable accounting stays **49 / 14 / 35**, produced-witness debt **5**.
 - Exact successor: `M4-CP-SCALE-CB1`, S1 instrumentation + compile/package only, no runtime and no S2-S5 work.
 
+**Verification amendment (reviewing agent) — `M4-CP-COND-TB5-REV` and `M4-CP-SCALE-DEFN`.** Both upheld;
+**CP-COND closure is legitimate**. The CB5 constraint is discharged with a falsifier sharper than specified:
+`independent_boundary_truncation_oracle(raw)` takes the raw bundle and every assertion about it precedes the
+`condition_surface_cell_input` call, the oracle derives real structure (`singularityVertex`, `cycleNumerator`,
+`sourceFace`, `fieldBranch`, `boundaryEdge`) with `independent_edge_incidence` re-deriving boundary incidence from
+raw connectivity, and the mutation at `tests/InputConditionerTests.cpp:777-786` pins **which** derived quantities
+must move — discrete facts equal, `boundaryParameter` unequal, whole result unequal — rather than merely requiring
+the oracle to break. Conjunct 4 is therefore **PASS by proof**, never by the "genuinely unreachable" hatch, and
+row423 is a real gate inside the cumulative selector, which is why TB5 shows zero SKIP where TB4 showed one.
+Lineage re-derived: selector423 has 423 rows, hashes `4e67e4dc…`, first 422 rows `bbd496f3…` byte-identical to
+accepted selector422 — extending the verified chain to **373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423** with no
+accepted prefix shifting anywhere across CP1, CP2, CP3 and CP-COND. **CP-SCALE DEFN:** §6's fixture census was
+recomputed row by row — every stated `chi` equals `V − E + F` and every genus follows from
+`(2·components − chi − boundaryLoops)/2`, with **zero** genus≥2 fixtures, exactly as concluded. Publishing that
+census makes the frozen exit's "precondition explicit" escape explicit *with evidence* rather than by assertion,
+and refusing genus-1 S5 credit in terms forecloses the substitution corrected at
+`Architecture_M4_DEFN_Frozen_Definitions.md:508` and again at CP-COND conjunct 4. The two new DEFN observations are
+witness/architecture preconditions found at definition time, each with an owner. **One prospective constraint
+recorded durably in the tracker:** S5 now has the structure conjunct 4 had, and such clauses get invoked later under
+closure pressure by turns that did not write them — so CP-SCALE may close with S5 unproved only if the precondition
+is carried with its census evidence, and genus-1 may never be credited toward S5. Accounting holds at
+**49 / 14 / 35**, debt **5**.
+
 ## 2026-09-14 — M4-CP-COND-TB5-REV — selector423 accepted; CP-COND CLOSED
 
 - Independently re-opened TB5 primary evidence and re-derived the exact **423/423** cumulative gate: selector422 **422/422**, row423 **1/1**, 423 unique row-for-row identities, owner census **30 / 277 / 75 / 41**, zero RED/SKIP/timeout/selection mismatch, 27/27 package manifest, 440/440 evidence manifest, and exact package/source/execution byte+mode postflight.

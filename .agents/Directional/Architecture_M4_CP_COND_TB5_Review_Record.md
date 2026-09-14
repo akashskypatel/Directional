@@ -208,3 +208,48 @@ elapsed-time cutoff as S3 semantics, backtrack S4 into A2a', credit genus1 as S5
 | Turn boundary held | PASS — Review performed no Directional runtime, configure/compile/package, product/test/fixture/selector semantic mutation, or CP-SCALE implementation. |
 | review_check.py boundary | **PASS** — `review_check.py boundary --expect-selector 423=4e67e4dc...d89343` reports no product/test/fixture/build mutation, no selector mutation, all committed selector hashes preserved, durable markers preserved, and `ALL CHECKS PASSED`. |
 | Pushed to origin, branch in sync | **PASS AT TURN CLOSEOUT** — durable Review/closure/plan patch is required to land on the configured working branch, temporary control state is then removed workflow-first, and final PR authority is re-read before the mandatory final comment; no local-only semantic work exists. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld. CP-COND closure is legitimate.** Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the CB5 constraint is discharged, and the falsifier is sharper than required
+
+The `M4-CP-COND-TB4-REV` addendum required the boundary oracle to be **pre-production independent**: constructed
+from raw input, computed by the test's own exact method, asserted before the conditioner runs, and falsifiable by
+a raw mutation. All four hold in `tests/InputConditionerTests.cpp`:
+
+- `independent_boundary_truncation_oracle(raw)` takes the raw bundle (`:766`), and every assertion about it
+  precedes the `condition_surface_cell_input` call at `:789-791`;
+- the oracle derives real structure rather than a constant — `singularityVertex`, `cycleNumerator`, `sourceFace`,
+  `fieldBranch`, `boundaryEdge` — and `independent_edge_incidence(raw.faces, …)` re-derives the boundary
+  incidence from raw connectivity, which is what makes it a *boundary* truncation rather than an assertion that
+  one exists;
+- the mutation at `:777-786` is **more discriminating than specified**. Rather than requiring the oracle merely
+  to break, it perturbs the raw field to a different angle and then pins which parts must move and which must
+  not: the discrete facts stay equal while `boundaryParameter` must differ (`EXPECT_NE`) and the whole result
+  must differ (`EXPECT_FALSE(*mutatedOracle == *rawOracle)`). That proves the oracle reads the raw bytes *and*
+  localises which derived quantity depends on them.
+
+### V2 — conjunct 4 is satisfied by proof, not by the hatch
+
+§4's conjunct-by-conjunct table records conjunct 4 **PASS** on "rows414-415 and independently reviewed row423".
+That is the outcome the `M4-CP-COND-TB3-REV` constraint demanded and the `TB4-REV` refusal preserved: the
+boundary item resolved into an independently proved witness, never into "reachability not proved" dressed as a
+permitted blocker. Row423 is now a real gate inside the cumulative selector rather than a report-only row, which
+is why TB5 shows zero SKIP where TB4 showed one.
+
+Conjunct 8's evidence is consistent with this reviewer's own chain verification.
+
+### V3 — lineage re-derived
+
+`Architecture_M4_CP_COND_CB5_Required_Green_Selector_423.txt` has **423** rows, hashes to `4e67e4dc6528a71e…`
+matching §2's citation, and its **first 422 rows hash to `bbd496f3396bd656…`** — byte-identical to accepted
+selector422. The M4 chain extends to:
+
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423**
+
+every link verified byte-exact at the turn that created it, with no accepted prefix shifting across CP1, CP2,
+CP3 and CP-COND.

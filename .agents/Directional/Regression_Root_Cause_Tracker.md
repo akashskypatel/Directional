@@ -142,6 +142,20 @@ closure record must say so rather than invoke the hatch. Recorded 2026-09-13 by 
 verification addendum; same substitution class as the corrected `Architecture_M4_DEFN_Frozen_Definitions.md:508`
 torus claim.
 
+
+## Closure constraint — CP-SCALE S5 — DURABLE
+
+The frozen M4 exit lets CP-SCALE close with the genus>=2 witness unproved only if "the checkpoint remains open with
+that precondition explicit". Explicit means **stated and carried with its evidence** — the fixture census in
+`Architecture_M4_CP_SCALE_Frozen_Definitions.md` §6, which shows no retained fixture has genus >= 2 — not asserted.
+
+**Genus-1 may never be credited toward S5.** The torus is accepted evidence for other purposes and receives zero S5
+credit. A closure record that invokes the escape without the census, or that lets torus evidence stand in for
+genus >= 2, has not satisfied the clause it cites.
+
+Recorded 2026-09-14 by the `M4-CP-SCALE-DEFN` review addendum, prospectively: S5 has the same structure CP-COND
+conjunct 4 had, and that clause was nearly invoked on an unevidenced claim by a turn that had not written it.
+
 ## M4-CP3-TB7-REV — **CANDIDATE REJECTED / TEST-AUTHORITY FIXTURE-PRECONDITION DRIFT / STABLE EVENT / CB10**
 
 - **Reviewed execution:** TB7 run/job `34721325716 / 103627645766` against immutable CB9 package `10305678151`; **223 = 222 PASS / 1 RED**, focused ordinal138/row408/rows404-407 **12/12 PASS**, selector403 ordinals1-210 PASS, ordinal211 RED, immutable postflight PASS.

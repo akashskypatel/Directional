@@ -72,3 +72,45 @@ Exactly one successor is authorized: `M4-CP-SCALE-CB1`, S1 passive scale instrum
 | Turn boundary held | runtime-free; documentation/planning only; no product/test/fixture/selector/build mutation |
 | review_check.py boundary | PASS — `review_check.py boundary --expect-selector 423=4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`; all checks passed |
 | Pushed to origin, branch in sync | final post-application/post-cleanup branch re-read is mandatory and is confirmed before the final PR closeout comment; no commit hash is embedded here |
+
+---
+
+## Independent review addendum (reviewing agent)
+
+Runtime-free. The definition is **upheld**, and §6 is the strongest part of it. Accounting holds at
+**49 / 14 / 35**, debt **5**.
+
+### V1 — the S5 census is arithmetically sound, and verified independently
+
+Every row of §6's fixture census was recomputed here. For all nine fixtures the stated `chi` equals `V − E + F`,
+and the stated orientable genus follows from `(2·components − chi − boundaryLoops) / 2`. There are **zero**
+genus≥2 fixtures in the retained set, exactly as the census concludes.
+
+Publishing that census is the right instrument. The frozen M4 exit permits CP-SCALE to remain open "with that
+precondition explicit", and this makes the precondition explicit **with evidence** rather than by assertion —
+the distinction that cost CP-COND several turns when the boundary item was parked on an unevidenced claim.
+
+Refusing genus-1 credit in terms is the other half: *"Torus genus1 remains valuable accepted evidence but
+receives zero S5 credit."* A genus-1 witness satisfying a genus≥2 requirement would be the exact substitution
+this project corrected at `Architecture_M4_DEFN_Frozen_Definitions.md:508` and again at CP-COND conjunct 4.
+
+### V2 — the two new observations are found at the right time
+
+`M4-CP-SCALE-DEFN-OBS-01` (no arrival-order S2 exact fallback at the reviewed seam) and
+`M4-CP-SCALE-DEFN-OBS-02` (the prescribed sphere is not an exact-repeat S3 witness) are both **witness or
+architecture preconditions**, and definition time is precisely when they are cheap to record. Each carries an
+owner. The carried CP3 items, the three `G4-B002` debts and the two `G4-B003` debts are held unchanged at their
+existing owners.
+
+### V3 — recorded prospectively: S5 inherits the CP-COND closure constraint
+
+S5 now has the same structure conjunct 4 had at CP-COND — a required witness that does not yet exist, beside a
+frozen exit clause offering to leave the checkpoint open "with that precondition explicit". The definition
+handles it correctly today. The lesson from CP-COND is that this kind of clause is invoked later, under closure
+pressure, by a turn that did not write it.
+
+The constraint is therefore recorded durably in `Regression_Root_Cause_Tracker.md` alongside the CP-COND one, in
+the same terms: **CP-SCALE may close with S5 unproved only if the precondition is stated explicitly and carried
+with its evidence — the §6 census — and genus-1 may never be credited toward S5.** A closure record that cites
+the escape without the census, or that lets torus evidence stand in for genus≥2, has not satisfied the clause it
+invokes.
