@@ -1,0 +1,3 @@
+# M4-CP-SCALE-TB1-REV temporary-state cleanup
+.agents/connector-triggers/source-snapshot/p5-cp-scale-tb1-rev-20260914.txt
+.agents/connector-triggers/drive-apply/p5-cp-scale-tb1-rev-20260914.txt
