@@ -1,11 +1,37 @@
+---
+Turn: M4-CP-COND-CB4
+Status: COMPLETE / SELECTOR422 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED; M4-CP-COND OPEN; M4 OPEN
+Repository: akashskypatel/Directional
+Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
+PR: 8, open / draft / unmerged
+Canonical next turn: M4-CP-COND-TB4-EXEC
+---
+
+
 # Future Chat Session Handoff — Directional
 
-**DURABLE — live resume authority**
-**Status:** `M4-CP-COND-CB4` COMPLETE / SELECTOR422 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED; `M4-CP-COND` OPEN; M4 OPEN
-**Repository:** `akashskypatel/Directional`
-**Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
-**PR:** #8, open / draft / unmerged
-**Canonical next turn:** `M4-CP-COND-TB4-EXEC`
+## Purpose — DURABLE, DO NOT DELETE
+
+This file contains durable operating policy, the exact next action, current immutable authority, standing product state, and resume-critical blockers/lessons required to continue safely. Architecture belongs in `DESIGN.md` and `REORIENTATION_PLAN.md`; tasks belong in `TODO.md`; completed history belongs in `CHANGELOG.md`; current exact runtime evidence belongs in the retained latest report/closure records and regression tracker.
+
+This section is durable. It may be corrected or extended, but it must not be deleted, collapsed into another section, or replaced by a summary without explicit user authorization.
+
+All instructions and sections prefixed with `[ChatGPT Web]` are mandatory for all `ChatGPT Web` sessions and must be followed exactly as written.
+All non-`ChatGPT Web` agents, i.e. `ChatGPT Work`, `Codex`, `Claude`, etc., can safely ignore any instruction or section prefixed with `[ChatGPT Web]`.
+
+
+
+## Authoritative Pre-Turn Documents — DURABLE, DO NOT DELETE
+
+These documents must be read in full at start of every turn.
+
+| Document | Purpose |
+| ------- | -------- |
+| [.agents\Directional\Durable_Handoff_Policy.md](.agents/Directional/Durable_Handoff_Policy.md) | Durable handoff policy |
+| [.agents\Directional\Mandatory_Start_Checklist.md](.agents/Directional/Mandatory_Start_Checklist.md) | Mandatory start-of-turn checklist |
+| [.agents\Directional\Mandatory_End_Checklist.md](.agents/Directional/Mandatory_End_Checklist.md) | Mandatory end-of-turn checklist |
+| [.agents\Directional\Patch_Application_Strategy.md](.agents/Directional/Patch_Application_Strategy.md) | Patch application strategy |
+| [.agents\Directional\Turn_Cadence.md](.agents/Directional/Turn_Cadence.md) | Turn cadence |
 
 ## Current authority
 
