@@ -593,7 +593,7 @@ Compile run/job `34785549072 / 103800273458` is GREEN on test-authority source `
 | `Architecture_M4_CP_COND_CB2_Code_Build_Record.md` | 68 | Folded after TB2 Review; package authority retained in §2.41/current TB2 report. |
 | `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` | 96 | Folded after TB2 EXEC/Review; 423-process gate/postflight retained in current TB2 report/Review/CB3 plan. |
 
-Current retained CP-COND authority after TB3 Review is the frozen definitions, current TB3-EXEC report, current TB3 Review record, and exactly one next plan `Architecture_M4_CP_COND_CB4_Code_Build_Plan.md`. TB2 EXEC/Review and the consumed TB3 plan are folded; the retired CB3 plan/report are indexed below.
+Current retained CP-COND authority after TB4 Review is the frozen definitions, selector422, current TB4-EXEC report, current TB4 Review record, and exactly one next plan `Architecture_M4_CP_COND_CB5_Code_Build_Plan.md`. Superseded TB3/CB4/TB4 planning records are folded into this consolidated record.
 
 
 ## 2.44 `M4-CP-COND-TB3-EXEC` — corrected artifact mechanically green; semantic Review pending
@@ -621,3 +621,21 @@ CP-COND remains OPEN; accepted authority remains CP3 package `10307919492` / sel
 | `Architecture_M4_CP_COND_TB2_EXEC_Report.md` | 40 | Folded after repaired TB3 authority superseded it; package-recovery mechanics retained in §§2.41-2.42 and tracker/changelog. |
 | `Architecture_M4_CP_COND_TB2_Review_Record.md` | 172 | Folded after its negative-index candidate was discharged; finding/correction lineage retained in §§2.42-2.45 and current Review. |
 | `Architecture_M4_CP_COND_TB3_EXEC_Plan.md` | 124 | Consumed by TB3 execution; frozen 423-process contract/result retained in current TB3 report and Review. |
+
+
+## 2.46 `M4-CP-COND-CB4 + TB4-EXEC + TB4-REV` — selector422 accepted; boundary raw-precondition remains
+
+CB4 published selector422 as exact selector408 rows1-408 plus the fourteen already-reviewed CP-COND gates and packaged the unchanged semantic source `702d9e10afff1fc3ac2ed3f3458acf8f19b617a5` as artifact `10327643907`. TB4-EXEC consumed that immutable package only and completed selector422 **422/422 PASS**: predecessor408 **408/408**, appended gates **14/14**, one expected report-only boundary SKIP, zero gating RED/timeout/selection mismatch and exact byte+mode postflight. Its non-self-referential evidence checksum manifest verifies completely.
+
+TB4 Review independently re-derived the raw ledger/logs, owner census **30/276/75/41**, selector hash/prefix, exact immutability and source-history comparison and **accepts package `10327643907` / selector422 as current M4 runtime authority**. This closes the TB3 selector-publication candidate and checksum observation without changing stable accounting (**49 / 14 / 35**, debt **5**).
+
+CP-COND remains OPEN on frozen §12 conjunct 4. The report-only boundary placeholder does not independently prove a raw separatrix route before production execution. The genuine-unreachability alternative is not viable because inherited accepted A2a identities already demonstrate singularity-port traces terminating on genuine source-boundary mandatory carriers. Exact successor `M4-CP-COND-CB5` must build an independent raw oracle + mutation falsifier, prove conditioner preservation, and append one gate as selector423 without production changes.
+
+### TB4 Review folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP_COND_TB3_EXEC_Report.md` | 67 | Folded after selector422 acceptance; TB3 mechanics and corrected-oracle lineage retained in §§2.44-2.46, tracker and changelog. |
+| `Architecture_M4_CP_COND_TB3_Review_Record.md` | 202 | Folded after its selector candidate/checksum observation were discharged; decisions retained in §§2.45-2.46 and tracker. |
+| `Architecture_M4_CP_COND_CB4_Code_Build_Report.md` | 118 | Folded after TB4 Review promotion; exact source/package/selector publication retained in §2.46, selector manifest and current Review. |
+| `Architecture_M4_CP_COND_TB4_Artifact_Only_Test_Benchmark_Plan.md` | 78 | Folded after TB4 execution/review; frozen gate/result retained in current TB4 EXEC report, Review and §2.46. |

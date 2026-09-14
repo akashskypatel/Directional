@@ -1,3 +1,7 @@
+## 2026-09-13 — M4-CP-COND-TB4-REV
+
+Accepted immutable CB4 package `10327643907` / cumulative selector422 **422/422** as current M4 runtime authority after independent TB4 evidence review. Closed the TB3 selector-publication candidate and evidence-manifest self-hash observation. CP-COND remains OPEN: frozen conjunct 4 still needs a pre-production independent raw boundary-truncated separatrix oracle and conditioner-preservation gate. Exact next is test-authority/runtime-free `M4-CP-COND-CB5`, targeting selector423. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-13 — `M4-CP-COND-CB4`: selector422 published; seven-target GMP/GMPXX compile/package GREEN
 
 - Published selector422 as the exact accepted selector408 prefix plus the fourteen already-runtime-proved CP-COND gating identities in frozen order. Selector422 is **422 LF rows**, SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`; first408 remains exactly `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`. Boundary-truncated separatrix remains report-only/non-selector.

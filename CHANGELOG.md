@@ -1,3 +1,7 @@
+## 2026-09-13 — M4-CP-COND-TB4-REV
+
+Accepted immutable CB4 package `10327643907` / cumulative selector422 **422/422** as current M4 runtime authority after independent TB4 evidence review. Closed the TB3 selector-publication candidate and evidence-manifest self-hash observation. CP-COND remains OPEN: frozen conjunct 4 still needs a pre-production independent raw boundary-truncated separatrix oracle and conditioner-preservation gate. Exact next is test-authority/runtime-free `M4-CP-COND-CB5`, targeting selector423. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
 # 2026-09-13 — M4-CP-COND-TB3-REV accepts repaired oracle; cumulative selector gap blocks CP-COND closure
 
 Runtime-free Review independently re-opened CB3 artifact `10325879420`, TB3 raw ledgers/logs and packaged `tests/InputConditionerTests.cpp`. TB3 mechanics are accepted at focused **14/14 PASS**, one expected report-only boundary **SKIP**, selector408 **408/408 PASS**, gating **422/422 PASS**, zero semantic RED/crash/timeout/actual selection mismatch and exact immutable postflight. The corrected negative-index identity is non-vacuous: its test-local GMP oracle exactifies actual raw binary64 geometry/field bytes, derives the unique closed planar fan and exact Z4 transport `[3,3,3,3,3]`, obtains signed numerator `-1`, and a one-LSB raw branch mutation invalidates the oracle. `M4-CP-COND-TB2-REV-CAND-01` therefore closes **TEST-AUTHORITY REPAIRED / RUNTIME-PROVED / NON-STABLE**.

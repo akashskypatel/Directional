@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-13, `M4-CP-COND-TB3-REV`):** M4-CP3 remains **CLOSED / ACCEPTED** on package `10307919492` / selector408 **408/408**. Review accepts the corrected negative-index raw oracle and TB3 mechanics, but CP-COND stays OPEN because its fourteen gating identities are not yet in the frozen cumulative append-only selector. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is selector-authority/package-only `M4-CP-COND-CB4`.
+> **Current milestone authority (2026-09-13, `M4-CP-COND-TB4-REV`):** package `10327643907` / selector422 **422/422** is accepted as current M4 runtime authority. The cumulative-selector publication gap and TB3 checksum-manifest observation are closed. CP-COND remains **OPEN** solely because frozen §12 conjunct 4 still lacks an independently proved boundary-truncated raw precondition. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is test-authority + selector-publication `M4-CP-COND-CB5`.
 
-**Currency.** `M4-CP-COND-TB3-REV`, 2026-09-13. Negative-index test authority is accepted and its TB2 candidate is closed; CP-COND remains open on a non-stable cumulative-selector publication gap; accepted CP3 runtime authority unchanged.
+**Currency.** `M4-CP-COND-TB4-REV`, 2026-09-13. Selector422/package authority is accepted; CP-COND remains open on the boundary raw-precondition oracle/gate; exact next CB5.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -63,7 +63,7 @@ guarantee. The distinguishing commitments:
 | A8 | `VerificationReport` + `OutputDisposition` | independent verifier assigns the tier |
 | A9 | logs and public result | — |
 
-A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on the produced torus. M4-CP3 is accepted through A4 on the constructed torus witness. CP-COND adds the architecturally preceding conditioning boundary: raw input is conditioned once into an immutable certified product before A0. Its implementation is compile-green. TB1 had no semantic runtime result because the candidate package lacked three cumulative selector-owner binaries; CB2 has now package-closed the unchanged semantic source with all four owners, but still has no semantic runtime result until TB2. A5 onward remain unreached, and the prescribed sphere still cannot reach A2b (§7).
+A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on the produced torus. M4-CP3 is accepted through A4 on the constructed torus witness. CP-COND adds the architecturally preceding conditioning boundary: raw input is conditioned once into an immutable certified product before A0. TB4 Review now accepts cumulative selector422/package `10327643907`; the checkpoint remains open only on the independently proved boundary-truncated raw-precondition gate. A5 onward remain unreached, and the prescribed sphere still cannot reach A2b (§7).
 
 **Disposition ladder** (assigned by A8, never asserted by a producer; a run only moves down):
 `D0 Certified` → `D1 QualityRelaxed` → `D2 LocallyDegraded` → `D3 Partial` → `D4 DiagnosticOnly`.
@@ -74,7 +74,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 TB8 Review independently re-derived the immutable 835-process result: repaired shared-fixture consumers 12/12 A/B, ordinal138 2/2, row408 2/2, rows404-407 8/8, accepted selector403 403/403 to completion, selector408 408/408 cumulative and an empty accepted RED census. Package/source/execution-view postflight is exact. The stale-fixture event remains historical stable evidence but `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**.
 
-The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **TB3 Review accepts the corrected negative-index oracle and 422/422 gating runtime, but CP-COND remains OPEN because the fourteen CP-COND gates were executed only as focused tests and are not yet members of the cumulative append-only selector required by frozen CP-COND/M4 authority. Exact next is `M4-CP-COND-CB4`.** Accepted authority remains CP3 package `10307919492` / selector408 408/408.
+The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **TB4 Review accepts package `10327643907` / selector422 422/422 as current M4 runtime authority and closes the selector-publication gap. CP-COND remains OPEN because frozen §12 conjunct 4 still lacks a pre-production independent boundary-truncated raw oracle/gate. Exact next is `M4-CP-COND-CB5`.** Stable accounting remains 49/14/35, debt 5.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -186,7 +186,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP-COND cumulative selector authority — NEXT: `M4-CP-COND-CB4`.** TB3 Review accepts the repaired negative-index raw oracle and full mechanical result, but frozen CP-COND §12 requires checkpoint gate credit on a cumulative append-only selector. Append the existing fourteen CP-COND gating identities after exact selector408 as rows 409-422, keep the boundary witness report-only/non-selector, and change no product/test semantics.
+1. **M4-CP-COND boundary-truncated raw-precondition authority — NEXT: `M4-CP-COND-CB5`.** Selector422/package authority is accepted. The remaining frozen §12 conjunct 4 cannot use the 'genuinely unreachable' escape: accepted A2a identities already demonstrate singularity-port termination on genuine source-boundary barriers. What is still missing is an independent raw oracle proving that boundary-truncated precondition *before* production execution and a conditioner-preservation gate. CB5 must add exactly that test authority and append it as selector423 row423 without product changes.
 
 2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** The main exact-torus pairing blocker is **CLOSED / RECOVERY PROVED** by CP3. Three inherited produced-witness re-proofs remain CP4 gating; debt stays 5 until actual runtime acceptance.
 
@@ -206,9 +206,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 8. Recurring defect patterns — the highest-value section
 
-**Focused runtime evidence is not cumulative selector credit when the frozen exit says selector.** TB3 proved all fourteen CP-COND identities GREEN and Review accepted the repaired oracle, but selector408 still contains only the predecessor authority. `Architecture_M4_CP_COND_Frozen_Definitions.md` §12 and M4 selector policy require append-only selector publication before checkpoint closure. This is a new instance of the existing explicit-gate/selector-enforcement rule, not a new lesson category: preserve the accepted prefix exactly and publish already-proved gates rather than weakening the exit contract.
+**Focused runtime evidence is not cumulative selector credit when the frozen exit says selector — discharged instance.** TB3 proved all fourteen CP-COND identities GREEN while selector408 still held only predecessor authority. CB4 published exact-prefix selector422 and TB4 re-proved it 422/422; TB4 Review accepts that authority. The reusable rule remains: preserve the accepted prefix exactly and publish already-proved gates rather than weakening the exit contract.
 
-**An intended construction is not an independent raw oracle.** CP-COND TB2 passed its negative-index identity, but the expected `-1` was computed from authored sector/degree constants while the raw binary64 branches were merely preserved. The proof obligation requires the answer to be re-derived from the raw subject, with a mutation that changes or invalidates that derivation. This is another instance of existing non-vacuity/oracle lessons (157/160/64j), not a new lesson family.
+**An intended construction is not an independent raw oracle.** The negative-index instance is repaired, but the same rule now binds the remaining boundary witness: production A2a can visibly terminate singularity-port traces on source boundaries, yet that post-production observation cannot certify the pre-production raw precondition of the conditioner gate. CB5 must derive the boundary route/locus from raw topology/field bytes first and include a mutation falsifier. This is the existing non-vacuity/oracle family, not a new lesson category.
 
 **Compile-green is not cumulative selector package closure.** CP-COND CB1 compiled every directly affected target it chose, yet its frozen TB successor required accepted selector408 whose identities span four owner executables. TB1 correctly failed before runtime when three owners were absent. This is a new instance, not a new category, of the package-closure rule already captured by `LESSONS.md` 3; the correction must hold all semantic bytes fixed and change only package completeness per Lesson 170.
 

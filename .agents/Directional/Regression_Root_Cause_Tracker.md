@@ -1,3 +1,17 @@
+## 2026-09-13 — `M4-CP-COND-TB4-REV`: selector422 accepted; boundary raw-precondition candidate opened
+
+- TB4 evidence independently re-derived: package `10327643907` / source `702d9e10...17a5`, selector422 **422/422 PASS**, predecessor408 **408/408**, appended gates **14/14**, one expected report-only boundary SKIP, zero gating RED/timeout/selection mismatch and exact immutable postflight.
+- `M4-CP-COND-TB3-REV-CAND-01` — **CLOSED / SELECTOR-AUTHORITY REPAIRED / RUNTIME-PROVED / NON-STABLE**. Selector422 first408 is byte-identical to accepted selector408 and rows409-422 are exactly the fourteen reviewed gates.
+- `M4-CP-COND-TB3-REV-OBS-01` — **CLOSED / ORCHESTRATION REPAIRED / NON-BLOCKING**. TB4 emits a non-self-referential evidence checksum manifest and independent verification passes for every substantive entry.
+- Package `10327643907` / selector422 is **ACCEPTED CURRENT M4 RUNTIME AUTHORITY**. Promotion does not close CP-COND.
+- `M4-CP-COND-TB4-REV-CAND-01` — **OPEN / TEST-AUTHORITY / BOUNDARY-TRUNCATED RAW PRECONDITION NOT INDEPENDENTLY PROVED / NON-STABLE**.
+  - **Root cause:** the report-only placeholder explicitly has no independent A2a reachability/raw-route proof. Frozen §10/§12 requires a pre-production independent raw oracle plus conditioner preservation.
+  - **Unreachability route rejected:** accepted A2a prefix tests already produce singularity-port termination on mandatory barriers on a disc with no hard-feature edges, so genuine source-boundary termination is reachable. Those production-observing tests cannot self-authorize the CP-COND raw precondition.
+  - **Falsifier:** CB5 authors one independent exact/discrete raw boundary-truncation oracle with a load-bearing mutation, proves conditioner preservation, publishes selector423 = exact selector422 prefix + one gate; TB5 proves 423/423 with exact postflight; Review independently re-derives the oracle and cumulative gate.
+  - **Owner:** `M4-CP-COND-CB5 -> TB5-EXEC -> TB5-REV`.
+  - **Prohibited:** production semantic change, production-derived raw oracle, epsilon/proximity authority, selector422 mutation, fixture weakening or unrelated debt absorption.
+- Stable accounting remains **49 / 14 / 35**, debt **5**. CP-COND remains OPEN.
+
 ## 2026-09-13 — `M4-CP-COND-TB3-REV`: negative-index candidate closed; cumulative-selector authority gap opened
 
 - TB3 primary evidence independently re-derived: artifact `10325879420` / source `4d9206cd...e675`, focused 14/14 PASS, report-only boundary SKIP, selector408 408/408 PASS, total gating 422/422, 423 selected processes, exact immutable postflight.
