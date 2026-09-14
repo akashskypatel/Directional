@@ -37,6 +37,17 @@ Eigen::RowVectorXd canonical_cross_row() {
   return row;
 }
 
+Eigen::RowVectorXd cross_row_for_angle(const double angle) {
+  const double cosine = std::cos(angle);
+  const double sine = std::sin(angle);
+  Eigen::RowVectorXd row(12);
+  row << cosine, sine, 0.0,
+        -sine, cosine, 0.0,
+        -cosine, -sine, 0.0,
+         sine, -cosine, 0.0;
+  return row;
+}
+
 RawSurfaceCellInput make_square_input() {
   RawSurfaceCellInput raw;
   raw.vertices.resize(4, 3);
@@ -137,6 +148,26 @@ NegativeIndexRawWitness make_negative_index_witness() {
     witness.raw.rawCrossField.block<1, 3>(face, 9) = -y;
   }
   return witness;
+}
+
+RawSurfaceCellInput make_boundary_truncation_witness() {
+  RawSurfaceCellInput raw;
+  raw.vertices.resize(6, 3);
+  raw.vertices.row(0) << 0.0, 0.0, 0.0;
+  constexpr double pi = 3.141592653589793238462643383279502884;
+  for (int i = 0; i < 5; ++i) {
+    const double angle = 2.0 * pi * static_cast<double>(i) / 5.0;
+    raw.vertices.row(i + 1) << std::cos(angle), std::sin(angle), 0.0;
+  }
+  raw.faces.resize(5, 3);
+  raw.rawCrossField.resize(5, 12);
+  for (int face = 0; face < 5; ++face) {
+    raw.faces.row(face) << 0, face + 1, (face + 1) % 5 + 1;
+    const double angle =
+        2.0 * pi * static_cast<double>(face) / 5.0 + pi / 5.0;
+    raw.rawCrossField.row(face) = cross_row_for_angle(angle);
+  }
+  return raw;
 }
 
 struct ExactVec3 {
@@ -355,11 +386,217 @@ std::optional<IndependentNegativeIndexOracle> independent_negative_index_oracle(
   return oracle;
 }
 
-bool exact_boundary_truncation_precondition_is_proved_without_a2a() {
-  // CP-COND can prove an open source boundary and preserve its raw carriers,
-  // but this CB1 fixture intentionally does not claim that the later A2a trace
-  // reaches that boundary. That reachability remains a named blocked gate.
-  return false;
+std::optional<int> independent_cycle_center(
+    const Eigen::MatrixXi &faces, const std::vector<int> &cycle) {
+  if (cycle.empty()) return std::nullopt;
+  std::vector<int> common;
+  common.reserve(3);
+  const int firstFace = cycle.front();
+  if (firstFace < 0 || firstFace >= faces.rows()) return std::nullopt;
+  for (int corner = 0; corner < 3; ++corner) {
+    const int candidate = faces(firstFace, corner);
+    bool presentEverywhere = true;
+    for (const int face : cycle) {
+      if (face < 0 || face >= faces.rows()) return std::nullopt;
+      bool present = false;
+      for (int c = 0; c < 3; ++c) present |= faces(face, c) == candidate;
+      if (!present) {
+        presentEverywhere = false;
+        break;
+      }
+    }
+    if (presentEverywhere) common.push_back(candidate);
+  }
+  if (common.size() != 1U) return std::nullopt;
+  return common.front();
+}
+
+int independent_edge_incidence(const Eigen::MatrixXi &faces, int a, int b) {
+  if (b < a) std::swap(a, b);
+  int incidence = 0;
+  for (Eigen::Index face = 0; face < faces.rows(); ++face) {
+    for (int edge = 0; edge < 3; ++edge) {
+      int x = faces(face, edge);
+      int y = faces(face, (edge + 1) % 3);
+      if (y < x) std::swap(x, y);
+      if (x == a && y == b) ++incidence;
+    }
+  }
+  return incidence;
+}
+
+struct IndependentBoundaryTruncationOracle {
+  int singularityVertex = -1;
+  int cycleNumerator = 0;
+  int sourceFace = -1;
+  int fieldBranch = -1;
+  std::array<int, 2> boundaryEdge{-1, -1};
+  mpq_class rayParameter;
+  mpq_class boundaryParameter;
+
+  bool operator==(const IndependentBoundaryTruncationOracle &other) const {
+    return singularityVertex == other.singularityVertex &&
+           cycleNumerator == other.cycleNumerator &&
+           sourceFace == other.sourceFace &&
+           fieldBranch == other.fieldBranch &&
+           boundaryEdge == other.boundaryEdge &&
+           rayParameter == other.rayParameter &&
+           boundaryParameter == other.boundaryParameter;
+  }
+};
+
+std::optional<IndependentBoundaryTruncationOracle>
+independent_boundary_truncation_oracle(const RawSurfaceCellInput &raw) {
+  const auto indexOracle = independent_negative_index_oracle(raw);
+  if (!indexOracle || indexOracle->cycleNumerator == 0) return std::nullopt;
+
+  const auto cycle = independent_closed_face_fan(
+      raw.faces, static_cast<int>(raw.vertices.rows()));
+  if (!cycle || cycle->empty()) return std::nullopt;
+  const auto center = independent_cycle_center(raw.faces, *cycle);
+  if (!center) return std::nullopt;
+  const auto centerPoint = exact_vec3(raw.vertices, *center, 0);
+  if (!centerPoint) return std::nullopt;
+
+  for (const int face : *cycle) {
+    int centerCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (raw.faces(face, corner) == *center) {
+        centerCorner = corner;
+        break;
+      }
+    }
+    if (centerCorner < 0) return std::nullopt;
+
+    const int rawA = raw.faces(face, (centerCorner + 1) % 3);
+    const int rawB = raw.faces(face, (centerCorner + 2) % 3);
+    if (independent_edge_incidence(raw.faces, rawA, rawB) != 1) continue;
+    const auto a = exact_vec3(raw.vertices, rawA, 0);
+    const auto b = exact_vec3(raw.vertices, rawB, 0);
+    if (!a || !b) return std::nullopt;
+    const ExactVec3 edge = *b - *a;
+    const ExactVec3 fromCenter = *a - *centerPoint;
+    const ExactVec3 normal = exact_cross(fromCenter, *b - *centerPoint);
+    if (exact_zero(normal)) return std::nullopt;
+
+    for (int branch = 0; branch < 4; ++branch) {
+      const auto direction = exact_vec3(raw.rawCrossField, face, branch * 3);
+      if (!direction || exact_zero(*direction) ||
+          exact_dot(*direction, normal) != 0) {
+        return std::nullopt;
+      }
+      const mpq_class denominator =
+          exact_dot(exact_cross(*direction, edge), normal);
+      if (denominator == 0) continue;
+      const mpq_class rayParameter =
+          exact_dot(exact_cross(fromCenter, edge), normal) / denominator;
+      mpq_class boundaryParameter =
+          exact_dot(exact_cross(fromCenter, *direction), normal) / denominator;
+      if (rayParameter <= 0 || boundaryParameter <= 0 ||
+          boundaryParameter >= 1) {
+        continue;
+      }
+
+      std::array<int, 2> boundaryEdge{rawA, rawB};
+      if (boundaryEdge[1] < boundaryEdge[0]) {
+        std::swap(boundaryEdge[0], boundaryEdge[1]);
+        boundaryParameter = 1 - boundaryParameter;
+      }
+      return IndependentBoundaryTruncationOracle{
+          *center, indexOracle->cycleNumerator, face, branch, boundaryEdge,
+          rayParameter, boundaryParameter};
+    }
+  }
+  return std::nullopt;
+}
+
+std::optional<RawSurfaceCellInput> reconstruct_raw_view_from_certificate(
+    const ConditionedSourceProduct &product) {
+  const auto &certificate = product.certificate;
+  RawSurfaceCellInput reconstructed;
+  reconstructed.vertices.resize(
+      static_cast<Eigen::Index>(certificate.vertices.size()), 3);
+  std::vector<int> conditionedToRaw(
+      static_cast<std::size_t>(product.vertices.rows()), -1);
+  for (const auto &entry : certificate.vertices) {
+    if (entry.rawVertex < 0 || entry.rawVertex >= reconstructed.vertices.rows() ||
+        entry.conditionedVertex < 0 ||
+        entry.conditionedVertex >= product.vertices.rows()) {
+      return std::nullopt;
+    }
+    int &rawOwner =
+        conditionedToRaw[static_cast<std::size_t>(entry.conditionedVertex)];
+    if (rawOwner >= 0) return std::nullopt;
+    rawOwner = entry.rawVertex;
+    reconstructed.vertices.row(entry.rawVertex) =
+        product.vertices.row(entry.conditionedVertex);
+  }
+  if (std::find(conditionedToRaw.begin(), conditionedToRaw.end(), -1) !=
+      conditionedToRaw.end()) {
+    return std::nullopt;
+  }
+
+  reconstructed.faces.resize(
+      static_cast<Eigen::Index>(certificate.faces.size()), 3);
+  for (const auto &entry : certificate.faces) {
+    if (entry.rawFace < 0 || entry.rawFace >= reconstructed.faces.rows() ||
+        entry.conditionedFace < 0 || entry.conditionedFace >= product.faces.rows()) {
+      return std::nullopt;
+    }
+    for (int corner = 0; corner < 3; ++corner) {
+      const int conditionedVertex = product.faces(entry.conditionedFace, corner);
+      if (conditionedVertex < 0 ||
+          conditionedVertex >= static_cast<int>(conditionedToRaw.size())) {
+        return std::nullopt;
+      }
+      reconstructed.faces(entry.rawFace, corner) =
+          conditionedToRaw[static_cast<std::size_t>(conditionedVertex)];
+    }
+  }
+
+  reconstructed.rawCrossField.resize(
+      static_cast<Eigen::Index>(certificate.fields.size()), 12);
+  for (const auto &entry : certificate.fields) {
+    if (entry.rawFace < 0 ||
+        entry.rawFace >= reconstructed.rawCrossField.rows() ||
+        entry.conditionedFace < 0 ||
+        entry.conditionedFace >= product.rawCrossField.rows()) {
+      return std::nullopt;
+    }
+    std::array<bool, 4> rawBranchSeen{false, false, false, false};
+    for (int conditionedBranch = 0; conditionedBranch < 4;
+         ++conditionedBranch) {
+      const int rawBranch =
+          entry.branchPermutation[static_cast<std::size_t>(conditionedBranch)];
+      if (rawBranch < 0 || rawBranch >= 4 ||
+          rawBranchSeen[static_cast<std::size_t>(rawBranch)]) {
+        return std::nullopt;
+      }
+      rawBranchSeen[static_cast<std::size_t>(rawBranch)] = true;
+      reconstructed.rawCrossField.block<1, 3>(entry.rawFace, rawBranch * 3) =
+          product.rawCrossField.block<1, 3>(entry.conditionedFace,
+                                            conditionedBranch * 3);
+    }
+  }
+
+  reconstructed.hardFeatures.resize(certificate.features.size());
+  for (const auto &entry : certificate.features) {
+    if (entry.rawFeature < 0 ||
+        entry.rawFeature >= static_cast<int>(reconstructed.hardFeatures.size())) {
+      return std::nullopt;
+    }
+    const int conditionedA = entry.conditionedEdge.vertex0;
+    const int conditionedB = entry.conditionedEdge.vertex1;
+    if (conditionedA < 0 || conditionedB < 0 ||
+        conditionedA >= static_cast<int>(conditionedToRaw.size()) ||
+        conditionedB >= static_cast<int>(conditionedToRaw.size())) {
+      return std::nullopt;
+    }
+    reconstructed.hardFeatures[static_cast<std::size_t>(entry.rawFeature)] = {
+        conditionedToRaw[static_cast<std::size_t>(conditionedA)],
+        conditionedToRaw[static_cast<std::size_t>(conditionedB)]};
+  }
+  return reconstructed;
 }
 
 } // namespace
@@ -523,11 +760,48 @@ TEST(InputConditionerCPCondCB1, ContradictoryExactZ4PairingIsTypedRefusal) {
   EXPECT_FALSE(directional::pipeline::validate_conditioning_failure(raw, policy, failure).has_value());
 }
 
-TEST(InputConditionerCPCondCB1, BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker) {
-  const RawSurfaceCellInput raw = make_square_input();
-  ASSERT_EQ(raw.faces.rows(), 2);
-  EXPECT_FALSE(exact_boundary_truncation_precondition_is_proved_without_a2a());
-  GTEST_SKIP() << "CP-COND proves boundary/correspondence only; A2a separatrix reachability remains unproved and non-selector.";
+TEST(InputConditionerCPCondCB5,
+     BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved) {
+  const RawSurfaceCellInput raw = make_boundary_truncation_witness();
+  const auto rawOracle = independent_boundary_truncation_oracle(raw);
+  ASSERT_TRUE(rawOracle.has_value());
+  EXPECT_EQ(rawOracle->singularityVertex, 0);
+  EXPECT_EQ(rawOracle->cycleNumerator, -1);
+  EXPECT_EQ(rawOracle->sourceFace, 0);
+  EXPECT_EQ(rawOracle->fieldBranch, 0);
+  EXPECT_EQ(rawOracle->boundaryEdge, (std::array<int, 2>{1, 2}));
+  EXPECT_EQ(independent_edge_incidence(
+                raw.faces, rawOracle->boundaryEdge[0], rawOracle->boundaryEdge[1]),
+            1);
+
+  RawSurfaceCellInput mutated = raw;
+  constexpr double pi = 3.141592653589793238462643383279502884;
+  mutated.rawCrossField.row(0) = cross_row_for_angle(2.0 * pi / 9.0);
+  const auto mutatedOracle = independent_boundary_truncation_oracle(mutated);
+  ASSERT_TRUE(mutatedOracle.has_value());
+  EXPECT_EQ(mutatedOracle->singularityVertex, rawOracle->singularityVertex);
+  EXPECT_EQ(mutatedOracle->cycleNumerator, rawOracle->cycleNumerator);
+  EXPECT_EQ(mutatedOracle->sourceFace, rawOracle->sourceFace);
+  EXPECT_EQ(mutatedOracle->boundaryEdge, rawOracle->boundaryEdge);
+  EXPECT_NE(mutatedOracle->boundaryParameter, rawOracle->boundaryParameter);
+  EXPECT_FALSE(*mutatedOracle == *rawOracle);
+
+  const ConditioningPolicy policy = ConditioningPolicy::production_identity();
+  const ConditioningResult result =
+      directional::pipeline::condition_surface_cell_input(raw, policy);
+  const auto *produced = std::get_if<Produced<ConditionedSourceProduct>>(&result);
+  ASSERT_NE(produced, nullptr);
+  const ConditionedSourceProduct &product = produced->product;
+  EXPECT_FALSE(directional::pipeline::validate_conditioned_source_product(
+                   raw, policy, product)
+                   .has_value());
+
+  const auto reconstructed = reconstruct_raw_view_from_certificate(product);
+  ASSERT_TRUE(reconstructed.has_value());
+  const auto conditionedOracle =
+      independent_boundary_truncation_oracle(*reconstructed);
+  ASSERT_TRUE(conditionedOracle.has_value());
+  EXPECT_TRUE(*conditionedOracle == *rawOracle);
 }
 
 TEST(InputConditionerCPCondCB1, CertificateTamperMatrixRejectsEveryAuthorityClass) {
