@@ -182,6 +182,30 @@ genus >= 2, has not satisfied the clause it cites.
 Recorded 2026-09-14 by the `M4-CP-SCALE-DEFN` review addendum, prospectively: S5 has the same structure CP-COND
 conjunct 4 had, and that clause was nearly invoked on an unevidenced claim by a turn that had not written it.
 
+
+## `M4-CP-SCALE-TB2-REV-OBS-02` — `make_zero_transport_field` has an unchecked precondition
+
+**Owner:** the turn that legitimately owns the helper — **not** `M4-CP-SCALE-CB3` · **Class:** TEST-AUTHORITY / SILENT-PRECONDITION
+**Non-blocking** — no accepted-green exposure; accounting unchanged at 49 / 14 / 35, debt 5.
+
+**Root cause.** `make_zero_transport_field` (`tests/FieldAlignedCurveNetworkTests.cpp:170`) sets
+`field.effort = Eigen::VectorXd::Zero(...)` and asserts nothing. It is valid only when every interior vertex is
+intrinsically flat, because the atlas lift `(cycles·effort + 4·cycleCurvature)/2π` must match the composed
+quarter-turn transport; on a non-flat vertex zero effort gives transport 0 against a non-zero lift and the atlas
+correctly refuses. The helper has **35 call sites**.
+
+**Why now.** The same silent precondition has produced two independent witness failures — `M3-CP4c3-TB7-CAND-02`
+and `M4-CP-SCALE-TB2-EXEC-CAND-01`. Proving the precondition at one call site fixes one instance; thirty-three
+other callers remain unchecked.
+
+**Discharge.** Assert the precondition inside the helper, so every affected caller is enumerated at once rather
+than discovered one TB cycle apiece — the same trade accepted for the no-fail-fast census at `M4-CP3-TB7-REV`.
+
+**Constraints.** Not in CB3, whose value depends on being a bounded S2 correction and which is already forbidden
+from touching historical ordinal374 authority. If the assertion fires on an existing caller, record the caller and
+its owner rather than silently repairing it. The historical M3 selector374 row is not in accepted selector423, so
+surfacing its known invalidity cannot cost an accepted ordinal.
+
 ## M4-CP3-TB7-REV — **CANDIDATE REJECTED / TEST-AUTHORITY FIXTURE-PRECONDITION DRIFT / STABLE EVENT / CB10**
 
 - **Reviewed execution:** TB7 run/job `34721325716 / 103627645766` against immutable CB9 package `10305678151`; **223 = 222 PASS / 1 RED**, focused ordinal138/row408/rows404-407 **12/12 PASS**, selector403 ordinals1-210 PASS, ordinal211 RED, immutable postflight PASS.

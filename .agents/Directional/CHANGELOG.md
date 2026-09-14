@@ -1,5 +1,28 @@
 ## 2026-09-14 — `M4-CP-SCALE-CB2`: independent S2 vertex-star oracle authored; candidate package compile GREEN
 
+**Verification amendment (reviewing agent, review record §10).** Upheld: rejecting candidate `10367451675` is
+correct and the root cause is exact. §3's chain was recomputed rather than accepted — three exact right-angle
+sectors give `Θ = 3π/2`, so the centre vertex carries `K = 2π − Θ = π/2` and is not intrinsically flat; with
+`effort = 0` the atlas lift `(cycles·effort + 4·cycleCurvature)/2π` evaluates to `(0 + 4·(π/2))/2π = 1` while the
+composed quarter-turn transport is `0`, and `0 ≢ 1 (mod 4)`, so `FieldAtlasBuildFailure` is the **correct** product
+behaviour. The classification follows: a witness-precondition defect in the fixture, not a vertex-star filter
+defect, and a duplicate root of `M3-CP4c3-TB7-CAND-02`. Accounting is right for the reason that matters — the
+failing identity is on the non-selector S2 surface, not in accepted selector423, so no accepted ordinal went
+PASS → RED. §8's requirement that CB3 *prove the precondition before invoking the comparator* is the correct
+instrument, the same discipline that fixed row408's effective hard-rail set; holding `M3-CP4c3-TB7-CAND-02` at a
+separate owner rather than silently repairing it inside a bounded correction is equally right (`LESSONS.md` 170).
+§5 is also correctly handled: TB2 ran selector423 **0/423**, so the turn produced no evidence about the accepted
+prefix at all, and recording that as an execution-evidence control defect keeps "accepted authority remains
+423/423" anchored to the prior accepted run. **One required addition, recorded as `M4-CP-SCALE-TB2-REV-OBS-02`:**
+`make_zero_transport_field` (`tests/FieldAlignedCurveNetworkTests.cpp:170`) sets `effort` to zero and asserts
+nothing, yet is valid only on intrinsically flat interior vertices — and it has **35 call sites**. The same silent
+precondition has now caused two independent witness failures. CB3's call-site proof fixes one instance and leaves
+thirty-three callers unchecked; asserting the precondition inside the helper enumerates every affected caller at
+once, the same trade accepted for the no-fail-fast census at `M4-CP3-TB7-REV`. Constrained to a later turn, not
+CB3; fires are information to be recorded, not silently repaired; and the historical M3 selector374 row is not in
+accepted selector423, so surfacing its known invalidity cannot cost an accepted ordinal. Accounting holds at
+**49 / 14 / 35**, debt **5**.
+
 ## 2026-09-14 — `M4-CP-SCALE-TB2-REV`: S2 candidate rejected; known non-flat helper precondition
 
 - Runtime-free Review independently re-opened TB2 evidence and candidate source, and rejects `10367451675` / `63cb20d6...c939e` as **TEST-AUTHORITY PRECONDITION FAILURE / NON-STABLE**. The S2 identity reused the already-known non-flat `make_zero_transport_field` witness: on the three-right-angle center, exact cycle lift is `1` while hand-authored transport composes to `0 mod 4`, so `FieldTransportAtlas` correctly returns `CycleTransportMismatch` before the comparator.

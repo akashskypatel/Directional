@@ -105,3 +105,67 @@ Under `CLEAN_UP_POLICY.md`, this Review preserves all load-bearing CB2/TB2 facts
 | Turn boundary held | PASS — runtime-free Review; no Directional runtime/build/package and no product/test/fixture/selector/benchmark/build-source mutation. |
 | review_check.py boundary | **PASS** — `review_check.py boundary --expect-selector 423=4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343` reports ALL CHECKS PASSED; no product/test/fixture/build or selector mutation. |
 | Pushed to origin, branch in sync | **PASS AT TURN CLOSEOUT** — exact-base durable Review patch is applied, temporary workflow/connector state is removed workflow-first, branch/PR authority is re-read, and no local-only Review work remains before the final PR comment. |
+
+---
+
+## 10. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Rejecting candidate `10367451675` is correct, the root cause is exact, and the
+obligation ledger is the most complete in this sequence. Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the root-cause derivation re-derived and confirmed
+
+§3's chain was recomputed rather than accepted, and every step holds:
+
+- three exact right-angle sectors give `Θ = 3·(π/2) = 3π/2`, so the centre vertex carries `K = 2π − Θ = π/2` and
+  is **not** intrinsically flat;
+- with `effort = 0` everywhere, the atlas lift `(cycles·effort + 4·cycleCurvature) / 2π` evaluates to
+  `(0 + 4·(π/2)) / 2π = 1`;
+- the composed quarter-turn transport under zero effort is `0`, and `0 ≢ 1 (mod 4)`, so `FieldAtlasBuildFailure`
+  is the **correct** product behaviour.
+
+The classification follows: this is a witness-precondition defect in the test fixture, not a vertex-star filter
+defect, and identifying it as a duplicate root of `M3-CP4c3-TB7-CAND-02` is right.
+
+The accounting is also right for the reason that matters: the failing identity belongs to the non-selector S2
+surface, not to accepted selector423, so no accepted ordinal transitioned PASS → RED and no stable event arises
+under the durable criterion.
+
+### V2 — §8's precondition guard is the correct instrument
+
+Requiring CB3 to *"prove the precondition before invoking the comparator"* is exactly the right shape, and the
+same discipline that fixed row408's effective hard-rail set and row392's `preferredCount`. Holding
+`M3-CP4c3-TB7-CAND-02` at a separate owner — *"CB3 must not silently repair it"* — is equally right: repairing a
+second, independently-owned defect inside a bounded correction would blur attribution exactly as
+`LESSONS.md` 170 describes.
+
+§5's disposition is also correct. TB2 ran selector423 **0/423**, so this turn produced no evidence at all about
+the accepted prefix; recording that as an execution-evidence control defect rather than letting it pass silently
+keeps "accepted authority remains 423/423" anchored to the prior accepted run rather than to anything TB2 showed.
+
+### V3 — REQUIRED (not in CB3): the helper's silent precondition should be checked at the helper
+
+`make_zero_transport_field` is valid only when every interior vertex is intrinsically flat. That precondition is
+nowhere asserted — the helper simply sets `field.effort = Eigen::VectorXd::Zero(...)`
+(`tests/FieldAlignedCurveNetworkTests.cpp:170`) — and it now has **35 call sites**.
+
+The same silent precondition has produced two independent witness failures: `M3-CP4c3-TB7-CAND-02` and now
+`M4-CP-SCALE-TB2-EXEC-CAND-01`. CB3's call-site proof fixes this instance; it leaves the helper loaded for the
+next caller, and there are thirty-three others whose vertex stars nobody has checked.
+
+**The generalizable fix is to make the helper assert its own precondition** — every interior vertex intrinsically
+flat — converting a silent assumption into a checked one. This is the same trade already accepted for the
+no-fail-fast census at `M4-CP3-TB7-REV`: one assertion enumerates every affected caller at once, where the
+current arrangement discovers them one TB cycle apiece.
+
+Three constraints on that work:
+
+1. **Not in CB3.** CB3's evidential value depends on being a bounded S2 correction, and §8 already forbids it
+   from touching historical ordinal374 authority. Assign this to the turn that legitimately owns the helper.
+2. **Fires are information, not breakage.** If the assertion trips on an existing caller, record the caller and
+   its owner; do not silently repair it, for the same reason §8 protects ordinal374.
+3. **No accepted-green exposure on the known path.** §2 verified that the historical M3 selector374 row
+   `ResolvedBranchCorrection.FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection` is **not** in
+   accepted selector423, so surfacing its known invalidity cannot cost an accepted ordinal.
+
+Recorded as `M4-CP-SCALE-TB2-REV-OBS-02` in the tracker.
