@@ -1,0 +1,38 @@
+name: Agent M4 CP SCALE DEFN Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-defn-drive-apply/run.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-defn-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-defn-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1gnnP7WiCSLqYVWnzHQmpV8KFskmg00jr
+      patch_sha256: d545d923d23479972cb9f3c0c84bb5a3074bc3a71093b589bfcb7e3e4202d30c
+      base_sha: b894a12fa077aff620892174f09805fbc5666b56
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: freeze M4 CP-SCALE definitions'
+      retention_days: 7
+    secrets: inherit
