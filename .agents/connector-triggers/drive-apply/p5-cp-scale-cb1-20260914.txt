@@ -1,4 +1,4 @@
-purpose=apply M4-CP-SCALE-CB1 compile-fix patch
-base_sha=6a8eed257a047bc70e53cc00dff629f9725c5cad
-patch_sha256=3e81437b85c627fe9342b60d70a1038df7cc03017efc1958eb62fec68261b795
-retry=1
+purpose=apply M4-CP-SCALE-CB1 retained-witness census matrix patch
+base_sha=2a61c3eb4c75d613da0085252a404cc88f885c42
+patch_sha256=b20447dc0357afb06f066fef97a89bec2689bb588907bfe41415108937397a8f
+retry=2
