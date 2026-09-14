@@ -1,3 +1,0 @@
-turn=M4-CP-COND-TB4-EXEC
-requested_head=bbcb67032f0e497d78ab2684b1a2b6cb64706b9f
-reason=user-requested fresh source snapshot after head change
