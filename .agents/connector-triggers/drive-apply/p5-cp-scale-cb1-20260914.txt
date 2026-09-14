@@ -1,4 +1,4 @@
-purpose=apply M4-CP-SCALE-CB1 verified work-preservation patch
-base_sha=0a2e2a23736ab2938ce8f8237147c2a0b9540848
-patch_sha256=c09c06fe094cb6c22587c102888af8ff62cbe76c4eb77aed70234ec16f062bff
-retry=0
+purpose=apply M4-CP-SCALE-CB1 compile-fix patch
+base_sha=6a8eed257a047bc70e53cc00dff629f9725c5cad
+patch_sha256=3e81437b85c627fe9342b60d70a1038df7cc03017efc1958eb62fec68261b795
+retry=1
