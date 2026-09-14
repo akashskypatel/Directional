@@ -1,3 +1,4 @@
 turn=M4-CP-SCALE-DEFN
 purpose=validate Drive caller draft
+attempt=2
 draft=.agents/Directional/turn-payloads/m4-cp-scale-defn/drive-caller-draft.yml
