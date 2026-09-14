@@ -1,6 +1,0 @@
-turn=M4-CP-SCALE-DEFN
-purpose=apply verified whitespace-clean Drive patch
-attempt=3
-file_id=16h_PvGxo7BiTinZsizNYJJOavZLzpB30
-patch_sha256=2fc0b72187bc1720e13fd4a510a67fd9364ca1812a3dcd40712e666f53ea98a0
-base_sha=b894a12fa077aff620892174f09805fbc5666b56
