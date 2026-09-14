@@ -1,5 +1,0 @@
-turn=M4-CP-SCALE-TB1-REV
-purpose=apply reviewed durable Review/CB2 documentation patch
-base_sha=92e107f509c6d90094c6f8f95a9c78371098c25b
-patch_sha256=d110f0dbca4851120936397552e690b9ec748ca545e3d3998875b8375d974ec2
-retry=0
