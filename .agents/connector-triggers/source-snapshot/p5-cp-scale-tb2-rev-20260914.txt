@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-TB2-REV
+purpose=exact-source-snapshot
+source_ref=6ba472b8c37b1d16d1dea3d6f7135a49ca976fbf
+runtimeExecution=false
