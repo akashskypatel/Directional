@@ -1,0 +1,5 @@
+# M4-CP-SCALE-DEFN temporary-state cleanup
+.agents/connector-triggers/m4-cp-scale-defn-drive-apply
+.agents/connector-triggers/m4-cp-scale-defn-drive-schema
+.agents/connector-triggers/source-snapshot/m4-cp-scale-defn-start-20260914.txt
+.agents/Directional/turn-payloads/m4-cp-scale-defn
