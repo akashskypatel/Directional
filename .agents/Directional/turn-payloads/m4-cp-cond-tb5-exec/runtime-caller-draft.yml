@@ -1,20 +1,20 @@
-name: Agent M4 CP-COND TB5 Artifact-Only Gate
+name: Agent M4 CP-COND TB5 Closeout Drive Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m4-cp-cond-tb5-exec/run.txt
+      - .agents/connector-triggers/m4-cp-cond-tb5-closeout-apply/run.txt
 
 permissions:
-  actions: read
   contents: write
+  id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: agent-m4-cp-cond-tb5-exec-${{ github.ref }}
+  group: agent-m4-cp-cond-tb5-closeout-apply-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -22,115 +22,17 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp-cond-tb5-exec
+      label: m4-cp-cond-tb5-closeout-apply
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  runtime:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Initialize diagnostic log
-        shell: bash
-        run: |
-          set -euo pipefail
-          log="${RUNNER_TEMP}/m4-cp-cond-tb5.log"
-          : > "$log"
-          echo "run_id=${GITHUB_RUN_ID}" | tee -a "$log"
-          echo "event_sha=${GITHUB_SHA}" | tee -a "$log"
-          echo "runtimeExecution=true" | tee -a "$log"
-      - name: Checkout harness authority only
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 1
-          token: ${{ secrets.GH_TOKEN || github.token }}
-      - name: Install packaged runtime dependencies
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee -a "${RUNNER_TEMP}/m4-cp-cond-tb5.log") 2>&1
-          sudo apt-get update
-          sudo apt-get install -y libgmp10 libgmpxx4ldbl
-      - name: Download immutable CB5 package
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee -a "${RUNNER_TEMP}/m4-cp-cond-tb5.log") 2>&1
-          work="${RUNNER_TEMP}/m4-cp-cond-tb5"; mkdir -p "$work/package" "$work/evidence"
-          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10331193451/zip" > "$work/candidate.zip"
-          unzip -q "$work/candidate.zip" -d "$work/package"
-          sha256sum "$work/candidate.zip"
-      - name: Immutable preflight
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee -a "${RUNNER_TEMP}/m4-cp-cond-tb5.log") 2>&1
-          work="${RUNNER_TEMP}/m4-cp-cond-tb5"
-          python3 .agents/Directional/turn-payloads/m4-cp-cond-tb5-exec/tb5_preflight.py --artifact "$work/candidate.zip" --package "$work/package" --work "$work" --evidence "$work/evidence"
-      - name: Execute selector423
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee -a "${RUNNER_TEMP}/m4-cp-cond-tb5.log") 2>&1
-          work="${RUNNER_TEMP}/m4-cp-cond-tb5"
-          python3 .agents/Directional/turn-payloads/m4-cp-cond-tb5-exec/tb5_execute.py --work "$work" --evidence "$work/evidence"
-      - name: Immutable postflight and evidence manifest
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee -a "${RUNNER_TEMP}/m4-cp-cond-tb5.log") 2>&1
-          work="${RUNNER_TEMP}/m4-cp-cond-tb5"; ev="$work/evidence"
-          if [[ -d "$work/package" && -d "$work/source" && -d "$work/execution-view" ]]; then
-            # Census the actually executed views; no repair is permitted.
-            python3 - "$work/package" "$ev/package-post.tsv" "$work/source" "$ev/source-post.tsv" "$work/execution-view" "$ev/execution-post.tsv" <<'PY'
-          from pathlib import Path
-          import hashlib,os,stat,sys
-          def sha(p):
-           h=hashlib.sha256(); f=open(p,'rb')
-           for b in iter(lambda:f.read(1048576),b''): h.update(b)
-           f.close(); return h.hexdigest()
-          def census(root,out):
-           root=Path(root); rows=[]
-           for p in sorted(root.rglob('*'),key=lambda x:x.as_posix()):
-            rel=p.relative_to(root).as_posix(); st=p.lstat(); m=stat.S_IMODE(st.st_mode)
-            if p.is_symlink(): rows.append(f'L\t{m:04o}\t-\t{hashlib.sha256(os.readlink(p).encode()).hexdigest()}\t{rel}\n')
-            elif p.is_file(): rows.append(f'F\t{m:04o}\t{st.st_size}\t{sha(p)}\t{rel}\n')
-           Path(out).write_text(''.join(rows))
-          for i in range(1,len(sys.argv),2): census(sys.argv[i],sys.argv[i+1])
-          PY
-            cmp "$ev/package-pre.tsv" "$ev/package-post.tsv"
-            cmp "$ev/source-pre.tsv" "$ev/source-post.tsv"
-            cmp "$ev/execution-pre.tsv" "$ev/execution-post.tsv"
-            cat > "$ev/postflight.txt" <<'EOF'
-          immutability=true
-          configure_execution=false
-          compile_execution=false
-          relink_execution=false
-          generated_discovery=false
-          package_repair=false
-          source_test_fixture_selector_mutation=false
-          EOF
-          fi
-          if [[ -d "$ev" ]]; then
-            (cd "$ev" && find . -type f ! -name EVIDENCE_SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > EVIDENCE_SHA256SUMS && sha256sum -c EVIDENCE_SHA256SUMS)
-          fi
-      - name: Upload TB5 result
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m4-cp-cond-tb5-result-${{ github.run_id }}
-          path: ${{ runner.temp }}/m4-cp-cond-tb5/evidence
-          if-no-files-found: error
-          retention-days: 14
-      - name: Upload TB5 diagnostic log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m4-cp-cond-tb5-log-${{ github.run_id }}
-          path: ${{ runner.temp }}/m4-cp-cond-tb5.log
-          if-no-files-found: error
-          retention-days: 14
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1iN_l6W1lV62AAsZE-UG3f9C12C5TyDiq
+      patch_sha256: "6798f8b70e632d4bda14eaa2087a36122aa9525059ce300877c45cf1c062f4f3"
+      base_sha: c6230c20a878bee48f79d767c1ee1e31ec11031d
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close out M4-CP-COND-TB5-EXEC"
+    secrets: inherit
