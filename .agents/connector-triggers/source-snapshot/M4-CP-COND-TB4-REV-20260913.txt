@@ -1,3 +1,0 @@
-turn=M4-CP-COND-TB4-REV
-source_authority=18d0b9dbe352f6e0fb3959517085292cf6b09255
-purpose=exact source snapshot for mandatory TB4 review
