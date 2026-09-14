@@ -1,4 +1,4 @@
 turn=M4-CP-COND-TB4-REV
-purpose=apply durable Review publication patch from Google Drive
+purpose=apply corrected durable Review publication patch from Google Drive
 base_sha=b49afb34aa413032fd0c9d6abc0cec6fdb1b19eb
-retry=1
+retry=2
