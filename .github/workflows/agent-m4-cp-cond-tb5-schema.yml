@@ -1,0 +1,34 @@
+name: Agent M4 CP-COND TB5 Schema Validation
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-cond-tb5-schema/validate.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp-cond-tb5-schema-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-cond-tb5-schema
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m4-cp-cond-tb5-exec/runtime-caller-draft.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
