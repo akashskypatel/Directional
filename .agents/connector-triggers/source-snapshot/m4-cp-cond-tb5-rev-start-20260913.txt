@@ -1,4 +1,0 @@
-M4-CP-COND-TB5-REV review-only source snapshot trigger.
-Initial review authority: ffc94a4bbc55576bf43571bb35948053e3bbaace.
-Purpose: materialize exact current source/docs for independent TB5 review.
-No Directional runtime, compile, package, product/test/fixture/selector mutation is authorized in this Review.
