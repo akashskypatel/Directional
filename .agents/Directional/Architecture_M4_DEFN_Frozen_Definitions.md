@@ -516,12 +516,14 @@ No required-green identity is appended until its stated precondition is independ
 | conditioning correspondence + idempotence + S6 perturbation | no current accepted production witness | CP-COND | gating after CB construction; perturbation metrics may be report-only until threshold frozen |
 | S1 bit-width/expression swell | current meshes <=152 vertices/300 faces, so production envelope is uncalibrated | CP-SCALE | **non-gating measurement** first; a later review may freeze a numeric gate, never M4-DEFN guesswork |
 | S2 certified-filter equivalence | exact fallback can provide oracle | CP-SCALE | gating: filtered and exact decisions must agree |
-| S3 limit-cycle typed termination | prescribed-sphere history proves a real exact limit-cycle surface | CP-SCALE | gating typed outcome when the dedicated fixture reaches the detector |
+| S3 limit-cycle typed termination | **CORRECTED by M4-CP-SCALE-DEFN:** prescribed-sphere history proves a repeated position-free combinatorial circuit with drifting exact entry positions, not a full exact-state repeat; dedicated exact-repeat construction is owed | CP-SCALE | gating typed outcome only when the exact full-state repeat precondition reaches the detector |
 | S4 incremental-Betti early rejection | construction owed | CP-SCALE | gating only after independently proved precondition/reachability |
 | S5 genus>=2 | construction/reachability owed; genus1 torus is insufficient | CP-SCALE/CP4 | gating only after a genus>=2 fixture reaches A3; until then it is an explicit blocker, not guaranteed-red selector debt |
 
 Representative Bunny/Vase quality/resource acceptance remains later milestone authority and is not silently pulled into
 M4.
+
+**CP-SCALE supersession note (2026-09-14).** `Architecture_M4_CP_SCALE_Frozen_Definitions.md` is the checkpoint-local normative authority for S1-S5 and supersedes only CP-SCALE predicate/reachability details in this section where they conflict. The surrounding M4 obligations, selector policy and checkpoint ownership are unchanged. Its citation map binds the correction to current source and retained evidence.
 
 ## 11. Debt and `G4-B004` adjudication
 

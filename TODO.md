@@ -2,16 +2,16 @@
 
 Last updated: 2026-09-14 UTC
 
-## Current turn — M4-CP-SCALE-DEFN
+## Current turn — M4-CP-SCALE-CB1
 
-- [x] `M4-CP-COND-TB5-REV`: independently re-derived TB5 423/423 evidence and the exact boundary raw oracle; promoted package `10331193451` / selector423 and CLOSED / ACCEPTED CP-COND.
-- [ ] `M4-CP-SCALE-DEFN`: inventory S1-S5 production seams and retained primary reachability evidence without executing runtime.
-- [ ] Freeze S1 exact measurement schema as diagnostic/non-gating; do not guess an acceptance threshold.
-- [ ] Freeze S2 exact-fallback-dominant certified-filter semantics and discriminating equivalence gates.
-- [ ] Freeze S3 exact semantic-state limit-cycle termination; no timeout/iteration/proximity semantics.
-- [ ] Freeze S4 incremental-Betti early rejection as earlier-never-different and non-backtracking.
-- [ ] Freeze S5 genus>=2 fixture/stage precondition; if unconstructed/unreached, keep it explicit non-selector blocker.
-- [ ] Publish one gate/diagnostic membership table from accepted selector423 and one bounded `M4-CP-SCALE-CB1` successor plan, or STOP with a definition amendment.
+- [x] `M4-CP-SCALE-DEFN`: froze S1-S5 authority boundaries from source/evidence; no runtime/build/semantic mutation.
+- [x] S1: exact trace-entry scale census is diagnostic/non-gating; no threshold inferred from current witnesses.
+- [x] S2: vertex-star certified filter + exact fallback is eligible for a later equivalence gate; arrival ordering remains blocked until an exact fallback owner is frozen.
+- [x] S3: full exact traversal-state repetition is the only semantic cycle key; prescribed-sphere history is combinatorial recurrence with exact-position drift, not an exact-repeat witness.
+- [x] S4: final actual-embedded disc/cellularity certificate remains authority; incremental early rejection needs an independent earlier-never-different oracle and may not alter A2a' cuts.
+- [x] S5: static fixture census finds no genus>=2 retained witness; torus genus1 receives zero S5 credit.
+- [ ] `M4-CP-SCALE-CB1`: implement and compile/package passive S1 exact trace-parameter scale census only; no runtime, selector append, threshold, or S2-S5 source change.
+- [ ] `M4-CP-SCALE-TB1-EXEC`: after CB1 compile/package, run immutable S1 diagnostics plus accepted selector423; S1 remains zero gate credit.
 
 ## Purpose
 
@@ -39,9 +39,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-DEFN` (definition / review + plan only)
+## Current focus — `M4-CP-SCALE-CB1` (Code + Build only)
 
-TB5 Review independently accepts immutable package `10331193451` / source `07984711db59eaa228820e7d44e5552a652edadf` / selector423 **423/423** as current M4 runtime authority and CLOSES / ACCEPTS CP-COND. Stable accounting remains **49 / 14 / 35**, debt **5**. CP-SCALE is now unblocked, but its first turn is runtime-free DEFN: freeze S1-S5 exact authority, witness reachability and gate membership before any implementation.
+CP-SCALE definitions are frozen. CB1 is bounded to passive S1 exact trace-parameter scale instrumentation, authored diagnostic coverage, compile and immutable packaging. No runtime, selector append, threshold, 4096-guard change or S2-S5 implementation is authorized. Accepted runtime authority remains package `10331193451` / selector423 **423/423**; stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -120,4 +120,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority is package `10331193451` / selector423 **423/423**. Exact next is runtime-free **`M4-CP-SCALE-DEFN`** under `Architecture_M4_CP_SCALE_DEFN_Plan.md`. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority is package `10331193451` / selector423 **423/423**. CP-SCALE definitions are frozen; exact next is **`M4-CP-SCALE-CB1`** under `Architecture_M4_CP_SCALE_CB1_Code_Build_Plan.md`. PR #8 remains open, draft, and unmerged.

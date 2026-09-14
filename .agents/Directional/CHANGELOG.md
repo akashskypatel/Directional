@@ -1,3 +1,13 @@
+## 2026-09-14 — `M4-CP-SCALE-DEFN`: S1-S5 authority frozen; bounded S1 CB1 next
+
+- Runtime-free source/evidence review froze `Architecture_M4_CP_SCALE_Frozen_Definitions.md`. Accepted package `10331193451` / selector423 remains unchanged at **423/423** (`4e67e4dc...d89343`); first422 re-hashes `bbd496f3...f7cc`; no selector row is added.
+- S1 is a passive exact A2a trace-entry rational scale census and remains diagnostic/non-gating. No threshold is inferred from current witnesses and the existing 4096-bit continuation guard is not reinterpreted as a scale gate.
+- S2 splits the already-certified vertex-star filter/exact-fallback seam from the arrival/arclength interval comparator, whose exact fallback is not frozen and therefore receives no gate credit.
+- S3 corrects one stale umbrella reachability claim: prescribed-sphere circulation is a repeated **combinatorial** circuit with drifting exact entry positions, not an exact full-state repeat. Full `FieldAlignedTraceTraversalState` equality remains the only semantic cycle key.
+- S4 keeps the actual-embedded cellularity/disc certificate as sole authority; incremental Betti rejection needs an independent earlier-never-different oracle and cannot alter A2a' cuts. S5 static census finds **no genus>=2 retained fixture**; torus genus1 receives zero S5 credit.
+- New non-stable preconditions `M4-CP-SCALE-DEFN-OBS-01..04` record arrival fallback, exact-repeat witness, incremental-topology oracle, and genus>=2 coverage debt. Stable accounting stays **49 / 14 / 35**, produced-witness debt **5**.
+- Exact successor: `M4-CP-SCALE-CB1`, S1 instrumentation + compile/package only, no runtime and no S2-S5 work.
+
 ## 2026-09-14 — M4-CP-COND-TB5-REV — selector423 accepted; CP-COND CLOSED
 
 - Independently re-opened TB5 primary evidence and re-derived the exact **423/423** cumulative gate: selector422 **422/422**, row423 **1/1**, 423 unique row-for-row identities, owner census **30 / 277 / 75 / 41**, zero RED/SKIP/timeout/selection mismatch, 27/27 package manifest, 440/440 evidence manifest, and exact package/source/execution byte+mode postflight.

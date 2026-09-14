@@ -22,9 +22,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-14, `M4-CP-COND-TB5-REV`):** package `10331193451` / selector423 **423/423** is accepted as current M4 runtime authority. TB5 Review independently re-derived the immutable 423-process gate and the exact/discrete boundary-truncation raw oracle, closes `M4-CP-COND-TB4-REV-CAND-01` non-stably, and **CLOSES / ACCEPTS M4-CP-COND**. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP-SCALE-DEFN`.
+> **Current milestone authority (2026-09-14, `M4-CP-SCALE-DEFN`):** package `10331193451` / selector423 **423/423** remains accepted current M4 runtime authority. CP-SCALE S1-S5 definitions are frozen; no selector/runtime authority changed. S1 is diagnostic-only; S2-S5 gate only after their independent preconditions. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is `M4-CP-SCALE-CB1`.
 
-**Currency.** `M4-CP-COND-TB5-REV`, 2026-09-14. Selector423/package authority is accepted; CP-COND is closed; exact next `M4-CP-SCALE-DEFN`.
+**Currency.** `M4-CP-SCALE-DEFN`, 2026-09-14. CP-SCALE definitions frozen; selector423 unchanged; exact next `M4-CP-SCALE-CB1`.
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -70,11 +70,11 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3 is CLOSED / ACCEPTED.** Current accepted M4 runtime authority is CB10 artifact `10307919492` / semantic source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a` with selector408 **408/408** (`c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`). Accepted predecessor selector403 remains **403/403** (`c3f509af...70cb7`). Stable accounting is **49 / 14 / 35**, produced-witness debt **5**.
+**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED.** Current accepted M4 runtime authority is package `10331193451` / semantic source `07984711db59eaa228820e7d44e5552a652edadf` with selector423 **423/423** (`4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`). Accepted predecessor selector422 is `bbd496f3...f7cc`; first408 remains accepted selector408 `c689c0cd...484`. Stable accounting is **49 / 14 / 35**, produced-witness debt **5**.
 
-TB8 Review independently re-derived the immutable 835-process result: repaired shared-fixture consumers 12/12 A/B, ordinal138 2/2, row408 2/2, rows404-407 8/8, accepted selector403 403/403 to completion, selector408 408/408 cumulative and an empty accepted RED census. Package/source/execution-view postflight is exact. The stale-fixture event remains historical stable evidence but `M4-CP3-TB7-REV-CAND-01` is **CLOSED / RECOVERY PROVED / STABLE EVENT RETAINED**.
+`M4-CP-SCALE-DEFN` is complete and freezes the scale/boundedness authority without runtime or semantic mutation. S1 begins with passive exact trace-parameter bit-width/work measurement and contributes zero gate credit. S2's vertex-star certified filter is eligible only with exact-fallback equivalence; the separate arrival comparator is not yet eligible because no exact fallback owner is frozen. S3 requires full exact traversal-state repetition; historical sphere circulation is combinatorial with exact-position drift. S4 may reject earlier only under an independent oracle that agrees with the existing actual-embedded disc certificate and cannot alter A2a' cuts. S5 has no retained genus>=2 witness.
 
-The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherited produced-witness re-proofs remain CP4-owned. **TB5 Review accepts package `10331193451` / selector423 423/423 as current M4 runtime authority and CLOSES / ACCEPTS CP-COND.** Review re-derived all 423 exact-filter processes, the exact selector422/408 prefixes, immutable postflight, and the raw boundary witness independently: the test-local exact oracle derives a `-1` singularity ending on source-boundary edge `{1,2}`, and a raw-field mutation changes its exact boundary parameter before any conditioner call. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP-SCALE-DEFN`.
+Exact next is bounded `M4-CP-SCALE-CB1`: S1 passive instrumentation + compile/package only; selector423 remains unchanged.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
@@ -86,6 +86,8 @@ The main exact-torus `G4-B002` blocker remains closed by CP3; its three inherite
 | **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears A1/A2a and reaches A2b certification | **Final M3 selector409 audit is 405/4.** Ordinals366/367 and protected 390/393/406/407 are green/non-vacuous under package113; the AU0–AU9 mechanical-witness criterion is MET and CP4c-3 is closed. Remaining audit REDs are separately owned and do not alter this witness. |
 
 **CP-COND acceptance witness (not a milestone production witness):** CB5's five-face raw boundary fan is deliberately test-local. TB5 Review independently derives its `-1` singularity and strict interior hit on real source-boundary edge `{1,2}` from exactified raw bytes, proves a field mutation changes the exact terminal parameter, and confirms the production-identity conditioner certificate reconstructs the same oracle. It closes the conditioner coverage obligation without changing the torus/sphere/two-ring/mechanical witness claims above.
+
+**CP-SCALE reachability note:** S1 can observe exact A2a trace-state rationals on the current witness family. The sphere's retained circulation is not an S3 exact-repeat witness; its exact entry position drifts. Static census finds no genus>=2 milestone-G OBJ, so S5 remains a coverage precondition. No witness row above changes stage in DEFN.
 
 ## 5. The central theorem of CP4c-2
 
@@ -188,7 +190,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP-SCALE — NEXT: `M4-CP-SCALE-DEFN`.** CP-COND is CLOSED / ACCEPTED on package `10331193451` / selector423 **423/423**. The next domain is S1-S5 scale/boundedness. S1 begins diagnostic/non-gating; S2 certified filters must remain subordinate to exact fallback; S3 typed limit-cycle termination must use exact semantic state rather than timeouts; S4 may reject earlier but never differently and may not backtrack into A2a'; S5 requires a genuinely genus>=2 witness that is proved to reach the frozen stage. DEFN must freeze concrete predicate surfaces, witness reachability and gate membership before any CB.
+1. **M4-CP-SCALE — NEXT: `M4-CP-SCALE-CB1`.** DEFN is complete. CB1 is intentionally S1-only: passive exact trace-parameter scale census, compile/package, no runtime/threshold/selector append. S2 arrival exact-fallback authority, S3 dedicated exact-repeat witness, S4 independent incremental oracle and S5 genus>=2 construction remain explicit later preconditions; none may be pulled into CB1.
 
 2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** The main exact-torus pairing blocker is **CLOSED / RECOVERY PROVED** by CP3. Three inherited produced-witness re-proofs remain CP4 gating; debt stays 5 until actual runtime acceptance.
 
@@ -205,6 +207,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 8. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** It remains green inside accepted selector365 but restates a retired local-fragment/global-owner injectivity premise. Do not weaken it pre-emptively; if it fires, classify test-authority drift.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A periodic combinatorial route is not an exact-state limit cycle when an exact coordinate drifts.** CP-SCALE DEFN re-read the S3 history and source together: the prescribed sphere revisits the same position-free 32-state circuit while exact entry parameters change, so it is evidence for recurrence pressure but not the frozen exact-repeat precondition. This is an instance of existing reachability/non-vacuity lessons, not a new category: name the complete semantic state first, then prove the witness repeats that state before assigning typed-cycle gate credit.
 
 **Focused runtime evidence is not cumulative selector credit when the frozen exit says selector — discharged instance.** TB3 proved all fourteen CP-COND identities GREEN while selector408 still held only predecessor authority. CB4 published exact-prefix selector422 and TB4 re-proved it 422/422; TB4 Review accepts that authority. The reusable rule remains: preserve the accepted prefix exactly and publish already-proved gates rather than weakening the exit contract.
 
