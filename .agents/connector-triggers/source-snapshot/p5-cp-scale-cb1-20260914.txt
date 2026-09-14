@@ -1,0 +1,3 @@
+purpose=source snapshot for M4-CP-SCALE-CB1
+source_sha=0a2e2a23736ab2938ce8f8237147c2a0b9540848
+retry=0
