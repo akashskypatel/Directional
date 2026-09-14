@@ -1,0 +1,3 @@
+turn=M4-CP-COND-CB5
+purpose=apply verified CB5 closeout documentation patch
+base_sha=37285b545c110a95996a05a112ac5ac6e44332e5
