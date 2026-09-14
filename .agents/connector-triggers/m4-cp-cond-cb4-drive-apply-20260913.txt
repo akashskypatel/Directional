@@ -1,0 +1,5 @@
+turn=M4-CP-COND-CB4
+purpose=apply selector422 publication patch from Google Drive
+base_sha=38fc03e19360c6bba57d2d7e41cc162f66ac7679
+patch_sha256=86d2b6da0730ddbfbcd979dd0ba224e4a5b3f3047ea15825a62ab20096d31790
+file_id=1x4cr093x9og5Cdzfx3YWa1dpj9JUYGHS
