@@ -1,3 +1,0 @@
-turn=M4-CP-COND-CB5
-purpose=validate temporary compile caller
-caller=.agents/Directional/turn-payloads/m4-cp-cond-cb5/compile-caller-draft.yml

@@ -1,3 +1,0 @@
-turn=M4-CP-COND-CB5
-purpose=validate temporary Drive apply caller
-caller=.agents/Directional/turn-payloads/m4-cp-cond-cb5/drive-caller-draft.yml

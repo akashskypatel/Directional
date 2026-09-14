@@ -1,3 +1,0 @@
-purpose=M4-CP-COND-CB5 source snapshot
-semantic_source=f445bf0045aa2148df2c14b14a1722b48feab12a
-retry=1
