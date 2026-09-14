@@ -1,6 +1,0 @@
-turn=M4-CP-SCALE-TB2-REV
-purpose=apply-durable-review-adjudication-and-consolidation
-retry=2
-base_sha=72c69d36bb11c9746b1277d64cc12a877e04f1f8
-patch_sha256=cf58d0a91dbd8e8408c36a21e39631bece7fc35c06d2e40ac6d906afaad998ad
-runtimeExecution=false
