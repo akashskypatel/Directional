@@ -1,0 +1,49 @@
+name: Agent Drive Apply CP-SCALE-TB1 Closeout 20260914
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-apply/p5-cp-scale-tb1-closeout-20260914.txt
+
+permissions:
+  actions: write
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-drive-apply-cp-scale-tb1-closeout-20260914
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-drive-apply-p5-cp-scale-tb1-closeout-20260914.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: drive-apply-cp-scale-tb1-closeout-20260914
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1kXEsiKScpixIbDX9_1ZlFLRYU-twTO9S
+      patch_sha256: 998a1ac12456887ecfc11db27685a30ffb5801c3f14d3c68e767e045e4f2fc2f
+      base_sha: 9ffa3a491aadd9dde856a13efc26b6126680da53
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: docs: close out M4-CP-SCALE-TB1 execution
+      retention_days: 14
+    secrets: inherit
