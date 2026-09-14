@@ -14268,7 +14268,7 @@ TEST(M4CPScaleS1,
   for (const FieldAlignedTraceScaleCensusRow &row : census.rows) {
     ASSERT_LT(row.trace.index(),
               withoutCensus.value().candidate_traces().size());
-    const FieldAlignedCandidateTrace &trace =
+    const directional::geometry::FieldAlignedCandidateTrace &trace =
         withoutCensus.value().candidate_traces()[row.trace.index()];
     ASSERT_EQ(row.trace, trace.id);
     ASSERT_LT(row.step, trace.segments.size());
