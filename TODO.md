@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-14 UTC
 
-## Current turn — M4-CP-SCALE-TB2-EXEC
+## Current turn — M4-CP-SCALE-TB2-REV
 
 - [x] `M4-CP-SCALE-DEFN`: froze S1-S5 authority boundaries from source/evidence; no runtime/build/semantic mutation.
 - [x] S1: exact trace-entry scale census is diagnostic/non-gating; no threshold inferred from current witnesses.
@@ -14,7 +14,8 @@ Last updated: 2026-09-14 UTC
 - [x] `M4-CP-SCALE-TB1-EXEC`: immutable artifact `10360085644` mechanically GREEN — focused S1 **1/1 PASS**, accepted selector423 **423/423 PASS**, zero RED/SKIP/timeout/crash/selection mismatch, exact immutable postflight; raw four-family measurements preserved with zero threshold/gate interpretation.
 - [x] `M4-CP-SCALE-TB1-REV`: runtime-free Review independently re-derived selector423/TB1 evidence, promoted package `10360085644`, accepted S1 only as threshold-free diagnostic instrumentation, and froze no numeric bound.
 - [x] `M4-CP-SCALE-CB2`: S2 vertex-star test authority authored on semantic source `63cb20d6ba5393058086c62c6422ac58b75c939e`; independent exact integer-seed oracle covers positive/negative/near-boundary/exact-fallback/tamper cases; changed-owner and eight-target GMP/GMPXX compiles/package GREEN with `runtimeExecution=false`; candidate artifact `10367451675`; selector423 unchanged and S2 receives zero runtime credit.
-- [ ] `M4-CP-SCALE-TB2-EXEC`: consume artifact `10367451675` immutably; focused S2 exactly once + accepted selector423 as 423 fresh exact-filter processes + exact postflight/evidence publication. No rebuild/repair/mutation, selector append, promotion, or semantic adjudication in EXEC; mandatory TB2 Review follows.
+- [x] `M4-CP-SCALE-TB2-EXEC`: exact preflight passed; focused S2 selected once and RED at first `positive-strict-interior` because `FieldTransportAtlas::make` returned false before comparator/receipt execution. Harness stopped before selector423/postflight and omitted the required explicit untouched-remainder ledger. Candidate remains unpromoted; stable totals unchanged.
+- [ ] `M4-CP-SCALE-TB2-REV`: re-open primary evidence; independently diagnose seeded atlas precondition versus production authority; adjudicate incomplete selector/postflight evidence; issue the bounded corrective successor. No runtime/build/semantic mutation.
 
 ## Purpose
 
@@ -42,11 +43,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-TB2-EXEC` (artifact-only runtime)
+## Current focus — `M4-CP-SCALE-TB2-REV` (runtime-free Review)
 
-Accepted runtime authority remains TB1-Review package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423** (`4e67e4dc...d89343`). CB2 has now authored the bounded S2 vertex-star equivalence identity on semantic source `63cb20d6ba5393058086c62c6422ac58b75c939e` and produced compile-green candidate artifact `10367451675` with GMP/GMPXX, a 28/28 self-excluding manifest, clean source receipts, and `runtimeExecution=false`. Product semantics and selector423 are unchanged; S2 still has zero gate credit.
+Accepted runtime authority remains TB1-Review package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423** (`4e67e4dc...d89343`). Candidate `10367451675` remains unpromoted: TB2 focused S2 RED at first `positive-strict-interior` because atlas construction failed before comparator/receipt execution. The harness then stopped before selector423/postflight and omitted the required explicit unexecuted remainder.
 
-Exact next `M4-CP-SCALE-TB2-EXEC` is frozen in `Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Plan.md`: immutable package preflight, focused S2 once, selector423 in 423 fresh exact-filter processes, exact postflight, evidence publication, then mandatory Review. EXEC cannot promote the package or append a selector row. Stable accounting remains **49 / 14 / 35**, debt **5**.
+Exact next is runtime-free `M4-CP-SCALE-TB2-REV`: independently re-open evidence, diagnose the seeded atlas precondition and evidence defect, then issue the bounded corrective successor. No runtime retry, semantic patch, selector append, promotion or S2 credit before Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -85,7 +86,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB1 REVIEWED + CB2 COMPILE GREEN**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority; CB2 candidate `10367451675` is runtime-unadjudicated. S1 remains diagnostic/non-gating with no numeric calibration threshold; exact next is artifact-only `M4-CP-SCALE-TB2-EXEC`; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB2 FOCUSED RED / REVIEW PENDING**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority; CB2 candidate `10367451675` is unpromoted after TB2 focused S2 RED before atlas construction; selector423 was not re-run. S1 remains diagnostic/non-gating with no numeric calibration threshold; exact next is runtime-free `M4-CP-SCALE-TB2-REV`; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.

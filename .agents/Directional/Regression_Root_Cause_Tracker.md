@@ -1,3 +1,11 @@
+## 2026-09-14 — `M4-CP-SCALE-TB2-EXEC`: focused S2 RED before atlas precondition; Review required
+
+- Candidate `10367451675` / source `63cb20d6ba5393058086c62c6422ac58b75c939e` passed exact preflight, then focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` selected one process and failed at first `positive-strict-interior`: `FieldTransportAtlas::make(...)` returned false at `tests/FieldAlignedCurveNetworkTests.cpp:11131`. No six-subject receipt was emitted and the vertex-star comparator was not reached.
+- `M4-CP-SCALE-TB2-EXEC-CAND-01` — **OPEN / TEST-AUTHORITY PRECONDITION / FOCUSED S2 RED / NON-STABLE**. Root at current evidence resolution: CB2's new fixture assumes arbitrary integer-seeded folded-cone subjects build valid atlas authority, but the first shipped subject falsifies that prerequisite before S2 semantics. Static source shows seed-dependent face-0 directions with fixed radial matching; the exact atlas error code is not emitted, so Review must determine the narrower corrective owner. Prohibited: treating atlas-construction failure as comparator evidence, weakening atlas validation, or rerunning semantics before Review.
+- Harness stop after the RED omitted the frozen plan's explicit 423-row unexecuted remainder and post-runtime census. This is a **non-semantic execution-evidence defect** carried into Review; it grants no selector credit.
+- No accepted selector identity was executed or changed, so stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**. Candidate remains unpromoted; accepted authority stays package `10360085644` / selector423 **423/423**.
+- **Exact successor:** runtime-free `M4-CP-SCALE-TB2-REV`.
+
 ## 2026-09-14 — `M4-CP-SCALE-TB1-REV`: candidate promoted; S1 calibration remains unproven
 
 - **Review decision:** `approved_with_amendments`. Independent Review re-hashed selector423 to **423 LF rows / `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`**, first422 to accepted selector422 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`, re-derived owners **30/277/75/41**, and parsed all 423 raw logs as exact-one PASS with zero RED/SKIP/timeout/crash/selection mismatch. The 869-entry TB1 evidence manifest verifies completely and published artifact `10363765929` contains byte-identical evidence.

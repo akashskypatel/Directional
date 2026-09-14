@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-CB2
-Status: COMPLETE / BUILD + PACKAGE GREEN / RUNTIME UNADJUDICATED; CP-SCALE OPEN; M4 OPEN
+Turn: M4-CP-SCALE-TB2-EXEC
+Status: COMPLETE / FOCUSED SEMANTIC RED / PACKAGE UNPROMOTED; CP-SCALE OPEN; M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB2-EXEC
+Canonical next turn: M4-CP-SCALE-TB2-REV
 ---
 
 # Future Chat Session Handoff — Directional
@@ -39,45 +39,19 @@ Read in full at every new formal turn:
 
 S1 remains accepted only as deterministic decision-neutral diagnostic instrumentation. No S1 numeric threshold is frozen; observed 429 bits are not a safety envelope and `kFieldExactContinuationMagnitudeBits = 4096U` remains an operational fail-closed guard.
 
-## CB2 candidate package — runtime unadjudicated
+## TB2 EXEC evidence — focused semantic RED; Review pending
 
-`M4-CP-SCALE-CB2` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME UNADJUDICATED**.
+`M4-CP-SCALE-TB2-EXEC` is **COMPLETE / FOCUSED SEMANTIC RED / PACKAGE UNPROMOTED**. Candidate `10367451675` / source `63cb20d6ba5393058086c62c6422ac58b75c939e` passed exact preflight. Run/job `34898232410 / 104157635232` then executed focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` exactly once; first subject `positive-strict-interior` failed because `FieldTransportAtlas::make(...)` returned false at `tests/FieldAlignedCurveNetworkTests.cpp:11131`. No six-subject receipt or vertex-star comparator execution occurred.
 
-Semantic/test change is only `tests/FieldAlignedCurveNetworkTests.cpp` at commit `63cb20d6ba5393058086c62c6422ac58b75c939e`:
+Result artifact `10370015436` / SHA-256 `bba2b4cc7bd3f14946ce178f04c1150742d1d14692bfd45165bf6ca3370bfa57`; log artifact `10369796116` / SHA-256 `095b141ec34937e9a87bd12e94beb65f2bded914839602420e471ec79968f334`; nested evidence ZIP SHA-256 `06e4db5b1701d90830dad4ddaa4f3015566b8a6ce75f38a71e94e4f06118cb61`, manifest **12/12** independently verified. No configure/compile/relink/repair/generated-discovery/mutation/benchmark execution occurred.
 
-- added test-local integer-seeded folded-cone field construction;
-- added independent exact S2 oracle from exact integer ray seeds on the three-right-angle cone;
-- authored exactly `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`;
-- matrix covers positive, negative, near-boundary-certified, exact-boundary/ExactFallback, and a two-subject discriminating tamper;
-- no production `src/`/`include/`, public API, CMake, fixture, selector, S1 threshold, S3/S4/S5, CP4, row399 or row408 semantic change.
+The harness stopped after the valid focused RED before selector423 and full postflight and omitted the required explicit 423-row unexecuted remainder. This evidence defect is carried into Review; **do not retry runtime before Review**. Candidate receives no promotion or S2/selector credit. Accepted authority remains package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
-Successful changed-owner preflight compile: run/job `34892475284 / 104138340270`, result/log artifacts `10367556999 / 10367562018`, GMP/GMPXX, `runtimeExecution=false`.
+Exact report: `.agents/Directional/Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Report.md`.
 
-Authoritative eight-target compile/package: run/job `34892831641 / 104139501513`:
+## Exact next — `M4-CP-SCALE-TB2-REV`
 
-- candidate artifact `10367451675`, SHA-256 `9a1b59bcbf6cbe14e1df180b0feaaeec6bf9e675d010f66303bc39cf4c83ddec`;
-- log artifact `10367267260`, SHA-256 `53ae0aadaca8e9893f05c243b448f8b8aaf603ff9b41c0338999b13412e7dcc9`;
-- root manifest **28/28**, self-excluding, SHA-256 `b229f38237f3e3f00dfd70f5f4f28f8faae0af9a888609c2c397b6fb8af1e47b`;
-- packaged source archive SHA-256 `de4667b5677ba3b60ae1737299ae3edb111cefa453e6ac4cc3f7357fe3607f27`;
-- selector423 in packaged source is byte-identical at 423 LF rows / `4e67e4dc...d89343`, first422 `bbd496f3...f7cc`;
-- all source-status receipts are empty;
-- `runtimeExecution=false`; no generated Directional executable/test/benchmark/discovery command ran.
-
-CB2 does **not** promote this package, append selector424, or assign S2 gate credit. Full source/build evidence is in `.agents/Directional/Architecture_M4_CP_SCALE_CB2_Code_Build_Report.md`.
-
-## Exact next — `M4-CP-SCALE-TB2-EXEC`
-
-Consume artifact `10367451675` **immutably**, with no rebuild/repair/source/test/fixture/selector mutation.
-
-Minimum frozen execution surface:
-
-1. full package/source/GMP/selector/owner preflight;
-2. focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` exactly once in one fresh exact-filter process, preserving the complete six-subject diagnostic receipt;
-3. accepted selector423 as **423 fresh exact-filter processes** using the static owner map, no generated discovery/list-tests;
-4. exact package/source/execution-view postflight;
-5. publish and re-open one non-self-referential evidence archive.
-
-The focused S2 identity is outside selector423 and contributes zero gate rows. EXEC reports mechanics only. Mandatory `M4-CP-SCALE-TB2-REV` follows and alone may adjudicate candidate promotion, S2 proof, stable-accounting implications, or a later selector-publication slice. The frozen plan is `.agents/Directional/Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
+Runtime-free Review only. Re-open primary TB2 evidence and independently determine why the seeded `positive-strict-interior` subject fails atlas construction before S2 comparator execution; distinguish invalid test/fixture authority from a product defect. Adjudicate the missing selector/postflight remainder and issue the next bounded corrective plan. Do not rerun runtime, compile/repackage, mutate product/test/fixture/selector semantics, promote the candidate, append selector424, or begin S3/S4/S5/CP4 work.
 
 ## Carried obligations
 
@@ -95,9 +69,9 @@ The focused S2 identity is outside selector423 and contributes zero gate rows. E
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/REVIEW.md
 project_plan:
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Report.md
 conditional_modules:
   - trigger: GitHub connector/workflow/artifact work
     path: modules/github-connector/MODULE.md
