@@ -1,0 +1,3 @@
+turn=M4-CP-COND-CB4
+requested_source_sha=9e6dedaaf8e666988587d9abd0067cfe64780711
+purpose=exact source snapshot for ChatGPT Web inspection
