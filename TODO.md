@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-13 UTC
 
-## Current turn — M4-CP-COND-TB4-REV
+## Current turn — M4-CP-COND-CB5
 
 - [x] `M4-CP-COND-CB4`: publish selector422 as exact selector408 prefix + the fourteen existing CP-COND gating identities; no product/test/fixture/CMake semantic change.
 - [x] Update `Required_Green_Selector_Manifest.md` additively; selector422 is 422 LF rows at `bbd496f3...f7cc`, first408 remains `c689c0cd...484`.
@@ -10,7 +10,7 @@ Last updated: 2026-09-13 UTC
 - [x] Freeze artifact-only `M4-CP-COND-TB4-EXEC` plan: selector422 422/422 + one expected report-only boundary SKIP, exact postflight, non-self-referential evidence checksum manifest, mandatory TB4 Review.
 - [x] `M4-CP-COND-TB4-EXEC`: immutable artifact `10327643907` executed mechanically GREEN at selector422 422/422 + one expected report-only SKIP; exact postflight and corrected evidence manifest verified.
 - [x] `M4-CP-COND-TB4-REV`: accept package `10327643907` / selector422 as current runtime authority; keep CP-COND OPEN on frozen boundary raw-precondition authority.
-- [ ] `M4-CP-COND-CB5`: construct a pre-production independent raw boundary-truncation oracle + mutation falsifier, prove conditioner preservation, append one gate as selector423 row423, compile/package runtime-free. Existing A2a authority rules out genuine-unreachability as the closure route.
+- [x] `M4-CP-COND-CB5`: independent exact/discrete raw boundary-truncation oracle + load-bearing mutation falsifier added; conditioner certificate re-proves the same oracle; selector423 published; package `10331193451` compiled GREEN with GMP/GMPXX and `runtimeExecution=false`.
 - [ ] `M4-CP-COND-TB5-EXEC` + mandatory `TB5-REV`: runtime-prove selector423 423/423 and adjudicate CP-COND closure. CP-SCALE remains blocked until then.
 
 ## Purpose
@@ -39,9 +39,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-CB5` (boundary raw-precondition authority)
+## Current focus — `M4-CP-COND-TB5-EXEC` (immutable selector423 runtime gate)
 
-TB4 Review accepts package `10327643907` / selector422 **422/422** as current M4 runtime authority and closes the selector-publication gap. CP-COND remains OPEN solely because frozen §12 conjunct 4 still lacks an independently proved boundary-truncated raw witness before production execution. Existing accepted A2a behavior shows genuine source-boundary termination is reachable, so CB5 must construct the independent raw oracle + mutation falsifier, prove conditioner preservation, and append one gate as selector423 row423. Stable accounting remains **49 / 14 / 35**, debt **5**.
+CB5 is compile/package GREEN. Candidate artifact `10331193451` from packaged source `07984711db59eaa228820e7d44e5552a652edadf` contains selector423 (`4e67e4dc...9343`) as the exact accepted selector422 prefix plus `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved`. Static ownership is **30 / 277 / 75 / 41 = 423** and compile evidence is GMP/GMPXX with `runtimeExecution=false`. Accepted runtime authority remains package `10327643907` / selector422 **422/422** until artifact-only TB5-EXEC and mandatory TB5-REV. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -80,7 +80,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND selector422 accepted; boundary raw-precondition OPEN; CB5 NEXT**. Package `10327643907` / selector422 **422/422** is accepted current runtime authority. CP-COND remains open only on the boundary raw-precondition gate; exact next is CB5 -> TB5-EXEC -> TB5-REV. CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND selector422 accepted; selector423 compile candidate GREEN; TB5 NEXT**. Package `10327643907` / selector422 **422/422** remains accepted current runtime authority. Candidate package `10331193451` / selector423 awaits artifact-only TB5-EXEC -> mandatory TB5-REV. CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -120,4 +120,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. TB4 Review accepts package `10327643907` / selector422 **422/422**. Exact next is **`M4-CP-COND-CB5`** under `Architecture_M4_CP_COND_CB5_Code_Build_Plan.md`, followed by artifact-only TB5-EXEC and mandatory TB5 Review. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. Accepted current CP-COND runtime authority remains package `10327643907` / selector422 **422/422**. CB5 candidate package `10331193451` / selector423 is compile GREEN only. Exact next is artifact-only **`M4-CP-COND-TB5-EXEC`** under `Architecture_M4_CP_COND_TB5_Artifact_Only_Test_Benchmark_Plan.md`, followed by mandatory TB5 Review. PR #8 remains open, draft, and unmerged.

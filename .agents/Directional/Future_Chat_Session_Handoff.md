@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-COND-TB4-REV
-Status: COMPLETE / SELECTOR422 + PACKAGE ACCEPTED / CP-COND OPEN ON BOUNDARY RAW-PRECONDITION; M4 OPEN
+Turn: M4-CP-COND-CB5
+Status: COMPLETE / COMPILE + PACKAGE GREEN / SELECTOR423 CANDIDATE / RUNTIME PENDING; M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-COND-CB5
+Canonical next turn: M4-CP-COND-TB5-EXEC
 ---
 
 
@@ -38,45 +38,28 @@ These documents must be read in full at start of every turn.
 - Repository: `akashskypatel/Directional`
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 - PR: #8, open/draft/unmerged.
-- Accepted current M4 runtime authority: package `10327643907`, packaged semantic source `702d9e10afff1fc3ac2ed3f3458acf8f19b617a5`.
-- Accepted cumulative selector: `Architecture_M4_CP_COND_CB4_Required_Green_Selector_422.txt`, **422/422**, SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`.
-- Accepted predecessor selector408 is preserved byte-for-byte as rows1-408, SHA-256 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`.
-- Stable accounting: **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
-- M4-CP3 is CLOSED / ACCEPTED. M4-CP-COND remains OPEN.
+- Accepted current M4 runtime authority remains package `10327643907`, packaged semantic source `702d9e10afff1fc3ac2ed3f3458acf8f19b617a5`, selector422 **422/422**, SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`.
+- CB5 compile candidate: package artifact `10331193451`, packaged source `07984711db59eaa228820e7d44e5552a652edadf`, selector423 SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
+- Selector423 rows1-422 preserve accepted selector422 byte-for-byte; row423 is `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved`. Static owner census is **30 / 277 / 75 / 41 = 423**.
+- CB5 compile run `34800916761` is GREEN with GMP/GMPXX and `runtimeExecution=false`; no CB5 runtime acceptance has occurred.
+- Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+- M4-CP3 is CLOSED / ACCEPTED. M4-CP-COND remains OPEN pending TB5 execution/review.
 
-## TB4 Review decision
+## CB5 completion
 
-TB4-EXEC immutable evidence is accepted: selector422 **422/422 PASS**, predecessor408 **408/408 PASS**, appended CP-COND gates **14/14 PASS**, one expected report-only boundary SKIP, zero gating RED/timeout/selection mismatch and exact byte+mode postflight. TB4's non-self-referential checksum manifest verifies completely.
+CB5 discharged the frozen boundary-precondition implementation obligation without product semantics. The new gate derives the boundary-truncated separatrix from raw mesh/field bytes before production execution using a test-local exact-rational oracle, is falsified by a load-bearing raw-field mutation, then reconstructs the raw authority through the conditioner certificate/correspondence and re-proves the identical oracle result.
 
-This closes:
+Semantic implementation commit `a3653af2e47723bbe2396b27a6da9f2f2db203f0` changes only the authorized test/CMake/selector-manifest surfaces. Authoritative package source `07984711db59eaa228820e7d44e5552a652edadf` compiled GREEN in run `34800916761`; immutable candidate artifact `10331193451` has SHA-256 `3f23572a4869e469a6f3ba1082af8a7836c29d9566d143e1a395950d8a94230b`. Package evidence is GMP/GMPXX, source-clean, self-excluding checksum **27/27**, and `runtimeExecution=false`.
 
-- `M4-CP-COND-TB3-REV-CAND-01` — selector-authority publication gap, recovery proved;
-- `M4-CP-COND-TB3-REV-OBS-01` — evidence-manifest self-hash, repaired.
+Selector423 is a compile candidate only. Accepted runtime authority remains selector422/package `10327643907` until mandatory TB5 Review.
 
-Selector422/package authority is promoted, but CP-COND does **not** close.
+## Exact next — `M4-CP-COND-TB5-EXEC`
 
-## Remaining CP-COND blocker
+Read and obey `.agents/Directional/Architecture_M4_CP_COND_TB5_Artifact_Only_Test_Benchmark_Plan.md`.
 
-Frozen §10/§12 conjunct 4 requires a boundary-truncated separatrix **raw precondition independently proved before production execution**, plus conditioner preservation of the authority used by that proof.
+TB5-EXEC must consume immutable artifact `10331193451` without configure/build/relink/repair, verify selector423/prefix/owner/package authority at preflight, and execute all **423** identities as fresh exact-filter processes in file order. A mechanically green attempt is 423/423, inherited 422/422, appended row423 1/1, zero RED/SKIP/timeout/selection mismatch, followed by exact byte+mode postflight. There is no report-only boundary process.
 
-The current report-only test does not prove this; it explicitly returns false and SKIPs. The alternate 'genuinely unreachable' path is not available: accepted inherited A2a tests already demonstrate singularity-port traces terminating on mandatory barriers on an open disc with no hard-feature edges, so those barriers are genuine source boundaries. That production observation proves the behavior class is reachable, but it cannot serve as the independent pre-production oracle.
-
-## Exact next — `M4-CP-COND-CB5`
-
-Read and obey `.agents/Directional/Architecture_M4_CP_COND_CB5_Code_Build_Plan.md`.
-
-CB5 is test-authority + selector-publication only, runtime-free:
-
-1. Build one raw boundary-truncation witness and a test-local exact/discrete oracle that proves the route/locus before calling the conditioner and without using production A1/A2a output.
-2. Add a load-bearing raw mutation falsifier.
-3. Require conditioner `Produced` and re-prove the same oracle on the conditioned raw view/certificate-preserved data.
-4. Gate identity is frozen as `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved`.
-5. Publish selector423 = exact accepted selector422 prefix + that one row. First422 hash must remain `bbd496f3...f7cc`; expected owner census **30 / 277 / 75 / 41**.
-6. No `src/`/`include/` product semantic change is authorized. Minimal test/CMake ownership metadata only.
-7. Compile/package the complete seven-target GMP/GMPXX owner set with `runtimeExecution=false`; no Directional runtime.
-8. Freeze artifact-only TB5 plan: selector423 423/423, exact postflight, mandatory TB5 Review.
-
-STOP if independent proof needs production tracing output, epsilon/proximity authority, production changes, selector weakening/reordering, or cannot be falsified by a raw mutation.
+TB5-EXEC does not promote the candidate. It must hand primary evidence to mandatory `M4-CP-COND-TB5-REV`, which owns promotion and CP-COND closure adjudication. CP-SCALE remains blocked until that review closes CP-COND.
 
 ## Mandatory documents
 
@@ -90,14 +73,15 @@ STOP if independent proof needs production tracing output, epsilon/proximity aut
 - `.agents/Directional/LESSONS.md`
 - `.agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md`
 - `.agents/Directional/Architecture_M4_CP_COND_TB4_Review_Record.md`
-- `.agents/Directional/Architecture_M4_CP_COND_CB5_Code_Build_Plan.md`
+- `.agents/Directional/Architecture_M4_CP_COND_CB5_Code_Build_Report.md`
+- `.agents/Directional/Architecture_M4_CP_COND_TB5_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/Required_Green_Selector_Manifest.md`
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - `TODO.md`
 
 ## Carried obligations
 
-- `M4-CP3-TB1-R1-REV-OBS-01`: same-region multiplicity-2 independent oracle before CP4; CB5 may discharge only if naturally covered, never by distorting the boundary witness.
+- `M4-CP3-TB1-R1-REV-OBS-01`: same-region multiplicity-2 independent oracle remains open before CP4; the CB5 boundary oracle does not discharge it.
 - `M4-CP3-CB4-REV-OBS-02`: row399 path/`sourceFaces` divergence tamper, next legitimate row399 touch.
 - TB3 row408 provenance: historical-claim bound.
 - `G4-B002`: 3 produced-witness debts, M4-CP4.
