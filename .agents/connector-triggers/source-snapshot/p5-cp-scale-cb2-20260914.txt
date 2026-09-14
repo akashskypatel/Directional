@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-CB2
+source_ref=56ba9f75d97ec96415ad34ab7873f6e5bfc25f93
+purpose=exact source snapshot before Code+Build implementation
