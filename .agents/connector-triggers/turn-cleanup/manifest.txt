@@ -2,5 +2,3 @@
 .agents/connector-triggers/source-snapshot/p5-cp-scale-cb1-20260914.txt
 .agents/connector-triggers/drive-apply/p5-cp-scale-cb1-20260914.txt
 .agents/connector-triggers/compile/p5-cp-scale-cb1-20260914.txt
-.agents/workflow-observation/
-.agents/Directional/turn-payloads/
