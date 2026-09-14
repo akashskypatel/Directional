@@ -1,0 +1,2 @@
+# M4-CP-COND-TB4-EXEC temporary-state cleanup
+.agents/connector-triggers/source-snapshot/M4-CP-COND-TB4-EXEC-20260913T1754-0700.txt
