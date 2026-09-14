@@ -1,0 +1,3 @@
+M4-CP-COND-TB5-REV Drive apply caller schema validation.
+Draft: .agents/Directional/turn-payloads/m4-cp-cond-tb5-rev/drive-apply-caller-draft.yml
+Expected patch SHA-256: 5eca77b9685260ca94b606b8d20d8df20ab1f59a38f8296ce1eeaa4639d3d19f
