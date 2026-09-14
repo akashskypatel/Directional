@@ -1,0 +1,38 @@
+name: Agent M4 CP-COND TB5 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-cond-tb5-closeout-apply/run.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp-cond-tb5-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-cond-tb5-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1iN_l6W1lV62AAsZE-UG3f9C12C5TyDiq
+      patch_sha256: "6798f8b70e632d4bda14eaa2087a36122aa9525059ce300877c45cf1c062f4f3"
+      base_sha: c6230c20a878bee48f79d767c1ee1e31ec11031d
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close out M4-CP-COND-TB5-EXEC"
+    secrets: inherit
