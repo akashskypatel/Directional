@@ -201,15 +201,13 @@ TriMesh make_three_right_angle_cone_fan() {
   return mesh;
 }
 
-CrossFieldResult make_folded_cone_vertex_field(const TriMesh &mesh,
-                                                const bool radialBoundarySeed) {
+CrossFieldResult make_folded_cone_vertex_field_with_seed(
+    const TriMesh &mesh, const std::int64_t rayX, const std::int64_t rayY) {
   CrossFieldResult field = make_zero_transport_field(mesh);
-  field.primaryDirections.row(0) =
-      radialBoundarySeed ? Eigen::RowVector3d(1.0, 1.0, 0.0)
-                         : Eigen::RowVector3d(2.0, 1.0, 0.0);
-  field.secondaryDirections.row(0) =
-      radialBoundarySeed ? Eigen::RowVector3d(-1.0, 1.0, 0.0)
-                         : Eigen::RowVector3d(-1.0, 2.0, 0.0);
+  field.primaryDirections.row(0) = Eigen::RowVector3d(
+      static_cast<double>(rayX), static_cast<double>(rayY), 0.0);
+  field.secondaryDirections.row(0) = Eigen::RowVector3d(
+      -static_cast<double>(rayY), static_cast<double>(rayX), 0.0);
   field.primaryDirections.row(1) = Eigen::RowVector3d(0.0, 1.0, 1.0);
   field.secondaryDirections.row(1) = Eigen::RowVector3d(0.0, -1.0, 1.0);
   field.primaryDirections.row(2) = Eigen::RowVector3d(1.0, 0.0, 1.0);
@@ -235,6 +233,12 @@ CrossFieldResult make_folded_cone_vertex_field(const TriMesh &mesh,
     }
   }
   return field;
+}
+
+CrossFieldResult make_folded_cone_vertex_field(const TriMesh &mesh,
+                                                const bool radialBoundarySeed) {
+  return make_folded_cone_vertex_field_with_seed(
+      mesh, radialBoundarySeed ? 1 : 2, 1);
 }
 
 CrossFieldResult make_planar_radial_arrival_field(const TriMesh &mesh) {
@@ -11035,6 +11039,163 @@ TEST(ResolvedBranchCorrection,
   EXPECT_EQ(SourceVertexId::from_index(3, 4U).value(), *audit.radialRay);
   ASSERT_TRUE(audit.ownerFace.has_value());
   EXPECT_EQ(expectedOwner, *audit.ownerFace);
+}
+
+struct M4CPScaleS2ExactOracle {
+  int comparisonToBoundary = 0;
+  SourceFaceTopologyKey expectedOwner;
+  bool onRadialRay = false;
+};
+
+M4CPScaleS2ExactOracle m4_cp_scale_s2_exact_oracle(
+    const std::int64_t rayX, const std::int64_t rayY) {
+  // Independent source of truth for this deliberately right-angle cone:
+  // every sector is exactly pi/2, so Theta=3*pi/2 and the straight-through
+  // ray is beta=alpha+3*pi/4.  The only discriminating radial boundary is
+  // beta=pi, equivalently alpha=pi/4.  In the positive arrival quadrant,
+  // monotonicity of tan makes sign(beta-pi) exactly sign(rayY-rayX).  This
+  // oracle therefore needs only the exact integer seed components; it does
+  // not call or restate the product filter or recursive radical comparator.
+  const auto exactX =
+      directional::authority::FieldExactRational::from_integer(rayX);
+  const auto exactY =
+      directional::authority::FieldExactRational::from_integer(rayY);
+  const int comparison = exactY < exactX ? -1 : exactY > exactX ? 1 : 0;
+  return M4CPScaleS2ExactOracle{
+      comparison, comparison < 0 ? topology_face(0, 2, 3, 4U)
+                                 : topology_face(0, 3, 1, 4U),
+      comparison == 0};
+}
+
+TEST(M4CPScaleS2, VertexStarCertifiedFilterMatchesIndependentExactOracle) {
+  using directional::geometry::VertexStarDecisionKernelRoute;
+  using directional::geometry::VertexStarTransitState;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldVertexTransitDecision;
+  using directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit;
+
+  struct Subject {
+    const char *name;
+    std::int64_t rayX;
+    std::int64_t rayY;
+    VertexStarDecisionKernelRoute expectedRoute;
+    bool nearBoundary = false;
+    bool tamper = false;
+  };
+
+  constexpr std::int64_t nearScale = std::int64_t{1} << 40;
+  const std::array<Subject, 6> subjects{{
+      {"positive-strict-interior", 1, 2, VertexStarDecisionKernelRoute::Filter},
+      {"negative-opposite-order", 2, 1, VertexStarDecisionKernelRoute::Filter},
+      {"near-boundary-certified", nearScale, nearScale - 1,
+       VertexStarDecisionKernelRoute::Filter, true},
+      {"exact-boundary-fallback", 1, 1,
+       VertexStarDecisionKernelRoute::ExactFallback},
+      {"tamper-base", 5, 4, VertexStarDecisionKernelRoute::Filter, false, true},
+      {"tamper-crossed", 3, 4, VertexStarDecisionKernelRoute::Filter, false,
+       true},
+  }};
+
+  const auto tamperBaseOracle =
+      m4_cp_scale_s2_exact_oracle(subjects[4].rayX, subjects[4].rayY);
+  const auto tamperCrossedOracle =
+      m4_cp_scale_s2_exact_oracle(subjects[5].rayX, subjects[5].rayY);
+  ASSERT_NE(tamperBaseOracle.comparisonToBoundary,
+            tamperCrossedOracle.comparisonToBoundary);
+  ASSERT_NE(tamperBaseOracle.expectedOwner, tamperCrossedOracle.expectedOwner)
+      << "tamper must change the independently derived semantic expectation";
+
+  bool sawFilter = false;
+  bool sawExactFallback = false;
+  bool sawCertifiedNearBoundary = false;
+  bool sawExactBoundary = false;
+  std::size_t tamperSubjects = 0U;
+
+  for (const Subject &subject : subjects) {
+    SCOPED_TRACE(subject.name);
+    ASSERT_GT(subject.rayX, 0);
+    ASSERT_GT(subject.rayY, 0);
+    ASSERT_LE(subject.rayX, std::int64_t{1} << 53);
+    ASSERT_LE(subject.rayY, std::int64_t{1} << 53);
+
+    const M4CPScaleS2ExactOracle oracle =
+        m4_cp_scale_s2_exact_oracle(subject.rayX, subject.rayY);
+    const TriMesh mesh = make_three_right_angle_cone_fan();
+    const auto sourceAuthority = make_source_authority(mesh);
+    ASSERT_TRUE(sourceAuthority.has_value());
+    const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {},
+        make_folded_cone_vertex_field_with_seed(mesh, subject.rayX,
+                                                subject.rayY));
+    ASSERT_TRUE(atlasBuild);
+    const auto &topology = atlasBuild.value().branch_topology();
+
+    const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 2, 4U);
+    const SourceVertexId center = SourceVertexId::from_index(0, 4U).value();
+    const auto *arrivalFrame = topology.find_frame(arrivalFace);
+    ASSERT_NE(nullptr, arrivalFrame);
+
+    const auto result = resolve_field_vertex_transit(
+        mesh, topology, arrivalFrame->sourceComponent,
+        arrivalFrame->topologyRegion, arrivalFace,
+        directional::authority::FieldBranch::from_integer(2), center,
+        directional::geometry::FieldVertexArrivalMode::FaceInterior);
+    const auto *decision = std::get_if<FieldVertexTransitDecision>(&result);
+    ASSERT_NE(nullptr, decision);
+    ASSERT_TRUE(decision->vertexStarTransit.has_value());
+    const auto &audit = *decision->vertexStarTransit;
+
+    ASSERT_TRUE(audit.closedFan);
+    ASSERT_EQ(3U, audit.fanLength);
+    ASSERT_EQ(3U, audit.sectors.size());
+    EXPECT_EQ(VertexStarTransitState::Owner, audit.state);
+    EXPECT_EQ(oracle.expectedOwner, decision->nextFace);
+    EXPECT_EQ(subject.expectedRoute, audit.kernelRoute);
+    EXPECT_EQ(1U, audit.ownerCardinality);
+    ASSERT_TRUE(audit.ownerFace.has_value());
+    EXPECT_EQ(oracle.expectedOwner, *audit.ownerFace);
+    EXPECT_EQ(oracle.onRadialRay, audit.onRadialRay);
+
+    for (const auto &sector : audit.sectors) {
+      EXPECT_EQ(exact_integer(0), sector.dot);
+      EXPECT_EQ(exact_integer(1), sector.normProduct);
+      EXPECT_EQ(exact_integer(1), sector.crossSquared);
+    }
+
+    if (oracle.onRadialRay) {
+      sawExactBoundary = true;
+      ASSERT_TRUE(audit.radialRay.has_value());
+      EXPECT_EQ(SourceVertexId::from_index(3, 4U).value(), *audit.radialRay);
+    } else {
+      EXPECT_FALSE(audit.radialRay.has_value());
+    }
+    sawFilter = sawFilter ||
+                audit.kernelRoute == VertexStarDecisionKernelRoute::Filter;
+    sawExactFallback =
+        sawExactFallback ||
+        audit.kernelRoute == VertexStarDecisionKernelRoute::ExactFallback;
+    sawCertifiedNearBoundary =
+        sawCertifiedNearBoundary ||
+        (subject.nearBoundary &&
+         audit.kernelRoute == VertexStarDecisionKernelRoute::Filter &&
+         oracle.comparisonToBoundary != 0);
+    tamperSubjects += subject.tamper ? 1U : 0U;
+
+    std::cout << "m4CpScaleS2;subject=" << subject.name
+              << ";rayX=" << subject.rayX << ";rayY=" << subject.rayY
+              << ";oracleBoundarySign=" << oracle.comparisonToBoundary
+              << ";expectedOwner=" << source_face_locus(oracle.expectedOwner)
+              << ";route=" << static_cast<int>(audit.kernelRoute)
+              << ";onRadialRay=" << (audit.onRadialRay ? "true" : "false")
+              << "\n";
+  }
+
+  EXPECT_TRUE(sawFilter);
+  EXPECT_TRUE(sawExactFallback);
+  EXPECT_TRUE(sawCertifiedNearBoundary);
+  EXPECT_TRUE(sawExactBoundary);
+  EXPECT_EQ(2U, tamperSubjects);
 }
 
 TEST(ResolvedBranchCorrection,
