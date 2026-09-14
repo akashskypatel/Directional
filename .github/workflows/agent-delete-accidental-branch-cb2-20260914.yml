@@ -1,0 +1,88 @@
+name: Agent Delete Accidental CB2 Branch 20260914
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/branch-delete/cb2-accidental-branch-20260914.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-delete-accidental-cb2-branch-20260914
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-delete-accidental-branch-cb2-20260914.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  delete-branch:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET_REF: heads/__do_not_create__
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/branch-delete.log"
+          : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" "event_sha=$GITHUB_SHA" "target_ref=$TARGET_REF" 'runtimeExecution=false' | tee -a "$log"
+
+      - name: Delete accidental branch and verify absence
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/branch-delete.log"
+          exec > >(tee -a "$log") 2>&1
+          code="$(curl --silent --show-error --output "${RUNNER_TEMP}/delete-response" --write-out '%{http_code}' \
+            --request DELETE \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs/${TARGET_REF}")"
+          echo "delete_http_status=$code"
+          test "$code" = "204"
+          verify="$(curl --silent --show-error --output "${RUNNER_TEMP}/verify-response" --write-out '%{http_code}' \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/${TARGET_REF}")"
+          echo "verify_http_status=$verify"
+          test "$verify" = "404"
+          printf '%s\n' "deleted_ref=$TARGET_REF" 'runtimeExecution=false' > "${RUNNER_TEMP}/branch-delete-result.env"
+
+      - name: Record final status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/branch-delete.log"
+          printf '%s\n' "final_job_status=${{ job.status }}" "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-branch-delete-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/branch-delete-result.env
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-branch-delete-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/branch-delete.log
+          if-no-files-found: error
+          retention-days: 7
