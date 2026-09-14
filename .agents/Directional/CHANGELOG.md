@@ -2,6 +2,28 @@
 
 Accepted immutable CB4 package `10327643907` / cumulative selector422 **422/422** as current M4 runtime authority after independent TB4 evidence review. Closed the TB3 selector-publication candidate and evidence-manifest self-hash observation. CP-COND remains OPEN: frozen conjunct 4 still needs a pre-production independent raw boundary-truncated separatrix oracle and conditioner-preservation gate. Exact next is test-authority/runtime-free `M4-CP-COND-CB5`, targeting selector423. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld: accepting selector422 and the package
+at **422/422** while holding CP-COND open on one named exit defect is correct on both halves. **The conjunct-4
+constraint raised at TB3-REV is honoured and exceeded.** §4 declares the conjunct unsatisfied rather than parking
+the boundary item under the hatch, and then *affirmatively rejects* the unreachability route by citing
+`TracesSingularityPortsIntoBranchConsistentCandidateSegments` and
+`CandidateTraceStopsAtMandatoryBarrierWithoutCrossing` — both verified here at selector rows 17 and 4, inside the
+accepted prefix, and both passing again in TB4. That closes the escape permanently rather than leaving it available.
+The closing distinction is exact: production-observing identities **reject** genuine unreachability yet do not
+**satisfy** §10's stronger pre-production independent construction requirement. Keeping ordinal423
+`BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker` outside selector422 as a report-only row is the honest
+form of "explicit blocker rather than fabricated". Lineage re-derived: selector422 has 422 rows, hashes
+`bbd496f3…`, and its first 408 rows hash to `c689c0cd…`, byte-identical to accepted selector408, with `422 − 408 =
+14` appended gates. With this link the full M4 chain — **373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422** — has now been
+verified byte-exact at the turn that created each link, with no accepted prefix shifting across CP1, CP2, CP3 and
+CP-COND. `TB3-REV-CAND-01` and `TB3-REV-OBS-01` both close repaired; predecessor408 re-ran 408/408 inside the
+cumulative gate rather than being assumed. **One forward constraint carried into the CB5 plan:** the new boundary
+oracle must be pre-production independent — it may not establish its precondition by observing production output,
+since this Review just showed that evidence rejects unreachability without satisfying §10. Follow the TB3
+negative-index template: construct the raw configuration directly, compute the precondition from raw bytes by the
+test's own exact method, assert it before the conditioner runs, and make it falsifiable by a raw mutation.
+Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-13 — `M4-CP-COND-CB4`: selector422 published; seven-target GMP/GMPXX compile/package GREEN
 
 - Published selector422 as the exact accepted selector408 prefix plus the fourteen already-runtime-proved CP-COND gating identities in frozen order. Selector422 is **422 LF rows**, SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`; first408 remains exactly `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`. Boundary-truncated separatrix remains report-only/non-selector.

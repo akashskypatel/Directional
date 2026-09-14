@@ -90,3 +90,18 @@ STOP before semantic mutation/build if:
 8. TB5 plan frozen.
 9. No product/fixture/benchmark semantic drift.
 10. Work-preservation patch emitted before risky orchestration and normal cleanup policy followed.
+
+## Amendment — the boundary oracle must be pre-production independent (TB4-REV addendum §V4, reviewing agent)
+
+TB4 Review established that production-observing identities are sufficient to **reject** genuine unreachability but
+do **not** satisfy frozen §10's pre-production independent construction requirement. The new boundary oracle
+therefore may not establish its precondition by observing production output.
+
+Follow the negative-index repair accepted at TB3 as the template: construct the raw source-boundary/field
+configuration directly, compute the precondition from the **raw bytes** by the test's own exact method, assert it
+**before** the conditioner runs, and make it falsifiable by a raw mutation.
+
+**Falsifier, before compile acceptance:** perturbing the raw input must change the oracle's computed precondition or
+break the comparison. An identity that still passes when its raw input is perturbed has not established a raw
+precondition, whatever its name says.
+

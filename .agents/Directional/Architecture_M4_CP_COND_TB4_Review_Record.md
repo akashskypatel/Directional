@@ -122,3 +122,66 @@ STOP and return to Review/DEFN before semantic mutation if any of the following 
 | Turn boundary | PASS — runtime-free Review; no product/test/fixture/selector/build-source mutation |
 | `review_check.py boundary` | PASS locally against the exact b49afb34 snapshot baseline — ALL CHECKS PASSED; no product/test/fixture/build or selector mutation |
 | Pushed to origin, branch in sync | PASS — ChatGPT Web equivalent: connector PR/branch authority was re-read after durable publication and confirmed the working branch at the published Review head, open/draft/unmerged; this session has no permitted local origin worktree for `git status -sb`. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Accepting selector422 and the package at **422/422** while holding CP-COND open on a
+single named exit defect is correct on both halves. Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the conjunct-4 constraint is honoured, and exceeded
+
+The `M4-CP-COND-TB3-REV` addendum required the boundary-truncated item to resolve into one of the two states
+frozen §12 conjunct 4 admits — independently proved, or proved genuinely unreachable — and, failing both, to be
+declared unsatisfied rather than parked under the hatch. §4 does exactly that, and then goes further than the
+constraint asked.
+
+It **affirmatively rejects** the unreachability route rather than merely declining to claim it, citing two
+identities that show the situation is reachable in production:
+`FieldAlignedCurveNetwork.TracesSingularityPortsIntoBranchConsistentCandidateSegments` and
+`FieldAlignedCurveNetwork.CandidateTraceStopsAtMandatoryBarrierWithoutCrossing`. Both were verified here to sit
+at selector rows **17** and **4** — inside the accepted prefix — and both pass again inside TB4. That closes the
+escape permanently instead of leaving it available to a future turn under time pressure.
+
+The closing distinction is the precise one: those production-observing identities are enough to **reject**
+genuine unreachability, yet they do not **satisfy** §10's stronger pre-production independent construction
+requirement. Production observation and pre-production independent authority are different evidential objects,
+and conflating them is exactly how the hatch would have been misused.
+
+Keeping ordinal423 `BoundaryTruncatedSeparatrixReachabilityRemainsNamedBlocker` outside selector422 as a
+report-only row is the honest form of "explicit blocker rather than fabricated" — the blocker is visible in the
+ledger and claims nothing it has not proved.
+
+### V2 — lineage re-derived, and the full M4 chain is byte-exact
+
+`Architecture_M4_CP_COND_CB4_Required_Green_Selector_422.txt` has **422** rows, hashes to `bbd496f3396bd656…`,
+and its **first 408 rows hash to `c689c0cd8a51f9a8…`** — byte-identical to accepted selector408. The appended
+count is exactly `422 − 408 = 14`, matching the fourteen CP-COND gate identities.
+
+With this link the whole M4 selector chain has now been verified byte-exact by this reviewer, each link at the
+turn that created it:
+
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422**
+
+No accepted prefix has shifted at any point across CP1, CP2, CP3 and CP-COND.
+
+### V3 — dispositions confirmed
+
+`M4-CP-COND-TB3-REV-CAND-01` closes recovery-proved with the selector-authority gap repaired, and
+`M4-CP-COND-TB3-REV-OBS-01` closes with the evidence-manifest self-hash repaired. Accounting is correctly
+unchanged: no accepted ordinal transitioned PASS → RED, and predecessor408 re-ran **408/408** inside the
+cumulative gate rather than being assumed.
+
+### V4 — forward constraint for `M4-CP-COND-CB5`
+
+CB5 owns the remaining defect, and §4's own reasoning implies a constraint worth stating before the build: the
+new boundary oracle must be **pre-production independent**. It may not establish its precondition by observing
+production output, because this Review has just shown that production observation — while sufficient to reject
+unreachability — does not satisfy §10.
+
+The negative-index repair accepted at TB3 is the working template, and it is worth following deliberately rather
+than rediscovering: construct the raw configuration directly, compute the precondition from the **raw bytes** by
+the test's own exact method, assert it **before** the conditioner runs, and make it falsifiable by a raw
+mutation. An identity that would still pass when its raw input is perturbed has not established a raw
+precondition, whatever its name says.
