@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-14 (`M4-CP-SCALE-CB1` COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED; current accepted runtime authority package `10331193451` / selector423 **423/423**; candidate artifact `10360085644`; stable accounting **49 / 14 / 35**, debt **5**; exact next `M4-CP-SCALE-TB1-EXEC`.)
+**Status date:** 2026-09-14 (`M4-CP-SCALE-TB1-EXEC` COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED; current accepted runtime authority package `10331193451` / selector423 **423/423**; candidate artifact `10360085644`; stable accounting **49 / 14 / 35**, debt **5**; exact next `M4-CP-SCALE-TB1-REV`.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -18,12 +18,17 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 
 `M4-CP-COND-DEFN` is COMPLETE / DEFINITIONS FROZEN; `M4-CP-COND-TB5-REV` now **CLOSES / ACCEPTS the checkpoint**. `Architecture_M4_CP_COND_Frozen_Definitions.md` owns the single-writer pre-A0 conditioned product, exact raw→conditioned correspondence, exact-policy operation set, typed refusal, independent certificate validator, idempotence and witness preconditions. The initial contract uses one-to-one face correspondence and exact sliver refusal rather than topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic authority.
 
-TB4 Review first accepted CB4 package `10327643907` / selector422 **422/422** while leaving the boundary raw-precondition gap explicit. CB5 then added one independent exact/discrete raw boundary oracle as selector423 row423 with no production semantic change; TB5 proved selector423 **423/423**; TB5 Review independently re-derived the oracle, mutation falsifier, certificate preservation and immutable cumulative gate. Package `10331193451` / selector423 is now accepted current M4 runtime authority and CP-COND is CLOSED. CP-SCALE DEFN is complete. CB1 then added only passive S1 exact trace-entry scale instrumentation and authored four-family diagnostic coverage; semantic source `a359b981f9350139304bc5a654041dfba78609b6` compiled/package GREEN as candidate artifact `10360085644` with no Directional runtime and no selector/threshold/S2-S5 change. Exact next is immutable `M4-CP-SCALE-TB1-EXEC`. Stable accounting stays **49 / 14 / 35**, debt **5**.
+TB4 Review first accepted CB4 package `10327643907` / selector422 **422/422** while leaving the boundary raw-precondition gap explicit. CB5 then added one independent exact/discrete raw boundary oracle as selector423 row423 with no production semantic change; TB5 proved selector423 **423/423**; TB5 Review independently re-derived the oracle, mutation falsifier, certificate preservation and immutable cumulative gate. Package `10331193451` / selector423 is now accepted current M4 runtime authority and CP-COND is CLOSED. CP-SCALE DEFN is complete. CB1 then added only passive S1 exact trace-entry scale instrumentation and authored four-family diagnostic coverage; semantic source `a359b981f9350139304bc5a654041dfba78609b6` compiled/package GREEN as candidate artifact `10360085644`. TB1-EXEC subsequently measured the frozen candidate artifact-only: S1 **1/1 PASS**, selector423 **423/423 PASS**, zero RED/SKIP/timeout/crash/selection mismatch and exact immutable postflight. The candidate remains unpromoted and S1 remains non-gating pending runtime-free `M4-CP-SCALE-TB1-REV`. Stable accounting stays **49 / 14 / 35**, debt **5**.
 
 
 ### M4-CP-SCALE CB1 compile freeze — 2026-09-14
 
 `M4-CP-SCALE-CB1` is COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED. Semantic source `a359b981f9350139304bc5a654041dfba78609b6` adds only passive GMP-backed exact trace-entry scale census instrumentation and `M4CPScaleS1.ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral`. Candidate artifact `10360085644` was produced by compile run/job `34872546633 / 104071824274`, verifies a self-excluding 28-entry manifest, packages all selector423 owners, and records `runtimeExecution=false`. Selector423 remains byte-identical at 423 rows / `4e67e4dc...d89343`; the 4096-bit guard is unchanged. No runtime authority is promoted by CB1. Exact next is artifact-only `M4-CP-SCALE-TB1-EXEC`, then mandatory Review.
+
+
+### M4-CP-SCALE TB1 execution — 2026-09-14
+
+`M4-CP-SCALE-TB1-EXEC` is COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED on immutable candidate artifact `10360085644`. The single authored S1 diagnostic is **1/1 PASS** and emits all four required families; selector423 is **423/423 PASS** with owners **30/277/75/41**, zero RED/SKIP/timeout/crash/selection mismatch, and exact package/source/execution-view postflight equality. Raw maxima are two-ring `9 / 105 / 107 / 107`, torus `0 / 0 / 0 / 0`, mechanical feature `60 / 1 / 1 / 1`, prescribed sphere `186 / 429 / 429 / 429` (`sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax`). EXEC assigns no threshold or gate credit and does not promote the candidate. Exact next is runtime-free `M4-CP-SCALE-TB1-REV`.
 
 
 ## 1. Where the project actually is
@@ -34,7 +39,7 @@ TB4 Review first accepted CB4 package `10327643907` / selector422 **422/422** wh
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CB1 COMPLETE + COMPILE GREEN** | package `10331193451` / selector423 **423/423** remains accepted runtime authority; candidate artifact `10360085644` awaits `M4-CP-SCALE-TB1-EXEC` + mandatory Review; three G4-B002 produced-witness debts remain CP4 gating. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB1-EXEC COMPLETE + MECHANICALLY GREEN** | package `10331193451` / selector423 **423/423** remains accepted runtime authority; candidate artifact `10360085644` awaits mandatory `M4-CP-SCALE-TB1-REV`; three G4-B002 produced-witness debts remain CP4 gating. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -440,7 +445,7 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 | `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | **CLOSED / ACCEPTED:** package117/R1, selector382 **382/382**; closure `M4_CP2_Closure_Record.md` |
 | `M4-CP3` | re-prove family-free baseline A3 shared counts/parity, publish exact A2b source paths and bind A3, then producers consume the accepted plan; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | **CLOSED / ACCEPTED:** package `10307919492`, selector408 **408/408**, TB8 **835/835**; closure `M4_CP3_Closure_Record.md` |
 | `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with one single-writer conditioned source, certified raw correspondence, typed refusal and non-vacuous witness gates | **CLOSED / ACCEPTED:** TB5 Review promotes package `10331193451` / selector423 **423/423** after independently re-deriving the exact boundary-truncated raw precondition, mutation falsifier, conditioner preservation and immutable cumulative evidence. Closure: `M4_CP_COND_Closure_Record.md`. |
-| `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | **NEXT: `M4-CP-SCALE-DEFN`**; planning/runtime-free. Uncalibrated S1 measurements start non-gating; S2-S5 gate only on independently proved preconditions/reachability. |
+| `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | DEFN frozen; CB1 compile-green; TB1-EXEC mechanically GREEN at S1 1/1 + selector423 423/423 with immutable postflight. **NEXT: `M4-CP-SCALE-TB1-REV`**; S1 remains non-gating until Review adjudicates raw measurements. |
 | `M4-CP4` | cumulative M4 exit: full gate, all three `G4-B002` produced-witness debt re-proofs, work/bit-width evidence | exit proof only; no second writer |
 
 #### M4-CP3-DEFN-R1 semantic rebase

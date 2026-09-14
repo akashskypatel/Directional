@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-CB1
-Status: COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED; CP-SCALE OPEN; M4 OPEN
+Turn: M4-CP-SCALE-TB1-EXEC
+Status: COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED; CP-SCALE OPEN; M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB1-EXEC
+Canonical next turn: M4-CP-SCALE-TB1-REV
 ---
 
 # Future Chat Session Handoff — Directional
@@ -52,25 +52,49 @@ Durable CB1 authority:
 - `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md`
 
-## Exact next — `M4-CP-SCALE-TB1-EXEC`
+## TB1 execution evidence — NOT YET REVIEW-PROMOTED
 
-Obey `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md` exactly.
+`M4-CP-SCALE-TB1-EXEC` is COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED.
 
-Artifact-only execution consumes **only** candidate artifact `10360085644` without rebuild/repair. Preflight package/source/selector immutability, run the single S1 diagnostic identity once from `directional_surface_cell_producer_tests`, capture the four retained witness-family measurements without inventing threshold credit, execute accepted selector423 **423/423** in fresh exact-filter processes, then prove exact immutable postflight. S1 remains diagnostic/non-gating.
+- immutable candidate: artifact `10360085644`, semantic source `a359b981f9350139304bc5a654041dfba78609b6`;
+- focused S1 diagnostic: **1/1 PASS**;
+- selector423: **423/423 PASS**, owners **30/277/75/41**, zero RED/SKIP/timeout/crash/selection mismatch;
+- raw S1 `(sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax)`:
+  - two-ring `9 / 105 / 107 / 107`;
+  - torus `0 / 0 / 0 / 0`;
+  - mechanical feature `60 / 1 / 1 / 1`;
+  - prescribed sphere `186 / 429 / 429 / 429`;
+- package/source/execution-view postflight: exact byte+mode equality;
+- evidence archive SHA-256: `712bf4983695a58d1d0859e041895209c9935eb7e8f4bdc2835c01737173e3da`;
+- publication run/job: `34883153457 / 104107197329`;
+- published result artifact: `10363765929`, SHA-256 `4d1a45227983bf9cef221268ee14657f1d81752b5a5c1923db6954607fdfcfe1`;
+- published log artifact: `10364255019`, SHA-256 `68552b7be50578dbdc6e5b0596e7afe03332ef9f011ab995b3556ef080e61200`;
+- regression intake: no new stable event/category/recurrence or candidate; stable accounting remains **49 / 14 / 35**, debt **5**.
 
-EXEC may not classify/promote the candidate or freeze the next implementation slice. Exact successor after completed execution is mandatory runtime-free `M4-CP-SCALE-TB1-REV`.
+S1 remains diagnostic/non-gating. Candidate `10360085644` is not promoted by EXEC; accepted runtime authority remains package `10331193451` / selector423 **423/423** until Review.
+
+Durable TB1 report: `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md`.
+
+## Exact next — `M4-CP-SCALE-TB1-REV`
+
+Review `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md`, the frozen definitions, CB1 report, and published immutable TB1 evidence. Review is runtime-free: do not rerun the candidate, compile, rebuild, repair, or mutate source/tests/fixtures/selectors.
+
+Independently re-open the exact four-family S1 measurements and selector423/postflight evidence. Decide whether the mechanically green candidate is promotable, whether S1 supports any bounded threshold-free conclusion, and which **single next bounded CP-SCALE slice** is justified by the frozen definition preconditions. Do not infer safety from maxima alone and do not silently convert the diagnostic S1 identity into a gate.
+
+Review must update `ORIENTATION.md`, the regression tracker, roadmap/handoff/TODO/CHANGELOG as required, perform mandatory document consolidation, and name exactly one successor.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB.md
+  - references/turns/REV.md
 project_plan:
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md
 conditional_modules:
   - trigger: GitHub connector/workflow/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M4_CP_SCALE_CB1_Code_Build_Report.md
   - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
   - .agents/Directional/Required_Green_Selector_Manifest.md

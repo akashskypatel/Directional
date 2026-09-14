@@ -1,3 +1,10 @@
+## 2026-09-14 — `M4-CP-SCALE-TB1-EXEC`: S1 measured; selector423 mechanically green; Review pending
+
+- Immutable CB1 candidate `10360085644` / semantic source `a359b981f9350139304bc5a654041dfba78609b6` executed artifact-only with no configure/build/relink/repair/discovery/mutation/benchmark. Focused S1 identity is **1/1 PASS** and accepted selector423 is **423/423 PASS**, owners **30/277/75/41**, with **0 RED / 0 SKIP / 0 timeout / 0 crash / 0 selection mismatch** and exact immutable postflight.
+- Raw S1 measurements are preserved without threshold interpretation: two-ring `9 / 105 / 107 / 107`, torus `0 / 0 / 0 / 0`, mechanical feature `60 / 1 / 1 / 1`, prescribed sphere `186 / 429 / 429 / 429` for `sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax`. Torus and mechanical feature reach `global-topology-plan`; prescribed sphere reaches `field-aligned-network` and retains the existing downstream `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent` receipt.
+- **Regression classification: none observed by EXEC.** No accepted PASS→RED transition, crash, skip, timeout, nondeterminism, integrity failure, orchestration failure with semantic runtime credit, or new failure surface is present. No new stable event/category/recurrence or candidate is opened.
+- Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. Accepted runtime authority remains package `10331193451` / selector423 **423/423**; candidate `10360085644` remains unpromoted. Exact successor is runtime-free `M4-CP-SCALE-TB1-REV`.
+
 ## 2026-09-14 — `M4-CP-SCALE-DEFN`: scale preconditions frozen; no stable regression
 
 - **Accepted authority unchanged:** package `10331193451`, selector423 **423/423** at `4e67e4dc...d89343`; stable accounting **49 events / 14 categories / 35 recurrences**, debt **5**. DEFN executed no runtime and observed no accepted PASS->RED transition.

@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-14 UTC
 
-## Current turn — M4-CP-SCALE-TB1-EXEC
+## Current turn — M4-CP-SCALE-TB1-REV
 
 - [x] `M4-CP-SCALE-DEFN`: froze S1-S5 authority boundaries from source/evidence; no runtime/build/semantic mutation.
 - [x] S1: exact trace-entry scale census is diagnostic/non-gating; no threshold inferred from current witnesses.
@@ -11,7 +11,7 @@ Last updated: 2026-09-14 UTC
 - [x] S4: final actual-embedded disc/cellularity certificate remains authority; incremental early rejection needs an independent earlier-never-different oracle and may not alter A2a' cuts.
 - [x] S5: static fixture census finds no genus>=2 retained witness; torus genus1 receives zero S5 credit.
 - [x] `M4-CP-SCALE-CB1`: passive S1 exact trace-parameter scale census implemented and compiled/package GREEN on semantic source `a359b981f9350139304bc5a654041dfba78609b6`; candidate artifact `10360085644`; no runtime, selector append, threshold, 4096-guard change, or S2-S5 source change.
-- [ ] `M4-CP-SCALE-TB1-EXEC`: consume immutable artifact `10360085644` without rebuild/repair; execute the authored S1 four-family diagnostic plus accepted selector423 **423/423**, then prove exact postflight. S1 remains zero gate credit.
+- [x] `M4-CP-SCALE-TB1-EXEC`: immutable artifact `10360085644` mechanically GREEN — focused S1 **1/1 PASS**, accepted selector423 **423/423 PASS**, zero RED/SKIP/timeout/crash/selection mismatch, exact immutable postflight; raw four-family measurements preserved with zero threshold/gate interpretation.
 - [ ] `M4-CP-SCALE-TB1-REV`: mandatory runtime-free review after EXEC; only Review may interpret S1 measurements, classify evidence, promote authority, or freeze the next bounded CP-SCALE slice.
 
 ## Purpose
@@ -40,9 +40,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-TB1-EXEC` (artifact-only Test + Benchmark execution)
+## Current focus — `M4-CP-SCALE-TB1-REV` (mandatory runtime-free Review)
 
-CP-SCALE definitions are frozen and CB1 is compile-GREEN. Candidate artifact `10360085644` / semantic source `a359b981f9350139304bc5a654041dfba78609b6` contains the passive S1 exact trace-parameter scale census and all accepted selector423 owners. TB1-EXEC must use that immutable artifact without configure/build/relink/repair, execute the authored four-family S1 diagnostic plus selector423 **423/423**, and prove exact byte+mode postflight. S1 remains diagnostic/non-gating and no numeric threshold may be inferred. Accepted runtime authority remains package `10331193451` / selector423 **423/423** until Review; stable accounting remains **49 / 14 / 35**, debt **5**.
+TB1-EXEC completed artifact-only on candidate `10360085644` / semantic source `a359b981f9350139304bc5a654041dfba78609b6`: focused S1 **1/1 PASS**, selector423 **423/423 PASS**, owners **30/277/75/41**, zero RED/SKIP/timeout/crash/selection mismatch and exact immutable postflight. Raw S1 measurements are two-ring `9 / 105 / 107 / 107`, torus `0 / 0 / 0 / 0`, mechanical feature `60 / 1 / 1 / 1`, prescribed sphere `186 / 429 / 429 / 429` (`sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax`). `M4-CP-SCALE-TB1-REV` must independently re-open this evidence, interpret S1 without inventing threshold credit, decide candidate promotion, and freeze only the next bounded CP-SCALE slice justified by the evidence. Accepted runtime authority remains package `10331193451` / selector423 **423/423** pending Review; stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -81,7 +81,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CB1 COMPLETE + COMPILE GREEN**. Package `10331193451` / selector423 **423/423** remains accepted current runtime authority. Candidate CP-SCALE artifact `10360085644` is compile-only and awaits `M4-CP-SCALE-TB1-EXEC` + mandatory Review; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB1-EXEC COMPLETE + MECHANICALLY GREEN**. Package `10331193451` / selector423 **423/423** remains accepted current runtime authority. Candidate CP-SCALE artifact `10360085644` is mechanically GREEN and awaits mandatory `M4-CP-SCALE-TB1-REV`; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -121,4 +121,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority is package `10331193451` / selector423 **423/423**. CP-SCALE CB1 is COMPLETE / COMPILE GREEN on candidate artifact `10360085644`; exact next is immutable **`M4-CP-SCALE-TB1-EXEC`** under `Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md`, followed by mandatory Review. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority is package `10331193451` / selector423 **423/423**. CP-SCALE TB1-EXEC is COMPLETE / MECHANICALLY GREEN on candidate artifact `10360085644`; exact next is runtime-free **`M4-CP-SCALE-TB1-REV`** to adjudicate the raw S1 measurements and candidate authority. PR #8 remains open, draft, and unmerged.
