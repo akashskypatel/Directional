@@ -1,0 +1,5 @@
+turn=M4-CP-COND-CB4
+purpose=apply durable closeout report/handoff/TODO/changelog patch
+base_sha=ab755a692fe91bede30318f2daa0674f2c0f11d4
+patch_sha256=0d15daeb429b42ea8344aa52d0ba086cd8603771861e62d9034e4848cb0b0f88
+file_id=1EJJI8-Z657zRpzs51ytBXa9lC7RPfbvU
