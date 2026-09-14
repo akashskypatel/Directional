@@ -1,0 +1,3 @@
+turn=M4-CP-COND-TB5-EXEC
+purpose=validate artifact-only runtime caller draft
+retry=0
