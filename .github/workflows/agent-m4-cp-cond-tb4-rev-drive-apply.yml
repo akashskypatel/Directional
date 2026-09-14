@@ -38,10 +38,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1PT_D3aUJTnFWV0JPEQYBwsw6VIhbCnKT
-      patch_sha256: 06a639c615b8d47e60ee5cb9cb225e2008d1a091f0f1750f3d44f17e67daab9c
-      base_sha: b49afb34aa413032fd0c9d6abc0cec6fdb1b19eb
+      file_id: 19dLIf-Jw_uC0TKht-yQeFRkZoaQ8Rn1q
+      patch_sha256: 984248a5ec7329a80e2df2b9556c359402d8024e4f0a64c4e86f5f7045b78251
+      base_sha: d309f3bc128583c5280db56a71f4cb18f8614acf
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'docs: M4-CP-COND-TB4-REV adjudicate selector422 and bind CB5'
+      commit_message: 'docs: finalize M4-CP-COND-TB4-REV push confirmation'
       retention_days: 14
     secrets: inherit
