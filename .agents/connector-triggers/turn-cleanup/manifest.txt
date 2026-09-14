@@ -1,0 +1,4 @@
+# M4-CP-SCALE-TB1-EXEC temporary-state retirement
+.agents/connector-triggers/source-snapshot/p5-cp-scale-tb1-20260914.txt
+.agents/connector-triggers/evidence-publish/p5-cp-scale-tb1-20260914.txt
+.agents/connector-triggers/drive-apply/p5-cp-scale-tb1-closeout-20260914.txt
