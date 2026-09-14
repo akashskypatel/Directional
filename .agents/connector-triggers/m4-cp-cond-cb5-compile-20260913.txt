@@ -1,0 +1,4 @@
+turn=M4-CP-COND-CB5
+purpose=compile changed owner then exact seven-target package
+source_sha=07984711db59eaa228820e7d44e5552a652edadf
+retry=1
