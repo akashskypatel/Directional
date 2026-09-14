@@ -1,3 +1,11 @@
+## 2026-09-14 — `M4-CP-SCALE-CB1`: passive S1 exact scale census compile GREEN; TB1 artifact frozen
+
+- Implemented only frozen CP-SCALE S1 on semantic source `a359b981f9350139304bc5a654041dfba78609b6`: optional GMP-backed exact trace-entry scale rows, canonical `(trace,step)` ordering, exact sums/maxima and `{sum,count}` means, success semantic digest, and failure-preserving partial census. Sampling occurs only after the existing traversal guard accepts the state and never participates in a production decision.
+- Authored `M4CPScaleS1.ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral`: two-ring nontrivial sample + independent exact-width oracle + repeat determinism + semantic enabled/disabled equality + `0 -> 1/257` falsifier, then retained torus/mechanical-feature/prescribed-sphere deterministic coverage with partial census retained on typed baseline error.
+- Selector423 remains byte-identical at **423 LF rows** / `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`; `kFieldExactContinuationMagnitudeBits` remains `4096U`; no threshold, selector append, or S2-S5 implementation was introduced.
+- Authoritative compile run/job `34872546633 / 104071824274` is GREEN for all eight packaged owners with GMP/GMPXX and `runtimeExecution=false`. Candidate artifact `10360085644` has digest `996189b38c26f906bdd86354451571475900d98d0811f50e50a9439f26ff6ec7`; log artifact `10359913218` is `15345f2c43adc684dd219ff42a7c37003123c065c7fff257dcb554a85d34550c`; package `SHA256SUMS` verifies **28/28** and hashes `3ac6c9e388d06ed5572613480a587952736657be88cf8dfba393d356e47028b8`. No Directional runtime/test/benchmark/discovery executed in CB1.
+- Accepted runtime authority remains package `10331193451` / selector423 **423/423**; stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is immutable `M4-CP-SCALE-TB1-EXEC` on artifact `10360085644`, followed by mandatory runtime-free Review.
+
 ## 2026-09-14 — `M4-CP-SCALE-DEFN`: S1-S5 authority frozen; bounded S1 CB1 next
 
 - Runtime-free source/evidence review froze `Architecture_M4_CP_SCALE_Frozen_Definitions.md`. Accepted package `10331193451` / selector423 remains unchanged at **423/423** (`4e67e4dc...d89343`); first422 re-hashes `bbd496f3...f7cc`; no selector row is added.

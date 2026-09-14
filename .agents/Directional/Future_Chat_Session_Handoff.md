@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-DEFN
-Status: COMPLETE / DEFINITIONS FROZEN / CP-SCALE OPEN; M4 OPEN
+Turn: M4-CP-SCALE-CB1
+Status: COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED; CP-SCALE OPEN; M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB1
+Canonical next turn: M4-CP-SCALE-TB1-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -25,48 +25,54 @@ Read in full at every new formal turn:
 - `.agents/Directional/Patch_Application_Strategy.md`
 - `.agents/Directional/Turn_Cadence.md`
 
-## Current authority
+## Current accepted runtime authority
 
-- Accepted current M4 runtime authority: package `10331193451`, packaged semantic source `07984711db59eaa228820e7d44e5552a652edadf`, selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
+- Accepted current M4 runtime authority remains package `10331193451`, packaged semantic source `07984711db59eaa228820e7d44e5552a652edadf`, selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
 - Accepted predecessor selector422: `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`.
 - `M4-CP-COND` is CLOSED / ACCEPTED. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
 - `M4-CP-SCALE-DEFN` is COMPLETE / DEFINITIONS FROZEN. CP-SCALE remains OPEN.
 
-## CP-SCALE frozen findings
+## CB1 candidate compile authority — NOT YET PROMOTED
 
-- **S1:** passive exact trace-parameter numerator/denominator/magnitude-bit census first; diagnostic/non-gating; no numeric acceptance threshold yet. Existing 4096-bit continuation guard is operational fail-closed authority, not S1 calibration.
-- **S2:** vertex-star algebraic sign has a certified filter + exact fallback and is a later eligible equivalence gate. Arrival/arclength filtering has no frozen exact fallback at the reviewed seam and remains non-selector.
-- **S3:** semantic cycle key is the full exact `FieldAlignedTraceTraversalState`. Historical sphere circulation repeats a combinatorial circuit while exact entry positions drift; it does not prove the exact-repeat precondition.
-- **S4:** actual-embedded cellularity/disc certificates remain sole topology authority. Incremental Betti rejection must be earlier-never-different, independently oracled, and may not alter/backtrack A2a' cuts.
-- **S5:** no retained milestone-G OBJ has genus>=2; torus genus1 gets zero S5 credit. A genus>=2 source must be constructed, independently censused, field-admissible and later proved to reach A3 before any selector row.
+`M4-CP-SCALE-CB1` is COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED.
 
-Durable CP-SCALE authority:
+- semantic source: `a359b981f9350139304bc5a654041dfba78609b6`;
+- compile run/job: `34872546633 / 104071824274`;
+- immutable candidate result artifact: `10360085644`, SHA-256 `996189b38c26f906bdd86354451571475900d98d0811f50e50a9439f26ff6ec7`;
+- diagnostic-log artifact: `10359913218`, SHA-256 `15345f2c43adc684dd219ff42a7c37003123c065c7fff257dcb554a85d34550c`;
+- package root `SHA256SUMS`: **28/28**, self-excluding, SHA-256 `3ac6c9e388d06ed5572613480a587952736657be88cf8dfba393d356e47028b8`;
+- packaged source archive SHA-256: `b261f468cde2e54974f19931ca5101e2c6d07e273ca555c0526d9e7ce112e3d4`;
+- eight packaged owners compiled/linked GREEN with GMP/GMPXX; all source-status receipts empty; `runtimeExecution=false`.
 
+CB1 adds only passive S1 exact trace-entry scale instrumentation and authored diagnostic coverage. The census records canonical `(trace,step)` exact numerator/denominator/magnitude widths and exact aggregates, preserves partial evidence on typed production error, and cannot alter production decisions. Selector423 remains byte-identical and `kFieldExactContinuationMagnitudeBits` remains `4096U`. No S2-S5 source work and no threshold are present.
+
+Durable CB1 authority:
+
+- `.agents/Directional/Architecture_M4_CP_SCALE_CB1_Code_Build_Report.md`
+- `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md`
-- `.agents/Directional/Architecture_M4_CP_SCALE_DEFN_Record.md`
-- `.agents/Directional/Architecture_M4_CP_SCALE_CB1_Code_Build_Plan.md`
 
-## Exact next — `M4-CP-SCALE-CB1`
+## Exact next — `M4-CP-SCALE-TB1-EXEC`
 
-Obey `.agents/Directional/Architecture_M4_CP_SCALE_CB1_Code_Build_Plan.md` exactly. Code + Build only: add passive deterministic S1 exact trace-entry scale instrumentation and authored diagnostic coverage; compile/package the exact pushed revision; execute **no Directional runtime**. Do not change selector423, guess thresholds, alter tracing decisions/4096 guard, or implement S2-S5.
+Obey `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md` exactly.
+
+Artifact-only execution consumes **only** candidate artifact `10360085644` without rebuild/repair. Preflight package/source/selector immutability, run the single S1 diagnostic identity once from `directional_surface_cell_producer_tests`, capture the four retained witness-family measurements without inventing threshold credit, execute accepted selector423 **423/423** in fresh exact-filter processes, then prove exact immutable postflight. S1 remains diagnostic/non-gating.
+
+EXEC may not classify/promote the candidate or freeze the next implementation slice. Exact successor after completed execution is mandatory runtime-free `M4-CP-SCALE-TB1-REV`.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB.md
 project_plan:
-  - .agents/Directional/Architecture_M4_CP_SCALE_CB1_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Plan.md
 conditional_modules:
-  - trigger: implementation design/test-source work
-    path: modules/engineering-guidelines/MODULE.md
-  - trigger: unit-test design
-    path: modules/unit-testing/MODULE.md
   - trigger: GitHub connector/workflow/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP_SCALE_CB1_Code_Build_Report.md
   - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M4_CP_SCALE_DEFN_Record.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - TODO.md
