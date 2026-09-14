@@ -1,0 +1,6 @@
+turn=M4-CP-SCALE-TB2-EXEC
+purpose=immutable artifact-only S2 focus plus selector423 reproof
+candidate_artifact_id=10367451675
+candidate_source=63cb20d6ba5393058086c62c6422ac58b75c939e
+caller_install=ca8e9b122964be4fb3f72473ca8b81b05c9ec64f
+runtimeExecution=artifact-only
