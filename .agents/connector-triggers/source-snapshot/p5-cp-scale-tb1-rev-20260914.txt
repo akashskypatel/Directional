@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-TB1-REV
+purpose=exact source snapshot for mandatory runtime-free review
+requested_source=05fa7bba88e90520ed3befbae8f492f5da3e4dad
+retry=1
+runtimeExecution=false
