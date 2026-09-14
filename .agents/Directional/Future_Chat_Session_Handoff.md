@@ -1,17 +1,17 @@
 ---
-Turn: M4-CP-SCALE-TB1-REV
-Status: COMPLETE / APPROVED WITH AMENDMENTS / PACKAGE PROMOTED; CP-SCALE OPEN; M4 OPEN
+Turn: M4-CP-SCALE-CB2
+Status: COMPLETE / BUILD + PACKAGE GREEN / RUNTIME UNADJUDICATED; CP-SCALE OPEN; M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB2
+Canonical next turn: M4-CP-SCALE-TB2-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
 
 ## Purpose — DURABLE, DO NOT DELETE
 
-This file contains durable operating policy, the exact next action, current immutable authority, standing product state, and resume-critical blockers/lessons required to continue safely. Architecture belongs in `DESIGN.md` and frozen-definition records; tasks belong in `TODO.md`; completed history belongs in `CHANGELOG.md`; exact runtime evidence belongs in retained closure/review records and `Regression_Root_Cause_Tracker.md`.
+This file contains durable operating policy, the exact next action, current immutable authority, standing product state, and resume-critical blockers/lessons required to continue safely. Architecture belongs in `DESIGN.md` and frozen-definition records; tasks belong in `TODO.md`; completed history belongs in `CHANGELOG.md`; exact runtime evidence belongs in retained reports/review records and `Regression_Root_Cause_Tracker.md`.
 
 All `[ChatGPT Web]` instructions remain mandatory for ChatGPT Web sessions. Other agents may ignore only instructions explicitly prefixed `[ChatGPT Web]`.
 
@@ -27,75 +27,62 @@ Read in full at every new formal turn:
 
 ## Current accepted runtime authority
 
-`M4-CP-SCALE-TB1-REV` is **APPROVED WITH AMENDMENTS / PROMOTED**.
+`M4-CP-SCALE-TB1-REV` remains the accepted runtime authority entering TB2:
 
-- accepted current M4 runtime package: `10360085644`;
-- semantic source: `a359b981f9350139304bc5a654041dfba78609b6`;
-- candidate compile run/job: `34872546633 / 104071824274`;
-- package provider SHA-256: `996189b38c26f906bdd86354451571475900d98d0811f50e50a9439f26ff6ec7`;
-- package manifest: **28/28**, SHA-256 `3ac6c9e388d06ed5572613480a587952736657be88cf8dfba393d356e47028b8`;
-- packaged-source archive SHA-256: `b261f468cde2e54974f19931ca5101e2c6d07e273ca555c0526d9e7ce112e3d4`;
-- accepted selector423: **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`;
-- accepted predecessor selector422: `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`;
-- owner census: **30 authority-kernel / 277 producer / 75 completion / 41 validation**;
-- stable accounting: **49 events / 14 categories / 35 recurrences**;
-- produced-witness debt: **5**.
+- accepted package `10360085644`;
+- semantic source `a359b981f9350139304bc5a654041dfba78609b6`;
+- accepted selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`;
+- predecessor selector422 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`;
+- owner census **30 authority-kernel / 277 producer / 75 completion / 41 validation**;
+- stable accounting **49 events / 14 categories / 35 recurrences**;
+- produced-witness debt **5**.
 
-Selector authority did not advance numerically: Review independently re-proved the exact accepted selector423 bytes on the promoted package.
+S1 remains accepted only as deterministic decision-neutral diagnostic instrumentation. No S1 numeric threshold is frozen; observed 429 bits are not a safety envelope and `kFieldExactContinuationMagnitudeBits = 4096U` remains an operational fail-closed guard.
 
-## TB1 reviewed evidence
+## CB2 candidate package — runtime unadjudicated
 
-TB1-EXEC consumed package `10360085644` artifact-only and completed:
+`M4-CP-SCALE-CB2` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME UNADJUDICATED**.
 
-- focused S1 diagnostic: **1/1 PASS**;
-- selector423: **423/423 PASS** in 423 fresh exact-filter processes;
-- zero RED/SKIP/timeout/crash/selection mismatch;
-- package/source/execution-view postflight: exact byte+mode equality;
-- TB1 evidence archive SHA-256: `712bf4983695a58d1d0859e041895209c9935eb7e8f4bdc2835c01737173e3da`;
-- evidence publication run/job: `34883153457 / 104107197329`;
-- published result artifact: `10363765929`, SHA-256 `4d1a45227983bf9cef221268ee14657f1d81752b5a5c1923db6954607fdfcfe1`;
-- published log artifact: `10364255019`, SHA-256 `68552b7be50578dbdc6e5b0596e7afe03332ef9f011ab995b3556ef080e61200`.
+Semantic/test change is only `tests/FieldAlignedCurveNetworkTests.cpp` at commit `63cb20d6ba5393058086c62c6422ac58b75c939e`:
 
-Review independently re-downloaded the published result, verified its nested evidence archive byte-for-byte and all **869** evidence manifest entries, re-hashed selector423/first422, re-derived all 423 raw process outcomes and S1 decision-neutrality from exact source.
+- added test-local integer-seeded folded-cone field construction;
+- added independent exact S2 oracle from exact integer ray seeds on the three-right-angle cone;
+- authored exactly `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`;
+- matrix covers positive, negative, near-boundary-certified, exact-boundary/ExactFallback, and a two-subject discriminating tamper;
+- no production `src/`/`include/`, public API, CMake, fixture, selector, S1 threshold, S3/S4/S5, CP4, row399 or row408 semantic change.
 
-Raw S1 `(sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax)` remains:
+Successful changed-owner preflight compile: run/job `34892475284 / 104138340270`, result/log artifacts `10367556999 / 10367562018`, GMP/GMPXX, `runtimeExecution=false`.
 
-- two-ring `9 / 105 / 107 / 107`;
-- torus `0 / 0 / 0 / 0`;
-- mechanical feature `60 / 1 / 1 / 1`;
-- prescribed sphere `186 / 429 / 429 / 429`.
+Authoritative eight-target compile/package: run/job `34892831641 / 104139501513`:
 
-S1 is accepted only as deterministic, exact, decision-neutral diagnostic instrumentation. **No numeric threshold is frozen.** The observed 429-bit maximum is not a safety envelope; `kFieldExactContinuationMagnitudeBits = 4096U` remains an operational fail-closed guard, not calibration authority. `M4-CP-SCALE-TB1-REV-OBS-01` keeps representative/stress calibration open before any future S1 numeric gate.
+- candidate artifact `10367451675`, SHA-256 `9a1b59bcbf6cbe14e1df180b0feaaeec6bf9e675d010f66303bc39cf4c83ddec`;
+- log artifact `10367267260`, SHA-256 `53ae0aadaca8e9893f05c243b448f8b8aaf603ff9b41c0338999b13412e7dcc9`;
+- root manifest **28/28**, self-excluding, SHA-256 `b229f38237f3e3f00dfd70f5f4f28f8faae0af9a888609c2c397b6fb8af1e47b`;
+- packaged source archive SHA-256 `de4667b5677ba3b60ae1737299ae3edb111cefa453e6ac4cc3f7357fe3607f27`;
+- selector423 in packaged source is byte-identical at 423 LF rows / `4e67e4dc...d89343`, first422 `bbd496f3...f7cc`;
+- all source-status receipts are empty;
+- `runtimeExecution=false`; no generated Directional executable/test/benchmark/discovery command ran.
 
-Durable authority:
+CB2 does **not** promote this package, append selector424, or assign S2 gate credit. Full source/build evidence is in `.agents/Directional/Architecture_M4_CP_SCALE_CB2_Code_Build_Report.md`.
 
-- `.agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md`
-- `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Architecture_M4_CP_SCALE_TB1_Review_Record.md`
-- `.agents/Directional/M4_Consolidated_Record.md`
-- `.agents/Directional/Required_Green_Selector_Manifest.md`
-- `.agents/Directional/Regression_Root_Cause_Tracker.md`
+## Exact next — `M4-CP-SCALE-TB2-EXEC`
 
-## Exact next — `M4-CP-SCALE-CB2`
+Consume artifact `10367451675` **immutably**, with no rebuild/repair/source/test/fixture/selector mutation.
 
-Code + Build only, `runtimeExecution=false`.
+Minimum frozen execution surface:
 
-Prediction: the already-existing S2 **vertex-star** certified filter/exact-fallback mechanism can be independently exact-oracled without changing production semantics.
+1. full package/source/GMP/selector/owner preflight;
+2. focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` exactly once in one fresh exact-filter process, preserving the complete six-subject diagnostic receipt;
+3. accepted selector423 as **423 fresh exact-filter processes** using the static owner map, no generated discovery/list-tests;
+4. exact package/source/execution-view postflight;
+5. publish and re-open one non-self-referential evidence archive.
 
-Author exactly one test identity:
-
-`M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`
-
-Default authorized semantic path is only `tests/FieldAlignedCurveNetworkTests.cpp`: test-local independent exact oracle + the identity. Required subject matrix includes positive, negative, near-boundary-certified, exact-boundary/fallback, and discriminating-tamper cases. At least one case must prove production `Filter`; at least one must prove `ExactFallback`. Expected semantics must be derived independently from exact subject inputs, not from the production comparator under test.
-
-**STOP for Review** if satisfying the identity would require any production `src/`/`include/` semantic change, a new public semantic API, an arrival-order fallback, selector423 mutation, or scope drift into S1 threshold calibration / S3 / S4 / S5 / CP4 / row399 / row408.
-
-If the identity is authored within that boundary, compile/package using the durable reusable compile workflow with GMP/GMPXX and no runtime. Selector423 stays exactly 423 rows; CB2 cannot claim S2 gate credit or append selector424. Full criteria and falsifiers are frozen in `.agents/Directional/Architecture_M4_CP_SCALE_CB2_Code_Build_Plan.md`.
+The focused S2 identity is outside selector423 and contributes zero gate rows. EXEC reports mechanics only. Mandatory `M4-CP-SCALE-TB2-REV` follows and alone may adjudicate candidate promotion, S2 proof, stable-accounting implications, or a later selector-publication slice. The frozen plan is `.agents/Directional/Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Carried obligations
 
-- `M4-CP-SCALE-TB1-REV-OBS-01`: S1 representative/stress calibration before any future numeric gate; does not block CB2.
-- `M4-CP-SCALE-DEFN-OBS-01`: arrival-order exact fallback not frozen; not owned by CB2.
+- `M4-CP-SCALE-TB1-REV-OBS-01`: S1 representative/stress calibration before any future numeric gate; does not block S2.
+- `M4-CP-SCALE-DEFN-OBS-01`: arrival-order exact fallback not frozen; not owned by vertex-star S2.
 - `M4-CP-SCALE-DEFN-OBS-02`: dedicated full exact-state repeat S3 witness + typed outcome owed.
 - `M4-CP-SCALE-DEFN-OBS-03`: S4 independent incremental earlier-never-different oracle/reachability owed.
 - `M4-CP-SCALE-DEFN-OBS-04`: genus>=2 construction/reachability owed; torus genus1 is zero S5 credit.
@@ -108,15 +95,14 @@ If the identity is authored within that boundary, compile/package using the dura
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB-EXEC.md
 project_plan:
-  - .agents/Directional/Architecture_M4_CP_SCALE_CB2_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB2_Artifact_Only_Test_Benchmark_Plan.md
 conditional_modules:
-  - trigger: test-source authoring
-    path: modules/unit-testing/MODULE.md
   - trigger: GitHub connector/workflow/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M4_CP_SCALE_CB2_Code_Build_Report.md
   - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
   - .agents/Directional/Architecture_M4_CP_SCALE_TB1_Review_Record.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
