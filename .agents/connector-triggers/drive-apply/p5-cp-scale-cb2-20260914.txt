@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-CB2
+base_sha=56ba9f75d97ec96415ad34ab7873f6e5bfc25f93
+patch_sha256=c05001c3dd308412c0e691e6a501ecad3256b0dbf6755e4ef7fe4a56f36f8925
+file_id=1pub383hjzvk__Qg-TXB6Lc4Ftk5KsW7y
+purpose=apply bounded S2 test-authority patch
