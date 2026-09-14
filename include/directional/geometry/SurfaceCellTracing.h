@@ -926,9 +926,14 @@ struct FieldAlignedTraceScaleCensusSuccess {
   std::uint64_t semanticDigest = 0U;
 };
 
+struct FieldAlignedTraceScaleCensusFailure {
+  FieldAlignedTraceScaleCensus census;
+  FieldAlignedCurveNetworkError error;
+};
+
 using FieldAlignedTraceScaleCensusResult =
     std::variant<FieldAlignedTraceScaleCensusSuccess,
-                 FieldAlignedCurveNetworkError>;
+                 FieldAlignedTraceScaleCensusFailure>;
 
 [[nodiscard]] FieldAlignedTraceScaleMeasurement
 measure_field_aligned_trace_parameter_scale(

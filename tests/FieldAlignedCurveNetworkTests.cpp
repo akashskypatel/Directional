@@ -14323,6 +14323,124 @@ TEST(M4CPScaleS1,
             changedMeasurement.denominatorBits);
   EXPECT_EQ(changedParameter.magnitude_bits(), changedMeasurement.magnitudeBits);
   EXPECT_NE(baselineMeasurement, changedMeasurement);
+
+  std::cout << "m4CpScaleS1;witness=two-ring;sampleCount="
+            << census.aggregate.sampleCount
+            << ";numeratorBitsMax=" << census.aggregate.numeratorBitsMax
+            << ";denominatorBitsMax=" << census.aggregate.denominatorBitsMax
+            << ";magnitudeBitsMax=" << census.aggregate.magnitudeBitsMax
+            << ";deepestStage=direct-field-aligned-network\n";
+
+  const auto verifyRetainedWitness = [&](const std::string &fixtureStem,
+                                         const std::string &witnessName) {
+    const Cp4cReachabilityObservation observation =
+        observe_cp4c_witness(fixtureStem, witnessName);
+    ASSERT_TRUE(observation.sourceAuthority.has_value()) << observation.report;
+    ASSERT_TRUE(observation.atlas.has_value()) << observation.report;
+
+    const auto baseline = FieldAlignedCurveNetwork::make(
+        observation.mesh, *observation.sourceAuthority, *observation.atlas,
+        observation.rails);
+    const auto firstWitness = diagnose_field_aligned_trace_scale_census(
+        observation.mesh, *observation.sourceAuthority, *observation.atlas,
+        observation.rails);
+    const auto secondWitness = diagnose_field_aligned_trace_scale_census(
+        observation.mesh, *observation.sourceAuthority, *observation.atlas,
+        observation.rails);
+
+    const FieldAlignedTraceScaleCensus *firstCensus = nullptr;
+    const FieldAlignedTraceScaleCensus *secondCensus = nullptr;
+    if (baseline) {
+      const auto *firstWitnessSuccess =
+          std::get_if<FieldAlignedTraceScaleCensusSuccess>(&firstWitness);
+      const auto *secondWitnessSuccess =
+          std::get_if<FieldAlignedTraceScaleCensusSuccess>(&secondWitness);
+      ASSERT_NE(nullptr, firstWitnessSuccess);
+      ASSERT_NE(nullptr, secondWitnessSuccess);
+      EXPECT_EQ(baseline.value().semantic_digest(),
+                firstWitnessSuccess->semanticDigest);
+      EXPECT_EQ(firstWitnessSuccess->semanticDigest,
+                secondWitnessSuccess->semanticDigest);
+      firstCensus = &firstWitnessSuccess->census;
+      secondCensus = &secondWitnessSuccess->census;
+    } else {
+      const auto *firstWitnessFailure =
+          std::get_if<FieldAlignedTraceScaleCensusFailure>(&firstWitness);
+      const auto *secondWitnessFailure =
+          std::get_if<FieldAlignedTraceScaleCensusFailure>(&secondWitness);
+      ASSERT_NE(nullptr, firstWitnessFailure);
+      ASSERT_NE(nullptr, secondWitnessFailure);
+      EXPECT_EQ(baseline.error(), firstWitnessFailure->error);
+      EXPECT_EQ(firstWitnessFailure->error, secondWitnessFailure->error);
+      firstCensus = &firstWitnessFailure->census;
+      secondCensus = &secondWitnessFailure->census;
+    }
+
+    ASSERT_NE(nullptr, firstCensus);
+    ASSERT_NE(nullptr, secondCensus);
+    EXPECT_EQ(*firstCensus, *secondCensus);
+    EXPECT_EQ(firstCensus->rows.size(), firstCensus->aggregate.sampleCount);
+    EXPECT_TRUE(std::is_sorted(
+        firstCensus->rows.begin(), firstCensus->rows.end(),
+        [](const auto &lhs, const auto &rhs) {
+          return std::tie(lhs.trace, lhs.step) <
+                 std::tie(rhs.trace, rhs.step);
+        }));
+
+    std::uint64_t witnessNumeratorBitsSum = 0U;
+    std::uint64_t witnessDenominatorBitsSum = 0U;
+    std::uint64_t witnessMagnitudeBitsSum = 0U;
+    std::size_t witnessNumeratorBitsMax = 0U;
+    std::size_t witnessDenominatorBitsMax = 0U;
+    std::size_t witnessMagnitudeBitsMax = 0U;
+    for (const FieldAlignedTraceScaleCensusRow &row : firstCensus->rows) {
+      witnessNumeratorBitsSum += row.numeratorBits;
+      witnessDenominatorBitsSum += row.denominatorBits;
+      witnessMagnitudeBitsSum += row.magnitudeBits;
+      witnessNumeratorBitsMax =
+          std::max(witnessNumeratorBitsMax, row.numeratorBits);
+      witnessDenominatorBitsMax =
+          std::max(witnessDenominatorBitsMax, row.denominatorBits);
+      witnessMagnitudeBitsMax =
+          std::max(witnessMagnitudeBitsMax, row.magnitudeBits);
+    }
+    EXPECT_EQ(witnessNumeratorBitsSum,
+              firstCensus->aggregate.numeratorBitsSum);
+    EXPECT_EQ(witnessDenominatorBitsSum,
+              firstCensus->aggregate.denominatorBitsSum);
+    EXPECT_EQ(witnessMagnitudeBitsSum,
+              firstCensus->aggregate.magnitudeBitsSum);
+    EXPECT_EQ(witnessNumeratorBitsMax,
+              firstCensus->aggregate.numeratorBitsMax);
+    EXPECT_EQ(witnessDenominatorBitsMax,
+              firstCensus->aggregate.denominatorBitsMax);
+    EXPECT_EQ(witnessMagnitudeBitsMax,
+              firstCensus->aggregate.magnitudeBitsMax);
+    EXPECT_EQ((FieldAlignedTraceScaleExactMean{witnessNumeratorBitsSum,
+                                                firstCensus->rows.size()}),
+              firstCensus->aggregate.numeratorBitsMean);
+    EXPECT_EQ((FieldAlignedTraceScaleExactMean{witnessDenominatorBitsSum,
+                                                firstCensus->rows.size()}),
+              firstCensus->aggregate.denominatorBitsMean);
+    EXPECT_EQ((FieldAlignedTraceScaleExactMean{witnessMagnitudeBitsSum,
+                                                firstCensus->rows.size()}),
+              firstCensus->aggregate.magnitudeBitsMean);
+
+    std::cout << "m4CpScaleS1;witness=" << witnessName
+              << ";sampleCount=" << firstCensus->aggregate.sampleCount
+              << ";numeratorBitsMax="
+              << firstCensus->aggregate.numeratorBitsMax
+              << ";denominatorBitsMax="
+              << firstCensus->aggregate.denominatorBitsMax
+              << ";magnitudeBitsMax="
+              << firstCensus->aggregate.magnitudeBitsMax
+              << ";baselineOutcome=" << (baseline ? "success" : "error")
+              << ";reachability={" << observation.report << "}\n";
+  };
+
+  verifyRetainedWitness("torus", "torus");
+  verifyRetainedWitness("mechanical_feature", "mechanical feature");
+  verifyRetainedWitness("sphere_prescribed", "prescribed sphere");
 }
 
 TEST(ResolvedBranchCorrection,

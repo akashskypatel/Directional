@@ -4801,7 +4801,7 @@ FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
     finalize();
     if (const auto *error =
             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
-      return *error;
+      return FieldAlignedTraceScaleCensusFailure{std::move(census), *error};
     }
     const FieldAlignedCurveNetworkCandidate &candidate =
         std::get<FieldAlignedCurveNetworkCandidate>(canonical);
@@ -4809,7 +4809,7 @@ FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
             sourceMesh, sourceAuthority, fieldTransportAtlas,
             authoritativeRails, candidate);
         error.has_value()) {
-      return *error;
+      return FieldAlignedTraceScaleCensusFailure{std::move(census), *error};
     }
     const std::uint64_t sourceDigest =
         fieldTransportAtlas.quadrangulability().source_digest();
@@ -4824,7 +4824,8 @@ FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
     FieldAlignedCurveNetworkError error;
     error.code = FieldAlignedCurveNetworkErrorCode::
         BranchContinuationExactMagnitudeExceeded;
-    return error;
+    return FieldAlignedTraceScaleCensusFailure{std::move(census),
+                                               std::move(error)};
   }
 }
 
