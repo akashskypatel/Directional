@@ -1,7 +1,0 @@
-# M4-CP-SCALE-CB2 temporary state
-.agents/connector-triggers/branch-delete/cb2-accidental-branch-20260914.txt
-.agents/connector-triggers/compile/p5-cp-scale-cb2-package-20260914.txt
-.agents/connector-triggers/compile/p5-cp-scale-cb2-preflight-20260914.txt
-.agents/connector-triggers/source-snapshot/p5-cp-scale-cb2-20260914.txt
-.agents/connector-triggers/drive-apply/p5-cp-scale-cb2-20260914.txt
-.agents/connector-triggers/drive-apply/p5-cp-scale-cb2-closeout-20260914.txt
