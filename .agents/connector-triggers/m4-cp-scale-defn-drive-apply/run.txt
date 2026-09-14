@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-DEFN
+purpose=apply verified Drive patch
+file_id=1gnnP7WiCSLqYVWnzHQmpV8KFskmg00jr
+patch_sha256=d545d923d23479972cb9f3c0c84bb5a3074bc3a71093b589bfcb7e3e4202d30c
+base_sha=b894a12fa077aff620892174f09805fbc5666b56
