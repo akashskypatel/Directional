@@ -2,17 +2,16 @@
 
 Last updated: 2026-09-13 UTC
 
-## Current turn — M4-CP-COND-CB4
+## Current turn — M4-CP-COND-TB4-EXEC
 
-- [x] `M4-CP-COND-TB3-REV`: independently re-derived TB3 mechanics and accepted the corrected negative-index raw oracle/non-vacuity authority.
-- [x] Close `M4-CP-COND-TB2-REV-CAND-01` **TEST-AUTHORITY REPAIRED / RUNTIME-PROVED / NON-STABLE**.
-- [x] Keep boundary-truncated separatrix **report-only / non-selector** because A2a reachability remains unproved.
-- [x] Open `M4-CP-COND-TB3-REV-CAND-01` **SELECTOR-AUTHORITY / CP-COND GATING IDENTITIES OUTSIDE CUMULATIVE SELECTOR / NON-STABLE**; accepted runtime authority remains CP3 package `10307919492` / selector408 408/408.
-- [ ] `M4-CP-COND-CB4`: append the existing fourteen CP-COND gating identities after the exact selector408 prefix to publish selector422; no product/test/fixture/CMake semantic change.
-- [ ] Update `Required_Green_Selector_Manifest.md` with selector422 line count/hash/prefix hash; preserve all older selectors byte-for-byte.
-- [ ] Compile/package the unchanged complete seven-target owner set with GMP/GMPXX and `runtimeExecution=false`; no Directional runtime.
-- [ ] Freeze artifact-only `M4-CP-COND-TB4-EXEC`: selector422 422/422 + one expected report-only boundary SKIP, exact postflight, non-self-referential evidence checksum manifest, mandatory TB4 Review.
-- [ ] CP-SCALE remains blocked until CP-COND selector-authority closure is reviewed and accepted.
+- [x] `M4-CP-COND-CB4`: publish selector422 as exact selector408 prefix + the fourteen existing CP-COND gating identities; no product/test/fixture/CMake semantic change.
+- [x] Update `Required_Green_Selector_Manifest.md` additively; selector422 is 422 LF rows at `bbd496f3...f7cc`, first408 remains `c689c0cd...484`.
+- [x] Compile/package the complete seven-target owner set with GMP/GMPXX and `runtimeExecution=false`; candidate artifact `10327643907` is compile/package GREEN.
+- [x] Freeze artifact-only `M4-CP-COND-TB4-EXEC` plan: selector422 422/422 + one expected report-only boundary SKIP, exact postflight, non-self-referential evidence checksum manifest, mandatory TB4 Review.
+- [ ] `M4-CP-COND-TB4-EXEC`: execute immutable artifact `10327643907` exactly as frozen; no rebuild/mutation/repair/generated discovery.
+- [ ] `M4-CP-COND-TB4-REV`: mandatory review/adjudication after EXEC; CB4 does not promote candidate runtime authority.
+- [ ] Resolve the boundary-truncated separatrix reachability obligation before CP-COND closure: produced witness or independent A2a unreachability proof.
+- [ ] CP-SCALE remains blocked until CP-COND selector-authority/reachability closure is reviewed and accepted.
 
 ## Purpose
 
@@ -40,9 +39,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-CB4` (selector-authority/package-only)
+## Current focus — `M4-CP-COND-TB4-EXEC` (artifact-only cumulative selector gate)
 
-TB3 Review accepts the repaired negative-index raw oracle and TB3's mechanically green execution, but CP-COND remains OPEN because the fourteen CP-COND gating identities are not yet members of the frozen cumulative append-only selector lineage. CB4 must publish selector422 = exact selector408 prefix + those fourteen existing identities, with no product/test semantic drift, then compile/package only. Boundary-truncated separatrix remains report-only/non-selector. Accepted runtime authority remains CP3 package `10307919492` / selector408 408/408. Stable accounting remains **49 / 14 / 35**, debt **5**.
+CB4 has published selector422 = exact selector408 prefix + fourteen existing CP-COND gating identities and produced compile/package-GREEN artifact `10327643907` with no semantic source change and no runtime. TB4-EXEC must now run the frozen 422-process cumulative selector gate plus one expected report-only boundary SKIP directly from that artifact. Accepted runtime authority remains CP3 package `10307919492` / selector408 408/408 until mandatory TB4 Review. Stable accounting remains **49 / 14 / 35**, debt **5**. Boundary-truncated separatrix reachability remains an independent closure obligation.
 
 ## Carried forward from M1
 
@@ -81,7 +80,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND TB3-EXEC MECHANICALLY GREEN; TB3-REV NEXT**. `M4-CP3-TB8-REV` promotes package `10307919492` / selector408 **408/408** and closes the main exact-torus pairing blocker. CP-COND package/runtime recovery is mechanically proved; CB3 corrects the negative-index test authority from raw bytes; TB3-EXEC mechanically passes the frozen 423-process surface with exact postflight. Mandatory TB3 Review must adjudicate before CP-COND can close. CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CB4 COMPILE+PACKAGE GREEN; TB4-EXEC NEXT**. Candidate artifact `10327643907` carries selector422 and the complete seven-target owner set; no runtime promotion is claimed. Accepted authority remains CP3 package `10307919492` / selector408 **408/408** pending TB4-EXEC + mandatory TB4-REV and boundary reachability resolution. CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.

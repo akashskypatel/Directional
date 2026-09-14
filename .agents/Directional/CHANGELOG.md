@@ -1,3 +1,12 @@
+## 2026-09-13 — `M4-CP-COND-CB4`: selector422 published; seven-target GMP/GMPXX compile/package GREEN
+
+- Published selector422 as the exact accepted selector408 prefix plus the fourteen already-runtime-proved CP-COND gating identities in frozen order. Selector422 is **422 LF rows**, SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`; first408 remains exactly `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`. Boundary-truncated separatrix remains report-only/non-selector.
+- Candidate source `702d9e10afff1fc3ac2ed3f3458acf8f19b617a5` changes selector/manifest/TB4 plan only; product, test, fixture, CMake and runtime semantics are unchanged.
+- Compile run/job `34792127913 / 103818213551` built the exact seven-target owner set with GMP/GMPXX, preflight/build exits zero, clean source receipts and `runtimeExecution=false`. No generated Directional executable was run.
+- Candidate result artifact `10327643907` (`78c8d14e9e4ed63ca900f393ca696df4a684cb5d3e6fe2ec3438e92aae89a0e8`) verifies all 27 non-self package checksum entries and the packaged selector/source authority.
+- `tools/selector_manifest.py` was evaluated but its generated candidate was discarded because it conflates separate M3/M4 numeric selector lineages; CB4 made no tool change and updated the additive manifest directly from byte-verified selector authority.
+- Accepted runtime authority remains CP3 package `10307919492` / selector408 **408/408**; stable accounting remains **49 / 14 / 35**, debt **5**. CP-COND remains OPEN. Exact successor is artifact-only `M4-CP-COND-TB4-EXEC`, followed mandatorily by TB4 Review.
+
 ## 2026-09-13 — `M4-CP-COND-TB2-REV`: package recovery proved; negative-index gate rejected as test authority
 
 - Re-derived TB2: 14/14 focused PASS, one report-only boundary SKIP, selector408 408/408 PASS, 423 processes, zero RED/crash/selection mismatch, exact immutable postflight.
