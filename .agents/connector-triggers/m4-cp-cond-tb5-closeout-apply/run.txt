@@ -1,5 +1,0 @@
-turn=M4-CP-COND-TB5-EXEC
-purpose=apply durable TB5 closeout documentation patch from Google Drive
-base_sha=c6230c20a878bee48f79d767c1ee1e31ec11031d
-patch_sha256=6798f8b70e632d4bda14eaa2087a36122aa9525059ce300877c45cf1c062f4f3
-retry=0

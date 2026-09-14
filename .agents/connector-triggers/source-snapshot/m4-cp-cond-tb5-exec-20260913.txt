@@ -1,4 +1,0 @@
-turn=M4-CP-COND-TB5-EXEC
-purpose=start-of-turn exact source snapshot
-requested_branch_head=9c69d5278998d15843f8644bea714aba949b7578
-runtimeExecution=false
