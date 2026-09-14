@@ -1,3 +1,10 @@
+## 2026-09-14 — `M4-CP-COND-TB5-EXEC`: selector423 mechanically GREEN; Review pending
+
+- Immutable candidate package `10331193451` / source `07984711...03f0` executed in run/job `34805164109 / 103855521990`; result/log artifacts `10333057375 / 10332819388` have SHA-256 `240d2257...8bb3` / `e2b3262b...6499`.
+- Frozen selector423 completes **423/423 PASS**, inherited selector422 prefix **422/422**, appended boundary gate **1/1**, with **0 RED / 0 SKIP / 0 timeout / 0 selection mismatch** and exact package/source/execution-view byte+mode postflight. The evidence checksum manifest is non-self-referential and independently verifies all **440** entries.
+- **No new regression/candidate is observed by EXEC.** No accepted PASS→RED transition exists, so no new stable event/category/recurrence is assigned. Stable accounting remains **49 / 14 / 35**, debt **5**.
+- `M4-CP-COND-TB4-REV-CAND-01` remains **OPEN / RUNTIME FALSIFIER GREEN / REVIEW REQUIRED / NON-STABLE**. TB5 mechanically satisfies its prescribed 423/423 runtime condition, but only `M4-CP-COND-TB5-REV` may independently adjudicate the raw-oracle authority, close the candidate, promote selector423/package authority, or close CP-COND.
+
 ## 2026-09-13 — `M4-CP-COND-TB4-REV`: selector422 accepted; boundary raw-precondition candidate opened
 
 - TB4 evidence independently re-derived: package `10327643907` / source `702d9e10...17a5`, selector422 **422/422 PASS**, predecessor408 **408/408**, appended gates **14/14**, one expected report-only boundary SKIP, zero gating RED/timeout/selection mismatch and exact immutable postflight.

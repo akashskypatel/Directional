@@ -593,7 +593,7 @@ Compile run/job `34785549072 / 103800273458` is GREEN on test-authority source `
 | `Architecture_M4_CP_COND_CB2_Code_Build_Record.md` | 68 | Folded after TB2 Review; package authority retained in §2.41/current TB2 report. |
 | `Architecture_M4_CP_COND_CB2_Artifact_Only_Test_Benchmark_Plan.md` | 96 | Folded after TB2 EXEC/Review; 423-process gate/postflight retained in current TB2 report/Review/CB3 plan. |
 
-Current retained CP-COND authority after TB4 Review is the frozen definitions, selector422, current TB4-EXEC report, current TB4 Review record, and exactly one next plan `Architecture_M4_CP_COND_CB5_Code_Build_Plan.md`. Superseded TB3/CB4/TB4 planning records are folded into this consolidated record.
+Current retained CP-COND authority after TB5-EXEC is the frozen definitions, accepted selector422/runtime authority, candidate selector423, the TB4 Review record, current `Architecture_M4_CP_COND_TB5_EXEC_Report.md`, and exactly one next plan `Architecture_M4_CP_COND_TB5_Review_Plan.md`. TB5 stale-evidence cleanup retires `Architecture_M4_CP_COND_CB5_Code_Build_Plan.md` (107 lines), `Architecture_M4_CP_COND_CB5_Code_Build_Report.md` (108 lines), and `Architecture_M4_CP_COND_TB5_Artifact_Only_Test_Benchmark_Plan.md` (127 lines); the mandatory TB5 Review must add those filenames/line counts/verdicts to this folded-document index under the Review-turn consolidation rule.
 
 
 ## 2.44 `M4-CP-COND-TB3-EXEC` — corrected artifact mechanically green; semantic Review pending

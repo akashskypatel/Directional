@@ -1,3 +1,11 @@
+## 2026-09-14 — M4-CP-COND-TB5-EXEC
+
+- Immutable artifact-only run/job `34805164109 / 103855521990` consumed CB5 package `10331193451` / source `07984711db59eaa228820e7d44e5552a652edadf` without configure/build/relink/repair or source/test/fixture/selector mutation.
+- Preflight passed package `SHA256SUMS` **27/27**, GMP/GMPXX runtime linkage, selector423 423 rows at `4e67e4dc...9343`, exact selector422 prefix `bbd496f3...f7cc`, row423 identity and owner census **30 / 277 / 75 / 41**.
+- Runtime gate is **423/423 PASS**, inherited prefix **422/422**, appended boundary gate **1/1**, zero RED/SKIP/timeout/selection mismatch. Package/source/execution-view postflight is byte+mode identical.
+- Result artifact `10333057375` (`240d22578a48570b8ecab26c158d24ccc70f4e5a5c79a53d4bdd9359e1c78bb3`) carries a non-self-referential **440-entry** evidence manifest that verifies completely; diagnostic artifact `10332819388` is `e2b3262b5188149a8bfe3664e7473c44feeb73ad119216081d1d0889c9d66499`.
+- EXEC observes no new regression/candidate; accounting stays **49 / 14 / 35**, debt **5**. Accepted runtime authority remains package `10327643907` / selector422 until mandatory `M4-CP-COND-TB5-REV`; CP-COND and CP-SCALE remain blocked pending that adjudication.
+
 ## 2026-09-13 — M4-CP-COND-CB5
 
 - Completed the bounded runtime-free CB5 test-authority turn without any `src/`/`include/` product semantic change. `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved` derives a genuine source-boundary truncation from raw mesh/field bytes with an independent exact-rational oracle before production execution, includes a load-bearing raw-field mutation falsifier, and re-proves the same result from conditioner certificate/correspondence-preserved authority.

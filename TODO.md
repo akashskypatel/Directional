@@ -1,8 +1,8 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-13 UTC
+Last updated: 2026-09-14 UTC
 
-## Current turn — M4-CP-COND-CB5
+## Current turn — M4-CP-COND-TB5-REV
 
 - [x] `M4-CP-COND-CB4`: publish selector422 as exact selector408 prefix + the fourteen existing CP-COND gating identities; no product/test/fixture/CMake semantic change.
 - [x] Update `Required_Green_Selector_Manifest.md` additively; selector422 is 422 LF rows at `bbd496f3...f7cc`, first408 remains `c689c0cd...484`.
@@ -11,7 +11,8 @@ Last updated: 2026-09-13 UTC
 - [x] `M4-CP-COND-TB4-EXEC`: immutable artifact `10327643907` executed mechanically GREEN at selector422 422/422 + one expected report-only SKIP; exact postflight and corrected evidence manifest verified.
 - [x] `M4-CP-COND-TB4-REV`: accept package `10327643907` / selector422 as current runtime authority; keep CP-COND OPEN on frozen boundary raw-precondition authority.
 - [x] `M4-CP-COND-CB5`: independent exact/discrete raw boundary-truncation oracle + load-bearing mutation falsifier added; conditioner certificate re-proves the same oracle; selector423 published; package `10331193451` compiled GREEN with GMP/GMPXX and `runtimeExecution=false`.
-- [ ] `M4-CP-COND-TB5-EXEC` + mandatory `TB5-REV`: runtime-prove selector423 423/423 and adjudicate CP-COND closure. CP-SCALE remains blocked until then.
+- [x] `M4-CP-COND-TB5-EXEC`: immutable candidate runtime is mechanically GREEN at selector423 **423/423**, inherited selector422 **422/422**, appended boundary gate **1/1**, with exact immutable postflight.
+- [ ] `M4-CP-COND-TB5-REV`: independently re-open TB5 evidence and CB5 raw-oracle authority; adjudicate selector423/package promotion and CP-COND closure. CP-SCALE remains blocked until Review closes CP-COND.
 
 ## Purpose
 
@@ -39,9 +40,9 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-COND-TB5-EXEC` (immutable selector423 runtime gate)
+## Current focus — `M4-CP-COND-TB5-REV` (review + plan only)
 
-CB5 is compile/package GREEN. Candidate artifact `10331193451` from packaged source `07984711db59eaa228820e7d44e5552a652edadf` contains selector423 (`4e67e4dc...9343`) as the exact accepted selector422 prefix plus `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved`. Static ownership is **30 / 277 / 75 / 41 = 423** and compile evidence is GMP/GMPXX with `runtimeExecution=false`. Accepted runtime authority remains package `10327643907` / selector422 **422/422** until artifact-only TB5-EXEC and mandatory TB5-REV. Stable accounting remains **49 / 14 / 35**, debt **5**.
+TB5-EXEC is mechanically GREEN on immutable package `10331193451` / source `07984711db59eaa228820e7d44e5552a652edadf`: selector423 **423/423**, inherited selector422 **422/422**, appended boundary gate **1/1**, zero RED/SKIP/timeout/selection mismatch and exact immutable postflight. Result artifact `10333057375` is `240d2257...8bb3`. Accepted runtime authority nevertheless remains package `10327643907` / selector422 **422/422** until mandatory TB5 Review independently adjudicates the raw-oracle authority and promotion. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -80,7 +81,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND selector422 accepted; selector423 compile candidate GREEN; TB5 NEXT**. Package `10327643907` / selector422 **422/422** remains accepted current runtime authority. Candidate package `10331193451` / selector423 awaits artifact-only TB5-EXEC -> mandatory TB5-REV. CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND selector422 accepted; selector423 TB5 mechanically GREEN; TB5-REV NEXT**. Package `10327643907` / selector422 **422/422** remains accepted current runtime authority pending Review. Candidate package `10331193451` / selector423 is runtime-proved 423/423 but not yet promoted. CP-SCALE follows only after CP-COND; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -120,4 +121,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. Accepted current CP-COND runtime authority remains package `10327643907` / selector422 **422/422**. CB5 candidate package `10331193451` / selector423 is compile GREEN only. Exact next is artifact-only **`M4-CP-COND-TB5-EXEC`** under `Architecture_M4_CP_COND_TB5_Artifact_Only_Test_Benchmark_Plan.md`, followed by mandatory TB5 Review. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 remains CLOSED / ACCEPTED on package `10307919492` / selector408 408/408. Accepted current CP-COND runtime authority remains package `10327643907` / selector422 **422/422** pending Review. Candidate package `10331193451` / selector423 is mechanically GREEN at **423/423** in TB5 but is not yet promoted. Exact next is review-only **`M4-CP-COND-TB5-REV`** under `Architecture_M4_CP_COND_TB5_Review_Plan.md`. PR #8 remains open, draft, and unmerged.
