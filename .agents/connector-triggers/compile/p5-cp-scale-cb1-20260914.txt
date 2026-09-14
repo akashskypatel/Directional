@@ -1,4 +1,4 @@
-purpose=compile M4-CP-SCALE-CB1 exact pushed evidence revision
-source_sha=6a8eed257a047bc70e53cc00dff629f9725c5cad
+purpose=compile M4-CP-SCALE-CB1 exact fixed pushed evidence revision
+source_sha=2a61c3eb4c75d613da0085252a404cc88f885c42
 runtimeExecution=false
-retry=0
+retry=1
