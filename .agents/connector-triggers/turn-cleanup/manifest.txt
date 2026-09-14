@@ -1,0 +1,4 @@
+# M4-CP-SCALE-TB2-EXEC temporary-state cleanup
+.agents/connector-triggers/drive-apply/p5-cp-scale-tb2-exec-closeout-20260914.txt
+.agents/connector-triggers/source-snapshot/p5-cp-scale-tb2-exec-20260914.txt
+.agents/connector-triggers/tb-exec/p5-cp-scale-tb2-exec-20260914.txt
