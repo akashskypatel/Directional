@@ -1,0 +1,9 @@
+# M4-CP-COND-CB5 temporary state
+.agents/Directional/turn-payloads/m4-cp-cond-cb5
+.agents/connector-triggers/m4-cp-cond-cb5-compile-20260913.txt
+.agents/connector-triggers/m4-cp-cond-cb5-compile-schema
+.agents/connector-triggers/m4-cp-cond-cb5-drive-apply-20260913.txt
+.agents/connector-triggers/m4-cp-cond-cb5-drive-schema
+.agents/connector-triggers/source-snapshot/m4-cp-cond-cb5-20260913.txt
+.agents/connector-triggers/m4-cp-cond-cb5-closeout-drive-schema
+.agents/connector-triggers/m4-cp-cond-cb5-closeout-drive-apply-20260913.txt
