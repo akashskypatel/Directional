@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-TB6-EXEC
+source_ref=76344df49e37aa91236a6bebdece3ebd37b8b817
+purpose=exact source snapshot
