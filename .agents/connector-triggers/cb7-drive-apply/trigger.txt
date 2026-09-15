@@ -1,3 +1,3 @@
-M4-CP-SCALE-CB7 Drive patch apply compile fix
+M4-CP-SCALE-CB7 Drive patch apply compile fix v2
 base_sha=4eb4d14fd8af4830afdd212ade0842706c1817f0
-patch_sha256=a82ef09229d05d589412b1b47fc58c4ed50cc740d24974f2f3427d81990637ec
+patch_sha256=4e632f960e965f4218953f12eae62db5ce48c765daeee7131946057813618f07
