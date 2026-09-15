@@ -1,4 +1,0 @@
-M4-CP-SCALE-TB3-EXEC source snapshot trigger.
-Frozen source authority before trigger: 797ca1110c68d0461b7406673760ac5550f966cc
-Purpose: inspect frozen TB3-EXEC plan and mandatory turn documents only.
-Retry: 0
