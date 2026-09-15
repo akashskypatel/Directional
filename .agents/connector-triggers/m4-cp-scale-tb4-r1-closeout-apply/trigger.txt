@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-TB4-R1-EXEC
+purpose=apply-durable-closeout
+base_sha=f07ec0996f89dd859e510af6c170fcf940290282
+patch_sha256=2803f4f96e2bc4b9d3e3eb96c0bf05b718b3259de677e27d0724f198f063474f
