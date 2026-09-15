@@ -1,0 +1,14 @@
+{
+  "base_commit": "b347fbdb923b9dfff69c7467aa33fc5cfac31878",
+  "patch_sha256": "7cb96140381252494790f96feed4ec225191603c47e6e43340ee563540d6120c",
+  "encoded_sha256": "9dd32d5b5bc4d340bad74648d0789b906194efecad8e568a91c3d0f5e39f979c",
+  "encoding": "gzip+base64",
+  "fragment_count": 1,
+  "intended_paths": [
+    "TODO.md",
+    ".agents/Directional/Future_Chat_Session_Handoff.md",
+    ".agents/Directional/M4_Consolidated_Record.md",
+    ".agents/Directional/CHANGELOG.md",
+    ".agents/Directional/Architecture_M4_CP_SCALE_TB4_EXEC_Test_Benchmark_Plan.md"
+  ]
+}
