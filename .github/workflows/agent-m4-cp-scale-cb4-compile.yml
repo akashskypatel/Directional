@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/m4-cp-scale-cb4-compile/trigger.txt
 
 permissions:
-  contents: read
+  contents: write
   actions: write
   issues: write
   pull-requests: write
