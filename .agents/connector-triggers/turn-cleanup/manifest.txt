@@ -1,0 +1,4 @@
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb3-exec-20260915.txt
+.agents/connector-triggers/m4-cp-scale-tb3-exec-20260915.txt
+.agents/connector-triggers/m4-cp-scale-tb3-exec-docs-apply-20260915.txt
+.agents/Directional/turn-payloads/m4-cp-scale-tb3-exec.sh
