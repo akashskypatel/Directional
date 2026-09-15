@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-CB5
+purpose=exact-source-snapshot
+base_head=7b038b4bafd9c710eed81fa36863cbe0e148706e
