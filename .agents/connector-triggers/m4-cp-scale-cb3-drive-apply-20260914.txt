@@ -1,4 +1,0 @@
-M4-CP-SCALE-CB3 Drive patch application.
-Patch base: c4b29080763e3e3328aef19e74d389019f2151b3
-Patch SHA-256: f20cc09ecbf9542a8f559ae8d777de62d8d9fdca3705bc2261d8efba67c598a8
-Retry: 0
