@@ -1,6 +1,6 @@
 # M4-CP-SCALE-CB5 Orchestration Correction Plan — immutable TB4 retry harness
 
-**Status:** FROZEN BY `M4-CP-SCALE-TB4-EXEC`
+**Status:** COMPLETE / STATIC GREEN
 **Turn type:** Code + Build cadence slot, **runtime-free control-plane correction only**
 **Semantic source/package:** frozen; no product/test/fixture/CMake/selector/package mutation
 **Exact immutable candidate:** artifact `10378808176`, semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`
@@ -68,3 +68,20 @@ After a mechanically valid retry, the ordinary mandatory successor is `M4-CP-SCA
 ## 7. STOP rules
 
 STOP and return for explicit re-planning if correcting either defect requires changing semantic source, tests, fixtures, selectors, package bytes, reusable workflow permissions, or accepted runtime authority. Do not recompile merely to make runner layout easier. Do not weaken the immutable census/postflight contract.
+
+## 8. CB5 static verification outcome
+
+CB5 completed the authorized control-plane correction without compiling or executing Directional. Exact inspection authority was source-snapshot run `34974644691` at control head `6103a19473cccd2cccedb023c633bfcfe10ece29`; snapshot artifact `10398945458` has provider SHA-256 `b314cfc3a78f97d1163df4827776c300ef0360b41b0f72656256efbef4592184`, and its internal `source.tar.gz` hashes `fae8d18911efa690784bf138da12d83d56ccea3835465fab65150cc0e1c2d2c1`. The semantic candidate remains artifact `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` unchanged.
+
+The successor payload is `.agents/Directional/turn-payloads/m4_cp_scale_tb4_r1_exec.py` plus `m4_cp_scale_tb4_r1_exec_lib.py`, SHA-256 `a83ad830677f32aa0a882158c1e800762c65957ce5bb69645acbc511a8b37673` / `10fa3684a75968e5a14256c90f7e24fec486eb8d63553f9c6daee873ace20967`. Static verification established all frozen CB5 requirements:
+
+- both Python payload files parse and `py_compile` successfully;
+- fixture source is exactly `benchmarks/fixtures` and destination exactly `test-data/benchmarks/fixtures`; an isolated non-Directional helper exercise copied all **27** packaged fixture files and proved relative paths, file bytes, directory/file modes and symlink targets identical;
+- one shared `CENSUS_BASES = (package, source, execution-view)` / `census_path(name, phase)` authority emits every `*-census-before.tsv` receipt consumed by postflight and the matching `*-census-after.tsv`;
+- immutable candidate/package/source/selector constants, 28-member manifest checks, owner census **30/277/75/41**, focused-first S2, 423-row `UNEXECUTED` preinitialization, one fresh exact-filter process per row, fail-closed selection mismatch and immutable postflight remain in the payload;
+- local diff inspection before documentation edits showed only the two successor runner payloads added: no production source, test source, fixture bytes, CMake/build semantics, selectors, reusable workflow permissions or package bytes changed;
+- `runtimeExecution=false`; no Directional configure, compile, link, generated discovery, test, benchmark, CLI, repair or mutation executed.
+
+The invalid TB4 attempt `34938070127` remains provenance only and contributes no semantic ledger. Accepted runtime authority and stable accounting are unchanged. Exact next is fresh `M4-CP-SCALE-TB4-R1-EXEC` from process 1 on the same immutable artifact, followed after a mechanically valid attempt by mandatory `M4-CP-SCALE-TB4-REV`.
+
+**Process evidence note.** The start-of-turn read-mode gate was declared after several initial control/document connector reads. Once detected, piecemeal repository inspection stopped, `READ_MODE=snapshot` was enforced, and all implementation/static analysis proceeded from the verified exact snapshot above. No repository-applicable source work was authored before that correction.

@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB4-EXEC
-Status: COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER / CANDIDATE UNPROMOTED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-CB5
+Status: COMPLETE / STATIC GREEN / RUNTIME-FREE ORCHESTRATION CORRECTION / CANDIDATE UNPROMOTED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB5
+Canonical next turn: M4-CP-SCALE-TB4-R1-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -38,23 +38,19 @@ Read in full at every new formal turn:
 
 S1 remains deterministic decision-neutral diagnostic authority only. No S1 numeric threshold is frozen; observed 429 bits are not a safety envelope and the 4096-bit continuation guard remains operational fail-closed authority only.
 
-## TB4-EXEC disposition — orchestration invalid; retry required before Review
+## CB5 disposition — static GREEN; fresh immutable retry authorized
 
-`M4-CP-SCALE-TB4-EXEC` is **COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER** on immutable CB4 candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. Run/job `34938070127 / 104280301940` passed exact package/source/selector preflight and observed focused S2 **1/1 PASS**. It then executed all 423 selector rows, observing 383 PASS / 40 RED / 0 SKIP / 0 timeout / 0 selection mismatch. Every one of the 40 RED logs carries the same runner-only missing-test-data exception because the payload copied packaged `benchmarks/fixtures` one directory too shallow: `view/test-data/benchmarks/<...>` instead of the required `view/test-data/benchmarks/fixtures/<...>`.
+`M4-CP-SCALE-CB5` is **COMPLETE / STATIC GREEN / runtime-free**. It corrects only the two frozen TB4 runner defects while reusing exact candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. The corrected successor payload materializes packaged source `benchmarks/fixtures` at `view/test-data/benchmarks/fixtures`, verifies the copied 27-file fixture subtree by relative path/bytes/modes/symlink targets before runtime, and uses one shared `package/source/execution-view-census-{before,after}.tsv` naming authority for immutable pre/postflight. Payload SHA-256 is `a83ad830677f32aa0a882158c1e800762c65957ce5bb69645acbc511a8b37673` / `10fa3684a75968e5a14256c90f7e24fec486eb8d63553f9c6daee873ace20967`.
 
-The attempt is independently invalid a second way: preflight wrote `execution-view-before.tsv`, while mandatory `postflight()` required `execution-view-census-before.tsv`, producing `FileNotFoundError`, mechanical exit `97`, and `postflightPass=false`. Captured package/source/execution-view before/after censuses are byte-identical and package checksum verification passed again after runtime, so no immutable input drift is observed; nevertheless the frozen postflight contract was not satisfied.
+Static verification used exact snapshot run `34974644691` / artifact `10398945458`, control source `6103a19473cccd2cccedb023c633bfcfe10ece29`, provider SHA-256 `b314cfc3a78f97d1163df4827776c300ef0360b41b0f72656256efbef4592184`, internal source archive SHA-256 `fae8d18911efa690784bf138da12d83d56ccea3835465fab65150cc0e1c2d2c1`. Python parse/`py_compile`, corrected path/naming checks, isolated fixture-copy verification and diff-scope checks passed. `runtimeExecution=false`; no Directional configure, compile, link, discovery, test, benchmark, CLI, repair or mutation executed. No production/test/fixture/CMake/selector/package/reusable-workflow permission changed.
 
-Result artifact `10384800591` has provider SHA-256 `3c6b5cc9ae54f8ebc0bfed9d4097003dbd0250f8cfc3053a89ad3ef95ca27065`; diagnostic log artifact `10384696446` has provider SHA-256 `79abfc66e2d7883444a60fcccc81b904e11ca378b93f2bd94abebdd8e76d810b`; nested evidence ZIP SHA-256 is `ee5948335006b10e4f00d295e181489a6b9352634df26952f4c52dacf7c8e0ca`. No configure, compile, relink, repair, generated discovery, benchmark or mutation occurred.
+Invalid predecessor TB4-EXEC run/job `34938070127 / 104280301940` remains **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Its focused 1/1 observation and 383/40 selector observation surface remain provenance only and may not be imported into the retry. Candidate remains unpromoted; accepted runtime authority stays package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423**; stable accounting remains **49 / 14 / 35**, debt **5**.
 
-Per durable `Turn_Cadence.md` rule 5, an orchestration failure receives no semantic ledger. The observed S2 PASS is not promoted; the 40 selector RED observations are not product regressions; candidate `10378808176` remains unpromoted; accepted runtime authority and stable accounting remain unchanged.
+## Exact next — `M4-CP-SCALE-TB4-R1-EXEC`
 
-## Exact next — `M4-CP-SCALE-CB5`
+Execute `.agents/Directional/Architecture_M4_CP_SCALE_TB4_R1_EXEC_Test_Benchmark_Plan.md` as a fresh artifact-only retry against exact artifact `10378808176`. Restart from process 1: immutable preflight from scratch, all 423 rows preinitialized `UNEXECUTED`, focused S2 once first, selector423 only after focused PASS with one fresh exact-filter process per row, then exact package/source/execution-view postflight. No rebuild, repair, mutation, generated discovery or benchmark execution is authorized.
 
-Execute `.agents/Directional/Architecture_M4_CP_SCALE_CB5_Orchestration_Correction_Plan.md` as a **runtime-free control-plane correction only**. Reuse exact immutable artifact `10378808176`; change no product source, test source, fixture bytes, CMake/build semantics, selector bytes, package bytes, or reusable workflow permissions.
-
-CB5 must correct only: (1) execution-view fixture materialization to `view/test-data/benchmarks/fixtures`, sourced byte-for-byte from the packaged source archive; and (2) the execution-view census receipt names so preflight and postflight consume the same filenames. Verify these statically without executing Directional binaries.
-
-If and only if CB5 is statically GREEN, exact next becomes fresh `M4-CP-SCALE-TB4-R1-EXEC` against the same package, restarting the full gate from process 1. Only after a mechanically valid retry does `M4-CP-SCALE-TB4-REV` become the mandatory semantic adjudication turn.
+Only after a mechanically valid retry does the mandatory successor become `M4-CP-SCALE-TB4-REV` for semantic adjudication.
 
 ## Carried obligations
 
@@ -74,6 +70,7 @@ If and only if CB5 is statically GREEN, exact next becomes fresh `M4-CP-SCALE-TB
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_R1_EXEC_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M4_CP_SCALE_CB5_Orchestration_Correction_Plan.md
   - .agents/Directional/Architecture_M4_CP_SCALE_TB4_Artifact_Only_Test_Benchmark_Report.md
 project_plan:

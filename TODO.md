@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-15 UTC
 
-## Current turn — M4-CP-SCALE-CB5
+## Current turn — M4-CP-SCALE-TB4-R1-EXEC
 
 - [x] `M4-CP-SCALE-DEFN`: froze S1-S5 authority boundaries from source/evidence; no runtime/build/semantic mutation.
 - [x] S1: exact trace-entry scale census is diagnostic/non-gating; no threshold inferred from current witnesses.
@@ -22,7 +22,8 @@ Last updated: 2026-09-15 UTC
 - [x] `M4-CP-SCALE-TB3-REV`: independently re-opened TB3 evidence/source and rejects candidate `10375799491` as duplicate non-flat regularity test-authority failure / non-stable. Production matching correctly derives center lift `1`; CB3 also reversed face-2 secondary handedness. `M4-CP-SCALE-TB2-REV-OBS-01` is discharged; stable totals remain 49/14/35.
 - [x] `M4-CP-SCALE-CB4`: test-authority-only repair compiled/package GREEN on semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. The S2 folded star now independently certifies right-handed face axes, `q4` winding `-1` / wrapped `-2*pi`, production-derived aggregate effort `-2*pi`, center lift `0`, matching composition `0`, no center singularity, complete transitions, typed atlas success, and valid arrival frame/branch before the unchanged six-subject Filter/ExactFallback oracle. Eight approved GMP/GMPXX targets compiled with `runtimeExecution=false`; candidate artifact `10378808176`; selector423 remains byte-identical.
 - [x] `M4-CP-SCALE-TB4-EXEC`: **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Immutable run `34938070127` passed package preflight and observed focused S2 1/1 PASS, then selector423 383 PASS / 40 RED; all 40 REDs share one runner-only missing-test-data exception caused by materializing packaged `benchmarks/fixtures` one directory too shallow. Mandatory postflight separately failed because preflight wrote `execution-view-before.tsv` while postflight required `execution-view-census-before.tsv` (mechanical exit 97). Candidate remains unpromoted; stable accounting unchanged.
-- [ ] `M4-CP-SCALE-CB5`: runtime-free orchestration correction only. Reuse exact artifact `10378808176`; fix execution-view fixture destination to `test-data/benchmarks/fixtures` and make census receipt basenames internally consistent; statically verify without compiling or running Directional. On GREEN, exact next is fresh `M4-CP-SCALE-TB4-R1-EXEC` from process 1 on the same package.
+- [x] `M4-CP-SCALE-CB5`: runtime-free orchestration correction STATIC GREEN. Successor payload now materializes packaged `benchmarks/fixtures` exactly at `test-data/benchmarks/fixtures`, uses one shared `package/source/execution-view-census-{before,after}.tsv` naming authority, and asserts exact copied fixture structure before runtime. Python/static checks passed; no Directional compile/runtime or semantic/package/selector/reusable-workflow change occurred.
+- [ ] `M4-CP-SCALE-TB4-R1-EXEC`: fresh artifact-only retry from process 1 on exact candidate `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936`; import zero semantic credit from invalid TB4-EXEC, run focused S2 first, then selector423 only after focused PASS, and require exact immutable postflight.
 
 ## Purpose
 
@@ -54,11 +55,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-CB5` (runtime-free TB4 orchestration correction)
+## Current focus — `M4-CP-SCALE-TB4-R1-EXEC` (fresh immutable retry after static harness correction)
 
 Accepted runtime authority remains TB1-Review package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423** (`4e67e4dc...d89343`). CB4 candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` remains compile/package GREEN but unpromoted.
 
-TB4-EXEC run `34938070127` is **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Focused S2 observed 1/1 PASS, but 40 selector rows all hit one execution-view fixture-path exception and mandatory postflight failed an inconsistent execution-view census basename. No observed TB4 row is acceptance evidence. Exact next is runtime-free `M4-CP-SCALE-CB5`, runner/control-plane files only; if its static checks pass, retry the entire immutable gate as `M4-CP-SCALE-TB4-R1-EXEC` on the same package before mandatory Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
+CB5 is STATIC GREEN and changed only successor runner/control payloads: packaged `benchmarks/fixtures` now lands at `view/test-data/benchmarks/fixtures`, fixture structure is independently asserted before runtime, and pre/postflight share exact census receipt names. No Directional compile/runtime or semantic/package/selector/reusable-workflow change occurred. Exact next is fresh `M4-CP-SCALE-TB4-R1-EXEC` on the same candidate from process 1; invalid run `34938070127` contributes no semantic result. After a mechanically valid retry, mandatory successor is `M4-CP-SCALE-TB4-REV`. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -97,7 +98,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB4 ORCHESTRATION INVALID / CB5 NEXT**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority. Candidate `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` remains compile/package GREEN but unpromoted; TB4 observations receive no semantic credit because runner fixture layout and mandatory postflight receipt naming were invalid. Exact next is runtime-free `M4-CP-SCALE-CB5`, then fresh `M4-CP-SCALE-TB4-R1-EXEC` if statically GREEN. S1 remains diagnostic/non-gating with no numeric calibration threshold; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB4 ORCHESTRATION INVALID / CB5 STATIC GREEN / TB4-R1-EXEC NEXT**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority. Candidate `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` remains compile/package GREEN but unpromoted; TB4 observations receive no semantic credit because runner fixture layout and mandatory postflight receipt naming were invalid. CB5 is statically GREEN; exact next is fresh `M4-CP-SCALE-TB4-R1-EXEC` on the same candidate. S1 remains diagnostic/non-gating with no numeric calibration threshold; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -137,4 +138,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority remains package `10360085644` / selector423 **423/423**. CP-SCALE remains OPEN: TB4 run `34938070127` is orchestration-invalid and gives no semantic credit; candidate `10378808176` remains unpromoted. Exact next is **`M4-CP-SCALE-CB5`**; on static GREEN retry as `M4-CP-SCALE-TB4-R1-EXEC`, then mandatory Review. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority remains package `10360085644` / selector423 **423/423**. CP-SCALE remains OPEN: TB4 run `34938070127` is orchestration-invalid and gives no semantic credit; CB5 is STATIC GREEN; candidate `10378808176` remains unpromoted. Exact next is fresh **`M4-CP-SCALE-TB4-R1-EXEC`** on the same immutable package, then mandatory Review after a mechanically valid attempt. PR #8 remains open, draft, and unmerged.
