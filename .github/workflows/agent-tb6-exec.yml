@@ -159,8 +159,13 @@ jobs:
           census_tree "$package" "$evidence/package-census-before.tsv"
 
           test "$(cat "$package/metadata/source-commit.txt")" = "$SEMANTIC_SOURCE_SHA"
+          test "$(cat "$package/metadata/build-exit-code.txt")" = "0"
+          test "$(cat "$package/metadata/preflight-exit-code.txt")" = "0"
+          for f in "$package"/metadata/source-status-*.txt; do test ! -s "$f"; done
           grep -Fx 'runtimeExecution=false' "$package/metadata/command-boundary.txt"
+          grep -Fx 'turnBoundary=Code+Build-only' "$package/metadata/command-boundary.txt"
           grep -Fx 'exactArithmeticBackend=GMP' "$package/metadata/command-boundary.txt"
+          grep -Fx 'manifestExcludesSelf=true' "$package/metadata/command-boundary.txt"
           grep -F 'libgmpxx' "$package/metadata/gmp-evidence.txt"
           grep -F 'libgmp.so' "$package/metadata/gmp-evidence.txt"
 
@@ -249,9 +254,10 @@ jobs:
             mode="$(stat -c '%a' "$p")"
             test "$mode" = "755"
             ldd "$p" > "$evidence/preflight/ldd-${b}.txt"
-            grep -F 'libgmpxx.so' "$evidence/preflight/ldd-${b}.txt"
-            grep -F 'libgmp.so' "$evidence/preflight/ldd-${b}.txt"
+            ! grep -Fq 'not found' "$evidence/preflight/ldd-${b}.txt"
           done
+          grep -F 'libgmpxx.so' "$evidence/preflight/ldd-directional_surface_cell_producer_tests.txt"
+          grep -F 'libgmp.so' "$evidence/preflight/ldd-directional_surface_cell_producer_tests.txt"
 
           rm -rf "$execution"
           mkdir -p "$execution"
