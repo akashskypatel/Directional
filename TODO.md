@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-15 UTC
 
-## Current turn — M4-CP-SCALE-CB4
+## Current turn — M4-CP-SCALE-TB4-EXEC
 
 - [x] `M4-CP-SCALE-DEFN`: froze S1-S5 authority boundaries from source/evidence; no runtime/build/semantic mutation.
 - [x] S1: exact trace-entry scale census is diagnostic/non-gating; no threshold inferred from current witnesses.
@@ -20,7 +20,8 @@ Last updated: 2026-09-15 UTC
 - [x] `M4-CP-SCALE-TB2-REV-OBS-01`: structurally closed in the frozen TB3 payload: all 423 selector rows are materialized as `UNEXECUTED` before focused runtime, and EXIT finalization preserves the full remainder plus immutable census/postflight evidence on focused failure. Runtime evidence remains for TB3-EXEC.
 - [x] `M4-CP-SCALE-TB3-EXEC`: immutable candidate `10375799491` executed under the frozen artifact-only payload. Focused S2 selected 1/1 and RED before comparator credit (`centerCycleLift=1`, matching-cycle quarter-turn `2`, center supplied singularity true, atlas `CycleTransportMismatch`). Selector423 correctly did not execute; all 423 rows were preserved as explicit `UNEXECUTED` with exact immutable postflight, mechanically discharging `M4-CP-SCALE-TB2-REV-OBS-01`. Candidate remains unpromoted; stable totals unchanged.
 - [x] `M4-CP-SCALE-TB3-REV`: independently re-opened TB3 evidence/source and rejects candidate `10375799491` as duplicate non-flat regularity test-authority failure / non-stable. Production matching correctly derives center lift `1`; CB3 also reversed face-2 secondary handedness. `M4-CP-SCALE-TB2-REV-OBS-01` is discharged; stable totals remain 49/14/35.
-- [ ] `M4-CP-SCALE-CB4`: test-authority-only repair. Author a consistently right-handed S2 field with independently certified `q4` winding `-1` / aggregate cycle effort `-2*pi`, prove zero center lift/no singularity/atlas+arrival success before comparator use, preserve the six-subject exact oracle and both Filter/ExactFallback, then compile/package only with GMP/GMPXX and unchanged selector423.
+- [x] `M4-CP-SCALE-CB4`: test-authority-only repair compiled/package GREEN on semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. The S2 folded star now independently certifies right-handed face axes, `q4` winding `-1` / wrapped `-2*pi`, production-derived aggregate effort `-2*pi`, center lift `0`, matching composition `0`, no center singularity, complete transitions, typed atlas success, and valid arrival frame/branch before the unchanged six-subject Filter/ExactFallback oracle. Eight approved GMP/GMPXX targets compiled with `runtimeExecution=false`; candidate artifact `10378808176`; selector423 remains byte-identical.
+- [ ] `M4-CP-SCALE-TB4-EXEC`: artifact-only immutable runtime gate for candidate `10378808176`. Execute focused S2 first, preserve the preinitialized 423-row failure remainder on focused RED, otherwise run selector423 as 423 fresh exact-filter processes; no rebuild/repair/source/test/fixture mutation or benchmark execution.
 
 ## Purpose
 
@@ -48,11 +49,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-CB4` (regular S2 cross-field test authority; compile/package only)
+## Current focus — `M4-CP-SCALE-TB4-EXEC` (artifact-only S2 runtime proof)
 
-Accepted runtime authority remains TB1-Review package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423** (`4e67e4dc...d89343`). CB3 is compile/package GREEN but runtime-unadjudicated: candidate artifact `10375799491`, semantic source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b`, 28/28 self-excluding package manifest, GMP/GMPXX, and unchanged selector423. No runtime credit or promotion is claimed.
+Accepted runtime authority remains TB1-Review package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423** (`4e67e4dc...d89343`). CB4 is compile/package GREEN but remains runtime-unadjudicated: semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`, compile run/job `34923091581 / 104235295287`, candidate artifact `10378808176`, 28/28 self-excluding manifest verification, GMP/GMPXX, clean source receipts, `runtimeExecution=false`, and byte-identical selector423. No S2 runtime credit or promotion is claimed.
 
-TB3 Review rejects candidate `10375799491` as **TEST-AUTHORITY PRECONDITION FAILURE / DUPLICATE KNOWN ROOT / NON-STABLE**. The CB3 field still carries zero aggregate cycle effort on a `K=pi/2` center, so production correctly derives lift `1`; face 2 also reverses secondary handedness. Exact next is bounded `M4-CP-SCALE-CB4`, test source only: independently establish `q4` winding `-1` / cycle effort `-2*pi`, consistent handedness, zero lift/no singularity/atlas+arrival success, then preserve the six-subject Filter/ExactFallback oracle and compile/package only. Accepted runtime authority stays package `10360085644` / selector423 **423/423**; stable accounting remains **49 / 14 / 35**, debt **5**.
+Exact next is `M4-CP-SCALE-TB4-EXEC`, then mandatory `M4-CP-SCALE-TB4-REV`. TB4 must verify the immutable candidate, preinitialize all 423 selector rows as `UNEXECUTED`, run focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` first in one fresh exact-filter process, stop with the complete remainder and immutable postflight on focused RED, or on focused PASS execute selector423 as 423 fresh processes and update every row exactly once. No rebuild, repair, mutation, discovery, or benchmarks. Accepted runtime authority stays package `10360085644` / selector423 **423/423** until Review; stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -91,7 +92,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB3 CANDIDATE REJECTED / CB4 NEXT**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority. Candidate `10375799491` is rejected/unpromoted after Review classifies TB3 as duplicate non-flat regularity test-authority failure; the 423-row failure-path control is discharged. Exact next is test-only `M4-CP-SCALE-CB4`. S1 remains diagnostic/non-gating with no numeric calibration threshold; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CB4 COMPILE-PACKAGE GREEN / TB4-EXEC NEXT**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority. Candidate `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` is compile/package GREEN with no runtime credit; exact next is artifact-only `M4-CP-SCALE-TB4-EXEC`, then mandatory Review. S1 remains diagnostic/non-gating with no numeric calibration threshold; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -131,4 +132,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority remains package `10360085644` / selector423 **423/423**. CP-SCALE remains OPEN: candidate `10375799491` is rejected/unpromoted as duplicate non-flat regularity test-authority failure; exact next is **`M4-CP-SCALE-CB4`**. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority remains package `10360085644` / selector423 **423/423**. CP-SCALE remains OPEN: CB4 candidate `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` is compile/package GREEN and runtime-unadjudicated; exact next is **`M4-CP-SCALE-TB4-EXEC`**, then mandatory `M4-CP-SCALE-TB4-REV`. PR #8 remains open, draft, and unmerged.

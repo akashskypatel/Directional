@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB3-REV
-Status: COMPLETE / CANDIDATE REJECTED / DUPLICATE TEST-AUTHORITY ROOT / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-CB4
+Status: COMPLETE / COMPILE-PACKAGE GREEN / CANDIDATE UNPROMOTED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB4
+Canonical next turn: M4-CP-SCALE-TB4-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -27,7 +27,7 @@ Read in full at every new formal turn:
 
 ## Current accepted runtime authority
 
-`M4-CP-SCALE-TB1-REV` remains accepted runtime authority after TB2 Review:
+`M4-CP-SCALE-TB1-REV` remains accepted runtime authority until TB4 Review:
 
 - package `10360085644`;
 - semantic source `a359b981f9350139304bc5a654041dfba78609b6`;
@@ -38,17 +38,19 @@ Read in full at every new formal turn:
 
 S1 remains deterministic decision-neutral diagnostic authority only. No S1 numeric threshold is frozen; observed 429 bits are not a safety envelope and the 4096-bit continuation guard remains operational fail-closed authority only.
 
-## TB3 Review decision — candidate rejected; CB4 owns regular-star test authority
+## CB4 Code + Build closeout — candidate ready for immutable TB4 execution
 
-`M4-CP-SCALE-TB3-REV` is **COMPLETE / CANDIDATE REJECTED / TEST-AUTHORITY PRECONDITION FAILURE / DUPLICATE KNOWN ROOT / NON-STABLE**. Review independently re-opened TB3 evidence and candidate source. The three-right-angle center has `K=pi/2`; CB3's authored cross derives aggregate cycle effort `0`, so production `principal_matching` correctly yields center lift `1`, a supplied singularity and `CycleTransportMismatch`. This is the same non-flat regular-star root as `M3-CP4c3-TB7-CAND-02` / TB2 / `LESSONS.md` 22r, not a product comparator defect.
+`M4-CP-SCALE-CB4` is **COMPLETE / COMPILE-PACKAGE GREEN / RUNTIME-UNADJUDICATED**. The only semantic edit is `tests/FieldAlignedCurveNetworkTests.cpp` at semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. The S2 folded-star authority now derives every secondary from `normal x primary`, independently reconstructs `q4` winding `-1` / wrapped `-2*pi`, derives production matching/effort/singularities, independently certifies aggregate effort `-2*pi`, center lift `0`, matching composition `0`, no center singularity, complete transitions, successful typed atlas construction, and valid arrival frame/branch before comparator use. The retained six-subject independent exact oracle still covers positive, negative, nonzero near-boundary, exact-boundary, and discriminating tamper behavior with non-vacuous `Filter` and `ExactFallback`. No product/API/CMake/fixture/selector semantics changed.
 
-CB3 additionally hand-authored face 2 with a reversed secondary handedness. Fixing that alone does not regularize the center; the missing topological field winding remains load-bearing. Candidate package `10375799491` stays rejected/unpromoted. Stable accounting remains **49 / 14 / 35**, debt **5**. `M4-CP-SCALE-TB2-REV-OBS-01` is discharged by TB3's complete 423-row UNEXECUTED remainder and immutable postflight.
+Authoritative compile/package run/job `34923091581 / 104235295287` checked out exact semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`, passed changed-owner preflight, compiled all eight approved targets under GMP/GMPXX, preserved clean source-status receipts, and recorded `runtimeExecution=false`. Candidate result artifact `10378808176` has provider SHA-256 `a60fbbb7127b2fb36952cc9fef8d58cce366204ffbcbdcd7ace2de69ff7e488a`; log artifact `10379215154` has provider SHA-256 `b165945e6e9d75c85e49e003626a9aca61c0863b4256afd5573132f8c02dc3d6`. The result's self-excluding manifest verified all 28 listed members. Selector423 remains exactly 423 LF rows / `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`; first422 remains `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`.
 
-## Exact next — `M4-CP-SCALE-CB4`
+The first compile caller attempt `34923002444` failed before jobs started because the temporary caller permission ceiling was below the reusable graph's statically required union. Only that temporary caller permission was corrected; reusable workflow permissions and semantic source were unchanged. The diagnosed retry above is authoritative. No Directional runtime, test, benchmark, discovery, CLI, fuzzer, help/version, or custom-input process executed during CB4. Compile-green does not promote S2 or the candidate package.
 
-Test-authority-only Code + Build. Change only `tests/FieldAlignedCurveNetworkTests.cpp`. Build an S2-local consistently right-handed cross field whose independently reconstructed `q4` winding is `-1` around the known cone center, equivalently production-derived aggregate cycle effort `-2*pi` for `K=pi/2`; prove center lift `0`, matching composition `0 mod 4`, no center singularity, atlas success and valid arrival frame/branch before comparator use. Preserve the six-subject independent exact positive/negative/near-boundary/exact-boundary/tamper matrix and non-vacuous `Filter` + `ExactFallback`. Compile/package only with GMP/GMPXX, `runtimeExecution=false`, and byte-identical selector423. Full falsifiers/STOP rules are frozen in `Architecture_M4_CP_SCALE_CB4_Code_Build_Plan.md`.
+## Exact next — `M4-CP-SCALE-TB4-EXEC`
 
-If and only if CB4 is compile/package GREEN, exact next becomes artifact-only `M4-CP-SCALE-TB4-EXEC`, then mandatory `M4-CP-SCALE-TB4-REV`.
+Execute `.agents/Directional/Architecture_M4_CP_SCALE_TB4_EXEC_Test_Benchmark_Plan.md` against immutable candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. Verify the immutable package first; preinitialize all 423 selector rows as `UNEXECUTED`; run focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` first in one fresh exact-filter process. On focused RED, preserve the complete 423-row remainder plus immutable postflight and stop. On focused PASS, execute selector423 as 423 fresh exact-filter processes and update every row exactly once. Never rebuild, repair, mutate source/test/fixture/build logic, discover generated tests, or run benchmarks.
+
+TB4-EXEC is mechanical evidence only. It cannot promote S2 or alter stable accounting. Exact successor is mandatory `M4-CP-SCALE-TB4-REV`, which independently re-opens the TB4 evidence and decides promotion/classification.
 
 ## Carried obligations
 
@@ -68,8 +70,7 @@ If and only if CB4 is compile/package GREEN, exact next becomes artifact-only `M
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_SCALE_CB4_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB3_Review_Record.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_EXEC_Test_Benchmark_Plan.md
 project_plan:
   - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
   - .agents/Directional/M4_Consolidated_Record.md
@@ -77,12 +78,10 @@ conditional_modules:
   - trigger: GitHub connector/workflow/artifact work
     path: .agents/Directional/GitHub_Workflow_Policy.md
 deep_references:
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
   - TODO.md
 do_not_preload:
-  - folded TB2 Review / CB3 plan / TB3 EXEC plan+report
-  - superseded CP-COND per-turn reports/plans
+  - superseded CB4 plan and folded TB2/TB3 execution material
   - unrelated historical milestone reports
 ```
