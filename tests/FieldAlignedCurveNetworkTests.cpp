@@ -241,6 +241,77 @@ CrossFieldResult make_folded_cone_vertex_field(const TriMesh &mesh,
       mesh, radialBoundarySeed ? 1 : 2, 1);
 }
 
+struct M4CPScaleS2FieldAuthority {
+  CrossFieldResult field;
+  int centerCycle = -1;
+  double centerCycleLift = std::numeric_limits<double>::quiet_NaN();
+  int matchingCycleQuarterTurn = 0;
+};
+
+M4CPScaleS2FieldAuthority make_m4_cp_scale_s2_regular_folded_field(
+    const TriMesh &mesh, const std::int64_t rayX, const std::int64_t rayY) {
+  Eigen::MatrixXd primary(mesh.F.rows(), 3);
+  Eigen::MatrixXd secondary(mesh.F.rows(), 3);
+  primary.row(0) = Eigen::RowVector3d(static_cast<double>(rayX),
+                                      static_cast<double>(rayY), 0.0);
+  secondary.row(0) = Eigen::RowVector3d(-static_cast<double>(rayY),
+                                        static_cast<double>(rayX), 0.0);
+  primary.row(1) = Eigen::RowVector3d(0.0, 1.0, 1.0);
+  secondary.row(1) = Eigen::RowVector3d(0.0, -1.0, 1.0);
+  primary.row(2) = Eigen::RowVector3d(1.0, 0.0, 1.0);
+  secondary.row(2) = Eigen::RowVector3d(-1.0, 0.0, 1.0);
+
+  directional::PCFaceTangentBundle bundle;
+  bundle.init(mesh);
+  directional::CartesianField rawField;
+  rawField.init(bundle, directional::fieldTypeEnum::RAW_FIELD,
+                directional::fields::kCrossFieldDegree);
+  rawField.set_extrinsic_field(directional::fields::make_raw_cross_field(
+      mesh, primary, secondary, true));
+  CrossFieldResult field = directional::fields::finalize_cross_field_result(
+      rawField, false, true);
+
+  M4CPScaleS2FieldAuthority authority;
+  authority.field = std::move(field);
+  authority.centerCycle = bundle.local2Cycle(0);
+  if (authority.centerCycle >= 0 &&
+      authority.centerCycle < bundle.cycles.rows()) {
+    Eigen::SparseMatrix<double, Eigen::RowMajor> rowCycles = bundle.cycles;
+    double signedEffort = 0.0;
+    for (Eigen::SparseMatrix<double, Eigen::RowMajor>::InnerIterator it(
+             rowCycles, authority.centerCycle);
+         it; ++it) {
+      const int edge = bundle.innerAdjacencies(it.col());
+      signedEffort += it.value() * authority.field.effort(edge);
+    }
+    authority.centerCycleLift =
+        (signedEffort +
+         static_cast<double>(directional::fields::kCrossFieldDegree) *
+             bundle.cycleCurvatures(authority.centerCycle)) /
+        (2.0 * std::numbers::pi);
+  }
+
+  const auto accumulateMatching = [&](const int fromFace, const int toFace) {
+    const auto transition = std::find_if(
+        authority.field.edgeTransitions.begin(),
+        authority.field.edgeTransitions.end(),
+        [&](const CrossFieldEdgeTransition &candidate) {
+          return (candidate.firstFace == fromFace &&
+                  candidate.secondFace == toFace) ||
+                 (candidate.firstFace == toFace &&
+                  candidate.secondFace == fromFace);
+        });
+    if (transition == authority.field.edgeTransitions.end()) return 0;
+    return transition->firstFace == fromFace ? transition->matching
+                                              : -transition->matching;
+  };
+  const int composedMatching = accumulateMatching(0, 1) +
+                               accumulateMatching(1, 2) +
+                               accumulateMatching(2, 0);
+  authority.matchingCycleQuarterTurn = ((composedMatching % 4) + 4) % 4;
+  return authority;
+}
+
 CrossFieldResult make_planar_radial_arrival_field(const TriMesh &mesh) {
   CrossFieldResult field = make_zero_transport_field(mesh);
   for (int face = 0; face < mesh.F.rows(); ++face) {
@@ -11124,22 +11195,59 @@ TEST(M4CPScaleS2, VertexStarCertifiedFilterMatchesIndependentExactOracle) {
     const TriMesh mesh = make_three_right_angle_cone_fan();
     const auto sourceAuthority = make_source_authority(mesh);
     ASSERT_TRUE(sourceAuthority.has_value());
+    const M4CPScaleS2FieldAuthority fieldAuthority =
+        make_m4_cp_scale_s2_regular_folded_field(mesh, subject.rayX,
+                                                 subject.rayY);
+    ASSERT_TRUE(fieldAuthority.field.matchingComputed);
+    ASSERT_TRUE(fieldAuthority.field.singularitiesComputed);
+    ASSERT_EQ(mesh.EV.rows(), fieldAuthority.field.matching.size());
+    ASSERT_EQ(mesh.EV.rows(), fieldAuthority.field.effort.size());
+    ASSERT_EQ(static_cast<std::size_t>(mesh.EV.rows()),
+              fieldAuthority.field.edgeTransitions.size());
+    std::set<int> transitionEdges;
+    for (const auto &transition : fieldAuthority.field.edgeTransitions) {
+      EXPECT_GE(transition.sourceEdge, 0);
+      EXPECT_LT(transition.sourceEdge, mesh.EV.rows());
+      transitionEdges.insert(transition.sourceEdge);
+    }
+    EXPECT_EQ(static_cast<std::size_t>(mesh.EV.rows()), transitionEdges.size());
+    ASSERT_GE(fieldAuthority.centerCycle, 0);
+    EXPECT_NEAR(0.0, fieldAuthority.centerCycleLift, 1.0e-10);
+    EXPECT_EQ(0, fieldAuthority.matchingCycleQuarterTurn);
+    ASSERT_EQ(fieldAuthority.field.singularCycles.size(),
+              fieldAuthority.field.singularIndices.size());
+    bool centerIsSuppliedSingularity = false;
+    for (Eigen::Index index = 0;
+         index < fieldAuthority.field.singularCycles.size(); ++index) {
+      if (fieldAuthority.field.singularCycles(index) == 0) {
+        centerIsSuppliedSingularity = true;
+      }
+    }
+    EXPECT_FALSE(centerIsSuppliedSingularity);
+
     const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-        mesh, *sourceAuthority, {},
-        make_folded_cone_vertex_field_with_seed(mesh, subject.rayX,
-                                                subject.rayY));
-    ASSERT_TRUE(atlasBuild);
+        mesh, *sourceAuthority, {}, fieldAuthority.field);
+    ASSERT_TRUE(atlasBuild)
+        << directional::authority::field_atlas_build_error_code_name(
+               atlasBuild.error().code);
     const auto &topology = atlasBuild.value().branch_topology();
 
     const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 2, 4U);
     const SourceVertexId center = SourceVertexId::from_index(0, 4U).value();
     const auto *arrivalFrame = topology.find_frame(arrivalFace);
     ASSERT_NE(nullptr, arrivalFrame);
+    const auto arrivalBranch =
+        directional::authority::FieldBranch::from_integer(2);
+    ASSERT_NE(arrivalFrame->branches.end(),
+              std::find_if(arrivalFrame->branches.begin(),
+                           arrivalFrame->branches.end(),
+                           [&](const auto &pairing) {
+                             return pairing.branch == arrivalBranch;
+                           }));
 
     const auto result = resolve_field_vertex_transit(
         mesh, topology, arrivalFrame->sourceComponent,
-        arrivalFrame->topologyRegion, arrivalFace,
-        directional::authority::FieldBranch::from_integer(2), center,
+        arrivalFrame->topologyRegion, arrivalFace, arrivalBranch, center,
         directional::geometry::FieldVertexArrivalMode::FaceInterior);
     const auto *decision = std::get_if<FieldVertexTransitDecision>(&result);
     ASSERT_NE(nullptr, decision);
@@ -11188,7 +11296,11 @@ TEST(M4CPScaleS2, VertexStarCertifiedFilterMatchesIndependentExactOracle) {
               << ";expectedOwner=" << source_face_locus(oracle.expectedOwner)
               << ";route=" << static_cast<int>(audit.kernelRoute)
               << ";onRadialRay=" << (audit.onRadialRay ? "true" : "false")
-              << "\n";
+              << ";centerCycleLift=" << fieldAuthority.centerCycleLift
+              << ";matchingCycleQuarterTurn="
+              << fieldAuthority.matchingCycleQuarterTurn
+              << ";suppliedSingularities="
+              << fieldAuthority.field.singularCycles.size() << "\n";
   }
 
   EXPECT_TRUE(sawFilter);
