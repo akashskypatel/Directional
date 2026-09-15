@@ -7,6 +7,28 @@
 - Review consolidation folds the consumed CB6 plan, superseded TB4-R1 report, superseded TB4 Review and consumed TB5 plan into `M4_Consolidated_Record.md` §2.53. Current TB5 runtime report is retained.
 - Exact next is `M4-CP-SCALE-CB7` under `Architecture_M4_CP_SCALE_CB7_S3_Exact_Repeat_Code_Build_Plan.md`: exact full traversal-state repeat may publish typed `LimitCycleTermination`; combinatorial recurrence/step budget remain fail-closed; selector424 stays frozen and selector425 is not authored in CB7.
 
+**Verification amendment (reviewing agent, review record §10).** Upheld, no correction. Lineage re-derived:
+selector424 has **424** rows, hashes `f202a1720c0a5288…`, and its first 423 rows hash to `4e67e4dc6528a71e…` —
+byte-identical to accepted selector423 — with row 424 exactly
+`M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`, the single identity CB6 was scoped to append.
+The owner census corroborates from a second direction: **30 / 278 / 75 / 41** sums to 424, an increment of exactly
+one producer-owned row over selector423's `30 / 277 / 75 / 41`, so a publication turn that had disturbed anything
+else would show in that partition. The M4 chain now reads
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424**, every link verified byte-exact at the turn that created
+it. `TB4-REV-OBS-01` is discharged on all three conditions independently — exact-prefix publication, a fresh
+**cumulative** 424/424, and independent Review — rather than letting one stand in for the others, which matters
+because that obligation existed precisely to stop a focused PASS being read as cumulative gate credit. The nested
+evidence manifest is now **self-excluding**, closing the defect class first raised at `M4-CP-COND-TB3-REV` and
+making it the third member of that class fixed rather than re-encountered. The twelve-row obligation table gives
+every item a disposition and owner, with two earlier constraints surviving in their intended form:
+`TB2-REV-OBS-02` keeps its scope bound to the `make_zero_transport_field` flat-star precondition rather than the
+authored-winding class, and `DEFN-OBS-04` restates the durable S5 rule in terms — *genus-1 torus receives zero
+credit*. §6 states the promotion's scope without prompting: CP-SCALE is not closed, S1 stays diagnostic with no
+authorized threshold, the S2 arrival exact fallback is undefined, and S3–S5 remain unproved — one of five scale
+surfaces is gated, four are not. `CB7` is correctly bounded to a single variable with falsifiers frozen before the
+build and the repeat key fixed to the complete exact state, foreclosing the budget-or-proximity substitution.
+Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-15 — `M4-CP-SCALE-TB5-EXEC`: selector424 cumulative immutable gate mechanically GREEN
 
 Artifact-only run/job `35002009539 / 104492480074` consumed exact CB6 candidate `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` and executed selector424 as **424 fresh exact-filter processes in file order**. Result is **424/424 PASS / 0 RED / 0 SKIP / 0 timeout / 0 crash / 0 selection mismatch / 0 unexecuted**, owner census **30/278/75/41**; row424 `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` ran freshly and passed. Pre/post package, source and execution-view byte+mode censuses are identical; package manifest is 28/28 both sides; selector424 remains `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` with exact selector423 prefix. No configure/compile/relink/repair/discovery/mutation/benchmark occurred.

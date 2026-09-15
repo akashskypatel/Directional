@@ -127,3 +127,55 @@ Durable CP-SCALE facts from the consumed CB6 plan, superseded TB4-R1 report, sup
 | Turn boundary held | Yes — runtime-free Review; no product/test/fixture/selector/benchmark/build-source mutation. |
 | review_check.py boundary | **GREEN / ALL CHECKS PASSED** on the exact prepared Review delta; no product/test/fixture/build or selector mutation; selector424 exact hash matched. |
 | Pushed to origin, branch in sync | Final closeout requirement: after the Review patch and mandatory cleanup land, re-read branch authority and require the working branch to be at the cleanup result with no retained temporary turn state before declaring this turn COMPLETE. |
+
+---
+
+## 10. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, no correction.** Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — lineage and owner census re-derived
+
+`Architecture_M4_CP_SCALE_CB6_Required_Green_Selector_424.txt` has **424** rows, hashes to `f202a1720c0a5288…`,
+and its **first 423 rows hash to `4e67e4dc6528a71e…`** — byte-identical to accepted selector423. Row 424 is
+exactly `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`, the single identity CB6 was scoped
+to append and nothing else.
+
+The owner census corroborates the same fact from a second direction: **30 / 278 / 75 / 41** sums to 424, and the
+increment over selector423's `30 / 277 / 75 / 41` is exactly one producer-owned row. A publication turn that had
+quietly disturbed anything else would show up in that partition, and it does not.
+
+The M4 chain now reads **373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424**, every link verified byte-exact
+at the turn that created it.
+
+### V2 — the OBS-01 discharge is properly grounded
+
+`M4-CP-SCALE-TB4-REV-OBS-01` is discharged on all three of its conditions independently — exact selector423-prefix
+publication, a **fresh cumulative 424/424**, and independent Review — rather than letting any one of them stand in
+for the others. That matters because the obligation existed precisely to stop a focused PASS being treated as
+cumulative gate credit; discharging it on a focused result would have reproduced the defect it was opened against.
+
+Also worth recording: the nested evidence manifest is now **self-excluding**. That closes the defect class first
+raised at `M4-CP-COND-TB3-REV` — a manifest containing its own digest verifies vacuously — and it is the third
+member of that class to be fixed rather than re-encountered.
+
+### V3 — obligations
+
+The twelve-row table gives every item a disposition and an owner. Two carried constraints from earlier reviews
+survive intact in their intended form: `TB2-REV-OBS-02` keeps its scope bound (the `make_zero_transport_field`
+flat-star precondition, not the authored-winding class), and `DEFN-OBS-04` restates the durable S5 rule in terms —
+*"genus-1 torus receives zero credit"*.
+
+### V4 — scope of the promotion is stated by the turn itself
+
+§6 says plainly that promotion does **not** close CP-SCALE: S1 stays diagnostic with no authorized numeric
+threshold, the S2 arrival exact fallback is still undefined, and S3, S4 and S5 remain unproved. That is the
+framing this reviewer asked to keep visible at `M4-CP-SCALE-TB4-REV` §V3, now supplied by the turn without
+prompting. One of five scale surfaces is gated; four are not.
+
+`M4-CP-SCALE-CB7` is correctly bounded to a single variable — S3 exact traversal-state repetition becoming a typed
+`LimitCycleTermination` outcome with one dedicated focused gate identity — with falsifiers frozen before the build
+and the semantic repeat key fixed to the complete exact state
+`(sourceFace, branch, incomingCarrier, exact FieldBoundaryPoint entryPoint)`. Only equality of that full state may
+authorize limit-cycle credit, which forecloses the budget-or-proximity substitution the frozen definitions already
+prohibit.
