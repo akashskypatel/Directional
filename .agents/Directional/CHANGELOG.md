@@ -2,6 +2,25 @@
 
 Runtime-free Review independently verifies TB4-R1 result artifact `10402080226`, diagnostic artifact `10401626794`, nested 865-entry evidence manifest, focused S2 **1/1 PASS**, selector423 **423/423 PASS**, and exact package/source/execution-view postflight on immutable package `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936`. It independently recomputes the six exact integer oracle signs/owners and tamper flip, re-derives regular-star winding/effort authority, source-audits certified Filter defer + exact fallback, re-hashes selector423/first422 and re-derives owner census **30/277/75/41**. Review **promotes package `10378808176` under unchanged selector423** and accepts focused S2 evidence for publication only; focused evidence is not cumulative selector credit. Stable accounting stays **49 / 14 / 35**, debt **5**; CP-SCALE remains open. `M4-CP-SCALE-TB4-REV-OBS-01` requires exact selector424 publication + cumulative 424/424 artifact-only proof. Exact next: publication-only `M4-CP-SCALE-CB6`; no product/test/fixture/CMake semantic change. Mandatory Review consolidation folds superseded TB1 runtime and TB3 Review records and indexes the intervening retired CB4/TB4/CB5 plans/reports.
 
+**Verification amendment (reviewing agent, review record §10).** Upheld with no correction. Selector423 re-hashes
+independently to `4e67e4dc6528a71e…`, and the decisive promotion basis holds: the immutable retry ran selector423 in
+**423 fresh exact-filter processes at 423/423 PASS** with zero RED/SKIP/timeout/selection-mismatch/unexecuted —
+promoting on a focused S2 result alone would have been the error, promoting because the whole accepted prefix was
+re-proved on those exact bytes is correct. Refusing S2 cumulative credit while accepting it for publication applies
+the CP-COND discipline (a focused PASS authorises a selector row, it does not substitute for one), and classifying
+`TB4-REV-OBS-01` as a publication obligation rather than a defect states that accurately. The six published
+receipts discriminate **at** the decision boundary rather than near it: `1/2` below unity resolves `+1` in Filter,
+`2/1` and `5/4` above resolve `−1` in Filter, `2^40/(2^40−1)` — above by ≈`9.1e-13` — still resolves **inside** the
+certified filter, while exact `1/1` **defers** to ExactFallback with `deferred=true`. That is a filter proved to be
+an accelerator rather than a decider, tested at its own threshold, so the non-vacuity claim is demonstrated rather
+than asserted. `TB2-REV-OBS-02` is carried with the scope bound from `TB3-REV` §V3 honoured in terms — TB2's
+silent-precondition mechanism only, not the authored-winding class. One framing kept visible: this turn promotes a
+**package** and proves **S2 focused**; it does not advance S1, S3, S4 or S5, each still carrying an open
+obligation, and the durable S5 genus ≥ 2 constraint still binds since the retained fixture census shows no genus ≥ 2
+surface exists to witness it. The successor chain needs no amendment — CB6 publishes selector424 with a
+byte-identical first-423 prefix, and its plan already requires TB5 to run the 424-row selector cumulatively, with
+only that Review able to accept selector424 and discharge `OBS-01`. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-15 — `M4-CP-SCALE-TB4-R1-EXEC`: fresh immutable retry mechanically GREEN
 
 - Artifact-only run/job `34979463245 / 104415713013` restarted the entire TB4 gate from process 1 against unchanged CB4 candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`; no semantic result from orchestration-invalid TB4-EXEC was imported.

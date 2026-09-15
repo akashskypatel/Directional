@@ -111,3 +111,56 @@ Durable facts from the superseded TB1 runtime-authority report and TB3 review re
 | Turn boundary held | Yes — runtime-free Review; no product/test/fixture/selector/benchmark/build-source mutation. |
 | review_check.py boundary | GREEN / ALL CHECKS PASSED, including no product/test/fixture/build or selector mutation and selector423 hash match. |
 | Pushed to origin, branch in sync | Confirmed only at final closeout after patch application + mandatory cleanup; final authority check must show no ahead/behind before this turn is declared complete. |
+
+---
+
+## 10. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, with no correction.** Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the promotion basis is sound and was re-derived
+
+Selector423 re-hashes independently to `4e67e4dc6528a71e…`, matching §4. The decisive point for promotion is
+§2/§4's record that the immutable retry ran selector423 in **423 fresh exact-filter processes at 423/423 PASS**,
+zero RED/SKIP/timeout/selection-mismatch/unexecuted. Promoting a package on the strength of a focused S2 result
+alone would have been the error; promoting it because the whole accepted prefix was re-proved on those exact
+bytes is correct.
+
+Refusing S2 cumulative credit while accepting it for publication is the same discipline established at
+CP-COND — a focused PASS authorises a selector row, it does not substitute for one — and classifying
+`M4-CP-SCALE-TB4-REV-OBS-01` as a *publication obligation rather than a defect* states that distinction
+accurately.
+
+### V2 — the six receipts discriminate at the decision boundary, not merely near it
+
+The published subjects are worth reading as a set, because they demonstrate the S2 contract where it actually
+bites:
+
+| subject | ratio vs 1 | sign | route |
+|---|---|---|---|
+| `1/2` | below | `+1` | Filter |
+| `2/1`, `5/4` | above | `−1` | Filter |
+| `2^40/(2^40−1)` | above by ≈`9.1e-13` | `−1` | Filter |
+| `1/1` | exactly equal | `0` | **ExactFallback**, deferred |
+
+The sign convention is coherent throughout, and the two boundary subjects are the ones that matter: a case
+differing from unity by under a picounit still resolves **inside** the certified filter, while exact equality
+**defers** to exact authority. That is a filter proved to be an accelerator rather than a decider, tested at its
+own threshold instead of at a comfortable distance from it. Both routes are exercised with distinct outcomes, so
+the non-vacuity claim is demonstrated rather than asserted.
+
+### V3 — obligations, and what "promoted" does and does not mean here
+
+`M4-CP-SCALE-TB2-REV-OBS-02` is carried with the scope bound recorded at `M4-CP-SCALE-TB3-REV` §V3 honoured in
+terms — it owns the TB2 silent-precondition mechanism only, not the authored-winding class. Every other carried
+item keeps its owner.
+
+One framing worth keeping visible as CP-SCALE continues: this turn promotes a **package**, and proves **S2**
+focused. It does not advance S1, S3, S4 or S5, each of which still carries its own open obligation, and the S5
+genus ≥ 2 constraint recorded durably in `Regression_Root_Cause_Tracker.md` still binds — the retained fixture
+census shows no genus ≥ 2 surface exists to witness it. CP-SCALE closure remains several proofs away, and
+"package promoted" should not be read as checkpoint progress beyond S2.
+
+The successor chain is fully specified: CB6 publishes selector424 with a byte-identical first-423 prefix, and its
+plan already requires TB5 to execute the 424-row selector **cumulatively**, with only that Review able to accept
+selector424 and discharge `OBS-01`. No gap to close there.
