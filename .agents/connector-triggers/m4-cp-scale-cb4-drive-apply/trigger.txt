@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-CB4
-caller_install_sha=4f5d77f59af24a96afa3ded41dc306dce190a56e
-patch_sha256=e48ae6eeca14866cb7edf2ddbbcba9584099fe56e89344a9fdc16b50fb7998fd

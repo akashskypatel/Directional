@@ -1,7 +1,0 @@
-# M4-CP-SCALE-CB4 temporary state
-.agents/connector-triggers/m4-cp-scale-cb4-compile/trigger.txt
-.agents/connector-triggers/m4-cp-scale-cb4-drive-apply/trigger.txt
-.agents/connector-triggers/source-snapshot/m4-cp-scale-cb4-closeout.txt
-.agents/connector-triggers/m4-cp-scale-cb4-closeout-apply/trigger.txt
-.agents/Directional/turn-payloads/m4-cp-scale-cb4-closeout.patch.gz.b64
-.agents/Directional/turn-payloads/m4-cp-scale-cb4-closeout.patch.meta.json
