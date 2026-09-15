@@ -32,9 +32,9 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 144GEEzA_mhF0BegxNE2Oj-IVn4Ddbrw7
-      patch_sha256: 4e632f960e965f4218953f12eae62db5ce48c765daeee7131946057813618f07
-      base_sha: 4eb4d14fd8af4830afdd212ade0842706c1817f0
+      file_id: 160J5jl6CWJngS4fF9Meyxc2U23vRTPUV
+      patch_sha256: 616f2a84afaafd13671f6f2d14c41dfa1ebd74f252082f3ca5c4e3646b5e6757
+      base_sha: b14939c2052475172c8a907de045806caa69b82f
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "fix: restore NetworkNodeId test alias"
+      commit_message: "docs: close M4-CP-SCALE-CB7"
     secrets: inherit
