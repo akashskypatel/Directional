@@ -1,0 +1,2 @@
+turn=M4-CP-SCALE-CB4
+purpose=closeout-doc-patch-source-snapshot
