@@ -1,0 +1,36 @@
+name: M4 CP SCALE TB3 REV Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb3-rev-apply-20260914.txt
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: m4-cp-scale-tb3-rev-apply
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-scale-tb3-rev-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1mm_OS5uM9j5txpWNz06_xq8x042zcZ0r
+      patch_sha256: 99d8e4f6f999595da57fe2ae9669fc1b56322b889e67afe4195c5a23316a65f8
+      base_sha: d2c41653309dd327a6b38babb5437643163e4f26
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: review M4-CP-SCALE-TB3 and freeze CB4"
+    secrets: inherit
