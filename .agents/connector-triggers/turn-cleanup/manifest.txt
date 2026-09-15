@@ -1,0 +1,3 @@
+# M4-CP-SCALE-TB4-REV temporary state
+.agents/connector-triggers/source-snapshot/tb4-rev.txt
+.agents/connector-triggers/m4-cp-scale-tb4-rev-drive-apply/trigger.txt
