@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB4-R1-EXEC
-Status: COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED / CANDIDATE UNPROMOTED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-TB4-REV
+Status: COMPLETE / PACKAGE PROMOTED / S2 PUBLICATION AUTHORIZED / SELECTOR423 PRESERVED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB4-REV
+Canonical next turn: M4-CP-SCALE-CB6
 ---
 
 # Future Chat Session Handoff — Directional
@@ -27,44 +27,47 @@ Read in full at every new formal turn:
 
 ## Current accepted runtime authority
 
-`M4-CP-SCALE-TB1-REV` remains accepted runtime authority pending mandatory TB4 Review:
+`M4-CP-SCALE-TB4-REV` promotes the fresh CB4 package as current M4 runtime authority:
 
-- package `10360085644`;
-- semantic source `a359b981f9350139304bc5a654041dfba78609b6`;
-- selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`;
+- package `10378808176`;
+- semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`;
+- accepted selector423 **423/423**, SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`;
 - first422 SHA-256 `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`;
 - owner census **30 authority-kernel / 277 producer / 75 completion / 41 validation**;
 - stable accounting **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
 
 S1 remains deterministic decision-neutral diagnostic authority only. No S1 numeric threshold is frozen; observed 429 bits are not a safety envelope and the 4096-bit continuation guard remains operational fail-closed authority only.
 
-## TB4-R1-EXEC disposition — mechanically GREEN; semantic Review required
+## TB4 Review disposition — S2 focused contract proved; cumulative selector publication still required
 
-`M4-CP-SCALE-TB4-R1-EXEC` is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED** on immutable CB4 candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. Fresh run/job `34979463245 / 104415713013` restarted from process 1 and imported no semantic result from invalid TB4-EXEC.
+Fresh TB4-R1 run/job `34979463245 / 104415713013` on immutable package `10378808176` is mechanically GREEN: focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` **1/1 PASS**, selector423 **423/423 PASS**, zero RED/SKIP/timeout/selection mismatch/unexecuted, and exact package/source/execution-view postflight. Result artifact `10402080226` has SHA-256 `862a59893fdf0f1dd9572791f9c332e652a155ffc735b59e38b17be6f54bd4c8`; diagnostic artifact `10401626794` has SHA-256 `44d26728de2d5f20329b706dafbb43dd04ec93ed34d8b22184d8838d3b93dcdd`; nested evidence ZIP SHA-256 is `843449af7e86efb0320677f6fd4301abe9888878fcdceac1d938d6812ca06c15`, with self-excluding 865-entry manifest SHA-256 `584329e4125716b81622ed0aed42d509a109a33dcbbba3f35706d58c072b07db` verifying 865/865.
 
-Exact preflight passed the 28-entry package manifest, source/package/selector hashes, owner census **30/277/75/41**, and corrected execution-view fixture materialization. Focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` selected exactly once and **PASS**. All six subject receipts are present, including Filter and ExactFallback paths, q4 winding `-1`, wrapped phase/aggregate effort about `-2*pi`, matching-cycle quarter-turn `0`, and the expected independent owner/sign matrix. Three raw receipts print `centerCycleLift=-1.41358e-16`; EXEC records that passing floating diagnostic without semantic interpretation.
+Review independently re-derives the six integer oracle signs/owners, the tamper owner flip, regular-star right-handed cross authority, `q4` winding `-1` / required aggregate effort `-2*pi`, certified Filter defer + recursive exact fallback source semantics, selector423 hashes and owner census. Both Filter and ExactFallback are non-vacuous; both signs, near-boundary Filter and exact-boundary fallback execute. The small passing `centerCycleLift=-1.41358e-16` diagnostic is not comparator authority and creates no candidate.
 
-Selector423 then executed **423/423 PASS / 0 RED / 0 SKIP / 0 timeout / 0 selection mismatch / 0 unexecuted**, one fresh exact-filter process per row. Mandatory postflight passed with byte-identical package/source/execution-view censuses and re-verified package manifest. `final-status.txt` records mechanical exit `0`, `preflightPass=true`, `postflightPass=true`; configure/compile/relink/repair/discovery/mutation/benchmark execution are all false.
+The first TB4 attempt remains orchestration-invalid/provenance-only. Its fixture-layout and postflight-basename candidates are CLOSED/NON-STABLE by the fresh retry.
 
-Result artifact `10402080226` has provider SHA-256 `862a59893fdf0f1dd9572791f9c332e652a155ffc735b59e38b17be6f54bd4c8`; diagnostic artifact `10401626794` has provider SHA-256 `44d26728de2d5f20329b706dafbb43dd04ec93ed34d8b22184d8838d3b93dcdd`. Nested evidence ZIP SHA-256 is `843449af7e86efb0320677f6fd4301abe9888878fcdceac1d938d6812ca06c15`; its self-excluding manifest verifies **865/865** at SHA-256 `584329e4125716b81622ed0aed42d509a109a33dcbbba3f35706d58c072b07db`. Exact detail is retained in `Architecture_M4_CP_SCALE_TB4_R1_Artifact_Only_Test_Benchmark_Report.md`.
+Package `10378808176` is accepted under unchanged selector423. **S2 is not yet cumulative selector credit:** the focused process ran outside selector423. `M4-CP-SCALE-TB4-REV-OBS-01` therefore requires exact selector424 publication + fresh cumulative 424/424 artifact-only proof + Review before S2 receives required-green selector acceptance.
 
-Both predecessor orchestration candidates are mechanically falsified/closed as non-stable: fixture-backed rows execute at the corrected consumer path, and the shared census receipt contract completes exact postflight. Invalid predecessor run `34938070127` remains provenance-only and receives zero semantic credit.
+## Exact next — `M4-CP-SCALE-CB6`
 
-Candidate `10378808176` remains **UNPROMOTED** until Review. Stable accounting and accepted runtime authority are unchanged.
+Execute `.agents/Directional/Architecture_M4_CP_SCALE_CB6_Selector424_Publication_Code_Build_Plan.md` as a one-variable selector-publication + compile/package turn.
 
-## Exact next — `M4-CP-SCALE-TB4-REV`
+Authorized semantic mutation: create exactly one new selector424 file whose rows1-423 are byte-identical to accepted selector423 and whose row424 is exactly `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`. Expected static owner census becomes **30 authority-kernel / 278 producer / 75 completion / 41 validation**.
 
-Perform the mandatory runtime-free Review. Independently reopen the retained TB4-R1 primary evidence and candidate source/test authority; adjudicate the focused S2 semantics and cumulative selector result against the frozen CP-SCALE definitions; decide promotion/rejection/re-plan; update `ORIENTATION.md`; perform mandatory Review consolidation and reference repair. Do not execute Directional runtime, rebuild, repair, or mutate candidate semantics during Review.
+No production source, test source, fixture, benchmark, CMake/build semantic, accepted selector423, S1, S2 arrival, S3/S4/S5 or reusable-workflow permission change is authorized. Compile/package through the durable reusable GMP/GMPXX workflow only, with `runtimeExecution=false`. If GREEN, exact next is artifact-only `M4-CP-SCALE-TB5-EXEC` on the new immutable package, followed by mandatory Review.
+
+CP-SCALE remains OPEN even after S2 publication because S3, S4 and S5 are separate exit obligations.
 
 ## Carried obligations
 
 - `M4-CP-SCALE-TB1-REV-OBS-01`: S1 representative/stress calibration before any future numeric gate.
 - `M4-CP-SCALE-TB2-REV-OBS-01`: **DISCHARGED by TB3 Review**; 423/423 rows were preserved UNEXECUTED with exact immutable postflight.
-- `M4-CP-SCALE-TB2-REV-OBS-02`: audit the remaining `make_zero_transport_field` callers in a later dedicated turn; not CB3/TB3 scope.
+- `M4-CP-SCALE-TB2-REV-OBS-02`: audit remaining `make_zero_transport_field` callers in a later dedicated turn; owns the TB2 silent-precondition mechanism only.
 - `M4-CP-SCALE-DEFN-OBS-01`: arrival-order exact fallback not frozen; not owned by vertex-star S2.
 - `M4-CP-SCALE-DEFN-OBS-02`: dedicated full exact-state repeat S3 witness + typed outcome owed.
 - `M4-CP-SCALE-DEFN-OBS-03`: S4 independent incremental earlier-never-different oracle/reachability owed.
-- `M4-CP-SCALE-DEFN-OBS-04`: genus>=2 construction/reachability owed.
+- `M4-CP-SCALE-DEFN-OBS-04`: genus>=2 construction/reachability owed; torus genus1 receives zero S5 credit.
+- `M4-CP-SCALE-TB4-REV-OBS-01`: publish S2 as selector424 row424 and prove cumulative 424/424 before selector-level acceptance.
 - `M4-CP3-TB1-R1-REV-OBS-01`: same-region multiplicity-2 independent oracle before cumulative M4-CP4.
 - `M4-CP3-CB4-REV-OBS-02`: row399 path/`sourceFaces` divergence tamper at next legitimate row399 touch.
 - row408 provenance warning remains historical-bound.
@@ -74,20 +77,22 @@ Perform the mandatory runtime-free Review. Independently reopen the retained TB4
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_R1_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_CB6_Selector424_Publication_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_Review_Record.md
   - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
-  - .agents/Directional/M4_Consolidated_Record.md
 project_plan:
+  - .agents/Directional/M4_Consolidated_Record.md
   - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
 conditional_modules:
   - trigger: GitHub connector/workflow/artifact work
     path: .agents/Directional/GitHub_Workflow_Policy.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_R1_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - TODO.md
 do_not_preload:
-  - consumed TB4-R1-EXEC/CB5 plans and orchestration-invalid TB4 report
+  - folded TB1/TB2/TB3 CP-SCALE per-turn records
+  - consumed CB4/TB4-EXEC/CB5/TB4-R1-EXEC plans
   - unrelated historical milestone reports
 ```
