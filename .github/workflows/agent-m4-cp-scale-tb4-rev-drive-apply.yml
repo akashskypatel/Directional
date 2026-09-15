@@ -1,0 +1,48 @@
+name: Agent M4 CP SCALE TB4 REV Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb4-rev-drive-apply/trigger.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp-scale-tb4-rev-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp-scale-tb4-rev-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb4-rev-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1nsYsqZoDT9U5IGmx5TuS_ePDnwb4Fn4L
+      patch_sha256: "eecfadd8b11e9b8ac8d4ca5010c2a7a452861dd8d90f4f85826c685f22975cfa"
+      base_sha: 6017037103a46c588e1caf8b3657657bf97c4129
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: review M4 CP SCALE TB4 and freeze selector424 publication"
+      retention_days: 7
+    secrets: inherit
