@@ -1,0 +1,34 @@
+name: M4 CP SCALE CB3 Source Snapshot
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb3-source-snapshot-20260914.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-cb3-source-snapshot
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-scale-cb3-source-snapshot.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  snapshot:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: c4b29080763e3e3328aef19e74d389019f2151b3
+      artifact_prefix: m4-cp-scale-cb3-source
+    secrets: inherit
