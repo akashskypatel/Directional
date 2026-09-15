@@ -243,23 +243,83 @@ CrossFieldResult make_folded_cone_vertex_field(const TriMesh &mesh,
 
 struct M4CPScaleS2FieldAuthority {
   CrossFieldResult field;
+  Eigen::MatrixXd authoredPrimaryDirections;
+  Eigen::MatrixXd authoredSecondaryDirections;
   int centerCycle = -1;
+  double centerQ4WrappedPhaseSum = std::numeric_limits<double>::quiet_NaN();
+  int centerQ4Winding = 0;
+  double centerCycleEffort = std::numeric_limits<double>::quiet_NaN();
+  double centerCurvature = std::numeric_limits<double>::quiet_NaN();
   double centerCycleLift = std::numeric_limits<double>::quiet_NaN();
   int matchingCycleQuarterTurn = 0;
 };
 
 M4CPScaleS2FieldAuthority make_m4_cp_scale_s2_regular_folded_field(
     const TriMesh &mesh, const std::int64_t rayX, const std::int64_t rayY) {
+  const double rayLength =
+      std::hypot(static_cast<double>(rayX), static_cast<double>(rayY));
+  if (!(rayLength > 0.0) || mesh.F.rows() != 3) {
+    throw std::invalid_argument(
+        "M4-CP-SCALE S2 requires a nonzero ray and three-face cone");
+  }
+
+  const double baseX = static_cast<double>(rayX) / rayLength;
+  const double baseY = static_cast<double>(rayY) / rayLength;
   Eigen::MatrixXd primary(mesh.F.rows(), 3);
-  Eigen::MatrixXd secondary(mesh.F.rows(), 3);
-  primary.row(0) = Eigen::RowVector3d(static_cast<double>(rayX),
-                                      static_cast<double>(rayY), 0.0);
-  secondary.row(0) = Eigen::RowVector3d(-static_cast<double>(rayY),
-                                        static_cast<double>(rayX), 0.0);
-  primary.row(1) = Eigen::RowVector3d(0.0, 1.0, 1.0);
-  secondary.row(1) = Eigen::RowVector3d(0.0, -1.0, 1.0);
-  primary.row(2) = Eigen::RowVector3d(1.0, 0.0, 1.0);
-  secondary.row(2) = Eigen::RowVector3d(-1.0, 0.0, 1.0);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    double localX = baseX;
+    double localY = baseY;
+    if (face != 0) {
+      const double offset =
+          -static_cast<double>(face) * std::numbers::pi / 6.0;
+      const double cosine = std::cos(offset);
+      const double sine = std::sin(offset);
+      localX = baseX * cosine - baseY * sine;
+      localY = baseY * cosine + baseX * sine;
+    }
+    primary.row(face) =
+        localX * mesh.FBx.row(face) + localY * mesh.FBy.row(face);
+  }
+  const Eigen::MatrixXd secondary = directional::fields::orthogonal_complement(
+      mesh, primary, true);
+
+  M4CPScaleS2FieldAuthority authority;
+  authority.authoredPrimaryDirections = primary;
+  authority.authoredSecondaryDirections = secondary;
+
+  std::array<double, 3> q4Phase{};
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const double localX = primary.row(face).dot(mesh.FBx.row(face));
+    const double localY = primary.row(face).dot(mesh.FBy.row(face));
+    q4Phase[static_cast<std::size_t>(face)] =
+        4.0 * std::atan2(localY, localX);
+  }
+  double wrappedPhaseSum = 0.0;
+  for (std::size_t face = 0; face < q4Phase.size(); ++face) {
+    const std::size_t next = (face + 1U) % q4Phase.size();
+    wrappedPhaseSum += std::remainder(q4Phase[next] - q4Phase[face],
+                                      2.0 * std::numbers::pi);
+  }
+  authority.centerQ4WrappedPhaseSum = wrappedPhaseSum;
+  authority.centerQ4Winding = static_cast<int>(std::llround(
+      wrappedPhaseSum / (2.0 * std::numbers::pi)));
+
+  double centerAngleSum = 0.0;
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    int centerCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (mesh.F(face, corner) == 0) centerCorner = corner;
+    }
+    if (centerCorner < 0) continue;
+    const Eigen::RowVector3d first =
+        mesh.V.row(mesh.F(face, (centerCorner + 1) % 3)) - mesh.V.row(0);
+    const Eigen::RowVector3d second =
+        mesh.V.row(mesh.F(face, (centerCorner + 2) % 3)) - mesh.V.row(0);
+    const double cosine = std::clamp(
+        first.dot(second) / (first.norm() * second.norm()), -1.0, 1.0);
+    centerAngleSum += std::acos(cosine);
+  }
+  authority.centerCurvature = 2.0 * std::numbers::pi - centerAngleSum;
 
   directional::PCFaceTangentBundle bundle;
   bundle.init(mesh);
@@ -268,11 +328,9 @@ M4CPScaleS2FieldAuthority make_m4_cp_scale_s2_regular_folded_field(
                 directional::fields::kCrossFieldDegree);
   rawField.set_extrinsic_field(directional::fields::make_raw_cross_field(
       mesh, primary, secondary, true));
-  CrossFieldResult field = directional::fields::finalize_cross_field_result(
+  authority.field = directional::fields::finalize_cross_field_result(
       rawField, false, true);
 
-  M4CPScaleS2FieldAuthority authority;
-  authority.field = std::move(field);
   authority.centerCycle = bundle.local2Cycle(0);
   if (authority.centerCycle >= 0 &&
       authority.centerCycle < bundle.cycles.rows()) {
@@ -284,10 +342,11 @@ M4CPScaleS2FieldAuthority make_m4_cp_scale_s2_regular_folded_field(
       const int edge = bundle.innerAdjacencies(it.col());
       signedEffort += it.value() * authority.field.effort(edge);
     }
+    authority.centerCycleEffort = signedEffort;
     authority.centerCycleLift =
         (signedEffort +
          static_cast<double>(directional::fields::kCrossFieldDegree) *
-             bundle.cycleCurvatures(authority.centerCycle)) /
+             authority.centerCurvature) /
         (2.0 * std::numbers::pi);
   }
 
@@ -11198,6 +11257,28 @@ TEST(M4CPScaleS2, VertexStarCertifiedFilterMatchesIndependentExactOracle) {
     const M4CPScaleS2FieldAuthority fieldAuthority =
         make_m4_cp_scale_s2_regular_folded_field(mesh, subject.rayX,
                                                  subject.rayY);
+    ASSERT_EQ(mesh.F.rows(), fieldAuthority.authoredPrimaryDirections.rows());
+    ASSERT_EQ(mesh.F.rows(), fieldAuthority.authoredSecondaryDirections.rows());
+    for (int face = 0; face < mesh.F.rows(); ++face) {
+      const Eigen::RowVector3d primary =
+          fieldAuthority.authoredPrimaryDirections.row(face);
+      const Eigen::RowVector3d secondary =
+          fieldAuthority.authoredSecondaryDirections.row(face);
+      const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
+      ASSERT_TRUE(primary.allFinite());
+      ASSERT_TRUE(secondary.allFinite());
+      EXPECT_NEAR(1.0, primary.norm(), 1.0e-12);
+      EXPECT_NEAR(1.0, secondary.norm(), 1.0e-12);
+      EXPECT_NEAR(0.0, primary.dot(secondary), 1.0e-12);
+      EXPECT_NEAR(0.0, primary.dot(normal), 1.0e-12);
+      EXPECT_NEAR(0.0, secondary.dot(normal), 1.0e-12);
+      EXPECT_GT(normal.dot(primary.cross(secondary)), 1.0 - 1.0e-12)
+          << "face " << face << " must use a right-handed tangent frame";
+    }
+    EXPECT_NEAR(-2.0 * std::numbers::pi,
+                fieldAuthority.centerQ4WrappedPhaseSum, 1.0e-10);
+    EXPECT_EQ(-1, fieldAuthority.centerQ4Winding);
+
     ASSERT_TRUE(fieldAuthority.field.matchingComputed);
     ASSERT_TRUE(fieldAuthority.field.singularitiesComputed);
     ASSERT_EQ(mesh.EV.rows(), fieldAuthority.field.matching.size());
@@ -11212,6 +11293,10 @@ TEST(M4CPScaleS2, VertexStarCertifiedFilterMatchesIndependentExactOracle) {
     }
     EXPECT_EQ(static_cast<std::size_t>(mesh.EV.rows()), transitionEdges.size());
     ASSERT_GE(fieldAuthority.centerCycle, 0);
+    EXPECT_NEAR(std::numbers::pi / 2.0, fieldAuthority.centerCurvature,
+                1.0e-12);
+    EXPECT_NEAR(-2.0 * std::numbers::pi, fieldAuthority.centerCycleEffort,
+                1.0e-10);
     EXPECT_NEAR(0.0, fieldAuthority.centerCycleLift, 1.0e-10);
     EXPECT_EQ(0, fieldAuthority.matchingCycleQuarterTurn);
     ASSERT_EQ(fieldAuthority.field.singularCycles.size(),
@@ -11219,7 +11304,8 @@ TEST(M4CPScaleS2, VertexStarCertifiedFilterMatchesIndependentExactOracle) {
     bool centerIsSuppliedSingularity = false;
     for (Eigen::Index index = 0;
          index < fieldAuthority.field.singularCycles.size(); ++index) {
-      if (fieldAuthority.field.singularCycles(index) == 0) {
+      if (fieldAuthority.field.singularCycles(index) ==
+          fieldAuthority.centerCycle) {
         centerIsSuppliedSingularity = true;
       }
     }
@@ -11296,6 +11382,11 @@ TEST(M4CPScaleS2, VertexStarCertifiedFilterMatchesIndependentExactOracle) {
               << ";expectedOwner=" << source_face_locus(oracle.expectedOwner)
               << ";route=" << static_cast<int>(audit.kernelRoute)
               << ";onRadialRay=" << (audit.onRadialRay ? "true" : "false")
+              << ";q4Winding=" << fieldAuthority.centerQ4Winding
+              << ";q4WrappedPhaseSum="
+              << fieldAuthority.centerQ4WrappedPhaseSum
+              << ";centerCycleEffort=" << fieldAuthority.centerCycleEffort
+              << ";centerCurvature=" << fieldAuthority.centerCurvature
               << ";centerCycleLift=" << fieldAuthority.centerCycleLift
               << ";matchingCycleQuarterTurn="
               << fieldAuthority.matchingCycleQuarterTurn
