@@ -3273,6 +3273,7 @@ TEST(EmbeddedGraphTopology,
      TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking) {
   using directional::authority::FieldBranch;
   using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
   using directional::authority::Orientation;
   using directional::authority::TopologyRegionId;
   using directional::authority::TraceId;
