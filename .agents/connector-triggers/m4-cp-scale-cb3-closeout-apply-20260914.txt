@@ -1,0 +1,4 @@
+M4-CP-SCALE-CB3 closeout docs/test-plan apply.
+Patch base: ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b
+Patch SHA-256: 5c1bbee2ff9d8e8890129e701fc42cfb63d909bff7c325c166f1c011837e8344
+Retry: 0
