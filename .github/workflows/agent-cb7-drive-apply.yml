@@ -32,9 +32,9 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1v4fy177GkGpQJhD1zlfK3ZvWaBDL2o6b
-      patch_sha256: 4e31c84bade3cb4c7ecab1d973b80f73810ac354ccb6647587d4524606654259
-      base_sha: 9ae9a485843022d74d203ffcfbc2f458f7604993
+      file_id: 1Bsf8p2y5SIivG_XHI1QmAuR4tQq6eBXy
+      patch_sha256: a82ef09229d05d589412b1b47fc58c4ed50cc740d24974f2f3427d81990637ec
+      base_sha: 4eb4d14fd8af4830afdd212ade0842706c1817f0
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "feat: publish exact trace limit-cycle termination"
+      commit_message: "fix: restore NetworkNodeId test alias"
     secrets: inherit
