@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-TB4-EXEC
+purpose=apply verified closeout documentation patch
+patch_sha256=f44a5abd54d54b7d2f83aa8042531b6bbd41c708554c6de5e15814c3036bf674
