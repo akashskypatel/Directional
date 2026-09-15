@@ -1,0 +1,6 @@
+M4-CP-SCALE-CB3 compile-only trigger.
+Semantic source: ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b
+Changed-owner preflight: directional_surface_cell_producer_tests
+Authoritative package: eight approved targets
+Runtime execution: false
+Retry: 0
