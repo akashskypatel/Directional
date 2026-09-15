@@ -1,8 +1,8 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-14 UTC
+Last updated: 2026-09-15 UTC
 
-## Current turn — M4-CP-SCALE-TB3-EXEC
+## Current turn — M4-CP-SCALE-TB3-REV
 
 - [x] `M4-CP-SCALE-DEFN`: froze S1-S5 authority boundaries from source/evidence; no runtime/build/semantic mutation.
 - [x] S1: exact trace-entry scale census is diagnostic/non-gating; no threshold inferred from current witnesses.
@@ -18,7 +18,8 @@ Last updated: 2026-09-14 UTC
 - [x] `M4-CP-SCALE-TB2-REV`: independently re-opened TB2 evidence and rejected candidate `10367451675`. The S2 fixture reused the already-known invalid non-flat `make_zero_transport_field` precondition: exact center lift `1` conflicts with composed transport `0`, so atlas `CycleTransportMismatch` is legitimate and comparator equivalence was never exercised. Candidate remains non-stable/unpromoted; stable totals unchanged.
 - [x] `M4-CP-SCALE-CB3`: corrected only S2 test authority on semantic source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b`. The folded-star field now derives matching/effort/singularities through production field authority and certifies center/atlas/arrival preconditions before comparator use; the exact six-subject Filter/ExactFallback oracle is retained. Changed-owner producer preflight and the authoritative eight-target GMP/GMPXX package are GREEN with `runtimeExecution=false`; candidate artifact `10375799491`; selector423 remains byte-identical.
 - [x] `M4-CP-SCALE-TB2-REV-OBS-01`: structurally closed in the frozen TB3 payload: all 423 selector rows are materialized as `UNEXECUTED` before focused runtime, and EXIT finalization preserves the full remainder plus immutable census/postflight evidence on focused failure. Runtime evidence remains for TB3-EXEC.
-- [ ] `M4-CP-SCALE-TB3-EXEC`: execute frozen artifact `10375799491` only under `Architecture_M4_CP_SCALE_TB3_EXEC_Test_Benchmark_Plan.md`; focused S2 first, then selector423 423 fresh processes only on focused PASS; no rebuild/repair/mutation/discovery/benchmark; mandatory successor `M4-CP-SCALE-TB3-REV`.
+- [x] `M4-CP-SCALE-TB3-EXEC`: immutable candidate `10375799491` executed under the frozen artifact-only payload. Focused S2 selected 1/1 and RED before comparator credit (`centerCycleLift=1`, matching-cycle quarter-turn `2`, center supplied singularity true, atlas `CycleTransportMismatch`). Selector423 correctly did not execute; all 423 rows were preserved as explicit `UNEXECUTED` with exact immutable postflight, mechanically discharging `M4-CP-SCALE-TB2-REV-OBS-01`. Candidate remains unpromoted; stable totals unchanged.
+- [ ] `M4-CP-SCALE-TB3-REV`: independently reopen TB3 evidence and candidate source, adjudicate `M4-CP-SCALE-TB3-EXEC-CAND-01`, verify the fail-fast remainder/postflight receipts, and decide the bounded corrective owner. No runtime, retry, promotion, or corrective implementation before Review.
 
 ## Purpose
 
@@ -46,11 +47,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-TB3-EXEC` (immutable focused S2 + selector423 runtime)
+## Current focus — `M4-CP-SCALE-TB3-REV` (independent TB3 evidence review and corrective ownership)
 
 Accepted runtime authority remains TB1-Review package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423** (`4e67e4dc...d89343`). CB3 is compile/package GREEN but runtime-unadjudicated: candidate artifact `10375799491`, semantic source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b`, 28/28 self-excluding package manifest, GMP/GMPXX, and unchanged selector423. No runtime credit or promotion is claimed.
 
-Exact next is `M4-CP-SCALE-TB3-EXEC` under `Architecture_M4_CP_SCALE_TB3_EXEC_Test_Benchmark_Plan.md` and frozen payload `turn-payloads/m4-cp-scale-tb3-exec.sh`. Preflight must materialize all 423 selector rows as `UNEXECUTED` before focused S2 runtime; focused failure stops semantic execution but still publishes the untouched remainder and immutable postflight; focused PASS proceeds through all 423 selector identities in fresh processes. TB3-EXEC never promotes authority; mandatory successor is `M4-CP-SCALE-TB3-REV`. Stable accounting remains **49 / 14 / 35**, debt **5**.
+TB3-EXEC is complete and semantic RED on immutable candidate `10375799491`. Focused S2 selected exactly once and failed its pre-comparator authority checks (`centerCycleLift=1`, matching-cycle quarter-turn `2`, supplied singularity true, atlas `CycleTransportMismatch`), so selector423 correctly remained **423/423 UNEXECUTED** in the TB3 ledger. Failure-path remainder preservation and immutable postflight are proved. Exact next is mandatory runtime-free `M4-CP-SCALE-TB3-REV`; Review owns root-cause classification and corrective planning. Accepted runtime authority remains package `10360085644` / selector423 **423/423**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -89,7 +90,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CB3 BUILD GREEN / TB3-EXEC NEXT**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority. CB3 corrected only the invalid S2 test precondition and produced compile-green candidate `10375799491`; S2 remains runtime-unproved and unpromoted. Exact next is artifact-only `M4-CP-SCALE-TB3-EXEC`, followed by mandatory Review. S1 remains diagnostic/non-gating with no numeric calibration threshold; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE TB3 SEMANTIC RED / REVIEW NEXT**. Package `10360085644` / selector423 **423/423** remains accepted runtime authority. Candidate `10375799491` is compile-green but TB3 focused S2 RED before comparator credit; selector423 did not execute and the full 423-row UNEXECUTED remainder/postflight was preserved. Exact next is mandatory `M4-CP-SCALE-TB3-REV`. S1 remains diagnostic/non-gating with no numeric calibration threshold; CP4 later discharges the 3 `G4-B002` produced-witness debts and closes M4.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -129,4 +130,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority remains package `10360085644` / selector423 **423/423**. CP-SCALE remains OPEN: CB3 candidate `10375799491` is compile/package GREEN but runtime-unadjudicated with zero S2 credit; exact next is **`M4-CP-SCALE-TB3-EXEC`**, followed by mandatory `M4-CP-SCALE-TB3-REV`. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Current M4 runtime authority remains package `10360085644` / selector423 **423/423**. CP-SCALE remains OPEN: candidate `10375799491` is compile/package GREEN but TB3 focused S2 RED before comparator credit and remains unpromoted; exact next is mandatory **`M4-CP-SCALE-TB3-REV`**. PR #8 remains open, draft, and unmerged.
