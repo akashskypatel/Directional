@@ -1,0 +1,2 @@
+# M4-CP-SCALE-CB7 accidental comment-marker cleanup
+.agents/Directional/turn-payloads/DO_NOT_KEEP_M4-CP-SCALE-CB7-comment.txt
