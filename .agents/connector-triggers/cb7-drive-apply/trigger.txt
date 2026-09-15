@@ -1,0 +1,3 @@
+M4-CP-SCALE-CB7 Drive patch apply
+base_sha=9ae9a485843022d74d203ffcfbc2f458f7604993
+patch_sha256=4e31c84bade3cb4c7ecab1d973b80f73810ac354ccb6647587d4524606654259
