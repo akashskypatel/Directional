@@ -1,3 +1,4 @@
 M4-CP-SCALE-TB5-REV closeout documentation apply
 base=5ea774538567db82058067826e48b3ffc1fd97f2
 patch_sha256=acdc09e10411a8151f5a9f552d73b36d31c3d2931e22de448788dab48fe818cc
+retry=2
