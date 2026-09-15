@@ -1,3 +1,0 @@
-M4-CP-SCALE-CB7 Drive patch apply closeout
-base_sha=b14939c2052475172c8a907de045806caa69b82f
-patch_sha256=616f2a84afaafd13671f6f2d14c41dfa1ebd74f252082f3ca5c4e3646b5e6757

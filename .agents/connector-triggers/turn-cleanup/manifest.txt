@@ -1,4 +1,0 @@
-# M4-CP-SCALE-CB7 temporary-state cleanup
-.agents/connector-triggers/cb7-compile
-.agents/connector-triggers/cb7-drive-apply
-.agents/connector-triggers/source-snapshot

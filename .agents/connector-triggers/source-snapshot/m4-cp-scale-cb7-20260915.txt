@@ -1,3 +1,0 @@
-M4-CP-SCALE-CB7 source snapshot request
-semantic_parent=d0fa02a280db6a6ee7e38203b98e699f42773ad6
-purpose=freeze exact source for bounded S3 implementation
