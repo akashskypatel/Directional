@@ -125,7 +125,7 @@ jobs:
           .agents/Directional/M4_Consolidated_Record.md
           TODO.md
           EOF
-          git diff --name-only | LC_ALL=C sort > "${RUNNER_TEMP}/actual-paths.txt"
+          { git diff --name-only; git ls-files --others --exclude-standard; } | LC_ALL=C sort -u > "${RUNNER_TEMP}/actual-paths.txt"
           diff -u "${RUNNER_TEMP}/expected-paths.txt" "${RUNNER_TEMP}/actual-paths.txt"
 
           test "$(sha256sum TODO.md | awk '{print $1}')" = 066daa4a710d7c0c791a6912484b1e3ccad725d1b66473bc5128e72436bce5e2
