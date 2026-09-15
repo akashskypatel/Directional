@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB2-REV
-Status: COMPLETE / CANDIDATE REJECTED / CP-SCALE OPEN; M4 OPEN
+Turn: M4-CP-SCALE-CB3
+Status: COMPLETE / BUILD + PACKAGE GREEN / RUNTIME UNADJUDICATED; CP-SCALE OPEN; M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB3
+Canonical next turn: M4-CP-SCALE-TB3-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -38,24 +38,25 @@ Read in full at every new formal turn:
 
 S1 remains deterministic decision-neutral diagnostic authority only. No S1 numeric threshold is frozen; observed 429 bits are not a safety envelope and the 4096-bit continuation guard remains operational fail-closed authority only.
 
-## TB2 Review decision — candidate rejected, known test precondition
+## CB3 result — S2 test authority corrected, candidate compile/package GREEN
 
-`M4-CP-SCALE-TB2-REV` rejects candidate package `10367451675` / source `63cb20d6ba5393058086c62c6422ac58b75c939e` as **TEST-AUTHORITY PRECONDITION FAILURE / NON-STABLE**. TB2 focused runtime selected `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` exactly once and RED on the first `positive-strict-interior` subject because `FieldTransportAtlas::make` rejected the fixture before comparator execution.
+`M4-CP-SCALE-CB3` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME UNADJUDICATED**. Only `tests/FieldAlignedCurveNetworkTests.cpp` changed semantically at candidate source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b`: the S2 folded-star witness now authors per-face tangent directions, derives matching/effort/singularities through `make_raw_cross_field` + `finalize_cross_field_result`, independently re-derives center lift and matching composition, and proves complete diagnostics, regular center, successful atlas, and valid arrival frame/branch before invoking the comparator. The independent six-subject exact oracle remains positive/negative/near-boundary/exact-boundary/tamper with both `Filter` and `ExactFallback`. Product/API/CMake/fixture/selector semantics are unchanged; historical ordinal374 is untouched.
 
-Review re-derived the exact existing root: the three-right-angle center has `Theta=3*pi/2`, defect `K=pi/2`, and exact center lift `1`; reused `make_zero_transport_field` authority declares zero effort/no singularity and radial matching composition `0 mod 4`. `CycleTransportMismatch` is therefore a legitimate atlas rejection. This is the durable `M3-CP4c3-TB7-CAND-02` / `LESSONS.md` 22r root, not a new product defect. All six S2 subjects inherit the same invalid field precondition. Historical ordinal374 remains a separate deferred owner and must not be repaired opportunistically in CB3.
+Compile run `34915185539` is GREEN. Changed-owner preflight compiled only `directional_surface_cell_producer_tests`; authoritative packaging compiled the eight approved targets with GMP/GMPXX and `runtimeExecution=false`. Candidate artifact `10375799491` has provider/Actions SHA-256 `60e84d9b630a8a59574b330e83f80120000973f91a011272a743ce6bdbac5379`; root `SHA256SUMS` hashes to `2f52b377f0a26bd1d474ed64e41a2fd5096b5ad102c4ff802691dd1969246cfb` and verifies 28/28; packaged source archive hashes `4ec9c7888621fbb0b51cff7173a8ef678c6351a5f3a88988fc0d1b590aee1e2d`. Selector423 remains exactly 423 rows / `4e67e4dc...d89343`, first422 `bbd496f3...f7cc`, and the S2 identity remains outside it.
 
-Candidate `10367451675` remains unpromoted with zero S2, selector or gate credit. Selector423 is unchanged. `M4-CP-SCALE-TB2-REV-OBS-01` is open: the next artifact-only harness must pre-initialize all 423 selector rows as `UNEXECUTED` and preserve the failure-path untouched remainder/census before focused runtime.
+`M4-CP-SCALE-TB2-REV-OBS-01` is structurally addressed by the frozen TB3 payload: before focused runtime it creates all 423 selector ledger rows as `UNEXECUTED`; the EXIT finalizer preserves the complete untouched remainder and package/source/execution-view postflight even when focused S2 fails.
 
-## Exact next — `M4-CP-SCALE-CB3`
+## Exact next — `M4-CP-SCALE-TB3-EXEC`
 
-Code + Build only, test-authority repair, `runtimeExecution=false`. Work only in `tests/FieldAlignedCurveNetworkTests.cpp` unless a STOP rule returns to Review. Create an S2-local atlas-admissible **regular** folded-star field by authoring tangent directions and deriving matching/effort/singularities through accepted production field authority (`make_raw_cross_field` + `finalize_cross_field_result` / `principal_matching`). Before comparator use, certify complete diagnostics, zero center singularity/cycle lift, matching composition agreement, successful atlas build with typed error visibility, and valid arrival frame/branch. Preserve the independent exact positive/negative/near-boundary/exact-boundary/tamper matrix and non-vacuously exercise both `Filter` and `ExactFallback`. Do not change product semantics/API/CMake/fixture/selector423, do not repair historical ordinal374, and do not begin S3/S4/S5/CP4.
+Artifact-only runtime execution using exact candidate artifact `10375799491` and `.agents/Directional/Architecture_M4_CP_SCALE_TB3_EXEC_Test_Benchmark_Plan.md`. Execute the frozen payload `.agents/Directional/turn-payloads/m4-cp-scale-tb3-exec.sh` without rebuild, relink, repair, source/fixture mutation, generated discovery, benchmark, or selector change. Run focused S2 first in one fresh exact-filter process. On focused failure, stop semantic runtime and publish the full preinitialized 423-row `UNEXECUTED` remainder plus immutable postflight. On focused PASS, execute selector423 as 423 fresh exact-filter processes and require complete census evidence.
 
-If the bounded test-only correction compiles/packages GREEN under mandatory GMP/GMPXX changed-owner preflight + eight-target compile/package, freeze `M4-CP-SCALE-TB3-EXEC`; compile evidence cannot itself promote the package or grant S2 credit.
+TB3-EXEC is mechanical only and cannot promote the candidate or alter stable accounting. Regardless of GREEN or RED, stop at mandatory `M4-CP-SCALE-TB3-REV` for evidence re-opening and semantic adjudication.
 
 ## Carried obligations
 
 - `M4-CP-SCALE-TB1-REV-OBS-01`: S1 representative/stress calibration before any future numeric gate.
-- `M4-CP-SCALE-TB2-REV-OBS-01`: full selector remainder/census must survive focused fail-fast.
+- `M4-CP-SCALE-TB2-REV-OBS-01`: structurally frozen in TB3 payload; runtime must prove full selector remainder/census survives focused fail-fast.
+- `M4-CP-SCALE-TB2-REV-OBS-02`: audit the remaining `make_zero_transport_field` callers in a later dedicated turn; not CB3/TB3 scope.
 - `M4-CP-SCALE-DEFN-OBS-01`: arrival-order exact fallback not frozen; not owned by vertex-star S2.
 - `M4-CP-SCALE-DEFN-OBS-02`: dedicated full exact-state repeat S3 witness + typed outcome owed.
 - `M4-CP-SCALE-DEFN-OBS-03`: S4 independent incremental earlier-never-different oracle/reachability owed.
@@ -69,9 +70,9 @@ If the bounded test-only correction compiles/packages GREEN under mandatory GMP/
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB.md
 project_plan:
-  - .agents/Directional/Architecture_M4_CP_SCALE_CB3_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB3_EXEC_Test_Benchmark_Plan.md
 conditional_modules:
   - trigger: GitHub connector/workflow/artifact work
     path: modules/github-connector/MODULE.md
