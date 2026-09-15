@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-CB4
-Status: COMPLETE / COMPILE-PACKAGE GREEN / CANDIDATE UNPROMOTED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-TB4-EXEC
+Status: COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER / CANDIDATE UNPROMOTED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB4-EXEC
+Canonical next turn: M4-CP-SCALE-CB5
 ---
 
 # Future Chat Session Handoff — Directional
@@ -27,7 +27,7 @@ Read in full at every new formal turn:
 
 ## Current accepted runtime authority
 
-`M4-CP-SCALE-TB1-REV` remains accepted runtime authority until TB4 Review:
+`M4-CP-SCALE-TB1-REV` remains accepted runtime authority:
 
 - package `10360085644`;
 - semantic source `a359b981f9350139304bc5a654041dfba78609b6`;
@@ -38,19 +38,23 @@ Read in full at every new formal turn:
 
 S1 remains deterministic decision-neutral diagnostic authority only. No S1 numeric threshold is frozen; observed 429 bits are not a safety envelope and the 4096-bit continuation guard remains operational fail-closed authority only.
 
-## CB4 Code + Build closeout — candidate ready for immutable TB4 execution
+## TB4-EXEC disposition — orchestration invalid; retry required before Review
 
-`M4-CP-SCALE-CB4` is **COMPLETE / COMPILE-PACKAGE GREEN / RUNTIME-UNADJUDICATED**. The only semantic edit is `tests/FieldAlignedCurveNetworkTests.cpp` at semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. The S2 folded-star authority now derives every secondary from `normal x primary`, independently reconstructs `q4` winding `-1` / wrapped `-2*pi`, derives production matching/effort/singularities, independently certifies aggregate effort `-2*pi`, center lift `0`, matching composition `0`, no center singularity, complete transitions, successful typed atlas construction, and valid arrival frame/branch before comparator use. The retained six-subject independent exact oracle still covers positive, negative, nonzero near-boundary, exact-boundary, and discriminating tamper behavior with non-vacuous `Filter` and `ExactFallback`. No product/API/CMake/fixture/selector semantics changed.
+`M4-CP-SCALE-TB4-EXEC` is **COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER** on immutable CB4 candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. Run/job `34938070127 / 104280301940` passed exact package/source/selector preflight and observed focused S2 **1/1 PASS**. It then executed all 423 selector rows, observing 383 PASS / 40 RED / 0 SKIP / 0 timeout / 0 selection mismatch. Every one of the 40 RED logs carries the same runner-only missing-test-data exception because the payload copied packaged `benchmarks/fixtures` one directory too shallow: `view/test-data/benchmarks/<...>` instead of the required `view/test-data/benchmarks/fixtures/<...>`.
 
-Authoritative compile/package run/job `34923091581 / 104235295287` checked out exact semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`, passed changed-owner preflight, compiled all eight approved targets under GMP/GMPXX, preserved clean source-status receipts, and recorded `runtimeExecution=false`. Candidate result artifact `10378808176` has provider SHA-256 `a60fbbb7127b2fb36952cc9fef8d58cce366204ffbcbdcd7ace2de69ff7e488a`; log artifact `10379215154` has provider SHA-256 `b165945e6e9d75c85e49e003626a9aca61c0863b4256afd5573132f8c02dc3d6`. The result's self-excluding manifest verified all 28 listed members. Selector423 remains exactly 423 LF rows / `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`; first422 remains `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc`.
+The attempt is independently invalid a second way: preflight wrote `execution-view-before.tsv`, while mandatory `postflight()` required `execution-view-census-before.tsv`, producing `FileNotFoundError`, mechanical exit `97`, and `postflightPass=false`. Captured package/source/execution-view before/after censuses are byte-identical and package checksum verification passed again after runtime, so no immutable input drift is observed; nevertheless the frozen postflight contract was not satisfied.
 
-The first compile caller attempt `34923002444` failed before jobs started because the temporary caller permission ceiling was below the reusable graph's statically required union. Only that temporary caller permission was corrected; reusable workflow permissions and semantic source were unchanged. The diagnosed retry above is authoritative. No Directional runtime, test, benchmark, discovery, CLI, fuzzer, help/version, or custom-input process executed during CB4. Compile-green does not promote S2 or the candidate package.
+Result artifact `10384800591` has provider SHA-256 `3c6b5cc9ae54f8ebc0bfed9d4097003dbd0250f8cfc3053a89ad3ef95ca27065`; diagnostic log artifact `10384696446` has provider SHA-256 `79abfc66e2d7883444a60fcccc81b904e11ca378b93f2bd94abebdd8e76d810b`; nested evidence ZIP SHA-256 is `ee5948335006b10e4f00d295e181489a6b9352634df26952f4c52dacf7c8e0ca`. No configure, compile, relink, repair, generated discovery, benchmark or mutation occurred.
 
-## Exact next — `M4-CP-SCALE-TB4-EXEC`
+Per durable `Turn_Cadence.md` rule 5, an orchestration failure receives no semantic ledger. The observed S2 PASS is not promoted; the 40 selector RED observations are not product regressions; candidate `10378808176` remains unpromoted; accepted runtime authority and stable accounting remain unchanged.
 
-Execute `.agents/Directional/Architecture_M4_CP_SCALE_TB4_EXEC_Test_Benchmark_Plan.md` against immutable candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. Verify the immutable package first; preinitialize all 423 selector rows as `UNEXECUTED`; run focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` first in one fresh exact-filter process. On focused RED, preserve the complete 423-row remainder plus immutable postflight and stop. On focused PASS, execute selector423 as 423 fresh exact-filter processes and update every row exactly once. Never rebuild, repair, mutate source/test/fixture/build logic, discover generated tests, or run benchmarks.
+## Exact next — `M4-CP-SCALE-CB5`
 
-TB4-EXEC is mechanical evidence only. It cannot promote S2 or alter stable accounting. Exact successor is mandatory `M4-CP-SCALE-TB4-REV`, which independently re-opens the TB4 evidence and decides promotion/classification.
+Execute `.agents/Directional/Architecture_M4_CP_SCALE_CB5_Orchestration_Correction_Plan.md` as a **runtime-free control-plane correction only**. Reuse exact immutable artifact `10378808176`; change no product source, test source, fixture bytes, CMake/build semantics, selector bytes, package bytes, or reusable workflow permissions.
+
+CB5 must correct only: (1) execution-view fixture materialization to `view/test-data/benchmarks/fixtures`, sourced byte-for-byte from the packaged source archive; and (2) the execution-view census receipt names so preflight and postflight consume the same filenames. Verify these statically without executing Directional binaries.
+
+If and only if CB5 is statically GREEN, exact next becomes fresh `M4-CP-SCALE-TB4-R1-EXEC` against the same package, restarting the full gate from process 1. Only after a mechanically valid retry does `M4-CP-SCALE-TB4-REV` become the mandatory semantic adjudication turn.
 
 ## Carried obligations
 
@@ -70,7 +74,8 @@ TB4-EXEC is mechanical evidence only. It cannot promote S2 or alter stable accou
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_EXEC_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_CB5_Orchestration_Correction_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_Artifact_Only_Test_Benchmark_Report.md
 project_plan:
   - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
   - .agents/Directional/M4_Consolidated_Record.md
@@ -82,6 +87,6 @@ deep_references:
   - .agents/Directional/Required_Green_Selector_Manifest.md
   - TODO.md
 do_not_preload:
-  - superseded CB4 plan and folded TB2/TB3 execution material
+  - consumed TB4-EXEC plan and folded TB2/TB3 execution material
   - unrelated historical milestone reports
 ```
