@@ -1,0 +1,48 @@
+name: M4 CP SCALE TB3 EXEC Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb3-exec-docs-apply-20260915.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb3-exec-docs-apply
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-scale-tb3-exec-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb3-exec-docs-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1vYmcq4r4uuI9AA_elSF6CVzg56iIMJQ5
+      patch_sha256: 081883900bd349e071c24532c8848acfbf47ef74978069fcd4630a3db2ef21de
+      base_sha: de7c573955578fb8ec599233870e83cda0e910dd
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4-CP-SCALE-TB3-EXEC; route to Review"
+      retention_days: 14
+    secrets: inherit
