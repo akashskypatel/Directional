@@ -217,6 +217,12 @@ correctly refuses. The helper has **35 call sites**.
 and `M4-CP-SCALE-TB2-EXEC-CAND-01`. Proving the precondition at one call site fixes one instance; thirty-three
 other callers remain unchecked.
 
+**Scope bound (added by the `M4-CP-SCALE-TB3-REV` addendum §V3).** This obligation addresses the **TB2 mechanism**
+— zero effort declared on a non-flat vertex. It would **not** have caught `M4-CP-SCALE-TB3`, whose helper does not
+call `make_zero_transport_field` at all and instead fails because authored per-face directions lack the required
+winding on a valid measurement path. Both violate `Σeffort = −4K` at a cone vertex; only one is this helper's fault.
+Do not brief the helper-audit owner as though this prevents the authored-winding class, and do not widen it to cover that class.
+
 **Discharge.** Assert the precondition inside the helper, so every affected caller is enumerated at once rather
 than discovered one TB cycle apiece — the same trade accepted for the no-fail-fast census at `M4-CP3-TB7-REV`.
 

@@ -95,3 +95,67 @@ The handoff also referenced `references/turns/REVIEW.md` and `modules/github-con
 | Turn boundary held | Yes — runtime-free Review; no product/test/fixture/selector/benchmark/build-source mutation. |
 | review_check.py boundary | **GREEN / ALL CHECKS PASSED**: no product/test/fixture/build mutation, no selector mutation, durable markers preserved, selector423 independently matched `4e67e4dc...d89343`. |
 | Pushed to origin, branch in sync | Confirmed only at final closeout by the apply/cleanup control plane and final branch-authority check; no commit hash is embedded here. The turn must not close if that confirmation fails. |
+
+---
+
+## 9. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld on substance.** Rejecting candidate `10375799491` is correct, the diagnosis is sound,
+§5's target list is the right shape, and establishing feasibility before freezing CB4 is the discipline that
+keeps the successor from stopping for want of a construction. Accounting holds at **49 / 14 / 35**, debt **5**.
+One classification correction below.
+
+### V1 — the checkable arithmetic confirms
+
+The internal chain was recomputed. With three exact right-angle sectors the centre carries `K = π/2`, so
+`−4K = −2π`, matching the stated wrapped-phase sum; substituting into the atlas lift gives
+`(Σeffort + 4K) / 2π = (−2π + 2π) / 2π = 0`. Centre lift zero, no supplied singularity, composed matching zero
+modulo four — the target state §5 requires.
+
+The §4 hedge is also correct and worth preserving: the specific offset triple `0, −π/6, −π/3` is labelled
+**static planning evidence only**, and CB4 is explicitly not required to hard-code it. That matters, because
+whether those particular offsets produce the stated effort sum depends on production matching and cycle
+conventions that no static reading settles. §5 already requires CB4 to *independently reconstruct* the winding
+from the authored field rather than assume the example works, which is the correct guard.
+
+### V2 — CB3's precondition guard worked; that is why this RED is useful
+
+Worth recording, because three consecutive rejections invite the reading that nothing is advancing. TB2 failed
+with an opaque atlas refusal. TB3 fails with a named, quantified precondition report — centre lift expected 0
+observed 1, matching quarter-turn expected 0 observed 2, supplied singularity expected false observed true,
+typed construction expected success observed `CycleTransportMismatch`. That is §8's "prove the precondition
+before invoking the comparator" doing exactly its job: the failure now describes itself instead of requiring a
+diagnosis turn.
+
+`M4-CP-SCALE-TB2-REV-OBS-01` is likewise genuinely discharged rather than waived — selector423 appears as a
+complete 423-row `UNEXECUTED` ledger, so the turn's silence about the accepted prefix is now *recorded* silence.
+
+### V3 — CORRECTION: this is the same invariant, not the same root
+
+The status line reads **DUPLICATE KNOWN ROOT**. That conflates two distinct mechanisms under one label, and the
+distinction is load-bearing.
+
+- **TB2** failed inside `make_zero_transport_field` — zero effort declared on a vertex that is not intrinsically
+  flat. An *invalid helper precondition*.
+- **TB3** does not use that helper at all. Verified directly: `make_m4_cp_scale_s2_regular_folded_field` contains
+  no call to `make_zero_transport_field`. It builds through `make_raw_cross_field` and
+  `finalize_cross_field_result`, which measure correctly; what fails is that the *authored per-face directions do
+  not carry the required winding*. A fixture-construction defect on a **valid measurement path**.
+
+Both violate the same invariant — `Σeffort = −4K` at a cone vertex — but by different causes, and CB3 did not
+repeat CB2's mistake. It replaced an invalid helper with a correct production derivation path, which is why the
+diagnostics improved from opaque to quantified. Recording this as a plain duplicate invites a later reader to
+conclude the turn regressed, when it advanced.
+
+**Consequence for scope.** `M4-CP-SCALE-TB2-REV-OBS-02` — asserting the flatness precondition inside
+`make_zero_transport_field` — addresses the **TB2** mechanism and **would not have caught TB3**. It remains worth
+doing on its own merits (35 call sites, two historical failures), but the helper-audit owner should not be
+briefed as though it prevents this class, and should not be widened to cover authored-winding defects. The
+tracker entry is annotated accordingly.
+
+### V4 — obligations and process disclosure
+
+All carried items keep named owners, with `OBS-02` correctly held out of CB4 scope. §7's self-report — a
+temporary caller installed before the workflow policy was fully re-read, and a handoff citing two paths absent
+from the snapshot — is the right kind of disclosure: process defects recorded by the turn that committed them
+cost far less than the same defects found later by someone reconstructing what happened.

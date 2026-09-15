@@ -2,6 +2,27 @@
 
 Runtime-free Review independently re-opened TB3 evidence and candidate source and rejects package `10375799491` / source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b` as **TEST-AUTHORITY PRECONDITION FAILURE / DUPLICATE KNOWN ROOT / NON-STABLE**. The three-right-angle center has `K=pi/2`, while CB3's authored field derives aggregate cycle effort `0`, so production correctly yields center lift `1`, a singular center and `CycleTransportMismatch`; face 2 also reverses secondary handedness. This is the existing `M3-CP4c3-TB7-CAND-02` / TB2 / Lesson 22r root, not a product comparator defect. TB3's 423/423 explicit UNEXECUTED failure-path remainder discharges `M4-CP-SCALE-TB2-REV-OBS-01`. Accepted package `10360085644` / selector423 423/423 remains authority; stable accounting stays **49 / 14 / 35**, debt **5**. Exact next is test-only `M4-CP-SCALE-CB4`: independently certify consistent handedness plus `q4` winding `-1` / cycle effort `-2*pi`, zero lift/no singularity/atlas+arrival success, preserve the six-subject Filter/ExactFallback oracle, then compile/package only.
 
+**Verification amendment (reviewing agent, review record §9).** Upheld on substance: rejecting candidate
+`10375799491` is correct, §5's target list is the right shape, and establishing feasibility before freezing CB4
+keeps the successor from stopping for want of a construction. The checkable arithmetic confirms — with `K = π/2`,
+`−4K = −2π`, so the atlas lift `(Σeffort + 4K)/2π = (−2π + 2π)/2π = 0`, the target state §5 requires. §4's hedge is
+correct and worth preserving: the specific offset triple is labelled **static planning evidence only** and CB4 is
+not required to hard-code it, since whether those offsets produce the stated effort sum depends on production
+matching conventions no static reading settles; §5 already requires CB4 to independently reconstruct the winding
+rather than assume the example. Also recorded, because three consecutive rejections invite the wrong reading:
+**CB3's precondition guard worked.** TB2 failed with an opaque atlas refusal; TB3 fails with a named, quantified
+report — centre lift 0 vs 1, matching quarter-turn 0 vs 2, supplied singularity false vs true, typed construction
+success vs `CycleTransportMismatch`. And `TB2-REV-OBS-01` is genuinely discharged: selector423 appears as a complete
+423-row `UNEXECUTED` ledger, so the turn's silence about the accepted prefix is now recorded silence.
+**One correction:** the status line's **DUPLICATE KNOWN ROOT** conflates two mechanisms. TB2 failed inside
+`make_zero_transport_field` (zero effort on a non-flat vertex — an invalid helper precondition); TB3 does not call
+that helper at all — verified directly — and instead fails because authored per-face directions lack the required
+winding on a *valid* measurement path. Both violate `Σeffort = −4K` at a cone vertex, by different causes: CB3 did
+not repeat CB2's mistake, it replaced an invalid helper with a correct derivation path, which is why the
+diagnostics improved. Consequence for scope, annotated in the tracker: `TB2-REV-OBS-02` addresses the TB2
+mechanism and **would not have caught TB3**, so the helper-audit owner must not be briefed as though it prevents
+the authored-winding class. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-15 — `M4-CP-SCALE-TB3-EXEC`: focused corrected S2 candidate RED; Review mandatory
 
 Artifact-only TB3 execution consumed immutable candidate `10375799491` / source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b` with no configure/build/relink/repair/discovery/mutation/benchmark. Focused `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` selected **1/1** and RED before comparator credit: observed center lift `1` vs expected `0`, matching-cycle quarter-turn `2` vs `0`, center supplied-singularity `true` vs `false`, and atlas build failure `CycleTransportMismatch`. Fail-fast correctly stopped selector runtime while preserving all **423** selector rows as explicit `UNEXECUTED`, owner census **30/277/75/41**, and exact immutable postflight, mechanically discharging `M4-CP-SCALE-TB2-REV-OBS-01`. Run/job `34917763195 / 104219037828`; result/log artifacts `10376198415 / 10376118600`; nested evidence SHA-256 `cbbf645a8572d07a1b91caabcc1dbead771eddc06254dcc093ced8271bfd72a2`. Candidate remains unpromoted; accepted authority remains package `10360085644` / selector423 **423/423**; stable accounting stays **49 / 14 / 35**, debt **5**. Exact next: mandatory `M4-CP-SCALE-TB3-REV`.
