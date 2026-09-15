@@ -1,3 +1,5 @@
 turn=M4-CP-SCALE-CB4
 purpose=apply-verified-closeout-doc-patch
 caller_install=87e38a9cf23641d01767dc4bd4837873f46245a4
+retry=2
+fix=fetch-depth-8-for-base-ancestry
