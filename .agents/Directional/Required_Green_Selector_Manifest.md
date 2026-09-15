@@ -68,10 +68,10 @@ Future selector files are named by their resulting identity count.
 | **407** | 407 | `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae` | 406 | 1 | superseded |
 | **408** | 408 | `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484` | **none** | - | superseded |
 | **408** | 408 | `2a742ba92dba744425fccaf81d5cc7a57885cbff37c779d525218fcd70500af6` | **none** | - | superseded |
-| **409** | 409 | `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` | 408 | 1 | **CURRENT GATE** |
+| **409** | 409 | `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` | 408 | 1 | superseded |
 | **422** | 422 | `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc` | **none** | - | superseded |
 | **423** | 423 | `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343` | 422 | 1 | superseded |
-| **424** | 424 | `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` | 423 | 1 | superseded |
+| **424** | 424 | `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` | 423 | 1 | **CURRENT GATE / ACCEPTED M4 AUTHORITY** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -656,7 +656,7 @@ node-disjoint boundary loops are still rejected with reason `ArcChainBroken` aft
 is removed. It asserts a constructed rejection, never a value on the production fixture. Ordinals 397–408 keep
 their contracts.
 
-### 409 — CURRENT GATE
+### 409 — superseded
 
 `Architecture_M3_CP4c3_Required_Green_Selector_409.txt` — **409 identities**, authored by `M3-CP4c-3-CB39`, LF
 SHA-256 `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e`. Selector 408 is its exact 408-line
@@ -773,13 +773,15 @@ Appended 1 identity to selector 422:
 
 - `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved`
 
-### 424 — superseded
+### 424 — CURRENT GATE / ACCEPTED M4 AUTHORITY
 
-`Architecture_M4_CP_SCALE_CB6_Required_Green_Selector_424.txt` — 424 identities, first committed -.
+`Architecture_M4_CP_SCALE_CB6_Required_Green_Selector_424.txt` — **424 identities**, LF SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`. Its first423 LF rows are byte-identical to accepted selector423 SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
 
 Appended 1 identity to selector 423:
 
 - `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`
+
+**Accepted at `M4-CP-SCALE-TB5-REV`.** Immutable candidate package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` executed selector424 in exact order as **424/424 PASS** with zero RED/SKIP/timeout/crash/selection mismatch/unexecuted and exact owner census **30 authority-kernel / 278 producer / 75 completion / 41 validation**. Review independently re-derived selector/prefix hashes, ownership, the complete process ledger, the six-subject S2 exact oracle and Filter/ExactFallback non-vacuity. This discharges `M4-CP-SCALE-TB4-REV-OBS-01`; selector424 is current accepted M4 required-green authority.
 
 ## Separate lineage — M1
 

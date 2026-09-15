@@ -1,3 +1,11 @@
+## 2026-09-15 — `M4-CP-SCALE-TB5-REV`: selector424/package promoted; S2 cumulative publication observation discharged
+
+- **Review decision:** **APPROVE / PROMOTE PACKAGE `10407605295` / ACCEPT SELECTOR424 424/424 / CP-SCALE OPEN**. Review independently re-hashes selector424 `f202a172...466ca` and exact selector423 prefix `4e67e4dc...d89343`, recomputes source+CMake owner census **30/278/75/41**, verifies the exact 424-row process ledger and fresh row424 PASS, and independently re-derives the six-subject integer oracle plus non-vacuous Filter/ExactFallback routes.
+- Immutable TB5 evidence is valid: package/source/execution-view pre/post censuses are exact byte+mode matches, package manifest is 28/28 both sides, nested evidence manifest verifies **1298/1298**, and no configure/compile/relink/repair/generated-discovery/mutation/benchmark occurred.
+- `M4-CP-SCALE-TB4-REV-OBS-01` — **DISCHARGED / PUBLICATION + CUMULATIVE RUNTIME + REVIEW PROVED / NON-STABLE**. Exact selector423-prefix publication, fresh selector424 424/424 and independent Review are all satisfied. S2 vertex-star now has cumulative required-green selector credit.
+- **No new regression/candidate.** No accepted-green loss exists; stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+- Carried: `M4-CP-SCALE-TB1-REV-OBS-01`, `M4-CP-SCALE-TB2-REV-OBS-02`, `M4-CP-SCALE-DEFN-OBS-01..04`, CP3 observations and debt owners. Exact next is bounded S3 `M4-CP-SCALE-CB7`; `M4-CP-SCALE-DEFN-OBS-02` becomes the immediate owner.
+
 ## 2026-09-15 — `M4-CP-SCALE-TB5-EXEC`: selector424 cumulative gate mechanically GREEN; no regression/candidate
 
 - Fresh artifact-only run/job `35002009539 / 104492480074` on immutable candidate `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` proves selector424 **424/424 PASS** in 424 fresh exact-filter processes with **0 RED / 0 SKIP / 0 timeout / 0 crash / 0 selection mismatch / 0 unexecuted** and exact owner execution census **30/278/75/41**.
