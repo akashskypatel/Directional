@@ -1,5 +1,0 @@
-# M4-CP-SCALE-CB6 temporary-state cleanup
-.agents/connector-triggers/m4-cp-scale-cb6-closeout-drive-apply
-.agents/connector-triggers/m4-cp-scale-cb6-compile
-.agents/connector-triggers/m4-cp-scale-cb6-drive-apply
-.agents/connector-triggers/source-snapshot
