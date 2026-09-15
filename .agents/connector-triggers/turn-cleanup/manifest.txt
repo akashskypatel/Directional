@@ -1,0 +1,2 @@
+.agents/connector-triggers/source-snapshot/tb5-review.txt
+.agents/connector-triggers/m4-cp-scale-tb5-rev-closeout-drive-apply/trigger.txt
