@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-TB4-R1-EXEC
+purpose=fresh immutable artifact-only retry from process 1
+candidate_artifact=10378808176
+semantic_source=905dabe390577d63ed6a9289e3f3d53aa4144936
+retry=1
