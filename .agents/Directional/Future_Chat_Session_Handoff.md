@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-CB6
-Status: COMPLETE / SELECTOR424 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-TB5-EXEC
+Status: COMPLETE / SELECTOR424 424/424 MECHANICALLY GREEN / REVIEW REQUIRED / CANDIDATE UNPROMOTED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB5-EXEC
+Canonical next turn: M4-CP-SCALE-TB5-REV
 ---
 
 # Future Chat Session Handoff — Directional
@@ -56,13 +56,19 @@ Compile run/job `34994665690 / 104467833192` built exact source `0d8e4aa3472fae2
 
 This package is a **candidate only**. Accepted runtime authority remains package `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` under selector423 until fresh cumulative selector424 runtime proof and mandatory Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
-## Exact next — `M4-CP-SCALE-TB5-EXEC`
+## TB5-EXEC closeout — selector424 cumulative runtime mechanically GREEN; Review owns promotion
 
-Execute `.agents/Directional/Architecture_M4_CP_SCALE_TB5_Artifact_Only_Test_Benchmark_Plan.md` against immutable candidate artifact `10407605295` / exact source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3`. Verify package/source/selector provenance before runtime, then execute selector424 cumulatively in exact row order with one fresh exact-filter process per row and require **424/424 PASS** with zero RED/SKIP/timeout/crash/selection mismatch/unexecuted plus exact immutable postflight. Row424 must run freshly; TB4-R1 focused S2 proof may not be imported as cumulative credit.
+Fresh artifact-only run/job `35002009539 / 104492480074` consumed immutable candidate artifact `10407605295` / semantic source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` and executed selector424 cumulatively as **424 fresh exact-filter processes in exact file order**. Result is **424/424 PASS / 0 RED / 0 SKIP / 0 timeout / 0 crash / 0 selection mismatch / 0 unexecuted**, with exact execution census **30 authority-kernel / 278 producer / 75 completion / 41 validation**. Row424 `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` ran freshly in TB5 and passed; no TB4 focused result was imported.
 
-TB5-EXEC is execution/evidence only: no configure/compile/relink/repair/discovery, no source/fixture/selector mutation, and no promotion decision. Mandatory successor is `M4-CP-SCALE-TB5-REV`, which alone may accept selector424/package authority or discharge `M4-CP-SCALE-TB4-REV-OBS-01`.
+Preflight and postflight both verify the 28-entry package manifest; selector424 remains `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`, prefix423 remains `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`, and package/source/execution-view byte+mode censuses are exactly equal before/after. No configure/compile/relink/repair/generated-discovery/mutation/benchmark occurred. Result artifact `10410518189` SHA-256 `7f9f9a4f9b18930255688e775691a21b92538c666a987f29101541aaec1ce3ac` and log artifact `10410672518` SHA-256 `26d59ed6846effe4d38fdc5b2c27b23d95cdf0f6784e8b0ff5d49c212320cc7f` preserve the run; nested evidence ZIP SHA-256 `576104efb4aa5723a0384ec7aac0abe0fbc244b8dbb9417a198ea53041040bac` contains a verified **1298-entry** non-self-referential manifest SHA-256 `1aabede920e5401187f8c8590a4969d26694b8fa43cee98c37f29f63b61ea208`.
 
-CP-SCALE remains OPEN after S2 because S3, S4 and S5 are separate exit obligations.
+No regression/candidate is observed, so stable accounting remains **49 / 14 / 35**, debt **5**. This is mechanical EXEC evidence only: accepted runtime authority remains package `10378808176` / selector423 until Review. `M4-CP-SCALE-TB4-REV-OBS-01` is now publication + cumulative-runtime satisfied but remains open until Review.
+
+## Exact next — `M4-CP-SCALE-TB5-REV`
+
+Perform the mandatory runtime-free Review. Re-open primary TB5 result/log/nested evidence bytes; independently verify artifact/source/selector provenance, 424-row ledger cardinality/order/unique selection/PASS status, owner census **30/278/75/41**, fresh row424 execution, 1298-entry manifest, exact pre/post package/source/execution-view equality, and the absence of forbidden compile/repair/discovery/mutation activity. Independently re-derive decisive selector424/S2 authority instead of treating EXEC narrative as authority.
+
+Only Review may promote candidate artifact `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3`, accept selector424 as cumulative required-green authority, or discharge `M4-CP-SCALE-TB4-REV-OBS-01`. CP-SCALE remains open after S2 because S3, S4 and S5 remain separate frozen obligations.
 
 ## Carried obligations
 
@@ -83,7 +89,8 @@ CP-SCALE remains OPEN after S2 because S3, S4 and S5 are separate exit obligatio
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB5_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB5_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/REVIEW_TURN_POLICY.md
 conditional_modules:
   - trigger: GitHub connector/workflow/artifact work
     path: .agents/Directional/GitHub_Workflow_Policy.md

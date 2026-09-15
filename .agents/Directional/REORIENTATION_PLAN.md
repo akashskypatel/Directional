@@ -1,11 +1,11 @@
-> **Current milestone authority (2026-09-15, `M4-CP-SCALE-TB4-REV`):** M1-M3 remain CLOSED / ACCEPTED; M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Package `10378808176` / selector423 **423/423** is accepted current M4 runtime authority. Focused S2 is Review-proved for publication but not cumulative selector credit. Exact next is `M4-CP-SCALE-CB6`, selector424 publication + compile/package only. Stable accounting **49 / 14 / 35**, debt **5**.
+> **Current milestone authority (2026-09-15, `M4-CP-SCALE-TB5-EXEC`):** M1-M3 remain CLOSED / ACCEPTED; M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Package `10378808176` / selector423 **423/423** remains accepted current M4 runtime authority pending Review. Candidate `10407605295` / selector424 is mechanically GREEN at **424/424 PASS** with exact immutable postflight. Exact next is `M4-CP-SCALE-TB5-REV`. Stable accounting **49 / 14 / 35**, debt **5**.
 
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap
 **Normative design:** `.agents/Directional/DESIGN.md`
 **Accepted authority:** current M4 package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` / selector423 **423/423**; CP-COND predecessor package `10331193451` remains historical accepted authority; M3 package113/TB48 remains the milestone-closure predecessor with accepted selector365 **365/365**.
-**Decision:** Historical M4-CP1/CP2 framed closures remain factual; CP3 and CP-COND are closed/accepted. CP-SCALE is open: S1 remains diagnostic-only; TB4 Review promotes package `10378808176` and accepts focused S2 for publication only; cumulative S2 selector credit requires selector424. Exact next is `M4-CP-SCALE-CB6`. M3 is not reopened.
+**Decision:** Historical M4-CP1/CP2 framed closures remain factual; CP3 and CP-COND are closed/accepted. CP-SCALE is open: S1 remains diagnostic-only; TB4 Review promotes package `10378808176` and accepts focused S2 for publication only; cumulative S2 selector credit requires selector424. TB5-EXEC now mechanically proves selector424 424/424; exact next is mandatory `M4-CP-SCALE-TB5-REV`. M3 is not reopened.
 
 **Updated 2026-08-26 after `M3-CP4c-0-TB-R2`.** Authoritative retry 1 `32914546494 / 98015432540` passed identities **1–328** and failed ordinal **329**, `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The immutable diagnostic shows numeric branch loci emitted as control characters because `FieldBranch::value()` is `std::uint8_t` and the test/witness stream inserts it directly as a character. Q8 was correctly **NOT RUN** because 338/338 was not green. Exact next is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**; no semantic rerun or correction precedes that review. The checkpoint map is `ROADMAP.md`.
 **M1 exit gate:** retained in section 5.1 as the gate-authoring pattern. **Retry budget: ABOLISHED 2026-08-25.** A diagnosed orchestration defect may be corrected without consuming semantic authority; deterministic semantic red does not rerun inside TB. Cumulative package cost is reported, not gated; M3 has **41 packages**.
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND CLOSED/ACCEPTED; CP-SCALE package10378808176 remains accepted under selector423; selector424 candidate PUBLISHED + COMPILE GREEN; NEXT `M4-CP-SCALE-TB5-EXEC`** |
+| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND CLOSED/ACCEPTED; CP-SCALE package10378808176 remains accepted under selector423; selector424 candidate `10407605295` 424/424 MECHANICALLY GREEN; NEXT `M4-CP-SCALE-TB5-REV`** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -224,13 +224,13 @@ The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c25
 
 ## 8. M4 — global conformity plan
 
-**Status: CP3 CLOSED / ACCEPTED; CP-COND CLOSED / ACCEPTED; CP-SCALE OPEN; exact next `M4-CP-SCALE-TB5-EXEC`.** Current accepted M4 runtime authority is package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` with selector423 **423/423** (`4e67e4dc...d89343`). TB4 Review independently validates fresh focused S2 1/1 plus selector423 423/423 and exact immutable postflight, promotes the package, and authorizes S2 selector publication without granting cumulative selector credit. Stable accounting is **49 / 14 / 35**, debt **5**.
+**Status: CP3 CLOSED / ACCEPTED; CP-COND CLOSED / ACCEPTED; CP-SCALE OPEN; exact next `M4-CP-SCALE-TB5-REV`.** Current accepted M4 runtime authority is package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` with selector423 **423/423** (`4e67e4dc...d89343`). TB4 Review independently validates fresh focused S2 1/1 plus selector423 423/423 and exact immutable postflight, promotes the package, and authorizes S2 selector publication without granting cumulative selector credit. Stable accounting is **49 / 14 / 35**, debt **5**.
 
 Production-baseline A3 remains the family/sign-free exact shared subdivision + region parity authority frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` §17. CP3 has already re-proved and production-wired that semantic core through A4. CP-COND has already established the exact certified raw→conditioned pre-A0 boundary and closed on selector423.
 
 **CP-SCALE current state.** Frozen S1-S5 semantics live in `Architecture_M4_CP_SCALE_Frozen_Definitions.md`. S1 remains accepted as a passive GMP exact trace-entry diagnostic with no numeric bound. S2 vertex-star focused semantics are now Review-proved: candidate package `10378808176` has a valid right-handed regular-star field, non-vacuous Filter + ExactFallback six-subject independent oracle, fresh focused 1/1 PASS, full accepted selector423 423/423 and exact immutable postflight. Package `10378808176` is accepted current runtime authority.
 
-Focused S2 runtime does not substitute for cumulative selector credit. `M4-CP-SCALE-CB6` must publish exact selector424 = accepted 423-row prefix + S2 row424 and compile/package without changing product/test/fixture/CMake semantics; later artifact-only TB + Review must prove 424/424. Arrival ordering remains blocked until a same-seam exact fallback owner is frozen; S3/S4/S5 retain their exact-repeat/incremental-oracle/genus>=2 preconditions.
+CB6 published exact selector424 and TB5-EXEC run `35002009539` mechanically proves the cumulative selector **424/424** on immutable candidate `10407605295` with exact postflight. Cumulative selector credit is still not accepted until mandatory TB5 Review promotes it. Arrival ordering remains blocked until a same-seam exact fallback owner is frozen; S3/S4/S5 retain their exact-repeat/incremental-oracle/genus>=2 preconditions.
 
 ### Produced-witness debt is tracked per blocker
 

@@ -1,3 +1,11 @@
+## 2026-09-15 — `M4-CP-SCALE-TB5-EXEC`: selector424 cumulative gate mechanically GREEN; no regression/candidate
+
+- Fresh artifact-only run/job `35002009539 / 104492480074` on immutable candidate `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` proves selector424 **424/424 PASS** in 424 fresh exact-filter processes with **0 RED / 0 SKIP / 0 timeout / 0 crash / 0 selection mismatch / 0 unexecuted** and exact owner execution census **30/278/75/41**.
+- Package/source/execution-view byte+mode censuses are exactly equal pre/post; package checksum is **28/28** both sides; selector424 remains `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` with byte-identical selector423 prefix `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343` and fresh row424 PASS.
+- **No accepted-green loss, no product-semantic RED, and no orchestration candidate were observed.** Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+- `M4-CP-SCALE-TB4-REV-OBS-01` is now **OPEN / PUBLICATION + CUMULATIVE RUNTIME SATISFIED / REVIEW OWED / NON-STABLE**. Only `M4-CP-SCALE-TB5-REV` may promote selector424/package authority or discharge the observation.
+- Accepted runtime authority therefore remains package `10378808176` / selector423 until Review. Exact successor: `M4-CP-SCALE-TB5-REV`.
+
 ## 2026-09-15 — `M4-CP-SCALE-CB6`: publication/compile GREEN; no runtime regression adjudication
 
 - **No runtime was executed.** CB6 adds no stable regression event/category/recurrence and cannot close/open semantic runtime candidates. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.

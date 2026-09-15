@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-15 UTC
 
-## Current turn — M4-CP-SCALE-TB5-EXEC
+## Current turn — M4-CP-SCALE-TB5-REV
 
 - [x] `M4-CP-SCALE-TB4-R1-EXEC`: fresh immutable candidate `10378808176` mechanically GREEN — focused S2 **1/1 PASS**, selector423 **423/423 PASS**, zero process anomalies, exact immutable postflight.
 - [x] `M4-CP-SCALE-TB4-REV`: independently re-derived the six-subject exact oracle, Filter/ExactFallback non-vacuity, regular-star winding/effort authority, selector hashes and owner census; promoted package `10378808176` under unchanged selector423; stable totals remain **49 / 14 / 35**, debt **5**.
@@ -11,7 +11,7 @@ Last updated: 2026-09-15 UTC
 - [x] Re-derived unique gate ownership as **30 authority-kernel / 278 producer / 75 completion / 41 validation**.
 - [x] Preserved product/test/fixture/CMake semantics and accepted selector423 byte-for-byte; only selector424 was added as semantic gate authority.
 - [x] Compile/package GREEN through durable GMP/GMPXX reusable workflow with `runtimeExecution=false`; candidate artifact `10407605295`, exact source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3`, package manifest 28/28.
-- [ ] `M4-CP-SCALE-TB5-EXEC`: execute the immutable candidate artifact-only under exact selector424, one fresh exact-filter process per row, requiring **424/424** with exact immutable postflight.
+- [x] `M4-CP-SCALE-TB5-EXEC`: immutable candidate artifact-only gate mechanically GREEN — selector424 **424/424 PASS**, zero process anomalies, exact immutable postflight, owner census **30/278/75/41**.
 - [ ] `M4-CP-SCALE-TB5-REV`: independently adjudicate TB5 evidence; only Review may promote candidate package/selector424 or discharge `M4-CP-SCALE-TB4-REV-OBS-01`.
 
 ## Purpose
@@ -44,11 +44,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-TB5-EXEC` (immutable selector424 cumulative proof)
+## Current focus — `M4-CP-SCALE-TB5-REV` (independent adjudication of selector424 cumulative proof)
 
 Accepted runtime authority remains package `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` under selector423 **423/423** (`4e67e4dc...d89343`). CB6 has now published candidate selector424 and compile-proved it without running Directional; this does **not** promote runtime authority.
 
-Candidate selector424 is exact selector423 prefix + row424 `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`, SHA-256 `f202a172...466ca`, owner census **30/278/75/41**. Candidate artifact `10407605295` was compiled from exact source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` with GMP/GMPXX, package manifest 28/28 and `runtimeExecution=false`. Exact next is artifact-only `M4-CP-SCALE-TB5-EXEC` using `Architecture_M4_CP_SCALE_TB5_Artifact_Only_Test_Benchmark_Plan.md`, followed by mandatory Review. Stable accounting remains **49 / 14 / 35**, debt **5**; CP-SCALE remains OPEN because selector424 cumulative acceptance and S3-S5 are still unproved.
+Candidate selector424 is exact selector423 prefix + row424 `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`, SHA-256 `f202a172...466ca`, owner census **30/278/75/41**. TB5-EXEC run `35002009539` is mechanically GREEN at **424/424 PASS** with zero RED/SKIP/timeout/crash/selection mismatch/unexecuted and exact immutable postflight. This does not promote authority: exact next is mandatory `M4-CP-SCALE-TB5-REV`, which alone may accept candidate `10407605295` / selector424 and discharge `M4-CP-SCALE-TB4-REV-OBS-01`. Stable accounting remains **49 / 14 / 35**, debt **5**; CP-SCALE remains OPEN because Review and S3-S5 are still unproved.
 
 ## Carried forward from M1
 
@@ -87,7 +87,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 FOCUSED REVIEW GREEN / SELECTOR424 PUBLICATION NEXT**. Package `10378808176` / selector423 **423/423** remains accepted current runtime authority. Candidate artifact `10407605295` / selector424 is compile-proved only. Exact next `M4-CP-SCALE-TB5-EXEC`; S1 remains diagnostic/non-gating, S2 cumulative selector acceptance still owed, S3-S5 remain open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE SELECTOR424 424/424 MECHANICALLY GREEN / REVIEW NEXT**. Package `10378808176` / selector423 **423/423** remains accepted current runtime authority pending Review. Candidate artifact `10407605295` / selector424 is mechanically GREEN at **424/424 PASS** with exact immutable postflight but remains unpromoted. Exact next `M4-CP-SCALE-TB5-REV`; S1 remains diagnostic/non-gating, S2 cumulative selector acceptance awaits Review, S3-S5 remain open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -127,4 +127,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB4-REV` promotes package `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` as current M4 runtime authority under unchanged selector423 **423/423**. CP-SCALE remains OPEN: focused S2 is accepted for selector publication but does not yet receive cumulative required-green credit. Exact next is **`M4-CP-SCALE-CB6`**, publication-only selector424 + compile/package; row424 must be exactly `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`, after which immutable TB must prove cumulative 424/424 before Review. Stable accounting remains unchanged, and the prior orchestration-invalid TB4 attempt remains no-semantic-ledger provenance only. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB4-REV` promotes package `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` as current M4 runtime authority under unchanged selector423 **423/423**. CP-SCALE remains OPEN: focused S2 is accepted for selector publication but does not yet receive cumulative required-green credit. CB6 published selector424 and TB5-EXEC run `35002009539` mechanically proves cumulative **424/424 PASS** with exact immutable postflight. Exact next is mandatory **`M4-CP-SCALE-TB5-REV`**; only Review may promote candidate `10407605295` / selector424. Stable accounting remains unchanged, and the prior orchestration-invalid TB4 attempt remains no-semantic-ledger provenance only. PR #8 remains open, draft, and unmerged.
