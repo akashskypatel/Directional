@@ -1,5 +1,0 @@
-.agents/connector-triggers/source-snapshot/tb5-exec.txt
-.agents/Directional/turn-payloads/m4-cp-scale-tb5-exec.sh
-.agents/connector-triggers/m4-cp-scale-tb5-payload-drive-apply/trigger.txt
-.agents/connector-triggers/m4-cp-scale-tb5-exec/trigger.txt
-.agents/connector-triggers/m4-cp-scale-tb5-closeout-drive-apply/trigger.txt
