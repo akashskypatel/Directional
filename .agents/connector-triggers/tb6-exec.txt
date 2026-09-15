@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-TB6-EXEC
+candidate_artifact_id=10418328122
+semantic_source=153047c3f92e9b9b784e11eaee1ede2de5628470
+selector424_sha256=f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca
+focused_identity=M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination
