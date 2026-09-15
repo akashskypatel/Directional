@@ -1,5 +1,0 @@
-M4-CP-SCALE-TB3-REV Drive patch apply trigger.
-Base source: d2c41653309dd327a6b38babb5437643163e4f26
-Patch SHA-256: 99d8e4f6f999595da57fe2ae9669fc1b56322b889e67afe4195c5a23316a65f8
-Drive file id: 1mm_OS5uM9j5txpWNz06_xq8x042zcZ0r
-Retry: 0
