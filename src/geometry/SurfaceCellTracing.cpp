@@ -1754,6 +1754,22 @@ FieldAlignedCurveNetworkError field_aligned_trace_traversal_error(
   return error;
 }
 
+FieldAlignedTraceTraversalPublicationResult
+publish_field_aligned_trace_traversal_state(
+    FieldAlignedCandidateTrace &trace, FieldAlignedTraceTraversalGuard &guard,
+    const FieldAlignedTraceTraversalState &state) {
+  const FieldAlignedTraceTraversalStatus status = guard.observe(state);
+  if (status == FieldAlignedTraceTraversalStatus::Advanced) {
+    return FieldAlignedTraceTraversalPublicationStatus::Advanced;
+  }
+  if (status == FieldAlignedTraceTraversalStatus::CycleDetected) {
+    trace.terminalLimitCycle = FieldAlignedLimitCycleTermination{
+        state.sourceFace, state.branch, state.incomingCarrier, state.entryPoint};
+    return FieldAlignedTraceTraversalPublicationStatus::LimitCycleTermination;
+  }
+  return field_aligned_trace_traversal_error(status, state, guard);
+}
+
 FieldBranchEdgeFlowRelation classify_field_branch_transport_flow(
     const authority::SourceFaceTopologyKey &sourceFace,
     const authority::FieldBranchBoundaryPairing &sourcePairing,
@@ -2881,7 +2897,8 @@ struct FieldAlignedTraceRuntime {
 };
 
 using FieldAlignedTraceProposalResult =
-    std::variant<FieldAlignedTraceProposal, FieldAlignedCurveNetworkError>;
+    std::variant<FieldAlignedTraceProposal, FieldAlignedLimitCycleTermination,
+                 FieldAlignedCurveNetworkError>;
 
 FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     const TriMesh &sourceMesh,
@@ -2901,11 +2918,16 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     annotate_field_aligned_trace_history(error, trace, state);
     return error;
   };
-  const FieldAlignedTraceTraversalStatus traversalStatus =
-      runtime.traversalGuard.observe(state);
-  if (traversalStatus != FieldAlignedTraceTraversalStatus::Advanced) {
-    return traceError(field_aligned_trace_traversal_error(
-        traversalStatus, state, runtime.traversalGuard));
+  auto traversalPublication = publish_field_aligned_trace_traversal_state(
+      trace, runtime.traversalGuard, state);
+  if (auto *error =
+          std::get_if<FieldAlignedCurveNetworkError>(&traversalPublication)) {
+    return traceError(std::move(*error));
+  }
+  if (std::get<FieldAlignedTraceTraversalPublicationStatus>(
+          traversalPublication) ==
+      FieldAlignedTraceTraversalPublicationStatus::LimitCycleTermination) {
+    return *trace.terminalLimitCycle;
   }
   if (scaleCensus != nullptr) {
     scaleCensus->rows.emplace_back(
@@ -3227,6 +3249,35 @@ field_aligned_publish_barrier_termination(
   return std::nullopt;
 }
 
+std::optional<FieldAlignedCurveNetworkError>
+field_aligned_publish_limit_cycle_termination(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    const FieldAlignedCandidateTrace &trace) {
+  if (!trace.terminalLimitCycle.has_value() || trace.segments.empty()) {
+    return trace_scoped_terminal_ownership_error(
+        FieldAlignedCurveNetworkErrorCondition::TraceTerminalKindInvalid,
+        trace.sourceVertex, trace.singularity);
+  }
+  const FieldAlignedLimitCycleTermination &termination =
+      *trace.terminalLimitCycle;
+  const auto terminalNode =
+      field_aligned_append_contact_node(candidate, termination.sourceFace);
+  if (!terminalNode.has_value()) {
+    return trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventBinding,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        termination.entryPoint.edge, termination.sourceFace,
+        termination.branch);
+  }
+  candidate.events.emplace_back(
+      *terminalNode, FieldAlignedNetworkEventKind::LimitCycleTermination,
+      termination.sourceFace, termination.entryPoint.edge,
+      std::vector<FieldAlignedNetworkEventIncidence>{
+          FieldAlignedNetworkEventIncidence(
+              trace.id, trace.port, FieldAlignedTraceEventRole::Terminal)});
+  return std::nullopt;
+}
+
 FieldAlignedArrivalOrdering field_aligned_compare_priority_arrivals(
     const FieldTraceArrivalPriority priority,
     const FieldAlignedArrivalMeasure &first,
@@ -3350,6 +3401,7 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
     firstTrace.terminalBarrier.reset();
     firstTrace.terminalPoint.reset();
     firstTrace.terminalSingularity.reset();
+    firstTrace.terminalLimitCycle.reset();
     firstTrace.terminalContact = FieldAlignedTerminalContact{
         event.sourceFace, event.barycentric, secondTrace.id, struckSegment};
     firstRuntime.active = false;
@@ -3368,6 +3420,7 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
       secondTrace.terminalBarrier.reset();
       secondTrace.terminalPoint.reset();
       secondTrace.terminalSingularity.reset();
+      secondTrace.terminalLimitCycle.reset();
       secondTrace.terminalContact = FieldAlignedTerminalContact{
           event.sourceFace, event.barycentric, firstTrace.id, struckSegment};
       secondRuntime.active = false;
@@ -3399,6 +3452,7 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
       secondTrace.terminalBarrier.reset();
       secondTrace.terminalPoint.reset();
       secondTrace.terminalSingularity.reset();
+      secondTrace.terminalLimitCycle.reset();
       secondTrace.terminalContact = FieldAlignedTerminalContact{
           event.sourceFace, event.barycentric, firstTrace.id,
           firstPendingSegmentIndex};
@@ -3534,6 +3588,12 @@ canonical_field_aligned_traces_and_events(
         candidate.candidateTraces[traceIndex], runtime, scaleCensus);
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&proposed)) {
       return *error;
+    }
+    if (std::get_if<FieldAlignedLimitCycleTermination>(&proposed) != nullptr) {
+      runtime.active = false;
+      runtime.proposal.reset();
+      return field_aligned_publish_limit_cycle_termination(
+          candidate, candidate.candidateTraces[traceIndex]);
     }
     runtime.proposal =
         std::get<FieldAlignedTraceProposal>(std::move(proposed));
@@ -3733,6 +3793,7 @@ canonical_field_aligned_traces_and_events(
       trace.terminalSingularity = proposal.terminalSingularity;
       trace.terminalBarrier.reset();
       trace.terminalContact.reset();
+      trace.terminalLimitCycle.reset();
       runtime.active = false;
       if (const auto error = append_field_aligned_singularity_termination(
               candidate, trace);
@@ -3746,6 +3807,7 @@ canonical_field_aligned_traces_and_events(
       trace.terminalBarrier = proposal.terminalBarrier;
       trace.terminalSingularity.reset();
       trace.terminalContact.reset();
+      trace.terminalLimitCycle.reset();
       runtime.active = false;
       if (const auto error =
               field_aligned_publish_barrier_termination(candidate, trace);
@@ -3773,7 +3835,8 @@ canonical_field_aligned_traces_and_events(
     const std::size_t terminalKinds =
         static_cast<std::size_t>(trace.terminalSingularity.has_value()) +
         static_cast<std::size_t>(trace.terminalBarrier.has_value()) +
-        static_cast<std::size_t>(trace.terminalContact.has_value());
+        static_cast<std::size_t>(trace.terminalContact.has_value()) +
+        static_cast<std::size_t>(trace.terminalLimitCycle.has_value());
     if (trace.segments.empty() || terminalKinds != 1U) {
       return trace_scoped_terminal_ownership_error(
           FieldAlignedCurveNetworkErrorCondition::TraceTerminalKindInvalid,
@@ -4523,6 +4586,24 @@ std::uint64_t field_aligned_candidate_digest(
       field_aligned_hash_id(hash, contact.struckTrace);
       field_aligned_hash_consume(hash, contact.struckSegmentIndex);
     }
+    if (trace.terminalLimitCycle.has_value()) {
+      // Preserve every pre-S3 semantic digest byte-for-byte when the new
+      // terminal is absent. The domain tag makes an actually published S3
+      // terminal unambiguous without perturbing legacy candidates.
+      constexpr std::uint64_t kLimitCycleTerminationHashDomain =
+          0x4c494d4954435943ULL; // "LIMITCYC"
+      const FieldAlignedLimitCycleTermination &termination =
+          *trace.terminalLimitCycle;
+      field_aligned_hash_consume(hash, kLimitCycleTerminationHashDomain);
+      field_aligned_hash_face(hash, termination.sourceFace);
+      field_aligned_hash_consume(hash, termination.branch.value());
+      field_aligned_hash_consume(hash,
+                                 termination.incomingCarrier.has_value());
+      if (termination.incomingCarrier.has_value()) {
+        field_aligned_hash_edge(hash, *termination.incomingCarrier);
+      }
+      field_aligned_hash_boundary_point(hash, termination.entryPoint);
+    }
   }
   field_aligned_hash_consume(hash, candidate.events.size());
   for (const FieldAlignedNetworkEvent &event : candidate.events) {
@@ -4685,7 +4766,8 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
           FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
           actual.sourceVertex, sourceEdge, std::nullopt, actual.singularity);
     }
-    if (actual.terminalContact != wanted.terminalContact) {
+    if (actual.terminalContact != wanted.terminalContact ||
+        actual.terminalLimitCycle != wanted.terminalLimitCycle) {
       return field_aligned_error(
           FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
           actual.sourceVertex, std::nullopt, std::nullopt, actual.singularity);

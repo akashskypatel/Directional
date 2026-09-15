@@ -3273,7 +3273,6 @@ TEST(EmbeddedGraphTopology,
      TerminalContactCanonicalBarycentricsRemapToOrientedSourceFaceForVertexRayRanking) {
   using directional::authority::FieldBranch;
   using directional::authority::NetworkArcId;
-  using directional::authority::NetworkNodeId;
   using directional::authority::Orientation;
   using directional::authority::TopologyRegionId;
   using directional::authority::TraceId;
@@ -14475,6 +14474,157 @@ TEST(ResolvedBranchCorrection,
   EXPECT_EQ(1U, error.traceStepBudget);
 }
 
+TEST(M4CPScaleS3, ExactTraversalStateRepeatPublishesLimitCycleTermination) {
+  using directional::authority::NetworkNodeId;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedCurveNetworkError;
+  using directional::geometry::FieldAlignedCurveNetworkErrorCode;
+  using directional::geometry::FieldAlignedLimitCycleTermination;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+
+  const SourceFaceTopologyKey face = topology_face(0, 1, 2, 4U);
+  const SourceFaceTopologyKey otherFace = topology_face(0, 1, 3, 4U);
+  const SourceEdgeTopologyKey edge = topology_edge(0, 1, 4U);
+  const auto branch = directional::authority::FieldBranch::from_integer(0);
+  const auto otherBranch = directional::authority::FieldBranch::from_integer(1);
+  const FieldAlignedTraceTraversalState first{
+      face, branch, edge, boundary_point(edge, 1, 5)};
+  const FieldAlignedTraceTraversalState differentEntry{
+      face, branch, edge, boundary_point(edge, 2, 5)};
+
+  const auto makeTrace = []() {
+    return FieldAlignedCandidateTrace(
+        TraceId::from_index(0, 1).value(),
+        SingularityPortId::from_index(0, 1).value(),
+        FieldSingularityId::from_index(0, 1).value(),
+        SourceVertexId::from_index(0, 4).value(),
+        SourceComponentId::from_index(0, 1).value(),
+        TopologyRegionId::from_index(0, 1).value());
+  };
+
+  FieldAlignedCandidateTrace trace = makeTrace();
+  FieldAlignedTraceTraversalGuard exactGuard(16U);
+  auto publication = publish_field_aligned_trace_traversal_state(
+      trace, exactGuard, first);
+  ASSERT_TRUE(std::holds_alternative<
+              FieldAlignedTraceTraversalPublicationStatus>(publication));
+  EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::Advanced,
+            std::get<FieldAlignedTraceTraversalPublicationStatus>(publication));
+  EXPECT_FALSE(trace.terminalLimitCycle.has_value());
+
+  publication = publish_field_aligned_trace_traversal_state(
+      trace, exactGuard, differentEntry);
+  ASSERT_TRUE(std::holds_alternative<
+              FieldAlignedTraceTraversalPublicationStatus>(publication));
+  EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::Advanced,
+            std::get<FieldAlignedTraceTraversalPublicationStatus>(publication));
+  EXPECT_FALSE(trace.terminalLimitCycle.has_value())
+      << "same face/branch/carrier at a different exact entry point is not a "
+         "limit cycle";
+
+  publication = publish_field_aligned_trace_traversal_state(
+      trace, exactGuard, first);
+  ASSERT_TRUE(std::holds_alternative<
+              FieldAlignedTraceTraversalPublicationStatus>(publication));
+  EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::LimitCycleTermination,
+            std::get<FieldAlignedTraceTraversalPublicationStatus>(publication));
+  ASSERT_TRUE(trace.terminalLimitCycle.has_value());
+  const FieldAlignedLimitCycleTermination expected{
+      first.sourceFace, first.branch, first.incomingCarrier, first.entryPoint};
+  EXPECT_EQ(expected, *trace.terminalLimitCycle);
+
+  const std::array<FieldAlignedTraceTraversalState, 4> oneFieldTampered{{
+      FieldAlignedTraceTraversalState{otherFace, first.branch,
+                                      first.incomingCarrier, first.entryPoint},
+      FieldAlignedTraceTraversalState{first.sourceFace, otherBranch,
+                                      first.incomingCarrier, first.entryPoint},
+      FieldAlignedTraceTraversalState{first.sourceFace, first.branch,
+                                      std::nullopt, first.entryPoint},
+      FieldAlignedTraceTraversalState{first.sourceFace, first.branch,
+                                      first.incomingCarrier,
+                                      differentEntry.entryPoint},
+  }};
+  for (const auto &tampered : oneFieldTampered) {
+    FieldAlignedCandidateTrace tamperedTrace = makeTrace();
+    FieldAlignedTraceTraversalGuard tamperedGuard(16U);
+    auto firstPublication = publish_field_aligned_trace_traversal_state(
+        tamperedTrace, tamperedGuard, first);
+    ASSERT_TRUE(std::holds_alternative<
+                FieldAlignedTraceTraversalPublicationStatus>(firstPublication));
+    EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::Advanced,
+              std::get<FieldAlignedTraceTraversalPublicationStatus>(
+                  firstPublication));
+    auto tamperedPublication = publish_field_aligned_trace_traversal_state(
+        tamperedTrace, tamperedGuard, tampered);
+    ASSERT_TRUE(std::holds_alternative<
+                FieldAlignedTraceTraversalPublicationStatus>(
+        tamperedPublication));
+    EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::Advanced,
+              std::get<FieldAlignedTraceTraversalPublicationStatus>(
+                  tamperedPublication));
+    EXPECT_FALSE(tamperedTrace.terminalLimitCycle.has_value())
+        << "changing any load-bearing exact-state field must prevent S3 credit";
+    auto exactRepeatPublication = publish_field_aligned_trace_traversal_state(
+        tamperedTrace, tamperedGuard, first);
+    ASSERT_TRUE(std::holds_alternative<
+                FieldAlignedTraceTraversalPublicationStatus>(
+        exactRepeatPublication));
+    EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::LimitCycleTermination,
+              std::get<FieldAlignedTraceTraversalPublicationStatus>(
+                  exactRepeatPublication));
+    ASSERT_TRUE(tamperedTrace.terminalLimitCycle.has_value());
+    EXPECT_EQ(expected, *tamperedTrace.terminalLimitCycle);
+  }
+
+  FieldAlignedCandidateTrace recurrenceTrace = makeTrace();
+  FieldAlignedTraceTraversalGuard recurrenceGuard(1024U);
+  for (const int numerator : {1, 2}) {
+    const FieldAlignedTraceTraversalState state{
+        face, branch, edge, boundary_point(edge, numerator, 7)};
+    auto result = publish_field_aligned_trace_traversal_state(
+        recurrenceTrace, recurrenceGuard, state);
+    ASSERT_TRUE(std::holds_alternative<
+                FieldAlignedTraceTraversalPublicationStatus>(result));
+    EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::Advanced,
+              std::get<FieldAlignedTraceTraversalPublicationStatus>(result));
+  }
+  const FieldAlignedTraceTraversalState recurrenceThird{
+      face, branch, edge, boundary_point(edge, 3, 7)};
+  auto recurrenceResult = publish_field_aligned_trace_traversal_state(
+      recurrenceTrace, recurrenceGuard, recurrenceThird);
+  ASSERT_TRUE(
+      std::holds_alternative<FieldAlignedCurveNetworkError>(recurrenceResult));
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::TraceCombinatorialRecurrenceExceeded,
+            std::get<FieldAlignedCurveNetworkError>(recurrenceResult).code);
+  EXPECT_FALSE(recurrenceTrace.terminalLimitCycle.has_value());
+
+  FieldAlignedCandidateTrace boundedTrace = makeTrace();
+  FieldAlignedTraceTraversalGuard boundedGuard(1U);
+  auto boundedFirst = publish_field_aligned_trace_traversal_state(
+      boundedTrace, boundedGuard, first);
+  ASSERT_TRUE(std::holds_alternative<
+              FieldAlignedTraceTraversalPublicationStatus>(boundedFirst));
+  EXPECT_EQ(FieldAlignedTraceTraversalPublicationStatus::Advanced,
+            std::get<FieldAlignedTraceTraversalPublicationStatus>(boundedFirst));
+  const FieldAlignedTraceTraversalState boundedSecond{
+      otherFace, branch, edge, boundary_point(edge, 1, 3)};
+  auto boundedResult = publish_field_aligned_trace_traversal_state(
+      boundedTrace, boundedGuard, boundedSecond);
+  ASSERT_TRUE(
+      std::holds_alternative<FieldAlignedCurveNetworkError>(boundedResult));
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::TraceStepBudgetExhausted,
+            std::get<FieldAlignedCurveNetworkError>(boundedResult).code);
+  EXPECT_FALSE(boundedTrace.terminalLimitCycle.has_value());
+
+  std::cout
+      << "m4CpScaleS3;exactRepeat=LimitCycleTermination"
+         ";differentExactEntry=Advanced;loadBearingTamperCount=4"
+         ";combinatorialRecurrence=TraceCombinatorialRecurrenceExceeded"
+         ";stepBudget=TraceStepBudgetExhausted\n";
+}
+
 TEST(ResolvedBranchCorrection,
      TraceTraversalFailsClosedOnPositionFreeCombinatorialRecurrence) {
   using namespace directional::geometry::surface_cell_tracing_detail;
@@ -15259,6 +15409,7 @@ TEST(TraceTerminationCorrection,
   static_assert(static_cast<std::uint8_t>(Kind::SingularityTermination) == 4U);
   static_assert(static_cast<std::uint8_t>(Kind::SingularityPortJunction) == 5U);
   static_assert(static_cast<std::uint8_t>(Kind::TraceSelfClosure) == 6U);
+  static_assert(static_cast<std::uint8_t>(Kind::LimitCycleTermination) == 7U);
 
   Cp3bEventFixture fixture = build_cp3b_event_fixture();
   ASSERT_TRUE(fixture.network.has_value());

@@ -433,6 +433,15 @@ struct FieldAlignedTerminalContact {
   auto operator<=>(const FieldAlignedTerminalContact &) const = default;
 };
 
+struct FieldAlignedLimitCycleTermination {
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  authority::FieldBoundaryPoint entryPoint;
+
+  auto operator<=>(const FieldAlignedLimitCycleTermination &) const = default;
+};
+
 struct FieldAlignedCandidateTrace {
   FieldAlignedCandidateTrace(
       authority::TraceId traceId, authority::SingularityPortId portId,
@@ -455,6 +464,7 @@ struct FieldAlignedCandidateTrace {
   std::optional<authority::FieldBoundaryPoint> terminalPoint;
   std::optional<authority::FieldSingularityId> terminalSingularity;
   std::optional<FieldAlignedTerminalContact> terminalContact;
+  std::optional<FieldAlignedLimitCycleTermination> terminalLimitCycle;
 
   auto operator<=>(const FieldAlignedCandidateTrace &) const = default;
 };
@@ -474,6 +484,7 @@ enum class FieldAlignedNetworkEventKind : std::uint8_t {
   SingularityTermination = 4,
   SingularityPortJunction = 5,
   TraceSelfClosure = 6,
+  LimitCycleTermination = 7,
 };
 
 enum class FieldAlignedTraceEventRole : std::uint8_t {
@@ -1077,6 +1088,27 @@ private:
   std::set<FieldAlignedTraceTraversalState> visited_;
   std::map<FieldAlignedTraceCombinatorialState, std::size_t> combinatorialVisits_;
 };
+
+enum class FieldAlignedTraceTraversalPublicationStatus : std::uint8_t {
+  Advanced = 0,
+  LimitCycleTermination = 1,
+};
+
+using FieldAlignedTraceTraversalPublicationResult =
+    std::variant<FieldAlignedTraceTraversalPublicationStatus,
+                 FieldAlignedCurveNetworkError>;
+
+/**
+ * Publish the semantic outcome of observing one exact traversal state. Only a
+ * complete repeat of (sourceFace, branch, incomingCarrier, exact entryPoint)
+ * becomes a typed limit-cycle terminal. Position-free recurrence and the step
+ * budget remain fail-closed errors. This is the production projection seam
+ * used by the canonical tracer and the S3 contract test.
+ */
+[[nodiscard]] FieldAlignedTraceTraversalPublicationResult
+publish_field_aligned_trace_traversal_state(
+    FieldAlignedCandidateTrace &trace, FieldAlignedTraceTraversalGuard &guard,
+    const FieldAlignedTraceTraversalState &state);
 
 /**
  * @brief Deterministic magnitude policy for exact continuation values.
