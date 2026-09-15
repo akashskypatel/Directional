@@ -43,5 +43,5 @@ jobs:
       patch_sha256: acdc09e10411a8151f5a9f552d73b36d31c3d2931e22de448788dab48fe818cc
       base_sha: 5ea774538567db82058067826e48b3ffc1fd97f2
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close M4-CP-SCALE-TB5 review and plan CB7
+      commit_message: "docs: close M4-CP-SCALE-TB5 review and plan CB7"
     secrets: inherit
