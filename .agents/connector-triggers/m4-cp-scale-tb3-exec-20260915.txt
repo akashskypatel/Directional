@@ -1,0 +1,5 @@
+M4-CP-SCALE-TB3-EXEC trigger.
+Frozen candidate artifact: 10375799491
+Frozen candidate semantic source: ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b
+Orchestration base: de7c573955578fb8ec599233870e83cda0e910dd
+Retry: 0
