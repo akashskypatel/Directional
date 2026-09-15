@@ -22,7 +22,7 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-15, `M4-CP-SCALE-TB4-REV`):** package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` / selector423 **423/423** is accepted current M4 runtime authority. Fresh TB4-R1 proves focused S2 **1/1 PASS** plus the full accepted selector and exact immutable postflight; Review accepts the S2 vertex-star contract for publication but not yet cumulative selector credit. S1 remains diagnostic/decision-neutral with no numeric threshold. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is publication-only `M4-CP-SCALE-CB6` to create selector424 = exact selector423 prefix + S2 row424 and compile/package without semantic source changes.
+> **Current milestone authority (2026-09-15, after `M4-CP-SCALE-CB6`):** package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` / selector423 **423/423** remains accepted current M4 runtime authority. CB6 published candidate selector424 (SHA-256 `f202a172...466ca`, exact selector423 prefix + S2 row424, owner census **30/278/75/41**) and compile-proved candidate artifact `10407605295` / source `0d8e4aa...678d3` with GMP/GMPXX and `runtimeExecution=false`; no runtime promotion occurred. S1 remains diagnostic/decision-neutral with no numeric threshold. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M4-CP-SCALE-TB5-EXEC`, then mandatory Review.
 
 **Currency.** `M4-CP-SCALE-TB4-REV`, 2026-09-15 UTC.
 
@@ -70,7 +70,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. M4-CP-SCALE remains OPEN.** `M4-CP-SCALE-TB4-REV` promotes package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` as current M4 runtime authority under unchanged selector423 **423/423** (`4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`). Accepted predecessor selector422 remains `bbd496f3...f7cc`; first408 remains accepted selector408 `c689c0cd...484`. Stable accounting is **49 / 14 / 35**, produced-witness debt **5**.
+**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. M4-CP-SCALE remains OPEN.** `M4-CP-SCALE-TB4-REV` remains the accepted runtime authority at package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` under selector423 **423/423** (`4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`). CB6 has subsequently published selector424 and compile-proved candidate artifact `10407605295`, but runtime acceptance is pending TB5 + Review. Accepted predecessor selector422 remains `bbd496f3...f7cc`; first408 remains accepted selector408 `c689c0cd...484`. Stable accounting is **49 / 14 / 35**, produced-witness debt **5**.
 
 S1 remains an accepted threshold-free diagnostic: the retained active maximum is 429 bits, but the witness domain is not a numeric safety envelope; `M4-CP-SCALE-TB1-REV-OBS-01` carries calibration and 4096 remains an operational fail-closed guard only.
 

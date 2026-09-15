@@ -1,5 +1,11 @@
 # M4 Consolidated Record
 
+## 0.3 CP-SCALE CB6 — selector424 publication compile-proved; runtime acceptance pending
+
+`M4-CP-SCALE-CB6` publishes selector424 as exact selector423 prefix plus S2 row424. Exact selector424 SHA-256 is `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`; static owner census is **30/278/75/41**. Compile run/job `34994665690 / 104467833192` produced immutable candidate artifact `10407605295` from exact source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3`, GMP/GMPXX, package manifest 28/28, `runtimeExecution=false`, with no product/test/fixture/CMake semantic change.
+
+This does not supersede accepted runtime authority. Package `10378808176` / selector423 remains accepted until `M4-CP-SCALE-TB5-EXEC` proves cumulative 424/424 and mandatory Review adjudicates promotion. Stable accounting remains **49 / 14 / 35**, debt **5**; S3-S5 remain open.
+
 **Status:** CURRENT M4 FAMILY RECORD
 **Last updated:** 2026-09-15 at `M4-CP-SCALE-TB4-R1-EXEC`
 

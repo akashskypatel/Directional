@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND CLOSED/ACCEPTED; CP-SCALE package10378808176 PROMOTED under selector423; S2 PUBLICATION AUTHORIZED; NEXT `M4-CP-SCALE-CB6`** |
+| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND CLOSED/ACCEPTED; CP-SCALE package10378808176 remains accepted under selector423; selector424 candidate PUBLISHED + COMPILE GREEN; NEXT `M4-CP-SCALE-TB5-EXEC`** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -224,7 +224,7 @@ The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c25
 
 ## 8. M4 — global conformity plan
 
-**Status: CP3 CLOSED / ACCEPTED; CP-COND CLOSED / ACCEPTED; CP-SCALE OPEN; exact next `M4-CP-SCALE-CB6`.** Current accepted M4 runtime authority is package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` with selector423 **423/423** (`4e67e4dc...d89343`). TB4 Review independently validates fresh focused S2 1/1 plus selector423 423/423 and exact immutable postflight, promotes the package, and authorizes S2 selector publication without granting cumulative selector credit. Stable accounting is **49 / 14 / 35**, debt **5**.
+**Status: CP3 CLOSED / ACCEPTED; CP-COND CLOSED / ACCEPTED; CP-SCALE OPEN; exact next `M4-CP-SCALE-TB5-EXEC`.** Current accepted M4 runtime authority is package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` with selector423 **423/423** (`4e67e4dc...d89343`). TB4 Review independently validates fresh focused S2 1/1 plus selector423 423/423 and exact immutable postflight, promotes the package, and authorizes S2 selector publication without granting cumulative selector credit. Stable accounting is **49 / 14 / 35**, debt **5**.
 
 Production-baseline A3 remains the family/sign-free exact shared subdivision + region parity authority frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` §17. CP3 has already re-proved and production-wired that semantic core through A4. CP-COND has already established the exact certified raw→conditioned pre-A0 boundary and closed on selector423.
 

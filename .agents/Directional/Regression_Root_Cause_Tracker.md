@@ -1,3 +1,9 @@
+## 2026-09-15 — `M4-CP-SCALE-CB6`: publication/compile GREEN; no runtime regression adjudication
+
+- **No runtime was executed.** CB6 adds no stable regression event/category/recurrence and cannot close/open semantic runtime candidates. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+- `M4-CP-SCALE-TB4-REV-OBS-01` remains **OPEN / PUBLICATION PART SATISFIED / CUMULATIVE RUNTIME + REVIEW OWED / NON-STABLE**. Selector424 is now published exactly at SHA-256 `f202a172...466ca`, prefix423 is unchanged, row424 is the S2 identity, and compile/package is GREEN on candidate artifact `10407605295`. Falsifier/closure condition is still fresh artifact-only selector424 **424/424** with exact postflight followed by `M4-CP-SCALE-TB5-REV`.
+- Accepted runtime authority remains package `10378808176` / selector423 until Review. No product/test/fixture/CMake semantic bytes changed in CB6.
+
 ## 2026-09-15 — `M4-CP-SCALE-TB4-REV`: package promoted; S2 publication authorized; cumulative selector credit still owed
 
 - **Review decision:** **PROMOTE PACKAGE / ACCEPT FOCUSED S2 CONTRACT FOR PUBLICATION / SELECTOR423 PRESERVED / CP-SCALE OPEN**. Fresh immutable TB4-R1 run/job `34979463245 / 104415713013` proves focused S2 **1/1 PASS**, selector423 **423/423 PASS**, zero runtime-process anomalies and exact immutable postflight on package `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`.

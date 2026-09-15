@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB4-REV
-Status: COMPLETE / PACKAGE PROMOTED / S2 PUBLICATION AUTHORIZED / SELECTOR423 PRESERVED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-CB6
+Status: COMPLETE / SELECTOR424 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB6
+Canonical next turn: M4-CP-SCALE-TB5-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -48,15 +48,21 @@ The first TB4 attempt remains orchestration-invalid/provenance-only. Its fixture
 
 Package `10378808176` is accepted under unchanged selector423. **S2 is not yet cumulative selector credit:** the focused process ran outside selector423. `M4-CP-SCALE-TB4-REV-OBS-01` therefore requires exact selector424 publication + fresh cumulative 424/424 artifact-only proof + Review before S2 receives required-green selector acceptance.
 
-## Exact next — `M4-CP-SCALE-CB6`
+## CB6 closeout — selector424 published; compile/package GREEN; runtime unadjudicated
 
-Execute `.agents/Directional/Architecture_M4_CP_SCALE_CB6_Selector424_Publication_Code_Build_Plan.md` as a one-variable selector-publication + compile/package turn.
+`M4-CP-SCALE-CB6` completed the one-variable publication turn. `Architecture_M4_CP_SCALE_CB6_Required_Green_Selector_424.txt` is exactly 424 LF rows with SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`; rows1-423 remain byte-identical to accepted selector423 SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`, and row424 is exactly `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`. Unique static ownership is **30 authority-kernel / 278 producer / 75 completion / 41 validation**.
 
-Authorized semantic mutation: create exactly one new selector424 file whose rows1-423 are byte-identical to accepted selector423 and whose row424 is exactly `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`. Expected static owner census becomes **30 authority-kernel / 278 producer / 75 completion / 41 validation**.
+Compile run/job `34994665690 / 104467833192` built exact source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` through the durable GMP/GMPXX reusable workflow. Result artifact `10407605295` has provider SHA-256 `29f68b3880fb9d2d521aa74541112af9de5d35fdc982decfdbc8067305e747e5`; log artifact `10406473227` has provider SHA-256 `517ab8efbcebef96c30ca55a5caa7c85bc94467933d164a94f66b3e977dae00d`; packaged source archive SHA-256 is `55bbe23520e7398fcf2e639623492007d445dd219ca1960cb5f63b301cd7b0c3`. Package `SHA256SUMS` verifies **28/28**, all eight approved compile targets completed, source status receipts are empty, and `runtimeExecution=false`. No Directional binary/test/benchmark/discovery command ran. Reviewed test/CMake source bytes match entering authority; no product/test/fixture/CMake semantic change was made.
 
-No production source, test source, fixture, benchmark, CMake/build semantic, accepted selector423, S1, S2 arrival, S3/S4/S5 or reusable-workflow permission change is authorized. Compile/package through the durable reusable GMP/GMPXX workflow only, with `runtimeExecution=false`. If GREEN, exact next is artifact-only `M4-CP-SCALE-TB5-EXEC` on the new immutable package, followed by mandatory Review.
+This package is a **candidate only**. Accepted runtime authority remains package `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936` under selector423 until fresh cumulative selector424 runtime proof and mandatory Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
-CP-SCALE remains OPEN even after S2 publication because S3, S4 and S5 are separate exit obligations.
+## Exact next — `M4-CP-SCALE-TB5-EXEC`
+
+Execute `.agents/Directional/Architecture_M4_CP_SCALE_TB5_Artifact_Only_Test_Benchmark_Plan.md` against immutable candidate artifact `10407605295` / exact source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3`. Verify package/source/selector provenance before runtime, then execute selector424 cumulatively in exact row order with one fresh exact-filter process per row and require **424/424 PASS** with zero RED/SKIP/timeout/crash/selection mismatch/unexecuted plus exact immutable postflight. Row424 must run freshly; TB4-R1 focused S2 proof may not be imported as cumulative credit.
+
+TB5-EXEC is execution/evidence only: no configure/compile/relink/repair/discovery, no source/fixture/selector mutation, and no promotion decision. Mandatory successor is `M4-CP-SCALE-TB5-REV`, which alone may accept selector424/package authority or discharge `M4-CP-SCALE-TB4-REV-OBS-01`.
+
+CP-SCALE remains OPEN after S2 because S3, S4 and S5 are separate exit obligations.
 
 ## Carried obligations
 
@@ -77,22 +83,19 @@ CP-SCALE remains OPEN even after S2 publication because S3, S4 and S5 are separa
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M4_CP_SCALE_CB6_Selector424_Publication_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_Review_Record.md
-  - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
-project_plan:
-  - .agents/Directional/M4_Consolidated_Record.md
-  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_TB5_Artifact_Only_Test_Benchmark_Plan.md
 conditional_modules:
   - trigger: GitHub connector/workflow/artifact work
     path: .agents/Directional/GitHub_Workflow_Policy.md
 deep_references:
-  - .agents/Directional/Architecture_M4_CP_SCALE_TB4_R1_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md
   - .agents/Directional/Required_Green_Selector_Manifest.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - TODO.md
+templates_when_producing:
+  - artifact-only TB result/log evidence required by the TB5 plan
 do_not_preload:
   - folded TB1/TB2/TB3 CP-SCALE per-turn records
-  - consumed CB4/TB4-EXEC/CB5/TB4-R1-EXEC plans
+  - consumed CB4/TB4-EXEC/CB5/TB4-R1-EXEC/CB6 plans
   - unrelated historical milestone reports
 ```
