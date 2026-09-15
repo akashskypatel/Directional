@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-TB4-REV
-purpose=apply-reviewed-documentation-patch
-base_sha=6017037103a46c588e1caf8b3657657bf97c4129
-patch_sha256=eecfadd8b11e9b8ac8d4ca5010c2a7a452861dd8d90f4f85826c685f22975cfa

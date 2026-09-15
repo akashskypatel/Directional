@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB4-REV
-requested_source=06c887e8a651535eb881416355727cd212bff13d
-purpose=review-source-snapshot
