@@ -1,0 +1,2 @@
+# M4-CP-SCALE-CB7 post-closeout payload cleanup
+.agents/Directional/turn-payloads/M4-CP-SCALE-CB7-final-comment.md
