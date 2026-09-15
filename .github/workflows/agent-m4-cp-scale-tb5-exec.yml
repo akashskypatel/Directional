@@ -1,0 +1,132 @@
+name: Agent M4 CP SCALE TB5 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb5-exec/trigger.txt
+
+permissions:
+  contents: write
+  actions: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp-scale-tb5-exec
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp-scale-tb5-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb5-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp-scale-tb5-exec-workflow.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" \
+            'turnBoundary=Test+Benchmark-artifact-only' \
+            'configureExecution=false' \
+            'compileExecution=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact orchestration source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Verify frozen TB5 payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp-scale-tb5-exec-workflow.log"
+          exec > >(tee -a "$log") 2>&1
+          payload='.agents/Directional/turn-payloads/m4-cp-scale-tb5-exec.sh'
+          test -f "$payload"
+          test "$(sha256sum "$payload" | awk '{print $1}')" = '4200a5a59688e390d65087364a43ac5178854b1efafd33f6accf3891823922d4'
+          bash -n "$payload"
+          git status --short
+
+      - name: Execute immutable selector424 artifact-only gate
+        id: tb5
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+        shell: bash
+        run: |
+          set -o pipefail
+          log="${RUNNER_TEMP}/m4-cp-scale-tb5-exec-workflow.log"
+          exec > >(tee -a "$log") 2>&1
+          bash .agents/Directional/turn-payloads/m4-cp-scale-tb5-exec.sh
+
+      - name: Upload TB5 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb5-exec-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/tb5-publish/result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB5 detailed log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb5-exec-log-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/tb5-publish/log
+            ${{ runner.temp }}/m4-cp-scale-tb5-exec-workflow.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m4-cp-scale-tb5-exec-workflow.log"
+          {
+            echo "tb5_outcome=${{ steps.tb5.outcome }}"
+            echo "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)"
+            git status --short 2>&1 || true
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Propagate TB5 status
+        if: always()
+        env:
+          TB5_OUTCOME: ${{ steps.tb5.outcome }}
+        shell: bash
+        run: |
+          test "$TB5_OUTCOME" = success
