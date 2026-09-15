@@ -731,3 +731,24 @@ Exact successor is `M4-CP-SCALE-CB3`: test-source-only S2 authority repair. It m
 Historical citations remain resolvable through this index and git history. No selector file, durable policy, frozen definition, accepted TB1 runtime-authority report or unresolved evidence was folded.
 
 Current retained CP-SCALE authority is `Architecture_M4_CP_SCALE_Frozen_Definitions.md`, accepted `Architecture_M4_CP_SCALE_TB1_Artifact_Only_Test_Benchmark_Report.md`, current `Architecture_M4_CP_SCALE_TB2_Review_Record.md`, next `Architecture_M4_CP_SCALE_CB3_Code_Build_Plan.md`, this consolidated record, selector authority and the regression tracker/changelogs. Full text of folded documents remains recoverable from git history.
+
+## 2.51 `M4-CP-SCALE-CB3 + TB3-EXEC + TB3-REV` — production-derived matching still exposes invalid regular-star field; candidate rejected
+
+CB3 changed only `tests/FieldAlignedCurveNetworkTests.cpp` semantically at source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b`, moving S2 matching/effort/singularity derivation through production cross-field finalization and retaining the six-subject exact comparator oracle. Compile run `34915185539` was GREEN with GMP/GMPXX and `runtimeExecution=false`; candidate artifact `10375799491` has SHA-256 `60e84d9b630a8a59574b330e83f80120000973f91a011272a743ce6bdbac5379`, 28/28 root manifest SHA-256 `2f52b377f0a26bd1d474ed64e41a2fd5096b5ad102c4ff802691dd1969246cfb`, and source archive SHA-256 `4ec9c7888621fbb0b51cff7173a8ef678c6351a5f3a88988fc0d1b590aee1e2d`. Selector423 remained byte-identical.
+
+TB3 artifact-only run/job `34917763195 / 104219037828` selected focused S2 exactly once and stopped before comparator credit: center lift `1` vs expected `0`, matching-cycle quarter-turn `2` vs `0`, supplied center singularity true, atlas `CycleTransportMismatch`. Selector423 executed 0/423, but the corrected fail-fast harness preserved all 423 rows explicitly UNEXECUTED with owner census 30/277/75/41 and exact immutable postflight. Result/log artifacts `10376198415 / 10376118600` have SHA-256 `1dff929087652a6bc6928d378e43d638b93fd6ec0fae83e64ae7d5a2e69bbb86` / `226d4dd8a54fa3f99b44e4231c4ee8b8177047e1c071b7983b5c3ba4cc8671e8`; nested evidence SHA-256 is `cbbf645a8572d07a1b91caabcc1dbead771eddc06254dcc093ced8271bfd72a2`. `M4-CP-SCALE-TB2-REV-OBS-01` is therefore discharged.
+
+TB3 Review rejects candidate `10375799491` **TEST-AUTHORITY PRECONDITION FAILURE / DUPLICATE KNOWN ROOT / NON-STABLE**. The cone center has `K=pi/2`; the CB3 authored cross derives aggregate cycle effort `0` rather than regularity-required `-4K=-2*pi`, so `principal_matching` correctly derives lift `1`/singularity. Face 2 also hand-authors a reversed secondary tangent orientation, but correcting handedness alone still leaves zero cycle effort/lift1. The controlling root remains `M3-CP4c3-TB7-CAND-02` / Lesson 22r, not a product defect. Accepted runtime authority remains package `10360085644` / selector423 423/423; stable accounting remains 49/14/35, debt 5.
+
+Exact next is `M4-CP-SCALE-CB4`, test source only: independently certify consistent cross handedness and `q4` winding `-1` / aggregate effort `-2*pi`, center lift and matching composition zero, no center singularity, atlas + arrival success, then preserve the six-subject Filter/ExactFallback exact oracle and compile/package only. `M4-CP-SCALE-TB2-REV-OBS-02` and all other unrelated obligations remain separately owned.
+
+### CP-SCALE TB3 Review folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP_SCALE_TB2_Review_Record.md` | 171 | **SUPERSEDED/FOLDED AFTER TB3 REVIEW.** TB2 invalid zero-transport diagnosis, OBS-01/OBS-02 and CB3 routing are preserved in §§2.50-2.51, tracker, current Review and handoff. |
+| `Architecture_M4_CP_SCALE_CB3_Code_Build_Plan.md` | 146 | **CONSUMED/FOLDED AFTER TB3 REVIEW.** Test-only authority scope, regular-center preconditions, compile/package boundary and TB3 control requirements are preserved in §2.51 and the current Review/CB4 plan. |
+| `Architecture_M4_CP_SCALE_TB3_EXEC_Test_Benchmark_Plan.md` | 97 | **CONSUMED/FOLDED AFTER EXEC + REVIEW.** Artifact-only ordering, preinitialized selector remainder, fail-fast and immutable postflight contract are preserved in §2.51/current Review. |
+| `Architecture_M4_CP_SCALE_TB3_EXEC_Artifact_Only_Test_Benchmark_Report.md` | 115 | **FOLDED AFTER TB3 REVIEW.** Runtime identities, pre-comparator RED, 423-row UNEXECUTED remainder and immutable evidence are preserved in §2.51, tracker and current Review. |
+
+Frozen CP-SCALE definitions and the accepted TB1 artifact-only runtime report remain retained authority.

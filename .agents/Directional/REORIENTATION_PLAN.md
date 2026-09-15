@@ -1,15 +1,15 @@
-> **Current milestone authority (2026-09-14, `M4-CP-SCALE-TB1-REV`):** M1-M3 remain CLOSED / ACCEPTED; M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Package `10360085644` / selector423 **423/423** is accepted current M4 runtime authority. CP-SCALE S1 diagnostic instrumentation is accepted without a numeric threshold; exact next is bounded S2 vertex-star `M4-CP-SCALE-CB2`. Stable accounting **49 / 14 / 35**, debt **5**.
+> **Current milestone authority (2026-09-15, `M4-CP-SCALE-TB3-REV`):** M1-M3 remain CLOSED / ACCEPTED; M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Package `10360085644` / selector423 **423/423** remains accepted M4 runtime authority. TB3 candidate `10375799491` is rejected as duplicate non-flat regular-star test-authority failure / non-stable; exact next is bounded test-only `M4-CP-SCALE-CB4`. Stable accounting **49 / 14 / 35**, debt **5**.
 
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap
 **Normative design:** `.agents/Directional/DESIGN.md`
 **Accepted authority:** current M4 package `10360085644` / selector423 **423/423**; CP-COND predecessor package `10331193451` remains historical accepted authority; M3 package113/TB48 remains the milestone-closure predecessor with accepted selector365 **365/365**.
-**Decision:** Historical M4-CP1/CP2 framed closures remain factual; CP3 and CP-COND are now closed/accepted. CP-SCALE is open: S1 diagnostic measurement is accepted but uncalibrated, and the exact next bounded slice is S2 vertex-star `M4-CP-SCALE-CB2`. M3 is not reopened.
+**Decision:** Historical M4-CP1/CP2 framed closures remain factual; CP3 and CP-COND are closed/accepted. CP-SCALE is open: S1 remains accepted diagnostic-only, S2 remains unproved after TB3 Review rejects candidate `10375799491`, and exact next is `M4-CP-SCALE-CB4` test-authority correction. M3 is not reopened.
 
 **Updated 2026-08-26 after `M3-CP4c-0-TB-R2`.** Authoritative retry 1 `32914546494 / 98015432540` passed identities **1–328** and failed ordinal **329**, `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The immutable diagnostic shows numeric branch loci emitted as control characters because `FieldBranch::value()` is `std::uint8_t` and the test/witness stream inserts it directly as a character. Q8 was correctly **NOT RUN** because 338/338 was not green. Exact next is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**; no semantic rerun or correction precedes that review. The checkpoint map is `ROADMAP.md`.
 **M1 exit gate:** retained in section 5.1 as the gate-authoring pattern. **Retry budget: ABOLISHED 2026-08-25.** A diagnosed orchestration defect may be corrected without consuming semantic authority; deterministic semantic red does not rerun inside TB. Cumulative package cost is reported, not gated; M3 has **41 packages**.
-**Last updated:** 2026-09-14 UTC
+**Last updated:** 2026-09-15 UTC
 
 Repository authority: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8. Keep the PR open, draft, and unmerged until separately authorized.
 
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND CLOSED/ACCEPTED; CP-SCALE S1 reviewed; NEXT `M4-CP-SCALE-CB2`** |
+| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND CLOSED/ACCEPTED; CP-SCALE TB3 candidate rejected; NEXT `M4-CP-SCALE-CB4`** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
@@ -224,13 +224,13 @@ The accepted predecessor into M4 is selector **365**, LF SHA-256 `6b5b6555d39c25
 
 ## 8. M4 — global conformity plan
 
-**Status: CP3 CLOSED / ACCEPTED; CP-COND CLOSED / ACCEPTED; CP-SCALE OPEN; exact next `M4-CP-SCALE-CB2`.** Current accepted M4 runtime authority is package `10360085644` / semantic source `a359b981f9350139304bc5a654041dfba78609b6` with selector423 **423/423** (`4e67e4dc...d89343`). Stable accounting is **49 / 14 / 35**, debt **5**.
+**Status: CP3 CLOSED / ACCEPTED; CP-COND CLOSED / ACCEPTED; CP-SCALE OPEN; exact next `M4-CP-SCALE-CB4`.** Current accepted M4 runtime authority is package `10360085644` / semantic source `a359b981f9350139304bc5a654041dfba78609b6` with selector423 **423/423** (`4e67e4dc...d89343`). TB3 Review rejects candidate `10375799491` as duplicate non-flat regular-star test-authority failure / non-stable. Stable accounting is **49 / 14 / 35**, debt **5**.
 
 Production-baseline A3 remains the family/sign-free exact shared subdivision + region parity authority frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` §17. CP3 has already re-proved and production-wired that semantic core through A4. CP-COND has already established the exact certified raw→conditioned pre-A0 boundary and closed on selector423.
 
 **CP-SCALE current state.** Frozen S1-S5 semantics live in `Architecture_M4_CP_SCALE_Frozen_Definitions.md`. TB1 Review accepts S1's passive GMP exact trace-entry census as deterministic/decision-neutral and promotes package `10360085644`, but explicitly freezes no numeric bound: observed maximum 429 bits is witness-domain evidence only and 4096 remains an operational guard. `M4-CP-SCALE-TB1-REV-OBS-01` carries calibration before any future S1 numeric gate.
 
-The next eligible surface is S2 vertex-star certified-filter equivalence. `M4-CP-SCALE-CB2` must author one independent exact-oracle matrix exercising both Filter and ExactFallback routes, compile/package only, preserve production semantics and selector423, and stop if a production/API change would be required. Arrival ordering remains blocked until a same-seam exact fallback owner is frozen; S3/S4/S5 retain their exact-repeat/incremental-oracle/genus>=2 preconditions.
+S2 remains the next eligible surface. TB2 and TB3 both stop before comparator credit on test authority. `M4-CP-SCALE-CB4` must author a consistently right-handed non-flat regular-star field with independent `q4` winding `-1` / aggregate effort `-2*pi`, prove zero center lift/no singularity/atlas+arrival success, preserve the six-subject independent Filter/ExactFallback oracle, and compile/package only with unchanged selector423. Arrival ordering remains blocked until a same-seam exact fallback owner is frozen; S3/S4/S5 retain their exact-repeat/incremental-oracle/genus>=2 preconditions.
 
 ### Produced-witness debt is tracked per blocker
 

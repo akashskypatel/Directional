@@ -1,3 +1,7 @@
+## 2026-09-15 — `M4-CP-SCALE-TB3-REV`: candidate rejected; regular-star invariant still false
+
+Runtime-free Review independently re-opened TB3 evidence and candidate source and rejects package `10375799491` / source `ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b` as **TEST-AUTHORITY PRECONDITION FAILURE / DUPLICATE KNOWN ROOT / NON-STABLE**. The three-right-angle center has `K=pi/2`, while CB3's authored field derives aggregate cycle effort `0`, so production correctly yields center lift `1`, a singular center and `CycleTransportMismatch`; face 2 also reverses secondary handedness. This is the existing `M3-CP4c3-TB7-CAND-02` / TB2 / Lesson 22r root, not a product comparator defect. TB3's 423/423 explicit UNEXECUTED failure-path remainder discharges `M4-CP-SCALE-TB2-REV-OBS-01`. Accepted package `10360085644` / selector423 423/423 remains authority; stable accounting stays **49 / 14 / 35**, debt **5**. Exact next is test-only `M4-CP-SCALE-CB4`: independently certify consistent handedness plus `q4` winding `-1` / cycle effort `-2*pi`, zero lift/no singularity/atlas+arrival success, preserve the six-subject Filter/ExactFallback oracle, then compile/package only.
+
 ## 2026-09-14 — `M4-CP-SCALE-CB2`: independent S2 vertex-star oracle authored; candidate package compile GREEN
 
 ## 2026-09-14 — `M4-CP-SCALE-TB2-REV`: S2 candidate rejected; known non-flat helper precondition
