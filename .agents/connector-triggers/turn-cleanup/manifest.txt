@@ -1,0 +1,3 @@
+# M4-CP-SCALE-CB3 turn cleanup
+# All temporary workflow callers/markers were already retired workflow-first.
+# Keep .agents/Directional/turn-payloads/m4-cp-scale-tb3-exec.sh: it is the frozen next-turn payload.
