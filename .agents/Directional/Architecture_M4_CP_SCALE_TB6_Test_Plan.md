@@ -16,6 +16,25 @@ Accepted selector424 remains the cumulative regression authority and must stay
 byte-for-byte unchanged at SHA-256
 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`.
 
+### Frozen CB7 candidate authority
+
+TB6 must consume **exactly** the CB7 GREEN package produced by compile run/job
+`35022869891 / 104562750677`:
+
+- result artifact `10418328122`, provider SHA-256
+  `a9f33bce6029022495fccbc4680da9bdd25cf41aa5cc733b2c04335e156ac16e`;
+- exact semantic source `153047c3f92e9b9b784e11eaee1ede2de5628470`;
+- packaged source archive SHA-256
+  `703dcc22f18ed565b623ef4eb43e117cd8acfd5d982ed0bde111d5cfdd56e0ff`;
+- root `SHA256SUMS` SHA-256
+  `d5e2e620f3e5a9e78f4b646be95f872dd78ab8cbee7fe726156abf8249d6d5ad`,
+  verified **28/28**;
+- compile metadata `runtimeExecution=false`, `turnBoundary=Code+Build-only`,
+  `exactArithmeticBackend=GMP`.
+
+Any different package/source is an authority mismatch and must STOP as BLOCKED;
+do not rebuild or substitute a newer branch head inside TB6.
+
 ## Immutable preflight
 
 Before executing any generated binary:

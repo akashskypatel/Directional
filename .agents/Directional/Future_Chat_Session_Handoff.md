@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB5-REV
-Status: COMPLETE / PACKAGE10407605295 PROMOTED / SELECTOR424 ACCEPTED 424/424 / S2 CUMULATIVE CREDIT ACCEPTED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-CB7
+Status: COMPLETE / S3 TYPED LIMIT-CYCLE CANDIDATE COMPILE GREEN / RUNTIME UNADJUDICATED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB7
+Canonical next turn: M4-CP-SCALE-TB6-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -40,15 +40,40 @@ TB5 run/job `35002009539 / 104492480074` executed selector424 as 424 fresh exact
 
 Review independently re-hashed selector424/prefix423, re-derived all 424 owners from packaged source+CMake, independently parsed the complete process ledger, re-derived the six-subject S2 exact-oracle/route matrix, and source-audited the certified filter as defer-only with recursive exact fallback. Row424 ran freshly. `M4-CP-SCALE-TB4-REV-OBS-01` is **DISCHARGED** and S2 vertex-star now has cumulative selector credit. No regression/candidate is opened.
 
-CP-SCALE remains OPEN. S1 remains threshold-free diagnostic; S2 arrival exact fallback remains blocked; S3 exact full-state typed limit-cycle publication is next; S4 independent incremental oracle and S5 genus>=2 witness remain open.
+CP-SCALE remains OPEN. S1 remains threshold-free diagnostic; S2 arrival exact fallback remains blocked; S3 exact full-state typed limit-cycle candidate is compile GREEN but runtime-unadjudicated; S4 independent incremental oracle and S5 genus>=2 witness remain open.
 
-## Exact next — `M4-CP-SCALE-CB7`
+## Exact next — `M4-CP-SCALE-TB6-EXEC`
 
-Execute only the bounded S3 Code + Build plan in `Architecture_M4_CP_SCALE_CB7_S3_Exact_Repeat_Code_Build_Plan.md`. The frozen semantic key is exact `FieldAlignedTraceTraversalState=(sourceFace, branch, incomingCarrier, exact FieldBoundaryPoint entryPoint)`. Only complete exact state equality may publish typed `LimitCycleTermination`.
+CB7 is compile/package GREEN at exact semantic source
+`153047c3f92e9b9b784e11eaee1ede2de5628470`. Candidate artifact
+`10418328122` (provider SHA-256
+`a9f33bce6029022495fccbc4680da9bdd25cf41aa5cc733b2c04335e156ac16e`) was
+built by run/job `35022869891 / 104562750677`; root package manifest is **28/28
+PASS**, packaged source archive SHA-256 is
+`703dcc22f18ed565b623ef4eb43e117cd8acfd5d982ed0bde111d5cfdd56e0ff`, and
+compile metadata proves `runtimeExecution=false` with GMP/GMPXX.
 
-CB7 may change the minimal S3 product/test surface and author focused identity `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`, but must **not** publish selector425, modify selector424, substitute combinatorial recurrence/step budget/time/proximity for exact-state repetition, touch S1/S2/S4/S5 semantics, or execute Directional runtime. Compile/package must use the durable GMP/GMPXX reusable workflow with `runtimeExecution=false`.
+CB7 publishes typed `LimitCycleTermination` only from complete exact
+`FieldAlignedTraceTraversalState=(sourceFace, branch, incomingCarrier, exact
+FieldBoundaryPoint entryPoint)` repetition. Combinatorial recurrence and step
+budget remain typed fail-closed errors. Focused producer identity
+`M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` is compiled
+but intentionally remains outside selector424. Selector424 is unchanged at
+`f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`; no
+selector425 exists.
 
-On GREEN compile/package the exact successor is artifact-only `M4-CP-SCALE-TB6-EXEC`, then mandatory `M4-CP-SCALE-TB6-REV`.
+Execute only `Architecture_M4_CP_SCALE_TB6_Test_Plan.md` against **artifact
+10418328122 exactly**. TB6-EXEC must run the focused S3 identity once, then the
+accepted selector424 as 424 fresh exact-filter processes, with immutable
+pre/post authority. It may not rebuild, edit, repair, discover/list tests, create
+selector425, or substitute a newer branch build. On completion, exact successor
+is mandatory `M4-CP-SCALE-TB6-REV`; only Review may accept S3 cumulative credit
+or choose the next CP-SCALE implementation turn.
+
+Accepted runtime authority remains TB5 package `10407605295` / source
+`0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` / selector424 **424/424** until
+TB6 + Review adjudicate the CB7 candidate. Stable accounting remains **49 events /
+14 categories / 35 recurrences**; produced-witness debt remains **5**.
 
 ## Carried obligations
 
@@ -67,12 +92,12 @@ On GREEN compile/package the exact successor is artifact-only `M4-CP-SCALE-TB6-E
 
 ## Context Load Plan
 
-For `M4-CP-SCALE-CB7`, read the mandatory policies/checklists first, then:
+For `M4-CP-SCALE-TB6-EXEC`, read the mandatory policies/checklists first, then:
 
-1. `Architecture_M4_CP_SCALE_TB5_Review_Record.md` and current TB5 report for accepted selector/package authority;
-2. `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §§4,7-10 for S3 semantics and STOP rules;
-3. `Architecture_M4_CP_SCALE_CB7_S3_Exact_Repeat_Code_Build_Plan.md` for the exact bounded work and falsifiers;
-4. `ORIENTATION.md`, `TODO.md`, `ROADMAP.md`, `REORIENTATION_PLAN.md`, tracker and selector manifest for current milestone/debt/obligation state;
-5. production traversal guard/projection code and the existing exact-entry-position guard tests only after source authority is frozen by the new turn.
+1. `Architecture_M4_CP_SCALE_CB7_Code_Build_Report.md` for exact candidate package/source/compile authority and correction provenance;
+2. `Architecture_M4_CP_SCALE_TB6_Test_Plan.md` for the executable artifact-only runtime sequence, acceptance criteria and stop rules;
+3. `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §§4,7-10 for frozen S3 semantics;
+4. `Architecture_M4_CP_SCALE_TB5_Review_Record.md` and current TB5 report for accepted selector424/runtime authority;
+5. `ORIENTATION.md`, `TODO.md`, `ROADMAP.md`, `REORIENTATION_PLAN.md`, tracker and selector manifest only as required by the turn-start checklist.
 
-Do not re-open S2 or modify selector424. Full folded CP-SCALE history is in `M4_Consolidated_Record.md`; superseded per-turn documents remain recoverable from git history.
+Do not reopen CB7 implementation in TB6-EXEC. Do not create selector425. Full folded CP-SCALE history remains in `M4_Consolidated_Record.md`; superseded per-turn documents remain recoverable from git history.
