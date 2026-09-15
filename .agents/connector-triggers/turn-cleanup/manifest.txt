@@ -1,0 +1,2 @@
+# M4-CP-SCALE-CB4 final residual cleanup
+.agents/connector-triggers/source-snapshot/20260914T1938-4f876d37.txt
