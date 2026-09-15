@@ -1,3 +1,12 @@
+## 2026-09-15 — `M4-CP-SCALE-TB4-R1-EXEC`: mechanically GREEN; predecessor orchestration candidates falsified
+
+- Fresh artifact-only retry run/job `34979463245 / 104415713013` against immutable candidate `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936` is mechanically GREEN: focused S2 **1/1 PASS**, selector423 **423/423 PASS**, zero RED/SKIP/timeout/selection mismatch/unexecuted, and exact package/source/execution-view postflight.
+- `M4-CP-SCALE-TB4-EXEC-CAND-01` — **CLOSED / ORCHESTRATION FALSIFIER PASSED / NON-STABLE**. Exact packaged `benchmarks/fixtures` materialized at the consumer path `view/test-data/benchmarks/fixtures`; source/execution-view fixture manifests are identical and all 423 selector rows reached their intended bodies with no missing-test-data exception.
+- `M4-CP-SCALE-TB4-EXEC-CAND-02` — **CLOSED / ORCHESTRATION FALSIFIER PASSED / NON-STABLE**. Preflight/postflight consume one shared census-basename contract; package/source/execution-view before/after censuses are independently byte-identical and `postflightPass=true`.
+- No new regression/candidate is observed by EXEC. The small printed `centerCycleLift=-1.41358e-16` diagnostic on three of six focused S2 subjects is retained as raw passing evidence and receives no semantic classification here; mandatory Review owns semantic adjudication of the candidate.
+- Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. Candidate remains unpromoted; accepted runtime authority remains package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` / selector423 **423/423**.
+- **Exact successor:** `M4-CP-SCALE-TB4-REV`, runtime-free Review. No retry/correction/implementation before Review.
+
 ## 2026-09-15 — `M4-CP-SCALE-TB4-EXEC`: orchestration-invalid; semantic ledger suppressed
 
 - **EXEC disposition:** **COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER / NON-STABLE**. Run/job `34938070127 / 104280301940` consumed exact CB4 artifact `10378808176` / source `905dabe390577d63ed6a9289e3f3d53aa4144936`; preflight passed and focused S2 observed 1/1 PASS, but mandatory execution-view/postflight authority failed later. Per durable `Turn_Cadence.md` orchestration-failure rule, no focused or selector observation from this attempt is acceptance evidence.

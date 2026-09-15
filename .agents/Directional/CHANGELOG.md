@@ -1,3 +1,12 @@
+## 2026-09-15 — `M4-CP-SCALE-TB4-R1-EXEC`: fresh immutable retry mechanically GREEN
+
+- Artifact-only run/job `34979463245 / 104415713013` restarted the entire TB4 gate from process 1 against unchanged CB4 candidate artifact `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`; no semantic result from orchestration-invalid TB4-EXEC was imported.
+- Corrected fixture materialization and census naming passed preflight. Focused S2 is **1/1 PASS** with all six subject receipts, both Filter/ExactFallback paths, q4 winding `-1` and matching-cycle quarter-turn `0`. Selector423 is **423/423 PASS / 0 RED / 0 SKIP / 0 timeout / 0 selection mismatch / 0 unexecuted**.
+- Mandatory postflight is GREEN with byte-identical package/source/execution-view censuses, 28/28 package re-verification and unchanged selector hashes. No configure/compile/relink/repair/discovery/mutation/benchmark executed.
+- Result artifact `10402080226` SHA-256 `862a59893fdf0f1dd9572791f9c332e652a155ffc735b59e38b17be6f54bd4c8`; diagnostic artifact `10401626794` SHA-256 `44d26728de2d5f20329b706dafbb43dd04ec93ed34d8b22184d8838d3b93dcdd`; nested evidence `843449af7e86efb0320677f6fd4301abe9888878fcdceac1d938d6812ca06c15` with **865/865** self-excluding manifest entries.
+- `M4-CP-SCALE-TB4-EXEC-CAND-01/02` are mechanically falsified/closed as non-stable orchestration defects. No new regression candidate was observed. Stable accounting remains **49 / 14 / 35**, debt **5**.
+- Candidate remains unpromoted and accepted runtime authority remains package `10360085644` pending mandatory runtime-free `M4-CP-SCALE-TB4-REV`.
+
 ## 2026-09-15 — `M4-CP-SCALE-CB5`: TB4 retry harness statically corrected; same immutable package retained
 
 Runtime-free CB5 corrected only successor artifact-execution payloads for immutable candidate `10378808176` / semantic source `905dabe390577d63ed6a9289e3f3d53aa4144936`. The retry now materializes packaged `benchmarks/fixtures` exactly at `view/test-data/benchmarks/fixtures`, verifies the copied **27-file** subtree by relative path/bytes/modes/symlink targets before any Directional process, and uses one shared `package/source/execution-view-census-{before,after}.tsv` naming authority. Payload SHA-256 is `a83ad830677f32aa0a882158c1e800762c65957ce5bb69645acbc511a8b37673` / `10fa3684a75968e5a14256c90f7e24fec486eb8d63553f9c6daee873ace20967`.
