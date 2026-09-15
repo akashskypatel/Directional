@@ -1,0 +1,46 @@
+name: M4 CP SCALE CB3 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb3-closeout-apply-20260914.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-cb3-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb3-closeout-apply
+      commit_run_file: false
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-scale-cb3-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 11p8h8e1Em3i3nuMCC6-WgUedjeH7d1Dv
+      patch_sha256: 5c1bbee2ff9d8e8890129e701fc42cfb63d909bff7c325c166f1c011837e8344
+      base_sha: ba6e204d9daef39bfc6c168b659fc1b94f2b5b9b
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4 CP SCALE CB3 and freeze TB3 EXEC"
+    secrets: inherit
