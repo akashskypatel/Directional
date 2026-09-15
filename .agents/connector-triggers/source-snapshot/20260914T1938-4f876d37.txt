@@ -1,2 +1,0 @@
-purpose=chatgpt-web-source-snapshot
-semantic_source_sha=4f876d37b94fd6defb604364df24fba3e8fc7721
