@@ -1,0 +1,2 @@
+# M4-CP-SCALE-CB7 final accidental staging cleanup
+.agents/Directional/turn-payloads/FATAL_RETRY_COMMENT_STAGE.txt
