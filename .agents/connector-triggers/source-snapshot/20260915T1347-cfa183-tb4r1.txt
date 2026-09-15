@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-TB4-R1-EXEC
+requested_base=cfa183d268e0d42fb5ad1a2fb7d56852813844b9
+purpose=start-of-turn source snapshot
