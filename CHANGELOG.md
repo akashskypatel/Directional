@@ -1,3 +1,9 @@
+
+## 2026-09-15 — M4-CP-SCALE-TB6-EXEC GREEN; mandatory Review next
+
+- Artifact-only S3 runtime is mechanically GREEN on immutable CB7 candidate `10418328122`: focused exact-repeat termination **1/1 PASS** and accepted selector424 **424/424 PASS** in fresh processes, with exact immutable postflight and no rebuild/mutation.
+- First attempt stopped pre-runtime on a harness-only GMP dependency assertion; fresh corrected retry passed without changing candidate bytes. No product-semantic regression was observed. Accepted runtime authority remains TB5 until `M4-CP-SCALE-TB6-REV`.
+
 ## 2026-09-15 — `M4-CP-SCALE-CB7`: S3 exact-repeat typed termination compile GREEN
 
 CB7 candidate source `153047c3f92e9b9b784e11eaee1ede2de5628470` publishes typed `LimitCycleTermination` only from complete exact `(sourceFace, branch, incomingCarrier, entryPoint)` repetition, retains the exact repeated-state locus, and leaves combinatorial recurrence/step budget fail-closed. Focused producer identity `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` is compiled but remains outside unchanged selector424; selector425 was not authored. Authoritative GMP/GMPXX compile run/job `35022869891 / 104562750677` is GREEN with `runtimeExecution=false`; candidate artifact `10418328122` has provider SHA-256 `a9f33bce6029022495fccbc4680da9bdd25cf41aa5cc733b2c04335e156ac16e`, packaged source SHA-256 `703dcc22f18ed565b623ef4eb43e117cd8acfd5d982ed0bde111d5cfdd56e0ff`, and manifest **28/28 PASS**. An earlier compile exposed one accidental missing test-local `NetworkNodeId` alias; the surgical restoration is included in the exact candidate source. Accepted runtime authority remains TB5 package `10407605295` / selector424 **424/424** pending TB6 + Review. Exact next: artifact-only `M4-CP-SCALE-TB6-EXEC`, then mandatory `M4-CP-SCALE-TB6-REV`.

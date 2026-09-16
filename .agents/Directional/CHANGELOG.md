@@ -1,3 +1,9 @@
+## 2026-09-15 — M4-CP-SCALE-TB6-EXEC mechanically GREEN; S3 review owed
+
+- Fresh authoritative retry run/job `35036993863 / 104608250744` consumed immutable CB7 artifact `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` with no rebuild or mutation. Focused `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` passed 1/1 with the required exact-repeat/backstop receipt; accepted selector424 passed **424/424** in 424 fresh exact-filter processes with zero anomalies and owner census **30/278/75/41**.
+- Initial attempt `35036750841` was BLOCKED_PRE_RUNTIME by an over-broad direct-GMP `ldd` assertion and produced no semantic ledger. The bounded temporary-workflow correction left candidate bytes unchanged; fresh retry passed immutable pre/post authority. TB6 result/log artifacts are `10423717019 / 10424430214`; nested evidence manifest verifies **1302/1302**.
+- No product regression or accepted-green loss. Stable accounting remains **49 / 14 / 35**, debt **5**. Candidate remains unpromoted; exact successor is mandatory `M4-CP-SCALE-TB6-REV`.
+
 ## 2026-09-15 — `M4-CP-SCALE-CB7`: S3 exact-repeat typed termination compile/package GREEN
 
 - Exact candidate semantic source `153047c3f92e9b9b784e11eaee1ede2de5628470` adds typed `FieldAlignedLimitCycleTermination` carrying the complete repeated-state locus, `LimitCycleTermination` event publication, and a production projection seam where only exact full `FieldAlignedTraceTraversalState=(sourceFace, branch, incomingCarrier, exact entryPoint)` repetition receives S3 terminal credit. Combinatorial recurrence and step budget remain typed fail-closed errors.
