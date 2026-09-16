@@ -1,0 +1,3 @@
+Resume after interrupted ChatGPT session.
+Snapshot current branch authority after M4-CP-SCALE-CB10 preflight trigger.
+Previous observed head: 8d9b82c3c88e216eb566371fdc040436f3ae9892.
