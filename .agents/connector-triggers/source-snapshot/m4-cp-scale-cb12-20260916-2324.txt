@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-CB12
-semantic_base=8b03ff51eb1e78eab26a41a69238ddb7a7181945
-read_mode=snapshot
-created_utc=2026-09-16T23:24:00Z
