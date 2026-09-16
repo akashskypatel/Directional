@@ -1,3 +1,0 @@
-M4-CP-SCALE-TB7 closeout Drive caller schema validation.
-Validates corrected six-path closeout caller without ORIENTATION mutation.
-Retry: 4

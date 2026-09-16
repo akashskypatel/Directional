@@ -1,5 +1,0 @@
-M4-CP-SCALE-TB7-EXEC immutable selector425 runtime trigger.
-Candidate artifact: 10425344367
-Candidate source: 01b1124af094044e32d6887ff0615881333d12ce
-Expected selector425: 425 fresh exact-filter processes.
-Retry: 2
