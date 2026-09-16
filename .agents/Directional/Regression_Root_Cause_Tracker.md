@@ -1,3 +1,12 @@
+## 2026-09-16 — `M4-CP-SCALE-TB9-REV` — S4 PREREQUISITE ACCEPTED / PACKAGE PROMOTED / NON-STABLE
+
+- Review independently reopens CB10 artifact `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`, TB9 run/job `35121594986 / 104880514495`, result/log artifacts `10458072304 / 10458461955`, nested evidence SHA-256 `01040836e8138ec92cd624cfc7bf571d69657c2c7f7dbb288f7afe92cc4cc933`, and its 1304-entry manifest `e9e879efbe7fc78bc0448e3f3847e705e88a78b00d766e2f98705afa389a9b93`; all retained hashes/manifests verify.
+- Corrected focused prerequisite is non-vacuous and Review-rederived: empty torus `V48/E48/F4,c4,s1,chi0` gives `b1=4`, required/observed `3/4`, reject true; accepted cuts `V72/E76/F4,c1,s1,chi0` give `b1=5`, required/observed `4/4`, reject false; one-edge adversarial one-way safety, reversed-enumeration invariance and production decision-neutrality all execute. The independent connected-complement count is not conflated with product face-walk orbit count off the cellular domain.
+- Frozen selector425 independently re-hashes to `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, exact first424 prefix `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`; all 425 ledger rows are fresh PASS with exact owners **30/279/75/41**, zero anomalies, and immutable postflight.
+- `M4-CP-SCALE-DEFN-OBS-03` — **DISCHARGED / INDEPENDENT S4 PREREQUISITE ORACLE + REACHABLE NEGATIVE + FRESH RUNTIME + REVIEW PROVED / NON-STABLE**. Package `10455353524` is promoted as current runtime authority under unchanged selector425.
+- S4 product semantics remain **OPEN / NON-SELECTOR**. Exact next owner is `M4-CP-SCALE-CB11`, which may only add a fixed-candidate necessary-condition accelerator plus an independent focused product test. Early rejection must fall through to unchanged proposal logic; cut mutation/backtracking/repair, final-certificate weakening, `proposal_components`/face-walk representation substitution without proof, and selector426 publication are prohibited. Fresh TB10 + Review are required before publication.
+- No accepted PASS->RED transition or new regression candidate exists. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB9-EXEC` — FOCUSED + SELECTOR425 GREEN / REVIEW OWED / NON-STABLE
 
 - Authoritative artifact-only run/job `35121594986 / 104880514495` consumed candidate `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`; no rebuild, repair, mutation, discovery, or benchmark execution occurred.
