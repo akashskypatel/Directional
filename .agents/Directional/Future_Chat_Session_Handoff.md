@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB6-EXEC
-Status: COMPLETE / FOCUSED S3 1/1 + SELECTOR424 424/424 GREEN / REVIEW OWED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-TB6-REV
+Status: COMPLETE / PACKAGE10418328122 PROMOTED UNDER SELECTOR424 / S3 FOCUSED PUBLICATION AUTHORITY ACCEPTED / SELECTOR425 CUMULATIVE CREDIT OWED / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB6-REV
+Canonical next turn: M4-CP-SCALE-CB8
 ---
 
 # Future Chat Session Handoff — Directional
@@ -27,32 +27,32 @@ Read in full at every new formal turn:
 
 ## Current accepted runtime authority
 
-`M4-CP-SCALE-TB5-REV` promotes the immutable CB6/TB5 candidate as current M4 runtime authority:
+`M4-CP-SCALE-TB6-REV` promotes the immutable CB7/TB6 candidate as current M4 runtime authority:
 
-- package `10407605295`, provider SHA-256 `29f68b3880fb9d2d521aa74541112af9de5d35fdc982decfdbc8067305e747e5`;
-- semantic source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3`;
-- accepted selector424 **424/424**, SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`;
-- exact accepted selector423 prefix SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`;
-- current owner census **30 authority-kernel / 278 producer / 75 completion / 41 validation**;
+- package `10418328122`, provider SHA-256 `a9f33bce6029022495fccbc4680da9bdd25cf41aa5cc733b2c04335e156ac16e`;
+- semantic source `153047c3f92e9b9b784e11eaee1ede2de5628470`;
+- accepted required-green selector424 **424/424**, SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`;
+- exact selector423 prefix SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`;
+- owner census **30 authority-kernel / 278 producer / 75 completion / 41 validation**;
 - stable accounting **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
 
-TB5 run/job `35002009539 / 104492480074` executed selector424 as 424 fresh exact-filter processes with **424/424 PASS**, zero RED/SKIP/timeout/crash/selection mismatch/unexecuted, and exact immutable package/source/execution-view postflight. Result/log artifacts are `10410518189 / 10410672518`, SHA-256 `7f9f9a4f9b18930255688e775691a21b92538c666a987f29101541aaec1ce3ac / 26d59ed6846effe4d38fdc5b2c27b23d95cdf0f6784e8b0ff5d49c212320cc7f`; nested evidence ZIP SHA-256 is `576104efb4aa5723a0384ec7aac0abe0fbc244b8dbb9417a198ea53041040bac` with verified 1298-entry manifest SHA-256 `1aabede920e5401187f8c8590a4969d26694b8fa43cee98c37f29f63b61ea208`.
+TB6 authoritative retry run/job `35036993863 / 104608250744` executed focused S3 **1/1 PASS** and selector424 **424/424 PASS** in 425 total fresh exact-filter processes with zero anomalies and exact immutable package/source/execution-view postflight. Result/log artifacts are `10423717019 / 10424430214`; nested evidence ZIP SHA-256 `6e70e20405bb5d1ab605c0fb49636bffce15a970c10fe842bf9ce1a5759310e9`; 1302-entry evidence-manifest SHA-256 `3b05c4105cbdbe120e105bc0ca120e3fc46e98e102c4b5151e7c42fab4c0dfe7`.
 
-Review independently re-hashed selector424/prefix423, re-derived all 424 owners from packaged source+CMake, independently parsed the complete process ledger, re-derived the six-subject S2 exact-oracle/route matrix, and source-audited the certified filter as defer-only with recursive exact fallback. Row424 ran freshly. `M4-CP-SCALE-TB4-REV-OBS-01` is **DISCHARGED** and S2 vertex-star now has cumulative selector credit. No regression/candidate is opened.
+Review independently reopens those bytes, re-hashes selector/prefix, re-derives all 424 owners and raw process outputs, re-derives the focused receipt/discriminator matrix, and source-audits the exact-state publication seam. `M4-CP-SCALE-DEFN-OBS-02` is **DISCHARGED**. S3 focused proof is accepted for publication but is not cumulative selector credit. New `M4-CP-SCALE-TB6-REV-OBS-01` requires selector425 publication + fresh 425/425 + Review.
 
-CP-SCALE remains OPEN. S1 remains threshold-free diagnostic; S2 arrival exact fallback remains blocked; S3 exact full-state typed limit-cycle candidate is runtime GREEN in TB6-EXEC but Review-unadjudicated; S4 independent incremental oracle and S5 genus>=2 witness remain open.
+CP-SCALE remains OPEN. S1 remains diagnostic, S2 arrival exact fallback remains blocked, S4 incremental oracle and S5 genus>=2 witness remain open.
 
-## Exact next — `M4-CP-SCALE-TB6-REV`
+## Exact next — `M4-CP-SCALE-CB8`
 
-TB6-EXEC is mechanically GREEN against exact CB7 candidate artifact `10418328122` / semantic source `153047c3f92e9b9b784e11eaee1ede2de5628470`. Authoritative retry run/job `35036993863 / 104608250744` proves focused S3 **1/1 PASS** with the required exact structured receipt and accepted selector424 **424/424 PASS** across 424 fresh exact-filter processes. Total runtime process count is 425 only as `1 focused + 424 selector`; no selector425 exists.
+Publication-only Code + Build under `Architecture_M4_CP_SCALE_CB8_Selector425_Publication_Code_Build_Plan.md`. The single variable is selector lineage:
 
-Result artifact `10423717019` has provider SHA-256 `239886ce2918ce97416d01b8e7e390210c284acfc608c53b7531fc99a8854e8d`; log artifact `10424430214` has provider SHA-256 `b1b8353968a496ff6e7673dba7209971b04f7b205f8316855e91e8e6ea0fa935`; nested evidence ZIP SHA-256 is `6e70e20405bb5d1ab605c0fb49636bffce15a970c10fe842bf9ce1a5759310e9`, with verified **1302-entry** manifest SHA-256 `3b05c4105cbdbe120e105bc0ca120e3fc46e98e102c4b5151e7c42fab4c0dfe7`.
+1. publish `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt`;
+2. rows1-424 must be byte-identical accepted selector424; row425 exactly `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`;
+3. selector425 expected SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; prefix424 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`; expected owner census **30/279/75/41**;
+4. product/test/fixture/CMake semantics and selector424 stay frozen; selector426 is forbidden;
+5. compile/package with GMP/GMPXX and `runtimeExecution=false`; no Directional runtime/discovery/benchmark.
 
-Initial attempt `35036750841` stopped before runtime because the temporary harness over-required direct GMP/GMPXX `ldd` dependencies from every owner binary. It published `runtimeStarted=false` and no semantic ledger. The bounded workflow-only correction did not alter candidate/source/test/fixture/selector bytes; fresh retry is the sole TB6 semantic authority.
-
-Mandatory `M4-CP-SCALE-TB6-REV` must independently reopen the immutable candidate and TB6 evidence, re-derive focused ownership/one-process selection and receipt semantics, re-derive all 424 selector rows/owners/results, verify package/source/execution-view immutability and absence of selector425/rebuild, and source-audit that the product change remains limited to exact-repeat S3 publication with recurrence/step-budget fail-closed. Only Review may promote the candidate, accept S3 cumulative credit, discharge `M4-CP-SCALE-DEFN-OBS-02`, or choose the next CP-SCALE implementation turn.
-
-Accepted runtime authority remains TB5 package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` / selector424 **424/424** until TB6 Review adjudicates the candidate. Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**.
+On GREEN package, exact successor is `M4-CP-SCALE-TB7-EXEC` executing selector425 **425/425** as 425 fresh exact-filter processes, followed by mandatory `M4-CP-SCALE-TB7-REV`. TB6 focused execution may not be imported as row425 cumulative credit.
 
 ## Carried obligations
 
@@ -60,10 +60,11 @@ Accepted runtime authority remains TB5 package `10407605295` / source `0d8e4aa34
 - `M4-CP-SCALE-TB2-REV-OBS-01`: **DISCHARGED by TB3 Review**; 423/423 rows were preserved UNEXECUTED with exact immutable postflight.
 - `M4-CP-SCALE-TB2-REV-OBS-02`: audit remaining `make_zero_transport_field` callers in a later dedicated turn; owns the TB2 silent-precondition mechanism only.
 - `M4-CP-SCALE-DEFN-OBS-01`: arrival-order exact fallback not frozen; not owned by vertex-star S2.
-- `M4-CP-SCALE-DEFN-OBS-02`: dedicated full exact-state repeat S3 witness + typed outcome owed.
+- `M4-CP-SCALE-DEFN-OBS-02`: **DISCHARGED by TB6 Review**; exact full-state witness + typed outcome independently proved.
 - `M4-CP-SCALE-DEFN-OBS-03`: S4 independent incremental earlier-never-different oracle/reachability owed.
 - `M4-CP-SCALE-DEFN-OBS-04`: genus>=2 construction/reachability owed; torus genus1 receives zero S5 credit.
 - `M4-CP-SCALE-TB4-REV-OBS-01`: **DISCHARGED by TB5 Review**; selector424 exact-prefix publication, fresh 424/424 runtime and independent Review are all proved.
+- `M4-CP-SCALE-TB6-REV-OBS-01`: selector425 exact-prefix publication + fresh 425/425 runtime + Review; immediate owner `CB8 -> TB7 -> Review`.
 - `M4-CP3-TB1-R1-REV-OBS-01`: same-region multiplicity-2 independent oracle before cumulative M4-CP4.
 - `M4-CP3-CB4-REV-OBS-02`: row399 path/`sourceFaces` divergence tamper at next legitimate row399 touch.
 - row408 provenance warning remains historical-bound.
@@ -71,12 +72,12 @@ Accepted runtime authority remains TB5 package `10407605295` / source `0d8e4aa34
 
 ## Context Load Plan
 
-For `M4-CP-SCALE-TB6-REV`, read the mandatory policies/checklists first, then:
+For `M4-CP-SCALE-CB8`, read mandatory policies/checklists first, then:
 
-1. `Architecture_M4_CP_SCALE_TB6_Artifact_Only_Test_Benchmark_Report.md` and immutable TB6 result/log evidence for exact execution authority;
-2. `Architecture_M4_CP_SCALE_TB6_Test_Plan.md` for the frozen acceptance contract and mandatory Review derivations;
-3. `Architecture_M4_CP_SCALE_CB7_Code_Build_Report.md` plus `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §§4,7-10 for source/semantic authority;
-4. `Architecture_M4_CP_SCALE_TB5_Review_Record.md` for currently accepted selector424/runtime authority;
-5. `ORIENTATION.md`, `TODO.md`, `ROADMAP.md`, `REORIENTATION_PLAN.md`, tracker and selector manifest as required by the turn-start checklist.
+1. `Architecture_M4_CP_SCALE_CB8_Selector425_Publication_Code_Build_Plan.md`;
+2. `Architecture_M4_CP_SCALE_TB6_Review_Record.md`;
+3. `Architecture_M4_CP_SCALE_TB6_Artifact_Only_Test_Benchmark_Report.md`;
+4. `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §§4,7-10;
+5. `ORIENTATION.md`, `TODO.md`, selector manifest, tracker and roadmap/current handoff state.
 
-Review must remain runtime-free unless the review policy explicitly authorizes a targeted falsifier; do not rebuild, repair, create selector425, or begin the next implementation turn. On Review closeout, update `ORIENTATION.md` and consolidate superseded CP-SCALE documents per the mandatory end checklist.
+CB8 is runtime-free Code + Build. Preserve exact accepted selector424 prefix, do not alter product/test/fixture/CMake semantics, do not publish selector426, and stop on any selector/hash/owner mismatch or Directional runtime.

@@ -781,7 +781,9 @@ Appended 1 identity to selector 423:
 
 - `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`
 
-**Accepted at `M4-CP-SCALE-TB5-REV`.** Immutable candidate package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` executed selector424 in exact order as **424/424 PASS** with zero RED/SKIP/timeout/crash/selection mismatch/unexecuted and exact owner census **30 authority-kernel / 278 producer / 75 completion / 41 validation**. Review independently re-derived selector/prefix hashes, ownership, the complete process ledger, the six-subject S2 exact oracle and Filter/ExactFallback non-vacuity. This discharges `M4-CP-SCALE-TB4-REV-OBS-01`; selector424 is current accepted M4 required-green authority.
+**Accepted at `M4-CP-SCALE-TB5-REV`; retained as current required-green selector at `M4-CP-SCALE-TB6-REV`.** Package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` first established selector424 **424/424**. TB6 Review later promotes current runtime package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under the same byte-identical selector424 after independently re-deriving focused S3 **1/1**, selector424 **424/424**, owner census **30/278/75/41** and immutable evidence. `M4-CP-SCALE-TB4-REV-OBS-01` remains discharged; selector424 remains current accepted M4 required-green authority.
+
+**S3 publication authorized, selector425 not yet accepted.** `M4-CP-SCALE-TB6-REV` accepts focused `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` for publication only. `M4-CP-SCALE-TB6-REV-OBS-01` requires selector425 = exact selector424 prefix + that row425, expected SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, static owner census **30/279/75/41**, then fresh **425/425** runtime + Review before selector425 or S3 cumulative credit is accepted.
 
 ## Separate lineage — M1
 

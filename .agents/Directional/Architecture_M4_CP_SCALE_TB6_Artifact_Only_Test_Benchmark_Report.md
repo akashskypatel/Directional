@@ -1,14 +1,15 @@
 # M4-CP-SCALE-TB6 Artifact-Only Test + Benchmark Report
 
 **Turn:** `M4-CP-SCALE-TB6-EXEC`
-**Disposition:** **COMPLETE / MECHANICALLY GREEN / REVIEW REQUIRED / NO PROMOTION IN EXEC**
+**Disposition:** **COMPLETE / MECHANICALLY GREEN / PROMOTED BY `M4-CP-SCALE-TB6-REV` UNDER UNCHANGED SELECTOR424; S3 SELECTOR425 PUBLICATION OWED**
 **Authoritative execution run/job:** `35036993863 / 104608250744`
 **Control/event SHA:** `4b613f2420de231c09c2aff97da25542f0641fd7`
 **Immutable candidate artifact:** `10418328122` (`a9f33bce6029022495fccbc4680da9bdd25cf41aa5cc733b2c04335e156ac16e`)
 **Semantic source:** `153047c3f92e9b9b784e11eaee1ede2de5628470`
 **Selector authority under test:** `Architecture_M4_CP_SCALE_CB6_Required_Green_Selector_424.txt`, 424 rows, SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`
 **Focused S3 identity:** `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`
-**Mandatory successor:** `M4-CP-SCALE-TB6-REV`
+**Mandatory Review:** `M4-CP-SCALE-TB6-REV` — **COMPLETE / ACCEPTED**
+**Current successor after Review:** `M4-CP-SCALE-CB8`
 
 ## 1. Boundary and immutable provenance
 
@@ -93,8 +94,12 @@ Final runtime status is `status=GREEN`, `focused=PASS`, `selector424=424/424`, `
 
 TB6 observed **no product-semantic regression and no accepted-green loss**. Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. `M4-CP-SCALE-DEFN-OBS-02` advances to **FOCUSED RUNTIME SATISFIED / REVIEW OWED / NON-STABLE**; EXEC alone does not discharge it.
 
-## 8. Authority and successor
+## 8. EXEC-time authority and mandatory Review boundary
 
-TB6-EXEC does **not** promote candidate artifact `10418328122` or S3 cumulative credit. Accepted runtime authority remains TB5 package `10407605295` / semantic source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` under selector424 **424/424** until mandatory `M4-CP-SCALE-TB6-REV` independently reopens and adjudicates this evidence.
+At TB6-EXEC closeout, the execution turn correctly made no promotion claim: candidate artifact `10418328122` remained unpromoted and TB5 package `10407605295` remained accepted until mandatory `M4-CP-SCALE-TB6-REV`. The EXEC turn also correctly withheld selector425/cumulative S3 credit. That historical boundary is now superseded by the completed Review disposition in §9; it is retained here only to preserve turn provenance.
 
-Exact next formal turn: **`M4-CP-SCALE-TB6-REV`**. Only Review may promote the CB7/TB6 candidate, accept S3 cumulative credit, discharge `M4-CP-SCALE-DEFN-OBS-02`, update orientation, consolidate superseded CP-SCALE turn documents, and choose the next CP-SCALE implementation turn.
+## 9. Mandatory Review disposition
+
+`M4-CP-SCALE-TB6-REV` independently reopened candidate/result/log bytes, verified the 1302-entry evidence manifest, re-hashed selector424 and accepted selector423 prefix, rebuilt owner mapping from packaged source+CMake, reopened every one of the 424 selector raw outputs, re-derived focused S3 ownership/receipt/non-vacuity, and source-audited the exact-state publication seam. Review **PROMOTES** package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` as current M4 runtime authority under unchanged selector424 **424/424** and accepts the focused S3 contract for publication.
+
+This does **not** grant cumulative selector425 credit. `M4-CP-SCALE-TB6-REV-OBS-01` requires publication-only selector425 = exact selector424 prefix + S3 row425, then fresh immutable selector425 **425/425** runtime and Review. Exact next is `M4-CP-SCALE-CB8`. Stable accounting remains **49 / 14 / 35**, debt **5**.

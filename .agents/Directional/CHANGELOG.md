@@ -1,3 +1,10 @@
+## 2026-09-16 — `M4-CP-SCALE-TB6-REV`: package promoted under selector424; S3 publication authorized
+
+- Independent Review reopens candidate/result/log bytes, verifies the 1302-entry evidence manifest, re-hashes selector424/prefix423, rebuilds owner census **30/278/75/41**, reopens all 424 selector raw outputs, re-derives the focused S3 receipt/discriminator matrix and source-audits exact full-state typed termination.
+- **PROMOTE** package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under unchanged selector424 **424/424**. `M4-CP-SCALE-DEFN-OBS-02` is discharged. Focused S3 proof is accepted for selector publication, not cumulative selector credit.
+- New `M4-CP-SCALE-TB6-REV-OBS-01` requires selector425 = exact selector424 prefix + S3 row425, expected SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owner census **30/279/75/41**, then fresh 425/425 + Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
+- Review folds five consumed/superseded CP-SCALE turn records into `M4_Consolidated_Record.md` §2.54. Exact next is publication-only `M4-CP-SCALE-CB8`; no product/test/fixture/CMake semantic change or runtime is authorized.
+
 ## 2026-09-15 — M4-CP-SCALE-TB6-EXEC mechanically GREEN; S3 review owed
 
 - Fresh authoritative retry run/job `35036993863 / 104608250744` consumed immutable CB7 artifact `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` with no rebuild or mutation. Focused `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` passed 1/1 with the required exact-repeat/backstop receipt; accepted selector424 passed **424/424** in 424 fresh exact-filter processes with zero anomalies and owner census **30/278/75/41**.
