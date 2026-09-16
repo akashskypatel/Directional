@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-CB9
+purpose=validate staged Drive patch caller against SchemaStore
+retry=0
