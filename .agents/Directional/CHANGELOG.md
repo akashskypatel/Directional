@@ -1,3 +1,10 @@
+## 2026-09-16 — `M4-CP-SCALE-TB8-EXEC`: focused S4 prerequisite valid mechanical RED; selector425 fail-fast unexecuted
+
+- Immutable CB9 artifact `10428779988` / source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf` was executed without rebuild/repair/mutation. Authoritative run/job `35053875774 / 104659839191`; result/log artifacts `10430235842 / 10430201060`.
+- Focus `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` selected/executed **1/1** and RED at the first assertion: expected negative `vertexCount=18`, observed `48`. No structured receipt was reached.
+- Fail-fast stopped before selector425; **0/425 executed, 425/425 explicitly UNEXECUTED**. Exact package/source/execution-view postflight and immutable hashes PASS; all forbidden build/repair/discovery/mutation/benchmark operations remain false.
+- Execution is mechanically valid RED and requires semantic Review. Accepted runtime authority remains TB7 package `10425344367` / selector425 **425/425**; stable accounting remains **49 / 14 / 35**, debt **5**. Exact next: `M4-CP-SCALE-TB8-REV`.
+
 ## 2026-09-16 — `M4-CP-SCALE-CB9`: S4 prerequisite independent oracle compiles/packages GREEN
 
 - Semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf` changes only `tests/FieldAlignedCurveNetworkTests.cpp`. New diagnostic `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` independently derives component/Betti/required-face topology on a production-reachable empty-cut torus state and carries positive, adversarial, enumeration and decision-neutrality controls. Product cut selection/final certificate/CMake/fixture/selector semantics are unchanged.

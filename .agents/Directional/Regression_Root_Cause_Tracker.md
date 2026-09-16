@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-TB8-EXEC` — FOCUSED S4 PREREQUISITE RED / REVIEW OWED / NON-STABLE
+
+- Authoritative artifact-only run/job `35053875774 / 104659839191` consumed CB9 artifact `10428779988` / semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`. Result/log artifacts are `10430235842 / 10430201060`; immutable postflight passed exactly.
+- `M4-CP-SCALE-TB8-EXEC-CAND-01` — **OPEN / NON-STABLE / REVIEW OWED**. Focus `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` selected/executed exactly **1/1**, exited `1`, and failed first at `tests/FieldAlignedCurveNetworkTests.cpp:14164`: expected negative invariant `vertexCount=18`, observed `48`. No structured receipt was reached.
+- Frozen fail-fast discipline stopped before selector425. All **425** selector rows are explicitly UNEXECUTED; therefore no accepted-selector PASS->RED transition was observed and no selector regression is claimed.
+- Package/source/execution-view byte+mode censuses and all immutable hashes reverified; configure/compile/relink/repair/discovery/mutation/benchmark execution all remained false. This is a valid semantic/mechanical RED candidate, not orchestration failure.
+- Accepted runtime authority remains TB7 package `10425344367` / selector425 **425/425**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5** pending mandatory `M4-CP-SCALE-TB8-REV`.
+
 ## M4-CP-SCALE-CB9 — **S4 PREREQUISITE ORACLE COMPILE GREEN / RUNTIME UNADJUDICATED / NON-STABLE / TB8 NEXT**
 
 - CB9 changes only `tests/FieldAlignedCurveNetworkTests.cpp` at semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`. It adds `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral`, an independent exact component/Betti/required-face oracle with a production-reachable empty-cut torus negative and positive/adversarial/enumeration/decision-neutral controls. Product topology decisions and the final certificate remain unchanged.

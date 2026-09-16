@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-CB9
-Status: COMPLETE / S4 PREREQUISITE TEST AUTHORITY COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED / SELECTOR425 ACCEPTED AUTHORITY UNCHANGED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-TB8-EXEC
+Status: COMPLETE / VALID MECHANICALLY RED / FOCUSED S4 PREREQUISITE RED / SELECTOR425 FAIL-FAST UNEXECUTED / IMMUTABLE POSTFLIGHT PASS / REVIEW OWED
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB8-EXEC
+Canonical next turn: M4-CP-SCALE-TB8-REV
 ---
 
 # Future Chat Session Handoff — Directional
@@ -29,7 +29,7 @@ Read in full at every new formal turn:
 
 ## Current accepted runtime authority
 
-Accepted authority remains the TB7 Review promotion; CB9 has not executed runtime and cannot promote itself:
+Accepted authority remains the TB7 Review promotion; TB8-EXEC is mechanically RED and cannot promote the CB9 candidate:
 
 - package `10425344367`, provider SHA-256 `1e29c9f3348b2e153d563c7e94acdaea52be8f16f6520fa8603fa084bba734bc`;
 - semantic source `01b1124af094044e32d6887ff0615881333d12ce`;
@@ -40,25 +40,26 @@ Accepted authority remains the TB7 Review promotion; CB9 has not executed runtim
 
 TB7 authoritative runtime remains run/job `35045130314 / 104633231692`, selector425 **425/425 PASS**, with exact immutable postflight. `M4-CP-SCALE-TB6-REV-OBS-01` is discharged and S3 has cumulative selector credit.
 
-## CB9 candidate — compile/package GREEN, runtime unadjudicated
+## TB8-EXEC candidate result — focused prerequisite RED, immutable postflight PASS
 
-CB9 changes exactly `tests/FieldAlignedCurveNetworkTests.cpp` at semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`. It adds diagnostic identity `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral`, outside selector425, with an independent exact Betti/face-count oracle over the production-reachable empty-cut torus state plus positive, adversarial, enumeration and decision-neutrality controls. Product source, final certificate, cut selection, CMake, fixtures and selectors are unchanged.
+TB8-EXEC consumed CB9 candidate artifact `10428779988` / semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf` artifact-only. Runtime workflow run/job `35053875774 / 104659839191` completed successfully as orchestration and preserved result/log artifacts `10430235842 / 10430201060`. The nested evidence ZIP is `373fd6291ae215606a4f12e47688155277afdfc330111f166b971f68e46df1ce` and its 29-entry manifest verifies.
 
-Authoritative compile run/job `35051977240 / 104654125358` is GREEN with GMP/GMPXX and `runtimeExecution=false`. Candidate package artifact `10428779988` has provider SHA-256 `7470947abba0ca2dc1e8bccd0caba8efdaa53abeaa3b1ae5130a550a3b462bd6`; log artifact `10428819823` has provider SHA-256 `cc7c783f9aa3a777527d2e35a4c560fea458de8c31672073bb64ce00448fd4f0`; packaged source archive SHA-256 is `cd0d0c7e084bbf86fbac4086eb076ad987f55d389b5e5c63ec95fcd4724cde55`; root manifest SHA-256 is `e3423161932039366ccf1c4728cab9a3a7115340abd587923be10be3cd7a818b`, **26/26 PASS**. Selector425 remains exactly 425 unique rows at its accepted SHA.
+Focused `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` selected/executed exactly **1/1**, exited `1`, and failed at its first assertion: the authored negative expected `vertexCount=18`, while `negativeInvariant->vertexCount` was `48`. No structured receipt was reached. Frozen fail-fast therefore prevented selector425 execution; **0/425 selector rows ran and all 425 are explicitly UNEXECUTED**. Package/source/execution-view byte+mode censuses and all immutable hashes reverified after runtime, and configure/compile/relink/repair/generated-discovery/mutation/benchmark execution all remained false.
 
-`M4-CP-SCALE-DEFN-OBS-03` remains OPEN. CB9 establishes eligibility for artifact-only prerequisite runtime; it does not accept S4 or authorize production early rejection.
+This is a valid mechanical/semantic RED observation, not an orchestration failure. EXEC does not decide why the independent oracle/construction differs, does not promote the candidate, and does not alter stable accounting. `M4-CP-SCALE-DEFN-OBS-03` remains OPEN / REVIEW OWED / NON-STABLE.
 
-## Exact next — `M4-CP-SCALE-TB8-EXEC`
+## Exact next — `M4-CP-SCALE-TB8-REV`
 
-Use `Architecture_M4_CP_SCALE_TB8_Artifact_Only_Test_Benchmark_Plan.md` against immutable artifact `10428779988` only:
+Mandatory runtime-free Review must independently reopen and rederive, rather than merely trusting the EXEC summary:
 
-1. verify provider/package/source/manifest/selector425 identities and owner map before runtime;
-2. execute `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` exactly once as a fresh focused producer process;
-3. execute selector425 as **425 additional fresh exact-filter processes in exact selector order**;
-4. require exact selection, zero skip/crash/timeout/nonzero exit/selection mismatch and preserve explicit unexecuted remainder on fail-fast paths;
-5. preserve package/source/execution-view byte+mode censuses and re-hash immutable authority after runtime;
-6. execute no configure/build/relink/repair/generated discovery/mutation/benchmark;
-7. close mechanically only; mandatory `M4-CP-SCALE-TB8-REV` independently adjudicates prerequisite acceptance and any later production S4 authorization.
+1. immutable CB9 candidate artifact `10428779988` and semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`;
+2. TB8 result/log artifacts `10430235842 / 10430201060` and the nested evidence archive/manifest;
+3. focused test source, independent topology oracle and production-reachable empty-cut torus negative;
+4. the exact expected `18` versus observed `48` negative `vertexCount` discrepancy and why the assertion precedes the receipt;
+5. fail-fast proof that selector425 never ran and all 425 rows are explicitly UNEXECUTED;
+6. immutable postflight and prohibited-operation evidence.
+
+Review must decide the prerequisite/test-authority disposition and the only authorized successor. Do **not** activate production S4 early rejection, publish selector426, promote candidate `10428779988`, or advance CP-SCALE before that Review.
 
 ## Carried obligations
 
@@ -66,7 +67,7 @@ Use `Architecture_M4_CP_SCALE_TB8_Artifact_Only_Test_Benchmark_Plan.md` against 
 - `M4-CP-SCALE-TB2-REV-OBS-02`: later dedicated audit of remaining `make_zero_transport_field` callers.
 - `M4-CP-SCALE-DEFN-OBS-01`: S2 arrival-order exact fallback not frozen.
 - `M4-CP-SCALE-DEFN-OBS-02`: **DISCHARGED by TB6 Review**.
-- `M4-CP-SCALE-DEFN-OBS-03`: **OPEN / CB9 COMPILE PREREQUISITE SATISFIED / RUNTIME + REVIEW OWED**; immediate owner `TB8-EXEC -> TB8-REV`.
+- `M4-CP-SCALE-DEFN-OBS-03`: **OPEN / FOCUSED RUNTIME RED / REVIEW OWED / NON-STABLE**; immediate owner `TB8-REV`.
 - `M4-CP-SCALE-DEFN-OBS-04`: genus>=2 construction/reachability owed; torus genus1 receives zero S5 credit.
 - `M4-CP-SCALE-TB4-REV-OBS-01`: **DISCHARGED by TB5 Review**.
 - `M4-CP-SCALE-TB6-REV-OBS-01`: **DISCHARGED by TB7 Review**.
@@ -76,14 +77,14 @@ Use `Architecture_M4_CP_SCALE_TB8_Artifact_Only_Test_Benchmark_Plan.md` against 
 
 ## Context load plan
 
-For `M4-CP-SCALE-TB8-EXEC`, read mandatory policies/checklists first, then:
+For `M4-CP-SCALE-TB8-REV`, read mandatory policies/checklists first, then:
 
-1. `Architecture_M4_CP_SCALE_TB8_Artifact_Only_Test_Benchmark_Plan.md`;
-2. `Architecture_M4_CP_SCALE_CB9_Code_Build_Report.md`;
-3. `Architecture_M4_CP_SCALE_TB7_Review_Record.md`;
-4. `Architecture_M4_CP_SCALE_TB7_Artifact_Only_Test_Benchmark_Report.md`;
+1. `Architecture_M4_CP_SCALE_TB8_Artifact_Only_Test_Benchmark_Report.md`;
+2. `Architecture_M4_CP_SCALE_TB8_Artifact_Only_Test_Benchmark_Plan.md`;
+3. `Architecture_M4_CP_SCALE_CB9_Code_Build_Report.md`;
+4. `Architecture_M4_CP_SCALE_TB7_Review_Record.md`;
 5. `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §§5,7-10;
 6. `M4_Consolidated_Record.md` §2.55;
-7. `TODO.md`, selector manifest, tracker and roadmap.
+7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, selector manifest and roadmap.
 
-TB8 is immutable artifact-only runtime. Candidate source/package bytes may not be rebuilt, repaired or mutated. Accepted runtime authority remains the TB7 package until mandatory Review says otherwise.
+TB8 Review is semantic adjudication only. Accepted runtime authority remains TB7 package `10425344367` / selector425 **425/425** until Review explicitly proves otherwise. The selector425 runtime from TB7 must not be inferred to have rerun in TB8; TB8 fail-fast executed only the focused prerequisite.
