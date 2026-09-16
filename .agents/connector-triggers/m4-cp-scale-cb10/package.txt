@@ -1,0 +1,4 @@
+purpose=compile full standard package for M4-CP-SCALE-CB10
+semantic_source=bebb14e32a0ac53dd420acf46bfa34410cf759a1
+runtimeExecution=false
+retry=0
