@@ -5,6 +5,26 @@
 - Review also rejects requiring independent connected complement-component count to equal product face-walk-orbit `certificate.faceCount` on the non-cellular negative. CB10 must pair the early oracle one-way (`early reject => unchanged final certificate rejects`) and preserve positive/adversarial/enumeration/decision-neutral falsifiers. The controls after the first negative assertion received zero TB8 runtime credit.
 - Accepted runtime authority remains TB7 package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` / selector425 **425/425**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**. `M4-CP-SCALE-DEFN-OBS-03` remains open through `CB10 -> TB9-EXEC -> TB9-REV`; no product S4 activation or selector426 is authorized. Exact next: `M4-CP-SCALE-CB10`.
 
+**Verification amendment (reviewing agent, review record §13).** Upheld: the rejection is correct, the attribution
+finding exact, and refusing to accept `DEFN-OBS-03` on a run where four of five controls never executed is right.
+**The pre-commitment control worked** — `TB6-REV` declared selector425's SHA-256 before CB8 built it, and the
+published file has 425 rows hashing to `e0e0f394faae536ac257ec54…`, exactly the pre-committed value, with first 424
+rows `f202a1720c0a5288` byte-identical to accepted selector424; the chain now reads
+**373 ⊂ … ⊂ 424 ⊂ 425**. All four decisive arithmetic claims were recomputed and hold: `18/30/18, c=1` gives
+`χ = 6` matching the recorded **sphere** oracle (`sourceChi=2`), so it is a transplanted sphere constant; torus
+`b1 = 48 − 48 + 4 = 4`; `F_required = 0 − 1 + 4 = 3` against observed `4`, a correct rejection; and the positive
+falsifier `b1 = 76 − 72 + 1 = 5`, `F_required = 4` against observed `F = 4`, a correct acceptance. The consistency
+argument also checks — `V = E = 48` with `b1 = c = 4` means four disjoint closed cycles, which is exactly why a
+union of closed cycles cannot cellularise the torus. **One structural requirement added to the CB10 plan:** §8
+diagnoses that four controls received zero runtime credit but leaves the cause unaddressed, and constraint 4
+preserves those controls without making them *observable*. `TEST(M4CPScaleS4Prereq, …)`
+(`tests/FieldAlignedCurveNetworkTests.cpp:14128`) is a single identity holding every subject, with **26 fatal
+`ASSERT_`** against 17 `EXPECT_` in its first ninety lines, so one fatal assertion aborts the body and blinds every
+later subject. CB10 must split the subjects into separate identities, or reserve fatal assertions for
+within-subject preconditions and emit an end-of-test receipt enumerating each subject's outcome — otherwise TB9 can
+spend another full cycle learning about exactly one subject. Same trade accepted at `M4-CP3-TB7-REV`; same
+"passed versus did not run" discipline as `LESSONS.md` 160. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB8-EXEC`: focused S4 prerequisite valid mechanical RED; selector425 fail-fast unexecuted
 
 - Immutable CB9 artifact `10428779988` / source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf` was executed without rebuild/repair/mutation. Authoritative run/job `35053875774 / 104659839191`; result/log artifacts `10430235842 / 10430201060`.

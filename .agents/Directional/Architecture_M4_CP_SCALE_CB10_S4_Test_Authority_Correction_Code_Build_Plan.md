@@ -130,3 +130,21 @@ Stop and return to Review rather than broaden CB10 if any of the following occur
 CB10 succeeds only when the corrected test authority compiles/packages under the frozen scope with selector425 unchanged and `runtimeExecution=false`. Compile success provides **zero** S4 prerequisite runtime credit.
 
 The next expected turn after successful CB10 is `M4-CP-SCALE-TB9-EXEC`: immutable artifact-only focus first, then selector425 as fresh exact-filter processes only if focus is green, with explicit fail-fast remainder and immutable postflight. `M4-CP-SCALE-TB9-REV` is mandatory before any production S4 early-reject implementation or selector426 publication.
+
+## Amendment — make the S4 subjects independently observable (TB8-REV §13 V3, reviewing agent)
+
+Constraint 4 preserves the positive accepted-cut, adversarial, enumeration-invariance and decision-neutrality
+controls, but preserving them is not the same as making them **observable**. TB8 learned about exactly one subject
+because `TEST(M4CPScaleS4Prereq, …)` (`tests/FieldAlignedCurveNetworkTests.cpp:14128`) is a single identity holding
+every subject, carrying 26 fatal `ASSERT_` against 17 non-fatal `EXPECT_` in its first ninety lines. One fatal
+assertion aborts the body and blinds every later subject.
+
+CB10 must therefore structure the S4 controls so a failure in one subject does not mask the others. Either:
+
+1. split them into separate identities — each fails independently, and each can earn its own selector row later; or
+2. keep one identity, reserving fatal `ASSERT_` for preconditions **within** a subject and using non-fatal
+   `EXPECT_` at subject boundaries, with an end-of-test receipt enumerating every subject's outcome.
+
+Without this, TB9 can spend another full cycle learning about exactly one subject. Same trade accepted at
+`M4-CP3-TB7-REV` for the accepted prefix, and the same "passed versus did not run" discipline as `LESSONS.md` 160.
+

@@ -156,3 +156,69 @@ The current accepted runtime report remains `Architecture_M4_CP_SCALE_TB7_Artifa
 | Turn boundary held | runtime-free; documentation only; no product/test/fixture/selector/benchmark/build mutation |
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** — `review_check.py boundary --expect-selector 425=e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` reports no product/test/fixture/build mutation, no selector mutation, all committed selector hashes preserved, durable markers preserved, and the declared selector425 hash matches |
 | Pushed to origin, branch in sync | **PASS AT TURN CLOSEOUT** — durable Review/plan/consolidation bytes are required to land on the configured working branch, temporary control state is then removed workflow-first, and final branch authority is re-read before the mandatory final PR summary comment; no local-only semantic work may remain |
+
+---
+
+## 13. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The rejection is correct, the attribution finding is exact, and refusing to accept
+`DEFN-OBS-03` on a run where four of five controls never executed is the right call. Accounting holds at
+**49 / 14 / 35**, debt **5**. One structural addition for CB10.
+
+### V1 — the pre-commitment control worked
+
+`M4-CP-SCALE-TB6-REV` declared selector425's target SHA-256 and owner census **before** CB8 built it. Verified
+here: the published `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt` has 425 rows and hashes to
+`e0e0f394faae536ac257ec54…`, exactly the pre-committed value, with its first 424 rows hashing to
+`f202a1720c0a5288` — byte-identical to accepted selector424. A publication turn checked against a number written
+down in advance is a materially stronger control than one that self-reports its output, and it held.
+
+The chain now reads **373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424 ⊂ 425**.
+
+### V2 — all four decisive arithmetic claims re-derived
+
+Every number the adjudication turns on was recomputed independently, and all four hold:
+
+| claim | check | result |
+|---|---|---|
+| `18/30/18, c=1` is the sphere's | `χ = 18 − 30 + 18 = 6`, matching the recorded sphere oracle (`sourceChi=2`) | confirmed |
+| torus first Betti number | `b1 = E − V + c = 48 − 48 + 4 = 4` | confirmed |
+| torus required faces | `F_required = χ − s + b1 = 0 − 1 + 4 = 3`, observed `4` | correct rejection |
+| positive accepted-cut falsifier | `b1 = 76 − 72 + 1 = 5`, `F_required = 0 − 1 + 5 = 4`, observed `F = 4` | correct acceptance |
+
+The consistency argument also checks: `V = E = 48` with `b1 = c = 4` means the pre-cut network is four disjoint
+closed cycles, which is exactly why a union of closed cycles cannot cellularise the torus. So the runtime `48`
+agrees with accepted torus authority and CB9's hard-coded `18` is a transplanted sphere constant — a
+witness-identity error in the test, not a product change. Classification and non-stable accounting both follow:
+the candidate was never promoted, the failed identity sits outside selector425, and no accepted ordinal
+transitioned PASS → RED.
+
+### V3 — REQUIRED for CB10: make the S4 subjects independently observable
+
+§8 records that the positive accepted-cut, one-edge adversarial, reversed-cut enumeration and decision-neutrality
+controls received **zero runtime credit** because the first negative assertion failed before the receipt site.
+That diagnoses the consequence correctly but leaves the structural cause unaddressed, and CB10 constraint 4 —
+"preserve and later runtime-prove" those controls — preserves them without making them *observable*.
+
+The cause is concrete. `TEST(M4CPScaleS4Prereq, …)` at `tests/FieldAlignedCurveNetworkTests.cpp:14128` is a
+**single identity holding every S4 subject**, and its first ninety lines carry **26 fatal `ASSERT_`** against 17
+non-fatal `EXPECT_`. Any one subject's fatal assertion therefore aborts the whole body and blinds every later
+subject. That is why this turn learned about exactly one subject, and without a structural change TB9 can spend
+another full cycle doing the same.
+
+**Requirement.** CB10 must structure the S4 controls so that one subject's failure does not mask the others —
+either by splitting them into separate identities, each able to fail independently and each earning its own
+selector row later, or by keeping one identity while reserving fatal `ASSERT_` for preconditions *within* a
+subject and using non-fatal `EXPECT_` at subject boundaries, with an end-of-test receipt enumerating every
+subject's outcome.
+
+This is the same trade already accepted at `M4-CP3-TB7-REV` for the accepted prefix, and the same
+"passed versus did not run" discipline as `LESSONS.md` 160: one run should enumerate every control's verdict,
+not the first casualty's.
+
+### V4 — obligations
+
+The ledger is complete, with three items correctly marked discharged by earlier Reviews — including
+`TB6-REV-OBS-01`, closed at TB7 when selector425 reached cumulative `425/425`, which completes the S3 publication
+chain this reviewer tracked. `TB2-REV-OBS-02` keeps its scope, `DEFN-OBS-04` keeps the durable S5 rule, and
+`DEFN-OBS-03` is correctly re-scoped rather than discharged.
