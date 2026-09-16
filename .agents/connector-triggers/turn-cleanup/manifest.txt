@@ -1,1 +1,5 @@
+.agents/connector-triggers/m4-cp-scale-cb11-compile.txt
+.agents/connector-triggers/m4-cp-scale-cb11-drive-apply.txt
+.agents/connector-triggers/m4-cp-scale-cb11-docs-drive-apply.txt
+.agents/connector-triggers/source-snapshot/M4-CP-SCALE-CB11-20260916T1728Z.txt
 .agents/connector-triggers/source-snapshot/cont-m4-cp-scale-cb11-20260916-1052.txt
