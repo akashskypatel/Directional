@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-TB7-REV`: selector425 promoted; S3 cumulative credit accepted
+
+- Independent Review verifies candidate package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce`, TB7 result/log `10426872680 / 10427326246`, nested evidence `436ef272...1c4d` and 1298-entry manifest `5639b843...14622` from immutable bytes.
+- Selector425 re-hashes `e0e0f394...790e0b`, exact first424 prefix `f202a172...466ca`, owner census **30/279/75/41**. Every one of 425 fresh raw processes independently re-parses PASS with zero anomaly; row425 carries the frozen S3 exact-repeat receipt.
+- Package/source/execution-view pre/post censuses are byte-identical; artifact-only prohibitions are intact. Source audit confirms exact full-state repeat is the only typed `LimitCycleTermination` authority; combinatorial recurrence and step budget remain separate fail-closed errors.
+- **PROMOTE** package `10425344367` / selector425 **425/425**. `M4-CP-SCALE-TB6-REV-OBS-01` is **DISCHARGED**; S3 cumulative credit is accepted. Initial attempt `35044943849` remains pre-runtime orchestration-only/zero credit. Stable accounting remains **49 / 14 / 35**, debt **5**.
+- Review consolidation folds four superseded/consumed CP-SCALE records into `M4_Consolidated_Record.md` §2.55. Exact next is `M4-CP-SCALE-CB9`, S4 independent-oracle/reachability prerequisite only; selector425 stays frozen and no runtime runs in CB9.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB6-REV`: package promoted under selector424; S3 publication authorized
 
 - Independent Review reopens candidate/result/log bytes, verifies the 1302-entry evidence manifest, re-hashes selector424/prefix423, rebuilds owner census **30/278/75/41**, reopens all 424 selector raw outputs, re-derives the focused S3 receipt/discriminator matrix and source-audits exact full-state typed termination.

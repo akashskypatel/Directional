@@ -774,7 +774,7 @@ Appended 1 identity to selector 422:
 
 - `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved`
 
-### 424 — CURRENT GATE / ACCEPTED M4 AUTHORITY
+### 424 — ACCEPTED HISTORICAL PREFIX OF CURRENT SELECTOR425
 
 `Architecture_M4_CP_SCALE_CB6_Required_Green_Selector_424.txt` — **424 identities**, LF SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`. Its first423 LF rows are byte-identical to accepted selector423 SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
 
@@ -782,11 +782,11 @@ Appended 1 identity to selector 423:
 
 - `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`
 
-**Accepted at `M4-CP-SCALE-TB5-REV`; retained as current required-green selector at `M4-CP-SCALE-TB6-REV`.** Package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` first established selector424 **424/424**. TB6 Review later promotes current runtime package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under the same byte-identical selector424 after independently re-deriving focused S3 **1/1**, selector424 **424/424**, owner census **30/278/75/41** and immutable evidence. `M4-CP-SCALE-TB4-REV-OBS-01` remains discharged; selector424 remains current accepted M4 required-green authority.
+**Accepted at `M4-CP-SCALE-TB5-REV`; now the exact first424 prefix of current selector425.** Package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` first established selector424 **424/424**. TB6 Review later promoted package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under the same byte-identical selector424. `M4-CP-SCALE-TB4-REV-OBS-01` remains discharged; selector424 remains frozen historical accepted prefix authority.
 
-**S3 publication authorized, selector425 not yet accepted.** `M4-CP-SCALE-TB6-REV` accepts focused `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` for publication only. `M4-CP-SCALE-TB6-REV-OBS-01` requires selector425 = exact selector424 prefix + that row425, expected SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, static owner census **30/279/75/41**, then fresh **425/425** runtime + Review before selector425 or S3 cumulative credit is accepted.
+**S3 publication and cumulative acceptance complete.** TB7 Review proves the exact selector424-prefix publication, fresh selector425 **425/425** cumulative runtime and independent Review, accepts S3 cumulative credit, and discharges `M4-CP-SCALE-TB6-REV-OBS-01`.
 
-### 425 — PUBLISHED CANDIDATE / MECHANICALLY GREEN / REVIEW UNADJUDICATED
+### 425 — CURRENT GATE / ACCEPTED M4 AUTHORITY
 
 `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt` — **425 identities**, LF SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`. Its first424 LF rows are byte-identical to accepted selector424 SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`.
 
@@ -794,7 +794,7 @@ Appended 1 producer-owned identity to selector424:
 
 - `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`
 
-CB8 static ownership is **30 authority-kernel / 279 producer / 75 completion / 41 validation**. Compile/package run/job `35042417046 / 104624909472` is GREEN on source `01b1124af094044e32d6887ff0615881333d12ce`, artifact `10425344367`, with GMP/GMPXX, clean source receipts, self-verifying package manifest and `runtimeExecution=false`. TB7 authoritative retry `35045130314 / 104633231692` then executes selector425 **425/425 PASS** in 425 fresh exact-filter processes with exact owner census **30/279/75/41**, fresh row425 PASS and exact immutable postflight. **EXEC does not promote the selector.** Selector424 remains current accepted M4 authority until mandatory `M4-CP-SCALE-TB7-REV` independently adjudicates the evidence.
+CB8 static ownership is **30 authority-kernel / 279 producer / 75 completion / 41 validation**. Compile/package run/job `35042417046 / 104624909472` is GREEN on source `01b1124af094044e32d6887ff0615881333d12ce`, artifact `10425344367`, with GMP/GMPXX, clean source receipts, self-verifying package manifest and `runtimeExecution=false`. TB7 authoritative retry `35045130314 / 104633231692` executes selector425 **425/425 PASS** in 425 fresh exact-filter processes with exact owner census **30/279/75/41**, fresh row425 PASS and exact immutable postflight. `M4-CP-SCALE-TB7-REV` independently re-derives selector/prefix/owners/all 425 raw outcomes and S3 semantics and **PROMOTES selector425/package `10425344367` as current M4 runtime authority**. `M4-CP-SCALE-TB6-REV-OBS-01` is discharged. No selector426 exists or is authorized by this Review.
 
 ## Separate lineage — M1
 

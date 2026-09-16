@@ -1,3 +1,12 @@
+## 2026-09-16 — `M4-CP-SCALE-TB7-REV`: selector425 promoted; S3 cumulative observation discharged
+
+- Independent Review re-opens immutable CB8 package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce`, TB7 result/log artifacts `10426872680 / 10427326246`, nested evidence ZIP `436ef2722...1c4d`, and 1298-entry manifest `5639b843...14622`; all hashes/manifests re-verify.
+- Selector425 independently re-hashes to `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, exact selector424 prefix `f202a172...466ca`, **425 unique rows**, owner census **30/279/75/41**. Review independently joins all 425 raw processes to the rebuilt owner map: **425/425 PASS**, zero RED/SKIP/crash/timeout/selection mismatch/unexecuted, fresh row425 with the frozen S3 receipt.
+- Package/source/execution-view pre/post censuses are byte-identical; no configure/compile/relink/repair/discovery/mutation/benchmark occurred. S3 source audit independently preserves the full exact-state repeat contract and distinct combinatorial/step-budget backstops.
+- Initial run `35044943849` independently re-classifies as **zero-semantic-credit orchestration failure**: shell exit 127 before checkout/harness/runtime. `M4-CP-SCALE-TB7-EXEC-CAND-01` remains CLOSED / NON-STABLE.
+- `M4-CP-SCALE-TB6-REV-OBS-01` — **DISCHARGED / PUBLICATION + CUMULATIVE RUNTIME + INDEPENDENT REVIEW PROVED / NON-STABLE**. Package `10425344367` / selector425 becomes accepted M4 runtime authority; S3 receives cumulative required-green credit.
+- **No product-semantic regression or accepted-green loss.** Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**. Next bounded owner is S4 prerequisite `M4-CP-SCALE-CB9`; `M4-CP-SCALE-DEFN-OBS-03` remains open until its independent oracle/reachability and later production semantics are separately proved.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB7-EXEC`: selector425 mechanically GREEN; checkout orchestration candidate closed
 
 - Fresh authoritative retry run/job `35045130314 / 104633231692` on immutable CB8 artifact `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` is mechanically GREEN: selector425 **425/425 PASS** in 425 fresh exact-filter processes, including fresh row425 S3 **1/1 PASS**, with **0 RED / 0 SKIP / 0 crash / 0 timeout / 0 selection mismatch / 0 unexecuted** and owner census **30/279/75/41**.

@@ -1,3 +1,9 @@
+# 2026-09-16 — M4-CP-SCALE-TB7 Review promotes selector425; S4 prerequisite next
+
+TB7 Review is **APPROVED**. Independent re-derivation of immutable CB8 artifact `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` and TB7 evidence confirms selector425 **425/425 PASS** in 425 fresh exact-filter processes, exact selector424 prefix, owner census **30/279/75/41**, fresh S3 row425 receipt, and byte-identical package/source/execution-view postflight. Package `10425344367` / selector425 becomes accepted current M4 runtime authority. `M4-CP-SCALE-TB6-REV-OBS-01` is **DISCHARGED** and S3 receives cumulative required-green credit.
+
+Initial TB7 attempt `35044943849` remains zero-credit orchestration provenance: it failed with shell exit 127 before checkout/harness/runtime. No new product regression or accepted-green loss exists; stable accounting remains **49 / 14 / 35**, debt **5**. CP-SCALE remains OPEN. Exact next `M4-CP-SCALE-CB9` owns only the S4 independent-oracle/reachability prerequisite, leaving product topology decisions and selector425 frozen; no selector426 or runtime is authorized in CB9.
+
 # 2026-09-16 — M4-CP-SCALE-TB7 selector425 mechanically GREEN; mandatory Review next
 
 TB7-EXEC is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED**. Fresh authoritative retry run/job `35045130314 / 104633231692` consumed immutable CB8 artifact `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` and executed selector425 **425/425 PASS** as 425 fresh exact-filter processes in exact selector order. Row425 `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` ran freshly and passed 1/1; no TB6 focused execution was imported. Owner execution census is **30/279/75/41** with zero RED, SKIP, crash, timeout, selection mismatch or unexecuted rows.
