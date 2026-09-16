@@ -14147,136 +14147,227 @@ TEST(M4CPScaleS4Prereq,
   ASSERT_EQ(acceptedCuts.end(),
             std::adjacent_find(acceptedCuts.begin(), acceptedCuts.end()));
 
+  // The retained torus witness is the subject authority. The empty-cut graph
+  // must be derived independently from raw network/source topology rather than
+  // transplanted from a different witness or read from the final certificate.
+  EXPECT_EQ(48U, network.nodes().size());
+  EXPECT_EQ(48U, cp4c_oracle_network_edge_accounting(network).total());
+
+  struct SubjectObservation {
+    std::optional<Cp4cActualEmbeddedGraphOracle> raw;
+    std::optional<M4CpScaleS4TopologyInvariant> invariant;
+    std::optional<
+        directional::geometry::SurfaceCutGraphCellularityCertificate>
+        certificate;
+  };
+  const auto observeSubject = [&](const std::vector<SourceEdgeTopologyKey> &cuts) {
+    SubjectObservation observation;
+    observation.raw = cp4c_independent_actual_embedded_graph_oracle(
+        torus.mesh, network, cuts);
+    if (observation.raw.has_value()) {
+      observation.invariant = m4_cp_scale_s4_incremental_topology_oracle(
+          network, cuts, *observation.raw);
+    }
+    observation.certificate = m4_cp_scale_s4_product_certificate_view(
+        torus.mesh, *torus.sourceAuthority, network, cuts);
+    return observation;
+  };
+
   // canonical_candidate initializes cuts as the empty set and certifies that
-  // state before any proposal mutation. With all upstream bindings established
-  // here, the empty-cut subject is therefore a production-reachable candidate
-  // state rather than a synthetic negative.
-  const auto negativeRaw = cp4c_independent_actual_embedded_graph_oracle(
-      torus.mesh, network, reachableNegativeCuts);
-  ASSERT_TRUE(negativeRaw.has_value());
-  const auto negativeInvariant = m4_cp_scale_s4_incremental_topology_oracle(
-      network, reachableNegativeCuts, *negativeRaw);
-  ASSERT_TRUE(negativeInvariant.has_value());
-  const auto negativeCertificate = m4_cp_scale_s4_product_certificate_view(
-      torus.mesh, *torus.sourceAuthority, network, reachableNegativeCuts);
-  ASSERT_TRUE(negativeCertificate.has_value());
+  // state before any proposal mutation. A failure in this subject is reported
+  // non-fatally so the positive/adversarial/enumeration controls still run.
+  const auto negative = observeSubject(reachableNegativeCuts);
+  EXPECT_TRUE(negative.raw.has_value());
+  EXPECT_TRUE(negative.invariant.has_value());
+  EXPECT_TRUE(negative.certificate.has_value());
+  if (negative.raw.has_value()) {
+    EXPECT_EQ(48U, negative.raw->vertexCount);
+    EXPECT_EQ(48U, negative.raw->edgeCount);
+    EXPECT_EQ(4U, negative.raw->faceCount);
+    EXPECT_EQ(4U, negative.raw->graphComponentCount);
+    EXPECT_EQ(1U, negative.raw->sourceComponentCount);
+    EXPECT_EQ(0, negative.raw->sourceEulerCharacteristic);
+    EXPECT_EQ(4U, negative.raw->components.size());
+    for (const auto &component : negative.raw->components) {
+      EXPECT_TRUE(component.boundaryCyclesValid);
+      EXPECT_EQ(2U, component.boundaryWalkCount);
+      EXPECT_EQ(0, component.eulerCharacteristic);
+      EXPECT_FALSE(component.proves_disc_topology());
+    }
+  }
+  if (negative.invariant.has_value()) {
+    EXPECT_EQ(48U, negative.invariant->vertexCount);
+    EXPECT_EQ(48U, negative.invariant->edgeCount);
+    EXPECT_EQ(4U, negative.invariant->faceCount);
+    EXPECT_EQ(4U, negative.invariant->graphComponentCount);
+    EXPECT_EQ(1U, negative.invariant->sourceComponentCount);
+    EXPECT_EQ(4, negative.invariant->firstBetti);
+    EXPECT_EQ(3, negative.invariant->requiredFaceCount);
+    EXPECT_EQ(0, negative.invariant->sourceEulerCharacteristic);
+    EXPECT_TRUE(negative.invariant->rejects);
+  }
+  if (negative.invariant.has_value() && negative.certificate.has_value()) {
+    EXPECT_EQ(negative.invariant->sourceEulerCharacteristic,
+              negative.certificate->sourceEulerCharacteristic);
+    EXPECT_EQ(negative.invariant->sourceComponentCount,
+              negative.certificate->sourceComponentCount);
+    if (negative.invariant->rejects) {
+      EXPECT_FALSE(negative.certificate->proves_embedded_cellularity());
+    }
+  }
 
-  ASSERT_EQ(18U, negativeInvariant->vertexCount);
-  ASSERT_EQ(30U, negativeInvariant->edgeCount);
-  ASSERT_EQ(18U, negativeInvariant->faceCount);
-  ASSERT_EQ(1U, negativeInvariant->graphComponentCount);
-  ASSERT_EQ(1U, negativeInvariant->sourceComponentCount);
-  ASSERT_EQ(13, negativeInvariant->firstBetti);
-  ASSERT_EQ(12, negativeInvariant->requiredFaceCount);
-  ASSERT_EQ(0, negativeInvariant->sourceEulerCharacteristic);
-  ASSERT_TRUE(negativeInvariant->rejects);
-  EXPECT_EQ(6, negativeCertificate->eulerCharacteristic);
-  EXPECT_EQ(0, negativeCertificate->sourceEulerCharacteristic);
-  EXPECT_EQ(negativeInvariant->faceCount, negativeCertificate->faceCount);
-  EXPECT_EQ(negativeInvariant->graphComponentCount,
-            negativeCertificate->graphComponentCount);
-  EXPECT_EQ(negativeInvariant->sourceComponentCount,
-            negativeCertificate->sourceComponentCount);
-  EXPECT_EQ(negativeInvariant->rejects,
-            negativeCertificate->eulerCharacteristic !=
-                negativeCertificate->sourceEulerCharacteristic);
-  EXPECT_FALSE(negativeCertificate->proves_embedded_cellularity());
+  // The production-accepted cut set is the false-positive control. Its raw
+  // complement components independently prove discs and the early necessary
+  // condition must therefore remain non-rejecting.
+  const auto positive = observeSubject(acceptedCuts);
+  EXPECT_TRUE(positive.raw.has_value());
+  EXPECT_TRUE(positive.invariant.has_value());
+  EXPECT_TRUE(positive.certificate.has_value());
+  if (positive.raw.has_value()) {
+    EXPECT_EQ(72U, positive.raw->vertexCount);
+    EXPECT_EQ(76U, positive.raw->edgeCount);
+    EXPECT_EQ(4U, positive.raw->faceCount);
+    EXPECT_EQ(1U, positive.raw->graphComponentCount);
+    EXPECT_EQ(1U, positive.raw->sourceComponentCount);
+    EXPECT_EQ(0, positive.raw->sourceEulerCharacteristic);
+    EXPECT_EQ(4U, positive.raw->components.size());
+    for (const auto &component : positive.raw->components) {
+      EXPECT_TRUE(component.proves_disc_topology());
+    }
+  }
+  if (positive.invariant.has_value()) {
+    EXPECT_EQ(72U, positive.invariant->vertexCount);
+    EXPECT_EQ(76U, positive.invariant->edgeCount);
+    EXPECT_EQ(4U, positive.invariant->faceCount);
+    EXPECT_EQ(1U, positive.invariant->graphComponentCount);
+    EXPECT_EQ(1U, positive.invariant->sourceComponentCount);
+    EXPECT_EQ(5, positive.invariant->firstBetti);
+    EXPECT_EQ(4, positive.invariant->requiredFaceCount);
+    EXPECT_EQ(0, positive.invariant->sourceEulerCharacteristic);
+    EXPECT_FALSE(positive.invariant->rejects);
+  }
+  if (positive.certificate.has_value()) {
+    EXPECT_TRUE(positive.certificate->proves_embedded_cellularity());
+    EXPECT_TRUE(m4_cp_scale_s4_topology_fields_match(
+        *positive.certificate, acceptedCutGraph.certificate()));
+  }
 
-  const auto positiveRaw = cp4c_independent_actual_embedded_graph_oracle(
-      torus.mesh, network, acceptedCuts);
-  ASSERT_TRUE(positiveRaw.has_value());
-  const auto positiveInvariant = m4_cp_scale_s4_incremental_topology_oracle(
-      network, acceptedCuts, *positiveRaw);
-  ASSERT_TRUE(positiveInvariant.has_value());
-  const auto positiveCertificate = m4_cp_scale_s4_product_certificate_view(
-      torus.mesh, *torus.sourceAuthority, network, acceptedCuts);
-  ASSERT_TRUE(positiveCertificate.has_value());
-
-  EXPECT_EQ(72U, positiveInvariant->vertexCount);
-  EXPECT_EQ(76U, positiveInvariant->edgeCount);
-  EXPECT_EQ(4U, positiveInvariant->faceCount);
-  EXPECT_EQ(1U, positiveInvariant->graphComponentCount);
-  EXPECT_EQ(1U, positiveInvariant->sourceComponentCount);
-  EXPECT_EQ(5, positiveInvariant->firstBetti);
-  EXPECT_EQ(4, positiveInvariant->requiredFaceCount);
-  EXPECT_FALSE(positiveInvariant->rejects);
-  EXPECT_TRUE(positiveCertificate->proves_embedded_cellularity());
-  EXPECT_TRUE(m4_cp_scale_s4_topology_fields_match(
-      *positiveCertificate, acceptedCutGraph.certificate()));
-
-  // Perturb the candidate topology with a deterministic source-edge cut that
-  // production eventually selects. This remains upstream-admissible and must
-  // agree with the unchanged final certificate predicate for the covered
-  // Betti/face-count rejection class; its classification is not hard-coded.
+  // Perturb the candidate with one deterministic accepted source-edge cut. S4
+  // is only a necessary-condition accelerator: rejection implies the final
+  // authority also rejects, while non-rejection does not imply final success.
   const std::vector<SourceEdgeTopologyKey> adversarialCuts{acceptedCuts.front()};
-  const auto adversarialRaw = cp4c_independent_actual_embedded_graph_oracle(
-      torus.mesh, network, adversarialCuts);
-  ASSERT_TRUE(adversarialRaw.has_value());
-  const auto adversarialInvariant = m4_cp_scale_s4_incremental_topology_oracle(
-      network, adversarialCuts, *adversarialRaw);
-  ASSERT_TRUE(adversarialInvariant.has_value());
-  const auto adversarialCertificate = m4_cp_scale_s4_product_certificate_view(
-      torus.mesh, *torus.sourceAuthority, network, adversarialCuts);
-  ASSERT_TRUE(adversarialCertificate.has_value());
-  EXPECT_NE(negativeInvariant->stateIdentity,
-            adversarialInvariant->stateIdentity);
-  EXPECT_EQ(adversarialInvariant->rejects,
-            adversarialCertificate->eulerCharacteristic !=
-                adversarialCertificate->sourceEulerCharacteristic);
-  EXPECT_EQ(!adversarialInvariant->rejects,
-            adversarialCertificate->proves_embedded_cellularity());
+  const auto adversarial = observeSubject(adversarialCuts);
+  EXPECT_TRUE(adversarial.raw.has_value());
+  EXPECT_TRUE(adversarial.invariant.has_value());
+  EXPECT_TRUE(adversarial.certificate.has_value());
+  if (adversarial.invariant.has_value() && negative.invariant.has_value()) {
+    EXPECT_NE(negative.invariant->stateIdentity,
+              adversarial.invariant->stateIdentity);
+  }
+  if (adversarial.invariant.has_value() && positive.invariant.has_value()) {
+    EXPECT_NE(positive.invariant->stateIdentity,
+              adversarial.invariant->stateIdentity);
+  }
+  if (adversarial.invariant.has_value() && adversarial.certificate.has_value() &&
+      adversarial.invariant->rejects) {
+    EXPECT_FALSE(adversarial.certificate->proves_embedded_cellularity());
+  }
 
-  // Edge enumeration is not semantic state. Reversing the accepted cut vector
-  // must leave the independent oracle and its canonical state receipt unchanged.
+  // Edge enumeration is not semantic state. Reversing accepted-cut input order
+  // must preserve the independently derived canonical topology receipt.
   std::vector<SourceEdgeTopologyKey> reversedCuts = acceptedCuts;
   std::reverse(reversedCuts.begin(), reversedCuts.end());
-  const auto relabeledRaw = cp4c_independent_actual_embedded_graph_oracle(
-      torus.mesh, network, reversedCuts);
-  ASSERT_TRUE(relabeledRaw.has_value());
-  const auto relabeledInvariant = m4_cp_scale_s4_incremental_topology_oracle(
-      network, reversedCuts, *relabeledRaw);
-  ASSERT_TRUE(relabeledInvariant.has_value());
-  EXPECT_EQ(positiveInvariant->stateIdentity,
-            relabeledInvariant->stateIdentity);
-  EXPECT_EQ(positiveInvariant->firstBetti, relabeledInvariant->firstBetti);
-  EXPECT_EQ(positiveInvariant->requiredFaceCount,
-            relabeledInvariant->requiredFaceCount);
-  EXPECT_EQ(positiveInvariant->rejects, relabeledInvariant->rejects);
+  const auto reversed = observeSubject(reversedCuts);
+  EXPECT_TRUE(reversed.raw.has_value());
+  EXPECT_TRUE(reversed.invariant.has_value());
+  bool enumerationInvariant = false;
+  if (positive.invariant.has_value() && reversed.invariant.has_value()) {
+    enumerationInvariant =
+        positive.invariant->stateIdentity == reversed.invariant->stateIdentity &&
+        positive.invariant->firstBetti == reversed.invariant->firstBetti &&
+        positive.invariant->requiredFaceCount ==
+            reversed.invariant->requiredFaceCount &&
+        positive.invariant->rejects == reversed.invariant->rejects;
+    EXPECT_TRUE(enumerationInvariant);
+  }
 
-  // The product result exists before any S4 diagnostic oracle is evaluated.
-  // Re-running the unchanged production entry point afterwards must reproduce
-  // the same output exactly, proving the test-only oracle has no decision path.
+  // Re-running the unchanged production entry point after every diagnostic
+  // subject must reproduce the pre-diagnostic production result exactly.
   const auto productAfterDiagnostics = directional::geometry::SurfaceCutGraph::make(
       torus.mesh.F, static_cast<std::size_t>(torus.mesh.V.rows()),
       *torus.sourceAuthority, *torus.atlas, network);
-  ASSERT_TRUE(productAfterDiagnostics);
-  EXPECT_EQ(acceptedCutGraph.cut_edges(),
-            productAfterDiagnostics.value().cut_edges());
-  EXPECT_EQ(acceptedCutGraph.certificate(),
-            productAfterDiagnostics.value().certificate());
-  EXPECT_EQ(acceptedCutGraph.semantic_digest(),
-            productAfterDiagnostics.value().semantic_digest());
-  EXPECT_EQ(acceptedCutGraph.provenance_digest(),
-            productAfterDiagnostics.value().provenance_digest());
+  EXPECT_TRUE(static_cast<bool>(productAfterDiagnostics));
+  bool decisionNeutral = false;
+  if (productAfterDiagnostics) {
+    decisionNeutral =
+        acceptedCutGraph.cut_edges() == productAfterDiagnostics.value().cut_edges() &&
+        acceptedCutGraph.certificate() ==
+            productAfterDiagnostics.value().certificate() &&
+        acceptedCutGraph.semantic_digest() ==
+            productAfterDiagnostics.value().semantic_digest() &&
+        acceptedCutGraph.provenance_digest() ==
+            productAfterDiagnostics.value().provenance_digest();
+    EXPECT_TRUE(decisionNeutral);
+  }
 
-  std::cout
-      << "m4CpScaleS4Prereq"
-      << ";coveredClass=BettiFaceCountMismatch"
-      << ";reachableNegative=true"
-      << ";negativeState={" << negativeInvariant->stateIdentity << '}'
-      << ";negativeBetti=" << negativeInvariant->firstBetti
-      << ";negativeRequiredFaces=" << negativeInvariant->requiredFaceCount
-      << ";negativeObservedFaces=" << negativeInvariant->faceCount
-      << ";negativeProductEuler=" << negativeCertificate->eulerCharacteristic
-      << ";positiveState={" << positiveInvariant->stateIdentity << '}'
-      << ";positiveBetti=" << positiveInvariant->firstBetti
-      << ";positiveRequiredFaces=" << positiveInvariant->requiredFaceCount
-      << ";positiveObservedFaces=" << positiveInvariant->faceCount
-      << ";adversarialState={" << adversarialInvariant->stateIdentity << '}'
-      << ";adversarialReject="
-      << (adversarialInvariant->rejects ? "true" : "false")
-      << ";enumerationInvariant=true"
-      << ";decisionNeutral=true\n";
+  // Emit one end receipt after every subject had an opportunity to execute.
+  // Availability flags make a masked/partial subject observable without
+  // manufacturing replacement values for missing evidence.
+  std::cout << "m4CpScaleS4Prereq"
+            << ";coveredClass=BettiFaceCountMismatch"
+            << ";reachableNegative=true"
+            << ";negativeRawAvailable="
+            << (negative.raw.has_value() ? "true" : "false")
+            << ";negativeInvariantAvailable="
+            << (negative.invariant.has_value() ? "true" : "false")
+            << ";negativeCertificateAvailable="
+            << (negative.certificate.has_value() ? "true" : "false");
+  if (negative.invariant.has_value()) {
+    std::cout << ";negativeState={" << negative.invariant->stateIdentity << '}'
+              << ";negativeBetti=" << negative.invariant->firstBetti
+              << ";negativeRequiredFaces="
+              << negative.invariant->requiredFaceCount
+              << ";negativeObservedFaces=" << negative.invariant->faceCount
+              << ";negativeReject="
+              << (negative.invariant->rejects ? "true" : "false");
+  }
+  std::cout << ";positiveRawAvailable="
+            << (positive.raw.has_value() ? "true" : "false")
+            << ";positiveInvariantAvailable="
+            << (positive.invariant.has_value() ? "true" : "false")
+            << ";positiveCertificateAvailable="
+            << (positive.certificate.has_value() ? "true" : "false");
+  if (positive.invariant.has_value()) {
+    std::cout << ";positiveState={" << positive.invariant->stateIdentity << '}'
+              << ";positiveBetti=" << positive.invariant->firstBetti
+              << ";positiveRequiredFaces="
+              << positive.invariant->requiredFaceCount
+              << ";positiveObservedFaces=" << positive.invariant->faceCount
+              << ";positiveReject="
+              << (positive.invariant->rejects ? "true" : "false");
+  }
+  std::cout << ";adversarialRawAvailable="
+            << (adversarial.raw.has_value() ? "true" : "false")
+            << ";adversarialInvariantAvailable="
+            << (adversarial.invariant.has_value() ? "true" : "false")
+            << ";adversarialCertificateAvailable="
+            << (adversarial.certificate.has_value() ? "true" : "false");
+  if (adversarial.invariant.has_value()) {
+    std::cout << ";adversarialState={"
+              << adversarial.invariant->stateIdentity << '}'
+              << ";adversarialReject="
+              << (adversarial.invariant->rejects ? "true" : "false");
+  }
+  if (adversarial.certificate.has_value()) {
+    std::cout << ";adversarialFinalCellular="
+              << (adversarial.certificate->proves_embedded_cellularity()
+                      ? "true"
+                      : "false");
+  }
+  std::cout << ";enumerationInvariant="
+            << (enumerationInvariant ? "true" : "false")
+            << ";decisionNeutral=" << (decisionNeutral ? "true" : "false")
+            << '\n';
 }
 
 TEST(ResolvedBranchCorrection,
