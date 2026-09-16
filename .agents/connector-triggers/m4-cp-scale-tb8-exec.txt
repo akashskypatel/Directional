@@ -1,0 +1,6 @@
+turn=M4-CP-SCALE-TB8-EXEC
+candidate_artifact=10428779988
+semantic_source=939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf
+selector=e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b
+focused=M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral
+retry=0
