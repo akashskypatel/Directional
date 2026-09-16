@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-TB10-EXEC` — S4 PRODUCT FOCUS + SELECTOR425 GREEN / REVIEW OWED / NON-STABLE
+
+- Authoritative artifact-only run/job `35135187381 / 104925730218` consumed CB11 candidate `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c`; no configure, compile, relink, repair, chmod, discovery, selector mutation, or benchmark execution occurred.
+- Focus `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` passed **1/1** and emitted one valid product receipt. Negative `V48/E48/Fobs4,c4,s1,chi0` gives `b1=4`, required/observed `3/4`, reject true; positive `V72/E76/Fobs4,c1,s1,chi0` gives `b1=5`, required/observed `4/4`, reject false. Adversarial one-way safety, reversed-enumeration invariance and decision neutrality are GREEN. The product counters are `evaluations=2 / earlyRejects=1 / acceleratedFull=1 / referenceFull=2 / bypassed=1`.
+- Frozen selector425 then executed **425/425 PASS** in 425 additional fresh exact-filter processes: zero RED/SKIP/crash/timeout/selection mismatch/unexecuted, exact owners **30/279/75/41**. Package/source/execution-view/fixture postflight is byte+mode exact.
+- No new regression candidate exists and no accepted PASS-to-RED transition was observed. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+- Candidate product runtime is **MECHANICALLY GREEN / REVIEW OWED / NON-STABLE**. Accepted runtime authority remains TB9 Review package `10455353524` / selector425 **425/425** until mandatory `M4-CP-SCALE-TB10-REV`; EXEC itself authorizes no selector426 publication or S4 cumulative credit.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB9-REV` — S4 PREREQUISITE ACCEPTED / PACKAGE PROMOTED / NON-STABLE
 
 - Review independently reopens CB10 artifact `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`, TB9 run/job `35121594986 / 104880514495`, result/log artifacts `10458072304 / 10458461955`, nested evidence SHA-256 `01040836e8138ec92cd624cfc7bf571d69657c2c7f7dbb288f7afe92cc4cc933`, and its 1304-entry manifest `e9e879efbe7fc78bc0448e3f3847e705e88a78b00d766e2f98705afa389a9b93`; all retained hashes/manifests verify.

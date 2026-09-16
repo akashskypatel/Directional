@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-CB11
-Status: COMPLETE / S4 PRODUCT COMPILE + PACKAGE GREEN / RUNTIME OWED
+Turn: M4-CP-SCALE-TB10-EXEC
+Status: COMPLETE / MECHANICALLY GREEN / REVIEW REQUIRED
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB10-EXEC
+Canonical next turn: M4-CP-SCALE-TB10-REV
 ---
 
 # Future Chat Session Handoff — Directional
@@ -50,15 +50,17 @@ The production-reachable empty-cut torus is independently observed as `V=48,E=48
 
 The independent prerequisite is **not** selector426 and does not implement product S4. Final authority remains `SurfaceCutGraphCellularityCertificate::proves_embedded_cellularity()` plus per-face disc topology.
 
-## CB11 compile/package candidate
+## TB10 candidate runtime evidence
 
-CB11 is compile/package GREEN at semantic source `2adb7b8169a387fcb6db6487768d7bd3d678265c` with no Directional runtime. Compile run/job `35130835524 / 104911222945`; candidate artifact `10461816370` / `93f47702e3919eff0b5503acd7506fbdf661477b6b55b91a0f29fc5a98be2358`; log artifact `10461716532` / `4ff36bd4421b7baf7a6d99187fd1be491a0a8bb94b969ec1885f8ccaa7b498fc`; source archive `79ea26c2f9faf9499e33db02c65cba04b47f3a64eeb35b0c4c421fcf45c50afe`; 28-entry manifest `ef128c01e17db2eebb78e7e92722f732af040d8a6862cda9b24f9e5969ca6dbf`; GMP/GMPXX and all eight targets GREEN; `runtimeExecution=false`. Selector425 and first424 remain byte-identical and no selector426 exists.
+CB11 candidate artifact `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` remains unpromoted. TB10-EXEC run/job `35135187381 / 104925730218` consumed it immutably and is mechanically GREEN: focused product identity **1/1 PASS**; product counters **2 evaluations / 1 early reject / 1 accelerated full certification / 2 reference full certifications / 1 bypass**; selector425 **425/425 PASS** in 425 additional fresh exact-filter processes; exact owner census **30/279/75/41**; zero RED/SKIP/crash/timeout/selection mismatch/unexecuted; exact immutable package/source/execution-view/fixture postflight.
 
-Compile GREEN grants zero S4 runtime/selector credit; accepted runtime authority remains TB9 Review package `10455353524`.
+Result/log artifacts are `10463670805 / 10464360210`, provider SHA-256 `a74e65ef4040d1889212c31da997f0b629d1279913e5ae358ed4846e587e83f9 / 09d2e92e649ec7e4dfd868cedeeb0066fa4443cc54fe39400ecc9592a7a38bea`. Nested evidence SHA-256 is `b17c2956d5e6735098a772465922f4d0d620c1c8ddbbbbe1527800a2bf188133`; its 1304-entry manifest SHA-256 is `b7170097b5e665f7228dc23587ac3abe4e05f8a5e584b22c89b8681d6a22e7cb` and independently verifies.
 
-## Exact next — `M4-CP-SCALE-TB10-EXEC`
+EXEC grants no package promotion, cumulative S4 credit, selector426 publication, or CP-SCALE closure. Accepted runtime authority remains TB9 Review package `10455353524` / selector425 **425/425** until Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
-Execute `Architecture_M4_CP_SCALE_TB10_Artifact_Only_Test_Benchmark_Plan.md` against immutable artifact `10461816370`. Verify package/source/GMP/manifests and modes without repair. Run the focused S4 product identity first; only if GREEN execute selector425 as 425 additional fresh exact-filter processes. No benchmark, configure, compile, relink, codegen, chmod, repair, source/test/fixture/selector mutation, discovery, or selector426 publication. TB10-EXEC records mechanics and every regression classification; exact successor is mandatory `M4-CP-SCALE-TB10-REV` before any S4 cumulative credit/publication.
+## Exact next — `M4-CP-SCALE-TB10-REV`
+
+Independently reopen CB11 candidate package/source plus TB10 result/log/nested evidence. Re-derive the fixed-candidate counting domain; adjudicate negative/positive/adversarial one-way safety; prove the bypass is genuine and cannot replace final-certificate authority; re-check decision neutrality; independently verify selector425 process/owner ledger and immutable postflight; classify any regression evidence; then decide whether package promotion and any selector426 publication are authorized. No later S4/S5 implementation is authorized before this Review closes.
 
 ## Carried obligations
 
@@ -76,12 +78,12 @@ Execute `Architecture_M4_CP_SCALE_TB10_Artifact_Only_Test_Benchmark_Plan.md` aga
 
 ## Context load plan
 
-For `M4-CP-SCALE-TB10-EXEC`, read mandatory policies/checklists first, then:
+For `M4-CP-SCALE-TB10-REV`, read mandatory policies/checklists first, then:
 
-1. `Architecture_M4_CP_SCALE_TB10_Artifact_Only_Test_Benchmark_Plan.md`;
-2. `Architecture_M4_CP_SCALE_CB11_Code_Build_Report.md`;
-3. `Architecture_M4_CP_SCALE_CB11_S4_Product_Activation_Code_Build_Plan.md`;
-4. `Architecture_M4_CP_SCALE_TB9_Review_Record.md` and retained TB9 runtime report;
-5. frozen definitions, `M4_Consolidated_Record.md` §2.57, tracker, `TODO.md`, selector425 and roadmap.
+1. `Architecture_M4_CP_SCALE_TB10_Artifact_Only_Test_Benchmark_Report.md` and retained TB10 result/log artifacts;
+2. `Architecture_M4_CP_SCALE_TB10_Artifact_Only_Test_Benchmark_Plan.md`;
+3. `Architecture_M4_CP_SCALE_CB11_Code_Build_Report.md` and `Architecture_M4_CP_SCALE_CB11_S4_Product_Activation_Code_Build_Plan.md`;
+4. `Architecture_M4_CP_SCALE_TB9_Review_Record.md` and retained TB9 runtime authority;
+5. semantic source `2adb7b8169a387fcb6db6487768d7bd3d678265c`, frozen definitions, `M4_Consolidated_Record.md`, tracker, `TODO.md`, selector425 and roadmap.
 
-Do not rebuild or repair artifact `10461816370`. Focus must be GREEN before selector425 executes. TB10-EXEC stops at mandatory Review.
+Review must remain runtime-free and independently adjudicate the candidate before any selector426 publication or cumulative S4 credit.
