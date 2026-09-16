@@ -1,0 +1,34 @@
+name: M4 CP SCALE TB7 Caller Schema Validation
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb7-schema-validate.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb7-schema-validate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb7-schema-validate
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-tb7:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m4-cp-scale-tb7-exec-caller.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
