@@ -1,0 +1,34 @@
+name: M4 CP SCALE CB8 Compile Package
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb8-compile.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: m4-cp-scale-cb8-compile-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb8-compile
+      commit_run_file: false
+    secrets: inherit
+
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: ${{ github.event.before }}
+      artifact_prefix: m4-cp-scale-cb8
+    secrets: inherit
