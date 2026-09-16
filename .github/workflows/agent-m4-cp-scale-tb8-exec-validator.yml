@@ -1,0 +1,28 @@
+name: M4 CP SCALE TB8 Runtime Caller Schema Validation
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m4-cp-scale-tb8-exec-schema.txt]
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+concurrency:
+  group: m4-cp-scale-tb8-exec-schema-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb8-exec-schema
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m4-cp-scale-tb8-exec-caller.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 7
+    secrets: inherit
