@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-TB8-EXEC
+purpose=apply verified artifact-only runtime orchestration patch
+base=753217d55abacb64bc4b7b6d58194dbb63e8cdf4
+retry=0
