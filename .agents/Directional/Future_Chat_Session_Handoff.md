@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB8-REV
-Status: COMPLETE / CB9 S4 PREREQUISITE TEST AUTHORITY REJECTED / WITNESS-NUMERIC TRANSPLANT ROOT CAUSE / TB7 RUNTIME AUTHORITY UNCHANGED / CP-SCALE OPEN
+Turn: M4-CP-SCALE-CB10
+Status: COMPLETE / TEST AUTHORITY CORRECTED / COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED / CP-SCALE OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB10
+Canonical next turn: M4-CP-SCALE-TB9-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -29,7 +29,7 @@ Read in full at every new formal turn:
 
 ## Current accepted runtime authority
 
-TB8 Review rejects the CB9 prerequisite test authority and does not promote its candidate. Accepted authority remains the TB7 Review promotion:
+CB10 corrected the S4 prerequisite test authority and compiled/packages the corrected candidate, but executed no Directional runtime. Accepted runtime authority therefore remains the TB7 Review promotion:
 
 - package `10425344367`, provider SHA-256 `1e29c9f3348b2e153d563c7e94acdaea52be8f16f6520fa8603fa084bba734bc`;
 - semantic source `01b1124af094044e32d6887ff0615881333d12ce`;
@@ -40,36 +40,21 @@ TB8 Review rejects the CB9 prerequisite test authority and does not promote its 
 
 TB7 authoritative runtime remains run/job `35045130314 / 104633231692`, selector425 **425/425 PASS**, with exact immutable postflight. Do not infer that selector425 reran in TB8: TB8 executed only the focused prerequisite before fail-fast.
 
-## TB8 Review adjudication
+## CB10 code/build result
 
-TB8 run/job `35053875774 / 104659839191` is valid semantic/mechanical RED evidence. Its focus selected/executed exactly 1/1 and failed first at expected negative `vertexCount=18` versus observed `48`; selector425 then remained **0/425 executed / 425/425 explicitly UNEXECUTED**. Result/log artifacts are `10430235842 / 10430201060`; immutable postflight passed and prohibited build/repair/discovery/mutation/benchmark operations remained false.
+Semantic source `bebb14e32a0ac53dd420acf46bfa34410cf759a1` changes only `tests/FieldAlignedCurveNetworkTests.cpp`. The S4 prerequisite now uses the accepted torus empty-cut authority `V=48,E=48,F=4,c=4,s=1,chi=0`, four annular complement components, `b1=4`, and required faces `3`; it removes the invalid non-cellular complement-count/product-face-orbit equality and enforces only the one-way early-reject safety implication. Positive accepted-cut, one-edge adversarial, reversed-enumeration, and production decision-neutrality controls remain present and independently observable through one terminal structured receipt.
 
-Review independently reopens the candidate package/source and evidence and finds:
+Changed-owner preflight run/job `35114377792 / 104856007410` is GREEN. Full standard package run/job `35116725106 / 104863990686` is GREEN under GMP/GMPXX with `runtimeExecution=false`; immutable result artifact `10455353524`, provider SHA-256 `b891318511ef6db2f6317abac99a4b7e1511fe6d4ebc58bdd048cdc49a757de9`, packages all eight standard targets from exact semantic source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`. Selector425 remains exactly byte-frozen at `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, with first424 prefix `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`.
 
-1. the empty-cut torus subject is genuinely production-reachable because `SurfaceCutGraph::canonical_candidate` starts with an empty cut set and certifies it before proposal mutation;
-2. the raw independent S4 oracle is structurally separate from `SurfaceCutGraph` and derives a valid necessary cellularity condition;
-3. CB9 bound the **prescribed-sphere** pre-cut graph-count tuple `V/E/F=18/30/18, c=1` to a **torus** subject whose accepted authority is `V=48,E=48,c=4` with four annular complement components;
-4. corrected empty-torus arithmetic is `b1=4`, required faces `3`, observed independent complement components `4`, therefore a valid necessary-condition rejection;
-5. CB9 also incorrectly required independent connected complement-component count to equal product face-walk-orbit `faceCount` on a non-cellular state, where those representations are not equivalent;
-6. positive/adversarial/enumeration/decision-neutral controls received zero TB8 runtime credit because the first assertion stopped execution before them.
+No Directional runtime executed in CB10. `M4-CP-SCALE-DEFN-OBS-03` is **TEST AUTHORITY CORRECTED + COMPILE GREEN / FRESH RUNTIME + REVIEW OWED / NON-STABLE**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
 
-`M4-CP-SCALE-TB8-EXEC-CAND-01` is **CLOSED / TEST-AUTHORITY WITNESS-NUMERIC TRANSPLANT / NON-STABLE**. `M4-CP-SCALE-DEFN-OBS-03` remains **OPEN / TEST-AUTHORITY CORRECTION + FRESH RUNTIME + REVIEW OWED / NON-STABLE**.
+## Exact next — `M4-CP-SCALE-TB9-EXEC`
 
-## Exact next — `M4-CP-SCALE-CB10`
+Use `Architecture_M4_CP_SCALE_TB9_Artifact_Only_Test_Benchmark_Plan.md`.
 
-Use `Architecture_M4_CP_SCALE_CB10_S4_Test_Authority_Correction_Code_Build_Plan.md`.
+TB9-EXEC must consume artifact `10455353524` without rebuild or repair. Execute focused `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` first in one fresh process. Any focused RED/SKIP/crash/selection/receipt defect fail-closes selector execution and leaves all 425 rows explicitly UNEXECUTED. Only focused GREEN authorizes 425 additional fresh exact-filter selector425 processes. Immutable postflight is mandatory in either branch.
 
-CB10 is **test-authority correction + compile/package only**. It may modify only the S4 prerequisite test/helper logic needed to:
-
-1. bind the empty-cut negative to accepted torus `48/48,c=4,s=1`, four-annulus authority and derive `b1=4`, required faces `3`, observed components `4`;
-2. remove the invalid negative equality between independent complement-component count and product face-walk-orbit count;
-3. require only the S4 safety implication `earlyReject => unchanged final certificate rejects` for partial/adversarial covered-class subjects;
-4. preserve positive accepted-cut `72/76/4`, enumeration-invariance and decision-neutrality controls for later runtime proof;
-5. compile/package all accepted selector425 owners under mandatory GMP/GMPXX with `runtimeExecution=false`.
-
-Product source, A2a' cut selection, final certificate semantics, fixtures, CMake semantics and selector425 are frozen. No selector426 and no Directional runtime are authorized in CB10. If correction requires changing production semantics or weakening final authority, stop and return to Review.
-
-After successful CB10 compile/package, expected next is fresh artifact-only `M4-CP-SCALE-TB9-EXEC`, then mandatory `M4-CP-SCALE-TB9-REV` before any production S4 activation.
+TB9-EXEC makes no promotion claim. Its exact successor is mandatory `M4-CP-SCALE-TB9-REV`; no production S4 activation or selector426 is authorized before that Review.
 
 ## Carried obligations
 
@@ -87,14 +72,12 @@ After successful CB10 compile/package, expected next is fresh artifact-only `M4-
 
 ## Context load plan
 
-For `M4-CP-SCALE-CB10`, read mandatory policies/checklists first, then:
+For `M4-CP-SCALE-TB9-EXEC`, read mandatory policies/checklists first, then:
 
-1. `Architecture_M4_CP_SCALE_TB8_Review_Record.md`;
-2. `Architecture_M4_CP_SCALE_CB10_S4_Test_Authority_Correction_Code_Build_Plan.md`;
-3. `Architecture_M4_CP_SCALE_TB7_Artifact_Only_Test_Benchmark_Report.md`;
-4. `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §§5,7-10;
-5. `M4_Consolidated_Record.md` §2.56;
-6. `M3_CP4c_Frozen_Definitions.md` torus actual-complex authority and selector425 row356 source;
-7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, selector manifest and roadmap.
+1. `Architecture_M4_CP_SCALE_CB10_Code_Build_Report.md`;
+2. `Architecture_M4_CP_SCALE_TB9_Artifact_Only_Test_Benchmark_Plan.md`;
+3. `Architecture_M4_CP_SCALE_TB8_Review_Record.md`;
+4. `Architecture_M4_CP_SCALE_TB7_Artifact_Only_Test_Benchmark_Report.md`;
+5. `Regression_Root_Cause_Tracker.md`, `TODO.md`, selector425 manifest and roadmap.
 
-CB10 must correct the test authority without converting the Review finding into a production change. Accepted runtime authority remains TB7 until a later fresh runtime + Review explicitly promotes a successor.
+Execution is artifact-only. Do not preload unrelated historical plans. Accepted runtime authority remains TB7 until TB9 Review explicitly promotes a successor.

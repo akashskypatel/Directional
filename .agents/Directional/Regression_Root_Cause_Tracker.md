@@ -1,3 +1,10 @@
+## 2026-09-16 — `M4-CP-SCALE-CB10` — S4 TEST AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME OWED / NON-STABLE
+
+- Semantic source `bebb14e32a0ac53dd420acf46bfa34410cf759a1` changes only `tests/FieldAlignedCurveNetworkTests.cpp`. The corrected empty-cut torus authority is `V=48,E=48,F=4,c=4,s=1,chi=0`, four annular complement components, `b1=4`, `F_required=3`; the invalid off-domain complement-count/product-face-orbit equality is removed.
+- The final-authority relation is now the required one-way implication: an S4 early rejection requires the unchanged final certificate to reject; non-rejection does not manufacture final success. Accepted-cut positive, one-edge adversarial, enumeration-invariance and production decision-neutrality controls remain observable through a terminal structured receipt.
+- Changed-owner preflight `35114377792 / 104856007410` and full package compile `35116725106 / 104863990686` are GREEN under GMP/GMPXX with `runtimeExecution=false`. Candidate artifact `10455353524` / provider SHA-256 `b891318511ef6db2f6317abac99a4b7e1511fe6d4ebc58bdd048cdc49a757de9`; selector425 is unchanged.
+- `M4-CP-SCALE-DEFN-OBS-03` — **OPEN / TEST AUTHORITY CORRECTED + COMPILE GREEN / FRESH RUNTIME + REVIEW OWED / NON-STABLE**. Owner chain is now `M4-CP-SCALE-TB9-EXEC -> M4-CP-SCALE-TB9-REV`. No runtime evidence or accepted PASS→RED transition exists in CB10, so stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**, and accepted runtime authority remains TB7 package `10425344367` / selector425 **425/425**.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB8-REV` — CB9 S4 PREREQUISITE TEST AUTHORITY REJECTED / NON-STABLE
 
 - `M4-CP-SCALE-TB8-EXEC-CAND-01` — **CLOSED / TEST-AUTHORITY WITNESS-NUMERIC TRANSPLANT / NON-STABLE / CB10 CORRECTION OWED**. Review independently reopens candidate package/source plus TB8 result/log/nested evidence and confirms the focus was a real semantic process, not orchestration failure. The first assertion expected `vertexCount=18` while the independent oracle observed `48`.

@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-CB10`: corrected S4 prerequisite test authority; compile/package GREEN
+
+Code + Build only. Semantic source `bebb14e32a0ac53dd420acf46bfa34410cf759a1` changes only `tests/FieldAlignedCurveNetworkTests.cpp`. The production-reachable empty-cut torus negative is corrected to `48/48/F4,c4,s1,chi0`, four annuli, `b1=4`, required faces `3`; the invalid non-cellular complement-count/product-face-orbit equality is removed. Positive accepted-cut, one-edge adversarial, reversed-enumeration and decision-neutrality controls remain, and a terminal structured receipt makes subject availability/outcomes observable. Product source, final certificate semantics, fixtures, CMake semantics and selector425 are unchanged.
+
+Changed-owner preflight `35114377792 / 104856007410` is GREEN. Full package compile `35116725106 / 104863990686` is GREEN under mandatory GMP/GMPXX with `runtimeExecution=false`. Candidate artifact `10455353524` / provider SHA-256 `b891318511ef6db2f6317abac99a4b7e1511fe6d4ebc58bdd048cdc49a757de9`; source archive SHA-256 `884ff6703f290df8b3479e35945cb3dc29b0732e3810eb66528759721d8366ae`. All eight standard targets compiled; no packaged binary executed. Selector425 remains 425 unique LF rows at `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, first424 prefix `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`.
+
+No runtime credit is claimed. Accepted runtime authority remains TB7 package `10425344367` / selector425 **425/425**; stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M4-CP-SCALE-TB9-EXEC`, followed by mandatory `M4-CP-SCALE-TB9-REV`.
+
 ## 2026-09-16 — PR surface frozen: metadata/title/body writes forbidden
 
 User instruction 2026-09-16: forbid spending tool calls on PR metadata, title and body changes, and set the PR

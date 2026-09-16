@@ -2,13 +2,12 @@
 
 Last updated: 2026-09-16 UTC
 
-## Current turn — M4-CP-SCALE-CB10
+## Current turn — M4-CP-SCALE-TB9-EXEC
 
-- [x] `M4-CP-SCALE-TB7-REV`: promoted package `10425344367` / selector425 **425/425** and accepted S3 cumulative credit.
-- [x] `M4-CP-SCALE-CB9`: authored/compiled the S4 prerequisite test candidate `10428779988`; no product or selector change.
-- [x] `M4-CP-SCALE-TB8-EXEC`: valid focused RED at expected torus `vertexCount=18` versus observed `48`; selector425 **0/425 executed / 425 UNEXECUTED**; immutable postflight PASS.
-- [x] `M4-CP-SCALE-TB8-REV`: rejects CB9 prerequisite test authority. The empty-cut torus is production-reachable and the raw necessary-condition oracle is structurally independent, but CB9 transplanted prescribed-sphere graph-count constants `18/30/18,c=1` onto torus authority `48/48,c=4` and also compared complement-component count to product face-walk-orbit count off the cellular domain. Candidate closes non-stably; accepted TB7 authority remains unchanged.
-- [ ] `M4-CP-SCALE-CB10`: test-only S4 prerequisite correction + compile/package. Bind the empty-cut negative to torus `V=48,E=48,F=4,c=4,s=1,chi=0 -> b1=4,F_required=3`, remove invalid non-cellular face-count representation equality, preserve positive/adversarial/enumeration/decision-neutral controls, keep product/CMake/fixtures/selector425 frozen, execute no Directional runtime.
+- [x] `M4-CP-SCALE-TB8-REV`: rejected the CB9 sphere-numbered torus prerequisite authority; accepted TB7 runtime authority remained unchanged.
+- [x] `M4-CP-SCALE-CB10`: corrected only the S4 prerequisite test authority at semantic source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`; changed-owner preflight and all-eight-target GMP/GMPXX package compile are GREEN with `runtimeExecution=false`. Candidate artifact `10455353524` / SHA-256 `b891318511ef6db2f6317abac99a4b7e1511fe6d4ebc58bdd048cdc49a757de9`; selector425 remains byte-frozen.
+- [ ] `M4-CP-SCALE-TB9-EXEC`: artifact-only focused S4 prerequisite first; fail fast on focused defect, otherwise run selector425 as 425 additional fresh exact-filter processes; immutable postflight mandatory. No rebuild/repair/mutation and no promotion decision.
+- [ ] `M4-CP-SCALE-TB9-REV`: mandatory independent review after TB9 execution; decides candidate promotion and `M4-CP-SCALE-DEFN-OBS-03` disposition.
 
 ## Purpose
 
