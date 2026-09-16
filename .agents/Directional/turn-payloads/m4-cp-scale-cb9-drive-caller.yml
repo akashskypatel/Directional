@@ -1,0 +1,39 @@
+name: M4 CP SCALE CB9 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb9-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-cb9-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb9-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1DI_zZn1RILfktMWxw3058urVYDoHh9JY
+      patch_sha256: '3a33ae0b2e16da848e4249da1062e5a7ca2647bfd7ebf9e44da5d26b131fdd25'
+      base_sha: 5254b2998c079565583412f52bfd4df8cf2ecd7f
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'test: add S4 prerequisite oracle authority'
+      retention_days: 14
+    secrets: inherit
