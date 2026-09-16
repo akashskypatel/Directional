@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-CB12`: selector426 published; compile/package GREEN
+
+Publication-only CB12 created selector426 as the exact accepted selector425 bytes plus producer row `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate`. Selector426 is **426 LF rows / 426 unique**, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; first425 remains `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; static owners are **30/280/75/41**. Publication commit `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` changes only selector426 and the additive selector manifest.
+
+Compile run/job `35163156552 / 105018295110` built all eight standard targets from exact source `e15e83c79...` under GMP/GMPXX with `runtimeExecution=false`. Result artifact `10473134357` provider SHA-256 is `aa503e4be2aa1904172c9a3710f41e7cf0ccd352575b39078ece61b7d5d660b9`; activity log artifact `10472809674` SHA-256 is `2e06d75866a328045ccd0a27334feeb1e616f7d54830f3d5d5488135ca03a266`; packaged source archive SHA-256 is `190233bd050a2d1a6c042217f11294f38fc29fdc62d9c6b124a84fefb914d570`; package manifest 28/28 verifies. No Directional runtime, test or benchmark executed.
+
+Accepted runtime authority remains TB10 package `10461816370` / selector425 until fresh TB11 + mandatory Review. Exact next is `M4-CP-SCALE-TB11-EXEC`, consuming artifact `10473134357` without rebuild and executing selector426 as 426 fresh exact-filter processes. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB10-REV`: S4 product accepted for publication; package `10461816370` promoted
 
 Runtime-free Review independently reopened CB11 package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c`, TB10 run/job `35135187381 / 104925730218`, result/log artifacts `10463670805 / 10464360210`, nested evidence, semantic source and selector425. Package/source/GMP authority, 28-entry package manifest, 1304-entry nested evidence manifest, all 425 selector-process rows/owners and immutable postflight independently reverified.

@@ -2,13 +2,14 @@
 
 Last updated: 2026-09-16 UTC
 
-## Current turn — M4-CP-SCALE-TB10-REV
+## Current turn — M4-CP-SCALE-CB12
 
 - [x] `M4-CP-SCALE-TB9-REV`: promoted corrected prerequisite package `10455353524` under selector425 and discharged `M4-CP-SCALE-DEFN-OBS-03`.
 - [x] `M4-CP-SCALE-CB11`: implemented bounded S4 product accelerator + independent focused test at source `2adb7b8169a387fcb6db6487768d7bd3d678265c`; package `10461816370` compile/GMP GREEN with no runtime.
 - [x] `M4-CP-SCALE-TB10-EXEC`: artifact-only focus **1/1 PASS** + selector425 **425/425 PASS**, owners **30/279/75/41**, genuine `1`-attempt bypass, zero anomalies, immutable postflight.
 - [x] `M4-CP-SCALE-TB10-REV`: independently accepts S4 product focus for publication and promotes package `10461816370` under unchanged selector425; cumulative S4 credit withheld.
-- [ ] `M4-CP-SCALE-CB12`: publication-only selector426 append + compile/package; exact selector425 prefix plus S4 row, expected SHA `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/280/75/41**; no semantic product/test/fixture change and no runtime.
+- [x] `M4-CP-SCALE-CB12`: selector426 published at source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`; exact prefix + one S4 producer row, SHA `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/280/75/41**; GMP/GMPXX artifact `10473134357` compile GREEN with no runtime.
+- [ ] `M4-CP-SCALE-TB11-EXEC`: immutable artifact-only selector426 cumulative execution, exactly 426 fresh processes; require 426/426 PASS and exact immutable postflight; no benchmark.
 
 ## Purpose
 
@@ -40,13 +41,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-CB12` (selector426 publication-only)
+## Current focus — `M4-CP-SCALE-TB11-EXEC` (selector426 cumulative artifact-only runtime)
 
 Accepted current runtime authority is package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under selector425 **425/425** (`e0e0f394...790e0b`), exact selector424 prefix `f202a172...466ca`, owner census **30/279/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 TB10 Review accepts `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` for publication after independently proving its actual-complement counting domain, one-way safety, genuine bypass and decision neutrality. `M4-CP-SCALE-TB10-REV-OBS-01` remains open because the identity is outside selector425.
 
-CB12 must create selector426 as exact selector425 bytes plus the S4 row, 426 unique LF rows, expected SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30 authority-kernel / 280 producer / 75 completion / 41 validation**. It is publication-only Code + Build: no product/test/fixture/CMake/benchmark semantic changes and no Directional runtime. Fresh `M4-CP-SCALE-TB11-EXEC` 426-row artifact-only runtime + mandatory Review are required before cumulative S4 credit.
+CB12 has now published selector426 exactly: 426 unique LF rows, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, exact selector425 prefix, owners **30 authority-kernel / 280 producer / 75 completion / 41 validation**. Compile artifact `10473134357` on source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` is GREEN under GMP/GMPXX with `runtimeExecution=false`. Fresh `M4-CP-SCALE-TB11-EXEC` must execute all 426 rows in separate processes from that immutable artifact; mandatory Review remains required before cumulative S4 credit.
 
 ## Carried forward from M1
 
@@ -85,7 +86,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 CUMULATIVE ACCEPTED + S4 PRODUCT FOCUSED ACCEPTED FOR PUBLICATION / CHECKPOINT OPEN**. TB10 Review promotes package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under unchanged selector425 **425/425**. Exact next `M4-CP-SCALE-CB12` publishes selector426; cumulative S4 credit remains withheld until TB11 + Review. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 CUMULATIVE ACCEPTED + S4 PRODUCT FOCUSED ACCEPTED FOR PUBLICATION / CHECKPOINT OPEN**. TB10 Review promotes package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under unchanged selector425 **425/425**. Selector426 is now published/compile-green in artifact `10473134357`; exact next `M4-CP-SCALE-TB11-EXEC`; cumulative S4 credit remains withheld until TB11 + Review. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -125,4 +126,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB10-REV` promotes package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under unchanged selector425 **425/425** and accepts the focused S4 product for publication. Cumulative S4 selector credit remains withheld until selector426 publication + fresh TB11 + Review. CP-SCALE remains OPEN: S1 is diagnostic/non-gating, S2 arrival remains blocked, S4 cumulative publication and S5 genus>=2 remain open. Exact next is **`M4-CP-SCALE-CB12`**. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB10-REV` promotes package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under unchanged selector425 **425/425** and accepts the focused S4 product for publication. Cumulative S4 selector credit remains withheld until fresh TB11 + Review. CP-SCALE remains OPEN: S1 is diagnostic/non-gating, S2 arrival remains blocked, S4 cumulative acceptance and S5 genus>=2 remain open. Exact next is **`M4-CP-SCALE-TB11-EXEC`**. PR #8 remains open, draft, and unmerged.

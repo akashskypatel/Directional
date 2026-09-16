@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB10-REV
-Status: COMPLETE / PACKAGE PROMOTED / S4 FOCUSED ACCEPTED FOR PUBLICATION / CUMULATIVE S4 OWED
+Turn: M4-CP-SCALE-CB12
+Status: COMPLETE / SELECTOR426 PUBLISHED + COMPILE GREEN / CUMULATIVE S4 RUNTIME + REVIEW OWED
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB12
+Canonical next turn: M4-CP-SCALE-TB11-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -50,9 +50,15 @@ Focused runtime is non-vacuous: negative required/observed `3/4` rejects, positi
 
 The focused identity is **not yet cumulative selector credit** because selector425 remains byte-frozen and does not contain it. `M4-CP-SCALE-TB10-REV-OBS-01` owns publication + fresh cumulative runtime + Review.
 
-## Exact next — `M4-CP-SCALE-CB12`
+## Current CB12 publication candidate
 
-Execute `Architecture_M4_CP_SCALE_CB12_Selector426_Publication_Code_Build_Plan.md`. Publish selector426 as exact selector425 bytes plus row `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate`. Required full SHA-256 is `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; expected owner census is **30/280/75/41**. CB12 is publication-only Code + Build: no product/test/fixture/CMake/benchmark semantic changes and no Directional runtime. Compile/package unchanged semantic source under mandatory GMP/GMPXX. Exact successor after compile GREEN is `M4-CP-SCALE-TB11-EXEC`, followed by mandatory Review before cumulative S4 credit.
+CB12 published selector426 at source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`: 426 LF rows / 426 unique, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, exact selector425 first425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owner census **30 authority-kernel / 280 producer / 75 completion / 41 validation**. Semantic publication changed only selector426 plus its additive manifest entry.
+
+Compile run/job `35163156552 / 105018295110` is GREEN on exact source `e15e83c79...`; GMP/GMPXX-linked result artifact `10473134357` has provider SHA-256 `aa503e4be2aa1904172c9a3710f41e7cf0ccd352575b39078ece61b7d5d660b9`, packaged source archive SHA-256 `190233bd050a2d1a6c042217f11294f38fc29fdc62d9c6b124a84fefb914d570`, 28/28 package checksums and `runtimeExecution=false`. This is a **candidate runtime package for TB11**, not promoted runtime authority; accepted runtime authority remains TB10 package `10461816370` / selector425 until Review.
+
+## Exact next — `M4-CP-SCALE-TB11-EXEC`
+
+Execute `Architecture_M4_CP_SCALE_TB11_Artifact_Only_Test_Benchmark_Plan.md` against immutable artifact `10473134357` without rebuild or repair. Execute selector426 as exactly **426 fresh exact-filter processes in exact file order**, require 426/426 PASS, zero RED/SKIP/crash/timeout/selection mismatch/unexecuted, owner census **30/280/75/41**, and exact immutable postflight. No benchmark is required or authorized for this publication-only acceptance surface. Exact successor after EXEC is mandatory `M4-CP-SCALE-TB11-REV`; cumulative S4 credit remains withheld until that Review.
 
 ## Carried obligations
 
@@ -71,12 +77,12 @@ Execute `Architecture_M4_CP_SCALE_CB12_Selector426_Publication_Code_Build_Plan.m
 
 ## Context load plan
 
-For `M4-CP-SCALE-CB12`, read mandatory policies/checklists first, then:
+For `M4-CP-SCALE-TB11-EXEC`, read mandatory policies/checklists first, then:
 
-1. `Architecture_M4_CP_SCALE_CB12_Selector426_Publication_Code_Build_Plan.md`;
-2. `Architecture_M4_CP_SCALE_TB10_Review_Record.md`;
-3. retained `Architecture_M4_CP_SCALE_TB10_Artifact_Only_Test_Benchmark_Report.md`;
-4. `Architecture_M4_CP_SCALE_Frozen_Definitions.md`, `M4_Consolidated_Record.md`, tracker, `TODO.md`, selector425, selector manifest and roadmap;
-5. semantic source `2adb7b8169a387fcb6db6487768d7bd3d678265c` only as needed to verify row426 ownership; product/test semantics are frozen.
+1. `Architecture_M4_CP_SCALE_TB11_Artifact_Only_Test_Benchmark_Plan.md`;
+2. `Architecture_M4_CP_SCALE_CB12_Code_Build_Report.md`;
+3. `Architecture_M4_CP_SCALE_TB10_Review_Record.md`;
+4. retained `Architecture_M4_CP_SCALE_TB10_Artifact_Only_Test_Benchmark_Report.md`;
+5. `Architecture_M4_CP_SCALE_Frozen_Definitions.md`, `M4_Consolidated_Record.md`, tracker, `TODO.md`, selector426, selector manifest and roadmap.
 
-Do not re-implement S4 in CB12. The only semantic publication is the selector append; runtime belongs to TB11.
+Do not rebuild or repair artifact `10473134357` in TB11. Runtime is exactly the 426 fresh selector processes; Review owns cumulative S4 acceptance.
