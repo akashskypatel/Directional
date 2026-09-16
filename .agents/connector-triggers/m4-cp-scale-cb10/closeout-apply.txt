@@ -2,4 +2,5 @@ purpose=apply verified M4-CP-SCALE-CB10 closeout documentation patch
 base_sha=ae0063217bfc07436e335167f82975e340099c9c
 patch_sha256=0052cfcc9a96cb680733979578ed61a4fb67c29d7eb4fc4f8cadd2d77a49a8ef
 runtimeExecution=false
-retry=0
+retry=1
+staging_parent=Directional-CI
