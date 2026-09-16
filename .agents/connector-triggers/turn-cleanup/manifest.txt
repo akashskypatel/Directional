@@ -1,2 +1,0 @@
-# M4-CP-SCALE-TB7-EXEC final stale snapshot-marker cleanup
-.agents/connector-triggers/source-snapshot

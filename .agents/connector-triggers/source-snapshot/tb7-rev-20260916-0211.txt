@@ -1,2 +1,0 @@
-M4-CP-SCALE-TB7-REV start-of-turn source snapshot.
-Freeze repository authority for review planning and closeout.
