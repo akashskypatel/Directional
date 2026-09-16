@@ -1,0 +1,37 @@
+name: M4 CP SCALE CB8 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb8-drive-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m4-cp-scale-cb8-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb8-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 19_8SKyZvXj_bn6V_1AwBLf02hr-uaOLS
+      patch_sha256: 87ffb113b77dcd53317a8742d70ad7651f29b0170703188b4673f593d184cb17
+      base_sha: 3fc25a00327de8c295936c84ec1568e7d5a794b1
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: publish M4 CP SCALE selector425 candidate'
+    secrets: inherit
