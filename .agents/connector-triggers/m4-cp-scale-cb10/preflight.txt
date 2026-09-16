@@ -1,4 +1,0 @@
-purpose=compile changed-owner preflight for M4-CP-SCALE-CB10
-source_sha=bebb14e32a0ac53dd420acf46bfa34410cf759a1
-target=directional_surface_cell_producer_tests
-retry=0
