@@ -1,0 +1,48 @@
+name: Agent M4 CP SCALE CB10 Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb10/apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp-scale-cb10-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb10-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp-scale-cb10-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1fznVax0zbwnWCh6YX1knSIbmf67nV3iV
+      patch_sha256: 8766a16a203933a0357385bb76748d5602ff59ff9149ac1e540a81f0e4ab5612
+      base_sha: 4107d693675f207c4501576f6546e997edcdf1a5
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'test: correct M4 CP SCALE S4 torus authority'
+      retention_days: 14
+    secrets: inherit
