@@ -1,3 +1,0 @@
-M4-CP-SCALE-TB7-REV source snapshot trigger.
-Pre-trigger branch authority: 45ca3c3eb9fc27f4e0df15d5f69a48e10d3b5c3f
-Purpose: runtime-free Review; snapshot mode required by Mandatory_Start_Checklist.
