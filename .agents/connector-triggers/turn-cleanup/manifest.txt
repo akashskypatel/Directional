@@ -1,0 +1,5 @@
+# M4-CP-SCALE-CB10 temporary state cleanup
+.agents/connector-triggers/source-snapshot/session-20260916-0755.txt
+.agents/connector-triggers/source-snapshot/resume-20260916-0818.txt
+.agents/connector-triggers/m4-cp-scale-cb10/preflight.txt
+.agents/connector-triggers/m4-cp-scale-cb10/package.txt
