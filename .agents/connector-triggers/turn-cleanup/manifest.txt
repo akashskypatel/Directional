@@ -1,0 +1,10 @@
+# M4-CP-SCALE-TB8-EXEC temporary-state cleanup
+.agents/Directional/turn-payloads/m4-cp-scale-tb8-drive-caller.yml
+.agents/Directional/turn-payloads/m4-cp-scale-tb8-exec-caller.yml
+.agents/Directional/turn-payloads/m4-cp-scale-tb8-exec.sh
+.agents/Directional/turn-payloads/m4-cp-scale-tb8-helper.py
+.agents/connector-triggers/m4-cp-scale-tb8-drive-apply.txt
+.agents/connector-triggers/m4-cp-scale-tb8-drive-schema.txt
+.agents/connector-triggers/m4-cp-scale-tb8-exec-schema.txt
+.agents/connector-triggers/m4-cp-scale-tb8-exec.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb8-exec-20260916.txt
