@@ -1,3 +1,2 @@
-turn=M4-CP-SCALE-TB8-EXEC
-purpose=validate Drive apply caller before activation
-retry=0
+M4-CP-SCALE-TB8-EXEC closeout Drive caller schema validation
+2026-09-16T08:53:00Z
