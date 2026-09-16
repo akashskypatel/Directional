@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-TB9-EXEC` — FOCUSED + SELECTOR425 GREEN / REVIEW OWED / NON-STABLE
+
+- Authoritative artifact-only run/job `35121594986 / 104880514495` consumed candidate `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`; no rebuild, repair, mutation, discovery, or benchmark execution occurred.
+- Corrected S4 prerequisite focus selected/executed/passed **1/1/1** and emitted exactly one valid receipt. Empty-torus negative is `V48/E48/F4,c4,s1,chi0`, `b1=4`, required/observed `3/4`, reject true; accepted-cut positive is `V72/E76/F4,c1,s1,chi0`, `b1=5`, required/observed `4/4`, reject false. Adversarial one-edge safety, enumeration invariance, and production decision-neutrality are all GREEN.
+- Frozen selector425 then executed **425/425 PASS** in 425 additional fresh exact-filter processes: zero RED/SKIP/crash/timeout/selection mismatch/unexecuted, exact owners **30/279/75/41**. Immutable package/source/execution-view/fixture postflight is exact.
+- No new regression candidate exists and no accepted PASS-to-RED transition was observed. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+- `M4-CP-SCALE-DEFN-OBS-03` — **OPEN / FRESH RUNTIME GREEN + REVIEW OWED / NON-STABLE**. Mandatory owner is `M4-CP-SCALE-TB9-REV`, which alone may promote candidate `10455353524` and decide observation disposition. Accepted runtime authority remains TB7 package `10425344367` / selector425 **425/425** until then.
+
 ## 2026-09-16 — `M4-CP-SCALE-CB10` — S4 TEST AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME OWED / NON-STABLE
 
 - Semantic source `bebb14e32a0ac53dd420acf46bfa34410cf759a1` changes only `tests/FieldAlignedCurveNetworkTests.cpp`. The corrected empty-cut torus authority is `V=48,E=48,F=4,c=4,s=1,chi=0`, four annular complement components, `b1=4`, `F_required=3`; the invalid off-domain complement-count/product-face-orbit equality is removed.

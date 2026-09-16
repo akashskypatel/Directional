@@ -2,11 +2,11 @@
 
 Last updated: 2026-09-16 UTC
 
-## Current turn — M4-CP-SCALE-TB9-EXEC
+## Current turn — M4-CP-SCALE-TB9-REV
 
 - [x] `M4-CP-SCALE-TB8-REV`: rejected the CB9 sphere-numbered torus prerequisite authority; accepted TB7 runtime authority remained unchanged.
 - [x] `M4-CP-SCALE-CB10`: corrected only the S4 prerequisite test authority at semantic source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`; changed-owner preflight and all-eight-target GMP/GMPXX package compile are GREEN with `runtimeExecution=false`. Candidate artifact `10455353524` / SHA-256 `b891318511ef6db2f6317abac99a4b7e1511fe6d4ebc58bdd048cdc49a757de9`; selector425 remains byte-frozen.
-- [ ] `M4-CP-SCALE-TB9-EXEC`: artifact-only focused S4 prerequisite first; fail fast on focused defect, otherwise run selector425 as 425 additional fresh exact-filter processes; immutable postflight mandatory. No rebuild/repair/mutation and no promotion decision.
+- [x] `M4-CP-SCALE-TB9-EXEC`: artifact-only run/job `35121594986 / 104880514495` is mechanically GREEN: focused prerequisite **1/1 PASS**, selector425 **425/425 PASS**, owners **30/279/75/41**, zero runtime anomalies, exact immutable postflight. Result/log artifacts `10458072304 / 10458461955`; no rebuild/repair/mutation and no promotion decision.
 - [ ] `M4-CP-SCALE-TB9-REV`: mandatory independent review after TB9 execution; decides candidate promotion and `M4-CP-SCALE-DEFN-OBS-03` disposition.
 
 ## Purpose
@@ -39,13 +39,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-CB10` (S4 prerequisite test-authority correction)
+## Current focus — `M4-CP-SCALE-TB9-REV` (independent runtime adjudication)
 
 Accepted runtime authority remains TB7 package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` under selector425 **425/425** (`e0e0f394...790e0b`), exact selector424 prefix `f202a172...466ca`, owner census **30/279/75/41**.
 
-TB8 Review re-derived the rejected CB9 focus from exact bytes. `SurfaceCutGraph::canonical_candidate` proves the empty-cut torus state is a real production candidate, but accepted row356 and M3 frozen authority establish its pre-cut network as **V=48 / E=48 / c=4 with four annular complement components**. The CB9 expected tuple **18/30/18 / c=1** is the retained prescribed-sphere pre-cut actual-graph tuple. Correct torus necessary-condition arithmetic is `b1=4`, required faces `3`, observed independent complement components `4`, so the negative still rejects for a sound reason. CB9's additional equality between independent complement components and product face-walk-orbit `faceCount` is invalid off the cellular domain and must be removed.
+TB9 candidate `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1` is mechanically GREEN: corrected focused S4 prerequisite **1/1 PASS**, selector425 **425/425 PASS**, 426/426 fresh processes total, exact immutable postflight, and no runtime anomaly. `M4-CP-SCALE-DEFN-OBS-03` is **OPEN / FRESH RUNTIME GREEN + REVIEW OWED / NON-STABLE**.
 
-`M4-CP-SCALE-CB10` owns only that test-authority correction and compile/package proof. Product topology semantics, A2a' cut selection, final certificate, fixtures, CMake semantics and selector425 stay frozen. No runtime and no selector426. `M4-CP-SCALE-DEFN-OBS-03` remains **OPEN / CORRECTION + FRESH TB9 + REVIEW OWED / NON-STABLE**. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M4-CP-SCALE-TB9-REV` must independently reopen package/source/result/log/nested evidence, rederive the S4 prerequisite arithmetic and one-way safety/control semantics, recheck all 425 selector outcomes/owners and immutable postflight, then decide promotion and observation disposition. No product S4 activation or selector426 before Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -84,7 +84,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` / selector425 **425/425** remains accepted current runtime authority after TB7 Review. TB8 Review rejected CB9's S4 prerequisite test authority as a non-stable witness-numeric transplant plus an off-domain face-count representation comparison; accepted TB7 authority remains unchanged. Exact next `M4-CP-SCALE-CB10` is test-only authority correction + compile/package, with no S4 production activation or selector426. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` / selector425 **425/425** remains accepted current runtime authority after TB7 Review. TB9 mechanically proved corrected candidate `10455353524`: focused S4 prerequisite **1/1 PASS** plus selector425 **425/425 PASS** with immutable postflight. Accepted TB7 authority remains unchanged until exact next `M4-CP-SCALE-TB9-REV` adjudicates promotion and `DEFN-OBS-03`; no S4 production activation or selector426 before Review. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
