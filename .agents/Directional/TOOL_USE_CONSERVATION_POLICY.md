@@ -43,7 +43,7 @@ Every turn maintains one zero-cost, turn-local tool-call ledger from the first i
 1. Read the PR or configured branch authority once at the beginning of the turn.
 2. Record repository, branch, PR number, head SHA, base SHA, draft/open state, and requested turn type.
 3. Treat that recorded head as the initial authority for reads and planning.
-4. Do not repeatedly request PR metadata during the same unchanged phase.
+4. Do not repeatedly request PR metadata during the same unchanged phase, and do not write PR metadata at all (§10).
 5. Re-read branch/PR authority only at a real compare-and-swap boundary: before a write based on a potentially stale parent, after a workflow-originated branch write, or before final closeout when external actors may have advanced the branch.
 
 ### Step 2 — choose the read mode before reading source
@@ -203,7 +203,7 @@ Do not discover and delete temporary repository files one at a time at turn clos
 
 **Never** use the batch cleanup manifest to bypass workflow-first deletion or to remove durable records.
 
-## 10. PR comment conservation
+## 10. The PR is not a work surface
 
 **Turn summaries are not posted to the PR.** A turn's closing record belongs in the durable handoff documents —
 `Future_Chat_Session_Handoff.md`, the owning report/review record, `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`
@@ -215,6 +215,19 @@ Authority: user instruction 2026-09-16.
    observer may trim stale ones; they are navigation aids, never durable evidence.
 3. Historical comments need not be preserved. The agent-turn-cleanup workflow is authorized to trim them.
 4. If a fact matters, it goes in a durable document. A fact that exists only in a PR comment is not recorded.
+
+**PR metadata, title and body are frozen.** The PR #8 title and body were set once, on 2026-09-16, to a durable
+high-level description of the branch's work and a pointer to where current state actually lives. They are
+**not** a status mirror and must not be updated again.
+
+5. **Do not modify the PR title, body, labels, assignees, milestones or any other PR metadata.** Spending tool
+   calls to restate turn state on the PR surface is waste: the state is already authoritative in
+   `ORIENTATION.md`, `Future_Chat_Session_Handoff.md`, `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md` and the
+   top-level `STATUS` beacon, and a second copy on the PR drifts within one turn.
+6. Do not re-read unchanged PR metadata either. Read it once if genuinely needed for navigation, never per
+   sub-step.
+7. The only authorized future change to the PR title or body is an explicit user instruction to change it.
+   Authority: user instruction 2026-09-16.
 
 ## 11. End-of-turn conservation procedure
 
@@ -228,7 +241,7 @@ Before final closeout:
 6. Inspect `.github/workflows`, `.agents/connector-triggers`, `.agents/workflow-observation`, and `.agents/Directional/turn-payloads` once to verify final hygiene.
 7. Verify the branch head once after cleanup.
 8. Update coherent durable documentation in one batch where practical.
-9. Update the PR body only if its durable current-state summary actually changed.
+9. Do not touch the PR title, body or metadata. They are frozen — see §10.
 10. Make the durable documentation commit the final repository write of the turn. No PR comment is posted.
 11. Report the in-memory tool-call ledger total and category breakdown at closeout, without spending additional tool calls to do so.
 
@@ -256,7 +269,7 @@ Before final closeout:
 
 - Beginning source/document inspection before choosing `READ_MODE`.
 - Choosing `direct` when the turn is already known to require three or more repository files/documents, cross-file tracing, repeated inspection, or repository-wide search.
-- Re-reading the same unchanged PR metadata before every sub-step.
+- Re-reading the same unchanged PR metadata before every sub-step, or spending any tool call to rewrite the PR title, body or metadata.
 - Fetching the same source file repeatedly by overlapping line ranges when a source snapshot is available or was required by Step 2.
 - Continuing piecemeal connector reads after snapshot acquisition failed without recording and justifying the explicit Step-3 fallback.
 - Searching GitHub separately for every symbol after the repository is already materialized locally.

@@ -1,3 +1,32 @@
+## 2026-09-16 — PR surface frozen: metadata/title/body writes forbidden
+
+User instruction 2026-09-16: forbid spending tool calls on PR metadata, title and body changes, and set the PR
+title and body once to an authoritative high-level description that is not to be changed going forward.
+
+**Policy.** `TOOL_USE_CONSERVATION_POLICY.md` §10 is retitled *The PR is not a work surface* and extended beyond
+comments to the whole PR surface. New items forbid modifying the PR title, body, labels, assignees, milestones or
+any other metadata, and state the reason: that state is already authoritative in `ORIENTATION.md`,
+`Future_Chat_Session_Handoff.md`, `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md` and the top-level `STATUS`
+beacon, so a second copy on the PR drifts within a single turn. The only authorized future change is an explicit
+user instruction. §11 item 9 previously read *"update the PR body only if its durable current-state summary
+actually changed"* and now forbids touching it; the §4 reading rule and the anti-pattern list are extended to
+cover writes as well as re-reads.
+
+**PR #8.** Title and body replaced once with a durable description carrying no turn-specific, count-specific or
+package-specific facts. The previous title named `M4-CP-SCALE-CB9` as next and the body cited a specific package,
+run/job ids and accounting totals — all of which churned every turn, which is exactly the waste being removed;
+the title was already stale, since the accepted successor is `M4-CP-SCALE-CB10`.
+
+The new body states what the work commits to — exact arithmetic with no tolerances, single-writer authority,
+derived-not-assumed products, typed failure over silent degradation — and the `CB → TB → REVIEW` cadence gated by a
+byte-frozen append-only selector. Its second half is a pointer table naming where current state actually lives, so
+the body can stay static without leaving a reader stranded. That pointer design is what makes "never changed again"
+workable rather than aspirational.
+
+Runtime-free; no product, test, fixture, selector, benchmark or build source touched. Accepted authority remains
+package `10425344367` / selector425 **425/425**; accounting unchanged at **49 / 14 / 35**, debt **5**. This is a
+policy turn, so `STATUS` continues to describe `M4-CP-SCALE-TB8-REV` and its successor `M4-CP-SCALE-CB10`.
+
 ## 2026-09-16 — PR closing comments retired; durable handoff documents own turn closure
 
 User instruction 2026-09-16: closing comments on the PR are no longer necessary, and everything belongs in the
