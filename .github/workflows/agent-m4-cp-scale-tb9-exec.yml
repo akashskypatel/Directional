@@ -1,0 +1,108 @@
+name: M4 CP SCALE TB9 Artifact-Only Runtime
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb9/execute.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb9-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp-scale-tb9-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb9-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp-scale-tb9-workflow.log"
+          : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" "ref=$GITHUB_REF" 'runtimeBoundary=Test+Benchmark-artifact-only' "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact orchestration source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Execute immutable TB9 harness
+        id: harness
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+          CANDIDATE_ARTIFACT_ID: '10455353524'
+          CANDIDATE_PROVIDER_SHA256: 'b891318511ef6db2f6317abac99a4b7e1511fe6d4ebc58bdd048cdc49a757de9'
+          SEMANTIC_SOURCE_SHA: 'bebb14e32a0ac53dd420acf46bfa34410cf759a1'
+          SOURCE_ARCHIVE_SHA256: '884ff6703f290df8b3479e35945cb3dc29b0732e3810eb66528759721d8366ae'
+          PACKAGE_MANIFEST_SHA256: '1219fbe0550d260be929e5dc4b7d3a4afa21fc1d1e15a992114e982c9a74d1d4'
+          SELECTOR_SHA256: 'e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b'
+          PREFIX424_SHA256: 'f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca'
+          FOCUSED_IDENTITY: M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral
+        shell: bash
+        run: |
+          set -uo pipefail
+          log="${RUNNER_TEMP}/m4-cp-scale-tb9-workflow.log"
+          set +e
+          bash .agents/Directional/turn-payloads/m4-cp-scale-tb9-exec.sh > >(tee -a "$log") 2> >(tee -a "$log" >&2)
+          rc=$?
+          set -e
+          echo "harness_exit=$rc" | tee -a "$log"
+          echo "exit=$rc" >> "$GITHUB_OUTPUT"
+          exit "$rc"
+
+      - name: Upload TB9 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb9-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/tb9-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m4-cp-scale-tb9-workflow.log"
+          printf '%s\n' "final_job_status=${{ job.status }}" "harness_exit=${{ steps.harness.outputs.exit || 'unavailable' }}" "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)" "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+          git status --short 2>&1 | tee -a "$log" || true
+
+      - name: Upload workflow diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb9-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp-scale-tb9-workflow.log
+          if-no-files-found: error
+          retention-days: 14
