@@ -1,0 +1,80 @@
+name: M4 CP SCALE TB8 Artifact-Only Runtime
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m4-cp-scale-tb8-exec.txt]
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+concurrency:
+  group: m4-cp-scale-tb8-exec-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb8-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+  execute:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp-scale-tb8-workflow.log"; : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" "ref=$GITHUB_REF" 'runtimeBoundary=Test+Benchmark-artifact-only' "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+      - name: Checkout exact orchestration source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+      - name: Execute immutable TB8 harness
+        id: harness
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+          CANDIDATE_ARTIFACT_ID: '10428779988'
+          CANDIDATE_PROVIDER_SHA256: '7470947abba0ca2dc1e8bccd0caba8efdaa53abeaa3b1ae5130a550a3b462bd6'
+          SEMANTIC_SOURCE_SHA: '939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf'
+          SOURCE_ARCHIVE_SHA256: 'cd0d0c7e084bbf86fbac4086eb076ad987f55d389b5e5c63ec95fcd4724cde55'
+          PACKAGE_MANIFEST_SHA256: 'e3423161932039366ccf1c4728cab9a3a7115340abd587923be10be3cd7a818b'
+          SELECTOR_SHA256: 'e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b'
+          FOCUSED_IDENTITY: M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral
+        shell: bash
+        run: |
+          set -uo pipefail
+          log="${RUNNER_TEMP}/m4-cp-scale-tb8-workflow.log"; set +e
+          bash .agents/Directional/turn-payloads/m4-cp-scale-tb8-exec.sh > >(tee -a "$log") 2> >(tee -a "$log" >&2)
+          rc=$?; set -e; echo "harness_exit=$rc" | tee -a "$log"; echo "exit=$rc" >> "$GITHUB_OUTPUT"; exit "$rc"
+      - name: Upload TB8 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb8-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/tb8-result
+          if-no-files-found: error
+          retention-days: 14
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m4-cp-scale-tb8-workflow.log"
+          printf '%s\n' "final_job_status=${{ job.status }}" "harness_exit=${{ steps.harness.outputs.exit || 'unavailable' }}" "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)" "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+          git status --short 2>&1 | tee -a "$log" || true
+      - name: Upload workflow diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb8-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp-scale-tb8-workflow.log
+          if-no-files-found: error
+          retention-days: 14
