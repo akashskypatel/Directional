@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-TB8-REV
-purpose=exact source snapshot for mandatory runtime-free review
-base_head=af67d50b3f1c4097494fd125b2845dcf622d119f
-runtimeExecution=false

@@ -1,3 +1,0 @@
-Purpose: validate the exact M4-CP-SCALE-TB8-REV Drive closeout caller draft before active installation.
-Expected source boundary: caller draft and validator are branch authority before this marker.
-Attempt: 1

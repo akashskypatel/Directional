@@ -1,4 +1,0 @@
-Purpose: apply the preverified M4-CP-SCALE-TB8-REV closeout patch from Google Drive.
-Patch base: 6517d46ad9ab103991b524c5fb4ca8e0200a1c0e
-Patch SHA-256: 5cc924c88d2f2d9ca273e62d017be300c667deff6f7a1158a9eb2ce978f74512
-Attempt: 1
