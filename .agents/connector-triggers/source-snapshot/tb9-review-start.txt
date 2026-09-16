@@ -1,3 +1,0 @@
-M4-CP-SCALE-TB9-REV source snapshot request
-source_authority_before_marker=40b0ad7fa55c24c691704872c64205a813b3cd50
-runtimeExecution=false
