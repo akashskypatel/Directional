@@ -1,4 +1,5 @@
 # M4-CP-SCALE-TB6-EXEC temporary state
+# retry after all temporary workflow callers were removed
 .agents/connector-triggers/tb6-exec.txt
 .agents/connector-triggers/tb6-source-snapshot.txt
 .agents/connector-triggers/tb6-drive-apply
