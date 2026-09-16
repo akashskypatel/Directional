@@ -1,0 +1,547 @@
+# Directional Surface-Cell Roadmap — accepted state to production-ready
+
+**Purpose.** One forward-looking map from the current accepted gate to a production-ready
+implementation of `DESIGN.md`. It exists because `DESIGN.md` §14 defines milestones **M0–M8** with
+acceptance criteria but decomposes none of them into checkpoints, and only M3 had ever been decomposed
+— inside a plan document, mid-milestone, under schedule pressure. Every prior milestone that started
+without a checkpoint decomposition had to acquire one at cost.
+
+**Authority.** `DESIGN.md` §14 owns *what* each milestone must prove; this file owns *how it is cut
+into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
+`TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
+
+**Status date:** 2026-09-16 (`M4-CP-SCALE-TB6-REV` COMPLETE: package `10418328122` / selector424 **424/424** promoted as current M4 runtime authority; S3 focused publication authority accepted while cumulative selector425 credit remains owed; stable accounting **49 / 14 / 35**, debt **5**; CP-SCALE remains OPEN; exact next `M4-CP-SCALE-CB8` publication-only.)
+
+**Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
+
+### M4-CP-COND definition freeze — 2026-09-13
+
+`M4-CP-COND-DEFN` is COMPLETE / DEFINITIONS FROZEN; `M4-CP-COND-TB5-REV` now **CLOSES / ACCEPTS the checkpoint**. `Architecture_M4_CP_COND_Frozen_Definitions.md` owns the single-writer pre-A0 conditioned product, exact raw→conditioned correspondence, exact-policy operation set, typed refusal, independent certificate validator, idempotence and witness preconditions. The initial contract uses one-to-one face correspondence and exact sliver refusal rather than topology-changing repair. Legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization are not semantic authority.
+
+TB4 Review first accepted CB4 package `10327643907` / selector422 **422/422** while leaving the boundary raw-precondition gap explicit. CB5 then added one independent exact/discrete raw boundary oracle as selector423 row423 with no production semantic change; TB5 proved selector423 **423/423**; TB5 Review independently re-derived the oracle, mutation falsifier, certificate preservation and immutable cumulative gate. Package `10331193451` / selector423 was then accepted as current M4 runtime authority and CP-COND was CLOSED. CP-SCALE DEFN is complete. CB1 then added only passive S1 exact trace-entry scale instrumentation and authored four-family diagnostic coverage; semantic source `a359b981f9350139304bc5a654041dfba78609b6` compiled/package GREEN as candidate artifact `10360085644`. TB1-EXEC subsequently measured the frozen candidate artifact-only: S1 **1/1 PASS**, selector423 **423/423 PASS**, zero RED/SKIP/timeout/crash/selection mismatch and exact immutable postflight. Runtime-free TB1 Review independently re-derived the evidence and promotes package `10360085644` while selector423 remains byte-identical. S1 remains diagnostic/non-gating and no numeric threshold is frozen. CB2 then authored the S2 exact-oracle identity and compiled candidate `10367451675`; TB2 focused runtime RED before comparator execution because the fixture reused the already-known non-flat `make_zero_transport_field` precondition. TB2 Review rejected that candidate as non-stable test authority. CB3 then delegated field matching/effort to production and compiled candidate `10375799491`; TB3 runtime still RED before comparator because the authored field has zero aggregate cycle effort on a `K=pi/2` center, and Review classifies it as the same regular-star admissibility invariant but a distinct authored-winding mechanism, plus a local reversed-handed face pair. CB4 then produced candidate `10378808176`; its first TB4 execution is orchestration-invalid/no-semantic-ledger because fixture staging and census receipt naming were wrong. CB5 statically corrected only that retry harness. Fresh TB4-R1 then proved focused S2 **1/1 PASS**, selector423 **423/423 PASS**, and exact immutable postflight. TB4 Review independently re-derived the six-subject exact oracle, non-vacuous Filter/ExactFallback routes, regular-star transport preconditions and 30/277/75/41 selector ownership, and promotes package `10378808176` under unchanged selector423. CB6 published selector424 with the exact accepted selector423 prefix and S2 row424. TB5-EXEC proves package `10407605295` mechanically GREEN at **424/424 PASS** in fresh exact-filter processes with exact immutable postflight. TB5 Review independently re-hashes selector424/prefix423, re-derives owner census **30/278/75/41**, verifies the complete 424-row runtime ledger and S2 exact-oracle/Filter+ExactFallback non-vacuity, then promotes package `10407605295` and accepts S2 cumulative selector credit. CB7 next implemented only S3 exact full-state typed `LimitCycleTermination`; TB6 authoritative retry proved focused S3 **1/1** plus selector424 **424/424** with immutable postflight. TB6 Review independently re-derived those bytes/rows/semantics and promotes package `10418328122` under unchanged selector424 while accepting S3 focused proof for selector publication. Stable accounting remains **49 / 14 / 35**, debt **5**. CP-SCALE remains open; exact next is publication-only `M4-CP-SCALE-CB8`, followed by fresh selector425 425/425 + Review.
+
+
+### M4-CP-SCALE CB1 compile freeze — 2026-09-14
+
+`M4-CP-SCALE-CB1` is COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED. Semantic source `a359b981f9350139304bc5a654041dfba78609b6` adds only passive GMP-backed exact trace-entry scale census instrumentation and `M4CPScaleS1.ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral`. Candidate artifact `10360085644` was produced by compile run/job `34872546633 / 104071824274`, verifies a self-excluding 28-entry manifest, packages all selector423 owners, and records `runtimeExecution=false`. Selector423 remains byte-identical at 423 rows / `4e67e4dc...d89343`; the 4096-bit guard is unchanged. No runtime authority is promoted by CB1. Exact next is artifact-only `M4-CP-SCALE-TB1-EXEC`, then mandatory Review.
+
+
+### M4-CP-SCALE TB1 execution — 2026-09-14
+
+`M4-CP-SCALE-TB1-EXEC` is COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED on immutable candidate artifact `10360085644`. The single authored S1 diagnostic is **1/1 PASS** and emits all four required families; selector423 is **423/423 PASS** with owners **30/277/75/41**, zero RED/SKIP/timeout/crash/selection mismatch, and exact package/source/execution-view postflight equality. Raw maxima are two-ring `9 / 105 / 107 / 107`, torus `0 / 0 / 0 / 0`, mechanical feature `60 / 1 / 1 / 1`, prescribed sphere `186 / 429 / 429 / 429` (`sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax`). EXEC assigned no threshold or gate credit. Subsequent runtime-free TB1 Review independently re-derived all decisive evidence and promotes the package without changing selector423.
+
+
+### M4-CP-SCALE TB1 Review — 2026-09-14
+
+`M4-CP-SCALE-TB1-REV` is **APPROVED WITH AMENDMENTS**. Review re-hashed selector423/first422, re-derived owners and all 423 raw process outcomes, verified the 869-entry evidence manifest and published nested archive, and source-audited S1 decision-neutrality. Package `10360085644` / source `a359b981f9350139304bc5a654041dfba78609b6` becomes accepted current M4 runtime authority; selector423 remains **423/423** / `4e67e4dc...d89343`. The observed 429-bit maximum is not a calibration bound; S1 remains diagnostic/non-gating and `M4-CP-SCALE-TB1-REV-OBS-01` carries representative/stress calibration before any future numeric gate. Exact next `M4-CP-SCALE-CB2` is S2 vertex-star test-authority + compile/package only, with no production semantic change or selector append.
+
+### M4-CP-SCALE TB2 Review — 2026-09-14
+
+`M4-CP-SCALE-TB2-REV` **REJECTS candidate `10367451675` / source `63cb20d6...c939e` as NON-STABLE TEST-AUTHORITY PRECONDITION FAILURE**. The focused S2 identity never reached the vertex-star comparator: its folded-cone fixture reused the already-known invalid non-flat `make_zero_transport_field` construction. On the three-right-angle center, `Theta=3*pi/2`, `K=pi/2`, exact center lift is `1`, while the hand-authored matching composes to `0 mod 4`; `FieldTransportAtlas` therefore correctly rejects with `CycleTransportMismatch`. This is the existing `M3-CP4c3-TB7-CAND-02` / Lesson 22r root, not a product defect. Selector423 and accepted runtime authority remain unchanged; stable accounting stays **49 / 14 / 35**, debt **5**. `M4-CP-SCALE-TB2-REV-OBS-01` separately records that future fail-fast harnesses must pre-initialize the full selector remainder. Exact next is `M4-CP-SCALE-CB3`, test-authority repair only.
+
+
+## 1. Where the project actually is
+
+| Milestone | State | Accepted authority |
+|---|---|---|
+| M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
+| M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
+| M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
+| M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 CUMULATIVE ACCEPTED; CHECKPOINT OPEN** | package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` under selector424 **424/424** is accepted runtime authority; exact next `M4-CP-SCALE-CB7` owns S3 exact full-state typed termination; three G4-B002 produced-witness debts remain CP4 gating. |
+| M5–M8 | not started | — |
+
+M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
+`M3-CP4-DEFN` is complete. CP4a/CP4b are superseded into CP4ab.
+
+**CP4c was split on 2026-08-25** by `M3_CP4c_Consolidated_Record.md` §7 (retired CP4c parent TB-R1 review) after TB-R1
+returned VALID RED 316/322. Its two committed witnesses are **closed surfaces** — torus χ = 0 genus 1,
+mechanical χ = 2 sphere — while every witness that has ever validated A2b is a **bounded disc**, χ = 1.
+Two of the three failure families are therefore scope gaps in *accepted* authority, not CP4c defects.
+
+Cumulative accepted authority has grown 304 → 316 → 346 → 353 → 355 → **365** through CP4c-2. C1/C3/C6 were allocated to CP4c-2 and are green; C2 is allocated to CP4c-3, whose gate was frozen at **367** by `M3-CP4c-3-DEFN` and extends to **370** under AK7 (restated as **AL7** after the phase-1 review) and to **373** under **AM8**, which appends Amendment 15's three identities. The allocation of criteria to checkpoints is unchanged; which **witnesses** a checkpoint's identities bind is a DEFN decision, and CP4c-3's DEFN put the prescribed sphere in its gate.
+
+---
+
+## 2. Trajectory check against `DESIGN.md` §14 M3
+
+`DESIGN.md` §14 M3 lists six acceptance criteria. Current disposition, each traced to the identity that
+owns it:
+
+| DESIGN §14 M3 criterion | Owner | State |
+|---|---|---|
+| singularity ports derived from field index, owned exactly once | A1 / A2a | accepted at CP1/CP3 |
+| traces branch-consistent and provably non-crossing | A2a | accepted at CP3a/CP3b |
+| every trace terminates at a typed network event; no silent interior termination representable | A2a | **accepted / re-proved at CP4c-1**: TB-R5 355/355, C5 PASS with exact W3 kind-union evidence |
+| every emitted region carries a disc-topology proof | A2b | **accepted at CP4ab** (B1, B4) |
+| network selection preserves mandatory topology under tamper | A2b | accepted at CP4ab (A4, A5) |
+| tracing-order and start-port permutation invariance | A2b | accepted at CP4ab (A6) |
+
+**Verdict: the trajectory is complete and M3 is CLOSED / ACCEPTED.** Every M3 criterion has an owning identity; CP4c-2 established the closed/higher-genus A2b scope and CP4c-3 closed the final mechanical witness under AU0–AU9. Package113/TB48 is the promoted reviewed runtime authority. The accepted required-green boundary remains selector365.
+
+The one substantive gap is not a criterion but a *scope* of proof: all six are proven on **development
+witnesses** (the two-ring skew disc and the four-triangle fan), not on production-representative
+meshes, and — as the CP4c plan establishes — **A2b is not yet constructed by the production pipeline at
+all**. That is exactly and only what CP4c exists to close. See
+`M3_CP4c_Consolidated_Record.md` §2.
+
+---
+
+## 3. M3 exit — CLOSED / ACCEPTED
+
+CP4c's production A2b wiring (CB1) and its two production-path fixtures (CB2) were built and compiled, and TB-R1 proved the wiring regressed nothing: the accepted 316 stayed green. The later CP4c decomposition below is now fully adjudicated; identity names remain historical authority and their checkpoint allocation is unchanged.
+
+| Checkpoint | Domain | Gate | State |
+|---|---|---|---|
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **CLOSED / ACCEPTED.** `M3-CP4c-0-TB-R9` **did execute**: `33079817998 / 98543736213`, **346/346 PASS**, including Q8 criteria 1/4/5. Later 353/355/365 gates preserve the 346 prefix as corroboration. See `M3_Closure_Record.md` §2.1. |
+| **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
+| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
+| **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); inherited sphere/quality/fixture debt remains separately owned | **accepted prefix 365; final audit selector 409** | **CLOSED / ACCEPTED at TB48-REV.** Package113/TB48 promoted at 405 PASS / 4 RED, accepted 365/365. Ordinal370 is runtime-proved corrected; AU0–AU9 exit criterion MET; remaining 368/369/374/398 are separate owners. |
+
+> **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
+> in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval
+> pairing to be *resolved* with **barycentric positions propagating in arbitrary precision**. Measured by
+> the TB-R3 census: two-ring **50%** ambiguous, fan **25%**, torus **50%**, sphere **50%** — the exact
+> signature of `dbary = {-u-v, u, v}` summing to zero, so a face is either `2×1` or `1×2` with no third
+> case. **The gap is two missing data:** the entry position on trace segments, and the barycentric
+> direction, which A1 computes and then discards. The DEFN freezes `FieldBoundaryPoint` (single writer
+> A2a, canonical-edge parameter, exact rational), an exact minimum-ratio continuation with **no tolerance
+> in any topological decision**, deletion of the Cartesian `connections`, and unification with the CP4ab
+> barrier-terminus datum **without reopening CP4ab**. It proves that **no accepted witness's traces
+> change**, because old and new rules agree on every `2×1` face and no accepted trace can ever have
+> traversed a `1×2` one.
+
+> **`M3-CP4c-2-DEFN` inherits a `DESIGN.md` §7.2 gap.** §7.2 derives the network from singularities,
+> features, and boundaries; a closed surface with an index-free field has none of the three, so §4.6's
+> motorcycle graph is empty — its size is `O(n)` in extraordinary nodes. Measured: the committed torus
+> publishes **0 traces / 0 events**, and A2b then has no labeled face to seed region ownership from.
+> Quad-remeshing a torus needs a **seam / cut graph the architecture cannot currently produce.** That
+> DEFN must settle it before any genus > 0 code is written.
+
+Historical CP4c turns, retained for provenance: `CB1` (wiring, W0–W5), `DG1` (the last diagnostic turn
+this project will run), `CB2` (W7–W9), `TB-R1` (VALID RED 316/322).
+
+CP4c-1's historical TB-R3 is **VALID RED 316/318** with the accepted 316 green in the same run. C4/C5 remain the only
+checkpoint-local required identities and **stay gating**; demotion to non-gating was considered and rejected. CP4c-0 and
+CP4c-0b are accepted; CB3 rebased the gate to 355, the mandatory review identified C5 test over-specification, CB4 corrected only that test authority, and TB-R5 returned **355/355** with the exact W3 prediction. CP4c-1 is therefore closed; exact next is `M3-CP4c-2-DEFN`.
+
+CP4c-0's artifact-only TB proves the exact-continuation focused gate **328/328**, but frozen Q8 is red:
+the prescribed sphere reaches A1 then A2a rejects `BranchContinuationDegenerateEntry` before network
+publication. CP4c-0 remains unaccepted and CP4c-1 blocked.
+
+**CB2 → TB-R2 executed that correction, and `M3-CP4c-0-TB-R2-REVIEW-PLAN` closed on 2026-08-26**
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R2 review)). CB2 is build green at
+`390e65b373063c667e3c3f5e78b74ed9d859093b` / package `9586196535` with the selector re-frozen at
+**338 = 316 + 12 + 10**. TB-R2 re-proved the accepted **316/316** and the prior **328/328** prefix, then
+failed at ordinal **329** on the first E1 correction identity: `FieldBranch::value()` returns
+`std::uint8_t`, which stream insertion writes as a **character**, so `branch=1` emitted as `\x01`. Q8 was
+correctly **NOT RUN**.
+
+Review verdict: the failure is **solely** that formatting defect at two call sites — and it exposes a real
+frozen gap, because Amendment 5 required a property of the emitted *value* and never constrained the
+*mechanism*. A second defect of the same shape was found: ~15 trace-seed back-fills that E1c's
+line-scoped wording never reached. Both are **class defects certified by instance falsifiers**, which is
+the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
+particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
+**`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**`M3-CP4c-0b-DEFN` split the checkpoint on 2026-08-27**
+(`Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`). The inversion CB9 identified —
+CP4c-0 blocked on a capability assigned to its successor — is resolved neither by reordering nor by
+re-scoping, but by recognising that CP4c-0 had been carrying two unrelated obligations under one gate.
+Continuation is finished and closes on its own 346 identities. Termination becomes its own checkpoint,
+and Q8 criteria 2 and 3 move to it **together**, because the six circulating traces are simultaneously
+what blocks the 24-trace network and what would satisfy the trace-intersection criterion.
+
+The termination contract is frozen from measurement rather than from the citation. Self-contact cannot
+be the rule: the field is one constant vector per `(face, branch)`, so a trace's repeat visits lay
+**parallel** segments — measured, 2,548 co-face pairs with zero crossings. A mesh-derived length budget
+cannot be the rule either: the longest correctly terminating trace and one lap of a never-terminating
+trace measure **the same length to four decimal places**, so length carries no information about
+termination, and a truncated trace leaves an arc that bounds no region. What does work is contact with
+the **perpendicular** branch family, which crosses every circulating trace at step 0.
+
+The one genuine choice — arrival priority — is frozen as `ArcLengthFiltered`: double arc length with a
+*computed* forward error bound rather than a tuned epsilon. Exact comparison is excluded on complexity,
+since comparing sums of *k* radicals is exponential in *k*. Ties turn out to need no arbitrary rule at
+all: same-time-different-point events are independent, and same-time-same-point means both traces
+terminate there. That matters because the sphere's singularities are cube corners, so exact ties are
+*systematic* on symmetric input — precisely the inputs used to judge quality. Alternative priorities are
+kept for future comparison but are unreachable from the production path, so the knob cannot become a
+second authority.
+
+**CB8 → TB-R8 → `M3-CP4c-0-CB9` exposed and guarded non-termination on 2026-08-27**
+(`M3_CP4c_Consolidated_Record.md`). CB8 implemented DEFN-2's grazing
+transit faithfully. TB-R8 then ran for 853 seconds on one identity and died with
+`gcd(): while running too long!` — and the interesting part is what that turned out to mean.
+
+Retiring `BranchTransportFlowDisagreement` was correct, but it had been aborting the sphere network at
+the first grazing edge, which *incidentally* stopped every trace before any of them could go anywhere.
+With it gone, six of the sphere's separatrices were free to do what the field actually makes them do:
+lap a closed 32-face circuit forever. Neither guard noticed. The cycle guard keys on a state that
+carries the exact entry position, which drifts every lap, so it is structurally blind to circulation —
+the position was added to fix a false positive and created a false negative in the same predicate. The
+step budget authorised 1,775,616 steps against an arithmetic that could not survive 205, so it was not a
+bound at all. What actually stopped the run was the fallback bignum's fixed 10,000-iteration `gcd` cap,
+throwing `std::runtime_error` out of a closed producer.
+
+CB9's measures N0–N7 landed the guards: a **position-free** combinatorial recurrence bound calibrated
+against measurement (every terminating trace enters each `(face, branch, carrier)` exactly once; the
+allowance is two), a deterministic exact-magnitude policy that declines to answer rather than answering
+approximately, iteration bounds derived from the algorithms' own worst cases instead of magic constants,
+a step budget that is now provably an envelope of the recurrence guard, and a producer that stays closed
+against its dependencies' failure modes. 42/42 legitimate traces are unchanged; the six runaways stop at
+step 65; the worst exact width falls from 19,460 bits to 2,684.
+
+**The remaining blocker is architectural, and it is not in CP4c-0.** `DESIGN.md` §4.6 says limit cycles
+do not exist because crash-on-contact removes them structurally. A2a does not implement crash-on-contact
+— it is C4/C5, in CP4c-1, which is blocked on CP4c-0. So CP4c-0's Q8 criterion 2 depends on a capability
+assigned to its own successor. `M3-CP4c-0-DEFN-3` must choose between reordering C4/C5 and re-scoping
+the 24-trace network, and no further CB cycle aimed at criterion 2 should start before it does.
+
+**CB7 → TB-R7 → `M3-CP4c-0-DEFN-2` closed the model gap on 2026-08-26**
+(`Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`). TB-R7 held the gate at **338/338** with the
+accepted prefix at **316/316**, reproduced K1's near-tangency separation, and found **176/176 complete
+vertex fans with zero holonomy mismatches** — so no period or transport defect exists to chase, and the
+evidence pointed at the tracing model. K2, which was to have measured continuation cost, published
+nothing usable: it walks traces with the **retired Cartesian carrier lookup**, carries no position, and
+stops on the first `1×2` face, which on a 50%-`1×2` witness is step one for all 24 traces
+(`M3-CP4c0-DEFN2-CAND-01`, test-side, owned by measure L8).
+
+DEFN-2 therefore decided on **structure**. The tracing model already defines the exactly-tangent case —
+Amendment 3 has the trace travel along the edge and exit at a vertex — so any rule for the near-tangent
+neighbourhood must agree with it in the limit. **Grazing edge transit does, by the same expression on
+the same index; a grazing terminus does not**, and would additionally forfeit the checkpoint, because
+the grazing edges turn out to lie in corridors along the field's own separatrices. A refinement
+precondition would reject every non-degenerate witness the project owns, two of them already accepted. A
+general edge-following mode is unnecessary: the directions are constant per face, so the transit
+completes in one hop.
+
+The evidence was re-derived from the committed fixtures alone, with no product code: **72** grazing
+configurations on **72 distinct** sphere edges and **120** on the torus, matching TB-R7's runtime
+figures to six decimal places, with **zero** slide-direction ambiguities in 192 configurations. The
+eight sphere singularities are exactly the corners of an inscribed cube, each with three grazing edges,
+and the live locus `6-8` transits to **vertex 8 — itself a singularity** — so the blocked trace
+terminates lawfully by `SingularityTermination`. A1 is untouched, T6 stays unreachable, and no new
+event kind is added. Q8 is **not** amended; its criterion 3 is predicted unsatisfiable on this witness
+for a reason that is a property of the field, and is re-homed to CP4c-1 with the response
+pre-committed. Exact next is **`M3-CP4c-0-CB8`** under **L0–L9**, Code + Build only.
+
+**CB6 → TB-R6 delivered the decomposition, and `M3-CP4c-0-TB-R6-REVIEW-PLAN` closed on 2026-08-26**
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R6 review)). **This cycle identified the root cause**,
+and it is a contract/model gap rather than an implementation defect.
+
+The review reproduced the sphere's census from the committed `.obj` and `.rawfield` alone — no product
+code — and obtained **exactly 144 directed disagreements**, matching the runtime figure. That
+reproduction also explains them: the **tangency ratio** `min(|d_opp| / max|d|)` has median **0.0218**
+across all 144 disagreeing pairs and **0.9233** across the 1008 agreeing ones, a 42× separation, with
+every disagreement at or below **0.2004**. The direction is nearly parallel to the shared edge, the
+field's own rotation across that edge (≈ 23°) flips the small perpendicular component, and **both faces
+correctly compute "outflow"**.
+
+At the live locus every published term is independently verified correct: `matching = 0` is
+geometrically right with a wide margin (nearest target raw index **23.7°**, next **66.3°**);
+`0 + 1 − 3 ≡ 2` reproduces the published lift; both gauges map to raw index 0; both `dbary` triples
+match to **10 decimal places**; and all 288 interior edges are normal adjacency with no folding.
+
+**So `Amendment 4` / measure `E5` is the defect** — it asserts a *continuum* property that a
+piecewise-constant field does not satisfy near tangency. **Amendment 9** corrects it:
+`BranchTransportFlowDisagreement` is a **typed grazing observation**, not an A1 defect; no tolerance may
+be used to classify grazing; and **`DESIGN.md` §4.5 does not define what a trace does at a grazing
+edge** — the substantive gap, and a `-DEFN` obligation. Three prior readings are withdrawn: the live
+locus does not indict `build_branch_transports`; the two decision-table classes are one phenomenon; and
+J3's 524/524 does not exclude H-B, because `independent_edge_measurement` re-implements principal
+matching, the algorithm H-B suspects.
+
+**CB5 → TB-R5 delivered the census, and `M3-CP4c-0-TB-R5-REVIEW-PLAN` closed on 2026-08-26**
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R5 review)). H1 ran and reported **390 violations /
+4224 pairs**. Review verified the census's *mechanism* in source — it applies the published `signedLift`
+per Amendment 7 and reads the right coordinates — and then corrected its *population*:
+
+- **The four-triangle fan's violations are a fixture artifact.** Its field
+  (`make_index_one_singularity_field`) leaves the direction vectors globally constant and *imposes*
+  `matching = ±1` on one edge. For the violating edge the published lift is **exactly correct**
+  (`matching(+1) + g_source(0) − g_target(1) = 0`); the flow disagreement is forced by a matching that
+  contradicts the geometry. One edge × two directions predicts **exactly the 2 observed**, and both
+  reported `−1/2` derivatives were reproduced by hand. The brief's use of the fan as evidence against
+  H-B is therefore **withdrawn**.
+- **The lift histogram carries no information about matching.** `signedLift = matching + g_src − g_tgt`
+  is a sum of three unobserved terms, and the ±k tail symmetry is imposed by the census's own
+  two-direction loop. Distinct disagreements are half the reported counts: two-ring **2**, fan **1**
+  (artifact), sphere **72**, torus **120** — a corrected population of **388 directed / 194 distinct**
+  over three legitimate witnesses.
+
+**H-A and H-C remain excluded; H-B is undecided and cannot be decided as currently instrumented.** The
+next cycle adds one field: decompose the lift into `matching`, `rawGauge[source]`, `rawGauge[target]`.
+Each branch of the resulting decision table names a different owner — field matching, gauge composition,
+or flow classification. Measure **J1**; still **no production change authorized**.
+
+**CB4 → TB-R4 closed the test-side corrections, and `M3-CP4c-0-TB-R4-REVIEW-PLAN` closed on 2026-08-26**
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R4 review)). **This is the first cycle in which
+CP4c-0's real subject is on the table.** G1–G4/G6 are runtime-proved, the frozen gate is **338/338
+green**, and Q8 became creditable — and red at criterion 2.
+
+G5 published the sphere's rejection in full for the first time. Decoding the six exact rationals:
+**both faces classify the shared edge `6-8` as `Outflow`** (`d_source[2] = −1.0035…`,
+`d_target[2] = −0.5770…`). A continuous direction cannot exit a shared edge from both sides, and the
+magnitudes are three orders above any epsilon here, so this is **not** a tolerance artifact. The
+physically correct target branch is **`3`** — two quarter-turns from the published `1` — so the lift is
+off by a full reversal. The source face is a genuine `1×2`, meaning CP4c-0's min-ratio rule chose the
+exit edge correctly; the transport that follows it did not.
+
+The review **refused to guess the mechanism**. The obvious candidate — per-face canonical-normal parity,
+which is mismatched on 86.8 % of the sphere's interior edges — was tested and **refuted**: the gauge is
+an index shift and cancels in the subtraction regardless of frame. Two supporting assumptions were also
+excluded (the raw-array reconstruction matches the stored field exactly; the stored ordering is globally
+orientation-coherent). Three candidates survive — matching sign convention, matching aliasing, or a
+wrong branch carried by A2a — and a single **cross-face flow-agreement census** over A1 authority
+discriminates among all three. That census is measure **H1** and is the whole point of the next cycle.
+
+**Recorded caveat:** a green accepted 316 is **not** evidence that cross-face transport is correct — no
+accepted identity has ever asserted it, because E5 created that invariant in CB2.
+
+**CB3 → TB-R3 executed that correction, and `M3-CP4c-0-TB-R3-REVIEW-PLAN` closed on 2026-08-26**
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R3 review)). F1/F2 are runtime-proved and F6
+worked — all 338 identities executed despite an early red, which is why this cycle returned a complete
+picture rather than one bit. Two identities are red and **both are test-side**:
+
+- **ordinal 333** throws `compute_edge_quantities(): DCEL consistency check failed` before the predicate
+  under test runs. The fixture builds a **single-triangle** mesh, and `DCEL::check_consistency`'s
+  `checkPureBoundary` rejects any face with no interior edge — so every candidate is invalid regardless
+  of coordinates. The near-degenerate coordinate search is a red herring;
+- **ordinal 334** is an oracle defect **originating in the reviewer's own E8 specification**.
+  `FieldBranch` is **gauged per face** by `build_face_branch_frame`, so iterating one numeric label
+  across four faces compares four different physical directions. The gauge model derived from source
+  reproduces the observed `0, 1, 0, 3` admitted-face counts exactly.
+
+**Production is correct at both sites** — `build_branch_transports` already corrects every lift by the
+per-face gauge difference, and all three cross-face branch steps in production use it. **Amendment 7**
+records that `FieldBranch` is not a portable identifier, and that a required falsifier may not assert
+that a witness *fails*.
+
+**The finding that outranks both reds:** the supplemental falsifier's passing `ASSERT_FALSE(networkBuild)`
+proves **the prescribed sphere still does not publish a network**. Q8 is therefore expected to fail next
+cycle even at 338/338, and nothing in the gate currently publishes the sphere's rejection code.
+Measures **G4** and **G5** address both. Exact next is **`M3-CP4c-0-CB4`** under **G0–G8**, test-side only.
+
+**`M3-CP4c-0-TB-REVIEW-PLAN` closed that adjudication on 2026-08-25**
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB review)). Verdict: **neither T6 nor Q8 is at
+fault, and neither is weakened.** A1 decides the **sign of a barycentric direction coordinate** with a
+`double` tolerance in three separate places and publishes those verdicts as topological ownership
+(carrier-set membership, vertex-sector membership), while A2a's new continuation rule decides the same
+sign exactly on the same published datum. Where they disagree — the band `|d| ≤ 1e-10`, widened further
+by a lossy barycentric→world→barycentric round trip — A1 hands A2a a state A2a is correct to reject.
+The defect is in the CP4c-0 frozen definitions, which asserted that surviving tolerance was harmless;
+five amendments were issued. **CB2 is now BUILD GREEN** at `390e65b373063c667e3c3f5e78b74ed9d859093b` after a verification-first audit found E1–E9 already present; the required selector is **338 = 316 + 12 + 10**. Exact next is **`M3-CP4c-0-TB-R2`**, artifact-only runtime. After E2–E5, T6 is *provably unreachable* from any well-formed production state.
+
+**No budget.** Attempt and diagnostic budgets and the `DG` turn type were abolished on 2026-08-25. Workflow is `CB → TB → (red) → REVIEW+PLAN → CB`; a red TB consumes nothing and mandatorily routes to review.
+
+---
+
+## 3b. Scale, robustness and coverage items — from the 2026-08-31 adversarial architecture review
+
+An adversarial review of the design was adjudicated in full at `M3-CP4c-3-TB5-REV` §9. Four of its concerns are
+valid about **cost and coverage** and are scheduled here; the rest were contradicted by measured evidence and are
+recorded as prohibited in that record and in `DESIGN.md` §7.2.1. None of these is a CP4c-3 blocker, and none may be
+pulled forward into a bounded corrective turn.
+
+| Item | Concern | Scheduled | Constraint |
+|---|---|---|---|
+| **S1 — expression swell** | exact barycentric parameters composed face-to-face grow in bit-width; never measured, and `field_aligned_trace_step_budget`'s own comment asserts growth without quantifying it | **M4** — *measure first*: max/mean numerator-denominator bit-width per trace step on all four witnesses | mitigation must be representational (reduce to lowest terms; recompute in the destination face from exact source data). **Lattice snapping is prohibited** — it changes the value, not the cost (Amendment 18) |
+| **S2 — certified predicate filters** | a blanket "always full rational" evaluation leaves large constant factors on the table | **M4/M8** — admit Shewchuk-style adaptive predicates and interval filters | permitted **only** in certified form: return the provably-correct result or defer to exact. A filter that can differ from the exact path is prohibited (Amendment 18) |
+| **S3 — limit cycles vs. a step budget** | a step budget is a heuristic; historical sphere circulation repeats a combinatorial circuit while exact entry positions drift | **M4** — exact cycle detection only on repeated full `FieldAlignedTraceTraversalState`; emit typed `LimitCycleTermination` | sphere history motivates the risk but is **not** the exact-repeat precondition; budget/position-free recurrence remain reportable fail-closed backstops, not semantic cycle authority |
+| **S4 — post-mortem disc proof** | expensive topology may be discovered only at the final actual-embedded disc certificate | **M4-scale / M8** — independently oracled incremental Betti/connectivity early rejection | fails **earlier, never differently** than the unchanged actual-embedded certificate; retired source-support Euler proxy is not authority; **backtracking/modifying A2a′ cuts is prohibited** |
+| **S5 — higher-genus coverage** | handle-generator cycles (`2g`) have only ever been exercised at genus 1 (torus); genus ≥ 2 is untested | **M4** — add a genus ≥ 2 witness to the produced-witness set | a coverage gap, not a defect; the atlas already *verifies* holonomy rather than choosing it, so no ILP redesign is implied |
+| **S6 — input-noise stability** | the field comes from a floating-point optimizer, so an exact predicate answers a question whose premise carries noise | **M5** — a perturbation witness: re-run with the field perturbed at the last significant bits and assert the **topological** output is unchanged | this replaces "thickened predicates", which are prohibited: an epsilon tube relocates the discontinuity to the tube boundary and reintroduces a tuning constant |
+
+**CP-SCALE DEFN freeze — 2026-09-14.** S1 first slice is diagnostic-only exact trace-entry scale measurement. The vertex-star certified filter/exact fallback is the first eligible S2 gate surface; arrival ordering remains blocked on an exact fallback owner. S3 requires a dedicated exact full-state repeat, not the sphere combinatorial recurrence. S4 remains non-selector until an independent earlier-never-different oracle is reachable. Static census of all retained milestone-G OBJ files finds no genus>=2 witness, so S5 remains an explicit coverage blocker. Selector423 is unchanged.
+
+**Related open audit already tracked:** `TODO.md` carries the `kBranchTopologyTolerance` item —
+`direction_in_incident_vertex_sector`'s callers compare a Gram **determinant** against `1e-10`. S2 and S6 are the
+right frame in which to close it.
+
+---
+
+## 3b-bis. Witness coverage is the binding constraint on production readiness — 2026-09-01
+
+The adversarial architecture review of 2026-08-31 was **re-evaluated under a production lens** in
+`Architecture_Adversarial_Review_Reevaluation_Production_Lens.md`, and five of its six rejected items were
+partially or wholly reversed. The operative finding is not about any one proposal:
+
+**Every witness this project has run is a near-uniform, sliver-free, low-valence mesh of at most 152 vertices.**
+Measured from the committed fixtures:
+
+| fixture | V / F | area ratio | max aspect ratio | valence |
+|---|---|---|---|---|
+| `mechanical_feature` | 152 / 300 | **2.38** | **2.67** | 4–6 |
+| `sphere_prescribed` | 98 / 192 | **3.17** | **1.72** | 4–6 |
+| `torus` | 72 / 144 | **2.05** | **2.14** | **6 only** |
+
+Production inputs routinely carry area ratios of `10⁶`+ and aspect ratios in the hundreds. A rejection of the form
+*"unnecessary, because the measured evidence shows no such case"* is invalid when the evidence base cannot produce
+that case. **The correct disposition for such an item is "unmeasured, witness owed" — never "rejected."**
+
+### Coverage matrix — what has never been exercised
+
+| gap | evidence | owning checkpoint |
+|---|---|---|
+| **sliver / anisotropic geometry** | max aspect 2.67 across all witnesses | **M4-CP-COND** |
+| **high valence** | max valence 6; the torus is uniformly 6 | **M4-CP-COND** |
+| **scale** | ≤ 152 vertices, ≤ 300 faces | **M4-CP-SCALE** (with S1 swell measurement) |
+| **negative-index singularity** | all prescribed singularities are `+1`; the torus has none | **M4-CP-COND** |
+| **boundary-truncated separatrix** | the only bounded witness is the two-ring disc | **M4-CP-COND** |
+| **inadmissible input field** | every field has been admissible or synthetic; the one deliberately synthetic field was itself found inadmissible at ordinal 370 | **M4-CP-COND** |
+| **genus ≥ 2** | handle generators exercised only at genus 1 | **M4** (S5) |
+| **exact ties from symmetric input** | fixtures are irregular, so exact ties are measure-zero; CAD/grid-aligned/mirror-symmetric production input produces them routinely | **M5-CP-REG** |
+
+### New checkpoints
+
+| Checkpoint | Owns | Gate content |
+|---|---|---|
+| **`M4-CP-COND`** | **Amendment 20** — the conditioning stage before A0: admissibility certification, a conditioned immutable source product with a certified correspondence to the raw input, and typed inadmissibility. Sliver repair-or-refusal, near-duplicate merging, bounded-lattice quantization and field-matching repair live here and **only** here | witnesses for slivers, high valence, negative-index singularities, boundary-truncated separatrices, and an inadmissible input field; correspondence-integrity and idempotence identities |
+| **`M4-CP-SCALE`** | production-scale behaviour: S1 expression-swell measurement, S2 certified filters, S3 exact limit-cycle detection, S4 incremental Betti early rejection | measured bit-width envelopes; a typed `LimitCycleTermination`; early-rejection localization |
+| **`M5-CP-REG`** | **Amendment 21** — the degeneracy taxonomy, the regularization policy interface, certificate recording of every regularization, and its mapping onto the D0–D4 disposition ladder; plus the typed index-deficit reconciliation contract | exact-tie witnesses from symmetric input; a run that lands on a degraded tier **and says so** |
+
+**S6 (input-perturbation stability) is promoted** from a stability measurement to the **acceptance evidence for the
+conditioning contract** under `M4-CP-COND`.
+
+**None of this is CP4c-3 work.** CP4c-3 closes on the mechanical witness under **AU0–AU9**, unchanged.
+
+---
+
+## 3c. Development-cadence changes — 2026-08-31
+
+CP4c-3 held ordinal 366 red for six consecutive TB runs at roughly **one defect per three turns**. The causes are
+recorded in `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §10 (folded 2026-09-03 — resolve via the folded document index in `M3_CP4c_Consolidated_Record.md`). Three changes follow, none of which
+weakens the gate, changes a selector byte, or alters `first_red_ordinal` semantics:
+
+1. **Full report-only pass.** After the first red fixes the verdict, execute **every remaining ordinal** report-only
+   with **zero gate credit**. The restricted 367–373 version of this produced four independent findings in a single
+   run; extending it makes each run buy every independently-reachable defect instead of one.
+2. **Minimal witnesses for active defects.** Every active gating defect gets a small constructed witness that
+   reproduces it — for the transit election, a single interior vertex with a known fan and an exact synthetic
+   field. A 152-vertex production witness is the wrong instrument for first-light debugging; the minimal witness
+   also becomes a permanent regression identity.
+3. **Measures written as predicates with a named falsifier.** A corrective measure states the invalidated
+   assumption in words, and names the observation that would fall outside it. Five consecutive measures were
+   satisfied exactly and defeated in substance because they were scoped by symbol, enum, stage, mechanism
+   enumeration and predicate-versus-provenance. `LESSONS.md` 68 and 70.
+
+---
+
+## 4. M4–M8 — proposed checkpoint decomposition
+
+M4 is now frozen and underway; M5-M8 remain proposed at this level. Each milestone/checkpoint is cut by the rule this project has applied since M1: **one
+checkpoint carries one independently testable semantic domain.** Gate arithmetic is cumulative —
+every checkpoint carries the full accepted predecessor selector plus its own frozen identities.
+
+Each milestone opens with its own `-DEFN` planning turn. That is not ceremony: CP4's DEFN was the
+turn that caught an undefined disc-proof certificate before code was written against it, and M1 paid
+twice for skipping the equivalent. **A `-DEFN` turn is planning only and runs nothing.**
+
+**A `-DEFN` turn must now also state, for each witness it names, which product stage that witness has
+been *proven* to reach** — not that its files exist. CP4c's failure was exactly this omission.
+
+### M4 — global conformity plan (`DESIGN.md` §14 M4)
+
+Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Selector409 remains the retained final M3 audit surface, not the M4 required-green predecessor.
+
+| Checkpoint | Semantic domain | Notes |
+|---|---|---|
+| `M4-DEFN` | **COMPLETE:** frozen in `Architecture_M4_DEFN_Frozen_Definitions.md` | planning only / runtime-free |
+| `M4-CP1` | immutable **full-A2b-arc** schedule product with one A3 writer, multiplicity-preserving incidences, mandatory parity, compact arbitrary-precision breakpoint generator, exact binary64 ingress; L1 scheduling uses exact fixed-`M=2` Bi-MDF iterative refinement with theorem-derived lex encoding, independent structural validator and fixed-small optimum test oracle | **CLOSED / ACCEPTED:** package115/TB2, selector373 **373/373**, focused CP1 **8/8 twice**; closure `M4_CP1_Closure_Record.md` |
+| `M4-CP2` | carried positivity/parity/optimality certificate plus typed subset-scoped infeasibility obstruction | **CLOSED / ACCEPTED:** package117/R1, selector382 **382/382**; closure `M4_CP2_Closure_Record.md` |
+| `M4-CP3` | re-prove family-free baseline A3 shared counts/parity, publish exact A2b source paths and bind A3, then producers consume the accepted plan; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | **CLOSED / ACCEPTED:** package `10307919492`, selector408 **408/408**, TB8 **835/835**; closure `M4_CP3_Closure_Record.md` |
+| `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with one single-writer conditioned source, certified raw correspondence, typed refusal and non-vacuous witness gates | **CLOSED / ACCEPTED:** TB5 Review promotes package `10331193451` / selector423 **423/423** after independently re-deriving the exact boundary-truncated raw precondition, mutation falsifier, conditioner preservation and immutable cumulative evidence. Closure: `M4_CP_COND_Closure_Record.md`. |
+| `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | **OPEN.** TB6 Review promotes package `10418328122` / source `153047c3...` under unchanged selector424 **424/424**, accepts S3 focused exact-repeat proof for publication and discharges `DEFN-OBS-02`. Cumulative S3 selector credit is still owed: **NEXT `M4-CP-SCALE-CB8`** publishes selector425 only (exact selector424 prefix + S3 row425), then TB7 425/425 + Review. S1 calibration, S2 arrival, S4 and S5 remain open. |
+| `M4-CP4` | cumulative M4 exit: full gate, all three `G4-B002` produced-witness debt re-proofs, work/bit-width evidence | exit proof only; no second writer |
+
+#### M4-CP3-DEFN-R1 semantic rebase
+
+CB1 correctly stopped before mutation because production Cut arcs lacked source-derived U/V/sign authority. DEFN-R1 independently widened the finding to arbitrary Mandatory arcs and rejected both field-certifying every artificial cut and inventing a deterministic frame. Frozen §17 makes baseline A3 family/sign-free: exact shared counts/breakpoints plus per-region even boundary parity, optimized by exact minimum-cardinality T-join + lex refinement. `x_s=2` for every span is a constructive feasibility witness. Historical package117/selector382 remains accepted evidence for the superseded framed domain, but production sufficiency is re-proved inside CP3 before cutover.
+
+#### M4-CP3-TB2 review disposition
+
+CB3/TB1-R1 promoted package119/selector394 **394/394** as family/sign-free baseline authority. CB4-R1 then implemented §17.12 exact A2b source-path publication and the production A3 1:1 binder. Historical package120/old selector403 was mechanically green but rejected because its row400 was decorative. The R2 guard rejected an invented upstream conversion seam; R2-REV located the real terminal-contact canonical→raw consumer basis mismatch; R3 corrected it and replaced row400; R4 repaired the one stale CMake ownership marker and produced corrected artifact `10289601000`.
+
+TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: replacement row400 focused A/B **1/1 + 1/1**, predecessor394 **394/394**, successor403 **403/403**, zero RED/SKIP/timeout/selection mismatch, immutable package/source/execution-view postflight. `M4-CP3-TB2-R2-REV` independently re-derived package/selector/source provenance, owner totals `30/257/75/41`, all raw process discipline, and row400's exact raw `[3,0,4]` versus canonical `[0,3,4]` `1/3` correct / `2/3` no-remap discriminator. Review **accepts corrected R4 artifact `10289601000` and selector403** as current pre-cutover authority. The product/test/build-contract candidates are closed recovery-proved/non-stable; stable totals remain **47 / 14 / 33**, debt **5**.
+
+`M4-CP3-TB8-REV` closes CP3 on accepted package `10307919492` / selector408 **408/408**. The reviewed gate is **835/835 PASS**: repaired six-consumer fixture A/B, ordinal138 A/B, row408 A/B, rows404-407 A/B, accepted selector403 403/403 to completion and cumulative selector408 408/408, with empty accepted RED census and immutable postflight. The main exact-torus `InvalidHardRailPairing` blocker is recovery-proved closed without post-hoc pairing. Stable totals remain **49 / 14 / 35**, debt **5**. CP-COND then froze and implemented the pre-A0 conditioning contract. TB1 Review classifies the first artifact failure as pre-semantic selector-owner package closure; CB2 and TB2 prove that recovery. TB2 Review rejects only the negative-index test authority. CB3 corrects that oracle from raw binary64 bytes and compiles a complete immutable owner package. Exact next is `M4-CP-COND-TB3-EXEC` followed by mandatory Review.
+
+M4 still owns `G4-B002`'s three produced-witness debts; they are not CP3 exit conjuncts and remain CP4 gating. `G4-B004` is explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
+
+### M5 — certificate-carrying chart and quotient relations (§14 M5)
+
+| Checkpoint | Semantic domain |
+|---|---|
+| `M5-DEFN` | freeze canonical relation IDs, path certificates, and the tamper matrix |
+| `M5-CP1` | canonical relation ID domain and explicit path certificates, replacing verifier-side reachability reconstruction |
+| `M5-CP2` | typed failure for missing / duplicate / conflicting / nonreciprocal / representation-renumbered relations |
+| `M5-CP3` | M5 exit — torus lineage and quotient acceptance from direct production evidence; unused valid relations provably do not alter the selected certificate |
+
+M5 owns `G4-B003`'s two produced-witness debts.
+
+### M6 — occurrence, embedding, independent verification (§14 M6)
+
+| Checkpoint | Semantic domain |
+|---|---|
+| `M6-DEFN` | freeze the four stage products and the verifier's recompute boundary |
+| `M6-CP1` | separate occurrence creation / quotient construction / geometry embedding as complete stage products |
+| `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
+| `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
+
+### M7 — disposition and graded degradation (§14 M7)
+
+Sequenced after M6 by explicit design decision in `DESIGN.md` §14: disposition is a statement *about*
+the verified product, so implementing it earlier reproduces the silent-substitution failure §3
+diagnoses. **Do not resequence this.**
+
+| Checkpoint | Semantic domain |
+|---|---|
+| `M7-DEFN` | freeze `OutputDisposition`, `DegradationCertificate`, and verifier layer 7 as one vertical contract |
+| `M7-CP1` | tier assignment by the **verifier only**, never a producer; tier cannot be raised mid-run |
+| `M7-CP2` | declared degraded region producer — pure quads conforming exactly to the unmodified plan, cannot mutate upstream products |
+| `M7-CP3` | M7 exit — unrecorded and fabricated degradation both fail typed; omitted-region bookkeeping reconciles with quotient relation consumption; tier/degraded/omitted invariant under every §10.1 permutation; **no strict fixture gate closes on a degraded result** |
+
+### M8 — module boundaries and operational hardening (§14 M8)
+
+| Checkpoint | Semantic domain |
+|---|---|
+| `M8-CP1` | target module layout; forbidden producer/verifier dependencies made unavailable; `construction/` cannot depend on `disposition/` |
+| `M8-CP2` | diagnostics, resource accounting, packaging, CI hardening; no semantic equality includes execution handles or backend choice; diagnostics cannot feed semantic decisions |
+| `M8-CP3` | **production-ready exit** — every `DESIGN.md` §2.1 certified-acceptance condition met on the full witness set, and **no architecture-debt item in `Regression_Root_Cause_Tracker.md` remains open** |
+
+`M8-CP3` is the production-readiness definition. It is not met while any of `G4-B001`–`G4-B004` is
+open.
+
+---
+
+## 5. Open product blockers, and who owns them
+
+These are **not** M3 obligations and must not be claimed closed by M3 evidence.
+
+| Blocker | Stage | Owner |
+|---|---|---|
+| `G4-B001` / `PR8-R034` / `G4-R007` | completion/materializer — hard rail promoted into `IsolationSheetId` authority, rejected by `close_completion_lineage_source_authority(...)` | M6 at the earliest; adjudicate at `M6-DEFN` |
+| `G4-B002` | **main exact-torus pairing blocker CLOSED at CP3; three produced-witness debts remain** | M4-CP4 debt gate |
+| `G4-B003` | quotient/chart relations | M5 |
+| `G4-B004` | quotient relation/certificate then representative occurrence/verification | M5 focused production + M6 representative consumption; no M4 gate/debt |
+
+Produced-witness debt stands at **5** and is discharged by M4 (3) and M5 (2).
+
+---
+
+## 6. What "production ready" means here
+
+From `DESIGN.md` §2.1, unchanged and not restated in full: a run is production-ready when the certified
+acceptance conditions hold on the full witness set with no degraded result closing a strict gate, under
+the §10.1 determinism requirements, with the §15 stop conditions never triggered.
+
+Operationally, that is `M8-CP3`. The remaining path is: **CP4c-2 → CP4c-3 → M4 (4 checkpoints) → M5 (3)
+→ M6 (3) → M7 (3) → M8 (3)**, plus two CP4c `-DEFN` turns and five milestone `-DEFN` turns. Eighteen
+checkpoints remain.
+
+This decomposition is a **proposal until each milestone's `-DEFN` turn freezes it.** Gate arithmetic
+beyond 322 is deliberately not fixed here — freezing identity counts before the domain is defined is
+the failure `M3-CP4-DEFN` was created to prevent.

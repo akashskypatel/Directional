@@ -1,4 +1,5 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
 #include <array>
@@ -8,8 +9,23 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
+
+directional::geometry::SourceTopologyRegions test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  return std::move(*authority);
+}
 
 Eigen::MatrixXd derivative_vertices() {
   Eigen::MatrixXd vertices(4, 3);
@@ -28,11 +44,17 @@ Eigen::MatrixXi derivative_quad() {
 
 directional::geometry::SurfaceOptimizationConstraints derivative_constraints() {
   directional::geometry::SurfaceOptimizationConstraints constraints;
-  constraints.sourcePositions.resize(4, 3);
-  constraints.sourcePositions << 0.0, 0.0, 0.0,
+  constraints.sourceVertices.resize(4, 3);
+  constraints.sourceVertices << 0.0, 0.0, 0.0,
       2.0, 0.0, 0.0,
       2.0, 2.0, 0.0,
       0.0, 2.0, 0.0;
+  constraints.sourceFaces.resize(2, 3);
+  constraints.sourceFaces << 0, 1, 2,
+      0, 2, 3;
+  static const auto sourceAuthority =
+      test_source_authority(constraints.sourceFaces, {0, 0}, {0, 0});
+  constraints.sourceAuthority = &sourceAuthority;
   constraints.sourceNormals.resize(1, 3);
   constraints.sourceNormals << 0.2, 0.1, 1.0;
   constraints.sourceNormals.row(0).normalize();
@@ -42,7 +64,6 @@ directional::geometry::SurfaceOptimizationConstraints derivative_constraints() {
   constraints.sourceFieldY << -0.25, 1.0, 0.0;
   constraints.sourceFieldX.row(0).normalize();
   constraints.sourceFieldY.row(0).normalize();
-  constraints.sourceComponent = Eigen::VectorXi::Zero(4);
   constraints.localTargetSize.resize(4);
   constraints.localTargetSize << 0.9, 1.1, 1.2, 0.8;
   constraints.featureVertices = {2};
@@ -128,15 +149,14 @@ TEST(SurfaceMeshOptimizerPhase20,
   quads << 0, 1, 3, 2;
 
   auto constraints = derivative_constraints();
-  constraints.sourcePositions = vertices;
   constraints.featureVertices = {1, 2};
   constraints.orderedFeatureVertices = {1, 2};
   constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
   constraints.featureCurveIds(1) = 17;
   constraints.featureCurveIds(2) = 17;
-  constraints.featureRailIds = Eigen::VectorXi::Constant(4, -1);
-  constraints.featureRailIds(1) = 4;
-  constraints.featureRailIds(2) = 4;
+  constraints.featureRailIds.assign(4, std::nullopt);
+  constraints.featureRailIds[1] = directional::tests::test_hard_rail_id(4);
+  constraints.featureRailIds[2] = directional::tests::test_hard_rail_id(4);
   constraints.featureCurveIntervals.clear();
   constraints.featureCurveIntervals.push_back(
       {17, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}, 0, 0});
@@ -200,9 +220,9 @@ TEST(SurfaceMeshOptimizerPhase20,
   directional::geometry::SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = sourceVertices;
   constraints.sourceFaces = sourceFaces;
-  constraints.sourcePositions = sourceVertices;
-  constraints.sourceFaceComponent = {0, 0};
-  constraints.sourceFaceSheet = {3, 3};
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, {0, 0}, {3, 3});
+  constraints.sourceAuthority = &sourceAuthority;
   constraints.sourceNormals.resize(4, 3);
   constraints.sourceNormals << 0.0, 0.0, 1.0,
       0.18, 0.0, 0.98,
@@ -262,7 +282,6 @@ TEST(SurfaceMeshOptimizerPhase20,
       1.0, 1.0, 0.0,
       0.0, 1.0, 0.0;
   auto constraints = derivative_constraints();
-  constraints.sourcePositions = vertices;
   constraints.featureVertices.clear();
   constraints.featureCurveIntervals.clear();
   const auto options = isolated_options(
@@ -305,13 +324,13 @@ TEST(SurfaceMeshOptimizerPhase20,
   quads << 0, 1, 3, 2;
 
   directional::geometry::SurfaceOptimizationConstraints constraints;
-  constraints.sourcePositions.resize(4, 3);
-  constraints.sourcePositions << 0.0, 0.0, 0.0,
-      1.0, 0.0, 0.0,
-      0.0, 0.0, 0.0,
-      1.0, 1.0, 0.0;
-  constraints.sourceComponent.resize(4);
-  constraints.sourceComponent << 0, 1, 2, 3;
+  constraints.sourceVertices = vertices;
+  constraints.sourceFaces.resize(2, 3);
+  constraints.sourceFaces << 0, 1, 3,
+      0, 3, 2;
+  const auto sourceAuthority =
+      test_source_authority(constraints.sourceFaces, {0, 0}, {0, 0});
+  constraints.sourceAuthority = &sourceAuthority;
   constraints.sourceNormals.resize(1, 3);
   constraints.sourceNormals << 0.0, 0.0, 1.0;
   constraints.sourceFieldX.resize(1, 3);
@@ -323,9 +342,9 @@ TEST(SurfaceMeshOptimizerPhase20,
   constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
   constraints.featureCurveIds(1) = 7;
   constraints.featureCurveIds(2) = 7;
-  constraints.featureRailIds = Eigen::VectorXi::Constant(4, -1);
-  constraints.featureRailIds(1) = 5;
-  constraints.featureRailIds(2) = 5;
+  constraints.featureRailIds.assign(4, std::nullopt);
+  constraints.featureRailIds[1] = directional::tests::test_hard_rail_id(5);
+  constraints.featureRailIds[2] = directional::tests::test_hard_rail_id(5);
   constraints.featureCurveIntervals.push_back(
       {7, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}, 0, 0});
 

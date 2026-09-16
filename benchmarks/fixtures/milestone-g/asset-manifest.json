@@ -1,19 +1,19 @@
 {
   "assets": [
     {
-      "bytes": 15247,
+      "bytes": 15450,
       "path": "benchmarks/fixtures/generate_milestone_g_fixtures.py",
-      "sha256": "0a30b76cbe7ce582c69f70a52ecc31c553061593b319c97830465b27ec598a80"
+      "sha256": "a40e58c0b99b35d44e4a72e8df92657f6580abec7b0e77f1868e87d1398b1154"
     },
     {
-      "bytes": 698,
+      "bytes": 681,
       "path": "benchmarks/fixtures/milestone-g/LICENSE.md",
-      "sha256": "6c2a343e7b78aad724d7464246300eb1601f48553d9471d12d160c5812950c54"
+      "sha256": "5209869d60580f385fa6088332f8e4725335260f996f60bcd3f61b33b0c13249"
     },
     {
-      "bytes": 49554,
+      "bytes": 51055,
       "path": "benchmarks/fixtures/milestone-g/bunny_1k_random.obj",
-      "sha256": "8e19700250ea2d53608d10796d9a9c2216b25d718f85ca4e2bc1566ba128d1b3"
+      "sha256": "865d864f7afbd90283526d914e0d4d9718d83e9679943029060bde439b10ab05"
     },
     {
       "bytes": 1869,
@@ -99,6 +99,11 @@
       "bytes": 36084,
       "path": "benchmarks/fixtures/milestone-g/torus.rawfield",
       "sha256": "25dddeb56f19122833643d6092b862e6777e9e2be9aa2853dfa445c36fd02dbe"
+    },
+    {
+      "bytes": 75300,
+      "path": "benchmarks/fixtures/milestone-g/vase.off",
+      "sha256": "5f7bedc1783486589a8721a7b9be881064f361e4a07fd8c5278d8b8f55b2c868"
     }
   ],
   "generator": "benchmarks/fixtures/generate_milestone_g_fixtures.py"
