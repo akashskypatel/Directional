@@ -48,11 +48,19 @@ jobs:
       PREFIX424_SHA256: f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca
       ROW425_IDENTITY: M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination
     steps:
-      - name: Initialize diagnostic log
+      - name: Initialize diagnostic log and blocked result
         shell: bash
         run: |
           set -euo pipefail
           : > "${RUNNER_TEMP}/m4-cp-scale-tb7-exec.log"
+          mkdir -p "${RUNNER_TEMP}/tb7-result"
+          printf '%s\n' 'status=BLOCKED_PRE_RUNTIME' 'runtimeStarted=false' 'runtimeCompleted=false' > "${RUNNER_TEMP}/tb7-result/final-status.txt"
+
+      - name: Checkout exact orchestration source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
 
       - name: Execute immutable selector425 gate
         id: runtime
