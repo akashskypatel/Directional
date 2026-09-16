@@ -209,6 +209,37 @@ void canonicalize_cycle(std::vector<GlobalTopologyOrientedArc> &cycle);
     const std::vector<GlobalTopologyArc> &arcs,
     const FaceWalkResult &walk);
 
+/** Exact fixed-candidate topology receipt used by the S4 necessary-condition accelerator. */
+struct FixedCandidateTopologyInvariant {
+  std::size_t vertexCount = 0U;
+  std::size_t edgeCount = 0U;
+  std::size_t observedComplementComponentCount = 0U;
+  std::size_t graphComponentCount = 0U;
+  std::size_t sourceComponentCount = 0U;
+  std::int64_t firstBetti = 0;
+  std::int64_t requiredFaceCount = 0;
+  int sourceEulerCharacteristic = 0;
+  bool rejects = false;
+
+  auto operator<=>(const FixedCandidateTopologyInvariant &) const = default;
+};
+
+/**
+ * Count connected components of the actual source-surface complement.
+ *
+ * This is not the dart-face-walk orbit count.  It subdivides each source
+ * triangle by the already-built exact source paths, then stitches only
+ * non-graph source-edge intervals across adjacent source triangles.  Failure
+ * to establish that exact local arrangement returns nullopt so callers fall
+ * back to the unchanged final certificate.
+ */
+[[nodiscard]] std::optional<std::size_t>
+actual_complement_component_count(const EmbeddedGraphTopology &topology);
+
+/** Exact S4 fixed-candidate necessary-condition receipt; nullopt means unavailable. */
+[[nodiscard]] std::optional<FixedCandidateTopologyInvariant>
+fixed_candidate_topology_invariant(const EmbeddedGraphTopology &topology);
+
 /** Number of connected components of the actual graph, including all nodes. */
 [[nodiscard]] std::size_t actual_graph_component_count(
     const EmbeddedGraphTopology &topology);
@@ -218,3 +249,30 @@ void canonicalize_cycle(std::vector<GlobalTopologyOrientedArc> &cycle);
     const SourceTopologyIndex &topology);
 
 } // namespace directional::geometry::embedded_graph_topology_detail
+
+namespace directional::geometry::surface_cut_graph_test_detail {
+
+struct S4ExecutionDiagnostics {
+  std::size_t candidateEvaluations = 0U;
+  std::size_t earlyRejectedCandidates = 0U;
+  std::size_t fullCertificationAttempts = 0U;
+  std::size_t bypassedFinalCertificationAttempts = 0U;
+
+  auto operator<=>(const S4ExecutionDiagnostics &) const = default;
+};
+
+using CandidateResult =
+    std::variant<SurfaceCutGraphCandidate, SurfaceCutGraphError>;
+
+/** Last diagnostics produced by the public SurfaceCutGraph::make on this thread. */
+[[nodiscard]] S4ExecutionDiagnostics last_s4_execution_diagnostics() noexcept;
+
+/** Test-only reference seam: same canonical candidate search with S4 disabled. */
+[[nodiscard]] CandidateResult canonical_candidate_without_s4_for_test(
+    const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const FieldAlignedCurveNetwork &network,
+    S4ExecutionDiagnostics *diagnostics = nullptr);
+
+} // namespace directional::geometry::surface_cut_graph_test_detail

@@ -2019,6 +2019,499 @@ ExteriorOrbitBuildResult exterior_boundary_orbits(
   return exterior;
 }
 
+std::optional<std::size_t>
+actual_complement_component_count(const EmbeddedGraphTopology &topology) {
+  using Point = authority::ExactSourcePoint;
+  using Rational = authority::FieldExactRational;
+  using SourceEdge = authority::SourceEdgeTopologyKey;
+  using SourceFace = authority::SourceFaceTopologyKey;
+
+  struct Interval {
+    Rational low;
+    Rational high;
+  };
+  struct SeamKey {
+    SourceEdge edge;
+    Rational low;
+    Rational high;
+    auto operator<=>(const SeamKey &) const = default;
+  };
+  struct FacePiece {
+    Point first;
+    Point second;
+  };
+  struct LocalPoint {
+    Point key;
+    Rational x;
+    Rational y;
+  };
+  struct LocalEdge {
+    std::size_t first = 0U;
+    std::size_t second = 0U;
+    std::optional<SeamKey> seam;
+  };
+
+  const Rational zero = Rational::from_integer(0);
+  const Rational one = Rational::from_integer(1);
+
+  const auto edge_parameter = [&](const SourceEdge &edge,
+                                  const Point &point)
+      -> std::optional<Rational> {
+    if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+      if (*vertex == edge.first()) return zero;
+      if (*vertex == edge.second()) return one;
+      return std::nullopt;
+    }
+    const auto *edgePoint = std::get_if<authority::ExactSourceEdgePoint>(&point);
+    if (edgePoint == nullptr || edgePoint->edge != edge) return std::nullopt;
+    return edgePoint->parameter;
+  };
+
+  std::map<SourceEdge, std::set<Point>> edgePoints;
+  std::map<SourceEdge, std::vector<Interval>> barrierIntervals;
+  std::map<SourceFace, std::vector<FacePiece>> facePieces;
+  for (const auto &[edge, incident] : topology.sourceTopology.incidentFaces) {
+    (void)incident;
+    edgePoints[edge].insert(Point{edge.first()});
+    edgePoints[edge].insert(Point{edge.second()});
+  }
+
+  const auto record_edge_point = [&](const Point &point) {
+    if (const auto *edgePoint =
+            std::get_if<authority::ExactSourceEdgePoint>(&point)) {
+      const auto found = edgePoints.find(edgePoint->edge);
+      if (found != edgePoints.end()) found->second.insert(point);
+    }
+  };
+
+  for (const auto &arc : topology.arcs) {
+    for (const auto &piece : arc.sourcePath) {
+      record_edge_point(piece.first);
+      record_edge_point(piece.second);
+      if (const auto *edgeSupport =
+              std::get_if<authority::SourceEdgeSupport>(&piece.carrier)) {
+        const auto first = edge_parameter(edgeSupport->edge, piece.first);
+        const auto second = edge_parameter(edgeSupport->edge, piece.second);
+        if (!first.has_value() || !second.has_value() || *first == *second) {
+          return std::nullopt;
+        }
+        const Rational low = *first < *second ? *first : *second;
+        const Rational high = *first < *second ? *second : *first;
+        barrierIntervals[edgeSupport->edge].push_back(Interval{low, high});
+        continue;
+      }
+      if (const auto *faceSupport =
+              std::get_if<authority::SourceFaceInteriorSupport>(&piece.carrier)) {
+        if (topology.sourceTopology.faces.count(faceSupport->face) == 0U) {
+          return std::nullopt;
+        }
+        facePieces[faceSupport->face].push_back(
+            FacePiece{piece.first, piece.second});
+        continue;
+      }
+      return std::nullopt;
+    }
+  }
+
+  const auto interval_is_barrier = [&](const SeamKey &seam) {
+    const auto found = barrierIntervals.find(seam.edge);
+    if (found == barrierIntervals.end()) return false;
+    return std::any_of(found->second.begin(), found->second.end(),
+                       [&](const Interval &interval) {
+                         return interval.low <= seam.low &&
+                                interval.high >= seam.high;
+                       });
+  };
+
+  std::map<SeamKey, std::vector<std::size_t>> seamFragments;
+  std::set<SeamKey> barrierSeams;
+  std::size_t nextFragment = 0U;
+
+  for (const auto &[faceKey, face] : topology.sourceTopology.faces) {
+    const auto face_coordinates = [&](const Point &point)
+        -> std::optional<std::pair<Rational, Rational>> {
+      std::array<Rational, 3> barycentric{zero, zero, zero};
+      if (const auto *vertex =
+              std::get_if<authority::SourceVertexId>(&point)) {
+        const auto found = std::find(face.vertices.begin(), face.vertices.end(),
+                                     *vertex);
+        if (found == face.vertices.end()) return std::nullopt;
+        barycentric[static_cast<std::size_t>(
+            std::distance(face.vertices.begin(), found))] = one;
+      } else if (const auto *edgePoint =
+                     std::get_if<authority::ExactSourceEdgePoint>(&point)) {
+        if (!authority::source_face_contains_edge(face.topology,
+                                                  edgePoint->edge)) {
+          return std::nullopt;
+        }
+        const auto first =
+            std::find(face.vertices.begin(), face.vertices.end(),
+                      edgePoint->edge.first());
+        const auto second =
+            std::find(face.vertices.begin(), face.vertices.end(),
+                      edgePoint->edge.second());
+        if (first == face.vertices.end() || second == face.vertices.end()) {
+          return std::nullopt;
+        }
+        barycentric[static_cast<std::size_t>(
+            std::distance(face.vertices.begin(), first))] =
+            one - edgePoint->parameter;
+        barycentric[static_cast<std::size_t>(
+            std::distance(face.vertices.begin(), second))] =
+            edgePoint->parameter;
+      } else {
+        const auto &facePoint = std::get<authority::ExactSourceFacePoint>(point);
+        if (facePoint.face != face.topology) return std::nullopt;
+        const auto canonicalVertices = facePoint.face.vertices();
+        std::array<bool, 3> assigned{false, false, false};
+        for (std::size_t canonical = 0U; canonical < 3U; ++canonical) {
+          const auto oriented =
+              std::find(face.vertices.begin(), face.vertices.end(),
+                        canonicalVertices[canonical]);
+          if (oriented == face.vertices.end()) return std::nullopt;
+          const std::size_t index = static_cast<std::size_t>(
+              std::distance(face.vertices.begin(), oriented));
+          if (assigned[index]) return std::nullopt;
+          assigned[index] = true;
+          barycentric[index] = facePoint.barycentric[canonical];
+        }
+      }
+      if (barycentric[0] + barycentric[1] + barycentric[2] != one) {
+        return std::nullopt;
+      }
+      return std::pair<Rational, Rational>{barycentric[1], barycentric[2]};
+    };
+
+    std::map<Point, std::size_t> pointIndex;
+    std::vector<LocalPoint> points;
+    const auto add_point = [&](const Point &point) -> std::optional<std::size_t> {
+      const auto existing = pointIndex.find(point);
+      if (existing != pointIndex.end()) return existing->second;
+      const auto coordinates = face_coordinates(point);
+      if (!coordinates.has_value()) return std::nullopt;
+      const std::size_t index = points.size();
+      pointIndex.emplace(point, index);
+      points.push_back(LocalPoint{point, coordinates->first, coordinates->second});
+      return index;
+    };
+
+    for (const auto vertex : face.vertices) {
+      if (!add_point(Point{vertex}).has_value()) return std::nullopt;
+    }
+    for (const auto &edge : face.edges) {
+      const auto found = edgePoints.find(edge);
+      if (found == edgePoints.end()) return std::nullopt;
+      for (const auto &point : found->second) {
+        if (!add_point(point).has_value()) return std::nullopt;
+      }
+    }
+    const auto pieces = facePieces.find(faceKey);
+    if (pieces != facePieces.end()) {
+      for (const auto &piece : pieces->second) {
+        if (!add_point(piece.first).has_value() ||
+            !add_point(piece.second).has_value()) {
+          return std::nullopt;
+        }
+      }
+    }
+
+    std::vector<LocalEdge> edges;
+    std::set<std::pair<std::size_t, std::size_t>> edgeSet;
+    const auto add_edge = [&](std::size_t first, std::size_t second,
+                              std::optional<SeamKey> seam)
+        -> std::optional<std::size_t> {
+      if (first == second) return std::nullopt;
+      const auto key = std::minmax(first, second);
+      const std::pair<std::size_t, std::size_t> ordered{key.first, key.second};
+      if (!edgeSet.insert(ordered).second) return std::nullopt;
+      const std::size_t index = edges.size();
+      edges.push_back(LocalEdge{first, second, std::move(seam)});
+      return index;
+    };
+
+    if (pieces != facePieces.end()) {
+      for (const auto &piece : pieces->second) {
+        const auto first = pointIndex.find(piece.first);
+        const auto second = pointIndex.find(piece.second);
+        if (first == pointIndex.end() || second == pointIndex.end() ||
+            !add_edge(first->second, second->second, std::nullopt).has_value()) {
+          return std::nullopt;
+        }
+      }
+    }
+
+    for (const auto &edge : face.edges) {
+      const auto found = edgePoints.find(edge);
+      if (found == edgePoints.end()) return std::nullopt;
+      std::vector<std::pair<Rational, Point>> ordered;
+      ordered.reserve(found->second.size());
+      for (const auto &point : found->second) {
+        const auto parameter = edge_parameter(edge, point);
+        if (!parameter.has_value()) return std::nullopt;
+        ordered.push_back({*parameter, point});
+      }
+      std::sort(ordered.begin(), ordered.end(),
+                [](const auto &lhs, const auto &rhs) {
+                  return lhs.first < rhs.first;
+                });
+      for (std::size_t index = 1U; index < ordered.size(); ++index) {
+        if (ordered[index - 1U].first >= ordered[index].first) {
+          return std::nullopt;
+        }
+        const SeamKey seam{edge, ordered[index - 1U].first,
+                           ordered[index].first};
+        const auto first = pointIndex.find(ordered[index - 1U].second);
+        const auto second = pointIndex.find(ordered[index].second);
+        if (first == pointIndex.end() || second == pointIndex.end() ||
+            !add_edge(first->second, second->second, seam).has_value()) {
+          return std::nullopt;
+        }
+      }
+    }
+
+    const auto cross = [&](const std::size_t first, const std::size_t second,
+                           const std::size_t third) {
+      const Rational ax = points[second].x - points[first].x;
+      const Rational ay = points[second].y - points[first].y;
+      const Rational bx = points[third].x - points[first].x;
+      const Rational by = points[third].y - points[first].y;
+      return ax * by - ay * bx;
+    };
+    for (std::size_t firstEdge = 0U; firstEdge < edges.size(); ++firstEdge) {
+      for (std::size_t secondEdge = firstEdge + 1U; secondEdge < edges.size();
+           ++secondEdge) {
+        const auto &first = edges[firstEdge];
+        const auto &second = edges[secondEdge];
+        if (first.first == second.first || first.first == second.second ||
+            first.second == second.first || first.second == second.second) {
+          continue;
+        }
+        const Rational o1 = cross(first.first, first.second, second.first);
+        const Rational o2 = cross(first.first, first.second, second.second);
+        const Rational o3 = cross(second.first, second.second, first.first);
+        const Rational o4 = cross(second.first, second.second, first.second);
+        const auto sign = [&](const Rational &value) {
+          return value < zero ? -1 : value > zero ? 1 : 0;
+        };
+        const int s1 = sign(o1), s2 = sign(o2), s3 = sign(o3), s4 = sign(o4);
+        const auto on_segment = [&](const std::size_t firstVertex,
+                                    const std::size_t secondVertex,
+                                    const std::size_t pointVertex) {
+          const auto &a = points[firstVertex];
+          const auto &b = points[secondVertex];
+          const auto &point = points[pointVertex];
+          const Rational minX = a.x < b.x ? a.x : b.x;
+          const Rational maxX = a.x < b.x ? b.x : a.x;
+          const Rational minY = a.y < b.y ? a.y : b.y;
+          const Rational maxY = a.y < b.y ? b.y : a.y;
+          return point.x >= minX && point.x <= maxX &&
+                 point.y >= minY && point.y <= maxY;
+        };
+        const bool intersects =
+            (s1 != 0 && s2 != 0 && s3 != 0 && s4 != 0 && s1 != s2 &&
+             s3 != s4) ||
+            (s1 == 0 && on_segment(first.first, first.second, second.first)) ||
+            (s2 == 0 && on_segment(first.first, first.second, second.second)) ||
+            (s3 == 0 && on_segment(second.first, second.second, first.first)) ||
+            (s4 == 0 && on_segment(second.first, second.second, first.second));
+        if (intersects) return std::nullopt;
+      }
+    }
+
+    const std::size_t dartCount = edges.size() * 2U;
+    std::vector<std::vector<std::size_t>> outgoing(points.size());
+    const auto dart_from = [&](const std::size_t dart) {
+      const auto &edge = edges[dart / 2U];
+      return (dart & 1U) == 0U ? edge.first : edge.second;
+    };
+    const auto dart_to = [&](const std::size_t dart) {
+      const auto &edge = edges[dart / 2U];
+      return (dart & 1U) == 0U ? edge.second : edge.first;
+    };
+    for (std::size_t dart = 0U; dart < dartCount; ++dart) {
+      outgoing[dart_from(dart)].push_back(dart);
+    }
+    const auto upper_half = [&](const Rational &dx, const Rational &dy) {
+      return dy > zero || (dy == zero && dx > zero);
+    };
+    for (std::size_t vertex = 0U; vertex < outgoing.size(); ++vertex) {
+      auto &rotation = outgoing[vertex];
+      if (rotation.empty()) return std::nullopt;
+      for (std::size_t first = 0U; first < rotation.size(); ++first) {
+        const auto firstTo = dart_to(rotation[first]);
+        const Rational ax = points[firstTo].x - points[vertex].x;
+        const Rational ay = points[firstTo].y - points[vertex].y;
+        for (std::size_t second = first + 1U; second < rotation.size(); ++second) {
+          const auto secondTo = dart_to(rotation[second]);
+          const Rational bx = points[secondTo].x - points[vertex].x;
+          const Rational by = points[secondTo].y - points[vertex].y;
+          if (upper_half(ax, ay) == upper_half(bx, by) &&
+              ax * by - ay * bx == zero) {
+            return std::nullopt;
+          }
+        }
+      }
+      std::sort(rotation.begin(), rotation.end(), [&](const std::size_t lhs,
+                                                      const std::size_t rhs) {
+        const auto lhsTo = dart_to(lhs);
+        const auto rhsTo = dart_to(rhs);
+        const Rational lx = points[lhsTo].x - points[vertex].x;
+        const Rational ly = points[lhsTo].y - points[vertex].y;
+        const Rational rx = points[rhsTo].x - points[vertex].x;
+        const Rational ry = points[rhsTo].y - points[vertex].y;
+        const bool lhsUpper = upper_half(lx, ly);
+        const bool rhsUpper = upper_half(rx, ry);
+        if (lhsUpper != rhsUpper) return lhsUpper;
+        return lx * ry - ly * rx > zero;
+      });
+    }
+
+    std::vector<std::size_t> successor(dartCount, dartCount);
+    for (std::size_t dart = 0U; dart < dartCount; ++dart) {
+      const std::size_t target = dart_to(dart);
+      const std::size_t reverse = dart ^ 1U;
+      const auto &rotation = outgoing[target];
+      const auto found = std::find(rotation.begin(), rotation.end(), reverse);
+      if (found == rotation.end()) return std::nullopt;
+      const std::size_t offset =
+          static_cast<std::size_t>(std::distance(rotation.begin(), found));
+      successor[dart] = rotation[offset == 0U ? rotation.size() - 1U
+                                              : offset - 1U];
+    }
+
+    std::vector<std::size_t> orbitByDart(dartCount, dartCount);
+    std::vector<Rational> orbitArea2;
+    for (std::size_t start = 0U; start < dartCount; ++start) {
+      if (orbitByDart[start] != dartCount) continue;
+      const std::size_t orbit = orbitArea2.size();
+      Rational area2 = zero;
+      std::size_t current = start;
+      for (std::size_t steps = 0U; steps <= dartCount; ++steps) {
+        if (orbitByDart[current] != dartCount) {
+          if (current != start) return std::nullopt;
+          break;
+        }
+        orbitByDart[current] = orbit;
+        const auto first = dart_from(current);
+        const auto second = dart_to(current);
+        area2 = area2 + points[first].x * points[second].y -
+                          points[first].y * points[second].x;
+        current = successor[current];
+        if (current == start) break;
+        if (steps == dartCount) return std::nullopt;
+      }
+      if (area2 == zero) return std::nullopt;
+      orbitArea2.push_back(area2);
+    }
+
+    std::map<std::size_t, std::size_t> fragmentByOrbit;
+    for (std::size_t orbit = 0U; orbit < orbitArea2.size(); ++orbit) {
+      if (orbitArea2[orbit] > zero) {
+        fragmentByOrbit.emplace(orbit, nextFragment++);
+      }
+    }
+    if (fragmentByOrbit.empty()) return std::nullopt;
+
+    for (std::size_t edgeIndex = 0U; edgeIndex < edges.size(); ++edgeIndex) {
+      const auto &edge = edges[edgeIndex];
+      if (!edge.seam.has_value()) continue;
+      const std::size_t forwardOrbit = orbitByDart[2U * edgeIndex];
+      const std::size_t reverseOrbit = orbitByDart[2U * edgeIndex + 1U];
+      const auto forward = fragmentByOrbit.find(forwardOrbit);
+      const auto reverse = fragmentByOrbit.find(reverseOrbit);
+      if ((forward == fragmentByOrbit.end()) ==
+          (reverse == fragmentByOrbit.end())) {
+        return std::nullopt;
+      }
+      const std::size_t fragment =
+          forward != fragmentByOrbit.end() ? forward->second : reverse->second;
+      seamFragments[*edge.seam].push_back(fragment);
+      if (interval_is_barrier(*edge.seam)) barrierSeams.insert(*edge.seam);
+    }
+  }
+
+  if (nextFragment == 0U) return std::nullopt;
+  std::vector<std::size_t> parent(nextFragment);
+  std::iota(parent.begin(), parent.end(), 0U);
+  const auto root = [&](const auto &self, std::size_t value) -> std::size_t {
+    return parent[value] == value ? value : self(self, parent[value]);
+  };
+  const auto unite = [&](std::size_t first, std::size_t second) {
+    first = root(root, first);
+    second = root(root, second);
+    if (first == second) return;
+    if (first < second) parent[second] = first;
+    else parent[first] = second;
+  };
+
+  for (const auto &[seam, fragments] : seamFragments) {
+    const auto incident = topology.sourceTopology.incidentFaces.find(seam.edge);
+    if (incident == topology.sourceTopology.incidentFaces.end()) {
+      return std::nullopt;
+    }
+    if (incident->second.size() == 1U) {
+      if (fragments.size() != 1U) return std::nullopt;
+      continue;
+    }
+    if (incident->second.size() != 2U || fragments.size() != 2U) {
+      return std::nullopt;
+    }
+    if (barrierSeams.count(seam) == 0U) unite(fragments[0], fragments[1]);
+  }
+
+  std::set<std::size_t> roots;
+  for (std::size_t fragment = 0U; fragment < nextFragment; ++fragment) {
+    roots.insert(root(root, fragment));
+  }
+  return roots.size();
+}
+
+std::optional<FixedCandidateTopologyInvariant>
+fixed_candidate_topology_invariant(const EmbeddedGraphTopology &topology) {
+  const auto observed = actual_complement_component_count(topology);
+  if (!observed.has_value()) return std::nullopt;
+
+  std::set<authority::SourceVertexId> sourceVertices;
+  std::set<authority::SourceComponentId> sourceComponents;
+  for (const auto &[faceKey, face] : topology.sourceTopology.faces) {
+    (void)faceKey;
+    sourceVertices.insert(face.vertices.begin(), face.vertices.end());
+    sourceComponents.insert(face.component);
+  }
+  const std::size_t graphComponents = actual_graph_component_count(topology);
+  if (graphComponents < sourceComponents.size()) return std::nullopt;
+
+  const std::int64_t vertexCount =
+      static_cast<std::int64_t>(topology.cutNodes.combinedNodeExtent);
+  const std::int64_t edgeCount =
+      static_cast<std::int64_t>(topology.arcs.size());
+  const std::int64_t componentCount =
+      static_cast<std::int64_t>(graphComponents);
+  const std::int64_t sourceComponentCount =
+      static_cast<std::int64_t>(sourceComponents.size());
+  const std::int64_t firstBetti = edgeCount - vertexCount + componentCount;
+  if (firstBetti < 0) return std::nullopt;
+  const int sourceEuler =
+      static_cast<int>(sourceVertices.size()) -
+      static_cast<int>(topology.sourceTopology.incidentFaces.size()) +
+      static_cast<int>(topology.sourceTopology.faces.size());
+  const std::int64_t requiredFaceCount =
+      static_cast<std::int64_t>(sourceEuler) - sourceComponentCount + firstBetti;
+  if (requiredFaceCount < 0) return std::nullopt;
+
+  FixedCandidateTopologyInvariant result;
+  result.vertexCount = topology.cutNodes.combinedNodeExtent;
+  result.edgeCount = topology.arcs.size();
+  result.observedComplementComponentCount = *observed;
+  result.graphComponentCount = graphComponents;
+  result.sourceComponentCount = sourceComponents.size();
+  result.firstBetti = firstBetti;
+  result.requiredFaceCount = requiredFaceCount;
+  result.sourceEulerCharacteristic = sourceEuler;
+  result.rejects = static_cast<std::int64_t>(*observed) != requiredFaceCount;
+  return result;
+}
+
 std::size_t actual_graph_component_count(const EmbeddedGraphTopology &topology) {
   const std::size_t count = topology.cutNodes.combinedNodeExtent;
   if (count == 0U) return 0U;

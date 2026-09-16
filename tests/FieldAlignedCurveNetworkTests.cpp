@@ -14370,6 +14370,194 @@ TEST(M4CPScaleS4Prereq,
             << '\n';
 }
 
+TEST(M4CPScaleS4,
+     IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate) {
+  const Cp4cProductionFixture torus =
+      build_cp4c_pipeline_products_fixture("torus", "torus");
+  ASSERT_TRUE(torus.loadError.empty()) << torus.loadError;
+  ASSERT_TRUE(torus.sourceAuthority.has_value());
+  ASSERT_TRUE(torus.atlas.has_value());
+  ASSERT_TRUE(torus.network.has_value()) << torus.terminalFailureCode;
+  ASSERT_TRUE(torus.cutGraph.has_value()) << torus.terminalFailureCode;
+
+  const auto &network = *torus.network;
+  std::vector<SourceEdgeTopologyKey> acceptedCuts = torus.cutGraph->cut_edges();
+  std::sort(acceptedCuts.begin(), acceptedCuts.end());
+  ASSERT_FALSE(acceptedCuts.empty());
+  ASSERT_EQ(acceptedCuts.end(),
+            std::adjacent_find(acceptedCuts.begin(), acceptedCuts.end()));
+
+  struct Observation {
+    std::optional<Cp4cActualEmbeddedGraphOracle> independent;
+    std::optional<embedded::FixedCandidateTopologyInvariant> product;
+    std::optional<directional::geometry::SurfaceCutGraphCellularityCertificate>
+        finalCertificate;
+  };
+  const auto observe = [&](const std::vector<SourceEdgeTopologyKey> &cuts) {
+    Observation result;
+    result.independent = cp4c_independent_actual_embedded_graph_oracle(
+        torus.mesh, network, cuts);
+    const auto embeddedBuild = embedded::build_embedded_graph_topology(
+        torus.mesh.F, static_cast<std::size_t>(torus.mesh.V.rows()),
+        *torus.sourceAuthority, network, cuts);
+    if (const auto *topology =
+            std::get_if<embedded::EmbeddedGraphTopology>(&embeddedBuild)) {
+      result.product = embedded::fixed_candidate_topology_invariant(*topology);
+    }
+    result.finalCertificate = m4_cp_scale_s4_product_certificate_view(
+        torus.mesh, *torus.sourceAuthority, network, cuts);
+    return result;
+  };
+
+  const std::vector<SourceEdgeTopologyKey> emptyCuts;
+  const auto negative = observe(emptyCuts);
+  ASSERT_TRUE(negative.independent.has_value());
+  ASSERT_TRUE(negative.product.has_value());
+  ASSERT_TRUE(negative.finalCertificate.has_value());
+  EXPECT_EQ(negative.independent->vertexCount, negative.product->vertexCount);
+  EXPECT_EQ(negative.independent->edgeCount, negative.product->edgeCount);
+  EXPECT_EQ(negative.independent->faceCount,
+            negative.product->observedComplementComponentCount);
+  EXPECT_EQ(negative.independent->graphComponentCount,
+            negative.product->graphComponentCount);
+  EXPECT_EQ(negative.independent->sourceComponentCount,
+            negative.product->sourceComponentCount);
+  EXPECT_EQ(negative.independent->sourceEulerCharacteristic,
+            negative.product->sourceEulerCharacteristic);
+  EXPECT_EQ(48U, negative.product->vertexCount);
+  EXPECT_EQ(48U, negative.product->edgeCount);
+  EXPECT_EQ(4U, negative.product->observedComplementComponentCount);
+  EXPECT_EQ(4U, negative.product->graphComponentCount);
+  EXPECT_EQ(1U, negative.product->sourceComponentCount);
+  EXPECT_EQ(4, negative.product->firstBetti);
+  EXPECT_EQ(3, negative.product->requiredFaceCount);
+  EXPECT_EQ(0, negative.product->sourceEulerCharacteristic);
+  EXPECT_TRUE(negative.product->rejects);
+  EXPECT_FALSE(negative.finalCertificate->proves_embedded_cellularity());
+
+  const auto positive = observe(acceptedCuts);
+  ASSERT_TRUE(positive.independent.has_value());
+  ASSERT_TRUE(positive.product.has_value());
+  ASSERT_TRUE(positive.finalCertificate.has_value());
+  EXPECT_EQ(positive.independent->vertexCount, positive.product->vertexCount);
+  EXPECT_EQ(positive.independent->edgeCount, positive.product->edgeCount);
+  EXPECT_EQ(positive.independent->faceCount,
+            positive.product->observedComplementComponentCount);
+  EXPECT_EQ(positive.independent->graphComponentCount,
+            positive.product->graphComponentCount);
+  EXPECT_EQ(positive.independent->sourceComponentCount,
+            positive.product->sourceComponentCount);
+  EXPECT_EQ(positive.independent->sourceEulerCharacteristic,
+            positive.product->sourceEulerCharacteristic);
+  EXPECT_EQ(72U, positive.product->vertexCount);
+  EXPECT_EQ(76U, positive.product->edgeCount);
+  EXPECT_EQ(4U, positive.product->observedComplementComponentCount);
+  EXPECT_EQ(1U, positive.product->graphComponentCount);
+  EXPECT_EQ(1U, positive.product->sourceComponentCount);
+  EXPECT_EQ(5, positive.product->firstBetti);
+  EXPECT_EQ(4, positive.product->requiredFaceCount);
+  EXPECT_EQ(0, positive.product->sourceEulerCharacteristic);
+  EXPECT_FALSE(positive.product->rejects);
+  EXPECT_TRUE(positive.finalCertificate->proves_embedded_cellularity());
+
+  const std::vector<SourceEdgeTopologyKey> adversarialCuts{acceptedCuts.front()};
+  const auto adversarial = observe(adversarialCuts);
+  ASSERT_TRUE(adversarial.independent.has_value());
+  ASSERT_TRUE(adversarial.product.has_value());
+  ASSERT_TRUE(adversarial.finalCertificate.has_value());
+  EXPECT_EQ(adversarial.independent->faceCount,
+            adversarial.product->observedComplementComponentCount);
+  if (adversarial.product->rejects) {
+    EXPECT_FALSE(adversarial.finalCertificate->proves_embedded_cellularity());
+  }
+
+  std::vector<SourceEdgeTopologyKey> reversedCuts = acceptedCuts;
+  std::reverse(reversedCuts.begin(), reversedCuts.end());
+  const auto reversed = observe(reversedCuts);
+  ASSERT_TRUE(reversed.product.has_value());
+  EXPECT_EQ(*positive.product, *reversed.product);
+
+  const auto accelerated = directional::geometry::SurfaceCutGraph::make(
+      torus.mesh.F, static_cast<std::size_t>(torus.mesh.V.rows()),
+      *torus.sourceAuthority, *torus.atlas, network);
+  ASSERT_TRUE(static_cast<bool>(accelerated));
+  const auto acceleratedDiagnostics =
+      directional::geometry::surface_cut_graph_test_detail::
+          last_s4_execution_diagnostics();
+  EXPECT_GT(acceleratedDiagnostics.candidateEvaluations, 0U);
+  EXPECT_GT(acceleratedDiagnostics.earlyRejectedCandidates, 0U);
+  EXPECT_EQ(acceleratedDiagnostics.earlyRejectedCandidates,
+            acceleratedDiagnostics.bypassedFinalCertificationAttempts);
+
+  directional::geometry::surface_cut_graph_test_detail::S4ExecutionDiagnostics
+      referenceDiagnostics;
+  const auto reference =
+      directional::geometry::surface_cut_graph_test_detail::
+          canonical_candidate_without_s4_for_test(
+              torus.mesh.F, static_cast<std::size_t>(torus.mesh.V.rows()),
+              *torus.sourceAuthority, *torus.atlas, network,
+              &referenceDiagnostics);
+  const auto *referenceCandidate =
+      std::get_if<directional::geometry::SurfaceCutGraphCandidate>(&reference);
+  ASSERT_NE(nullptr, referenceCandidate);
+  EXPECT_EQ(referenceCandidate->cutEdges, accelerated.value().cut_edges());
+  EXPECT_EQ(referenceCandidate->certificate,
+            accelerated.value().certificate());
+  EXPECT_EQ(referenceCandidate->sourceDigest,
+            accelerated.value().source_digest());
+  EXPECT_EQ(referenceCandidate->atlasDigest,
+            accelerated.value().atlas_digest());
+  EXPECT_EQ(referenceCandidate->networkDigest,
+            accelerated.value().network_digest());
+  EXPECT_EQ(torus.cutGraph->cut_edges(), accelerated.value().cut_edges());
+  EXPECT_EQ(torus.cutGraph->certificate(), accelerated.value().certificate());
+  EXPECT_EQ(torus.cutGraph->semantic_digest(),
+            accelerated.value().semantic_digest());
+  EXPECT_EQ(torus.cutGraph->provenance_digest(),
+            accelerated.value().provenance_digest());
+  EXPECT_EQ(referenceDiagnostics.fullCertificationAttempts,
+            acceleratedDiagnostics.fullCertificationAttempts +
+                acceleratedDiagnostics.bypassedFinalCertificationAttempts);
+  EXPECT_GT(referenceDiagnostics.fullCertificationAttempts,
+            acceleratedDiagnostics.fullCertificationAttempts);
+
+  std::cout << "m4CpScaleS4Product"
+            << ";negative={V=" << negative.product->vertexCount
+            << ",E=" << negative.product->edgeCount
+            << ",Fobs=" << negative.product->observedComplementComponentCount
+            << ",c=" << negative.product->graphComponentCount
+            << ",s=" << negative.product->sourceComponentCount
+            << ",chi=" << negative.product->sourceEulerCharacteristic
+            << ",b1=" << negative.product->firstBetti
+            << ",Freq=" << negative.product->requiredFaceCount
+            << ",reject=" << (negative.product->rejects ? "true" : "false")
+            << "}"
+            << ";positive={V=" << positive.product->vertexCount
+            << ",E=" << positive.product->edgeCount
+            << ",Fobs=" << positive.product->observedComplementComponentCount
+            << ",c=" << positive.product->graphComponentCount
+            << ",s=" << positive.product->sourceComponentCount
+            << ",chi=" << positive.product->sourceEulerCharacteristic
+            << ",b1=" << positive.product->firstBetti
+            << ",Freq=" << positive.product->requiredFaceCount
+            << ",reject=" << (positive.product->rejects ? "true" : "false")
+            << "}"
+            << ";adversarialReject="
+            << (adversarial.product->rejects ? "true" : "false")
+            << ";enumerationInvariant=true"
+            << ";productCandidateEvaluations="
+            << acceleratedDiagnostics.candidateEvaluations
+            << ";productEarlyRejects="
+            << acceleratedDiagnostics.earlyRejectedCandidates
+            << ";productFullCertificationAttempts="
+            << acceleratedDiagnostics.fullCertificationAttempts
+            << ";referenceFullCertificationAttempts="
+            << referenceDiagnostics.fullCertificationAttempts
+            << ";bypassedFinalCertificationAttempts="
+            << acceleratedDiagnostics.bypassedFinalCertificationAttempts
+            << ";decisionNeutral=true\n";
+}
+
 TEST(ResolvedBranchCorrection,
      PrescribedSphereA2aOutcomeIsAlwaysPublishedNonGating) {
   const Cp4cReachabilityObservation sphere =

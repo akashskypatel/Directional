@@ -853,16 +853,12 @@ OwnershipBuildResult build_source_face_ownership(
   return build;
 }
 
-CertificateResult certify_actual_embedded_graph(
-    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
-    const SourceTopologyRegions &sourceAuthority,
+CertificateResult certify_actual_embedded_topology(
+    const EmbeddedGraphTopology &embedded,
     const FieldAlignedCurveNetwork &network,
     const std::vector<authority::SourceEdgeTopologyKey> &cutEdges,
     const std::vector<SurfaceCutCandidateEvidence> &cutCandidates) {
   using namespace embedded_graph_topology_detail;
-  const auto embeddedBuild=build_embedded_graph_topology(sourceFaces,sourceVertexCount,sourceAuthority,network,cutEdges);
-  if(const auto *failure=std::get_if<GlobalTopologyPlanError>(&embeddedBuild)) return topology_error(*failure);
-  const auto &embedded=std::get<EmbeddedGraphTopology>(embeddedBuild);
   const auto exteriorBuild=exterior_boundary_orbits(embedded.sourceTopology,network,embedded.arcs,embedded.faceWalk);
   if(const auto *failure=std::get_if<GlobalTopologyPlanError>(&exteriorBuild)) return topology_error(*failure);
   const auto &exterior=std::get<std::set<std::size_t>>(exteriorBuild);
@@ -984,7 +980,15 @@ std::uint64_t candidate_semantic_hash(
 }
 
 using CandidateResult=std::variant<SurfaceCutGraphCandidate,SurfaceCutGraphError>;
-CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network){
+thread_local surface_cut_graph_test_detail::S4ExecutionDiagnostics
+    g_lastS4ExecutionDiagnostics;
+
+CandidateResult canonical_candidate(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const FieldAlignedCurveNetwork &network, const bool enableS4,
+    surface_cut_graph_test_detail::S4ExecutionDiagnostics *diagnostics) {
   using namespace embedded_graph_topology_detail;
   const auto topology=build_source_index(sourceFaces,sourceVertexCount,sourceAuthority); if(!topology.has_value())return cut_error(SurfaceCutGraphErrorCode::InvalidSourceBinding);
   if(!fieldTransportAtlas.matches_source_faces(sourceFaces,sourceAuthority,sourceVertexCount)||!fieldTransportAtlas.quadrangulability().established())return cut_error(SurfaceCutGraphErrorCode::InvalidAtlasBinding);
@@ -999,7 +1003,68 @@ CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std
   std::set<authority::SourceEdgeTopologyKey> cuts;
   bool saturationUsed=false;std::optional<authority::SourceFaceTopologyKey> saturationLocus;std::size_t saturationPromotedEdgeCount=0U;
   std::size_t certificationAttemptIndex = 0U;
-  while(true){const auto evidence=classify_cut_candidates(*topology,mandatory,traceCrossed,cuts);const auto certificateBuild=certify_actual_embedded_graph(sourceFaces,sourceVertexCount,sourceAuthority,network,{cuts.begin(),cuts.end()},evidence);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&certificateBuild)){auto result=*failure;annotate_failure_euler_census(result,*topology,network,{cuts.begin(),cuts.end()});result.cutCandidates=evidence;result.certificationAttemptIndex=certificationAttemptIndex;result.certificationCutEdgeCount=cuts.size();return result;}auto certificate=std::get<SurfaceCutGraphCellularityCertificate>(certificateBuild);if(certificate.proves_embedded_cellularity()){certificate.saturationUsed=saturationUsed;certificate.saturationLocus=saturationLocus;certificate.saturationPromotedEdgeCount=saturationPromotedEdgeCount;SurfaceCutGraphCandidate result;result.cutEdges.assign(cuts.begin(),cuts.end());result.certificate=std::move(certificate);result.sourceDigest=network.source_digest();result.atlasDigest=network.atlas_digest();result.networkDigest=network.semantic_digest();return result;}
+  while (true) {
+    const auto evidence =
+        classify_cut_candidates(*topology, mandatory, traceCrossed, cuts);
+    const std::vector<authority::SourceEdgeTopologyKey> cutVector(cuts.begin(),
+                                                                  cuts.end());
+    const auto embeddedBuild = build_embedded_graph_topology(
+        sourceFaces, sourceVertexCount, sourceAuthority, network, cutVector);
+    if (const auto *failure =
+            std::get_if<GlobalTopologyPlanError>(&embeddedBuild)) {
+      auto result = topology_error(*failure);
+      annotate_failure_euler_census(result, *topology, network, cutVector);
+      result.cutCandidates = evidence;
+      result.certificationAttemptIndex = certificationAttemptIndex;
+      result.certificationCutEdgeCount = cuts.size();
+      return result;
+    }
+    const auto &embedded = std::get<EmbeddedGraphTopology>(embeddedBuild);
+
+    bool earlyRejected = false;
+    if (enableS4) {
+      const auto invariant = fixed_candidate_topology_invariant(embedded);
+      if (invariant.has_value()) {
+        if (diagnostics != nullptr) ++diagnostics->candidateEvaluations;
+        if (invariant->rejects) {
+          earlyRejected = true;
+          if (diagnostics != nullptr) {
+            ++diagnostics->earlyRejectedCandidates;
+            ++diagnostics->bypassedFinalCertificationAttempts;
+          }
+        }
+      }
+    }
+
+    if (!earlyRejected) {
+      if (diagnostics != nullptr) ++diagnostics->fullCertificationAttempts;
+      const auto certificateBuild = certify_actual_embedded_topology(
+          embedded, network, cutVector, evidence);
+      if (const auto *failure =
+              std::get_if<SurfaceCutGraphError>(&certificateBuild)) {
+        auto result = *failure;
+        annotate_failure_euler_census(result, *topology, network, cutVector);
+        result.cutCandidates = evidence;
+        result.certificationAttemptIndex = certificationAttemptIndex;
+        result.certificationCutEdgeCount = cuts.size();
+        return result;
+      }
+      auto certificate =
+          std::get<SurfaceCutGraphCellularityCertificate>(certificateBuild);
+      if (certificate.proves_embedded_cellularity()) {
+        certificate.saturationUsed = saturationUsed;
+        certificate.saturationLocus = saturationLocus;
+        certificate.saturationPromotedEdgeCount = saturationPromotedEdgeCount;
+        SurfaceCutGraphCandidate result;
+        result.cutEdges = cutVector;
+        result.certificate = std::move(certificate);
+        result.sourceDigest = network.source_digest();
+        result.atlasDigest = network.atlas_digest();
+        result.networkDigest = network.semantic_digest();
+        return result;
+      }
+    }
+
     ++certificationAttemptIndex;
     std::set<authority::SourceEdgeTopologyKey> barriers=mandatory;barriers.insert(traceCrossed.begin(),traceCrossed.end());barriers.insert(cuts.begin(),cuts.end());const auto components=proposal_components(*topology,barriers);bool added=false;std::optional<authority::SourceFaceTopologyKey> blockedLocus;std::vector<std::vector<authority::SourceFaceTopologyKey>> nonDiscComponents;
     for(const auto &component:components){const auto disc=proposal_component_is_disc(*topology,component,barriers);if(!disc.has_value())return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);if(*disc)continue;nonDiscComponents.push_back(component);if(!component.empty()&&!blockedLocus.has_value())blockedLocus=component.front();const auto proposed=proposal_tree_cotree_cut_edges(*topology,component,barriers);if(!proposed.has_value())continue;for(const auto &edge:*proposed){if(mandatory.count(edge))continue;added=cuts.insert(edge).second||added;}}
@@ -1080,9 +1145,75 @@ SurfaceCutGraphCellularityCertificate::find_source_face_owner(
              : nullptr;
 }
 
-SurfaceCutGraphBuildResult SurfaceCutGraph::make(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network){const auto candidate=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&candidate))return SurfaceCutGraphBuildResult(*failure);const auto &value=std::get<SurfaceCutGraphCandidate>(candidate);return SurfaceCutGraphBuildResult(SurfaceCutGraph(value.cutEdges,value.certificate,value.sourceDigest,value.atlasDigest,value.networkDigest,candidate_semantic_hash(value,network.semantic_digest()),candidate_hash(value)));}
+namespace surface_cut_graph_test_detail {
 
-SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network,SurfaceCutGraphCandidate candidate){const auto canonical=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&canonical))return SurfaceCutGraphBuildResult(*failure);auto wanted=std::get<SurfaceCutGraphCandidate>(canonical);std::sort(candidate.cutEdges.begin(),candidate.cutEdges.end());candidate.cutEdges.erase(std::unique(candidate.cutEdges.begin(),candidate.cutEdges.end()),candidate.cutEdges.end());if(candidate!=wanted)return SurfaceCutGraphBuildResult(cut_error(candidate.sourceDigest!=wanted.sourceDigest?SurfaceCutGraphErrorCode::InvalidSourceBinding:candidate.atlasDigest!=wanted.atlasDigest?SurfaceCutGraphErrorCode::InvalidAtlasBinding:candidate.networkDigest!=wanted.networkDigest?SurfaceCutGraphErrorCode::InvalidNetworkBinding:SurfaceCutGraphErrorCode::CellularityNotEstablished));return SurfaceCutGraphBuildResult(SurfaceCutGraph(wanted.cutEdges,wanted.certificate,wanted.sourceDigest,wanted.atlasDigest,wanted.networkDigest,candidate_semantic_hash(wanted,network.semantic_digest()),candidate_hash(wanted)));}
+S4ExecutionDiagnostics last_s4_execution_diagnostics() noexcept {
+  return g_lastS4ExecutionDiagnostics;
+}
+
+CandidateResult canonical_candidate_without_s4_for_test(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const FieldAlignedCurveNetwork &network,
+    S4ExecutionDiagnostics *diagnostics) {
+  if (diagnostics != nullptr) *diagnostics = S4ExecutionDiagnostics{};
+  return canonical_candidate(sourceFaces, sourceVertexCount, sourceAuthority,
+                             fieldTransportAtlas, network, false, diagnostics);
+}
+
+} // namespace surface_cut_graph_test_detail
+
+SurfaceCutGraphBuildResult SurfaceCutGraph::make(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const FieldAlignedCurveNetwork &network) {
+  g_lastS4ExecutionDiagnostics =
+      surface_cut_graph_test_detail::S4ExecutionDiagnostics{};
+  const auto candidate = canonical_candidate(
+      sourceFaces, sourceVertexCount, sourceAuthority, fieldTransportAtlas,
+      network, true, &g_lastS4ExecutionDiagnostics);
+  if (const auto *failure = std::get_if<SurfaceCutGraphError>(&candidate))
+    return SurfaceCutGraphBuildResult(*failure);
+  const auto &value = std::get<SurfaceCutGraphCandidate>(candidate);
+  return SurfaceCutGraphBuildResult(SurfaceCutGraph(
+      value.cutEdges, value.certificate, value.sourceDigest, value.atlasDigest,
+      value.networkDigest,
+      candidate_semantic_hash(value, network.semantic_digest()),
+      candidate_hash(value)));
+}
+
+SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const FieldAlignedCurveNetwork &network, SurfaceCutGraphCandidate candidate) {
+  const auto canonical = canonical_candidate(
+      sourceFaces, sourceVertexCount, sourceAuthority, fieldTransportAtlas,
+      network, true, nullptr);
+  if (const auto *failure = std::get_if<SurfaceCutGraphError>(&canonical))
+    return SurfaceCutGraphBuildResult(*failure);
+  auto wanted = std::get<SurfaceCutGraphCandidate>(canonical);
+  std::sort(candidate.cutEdges.begin(), candidate.cutEdges.end());
+  candidate.cutEdges.erase(
+      std::unique(candidate.cutEdges.begin(), candidate.cutEdges.end()),
+      candidate.cutEdges.end());
+  if (candidate != wanted)
+    return SurfaceCutGraphBuildResult(cut_error(
+        candidate.sourceDigest != wanted.sourceDigest
+            ? SurfaceCutGraphErrorCode::InvalidSourceBinding
+            : candidate.atlasDigest != wanted.atlasDigest
+                  ? SurfaceCutGraphErrorCode::InvalidAtlasBinding
+                  : candidate.networkDigest != wanted.networkDigest
+                        ? SurfaceCutGraphErrorCode::InvalidNetworkBinding
+                        : SurfaceCutGraphErrorCode::CellularityNotEstablished));
+  return SurfaceCutGraphBuildResult(SurfaceCutGraph(
+      wanted.cutEdges, wanted.certificate, wanted.sourceDigest,
+      wanted.atlasDigest, wanted.networkDigest,
+      candidate_semantic_hash(wanted, network.semantic_digest()),
+      candidate_hash(wanted)));
+}
 
 const char *surface_cut_graph_error_code_name(const SurfaceCutGraphErrorCode code) noexcept {switch(code){case SurfaceCutGraphErrorCode::InvalidSourceBinding:return "InvalidSourceBinding";case SurfaceCutGraphErrorCode::InvalidAtlasBinding:return "InvalidAtlasBinding";case SurfaceCutGraphErrorCode::InvalidNetworkBinding:return "InvalidNetworkBinding";case SurfaceCutGraphErrorCode::NonManifoldSource:return "NonManifoldSource";case SurfaceCutGraphErrorCode::CellularityNotEstablished:return "CellularityNotEstablished";case SurfaceCutGraphErrorCode::CutSearchExhaustedBeforeCellularity:return "CutSearchExhaustedBeforeCellularity";case SurfaceCutGraphErrorCode::EmptyNetworkOnClosedSurface:return "EmptyNetworkOnClosedSurface";case SurfaceCutGraphErrorCode::SourceFaceOwnershipNotEstablished:return "SourceFaceOwnershipNotEstablished";}return "Unknown";}
 const char *surface_cut_candidate_class_name(const SurfaceCutCandidateClass c) noexcept {switch(c){case SurfaceCutCandidateClass::Admissible:return "Admissible";case SurfaceCutCandidateClass::MandatoryAlreadyPresent:return "MandatoryAlreadyPresent";case SurfaceCutCandidateClass::TraceInteriorCrossing:return "TraceInteriorCrossing";}return "Unknown";}
