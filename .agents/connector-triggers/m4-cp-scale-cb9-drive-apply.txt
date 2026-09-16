@@ -1,4 +1,4 @@
 turn=M4-CP-SCALE-CB9
-purpose=apply verified test-only S4 prerequisite patch from Drive
-base=5254b2998c079565583412f52bfd4df8cf2ecd7f
-retry=0
+purpose=apply verified CB9 closeout patch from Drive
+base=939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf
+retry=1
