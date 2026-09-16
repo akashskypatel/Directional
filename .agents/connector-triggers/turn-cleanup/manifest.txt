@@ -1,0 +1,10 @@
+# M4-CP-SCALE-CB8 temporary state
+.agents/connector-triggers/m4-cp-scale-cb8-closeout-drive-apply.txt
+.agents/connector-triggers/m4-cp-scale-cb8-closeout-schema-validate.txt
+.agents/connector-triggers/m4-cp-scale-cb8-compile.txt
+.agents/connector-triggers/m4-cp-scale-cb8-drive-apply.txt
+.agents/connector-triggers/m4-cp-scale-cb8-schema-validate.txt
+.agents/connector-triggers/source-snapshot
+.agents/Directional/turn-payloads/m4-cp-scale-cb8-closeout-drive-caller.yml
+.agents/Directional/turn-payloads/m4-cp-scale-cb8-compile-caller.yml
+.agents/Directional/turn-payloads/m4-cp-scale-cb8-drive-caller.yml
