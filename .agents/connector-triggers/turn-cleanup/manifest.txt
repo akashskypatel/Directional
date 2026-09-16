@@ -1,1 +1,0 @@
-.agents/connector-triggers/m4-cp-scale-tb9-doc/apply.txt
