@@ -1,0 +1,39 @@
+name: M4 CP SCALE TB7 Closeout Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb7-closeout-drive.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb7-closeout-drive-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb7-closeout-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: "1HIWniENbnaqXHeliixEc11xYBoP-EvU8"
+      patch_sha256: "6eebdc4d2b66fecd6994d2cc600e146f15866947a8212ce8c8cd78322ecb2989"
+      base_sha: "079ad08cd381ce7f8f36dd8432c3f15ccecf1f17"
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4 CP SCALE TB7 EXEC and hand off Review"
+      retention_days: 7
+    secrets: inherit
