@@ -1,0 +1,24 @@
+name: Agent TB6 Review Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-tb6-rev-drive-apply.yml
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1YskO4HO5sAwiup5skcn51XSw7TV9IO82
+      patch_sha256: fe058941ef6edf3d38255d6b84f40fe073aed2a20190009ca1f56161ab2e563f
+      base_sha: b9ad3542543862e5138b36c067c29f258780df75
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: review TB6 S3 evidence and freeze selector425 publication"
+      retention_days: 7
+    secrets: inherit
