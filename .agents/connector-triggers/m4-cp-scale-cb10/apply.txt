@@ -1,0 +1,4 @@
+purpose=apply verified M4-CP-SCALE-CB10 test-authority patch
+base_sha=4107d693675f207c4501576f6546e997edcdf1a5
+patch_sha256=8766a16a203933a0357385bb76748d5602ff59ff9149ac1e540a81f0e4ab5612
+retry=0
