@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-CB9
-purpose=exact source snapshot before Code+Build inspection
-base=29defc67e00bf87d96a824d2cbc0640001735cbc

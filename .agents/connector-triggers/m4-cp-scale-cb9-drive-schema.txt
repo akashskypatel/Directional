@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-CB9
-purpose=validate staged CB9 closeout Drive caller against SchemaStore
-retry=1

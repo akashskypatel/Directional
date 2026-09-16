@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-CB9
-purpose=apply verified CB9 closeout patch from Drive
-base=939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf
-retry=1
