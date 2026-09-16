@@ -1,3 +1,34 @@
+## 2026-09-16 — PR closing comments retired; durable handoff documents own turn closure
+
+User instruction 2026-09-16: closing comments on the PR are no longer necessary, and everything belongs in the
+handoff documents. All policies requiring one were scanned and corrected.
+
+Three files carried the requirement, at five sites:
+
+- `Mandatory_End_Checklist.md` item 9 required the final repository write to be a summarized PR #8 conversation
+  comment. It now states that no PR comment is required to close a turn, names the durable closing record —
+  `Future_Chat_Session_Handoff.md`, the owning report/review record, `CHANGELOG.md`, the tracker and the top-level
+  `STATUS` beacon — and makes the documentation commit the final repository write, retaining the existing rule that
+  no artifact or tool emission may follow it.
+- `GitHub_Workflow_Policy.md` item 5 required the final PR summary comment after all repository mutations. It now
+  prohibits posting one to close a turn and points at the durable documents.
+- `TOOL_USE_CONSERVATION_POLICY.md` §10 was built around "one final summarized PR conversation comment per turn".
+  Rewritten: turn summaries are not posted to the PR at all, PR comments are not a turn-closing mechanism, and a
+  fact that exists only in a PR comment is not recorded. §11 item 10 now makes the documentation commit the final
+  repository write; item 11 drops its reference to the retired comment invocation; the decision table rows for
+  *Turn summary* and *Workflow PR comments* were rewritten; and the anti-pattern entry now rules out PR comments as
+  a closing or evidence mechanism outright rather than merely discouraging per-phase spam.
+
+Retained deliberately: the `github-actions[bot]` workflow **run-observation** channel, which is operational
+navigation rather than turn closure. Its description in `GitHub_Workflow_Policy.md` gains an explicit scope clause
+pointing at §10, so the capability is not mistaken for a licence to resume posting turn summaries. Guidance against
+*reading* PR comments wastefully is unchanged — that rule was never about posting.
+
+Runtime-free; no product, test, fixture, selector, benchmark or build source touched. Accepted authority remains
+package `10425344367` / selector425 **425/425**; accounting unchanged at **49 / 14 / 35**, debt **5**. Per the
+`STATUS` rule frozen earlier today, this policy turn does not invent a turn id: `STATUS` continues to describe
+`M4-CP-SCALE-TB8-REV` and its successor `M4-CP-SCALE-CB10`.
+
 ## 2026-09-16 — `STATUS` beacon: minimal three-field format frozen for both agents
 
 User instruction 2026-09-16: both the Review agent and the Implementation agent must maintain a `STATUS` file at

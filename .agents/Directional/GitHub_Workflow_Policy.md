@@ -93,7 +93,7 @@ Authentication:
 
 Primary channel:
 
-- PR conversation comment. Pass `pr_number: 8` for the active PR and give the caller `issues: write` and `pull-requests: write` permissions for the `github.token` fallback. The observer posts the run ID, exact run URL, event, event SHA, and non-secret token-source label. This channel does not mutate the branch and is the default.
+- PR conversation comment. Pass `pr_number: 8` for the active PR and give the caller `issues: write` and `pull-requests: write` permissions for the `github.token` fallback. The observer posts the run ID, exact run URL, event, event SHA, and non-secret token-source label. This channel does not mutate the branch and is the default. **Scope: automated workflow run observation only.** This channel is not a turn-closing or evidence-recording mechanism — see `TOOL_USE_CONSERVATION_POLICY.md` §10.
 - **Current reusable-observer permission caveat:** `agent-run-observer-reusable.yml` also contains the optional `branch-file` job, whose nested job requests `contents: write`. GitHub validates the permission ceiling of nested reusable-workflow jobs even when `commit_run_file: false` causes that job to skip. Therefore every caller of the current observer reusable must grant caller-level `contents: write`; `contents: read` makes the entire caller invalid at workflow-validation/startup time. Do not reduce this permission until the branch-file observer is split out or its reusable-workflow contract changes.
 
 Optional fallback channel:
@@ -254,7 +254,7 @@ Cleanup begins only after the run, logs/artifacts, and source identity have been
 2. Verify the temporary caller and marker return `not found`/are absent, and that no workflow-observation file for the completed run remains.
 3. Verify durable workflow files are still present and unchanged except for explicitly authorized durable edits.
 4. Update required durable handoff/TODO/report state for the active turn.
-5. Make the final PR summary comment only after all repository mutations are complete. Per end-of-turn policy, that summary comment is the final repository write for the turn.
+5. **Do not post a PR summary comment to close the turn.** Closing state belongs in the durable handoff documents; the documentation commit is the final repository write for the turn. Authority: user instruction 2026-09-16.
 
 ## Code + Build boundary
 

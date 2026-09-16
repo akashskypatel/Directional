@@ -205,13 +205,16 @@ Do not discover and delete temporary repository files one at a time at turn clos
 
 ## 10. PR comment conservation
 
-PR comments are evidence/navigation aids, not a tool-call log.
+**Turn summaries are not posted to the PR.** A turn's closing record belongs in the durable handoff documents —
+`Future_Chat_Session_Handoff.md`, the owning report/review record, `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`
+and the top-level `STATUS` beacon. PR comments are not a turn-closing mechanism and no longer end a turn.
+Authority: user instruction 2026-09-16.
 
-1. Keep human/agent turn summaries to **one final summarized PR conversation comment per turn** unless a policy explicitly requires another durable comment.
-2. Do not post per-step progress comments, duplicate evidence comments, or repeated "still running" comments.
-3. Workflow run-observation comments are temporary operational state. The durable observer should trim stale `github-actions[bot]` observation comments before posting the current one, using the configured stale-comment deletion action or agent-turn-cleanup workflow.
-4. The final turn-summary PR comment remains the final repository write/tool action of the turn when the handoff requires it. After that comment, perform no further repository/tool mutations.
-5. Historical comments, not including the current end-of-turn summary, do not need to be preserved. Use of agent-turn-cleanup workflow is authorized to be used to trim historical comments.
+1. Do not post turn-summary, progress, duplicate-evidence or "still running" comments.
+2. Workflow run-observation comments from `github-actions[bot]` remain temporary operational state. The durable
+   observer may trim stale ones; they are navigation aids, never durable evidence.
+3. Historical comments need not be preserved. The agent-turn-cleanup workflow is authorized to trim them.
+4. If a fact matters, it goes in a durable document. A fact that exists only in a PR comment is not recorded.
 
 ## 11. End-of-turn conservation procedure
 
@@ -226,8 +229,8 @@ Before final closeout:
 7. Verify the branch head once after cleanup.
 8. Update coherent durable documentation in one batch where practical.
 9. Update the PR body only if its durable current-state summary actually changed.
-10. Post one final summarized PR comment as the final repository write when required.
-11. Report the in-memory tool-call ledger total and category breakdown at closeout. When item 10 applies, include the item-10 comment invocation in the reported final total and make no subsequent tool call merely to recount or verify the ledger.
+10. Make the durable documentation commit the final repository write of the turn. No PR comment is posted.
+11. Report the in-memory tool-call ledger total and category breakdown at closeout, without spending additional tool calls to do so.
 
 ## 12. Decision table
 
@@ -245,9 +248,9 @@ Before final closeout:
 | Diagnose failed workflow | One job inventory, then logs for failed/relevant job(s) |
 | Inspect immutable artifact | Download once, verify once, inspect locally |
 | Delete many temp files | One inventory + one cleanup workflow after workflow-first deletion |
-| Workflow PR comments | Trim stale bot observations; retain one current observation |
+| Workflow PR comments | Temporary bot observations only; trim stale ones, post none |
 | Tool-call accounting | Maintain an in-memory ledger; report it without accounting-only tool calls |
-| Turn summary | One final PR conversation comment |
+| Turn summary | Durable handoff documents + `STATUS`; no PR comment |
 
 ## 13. Tool-call waste patterns that are prohibited unless justified
 
@@ -262,7 +265,7 @@ Before final closeout:
 - Re-fetching an artifact's remote contents after it has been downloaded and verified locally.
 - Staging patch bytes/Base64/fragments in the repository instead of using the Google Drive File-ID transport for non-minor code/docs changes.
 - Deleting temporary files with one connector call per path when a safe manifest-driven cleanup is available.
-- Posting a PR comment for every workflow phase, retry, cleanup step, or evidence item.
+- Posting PR comments at all as a turn-closing or evidence-recording mechanism; durable documents own that.
 - Creating one schema-validation run per workflow when the files can be validated in one matrix run.
 - Making multiple sequential repository commits for a coherent multi-file change when one atomic Git tree commit is practical.
 - Making any tool call solely to reconstruct, persist, or verify the in-memory tool-call ledger.
