@@ -1,3 +1,0 @@
-M4-CP-SCALE-TB7 ORIENTATION scope-correction caller schema validation.
-Validates exact staged Drive-apply caller before workflow publication.
-Retry: post-cleanup correction

@@ -1,5 +1,0 @@
-M4-CP-SCALE-TB7-EXEC ORIENTATION scope-correction Drive patch trigger.
-Patch file ID: 1AQDOHQNbYdsfll5s9JGXLXN9GWK0UCUV
-Patch SHA-256: 9279485e387b5eb58e4a6378e200b5f11272739b1d9b0917f9a0972d0f530cc9
-Base: d5af1a6ef1fbe82170ccc40f6e0a8262d0dc0250
-Purpose: restore Review-only ORIENTATION boundary after TB7-EXEC closeout.
