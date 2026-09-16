@@ -1,0 +1,2 @@
+# M4-CP-SCALE-TB10-EXEC closeout cleanup
+# Temporary docs-patch caller and marker were already removed connector-first.
