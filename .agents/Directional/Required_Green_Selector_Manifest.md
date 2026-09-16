@@ -73,6 +73,7 @@ Future selector files are named by their resulting identity count.
 | **423** | 423 | `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343` | 422 | 1 | superseded |
 | **424** | 424 | `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` | 423 | 1 | **CURRENT GATE / ACCEPTED M4 AUTHORITY** |
 | **425** | 425 | `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` | 424 | 1 | **PUBLISHED CANDIDATE / RUNTIME UNADJUDICATED** |
+| **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | **PUBLISHED CANDIDATE / RUNTIME UNADJUDICATED** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -795,6 +796,16 @@ Appended 1 producer-owned identity to selector424:
 - `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`
 
 CB8 static ownership is **30 authority-kernel / 279 producer / 75 completion / 41 validation**. Compile/package run/job `35042417046 / 104624909472` first published the selector on source `01b1124af094044e32d6887ff0615881333d12ce`, artifact `10425344367`, and TB7 Review accepted it **425/425**. TB9 later executes the byte-identical selector from corrected-prerequisite package `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`: run/job `35121594986 / 104880514495` records a separate S4-prerequisite focus **1/1 PASS** followed by selector425 **425/425 PASS**, exact owner census **30/279/75/41** and immutable postflight. `M4-CP-SCALE-TB9-REV` independently re-derives the prerequisite, selector/prefix/owners/all 425 raw outcomes and **PROMOTES package `10455353524` as current M4 runtime authority under unchanged selector425**. S3 cumulative credit remains accepted; `M4-CP-SCALE-DEFN-OBS-03` is discharged as prerequisite-only evidence. No selector426 exists or is authorized until S4 product semantics pass their own compile/runtime/Review/publication chain.
+
+### 426 — PUBLISHED CANDIDATE / RUNTIME UNADJUDICATED
+
+`Architecture_M4_CP_SCALE_CB12_Required_Green_Selector_426.txt` — **426 identities**, LF SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`. Its first425 LF rows are byte-identical to accepted selector425 SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`.
+
+Appended 1 producer-owned identity to selector425:
+
+- `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate`
+
+CB12 static ownership is **30 authority-kernel / 280 producer / 75 completion / 41 validation**. Selector426 is publication authority only until immutable artifact-only `M4-CP-SCALE-TB11-EXEC` and mandatory Review establish cumulative S4 credit. Accepted runtime authority remains selector425 until that Review.
 
 ## Separate lineage — M1
 
