@@ -30,10 +30,10 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1DI_zZn1RILfktMWxw3058urVYDoHh9JY
-      patch_sha256: '3a33ae0b2e16da848e4249da1062e5a7ca2647bfd7ebf9e44da5d26b131fdd25'
-      base_sha: 5254b2998c079565583412f52bfd4df8cf2ecd7f
+      file_id: 1IODb93rD8CAbBTXRJt6jMFrIadYYOmVf
+      patch_sha256: '6553bca4249befb9527182ba686622caac1d4125de49a461d8ba8ed509098758'
+      base_sha: 939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'test: add S4 prerequisite oracle authority'
+      commit_message: 'docs: close M4 CP SCALE CB9'
       retention_days: 14
     secrets: inherit
