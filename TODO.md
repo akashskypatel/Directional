@@ -2,13 +2,13 @@
 
 Last updated: 2026-09-16 UTC
 
-## Current turn — M4-CP-SCALE-TB7-EXEC
+## Current turn — M4-CP-SCALE-TB7-REV
 
 - [x] `M4-CP-SCALE-TB6-REV`: independently reopened TB6 evidence/source, promoted package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under unchanged selector424 **424/424**, accepted S3 focused proof for publication, and discharged `M4-CP-SCALE-DEFN-OBS-02`.
 - [x] `M4-CP-SCALE-CB8`: published selector425 as exact selector424 prefix + row425 `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`; SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owner census **30/279/75/41**.
 - [x] Compile/package run/job `35042417046 / 104624909472` GREEN on exact source `01b1124af094044e32d6887ff0615881333d12ce`; artifact `10425344367`, GMP/GMPXX, clean source, self-verifying manifest, `runtimeExecution=false`.
-- [ ] `M4-CP-SCALE-TB7-EXEC`: immutable artifact-only selector425 **425/425** as 425 fresh exact-filter processes in exact selector order; no rebuild/relink/repair/discovery/mutation/benchmark execution.
-- [ ] Mandatory successor `M4-CP-SCALE-TB7-REV` independently reopens TB7 evidence and alone may promote selector425 / discharge `M4-CP-SCALE-TB6-REV-OBS-01`.
+- [x] `M4-CP-SCALE-TB7-EXEC`: authoritative retry `35045130314 / 104633231692` mechanically GREEN at selector425 **425/425 PASS** in 425 fresh exact-filter processes, fresh row425 PASS, owner census **30/279/75/41**, exact immutable postflight, no rebuild/relink/repair/discovery/mutation/benchmark execution. Initial attempt `35044943849` was pre-runtime orchestration failure and receives zero semantic credit.
+- [ ] `M4-CP-SCALE-TB7-REV`: independently reopen CB8 package plus TB7 result/log/nested evidence, re-derive selector425/prefix/ownership/all 425 outcomes and immutability, then alone decide selector425 promotion and `M4-CP-SCALE-TB6-REV-OBS-01` discharge.
 
 ## Purpose
 
@@ -40,11 +40,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-TB7-EXEC` (artifact-only selector425 cumulative runtime)
+## Current focus — `M4-CP-SCALE-TB7-REV` (mandatory independent evidence adjudication)
 
-Current **accepted runtime authority remains** package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under selector424 **424/424** (`f202a172...466ca`). CB8 has now published selector425 candidate bytes and compiled/package them without runtime: exact source `01b1124af094044e32d6887ff0615881333d12ce`, result artifact `10425344367`, selector425 `e0e0f394...790e0b`, owner census **30/279/75/41**, GMP/GMPXX, `runtimeExecution=false`.
+Current **accepted runtime authority remains** package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under selector424 **424/424** (`f202a172...466ca`). CB8 candidate artifact `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` carries selector425 `e0e0f394...790e0b`, owner census **30/279/75/41**, GMP/GMPXX and `runtimeExecution=false`.
 
-`M4-CP-SCALE-TB6-REV-OBS-01` remains OPEN. TB7-EXEC must execute the immutable CB8 package only: selector425 **425/425** as 425 fresh exact-filter processes in exact selector order, with exact package/source/execution-view pre/post immutability. Row425 receives credit only from its own fresh selector process. Rebuild, relink, repair, discovery/listing, mutation and benchmark execution are forbidden. Mandatory next boundary is `M4-CP-SCALE-TB7-REV`; EXEC does not promote selector425. Stable accounting remains **49 / 14 / 35**, debt **5**.
+TB7 authoritative retry `35045130314 / 104633231692` is mechanically GREEN: selector425 **425/425 PASS** in 425 fresh exact-filter processes, fresh row425 PASS, zero anomalies and exact package/source/execution-view postflight. Initial attempt `35044943849` failed before runtime because the temporary workflow omitted checkout; it has no semantic ledger. `M4-CP-SCALE-TB6-REV-OBS-01` is therefore **publication + cumulative runtime satisfied / Review owed**. `M4-CP-SCALE-TB7-REV` must independently reopen the evidence and is the only turn allowed to promote selector425 or discharge the observation. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 

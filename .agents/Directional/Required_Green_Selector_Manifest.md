@@ -786,7 +786,7 @@ Appended 1 identity to selector 423:
 
 **S3 publication authorized, selector425 not yet accepted.** `M4-CP-SCALE-TB6-REV` accepts focused `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` for publication only. `M4-CP-SCALE-TB6-REV-OBS-01` requires selector425 = exact selector424 prefix + that row425, expected SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, static owner census **30/279/75/41**, then fresh **425/425** runtime + Review before selector425 or S3 cumulative credit is accepted.
 
-### 425 — PUBLISHED CANDIDATE / RUNTIME UNADJUDICATED
+### 425 — PUBLISHED CANDIDATE / MECHANICALLY GREEN / REVIEW UNADJUDICATED
 
 `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt` — **425 identities**, LF SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`. Its first424 LF rows are byte-identical to accepted selector424 SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`.
 
@@ -794,7 +794,7 @@ Appended 1 producer-owned identity to selector424:
 
 - `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`
 
-CB8 static ownership is **30 authority-kernel / 279 producer / 75 completion / 41 validation**. Compile/package run/job `35042417046 / 104624909472` is GREEN on source `01b1124af094044e32d6887ff0615881333d12ce`, artifact `10425344367`, with GMP/GMPXX, clean source receipts, self-verifying package manifest and `runtimeExecution=false`. **No runtime acceptance is implied.** Selector424 remains current accepted M4 authority until fresh selector425 **425/425** runtime and mandatory `M4-CP-SCALE-TB7-REV`.
+CB8 static ownership is **30 authority-kernel / 279 producer / 75 completion / 41 validation**. Compile/package run/job `35042417046 / 104624909472` is GREEN on source `01b1124af094044e32d6887ff0615881333d12ce`, artifact `10425344367`, with GMP/GMPXX, clean source receipts, self-verifying package manifest and `runtimeExecution=false`. TB7 authoritative retry `35045130314 / 104633231692` then executes selector425 **425/425 PASS** in 425 fresh exact-filter processes with exact owner census **30/279/75/41**, fresh row425 PASS and exact immutable postflight. **EXEC does not promote the selector.** Selector424 remains current accepted M4 authority until mandatory `M4-CP-SCALE-TB7-REV` independently adjudicates the evidence.
 
 ## Separate lineage — M1
 
