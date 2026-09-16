@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-CB12
+caller_install=07dbafe321834c489d896a13ccdb5c8588f3ce33
+patch_sha256=0b6bf1a2a4d309b8b7d08f474d21a0591000820e06a4968d2a6e0ac8db0431f2
+base_sha=e15e83c79a1e1962c0ed8d31ea85187ab6600e47
+created_utc=2026-09-16T23:47:00Z
