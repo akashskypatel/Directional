@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-TB6-EXEC
+purpose=apply durable closeout documentation patch
+file_id=1jmxxHx0aFt9J45kTW1qxwrfieFjihuYe
+patch_sha256=e4a3b03f9680cb9fad8bfe90be581970600618bc27670384e69844c74853b4c1
+base_sha=4b613f2420de231c09c2aff97da25542f0641fd7
