@@ -1,0 +1,4 @@
+# M4-CP-SCALE-TB6-EXEC temporary state
+.agents/connector-triggers/tb6-exec.txt
+.agents/connector-triggers/tb6-source-snapshot.txt
+.agents/connector-triggers/tb6-drive-apply
