@@ -1,2 +1,0 @@
-# M4-CP-SCALE-CB10 closeout transport cleanup
-.agents/connector-triggers/m4-cp-scale-cb10/closeout-apply.txt
