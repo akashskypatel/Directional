@@ -42,5 +42,5 @@ jobs:
       patch_sha256: 1c6d63989991e20f64bc3ec9eb80009f746310f8db277d67052e7ce727bfa5c1
       base_sha: 9257fbf93796dfa5a13a6a15a2cc02106a1be1c3
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs(m4): close CB11 and authorize TB10 execution
+      commit_message: "docs(m4): close CB11 and authorize TB10 execution"
     secrets: inherit
