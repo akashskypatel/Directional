@@ -1,0 +1,2 @@
+M4-CP-SCALE-TB7-REV schema validation trigger.
+Validate the exact Drive caller draft and the schema-validation caller itself.
