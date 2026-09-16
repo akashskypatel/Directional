@@ -1,0 +1,3 @@
+M4-CP-SCALE-TB7 caller schema validation.
+Validates the exact staged artifact-only execution caller before workflow publication.
+Retry: 1
