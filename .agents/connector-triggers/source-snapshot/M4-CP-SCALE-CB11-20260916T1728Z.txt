@@ -1,2 +1,0 @@
-M4-CP-SCALE-CB11 source snapshot trigger
-semantic_source=b29baad559ecd7ce708148ac579c87ca3b202572
