@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-TB8-EXEC
+purpose=start-of-turn exact source snapshot for immutable artifact-only runtime
+semantic_source=939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf
+control_base=fc539a75458898c98f20f497d89cb0844beca688
+retry=0
