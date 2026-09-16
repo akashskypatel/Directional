@@ -1,0 +1,32 @@
+name: M4 CP SCALE TB8 Drive Patch Apply
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m4-cp-scale-tb8-drive-apply.txt]
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+concurrency:
+  group: m4-cp-scale-tb8-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb8-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1u7TThT4cYSVsyAHP6feFlQbiL7sWqkCX
+      patch_sha256: ea5a0ea339801372bec772434b168620ceaf4388b81b7cf4743e34aac1a268cf
+      base_sha: 753217d55abacb64bc4b7b6d58194dbb63e8cdf4
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'test: prepare M4 CP SCALE TB8 artifact-only runtime'
+      retention_days: 14
+    secrets: inherit
