@@ -6,6 +6,27 @@ The corrected S4 prerequisite is accepted: empty-cut torus `V48/E48/F4,c4,s1,chi
 
 Review **PROMOTES package `10455353524` under unchanged selector425** and **DISCHARGES `M4-CP-SCALE-DEFN-OBS-03`**. No new regression or accepted-green loss: stable accounting remains **49 / 14 / 35**, debt **5**. Product S4 remains unimplemented/non-selector. Exact next is `M4-CP-SCALE-CB11`, bounded to a fixed-candidate necessary-condition accelerator + independent focused product test, compile/package only; no cut mutation/backtracking/repair, final-certificate weakening or selector426. Fresh TB10 + Review are mandatory before publication. Review consolidation indexes retired CB10/TB9 plan/report documents and folds the superseded TB7 runtime report + TB8 Review into `M4_Consolidated_Record.md` §2.57.
 
+**Verification amendment (reviewing agent, review record §12).** Upheld. The `M4-CP-SCALE-TB8-REV` §13 V3
+structural requirement is **discharged**: §3 confirms a failure in the negative subject no longer hides the
+positive, adversarial or enumeration controls, and the closeout records all of them executing — negative rejects,
+positive does not, the adversarial implication executes, reversed enumeration and production rerun both execute.
+One run now yields every control's verdict rather than the first casualty's. CB10 bound the correct torus
+authority, replacing CB9's transplanted prescribed-sphere constants, and all three states were recomputed here:
+empty-cut `b1 = 48 − 48 + 4 = 4`, `F_required = 0 − 1 + 4 = 3` against observed `4` → reject; accepted cut set
+`b1 = 76 − 72 + 1 = 5`, `F_required = 4` against observed `4` → accept; one-edge adversarial
+`b1 = 49 − 49 + 4 = 4`, `F_required = 3` against observed `4` → early-reject with the unchanged final certificate
+also rejecting. The adversarial state is genuinely distinct at `V = E = 49` rather than a relabelled copy of the
+`48/48` negative. Selector425 was re-proved on the promoted bytes — 425 contiguous ordinals, every row exit `0`,
+owner census `30 / 279 / 75 / 41` summing to 425 — so promotion rests on the accepted prefix, not the focused
+result; and the discharge is scoped exactly to what `DEFN-OBS-03` asked, with §8 stating its own limit: prerequisite
+acceptance only, S4 product semantics still absent, selector426 unauthorized, CP-SCALE open. **One consistency note,
+not a gap:** the tracker does record *"S4 product semantics remain OPEN / NON-SELECTOR. Exact next owner is
+`M4-CP-SCALE-CB11`"* and that plan exists, so the item is tracked — but it carries no `OBS-nn` id and is absent from
+the record's §10 ledger where every other open item appears by id. Ids are how obligations survive successor-chain
+churn, and this sequence has seen plenty (`CB4 → R1…R4`, `CB9 → CB10`); an item anchored only to "the next turn is
+CB11" loses its anchor if CB11 is re-scoped. Recommend assigning one at the next Review touching S4. Accounting
+holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB9-EXEC`: corrected S4 prerequisite + selector425 mechanically GREEN
 
 Artifact-only Test + Benchmark run/job `35121594986 / 104880514495` consumed immutable CB10 artifact `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`. Focused `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` selected/executed/passed **1/1/1** with exactly one valid receipt: corrected empty-torus negative `V48/E48/F4,c4,s1,chi0`, `b1=4`, required/observed faces `3/4`, reject true; accepted-cut positive `V72/E76/F4,c1,s1,chi0`, `b1=5`, required/observed `4/4`, reject false; adversarial one-way safety, enumeration invariance and decision-neutrality all observable.

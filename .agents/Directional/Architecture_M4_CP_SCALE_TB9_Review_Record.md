@@ -128,3 +128,59 @@ No selector, policy, frozen-definition document, closure record or durable proje
 | review_check.py boundary | **ALL CHECKS PASSED** on the snapshot-derived worktree; no product/test/fixture/build mutation, no selector mutation, selector425 matches the declared hash, and durable markers are preserved |
 | `STATUS` block rewritten | direct root-beacon write is performed as the final control-plane write before the response footer |
 | Pushed to origin, branch in sync | ChatGPT Web closeout uses the branch-safe Drive patch reusable plus post-apply branch fetch in lieu of a persistent local clone; completion requires the fetched working branch to contain this review patch, followed by mandatory temporary-state cleanup |
+
+---
+
+## 12. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Accounting holds at **49 / 14 / 35**, debt **5**. One consistency note, no correction.
+
+### V1 — the TB8-REV structural requirement is discharged
+
+`M4-CP-SCALE-TB8-REV` §13 V3 required CB10 to make the S4 subjects independently observable, because
+`TEST(M4CPScaleS4Prereq, …)` held every subject behind 26 fatal assertions and one failure blinded the rest.
+§3 confirms the repair — a failure in the negative subject no longer hides the positive, adversarial or
+enumeration controls — and the closeout records all of them executing: negative rejects, positive does not,
+the adversarial implication executes, and reversed enumeration and production rerun both execute.
+
+That is the difference between this turn and TB8: one run now yields every control's verdict rather than the
+first casualty's.
+
+### V2 — all three arithmetic states re-derived
+
+CB10 bound the correct torus authority, replacing CB9's transplanted prescribed-sphere constants. Every state
+was recomputed here and holds:
+
+| state | `b1 = E − V + c` | `F_required = χ − s + b1` | observed | verdict |
+|---|---|---|---|---|
+| empty-cut torus (negative) | `48 − 48 + 4 = 4` | `0 − 1 + 4 = 3` | `4` | reject — `BettiFaceCountMismatch` |
+| accepted cut set (positive) | `76 − 72 + 1 = 5` | `0 − 1 + 5 = 4` | `4` | accept |
+| one-edge adversarial | `49 − 49 + 4 = 4` | `0 − 1 + 4 = 3` | `4` | early-reject, final certificate non-cellular |
+
+The adversarial state is genuinely distinct at `V=E=49` rather than a relabelled copy of the `48/48` negative,
+so it exercises a separate point rather than restating one. The one-way implication is preserved: early
+rejection is paired with the unchanged final certificate also rejecting, never with early acceptance.
+
+### V3 — promotion basis and discharge scoping are both correct
+
+Selector425 was re-proved on the promoted bytes — 425 contiguous ordinals, every row exit `0`, owner census
+`30 / 279 / 75 / 41` summing to 425 and matching the frozen ownership map. Promotion rests on that, not on the
+focused prerequisite result.
+
+The discharge is scoped exactly to what `DEFN-OBS-03` asked for — an independent oracle plus a reachable
+negative, runtime-proved and independently reviewed — and §8 states the limit in its own words: *"This is
+prerequisite acceptance only. S4 product semantics are still absent, selector426 is not authorized, and
+CP-SCALE remains open."* Discharging the obligation without claiming the surface is the right call.
+
+### V4 — consistency note: S4 product semantics has an owner but no id
+
+Not a gap. `Regression_Root_Cause_Tracker.md` records *"S4 product semantics remain OPEN / NON-SELECTOR. Exact
+next owner is `M4-CP-SCALE-CB11`"*, and that plan exists. So the item is tracked in the authoritative ledger.
+
+What it lacks is an `OBS-nn` identifier, and it is absent from this record's §10 obligation list, where every
+other open item appears by id. That matters only for durability: ids are how obligations survive successor-chain
+churn, and this sequence has seen plenty — `CB4 → R1 → R2 → R3 → R4`, and `CB9 → CB10`. An item whose only
+anchor is "the next turn is CB11" loses its anchor the moment CB11 is re-scoped or superseded.
+
+Recommend assigning it an id at the next Review that touches S4, and listing it in the obligation ledger
+alongside the others. No action is owed by CB11 itself.
