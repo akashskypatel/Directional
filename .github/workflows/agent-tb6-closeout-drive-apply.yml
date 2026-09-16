@@ -39,8 +39,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1wpBr2F5VCwfsHlhxUsvvdub65VtF3LZf
-      patch_sha256: 35b0204a08eaf7ac97bdb7a8121ce25e82ff2ff97bba9ae38584e9d08381104f
+      file_id: 1DIpHrOqJ1_HlABf-wXxCj-RyRLMRt_uz
+      patch_sha256: 7cea0f7a367bf63d3b05e23ea50e564724c75d1f0f8f287bb5a0a14a8154ec4d
       base_sha: 76344df49e37aa91236a6bebdece3ebd37b8b817
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M4-CP-SCALE-TB6-EXEC"
