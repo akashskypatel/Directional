@@ -8965,6 +8965,179 @@ cp4c_independent_actual_embedded_graph_oracle(
   return oracle;
 }
 
+
+struct M4CpScaleS4TopologyInvariant {
+  std::size_t vertexCount = 0U;
+  std::size_t edgeCount = 0U;
+  std::size_t faceCount = 0U;
+  std::size_t graphComponentCount = 0U;
+  std::size_t sourceComponentCount = 0U;
+  std::int64_t firstBetti = 0;
+  std::int64_t requiredFaceCount = 0;
+  int sourceEulerCharacteristic = 0;
+  bool rejects = false;
+  std::string stateIdentity;
+};
+
+std::string m4_cp_scale_s4_state_identity(
+    const FieldAlignedCurveNetwork &network,
+    std::vector<SourceEdgeTopologyKey> cutEdges,
+    const Cp4cActualEmbeddedGraphOracle &oracle) {
+  std::sort(cutEdges.begin(), cutEdges.end());
+  std::ostringstream out;
+  out << "source=" << network.source_digest()
+      << ",network=" << network.semantic_digest() << ",cuts=[";
+  for (std::size_t index = 0U; index < cutEdges.size(); ++index) {
+    if (index != 0U) out << '|';
+    out << cutEdges[index].first().index() << '-'
+        << cutEdges[index].second().index();
+  }
+  out << "]"
+      << ",V=" << oracle.vertexCount << ",E=" << oracle.edgeCount
+      << ",F=" << oracle.faceCount << ",c=" << oracle.graphComponentCount
+      << ",s=" << oracle.sourceComponentCount
+      << ",sourceChi=" << oracle.sourceEulerCharacteristic;
+  return out.str();
+}
+
+std::optional<M4CpScaleS4TopologyInvariant>
+m4_cp_scale_s4_incremental_topology_oracle(
+    const FieldAlignedCurveNetwork &network,
+    const std::vector<SourceEdgeTopologyKey> &cutEdges,
+    const Cp4cActualEmbeddedGraphOracle &oracle) {
+  if (oracle.graphComponentCount < oracle.sourceComponentCount) {
+    return std::nullopt;
+  }
+  const std::int64_t vertexCount =
+      static_cast<std::int64_t>(oracle.vertexCount);
+  const std::int64_t edgeCount =
+      static_cast<std::int64_t>(oracle.edgeCount);
+  const std::int64_t graphComponentCount =
+      static_cast<std::int64_t>(oracle.graphComponentCount);
+  const std::int64_t sourceComponentCount =
+      static_cast<std::int64_t>(oracle.sourceComponentCount);
+  const std::int64_t firstBetti =
+      edgeCount - vertexCount + graphComponentCount;
+  if (firstBetti < 0) return std::nullopt;
+  const std::int64_t requiredFaceCount =
+      static_cast<std::int64_t>(oracle.sourceEulerCharacteristic) -
+      sourceComponentCount + firstBetti;
+  if (requiredFaceCount < 0) return std::nullopt;
+
+  M4CpScaleS4TopologyInvariant result;
+  result.vertexCount = oracle.vertexCount;
+  result.edgeCount = oracle.edgeCount;
+  result.faceCount = oracle.faceCount;
+  result.graphComponentCount = oracle.graphComponentCount;
+  result.sourceComponentCount = oracle.sourceComponentCount;
+  result.firstBetti = firstBetti;
+  result.requiredFaceCount = requiredFaceCount;
+  result.sourceEulerCharacteristic = oracle.sourceEulerCharacteristic;
+  result.rejects =
+      static_cast<std::int64_t>(oracle.faceCount) != requiredFaceCount;
+  result.stateIdentity =
+      m4_cp_scale_s4_state_identity(network, cutEdges, oracle);
+  return result;
+}
+
+std::optional<directional::geometry::SurfaceCutGraphCellularityCertificate>
+m4_cp_scale_s4_product_certificate_view(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
+    const FieldAlignedCurveNetwork &network,
+    const std::vector<SourceEdgeTopologyKey> &cutEdges) {
+  const auto embeddedBuild = embedded::build_embedded_graph_topology(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), sourceAuthority, network,
+      cutEdges);
+  const auto *embeddedTopology =
+      std::get_if<embedded::EmbeddedGraphTopology>(&embeddedBuild);
+  if (embeddedTopology == nullptr) return std::nullopt;
+
+  const auto exteriorBuild = embedded::exterior_boundary_orbits(
+      embeddedTopology->sourceTopology, network, embeddedTopology->arcs,
+      embeddedTopology->faceWalk);
+  const auto *exterior = std::get_if<std::set<std::size_t>>(&exteriorBuild);
+  if (exterior == nullptr) return std::nullopt;
+  const auto boundaryLoops =
+      embedded::source_boundary_loop_count(embeddedTopology->sourceTopology);
+  if (!boundaryLoops.has_value()) return std::nullopt;
+
+  std::set<SourceVertexId> sourceVertices;
+  std::set<SourceComponentId> sourceComponents;
+  for (const auto &[faceKey, face] : embeddedTopology->sourceTopology.faces) {
+    (void)faceKey;
+    sourceComponents.insert(face.component);
+    sourceVertices.insert(face.vertices.begin(), face.vertices.end());
+  }
+  const std::size_t graphComponents =
+      embedded::actual_graph_component_count(*embeddedTopology);
+  const std::size_t sourceComponentCount = sourceComponents.size();
+  const std::size_t totalOrbits = embeddedTopology->faceWalk.orbits.size();
+  if (exterior->size() > totalOrbits) return std::nullopt;
+  const std::size_t countedFaces = totalOrbits - exterior->size();
+  const int correction =
+      graphComponents >= sourceComponentCount
+          ? static_cast<int>(graphComponents - sourceComponentCount)
+          : 0;
+  const int sourceEuler =
+      static_cast<int>(sourceVertices.size()) -
+      static_cast<int>(embeddedTopology->sourceTopology.incidentFaces.size()) +
+      static_cast<int>(embeddedTopology->sourceTopology.faces.size());
+  const int graphEuler =
+      static_cast<int>(embeddedTopology->cutNodes.combinedNodeExtent) -
+      static_cast<int>(embeddedTopology->arcs.size()) +
+      static_cast<int>(countedFaces) - correction;
+  const bool discEmbeddingEstablished =
+      graphComponents == sourceComponentCount &&
+      exterior->size() == *boundaryLoops && graphEuler == sourceEuler;
+
+  directional::geometry::SurfaceCutGraphCellularityCertificate certificate;
+  certificate.vertexCount = embeddedTopology->cutNodes.combinedNodeExtent;
+  certificate.edgeCount = embeddedTopology->arcs.size();
+  certificate.totalOrbitCount = totalOrbits;
+  certificate.excludedBoundaryOrbitCount = exterior->size();
+  certificate.sourceBoundaryLoopCount = *boundaryLoops;
+  certificate.faceCount = countedFaces;
+  certificate.graphComponentCount = graphComponents;
+  certificate.sourceComponentCount = sourceComponentCount;
+  certificate.disconnectedComponentCorrection = correction;
+  certificate.eulerCharacteristic = graphEuler;
+  certificate.sourceEulerCharacteristic = sourceEuler;
+  certificate.faces.reserve(countedFaces);
+  for (std::size_t orbit = 0U; orbit < totalOrbits; ++orbit) {
+    if (exterior->count(orbit) != 0U) continue;
+    const auto &boundary = embeddedTopology->faceWalk.orbits[orbit];
+    if (boundary.empty()) return std::nullopt;
+    const auto anchor = *std::min_element(
+        boundary.begin(), boundary.end(), [](const auto lhs, const auto rhs) {
+          return std::tie(lhs.arc, lhs.orientation) <
+                 std::tie(rhs.arc, rhs.orientation);
+        });
+    certificate.faces.push_back(
+        {orbit, 1U, boundary.size(), discEmbeddingEstablished, anchor.arc,
+         anchor.orientation});
+  }
+  return certificate;
+}
+
+bool m4_cp_scale_s4_topology_fields_match(
+    const directional::geometry::SurfaceCutGraphCellularityCertificate &first,
+    const directional::geometry::SurfaceCutGraphCellularityCertificate &second) {
+  return first.complex == second.complex &&
+         first.vertexCount == second.vertexCount &&
+         first.edgeCount == second.edgeCount &&
+         first.totalOrbitCount == second.totalOrbitCount &&
+         first.excludedBoundaryOrbitCount == second.excludedBoundaryOrbitCount &&
+         first.sourceBoundaryLoopCount == second.sourceBoundaryLoopCount &&
+         first.faceCount == second.faceCount &&
+         first.graphComponentCount == second.graphComponentCount &&
+         first.sourceComponentCount == second.sourceComponentCount &&
+         first.disconnectedComponentCorrection ==
+             second.disconnectedComponentCorrection &&
+         first.eulerCharacteristic == second.eulerCharacteristic &&
+         first.sourceEulerCharacteristic == second.sourceEulerCharacteristic &&
+         first.faces == second.faces;
+}
+
 std::string cp4c_actual_embedded_graph_oracle_report(
     const std::string &witness, const Cp4cActualEmbeddedGraphOracle &oracle,
     const directional::geometry::SurfaceCutGraphCellularityCertificate *producer) {
@@ -13949,6 +14122,161 @@ TEST(ResolvedBranchCorrection,
     }
     std::cout << '\n';
   }
+}
+
+
+TEST(M4CPScaleS4Prereq,
+     IndependentTopologyOracleIsReachableAndDecisionNeutral) {
+  const Cp4cProductionFixture torus =
+      build_cp4c_pipeline_products_fixture("torus", "torus");
+  ASSERT_TRUE(torus.loadError.empty()) << torus.loadError;
+  ASSERT_TRUE(torus.sourceAuthority.has_value());
+  ASSERT_TRUE(torus.atlas.has_value());
+  ASSERT_TRUE(torus.network.has_value()) << torus.terminalFailureCode;
+  ASSERT_TRUE(torus.cutGraph.has_value()) << torus.terminalFailureCode;
+  ASSERT_TRUE(torus.mesh.boundaryLoops.empty());
+  ASSERT_EQ(0, torus.mesh.eulerChar);
+
+  const auto &network = *torus.network;
+  const auto &acceptedCutGraph = *torus.cutGraph;
+  const std::vector<SourceEdgeTopologyKey> reachableNegativeCuts;
+  std::vector<SourceEdgeTopologyKey> acceptedCuts =
+      acceptedCutGraph.cut_edges();
+  ASSERT_FALSE(acceptedCuts.empty());
+  std::sort(acceptedCuts.begin(), acceptedCuts.end());
+  ASSERT_EQ(acceptedCuts.end(),
+            std::adjacent_find(acceptedCuts.begin(), acceptedCuts.end()));
+
+  // canonical_candidate initializes cuts as the empty set and certifies that
+  // state before any proposal mutation. With all upstream bindings established
+  // here, the empty-cut subject is therefore a production-reachable candidate
+  // state rather than a synthetic negative.
+  const auto negativeRaw = cp4c_independent_actual_embedded_graph_oracle(
+      torus.mesh, network, reachableNegativeCuts);
+  ASSERT_TRUE(negativeRaw.has_value());
+  const auto negativeInvariant = m4_cp_scale_s4_incremental_topology_oracle(
+      network, reachableNegativeCuts, *negativeRaw);
+  ASSERT_TRUE(negativeInvariant.has_value());
+  const auto negativeCertificate = m4_cp_scale_s4_product_certificate_view(
+      torus.mesh, *torus.sourceAuthority, network, reachableNegativeCuts);
+  ASSERT_TRUE(negativeCertificate.has_value());
+
+  ASSERT_EQ(18U, negativeInvariant->vertexCount);
+  ASSERT_EQ(30U, negativeInvariant->edgeCount);
+  ASSERT_EQ(18U, negativeInvariant->faceCount);
+  ASSERT_EQ(1U, negativeInvariant->graphComponentCount);
+  ASSERT_EQ(1U, negativeInvariant->sourceComponentCount);
+  ASSERT_EQ(13, negativeInvariant->firstBetti);
+  ASSERT_EQ(12, negativeInvariant->requiredFaceCount);
+  ASSERT_EQ(0, negativeInvariant->sourceEulerCharacteristic);
+  ASSERT_TRUE(negativeInvariant->rejects);
+  EXPECT_EQ(6, negativeCertificate->eulerCharacteristic);
+  EXPECT_EQ(0, negativeCertificate->sourceEulerCharacteristic);
+  EXPECT_EQ(negativeInvariant->faceCount, negativeCertificate->faceCount);
+  EXPECT_EQ(negativeInvariant->graphComponentCount,
+            negativeCertificate->graphComponentCount);
+  EXPECT_EQ(negativeInvariant->sourceComponentCount,
+            negativeCertificate->sourceComponentCount);
+  EXPECT_EQ(negativeInvariant->rejects,
+            negativeCertificate->eulerCharacteristic !=
+                negativeCertificate->sourceEulerCharacteristic);
+  EXPECT_FALSE(negativeCertificate->proves_embedded_cellularity());
+
+  const auto positiveRaw = cp4c_independent_actual_embedded_graph_oracle(
+      torus.mesh, network, acceptedCuts);
+  ASSERT_TRUE(positiveRaw.has_value());
+  const auto positiveInvariant = m4_cp_scale_s4_incremental_topology_oracle(
+      network, acceptedCuts, *positiveRaw);
+  ASSERT_TRUE(positiveInvariant.has_value());
+  const auto positiveCertificate = m4_cp_scale_s4_product_certificate_view(
+      torus.mesh, *torus.sourceAuthority, network, acceptedCuts);
+  ASSERT_TRUE(positiveCertificate.has_value());
+
+  EXPECT_EQ(72U, positiveInvariant->vertexCount);
+  EXPECT_EQ(76U, positiveInvariant->edgeCount);
+  EXPECT_EQ(4U, positiveInvariant->faceCount);
+  EXPECT_EQ(1U, positiveInvariant->graphComponentCount);
+  EXPECT_EQ(1U, positiveInvariant->sourceComponentCount);
+  EXPECT_EQ(5, positiveInvariant->firstBetti);
+  EXPECT_EQ(4, positiveInvariant->requiredFaceCount);
+  EXPECT_FALSE(positiveInvariant->rejects);
+  EXPECT_TRUE(positiveCertificate->proves_embedded_cellularity());
+  EXPECT_TRUE(m4_cp_scale_s4_topology_fields_match(
+      *positiveCertificate, acceptedCutGraph.certificate()));
+
+  // Perturb the candidate topology with a deterministic source-edge cut that
+  // production eventually selects. This remains upstream-admissible and must
+  // agree with the unchanged final certificate predicate for the covered
+  // Betti/face-count rejection class; its classification is not hard-coded.
+  const std::vector<SourceEdgeTopologyKey> adversarialCuts{acceptedCuts.front()};
+  const auto adversarialRaw = cp4c_independent_actual_embedded_graph_oracle(
+      torus.mesh, network, adversarialCuts);
+  ASSERT_TRUE(adversarialRaw.has_value());
+  const auto adversarialInvariant = m4_cp_scale_s4_incremental_topology_oracle(
+      network, adversarialCuts, *adversarialRaw);
+  ASSERT_TRUE(adversarialInvariant.has_value());
+  const auto adversarialCertificate = m4_cp_scale_s4_product_certificate_view(
+      torus.mesh, *torus.sourceAuthority, network, adversarialCuts);
+  ASSERT_TRUE(adversarialCertificate.has_value());
+  EXPECT_NE(negativeInvariant->stateIdentity,
+            adversarialInvariant->stateIdentity);
+  EXPECT_EQ(adversarialInvariant->rejects,
+            adversarialCertificate->eulerCharacteristic !=
+                adversarialCertificate->sourceEulerCharacteristic);
+  EXPECT_EQ(!adversarialInvariant->rejects,
+            adversarialCertificate->proves_embedded_cellularity());
+
+  // Edge enumeration is not semantic state. Reversing the accepted cut vector
+  // must leave the independent oracle and its canonical state receipt unchanged.
+  std::vector<SourceEdgeTopologyKey> reversedCuts = acceptedCuts;
+  std::reverse(reversedCuts.begin(), reversedCuts.end());
+  const auto relabeledRaw = cp4c_independent_actual_embedded_graph_oracle(
+      torus.mesh, network, reversedCuts);
+  ASSERT_TRUE(relabeledRaw.has_value());
+  const auto relabeledInvariant = m4_cp_scale_s4_incremental_topology_oracle(
+      network, reversedCuts, *relabeledRaw);
+  ASSERT_TRUE(relabeledInvariant.has_value());
+  EXPECT_EQ(positiveInvariant->stateIdentity,
+            relabeledInvariant->stateIdentity);
+  EXPECT_EQ(positiveInvariant->firstBetti, relabeledInvariant->firstBetti);
+  EXPECT_EQ(positiveInvariant->requiredFaceCount,
+            relabeledInvariant->requiredFaceCount);
+  EXPECT_EQ(positiveInvariant->rejects, relabeledInvariant->rejects);
+
+  // The product result exists before any S4 diagnostic oracle is evaluated.
+  // Re-running the unchanged production entry point afterwards must reproduce
+  // the same output exactly, proving the test-only oracle has no decision path.
+  const auto productAfterDiagnostics = directional::geometry::SurfaceCutGraph::make(
+      torus.mesh.F, static_cast<std::size_t>(torus.mesh.V.rows()),
+      *torus.sourceAuthority, *torus.atlas, network);
+  ASSERT_TRUE(productAfterDiagnostics);
+  EXPECT_EQ(acceptedCutGraph.cut_edges(),
+            productAfterDiagnostics.value().cut_edges());
+  EXPECT_EQ(acceptedCutGraph.certificate(),
+            productAfterDiagnostics.value().certificate());
+  EXPECT_EQ(acceptedCutGraph.semantic_digest(),
+            productAfterDiagnostics.value().semantic_digest());
+  EXPECT_EQ(acceptedCutGraph.provenance_digest(),
+            productAfterDiagnostics.value().provenance_digest());
+
+  std::cout
+      << "m4CpScaleS4Prereq"
+      << ";coveredClass=BettiFaceCountMismatch"
+      << ";reachableNegative=true"
+      << ";negativeState={" << negativeInvariant->stateIdentity << '}'
+      << ";negativeBetti=" << negativeInvariant->firstBetti
+      << ";negativeRequiredFaces=" << negativeInvariant->requiredFaceCount
+      << ";negativeObservedFaces=" << negativeInvariant->faceCount
+      << ";negativeProductEuler=" << negativeCertificate->eulerCharacteristic
+      << ";positiveState={" << positiveInvariant->stateIdentity << '}'
+      << ";positiveBetti=" << positiveInvariant->firstBetti
+      << ";positiveRequiredFaces=" << positiveInvariant->requiredFaceCount
+      << ";positiveObservedFaces=" << positiveInvariant->faceCount
+      << ";adversarialState={" << adversarialInvariant->stateIdentity << '}'
+      << ";adversarialReject="
+      << (adversarialInvariant->rejects ? "true" : "false")
+      << ";enumerationInvariant=true"
+      << ";decisionNeutral=true\n";
 }
 
 TEST(ResolvedBranchCorrection,
