@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB8-EXEC
-purpose=validate artifact-only runtime caller before activation
-retry=0
