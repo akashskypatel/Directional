@@ -30,7 +30,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1E4oTw0EuZ3UtyyhzmiUpKsESxb4eiFHz
-      patch_sha256: 6228afad7c49a808d1835da0782e930cc4cd1c5d9a662bdfc9ec2f264d8a44fe
+      patch_sha256: d80df9c4d1e4a1d6ce458bb370fab314b45d5b3685c2f9ef1578f9d5cc76d69d
       base_sha: 01b1124af094044e32d6887ff0615881333d12ce
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: close M4 CP SCALE CB8 and freeze TB7 execution'
