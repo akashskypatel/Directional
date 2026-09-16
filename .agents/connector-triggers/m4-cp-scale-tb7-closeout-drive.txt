@@ -1,4 +1,5 @@
 M4-CP-SCALE-TB7-EXEC durable closeout Drive patch trigger.
-Patch file ID: 1HIWniENbnaqXHeliixEc11xYBoP-EvU8
-Patch SHA-256: 6eebdc4d2b66fecd6994d2cc600e146f15866947a8212ce8c8cd78322ecb2989
+Patch file ID: 1HetBeR-jwd6RZ4PQeKqIC_eMoklUKsLN
+Patch SHA-256: 4f8d64e8b36e83426f82340cdadc88f10656d2ae1d1e50b9b0c6913539476043
 Base: 079ad08cd381ce7f8f36dd8432c3f15ccecf1f17
+Retry: corrected six-path scope, no ORIENTATION mutation
