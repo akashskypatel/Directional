@@ -1,0 +1,3 @@
+ChatGPT Web source-snapshot trigger for M4-CP-SCALE-TB7-EXEC.
+Frozen pre-trigger repository authority: 3b6750a1667ecc2c75e433b3343a5f77ca9cf97b
+Control-plane marker only; no product/test/fixture semantics changed.
