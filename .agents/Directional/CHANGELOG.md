@@ -1,3 +1,9 @@
+## 2026-09-16 — `M4-CP-SCALE-CB11`: bounded S4 product accelerator compiles/packages GREEN
+
+Code + Build only. Semantic source `2adb7b8169a387fcb6db6487768d7bd3d678265c` changes only `EmbeddedGraphTopology.cpp/.h`, `SurfaceCutGraph.cpp`, and `FieldAlignedCurveNetworkTests.cpp`. The exact fixed-candidate S4 necessary-condition accelerator bypasses only a full certification attempt proved doomed, then follows the unchanged proposal path; final certificate authority and cut-search semantics remain unchanged. The focused product identity retains a structurally separate independent oracle, S4-disabled reference seam, and non-vacuous bypass discriminator.
+
+Compile run/job `35130835524 / 104911222945` is GREEN under GMP/GMPXX with `runtimeExecution=false`; all eight targets packaged. Candidate artifact `10461816370` / `93f47702e3919eff0b5503acd7506fbdf661477b6b55b91a0f29fc5a98be2358`; log `10461716532` / `4ff36bd4421b7baf7a6d99187fd1be491a0a8bb94b969ec1885f8ccaa7b498fc`; source archive `79ea26c2f9faf9499e33db02c65cba04b47f3a64eeb35b0c4c421fcf45c50afe`; 28-entry manifest `ef128c01e17db2eebb78e7e92722f732af040d8a6862cda9b24f9e5969ca6dbf`. Selector425/first424 remain exact; no selector426. No runtime credit is claimed; accepted runtime authority remains TB9 Review package `10455353524`; accounting remains **49 / 14 / 35**, debt **5**. Exact next is `M4-CP-SCALE-TB10-EXEC`, then mandatory Review.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB9-REV`: corrected S4 prerequisite accepted; package `10455353524` promoted
 
 Runtime-free independent Review re-opened CB10 candidate `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`, TB9 run/job `35121594986 / 104880514495`, result/log artifacts `10458072304 / 10458461955`, nested evidence and semantic source. Package manifest/source/GMP authority, the 1304-entry nested evidence manifest, selector425/prefix hashes, all 425 process rows/owners and immutable postflight independently reverified.
