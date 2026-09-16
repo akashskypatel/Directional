@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-CB11
+purpose=apply durable closeout documentation patch
+patch_sha256=1c6d63989991e20f64bc3ec9eb80009f746310f8db277d67052e7ce727bfa5c1
+base_sha=9257fbf93796dfa5a13a6a15a2cc02106a1be1c3
