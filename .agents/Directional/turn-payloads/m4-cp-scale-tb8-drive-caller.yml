@@ -1,4 +1,4 @@
-name: M4 CP SCALE TB8 Drive Patch Apply
+name: M4 CP SCALE TB8 Drive Closeout Patch Apply
 on:
   push:
     branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
@@ -16,17 +16,17 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp-scale-tb8-drive-apply
+      label: m4-cp-scale-tb8-drive-closeout-apply
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1u7TThT4cYSVsyAHP6feFlQbiL7sWqkCX
-      patch_sha256: ea5a0ea339801372bec772434b168620ceaf4388b81b7cf4743e34aac1a268cf
+      file_id: 1BXnhkYG90mg2m3NF1ojpZZF3cUSTSAdH
+      patch_sha256: c9517d4f8726f6c165ed5e2714b71708c1851bb1383e3f600e4821373c56dfb9
       base_sha: 753217d55abacb64bc4b7b6d58194dbb63e8cdf4
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'test: prepare M4 CP SCALE TB8 artifact-only runtime'
+      commit_message: 'docs: close M4 CP SCALE TB8 execution'
       retention_days: 14
     secrets: inherit
