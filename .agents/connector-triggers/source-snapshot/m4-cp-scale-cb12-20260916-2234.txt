@@ -1,0 +1,3 @@
+M4-CP-SCALE-CB12 source snapshot trigger
+parent_authority=4371687e3ca30efbb925b076b6e627da67de0ebc
+purpose=exact source snapshot before CB12 publication work
