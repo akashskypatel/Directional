@@ -196,3 +196,54 @@ is the one exact next-turn plan.
 | Turn boundary held | Review remained runtime-free; no product/test/fixture/selector/benchmark/build-source mutation. |
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** — no product/test/fixture/build or selector mutation; all tracked selector hashes and durable markers passed. |
 | Pushed to origin, branch in sync | Closeout requires the configured Drive/GitHub apply push plus post-push branch readback before turn termination; final confirmation is recorded without embedding the containing commit hash. |
+
+---
+
+## 11. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, no correction.** Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the S3 non-vacuity construction is the strongest in this sequence
+
+The frozen constraint entering this turn was that only equality of the complete exact state
+`(sourceFace, branch, incomingCarrier, entryPoint)` may authorize limit-cycle credit, with budget, proximity and
+combinatorial substitutes prohibited. §4 satisfies it in terms, and goes further than a single falsifier:
+
+- **every field of the composite key is individually load-bearing** — one-at-a-time tampering of `sourceFace`,
+  `branch`, `incomingCarrier` and `entryPoint` each prevents credit until the original complete state repeats,
+  which is the published `loadBearingTamperCount=4`;
+- the `differentExactEntry=Advanced` subject isolates the subtlest component: same face, branch and carrier with a
+  different exact entry **advances** rather than terminating, so `entryPoint` cannot be dropped silently;
+- both backstops keep **distinct** typed outcomes — `combinatorialRecurrence=TraceCombinatorialRecurrenceExceeded`
+  and step budget → `TraceStepBudgetExhausted` — so neither can be mistaken for limit-cycle credit;
+- §4 records that no tolerance, epsilon, wall-clock, length or proximity rule enters semantic cycle authority, and
+  that CB7 changed **publication only**, leaving the guard's precedence order intact.
+
+Applying the mutate-and-re-solve test to each field of a composite key, rather than to the key as a whole, is the
+right generalisation of `LESSONS.md` 171 and worth citing as precedent when a future gate turns on a tuple.
+
+### V2 — mechanics re-derived
+
+Selector424 re-hashes to `f202a1720c0a5288…`, unchanged, and the promoted package re-proved the full accepted
+prefix at **424/424** — the correct basis for promotion, not the focused S3 result. The declared row425 identity
+`M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` exists in source at
+`tests/FieldAlignedCurveNetworkTests.cpp:14478` with exactly that suite and name, so CB8 has no name drift to hit.
+The pre-declared ownership `30 / 279 / 75 / 41` sums to **425**, consistent with a single producer-owned append.
+
+### V3 — the obligation split is correct, and the pre-declaration is a strong control
+
+Discharging `M4-CP-SCALE-DEFN-OBS-02` while withholding cumulative credit could have left the gate untracked —
+a semantic obligation closed with nothing owning the missing selector row. It does not, because
+`M4-CP-SCALE-TB6-REV-OBS-01` is opened in the same breath as a publication/acceptance obligation, explicitly
+non-defect, discharged only by a fresh immutable selector425 **425/425** plus Review. The semantic question (does
+the witness exist and prove the contract) and the gating question (is it in the required-green set) are separated
+cleanly, and neither is allowed to stand in for the other.
+
+Worth recording as practice: this Review **pre-commits selector425's exact SHA-256 and expected owner census
+before CB8 builds it**. That makes the publication turn falsifiable against a target fixed in advance rather than
+self-reported after the fact — the same discipline as stating falsifiers before a build, applied at byte level to
+an artifact. Any drift in CB8's output now fails against a number this Review already wrote down.
+
+CP-SCALE remains correctly open: S3 joins S2 as semantically proved-but-ungated, while S1 calibration, the S2
+arrival exact fallback, S4 and S5 remain separately owned. `DEFN-OBS-04` again restates the durable S5 rule in
+terms — genus-1 receives zero credit — and `TB2-REV-OBS-02` keeps its scope bound, explicitly *not* an S3 owner.

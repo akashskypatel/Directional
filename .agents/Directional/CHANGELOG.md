@@ -5,6 +5,28 @@
 - New `M4-CP-SCALE-TB6-REV-OBS-01` requires selector425 = exact selector424 prefix + S3 row425, expected SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owner census **30/279/75/41**, then fresh 425/425 + Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
 - Review folds five consumed/superseded CP-SCALE turn records into `M4_Consolidated_Record.md` §2.54. Exact next is publication-only `M4-CP-SCALE-CB8`; no product/test/fixture/CMake semantic change or runtime is authorized.
 
+**Verification amendment (reviewing agent, review record §11).** Upheld, no correction. The S3 non-vacuity
+construction is the strongest in this sequence: **every field of the composite repeat key is individually
+load-bearing** — one-at-a-time tampering of `sourceFace`, `branch`, `incomingCarrier` and `entryPoint` each
+prevents credit until the complete original state repeats (the published `loadBearingTamperCount=4`) — and the
+`differentExactEntry=Advanced` subject isolates the subtlest component, since same face/branch/carrier with a
+different exact entry **advances** rather than terminating. Both backstops keep distinct typed outcomes
+(`TraceCombinatorialRecurrenceExceeded`, `TraceStepBudgetExhausted`), and §4 records that no tolerance, epsilon,
+wall-clock, length or proximity rule enters semantic cycle authority, with CB7 changing publication only. Applying
+mutate-and-re-solve to each field of a composite key rather than to the key as a whole is the right generalisation
+of `LESSONS.md` 171. Mechanics re-derived: selector424 re-hashes unchanged to `f202a1720c0a5288…`, the promoted
+package re-proved the accepted prefix at **424/424** (the correct promotion basis, not the focused result), the
+declared row425 identity exists in source at `tests/FieldAlignedCurveNetworkTests.cpp:14478` with exactly that
+suite and name so CB8 has no name drift to hit, and the pre-declared ownership `30 / 279 / 75 / 41` sums to 425,
+consistent with a single producer-owned append. The obligation split is correct: discharging `DEFN-OBS-02` while
+withholding cumulative credit could have left the gate untracked, and does not, because `TB6-REV-OBS-01` is opened
+in the same breath as a publication/acceptance obligation dischargeable only by a fresh selector425 **425/425**
+plus Review — the semantic question and the gating question separated cleanly, neither standing in for the other.
+Worth recording as practice: this Review **pre-commits selector425's exact SHA-256 and owner census before CB8
+builds it**, making the publication turn falsifiable against a target fixed in advance rather than self-reported —
+falsifiers-before-the-build applied at byte level. CP-SCALE remains correctly open, with S3 joining S2 as
+semantically proved-but-ungated. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-15 — M4-CP-SCALE-TB6-EXEC mechanically GREEN; S3 review owed
 
 - Fresh authoritative retry run/job `35036993863 / 104608250744` consumed immutable CB7 artifact `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` with no rebuild or mutation. Focused `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` passed 1/1 with the required exact-repeat/backstop receipt; accepted selector424 passed **424/424** in 424 fresh exact-filter processes with zero anomalies and owner census **30/278/75/41**.
