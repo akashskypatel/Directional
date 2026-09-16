@@ -1,0 +1,4 @@
+# M4-CP-SCALE-TB7-EXEC post-correction temporary-state cleanup
+.agents/connector-triggers/m4-cp-scale-tb7-closeout-drive.txt
+.agents/connector-triggers/m4-cp-scale-tb7-schema-validate.txt
+.agents/Directional/turn-payloads/m4-cp-scale-tb7-exec-caller.yml
