@@ -1,25 +1,33 @@
-## 2026-09-16 — `STATUS` beacon: exact format frozen for both agents
+## 2026-09-16 — `STATUS` beacon: minimal three-field format frozen for both agents
 
 User instruction 2026-09-16: both the Review agent and the Implementation agent must maintain a `STATUS` file at
-repository top level, with the exact format documented in the review and handoff policies.
+repository top level, and it must be **explicitly minimal** to exactly this format:
 
-The file already existed carrying four lines — turn, status, successor and delimiters. Reviewed and extended to a
-twelve-field schema covering the facts every turn in this sequence has actually needed to look up: turn id, **role**
-(the two agents share one file), date, status, a one-line verdict, the accepted package, the accepted selector with
-its count **and full SHA-256**, stable accounting with debt, the blocking obligation, the turn boundary, and the
-exact successor. The selector digest is what makes prefix drift detectable from the beacon alone.
+```
+---TURN_STATUS---
+Turn: <TURN_ID>
+Status: <COMPLETE|IN_PROGRESS|BLOCKED>
+Successor: <TURN_ID|UNKNOWN>
+---END_TURN_STATUS---
+```
 
 The canonical schema and its binding rules are frozen as `Durable_Handoff_Policy.md` item 15 — the document both
 agents read at end of turn. `REVIEW_TURN_POLICY.md` adds the Review-side duty and a closeout row that **reference**
 that item rather than restating the schema, so the two cannot drift apart; `ORIENTATION.md` gains a one-line pointer
 so a cold-start agent finds the beacon at all.
 
-Rules worth noting, each drawn from a defect observed in this session: exactly one block, overwritten and never
-appended; every field present every turn with `n/a — <reason>` rather than a blank, so a missed duty shows as a
-missing line; written before the turn's final commit so it lands with the work it describes; **no commit hash and no
-digest of `STATUS` itself**, because a file cannot attest to the commit containing it — the correction already
-applied to the review closeout row and to the `EVIDENCE_SHA256SUMS` self-entry; and `STATUS` is explicitly a beacon,
-not authority, so no fact may live only there and `ORIENTATION.md`/the tracker win any disagreement.
+Binding rules: exactly these three fields in this order between these delimiters, with **no fields added** — accepted
+package, selector digests, accounting, verdicts, blockers and boundaries all have authoritative homes already, and a
+second copy here would drift; `Status` is one of `COMPLETE`, `IN_PROGRESS`, `BLOCKED` and `Successor` is a turn id or
+`UNKNOWN`; exactly one block, overwritten and never appended; written before the turn's final commit so it lands with
+the work it describes; **no commit hash and no digest of `STATUS` itself**, since a file cannot attest to the commit
+containing it; and `STATUS` is a beacon, not authority — `ORIENTATION.md` and the tracker win any disagreement, with
+the next turn repairing `STATUS` rather than the reverse. A documentation or control-plane turn does not invent a
+turn id; it leaves `Turn` and `Successor` describing the last substantive turn.
+
+An initial draft of this entry specified a twelve-field schema carrying accepted package, selector digest, accounting,
+verdict, blocker and boundary. That was over-built and is withdrawn: it duplicated facts that already have owners,
+which is the drift this file is meant to avoid.
 
 Runtime-free; no product, test, fixture, selector, benchmark or build source touched. Accepted authority remains
 package `10425344367` / selector425 **425/425**; accounting unchanged at **49 / 14 / 35**, debt **5**.

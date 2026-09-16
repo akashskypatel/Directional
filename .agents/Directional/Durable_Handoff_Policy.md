@@ -23,43 +23,32 @@ At the end of every turn:
     definitions, policies, closure records or selector files. Authority: user instruction 2026-09-03, first
     applied at `M3-CP4c-3-TB18-REV`.
 
-15. **`STATUS` at repository top level is maintained by BOTH the Review agent and the Implementation agent,
-    at the end of every turn, in exactly the format below.** It is a cold-read beacon: one screen that tells the
-    next agent, human or otherwise, what the last turn decided and what is authoritative right now.
+15. **`STATUS` at repository top level is maintained by BOTH the Review agent and the Implementation agent, at
+    the end of every turn, in exactly this format and no other.** It is deliberately minimal — a three-value
+    beacon telling the next agent which turn last ran, whether it finished, and what comes next.
 
     ```
     ---TURN_STATUS---
-    Turn: <turn id, e.g. M4-CP-SCALE-CB10>
-    Role: Review | Implementation
-    Date: <YYYY-MM-DD> UTC
-    Status: COMPLETE | HALTED | REJECTED | BLOCKED
-    Verdict: <one line: what this turn decided, in plain words>
-    Accepted-Package: <artifact id of the accepted runtime authority>
-    Accepted-Selector: <selector filename> <n>/<n>
-    Accepted-Selector-SHA256: <full 64-hex digest>
-    Accounting: <events>/<categories>/<recurrences> debt <n>
-    Blocking: <obligation id + one clause, or "none">
-    Boundary: <runtime-free | compile+package | artifact-only runtime>; <mutation summary>
-    Successor: <exact next turn id>
+    Turn: <TURN_ID>
+    Status: <COMPLETE|IN_PROGRESS|BLOCKED>
+    Successor: <TURN_ID|UNKNOWN>
     ---END_TURN_STATUS---
     ```
 
     Rules, all binding:
 
-    - **Exactly one block. Overwrite it; never append.** A second block, or chronological history, defeats the
-      purpose and will drift.
-    - **Every field appears every turn.** A field that does not apply is answered `n/a — <reason>`; it is never
-      blank and never omitted. A missing line is a missed duty, visible as a missing line.
+    - **Exactly these three fields, in this order, between these delimiters.** Do not add fields. Accepted
+      package, selector digests, accounting, verdicts, blockers and boundaries all have authoritative homes
+      already; duplicating them here creates a second copy that drifts.
+    - `Status` is one of `COMPLETE`, `IN_PROGRESS`, `BLOCKED`. `Successor` is a turn id, or `UNKNOWN` when the
+      next turn genuinely is not yet determined.
+    - **Exactly one block. Overwrite it; never append.**
     - **Write it before the turn's final commit**, so `STATUS` lands in the same commit as the work it describes.
-    - **No commit hash, and no digest of `STATUS` itself.** A file cannot attest to the commit that contains it;
-      attempts produce corrective churn rather than evidence. `Accepted-Selector-SHA256` is a digest of a *different*
-      file and is therefore fine.
+    - **No commit hash and no digest of `STATUS` itself.** A file cannot attest to the commit that contains it.
     - **`STATUS` is a beacon, not authority.** `ORIENTATION.md`, `Regression_Root_Cause_Tracker.md`, the frozen
-      definitions and the selector files remain authoritative. **No fact may live only in `STATUS`.**
-    - **On disagreement the authoritative document wins**, and the next turn repairs `STATUS` rather than the
-      reverse.
-    - Keep the trailing newline, and keep `Verdict` and `Blocking` to one line each. If a turn needs more than a
-      line, the extra belongs in the owning record.
+      definitions and the selector files remain authoritative; where `STATUS` disagrees, they win and the next
+      turn repairs `STATUS`.
+    - Keep the trailing newline.
 
     A documentation, policy or control-plane turn does not invent a turn id: it leaves `Turn` and `Successor`
     describing the last substantive turn, consistent with rule 4 above.
