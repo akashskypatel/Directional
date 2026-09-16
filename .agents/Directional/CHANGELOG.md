@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-CB9`: S4 prerequisite independent oracle compiles/packages GREEN
+
+- Semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf` changes only `tests/FieldAlignedCurveNetworkTests.cpp`. New diagnostic `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral` independently derives component/Betti/required-face topology on a production-reachable empty-cut torus state and carries positive, adversarial, enumeration and decision-neutrality controls. Product cut selection/final certificate/CMake/fixture/selector semantics are unchanged.
+- Static negative is `V/E/F=18/30/18`, `c=1`, `b1=13`, required faces `12`; accepted positive is `72/76/4`, `b1=5`, required faces `4`. The covered class is explicitly `BettiFaceCountMismatch`; no universal S4 theorem or production early rejection is claimed.
+- Authoritative GMP/GMPXX compile run/job `35051977240 / 104654125358` is GREEN with `runtimeExecution=false`. Candidate artifact `10428779988` / provider SHA-256 `7470947abba0ca2dc1e8bccd0caba8efdaa53abeaa3b1ae5130a550a3b462bd6`; log `10428819823` / `cc7c783f9aa3a777527d2e35a4c560fea458de8c31672073bb64ce00448fd4f0`; packaged source `cd0d0c7e...de55`; 26-entry root manifest `e3423161...818b` verifies completely. Generated link evidence contains both GMPXX and GMP; exact backend is GMP.
+- Selector425 remains exactly 425 unique rows at `e0e0f394...790e0b`; no selector426. No runtime regression is adjudicated, so stable accounting stays **49 / 14 / 35**, debt **5**, and accepted runtime authority remains TB7 package `10425344367`.
+- Exact next is immutable `M4-CP-SCALE-TB8-EXEC`: focused S4 prerequisite **1/1** plus **425 additional** fresh selector425 exact-filter processes and immutable postflight, followed by mandatory Review.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB7-REV`: selector425 promoted; S3 cumulative credit accepted
 
 - Independent Review verifies candidate package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce`, TB7 result/log `10426872680 / 10427326246`, nested evidence `436ef272...1c4d` and 1298-entry manifest `5639b843...14622` from immutable bytes.

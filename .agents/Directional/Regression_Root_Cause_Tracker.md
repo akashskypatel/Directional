@@ -1,3 +1,10 @@
+## M4-CP-SCALE-CB9 — **S4 PREREQUISITE ORACLE COMPILE GREEN / RUNTIME UNADJUDICATED / NON-STABLE / TB8 NEXT**
+
+- CB9 changes only `tests/FieldAlignedCurveNetworkTests.cpp` at semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`. It adds `M4CPScaleS4Prereq.IndependentTopologyOracleIsReachableAndDecisionNeutral`, an independent exact component/Betti/required-face oracle with a production-reachable empty-cut torus negative and positive/adversarial/enumeration/decision-neutral controls. Product topology decisions and the final certificate remain unchanged.
+- Authoritative compile/package run/job `35051977240 / 104654125358` is GREEN under GMP/GMPXX with `runtimeExecution=false`; candidate artifact `10428779988` / source archive `cd0d0c7e...de55`; selector425 remains byte-identical at `e0e0f394...790e0b` / 425 unique rows.
+- `M4-CP-SCALE-DEFN-OBS-03` remains **OPEN / PREREQUISITE COMPILED / RUNTIME + REVIEW OWED / NON-STABLE**. CB9 supplies no selector/gate credit and does not authorize production early rejection. Falsifier remains artifact-only focused execution + cumulative selector425 + independent Review.
+- No Directional runtime ran and no accepted PASS->RED transition exists, so no stable event/category/recurrence changes. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**. Accepted runtime authority remains package `10425344367` / selector425 **425/425**. Exact successor: `M4-CP-SCALE-TB8-EXEC`.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB7-REV`: selector425 promoted; S3 cumulative observation discharged
 
 - Independent Review re-opens immutable CB8 package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce`, TB7 result/log artifacts `10426872680 / 10427326246`, nested evidence ZIP `436ef2722...1c4d`, and 1298-entry manifest `5639b843...14622`; all hashes/manifests re-verify.

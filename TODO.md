@@ -2,11 +2,11 @@
 
 Last updated: 2026-09-16 UTC
 
-## Current turn — M4-CP-SCALE-CB9
+## Current turn — M4-CP-SCALE-TB8-EXEC
 
 - [x] `M4-CP-SCALE-TB7-REV`: independently re-opened CB8 package plus TB7 result/log/nested evidence, re-derived selector425/prefix/ownership/all 425 raw outcomes and immutable postflight, promoted package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` under selector425 **425/425**, accepted S3 cumulative credit, and discharged `M4-CP-SCALE-TB6-REV-OBS-01`.
-- [ ] `M4-CP-SCALE-CB9`: author S4 prerequisite independent topology oracle + production-reachable negative/positive/adversarial/relabeling controls without changing product topology decisions; selector425 stays frozen and no selector426 is published; compile/package only.
-- [ ] If CB9 is GREEN within scope, `M4-CP-SCALE-TB8-EXEC`: immutable artifact-only focused S4-prerequisite process + 425 fresh selector425 processes, then mandatory `M4-CP-SCALE-TB8-REV`.
+- [x] `M4-CP-SCALE-CB9`: authored the test-side independent exact Betti/face-count oracle and production-reachable negative/positive/adversarial/enumeration/decision-neutral controls at source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`; compile/package `10428779988` is GREEN with GMP/GMPXX and no runtime; selector425 remains frozen.
+- [ ] `M4-CP-SCALE-TB8-EXEC`: consume immutable candidate `10428779988`; run the focused S4 prerequisite once plus 425 fresh selector425 processes with exact immutable postflight, then mandatory `M4-CP-SCALE-TB8-REV`.
 
 ## Purpose
 
@@ -38,11 +38,11 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-CB9` (S4 independent-oracle/reachability prerequisite)
+## Current focus — `M4-CP-SCALE-TB8-EXEC` (S4 prerequisite artifact-only runtime)
 
 Current accepted runtime authority is package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` under selector425 **425/425** (`e0e0f394...790e0b`), exact selector424 prefix `f202a172...466ca`, owner census **30/279/75/41**. TB7 Review independently proved cumulative S3 and discharged `M4-CP-SCALE-TB6-REV-OBS-01`.
 
-CB9 owns only the S4 prerequisite required by `M4-CP-SCALE-DEFN-OBS-03`: independently derive exact incremental connectivity/Betti impossibility from authoritative candidate topology state and prove a production-reachable negative against the unchanged final actual-embedded disc/cellularity certificate, with positive/adversarial/relabeling controls. Product cut selection/final certificate behavior, fixtures, selector425 and accepted semantics remain frozen. No selector426 and no runtime in CB9. If the needed state is not read-only observable or the negative is not independently reachable, STOP and return to Review.
+CB9 completed the S4 prerequisite test authority at semantic source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`: one producer-owned diagnostic independently derives exact Betti/face-count impossibility on the production-reachable empty-cut torus state and carries positive/adversarial/enumeration/decision-neutral controls. Candidate artifact `10428779988` is compile/package GREEN with GMP/GMPXX and no runtime. TB8 now owns immutable artifact-only execution: focused **1 process** plus selector425 **425 fresh processes**. Product cut selection/final certificate behavior, fixtures and selector425 remain frozen; no selector426 or S4 acceptance before Review.
 
 Stable accounting remains **49 / 14 / 35**, debt **5**. S1 calibration, TB2 helper audit, S2 arrival exact fallback, S4 production activation and S5 genus>=2 remain open.
 
@@ -83,7 +83,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` / selector425 **425/425** is accepted current runtime authority after TB7 Review. Exact next `M4-CP-SCALE-CB9` establishes the independent S4 oracle/reachability prerequisite without production semantic change or selector append; S1 remains diagnostic/non-gating, S2 arrival remains blocked, S4 production activation and S5 remain open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` / selector425 **425/425** is accepted current runtime authority after TB7 Review. Exact next `M4-CP-SCALE-TB8-EXEC` executes the compiled S4 prerequisite plus fresh selector425 without rebuild or mutation; S1 remains diagnostic/non-gating, S2 arrival remains blocked, S4 production activation and S5 remain open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -123,4 +123,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB7-REV` promotes package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` as current M4 runtime authority under selector425 **425/425** and discharges `M4-CP-SCALE-TB6-REV-OBS-01`; S3 is cumulatively accepted. CP-SCALE remains OPEN: S1 is diagnostic/non-gating, S2 arrival remains blocked, S4 independent oracle/reachability + production activation and S5 genus>=2 remain open. Exact next is **`M4-CP-SCALE-CB9`** under the frozen S4 prerequisite plan; selector425 stays frozen and no runtime is authorized in CB9. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB7-REV` package `10425344367` / source `01b1124af094044e32d6887ff0615881333d12ce` remains current M4 runtime authority under selector425 **425/425** with S3 cumulatively accepted. CB9 has now compiled/package GREEN the S4 prerequisite candidate `10428779988` / source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf` without production or selector change. CP-SCALE remains OPEN: S1 is diagnostic/non-gating, S2 arrival remains blocked, S4 prerequisite runtime/Review + production activation and S5 genus>=2 remain open. Exact next is **`M4-CP-SCALE-TB8-EXEC`** on immutable candidate `10428779988`, followed by mandatory Review. PR #8 remains open, draft, and unmerged.
