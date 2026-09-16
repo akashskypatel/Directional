@@ -1,0 +1,5 @@
+M4-CP-SCALE-TB7-REV durable closeout Drive apply trigger.
+Patch file ID: 16bzw-BB9_yUzIjhgAA1rrzUX23okTRup
+Patch SHA-256: f85787713ffc5098c5af437c96fea63b73d2bb9044ffd29ebe5b38742d20413d
+Base authority: 5d6dcbea01c799b02474324a4d9cb2d111809ac1
+Retry: 1
