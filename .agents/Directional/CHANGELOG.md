@@ -27,6 +27,22 @@ producer row above selector425. `TB10-REV-OBS-01` owns the publication chain, so
 rather than quietly fixed because it is the first test of that rule and it failed on the very next turn, which
 argues for the rule rather than against it. Accounting holds at **49 / 14 / 35**, debt **5**.
 
+**Correction (reviewing agent).** The verification amendment above reported a `STATUS` policy violation and
+recorded the beacon as "restored" by deleting `Started at`, `Resumed at` and `Ended at`. **That finding is
+withdrawn in full.** Those three timestamp fields are user-authorized (2026-09-16), and the turn that added them
+updated all three governing documents in the same change — `Durable_Handoff_Policy.md` item 15 to a six-field
+canonical format with a full entry/resume/closeout lifecycle, plus `REVIEW_TURN_POLICY.md` and `ORIENTATION.md`.
+Nothing was violated; beacon and policy moved together.
+
+This reviewer asserted the violation from remembered policy text instead of re-reading item 15 as committed — the
+failure `REVIEW_TURN_POLICY.md` §2.1 exists to prevent, applied to a policy rather than to evidence. Two harms
+followed: three authorized fields were deleted from `STATUS`, and item 15 was briefly overwritten with a thinner
+version lacking the lifecycle rules. Both are repaired — item 15 restored verbatim from the committed version, and
+`STATUS` rewritten with all six fields, `Started at` preserved from the original entry, `Resumed at` set to this
+reviewer's resume, `Ended at` refreshed at closeout. Review record §12 V3 carries the withdrawal. Nothing in the
+substantive TB10 adjudication changes: the §5 proof, the arithmetic, the promotion basis and the accounting all
+stand as recorded.
+
 ## 2026-09-16 — `STATUS` beacon lifecycle timestamps + entry/resume maintenance
 
 User instruction 2026-09-16 supersedes the earlier three-field-only maintenance rule. The repository-root beacon

@@ -227,23 +227,28 @@ focused result leaves nothing untracked. The `M4-CP-SCALE-TB9-REV` §12 V4 note 
 an id is now moot for S4 specifically — CB11 executed as planned and the remaining gap is publication, which
 OBS-01 owns by id. The general guidance stands for the next surface in this position.
 
-### V3 — POLICY CORRECTION: `STATUS` had drifted from the frozen format
+### V3 — WITHDRAWN: there was no `STATUS` drift, and this reviewer caused the only defect
 
-`STATUS` arrived at this Review carrying six fields — the frozen three plus `Started at`, `Resumed at` and
-`Ended at`. That violates the format the user specified on 2026-09-16 and `Durable_Handoff_Policy.md` item 15,
-which states *"Exactly these three fields, in this order, between these delimiters. Do not add fields."*
+This section originally reported that `STATUS` had drifted from a frozen three-field format by carrying
+`Started at`, `Resumed at` and `Ended at`, and recorded that the beacon had been "restored" by deleting them.
+**That finding was wrong and is withdrawn in full.**
 
-`STATUS` is restored to:
+The three timestamp fields are **user-authorized** (2026-09-16), and the turn that added them also updated all
+three governing documents in the same change — `Durable_Handoff_Policy.md` item 15 to a six-field canonical format
+with a full entry/resume/closeout lifecycle, plus the corresponding lines in `REVIEW_TURN_POLICY.md` and
+`ORIENTATION.md`. Nothing was violated; the beacon and its policy moved together, exactly as they should.
 
-```
----TURN_STATUS---
-Turn: M4-CP-SCALE-TB10-REV
-Status: COMPLETE
-Successor: M4-CP-SCALE-CB12
----END_TURN_STATUS---
-```
+This reviewer asserted the violation from remembered policy text rather than re-reading item 15 as committed —
+the precise failure `REVIEW_TURN_POLICY.md` §2.1 exists to prevent, applied here to a policy instead of to
+evidence. Two concrete harms followed: three authorized fields were deleted from `STATUS`, and item 15 was briefly
+overwritten with a thinner version lacking the lifecycle rules (`Started at` preserved across resumes, `Resumed at`
+empty on first attempt, `Ended at` empty unless `COMPLETE`, successor advancement creating a new turn).
 
-The content was accurate; only the schema was wrong, so nothing is lost. Recorded rather than quietly fixed
-because it is the first test of that rule and it failed on the very next turn — which is the argument for the rule
-rather than against it. Turn timing is available from git and from the owning report; if the user wants it in the
-beacon, that is a format change for them to authorize, not one an agent adds in passing.
+Both are repaired. Item 15 is restored verbatim from the committed version, and `STATUS` carries the six fields
+with `Started at` preserved from the original entry, `Resumed at` set to this reviewer's resume of the turn, and
+`Ended at` refreshed at closeout — which is what the lifecycle rules require for a `COMPLETE` turn that was
+resumed rather than superseded.
+
+Recorded rather than silently corrected because the withdrawn claim was published in the record and the changelog,
+and because the lesson is worth more than the embarrassment: a reviewer checking conformance to a policy must read
+the policy at its committed state, not from memory of having written it.
