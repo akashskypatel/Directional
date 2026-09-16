@@ -1,3 +1,11 @@
+## 2026-09-16 — `M4-CP-SCALE-TB10-REV`: S4 product accepted for publication; package `10461816370` promoted
+
+Runtime-free Review independently reopened CB11 package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c`, TB10 run/job `35135187381 / 104925730218`, result/log artifacts `10463670805 / 10464360210`, nested evidence, semantic source and selector425. Package/source/GMP authority, 28-entry package manifest, 1304-entry nested evidence manifest, all 425 selector-process rows/owners and immutable postflight independently reverified.
+
+Review re-derived the fixed-candidate counting domain directly from exact source paths and local planar complement stitching. The one-way safety theorem is explicit: if `c != s`, final cellularity already fails; if `c == s`, a successful final certificate would require `F_observed = chi + E - V = chi - s + b1 = F_required`, so `F_observed != F_required` cannot disagree with a successful final certificate. Non-reject still runs the unchanged final certificate. The focused runtime is non-vacuous: accelerated/reference full-certification attempts are `1/2`, with one genuine early reject/bypass, while accepted cuts, pre-existing certificate fields, bindings, semantic digest and provenance digest remain equal.
+
+Review **PROMOTES package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under unchanged selector425 `425/425`** and accepts `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` **for publication**. Cumulative S4 selector credit is withheld because the focused identity is outside selector425. `M4-CP-SCALE-TB10-REV-OBS-01` is opened as a non-defect publication obligation. Exact next `M4-CP-SCALE-CB12` must publish selector426 as exact selector425 prefix plus the S4 row; expected selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/280/75/41**, compile/package only. Fresh TB11 + Review are mandatory before cumulative S4 credit. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-16 — `STATUS` beacon lifecycle timestamps + entry/resume maintenance
 
 User instruction 2026-09-16 supersedes the earlier three-field-only maintenance rule. The repository-root beacon
