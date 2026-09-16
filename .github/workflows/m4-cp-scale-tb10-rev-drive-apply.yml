@@ -1,0 +1,45 @@
+name: M4 CP SCALE TB10 Review Closeout Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb10-rev/apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb10-rev-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb10-rev-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-scale-tb10-rev-drive-apply.yml
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1_j8BakhpB6KtQEDPYpHoG4qrskUvrsBy
+      patch_sha256: 7bda4d233c9ed70e3ed82456f8b84d6dd165131f43b46f3795746638ec840413
+      base_sha: 79733053d92a8555f9d72c05628e9130a6510097
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: docs: close M4 CP SCALE TB10 review
+      retention_days: 14
+    secrets: inherit
