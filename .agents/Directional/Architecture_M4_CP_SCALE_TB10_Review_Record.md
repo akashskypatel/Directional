@@ -180,3 +180,70 @@ The current role set retains this Review record, the current TB10 runtime report
 | review_check.py boundary | PASS; no forbidden Review-turn source/test/fixture/selector/build mutation in the closeout diff |
 | `STATUS` lifecycle maintained | `M4-CP-SCALE-TB10-REV`; `Started at` preserved `2026-09-16T20:18:14Z`; latest `Resumed at` maintained on continuation; final COMPLETE beacon sets exact successor and `Ended at` after all docs/cleanup |
 | Pushed to origin, branch in sync | final closeout verifies working-branch push/head before COMPLETE beacon; no alternate ref or force push is used |
+
+---
+
+## 12. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Accounting holds at **49 / 14 / 35**, debt **5**. One policy correction, applied.
+
+### V1 — the earlier-never-different proof is correct
+
+§5 is the substantive content of this turn, and it establishes the S4 safety contract rather than asserting it.
+Re-derived here and confirmed step by step:
+
+- the final certificate can prove embedded cellularity only when `c = s`; if `c ≠ s` it already fails, so the
+  interesting case is `c = s`;
+- substituting, `b1 = E − V + s`, hence
+  `F_required = χ − s + b1 = χ − s + (E − V + s) = χ + E − V` — the source-component term cancels exactly;
+- if the final certificate could succeed, every complement component is a disc, the embedding is cellular, and
+  Euler's formula gives `V − E + F = χ`, i.e. `F_observed = χ + E − V = F_required`;
+- therefore `F_observed ≠ F_required` **implies** the unchanged final certificate cannot succeed.
+
+That is soundness for the early rejector — it can only reject what the final authority would also reject — which
+is exactly the frozen "may reject earlier, never differently" contract. The converse is explicitly **not** claimed,
+and correctly so: matching face counts are necessary but not sufficient, since each component must also actually
+be a disc.
+
+The earlier fixture numbers corroborate it from both directions. The empty-cut torus and the one-edge adversarial
+state both have `c = 4 ≠ s = 1`, so final certification fails independently of the count; the accepted cut set has
+`c = s = 1` and `F_required = χ + E − V = 0 + 76 − 72 = 4`, agreeing with the `b1`-route value computed at TB9.
+Two formulas, same answer.
+
+### V2 — mechanics and boundary
+
+Selector425 was re-proved on the promoted bytes — contiguous ordinals 1–425, every row one exact identity at exit
+`0` — so promotion rests on the accepted prefix, not the focused S4 result. Withholding cumulative credit while
+accepting the focused contract for publication is the same discipline applied at S2 and S3.
+
+The pre-commitment practice continues and is worth keeping: selector426's exact SHA-256
+`41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` and its expected owner census
+`30 / 280 / 75 / 41` are declared **before** CB12 builds it. That census sums to 426 and is exactly one
+producer-owned row above selector425's `30 / 279 / 75 / 41`, so a publication turn that disturbed anything else
+would show up in the partition.
+
+`M4-CP-SCALE-TB10-REV-OBS-01` is opened for the publication and cumulative-acceptance chain, so discharging the
+focused result leaves nothing untracked. The `M4-CP-SCALE-TB9-REV` §12 V4 note about S4 product semantics lacking
+an id is now moot for S4 specifically — CB11 executed as planned and the remaining gap is publication, which
+OBS-01 owns by id. The general guidance stands for the next surface in this position.
+
+### V3 — POLICY CORRECTION: `STATUS` had drifted from the frozen format
+
+`STATUS` arrived at this Review carrying six fields — the frozen three plus `Started at`, `Resumed at` and
+`Ended at`. That violates the format the user specified on 2026-09-16 and `Durable_Handoff_Policy.md` item 15,
+which states *"Exactly these three fields, in this order, between these delimiters. Do not add fields."*
+
+`STATUS` is restored to:
+
+```
+---TURN_STATUS---
+Turn: M4-CP-SCALE-TB10-REV
+Status: COMPLETE
+Successor: M4-CP-SCALE-CB12
+---END_TURN_STATUS---
+```
+
+The content was accurate; only the schema was wrong, so nothing is lost. Recorded rather than quietly fixed
+because it is the first test of that rule and it failed on the very next turn — which is the argument for the rule
+rather than against it. Turn timing is available from git and from the owning report; if the user wants it in the
+beacon, that is a format change for them to authorize, not one an agent adds in passing.

@@ -6,6 +6,27 @@ Review re-derived the fixed-candidate counting domain directly from exact source
 
 Review **PROMOTES package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under unchanged selector425 `425/425`** and accepts `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` **for publication**. Cumulative S4 selector credit is withheld because the focused identity is outside selector425. `M4-CP-SCALE-TB10-REV-OBS-01` is opened as a non-defect publication obligation. Exact next `M4-CP-SCALE-CB12` must publish selector426 as exact selector425 prefix plus the S4 row; expected selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/280/75/41**, compile/package only. Fresh TB11 + Review are mandatory before cumulative S4 credit. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
+**Verification amendment (reviewing agent, review record §12).** Upheld. §5's earlier-never-different proof is the
+substantive content and was re-derived step by step: the final certificate can prove embedded cellularity only when
+`c = s`, so substituting gives `b1 = E − V + s` and `F_required = χ − s + (E − V + s) = χ + E − V` with the
+source-component term cancelling exactly; if the final certificate could succeed every complement component is a
+disc, the embedding is cellular, and Euler's formula yields `F_observed = χ + E − V = F_required`. Therefore
+`F_observed ≠ F_required` **implies** the unchanged final certificate cannot succeed — soundness for the early
+rejector, which is exactly the frozen "may reject earlier, never differently" contract — and the converse is
+correctly **not** claimed, since matching counts are necessary but not sufficient. The fixture numbers corroborate
+from both directions: the empty-cut torus and one-edge adversarial state both have `c = 4 ≠ s = 1` so final
+certification fails regardless of count, while the accepted cut set has `c = s = 1` and
+`F_required = 0 + 76 − 72 = 4`, agreeing with the `b1`-route value from TB9 — two formulas, one answer. Mechanics:
+selector425 re-proved on the promoted bytes (contiguous 1–425, every row exit `0`), so promotion rests on the
+accepted prefix rather than the focused S4 result; the pre-commitment practice continues with selector426's SHA-256
+`41f4d559…` and owner census `30 / 280 / 75 / 41` declared before CB12 builds, summing to 426 and exactly one
+producer row above selector425. `TB10-REV-OBS-01` owns the publication chain, so nothing is left untracked.
+**One policy correction applied:** `STATUS` arrived carrying six fields — the frozen three plus `Started at`,
+`Resumed at`, `Ended at` — violating the user's 2026-09-16 instruction and `Durable_Handoff_Policy.md` item 15
+("Do not add fields"). Restored to the three-field form; content was accurate, only the schema was wrong. Recorded
+rather than quietly fixed because it is the first test of that rule and it failed on the very next turn, which
+argues for the rule rather than against it. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-16 — `STATUS` beacon lifecycle timestamps + entry/resume maintenance
 
 User instruction 2026-09-16 supersedes the earlier three-field-only maintenance rule. The repository-root beacon
