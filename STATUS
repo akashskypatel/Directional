@@ -1,0 +1,14 @@
+---TURN_STATUS---
+Turn: M4-CP-SCALE-TB8-REV
+Role: Review
+Date: 2026-09-16 UTC
+Status: COMPLETE
+Verdict: CB9 S4 prerequisite test authority REJECTED — prescribed-sphere 18/30/18 constants transplanted onto a torus negative; test-only correction owed.
+Accepted-Package: 10425344367
+Accepted-Selector: Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt 425/425
+Accepted-Selector-SHA256: e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b
+Accounting: 49/14/35 debt 5
+Blocking: M4-CP-SCALE-DEFN-OBS-03 — S4 test-authority correction, fresh runtime and Review owed before any S4 credit.
+Boundary: runtime-free Review; no product/test/fixture/selector/benchmark/build-source mutation.
+Successor: M4-CP-SCALE-CB10
+---END_TURN_STATUS---
