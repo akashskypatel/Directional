@@ -1,3 +1,22 @@
+## 2026-09-16 — `STATUS` beacon lifecycle timestamps + entry/resume maintenance
+
+User instruction 2026-09-16 supersedes the earlier three-field-only maintenance rule. The repository-root beacon
+now retains the minimal turn/state/successor fields **plus lifecycle timestamps**: `Started at`, `Resumed at`, and
+`Ended at`, all UTC `YYYY-MM-DDTHH:MM:SSZ` when non-empty. `Started at` is set once per turn; `Resumed at` is empty
+on the initial attempt and replaced whenever that same incomplete turn resumes; `Ended at` is empty unless the turn
+becomes COMPLETE, when it is set on the final COMPLETE beacon. Advancing from a COMPLETE beacon to its successor
+is a new turn with a fresh `Started at` and cleared resume/end timestamps.
+
+Maintenance timing is also now explicit: before substantive work, read root `STATUS` and immediately direct-write
+the current entry/resume beacon through the GitHub connector **before every other repository mutation**. This is the
+sole bootstrap exception to the normal policy/read-mode sequence. At normal closeout, finish durable documentation
+and cleanup first; the final COMPLETE beacon is the final repository write of the turn.
+
+Canonical authority is `Durable_Handoff_Policy.md` item 15. `Mandatory_Start_Checklist.md`,
+`Mandatory_End_Checklist.md`, `TOOL_USE_CONSERVATION_POLICY.md`, `REVIEW_TURN_POLICY.md`, and `ORIENTATION.md` now
+point to the same lifecycle. This is policy/control-plane maintenance only; it does not alter product, selector,
+runtime, or stable-accounting authority.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB10-EXEC`: S4 product focus + selector425 mechanically GREEN
 
 Artifact-only Test + Benchmark run/job `35135187381 / 104925730218` consumed immutable CB11 artifact `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c`. Focused `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` passed **1/1** and emitted one valid receipt. Negative `V48/E48/Fobs4,c4,s1,chi0` gives `b1=4`, required/observed `3/4` and reject true; positive `V72/E76/Fobs4,c1,s1,chi0` gives `b1=5`, required/observed `4/4` and reject false. The adversarial one-way implication, reversed enumeration and decision neutrality all passed; product counters record **2 evaluations / 1 early reject / 1 accelerated full certification / 2 reference full certifications / 1 bypass**.
@@ -117,10 +136,10 @@ package `10425344367` / selector425 **425/425**; accounting unchanged at **49 / 
 `STATUS` rule frozen earlier today, this policy turn does not invent a turn id: `STATUS` continues to describe
 `M4-CP-SCALE-TB8-REV` and its successor `M4-CP-SCALE-CB10`.
 
-## 2026-09-16 — `STATUS` beacon: minimal three-field format frozen for both agents
+## 2026-09-16 — `STATUS` beacon: prior three-field format (superseded later 2026-09-16)
 
-User instruction 2026-09-16: both the Review agent and the Implementation agent must maintain a `STATUS` file at
-repository top level, and it must be **explicitly minimal** to exactly this format:
+Historical instruction, superseded by the lifecycle-timestamp guidance recorded above: both the Review agent and
+the Implementation agent maintain a repository-root `STATUS` beacon. The earlier form was:
 
 ```
 ---TURN_STATUS---

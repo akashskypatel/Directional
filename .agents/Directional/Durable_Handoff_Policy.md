@@ -23,34 +23,39 @@ At the end of every turn:
     definitions, policies, closure records or selector files. Authority: user instruction 2026-09-03, first
     applied at `M3-CP4c-3-TB18-REV`.
 
-15. **`STATUS` at repository top level is maintained by BOTH the Review agent and the Implementation agent, at
-    the end of every turn, in exactly this format and no other.** It is deliberately minimal — a three-value
-    beacon telling the next agent which turn last ran, whether it finished, and what comes next.
+15. **`STATUS` at repository top level is maintained by BOTH the Review agent and the Implementation agent at turn entry, resume, blocked/incomplete yield, and completion.** It is a minimal lifecycle beacon, not a second authority record.
 
-    ```
+    At the beginning of a turn, before substantive work, read repository-root `STATUS` if present, determine the current turn, and immediately direct-write the current beacon through the GitHub connector. **This initial beacon write must precede every other repository mutation.** It is the intentional bootstrap exception to the normal start-of-turn policy/read-mode sequence.
+
+    Canonical format:
+
+    ```text
     ---TURN_STATUS---
     Turn: <TURN_ID>
     Status: <COMPLETE|IN_PROGRESS|BLOCKED>
     Successor: <TURN_ID|UNKNOWN>
+    Started at: <UTC_TIMESTAMP>
+    Resumed at: <UTC_TIMESTAMP_OR_EMPTY>
+    Ended at: <UTC_TIMESTAMP_OR_EMPTY>
     ---END_TURN_STATUS---
     ```
 
     Rules, all binding:
 
-    - **Exactly these three fields, in this order, between these delimiters.** Do not add fields. Accepted
-      package, selector digests, accounting, verdicts, blockers and boundaries all have authoritative homes
-      already; duplicating them here creates a second copy that drifts.
-    - `Status` is one of `COMPLETE`, `IN_PROGRESS`, `BLOCKED`. `Successor` is a turn id, or `UNKNOWN` when the
-      next turn genuinely is not yet determined.
-    - **Exactly one block. Overwrite it; never append.**
-    - **Write it before the turn's final commit**, so `STATUS` lands in the same commit as the work it describes.
+    - **Exactly these six fields, in this order, between these delimiters.** Do not add package, selector, accounting, verdict, blocker, boundary, commit, or digest fields; those facts already have authoritative homes.
+    - All non-empty timestamps use UTC exactly as `YYYY-MM-DDTHH:MM:SSZ`.
+    - `Started at` is set once when the turn is first entered and is preserved for the lifetime of that turn.
+    - `Resumed at` is empty on the initial attempt. When the same incomplete turn is resumed, preserve `Started at` and immediately replace `Resumed at` with the current UTC timestamp. A resumed turn doing work is `IN_PROGRESS`; if it must yield blocked again, publish `BLOCKED` before yielding.
+    - `Ended at` is empty unless the turn becomes `COMPLETE`. When publishing the final COMPLETE beacon, preserve `Started at` and the latest `Resumed at`, set `Ended at` to the current UTC timestamp, and set the exact successor or `UNKNOWN` only when the successor genuinely is not yet determined.
+    - If the previous beacon is `COMPLETE` and work advances to its successor, that successor is a **new turn**: set a new `Started at`, clear `Resumed at`, clear `Ended at`, and publish `IN_PROGRESS`. Use the already-frozen successor when one exists; do not invent a different turn id.
+    - If an incomplete turn is merely resumed, keep the same `Turn`; do not advance to its successor.
+    - **Exactly one block. Overwrite it; never append.** Keep the trailing newline.
+    - The entry/resume beacon is always a direct GitHub-connector write even when later coherent edits use snapshot/patch transport. This bootstrap write is not implementation, build, test, benchmark, or runtime evidence.
+    - On normal COMPLETE closeout, finish durable documentation and cleanup first, then publish the COMPLETE beacon as the **final repository write of the turn**. No later repository mutation may occur in that turn.
+    - When yielding an incomplete turn, rewrite the beacon after the turn's last repository mutation with `IN_PROGRESS` or `BLOCKED` and leave `Ended at` empty.
     - **No commit hash and no digest of `STATUS` itself.** A file cannot attest to the commit that contains it.
-    - **`STATUS` is a beacon, not authority.** `ORIENTATION.md`, `Regression_Root_Cause_Tracker.md`, the frozen
-      definitions and the selector files remain authoritative; where `STATUS` disagrees, they win and the next
-      turn repairs `STATUS`.
-    - Keep the trailing newline.
+    - **`STATUS` is a beacon, not authority.** `ORIENTATION.md`, `Regression_Root_Cause_Tracker.md`, frozen definitions, selectors, retained reports/reviews, and the durable handoff remain authoritative; where `STATUS` disagrees, repair `STATUS` to match them.
 
-    A documentation, policy or control-plane turn does not invent a turn id: it leaves `Turn` and `Successor`
-    describing the last substantive turn, consistent with rule 4 above.
+    Documentation/policy/control-plane work performed inside an existing formal turn retains that turn id; it does not invent a parallel maintenance turn.
 
 Do not add transcripts, chronological tool history, copied superseded artifact tables, obsolete task selections, or generic procedure already owned by policy/skill files. Concision never authorizes deletion of durable information.

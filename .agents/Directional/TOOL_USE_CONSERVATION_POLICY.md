@@ -4,7 +4,7 @@
 
 This document is durable project authority under `RETENTION_POLICY.md`. It defines the mandatory strategy for minimizing GitHub connector, workflow-observation, artifact, and repository-maintenance tool calls without weakening source authority, turn boundaries, evidence requirements, or cleanup safety.
 
-**Reading this file in full is a mandatory start-of-turn step for every turn.** It is not satisfied by having read it in a prior turn. Apply it before choosing how to inspect repository source, create or monitor workflows, mutate multiple files, collect evidence, clean temporary state, or write PR comments.
+**Reading this file in full is a mandatory start-of-turn step for every turn.** It is not satisfied by having read it in a prior turn. The sole repository-operation exception is the `STATUS` bootstrap required by `Durable_Handoff_Policy.md` item 15: initialize the in-memory ledger, read repository-root `STATUS`, and immediately direct-write the entry/resume beacon before any other repository mutation; then read this policy and `GitHub_Workflow_Policy.md` before choosing any further repository-access, workflow, monitoring, artifact, cleanup, or PR-comment operation.
 
 Tool-use conservation is subordinate to correctness. Never save a tool call by weakening source identity, skipping a required policy read, merging Code + Build with Test + Benchmark, omitting required evidence, using stale branch authority, or bypassing a stop rule.
 
@@ -29,7 +29,7 @@ Perform the following in order.
 
 Every turn maintains one zero-cost, turn-local tool-call ledger from the first invocation through closeout.
 
-1. Initialize the ledger at zero before the first tool invocation of the turn. The mandatory policy-read invocation counts like any other tool call.
+1. Initialize the ledger at zero before the first tool invocation of the turn. The mandatory `STATUS` bootstrap read/write and the subsequent policy-read invocation each count like any other tool call.
 2. Increment the total exactly once for every actual tool invocation, including tool discovery, connector reads, connector writes, workflow/run/job/log queries, artifact transfers, local container/Python execution, web access, retries, and failed/erroring calls. Pure model reasoning and the user-facing final response do not increment it.
 3. Maintain both the exact total and a mutually exclusive primary breakdown by invoked tool namespace/family. The default report families are `GitHub connector`, `API/tool discovery`, `workflow evidence/action`, `artifact transfer`, `local container/Python`, `web/external`, and `other`; when a call could fit more than one family, assign it to one primary family only so category totals equal the overall total.
 4. Ledger maintenance is internal bookkeeping. **Never invoke a tool merely to increment, persist, inspect, or total the ledger.** Updating an in-memory counter is not a tool call and consumes no tool-call budget.
@@ -37,6 +37,10 @@ Every turn maintains one zero-cost, turn-local tool-call ledger from the first i
 6. If the ledger is genuinely lost or incomplete, report it as partial/unknown rather than guessing, and do not spend tool calls solely to reconstruct historical counts.
 7. At closeout, report the total and category breakdown without making any additional call for accounting. If a final PR summary comment is required, that comment invocation is itself a tool call: compute the final count as including that last invocation and include that final count in the summary. No later tool call may be made merely to verify the count.
 8. Tool-call totals are an efficiency metric, not an acceptance criterion. Never avoid a correctness-, evidence-, policy-, or race-preserving call just to keep the number low.
+
+### Step 0A — publish the turn-entry/resume `STATUS` beacon
+
+Before substantive work, read repository-root `STATUS` if present, determine whether this is a new successor turn or a resume of the same incomplete turn, and immediately direct-write the canonical beacon through the GitHub connector. Preserve/set `Started at`, `Resumed at`, and `Ended at` exactly as required by `Durable_Handoff_Policy.md` item 15. This write must precede every other repository mutation. Do not route the bootstrap beacon through patch transport or a workflow.
 
 ### Step 1 — resolve remote authority once
 
@@ -242,14 +246,16 @@ Before final closeout:
 7. Verify the branch head once after cleanup.
 8. Update coherent durable documentation in one batch where practical.
 9. Do not touch the PR title, body or metadata. They are frozen — see §10.
-10. Make the durable documentation commit the final repository write of the turn. No PR comment is posted.
-11. Report the in-memory tool-call ledger total and category breakdown at closeout, without spending additional tool calls to do so.
+10. Finish and push durable documentation before the final beacon. No PR comment is posted.
+11. Publish the final repository-root `STATUS` beacon by direct GitHub-connector write. For COMPLETE, set `Ended at` to the current UTC timestamp; for an incomplete yield, leave `Ended at` empty. The COMPLETE beacon is the final repository write of the turn.
+12. Report the in-memory tool-call ledger total and category breakdown at closeout, without spending additional tool calls to do so.
 
 ## 12. Decision table
 
 | Need | Default low-call strategy |
 |---|---|
-| PR/branch identity | One `get_pr_info`/authority read; reuse until a real write/race boundary |
+| Turn entry/resume beacon | Read root `STATUS` + immediate direct GitHub write before every other repository mutation |
+| PR/branch identity | One `get_pr_info`/authority read after the bootstrap beacon; reuse until a real write/race boundary |
 | One small known file | One direct connector fetch |
 | Several files / large source / iterative review | **Mandatory `READ_MODE=snapshot` before first source/document read**; one exact source snapshot, then local inspection |
 | Repo-wide symbol/search analysis | Snapshot + local `rg`/grep |
@@ -267,6 +273,7 @@ Before final closeout:
 
 ## 13. Tool-call waste patterns that are prohibited unless justified
 
+- Performing any repository mutation before the required entry/resume `STATUS` beacon write.
 - Beginning source/document inspection before choosing `READ_MODE`.
 - Choosing `direct` when the turn is already known to require three or more repository files/documents, cross-file tracing, repeated inspection, or repository-wide search.
 - Re-reading the same unchanged PR metadata before every sub-step, or spending any tool call to rewrite the PR title, body or metadata.
@@ -281,6 +288,7 @@ Before final closeout:
 - Posting PR comments at all as a turn-closing or evidence-recording mechanism; durable documents own that.
 - Creating one schema-validation run per workflow when the files can be validated in one matrix run.
 - Making multiple sequential repository commits for a coherent multi-file change when one atomic Git tree commit is practical.
+- Making any repository mutation after the final COMPLETE `STATUS` beacon.
 - Making any tool call solely to reconstruct, persist, or verify the in-memory tool-call ledger.
 
 ## 14. Exceptions and stop conditions

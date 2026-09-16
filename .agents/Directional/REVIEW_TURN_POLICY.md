@@ -69,10 +69,10 @@ turn resolves something you or a predecessor flagged, edit that bullet — do no
 - `ROADMAP.md` — whenever checkpoint status moves. Check it even when the turn did not mention it.
 - `Required_Green_Selector_Manifest.md` — whenever a selector is added or accepted.
 - `LESSONS.md` — a new lesson only for a genuinely new pattern; otherwise cite the existing number.
-- **`STATUS` at repository top level** — rewrite the single `---TURN_STATUS---` block: `Turn`, `Status`
-  (`COMPLETE|IN_PROGRESS|BLOCKED`), `Successor` (`TURN_ID|UNKNOWN`), and nothing else. Both the Review agent and
-  the Implementation agent maintain it. The exact format and its binding rules live in `Durable_Handoff_Policy.md`
-  item 15 — do not restate or extend the schema here, and do not add fields: it is a beacon, not authority.
+- **`STATUS` at repository top level** — maintain the entry/resume/closeout lifecycle beacon required by
+  `Durable_Handoff_Policy.md` item 15. Both the Review agent and the Implementation agent maintain it. The schema is
+  `Turn`, `Status`, `Successor`, `Started at`, `Resumed at`, `Ended at`; timestamps are UTC. Do not duplicate product
+  evidence into it: it is a beacon, not authority.
 - `Architecture_M4_DEFN_Frozen_Definitions.md` and any other normative/frozen document — when a review finds
   a claim in it false, **edit that file**, do not only record the correction in the review record. A frozen
   document is what later turns read; a correction that lives only in a review record leaves the false claim
@@ -125,7 +125,7 @@ incomplete regardless of how sound its adjudication is.
 | Successor frozen | <exactly one turn + where its falsifiers are stated> |
 | Turn boundary held | <runtime-free; no product/test/selector mutation> |
 | review_check.py boundary | <result> |
-| `STATUS` block rewritten | <Turn / Status / Successor — the three fields only, per `Durable_Handoff_Policy.md` item 15> |
+| `STATUS` lifecycle maintained | <Turn / Status / Successor / Started at / Resumed at / Ended at, per `Durable_Handoff_Policy.md` item 15> |
 | Pushed to origin, branch in sync | <confirm `git status -sb` showed no ahead/behind after the final push — do not embed a commit hash, which cannot be written truthfully inside the commit it names> |
 ```
 

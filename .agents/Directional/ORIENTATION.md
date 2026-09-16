@@ -17,9 +17,10 @@ behind. The required update covers:
 
 The same REVIEW turn also performs **document consolidation** under `CLEAN_UP_POLICY.md`.
 
-A minimal `STATUS` beacon at repository top level carries three values only — `Turn`, `Status`, `Successor`. Both
-the Review and Implementation agents rewrite it every turn; its exact format is `Durable_Handoff_Policy.md` item 15.
-It is a beacon, not authority — where it disagrees with this file or the tracker, they win.
+A minimal lifecycle `STATUS` beacon at repository top level carries `Turn`, `Status`, `Successor`, plus UTC
+`Started at`, `Resumed at`, and `Ended at` timestamps. Both Review and Implementation agents publish it on turn
+entry/resume and closeout; its exact lifecycle rules are `Durable_Handoff_Policy.md` item 15. It is a beacon, not
+authority — where it disagrees with this file or the tracker, they win.
 
 `REVIEW_TURN_POLICY.md` is the authoritative superset of these duties and carries the mandatory closeout block
 every review record must answer. This rule was itself deleted by a consolidation in `f6a784cf` and restored on
