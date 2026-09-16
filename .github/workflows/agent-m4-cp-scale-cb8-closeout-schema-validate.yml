@@ -1,0 +1,32 @@
+name: M4 CP SCALE CB8 Closeout Caller Schema Validation
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb8-closeout-schema-validate.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-cb8-closeout-schema-validate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb8-closeout-schema-validate
+      commit_run_file: false
+    secrets: inherit
+
+  validate-drive:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m4-cp-scale-cb8-closeout-drive-caller.yml
+    secrets: inherit
