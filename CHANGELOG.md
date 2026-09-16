@@ -1,3 +1,13 @@
+# 2026-09-16 — M4-CP-SCALE-CB8 selector425 published; compile/package GREEN; TB7 artifact-only runtime next
+
+CB8 is **COMPLETE / COMPILE-GREEN / RUNTIME UNADJUDICATED**. Published `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt` as the exact selector424 prefix plus `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`: **425/425 unique rows**, SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, first424 prefix `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`, unique producer definition, owner census **30/279/75/41**. No product/test/fixture/CMake semantic bytes changed and no selector426 was published.
+
+Compile/package run/job `35042417046 / 104624909472` checked out exact source `01b1124af094044e32d6887ff0615881333d12ce`, preflighted `directional_core`, compiled all approved targets successfully, linked GMP/GMPXX, recorded `exactArithmeticBackend=GMP`, preserved clean pre/post source status and a self-verifying package manifest, and executed **no Directional runtime** (`runtimeExecution=false`). Result artifact `10425344367` has provider digest `sha256:1e29c9f3348b2e153d563c7e94acdaea52be8f16f6520fa8603fa084bba734bc`; activity-log artifact `10426031026` has `sha256:24f78df126e3935fc70ae13d33331995b025472141794931d9cae30777c998cc`.
+
+Accepted runtime authority remains TB6 package `10418328122` / selector424 **424/424**. Exact next is `M4-CP-SCALE-TB7-EXEC`: immutable artifact-only selector425 **425/425** in 425 fresh exact-filter processes, followed by mandatory `M4-CP-SCALE-TB7-REV`. `M4-CP-SCALE-TB6-REV-OBS-01` remains open until that Review. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+
+Control-plane note: this ChatGPT Web session corrected an initial source-snapshot ordering miss immediately, and workflow observer comments were delayed for snapshot/Drive/compile triggers, so exact run IDs were recovered from Actions inventory without retriggering. The actual Drive/compile callers were SchemaStore-validated before activation; the one-time schema-validator bootstrap caller itself was locally YAML-checked because recursively validating the validator caller was unavailable. These are process/control-plane deviations only and do not alter selector or compile evidence.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB6-REV`: package promoted under selector424; S3 publication authorized
 
 - Independent Review reopens candidate/result/log bytes, verifies the 1302-entry evidence manifest, re-hashes selector424/prefix423, rebuilds owner census **30/278/75/41**, reopens all 424 selector raw outputs, re-derives the focused S3 receipt/discriminator matrix and source-audits exact full-state typed termination.

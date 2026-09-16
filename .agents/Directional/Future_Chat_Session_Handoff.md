@@ -1,10 +1,10 @@
 ---
-Turn: M4-CP-SCALE-TB6-REV
-Status: COMPLETE / PACKAGE10418328122 PROMOTED UNDER SELECTOR424 / S3 FOCUSED PUBLICATION AUTHORITY ACCEPTED / SELECTOR425 CUMULATIVE CREDIT OWED / CP-SCALE OPEN / M4 OPEN
+Turn: M4-CP-SCALE-CB8
+Status: COMPLETE / SELECTOR425 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED / SELECTOR424 REMAINS ACCEPTED RUNTIME AUTHORITY / CP-SCALE OPEN / M4 OPEN
 Repository: akashskypatel/Directional
 Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-CB8
+Canonical next turn: M4-CP-SCALE-TB7-EXEC
 ---
 
 # Future Chat Session Handoff — Directional
@@ -42,17 +42,24 @@ Review independently reopens those bytes, re-hashes selector/prefix, re-derives 
 
 CP-SCALE remains OPEN. S1 remains diagnostic, S2 arrival exact fallback remains blocked, S4 incremental oracle and S5 genus>=2 witness remain open.
 
-## Exact next — `M4-CP-SCALE-CB8`
+## CB8 published candidate — compile GREEN, runtime unadjudicated
 
-Publication-only Code + Build under `Architecture_M4_CP_SCALE_CB8_Selector425_Publication_Code_Build_Plan.md`. The single variable is selector lineage:
+`M4-CP-SCALE-CB8` publishes `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt` as the exact accepted selector424 prefix plus row425 `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`. Static proof is exact: **425 rows / 425 unique**, SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, first424 prefix `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`, one producer definition in `tests/FieldAlignedCurveNetworkTests.cpp`, owner census **30/279/75/41**.
 
-1. publish `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt`;
-2. rows1-424 must be byte-identical accepted selector424; row425 exactly `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`;
-3. selector425 expected SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; prefix424 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`; expected owner census **30/279/75/41**;
-4. product/test/fixture/CMake semantics and selector424 stay frozen; selector426 is forbidden;
-5. compile/package with GMP/GMPXX and `runtimeExecution=false`; no Directional runtime/discovery/benchmark.
+Compile/package run/job `35042417046 / 104624909472` is GREEN on exact source `01b1124af094044e32d6887ff0615881333d12ce`, with result artifact `10425344367` (provider SHA-256 `1e29c9f3348b2e153d563c7e94acdaea52be8f16f6520fa8603fa084bba734bc`) and activity-log artifact `10426031026` (`24f78df126e3935fc70ae13d33331995b025472141794931d9cae30777c998cc`). Preflight and full build both exit 0; GMP/GMPXX are linked; `exactArithmeticBackend=GMP`; all source-status receipts are empty; package manifest self-verifies; `runtimeExecution=false`. No Directional executable, test, benchmark, discovery, `ctest`, CLI, fuzzer, help/version command, or custom input executed.
 
-On GREEN package, exact successor is `M4-CP-SCALE-TB7-EXEC` executing selector425 **425/425** as 425 fresh exact-filter processes, followed by mandatory `M4-CP-SCALE-TB7-REV`. TB6 focused execution may not be imported as row425 cumulative credit.
+Selector425 is a **published candidate only**. Accepted runtime authority remains package `10418328122` / selector424 until fresh selector425 **425/425** execution and mandatory Review.
+
+## Exact next — `M4-CP-SCALE-TB7-EXEC`
+
+Artifact-only Test + Benchmark under `Architecture_M4_CP_SCALE_TB7_Artifact_Only_Test_Benchmark_Plan.md`:
+
+1. execute only immutable CB8 result artifact `10425344367`, exact source `01b1124af094044e32d6887ff0615881333d12ce`;
+2. verify selector425 SHA/prefix/count/ownership before runtime;
+3. execute selector425 **425/425** as **425 fresh exact-filter processes in exact selector order**;
+4. row425 receives cumulative credit only from its own fresh selector process; TB6 focused execution may not be imported;
+5. preserve exact package/source/execution-view pre/post immutability; no rebuild, relink, repair, discovery, mutation, or benchmark execution;
+6. mandatory successor is `M4-CP-SCALE-TB7-REV`. EXEC may report mechanics only and may not promote selector425 or discharge `M4-CP-SCALE-TB6-REV-OBS-01`.
 
 ## Carried obligations
 
@@ -72,12 +79,12 @@ On GREEN package, exact successor is `M4-CP-SCALE-TB7-EXEC` executing selector42
 
 ## Context Load Plan
 
-For `M4-CP-SCALE-CB8`, read mandatory policies/checklists first, then:
+For `M4-CP-SCALE-TB7-EXEC`, read mandatory policies/checklists first, then:
 
-1. `Architecture_M4_CP_SCALE_CB8_Selector425_Publication_Code_Build_Plan.md`;
-2. `Architecture_M4_CP_SCALE_TB6_Review_Record.md`;
-3. `Architecture_M4_CP_SCALE_TB6_Artifact_Only_Test_Benchmark_Report.md`;
+1. `Architecture_M4_CP_SCALE_TB7_Artifact_Only_Test_Benchmark_Plan.md`;
+2. `Architecture_M4_CP_SCALE_CB8_Selector425_Publication_Code_Build_Plan.md`;
+3. `Architecture_M4_CP_SCALE_TB6_Review_Record.md`;
 4. `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §§4,7-10;
 5. `ORIENTATION.md`, `TODO.md`, selector manifest, tracker and roadmap/current handoff state.
 
-CB8 is runtime-free Code + Build. Preserve exact accepted selector424 prefix, do not alter product/test/fixture/CMake semantics, do not publish selector426, and stop on any selector/hash/owner mismatch or Directional runtime.
+TB7-EXEC is artifact-only runtime. It must not build, relink, repair, discover/list tests, mutate package/source, or execute benchmarks. It reports mechanical evidence only; mandatory Review owns semantic promotion.
