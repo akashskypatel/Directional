@@ -1,3 +1,29 @@
+## 2026-09-16 — `STATUS` beacon: exact format frozen for both agents
+
+User instruction 2026-09-16: both the Review agent and the Implementation agent must maintain a `STATUS` file at
+repository top level, with the exact format documented in the review and handoff policies.
+
+The file already existed carrying four lines — turn, status, successor and delimiters. Reviewed and extended to a
+twelve-field schema covering the facts every turn in this sequence has actually needed to look up: turn id, **role**
+(the two agents share one file), date, status, a one-line verdict, the accepted package, the accepted selector with
+its count **and full SHA-256**, stable accounting with debt, the blocking obligation, the turn boundary, and the
+exact successor. The selector digest is what makes prefix drift detectable from the beacon alone.
+
+The canonical schema and its binding rules are frozen as `Durable_Handoff_Policy.md` item 15 — the document both
+agents read at end of turn. `REVIEW_TURN_POLICY.md` adds the Review-side duty and a closeout row that **reference**
+that item rather than restating the schema, so the two cannot drift apart; `ORIENTATION.md` gains a one-line pointer
+so a cold-start agent finds the beacon at all.
+
+Rules worth noting, each drawn from a defect observed in this session: exactly one block, overwritten and never
+appended; every field present every turn with `n/a — <reason>` rather than a blank, so a missed duty shows as a
+missing line; written before the turn's final commit so it lands with the work it describes; **no commit hash and no
+digest of `STATUS` itself**, because a file cannot attest to the commit containing it — the correction already
+applied to the review closeout row and to the `EVIDENCE_SHA256SUMS` self-entry; and `STATUS` is explicitly a beacon,
+not authority, so no fact may live only there and `ORIENTATION.md`/the tracker win any disagreement.
+
+Runtime-free; no product, test, fixture, selector, benchmark or build source touched. Accepted authority remains
+package `10425344367` / selector425 **425/425**; accounting unchanged at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB8-REV`: CB9 S4 prerequisite test authority rejected; CB10 correction next
 
 - Runtime-free Review independently reopened CB9 candidate `10428779988` / source `939db1d0bcf7c0d3be8d0960b994c1d53d0a1edf`, TB8 run/job `35053875774 / 104659839191`, result/log artifacts `10430235842 / 10430201060`, nested evidence, focused source and retained torus/sphere authority. TB8 remains valid mechanical RED with focus **1/1 executed / RED**, selector425 **0/425 executed / 425 UNEXECUTED**, and exact immutable postflight.
@@ -24,32 +50,6 @@ later subject. CB10 must split the subjects into separate identities, or reserve
 within-subject preconditions and emit an end-of-test receipt enumerating each subject's outcome — otherwise TB9 can
 spend another full cycle learning about exactly one subject. Same trade accepted at `M4-CP3-TB7-REV`; same
 "passed versus did not run" discipline as `LESSONS.md` 160. Accounting holds at **49 / 14 / 35**, debt **5**.
-
-## 2026-09-16 — `STATUS` beacon: exact format frozen for both agents
-
-User instruction 2026-09-16: both the Review agent and the Implementation agent must maintain a `STATUS` file at
-repository top level, with the exact format documented in the review and handoff policies.
-
-The file already existed carrying four lines — turn, status, successor and delimiters. Reviewed and extended to a
-twelve-field schema covering the facts every turn in this sequence has actually needed to look up: turn id, **role**
-(the two agents share one file), date, status, a one-line verdict, the accepted package, the accepted selector with
-its count **and full SHA-256**, stable accounting with debt, the blocking obligation, the turn boundary, and the
-exact successor. The selector digest is what makes prefix drift detectable from the beacon alone.
-
-The canonical schema and its binding rules are frozen as `Durable_Handoff_Policy.md` item 15 — the document both
-agents read at end of turn. `REVIEW_TURN_POLICY.md` adds the Review-side duty and a closeout row that **reference**
-that item rather than restating the schema, so the two cannot drift apart; `ORIENTATION.md` gains a one-line pointer
-so a cold-start agent finds the beacon at all.
-
-Rules worth noting, each drawn from a defect observed in this session: exactly one block, overwritten and never
-appended; every field present every turn with `n/a — <reason>` rather than a blank, so a missed duty shows as a
-missing line; written before the turn's final commit so it lands with the work it describes; **no commit hash and no
-digest of `STATUS` itself**, because a file cannot attest to the commit containing it — the correction already
-applied to the review closeout row and to the `EVIDENCE_SHA256SUMS` self-entry; and `STATUS` is explicitly a beacon,
-not authority, so no fact may live only there and `ORIENTATION.md`/the tracker win any disagreement.
-
-Runtime-free; no product, test, fixture, selector, benchmark or build source touched. Accepted authority remains
-package `10425344367` / selector425 **425/425**; accounting unchanged at **49 / 14 / 35**, debt **5**.
 
 ## 2026-09-16 — `M4-CP-SCALE-TB8-EXEC`: focused S4 prerequisite valid mechanical RED; selector425 fail-fast unexecuted
 
