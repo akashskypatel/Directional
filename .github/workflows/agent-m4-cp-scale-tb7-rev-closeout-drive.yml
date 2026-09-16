@@ -1,0 +1,39 @@
+name: M4 CP SCALE TB7 Review Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb7-rev-closeout-drive.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb7-rev-closeout-drive-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb7-rev-closeout-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 16bzw-BB9_yUzIjhgAA1rrzUX23okTRup
+      patch_sha256: f85787713ffc5098c5af437c96fea63b73d2bb9044ffd29ebe5b38742d20413d
+      base_sha: 5d6dcbea01c799b02474324a4d9cb2d111809ac1
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: review TB7 and promote selector425'
+      retention_days: 14
+    secrets: inherit
