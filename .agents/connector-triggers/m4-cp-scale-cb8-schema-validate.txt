@@ -1,3 +1,0 @@
-M4-CP-SCALE-CB8 caller schema validation.
-Validates exact staged Drive-apply and compile caller drafts before active publication.
-Retry: 1

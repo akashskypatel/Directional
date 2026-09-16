@@ -1,5 +1,0 @@
-M4-CP-SCALE-CB8 selector425 publication patch apply.
-Drive File ID: 19_8SKyZvXj_bn6V_1AwBLf02hr-uaOLS
-Patch SHA-256: 87ffb113b77dcd53317a8742d70ad7651f29b0170703188b4673f593d184cb17
-Base SHA: 3fc25a00327de8c295936c84ec1568e7d5a794b1
-Retry: 1
