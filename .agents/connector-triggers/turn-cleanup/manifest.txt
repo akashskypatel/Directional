@@ -1,0 +1,2 @@
+# M4-CP-SCALE-TB7-EXEC cleanup retry after concurrent source-snapshot observer race
+# No temporary paths remain; this retry closes the mandatory comment-hygiene gate.
