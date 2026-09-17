@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-CB14
+attempt=0
+purpose=apply durable CB14 closeout documentation
+patch_sha256=109f33223601781d9439882f1f041532dee24346fd68f6858e5331613302c67e
+base_sha=8297bf5bf50ec34cfc31d11b122e624b0039c449
