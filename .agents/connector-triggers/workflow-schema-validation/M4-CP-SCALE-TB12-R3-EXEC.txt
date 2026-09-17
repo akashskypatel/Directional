@@ -3,3 +3,4 @@ Purpose: validate exact TB12-R3 workflow draft before publication
 Draft: .agents/Directional/turn-payloads/agent-m4-cp-scale-tb12-r3.yml
 Installed validator caller: 65e4b27da82065e70bd37d30a9eb550c1d2742f8
 Retry: permission-ceiling correction commit 72e0bcb2414b767b8e4f3fdf2ce4282613246385
+Retry: exact draft permission ceiling fixed; validator caller 4537504941a5a8bc582673dadf8fe0031b07d073
