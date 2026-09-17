@@ -1,5 +1,0 @@
-# M4-CP-SCALE-TB12-R3-EXEC temporary-state ledger
-.agents/connector-triggers/source-snapshot/M4-CP-SCALE-TB12-R3-EXEC.txt
-.agents/Directional/turn-payloads/agent-m4-cp-scale-tb12-r3.yml
-.agents/connector-triggers/workflow-schema-validation/M4-CP-SCALE-TB12-R3-EXEC.txt
-.agents/connector-triggers/tb12-r3/M4-CP-SCALE-TB12-R3-EXEC.txt
