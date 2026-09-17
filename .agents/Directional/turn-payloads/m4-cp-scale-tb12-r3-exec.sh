@@ -54,7 +54,7 @@ p=$(awk -F'\t' 'NR>1&&$3=="directional_surface_cell_producer_tests"{n++}END{prin
 c=$(awk -F'\t' 'NR>1&&$3=="directional_surface_cell_completion_tests"{n++}END{print n+0}' "$MAP")
 v=$(awk -F'\t' 'NR>1&&$3=="directional_surface_cell_validation_tests"{n++}END{print n+0}' "$MAP")
 [[ "$a/$p/$c/$v" == '30/280/75/41' ]] || fail "owner census $a/$p/$c/$v"
-printf 'authority=%s\nproducer=%s\ncompletion=%s\n' "$a" "$p" "$c" "$v" > "$RESULT/owner-census.txt"
+printf 'authority=%s\nproducer=%s\ncompletion=%s\nvalidation=%s\n' "$a" "$p" "$c" "$v" > "$RESULT/owner-census.txt"
 printf 'gate\tordinal\tidentity\tbinary\texit\tselected\tok\tskipped\tresult\tstdout_sha256\tstderr_sha256\n' > "$RESULT/execution-ledger.tsv"
 run_one(){
  local gate="$1" ord="$2" id="$3" bin="$4" bounded="$5"; local stem="${gate,,}-$(printf '%03d' "$ord")" w="$RUNTIME/$stem"
