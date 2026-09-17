@@ -157,3 +157,61 @@ The retained CP-SCALE role set is: normative `Architecture_M4_CP_SCALE_Frozen_De
 | review_check.py boundary | PASS on the Review diff; selector426 declared hash and all frozen selectors unchanged |
 | `STATUS` lifecycle maintained | entry/resume beacon uses the six-field lifecycle; final COMPLETE beacon preserves original start/latest resume and sets successor CB13 plus end timestamp after all other repository writes |
 | Pushed to origin, branch in sync | final closeout verifies working-branch head after patch + cleanup before the COMPLETE beacon; no alternate ref or force push |
+
+---
+
+## 10. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, no correction.** Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the pre-commitment held, for the second consecutive publication
+
+`M4-CP-SCALE-TB10-REV` declared selector426's exact SHA-256 and owner census **before** CB12 built it. Verified
+here against the file:
+
+- full digest `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` — identical to the pre-committed
+  target;
+- first 425 rows hash to `e0e0f394faae536a…`, byte-identical to accepted selector425;
+- row 426 is exactly `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate`, the single
+  declared identity;
+- owner census `30 / 280 / 75 / 41` sums to 426 and matches the pre-declared partition.
+
+That is the second consecutive publication turn checked against a byte-level target fixed in advance — selector425
+at TB8, selector426 here. The chain now reads
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424 ⊂ 425 ⊂ 426**, every link verified byte-exact at the turn
+that created it.
+
+### V2 — the cumulative ledger check is the strongest in this sequence
+
+§4 does not stop at a count. It establishes 426 contiguous ordinals as 426 distinct processes, each with the mapped
+owner binary and one exact `--gtest_filter`, each exiting `0` with selected/executed/passed `1` and skipped `0`,
+and — the part that matters — **retained raw stdout for all 426 naming exactly one `[ RUN ]` / `[ OK ]` identity**.
+
+The explicit statement that *"row426 is not inferred from a cumulative count"*, with its credit grounded in its own
+retained process output, is precisely the right guard for a newly appended row. A cumulative total can be green
+while the one row anyone cares about was never the row that ran; this check forecloses that.
+
+### V3 — the S5 boundary pre-empts every shortcut this sequence has actually paid for
+
+§8 is worth keeping visible because its exclusion list is not generic. Each item names a failure this project has
+already spent turns on:
+
+- **a hand-asserted genus number** — CB13 must derive topology from the fixture bytes, the same discipline that
+  replaced CB9's transplanted `18/30/18` sphere constants;
+- **genus-1 substitution** — the durable rule that the torus earns zero S5 credit, recorded in the tracker;
+- **file existence mistaken for reachability** — a witness that exists but is never processed proves nothing;
+- **an atlas rejected before the target stage** — the "never reached its subject" failure that cost turns at
+  row408 and again at the S4 prerequisite.
+
+Requiring an admissible field/holonomy precondition to be established *before* reachability is claimed is the same
+precondition-before-comparator rule that finally made the S2 and S4 fixtures work, applied prospectively rather
+than after a rejected turn.
+
+### V4 — obligations
+
+`TB10-REV-OBS-01` is discharged on the complete chain it was opened for — focused proof, append-only publication,
+fresh cumulative gate, independent Review — rather than on any one leg. `DEFN-OBS-04` is carried to CB13 with the
+genus-1-zero-credit rule restated in terms. Every other item keeps its owner.
+
+CP-SCALE now has S2, S3 and S4 gated in the cumulative selector. What remains is S1 calibration, the S2 arrival
+exact-fallback owner, and S5 — which is the only one of the five still lacking any witness at all.

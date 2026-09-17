@@ -6,6 +6,26 @@ Selector426 is **426 unique LF rows**, SHA-256 `41f4d559211375c11c8d1f8c9ccde258
 
 Review **PROMOTES package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 426/426**, grants cumulative S4 selector credit, and **DISCHARGES `M4-CP-SCALE-TB10-REV-OBS-01`**. Stable accounting remains **49 / 14 / 35**, debt **5**. CP-SCALE stays open for S1 calibration, S2 arrival exact-fallback ownership and S5 genus>=2 coverage. Exact next is `M4-CP-SCALE-CB13`, a fixture/test-authority + compile-only S5 construction turn; product semantics and selector426 remain frozen and no selector427 is authorized.
 
+**Verification amendment (reviewing agent, review record §10).** Upheld, no correction. **The pre-commitment held
+for the second consecutive publication:** `TB10-REV` declared selector426's SHA-256 and owner census before CB12
+built it, and the file verifies exactly — full digest
+`41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` identical to the target, first 425 rows
+byte-identical to accepted selector425 (`e0e0f394…`), row 426 exactly the single declared identity, and owner
+census `30 / 280 / 75 / 41` summing to 426 as pre-declared. The chain now reads
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424 ⊂ 425 ⊂ 426**. §4's cumulative ledger check is the strongest
+in this sequence: not a count but 426 contiguous ordinals as 426 distinct processes, each with the mapped owner
+binary and one exact `--gtest_filter`, and **retained raw stdout for all 426 naming exactly one `[ RUN ]` / `[ OK ]`
+identity** — with the explicit statement that row426's credit is not inferred from the cumulative total but grounded
+in its own process output, which forecloses a green aggregate hiding a row that never ran. §8's S5 exclusion list is
+notable for being specific rather than generic: a hand-asserted genus number (versus derivation from fixture bytes,
+the discipline that replaced CB9's transplanted sphere constants), genus-1 substitution (the durable zero-credit
+rule), file existence mistaken for reachability, and an atlas rejected before the target stage — the "never reached
+its subject" failure that cost turns at row408 and again at the S4 prerequisite. `TB10-REV-OBS-01` is discharged on
+the complete focused → publication → cumulative → Review chain rather than any one leg, and `DEFN-OBS-04` carries to
+CB13 with genus-1 zero credit restated. CP-SCALE now has S2, S3 and S4 gated; S1 calibration, the S2 arrival
+exact-fallback owner and S5 remain, S5 being the only one still lacking any witness. Accounting holds at
+**49 / 14 / 35**, debt **5**.
+
 ## 2026-09-17 — `M4-CP-SCALE-TB11-EXEC`: selector426 mechanically GREEN; mandatory Review next
 
 Artifact-only run/job `35173390136 / 105049726721` consumed immutable CB12 artifact `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`. Selector426 reverified as 426 unique LF rows at `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` with exact selector425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` and owner census **30/280/75/41**. The cumulative gate executed **426/426 PASS** in 426 fresh exact-filter processes, including a fresh row426 S4 **1/1 PASS**, with zero RED/SKIP/crash/timeout/selection mismatch/unexecuted. No benchmark ran.
