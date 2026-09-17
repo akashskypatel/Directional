@@ -71,8 +71,9 @@ A static census of every retained milestone-G OBJ gives:
 | sphere_prescribed | 98/288/192 | 2 | 1 | 0 | 0 |
 | thin_bent_tube | 132/372/240 | 0 | 1 | 2 | 0 |
 | torus | 72/216/144 | 0 | 1 | 0 | 1 |
+| genus_two | 120/366/244 | -2 | 1 | 0 | 2 |
 
-There is no retained genus>=2 fixture. Torus genus1 remains valuable accepted evidence but receives **zero S5 credit**. Before an S5 selector row can exist, a future CB must construct a genus>=2 source, independently census its topology, establish admissible field/holonomy preconditions, and a later artifact-only TB must prove it reaches A3. File existence is not reachability.
+A deterministic retained genus-2 fixture now exists: independent census over the exact packaged OBJ derives `V/E/F=120/366/244`, one connected closed orientable component, zero boundary loops, `chi=-2`, genus `2`. Torus genus1 remains valuable accepted evidence but receives **zero S5 credit**. TB12-R1 proves that the retained genus-two source/field reaches production source labels and attempts A1 atlas construction, but production stops at `IncompleteCycleBasis / CycleOrderingFailed` before any atlas/A3 authority. TB12-R1 Review classifies that observed stop as a production cycle-basis ordering defect; the raw field may still need later admissibility proof after that defect is diagnosed. File existence/topology alone is not reachability, and S5 remains uncredited.
 
 ## 7. Gate / diagnostic membership and selector lineage
 
@@ -83,7 +84,7 @@ There is no retained genus>=2 fixture. Torus genus1 remains valuable accepted ev
 | S2 arrival | not allocated | exact fallback for the same ordering must be frozen | filtered interval comparator exists; exact fallback not established | **blocked/non-selector** | exact owner/fallback defined and equivalence proved |
 | S3 | `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` / producer | exact full traversal state repeats | TB7 Review independently validates exact selector425-prefix publication, fresh row425, all 425 cumulative rows, receipt/discriminator semantics and immutable postflight | **ACCEPTED / cumulative selector425 credit** | closed for this seam; combinatorial recurrence and step budget remain distinct backstops |
 | S4 | `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` / producer | independent monotone oracle + reachable negative | TB11 Review independently validates exact selector425-prefix publication, fresh selector426 **426/426**, row426 non-vacuity, owner census **30/280/75/41** and immutable postflight | **ACCEPTED / cumulative selector426 credit** | closed for this seam; final certificate remains sole acceptance authority |
-| S5 | `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` / producer | independently verified genus>=2 source + admissible field | no retained genus>=2 fixture | **blocked/non-selector** | genus>=2 witness reaches A3 and cumulative gate stays green |
+| S5 | `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` / producer | independently verified genus>=2 source + admissible field | retained genus-2 topology verified; TB12-R1 reaches source labels but atlas fails `CycleOrderingFailed` before A3 | **blocked/non-selector; production RP-07 defect open** | diagnose/correct cycle-basis ordering, then prove the same admissible genus>=2 witness reaches A3 under fresh runtime + Review |
 
 Selector426 is accepted current required-green authority at 426 LF rows / `41f4d559...b5114`; its first425 rows remain exact selector425 `e0e0f394...790e0b`, first424 remains `f202a172...466ca`, first423 remains `4e67e4dc...d89343`, and first422 remains `bbd496f3...f7cc`. S1 contributes zero gate rows. TB11 Review promotes package `10473134357` / source `e15e83c7...0e47` and grants S4 cumulative selector credit. S5 remains outside the selector until a genuine genus>=2 source + admissible field reaches A3 under fresh runtime and Review.
 
@@ -91,7 +92,7 @@ Selector426 is accepted current required-green authority at 426 LF rows / `41f4d
 
 TB11 Review promotes package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426**, exact selector425 prefix `e0e0f394...790e0b`, owners **30/280/75/41**. S4 cumulative credit is complete; no new S4 work is authorized.
 
-The exact bounded successor is `M4-CP-SCALE-CB13` under `Architecture_M4_CP_SCALE_CB13_S5_GenusTwo_Witness_Code_Build_Plan.md`. CB13 addresses only S5's missing precondition: construct one deterministic retained connected closed orientable genus-2 source, independently census topology, establish admissible field/holonomy authority, author/compile `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` as a producer-owned focus, and package under mandatory GMP/GMPXX without runtime. Production semantics and selector426 remain frozen; no selector427 may be published. A later artifact-only TB must prove the exact source/field actually reaches A3 before Review can grant focused S5 credit.
+TB12-R1 Review leaves accepted runtime authority unchanged and freezes exact bounded successor `M4-CP-SCALE-CB15` under `Architecture_M4_CP_SCALE_CB15_Cycle_Ordering_Diagnostics_Code_Build_Plan.md`. CB15 is diagnostics-only: identify the exact cycle row/class and structural `order_cycle_steps` subfailure while preserving `IncompleteCycleBasis / CycleOrderingFailed`, all semantic decisions/products, the retained fixture/test assertions and selector426. It compiles/packages under mandatory GMP/GMPXX with `runtimeExecution=false`; no selector427 is authorized. A later immutable TB + Review must diagnose the row and then, after any separately reviewed semantic correction, prove the same source/field establishes atlas authority and reaches A3 before S5 credit.
 
 ## 9. Citation / evidence map
 
@@ -108,4 +109,4 @@ The exact bounded successor is `M4-CP-SCALE-CB13` under `Architecture_M4_CP_SCAL
 
 ## 10. STOP rules
 
-STOP rather than broaden CB scope if a proposal guesses an S1 threshold, lets a filter decide without exact certification/fallback, calls a budget/proximity event an S3 cycle, changes A2a' cut selection for S4, credits torus as S5, appends a gate without independent reachability, or modifies accepted selector423/CP-COND/CP3 semantics.
+STOP rather than broaden CB scope if a proposal guesses an S1 threshold, lets a filter decide without exact certification/fallback, calls a budget/proximity event an S3 cycle, changes A2a' cut selection for S4, credits torus as S5, edits the genus-two raw field to hide the current `CycleOrderingFailed`, appends a gate without independent reachability, publishes selector427 before reviewed S5 reachability, or modifies accepted selector423/CP-COND/CP3 semantics.

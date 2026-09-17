@@ -985,3 +985,22 @@ CP-SCALE remains open because S1 calibration, S2 arrival exact-fallback ownershi
 Historical filenames resolve through this index and git history. No selector, policy, frozen definition, closure record, stable ID, unresolved blocker or durable project authority is folded.
 
 Current retained CP-SCALE role set after TB11 Review consolidation: normative `Architecture_M4_CP_SCALE_Frozen_Definitions.md`; current runtime evidence `Architecture_M4_CP_SCALE_TB11_Artifact_Only_Test_Benchmark_Report.md`; current Review `Architecture_M4_CP_SCALE_TB11_Review_Record.md`; exactly one next plan `Architecture_M4_CP_SCALE_CB13_S5_GenusTwo_Witness_Code_Build_Plan.md`; selector426 and every historical selector; this consolidated record; tracker/changelogs and other durable project documents.
+
+
+## 2.61 `M4-CP-SCALE-CB13 -> TB12 -> CB14 -> TB12-R1 -> TB12-R1-REV` — genus-two topology retained; latent RP-07 ordering defect exposed
+
+CB13 authored/compiled producer focus `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` without runtime or selector publication. Its first package omitted the referenced genus-two fixture bytes; artifact-only TB12 stopped in preflight with zero generated runtime. CB14 corrected only source/package retention: deterministic `genus_two.obj/.rawfield/.fixturemeta.json` became retained authority, independent package-byte census derives `V/E/F=120/366/244`, one connected closed orientable two-manifold, zero boundary loops, `chi=-2`, genus `2`, and candidate package `10509313705` / source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd` compiled all standard targets under GMP/GMPXX with `runtimeExecution=false`.
+
+TB12-R1 consumed those exact bytes artifact-only. One fresh S5 focus process selected/executed and failed at `independentAtlas.has_value()`; production reached source labels then returned `InvalidFieldTransportAtlas / IncompleteCycleBasis`, reason `CycleOrderingFailed`, A3 absent. Frozen fail-fast left selector426 0/426 and benchmark 0; immutable package/source/execution-view postflight matched exactly. Missing-fixture candidate `M4-CP-SCALE-TB12-EXEC-CAND-01` is therefore CLOSED / RECOVERY PROVED / NON-STABLE.
+
+TB12-R1 Review independently re-hashed package/fixture/selector evidence and statically resolved the observed semantic fork. `FieldTransportAtlas` derives directed support for each algebraic `bundle.cycles` row from coefficient sign + local face/edge incidence, then `order_cycle_steps` requires one simple closed consumed face loop **before** actual transport composition. The specific `CycleOrderingFailed` cannot therefore be caused by raw effort/quarter-turn values. Candidate source adds no `src/**`/`include/**` change relative to accepted source, so the wider S5 witness exposes latent pre-existing production behavior. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` is **OPEN / production cycle-basis ordering defect / existing `RP-07 CYCLIC_TOPOLOGY_LINEARIZATION` / NON-STABLE**. No accepted-green loss exists; stable totals remain **49 / 14 / 35**, debt **5**, accepted runtime authority remains package `10473134357` / selector426 **426/426**, and S5 remains uncredited.
+
+Exact next `M4-CP-SCALE-CB15` is diagnostics-only: identify failing cycle row/class/support/subreason while preserving `IncompleteCycleBasis / CycleOrderingFailed`, decisions/products, fixture/test semantics and selector426; compile/package with `runtimeExecution=false`, no selector427. Semantic repair is deferred until the exact structural subfailure is measured and reviewed.
+
+### CP-SCALE TB12-R1 Review folded-document index addition
+
+| Folded filename | Verdict / retained home |
+|---|---|
+| `Architecture_M4_CP_SCALE_CB13_S5_GenusTwo_Witness_Code_Build_Plan.md` | **CONSUMED/FOLDED BY TB12-R1 REVIEW.** Construction/compile-only scope, no-runtime/no-selector rules and S5 focus contract are retained in this §2.61, TB12-R1 report/Review, frozen definitions, tracker/changelog and git history. |
+
+Current retained CP-SCALE role set: normative frozen definitions; accepted TB11 runtime report/Review; current TB12-R1 RED report/Review; exactly one next plan `Architecture_M4_CP_SCALE_CB15_Cycle_Ordering_Diagnostics_Code_Build_Plan.md`; selector426 + historical selectors; this consolidated record; tracker/changelog and durable project authority.

@@ -2,20 +2,21 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-TB12-R1-REV
+## Current turn — M4-CP-SCALE-TB12-R1-REV (closeout)
 
-TB12-R1 artifact-only execution is complete and **FOCUSED SEMANTIC RED**. The exact retained genus-two fixture is mechanically valid and independently re-derives `V/E/F=120/366/244`, closed/orientable, `chi=-2`, genus `2`. One fresh producer process selected the S5 focus and failed at field-transport-atlas admissibility (`InvalidFieldTransportAtlas`, `IncompleteCycleBasis`, `CycleOrderingFailed`) before A3. Frozen fail-fast left selector426 **0/426** and benchmark execution **0**; immutable postflight is exact.
+TB12-R1 Review is complete in substance. Independent byte/source adjudication upholds the focused RED as a **production cycle-basis ordering defect**: `FieldTransportAtlas` tries to linearize topology-derived algebraic `bundle.cycles` support into one simple directed face loop and returns `CycleOrderingFailed` before transport composition. Retained genus-two topology is valid; raw-field values are not a valid explanation for this observed ordering failure. The field may still need later admissibility proof after the defect is diagnosed.
 
-- [x] `M4-CP-SCALE-CB14`: retain/package deterministic genus-two fixture; compile/package GREEN, no generated runtime.
-- [x] `M4-CP-SCALE-TB12-R1-EXEC`: verified immutable candidate and exact fixture; focused **0 PASS / 1 FAIL** semantic RED; no selector runtime; no benchmark; exact postflight.
-- [ ] `M4-CP-SCALE-TB12-R1-REV`: runtime-free independent Review + Plan; adjudicate retained-field test authority versus production atlas/cycle-ordering defect, classify candidate/stable consequences, freeze exactly one bounded successor.
-- [ ] Do **not** retry runtime, enter CB correction, mutate fixture/product/test semantics, or publish selector427 before Review.
+- [x] `M4-CP-SCALE-CB14`: retained/package deterministic genus-two fixture; compile/package GREEN, no generated runtime.
+- [x] `M4-CP-SCALE-TB12-R1-EXEC`: exact focus **0 PASS / 1 FAIL** semantic RED; no selector runtime; no benchmark; immutable postflight.
+- [x] `M4-CP-SCALE-TB12-R1-REV`: runtime-free independent Review; candidate classified production `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`, non-stable; S5 remains uncredited.
+- [ ] `M4-CP-SCALE-CB15`: **exact next** diagnostics-only Code + Build. Publish cycle row/class/support/order-failure subtype while preserving `IncompleteCycleBasis / CycleOrderingFailed`, all decisions/products, fixture/test semantics and selector426. Compile/package only; `runtimeExecution=false`.
+- [ ] Do **not** implement a semantic cycle repair, mutate the genus-two field/fixture, retry generated runtime, or publish selector427 inside CB15.
 
-## Current focus — `M4-CP-SCALE-TB12-R1-REV` (mandatory runtime-free adjudication)
+## Current focus — `M4-CP-SCALE-CB15` (diagnostics-only Code + Build)
 
-Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate package `10509313705` is mechanically valid but unpromoted. TB12-R1 establishes a genuine focused semantic RED at the atlas-admissibility precondition with exact topology/fixture/package postflight and no selector426 execution.
+Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate package `10509313705` is not promoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` is **OPEN / production FieldTransportAtlas cycle-basis ordering defect / RP-07 / NON-STABLE**; no accepted-green loss is priced.
 
-`M4-CP-SCALE-TB12-EXEC-CAND-01` is recovery-proved/non-stable. New `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` is open/review-required/non-stable. Review owns the first adjudication of whether the project-authored raw field is invalid authority or the production atlas/cycle-ordering path is defective; until then no stable regression event/category/recurrence is added and no S5 credit exists.
+CB15 must identify the exact failing cycle row/class and structural ordering subtype without changing behavior. If compile/package evidence is valid, the later artifact-only owner is `M4-CP-SCALE-TB12-R2-EXEC`, one fresh focused process followed by mandatory Review. Focus GREEN after diagnostics is itself a stop/non-neutrality signal, not S5 acceptance.
 
 ## Carried forward from M1
 
@@ -54,7 +55,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. CB14 retained and packaged the deterministic genus-two fixture authority as candidate artifact `10509313705` / source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd` without generated runtime. TB12-R1 has now produced a mechanically valid focused semantic RED; exact next `M4-CP-SCALE-TB12-R1-REV` adjudicates it before any retry/correction. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains runtime-unproven, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. CB14 retained and packaged the deterministic genus-two fixture authority as candidate artifact `10509313705` / source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd` without generated runtime. TB12-R1 Review classifies the mechanically valid focus RED as a non-stable production `RP-07` cycle-basis ordering defect; exact next `M4-CP-SCALE-CB15` is diagnostics-only compile/package before any semantic correction. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains runtime-unproven, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -94,4 +95,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. `M4-CP-SCALE-TB12-EXEC` produced no semantic ledger because candidate `10503330993` lacked its required retained genus-two fixture pair; CB14 corrected and packaged that fixture authority as candidate `10509313705` / source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd`. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 genus>=2 construction/reachability remains open. Exact next is **`M4-CP-SCALE-TB12-R1-REV`** for mandatory runtime-free adjudication of the focused semantic RED. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. `M4-CP-SCALE-TB12-EXEC` produced no semantic ledger because candidate `10503330993` lacked its required retained genus-two fixture pair; CB14 corrected and packaged that fixture authority as candidate `10509313705` / source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd`. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, retained S5 genus-two topology is proved, and atlas/A3 reachability is blocked by the reviewed cycle-ordering defect. Exact next is **`M4-CP-SCALE-CB15`** diagnostics-only Code + Build. PR #8 remains open, draft, and unmerged.
