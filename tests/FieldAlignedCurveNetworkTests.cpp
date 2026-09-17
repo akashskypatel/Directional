@@ -2111,6 +2111,206 @@ std::optional<IndependentSourceTopology> independent_source_topology(
   return topology;
 }
 
+struct IndependentSourceSurfaceCensus {
+  std::size_t vertexCount = 0U;
+  std::size_t edgeCount = 0U;
+  std::size_t faceCount = 0U;
+  std::size_t componentCount = 0U;
+  std::size_t boundaryLoopCount = 0U;
+  bool closedTwoManifold = false;
+  bool orientable = false;
+  std::int64_t eulerCharacteristic = 0;
+  std::optional<std::int64_t> genus;
+};
+
+std::optional<IndependentSourceSurfaceCensus>
+independent_source_surface_census(const TriMesh &mesh) {
+  if (mesh.F.cols() != 3 || mesh.F.rows() <= 0) return std::nullopt;
+
+  struct EdgeIncidence {
+    std::size_t face = 0U;
+    int first = -1;
+    int second = -1;
+  };
+
+  std::set<int> referencedVertices;
+  std::set<std::array<int, 3>> canonicalFaces;
+  std::vector<std::array<int, 3>> faces;
+  faces.reserve(static_cast<std::size_t>(mesh.F.rows()));
+  std::map<std::pair<int, int>, std::vector<EdgeIncidence>> edges;
+  std::map<int, std::map<int, std::set<int>>> vertexLinks;
+  std::map<int, std::set<std::pair<int, int>>> vertexLinkEdges;
+
+  for (int row = 0; row < mesh.F.rows(); ++row) {
+    const std::array<int, 3> face{
+        mesh.F(row, 0), mesh.F(row, 1), mesh.F(row, 2)};
+    if (face[0] < 0 || face[1] < 0 || face[2] < 0 ||
+        face[0] >= mesh.V.rows() || face[1] >= mesh.V.rows() ||
+        face[2] >= mesh.V.rows() || face[0] == face[1] ||
+        face[1] == face[2] || face[2] == face[0]) {
+      return std::nullopt;
+    }
+    std::array<int, 3> canonical = face;
+    std::sort(canonical.begin(), canonical.end());
+    if (!canonicalFaces.insert(canonical).second) return std::nullopt;
+    faces.push_back(face);
+    referencedVertices.insert(face.begin(), face.end());
+
+    for (std::size_t corner = 0U; corner < 3U; ++corner) {
+      const int first = face[corner];
+      const int second = face[(corner + 1U) % 3U];
+      const auto edge = std::minmax(first, second);
+      edges[{edge.first, edge.second}].push_back(EdgeIncidence{
+          static_cast<std::size_t>(row), first, second});
+
+      const int center = face[corner];
+      const int linkFirst = face[(corner + 1U) % 3U];
+      const int linkSecond = face[(corner + 2U) % 3U];
+      const auto linkEdge = std::minmax(linkFirst, linkSecond);
+      if (!vertexLinkEdges[center]
+               .insert({linkEdge.first, linkEdge.second})
+               .second) {
+        return std::nullopt;
+      }
+      vertexLinks[center][linkFirst].insert(linkSecond);
+      vertexLinks[center][linkSecond].insert(linkFirst);
+    }
+  }
+
+  std::vector<std::set<std::size_t>> faceAdjacency(faces.size());
+  std::map<int, std::set<int>> boundaryAdjacency;
+  bool closedEdgeManifold = true;
+  for (const auto &[edge, incidences] : edges) {
+    if (incidences.size() == 2U) {
+      faceAdjacency[incidences[0].face].insert(incidences[1].face);
+      faceAdjacency[incidences[1].face].insert(incidences[0].face);
+      continue;
+    }
+    closedEdgeManifold = false;
+    if (incidences.size() != 1U) return std::nullopt;
+    boundaryAdjacency[edge.first].insert(edge.second);
+    boundaryAdjacency[edge.second].insert(edge.first);
+  }
+
+  std::size_t componentCount = 0U;
+  std::set<std::size_t> visitedFaces;
+  for (std::size_t seed = 0U; seed < faces.size(); ++seed) {
+    if (visitedFaces.count(seed) != 0U) continue;
+    ++componentCount;
+    std::vector<std::size_t> pending{seed};
+    visitedFaces.insert(seed);
+    while (!pending.empty()) {
+      const std::size_t current = pending.back();
+      pending.pop_back();
+      for (const std::size_t adjacent : faceAdjacency[current]) {
+        if (visitedFaces.insert(adjacent).second) pending.push_back(adjacent);
+      }
+    }
+  }
+
+  std::size_t boundaryLoopCount = 0U;
+  std::set<int> visitedBoundaryVertices;
+  for (const auto &[vertex, adjacent] : boundaryAdjacency) {
+    if (adjacent.size() != 2U) return std::nullopt;
+    if (visitedBoundaryVertices.count(vertex) != 0U) continue;
+    ++boundaryLoopCount;
+    std::vector<int> pending{vertex};
+    visitedBoundaryVertices.insert(vertex);
+    while (!pending.empty()) {
+      const int current = pending.back();
+      pending.pop_back();
+      for (const int adjacentVertex : boundaryAdjacency[current]) {
+        if (visitedBoundaryVertices.insert(adjacentVertex).second) {
+          pending.push_back(adjacentVertex);
+        }
+      }
+    }
+  }
+
+  bool vertexLinksAreCycles = true;
+  for (const int vertex : referencedVertices) {
+    const auto link = vertexLinks.find(vertex);
+    if (link == vertexLinks.end() || link->second.empty()) {
+      vertexLinksAreCycles = false;
+      break;
+    }
+    for (const auto &[linkVertex, adjacent] : link->second) {
+      (void)linkVertex;
+      if (adjacent.size() != 2U) {
+        vertexLinksAreCycles = false;
+        break;
+      }
+    }
+    if (!vertexLinksAreCycles) break;
+    std::set<int> visitedLinkVertices;
+    std::vector<int> pending{link->second.begin()->first};
+    visitedLinkVertices.insert(pending.back());
+    while (!pending.empty()) {
+      const int current = pending.back();
+      pending.pop_back();
+      for (const int adjacent : link->second.at(current)) {
+        if (visitedLinkVertices.insert(adjacent).second) pending.push_back(adjacent);
+      }
+    }
+    if (visitedLinkVertices.size() != link->second.size()) {
+      vertexLinksAreCycles = false;
+      break;
+    }
+  }
+
+  bool orientable = true;
+  std::vector<int> faceOrientation(faces.size(), 0);
+  for (std::size_t seed = 0U; seed < faces.size() && orientable; ++seed) {
+    if (faceOrientation[seed] != 0) continue;
+    faceOrientation[seed] = 1;
+    std::vector<std::size_t> pending{seed};
+    while (!pending.empty() && orientable) {
+      const std::size_t current = pending.back();
+      pending.pop_back();
+      const auto &face = faces[current];
+      for (std::size_t corner = 0U; corner < 3U; ++corner) {
+        const int first = face[corner];
+        const int second = face[(corner + 1U) % 3U];
+        const auto canonical = std::minmax(first, second);
+        const auto edge = edges.find({canonical.first, canonical.second});
+        if (edge == edges.end() || edge->second.size() != 2U) continue;
+        const EdgeIncidence &other =
+            edge->second[edge->second[0].face == current ? 1U : 0U];
+        const bool sameDirection =
+            first == other.first && second == other.second;
+        const int requiredOrientation =
+            sameDirection ? -faceOrientation[current] : faceOrientation[current];
+        if (faceOrientation[other.face] == 0) {
+          faceOrientation[other.face] = requiredOrientation;
+          pending.push_back(other.face);
+        } else if (faceOrientation[other.face] != requiredOrientation) {
+          orientable = false;
+          break;
+        }
+      }
+    }
+  }
+
+  IndependentSourceSurfaceCensus census;
+  census.vertexCount = referencedVertices.size();
+  census.edgeCount = edges.size();
+  census.faceCount = faces.size();
+  census.componentCount = componentCount;
+  census.boundaryLoopCount = boundaryLoopCount;
+  census.closedTwoManifold = closedEdgeManifold && vertexLinksAreCycles;
+  census.orientable = orientable;
+  census.eulerCharacteristic =
+      static_cast<std::int64_t>(census.vertexCount) -
+      static_cast<std::int64_t>(census.edgeCount) +
+      static_cast<std::int64_t>(census.faceCount);
+  if (census.componentCount == 1U && census.closedTwoManifold &&
+      census.orientable && census.boundaryLoopCount == 0U &&
+      (2 - census.eulerCharacteristic) % 2 == 0) {
+    census.genus = (2 - census.eulerCharacteristic) / 2;
+  }
+  return census;
+}
+
 bool independent_face_orients_edge_forward(
     const IndependentSourceFaceRecord &face,
     const SourceEdgeTopologyKey &edge) {
@@ -14556,6 +14756,199 @@ TEST(M4CPScaleS4,
             << ";bypassedFinalCertificationAttempts="
             << acceleratedDiagnostics.bypassedFinalCertificationAttempts
             << ";decisionNeutral=true\n";
+}
+
+TEST(M4CPScaleS5, GenusTwoProducedWitnessReachesA3WithVerifiedTopology) {
+  TriMesh mesh;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/genus_two.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/genus_two.rawfield");
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const auto topology = independent_source_surface_census(mesh);
+  ASSERT_TRUE(topology.has_value());
+
+  const Eigen::MatrixXd rawField =
+      read_cp4c_rawfield(fieldPath, mesh.F.rows());
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.V, mesh.F, rawField, cp4c_remesh_options());
+  const auto &products = result.surfaceCellContext.productSnapshots;
+
+  std::optional<SourceTopologyRegions> independentSourceAuthority;
+  std::optional<directional::authority::FieldTransportAtlas> independentAtlas;
+  std::optional<directional::authority::FieldAtlasBuildError> independentAtlasError;
+  if (products.hasCrossField && products.hasAuthoritativeRails &&
+      products.hasSourceSurfaceLabels) {
+    SurfaceCellTracingOptions tracingOptions;
+    tracingOptions.authoritativeRails = products.authoritativeRails;
+    tracingOptions.hardFeatureEdges =
+        directional::pipeline::hard_feature_edge_keys_from_rails(
+            products.authoritativeRails,
+            static_cast<std::size_t>(mesh.V.rows()));
+    tracingOptions.sourceFaceComponents =
+        products.sourceSurfaceLabels.componentByFace;
+    tracingOptions.sourceFaceSheets =
+        products.sourceSurfaceLabels.localSheetByFace;
+    independentSourceAuthority =
+        directional::geometry::surface_cell_tracing_detail::
+            build_source_topology_regions(mesh.F, tracingOptions);
+    if (independentSourceAuthority.has_value()) {
+      auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+          mesh, *independentSourceAuthority, tracingOptions.hardFeatureEdges,
+          products.crossField);
+      if (atlasBuild) {
+        independentAtlas = std::move(atlasBuild.value());
+      } else {
+        independentAtlasError = atlasBuild.error();
+      }
+    }
+  }
+
+  std::string deepestProductionStage = "none";
+  std::size_t a3DebugCount = 0U;
+  std::uint64_t a3DebugHash = 0U;
+  std::size_t a3DebugElementCount = 0U;
+  for (const auto &debug : result.surfaceCellContext.debugProducts) {
+    if (debug.available) deepestProductionStage = debug.name;
+    if (debug.name == "global-topology-plan" && debug.available) {
+      ++a3DebugCount;
+      a3DebugHash = debug.structuralHash;
+      a3DebugElementCount = debug.elementCount;
+    }
+  }
+
+  const bool independentAtlasEstablished =
+      independentAtlas.has_value() &&
+      independentAtlas->quadrangulability().established();
+  const std::uint64_t independentAtlasHash =
+      independentAtlas.has_value()
+          ? directional::authority::field_transport_atlas_hash(
+                *independentAtlas)
+          : 0U;
+  const std::uint64_t productionAtlasHash =
+      products.fieldTransportAtlas.has_value()
+          ? directional::authority::field_transport_atlas_hash(
+                *products.fieldTransportAtlas)
+          : 0U;
+  const std::uint64_t a3SemanticDigest =
+      products.globalTopologyPlan.has_value()
+          ? products.globalTopologyPlan->semantic_digest()
+          : 0U;
+  const std::uint64_t a3StructuralHash =
+      products.globalTopologyPlan.has_value()
+          ? directional::geometry::global_topology_plan_hash(
+                *products.globalTopologyPlan)
+          : 0U;
+
+  std::cout
+      << "m4CpScaleS5"
+      << ";topology={V=" << topology->vertexCount
+      << ",E=" << topology->edgeCount << ",F=" << topology->faceCount
+      << ",components=" << topology->componentCount
+      << ",boundaryLoops=" << topology->boundaryLoopCount
+      << ",closedTwoManifold="
+      << (topology->closedTwoManifold ? "true" : "false")
+      << ",orientable=" << (topology->orientable ? "true" : "false")
+      << ",chi=" << topology->eulerCharacteristic << ",genus=";
+  if (topology->genus.has_value()) {
+    std::cout << *topology->genus;
+  } else {
+    std::cout << "unavailable";
+  }
+  std::cout << "}"
+            << ";field={crossField="
+            << (products.hasCrossField ? "true" : "false")
+            << ",atlasIndependent="
+            << (independentAtlas.has_value() ? "true" : "false")
+            << ",atlasEstablished="
+            << (independentAtlasEstablished ? "true" : "false")
+            << ",cycleCount="
+            << (independentAtlas.has_value() ? independentAtlas->cycles().size()
+                                             : 0U)
+            << ",witnessCount="
+            << (independentAtlas.has_value()
+                    ? independentAtlas->quadrangulability().witnesses().size()
+                    : 0U)
+            << ",atlasHash=" << independentAtlasHash
+            << ",productionAtlasHash=" << productionAtlasHash << "}"
+            << ";production={deepestStage=" << deepestProductionStage
+            << ",terminalFailureCode="
+            << (result.diagnostics.terminalFailureCode.empty()
+                    ? "none"
+                    : result.diagnostics.terminalFailureCode)
+            << ",terminalFailureStage="
+            << (result.diagnostics.terminalFailureStage.empty()
+                    ? "none"
+                    : result.diagnostics.terminalFailureStage)
+            << ",a3Produced="
+            << (products.globalTopologyPlan.has_value() ? "true" : "false")
+            << ",a3DebugCount=" << a3DebugCount
+            << ",a3SemanticDigest=" << a3SemanticDigest
+            << ",a3StructuralHash=" << a3StructuralHash
+            << ",a3DebugHash=" << a3DebugHash
+            << ",a3DebugElements=" << a3DebugElementCount
+            << ",regionCount="
+            << (products.globalTopologyPlan.has_value()
+                    ? products.globalTopologyPlan->regions().size()
+                    : 0U)
+            << ",arcCount="
+            << (products.globalTopologyPlan.has_value()
+                    ? products.globalTopologyPlan->arcs().size()
+                    : 0U)
+            << ",rotationCount="
+            << (products.globalTopologyPlan.has_value()
+                    ? products.globalTopologyPlan->rotation_system().size()
+                    : 0U)
+            << "}\n";
+
+  EXPECT_GT(topology->vertexCount, 0U);
+  EXPECT_GT(topology->edgeCount, 0U);
+  EXPECT_GT(topology->faceCount, 0U);
+  EXPECT_EQ(1U, topology->componentCount);
+  EXPECT_EQ(0U, topology->boundaryLoopCount);
+  EXPECT_TRUE(topology->closedTwoManifold);
+  EXPECT_TRUE(topology->orientable);
+  EXPECT_EQ(-2, topology->eulerCharacteristic);
+  ASSERT_TRUE(topology->genus.has_value());
+  EXPECT_EQ((2 - topology->eulerCharacteristic) / 2, *topology->genus);
+  EXPECT_EQ(2, *topology->genus);
+
+  ASSERT_TRUE(products.hasCrossField);
+  ASSERT_TRUE(products.hasAuthoritativeRails);
+  ASSERT_TRUE(products.hasSourceSurfaceLabels);
+  ASSERT_TRUE(independentSourceAuthority.has_value());
+  ASSERT_TRUE(independentAtlas.has_value())
+      << (independentAtlasError.has_value()
+              ? directional::authority::field_atlas_build_error_code_name(
+                    independentAtlasError->code)
+              : "source-topology-unavailable");
+  EXPECT_TRUE(independentAtlas->quadrangulability().established());
+  EXPECT_NE(0U, independentAtlas->quadrangulability().source_digest());
+  EXPECT_NE(0U, independentAtlas->quadrangulability().atlas_digest());
+  EXPECT_FALSE(independentAtlas->quadrangulability().witnesses().empty());
+  ASSERT_TRUE(products.fieldTransportAtlas.has_value());
+  EXPECT_EQ(independentAtlasHash, productionAtlasHash);
+  EXPECT_EQ(independentAtlas->quadrangulability(),
+            products.fieldTransportAtlas->quadrangulability());
+
+  ASSERT_TRUE(products.sourceTopologyRegions.has_value());
+  ASSERT_TRUE(products.fieldAlignedCurveNetwork.has_value())
+      << result.diagnostics.terminalFailureCode << '/'
+      << result.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(products.surfaceCutGraph.has_value())
+      << result.diagnostics.terminalFailureCode << '/'
+      << result.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(products.globalTopologyPlan.has_value())
+      << result.diagnostics.terminalFailureCode << '/'
+      << result.diagnostics.terminalFailureStage;
+  EXPECT_EQ(1U, a3DebugCount);
+  EXPECT_EQ(a3StructuralHash, a3DebugHash);
+  EXPECT_EQ(products.globalTopologyPlan->arcs().size() +
+                products.globalTopologyPlan->regions().size() +
+                products.globalTopologyPlan->rotation_system().size(),
+            a3DebugElementCount);
+  EXPECT_GT(products.globalTopologyPlan->regions().size(), 0U);
+  EXPECT_GT(products.globalTopologyPlan->arcs().size(), 0U);
 }
 
 TEST(ResolvedBranchCorrection,
