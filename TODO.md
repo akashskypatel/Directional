@@ -2,22 +2,20 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-TB12-R2-EXEC (closeout)
+## Current turn — M4-CP-SCALE-TB12-R2-REV (closeout)
 
-TB12-R2 is complete as the frozen artifact-only diagnostic retry on candidate artifact `10517300204` / source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21`. Exactly one S5 focus process reproduced the semantic RED with unchanged outer `InvalidFieldTransportAtlas / IncompleteCycleBasis / CycleOrderingFailed` and exposed `cycleOrdering={row=14,kind=BoundaryLoop,supportEdges=34,uniqueFromFaces=34,reason=SupportEdgeReused,currentFace=0,sourceEdge=0-72}`. Selector426 runtime is **0/426** and benchmark runtime **0** by frozen plan.
+TB12-R2 Review is complete and runtime-free. Candidate package `10517300204` remains unpromoted. Independent source audit resolves row14 `BoundaryLoop / SupportEdgeReused` as premature closure of the first successor orbit: 34 support edges with 34 unique outgoing faces exclude duplicate origins, and reuse at minimum/canonical start face0 occurs before all support is consumed. `dual_cycles` publishes valid algebraic support that may contain multiple closed components; the defect owner is `FieldTransportAtlas`'s one-simple-loop representation assumption.
 
-- [x] `M4-CP-SCALE-CB14`: retained/package deterministic genus-two fixture; compile/package GREEN, no generated runtime.
-- [x] `M4-CP-SCALE-TB12-R1-EXEC`: exact focus **0 PASS / 1 FAIL** semantic RED; no selector runtime; no benchmark; immutable postflight.
-- [x] `M4-CP-SCALE-TB12-R1-REV`: candidate classified production `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`, non-stable; S5 remains uncredited.
 - [x] `M4-CP-SCALE-CB15`: decision-neutral cycle-order diagnostics compile/package GREEN; no semantic repair or runtime.
-- [x] `M4-CP-SCALE-TB12-R2-EXEC`: one exact S5 focus **0 PASS / 1 FAIL**; discriminator captured as row14 `BoundaryLoop / SupportEdgeReused`; immutable postflight exact; no selector/benchmark.
-- [ ] `M4-CP-SCALE-TB12-R2-REV`: **exact next** runtime-free Review + Plan; independently re-derive the row14 support/reuse mechanism and freeze the smallest corrective owner/falsifier.
+- [x] `M4-CP-SCALE-TB12-R2-EXEC`: one exact S5 focus **0 PASS / 1 FAIL**; row14 `BoundaryLoop / SupportEdgeReused` discriminator captured; selector/benchmark runtime zero.
+- [x] `M4-CP-SCALE-TB12-R2-REV`: existing non-stable RP-07 candidate narrowed to valid multi-component algebraic support mis-handled by single-loop atlas ordering; no S5 credit.
+- [ ] `M4-CP-SCALE-CB16`: **exact next**. Preserve `dual_cycles`/row coefficients/lifts and canonically consume every closed successor component; update the independent validator/direct controls; compile/package all eight GMP/GMPXX targets with `runtimeExecution=false`; no selector/runtime.
 
-## Current focus — `M4-CP-SCALE-TB12-R2-REV`
+## Current focus — `M4-CP-SCALE-CB16`
 
-Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate package `10517300204` is not promoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` remains **OPEN / production FieldTransportAtlas cycle-basis ordering defect / RP-07 / NON-STABLE**, now narrowed to cycle row `14`, kind `BoundaryLoop`, 34 support edges / 34 unique source faces, subtype `SupportEdgeReused`, current face `0`, source edge `0-72`.
+Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate `10517300204` remains diagnostic-only and unpromoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` stays **OPEN / production FieldTransportAtlas cycle-basis ordering defect / RP-07 / NON-STABLE**.
 
-Review must consume the exact TB12-R2 evidence without runtime, identify the source-level invariant violated by that row, decide whether the ordering assumption or cycle support construction owns the defect, and freeze the next corrective Code + Build plan. No repair, selector427 publication or S5 acceptance is authorized before Review closes.
+CB16 may change only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp` semantically: partition one algebraic row's directed support into all canonically ordered closed components, consume every support edge exactly once, preserve existing single-component step order, and independently validate that contract. `dual_cycles`, fixture/rawfield, S5 focus, CMake/benchmark semantics and selector426 are frozen; no selector427 and no generated runtime. Stop rather than broaden if any forbidden surface is required.
 
 ## Carried forward from M1
 
@@ -56,7 +54,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. TB12-R1 Review classifies the valid genus-two focus RED as a non-stable production `RP-07` cycle-basis ordering defect. CB15 now packages decision-neutral cycle-order diagnostics as candidate artifact `10517300204` / source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` with no generated runtime or semantic repair; exact next `M4-CP-SCALE-TB12-R2-EXEC` executes the S5 focus once only to capture the discriminator. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains runtime-unproven, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. TB12-R2 Review narrows the non-stable S5 `RP-07` defect to `FieldTransportAtlas` single-loop representation of valid multi-component algebraic cycle support; candidate `10517300204` remains unpromoted. Exact next `M4-CP-SCALE-CB16` is bounded to deterministic all-components ordering plus independent validation, compile/package only. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains unaccepted, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.

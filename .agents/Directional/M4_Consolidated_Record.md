@@ -456,6 +456,26 @@ Accepted selector403 ordinal138 is a valid fail-closed compatibility contract, n
 
 Exact successor `M4-CP3-CB9` is runtime-free and freezes one semantic distinction: actual missing/ambiguous/contradictory occurrence authority remains `Rejected/InvalidFrontBoundaryAuthority`; valid total accepted boundary authority below the curved producer's minimum four-side chart remains `NotApplicable`. G1-G3 must prove ordinal138 and row408 occupy opposite sides of that boundary before mutation. Tests, fixtures, selectors, A2b/A3 writers and aggregate fail-closed semantics remain frozen.
 
+## 2.62 `M4-CP-SCALE-CB15 -> TB12-R2 -> TB12-R2-REV` — row14 proves multi-component algebraic support; atlas single-loop assumption owns RP-07
+
+CB15 added decision-neutral diagnostics only and compiled candidate artifact `10517300204` from exact source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` under all eight mandatory GMP/GMPXX targets with `runtimeExecution=false`. TB12-R2 consumed that immutable package and executed exactly one S5 focus process. The outer semantic RED remained `InvalidFieldTransportAtlas / IncompleteCycleBasis / CycleOrderingFailed`, selector426 runtime remained 0/426 and benchmark 0, while the new receipt identified `row=14`, `BoundaryLoop`, 34 support edges / 34 unique outgoing source faces, `SupportEdgeReused`, current face0, source edge0-72.
+
+TB12-R2 Review independently re-hashes package/selector/fixture authority and re-derives the ordering mechanism. `order_cycle_steps` sorts support, rejects duplicate origins and starts from the least `fromFace`; 34/34 unique origins exclude duplicate outgoing support and reuse at minimum face0 means the first successor orbit closes before all support is consumed. `dual_cycles` boundary rows are algebraic sums of boundary-vertex one-ring cycles, not a promise that their support is one connected simple face loop. The existing `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` therefore remains **OPEN / PRODUCTION FIELD-TRANSPORT CYCLE-BASIS ORDERING DEFECT / RP-07 / NON-STABLE**, now owned precisely by `FieldTransportAtlas`'s single-loop representation assumption.
+
+The frozen correction is `M4-CP-SCALE-CB16`: preserve the algebraic sparse row and exact turning lift, partition support into every closed directed successor component, canonicalize/flatten the components, consume every support edge exactly once, preserve existing single-component sequences, and update the independent atlas validator/direct controls to the same algebraic multi-component contract. `dual_cycles`, fixtures/rawfield, S5 focus semantics, selector426 and runtime are frozen in CB16. Accepted runtime authority remains package `10473134357` / selector426 **426/426**; stable totals stay **49 / 14 / 35**, debt **5**, S5 unaccepted.
+
+### CP-SCALE TB12-R2 Review folded-document index additions
+
+| Folded filename | Lines | Preserved role/verdict |
+|---|---:|---|
+| `Architecture_M4_CP_SCALE_CB15_Cycle_Ordering_Diagnostics_Code_Build_Plan.md` | 95 | **CONSUMED/FOLDED BY INTERVENING TB CLOSEOUT; INDEXED BY TB12-R2 REVIEW.** Decision-neutral row/class/support/subreason scope and no-runtime/no-semantic-repair constraints are preserved in this §2.62, TB12-R2 report/Review and git history. |
+| `Architecture_M4_CP_SCALE_CB15_Cycle_Ordering_Diagnostics_Code_Build_Report.md` | 68 | **SUPERSEDED/FOLDED BY TB12-R2 EXEC; INDEXED BY REVIEW.** Candidate artifact/source/GMP compile authority and diagnostic-only implementation are preserved in §2.62, current TB12-R2 report/Review, changelog and git history. |
+| `Architecture_M4_CP_SCALE_TB12_R2_Artifact_Only_Test_Benchmark_Plan.md` | 71 | **CONSUMED/FOLDED BY TB12-R2 EXEC; INDEXED BY REVIEW.** Exact one-process diagnostic retry/fail-fast contract is preserved in the current TB12-R2 report and §2.62. |
+| `Architecture_M4_CP_SCALE_TB12_R1_Artifact_Only_Test_Benchmark_Report.md` | 58 | **SUPERSEDED/FOLDED BY TB12-R2 REVIEW.** Earlier undifferentiated semantic RED is preserved in §2.61; the current TB12-R2 report carries the same outer failure plus the decisive row14 discriminator. |
+| `Architecture_M4_CP_SCALE_TB12_R1_Review_Record.md` | 126 | **SUPERSEDED/FOLDED BY TB12-R2 REVIEW.** Production RP-07 classification and raw-field exclusion remain in §2.61; row/subcondition uncertainty is superseded by §2.62/current Review. |
+
+Current retained CP-SCALE role set: normative frozen definitions; accepted TB11 runtime authority evidence; current TB12-R2 semantic-RED report; current TB12-R2 Review; exactly one next plan `Architecture_M4_CP_SCALE_CB16_Multi_Component_Cycle_Support_Code_Build_Plan.md`; selector426 + historical selectors; this consolidated record; tracker/changelog and durable project authority.
+
 ## 3. Folded document index
 
 Every filename below had its durable facts preserved before deletion. Full prior text remains recoverable from git
