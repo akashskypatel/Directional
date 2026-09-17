@@ -86,6 +86,14 @@ enum class FieldCycleKind : std::uint8_t {
   HandleGenerator,
 };
 
+enum class CycleOrderingFailureReason : std::uint8_t {
+  DuplicateFromFace,
+  MissingSuccessorFromFace,
+  SupportEdgeReused,
+  DirectedAdjacencyFaceMismatch,
+  OpenOrUnconsumedSupport,
+};
+
 enum class FieldQuadrangulabilityWitnessKind : std::uint8_t {
   ClosedShenSufficient,
   RelativeBoundary,
@@ -119,6 +127,19 @@ struct FieldAtlasRegionCycleBasisDiagnostics {
   std::size_t innerAdjacencyCount = 0U;
 
   auto operator<=>(const FieldAtlasRegionCycleBasisDiagnostics &) const = default;
+};
+
+struct FieldCycleOrderingDiagnostics {
+  std::size_t cycleRowIndex = 0U;
+  FieldCycleKind cycleKind = FieldCycleKind::HandleGenerator;
+  std::size_t supportEdgeCount = 0U;
+  std::size_t uniqueFromFaceCount = 0U;
+  std::optional<SourceFaceId> currentFace;
+  std::optional<SourceEdgeTopologyKey> sourceEdge;
+  CycleOrderingFailureReason reason =
+      CycleOrderingFailureReason::OpenOrUnconsumedSupport;
+
+  auto operator<=>(const FieldCycleOrderingDiagnostics &) const = default;
 };
 
 struct FieldBarrierComponentDiagnostics {
@@ -234,6 +255,7 @@ struct FieldAtlasBuildError {
   std::optional<TopologyRegionId> topologyRegion;
   std::optional<FieldBranch> branch;
   std::optional<IncompleteCycleBasisReason> incompleteCycleBasisReason;
+  std::optional<FieldCycleOrderingDiagnostics> cycleOrderingDiagnostics;
   std::vector<FieldAtlasRegionCycleBasisDiagnostics> regionCycleBasisDiagnostics;
   std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics;
 
@@ -891,6 +913,12 @@ field_atlas_build_error_code_name(FieldAtlasBuildErrorCode code) noexcept;
 
 [[nodiscard]] DIRECTIONAL_API const char *
 incomplete_cycle_basis_reason_name(IncompleteCycleBasisReason reason) noexcept;
+
+[[nodiscard]] DIRECTIONAL_API const char *
+field_cycle_kind_name(FieldCycleKind kind) noexcept;
+
+[[nodiscard]] DIRECTIONAL_API const char *
+cycle_ordering_failure_reason_name(CycleOrderingFailureReason reason) noexcept;
 
 [[nodiscard]] DIRECTIONAL_API std::uint64_t
 field_transport_atlas_hash(const FieldTransportAtlas &atlas) noexcept;

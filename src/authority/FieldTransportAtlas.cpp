@@ -1267,12 +1267,15 @@ FieldTransportAtlasBuildResult incomplete_cycle_basis_failure(
     const IncompleteCycleBasisReason reason,
     std::optional<SourceEdgeTopologyKey> sourceEdge,
     const TopologyRegionId topologyRegion,
-    const std::set<SourceEdgeTopologyKey> &hardFeatureEdges) {
+    const std::set<SourceEdgeTopologyKey> &hardFeatureEdges,
+    std::optional<FieldCycleOrderingDiagnostics> cycleOrderingDiagnostics =
+        std::nullopt) {
   FieldAtlasBuildError error;
   error.code = FieldAtlasBuildErrorCode::IncompleteCycleBasis;
   error.sourceEdge = std::move(sourceEdge);
   error.topologyRegion = topologyRegion;
   error.incompleteCycleBasisReason = reason;
+  error.cycleOrderingDiagnostics = std::move(cycleOrderingDiagnostics);
   error.regionCycleBasisDiagnostics =
       collect_cycle_basis_diagnostics(sourceMesh, sourceAuthority, hardFeatureEdges);
   for (const auto &region : sourceAuthority.regions()) {
@@ -1303,18 +1306,29 @@ struct DirectedCycleEdge {
 };
 
 std::optional<std::vector<FieldTransportStep>> order_cycle_steps(
-    std::vector<DirectedCycleEdge> directed) {
-  if (directed.empty()) return std::vector<FieldTransportStep>{};
+    std::vector<DirectedCycleEdge> directed,
+    FieldCycleOrderingDiagnostics &diagnostics) {
+  diagnostics.supportEdgeCount = directed.size();
+  if (directed.empty()) {
+    diagnostics.uniqueFromFaceCount = 0U;
+    return std::vector<FieldTransportStep>{};
+  }
 
   std::sort(directed.begin(), directed.end(),
             [](const DirectedCycleEdge &a, const DirectedCycleEdge &b) {
               return std::tie(a.fromFace, a.toFace, a.adjacency->sourceEdge) <
                      std::tie(b.fromFace, b.toFace, b.adjacency->sourceEdge);
             });
+  diagnostics.uniqueFromFaceCount = 1U;
   for (std::size_t i = 1; i < directed.size(); ++i) {
-    if (directed[i - 1U].fromFace == directed[i].fromFace) {
-      return std::nullopt;
+    if (directed[i - 1U].fromFace != directed[i].fromFace) {
+      ++diagnostics.uniqueFromFaceCount;
+      continue;
     }
+    diagnostics.reason = CycleOrderingFailureReason::DuplicateFromFace;
+    diagnostics.currentFace = directed[i].fromFace;
+    diagnostics.sourceEdge = directed[i].adjacency->sourceEdge;
+    return std::nullopt;
   }
 
   const SourceFaceId start = directed.front().fromFace;
@@ -1329,15 +1343,30 @@ std::optional<std::vector<FieldTransportStep>> order_cycle_steps(
           return candidate.fromFace < face;
         });
     if (found == directed.end() || found->fromFace != current) {
+      diagnostics.reason =
+          CycleOrderingFailureReason::MissingSuccessorFromFace;
+      diagnostics.currentFace = current;
+      diagnostics.sourceEdge.reset();
       return std::nullopt;
     }
     const std::size_t index =
         static_cast<std::size_t>(found - directed.begin());
-    if (used[index]) return std::nullopt;
+    if (used[index]) {
+      diagnostics.reason = CycleOrderingFailureReason::SupportEdgeReused;
+      diagnostics.currentFace = found->fromFace;
+      diagnostics.sourceEdge = found->adjacency->sourceEdge;
+      return std::nullopt;
+    }
     used[index] = true;
     const auto transport = directed_transport(
         *found->adjacency, found->fromFace, found->toFace);
-    if (!transport.has_value()) return std::nullopt;
+    if (!transport.has_value()) {
+      diagnostics.reason =
+          CycleOrderingFailureReason::DirectedAdjacencyFaceMismatch;
+      diagnostics.currentFace = found->fromFace;
+      diagnostics.sourceEdge = found->adjacency->sourceEdge;
+      return std::nullopt;
+    }
     result.push_back(FieldTransportStep{
         found->adjacency->id, found->adjacency->sourceEdge, found->fromFace,
         found->toFace, transport->transport, transport->signedLift});
@@ -1345,6 +1374,10 @@ std::optional<std::vector<FieldTransportStep>> order_cycle_steps(
   }
   if (current != start ||
       std::find(used.begin(), used.end(), false) != used.end()) {
+    diagnostics.reason =
+        CycleOrderingFailureReason::OpenOrUnconsumedSupport;
+    diagnostics.currentFace = current;
+    diagnostics.sourceEdge.reset();
     return std::nullopt;
   }
   return result;
@@ -2137,12 +2170,20 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         if (coefficient < 0.0) std::swap(first, second);
         directed.push_back({adjacency, first, second});
       }
-      const auto ordered = order_cycle_steps(directed);
+      FieldCycleOrderingDiagnostics orderingDiagnostics;
+      orderingDiagnostics.cycleRowIndex = static_cast<std::size_t>(row);
+      if (row < static_cast<int>(interiorLocalVertices.size())) {
+        orderingDiagnostics.cycleKind = FieldCycleKind::LocalVertex;
+      } else if (row < static_cast<int>(interiorLocalVertices.size()) +
+                           boundaryLoopCount) {
+        orderingDiagnostics.cycleKind = FieldCycleKind::BoundaryLoop;
+      }
+      const auto ordered = order_cycle_steps(directed, orderingDiagnostics);
       if (!ordered.has_value()) {
         return incomplete_cycle_basis_failure(
             sourceMesh, sourceAuthority,
             IncompleteCycleBasisReason::CycleOrderingFailed, std::nullopt,
-            region.id(), hardFeatureEdges);
+            region.id(), hardFeatureEdges, std::move(orderingDiagnostics));
       }
       const QuarterTurn composed = compose_cycle(*ordered);
       if (static_cast<int>(composed.value()) !=
@@ -2666,6 +2707,35 @@ const char *incomplete_cycle_basis_reason_name(
     return "CycleKindPartitionMismatch";
   case IncompleteCycleBasisReason::BoundaryCycleCountMismatch:
     return "BoundaryCycleCountMismatch";
+  }
+  return "Unknown";
+}
+
+const char *field_cycle_kind_name(const FieldCycleKind kind) noexcept {
+  switch (kind) {
+  case FieldCycleKind::LocalVertex:
+    return "LocalVertex";
+  case FieldCycleKind::BoundaryLoop:
+    return "BoundaryLoop";
+  case FieldCycleKind::HandleGenerator:
+    return "HandleGenerator";
+  }
+  return "Unknown";
+}
+
+const char *cycle_ordering_failure_reason_name(
+    const CycleOrderingFailureReason reason) noexcept {
+  switch (reason) {
+  case CycleOrderingFailureReason::DuplicateFromFace:
+    return "DuplicateFromFace";
+  case CycleOrderingFailureReason::MissingSuccessorFromFace:
+    return "MissingSuccessorFromFace";
+  case CycleOrderingFailureReason::SupportEdgeReused:
+    return "SupportEdgeReused";
+  case CycleOrderingFailureReason::DirectedAdjacencyFaceMismatch:
+    return "DirectedAdjacencyFaceMismatch";
+  case CycleOrderingFailureReason::OpenOrUnconsumedSupport:
+    return "OpenOrUnconsumedSupport";
   }
   return "Unknown";
 }

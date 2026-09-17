@@ -6433,6 +6433,31 @@ void append_atlas_error(std::ostringstream &stream,
            << directional::authority::incomplete_cycle_basis_reason_name(
                   *error.incompleteCycleBasisReason);
   }
+  if (error.cycleOrderingDiagnostics.has_value()) {
+    const auto &diagnostics = *error.cycleOrderingDiagnostics;
+    stream << ";cycleOrdering={row=" << diagnostics.cycleRowIndex
+           << ",kind="
+           << directional::authority::field_cycle_kind_name(
+                  diagnostics.cycleKind)
+           << ",supportEdges=" << diagnostics.supportEdgeCount
+           << ",uniqueFromFaces=" << diagnostics.uniqueFromFaceCount
+           << ",reason="
+           << directional::authority::cycle_ordering_failure_reason_name(
+                  diagnostics.reason)
+           << ",currentFace=";
+    if (diagnostics.currentFace.has_value()) {
+      stream << diagnostics.currentFace->index();
+    } else {
+      stream << "none";
+    }
+    stream << ",sourceEdge=";
+    if (diagnostics.sourceEdge.has_value()) {
+      stream << source_edge_locus(*diagnostics.sourceEdge);
+    } else {
+      stream << "none";
+    }
+    stream << '}';
+  }
   for (std::size_t index = 0U;
        index < error.regionCycleBasisDiagnostics.size(); ++index) {
     const auto &row = error.regionCycleBasisDiagnostics[index];
