@@ -1331,52 +1331,60 @@ std::optional<std::vector<FieldTransportStep>> order_cycle_steps(
     return std::nullopt;
   }
 
-  const SourceFaceId start = directed.front().fromFace;
-  SourceFaceId current = start;
   std::vector<bool> used(directed.size(), false);
   std::vector<FieldTransportStep> result;
   result.reserve(directed.size());
-  for (std::size_t step = 0; step < directed.size(); ++step) {
-    const auto found = std::lower_bound(
-        directed.begin(), directed.end(), current,
-        [](const DirectedCycleEdge &candidate, const SourceFaceId face) {
-          return candidate.fromFace < face;
-        });
-    if (found == directed.end() || found->fromFace != current) {
-      diagnostics.reason =
-          CycleOrderingFailureReason::MissingSuccessorFromFace;
-      diagnostics.currentFace = current;
-      diagnostics.sourceEdge.reset();
-      return std::nullopt;
+  while (result.size() < directed.size()) {
+    const auto componentStart = std::find(used.begin(), used.end(), false);
+    if (componentStart == used.end()) break;
+    const std::size_t componentStartIndex =
+        static_cast<std::size_t>(componentStart - used.begin());
+    const SourceFaceId start = directed[componentStartIndex].fromFace;
+    SourceFaceId current = start;
+
+    while (true) {
+      const auto found = std::lower_bound(
+          directed.begin(), directed.end(), current,
+          [](const DirectedCycleEdge &candidate, const SourceFaceId face) {
+            return candidate.fromFace < face;
+          });
+      if (found == directed.end() || found->fromFace != current) {
+        diagnostics.reason =
+            CycleOrderingFailureReason::MissingSuccessorFromFace;
+        diagnostics.currentFace = current;
+        diagnostics.sourceEdge.reset();
+        return std::nullopt;
+      }
+      const std::size_t index =
+          static_cast<std::size_t>(found - directed.begin());
+      if (used[index]) {
+        diagnostics.reason = CycleOrderingFailureReason::SupportEdgeReused;
+        diagnostics.currentFace = found->fromFace;
+        diagnostics.sourceEdge = found->adjacency->sourceEdge;
+        return std::nullopt;
+      }
+      used[index] = true;
+      const auto transport = directed_transport(
+          *found->adjacency, found->fromFace, found->toFace);
+      if (!transport.has_value()) {
+        diagnostics.reason =
+            CycleOrderingFailureReason::DirectedAdjacencyFaceMismatch;
+        diagnostics.currentFace = found->fromFace;
+        diagnostics.sourceEdge = found->adjacency->sourceEdge;
+        return std::nullopt;
+      }
+      result.push_back(FieldTransportStep{
+          found->adjacency->id, found->adjacency->sourceEdge, found->fromFace,
+          found->toFace, transport->transport, transport->signedLift});
+      current = found->toFace;
+      if (current == start) break;
     }
-    const std::size_t index =
-        static_cast<std::size_t>(found - directed.begin());
-    if (used[index]) {
-      diagnostics.reason = CycleOrderingFailureReason::SupportEdgeReused;
-      diagnostics.currentFace = found->fromFace;
-      diagnostics.sourceEdge = found->adjacency->sourceEdge;
-      return std::nullopt;
-    }
-    used[index] = true;
-    const auto transport = directed_transport(
-        *found->adjacency, found->fromFace, found->toFace);
-    if (!transport.has_value()) {
-      diagnostics.reason =
-          CycleOrderingFailureReason::DirectedAdjacencyFaceMismatch;
-      diagnostics.currentFace = found->fromFace;
-      diagnostics.sourceEdge = found->adjacency->sourceEdge;
-      return std::nullopt;
-    }
-    result.push_back(FieldTransportStep{
-        found->adjacency->id, found->adjacency->sourceEdge, found->fromFace,
-        found->toFace, transport->transport, transport->signedLift});
-    current = found->toFace;
   }
-  if (current != start ||
+  if (result.size() != directed.size() ||
       std::find(used.begin(), used.end(), false) != used.end()) {
     diagnostics.reason =
         CycleOrderingFailureReason::OpenOrUnconsumedSupport;
-    diagnostics.currentFace = current;
+    diagnostics.currentFace.reset();
     diagnostics.sourceEdge.reset();
     return std::nullopt;
   }

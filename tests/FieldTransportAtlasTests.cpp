@@ -5,12 +5,15 @@
 #include <bit>
 #include <cmath>
 #include <cstdint>
+#include <filesystem>
+#include <fstream>
 #include <map>
 #include <numeric>
 #include <limits>
 #include <optional>
 #include <sstream>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -24,7 +27,10 @@
 #include <directional/fields/CrossField.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/geometry/SurfaceCellTracing.h>
+#include <directional/io/ReadOBJ.h>
+#include <directional/pipeline/RemeshPipeline.h>
 
+#include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
 namespace {
@@ -1142,6 +1148,111 @@ std::vector<IndependentSupportKey> independent_published_support(
   return support;
 }
 
+std::optional<std::vector<IndependentSupportKey>>
+independent_canonical_component_order(
+    std::vector<IndependentSupportKey> support) {
+  const auto orderKey = [](const IndependentSupportKey &key) {
+    return std::make_tuple(std::get<2>(key), std::get<3>(key),
+                           std::get<0>(key), std::get<1>(key));
+  };
+  std::sort(support.begin(), support.end(),
+            [&](const IndependentSupportKey &a,
+                const IndependentSupportKey &b) {
+              return orderKey(a) < orderKey(b);
+            });
+
+  std::map<std::uint64_t, std::size_t> successor;
+  for (std::size_t index = 0; index < support.size(); ++index) {
+    if (!successor.emplace(std::get<2>(support[index]), index).second) {
+      return std::nullopt;
+    }
+  }
+
+  std::vector<bool> used(support.size(), false);
+  std::vector<IndependentSupportKey> ordered;
+  ordered.reserve(support.size());
+  while (ordered.size() < support.size()) {
+    const auto firstUnused = std::find(used.begin(), used.end(), false);
+    if (firstUnused == used.end()) break;
+    const std::size_t firstIndex =
+        static_cast<std::size_t>(firstUnused - used.begin());
+    const std::uint64_t startFace = std::get<2>(support[firstIndex]);
+    std::uint64_t currentFace = startFace;
+
+    while (true) {
+      const auto next = successor.find(currentFace);
+      if (next == successor.end() || used[next->second]) {
+        return std::nullopt;
+      }
+      used[next->second] = true;
+      ordered.push_back(support[next->second]);
+      currentFace = std::get<3>(support[next->second]);
+      if (currentFace == startFace) break;
+    }
+  }
+
+  if (ordered.size() != support.size() ||
+      std::find(used.begin(), used.end(), false) != used.end()) {
+    return std::nullopt;
+  }
+  return ordered;
+}
+
+bool independent_matches_canonical_component_order(
+    const std::vector<IndependentSupportKey> &support,
+    const std::vector<IndependentSupportKey> &publishedOrder) {
+  const auto canonical = independent_canonical_component_order(support);
+  return canonical.has_value() && *canonical == publishedOrder;
+}
+
+std::optional<std::size_t> independent_closed_component_count(
+    const std::vector<IndependentSupportKey> &support) {
+  const auto ordered = independent_canonical_component_order(support);
+  if (!ordered.has_value()) return std::nullopt;
+  std::size_t components = 0U;
+  std::size_t index = 0U;
+  while (index < ordered->size()) {
+    const std::uint64_t startFace = std::get<2>((*ordered)[index]);
+    std::uint64_t currentFace = startFace;
+    do {
+      if (index >= ordered->size() ||
+          std::get<2>((*ordered)[index]) != currentFace) {
+        return std::nullopt;
+      }
+      currentFace = std::get<3>((*ordered)[index]);
+      ++index;
+    } while (currentFace != startFace);
+    ++components;
+  }
+  return components;
+}
+
+Eigen::MatrixXd read_atlas_rawfield_fixture(
+    const std::filesystem::path &path, const int expectedFaces) {
+  std::ifstream stream(path);
+  if (!stream) {
+    throw std::runtime_error("Failed to open rawfield fixture: " +
+                             path.string());
+  }
+  int degree = 0;
+  int faceCount = 0;
+  if (!(stream >> degree >> faceCount) || degree != 4 ||
+      faceCount != expectedFaces) {
+    throw std::runtime_error("Invalid rawfield fixture header: " +
+                             path.string());
+  }
+  Eigen::MatrixXd raw(faceCount, 3 * degree);
+  for (int face = 0; face < faceCount; ++face) {
+    for (int column = 0; column < raw.cols(); ++column) {
+      if (!(stream >> raw(face, column))) {
+        throw std::runtime_error("Invalid rawfield fixture payload: " +
+                                 path.string());
+      }
+    }
+  }
+  return raw;
+}
+
 std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
     const CrossFieldResult &field,
@@ -1518,16 +1629,21 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     } else {
       return FieldAtlasBuildErrorCode::IncompleteCycleBasis;
     }
-    QuarterTurn composed;
-    std::optional<SourceFaceId> start;
-    std::optional<SourceFaceId> current;
+    std::vector<IndependentSupportKey> publishedOrder;
+    publishedOrder.reserve(cycle.steps.size());
     for (const FieldTransportStep &step : cycle.steps) {
-      if (!start.has_value()) {
-        start = step.fromFace;
-        current = step.fromFace;
-      }
-      if (*current != step.fromFace ||
-          step.adjacency.index() >= snapshot.adjacencies.size()) {
+      publishedOrder.emplace_back(
+          step.sourceEdge.first().index(), step.sourceEdge.second().index(),
+          step.fromFace.index(), step.toFace.index());
+    }
+    if (!independent_matches_canonical_component_order(
+            expectedCycle.support, publishedOrder)) {
+      return FieldAtlasBuildErrorCode::IncompleteCycleBasis;
+    }
+
+    QuarterTurn composed;
+    for (const FieldTransportStep &step : cycle.steps) {
+      if (step.adjacency.index() >= snapshot.adjacencies.size()) {
         return FieldAtlasBuildErrorCode::IncompleteCycleBasis;
       }
       const FieldTransportAdjacency &edge =
@@ -1543,10 +1659,6 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
         return FieldAtlasBuildErrorCode::CycleTransportMismatch;
       }
       composed = compose(step.transport, composed);
-      current = step.toFace;
-    }
-    if (start.has_value() && current != start) {
-      return FieldAtlasBuildErrorCode::IncompleteCycleBasis;
     }
     if (composed != cycle.composedTransport ||
         cycle.composedTransport != expectedCycle.composed ||
@@ -1887,6 +1999,174 @@ TEST(FieldTransportAtlas,
   EXPECT_EQ(directional::authority::QuarterTurn{},
             compose(forward->transport, reverse->transport));
   EXPECT_EQ(forward->signedLift, -reverse->signedLift);
+}
+
+TEST(FieldTransportAtlas,
+     IndependentCycleOrderingOracleHandlesMultipleClosedComponents) {
+  const std::vector<IndependentSupportKey> support{
+      {40U, 41U, 5U, 6U}, {42U, 43U, 6U, 5U},
+      {20U, 21U, 1U, 2U}, {22U, 23U, 2U, 3U},
+      {24U, 25U, 3U, 1U}};
+
+  const auto canonical = independent_canonical_component_order(support);
+  ASSERT_TRUE(canonical.has_value());
+  ASSERT_EQ(5U, canonical->size());
+  EXPECT_EQ(1U, std::get<2>((*canonical)[0]));
+  EXPECT_EQ(2U, std::get<2>((*canonical)[1]));
+  EXPECT_EQ(3U, std::get<2>((*canonical)[2]));
+  EXPECT_EQ(5U, std::get<2>((*canonical)[3]));
+  EXPECT_EQ(6U, std::get<2>((*canonical)[4]));
+  EXPECT_EQ(2U, independent_closed_component_count(support));
+
+  std::vector<IndependentSupportKey> reordered = *canonical;
+  std::rotate(reordered.begin(), reordered.begin() + 3, reordered.end());
+  EXPECT_NE(reordered, *canonical)
+      << "component order must remain observable even when support is equal";
+  EXPECT_TRUE(independent_matches_canonical_component_order(
+      support, *canonical));
+  EXPECT_FALSE(independent_matches_canonical_component_order(
+      support, reordered));
+  std::vector<IndependentSupportKey> reorderedSet = reordered;
+  std::sort(reorderedSet.begin(), reorderedSet.end());
+  std::vector<IndependentSupportKey> canonicalSet = *canonical;
+  std::sort(canonicalSet.begin(), canonicalSet.end());
+  EXPECT_EQ(canonicalSet, reorderedSet);
+
+  auto open = support;
+  std::get<3>(open[1]) = 7U;
+  EXPECT_FALSE(independent_canonical_component_order(open).has_value());
+
+  auto duplicateOrigin = support;
+  std::get<2>(duplicateOrigin[1]) = std::get<2>(duplicateOrigin[0]);
+  EXPECT_FALSE(
+      independent_canonical_component_order(duplicateOrigin).has_value());
+}
+
+TEST(FieldTransportAtlas, PreservesSingleComponentCanonicalCycleSequence) {
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const CrossFieldResult field = make_zero_transport_field(mesh);
+  const auto expected = independent_cycle_facts(mesh, field);
+  ASSERT_TRUE(expected.has_value());
+
+  auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
+  const auto found = std::find_if(
+      expected->begin(), expected->end(), [](const IndependentCycleRow &row) {
+        return row.kind == FieldCycleKind::LocalVertex && !row.support.empty();
+      });
+  ASSERT_NE(expected->end(), found);
+  const auto expectedOrder = independent_canonical_component_order(found->support);
+  ASSERT_TRUE(expectedOrder.has_value());
+  EXPECT_EQ(1U, independent_closed_component_count(found->support));
+
+  const auto published = std::find_if(
+      built.value().cycles().begin(), built.value().cycles().end(),
+      [&](const FieldCycleWitness &cycle) {
+        return cycle.kind == found->kind && cycle.localVertex.has_value() &&
+               found->localVertex.has_value() &&
+               cycle.localVertex->index() == *found->localVertex;
+      });
+  ASSERT_NE(built.value().cycles().end(), published);
+  std::vector<IndependentSupportKey> publishedOrder;
+  for (const FieldTransportStep &step : published->steps) {
+    publishedOrder.emplace_back(step.sourceEdge.first().index(),
+                                step.sourceEdge.second().index(),
+                                step.fromFace.index(), step.toFace.index());
+  }
+  EXPECT_EQ(*expectedOrder, publishedOrder);
+}
+
+TEST(FieldTransportAtlas, IndependentOracleRejectsCycleOrderingTamper) {
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const CrossFieldResult field = make_zero_transport_field(mesh);
+  auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
+  const IndependentAtlasSnapshot baseline = independent_snapshot(built.value());
+  ASSERT_FALSE(independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, baseline));
+
+  const auto cycleIt = std::find_if(
+      baseline.cycles.begin(), baseline.cycles.end(),
+      [](const FieldCycleWitness &cycle) { return cycle.steps.size() >= 2U; });
+  ASSERT_NE(baseline.cycles.end(), cycleIt);
+  const std::size_t cycleIndex =
+      static_cast<std::size_t>(cycleIt - baseline.cycles.begin());
+
+  IndependentAtlasSnapshot open = baseline;
+  open.cycles[cycleIndex].steps.back().toFace =
+      open.cycles[cycleIndex].steps.front().toFace;
+  EXPECT_EQ(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
+            independent_validate_snapshot(
+                mesh, *sourceAuthority, field, {}, open));
+
+  IndependentAtlasSnapshot duplicateOrigin = baseline;
+  duplicateOrigin.cycles[cycleIndex].steps[1].fromFace =
+      duplicateOrigin.cycles[cycleIndex].steps[0].fromFace;
+  EXPECT_EQ(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
+            independent_validate_snapshot(
+                mesh, *sourceAuthority, field, {}, duplicateOrigin));
+
+  IndependentAtlasSnapshot invalidAdjacency = baseline;
+  const std::size_t originalAdjacency =
+      invalidAdjacency.cycles[cycleIndex].steps.front().adjacency.index();
+  const auto replacement = std::find_if(
+      invalidAdjacency.adjacencies.begin(), invalidAdjacency.adjacencies.end(),
+      [&](const FieldTransportAdjacency &adjacency) {
+        return adjacency.id.index() != originalAdjacency;
+      });
+  ASSERT_NE(invalidAdjacency.adjacencies.end(), replacement);
+  invalidAdjacency.cycles[cycleIndex].steps.front().adjacency = replacement->id;
+  EXPECT_EQ(FieldAtlasBuildErrorCode::CycleTransportMismatch,
+            independent_validate_snapshot(
+                mesh, *sourceAuthority, field, {}, invalidAdjacency));
+}
+
+TEST(FieldTransportAtlas,
+     BuildsSyntheticGenusTwoAtlasWithMultiComponentBoundarySupport) {
+  TriMesh mesh;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/genus_two.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/genus_two.rawfield");
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd raw =
+      read_atlas_rawfield_fixture(fieldPath, mesh.F.rows());
+  const CrossFieldResult field =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+
+  auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
+
+  bool foundMultiComponentBoundary = false;
+  for (const FieldCycleWitness &cycle : built.value().cycles()) {
+    if (cycle.kind != FieldCycleKind::BoundaryLoop || cycle.steps.empty()) {
+      continue;
+    }
+    const std::vector<IndependentSupportKey> support =
+        independent_published_support(cycle);
+    const auto components = independent_closed_component_count(support);
+    ASSERT_TRUE(components.has_value());
+    if (*components >= 2U) {
+      foundMultiComponentBoundary = true;
+      const auto expectedOrder = independent_canonical_component_order(support);
+      ASSERT_TRUE(expectedOrder.has_value());
+      std::vector<IndependentSupportKey> publishedOrder;
+      for (const FieldTransportStep &step : cycle.steps) {
+        publishedOrder.emplace_back(step.sourceEdge.first().index(),
+                                    step.sourceEdge.second().index(),
+                                    step.fromFace.index(), step.toFace.index());
+      }
+      EXPECT_EQ(*expectedOrder, publishedOrder);
+      break;
+    }
+  }
+  EXPECT_TRUE(foundMultiComponentBoundary);
 }
 
 TEST(FieldTransportAtlas, RejectsStableAdjacencyTamperReasons) {
