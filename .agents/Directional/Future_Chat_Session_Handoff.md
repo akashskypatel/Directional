@@ -8,36 +8,35 @@
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 - PR: #8 (metadata frozen; do not modify title/body/labels/etc.)
 - Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**.
-- Selector426 is 426 unique canonical LF rows, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; exact first425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; owners **30 authority-kernel / 280 producer / 75 completion / 41 validation**.
+- Selector426 remains 426 unique canonical LF rows, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; exact first425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; owners **30 authority-kernel / 280 producer / 75 completion / 41 validation**.
 - Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
-- Candidate package `10509313705` / source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd` is **not promoted**. Its retained genus-two fixture topology is independently valid, but the frozen S5 focus is RED before atlas/A3 authority.
+- TB12-R1 candidate package `10509313705` remains **not promoted** and its focused RED remains the latest semantic runtime: retained genus-two topology is valid, but atlas/A3 authority fails at production `IncompleteCycleBasis / CycleOrderingFailed`.
+- CB15 candidate package `10517300204` / exact compile source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` is compile/package GREEN with diagnostics only; it is **not runtime-promoted**.
 
-## Latest completed turn — `M4-CP-SCALE-TB12-R1-REV`
+## Latest completed turn — `M4-CP-SCALE-CB15`
 
-Review independently re-opened package `10509313705`, its packaged source/fixture and retained TB12-R1 raw evidence. Package SHA-256 re-hashes to `fd9cb98e3f5b295cfaa7533d2a8626f66f8199c80832d626ccb97be695342de1`; root manifest verifies, source archive SHA is `496162e8582b00b380bcc7f7d817a3a512bee035242bb5878927799013fed52d`, GMP/GMPXX and `runtimeExecution=false` boundaries hold. Exact OBJ/rawfield hashes are `c6bacd98...eab3 / 7bd71837...f70e`; independent topology re-derives **120/366/244**, connected, closed, orientable, zero boundary loops, `chi=-2`, genus `2`.
+CB15 implements only the Review-authorized decision-neutral discriminator for the existing cycle-order failure. Implementation commit `d1bd3c9634df9c59df127de93efb3af54f404711` adds `FieldCycleOrderingDiagnostics` and the five failure subtypes (`DuplicateFromFace`, `MissingSuccessorFromFace`, `SupportEdgeReused`, `DirectedAdjacencyFaceMismatch`, `OpenOrUnconsumedSupport`) at the existing `order_cycle_steps` rejection boundaries. Receipt-only amendment `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` exposes those diagnostics in the frozen S5 structured stdout. Existing outer `IncompleteCycleBasis / CycleOrderingFailed`, all successful step/product semantics, S5 assertions/preconditions, fixture bytes and selector426 are preserved.
 
-The focus evidence is exactly one fresh `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` process, **0 PASS / 1 FAIL**, stopping at `independentAtlas.has_value()`. Production reports `InvalidFieldTransportAtlas / field-transport-atlas/IncompleteCycleBasis`, reason `CycleOrderingFailed`, deepest stage `source-labels`, A3 absent. Frozen fail-fast executed selector426 **0/426** and benchmark **0**.
+Mandatory reusable compile run/job `35266024382 / 105353384257` on exact source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` is GREEN for all eight standard targets. Result artifact `10517300204` has provider/local SHA-256 `dceab12b7fe9ee8feccf972837455b89f6fe8b4bc30b44ee4947fc2343bd2711`; recursive manifest verifies **28/28**; source archive SHA-256 is `14a1eccff69d402b72bf803f47b0ebf778f96d9f2da87baf46b74b1e49873ebc`; preflight/build are `0/0`; all source-status snapshots are empty; authoritative link evidence contains both GMPXX and GMP; `runtimeExecution=false`. Producer mode is `0755`, SHA-256 `3c5ff0af1b1b3ba78781692b9661c8c59e167acc14793feae291104fcecd269c`.
 
-Review resolves the prior fork for the **observed failure**. In `FieldTransportAtlas`, each sparse `bundle.cycles` row is converted to directed support from coefficient sign + local face/edge incidence and passed to `order_cycle_steps`; only after that succeeds are actual quarter-turn transports composed. `CycleOrderingFailed` therefore reflects topology/cycle-support linearization, not raw effort/transport values. Accepted source `e15e83c...0e47` -> candidate `3abb1e99...87cd` has no `src/**`/`include/**` production change, so the new witness exposes latent pre-existing behavior.
+Frozen selector426 re-hashes to `41f4d559...b5114` with exact first425 `e0e0f394...790e0b`, owners **30/280/75/41**. Retained genus-two hashes remain OBJ `c6bacd98...eab3`, rawfield `7bd71837...f70e`, metadata `22600270...1b76`; no selector427 exists. No generated Directional binary, test, discovery/list/help/version command, benchmark, CTest, CLI, fuzzer or custom input executed in CB15.
 
-`M4-CP-SCALE-TB12-R1-EXEC-CAND-01` is **OPEN / PRODUCTION FIELD-TRANSPORT CYCLE-BASIS ORDERING DEFECT / `RP-07 CYCLIC_TOPOLOGY_LINEARIZATION` / NON-STABLE**. The exact ordering subcondition remains unknown because current diagnostics collapse several structural failures into `CycleOrderingFailed`; do not guess a semantic fix. No accepted-green loss exists, so stable accounting/debt stay unchanged and S5 gets zero credit. The field may still need later admissibility proof after this defect is diagnosed.
-
-`M4-CP-SCALE-TB12-EXEC-CAND-01` remains **CLOSED / RECOVERY PROVED / NON-STABLE**.
+CB15 grants no S5 credit and does not alter stable accounting, debt, accepted runtime authority or the non-stable `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` classification.
 
 ## Exact next turn
 
-`M4-CP-SCALE-CB15` — diagnostics-only **Code + Build** under `Architecture_M4_CP_SCALE_CB15_Cycle_Ordering_Diagnostics_Code_Build_Plan.md`.
+`M4-CP-SCALE-TB12-R2-EXEC` — immutable artifact-only diagnostic retry under `Architecture_M4_CP_SCALE_TB12_R2_Artifact_Only_Test_Benchmark_Plan.md`, consuming only artifact `10517300204` / source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21`.
 
-CB15 may add only decision-neutral structured diagnostics for the existing cycle-order failure: exact cycle-row index, row class (`LocalVertex` / `BoundaryLoop` / `HandleGenerator`), support cardinality/locus and a subtype separating duplicate-from-face, missing-successor, reused-support, directed-face mismatch and open/unconsumed support. Preserve outer `IncompleteCycleBasis`, reason `CycleOrderingFailed`, all success/failure decisions/products, fixture bytes, existing focus assertions and selector426. Compile/package standard targets only through mandatory reusable GMP/GMPXX workflow; `runtimeExecution=false`. No semantic repair, raw-field/fixture change or selector427.
+Preflight must verify the provider/local package digest, **28/28** manifest, exact source archive/GMP/runtime boundary, producer mode/hash, selector426 bytes/prefix/owner census and exact genus-two fixture bytes/topology before generated runtime. Do not repair, `chmod`, rebuild, relink, regenerate, discover/list, or mutate the package.
 
-If CB15 compile/package is valid, its expected successor is artifact-only `M4-CP-SCALE-TB12-R2-EXEC`, which executes the focus once only to expose the new diagnostic discriminator and then routes to mandatory Review. Diagnostics are expected to leave the focus RED; an unexpected GREEN is non-neutrality evidence, not S5 credit.
+Execute exactly one fresh producer process for `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`. The expected decision-neutral result is the same focused RED with unchanged outer `InvalidFieldTransportAtlas / field-transport-atlas/IncompleteCycleBasis / CycleOrderingFailed`, now augmented by the exact cycle row/class/support/failure subtype in `independentAtlasFailure`. For this diagnostic retry, selector426 runtime is frozen at **0/426** and benchmark runtime at **0** regardless of focus result. A mechanically valid RED routes to mandatory `M4-CP-SCALE-TB12-R2-REV`; unexpected GREEN or changed old error/reason is non-neutrality evidence, not S5 credit.
 
 ## Open CP-SCALE obligations
 
 - `M4-CP-SCALE-TB1-REV-OBS-01` — S1 representative/stress calibration before any numeric gate.
 - `M4-CP-SCALE-TB2-REV-OBS-02` — zero-transport helper audit at the next legitimate touch.
 - `M4-CP-SCALE-DEFN-OBS-01` — S2 arrival exact fallback owner not frozen.
-- `M4-CP-SCALE-DEFN-OBS-04` — genus-two topology precondition is now proved; admissible atlas/A3 reachability remains open. Next owner is the CB15 diagnostic chain.
+- `M4-CP-SCALE-DEFN-OBS-04` — genus-two topology precondition is now proved; admissible atlas/A3 reachability remains open. Next owner is TB12-R2 discriminator capture followed by mandatory Review.
 - `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` — open production RP-07 cycle-basis ordering defect, non-stable.
 - `M4-CP-SCALE-DEFN-OBS-02`, `TB6-REV-OBS-01`, `DEFN-OBS-03`, `TB10-REV-OBS-01` are discharged.
 - CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts keep their existing owners.
