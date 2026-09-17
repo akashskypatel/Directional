@@ -1,4 +1,4 @@
 Purpose: apply verified M4-CP-SCALE-CB13 closeout documentation patch from Google Drive.
 Patch base: d65ea2071990a443750ca7d84a43b63630fbdad4
-Patch SHA-256: 40c70d7223700676e1298f38fdc875103b12c1481c166c3419c8d8cdb7cd72fd
-Attempt: 0
+Patch SHA-256: e620a470ece61dad7f60d07c392706a5ed0f4bf6b5172639bfa48742ea29835d
+Attempt: 1
