@@ -1,1 +1,0 @@
-validate-only: M4-CP-SCALE-TB11-EXEC workflow schema
