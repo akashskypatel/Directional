@@ -1,0 +1,63 @@
+name: Agent M4 CP SCALE TB12 R3
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb12-r3/M4-CP-SCALE-TB12-R3-EXEC.txt
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp-scale-tb12-r3.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb12-r3
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact execution control
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+      - name: Execute immutable TB12-R3 gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: bash .agents/Directional/turn-payloads/tb12-r3-harness.sh
+      - name: Upload TB12-R3 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb12-r3-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp-scale-tb12-r3-result
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload TB12-R3 log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp-scale-tb12-r3-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp-scale-tb12-r3.log
+          if-no-files-found: error
+          retention-days: 7
