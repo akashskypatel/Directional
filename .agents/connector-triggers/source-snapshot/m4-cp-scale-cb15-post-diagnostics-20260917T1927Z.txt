@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-CB15
+purpose=exact post-diagnostics source snapshot for static verification
+source_before_trigger=8eeb77e3e42a1bde8c2e1a70378327dff12606f0
