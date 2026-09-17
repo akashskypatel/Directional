@@ -1,0 +1,6 @@
+# M4-CP-SCALE-CB16 temporary-state ledger.
+# All turn-specific workflow callers and trigger markers were already retired connector-first before this manifest was published.
+# Retired in this turn: source-snapshot trigger(s), CB16 Drive-apply caller/marker, CB16 compile caller/marker,
+# redundant stale-patch caller/marker, and CB16 closeout Drive-apply caller/marker.
+# Google Drive staging files were either already inaccessible/retired or permanently deleted through the user-authorized connector.
+# No additional repository path remains for batch deletion; this workflow removes this manifest and trims PR comments.
