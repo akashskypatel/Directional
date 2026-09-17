@@ -1,1 +1,1 @@
-M4-CP-SCALE-TB12-R2-EXEC docs apply trigger
+M4-CP-SCALE-TB12-R2-EXEC docs apply trigger retry 2
