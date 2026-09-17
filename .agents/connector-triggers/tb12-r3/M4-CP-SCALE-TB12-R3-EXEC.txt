@@ -1,0 +1,7 @@
+Turn: M4-CP-SCALE-TB12-R3-EXEC
+Purpose: execute immutable artifact-only TB12-R3 gates
+Validated workflow draft run: 35288213391
+Candidate artifact: 10523132151
+Compile source: a8df4406ebd1a5252f0be20b1f1e65a2cb453ee9
+Plan: Architecture_M4_CP_SCALE_TB12_R3_Artifact_Only_Test_Benchmark_Plan.md
+Retry: 0
