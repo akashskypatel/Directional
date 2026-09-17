@@ -1,0 +1,2 @@
+# M4-CP-SCALE-TB11-EXEC temporary files
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb11-exec-resume-20260916-1815.txt
