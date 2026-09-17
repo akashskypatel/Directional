@@ -71,9 +71,9 @@ Future selector files are named by their resulting identity count.
 | **409** | 409 | `eea6d8c2bbc8e9247deb4bfbbe6763042c76002d1894dd62e35f80262403b53e` | 408 | 1 | superseded |
 | **422** | 422 | `bbd496f3396bd656d13c728ddaad806276e00b901675255e0b67241beec4f7cc` | **none** | - | superseded |
 | **423** | 423 | `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343` | 422 | 1 | superseded |
-| **424** | 424 | `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` | 423 | 1 | **CURRENT GATE / ACCEPTED M4 AUTHORITY** |
-| **425** | 425 | `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` | 424 | 1 | **PUBLISHED CANDIDATE / RUNTIME UNADJUDICATED** |
-| **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | **PUBLISHED CANDIDATE / RUNTIME UNADJUDICATED** |
+| **424** | 424 | `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` | 423 | 1 | superseded accepted prefix |
+| **425** | 425 | `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` | 424 | 1 | superseded accepted prefix |
+| **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | **CURRENT GATE / ACCEPTED M4 AUTHORITY** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -775,7 +775,7 @@ Appended 1 identity to selector 422:
 
 - `InputConditionerCPCondCB5.BoundaryTruncatedSeparatrixRawPreconditionIsIndependentAndPreserved`
 
-### 424 — ACCEPTED HISTORICAL PREFIX OF CURRENT SELECTOR425
+### 424 — ACCEPTED HISTORICAL PREFIX OF CURRENT SELECTOR426
 
 `Architecture_M4_CP_SCALE_CB6_Required_Green_Selector_424.txt` — **424 identities**, LF SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`. Its first423 LF rows are byte-identical to accepted selector423 SHA-256 `4e67e4dc6528a71e8399cd55dce6af4c6143e2502102e421b62a8eb712d89343`.
 
@@ -783,11 +783,11 @@ Appended 1 identity to selector 423:
 
 - `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle`
 
-**Accepted at `M4-CP-SCALE-TB5-REV`; now the exact first424 prefix of current selector425.** Package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` first established selector424 **424/424**. TB6 Review later promoted package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under the same byte-identical selector424. `M4-CP-SCALE-TB4-REV-OBS-01` remains discharged; selector424 remains frozen historical accepted prefix authority.
+**Accepted at `M4-CP-SCALE-TB5-REV`; now the exact first424 prefix of current selector426 through selector425.** Package `10407605295` / source `0d8e4aa3472fae26c22d49bc0d81acc5e98378d3` first established selector424 **424/424**. TB6 Review later promoted package `10418328122` / source `153047c3f92e9b9b784e11eaee1ede2de5628470` under the same byte-identical selector424. `M4-CP-SCALE-TB4-REV-OBS-01` remains discharged; selector424 remains frozen historical accepted prefix authority.
 
 **S3 publication and cumulative acceptance complete.** TB7 Review proves the exact selector424-prefix publication, fresh selector425 **425/425** cumulative runtime and independent Review, accepts S3 cumulative credit, and discharges `M4-CP-SCALE-TB6-REV-OBS-01`.
 
-### 425 — CURRENT GATE / ACCEPTED M4 AUTHORITY
+### 425 — ACCEPTED HISTORICAL PREFIX OF CURRENT SELECTOR426
 
 `Architecture_M4_CP_SCALE_CB8_Required_Green_Selector_425.txt` — **425 identities**, LF SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`. Its first424 LF rows are byte-identical to accepted selector424 SHA-256 `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca`.
 
@@ -795,9 +795,9 @@ Appended 1 producer-owned identity to selector424:
 
 - `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination`
 
-CB8 static ownership is **30 authority-kernel / 279 producer / 75 completion / 41 validation**. Compile/package run/job `35042417046 / 104624909472` first published the selector on source `01b1124af094044e32d6887ff0615881333d12ce`, artifact `10425344367`, and TB7 Review accepted it **425/425**. TB9 later executes the byte-identical selector from corrected-prerequisite package `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`: run/job `35121594986 / 104880514495` records a separate S4-prerequisite focus **1/1 PASS** followed by selector425 **425/425 PASS**, exact owner census **30/279/75/41** and immutable postflight. `M4-CP-SCALE-TB9-REV` independently re-derives the prerequisite, selector/prefix/owners/all 425 raw outcomes and **PROMOTES package `10455353524` as current M4 runtime authority under unchanged selector425**. S3 cumulative credit remains accepted; `M4-CP-SCALE-DEFN-OBS-03` is discharged as prerequisite-only evidence. No selector426 exists or is authorized until S4 product semantics pass their own compile/runtime/Review/publication chain.
+CB8 static ownership is **30 authority-kernel / 279 producer / 75 completion / 41 validation**. Compile/package run/job `35042417046 / 104624909472` first published the selector on source `01b1124af094044e32d6887ff0615881333d12ce`, artifact `10425344367`, and TB7 Review accepted it **425/425**. TB9 later executes the byte-identical selector from corrected-prerequisite package `10455353524` / source `bebb14e32a0ac53dd420acf46bfa34410cf759a1`: run/job `35121594986 / 104880514495` records a separate S4-prerequisite focus **1/1 PASS** followed by selector425 **425/425 PASS**, exact owner census **30/279/75/41** and immutable postflight. `M4-CP-SCALE-TB9-REV` independently re-derives the prerequisite, selector/prefix/owners/all 425 raw outcomes and **PROMOTES package `10455353524` as the then-current M4 runtime authority under unchanged selector425**. S3 cumulative credit remains accepted; `M4-CP-SCALE-DEFN-OBS-03` is discharged as prerequisite-only evidence. At that historical point selector426 was not yet authorized; the later S4 product/publication chain is recorded in the selector426 note below.
 
-### 426 — PUBLISHED CANDIDATE / RUNTIME UNADJUDICATED
+### 426 — CURRENT GATE / ACCEPTED M4 AUTHORITY
 
 `Architecture_M4_CP_SCALE_CB12_Required_Green_Selector_426.txt` — **426 identities**, LF SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`. Its first425 LF rows are byte-identical to accepted selector425 SHA-256 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`.
 
@@ -805,7 +805,7 @@ Appended 1 producer-owned identity to selector425:
 
 - `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate`
 
-CB12 static ownership is **30 authority-kernel / 280 producer / 75 completion / 41 validation**. Selector426 is publication authority only until immutable artifact-only `M4-CP-SCALE-TB11-EXEC` and mandatory Review establish cumulative S4 credit. Accepted runtime authority remains selector425 until that Review.
+CB12 static ownership is **30 authority-kernel / 280 producer / 75 completion / 41 validation**. TB11 run/job `35173390136 / 105049726721` then executes selector426 **426/426 PASS** in 426 fresh exact-filter processes with the same owner census, fresh row426 **1/1 PASS**, zero anomalies and exact immutable postflight. `M4-CP-SCALE-TB11-REV` independently re-hashes selector426 and its exact selector425 prefix, re-maps all 426 owners/process rows, confirms row426 non-vacuity and promotes package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`. Selector426 is the current accepted cumulative M4 gate; S4 cumulative credit is accepted.
 
 ## Separate lineage — M1
 

@@ -1,3 +1,9 @@
+## 2026-09-17 — `M4-CP-SCALE-TB11-REV`: cumulative S4 accepted; publication obligation discharged
+
+- `M4-CP-SCALE-TB10-REV-OBS-01` — **DISCHARGED / NON-DEFECT**. Exact CB12 selector426 publication plus TB11 fresh cumulative **426/426 PASS** and independent Review satisfy the publication/runtime/Review chain. Selector426 SHA `41f4d559...b5114`, exact selector425 prefix `e0e0f394...790e0b`, owners **30/280/75/41**; package `10473134357` / source `e15e83c7...0e47` is promoted.
+- Independent Review re-derived every process identity/owner/result and row426 non-vacuity; no accepted PASS->RED transition, new defect candidate, or stable event exists. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+- `M4-CP-SCALE-DEFN-OBS-04` — **CARRIED / NEXT OWNER `M4-CP-SCALE-CB13` / COVERAGE PRECONDITION / NON-STABLE**. Retained fixtures still contain no genus>=2 source. CB13 must construct a deterministic connected closed orientable genus-2 source, independently derive topology and establish admissible field/holonomy authority, then compile the focused producer test. Genus1 substitution, filename-only genus assertion, direct synthetic A3 authority, or production-validator weakening remain prohibited. Later artifact-only runtime + Review must prove the same source/field actually reaches A3 before any S5 selector publication.
+
 ## 2026-09-17 — `M4-CP-SCALE-TB11-EXEC` — SELECTOR426 GREEN / REVIEW OWED / NON-STABLE
 
 - Authoritative artifact-only run/job `35173390136 / 105049726721` consumed CB12 candidate `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`; result/log artifacts `10477627829 / 10477782343` preserve the complete runtime evidence.

@@ -1,75 +1,60 @@
----
-Turn: M4-CP-SCALE-TB11-EXEC
-Status: COMPLETE / SELECTOR426 426/426 MECHANICALLY GREEN / REVIEW OWED
-Repository: akashskypatel/Directional
-Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
-PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB11-REV
----
+# Future Chat Session Handoff
 
-# Future Chat Session Handoff — Directional
+**DURABLE — resume authority for the active working branch.**
 
-## Purpose — DURABLE, DO NOT DELETE
+## Current authority
 
-This file contains durable operating policy, exact next action, current immutable authority, standing product state, and resume-critical blockers required to continue safely. Architecture belongs in `DESIGN.md` and frozen-definition records; tasks belong in `TODO.md`; completed history belongs in `CHANGELOG.md`; runtime evidence belongs in retained reports/reviews and `Regression_Root_Cause_Tracker.md`.
+- Repository: `akashskypatel/Directional`
+- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
+- PR: #8 (metadata frozen; do not modify title/body/labels/etc.)
+- Current accepted M4 runtime authority: package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**.
+- Selector426: 426 unique canonical LF rows, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; exact first425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; owners **30 authority-kernel / 280 producer / 75 completion / 41 validation**.
+- Stable accounting: **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
 
-All `[ChatGPT Web]` instructions remain mandatory for ChatGPT Web sessions.
+## Latest accepted turn — `M4-CP-SCALE-TB11-REV`
 
-## Authoritative pre-turn documents — DURABLE, DO NOT DELETE
+Runtime-free Review independently reopened CB12 package `10473134357`, TB11 run/job `35173390136 / 105049726721`, result/log artifacts `10477627829 / 10477782343`, and nested evidence. It re-derived package/GMP authority, selector426 + exact selector425 prefix, all 426 identity owners and fresh exact-filter process outcomes, row426 non-vacuity, and exact immutable postflight.
 
-Read in full at every new formal turn:
+Verdict: **ACCEPT / PROMOTE PACKAGE / SELECTOR426 ACCEPTED 426/426 / S4 CUMULATIVE CREDIT GRANTED**. `M4-CP-SCALE-TB10-REV-OBS-01` is **DISCHARGED**. S4's fixed-candidate accelerator remains reject-only; the unchanged final exact certificate is sole acceptance authority.
 
-- `.agents/Directional/Durable_Handoff_Policy.md`
-- `.agents/Directional/Mandatory_Start_Checklist.md`
-- `.agents/Directional/Mandatory_End_Checklist.md`
-- `.agents/Directional/Patch_Application_Strategy.md`
-- `.agents/Directional/Turn_Cadence.md`
-- `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md`
-- `.agents/Directional/GitHub_Workflow_Policy.md`
+TB11 evidence pins:
+- result artifact `10477627829`, provider SHA `91f4d12b5dcfc6db90f7a5ce5c45a450746b2f75cbd61dbbccb7d8a8f9f9a2ac`;
+- log artifact `10477782343`, provider SHA `23161ee1db457851fc38ab4833d80ecb0924e2155ecf91646500c71ee4e3b872`;
+- nested evidence SHA `7ecb6463802918dfc2863ee826bcf1045b048d42167ba23b6f1fecdf5cd48e1c`;
+- self-manifest SHA `162993cba0d67612fcd604009bb6477ea2d53e7db1fd112311c73cac5bf8b80f`;
+- zero RED/SKIP/crash/timeout/selection mismatch/unexecuted; immutable package/source/execution-view/fixture postflight.
 
-## Current accepted runtime authority
+## Exact next turn
 
-TB10 Review package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under selector425 **425/425** remains accepted M4 runtime authority until TB11 Review. Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
+`M4-CP-SCALE-CB13` under `Architecture_M4_CP_SCALE_CB13_S5_GenusTwo_Witness_Code_Build_Plan.md`.
 
-TB11-EXEC has mechanically validated the CB12 publication candidate but cannot promote it. Candidate package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` carries selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, exact selector425 first425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, and owners **30/280/75/41**.
+Scope is **S5 witness construction + test-authority compile only**:
+1. construct one deterministic retained connected closed orientable genus-2 source;
+2. independently derive V/E/F, connectivity, boundary loops, orientability, chi=-2 and genus=2 from fixture incidence;
+3. establish admissible field/holonomy authority before any reachability claim;
+4. author/compile producer-owned `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`;
+5. mandatory GMP/GMPXX Code + Build package, `runtimeExecution=false`.
 
-## TB11 execution disposition
+Frozen: production `src/**`/`include/**` semantics, selector426 and every prior selector, S1-S4 accepted semantics, CP3/CP-COND/CP4 authority. **No selector427 and no Directional runtime in CB13.** If a production semantic change appears necessary, stop and return to Review rather than broadening the turn. Later artifact-only TB + Review must prove the same verified source/field actually reaches A3 before S5 focused credit/publication.
 
-Authoritative artifact-only run/job `35173390136 / 105049726721` executed selector426 as **426 fresh exact-filter processes**: **426/426 PASS**, zero RED/SKIP/crash/timeout/selection mismatch/unexecuted, and fresh producer row426 `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` **1/1 PASS**. Immutable package/source/execution-view/fixture postflight matched exactly; no configure, compile, relink, repair, mutation, discovery or benchmark execution occurred.
+## Open CP-SCALE obligations
 
-Result/log artifacts are `10477627829 / 10477782343` with provider SHA-256 `91f4d12b5dcfc6db90f7a5ce5c45a450746b2f75cbd61dbbccb7d8a8f9f9a2ac / 23161ee1db457851fc38ab4833d80ecb0924e2155ecf91646500c71ee4e3b872`. Nested evidence SHA-256 is `7ecb6463802918dfc2863ee826bcf1045b048d42167ba23b6f1fecdf5cd48e1c` with self-manifest SHA-256 `162993cba0d67612fcd604009bb6477ea2d53e7db1fd112311c73cac5bf8b80f`.
+- `M4-CP-SCALE-TB1-REV-OBS-01` — S1 representative/stress calibration before any numeric gate.
+- `M4-CP-SCALE-TB2-REV-OBS-02` — zero-transport helper audit at the next legitimate touch.
+- `M4-CP-SCALE-DEFN-OBS-01` — S2 arrival exact fallback owner not frozen.
+- `M4-CP-SCALE-DEFN-OBS-04` — S5 genus>=2 construction/reachability; **next owner CB13**.
+- `M4-CP-SCALE-DEFN-OBS-02`, `TB6-REV-OBS-01`, `DEFN-OBS-03`, `TB10-REV-OBS-01` are discharged.
+- CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts remain unchanged and keep their existing milestone owners.
 
-`M4-CP-SCALE-TB10-REV-OBS-01` is **PUBLICATION + FRESH CUMULATIVE RUNTIME SATISFIED / REVIEW OWED / NON-DEFECT**. EXEC mechanics do not by themselves grant cumulative S4 selector credit or candidate promotion.
+## Mandatory resume procedure
 
-## Exact next — `M4-CP-SCALE-TB11-REV`
+**DURABLE resume constraints:** these steps remain authoritative across chat/session changes until superseded by a later committed handoff.
 
-Perform mandatory Review on the immutable TB11 evidence. Independently re-hash selector426 and its first425 prefix, re-map all 426 identities/owners, verify all 426 fresh-process results including row426, reverify the nested evidence manifest and immutable postflight, and independently adjudicate `M4-CP-SCALE-TB10-REV-OBS-01`. Review may promote candidate package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` and grant cumulative S4 selector credit only if the evidence independently re-derives cleanly.
 
-No product/test/fixture/selector/CMake/benchmark semantic mutation, compile/package, or new Directional runtime is authorized in Review.
-
-## Carried obligations
-
-- `M4-CP-SCALE-TB1-REV-OBS-01`: S1 representative/stress calibration before any future numeric gate.
-- `M4-CP-SCALE-TB2-REV-OBS-02`: later dedicated audit of remaining `make_zero_transport_field` callers.
-- `M4-CP-SCALE-DEFN-OBS-01`: S2 arrival-order exact fallback not frozen.
-- `M4-CP-SCALE-DEFN-OBS-02`: **DISCHARGED by TB6 Review**.
-- `M4-CP-SCALE-DEFN-OBS-03`: **DISCHARGED by TB9 Review**.
-- `M4-CP-SCALE-DEFN-OBS-04`: genus>=2 construction/reachability owed; torus genus1 receives zero S5 credit.
-- `M4-CP-SCALE-TB4-REV-OBS-01`: **DISCHARGED by TB5 Review**.
-- `M4-CP-SCALE-TB6-REV-OBS-01`: **DISCHARGED by TB7 Review**.
-- `M4-CP-SCALE-TB10-REV-OBS-01`: **PUBLICATION + FRESH CUMULATIVE RUNTIME SATISFIED / REVIEW OWED / NON-DEFECT**; owner `M4-CP-SCALE-TB11-REV`.
-- `M4-CP3-TB1-R1-REV-OBS-01`: same-region multiplicity-2 independent oracle before cumulative M4-CP4.
-- `M4-CP3-CB4-REV-OBS-02`: row399 path/`sourceFaces` divergence tamper at next legitimate row399 touch.
-- `G4-B002`: 3 produced-witness debts, M4-CP4. `G4-B003`: 2 debts, M5.
-
-## Context load plan
-
-For `M4-CP-SCALE-TB11-REV`, read mandatory Review policies/checklists first, then:
-
-1. `Architecture_M4_CP_SCALE_TB11_Artifact_Only_Test_Benchmark_Report.md`;
-2. TB11 result/log artifacts `10477627829 / 10477782343` and nested evidence;
-3. `Architecture_M4_CP_SCALE_CB12_Code_Build_Report.md`;
-4. `Architecture_M4_CP_SCALE_TB10_Review_Record.md`;
-5. `Architecture_M4_CP_SCALE_Frozen_Definitions.md`, `M4_Consolidated_Record.md`, tracker, `TODO.md`, selector426, selector manifest and roadmap.
-
-Review is runtime-free. Independently re-open primary evidence; do not inherit EXEC conclusions from chat context.
+1. Read root `STATUS`; if incomplete, resume it, otherwise advance only to its named successor. Immediately direct-write the six-field entry/resume beacon before any other repository mutation.
+2. Re-read `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`; choose `READ_MODE` before source/document inspection. Three-or-more-file/cross-file work requires an exact source snapshot.
+3. Re-read `Mandatory_Start_Checklist.md`, `Mandatory_End_Checklist.md`, `Patch_Application_Strategy.md`, `Turn_Cadence.md`, `Durable_Handoff_Policy.md`, `GMP_COMPILE_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`, `LESSONS.md`, `TODO.md`, `DESIGN.md`, `REORIENTATION_PLAN.md`, this handoff, current frozen definitions, current report/Review and exact next plan as required by the active turn.
+4. Compile only through `.github/workflows/agent-compile-reusable.yml`; mandatory GMP/GMPXX. Do not run builds locally.
+5. Maintain work preservation, temporary-file inventory and cleanup workflow. Standard coherent multi-file edits use snapshot -> verified patch -> `My Drive/Directional-CI` -> durable Drive apply workflow. PR comments are not durable turn summaries.
+6. On every Review, update ORIENTATION/CHANGELOG/tracker/ROADMAP/manifest as applicable, consolidate superseded per-turn documents, run `review_check.py boundary`, freeze exactly one bounded successor, and keep Review runtime-free.
+7. The final COMPLETE `STATUS` beacon is the last repository mutation of a turn and preserves `Started at`, latest `Resumed at`, and sets `Ended at` UTC.
