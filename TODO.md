@@ -2,20 +2,19 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-TB12-R2-REV (closeout)
+## Current turn — M4-CP-SCALE-CB16 (closeout)
 
-TB12-R2 Review is complete and runtime-free. Candidate package `10517300204` remains unpromoted. Independent source audit resolves row14 `BoundaryLoop / SupportEdgeReused` as premature closure of the first successor orbit: 34 support edges with 34 unique outgoing faces exclude duplicate origins, and reuse at minimum/canonical start face0 occurs before all support is consumed. `dual_cycles` publishes valid algebraic support that may contain multiple closed components; the defect owner is `FieldTransportAtlas`'s one-simple-loop representation assumption.
+CB16 is compile/package GREEN and runtime-free. Semantic commit `0b9e3e8706322fad0b1b3f3a678d208a086ba365` changes only the reviewed atlas ordering implementation and its independent tests. Compile run/job `35283852353 / 105411733012` built all eight mandatory GMP/GMPXX targets from exact source `a8df4406ebd1a5252f0be20b1f1e65a2cb453ee9`; candidate artifact `10523132151` verifies 28/28 with `runtimeExecution=false`. No runtime or selector publication occurred.
 
-- [x] `M4-CP-SCALE-CB15`: decision-neutral cycle-order diagnostics compile/package GREEN; no semantic repair or runtime.
-- [x] `M4-CP-SCALE-TB12-R2-EXEC`: one exact S5 focus **0 PASS / 1 FAIL**; row14 `BoundaryLoop / SupportEdgeReused` discriminator captured; selector/benchmark runtime zero.
-- [x] `M4-CP-SCALE-TB12-R2-REV`: existing non-stable RP-07 candidate narrowed to valid multi-component algebraic support mis-handled by single-loop atlas ordering; no S5 credit.
-- [ ] `M4-CP-SCALE-CB16`: **exact next**. Preserve `dual_cycles`/row coefficients/lifts and canonically consume every closed successor component; update the independent validator/direct controls; compile/package all eight GMP/GMPXX targets with `runtimeExecution=false`; no selector/runtime.
+- [x] `M4-CP-SCALE-TB12-R2-REV`: multi-component algebraic support / single-loop atlas owner proved.
+- [x] `M4-CP-SCALE-CB16`: all closed support components consumed canonically; independent component decomposition/tamper controls added; eight-target GMP compile/package GREEN; no runtime.
+- [ ] `M4-CP-SCALE-TB12-R3-EXEC`: **exact next**. Artifact-only candidate `10523132151`; run four direct component-order controls first, then unchanged S5 focus, and only if both are green run selector426. No benchmark, rebuild, repair or selector427.
 
-## Current focus — `M4-CP-SCALE-CB16`
+## Current focus — `M4-CP-SCALE-TB12-R3-EXEC`
 
-Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate `10517300204` remains diagnostic-only and unpromoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` stays **OPEN / production FieldTransportAtlas cycle-basis ordering defect / RP-07 / NON-STABLE**.
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate `10523132151` is compile-only and unpromoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` remains **OPEN / RP-07 / NON-STABLE** until immutable runtime + Review show whether CB16 removes the observed ordering boundary and whether S5 reaches A3.
 
-CB16 may change only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp` semantically: partition one algebraic row's directed support into all canonically ordered closed components, consume every support edge exactly once, preserve existing single-component step order, and independently validate that contract. `dual_cycles`, fixture/rawfield, S5 focus, CMake/benchmark semantics and selector426 are frozen; no selector427 and no generated runtime. Stop rather than broaden if any forbidden surface is required.
+The successor plan is `Architecture_M4_CP_SCALE_TB12_R3_Artifact_Only_Test_Benchmark_Plan.md`. Consume the package unchanged. Gate A is the four new/updated `FieldTransportAtlas` controls; Gate B is unchanged `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`; Gate C is selector426 only when A+B are green. Every semantic outcome routes to `M4-CP-SCALE-TB12-R3-REV`.
 
 ## Carried forward from M1
 

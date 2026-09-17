@@ -1,3 +1,9 @@
+## 2026-09-17 — `M4-CP-SCALE-CB16`: multi-component atlas ordering correction compiles under GMP
+
+CB16 implements the TB12-R2 Review correction without changing the algebraic cycle basis. Semantic commit `0b9e3e8706322fad0b1b3f3a678d208a086ba365` changes only `FieldTransportAtlas.cpp` and `FieldTransportAtlasTests.cpp`: `order_cycle_steps` consumes every closed successor component in deterministic order, while the independent validator derives component decomposition from sparse-row support/adjacency and adds component-order/open/duplicate-origin/invalid-adjacency/single-component/genus-two controls. `dual_cycles`, retained fixture/rawfield, S5 focus, selector426 and CMake/benchmark semantics are unchanged.
+
+Compile run/job `35283852353 / 105411733012` builds all eight standard targets from source `a8df4406ebd1a5252f0be20b1f1e65a2cb453ee9`; artifact `10523132151` verifies 28/28, GMP/GMPXX, clean source states and `runtimeExecution=false`. No generated runtime ran. Accepted authority remains package `10473134357` / selector426 **426/426**; stable accounting remains **49/14/35**, debt **5**. Exact next is artifact-only `M4-CP-SCALE-TB12-R3-EXEC`; no selector427.
+
 ## 2026-09-17 — `M4-CP-SCALE-TB12-R2-EXEC`: focused RED reproduced; cycle-order discriminator captured
 
 - Immutable artifact `10517300204` / source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` passes exact provider/local digest, **28/28** manifest, source archive/GMP/runtime boundary, executable-mode, selector426 and retained genus-two fixture preflight. Independent topology remains `120/366/244`, connected/closed/orientable, `chi=-2`, genus `2`.
