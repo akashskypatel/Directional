@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-CB15
-purpose=exact source snapshot for bounded cycle-ordering Code+Build remediation
-source_before_trigger=0963bea02564cfcb68327ab94eda277ef2aec2b2

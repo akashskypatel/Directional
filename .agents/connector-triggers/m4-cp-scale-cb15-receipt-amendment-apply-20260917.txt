@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-CB15
-purpose=apply preserved S5 receipt-only diagnostic amendment
-base_sha=d1bd3c9634df9c59df127de93efb3af54f404711

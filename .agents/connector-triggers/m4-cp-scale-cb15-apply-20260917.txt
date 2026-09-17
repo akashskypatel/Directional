@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-CB15
-purpose=apply decision-neutral cycle-ordering diagnostics patch
-base_sha=e9669561f3b807751d7c2badb3065732a1e69aca
-patch_sha256=de0b65e78ebc5fb7010dd74b5058ffba3a6e7de50b3e24ad61f4c972deef22b5

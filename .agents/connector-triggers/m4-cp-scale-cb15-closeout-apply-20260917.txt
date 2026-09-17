@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-CB15
-purpose=apply verified durable closeout documentation patch
-base_sha=3589942b6f4e56624072d56f25dcb9db043c11d7

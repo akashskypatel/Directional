@@ -1,9 +1,0 @@
-# M4-CP-SCALE-CB15 temporary state
-.agents/connector-triggers/m4-cp-scale-cb15-apply-20260917.txt
-.agents/connector-triggers/m4-cp-scale-cb15-closeout-apply-20260917.txt
-.agents/connector-triggers/m4-cp-scale-cb15-compile-20260917.txt
-.agents/connector-triggers/m4-cp-scale-cb15-drive-apply-20260917.txt
-.agents/connector-triggers/m4-cp-scale-cb15-receipt-amendment-apply-20260917.txt
-.agents/connector-triggers/source-snapshot/m4-cp-scale-cb15-20260917T1904Z.txt
-.agents/connector-triggers/source-snapshot/m4-cp-scale-cb15-closeout-20260917T1950Z.txt
-.agents/connector-triggers/source-snapshot/m4-cp-scale-cb15-post-diagnostics-20260917T1927Z.txt
