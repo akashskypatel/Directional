@@ -14895,8 +14895,14 @@ TEST(M4CPScaleS5, GenusTwoProducedWitnessReachesA3WithVerifiedTopology) {
                     ? independentAtlas->quadrangulability().witnesses().size()
                     : 0U)
             << ",atlasHash=" << independentAtlasHash
-            << ",productionAtlasHash=" << productionAtlasHash << "}"
-            << ";production={deepestStage=" << deepestProductionStage
+            << ",productionAtlasHash=" << productionAtlasHash << "}";
+  if (independentAtlasError.has_value()) {
+    std::ostringstream atlasFailureReceipt;
+    append_atlas_error(atlasFailureReceipt, *independentAtlasError);
+    std::cout << ";independentAtlasFailure={" << atlasFailureReceipt.str()
+              << "}";
+  }
+  std::cout << ";production={deepestStage=" << deepestProductionStage
             << ",terminalFailureCode="
             << (result.diagnostics.terminalFailureCode.empty()
                     ? "none"
