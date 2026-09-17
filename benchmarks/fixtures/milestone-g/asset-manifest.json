@@ -1,14 +1,14 @@
 {
   "assets": [
     {
-      "bytes": 15450,
+      "bytes": 23621,
       "path": "benchmarks/fixtures/generate_milestone_g_fixtures.py",
-      "sha256": "a40e58c0b99b35d44e4a72e8df92657f6580abec7b0e77f1868e87d1398b1154"
+      "sha256": "eb82f01b73c626c1fa7aaf6ccac74ed9002136ba8cef13f3bc22303e85f3cbfb"
     },
     {
-      "bytes": 681,
+      "bytes": 799,
       "path": "benchmarks/fixtures/milestone-g/LICENSE.md",
-      "sha256": "5209869d60580f385fa6088332f8e4725335260f996f60bcd3f61b33b0c13249"
+      "sha256": "e53168e4804809437478b732a932d3a6c23fb9e777f468f2286e25160e697b15"
     },
     {
       "bytes": 51055,
@@ -34,6 +34,21 @@
       "bytes": 12950,
       "path": "benchmarks/fixtures/milestone-g/cylinder.rawfield",
       "sha256": "6e861e06fa5d3dd6ed84c48bf7d459df701acd7f6ab241cc2adbde66d829084d"
+    },
+    {
+      "bytes": 2898,
+      "path": "benchmarks/fixtures/milestone-g/genus_two.fixturemeta.json",
+      "sha256": "22600270cc11b7b421007e10a3861124c4238bc0e5353b2637a9c70005bf1b76"
+    },
+    {
+      "bytes": 5888,
+      "path": "benchmarks/fixtures/milestone-g/genus_two.obj",
+      "sha256": "c6bacd981fb0559dc3e290ee1367b9e369f4657b189ce288ce732461d8caeab3"
+    },
+    {
+      "bytes": 7326,
+      "path": "benchmarks/fixtures/milestone-g/genus_two.rawfield",
+      "sha256": "7bd71837954ded74461a46d65761b953cbc186978639d41567ad4a4aac4af70e"
     },
     {
       "bytes": 12922,

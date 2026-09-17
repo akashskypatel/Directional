@@ -3628,6 +3628,11 @@ output/
 !benchmarks/fixtures/
 benchmarks/fixtures/*
 !benchmarks/fixtures/component_parallelism.json
+!benchmarks/fixtures/milestone-g/
+benchmarks/fixtures/milestone-g/*
+!benchmarks/fixtures/milestone-g/genus_two.fixturemeta.json
+!benchmarks/fixtures/milestone-g/genus_two.obj
+!benchmarks/fixtures/milestone-g/genus_two.rawfield
 **/*.patch
 **/.obsidian/*
 **/.cache/*

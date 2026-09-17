@@ -231,6 +231,94 @@ def torus(nu: int, nv: int, major: float = 1.6, minor: float = 0.55) -> MeshBuil
     return mesh
 
 
+def stellate_faces(mesh: MeshBuilder, count: int, *, prefix: str) -> None:
+    """Deterministically stellate the first ``count`` triangles in place."""
+
+    if count < 0 or count > len(mesh.faces):
+        raise ValueError("stellation count outside face range")
+
+    original_faces = list(mesh.faces)
+    original_fields = list(mesh.fields)
+    faces: list[tuple[int, int, int]] = []
+    fields: list[tuple[Vec3, Vec3]] = []
+    for index, (face, field_axes) in enumerate(zip(original_faces, original_fields)):
+        if index >= count:
+            faces.append(face)
+            fields.append(field_axes)
+            continue
+
+        a, b, c = face
+        pa, pb, pc = mesh.vertices[a], mesh.vertices[b], mesh.vertices[c]
+        centroid = (
+            (pa[0] + pb[0] + pc[0]) / 3.0,
+            (pa[1] + pb[1] + pc[1]) / 3.0,
+            (pa[2] + pb[2] + pc[2]) / 3.0,
+        )
+        center = mesh.vertex((prefix, index), centroid)
+        faces.extend(((a, b, center), (b, c, center), (c, a, center)))
+        fields.extend((field_axes, field_axes, field_axes))
+
+    mesh.faces = faces
+    mesh.fields = fields
+
+
+def genus_two_handlebody() -> MeshBuilder:
+    """Build a deterministic closed genus-two triangle surface.
+
+    The base surface is the boundary of a 5x3x2 cubical solid with two
+    separated 1x1 through-tunnels.  Its 74 boundary quads triangulate to
+    V/F=72/148.  Stellating 48 triangles preserves topology while reaching
+    the frozen S5 inventory V/F=120/244 (and therefore E=366).
+    """
+
+    mesh = MeshBuilder()
+    solid = {
+        (x, y, z)
+        for x in range(5)
+        for y in range(3)
+        for z in range(2)
+        if not (y == 1 and x in (1, 3))
+    }
+
+    def point(x: int, y: int, z: int) -> Vec3:
+        return (float(x) - 2.5, float(y) - 1.5, float(z) - 1.0)
+
+    def key(x: int, y: int, z: int) -> tuple[str, int, int, int]:
+        return ("g2", x, y, z)
+
+    face_specs = (
+        ((1, 0, 0), lambda x, y, z: ((x + 1, y, z), (x + 1, y + 1, z), (x + 1, y + 1, z + 1), (x + 1, y, z + 1))),
+        ((-1, 0, 0), lambda x, y, z: ((x, y, z), (x, y, z + 1), (x, y + 1, z + 1), (x, y + 1, z))),
+        ((0, 1, 0), lambda x, y, z: ((x, y + 1, z), (x, y + 1, z + 1), (x + 1, y + 1, z + 1), (x + 1, y + 1, z))),
+        ((0, -1, 0), lambda x, y, z: ((x, y, z), (x + 1, y, z), (x + 1, y, z + 1), (x, y, z + 1))),
+        ((0, 0, 1), lambda x, y, z: ((x, y, z + 1), (x + 1, y, z + 1), (x + 1, y + 1, z + 1), (x, y + 1, z + 1))),
+        ((0, 0, -1), lambda x, y, z: ((x, y, z), (x, y + 1, z), (x + 1, y + 1, z), (x + 1, y, z))),
+    )
+
+    for x, y, z in sorted(solid):
+        for delta, corners_for in face_specs:
+            neighbor = (x + delta[0], y + delta[1], z + delta[2])
+            if neighbor in solid:
+                continue
+            corners = corners_for(x, y, z)
+            mesh.add_quad(
+                tuple(key(*corner) for corner in corners),
+                tuple(point(*corner) for corner in corners),
+                tuple(float(value) for value in delta),
+            )
+
+    if len(mesh.vertices) != 72 or len(mesh.faces) != 148:
+        raise ValueError(
+            f"unexpected genus-two base inventory: V={len(mesh.vertices)} F={len(mesh.faces)}"
+        )
+    stellate_faces(mesh, 48, prefix="g2-stellate")
+    if len(mesh.vertices) != 120 or len(mesh.faces) != 244:
+        raise ValueError(
+            f"unexpected genus-two final inventory: V={len(mesh.vertices)} F={len(mesh.faces)}"
+        )
+    return mesh
+
+
 def bent_tube(nu: int, nv: int) -> MeshBuilder:
     mesh = MeshBuilder()
 
@@ -334,6 +422,9 @@ def main() -> None:
     generated["plane"] = write_fixture(fixture_root, "plane", plane(4, 3))
     generated["cylinder"] = write_fixture(fixture_root, "cylinder", cylinder(16, 4))
     generated["torus"] = write_fixture(fixture_root, "torus", torus(12, 6))
+    generated["genus_two"] = write_fixture(
+        fixture_root, "genus_two", genus_two_handlebody()
+    )
     generated["thin_bent_tube"] = write_fixture(fixture_root, "thin_bent_tube", bent_tube(10, 12))
     generated["close_sheets"] = write_fixture(fixture_root, "close_sheets", close_sheets(3, 3))
     sphere = cube_surface(4, sphere_mapping)
@@ -371,13 +462,98 @@ def main() -> None:
         encoding="utf-8",
     )
 
+    genus_two_mesh, genus_two_field = generated["genus_two"]
+    genus_two_metadata_path = fixture_root / "genus_two.fixturemeta.json"
+    genus_two_metadata_path.write_text(
+        json.dumps(
+            {
+                "schema": "directional.fixture-authority.v1",
+                "name": "genus_two",
+                "license": "Directional project license",
+                "provenance": (
+                    "Deterministic project-authored boundary of a 5x3x2 cubical "
+                    "handlebody with two separated through-tunnels; 48 deterministic "
+                    "triangle stellations preserve the genus-two topology."
+                ),
+                "generator": str(script.relative_to(repository_root)).replace("\\", "/"),
+                "generator_version": "genus-two-v1",
+                "deterministic_seed": 0,
+                "mesh": {
+                    "path": str(genus_two_mesh.relative_to(repository_root)).replace("\\", "/"),
+                    "sha256": sha256(genus_two_mesh),
+                    "source_face_arity": 3,
+                    "vertices": 120,
+                    "edges": 366,
+                    "faces": 244,
+                    "connected_components": 1,
+                    "orientable": True,
+                    "euler_characteristic": -2,
+                    "genus": 2,
+                    "boundary_loops": 0,
+                    "validity_class": "valid closed orientable triangle two-manifold",
+                    "degenerate_faces": 0,
+                    "nonmanifold_edges": 0,
+                    "duplicate_faces": 0,
+                    "triangle_soup": False,
+                    "self_intersection_status": "not claimed by CB14 static topology census",
+                },
+                "geometry": {
+                    "scale": "axis-aligned 5x3x2 unit cubical handlebody",
+                    "curvature_class": "piecewise-planar with right-angle creases",
+                    "thinness_class": "unit-thickness tunnel walls",
+                    "noise_class": "none",
+                    "feature_graph": "derived from geometric creases by the production pipeline",
+                },
+                "cross_field": {
+                    "path": str(genus_two_field.relative_to(repository_root)).replace("\\", "/"),
+                    "sha256": sha256(genus_two_field),
+                    "source": "deterministic quad-side lattice inherited by triangle stellation",
+                    "degree": 4,
+                    "tangent_variation": "piecewise constant on each source boundary quad",
+                    "matching_distribution": "runtime-derived; not preclaimed by CB14",
+                    "singularity_count_index": "runtime-derived; not preclaimed by CB14",
+                    "boundary_holonomy": "none (closed source)",
+                    "noncontractible_holonomy": "runtime-derived; not preclaimed by CB14",
+                },
+                "target_size": {
+                    "variation": "owned by the focused S5 production options",
+                    "feasibility_class": "runtime-unadjudicated in CB14",
+                },
+                "intent": {
+                    "expected_outcome": "focused S5 runtime witness candidate; no CB14 semantic credit",
+                    "invariants": [
+                        "V=120,E=366,F=244",
+                        "one connected closed orientable component",
+                        "boundary_loops=0",
+                        "chi=-2",
+                        "genus=2",
+                        "raw field has one degree-four row per source face",
+                    ],
+                    "test_tier": "focused stage-contract plus independent topology/atlas oracle",
+                    "expected_artifact_labels": ["M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology"],
+                },
+                "budget": {
+                    "timeout_seconds": None,
+                    "work_budget": "owned by M4-CP-SCALE-TB12-R1-EXEC artifact-only harness",
+                    "rss_bytes": None,
+                    "status": "not invented by CB14; runtime budget remains TB authority",
+                },
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
     license_path = fixture_root / "LICENSE.md"
     license_path.write_text(
         "# Milestone G fixture licensing\n\n"
         "The analytic meshes and cross fields stored in this directory are "
         "deterministic project-authored fixtures generated by "
         "`generate_milestone_g_fixtures.py` and may be used under the same "
-        "license as Directional.\n\n"
+        "license as Directional. This includes the retained `genus_two.obj` / "
+        "`genus_two.rawfield` S5 fixture pair and its generated fixture metadata.\n\n"
         "`bunny_1k_random.obj` and `vase.off` are externally supplied "
         "production regression artifacts and are intentionally not generated "
         "or modified by the fixture script. Their benchmarks intentionally "
@@ -389,7 +565,16 @@ def main() -> None:
     )
 
     asset_paths = [path for pair in generated.values() for path in pair]
-    asset_paths.extend((bunny_mesh, vase_mesh, metadata_path, license_path, script))
+    asset_paths.extend(
+        (
+            bunny_mesh,
+            vase_mesh,
+            metadata_path,
+            genus_two_metadata_path,
+            license_path,
+            script,
+        )
+    )
     manifest = {
         "generator": str(script.relative_to(repository_root)).replace("\\", "/"),
         "assets": [
