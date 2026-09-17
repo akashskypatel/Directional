@@ -1,3 +1,0 @@
-Turn: M4-CP-SCALE-TB12-R1-EXEC
-Purpose: exact start-of-turn source snapshot and reconciliation
-Initial authority: feff98d82b13f9dbd287fb054cc7b1e59d10aad3
