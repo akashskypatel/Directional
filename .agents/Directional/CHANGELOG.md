@@ -1,3 +1,11 @@
+## 2026-09-17 — `M4-CP-SCALE-TB11-EXEC`: selector426 mechanically GREEN; mandatory Review next
+
+Artifact-only run/job `35173390136 / 105049726721` consumed immutable CB12 artifact `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`. Selector426 reverified as 426 unique LF rows at `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` with exact selector425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` and owner census **30/280/75/41**. The cumulative gate executed **426/426 PASS** in 426 fresh exact-filter processes, including a fresh row426 S4 **1/1 PASS**, with zero RED/SKIP/crash/timeout/selection mismatch/unexecuted. No benchmark ran.
+
+Package/source/execution-view/fixture pre/post byte+mode censuses matched exactly; all configure/compile/relink/codegen/chmod/repair/discovery/selector-mutation/benchmark prohibitions remained false. Result/log artifacts `10477627829 / 10477782343` have provider SHA-256 `91f4d12b5dcfc6db90f7a5ce5c45a450746b2f75cbd61dbbccb7d8a8f9f9a2ac / 23161ee1db457851fc38ab4833d80ecb0924e2155ecf91646500c71ee4e3b872`; nested evidence SHA-256 `7ecb6463802918dfc2863ee826bcf1045b048d42167ba23b6f1fecdf5cd48e1c` with self-manifest SHA-256 `162993cba0d67612fcd604009bb6477ea2d53e7db1fd112311c73cac5bf8b80f` reverified after download.
+
+No new regression candidate or stable-accounting change exists: **49 / 14 / 35**, debt **5**. `M4-CP-SCALE-TB10-REV-OBS-01` has publication + fresh cumulative runtime satisfied but remains Review-owed. Accepted runtime authority stays TB10 Review package `10461816370` / selector425 until `M4-CP-SCALE-TB11-REV` independently adjudicates this candidate.
+
 ## 2026-09-16 — `M4-CP-SCALE-CB12`: selector426 published; compile/package GREEN
 
 Publication-only CB12 created selector426 as the exact accepted selector425 bytes plus producer row `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate`. Selector426 is **426 LF rows / 426 unique**, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; first425 remains `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; static owners are **30/280/75/41**. Publication commit `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` changes only selector426 and the additive selector manifest.

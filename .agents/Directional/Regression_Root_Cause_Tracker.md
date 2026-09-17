@@ -1,3 +1,11 @@
+## 2026-09-17 — `M4-CP-SCALE-TB11-EXEC` — SELECTOR426 GREEN / REVIEW OWED / NON-STABLE
+
+- Authoritative artifact-only run/job `35173390136 / 105049726721` consumed CB12 candidate `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`; result/log artifacts `10477627829 / 10477782343` preserve the complete runtime evidence.
+- Selector426 reverified at `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, exact selector425 first425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, 426 unique LF rows and owners **30/280/75/41**. All **426/426** exact-filter processes passed with zero RED/SKIP/crash/timeout/selection mismatch/unexecuted; row426 S4 is a fresh **1/1 PASS** producer process.
+- Package/source/execution-view/fixture postflight is byte+mode identical; configure/compile/relink/repair/discovery/mutation/benchmark execution remained false. Nested evidence SHA-256 is `7ecb6463802918dfc2863ee826bcf1045b048d42167ba23b6f1fecdf5cd48e1c` with self-manifest SHA-256 `162993cba0d67612fcd604009bb6477ea2d53e7db1fd112311c73cac5bf8b80f`.
+- No accepted-green loss, product-semantic regression, or new regression candidate exists. Stable accounting remains **49 events / 14 categories / 35 recurrences**, debt **5**.
+- `M4-CP-SCALE-TB10-REV-OBS-01` — **PUBLICATION + FRESH CUMULATIVE RUNTIME SATISFIED / REVIEW OWED / NON-DEFECT**. The remaining falsifier is mandatory `M4-CP-SCALE-TB11-REV`, which must independently re-open and re-derive this evidence before cumulative S4 selector credit or package promotion. **Owner:** `M4-CP-SCALE-TB11-REV`. **Prohibited:** importing EXEC mechanics as reviewed acceptance, changing selector426, or advancing to S5 before Review.
+
 ## 2026-09-16 — `M4-CP-SCALE-TB10-REV` — S4 PRODUCT ACCEPTED FOR PUBLICATION / PACKAGE PROMOTED / NON-STABLE
 
 - Review independently reopens CB11 artifact `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c`, TB10 run/job `35135187381 / 104925730218`, result/log artifacts `10463670805 / 10464360210`, nested evidence SHA-256 `b17c2956d5e6735098a772465922f4d0d620c1c8ddbbbbe1527800a2bf188133`, and its 1304-entry manifest `b7170097b5e665f7228dc23587ac3abe4e05f8a5e584b22c89b8681d6a22e7cb`; all retained hashes/manifests verify.
