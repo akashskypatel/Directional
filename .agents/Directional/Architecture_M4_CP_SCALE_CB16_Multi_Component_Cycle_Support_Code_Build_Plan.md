@@ -100,3 +100,24 @@ STOP CB16 without semantic expansion if any of the following occurs:
 ## 8. Handoff on a valid compile
 
 A valid CB16 closeout may route to a separately frozen artifact-only retry of the unchanged S5 focus plus the new direct component-ordering controls. Runtime remains unauthorized inside this plan. Clearing row14 ordering is not itself S5 credit: if runtime reaches a later semantic failure, that later boundary becomes the next Review subject; if it reaches A3, mandatory Review still precedes any S5/selector publication.
+
+## Amendment — generalize the validator independently, do not relax it (TB12-R2-REV §8 V2, reviewing agent)
+
+`tests/FieldTransportAtlasTests.cpp:1526-1529` seeds `start`/`current` from the first emitted `step.fromFace` and
+rejects any step whose `fromFace` differs from the running `current`. It validates the **producer's emitted
+ordering** for contiguity, and it carries the same one-contiguous-loop premise this turn corrects in the product.
+
+The cheap repair — tolerate a discontinuity whenever the current component closes — is forbidden. It would make the
+oracle **self-authorizing**: it would accept whatever decomposition the producer emitted, by construction, and could
+no longer detect a dropped, duplicated or mis-ordered component.
+
+**Required.** The validator already reads `bundle.cycles` and its coefficients. Have it **derive the expected
+component decomposition independently from the sparse row's support and adjacency**, then compare the producer's
+flattened sequence against that derivation. This is the producer-independence rule already applied to the CP-COND
+negative-index oracle, where deriving the expectation from the producer's output was explicitly forbidden.
+
+**Additional falsifier, alongside the three already frozen.** Perturbing the producer's component **order** while
+leaving the step multiset unchanged must be detected. If it is not, the canonical-ordering requirement is
+unenforced and only the algebraic total is being checked — which §4 item 4 shows is order-invariant under
+addition modulo four, and therefore proves nothing about ordering.
+

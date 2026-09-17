@@ -94,3 +94,70 @@ This Review folds the superseded TB12-R1 semantic-RED report/Review and indexes 
 | review_check.py boundary | `PASS` on the final local Review diff; product/test/fixture/build/selector bytes unchanged |
 | `STATUS` lifecycle maintained | Review entry/resume beacon maintained; final COMPLETE beacon reserved as the last repository mutation after durable patch transport and cleanup |
 | Pushed to origin, branch in sync | durable Review patch is transported by the standard Drive workflow; final branch fetch/compare is required after cleanup before the COMPLETE beacon |
+
+---
+
+## 8. Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Accounting holds at **49 / 14 / 35**, debt **5**; accepted package `10473134357` /
+selector426 **426/426** unchanged. One requirement added to CB16.
+
+### V1 — the mechanism is confirmed by an independent derivation
+
+§2's two observations settle the diagnosis more tightly than they state. `supportEdges=34` with
+`uniqueFromFaces=34` means every support edge has a distinct outgoing origin, so the directed successor relation
+on that row's support is a **permutation** of 34 directed edges. A permutation decomposes uniquely into disjoint
+cycles, and a single-loop walker started anywhere traverses exactly one of them. Premature return to the start
+with support edges left unconsumed is therefore the precise signature of a permutation with more than one cycle —
+which is what was observed.
+
+That also identifies §4's "all closed components" as exactly the cycle decomposition of that permutation, not a
+new construct. §3's ownership split follows: `dual_cycles` produced a valid algebraic row, and the defect is the
+atlas assuming that row's support forms one simple loop.
+
+§4's soundness argument holds as stated: `QuarterTurn` composition is integer addition modulo four, which is
+commutative and associative, so composing the same multiset of steps in any component order yields the same
+total. Canonical ordering therefore buys determinism and reproducibility, not correctness of the algebraic
+result — which is precisely why requirement 5, preserving the exact sequence for already-valid single-component
+rows, is what protects the accepted atlas identities in selector426 rather than the ordering rule itself.
+
+### V2 — REQUIRED: the validator must be generalized independently, not relaxed into agreement
+
+§4's closing paragraph notes that the independent validator repeats the same one-contiguous-loop premise. That is
+the most consequential line in the record and deserves to be a requirement rather than an observation, because the
+obvious repair is the wrong one.
+
+Confirmed in source: `tests/FieldTransportAtlasTests.cpp:1526-1529` seeds `start`/`current` from the first emitted
+`step.fromFace` and then rejects any step whose `fromFace` differs from the running `current` — it validates the
+**producer's emitted ordering** for contiguity. The cheap generalization is to relax that check so a discontinuity
+is tolerated whenever the current component closes. **That would make the oracle self-authorizing**: it would
+accept whatever decomposition the producer emitted, by construction, and could no longer detect a dropped,
+duplicated or mis-ordered component.
+
+The validator already reads `bundle.cycles` and its coefficients, so it has what it needs to avoid that. CB16 must
+have it **derive the expected component decomposition independently from the sparse row's support and adjacency**,
+then compare the producer's flattened sequence against that derivation — the same producer-independence rule
+applied to the CP-COND negative-index oracle, where deriving the expectation from the producer's output was
+explicitly forbidden.
+
+A concrete falsifier to add alongside the three in §6: perturbing the producer's component **order** while leaving
+the step multiset unchanged must be detected by the validator. If it is not, the canonical-ordering requirement is
+unenforced and only the algebraic total is being checked — which §4 item 4 already shows is order-invariant, and
+therefore proves nothing about ordering.
+
+### V3 — classification, and what S5 has already bought
+
+The accounting is correct under the durable criterion: the S5 focus has never entered an accepted selector, no
+accepted ordinal transitioned PASS → RED, and selector426 is preserved, so this is a candidate-side production
+defect rather than a stable event. Carrying it under existing `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION` rather than
+opening a new category is right — the pattern is the same linearization assumption, in a new place.
+
+`DEFN-OBS-04`'s partial statement is precise and worth keeping in that form: **genus-two topology is proved**,
+while admissible atlas authority and A3 reachability remain unproved. Partial credit recorded exactly, with
+neither half borrowed from the other.
+
+Worth recording plainly, since S5 remains unaccepted and the sequence could otherwise read as pure cost: the
+genus-two witness has already earned its construction. It surfaced a real production defect in
+`FieldTransportAtlas` that no genus-1 fixture could expose, because a single-simple-loop assumption is only
+falsified by a cycle row whose support decomposes into several components. That is exactly what a coverage witness
+is for, and it did it before being gated.

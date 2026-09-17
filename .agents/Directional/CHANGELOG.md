@@ -5,6 +5,31 @@
 - New diagnostic receipt resolves the failure to `row=14`, `kind=BoundaryLoop`, `supportEdges=34`, `uniqueFromFaces=34`, `reason=SupportEdgeReused`, `currentFace=0`, `sourceEdge=0-72`. Raw stdout SHA-256 is `ab4dfc14f0b2555ab43bd08e2240b3e77777f2d7ed1613cff4c0a84c52c8de47`.
 - Frozen retry rules leave selector426 **0/426** and benchmark **0**; package/source/execution-view postflight is byte+mode identical. Existing RP-07 candidate remains open/non-stable; no new stable pricing, S5 credit or package promotion. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP-SCALE-TB12-R2-REV`.
 
+**Verification amendment (reviewing agent, review record §8).** Upheld. §2's observations settle the diagnosis more
+tightly than stated: `supportEdges=34` with `uniqueFromFaces=34` means the directed successor relation on that row's
+support is a **permutation** of 34 directed edges, which decomposes uniquely into disjoint cycles; a single-loop
+walker traverses exactly one, so premature return with edges unconsumed is the precise signature of a multi-cycle
+permutation. That also identifies §4's "all closed components" as exactly that cycle decomposition rather than a new
+construct, and §4's soundness argument holds — `QuarterTurn` composition is addition modulo four, commutative and
+associative, so component order cannot change the algebraic total, which is why requirement 5 (preserving the exact
+sequence for already-valid single-component rows) is what protects the accepted atlas identities rather than the
+ordering rule itself. **One requirement added to the CB16 plan:** §4 notes that the independent validator repeats the
+same one-loop premise, and that deserves to be a requirement, because the obvious repair is the wrong one. Confirmed
+at `tests/FieldTransportAtlasTests.cpp:1526-1529`, the validator seeds `start`/`current` from the first emitted
+`step.fromFace` and rejects any step whose `fromFace` differs from the running `current` — it validates the
+producer's emitted ordering. Relaxing that to tolerate a discontinuity whenever a component closes would make the
+oracle **self-authorizing**, accepting whatever the producer emitted by construction. The validator already reads
+`bundle.cycles`, so CB16 must have it derive the expected decomposition independently from the sparse row's support
+and adjacency — the producer-independence rule already applied to the CP-COND negative-index oracle — with an
+added falsifier: perturbing the producer's component order while leaving the step multiset unchanged must be
+detected, since the algebraic total is order-invariant and therefore proves nothing about ordering. Accounting is
+correct under the durable criterion — no accepted ordinal transitioned PASS → RED and selector426 is preserved — and
+`DEFN-OBS-04`'s partial statement is precise: genus-two topology proved, admissible atlas authority and A3
+reachability unproved. Worth recording since S5 remains unaccepted: the genus-two witness has already earned its
+construction by surfacing a real `FieldTransportAtlas` defect that no genus-1 fixture could expose, a
+single-simple-loop assumption being falsifiable only by a cycle row whose support decomposes into several
+components. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-17 — `M4-CP-SCALE-CB15`: decision-neutral cycle-order diagnostics compile/package GREEN
 
 - Implementation commit `d1bd3c9634df9c59df127de93efb3af54f404711` adds only structured `CycleOrderingFailed` diagnostics at the existing `order_cycle_steps` rejection boundaries; receipt-only amendment `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` exposes them in the frozen S5 stdout without changing assertions or preconditions.
