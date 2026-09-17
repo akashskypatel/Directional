@@ -1,0 +1,2 @@
+# M4-CP-SCALE-CB14 final temporary state
+.agents/connector-triggers/m4-cp-scale-cb14-roadmap-fix-20260917.txt
