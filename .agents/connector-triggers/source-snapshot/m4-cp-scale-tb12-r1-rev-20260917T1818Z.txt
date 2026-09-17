@@ -1,0 +1,3 @@
+Turn: M4-CP-SCALE-TB12-R1-REV
+Purpose: exact review source snapshot
+Parent authority before trigger: ae1d67946380ebd46e2c2cadd2c36a33b321e561
