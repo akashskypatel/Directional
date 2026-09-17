@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-CB16
-requested_after=72790dbb92fbea6296ff69be4eff74fdc1211456
-purpose=exact source snapshot for code/build inspection
-runtimeExecution=false
