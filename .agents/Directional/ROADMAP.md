@@ -71,7 +71,7 @@ TB4 Review first accepted CB4 package `10327643907` / selector422 **422/422** wh
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED; CHECKPOINT OPEN** | accepted runtime authority remains package `10473134357` / selector426 **426/426**, SHA `41f4d559…b5114`, owners **30/280/75/41**; CB13 candidate `10503330993` is compile-green but TB12 preflight found its required genus-two fixture pair absent, so no S5 runtime occurred; exact next `M4-CP-SCALE-CB14`; three G4-B002 produced-witness debts remain CP4 gating. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED; CHECKPOINT OPEN** | accepted runtime authority remains package `10473134357` / selector426 **426/426**, SHA `41f4d559…b5114`, owners **30/280/75/41**; CB14 candidate `10509313705` / source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd` is compile/package GREEN with retained genus-two fixture authority and no S5 runtime credit yet; exact next `M4-CP-SCALE-TB12-R1-EXEC`; three G4-B002 produced-witness debts remain CP4 gating. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
