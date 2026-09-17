@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M4-CP-SCALE-TB12-EXEC start-of-turn inspection.
-Expected source boundary: current working-branch authority after TB12 entry beacon.
-Retry: 0

@@ -1,4 +1,0 @@
-Purpose: apply verified M4-CP-SCALE-TB12-EXEC closeout documentation patch from Google Drive.
-Patch base: 672ef174713a95ec3d0973832b05e54eb528dfdb
-Patch SHA-256: a025b0303c7411e69c0a150670dbba638bbf70011c1d56225f22856c0595e100
-Attempt: 0
