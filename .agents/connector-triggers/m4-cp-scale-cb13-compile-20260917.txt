@@ -1,4 +1,0 @@
-Purpose: compile M4-CP-SCALE-CB13 S5 witness test authority only.
-Source: d65ea2071990a443750ca7d84a43b63630fbdad4
-Boundary: Code+Build compile only; runtimeExecution=false
-Attempt: 0
