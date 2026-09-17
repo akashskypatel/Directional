@@ -1,1 +1,0 @@
-trigger TB11 Review closeout patch apply
