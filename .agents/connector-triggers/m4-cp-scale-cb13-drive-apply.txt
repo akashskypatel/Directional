@@ -1,4 +1,0 @@
-M4-CP-SCALE-CB13 Drive patch apply
-base=8e73d23074e925e2d69e6f2154266a8b26e1bd3d
-patch_sha256=40fedd0b995b7c64d9d166cb5db9296fc0ff6d81b96ab4217cf74a3cc833705a
-retry=0
