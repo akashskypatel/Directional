@@ -74,7 +74,57 @@ A=(
 'FieldTransportAtlas.PreservesSingleComponentCanonicalCycleSequence'
 'FieldTransportAtlas.IndependentOracleRejectsCycleOrderingTamper'
 'FieldTransportAtlas.BuildsSyntheticGenusTwoAtlasWithMultiComponentBoundarySupport')
-for i in 0 1 2 3; do if run_one A "$((i+1))" "${A[$i]}" directional_surface_cell_authority_kernel_tests yes; then gate_a_pass=$((gate_a_pass+1)); else outcome='GATE_A_RED'; break; fi; done
-if [[ "$gate_a_pass" -eq 4 ]]; then
- B='M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology'
- if run_one B 1 "$B" directional_surface_cell_producer_tests yes; then gate_b_pass=1; outcome='GATE_B_PASS'; else outcomô'DtDUô%õ$TBs²f¦f¦bµ²"FvFUö÷72"ÖWBbb"FvFUö%÷72"ÖWÕÓ²FVà¢÷WF6öÖSÒu4TÄT5Dõ%õ52p¢vÆRe3ÒBuÇBr&VB×"÷&BB&â7&3²Fòµ²"F÷&B"ÓÒ÷&FæÂÕÒbb6öçFçVS²6VÆV7F÷%öWV7WFVCÒB6VÆV7F÷%öWV7WFVB³²b'VåööæR2"F÷&B""FB""F&â"æó²FVâ6VÆV7F÷%÷73ÒB6VÆV7F÷%÷72³²VÇ6R6VÆV7F÷%÷&VCÒB6VÆV7F÷%÷&VB³²÷WF6öÖSÒu4TÄT5Dõ%õ$TBs²f²FöæRÂ"DÔ ¢µ²"G6VÆV7F÷%öWV7WFVB"ÖWC#bÕÒÇÂfÂ'6VÆV7F÷"WV7WFöâ6÷VçBG6VÆV7F÷%öWV7WFVB ¦f¦6Vç7W2"E´r""E$U5TÅB÷6¶vRÖ6Vç7W2×&ÖgFW"çG7b#²6Vç7W2"E4õU$4R""E$U5TÅB÷6÷W&6RÖ6Vç7W2×"ÖÖgFW"çG7b#²6Vç7W2"EdUr""E$U5TÅBöWV7WFöâ×fWr×#2ÖgFW"çG7b ¦6××2"E$U5TÅB÷6¶vRÖ6Vç7W2Ö&Vf÷&RçG7b""E$U5TÅB÷6¶vRÖ6Vç7W2×#2ÖgFW"çG7b"ÇÂfÂw6¶vR6Vç7W26ævVBp¦6××2"E$U5TÅB÷6÷W&6RÖ6Vç7W2Ö&Vf÷&RçG7b""E$U5TÅB÷6÷W&6RÖ6Vç7W2×#2ÖgFW"çG7b"ÇÂfÂw6÷W&6R6Vç7W26ævVBp¦6××2"E$U5TÅBöWV7WFöâ×fWrÖ&Vf÷&RçG7b""E$U5TÅBöWV7WFöâ×fWr×#2ÖgFW"çG7b"ÇÂfÂvWV7WFöâfWr6Vç7W26ævVBp¥µ²"B6"DdövVçW5÷Gvòæö&¢""ÓÒ"DUT5Eôô$¢"bb"B6"DdövVçW5÷Gvòç&vfVÆB""ÓÒ"DUT5Eõ$r"bb"B6"DdövVçW5÷GvòæfGW&VÖWFæ§6öâ""ÓÒ"DUT5EôÔUD"ÕÒÇÂfÂvfGW&R÷7FfÆvBÖ6ÖF6p¦ÆVFvW%÷6ÒB6"E$U5TÅBöWV7WFöâÖÆVFvW"çG7b"¦6Bâ"E$U5TÅB÷F#"×#2×7VÖÖ'çGB"ÃÅ5TÔÔ%§GW&ãÒEEU$åô@§'VåöCÒDtDT%õ%Tåô@¦'Ff7EöCÓS#33#S§6÷W&6SÒDUT5Eõ4õU$4P¦÷WF6öÖSÒF÷WF6öÖP¦vFUö÷73ÒFvFUö÷72ó@¦vFUö%÷73ÒFvFUö%÷72ó§6VÆV7F÷%öWV7WFVCÒG6VÆV7F÷%öWV7WFVBóC#`§6VÆV7F÷%÷73ÒG6VÆV7F÷%÷70§6VÆV7F÷%÷&VCÒG6VÆV7F÷%÷&V@¦ÆVFvW%÷6#ScÒFÆVFvW%÷6§÷7FfÆvD6ö×ÆWFS×G'VP¦6öæfwW&TWV7WFöãÖfÇ6P¦6ö×ÆTWV7WFöãÖfÇ6P§&VÆæ´WV7WFöãÖfÇ6P¦6öFTvVæW&FöãÖfÇ6P¦6ÖöDWV7WFöãÖfÇ6P§6¶vU&W#ÖfÇ6P§6÷W&6T×WFFöãÖfÇ6P§FW7D×WFFöãÖfÇ6P¦fGW&T×WFFöãÖfÇ6P§6VÆV7F÷$×WFFöãÖfÇ6P¦&Væ6Ö&´WV7WFöãÖfÇ6P¦F66÷fW'Æ7DVÇfW'6öä7FfGÖfÇ6P¥5TÔÔ%¦6Bâ"E$U5TÅBöWV7WFöâÖ&÷VæF'çGB"ÃÄ$õTäD%§'VçFÖTWV7WFöã×G'VP§'VçFÖTvFTÒFvFUö÷72ó@§'VçFÖTvFT#ÒFvFUö%÷72ó§'VçFÖU6VÆV7F÷#ÒG6VÆV7F÷%öWV7WFVBóC#`¦&Væ6Ö&´WV7WFöãÖfÇ6P¦6öæfwW&TWV7WFöãÖfÇ6P¦6ö×ÆTWV7WFöãÖfÇ6P§&VÆæ´WV7WFöãÖfÇ6P§6¶vU&W#ÖfÇ6P¦6ÖöDWV7WFöãÖfÇ6P§6÷W&6UFW7DfGW&U6VÆV7F÷$×WFFöãÖfÇ6P§÷7FfÆvD6ö×ÆWFS×G'VP¤$õTäD%¦6B"E$U5TÅB÷F#"×#2×7VÖÖ'çGB  
+for i in 0 1 2 3; do if run_one A "$((i+1))" "${A[$i]}" directional_surface_cell_authority_kernel_tests yes; then gate_a_pass=$((gate_a_pass+1)); else outcome='GATE_B_RED'; fi
+fi
+if [[ "$gate_a_pass" -eq 4 && "$gate_b_pass" -eq 1 ]]; then
+ outcome='SELECTOR_PASS'
+ while IFS=$'\t' read -r ord id bin src; do [[ "$ord" == ordinal ]] && continue; selector_executed=$((selector_executed+1)); if run_one C "$ord" "$id" "$bin" no; then selector_pass=$((selector_pass+1)); else selector_red=$((selector_red+1)); outcome='SELECTOR_RED'; fi; done < "$MAP"
+ [[ "$selector_executed" -eq 426 ]] || fail "selector execution count $selector_executed"
+fi
+census "$PKG" "$RESULT/package-census-r3-after.tsv"; census "$SOURCE" "$RESULT/source-census-r3-after.tsv"; census "$VIEW" "$RESULT/execution-view-r3-after.tsv"
+cmp -s "$RESULT/package-census-before.tsv" "$RESULT/package-census-r3-after.tsv" || fail 'package census changed'
+cmp -s "$RESULT/source-census-before.tsv" "$RESULT/source-census-r3-after.tsv" || fail 'source census changed'
+cmp -s "$RESULT/execution-view-before.tsv" "$RESULT/execution-view-r3-after.tsv" || fail 'execution view census changed'
+[[ "$(sha "$FIX/genus_two.obj")" == "$EXPECT_OBJ" && "$(sha "$FIX/genus_two.rawfield")" == "$EXPECT_RAW" && "$(sha "$FIX/genus_two.fixturemeta.json")" == "$EXPECT_META" ]] || fail 'fixture postflight mismatch'
+ledger_sha=$(sha "$RESULT/execution-ledger.tsv")
+cat > "$RESULT/tb12-r3-summary.txt" <<SUMMARY
+turn=$TURN_ID
+run_id=$GITHUB_RUN_ID
+artifact_id=10523132151
+source=$EXPECT_SOURCE
+outcome=$outcome
+gate_a_pass=$gate_a_pass/4
+gate_b_pass=$gate_b_pass/1
+selector_executed=$selector_executed/426
+selector_pass=$selector_pass
+selector_red=$selector_red
+ledger_sha256=$ledger_sha
+postflightComplete=true
+configureExecution=false
+compileExecution=false
+relinkExecution=false
+codeGeneration=false
+chmodExecution=false
+packageRepair=false
+sourceMutation=false
+testMutation=false
+fixtureMutation=false
+selectorMutation=false
+benchmarkExecution=false
+discoveryListHelpVersionActivity=false
+SUMMARY
+cat > "$RESULT/execution-boundary.txt" <<BOUNDARY
+runtimeExecution=true
+runtimeGateA=$gate_a_pass/4
+runtimeGateB=$gate_b_pass/1
+runtimeSelector=$selector_executed/426
+benchmarkExecution=false
+configureExecution=false
+compileExecution=false
+relinkExecution=false
+packageRepair=false
+chmodExecution=false
+sourceTestFixtureSelectorMutation=false
+postflightComplete=true
+BOUNDARY
+cat "$RESULT/tb12-r3-summary.txt"
