@@ -1,0 +1,3 @@
+Purpose: M4-CP-SCALE-CB13 exact source snapshot
+Semantic source authority before control marker: 8e86217b07e6f7a112cbb4db50cf42d378fc2cc8
+Retry: 0
