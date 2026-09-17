@@ -1,0 +1,3 @@
+# M4-CP-SCALE-CB13 temporary repository state
+.agents/connector-triggers/m4-cp-scale-cb13-docs-apply-20260917.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb13-20260917T0505Z.txt
