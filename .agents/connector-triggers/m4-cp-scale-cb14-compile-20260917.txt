@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-CB14
-attempt=0
-purpose=compile retained genus-two fixture authority
-source_sha=3abb1e99e2cb42f385afcad4f6d185af4e7687cd

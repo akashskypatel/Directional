@@ -1,5 +1,0 @@
-turn=M4-CP-SCALE-CB14
-attempt=0
-purpose=apply retained genus-two fixture patch
-patch_sha256=65370e7bae2cedb729bf9295db34929d8300129efae45aafc0f8ff0b1bf3c2bf
-base_sha=f9182f39bc227cca89e96bc7df6f6dc4d430f1fd
