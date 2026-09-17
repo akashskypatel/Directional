@@ -1,3 +1,10 @@
+## 2026-09-17 — `M4-CP-SCALE-TB12-R2-EXEC`: focused RED reproduced; cycle-order discriminator captured
+
+- Immutable artifact `10517300204` / source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` passes exact provider/local digest, **28/28** manifest, source archive/GMP/runtime boundary, executable-mode, selector426 and retained genus-two fixture preflight. Independent topology remains `120/366/244`, connected/closed/orientable, `chi=-2`, genus `2`.
+- Exactly one fresh producer process executed `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` and returned **0 PASS / 1 FAIL**, exit `1`. Outer `InvalidFieldTransportAtlas / field-transport-atlas/IncompleteCycleBasis / CycleOrderingFailed` and absent A3 are unchanged.
+- New diagnostic receipt resolves the failure to `row=14`, `kind=BoundaryLoop`, `supportEdges=34`, `uniqueFromFaces=34`, `reason=SupportEdgeReused`, `currentFace=0`, `sourceEdge=0-72`. Raw stdout SHA-256 is `ab4dfc14f0b2555ab43bd08e2240b3e77777f2d7ed1613cff4c0a84c52c8de47`.
+- Frozen retry rules leave selector426 **0/426** and benchmark **0**; package/source/execution-view postflight is byte+mode identical. Existing RP-07 candidate remains open/non-stable; no new stable pricing, S5 credit or package promotion. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP-SCALE-TB12-R2-REV`.
+
 ## 2026-09-17 — `M4-CP-SCALE-CB15`: decision-neutral cycle-order diagnostics compile/package GREEN
 
 - Implementation commit `d1bd3c9634df9c59df127de93efb3af54f404711` adds only structured `CycleOrderingFailed` diagnostics at the existing `order_cycle_steps` rejection boundaries; receipt-only amendment `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` exposes them in the frozen S5 stdout without changing assertions or preconditions.

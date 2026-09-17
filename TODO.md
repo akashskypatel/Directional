@@ -2,21 +2,22 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-CB15 (closeout)
+## Current turn — M4-CP-SCALE-TB12-R2-EXEC (closeout)
 
-CB15 is complete in substance as a diagnostics-only Code + Build. Exact compile source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21` adds only the Review-authorized cycle-order discriminator and S5 receipt exposure; reusable compile/package run `35266024382` is GREEN under mandatory GMP/GMPXX with result artifact `10517300204`, provider/local SHA-256 `dceab12b7fe9ee8feccf972837455b89f6fe8b4bc30b44ee4947fc2343bd2711`, **28/28** manifest, source archive `14a1eccff69d402b72bf803f47b0ebf778f96d9f2da87baf46b74b1e49873ebc`, and `runtimeExecution=false`.
+TB12-R2 is complete as the frozen artifact-only diagnostic retry on candidate artifact `10517300204` / source `94072bb4f24bdc82a24fd0bb07b6dcf37a420a21`. Exactly one S5 focus process reproduced the semantic RED with unchanged outer `InvalidFieldTransportAtlas / IncompleteCycleBasis / CycleOrderingFailed` and exposed `cycleOrdering={row=14,kind=BoundaryLoop,supportEdges=34,uniqueFromFaces=34,reason=SupportEdgeReused,currentFace=0,sourceEdge=0-72}`. Selector426 runtime is **0/426** and benchmark runtime **0** by frozen plan.
 
 - [x] `M4-CP-SCALE-CB14`: retained/package deterministic genus-two fixture; compile/package GREEN, no generated runtime.
 - [x] `M4-CP-SCALE-TB12-R1-EXEC`: exact focus **0 PASS / 1 FAIL** semantic RED; no selector runtime; no benchmark; immutable postflight.
-- [x] `M4-CP-SCALE-TB12-R1-REV`: runtime-free independent Review; candidate classified production `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`, non-stable; S5 remains uncredited.
-- [x] `M4-CP-SCALE-CB15`: decision-neutral cycle row/class/support/failure-subtype diagnostics added; standard eight targets compile/package GREEN; no generated runtime, fixture mutation, semantic repair, selector change or selector427.
-- [ ] `M4-CP-SCALE-TB12-R2-EXEC`: **exact next** immutable artifact-only diagnostic retry on artifact `10517300204`; execute exactly one S5 focus process, capture the new ordering discriminator, execute selector426 **0/426** and benchmark **0**, then route to Review.
+- [x] `M4-CP-SCALE-TB12-R1-REV`: candidate classified production `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`, non-stable; S5 remains uncredited.
+- [x] `M4-CP-SCALE-CB15`: decision-neutral cycle-order diagnostics compile/package GREEN; no semantic repair or runtime.
+- [x] `M4-CP-SCALE-TB12-R2-EXEC`: one exact S5 focus **0 PASS / 1 FAIL**; discriminator captured as row14 `BoundaryLoop / SupportEdgeReused`; immutable postflight exact; no selector/benchmark.
+- [ ] `M4-CP-SCALE-TB12-R2-REV`: **exact next** runtime-free Review + Plan; independently re-derive the row14 support/reuse mechanism and freeze the smallest corrective owner/falsifier.
 
-## Current focus — `M4-CP-SCALE-TB12-R2-EXEC` (artifact-only diagnostic retry)
+## Current focus — `M4-CP-SCALE-TB12-R2-REV`
 
-Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate package `10517300204` is compile-green but not promoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` remains **OPEN / production FieldTransportAtlas cycle-basis ordering defect / RP-07 / NON-STABLE**; no accepted-green loss is priced.
+Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate package `10517300204` is not promoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` remains **OPEN / production FieldTransportAtlas cycle-basis ordering defect / RP-07 / NON-STABLE**, now narrowed to cycle row `14`, kind `BoundaryLoop`, 34 support edges / 34 unique source faces, subtype `SupportEdgeReused`, current face `0`, source edge `0-72`.
 
-TB12-R2 consumes exact CB15 source/package bytes without repair, executes only `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` once, and must preserve the old `InvalidFieldTransportAtlas / IncompleteCycleBasis / CycleOrderingFailed` decision while exposing `cycleOrdering={row,kind,supportEdges,uniqueFromFaces,reason,currentFace,sourceEdge}` if CB15 is decision-neutral. Expected RED routes to `M4-CP-SCALE-TB12-R2-REV`; unexpected GREEN or changed old error/reason is non-neutrality evidence, not S5 acceptance.
+Review must consume the exact TB12-R2 evidence without runtime, identify the source-level invariant violated by that row, decide whether the ordering assumption or cycle support construction owns the defect, and freeze the next corrective Code + Build plan. No repair, selector427 publication or S5 acceptance is authorized before Review closes.
 
 ## Carried forward from M1
 
