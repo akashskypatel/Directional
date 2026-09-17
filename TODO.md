@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-CB13
+## Current turn — M4-CP-SCALE-CB14
 
 - [x] `M4-CP-SCALE-TB9-REV`: promoted corrected prerequisite package `10455353524` under selector425 and discharged `M4-CP-SCALE-DEFN-OBS-03`.
 - [x] `M4-CP-SCALE-CB11`: implemented bounded S4 product accelerator + independent focused test at source `2adb7b8169a387fcb6db6487768d7bd3d678265c`; package `10461816370` compile/GMP GREEN with no runtime.
@@ -11,8 +11,9 @@ Last updated: 2026-09-17 UTC
 - [x] `M4-CP-SCALE-CB12`: selector426 published at source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`; exact prefix + one S4 producer row, SHA `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/280/75/41**; GMP/GMPXX artifact `10473134357` compile GREEN with no runtime.
 - [x] `M4-CP-SCALE-TB11-EXEC`: selector426 **426/426 PASS** in 426 fresh exact-filter processes, owners **30/280/75/41**, fresh row426 S4 **1/1 PASS**, zero anomalies, exact immutable postflight; no benchmark.
 - [x] `M4-CP-SCALE-TB11-REV`: independently re-opened package/runtime/evidence, promotes package `10473134357` under selector426 **426/426**, grants cumulative S4 credit and discharges `M4-CP-SCALE-TB10-REV-OBS-01`.
-- [x] `M4-CP-SCALE-CB13`: reused the retained deterministic `genus_two.obj/.rawfield` subject after independently deriving `V/E/F=120/366/244`, one component, zero boundary loops, closed orientable two-manifold, `chi=-2`, `genus=2`; authored producer-owned `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`; package `10503330993` compiled all eight standard targets under GMP/GMPXX with `runtimeExecution=false`, product semantics/selector426 frozen.
-- [ ] `M4-CP-SCALE-TB12-EXEC`: consume immutable package `10503330993` artifact-only; execute the focused S5 identity once plus selector426 as 426 fresh exact-filter processes; prove the same verified source/field actually reaches authoritative A3 or record a legitimate focused RED; no rebuild/repair/selector mutation/benchmark.
+- [x] `M4-CP-SCALE-CB13`: authored/compiled producer-owned `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` in package `10503330993` under GMP/GMPXX with `runtimeExecution=false`; later TB12 preflight proved the required `genus_two.obj/.rawfield` bytes were never retained in source/package, so CB13 grants no runnable S5 witness authority.
+- [x] `M4-CP-SCALE-TB12-EXEC`: **ORCHESTRATION FAILURE / NO SEMANTIC LEDGER** — package/digest/GMP/selector preflight passed, but required `genus_two.obj/.rawfield` are absent from immutable package source and current repository source; generated runtime **0**, selector426 **0/426**.
+- [ ] `M4-CP-SCALE-CB14`: retain the deterministic genus-two OBJ/rawfield through milestone-G generator + manifest/provenance, independently prove the frozen topology from committed bytes, compile/package standard eight targets under GMP with no runtime/product/test-semantic/selector change; then fresh `M4-CP-SCALE-TB12-R1-EXEC`.
 
 ## Purpose
 
@@ -44,13 +45,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-TB12-EXEC` (S5 genus-two produced-witness runtime proof)
+## Current focus — `M4-CP-SCALE-CB14` (S5 missing-fixture orchestration correction)
 
 Accepted current runtime authority remains package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426** (`41f4d559...b5114`), exact selector425 prefix `e0e0f394...790e0b`, owner census **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. CB13 creates no runtime credit.
 
-CB13 compile candidate package `10503330993` / source `d65ea2071990a443750ca7d84a43b63630fbdad4` contains the producer-owned focused identity `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`. The retained milestone-G `genus_two.obj/.rawfield` subject already existed, so CB13 did not duplicate fixture bytes; independent fixture-incidence census derives `V=120`, `E=366`, `F=244`, one connected component, zero boundary loops, closed orientable two-manifold topology, `chi=-2`, and genus `2`. The test independently establishes field/atlas authority before crediting production A3 and emits a structured topology/field/production receipt.
+CB13 candidate package `10503330993` / source `d65ea2071990a443750ca7d84a43b63630fbdad4` contains the producer-owned focus but **does not contain its required retained fixture pair**. TB12 artifact preflight verified the package digest/manifest/GMP/selector authority, then proved `benchmarks/fixtures/milestone-g/genus_two.obj` and `.rawfield` absent from both package source and current source. No generated Directional runtime executed and no semantic ledger exists. `M4-CP-SCALE-TB12-EXEC-CAND-01` owns this non-stable orchestration failure.
 
-TB12-EXEC must consume package `10503330993` unchanged, preserve archived executable modes, execute the focused S5 identity once and selector426 as 426 fresh exact-filter processes, and perform exact immutable postflight. A focused RED before A3 is legitimate semantic evidence and routes to `M4-CP-SCALE-TB12-REV`; no S5 credit, selector427, rebuild, repair, or benchmark is authorized in EXEC.
+CB14 must add deterministic generator-backed retained genus-two OBJ/rawfield bytes plus manifest/provenance, independently verify frozen topology `120/366/244`, `chi=-2`, genus `2`, and compile/package them under mandatory GMP/GMPXX with `runtimeExecution=false`. Production semantics, the already-authored focus, selector426 and all accepted predecessor bytes stay frozen. If package preflight is green, exact next is fresh artifact-only `M4-CP-SCALE-TB12-R1-EXEC`.
 
 ## Carried forward from M1
 
@@ -89,7 +90,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. CB13 compiled candidate package `10503330993` with the independently censused retained genus-two S5 witness and no product/selector mutation or runtime. Exact next `M4-CP-SCALE-TB12-EXEC` tests that candidate artifact-only. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains runtime-unproven, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. CB13 compiled candidate package `10503330993` but TB12 preflight proved its required genus-two fixture pair was never retained/packageable; TB12 executed no generated runtime. Exact next `M4-CP-SCALE-CB14` corrects fixture retention only before a fresh TB12 retry. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains runtime-unproven, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -129,4 +130,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` promotes package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426** and grants cumulative S4 selector credit; `M4-CP-SCALE-TB10-REV-OBS-01` is discharged. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 genus>=2 construction/reachability remains open. Exact next is **`M4-CP-SCALE-CB13`**. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. `M4-CP-SCALE-TB12-EXEC` produced no semantic ledger because candidate `10503330993` lacks its required retained genus-two fixture pair. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 genus>=2 construction/reachability remains open. Exact next is **`M4-CP-SCALE-CB14`**. PR #8 remains open, draft, and unmerged.
