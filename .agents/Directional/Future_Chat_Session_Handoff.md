@@ -31,36 +31,7 @@ Read in full at every new formal turn:
 
 TB10 Review package `10461816370` / source `2adb7b8169a387fcb6db6487768d7bd3d678265c` under selector425 **425/425** remains accepted M4 runtime authority until TB11 Review. Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
 
-TB11-EXEC has mechanically validated the CB12 publication candidate but cannot promote it. Candidate package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` carries selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, exact selector425 first425 prefix `---
-Turn: M4-CP-SCALE-CB12
-Status: COMPLETE / SELECTOR426 PUBLISHED + COMPILE GREEN / CUMULATIVE S4 RUNTIME + REVIEW OWED
-Repository: akashskypatel/Directional
-Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
-PR: 8, open / draft / unmerged
-Canonical next turn: M4-CP-SCALE-TB11-EXEC
----
-
-# Future Chat Session Handoff — Directional
-
-## Purpose — DURABLE, DO NOT DELETE
-
-This file contains durable operating policy, exact next action, current immutable authority, standing product state, and resume-critical blockers required to continue safely. Architecture belongs in `DESIGN.md` and frozen-definition records; tasks belong in `TODO.md`; completed history belongs in `CHANGELOG.md`; runtime evidence belongs in retained reports/reviews and `Regression_Root_Cause_Tracker.md`.
-
-All `[ChatGPT Web]` instructions remain mandatory for ChatGPT Web sessions.
-
-## Authoritative pre-turn documents — DURABLE, DO NOT DELETE
-
-Read in full at every new formal turn:
-
-- `.agents/Directional/Durable_Handoff_Policy.md`
-- `.agents/Directional/Mandatory_Start_Checklist.md`
-- `.agents/Directional/Mandatory_End_Checklist.md`
-- `.agents/Directional/Patch_Application_Strategy.md`
-- `.agents/Directional/Turn_Cadence.md`
-- `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md`
-- `.agents/Directional/GitHub_Workflow_Policy.md`
-
-`, and owners **30/280/75/41**.
+TB11-EXEC has mechanically validated the CB12 publication candidate but cannot promote it. Candidate package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` carries selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, exact selector425 first425 prefix `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, and owners **30/280/75/41**.
 
 ## TB11 execution disposition
 
