@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1OAnqJcBNgt8rfHvgk-nS3TfyME5UR1fd
-      patch_sha256: 40c70d7223700676e1298f38fdc875103b12c1481c166c3419c8d8cdb7cd72fd
+      patch_sha256: e620a470ece61dad7f60d07c392706a5ed0f4bf6b5172639bfa48742ea29835d
       base_sha: d65ea2071990a443750ca7d84a43b63630fbdad4
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M4 CP-SCALE CB13 and hand off TB12"
