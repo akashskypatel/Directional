@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-TB11-REV
+## Current turn — M4-CP-SCALE-CB13
 
 - [x] `M4-CP-SCALE-TB9-REV`: promoted corrected prerequisite package `10455353524` under selector425 and discharged `M4-CP-SCALE-DEFN-OBS-03`.
 - [x] `M4-CP-SCALE-CB11`: implemented bounded S4 product accelerator + independent focused test at source `2adb7b8169a387fcb6db6487768d7bd3d678265c`; package `10461816370` compile/GMP GREEN with no runtime.
@@ -11,7 +11,8 @@ Last updated: 2026-09-17 UTC
 - [x] `M4-CP-SCALE-CB12`: selector426 published at source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`; exact prefix + one S4 producer row, SHA `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/280/75/41**; GMP/GMPXX artifact `10473134357` compile GREEN with no runtime.
 - [x] `M4-CP-SCALE-TB11-EXEC`: selector426 **426/426 PASS** in 426 fresh exact-filter processes, owners **30/280/75/41**, fresh row426 S4 **1/1 PASS**, zero anomalies, exact immutable postflight; no benchmark.
 - [x] `M4-CP-SCALE-TB11-REV`: independently re-opened package/runtime/evidence, promotes package `10473134357` under selector426 **426/426**, grants cumulative S4 credit and discharges `M4-CP-SCALE-TB10-REV-OBS-01`.
-- [ ] `M4-CP-SCALE-CB13`: construct independently censused connected closed orientable genus-2 source + admissible field/holonomy precondition; compile focused S5 producer identity only, with product semantics/selector426 frozen and no runtime.
+- [x] `M4-CP-SCALE-CB13`: reused the retained deterministic `genus_two.obj/.rawfield` subject after independently deriving `V/E/F=120/366/244`, one component, zero boundary loops, closed orientable two-manifold, `chi=-2`, `genus=2`; authored producer-owned `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`; package `10503330993` compiled all eight standard targets under GMP/GMPXX with `runtimeExecution=false`, product semantics/selector426 frozen.
+- [ ] `M4-CP-SCALE-TB12-EXEC`: consume immutable package `10503330993` artifact-only; execute the focused S5 identity once plus selector426 as 426 fresh exact-filter processes; prove the same verified source/field actually reaches authoritative A3 or record a legitimate focused RED; no rebuild/repair/selector mutation/benchmark.
 
 ## Purpose
 
@@ -43,11 +44,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-CB13` (S5 genus-two witness construction + compile)
+## Current focus — `M4-CP-SCALE-TB12-EXEC` (S5 genus-two produced-witness runtime proof)
 
-Accepted current runtime authority is package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426** (`41f4d559...b5114`), exact selector425 prefix `e0e0f394...790e0b`, owner census **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. S4 cumulative selector credit is accepted and `M4-CP-SCALE-TB10-REV-OBS-01` is discharged.
+Accepted current runtime authority remains package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426** (`41f4d559...b5114`), exact selector425 prefix `e0e0f394...790e0b`, owner census **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. CB13 creates no runtime credit.
 
-CB13 owns only `M4-CP-SCALE-DEFN-OBS-04`'s construction half: add one deterministic retained connected closed orientable genus-2 source, independently derive its topology from fixture incidence, establish admissible field/holonomy authority, and compile `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` in the producer target. Product semantics and selector426 remain frozen; no runtime and no selector427. Later artifact-only TB + Review must prove the exact source/field actually reaches A3 before focused S5 credit or publication.
+CB13 compile candidate package `10503330993` / source `d65ea2071990a443750ca7d84a43b63630fbdad4` contains the producer-owned focused identity `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`. The retained milestone-G `genus_two.obj/.rawfield` subject already existed, so CB13 did not duplicate fixture bytes; independent fixture-incidence census derives `V=120`, `E=366`, `F=244`, one connected component, zero boundary loops, closed orientable two-manifold topology, `chi=-2`, and genus `2`. The test independently establishes field/atlas authority before crediting production A3 and emits a structured topology/field/production receipt.
+
+TB12-EXEC must consume package `10503330993` unchanged, preserve archived executable modes, execute the focused S5 identity once and selector426 as 426 fresh exact-filter processes, and perform exact immutable postflight. A focused RED before A3 is legitimate semantic evidence and routes to `M4-CP-SCALE-TB12-REV`; no S5 credit, selector427, rebuild, repair, or benchmark is authorized in EXEC.
 
 ## Carried forward from M1
 
@@ -86,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. TB11 Review promotes package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426**, owners **30/280/75/41**, and discharges the S4 publication obligation. Exact next `M4-CP-SCALE-CB13` constructs/compiles the missing S5 genus-two witness without product or selector mutation. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains open, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. CB13 compiled candidate package `10503330993` with the independently censused retained genus-two S5 witness and no product/selector mutation or runtime. Exact next `M4-CP-SCALE-TB12-EXEC` tests that candidate artifact-only. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains runtime-unproven, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
