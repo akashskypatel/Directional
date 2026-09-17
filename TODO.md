@@ -11,36 +11,6 @@ TB12-R1 artifact-only execution is complete and **FOCUSED SEMANTIC RED**. The ex
 - [ ] `M4-CP-SCALE-TB12-R1-REV`: runtime-free independent Review + Plan; adjudicate retained-field test authority versus production atlas/cycle-ordering defect, classify candidate/stable consequences, freeze exactly one bounded successor.
 - [ ] Do **not** retry runtime, enter CB correction, mutate fixture/product/test semantics, or publish selector427 before Review.
 
-## Purpose
-
-This is the single durable **task index** — open and blocked work only. It is deliberately forward-looking.
-
-Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, `M3_CP4ab_Closure_Record.md`, and `M3_Closure_Record.md`, plus current milestone checkpoint closures such as `.agents/Directional/M4_CP1_Closure_Record.md`, `.agents/Directional/M4_CP2_Closure_Record.md`, and `.agents/Directional/M4_CP3_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
-
-**Do not re-accumulate per-checkpoint, per-retry, or per-partial narrative here.** A closed checkpoint gets one line in `ROADMAP.md` §1 and a closure record; it does not stay in this file.
-
-## Turn workflow — changed 2026-08-25
-
-```
-CB  →  TB  →  green?  →  checkpoint CLOSES
-                ↓ semantic red
-        REVIEW + PLAN  →  CB  →  …
-                ↓ orchestration failure
-        CB (orchestration fix) → TB (fresh retry) → …
-```
-
-**Non-gating diagnostic identities** TB executes and reports them, the
-gate count excludes them, each carries a written rationale and an owning corrective measure.
-
-**Orchestration failures are not semantic RED.** They produce no semantic ledger and route to a bounded runtime-free control-plane Code + Build correction followed by a fresh immutable TB retry, per `Turn_Cadence.md`.
-
-**`DEFN` absorbs `REVIEW + PLAN` — user-authorized 2026-08-30.** When `DEFN` is the next step in the chain it **is**
-the review-and-plan turn: one turn freezes definitions, adjudicates inherited candidates, decides gate membership,
-and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
-it still gets its own review turn.
-
-**Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
-
 ## Current focus — `M4-CP-SCALE-TB12-R1-REV` (mandatory runtime-free adjudication)
 
 Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate package `10509313705` is mechanically valid but unpromoted. TB12-R1 establishes a genuine focused semantic RED at the atlas-admissibility precondition with exact topology/fixture/package postflight and no selector426 execution.
