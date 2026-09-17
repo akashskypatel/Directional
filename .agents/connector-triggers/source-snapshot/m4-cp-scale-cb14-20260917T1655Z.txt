@@ -1,0 +1,2 @@
+turn=M4-CP-SCALE-CB14
+purpose=exact source snapshot for CB14 inspection authority
