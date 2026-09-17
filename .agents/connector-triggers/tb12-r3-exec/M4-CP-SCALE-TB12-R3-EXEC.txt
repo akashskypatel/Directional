@@ -2,5 +2,5 @@ Turn: M4-CP-SCALE-TB12-R3-EXEC
 Purpose: execute frozen artifact-only Gate A -> Gate B -> conditional selector426
 Candidate artifact: 10523132151
 Source: a8df4406ebd1a5252f0be20b1f1e65a2cb453ee9
-Attempt: 2
-Diagnosed retry: exact harness restored; caller permission ceiling corrected
+Attempt: 3
+Diagnosed retry: run_one workdir initialization fixed after preflight-only orchestration failure
