@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/workflow-schema-validation/M4-CP-SCALE-TB12-R3-EXEC.txt
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
