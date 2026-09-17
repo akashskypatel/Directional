@@ -54,7 +54,7 @@ p=$(awk -F'\t' 'NR>1&&$3=="directional_surface_cell_producer_tests"{n++}END{prin
 c=$(awk -F'\t' 'NR>1&&$3=="directional_surface_cell_completion_tests"{n++}END{print n+0}' "$MAP")
 v=$(awk -F'\t' 'NR>1&&$3=="directional_surface_cell_validation_tests"{n++}END{print n+0}' "$MAP")
 [[ "$a/$p/$c/$v" == '30/280/75/41' ]] || fail "owner census $a/$p/$c/$v"
-printf 'authority=%s\nproducer=%s\ncompletion=%s\nvalidation=%s\n' "$a" "$p" "$c" "$v" > "$RESULT/owner-census.txt"
+printf 'authority=%s\nproducer=%s\ncompletion=%s\n' "$a" "$p" "$c" "$v" > "$RESULT/owner-census.txt"
 printf 'gate\tordinal\tidentity\tbinary\texit\tselected\tok\tskipped\tresult\tstdout_sha256\tstderr_sha256\n' > "$RESULT/execution-ledger.tsv"
 run_one(){
  local gate="$1" ord="$2" id="$3" bin="$4" bounded="$5"; local stem="${gate,,}-$(printf '%03d' "$ord")" w="$RUNTIME/$stem"
@@ -74,7 +74,10 @@ A=(
 'FieldTransportAtlas.PreservesSingleComponentCanonicalCycleSequence'
 'FieldTransportAtlas.IndependentOracleRejectsCycleOrderingTamper'
 'FieldTransportAtlas.BuildsSyntheticGenusTwoAtlasWithMultiComponentBoundarySupport')
-for i in 0 1 2 3; do if run_one A "$((i+1))" "${A[$i]}" directional_surface_cell_authority_kernel_tests yes; then gate_a_pass=$((gate_a_pass+1)); else outcome='GATE_B_RED'; fi
+for i in 0 1 2 3; do if run_one A "$((i+1))" "${A[$i]}" directional_surface_cell_authority_kernel_tests yes; then gate_a_pass=$((gate_a_pass+1)); else outcome='GATE_A_RED'; break; fi; done
+if [[ "$gate_a_pass" -eq 4 ]]; then
+ B='M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology'
+ if run_one B 1 "$B" directional_surface_cell_producer_tests yes; then gate_b_pass=1; outcome='GATE_B_PASS'; else outcome='GATE_B_RED'; fi
 fi
 if [[ "$gate_a_pass" -eq 4 && "$gate_b_pass" -eq 1 ]]; then
  outcome='SELECTOR_PASS'
