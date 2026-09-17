@@ -1,0 +1,5 @@
+# M4-CP-SCALE-CB14 temporary state
+.agents/connector-triggers/m4-cp-scale-cb14-drive-apply-20260917.txt
+.agents/connector-triggers/m4-cp-scale-cb14-compile-20260917.txt
+.agents/connector-triggers/m4-cp-scale-cb14-docs-apply-20260917.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb14-20260917T1655Z.txt
