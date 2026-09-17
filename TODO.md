@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-CB14
+## Current turn — M4-CP-SCALE-TB12-R1-EXEC
 
 - [x] `M4-CP-SCALE-TB9-REV`: promoted corrected prerequisite package `10455353524` under selector425 and discharged `M4-CP-SCALE-DEFN-OBS-03`.
 - [x] `M4-CP-SCALE-CB11`: implemented bounded S4 product accelerator + independent focused test at source `2adb7b8169a387fcb6db6487768d7bd3d678265c`; package `10461816370` compile/GMP GREEN with no runtime.
@@ -13,7 +13,8 @@ Last updated: 2026-09-17 UTC
 - [x] `M4-CP-SCALE-TB11-REV`: independently re-opened package/runtime/evidence, promotes package `10473134357` under selector426 **426/426**, grants cumulative S4 credit and discharges `M4-CP-SCALE-TB10-REV-OBS-01`.
 - [x] `M4-CP-SCALE-CB13`: authored/compiled producer-owned `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` in package `10503330993` under GMP/GMPXX with `runtimeExecution=false`; later TB12 preflight proved the required `genus_two.obj/.rawfield` bytes were never retained in source/package, so CB13 grants no runnable S5 witness authority.
 - [x] `M4-CP-SCALE-TB12-EXEC`: **ORCHESTRATION FAILURE / NO SEMANTIC LEDGER** — package/digest/GMP/selector preflight passed, but required `genus_two.obj/.rawfield` are absent from immutable package source and current repository source; generated runtime **0**, selector426 **0/426**.
-- [ ] `M4-CP-SCALE-CB14`: retain the deterministic genus-two OBJ/rawfield through milestone-G generator + manifest/provenance, independently prove the frozen topology from committed bytes, compile/package standard eight targets under GMP with no runtime/product/test-semantic/selector change; then fresh `M4-CP-SCALE-TB12-R1-EXEC`.
+- [x] `M4-CP-SCALE-CB14`: retained deterministic generator-backed genus-two OBJ/rawfield/metadata, independently proved `V/E/F=120/366/244`, `chi=-2`, genus `2`, and compiled/package GREEN as artifact `10509313705` from source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd` under GMP/GMPXX with no generated runtime or production/test/selector semantic change.
+- [ ] `M4-CP-SCALE-TB12-R1-EXEC`: fresh artifact-only S5 focus on package `10509313705`, then selector426 **426/426** only after focused PASS; exact immutable postflight, no repair/rebuild/benchmark.
 
 ## Purpose
 
@@ -45,13 +46,13 @@ it still gets its own review turn.
 
 **Same-agent REVIEW/DEFN — user-authorized 2026-09-10.** REVIEW, REVIEW + PLAN, and DEFN may be performed by the same agent/session as earlier turns. "Independent" means independently re-opened evidence/re-derivation/oracle authority unless a criterion explicitly requires personnel separation; cadence and turn boundaries are unchanged.
 
-## Current focus — `M4-CP-SCALE-CB14` (S5 missing-fixture orchestration correction)
+## Current focus — `M4-CP-SCALE-TB12-R1-EXEC` (fresh immutable S5 retry)
 
 Accepted current runtime authority remains package `10473134357` / source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426** (`41f4d559...b5114`), exact selector425 prefix `e0e0f394...790e0b`, owner census **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. CB13 creates no runtime credit.
 
-CB13 candidate package `10503330993` / source `d65ea2071990a443750ca7d84a43b63630fbdad4` contains the producer-owned focus but **does not contain its required retained fixture pair**. TB12 artifact preflight verified the package digest/manifest/GMP/selector authority, then proved `benchmarks/fixtures/milestone-g/genus_two.obj` and `.rawfield` absent from both package source and current source. No generated Directional runtime executed and no semantic ledger exists. `M4-CP-SCALE-TB12-EXEC-CAND-01` owns this non-stable orchestration failure.
+TB12's original candidate package `10503330993` lacked the retained genus-two fixture pair and stopped before generated runtime. CB14 corrects that orchestration/source-retention defect: fixture commit `bac950623c3f1a09d0cd8acbb74b35342ac20393` retains deterministic generator-backed OBJ/rawfield/metadata; independent census derives `120/366/244`, `chi=-2`, genus `2`; compile run `35250975996` packages exact source `3abb1e99e2cb42f385afcad4f6d185af4e7687cd` as artifact `10509313705` under GMP/GMPXX with `runtimeExecution=false`.
 
-CB14 must add deterministic generator-backed retained genus-two OBJ/rawfield bytes plus manifest/provenance, independently verify frozen topology `120/366/244`, `chi=-2`, genus `2`, and compile/package them under mandatory GMP/GMPXX with `runtimeExecution=false`. Production semantics, the already-authored focus, selector426 and all accepted predecessor bytes stay frozen. If package preflight is green, exact next is fresh artifact-only `M4-CP-SCALE-TB12-R1-EXEC`.
+`M4-CP-SCALE-TB12-EXEC-CAND-01` is corrected at the source/package layer but remains non-stable until fresh immutable runtime. Exact next `M4-CP-SCALE-TB12-R1-EXEC` must preflight the exact fixture hashes/modes, execute one focused S5 producer process, and only on focused PASS execute selector426 as 426 fresh exact-filter processes. Production semantics, the already-authored focus, selector426 and all accepted predecessor bytes remain frozen; no selector427 or benchmark is authorized.
 
 ## Carried forward from M1
 
