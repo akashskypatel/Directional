@@ -1,4 +1,4 @@
-Purpose: apply verified M4-CP-SCALE-CB13 witness patch from Google Drive.
+Purpose: apply corrected verified M4-CP-SCALE-CB13 witness patch from Google Drive.
 Patch base: 8e73d23074e925e2d69e6f2154266a8b26e1bd3d
-Patch SHA-256: 8dc74a050def70344d0b228d65aa8d768168a7c977d6bbdbd146407c9fac9238
-Retry: 0
+Patch SHA-256: 5fbe8bf4eb3e61c23bbd2e0b4f8b77465d38ba9032128c069facc4b4303a63d6
+Retry: 1
