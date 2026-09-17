@@ -1,0 +1,5 @@
+Turn: M4-CP-SCALE-TB12-R1-EXEC
+Purpose: apply verified semantic-RED report/handoff preservation patch
+Patch SHA-256: a38078e2bffe80b3a4dd8786bc1da363dc8af933c6c10d7f0fdbe6aa22068850
+Base: c2a1a0a54eed05ab71df2e7cf3a76bd089b87121
+Attempt: 0
