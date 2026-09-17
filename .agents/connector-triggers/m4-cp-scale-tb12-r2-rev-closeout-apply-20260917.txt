@@ -1,5 +1,0 @@
-turn=M4-CP-SCALE-TB12-R2-REV
-purpose=apply reviewed durable closeout documentation
-requested_at=2026-09-17T22:02:15Z
-retry_at=2026-09-17T22:04:00Z
-retry_reason=Drive staging object shared with workflow service account after initial 404
