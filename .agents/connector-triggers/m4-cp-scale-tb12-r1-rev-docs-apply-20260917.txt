@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-TB12-R1-REV
-purpose=Apply verified durable Review closeout patch from Google Drive.
-base_sha=fa02f69c7c2466667a0c6921442c8def810a76e2
-retry=1
