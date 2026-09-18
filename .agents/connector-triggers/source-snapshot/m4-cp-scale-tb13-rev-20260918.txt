@@ -1,5 +1,0 @@
-Turn: M4-CP-SCALE-TB13-REV
-Purpose: exact Review source snapshot
-Source authority: 79011614c44675e4ef73464b8ecc58b9e31ee426
-READ_MODE: snapshot
-RuntimeExecution: false
