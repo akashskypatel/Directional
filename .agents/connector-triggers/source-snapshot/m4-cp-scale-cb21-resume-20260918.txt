@@ -1,3 +1,0 @@
-Purpose: resume reconciliation snapshot for M4-CP-SCALE-CB21
-Expected authority before trigger: d8f9c6ed40d552cbe44496d6a0b4007a82576dd4
-Retry: 0

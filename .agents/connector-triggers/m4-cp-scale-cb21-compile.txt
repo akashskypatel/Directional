@@ -1,5 +1,0 @@
-turn=M4-CP-SCALE-CB21
-purpose=compile/package exact semantic source
-caller_install_sha=157e26aa26d24e5010820cdc3f3a3dfa463a95ff
-source_sha=ea7b15f53e5e92cb034c855d52c17eaa2d8928d1
-runtimeExecution=false

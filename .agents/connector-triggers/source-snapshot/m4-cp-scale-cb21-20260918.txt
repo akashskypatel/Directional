@@ -1,3 +1,0 @@
-Purpose: source snapshot for M4-CP-SCALE-CB21
-Expected parent authority: aa915e3607427d6c089a87c1a021b94ab55964a5
-Retry: 0
