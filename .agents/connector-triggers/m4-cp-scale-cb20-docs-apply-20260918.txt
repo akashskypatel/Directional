@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-CB20
+patch_file_id=1188tjk6BwN7G5y2nk1OJIlBoWK-8ngqv
+patch_sha256=fcfa8d26472fdb2d2b62f5a67501f2caab4859a08f8a754f9db03336a4df9ab6
+base_sha=081f5a17795bbe5533ebecffcf22ff2a7a20e2a5
