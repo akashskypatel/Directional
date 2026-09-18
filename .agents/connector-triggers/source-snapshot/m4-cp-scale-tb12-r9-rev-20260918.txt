@@ -1,0 +1,3 @@
+M4-CP-SCALE-TB12-R9-REV source snapshot
+source_head=79922e8a32374d66e02f20518fe45b3dc6588da8
+read_mode=snapshot
