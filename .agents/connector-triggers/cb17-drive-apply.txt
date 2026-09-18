@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-CB17
-purpose=apply verified test-authority repair patch
-base_sha=03d126541451bc4c329dcd9457e141306921f544
-retry=0
