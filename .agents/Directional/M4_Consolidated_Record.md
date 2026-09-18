@@ -1161,3 +1161,20 @@ The following superseded per-turn documents are folded here at R9 Review closeou
 - `Architecture_M4_CP_SCALE_CB22_Code_Build_Report.md` — CB22 candidate package/source/hash/GMP/selector evidence; decisive facts retained above and in R9 Review.
 - `Architecture_M4_CP_SCALE_TB12_R9_Artifact_Only_Test_Benchmark_Plan.md` — consumed 436-row fail-fast execution plan.
 - `Architecture_M4_CP_SCALE_TB12_R9_Artifact_Only_Test_Benchmark_Report.md` — R9 one-RED/435-unexecuted evidence and artifact provenance; adjudicated by R9 Review.
+
+## 2.67 `M4-CP-SCALE-DEFN-R1` — source-global boundary-cycle owner and regional support relation frozen
+
+R9's product seam is now specifiable without choosing a regional owner. Exact-source static proof shows `dual_cycles` aggregates each connected source boundary loop into one complete-source cycle row and maps every loop vertex to that row; field finalization computes the cycle index once and projects it back to vertices. Those vertex entries are therefore representation aliases of one global boundary fact. `FieldTransportAtlas`, by contrast, rebuilds regional `BoundaryLoop`s after hard-feature partition and applies region-relative curvature/Gauss-Bonnet correction, so their `turningLift` values are regional facts.
+
+DEFN-R1 freezes one typed source-global boundary-cycle fact keyed by canonical source-boundary topology and sourced from the same producer cycle-index computation. Legacy per-vertex aliases must reconcile exactly to that fact before collapse. Regional loops have one-or-many support associations only: their true source-boundary edge subsets must be disjoint and cover the global loop exactly on the same source component; source-boundary vertices may occur in multiple regional associations at cut endpoints. No global index / regional `turningLift` equality or stable/minimum regional owner is legal. Boundary global facts publish no `FieldSingularityFact` or singularity ports. CB21 globally-interior separating and same-region slit ownership remains unchanged; the boundary diagnostic count is non-authoritative.
+
+R9 CAND-01 remains **OPEN / PRODUCT / existing RP-01 / NON-STABLE** pending runtime recovery. R8 RP-02 remains closed. Accepted runtime authority stays TB11 package `10473134357` / selector426 **426/426**; stable totals remain **49 / 14 / 35**, debt **5**; S5/A3 uncredited and no selector427. Exact successor is compile-only `M4-CP-SCALE-CB23`.
+
+### CP-SCALE DEFN-R1 folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP_SCALE_TB12_R9_Review_Record.md` | 172 | **SUPERSEDED/FOLDED BY DEFN-R1.** R9 one-RED adjudication, RP-01 classification and specifiability stop are retained in §2.66/§2.67, tracker, changelog and DEFN-R1 record. |
+| `Architecture_M4_CP_SCALE_DEFN_R1_Source_Boundary_Alias_Reconciliation_Definition_Plan.md` | 86 | **CONSUMED/FOLDED BY DEFN-R1.** D1-D5 scope, stop rules and completion obligations are retained in §2.67, the DEFN-R1 record and frozen definitions. |
+
+Current retained CP-SCALE role set after DEFN-R1 consolidation: normative `Architecture_M4_CP_SCALE_Frozen_Definitions.md`; accepted runtime report `Architecture_M4_CP_SCALE_TB11_Artifact_Only_Test_Benchmark_Report.md`; current definition record `Architecture_M4_CP_SCALE_DEFN_R1_Source_Boundary_Alias_Reconciliation_Definition_Record.md`; exactly one next plan `Architecture_M4_CP_SCALE_CB23_Source_Boundary_Global_Cycle_Authority_Code_Build_Plan.md`; selector426/history; this consolidated record; tracker/changelog and durable project authority.

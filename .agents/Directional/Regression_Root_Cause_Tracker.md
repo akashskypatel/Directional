@@ -1,5 +1,16 @@
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R9-REV`: source-boundary alias versus regional boundary owner — **OPEN / PRODUCT / existing RP-01 / NON-STABLE**
 
+## M4-CP-SCALE-DEFN-R1 — R9 RP-01 authority rule frozen; runtime recovery still open
+
+- **Candidate:** `M4-CP-SCALE-TB12-R9-EXEC-CAND-01`.
+- **Disposition:** **OPEN / PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**. No runtime recovery is claimed by DEFN-R1.
+- **Static cause:** the field producer owns one aggregate source-boundary cycle index and projects it to boundary vertices; atlas hard-feature partition creates region-relative `BoundaryLoop`s. The current vertex -> one regional cycle map and later global-numerator/relative-lift equality conflate those domains.
+- **Frozen corrective rule:** one typed source-global boundary-cycle fact owns the producer numeric value; legacy aliases are exactly reconciled then collapsed; regional loops are one-or-many support associations whose true source-boundary edge subsets form a disjoint exact cover; no regional `turningLift` is compared with the global index. Boundary global facts emit no singularity ports.
+- **Owner:** exact successor `M4-CP-SCALE-CB23` compile-only Code + Build.
+- **Preserved state:** R8 `RP-02` remains CLOSED; production S5 R4 RP-01 remains OPEN; accepted runtime remains TB11 package `10473134357` / selector426 **426/426**; S5/A3 uncredited; no selector427.
+- **Accounting:** unchanged **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+
+
 - **Candidate adjudicated:** `M4-CP-SCALE-TB12-R9-EXEC-CAND-01` becomes **OPEN / PRODUCT / SOURCE-BOUNDARY-ALIAS vs PER-REGION BOUNDARY OWNERSHIP DOMAIN CONFLATION / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**.
 - **Independent evidence:** R9 run/job `35353935259 / 105628563418`; candidate `10548849094` / source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb`; row1 is the only executed ledger row and REDs `SingularityMismatch;sourceVertex=1;topologyRegion=1`; 435 rows remain UNEXECUTED; exact postflight matches. Selector426/first425 independently re-hash to `41f4d559...b5114 / e0e0f394...790e0b`, owners **30/280/75/41**.
 - **Root cause:** the producer maps all source-boundary vertices of one loop to one aggregate cycle row and may emit the same boundary-loop index at each alias vertex. Hard-feature cuts put alias vertex1 on both regional boundary loops, but `boundaryCycleByGlobalVertex` permits one `(region,cycle)` and rejects the second. The surviving final check also equates the selected region-relative corrected lift with the global boundary alias numerator. One global fact is therefore being forced through a one-region owner model.

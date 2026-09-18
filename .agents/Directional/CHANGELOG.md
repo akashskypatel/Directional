@@ -1,5 +1,16 @@
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R9-REV`: producer boundary alias collides with regional boundary ownership; definition first
 
+## 2026-09-18 — `M4-CP-SCALE-DEFN-R1`: source-global boundary-cycle authority frozen; CB23 next
+
+Runtime-free DEFN-R1 re-derived the R9 boundary-index dataflow from exact source snapshot `e00453cae28c583f333b23324ba9dbcf8d5688e2` (snapshot run/artifact `35364783516 / 10556186428`, archive `35207fef...24ab8`, `runtimeExecution=false`). `dual_cycles` aggregates one row per connected source boundary loop and maps every loop vertex to it; field finalization computes that global index before projecting it back to vertices. Atlas region construction separately recomputes region-relative `BoundaryLoop.turningLift` after hard-feature partition/correction.
+
+DEFN-R1 therefore freezes D1-D5: one typed source-global boundary-cycle fact owns the producer numeric index; legacy per-vertex boundary aliases are exactly checked then collapsed; one-or-many regional `BoundaryLoop` supports must form a disjoint exact cover of true source-boundary edges; no regional lift is globally comparable; boundary global facts create no singularity facts/ports; CB21 interior separating/slit authority and port arithmetic are unchanged. `sourceBoundaryBoundSingularityCount` remains diagnostic only.
+
+R9 CAND-01 remains OPEN / PRODUCT / existing RP-01 / NON-STABLE; R8 RP-02 stays closed; accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426** and stable accounting stays **49 / 14 / 35**, debt **5**. No selector427. Exact successor is compile-only `M4-CP-SCALE-CB23`.
+
+Process evidence: the initial control-plane invocation batched STATUS with handoff/TODO/tool-policy reads before the entry beacon/explicit READ_MODE declaration. No mutation or source inspection preceded the beacon; the turn then corrected to `READ_MODE=snapshot`. This is retained as an existing setup-order lesson instance.
+
+
 Review independently reopens CB22 artifact `10548849094`, R9 result/log `10550642712 / 10550482686`, raw row1, full fail-fast ledger and current source. Selector426/first425 re-hash to `41f4d559...b5114 / e0e0f394...790e0b`, owner census remains **30/280/75/41**, genus-two fixture bytes remain exact, and all package/source/execution-view pre/post censuses match. R9 is valid semantic evidence: one A0 RED, 435 UNEXECUTED, zero orchestration/benchmark/build/mutation.
 
 CB22's producer-consistent replacement discharges R8 `RP-02`: the skew field derives matching/effort/singularities through the accepted producer and independently re-measures them. The new `sourceVertex=1;topologyRegion=1` RED is product-owned. Source tracing shows `dual_cycles` aliases one global source-boundary cycle index across all boundary vertices; hard-feature cuts place boundary vertex1 on both regional boundary loops; `FieldTransportAtlas` nevertheless stores exactly one regional owner per global boundary vertex and rejects the second. A later check would still compare a global boundary alias numerator with a region-relative corrected loop lift.

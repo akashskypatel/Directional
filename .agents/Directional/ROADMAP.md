@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-18 (`M4-CP-SCALE-TB12-R9-EXEC` COMPLETE / VALID SEMANTIC RED / REVIEW REQUIRED. Producer-consistent CB22 candidate `10548849094` fails Gate A0 row1 with `SingularityMismatch;sourceVertex=1;topologyRegion=1`; 435/436 rows remain UNEXECUTED and immutable postflight matches. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. Exact next is runtime-free `M4-CP-SCALE-TB12-R9-REV`; stable accounting remains **49 / 14 / 35**, debt **5**.)
+**Status date:** 2026-09-18 (`M4-CP-SCALE-DEFN-R1` COMPLETE / SOURCE-BOUNDARY AUTHORITY FROZEN. One producer-owned source-global boundary-cycle index now governs exact legacy-alias reconciliation; regional `BoundaryLoop`s are support associations with disjoint exact source-boundary edge cover, never numeric owners. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP-SCALE-CB23`; no selector427.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 

@@ -6,56 +6,44 @@
 
 Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
 
-CB22 candidate artifact `10548849094` / semantic source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` remains unpromoted. R9 Review classifies its producer-consistent A0 row1 RED `SingularityMismatch;sourceVertex=1;topologyRegion=1` as **PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**: one global source-boundary-loop index is aliased across boundary vertices, but hard-feature decomposition places alias vertex1 on multiple region-relative boundary loops while product storage permits one regional owner and later compares a relative loop lift to the global alias numerator.
+CB22 candidate artifact `10548849094` / source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` remains unpromoted. R9 CAND-01 remains **OPEN / PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**. DEFN-R1 does not claim runtime recovery; it freezes the missing semantics: one producer-owned source-global boundary-cycle index, exact reconciliation/collapse of legacy per-vertex aliases, and one-or-many regional `BoundaryLoop` support associations whose true source-boundary edges exactly partition the global loop. Regional `turningLift` is never global index authority.
 
-R8 `RP-02 TEST_AUTHORITY_COVERAGE_GAP` is **CLOSED / CORRECTION ESTABLISHED** because CB22 uses accepted producer-derived matching/effort/singularities and independently re-measures them. Closure of RP-02 does not make A0 green. Production S5 `M4-CP-SCALE-TB12-R4-EXEC-CAND-01 / RP-01` remains OPEN because R9 never reaches S5; S5/A3 remain uncredited. No selector427.
+R8 `RP-02 TEST_AUTHORITY_COVERAGE_GAP` remains CLOSED. Production S5 RP-01 remains OPEN; S5/A3 remain uncredited. No selector427.
 
-## Latest completed Review — `M4-CP-SCALE-TB12-R9-REV`
+## Latest completed definition/review — `M4-CP-SCALE-DEFN-R1`
 
-Review independently reopens candidate/result/log bytes, raw row1, complete ledger and current source. R9 remains valid artifact-only semantic evidence: **0 PASS / 1 RED / 435 UNEXECUTED**, exact immutable postflight, benchmark 0, no build/repair/mutation. Selector426 and first425 independently re-hash exactly; owner census remains **30/280/75/41** and retained genus-two bytes are unchanged.
+The runtime-free definition turn re-derived `dual_cycles`, `effort_to_indices`, atlas region-boundary construction, alias reconciliation, interior slit/separating owner paths and the independent boundary validator from exact snapshot `e00453cae28c583f333b23324ba9dbcf8d5688e2`. It proves that the field producer computes one whole-source boundary-loop index and projects it to vertices, while the atlas recomputes region-relative boundary lifts after hard-feature partition/correction. Those values cannot share an owner or equality.
 
-Static trace uniquely localizes the sourceVertex1/region1 locus to the second regional insertion into `boundaryCycleByGlobalVertex`. The skew fan's source-boundary vertex1 belongs to both hard-cut regions. `dual_cycles`/`effort_to_indices` establish that boundary entries are vertex-keyed aliases of one global boundary-cycle index, not independent region singularities. The observed collision and the later proposed global-numerator/relative-lift equality are therefore one existing RP-01 authority-domain family, not a third distinct product cause.
+Frozen D1-D5: source-global boundary-cycle facts use a typed canonical source-topology identity and the producer's same cycle-index numeric computation; all legacy aliases are exactly checked before collapse; regional source-boundary support must form a disjoint exact edge cover of the global loop; boundary global facts publish no singularity fact/ports; CB21 interior separating and same-region slit authority stay unchanged. `sourceBoundaryBoundSingularityCount` is diagnostic only.
 
-The count-based definition stop does not fire, but a definition turn is still required because no frozen rule identifies the semantic owner of that global boundary fact when several regional loops exist. A bounded Code + Build patch would otherwise have to invent the rule.
+The initial setup invocation batched STATUS with handoff/TODO/tool-policy reads before the entry beacon/explicit READ_MODE choice. No mutation or source inspection preceded the beacon, and the turn corrected immediately to `READ_MODE=snapshot`; the deviation is retained as process evidence under the existing setup-order lesson family.
 
 ## Exact next turn
 
-`M4-CP-SCALE-DEFN-R1` — runtime-free source-boundary alias ownership/reconciliation definition under `Architecture_M4_CP_SCALE_DEFN_R1_Source_Boundary_Alias_Reconciliation_Definition_Plan.md`.
+`M4-CP-SCALE-CB23` — Code + Build only under `Architecture_M4_CP_SCALE_CB23_Source_Boundary_Global_Cycle_Authority_Code_Build_Plan.md`.
 
-DEFN-R1 must distinguish the global source-boundary cycle, legacy per-vertex aliases and region-relative boundary loops; freeze the exact reconciliation invariant after hard-feature cuts; state whether regional loops are ownership or incidence/support relations; preserve falsifiable tamper rejection; and preserve CB21 interior separating ownership, port-class arithmetic, cycle ordering, source partitioning, retained fixtures and accepted selector426. Do not pick a minimum regional owner merely because it is stable.
+CB23 must expose the global numeric fact from the field producer's same full-cycle computation; replace the one-regional-owner boundary alias seam with typed global fact + exact regional source-edge support cover; preserve single-alias tamper rejection and all interior owner/port semantics; add focused positive/negative/permutation test authority; and compile/package with GMP/GMPXX. **Execute no generated Directional runtime.**
 
 ### STOP conditions
 
-No generated Directional runtime, compile/package, product/test/fixture/selector mutation, R9 retry, CB22 promotion, S5/A3 credit or selector427 in DEFN-R1. Stop rather than authorize a patch if the global owner cannot be identified without a second numeric authority, if alias reconciliation would become a silent drop, if a regional owner is chosen only by ordering, or if materially different semantics require additional evidence.
-
-### Escalation rule — refined at `TB12-R9-REV`
-
-The rule recorded earlier was count-based: a **third distinct product root cause** on this S5 path routes to a
-definition turn. That remains a backstop, but the governing test is **specifiability** — route to definition when
-another bounded product CB cannot be safely specified without first deciding an open authority question, even when
-the counter is unspent.
-
-`TB12-R9-REV` applied exactly this. R4, R7 and R9 are three manifestations of one open `RP-01` family rather than
-three distinct causes, so the counter did not fire; but the next correction could not be bounded, and the turn
-routed to `M4-CP-SCALE-DEFN-R1` correctly. The count is the cruder instrument; ask the specifiability question
-first.
+Stop rather than broaden if a second numeric boundary authority would be required, if a minimum/first region or alias vertex is needed to choose ownership, if global index would still be compared to regional `turningLift`, if exact source-boundary edge cover cannot distinguish hard-feature cut edges, or if the correction would alter selector426/first425, genus-two fixture/rawfield bytes, S5 acceptance, or create selector427.
 
 ## Carried CP-SCALE obligations
 
 - `M4-CP-SCALE-TB12-R4-EXEC-CAND-01 / RP-01` — production S5 retry still OPEN.
-- `M4-CP-SCALE-TB12-R9-EXEC-CAND-01` — OPEN / PRODUCT / existing RP-01 / NON-STABLE; DEFN-R1 owns the missing boundary-alias invariant.
+- `M4-CP-SCALE-TB12-R9-EXEC-CAND-01` — OPEN / PRODUCT / existing RP-01 / NON-STABLE; CB23 owns the now-frozen boundary-authority correction.
 - `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: source/topology/raw-field authority supported; production atlas/A3 unproved.
-- `M4-CP-SCALE-TB2-REV-OBS-02` — carried dedicated `make_zero_transport_field` authority audit; unrelated to DEFN-R1.
+- `M4-CP-SCALE-TB2-REV-OBS-02` — carried dedicated `make_zero_transport_field` authority audit; unrelated to CB23.
 - `M4-CP-SCALE-TB1-REV-OBS-01`, `M4-CP-SCALE-DEFN-OBS-01`, inherited CP3 observations and `G4-B002/G4-B003` debts retain their existing owners.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-DEFN-R1`
+## Mandatory resume procedure — current `M4-CP-SCALE-CB23`
 
-1. Read root `STATUS`; publish the DEFN entry beacon first; choose `READ_MODE`; reopen this handoff, TODO, R9 Review, DEFN-R1 plan, frozen CP-SCALE definitions, accepted TB11 report, consolidated record, tracker/ORIENTATION/ROADMAP/LESSONS and mandatory definition/review/checklist policies.
-2. Materialize one exact source snapshot before broad inspection. Do not execute generated Directional runtime or mutate product/test/fixture/selector/build source.
-3. Build a complete static ownership/dataflow table for `rawBoundarySingularity`, `boundaryCycleByGlobalVertex`, source-boundary cycle witnesses, `sourceBoundaryBoundSingularityCount`, globally-interior separating owners and same-region slit owners. Label each map/equality by authority domain.
-4. Freeze exactly one semantic owner for the global boundary-loop index and one falsifiable reconciliation invariant across zero/one/many regional boundary associations. If existing authority already uniquely determines it, prove that; otherwise amend the CP-SCALE definition explicitly.
-5. Reconcile R9 CAND-01, production RP-01, RP-02 closure, stable accounting **49 / 14 / 35**, debt **5**, accepted package/selector and carried obligations. No S5/selector inference from unexecuted rows.
-6. Author exactly one bounded successor with falsifiers, update durable documents/consolidation, run review boundary checks, perform mandatory cleanup and make final `STATUS` the last repository mutation.
+1. Read root `STATUS`; publish the CB23 entry beacon first; choose `READ_MODE`; reopen this handoff, TODO, DEFN-R1 record, CB23 plan, frozen CP-SCALE definitions, accepted TB11 report, consolidated record, tracker/ORIENTATION/ROADMAP/LESSONS and mandatory Code+Build/GMP/checklist policies.
+2. Materialize one exact source snapshot before broad inspection. Re-derive the D1-D5 source seam and stop on any plan falsifier before mutation.
+3. Implement only the typed source-global boundary-cycle fact, exact legacy-alias reconciliation/collapse, exact global-to-regional source-boundary edge support relation, and focused tests. Preserve CB21 separating/slit ownership and port semantics. No selector or fixture edits.
+4. Run static checks, preserve a work-recovery patch, push through the authorized workflow path, and invoke mandatory `agent-compile-reusable.yml` with GMP/GMPXX. Compile owner target first, then the standard accepted targets.
+5. Execute **no generated Directional runtime**: no tests, benchmarks, discovery/list/help/version, `ctest`, CLI or GUI. Require package evidence `runtimeExecution=false`, exact source/selector/fixture hashes and clean source states.
+6. On GREEN, author exactly one immutable artifact-only TB successor focused on CB23 controls before production S5 retry. Perform mandatory cleanup and make final `STATUS` the last repository mutation.
 
 ## Historical R8 EXEC resume procedure — consumed
 

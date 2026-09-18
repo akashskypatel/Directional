@@ -1,7 +1,7 @@
 # M4-CP-SCALE Frozen Definitions
 
-**Turn:** `M4-CP-SCALE-DEFN`
-**Status:** DEFINITIONS FROZEN / CP-SCALE OPEN
+**Turn:** `M4-CP-SCALE-DEFN` + `M4-CP-SCALE-DEFN-R1` amendment
+**Status:** DEFINITIONS FROZEN / CP-SCALE OPEN / DEFN-R1 SOURCE-BOUNDARY AUTHORITY FROZEN
 **Current accepted authority after TB11 Review:** package `10473134357`, semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`, selector426 **426/426**, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; selector425 remains its exact first425 prefix at `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`. S2, S3 and S4 cumulative selector credit are accepted. Final topology certification remains sole acceptance authority; S4 is an earlier-never-different reject-only accelerator.
 
 **TB11 acceptance state:** artifact-only run/job `35173390136 / 105049726721` executes all 426 selector identities in fresh exact-filter processes, **426/426 PASS**, owners **30/280/75/41**, zero anomalies and exact immutable postflight. TB11 Review independently re-derives the selector/prefix, all 426 owners/process outcomes, row426 non-vacuity and package/evidence manifests, promotes package `10473134357`, and discharges `M4-CP-SCALE-TB10-REV-OBS-01`.
@@ -88,13 +88,19 @@ A deterministic retained genus-2 fixture now exists: independent census over the
 
 Selector426 is accepted current required-green authority at 426 LF rows / `41f4d559...b5114`; its first425 rows remain exact selector425 `e0e0f394...790e0b`, first424 remains `f202a172...466ca`, first423 remains `4e67e4dc...d89343`, and first422 remains `bbd496f3...f7cc`. S1 contributes zero gate rows. TB11 Review promotes package `10473134357` / source `e15e83c7...0e47` and grants S4 cumulative selector credit. S5 remains outside the selector until a genuine genus>=2 source + admissible field reaches A3 under fresh runtime and Review.
 
-## 8. Current bounded implementation slice
+## 8. Source-boundary global-cycle authority and current bounded implementation slice
 
 TB11 Review remains accepted runtime authority at package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` under selector426 **426/426**, exact selector425 prefix `e0e0f394...790e0b`, owners **30/280/75/41**. S4 cumulative credit is complete; no new S4 work is authorized.
 
-The retained genus-two S5 route remains blocked before accepted A3 reachability. R9 Review closes the R8 synthetic companion `RP-02` test-authority defect using CB22's producer-consistent skew control, but classifies the new sourceVertex1/region1 RED as product existing `RP-01 AUTHORITY_DOMAIN_CONFLATION`: legacy producer entries alias one global source-boundary cycle across vertices, while hard-feature region decomposition can place one alias vertex on several region-relative boundary loops. Current product state assumes one regional owner and later compares a relative regional lift with the global alias numerator.
+DEFN-R1 freezes the source-boundary rule exposed by R9. `dual_cycles` aggregates each connected source boundary loop into one complete-source cycle row, and field finalization computes its index once before projecting that same row back to boundary vertices. Those vertex entries are legacy aliases of one **source-global boundary-cycle fact**. They are not independent singularities and no vertex or region owns the global number.
 
-The count-based “third distinct product root cause” escalation remains unspent because R9 is a refinement of existing RP-01. Nevertheless no Code + Build correction is authorized yet: the semantic owner/reconciliation invariant across global boundary authority and multiple regional boundary associations is not frozen. Exact next is runtime-free `M4-CP-SCALE-DEFN-R1`. It must freeze that invariant while preserving CB21 interior separating ownership, port-class arithmetic, cycle-ordering authority, hard-feature partitioning, accepted selector426 and retained fixture/rawfield bytes. No selector427.
+The source-global fact SHALL use a typed source-topology identity, independent of `TopologyRegionId`/`FieldCycleId`, based on source component plus the exact canonical source-boundary edge loop. Its `indexNumerator` comes from the same producer cycle-index computation that creates the aliases; A1 must not reconstruct a competing value. Before collapse, every nonzero global boundary cycle must have exactly one equal alias per source-boundary vertex and zero-index loops must have no nonzero alias. Missing, duplicate, foreign or unequal aliases reject.
+
+Regional `FieldCycleWitness::BoundaryLoop` objects remain region-relative. A global source-boundary cycle may associate with one or many regional loops. The true source-boundary edge subsets of those regional loops must be disjoint and cover the global source-boundary loop exactly on the same source component; hard-feature cut edges are not part of that cover. Zero, incomplete, overlapping or foreign-component association rejects. Regional `turningLift` remains regional authority and SHALL NOT be equated to the global source-boundary `indexNumerator`, individually, by aggregation, or by selecting a representative region.
+
+The atlas publishes the global facts and their global-to-regional support associations separately from region-relative `cycles()`. Boundary global facts do not publish `FieldSingularityFact` or singularity ports and do not enter four-index interior port arithmetic. `sourceBoundaryBoundSingularityCount` is diagnostic only and counts reconciled nonzero global source-boundary facts supported in each region; one global fact may be counted once in multiple regions.
+
+CB21 globally-interior separating ownership, same-region slit ownership, hard-feature partition, exact-one-owner interior reconciliation, cycle ordering, retained fixture/rawfield bytes, accepted selector426/first425 and TB11 runtime authority remain frozen. R9 CAND-01 stays OPEN / PRODUCT / existing RP-01 / NON-STABLE until runtime recovery; production S5 remains uncredited. Exact next is compile-only `M4-CP-SCALE-CB23`, implementing this source-global boundary-cycle authority without selector427 or runtime.
 
 ## 9. Citation / evidence map
 
@@ -108,7 +114,9 @@ The count-based “third distinct product root cause” escalation remains unspe
 | sphere combinatorial recurrence history | retained `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`, `M3_CP4c_Consolidated_Record.md` |
 | current witness deepest stages | `ORIENTATION.md` §4 and accepted M4 closure/review records |
 | retained fixture topology census | `benchmarks/fixtures/milestone-g/*.obj`, static V/E/F/boundary census in this DEFN |
+| source-global boundary-cycle aggregation/aliases | `src/geometry/MeshTopology.cpp` (`dual_cycles`), `src/fields/FieldMatching.cpp` (`effort_to_indices`) |
+| regional boundary-cycle reconstruction and current invalid one-owner alias map | `src/authority/FieldTransportAtlas.cpp`; `tests/FieldTransportAtlasTests.cpp` independent boundary validator |
 
 ## 10. STOP rules
 
-STOP rather than broaden CB scope if a proposal guesses an S1 threshold, lets a filter decide without exact certification/fallback, calls a budget/proximity event an S3 cycle, changes A2a' cut selection for S4, credits torus as S5, edits the genus-two raw field to hide the current `CycleOrderingFailed`, appends a gate without independent reachability, publishes selector427 before reviewed S5 reachability, or modifies accepted selector423/CP-COND/CP3 semantics, or chooses one regional boundary loop as owner of a global source-boundary alias without a frozen semantic identity/reconciliation proof.
+STOP rather than broaden CB scope if a proposal guesses an S1 threshold, lets a filter decide without exact certification/fallback, calls a budget/proximity event an S3 cycle, changes A2a' cut selection for S4, credits torus as S5, edits the genus-two raw field to hide the current `CycleOrderingFailed`, appends a gate without independent reachability, publishes selector427 before reviewed S5 reachability, or modifies accepted selector423/CP-COND/CP3 semantics, or reintroduces a regional owner for a source-global boundary fact, chooses a representative region by ordering, equates global boundary index with regional `turningLift`, silently drops a legacy alias instead of exactly reconciling it, weakens exact source-boundary edge-cover validation, or changes the frozen D1-D5 semantics.

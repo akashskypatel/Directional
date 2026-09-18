@@ -2,24 +2,19 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Review — `M4-CP-SCALE-TB12-R9-REV`
+## Latest completed definition/review — `M4-CP-SCALE-DEFN-R1`
 
-R9 Review independently validates the one-RED/435-unexecuted artifact-only result and classifies `SingularityMismatch;sourceVertex=1;topologyRegion=1` as **PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**. The producer-consistent CB22 fixture closes R8 `RP-02` as a test-authority correction, but its source-boundary alias at vertex1 lies on both hard-cut regional boundary loops. Product state permits exactly one regional owner and a later path still compares a region-relative lift to the global boundary alias numerator.
+DEFN-R1 statically re-derived the boundary-index dataflow and freezes the missing RP-01 rule. The field producer owns **one source-global boundary-cycle index** per connected source boundary loop; the existing per-vertex entries are aliases that must be checked exactly and then collapsed. Region-relative `BoundaryLoop`s are support associations whose true source-boundary edge subsets form a disjoint exact cover of the global loop. Their corrected regional `turningLift` is never compared to the global index, and no minimum/first region owns the fact. Boundary global facts create no singularity ports.
 
-The frozen third-distinct-product-cause counter does **not** fire: this is another RP-01 domain-conflation instance. A definition turn is nevertheless required because the correct global-boundary alias owner/reconciliation invariant under region splitting is not frozen. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**, accounting **49 / 14 / 35**, debt **5**; candidate `10548849094` stays unpromoted, production S5 RP-01 remains OPEN, S5/A3 uncredited and selector427 forbidden.
+Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**, accounting **49 / 14 / 35**, debt **5**. R9 CAND-01 remains OPEN / PRODUCT / existing RP-01 / NON-STABLE; R8 RP-02 remains closed; production S5 and A3 remain uncredited. No selector427.
 
-- [x] `M4-CP-SCALE-CB21`: bounded interior separating-owner correction; direct recovery proved by R8.
-- [x] `M4-CP-SCALE-TB12-R8-REV`: R8 companion classified invalid test authority `RP-02`.
-- [x] `M4-CP-SCALE-CB22`: producer-consistent direct-control authority compiled/packaged GREEN.
-- [x] `M4-CP-SCALE-TB12-R9-EXEC`: valid semantic RED at source-boundary vertex1; exact immutable postflight.
-- [x] `M4-CP-SCALE-TB12-R9-REV`: R9 classified existing product RP-01; R8 RP-02 discharged; definition gap identified.
-- [ ] `M4-CP-SCALE-DEFN-R1`: **exact next**. Freeze global source-boundary alias ownership/reconciliation across multiple region-relative boundary loops before any product correction.
+- [x] `M4-CP-SCALE-TB12-R9-REV`: existing RP-01 / definition gap identified.
+- [x] `M4-CP-SCALE-DEFN-R1`: source-global boundary-cycle owner and exact regional support reconciliation frozen.
+- [ ] `M4-CP-SCALE-CB23`: **exact next**. Implement typed producer global boundary-cycle fact + exact alias collapse/support-cover reconciliation; compile/package only, no generated Directional runtime.
 
-## Current focus — `M4-CP-SCALE-DEFN-R1`
+## Current focus — `M4-CP-SCALE-CB23`
 
-Runtime-free only. Trace every consumer of producer boundary aliases and regional boundary-cycle ownership; distinguish global source-boundary cycle, per-vertex alias, region-relative `BoundaryLoop`, interior separating owner and same-region slit owner. Freeze one semantic owner and one falsifiable exact reconciliation invariant. A stable minimum region is not semantic authority; silent alias dropping and global-numerator/relative-lift equality without proof are forbidden.
-
-If the invariant becomes exact and bounded, DEFN-R1 may authorize one Code + Build successor. If materially different semantics remain, it must authorize the smallest evidence-producing runtime-free successor instead of guessing. Do not retry R9 directly.
+Implement the smallest D1-D5 correction in `Architecture_M4_CP_SCALE_CB23_Source_Boundary_Global_Cycle_Authority_Code_Build_Plan.md`. The numeric fact must come from the field producer's existing full-cycle computation, not a second A1 recomputation. Multiple regional boundary associations are valid only when their true source-boundary edge subsets form a disjoint exact cover; preserve CB21 interior separating/slit ownership and port-class guards. Compile/package under mandatory GMP/GMPXX and execute no generated runtime.
 
 ## Carried forward from M1
 
@@ -58,7 +53,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. R9 Review closes R8 `RP-02` as corrected test authority and classifies the producer-consistent sourceVertex1/region1 RED as product existing `RP-01 AUTHORITY_DOMAIN_CONFLATION`. Candidate `10548849094` remains unpromoted. Exact next is runtime-free `M4-CP-SCALE-DEFN-R1` to freeze source-boundary alias ownership/reconciliation before any product correction; production S5 `RP-01` remains open, S5 unaccepted, and three `G4-B002` debts remain CP4 gating.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. DEFN-R1 freezes the R9 existing-`RP-01` source-boundary rule: one source-global boundary-cycle fact owns the producer index; legacy aliases reconcile exactly and regional loops provide exact source-edge support only. Candidate `10548849094` remains unpromoted. Exact next is compile-only `M4-CP-SCALE-CB23`; production S5 `RP-01` remains open, S5 unaccepted, and three `G4-B002` debts remain CP4 gating.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -98,4 +93,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. R9 Review closes R8 test-authority `RP-02`, leaves CB22 candidate `10548849094` unpromoted, and classifies source-boundary alias / regional-owner failure as product existing `RP-01`. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is **`M4-CP-SCALE-DEFN-R1`** runtime-free definition; selector427 remains forbidden. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. R9 Review closes R8 test-authority `RP-02`, leaves CB22 candidate `10548849094` unpromoted, and classifies source-boundary alias / regional-owner failure as product existing `RP-01`. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. DEFN-R1 now freezes the source-global boundary-cycle owner/reconciliation rule. Exact next is compile-only **`M4-CP-SCALE-CB23`**; selector427 remains forbidden. PR #8 remains open, draft, and unmerged.
