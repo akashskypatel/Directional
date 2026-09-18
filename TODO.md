@@ -2,24 +2,23 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Review — `M4-CP-SCALE-TB12-R8-REV`
+## Latest completed Code + Build — `M4-CP-SCALE-CB22`
 
-R8 Review independently upholds R8 as valid semantic evidence but rejects its new RED as product evidence. CB21's direct target owner is recovery-proved: R8 reaches attachment partitioning for companion singularity id1/sourceVertex16 only after target vertex8/id0 has acquired its separating `BoundaryLoop` owner, passed reconciliation and been skipped as `BarrierAbsorbed`. The original production S5 `RP-01` remains open because S5 did not run.
+CB22 corrects only the invalid direct-test authority classified by R8 Review. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` now uses the accepted producer-consistent skew four-triangle fan: center vertex4 is the sole interior producer-derived `+1` singularity; hard edges `(1,4)` and `(3,4)` establish two competing separating regions; an independent owner-region reconstruction proves `BoundaryLoop.turningLift=4 != +1`; and the face-row permutation control preserves per-face field semantics by source topology before regenerating matching/effort/singularities through the accepted producer. Production semantics remain frozen.
 
-The R8 `SingularityPortClassCountMismatch` is **test-authority invalid precondition / existing `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / NON-STABLE**. The direct control assigns identical planar face directions but hand-injects one nonzero matching/effort edge and manual `+1/-1` singularities; the companion `-1` therefore demands five emitted classes from transport authority that the per-face field does not support. Do not weaken the product port-class guard.
+Compile/package is GREEN from semantic source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb`: run/job `35351112557 / 105619259327`, candidate artifact `10548849094`, result ZIP SHA-256 `f63c20ab184e78fa0cabcd89df7844a6fdaeacdba31691f3d51b39fec9bb1aa5`, all eight standard targets under GMP/GMPXX, 28/28 manifest verification, and `runtimeExecution=false`. This is compile evidence only; `RP-02` runtime re-proof remains pending and production S5 `RP-01` remains open.
 
 - [x] `M4-CP-SCALE-CB21`: bounded owner-domain correction compile/package GREEN.
 - [x] `M4-CP-SCALE-TB12-R8-EXEC`: valid semantic RED at A0 row1, companion vertex16 port-class count.
 - [x] `M4-CP-SCALE-TB12-R8-REV`: CB21 direct owner recovery proved; R8 candidate classified test-authority `RP-02`, non-stable.
-- [ ] `M4-CP-SCALE-CB22`: **exact next**. Test-only producer-consistent separating-owner fixture correction; production semantics frozen; compile/package only.
+- [x] `M4-CP-SCALE-CB22`: producer-consistent separating-owner test correction compiled/packaged GREEN; zero generated runtime.
+- [ ] `M4-CP-SCALE-TB12-R9-EXEC`: **exact next**. Immutable artifact-only A0 5 -> A 4 -> S5 1 -> selector426 426 fail-fast execution, benchmark 0, exact postflight.
 
-## Current focus — `M4-CP-SCALE-CB22`
+## Current focus — `M4-CP-SCALE-TB12-R9-EXEC`
 
-Change only `tests/FieldTransportAtlasTests.cpp`. Replace the five-ring handwritten transition/companion singularity inside `SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` with the accepted producer-consistent skew four-triangle fan: center vertex4 sole interior `+1` singularity; opposite radial hard edges `(1,4)` and `(3,4)` create two competing separating regions; independently derive owner boundary lift `4 != +1`; preserve stable owner identity under face-row permutation while remapping field directions by topology and regenerating matching/effort/singularities through the accepted producer.
+Consume only candidate artifact `10548849094` / semantic source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` under `Architecture_M4_CP_SCALE_TB12_R9_Artifact_Only_Test_Benchmark_Plan.md`. Before generated runtime, reproduce the exact package/source/manifest/GMP/mode/selector/fixture authority and freeze one R9 harness/caller. Initialize all **436** ledger rows `UNEXECUTED`; execute Gate A0 5 -> Gate A 4 -> S5 1 -> selector426 426 only while prior rows are green, one fresh exact-filter process per identity with `GTEST_FAIL_IF_NO_TEST_SELECTED=1`. Fail fast on the first valid semantic RED; benchmark 0; exact immutable postflight required.
 
-Production `FieldTransportAtlas.cpp`, source-topology/cycle/slit/source-boundary semantics, retained genus-two bytes, S5, selector426, CMake and benchmarks are frozen. Compile/package all eight standard targets under GMP/GMPXX with no generated runtime. On GREEN freeze a fresh R9 artifact-only A0 5 -> A 4 -> S5 1 -> selector426 426 fail-fast plan, benchmark 0, immutable postflight.
-
-Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**; S5/A3 remain uncredited and no selector427 exists.
+Any valid semantic result routes to `M4-CP-SCALE-TB12-R9-REV`. EXEC cannot promote the package, close/reprice production `RP-01`, grant S5/A3 credit, or publish selector427. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## Carried forward from M1
 
@@ -58,7 +57,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. R8 Review recovery-proves CB21's direct separating-owner target and classifies the later companion vertex16 RED as non-stable `RP-02` invalid test authority. Exact next is test-only compile/package `M4-CP-SCALE-CB22`; production S5 `RP-01` remains open, S5 unaccepted, and three `G4-B002` debts remain CP4 gating.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. R8 Review recovery-proves CB21's direct separating-owner target and classifies the later companion vertex16 RED as non-stable `RP-02` invalid test authority. CB22 replaces that invalid control with producer-consistent skew-fan authority and compiles/packages candidate `10548849094` GREEN with zero runtime. Exact next is immutable artifact-only `M4-CP-SCALE-TB12-R9-EXEC`; production S5 `RP-01` remains open, S5 unaccepted, and three `G4-B002` debts remain CP4 gating.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
