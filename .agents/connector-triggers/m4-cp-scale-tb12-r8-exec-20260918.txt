@@ -1,6 +1,0 @@
-turn=M4-CP-SCALE-TB12-R8-EXEC
-caller_install=885114fd96b6d1b5866d53572fc3455668e1869e
-harness_file_id=1clwXAJ_7tyx-ytUJ5Lq47FlcmzxRNKoG
-harness_sha256=917294ec05e5ad1ec6be990150b9a45931538209489830c4cd03610e1c0f3f9e
-candidate_artifact=10542249210
-candidate_source=ea7b15f53e5e92cb034c855d52c17eaa2d8928d1
