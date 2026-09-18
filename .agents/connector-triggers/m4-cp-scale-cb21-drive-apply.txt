@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-CB21
+purpose=apply verified semantic patch
+caller_install_sha=d85f33e06b197b991f7237fd2d3a76578f71c090
+patch_sha256=c2850169216f6b60c0bc417a5ae7cc05efffbc6e5361bf73913a71a3986f8a8b
+base_sha=f4ab066c989d61b2dc97aa92229ffad8673f1bc2
