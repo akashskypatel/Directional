@@ -1,0 +1,8 @@
+# M4-CP-SCALE-TB12-R9-EXEC temporary state cleanup
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r9-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r9-schema-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r9-exec-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r9-closeout-drive-schema-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r9-closeout-drive-apply-20260918.txt
+.agents/Directional/turn-payloads/m4-cp-scale-tb12-r9-exec.yml
+.agents/Directional/turn-payloads/m4-cp-scale-tb12-r9-closeout-drive.yml
