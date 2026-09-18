@@ -25,6 +25,42 @@ The post-closeout duplicate run `35312751970 / 105497993610` remains invalid-att
 
 R6 first reinstalls the exact validated caller from commit `efeb4da300cc559a02d92e0d7c10d140f3bef352` / blob `c31306fce7c7dbf96bb2b80859f285062460b26d` and verifies SHA-256 `6a673c9a8a8cd146dfc56f28d746ec928b6de34781eaa51a58231017645063eb`. It then creates only the exact marker `.agents/connector-triggers/m4-cp-scale-tb12-r6-exec-20260918.txt` in a separate commit, verifies its observer event SHA, downloads/verifies the frozen Drive harness, then executes the unchanged 436-row plan: Gate A0 **5**, Gate A **4**, S5 **1**, selector426 **426** only after all ten focused rows are green, benchmark **0**, exact postflight. A semantic RED routes to `M4-CP-SCALE-TB12-R6-REV`; an orchestration/integrity failure routes to the smallest orchestration-correction CB; all-green also routes to R6 Review before any selector427 decision.
 
+### What R6 must establish, and how to read its outcome
+
+Added by the Review Agent, 2026-09-18. The control-plane steps above are necessary but not sufficient — R6 also
+has to answer a semantic question, and its outcome routes differently depending on which.
+
+**Process budget.** The frozen plan is `5 + 4 + 1 + 426 = 436` rows: Gate A0 ownership/preservation (5), frozen
+Gate A cycle-order authority (4), the S5 focus (1), and cumulative selector426 (426). A run that does not account
+for all 436 has not executed the frozen plan.
+
+**Gate A and A0 are not optional re-runs.** Gate A re-proves the CB16/CB17 cycle-order authority already accepted
+as recovery evidence; Gate A0 proves CB18's ownership seam *and* that predecessor behaviour is preserved. A green
+S5 focus beside a red Gate A0 would mean the seam moved rather than was corrected.
+
+**Reading the S5 focus:**
+
+- **PASS** — CB18's separating-hard-feature ownership correction holds on the retained genus-two witness. This is
+  still only a focused result: publication and cumulative credit require the frozen
+  focused-proof → append-only publication → fresh cumulative gate → Review chain, exactly as S2, S3 and S4 each
+  went through. Do not treat a focused PASS as selector credit.
+- **RED at the same seam** — the correction is falsified; return to Review with the evidence.
+- **RED at a new, later seam** — CB18 advanced the boundary, as CB16 did before it. Root-cause it, classify it
+  against the existing taxonomy before inventing a category, and check whether the failure is product or test
+  authority before assuming product.
+
+**Do not credit the invalid duplicate run.** `35312751970 / 105497993610` is invalid-attempt provenance only. Its
+row-1 observation reads `SingularityMismatch;sourceVertex=8`, which differs from the R4 record's `sourceVertex=0`.
+That difference is **not** evidence that CB18 changed behaviour, because the run has no valid provenance to
+support any semantic claim. Comparing it against R4 is the specific mistake to avoid here.
+
+**Stop condition — when another bounded CB stops being the right answer.** S5 has now consumed CB16 (RP-07 cycle
+linearization, product), CB17 (Gate-A precondition, test authority), CB18 (RP-01 singularity ownership, product)
+and CB19 (orchestration). Each root cause was genuinely distinct and each correction was proved, so the sequence
+has been advancing rather than thrashing. If R6 produces a **third distinct product root cause** on this same S5
+path, that is the point to stop issuing bounded CBs and route to a definition turn instead: three independent
+product defects on one witness path is evidence about the frozen S5 approach, not about any one of them.
+
 ## Carried CP-SCALE obligations
 
 - `M4-CP-SCALE-TB1-REV-OBS-01` — S1 representative/stress calibration before any numeric gate.

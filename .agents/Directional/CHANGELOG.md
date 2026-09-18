@@ -1,3 +1,36 @@
+## 2026-09-18 — Review Agent handoff: R6 acceptance criteria and an S5 stop condition
+
+Runtime-free handoff turn. No review of a delegated turn; no product, test, fixture, selector, benchmark or build
+source touched. The exact next turn was already frozen by CB19 — `M4-CP-SCALE-TB12-R6-EXEC` against the reused
+CB18 candidate `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c`, through the CB19-corrected
+control plane — and nothing is owed before it.
+
+`Future_Chat_Session_Handoff.md` was strong on control-plane mechanics but did not say what R6 must **establish**
+or how to read its outcome. Added:
+
+- **Process budget** `5 + 4 + 1 + 426 = 436` rows, so a short run is recognisable as not having executed the
+  frozen plan.
+- **Gate A and A0 are not optional re-runs** — a green S5 focus beside a red Gate A0 would mean the seam moved
+  rather than was corrected.
+- **How to read the S5 focus:** a PASS is still only focused and must go through the frozen
+  focused-proof → publication → cumulative → Review chain that S2, S3 and S4 each completed; a RED at the same
+  seam falsifies CB18; a RED at a new later seam means the boundary advanced, as it did after CB16.
+- **Do not credit the invalid duplicate run** `35312751970 / 105497993610`. Its row-1
+  `SingularityMismatch;sourceVertex=8` differs from R4's `sourceVertex=0`, and that difference is not evidence of
+  changed behaviour because the run carries no valid provenance. Comparing the two is the specific trap here.
+- **A stop condition.** S5 has consumed CB16 (RP-07 cycle linearization, product), CB17 (Gate-A precondition, test
+  authority), CB18 (RP-01 singularity ownership, product) and CB19 (orchestration). Each root cause was distinct
+  and each correction proved, so the sequence has advanced rather than thrashed. If R6 yields a **third distinct
+  product root cause** on this same path, stop issuing bounded CBs and route to a definition turn: three
+  independent product defects on one witness path is evidence about the frozen S5 approach itself.
+
+`STATUS` continues to describe the last substantive turn, CB19, with its frozen successor; a handoff turn does not
+invent a turn id. Its absent `Resumed at` line is restored as the empty field the canonical format specifies
+(`Durable_Handoff_Policy.md` item 15), leaving CB19's own timestamps untouched since they are facts about CB19.
+
+Accepted authority remains package `10473134357` / selector426 **426/426**; accounting unchanged at
+**49 / 14 / 35**, debt **5**.
+
 ## 2026-09-18 — `M4-CP-SCALE-CB19`: R5 permission-ceiling orchestration corrected; exact R6 caller prevalidated and installed
 
 CB19 performs only the control-plane correction authorized after R5's zero-job startup failure. The exact frozen Drive harness was re-fetched and independently verified at 18,459 bytes / SHA-256 `dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2`; CB18 candidate artifact `10532133889`, source, selector426 and genus-two bytes are unchanged. No configure, compile, relink, repackage, generated test/discovery/benchmark process or package repair executed.
