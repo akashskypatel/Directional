@@ -1,28 +1,27 @@
-name: M4 CP SCALE TB12 R7 EXEC
+name: M4 CP SCALE CB20 Docs Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m4-cp-scale-tb12-r7-exec-20260918.txt
+      - .agents/connector-triggers/m4-cp-scale-cb20-docs-apply-20260918.txt
 
 permissions:
-  actions: read
   contents: write
   id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: m4-cp-scale-tb12-r7-exec
+  group: m4-cp-scale-cb20-docs-apply
   cancel-in-progress: false
 
 jobs:
   validate:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .github/workflows/m4-cp-scale-tb12-r7-exec.yml
+      workflow_path: .github/workflows/m4-cp-scale-cb20-docs-apply.yml
       source_ref: ${{ github.sha }}
     secrets: inherit
 
@@ -30,112 +29,20 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp-scale-tb12-r7-exec
+      label: m4-cp-scale-cb20-docs-apply
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  execute:
+  apply:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Initialize persistent diagnostic log
-        shell: bash
-        run: |
-          set -euo pipefail
-          log="${RUNNER_TEMP}/M4-CP-SCALE-TB12-R7-EXEC.workflow.log"
-          : > "$log"
-          printf '%s\n' \
-            "workflow=${GITHUB_WORKFLOW}" \
-            "run_id=${GITHUB_RUN_ID}" \
-            "event=${GITHUB_EVENT_NAME}" \
-            "event_sha=${GITHUB_SHA}" \
-            "ref=${GITHUB_REF}" \
-            "repository=${GITHUB_REPOSITORY}" \
-            "turnBoundary=Test+Benchmark-artifact-only" \
-            "runtimeExecution=true" \
-            "frozenHarnessTurn=M4-CP-SCALE-TB12-R5-EXEC" \
-            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
-
-      - name: Checkout exact control source
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 1
-          submodules: false
-          lfs: false
-
-      - name: Authenticate to Google Drive
-        id: auth
-        uses: google-github-actions/auth@v3
-        with:
-          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
-          workload_identity_provider: ${{ secrets.GOOGLE_PROVIDER }}
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
-          token_format: access_token
-          access_token_scopes: https://www.googleapis.com/auth/drive
-          create_credentials_file: false
-
-      - name: Download and verify frozen R5 harness
-        env:
-          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
-          HARNESS_FILE_ID: 1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV
-          HARNESS_SHA256: 04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf
-        shell: bash
-        run: |
-          set -euo pipefail
-          log="${RUNNER_TEMP}/M4-CP-SCALE-TB12-R7-EXEC.workflow.log"
-          harness="${RUNNER_TEMP}/m4_cp_scale_tb12_r5_exec_harness.sh"
-          curl --fail-with-body --silent --show-error --location --max-time 120 \
-            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-            "https://www.googleapis.com/drive/v3/files/${HARNESS_FILE_ID}?alt=media&supportsAllDrives=true" \
-            -o "$harness"
-          actual="$(sha256sum "$harness" | awk '{print $1}')"
-          echo "harness_sha256=${actual}" | tee -a "$log"
-          test "$actual" = "$HARNESS_SHA256"
-
-      - name: Execute frozen R5 artifact-only plan as fresh R7 runtime
-        id: execute
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -o pipefail
-          log="${RUNNER_TEMP}/M4-CP-SCALE-TB12-R7-EXEC.workflow.log"
-          set +e
-          bash "${RUNNER_TEMP}/m4_cp_scale_tb12_r5_exec_harness.sh" 2>&1 | tee -a "$log"
-          status=${PIPESTATUS[0]}
-          set -e
-          echo "harness_exit=${status}" | tee -a "$log"
-          exit "$status"
-
-      - name: Upload R7 result evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m4-cp-scale-tb12-r7-result-${{ github.run_id }}
-          path: ${{ runner.temp }}/M4-CP-SCALE-TB12-R5-EXEC-result
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Record final workflow status
-        if: always()
-        shell: bash
-        run: |
-          set +e
-          log="${RUNNER_TEMP}/M4-CP-SCALE-TB12-R7-EXEC.workflow.log"
-          printf '%s\n' \
-            "final_job_status=${{ job.status }}" \
-            "final_control_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)" \
-            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
-          git status --short 2>&1 | tee -a "$log" || true
-
-      - name: Upload persistent diagnostic log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m4-cp-scale-tb12-r7-log-${{ github.run_id }}
-          path: ${{ runner.temp }}/M4-CP-SCALE-TB12-R7-EXEC.workflow.log
-          if-no-files-found: error
-          retention-days: 14
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1188tjk6BwN7G5y2nk1OJIlBoWK-8ngqv
+      patch_sha256: fcfa8d26472fdb2d2b62f5a67501f2caab4859a08f8a754f9db03336a4df9ab6
+      base_sha: 081f5a17795bbe5533ebecffcf22ff2a7a20e2a5
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4 CP SCALE CB20 and plan R7"
+      retention_days: 14
+    secrets: inherit
