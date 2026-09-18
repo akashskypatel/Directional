@@ -6,6 +6,16 @@ Review separately re-censuses the unchanged genus-two fixture as connected, clos
 
 Review **PROMOTES package `10565723112` / selector427 as accepted current M4 runtime authority**, grants S5 cumulative required-green credit, discharges `M4-CP-SCALE-TB12-R10-REV-OBS-01`, and closes **M4-CP-SCALE / ACCEPTED**. No stable regression is added: accounting remains **49 / 14 / 35**, debt **5**. S1 calibration, S2-arrival exact fallback, the zero-transport helper audit, CP3 multiplicity/path observations and G4-B002/B003 debts are explicitly carried. Exact next is runtime-free **`M4-CP4-DEFN`** under `Architecture_M4_CP4_DEFN_Plan.md`.
 
+**Review verification (reviewing agent).** Upheld; CP-SCALE closure confirmed legitimate. Selector427 matches the
+SHA-256 pre-committed at `M4-CP-SCALE-TB12-R10-REV` byte-for-byte (third consecutive successful pre-commitment);
+first 426 rows are byte-identical to accepted selector426; row 427 is exactly the S5 identity. The chain
+373 through 427 is verified at every link. The §6 obligation ledger repair required by `TB12-R10-REV` landed in
+full — all four omitted items restored with dispositions. Accounting holds at 49 events / 14 categories /
+35 recurrences, produced-witness debt 5. One non-gating observation recorded as
+`M4-CP-SCALE-TB13-REV-OBS-01`: CP-SCALE closes with S2-arrival *and* S1 outside the gating set, but only
+S2-arrival carries an M4-exit determination for `M4-CP4-DEFN`; S1's census identity is absent from selector427 and
+needs the same explicit recording.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB13-EXEC`: selector427 cumulative artifact-only gate is 427/427 GREEN; Review required
 
 TB13 consumes immutable CB24 artifact `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` through frozen harness `1-KvdWwIBT81skkdNudg5xOkrQp5qjasA` (16,485 bytes, SHA-256 `b34ea0caf1b27016d84124452dc13e5bb0a3105556a24041a47a09020e1697aa`). Run/job `35393657851 / 105757517161` verifies selector427 **427 LF rows** / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, exact selector426 prefix, ownership **30/281/75/41**, then executes all **427/427 PASS** in exact file order as fresh one-identity processes. RED/SKIP/crash/timeout/selection mismatch/unexecuted counts are all zero; benchmark count is zero and exact package/source/execution-view pre/post byte+mode censuses match.

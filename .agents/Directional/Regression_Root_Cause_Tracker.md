@@ -8312,3 +8312,24 @@ cheap, and a failure would be diagnostic. `sourceFaces` has 189 consumer sites i
 
 **Prohibited:** folding this into the row400 recovery, whose evidential value depends on changing one variable
 (`LESSONS.md` 170); treating frozen rule 8 as a detector rather than an ownership rule.
+
+## `M4-CP-SCALE-TB13-REV-OBS-01` — CP-SCALE closes with two non-gated surfaces but only one carries a determination
+
+**Status.** OPEN / NON-GATING / owner `M4-CP4-DEFN`.
+
+CP-SCALE closed with S2-arrival and S1 both outside the gating set, and `M4-CP-SCALE-TB13-REV` §6 assigned
+`M4-CP4-DEFN` to record whether S2-arrival is an M4-exit conjunct. No equivalent assignment was made for S1.
+
+The S1 census identity exists — `M4CPScaleS1.ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral`
+(`tests/FieldAlignedCurveNetworkTests.cpp:15767`) — but is **absent from accepted selector427**. Its determinism
+and decision-neutrality are therefore not re-proved on the accepted package. CP-SCALE's own frozen exit tolerates
+this (`Architecture_M4_CP_SCALE_Frozen_Definitions.md` §2 makes S1 diagnostic/non-gating until a bound is frozen),
+so this is **not** a defect in the closure. The frozen M4 exit, however, speaks of S1 measurements being
+*published*, and whether measurements taken on superseded authority satisfy that clause is undecided.
+
+**Why:** a checkpoint that closes over an open question without naming it lets the question pass to the next
+checkpoint as an assumption rather than an obligation. §6 got this right for S2-arrival; S1 was left implicit.
+
+**How to apply:** `M4-CP4-DEFN` records an explicit determination for S1 — re-published on accepted authority,
+gated, or formally excused from the M4 exit clause — alongside the determination it already owes for S2-arrival.
+This is a recording duty, not a test-writing duty; it does not reopen CP-SCALE.

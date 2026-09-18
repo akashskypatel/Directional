@@ -122,3 +122,63 @@ That turn freezes the cumulative M4 exit surface from accepted selector427, the 
 Review documentation was published by Google Drive patch-transport run/job `35399850316 / 105777049355`. The verified preservation patch SHA-256 was `15fa259555cfd4320400fdb9fe57b457ad8a85d5e6ad813ad9da0f60d07a1b6d`, based at `e0b07852dca535628fa59c13ef670578d8a0a459`, and the reusable applied it at commit `05e697a0bc60c4ecda37aa191315916de387a13f` with `runtimeExecution=false`. Apply result artifact `10569908810` has provider ZIP SHA-256 `216207853f6ce2e36cc3645dc35748bbbbf33ddbc436d973b4990885c2d5412a`; the diagnostic log artifact `10569623797` has provider ZIP SHA-256 `d71243edd7627c11afb6651b31ab2f7ccd4b86e77358773894df1f16b87e95aa`. The workflow required owner-side Drive retirement, and the user-authorized control plane permanently deleted the staged patch after the push was authoritative.
 
 The temporary Review caller was removed before marker cleanup. Mandatory cleanup run/job `35399988903 / 105777441000` completed GREEN and produced cleanup commit `8670d41783fa5fbd3621130e3822dabad2271904`. Cleanup result artifact `10569158778` has provider ZIP SHA-256 `452fc823d3f6d526f7e3268a4ac5eeef49077f652474901d64cdd356c8ab02c7`; it records `runtimeExecution=false`, removal of the Review apply marker and Review source-snapshot marker, deletion of three temporary PR conversation comments and zero inline comments, and zero remaining comments before its observer. Final hygiene verification found exactly the seven durable agent workflows and no connector-trigger, workflow-observation, or turn-payload directory.
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld. CP-SCALE closure is legitimate.** Accounting holds at **49 / 14 / 35**, debt **5**.
+One symmetry gap is recorded for `M4-CP4-DEFN`.
+
+### V1 — the third consecutive pre-commitment held
+
+`M4-CP-SCALE-TB12-R10-REV` declared selector427's SHA-256 and owner census before CB24 built it. Verified against
+the file: 427 rows, full digest `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` identical to
+the pre-committed target, first 426 rows hashing to `41f4d559211375c1…` byte-identical to accepted selector426, and
+row 427 exactly `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`.
+
+That is three consecutive publication turns checked against byte-level targets fixed in advance — selector425, 426
+and 427. The M4 chain now reads
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424 ⊂ 425 ⊂ 426 ⊂ 427**, every link verified byte-exact at the
+turn that created it, with no accepted prefix shifting across CP1, CP2, CP3, CP-COND or CP-SCALE.
+
+### V2 — the ledger repair landed in full
+
+§6 opens by stating it discharges or re-carries "the obligations that earlier review addenda required not to
+disappear", and all four items omitted at R10 are restored with owners: `TB2-REV-OBS-02`,
+`M4-CP3-TB1-R1-REV-OBS-01`, `M4-CP3-CB4-REV-OBS-02` and `G4-B003`. Eight items, each with a disposition.
+
+The `DEFN-OBS-01` handling is the part worth naming as precedent. S2-arrival still lacks a same-seam exact
+fallback, and rather than deciding by omission whether that blocks M4 exit, the review assigns `M4-CP4-DEFN` to
+**record whether it is an M4-exit conjunct**. Converting an unresolved question into an explicit recording
+obligation is the right move at a checkpoint boundary — it is what keeps a closed checkpoint from silently
+absorbing an open one.
+
+### V3 — the closure follows the checkpoint's own frozen definition
+
+Closing with S1 non-gating is not a convenience. `Architecture_M4_CP_SCALE_Frozen_Definitions.md` §2 states that
+S1 "is diagnostic/non-gating until a later review has measurements from representative witnesses and freezes a
+justified bound". The review closes on exactly that basis and carries `TB1-REV-OBS-01` with the correct trigger —
+calibration is owed before any numeric bound becomes authoritative, not before closure.
+
+§7's refusal to fold S1 calibration, S2-arrival design, the helper audit or the CP3 observations into a promotion
+Review is also right, and consistent with how this sequence has handled bounded turns throughout.
+
+### V4 — RECORD FOR `M4-CP4-DEFN`: S1 needs the same determination S2-arrival is getting
+
+CP-SCALE closes with **two** non-gated surfaces, and only one of them receives a CP4-DEFN recording obligation.
+
+The S1 census identity exists —
+`M4CPScaleS1.ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral`
+(`tests/FieldAlignedCurveNetworkTests.cpp:15767`, calling `diagnose_field_aligned_trace_scale_census`) — but it is
+**absent from selector427**, verified by direct search. Its determinism and decision-neutrality are therefore not
+re-proved on the accepted package; whatever measurements it published were published against earlier authority.
+
+That is compatible with CP-SCALE's own exit, which makes S1 non-gating. It is not obviously compatible with the
+frozen M4 exit clause, which speaks of **S1 measurements being published**. Whether that clause is satisfied by
+measurements taken on superseded authority, or requires S1 to be re-published or gated at M4 exit, is precisely
+the kind of question that should be decided explicitly rather than inherited.
+
+**Recommend extending the §6 `DEFN-OBS-01` treatment to S1:** `M4-CP4-DEFN` should record whether S1 measurements
+must be re-published on accepted authority, or gated, for M4 exit — the same determination it will make for
+S2-arrival. Recorded in the tracker so the symmetry is not lost between checkpoints.
