@@ -1,4 +1,5 @@
 turn=M4-CP-SCALE-CB20
-patch_file_id=1188tjk6BwN7G5y2nk1OJIlBoWK-8ngqv
-patch_sha256=fcfa8d26472fdb2d2b62f5a67501f2caab4859a08f8a754f9db03336a4df9ab6
-base_sha=081f5a17795bbe5533ebecffcf22ff2a7a20e2a5
+patch_file_id=1AozbOAhoM-lDwfJxJ4qLxI5R7lUOiGEo
+patch_sha256=37a9a6c4ea677d1b8bb275301d3e2c7f067daef4e8bb30006fbb99d8c6ee7be7
+base_sha=5e8a5ea470a851afdce8c07d0eeda20ce7c1d974
+retry=1
