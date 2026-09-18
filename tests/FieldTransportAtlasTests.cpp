@@ -5,15 +5,12 @@
 #include <bit>
 #include <cmath>
 #include <cstdint>
-#include <filesystem>
-#include <fstream>
 #include <map>
 #include <numeric>
 #include <limits>
 #include <optional>
 #include <sstream>
 #include <set>
-#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -27,10 +24,7 @@
 #include <directional/fields/CrossField.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/geometry/SurfaceCellTracing.h>
-#include <directional/io/ReadOBJ.h>
-#include <directional/pipeline/RemeshPipeline.h>
 
-#include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
 namespace {
@@ -129,6 +123,26 @@ TriMesh make_four_triangle_fan() {
            1, 2, 4,
            2, 3, 4,
            3, 0, 4;
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return mesh;
+}
+
+TriMesh make_two_interior_islands_disk() {
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << 0.0, 0.0, 0.0,
+              2.0, 0.0, 0.0,
+              2.0, 2.0, 0.0,
+              0.0, 2.0, 0.0,
+              4.0 / 3.0, 2.0 / 3.0, 0.0,
+              2.0 / 3.0, 4.0 / 3.0, 0.0;
+  Eigen::MatrixXi faces(6, 3);
+  faces << 0, 1, 4,
+           1, 2, 4,
+           2, 0, 4,
+           0, 2, 5,
+           2, 3, 5,
+           3, 0, 5;
   TriMesh mesh;
   mesh.set_mesh(vertices, faces);
   return mesh;
@@ -724,6 +738,7 @@ struct IndependentCycleRow {
   std::optional<std::uint64_t> localVertex;
   std::vector<std::pair<int, int>> edgeSigns;
   std::vector<IndependentSupportKey> support;
+  std::vector<IndependentSupportKey> orderedSupport;
   int turningLift = 0;
   QuarterTurn composed;
 };
@@ -938,7 +953,7 @@ std::vector<IndependentCycleRow> independent_cycle_rows(const TriMesh &mesh) {
       rows.push_back(IndependentCycleRow{
           FieldCycleKind::LocalVertex,
           static_cast<std::uint64_t>(vertex),
-          independent_vertex_cycle(mesh, vertex), {}, 0, QuarterTurn{}});
+          independent_vertex_cycle(mesh, vertex), {}, {}, 0, QuarterTurn{}});
     }
   }
 
@@ -1062,6 +1077,10 @@ std::vector<IndependentCycleRow> independent_cycle_rows(const TriMesh &mesh) {
   return rows;
 }
 
+std::optional<std::vector<IndependentSupportKey>>
+independent_canonical_component_order(
+    std::vector<IndependentSupportKey> support);
+
 std::optional<std::vector<IndependentCycleRow>> independent_cycle_facts(
     const TriMesh &mesh, const CrossFieldResult &field) {
   std::vector<IndependentCycleRow> rows = independent_cycle_rows(mesh);
@@ -1094,6 +1113,10 @@ std::optional<std::vector<IndependentCycleRow>> independent_cycle_facts(
                                to);
     }
     std::sort(row.support.begin(), row.support.end());
+    const auto orderedSupport =
+        independent_canonical_component_order(row.support);
+    if (!orderedSupport.has_value()) return std::nullopt;
+    row.orderedSupport = *orderedSupport;
     const double curvature = independent_cycle_curvature(mesh, row);
     if (!std::isfinite(curvature)) return std::nullopt;
     const double exactLift =
@@ -1225,32 +1248,6 @@ std::optional<std::size_t> independent_closed_component_count(
     ++components;
   }
   return components;
-}
-
-Eigen::MatrixXd read_atlas_rawfield_fixture(
-    const std::filesystem::path &path, const int expectedFaces) {
-  std::ifstream stream(path);
-  if (!stream) {
-    throw std::runtime_error("Failed to open rawfield fixture: " +
-                             path.string());
-  }
-  int degree = 0;
-  int faceCount = 0;
-  if (!(stream >> degree >> faceCount) || degree != 4 ||
-      faceCount != expectedFaces) {
-    throw std::runtime_error("Invalid rawfield fixture header: " +
-                             path.string());
-  }
-  Eigen::MatrixXd raw(faceCount, 3 * degree);
-  for (int face = 0; face < faceCount; ++face) {
-    for (int column = 0; column < raw.cols(); ++column) {
-      if (!(stream >> raw(face, column))) {
-        throw std::runtime_error("Invalid rawfield fixture payload: " +
-                                 path.string());
-      }
-    }
-  }
-  return raw;
 }
 
 std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
@@ -1636,8 +1633,7 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
           step.sourceEdge.first().index(), step.sourceEdge.second().index(),
           step.fromFace.index(), step.toFace.index());
     }
-    if (!independent_matches_canonical_component_order(
-            expectedCycle.support, publishedOrder)) {
+    if (expectedCycle.orderedSupport != publishedOrder) {
       return FieldAtlasBuildErrorCode::IncompleteCycleBasis;
     }
 
@@ -2057,8 +2053,7 @@ TEST(FieldTransportAtlas, PreservesSingleComponentCanonicalCycleSequence) {
         return row.kind == FieldCycleKind::LocalVertex && !row.support.empty();
       });
   ASSERT_NE(expected->end(), found);
-  const auto expectedOrder = independent_canonical_component_order(found->support);
-  ASSERT_TRUE(expectedOrder.has_value());
+  ASSERT_FALSE(found->orderedSupport.empty());
   EXPECT_EQ(1U, independent_closed_component_count(found->support));
 
   const auto published = std::find_if(
@@ -2075,7 +2070,7 @@ TEST(FieldTransportAtlas, PreservesSingleComponentCanonicalCycleSequence) {
                                 step.sourceEdge.second().index(),
                                 step.fromFace.index(), step.toFace.index());
   }
-  EXPECT_EQ(*expectedOrder, publishedOrder);
+  EXPECT_EQ(found->orderedSupport, publishedOrder);
 }
 
 TEST(FieldTransportAtlas, IndependentOracleRejectsCycleOrderingTamper) {
@@ -2126,47 +2121,93 @@ TEST(FieldTransportAtlas, IndependentOracleRejectsCycleOrderingTamper) {
 }
 
 TEST(FieldTransportAtlas,
-     BuildsSyntheticGenusTwoAtlasWithMultiComponentBoundarySupport) {
-  TriMesh mesh;
-  const auto meshPath = directional::tests::benchmark_fixture_path(
-      "milestone-g/genus_two.obj");
-  const auto fieldPath = directional::tests::benchmark_fixture_path(
-      "milestone-g/genus_two.rawfield");
-  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
-  const Eigen::MatrixXd raw =
-      read_atlas_rawfield_fixture(fieldPath, mesh.F.rows());
-  const CrossFieldResult field =
-      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
+     OrdersEveryClosedComponentOfOneAlgebraicBoundaryRow) {
+  const TriMesh mesh = make_two_interior_islands_disk();
+  ASSERT_EQ(1U, mesh.boundaryLoops.size());
+  const CrossFieldResult field = make_zero_transport_field(mesh);
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
 
+  // Establish the discriminating subject entirely from source topology before
+  // atlas construction.  This disk has two interior degree-three stars, so the
+  // algebraic boundary row is six directed support edges in two closed
+  // components.
+  const auto expected = independent_cycle_facts(mesh, field);
+  ASSERT_TRUE(expected.has_value());
+  const auto expectedBoundary = std::find_if(
+      expected->begin(), expected->end(), [](const IndependentCycleRow &row) {
+        return row.kind == FieldCycleKind::BoundaryLoop;
+      });
+  ASSERT_NE(expected->end(), expectedBoundary);
+  ASSERT_EQ(6U, expectedBoundary->support.size());
+  ASSERT_EQ(6U, expectedBoundary->orderedSupport.size());
+  const auto componentCount =
+      independent_closed_component_count(expectedBoundary->support);
+  ASSERT_TRUE(componentCount.has_value());
+  ASSERT_EQ(2U, *componentCount);
+  const auto independentlyOrdered =
+      independent_canonical_component_order(expectedBoundary->support);
+  ASSERT_TRUE(independentlyOrdered.has_value());
+  ASSERT_EQ(expectedBoundary->orderedSupport, *independentlyOrdered);
+
   auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
   ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
+  const auto &cycles = built.value().cycles();
+  const auto published = std::find_if(
+      cycles.begin(), cycles.end(), [](const FieldCycleWitness &cycle) {
+        return cycle.kind == FieldCycleKind::BoundaryLoop;
+      });
+  ASSERT_NE(cycles.end(), published);
+  ASSERT_EQ(6U, published->steps.size());
 
-  bool foundMultiComponentBoundary = false;
-  for (const FieldCycleWitness &cycle : built.value().cycles()) {
-    if (cycle.kind != FieldCycleKind::BoundaryLoop || cycle.steps.empty()) {
-      continue;
-    }
-    const std::vector<IndependentSupportKey> support =
-        independent_published_support(cycle);
-    const auto components = independent_closed_component_count(support);
-    ASSERT_TRUE(components.has_value());
-    if (*components >= 2U) {
-      foundMultiComponentBoundary = true;
-      const auto expectedOrder = independent_canonical_component_order(support);
-      ASSERT_TRUE(expectedOrder.has_value());
-      std::vector<IndependentSupportKey> publishedOrder;
-      for (const FieldTransportStep &step : cycle.steps) {
-        publishedOrder.emplace_back(step.sourceEdge.first().index(),
-                                    step.sourceEdge.second().index(),
-                                    step.fromFace.index(), step.toFace.index());
-      }
-      EXPECT_EQ(*expectedOrder, publishedOrder);
-      break;
-    }
+  std::vector<IndependentSupportKey> publishedOrder;
+  publishedOrder.reserve(published->steps.size());
+  std::set<SourceEdgeTopologyKey> publishedEdges;
+  for (const FieldTransportStep &step : published->steps) {
+    publishedOrder.emplace_back(step.sourceEdge.first().index(),
+                                step.sourceEdge.second().index(),
+                                step.fromFace.index(), step.toFace.index());
+    EXPECT_TRUE(publishedEdges.insert(step.sourceEdge).second)
+        << "every algebraic support edge must be consumed exactly once";
   }
-  EXPECT_TRUE(foundMultiComponentBoundary);
+  EXPECT_EQ(expectedBoundary->orderedSupport, publishedOrder);
+  EXPECT_EQ(expectedBoundary->support,
+            independent_published_support(*published));
+
+  const IndependentAtlasSnapshot baseline = independent_snapshot(built.value());
+  EXPECT_FALSE(independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, baseline));
+
+  // Falsifier: preserve the exact six-step multiset and each component's
+  // internal order while swapping the two closed components.  The independent
+  // snapshot validator must reject that producer ordering.
+  const std::size_t cycleIndex = static_cast<std::size_t>(
+      published - cycles.begin());
+  std::size_t firstComponentSize = 0U;
+  const std::uint64_t startFace =
+      std::get<2>(expectedBoundary->orderedSupport.front());
+  std::uint64_t currentFace = startFace;
+  do {
+    ASSERT_LT(firstComponentSize, expectedBoundary->orderedSupport.size());
+    ASSERT_EQ(currentFace,
+              std::get<2>(expectedBoundary->orderedSupport[firstComponentSize]));
+    currentFace =
+        std::get<3>(expectedBoundary->orderedSupport[firstComponentSize]);
+    ++firstComponentSize;
+  } while (currentFace != startFace);
+  ASSERT_GT(firstComponentSize, 0U);
+  ASSERT_LT(firstComponentSize, expectedBoundary->orderedSupport.size());
+
+  IndependentAtlasSnapshot reordered = baseline;
+  auto &reorderedSteps = reordered.cycles[cycleIndex].steps;
+  std::rotate(reorderedSteps.begin(),
+              reorderedSteps.begin() + firstComponentSize,
+              reorderedSteps.end());
+  EXPECT_EQ(independent_published_support(baseline.cycles[cycleIndex]),
+            independent_published_support(reordered.cycles[cycleIndex]));
+  EXPECT_EQ(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
+            independent_validate_snapshot(
+                mesh, *sourceAuthority, field, {}, reordered));
 }
 
 TEST(FieldTransportAtlas, RejectsStableAdjacencyTamperReasons) {
