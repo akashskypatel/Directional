@@ -1,0 +1,44 @@
+name: M4 CP4 DEFN Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-defn-patch-apply-20260918.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-defn-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-defn-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1u-Diy8J1iXBlSFOCobhhXClITVT-bRCW
+      patch_sha256: ea48444f057dddfa23aa5d2f42983eee6cebfe1b07d4548d3b618de06bad58ca
+      base_sha: 62aa95fb3b24d1822279a817f57fd3376e4c2fd9
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M4-CP4-DEFN: freeze cumulative exit definitions"
+      retention_days: 7
+    secrets: inherit
