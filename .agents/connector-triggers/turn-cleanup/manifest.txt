@@ -1,0 +1,3 @@
+# M4-CP-SCALE-TB12-R10-REV final temporary-state cleanup
+.agents/connector-triggers/m4-cp-scale-tb12-r10-rev-apply-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r10-rev-20260918.txt
