@@ -1,0 +1,4 @@
+purpose=M4-CP-SCALE-TB12-R5-EXEC durable closeout docs
+caller_install=94f90577ebbc4833768c150213d0fedf0c4aaa72
+patch_sha256=1d43ab1810bcfccf5befa53a3ce9986632cf360eeb7b7770fa6287e6f7d6f8b0
+retry=0
