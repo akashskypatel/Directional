@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-TB12-R6-EXEC`: exact candidate preflight passes; frozen harness aborts before row 1
+
+Fresh artifact-only run/job `35321067552 / 105523481425` used marker/event SHA `532e9b0b2b681b5936a27e5ac35c6715052190eb`, the exact CB19-prevalidated caller blob `c31306fce7c7dbf96bb2b80859f285062460b26d`, and the exact 18,459-byte Drive harness `dbd9d8a5...43186a2`. CB18 candidate package `10532133889` preflighted successfully: 28/28 manifest, exact semantic source/source archive, executable modes, selector426/genus-two bytes and 30/280/75/41 owner census all match frozen authority.
+
+The harness then failed under `set -u` before the first `run_row`: line 225 initializes `stem` and dependent `dir/work` in one `local` command, so `$stem` is expanded before that assignment takes effect and Bash reports `stem: unbound variable`. The initialized 436-row ledger remains **436/436 UNEXECUTED** at SHA-256 `61fd0f8c...b92df`; Gate A0/A/S5/selector426 are 0/5, 0/4, 0/1, 0/426; benchmark/discovery are 0 and exact postflight is unreached. This is **ORCHESTRATION / NON-STABLE**, not semantic RED. Result/log artifacts `10536669823 / 10536659910` hash to `d27820fa...6f518 / d2471ec1...b168`.
+
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, accounting **49 / 14 / 35**, debt **5**; candidate `10532133889` remains unpromoted and S5/A3 remain uncredited. Exact next is control-plane-only `M4-CP-SCALE-CB20`, limited to nounset-safe harness initialization + fresh corrected harness/R7 caller freeze, with zero Directional runtime. The semantic retry occurs only in successor `M4-CP-SCALE-TB12-R7-EXEC`.
+
 ## 2026-09-18 — Review Agent handoff: R6 acceptance criteria and an S5 stop condition
 
 Runtime-free handoff turn. No review of a delegated turn; no product, test, fixture, selector, benchmark or build

@@ -2,20 +2,22 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Code + Build — `M4-CP-SCALE-CB19`
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R6-EXEC`
 
-CB19 corrected only the R5 GitHub Actions permission ceiling and executed **zero Directional runtime**. Candidate artifact `10532133889` and frozen harness `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` / `dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2` remain unchanged. Exact R6 caller bytes were SchemaStore-validated in run/job `35315434185 / 105505987470` and published at commit `efeb4da300cc559a02d92e0d7c10d140f3bef352`, blob `c31306fce7c7dbf96bb2b80859f285062460b26d`, SHA-256 `6a673c9a8a8cd146dfc56f28d746ec928b6de34781eaa51a58231017645063eb`. Mandatory CB19 cleanup retires the temporary caller; R6 reinstalls those exact bytes before creating its still-absent execution marker.
+R6 is **COMPLETE / ORCHESTRATION FAILURE / ZERO DIRECTIONAL SEMANTIC EXECUTION / NON-STABLE**. Fresh run/job `35321067552 / 105523481425` used the exact CB19-prevalidated caller and exact frozen Drive harness. Candidate `10532133889` passed package/source/selector/genus-two preflight, then the harness aborted under `set -u` before row 1 because `run_row` referenced `$stem` in dependent `dir/work` assignments within the same `local` command that first assigned `stem`.
 
 - [x] `M4-CP-SCALE-CB18`: compile/package GREEN candidate `10532133889`, source `079933f2ec31a9323218e73c7ae0d3ea1d11103c`; no generated runtime.
 - [x] `M4-CP-SCALE-TB12-R5-EXEC`: **ORCHESTRATION FAILURE / 0 JOBS / 0 SEMANTIC LEDGER / NON-STABLE**.
-- [x] `M4-CP-SCALE-CB19`: **CONTROL-PLANE CORRECTION GREEN / 0 RUNTIME / 0 COMPILE / 0 REPACKAGE**.
-- [ ] `M4-CP-SCALE-TB12-R6-EXEC`: **exact next**. Reinstall the exact prevalidated caller bytes, create its marker in a separate commit, execute the frozen 436-row artifact-only plan, then mandatory Review on any valid semantic outcome.
+- [x] `M4-CP-SCALE-CB19`: **CONTROL-PLANE PERMISSION CORRECTION GREEN / ZERO RUNTIME**.
+- [x] `M4-CP-SCALE-TB12-R6-EXEC`: **ORCHESTRATION FAILURE / 436/436 UNEXECUTED / NON-STABLE**; result/log `10536669823 / 10536659910`.
+- [ ] `M4-CP-SCALE-CB20`: **exact next**. Correct only the frozen harness nounset initialization, freeze a new corrected harness under a new Drive ID/hash, prevalidate/publish the fresh R7 caller without creating its marker, and execute zero generated Directional runtime.
+- [ ] `M4-CP-SCALE-TB12-R7-EXEC`: only after CB20 control-plane GREEN; rerun the unchanged 436-row artifact-only gate against unchanged candidate `10532133889`.
 
-## Current focus — `M4-CP-SCALE-TB12-R6-EXEC`
+## Current focus — `M4-CP-SCALE-CB20`
 
-Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate artifact `10532133889` remains unpromoted and S5/A3 remain uncredited. The post-closeout duplicate `35312751970 / 105497993610` remains invalid-attempt provenance only and may not substitute for fresh R6.
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate artifact `10532133889` remains unpromoted and S5/A3 remain uncredited. R6 initialized its 436-row ledger but executed **zero** rows; its ledger SHA-256 is `61fd0f8c26c8c2266794efbf8de1c37617a81b2436e027c3e31c0b02d08b92df`.
 
-R6 is governed by `Architecture_M4_CP_SCALE_TB12_R6_Artifact_Only_Test_Benchmark_Plan.md`: reinstall exact validated caller blob `c31306fce7c7dbf96bb2b80859f285062460b26d` / SHA-256 `6a673c9a...063eb` without modification, then use the frozen harness Drive ID/hash, exact package/selector/genus-two preflight, complete 436-row ledger, Gate A0 5/5 -> Gate A 4/4 -> S5 1/1 -> selector426 426/426 only if focused rows are green, benchmark 0, exact postflight, no semantic mutation/build/repair.
+CB20 is governed by `Architecture_M4_CP_SCALE_CB20_Orchestration_Harness_Code_Build_Plan.md`. It may not alter product, test, fixture, selector, CMake, benchmark, or candidate-package semantics. The original harness Drive file `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` / `dbd9d8a5...43186a2` remains immutable evidence; correction is staged as a new harness file and new R7 caller authority.
 
 ## Carried forward from M1
 
