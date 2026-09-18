@@ -1,0 +1,6 @@
+Turn: M4-CP-SCALE-TB12-R3-REV
+Purpose: apply verified Review closeout/consolidation patch from Google Drive
+Drive file: 1pxxu3o4KQOGu6ljn8XqyUKeSCRbDJ3V4
+Patch SHA-256: 2a48d662dcf88739780dd404c6c1ea65fddf7bf632ae4c6a2c45b42e96d438db
+Base: 1b6c57cd42c0eb919f875973529c7ea5a6d239d4
+Schema validation run: 35292128229
