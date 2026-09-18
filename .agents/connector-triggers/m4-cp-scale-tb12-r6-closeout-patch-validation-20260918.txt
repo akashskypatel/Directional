@@ -1,0 +1,3 @@
+purpose=validate M4-CP-SCALE-TB12-R6 closeout patch apply caller
+caller_draft_commit=092746709dc9d670cfe8b180b65d8b52b9a09003
+retry=0
