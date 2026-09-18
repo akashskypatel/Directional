@@ -1,3 +1,3 @@
 turn=M4-CP-SCALE-CB24
-purpose=exact source snapshot for publication-only inspection
-retry=0
+purpose=exact source snapshot after selector427 publication
+retry=1
