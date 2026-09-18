@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-CB17
+purpose=compile authority-kernel preflight then eight-target package
+source_sha=1b44d2b7b3173590db9837a1386eadbc9ac32981
+retry=0
