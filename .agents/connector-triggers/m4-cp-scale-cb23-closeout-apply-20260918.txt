@@ -1,0 +1,4 @@
+M4-CP-SCALE-CB23 closeout documentation patch
+Drive file: 17M-1y1sZAQ_9hmYBWX7O95Hw2KQWmKQK
+Patch SHA-256: 4de6e7b4a9facff4b128a3e9c7dbe8cca304d767a79525cfd37688bef0c16cce
+Patch base: 03ec3afa638b8c17849f3e1a9664cd6d1fcb9b54
