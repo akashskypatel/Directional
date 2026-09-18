@@ -1,0 +1,3 @@
+M4-CP-SCALE-TB12-R10-EXEC resume reconciliation snapshot
+Purpose: exact current branch authority after resume beacon.
+Parent authority: 6addc29c4ccce5232bc5e254338d3bba743a2fbe
