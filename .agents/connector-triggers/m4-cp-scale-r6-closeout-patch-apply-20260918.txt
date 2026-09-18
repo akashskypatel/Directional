@@ -1,0 +1,2 @@
+turn=M4-CP-SCALE-TB12-R6-EXEC
+purpose=apply-closeout-evidence-retirement
