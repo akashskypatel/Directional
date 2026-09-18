@@ -15,9 +15,9 @@ R6 cannot publish selector427, patch code/tests/fixtures, repair the package, re
 
 ## 2. Corrected control-plane precondition
 
-CB19 installed `.github/workflows/m4-cp-scale-tb12-r6-exec.yml` from a pre-publication validated draft. The active caller and validated draft share Git blob `c31306fce7c7dbf96bb2b80859f285062460b26d`; caller byte SHA-256 is `6a673c9a8a8cd146dfc56f28d746ec928b6de34781eaa51a58231017645063eb`.
+CB19 pre-publication validated and then published `.github/workflows/m4-cp-scale-tb12-r6-exec.yml`, proving that the published caller and validated draft share Git blob `c31306fce7c7dbf96bb2b80859f285062460b26d`; caller byte SHA-256 is `6a673c9a8a8cd146dfc56f28d746ec928b6de34781eaa51a58231017645063eb`. Mandatory CB19 turn cleanup then retires the temporary caller. R6 must reinstall **exactly** the bytes from publication commit `efeb4da300cc559a02d92e0d7c10d140f3bef352` / blob `c31306fce7c7dbf96bb2b80859f285062460b26d` before creating its marker. This reinstallation is control-plane setup only: do not regenerate, edit, reinterpret or revalidate different bytes.
 
-Before creating any execution marker, require the active caller to retain exactly:
+After exact byte-for-byte reinstallation and before creating any execution marker, require the active caller to retain exactly:
 
 ```yaml
 permissions:
@@ -38,7 +38,7 @@ The caller must still use:
 
 CB19 validation run `35315434185`, job `105505987470`, validated the exact draft against SchemaStore with `valid=true`; result artifact `10535275417` hashes to `ec90baa515ecbfe92bf53e8c6dce73578d06ac4c455fec3babfbcb144d0418c6`.
 
-The R6 execution marker was absent at CB19 handoff. R6 itself creates it in one later commit; that marker commit is the execution trigger and its SHA must match the observer report before workload evidence is accepted.
+The R6 execution marker was absent at CB19 handoff. R6 first republishes the exact validated caller bytes in one caller-install commit, verifies its blob/SHA-256 and frozen permission union, and only then creates the marker in a separate later commit. That marker commit is the execution trigger and its SHA must match the observer report before workload evidence is accepted. Caller installation must not itself create the marker or execute runtime.
 
 ## 3. Frozen harness rule
 
