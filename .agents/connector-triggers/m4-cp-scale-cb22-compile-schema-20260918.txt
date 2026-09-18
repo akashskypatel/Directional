@@ -1,3 +1,0 @@
-M4-CP-SCALE-CB22 compile caller schema validation
-Draft: .agents/Directional/turn-payloads/m4-cp-scale-cb22-compile.yml
-Retry: 1

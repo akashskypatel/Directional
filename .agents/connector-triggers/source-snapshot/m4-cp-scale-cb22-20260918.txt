@@ -1,3 +1,0 @@
-M4-CP-SCALE-CB22 source snapshot
-base_head=edcc64c6aadc9b7f8c744a84942bb0b4bf9e23ed
-purpose=exact source inspection authority for CB22

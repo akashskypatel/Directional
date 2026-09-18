@@ -1,4 +1,0 @@
-M4-CP-SCALE-CB22 closeout durable documentation patch
-file_id=1EhjHM44beivokbaCU0vbatzMJnUV8d7M
-patch_sha256=12e5b7a67e133e25c00978c9cdde40cdafa43d2c659777eae7a4475f1086433e
-retry=0
