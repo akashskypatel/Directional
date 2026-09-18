@@ -1,4 +1,0 @@
-# M4-CP-SCALE-TB12-R7-EXEC temporary-state cleanup
-.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r7-start-20260918.txt
-.agents/connector-triggers/m4-cp-scale-tb12-r7-exec-20260918.txt
-.agents/connector-triggers/m4-cp-scale-tb12-r7-closeout-apply-20260918.txt

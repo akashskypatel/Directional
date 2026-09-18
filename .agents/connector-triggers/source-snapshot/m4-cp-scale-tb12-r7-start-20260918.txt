@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB12-R7-EXEC
-requested_source=55da9899244de4d87085252ebe90832335bf00f9
-read_mode=snapshot
