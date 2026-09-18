@@ -16,7 +16,7 @@ jobs:
   snapshot:
     uses: ./.github/workflows/agent-source-snapshot.yml
     with:
-      source_ref: fad9e3ed5399135e36ddb6623b47111c6ee92aa7
-      artifact_prefix: m4-cp-scale-tb12-r4-rev-resume4-source
+      source_ref: b6a5ad107371ff08462d00a8cee6f9bbecd35667
+      artifact_prefix: m4-cp-scale-tb12-r4-rev-resume5-source
       retention_days: 7
     secrets: inherit
