@@ -1,3 +1,0 @@
-M4-CP-SCALE-DEFN-R1 closeout refresh snapshot
-Reason: branch head changed after the first definition snapshot; cont.txt requires fresh reconciliation before closeout.
-Authority before marker: 60d4642bb83da604f26693a7ff9860277dd856f5
