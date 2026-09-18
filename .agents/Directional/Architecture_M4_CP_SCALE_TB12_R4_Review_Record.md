@@ -146,3 +146,65 @@ Retained current CP-SCALE role set: normative `Architecture_M4_CP_SCALE_Frozen_D
 | review_check.py boundary | PASS on the Review diff with selector426 declared hash and all frozen selectors unchanged |
 | `STATUS` lifecycle maintained | start beacon `2026-09-18T02:37:27Z`; latest resume beacon `2026-09-18T03:55:11Z`; final COMPLETE beacon is reserved as the last repository mutation after patch/cleanup verification |
 | Pushed to origin, branch in sync | durable Review publication is followed by temporary-state cleanup and explicit branch-head synchronization verification before the final COMPLETE beacon; no alternate ref or force push is authorized |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, no correction.** Accounting holds at **49 / 14 / 35**, debt **5**; accepted package
+`10473134357` / selector426 **426/426** unchanged.
+
+### V1 — the component-ordering falsifier is fully discharged
+
+Issued at `M4-CP-SCALE-TB12-R2-REV` §8 V2 and re-issued at `TB12-R3-REV` when only its independent-derivation half
+had landed. Every sub-part is now covered, by the four Gate-A controls:
+
+- **independent derivation, before the producer runs** — the fourth control's test-local subject derives an
+  algebraic boundary row with six support steps and two closed successor components *before* atlas construction,
+  so the expectation cannot be a restatement of emitted output;
+- **order-sensitive comparison** — it checks independent canonical component order, not merely support
+  consumption;
+- **the perturbation falsifier** — the rotation/swap case preserves the same support multiset *and each
+  component's internal order*, changing only component order, and the independent validator rejects it as
+  `IncompleteCycleBasis`. That is precisely the case a sorted-support-plus-modulo-four-total validator could not
+  have detected, which was the gap;
+- **backward compatibility** — `PreservesSingleComponentCanonicalCycleSequence` guards CB16 contract item 5, so
+  the repair cannot redefine established one-component order.
+
+The rotation/swap construction is the sharpest part: holding internal order fixed isolates *component* order as
+the only variable, so a pass could not be explained by any other difference.
+
+### V2 — RP-07 recovery rests on two independent lines
+
+The first is the Gate-A controls above. The second is error-site advancement, and it is grounded in actual control
+flow rather than inferred: `FieldTransportAtlas.cpp:2189-2194` returns `IncompleteCycleBasis / CycleOrderingFailed`
+**immediately** on an ordering failure, while the raw interior-singularity owner XOR executes only later at
+`:2472-2480`, after ordered-cycle construction, transport composition, partitioning and reconciliation. The
+unchanged S5 focus now reaches `SingularityMismatch;sourceVertex=0` — the later site — which is reachable only if
+the ordering gate passed. The failure moved strictly downstream past the seam CB16 corrected.
+
+Neither line alone would be conclusive; together they are, and the record is right to name both.
+
+### V3 — accounting is correct by the criterion, not by assertion
+
+Fail-fast left selector426 at **0/426 with every row UNEXECUTED**, so no accepted ordinal *could* have transitioned
+PASS → RED. Non-stable follows from the durable criterion directly rather than from a judgement call, and the
+candidate is unpromoted with S5/A3 credit zero and selector427 absent.
+
+`DEFN-OBS-04`'s **OPEN / NARROWED** state records partial credit precisely again: genus-two topology independently
+proved and the retained raw field not falsified, with admissible atlas authority and A3 reachability still owed.
+Neither half is borrowed from the other, which is what has kept this obligation honest across four attempts.
+
+Also worth confirming: §7 states that the evidence separates field authority from product semantics strongly
+enough that the Review stop condition does not fire. Considering the stop and explaining why it was declined is
+better practice than not mentioning it.
+
+### V4 — what the genus-two witness has bought so far
+
+Still ungated, and still paying. It surfaced `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION` — a single-simple-loop
+assumption falsifiable only by a cycle row whose support decomposes into multiple components — and, once that was
+corrected, advanced far enough to expose `RP-01 / AUTHORITY_DOMAIN_CONFLATION` at the singularity-ownership seam.
+Two distinct production defects, neither reachable from any genus-1 fixture in the retained set.
+
+That is the argument for constructing coverage witnesses before they are gated, and it is worth keeping visible
+while S5 remains unaccepted.

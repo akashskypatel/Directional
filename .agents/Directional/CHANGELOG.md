@@ -6,6 +6,29 @@ Independent genus-two re-derivation gives `V/E/F=120/366/244`, `chi=-2`, genus 2
 
 No package promotion, selector427, S5/A3 credit or stable repricing occurs. Accepted runtime authority remains package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**. Review consolidation folds superseded TB11 Review and adjudicated R4 per-turn documents into `M4_Consolidated_Record.md` §2.63 while retaining the TB11 runtime report, current R4 Review and exactly one CB18 plan.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld, no correction. **The
+component-ordering falsifier issued at `TB12-R2-REV` and re-issued at `TB12-R3-REV` is now fully discharged**, every
+sub-part covered by the four Gate-A controls: the fourth control's test-local subject derives an algebraic boundary
+row with six support steps and two closed successor components **before** atlas construction, so the expectation
+cannot restate emitted output; it checks independent canonical component order rather than support consumption
+alone; its rotation/swap case preserves the same support multiset **and each component's internal order**, changing
+only component order, and the validator rejects it as `IncompleteCycleBasis` — precisely the case a
+sorted-support-plus-modulo-four-total validator could not detect, which was the gap; and
+`PreservesSingleComponentCanonicalCycleSequence` guards CB16 contract item 5. Holding internal order fixed isolates
+component order as the only variable, so a pass could not be explained by any other difference. **RP-07 recovery
+rests on two independent lines:** those controls, and error-site advancement grounded in actual control flow —
+`FieldTransportAtlas.cpp:2189-2194` returns `IncompleteCycleBasis / CycleOrderingFailed` immediately on ordering
+failure, while the interior-singularity owner XOR executes only later at `:2472-2480`, so reaching
+`SingularityMismatch;sourceVertex=0` is possible only if the ordering gate passed. Accounting is correct by the
+criterion rather than by judgement: fail-fast left selector426 at **0/426 with every row UNEXECUTED**, so no
+accepted ordinal could have transitioned PASS → RED. `DEFN-OBS-04` stays **OPEN / NARROWED** with genus-two
+topology proved and the retained field not falsified, while admissible atlas authority and A3 reachability remain
+owed — neither half borrowed from the other. §7's explicit consideration and declining of the Review stop condition
+is good practice. Worth keeping visible while S5 is unaccepted: the genus-two witness has now surfaced
+`RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION` and, once corrected, advanced far enough to expose
+`RP-01 / AUTHORITY_DOMAIN_CONFLATION` at the singularity-ownership seam — two distinct production defects, neither
+reachable from any genus-1 fixture in the retained set. Accounting holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-18 — `M4-CP-SCALE-CB17`: synthetic multi-component test authority repaired; eight-target GMP compile GREEN
 
 ## 2026-09-18 — M4-CP-SCALE-TB12-R4-EXEC corrected Gate A green; S5 reaches SingularityMismatch RED
