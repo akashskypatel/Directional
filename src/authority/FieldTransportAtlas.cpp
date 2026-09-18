@@ -2005,8 +2005,7 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         }
         const FieldCycleWitness &cycle = cycles[boundaryCycle.index()];
         if (cycle.kind != FieldCycleKind::BoundaryLoop ||
-            cycle.topologyRegion != region ||
-            cycle.turningLift != supplied->second) {
+            cycle.topologyRegion != region) {
           return;
         }
         const auto owner = std::make_pair(region, boundaryCycle);
@@ -2558,7 +2557,6 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
           separatingFeatureRegionsByGlobalVertex.find(rawVertex);
       if (cycle.kind != FieldCycleKind::BoundaryLoop ||
           cycle.topologyRegion != owner.first ||
-          cycle.turningLift != numerator ||
           incident == separatingFeatureRegionsByGlobalVertex.end() ||
           incident->second.count(owner.first) == 0U) {
         return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
