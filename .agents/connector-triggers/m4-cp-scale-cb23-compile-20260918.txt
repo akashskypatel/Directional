@@ -1,0 +1,4 @@
+M4-CP-SCALE-CB23 compile trigger
+Semantic source: e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff
+Owner preflight: directional_surface_cell_authority_kernel_tests
+Standard target set follows in the reusable compile caller.
