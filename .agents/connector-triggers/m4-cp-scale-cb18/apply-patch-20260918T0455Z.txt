@@ -1,0 +1,4 @@
+purpose=M4-CP-SCALE-CB18 apply verified Drive patch
+caller_install=029af569df71dec23f41080ef771393904fa8ad7
+patch_sha256=aec7d3d7764f5916ee8f47ae471970643ca30eb18a65f3a2b5a920448839a389
+retry=0
