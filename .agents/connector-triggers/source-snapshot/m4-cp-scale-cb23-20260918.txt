@@ -1,0 +1,3 @@
+M4-CP-SCALE-CB23 source snapshot
+Purpose: materialize exact branch authority for local inspection.
+Parent authority: 6d138f644bae92c53003f4fcd01398cc610e848a
