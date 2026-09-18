@@ -8322,23 +8322,29 @@ cheap, and a failure would be diagnostic. `sourceFaces` has 189 consumer sites i
 **Prohibited:** folding this into the row400 recovery, whose evidential value depends on changing one variable
 (`LESSONS.md` 170); treating frozen rule 8 as a detector rather than an ownership rule.
 
-## `M4-CP-SCALE-TB13-REV-OBS-01` — CP-SCALE closes with two non-gated surfaces but only one carries a determination
+## `M4-CP-SCALE-TB13-REV-OBS-01` — WITHDRAWN by its author; S1 measurements were already published
 
-**Status.** OPEN / NON-GATING / owner `M4-CP4-DEFN`.
+**Status.** WITHDRAWN IN FULL at `M4-CP4-DEFN` review / NON-STABLE / no successor obligation.
 
-CP-SCALE closed with S2-arrival and S1 both outside the gating set, and `M4-CP-SCALE-TB13-REV` §6 assigned
-`M4-CP4-DEFN` to record whether S2-arrival is an M4-exit conjunct. No equivalent assignment was made for S1.
+Raised at `M4-CP-SCALE-TB13-REV` on the reasoning that CP-SCALE closed with both S2-arrival and S1 outside the
+gating set while only S2-arrival carried an M4-exit determination, and that S1's absence from selector427 left the
+frozen M4 exit clause unsatisfied. **The second half of that reasoning was wrong, and it carried the finding.**
 
-The S1 census identity exists — `M4CPScaleS1.ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral`
-(`tests/FieldAlignedCurveNetworkTests.cpp:15767`) — but is **absent from accepted selector427**. Its determinism
-and decision-neutrality are therefore not re-proved on the accepted package. CP-SCALE's own frozen exit tolerates
-this (`Architecture_M4_CP_SCALE_Frozen_Definitions.md` §2 makes S1 diagnostic/non-gating until a bound is frozen),
-so this is **not** a defect in the closure. The frozen M4 exit, however, speaks of S1 measurements being
-*published*, and whether measurements taken on superseded authority satisfy that clause is undecided.
+The clause in `Architecture_M4_DEFN_Frozen_Definitions.md:595` requires that **S1 measurements are published**. It
+does not require S1 to be gated, to hold a numeric bound, or to be re-proved on the accepted package. The
+measurements are published, and were before the finding was raised: `M4-CP-SCALE-TB1-EXEC` (2026-09-14) records
+raw S1 values for four witnesses without threshold interpretation — two-ring `9 / 105 / 107 / 107`, torus
+`0 / 0 / 0 / 0`, mechanical feature `60 / 1 / 1 / 1`, prescribed sphere `186 / 429 / 429 / 429` for
+`sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax`, with each witness's reached stage named.
+The clause is satisfied on its own terms.
 
-**Why:** a checkpoint that closes over an open question without naming it lets the question pass to the next
-checkpoint as an assumption rather than an obligation. §6 got this right for S2-arrival; S1 was left implicit.
+**Root cause of the finding.** It substituted a stronger clause than the one frozen — reading "published" as
+"re-proved on accepted authority" — and then found the stronger clause unmet. That is the same failure mode as
+asserting a policy violation from remembered rather than re-read text: the decisive move was an inference about
+what a frozen document *should* say, not a read of what it does say. `LESSONS.md` 109/131 apply; the operative
+rule is that a claim about a frozen clause must quote the clause.
 
-**How to apply:** `M4-CP4-DEFN` records an explicit determination for S1 — re-published on accepted authority,
-gated, or formally excused from the M4 exit clause — alongside the determination it already owes for S2-arrival.
-This is a recording duty, not a test-writing duty; it does not reopen CP-SCALE.
+**Disposition of the underlying question.** `M4-CP4-DEFN` §6 independently re-homed S1 calibration to `M8-CP2`,
+report-only and non-gating, with `429` and `4096` explicitly barred from becoming thresholds. That disposition is
+correct and needs no amendment from this entry. Nothing is owed to `M4-CP4-CB1`.
+

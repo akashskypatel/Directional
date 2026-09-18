@@ -182,3 +182,13 @@ the kind of question that should be decided explicitly rather than inherited.
 **Recommend extending the §6 `DEFN-OBS-01` treatment to S1:** `M4-CP4-DEFN` should record whether S1 measurements
 must be re-published on accepted authority, or gated, for M4 exit — the same determination it will make for
 S2-arrival. Recorded in the tracker so the symmetry is not lost between checkpoints.
+
+### V4 — WITHDRAWN at `M4-CP4-DEFN` review
+
+V4 above is **withdrawn in full by its author.** The frozen M4 exit clause
+(`Architecture_M4_DEFN_Frozen_Definitions.md:595`) requires that **S1 measurements are published** — not that S1
+be gated or re-proved on the accepted package. They are published: `M4-CP-SCALE-TB1-EXEC` (2026-09-14) records
+two-ring `9 / 105 / 107 / 107`, torus `0 / 0 / 0 / 0`, mechanical feature `60 / 1 / 1 / 1` and prescribed sphere
+`186 / 429 / 429 / 429`, without threshold interpretation. V4 read a stronger clause than the one frozen and then
+found the stronger clause unmet. The recommendation it made is void; no obligation passes to `M4-CP4-CB1`. See
+`M4-CP-SCALE-TB13-REV-OBS-01` in the tracker for the full withdrawal. V1–V3 stand unchanged.

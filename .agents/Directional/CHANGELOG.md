@@ -1,3 +1,24 @@
+## 2026-09-18 — `M4-CP4-DEFN` review: definitions upheld; `TB13-REV-OBS-01` withdrawn by its author
+
+Runtime-free review of the CP4 definition freeze. **Upheld; no amendment required.** Accepted authority unchanged
+at package `10565723112` / selector427 **427/427**; accounting **49 events / 14 categories / 35 recurrences**,
+produced-witness debt **5** (3 `G4-B002` gating in CP4, 2 `G4-B003` owned by M5 — the split reconciles).
+
+`Architecture_M4_CP4_Frozen_Definitions.md` §6 gives every carried item exactly one owner, which is the property
+whose absence forced the `TB12-R10-REV` ledger repair. Two dispositions are worth naming: `TB2-REV-OBS-02`, the
+`make_zero_transport_field` precondition audit carried without a slot across many turns, is now a **pre-CP4
+prerequisite** owned by `M4-CP4-CB1`; and the S2-arrival re-homing to `M8-CP2` is fenced by an explicit reopen
+trigger — a proposed exact fallback that changes a semantic contact decision stops and reopens the owning A2a/M3
+checkpoint rather than being absorbed as hardening. §5.5 keeps bit-width evidence report-only and bars `429` and
+`4096` from becoming thresholds.
+
+**`M4-CP-SCALE-TB13-REV-OBS-01` is withdrawn in full by its author.** The frozen M4 exit clause requires that S1
+measurements be *published*, not gated or re-proved on accepted authority; `M4-CP-SCALE-TB1-EXEC` (2026-09-14)
+published them for four witnesses without threshold interpretation. The finding substituted a stronger clause
+than the one frozen. V4 of the TB13 review record is marked withdrawn; V1–V3 stand.
+
+Exact successor: `M4-CP4-CB1` — Code + Build, compile/package only, selector427 byte-frozen, no runtime.
+
 ## 2026-09-18 — `M4-CP4-DEFN`: cumulative M4 exit definitions frozen; CB1 planned
 
 Runtime-free DEFN preserves accepted runtime authority package `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** (SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, exact selector426 prefix `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/281/75/41**). No compile, Directional runtime, selector mutation or product/test/fixture/build semantic change occurs.

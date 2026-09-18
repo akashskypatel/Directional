@@ -1,7 +1,8 @@
 ---TURN_STATUS---
 Turn: M4-CP4-DEFN
-Status: IN_PROGRESS
-Successor: M4-CP4-DEFN
+Status: COMPLETE
+Successor: M4-CP4-CB1
 Started at: 2026-09-18T22:18:00Z
-Ended at:
+Resumed at: 2026-09-18T23:02:14Z
+Ended at: 2026-09-18T23:11:47Z
 ---END_TURN_STATUS---
