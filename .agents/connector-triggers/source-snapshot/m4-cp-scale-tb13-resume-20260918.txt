@@ -1,4 +1,0 @@
-Turn: M4-CP-SCALE-TB13-EXEC
-Purpose: closeout source snapshot
-READ_MODE: snapshot
-RuntimeExecution: false
