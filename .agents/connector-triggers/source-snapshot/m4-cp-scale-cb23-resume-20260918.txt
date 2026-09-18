@@ -1,3 +1,0 @@
-M4-CP-SCALE-CB23 resume source snapshot
-Purpose: reconcile retained local WIP against current branch authority.
-Parent authority: b39881bb5df0dfaeab589d12e64663a8eadba785

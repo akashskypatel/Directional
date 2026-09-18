@@ -1,4 +1,0 @@
-M4-CP-SCALE-CB23 patch apply trigger
-Caller install: 258ba91ccefcdd73b8ac69abbfe9b4f9ff0963da
-Patch base: 8a49910bb31334cc26e056fb100ca24f2be8bd0b
-Patch SHA-256: ebaca5c8d29ed92293bc942a0fc80f99b009040dc28275863d192593b52ef11b

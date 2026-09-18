@@ -1,3 +1,0 @@
-M4-CP-SCALE-CB23 resume reconciliation snapshot
-Purpose: exact current branch authority after resume beacon.
-Parent authority: 866ad97b8ea5a677fd6cb5f49650741cae0d2b86
