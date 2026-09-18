@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-TB13-EXEC`: selector427 cumulative artifact-only gate is 427/427 GREEN; Review required
+
+TB13 consumes immutable CB24 artifact `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` through frozen harness `1-KvdWwIBT81skkdNudg5xOkrQp5qjasA` (16,485 bytes, SHA-256 `b34ea0caf1b27016d84124452dc13e5bb0a3105556a24041a47a09020e1697aa`). Run/job `35393657851 / 105757517161` verifies selector427 **427 LF rows** / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, exact selector426 prefix, ownership **30/281/75/41**, then executes all **427/427 PASS** in exact file order as fresh one-identity processes. RED/SKIP/crash/timeout/selection mismatch/unexecuted counts are all zero; benchmark count is zero and exact package/source/execution-view pre/post byte+mode censuses match.
+
+Result/log artifacts `10566648975 / 10567158604` have provider SHA-256 `3dd23c08cad9eccd49e61fae4cd14cb735bccc5a00ef23f2192af339aef1f366 / f7987aa4219881b966f324dff939294585fb3992980ebf730d0dbb9889b1cda6`; final ledger SHA-256 is `2a71510891fd7cc9c4e33483a908ce4505c4bcd315053ea6f72f7055322abfed`. No configure/compile/relink/generated-discovery/repair/package/mode/source/test/fixture/selector mutation occurred. No accepted-green regression is observed; stable accounting remains **49 / 14 / 35**, debt **5**.
+
+EXEC does not promote candidate package `10565723112` or grant cumulative S5 selector credit. Accepted runtime authority remains R10 package `10560828304` / selector426 **426/426** until mandatory runtime-free `M4-CP-SCALE-TB13-REV` independently adjudicates the evidence. `M4-CP-SCALE-TB12-R10-REV-OBS-01` now has publication + fresh-runtime legs complete; only Review remains.
+
 ## 2026-09-18 — `M4-CP-SCALE-CB24`: selector427 published exactly; GMP compile/package GREEN; TB13 next
 
 CB24 completes the publication-only leg authorized by R10 Review. `Architecture_M4_CP_SCALE_CB24_Required_Green_Selector_427.txt` is exact selector426 plus `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`: **427 LF rows**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, exact first426 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, owners **30/281/75/41**. Product/test/fixture/benchmark/CMake semantics and selector426 remain unchanged.
