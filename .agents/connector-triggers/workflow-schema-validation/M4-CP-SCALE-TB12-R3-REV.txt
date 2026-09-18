@@ -1,0 +1,5 @@
+Turn: M4-CP-SCALE-TB12-R3-REV
+Purpose: validate exact closeout Drive-apply workflow draft before publication
+Draft: .agents/Directional/turn-payloads/agent-tb12-r3-rev-closeout-apply.yml
+Patch SHA-256: 2a48d662dcf88739780dd404c6c1ea65fddf7bf632ae4c6a2c45b42e96d438db
+Retry: 0
