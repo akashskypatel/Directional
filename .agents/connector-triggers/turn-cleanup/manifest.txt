@@ -1,0 +1,7 @@
+.agents/Directional/turn-payloads/tb12-r4-exec.py
+.agents/Directional/turn-payloads/tb12_r4_spec.py
+.agents/connector-triggers/tb12-r4-exec/M4-CP-SCALE-TB12-R4-EXEC.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r4-exec-start.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r4-exec-resume.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r4-exec-post-closeout.txt
+.agents/connector-triggers/tb12-r4-closeout-drive-apply.txt
