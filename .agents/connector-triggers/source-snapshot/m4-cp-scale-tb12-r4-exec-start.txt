@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB12-R4-EXEC
-source_ref=46bbc62a1018b6278ddd8229b7d323681845fad6
-purpose=start-of-turn-snapshot-reconciliation

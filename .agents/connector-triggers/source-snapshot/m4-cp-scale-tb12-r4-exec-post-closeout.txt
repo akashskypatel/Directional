@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB12-R4-EXEC
-purpose=post-closeout-doc-reconciliation
-base_head=3a94dd8fa293c81266daa241b5df9686482c66c1
