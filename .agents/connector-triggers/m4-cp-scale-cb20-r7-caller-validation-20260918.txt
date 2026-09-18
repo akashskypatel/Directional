@@ -1,5 +1,5 @@
-purpose=M4-CP-SCALE-CB20 validate exact R7 caller draft before publication
+purpose=M4-CP-SCALE-CB20 validate docs apply caller draft before publication
 caller_install=aa8f6b8c5092143fedd31e9a07b71259f5b40dee
-draft_blob=a9705992bf85bfe8cc0caca7e8b6a94e099d89d5
+draft_blob=b33e2f0141415abfe3b89e57144b5c34fb077503
 r7_execution_marker_must_remain_absent=true
-retry=0
+retry=1
