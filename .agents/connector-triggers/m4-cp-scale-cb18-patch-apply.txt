@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-CB18
+purpose=apply verified work-preservation patch
+base_sha=a4c29483b5f564f01245ca83dec0924f12c83352
+retry=0
