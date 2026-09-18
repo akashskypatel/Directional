@@ -2431,31 +2431,34 @@ TEST(FieldTransportAtlas, ClassifiesHardFeaturesAsNontraversableCuts) {
 
 TEST(FieldTransportAtlas,
      SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle) {
-  constexpr int kSegments = 8;
-  constexpr int kTargetRing = 1;
-  constexpr int kInteriorRing = 2;
-  const int targetVertex = kTargetRing * kSegments;
-  const int interiorVertex = kInteriorRing * kSegments;
-  const TriMesh mesh = make_five_ring_annulus();
+  constexpr int targetVertex = 4;
+  const TriMesh mesh = make_skew_four_triangle_fan();
   ASSERT_EQ(0, mesh.isBoundaryVertex(targetVertex));
-  ASSERT_EQ(0, mesh.isBoundaryVertex(interiorVertex));
 
   const auto sourceEdge = [&](const int first, const int second) {
     return SourceEdgeTopologyKey::from_indices(
                first, second, static_cast<std::size_t>(mesh.V.rows()))
         .value();
   };
-  std::set<SourceEdgeTopologyKey> hardEdges;
-  for (const int ring : {1, 3}) {
-    for (int segment = 0; segment < kSegments; ++segment) {
-      hardEdges.insert(sourceEdge(
-          ring * kSegments + segment,
-          ring * kSegments + (segment + 1) % kSegments));
-    }
-  }
+  const std::array<SourceEdgeTopologyKey, 2> targetHardEdges{
+      sourceEdge(1, targetVertex), sourceEdge(3, targetVertex)};
+  const std::set<SourceEdgeTopologyKey> hardEdges(targetHardEdges.begin(),
+                                                   targetHardEdges.end());
+  ASSERT_EQ(2U, hardEdges.size());
+
   const auto sourceAuthority = make_source_authority(mesh, hardEdges);
   ASSERT_TRUE(sourceAuthority.has_value());
-  ASSERT_EQ(sourceAuthority->regions().size(), 3U);
+  ASSERT_EQ(2U, sourceAuthority->regions().size());
+
+  std::set<std::set<int>> regionFaceSets;
+  for (const auto &region : sourceAuthority->regions()) {
+    std::set<int> rows;
+    for (const SourceFaceId row : sourceAuthority->rows_for_region(region.id())) {
+      rows.insert(static_cast<int>(row.index()));
+    }
+    regionFaceSets.insert(std::move(rows));
+  }
+  EXPECT_EQ((std::set<std::set<int>>{{0, 3}, {1, 2}}), regionFaceSets);
 
   const auto sourceEdgeRow = [&](const SourceEdgeTopologyKey &key) {
     for (int edge = 0; edge < mesh.EV.rows(); ++edge) {
@@ -2463,14 +2466,14 @@ TEST(FieldTransportAtlas,
     }
     return -1;
   };
-  const std::array<SourceEdgeTopologyKey, 2> targetHardEdges{
-      sourceEdge(targetVertex, kTargetRing * kSegments + 1),
-      sourceEdge(targetVertex,
-                 kTargetRing * kSegments + (kSegments - 1))};
   std::set<directional::authority::TopologyRegionId> incidentRegions;
-  std::size_t preCb18LocalBarrierEdgeCount = 0U;
+  std::size_t sameRegionTargetHardEdgeCount = 0U;
   for (const SourceEdgeTopologyKey &hardEdge : targetHardEdges) {
     ASSERT_NE(hardEdges.end(), hardEdges.find(hardEdge));
+    EXPECT_TRUE(hardEdge.first().index() ==
+                    static_cast<std::size_t>(targetVertex) ||
+                hardEdge.second().index() ==
+                    static_cast<std::size_t>(targetVertex));
     const int edge = sourceEdgeRow(hardEdge);
     ASSERT_GE(edge, 0);
     ASSERT_GE(mesh.EF(edge, 0), 0);
@@ -2484,94 +2487,35 @@ TEST(FieldTransportAtlas,
     EXPECT_NE(firstRegion, secondRegion);
     incidentRegions.insert(firstRegion);
     incidentRegions.insert(secondRegion);
-    preCb18LocalBarrierEdgeCount += firstRegion == secondRegion ? 1U : 0U;
+    sameRegionTargetHardEdgeCount += firstRegion == secondRegion ? 1U : 0U;
   }
-  ASSERT_GE(incidentRegions.size(), 2U);
-  EXPECT_EQ(0U, preCb18LocalBarrierEdgeCount)
-      << "pre-CB18 local barrierVertices only includes hard edges whose two "
-         "incident faces belong to one topology region";
-
-  CrossFieldResult field = make_zero_transport_field(mesh);
-  constexpr double kFieldAngle = 0.173;
-  const Eigen::RowVector3d primary(std::cos(kFieldAngle),
-                                   std::sin(kFieldAngle), 0.0);
-  const Eigen::RowVector3d secondary(-std::sin(kFieldAngle),
-                                     std::cos(kFieldAngle), 0.0);
-  for (int face = 0; face < mesh.F.rows(); ++face) {
-    field.primaryDirections.row(face) = primary;
-    field.secondaryDirections.row(face) = secondary;
-  }
-  const SourceEdgeTopologyKey transportEdge =
-      sourceEdge(targetVertex, interiorVertex);
-  const int transportEdgeRow = sourceEdgeRow(transportEdge);
-  ASSERT_GE(transportEdgeRow, 0);
-  ASSERT_GE(mesh.EF(transportEdgeRow, 0), 0);
-  ASSERT_GE(mesh.EF(transportEdgeRow, 1), 0);
-  const int targetCycleSign =
-      mesh.EV(transportEdgeRow, 0) == targetVertex ? -1 : 1;
-  field.matching(transportEdgeRow) = targetCycleSign;
-  field.effort(transportEdgeRow) =
-      static_cast<double>(targetCycleSign) * 2.0 * std::numbers::pi;
-  CrossFieldEdgeTransition *transition = find_transition(
-      field, transportEdge, static_cast<std::size_t>(mesh.V.rows()));
-  ASSERT_NE(nullptr, transition);
-  transition->matching = targetCycleSign;
-  transition->effort = field.effort(transportEdgeRow);
-
-  directional::PCFaceTangentBundle bundle;
-  ASSERT_NO_THROW(bundle.init(mesh));
-  Eigen::SparseMatrix<double, Eigen::RowMajor> cycleRows = bundle.cycles;
-  const auto independentlyCertifiedIndex = [&](const int vertex) {
-    const int cycle = bundle.local2Cycle(vertex);
-    EXPECT_GE(cycle, 0);
-    EXPECT_LT(cycle, cycleRows.rows());
-    double orientedEffort = 0.0;
-    for (Eigen::SparseMatrix<double, Eigen::RowMajor>::InnerIterator it(
-             cycleRows, cycle);
-         it; ++it) {
-      if (std::abs(it.value()) < 1.0e-12) continue;
-      EXPECT_GE(it.col(), 0);
-      EXPECT_LT(it.col(), bundle.innerAdjacencies.size());
-      const int sourceEdgeIndex = bundle.innerAdjacencies(it.col());
-      orientedEffort += it.value() * field.effort(sourceEdgeIndex);
-    }
-    const double exactIndex =
-        (orientedEffort +
-         static_cast<double>(directional::fields::kCrossFieldDegree) *
-             bundle.cycleCurvatures(cycle)) /
-        (2.0 * std::numbers::pi);
-    EXPECT_TRUE(std::isfinite(exactIndex));
-    EXPECT_NEAR(std::round(exactIndex), exactIndex, 1.0e-9);
-    return static_cast<int>(std::llround(exactIndex));
-  };
-  const int targetIndex = independentlyCertifiedIndex(targetVertex);
-  const int interiorIndex = independentlyCertifiedIndex(interiorVertex);
-  ASSERT_EQ(1, targetIndex);
-  ASSERT_EQ(-1, interiorIndex);
-  field.singularCycles.resize(2);
-  field.singularIndices.resize(2);
-  field.singularCycles << targetVertex, interiorVertex;
-  field.singularIndices << targetIndex, interiorIndex;
-
+  ASSERT_EQ(2U, incidentRegions.size());
+  EXPECT_EQ(0U, sameRegionTargetHardEdgeCount)
+      << "the target hard edges must be separating cuts, not same-region "
+         "slits";
   const auto expectedOwnerRegion = *incidentRegions.begin();
-  const int transportFirstFace = mesh.EF(transportEdgeRow, 0);
-  const int transportSecondFace = mesh.EF(transportEdgeRow, 1);
-  const auto transportRegion = sourceAuthority->region_for_row(
-      SourceFaceId::from_index(
-          transportFirstFace, static_cast<std::size_t>(mesh.F.rows()))
-          .value());
-  ASSERT_EQ(transportRegion,
-            sourceAuthority->region_for_row(
-                SourceFaceId::from_index(
-                    transportSecondFace,
-                    static_cast<std::size_t>(mesh.F.rows()))
-                    .value()));
-  EXPECT_NE(expectedOwnerRegion, transportRegion);
-  EXPECT_NE(incidentRegions.end(), incidentRegions.find(transportRegion));
+
+  CrossFieldResult field;
+  ASSERT_NO_FATAL_FAILURE(make_skew_index_one_singularity_field(mesh, field));
+  ASSERT_EQ(field.singularCycles.size(), field.singularIndices.size());
+  std::size_t interiorSingularityCount = 0U;
+  std::optional<int> targetIndex;
+  for (Eigen::Index row = 0; row < field.singularCycles.size(); ++row) {
+    const int vertex = field.singularCycles(row);
+    ASSERT_GE(vertex, 0);
+    ASSERT_LT(vertex, mesh.V.rows());
+    if (mesh.isBoundaryVertex(vertex) != 0) continue;
+    ++interiorSingularityCount;
+    EXPECT_EQ(targetVertex, vertex);
+    targetIndex = field.singularIndices(row);
+  }
+  ASSERT_EQ(1U, interiorSingularityCount);
+  ASSERT_TRUE(targetIndex.has_value());
+  ASSERT_EQ(1, *targetIndex);
 
   const std::vector<SourceFaceId> expectedOwnerRows =
       sourceAuthority->rows_for_region(expectedOwnerRegion);
-  ASSERT_FALSE(expectedOwnerRows.empty());
+  ASSERT_EQ(2U, expectedOwnerRows.size());
   std::set<int> expectedOwnerGlobalVertexSet;
   for (const SourceFaceId row : expectedOwnerRows) {
     ASSERT_LT(row.index(), static_cast<std::size_t>(mesh.F.rows()));
@@ -2594,6 +2538,10 @@ TEST(FieldTransportAtlas,
   }
   Eigen::MatrixXi expectedOwnerFaces(
       static_cast<Eigen::Index>(expectedOwnerRows.size()), 3);
+  Eigen::MatrixXd expectedOwnerPrimary(
+      static_cast<Eigen::Index>(expectedOwnerRows.size()), 3);
+  Eigen::MatrixXd expectedOwnerSecondary(
+      static_cast<Eigen::Index>(expectedOwnerRows.size()), 3);
   for (std::size_t localFace = 0; localFace < expectedOwnerRows.size();
        ++localFace) {
     const int globalFace = static_cast<int>(expectedOwnerRows[localFace].index());
@@ -2604,62 +2552,60 @@ TEST(FieldTransportAtlas,
       expectedOwnerFaces(static_cast<Eigen::Index>(localFace), corner) =
           localVertex->second;
     }
+    expectedOwnerPrimary.row(static_cast<Eigen::Index>(localFace)) =
+        field.primaryDirections.row(globalFace);
+    expectedOwnerSecondary.row(static_cast<Eigen::Index>(localFace)) =
+        field.secondaryDirections.row(globalFace);
   }
   TriMesh expectedOwnerMesh;
   ASSERT_NO_THROW(
       expectedOwnerMesh.set_mesh(expectedOwnerVertices, expectedOwnerFaces));
-  EXPECT_EQ(sourceAuthority->region(expectedOwnerRegion).euler_characteristic(),
-            expectedOwnerMesh.V.rows() - expectedOwnerMesh.EV.rows() +
-                expectedOwnerMesh.F.rows());
-  EXPECT_EQ(sourceAuthority->region(expectedOwnerRegion).boundary_loop_count(),
-            static_cast<int>(expectedOwnerMesh.boundaryLoops.size()));
+  EXPECT_EQ(1, expectedOwnerMesh.V.rows() - expectedOwnerMesh.EV.rows() +
+                   expectedOwnerMesh.F.rows());
+  EXPECT_EQ(1,
+            sourceAuthority->region(expectedOwnerRegion).euler_characteristic());
+  ASSERT_EQ(1U, expectedOwnerMesh.boundaryLoops.size());
+  EXPECT_EQ(1,
+            sourceAuthority->region(expectedOwnerRegion).boundary_loop_count());
+
+  std::size_t ownerInteriorVertexCount = 0U;
+  for (int vertex = 0; vertex < expectedOwnerMesh.V.rows(); ++vertex) {
+    ownerInteriorVertexCount +=
+        expectedOwnerMesh.isBoundaryVertex(vertex) == 0 ? 1U : 0U;
+  }
+  EXPECT_EQ(0U, ownerInteriorVertexCount);
 
   const auto targetLocal = expectedOwnerLocalByGlobal.find(targetVertex);
   ASSERT_NE(expectedOwnerLocalByGlobal.end(), targetLocal);
-  std::optional<std::size_t> targetBoundaryLoop;
-  for (std::size_t loop = 0; loop < expectedOwnerMesh.boundaryLoops.size();
-       ++loop) {
-    const auto &boundary = expectedOwnerMesh.boundaryLoops[loop];
-    if (std::find(boundary.begin(), boundary.end(), targetLocal->second) ==
-        boundary.end()) {
-      continue;
-    }
-    ASSERT_FALSE(targetBoundaryLoop.has_value());
-    targetBoundaryLoop = loop;
-  }
-  ASSERT_TRUE(targetBoundaryLoop.has_value());
+  const auto &ownerBoundary = expectedOwnerMesh.boundaryLoops.front();
+  ASSERT_NE(ownerBoundary.end(),
+            std::find(ownerBoundary.begin(), ownerBoundary.end(),
+                      targetLocal->second));
 
-  CrossFieldResult expectedOwnerField =
-      make_zero_transport_field(expectedOwnerMesh);
-  for (std::size_t localFace = 0; localFace < expectedOwnerRows.size();
-       ++localFace) {
-    const int globalFace = static_cast<int>(expectedOwnerRows[localFace].index());
-    expectedOwnerField.primaryDirections.row(
-        static_cast<Eigen::Index>(localFace)) =
-        field.primaryDirections.row(globalFace);
-    expectedOwnerField.secondaryDirections.row(
-        static_cast<Eigen::Index>(localFace)) =
-        field.secondaryDirections.row(globalFace);
-  }
+  CrossFieldResult expectedOwnerField;
+  ASSERT_NO_THROW({
+    directional::PCFaceTangentBundle ownerBundle;
+    ownerBundle.init(expectedOwnerMesh);
+    directional::CartesianField rawOwnerField;
+    rawOwnerField.init(ownerBundle, directional::fieldTypeEnum::RAW_FIELD,
+                       directional::fields::kCrossFieldDegree);
+    rawOwnerField.set_extrinsic_field(directional::fields::make_raw_cross_field(
+        expectedOwnerMesh, expectedOwnerPrimary, expectedOwnerSecondary));
+    expectedOwnerField = directional::fields::finalize_cross_field_result(
+        rawOwnerField, false, true);
+  });
   const auto expectedOwnerCycleFacts =
       independent_cycle_facts(expectedOwnerMesh, expectedOwnerField);
   ASSERT_TRUE(expectedOwnerCycleFacts.has_value());
-  std::size_t ownerInteriorCycleCount = 0U;
-  for (int vertex = 0; vertex < expectedOwnerMesh.V.rows(); ++vertex) {
-    if (expectedOwnerMesh.isBoundaryVertex(vertex) == 0) {
-      ++ownerInteriorCycleCount;
-    }
-  }
-  const std::size_t expectedOwnerCycleRow =
-      ownerInteriorCycleCount + *targetBoundaryLoop;
-  ASSERT_LT(expectedOwnerCycleRow, expectedOwnerCycleFacts->size());
+  ASSERT_EQ(1U, expectedOwnerCycleFacts->size());
   const IndependentCycleRow &expectedRelativeBoundary =
-      expectedOwnerCycleFacts->at(expectedOwnerCycleRow);
+      expectedOwnerCycleFacts->front();
   ASSERT_EQ(FieldCycleKind::BoundaryLoop, expectedRelativeBoundary.kind);
-  const int expectedRelativeLift = expectedRelativeBoundary.turningLift;
-  EXPECT_NE(targetIndex, expectedRelativeLift)
+  ASSERT_EQ(4, expectedRelativeBoundary.turningLift);
+  ASSERT_NE(*targetIndex, expectedRelativeBoundary.turningLift)
       << "separating ownership is source-incidence/containment authority; "
          "the region-relative boundary lift is not the global vertex index";
+  const int expectedRelativeLift = expectedRelativeBoundary.turningLift;
 
   auto built =
       FieldTransportAtlas::make(mesh, *sourceAuthority, hardEdges, field);
@@ -2714,52 +2660,74 @@ TEST(FieldTransportAtlas,
     EXPECT_EQ(0U, region.unboundSingularityCount);
   }
 
+  const std::vector<SourceFaceTopologyKey> baselineTopology =
+      independent_row_topology(mesh, *sourceAuthority);
+  ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()), baselineTopology.size());
+  std::map<SourceFaceTopologyKey,
+           std::pair<Eigen::RowVector3d, Eigen::RowVector3d>>
+      semanticDirections;
+  for (int row = 0; row < mesh.F.rows(); ++row) {
+    const auto [it, inserted] = semanticDirections.emplace(
+        baselineTopology[static_cast<std::size_t>(row)],
+        std::make_pair(Eigen::RowVector3d(field.primaryDirections.row(row)),
+                       Eigen::RowVector3d(field.secondaryDirections.row(row))));
+    EXPECT_TRUE(inserted);
+    (void)it;
+  }
+
   Eigen::MatrixXi permutedFaces(mesh.F.rows(), 3);
   for (int row = 0; row < mesh.F.rows(); ++row) {
     permutedFaces.row(row) = mesh.F.row(mesh.F.rows() - 1 - row);
   }
   TriMesh permutedMesh;
   ASSERT_NO_THROW(permutedMesh.set_mesh(mesh.V, permutedFaces));
-  const auto permutedAuthority =
-      make_source_authority(permutedMesh, hardEdges);
+  const auto permutedAuthority = make_source_authority(permutedMesh, hardEdges);
   ASSERT_TRUE(permutedAuthority.has_value());
   EXPECT_EQ(sourceAuthority->regions(), permutedAuthority->regions())
       << "topology-region authority IDs must survive source-face row storage "
          "permutation";
 
-  const auto permutedSourceEdgeRow = [&](const SourceEdgeTopologyKey &key) {
-    for (int edge = 0; edge < permutedMesh.EV.rows(); ++edge) {
-      if (edge_key(permutedMesh, edge) == key) return edge;
-    }
-    return -1;
-  };
-  CrossFieldResult permutedField = make_zero_transport_field(permutedMesh);
-  for (int face = 0; face < permutedMesh.F.rows(); ++face) {
-    permutedField.primaryDirections.row(face) = primary;
-    permutedField.secondaryDirections.row(face) = secondary;
+  Eigen::MatrixXd permutedPrimary(permutedMesh.F.rows(), 3);
+  Eigen::MatrixXd permutedSecondary(permutedMesh.F.rows(), 3);
+  for (int row = 0; row < permutedMesh.F.rows(); ++row) {
+    const SourceFaceId rowId = SourceFaceId::from_index(
+        row, static_cast<std::size_t>(permutedMesh.F.rows())).value();
+    const SourceFaceTopologyKey &topology =
+        permutedAuthority->topology_for_row(rowId);
+    const auto directions = semanticDirections.find(topology);
+    ASSERT_NE(semanticDirections.end(), directions);
+    permutedPrimary.row(row) = directions->second.first;
+    permutedSecondary.row(row) = directions->second.second;
   }
-  const int permutedTransportEdgeRow =
-      permutedSourceEdgeRow(transportEdge);
-  ASSERT_GE(permutedTransportEdgeRow, 0);
-  ASSERT_GE(permutedMesh.EF(permutedTransportEdgeRow, 0), 0);
-  ASSERT_GE(permutedMesh.EF(permutedTransportEdgeRow, 1), 0);
-  const int permutedTargetCycleSign =
-      permutedMesh.EV(permutedTransportEdgeRow, 0) == targetVertex ? -1 : 1;
-  permutedField.matching(permutedTransportEdgeRow) = permutedTargetCycleSign;
-  permutedField.effort(permutedTransportEdgeRow) =
-      static_cast<double>(permutedTargetCycleSign) * 2.0 *
-      std::numbers::pi;
-  CrossFieldEdgeTransition *permutedTransition = find_transition(
-      permutedField, transportEdge,
-      static_cast<std::size_t>(permutedMesh.V.rows()));
-  ASSERT_NE(nullptr, permutedTransition);
-  permutedTransition->matching = permutedTargetCycleSign;
-  permutedTransition->effort =
-      permutedField.effort(permutedTransportEdgeRow);
-  permutedField.singularCycles.resize(2);
-  permutedField.singularIndices.resize(2);
-  permutedField.singularCycles << targetVertex, interiorVertex;
-  permutedField.singularIndices << targetIndex, interiorIndex;
+
+  CrossFieldResult permutedField;
+  ASSERT_NO_THROW({
+    directional::PCFaceTangentBundle permutedBundle;
+    permutedBundle.init(permutedMesh);
+    directional::CartesianField rawPermutedField;
+    rawPermutedField.init(permutedBundle, directional::fieldTypeEnum::RAW_FIELD,
+                          directional::fields::kCrossFieldDegree);
+    rawPermutedField.set_extrinsic_field(
+        directional::fields::make_raw_cross_field(
+            permutedMesh, permutedPrimary, permutedSecondary));
+    permutedField = directional::fields::finalize_cross_field_result(
+        rawPermutedField, false, true);
+  });
+  ASSERT_TRUE(permutedField.matchingComputed);
+  ASSERT_TRUE(permutedField.singularitiesComputed);
+  ASSERT_EQ(permutedField.singularCycles.size(),
+            permutedField.singularIndices.size());
+  std::size_t permutedInteriorSingularityCount = 0U;
+  for (Eigen::Index row = 0; row < permutedField.singularCycles.size(); ++row) {
+    const int vertex = permutedField.singularCycles(row);
+    ASSERT_GE(vertex, 0);
+    ASSERT_LT(vertex, permutedMesh.V.rows());
+    if (permutedMesh.isBoundaryVertex(vertex) != 0) continue;
+    ++permutedInteriorSingularityCount;
+    EXPECT_EQ(targetVertex, vertex);
+    EXPECT_EQ(1, permutedField.singularIndices(row));
+  }
+  ASSERT_EQ(1U, permutedInteriorSingularityCount);
 
   auto permutedBuilt = FieldTransportAtlas::make(
       permutedMesh, *permutedAuthority, hardEdges, permutedField);
@@ -2772,8 +2740,8 @@ TEST(FieldTransportAtlas,
         return candidate.sourceVertex.index() ==
                static_cast<std::size_t>(targetVertex);
       });
-  ASSERT_NE(permutedBuilt.value().singularities().end(),
-            permutedSingularity);
+  ASSERT_NE(permutedBuilt.value().singularities().end(), permutedSingularity);
+  EXPECT_EQ(1, permutedSingularity->indexNumerator);
   ASSERT_TRUE(permutedSingularity->topologyRegion.has_value());
   ASSERT_TRUE(permutedSingularity->localCycle.has_value());
   EXPECT_EQ(expectedOwnerRegion, *permutedSingularity->topologyRegion);
@@ -2786,9 +2754,23 @@ TEST(FieldTransportAtlas,
       permutedBuilt.value().cycles()[permutedSingularity->localCycle->index()];
   EXPECT_EQ(FieldCycleKind::BoundaryLoop, permutedOwnerCycle.kind);
   EXPECT_EQ(expectedOwnerRegion, permutedOwnerCycle.topologyRegion);
+  EXPECT_EQ(4, permutedOwnerCycle.turningLift);
   EXPECT_EQ(expectedRelativeLift, permutedOwnerCycle.turningLift);
   EXPECT_EQ(FieldSingularityFact::PortPolicy::BarrierAbsorbed,
             permutedSingularity->portPolicy);
+  const auto permutedOriginAttachments = std::count_if(
+      permutedBuilt.value()
+          .branch_topology()
+          .singularity_port_attachments()
+          .begin(),
+      permutedBuilt.value()
+          .branch_topology()
+          .singularity_port_attachments()
+          .end(),
+      [&](const FieldSingularityPortAttachment &attachment) {
+        return attachment.singularity == permutedSingularity->id;
+      });
+  EXPECT_EQ(0, permutedOriginAttachments);
 }
 
 TEST(FieldTransportAtlas, RejectsNonIntegralLiftAndSingularityMismatch) {
