@@ -1,0 +1,4 @@
+purpose=M4-CP-SCALE-CB19 refresh after concurrent control-plane changes
+expected_head=3887fcc8f967f7cb2f2a0a3e66f5b22a70dab9e6
+read_mode=snapshot
+retry=0
