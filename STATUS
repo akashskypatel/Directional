@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M4-CP-SCALE-TB12-R10-EXEC
-Status: COMPLETE
+Turn: M4-CP-SCALE-TB12-R10-REV
+Status: IN_PROGRESS
 Successor: M4-CP-SCALE-TB12-R10-REV
-Started at: 2026-09-18T18:38:58Z
-Resumed at: 2026-09-18T19:05:14Z
-Ended at: 2026-09-18T19:15:05Z
+Started at: 2026-09-18T19:16:54Z
+Resumed at: 
+Ended at: 
 ---END_TURN_STATUS---
