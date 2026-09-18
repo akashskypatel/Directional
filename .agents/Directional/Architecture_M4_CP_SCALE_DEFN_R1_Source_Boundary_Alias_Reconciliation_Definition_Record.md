@@ -3,6 +3,8 @@
 **Turn:** `M4-CP-SCALE-DEFN-R1`
 **Disposition:** COMPLETE / DEFINITION FROZEN / RUNTIME-FREE
 **Exact successor:** `M4-CP-SCALE-CB23`
+
+**Post-definition status amendment (R10 Review, 2026-09-18):** the historical CB23 successor was consumed and R10 independently recovery-proved D1-D5. Package `10560828304` is now accepted under unchanged selector426; R9/R4 `RP-01` are closed recovery-proved/non-stable and `DEFN-OBS-04` is discharged. S5 is focused-accepted for publication. The historical open-status/successor statements below remain as DEFN-R1 turn provenance; current authority is `Architecture_M4_CP_SCALE_Frozen_Definitions.md` plus `Architecture_M4_CP_SCALE_TB12_R10_Review_Record.md`. Exact current successor is publication-only `M4-CP-SCALE-CB24`.
 **Accepted runtime authority unchanged:** artifact `10473134357`, semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47`, selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**.
 **Stable accounting unchanged:** **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
 

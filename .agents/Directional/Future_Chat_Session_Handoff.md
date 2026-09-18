@@ -4,38 +4,40 @@
 
 ## Current authority
 
-Accepted M4 runtime authority remains TB11 package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5** until Review adjudicates the fresh candidate evidence.
+`M4-CP-SCALE-TB12-R10-REV` promotes package `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` as accepted current M4 runtime authority under unchanged selector426 **426/426**, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; exact first425 remains `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
 
-CB23 candidate artifact `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` now has valid all-green artifact-only R10 evidence but is **not yet promoted by EXEC**. R10 run/job `35382311474 / 105721178393` passes Gate C0 **3/3**, inherited Gate A **4/4**, production S5 **1/1**, selector426 **426/426**, total **434/434 PASS**, with exact immutable postflight and benchmark/build/configure/relink/discovery/repair/mutation all zero. Result/log artifacts are `10562622856 / 10562292934`; ledger SHA-256 is `32c57323bc2d458ceb38226dd0d0517798e413b0a1a477dd0d4fc17f6d608559`.
+R10 run/job `35382311474 / 105721178393` is independently accepted evidence: CB23 authority controls **3/3**, inherited Gate A **4/4**, production S5 **1/1**, selector426 **426/426**, total **434/434 PASS**, exact immutable postflight. Result/log artifacts `10562622856 / 10562292934`; ledger SHA-256 `32c57323bc2d458ceb38226dd0d0517798e413b0a1a477dd0d4fc17f6d608559`.
 
-`M4-CP-SCALE-TB12-R9-EXEC-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` remains OPEN only because mandatory Review owns closure/promotion. R8 `RP-02` remains closed. No selector427.
-
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R10-EXEC`
-
-Frozen harness authority is Drive `1BE8aLC5OEhBZGhrJ1Zd88eUhaiigeMdi`, 18,542 bytes, SHA-256 `e61ea1ced3936f2e0251d74816deb30a16835c9857fc0f5b50eaa85ef9f21e83`. Exact package preflight re-proved artifact SHA `e84692e13d6de3b7bec46d8d5433b6b1c196e451187d5fb3a0a3fd6bb1d47ea1`, manifest 28/28, source archive `7ad520fc87b184d04d2aa94b0a0f51782bbc6a6c7e95df92edfd84012788f83f`, GMP/GMPXX, 0755 binaries, selector426/first425 and retained genus-two bytes. Exact postflight matched all package/source/execution-view censuses.
-
-Production S5 PASS reports exact genus-two topology `120/366/244`, `chi=-2`, genus `2`, matching independent/production atlas digest `6035809732721064170`, and `a3Produced=true` with A3 digest `15065394778054153947`, 14 regions / 92 arcs / 76 rotations. EXEC records that evidence without deciding final acceptance meaning.
+R9 and production R4 `RP-01 AUTHORITY_DOMAIN_CONFLATION` obligations are **CLOSED / RECOVERY PROVED / NON-STABLE**. `M4-CP-SCALE-DEFN-OBS-04` is **DISCHARGED**. R8 RP-02 remains closed. S5 is **FOCUSED ACCEPTED / FOR PUBLICATION**; it is not cumulative selector credit because the identity is outside selector426. No selector427 exists yet.
 
 ## Exact next turn
 
-`M4-CP-SCALE-TB12-R10-REV` — independent runtime-free Review of the all-green R10 candidate.
+`M4-CP-SCALE-CB24` — publication-only Code + Build under `Architecture_M4_CP_SCALE_CB24_S5_Selector_Publication_Code_Build_Plan.md`.
 
-### Carried CP-SCALE obligations
+CB24 must publish selector427 as exact selector426 bytes plus one row:
 
-- `M4-CP-SCALE-TB12-R4-EXEC-CAND-01 / RP-01` — production S5 recovery evidence now exists in R10; closure remains Review-owned.
-- `M4-CP-SCALE-TB12-R9-EXEC-CAND-01` — all-green CB23 recovery candidate; closure/promotion remains Review-owned.
-- `M4-CP-SCALE-DEFN-OBS-04` — production atlas/A3 evidence now exists in R10; final disposition remains Review-owned.
-- `M4-CP-SCALE-TB2-REV-OBS-02` — carried dedicated `make_zero_transport_field` authority audit; unrelated to R10.
-- `M4-CP-SCALE-TB1-REV-OBS-01`, `M4-CP-SCALE-DEFN-OBS-01`, inherited CP3 observations and `G4-B002/G4-B003` debts retain their existing owners.
+`M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`
 
-## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R10-REV`
+Expected selector427: **427 LF rows**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, exact first426 SHA `41f4d559...b5114`, owners **30/281/75/41**. Product/test/fixture/benchmark/CMake semantics and selector426 bytes are frozen. Generated Directional runtime is forbidden. If static prefix/hash/owner checks fail or semantic edits would be required, stop back to Review.
 
-1. Read root `STATUS`; publish the Review entry beacon first; choose `READ_MODE`; reopen this handoff, TODO, R10 report, R10 plan, CB23 report, frozen CP-SCALE definitions, accepted TB11 report, consolidated record, tracker/ORIENTATION/ROADMAP/LESSONS and mandatory Review/checklist policies.
-2. Independently verify R10 run/job `35382311474 / 105721178393`, result/log artifacts `10562622856 / 10562292934`, harness hash/size, final ledger `32c57323...608559`, exact 434/434 phase counts, S5 receipt, selector ownership and pre/postflight equality. Do not rely only on EXEC prose.
-3. Decide whether all-green R10 closes the R9/R4 `RP-01`, promotes package `10560828304`, grants S5/A3 credit, and changes current accepted M4 authority. Any pricing/accounting change belongs here, not in EXEC.
-4. Apply the Review stop/definition rules from frozen CP-SCALE authority. Do not issue a new Code + Build turn unless a concrete remaining defect or unmet acceptance criterion is independently established.
-5. Update `ORIENTATION.md`, tracker, TODO/ROADMAP/handoff/changelog, then perform mandatory Review consolidation into `M4_Consolidated_Record.md` and repair retained citations.
-6. Perform mandatory workflow/trigger cleanup and final hygiene; make the COMPLETE Review `STATUS` beacon the final repository mutation.
+A green CB24 routes to immutable artifact-only `M4-CP-SCALE-TB13-EXEC`, then mandatory `M4-CP-SCALE-TB13-REV` before cumulative S5 credit.
+
+### Carried obligations
+
+- `M4-CP-SCALE-TB12-R10-REV-OBS-01` — OPEN / NON-DEFECT publication + fresh cumulative runtime + Review; owner CB24 -> TB13 -> Review.
+- `M4-CP-SCALE-TB1-REV-OBS-01` — S1 calibration remains separately owned/non-gating until a justified threshold is frozen.
+- `M4-CP-SCALE-DEFN-OBS-01` — S2 arrival comparator exact-fallback ownership remains separate.
+- `M4-CP-SCALE-TB2-REV-OBS-02` — dedicated `make_zero_transport_field` audit remains separate.
+- Three `G4-B002` produced-witness debts remain M4-CP4 gating; total debt remains 5.
+
+## Mandatory resume procedure — current `M4-CP-SCALE-CB24`
+
+1. Read root `STATUS`; publish CB24 entry beacon first; choose `READ_MODE`; reopen this handoff, TODO, R10 Review record, CB24 plan, current CP-SCALE frozen definitions, R10 runtime report, selector manifest, roadmap/tracker and mandatory Code+Build/workflow/checklist policies.
+2. Treat selector426 as immutable input. Re-hash it to 426 LF rows / `41f4d559...b5114` and first425 `e0e0f394...790e0b` before publication.
+3. Create selector427 only as byte-exact selector426 plus the reviewed S5 row. Require full SHA `f9c883...ae86f` and static owners **30/281/75/41**. Any mismatch stops the turn.
+4. Run static checks and GitHub compile/package only under mandatory GMP/GMPXX; execute no generated Directional runtime.
+5. On compile GREEN, record immutable artifact/hash/manifests and author exactly one artifact-only TB13 plan. Do not grant cumulative S5 credit in CB24.
+6. Perform mandatory cleanup; make final COMPLETE `STATUS` the last repository mutation.
 
 ## Historical R8 EXEC resume procedure — consumed
 

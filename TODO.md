@@ -2,21 +2,22 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R10-EXEC`
+## Latest completed Review — `M4-CP-SCALE-TB12-R10-REV`
 
-R10 consumed immutable CB23 artifact `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`. Run/job `35382311474 / 105721178393` is artifact-only GREEN: Gate C0 **3/3**, inherited Gate A **4/4**, production S5 **1/1**, selector426 **426/426**, for **434/434 PASS** with exact immutable postflight and benchmark/build/configure/relink/repair/mutation counts all zero. Result/log artifacts are `10562622856 / 10562292934`; final ledger SHA-256 is `32c57323bc2d458ceb38226dd0d0517798e413b0a1a477dd0d4fc17f6d608559`.
+R10 Review independently re-derives the all-green artifact-only evidence and **promotes package `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` as accepted current M4 runtime authority under unchanged selector426 `426/426`**. Run/job `35382311474 / 105721178393` remains the decisive runtime: CB23 controls **3/3**, inherited Gate A **4/4**, production S5 **1/1**, selector426 **426/426**, total **434/434 PASS**, exact immutable postflight, benchmark/build/configure/relink/repair/mutation counts zero.
 
-EXEC does not itself promote package `10560828304`, close R9 `RP-01`, or grant final S5/A3 checkpoint credit. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**, stable accounting **49 / 14 / 35**, debt **5**, no selector427.
+R9 and production R4 `RP-01 AUTHORITY_DOMAIN_CONFLATION` obligations are **CLOSED / RECOVERY PROVED / NON-STABLE**; `M4-CP-SCALE-DEFN-OBS-04` is **DISCHARGED**. S5 is accepted **for publication**, but cumulative selector credit is withheld because its identity is outside selector426. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M4-CP-SCALE-TB12-R9-REV`: existing RP-01 / definition gap identified.
 - [x] `M4-CP-SCALE-DEFN-R1`: source-global boundary-cycle owner and exact regional support reconciliation frozen.
 - [x] `M4-CP-SCALE-CB23`: typed producer global boundary-cycle fact + exact alias collapse/support-cover reconciliation compile/package GREEN.
 - [x] `M4-CP-SCALE-TB12-R10-EXEC`: CB23 controls 3/3, inherited Gate A 4/4, production S5 1/1, selector426 426/426; immutable postflight GREEN.
-- [ ] `M4-CP-SCALE-TB12-R10-REV`: **exact next**. Independently re-derive R10 evidence and decide candidate promotion, R9 RP-01 closure, S5/A3 credit, accepted authority and any required next gate.
+- [x] `M4-CP-SCALE-TB12-R10-REV`: candidate promoted; R9/R4 RP-01 recovery accepted; S5 focused accepted for publication; `DEFN-OBS-04` discharged.
+- [ ] `M4-CP-SCALE-CB24`: **exact next**. Publication-only selector427 = exact selector426 prefix + S5 row; expected SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **30/281/75/41**; compile/package only, no generated runtime.
 
-## Current focus — `M4-CP-SCALE-TB12-R10-REV`
+## Current focus — `M4-CP-SCALE-CB24`
 
-Review `Architecture_M4_CP_SCALE_TB12_R10_Artifact_Only_Test_Benchmark_Report.md`, raw R10 result/log evidence and current source authority independently. Do not implement a corrective CB unless Review finds a specific falsified invariant. Review owns package promotion/closure decisions and mandatory consolidation/ORIENTATION updates.
+Follow `Architecture_M4_CP_SCALE_CB24_S5_Selector_Publication_Code_Build_Plan.md`. Publish no semantic change: selector427 is the exact accepted selector426 bytes plus `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`. Stop if prefix/hash/owner expectations fail or publication would require product/test/fixture/CMake changes. A green CB24 routes to fresh artifact-only `M4-CP-SCALE-TB13-EXEC`, then mandatory Review before cumulative S5 credit.
 
 ## Carried forward from M1
 
@@ -55,7 +56,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426** pending Review. DEFN-R1 freezes the R9 existing-`RP-01` source-boundary rule: one source-global boundary-cycle fact owns the producer index; legacy aliases reconcile exactly and regional loops provide exact source-edge support only. CB23 candidate `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` now has R10 artifact-only **434/434 GREEN** evidence including production S5 and exact immutable postflight, but EXEC does not promote authority or close `RP-01`. Exact next is `M4-CP-SCALE-TB12-R10-REV`; S5/A3 acceptance and candidate promotion remain Review-owned, and three `G4-B002` debts remain CP4 gating.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED + S5 FOCUSED ACCEPTED FOR PUBLICATION / CHECKPOINT OPEN**. Accepted runtime authority is package `10560828304` / selector426 **426/426**. R10 Review closes R9/R4 `RP-01` recovery non-stably and discharges `DEFN-OBS-04`; genuine genus-two S5 reaches independently verified A3. Cumulative S5 selector credit remains pending `M4-CP-SCALE-TB12-R10-REV-OBS-01`: selector427 publication + fresh 427/427 runtime + Review. Exact next is publication-only `M4-CP-SCALE-CB24`; three `G4-B002` debts remain CP4 gating.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -95,4 +96,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426** pending Review. R9 Review closes R8 test-authority `RP-02`, leaves CB22 candidate `10548849094` unpromoted, and classifies source-boundary alias / regional-owner failure as product existing `RP-01`. CB23 artifact `10560828304` now has R10 artifact-only **434/434 GREEN** evidence with production S5 and exact immutable postflight, but EXEC leaves promotion, `RP-01` closure, and S5/A3 credit to Review. Exact next is **`M4-CP-SCALE-TB12-R10-REV`**; selector427 remains forbidden. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB12-R10-REV` promotes package `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` as accepted runtime authority under selector426 **426/426**. R9/R4 `RP-01` recovery is closed non-stably; S5 is focused-accepted for publication and `DEFN-OBS-04` is discharged. Exact next is publication-only **`M4-CP-SCALE-CB24`**; selector427 is authorized only as exact selector426 prefix + S5 row and still does not exist. PR #8 remains open, draft, and unmerged.
