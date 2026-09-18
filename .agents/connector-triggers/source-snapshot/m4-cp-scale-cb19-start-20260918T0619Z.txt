@@ -1,0 +1,4 @@
+purpose=M4-CP-SCALE-CB19 start-of-turn snapshot after READ_MODE correction
+source_head=801b6914ea13bc3b4ff4a9b7b435ce3ae4589515
+read_mode=snapshot
+retry=0
