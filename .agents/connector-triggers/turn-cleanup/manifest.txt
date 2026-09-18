@@ -1,1 +1,3 @@
 .agents/connector-triggers/source-snapshot/m4-cp-scale-cb24-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb24-compile-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb24-closeout-docs-20260918.txt
