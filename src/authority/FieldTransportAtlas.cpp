@@ -1963,6 +1963,59 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       boundaryCycleByGlobalVertex;
   std::map<int, std::pair<TopologyRegionId, FieldCycleId>>
       slitCycleByGlobalVertex;
+  std::map<int, std::set<TopologyRegionId>>
+      separatingFeatureRegionsByGlobalVertex;
+  for (const int edgeIndex : sourceEdges) {
+    const auto edge = SourceEdgeTopologyKey::from_indices(
+        sourceMesh.EV(edgeIndex, 0), sourceMesh.EV(edgeIndex, 1),
+        vertexExtent);
+    if (!edge || hardFeatureEdges.count(edge.value()) == 0U) continue;
+    const int firstFace = sourceMesh.EF(edgeIndex, 0);
+    const int secondFace = sourceMesh.EF(edgeIndex, 1);
+    if (firstFace < 0 || secondFace < 0 || firstFace >= sourceMesh.F.rows() ||
+        secondFace >= sourceMesh.F.rows()) {
+      continue;
+    }
+    const TopologyRegionId firstRegion =
+        rowRegions[static_cast<std::size_t>(firstFace)];
+    const TopologyRegionId secondRegion =
+        rowRegions[static_cast<std::size_t>(secondFace)];
+    if (firstRegion == secondRegion) continue;
+    for (int endpoint = 0; endpoint < 2; ++endpoint) {
+      const int vertex = sourceMesh.EV(edgeIndex, endpoint);
+      separatingFeatureRegionsByGlobalVertex[vertex].insert(firstRegion);
+      separatingFeatureRegionsByGlobalVertex[vertex].insert(secondRegion);
+    }
+  }
+  std::map<int, std::pair<TopologyRegionId, FieldCycleId>>
+      separatingFeatureCycleByGlobalVertex;
+
+  const auto consider_separating_feature_boundary_owner =
+      [&](const int globalVertex, const TopologyRegionId region,
+          const FieldCycleId boundaryCycle) {
+        if (sourceMesh.isBoundaryVertex(globalVertex) != 0) return;
+        const auto supplied = rawSingularity.find(globalVertex);
+        const auto incident =
+            separatingFeatureRegionsByGlobalVertex.find(globalVertex);
+        if (supplied == rawSingularity.end() ||
+            incident == separatingFeatureRegionsByGlobalVertex.end() ||
+            incident->second.count(region) == 0U ||
+            boundaryCycle.index() >= cycles.size()) {
+          return;
+        }
+        const FieldCycleWitness &cycle = cycles[boundaryCycle.index()];
+        if (cycle.kind != FieldCycleKind::BoundaryLoop ||
+            cycle.topologyRegion != region ||
+            cycle.turningLift != supplied->second) {
+          return;
+        }
+        const auto owner = std::make_pair(region, boundaryCycle);
+        const auto inserted =
+            separatingFeatureCycleByGlobalVertex.emplace(globalVertex, owner);
+        if (!inserted.second && owner < inserted.first->second) {
+          inserted.first->second = owner;
+        }
+      };
 
   for (const geometry::SurfaceTopologyRegion &region :
        sourceAuthority.regions()) {
@@ -2028,6 +2081,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         if (sourceMesh.isBoundaryVertex(vertex) == 0 ||
             rawBoundarySingularity.find(vertex) ==
                 rawBoundarySingularity.end()) {
+          consider_separating_feature_boundary_owner(
+              vertex, region.id(), boundaryCycleId);
           continue;
         }
         if (!boundaryCycleByGlobalVertex
@@ -2342,6 +2397,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
                 region.id());
           }
         }
+        consider_separating_feature_boundary_owner(
+            globalVertex, region.id(), boundaryCycle);
         if (sourceMesh.isBoundaryVertex(globalVertex) == 0 &&
             local->barrierVertices.count(globalVertex) != 0U &&
             rawSingularity.find(globalVertex) != rawSingularity.end()) {
@@ -2474,17 +2531,39 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         make_id<SourceVertexId>(static_cast<std::size_t>(rawVertex));
     const auto localOwner = localCycleByGlobalVertex.find(rawVertex);
     const auto slitOwner = slitCycleByGlobalVertex.find(rawVertex);
-    if ((localOwner == localCycleByGlobalVertex.end()) ==
-        (slitOwner == slitCycleByGlobalVertex.end())) {
+    const auto separatingOwner =
+        separatingFeatureCycleByGlobalVertex.find(rawVertex);
+    const int ownerCount =
+        (localOwner != localCycleByGlobalVertex.end() ? 1 : 0) +
+        (slitOwner != slitCycleByGlobalVertex.end() ? 1 : 0) +
+        (separatingOwner != separatingFeatureCycleByGlobalVertex.end() ? 1
+                                                                        : 0);
+    if (ownerCount != 1) {
       return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
                   std::nullopt, std::nullopt, vertex);
     }
-    const auto &owner = localOwner != localCycleByGlobalVertex.end()
-                            ? localOwner->second
-                            : slitOwner->second;
+    const auto &owner =
+        localOwner != localCycleByGlobalVertex.end()
+            ? localOwner->second
+            : (slitOwner != slitCycleByGlobalVertex.end()
+                   ? slitOwner->second
+                   : separatingOwner->second);
     if (owner.second.index() >= cycles.size()) {
       return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
                   std::nullopt, std::nullopt, vertex, owner.first);
+    }
+    if (separatingOwner != separatingFeatureCycleByGlobalVertex.end()) {
+      const FieldCycleWitness &cycle = cycles[owner.second.index()];
+      const auto incident =
+          separatingFeatureRegionsByGlobalVertex.find(rawVertex);
+      if (cycle.kind != FieldCycleKind::BoundaryLoop ||
+          cycle.topologyRegion != owner.first ||
+          cycle.turningLift != numerator ||
+          incident == separatingFeatureRegionsByGlobalVertex.end() ||
+          incident->second.count(owner.first) == 0U) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                    std::nullopt, std::nullopt, vertex, owner.first);
+      }
     }
     FieldTransportRegionDiagnostics *diagnostics =
         region_diagnostics(owner.first);
@@ -2495,8 +2574,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     ++diagnostics->prescribedSingularityCount;
     if (localOwner != localCycleByGlobalVertex.end()) {
       ++diagnostics->localVertexBoundSingularityCount;
-    } else {
+    } else if (slitOwner != slitCycleByGlobalVertex.end()) {
       ++diagnostics->slitBoundaryBoundSingularityCount;
+    } else {
+      ++diagnostics->separatingFeatureBoundaryBoundSingularityCount;
     }
 
     std::optional<SourceComponentId> component;
@@ -2513,10 +2594,12 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
                   std::nullopt, std::nullopt, vertex);
     }
+    const bool barrierAbsorbed =
+        slitOwner != slitCycleByGlobalVertex.end() ||
+        separatingOwner != separatingFeatureCycleByGlobalVertex.end();
     const FieldSingularityFact::PortPolicy portPolicy =
-        slitOwner != slitCycleByGlobalVertex.end()
-            ? FieldSingularityFact::PortPolicy::BarrierAbsorbed
-            : FieldSingularityFact::PortPolicy::Emit;
+        barrierAbsorbed ? FieldSingularityFact::PortPolicy::BarrierAbsorbed
+                        : FieldSingularityFact::PortPolicy::Emit;
     singularities.push_back(FieldSingularityFact{
         make_id<FieldSingularityId>(singularities.size()), vertex, *component,
         numerator, owner.first, owner.second, portPolicy});
@@ -2526,7 +2609,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     diagnostics.unboundSingularityCount =
         diagnostics.prescribedSingularityCount -
         diagnostics.localVertexBoundSingularityCount -
-        diagnostics.slitBoundaryBoundSingularityCount;
+        diagnostics.slitBoundaryBoundSingularityCount -
+        diagnostics.separatingFeatureBoundaryBoundSingularityCount;
     if (diagnostics.unboundSingularityCount != 0U) {
       return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
                   std::nullopt, std::nullopt, std::nullopt,

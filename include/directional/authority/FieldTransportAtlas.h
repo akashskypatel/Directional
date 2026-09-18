@@ -204,6 +204,7 @@ struct FieldTransportRegionDiagnostics {
   std::size_t prescribedSingularityCount = 0U;
   std::size_t localVertexBoundSingularityCount = 0U;
   std::size_t slitBoundaryBoundSingularityCount = 0U;
+  std::size_t separatingFeatureBoundaryBoundSingularityCount = 0U;
   std::size_t sourceBoundaryBoundSingularityCount = 0U;
   std::size_t unboundSingularityCount = 0U;
 
