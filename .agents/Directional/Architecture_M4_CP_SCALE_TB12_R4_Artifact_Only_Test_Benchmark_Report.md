@@ -53,3 +53,15 @@ Accepted runtime authority remains package `10473134357` / semantic source `e15e
 Start-of-turn source reconciliation used exact snapshot artifact `10527943318` from run `35296152714`, resolving source SHA `46bbc62a1018b6278ddd8229b7d323681845fad6`; stale CB17 local scratch changes compared byte-identical to that authority, so no local-only WIP required Drive preservation. During startup, several repository reads occurred before the required explicit `READ_MODE=snapshot` policy gate, and the temporary runtime caller was first published before its SchemaStore validation job ran. After detection, source/document inspection stayed on the verified snapshot; the runtime workload was gated behind and executed only after its exact caller passed the reusable SchemaStore validator. These are control-plane process misses, not semantic evidence, and no retry or result substitution occurred.
 
 Exact successor is runtime-free `M4-CP-SCALE-TB12-R4-REV`. No runtime retry, selector execution, benchmark, correction, package promotion, S5 credit, or stable repricing may precede Review.
+
+## 7. Stale-evidence closeout
+
+Per `CLEAN_UP_POLICY.md`, TB12-R4 retires the consumed R4 EXEC plan and superseded preceding CB17/R3 per-turn evidence only after their resume-critical facts are preserved in this report, the durable handoff, tracker, changelog, ORIENTATION/ROADMAP, `M4_Consolidated_Record.md` and git history. Retired current-head files are:
+
+- `Architecture_M4_CP_SCALE_CB17_Code_Build_Report.md`;
+- `Architecture_M4_CP_SCALE_CB17_Test_Authority_Repair_Code_Build_Plan.md`;
+- `Architecture_M4_CP_SCALE_TB12_R3_Artifact_Only_Test_Benchmark_Report.md`;
+- `Architecture_M4_CP_SCALE_TB12_R3_Review_Record.md`;
+- `Architecture_M4_CP_SCALE_TB12_R4_Artifact_Only_Test_Benchmark_Plan.md`.
+
+The retained per-turn role set is this TB12-R4 report plus `Architecture_M4_CP_SCALE_TB12_R4_Review_Plan.md`. Under `CLEAN_UP_POLICY.md`, the mandatory R4 Review must add folded-document-index entries for the five retired filenames, recovering their line counts from git history and confirming the durable retained home for each.

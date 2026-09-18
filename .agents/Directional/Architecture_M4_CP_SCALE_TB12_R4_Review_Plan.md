@@ -17,6 +17,7 @@ Independently re-open immutable CB17 candidate artifact `10527625935` / compile 
 4. Decide the disposition of `M4-CP-SCALE-TB12-R4-EXEC-CAND-01` and whether it is a new candidate, a continuation/refinement of `M4-CP-SCALE-TB12-R1-EXEC-CAND-01`, or invalid test authority. Price stable event/category/recurrence only under the accepted-green criterion in `Regression_Root_Cause_Tracker.md`.
 5. Preserve fail-fast consequences: selector426 remains **0/426**, benchmark **0**, package `10527625935` remains unpromoted, S5/A3 receive zero acceptance credit, and `M4-CP-SCALE-DEFN-OBS-04` stays open unless Review can close a premise without new runtime.
 6. Freeze exactly one next owner and smallest corrective/diagnostic scope. No generated Directional runtime, compile, source/test/fixture/selector mutation, package repair, selector427 publication or package promotion is authorized in Review.
+7. Perform mandatory Review consolidation under `CLEAN_UP_POLICY.md`, including folded-document-index entries (with recovered line counts and retained-home dispositions) for the five TB12-R4-retired files named in the TB12-R4 report §7; complete every row of the `REVIEW_TURN_POLICY.md` closeout block.
 
 ## Stop conditions
 
