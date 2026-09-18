@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-CB24
+source_sha=6fe075f7d9397a561fe50b79517b4f714fb9eeef
+retry=1
