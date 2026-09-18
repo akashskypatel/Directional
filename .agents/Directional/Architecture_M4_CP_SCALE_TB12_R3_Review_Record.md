@@ -94,3 +94,59 @@ A compile-green CB17 candidate remains unpromoted. Its later artifact-only succe
 | `review_check.py boundary` | required before patch publication/closeout; selector426 exact hash expected |
 | STATUS lifecycle maintained | IN_PROGRESS entry written first; COMPLETE beacon deferred until after durable docs + mandatory cleanup |
 | Pushed to origin, branch in sync | required after preservation patch apply and cleanup before final COMPLETE beacon |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Accounting and accepted authority unchanged. One carried falsifier is **not yet
+satisfied** and is re-issued to CB17.
+
+### V1 — the Gate-A classification is right, and CB16 is correctly not falsified
+
+§3.1's mechanism is the decisive one: `build_source_topology_regions` crosses an interior edge whenever the two
+faces share the raw component and the edge is absent from `options.hardFeatureEdges`, so the authority the test
+actually supplied cannot produce the multi-component `BoundaryLoop` it later requires. The test asserts a
+condition its own setup never establishes — the same class as the torus hard-rail precondition defect at
+`M4-CP3-TB3-REV` and the S4 prerequisite at `TB8-REV`, and the third time this shape has appeared in this
+sequence.
+
+That is also why **CB16 is not falsified**: the RED reports the absence of a precondition, not a failure of the
+multi-component walk. §3.2's separation is the right one — the genuine multi-component case lives on the
+production path that TB12-R2 measured (region 0, fourteen interior local vertices, one boundary loop, row 14 with
+34 support edges), not in the Gate-A synthetic.
+
+### V2 — the deletion catch deserves emphasis
+
+§4 records that the source immediately preceding CB16 already contained
+`make_two_interior_islands_disk()` and a positive multi-component integration identity, and that **CB16 removed
+them** while adding the genus-two test — even though the frozen CB16 plan required a positive synthetic atlas case
+whose support decomposes into multiple components.
+
+A corrective turn deleting the very coverage its own plan mandated is worth stating plainly, because it is not a
+drafting slip: it removed the one witness that could have demonstrated the multi-component walk works, and left
+the correction resting entirely on a production path whose precondition then failed for an unrelated reason.
+Declining to grant runtime credit to the historical test body while using source history to bound the correction
+is exactly the right handling.
+
+### V3 — RE-ISSUED: the component-ordering falsifier is still unsatisfied
+
+`M4-CP-SCALE-TB12-R2-REV` §8 V2 required, alongside independent derivation, that **perturbing the producer's
+component order while leaving the step multiset unchanged must be detected**. That is not yet satisfied.
+
+The independent derivation half did land: `independent_cycle_facts(mesh, field)` builds expectations from mesh and
+field rather than from producer output, which closes the self-authorizing hazard. But `IndependentCycleRow`
+(`tests/FieldTransportAtlasTests.cpp:722-729`) carries `support` as a **sorted** vector and `composed` as a
+`QuarterTurn`. Sorting discards order by construction, and the composed total is addition modulo four — which the
+CB16 contract itself established is **order-invariant**. Neither field can distinguish one component ordering from
+another.
+
+So the canonical-ordering half of the CB16 semantic contract, items 2 and 3, is presently **unenforced by any
+independent check**. The walk may well be correct; nothing would notice if it were not. This is the same
+structural-presence-without-behavioural-coverage pattern as `LESSONS.md` 171, applied to an ordering rule instead
+of a fixture feature: deleting the canonicalization would change no assertion.
+
+**Required of CB17**, alongside restoring the positive synthetic witness: `IndependentCycleRow` must carry an
+expected **ordered** component sequence — derived from the sparse row's support and adjacency, not from emitted
+steps — and the comparison against the producer's flattened sequence must be order-sensitive. The falsifier stands
+as written: perturb component order, leave the multiset unchanged, and the validator must fail.

@@ -101,3 +101,25 @@ A valid CB17 closeout may freeze a later artifact-only `M4-CP-SCALE-TB12-R4-EXEC
 5. benchmark execution only if separately frozen by that TB plan.
 
 Any semantic runtime result still requires mandatory independent Review before S5/selector credit, candidate closure or package promotion.
+
+## Amendment — the component-ordering falsifier is still owed (TB12-R3-REV addendum §V3, reviewing agent)
+
+`M4-CP-SCALE-TB12-R2-REV` required two things of the validator. The first landed: `independent_cycle_facts(mesh,
+field)` derives expectations from mesh and field rather than from producer output, closing the self-authorizing
+hazard. The second did not.
+
+`IndependentCycleRow` (`tests/FieldTransportAtlasTests.cpp:722-729`) carries `support` as a **sorted** vector and
+`composed` as a `QuarterTurn`. Sorting discards order by construction, and the composed total is addition modulo
+four — which the CB16 contract itself established is **order-invariant**. Neither field can distinguish one
+component ordering from another, so the canonical-ordering requirement (CB16 contract items 2 and 3) is presently
+enforced by nothing. Deleting the canonicalization would change no assertion.
+
+**Required of CB17**, alongside restoring the positive synthetic multi-component witness:
+
+1. `IndependentCycleRow` carries an expected **ordered** component sequence, derived from the sparse row's support
+   and adjacency — never from the producer's emitted steps.
+2. The comparison against the producer's flattened sequence is **order-sensitive**.
+3. **Falsifier before compile acceptance:** perturb the producer's component order while leaving the step multiset
+   unchanged; the validator must fail. If it passes, the ordering rule is unverified and only the order-invariant
+   total is being checked.
+

@@ -2,6 +2,27 @@
 
 Independent Review re-verifies candidate artifact `10523132151`, selector426/first425, retained genus-two fixture bytes, authoritative run `35289133532 / 105427980925` and Gate-A PASS/PASS/PASS/RED ledger. Source audit finds the fourth control invalid as correction authority: it reconstructs the connected closed genus-two source with all-zero component/sheet labels and **empty hard-feature authority**, while production S5 derives hard-feature edges from authoritative rails plus production source labels. The test then requires a `BoundaryLoop` subject its own source authority does not establish. This is `M4-CP-SCALE-TB12-R3-EXEC-CAND-01`, a non-stable `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` instance; CB16 is not falsified. The original `RP-07` production candidate remains open because S5 never ran after fail-fast. Stable totals remain **49 / 14 / 35**, debt **5**, accepted package `10473134357` / selector426 **426/426** unchanged. Exact next is test-only runtime-free `M4-CP-SCALE-CB17`, restoring/adapting an independently preconditioned synthetic two-component boundary-row atlas control.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld. §3.1's mechanism is decisive:
+`build_source_topology_regions` crosses an interior edge whenever the two faces share the raw component and the edge
+is absent from `options.hardFeatureEdges`, so the authority the test supplied cannot produce the multi-component
+`BoundaryLoop` it later requires — the test asserts a condition its own setup never establishes, the same class as
+the torus hard-rail defect at `M4-CP3-TB3-REV` and the S4 prerequisite at `TB8-REV`, and the third appearance of
+that shape in this sequence. That is also why **CB16 is correctly not falsified**: the RED reports a missing
+precondition, not a failed multi-component walk, and §3.2 rightly separates the genuine case onto the production
+path TB12-R2 measured. §4's catch deserves emphasis — CB16 **removed** `make_two_interior_islands_disk()` and the
+positive multi-component integration identity that its own frozen plan required, leaving the correction resting
+entirely on a production path whose precondition then failed for an unrelated reason. **One carried falsifier is
+re-issued to CB17.** The independent-derivation half of the `TB12-R2-REV` requirement landed —
+`independent_cycle_facts(mesh, field)` builds expectations from mesh and field, closing the self-authorizing hazard
+— but `IndependentCycleRow` (`tests/FieldTransportAtlasTests.cpp:722-729`) carries `support` as a **sorted** vector
+and `composed` as a `QuarterTurn`. Sorting discards order by construction and the composed total is addition modulo
+four, which the CB16 contract itself established is order-invariant, so neither field can distinguish one component
+ordering from another. The canonical-ordering half of that contract (items 2 and 3) is therefore enforced by
+nothing: deleting the canonicalization would change no assertion — the `LESSONS.md` 171 pattern applied to an
+ordering rule. CB17 must have `IndependentCycleRow` carry an expected **ordered** component sequence derived from
+the sparse row's support and adjacency, compare order-sensitively, and satisfy the falsifier that perturbing
+component order with the multiset unchanged must fail the validator. Accounting and accepted authority unchanged.
+
 ## 2026-09-17 — `M4-CP-SCALE-TB12-R3-EXEC`: CB16 candidate stops at Gate A 3/4
 
 Artifact-only run/job `35289133532 / 105427980925` consumes immutable CB16 artifact `10523132151` / source `a8df4406ebd1a5252f0be20b1f1e65a2cb453ee9`. Exact package/selector/fixture preflight passes. Three fresh component-order controls PASS; `FieldTransportAtlas.BuildsSyntheticGenusTwoAtlasWithMultiComponentBoundarySupport` is RED, exit `1`, exactly one selected test, with `built=false` and `code=CycleTransportMismatch;topologyRegion=0`. Frozen fail-fast leaves unchanged S5 Gate B **0/1**, selector426 **0/426** and benchmark **0**. Package/source/execution-view postflight is byte+mode identical. Result/log artifacts are `10526001047 / 10525856300`; execution ledger hashes to `1330c5002dbc4aab900e518860c8f653cfcadb0910797caf1175828dc5cda290`.
