@@ -1,0 +1,2 @@
+# M4-CP-SCALE-TB12-R4-REV closeout
+# No remaining inventoried temporary paths; temporary workflow callers and trigger files were retired before batch cleanup.
