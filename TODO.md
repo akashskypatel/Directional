@@ -2,19 +2,20 @@
 
 Last updated: 2026-09-17 UTC
 
-## Current turn — M4-CP-SCALE-CB16 (closeout)
+## Current turn — M4-CP-SCALE-TB12-R3-EXEC (closeout)
 
-CB16 is compile/package GREEN and runtime-free. Semantic commit `0b9e3e8706322fad0b1b3f3a678d208a086ba365` changes only the reviewed atlas ordering implementation and its independent tests. Compile run/job `35283852353 / 105411733012` built all eight mandatory GMP/GMPXX targets from exact source `a8df4406ebd1a5252f0be20b1f1e65a2cb453ee9`; candidate artifact `10523132151` verifies 28/28 with `runtimeExecution=false`. No runtime or selector publication occurred.
+TB12-R3 consumed immutable CB16 artifact `10523132151` and is mechanically valid but semantically RED at frozen Gate A. Three direct ordering/oracle controls PASS; `FieldTransportAtlas.BuildsSyntheticGenusTwoAtlasWithMultiComponentBoundarySupport` fails with `built=false`, `code=CycleTransportMismatch;topologyRegion=0`. Frozen fail-fast leaves S5 Gate B **0/1**, selector426 **0/426** and benchmark **0**. Immutable package/source/execution-view postflight matches exactly.
 
 - [x] `M4-CP-SCALE-TB12-R2-REV`: multi-component algebraic support / single-loop atlas owner proved.
 - [x] `M4-CP-SCALE-CB16`: all closed support components consumed canonically; independent component decomposition/tamper controls added; eight-target GMP compile/package GREEN; no runtime.
-- [ ] `M4-CP-SCALE-TB12-R3-EXEC`: **exact next**. Artifact-only candidate `10523132151`; run four direct component-order controls first, then unchanged S5 focus, and only if both are green run selector426. No benchmark, rebuild, repair or selector427.
+- [x] `M4-CP-SCALE-TB12-R3-EXEC`: artifact-only Gate A **3/4**; synthetic genus-two atlas control RED at `CycleTransportMismatch`; Gate B/selector426/benchmark not executed.
+- [ ] `M4-CP-SCALE-TB12-R3-REV`: **exact next**. Independently adjudicate the Gate-A RED, re-open immutable evidence/source/test authority, classify the existing candidate, and freeze exactly one bounded successor. Runtime-free.
 
-## Current focus — `M4-CP-SCALE-TB12-R3-EXEC`
+## Current focus — `M4-CP-SCALE-TB12-R3-REV`
 
-Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate `10523132151` is compile-only and unpromoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` remains **OPEN / RP-07 / NON-STABLE** until immutable runtime + Review show whether CB16 removes the observed ordering boundary and whether S5 reaches A3.
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate artifact `10523132151` remains unpromoted. `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` remains **OPEN / REVIEW REQUIRED / NON-STABLE**: TB12-R3 proves three CB16 direct controls but the fourth frozen synthetic genus-two control remains RED before the unchanged S5 focus can execute.
 
-The successor plan is `Architecture_M4_CP_SCALE_TB12_R3_Artifact_Only_Test_Benchmark_Plan.md`. Consume the package unchanged. Gate A is the four new/updated `FieldTransportAtlas` controls; Gate B is unchanged `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`; Gate C is selector426 only when A+B are green. Every semantic outcome routes to `M4-CP-SCALE-TB12-R3-REV`.
+Review authority is `Architecture_M4_CP_SCALE_TB12_R3_Artifact_Only_Test_Benchmark_Report.md` plus result/log artifacts `10526001047 / 10525856300`. Review must not assign S5/selector credit from unexecuted gates, and no Code + Build correction or retry may precede its adjudication.
 
 ## Carried forward from M1
 
@@ -53,7 +54,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. TB12-R2 Review narrows the non-stable S5 `RP-07` defect to `FieldTransportAtlas` single-loop representation of valid multi-component algebraic cycle support; candidate `10517300204` remains unpromoted. Exact next `M4-CP-SCALE-CB16` is bounded to deterministic all-components ordering plus independent validation, compile/package only. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains unaccepted, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. CB16 candidate `10523132151` remains unpromoted: TB12-R3 proves three direct multi-component ordering/oracle controls but the frozen synthetic genus-two atlas control is RED at `CycleTransportMismatch;topologyRegion=0`, so S5 and selector426 did not run. Exact next is runtime-free `M4-CP-SCALE-TB12-R3-REV`. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains unaccepted, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.

@@ -1,3 +1,9 @@
+## 2026-09-17 — `M4-CP-SCALE-TB12-R3-EXEC`: CB16 candidate stops at Gate A 3/4
+
+Artifact-only run/job `35289133532 / 105427980925` consumes immutable CB16 artifact `10523132151` / source `a8df4406ebd1a5252f0be20b1f1e65a2cb453ee9`. Exact package/selector/fixture preflight passes. Three fresh component-order controls PASS; `FieldTransportAtlas.BuildsSyntheticGenusTwoAtlasWithMultiComponentBoundarySupport` is RED, exit `1`, exactly one selected test, with `built=false` and `code=CycleTransportMismatch;topologyRegion=0`. Frozen fail-fast leaves unchanged S5 Gate B **0/1**, selector426 **0/426** and benchmark **0**. Package/source/execution-view postflight is byte+mode identical. Result/log artifacts are `10526001047 / 10525856300`; execution ledger hashes to `1330c5002dbc4aab900e518860c8f653cfcadb0910797caf1175828dc5cda290`.
+
+EXEC assigns no new stable pricing and does not adjudicate whether the remaining mismatch is residual production behavior, incomplete correction, or test authority. Accepted runtime authority stays package `10473134357` / selector426 **426/426**; stable accounting remains **49/14/35**, debt **5**; S5 remains uncredited and candidate `10523132151` unpromoted. Exact next is runtime-free `M4-CP-SCALE-TB12-R3-REV`.
+
 ## 2026-09-17 — `M4-CP-SCALE-CB16`: multi-component atlas ordering correction compiles under GMP
 
 CB16 implements the TB12-R2 Review correction without changing the algebraic cycle basis. Semantic commit `0b9e3e8706322fad0b1b3f3a678d208a086ba365` changes only `FieldTransportAtlas.cpp` and `FieldTransportAtlasTests.cpp`: `order_cycle_steps` consumes every closed successor component in deterministic order, while the independent validator derives component decomposition from sparse-row support/adjacency and adds component-order/open/duplicate-origin/invalid-adjacency/single-component/genus-two controls. `dual_cycles`, retained fixture/rawfield, S5 focus, selector426 and CMake/benchmark semantics are unchanged.
