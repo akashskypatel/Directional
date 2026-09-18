@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M4-CP-SCALE-TB13-REV
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M4-CP4-DEFN
 Started at: 2026-09-18T21:30:03Z
 Resumed at: 2026-09-18T21:54:22Z
-Ended at:
+Ended at: 2026-09-18T22:07:21Z
 ---END_TURN_STATUS---
