@@ -1,0 +1,7 @@
+# M4-CP-SCALE-CB23 final temporary-state cleanup
+.agents/connector-triggers/m4-cp-scale-cb23-apply-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb23-compile-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb23-closeout-apply-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb23-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb23-resume-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb23-resume2-20260918.txt
