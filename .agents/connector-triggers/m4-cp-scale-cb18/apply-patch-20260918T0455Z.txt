@@ -1,4 +1,0 @@
-purpose=M4-CP-SCALE-CB18 apply verified closeout documentation patch
-caller_install=7821fc93256d1aba4de03a7969cb16f4ffe6b101
-patch_sha256=fe32bbc8f220d9c0f835b784004c1e851046f2a0f631cbdb70630da801b31d9a
-retry=1

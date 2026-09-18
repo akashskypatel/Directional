@@ -1,3 +1,0 @@
-purpose=M4-CP-SCALE-CB18 reconcile current semantic source after concurrent branch advancement
-semantic_source=079933f2ec31a9323218e73c7ae0d3ea1d11103c
-retry=0
