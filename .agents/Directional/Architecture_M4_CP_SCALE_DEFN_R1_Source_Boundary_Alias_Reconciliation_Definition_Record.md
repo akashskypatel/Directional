@@ -129,21 +129,34 @@ Partitioning on **edges** rather than vertices is the load-bearing choice. A har
 boundary splits it *at a vertex*, so vertices are necessarily shared while edges are not. An invariant keyed on
 vertices could not have been made exact; this one can.
 
-### V2 — a second population site CB23 must also convert
+### V2 — both population sites must convert, and the *uncovered* one is the single-face path
 
-The R9 failure was observed at one site, but `boundaryCycleByGlobalVertex` is populated at **two**, and they do
-not agree on uniqueness semantics:
+`boundaryCycleByGlobalVertex` is populated at two sites with different uniqueness semantics:
 
-- `src/authority/FieldTransportAtlas.cpp:2087` uses a plain `emplace` and fails on **any** duplicate key —
-  `if (!…emplace(vertex, {region.id(), boundaryCycleId}).second) return fail(SingularityMismatch, …)`. This is the
-  site R9 hit;
-- `:2390-2391` emplaces and then tolerates a duplicate when the stored value is identical —
-  `if (!inserted.second && inserted.first->second != owner) return fail(…)`. It rejects only a *different* owner.
+- `src/authority/FieldTransportAtlas.cpp:2087` — plain `emplace`, failing on **any** duplicate key. It sits inside
+  the guard `regionRows.size() == 1U && region.euler_characteristic() == 1 && region.boundary_loop_count() == 1`
+  (`:2027`), so it serves **single-face disc regions** only;
+- `:2390-2393` — the general path. It emplaces and rejects only a *different* stored owner
+  (`!inserted.second && inserted.first->second != owner`), tolerating idempotent re-insertion.
 
-So one path already admits idempotent re-insertion and the other does not, and **both** still encode the
-one-regional-owner-per-global-vertex assumption that D2 retires. Converting only the site R9 happened to reach
-would leave the second path rejecting a legitimate multi-region association. CB23 must convert both, and the
-final reconciliation consumer at `:2504-2516` with them.
+**Correction to this addendum's first revision**, which attributed R9's failure to `:2087`: it did not. The skew
+fan's regions `{0,3}` and `{1,2}` carry two faces each, so `regionRows.size() == 1U` is false and they take the
+**general** path. R9 failed at `:2393`, because regions `{0,3}` and `{1,2}` supply *different* owners for shared
+boundary vertex `1`.
+
+That reverses which site needs attention. The CB23 plan's required control — *"one hard-cut source boundary cycle
+supports two regional boundary loops → atlas construction succeeds and retains both support associations"* — uses
+the skew fan and therefore exercises the general path that already failed. **The single-face path at `:2087` has no
+planned coverage**, and it is the stricter of the two: it rejects *any* duplicate, so a single-face region whose
+boundary loop covers only part of `E(G)` would still fail after the general path is converted.
+
+The case is realizable, so the obligation is satisfiable rather than aspirational: cutting the skew fan at `(1,4)`
+and `(2,4)` leaves face `1` alone as a region — triangle `(1,2,4)`, `χ = 1`, one boundary loop, satisfying the
+`:2027` guard — whose only true source-boundary edge is `(1,2)`, a proper subset of `E(G)`. That reaches `:2087`
+with a partial cover.
+
+CB23 must therefore convert **both** population sites and the reconciliation consumer at `:2504-2516`, and its
+focused test authority needs a **single-face-region** subject alongside the existing skew-fan control.
 
 ### V3 — two checks closed, so they are not re-opened
 

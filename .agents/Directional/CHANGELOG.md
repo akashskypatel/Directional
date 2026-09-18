@@ -21,6 +21,27 @@ shape noted for the owning turn: `Resumed at`/`Ended at` should be empty rather 
 format, while `Successor: UNKNOWN` is valid; left uncorrected here because the turn is still `IN_PROGRESS` under
 the implementation agent. Accounting unchanged at **49 / 14 / 35**, debt **5**.
 
+**Review amendment (reviewing agent) — DEFN-R1 closeout reviewed; site attribution corrected.** DEFN-R1 is now
+COMPLETE with a well-formed six-field beacon, and the record is unchanged since the prior review addendum, so the
+definition stands as upheld. **One correction to that addendum:** it attributed R9's failure to
+`FieldTransportAtlas.cpp:2087`. It did not fail there. That site sits behind the `:2027` guard
+`regionRows.size() == 1U && euler_characteristic() == 1 && boundary_loop_count() == 1`, serving single-face disc
+regions only, while the skew fan's regions `{0,3}` and `{1,2}` carry two faces each and therefore take the general
+path — R9 failed at `:2393`, where the two regions supply *different* owners for shared boundary vertex `1`.
+
+That reverses which site needs attention, and sharpens the finding. The CB23 plan's required control — *one
+hard-cut source boundary cycle supports two regional boundary loops* — uses the skew fan and so exercises the
+general path that already failed. **The single-face path at `:2087` has no planned coverage and is the stricter of
+the two**, rejecting any duplicate key at all, so converting the general path alone would leave a single-face
+region whose boundary loop partially covers `E(G)` still failing. The case is realizable, so the obligation is
+satisfiable: cutting the skew fan at `(1,4)` and `(2,4)` leaves face `1` alone — triangle `(1,2,4)`, `χ = 1`, one
+boundary loop — whose only true source-boundary edge is `(1,2)`, a proper subset of `E(G)`.
+
+The CB23 plan is amended with a three-row site table and two requirements: convert both population sites plus the
+`:2504-2516` reconciliation consumer, and add a focused single-face-region control so `:2087` is exercised. A
+conversion passing the skew-fan control while leaving `:2087` on one-owner semantics has not implemented D2.
+Accounting unchanged at **49 / 14 / 35**, debt **5**; accepted package `10473134357` / selector426 **426/426**.
+
 ## 2026-09-18 — `M4-CP-SCALE-DEFN-R1`: source-global boundary-cycle authority frozen; CB23 next
 
 Runtime-free DEFN-R1 re-derived the R9 boundary-index dataflow from exact source snapshot `e00453cae28c583f333b23324ba9dbcf8d5688e2` (snapshot run/artifact `35364783516 / 10556186428`, archive `35207fef...24ab8`, `runtimeExecution=false`). `dual_cycles` aggregates one row per connected source boundary loop and maps every loop vertex to it; field finalization computes that global index before projecting it back to vertices. Atlas region construction separately recomputes region-relative `BoundaryLoop.turningLift` after hard-feature partition/correction.

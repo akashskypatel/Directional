@@ -78,3 +78,34 @@ STOP and return to definition/review rather than inventing behavior if any of th
 ## Expected successor
 
 On compile/package GREEN with all static falsifiers preserved, authorize exactly one immutable artifact-only Test + Benchmark turn focused first on the CB23 boundary-authority controls before any production S5 retry. On compile failure, remain in the same Code + Build turn only for a bounded compile correction permitted by policy. On semantic ambiguity or a DEFN-R1 falsifier, STOP and route to Review/definition rather than widening CB23.
+
+## Amendment — convert BOTH population sites; the single-face path is the uncovered one (DEFN-R1 review §V2)
+
+`boundaryCycleByGlobalVertex` carries its one-owner assumption at **two** population sites with different
+semantics, plus one consumer:
+
+| site | scope | semantics |
+|---|---|---|
+| `src/authority/FieldTransportAtlas.cpp:2087` | single-face disc regions only, behind the `:2027` guard `regionRows.size() == 1U && euler_characteristic() == 1 && boundary_loop_count() == 1` | plain `emplace`; **any** duplicate key fails |
+| `:2390-2393` | general path | `emplace`, rejecting only a *different* stored owner; tolerates idempotent re-insertion |
+| `:2504-2516` | final reconciliation | single-owner lookup, plus the `:2512` `turningLift == numerator` cross-domain equality |
+
+**R9 failed at `:2390-2393`, not `:2087`.** The skew fan's regions `{0,3}` and `{1,2}` hold two faces each, so the
+`:2027` guard is false and they take the general path, where the two regions supply different owners for shared
+boundary vertex `1`.
+
+Consequently the already-required control — *one hard-cut source boundary cycle supports two regional boundary
+loops* — exercises only the general path. **The single-face path at `:2087` has no planned coverage and is the
+stricter of the two**, rejecting any duplicate at all, so converting the general path alone would leave a
+single-face region whose boundary loop partially covers `E(G)` still failing.
+
+Required:
+
+1. convert **both** population sites and the reconciliation consumer to the D2 support-association relation;
+2. add a focused control on a **single-face region** with a partial `E(G)` cover, so `:2087` is exercised. This is
+   realizable: cutting the skew fan at `(1,4)` and `(2,4)` leaves face `1` alone — triangle `(1,2,4)`, `χ = 1`, one
+   boundary loop, satisfying the `:2027` guard — whose only true source-boundary edge is `(1,2)`, a proper subset
+   of `E(G)`.
+
+A conversion that passes the skew-fan control while leaving `:2087` on one-owner semantics has not implemented D2.
+
