@@ -11,6 +11,14 @@
 - Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
 - CB18 candidate package `10532133889` / compile source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` is compile/package GREEN and unpromoted. Compile run/job `35307991751 / 105484066744`; artifact/log SHA-256 `4793e0155349a7f6c1e1a7833f5474d468cae89fcdd40916ec3eca192ff09c3a / 5d5d36c2010b92e915b98f85481aab83e1928c5b1654fee9af4e39b47c4a99c3`.
 
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R7-EXEC`
+
+R7 is **COMPLETE / VALID SEMANTIC RED / FAIL-FAST AT GATE A0 ROW 1 / NON-STABLE**. Exact caller bytes from CB20 were reinstalled at commit `7b15fe72d8786d05a0bfc6e5ecae1e24eb7ee7f0`; marker/event SHA `a5b4bc4ef6f84ac0c2ad20043eb6e7e973cf263f` produced run/job `35326420329 / 105540445909`. Corrected harness Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` re-hashed to `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf` and immutable candidate preflight passed.
+
+Gate A0 row 1 `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` executed exactly once, selected=1/skipped=0, exit=1, and reported `built=false`, `code=SingularityMismatch;sourceVertex=8` at `FieldTransportAtlasTests.cpp:2572`. Fail-fast leaves **435/436** rows unexecuted: A0 0 PASS / 1 RED / 4 unexecuted; A 0/4, S5 0/1, selector426 0/426; benchmark 0. `orchestration_failure=false`, `semantic_red=true`, `postflight_complete=true`; package/source/execution-view pre/post censuses are byte-identical. Result/log artifacts are `10538264057 / 10538428912`, provider SHA-256 `12d79ff1...e1aa8 / d2890bbd...ce2e3`; final ledger SHA-256 `b223e343...b043a`.
+
+EXEC assigns no stable pricing and does not itself adjudicate `RP-01`. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**; stable accounting remains **49 / 14 / 35**, debt **5**. Candidate `10532133889` remains unpromoted and S5/A3 remain uncredited. Exact next is runtime-free `M4-CP-SCALE-TB12-R7-REV`.
+
 ## Latest completed Code + Build — `M4-CP-SCALE-CB20`
 
 CB20 is **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / NO BUILD**. It corrected exactly R6's same-command nounset initialization defect and nothing else. Original harness Drive `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` remains unchanged at 18,459 bytes / `dbd9d8a5...43186a2`. Corrected successor harness is frozen under new Drive file `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, 18,479 bytes, SHA-256 `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf`; exact diff is only the sequential `stem`/`dir`/`work` initialization, `bash -n` passes, and the non-Directional nounset micro-proof is green.
@@ -36,9 +44,9 @@ The post-closeout duplicate run `35312751970 / 105497993610` remains invalid-att
 
 ## Exact next turn
 
-`M4-CP-SCALE-TB12-R7-EXEC` — immutable artifact-only Test + Benchmark under `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Plan.md`.
+`M4-CP-SCALE-TB12-R7-REV` — mandatory runtime-free Review of the valid R7 Gate-A0 semantic RED.
 
-R7 first reinstalls exact caller bytes from publication commit `df3a476bcdb1851ec033f96cad2357b764d327d8` / blob `a9705992bf85bfe8cc0caca7e8b6a94e099d89d5` and verifies SHA-256 `d2f8fe25701023bdad4843cfa6f608f2fed44980006bd73db699915728288279` plus the frozen permission union. It then creates only `.agents/connector-triggers/m4-cp-scale-tb12-r7-exec-20260918.txt` in a separate commit. The workload must consume corrected harness Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / 18,479 bytes / `04f3e8dd...e7cdf` and unchanged candidate `10532133889`. Execute Gate A0 **5**, Gate A **4**, S5 **1**, and selector426 **426** only if all ten focused rows are green; benchmark **0**; exact postflight required. Any valid semantic outcome routes to mandatory R7 Review; orchestration/integrity failure routes to the smallest control-plane CB.
+Review must independently reopen the R7 report/artifacts and CB18 correction authority, compare the valid `sourceVertex=8` failure against R4's valid `sourceVertex=0` `RP-01` record, and decide whether CB18 is falsified, whether the locus is a recurrence/new product defect, or whether test/authority scope is implicated. The older duplicate R5 observation remains invalid-attempt provenance and must not be used as semantic authority. Freeze the successor only after this classification; no corrective CB, retry, selector426 execution, benchmark, package promotion, selector427 publication or S5 credit is authorized before Review.
 
 ### Historical R6 acceptance interpretation — consumed by R6
 
@@ -87,14 +95,13 @@ product defects on one witness path is evidence about the frozen S5 approach, no
 - `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: genus-two topology and raw-field index authority supported; production atlas/A3 still unproved.
 - CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts retain existing owners.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R7-EXEC`
+## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R7-REV`
 
-1. Read root `STATUS`; it should close CB20 and name `M4-CP-SCALE-TB12-R7-EXEC`. Immediately direct-write the R7 entry beacon before any other repository mutation.
-2. Choose `READ_MODE` before broad inspection. Read the R7 plan, CB20 report, tool/workflow/retention/cleanup policies, tracker/TODO/ROADMAP/handoff and relevant lessons from one verified source snapshot.
-3. Confirm CB20 cleanup left `.github/workflows/m4-cp-scale-tb12-r7-exec.yml` absent and the R7 marker absent. Reinstall exact caller bytes from commit `df3a476bcdb1851ec033f96cad2357b764d327d8` / blob `a9705992bf85bfe8cc0caca7e8b6a94e099d89d5`; require SHA-256 `d2f8fe25701023bdad4843cfa6f608f2fed44980006bd73db699915728288279` and the exact five-permission union.
-4. Only after caller installation is branch authority, create `.agents/connector-triggers/m4-cp-scale-tb12-r7-exec-20260918.txt` in a separate commit and make no further repository write until the observer reports the matching run/event SHA.
-5. Treat candidate artifact `10532133889` and corrected Drive harness `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf` as immutable. Execute only the frozen 436-row plan; no source/test/fixture/selector/build mutation, configure, compile, relink, harness regeneration or package repair.
-6. Preserve fail-fast and exact postflight. Route semantic RED/all-green to `M4-CP-SCALE-TB12-R7-REV`; route orchestration/integrity failure to the smallest orchestration-correction CB. Perform mandatory cleanup and make final COMPLETE `STATUS` the last repository mutation.
+1. Read root `STATUS`; it should close R7 EXEC and name `M4-CP-SCALE-TB12-R7-REV`. Immediately direct-write the Review entry beacon before any other repository mutation.
+2. Choose `READ_MODE` before broad inspection. Re-open `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Report.md`, the frozen R7 plan, CB18/CB20 authority, tracker/TODO/ROADMAP/handoff, relevant lessons and policies from verified repository authority.
+3. Independently verify run/job `35326420329 / 105540445909`, result/log artifacts `10538264057 / 10538428912`, row-1 selected/executed semantics, `SingularityMismatch;sourceVertex=8`, 435 later `UNEXECUTED` rows and exact immutable postflight. Do not import semantic credit from invalid duplicate R5 run `35312751970`.
+4. Compare the valid R7 failure against CB18's separating-hard-feature ownership contract and R4 Review's `RP-01` diagnosis. Decide whether the correction is falsified/recurring, a distinct product defect is exposed, or test/authority scope is at fault; price/update tracker only from that reviewed classification.
+5. Because this is Review, perform retention/consolidation as required, freeze the exact successor and plan before any product mutation, then perform mandatory cleanup and make final COMPLETE `STATUS` the last repository mutation.
 
 ## Historical R6 resume procedure — consumed
 

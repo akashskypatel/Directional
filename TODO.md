@@ -2,26 +2,27 @@
 
 Last updated: 2026-09-18 UTC
 
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R7-EXEC`
+
+R7 is **COMPLETE / VALID SEMANTIC RED / FAIL-FAST AT GATE A0 ROW 1 / NON-STABLE**. Run/job `35326420329 / 105540445909` consumes unchanged CB18 candidate `10532133889` through corrected harness Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / `04f3e8dd...e7cdf`. Immutable preflight passes. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` executes exactly once and REDs with `code=SingularityMismatch;sourceVertex=8`; remaining **435/436** rows are unexecuted, including S5 and selector426. Benchmark is 0. Exact package/source/execution-view postflight passes. Result/log artifacts are `10538264057 / 10538428912`.
+
 ## Latest completed Code + Build — `M4-CP-SCALE-CB20`
 
-CB20 is **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / NO BUILD**. Original harness authority remains Drive `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` / 18,459 bytes / `dbd9d8a5...43186a2`. Corrected nounset-safe harness authority is new Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / 18,479 bytes / `04f3e8dd...e7cdf`. Exact R7 caller publication is commit/blob `df3a476bcdb1851ec033f96cad2357b764d327d8 / a9705992bf85bfe8cc0caca7e8b6a94e099d89d5`, SHA-256 `d2f8fe25...8279`, after SchemaStore validation run/job `35323555381 / 105531346862`. R7 marker is absent. Candidate `10532133889` is unchanged and unpromoted.
+CB20 remains **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / NO BUILD**. Corrected harness authority is Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, 18,479 bytes, SHA-256 `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf`; published R7 caller authority is commit/blob `df3a476bcdb1851ec033f96cad2357b764d327d8 / a9705992bf85bfe8cc0caca7e8b6a94e099d89d5`.
 
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R6-EXEC`
+- [x] `M4-CP-SCALE-CB18`: compile/package GREEN candidate `10532133889`; no generated runtime.
+- [x] `M4-CP-SCALE-TB12-R5-EXEC`: orchestration failure / zero semantic ledger.
+- [x] `M4-CP-SCALE-CB19`: control-plane correction green.
+- [x] `M4-CP-SCALE-TB12-R6-EXEC`: orchestration failure before row 1; 436/436 unexecuted.
+- [x] `M4-CP-SCALE-CB20`: nounset harness correction + prevalidated R7 caller; zero generated runtime.
+- [x] `M4-CP-SCALE-TB12-R7-EXEC`: valid semantic RED at Gate A0 row 1, `SingularityMismatch;sourceVertex=8`; 435/436 rows unexecuted; exact postflight green.
+- [ ] `M4-CP-SCALE-TB12-R7-REV`: **exact next**. Independently classify the valid row-1 RED against CB18's ownership contract, R4 `RP-01` evidence and the `sourceVertex=0 -> 8` locus difference. Freeze the next corrective/definition route before any product mutation.
 
-R6 is **COMPLETE / ORCHESTRATION FAILURE / ZERO DIRECTIONAL SEMANTIC EXECUTION / NON-STABLE**. Run/job `35321067552 / 105523481425` reinstalled the exact CB19-prevalidated caller and exact 18,459-byte Drive harness, then verified candidate package `10532133889` through immutable package/source/selector/genus-two preflight. The frozen harness aborted under `set -u` before its first semantic process because `stem`, `dir=...$stem`, and `work=...$stem` are initialized in one `local` command. The complete 436-row ledger therefore remains **436/436 UNEXECUTED**; Gate A0/A/S5/selector426 are **0/5 / 0/4 / 0/1 / 0/426**, benchmark/discovery 0, and exact postflight is unreached. Result/log artifacts are `10536669823 / 10536659910`.
+## Current focus — `M4-CP-SCALE-TB12-R7-REV`
 
-- [x] `M4-CP-SCALE-CB18`: compile/package GREEN candidate `10532133889`, source `079933f2ec31a9323218e73c7ae0d3ea1d11103c`; no generated runtime.
-- [x] `M4-CP-SCALE-TB12-R5-EXEC`: **ORCHESTRATION FAILURE / 0 JOBS / 0 SEMANTIC LEDGER / NON-STABLE**.
-- [x] `M4-CP-SCALE-CB19`: **CONTROL-PLANE CORRECTION GREEN / 0 RUNTIME / 0 COMPILE / 0 REPACKAGE**.
-- [x] `M4-CP-SCALE-TB12-R6-EXEC`: **ORCHESTRATION FAILURE / 436 UNEXECUTED / 0 GENERATED DIRECTIONAL PROCESSES / NON-STABLE**.
-- [x] `M4-CP-SCALE-CB20`: **CONTROL PLANE GREEN / corrected harness + prevalidated R7 caller frozen / 0 generated Directional runtime**.
-- [ ] `M4-CP-SCALE-TB12-R7-EXEC`: **exact next**. Reinstall exact published R7 caller, create its marker in a separate commit, consume corrected harness `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, and execute the unchanged 436-row semantic gate.
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate `10532133889` remains unpromoted and S5/A3 remain uncredited.
 
-## Current focus — `M4-CP-SCALE-TB12-R7-EXEC`
-
-Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate artifact `10532133889` remains unpromoted and S5/A3 remain uncredited. CB20 has corrected only R6's orchestration defect; no semantic row has yet executed against the corrected harness.
-
-R7 is governed by `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Plan.md`. Reinstall exact caller commit/blob `df3a476bcdb1851ec033f96cad2357b764d327d8 / a9705992bf85bfe8cc0caca7e8b6a94e099d89d5` (caller SHA-256 `d2f8fe25...8279`), verify corrected harness Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / `04f3e8dd...e7cdf`, then create the R7 marker separately. Execute Gate A0 5 -> Gate A 4 -> S5 1 -> selector426 426 only after all ten focused rows are green; benchmark 0; exact postflight required. No rebuild, repair, package/source/test/fixture/selector mutation, or selector427 publication is permitted in EXEC.
+Review authority is `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Report.md` plus the frozen R7 plan. Review must treat run `35326420329` as valid semantic evidence: pre/post immutable censuses are equal and the only executed row is Gate A0 row 1, which REDs at `FieldTransportAtlasTests.cpp:2572` with `code=SingularityMismatch;sourceVertex=8`. Do not import semantic credit from the older invalid duplicate R5 run. Determine whether R7 falsifies the CB18 separating-hard-feature ownership repair / recurs as `RP-01`, exposes a distinct product defect, or reveals an authority/test issue. No retry, corrective CB, selector execution, benchmark, package promotion, selector427 or S5 credit before Review.
 
 ## Carried forward from M1
 
