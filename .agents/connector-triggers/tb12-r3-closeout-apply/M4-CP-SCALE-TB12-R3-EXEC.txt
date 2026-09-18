@@ -1,5 +1,0 @@
-Turn: M4-CP-SCALE-TB12-R3-EXEC
-Purpose: apply verified durable closeout patch from Google Drive
-Drive file: 1oyjVWGqlg43-F059r1cfIc_1C4ApLsS-
-Patch SHA-256: 6003769c4e57902c3026f95cc99b95416370e8b3faac102e6fc475f1ae5031e5
-Base: 28a92be2f57226c0c047ab646d55762a4a4c6043
