@@ -1,0 +1,4 @@
+M4-CP-SCALE-TB12-R10-REV documentation/adjudication patch
+Drive file: 1FbZtDCXIOkoOc2G8mrc8pXVo7qpCMOVA
+Patch SHA-256: 9a6c376ae51e540fb2b24968e195226fcf39fb30068feb584e481e0a11458faa
+Patch base: 8f50fa7aa32ddfc36e788da2c51ec30a01acccda
