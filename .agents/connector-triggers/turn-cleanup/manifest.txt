@@ -1,0 +1,3 @@
+.agents/connector-triggers/m4-cp-scale-tb12-r5-exec-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r5-run-probe-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r5-closeout-docs-20260918.txt
