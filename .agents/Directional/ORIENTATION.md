@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-18, after `M4-CP-SCALE-TB13-REV`):** accepted M4 runtime authority is package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. TB13 Review independently accepts the exact selector426-prefix publication, all 427 fresh PASS rows, immutable postflight and genuine genus-2 S5 A3 evidence. S5 now has cumulative required-green credit; `M4-CP-SCALE-TB12-R10-REV-OBS-01` is discharged and CP-SCALE is **CLOSED / ACCEPTED**. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP4-DEFN`; cumulative M4 exit still owns the three `G4-B002` produced-witness debts and work/bit-width proof.
+> **Current milestone authority (2026-09-18, after `M4-CP4-DEFN`):** accepted M4 runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. CP4-DEFN is runtime-free and changes no accepted semantics. It freezes the three produced `G4-B002` re-proofs, produced same-region multiplicity-2 proof, zero-transport helper audit, and current production-baseline work contract: producer and self-validator each perform `1+2E` T-join invocations, aggregate `2+4E`, under monotone fixed-prefix progress. S1 calibration is re-homed to M8-CP2; S2-arrival hardening is M8-CP2-owned only while observationally equivalent, with semantic disagreement reopening A2a/M3. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP4-CB1`; selector427 stays byte-frozen.
 
-**Currency.** `M4-CP-SCALE-TB13-REV`, 2026-09-18 UTC
+**Currency.** `M4-CP4-DEFN`, 2026-09-18 UTC
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -77,9 +77,9 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 **M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open.** `M4-CP-SCALE-TB13-REV` promotes package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` as accepted runtime authority under selector427 **427/427** (`f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`). Exact selector426 prefix remains `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; owners are **30 / 281 / 75 / 41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
 
-S1 remains threshold-free diagnostic/non-gating; S2 vertex-star, S3 exact-repeat, S4 reject-only topology and S5 genuine genus-two coverage have cumulative selector credit. The separate S2-arrival exact-fallback observation remains open and receives no semantic authority by implication.
+S1 remains threshold-free diagnostic/non-gating; S2 vertex-star, S3 exact-repeat, S4 reject-only topology and S5 genuine genus-two coverage have cumulative selector credit. CP4-DEFN explicitly re-homes S1 numeric calibration to M8-CP2. The separate S2-arrival comparator remains uncertified-exact; M8-CP2 may harden it only if observationally equivalent to accepted `ArcLengthFiltered` semantics, otherwise the owning A2a/M3 checkpoint reopens.
 
-TB13 Review discharges `M4-CP-SCALE-TB12-R10-REV-OBS-01`: selector427 is exact append-only publication, TB13 is **427/427 PASS** with exact immutable postflight, and the retained genus-two fixture independently re-censuses to `120/366/244`, `chi=-2`, genus `2` while production/independent atlas hashes agree and A3 is produced. CP-SCALE is closed. Exact next is `M4-CP4-DEFN`, which freezes the cumulative exit/debt/work ledger and explicitly assigns every carried observation before CP4 Code + Build.
+`M4-CP4-DEFN` freezes the cumulative exit in `Architecture_M4_CP4_Frozen_Definitions.md`. Current production A3 work authority is the family/sign-free baseline, not the historical framed work ledger: successful build + self-validation executes `2+4E` exact minimum-T-join calls with canonical fixed-prefix progress, reported matching dimensions and report-only exact-width evidence. Same-region multiplicity-2 and the zero-transport helper audit are pre-publication CP4 obligations. Exact next is `M4-CP4-CB1`; no selector row is appended in that compile-only turn.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -196,13 +196,13 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP4 — NEXT: `M4-CP4-DEFN` (runtime-free planning).** Accepted authority is package `10565723112` / selector427 **427/427**. Freeze the cumulative M4 exit: exact accepted-prefix contract, all three produced-witness `G4-B002` debts, work/bit-width/monotone-progress evidence, and one explicit owner/disposition for every carried M4 observation. CP4 is an exit proof only, never a second schedule writer.
+1. **M4-CP4 — NEXT: `M4-CP4-CB1` (Code + Build, compile-only).** Definitions are frozen in `Architecture_M4_CP4_Frozen_Definitions.md`. CB1 adds auditable production-baseline work/progress/bit-width receipts, three focused produced `G4-B002` identities, produced same-region multiplicity-2 proof, and the zero-transport helper precondition audit. selector427 remains byte-frozen and no Directional runtime executes.
 
-2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** Three inherited produced-witness re-proofs remain CP4 gating; debt stays 5 until actual runtime acceptance.
+2. **`G4-B002` produced-witness debt — M4-CP4 exit-critical.** The three subjects/oracles/tampers are now defined: produced closed-complex candidate extraction; production torus relation ownership under container reorder; and missing relation owner on produced periodic authority. Debt remains 5 until focused TB+Review and later cumulative publication/runtime actually accept them.
 
-3. **Carried M4 observations requiring explicit CP4-DEFN disposition.** `M4-CP-SCALE-TB1-REV-OBS-01` (S1 calibration) remains non-gating unless a representative/stress bound is separately justified; `M4-CP-SCALE-DEFN-OBS-01` still lacks S2-arrival same-seam exact fallback; `M4-CP-SCALE-TB2-REV-OBS-02` still owes the dedicated `make_zero_transport_field` precondition audit; `M4-CP3-TB1-R1-REV-OBS-01` still requires an end-to-end same-region multiplicity-2 binder/oracle witness **before M4-CP4 closure**; `M4-CP3-CB4-REV-OBS-02` still owes the row399 path/`sourceFaces` divergence tamper on its next legitimate touch.
+3. **Same-region multiplicity-2 + helper audit — CP4 prerequisites.** `M4-CP3-TB1-R1-REV-OBS-01` is an explicit CP4 exit conjunct and must prove two produced A2b boundary occurrences survive the baseline binder. `M4-CP-SCALE-TB2-REV-OBS-02` is a CB1 test-authority prerequisite: semantic-success uses of `make_zero_transport_field` must prove upstream atlas/topology admissibility before downstream reachability receives credit.
 
-4. **`G4-B003` produced-witness debt — M5-owned.** Two nonzero periodic Z4 re-proofs remain debt; CP4-DEFN must keep them out of M4 rather than lose them.
+4. **Re-homed carried observations.** S1 numeric calibration -> M8-CP2; S2-arrival exact fallback -> M8-CP2 only if observationally equivalent, otherwise reopen A2a/M3; row399 path/`sourceFaces` divergence tamper -> first legitimate row399/binder/producer touch; row408 historical provenance -> truth constraint; `G4-B003` -> M5.
 
 5. **Ordinal369 ordinary trace-crossed proposal quality — ACTIVE / separate.** Existing proposal-quality/coverage owner remains valid.
 
@@ -215,6 +215,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 9. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** Do not weaken it pre-emptively; classify as test-authority drift if it fires.
 
 ## 8. Recurring defect patterns
+- **CP4-DEFN adds no new regression pattern.** It applies existing produced-witness, independent-oracle, append-only-selector, and reachability-precondition lessons. The new work-ledger definition corrects an accounting-domain issue before implementation: current production baseline includes both producer and self-validator schedules, so `1+2E` alone is not whole-stage work. This is definition hygiene, not a runtime regression.
 - **RP-01 authority-domain conflation — source-boundary alias instance (DEFN-R1), RECOVERY PROVED by R10.** A whole-source boundary-cycle index was projected to vertices and later treated as if each alias had one regional boundary owner. Hard-feature cuts make that false. DEFN-R1/CB23 correct the seam by keeping one typed global fact and exact regional support associations; R10's multi-region/single-face/alias-tamper controls plus production S5 are green. Keep the pattern because it remains reusable, but the active R4/R9 instances are closed non-stably.
  — the highest-value section
 

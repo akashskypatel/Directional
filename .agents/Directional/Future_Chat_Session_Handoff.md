@@ -4,38 +4,38 @@
 
 ## Current authority
 
-`M4-CP-SCALE-TB13-REV` **CLOSES / ACCEPTS M4-CP-SCALE** and promotes package `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** as accepted current M4 runtime authority. Selector427 SHA-256 is `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; exact selector426 prefix is `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; owners **30/281/75/41**.
+`M4-CP4-DEFN` is **COMPLETE / DEFINITIONS FROZEN / RUNTIME-FREE**. Accepted current M4 runtime authority is unchanged: package `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Selector427 SHA-256 is `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; exact selector426 prefix is `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; owners **30/281/75/41**.
 
-TB13 run/job `35393657851 / 105757517161` is the decisive cumulative runtime: result artifact `10566648975` / provider SHA-256 `3dd23c08cad9eccd49e61fae4cd14cb735bccc5a00ef23f2192af339aef1f366`, log artifact `10567158604` / SHA-256 `f7987aa4219881b966f324dff939294585fb3992980ebf730d0dbb9889b1cda6`, final ledger `2a71510891fd7cc9c4e33483a908ce4505c4bcd315053ea6f72f7055322abfed`. Review independently re-parses **427/427 PASS**, exact prefix/order/ownership and immutable postflight, and independently re-derives genuine genus-two topology plus matching atlas/A3 evidence. `M4-CP-SCALE-TB12-R10-REV-OBS-01` is DISCHARGED and S5 has cumulative selector credit.
+TB13 run/job `35393657851 / 105757517161` remains the decisive accepted cumulative runtime: result artifact `10566648975`, all **427/427 PASS**, exact immutable postflight, genuine genus-two S5 and verified A3. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. M4 remains OPEN because CP4 still requires focused implementation/runtime/review, append-only publication and the final cumulative exit gate.
 
-Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. M4 itself remains OPEN because `M4-CP4` is the cumulative exit.
+`Architecture_M4_CP4_Frozen_Definitions.md` freezes CP4's cumulative-exit contract. Current production baseline work is `1+2E` minimum-T-join calls in the producer plus `1+2E` in its self-validator, aggregate **`2+4E`**, with monotone lex-prefix progress and report-only exact-width evidence. No numeric bound is inferred from S1's observed 429 bits or the unrelated 4096 operational guard.
 
 ## Exact next turn
 
-`M4-CP4-DEFN` — runtime-free definition/planning under `Architecture_M4_CP4_DEFN_Plan.md`.
+`M4-CP4-CB1` — Code + Build, compile/package only, under `Architecture_M4_CP4_CB1_Code_Build_Plan.md`.
 
-Freeze the cumulative M4 exit from exact accepted selector427, all three `G4-B002` produced-witness debt re-proofs, work/bit-width/monotone-progress evidence and the owner/disposition of every carried M4 observation. CP4 is an exit proof only; it must not add a second schedule writer or weaken a produced-witness requirement.
+CB1 implements only the frozen evidence surface: production-baseline work/progress/bit-width receipts + independent validation; the three focused produced `G4-B002` identities; produced same-region multiplicity-2 through the A2b→baseline binder; and the dedicated `make_zero_transport_field` semantic-success precondition audit. selector427 remains byte-frozen and **no generated Directional runtime may execute**.
 
-### Carried obligations
+### Carried obligations and owners
 
-- `M4-CP-SCALE-TB1-REV-OBS-01` — S1 calibration remains non-gating until a representative/stress domain justifies a bound; CP4-DEFN must assign/re-home it explicitly.
-- `M4-CP-SCALE-DEFN-OBS-01` — S2 arrival comparator exact-fallback ownership remains open; CP4-DEFN must classify its exit ownership explicitly.
-- `M4-CP-SCALE-TB2-REV-OBS-02` — dedicated `make_zero_transport_field` precondition audit remains owed; no more phrase-only deferral.
-- `M4-CP3-TB1-R1-REV-OBS-01` — same-region multiplicity-2 binder + independent oracle is due before cumulative M4-CP4 closure.
-- `M4-CP3-CB4-REV-OBS-02` — row399 path/`sourceFaces` divergence tamper remains due on next legitimate row399 touch.
-- three `G4-B002` produced-witness debts are **M4-CP4 gating**.
-- two `G4-B003` produced-witness debts remain **M5-owned**.
-- historical TB3 row408 provenance remains a truth constraint: do not rewrite it as a historically observed `InvalidHardRailPairing` failure.
+- three `G4-B002` produced-witness debts — **M4-CP4 gating**; focused subjects/oracles/tampers are frozen in CP4 definitions.
+- `M4-CP3-TB1-R1-REV-OBS-01` — **M4-CP4 exit conjunct**, implemented in CB1 as produced same-region multiplicity-2 binder/oracle/tamper evidence.
+- `M4-CP-SCALE-TB2-REV-OBS-02` — **pre-CP4 prerequisite**, CB1 helper audit; no product semantic accommodation of an inadmissible zero-transport field.
+- `M4-CP-SCALE-TB1-REV-OBS-01` — **M8-CP2**, representative/stress numeric calibration only; remains report-only/non-gating before then.
+- `M4-CP-SCALE-DEFN-OBS-01` — **M8-CP2 only if observationally equivalent**; if an exact arrival fallback changes accepted contact semantics, reopen A2a/M3 instead of treating it as hardening.
+- `M4-CP3-CB4-REV-OBS-02` — first legitimate future touch of row399 or its path/`sourceFaces` binder/producer.
+- historical row408 provenance — truth constraint; never rewrite history as an observed `InvalidHardRailPairing` failure.
+- two `G4-B003` produced-witness debts — **M5-owned**, unchanged.
 
-## Mandatory resume procedure — current `M4-CP4-DEFN`
+## Mandatory resume procedure — current `M4-CP4-CB1`
 
-1. Read root `STATUS` and publish the DEFN entry beacon first. Read mandatory policies/checklists and the turn-based skill's definition/planning state, choose `READ_MODE`, then reconcile exact branch authority.
-2. Re-open this handoff, TODO, `M4_CP_SCALE_Closure_Record.md`, `Architecture_M4_CP_SCALE_TB13_Review_Record.md`, `Architecture_M4_DEFN_Frozen_Definitions.md`, `Architecture_M4_CP4_DEFN_Plan.md`, tracker/ROADMAP/ORIENTATION, selector manifest and relevant LESSONS. Planning is runtime-free.
-3. Freeze selector427 as the exact cumulative predecessor. Re-derive the three `G4-B002` debt preconditions from production authority and do not substitute direct/draft witnesses.
-4. Define exact work/bit-width evidence and a global monotone progress measure. Do not infer a numeric S1 gate from 429 or the 4096 operational guard.
-5. Disposition every carried observation with exactly one owner: CP4 exit conjunct, pre-CP4 prerequisite, or explicitly later owner. `M4-CP3-TB1-R1-REV-OBS-01` is already required before cumulative M4-CP4 closure.
-6. Author `Architecture_M4_CP4_Frozen_Definitions.md` plus exactly one bounded successor plan. No compile, no Directional runtime, no selector/product/test/fixture/build-source mutation in DEFN.
-7. Perform mandatory Review/DEFN ORIENTATION, tracker/TODO/ROADMAP/handoff/consolidation closeout and cleanup. Make final `STATUS` the last repository mutation.
+1. Read root `STATUS` and publish the CB1 entry beacon first. Read mandatory policies/checklists and Code+Build cadence, choose `READ_MODE=snapshot` before broad cross-file inspection, then reconcile exact branch authority.
+2. Re-open this handoff, TODO, `Architecture_M4_CP4_Frozen_Definitions.md`, `Architecture_M4_CP4_CB1_Code_Build_Plan.md`, tracker/ROADMAP/ORIENTATION, selector manifest and relevant LESSONS. Freeze selector427 byte-for-byte.
+3. Implement only CB1-A through CB1-D. Do not route production back through historical framed work-ledger authority, do not add a second A3 writer, and do not substitute synthetic/direct witnesses for produced-credit subjects.
+4. Independently validate the production-baseline receipt: producer `1+2E`, validator `1+2E`, aggregate `2+4E`, ordered per-call dimensions, zero retries/resets, monotone `(initialOptimumPending, remainingCanonicalSpanDecisions)` progress and report-only EInt width categories. Receipt data must never feed semantic decisions.
+5. For the three `G4-B002` identities and same-region multiplicity subject, STOP to Review if production authority cannot reach the frozen precondition. Do not broaden product semantics or manufacture production credit. The zero-transport helper audit is test-authority only; any required product semantic change also STOPs to Review.
+6. Compile/package only through mandatory `agent-compile-reusable.yml` with GMP/GMPXX and `runtimeExecution=false`. Execute no generated Directional binary, test, benchmark, discovery/list/help/version command or `ctest`.
+7. On compile/package GREEN, author exactly one artifact-only `M4-CP4-TB1-EXEC` successor plan from actual CB1 evidence. Perform mandatory Code+Build closeout, cleanup and durable handoff updates; make final `STATUS` the last repository mutation.
 
 ## Historical R8 EXEC resume procedure — consumed
 
