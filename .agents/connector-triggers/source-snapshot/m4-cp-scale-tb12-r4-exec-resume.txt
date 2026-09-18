@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-TB12-R4-EXEC
+purpose=resume-snapshot-reconciliation
+base_head=e85d345e23e3160aa20ae3ddb589c33d25ee655f
