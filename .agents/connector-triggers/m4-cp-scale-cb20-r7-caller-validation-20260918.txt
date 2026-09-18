@@ -1,5 +1,0 @@
-purpose=M4-CP-SCALE-CB20 validate rebased docs apply caller draft before publication
-caller_install=aa8f6b8c5092143fedd31e9a07b71259f5b40dee
-draft_blob=8eb3c7bf5f69ee8471ae98a4332e377dfc0e0fa7
-r7_execution_marker_must_remain_absent=true
-retry=2

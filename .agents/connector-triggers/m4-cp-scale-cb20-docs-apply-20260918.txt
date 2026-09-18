@@ -1,5 +1,0 @@
-turn=M4-CP-SCALE-CB20
-patch_file_id=1AozbOAhoM-lDwfJxJ4qLxI5R7lUOiGEo
-patch_sha256=37a9a6c4ea677d1b8bb275301d3e2c7f067daef4e8bb30006fbb99d8c6ee7be7
-base_sha=5e8a5ea470a851afdce8c07d0eeda20ce7c1d974
-retry=1

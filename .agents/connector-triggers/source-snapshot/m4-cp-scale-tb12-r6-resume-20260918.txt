@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB12-R6-EXEC
-requested_source=499e1406517ccdd40d54de7927392c8fd4e14f0d
-purpose=resume-reconciliation

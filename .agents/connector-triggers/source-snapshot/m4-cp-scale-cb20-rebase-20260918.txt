@@ -1,2 +1,0 @@
-turn=M4-CP-SCALE-CB20
-reason=intended durable paths changed after initial snapshot; refresh exact authority before patch reconstruction
