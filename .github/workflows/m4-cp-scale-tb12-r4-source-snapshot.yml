@@ -1,0 +1,22 @@
+name: M4 CP SCALE TB12 R4 Source Snapshot
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r4-exec-start.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  snapshot:
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: 46bbc62a1018b6278ddd8229b7d323681845fad6
+      artifact_prefix: m4-cp-scale-tb12-r4-source
+      retention_days: 7
+    secrets: inherit
