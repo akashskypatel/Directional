@@ -1,4 +1,0 @@
-purpose=apply verified M4-CP-SCALE-TB12-R6 closeout documentation patch
-patch_file_id=1_Mz7LZTRi29nRR2SLTjwLBpxiks_lfTS
-patch_sha256=6ca2f1ff27c0b6904b1e30fe1914a5e7f7648e9ddf197806ef46e7846d08023d
-retry=0
