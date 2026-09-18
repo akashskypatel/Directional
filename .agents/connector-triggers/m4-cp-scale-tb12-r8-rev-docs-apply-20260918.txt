@@ -1,0 +1,5 @@
+turn=M4-CP-SCALE-TB12-R8-REV
+purpose=apply reviewed documentation and CB22 plan patch
+base_sha=405570260ff40e18d7f7b243fd0ad1d65e96c4ec
+patch_sha256=e55618a881195a9355eb03fd1bd79e309a36a6977e5d2f674411dd01cca5fda5
+retry=0
