@@ -1,0 +1,3 @@
+M4-CP-SCALE-CB22 Drive caller schema validation
+Draft: .agents/Directional/turn-payloads/m4-cp-scale-cb22-drive-apply.yml
+Retry: 1
