@@ -1,0 +1,38 @@
+name: M4 CP SCALE CB22 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb22-closeout-drive-apply-20260918.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-cb22-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb22-closeout-drive-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1EhjHM44beivokbaCU0vbatzMJnUV8d7M
+      patch_sha256: '12e5b7a67e133e25c00978c9cdde40cdafa43d2c659777eae7a4475f1086433e'
+      base_sha: ec348a1d13f96764da5674b66a3ce314a4a8c2cb
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close M4 CP SCALE CB22 and plan R9'
+    secrets: inherit
