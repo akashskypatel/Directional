@@ -1,5 +1,0 @@
-M4-CP-SCALE-TB12-R10-REV documentation/adjudication patch retry
-Drive file: 1BQafT_Or9H5-k6gRdUGd1Kmx3lfa2Iu8
-Patch SHA-256: 7c6624c1311315aa81154d4b67e81b530f06dc79200822b4f2908fbecbf426b5
-Patch base: 8f50fa7aa32ddfc36e788da2c51ec30a01acccda
-Retry: 1

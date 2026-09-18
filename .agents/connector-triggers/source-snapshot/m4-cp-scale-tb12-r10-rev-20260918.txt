@@ -1,3 +1,0 @@
-M4-CP-SCALE-TB12-R10-REV source snapshot
-Purpose: mandatory start-of-turn reconciliation against exact current branch authority.
-Parent authority: 4cbe80e4b1d92b17f2148de212f3d565cbef05db
