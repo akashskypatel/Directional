@@ -1,4 +1,0 @@
-turn=M4-CP-SCALE-TB12-R7-REV
-requested_source=d7d9ecb79d6423bdfb70b87d8a71ea23e0f63d8e
-read_mode=snapshot
-reason=resume-reconciliation
