@@ -1,0 +1,37 @@
+name: M4 CP SCALE CB22 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb22-drive-apply-20260918.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-cb22-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb22-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1z22n0YYO-CznVNlvrf11l63iEFdFA34T
+      patch_sha256: 'b1dca3fff2360457fb72d4dc0eb8ee639f2d8c5900ca369ed884df57ad8a692d'
+      base_sha: 36b0adbb7d75e44c50cc6616fee1574189d3f777
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M4-CP-SCALE-CB22: correct separating-owner test authority'
+    secrets: inherit
