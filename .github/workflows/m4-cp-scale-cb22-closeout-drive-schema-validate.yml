@@ -1,0 +1,33 @@
+name: M4 CP SCALE CB22 Closeout Drive Schema Validate
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb22-closeout-drive-schema-20260918.txt
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-cb22-closeout-drive-schema-validate
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb22-closeout-drive-schema-validate
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m4-cp-scale-cb22-closeout-drive.yml
+    secrets: inherit
