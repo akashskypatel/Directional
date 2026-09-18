@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB12-R4-REV
-source_ref=b6a5ad107371ff08462d00a8cee6f9bbecd35667
-purpose=resume5-snapshot-reconciliation
