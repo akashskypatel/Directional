@@ -110,3 +110,63 @@ The definition turn must stop rather than choose a minimum regional owner by con
 | review_check.py boundary | **PASS** on the prepared final Review diff; no product/test/build/fixture/selector mutation and selector bytes match baseline |
 | `STATUS` lifecycle maintained | entry `2026-09-18T14:21:30Z`; resume `2026-09-18T14:39:26Z`; final COMPLETE beacon reserved as the last repository mutation |
 | Pushed to origin, branch in sync | documentation application/cleanup must verify successful remote push and final branch authority immediately before the direct final `STATUS` write; no commit hash is embedded here |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, no correction.** Accounting holds at **49 / 14 / 35**, debt **5**; accepted package
+`10473134357` / selector426 **426/426** unchanged.
+
+### V1 — the locus is exact, verified from the fixture
+
+`make_skew_four_triangle_fan()` (`tests/support/SkewSingularFieldWitness.h:138-142`) defines faces
+`(0,1,4) (1,2,4) (2,3,4) (3,0,4)`, so vertices `0,1,2,3` are the source boundary and `4` is interior — the test's
+own `ASSERT_EQ(0, mesh.isBoundaryVertex(targetVertex))` agrees.
+
+Cutting at the radial hard features `(1,4)` and `(3,4)` separates faces `0|1` and `2|3` while leaving faces `1–2`
+adjacent across `(2,4)` and faces `3–0` adjacent across `(0,4)`. The regions are therefore exactly `{1,2}` and
+`{0,3}`, as §3 states. **Vertex 1 lies in face 0 and face 1**, hence in both regions — and vertex 3 likewise, by
+symmetry, in faces 2 and 3.
+
+So `boundaryCycleByGlobalVertex : source vertex -> one regional BoundaryLoop owner` genuinely cannot represent the
+corrected subject: the map's one-to-one assumption is falsified by construction, not by coincidence. §3's claim to
+be "statically diagnostic, not ambiguous" holds.
+
+### V2 — the escalation rationale improves on the threshold this reviewer wrote, and is adopted
+
+The handoff threshold was a **third distinct product root cause** routes to definition. §4 applies it, finds it
+does **not** fire by cardinality — R4, R7 and R9 are three manifestations of one open `RP-01` family rather than
+three distinct causes — and then routes to definition anyway, because **another bounded product CB is not safely
+specifiable**.
+
+That is the better test, and it is a correction to guidance this reviewer issued. A count is a backstop; what
+actually matters is whether the next correction can be bounded without deciding an open authority question. Three
+manifestations at three seams, with the same cross-domain equality resurfacing after being removed once, is
+evidence about the definition rather than about any implementation. The refinement is adopted: specifiability
+governs, and the counter remains a secondary backstop.
+
+### V3 — the surviving equality is the sharpest sub-finding
+
+CB21 removed the global-numerator/regional-lift equality from **eligibility**, and R8 recovery-proved that removal
+at vertex 8. §3 shows the same equality still governs **final reconciliation**, where the selected regional
+`BoundaryLoop.turningLift` is still required to match the global numerator.
+
+That explains why seam-by-seam correction has not converged: the equality was removed where it was observed, not
+where it lives. DEFN-R1 item 3 — an exact reconciliation invariant that preserves the original global boundary
+fact **without equating it to an unrelated regional correction** — is the right frame, and item 5's preservation
+obligations correctly protect CB21's proved recovery from being undone while that is settled.
+
+The stop rules are the right ones too: no minimum-region-by-convenience, no silently dropped aliases, no weakened
+`SingularityMismatch`, and no using the source-boundary alias as a regional owner.
+
+### V4 — obligations
+
+`R8-EXEC-CAND-01 / RP-02` is discharged on producer-derived, independently re-measured field authority;
+`R7-EXEC-CAND-01` correctly stays closed, since R9 stops elsewhere and does not reopen the centre correction; and
+`R4-EXEC-CAND-01 / RP-01` correctly stays open, because the genus-two production S5 path still has not rerun past
+the owner seam.
+
+`TB2-REV-OBS-02` is recorded exactly as this reviewer recommended last turn — CB22 removed one invalid-helper use,
+and the broad `make_zero_transport_field` audit remains owed as its own work. That distinction is the one that
+matters: a bounded turn removing a single caller is not the audit.

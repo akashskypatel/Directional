@@ -6,6 +6,27 @@ CB22's producer-consistent replacement discharges R8 `RP-02`: the skew field der
 
 R9 CAND-01 is therefore **OPEN / PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**, not a third distinct product root cause. The count-based definition stop does not fire, but a bounded patch is not yet defined: inherited boundary-alias reconciliation says “owning BoundaryLoop,” while the cut topology supplies several relative loops and no frozen rule says which object owns the global fact. Exact next is runtime-free `M4-CP-SCALE-DEFN-R1` to freeze global boundary-alias ownership/reconciliation before any product CB. Accepted authority stays TB11 package `10473134357` / selector426 **426/426**; accounting **49 / 14 / 35**, debt **5**; CB22 remains unpromoted, production S5 RP-01 remains open, S5/A3 uncredited, no selector427.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld, no correction. **The locus was
+verified from the fixture:** `make_skew_four_triangle_fan()` (`tests/support/SkewSingularFieldWitness.h:138-142`)
+defines faces `(0,1,4) (1,2,4) (2,3,4) (3,0,4)`, so `0,1,2,3` are the source boundary and `4` interior; cutting at
+radial hard features `(1,4)` and `(3,4)` separates faces `0|1` and `2|3` while leaving `1–2` and `3–0` adjacent,
+giving exactly regions `{1,2}` and `{0,3}`. **Vertex 1 lies in face 0 and face 1, hence in both regions** — and
+vertex 3 likewise by symmetry — so `boundaryCycleByGlobalVertex : source vertex -> one regional BoundaryLoop owner`
+genuinely cannot represent the corrected subject. §3's claim to be statically diagnostic holds. **The escalation
+rationale improves on guidance this reviewer wrote and is adopted:** the handoff threshold was a third *distinct*
+product root cause, which §4 applies and correctly finds unspent — R4, R7 and R9 are three manifestations of one
+open `RP-01` family — yet routes to definition anyway because another bounded product CB is not safely
+specifiable. That is the better test; a count is a backstop, and the handoff is updated so specifiability governs.
+**The sharpest sub-finding is the surviving equality:** CB21 removed the global-numerator/regional-lift equality
+from *eligibility* and R8 recovery-proved that at vertex 8, but §3 shows it still governs *final reconciliation* —
+which explains why seam-by-seam correction has not converged, since the equality was removed where it was observed
+rather than where it lives. DEFN-R1 item 3 frames it correctly, and item 5's preservation obligations protect
+CB21's proved recovery while it is settled. Obligations are right: `R8 / RP-02` discharged on producer-derived
+re-measured field authority, `R7` correctly still closed, `R4 / RP-01` correctly still open since the genus-two S5
+path has not rerun past the owner seam, and `TB2-REV-OBS-02` recorded exactly as recommended last turn — CB22
+removed one invalid-helper use, the broad audit remains owed as its own work. Accounting holds at
+**49 / 14 / 35**, debt **5**.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R9-EXEC`: producer-consistent direct control reaches sourceVertex1 semantic RED
 
 R9 consumes immutable CB22 artifact `10548849094` / source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` through frozen 18,479-byte harness `f7632ec2...fad7`. Authoritative run/job `35353935259 / 105628563418` passes exact package/GMP/mode/selector/fixture preflight, initializes all 436 rows, then executes only Gate A0 row1. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` is selected once, not skipped, and REDs at `FieldTransportAtlasTests.cpp:2612` with `SingularityMismatch;sourceVertex=1;topologyRegion=1`.

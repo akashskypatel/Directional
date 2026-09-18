@@ -28,6 +28,18 @@ DEFN-R1 must distinguish the global source-boundary cycle, legacy per-vertex ali
 
 No generated Directional runtime, compile/package, product/test/fixture/selector mutation, R9 retry, CB22 promotion, S5/A3 credit or selector427 in DEFN-R1. Stop rather than authorize a patch if the global owner cannot be identified without a second numeric authority, if alias reconciliation would become a silent drop, if a regional owner is chosen only by ordering, or if materially different semantics require additional evidence.
 
+### Escalation rule — refined at `TB12-R9-REV`
+
+The rule recorded earlier was count-based: a **third distinct product root cause** on this S5 path routes to a
+definition turn. That remains a backstop, but the governing test is **specifiability** — route to definition when
+another bounded product CB cannot be safely specified without first deciding an open authority question, even when
+the counter is unspent.
+
+`TB12-R9-REV` applied exactly this. R4, R7 and R9 are three manifestations of one open `RP-01` family rather than
+three distinct causes, so the counter did not fire; but the next correction could not be bounded, and the turn
+routed to `M4-CP-SCALE-DEFN-R1` correctly. The count is the cruder instrument; ask the specifiability question
+first.
+
 ## Carried CP-SCALE obligations
 
 - `M4-CP-SCALE-TB12-R4-EXEC-CAND-01 / RP-01` — production S5 retry still OPEN.
