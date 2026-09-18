@@ -1,0 +1,4 @@
+# M4-CP-SCALE-TB12-R7-REV temporary repository state
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r7-rev-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r7-rev-resume-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r7-rev-docs-apply-20260918.txt
