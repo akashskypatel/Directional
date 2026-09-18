@@ -1,0 +1,6 @@
+purpose=M4-CP-SCALE-TB12-R5-EXEC immutable artifact-only execution
+caller_install=16021847faf83a4ef8525886ea271d6546c58c3a
+candidate_artifact=10532133889
+semantic_source=079933f2ec31a9323218e73c7ae0d3ea1d11103c
+harness_sha256=dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2
+retry=0
