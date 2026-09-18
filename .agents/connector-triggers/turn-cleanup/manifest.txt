@@ -1,4 +1,9 @@
-# M4-CP-SCALE-TB12-R6-EXEC temporary-state cleanup
+# M4-CP-SCALE-CB20 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb20-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb20-rebase-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb20-r7-caller-validation-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb20-docs-apply-20260918.txt
+.agents/Directional/turn-payloads/m4-cp-scale-tb12-r7-exec.yml
 .agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r6-exec-20260918.txt
 .agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r6-resume-20260918.txt
 .agents/connector-triggers/m4-cp-scale-tb12-r6-exec-20260918.txt
