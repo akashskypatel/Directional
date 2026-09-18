@@ -1,0 +1,47 @@
+name: M4 CP SCALE TB12 R5 Cadence Recovery Docs
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb12-r5-recovery/apply-docs.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb12-r5-cadence-recovery-docs
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp-scale-tb12-r5-cadence-recovery-docs.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb12-r5-cadence-recovery-docs
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1c9Bzm04_WmtTh8tmMB70ufqFFcLWLO8X
+      patch_sha256: 945c76ac262dda91eeaee4a1ad4b53108c650e7c28ddea922f61a29a50bc4ec3
+      base_sha: caf8f81f3979035fd56929a312bcd8859caf2064
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: retain invalid R5 duplicate and restore CB19 cadence"
+    secrets: inherit
