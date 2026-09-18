@@ -1,0 +1,6 @@
+# M4-CP-SCALE-CB21 temporary-state cleanup
+.agents/connector-triggers/m4-cp-scale-cb21-closeout-drive-apply.txt
+.agents/connector-triggers/m4-cp-scale-cb21-compile.txt
+.agents/connector-triggers/m4-cp-scale-cb21-drive-apply.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb21-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb21-resume-20260918.txt
