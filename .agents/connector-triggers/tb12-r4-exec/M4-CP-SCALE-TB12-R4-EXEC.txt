@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-TB12-R4-EXEC
+artifact_id=10527625935
+compile_source=1b44d2b7b3173590db9837a1386eadbc9ac32981
+mode=artifact-only-fail-fast
