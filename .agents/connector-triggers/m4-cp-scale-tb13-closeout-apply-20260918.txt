@@ -1,0 +1,6 @@
+Turn: M4-CP-SCALE-TB13-EXEC
+Purpose: apply durable TB13 execution closeout evidence
+Patch Drive ID: 1Bw0t3MA65Rnm7n5nfk2TcdU0rQwvztxF
+Patch SHA256: acf74da62318e1e33140ccdf4e932db0384d8d000a64fe5f2cc6897961e526fc
+Base SHA: 431f24b996ce419e6a2275202572001077724330
+RuntimeExecution: false
