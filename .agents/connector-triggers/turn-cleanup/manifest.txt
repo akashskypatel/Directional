@@ -1,0 +1,3 @@
+# M4-CP4-DEFN temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m4-cp4-defn-20260918.txt
+.agents/connector-triggers/m4-cp4-defn-patch-apply-20260918.txt
