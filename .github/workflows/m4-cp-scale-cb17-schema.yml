@@ -1,0 +1,30 @@
+name: M4 CP SCALE CB17 Compile Schema
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/workflow-schema-validation/M4-CP-SCALE-CB17.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m4-cp-scale-cb17-compile.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb17-schema
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
