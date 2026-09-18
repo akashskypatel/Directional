@@ -1,0 +1,7 @@
+# M4-CP-SCALE-TB12-R6-EXEC temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r6-exec-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r6-resume-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb12-r6-exec-20260918.txt
+.agents/connector-triggers/m4-cp-scale-r6-closeout-validate-20260918.txt
+.agents/connector-triggers/m4-cp-scale-r6-closeout-patch-apply-20260918.txt
+.agents/Directional/turn-payloads/m4-cp-scale-r6-closeout-patch-apply.yml
