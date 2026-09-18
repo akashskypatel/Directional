@@ -1,0 +1,3 @@
+M4-CP-SCALE-CB22 closeout Drive caller schema validation
+expected_draft=.agents/Directional/turn-payloads/m4-cp-scale-cb22-closeout-drive.yml
+retry=0
