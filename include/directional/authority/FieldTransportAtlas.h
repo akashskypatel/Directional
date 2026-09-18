@@ -313,6 +313,25 @@ struct FieldCycleWitness {
   auto operator<=>(const FieldCycleWitness &) const = default;
 };
 
+struct FieldSourceBoundaryCycleFact {
+  SourceBoundaryCycleId id;
+  SourceComponentId sourceComponent;
+  std::vector<SourceVertexId> canonicalVertices;
+  std::vector<SourceEdgeTopologyKey> sourceEdges;
+  int indexNumerator = 0;
+
+  auto operator<=>(const FieldSourceBoundaryCycleFact &) const = default;
+};
+
+struct FieldSourceBoundaryCycleAssociation {
+  SourceBoundaryCycleId sourceBoundaryCycle;
+  TopologyRegionId topologyRegion;
+  FieldCycleId regionalCycle;
+  std::vector<SourceEdgeTopologyKey> sourceBoundaryEdges;
+
+  auto operator<=>(const FieldSourceBoundaryCycleAssociation &) const = default;
+};
+
 struct FieldSingularityFact {
   enum class PortPolicy : std::uint8_t {
     Emit,
@@ -812,6 +831,14 @@ public:
   singularities() const noexcept {
     return singularities_;
   }
+  [[nodiscard]] const std::vector<FieldSourceBoundaryCycleFact> &
+  source_boundary_cycles() const noexcept {
+    return sourceBoundaryCycles_;
+  }
+  [[nodiscard]] const std::vector<FieldSourceBoundaryCycleAssociation> &
+  source_boundary_cycle_associations() const noexcept {
+    return sourceBoundaryCycleAssociations_;
+  }
   [[nodiscard]] const std::vector<FieldComponentTopology> &
   component_topology() const noexcept {
     return componentTopology_;
@@ -854,6 +881,9 @@ private:
       std::vector<FieldNonTraversableEdge> nontraversableEdges,
       std::vector<FieldCycleWitness> cycles,
       std::vector<FieldSingularityFact> singularities,
+      std::vector<FieldSourceBoundaryCycleFact> sourceBoundaryCycles,
+      std::vector<FieldSourceBoundaryCycleAssociation>
+          sourceBoundaryCycleAssociations,
       std::vector<FieldComponentTopology> componentTopology,
       std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics,
       FieldBranchTopology branchTopology,
@@ -865,6 +895,9 @@ private:
         adjacencies_(std::move(adjacencies)),
         nontraversableEdges_(std::move(nontraversableEdges)),
         cycles_(std::move(cycles)), singularities_(std::move(singularities)),
+        sourceBoundaryCycles_(std::move(sourceBoundaryCycles)),
+        sourceBoundaryCycleAssociations_(
+            std::move(sourceBoundaryCycleAssociations)),
         componentTopology_(std::move(componentTopology)),
         regionTransportDiagnostics_(std::move(regionTransportDiagnostics)),
         branchTopology_(std::move(branchTopology)),
@@ -878,6 +911,9 @@ private:
   std::vector<FieldNonTraversableEdge> nontraversableEdges_;
   std::vector<FieldCycleWitness> cycles_;
   std::vector<FieldSingularityFact> singularities_;
+  std::vector<FieldSourceBoundaryCycleFact> sourceBoundaryCycles_;
+  std::vector<FieldSourceBoundaryCycleAssociation>
+      sourceBoundaryCycleAssociations_;
   std::vector<FieldComponentTopology> componentTopology_;
   std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics_;
   FieldBranchTopology branchTopology_;

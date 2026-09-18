@@ -10164,6 +10164,91 @@ fields::CrossFieldResult remap_surface_cell_cross_field_component(
         static_cast<int>(localVertex);
   }
 
+  if (sourceCrossField.sourceBoundaryCyclesComputed) {
+    struct LocalBoundaryFact {
+      std::vector<authority::SourceVertexId> vertices;
+      std::vector<authority::SourceEdgeTopologyKey> edges;
+      int indexNumerator = 0;
+    };
+    std::vector<LocalBoundaryFact> localBoundaryFacts;
+    bool partialBoundaryFact = false;
+    for (const fields::CrossFieldSourceBoundaryCycleFact &sourceFact :
+         sourceCrossField.sourceBoundaryCycles) {
+      std::vector<authority::SourceVertexId> vertices;
+      vertices.reserve(sourceFact.canonicalVertices.size());
+      bool touchesComponent = false;
+      bool complete = true;
+      for (const authority::SourceVertexId sourceVertex :
+           sourceFact.canonicalVertices) {
+        const auto found =
+            localVertexByOriginal.find(static_cast<int>(sourceVertex.index()));
+        if (found == localVertexByOriginal.end()) {
+          complete = false;
+          continue;
+        }
+        touchesComponent = true;
+        vertices.push_back(
+            authority::SourceVertexId::from_index(
+                found->second,
+                static_cast<std::size_t>(componentMesh.V.rows()))
+                .value());
+      }
+      if (!touchesComponent) continue;
+      if (!complete || vertices.size() != sourceFact.canonicalVertices.size()) {
+        partialBoundaryFact = true;
+        break;
+      }
+      const auto best_rotation = [](const auto &input) {
+        using Vertex = authority::SourceVertexId;
+        std::vector<Vertex> best;
+        for (std::size_t start = 0; start < input.size(); ++start) {
+          std::vector<Vertex> candidate;
+          candidate.reserve(input.size());
+          for (std::size_t offset = 0; offset < input.size(); ++offset) {
+            candidate.push_back(input[(start + offset) % input.size()]);
+          }
+          if (best.empty() || candidate < best) best = std::move(candidate);
+        }
+        return best;
+      };
+      std::vector<authority::SourceVertexId> forward = best_rotation(vertices);
+      std::reverse(vertices.begin(), vertices.end());
+      std::vector<authority::SourceVertexId> reverse = best_rotation(vertices);
+      vertices = reverse < forward ? std::move(reverse) : std::move(forward);
+      std::vector<authority::SourceEdgeTopologyKey> edges;
+      edges.reserve(vertices.size());
+      for (std::size_t i = 0; i < vertices.size(); ++i) {
+        edges.push_back(authority::SourceEdgeTopologyKey::make(
+                            vertices[i], vertices[(i + 1U) % vertices.size()])
+                            .value());
+      }
+      localBoundaryFacts.push_back(
+          LocalBoundaryFact{std::move(vertices), std::move(edges),
+                            sourceFact.indexNumerator});
+    }
+    if (partialBoundaryFact) {
+      // A partially intersected complete source boundary is not a valid
+      // component projection. Leave the typed product unavailable so A1
+      // rejects any carried legacy boundary aliases rather than guessing.
+    } else {
+      std::sort(localBoundaryFacts.begin(), localBoundaryFacts.end(),
+                [](const LocalBoundaryFact &a, const LocalBoundaryFact &b) {
+                  return a.vertices < b.vertices;
+                });
+      for (std::size_t i = 0; i < localBoundaryFacts.size(); ++i) {
+        local.sourceBoundaryCycles.push_back(
+            fields::CrossFieldSourceBoundaryCycleFact{
+                authority::SourceBoundaryCycleId::from_index(
+                    i, localBoundaryFacts.size())
+                    .value(),
+                std::move(localBoundaryFacts[i].vertices),
+                std::move(localBoundaryFacts[i].edges),
+                localBoundaryFacts[i].indexNumerator});
+      }
+      local.sourceBoundaryCyclesComputed = true;
+    }
+  }
+
   std::vector<int> uncovered;
   for (Eigen::Index index = 0;
        index < sourceCrossField.uncoveredFaces.size(); ++index) {

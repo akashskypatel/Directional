@@ -60,6 +60,49 @@ std::optional<SourceEdgeTopologyKey> typed_edge(
               : std::nullopt;
 }
 
+std::vector<SourceVertexId> canonical_boundary_vertices(
+    const std::vector<int> &rawVertices, const std::size_t vertexExtent) {
+  std::vector<SourceVertexId> vertices;
+  vertices.reserve(rawVertices.size());
+  for (const int rawVertex : rawVertices) {
+    const auto vertex = SourceVertexId::from_index(rawVertex, vertexExtent);
+    if (!vertex) return {};
+    vertices.push_back(vertex.value());
+  }
+  if (vertices.empty()) return {};
+
+  const auto best_rotation = [](const std::vector<SourceVertexId> &input) {
+    std::vector<SourceVertexId> best;
+    for (std::size_t start = 0; start < input.size(); ++start) {
+      std::vector<SourceVertexId> candidate;
+      candidate.reserve(input.size());
+      for (std::size_t offset = 0; offset < input.size(); ++offset) {
+        candidate.push_back(input[(start + offset) % input.size()]);
+      }
+      if (best.empty() || candidate < best) best = std::move(candidate);
+    }
+    return best;
+  };
+
+  std::vector<SourceVertexId> forward = best_rotation(vertices);
+  std::reverse(vertices.begin(), vertices.end());
+  std::vector<SourceVertexId> reverse = best_rotation(vertices);
+  return reverse < forward ? reverse : forward;
+}
+
+std::vector<SourceEdgeTopologyKey> boundary_edges_from_vertices(
+    const std::vector<SourceVertexId> &vertices) {
+  std::vector<SourceEdgeTopologyKey> edges;
+  edges.reserve(vertices.size());
+  for (std::size_t i = 0; i < vertices.size(); ++i) {
+    const auto edge = SourceEdgeTopologyKey::make(
+        vertices[i], vertices[(i + 1) % vertices.size()]);
+    if (!edge) return {};
+    edges.push_back(edge.value());
+  }
+  return edges;
+}
+
 std::optional<Eigen::Vector3d> normalized_projected(
     const Eigen::Vector3d &direction, const Eigen::Vector3d &normal) {
   Eigen::Vector3d tangent = direction - direction.dot(normal) * normal;
@@ -1563,6 +1606,9 @@ std::uint64_t atlas_fact_digest(
     const std::vector<FieldNonTraversableEdge> &nontraversableEdges,
     const std::vector<FieldCycleWitness> &cycles,
     const std::vector<FieldSingularityFact> &singularities,
+    const std::vector<FieldSourceBoundaryCycleFact> &sourceBoundaryCycles,
+    const std::vector<FieldSourceBoundaryCycleAssociation>
+        &sourceBoundaryCycleAssociations,
     const std::vector<FieldComponentTopology> &componentTopology,
     const std::vector<FieldQuadrangulabilityWitness> &witnesses,
     const std::uint64_t branchTopologyDigest) {
@@ -1625,6 +1671,53 @@ std::uint64_t atlas_fact_digest(
     consume_hash(hash, vertex);
     consume_signed(hash, numerator);
     consume_hash(hash, portPolicy);
+  }
+
+  std::vector<std::uint64_t> sourceBoundaryFactDigests;
+  sourceBoundaryFactDigests.reserve(sourceBoundaryCycles.size());
+  for (const FieldSourceBoundaryCycleFact &fact : sourceBoundaryCycles) {
+    std::uint64_t factHash = kFnvOffset;
+    consume_hash(factHash, fact.sourceComponent.index());
+    consume_signed(factHash, fact.indexNumerator);
+    consume_hash(factHash, fact.canonicalVertices.size());
+    for (const SourceVertexId vertex : fact.canonicalVertices) {
+      consume_hash(factHash, vertex.index());
+    }
+    consume_hash(factHash, fact.sourceEdges.size());
+    for (const SourceEdgeTopologyKey &edge : fact.sourceEdges) {
+      consume_hash(factHash, edge.first().index());
+      consume_hash(factHash, edge.second().index());
+    }
+    sourceBoundaryFactDigests.push_back(factHash);
+  }
+  std::sort(sourceBoundaryFactDigests.begin(), sourceBoundaryFactDigests.end());
+  consume_hash(hash, sourceBoundaryFactDigests.size());
+  for (const std::uint64_t digest : sourceBoundaryFactDigests) {
+    consume_hash(hash, digest);
+  }
+
+  std::vector<std::uint64_t> sourceBoundaryAssociationDigests;
+  sourceBoundaryAssociationDigests.reserve(sourceBoundaryCycleAssociations.size());
+  for (const FieldSourceBoundaryCycleAssociation &association :
+       sourceBoundaryCycleAssociations) {
+    if (association.regionalCycle.index() >= cycles.size()) continue;
+    std::uint64_t associationHash = kFnvOffset;
+    consume_hash(associationHash, association.sourceBoundaryCycle.index());
+    consume_hash(associationHash,
+                 cycle_semantic_digest(cycles[association.regionalCycle.index()],
+                                       rowTopology));
+    consume_hash(associationHash, association.sourceBoundaryEdges.size());
+    for (const SourceEdgeTopologyKey &edge : association.sourceBoundaryEdges) {
+      consume_hash(associationHash, edge.first().index());
+      consume_hash(associationHash, edge.second().index());
+    }
+    sourceBoundaryAssociationDigests.push_back(associationHash);
+  }
+  std::sort(sourceBoundaryAssociationDigests.begin(),
+            sourceBoundaryAssociationDigests.end());
+  consume_hash(hash, sourceBoundaryAssociationDigests.size());
+  for (const std::uint64_t digest : sourceBoundaryAssociationDigests) {
+    consume_hash(hash, digest);
   }
 
   std::vector<std::tuple<int, int, int, std::size_t, std::size_t,
@@ -1953,14 +2046,148 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     }
   }
 
+  std::map<SourceEdgeTopologyKey, int> sourceEdgeRowByKey;
+  for (const int edgeIndex : sourceEdges) {
+    const auto edge = SourceEdgeTopologyKey::from_indices(
+        sourceMesh.EV(edgeIndex, 0), sourceMesh.EV(edgeIndex, 1),
+        vertexExtent);
+    if (!edge || !sourceEdgeRowByKey.emplace(edge.value(), edgeIndex).second) {
+      return fail(FieldAtlasBuildErrorCode::InvalidInput,
+                  edge ? std::optional<SourceEdgeTopologyKey>(edge.value())
+                       : std::nullopt);
+    }
+  }
+
+  std::vector<FieldSourceBoundaryCycleFact> sourceBoundaryCycles;
+  std::map<SourceEdgeTopologyKey, SourceBoundaryCycleId>
+      sourceBoundaryCycleByEdge;
+  std::map<SourceVertexId, SourceBoundaryCycleId> sourceBoundaryCycleByVertex;
+  if (!crossField.sourceBoundaryCyclesComputed &&
+      !rawBoundarySingularity.empty()) {
+    return fail(FieldAtlasBuildErrorCode::SingularityMismatch);
+  }
+  if (crossField.sourceBoundaryCyclesComputed) {
+    struct ExpectedSourceBoundaryCycle {
+      std::vector<SourceVertexId> canonicalVertices;
+      std::vector<SourceEdgeTopologyKey> sourceEdges;
+    };
+    std::vector<ExpectedSourceBoundaryCycle> expectedSourceBoundaryCycles;
+    expectedSourceBoundaryCycles.reserve(sourceMesh.boundaryLoops.size());
+    for (const std::vector<int> &rawLoop : sourceMesh.boundaryLoops) {
+      std::vector<SourceVertexId> vertices =
+          canonical_boundary_vertices(rawLoop, vertexExtent);
+      std::vector<SourceEdgeTopologyKey> edges =
+          boundary_edges_from_vertices(vertices);
+      if (vertices.size() != rawLoop.size() || edges.size() != rawLoop.size()) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch);
+      }
+      expectedSourceBoundaryCycles.push_back(
+          ExpectedSourceBoundaryCycle{std::move(vertices), std::move(edges)});
+    }
+    std::sort(expectedSourceBoundaryCycles.begin(),
+              expectedSourceBoundaryCycles.end(),
+              [](const ExpectedSourceBoundaryCycle &a,
+                 const ExpectedSourceBoundaryCycle &b) {
+                return a.canonicalVertices < b.canonicalVertices;
+              });
+    if (crossField.sourceBoundaryCycles.size() !=
+        expectedSourceBoundaryCycles.size()) {
+      return fail(FieldAtlasBuildErrorCode::SingularityMismatch);
+    }
+
+    for (std::size_t i = 0; i < crossField.sourceBoundaryCycles.size(); ++i) {
+      const fields::CrossFieldSourceBoundaryCycleFact &supplied =
+          crossField.sourceBoundaryCycles[i];
+      const ExpectedSourceBoundaryCycle &expected =
+          expectedSourceBoundaryCycles[i];
+      if (supplied.id.index() != i ||
+          supplied.canonicalVertices != expected.canonicalVertices ||
+          supplied.sourceEdges != expected.sourceEdges) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch);
+      }
+
+      std::optional<SourceComponentId> component;
+      for (const SourceEdgeTopologyKey &edge : supplied.sourceEdges) {
+        const auto row = sourceEdgeRowByKey.find(edge);
+        if (row == sourceEdgeRowByKey.end()) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch, edge);
+        }
+        const int edgeIndex = row->second;
+        const int first = sourceMesh.EF(edgeIndex, 0);
+        const int second = sourceMesh.EF(edgeIndex, 1);
+        const bool firstValid = first >= 0 && first < sourceMesh.F.rows();
+        const bool secondValid = second >= 0 && second < sourceMesh.F.rows();
+        if (firstValid == secondValid) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch, edge);
+        }
+        const SourceFaceId face = make_id<SourceFaceId>(
+            static_cast<std::size_t>(firstValid ? first : second));
+        const SourceComponentId edgeComponent =
+            sourceAuthority.component_for_row(face);
+        if (!component.has_value()) {
+          component = edgeComponent;
+        } else if (*component != edgeComponent) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch, edge);
+        }
+        if (!sourceBoundaryCycleByEdge.emplace(edge, supplied.id).second) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch, edge);
+        }
+      }
+      if (!component.has_value()) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch);
+      }
+      for (const SourceVertexId vertex : supplied.canonicalVertices) {
+        if (!sourceBoundaryCycleByVertex.emplace(vertex, supplied.id).second) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                      std::nullopt, std::nullopt, vertex);
+        }
+      }
+      sourceBoundaryCycles.push_back(FieldSourceBoundaryCycleFact{
+          supplied.id, *component, supplied.canonicalVertices,
+          supplied.sourceEdges, supplied.indexNumerator});
+    }
+
+    // Legacy per-boundary-vertex singularity entries are aliases of the one
+    // producer-owned complete source-boundary-cycle fact. Reconcile every alias
+    // exactly before any regional boundary-cycle association is constructed.
+    for (const FieldSourceBoundaryCycleFact &cycle : sourceBoundaryCycles) {
+      for (const SourceVertexId vertex : cycle.canonicalVertices) {
+        const auto alias =
+            rawBoundarySingularity.find(static_cast<int>(vertex.index()));
+        if (cycle.indexNumerator == 0) {
+          if (alias != rawBoundarySingularity.end()) {
+            return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                        std::nullopt, std::nullopt, vertex);
+          }
+        } else if (alias == rawBoundarySingularity.end() ||
+                   alias->second != cycle.indexNumerator) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                      std::nullopt, std::nullopt, vertex);
+        }
+      }
+    }
+    for (const auto &[rawVertex, numerator] : rawBoundarySingularity) {
+      const SourceVertexId vertex =
+          make_id<SourceVertexId>(static_cast<std::size_t>(rawVertex));
+      const auto owner = sourceBoundaryCycleByVertex.find(vertex);
+      if (owner == sourceBoundaryCycleByVertex.end() ||
+          owner->second.index() >= sourceBoundaryCycles.size() ||
+          sourceBoundaryCycles[owner->second.index()].indexNumerator != numerator) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                    std::nullopt, std::nullopt, vertex);
+      }
+    }
+
+  }
+
   std::vector<FieldCycleWitness> cycles;
+  std::vector<FieldSourceBoundaryCycleAssociation>
+      sourceBoundaryCycleAssociations;
   std::vector<FieldComponentTopology> componentTopology;
   std::vector<FieldQuadrangulabilityWitness> certificateWitnesses;
   std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics;
   std::map<int, std::pair<TopologyRegionId, FieldCycleId>>
       localCycleByGlobalVertex;
-  std::map<int, std::pair<TopologyRegionId, FieldCycleId>>
-      boundaryCycleByGlobalVertex;
   std::map<int, std::pair<TopologyRegionId, FieldCycleId>>
       slitCycleByGlobalVertex;
   std::map<int, std::set<TopologyRegionId>>
@@ -1989,6 +2216,37 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
   }
   std::map<int, std::pair<TopologyRegionId, FieldCycleId>>
       separatingFeatureCycleByGlobalVertex;
+
+  const auto record_source_boundary_association =
+      [&](const TopologyRegionId region, const FieldCycleId regionalCycle,
+          std::vector<SourceEdgeTopologyKey> support) -> bool {
+        if (support.empty()) return true;
+        std::sort(support.begin(), support.end());
+        if (std::adjacent_find(support.begin(), support.end()) != support.end()) {
+          return false;
+        }
+        std::optional<SourceBoundaryCycleId> globalCycle;
+        for (const SourceEdgeTopologyKey &edge : support) {
+          const auto found = sourceBoundaryCycleByEdge.find(edge);
+          if (found == sourceBoundaryCycleByEdge.end()) return false;
+          if (!globalCycle.has_value()) {
+            globalCycle = found->second;
+          } else if (*globalCycle != found->second) {
+            return false;
+          }
+        }
+        if (!globalCycle.has_value() ||
+            globalCycle->index() >= sourceBoundaryCycles.size() ||
+            sourceAuthority.region(region).component() !=
+                sourceBoundaryCycles[globalCycle->index()].sourceComponent) {
+          return false;
+        }
+        sourceBoundaryCycleAssociations.push_back(
+            FieldSourceBoundaryCycleAssociation{*globalCycle, region,
+                                                regionalCycle,
+                                                std::move(support)});
+        return true;
+      };
 
   const auto consider_separating_feature_boundary_owner =
       [&](const int globalVertex, const TopologyRegionId region,
@@ -2076,23 +2334,32 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       regionDiagnostics.requiredIndexSum = requiredIndexSum;
       regionDiagnostics.boundaryIndexSum = requiredIndexSum;
       regionTransportDiagnostics.push_back(std::move(regionDiagnostics));
-      for (const int vertex : sourceVertices) {
-        if (sourceMesh.isBoundaryVertex(vertex) == 0 ||
-            rawBoundarySingularity.find(vertex) ==
-                rawBoundarySingularity.end()) {
-          consider_separating_feature_boundary_owner(
-              vertex, region.id(), boundaryCycleId);
-          continue;
-        }
-        if (!boundaryCycleByGlobalVertex
-                 .emplace(vertex,
-                          std::make_pair(region.id(), boundaryCycleId))
-                 .second) {
+
+      std::vector<SourceEdgeTopologyKey> sourceBoundarySupport;
+      for (int corner = 0; corner < 3; ++corner) {
+        const int firstVertex =
+            sourceMesh.F(static_cast<int>(sourceFace.index()), corner);
+        const int secondVertex =
+            sourceMesh.F(static_cast<int>(sourceFace.index()),
+                         (corner + 1) % 3);
+        const auto edge = SourceEdgeTopologyKey::from_indices(
+            firstVertex, secondVertex, vertexExtent);
+        if (!edge) {
           return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
-                      std::nullopt, std::nullopt,
-                      make_id<SourceVertexId>(static_cast<std::size_t>(vertex)),
-                      region.id());
+                      std::nullopt, sourceFace, std::nullopt, region.id());
         }
+        if (sourceBoundaryCycleByEdge.count(edge.value()) != 0U) {
+          sourceBoundarySupport.push_back(edge.value());
+        }
+      }
+      if (!record_source_boundary_association(
+              region.id(), boundaryCycleId, std::move(sourceBoundarySupport))) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                    std::nullopt, sourceFace, std::nullopt, region.id());
+      }
+      for (const int vertex : sourceVertices) {
+        consider_separating_feature_boundary_owner(
+            vertex, region.id(), boundaryCycleId);
       }
       continue;
     }
@@ -2375,7 +2642,41 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
          loopIndex < local->mesh.boundaryLoops.size(); ++loopIndex) {
       const FieldCycleId boundaryCycle =
           cycles[boundaryCycleIndices[loopIndex]].id;
-      for (const int localVertex : local->mesh.boundaryLoops[loopIndex]) {
+      const std::vector<int> &localBoundaryLoop =
+          local->mesh.boundaryLoops[loopIndex];
+      std::vector<SourceEdgeTopologyKey> sourceBoundarySupport;
+      sourceBoundarySupport.reserve(localBoundaryLoop.size());
+      for (std::size_t edgeIndex = 0; edgeIndex < localBoundaryLoop.size();
+           ++edgeIndex) {
+        const int firstLocal = localBoundaryLoop[edgeIndex];
+        const int secondLocal =
+            localBoundaryLoop[(edgeIndex + 1U) % localBoundaryLoop.size()];
+        if (firstLocal < 0 || secondLocal < 0 ||
+            firstLocal >= local->mesh.V.rows() ||
+            secondLocal >= local->mesh.V.rows()) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                      std::nullopt, std::nullopt, std::nullopt, region.id());
+        }
+        const int firstGlobal = local->globalVertexByLocal[
+            static_cast<std::size_t>(firstLocal)];
+        const int secondGlobal = local->globalVertexByLocal[
+            static_cast<std::size_t>(secondLocal)];
+        const auto edge = SourceEdgeTopologyKey::from_indices(
+            firstGlobal, secondGlobal, vertexExtent);
+        if (!edge) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                      std::nullopt, std::nullopt, std::nullopt, region.id());
+        }
+        if (sourceBoundaryCycleByEdge.count(edge.value()) != 0U) {
+          sourceBoundarySupport.push_back(edge.value());
+        }
+      }
+      if (!record_source_boundary_association(
+              region.id(), boundaryCycle, std::move(sourceBoundarySupport))) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                    std::nullopt, std::nullopt, std::nullopt, region.id());
+      }
+      for (const int localVertex : localBoundaryLoop) {
         if (localVertex < 0 || localVertex >= local->mesh.V.rows()) {
           return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
                       std::nullopt, std::nullopt, std::nullopt, region.id());
@@ -2383,19 +2684,6 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         const int globalVertex = local->globalVertexByLocal[
             static_cast<std::size_t>(localVertex)];
         const auto owner = std::make_pair(region.id(), boundaryCycle);
-        if (sourceMesh.isBoundaryVertex(globalVertex) != 0 &&
-            rawBoundarySingularity.find(globalVertex) !=
-                rawBoundarySingularity.end()) {
-          const auto inserted =
-              boundaryCycleByGlobalVertex.emplace(globalVertex, owner);
-          if (!inserted.second && inserted.first->second != owner) {
-            return fail(
-                FieldAtlasBuildErrorCode::SingularityMismatch, std::nullopt,
-                std::nullopt,
-                make_id<SourceVertexId>(static_cast<std::size_t>(globalVertex)),
-                region.id());
-          }
-        }
         consider_separating_feature_boundary_owner(
             globalVertex, region.id(), boundaryCycle);
         if (sourceMesh.isBoundaryVertex(globalVertex) == 0 &&
@@ -2498,30 +2786,70 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     return found == regionTransportDiagnostics.end() ? nullptr : &*found;
   };
 
-  for (const auto &[rawVertex, numerator] : rawBoundarySingularity) {
-    const SourceVertexId vertex =
-        make_id<SourceVertexId>(static_cast<std::size_t>(rawVertex));
-    const auto owner = boundaryCycleByGlobalVertex.find(rawVertex);
-    if (owner == boundaryCycleByGlobalVertex.end() ||
-        owner->second.second.index() >= cycles.size()) {
-      return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
-                  std::nullopt, std::nullopt, vertex);
+  std::set<std::pair<SourceBoundaryCycleId, TopologyRegionId>>
+      diagnosedBoundaryCycleRegions;
+  for (const FieldSourceBoundaryCycleFact &globalCycle : sourceBoundaryCycles) {
+    const std::set<SourceEdgeTopologyKey> expected(
+        globalCycle.sourceEdges.begin(), globalCycle.sourceEdges.end());
+    std::set<SourceEdgeTopologyKey> covered;
+    bool associated = false;
+    for (const FieldSourceBoundaryCycleAssociation &association :
+         sourceBoundaryCycleAssociations) {
+      if (association.sourceBoundaryCycle != globalCycle.id) continue;
+      associated = true;
+      if (association.regionalCycle.index() >= cycles.size()) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                    std::nullopt, std::nullopt, std::nullopt,
+                    association.topologyRegion);
+      }
+      const FieldCycleWitness &regionalCycle =
+          cycles[association.regionalCycle.index()];
+      if (regionalCycle.kind != FieldCycleKind::BoundaryLoop ||
+          regionalCycle.topologyRegion != association.topologyRegion ||
+          regionalCycle.sourceComponent != globalCycle.sourceComponent ||
+          sourceAuthority.region(association.topologyRegion).component() !=
+              globalCycle.sourceComponent) {
+        return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                    std::nullopt, std::nullopt, std::nullopt,
+                    association.topologyRegion);
+      }
+      for (const SourceEdgeTopologyKey &edge : association.sourceBoundaryEdges) {
+        if (expected.count(edge) == 0U || !covered.insert(edge).second) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch, edge,
+                      std::nullopt, std::nullopt,
+                      association.topologyRegion);
+        }
+      }
+      if (globalCycle.indexNumerator != 0 &&
+          diagnosedBoundaryCycleRegions
+              .emplace(globalCycle.id, association.topologyRegion)
+              .second) {
+        FieldTransportRegionDiagnostics *diagnostics =
+            region_diagnostics(association.topologyRegion);
+        if (diagnostics == nullptr) {
+          return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
+                      std::nullopt, std::nullopt, std::nullopt,
+                      association.topologyRegion);
+        }
+        ++diagnostics->sourceBoundaryBoundSingularityCount;
+      }
     }
-    const FieldCycleWitness &boundaryCycle =
-        cycles[owner->second.second.index()];
-    if (boundaryCycle.kind != FieldCycleKind::BoundaryLoop ||
-        boundaryCycle.turningLift != numerator) {
-      return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
-                  std::nullopt, std::nullopt, vertex, owner->second.first);
+    if (!associated || covered != expected) {
+      return fail(FieldAtlasBuildErrorCode::SingularityMismatch);
     }
-    FieldTransportRegionDiagnostics *diagnostics =
-        region_diagnostics(owner->second.first);
-    if (diagnostics == nullptr) {
-      return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
-                  std::nullopt, std::nullopt, vertex, owner->second.first);
-    }
-    ++diagnostics->sourceBoundaryBoundSingularityCount;
   }
+  std::sort(sourceBoundaryCycleAssociations.begin(),
+            sourceBoundaryCycleAssociations.end(),
+            [](const FieldSourceBoundaryCycleAssociation &a,
+               const FieldSourceBoundaryCycleAssociation &b) {
+              if (a.sourceBoundaryCycle != b.sourceBoundaryCycle) {
+                return a.sourceBoundaryCycle < b.sourceBoundaryCycle;
+              }
+              if (a.topologyRegion != b.topologyRegion) {
+                return a.topologyRegion < b.topologyRegion;
+              }
+              return a.sourceBoundaryEdges < b.sourceBoundaryEdges;
+            });
 
   std::vector<FieldSingularityFact> singularities;
   singularities.reserve(rawSingularity.size());
@@ -2629,7 +2957,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       branchFrames, *branchTransports, *singularityAttachments);
   const std::uint64_t atlasDigest = atlas_fact_digest(
       sourceDigest, rowTopology, adjacencies, nontraversableEdges, cycles,
-      singularities, componentTopology, certificateWitnesses, branchDigest);
+      singularities, sourceBoundaryCycles, sourceBoundaryCycleAssociations,
+      componentTopology, certificateWitnesses, branchDigest);
   FieldBranchTopology branchTopology(
       std::move(branchFrames), std::move(*branchTransports),
       std::move(*singularityAttachments), branchDigest);
@@ -2639,9 +2968,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       vertexExtent, std::move(rowTopology), std::move(rowRegions),
       std::move(rowComponents), std::move(adjacencies),
       std::move(nontraversableEdges), std::move(cycles),
-      std::move(singularities), std::move(componentTopology),
-      std::move(regionTransportDiagnostics), std::move(branchTopology),
-      std::move(certificate)));
+      std::move(singularities), std::move(sourceBoundaryCycles),
+      std::move(sourceBoundaryCycleAssociations),
+      std::move(componentTopology), std::move(regionTransportDiagnostics),
+      std::move(branchTopology), std::move(certificate)));
 }
 
 const FieldFaceBranchFrame *FieldBranchTopology::find_frame(

@@ -45,6 +45,7 @@ enum class AuthorityDomain : std::uint8_t {
   QuotientClass,
   NetworkRegion,
   NetworkArc,
+  SourceBoundaryCycle,
 };
 
 enum class DomainErrorCode : std::uint8_t {
@@ -94,6 +95,9 @@ struct SourceVertexTag {
 };
 struct SourceFaceTag {
   static constexpr AuthorityDomain domain = AuthorityDomain::SourceFace;
+};
+struct SourceBoundaryCycleTag {
+  static constexpr AuthorityDomain domain = AuthorityDomain::SourceBoundaryCycle;
 };
 struct InteriorTransitionTag {
   static constexpr AuthorityDomain domain = AuthorityDomain::InteriorTransition;
@@ -210,6 +214,7 @@ private:
 
 using SourceVertexId = SemanticId<detail::SourceVertexTag>;
 using SourceFaceId = SemanticId<detail::SourceFaceTag>;
+using SourceBoundaryCycleId = SemanticId<detail::SourceBoundaryCycleTag>;
 using InteriorTransitionId = SemanticId<detail::InteriorTransitionTag>;
 using SourceComponentId = SemanticId<detail::SourceComponentTag>;
 using IsolationSheetId = SemanticId<detail::IsolationSheetTag>;
@@ -239,6 +244,7 @@ using QuotientClassId = SemanticId<detail::QuotientClassTag>;
 // another semantic domain through implicit conversion/construction.
 static_assert(!std::is_convertible_v<SourceVertexId, std::size_t>);
 static_assert(!std::is_convertible_v<SourceFaceId, std::size_t>);
+static_assert(!std::is_convertible_v<SourceBoundaryCycleId, std::size_t>);
 static_assert(!std::is_convertible_v<SourceComponentId, std::size_t>);
 static_assert(!std::is_convertible_v<IsolationSheetId, std::size_t>);
 static_assert(!std::is_convertible_v<TopologyRegionId, std::size_t>);
@@ -256,6 +262,7 @@ static_assert(!std::is_convertible_v<SingularityPortId, FieldSingularityId>);
 static_assert(!std::is_convertible_v<FieldSingularityId, SingularityPortId>);
 static_assert(!std::is_constructible_v<SourceVertexId, std::size_t>);
 static_assert(!std::is_constructible_v<SourceFaceId, std::size_t>);
+static_assert(!std::is_constructible_v<SourceBoundaryCycleId, std::size_t>);
 static_assert(!std::is_convertible_v<TopologyRegionId, FieldChartId>);
 static_assert(!std::is_convertible_v<FieldChartId, TopologyRegionId>);
 static_assert(!std::is_convertible_v<SurfaceCellOwnershipClassId,
