@@ -1,0 +1,5 @@
+purpose=M4-CP-SCALE-CB19 durable closeout docs
+caller_install=78c0edde691860a2584d6346b254bda78d01d9c2
+patch_sha256=4b0829e3a9f44b83945e71c64feccdb1b7c8d1ee36b86730afd50ea16c6c7c27
+base_sha=cad01d27a12ffc7af6748255061071e011119e25
+retry=0
