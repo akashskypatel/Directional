@@ -2,11 +2,11 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Review — `M4-CP-SCALE-TB12-R7-REV`
+## Latest completed Code + Build — `M4-CP-SCALE-CB21`
 
-R7 Review is **COMPLETE / CB18 FALSIFIED AT DIRECT OWNER GATE / EXISTING RP-01 REFINED / NON-STABLE**. Valid R7 run/job `35326420329 / 105540445909` executes A0 row1 once and REDs `SingularityMismatch;sourceVertex=8`; 435/436 rows remain unexecuted. Review independently localizes the failure to CB18's unsupported equality between the global source-vertex singularity numerator and a per-region relative `BoundaryLoop.turningLift`. The direct CB18 test repeats the same equality, so it is not independent authority for that relation.
+CB21 is **IMPLEMENTED / COMPILE+PACKAGE GREEN / RUNTIME UNEXECUTED**. Semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` changes only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp`: separating-owner eligibility/final reconciliation no longer equate a per-region `BoundaryLoop.turningLift` with the global source-vertex singularity numerator. The direct control independently derives a valid owner-region boundary lift that differs from the target global numerator before product construction, and a source-face-row permutation requires the same stable owner identity.
 
-Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate `10532133889` remains unpromoted and S5/A3 remain uncredited. R6 orchestration recovery is now proved by R7's full generated-runtime/postflight path.
+Compile run/job `35334247422 / 105565353324` builds all eight standard targets under GMP/GMPXX with `runtimeExecution=false`. Candidate artifact `10542249210` / source `ea7b15f...28d1` verifies **28/28**, ZIP SHA-256 `a64352a9524c4f114865948bb84226a317eaa1affa2e7a7fcfeea62352c7ef6c`, source archive `7a8c8f9c866dfc51580975d64e6dda5001291780e666d1491a6aee2a39a858e7`, selector426/first425 and retained genus-two bytes unchanged. No generated Directional runtime ran, so accepted runtime authority remains package `10473134357` / selector426 **426/426**, stable accounting **49 / 14 / 35**, debt **5**, and S5/A3 remain uncredited.
 
 - [x] `M4-CP-SCALE-CB18`: packaged separating-feature owner candidate `10532133889`.
 - [x] `M4-CP-SCALE-TB12-R5-EXEC`: orchestration-only failure.
@@ -15,13 +15,14 @@ Accepted runtime authority remains package `10473134357` / selector426 **426/426
 - [x] `M4-CP-SCALE-CB20`: nounset harness correction / R7 caller freeze.
 - [x] `M4-CP-SCALE-TB12-R7-EXEC`: valid semantic RED at A0 row1.
 - [x] `M4-CP-SCALE-TB12-R7-REV`: root-cause = CB18 cross-domain equality, existing `RP-01`.
-- [ ] `M4-CP-SCALE-CB21`: **exact next**. Compile/package-only correction of separating-owner eligibility plus independent mismatch discriminator. No generated Directional runtime.
+- [x] `M4-CP-SCALE-CB21`: bounded owner-eligibility correction + independent mismatch/canonicalization controls, compile/package GREEN.
+- [ ] `M4-CP-SCALE-TB12-R8-EXEC`: **exact next**. Artifact-only A0 5 -> A 4 -> S5 1 -> selector426 426 fail-fast gate against immutable artifact `10542249210`; benchmark 0; exact postflight required.
 
-## Current focus — `M4-CP-SCALE-CB21`
+## Current focus — `M4-CP-SCALE-TB12-R8-EXEC`
 
-Change only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp` semantically. Separating-feature ownership must be based on source-topology incidence and actual boundary-loop containment, then canonicalized by stable `(TopologyRegionId, FieldCycleId)`. Remove the boundary-loop-lift/global-singularity-index equality from production and the shared test oracle. Preserve the raw numerator as the singularity's numeric fact, `BarrierAbsorbed`, zero origin ports, exact owner exclusivity, same-region slit semantics and source-boundary semantics.
+Consume candidate artifact `10542249210` / semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` unchanged. Preflight package/source/modes, selector426/first425 and genus-two hashes. Freeze one R8 execution harness/caller without generated Directional runtime, then execute exactly 436 fresh-process rows with fail-fast: Gate A0 5, Gate A 4, S5 1, and selector426 426 only if all ten focused rows are green. Benchmark execution is 0.
 
-The direct control must independently establish a valid separating-owner case where the relative boundary-loop lift differs from the global target singularity numerator; restoring the old equality must make the control fail. Preserve source topology, cycle ordering, retained genus-two bytes/S5, selector426 and CMake/benchmark semantics. Compile/package under GMP/GMPXX with `runtimeExecution=false`; if green, freeze only a later fresh R8 artifact-only plan.
+R8 must not configure, compile, relink, repair or mutate packaged source/tests/fixtures/selectors. Any valid semantic result routes to mandatory `M4-CP-SCALE-TB12-R8-REV`; EXEC itself cannot promote the package, close/reprice `RP-01`, grant S5/A3 credit or publish selector427.
 
 ## Carried forward from M1
 
@@ -60,7 +61,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. R7 Review falsifies CB18 at the direct separating-owner gate and refines the existing RP-01 authority-domain defect; exact next is compile/package-only CB21. S5 remains unaccepted and three `G4-B002` debts remain CP4 gating.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. CB21 candidate `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` is compile/package GREEN under GMP/GMPXX with the R7 RP-01 equality removed and independent mismatch/canonicalization controls compiled. Exact next is artifact-only `M4-CP-SCALE-TB12-R8-EXEC`; S5 remains unaccepted and three `G4-B002` debts remain CP4 gating.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -100,4 +101,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. CB18 candidate `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` remains compile/package GREEN and unpromoted. R7 is valid semantic evidence: Gate A0 row1 REDs `SingularityMismatch;sourceVertex=8`; Review classifies the cause as CB18's unsupported global-source-index/per-region-boundary-lift equality, a refinement of existing product `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a new stable root cause. R6 is CLOSED / orchestration recovery proved / non-stable. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is compile/package-only **`M4-CP-SCALE-CB21`**, limited to separating-owner eligibility plus an independent mismatch discriminator; no generated Directional runtime or selector427 is authorized. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. CB21 candidate `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` is compile/package GREEN with the R7 cross-domain owner equality removed; it is not runtime-promoted. R7 remains valid semantic evidence for existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`; R6 is CLOSED / orchestration recovery proved / non-stable. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is immutable artifact-only **`M4-CP-SCALE-TB12-R8-EXEC`** under the frozen 436-row fail-fast plan; benchmark 0 and selector427 remains forbidden. PR #8 remains open, draft, and unmerged.

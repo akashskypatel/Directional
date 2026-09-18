@@ -4,27 +4,35 @@
 
 ## Current authority
 
-Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. CB18 candidate artifact `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` remains unpromoted; S5/A3 remain uncredited.
+Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
 
-## Latest completed Review — `M4-CP-SCALE-TB12-R7-REV`
+CB21 is compile/package GREEN but not runtime-promoted: candidate artifact `10542249210`, semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1`, package SHA-256 `a64352a9524c4f114865948bb84226a317eaa1affa2e7a7fcfeea62352c7ef6c`, source archive `7a8c8f9c866dfc51580975d64e6dda5001291780e666d1491a6aee2a39a858e7`, root manifest `88e3f454c963af481df96b5fea4b5450b904c707a6dc5ad1f9299d87ae55611c` **28/28**. S5/A3 remain uncredited until fresh runtime plus Review.
 
-R7 run/job `35326420329 / 105540445909` is valid semantic evidence. Exact 436-row gate executes only A0 row1 `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle`, which REDs `SingularityMismatch;sourceVertex=8`; 435 later rows are `UNEXECUTED`, including S5 and selector426, benchmark 0. Exact package/source/execution-view postflight matches.
+## Latest completed Code + Build — `M4-CP-SCALE-CB21`
 
-Review independently root-causes the failure to CB18's new cross-domain owner-eligibility requirement `BoundaryLoop.turningLift == rawSingularity[vertex]`. The raw singularity is a global source-vertex index; the boundary-loop lift is a per-region relative quantity and the canonical loop may absorb region-level Gauss-Bonnet correction. The test independently proves separating incidence/global +1 target/local-slit absence, but then mirrors the same numeric equality after construction, so that relation was never independently authorized.
+CB21 removes CB18's unsupported equality between the global source-vertex singularity numerator and a per-region relative `BoundaryLoop.turningLift` at both separating-owner eligibility and final reconciliation. Source-topology incidence, actual local `BoundaryLoop` containment/region ownership, stable minimum `(TopologyRegionId, FieldCycleId)`, exact-one-owner reconciliation, raw numerator, `BarrierAbsorbed`, zero origin ports, same-region slit semantics and source-boundary semantics remain intact.
 
-Candidate disposition: `M4-CP-SCALE-TB12-R7-EXEC-CAND-01` is **OPEN / PRODUCT / CB18 SEPARATING-OWNER ELIGIBILITY CROSS-DOMAIN EQUALITY / existing RP-01 AUTHORITY_DOMAIN_CONFLATION / NON-STABLE**, with shared-test-assumption weakness. R4 RP-01 remains open until original S5 advances. R6 orchestration candidate is CLOSED / RECOVERY PROVED / NON-STABLE because corrected R7 reached runtime and postflight.
+The direct regression control independently reconstructs the expected owner-region boundary cycle and proves its relative lift differs from the global target numerator **before** invoking the atlas. A reversed source-face-row control requires the same stable owner region/cycle. Semantic changes are exactly `FieldTransportAtlas.cpp` + `FieldTransportAtlasTests.cpp` (177 insertions / 8 deletions).
+
+Compile run/job `35334247422 / 105565353324` builds all eight standard targets under GMP/GMPXX with `runtimeExecution=false`. Selector426/first425 and retained genus-two OBJ/rawfield/metadata hashes are unchanged. No generated Directional binary executed.
 
 ## Exact next turn
 
-`M4-CP-SCALE-CB21` — compile/package-only separating-hard-feature owner-eligibility correction.
+`M4-CP-SCALE-TB12-R8-EXEC` — immutable artifact-only validation of CB21 candidate `10542249210`.
 
-Semantic changes are bounded to `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp`. Owner eligibility must use source-topology incidence plus actual `BoundaryLoop` containment and stable-ID canonicalization, not boundary-loop-lift/global-index equality. Preserve global raw numerator, exact-one-owner reconciliation, `BarrierAbsorbed`, zero origin ports, same-region slit semantics and source-boundary semantics.
+Execute the frozen 436-row fail-fast gate exactly:
 
-The direct control must independently establish a valid case where the eligible relative boundary-loop lift differs from the target global singularity numerator; restoring the old equality must fail the control. Preserve topology partition, cycle ordering, retained genus-two bytes/S5, selector426, CMake/benchmark semantics and accepted behavior. Generated Directional runtime is forbidden in CB21. If compile/package is green, freeze a fresh R8 artifact-only plan; do not execute it in CB21.
+```text
+Gate A0 5 -> Gate A 4 -> S5 1 -> selector426 426 only if all ten focused rows are green
+benchmark 0
+exact immutable postflight required
+```
+
+The plan is `Architecture_M4_CP_SCALE_TB12_R8_Artifact_Only_Test_Benchmark_Plan.md`. R8 may prepare/freeze only execution-control material before runtime; it must not configure, compile, relink, repair or mutate packaged source/tests/fixtures/selectors. All-green or semantic RED routes to mandatory `M4-CP-SCALE-TB12-R8-REV`; EXEC itself cannot promote package authority, close/reprice `RP-01`, grant S5/A3 credit or publish selector427.
 
 ### STOP conditions
 
-Stop and return to Review/Definition if source authority proves `BoundaryLoop.turningLift` is per-vertex singularity authority; if the correction requires topology/cycle/slit/source-boundary/fixture/selector/CMake changes; if an independent mismatch discriminator cannot be constructed; if stable-ID canonical ownership cannot be maintained; or if the next issue is actually boundary-quadrangulability/certificate semantics rather than this ownership seam.
+Stop with zero semantic credit if package/source/hash/mode preflight fails, the harness/caller cannot be frozen without altering semantic inputs, test selection is zero/multiple/skipped-only/crashes, or immutable postflight differs. On the first valid semantic RED, fail-fast and route to Review with later rows `UNEXECUTED`; do not patch or rerun in R8.
 
 ## Carried CP-SCALE obligations
 
@@ -34,13 +42,14 @@ Stop and return to Review/Definition if source authority proves `BoundaryLoop.tu
 - `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: genus-two topology and raw-field index authority supported; production atlas/A3 still unproved.
 - CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts retain existing owners.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-CB21`
+## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R8-EXEC`
 
-1. Read root `STATUS`; it should close R7 Review and name `M4-CP-SCALE-CB21`. Direct-write the CB21 entry beacon before any other repository mutation.
-2. Choose `READ_MODE` before broad inspection. Re-open the R7 Review record, CB21 plan, accepted TB11 runtime report, frozen definitions, tracker/TODO/ROADMAP/handoff, LESSONS and mandatory policies from verified repository authority.
-3. Re-prove selector426/first425 and retained genus-two hashes before semantic edits. Keep generated runtime forbidden.
-4. Modify only the two authorized semantic files. Remove the separating-owner loop-lift/global-index equality while preserving incidence/containment, stable-ID canonicalization, one-owner reconciliation, raw numerator, `BarrierAbsorbed`, zero ports, slit/source-boundary semantics. Repair the direct test with an independent mismatch discriminator and canonicalization control.
-5. Compile/package all standard targets with GMP/GMPXX using repository workflows and `runtimeExecution=false`. If green, freeze one candidate and only the later R8 artifact-only plan; do not run R8. Preserve WIP through Drive patch transport before exhaustion, then perform mandatory cleanup and make final COMPLETE `STATUS` the last mutation.
+1. Read root `STATUS`; it should close CB21 and name `M4-CP-SCALE-TB12-R8-EXEC`. Direct-write the R8 entry beacon before any other repository mutation.
+2. Choose `READ_MODE` before broad inspection. Re-open the R8 artifact-only plan, CB21 Code+Build report, accepted TB11 runtime report, frozen definitions, tracker/TODO/ROADMAP/handoff, LESSONS and mandatory policies from verified repository authority.
+3. Perform TB stale-evidence cleanup only as authorized by policy; do not remove the current CB21 package/report/plan before their necessary facts are retained. Verify artifact `10542249210` exact ZIP/source/archive/manifest/modes/GMP evidence and packaged selector426/first425/genus-two hashes before generated runtime. Extraction must preserve archived executable modes; no `chmod` or package repair.
+4. Before the first Directional process, freeze one R8 harness/caller from the proven R7 structure and exact R8 plan. Preserve the nounset-safe sequential `stem`/`dir`/`work` initialization, run non-Directional syntax/path checks, record harness bytes/size/SHA, schema-validate the caller, then create its marker separately. No compile/configure/relink/discovery/runtime during preparation.
+5. Initialize all 436 ledger rows `UNEXECUTED`, then execute fresh-process Gate A0 5 -> Gate A 4 -> S5 1 -> selector426 426 only while prior rows are green. Use exact filters with `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, fail-fast on the first valid semantic RED, benchmark 0, and mandatory immutable postflight.
+6. Preserve raw result/log artifacts, per-process counts/hashes, S5 receipt/deepest error when reached, selector owner census when reached and exact pre/postflight. Route any valid semantic result to `M4-CP-SCALE-TB12-R8-REV`; route orchestration/integrity failure to the smallest correction required. Perform mandatory cleanup and make final `STATUS` the last repository mutation.
 
 ## Historical R6 resume procedure — consumed
 

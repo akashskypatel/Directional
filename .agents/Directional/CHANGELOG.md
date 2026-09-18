@@ -1,3 +1,13 @@
+## 2026-09-18 — `M4-CP-SCALE-CB21`: separating-owner authority-domain correction compiles; R8 artifact-only next
+
+CB21 is **IMPLEMENTED / COMPILE+PACKAGE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME**. Semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` changes only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp` (177 insertions / 8 deletions). Production removes CB18's equality between per-region `BoundaryLoop.turningLift` and the global source-vertex singularity numerator at owner eligibility and final reconciliation while preserving separating-feature incidence/containment, stable `(TopologyRegionId, FieldCycleId)` canonicalization, exact-one-owner, raw numerator, `BarrierAbsorbed`, zero ports, same-region slit and source-boundary semantics.
+
+The direct control independently reconstructs the expected owner-region boundary cycle before atlas construction, proves that eligible relative lift differs from the target global numerator, and adds a reversed source-face-row control requiring the same stable owner region/cycle. Selector426 remains `41f4d559...b5114`, first425 `e0e0f394...790e0b`; retained genus-two OBJ/rawfield/metadata hashes are unchanged and no selector427 exists.
+
+Mandatory compile run/job `35334247422 / 105565353324` builds all eight standard targets under GMP/GMPXX from exact source `ea7b15f...28d1`. Candidate artifact `10542249210` hashes to `a64352a9...7ef6c`; root manifest `88e3f454...5611c` verifies **28/28**; source archive is `7a8c8f9c...858e7`; all recorded source states are clean and `runtimeExecution=false`. No generated test/benchmark/discovery process ran. Accepted runtime authority therefore remains TB11 package `10473134357` / selector426 **426/426** and stable accounting remains **49 / 14 / 35**, debt **5**; S5/A3 remain uncredited.
+
+Exact next is immutable artifact-only `M4-CP-SCALE-TB12-R8-EXEC` under the frozen **A0 5 -> A 4 -> S5 1 -> selector426 426** fail-fast ledger, benchmark 0 and mandatory immutable postflight. Any valid semantic result routes to Review; EXEC cannot promote package authority or close/reprice `RP-01`.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R7-REV`: CB18 owner eligibility falsified; same RP-01 seam continues to CB21
 
 - Independently re-opened valid R7 run/job `35326420329 / 105540445909`: A0 row1 alone executes and REDs `SingularityMismatch;sourceVertex=8`; 435/436 rows remain unexecuted; immutable postflight is exact; selector426/S5/benchmark runtime remains zero.

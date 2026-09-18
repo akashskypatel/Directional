@@ -1,3 +1,12 @@
+## 2026-09-18 — `M4-CP-SCALE-CB21`: RP-01 owner-domain correction compiled; runtime recovery pending R8 — **OPEN / PRODUCT / existing RP-01 / NON-STABLE**
+
+- **Correction authority:** semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` changes only `FieldTransportAtlas.cpp` and `FieldTransportAtlasTests.cpp`. Separating owner eligibility/final reconciliation now use source-topology incidence + actual local `BoundaryLoop` ownership/containment and stable `(TopologyRegionId, FieldCycleId)` identity; the invalid `BoundaryLoop.turningLift == global raw singularity numerator` equality is removed.
+- **Independent discriminator:** the direct control reconstructs the expected owner-region submesh/cycle facts independently before atlas construction, proves the eligible relative boundary lift differs from the target global numerator, and adds a reversed source-face-row control requiring the same stable owner region/cycle. Restoring the deleted equality would reject this valid subject.
+- **Compile evidence:** run/job `35334247422 / 105565353324`; candidate artifact `10542249210`; package SHA-256 `a64352a9524c4f114865948bb84226a317eaa1affa2e7a7fcfeea62352c7ef6c`; source archive `7a8c8f9c866dfc51580975d64e6dda5001291780e666d1491a6aee2a39a858e7`; manifest **28/28**; GMP/GMPXX; `runtimeExecution=false`. Selector426/first425 and retained genus-two bytes are unchanged.
+- **Disposition:** this is compile proof only. `M4-CP-SCALE-TB12-R7-EXEC-CAND-01` / R4 `RP-01` remains open until fresh artifact-only runtime demonstrates whether the original S5 path advances. No stable event/category/recurrence is opened, closed or repriced by CB21.
+- **Accounting:** unchanged **49 / 14 / 35**, debt **5**. Accepted runtime authority remains package `10473134357` / selector426 **426/426**; S5/A3 remain uncredited.
+- **Exact successor:** `M4-CP-SCALE-TB12-R8-EXEC`, immutable artifact-only 436-row fail-fast gate; mandatory Review follows any valid semantic result.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R7-REV`: CB18 direct owner gate falsified by global-index/per-region-boundary-lift conflation — **OPEN / PRODUCT / existing RP-01 / NON-STABLE**
 
 - **Independent evidence:** valid R7 run/job `35326420329 / 105540445909` executes only A0 row1 and REDs `SingularityMismatch;sourceVertex=8`; 435/436 rows are unexecuted, immutable postflight matches, and selector/S5/benchmark runtime is zero. Selector426 independently re-hashes to `41f4d559...b5114`, first425 `e0e0f394...790e0b`.
