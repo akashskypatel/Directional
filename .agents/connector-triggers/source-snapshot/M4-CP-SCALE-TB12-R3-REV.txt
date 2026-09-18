@@ -1,0 +1,3 @@
+Turn: M4-CP-SCALE-TB12-R3-REV
+Purpose: exact start-of-turn source/document snapshot for mandatory review READ_MODE
+Requested source: trigger commit (github.sha)
