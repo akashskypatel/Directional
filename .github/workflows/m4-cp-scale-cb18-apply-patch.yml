@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp-scale-cb18-apply-patch
+      label: m4-cp-scale-cb18-closeout-docs
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -39,9 +39,9 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1fK7IuGrNV4is70fCcDLj3yvHCfH7sEHW
-      patch_sha256: aec7d3d7764f5916ee8f47ae471970643ca30eb18a65f3a2b5a920448839a389
+      file_id: 1Uq72FCc3kiH3P7Knn0UBjWVWuzlgjbbP
+      patch_sha256: fe32bbc8f220d9c0f835b784004c1e851046f2a0f631cbdb70630da801b31d9a
       base_sha: a4c29483b5f564f01245ca83dec0924f12c83352
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M4-CP-SCALE-CB18: bind separating hard-feature singularity ownership"
+      commit_message: "M4-CP-SCALE-CB18: close out compile evidence and freeze R5"
     secrets: inherit
