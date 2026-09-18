@@ -1,0 +1,5 @@
+# M4-CP-SCALE-TB12-R10-EXEC final temporary-state cleanup after workflow-first caller retirement
+.agents/connector-triggers/m4-cp-scale-tb12-r10-exec-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r10-exec-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r10-exec-resume-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb12-r10-resume-20260918.txt
