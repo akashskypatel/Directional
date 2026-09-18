@@ -1,0 +1,2 @@
+turn=M4-CP-SCALE-CB17
+purpose=publish closeout documentation and TB12-R4 handoff
