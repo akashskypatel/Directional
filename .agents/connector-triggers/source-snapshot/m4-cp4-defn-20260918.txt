@@ -1,0 +1,3 @@
+M4-CP4-DEFN source snapshot
+Purpose: freeze current branch authority for runtime-free definition/planning inspection.
+Retry: 0
