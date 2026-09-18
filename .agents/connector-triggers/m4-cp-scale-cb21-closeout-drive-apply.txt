@@ -1,0 +1,4 @@
+Purpose: apply CB21 durable closeout docs from Drive
+Caller install: 6a97824dd45f3ef50be74d29e1fd03c3428a6aa7
+Patch SHA-256: 8b565f00fab13ea0ad8b3bf82b1baec6e99d15088b72dd0a725e6bdaaaabd59c
+Retry: 0
