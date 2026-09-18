@@ -1,0 +1,6 @@
+.agents/connector-triggers/m4-cp-scale-cb18-compile.txt
+.agents/connector-triggers/m4-cp-scale-cb18-drive-apply-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb18-patch-apply.txt
+.agents/connector-triggers/m4-cp-scale-cb18/apply-patch-20260918T0455Z.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb18-20260918T0424Z.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb18-reconcile-20260918.txt
