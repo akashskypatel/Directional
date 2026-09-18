@@ -1,0 +1,4 @@
+M4-CP-SCALE-TB12-R10-EXEC closeout documentation patch
+Drive file: 1wj8dGyRpnV5NuVdh_HdV7KTaYsOwo27U
+Patch SHA-256: 4e056abcbae4de21a024aa4b36a16b5a2055d2a0f5d38cc81f6cbe9333fd72dc
+Patch base: 234ac996773a228457df607dbbbfcb92072f01b6
