@@ -1,0 +1,48 @@
+name: Agent M4 CP SCALE CB21 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb21-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp-scale-cb21-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp-scale-cb21-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb21-drive-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1uEHGS0LGVI0rCTuDRiYprrSXIEYM63iw
+      patch_sha256: c2850169216f6b60c0bc417a5ae7cc05efffbc6e5361bf73913a71a3986f8a8b
+      base_sha: f4ab066c989d61b2dc97aa92229ffad8673f1bc2
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M4-CP-SCALE-CB21: correct separating owner eligibility'
+      retention_days: 14
+    secrets: inherit
