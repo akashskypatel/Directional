@@ -1,3 +1,0 @@
-turn=M4-CP-SCALE-TB12-R8-REV
-purpose=start-of-review exact source snapshot
-source_authority_before_trigger=271f2db3cc1fe44ce93bb01a6b414a4d81b8eeea
