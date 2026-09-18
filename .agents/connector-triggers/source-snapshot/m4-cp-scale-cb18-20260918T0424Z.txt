@@ -1,0 +1,3 @@
+purpose=M4-CP-SCALE-CB18 exact source snapshot
+expected_parent=f9c2aa5839895e08f724ba520c97f6730ef8953c
+retry=0
