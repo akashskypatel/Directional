@@ -1,0 +1,6 @@
+# M4-CP-SCALE-CB19 temporary-state cleanup
+.agents/connector-triggers/m4-cp-scale-cb19-closeout-docs-20260918.txt
+.agents/connector-triggers/m4-cp-scale-cb19-r6-caller-validation-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb19-refresh-20260918T0636Z.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-cb19-start-20260918T0619Z.txt
+.agents/Directional/turn-payloads/m4-cp-scale-tb12-r6-exec.yml
