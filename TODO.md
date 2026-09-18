@@ -2,27 +2,26 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R7-EXEC`
+## Latest completed Review — `M4-CP-SCALE-TB12-R7-REV`
 
-R7 is **COMPLETE / VALID SEMANTIC RED / FAIL-FAST AT GATE A0 ROW 1 / NON-STABLE**. Run/job `35326420329 / 105540445909` consumes unchanged CB18 candidate `10532133889` through corrected harness Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / `04f3e8dd...e7cdf`. Immutable preflight passes. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` executes exactly once and REDs with `code=SingularityMismatch;sourceVertex=8`; remaining **435/436** rows are unexecuted, including S5 and selector426. Benchmark is 0. Exact package/source/execution-view postflight passes. Result/log artifacts are `10538264057 / 10538428912`.
+R7 Review is **COMPLETE / CB18 FALSIFIED AT DIRECT OWNER GATE / EXISTING RP-01 REFINED / NON-STABLE**. Valid R7 run/job `35326420329 / 105540445909` executes A0 row1 once and REDs `SingularityMismatch;sourceVertex=8`; 435/436 rows remain unexecuted. Review independently localizes the failure to CB18's unsupported equality between the global source-vertex singularity numerator and a per-region relative `BoundaryLoop.turningLift`. The direct CB18 test repeats the same equality, so it is not independent authority for that relation.
 
-## Latest completed Code + Build — `M4-CP-SCALE-CB20`
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate `10532133889` remains unpromoted and S5/A3 remain uncredited. R6 orchestration recovery is now proved by R7's full generated-runtime/postflight path.
 
-CB20 remains **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / NO BUILD**. Corrected harness authority is Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, 18,479 bytes, SHA-256 `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf`; published R7 caller authority is commit/blob `df3a476bcdb1851ec033f96cad2357b764d327d8 / a9705992bf85bfe8cc0caca7e8b6a94e099d89d5`.
+- [x] `M4-CP-SCALE-CB18`: packaged separating-feature owner candidate `10532133889`.
+- [x] `M4-CP-SCALE-TB12-R5-EXEC`: orchestration-only failure.
+- [x] `M4-CP-SCALE-CB19`: permission-ceiling correction.
+- [x] `M4-CP-SCALE-TB12-R6-EXEC`: orchestration-only nounset failure.
+- [x] `M4-CP-SCALE-CB20`: nounset harness correction / R7 caller freeze.
+- [x] `M4-CP-SCALE-TB12-R7-EXEC`: valid semantic RED at A0 row1.
+- [x] `M4-CP-SCALE-TB12-R7-REV`: root-cause = CB18 cross-domain equality, existing `RP-01`.
+- [ ] `M4-CP-SCALE-CB21`: **exact next**. Compile/package-only correction of separating-owner eligibility plus independent mismatch discriminator. No generated Directional runtime.
 
-- [x] `M4-CP-SCALE-CB18`: compile/package GREEN candidate `10532133889`; no generated runtime.
-- [x] `M4-CP-SCALE-TB12-R5-EXEC`: orchestration failure / zero semantic ledger.
-- [x] `M4-CP-SCALE-CB19`: control-plane correction green.
-- [x] `M4-CP-SCALE-TB12-R6-EXEC`: orchestration failure before row 1; 436/436 unexecuted.
-- [x] `M4-CP-SCALE-CB20`: nounset harness correction + prevalidated R7 caller; zero generated runtime.
-- [x] `M4-CP-SCALE-TB12-R7-EXEC`: valid semantic RED at Gate A0 row 1, `SingularityMismatch;sourceVertex=8`; 435/436 rows unexecuted; exact postflight green.
-- [ ] `M4-CP-SCALE-TB12-R7-REV`: **exact next**. Independently classify the valid row-1 RED against CB18's ownership contract, R4 `RP-01` evidence and the `sourceVertex=0 -> 8` locus difference. Freeze the next corrective/definition route before any product mutation.
+## Current focus — `M4-CP-SCALE-CB21`
 
-## Current focus — `M4-CP-SCALE-TB12-R7-REV`
+Change only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp` semantically. Separating-feature ownership must be based on source-topology incidence and actual boundary-loop containment, then canonicalized by stable `(TopologyRegionId, FieldCycleId)`. Remove the boundary-loop-lift/global-singularity-index equality from production and the shared test oracle. Preserve the raw numerator as the singularity's numeric fact, `BarrierAbsorbed`, zero origin ports, exact owner exclusivity, same-region slit semantics and source-boundary semantics.
 
-Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate `10532133889` remains unpromoted and S5/A3 remain uncredited.
-
-Review authority is `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Report.md` plus the frozen R7 plan. Review must treat run `35326420329` as valid semantic evidence: pre/post immutable censuses are equal and the only executed row is Gate A0 row 1, which REDs at `FieldTransportAtlasTests.cpp:2572` with `code=SingularityMismatch;sourceVertex=8`. Do not import semantic credit from the older invalid duplicate R5 run. Determine whether R7 falsifies the CB18 separating-hard-feature ownership repair / recurs as `RP-01`, exposes a distinct product defect, or reveals an authority/test issue. No retry, corrective CB, selector execution, benchmark, package promotion, selector427 or S5 credit before Review.
+The direct control must independently establish a valid separating-owner case where the relative boundary-loop lift differs from the global target singularity numerator; restoring the old equality must make the control fail. Preserve source topology, cycle ordering, retained genus-two bytes/S5, selector426 and CMake/benchmark semantics. Compile/package under GMP/GMPXX with `runtimeExecution=false`; if green, freeze only a later fresh R8 artifact-only plan.
 
 ## Carried forward from M1
 
@@ -61,7 +60,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. R4 Review closes corrected Gate-A `RP-02` and cycle-ordering `RP-07`; CB18 packages the bounded separating-hard-feature `RP-01` ownership correction as candidate `10532133889` with no runtime credit. Fresh R6 passed immutable candidate preflight but executed no semantic row because the frozen shell harness aborted on nounset `stem` initialization. CB20 has now frozen the one-statement harness correction and exact prevalidated R7 caller with zero generated runtime; exact next is fresh artifact-only `M4-CP-SCALE-TB12-R7-EXEC`. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains unaccepted, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. R7 Review falsifies CB18 at the direct separating-owner gate and refines the existing RP-01 authority-domain defect; exact next is compile/package-only CB21. S5 remains unaccepted and three `G4-B002` debts remain CP4 gating.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -101,4 +100,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. CB18 candidate `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` is compile/package GREEN and unpromoted; prior RP-02/RP-07 remain closed without stable repricing and the current S5 blocker remains product `RP-01` pending runtime. R6 adds only non-stable orchestration candidate `M4-CP-SCALE-TB12-R6-EXEC-CAND-01`; all 436 semantic rows remain unexecuted. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is artifact-only **`M4-CP-SCALE-TB12-R7-EXEC`** under the retained R7 plan; CB20 control-plane authority is frozen and no semantic credit has yet been granted. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. CB18 candidate `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` remains compile/package GREEN and unpromoted. R7 is valid semantic evidence: Gate A0 row1 REDs `SingularityMismatch;sourceVertex=8`; Review classifies the cause as CB18's unsupported global-source-index/per-region-boundary-lift equality, a refinement of existing product `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a new stable root cause. R6 is CLOSED / orchestration recovery proved / non-stable. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is compile/package-only **`M4-CP-SCALE-CB21`**, limited to separating-owner eligibility plus an independent mismatch discriminator; no generated Directional runtime or selector427 is authorized. PR #8 remains open, draft, and unmerged.

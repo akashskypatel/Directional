@@ -1,3 +1,10 @@
+## 2026-09-18 — `M4-CP-SCALE-TB12-R7-REV`: CB18 owner eligibility falsified; same RP-01 seam continues to CB21
+
+- Independently re-opened valid R7 run/job `35326420329 / 105540445909`: A0 row1 alone executes and REDs `SingularityMismatch;sourceVertex=8`; 435/436 rows remain unexecuted; immutable postflight is exact; selector426/S5/benchmark runtime remains zero.
+- Root cause is CB18's unsupported equality between global raw source-vertex singularity numerator and per-region relative `BoundaryLoop.turningLift`; the latter participates in region-level index correction and is not per-vertex numeric authority. The direct CB18 test mirrored the same equality, so that relation lacked an independent oracle.
+- Classified R7 as existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a third distinct product cause. R4 RP-01 remains open pending corrected S5 runtime; R6 orchestration is closed recovery-proved. Stable accounting remains **49 / 14 / 35**, debt **5**; accepted package `10473134357` / selector426 **426/426** unchanged.
+- Exact successor `M4-CP-SCALE-CB21`: compile/package-only owner-eligibility/test-oracle correction with an independent lift/index-mismatch discriminator. No generated runtime, selector427 or S5 credit.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R7-EXEC`: corrected harness reaches valid semantic RED at Gate A0 row 1
 
 R7 reinstalls the exact CB20-published caller, triggers run/job `35326420329 / 105540445909`, and consumes unchanged CB18 package `10532133889` with corrected frozen harness `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / `04f3e8dd...e7cdf`. Immutable preflight passes. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` executes exactly once and REDs with `built=false`, `code=SingularityMismatch;sourceVertex=8`; fail-fast leaves 435/436 rows unexecuted, including S5 and selector426, benchmark 0. Exact package/source/execution-view postflight passes, so this is semantic rather than orchestration evidence. Result/log artifacts are `10538264057 / 10538428912`, final ledger SHA-256 `b223e343...b043a`. No stable pricing or authority promotion occurs in EXEC; accepted package `10473134357` / selector426 426/426 and accounting 49/14/35, debt 5 remain unchanged. Exact next is runtime-free `M4-CP-SCALE-TB12-R7-REV`.
@@ -8,7 +15,7 @@ CB20 is **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / 
 
 Corrected harness authority is new Drive file `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, **18,479 bytes**, SHA-256 `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf`; owner-side re-fetch reproduced the bytes. Fresh R7 caller validation run `35323555381` passed self-check and exact draft validation; result artifact `10537559842` hashes to `7393e133...fb87` with `valid=true`. Published caller commit/blob `df3a476bcdb1851ec033f96cad2357b764d327d8 / a9705992bf85bfe8cc0caca7e8b6a94e099d89d5` is 4,870 bytes, SHA-256 `d2f8fe25...8279`, with unchanged permission union `actions: read`, `contents: write`, `id-token: write`, `issues: write`, `pull-requests: write`. The R7 execution marker remains absent.
 
-Candidate `10532133889`, accepted package `10473134357`, selector426 and stable accounting remain unchanged; S5/A3 remain uncredited. Exact next is immutable artifact-only `M4-CP-SCALE-TB12-R7-EXEC` under `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Plan.md`; CB20 itself executes no 436-row semantic process.
+Candidate `10532133889`, accepted package `10473134357`, selector426 and stable accounting remain unchanged; S5/A3 remain uncredited. Exact next at CB20 closeout was immutable artifact-only `M4-CP-SCALE-TB12-R7-EXEC`; that consumed plan is now resolved through `M4_Consolidated_Record.md` §2.64 and git history. CB20 itself executes no 436-row semantic process.
 
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R6-EXEC`: exact candidate preflight passes; frozen harness aborts before row 1
 

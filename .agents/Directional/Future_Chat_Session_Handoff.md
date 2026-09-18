@@ -4,88 +4,27 @@
 
 ## Current authority
 
-- Repository: `akashskypatel/Directional`
-- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
-- PR: #8 (metadata frozen; do not modify title/body/labels/etc.)
-- Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, owner census **30/280/75/41**.
-- Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
-- CB18 candidate package `10532133889` / compile source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` is compile/package GREEN and unpromoted. Compile run/job `35307991751 / 105484066744`; artifact/log SHA-256 `4793e0155349a7f6c1e1a7833f5474d468cae89fcdd40916ec3eca192ff09c3a / 5d5d36c2010b92e915b98f85481aab83e1928c5b1654fee9af4e39b47c4a99c3`.
+Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. CB18 candidate artifact `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` remains unpromoted; S5/A3 remain uncredited.
 
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R7-EXEC`
+## Latest completed Review — `M4-CP-SCALE-TB12-R7-REV`
 
-R7 is **COMPLETE / VALID SEMANTIC RED / FAIL-FAST AT GATE A0 ROW 1 / NON-STABLE**. Exact caller bytes from CB20 were reinstalled at commit `7b15fe72d8786d05a0bfc6e5ecae1e24eb7ee7f0`; marker/event SHA `a5b4bc4ef6f84ac0c2ad20043eb6e7e973cf263f` produced run/job `35326420329 / 105540445909`. Corrected harness Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` re-hashed to `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf` and immutable candidate preflight passed.
+R7 run/job `35326420329 / 105540445909` is valid semantic evidence. Exact 436-row gate executes only A0 row1 `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle`, which REDs `SingularityMismatch;sourceVertex=8`; 435 later rows are `UNEXECUTED`, including S5 and selector426, benchmark 0. Exact package/source/execution-view postflight matches.
 
-Gate A0 row 1 `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` executed exactly once, selected=1/skipped=0, exit=1, and reported `built=false`, `code=SingularityMismatch;sourceVertex=8` at `FieldTransportAtlasTests.cpp:2572`. Fail-fast leaves **435/436** rows unexecuted: A0 0 PASS / 1 RED / 4 unexecuted; A 0/4, S5 0/1, selector426 0/426; benchmark 0. `orchestration_failure=false`, `semantic_red=true`, `postflight_complete=true`; package/source/execution-view pre/post censuses are byte-identical. Result/log artifacts are `10538264057 / 10538428912`, provider SHA-256 `12d79ff1...e1aa8 / d2890bbd...ce2e3`; final ledger SHA-256 `b223e343...b043a`.
+Review independently root-causes the failure to CB18's new cross-domain owner-eligibility requirement `BoundaryLoop.turningLift == rawSingularity[vertex]`. The raw singularity is a global source-vertex index; the boundary-loop lift is a per-region relative quantity and the canonical loop may absorb region-level Gauss-Bonnet correction. The test independently proves separating incidence/global +1 target/local-slit absence, but then mirrors the same numeric equality after construction, so that relation was never independently authorized.
 
-EXEC assigns no stable pricing and does not itself adjudicate `RP-01`. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**; stable accounting remains **49 / 14 / 35**, debt **5**. Candidate `10532133889` remains unpromoted and S5/A3 remain uncredited. Exact next is runtime-free `M4-CP-SCALE-TB12-R7-REV`.
-
-## Latest completed Code + Build — `M4-CP-SCALE-CB20`
-
-CB20 is **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / NO BUILD**. It corrected exactly R6's same-command nounset initialization defect and nothing else. Original harness Drive `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` remains unchanged at 18,459 bytes / `dbd9d8a5...43186a2`. Corrected successor harness is frozen under new Drive file `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, 18,479 bytes, SHA-256 `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf`; exact diff is only the sequential `stem`/`dir`/`work` initialization, `bash -n` passes, and the non-Directional nounset micro-proof is green.
-
-Fresh R7 caller is validated/published at commit `df3a476bcdb1851ec033f96cad2357b764d327d8`, Git blob `a9705992bf85bfe8cc0caca7e8b6a94e099d89d5`, 4,870 bytes, SHA-256 `d2f8fe25701023bdad4843cfa6f608f2fed44980006bd73db699915728288279`. Validation run/job `35323555381 / 105531346862` is green; exact result artifact `10537559842` hashes to `7393e133591f77b481f55a19f350c5adcaa959715740deec354dfb5f9c79fb87`. The R7 marker is absent. Candidate/package/selector/genus-two authority and stable accounting are unchanged; S5/A3 remain uncredited. Detailed evidence is `Architecture_M4_CP_SCALE_CB20_Orchestration_Harness_Code_Build_Report.md`.
-
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R6-EXEC`
-
-R6 is **COMPLETE / ORCHESTRATION FAILURE / ZERO DIRECTIONAL SEMANTIC EXECUTION / NON-STABLE**. Exact run/job `35321067552 / 105523481425` used marker/event SHA `532e9b0b2b681b5936a27e5ac35c6715052190eb`, exact caller blob `c31306fce7c7dbf96bb2b80859f285062460b26d`, and exact 18,459-byte Drive harness `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` / `dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2`.
-
-Candidate package `10532133889` passed immutable package/source/selector/genus-two preflight. The frozen harness then aborted under `set -u` before the first `run_row`: line 225 initializes `stem`, `dir="$RESULT/raw/$stem"`, and `work="$RUNTIME/$stem"` in one `local` command, so the dependent `$stem` expansions occur before the assignment is available. The complete ledger was initialized but remains **436/436 UNEXECUTED**, SHA-256 `61fd0f8c26c8c2266794efbf8de1c37617a81b2436e027c3e31c0b02d08b92df`; Gate A0/A/S5/selector426 are **0/5 / 0/4 / 0/1 / 0/426**, benchmark/discovery 0, exact postflight unreached. Result/log artifacts are `10536669823 / 10536659910`, SHA-256 `d27820fadb682b5aee8ff32816b0a6bfa4a824ad2266f2908376ca12ae66f518 / d2471ec1fc0dfe011ab0a4463eaa6e44a652165df65fe7b9c55dd9b908f6b168`.
-
-This does not adjudicate CB18 or S5. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**; stable accounting remains **49 / 14 / 35**, debt **5**. `M4-CP-SCALE-TB12-R6-EXEC-CAND-01` is orchestration-only/non-stable.
-
-
-## Latest completed Code + Build — `M4-CP-SCALE-CB19`
-
-CB19 is **COMPLETE / CONTROL PLANE GREEN / ZERO DIRECTIONAL RUNTIME / NO REBUILD**. It closes only R5's reusable-workflow permission-ceiling defect. Candidate artifact `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` and the exact frozen 18,459-byte harness remain unchanged. The harness was owner-control-plane fetched and re-hashed as `dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2`.
-
-The fresh R6 caller was materialized through the SHA-256 placeholder writer, validated as a draft by SchemaStore run/job `35315434185 / 105505987470`, and published byte-identically at commit `efeb4da300cc559a02d92e0d7c10d140f3bef352`: draft and published file share Git blob `c31306fce7c7dbf96bb2b80859f285062460b26d`, byte SHA-256 `6a673c9a8a8cd146dfc56f28d746ec928b6de34781eaa51a58231017645063eb`, with exact permission union `actions: read`, `contents: write`, `id-token: write`, `issues: write`, `pull-requests: write`. Mandatory CB19 cleanup retires the temporary workflow again, so R6 must reinstall those exact validated bytes before triggering. **The R6 execution marker is absent**, and CB19 executed no successor runtime.
-
-The post-closeout duplicate run `35312751970 / 105497993610` remains invalid-attempt provenance only. Its row-1 `SingularityMismatch;sourceVertex=8` observation cannot be imported as R6 evidence or used to alter the frozen plan. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**; stable accounting remains **49 / 14 / 35**, debt **5**; S5/A3 remain uncredited. CB19's resume-critical control-plane facts are retained in this handoff and `CHANGELOG.md`; its superseded per-turn report is retired at R6 closeout and remains recoverable from git history.
+Candidate disposition: `M4-CP-SCALE-TB12-R7-EXEC-CAND-01` is **OPEN / PRODUCT / CB18 SEPARATING-OWNER ELIGIBILITY CROSS-DOMAIN EQUALITY / existing RP-01 AUTHORITY_DOMAIN_CONFLATION / NON-STABLE**, with shared-test-assumption weakness. R4 RP-01 remains open until original S5 advances. R6 orchestration candidate is CLOSED / RECOVERY PROVED / NON-STABLE because corrected R7 reached runtime and postflight.
 
 ## Exact next turn
 
-`M4-CP-SCALE-TB12-R7-REV` — mandatory runtime-free Review of the valid R7 Gate-A0 semantic RED.
+`M4-CP-SCALE-CB21` — compile/package-only separating-hard-feature owner-eligibility correction.
 
-Review must independently reopen the R7 report/artifacts and CB18 correction authority, compare the valid `sourceVertex=8` failure against R4's valid `sourceVertex=0` `RP-01` record, and decide whether CB18 is falsified, whether the locus is a recurrence/new product defect, or whether test/authority scope is implicated. The older duplicate R5 observation remains invalid-attempt provenance and must not be used as semantic authority. Freeze the successor only after this classification; no corrective CB, retry, selector426 execution, benchmark, package promotion, selector427 publication or S5 credit is authorized before Review.
+Semantic changes are bounded to `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp`. Owner eligibility must use source-topology incidence plus actual `BoundaryLoop` containment and stable-ID canonicalization, not boundary-loop-lift/global-index equality. Preserve global raw numerator, exact-one-owner reconciliation, `BarrierAbsorbed`, zero origin ports, same-region slit semantics and source-boundary semantics.
 
-### Historical R6 acceptance interpretation — consumed by R6
+The direct control must independently establish a valid case where the eligible relative boundary-loop lift differs from the target global singularity numerator; restoring the old equality must fail the control. Preserve topology partition, cycle ordering, retained genus-two bytes/S5, selector426, CMake/benchmark semantics and accepted behavior. Generated Directional runtime is forbidden in CB21. If compile/package is green, freeze a fresh R8 artifact-only plan; do not execute it in CB21.
 
-The following pre-execution interpretation is retained as historical authority for how R6 would have been read had semantic execution begun. R6 never reached Gate A0, so none of its PASS/RED branches fired.
+### STOP conditions
 
-
-Added by the Review Agent, 2026-09-18. The control-plane steps above are necessary but not sufficient — R6 also
-has to answer a semantic question, and its outcome routes differently depending on which.
-
-**Process budget.** The frozen plan is `5 + 4 + 1 + 426 = 436` rows: Gate A0 ownership/preservation (5), frozen
-Gate A cycle-order authority (4), the S5 focus (1), and cumulative selector426 (426). A run that does not account
-for all 436 has not executed the frozen plan.
-
-**Gate A and A0 are not optional re-runs.** Gate A re-proves the CB16/CB17 cycle-order authority already accepted
-as recovery evidence; Gate A0 proves CB18's ownership seam *and* that predecessor behaviour is preserved. A green
-S5 focus beside a red Gate A0 would mean the seam moved rather than was corrected.
-
-**Reading the S5 focus:**
-
-- **PASS** — CB18's separating-hard-feature ownership correction holds on the retained genus-two witness. This is
-  still only a focused result: publication and cumulative credit require the frozen
-  focused-proof → append-only publication → fresh cumulative gate → Review chain, exactly as S2, S3 and S4 each
-  went through. Do not treat a focused PASS as selector credit.
-- **RED at the same seam** — the correction is falsified; return to Review with the evidence.
-- **RED at a new, later seam** — CB18 advanced the boundary, as CB16 did before it. Root-cause it, classify it
-  against the existing taxonomy before inventing a category, and check whether the failure is product or test
-  authority before assuming product.
-
-**Do not credit the invalid duplicate run.** `35312751970 / 105497993610` is invalid-attempt provenance only. Its
-row-1 observation reads `SingularityMismatch;sourceVertex=8`, which differs from the R4 record's `sourceVertex=0`.
-That difference is **not** evidence that CB18 changed behaviour, because the run has no valid provenance to
-support any semantic claim. Comparing it against R4 is the specific mistake to avoid here.
-
-**Stop condition — when another bounded CB stops being the right answer.** S5 has now consumed CB16 (RP-07 cycle
-linearization, product), CB17 (Gate-A precondition, test authority), CB18 (RP-01 singularity ownership, product)
-and CB19 (orchestration). Each root cause was genuinely distinct and each correction was proved, so the sequence
-has been advancing rather than thrashing. If R6 produces a **third distinct product root cause** on this same S5
-path, that is the point to stop issuing bounded CBs and route to a definition turn instead: three independent
-product defects on one witness path is evidence about the frozen S5 approach, not about any one of them.
+Stop and return to Review/Definition if source authority proves `BoundaryLoop.turningLift` is per-vertex singularity authority; if the correction requires topology/cycle/slit/source-boundary/fixture/selector/CMake changes; if an independent mismatch discriminator cannot be constructed; if stable-ID canonical ownership cannot be maintained; or if the next issue is actually boundary-quadrangulability/certificate semantics rather than this ownership seam.
 
 ## Carried CP-SCALE obligations
 
@@ -95,13 +34,13 @@ product defects on one witness path is evidence about the frozen S5 approach, no
 - `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: genus-two topology and raw-field index authority supported; production atlas/A3 still unproved.
 - CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts retain existing owners.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R7-REV`
+## Mandatory resume procedure — current `M4-CP-SCALE-CB21`
 
-1. Read root `STATUS`; it should close R7 EXEC and name `M4-CP-SCALE-TB12-R7-REV`. Immediately direct-write the Review entry beacon before any other repository mutation.
-2. Choose `READ_MODE` before broad inspection. Re-open `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Report.md`, the frozen R7 plan, CB18/CB20 authority, tracker/TODO/ROADMAP/handoff, relevant lessons and policies from verified repository authority.
-3. Independently verify run/job `35326420329 / 105540445909`, result/log artifacts `10538264057 / 10538428912`, row-1 selected/executed semantics, `SingularityMismatch;sourceVertex=8`, 435 later `UNEXECUTED` rows and exact immutable postflight. Do not import semantic credit from invalid duplicate R5 run `35312751970`.
-4. Compare the valid R7 failure against CB18's separating-hard-feature ownership contract and R4 Review's `RP-01` diagnosis. Decide whether the correction is falsified/recurring, a distinct product defect is exposed, or test/authority scope is at fault; price/update tracker only from that reviewed classification.
-5. Because this is Review, perform retention/consolidation as required, freeze the exact successor and plan before any product mutation, then perform mandatory cleanup and make final COMPLETE `STATUS` the last repository mutation.
+1. Read root `STATUS`; it should close R7 Review and name `M4-CP-SCALE-CB21`. Direct-write the CB21 entry beacon before any other repository mutation.
+2. Choose `READ_MODE` before broad inspection. Re-open the R7 Review record, CB21 plan, accepted TB11 runtime report, frozen definitions, tracker/TODO/ROADMAP/handoff, LESSONS and mandatory policies from verified repository authority.
+3. Re-prove selector426/first425 and retained genus-two hashes before semantic edits. Keep generated runtime forbidden.
+4. Modify only the two authorized semantic files. Remove the separating-owner loop-lift/global-index equality while preserving incidence/containment, stable-ID canonicalization, one-owner reconciliation, raw numerator, `BarrierAbsorbed`, zero ports, slit/source-boundary semantics. Repair the direct test with an independent mismatch discriminator and canonicalization control.
+5. Compile/package all standard targets with GMP/GMPXX using repository workflows and `runtimeExecution=false`. If green, freeze one candidate and only the later R8 artifact-only plan; do not run R8. Preserve WIP through Drive patch transport before exhaustion, then perform mandatory cleanup and make final COMPLETE `STATUS` the last mutation.
 
 ## Historical R6 resume procedure — consumed
 
