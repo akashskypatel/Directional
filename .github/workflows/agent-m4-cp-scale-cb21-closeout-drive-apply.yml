@@ -1,0 +1,48 @@
+name: Agent M4 CP SCALE CB21 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-cb21-closeout-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m4-cp-scale-cb21-closeout-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m4-cp-scale-cb21-closeout-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-cb21-closeout-drive-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1ctEZWyJ-L7LOiOGOMqaU8gJ6PTpoE6pd
+      patch_sha256: 8b565f00fab13ea0ad8b3bf82b1baec6e99d15088b72dd0a725e6bdaaaabd59c
+      base_sha: 352f9f603ce7141bc58a11443d5170fb047d0621
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close M4 CP SCALE CB21 and plan R8'
+      retention_days: 14
+    secrets: inherit
