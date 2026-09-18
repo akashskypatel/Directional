@@ -1,2 +1,0 @@
-turn=M4-CP-SCALE-CB17
-purpose=resume exact source snapshot reconciliation
