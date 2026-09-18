@@ -1,3 +1,0 @@
-purpose=M4-CP-SCALE-TB12-R5 closeout durable-document snapshot
-expected_head=9b773819f221b699f938d870325590f8e7d1d67d
-retry=0
