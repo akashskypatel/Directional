@@ -70,6 +70,12 @@ These control-plane deviations did not alter publication or compile semantics, a
 - Creating the initial cleanup manifest auto-triggered cleanup run `35390313905`, which failed before closeout. No semantic/runtime evidence came from that run.
 - The first compile-marker create call ended in a transport disconnect; an authority read proved the marker absent before one bounded retry created it.
 
+## Final hygiene
+
+Mandatory turn cleanup run/job `35392163043 / 105752784688` completed **SUCCESS**. Result artifact `10565628746` (provider SHA-256 `d6748cf279eb006b796be278babac5e515eb0cb55b7e4e7b843d0feaa73728a3`) records cleanup commit `127b0dc2c4492acd57e219eb2b715e17f5aa6047`, `runtimeExecution=false`, and removal of the CB24 source-snapshot, compile, and closeout markers. Temporary CB24 workflow callers are absent; `.agents` contains only the durable `Directional` tree and no workflow-observation or turn-payload state remains.
+
+The continuation recovery copy of the already-emitted CB24 work-preservation patch was staged to `My Drive/Directional-CI` only after repository authority had already advanced past its exact intended two-file publication. It was never applied, and was permanently deleted after the authoritative selector427/manifest publication and compile evidence were re-verified.
+
 ## Exact next
 
 `M4-CP-SCALE-TB13-EXEC` consumes artifact `10565723112` immutably under `Architecture_M4_CP_SCALE_TB13_Artifact_Only_Test_Benchmark_Plan.md`. It must execute selector427 in exact file order as **427 fresh processes**, with zero benchmark execution and exact immutable pre/postflight. Any semantic outcome then routes to mandatory `M4-CP-SCALE-TB13-REV`; cumulative S5 credit is forbidden before that Review.
