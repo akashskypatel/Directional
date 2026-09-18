@@ -1,0 +1,2 @@
+turn=M4-CP-SCALE-TB12-R8-EXEC
+purpose=start-of-turn exact source snapshot after STATUS beacon
