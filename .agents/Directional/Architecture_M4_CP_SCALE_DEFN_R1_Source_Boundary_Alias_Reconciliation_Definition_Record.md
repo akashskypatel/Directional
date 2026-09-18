@@ -102,3 +102,66 @@ The implementation MUST stop rather than broaden if it cannot expose the global 
 | `review_check.py boundary` | **PASS.** `review_check.py boundary --expect-selector 426=41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` passed every product/test/build/selector/durable-marker check. |
 | `STATUS` lifecycle | Entry beacon: `M4-CP-SCALE-DEFN-R1 / IN_PROGRESS`, started `2026-09-18T15:48:00Z`. Final COMPLETE beacon with successor `M4-CP-SCALE-CB23` is reserved as the last repository mutation after cleanup. |
 | Pushed to origin / branch in sync | Durable documentation is transported to the configured working branch; final control-plane verification occurs after cleanup and before the last `STATUS` write. |
+
+---
+
+## Independent review addendum (reviewing agent)
+
+Runtime-free. The definition is **upheld**. An independent source trace of
+`rawBoundarySingularity`, `boundaryCycleByGlobalVertex` and the source-boundary `BoundaryLoop` witnesses was
+performed against the exact atlas source and corroborates D1–D5 rather than correcting them. One additional
+consumer site is recorded for CB23, and two checks are recorded as closed so they are not re-opened.
+
+### V1 — D2's edge-partition holds exactly on the subject that failed
+
+The invariant is not merely plausible; it is satisfied where the old one broke. For the skew fan, the global
+source-boundary edge set is `E(G) = {(0,1), (1,2), (2,3), (3,0)}`. Cutting at the radial hard features `(1,4)` and
+`(3,4)` yields regions `{0,3}` and `{1,2}`, whose true source-boundary edges are:
+
+- region `{0,3}` (faces `(0,1,4)`, `(3,0,4)`) supports `{(0,1), (3,0)}`;
+- region `{1,2}` (faces `(1,2,4)`, `(2,3,4)`) supports `{(1,2), (2,3)}`.
+
+Their union is exactly `E(G)` and their intersection is empty, so D2's cover-and-disjointness relation holds.
+Meanwhile source-boundary vertices `1` and `3` each occur in **both** associations — precisely the situation that
+made the old per-vertex map fail.
+
+Partitioning on **edges** rather than vertices is the load-bearing choice. A hard-feature cut meeting the source
+boundary splits it *at a vertex*, so vertices are necessarily shared while edges are not. An invariant keyed on
+vertices could not have been made exact; this one can.
+
+### V2 — a second population site CB23 must also convert
+
+The R9 failure was observed at one site, but `boundaryCycleByGlobalVertex` is populated at **two**, and they do
+not agree on uniqueness semantics:
+
+- `src/authority/FieldTransportAtlas.cpp:2087` uses a plain `emplace` and fails on **any** duplicate key —
+  `if (!…emplace(vertex, {region.id(), boundaryCycleId}).second) return fail(SingularityMismatch, …)`. This is the
+  site R9 hit;
+- `:2390-2391` emplaces and then tolerates a duplicate when the stored value is identical —
+  `if (!inserted.second && inserted.first->second != owner) return fail(…)`. It rejects only a *different* owner.
+
+So one path already admits idempotent re-insertion and the other does not, and **both** still encode the
+one-regional-owner-per-global-vertex assumption that D2 retires. Converting only the site R9 happened to reach
+would leave the second path rejecting a legitimate multi-region association. CB23 must convert both, and the
+final reconciliation consumer at `:2504-2516` with them.
+
+### V3 — two checks closed, so they are not re-opened
+
+- **`BoundaryLoop.turningLift` is not overloaded.** Two construction paths assign it from different expressions —
+  `:2052-2055` sets `turningLift = requiredIndexSum = 4 · χ(region)`, while the general path at `:2194/:2271` sets
+  it from the rounded exact holonomy lift. The shortcut is guarded by
+  `regionRows.size() == 1 && region.euler_characteristic() == 1 && region.boundary_loop_count() == 1`, so it fires
+  only for a single-face disc region, where `4 · χ = 4` is that region's own boundary holonomy. Both paths
+  therefore yield a region-relative quantity, and D2's treatment of `turningLift` as region-relative authority is
+  consistent across them. No action.
+- **The cross-domain equality is removed where it lives.** `:2512` required
+  `boundaryCycle.turningLift == numerator`, comparing a region-relative lift against a global per-vertex alias
+  numerator. D3's prohibition on comparing an alias numerator to any regional `turningLift` reaches exactly that
+  site, which is the one CB21 left standing when it removed the same equality from eligibility.
+
+### V4 — beacon shape
+
+`STATUS` currently carries `Resumed at: UNKNOWN` and `Ended at: UNKNOWN`. The canonical format specifies
+`<UTC_TIMESTAMP_OR_EMPTY>` for both, so those should be empty rather than `UNKNOWN`; `Successor: UNKNOWN` is valid
+and correct while the successor is undetermined. Left for the owning turn to correct at closeout rather than
+rewritten here, since the turn is still `IN_PROGRESS` under the implementation agent.

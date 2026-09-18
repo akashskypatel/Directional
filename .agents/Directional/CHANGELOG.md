@@ -1,5 +1,26 @@
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R9-REV`: producer boundary alias collides with regional boundary ownership; definition first
 
+**Independent review addendum (reviewing agent).** The DEFN-R1 definition is **upheld**. An independent source
+trace of `rawBoundarySingularity`, `boundaryCycleByGlobalVertex` and the source-boundary `BoundaryLoop` witnesses
+corroborates D1–D5 rather than correcting them. **D2's edge-partition holds exactly on the subject that failed:**
+for the skew fan, `E(G) = {(0,1),(1,2),(2,3),(3,0)}`; region `{0,3}` supports `{(0,1),(3,0)}` and region `{1,2}`
+supports `{(1,2),(2,3)}`, so the union is `E(G)` and the intersection empty, while boundary vertices `1` and `3`
+each occur in **both** associations — precisely what broke the old per-vertex map. Partitioning on edges rather
+than vertices is the load-bearing choice, since a hard-feature cut meeting the source boundary splits it *at a
+vertex*: vertices are necessarily shared, edges are not. **One additional consumer site recorded for CB23:**
+`boundaryCycleByGlobalVertex` is populated at two sites with *different* uniqueness semantics — `:2087` fails on
+any duplicate key (the site R9 hit), while `:2390-2391` tolerates a duplicate whose stored value is identical and
+rejects only a different owner. Both still encode the one-regional-owner-per-global-vertex assumption D2 retires,
+so converting only the observed site would leave the second rejecting a legitimate multi-region association; CB23
+must convert both plus the reconciliation consumer at `:2504-2516`. **Two checks closed so they are not
+re-opened:** `BoundaryLoop.turningLift` is *not* overloaded — the `4·χ(region)` shortcut at `:2052-2055` is guarded
+to single-face disc regions where that equals the region's own boundary holonomy, so both construction paths yield
+a region-relative quantity and D2's treatment is consistent; and D3's prohibition reaches exactly `:2512`, the
+surviving cross-domain equality CB21 left standing when it removed the same comparison from eligibility. Beacon
+shape noted for the owning turn: `Resumed at`/`Ended at` should be empty rather than `UNKNOWN` per the canonical
+format, while `Successor: UNKNOWN` is valid; left uncorrected here because the turn is still `IN_PROGRESS` under
+the implementation agent. Accounting unchanged at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-18 — `M4-CP-SCALE-DEFN-R1`: source-global boundary-cycle authority frozen; CB23 next
 
 Runtime-free DEFN-R1 re-derived the R9 boundary-index dataflow from exact source snapshot `e00453cae28c583f333b23324ba9dbcf8d5688e2` (snapshot run/artifact `35364783516 / 10556186428`, archive `35207fef...24ab8`, `runtimeExecution=false`). `dual_cycles` aggregates one row per connected source boundary loop and maps every loop vertex to it; field finalization computes that global index before projecting it back to vertices. Atlas region construction separately recomputes region-relative `BoundaryLoop.turningLift` after hard-feature partition/correction.
