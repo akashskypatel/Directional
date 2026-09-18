@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/m4-cp-scale-cb22-closeout-drive-schema-20260918.txt
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
