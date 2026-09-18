@@ -57,3 +57,21 @@ The exact pre-authored R5 execution harness is retained for the corrected retry 
 Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, owner census **30/280/75/41**. Stable accounting remains **49 events / 14 categories / 35 recurrences** and produced-witness debt remains **5**. CB18 candidate `10532133889` remains unpromoted; S5/A3 remain uncredited; no selector427 exists.
 
 Per `Turn_Cadence.md`, exact next is control-plane-only `M4-CP-SCALE-CB19`. It must correct the caller permission ceiling without changing or rebuilding the immutable candidate, preserve this invalid-attempt provenance, and hand the same frozen semantic plan to fresh `M4-CP-SCALE-TB12-R6-EXEC`.
+
+
+## 6. Post-closeout duplicate execution — invalid attempt only
+
+After the authoritative R5 closeout above had already routed orchestration failure to `M4-CP-SCALE-CB19`, a later duplicate execution caller was authored with the corrected `contents: write` ceiling and triggered **before CB19 was completed**. This violates the frozen cadence edge `orchestration failure -> CB orchestration fix -> fresh TB`, so the resulting runtime cannot replace R5, cannot be relabeled as R6, and has zero semantic or stable authority. The duplicate also regenerated its harness rather than reusing the frozen Drive harness required by the CB19 plan.
+
+Retained invalid-attempt provenance:
+
+- workflow run/job: `35312751970 / 105497993610`;
+- event SHA: `f80df6752d300557a98f59399c23f524263075d2`;
+- result artifact `10534520770`, SHA-256 `511d82154b10564cb68a340d551cf8652e4dc4fed7d6813f3f2bbfd2d714b791`;
+- workflow log artifact `10534211366`, SHA-256 `4cfa9cfe0f2d73e17391b731d1c93b7073cb798e8fac4816af55d19cc0b3b013`;
+- immutable package/source/selector/genus-two preflight passed and exact postflight reported package/source/execution-view/fixture census equality;
+- full 436-row ledger was initialized, but fail-fast executed only global row 1 and left **435 `UNEXECUTED`**; benchmark execution remained **0**;
+- row 1 selected/executed exactly one `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` process and RED with exit 1 at `tests/FieldTransportAtlasTests.cpp:2572`: `built=false`, `code=SingularityMismatch;sourceVertex=8`;
+- row-1 stdout/stderr SHA-256: `999dc96ac83ed8786e34863024428242db4e9d6aaac337b812544884133dd137 / e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+These bytes are retained only so later R6/Review can recognize a repeated observation if it occurs under valid cadence. They do **not** open, close, reprice or reclassify any product/test candidate. Accepted runtime authority, stable accounting, S5/A3 status and exact successor remain exactly as in §5: `M4-CP-SCALE-CB19` next, then a fresh `M4-CP-SCALE-TB12-R6-EXEC` using the frozen harness.
