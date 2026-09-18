@@ -1,6 +1,0 @@
-Turn: M4-CP-SCALE-TB13-EXEC
-Purpose: apply verified TB13 runtime closeout patch
-Base: 431f24b996ce419e6a2275202572001077724330
-Patch SHA256: 98d206a64155474c3f3778ed96061fc91a2d0fdfc52311f395c3a6ee0e35554f
-Retry: 0
-RuntimeExecution: false
