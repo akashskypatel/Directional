@@ -13,11 +13,12 @@ R9 and production R4 `RP-01 AUTHORITY_DOMAIN_CONFLATION` obligations are **CLOSE
 - [x] `M4-CP-SCALE-CB23`: typed producer global boundary-cycle fact + exact alias collapse/support-cover reconciliation compile/package GREEN.
 - [x] `M4-CP-SCALE-TB12-R10-EXEC`: CB23 controls 3/3, inherited Gate A 4/4, production S5 1/1, selector426 426/426; immutable postflight GREEN.
 - [x] `M4-CP-SCALE-TB12-R10-REV`: candidate promoted; R9/R4 RP-01 recovery accepted; S5 focused accepted for publication; `DEFN-OBS-04` discharged.
-- [ ] `M4-CP-SCALE-CB24`: **exact next**. Publication-only selector427 = exact selector426 prefix + S5 row; expected SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **30/281/75/41**; compile/package only, no generated runtime.
+- [x] `M4-CP-SCALE-CB24`: selector427 published exactly, owners **30/281/75/41**; compile/package GREEN on artifact `10565723112`, `runtimeExecution=false`.
+- [ ] `M4-CP-SCALE-TB13-EXEC`: **exact next**. Consume artifact `10565723112` immutably and execute selector427 **427/427** in exact file order, one fresh process per row, benchmark 0, exact immutable postflight; then mandatory Review.
 
-## Current focus — `M4-CP-SCALE-CB24`
+## Current focus — `M4-CP-SCALE-TB13-EXEC`
 
-Follow `Architecture_M4_CP_SCALE_CB24_S5_Selector_Publication_Code_Build_Plan.md`. Publish no semantic change: selector427 is the exact accepted selector426 bytes plus `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`. Stop if prefix/hash/owner expectations fail or publication would require product/test/fixture/CMake changes. A green CB24 routes to fresh artifact-only `M4-CP-SCALE-TB13-EXEC`, then mandatory Review before cumulative S5 credit.
+Follow `Architecture_M4_CP_SCALE_TB13_Artifact_Only_Test_Benchmark_Plan.md`. Artifact `10565723112` is the immutable CB24 compile candidate from exact source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`. Selector427 is 427 LF rows at SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, with accepted selector426 as an exact prefix and owners **30/281/75/41**. Execute the complete selector fresh and perform exact immutable postflight; cumulative S5 credit remains withheld until mandatory `M4-CP-SCALE-TB13-REV`.
 
 ## Carried forward from M1
 
@@ -56,7 +57,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED + S5 FOCUSED ACCEPTED FOR PUBLICATION / CHECKPOINT OPEN**. Accepted runtime authority is package `10560828304` / selector426 **426/426**. R10 Review closes R9/R4 `RP-01` recovery non-stably and discharges `DEFN-OBS-04`; genuine genus-two S5 reaches independently verified A3. Cumulative S5 selector credit remains pending `M4-CP-SCALE-TB12-R10-REV-OBS-01`: selector427 publication + fresh 427/427 runtime + Review. Exact next is publication-only `M4-CP-SCALE-CB24`; three `G4-B002` debts remain CP4 gating.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED + S5 FOCUSED ACCEPTED FOR PUBLICATION / CHECKPOINT OPEN**. Accepted runtime authority is package `10560828304` / selector426 **426/426**. R10 Review closes R9/R4 `RP-01` recovery non-stably and discharges `DEFN-OBS-04`; genuine genus-two S5 reaches independently verified A3. Cumulative S5 selector credit remains pending `M4-CP-SCALE-TB12-R10-REV-OBS-01`: selector427 publication + fresh 427/427 runtime + Review. CB24 has published selector427 and compile/package artifact `10565723112` GREEN with no generated runtime. Exact next is artifact-only `M4-CP-SCALE-TB13-EXEC`; cumulative S5 credit still awaits fresh 427/427 evidence plus Review. Three `G4-B002` debts remain CP4 gating.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
