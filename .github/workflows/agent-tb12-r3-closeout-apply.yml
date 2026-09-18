@@ -1,0 +1,43 @@
+name: M4 CP SCALE TB12 R3 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb12-r3-closeout-apply/M4-CP-SCALE-TB12-R3-EXEC.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb12-r3-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb12-r3-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1oyjVWGqlg43-F059r1cfIc_1C4ApLsS-
+      patch_sha256: 6003769c4e57902c3026f95cc99b95416370e8b3faac102e6fc475f1ae5031e5
+      base_sha: 28a92be2f57226c0c047ab646d55762a4a4c6043
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M4-CP-SCALE-TB12-R3-EXEC"
+    secrets: inherit
