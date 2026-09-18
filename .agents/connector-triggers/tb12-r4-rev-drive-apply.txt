@@ -1,0 +1,4 @@
+turn=M4-CP-SCALE-TB12-R4-REV
+base_sha=fad9e3ed5399135e36ddb6623b47111c6ee92aa7
+patch_sha256=fd31405bd3fb4725e9691c00dba533353d94de85c2f4e9011e74b149524e728d
+purpose=publish-review-closeout
