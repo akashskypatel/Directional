@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-CB24
+purpose=update oversized durable closeout records
+retry=0
