@@ -1,0 +1,5 @@
+# M4-CP-SCALE-TB13-EXEC temporary-state cleanup
+.agents/connector-triggers/m4-cp-scale-tb13-closeout-apply-20260918.txt
+.agents/connector-triggers/m4-cp-scale-tb13-exec-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb13-20260918.txt
+.agents/connector-triggers/source-snapshot/m4-cp-scale-tb13-resume-20260918.txt
