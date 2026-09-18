@@ -1,3 +1,13 @@
+## 2026-09-18 — `M4-CP-SCALE-TB12-R8-REV`: direct owner recovery proved; companion RED is test-authority RP-02
+
+Review independently re-hashes candidate artifact `10542249210`, selector426/first425, the exact R8 ledger and immutable pre/post censuses. R8 run/job `35338412117 / 105578569562` has one RED + 435 UNEXECUTED rows. The raw diagnostic is singularity id1/sourceVertex16 with `incidences=4 / classes=4 / expectedClasses=5`.
+
+Control flow proves CB21's target correction recovered: raw singularities are source-vertex ordered, target8 is id0, attachment building begins only after exact-one-owner reconciliation, and separating targets are skipped as `BarrierAbsorbed`; reaching id1 partitioning therefore proves target8 acquired and validated its separating `BoundaryLoop` owner. R7's direct candidate is CLOSED recovery-proved. Production genus-two S5 `RP-01` remains OPEN because R8 never reaches S5.
+
+The new RED is classified **OPEN / test-authority invalid companion-singularity precondition / existing `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / NON-STABLE**. The test gives every face identical planar directions but manually injects one nonzero matching/effort edge and handwritten `+1/-1` singularities; independent geometric transport for the constant planar frames is zero, so the companion's five-class expectation is not producer-authorized. Product `4-index` and port-class guards remain frozen.
+
+Exact successor is test-only `M4-CP-SCALE-CB22`: reuse the accepted producer-consistent skew four-triangle fan, center4 sole interior `+1`, hard edges `(1,4)/(3,4)` splitting two competing regions, independently prove owner boundary lift `4 != +1`, and preserve the same field by topology under face-row permutation before regenerating field authority. Stable accounting remains **49 / 14 / 35**, debt **5**; accepted package `10473134357` / selector426 **426/426** unchanged; S5/A3 uncredited.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R8-EXEC`: CB21 direct owner control advances to port-class-count semantic RED
 
 R8 consumes immutable CB21 artifact `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` with frozen 18,479-byte harness `917294ec...f3f9e`. Authoritative run/job `35338412117 / 105578569562` passes exact package/GMP/mode/selector/fixture preflight, initializes all 436 rows, then executes only Gate A0 row1. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` is selected once, not skipped, and REDs at `FieldTransportAtlasTests.cpp:2666` with `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`; diagnostics report `incidences=4`, `classes=4`, `expectedClasses=5`.

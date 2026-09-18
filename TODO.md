@@ -2,21 +2,24 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R8-EXEC`
+## Latest completed Review — `M4-CP-SCALE-TB12-R8-REV`
 
-R8 is **COMPLETE / VALID SEMANTIC RED / FAIL-FAST AT A0 ROW1 / NON-STABLE**. Immutable CB21 artifact `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` passes exact package/source/GMP/mode/selector/fixture preflight. Run/job `35338412117 / 105578569562` executes `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` exactly once and fails at `FieldTransportAtlasTests.cpp:2666` with `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`; diagnostics show `incidences=4`, `classes=4`, `expectedClasses=5`.
+R8 Review independently upholds R8 as valid semantic evidence but rejects its new RED as product evidence. CB21's direct target owner is recovery-proved: R8 reaches attachment partitioning for companion singularity id1/sourceVertex16 only after target vertex8/id0 has acquired its separating `BoundaryLoop` owner, passed reconciliation and been skipped as `BarrierAbsorbed`. The original production S5 `RP-01` remains open because S5 did not run.
 
-Fail-fast leaves **435/436 UNEXECUTED**: Gate A0 0 PASS / 1 RED / 4 unexecuted, Gate A 0/4, S5 0/1, selector426 0/426, benchmark 0. Exact package/source/execution-view postflight passes; result/log artifacts are `10543544280 / 10544295647`; final ledger SHA-256 `a9aea1a0ba92f6889f2c50268c34b29b71c643e23a3a20ba8ff2844986b573e2`.
+The R8 `SingularityPortClassCountMismatch` is **test-authority invalid precondition / existing `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / NON-STABLE**. The direct control assigns identical planar face directions but hand-injects one nonzero matching/effort edge and manual `+1/-1` singularities; the companion `-1` therefore demands five emitted classes from transport authority that the per-face field does not support. Do not weaken the product port-class guard.
 
-- [x] `M4-CP-SCALE-CB21`: bounded owner-eligibility correction + independent mismatch/canonicalization controls, compile/package GREEN.
-- [x] `M4-CP-SCALE-TB12-R8-EXEC`: valid row1 semantic RED at the later port-class-count seam; 435 rows unexecuted by fail-fast.
-- [ ] `M4-CP-SCALE-TB12-R8-REV`: **exact next**. Independently classify the boundary advance, CB21/RP-01 recovery status, port-class-count semantics, evidence sufficiency and third-distinct-product-root-cause stop before any corrective CB.
+- [x] `M4-CP-SCALE-CB21`: bounded owner-domain correction compile/package GREEN.
+- [x] `M4-CP-SCALE-TB12-R8-EXEC`: valid semantic RED at A0 row1, companion vertex16 port-class count.
+- [x] `M4-CP-SCALE-TB12-R8-REV`: CB21 direct owner recovery proved; R8 candidate classified test-authority `RP-02`, non-stable.
+- [ ] `M4-CP-SCALE-CB22`: **exact next**. Test-only producer-consistent separating-owner fixture correction; production semantics frozen; compile/package only.
 
-## Current focus — `M4-CP-SCALE-TB12-R8-REV`
+## Current focus — `M4-CP-SCALE-CB22`
 
-Review immutable R8 result `35338412117 / 105578569562` against candidate `10542249210` without compile or generated runtime. Re-derive package/harness/result provenance, confirm the direct test's independent mismatch precondition precedes atlas construction, compare R7 `SingularityMismatch;sourceVertex=8` with R8 `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`, and inspect the class-count product contract before assigning product/test/orchestration classification or stable accounting.
+Change only `tests/FieldTransportAtlasTests.cpp`. Replace the five-ring handwritten transition/companion singularity inside `SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` with the accepted producer-consistent skew four-triangle fan: center vertex4 sole interior `+1` singularity; opposite radial hard edges `(1,4)` and `(3,4)` create two competing separating regions; independently derive owner boundary lift `4 != +1`; preserve stable owner identity under face-row permutation while remapping field directions by topology and regenerating matching/effort/singularities through the accepted producer.
 
-Review alone may decide whether CB21 recovery-proves the prior `RP-01` owner-domain seam, whether the new RED is a distinct product cause or existing recurrence, and whether the frozen third-distinct-product-root-cause definition stop fires. No retry, corrective implementation, package promotion, selector427 publication or S5/A3 credit is authorized before Review.
+Production `FieldTransportAtlas.cpp`, source-topology/cycle/slit/source-boundary semantics, retained genus-two bytes, S5, selector426, CMake and benchmarks are frozen. Compile/package all eight standard targets under GMP/GMPXX with no generated runtime. On GREEN freeze a fresh R9 artifact-only A0 5 -> A 4 -> S5 1 -> selector426 426 fail-fast plan, benchmark 0, immutable postflight.
+
+Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**; S5/A3 remain uncredited and no selector427 exists.
 
 ## Carried forward from M1
 
@@ -55,7 +58,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. CB21 candidate `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` is compile/package GREEN under GMP/GMPXX with the R7 RP-01 equality removed and independent mismatch/canonicalization controls compiled. Exact next is artifact-only `M4-CP-SCALE-TB12-R8-EXEC`; S5 remains unaccepted and three `G4-B002` debts remain CP4 gating.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**. R8 Review recovery-proves CB21's direct separating-owner target and classifies the later companion vertex16 RED as non-stable `RP-02` invalid test authority. Exact next is test-only compile/package `M4-CP-SCALE-CB22`; production S5 `RP-01` remains open, S5 unaccepted, and three `G4-B002` debts remain CP4 gating.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -95,4 +98,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. CB21 candidate `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` is compile/package GREEN with the R7 cross-domain owner equality removed; it is not runtime-promoted. R7 remains valid semantic evidence for existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`; R6 is CLOSED / orchestration recovery proved / non-stable. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is immutable artifact-only **`M4-CP-SCALE-TB12-R8-EXEC`** under the frozen 436-row fail-fast plan; benchmark 0 and selector427 remains forbidden. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. R8 Review recovery-proves the CB21 direct owner seam but leaves candidate `10542249210` unpromoted; the new companion failure is non-stable `RP-02` test authority, while the production S5 `RP-01` remains open. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is **`M4-CP-SCALE-CB22`** test-only compile/package; selector427 remains forbidden. PR #8 remains open, draft, and unmerged.
