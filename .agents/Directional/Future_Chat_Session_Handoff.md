@@ -4,40 +4,37 @@
 
 ## Current authority
 
-`M4-CP-SCALE-TB12-R10-REV` promotes package `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` as accepted current M4 runtime authority under unchanged selector426 **426/426**, SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; exact first425 remains `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
+`M4-CP-SCALE-TB12-R10-REV` still owns accepted current M4 **runtime** authority: package `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
 
-R10 run/job `35382311474 / 105721178393` is independently accepted evidence: CB23 authority controls **3/3**, inherited Gate A **4/4**, production S5 **1/1**, selector426 **426/426**, total **434/434 PASS**, exact immutable postflight. Result/log artifacts `10562622856 / 10562292934`; ledger SHA-256 `32c57323bc2d458ceb38226dd0d0517798e413b0a1a477dd0d4fc17f6d608559`.
+`M4-CP-SCALE-CB24` is now **COMPLETE / PUBLICATION GREEN / COMPILE+PACKAGE GREEN / ZERO GENERATED RUNTIME**. Selector427 is published as exact selector426 bytes plus row427 `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`: **427 LF rows**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **30/281/75/41**. Exact compile source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`; run/job `35391181281 / 105749651674`; immutable candidate artifact `10565723112`, provider ZIP SHA-256 `96e9e900e67777f31fbbf97d05efc44ed8c944d9f2bc031a5826e47602ea7bfa`; packaged source archive `3b6b587efadf3b83082b11e5f7a9e1c06b5c8f1ce0671d82db707ffc7fac3bfd`; package manifest **28/28**; GMPXX+GMP authoritative; `runtimeExecution=false`.
 
-R9 and production R4 `RP-01 AUTHORITY_DOMAIN_CONFLATION` obligations are **CLOSED / RECOVERY PROVED / NON-STABLE**. `M4-CP-SCALE-DEFN-OBS-04` is **DISCHARGED**. R8 RP-02 remains closed. S5 is **FOCUSED ACCEPTED / FOR PUBLICATION**; it is not cumulative selector credit because the identity is outside selector426. No selector427 exists yet.
+CB24 does not grant cumulative S5 runtime credit. `M4-CP-SCALE-TB12-R10-REV-OBS-01` remains OPEN with its publication leg complete and fresh cumulative runtime + Review outstanding.
 
 ## Exact next turn
 
-`M4-CP-SCALE-CB24` — publication-only Code + Build under `Architecture_M4_CP_SCALE_CB24_S5_Selector_Publication_Code_Build_Plan.md`.
+`M4-CP-SCALE-TB13-EXEC` — immutable artifact-only Test + Benchmark under `Architecture_M4_CP_SCALE_TB13_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB24 must publish selector427 as exact selector426 bytes plus one row:
+Consume artifact `10565723112` exactly. Verify package/source/GMP/modes/28-entry manifest and packaged selector427/prefix hashes before runtime. Execute selector427 in exact file order as **427 fresh single-identity processes** using the owning packaged test binaries. Execute **zero benchmarks**. Re-run exact immutable byte/mode postflight after the final process. No configure, compile, relink, generated discovery, source/test/fixture/selector mutation, or package/permission repair is authorized.
 
-`M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`
-
-Expected selector427: **427 LF rows**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, exact first426 SHA `41f4d559...b5114`, owners **30/281/75/41**. Product/test/fixture/benchmark/CMake semantics and selector426 bytes are frozen. Generated Directional runtime is forbidden. If static prefix/hash/owner checks fail or semantic edits would be required, stop back to Review.
-
-A green CB24 routes to immutable artifact-only `M4-CP-SCALE-TB13-EXEC`, then mandatory `M4-CP-SCALE-TB13-REV` before cumulative S5 credit.
+Every valid semantic outcome routes to mandatory `M4-CP-SCALE-TB13-REV`; cumulative S5 credit remains forbidden before Review.
 
 ### Carried obligations
 
-- `M4-CP-SCALE-TB12-R10-REV-OBS-01` — OPEN / NON-DEFECT publication + fresh cumulative runtime + Review; owner CB24 -> TB13 -> Review.
+- `M4-CP-SCALE-TB12-R10-REV-OBS-01` — OPEN / publication leg COMPLETE; fresh selector427 cumulative runtime + Review remain, owner TB13 -> Review.
 - `M4-CP-SCALE-TB1-REV-OBS-01` — S1 calibration remains separately owned/non-gating until a justified threshold is frozen.
 - `M4-CP-SCALE-DEFN-OBS-01` — S2 arrival comparator exact-fallback ownership remains separate.
 - `M4-CP-SCALE-TB2-REV-OBS-02` — dedicated `make_zero_transport_field` audit remains separate.
 - Three `G4-B002` produced-witness debts remain M4-CP4 gating; total debt remains 5.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-CB24`
+## Mandatory resume procedure — current `M4-CP-SCALE-TB13-EXEC`
 
-1. Read root `STATUS`; publish CB24 entry beacon first; choose `READ_MODE`; reopen this handoff, TODO, R10 Review record, CB24 plan, current CP-SCALE frozen definitions, R10 runtime report, selector manifest, roadmap/tracker and mandatory Code+Build/workflow/checklist policies.
-2. Treat selector426 as immutable input. Re-hash it to 426 LF rows / `41f4d559...b5114` and first425 `e0e0f394...790e0b` before publication.
-3. Create selector427 only as byte-exact selector426 plus the reviewed S5 row. Require full SHA `f9c883...ae86f` and static owners **30/281/75/41**. Any mismatch stops the turn.
-4. Run static checks and GitHub compile/package only under mandatory GMP/GMPXX; execute no generated Directional runtime.
-5. On compile GREEN, record immutable artifact/hash/manifests and author exactly one artifact-only TB13 plan. Do not grant cumulative S5 credit in CB24.
-6. Perform mandatory cleanup; make final COMPLETE `STATUS` the last repository mutation.
+1. Read root `STATUS`; publish the TB13 entry beacon first. Read mandatory policies/checklists and choose `READ_MODE` before broad inspection.
+2. Re-open this handoff, TODO, CB24 report, TB13 artifact-only plan, selector manifest, tracker/roadmap and accepted R10 Review authority. Do not mutate product/source/test/fixture/selector bytes.
+3. Download artifact `10565723112` exactly once and verify provider ZIP SHA `96e9e900...7bfa`, exact source `6fe075f7...eeef`, packaged source archive `3b6b587e...3bfd`, package `SHA256SUMS` 28/28, modes 0755, clean source receipts and GMPXX+GMP evidence. Extract without repairing executable modes.
+4. Require packaged selector427 427 rows / `f9c88380...ae86f`, exact first426 `41f4d559...b5114`, row427 exact S5 identity and owners **30/281/75/41**. Freeze package byte/mode census before runtime.
+5. Execute all 427 rows exactly once in file order, one fresh process per identity, exact filters, zero benchmarks. Record full per-row ledger and raw evidence even if an earlier row is semantic RED.
+6. Perform exact immutable postflight; no build/configure/relink/discovery/repair/mutation. Update the regression tracker for any observed runtime regression/candidate and route every valid semantic result to mandatory `M4-CP-SCALE-TB13-REV`.
+7. Perform mandatory cleanup; make final `STATUS` the last repository mutation.
 
 ## Historical R8 EXEC resume procedure — consumed
 
