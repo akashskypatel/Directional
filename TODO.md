@@ -2,27 +2,21 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Code + Build — `M4-CP-SCALE-CB21`
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R8-EXEC`
 
-CB21 is **IMPLEMENTED / COMPILE+PACKAGE GREEN / RUNTIME UNEXECUTED**. Semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` changes only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp`: separating-owner eligibility/final reconciliation no longer equate a per-region `BoundaryLoop.turningLift` with the global source-vertex singularity numerator. The direct control independently derives a valid owner-region boundary lift that differs from the target global numerator before product construction, and a source-face-row permutation requires the same stable owner identity.
+R8 is **COMPLETE / VALID SEMANTIC RED / FAIL-FAST AT A0 ROW1 / NON-STABLE**. Immutable CB21 artifact `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` passes exact package/source/GMP/mode/selector/fixture preflight. Run/job `35338412117 / 105578569562` executes `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` exactly once and fails at `FieldTransportAtlasTests.cpp:2666` with `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`; diagnostics show `incidences=4`, `classes=4`, `expectedClasses=5`.
 
-Compile run/job `35334247422 / 105565353324` builds all eight standard targets under GMP/GMPXX with `runtimeExecution=false`. Candidate artifact `10542249210` / source `ea7b15f...28d1` verifies **28/28**, ZIP SHA-256 `a64352a9524c4f114865948bb84226a317eaa1affa2e7a7fcfeea62352c7ef6c`, source archive `7a8c8f9c866dfc51580975d64e6dda5001291780e666d1491a6aee2a39a858e7`, selector426/first425 and retained genus-two bytes unchanged. No generated Directional runtime ran, so accepted runtime authority remains package `10473134357` / selector426 **426/426**, stable accounting **49 / 14 / 35**, debt **5**, and S5/A3 remain uncredited.
+Fail-fast leaves **435/436 UNEXECUTED**: Gate A0 0 PASS / 1 RED / 4 unexecuted, Gate A 0/4, S5 0/1, selector426 0/426, benchmark 0. Exact package/source/execution-view postflight passes; result/log artifacts are `10543544280 / 10544295647`; final ledger SHA-256 `a9aea1a0ba92f6889f2c50268c34b29b71c643e23a3a20ba8ff2844986b573e2`.
 
-- [x] `M4-CP-SCALE-CB18`: packaged separating-feature owner candidate `10532133889`.
-- [x] `M4-CP-SCALE-TB12-R5-EXEC`: orchestration-only failure.
-- [x] `M4-CP-SCALE-CB19`: permission-ceiling correction.
-- [x] `M4-CP-SCALE-TB12-R6-EXEC`: orchestration-only nounset failure.
-- [x] `M4-CP-SCALE-CB20`: nounset harness correction / R7 caller freeze.
-- [x] `M4-CP-SCALE-TB12-R7-EXEC`: valid semantic RED at A0 row1.
-- [x] `M4-CP-SCALE-TB12-R7-REV`: root-cause = CB18 cross-domain equality, existing `RP-01`.
 - [x] `M4-CP-SCALE-CB21`: bounded owner-eligibility correction + independent mismatch/canonicalization controls, compile/package GREEN.
-- [ ] `M4-CP-SCALE-TB12-R8-EXEC`: **exact next**. Artifact-only A0 5 -> A 4 -> S5 1 -> selector426 426 fail-fast gate against immutable artifact `10542249210`; benchmark 0; exact postflight required.
+- [x] `M4-CP-SCALE-TB12-R8-EXEC`: valid row1 semantic RED at the later port-class-count seam; 435 rows unexecuted by fail-fast.
+- [ ] `M4-CP-SCALE-TB12-R8-REV`: **exact next**. Independently classify the boundary advance, CB21/RP-01 recovery status, port-class-count semantics, evidence sufficiency and third-distinct-product-root-cause stop before any corrective CB.
 
-## Current focus — `M4-CP-SCALE-TB12-R8-EXEC`
+## Current focus — `M4-CP-SCALE-TB12-R8-REV`
 
-Consume candidate artifact `10542249210` / semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` unchanged. Preflight package/source/modes, selector426/first425 and genus-two hashes. Freeze one R8 execution harness/caller without generated Directional runtime, then execute exactly 436 fresh-process rows with fail-fast: Gate A0 5, Gate A 4, S5 1, and selector426 426 only if all ten focused rows are green. Benchmark execution is 0.
+Review immutable R8 result `35338412117 / 105578569562` against candidate `10542249210` without compile or generated runtime. Re-derive package/harness/result provenance, confirm the direct test's independent mismatch precondition precedes atlas construction, compare R7 `SingularityMismatch;sourceVertex=8` with R8 `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`, and inspect the class-count product contract before assigning product/test/orchestration classification or stable accounting.
 
-R8 must not configure, compile, relink, repair or mutate packaged source/tests/fixtures/selectors. Any valid semantic result routes to mandatory `M4-CP-SCALE-TB12-R8-REV`; EXEC itself cannot promote the package, close/reprice `RP-01`, grant S5/A3 credit or publish selector427.
+Review alone may decide whether CB21 recovery-proves the prior `RP-01` owner-domain seam, whether the new RED is a distinct product cause or existing recurrence, and whether the frozen third-distinct-product-root-cause definition stop fires. No retry, corrective implementation, package promotion, selector427 publication or S5/A3 credit is authorized before Review.
 
 ## Carried forward from M1
 

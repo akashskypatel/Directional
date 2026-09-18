@@ -6,33 +6,31 @@
 
 Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
 
-CB21 is compile/package GREEN but not runtime-promoted: candidate artifact `10542249210`, semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1`, package SHA-256 `a64352a9524c4f114865948bb84226a317eaa1affa2e7a7fcfeea62352c7ef6c`, source archive `7a8c8f9c866dfc51580975d64e6dda5001291780e666d1491a6aee2a39a858e7`, root manifest `88e3f454c963af481df96b5fea4b5450b904c707a6dc5ad1f9299d87ae55611c` **28/28**. S5/A3 remain uncredited until fresh runtime plus Review.
+CB21 candidate `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` is compile/package GREEN but remains unpromoted. R8 valid semantic execution `35338412117 / 105578569562` fails A0 row1 with `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1` after exact immutable preflight; 435/436 rows remain unexecuted and postflight is exact. S5/A3 remain uncredited.
 
-## Latest completed Code + Build — `M4-CP-SCALE-CB21`
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R8-EXEC`
 
-CB21 removes CB18's unsupported equality between the global source-vertex singularity numerator and a per-region relative `BoundaryLoop.turningLift` at both separating-owner eligibility and final reconciliation. Source-topology incidence, actual local `BoundaryLoop` containment/region ownership, stable minimum `(TopologyRegionId, FieldCycleId)`, exact-one-owner reconciliation, raw numerator, `BarrierAbsorbed`, zero origin ports, same-region slit semantics and source-boundary semantics remain intact.
+Frozen harness Drive `1clwXAJ_7tyx-ytUJ5Lq47FlcmzxRNKoG`, 18,479 bytes, SHA-256 `917294ec05e5ad1ec6be990150b9a45931538209489830c4cd03610e1c0f3f9e`, consumes candidate artifact `10542249210` unchanged. Gate A0 row1 `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` selects once, skips zero and exits 1 at `tests/FieldTransportAtlasTests.cpp:2666`; product diagnostics report source vertex 16 / topology region 1 with 4 incidences, 4 classes and expected 5.
 
-The direct regression control independently reconstructs the expected owner-region boundary cycle and proves its relative lift differs from the global target numerator **before** invoking the atlas. A reversed source-face-row control requires the same stable owner region/cycle. Semantic changes are exactly `FieldTransportAtlas.cpp` + `FieldTransportAtlasTests.cpp` (177 insertions / 8 deletions).
-
-Compile run/job `35334247422 / 105565353324` builds all eight standard targets under GMP/GMPXX with `runtimeExecution=false`. Selector426/first425 and retained genus-two OBJ/rawfield/metadata hashes are unchanged. No generated Directional binary executed.
+R8 therefore advances beyond R7's `SingularityMismatch;sourceVertex=8` but does not self-adjudicate what that advancement means. A0 rows 2–5, Gate A, S5 and selector426 remain explicit `UNEXECUTED`; benchmark 0. Result/log artifacts `10543544280 / 10544295647`, final ledger SHA-256 `a9aea1a0ba92f6889f2c50268c34b29b71c643e23a3a20ba8ff2844986b573e2`; package/source/execution-view postflight is byte-identical.
 
 ## Exact next turn
 
-`M4-CP-SCALE-TB12-R8-EXEC` — immutable artifact-only validation of CB21 candidate `10542249210`.
+`M4-CP-SCALE-TB12-R8-REV` — runtime-free independent Review.
 
-Execute the frozen 436-row fail-fast gate exactly:
-
-```text
-Gate A0 5 -> Gate A 4 -> S5 1 -> selector426 426 only if all ten focused rows are green
-benchmark 0
-exact immutable postflight required
-```
-
-The plan is `Architecture_M4_CP_SCALE_TB12_R8_Artifact_Only_Test_Benchmark_Plan.md`. R8 may prepare/freeze only execution-control material before runtime; it must not configure, compile, relink, repair or mutate packaged source/tests/fixtures/selectors. All-green or semantic RED routes to mandatory `M4-CP-SCALE-TB12-R8-REV`; EXEC itself cannot promote package authority, close/reprice `RP-01`, grant S5/A3 credit or publish selector427.
+Review must independently re-derive candidate/harness/run/artifact provenance, the direct test's independent relative-lift/global-index mismatch precondition, R7→R8 error-site advancement, partition-class semantics and immutable postflight. It must decide whether CB21 recovery-proves the prior `RP-01` seam, whether the new class-count RED is product or test authority, whether an existing root-cause category/recurrence applies, and whether the frozen third-distinct-product-root-cause definition stop fires.
 
 ### STOP conditions
 
-Stop with zero semantic credit if package/source/hash/mode preflight fails, the harness/caller cannot be frozen without altering semantic inputs, test selection is zero/multiple/skipped-only/crashes, or immutable postflight differs. On the first valid semantic RED, fail-fast and route to Review with later rows `UNEXECUTED`; do not patch or rerun in R8.
+Do not start a corrective CB, retry R8, execute selector426, run benchmarks, promote candidate `10542249210`, publish selector427 or grant S5/A3 credit before Review. If Review cannot establish the class-count contract or distinguish product from test authority from existing evidence, it must preserve the candidate as non-stable and route to the smallest definition/diagnostic plan rather than assume.
+
+## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R8-REV`
+
+1. Read root `STATUS`; it should close R8 EXEC and name `M4-CP-SCALE-TB12-R8-REV`. Direct-write the Review entry beacon before any other repository mutation.
+2. Choose `READ_MODE` before broad inspection. Re-open the R8 report/plan, CB21 report, R7 Review, accepted TB11 report, frozen CP-SCALE definitions, tracker/TODO/ROADMAP/ORIENTATION/handoff, LESSONS and mandatory policies from verified authority. Review is runtime-free.
+3. Re-open R8 result/log artifacts `10543544280 / 10544295647`, verify provider/local digests, complete 436-row fail-fast ledger, exact raw row1 stdout/stderr hashes and pre/post censes. Re-fetch runtime event caller/marker/harness authority at event SHA `2161f46960e40b73c205ff5ba2c79ffc255bf935`; do not use later cleanup/control-plane commits as runtime provenance.
+4. Source-audit `SingularityPortClassCountMismatch` and the direct test independently. Determine whether the CB21 owner correction is actually traversed/recovery-proved before the new rejection, whether the expected port-class cardinality is correct for the authored subject, and whether this is a third distinct product root cause on the S5 route. Do not infer from error-code advancement alone.
+5. Update Review record, tracker/accounting, ORIENTATION and required durable docs; perform mandatory REVIEW consolidation only within authorized scope. Freeze exactly one successor plan. Cleanup temporary state and make final `STATUS` the last repository mutation.
 
 ## Carried CP-SCALE obligations
 
@@ -42,7 +40,7 @@ Stop with zero semantic credit if package/source/hash/mode preflight fails, the 
 - `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: genus-two topology and raw-field index authority supported; production atlas/A3 still unproved.
 - CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts retain existing owners.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R8-EXEC`
+## Historical R8 EXEC resume procedure — consumed
 
 1. Read root `STATUS`; it should close CB21 and name `M4-CP-SCALE-TB12-R8-EXEC`. Direct-write the R8 entry beacon before any other repository mutation.
 2. Choose `READ_MODE` before broad inspection. Re-open the R8 artifact-only plan, CB21 Code+Build report, accepted TB11 runtime report, frozen definitions, tracker/TODO/ROADMAP/handoff, LESSONS and mandatory policies from verified repository authority.

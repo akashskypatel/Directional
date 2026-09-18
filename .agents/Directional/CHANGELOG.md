@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-TB12-R8-EXEC`: CB21 direct owner control advances to port-class-count semantic RED
+
+R8 consumes immutable CB21 artifact `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` with frozen 18,479-byte harness `917294ec...f3f9e`. Authoritative run/job `35338412117 / 105578569562` passes exact package/GMP/mode/selector/fixture preflight, initializes all 436 rows, then executes only Gate A0 row1. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` is selected once, not skipped, and REDs at `FieldTransportAtlasTests.cpp:2666` with `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`; diagnostics report `incidences=4`, `classes=4`, `expectedClasses=5`.
+
+Fail-fast leaves **435/436 UNEXECUTED**: A0 0 PASS / 1 RED / 4 unexecuted, A 0/4, S5 0/1, selector426 0/426, benchmark 0. Package/source/execution-view postflight is byte-identical; no configure/compile/relink/discovery/repair/mutation occurs. Result/log artifacts `10543544280 / 10544295647` hash to `4fbbd1b1...f8db6 / b9d8370a...cff5a`; final ledger SHA-256 is `a9aea1a0...573e2`.
+
+The failure boundary is later/different than R7's `SingularityMismatch;sourceVertex=8`, but EXEC does not self-adjudicate whether CB21 recovery is proved or how the new class-count seam is classified. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**; CB21 remains unpromoted and S5/A3 uncredited. Exact next is runtime-free `M4-CP-SCALE-TB12-R8-REV`.
+
 ## 2026-09-18 — `M4-CP-SCALE-CB21`: separating-owner authority-domain correction compiles; R8 artifact-only next
 
 CB21 is **IMPLEMENTED / COMPILE+PACKAGE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME**. Semantic source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` changes only `src/authority/FieldTransportAtlas.cpp` and `tests/FieldTransportAtlasTests.cpp` (177 insertions / 8 deletions). Production removes CB18's equality between per-region `BoundaryLoop.turningLift` and the global source-vertex singularity numerator at owner eligibility and final reconciliation while preserving separating-feature incidence/containment, stable `(TopologyRegionId, FieldCycleId)` canonicalization, exact-one-owner, raw numerator, `BarrierAbsorbed`, zero ports, same-region slit and source-boundary semantics.
