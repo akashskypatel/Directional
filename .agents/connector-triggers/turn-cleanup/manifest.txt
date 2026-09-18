@@ -1,0 +1,6 @@
+# M4-CP-SCALE-TB12-R3-REV temporary-state ledger.
+# Turn-specific workflow callers were retired connector-first before this manifest was published.
+.agents/connector-triggers/source-snapshot/M4-CP-SCALE-TB12-R3-REV.txt
+.agents/Directional/turn-payloads/agent-tb12-r3-rev-closeout-apply.yml
+.agents/connector-triggers/workflow-schema-validation/M4-CP-SCALE-TB12-R3-REV.txt
+.agents/connector-triggers/tb12-r3-rev-closeout-apply/M4-CP-SCALE-TB12-R3-REV.txt
