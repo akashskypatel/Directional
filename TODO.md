@@ -2,16 +2,19 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Code + Build — `M4-CP-SCALE-CB18`
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R5-EXEC`
 
-CB18 exact semantic source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` implements the bounded separating-hard-feature singularity ownership correction and direct independent control. Compile run/job `35307991751 / 105484066744` is GREEN on all eight standard targets under GMP/GMPXX with `runtimeExecution=false`; candidate artifact `10532133889` remains unpromoted. Selector426/first425 and retained genus-two bytes are unchanged; no selector427 exists.
+R5 stopped before any job/runtime as **ORCHESTRATION FAILURE / NO SEMANTIC LEDGER**. Primary run `35311252926` and fallback probe `35311498108` both ended `startup_failure` with zero jobs because their callers granted `contents: read` while `agent-run-observer-reusable.yml` statically requires a `contents: write` ceiling for its nested branch-file job. No package preflight, harness download, test, selector row or benchmark executed.
 
-- [x] `M4-CP-SCALE-CB18`: **COMPLETE / COMPILE+PACKAGE GREEN / NO GENERATED RUNTIME**.
-- [ ] `M4-CP-SCALE-TB12-R5-EXEC`: **exact next**. Immutable artifact-only ownership controls -> frozen Gate A -> unchanged S5 -> selector426 on all-focused-green; benchmark 0; fail-fast and exact postflight.
+- [x] `M4-CP-SCALE-CB18`: compile/package GREEN candidate `10532133889`, source `079933f2ec31a9323218e73c7ae0d3ea1d11103c`; no generated runtime.
+- [x] `M4-CP-SCALE-TB12-R5-EXEC`: **ORCHESTRATION FAILURE / 0 JOBS / 0 SEMANTIC LEDGER / NON-STABLE**.
+- [ ] `M4-CP-SCALE-CB19`: **exact next**. Control-plane-only correction: fresh R6 caller must include `contents: write`; reuse exact candidate artifact and frozen harness; no source/test/fixture/selector/build semantic edit, compile, repackage or generated runtime.
 
-## Current focus — `M4-CP-SCALE-TB12-R5-EXEC`
+## Current focus — `M4-CP-SCALE-CB19`
 
-Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate artifact `10532133889` / source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` is compile-green but receives no runtime/S5/selector credit. Execute only `Architecture_M4_CP_SCALE_TB12_R5_Artifact_Only_Test_Benchmark_Plan.md`; no source/test/fixture/selector/build mutation or replacement compile is authorized.
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. CB18 candidate artifact `10532133889` remains unpromoted and S5/A3 remain uncredited. `M4-CP-SCALE-TB12-R5-EXEC-CAND-01` is resolved orchestration/non-stable; the open product `M4-CP-SCALE-TB12-R4-EXEC-CAND-01 / RP-01` is unchanged because R5 measured no semantics.
+
+CB19 must implement only `Architecture_M4_CP_SCALE_CB19_Orchestration_Correction_Code_Build_Plan.md`: retain artifact `10532133889` and frozen harness Drive ID `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` / SHA-256 `dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2`, correct the reusable-observer caller permission union, validate exact fresh R6 caller bytes, and hand the unchanged 436-row semantic plan to `M4-CP-SCALE-TB12-R6-EXEC`.
 
 ## Carried forward from M1
 
