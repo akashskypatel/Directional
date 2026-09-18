@@ -2,20 +2,21 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Code + Build — `M4-CP-SCALE-CB23`
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R10-EXEC`
 
-CB23 implements DEFN-R1 on semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`: one producer-owned source-global boundary-cycle index, exact legacy-alias reconciliation/collapse, and one-or-many regional source-edge support associations forming a disjoint exact cover. Both formerly distinct population paths are converted, and the global-index/regional-`turningLift` equality is removed while interior separating/slit ownership and port semantics remain frozen. Mandatory GMP/GMPXX compile/package run `35378397152` is GREEN as artifact `10560828304`; no generated Directional runtime executed.
+R10 consumed immutable CB23 artifact `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`. Run/job `35382311474 / 105721178393` is artifact-only GREEN: Gate C0 **3/3**, inherited Gate A **4/4**, production S5 **1/1**, selector426 **426/426**, for **434/434 PASS** with exact immutable postflight and benchmark/build/configure/relink/repair/mutation counts all zero. Result/log artifacts are `10562622856 / 10562292934`; final ledger SHA-256 is `32c57323bc2d458ceb38226dd0d0517798e413b0a1a477dd0d4fc17f6d608559`.
 
-Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**, accounting **49 / 14 / 35**, debt **5**. R9 CAND-01 remains OPEN / PRODUCT / existing RP-01 / NON-STABLE pending R10 runtime re-proof; R8 RP-02 remains closed; production S5 and A3 remain uncredited. No selector427.
+EXEC does not itself promote package `10560828304`, close R9 `RP-01`, or grant final S5/A3 checkpoint credit. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**, stable accounting **49 / 14 / 35**, debt **5**, no selector427.
 
 - [x] `M4-CP-SCALE-TB12-R9-REV`: existing RP-01 / definition gap identified.
 - [x] `M4-CP-SCALE-DEFN-R1`: source-global boundary-cycle owner and exact regional support reconciliation frozen.
-- [x] `M4-CP-SCALE-CB23`: typed producer global boundary-cycle fact + exact alias collapse/support-cover reconciliation implemented; artifact `10560828304` compile/package GREEN under GMP/GMPXX with no generated runtime.
-- [ ] `M4-CP-SCALE-TB12-R10-EXEC`: **exact next**. Immutable artifact-only CB23 controls first, then inherited Gate A, production S5, and selector426 fail-fast; benchmark 0.
+- [x] `M4-CP-SCALE-CB23`: typed producer global boundary-cycle fact + exact alias collapse/support-cover reconciliation compile/package GREEN.
+- [x] `M4-CP-SCALE-TB12-R10-EXEC`: CB23 controls 3/3, inherited Gate A 4/4, production S5 1/1, selector426 426/426; immutable postflight GREEN.
+- [ ] `M4-CP-SCALE-TB12-R10-REV`: **exact next**. Independently re-derive R10 evidence and decide candidate promotion, R9 RP-01 closure, S5/A3 credit, accepted authority and any required next gate.
 
-## Current focus — `M4-CP-SCALE-TB12-R10-EXEC`
+## Current focus — `M4-CP-SCALE-TB12-R10-REV`
 
-Consume immutable CB23 artifact `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` under `Architecture_M4_CP_SCALE_TB12_R10_Artifact_Only_Test_Benchmark_Plan.md`. Run the three CB23 boundary-authority controls first; only if green, run the inherited corrected Gate A, production S5, then selector426. Fail fast, benchmark 0, no rebuild/repair/mutation.
+Review `Architecture_M4_CP_SCALE_TB12_R10_Artifact_Only_Test_Benchmark_Report.md`, raw R10 result/log evidence and current source authority independently. Do not implement a corrective CB unless Review finds a specific falsified invariant. Review owns package promotion/closure decisions and mandatory consolidation/ORIENTATION updates.
 
 ## Carried forward from M1
 

@@ -1,3 +1,12 @@
+## 2026-09-18 — `M4-CP-SCALE-TB12-R10-EXEC`: CB23 recovery candidate is all-green; no new regression observed — **OPEN / REVIEW REQUIRED / NON-STABLE**
+
+- **Authority:** run/job `35382311474 / 105721178393`, immutable candidate artifact `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`, frozen harness Drive `1BE8aLC5OEhBZGhrJ1Zd88eUhaiigeMdi` / 18,542 bytes / SHA-256 `e61ea1ced3936f2e0251d74816deb30a16835c9857fc0f5b50eaa85ef9f21e83`.
+- **Observed:** exact immutable preflight passes; CB23 Gate C0 **3/3 PASS**, inherited Gate A **4/4 PASS**, production S5 **1/1 PASS**, selector426 **426/426 PASS**; total **434/434 PASS**, zero RED/SKIP/orchestration rows, benchmark 0. Exact postflight package/source/execution-view censuses match.
+- **Evidence:** result/log artifacts `10562622856 / 10562292934`, SHA-256 `57521f2ede071dc2087c2c265ef265308f215c8688653fb341681fdbdb2b8ab8 / 907e5b8e6152414fa01d638a1f6546754ec7bd62c1f2422bd9b881bb0bf9afd3`; ledger SHA-256 `32c57323bc2d458ceb38226dd0d0517798e413b0a1a477dd0d4fc17f6d608559`.
+- **Regression disposition:** R10 EXEC observes **no new regression/candidate**. Existing `M4-CP-SCALE-TB12-R9-EXEC-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` remains OPEN until mandatory independent Review decides whether the all-green direct controls + S5 + selector recovery close it and whether package `10560828304` becomes accepted authority. EXEC performs no root-cause repricing or package promotion.
+- **Stable-count rationale:** **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, produced-witness debt **5**. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426** pending Review.
+- **Exact successor:** `M4-CP-SCALE-TB12-R10-REV`.
+
 ## 2026-09-18 — `M4-CP-SCALE-CB23`: R9 RP-01 correction compile GREEN; runtime recovery pending — **OPEN / PRODUCT / existing RP-01 / NON-STABLE**
 
 - **Semantic correction:** source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` implements DEFN-R1 typed source-global boundary-cycle facts, exact alias collapse, one-or-many regional source-edge support associations with disjoint exact cover, and removes global-numerator/regional-`turningLift` comparison. Both formerly distinct population paths are converted; interior separating/slit owner and port semantics remain frozen.
