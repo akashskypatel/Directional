@@ -1,0 +1,6 @@
+Turn: M4-CP-SCALE-TB13-REV
+Purpose: apply independently verified Review promotion/closure documentation
+Patch base: e0b07852dca535628fa59c13ef670578d8a0a459
+Patch SHA256: 15fa259555cfd4320400fdb9fe57b457ad8a85d5e6ad813ad9da0f60d07a1b6d
+Retry: 0
+RuntimeExecution: false
