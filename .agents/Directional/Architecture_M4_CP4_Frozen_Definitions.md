@@ -239,3 +239,27 @@ Stop and return to Review/DEFN rather than broadening the checkpoint if any of t
 ## 9. Exact next turn
 
 `M4-CP4-CB1` under `Architecture_M4_CP4_CB1_Code_Build_Plan.md`.
+
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector427 re-hashed as `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; exact first-426 prefix re-hashed as `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; 427 LF rows confirmed. |
+| Decisive claims independently re-derived | Re-derived the active production A3 owner as `build_global_conformity_baseline(...)` plus independent validator; producer T-join schedule `1+2E`, validator schedule `1+2E`, successful aggregate `2+4E`; per-call finite `T_j` BFS/matching domain; monotone progress `(1,E)->(0,0)`; produced-subject requirements for all three `G4-B002` debts and same-region multiplicity-2. |
+| Non-vacuity checked | Every proposed CP4 witness freezes a produced subject, independent oracle and discriminating tamper; §§3–4 and §8 require STOP/Review rather than synthetic/direct substitution when a produced fixture cannot reach the required stage. |
+| Prior obligations discharged/carried | `M4-CP-SCALE-TB1-REV-OBS-01` -> M8-CP2; `M4-CP-SCALE-DEFN-OBS-01` -> M8-CP2 only if observationally equivalent, otherwise reopen owner; `M4-CP-SCALE-TB2-REV-OBS-02` -> CB1 prerequisite; `M4-CP3-TB1-R1-REV-OBS-01` -> CP4 exit; `M4-CP3-CB4-REV-OBS-02` -> first legitimate row399/binder/producer touch; row408 history retained as truth constraint; three `G4-B002` debts remain CP4-gating; two `G4-B003` debts remain M5-owned. |
+| Stable accounting | **49 / 14 / 35**, produced-witness debt **5**; accepted runtime authority remains package `10565723112` / selector427 **427/427** with owner partition **30 / 281 / 75 / 41**. |
+| New candidates/obligations recorded | No new stable regression candidate. Definition-only obligations and exact owners were recorded in the tracker/TODO/frozen definitions without changing stable counts. |
+| ORIENTATION currency line | `M4-CP4-DEFN` / 2026-09-18 written. |
+| ORIENTATION §3 / §4 / §7 / §8 | Updated for CP4 definition authority, exact next work, carried observations and stop/falsifier boundaries; no witness-table rewrite was needed because no runtime witness changed. |
+| CHANGELOG | `M4-CP4-DEFN` entry added. |
+| ROADMAP | Updated: CP-SCALE closed/accepted; CP4 DEFN complete; CP4 execution remains open with CB1 next; M8-CP2 owns the deferred calibration/hardening items. |
+| Selector manifest | n/a — selector427 is frozen and no selector row changed in this runtime-free DEFN turn. |
+| LESSONS | n/a — this turn introduced no new recurring failure pattern beyond already recorded policy/lessons. |
+| Consolidation under CLEAN_UP_POLICY | Consumed `Architecture_M4_CP4_DEFN_Plan.md` was folded/indexed in `M4_Consolidated_Record.md` and deleted; exactly one bounded successor plan, `Architecture_M4_CP4_CB1_Code_Build_Plan.md`, is retained. Temporary source-snapshot and Drive-patch markers were removed by cleanup run `35403664814`; only the seven durable workflows remain. |
+| Successor frozen | Exactly one successor: `M4-CP4-CB1`; falsifiers and stop rules are frozen in this record §8 and `Architecture_M4_CP4_CB1_Code_Build_Plan.md`. |
+| Turn boundary held | Yes — definition/planning remained runtime-free; no Directional binary executed and no product/test/fixture/selector/benchmark/build semantics changed. The Drive patch application recorded `runtimeExecution=false`; staged Drive patch was retired owner-side after successful push. |
+| review_check.py boundary | **ALL CHECKS PASSED**, including selector prefix/hash and prohibited-mutation checks. |
+| `STATUS` lifecycle maintained | `Turn=M4-CP4-DEFN`; entry `Status=IN_PROGRESS`; final `Status=COMPLETE`; `Successor=M4-CP4-CB1`; `Started at=2026-09-18T22:18:00Z`; `Resumed at=n/a`; `Ended at` is written by the final root `STATUS` mutation after this closeout record. |
+| Pushed to origin, branch in sync | Connector/Actions writes landed directly on the configured origin branch; after cleanup, current branch authority was re-read successfully, only the seven durable workflows remain, and all temporary trigger/observation/payload directories are absent. `git status -sb` is n/a because this Web turn retained no local origin-tracking checkout after connector/Actions pushes; direct origin re-read is the equivalent authority check. |
