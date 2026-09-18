@@ -8,6 +8,28 @@ The new RED is classified **OPEN / test-authority invalid companion-singularity 
 
 Exact successor is test-only `M4-CP-SCALE-CB22`: reuse the accepted producer-consistent skew four-triangle fan, center4 sole interior `+1`, hard edges `(1,4)/(3,4)` splitting two competing regions, independently prove owner boundary lift `4 != +1`, and preserve the same field by topology under face-row permutation before regenerating field authority. Stable accounting remains **49 / 14 / 35**, debt **5**; accepted package `10473134357` / selector426 **426/426** unchanged; S5/A3 uncredited.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld, no correction. §2's recovery proof
+argues from control flow rather than a changed error string: `rawSingularity` is a `std::map<int,int>` so target
+vertex 8 is singularity id 0, `build_singularity_attachments` skips every `BarrierAbsorbed` singularity, and the R8
+partition diagnostic places vertex 8 past exact-one-owner reconciliation, past separating-owner
+kind/region/incidence validation, published with the separating owner, and skipped before emitted-port
+partitioning. The decisive step is the counterfactual — restoring CB18's deleted equality would halt at vertex 8
+*before* that point, **exactly as R7 did** — which is grounded in observed prior behaviour rather than asserted.
+Scoping is equally correct: direct-control recovery only, with `TB12-R4-EXEC-CAND-01 / RP-01` staying OPEN because
+proving a correction is not proving the path. The handoff's third-distinct-product-cause threshold was evaluated a
+third time and correctly declined — this RED is `RP-02` in the test's own companion singularity, and CB22 is
+test-authority only with production frozen, so the semantic-attempt count at the ownership seam does not advance.
+§5's refusal to patch the five-ring synthetic again, in favour of the certified skew fan where the singularity is
+**derived** rather than hand-authored, is the same correction pattern that fixed the S2 winding defect. **One
+recommendation recorded in the tracker:** the failing control is a `make_zero_transport_field` caller
+(`tests/FieldTransportAtlasTests.cpp:2494`) declaring zero matching/effort beneath a hand-authored index `-1` —
+the same silent precondition `TB2-REV-OBS-02` was opened against, now its **third** instance after
+`M3-CP4c3-TB7-CAND-02` and `TB12-R2`. Three failures, each a Code + Build plus execution round trip, against one
+assertion in one helper whose call sites have grown from 35 at opening to 37. Every individual deferral was
+correct, but "the next legitimate touch" has permitted three of them, and a phrase that never resolves is not an
+owner: the audit should be scheduled as its own turn, explicitly not folded into CB22. Accounting and accepted
+authority unchanged.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R8-EXEC`: CB21 direct owner control advances to port-class-count semantic RED
 
 R8 consumes immutable CB21 artifact `10542249210` / source `ea7b15f53e5e92cb034c855d52c17eaa2d8928d1` with frozen 18,479-byte harness `917294ec...f3f9e`. Authoritative run/job `35338412117 / 105578569562` passes exact package/GMP/mode/selector/fixture preflight, initializes all 436 rows, then executes only Gate A0 row1. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` is selected once, not skipped, and REDs at `FieldTransportAtlasTests.cpp:2666` with `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`; diagnostics report `incidences=4`, `classes=4`, `expectedClasses=5`.

@@ -135,3 +135,65 @@ Review folds the superseded/consumed CP-SCALE per-turn documents into `M4_Consol
 | review_check.py boundary | **PASS** on the prepared final Review diff; no product/test/build/fixture/selector source mutation and durable markers preserved |
 | `STATUS` lifecycle maintained | entry beacon `2026-09-18T12:12:14Z`; final COMPLETE beacon reserved as the last repository mutation after publication/cleanup verification |
 | Pushed to origin, branch in sync | connector/workflow environment has no persistent local origin checkout; documentation application must verify successful push and final remote branch authority before the direct final `STATUS` write |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, no correction.** Accounting and accepted authority unchanged; accepted package
+`10473134357` / selector426 **426/426**.
+
+### V1 — the recovery proof is genuine, and honestly scoped
+
+§2 does not argue from a changed error string, which is the weak form of this claim. It argues from control flow:
+`rawSingularity` is a `std::map<int,int>` so target vertex 8 is singularity id 0, `build_singularity_attachments`
+skips every `BarrierAbsorbed` singularity, and R8's partition diagnostic places vertex 8 past exact-one-owner
+reconciliation, past separating-owner kind/region/incidence validation, published with the separating owner, and
+skipped before emitted-port partitioning.
+
+The decisive sentence is the counterfactual: restoring CB18's deleted global-index/per-region-lift equality would
+halt at vertex 8 *before* that point, **exactly as R7 did**. That is grounded in observed prior behaviour rather
+than asserted, so the equality removal is demonstrated rather than inferred.
+
+The scoping is equally correct: this is direct-control recovery only, the genus-two S5 path did not execute in R8,
+and `TB12-R4-EXEC-CAND-01 / RP-01` stays OPEN until fresh S5 runtime advances it. Proving a correction is not
+proving the path.
+
+### V2 — the stop condition was evaluated a third time, and correctly declined
+
+The handoff threshold — a **third distinct product root cause** on this S5 path routes to a definition turn — is
+again addressed head-on and correctly found not to fire. This RED is `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` in the
+test's own companion singularity, not a product cause at all. CB22 is test-authority only and production
+`FieldTransportAtlas.cpp` is frozen, so the semantic-attempt count at the ownership seam does not advance either.
+The threshold remains live and unspent.
+
+§5's refusal to patch the five-ring synthetic again, in favour of the already-certified skew fan where the
+singularity is **derived by `make_skew_index_one_singularity_field(...)` rather than hand-authored**, is the right
+correction and the same pattern that fixed the S2 winding defect: stop authoring what production must derive. The
+permutation control's requirement to preserve the same field *by source-face topology* rather than reassigning
+angles by new row index is a real subtlety and worth having stated.
+
+### V3 — `TB2-REV-OBS-02` is now implicated a third time and should be given a turn
+
+The failing direct control is a `make_zero_transport_field` caller
+(`tests/FieldTransportAtlasTests.cpp:2494`). §3's diagnosis is that it declares zero matching and zero effort
+beneath a hand-authored index numerator of `-1` at vertex 16 — authorities that cannot both hold, since identical
+cross directions on coplanar adjacent faces measure zero connection.
+
+That is the **same silent precondition** this reviewer opened `TB2-REV-OBS-02` against: the helper is valid only
+where the declared topology requires no transport. Counting the instances:
+
+1. `M3-CP4c3-TB7-CAND-02` — historical invalid folded-cone witness;
+2. `M4-CP-SCALE-TB12-R2` — zero effort on a non-flat cone vertex, `K = π/2`;
+3. this RED — zero effort beneath a declared index `-1`.
+
+Three failures, each costing a Code + Build plus artifact-only execution round trip, against one assertion inside
+one helper. The call-site count has meanwhile grown from **35** when the obligation was opened to **37** today.
+
+The obligation has been carried correctly each time and each deferral was individually right — CB17, CB18, CB21
+and now CB22 all had bounded scopes that should not have absorbed it. But "the next legitimate touch" has now
+permitted three deferrals, and a phrase that never resolves is not an owner. **Recommend scheduling the helper
+audit as its own turn** rather than carrying it against an unspecified future touch.
+
+Explicitly **not** for CB22: its evidential value depends on being a bounded fixture replacement, and widening it
+to 37 call sites would forfeit that (`LESSONS.md` 170). CB22 removing one caller is a side benefit, not the audit.

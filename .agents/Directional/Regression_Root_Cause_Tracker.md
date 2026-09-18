@@ -530,6 +530,16 @@ correctly refuses. The helper has **35 call sites**.
 and `M4-CP-SCALE-TB2-EXEC-CAND-01`. Proving the precondition at one call site fixes one instance; thirty-three
 other callers remain unchecked.
 
+**Third instance recorded 2026-09-18 (`TB12-R8-REV` addendum §V3).** The failing direct control
+`SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` (`tests/FieldTransportAtlasTests.cpp:2494`) is a
+`make_zero_transport_field` caller declaring zero matching/effort beneath a hand-authored index numerator `-1`.
+Instances to date: `M3-CP4c3-TB7-CAND-02`; `M4-CP-SCALE-TB12-R2` (zero effort on a non-flat cone vertex); this RED.
+Three failures, each costing a Code + Build plus artifact-only round trip, against one assertion in one helper;
+call sites have grown from 35 at opening to **37**. Each individual deferral was correct — CB17, CB18, CB21 and
+CB22 all had bounded scopes that should not absorb it — but "the next legitimate touch" has now permitted three
+deferrals, and a phrase that never resolves is not an owner. **Schedule the audit as its own turn.** It must not be
+folded into CB22 (`LESSONS.md` 170).
+
 **Scope bound (added by the `M4-CP-SCALE-TB3-REV` addendum §V3).** This obligation addresses the **TB2 mechanism**
 — zero effort declared on a non-flat vertex. It would **not** have caught `M4-CP-SCALE-TB3`, whose helper does not
 call `make_zero_transport_field` at all and instead fails because authored per-face directions lack the required
