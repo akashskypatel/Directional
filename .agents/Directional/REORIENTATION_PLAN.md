@@ -1,15 +1,15 @@
-> **Current milestone authority (2026-09-17, `M4-CP-SCALE-TB12-R1-REV`):** M1-M3 remain CLOSED / ACCEPTED; M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. Package `10473134357` / selector426 **426/426** remains accepted current M4 runtime authority. S2 vertex-star, S3 exact-repeat and S4 incremental reject-only semantics are cumulative accepted. Retained genus-two topology is proved, but S5 is blocked by non-stable production `IncompleteCycleBasis / CycleOrderingFailed` before A3. Exact successor is diagnostics-only `M4-CP-SCALE-CB15`. Stable accounting **49 / 14 / 35**, debt **5**.
+> **Current milestone authority (2026-09-18, `M4-CP-SCALE-TB13-REV`):** M1-M3 remain CLOSED / ACCEPTED; M4-CP1/CP2 historical framed closures remain factual; M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** is accepted current M4 runtime authority. S2 vertex-star, S3, S4 and S5 have cumulative selector credit; S1 remains diagnostic/non-gating. Stable accounting **49 / 14 / 35**, debt **5**. Exact successor is runtime-free `M4-CP4-DEFN`.
 
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap
 **Normative design:** `.agents/Directional/DESIGN.md`
-**Accepted authority:** current M4 package `10418328122` / semantic source `153047c3f92e9b9b784e11eaee1ede2de5628470` / selector424 **424/424**; selector423 is its exact accepted prefix; CP-COND predecessor package `10331193451` remains historical accepted authority; M3 package113/TB48 remains the milestone-closure predecessor with accepted selector365 **365/365**.
-**Decision:** Historical M4-CP1/CP2 framed closures remain factual; CP3 and CP-COND are closed/accepted. CP-SCALE is open: S1 remains diagnostic-only; S2 vertex-star, S3 exact-repeat and S4 incremental reject-only semantics are cumulative accepted through selector426 **426/426** on promoted package `10473134357`; S2 arrival remains blocked on an exact fallback owner; S5 retained topology now exists, but admissible atlas/A3 reachability is blocked by the reviewed cycle-basis ordering defect. Exact successor is diagnostics-only `M4-CP-SCALE-CB15`. M3 is not reopened.
+**Accepted authority:** current M4 package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**; selector426 is its exact accepted prefix. CP-SCALE closure is `M4_CP_SCALE_Closure_Record.md`; M3 package113/TB48 remains the milestone-closure predecessor with accepted selector365 **365/365**.
+**Decision:** Historical M4-CP1/CP2 framed closures remain factual; CP3, CP-COND and CP-SCALE are closed/accepted. S1 remains diagnostic/non-gating while S2 vertex-star, S3, S4 and S5 are cumulative accepted under selector427. `M4-CP4` is the remaining cumulative M4 exit; exact next is planning-only `M4-CP4-DEFN`, which must freeze all three `G4-B002` produced-witness re-proofs, work/bit-width/monotone-progress evidence and explicit owners for carried observations. M3 is not reopened.
 
 **Updated 2026-08-26 after `M3-CP4c-0-TB-R2`.** Authoritative retry 1 `32914546494 / 98015432540` passed identities **1–328** and failed ordinal **329**, `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The immutable diagnostic shows numeric branch loci emitted as control characters because `FieldBranch::value()` is `std::uint8_t` and the test/witness stream inserts it directly as a character. Q8 was correctly **NOT RUN** because 338/338 was not green. Exact next is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**; no semantic rerun or correction precedes that review. The checkpoint map is `ROADMAP.md`.
 **M1 exit gate:** retained in section 5.1 as the gate-authoring pattern. **Retry budget: ABOLISHED 2026-08-25.** A diagnosed orchestration defect may be corrected without consuming semantic authority; deterministic semantic red does not rerun inside TB. Cumulative package cost is reported, not gated; M3 has **41 packages**.
-**Last updated:** 2026-09-16 UTC
+**Last updated:** 2026-09-18 UTC
 
 Repository authority: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8. Keep the PR open, draft, and unmerged until separately authorized.
 
@@ -75,7 +75,7 @@ Use this as a non-regression checklist when M2-M8 rework the producer path.
 | M1 | single-authority contract cutover | **complete** |
 | M2 | closed stage products and single writers | **complete** |
 | M3 | field-aligned curve network | **complete** |
-| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND CLOSED/ACCEPTED; CP-SCALE package `10473134357` under selector426 426/426; S2/S3/S4 cumulative accepted; NEXT `M4-CP-SCALE-CB15` S5 cycle-ordering diagnostics + compile** |
+| M4 | global conformity plan | **CP1/CP2 framed closures retained; CP3 + CP-COND + CP-SCALE CLOSED/ACCEPTED; package `10565723112` / selector427 427/427 accepted; NEXT `M4-CP4-DEFN` cumulative-exit planning** |
 | M5 | certificate-carrying chart/quotient relations | pending |
 | M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |

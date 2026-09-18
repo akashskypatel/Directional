@@ -518,7 +518,7 @@ No required-green identity is appended until its stated precondition is independ
 | S2 certified-filter equivalence | exact fallback can provide oracle | CP-SCALE | gating: filtered and exact decisions must agree |
 | S3 limit-cycle typed termination | **CORRECTED by M4-CP-SCALE-DEFN:** prescribed-sphere history proves a repeated position-free combinatorial circuit with drifting exact entry positions, not a full exact-state repeat; dedicated exact-repeat construction is owed | CP-SCALE | gating typed outcome only when the exact full-state repeat precondition reaches the detector |
 | S4 incremental-Betti early rejection | construction owed | CP-SCALE | gating only after independently proved precondition/reachability |
-| S5 genus>=2 | **R10 Review 2026-09-18:** genuine retained genus2 authority reaches independently verified A3 on accepted package `10560828304`; focused S5 identity is accepted for publication but is not yet cumulative selector credit | CP-SCALE/CP4 | gating row is eligible for append-only publication; selector427 + fresh cumulative runtime + Review are required before cumulative S5 credit |
+| S5 genus>=2 | **TB13 Review 2026-09-18:** genuine retained genus2 authority reaches independently verified A3 on package `10565723112`; exact selector427 publication and fresh cumulative runtime are independently accepted | CP-SCALE/CP4 | **cumulative selector427 credit accepted**; torus genus1 remains zero S5 credit |
 
 Representative Bunny/Vase quality/resource acceptance remains later milestone authority and is not silently pulled into
 M4.
@@ -526,6 +526,8 @@ M4.
 **CP-SCALE supersession note (2026-09-14).** `Architecture_M4_CP_SCALE_Frozen_Definitions.md` is the checkpoint-local normative authority for S1-S5 and supersedes only CP-SCALE predicate/reachability details in this section where they conflict. The surrounding M4 obligations, selector policy and checkpoint ownership are unchanged. Its citation map binds the correction to current source and retained evidence.
 
 **CP-SCALE R10 Review amendment (2026-09-18).** R10 independently establishes the S5 reachability precondition on genuine genus-2 authority and accepts the focused S5 identity for publication. This does not bypass §12's append-only selector rule: cumulative S5 credit requires selector427 publication, fresh immutable cumulative runtime and Review. S1 calibration, S2-arrival exact-fallback ownership and CP4's three `G4-B002` produced-witness debts remain separately owned.
+
+**CP-SCALE TB13 Review amendment (2026-09-18).** Exact selector427 publication, fresh 427/427 immutable cumulative runtime and independent Review now satisfy that append-only contract. Package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` is accepted current M4 runtime authority and CP-SCALE is CLOSED / ACCEPTED. S1 calibration, S2-arrival exact-fallback ownership, the zero-transport helper audit and CP3 carried observations remain separately owned; CP4 still owns all three `G4-B002` produced-witness debts and cumulative M4 exit.
 
 ## 11. Debt and `G4-B004` adjudication
 

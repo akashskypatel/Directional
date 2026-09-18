@@ -74,7 +74,7 @@ Future selector files are named by their resulting identity count.
 | **424** | 424 | `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` | 423 | 1 | superseded accepted prefix |
 | **425** | 425 | `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` | 424 | 1 | superseded accepted prefix |
 | **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | superseded accepted prefix |
-| **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **CURRENT GATE / PUBLISHED CANDIDATE** |
+| **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **ACCEPTED CURRENT AUTHORITY** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -808,7 +808,7 @@ Appended 1 producer-owned identity to selector425:
 
 CB12 static ownership is **30 authority-kernel / 280 producer / 75 completion / 41 validation**. TB11 run/job `35173390136 / 105049726721` then executes selector426 **426/426 PASS** in 426 fresh exact-filter processes with the same owner census, fresh row426 **1/1 PASS**, zero anomalies and exact immutable postflight. `M4-CP-SCALE-TB11-REV` first accepted this selector and promoted package `10473134357`. R10 Review later independently re-hashes selector426/prefix425, re-counts the same **30/280/75/41** ownership and promotes package `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` under the unchanged selector after **434/434** artifact-only GREEN evidence. Selector426 remains accepted cumulative M4 authority and the exact historical prefix of selector427; S4 cumulative credit remains accepted. `M4-CP-SCALE-TB12-R10-REV-OBS-01` authorized selector427 only as this exact 426-row prefix plus the reviewed S5 row.
 
-### 427 — CURRENT GATE / PUBLISHED CANDIDATE
+### 427 — ACCEPTED CURRENT AUTHORITY
 
 `Architecture_M4_CP_SCALE_CB24_Required_Green_Selector_427.txt` — **427 identities**, LF SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Its first426 LF rows are byte-identical to accepted selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`.
 
@@ -816,7 +816,7 @@ Appended 1 producer-owned identity to selector426:
 
 - `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`
 
-CB24 static ownership is **30 authority-kernel / 281 producer / 75 completion / 41 validation**. Publication is candidate gate authority only: cumulative S5 credit remains withheld until fresh artifact-only `M4-CP-SCALE-TB13-EXEC` proves selector427 **427/427** and mandatory `M4-CP-SCALE-TB13-REV` independently accepts that evidence.
+CB24 static ownership is **30 authority-kernel / 281 producer / 75 completion / 41 validation**. `M4-CP-SCALE-TB13-EXEC` run/job `35393657851 / 105757517161` executes selector427 **427/427 PASS** in exact file order with exact immutable postflight. `M4-CP-SCALE-TB13-REV` independently re-hashes the selector/prefix, re-parses every one-selected PASS row, verifies the package/result manifests and pre/post censuses, and promotes package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`. S5 therefore has cumulative required-green credit and selector427 is accepted current M4 authority.
 
 ## Separate lineage — M1
 
