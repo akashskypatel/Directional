@@ -5,6 +5,29 @@
 - Classified R7 as existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a third distinct product cause. R4 RP-01 remains open pending corrected S5 runtime; R6 orchestration is closed recovery-proved. Stable accounting remains **49 / 14 / 35**, debt **5**; accepted package `10473134357` / selector426 **426/426** unchanged.
 - Exact successor `M4-CP-SCALE-CB21`: compile/package-only owner-eligibility/test-oracle correction with an independent lift/index-mismatch discriminator. No generated runtime, selector427 or S5 credit.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld, no correction. All three cited sites
+verified directly: `src/authority/FieldTransportAtlas.cpp:2009` rejects an otherwise-incident owner on
+`cycle.turningLift != supplied->second`; the same equality reappears as a `SingularityMismatch` condition in final
+separating-owner validation; and `tests/FieldTransportAtlasTests.cpp:2596` asserts
+`EXPECT_EQ(singularity->indexNumerator, ownerCycle.turningLift)`, so the test encodes the same equality the product
+does. The domain argument holds — `rawSingularity[globalVertex]` is a **global source-vertex** index numerator while
+`BoundaryLoop.turningLift` is a **per-region relative** boundary-cycle quantity built from summed local lifts, so
+they coincide only in special configurations and equality cannot serve as an eligibility gate. **One pattern worth
+naming for CB21:** CB18 was the correction for an `RP-01 / AUTHORITY_DOMAIN_CONFLATION` defect and its fix
+introduced a *new* `RP-01` conflation. That is not incidental — a correction in this family is written while
+reasoning across two domains at once, which is the state in which they get equated. CB21 is the next correction in
+the same family, so whatever replaces the removed equality must be drawn from the same domain as the decision it
+governs: owner eligibility is a per-region incidence question and should be settled by per-region incidence facts,
+never by a quantity whose authority is global. The handoff's third-distinct-product-cause stop condition was
+applied and correctly declined — §5 determines this is a refinement of the same R4 ownership seam, and CB19/CB20
+were control-plane, so CB21 is only the second semantic attempt at this seam and the threshold remains unspent.
+Keeping `TB12-R4-EXEC-CAND-01` OPEN until a corrected runtime advances the genus-two S5 path is right: falsifying a
+correction is not closing the defect it targeted. The CB21 contract needs nothing added — the discriminator's
+inequality case, producer-independence, the anti-vacuity rule that mere deletion of the assertion does not suffice,
+and the canonicalization control requiring multiple incident candidates to resolve by stable authority IDs are all
+already frozen, that last being the competing-owner negative this reviewer would otherwise have added. Accounting
+holds at **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R7-EXEC`: corrected harness reaches valid semantic RED at Gate A0 row 1
 
 R7 reinstalls the exact CB20-published caller, triggers run/job `35326420329 / 105540445909`, and consumes unchanged CB18 package `10532133889` with corrected frozen harness `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / `04f3e8dd...e7cdf`. Immutable preflight passes. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` executes exactly once and REDs with `built=false`, `code=SingularityMismatch;sourceVertex=8`; fail-fast leaves 435/436 rows unexecuted, including S5 and selector426, benchmark 0. Exact package/source/execution-view postflight passes, so this is semantic rather than orchestration evidence. Result/log artifacts are `10538264057 / 10538428912`, final ledger SHA-256 `b223e343...b043a`. No stable pricing or authority promotion occurs in EXEC; accepted package `10473134357` / selector426 426/426 and accounting 49/14/35, debt 5 remain unchanged. Exact next is runtime-free `M4-CP-SCALE-TB12-R7-REV`.

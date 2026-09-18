@@ -134,3 +134,66 @@ Retained current CP-SCALE role set: normative `Architecture_M4_CP_SCALE_Frozen_D
 | Turn boundary held | yes — runtime-free Review; no generated Directional runtime, compile, package repair, product/test/fixture/selector/benchmark/build-source mutation |
 | review_check.py boundary | **PASS** on the consolidated final local diff with declared selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; no product/test/fixture/build/selector mutation and durable markers preserved |
 | `STATUS` lifecycle maintained | start beacon `2026-09-18T09:08:09Z`; final COMPLETE beacon reserved as the last repository mutation after publication/cleanup verification |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, no correction.** Accounting holds at **49 / 14 / 35**, debt **5**; accepted package
+`10473134357` / selector426 **426/426** unchanged.
+
+### V1 — all three cited sites verified directly
+
+- `src/authority/FieldTransportAtlas.cpp:2009` rejects an otherwise-incident owner on
+  `cycle.turningLift != supplied->second`, exactly as §3 states;
+- the same equality reappears as a `SingularityMismatch` condition in final separating-owner validation;
+- `tests/FieldTransportAtlasTests.cpp:2596` asserts
+  `EXPECT_EQ(singularity->indexNumerator, ownerCycle.turningLift)` — the test encodes the same equality the
+  product does.
+
+The domain argument holds. `rawSingularity[globalVertex]` is a **global source-vertex** index numerator;
+`BoundaryLoop.turningLift` is a **per-region relative** boundary-cycle quantity built from summed local lifts.
+Those coincide only in special configurations, so equality is not a general invariant and cannot serve as an
+eligibility gate. §3's observation that the callback already carries the ownership fact — the vertex is being
+visited on that exact local boundary loop, with source-topology incidence establishing the rest — is what makes
+the removal a simplification rather than a weakening.
+
+### V2 — the pattern worth naming for CB21
+
+CB18 was the correction for an `RP-01 / AUTHORITY_DOMAIN_CONFLATION` defect, and its fix **introduced a new
+`RP-01` conflation**. That is not a coincidence worth passing over: a correction in this family is written by
+someone reasoning across two domains at once, which is exactly the state in which the two get equated.
+
+CB21 is the next correction in the same family, so the caution applies directly to it: whatever CB21 uses in place
+of the removed equality must be drawn from **the same domain as the decision it governs**. Owner eligibility is a
+per-region incidence question, so it should be settled by per-region incidence facts — the local boundary loop and
+the source-topology incidence map — and not by any quantity whose authority is global. The §7 stop rule already
+guards the converse case, where source authority turns out to make `turningLift` normatively the per-vertex
+authority; this guards the direction that actually failed.
+
+### V3 — the handoff stop condition was applied and correctly declined
+
+`Future_Chat_Session_Handoff.md` records that a **third distinct product root cause** on this S5 path should route
+to a definition turn rather than another bounded CB. §5 addresses it head-on and correctly determines it does not
+fire: this is a refinement/recurrence of the same R4 ownership seam, not a third distinct downstream cause, and
+CB19/CB20 were control-plane rather than semantic attempts. CB21 is therefore only the **second** semantic attempt
+at this seam. The threshold remains live and unspent.
+
+Keeping `M4-CP-SCALE-TB12-R4-EXEC-CAND-01` **OPEN** until a corrected runtime proves the genus-two S5 path
+advances is the right bookkeeping — R7 falsified a correction, which is not the same as closing the defect that
+correction targeted.
+
+### V4 — the CB21 contract needs nothing added
+
+Checked against what this reviewer would otherwise have required, and each is already frozen: the discriminator
+must establish a case where the relative loop lift is **not equal** to the global numerator while incidence and
+ownership preconditions stay valid, and then require ownership to succeed; the mismatch must be established
+**without reading the producer's published owner as the oracle**; the discriminator must **fail if the old CB18
+equality is restored**, with mere deletion of the assertion called vacuous in terms; and the canonicalization
+control requires multiple incident owner candidates to resolve by stable authority IDs rather than insertion
+order, with the expected identity derived independently of producer output.
+
+That last control is the competing-owner negative this reviewer intended to add, stated more precisely than the
+addition would have been. Removing the equality from both production and test authority together is also correct —
+leaving it in the test would reproduce the self-confirming oracle that prevented CB18's defect from being caught
+at the time.
