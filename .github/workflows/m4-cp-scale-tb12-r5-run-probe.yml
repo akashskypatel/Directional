@@ -1,0 +1,34 @@
+name: M4 CP SCALE TB12 R5 Run Probe
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb12-r5-run-probe-20260918.txt
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb12-r5-run-probe
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  probe:
+    uses: ./.github/workflows/agent-recent-workflow-runs-reusable.yml
+    with:
+      per_page: 100
+      max_pages: 1
+      branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      event: push
+      retention_days: 7
+    secrets: inherit
