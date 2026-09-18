@@ -1,3 +1,0 @@
-M4-CP-SCALE-TB12-R10-EXEC source snapshot
-Purpose: materialize exact current branch authority for mandatory Test+Benchmark start-of-turn document review.
-Parent authority: c06e7c8bb549450046b0342df6b754c1470a3149
