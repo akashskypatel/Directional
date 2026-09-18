@@ -7,37 +7,42 @@
 - Repository: `akashskypatel/Directional`
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 - PR: #8 (metadata frozen; do not modify title/body/labels/etc.)
-- Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**.
+- Accepted M4 runtime authority remains package `10473134357` / semantic source `e15e83c79a1e1962c0ed8d31ea85187ab6600e47` / selector426 **426/426**, owner census **30/280/75/41**.
 - Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
-- CB17 candidate artifact `10527625935` / compile source `1b44d2b7b3173590db9837a1386eadbc9ac32981` remains unpromoted. TB12-R4 authoritative run/job is `35296853812 / 105451109821`; result/log artifacts are `10528172684 / 10527643135`.
+- CB17 candidate artifact `10527625935` / compile source `1b44d2b7b3173590db9837a1386eadbc9ac32981` remains unpromoted. TB12-R4 run/job `35296853812 / 105451109821` is adjudicated evidence, not accepted runtime authority.
 
-## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R4-EXEC`
+## Latest completed Review — `M4-CP-SCALE-TB12-R4-REV`
 
-TB12-R4 consumed candidate `10527625935` unchanged. Provider/local package SHA-256 is `88e61b93328ff4617f6810077b9469602466c06e4059b23b7c0402aefbd80e93`; manifest **28/28**, source `1b44d2b7b3173590db9837a1386eadbc9ac32981`, GMP/GMPXX, selector426/prefix and retained genus-two hashes all verify. No build, repair, source/test/fixture/selector mutation, discovery/list/help/version runtime or benchmark occurred.
+Review independently re-opened the immutable CB17 package and TB12-R4 result/log/ledger rather than relying on EXEC prose. Corrected Gate A is **4/4 PASS**; the same-row replacement control independently proves 6 support steps / 2 closed successor components and rejects a whole-component ordering tamper with the multiset unchanged. `M4-CP-SCALE-TB12-R3-EXEC-CAND-01 / RP-02` is therefore **CLOSED / TEST-AUTHORITY REPAIR PROVED / NON-STABLE**.
 
-Corrected Gate A is **4/4 PASS** in the frozen order. The replacement integration control `FieldTransportAtlas.OrdersEveryClosedComponentOfOneAlgebraicBoundaryRow` selects once and passes, so CB17's corrected authority has direct runtime evidence. Gate B then executes exactly one `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` process and REDs at a later boundary: independent atlas construction reports `SingularityMismatch;sourceVertex=0`, production terminates `InvalidFieldTransportAtlas / field-transport-atlas/SingularityMismatch;sourceVertex=0`, deepest stage `source-labels`, and `a3Produced=false`. Fail-fast leaves selector426 **0/426** with all rows explicit `UNEXECUTED`; benchmark is **0**. Immutable postflight is exact. Full report: `Architecture_M4_CP_SCALE_TB12_R4_Artifact_Only_Test_Benchmark_Report.md`.
+The unchanged S5 witness then reaches `SingularityMismatch;sourceVertex=0` strictly after `order_cycle_steps`, so the required post-CB16 production retry proves the old `M4-CP-SCALE-TB12-R1-EXEC-CAND-01 / RP-07` boundary recovered. That candidate is **CLOSED / RECOVERY PROVED / NON-STABLE**. R4 selector426 execution remains **0/426** and benchmark **0** by fail-fast; no selector427, promotion or S5/A3 credit exists.
+
+Independent genus-two reconstruction gives `V/E/F=120/366/244`, closed orientable genus 2, 72 right-angle hard-feature crease edges and 14 source topology regions. Independent raw-field census gives 24 nonzero singular vertices, total index numerator `-8=4*chi`; source vertex 0 is a genuine `+1` singularity. The retained field is not falsified.
+
+The current product defect is exact: source topology treats every hard feature as a region separator and atlas authority treats every hard feature as globally nontraversable, but `make_local_region_mesh` adds a hard edge to `barrierEdges/barrierVertices` only when both incident faces are already in the same topology region. Vertex 0 lies on three separating hard-feature edges across three incident regions and therefore receives neither local-cycle nor absorbed/slit owner before the final singularity XOR. `M4-CP-SCALE-TB12-R4-EXEC-CAND-01` is **OPEN / PRODUCT / separating-hard-feature singularity ownership domain mismatch / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**. `M4-CP-SCALE-DEFN-OBS-04` remains OPEN / NARROWED.
+
+Review authority and detailed falsifiers are in `Architecture_M4_CP_SCALE_TB12_R4_Review_Record.md`; historical per-turn evidence resolves through `M4_Consolidated_Record.md` §2.63 and git history. Accepted current runtime report remains `Architecture_M4_CP_SCALE_TB11_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Exact next turn
 
-`M4-CP-SCALE-TB12-R4-REV` — runtime-free independent Review + Plan under `Architecture_M4_CP_SCALE_TB12_R4_Review_Plan.md`.
+`M4-CP-SCALE-CB18` — Code + Build only under `Architecture_M4_CP_SCALE_CB18_Separating_Hard_Feature_Singularity_Ownership_Code_Build_Plan.md`.
 
-Independently re-open artifact `10527625935` and TB12-R4 result `10528172684`. Adjudicate whether corrected Gate-A 4/4 closes the prior `RP-02` test-authority candidate; determine what the transition from `IncompleteCycleBasis / CycleOrderingFailed` to `SingularityMismatch;sourceVertex=0` proves about the `RP-07` correction; and distinguish retained-field inadmissibility from a production singularity/admissibility defect or another authority mismatch. Review must classify `M4-CP-SCALE-TB12-R4-EXEC-CAND-01`, price stable accounting only under the accepted-green criterion, and freeze exactly one next owner. No generated runtime, compile, correction, selector execution, package promotion, selector427 or benchmark is authorized.
+Implement the smallest atlas ownership correction for a prescribed globally-interior singularity on a **separating hard-feature boundary**. Required result: exactly one deterministic incident-region `BoundaryLoop` owner, `BarrierAbsorbed`, zero origin ports; multi-region choice canonical by stable authority IDs and invariant to storage/iteration order. Add direct independent regression control proving the pre-CB18 failure and the corrected ownership behavior.
 
-## Open CP-SCALE obligations
+Frozen/prohibited: source-topology partition semantics; CB16 multi-component ordering and `dual_cycles`; retained `genus_two.obj/.rawfield/.fixturemeta.json`; S5 focus; selector426 and selector publication; CMake/benchmark semantics; accepted predecessor behavior. CB18 compiles/packages all standard targets under GMP/GMPXX with `runtimeExecution=false`; **no generated Directional runtime**. Fresh artifact-only runtime is a later Test+Benchmark turn.
+
+## Carried CP-SCALE obligations
 
 - `M4-CP-SCALE-TB1-REV-OBS-01` — S1 representative/stress calibration before any numeric gate.
 - `M4-CP-SCALE-TB2-REV-OBS-02` — zero-transport helper audit at the next legitimate touch.
 - `M4-CP-SCALE-DEFN-OBS-01` — S2 arrival exact fallback owner not frozen.
-- `M4-CP-SCALE-DEFN-OBS-04` — genus-two topology proved; TB12-R4 reaches `SingularityMismatch` before atlas publication/A3, so admissible production atlas/A3 reachability remains Review-owned.
-- `M4-CP-SCALE-TB12-R1-EXEC-CAND-01` — OPEN / RP-07 / post-CB16 production retry now observed at a later `SingularityMismatch` boundary; Review owns closure/continuation.
-- `M4-CP-SCALE-TB12-R3-EXEC-CAND-01` — OPEN / RP-02 / corrected Gate-A control now runtime-green; Review owns closure.
-- CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts keep their existing owners.
+- `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: genus-two topology and raw-field index authority supported; production atlas/A3 still unproved.
+- CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts retain existing owners.
 
 ## Mandatory resume procedure
 
 1. Read root `STATUS`; if incomplete, resume it, otherwise advance only to its named successor. Immediately direct-write the canonical entry/resume beacon before any other repository mutation.
-2. Re-read `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`; choose `READ_MODE` before repository inspection. Review is runtime-free.
-3. Re-read mandatory checklists/cadence/handoff/retention/cleanup policies, `LESSONS.md`, TODO/design/reorientation, this handoff, frozen definitions, TB12-R4 report and Review plan. Historical R2/CB16/R3/CB17 facts resolve through current durable records.
-4. Independently verify frozen artifact/result identities and raw Gate-A/Gate-B receipts before source adjudication. Do not reuse EXEC conclusions as Review conclusions.
-5. Perform the exact Review-plan adjudication, update `Regression_Root_Cause_Tracker.md`, freeze one successor and preserve accepted authority unless Review evidence authorizes otherwise. No Directional runtime/compile/package mutation.
-6. Run mandatory cleanup at closeout. PR metadata remains frozen and PR comments are non-durable. Final COMPLETE root `STATUS` direct-write is the last repository mutation.
+2. Re-read `TOOL_USE_CONSERVATION_POLICY.md`, `GitHub_Workflow_Policy.md`, mandatory checklists/cadence/handoff/retention/cleanup policies, `LESSONS.md`, `ORIENTATION.md`, tracker/TODO/ROADMAP, this handoff, frozen definitions, current Review and CB18 plan. Choose `READ_MODE` before broad repository inspection.
+3. Reconcile local snapshot with exact origin head and preserve all unpushed work through Google Drive patch transport before further edits.
+4. Execute only the CB18 bounded Code+Build plan. No runtime, selector publication, fixture/S5/partition/cycle-order changes. Compile through the reusable GitHub workflow under mandatory GMP/GMPXX.
+5. Preserve durable evidence, freeze exactly one successor, run mandatory cleanup, retire consumed Drive patches, and make final COMPLETE root `STATUS` direct-write the last repository mutation.

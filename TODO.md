@@ -2,20 +2,19 @@
 
 Last updated: 2026-09-18 UTC
 
-## Current turn — M4-CP-SCALE-TB12-R4-EXEC (closeout)
+## Latest completed Review — `M4-CP-SCALE-TB12-R4-REV`
 
-TB12-R4 consumed CB17 artifact `10527625935` unchanged. Corrected Gate A is **4/4 PASS**; unchanged S5 then REDs at `SingularityMismatch;sourceVertex=0` before atlas publication/A3. Fail-fast leaves selector426 **0/426** and benchmark **0**; immutable postflight passes.
+R4 Review independently accepts corrected Gate A **4/4** as repaired test authority, closes prior cycle-ordering `RP-07` as recovery proved, and root-causes the later S5 `SingularityMismatch;sourceVertex=0` to an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: separating hard-feature source-region boundaries are globally nontraversable but absent from every same-region local `barrierVertices` owner path. Independent retained-field census supports, rather than falsifies, the genus-two raw field. No package promotion or S5/A3 credit occurs.
 
-- [x] `M4-CP-SCALE-TB12-R3-REV`: invalid fourth Gate-A authority classified `RP-02`.
-- [x] `M4-CP-SCALE-CB17`: corrected test authority compiled/package GREEN, no runtime.
-- [x] `M4-CP-SCALE-TB12-R4-EXEC`: Gate A **4/4 PASS**; S5 **0/1 RED** at `SingularityMismatch;sourceVertex=0`; selector426 **0/426 UNEXECUTED**; benchmark **0**.
-- [ ] `M4-CP-SCALE-TB12-R4-REV`: **exact next**. Runtime-free independent adjudication of corrected Gate-A authority, RP-07 recovery boundary, new S5 singularity RED and next owner.
+- [x] `M4-CP-SCALE-TB12-R4-REV`: `RP-02` CLOSED / test-authority repair proved; `RP-07` CLOSED / recovery proved; R4 candidate OPEN / PRODUCT / `RP-01` / NON-STABLE.
+- [x] Consolidation: eight superseded/consumed CP-SCALE per-turn documents indexed in `M4_Consolidated_Record.md` §2.63; accepted TB11 runtime report retained.
+- [ ] `M4-CP-SCALE-CB18`: **exact next**. Compile/package-only correction of separating-hard-feature singularity ownership plus direct independent controls; no generated runtime or selector publication.
 
-## Current focus — `M4-CP-SCALE-TB12-R4-REV`
+## Current focus — `M4-CP-SCALE-CB18`
 
-Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate `10527625935` remains unpromoted. Review authority is run/job `35296853812 / 105451109821`, result/log artifacts `10528172684 / 10527643135`.
+Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**, stable accounting **49 / 14 / 35**, debt **5**. Candidate `10527625935` remains unpromoted.
 
-Review must independently verify Gate A 4/4 and S5 raw receipt, decide disposition of `M4-CP-SCALE-TB12-R3-EXEC-CAND-01 / RP-02`, determine whether the old `RP-07` cycle-ordering defect is recovery-proved or only bypassed before the new singularity seam, classify `M4-CP-SCALE-TB12-R4-EXEC-CAND-01`, and freeze one successor. No generated runtime, compile, source/test/fixture/selector mutation, package promotion, selector427 or benchmark is authorized.
+CB18 must give a prescribed globally-interior singularity on a hard feature that separates source topology regions exactly one deterministic boundary owner, publish `BarrierAbsorbed`, and emit zero origin ports. Multiple incident-region ownership must be canonical by stable authority IDs and iteration-order invariant. It may touch only the bounded atlas ownership seam plus direct independent test authority. Source-region partitioning, CB16 cycle ordering/`dual_cycles`, retained genus-two fixture/rawfield, frozen S5 focus, selector426, CMake/benchmark semantics and accepted predecessor behavior are frozen. Generated Directional runtime is forbidden; compile/package under GMP/GMPXX only.
 
 ## Carried forward from M1
 
@@ -54,7 +53,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. CB17 candidate `10527625935` / source `1b44d2b7b3173590db9837a1386eadbc9ac32981` remains unpromoted. TB12-R4 proves corrected Gate A **4/4 PASS** and then reaches an S5 `SingularityMismatch;sourceVertex=0` RED; selector426/benchmark are unexecuted by fail-fast. Exact next is runtime-free `M4-CP-SCALE-TB12-R4-REV`. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains unaccepted, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED / CHECKPOINT OPEN**. Accepted runtime authority remains TB11 Review package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. R4 Review closes corrected Gate-A `RP-02` and cycle-ordering `RP-07`; the current S5 blocker is an open non-stable product `RP-01` separating-hard-feature singularity ownership mismatch. Exact next is compile-only `M4-CP-SCALE-CB18`. S1 remains diagnostic/non-gating, S2 arrival remains blocked, S5 remains unaccepted, and CP4 later discharges the 3 `G4-B002` debts before M4 closes.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -94,4 +93,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. CB17 candidate artifact `10527625935` / source `1b44d2b7b3173590db9837a1386eadbc9ac32981` remains unpromoted after TB12-R4 corrected Gate A **4/4 PASS** and S5 RED at `SingularityMismatch;sourceVertex=0`. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is runtime-free independent Review **`M4-CP-SCALE-TB12-R4-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3 and M4-CP-COND are CLOSED / ACCEPTED. `M4-CP-SCALE-TB11-REV` remains accepted runtime authority at package `10473134357` / selector426 **426/426**. R4 Review leaves CB17 candidate `10527625935` unpromoted, closes prior RP-02/RP-07 candidates without stable repricing, and owns the current S5 blocker as product `RP-01`. CP-SCALE remains OPEN: S1 is diagnostic/non-gating pending calibration, S2 arrival remains blocked, and S5 remains uncredited. Exact next is compile-only **`M4-CP-SCALE-CB18`**. PR #8 remains open, draft, and unmerged.

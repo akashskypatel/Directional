@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-TB12-R4-REV`: corrected Gate-A authority accepted; later S5 RED root-caused to separating-hard-feature ownership seam
+
+Runtime-free Review independently reopens CB17 candidate artifact `10527625935` / source `1b44d2b7b3173590db9837a1386eadbc9ac32981` and TB12-R4 run/job `35296853812 / 105451109821`. Corrected Gate A is **4/4 PASS** with a non-vacuous two-component same-row control and order-tamper rejection, so `M4-CP-SCALE-TB12-R3-EXEC-CAND-01 / RP-02` closes as test-authority repair proved. The unchanged S5 witness reaches `SingularityMismatch;sourceVertex=0` strictly after cycle ordering, closing prior `M4-CP-SCALE-TB12-R1-EXEC-CAND-01 / RP-07` as recovery proved.
+
+Independent genus-two re-derivation gives `V/E/F=120/366/244`, `chi=-2`, genus 2, 72 separating right-angle hard features and 14 source topology regions. Independent field census gives 24 nonzero singular vertices with total numerator `-8=4*chi`; source vertex 0 is genuine `+1`. The R4 RED is therefore root-caused to existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: separating hard features define source-region boundaries/global nontraversability, but local atlas `barrierVertices` contains only same-region hard features, leaving the separating-boundary singularity with no owner. `M4-CP-SCALE-TB12-R4-EXEC-CAND-01` remains OPEN / PRODUCT / NON-STABLE and is owned by compile-only `M4-CP-SCALE-CB18`.
+
+No package promotion, selector427, S5/A3 credit or stable repricing occurs. Accepted runtime authority remains package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**. Review consolidation folds superseded TB11 Review and adjudicated R4 per-turn documents into `M4_Consolidated_Record.md` §2.63 while retaining the TB11 runtime report, current R4 Review and exactly one CB18 plan.
+
 ## 2026-09-18 — `M4-CP-SCALE-CB17`: synthetic multi-component test authority repaired; eight-target GMP compile GREEN
 
 ## 2026-09-18 — M4-CP-SCALE-TB12-R4-EXEC corrected Gate A green; S5 reaches SingularityMismatch RED
