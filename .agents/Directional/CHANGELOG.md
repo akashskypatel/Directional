@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-CB20`: nounset harness correction frozen; R7 caller validated and published
+
+CB20 is **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / NO BUILD**. The original R5/R6 Drive harness was re-fetched unchanged at **18,459 bytes**, SHA-256 `dbd9d8a5...43186a2`. The only authorized correction replaces the single same-command `stem` / dependent `dir` / `work` local declaration with sequential nounset-safe assignments. Exact diff is one statement, `bash -n` passes, and a non-Directional `set -u` micro-proof derives the expected `001-GATEA0-001` paths.
+
+Corrected harness authority is new Drive file `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, **18,479 bytes**, SHA-256 `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf`; owner-side re-fetch reproduced the bytes. Fresh R7 caller validation run `35323555381` passed self-check and exact draft validation; result artifact `10537559842` hashes to `7393e133...fb87` with `valid=true`. Published caller commit/blob `df3a476bcdb1851ec033f96cad2357b764d327d8 / a9705992bf85bfe8cc0caca7e8b6a94e099d89d5` is 4,870 bytes, SHA-256 `d2f8fe25...8279`, with unchanged permission union `actions: read`, `contents: write`, `id-token: write`, `issues: write`, `pull-requests: write`. The R7 execution marker remains absent.
+
+Candidate `10532133889`, accepted package `10473134357`, selector426 and stable accounting remain unchanged; S5/A3 remain uncredited. Exact next is immutable artifact-only `M4-CP-SCALE-TB12-R7-EXEC` under `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Plan.md`; CB20 itself executes no 436-row semantic process.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R6-EXEC`: exact candidate preflight passes; frozen harness aborts before row 1
 
 Fresh artifact-only run/job `35321067552 / 105523481425` used marker/event SHA `532e9b0b2b681b5936a27e5ac35c6715052190eb`, the exact CB19-prevalidated caller blob `c31306fce7c7dbf96bb2b80859f285062460b26d`, and the exact 18,459-byte Drive harness `dbd9d8a5...43186a2`. CB18 candidate package `10532133889` preflighted successfully: 28/28 manifest, exact semantic source/source archive, executable modes, selector426/genus-two bytes and 30/280/75/41 owner census all match frozen authority.

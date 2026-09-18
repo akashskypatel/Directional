@@ -11,6 +11,12 @@
 - Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt **5**.
 - CB18 candidate package `10532133889` / compile source `079933f2ec31a9323218e73c7ae0d3ea1d11103c` is compile/package GREEN and unpromoted. Compile run/job `35307991751 / 105484066744`; artifact/log SHA-256 `4793e0155349a7f6c1e1a7833f5474d468cae89fcdd40916ec3eca192ff09c3a / 5d5d36c2010b92e915b98f85481aab83e1928c5b1654fee9af4e39b47c4a99c3`.
 
+## Latest completed Code + Build — `M4-CP-SCALE-CB20`
+
+CB20 is **COMPLETE / CONTROL PLANE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME / NO BUILD**. It corrected exactly R6's same-command nounset initialization defect and nothing else. Original harness Drive `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` remains unchanged at 18,459 bytes / `dbd9d8a5...43186a2`. Corrected successor harness is frozen under new Drive file `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV`, 18,479 bytes, SHA-256 `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf`; exact diff is only the sequential `stem`/`dir`/`work` initialization, `bash -n` passes, and the non-Directional nounset micro-proof is green.
+
+Fresh R7 caller is validated/published at commit `df3a476bcdb1851ec033f96cad2357b764d327d8`, Git blob `a9705992bf85bfe8cc0caca7e8b6a94e099d89d5`, 4,870 bytes, SHA-256 `d2f8fe25701023bdad4843cfa6f608f2fed44980006bd73db699915728288279`. Validation run/job `35323555381 / 105531346862` is green; exact result artifact `10537559842` hashes to `7393e133591f77b481f55a19f350c5adcaa959715740deec354dfb5f9c79fb87`. The R7 marker is absent. Candidate/package/selector/genus-two authority and stable accounting are unchanged; S5/A3 remain uncredited. Detailed evidence is `Architecture_M4_CP_SCALE_CB20_Orchestration_Harness_Code_Build_Report.md`.
+
 ## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R6-EXEC`
 
 R6 is **COMPLETE / ORCHESTRATION FAILURE / ZERO DIRECTIONAL SEMANTIC EXECUTION / NON-STABLE**. Exact run/job `35321067552 / 105523481425` used marker/event SHA `532e9b0b2b681b5936a27e5ac35c6715052190eb`, exact caller blob `c31306fce7c7dbf96bb2b80859f285062460b26d`, and exact 18,459-byte Drive harness `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC` / `dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2`.
@@ -30,9 +36,9 @@ The post-closeout duplicate run `35312751970 / 105497993610` remains invalid-att
 
 ## Exact next turn
 
-`M4-CP-SCALE-CB20` — control-plane-only Code + Build under `Architecture_M4_CP_SCALE_CB20_Orchestration_Harness_Code_Build_Plan.md`.
+`M4-CP-SCALE-TB12-R7-EXEC` — immutable artifact-only Test + Benchmark under `Architecture_M4_CP_SCALE_TB12_R7_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB20 corrects only the nounset defect in the frozen harness by splitting `stem`, `dir`, and `work` into sequential assignments; it may not touch product/test/fixture/selector/CMake/benchmark/candidate-package semantics. The original Drive harness remains immutable evidence. CB20 freezes a corrected harness under a **new** Drive file ID/hash, prevalidates/publishes a fresh R7 caller with the same required permission union, creates **no R7 execution marker**, and runs no generated Directional binary. On control-plane GREEN, exact successor is `M4-CP-SCALE-TB12-R7-EXEC`, which reuses unchanged candidate `10532133889` and the same 436-row semantic gate.
+R7 first reinstalls exact caller bytes from publication commit `df3a476bcdb1851ec033f96cad2357b764d327d8` / blob `a9705992bf85bfe8cc0caca7e8b6a94e099d89d5` and verifies SHA-256 `d2f8fe25701023bdad4843cfa6f608f2fed44980006bd73db699915728288279` plus the frozen permission union. It then creates only `.agents/connector-triggers/m4-cp-scale-tb12-r7-exec-20260918.txt` in a separate commit. The workload must consume corrected harness Drive `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / 18,479 bytes / `04f3e8dd...e7cdf` and unchanged candidate `10532133889`. Execute Gate A0 **5**, Gate A **4**, S5 **1**, and selector426 **426** only if all ten focused rows are green; benchmark **0**; exact postflight required. Any valid semantic outcome routes to mandatory R7 Review; orchestration/integrity failure routes to the smallest control-plane CB.
 
 ### Historical R6 acceptance interpretation — consumed by R6
 
@@ -81,14 +87,14 @@ product defects on one witness path is evidence about the frozen S5 approach, no
 - `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: genus-two topology and raw-field index authority supported; production atlas/A3 still unproved.
 - CP3 carried observations and `G4-B002`/`G4-B003` produced-witness debts retain existing owners.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-CB20`
+## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R7-EXEC`
 
-1. Read root `STATUS`; it should close R6 and name `M4-CP-SCALE-CB20`. Immediately direct-write the CB20 entry beacon before any other repository mutation.
-2. Choose `READ_MODE` before broad inspection. Read the CB20 plan, R6 report, tool/workflow/retention/cleanup policies, tracker/TODO/ROADMAP/handoff and relevant lessons from one verified source snapshot.
-3. Re-fetch the original Drive harness `1WnSzFMBLSu5OdFjZTGbkgym8D-ikUdVC`, require 18,459 bytes and SHA-256 `dbd9d8a51cb9b3fe62a576911fd5eff8c9658586a1bb3644c2fde3ddd43186a2`, and preserve it unchanged.
-4. Apply only the nounset-safe sequential `stem`/`dir`/`work` initialization correction described in the CB20 plan. Require exact one-statement diff, `bash -n`, and the non-Directional nounset micro-proof. Upload the corrected bytes as a new Drive file and record ID/hash.
-5. Author/validate/publish the fresh R7 caller from the corrected harness ID/hash, retaining exact permission union and frozen artifact-only gate. Do not create the R7 marker or execute generated Directional runtime in CB20.
-6. Preserve/report control-plane evidence, clean temporary caller/markers only after durable closeout, and finish CB20 with its exact R7 successor. Accepted runtime authority and candidate package remain unchanged until a valid semantic TB plus Review says otherwise.
+1. Read root `STATUS`; it should close CB20 and name `M4-CP-SCALE-TB12-R7-EXEC`. Immediately direct-write the R7 entry beacon before any other repository mutation.
+2. Choose `READ_MODE` before broad inspection. Read the R7 plan, CB20 report, tool/workflow/retention/cleanup policies, tracker/TODO/ROADMAP/handoff and relevant lessons from one verified source snapshot.
+3. Confirm CB20 cleanup left `.github/workflows/m4-cp-scale-tb12-r7-exec.yml` absent and the R7 marker absent. Reinstall exact caller bytes from commit `df3a476bcdb1851ec033f96cad2357b764d327d8` / blob `a9705992bf85bfe8cc0caca7e8b6a94e099d89d5`; require SHA-256 `d2f8fe25701023bdad4843cfa6f608f2fed44980006bd73db699915728288279` and the exact five-permission union.
+4. Only after caller installation is branch authority, create `.agents/connector-triggers/m4-cp-scale-tb12-r7-exec-20260918.txt` in a separate commit and make no further repository write until the observer reports the matching run/event SHA.
+5. Treat candidate artifact `10532133889` and corrected Drive harness `1Q1h9-W7AKuS1VP-IXJ__v4nqvmiNpNGV` / `04f3e8dd49b5521f5850d4bfc2eea4b8f04b4c4f4ef839974b55cd3b1c7e7cdf` as immutable. Execute only the frozen 436-row plan; no source/test/fixture/selector/build mutation, configure, compile, relink, harness regeneration or package repair.
+6. Preserve fail-fast and exact postflight. Route semantic RED/all-green to `M4-CP-SCALE-TB12-R7-REV`; route orchestration/integrity failure to the smallest orchestration-correction CB. Perform mandatory cleanup and make final COMPLETE `STATUS` the last repository mutation.
 
 ## Historical R6 resume procedure — consumed
 
