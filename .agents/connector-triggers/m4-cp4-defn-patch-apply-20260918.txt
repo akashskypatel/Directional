@@ -1,4 +1,0 @@
-M4-CP4-DEFN Drive patch apply
-Purpose: apply verified work-preservation patch from Google Drive.
-Base: 62aa95fb3b24d1822279a817f57fd3376e4c2fd9
-Retry: 0
