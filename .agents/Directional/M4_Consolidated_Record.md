@@ -1141,3 +1141,23 @@ Accepted runtime authority remains TB11 package `10473134357` / selector426 **42
 | `Architecture_M4_CP_SCALE_TB12_R8_Artifact_Only_Test_Benchmark_Report.md` | 133 | **ADJUDICATED/FOLDED BY R8 REVIEW.** R8 semantic evidence independently retained in §2.65/current Review; it is not accepted runtime authority. |
 
 Current retained CP-SCALE role set after R8 Review consolidation: normative `Architecture_M4_CP_SCALE_Frozen_Definitions.md`; accepted runtime report `Architecture_M4_CP_SCALE_TB11_Artifact_Only_Test_Benchmark_Report.md`; current Review `Architecture_M4_CP_SCALE_TB12_R8_Review_Record.md`; exactly one next plan `Architecture_M4_CP_SCALE_CB22_Separating_Owner_Test_Authority_Correction_Code_Build_Plan.md`; selector426/history; this consolidated record; tracker/changelog and other durable project authority.
+
+## 2.66 `M4-CP-SCALE-CB22 -> TB12-R9-EXEC -> TB12-R9-REV` — producer-consistent control exposes source-boundary alias / regional-owner conflation
+
+CB22 replaced R8's invalid constant-planar/handwritten transition authority with the accepted producer-consistent skew four-triangle fan and changed only test source. Candidate `10548849094` / source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` compiles/packages GREEN under GMP/GMPXX with selector426 unchanged. The corrected direct subject proves center4 is the sole interior `+1` singularity, hard edges `(1,4)/(3,4)` split exactly two regions `{0,3}` / `{1,2}`, no target edge is a same-region slit, and the stable owner-region relative boundary has `turningLift=4 != +1`.
+
+R9 run/job `35353935259 / 105628563418` is valid artifact-only semantic evidence. Exact package/source/GMP/mode/selector/fixture preflight passes, A0 row1 selects one/skips zero and REDs `SingularityMismatch;sourceVertex=1;topologyRegion=1`; fail-fast leaves **435/436 UNEXECUTED**, including S5 and all 426 selector rows; immutable postflight matches. Result/log artifacts are `10550642712 / 10550482686`; ledger SHA-256 is `254c0f2a6e89d5ebaad9c4534d5be699a34832dd7081a64c8b6476a9d528a41c`.
+
+Review closes R8 `RP-02` as corrected test authority: CB22 derives and independently re-measures the field, so the former handwritten companion defect is absent. The new RED is product-owned. `dual_cycles` maps all vertices of one source boundary loop to one aggregate cycle row; the producer projects that global index back to per-vertex aliases. Hard-feature cuts put source-boundary vertex1 on both regional boundary loops, while `boundaryCycleByGlobalVertex` accepts one regional owner and rejects the second. The later boundary reconciliation still proposes equality between a global boundary alias numerator and one region-relative corrected `BoundaryLoop.turningLift`.
+
+`M4-CP-SCALE-TB12-R9-EXEC-CAND-01` is **OPEN / PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE**. This is a refinement of R4/R7 rather than a third distinct product root cause, so the count threshold does not fire. Nevertheless the correct patch is not yet normatively determined: inherited alias reconciliation names an “owning BoundaryLoop,” but hard-feature decomposition supplies multiple regional loops for one global source-boundary fact. Exact successor `M4-CP-SCALE-DEFN-R1` is runtime-free and freezes that owner/reconciliation invariant before any further product CB. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**; totals remain **49 / 14 / 35**, debt **5**; S5/A3 remain uncredited and production S5 RP-01 remains open.
+
+### CP-SCALE TB12-R9 Review folded-document index additions
+
+The following superseded per-turn documents are folded here at R9 Review closeout. Their full text remains recoverable from git history; resume-critical authority is retained in this section, the R9 Review record, tracker, handoff and next definition plan.
+
+- `Architecture_M4_CP_SCALE_TB12_R8_Review_Record.md` — R8 direct-owner recovery proof, invalid companion-field `RP-02` classification and CB22 falsifier; superseded by CB22/R9 adjudication.
+- `Architecture_M4_CP_SCALE_CB22_Separating_Owner_Test_Authority_Correction_Code_Build_Plan.md` — consumed test-only producer-consistent correction plan.
+- `Architecture_M4_CP_SCALE_CB22_Code_Build_Report.md` — CB22 candidate package/source/hash/GMP/selector evidence; decisive facts retained above and in R9 Review.
+- `Architecture_M4_CP_SCALE_TB12_R9_Artifact_Only_Test_Benchmark_Plan.md` — consumed 436-row fail-fast execution plan.
+- `Architecture_M4_CP_SCALE_TB12_R9_Artifact_Only_Test_Benchmark_Report.md` — R9 one-RED/435-unexecuted evidence and artifact provenance; adjudicated by R9 Review.
