@@ -1,0 +1,4 @@
+M4-CP-SCALE-CB22 verified Drive patch apply
+Base: 36b0adbb7d75e44c50cc6616fee1574189d3f777
+Drive file: 1z22n0YYO-CznVNlvrf11l63iEFdFA34T
+Retry: 1
