@@ -1,2 +1,0 @@
-.agents/connector-triggers/source-snapshot/m4-cp-scale-defn-r1-20260918.txt
-.agents/connector-triggers/google-drive/m4-cp-scale-defn-r1-apply.txt

@@ -1,3 +1,0 @@
-M4-CP-SCALE-DEFN-R1 source snapshot
-Purpose: runtime-free definition review and static ownership/dataflow analysis.
-Base authority before trigger: ff87733c937fdb6f7bf961257a7985024c2d7280

@@ -1,5 +1,0 @@
-M4-CP-SCALE-DEFN-R1 Drive patch apply
-caller_sha=6c129fdc0cd3cbd7df6fa6832e46c04dfdd8a461
-patch_file_id=1JrTKPi-wOs-G5ODTYz3BS6hI5dyLL2pj
-patch_sha256=b8f89ae1bb41121f17a47fd1eaff74b280513d2d8bca73bab8e167a6ef937df8
-base_sha=e00453cae28c583f333b23324ba9dbcf8d5688e2
