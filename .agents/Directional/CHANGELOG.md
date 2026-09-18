@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-TB12-R9-EXEC`: producer-consistent direct control reaches sourceVertex1 semantic RED
+
+R9 consumes immutable CB22 artifact `10548849094` / source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` through frozen 18,479-byte harness `f7632ec2...fad7`. Authoritative run/job `35353935259 / 105628563418` passes exact package/GMP/mode/selector/fixture preflight, initializes all 436 rows, then executes only Gate A0 row1. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` is selected once, not skipped, and REDs at `FieldTransportAtlasTests.cpp:2612` with `SingularityMismatch;sourceVertex=1;topologyRegion=1`.
+
+Fail-fast leaves **435/436 UNEXECUTED**: A0 0 PASS / 1 RED / 4 unexecuted, A 0/4, S5 0/1, selector426 0/426, benchmark 0. Package/source/execution-view postflight is byte-identical; no configure/compile/relink/discovery/repair/mutation occurs. Result/log artifacts `10550642712 / 10550482686` hash to `8a9bf09e...2d650 / 3b953803...7b806`; final ledger SHA-256 is `254c0f2a...28a41c`.
+
+EXEC deliberately does not classify the new sourceVertex1 locus or decide the disposition of CB22's `RP-02` correction. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**; candidate `10548849094` remains unpromoted and S5/A3 uncredited. Exact next is runtime-free `M4-CP-SCALE-TB12-R9-REV`.
+
 ## 2026-09-18 — `M4-CP-SCALE-CB22`: producer-consistent separating-owner control compiles; R9 artifact-only next
 
 CB22 is **IMPLEMENTED / COMPILE+PACKAGE GREEN / ZERO GENERATED DIRECTIONAL RUNTIME**. Semantic source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` changes only `tests/FieldTransportAtlasTests.cpp`. The direct separating-owner control now uses the accepted skew four-triangle fan and producer-derived cross field: center4 is the sole interior `+1` singularity, `(1,4)/(3,4)` are separating hard edges between exactly two source-topology regions, and an independently reconstructed owner region yields `BoundaryLoop.turningLift=4 != +1`. The face-row permutation maps field directions by source-topology identity and regenerates matching/effort/singularities through the accepted producer; no transition or singularity is hand-authored. Production code and port-class semantics remain frozen.

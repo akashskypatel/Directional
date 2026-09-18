@@ -2,23 +2,24 @@
 
 Last updated: 2026-09-18 UTC
 
-## Latest completed Code + Build — `M4-CP-SCALE-CB22`
+## Latest completed Test + Benchmark — `M4-CP-SCALE-TB12-R9-EXEC`
 
-CB22 corrects only the invalid direct-test authority classified by R8 Review. `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` now uses the accepted producer-consistent skew four-triangle fan: center vertex4 is the sole interior producer-derived `+1` singularity; hard edges `(1,4)` and `(3,4)` establish two competing separating regions; an independent owner-region reconstruction proves `BoundaryLoop.turningLift=4 != +1`; and the face-row permutation control preserves per-face field semantics by source topology before regenerating matching/effort/singularities through the accepted producer. Production semantics remain frozen.
+R9 is **COMPLETE / VALID SEMANTIC RED / FAIL-FAST / REVIEW REQUIRED**. Immutable CB22 candidate `10548849094` / source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` passed exact package/source/GMP/mode/selector/genus-two preflight. Gate A0 row1 `FieldTransportAtlas.SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle` then selected exactly once, skipped zero, exited 1 and failed at `FieldTransportAtlasTests.cpp:2612` with `code=SingularityMismatch;sourceVertex=1;topologyRegion=1`.
 
-Compile/package is GREEN from semantic source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb`: run/job `35351112557 / 105619259327`, candidate artifact `10548849094`, result ZIP SHA-256 `f63c20ab184e78fa0cabcd89df7844a6fdaeacdba31691f3d51b39fec9bb1aa5`, all eight standard targets under GMP/GMPXX, 28/28 manifest verification, and `runtimeExecution=false`. This is compile evidence only; `RP-02` runtime re-proof remains pending and production S5 `RP-01` remains open.
+Fail-fast leaves **0 PASS / 1 RED / 435 UNEXECUTED** over the 436-row ledger: A0 0/1/4, A 0/0/4, S5 unexecuted, selector426 0 PASS / 426 UNEXECUTED, benchmark 0. Immutable package/source/execution-view postflight matches exactly. Result/log artifacts are `10550642712 / 10550482686`; final ledger SHA-256 is `254c0f2a6e89d5ebaad9c4534d5be699a34832dd7081a64c8b6476a9d528a41c`.
 
 - [x] `M4-CP-SCALE-CB21`: bounded owner-domain correction compile/package GREEN.
 - [x] `M4-CP-SCALE-TB12-R8-EXEC`: valid semantic RED at A0 row1, companion vertex16 port-class count.
 - [x] `M4-CP-SCALE-TB12-R8-REV`: CB21 direct owner recovery proved; R8 candidate classified test-authority `RP-02`, non-stable.
 - [x] `M4-CP-SCALE-CB22`: producer-consistent separating-owner test correction compiled/packaged GREEN; zero generated runtime.
-- [ ] `M4-CP-SCALE-TB12-R9-EXEC`: **exact next**. Immutable artifact-only A0 5 -> A 4 -> S5 1 -> selector426 426 fail-fast execution, benchmark 0, exact postflight.
+- [x] `M4-CP-SCALE-TB12-R9-EXEC`: valid semantic RED at A0 row1, sourceVertex1 `SingularityMismatch`; exact postflight; 435 rows unexecuted.
+- [ ] `M4-CP-SCALE-TB12-R9-REV`: **exact next**. Independently adjudicate the producer-consistent direct-control RED and its relationship to `RP-02` before any correction or retry.
 
-## Current focus — `M4-CP-SCALE-TB12-R9-EXEC`
+## Current focus — `M4-CP-SCALE-TB12-R9-REV`
 
-Consume only candidate artifact `10548849094` / semantic source `ec348a1d13f96764da5674b66a3ce314a4a8c2cb` under `Architecture_M4_CP_SCALE_TB12_R9_Artifact_Only_Test_Benchmark_Plan.md`. Before generated runtime, reproduce the exact package/source/manifest/GMP/mode/selector/fixture authority and freeze one R9 harness/caller. Initialize all **436** ledger rows `UNEXECUTED`; execute Gate A0 5 -> Gate A 4 -> S5 1 -> selector426 426 only while prior rows are green, one fresh exact-filter process per identity with `GTEST_FAIL_IF_NO_TEST_SELECTED=1`. Fail fast on the first valid semantic RED; benchmark 0; exact immutable postflight required.
+Re-open candidate artifact `10548849094`, R9 result/log artifacts `10550642712 / 10550482686`, raw A0 row1 output, the complete fail-fast ledger, frozen harness/caller authority, candidate package/source/selector/fixture hashes and exact immutable postflight. Determine whether `SingularityMismatch;sourceVertex=1;topologyRegion=1` is product or test authority, whether it closes/reopens/reclassifies `RP-02`, whether it is a recurrence or distinct root cause, and what exact successor is permitted by the frozen definitions and cadence.
 
-Any valid semantic result routes to `M4-CP-SCALE-TB12-R9-REV`. EXEC cannot promote the package, close/reprice production `RP-01`, grant S5/A3 credit, or publish selector427. Accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**; stable accounting remains **49 / 14 / 35**, debt **5**.
+Review must not import unexecuted S5/selector rows as evidence. Production `RP-01` remains OPEN because S5 did not run. EXEC made no stable accounting change: accepted runtime authority remains TB11 package `10473134357` / selector426 **426/426**, stable accounting **49 / 14 / 35**, debt **5**, candidate `10548849094` unpromoted, S5/A3 uncredited, selector427 forbidden.
 
 ## Carried forward from M1
 
