@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-18 (`M4-CP-SCALE-DEFN-R1` COMPLETE / SOURCE-BOUNDARY AUTHORITY FROZEN. One producer-owned source-global boundary-cycle index now governs exact legacy-alias reconciliation; regional `BoundaryLoop`s are support associations with disjoint exact source-boundary edge cover, never numeric owners. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP-SCALE-CB23`; no selector427.)
+**Status date:** 2026-09-18 (`M4-CP-SCALE-CB23` COMPLETE / COMPILE+PACKAGE GREEN. Semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` implements DEFN-R1 source-global boundary-cycle authority; candidate artifact `10560828304` is runtime-free and unpromoted. Accepted runtime authority remains package `10473134357` / selector426 **426/426**, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M4-CP-SCALE-TB12-R10-EXEC`; no selector427.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -83,6 +83,10 @@ TB4 Review first accepted CB4 package `10327643907` / selector422 **422/422** wh
 
 R7 is valid semantic evidence: A0 row1 executes once and REDs `SingularityMismatch;sourceVertex=8`, with 435/436 rows unexecuted and immutable postflight green. Review independently resolves the failure to CB18's unsupported equality between global source-vertex singularity numerator and per-region relative `BoundaryLoop.turningLift`; the direct test shared the same assumption. This refines existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, leaves stable accounting **49 / 14 / 35** and debt **5**, and freezes compile/package-only CB21 as exact next.
 
+### M4-CP-SCALE CB23 — 2026-09-18
+
+CB23 implements DEFN-R1's typed source-global boundary-cycle authority on semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`. Mandatory GMP/GMPXX compile/package run `35378397152` is GREEN as artifact `10560828304`, with 28/28 manifest, clean source states and `runtimeExecution=false`; no generated Directional runtime executed. Runtime authority remains TB11 selector426 **426/426**, R9 RP-01 remains open pending runtime recovery, and exact next is artifact-only `M4-CP-SCALE-TB12-R10-EXEC`.
+
 ## 1. Where the project actually is
 
 | Milestone | State | Accepted authority |
@@ -91,7 +95,7 @@ R7 is valid semantic evidence: A0 row1 executes once and REDs `SingularityMismat
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED; CHECKPOINT OPEN** | accepted runtime authority remains package `10473134357` / selector426 **426/426**, SHA `41f4d559…b5114`, owners **30/280/75/41**. R8 valid A0 row1 RED on candidate `10542249210` advances beyond R7 owner-equality rejection to `SingularityPortClassCountMismatch;sourceVertex=16;topologyRegion=1`; 435 rows remain unexecuted and mandatory Review owns classification. Exact next `M4-CP-SCALE-TB12-R8-REV`; three G4-B002 debts remain CP4 gating. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE S2 + S3 + S4 CUMULATIVE ACCEPTED; CHECKPOINT OPEN** | accepted runtime authority remains package `10473134357` / selector426 **426/426**, SHA `41f4d559…b5114`, owners **30/280/75/41**. CB23 compile/package candidate `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` implements DEFN-R1 but is not runtime-promoted. Exact next `M4-CP-SCALE-TB12-R10-EXEC`; three G4-B002 debts remain CP4 gating. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

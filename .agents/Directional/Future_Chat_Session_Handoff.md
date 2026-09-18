@@ -10,40 +10,36 @@ CB22 candidate artifact `10548849094` / source `ec348a1d13f96764da5674b66a3ce314
 
 R8 `RP-02 TEST_AUTHORITY_COVERAGE_GAP` remains CLOSED. Production S5 RP-01 remains OPEN; S5/A3 remain uncredited. No selector427.
 
-## Latest completed definition/review — `M4-CP-SCALE-DEFN-R1`
+## Latest completed Code + Build — `M4-CP-SCALE-CB23`
 
-The runtime-free definition turn re-derived `dual_cycles`, `effort_to_indices`, atlas region-boundary construction, alias reconciliation, interior slit/separating owner paths and the independent boundary validator from exact snapshot `e00453cae28c583f333b23324ba9dbcf8d5688e2`. It proves that the field producer computes one whole-source boundary-loop index and projects it to vertices, while the atlas recomputes region-relative boundary lifts after hard-feature partition/correction. Those values cannot share an owner or equality.
+CB23 implements DEFN-R1's source-global boundary-cycle authority on semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`. Both former regional-owner population paths now publish source-boundary support associations; aliases reconcile exactly to the producer-owned full-cycle fact; regional supports form a disjoint exact source-edge cover; the global-index/regional-`turningLift` equality is removed. Interior separating/slit owner and port semantics remain unchanged.
 
-Frozen D1-D5: source-global boundary-cycle facts use a typed canonical source-topology identity and the producer's same cycle-index numeric computation; all legacy aliases are exactly checked before collapse; regional source-boundary support must form a disjoint exact edge cover of the global loop; boundary global facts publish no singularity fact/ports; CB21 interior separating and same-region slit authority stay unchanged. `sourceBoundaryBoundSingularityCount` is diagnostic only.
+Mandatory compile run/job `35378397152 / 105708558821` is GREEN. Immutable result artifact `10560828304` hashes to `e84692e13d6de3b7bec46d8d5433b6b1c196e451187d5fb3a0a3fd6bb1d47ea1`; root manifest is 28/28 and source archive SHA-256 is `7ad520fc87b184d04d2aa94b0a0f51782bbc6a6c7e95df92edfd84012788f83f`. GMPXX+GMP are authoritative, source states are clean, executable modes are 0755 and `runtimeExecution=false`. No generated Directional binary executed.
 
-The initial setup invocation batched STATUS with handoff/TODO/tool-policy reads before the entry beacon/explicit READ_MODE choice. No mutation or source inspection preceded the beacon, and the turn corrected immediately to `READ_MODE=snapshot`; the deviation is retained as process evidence under the existing setup-order lesson family.
+Accepted runtime authority is still TB11 package `10473134357` / selector426 **426/426**, selector SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`, owners **30/280/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. R9 CAND-01 remains OPEN / PRODUCT / existing RP-01 / NON-STABLE pending runtime recovery; S5/A3 remain uncredited; no selector427.
 
 ## Exact next turn
 
-`M4-CP-SCALE-CB23` — Code + Build only under `Architecture_M4_CP_SCALE_CB23_Source_Boundary_Global_Cycle_Authority_Code_Build_Plan.md`.
+`M4-CP-SCALE-TB12-R10-EXEC` — immutable artifact-only Test + Benchmark under `Architecture_M4_CP_SCALE_TB12_R10_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB23 must expose the global numeric fact from the field producer's same full-cycle computation; replace the one-regional-owner boundary alias seam with typed global fact + exact regional source-edge support cover; preserve single-alias tamper rejection and all interior owner/port semantics; add focused positive/negative/permutation test authority; and compile/package with GMP/GMPXX. **Execute no generated Directional runtime.**
+R10 must verify artifact `10560828304` exactly, then run fresh-process fail-fast Gate C0: `SeparatingHardFeatureSingularityOwnsCanonicalBoundaryCycle`, `SingleFaceBoundaryRegionPublishesPartialGlobalBoundarySupport`, `PublishesCheckedSingularityPortAttachments`. Only if all three are green may it run the unchanged corrected Gate A 4/4, production S5 once, and selector426 426/426. Benchmark 0. No configure/compile/relink/package repair or source/test/fixture/selector mutation. Any valid semantic outcome routes to `M4-CP-SCALE-TB12-R10-REV`.
 
-### STOP conditions
-
-Stop rather than broaden if a second numeric boundary authority would be required, if a minimum/first region or alias vertex is needed to choose ownership, if global index would still be compared to regional `turningLift`, if exact source-boundary edge cover cannot distinguish hard-feature cut edges, or if the correction would alter selector426/first425, genus-two fixture/rawfield bytes, S5 acceptance, or create selector427.
-
-## Carried CP-SCALE obligations
+### Carried CP-SCALE obligations
 
 - `M4-CP-SCALE-TB12-R4-EXEC-CAND-01 / RP-01` — production S5 retry still OPEN.
-- `M4-CP-SCALE-TB12-R9-EXEC-CAND-01` — OPEN / PRODUCT / existing RP-01 / NON-STABLE; CB23 owns the now-frozen boundary-authority correction.
+- `M4-CP-SCALE-TB12-R9-EXEC-CAND-01` — OPEN / PRODUCT / existing RP-01 / NON-STABLE; CB23 is compile-green correction, runtime recovery unproved until R10.
 - `M4-CP-SCALE-DEFN-OBS-04` — OPEN / NARROWED: source/topology/raw-field authority supported; production atlas/A3 unproved.
-- `M4-CP-SCALE-TB2-REV-OBS-02` — carried dedicated `make_zero_transport_field` authority audit; unrelated to CB23.
+- `M4-CP-SCALE-TB2-REV-OBS-02` — carried dedicated `make_zero_transport_field` authority audit; unrelated to CB23/R10.
 - `M4-CP-SCALE-TB1-REV-OBS-01`, `M4-CP-SCALE-DEFN-OBS-01`, inherited CP3 observations and `G4-B002/G4-B003` debts retain their existing owners.
 
-## Mandatory resume procedure — current `M4-CP-SCALE-CB23`
+## Mandatory resume procedure — current `M4-CP-SCALE-TB12-R10-EXEC`
 
-1. Read root `STATUS`; publish the CB23 entry beacon first; choose `READ_MODE`; reopen this handoff, TODO, DEFN-R1 record, CB23 plan, frozen CP-SCALE definitions, accepted TB11 report, consolidated record, tracker/ORIENTATION/ROADMAP/LESSONS and mandatory Code+Build/GMP/checklist policies.
-2. Materialize one exact source snapshot before broad inspection. Re-derive the D1-D5 source seam and stop on any plan falsifier before mutation.
-3. Implement only the typed source-global boundary-cycle fact, exact legacy-alias reconciliation/collapse, exact global-to-regional source-boundary edge support relation, and focused tests. Preserve CB21 separating/slit ownership and port semantics. No selector or fixture edits.
-4. Run static checks, preserve a work-recovery patch, push through the authorized workflow path, and invoke mandatory `agent-compile-reusable.yml` with GMP/GMPXX. Compile owner target first, then the standard accepted targets.
-5. Execute **no generated Directional runtime**: no tests, benchmarks, discovery/list/help/version, `ctest`, CLI or GUI. Require package evidence `runtimeExecution=false`, exact source/selector/fixture hashes and clean source states.
-6. On GREEN, author exactly one immutable artifact-only TB successor focused on CB23 controls before production S5 retry. Perform mandatory cleanup and make final `STATUS` the last repository mutation.
+1. Read root `STATUS`; publish the R10 entry beacon first; choose `READ_MODE`; reopen this handoff, TODO, CB23 report, R10 plan, frozen CP-SCALE definitions, accepted TB11 report, consolidated record, tracker/ORIENTATION/ROADMAP/LESSONS and mandatory Test+Benchmark/checklist policies.
+2. Treat artifact `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` as immutable. Verify provider/local digest, 28/28 manifest, source archive digest, GMP/GMPXX, executable modes, selector426/first425, retained genus-two hashes and exact source before generated runtime. Extract with ordinary mode-preserving tools; no `chmod` or repair.
+3. Freeze one R10 harness before runtime. Use one fresh process per identity, exact filters with `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, explicit UNEXECUTED ledger initialization, and fail-fast.
+4. Execute Gate C0 3 first. Only if green run inherited corrected Gate A 4, S5 1, then selector426 426. Benchmark 0.
+5. Perform mandatory immutable postflight. Any semantic RED or all-green semantic result routes to `M4-CP-SCALE-TB12-R10-REV`; orchestration failure routes only to the smallest control-plane correction.
+6. Update the regression tracker/report, perform mandatory cleanup, and make final `STATUS` the last repository mutation.
 
 ## Historical R8 EXEC resume procedure — consumed
 

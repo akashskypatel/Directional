@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-CB23`: R9 RP-01 correction compile GREEN; runtime recovery pending — **OPEN / PRODUCT / existing RP-01 / NON-STABLE**
+
+- **Semantic correction:** source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` implements DEFN-R1 typed source-global boundary-cycle facts, exact alias collapse, one-or-many regional source-edge support associations with disjoint exact cover, and removes global-numerator/regional-`turningLift` comparison. Both formerly distinct population paths are converted; interior separating/slit owner and port semantics remain frozen.
+- **Compile evidence:** run/job `35378397152 / 105708558821`, artifact `10560828304` / SHA-256 `e84692e13d6de3b7bec46d8d5433b6b1c196e451187d5fb3a0a3fd6bb1d47ea1`, 28/28 manifest, source archive `7ad520fc87b184d04d2aa94b0a0f51782bbc6a6c7e95df92edfd84012788f83f`, all eight standard targets, GMPXX+GMP, clean source states, `runtimeExecution=false`.
+- **Disposition:** `M4-CP-SCALE-TB12-R9-EXEC-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` remains **OPEN / PRODUCT / NON-STABLE** until immutable artifact-only R10 runtime proves or falsifies recovery. Compile success is not package promotion.
+- **Accepted authority/accounting:** unchanged TB11 package `10473134357` / selector426 **426/426**; **49 events / 14 categories / 35 recurrences**, debt **5**. S5/A3 uncredited; no selector427.
+- **Exact runtime owner:** `M4-CP-SCALE-TB12-R10-EXEC`, CB23 controls first, then inherited Gate A, S5 and selector426 fail-fast.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R9-REV`: source-boundary alias versus regional boundary owner — **OPEN / PRODUCT / existing RP-01 / NON-STABLE**
 
 ## M4-CP-SCALE-DEFN-R1 — R9 RP-01 authority rule frozen; runtime recovery still open

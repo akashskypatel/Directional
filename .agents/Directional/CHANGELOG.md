@@ -1,3 +1,11 @@
+## 2026-09-18 — `M4-CP-SCALE-CB23`: source-boundary global-cycle authority implemented; GMP compile GREEN
+
+CB23 implements DEFN-R1 on semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`: one typed source-global boundary-cycle fact carries the producer's existing full-cycle index; legacy aliases reconcile exactly before collapse; both the single-face-disc and general regional paths publish source-boundary edge support associations; exact disjoint cover replaces one-regional-owner semantics; the surviving global-numerator/regional-`turningLift` equality is removed. Focused later-runtime controls cover the R9 skew fan, row/orientation permutation, the previously uncovered single-face partial-support path, and negative alias/support corruption. Interior separating/slit owner and port semantics are unchanged.
+
+Mandatory compile run/job `35378397152 / 105708558821` is GREEN. Artifact `10560828304` hashes to `e84692e13d6de3b7bec46d8d5433b6b1c196e451187d5fb3a0a3fd6bb1d47ea1`; manifest 28/28, manifest SHA-256 `39e4dfa89c6203852b544395aad0651348f7d976110020b86a2a75968b2edff3`, source archive `7ad520fc87b184d04d2aa94b0a0f51782bbc6a6c7e95df92edfd84012788f83f`; all standard eight targets compile with GMPXX+GMP, clean source states and `runtimeExecution=false`. Selector426/first425 and retained genus-two bytes are unchanged; no selector427. No Directional runtime executed.
+
+This compile evidence does not promote runtime authority or close R9 RP-01. Accepted authority remains TB11 package `10473134357` / selector426 **426/426**, accounting **49 / 14 / 35**, debt **5**; S5/A3 uncredited. Exact successor is artifact-only `M4-CP-SCALE-TB12-R10-EXEC`, testing CB23 controls first before inherited Gate A, S5 and selector426.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R9-REV`: producer boundary alias collides with regional boundary ownership; definition first
 
 **Independent review addendum (reviewing agent).** The DEFN-R1 definition is **upheld**. An independent source
