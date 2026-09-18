@@ -88,3 +88,71 @@ CB24 may publish only selector427 and associated durable selector metadata/calle
 | review_check.py boundary | PASS on the review working tree before publication |
 | `STATUS` lifecycle maintained | entry beacon published for `M4-CP-SCALE-TB12-R10-REV`; COMPLETE beacon with successor `M4-CP-SCALE-CB24` is the final repository mutation |
 | Pushed to origin, branch in sync | review-document patch is applied/pushed through the repository workflow and clean branch state is verified before final STATUS; cleanup/final beacon follow policy |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The promotion, the focused S5 acceptance and the publication boundary are all correct.
+One completeness correction to the obligation ledger.
+
+### V1 — the DEFN-R1 review amendment landed and was load-bearing
+
+`M4-CP-SCALE-DEFN-R1` review §V2 required CB23 to convert **both** population sites rather than only the general
+path R9 failed on, and to add a single-face-region control so `FieldTransportAtlas.cpp:2087` would be exercised.
+`FieldTransportAtlas.SingleFaceBoundaryRegionPublishesPartialGlobalBoundarySupport` is exactly that control, §2
+records it exercising the formerly separate single-face regional path, and §3 confirms **all three** CB23
+boundary-authority controls green.
+
+Worth recording as an outcome rather than a claim: the amendment converted what would very likely have been a
+partial migration — the skew-fan control alone exercises only the path that had already failed — into a complete
+one, and it cost one paragraph rather than a rejected turn.
+
+### V2 — the genus-2 precondition is derived, not asserted
+
+§2 item 4's census was recomputed here: `V/E/F = 120/366/244` gives `χ = 120 − 366 + 244 = −2`, and for a
+connected closed orientable surface with zero boundary loops `genus = (2 − χ)/2 = 2`. The fixture is genuinely
+genus 2.
+
+That is the form `DEFN-OBS-04` demanded and the form its exclusion list required: a hand-asserted genus number
+earned zero credit, and this number is derived from the fixture bytes. §2's closing restatement that torus genus 1
+still receives zero S5 credit keeps the durable rule intact in terms.
+
+### V3 — the milestone, scoped honestly
+
+`M4-CP-SCALE-TB12-R4-EXEC-CAND-01 / RP-01` has been open since R4 and cost CB18 (falsified), CB21, a definition
+turn and CB23. It is now closed recovery-proved on an unchanged production S5 traversal, and `DEFN-OBS-04` is
+discharged with topology, producer field/atlas admissibility and A3 reachability present in one immutable run.
+
+The genus-two witness, noted twice in earlier reviews as ungated and still paying, has now earned its own
+acceptance as well as the two production defects it surfaced along the way.
+
+§4's restraint is equally right: this is **focused** acceptance, not cumulative credit, and the publication chain
+is what converts it. The pre-committed controls are the correct ones — first 426 rows byte-identical, row 427
+exactly the S5 identity, expected SHA-256 `f9c88380…`, expected ownership `30 / 281 / 75 / 41`, which sums to 427
+and is exactly one producer row above selector426.
+
+### V4 — REQUIRED: the carried-obligation ledger is incomplete
+
+The closeout's prior-obligations row lists the discharged items plus *"S1 calibration/S2-arrival and three
+`G4-B002` debts carried"*. Four carried obligations are missing from it:
+
+- `M4-CP-SCALE-TB2-REV-OBS-02` — the `make_zero_transport_field` helper audit;
+- `M4-CP3-TB1-R1-REV-OBS-01` — same-region multiplicity-2 independent oracle, owed before cumulative CP4;
+- `M4-CP3-CB4-REV-OBS-02` — row399 path/`sourceFaces` producer-divergence tamper;
+- `G4-B003` — two produced-witness debts owned by M5.
+
+All four remain recorded in `Regression_Root_Cause_Tracker.md`, so nothing is lost. But the review record's ledger
+is where a reader checks, and this is precisely the turn at which an incomplete one misleads: at a milestone where
+S5 is accepted and `DEFN-OBS-04` discharged, a ledger naming only S1, S2-arrival and `G4-B002` reads as though
+little else remains.
+
+**`TB2-REV-OBS-02` deserves specific note.** At `TB12-R8-REV` it was escalated with evidence — three failure
+instances, call sites grown from 35 to 37 — and a dedicated turn was recommended. `TB12-R9-REV` carried it
+explicitly. This record omits it. That is the degradation warned about at R8: *a phrase that never resolves is not
+an owner*, and the obligation has now moved from deferred-with-owner to absent-from-the-ledger. It should be
+restored to the ledger and scheduled.
+
+For the record, CP-SCALE's actual remaining state is: S2, S3 and S4 gated in selector426; S5 focused-accepted with
+publication owed; S1 calibration owed; the S2-arrival exact fallback unallocated; and the four obligations above
+carried, alongside `G4-B002`.

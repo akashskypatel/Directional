@@ -4,6 +4,28 @@ Runtime-free Review independently re-opens R10 run/job `35382311474 / 1057211783
 
 Review **PROMOTES package `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` under unchanged selector426 426/426**, closes R9 and production R4 `RP-01 AUTHORITY_DOMAIN_CONFLATION` recovery obligations as non-stable, and discharges `M4-CP-SCALE-DEFN-OBS-04`. S5 is accepted **for publication**, not yet cumulative selector credit. New non-defect `M4-CP-SCALE-TB12-R10-REV-OBS-01` requires selector427 = exact selector426 prefix + `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`, expected SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **30/281/75/41**, followed by fresh 427/427 runtime + Review. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is publication-only `M4-CP-SCALE-CB24`.
 
+**Verification amendment (reviewing agent, review record addendum).** Upheld — promotion, focused S5 acceptance and
+the publication boundary are all correct. **The DEFN-R1 review amendment landed and was load-bearing:**
+`FieldTransportAtlas.SingleFaceBoundaryRegionPublishesPartialGlobalBoundarySupport` is exactly the single-face
+control required so `:2087` would be exercised, and §3 confirms all **three** CB23 boundary-authority controls
+green — the skew-fan control alone exercises only the path that had already failed, so the amendment converted a
+likely partial migration into a complete one. **The genus-2 precondition is derived, not asserted:** recomputing
+§2's census, `V/E/F = 120/366/244` gives `χ = −2`, and for a connected closed orientable surface with zero boundary
+loops `genus = (2 − χ)/2 = 2`. That is the form `DEFN-OBS-04` demanded, and torus genus 1 is restated as zero S5
+credit. **Milestone, scoped honestly:** `TB12-R4-EXEC-CAND-01 / RP-01` has been open since R4 and cost CB18
+(falsified), CB21, a definition turn and CB23; it is now closed recovery-proved on an unchanged production S5
+traversal, with `DEFN-OBS-04` discharged. §4's restraint is right — this is focused acceptance, and the
+pre-committed selector427 controls (first 426 rows byte-identical, row 427 the S5 identity, SHA `f9c88380…`,
+ownership `30 / 281 / 75 / 41` summing to 427, one producer row above selector426) are the correct converters.
+**One required correction:** the closeout's prior-obligations row omits four carried items —
+`M4-CP-SCALE-TB2-REV-OBS-02` (zero-transport helper audit), `M4-CP3-TB1-R1-REV-OBS-01` (multiplicity-2 oracle
+before CP4), `M4-CP3-CB4-REV-OBS-02` (row399 path/`sourceFaces` divergence tamper) and `G4-B003` (two M5 debts).
+All four remain in the tracker so nothing is lost, but the record's ledger is where a reader checks, and at a
+milestone where S5 is accepted an incomplete ledger reads as though little else remains. `TB2-REV-OBS-02` deserves
+specific note: escalated with evidence at R8-REV, carried explicitly at R9-REV, and omitted here — the exact
+degradation warned about, from deferred-with-owner to absent-from-the-ledger. Accounting unchanged at
+**49 / 14 / 35**, debt **5**.
+
 ## 2026-09-18 — `M4-CP-SCALE-TB12-R10-EXEC`: CB23 artifact-only recovery run is 434/434 GREEN; Review required
 
 R10 consumes immutable CB23 artifact `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` through frozen harness `1BE8aLC5OEhBZGhrJ1Zd88eUhaiigeMdi` (`18,542` bytes, SHA-256 `e61ea1ced3936f2e0251d74816deb30a16835c9857fc0f5b50eaa85ef9f21e83`). Run/job `35382311474 / 105721178393` passes exact immutable preflight, then Gate C0 **3/3**, inherited Gate A **4/4**, production S5 **1/1**, and selector426 **426/426** for **434/434 PASS** total. Benchmark/build/configure/relink/discovery/repair/mutation counts are all zero and exact package/source/execution-view postflight matches.
