@@ -1,0 +1,3 @@
+turn=M4-CP-SCALE-TB12-R7-REV
+requested_source=2d1ca8b3c279fcec953af9909d614dfd2fc2d5bf
+read_mode=snapshot
