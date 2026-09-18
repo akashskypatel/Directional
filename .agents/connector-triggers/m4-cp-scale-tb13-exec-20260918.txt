@@ -1,0 +1,9 @@
+Turn: M4-CP-SCALE-TB13-EXEC
+Purpose: Execute immutable selector427 artifact-only runtime gate
+Candidate artifact ID: 10565723112
+Candidate artifact name: m4-cp-scale-cb24-result-35391181281
+Candidate artifact provider SHA256: 96e9e900e67777f31fbbf97d05efc44ed8c944d9f2bc031a5826e47602ea7bfa
+Compiled source: 6fe075f7d9397a561fe50b79517b4f714fb9eeef
+Harness Drive ID: 1-KvdWwIBT81skkdNudg5xOkrQp5qjasA
+Harness SHA256: b34ea0caf1b27016d84124452dc13e5bb0a3105556a24041a47a09020e1697aa
+RuntimeExecution: true
