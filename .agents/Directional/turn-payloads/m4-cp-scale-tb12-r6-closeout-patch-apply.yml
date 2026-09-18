@@ -1,0 +1,38 @@
+name: M4 CP SCALE TB12 R6 Closeout Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp-scale-tb12-r6-closeout-patch-apply-20260918.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp-scale-tb12-r6-closeout-patch-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp-scale-tb12-r6-closeout-patch-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1_Mz7LZTRi29nRR2SLTjwLBpxiks_lfTS
+      patch_sha256: 6ca2f1ff27c0b6904b1e30fe1914a5e7f7648e9ddf197806ef46e7846d08023d
+      base_sha: a8cc5c9940dd2f988ae63cda9245c1c41a38eb46
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close out M4 CP SCALE TB12 R6 execution"
+    secrets: inherit
