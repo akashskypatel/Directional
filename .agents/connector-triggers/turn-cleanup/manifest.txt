@@ -1,0 +1,2 @@
+.agents/connector-triggers/cb17-closeout-drive-apply.txt
+.agents/connector-triggers/source-snapshot/M4-CP-SCALE-CB17.txt
