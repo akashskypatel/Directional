@@ -2,25 +2,27 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Test + Benchmark — `M4-CP4-TB2-R1-EXEC`
+## Latest Code + Build — `M4-CP4-CB7`
 
-R1 is **COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Exact installed caller SHA-256 `88ab6b51201801f2468add9b3f1ee4ad890c751052c48b1a7c0e9f773af8699c` was re-proved by snapshot run `35444548694`, and exact installed-caller schema validation run `35444528913` is GREEN. Runtime trigger run `35444642320` nevertheless ended `startup_failure` with zero jobs because the caller's `contents: read` ceiling cannot satisfy the observer reusable's optional `contents: write` job. No Directional runtime executed.
+CB7 is **COMPLETE / CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE**. Commit `bbb64a7923900c0b0ce8c52680ef4588b85c691a` changes only the durable caller top-level `contents: read` -> `contents: write`. Corrected caller SHA-256 is `488326cd8cbf1ee4078796b8ecd7031f578b87272eb62df5fa2d7d42fd42d719`; harness remains `1dcdd6c6e638b0951af0af38ce2b0e34fafcc877843104e617caf175cf36aeba`. Final validation run `35446771294` is GREEN for schema plus static permission-ceiling/timeout checks. No Directional runtime or compile executed.
 
 Accepted runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. CB4 artifact `10578784752` and CB5 delta `10582435470` remain immutable/unpromoted.
 
 - [x] `M4-CP4-TB2-EXEC`: orchestration-invalid; no semantic rows promoted.
 - [x] `M4-CP4-CB6`: timeout-free execution plane authored; no runtime.
 - [x] `M4-CP4-TB2-R1-EXEC`: startup-invalid at reusable-workflow permission ceiling; zero jobs / zero semantic rows.
-- [ ] `M4-CP4-CB7`: **exact next**; runtime-free caller permission-ceiling correction.
-- [ ] `M4-CP4-TB2-R2-EXEC`: after CB7 only; re-run all 431 frozen processes from scratch.
+- [x] `M4-CP4-CB7`: caller permission ceiling corrected and statically verified; no runtime.
+- [ ] `M4-CP4-TB2-R2-EXEC`: **exact next**; re-run all 431 frozen processes from scratch.
+- [ ] `M4-CP4-TB2-R2-REV`: mandatory after any orchestration-valid R2 semantic result.
 
-## Current focus — `M4-CP4-CB7`
+## Current focus — `M4-CP4-TB2-R2-EXEC`
 
-- [ ] Preserve immutable CB4/CB5 packages, R1 harness, selector427, owner census **30/281/75/41**, focus set and routing unchanged.
-- [ ] Change only successor caller top-level `contents: read` -> `contents: write`; do not change reusable-workflow permissions or enable branch-file reporting.
-- [ ] Derive/freeze corrected caller hash; schema-validate and statically verify caller/called-workflow permission ceilings.
-- [ ] Execute no compile/repackage and no Directional binary in CB7.
-- [ ] Close only to `M4-CP4-TB2-R2-EXEC`, which starts from ordinal1 with zero credit from all invalid TB2/R1 attempts.
+- [ ] Begin with Test + Benchmark stale-evidence cleanup.
+- [ ] Install exact corrected caller bytes, re-hash/schema-validate them, and re-prove the caller/reusable permission ceiling before runtime.
+- [ ] Preserve immutable CB4/CB5 packages, harness, selector427, owner census **30/281/75/41**, four-row focus set and routing unchanged.
+- [ ] Execute four focused + 427 selector processes from ordinal1; no resumption/credit from invalid TB2/R1 attempts.
+- [ ] Continue after semantic RED, stop only for orchestration-invalid state, and complete immutable postflight whenever runtime starts.
+- [ ] Classify any semantic non-green before closeout and route any valid semantic result to `M4-CP4-TB2-R2-REV`.
 
 ## Carried forward from M1
 
@@ -59,7 +61,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5; CB5 compile-proves the remaining two M4 test-authority corrections in delta artifact `10582435470` while leaving runtime unadjudicated. Exact next is runtime-free `M4-CP4-CB7`, then fresh `M4-CP4-TB2-R2-EXEC` from ordinal1.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5; CB5 compile-proves the remaining two M4 test-authority corrections in delta artifact `10582435470` while leaving runtime unadjudicated. Exact next is fresh `M4-CP4-TB2-R2-EXEC` from ordinal1, then mandatory runtime-free Review.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -99,4 +101,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; full CB4 candidate `10578784752` and CB5 delta `10582435470` remain unpromoted. All three `G4-B002` debts remain open and counted: one closed-complex debt is M4-CP4-owned and two periodic debts are M5-owned. Exact successor is runtime-free `M4-CP4-CB7`, then fresh `M4-CP4-TB2-R2-EXEC` from ordinal1. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; full CB4 candidate `10578784752` and CB5 delta `10582435470` remain unpromoted. All three `G4-B002` debts remain open and counted: one closed-complex debt is M4-CP4-owned and two periodic debts are M5-owned. Exact successor is fresh `M4-CP4-TB2-R2-EXEC` from ordinal1, then mandatory runtime-free Review. PR #8 remains open, draft, and unmerged.

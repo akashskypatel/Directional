@@ -1,3 +1,12 @@
+## 2026-09-19 — `M4-CP4-CB7`: R1 caller permission ceiling correction — **CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE / NON-STABLE**
+
+- **Authority:** commit `bbb64a7923900c0b0ce8c52680ef4588b85c691a` changes only caller top-level `contents: read` -> `contents: write`; corrected caller SHA-256 `488326cd8cbf1ee4078796b8ecd7031f578b87272eb62df5fa2d7d42fd42d719`, mode 644 / 5,532 bytes. Harness remains `1dcdd6c6e638b0951af0af38ce2b0e34fafcc877843104e617caf175cf36aeba`, mode 755 / 30,249 bytes.
+- **Verification:** run `35446771294` is GREEN for schema validation plus independent static permission/timeout checks. Receipt artifact `10585314838` has provider SHA-256 `62b8b3aeceafdc1ca96d00484ed2c839c3fcd8fb8e67dc2de07ac88e2ae1ce55` and records `static_permission_ceiling_valid=true`, `commit_run_file=false`, observer ceiling `contents: write`, and no full-gate timeout/watchdog.
+- **`M4-CP4-TB2-R1-EXEC-CAND-01`: CORRECTED IN CB7 / RUNTIME RE-PROOF PENDING / NON-STABLE.** The control-plane startup cause is statically corrected; closure falsifier is fresh R2 job construction plus complete artifact-only gate execution. R1 itself retains zero semantic credit.
+- **Semantic authority:** none changed. CB7 executes no Directional runtime/compile/repackage. Accepted runtime authority remains package `10565723112` / selector427 **427/427**; CB4 `10578784752` and CB5 `10582435470` remain immutable/unpromoted.
+- **Accounting:** control-plane correction observes no runtime regression. **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, produced-witness debt **5**.
+- **Exact successor:** fresh `M4-CP4-TB2-R2-EXEC` from ordinal1; any orchestration-valid semantic result routes to mandatory Review.
+
 ## 2026-09-19 — `M4-CP4-TB2-R1-EXEC`: caller permission ceiling prevents job construction — **ORCHESTRATION INVALID / NO SEMANTIC LEDGER / NON-STABLE**
 
 - **Pre-runtime authority:** exact installed caller `.github/workflows/m4-cp4-tb2-r1-exec.yml` re-hashes to `88ab6b51201801f2468add9b3f1ee4ad890c751052c48b1a7c0e9f773af8699c`, byte-identical to the CB6 draft; harness remains `1dcdd6c6e638b0951af0af38ce2b0e34fafcc877843104e617caf175cf36aeba`, mode 755. Exact installed-caller schema validation run `35444528913` reports `valid=true`.
