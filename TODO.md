@@ -2,24 +2,24 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Code + Build — `M4-CP4-CB2`
+## Latest Test + Benchmark — `M4-CP4-TB1-R1-EXEC`
 
-`M4-CP4-CB2` closes the two deterministic TB1 orchestration/package defects without semantic edits. Mandatory all-eight GMP compile run/job `35413725768 / 105818192513` is GREEN on source `ad54c12774e10480fd3cef8138cacb8d5dec1529`. Candidate result/log artifacts `10575545321 / 10575465548` have SHA-256 `602632ed05f2d6e8a4c9ccbfb1ef135417b1d1e2eb30c2c29e74892007f7ba00 / 2ae9a797ccc3f0d5f64f3acd0d2570803859ae775236b804286729a85dd2e64c`; source archive SHA-256 is `781155c61419f999ebb9631136ca24e998f01dff0c160b071240c946b4afa4ed`. All four selector owners are packaged/executable, actual clean receipts and GMPXX+GMP are verified, selector427 is unchanged, and `runtimeExecution=false`.
+`M4-CP4-TB1-R1-EXEC` is **ORCHESTRATION INVALID AFTER PARTIAL RUNTIME / NO ACCEPTANCE CREDIT**. Run/job `35415494665 / 105823258305` re-proved candidate artifact `10575545321` preflight, then focused row 1 PASSed and focused row 2 produced one-selected RED at `Invalid rawfield fixture header`. The frozen harness re-enabled `set -e` inside `run_one`, so row 2's nonzero return aborted the harness before rows 3–6, selector427 and mandatory immutable postflight. Boundary: `runtime_started=true`, `postflight_complete=false`, selector `0/427`; no benchmark/build/repair/mutation path ran.
 
-Corrected R1 controls are frozen but unexecuted: harness `4b956829e4b656ccc71f00c781028fcb08452cad995cbcdfaaacde314954d29f` (19,871 bytes, commit `cfb6d5a97419fb119c8f73c02d9c42a2235db21b`) and caller `617e9e3634cccffd7a68ab2c30e82fb5bc48026823232ada59eae81e89a9790f` (4,974 bytes, commit `7ca49c0b345b3e6baa50b7e6718d9909125fb77f`), schema GREEN in run `35413925663`.
-
-Accepted runtime authority remains package `10565723112` / selector427 **427/427**; accounting **49 / 14 / 35**, debt **5**.
+The row-2 observation is retained diagnostic-only; it receives no semantic credit because postflight and the frozen focused surface are incomplete. Accepted runtime authority remains package `10565723112` / selector427 **427/427**; accounting **49 / 14 / 35**, debt **5**.
 
 - [x] `M4-CP4-DEFN`: definitions frozen.
 - [x] `M4-CP4-CB1`: semantic evidence surface compiled; runtime not executed.
 - [x] `M4-CP4-TB1-EXEC`: ORCHESTRATION INVALID / NO SEMANTIC RUNTIME.
-- [x] `M4-CP4-CB2`: all-eight package + corrected frozen R1 controls; build GREEN; runtime not executed.
-- [ ] `M4-CP4-TB1-R1-EXEC`: **exact next**. Consume artifact `10575545321` immutably and execute fresh 433-row contract under `Architecture_M4_CP4_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md`.
-- [ ] `M4-CP4-TB1-R1-REV`: mandatory runtime-free adjudication after R1.
+- [x] `M4-CP4-CB2`: all-eight package + corrected receipt/package controls; build GREEN; runtime not executed.
+- [x] `M4-CP4-TB1-R1-EXEC`: ORCHESTRATION INVALID after two focus processes; no postflight or acceptance credit.
+- [ ] `M4-CP4-CB3`: **exact next**. Correct only the harness `errexit`/semantic-return interaction; preserve package and all semantic bytes.
+- [ ] `M4-CP4-TB1-R2-EXEC`: fresh retry on unchanged artifact `10575545321` after CB3 control freeze.
+- [ ] `M4-CP4-TB1-R2-REV`: mandatory runtime-free adjudication after trustworthy R2 evidence.
 
-## Current focus — `M4-CP4-TB1-R1-EXEC`
+## Current focus — `M4-CP4-CB3`
 
-Reinstall the frozen R1 controls exactly, consume artifact `10575545321` once, preserve archived modes, and perform no configure/compile/relink/discovery/repair/source/test/fixture/selector mutation.
+Runtime-free control-only correction under `Architecture_M4_CP4_CB3_Code_Build_Plan.md`. Do not change product/test/fixture/selector/package semantics and do not execute generated Directional runtime.
 
 ## Carried forward from M1
 
@@ -58,7 +58,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. S2 vertex-star, S3, S4 and S5 are cumulative accepted; S1 remains diagnostic/non-gating. Three `G4-B002` debts remain CP4 gating; their focused identities are compiled but still have no runtime+Review credit. CB2 closed package/harness orchestration; exact next is fresh immutable `M4-CP4-TB1-R1-EXEC` on artifact `10575545321`.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. S2 vertex-star, S3, S4 and S5 are cumulative accepted; S1 remains diagnostic/non-gating. Three `G4-B002` debts remain CP4 gating; their focused identities are compiled but still have no runtime+Review credit. CB2 closed package/receipt closure, but R1 exposed `M4-CP4-TB1-R1-ORCH-01`: the harness aborts on a semantic nonzero before remaining focus rows/postflight. Exact next is runtime-free `M4-CP4-CB3`; candidate artifact `10575545321` remains unchanged/unpromoted.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -98,4 +98,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** is accepted current M4 runtime authority. `M4-CP4-TB1-EXEC` is orchestration-invalid with zero semantic runtime: the TB harness required a non-existent source-status receipt and candidate artifact `10574525792` omits the validation-owner executable needed by 41 selector rows. Exact next is runtime-free **`M4-CP4-CB2`** under `Architecture_M4_CP4_CB2_Code_Build_Plan.md`; M4 remains open until fresh focused runtime+Review, publication, and the final cumulative gate close CP4. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** is accepted current M4 runtime authority. `M4-CP4-TB1-EXEC` is orchestration-invalid with zero semantic runtime: the TB harness required a non-existent source-status receipt and candidate artifact `10574525792` omits the validation-owner executable needed by 41 selector rows. R1 now supersedes that historical next: exact current successor is runtime-free **`M4-CP4-CB3`** under `Architecture_M4_CP4_CB3_Code_Build_Plan.md`; M4 remains open until trustworthy focused runtime+Review, publication, and the final cumulative gate close CP4. PR #8 remains open, draft, and unmerged.

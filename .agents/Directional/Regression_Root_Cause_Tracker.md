@@ -1,3 +1,13 @@
+## 2026-09-19 — `M4-CP4-TB1-R1-EXEC`: semantic nonzero exposes harness `errexit` control failure — **COMPLETE / ORCHESTRATION INVALID / NON-STABLE**
+
+- **Authority:** run/job `35415494665 / 105823258305`, event SHA `a4764ce76ed93e79da29d7179f82a12d62261fc8`, candidate artifact `10575545321`, result/log artifacts `10574789745 / 10575004615` with SHA-256 `1b45423f593540c0218680d8b978c13b560efdf90ba3473cb45332668d8d3dc0 / 77e97dc5da2f1e3dcd178b7b2ee16c3c9d5a1a21f0f5d84d876947cd6d33ce37`.
+- **Preflight:** package/source/manifest/receipts/GMP/modes/selector all exact; selector427 owners **30 / 281 / 75 / 41**. Runtime starts with no configure/compile/relink/discovery/repair/mutation/benchmark path.
+- **Observed:** focused row1 PASS. Focused row2 selects exactly one test and exits `1` at `Invalid rawfield fixture header`; raw-log SHA `e54d425ff3abe6beb32980da9aa0da22f0c2f5e2c55aab3f533cad2ab2df14b6`.
+- **`M4-CP4-TB1-R1-ORCH-01`:** `run_one` executes under an outer `set +e` but internally calls `set -e` before its final PASS predicate. A semantic nonzero therefore exits the harness before the outer loop captures status/counter, remaining focused rows, selector427 or immutable postflight. Boundary: `runtime_started=true`, `postflight_complete=false`, `focus_executed=1` despite two raw focus logs, selector `0/427`.
+- **Row-2 disposition:** diagnostic only / unadjudicated. Static source shows its helper expects `rows columns` while committed torus rawfield header is `4 144`; no test/product correction is authorized from this invalid attempt.
+- **Accounting:** no accepted semantic regression/candidate is opened; stable totals remain **49 / 14 / 35**, debt **5**. Accepted authority remains package `10565723112` / selector427 **427/427**.
+- **Exact successor:** runtime-free control-only `M4-CP4-CB3`; preserve artifact `10575545321` and all semantic bytes, correct only harness errexit propagation, then fresh `M4-CP4-TB1-R2-EXEC`.
+
 ## 2026-09-19 — `M4-CP4-CB2`: TB1 orchestration/package causes corrected without semantic change — **COMPLETE / BUILD GREEN / NON-STABLE**
 
 - **Authority:** source `ad54c12774e10480fd3cef8138cacb8d5dec1529`; run/job `35413725768 / 105818192513`; candidate artifact `10575545321`, SHA-256 `602632ed05f2d6e8a4c9ccbfb1ef135417b1d1e2eb30c2c29e74892007f7ba00`; log `10575465548`, SHA-256 `2ae9a797ccc3f0d5f64f3acd0d2570803859ae775236b804286729a85dd2e64c`; source archive `781155c61419f999ebb9631136ca24e998f01dff0c160b071240c946b4afa4ed`.

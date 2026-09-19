@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-19 (`M4-CP4-TB1-EXEC` ORCHESTRATION INVALID / NO SEMANTIC RUNTIME. Run/job `35411656874 / 105812362078` verified candidate artifact `10574525792` package SHA and exact source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`, then stopped before runtime because the harness required a non-existent `source-status-after-package.txt`; the same verified package omits `directional_surface_cell_validation_tests`, making 41 validation-owned selector427 rows unexecutable. Accepted M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Stable accounting **49 / 14 / 35**, debt **5**. Exact next: runtime-free `M4-CP4-CB2` for all-eight package closure and corrected retry harness; then fresh `M4-CP4-TB1-R1-EXEC`.)
+**Status date:** 2026-09-19 (`M4-CP4-TB1-R1-EXEC` ORCHESTRATION INVALID AFTER PARTIAL RUNTIME. Candidate `10575545321` passes immutable preflight; focus row1 PASS and row2 one-selected RED are observed, but harness `errexit` control aborts before rows 3–6, selector427 and mandatory postflight. No acceptance credit. Accepted M4 runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting **49 / 14 / 35**, debt **5**. Exact next: runtime-free `M4-CP4-CB3`, then fresh `M4-CP4-TB1-R2-EXEC`.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -95,7 +95,7 @@ CB23 implements DEFN-R1's typed source-global boundary-cycle authority on semant
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 CB1 BUILD GREEN, FOCUSED RUNTIME OPEN** | accepted runtime authority package `10565723112` / selector427 **427/427**, SHA `f9c88380…ae86f`, owners **30/281/75/41**. CB1 compiled candidate artifact `10574525792` with the frozen produced-debt/multiplicity/helper/work evidence surface and no runtime. Exact next `M4-CP4-TB1-EXEC`; runtime+Review still gate credit and publication. |
+| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN; R1 ORCHESTRATION INVALID** | accepted runtime authority package `10565723112` / selector427 **427/427**, SHA `f9c88380…ae86f`, owners **30/281/75/41**. Candidate `10575545321` remains unpromoted. R1 exposed harness `errexit` control failure after focus row1 PASS / row2 diagnostic RED and before postflight. Exact next `M4-CP4-CB3`; runtime+Review still gate credit and publication. |
 | M5–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

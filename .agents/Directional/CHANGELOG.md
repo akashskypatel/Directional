@@ -1,3 +1,9 @@
+## 2026-09-19 — `M4-CP4-TB1-R1-EXEC`: partial runtime invalidated by harness errexit bug; CB3 next
+
+Artifact-only run/job `35415494665 / 105823258305` re-proves candidate `10575545321` package/source/manifest/GMP/modes/selector427 preflight exactly. Focus row1 PASSes. Focus row2 selects once and REDs at `Invalid rawfield fixture header`, but the frozen harness incorrectly re-enables `set -e` inside `run_one`; the semantic nonzero terminates the harness before focused rows 3–6, selector427 and mandatory immutable postflight. Result/log artifacts `10574789745 / 10575004615` hash to `1b45423f593540c0218680d8b978c13b560efdf90ba3473cb45332668d8d3dc0 / 77e97dc5da2f1e3dcd178b7b2ee16c3c9d5a1a21f0f5d84d876947cd6d33ce37`.
+
+The run is therefore orchestration-invalid and grants no semantic credit/package promotion/debt discharge. The row-2 observation is diagnostic-only pending a valid full focused/postflight run. Accepted authority remains package `10565723112` / selector427 **427/427**; stable accounting **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP4-CB3`, correcting only harness control flow and preserving candidate `10575545321`, followed by fresh `M4-CP4-TB1-R2-EXEC`.
+
 ## 2026-09-19 — `M4-CP4-CB2`: all-eight package closure GREEN; corrected TB1-R1 control frozen
 
 Mandatory reusable GMP compile run/job `35413725768 / 105818192513` succeeds on exact source `ad54c12774e10480fd3cef8138cacb8d5dec1529` across all eight standard targets. Candidate result/log artifacts `10575545321 / 10575465548` have SHA-256 `602632ed05f2d6e8a4c9ccbfb1ef135417b1d1e2eb30c2c29e74892007f7ba00 / 2ae9a797ccc3f0d5f64f3acd0d2570803859ae775236b804286729a85dd2e64c`; source archive SHA-256 is `781155c61419f999ebb9631136ca24e998f01dff0c160b071240c946b4afa4ed`. The 28-entry manifest verifies, all five actual clean receipts are empty, GMPXX+GMP is bound, and all four selector owners are packaged/executable. `runtimeExecution=false`.
