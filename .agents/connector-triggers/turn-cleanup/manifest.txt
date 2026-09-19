@@ -1,2 +1,0 @@
-# M4-CP4-CB5 residual temporary state discovered by final hygiene
-.agents/connector-triggers/source-snapshot/m4-cp4-cb5-cont2-20260919.txt
