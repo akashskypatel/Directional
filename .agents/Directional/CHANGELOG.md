@@ -1,3 +1,7 @@
+## 2026-09-19 — `M4-CP4-TB3-REV`: selector430 accepted; CP4 and M4 close
+
+Independent runtime-free Review re-opens CB8 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` and TB3 result `10592987234`, independently verifies package **26/26**, selector430 **430 rows / `1c412850...9db6`** with exact selector427 prefix, owners **31/283/75/41**, all **430/430 PASS** one-selected process rows/raw hashes, result manifest **447/447**, and exact package/source/execution-view postflight. Static Review also re-derives non-vacuous work/boundedness, produced same-region multiplicity-two, and flat/non-flat zero-transport contracts. Package `10591801825` is promoted as accepted current M4 runtime authority; `M4-CP4` and M4 are **CLOSED / ACCEPTED**. Stable accounting remains **49 / 14 / 35**, debt **5**; four debts remain M5-owned and one remains M6-owned. Exact next is planning-only `M5-DEFN`.
+
 ## 2026-09-19 — `M4-CP4-TB3-EXEC`: selector430 cumulative gate mechanically GREEN at 430/430
 
 Immutable artifact-only run/job `35470130614 / 105969470184` consumed only CB8 package `10591801825` from exact compiled source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`. Candidate ZIP SHA-256 re-verifies as `20d9b07bae631e68f3292ee37ccb80c4724bae6eec0c50cd2274c36443183da6`, package manifest **26/26**, source archive `4d057381ba3f1caed55579f7a9b662753632637eb0aff7b1432326d8e557021a`, GMP/GMPXX evidence intact and all four owner binaries mode `0755`.

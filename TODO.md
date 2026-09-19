@@ -2,19 +2,18 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest runtime turn — `M4-CP4-TB3-EXEC`
+## Latest review turn — `M4-CP4-TB3-REV`
 
-TB3 EXEC is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED**. Immutable run/job `35470130614 / 105969470184` consumed CB8 artifact `10591801825` and executed exact selector430 as **430 fresh processes: 430 PASS / 0 RED / 0 SKIP / 0 crash / 0 selection mismatch**, owner PASS census **31/283/75/41**. Mandatory package/source/execution-view postflight is exact; compile/configure/relink/discovery/repair/mutation and benchmark counters are all zero. Accepted runtime authority remains package `10565723112` / selector427 **427/427** pending mandatory Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
+Review is **COMPLETE / APPROVED**. Package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` is accepted under selector430 **430/430 PASS**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31/283/75/41**. `M4-CP4` and M4 are **CLOSED / ACCEPTED**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
-- [x] `M4-CP4-TB2-R2-REV`: complete; three M4 rows credited; closed-complex subject escalated.
-- [x] `M4-CP4-DEFN-R2`: Reading B; closed-complex debt re-homed to M6 without debt reduction.
-- [x] `M4-CP4-CB8`: selector430 publication exact; GMP compile/package GREEN; generated runtime zero.
-- [x] `M4-CP4-TB3-EXEC`: immutable selector430 gate mechanically GREEN at **430/430**, with exact postflight and zero forbidden execution/mutation.
-- [ ] `M4-CP4-TB3-REV`: **exact next**; mandatory runtime-free Review; independently adjudicate promotion, cumulative selector430 credit and CP4/M4 closure.
+- [x] `M4-CP4-CB8`: exact selector430 publication + mandatory GMP compile/package.
+- [x] `M4-CP4-TB3-EXEC`: immutable cumulative gate **430/430** with exact postflight.
+- [x] `M4-CP4-TB3-REV`: independent package/selector/ledger/non-vacuity adjudication; package promoted; CP4/M4 closed.
+- [ ] `M5-DEFN`: **exact next**; runtime-free freeze of canonical relation identity/path certificates/tamper matrix and M5 debt ownership.
 
-## Current focus — `M4-CP4-TB3-REV`
+## Current focus — `M5-DEFN`
 
-Runtime-free Review of the mechanically green TB3 evidence. Re-derive package/selector/ledger/postflight authority independently, then adjudicate promotion of artifact `10591801825`, cumulative selector430 **430/430** credit and CP4/M4 closure. No new runtime, compile or semantic mutation is authorized.
+Execute only `Architecture_M5_DEFN_Definition_Plan.md`. Freeze the relation-ID domain, explicit selected path-certificate contract, single-writer/consumer cutover, typed missing/duplicate/conflicting/nonreciprocal/representation-renumbered failures, unused-valid-relation invariance, witness-stage reachability, and exact CP1/CP2/CP3 ownership of the four M5 produced-witness debts. No implementation, compile, runtime, or selector mutation is authorized.
 
 ## Carried forward from M1
 
@@ -53,8 +52,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN pending Review**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** until Review. DEFN-R1 re-homed two periodic debts to M5 and DEFN-R2 re-homed the closed-complex debt to M6. CB8 candidate package `10591801825` has now completed mechanically green selector430 runtime at **430/430** with exact immutable postflight. Exact next is runtime-free `M4-CP4-TB3-REV`, which alone may promote the package, grant selector430 credit and close CP4/M4.
-- [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
+- [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
+- [ ] **M5** certificate-carrying chart/quotient relations — **NEXT: `M5-DEFN`**; also owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -93,4 +92,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority. CB8 publishes exact selector430 and candidate package `10591801825` but grants no runtime credit. No produced-witness debt remains M4-owned: the closed-complex `G4-B002` debt is M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M4-CP4-TB3-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4 is **CLOSED / ACCEPTED** on package `10591801825` / selector430 **430/430**. No produced-witness debt is discharged by closure: the closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-DEFN`**. PR #8 remains open, draft, and unmerged.

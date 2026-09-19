@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-19 (`M4-CP4-DEFN-R2` COMPLETE / READING B FROZEN / CP4 OPEN FOR PUBLICATION. Static stage authority proves `surfaceCellContext` is diagnostic-only and retained `hasArrangement` is a post-tracing occurrence/arrangement surface, not A4 `RegionCellComplex` authority. The unchanged closed-complex `G4-B002` debt moves to M6-CP1 mechanism / M6-CP3 direct-production proof; debt remains **5**. R2-reviewed M4 rows1/3/4 are frozen for selector430 publication. Accepted authority remains package `10565723112` / selector427 **427/427**; exact next is publication-only `M4-CP4-CB8`.)
+**Status date:** 2026-09-19 (`M4-CP4-TB3-REV` COMPLETE / APPROVED. M4 is **CLOSED / ACCEPTED** on package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` under selector430 **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31/283/75/41**. Stable accounting remains **49 / 14 / 35**, debt **5**. Four produced-witness debts remain M5-owned and one remains M6-owned. Exact next is planning-only `M5-DEFN`.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -87,9 +87,9 @@ R7 is valid semantic evidence: A0 row1 executes once and REDs `SingularityMismat
 
 CB23 implements DEFN-R1's typed source-global boundary-cycle authority on semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`. Mandatory GMP/GMPXX compile/package run `35378397152` is GREEN as artifact `10560828304`. R10 artifact-only run/job `35382311474 / 105721178393` then passes CB23 controls **3/3**, inherited Gate A **4/4**, production S5 **1/1** and selector426 **426/426**, total **434/434**, with exact immutable postflight and benchmark/build mutation counts zero. R10 Review independently accepts that evidence, promotes artifact `10560828304`, closes R9/R4 RP-01 recovery non-stably, and accepts S5 for publication. Exact next is publication-only `M4-CP-SCALE-CB24`.
 
-### M4-CP4 current state — 2026-09-19
+### M4-CP4 closure — 2026-09-19
 
-DEFN-R2 is complete and freezes Reading B for the remaining closed-complex subject. `DESIGN.md` places per-region `RegionCellComplex` at A4 and explicit corner/side occurrences in A5 `SurfaceOccurrenceComplex`; current `SurfaceCellPipelineContext` is explicitly diagnostic-only, and `hasArrangement` is set only after tracing continues through strands, embedding and global arrangement construction. The candidate-bearing arrangement is therefore not M4/A4 stage authority. The unchanged closed-complex `G4-B002` debt is re-homed to **M6-CP1 mechanism / M6-CP3 direct-production re-proof** with its fail-closed/no-recovery subject, independent eligibility oracle and hard-feature tamper unchanged. Two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned; total debt remains **5**. R2 Review already credited work/boundedness, same-region multiplicity-two and exact zero-transport typed behavior. CP4 remains open only for publication + final cumulative re-proof. DEFN-R2 freezes selector430 as exact selector427 prefix plus those three reviewed rows, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31/283/75/41**. Exact next is publication-only `M4-CP4-CB8`.
+DEFN-R2 froze Reading B and re-homed the closed candidate-bearing-complex debt to **M6-CP1 mechanism / M6-CP3 direct-production re-proof** without changing debt count. CB8 then published exact selector430 and mandatory GMP package `10591801825`; TB3 executed selector430 **430/430 PASS** with exact immutable postflight. `M4-CP4-TB3-REV` independently re-derived package/selector/prefix/owner/ledger authority and the non-vacuity of all three appended identities, then promoted package `10591801825`. **CP4 and M4 are CLOSED / ACCEPTED.** Two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned and the closed-complex `G4-B002` debt remains M6-owned; total debt remains **5**. Exact next is runtime-free `M5-DEFN`.
 
 ## 1. Where the project actually is
 
@@ -99,8 +99,9 @@ DEFN-R2 is complete and freezes Reading B for the remaining closed-complex subje
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
-| M4 | **CP1/CP2 framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN after DEFN-R2 ownership reconciliation** | accepted runtime authority package `10565723112` / selector427 **427/427**, SHA `f9c88380…ae86f`, owners **30/281/75/41**. R2-reviewed M4 exit rows are ready for selector430 publication; no produced-witness debt remains M4-owned. The closed-complex debt is M6-owned and four relation/periodic debts are M5-owned. Exact next `M4-CP4-CB8`. |
-| M5–M8 | not started | — |
+| M4 | **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`** | `M4_Closure_Record.md`; package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA `1c412850…9db6`, owners **31/283/75/41**. |
+| M5 | **NEXT — `M5-DEFN`** | `Architecture_M5_DEFN_Definition_Plan.md`; four M5-owned produced-witness debts remain open. |
+| M6–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
 `M3-CP4-DEFN` is complete. CP4a/CP4b are superseded into CP4ab.
@@ -483,7 +484,7 @@ weakens the gate, changes a selector byte, or alters `first_red_ordinal` semanti
 
 ## 4. M4–M8 — proposed checkpoint decomposition
 
-M4 is now frozen and underway; M5-M8 remain proposed at this level. Each milestone/checkpoint is cut by the rule this project has applied since M1: **one
+M4 is CLOSED / ACCEPTED; M5 is next and opens at `M5-DEFN`; M6-M8 remain proposed at this level. Each milestone/checkpoint is cut by the rule this project has applied since M1: **one
 checkpoint carries one independently testable semantic domain.** Gate arithmetic is cumulative —
 every checkpoint carries the full accepted predecessor selector plus its own frozen identities.
 
@@ -506,7 +507,7 @@ Entering accepted predecessor **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca9
 | `M4-CP3` | re-prove family-free baseline A3 shared counts/parity, publish exact A2b source paths and bind A3, then producers consume the accepted plan; fixed-plan A4 target variation cannot change shared breakpoints; retire post-hoc hard-rail pairing | **CLOSED / ACCEPTED:** package `10307919492`, selector408 **408/408**, TB8 **835/835**; closure `M4_CP3_Closure_Record.md` |
 | `M4-CP-COND` | Amendment 20 conditioner, architecturally before A0, with one single-writer conditioned source, certified raw correspondence, typed refusal and non-vacuous witness gates | **CLOSED / ACCEPTED:** TB5 Review promotes package `10331193451` / selector423 **423/423** after independently re-deriving the exact boundary-truncated raw precondition, mutation falsifier, conditioner preservation and immutable cumulative evidence. Closure: `M4_CP_COND_Closure_Record.md`. |
 | `M4-CP-SCALE` | S1–S5 scale/boundedness: swell measurement, certified filters, limit-cycle termination, incremental Betti and genus>=2 coverage | **CLOSED / ACCEPTED at `M4-CP-SCALE-TB13-REV`.** Package `10565723112` / selector427 **427/427** is reviewed current M4 runtime authority; S2 vertex-star, S3, S4 and genuine genus-two S5 have cumulative selector credit; S1 remains diagnostic/non-gating. `M4-CP-SCALE-TB12-R10-REV-OBS-01` is discharged. CP4-DEFN has assigned the remaining observations to explicit owners; see the CP4 row. Closure: `M4_CP_SCALE_Closure_Record.md`. |
-| `M4-CP4` | cumulative M4 exit: exact selector427 prefix, reviewed work/bit-width/monotone-progress evidence, produced same-region multiplicity-2, helper-precondition audit, publication, and final cumulative re-proof | **DEFN-R2 COMPLETE / READING B / M4-CP4 STILL OPEN FOR PUBLICATION.** The closed candidate-bearing-complex debt is not A4 authority and is re-homed unchanged to M6-CP1 mechanism / M6-CP3 production proof. Row1 work/boundedness, row3 multiplicity-two and row4 exact zero-transport correction are reviewed green and freeze selector430 publication after the exact selector427 prefix. Exact next is `M4-CP4-CB8`; final closure still requires fresh selector430 artifact-only runtime + Review. |
+| `M4-CP4` | cumulative M4 exit: exact selector427 prefix, reviewed work/bit-width/monotone-progress evidence, produced same-region multiplicity-2, helper-precondition audit, publication, and final cumulative re-proof | **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`.** Package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` is promoted under selector430 **430/430**, owners **31/283/75/41**, after independent package/ledger/postflight/non-vacuity re-derivation. The M6 closed-complex debt and four M5 periodic/relation debts remain open unchanged. Closure: `M4_CP4_Closure_Record.md`; milestone closure: `M4_Closure_Record.md`. |
 
 #### M4-CP3-DEFN-R1 semantic rebase
 
@@ -524,9 +525,11 @@ TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: re
 
 `M4-CP4-CB1` authored the frozen CP4 evidence surface without changing selector427. The first TB was pre-runtime orchestration-invalid; CB2 produced all-eight GMP candidate `10575545321`; R1 exposed the harness `errexit` bug; CB3 corrected only that control path. R2 became trustworthy at focus **2 PASS / 4 RED** plus selector427 **427/427 PASS**. R2 Review classified three test-authority/precondition roots; CB4 corrected them and compiled all-eight candidate `10578784752`. R3 remained **429 PASS / 4 RED**; Review then routed rows3/4 to DEFN-R1, which froze Reading B and re-homed those two periodic debts to M5. CB5 corrected only the remaining row2 production precondition and row6 exact `NonIntegralCycleLift` expectation in delta artifact `10582435470`. CB6 froze the timeout-free execution plane; R1 stopped before job construction on the caller/reusable permission ceiling; CB7 corrected only that ceiling. Fresh R2 now completes all 431 processes at **430 PASS / 1 RED**, including selector427 **427/427**, but row2 still stops at `NotProductionReady/tracing` before retained arrangement authority. Accepted authority remains package `10565723112`; R2 Review credits rows1/3/4 and escalates the sole row2 subject to runtime-free `M4-CP4-DEFN-R2`.
 
+`M4-CP4-DEFN-R2` freezes Reading B and re-homes that final closed-complex subject to M6. CB8 then publishes exact selector430 and mandatory GMP package `10591801825`; TB3 executes all **430/430 PASS** with exact immutable postflight. `M4-CP4-TB3-REV` independently re-derives the package, selector427 prefix, owner census, all process/raw-log hashes and the three appended contracts, promotes package `10591801825`, and closes **CP4 and M4**. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is `M5-DEFN`.
+
 M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing-complex `G4-B002` debt is M6-owned: M6-CP1 owns occurrence-complex/stage-separation mechanism and M6-CP3 owns its direct-production re-proof. The two periodic `G4-B002` debts are M5-owned: canonical relation/container-order identity is an M5-CP1 mechanism with M5-CP3 production proof, while missing-owner typing is an M5-CP2 mechanism with M5-CP3 production proof. `G4-B004` remains explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 
-### M5 — certificate-carrying chart and quotient relations (§14 M5)
+### M5 — certificate-carrying chart and quotient relations (§14 M5) — **NEXT: `M5-DEFN`**
 
 | Checkpoint | Semantic domain |
 |---|---|

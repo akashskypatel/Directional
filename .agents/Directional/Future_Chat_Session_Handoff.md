@@ -4,29 +4,45 @@
 
 ## Current authority
 
-`M4-CP4-TB3-EXEC` is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED**. Immutable artifact-only run/job `35470130614 / 105969470184` consumed only CB8 artifact `10591801825` from exact compiled source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`. Result/log artifacts are `10592987234 / 10592817804`; result ZIP SHA-256 is `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`.
+`M4-CP4-TB3-REV` is **COMPLETE / APPROVED**. Review promotes CB8 package `10591801825` from exact compiled source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` as accepted M4 runtime authority under selector430 **430/430 PASS**. Selector430 is **430 LF rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`**, exact accepted selector427 prefix `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **31 / 283 / 75 / 41**.
 
-Selector430 re-verifies at **430 LF rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` / owners 31 / 283 / 75 / 41** with exact selector427 prefix. Runtime is **430/430 PASS**, zero RED/SKIP/crash/selection mismatch/unexecuted; package/source/execution-view postflight is byte+mode exact; all configure/compile/relink/discovery/repair/mutation counters and benchmark count are zero.
+Authoritative TB3 run/job is `35470130614 / 105969470184`; result/log artifacts are `10592987234 / 10592817804`. Independent Review re-derived package **26/26**, all **430** one-selected PASS process rows/raw hashes, result manifest **447/447**, exact package/source/execution-view postflight, and the non-vacuity of the three CP4 appended identities. `M4-CP4` and milestone **M4 are CLOSED / ACCEPTED**.
 
-TB3 EXEC grants no semantic promotion. Accepted M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** until mandatory Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
+Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. M5 owns the two periodic `G4-B002` debts plus two `G4-B003` debts. M6 owns the closed candidate-bearing-complex `G4-B002` debt. M4 closure grants no credit to those carried debts.
 
 ## Exact next turn
 
-**`M4-CP4-TB3-REV`** — mandatory runtime-free Review of `Architecture_M4_CP4_TB3_Artifact_Only_Test_Benchmark_Report.md`.
+**`M5-DEFN`** — runtime-free definition/planning turn under `Architecture_M5_DEFN_Definition_Plan.md`.
 
-1. Independently re-derive immutable package `10591801825`, selector430, 430-process ledger, exact-one/zero-skip routing and postflight authority.
-2. Decide whether the mechanically green evidence promotes package `10591801825` and grants cumulative selector430 **430/430** accepted runtime credit.
-3. Preserve stable accounting/debt unless Review evidence justifies an explicit change; no regression was observed in EXEC.
-4. Decide CP4/M4 closure against all amended exit conjuncts; no new runtime, compile, product/test/fixture/selector mutation or corrective patch is authorized in Review.
+Freeze canonical relation IDs, explicit selected path certificates, the missing/duplicate/conflicting/nonreciprocal/representation-renumbered typed failure matrix, unused-valid-relation invariance, witness-stage reachability, and the exact CP1/CP2/CP3 ownership of all four M5 produced-witness debts. Do not implement, compile, execute Directional runtime, or mutate selector bytes in `M5-DEFN`.
 
-### Carried obligations and owners
+## Carried obligations
 
-- produced closed-complex `G4-B002` — **OPEN / M6-CP1 mechanism + M6-CP3 direct-production proof**;
-- `M4-CP4-TB2-R2-CAND-01` / antecedent `M4-CP4-TB1-R3-CAND-01` — **CLOSED AS M4 OWNERSHIP QUESTION / RE-HOMED TO M6 / NON-STABLE**; underlying debt remains open;
-- periodic reorder + missing-owner `G4-B002` debts — **OPEN / M5**, unchanged;
-- two `G4-B003` debts — **OPEN / M5**, unchanged;
-- `M4-CP4-TB1-R3-CAND-03` — **CLOSED / CORRECTION RUNTIME-PROVED / NON-STABLE**;
-- row1 work/boundedness and same-region multiplicity-two — **REVIEWED CREDITED / selector430 publication rows**;
-- `M4-CP3-CB4-REV-OBS-02` — first legitimate row399/path/`sourceFaces` binder touch;
-- `M4-CP-SCALE-TB1-REV-OBS-01` — M8-CP2;
-- `M4-CP-SCALE-DEFN-OBS-01` — M8-CP2 only if observationally equivalent, otherwise frozen reopen path.
+- M5-CP1 mechanism + M5-CP3 production: `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, preserving the `>=2` discriminator.
+- M5-CP2 mechanism + M5-CP3 production: `MissingPeriodicRelationOwnerIsRejected`.
+- M5-CP3: `FullPeriodicRotationAndTranslationMaterialize` and `TamperedFullPeriodicTransformIsRejected` on direct produced nonzero-Z4 authority.
+- M6-CP1 mechanism + M6-CP3 production: `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on authoritative A5 occurrence-complex production.
+- M8-CP2: `M4-CP-SCALE-TB1-REV-OBS-01`; `M4-CP-SCALE-DEFN-OBS-01` only if observationally equivalent, otherwise use its frozen reopen path.
+- First legitimate row399/path/`sourceFaces` binder touch: `M4-CP3-CB4-REV-OBS-02`.
+
+## Context Load Plan
+
+```yaml
+load_next:
+  - references/turns/REVIEW.md
+conditional_modules:
+  - trigger: implementation design / corrective planning is required by M5-DEFN
+    path: modules/engineering-guidelines/MODULE.md
+  - trigger: GitHub connector or workflow/artifact operations are required
+    path: modules/github-connector/MODULE.md
+deep_references:
+  - .agents/Directional/DESIGN.md §14 M5
+  - .agents/Directional/ROADMAP.md §4 M5
+  - .agents/Directional/Architecture_M5_DEFN_Definition_Plan.md
+templates_when_producing: []
+do_not_preload:
+  - sibling turn files
+  - module reference directories
+  - research/provenance/examples
+  - uncited historical reports
+```

@@ -74,8 +74,8 @@ Future selector files are named by their resulting identity count.
 | **424** | 424 | `f202a1720c0a5288471d04836402b8432eb6f4f788da68a12e70dacb875466ca` | 423 | 1 | superseded accepted prefix |
 | **425** | 425 | `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` | 424 | 1 | superseded accepted prefix |
 | **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | superseded accepted prefix |
-| **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **ACCEPTED CURRENT AUTHORITY** |
-| **430** | 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 427 | 3 | **CURRENT GATE** |
+| **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **ACCEPTED HISTORICAL PREFIX OF SELECTOR430** |
+| **430** | 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 427 | 3 | **ACCEPTED CURRENT AUTHORITY** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -809,7 +809,7 @@ Appended 1 producer-owned identity to selector425:
 
 CB12 static ownership is **30 authority-kernel / 280 producer / 75 completion / 41 validation**. TB11 run/job `35173390136 / 105049726721` then executes selector426 **426/426 PASS** in 426 fresh exact-filter processes with the same owner census, fresh row426 **1/1 PASS**, zero anomalies and exact immutable postflight. `M4-CP-SCALE-TB11-REV` first accepted this selector and promoted package `10473134357`. R10 Review later independently re-hashes selector426/prefix425, re-counts the same **30/280/75/41** ownership and promotes package `10560828304` / source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` under the unchanged selector after **434/434** artifact-only GREEN evidence. Selector426 remains accepted cumulative M4 authority and the exact historical prefix of selector427; S4 cumulative credit remains accepted. `M4-CP-SCALE-TB12-R10-REV-OBS-01` authorized selector427 only as this exact 426-row prefix plus the reviewed S5 row.
 
-### 427 — ACCEPTED CURRENT AUTHORITY
+### 427 — ACCEPTED HISTORICAL PREFIX OF SELECTOR430
 
 `Architecture_M4_CP_SCALE_CB24_Required_Green_Selector_427.txt` — **427 identities**, LF SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Its first426 LF rows are byte-identical to accepted selector426 SHA-256 `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`.
 
@@ -819,7 +819,7 @@ Appended 1 producer-owned identity to selector426:
 
 CB24 static ownership is **30 authority-kernel / 281 producer / 75 completion / 41 validation**. `M4-CP-SCALE-TB13-EXEC` run/job `35393657851 / 105757517161` executes selector427 **427/427 PASS** in exact file order with exact immutable postflight. `M4-CP-SCALE-TB13-REV` independently re-hashes the selector/prefix, re-parses every one-selected PASS row, verifies the package/result manifests and pre/post censuses, and promotes package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`. S5 therefore has cumulative required-green credit and selector427 is accepted current M4 authority.
 
-### 430 — CURRENT GATE
+### 430 — ACCEPTED CURRENT AUTHORITY
 
 `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` — **430 identities**, LF SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`. Its first427 LF rows are byte-identical to accepted selector427 SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
 
@@ -829,7 +829,9 @@ Appended exactly the three `M4-CP4-TB2-R2-REV` reviewed-green identities, in fro
 - `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`
 - `M4CP4.ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRejection`
 
-CB8 static ownership is **31 authority-kernel / 283 producer / 75 completion / 41 validation**. Mandatory GMP compile/package run/job `35468097574 / 105964043163` succeeds from exact publication source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`; candidate artifact `10591801825` has provider ZIP SHA-256 `20d9b07bae631e68f3292ee37ccb80c4724bae6eec0c50cd2274c36443183da6`, package manifest **26/26**, source archive SHA-256 `4d057381ba3f1caed55579f7a9b662753632637eb0aff7b1432326d8e557021a`, all four owner executables mode `0755`, clean source receipts, GMPXX+GMP linkage and `runtimeExecution=false`. Selector430 is the published next cumulative gate; accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** until fresh selector430 artifact-only execution and mandatory Review.
+CB8 static ownership is **31 authority-kernel / 283 producer / 75 completion / 41 validation**. Mandatory GMP compile/package run/job `35468097574 / 105964043163` succeeds from exact publication source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`; artifact `10591801825` has provider ZIP SHA-256 `20d9b07bae631e68f3292ee37ccb80c4724bae6eec0c50cd2274c36443183da6`, package manifest **26/26**, source archive SHA-256 `4d057381ba3f1caed55579f7a9b662753632637eb0aff7b1432326d8e557021a`, all four owner executables mode `0755`, clean source receipts, GMPXX+GMP linkage and `runtimeExecution=false`.
+
+TB3 run/job `35470130614 / 105969470184` then executes the exact selector430 as **430/430 PASS** fresh exact-filter processes with zero RED/SKIP/crash/selection mismatch/unexecuted and exact owner census **31/283/75/41**. Result/log artifacts are `10592987234 / 10592817804`; mandatory package/source/execution-view postflight is byte+mode exact and every forbidden build/repair/mutation/benchmark counter is zero. `M4-CP4-TB3-REV` independently re-hashes package/selector/prefix, re-parses all 430 process rows/raw hashes, checks the three appended rows for non-vacuity, and **promotes package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` under selector430 as accepted current M4 closure authority**. Selector427 remains its exact accepted historical prefix.
 
 ## Separate lineage — M1
 
