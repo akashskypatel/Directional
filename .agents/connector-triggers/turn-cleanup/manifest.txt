@@ -1,6 +1,0 @@
-# M4-CP4-TB2-EXEC temporary repository state
-.agents/connector-triggers/m4-cp4-tb2/validate-caller.txt
-.agents/connector-triggers/m4-cp4-tb2/execute.txt
-.agents/connector-triggers/m4-cp4-tb2/validate-closeout-caller.txt
-.agents/connector-triggers/m4-cp4-tb2/apply-closeout.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-exec-20260919.txt

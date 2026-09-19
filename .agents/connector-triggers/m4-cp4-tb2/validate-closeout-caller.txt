@@ -1,2 +1,0 @@
-Purpose: schema-validate exact installed M4-CP4-TB2 closeout patch caller before patch workload execution.
-Workload: must remain skipped on this validation trigger.
