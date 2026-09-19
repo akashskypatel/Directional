@@ -1,0 +1,3 @@
+Purpose: apply verified M4-CP4-TB2-EXEC orchestration-invalid closeout documentation patch.
+Base authority: 4922b2b7068c93cf6a8af24795ebc08626d70d5b
+Retry: 0
