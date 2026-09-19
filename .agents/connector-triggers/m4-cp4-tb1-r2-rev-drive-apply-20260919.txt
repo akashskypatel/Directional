@@ -1,0 +1,4 @@
+M4-CP4-TB1-R2-REV closeout documentation apply
+base_sha=1579815ec43304626fd186be8ca4a224daffb655
+patch_sha256=f8ec741b8fc5199a051b42df7a8129ca6efa54a9a736d3fa4ce70ea7f9ed7e07
+runtime=forbidden
