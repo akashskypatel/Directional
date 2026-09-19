@@ -8662,3 +8662,31 @@ it.** Standing rule: when a decision changes *what* a checkpoint owes, amend the
 same turn, not only the checkpoint's own definitions; when it changes *who* owes it, amend the receiving
 milestone's charter as well. `[[PROCESS-01]]` lineage applies — a durable rule that lives only where it was
 written is one turn away from being invisible.
+
+## `M5-DEFN-REV-OBS-01` — M5's exit conditions are split between the charter and the checkpoint document
+
+**Status.** OPEN / NON-GATING / owner `M5-CP3` / must be discharged before M5 closure is adjudicated.
+
+`Architecture_M5_Frozen_Definitions.md` states no "M5 closes when…" clause, and neither does
+`Architecture_M5_DEFN_Definition_Record.md` nor `Architecture_M5_CP1_Code_Build_Plan.md`. §12's citation map
+instead assigns **milestone acceptance** to `DESIGN.md` §14 M5, which does carry acceptance criteria and is
+extended by the `M4-CP4-DEFN-R1` amendment naming the two inherited periodic debts.
+
+**This is not a defect and requires no amendment now.** The question is answered rather than ignored, there is no
+contradiction between the two documents, and authoring an exit theorem would be a definitional act rather than a
+reconciliation — which is why this Review recorded the risk instead of repeating the
+`[[M4-CP4-TB3-REV-OBS-01]]` repair.
+
+**Why it is still worth carrying:** M5's *general* acceptance lives in the charter while its *operative* testable
+conditions — four debts, the preserved `>=2` produced-relation/edge and missing-owner discriminators, the §8.1
+mechanism-only prohibition, and the CP1/CP2/CP3 bindings — live in §§8-9 of the checkpoint-local document. That
+is exactly the division that produced `[[M4-CP4-TB3-REV-OBS-01]]`, where the general clause and the operative
+conjuncts diverged and the divergence became visible only at the moment of closure. The risk here is not
+contradiction but incompleteness: no single statement exists to check a closure claim against.
+
+**How to apply:** the turn adjudicating M5 closure states M5's exit once, explicitly, reconciling `DESIGN.md`
+§14 M5 with §§8-9 of `Architecture_M5_Frozen_Definitions.md`, and confirms against **both** that all four M5
+debts are discharged on **produced** authority with no mechanism-only credit, that no `>=2` discriminator was
+weakened, and that the M6-owned closed candidate-bearing-complex debt remains M6's. Per
+`[[M4-CP4-TB3-REV-OBS-01]]`, the reconciled statement is written into the governing M5 document, not only into
+the closing checkpoint's own record.

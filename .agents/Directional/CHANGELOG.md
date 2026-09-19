@@ -1,3 +1,34 @@
+## 2026-09-19 — `M5-DEFN` review: definitions upheld; exit-statement risk recorded for M5-CP3
+
+Runtime-free review. **Upheld; no amendment required.** Entering authority re-derived exact: selector430
+`430/430` at `1c412850…9db6`, owner census `31/283/75/41` summing to 430, accounting **49 / 14 / 35**, and debt
+**5** split **4 M5-owned / 1 M6-owned** — reconciling exactly against DEFN-R1's two periodic re-homings, the two
+standing `G4-B003` debts, and DEFN-R2's M6 closed-complex debt.
+
+Two sections carry the most weight and both are right. **§8.1** records the strongest existing evidence per debt
+and marks all of it *mechanism-only, no produced-witness credit*; both helpers it names —
+`direct_periodic_owner_product()` and `direct_full_periodic_materializer_draft()` — are real, live in
+`tests/SurfaceCellTransitionQuotientTests.cpp`, and are correctly classified as direct/draft. Four debts already
+have nearly-passing direct witnesses in the tree, so this is what stops the cheapest path to closing M5 being
+their quiet promotion. **§3.1** makes `PeriodicRelationId` a content identity excluding composed transport,
+vector position and execution handles: were transport part of identity, a transform tamper would yield a
+*different* relation id and `TamperedFullPeriodicTransformIsRejected` would observe a new relation rather than a
+rejected one — passing while proving nothing.
+
+§9 also closes the loop opened at DEFN-R1: CP1 must permit multiple distinct same-region relations when their
+canonical path identities differ, and CP3 must prove production emits at least two on the row408-class one-region
+torus. The re-homed debt arrived with a mechanism, not merely a new owner.
+
+New: `M5-DEFN-REV-OBS-01` (non-gating, owner `M5-CP3`) — no "M5 closes when…" clause exists in any M5 document;
+§12 instead cites `DESIGN.md` §14 M5 for milestone acceptance. That is an answer, not an omission, and there is
+no contradiction to reconcile, so this Review deliberately did **not** repeat the `M4-CP4-TB3-REV-OBS-01` repair:
+authoring an exit theorem is a definitional act, not a reconciliation. The carried risk is that M5's general
+acceptance sits in the charter while its operative conditions sit in §§8-9 — the same division that only became
+visible at M4 closure. The turn adjudicating M5 closure must state M5's exit once, against both sources.
+
+Exact successor: `M5-CP1-CB1` — Code + Build, runtime-free, compile-only; no selector publication, so no
+pre-commitment is due.
+
 ## 2026-09-19 — `M4-CP4-TB3-REV` review: M4 closure upheld; governing exit clause reconciled
 
 ## 2026-09-19 — M5-DEFN definitions frozen

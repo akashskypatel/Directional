@@ -252,3 +252,101 @@ This record supersedes the consumed `Architecture_M5_DEFN_Definition_Plan.md` as
 | typed failure matrix | this record §6 |
 | invariance | this record §7 |
 | exact next implementation | `Architecture_M5_CP1_Code_Build_Plan.md` |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** M5-DEFN is complete and well-constructed. Entering authority is exact, all four
+inherited debts are bound to named checkpoints with discriminators preserved, and the two design decisions that
+carry the most weight are both correct. One forward-looking risk is recorded; no amendment is required and none
+is made.
+
+### V1 — entering authority re-derived
+
+§1 is exact against the accepted M4 exit: selector430 `430/430` at
+`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` — the value this reviewer verified before CB8
+built it and again on publication — owner census `31 / 283 / 75 / 41` summing to 430, accounting
+**49 / 14 / 35**, and produced-witness debt **5** split **4 M5-owned / 1 M6-owned**. The split reconciles
+exactly: §8.2's four (two periodic `G4-B002` re-homed at `DEFN-R1`, two `G4-B003` always M5's) plus the
+closed candidate-bearing-complex `G4-B002` re-homed to M6 at `DEFN-R2`.
+
+§8.2 states the M6 boundary in the operative direction — "M5 may not pull A5 occurrence ownership backward to
+obtain evidence" — which is the form that actually prevents the error, rather than merely naming the owner.
+
+### V2 — §8.1 is the anti-substitution guard, and it is built on real bytes
+
+The "highest stage already proved" table records the strongest existing evidence for each debt and marks all of
+it **mechanism-only, no produced-witness credit**. Both helpers it names are real and correctly classified:
+`direct_periodic_owner_product()` and `direct_full_periodic_materializer_draft()` both live in
+`tests/SurfaceCellTransitionQuotientTests.cpp`, and both are direct/draft constructions rather than pipeline
+products.
+
+This is the most valuable section in the document. Four debts already have *almost*-passing direct witnesses
+sitting in the tree; without §8.1 the cheapest path to closing M5 would be to quietly promote them. The closing
+sentence forecloses it explicitly: fixture presence, direct builders, synthetic products and phase-front
+reachability without produced periodic relations do not discharge a production debt.
+
+### V3 — separating identity from transport is what keeps the `G4-B003` tamper non-vacuous
+
+§3.1 makes `PeriodicRelationId` a content identity that explicitly excludes composed transport / `GridAutomorphism`,
+vector position or table row, and execution handles, stating: "Transport is **relation value**, not relation
+identity."
+
+The consequence deserves to be named because it is load-bearing two checkpoints ahead. If identity included
+transport, then tampering a transform would produce a **different** relation id — and
+`TamperedFullPeriodicTransformIsRejected` would observe a new relation rather than a rejected one. The test would
+pass while proving nothing. Excluding transport from identity is precisely what makes that discriminator
+falsifiable, and §10's amendment — "transform tamper becomes a conflict on one stable semantic relation rather
+than a new identity" — records the reasoning correctly.
+
+### V4 — the re-homed debt acquired a mechanism, not just an owner
+
+`M4-CP4-DEFN-R1` re-homed the periodic debts to M5 on the ground that same-sheet basis identity requires the
+later topology-basis solver that `src/geometry/SurfaceCellTracing.cpp:6322-6325` defers. §9 now supplies exactly
+that: CP1 must "permit multiple distinct same-region relations when their **canonical path identities differ**",
+and CP3 must prove production emits at least two canonical same-region relations on the accepted row408-class
+one-region torus.
+
+That closes the loop opened at `DEFN-R1` and settled at `TB1-R3-REV`. Content-based identity is what makes two
+same-region generators distinguishable without guessing a basis by discovery order — the unsound approach the
+product comment refused. The re-homing was therefore not debt deferral: the obligation arrived with a concrete
+mechanism and a checkpoint that must prove it.
+
+### V5 — RECORDED RISK: M5's exit conditions are stated in two places and nowhere in full
+
+At `M4-CP4-TB3-REV` I required M5's exit theorem to appear in the governing M5 document. It does not:
+`Architecture_M5_Frozen_Definitions.md` contains no "M5 closes when…" clause, and neither does the DEFN record
+nor the CP1 plan.
+
+**This is not the M4 defect, and I am deliberately not repeating last turn's repair.** §12's citation map answers
+the question rather than ignoring it, assigning *milestone acceptance* to `DESIGN.md` §14 M5 — which does carry
+acceptance criteria (exact selected relation paths retained and independently verified; unused valid relations do
+not alter the selected certificate; the five failure classes fail typed; torus lineage and quotient acceptance
+are direct production evidence), extended by the DEFN-R1 amendment naming the two inherited periodic debts. There
+is no contradiction to reconcile here, and writing an exit theorem would be a definitional act rather than a
+reconciliation — outside what a review turn should decide unilaterally.
+
+The residual risk is one of shape, and this project has already been bitten by it once. M5's *general* acceptance
+lives in the charter while its *operative, testable* conditions — four debts, preserved `>=2` discriminators, the
+mechanism-only prohibition, the CP1/CP2/CP3 bindings — live in §§8-9 of this checkpoint-local document. That is
+the same division that produced `M4-CP4-TB3-REV-OBS-01`, where the two halves diverged and the divergence only
+became visible at the moment of closure.
+
+**Required before M5 closes, not now:** the turn that adjudicates M5 closure must state M5's exit once,
+explicitly, reconciling `DESIGN.md` §14 M5 with §§8-9 of this document, and must confirm against **both** that
+all four debts are discharged on produced authority with no mechanism-only credit. Recorded as
+`M5-DEFN-REV-OBS-01`, owned by `M5-CP3`.
+
+### V6 — successor scope and verification limits
+
+`Architecture_M5_CP1_Code_Build_Plan.md` is Code + Build / runtime-free and compile-only, forbids weakening any
+accepted selector430 identity, forbids CP2 acceptance claims, and forbids downstream graph search as a semantic
+substitute for producer-selected certificates. No selector pre-commitment is due, correctly — CB1 publishes
+nothing; the pre-commitment obligation attaches to the first M5 publication CB, on selector430 as byte-frozen
+prefix.
+
+Re-derived from repository bytes: selector430's hash and owner-census arithmetic, the existence and direct/draft
+character of both helpers named in §8.1, §3.1's identity exclusions, §§8.2/9 debt-to-checkpoint bindings and
+their totals, and the absence of any exit clause across all three M5 documents. Accepted as reported: the
+definition-audit source snapshot and artifact identifiers.
