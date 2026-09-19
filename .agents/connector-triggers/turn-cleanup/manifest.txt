@@ -1,7 +1,0 @@
-# M4-CP4-CB3 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/m4-cp4-cb3-20260919T023817Z.txt
-.agents/connector-triggers/m4-cp4-cb3-control-freeze-20260919.txt
-.agents/connector-triggers/m4-cp4-cb3-closeout-drive-apply-20260919.txt
-.agents/Directional/turn-payloads/m4-cp4-tb1-r2-harness.sh
-.agents/Directional/turn-payloads/m4-cp4-tb1-r2-exec.draft.yml
-.agents/Directional/turn-payloads/m4-cp4-tb1-r2-exec.yml.draft

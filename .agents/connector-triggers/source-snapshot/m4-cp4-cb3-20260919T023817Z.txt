@@ -1,4 +1,0 @@
-M4-CP4-CB3 source snapshot
-purpose=runtime-free control-only harness correction
-read_mode=snapshot
-runtime=forbidden
