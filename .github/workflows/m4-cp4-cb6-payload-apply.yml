@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1vhgg6J2CgIK-9Pzd714VS3FyTnhn2fEN
-      patch_sha256: cdd4c35d4a33ed395a692e79164634b94965d54ac32e91660180a1015fb116d5
-      base_sha: d3085ee2f778d8c4127447a77f31030001723a75
+      file_id: 1ACkvF08QMN9Kl7fLcuxUmPZ8DTaXQA81
+      patch_sha256: 041c320bdc4d24adc9460373b2dfa3901b621899a6641963ac50f366ce0b51fc
+      base_sha: 355a1bbce47937844786be000fa4d66a418864b4
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M4-CP4-CB6: add R1 execution payloads"
+      commit_message: "M4-CP4-CB6: closeout control-plane correction"
       retention_days: 7
     secrets: inherit
