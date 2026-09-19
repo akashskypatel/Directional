@@ -1,4 +1,0 @@
-Purpose: M4-CP4-DEFN-R2 resume reconciliation snapshot.
-Authority before marker: 725be6b9a0c326a3636d3579f8a1a9af2b7113ca
-READ_MODE=snapshot
-Directional runtime authorized: false

@@ -1,4 +1,0 @@
-.agents/connector-triggers/m4-cp4-defn-r2/apply-closeout.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-defn-r2-resume-20260919-2001.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-defn-r2-resume-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-defn-r2-start-20260919.txt

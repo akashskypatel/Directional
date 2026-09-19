@@ -1,4 +1,0 @@
-Purpose: M4-CP4-DEFN-R2 start-of-turn authoritative snapshot.
-Authority before marker: 7c7d4dd5ba1bf7c82b316cc12fbdf46be759ee58
-READ_MODE=snapshot
-Directional runtime authorized: false

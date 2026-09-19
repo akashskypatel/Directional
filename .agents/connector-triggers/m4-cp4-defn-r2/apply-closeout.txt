@@ -1,4 +1,0 @@
-M4-CP4-DEFN-R2 closeout patch apply.
-Patch SHA-256: a3da23fb67668b8d95b5787a178d9e2b98503a5c0ed6429d8aa1a941b2b9a931
-Patch base: a8c9547f416139f82f2215850c35afe742fa5118
-Directional runtime authorized: false
