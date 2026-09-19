@@ -1,0 +1,158 @@
+name: M4 CP4 CB3 Control Freeze Validation
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-cb3-control-freeze-20260919.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-cb3-control-freeze-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-cb3-control-freeze
+      commit_run_file: false
+    secrets: inherit
+
+  validate_self:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-cb3-control-freeze.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  validate_r2:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m4-cp4-tb1-r2-exec.draft.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  static_control_check:
+    needs:
+      - validate_self
+      - validate_r2
+    if: ${{ needs.validate_self.outputs.valid == 'true' && needs.validate_r2.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp4-cb3-control-freeze.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runtimeExecution=false"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact control authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Verify frozen R2 controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m4-cp4-cb3-control-freeze.log"
+          exec > >(tee -a "$log") 2>&1
+          harness='.agents/Directional/turn-payloads/m4-cp4-tb1-r2-harness.sh'
+          caller='.agents/Directional/turn-payloads/m4-cp4-tb1-r2-exec.draft.yml'
+          test -f "$harness"
+          test -f "$caller"
+          test "$(wc -c < "$harness" | tr -d ' ')" = "19885"
+          test "$(sha256sum "$harness" | awk '{print $1}')" = "78ab110f8ad851b66fcc331ef02b3a02388f51147efcd4672f2c9bfc7fd750dd"
+          test "$(wc -c < "$caller" | tr -d ' ')" = "4974"
+          test "$(sha256sum "$caller" | awk '{print $1}')" = "e21b17f12b18b7e3a45d97dba322a063cc8a64cf911e040fb6bbe60f832e5a2d"
+          bash -n "$harness"
+          python3 - "$harness" "$caller" <<'PY'
+          from pathlib import Path
+          import sys
+          h = Path(sys.argv[1]).read_text(encoding='utf-8')
+          c = Path(sys.argv[2]).read_text(encoding='utf-8')
+          start = h.index('run_one() {')
+          end = h.index('\n}\n\necho "M4-CP4-TB1-R2-EXEC immutable artifact-only harness"', start) + 2
+          fn = h[start:end]
+          assert 'set +e' not in fn
+          assert 'set -e' not in fn
+          assert fn.count('if GTEST_FAIL_IF_NO_TEST_SELECTED=1 "$exe" "--gtest_filter=${identity}" > "$raw" 2>&1; then') == 1
+          assert 'rc=0' in fn and 'rc=$?' in fn
+          assert 'ARTIFACT_ID="10575545321"' in h
+          assert 'EXPECTED_SOURCE_SHA="ad54c12774e10480fd3cef8138cacb8d5dec1529"' in h
+          assert 'EXPECTED_SELECTOR_SHA256="f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f"' in h
+          assert 'EXPECTED_SELECTOR_ROWS=427' in h
+          assert 'benchmark_execution_count=0' in h
+          assert 'M4-CP4-TB1-R1-EXEC' not in h and 'm4-cp4-tb1-r1' not in h
+          assert '.agents/connector-triggers/m4-cp4-tb1-r2-exec-20260919.txt' in c
+          assert '.agents/Directional/turn-payloads/m4-cp4-tb1-r2-harness.sh' in c
+          assert 'workflow_path: .github/workflows/m4-cp4-tb1-r2-exec.yml' in c
+          assert 'runtime_boundary=artifact-only' in c
+          assert 'timeout-minutes:' not in c
+          print('static_control_check=PASS')
+          print('run_one_preserves_caller_errexit=true')
+          print('semantic_package_identity_unchanged=true')
+          print('runtimeExecution=false')
+          PY
+
+      - name: Write control-freeze result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/m4-cp4-cb3-control-freeze-result"
+          mkdir -p "$out"
+          cat > "$out/result.env" <<EOF
+          event_sha=${GITHUB_SHA}
+          harness_path=.agents/Directional/turn-payloads/m4-cp4-tb1-r2-harness.sh
+          harness_bytes=19885
+          harness_sha256=78ab110f8ad851b66fcc331ef02b3a02388f51147efcd4672f2c9bfc7fd750dd
+          caller_draft_path=.agents/Directional/turn-payloads/m4-cp4-tb1-r2-exec.draft.yml
+          caller_bytes=4974
+          caller_sha256=e21b17f12b18b7e3a45d97dba322a063cc8a64cf911e040fb6bbe60f832e5a2d
+          candidate_artifact=10575545321
+          compiled_source=ad54c12774e10480fd3cef8138cacb8d5dec1529
+          runtimeExecution=false
+          final_job_status=${{ job.status }}
+          EOF
+          git status --short >> "$out/result.env" || true
+
+      - name: Upload control-freeze result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp4-cb3-control-freeze-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp4-cb3-control-freeze-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m4-cp4-cb3-control-freeze-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m4-cp4-cb3-control-freeze.log
+          if-no-files-found: error
+          retention-days: 7
