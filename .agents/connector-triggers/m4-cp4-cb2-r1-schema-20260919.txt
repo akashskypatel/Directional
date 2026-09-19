@@ -1,3 +1,0 @@
-M4-CP4-CB2 validate frozen TB1-R1 caller schema
-retry=0
-runtime=forbidden

@@ -1,4 +1,0 @@
-M4-CP4-CB2 source snapshot
-purpose=orchestration/package correction Code + Build
-read_mode=snapshot
-retry=0
