@@ -1,0 +1,3 @@
+Purpose: M4-CP4-CB6 continuation reconciliation snapshot.
+Semantic authority before marker: 5e22be76f401734a48a4a814dce7bbefa9ffd145
+Retry: 0
