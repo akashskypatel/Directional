@@ -129,7 +129,7 @@ No corrective Code + Build plan is warranted. The smallest valid successor is th
 | Selector manifest | **UPDATED** — selector430 accepted current authority; selector427 historical accepted prefix |
 | LESSONS | **UNCHANGED** — no novel recurring engineering/review pattern beyond existing durable rules |
 | Consolidation under CLEAN_UP_POLICY | **COMPLETE** — superseded CP4 per-turn documents indexed/folded; current TB3 runtime report, this Review, closures, normative definitions/selectors and one M5 next plan retained |
-| Successor frozen | **YES — `M5-DEFN`** |
+| Successor frozen | **YES — `M5-DEFN`**; falsifiers and stop rules are frozen in `Architecture_M5_DEFN_Definition_Plan.md` §4 |
 | Turn boundary held | **YES — documentation/static evidence only; no implementation or runtime** |
 | review_check.py boundary | **PASS — `python3 .agents/Directional/tools/review_check.py boundary --expect-selector 430=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`** |
 | `STATUS` lifecycle maintained | **YES — entry beacon published; final COMPLETE beacon is reserved as the final repository write** |

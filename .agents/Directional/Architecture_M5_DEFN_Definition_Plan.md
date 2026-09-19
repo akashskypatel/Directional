@@ -33,8 +33,21 @@ Freeze the semantic contract that lets M5 replace verifier-side reachability rec
 - Do not assume a zero-Z4 or direct-plan witness can discharge the M5 nonzero-periodic direct-production debts.
 - Do not broaden M5 into A5 occurrence-complex ownership; the closed candidate-bearing-complex debt remains M6-owned.
 
-## 4. Acceptance criteria for `M5-DEFN`
+## 4. Falsifiers and stop rules
 
-`M5-DEFN` is complete only when one frozen definition record states every identity/domain/owner above, maps each negative case to a typed failure and independent falsifier, binds every named witness to proven production stage reachability, preserves the four M5 debt discriminators, and yields one surgical `M5-CP1` Code + Build plan with observable compile and future artifact-only validation criteria.
+The definition must fail closed rather than paper over any of these conditions:
+
+- a proposed canonical relation ID still depends on container position, relation-vector order, front-edge equality, execution handle, or another representation handle;
+- an explicit path certificate cannot identify one exact ordered relation path and its composed transport independently of verifier reachability reconstruction;
+- adding an unused valid relation can change the selected certificate;
+- any missing, duplicate, conflicting, nonreciprocal, or representation-renumbered case lacks a typed failure owner and an independent negative witness;
+- a proposed M5 debt witness reaches only a direct/synthetic helper path rather than the frozen production stage, or weakens the original `>=2`, missing-owner, or nonzero-Z4 discriminator;
+- CP1/CP2 scope would require A5 occurrence-complex work owned by M6.
+
+Any one of those is a **definition blocker**. Stop `M5-DEFN`; do not authorize `M5-CP1` until the ambiguity is resolved in the frozen definition record.
+
+## 5. Acceptance criteria for `M5-DEFN`
+
+`M5-DEFN` is complete only when one frozen definition record states every identity/domain/owner above, maps each negative case to a typed failure and independent falsifier, binds every named witness to proven production stage reachability, preserves the four M5 debt discriminators, and yields one surgical `M5-CP1` Code + Build plan with observable compile and future artifact-only validation criteria. The record must also restate the M5 milestone acceptance conditions from `DESIGN.md`: exact selected relation paths retained and independently verified; unused valid relations decision-neutral; all five relation-failure classes typed; and torus lineage/quotient acceptance reserved for direct production evidence.
 
 No source/test/benchmark/build/selector mutation, compilation, or Directional runtime is authorized in this definition turn.
