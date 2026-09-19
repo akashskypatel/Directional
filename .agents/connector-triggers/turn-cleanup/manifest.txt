@@ -1,6 +1,0 @@
-# M4-CP4-CB1 temporary-state cleanup
-.agents/connector-triggers/m4-cp4-cb1-closeout-drive-apply-20260919.txt
-.agents/connector-triggers/m4-cp4-cb1-compile-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb1-20260918T234907Z.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb1-reconcile-20260919T002433Z.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb1-resume-20260919T000317Z.txt

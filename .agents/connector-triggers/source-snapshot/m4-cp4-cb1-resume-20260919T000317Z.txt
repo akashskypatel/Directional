@@ -1,4 +1,0 @@
-turn=M4-CP4-CB1
-resumed_status_commit=f208bc8e43f7f025d283bbb6db2d4ed553c21ece
-read_mode=snapshot
-runtimeExecution=false

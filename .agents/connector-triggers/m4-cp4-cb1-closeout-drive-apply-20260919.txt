@@ -1,5 +1,0 @@
-turn=M4-CP4-CB1
-base_sha=a93b1d7963e549de2a6fdc1e4ba29b431ef2939c
-patch_sha256=9ec8bd14b5e092ab3dec3b26a0792048974c3b1959d64d8c280ecf9b673b5fa3
-retry=1
-runtimeExecution=false
