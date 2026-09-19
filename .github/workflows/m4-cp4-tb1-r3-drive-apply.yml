@@ -1,0 +1,47 @@
+name: M4 CP4 TB1 R3 Control Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-tb1-r3-drive-apply-20260919.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-tb1-r3-drive-apply-agent-surface-cell-quad
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-tb1-r3-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-tb1-r3-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: "10US8RZxwpPBfaKe-W0NMN5gF14NFZ-l7"
+      patch_sha256: "c2076ff6ad5131eb0a9b9bdee1d232fdf084a9ce183968074bc796cb09cc04ee"
+      base_sha: "b0345a26a7015a95491b98fc6d8ad0da45f0df1b"
+      target_branch: "agent/surface_cell_quad/p5-recover-bridge-healing"
+      commit_message: "M4-CP4-TB1-R3-EXEC: install immutable execution controls"
+    secrets: inherit
