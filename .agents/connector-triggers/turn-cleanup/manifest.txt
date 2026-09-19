@@ -1,7 +1,0 @@
-.agents/Directional/turn-payloads/m4-cp4-tb1-r3-caller-draft.yml
-.agents/Directional/turn-payloads/m4-cp4-tb1-r3-harness.sh
-.agents/connector-triggers/m4-cp4-tb1-r3-closeout-apply-20260919.txt
-.agents/connector-triggers/m4-cp4-tb1-r3-drive-apply-20260919.txt
-.agents/connector-triggers/m4-cp4-tb1-r3-exec-20260919.txt
-.agents/connector-triggers/m4-cp4-tb1-r3-schema-validate-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb1-r3-exec-20260919.txt
