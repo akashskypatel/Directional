@@ -6,6 +6,7 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <filesystem>
 #include <fstream>
@@ -100,6 +101,27 @@ ProducedClosedArrangementFixture produced_closed_torus_arrangement() {
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
   options.surfaceCells.allowSourceGridRecovery = false;
   options.surfaceCells.retainIntermediateGeometry = true;
+  options.surfaceCells.featureMap.cadAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.cadAbsoluteHighDegrees = 180.0;
+  options.surfaceCells.featureMap.organicAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.organicAbsoluteHighDegrees = 180.0;
+  const std::array<int, 7> minorCycle{{0, 3, 25, 37, 49, 61, 0}};
+  const std::array<int, 13> majorCycle{
+      {0, 1, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 0}};
+  const auto addCycle = [&options](const auto &cycle) {
+    for (std::size_t i = 1U; i < cycle.size(); ++i) {
+      const int a = cycle[i - 1U];
+      const int b = cycle[i];
+      options.surfaceCells.featureMap.userHardEdges.insert(
+          {std::min(a, b), std::max(a, b)});
+    }
+  };
+  addCycle(minorCycle);
+  addCycle(majorCycle);
+  if (options.surfaceCells.featureMap.userHardEdges.size() != 18U) {
+    throw std::runtime_error(
+        "Produced torus requires the row408 18-edge hard-rail authority");
+  }
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       fixture.mesh.V, fixture.mesh.F, raw, options);
   if (!result.surfaceCellContext.hasArrangement) {

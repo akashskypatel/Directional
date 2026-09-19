@@ -357,7 +357,7 @@ TEST(M4CP4, ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRej
       nonFlatMesh, *nonFlatAuthority, {},
       make_zero_transport_field(nonFlatMesh));
   ASSERT_FALSE(nonFlatAtlas);
-  EXPECT_EQ(FieldAtlasBuildErrorCode::CycleTransportMismatch,
+  EXPECT_EQ(FieldAtlasBuildErrorCode::NonIntegralCycleLift,
             nonFlatAtlas.error().code);
 }
 
