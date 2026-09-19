@@ -1,0 +1,2 @@
+Purpose: schema-validate exact installed M4-CP4-TB2 artifact-gate caller before runtime.
+Execution job must remain skipped on this validation trigger.
