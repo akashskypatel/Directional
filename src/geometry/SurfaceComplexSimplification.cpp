@@ -2,10 +2,36 @@
 
 namespace directional::geometry::surface_simplification_detail {
 
+std::int64_t rail_id_leaf(const std::optional<authority::HardRailId> &rail) {
+  return rail.has_value() ? static_cast<std::int64_t>(rail->index()) : -1;
+}
+
 bool element_protected(const SurfaceSimplificationElement &element) {
   return element.hardFeature || element.boundary || element.basinRoot ||
          element.rootLabelProtected || element.singularityProtected;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void append_source_scope_identity(
+    SourceAwareIdentity &identity,
+    const std::optional<authority::TopologyRegionId> &region,
+    const std::optional<SourceProjectionChart> &chart) {
+  identity.sourceScopes.push_back({region, chart});
+}
+
 
 } // namespace directional::geometry::surface_simplification_detail
 
@@ -41,9 +67,33 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     hash ^= static_cast<std::uint64_t>(value);
     hash *= 1099511628211ULL;
   };
+  const auto mix_scope = [&](
+      const std::optional<authority::TopologyRegionId> &region,
+      const std::optional<SourceProjectionChart> &chart) {
+    mix(region.has_value() ? static_cast<std::int64_t>(region->index()) : -1);
+    if (!chart.has_value()) { mix(-1); return; }
+    mix(static_cast<std::int64_t>(chart->chart.index()));
+    for (const authority::SourceVertexId vertex : chart->face.vertices()) {
+      mix(static_cast<std::int64_t>(vertex.index()));
+    }
+  };
+  const auto mix_required_chart = [&](const SourceProjectionChart &chart) {
+    mix(static_cast<std::int64_t>(chart.chart.index()));
+    for (const authority::SourceVertexId vertex : chart.face.vertices()) {
+      mix(static_cast<std::int64_t>(vertex.index()));
+    }
+  };
   mix(static_cast<int>(complex.nodes.size()));
   mix(static_cast<int>(complex.halfedges.size()));
   mix(static_cast<int>(complex.cells.size()));
+  mix(static_cast<int>(complex.sourceOwnershipRegistry.size()));
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    mix(record.sourceTopologyRegion.has_value() ? static_cast<std::int64_t>(record.sourceTopologyRegion->index()) : -1);
+    for (const SourceProjectionChart &chart : record.exactCharts) {
+      mix_required_chart(chart);
+    }
+  }
   for (const SurfaceArrangementNode &node : complex.nodes) {
     mix(node.id);
     mix(node.sourceFace);
@@ -57,6 +107,19 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(static_cast<int>(node.occurrences.size()));
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
       mix(occurrence.sourceFace);
+      mix_scope(occurrence.sourceTopologyRegion, occurrence.sourceChart);
+      mix(occurrence.sourceArc);
+      mix(occurrence.provenance);
+      mix(rail_id_leaf(occurrence.railId));
+      mix(occurrence.curveId);
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.sourceT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.sourceT1 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.railT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.railT1 * 1.0e10)));
       for (int i = 0; i < 3; ++i) {
         mix(static_cast<std::int64_t>(
             std::llround(occurrence.barycentric[i] * 1.0e10)));
@@ -79,10 +142,9 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(halfedge.hardFeature ? 1 : 0);
     mix(halfedge.layoutSupport ? 1 : 0);
     mix(halfedge.singularitySupport ? 1 : 0);
-    mix(halfedge.railId);
+    mix(rail_id_leaf(halfedge.railId));
     mix(halfedge.curveId);
-    mix(halfedge.sourceComponent);
-    mix(halfedge.sourceSheet);
+    mix_scope(halfedge.sourceTopologyRegion, halfedge.sourceChart);
     mix(halfedge.proposalId);
     mix(halfedge.proposalSeedId);
     mix(halfedge.proposalSide);
@@ -100,10 +162,9 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
       mix(value.hardFeature ? 1 : 0);
       mix(value.layoutSupport ? 1 : 0);
       mix(value.singularitySupport ? 1 : 0);
-      mix(value.railId);
+      mix(rail_id_leaf(value.railId));
       mix(value.curveId);
-      mix(value.sourceComponent);
-      mix(value.sourceSheet);
+      mix_scope(value.sourceTopologyRegion, value.sourceChart);
       mix(value.proposalId);
       mix(value.proposalSeedId);
       mix(value.proposalSide);
@@ -118,6 +179,14 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   for (const SurfaceArrangementCell &cell : complex.cells) {
     mix(cell.id);
     mix(cell.sourceFace);
+    mix(cell.sourceTopologyRegion.has_value()
+            ? static_cast<std::int64_t>(cell.sourceTopologyRegion->index())
+            : -1);
+    mix(surface_cell_ownership_class_representation_leaf(
+        cell.sourceOwnershipClass));
+    for (const SourceProjectionChart &chart : cell.sourceCharts) {
+      mix_required_chart(chart);
+    }
     for (const int sourceFace : cell.sourceFaces) {
       mix(sourceFace);
     }
@@ -126,6 +195,13 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(cell.closed ? 1 : 0);
     mix(cell.boundaryCycle ? 1 : 0);
     mix(cell.disk ? 1 : 0);
+    mix(cell.cutCellDisk ? 1 : 0);
+    mix(cell.bridgeExcursion ? 1 : 0);
+    mix(cell.supportOnlyCycle ? 1 : 0);
+    mix(cell.sourceBoundarySide);
+    for (const int loop : cell.sourceBoundaryLoopIds) {
+      mix(loop);
+    }
     mix(cell.boundaryComponentCount);
     mix(cell.eulerCharacteristic);
     mix(cell.quadReady ? 1 : 0);
@@ -133,6 +209,9 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(static_cast<std::int64_t>(std::llround(cell.area * 1.0e10)));
     for (const int halfedge : cell.halfedges) {
       mix(halfedge);
+    }
+    for (const int offset : cell.boundaryCycleOffsets) {
+      mix(offset);
     }
     for (const int family : cell.sideFamilies) {
       mix(family);
@@ -144,6 +223,18 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   mix(complex.diagnostics.eulerCharacteristic);
   mix(complex.diagnostics.connectedComponentCount);
   mix(complex.diagnostics.boundaryLoopCount);
+  mix(complex.diagnostics.directedWedgeCount);
+  mix(complex.diagnostics.successorMissingCount);
+  mix(complex.diagnostics.successorAmbiguityCount);
+  mix(complex.diagnostics.predecessorMultiplicityFailureCount);
+  mix(complex.diagnostics.repeatedNodeCycleCount);
+  mix(complex.diagnostics.repeatedEdgeCycleCount);
+  mix(static_cast<int>(complex.diagnostics.incidenceFailure));
+  mix(complex.diagnostics.incidenceFailureNode);
+  mix(complex.diagnostics.incidenceFailureHalfedge);
+  mix(complex.diagnostics.incidenceFailureTwin);
+  mix(complex.diagnostics.incidenceFailureNext);
+  mix(static_cast<std::int64_t>(complex.diagnostics.directedIncidenceHash));
   mix(complex.diagnostics.incidenceValid ? 1 : 0);
   mix(complex.diagnostics.embeddingValid ? 1 : 0);
   mix(complex.diagnostics.orientationValid ? 1 : 0);
@@ -240,72 +331,214 @@ SurfaceSimplificationRejectionReason validate_candidate(
 
 namespace directional::geometry::surface_simplification_detail {
 
-bool validate_complex_incidence(const SurfaceCellComplex &complex,
-                                const bool requireDiskCells) {
+SurfaceCellIncidenceAudit audit_complex_incidence(
+    const SurfaceCellComplex &complex, const bool requireDiskCells) {
+  SurfaceCellIncidenceAudit audit;
   for (int i = 0; i < static_cast<int>(complex.nodes.size()); ++i) {
     if (complex.nodes[static_cast<std::size_t>(i)].id != i) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::NodeIdMismatch;
+      audit.node = i;
+      audit.expected = i;
+      audit.actual = complex.nodes[static_cast<std::size_t>(i)].id;
+      return audit;
     }
   }
+  if (!complex.sourceOwnershipRegistry.empty() &&
+      !validate_surface_cell_ownership_registry(complex)) {
+    audit.failure = SurfaceCellIncidenceFailureKind::OwnershipRegistryMismatch;
+    return audit;
+  }
+
   std::vector<int> halfedgeUse(complex.halfedges.size(), 0);
+  std::vector<int> predecessorUse(complex.halfedges.size(), 0);
+  std::set<std::tuple<int, int, int>> directedIncidence;
   for (int i = 0; i < static_cast<int>(complex.halfedges.size()); ++i) {
     const SurfaceArrangementHalfedge &halfedge =
         complex.halfedges[static_cast<std::size_t>(i)];
-    if (halfedge.id != i || halfedge.twin < 0 ||
-        halfedge.twin >= static_cast<int>(complex.halfedges.size()) ||
-        halfedge.next < 0 ||
-        halfedge.next >= static_cast<int>(complex.halfedges.size()) ||
-        halfedge.from < 0 ||
+    audit.halfedge = i;
+    audit.twin = halfedge.twin;
+    audit.next = halfedge.next;
+    audit.cell = halfedge.cell;
+    if (halfedge.id != i) {
+      audit.failure = SurfaceCellIncidenceFailureKind::HalfedgeIdMismatch;
+      audit.expected = i;
+      audit.actual = halfedge.id;
+      return audit;
+    }
+    if (halfedge.twin < 0 ||
+        halfedge.twin >= static_cast<int>(complex.halfedges.size())) {
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidTwin;
+      return audit;
+    }
+    if (halfedge.from < 0 ||
         halfedge.from >= static_cast<int>(complex.nodes.size()) ||
-        halfedge.to < 0 || halfedge.to >= static_cast<int>(complex.nodes.size()) ||
-        halfedge.from == halfedge.to || halfedge.cell < 0 ||
+        halfedge.to < 0 ||
+        halfedge.to >= static_cast<int>(complex.nodes.size())) {
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidEndpoint;
+      audit.node = halfedge.from < 0 ||
+                           halfedge.from >= static_cast<int>(complex.nodes.size())
+                       ? halfedge.from
+                       : halfedge.to;
+      return audit;
+    }
+    if (halfedge.from == halfedge.to) {
+      audit.failure = SurfaceCellIncidenceFailureKind::DegenerateEdge;
+      audit.node = halfedge.from;
+      return audit;
+    }
+    if (halfedge.cell < 0 ||
         halfedge.cell >= static_cast<int>(complex.cells.size())) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidCell;
+      return audit;
+    }
+    if (halfedge.next < 0 ||
+        halfedge.next >= static_cast<int>(complex.halfedges.size())) {
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidNext;
+      return audit;
     }
     const SurfaceArrangementHalfedge &twin =
         complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
     if (twin.twin != i || twin.from != halfedge.to ||
         twin.to != halfedge.from) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::TwinAsymmetry;
+      audit.expected = i;
+      audit.actual = twin.twin;
+      return audit;
+    }
+    const SurfaceArrangementHalfedge &next =
+        complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+    if (next.from != halfedge.to) {
+      audit.failure = SurfaceCellIncidenceFailureKind::NextEndpointMismatch;
+      audit.node = halfedge.to;
+      audit.expected = halfedge.to;
+      audit.actual = next.from;
+      return audit;
+    }
+    ++predecessorUse[static_cast<std::size_t>(halfedge.next)];
+    if (!directedIncidence.emplace(halfedge.cell, halfedge.from,
+                                   halfedge.to)
+             .second) {
+      audit.failure =
+          SurfaceCellIncidenceFailureKind::DirectedEdgeMultiplicity;
+      return audit;
     }
   }
+
+  for (int i = 0; i < static_cast<int>(complex.halfedges.size()); ++i) {
+    if (predecessorUse[static_cast<std::size_t>(i)] != 1) {
+      audit.failure = SurfaceCellIncidenceFailureKind::PredecessorMultiplicity;
+      audit.halfedge = i;
+      audit.expected = 1;
+      audit.actual = predecessorUse[static_cast<std::size_t>(i)];
+      return audit;
+    }
+  }
+
   for (int i = 0; i < static_cast<int>(complex.cells.size()); ++i) {
-    const SurfaceArrangementCell &cell = complex.cells[static_cast<std::size_t>(i)];
-    if (cell.id != i || !cell.closed || cell.halfedges.size() < 3U) {
-      return false;
+    const SurfaceArrangementCell &cell =
+        complex.cells[static_cast<std::size_t>(i)];
+    audit.cell = i;
+    if (cell.id != i) {
+      audit.failure = SurfaceCellIncidenceFailureKind::CellIdMismatch;
+      audit.expected = i;
+      audit.actual = cell.id;
+      return audit;
+    }
+    if (!cell.closed) {
+      audit.failure = SurfaceCellIncidenceFailureKind::CellNotClosed;
+      return audit;
+    }
+    const bool validSupportOnlyCycle =
+        cell.supportOnlyCycle && cell.halfedges.size() == 2U &&
+        complex.halfedges[static_cast<std::size_t>(cell.halfedges[0])].twin ==
+            cell.halfedges[1] &&
+        complex.halfedges[static_cast<std::size_t>(cell.halfedges[1])].twin ==
+            cell.halfedges[0];
+    if (cell.halfedges.size() < 3U && !validSupportOnlyCycle) {
+      audit.failure = SurfaceCellIncidenceFailureKind::CellTooSmall;
+      audit.actual = static_cast<int>(cell.halfedges.size());
+      return audit;
     }
     if (requireDiskCells && !cell.boundaryCycle &&
         (!cell.disk || cell.boundaryComponentCount != 1 ||
          cell.eulerCharacteristic != 1)) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::NonDiskCell;
+      return audit;
     }
     if (cell.sideFamilies.size() != cell.sideEdgeCounts.size()) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::SideMetadataMismatch;
+      return audit;
+    }
+    std::vector<std::pair<std::size_t, std::size_t>> boundaryRanges;
+    if (!surface_arrangement_boundary_cycle_ranges(cell, boundaryRanges)) {
+      audit.failure = SurfaceCellIncidenceFailureKind::CellNotClosed;
+      return audit;
     }
     std::set<int> seen;
-    for (std::size_t j = 0; j < cell.halfedges.size(); ++j) {
-      const int halfedgeId = cell.halfedges[j];
-      if (halfedgeId < 0 ||
-          halfedgeId >= static_cast<int>(complex.halfedges.size()) ||
-          !seen.insert(halfedgeId).second) {
-        return false;
+    for (const auto &[begin, end] : boundaryRanges) {
+      for (std::size_t j = begin; j < end; ++j) {
+        const int halfedgeId = cell.halfedges[j];
+        audit.halfedge = halfedgeId;
+        if (halfedgeId < 0 ||
+            halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+          audit.failure = SurfaceCellIncidenceFailureKind::InvalidNext;
+          return audit;
+        }
+        if (!seen.insert(halfedgeId).second) {
+          audit.failure =
+              SurfaceCellIncidenceFailureKind::RepeatedCellHalfedge;
+          return audit;
+        }
+        const SurfaceArrangementHalfedge &halfedge =
+            complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+        const int expectedNext =
+            cell.halfedges[j + 1U < end ? j + 1U : begin];
+        if (halfedge.cell != i) {
+          audit.failure =
+              SurfaceCellIncidenceFailureKind::HalfedgeCellMismatch;
+          audit.expected = i;
+          audit.actual = halfedge.cell;
+          return audit;
+        }
+        if (halfedge.next != expectedNext) {
+          audit.failure = SurfaceCellIncidenceFailureKind::CellNextMismatch;
+          audit.expected = expectedNext;
+          audit.actual = halfedge.next;
+          return audit;
+        }
+        if (halfedge.to !=
+            complex.halfedges[static_cast<std::size_t>(expectedNext)].from) {
+          audit.failure =
+              SurfaceCellIncidenceFailureKind::NextEndpointMismatch;
+          audit.expected = halfedge.to;
+          audit.actual =
+              complex.halfedges[static_cast<std::size_t>(expectedNext)].from;
+          return audit;
+        }
+        ++halfedgeUse[static_cast<std::size_t>(halfedgeId)];
       }
-      const SurfaceArrangementHalfedge &halfedge =
-          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
-      const int expectedNext =
-          cell.halfedges[(j + 1U) % cell.halfedges.size()];
-      if (halfedge.cell != i || halfedge.next != expectedNext ||
-          halfedge.to !=
-              complex.halfedges[static_cast<std::size_t>(expectedNext)].from) {
-        return false;
-      }
-      ++halfedgeUse[static_cast<std::size_t>(halfedgeId)];
     }
   }
-  return std::all_of(halfedgeUse.begin(), halfedgeUse.end(),
-                     [](const int count) { return count == 1; });
+  for (int i = 0; i < static_cast<int>(halfedgeUse.size()); ++i) {
+    if (halfedgeUse[static_cast<std::size_t>(i)] != 1) {
+      audit.failure = SurfaceCellIncidenceFailureKind::HalfedgeUseMismatch;
+      audit.halfedge = i;
+      audit.expected = 1;
+      audit.actual = halfedgeUse[static_cast<std::size_t>(i)];
+      return audit;
+    }
+  }
+  audit.valid = true;
+  audit.failure = SurfaceCellIncidenceFailureKind::None;
+  audit.node = audit.halfedge = audit.twin = audit.next = audit.cell = -1;
+  audit.expected = audit.actual = -1;
+  return audit;
 }
 
+bool validate_complex_incidence(const SurfaceCellComplex &complex,
+                                const bool requireDiskCells) {
+  return audit_complex_incidence(complex, requireDiskCells).valid;
+}
 } // namespace directional::geometry::surface_simplification_detail
 
 namespace directional::geometry::surface_simplification_detail {
@@ -346,18 +579,21 @@ std::vector<std::int64_t> protected_node_signature(
 
 namespace directional::geometry::surface_simplification_detail {
 
-std::multiset<std::vector<std::int64_t>> protected_support(
+std::multiset<SourceAwareIdentity> protected_support(
     const SurfaceCellComplex &complex) {
-  std::multiset<std::vector<std::int64_t>> keys;
+  std::multiset<SourceAwareIdentity> keys;
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
     if (halfedge.twin < 0 || halfedge.id > halfedge.twin ||
-        (!halfedge.hardFeature && halfedge.family >= 0)) {
+        (!halfedge.hardFeature && halfedge.family >= 0 &&
+         !halfedge.singularitySupport)) {
       continue;
     }
     if (halfedge.from < 0 || halfedge.to < 0 ||
         halfedge.from >= static_cast<int>(complex.nodes.size()) ||
         halfedge.to >= static_cast<int>(complex.nodes.size())) {
-      keys.insert({std::numeric_limits<std::int64_t>::min()});
+      SourceAwareIdentity invalid;
+      invalid.values.push_back(std::numeric_limits<std::int64_t>::min());
+      keys.insert(std::move(invalid));
       continue;
     }
     std::vector<std::int64_t> from = protected_node_signature(
@@ -368,49 +604,48 @@ std::multiset<std::vector<std::int64_t>> protected_support(
       std::swap(from, to);
     }
 
-    std::vector<std::vector<std::int64_t>> provenanceKeys;
+    std::vector<SourceAwareIdentity> provenanceKeys;
     provenanceKeys.reserve(halfedge.provenance.size());
     for (const SurfaceArrangementProvenance &value : halfedge.provenance) {
       const double sourceLo = std::min(value.sourceT0, value.sourceT1);
       const double sourceHi = std::max(value.sourceT0, value.sourceT1);
       const double railLo = std::min(value.railT0, value.railT1);
       const double railHi = std::max(value.railT0, value.railT1);
-      provenanceKeys.push_back({
-          value.sourceArc,
-          value.provenance,
-          value.sourceFace,
-          value.family,
-          value.strand,
-          value.featureClass,
-          value.hardFeature ? 1 : 0,
-          value.layoutSupport ? 1 : 0,
-          value.singularitySupport ? 1 : 0,
-          value.railId,
-          value.curveId,
-          value.sourceComponent,
-          value.sourceSheet,
-          value.proposalId,
-          value.proposalSeedId,
-          value.proposalSide,
-          value.proposalBoundarySegment,
-          static_cast<std::int64_t>(std::llround(sourceLo * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(sourceHi * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(railLo * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(railHi * 1.0e10))});
+      SourceAwareIdentity provenanceKey;
+      provenanceKey.values = {
+          value.sourceArc, value.provenance, value.sourceFace, value.family,
+          value.strand, value.featureClass, value.hardFeature ? 1 : 0,
+          value.layoutSupport ? 1 : 0, value.singularitySupport ? 1 : 0,
+          rail_id_leaf(value.railId), value.curveId};
+      append_source_scope_identity(provenanceKey, value.sourceTopologyRegion,
+                                   value.sourceChart);
+      provenanceKey.values.insert(provenanceKey.values.end(),
+          {value.proposalId, value.proposalSeedId, value.proposalSide,
+           value.proposalBoundarySegment,
+           static_cast<std::int64_t>(std::llround(sourceLo * 1.0e10)),
+           static_cast<std::int64_t>(std::llround(sourceHi * 1.0e10)),
+           static_cast<std::int64_t>(std::llround(railLo * 1.0e10)),
+           static_cast<std::int64_t>(std::llround(railHi * 1.0e10))});
+      provenanceKeys.push_back(std::move(provenanceKey));
     }
     std::sort(provenanceKeys.begin(), provenanceKeys.end());
 
-    std::vector<std::int64_t> key = {
+    SourceAwareIdentity key;
+    key.values = {
         halfedge.hardFeature ? 1 : 0,
         halfedge.family < 0 ? 1 : 0,
         static_cast<std::int64_t>(from.size())};
-    key.insert(key.end(), from.begin(), from.end());
-    key.push_back(static_cast<std::int64_t>(to.size()));
-    key.insert(key.end(), to.begin(), to.end());
-    key.push_back(static_cast<std::int64_t>(provenanceKeys.size()));
-    for (const auto &provenance : provenanceKeys) {
-      key.push_back(static_cast<std::int64_t>(provenance.size()));
-      key.insert(key.end(), provenance.begin(), provenance.end());
+    key.values.insert(key.values.end(), from.begin(), from.end());
+    key.values.push_back(static_cast<std::int64_t>(to.size()));
+    key.values.insert(key.values.end(), to.begin(), to.end());
+    key.values.push_back(static_cast<std::int64_t>(provenanceKeys.size()));
+    for (const SourceAwareIdentity &provenance : provenanceKeys) {
+      key.values.push_back(static_cast<std::int64_t>(provenance.values.size()));
+      key.values.insert(key.values.end(), provenance.values.begin(),
+                        provenance.values.end());
+      key.sourceScopes.insert(key.sourceScopes.end(),
+                              provenance.sourceScopes.begin(),
+                              provenance.sourceScopes.end());
     }
     keys.insert(std::move(key));
   }
@@ -507,14 +742,19 @@ void classify_rebuilt_cell_sides(
   }
   cell.quadReady = !cell.boundaryCycle && cell.disk &&
                    cell.sideFamilies.size() == 4U;
-  cell.cellClass = cell.boundaryCycle
-                       ? SurfaceArrangementCellClass::Exterior
-                       : (cell.quadReady
-                              ? SurfaceArrangementCellClass::RegularQuad
-                              : SurfaceArrangementCellClass::PatchCandidate);
-  cell.rejectReason = cell.quadReady
-                          ? SurfaceArrangementRejectReason::None
-                          : SurfaceArrangementRejectReason::NotFourSided;
+  if (cell.boundaryCycle) {
+    cell.cellClass = SurfaceArrangementCellClass::Exterior;
+    cell.rejectReason = SurfaceArrangementRejectReason::None;
+  } else if (!cell.disk) {
+    cell.cellClass = SurfaceArrangementCellClass::NonDisk;
+    cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
+  } else if (cell.quadReady) {
+    cell.cellClass = SurfaceArrangementCellClass::RegularQuad;
+    cell.rejectReason = SurfaceArrangementRejectReason::None;
+  } else {
+    cell.cellClass = SurfaceArrangementCellClass::PatchCandidate;
+    cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
+  }
 }
 
 } // namespace directional::geometry::surface_simplification_detail
@@ -523,11 +763,16 @@ namespace directional::geometry::surface_simplification_detail {
 
 void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   const int undirectedEdges = static_cast<int>(complex.halfedges.size()) / 2;
-  const int interiorCells = static_cast<int>(std::count_if(
-      complex.cells.begin(), complex.cells.end(),
-      [](const SurfaceArrangementCell &cell) { return !cell.boundaryCycle; }));
+  const int boundedEulerContribution = std::accumulate(
+      complex.cells.begin(), complex.cells.end(), 0,
+      [](const int sum, const SurfaceArrangementCell &cell) {
+        return sum + (!cell.boundaryCycle && !cell.supportOnlyCycle
+                          ? cell.eulerCharacteristic
+                          : 0);
+      });
   complex.diagnostics.eulerCharacteristic =
-      static_cast<int>(complex.nodes.size()) - undirectedEdges + interiorCells;
+      static_cast<int>(complex.nodes.size()) - undirectedEdges +
+      boundedEulerContribution;
 
   std::vector<std::pair<int, int>> arrangementEdges;
   std::vector<std::pair<int, int>> arrangementBoundaryEdges;
@@ -557,8 +802,9 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
     if (!cell.boundaryCycle && !cell.disk) {
       cellsDiskValid = false;
     }
-    if (cell.boundaryCycle ? !(cell.signedArea < -1.0e-14)
-                           : !(cell.signedArea > 1.0e-14)) {
+    if (!cell.supportOnlyCycle &&
+        (cell.boundaryCycle ? !(cell.signedArea < -1.0e-14)
+                            : !(cell.signedArea > 1.0e-14))) {
       if (cell.rejectReason != SurfaceArrangementRejectReason::Sliver) {
         orientationValid = false;
       }
@@ -566,16 +812,70 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   }
 
   complex.diagnostics.incidenceValid = validate_complex_incidence(complex);
+  if (complex.diagnostics.incidenceValid) {
+    complex.diagnostics.incidenceFailure =
+        SurfaceArrangementIncidenceFailure::None;
+    complex.diagnostics.incidenceFailureNode = -1;
+    complex.diagnostics.incidenceFailureHalfedge = -1;
+    complex.diagnostics.incidenceFailureTwin = -1;
+    complex.diagnostics.incidenceFailureNext = -1;
+    complex.diagnostics.successorMissingCount = 0;
+    complex.diagnostics.successorAmbiguityCount = 0;
+    complex.diagnostics.predecessorMultiplicityFailureCount = 0;
+    complex.diagnostics.repeatedNodeCycleCount = 0;
+    complex.diagnostics.repeatedEdgeCycleCount = 0;
+  }
+  complex.diagnostics.embeddingValid =
+      complex.diagnostics.embeddingValid &&
+      validate_surface_cell_ownership_registry(complex);
   complex.diagnostics.orientationValid = orientationValid;
   complex.diagnostics.cellsDiskValid = cellsDiskValid;
   complex.diagnostics.connectedComponentCount =
       surface_arrangement_detail::graph_component_count(
           static_cast<int>(complex.nodes.size()), arrangementEdges);
-  const auto [boundaryLoops, boundaryValid] =
-      surface_arrangement_detail::boundary_loop_count(
-          static_cast<int>(complex.nodes.size()), arrangementBoundaryEdges);
-  complex.diagnostics.boundaryLoopCount = boundaryLoops;
-  complex.diagnostics.boundaryLoopsValid = boundaryValid;
+  const bool hasExplicitBoundaryEvidence =
+      complex.diagnostics.sourceBoundaryLoopCount == 0 ||
+      std::any_of(complex.cells.begin(), complex.cells.end(),
+                  [](const SurfaceArrangementCell &cell) {
+                    return !cell.sourceBoundaryLoopIds.empty();
+                  });
+  if (hasExplicitBoundaryEvidence) {
+    std::map<int, int> exteriorOwners;
+    bool boundaryValid = true;
+    for (const SurfaceArrangementCell &cell : complex.cells) {
+      if (cell.sourceBoundaryLoopIds.empty()) {
+        continue;
+      }
+      if (cell.sourceBoundarySide != (cell.boundaryCycle ? -1 : 1)) {
+        boundaryValid = false;
+      }
+      if (!cell.boundaryCycle) {
+        continue;
+      }
+      for (const int loop : cell.sourceBoundaryLoopIds) {
+        if (loop < 0) {
+          boundaryValid = false;
+          continue;
+        }
+        ++exteriorOwners[loop];
+      }
+    }
+    boundaryValid =
+        boundaryValid &&
+        static_cast<int>(exteriorOwners.size()) ==
+            complex.diagnostics.sourceBoundaryLoopCount &&
+        std::all_of(exteriorOwners.begin(), exteriorOwners.end(),
+                    [](const auto &entry) { return entry.second == 1; });
+    complex.diagnostics.boundaryLoopCount =
+        static_cast<int>(exteriorOwners.size());
+    complex.diagnostics.boundaryLoopsValid = boundaryValid;
+  } else {
+    const auto [boundaryLoops, boundaryValid] =
+        surface_arrangement_detail::boundary_loop_count(
+            static_cast<int>(complex.nodes.size()), arrangementBoundaryEdges);
+    complex.diagnostics.boundaryLoopCount = boundaryLoops;
+    complex.diagnostics.boundaryLoopsValid = boundaryValid;
+  }
   complex.diagnostics.eulerCharacteristicValid =
       complex.diagnostics.eulerCharacteristic ==
           complex.diagnostics.sourceEulerCharacteristic &&
@@ -586,7 +886,7 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
       complex.diagnostics.boundaryLoopsValid;
   complex.diagnostics.extractedArea = 0.0;
   for (const SurfaceArrangementCell &cell : complex.cells) {
-    if (!cell.boundaryCycle) {
+    if (!cell.boundaryCycle && !cell.supportOnlyCycle) {
       complex.diagnostics.extractedArea += cell.area;
     }
   }
@@ -720,12 +1020,13 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
   struct CellRecord {
     SurfaceArrangementCell cell;
     std::vector<int> oldBoundary;
-    bool merged = false;
+    bool reclassify = false;
+    bool recomputeGeometry = false;
   };
   std::vector<CellRecord> records;
   for (const SurfaceArrangementCell &cell : complex.cells) {
     if (affectedCells.count(cell.id) == 0) {
-      records.push_back({cell, cell.halfedges, false});
+      records.push_back({cell, cell.halfedges, false, false});
     }
   }
 
@@ -753,11 +1054,8 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     }
     SurfaceArrangementCell trimmed = source;
     trimmed.closed = true;
-    trimmed.disk = true;
-    trimmed.boundaryComponentCount = 1;
-    trimmed.eulerCharacteristic = 1;
     records.push_back(
-        {std::move(trimmed), std::move(orderedBoundary), true});
+        {std::move(trimmed), std::move(orderedBoundary), true, false});
   }
 
   for (const std::vector<int> &mergeComponent : mergeComponents) {
@@ -789,9 +1087,15 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     mergedCell.boundaryCycle = false;
     mergedCell.closed = true;
     mergedCell.disk = true;
+    mergedCell.boundaryCycleOffsets = {0};
     mergedCell.boundaryComponentCount = 1;
     mergedCell.eulerCharacteristic = 1;
     std::set<int> mergedSourceFaces;
+    std::set<authority::TopologyRegionId> mergedRegions;
+    std::set<int> mergedBoundaryLoops;
+    int mergedBoundarySide = 0;
+    std::set<authority::SurfaceCellOwnershipClassId> mergedOwnershipClasses;
+    std::set<SourceProjectionChart> mergedCharts;
     double fallbackArea = 0.0;
     for (const int cellId : mergeComponent) {
       const SurfaceArrangementCell &cell =
@@ -799,16 +1103,44 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       fallbackArea += cell.area;
       mergedSourceFaces.insert(cell.sourceFaces.begin(), cell.sourceFaces.end());
       if (cell.sourceFace >= 0) mergedSourceFaces.insert(cell.sourceFace);
+      if (!cell.sourceOwnershipClass.has_value() ||
+          find_surface_cell_ownership_class(
+              complex, cell.sourceTopologyRegion,
+              cell.sourceOwnershipClass) == nullptr) {
+        return invalid;
+      }
+      if (!cell.sourceTopologyRegion.has_value()) return invalid;
+      mergedRegions.insert(cell.sourceTopologyRegion.value());
+      mergedBoundaryLoops.insert(cell.sourceBoundaryLoopIds.begin(),
+                                 cell.sourceBoundaryLoopIds.end());
+      if (cell.sourceBoundarySide != 0) {
+        if (mergedBoundarySide != 0 &&
+            mergedBoundarySide != cell.sourceBoundarySide) {
+          return invalid;
+        }
+        mergedBoundarySide = cell.sourceBoundarySide;
+      }
+      mergedCharts.insert(cell.sourceCharts.begin(), cell.sourceCharts.end());
+      mergedOwnershipClasses.insert(cell.sourceOwnershipClass.value());
     }
+    if (mergedOwnershipClasses.size() != 1U || mergedRegions.size() != 1U) {
+      return invalid;
+    }
+    mergedCell.sourceOwnershipClass = *mergedOwnershipClasses.begin();
+    mergedCell.sourceCharts.assign(mergedCharts.begin(), mergedCharts.end());
+    mergedCell.sourceTopologyRegion = *mergedRegions.begin();
     mergedCell.sourceFaces.assign(mergedSourceFaces.begin(),
                                   mergedSourceFaces.end());
+    mergedCell.sourceBoundaryLoopIds.assign(mergedBoundaryLoops.begin(),
+                                            mergedBoundaryLoops.end());
+    mergedCell.sourceBoundarySide = mergedBoundarySide;
     mergedCell.sourceFace = mergedCell.sourceFaces.empty()
                                 ? -1
                                 : mergedCell.sourceFaces.front();
     mergedCell.area = fallbackArea;
     mergedCell.signedArea = fallbackArea;
     records.push_back(
-        {std::move(mergedCell), std::move(orderedBoundary), true});
+        {std::move(mergedCell), std::move(orderedBoundary), true, true});
   }
 
   SurfaceCellComplex rebuilt = complex;
@@ -831,6 +1163,7 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
 
   rebuilt.cells.clear();
   std::vector<unsigned char> rebuiltCellNeedsClassification;
+  std::vector<unsigned char> rebuiltCellNeedsGeometry;
   for (CellRecord &record : records) {
     SurfaceArrangementCell cell = std::move(record.cell);
     cell.id = static_cast<int>(rebuilt.cells.size());
@@ -844,7 +1177,8 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       if (newHalfedgeId < 0) return invalid;
       cell.halfedges.push_back(newHalfedgeId);
     }
-    rebuiltCellNeedsClassification.push_back(record.merged ? 1U : 0U);
+    rebuiltCellNeedsClassification.push_back(record.reclassify ? 1U : 0U);
+    rebuiltCellNeedsGeometry.push_back(record.recomputeGeometry ? 1U : 0U);
     rebuilt.cells.push_back(std::move(cell));
   }
   for (SurfaceArrangementCell &cell : rebuilt.cells) {
@@ -885,18 +1219,46 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
 
   for (std::size_t cellIndex = 0; cellIndex < rebuilt.cells.size(); ++cellIndex) {
     if (rebuiltCellNeedsClassification[cellIndex] == 0U) continue;
-    SurfaceArrangementCell &merged = rebuilt.cells[cellIndex];
-    if (vertices != nullptr && faces != nullptr) {
+    SurfaceArrangementCell &rebuiltCell = rebuilt.cells[cellIndex];
+    std::set<int> uniqueNodes;
+    for (const int halfedgeId : rebuiltCell.halfedges) {
+      uniqueNodes.insert(
+          rebuilt.halfedges[static_cast<std::size_t>(halfedgeId)].from);
+    }
+    rebuiltCell.cutCellDisk = false;
+    rebuiltCell.bridgeExcursion = false;
+    rebuiltCell.supportOnlyCycle = false;
+    rebuiltCell.closed = rebuiltCell.halfedges.size() >= 3U;
+    rebuiltCell.boundaryCycleOffsets =
+        rebuiltCell.closed ? std::vector<int>{0} : std::vector<int>{};
+    rebuiltCell.boundaryComponentCount = rebuiltCell.closed ? 1 : 0;
+    rebuiltCell.eulerCharacteristic =
+        static_cast<int>(uniqueNodes.size()) -
+        static_cast<int>(rebuiltCell.halfedges.size()) +
+        (rebuiltCell.closed ? 1 : 0);
+    rebuiltCell.disk = rebuiltCell.closed &&
+                       uniqueNodes.size() == rebuiltCell.halfedges.size() &&
+                       rebuiltCell.boundaryComponentCount == 1 &&
+                       rebuiltCell.eulerCharacteristic == 1;
+
+    if (rebuiltCellNeedsGeometry[cellIndex] != 0U && vertices != nullptr &&
+        faces != nullptr) {
       if (!surface_arrangement_detail::polygon_geometry(
-              *vertices, *faces, merged.halfedges, rebuilt.halfedges,
-              rebuilt.nodes, merged.signedArea, merged.area,
-              merged.sourceFaces)) {
+              *vertices, *faces, rebuiltCell.halfedges, rebuilt.halfedges,
+              rebuilt.nodes, rebuiltCell.signedArea, rebuiltCell.area,
+              rebuiltCell.sourceFaces)) {
         rebuilt.diagnostics.embeddingValid = false;
       }
-      merged.sourceFace =
-          merged.sourceFaces.empty() ? -1 : merged.sourceFaces.front();
+      rebuiltCell.sourceFace = rebuiltCell.sourceFaces.empty()
+                                    ? -1
+                                    : rebuiltCell.sourceFaces.front();
     }
-    classify_rebuilt_cell_sides(merged, rebuilt, vertices, faces);
+    // A same-cell bridge contributes an out-and-back excursion with zero
+    // signed area. Trimming it leaves the represented surface region and its
+    // source-face support unchanged, so preserve the authoritative geometry
+    // instead of forcing a new single-chart projection of a curved multi-face
+    // cell. Distinct-cell merges still recompute their geometry above.
+    classify_rebuilt_cell_sides(rebuiltCell, rebuilt, vertices, faces);
   }
   recompute_rebuilt_diagnostics(rebuilt);
   return rebuilt;
@@ -952,7 +1314,7 @@ extract_surface_simplification_candidates_impl(
     int to = -1;
     int family = -1;
     int strand = -1;
-    std::set<int> sourceSheets;
+    std::set<authority::SurfaceCellOwnershipClassId> ownershipClasses;
     bool hardFeature = false;
     bool boundary = false;
     bool layoutSupport = false;
@@ -988,22 +1350,33 @@ extract_surface_simplification_candidates_impl(
     record.boundary = halfedge.family < 0 || twin.family < 0 ||
                       cell_is_exterior(halfedge.cell) ||
                       cell_is_exterior(twin.cell);
-    if (halfedge.sourceSheet >= 0) record.sourceSheets.insert(halfedge.sourceSheet);
-    if (twin.sourceSheet >= 0) record.sourceSheets.insert(twin.sourceSheet);
     for (const SurfaceArrangementProvenance &value : halfedge.provenance) {
-      if (value.sourceSheet >= 0) record.sourceSheets.insert(value.sourceSheet);
       record.layoutSupport = record.layoutSupport || value.layoutSupport;
       record.singularitySupport =
           record.singularitySupport || value.singularitySupport;
     }
     for (const SurfaceArrangementProvenance &value : twin.provenance) {
-      if (value.sourceSheet >= 0) record.sourceSheets.insert(value.sourceSheet);
       record.layoutSupport = record.layoutSupport || value.layoutSupport;
       record.singularitySupport =
           record.singularitySupport || value.singularitySupport;
     }
-    if (halfedge.cell >= 0) record.cells.insert(halfedge.cell);
-    if (twin.cell >= 0) record.cells.insert(twin.cell);
+    const auto appendOwnership = [&](const int cellId,
+                                     const SurfaceArrangementHalfedge &edge) {
+      if (cellId < 0 || cellId >= static_cast<int>(complex.cells.size())) {
+        return;
+      }
+      record.cells.insert(cellId);
+      const SurfaceArrangementCell &cell =
+          complex.cells[static_cast<std::size_t>(cellId)];
+      if (cell.sourceOwnershipClass.has_value() &&
+          find_surface_cell_ownership_class(
+              complex, cell.sourceTopologyRegion,
+              cell.sourceOwnershipClass) != nullptr) {
+        record.ownershipClasses.insert(cell.sourceOwnershipClass.value());
+      }
+    };
+    appendOwnership(halfedge.cell, halfedge);
+    appendOwnership(twin.cell, twin);
 
     if (vertices != nullptr && faces != nullptr && record.from >= 0 &&
         record.to >= 0 && record.from < static_cast<int>(complex.nodes.size()) &&
@@ -1056,7 +1429,7 @@ extract_surface_simplification_candidates_impl(
     std::set<int> nodes;
     std::set<int> cells;
     std::set<int> strands;
-    std::set<int> sheets;
+    std::set<authority::SurfaceCellOwnershipClassId> ownershipClasses;
     for (const int edgeIndex : edgeIndices) {
       const EdgeRecord &edge = edges[static_cast<std::size_t>(edgeIndex)];
       candidate.elementIds.push_back(edge.halfedge);
@@ -1064,7 +1437,8 @@ extract_surface_simplification_candidates_impl(
       nodes.insert(edge.to);
       cells.insert(edge.cells.begin(), edge.cells.end());
       if (edge.strand >= 0) strands.insert(edge.strand);
-      sheets.insert(edge.sourceSheets.begin(), edge.sourceSheets.end());
+      ownershipClasses.insert(edge.ownershipClasses.begin(),
+                              edge.ownershipClasses.end());
       candidate.touchesHardFeature =
           candidate.touchesHardFeature || edge.hardFeature;
       candidate.touchesSingularity =
@@ -1079,7 +1453,7 @@ extract_surface_simplification_candidates_impl(
     candidate.affectedNodeIds.assign(nodes.begin(), nodes.end());
     candidate.affectedCellIds.assign(cells.begin(), cells.end());
     candidate.affectedStrandIds.assign(strands.begin(), strands.end());
-    candidate.touchesLocalSheetBoundary = sheets.size() > 1U;
+    candidate.touchesLocalSheetBoundary = ownershipClasses.size() > 1U;
     if (!explicitSingularityOnly) {
       for (const int node : candidate.affectedNodeIds) {
         if (node >= 0 && node < static_cast<int>(singularNode.size()) &&
@@ -1199,6 +1573,62 @@ extract_surface_simplification_candidates_impl(
   }
 
   int stableId = 0;
+  // A pinched DCEL face can contain several disconnected optional bridge
+  // excursions. Removing any one excursion in isolation may leave a repeated
+  // node walk that cannot be represented as a simple boundary cycle. Emit a
+  // cell-scoped aggregate candidate containing every optional bridge on that
+  // face so the transaction can prove the complete repair atomically. This is
+  // deliberately narrower than a general region collapse: every selected
+  // edge is independently a graph bridge, layout support is optional, and
+  // hard-feature, boundary, and singularity support are excluded.
+  std::map<int, std::vector<int>> healingEdgesByCell;
+  for (const int edgeIndex : bridgeEdges) {
+    const EdgeRecord &edge = edges[static_cast<std::size_t>(edgeIndex)];
+    if (edge.family < 0 || !edge.layoutSupport || edge.singularitySupport ||
+        edge.hardFeature || edge.boundary || edge.cells.size() != 1U) {
+      continue;
+    }
+    const int cellId = *edge.cells.begin();
+    if (cellId < 0 || cellId >= static_cast<int>(complex.cells.size()) ||
+        complex.cells[static_cast<std::size_t>(cellId)].boundaryCycle ||
+        complex.cells[static_cast<std::size_t>(cellId)].disk) {
+      continue;
+    }
+    healingEdgesByCell[cellId].push_back(edgeIndex);
+  }
+  for (auto &[cellId, group] : healingEdgesByCell) {
+    (void)cellId;
+    std::sort(group.begin(), group.end(), [&](const int a, const int b) {
+      return edges[static_cast<std::size_t>(a)].halfedge <
+             edges[static_cast<std::size_t>(b)].halfedge;
+    });
+    group.erase(std::unique(group.begin(), group.end()), group.end());
+    if (group.size() < 2U ||
+        static_cast<int>(group.size()) < options.minimumElements) {
+      continue;
+    }
+    SurfaceSimplificationCandidate candidate;
+    candidate.stableId = stableId++;
+    candidate.type = SurfaceSimplificationCandidateType::OpenStrip;
+    populate(candidate, group, true);
+    candidate.topologyHealing = true;
+    candidate.sideFeasible = true;
+    // Independent same-cell bridge trims may live on different local source
+    // sheets without crossing or merging those sheets. Protect only an edge
+    // whose own provenance spans multiple sheets; do not reject an atomic
+    // collection merely because its disconnected excursions belong to
+    // different sheets.
+    candidate.touchesLocalSheetBoundary = std::any_of(
+        group.begin(), group.end(), [&](const int edgeIndex) {
+          return edges[static_cast<std::size_t>(edgeIndex)]
+                     .ownershipClasses.size() > 1U;
+        });
+    candidate.changesTopology = candidate.touchesLocalSheetBoundary ||
+                                candidate.touchesSingularity;
+    candidate.topologyPenalty = candidate.changesTopology ? 1.0e6 : 0.0;
+    append_candidate(std::move(candidate));
+  }
+
   std::map<std::pair<int, int>, std::vector<int>> healingGroups;
   for (const int edgeIndex : bridgeEdges) {
     const EdgeRecord &edge = edges[static_cast<std::size_t>(edgeIndex)];
@@ -1517,7 +1947,9 @@ SurfaceSimplificationResult simplify_surface_complex(
       transaction.afterHash = structural_hash(elements);
       ++result.rejected;
     }
-    result.transactions.push_back(transaction);
+    if (options.retainTransactionDetails) {
+      result.transactions.push_back(std::move(transaction));
+    }
   }
 
   result.elements = std::move(elements);
@@ -1531,16 +1963,140 @@ SurfaceSimplificationResult simplify_surface_complex(
 namespace directional::geometry {
 
 SurfaceSimplificationResult simplify_surface_cell_complex_impl(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces,
     const SurfaceSimplificationOptions &options) {
   using namespace surface_simplification_detail;
   SurfaceSimplificationResult result;
   result.hasComplexOutput = true;
-  SurfaceCellComplex complex = inputComplex;
+  SurfaceCellComplex complex = std::move(inputComplex);
+  Eigen::MatrixXi topologyOnlyFaces(0, 3);
+  const Eigen::MatrixXi &ownershipFaces =
+      faces != nullptr ? *faces : topologyOnlyFaces;
+  if (!canonicalize_surface_cell_ownership(complex, ownershipFaces)) {
+    result.complex = std::move(complex);
+    result.rejected = static_cast<int>(candidates.size());
+    result.initialActiveElements =
+        static_cast<int>(result.complex.halfedges.size()) / 2;
+    result.finalActiveElements = result.initialActiveElements;
+    result.finalHash = hash_surface_cell_complex(result.complex);
+    return result;
+  }
   result.initialActiveElements =
       static_cast<int>(complex.halfedges.size()) / 2;
+
+  const auto candidateSemanticIdentity =
+      [&](const SurfaceSimplificationCandidate &candidate) {
+        SourceAwareIdentity identity;
+        identity.values = {static_cast<int>(candidate.type),
+                           candidate.topologyHealing ? 1 : 0};
+        std::vector<SourceAwareIdentity> edges;
+        for (const int halfedgeId : candidate.elementIds) {
+          if (halfedgeId < 0 ||
+              halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+            SourceAwareIdentity invalid;
+            invalid.values = {-1, halfedgeId};
+            edges.push_back(std::move(invalid));
+            continue;
+          }
+          const SurfaceArrangementHalfedge &edge =
+              complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+          SourceAwareIdentity edgeIdentity;
+          edgeIdentity.values = {
+              std::min(edge.from, edge.to), std::max(edge.from, edge.to),
+              edge.family, edge.strand, edge.featureClass,
+              edge.hardFeature ? 1 : 0, edge.layoutSupport ? 1 : 0,
+              edge.singularitySupport ? 1 : 0, rail_id_leaf(edge.railId),
+              edge.curveId};
+          append_source_scope_identity(edgeIdentity, edge.sourceTopologyRegion,
+                                       edge.sourceChart);
+          edgeIdentity.values.insert(edgeIdentity.values.end(),
+                                     {edge.proposalSide,
+                                      edge.proposalBoundarySegment});
+          for (const SurfaceArrangementProvenance &provenance :
+               edge.provenance) {
+            edgeIdentity.values.insert(
+                edgeIdentity.values.end(),
+                {provenance.family, provenance.strand,
+                 provenance.featureClass, provenance.hardFeature ? 1 : 0,
+                 provenance.layoutSupport ? 1 : 0,
+                 provenance.singularitySupport ? 1 : 0,
+                 rail_id_leaf(provenance.railId), provenance.curveId});
+            append_source_scope_identity(edgeIdentity,
+                                         provenance.sourceTopologyRegion,
+                                         provenance.sourceChart);
+            edgeIdentity.values.insert(edgeIdentity.values.end(),
+                                       {provenance.proposalSide,
+                                        provenance.proposalBoundarySegment});
+          }
+          edges.push_back(std::move(edgeIdentity));
+        }
+        std::sort(edges.begin(), edges.end());
+        identity.values.push_back(static_cast<std::int64_t>(edges.size()));
+        for (const SourceAwareIdentity &edge : edges) {
+          identity.values.push_back(static_cast<std::int64_t>(edge.values.size()));
+          identity.values.insert(identity.values.end(), edge.values.begin(),
+                                 edge.values.end());
+          identity.sourceScopes.insert(identity.sourceScopes.end(),
+                                       edge.sourceScopes.begin(),
+                                       edge.sourceScopes.end());
+        }
+        return identity;
+      };
+  const auto hashSemanticIdentity = [](const SourceAwareIdentity &identity) {
+    std::uint64_t hash = 1469598103934665603ULL;
+    const auto mix = [&](const std::uint64_t value) {
+      hash ^= value;
+      hash *= 1099511628211ULL;
+    };
+    for (const std::int64_t value : identity.values) {
+      mix(static_cast<std::uint64_t>(value));
+    }
+    // Collision-domain diagnostic only. Exact candidate deduplication uses the
+    // typed SourceAwareIdentity below and never decodes this digest.
+    mix(static_cast<std::uint64_t>(identity.sourceScopes.size()));
+    for (const SourceScope &scope : identity.sourceScopes) {
+      mix(scope.region.has_value() ? 1U : 0U);
+      mix(scope.chart.has_value() ? 1U : 0U);
+    }
+    return hash;
+  };
+
+  int currentGeneration = 0;
+  const auto normalizeGeneration =
+      [&](std::vector<SurfaceSimplificationCandidate> input,
+          const bool preserveStableIds) {
+        std::vector<SurfaceSimplificationCandidate> normalized;
+        normalized.reserve(input.size());
+        std::set<SourceAwareIdentity> liveIdentities;
+        for (SurfaceSimplificationCandidate &candidate : input) {
+          if (options.topologyHealingOnly && !candidate.topologyHealing) {
+            continue;
+          }
+          ++result.generatedCandidates;
+          const SourceAwareIdentity identity =
+              candidateSemanticIdentity(candidate);
+          if (!liveIdentities.insert(identity).second) {
+            ++result.deduplicatedCandidates;
+            continue;
+          }
+          candidate.generation = currentGeneration;
+          candidate.semanticHash = hashSemanticIdentity(identity);
+          if (!preserveStableIds || candidate.stableId < 0) {
+            candidate.stableId = 1000000 +
+                currentGeneration * 1000000 +
+                static_cast<int>(normalized.size());
+          }
+          normalized.push_back(std::move(candidate));
+        }
+        result.peakLiveCandidates = std::max(
+            result.peakLiveCandidates, static_cast<int>(normalized.size()));
+        return normalized;
+      };
+
+  candidates = normalizeGeneration(std::move(candidates), true);
+  result.frontierGenerations = 1;
 
   std::priority_queue<QueueEntry> queue;
   for (int i = 0; i < static_cast<int>(candidates.size()); ++i) {
@@ -1554,7 +2110,6 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
                 candidates[static_cast<std::size_t>(i)].stableId, i});
   }
 
-  int nextStableBase = 1000000;
   while (!queue.empty()) {
     if (options.targetActiveElements > 0 &&
         static_cast<int>(complex.halfedges.size()) / 2 <=
@@ -1569,12 +2124,47 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
     }
     SurfaceSimplificationCandidate &candidate =
         candidates[static_cast<std::size_t>(entry.index)];
+    if (candidate.generation != currentGeneration) {
+      ++result.staleGenerationCandidates;
+      continue;
+    }
     const double cost = objective_cost(candidate, options.weights);
     SurfaceSimplificationTransaction transaction;
     transaction.candidateId = candidate.stableId;
     transaction.type = candidate.type;
+    transaction.topologyHealing = candidate.topologyHealing;
+    transaction.elementIds = candidate.elementIds;
+    transaction.affectedCellIds = candidate.affectedCellIds;
     transaction.objectiveCost = cost;
     transaction.beforeHash = complex_structural_hash(complex);
+    transaction.beforeNodeCount = static_cast<int>(complex.nodes.size());
+    transaction.beforeUndirectedEdgeCount =
+        static_cast<int>(complex.halfedges.size()) / 2;
+    transaction.beforeInteriorCellCount = static_cast<int>(std::count_if(
+        complex.cells.begin(), complex.cells.end(),
+        [](const SurfaceArrangementCell &cell) { return !cell.boundaryCycle; }));
+    transaction.beforeEulerCharacteristic =
+        complex.diagnostics.eulerCharacteristic;
+    transaction.sourceEulerCharacteristic =
+        complex.diagnostics.sourceEulerCharacteristic;
+    transaction.beforeConnectedComponentCount =
+        complex.diagnostics.connectedComponentCount;
+    transaction.sourceConnectedComponentCount =
+        complex.diagnostics.sourceConnectedComponentCount;
+    transaction.beforeBoundaryLoopCount =
+        complex.diagnostics.boundaryLoopCount;
+    transaction.sourceBoundaryLoopCount =
+        complex.diagnostics.sourceBoundaryLoopCount;
+    transaction.beforeUnsplitCrossings =
+        complex.diagnostics.unsplitCrossings;
+    transaction.beforeGeometricTJunctions =
+        complex.diagnostics.geometricTJunctions;
+    transaction.beforeEmbeddingValid = complex.diagnostics.embeddingValid;
+    transaction.beforeOrientationValid = complex.diagnostics.orientationValid;
+    transaction.beforeBoundaryLoopsValid =
+        complex.diagnostics.boundaryLoopsValid;
+    transaction.beforeEulerCharacteristicValid =
+        complex.diagnostics.eulerCharacteristicValid;
 
     std::set<int> removeHalfedges;
     SurfaceSimplificationRejectionReason rejection =
@@ -1644,24 +2234,82 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
 
     if (rejection == SurfaceSimplificationRejectionReason::None) {
       const int beforeNonDiskDefect = non_disk_topology_defect(complex);
+      transaction.beforeNonDiskDefect = beforeNonDiskDefect;
       SurfaceCellComplex trial = rebuild_complex_after_halfedge_removal(
           complex, removeHalfedges, vertices, faces);
+      transaction.trialBuilt = true;
       ++result.incidenceRebuilds;
+      transaction.afterNonDiskDefect = non_disk_topology_defect(trial);
+      transaction.afterNodeCount = static_cast<int>(trial.nodes.size());
+      transaction.afterUndirectedEdgeCount =
+          static_cast<int>(trial.halfedges.size()) / 2;
+      transaction.afterInteriorCellCount = static_cast<int>(std::count_if(
+          trial.cells.begin(), trial.cells.end(),
+          [](const SurfaceArrangementCell &cell) {
+            return !cell.boundaryCycle;
+          }));
+      transaction.afterEulerCharacteristic =
+          trial.diagnostics.eulerCharacteristic;
+      transaction.afterConnectedComponentCount =
+          trial.diagnostics.connectedComponentCount;
+      transaction.afterBoundaryLoopCount =
+          trial.diagnostics.boundaryLoopCount;
+      transaction.afterUnsplitCrossings =
+          trial.diagnostics.unsplitCrossings;
+      transaction.afterGeometricTJunctions =
+          trial.diagnostics.geometricTJunctions;
+      transaction.incidenceValid = validate_complex_incidence(trial, false);
+      transaction.embeddingValid = trial.diagnostics.embeddingValid;
+      transaction.orientationValid = trial.diagnostics.orientationValid;
+      transaction.boundaryLoopsValid = trial.diagnostics.boundaryLoopsValid;
+      transaction.eulerCharacteristicValid =
+          trial.diagnostics.eulerCharacteristicValid;
+      transaction.noUnsplitCrossings =
+          trial.diagnostics.unsplitCrossings == 0;
+      transaction.noGeometricTJunctions =
+          trial.diagnostics.geometricTJunctions == 0;
+      const auto mismatch = [](const int value, const int source) {
+        return std::abs(value - source);
+      };
+      transaction.topologyMismatchNotWorse =
+          (!transaction.beforeEmbeddingValid ||
+           transaction.embeddingValid) &&
+          (!transaction.beforeOrientationValid ||
+           transaction.orientationValid) &&
+          (!transaction.beforeBoundaryLoopsValid ||
+           transaction.boundaryLoopsValid) &&
+          mismatch(transaction.afterEulerCharacteristic,
+                   transaction.sourceEulerCharacteristic) <=
+              mismatch(transaction.beforeEulerCharacteristic,
+                       transaction.sourceEulerCharacteristic) &&
+          mismatch(transaction.afterConnectedComponentCount,
+                   transaction.sourceConnectedComponentCount) <=
+              mismatch(transaction.beforeConnectedComponentCount,
+                       transaction.sourceConnectedComponentCount) &&
+          mismatch(transaction.afterBoundaryLoopCount,
+                   transaction.sourceBoundaryLoopCount) <=
+              mismatch(transaction.beforeBoundaryLoopCount,
+                       transaction.sourceBoundaryLoopCount) &&
+          transaction.afterUnsplitCrossings <=
+              transaction.beforeUnsplitCrossings &&
+          transaction.afterGeometricTJunctions <=
+              transaction.beforeGeometricTJunctions;
+      transaction.protectedSupportPreserved =
+          same_protected_support(complex, trial);
       const bool healingTopologyValid =
-          validate_complex_incidence(trial, false) &&
-          trial.diagnostics.embeddingValid &&
-          trial.diagnostics.orientationValid &&
-          trial.diagnostics.boundaryLoopsValid &&
-          trial.diagnostics.eulerCharacteristicValid &&
-          trial.diagnostics.unsplitCrossings == 0 &&
-          trial.diagnostics.geometricTJunctions == 0 &&
-          non_disk_topology_defect(trial) < beforeNonDiskDefect;
+          transaction.incidenceValid &&
+          transaction.topologyMismatchNotWorse &&
+          transaction.afterNonDiskDefect < beforeNonDiskDefect;
       const bool ordinaryTopologyValid =
           validate_complex_incidence(trial) && trial.diagnostics.topologyValid;
-      if (candidate.topologyHealing ? !healingTopologyValid
-                                    : !ordinaryTopologyValid) {
+      const bool monotoneReduction =
+          transaction.afterUndirectedEdgeCount <
+          transaction.beforeUndirectedEdgeCount;
+      if (!monotoneReduction ||
+          (candidate.topologyHealing ? !healingTopologyValid
+                                     : !ordinaryTopologyValid)) {
         rejection = SurfaceSimplificationRejectionReason::TopologyChanged;
-      } else if (!same_protected_support(complex, trial)) {
+      } else if (!transaction.protectedSupportPreserved) {
         rejection = SurfaceSimplificationRejectionReason::ProtectedFeature;
       } else {
         ++result.validationPasses;
@@ -1671,32 +2319,36 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
         transaction.afterHash = complex_structural_hash(complex);
         ++result.committed;
 
-        for (SurfaceSimplificationCandidate &other : candidates) {
-          if (other.stableId == candidate.stableId || other.invalidated) {
-            continue;
+        result.invalidatedCandidates +=
+            std::max(0, static_cast<int>(candidates.size()) - 1);
+        const bool commitLimitReached =
+            options.maxCommittedTransactions >= 0 &&
+            result.committed >= options.maxCommittedTransactions;
+        if (options.refreshCandidatesAfterCommit && !commitLimitReached) {
+          const SurfaceSimplificationCandidateSet refreshed =
+              vertices != nullptr && faces != nullptr
+                  ? extract_surface_simplification_candidates(
+                        complex, *vertices, *faces)
+                  : extract_surface_simplification_candidates(complex);
+          ++currentGeneration;
+          ++result.frontierGenerations;
+          candidates = normalizeGeneration(refreshed.candidates, false);
+          result.recomputedCandidates +=
+              static_cast<int>(candidates.size());
+          queue = std::priority_queue<QueueEntry>();
+          for (int index = 0; index < static_cast<int>(candidates.size());
+               ++index) {
+            const SurfaceSimplificationCandidate &refreshedCandidate =
+                candidates[static_cast<std::size_t>(index)];
+            const double refreshedCost =
+                objective_cost(refreshedCandidate, options.weights);
+            queue.push({refreshedCost, refreshedCandidate.type,
+                        refreshedCandidate.stableId, index});
           }
-          other.invalidated = true;
-          ++result.invalidatedCandidates;
-        }
-        const SurfaceSimplificationCandidateSet refreshed =
-            vertices != nullptr && faces != nullptr
-                ? extract_surface_simplification_candidates(
-                      complex, *vertices, *faces)
-                : extract_surface_simplification_candidates(complex);
-        for (SurfaceSimplificationCandidate recomputedCandidate :
-             refreshed.candidates) {
-          if (options.topologyHealingOnly &&
-              !recomputedCandidate.topologyHealing) {
-            continue;
+        } else {
+          for (SurfaceSimplificationCandidate &other : candidates) {
+            other.invalidated = true;
           }
-          recomputedCandidate.stableId = nextStableBase++;
-          const int index = static_cast<int>(candidates.size());
-          const double recomputedCost =
-              objective_cost(recomputedCandidate, options.weights);
-          queue.push({recomputedCost, recomputedCandidate.type,
-                      recomputedCandidate.stableId, index});
-          candidates.push_back(std::move(recomputedCandidate));
-          ++result.recomputedCandidates;
         }
       }
     }
@@ -1707,7 +2359,9 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
       transaction.afterHash = complex_structural_hash(complex);
       ++result.rejected;
     }
-    result.transactions.push_back(transaction);
+    if (options.retainTransactionDetails) {
+      result.transactions.push_back(std::move(transaction));
+    }
   }
 
   result.complex = std::move(complex);
@@ -1722,10 +2376,11 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
 namespace directional::geometry {
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options) {
-  return simplify_surface_cell_complex_impl(inputComplex, std::move(candidates),
+  return simplify_surface_cell_complex_impl(std::move(inputComplex),
+                                             std::move(candidates),
                                              nullptr, nullptr, options);
 }
 
@@ -1734,12 +2389,13 @@ SurfaceSimplificationResult simplify_surface_cell_complex(
 namespace directional::geometry {
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex, const Eigen::MatrixXd &vertices,
+    SurfaceCellComplex inputComplex, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options) {
-  return simplify_surface_cell_complex_impl(inputComplex, std::move(candidates),
-                                             &vertices, &faces, options);
+  return simplify_surface_cell_complex_impl(std::move(inputComplex),
+                                             std::move(candidates), &vertices,
+                                             &faces, options);
 }
 
 } // namespace directional::geometry

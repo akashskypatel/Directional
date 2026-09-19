@@ -1,4 +1,5 @@
 #include <directional/geometry/FlowRepStrands.h>
+#include <directional/geometry/SurfaceArrangement.h>
 
 namespace directional::geometry {
 
@@ -258,19 +259,19 @@ bool valid_barycentric(const Eigen::RowVector3d &value,
 namespace directional::geometry::flow_rep_detail {
 
 bool arc_has_complete_provenance(const FlowRepArc &arc) {
-  if (arc.sourceFace < 0 || arc.sourceComponent < 0 || arc.sourceSheet < 0 ||
+  if (arc.sourceFace < 0 || !arc.sourceTopologyRegion.has_value() ||
+      !arc.sourceIsolationSheet.has_value() ||
       !valid_barycentric(arc.startBarycentric) ||
       !valid_barycentric(arc.endBarycentric) || !finite_row3(arc.start) ||
       !finite_row3(arc.end) || arc_length(arc) <= 0.0) {
     return false;
   }
   if (arc.mandatoryRail) {
-    return arc.initiallyActive && arc.railId >= 0 && arc.curveId >= 0 &&
-           arc.strandProvenance >= 0 &&
+    return arc.initiallyActive && arc.railId.has_value() && arc.curveId >= 0 &&
            (arc.boundaryRail || arc.hardFeatureRail);
   }
   if (arc.layoutSupport) {
-    return !arc.boundaryRail && !arc.hardFeatureRail && arc.railId < 0 &&
+    return !arc.boundaryRail && !arc.hardFeatureRail && !arc.railId.has_value() &&
            arc.curveId < 0 && arc.proposalId < 0 && arc.supportTraceId >= 0 &&
            arc.supportSeedId >= 0 && arc.supportSegment >= 0 &&
            arc.sameStrandHint == arc.supportTraceId;
@@ -285,7 +286,8 @@ namespace directional::geometry::flow_rep_detail {
 
 bool coverage_sample_is_valid(const FlowRepCoverageSample &sample) {
   return finite_row3(sample.position) && sample.sourceFace >= 0 &&
-         sample.sourceComponent >= 0 && sample.sourceSheet >= 0 &&
+         sample.sourceTopologyRegion.has_value() &&
+         sample.sourceIsolationSheet.has_value() &&
          valid_barycentric(sample.barycentric) &&
          std::isfinite(sample.targetSize) && sample.targetSize > 0.0 &&
          sample.sourceArcId >= 0;
@@ -298,8 +300,8 @@ namespace directional::geometry::flow_rep_detail {
 bool sample_and_arc_are_intrinsically_compatible(
     const FlowRepCoverageSample &sample, const FlowRepArc &arc) {
   return sample.sourceFace == arc.sourceFace &&
-         sample.sourceComponent == arc.sourceComponent &&
-         sample.sourceSheet == arc.sourceSheet;
+         sample.sourceTopologyRegion == arc.sourceTopologyRegion &&
+         sample.sourceIsolationSheet == arc.sourceIsolationSheet;
 }
 
 } // namespace directional::geometry::flow_rep_detail
@@ -465,15 +467,41 @@ classify_endpoints(const std::vector<FlowRepArc> &arcs,
 
 namespace directional::geometry {
 
+namespace {
+
+std::optional<std::pair<authority::TopologyRegionId,
+                             authority::IsolationSheetId>> network_source_scope(
+    const SurfaceCellNetwork &network, const int sourceFace) {
+  if (!network.sourceTopologyRegions.has_value() || sourceFace < 0) {
+    return std::nullopt;
+  }
+  const SourceTopologyRegions &authority = *network.sourceTopologyRegions;
+  const auto row = authority::SourceFaceId::from_index(
+      sourceFace, authority.face_count());
+  if (!row) return std::nullopt;
+  return std::make_pair(authority.region_for_row(row.value()),
+                        authority.sheet_for_row(row.value()));
+}
+
+std::optional<std::pair<authority::TopologyRegionId,
+                        authority::IsolationSheetId>> tracing_source_scope(
+    const SurfaceCellTracingOptions &options, const int sourceFace) {
+  if (options.sourceAuthority == nullptr || sourceFace < 0) {
+    return std::nullopt;
+  }
+  const auto row = authority::SourceFaceId::from_index(
+      sourceFace, options.sourceAuthority->face_count());
+  if (!row) return std::nullopt;
+  return std::make_pair(options.sourceAuthority->region_for_row(row.value()),
+                        options.sourceAuthority->sheet_for_row(row.value()));
+}
+
+} // namespace
+
 std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceCellNetwork &network) {
   std::vector<FlowRepArc> arcs;
-  const auto face_label = [](const std::vector<int> &labels, const int face) {
-    return face >= 0 && face < static_cast<int>(labels.size())
-               ? labels[static_cast<std::size_t>(face)]
-               : -1;
-  };
   const auto append_segment = [&](const SurfaceTraceSegment &segment,
                                   const bool mandatory, const int proposalId,
                                   const int proposalSeedId,
@@ -493,9 +521,15 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     arc.sourceFace = segment.face;
     arc.startBarycentric = segment.startBarycentric;
     arc.endBarycentric = segment.endBarycentric;
-    arc.sourceComponent =
-        face_label(network.sourceFaceComponents, segment.face);
-    arc.sourceSheet = face_label(network.sourceFaceSheets, segment.face);
+    const auto sourceScope = network_source_scope(network, segment.face);
+    arc.sourceTopologyRegion =
+        sourceScope.has_value()
+            ? std::optional<authority::TopologyRegionId>(sourceScope->first)
+            : std::nullopt;
+    arc.sourceIsolationSheet =
+        sourceScope.has_value()
+            ? std::optional<authority::IsolationSheetId>(sourceScope->second)
+            : std::nullopt;
     arc.family = segment.family;
     arc.strandProvenance = proposalId;
     arc.featureProvenance = segment.exitEdge;
@@ -512,17 +546,18 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
       arc.strandProvenance = -2 - supportTraceId;
       arc.sameStrandHint = supportTraceId;
     }
-    arc.hardFeatureRail = mandatory || segment.railId >= 0;
-    arc.mandatoryRail = mandatory || segment.railId >= 0;
-    if (segment.railId >= 0) {
+    arc.hardFeatureRail = mandatory || segment.railId.has_value();
+    arc.mandatoryRail = mandatory || segment.railId.has_value();
+    if (segment.railId.has_value()) {
       arc.featureProvenance = segment.curveId;
       arc.featureClass = 3;
       arc.railId = segment.railId;
       arc.curveId = segment.curveId;
       arc.railT0 = segment.railT0;
       arc.railT1 = segment.railT1;
-      arc.sameStrandHint = segment.railId;
+      arc.sameStrandHint = -1;
     }
+    flow_rep_detail::assign_intrinsic_endpoint_keys(arc, faces);
     arcs.push_back(arc);
   };
   for (const SurfaceCellRail &rail : network.authoritativeRails) {
@@ -544,23 +579,28 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
       arc.sourceFace = a.sourceFace;
       arc.startBarycentric = a.barycentric;
       arc.endBarycentric = b.barycentric;
-      arc.sourceComponent = rail.component >= 0
-                                ? rail.component
-                                : face_label(network.sourceFaceComponents,
-                                             a.sourceFace);
-      arc.sourceSheet = face_label(network.sourceFaceSheets, a.sourceFace);
+      const auto sourceScope = network_source_scope(network, a.sourceFace);
+      arc.sourceTopologyRegion =
+          sourceScope.has_value()
+              ? std::optional<authority::TopologyRegionId>(sourceScope->first)
+              : std::nullopt;
+      arc.sourceIsolationSheet =
+          sourceScope.has_value()
+              ? std::optional<authority::IsolationSheetId>(sourceScope->second)
+              : std::nullopt;
       arc.family = -1;
       arc.featureClass = rail.kind == SurfaceCellRailKind::Boundary ? 1 : 3;
       arc.mandatoryRail = true;
       arc.boundaryRail = rail.kind == SurfaceCellRailKind::Boundary;
       arc.hardFeatureRail = rail.kind == SurfaceCellRailKind::HardFeature;
-      arc.strandProvenance = rail.id;
+      // HardRailId is the sole rail strand authority; no raw ordinal mirror.
       arc.featureProvenance = rail.curveId;
       arc.railId = rail.id;
       arc.curveId = rail.curveId;
       arc.railT0 = a.railParameter;
       arc.railT1 = b.railParameter;
-      arc.sameStrandHint = rail.id;
+      arc.sameStrandHint = -1;
+      flow_rep_detail::assign_intrinsic_endpoint_keys(arc, faces);
       arcs.push_back(arc);
     }
   }
@@ -634,12 +674,12 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
             network.traces[static_cast<std::size_t>(traceId)];
         if (trace.segments.empty() ||
             !terminal_is_embedded_anchor(trace.termination) ||
-            trace.segments.front().railId >= 0) {
+            trace.segments.front().railId.has_value()) {
           continue;
         }
         std::vector<SurfaceTraceSegment> supportPath;
         for (const SurfaceTraceSegment &segment : trace.segments) {
-          if (segment.railId >= 0) {
+          if (segment.railId.has_value()) {
             break;
           }
           supportPath.push_back(segment);
@@ -666,7 +706,14 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
         }
         if (arcs.size() > firstSupportArc) {
           arcs[firstSupportArc].startEmbeddedAnchor = true;
-          arcs.back().endEmbeddedAnchor = true;
+          // A trace can enter an authoritative rail before its recorded
+          // terminal reason. The rail suffix is intentionally omitted because
+          // the authoritative rail is already represented, but that does not
+          // transfer the full trace's terminal anchor to the last pre-rail
+          // segment. Its endpoint must be connected by canonical rail ownership
+          // or remain an explicit endpoint-completion obligation.
+          arcs.back().endEmbeddedAnchor =
+              supportPath.size() == trace.segments.size();
         }
       }
     }
@@ -689,13 +736,12 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     if (trace.segments.empty() ||
         trace.termination == TraceTerminationReason::FieldMetadata ||
         trace.termination == TraceTerminationReason::SourceSheet ||
-        trace.termination == TraceTerminationReason::Degenerate ||
-        trace.segments.front().railId >= 0) {
+        trace.segments.front().railId.has_value()) {
       continue;
     }
     std::vector<SurfaceTraceSegment> supportPath;
     for (const SurfaceTraceSegment &segment : trace.segments) {
-      if (segment.railId >= 0) {
+      if (segment.railId.has_value()) {
         break;
       }
       supportPath.push_back(segment);
@@ -724,7 +770,11 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     }
     if (arcs.size() > firstSupportArc) {
       arcs[firstSupportArc].startEmbeddedAnchor = true;
+      // Preserve an embedded terminal only when the retained support path
+      // actually reaches that terminal. A pre-rail prefix cannot inherit the
+      // later Boundary/Feature/Captured label from the omitted rail suffix.
       arcs.back().endEmbeddedAnchor =
+          supportPath.size() == trace.segments.size() &&
           terminal_is_embedded_anchor(trace.termination);
     }
   }
@@ -807,6 +857,7 @@ FlowRepSelectionInput build_flow_rep_selection_input(
   const int transitionRingTraceBase =
       static_cast<int>(4U * network.seeds.size() +
                        network.singularSeparatrices.size());
+  std::map<int, std::vector<int>> transitionRingArcIdsByVertex;
   int transitionRingIndex = 0;
   for (const int singularVertex : singularVertices) {
     const int supportTraceId = transitionRingTraceBase + transitionRingIndex++;
@@ -851,9 +902,15 @@ FlowRepSelectionInput build_flow_rep_selection_input(
           (arc.end - arc.start).norm() <= 1.0e-14) {
         continue;
       }
-      arc.sourceComponent =
-          face_label(network.sourceFaceComponents, face);
-      arc.sourceSheet = face_label(network.sourceFaceSheets, face);
+      const auto sourceScope = network_source_scope(network, face);
+      arc.sourceTopologyRegion =
+          sourceScope.has_value()
+              ? std::optional<authority::TopologyRegionId>(sourceScope->first)
+              : std::nullopt;
+      arc.sourceIsolationSheet =
+          sourceScope.has_value()
+              ? std::optional<authority::IsolationSheetId>(sourceScope->second)
+              : std::nullopt;
       // A transition ring is a protected topology-template boundary, not one
       // of the two transported cross-field families.
       arc.family = -1;
@@ -866,8 +923,278 @@ FlowRepSelectionInput build_flow_rep_selection_input(
       arc.startEmbeddedAnchor = true;
       arc.endEmbeddedAnchor = true;
       arc.singularitySupport = true;
+      flow_rep_detail::assign_intrinsic_endpoint_keys(arc, faces);
+      transitionRingArcIdsByVertex[singularVertex].push_back(arc.id);
       input.arcs.push_back(std::move(arc));
     }
+  }
+
+  // A separatrix can take a numerically tiny tour through the singular
+  // one-ring and enter an authoritative rail before it reaches the transition
+  // ring. Retaining that pre-rail micro-loop creates a homoclinic edge at the
+  // singular node: one DCEL face becomes a two-sided lens and its neighbor is
+  // pinched. The authoritative rail already represents the omitted suffix, so
+  // replace only these entirely intra-ring prefixes with the canonical radial
+  // spoke defined by the enumerated branch ray and the intrinsic transition
+  // ring. Branches that actually cross the ring keep their traced geometry.
+  const int singularSupportTraceBase =
+      static_cast<int>(4U * network.seeds.size());
+  const auto barycentric_uv = [](const Eigen::RowVector3d &barycentric) {
+    return Eigen::Vector2d(barycentric[1], barycentric[2]);
+  };
+  for (int separatrixIndex = 0;
+       separatrixIndex <
+       static_cast<int>(network.singularSeparatrices.size());
+       ++separatrixIndex) {
+    const SurfaceSingularitySeparatrix &separatrix =
+        network.singularSeparatrices[static_cast<std::size_t>(
+            separatrixIndex)];
+    const int supportTraceId =
+        singularSupportTraceBase + separatrixIndex;
+    const auto foundRing =
+        transitionRingArcIdsByVertex.find(separatrix.sourceVertex);
+    if (foundRing == transitionRingArcIdsByVertex.end()) {
+      continue;
+    }
+
+    std::vector<int> supportArcIds;
+    for (const FlowRepArc &arc : input.arcs) {
+      if (arc.initiallyActive && arc.singularitySupport && arc.family >= 0 &&
+          arc.supportTraceId == supportTraceId) {
+        supportArcIds.push_back(arc.id);
+      }
+    }
+    if (supportArcIds.empty()) {
+      continue;
+    }
+    std::sort(supportArcIds.begin(), supportArcIds.end(),
+              [&](const int first, const int second) {
+                const FlowRepArc &a =
+                    input.arcs[static_cast<std::size_t>(first)];
+                const FlowRepArc &b =
+                    input.arcs[static_cast<std::size_t>(second)];
+                return std::tie(a.supportSegment, a.id) <
+                       std::tie(b.supportSegment, b.id);
+              });
+
+    double minimumRingRadius = std::numeric_limits<double>::infinity();
+    const Eigen::RowVector3d singularPosition =
+        vertices.row(separatrix.sourceVertex);
+    for (const int ringArcId : foundRing->second) {
+      const FlowRepArc &ring =
+          input.arcs[static_cast<std::size_t>(ringArcId)];
+      minimumRingRadius =
+          std::min(minimumRingRadius,
+                   std::min((ring.start - singularPosition).norm(),
+                            (ring.end - singularPosition).norm()));
+    }
+    const double returnTolerance =
+        std::isfinite(minimumRingRadius) && minimumRingRadius > 0.0
+            ? std::max(1.0e-12, 1.0e-5 * minimumRingRadius)
+            : 1.0e-12;
+
+    int firstRingCrossingPosition = -1;
+    for (int position = 0;
+         position < static_cast<int>(supportArcIds.size()); ++position) {
+      const FlowRepArc &support = input.arcs[static_cast<std::size_t>(
+          supportArcIds[static_cast<std::size_t>(position)])];
+      for (const int ringArcId : foundRing->second) {
+        const FlowRepArc &ring =
+            input.arcs[static_cast<std::size_t>(ringArcId)];
+        if (support.sourceFace != ring.sourceFace) {
+          continue;
+        }
+        surface_arrangement_detail::Segment2 supportSegment;
+        supportSegment.start = barycentric_uv(support.startBarycentric);
+        supportSegment.end = barycentric_uv(support.endBarycentric);
+        surface_arrangement_detail::Segment2 ringSegment;
+        ringSegment.start = barycentric_uv(ring.startBarycentric);
+        ringSegment.end = barycentric_uv(ring.endBarycentric);
+        double supportParameter = 0.0;
+        double ringParameter = 0.0;
+        Eigen::Vector2d point = Eigen::Vector2d::Zero();
+        if (surface_arrangement_detail::segment_intersection_params(
+                supportSegment, ringSegment, supportParameter,
+                ringParameter, point) &&
+            supportParameter > 1.0e-10) {
+          firstRingCrossingPosition = position;
+          break;
+        }
+      }
+      if (firstRingCrossingPosition >= 0) {
+        break;
+      }
+    }
+
+    // Re-root a branch that numerically returns to its source singularity
+    // before it first reaches the transition ring. The removed prefix lies
+    // wholly inside the ring and therefore cannot encode global layout
+    // topology; retaining it creates a tiny homoclinic loop and a pinched
+    // DCEL face. The continuation remains the authoritative traced branch.
+    int lastPreRingReturnPosition = -1;
+    const int returnSearchEnd =
+        firstRingCrossingPosition >= 0
+            ? firstRingCrossingPosition
+            : static_cast<int>(supportArcIds.size());
+    for (int position = 0; position < returnSearchEnd; ++position) {
+      const FlowRepArc &support = input.arcs[static_cast<std::size_t>(
+          supportArcIds[static_cast<std::size_t>(position)])];
+      if ((support.end - singularPosition).norm() <= returnTolerance) {
+        lastPreRingReturnPosition = position;
+      }
+    }
+    if (lastPreRingReturnPosition >= 0 &&
+        lastPreRingReturnPosition + 1 <
+            static_cast<int>(supportArcIds.size())) {
+      const int continuationArcId =
+          supportArcIds[static_cast<std::size_t>(
+              lastPreRingReturnPosition + 1)];
+      FlowRepArc &continuation =
+          input.arcs[static_cast<std::size_t>(continuationArcId)];
+      int singularCorner = -1;
+      for (int corner = 0; corner < 3; ++corner) {
+        if (faces(continuation.sourceFace, corner) ==
+            separatrix.sourceVertex) {
+          singularCorner = corner;
+          break;
+        }
+      }
+      if (singularCorner >= 0 &&
+          (continuation.start - singularPosition).norm() <=
+              returnTolerance) {
+        for (int position = 0;
+             position <= lastPreRingReturnPosition; ++position) {
+          input.arcs[static_cast<std::size_t>(
+              supportArcIds[static_cast<std::size_t>(position)])]
+              .initiallyActive = false;
+        }
+        continuation.start = singularPosition;
+        continuation.startBarycentric = Eigen::RowVector3d::Zero();
+        continuation.startBarycentric[singularCorner] = 1.0;
+        continuation.startEmbeddedAnchor = true;
+        flow_rep_detail::assign_intrinsic_endpoint_keys(continuation, faces);
+        continue;
+      }
+    }
+
+    bool hasAuthoritativeRailSuffix = false;
+    for (const SurfaceTraceSegment &segment : separatrix.trace.segments) {
+      if (segment.railId.has_value()) {
+        hasAuthoritativeRailSuffix = true;
+        break;
+      }
+    }
+    const bool terminalReturnNeedsSpoke =
+        lastPreRingReturnPosition ==
+        static_cast<int>(supportArcIds.size()) - 1;
+    if (firstRingCrossingPosition >= 0 ||
+        (!hasAuthoritativeRailSuffix && !terminalReturnNeedsSpoke)) {
+      continue;
+    }
+
+    int firstSupportArcId = -1;
+    int owningRingArcId = -1;
+    for (const int supportArcId : supportArcIds) {
+      const FlowRepArc &support =
+          input.arcs[static_cast<std::size_t>(supportArcId)];
+      if (support.sourceFace != separatrix.initialFace) {
+        continue;
+      }
+      firstSupportArcId = supportArcId;
+      for (const int ringArcId : foundRing->second) {
+        if (input.arcs[static_cast<std::size_t>(ringArcId)].sourceFace ==
+            separatrix.initialFace) {
+          owningRingArcId = ringArcId;
+          break;
+        }
+      }
+      if (owningRingArcId >= 0) {
+        break;
+      }
+    }
+    if (firstSupportArcId < 0 || owningRingArcId < 0) {
+      continue;
+    }
+
+    const FlowRepArc &firstSupport =
+        input.arcs[static_cast<std::size_t>(firstSupportArcId)];
+    const FlowRepArc &owningRing =
+        input.arcs[static_cast<std::size_t>(owningRingArcId)];
+    Eigen::RowVector3d vertexBarycentric = Eigen::RowVector3d::Zero();
+    int singularCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (faces(separatrix.initialFace, corner) ==
+          separatrix.sourceVertex) {
+        singularCorner = corner;
+        vertexBarycentric[corner] = 1.0;
+        break;
+      }
+    }
+    if (singularCorner < 0) {
+      continue;
+    }
+    const Eigen::Vector2d vertexUv = barycentric_uv(vertexBarycentric);
+    const Eigen::Vector2d firstStartUv =
+        barycentric_uv(firstSupport.startBarycentric);
+    const Eigen::Vector2d firstEndUv =
+        barycentric_uv(firstSupport.endBarycentric);
+    Eigen::Vector2d rayDirection = firstEndUv - firstStartUv;
+    if ((firstStartUv - vertexUv).norm() >
+        (firstEndUv - vertexUv).norm()) {
+      rayDirection = firstStartUv - firstEndUv;
+    }
+    if (!(rayDirection.norm() > 1.0e-14) ||
+        !rayDirection.allFinite()) {
+      continue;
+    }
+    rayDirection.normalize();
+    surface_arrangement_detail::Segment2 ray;
+    ray.start = vertexUv;
+    ray.end = vertexUv + 4.0 * rayDirection;
+    surface_arrangement_detail::Segment2 ringSegment;
+    ringSegment.start = barycentric_uv(owningRing.startBarycentric);
+    ringSegment.end = barycentric_uv(owningRing.endBarycentric);
+    double rayParameter = 0.0;
+    double ringParameter = 0.0;
+    Eigen::Vector2d intersection = Eigen::Vector2d::Zero();
+    if (!surface_arrangement_detail::segment_intersection_params(
+            ray, ringSegment, rayParameter, ringParameter, intersection) ||
+        rayParameter <= 1.0e-10) {
+      continue;
+    }
+    Eigen::RowVector3d ringBarycentric;
+    ringBarycentric << 1.0 - intersection.x() - intersection.y(),
+        intersection.x(), intersection.y();
+    ringBarycentric =
+        surface_arrangement_detail::canonicalize_barycentric(
+            ringBarycentric);
+    if (!ringBarycentric.allFinite() ||
+        ringBarycentric.minCoeff() < -1.0e-10) {
+      continue;
+    }
+
+    for (const int supportArcId : supportArcIds) {
+      input.arcs[static_cast<std::size_t>(supportArcId)].initiallyActive =
+          false;
+    }
+    FlowRepArc spoke = firstSupport;
+    spoke.id = static_cast<int>(input.arcs.size());
+    spoke.start = singularPosition;
+    spoke.end = surface_cell_tracing_detail::point_position(
+        vertices, faces,
+        SurfaceTracePoint{separatrix.initialFace, ringBarycentric});
+    spoke.sourceFace = separatrix.initialFace;
+    spoke.startBarycentric = vertexBarycentric;
+    spoke.endBarycentric = ringBarycentric;
+    spoke.family = separatrix.family;
+    spoke.featureProvenance = -1;
+    spoke.supportSegment = 0;
+    spoke.startEmbeddedAnchor = true;
+    spoke.endEmbeddedAnchor = true;
+    spoke.initiallyActive = true;
+    spoke.substitutions.clear();
+    flow_rep_detail::assign_intrinsic_endpoint_keys(spoke, faces);
+    input.arcs.push_back(std::move(spoke));
   }
 
   const auto target_size_at_barycentric = [&](const int face,
@@ -907,8 +1234,8 @@ FlowRepSelectionInput build_flow_rep_selection_input(
       sample.sourceFace = arc.sourceFace;
       sample.barycentric = (1.0 - parameter) * arc.startBarycentric +
                            parameter * arc.endBarycentric;
-      sample.sourceComponent = arc.sourceComponent;
-      sample.sourceSheet = arc.sourceSheet;
+      sample.sourceTopologyRegion = arc.sourceTopologyRegion;
+      sample.sourceIsolationSheet = arc.sourceIsolationSheet;
       sample.targetSize =
           target_size_at_barycentric(sample.sourceFace, sample.barycentric);
       sample.sourceArcId = arc.id;
@@ -1014,6 +1341,12 @@ FlowRepAffinity compute_flow_rep_affinity(
       flow_rep_detail::arcs_adjacent(a, b, options.adjacentDistance);
   const double parallel =
       std::abs(flow_rep_detail::arc_tangent(a).dot(flow_rep_detail::arc_tangent(b)));
+  if (adjacent && a.railId.has_value() && b.railId.has_value() &&
+      a.railId == b.railId) {
+    affinity.score = 0.75 + parallel;
+    affinity.cue = FlowRepAffinityCue::JunctionContinuation;
+    return affinity;
+  }
   if (adjacent && a.sameStrandHint >= 0 && a.sameStrandHint == b.sameStrandHint) {
     affinity.score = 0.75 + parallel;
     affinity.cue = FlowRepAffinityCue::JunctionContinuation;
@@ -1396,8 +1729,8 @@ namespace directional::geometry::flow_rep_detail {
 bool substitution_preserves_cycle_boundary(const FlowRepArc &original,
                                                    const FlowRepArc &candidate) {
   if (candidate.mandatoryRail || candidate.sourceFace != original.sourceFace ||
-      candidate.sourceComponent != original.sourceComponent ||
-      candidate.sourceSheet != original.sourceSheet ||
+      candidate.sourceTopologyRegion != original.sourceTopologyRegion ||
+      candidate.sourceIsolationSheet != original.sourceIsolationSheet ||
       candidate.family != original.family ||
       candidate.proposalId != original.proposalId ||
       candidate.proposalSide != original.proposalSide ||
@@ -1570,15 +1903,15 @@ bool cycle_evaluations_are_valid(
 namespace directional::geometry::flow_rep_detail {
 
 FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc) {
-  if (arc.mandatoryRail || arc.railId >= 0) {
-    return {0, arc.railId, arc.curveId, arc.family, arc.sourceComponent};
+  if (arc.mandatoryRail || arc.railId.has_value()) {
+    return {0, arc.railId, arc.curveId, -1, arc.family, arc.sourceTopologyRegion};
   }
   if (arc.proposalId >= 0 && arc.proposalSide >= 0) {
-    return {1, arc.proposalId, arc.proposalSide, arc.family,
-            arc.sourceComponent};
+    return {1, std::nullopt, arc.proposalId, arc.proposalSide, arc.family,
+            arc.sourceTopologyRegion};
   }
-  return {2, arc.sameStrandHint, arc.family, arc.sourceComponent,
-          arc.sourceComponent};
+  return {2, std::nullopt, arc.sameStrandHint, -1, arc.family,
+          arc.sourceTopologyRegion};
 }
 
 } // namespace directional::geometry::flow_rep_detail
@@ -1586,14 +1919,69 @@ FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc) {
 namespace directional::geometry::flow_rep_detail {
 
 std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
-                                           const bool start) {
+                                    const bool start) {
+  const bool intrinsicValid =
+      start ? arc.startIntrinsicEndpointKeyValid
+            : arc.endIntrinsicEndpointKeyValid;
+  if (intrinsicValid) {
+    return start ? arc.startIntrinsicEndpointKey
+                 : arc.endIntrinsicEndpointKey;
+  }
   std::uint64_t h = point_key(start ? arc.start : arc.end);
   const auto mix = [&](const std::int64_t value) {
     h ^= static_cast<std::uint64_t>(value);
     h *= 1099511628211ULL;
   };
-  mix(arc.sourceComponent);
+  mix(arc.sourceTopologyRegion.has_value()
+          ? static_cast<std::int64_t>(arc.sourceTopologyRegion->index())
+          : -1);
+  mix(arc.sourceIsolationSheet.has_value()
+          ? static_cast<std::int64_t>(arc.sourceIsolationSheet->index())
+          : -1);
   return h;
+}
+
+void assign_intrinsic_endpoint_keys(FlowRepArc &arc,
+                                    const Eigen::MatrixXi &faces) {
+  const auto key = [&](const Eigen::RowVector3d &barycentric) {
+    const surface_arrangement_detail::NodeKey node =
+        surface_arrangement_detail::make_node_key(
+            faces, arc.sourceFace,
+            surface_arrangement_detail::bary_to_uv(barycentric));
+    std::uint64_t hash = 1469598103934665603ULL;
+    const auto mix = [&](const std::int64_t value) {
+      hash ^= static_cast<std::uint64_t>(value);
+      hash *= 1099511628211ULL;
+    };
+    mix(node.kind);
+    mix(node.face);
+    mix(node.edge.has_value() ? node.edge->first().index() : -1);
+    mix(node.edge.has_value() ? node.edge->second().index() : -1);
+    mix(node.edgeT);
+    mix(node.vertex);
+    mix(node.u);
+    mix(node.v);
+    mix(arc.sourceTopologyRegion.has_value()
+            ? static_cast<std::int64_t>(arc.sourceTopologyRegion->index())
+            : -1);
+    mix(arc.sourceIsolationSheet.has_value()
+            ? static_cast<std::int64_t>(arc.sourceIsolationSheet->index())
+            : -1);
+    return hash;
+  };
+  if (arc.sourceFace < 0 || arc.sourceFace >= faces.rows() ||
+      !arc.startBarycentric.allFinite() ||
+      !arc.endBarycentric.allFinite()) {
+    arc.startIntrinsicEndpointKeyValid = false;
+    arc.endIntrinsicEndpointKeyValid = false;
+    arc.startIntrinsicEndpointKey = 0U;
+    arc.endIntrinsicEndpointKey = 0U;
+    return;
+  }
+  arc.startIntrinsicEndpointKey = key(arc.startBarycentric);
+  arc.endIntrinsicEndpointKey = key(arc.endBarycentric);
+  arc.startIntrinsicEndpointKeyValid = true;
+  arc.endIntrinsicEndpointKeyValid = true;
 }
 
 } // namespace directional::geometry::flow_rep_detail
@@ -1970,10 +2358,10 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
             !arcs[static_cast<std::size_t>(sample.sourceArcId)].initiallyActive ||
             sample.sourceFace !=
                 arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceFace ||
-            sample.sourceComponent !=
-                arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceComponent ||
-            sample.sourceSheet !=
-                arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceSheet) {
+            sample.sourceTopologyRegion !=
+                arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceTopologyRegion ||
+            sample.sourceIsolationSheet !=
+                arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceIsolationSheet) {
           return finish_failure(
               FlowRepSelectionFailureCode::InvalidCoverageEvidence);
         }
@@ -2059,10 +2447,10 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
           !arcs[static_cast<std::size_t>(sample.sourceArcId)].initiallyActive ||
           sample.sourceFace !=
               arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceFace ||
-          sample.sourceComponent !=
-              arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceComponent ||
-          sample.sourceSheet !=
-              arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceSheet) {
+          sample.sourceTopologyRegion !=
+              arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceTopologyRegion ||
+          sample.sourceIsolationSheet !=
+              arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceIsolationSheet) {
         return finish_failure(
             FlowRepSelectionFailureCode::InvalidCoverageEvidence);
       }
@@ -2386,58 +2774,331 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
 
 namespace directional::geometry {
 
+namespace {
+
+struct FlowRepEndpointCompletionDraft : FlowRepEndpointCompletionEvidence {
+  bool success = false;
+  FlowRepEndpointCompletionFailureKind failureKind =
+      FlowRepEndpointCompletionFailureKind::None;
+  std::string failure;
+  std::vector<FlowRepArc> arcs;
+  std::vector<int> retainedArcIds;
+  std::vector<FlowRepEndpointTag> endpointTags;
+};
+
+FlowRepEndpointCompletionResult close_flow_rep_endpoint_completion(
+    FlowRepEndpointCompletionDraft draft) {
+  if (draft.success) {
+    FlowRepEndpointCompletionEvidence evidence =
+        std::move(static_cast<FlowRepEndpointCompletionEvidence &>(draft));
+    FlowRepEndpointCompletionProduct product;
+    product.arcs = std::move(draft.arcs);
+    product.retainedArcIds = std::move(draft.retainedArcIds);
+    product.endpointTags = std::move(draft.endpointTags);
+    return FlowRepEndpointCompletionResult::produced(
+        std::move(evidence), std::move(product));
+  }
+  if (draft.failureKind == FlowRepEndpointCompletionFailureKind::None) {
+    throw std::logic_error(
+        "FlowRep endpoint completion rejected without a typed failure.");
+  }
+  FlowRepEndpointCompletionFailure failure;
+  failure.kind = draft.failureKind;
+  failure.detail = std::move(draft.failure);
+  FlowRepEndpointCompletionEvidence evidence =
+      std::move(static_cast<FlowRepEndpointCompletionEvidence &>(draft));
+  return FlowRepEndpointCompletionResult::rejected(
+      std::move(evidence), std::move(failure));
+}
+
+} // namespace
+
 FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &crossField,
     const SurfaceCellTracingOptions &tracingOptions,
-    const std::vector<FlowRepArc> &arcs,
-    const std::vector<int> &retainedArcIds,
+    std::vector<FlowRepArc> arcs,
+    std::vector<int> retainedArcIds,
     const FlowRepEndpointCompletionOptions &options) {
-  FlowRepEndpointCompletionResult result;
-  result.arcs = arcs;
-  result.retainedArcIds = retainedArcIds;
+  FlowRepEndpointCompletionDraft result;
+  result.arcs = std::move(arcs);
+  result.retainedArcIds = std::move(retainedArcIds);
   if (options.maxEndpointTraces < 0 || options.maxAddedArcs < 0 ||
       !std::isfinite(options.intersectionTolerance) ||
       options.intersectionTolerance <= 0.0) {
+    result.failureKind = FlowRepEndpointCompletionFailureKind::InvalidOptions;
     result.failure = "InvalidEndpointCompletionOptions";
-    return result;
+    return close_flow_rep_endpoint_completion(std::move(result));
   }
   if (crossField.primaryDirections.rows() != faces.rows() ||
       crossField.primaryDirections.cols() != 3 ||
       crossField.secondaryDirections.rows() != faces.rows() ||
       crossField.secondaryDirections.cols() != 3) {
+    result.failureKind = FlowRepEndpointCompletionFailureKind::IncompleteCrossFieldAxes;
     result.failure = "IncompleteCrossFieldAxes";
-    return result;
+    return close_flow_rep_endpoint_completion(std::move(result));
   }
 
+  const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
   std::vector<std::vector<int>> activeArcsByFace(
       static_cast<std::size_t>(faces.rows()));
   std::map<std::uint64_t, int> endpointDegree;
+  struct RetainedFeatureRailInterval {
+    double t0 = 0.0;
+    double t1 = 0.0;
+    std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+    std::set<authority::IsolationSheetId> incidentSourceSheets;
+  };
+  std::map<authority::SourceEdgeTopologyKey, std::vector<RetainedFeatureRailInterval>>
+      retainedFeatureRailsByEdge;
+  std::map<int, std::vector<RetainedFeatureRailInterval>>
+      retainedFeatureRailsByVertex;
   std::vector<unsigned char> retained(result.arcs.size(), 0U);
   for (const int arcId : result.retainedArcIds) {
     if (arcId < 0 || arcId >= static_cast<int>(result.arcs.size()) ||
         result.arcs[static_cast<std::size_t>(arcId)].id != arcId) {
+      result.failureKind = FlowRepEndpointCompletionFailureKind::InvalidRetainedArcIdentity;
       result.failure = "InvalidRetainedArcIdentity";
-      return result;
+      return close_flow_rep_endpoint_completion(std::move(result));
     }
     if (retained[static_cast<std::size_t>(arcId)] != 0U) {
+      result.failureKind = FlowRepEndpointCompletionFailureKind::DuplicateRetainedArc;
       result.failure = "DuplicateRetainedArc";
-      return result;
+      return close_flow_rep_endpoint_completion(std::move(result));
     }
     retained[static_cast<std::size_t>(arcId)] = 1U;
-    const FlowRepArc &arc = result.arcs[static_cast<std::size_t>(arcId)];
-    if (!flow_rep_detail::arc_has_complete_provenance(arc)) {
+    if (!flow_rep_detail::arc_has_complete_provenance(
+            result.arcs[static_cast<std::size_t>(arcId)])) {
+      result.failureKind = FlowRepEndpointCompletionFailureKind::IncompleteRetainedArcProvenance;
       result.failure = "IncompleteRetainedArcProvenance";
-      return result;
+      return close_flow_rep_endpoint_completion(std::move(result));
     }
+  }
+
+  // Trace transitions can leave two retained chart endpoints on different
+  // incident edges only a sub-tolerance distance from the same exact source
+  // vertex. The arrangement identifies that vertex intrinsically, while a
+  // per-face endpoint key keeps the unsanitized points separate and turns one
+  // support segment into a bridge. Canonicalize only when at least two
+  // distinct retained arcs prove ownership inside the same edge-connected
+  // source-face fan. Faces that merely touch at a vertex remain separated, as
+  // do different source components.
+  struct NearVertexEndpoint {
+    int arcId = -1;
+    bool start = false;
+    int sourceFace = -1;
+    int sourceVertex = -1;
+    std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  };
+  std::map<std::pair<int, std::optional<authority::TopologyRegionId>>,
+           std::vector<NearVertexEndpoint>>
+      nearVertexEndpoints;
+  for (const int arcId : result.retainedArcIds) {
+    const FlowRepArc &arc = result.arcs[static_cast<std::size_t>(arcId)];
+    if (arc.sourceFace < 0 || arc.sourceFace >= faces.rows()) {
+      continue;
+    }
+    for (const bool start : {true, false}) {
+      const Eigen::RowVector3d &position = start ? arc.start : arc.end;
+      if (!position.allFinite()) {
+        continue;
+      }
+      int nearestVertex = -1;
+      double nearestDistance = std::numeric_limits<double>::infinity();
+      for (int corner = 0; corner < 3; ++corner) {
+        const int vertex = faces(arc.sourceFace, corner);
+        const double distance =
+            (position - vertices.row(vertex)).norm();
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestVertex = vertex;
+        }
+      }
+      if (nearestVertex >= 0 &&
+          nearestDistance <= options.intersectionTolerance) {
+        nearVertexEndpoints[{nearestVertex, arc.sourceTopologyRegion}].push_back(
+            {arcId, start, arc.sourceFace, nearestVertex,
+             arc.sourceTopologyRegion});
+      }
+    }
+  }
+  const auto faces_share_vertex_edge = [&](const int firstFace,
+                                            const int secondFace,
+                                            const int vertex) {
+    if (firstFace == secondFace) {
+      return true;
+    }
+    int sharedVertices = 0;
+    bool sharesVertex = false;
+    for (int firstCorner = 0; firstCorner < 3; ++firstCorner) {
+      const int firstVertex = faces(firstFace, firstCorner);
+      for (int secondCorner = 0; secondCorner < 3; ++secondCorner) {
+        if (firstVertex != faces(secondFace, secondCorner)) {
+          continue;
+        }
+        ++sharedVertices;
+        sharesVertex = sharesVertex || firstVertex == vertex;
+      }
+    }
+    return sharesVertex && sharedVertices >= 2;
+  };
+  for (auto &[vertexComponent, endpoints] : nearVertexEndpoints) {
+    const int sourceVertex = vertexComponent.first;
+    std::vector<int> parent(endpoints.size());
+    std::iota(parent.begin(), parent.end(), 0);
+    const auto find_root = [&](int index) {
+      int root = index;
+      while (parent[static_cast<std::size_t>(root)] != root) {
+        root = parent[static_cast<std::size_t>(root)];
+      }
+      while (parent[static_cast<std::size_t>(index)] != index) {
+        const int next = parent[static_cast<std::size_t>(index)];
+        parent[static_cast<std::size_t>(index)] = root;
+        index = next;
+      }
+      return root;
+    };
+    for (int first = 0; first < static_cast<int>(endpoints.size()); ++first) {
+      for (int second = first + 1;
+           second < static_cast<int>(endpoints.size()); ++second) {
+        if (!faces_share_vertex_edge(
+                endpoints[static_cast<std::size_t>(first)].sourceFace,
+                endpoints[static_cast<std::size_t>(second)].sourceFace,
+                sourceVertex)) {
+          continue;
+        }
+        const int firstRoot = find_root(first);
+        const int secondRoot = find_root(second);
+        if (firstRoot != secondRoot) {
+          parent[static_cast<std::size_t>(secondRoot)] = firstRoot;
+        }
+      }
+    }
+    std::map<int, std::vector<int>> fanEndpoints;
+    for (int endpointIndex = 0;
+         endpointIndex < static_cast<int>(endpoints.size());
+         ++endpointIndex) {
+      fanEndpoints[find_root(endpointIndex)].push_back(endpointIndex);
+    }
+    for (const auto &[fan, endpointIndices] : fanEndpoints) {
+      (void)fan;
+      std::set<int> distinctArcs;
+      for (const int endpointIndex : endpointIndices) {
+        distinctArcs.insert(
+            endpoints[static_cast<std::size_t>(endpointIndex)].arcId);
+      }
+      if (distinctArcs.size() < 2U) {
+        continue;
+      }
+      for (const int endpointIndex : endpointIndices) {
+        const NearVertexEndpoint &endpoint =
+            endpoints[static_cast<std::size_t>(endpointIndex)];
+        FlowRepArc &arc =
+            result.arcs[static_cast<std::size_t>(endpoint.arcId)];
+        Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+        for (int corner = 0; corner < 3; ++corner) {
+          if (faces(arc.sourceFace, corner) == sourceVertex) {
+            barycentric[corner] = 1.0;
+            break;
+          }
+        }
+        if (endpoint.start) {
+          arc.start = vertices.row(sourceVertex);
+          arc.startBarycentric = barycentric;
+          arc.startEmbeddedAnchor = true;
+        } else {
+          arc.end = vertices.row(sourceVertex);
+          arc.endBarycentric = barycentric;
+          arc.endEmbeddedAnchor = true;
+        }
+      }
+    }
+  }
+
+  for (const int arcId : result.retainedArcIds) {
+    FlowRepArc &arc = result.arcs[static_cast<std::size_t>(arcId)];
+    flow_rep_detail::assign_intrinsic_endpoint_keys(arc, faces);
     if (arc.sourceFace >= 0 && arc.sourceFace < faces.rows()) {
       activeArcsByFace[static_cast<std::size_t>(arc.sourceFace)].push_back(
           arcId);
+      if (arc.hardFeatureRail) {
+        const Eigen::RowVector3d startBarycentric =
+            surface_arrangement_detail::canonicalize_barycentric(
+                arc.startBarycentric);
+        const Eigen::RowVector3d endBarycentric =
+            surface_arrangement_detail::canonicalize_barycentric(
+                arc.endBarycentric);
+        int localEdge = -1;
+        for (int edge = 0; edge < 3; ++edge) {
+          if (std::abs(startBarycentric[edge]) <= 1.0e-10 &&
+              std::abs(endBarycentric[edge]) <= 1.0e-10) {
+            localEdge = edge;
+            break;
+          }
+        }
+        if (localEdge >= 0) {
+          const Eigen::Vector2d startUv =
+              surface_arrangement_detail::bary_to_uv(startBarycentric);
+          const Eigen::Vector2d endUv =
+              surface_arrangement_detail::bary_to_uv(endBarycentric);
+          const double startT =
+              surface_arrangement_detail::canonical_edge_parameter(
+                  faces, arc.sourceFace, localEdge, startUv);
+          const double endT =
+              surface_arrangement_detail::canonical_edge_parameter(
+                  faces, arc.sourceFace, localEdge, endUv);
+          const authority::SourceEdgeTopologyKey edgeKey =
+              surface_arrangement_detail::source_edge_key(
+                  faces, arc.sourceFace, localEdge);
+          RetainedFeatureRailInterval interval;
+          interval.t0 = std::min(startT, endT);
+          interval.t1 = std::max(startT, endT);
+          interval.sourceTopologyRegion = arc.sourceTopologyRegion;
+          const auto edgeOwner = edgeFaces.find(edgeKey);
+          if (edgeOwner != edgeFaces.end()) {
+            for (const int incidentFace : edgeOwner->second) {
+              const auto incidentScope =
+                  tracing_source_scope(tracingOptions, incidentFace);
+              if (!incidentScope.has_value() ||
+                  incidentScope->first != arc.sourceTopologyRegion) {
+                continue;
+              }
+              interval.incidentSourceSheets.insert(incidentScope->second);
+            }
+          }
+          if (interval.incidentSourceSheets.empty() &&
+              arc.sourceIsolationSheet.has_value()) {
+            interval.incidentSourceSheets.insert(*arc.sourceIsolationSheet);
+          }
+          const int edgeVertex0 =
+              faces(arc.sourceFace, (localEdge + 1) % 3);
+          const int edgeVertex1 =
+              faces(arc.sourceFace, (localEdge + 2) % 3);
+          const int canonicalVertex0 = std::min(edgeVertex0, edgeVertex1);
+          const int canonicalVertex1 = std::max(edgeVertex0, edgeVertex1);
+          const double edgeLength =
+              (vertices.row(canonicalVertex1) -
+               vertices.row(canonicalVertex0))
+                  .norm();
+          const double endpointParameterTolerance =
+              std::isfinite(edgeLength) && edgeLength > 0.0
+                  ? std::max(1.0e-10,
+                             options.intersectionTolerance / edgeLength)
+                  : 1.0e-10;
+          if (interval.t0 <= endpointParameterTolerance) {
+            retainedFeatureRailsByVertex[canonicalVertex0].push_back(interval);
+          }
+          if (interval.t1 >= 1.0 - endpointParameterTolerance) {
+            retainedFeatureRailsByVertex[canonicalVertex1].push_back(interval);
+          }
+          retainedFeatureRailsByEdge[edgeKey].push_back(
+              std::move(interval));
+        }
+      }
     }
     ++endpointDegree[flow_rep_detail::embedded_endpoint_key(arc, true)];
     ++endpointDegree[flow_rep_detail::embedded_endpoint_key(arc, false)];
   }
-
   struct OpenEndpoint {
     int arcId = -1;
     bool start = false;
@@ -2467,8 +3128,9 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
   result.openEndpointsBefore = static_cast<int>(openEndpoints.size());
   if (result.openEndpointsBefore > options.maxEndpointTraces) {
     result.unresolvedEndpoints = result.openEndpointsBefore;
+    result.failureKind = FlowRepEndpointCompletionFailureKind::EndpointTraceLimitExceeded;
     result.failure = "EndpointTraceLimitExceeded";
-    return result;
+    return close_flow_rep_endpoint_completion(std::move(result));
   }
 
   const auto face_label = [](const std::vector<int> &labels, const int face,
@@ -2484,62 +3146,334 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
                         const Eigen::Vector2d &b) {
     return a.x() * b.y() - a.y() * b.x();
   };
-  const auto first_intersection_parameter = [&](
+  struct FeatureRailOwnershipQuery {
+    bool owned = false;
+    int candidates = 0;
+    int compatibleCandidates = 0;
+  };
+  const auto retained_feature_rail_ownership =
+      [&](const FlowRepArc &arc) -> FeatureRailOwnershipQuery {
+    FeatureRailOwnershipQuery query;
+    if (arc.sourceFace < 0 || arc.sourceFace >= faces.rows()) {
+      return query;
+    }
+    const surface_arrangement_detail::NodeKey node =
+        surface_arrangement_detail::make_node_key(
+            faces, arc.sourceFace,
+            surface_arrangement_detail::bary_to_uv(arc.endBarycentric));
+    const auto compatible = [&](const RetainedFeatureRailInterval &interval) {
+      return interval.sourceTopologyRegion == arc.sourceTopologyRegion &&
+             arc.sourceIsolationSheet.has_value() &&
+             interval.incidentSourceSheets.count(*arc.sourceIsolationSheet) != 0U;
+    };
+    if (node.kind == 0 && node.vertex >= 0) {
+      const auto found = retainedFeatureRailsByVertex.find(node.vertex);
+      if (found == retainedFeatureRailsByVertex.end()) {
+        return query;
+      }
+      query.candidates = static_cast<int>(found->second.size());
+      for (const RetainedFeatureRailInterval &interval : found->second) {
+        if (compatible(interval)) {
+          ++query.compatibleCandidates;
+          query.owned = true;
+        }
+      }
+      return query;
+    }
+    if (node.kind != 1 || !node.edge.has_value() || node.edgeT < 0) {
+      return query;
+    }
+    const authority::SourceEdgeTopologyKey &edgeKey = *node.edge;
+    const double t = static_cast<double>(node.edgeT) / 1.0e10;
+    const int edgeVertex0 = static_cast<int>(edgeKey.first().index());
+    const int edgeVertex1 = static_cast<int>(edgeKey.second().index());
+    const double edgeLength =
+        edgeVertex0 >= 0 && edgeVertex0 < vertices.rows() &&
+                edgeVertex1 >= 0 && edgeVertex1 < vertices.rows()
+            ? (vertices.row(edgeVertex1) - vertices.row(edgeVertex0)).norm()
+            : std::numeric_limits<double>::quiet_NaN();
+    const double parameterTolerance =
+        std::isfinite(edgeLength) && edgeLength > 0.0
+            ? std::max(1.0e-10,
+                       options.intersectionTolerance / edgeLength)
+            : 1.0e-10;
+    const auto consider_vertex = [&](const int sourceVertex) {
+      const auto foundVertex = retainedFeatureRailsByVertex.find(sourceVertex);
+      if (foundVertex == retainedFeatureRailsByVertex.end()) {
+        return;
+      }
+      query.candidates += static_cast<int>(foundVertex->second.size());
+      for (const RetainedFeatureRailInterval &interval : foundVertex->second) {
+        if (compatible(interval)) {
+          ++query.compatibleCandidates;
+          query.owned = true;
+        }
+      }
+    };
+    const auto found = retainedFeatureRailsByEdge.find(edgeKey);
+    if (found != retainedFeatureRailsByEdge.end()) {
+      query.candidates += static_cast<int>(found->second.size());
+      for (const RetainedFeatureRailInterval &interval : found->second) {
+        if (!compatible(interval)) {
+          continue;
+        }
+        ++query.compatibleCandidates;
+        if (t >= interval.t0 - parameterTolerance &&
+            t <= interval.t1 + parameterTolerance) {
+          query.owned = true;
+        }
+      }
+    }
+    // A trace can terminate numerically on the final sliver of one feature
+    // edge while the authoritative retained rail leaves the same source
+    // vertex through another incident edge. Convert the spatial endpoint
+    // tolerance to this source edge's parameter domain before transferring
+    // ownership. A Feature label alone is still insufficient: an incident
+    // retained rail must prove component- and sheet-compatible ownership.
+    if (t <= parameterTolerance) {
+      consider_vertex(edgeVertex0);
+    }
+    if (1.0 - t <= parameterTolerance) {
+      consider_vertex(edgeVertex1);
+    }
+    return query;
+  };
+  struct NetworkIntersection {
+    double traceParameter = std::numeric_limits<double>::infinity();
+    double targetParameter = -1.0;
+    int targetArcId = -1;
+    int traceSegment = -1;
+    int targetSourceFace = -1;
+    Eigen::RowVector3d targetBarycentric =
+        Eigen::RowVector3d::Constant(
+            std::numeric_limits<double>::quiet_NaN());
+    Eigen::RowVector3d targetStartBarycentric =
+        Eigen::RowVector3d::Constant(
+            std::numeric_limits<double>::quiet_NaN());
+    Eigen::RowVector3d targetEndBarycentric =
+        Eigen::RowVector3d::Constant(
+            std::numeric_limits<double>::quiet_NaN());
+  };
+  const auto first_network_intersection = [&](
       const SurfaceTraceSegment &segment, const FlowRepArc &target,
-      double &parameter) {
+      NetworkIntersection &intersection) {
     if (segment.face != target.sourceFace) {
       return false;
     }
-    const Eigen::Vector2d a = uv(segment.startBarycentric);
-    const Eigen::Vector2d b = uv(segment.endBarycentric);
-    const Eigen::Vector2d c = uv(target.startBarycentric);
-    const Eigen::Vector2d d = uv(target.endBarycentric);
-    const Eigen::Vector2d r = b - a;
-    const Eigen::Vector2d s = d - c;
-    const double tolerance = options.intersectionTolerance;
-    const double denominator = cross(r, s);
-    const Eigen::Vector2d offset = c - a;
-    if (std::abs(denominator) > tolerance) {
-      const double t = cross(offset, s) / denominator;
-      const double u = cross(offset, r) / denominator;
-      if (t > tolerance && t <= 1.0 + tolerance && u >= -tolerance &&
-          u <= 1.0 + tolerance) {
-        parameter = std::clamp(t, 0.0, 1.0);
-        return true;
+    const Eigen::RowVector3d segmentStart =
+        surface_cell_tracing_detail::point_position(
+            vertices, faces,
+            SurfaceTracePoint{segment.face, segment.startBarycentric});
+    const Eigen::RowVector3d segmentEnd =
+        surface_cell_tracing_detail::point_position(
+            vertices, faces,
+            SurfaceTracePoint{segment.face, segment.endBarycentric});
+    const double segmentLength = (segmentEnd - segmentStart).norm();
+    if (!segmentStart.allFinite() || !segmentEnd.allFinite() ||
+        !std::isfinite(segmentLength) ||
+        segmentLength <= options.intersectionTolerance) {
+      return false;
+    }
+    const auto is_resolvable_parameter = [&](const double parameter) {
+      return std::isfinite(parameter) && parameter > 0.0 &&
+             parameter <= 1.0 + 1.0e-12 &&
+             parameter * segmentLength > options.intersectionTolerance;
+    };
+
+    surface_arrangement_detail::Segment2 traceSegment;
+    traceSegment.sourceFace = segment.face;
+    traceSegment.start = uv(segment.startBarycentric);
+    traceSegment.end = uv(segment.endBarycentric);
+    surface_arrangement_detail::Segment2 targetSegment;
+    targetSegment.sourceFace = target.sourceFace;
+    targetSegment.start = uv(target.startBarycentric);
+    targetSegment.end = uv(target.endBarycentric);
+
+    double traceParameter = 0.0;
+    double targetParameter = 0.0;
+    Eigen::Vector2d point = Eigen::Vector2d::Zero();
+    if (!surface_arrangement_detail::segment_intersection_params(
+            traceSegment, targetSegment, traceParameter, targetParameter,
+            point)) {
+      return false;
+    }
+
+    if (!is_resolvable_parameter(traceParameter)) {
+      // Collinear overlap can begin at the trace origin. That point cannot
+      // close a degree-one endpoint, so consider the exact target endpoints
+      // farther along the trace before discarding the overlap. Use the same
+      // strict collinearity tolerance as arrangement construction.
+      const Eigen::Vector2d direction = traceSegment.end - traceSegment.start;
+      const double directionSquared = direction.squaredNorm();
+      if (directionSquared <= 1.0e-24) {
+        return false;
       }
-      return false;
-    }
-    if (std::abs(cross(offset, r)) > tolerance ||
-        r.squaredNorm() <= tolerance * tolerance) {
-      return false;
-    }
-    double best = std::numeric_limits<double>::infinity();
-    for (const Eigen::Vector2d &point : {c, d}) {
-      const double t = (point - a).dot(r) / r.squaredNorm();
-      if (t > tolerance && t <= 1.0 + tolerance) {
-        best = std::min(best, std::clamp(t, 0.0, 1.0));
+      double best = std::numeric_limits<double>::infinity();
+      double bestTargetParameter = -1.0;
+      Eigen::RowVector3d bestBarycentric =
+          Eigen::RowVector3d::Constant(
+              std::numeric_limits<double>::quiet_NaN());
+      for (const auto &[targetPoint, targetBarycentric,
+                        candidateTargetParameter] :
+           {std::tuple<Eigen::Vector2d, Eigen::RowVector3d, double>{
+                targetSegment.start, target.startBarycentric, 0.0},
+            {targetSegment.end, target.endBarycentric, 1.0}}) {
+        if (std::abs(surface_arrangement_detail::cross2(
+                targetPoint - traceSegment.start, direction)) > 1.0e-12) {
+          continue;
+        }
+        const double candidate =
+            (targetPoint - traceSegment.start).dot(direction) /
+            directionSquared;
+        if (is_resolvable_parameter(candidate) && candidate < best) {
+          best = candidate;
+          bestTargetParameter = candidateTargetParameter;
+          bestBarycentric = targetBarycentric;
+        }
       }
+      if (!std::isfinite(best)) {
+        return false;
+      }
+      intersection.traceParameter = std::clamp(best, 0.0, 1.0);
+      intersection.targetParameter = bestTargetParameter;
+      intersection.targetArcId = target.id;
+      intersection.targetSourceFace = target.sourceFace;
+      intersection.targetBarycentric = bestBarycentric;
+      intersection.targetStartBarycentric = target.startBarycentric;
+      intersection.targetEndBarycentric = target.endBarycentric;
+      return true;
     }
-    if (!std::isfinite(best)) {
-      return false;
-    }
-    parameter = best;
-    return true;
+
+    intersection.traceParameter =
+        std::clamp(traceParameter, 0.0, 1.0);
+    intersection.targetParameter =
+        std::clamp(targetParameter, 0.0, 1.0);
+    intersection.targetArcId = target.id;
+    intersection.targetSourceFace = target.sourceFace;
+    // Snap the connector endpoint to the intersection point represented in
+    // the target chart. This makes the ownership proof consumed here exactly
+    // reproducible by the arrangement splitter instead of relying on two
+    // independently rounded trace/target evaluations.
+    intersection.targetBarycentric =
+        surface_arrangement_detail::canonicalize_barycentric(
+            surface_arrangement_detail::uv_to_bary(point));
+    intersection.targetStartBarycentric = target.startBarycentric;
+    intersection.targetEndBarycentric = target.endBarycentric;
+    return intersection.targetBarycentric.allFinite();
   };
 
   int nextSupportTraceId = 0;
   for (const FlowRepArc &arc : result.arcs) {
     nextSupportTraceId = std::max(nextSupportTraceId, arc.supportTraceId + 1);
   }
+  const auto endpoint_location = [&](const FlowRepArc *arc, int &sourceFace,
+                                     int &sourceVertex, int &sourceEdge0,
+                                     int &sourceEdge1, double &sourceEdgeT,
+                                     Eigen::RowVector3d &barycentric) {
+    if (arc == nullptr || arc->sourceFace < 0 ||
+        arc->sourceFace >= faces.rows()) {
+      return;
+    }
+    sourceFace = arc->sourceFace;
+    barycentric = arc->endBarycentric;
+    const surface_arrangement_detail::NodeKey node =
+        surface_arrangement_detail::make_node_key(
+            faces, arc->sourceFace,
+            surface_arrangement_detail::bary_to_uv(arc->endBarycentric));
+    if (node.kind == 0) {
+      sourceVertex = node.vertex;
+    } else if (node.kind == 1 && node.edge.has_value() && node.edgeT >= 0) {
+      sourceEdge0 = static_cast<int>(node.edge->first().index());
+      sourceEdge1 = static_cast<int>(node.edge->second().index());
+      sourceEdgeT = static_cast<double>(node.edgeT) / 1.0e10;
+    }
+  };
+  const auto record_diagnostic = [&](
+      const OpenEndpoint &endpoint, const FlowRepArc &source,
+      const int family, const int sign, const SurfaceTraceResult *trace,
+      const FlowRepArc *terminalArc,
+      const FlowRepArc *lastRepresentableArc,
+      const FeatureRailOwnershipQuery &featureRailOwnership,
+      const int generatedSupportTraceId,
+      const NetworkIntersection *networkIntersection,
+      const int skippedDegenerateSegments,
+      const FlowRepEndpointResolution resolution) {
+    FlowRepEndpointCompletionDiagnostic diagnostic;
+    diagnostic.sourceArcId = endpoint.arcId;
+    diagnostic.startEndpoint = endpoint.start;
+    diagnostic.requiredSingularitySupport = source.singularitySupport;
+    diagnostic.hardFeatureRail = source.hardFeatureRail;
+    diagnostic.family = family;
+    diagnostic.sign = sign;
+    diagnostic.skippedDegenerateSegments = skippedDegenerateSegments;
+    diagnostic.resolution = resolution;
+    if (trace != nullptr) {
+      diagnostic.termination = trace->termination;
+      diagnostic.tracedSegments = static_cast<int>(trace->segments.size());
+      const int termination = static_cast<int>(trace->termination);
+      if (termination >= 0 &&
+          termination < static_cast<int>(result.traceTerminationCounts.size())) {
+        ++result.traceTerminationCounts[static_cast<std::size_t>(termination)];
+      }
+    }
+    endpoint_location(terminalArc, diagnostic.terminalSourceFace,
+                      diagnostic.terminalSourceVertex,
+                      diagnostic.terminalSourceEdge0,
+                      diagnostic.terminalSourceEdge1,
+                      diagnostic.terminalSourceEdgeT,
+                      diagnostic.terminalBarycentric);
+    endpoint_location(lastRepresentableArc,
+                      diagnostic.lastRepresentableSourceFace,
+                      diagnostic.lastRepresentableSourceVertex,
+                      diagnostic.lastRepresentableSourceEdge0,
+                      diagnostic.lastRepresentableSourceEdge1,
+                      diagnostic.lastRepresentableSourceEdgeT,
+                      diagnostic.lastRepresentableBarycentric);
+    if (terminalArc != nullptr && lastRepresentableArc != nullptr &&
+        terminalArc->end.allFinite() &&
+        lastRepresentableArc->end.allFinite()) {
+      diagnostic.terminalDistanceToLastRepresentable =
+          (terminalArc->end - lastRepresentableArc->end).norm();
+    }
+    diagnostic.terminalFeatureRailCandidates = featureRailOwnership.candidates;
+    diagnostic.terminalCompatibleFeatureRailCandidates =
+        featureRailOwnership.compatibleCandidates;
+    diagnostic.generatedSupportTraceId = generatedSupportTraceId;
+    if (networkIntersection != nullptr) {
+      diagnostic.captureTargetArcId = networkIntersection->targetArcId;
+      diagnostic.captureTraceSegment = networkIntersection->traceSegment;
+      diagnostic.captureTraceParameter =
+          networkIntersection->traceParameter;
+      diagnostic.captureTargetParameter =
+          networkIntersection->targetParameter;
+      diagnostic.captureTargetSourceFace =
+          networkIntersection->targetSourceFace;
+      diagnostic.captureBarycentric =
+          networkIntersection->targetBarycentric;
+      diagnostic.captureTargetStartBarycentric =
+          networkIntersection->targetStartBarycentric;
+      diagnostic.captureTargetEndBarycentric =
+          networkIntersection->targetEndBarycentric;
+    }
+    result.diagnostics.push_back(std::move(diagnostic));
+  };
   for (const OpenEndpoint &endpoint : openEndpoints) {
+    const int sourceArcId = endpoint.arcId;
+    FlowRepArc &source =
+        result.arcs[static_cast<std::size_t>(sourceArcId)];
     if (endpointDegree[endpoint.key] != 1) {
       ++result.resolvedEndpoints;
+      record_diagnostic(endpoint, source, source.family, 0, nullptr,
+                        nullptr, nullptr, {}, -1, nullptr, 0,
+                        FlowRepEndpointResolution::AlreadyResolved);
       continue;
     }
-    const FlowRepArc &source =
-        result.arcs[static_cast<std::size_t>(endpoint.arcId)];
     if (source.sourceFace < 0 || source.sourceFace >= faces.rows()) {
       ++result.unresolvedEndpoints;
+      result.unresolvedRequiredEndpoints += source.singularitySupport ? 1 : 0;
+      record_diagnostic(endpoint, source, source.family, 0, nullptr,
+                        nullptr, nullptr, {}, -1, nullptr, 0,
+                        FlowRepEndpointResolution::InvalidSourceFace);
       continue;
     }
     const SurfaceTracePoint startPoint{
@@ -2552,6 +3486,11 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
       const Eigen::RowVector3d tangent = source.end - source.start;
       if (!tangent.allFinite() || tangent.squaredNorm() <= 1.0e-24) {
         ++result.unresolvedEndpoints;
+        result.unresolvedRequiredEndpoints +=
+            source.singularitySupport ? 1 : 0;
+        record_diagnostic(endpoint, source, family, 0, nullptr,
+                          nullptr, nullptr, {}, -1, nullptr, 0,
+                          FlowRepEndpointResolution::DegenerateSource);
         continue;
       }
       const Eigen::RowVector3d unitTangent = tangent.normalized();
@@ -2573,18 +3512,32 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
         vertices, faces, crossField, seed, family, sign, tracingOptions);
     if (trace.segments.empty()) {
       ++result.unresolvedEndpoints;
+      result.unresolvedRequiredEndpoints += source.singularitySupport ? 1 : 0;
+      record_diagnostic(endpoint, source, family, sign, &trace,
+                        nullptr, nullptr, {}, -1, nullptr, 0,
+                        FlowRepEndpointResolution::EmptyTrace);
       continue;
     }
 
     const int supportTraceId = nextSupportTraceId++;
     std::vector<FlowRepArc> appended;
     bool reachedNetwork = false;
+    bool reachedIntrinsicNode = false;
+    bool reconciledSourceEndpoint = false;
+    FeatureRailOwnershipQuery terminalFeatureRailOwnership;
+    int skippedDegenerateSegments = 0;
+    FlowRepArc terminalTraceArc;
+    bool hasTerminalTraceArc = false;
+    FlowRepArc lastRepresentableTraceArc;
+    bool hasLastRepresentableTraceArc = false;
+    NetworkIntersection committedNetworkIntersection;
+    bool hasCommittedNetworkIntersection = false;
     for (int segmentIndex = 0;
          segmentIndex < static_cast<int>(trace.segments.size());
          ++segmentIndex) {
       SurfaceTraceSegment segment =
           trace.segments[static_cast<std::size_t>(segmentIndex)];
-      double earliest = std::numeric_limits<double>::infinity();
+      NetworkIntersection earliestIntersection;
       if (segment.face >= 0 && segment.face < faces.rows()) {
         for (const int targetId :
              activeArcsByFace[static_cast<std::size_t>(segment.face)]) {
@@ -2593,21 +3546,36 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
           }
           const FlowRepArc &target =
               result.arcs[static_cast<std::size_t>(targetId)];
-          if (target.sourceComponent != source.sourceComponent ||
-              target.sourceSheet != source.sourceSheet) {
+          const auto segmentScope =
+              tracing_source_scope(tracingOptions, segment.face);
+          const std::optional<authority::TopologyRegionId> segmentRegion =
+              segmentScope.has_value()
+                  ? std::optional<authority::TopologyRegionId>(segmentScope->first)
+                  : source.sourceTopologyRegion;
+          const std::optional<authority::IsolationSheetId> segmentSheet =
+              segmentScope.has_value()
+                  ? std::optional<authority::IsolationSheetId>(segmentScope->second)
+                  : source.sourceIsolationSheet;
+          if (target.sourceTopologyRegion != segmentRegion ||
+              target.sourceIsolationSheet != segmentSheet) {
             continue;
           }
-          double parameter = 0.0;
-          if (first_intersection_parameter(segment, target, parameter)) {
-            earliest = std::min(earliest, parameter);
+          NetworkIntersection candidate;
+          if (first_network_intersection(segment, target, candidate)) {
+            candidate.traceSegment = segmentIndex;
+          }
+          if (std::isfinite(candidate.traceParameter) &&
+              candidate.traceParameter <
+                  earliestIntersection.traceParameter) {
+            earliestIntersection = candidate;
           }
         }
       }
-      if (std::isfinite(earliest)) {
-        segment.endBarycentric =
-            (1.0 - earliest) * segment.startBarycentric +
-            earliest * segment.endBarycentric;
+      if (std::isfinite(earliestIntersection.traceParameter)) {
+        segment.endBarycentric = earliestIntersection.targetBarycentric;
         reachedNetwork = true;
+        committedNetworkIntersection = earliestIntersection;
+        hasCommittedNetworkIntersection = true;
       }
       FlowRepArc arc;
       arc.id = static_cast<int>(result.arcs.size() + appended.size());
@@ -2617,18 +3585,22 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
       arc.end = surface_cell_tracing_detail::point_position(
           vertices, faces,
           SurfaceTracePoint{segment.face, segment.endBarycentric});
-      if (!arc.start.allFinite() || !arc.end.allFinite() ||
-          (arc.end - arc.start).norm() <= options.intersectionTolerance) {
+      if (!arc.start.allFinite() || !arc.end.allFinite()) {
         break;
       }
       arc.sourceFace = segment.face;
       arc.startBarycentric = segment.startBarycentric;
       arc.endBarycentric = segment.endBarycentric;
-      arc.sourceComponent = face_label(
-          tracingOptions.sourceFaceComponents, segment.face,
-          source.sourceComponent);
-      arc.sourceSheet = face_label(tracingOptions.sourceFaceSheets,
-                                   segment.face, source.sourceSheet);
+      const auto segmentScope =
+          tracing_source_scope(tracingOptions, segment.face);
+      arc.sourceTopologyRegion =
+          segmentScope.has_value()
+              ? std::optional<authority::TopologyRegionId>(segmentScope->first)
+              : source.sourceTopologyRegion;
+      arc.sourceIsolationSheet =
+          segmentScope.has_value()
+              ? std::optional<authority::IsolationSheetId>(segmentScope->second)
+              : source.sourceIsolationSheet;
       arc.family = segment.family;
       arc.strandProvenance = -2 - supportTraceId;
       arc.featureProvenance = segment.exitEdge;
@@ -2642,10 +3614,87 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
           source.supportSeedId >= 0 ? source.supportSeedId : source.id;
       arc.supportSegment = segmentIndex;
       arc.sameStrandHint = supportTraceId;
+      flow_rep_detail::assign_intrinsic_endpoint_keys(arc, faces);
+      const std::uint64_t terminalKey =
+          flow_rep_detail::embedded_endpoint_key(arc, false);
+      terminalTraceArc = arc;
+      hasTerminalTraceArc = true;
+      if (!reachedNetwork && terminalKey != endpoint.key &&
+          endpointDegree[terminalKey] > 0) {
+        reachedNetwork = true;
+        reachedIntrinsicNode = true;
+      }
+      if (!reachedNetwork &&
+          trace.termination == TraceTerminationReason::Feature &&
+          segmentIndex + 1 == static_cast<int>(trace.segments.size())) {
+        terminalFeatureRailOwnership =
+            retained_feature_rail_ownership(arc);
+      }
+      if (!reachedNetwork && terminalFeatureRailOwnership.owned) {
+        // A hard-feature rail can be represented in the chart on the other
+        // side of its source edge, and a branch can reach a rail endpoint
+        // through another incident face at the same source vertex. Same-face
+        // segment intersection cannot see either ownership case. Accept only
+        // a canonical source-edge interval or rail endpoint owned by a
+        // retained rail on the same component and incident sheet; the
+        // termination label alone remains insufficient.
+        reachedNetwork = true;
+        reachedIntrinsicNode = true;
+      }
+      if ((arc.end - arc.start).norm() <= options.intersectionTolerance) {
+        ++skippedDegenerateSegments;
+        if (reachedNetwork) {
+          // A retained-network capture can occur within the spatial tolerance
+          // of the original degree-one endpoint. Emitting that final sliver is
+          // numerically meaningless, but dropping it leaves the required
+          // branch open. Because the old endpoint has degree one, reconcile it
+          // transactionally to the proven capture point and mark it embedded.
+          // This is a topology-preserving snap, not synthetic completion: the
+          // target was already verified on the same source component/sheet.
+          if (appended.empty()) {
+            auto foundDegree = endpointDegree.find(endpoint.key);
+            if (foundDegree != endpointDegree.end() && foundDegree->second > 0) {
+              --foundDegree->second;
+            }
+            if (endpoint.start) {
+              source.start = arc.end;
+              source.startBarycentric = arc.endBarycentric;
+              source.startEmbeddedAnchor = true;
+            } else {
+              source.end = arc.end;
+              source.endBarycentric = arc.endBarycentric;
+              source.endEmbeddedAnchor = true;
+            }
+            flow_rep_detail::assign_intrinsic_endpoint_keys(source, faces);
+            ++endpointDegree[flow_rep_detail::embedded_endpoint_key(
+                source, endpoint.start)];
+            reconciledSourceEndpoint = true;
+          }
+          break;
+        }
+        continue;
+      }
+      lastRepresentableTraceArc = arc;
+      hasLastRepresentableTraceArc = true;
       appended.push_back(std::move(arc));
       if (reachedNetwork) {
         break;
       }
+    }
+
+    if (reconciledSourceEndpoint) {
+      ++result.resolvedEndpoints;
+      record_diagnostic(
+          endpoint, source, family, sign, &trace,
+          hasTerminalTraceArc ? &terminalTraceArc : nullptr,
+          hasLastRepresentableTraceArc ? &lastRepresentableTraceArc : nullptr,
+          terminalFeatureRailOwnership, supportTraceId,
+          hasCommittedNetworkIntersection ? &committedNetworkIntersection
+                                          : nullptr,
+          skippedDegenerateSegments,
+          reachedIntrinsicNode ? FlowRepEndpointResolution::IntrinsicNode
+                               : FlowRepEndpointResolution::SegmentIntersection);
+      continue;
     }
 
     // A termination label alone is not proof that the embedded network owns
@@ -2657,6 +3706,22 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
         result.addedArcs + static_cast<int>(appended.size()) >
             options.maxAddedArcs) {
       ++result.unresolvedEndpoints;
+      result.unresolvedRequiredEndpoints += source.singularitySupport ? 1 : 0;
+      const FlowRepEndpointResolution resolution =
+          result.addedArcs + static_cast<int>(appended.size()) >
+                  options.maxAddedArcs
+              ? FlowRepEndpointResolution::AddedArcLimit
+              : FlowRepEndpointResolution::NoNetworkCapture;
+      record_diagnostic(endpoint, source, family, sign, &trace,
+                        hasTerminalTraceArc ? &terminalTraceArc : nullptr,
+                        hasLastRepresentableTraceArc
+                            ? &lastRepresentableTraceArc
+                            : nullptr,
+                        terminalFeatureRailOwnership, supportTraceId,
+                        hasCommittedNetworkIntersection
+                            ? &committedNetworkIntersection
+                            : nullptr,
+                        skippedDegenerateSegments, resolution);
       continue;
     }
     appended.back().endEmbeddedAnchor = true;
@@ -2665,8 +3730,9 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
     }
     for (FlowRepArc &arc : appended) {
       if (!flow_rep_detail::arc_has_complete_provenance(arc)) {
+        result.failureKind = FlowRepEndpointCompletionFailureKind::GeneratedEndpointArcMissingProvenance;
         result.failure = "GeneratedEndpointArcMissingProvenance";
-        return result;
+        return close_flow_rep_endpoint_completion(std::move(result));
       }
       const int arcId = arc.id;
       result.arcs.push_back(std::move(arc));
@@ -2681,17 +3747,32 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
       ++result.addedArcs;
     }
     ++result.resolvedEndpoints;
+    // Generated connector insertion can reallocate result.arcs. Reacquire
+    // the source by stable arc identity before recording committed evidence.
+    const FlowRepArc &committedSource =
+        result.arcs[static_cast<std::size_t>(sourceArcId)];
+    record_diagnostic(
+        endpoint, committedSource, family, sign, &trace,
+        hasTerminalTraceArc ? &terminalTraceArc : nullptr,
+        hasLastRepresentableTraceArc ? &lastRepresentableTraceArc : nullptr,
+        terminalFeatureRailOwnership, supportTraceId,
+        hasCommittedNetworkIntersection ? &committedNetworkIntersection
+                                        : nullptr,
+        skippedDegenerateSegments,
+        reachedIntrinsicNode ? FlowRepEndpointResolution::IntrinsicNode
+                             : FlowRepEndpointResolution::SegmentIntersection);
   }
 
   std::stable_sort(result.retainedArcIds.begin(), result.retainedArcIds.end());
   result.endpointTags = flow_rep_detail::classify_endpoints(
       result.arcs, result.retainedArcIds);
   if (result.unresolvedEndpoints != 0 && options.requireAllEndpointsResolved) {
+    result.failureKind = FlowRepEndpointCompletionFailureKind::UnresolvedRequiredEndpoints;
     result.failure = "UnresolvedFlowlineEndpoints";
-    return result;
+    return close_flow_rep_endpoint_completion(std::move(result));
   }
   result.success = true;
-  return result;
+  return close_flow_rep_endpoint_completion(std::move(result));
 }
 
 } // namespace directional::geometry
