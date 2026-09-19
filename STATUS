@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M5-DEFN
-Status: COMPLETE
-Successor: M5-CP1-CB1
-Started at: 2026-09-19T22:13:32Z
-Resumed at: 2026-09-19T23:22:47Z
-Ended at: 2026-09-19T23:36:12Z
+Turn: M5-CP1-CB1
+Status: IN_PROGRESS
+Successor:
+Started at: 2026-09-19T23:03:12Z
+Resumed at:
+Ended at:
 ---END_TURN_STATUS---
