@@ -1,0 +1,4 @@
+Purpose: M4-CP4-TB2-R2-EXEC start-of-turn authoritative snapshot after stale-evidence cleanup no-op.
+Authority before marker: 8c030957158eb3ca0c009b50fb4962a02ff3aa88
+READ_MODE=snapshot
+Directional runtime authorized: false
