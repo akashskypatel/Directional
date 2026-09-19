@@ -1,3 +1,11 @@
+## 2026-09-19 — `M4-CP4-CB5`: bounded row2/row6 test authority compiles GREEN; TB2 composite gate frozen
+
+Code + Build only; **no generated Directional runtime**. CB5 changes exactly `tests/SurfaceComplexSimplificationPhase17Tests.cpp` and `tests/FieldTransportAtlasTests.cpp`. Row2 reuses the accepted row408 18-hard-edge torus production precondition while preserving fail-closed/no-recovery execution and the independent candidate oracle/tamper. Row6 preserves nonzero apex-defect and flat-success controls and now expects exact `NonIntegralCycleLift`. The two periodic focused identities are untouched and remain M5-owned.
+
+Patch run/job `35436117274 / 105878958514` applies patch SHA-256 `0cd1643a4f0232ae9aeb2edc5f9749449ebc5d21164b1c60813a02117c2133dd` as commit `c5daef9a2250610f0f86e5332d8e1a3edd5a91a6`. Mandatory GMP compile run/job `35436226379 / 105879256297` compiles only `directional_surface_cell_completion_tests` and `directional_surface_cell_authority_kernel_tests` from exact source `4e9ff5003c8dd165dd614c25dd95f0308403719b`. Delta artifact `10582435470` has provider SHA-256 `3e889c4682b35f6de2d30b38b9bf016f0dea526a10e46a0b9f1b404610443ad3`, manifest **24/24**, source archive `b904ba5fec938d74d432501396f94de0c015072de6d9009c6213e6d547c19c81`, GMPXX+GMP linkage, clean source receipts and `runtimeExecution=false`.
+
+No runtime promotion or debt credit occurs. Accepted authority remains package `10565723112` / selector427 **427/427**; accounting stays **49 / 14 / 35**, debt **5**. `CAND-01` and `CAND-03` are correction-built but runtime-unproved. Exact successor is artifact-only `M4-CP4-TB2-EXEC`: composite producer/validation bytes from full CB4 package `10578784752` plus authority/completion bytes from CB5 delta `10582435470`, four M4-owned focus rows + exact selector427, then mandatory Review.
+
 ## 2026-09-19 — `M4-CP4-DEFN-R1` review: Reading B upheld; Reading C disproved and withdrawn
 
 Runtime-free review. **Upheld.** Accounting holds at **49 events / 14 categories / 35 recurrences**;

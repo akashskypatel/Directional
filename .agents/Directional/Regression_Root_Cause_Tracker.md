@@ -1,13 +1,22 @@
+## 2026-09-19 — `M4-CP4-CB5`: remaining M4 test-authority gaps correction-built — **COMPILE GREEN / RUNTIME RE-PROOF PENDING / NON-STABLE**
+
+- **Authority:** exact patch commit `c5daef9a2250610f0f86e5332d8e1a3edd5a91a6`; exact compiled source `4e9ff5003c8dd165dd614c25dd95f0308403719b`; compile run/job `35436226379 / 105879256297`; delta artifact `10582435470`, provider SHA-256 `3e889c4682b35f6de2d30b38b9bf016f0dea526a10e46a0b9f1b404610443ad3`; GMPXX+GMP; `runtimeExecution=false`.
+- **`M4-CP4-TB1-R3-CAND-01`: CORRECTED IN CB5 / RUNTIME RE-PROOF PENDING / NON-STABLE.** The test-local produced-torus helper now uses accepted row408 18-hard-edge production authority plus automatic-feature suppression while preserving fail-closed/no-recovery execution and the independent candidate oracle/tamper. **Closure falsifier remains runtime:** the produced subject must reach retained incidence-valid candidate authority and the independent oracle/tamper must pass.
+- **`M4-CP4-TB1-R3-CAND-03`: CORRECTED IN CB5 / RUNTIME RE-PROOF PENDING / NON-STABLE.** The unchanged non-flat zero-effort witness now expects exact `NonIntegralCycleLift`; flat success and independent nonzero apex-defect controls remain. **Closure falsifier remains runtime:** exact focused execution must pass those controls and typed result.
+- **Periodic authority:** `CAND-02` remains closed as an M4 ownership question; its two `G4-B002` debts remain OPEN/M5-owned and were not edited or credited.
+- **Accounting:** compile-only correction observes no runtime event. **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, produced-witness debt **5**. Accepted runtime authority remains package `10565723112` / selector427 **427/427**.
+- **Exact successor:** artifact-only `M4-CP4-TB2-EXEC` under `Architecture_M4_CP4_TB2_Artifact_Only_Test_Benchmark_Plan.md`, then mandatory Review for any orchestration-valid semantic result.
+
 ## 2026-09-19 — `M4-CP4-DEFN-R1`: periodic ownership reconciled at milestone boundary — **READING B / NON-STABLE**
 
 - **Authority:** runtime-free definition/review over accepted package `10565723112` / selector427 **427/427** plus verified source snapshot `7259af1f020c208337a69471e11495c6cd9fd196`. No generated Directional runtime or code/test/fixture/selector/build mutation.
 - **Reading-C discriminator:** exact static census of committed torus: `V=72`, `F=144`, `18` unique hard edges, every hard edge two-face incident; production face adjacency with those edges omitted remains one connected component of **144 faces**. `M4-CP4-TB1-R3-REV-OBS-01` is **DISCHARGED**.
 - **Reading-A disposition:** rejected as M4-local authority. A second same-sheet generator needs canonical topology-basis/relation identity plus path binding; `DESIGN.md` §14 assigns that domain to M5 and current product explicitly returns `AmbiguousBasis` rather than discovery-order ownership.
 - **`M4-CP4-TB1-R3-CAND-02`: CLOSED AS M4 OWNERSHIP QUESTION / RE-HOMED TO M5 / NON-STABLE.** The underlying two `G4-B002` debts remain OPEN and counted. Relation reorder -> M5-CP1 mechanism + M5-CP3 direct-production proof. Missing owner -> M5-CP2 mechanism + M5-CP3 direct-production proof. Exact `>=2` relation/edge and missing-owner discriminators remain unchanged.
-- **`M4-CP4-TB1-R3-CAND-01`: OPEN / RP-02 TEST_AUTHORITY_COVERAGE_GAP / CB5.** M4 retains the produced closed-complex debt; only the test-local production precondition may align to accepted row408 reachability while fail-closed/no-recovery execution and independent oracle/tamper remain unchanged.
-- **`M4-CP4-TB1-R3-CAND-03`: OPEN / RP-02 TEST_AUTHORITY_COVERAGE_GAP / CB5.** Exact expected rejection for the frozen non-flat witness is `NonIntegralCycleLift`; product validation order remains unchanged.
+- **`M4-CP4-TB1-R3-CAND-01`: CORRECTED IN CB5 / RUNTIME RE-PROOF PENDING / NON-STABLE.** M4 retains the produced closed-complex debt; CB5 aligns only the test-local production precondition to accepted row408 reachability while fail-closed/no-recovery execution and independent oracle/tamper remain unchanged.
+- **`M4-CP4-TB1-R3-CAND-03`: CORRECTED IN CB5 / RUNTIME RE-PROOF PENDING / NON-STABLE.** Exact expected rejection for the frozen non-flat witness is now `NonIntegralCycleLift`; product validation order remains unchanged.
 - **Accounting:** +0 event / +0 category / +0 recurrence. Totals remain **49 / 14 / 35**, produced-witness debt **5**. M4 owns 1 produced-witness debt; M5 owns 4. Accepted runtime authority unchanged.
-- **Exact successor:** compile-only `M4-CP4-CB5`.
+- **Exact successor:** artifact-only `M4-CP4-TB2-EXEC`, then mandatory Review.
 
 ## 2026-09-19 — `M4-CP4-TB1-R3-REV`: R2 corrections proved; periodic-owner representation reaches definition stop — **APPROVED WITH AMENDMENTS / NON-STABLE**
 

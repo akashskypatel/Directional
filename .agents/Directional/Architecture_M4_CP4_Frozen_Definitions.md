@@ -264,7 +264,7 @@ Stop and return to Review/DEFN rather than broadening the checkpoint if any of t
 
 ## 9. Exact next turn
 
-`M4-CP4-CB5` under `Architecture_M4_CP4_CB5_Code_Build_Plan.md`. It is a bounded Code + Build turn limited to the two remaining M4 test-authority corrections: produced closed-complex reachability for §3.1 and the exact `NonIntegralCycleLift` expectation for the already-proved non-flat zero-transport witness. It must leave product/fixture/selector semantics and the two M5-owned periodic focused identities unchanged, compile only, and execute no generated runtime.
+`M4-CP4-CB5` has completed its bounded test-authority correction and compile-only gate without changing product/fixture/selector semantics or the two M5-owned periodic focused identities. Exact next is artifact-only `M4-CP4-TB2-EXEC` under `Architecture_M4_CP4_TB2_Artifact_Only_Test_Benchmark_Plan.md`: four M4-owned focus rows (1/2/5/6) plus exact selector427 through the frozen CB4+CB5 composite owner view, then mandatory runtime-free Review.
 
 
 ## Review closeout

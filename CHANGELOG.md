@@ -1,3 +1,7 @@
+## 2026-09-19 — M4-CP4-CB5 remaining test-authority corrections compile GREEN
+
+CB5 changes only the row2 produced-closed-complex test precondition and row6 exact typed expectation. Mandatory GMP compile run/job `35436226379 / 105879256297` is GREEN for the two affected targets from exact source `4e9ff5003c8dd165dd614c25dd95f0308403719b`, with `runtimeExecution=false`; delta artifact `10582435470` hashes to `3e889c4682b35f6de2d30b38b9bf016f0dea526a10e46a0b9f1b404610443ad3`. Product/fixture/selector/CMake semantics and M5-owned periodic focused identities are unchanged. Accepted M4 runtime authority remains package `10565723112` / selector427 **427/427**. Exact next is artifact-only `M4-CP4-TB2-EXEC` on the frozen CB4+CB5 composite owner view, then mandatory Review.
+
 ## 2026-09-19 — M4-CP4 R3 Review invokes periodic-authority definition stop
 
 Independent Review upholds R3's immutable evidence (**429 PASS / 4 RED**, selector427 **427/427**) but does not promote candidate `10578784752`. CB4's three original R2 precondition corrections are runtime-proved; remaining row2 and row6 issues are test-authority reachability/typed-expectation gaps. Rows3/4 materially advance to `Produced` yet publish zero explicit periodic relations; current source intentionally lacks canonical second same-sheet periodic ownership, so frozen CP4's Review/DEFN stop fires. Accepted M4 authority remains package `10565723112`, stable accounting **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP4-DEFN-R1`; no periodic debt is weakened or deleted.

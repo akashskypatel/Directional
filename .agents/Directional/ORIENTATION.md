@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-19, after `M4-CP4-DEFN-R1`):** accepted M4 runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. DEFN-R1 freezes Reading B after independently deriving that the row408 torus remains one 144-face `sourceTopologyRegion` when all 18 accepted hard edges are removed from face adjacency. Canonical same-sheet two-generator relation identity therefore belongs to M5's relation/path-certificate domain. The two periodic `G4-B002` debts remain open but are M5-owned; the produced closed-complex debt remains M4-CP4-owned. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP4-CB5`; selector427 remains byte-frozen.
+> **Current milestone authority (2026-09-19, after `M4-CP4-CB5`):** accepted M4 runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. DEFN-R1's Reading B remains frozen: two periodic `G4-B002` debts are M5-owned and the produced closed-complex debt remains M4-CP4-owned. CB5 changes only row2/row6 test authority and compiles the two affected GMP targets in delta artifact `10582435470`; no generated runtime has adjudicated them. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M4-CP4-TB2-EXEC`; selector427 remains byte-frozen.
 
-**Currency.** `M4-CP4-DEFN-R1`, 2026-09-19 UTC
+**Currency.** `M4-CP4-CB5`, 2026-09-19 UTC
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -75,13 +75,13 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open after DEFN-R1 ownership reconciliation.** Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427** (`f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; owners **30 / 281 / 75 / 41**). Stable accounting remains **49 / 14 / 35**, debt **5**.
+**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open after CB5 compile-only correction.** Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427** (`f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; owners **30 / 281 / 75 / 41**). Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 `M4-CP4-TB1-R3-EXEC` remains trustworthy semantic evidence on unpromoted candidate `10578784752`: all 433 planned processes ran, focus **2 PASS / 4 RED**, selector **427/427 PASS**, exact-one selection held, and immutable package/source/execution-view postflight is exact. Review retains row1 work/boundedness and row5 produced same-region multiplicity-2 focused credit.
 
 DEFN-R1 resolves the rows3/4 ownership stop rather than changing their product. Independent static derivation of the exact row408 torus (`72/216/144`) under the production topology-region adjacency rule yields **one** 144-face region after all **18** hard edges are excluded, so the distinct-sheet Reading C is unavailable. A second independent same-sheet generator needs canonical relation/basis identity and path binding, which `DESIGN.md` §14 assigns to M5 and current product source deliberately refuses to guess (`AmbiguousBasis`). Reading B is frozen: the periodic reorder debt moves to M5-CP1 mechanism / M5-CP3 production proof, and the missing-owner debt to M5-CP2 mechanism / M5-CP3 production proof. Both remain open, their exact discriminators remain unchanged, and debt count remains 5.
 
-M4 now retains one `G4-B002` debt: produced closed-complex candidate extraction. Row2 remains test-authority witness reachability at `NotProductionReady/tracing`; row6 remains test-authority exact typed expectation and must assert `NonIntegralCycleLift`. Exact next is compile-only **`M4-CP4-CB5`**.
+M4 now retains one `G4-B002` debt: produced closed-complex candidate extraction. CB5 has corrected row2's test-local production precondition and row6's exact typed expectation and compile-proved the two affected owner binaries; runtime re-proof is still pending. Exact next is artifact-only **`M4-CP4-TB2-EXEC`** using the frozen CB4+CB5 composite owner view.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,7 +198,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP4 — NEXT: `M4-CP4-CB5` (compile-only test-authority correction).** Correct row2 production-witness reachability using only already accepted torus production preconditions, and row6's expected typed code to exact `NonIntegralCycleLift`. Product/fixture/selector semantics remain frozen.
+1. **M4-CP4 — NEXT: `M4-CP4-TB2-EXEC` (artifact-only M4-owned focused re-proof + selector427).** Re-run rows1/2/5/6 through the frozen composite owner view, require 4/4 focused PASS plus selector427 427/427, and leave the two M5-owned periodic focused identities unexecuted/uncredited for M4.
 
 2. **`G4-B002` produced closed-complex debt — OPEN / M4-CP4.** A fail-closed, recovery-disabled produced closed subject must reach a retained incidence-valid candidate-bearing complex and satisfy the independent eligibility oracle plus discriminating tamper.
 
