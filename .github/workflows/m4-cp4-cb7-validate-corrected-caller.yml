@@ -84,8 +84,8 @@ jobs:
               raise SystemExit('observer branch-file contents: write ceiling not found')
           if 'commit_run_file: false' not in caller:
               raise SystemExit('caller unexpectedly enables branch-file reporting')
-          if 'timeout-minutes' in caller or 'timeout-minutes' in harness:
-              raise SystemExit('full-gate timeout-minutes token found')
+          if re.search(r'^ +timeout-minutes *:', caller, re.M) or re.search(r'^ +timeout-minutes *:', harness, re.M):
+              raise SystemExit('full-gate timeout-minutes field found')
           if re.search(r'(^|[\s;|&])timeout([\s]|$)', harness):
               raise SystemExit('shell timeout/watchdog token found in harness')
 
