@@ -1,3 +1,12 @@
+## 2026-09-19 — `M4-CP4-TB1-R2-EXEC`: corrected gate reaches trustworthy semantic RED — **COMPLETE / REVIEW REQUIRED / UNCLASSIFIED**
+
+- **Authority:** run/job `35417670510 / 105829346816`, event SHA `50b0fade072dd4cd938f7f2990ad0195dd4ff365`, candidate artifact `10575545321`; result/log artifacts `10576548553 / 10575999074`, provider SHA-256 `eb5b86fd219632f11358bafea6f9054a37795a13bd953805acca9dca1dfb971b / 3d4d2d15dc534eea9dc6b98014811b7142b274d9c9f96eedf063a43233714fd9`.
+- **Integrity:** exact package/source/archive/manifests/receipts/GMP/control hashes/selector427/owner modes verified. Mandatory postflight is exact; `orchestration_failure=false`; all build/repair/mutation counters and benchmark count are zero.
+- **Focused runtime:** row1 PASS; row2 RED at `Invalid rawfield fixture header`; rows3/4 RED at `InvalidBoundedDiskBoundaryTurn`; row5 PASS; row6 RED because non-flat zero-transport fixture is accepted (`nonFlatAtlas=true`). All six rows are one-selected and executed despite semantic nonzero.
+- **Cumulative runtime:** selector427 **427/427 PASS**. Full ledger **429 PASS / 4 RED** across 433 planned rows. No accepted-prefix regression is observed.
+- **Control observation:** boundary `stop_reason=semantic_red_focus_6` records the last focused RED rather than the first due to overwrite; full ledger/raw evidence is intact, so this is retained for Review rather than classified as orchestration failure.
+- **Accounting/disposition:** EXEC does not classify the four REDs or award debt/observation credit. Stable totals remain provisionally **49 / 14 / 35**, debt **5**; accepted authority remains package `10565723112` / selector427 **427/427**. Exact successor is runtime-free `M4-CP4-TB1-R2-REV`.
+
 ## 2026-09-19 — `M4-CP4-TB1-R1-EXEC`: semantic nonzero exposes harness `errexit` control failure — **COMPLETE / ORCHESTRATION INVALID / NON-STABLE**
 
 - **Authority:** run/job `35415494665 / 105823258305`, event SHA `a4764ce76ed93e79da29d7179f82a12d62261fc8`, candidate artifact `10575545321`, result/log artifacts `10574789745 / 10575004615` with SHA-256 `1b45423f593540c0218680d8b978c13b560efdf90ba3473cb45332668d8d3dc0 / 77e97dc5da2f1e3dcd178b7b2ee16c3c9d5a1a21f0f5d84d876947cd6d33ce37`.

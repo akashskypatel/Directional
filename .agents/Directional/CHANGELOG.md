@@ -1,3 +1,9 @@
+## 2026-09-19 — `M4-CP4-TB1-R2-EXEC`: corrected immutable gate completes; focused semantic RED enters Review
+
+Corrected artifact-only R2 run/job `35417670510 / 105829346816` re-proves candidate `10575545321` preflight exactly, executes all six focus rows and the exact selector427 prefix, and completes immutable postflight. Focus is **2 PASS / 4 RED**: work receipt and produced same-region multiplicity-2 PASS; produced closed-complex oracle REDs at `Invalid rawfield fixture header`; both produced torus periodic-owner witnesses RED at upstream `InvalidBoundedDiskBoundaryTurn`; zero-transport prerequisite REDs because the authored non-flat case returns a valid atlas. Selector427 remains **427/427 PASS**; full ledger **429 PASS / 4 RED**, benchmark zero, no build/repair/mutation activity and exact package/source/execution-view postflight.
+
+This is trustworthy semantic evidence, not orchestration failure. Candidate `10575545321` remains unpromoted and EXEC grants no debt/regression ownership decisions. Accepted authority remains package `10565723112` / selector427 **427/427** with provisional accounting **49 / 14 / 35**, debt **5**. Exact successor: mandatory runtime-free `M4-CP4-TB1-R2-REV`.
+
 ## 2026-09-19 — `M4-CP4-TB1-R1-EXEC`: partial runtime invalidated by harness errexit bug; CB3 next
 
 ## 2026-09-19 — `M4-CP4-CB3`: R1 harness `errexit` defect corrected; R2 controls frozen
