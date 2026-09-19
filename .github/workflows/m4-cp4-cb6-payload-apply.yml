@@ -1,0 +1,48 @@
+name: M4 CP4 CB6 Payload Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-cb6/apply-payload.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-cb6-payload-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-cb6-payload-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-cb6-payload-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1vhgg6J2CgIK-9Pzd714VS3FyTnhn2fEN
+      patch_sha256: cdd4c35d4a33ed395a692e79164634b94965d54ac32e91660180a1015fb116d5
+      base_sha: d3085ee2f778d8c4127447a77f31030001723a75
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M4-CP4-CB6: add R1 execution payloads"
+      retention_days: 7
+    secrets: inherit
