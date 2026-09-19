@@ -1,3 +1,11 @@
+## 2026-09-19 — `M4-CP4-TB3-EXEC`: selector430 cumulative gate mechanically GREEN at 430/430
+
+Immutable artifact-only run/job `35470130614 / 105969470184` consumed only CB8 package `10591801825` from exact compiled source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`. Candidate ZIP SHA-256 re-verifies as `20d9b07bae631e68f3292ee37ccb80c4724bae6eec0c50cd2274c36443183da6`, package manifest **26/26**, source archive `4d057381ba3f1caed55579f7a9b662753632637eb0aff7b1432326d8e557021a`, GMP/GMPXX evidence intact and all four owner binaries mode `0755`.
+
+Selector430 re-verifies at **430 rows / 35,001 bytes / `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`**, exact selector427 prefix and owners **31/283/75/41**. All **430 fresh exact-filter processes PASS** with zero RED/SKIP/crash/selection mismatch/unexecuted. Package/source/execution-view censuses are byte+mode equal before/after; all configure/compile/relink/discovery/repair/mutation and benchmark counters are zero. Result/log artifacts are `10592987234 / 10592817804`; process-ledger SHA-256 is `0e1884ec95bf5043662f42ce5c24186aedb83d74cfe1e0395881a886768694a5`.
+
+EXEC is mechanically green but semantically unadjudicated. Accepted authority remains package `10565723112` / selector427 **427/427**, stable accounting **49 / 14 / 35**, debt **5** until mandatory runtime-free `M4-CP4-TB3-REV`, which owns package promotion, cumulative selector430 credit and CP4/M4 closure.
+
 ## 2026-09-19 — `M4-CP4-CB8`: selector430 published exactly; GMP compile/package GREEN; TB3 next
 
 CB8 completes the publication-only leg authorized by DEFN-R2. `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` is exact selector427 plus the three reviewed CP4 identities: **430 LF rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`**, exact first427 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **31/283/75/41**. Product/test/fixture/benchmark/CMake semantics and all existing selector bytes remain unchanged.
