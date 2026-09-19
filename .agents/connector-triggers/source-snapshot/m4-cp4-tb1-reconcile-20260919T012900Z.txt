@@ -1,4 +1,0 @@
-M4-CP4-TB1-EXEC reconcile snapshot after concurrent closeout writes
-purpose=exact-current-head documentation reconciliation
-read_mode=snapshot
-retry=0

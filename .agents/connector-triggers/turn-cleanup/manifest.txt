@@ -1,2 +1,0 @@
-.agents/connector-triggers/m4-cp4-tb1-closeout-drive-apply-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb1-reconcile-20260919T012900Z.txt
