@@ -1,5 +1,0 @@
-# M4-CP4-CB7 temporary state cleanup
-.agents/connector-triggers/m4-cp4-cb7/apply-closeout.txt
-.agents/connector-triggers/m4-cp4-cb7/validate-corrected-caller.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb7-closeout-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb7-start-20260919.txt

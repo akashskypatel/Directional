@@ -1,3 +1,0 @@
-Purpose: M4-CP4-CB7 exact closeout base snapshot after corrected-caller validation.
-Authority before marker: 164cc2f1d15f1ac8383b20c0ea779e9d6c21c36b
-Directional runtime authorized: false

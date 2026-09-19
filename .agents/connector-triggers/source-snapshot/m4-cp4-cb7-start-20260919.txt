@@ -1,4 +1,0 @@
-Purpose: M4-CP4-CB7 start-of-turn authoritative snapshot.
-Authority before marker: 8fd72b405dcdc0b70c5554def8e6be791b4f51f7
-READ_MODE=snapshot
-Directional runtime authorized: false
