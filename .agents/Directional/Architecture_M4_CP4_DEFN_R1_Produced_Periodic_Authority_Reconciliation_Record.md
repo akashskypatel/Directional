@@ -103,6 +103,8 @@ One process nonconformance occurred at turn startup: handoff/TODO repository doc
 
 Source-snapshot authority for static review: workflow run `35433761426`, artifact `10582101479`, outer digest `49be09928b7ef944303e24197da9a6b50fb36f7ddfe9b19dc0abf1bb57e9643e`, exact snapshot/event SHA `7259af1f020c208337a69471e11495c6cd9fd196`, archive SHA-256 `7a92fbb81221caec14dcf87d934fec3f4f02691339409ad72b7529646ec9758c`, `runtimeExecution=false`.
 
+Resume reconciliation after the continuation request used source-snapshot run `35435078981`, artifact `10581333102`, outer digest `12540f1dc01c37787c118f1d2debbf263b4b8e9034cb3ef34a8877dd29482375`, exact snapshot/event SHA `1aa96b251951e9ef5021ae7a8bc1e37627fa1209`, archive SHA-256 `bd078fab6ff9888e556eeffa7ed21460f64c0957c51d5dbc10eedc85eb2a897c`, and `runtimeExecution=false`. All 13 prepared documentation paths matched origin byte-for-byte (including the two intended removals), leaving no local-only unpushed work. The Drive patch `1rLxjoEulPhnJZjclLVzDWKE5MLLc9ofR` was owner-deleted after successful push evidence, and final temporary caller/marker cleanup left only durable workflows with no workflow-observation or turn-payload files.
+
 ## 7. Exact successor
 
 Exactly one successor is frozen: **`M4-CP4-CB5`**, under `Architecture_M4_CP4_CB5_Code_Build_Plan.md`.
@@ -129,5 +131,5 @@ Its falsifiers are written before implementation. Scope is limited to the row2 p
 | Successor frozen | Exactly one: `M4-CP4-CB5`; falsifiers are stated before authorized edits in `Architecture_M4_CP4_CB5_Code_Build_Plan.md` §2. |
 | Turn boundary held | Yes — runtime-free; no product/test/fixture/selector/benchmark/build semantics changed and no generated Directional binary executed. |
 | review_check.py boundary | **ALL CHECKS PASSED** against the prepared documentation-only delta with selector427 explicitly re-hashed. |
-| `STATUS` lifecycle maintained | `Turn=M4-CP4-DEFN-R1`; entry `IN_PROGRESS`; `Started at=2026-09-19T09:04:39Z`; `Resumed at` empty; final COMPLETE / `Successor=M4-CP4-CB5` / Ended timestamp is reserved for the final direct STATUS mutation. |
+| `STATUS` lifecycle maintained | `Turn=M4-CP4-DEFN-R1`; entry `IN_PROGRESS`; `Started at=2026-09-19T09:04:39Z`; continuation `Resumed at=2026-09-19T09:30:09Z`; final COMPLETE / `Successor=M4-CP4-CB5` / Ended timestamp is reserved for the final direct STATUS mutation. |
 | Pushed to origin, branch in sync | The verified documentation patch is pushed to the configured working branch and final branch authority is re-read before the final STATUS beacon; no alternate ref is used. |
