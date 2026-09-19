@@ -1,0 +1,48 @@
+name: M4 CP4 CB7 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-cb7/apply-closeout.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-cb7-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-cb7-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-cb7-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1QgDjFTC8_iSJ5E_kXM842RLvle3v0XqE
+      patch_sha256: 79fd9121d22bf0d9086cc66149d0898194eef41ef9fa8412063c0aca80f4cdf1
+      base_sha: 582f572265da47098eb533258e930d9eec88f6a6
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M4-CP4-CB7: publish closeout and R2 plan"
+      retention_days: 7
+    secrets: inherit
