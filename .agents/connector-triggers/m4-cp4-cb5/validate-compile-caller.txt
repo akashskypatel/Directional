@@ -1,0 +1,2 @@
+Purpose: schema-validate the exact installed M4-CP4-CB5 compile caller before compile workload execution.
+Workload: must remain skipped on this validation trigger.
