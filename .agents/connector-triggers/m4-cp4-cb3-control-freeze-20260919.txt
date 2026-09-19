@@ -1,0 +1,3 @@
+M4-CP4-CB3 static control-freeze validation
+candidate_artifact=10575545321
+runtime=forbidden
