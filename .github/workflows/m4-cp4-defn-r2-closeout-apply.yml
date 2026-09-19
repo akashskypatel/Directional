@@ -1,0 +1,48 @@
+name: M4 CP4 DEFN R2 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-defn-r2/apply-closeout.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-defn-r2-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-defn-r2-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-defn-r2-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 163AAnRurgPm9qJCsaXXWNHVvjd92GR2x
+      patch_sha256: a3da23fb67668b8d95b5787a178d9e2b98503a5c0ed6429d8aa1a941b2b9a931
+      base_sha: a8c9547f416139f82f2215850c35afe742fa5118
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M4-CP4-DEFN-R2: freeze Reading B and publication successor"
+      retention_days: 7
+    secrets: inherit
