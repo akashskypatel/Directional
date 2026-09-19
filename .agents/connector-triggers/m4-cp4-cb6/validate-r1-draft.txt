@@ -1,4 +1,5 @@
 M4-CP4-CB6 static schema validation only.
-Mode: self
+Mode: R1 caller draft
+R1 caller draft: .agents/Directional/turn-payloads/m4-cp4-tb2-r1-caller-draft.yml
 Directional runtime authorized: false
-Retry: 3
+Retry: 4
