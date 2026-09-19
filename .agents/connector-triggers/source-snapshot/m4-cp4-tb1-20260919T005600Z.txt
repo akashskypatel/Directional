@@ -1,4 +1,0 @@
-M4-CP4-TB1-EXEC source snapshot
-purpose=turn-start policy/document/static inspection
-read_mode=snapshot
-retry=0

@@ -1,5 +1,0 @@
-M4-CP4-TB1-EXEC artifact-only execution
-candidate_artifact=10574525792
-expected_source=8d6b8ccf5d49966414f8c54b02b130d8196d3af8
-planned_rows=433
-retry=0
