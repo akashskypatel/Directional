@@ -942,6 +942,8 @@ Acceptance:
 - every owned relation is consumed exactly once;
 - exact source support is shared without consumer-specific quantized identity;
 - source-row, output-row, and scheduler permutation invariance passes.
+
+**M4-CP4-DEFN-R2 ownership amendment (2026-09-19).** The inherited `G4-B002` produced-witness debt `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` is M6-owned because the required closed candidate-bearing arrangement is A5/A6 stage authority: `SurfaceCellPipelineContext` is documented diagnostic-only and must not carry semantic stage authority, so `hasArrangement` cannot be pulled backward into an M4 gate. M6-CP1 owns the authoritative A5 occurrence-complex/stage separation that candidate extraction may consume, and M6-CP3 owns the direct-production re-proof. The original contract is preserved unchanged: fail-closed `SurfaceCells`, no source-grid recovery or fallback substitution, closed source, independently validated candidate eligibility, and a discriminating hard-feature/protection tamper. A synthetic or direct arrangement receives zero credit, and no M4 credit is granted.
 ### M7 — disposition and graded degradation
  
 Introduce `OutputDisposition`, `DegradationCertificate`, the declared degraded region producer, and verifier layer 7 as one vertical contract.

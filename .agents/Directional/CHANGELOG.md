@@ -1,3 +1,32 @@
+## 2026-09-19 — `M4-CP4-DEFN-R2` review: upheld; selector430 pre-commitment verified early; M6 inheritance repaired
+
+Runtime-free review. **Upheld.** Accounting holds at **49 events / 14 categories / 35 recurrences**, debt **5**.
+
+**The selector430 pre-commitment is confirmed before CB8 builds it.** Constructing the predicted file directly —
+accepted selector427 bytes plus the three named identities in the stated order — reproduces the pre-committed
+values exactly: **430 rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`**.
+The pre-commitment is therefore known correct rather than merely declared, so CB8 has a fully determined target.
+Owner census `31/283/75/41` sums to 430 and differs from selector427's `30/281/75/41` by exactly the three
+appended rows; all three identities exist in the tree.
+
+The stage-authority ground is sound: `RemeshPipeline.h:345-347` documents `SurfaceCellPipelineContext` as
+diagnostic-only and says it "must not carry semantic stage authority", and `hasArrangement` is a member of it, so
+it cannot be pulled backward into an M4 gate. The M6 charter pre-existed at `fbb51c83~1` — not circular.
+
+**Repaired:** `M4-CP4-DEFN-R2-REV-OBS-01`. DEFN-R1 recorded its M5 re-homing in `DESIGN.md` §14 right before
+`### M6`, where an M5 turn must read it. DEFN-R2 re-homed the closed-complex debt to M6 but never touched
+`DESIGN.md`, so an M6 definition turn would have read its acceptance list and found no inherited obligation. The
+debt was not lost from the tracker, but it would have been invisible at the point of receipt. This Review added
+the parallel amendment at `DESIGN.md:946`. Standing rule recorded: a re-homing is written into the receiving
+milestone's own charter, not only into the records of the milestone shedding it.
+
+Noted plainly: across DEFN-R1 and DEFN-R2 all three `G4-B002` debts have left M4, so **M4-CP4 will close having
+re-homed rather than discharged every produced-witness debt it was chartered to discharge.** Disclosed by §4 in
+those words, each step resting on a verified pre-existing charter, each preserving the debt at zero M4 credit
+with its discriminator verbatim, and rows 1 and 5 remaining genuine production-authority evidence.
+
+Exact successor: `M4-CP4-CB8` — publication Code + Build; append exactly the three pre-committed identities.
+
 ## 2026-09-19 — `M4-CP4-DEFN-R2`: Reading B re-homes closed-complex debt to M6; selector430 publication frozen
 
 Runtime-free DEFN-R2 proves the remaining candidate-bearing arrangement is not M4/A4 authority: A4 owns per-region `RegionCellComplex`, A5 owns explicit occurrence complex, and current `SurfaceCellPipelineContext` is diagnostic-only with `hasArrangement` published after strands/embedding/global arrangement construction. The unchanged closed-complex `G4-B002` debt therefore moves to M6-CP1 mechanism / M6-CP3 direct-production proof; debt remains **5**, stable accounting **49 / 14 / 35**, and accepted package `10565723112` / selector427 **427/427** is unchanged. R2-reviewed work/boundedness, same-region multiplicity-two and exact zero-transport rows freeze selector430 publication: SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31/283/75/41**. CP4 remains open; exact next is publication-only `M4-CP4-CB8`, then final artifact-only selector430 runtime + Review.

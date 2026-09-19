@@ -108,3 +108,96 @@ Exactly one successor is authorized: publication-only `M4-CP4-CB8` under `Archit
 | review_check.py boundary | **ALL CHECKS PASSED** — selector hashes/prefix and durable markers preserved; no product/test/fixture/build/selector mutation. |
 | `STATUS` lifecycle maintained | `Turn=M4-CP4-DEFN-R2`; Started `2026-09-19T19:15:59Z`; latest Resumed `2026-09-19T20:00:00Z`; final COMPLETE / successor `M4-CP4-CB8` / Ended timestamp is reserved for the final direct STATUS write after documentation and cleanup. |
 | Pushed to origin, branch in sync | Web/connector equivalent: coherent DEFN-R2 documentation is pushed to the configured working branch, then branch authority is re-read after workflow-first cleanup; no self-referential commit hash is embedded in this record. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld, with one durable-record gap repaired by this Review.** The stage-authority reasoning is
+correct, the M6 charter pre-exists, and the selector430 pre-commitment is confirmed **before** CB8 builds it.
+Accounting holds at **49 / 14 / 35**, debt **5**.
+
+### V1 — the pre-committed selector430 is verified ahead of its construction
+
+§4 pre-commits selector430 as 430 LF rows / 35,001 bytes / SHA-256
+`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`. Rather than wait for CB8 and compare
+afterwards, I constructed the predicted file directly — accepted selector427 bytes followed by the three named
+identities in the stated order — and hashed it:
+
+| Property | Pre-committed | Independently constructed |
+|---|---|---|
+| rows | 430 | **430** |
+| bytes | 35,001 | **35,001** |
+| SHA-256 | `1c412850…9db6` | **`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`** |
+
+Exact match on all three. This is a stronger check than prior turns allowed: the pre-commitment is now known to
+be *correct*, not merely *declared*, so CB8 has a fully determined target and any deviation is detectable
+immediately rather than adjudicated afterwards. The owner census `31 / 283 / 75 / 41` sums to 430 and differs
+from selector427's `30 / 281 / 75 / 41` by exactly the three appended rows. All three identities exist in the
+tree — `GlobalConformityBaselineTests.cpp`, `FieldAlignedCurveNetworkTests.cpp` and `FieldTransportAtlasTests.cpp`
+respectively — so no row names a nonexistent test.
+
+### V2 — the stage-authority ground is sound and the M6 charter is not circular
+
+`include/directional/pipeline/RemeshPipeline.h:345` documents `SurfaceCellPipelineContext` as a "Diagnostic-only
+surface-cell observation context" and `:347` states it "must not carry semantic stage authority";
+`hasArrangement` is a member of that context (`:403`). Gating an M4 exit conjunct on it would make a diagnostic
+retention surface into semantic authority — the Review is right to refuse, and equally right that substituting
+`phaseFront == Produced` would be the opposite error.
+
+Applying the same anti-circularity test that DEFN-R1 passed: at `fbb51c83~1`, `DESIGN.md` §14's M6 section
+already read "Separate occurrence creation, quotient construction, geometry embedding, and validation as complete
+stage products." The receiving milestone was chartered for exactly this before DEFN-R2 ran. The re-homing rests
+on pre-existing authority.
+
+### V3 — REPAIRED: the M6 inheritance was recorded only where M4 will read it
+
+This is the one real defect, and it is the failure mode this sequence has been bitten by before: an obligation
+recorded only in the record of the milestone that sheds it.
+
+`M4-CP4-DEFN-R1` set the correct precedent. Its amendment sits at `DESIGN.md:934` — immediately after the M5
+acceptance list and immediately before `### M6` — precisely where an M5 definition turn reading its own charter
+must encounter it.
+
+**DEFN-R2 did not follow that precedent.** It modified `Architecture_M4_CP4_Frozen_Definitions.md`, `ROADMAP.md`,
+the tracker and `TODO.md`, and **did not touch `DESIGN.md` at all**. Before this Review, the string `G4-B002`
+appeared exactly once in `DESIGN.md` — the DEFN-R1 M5 amendment — and neither `CandidateExtractionBaseline…` nor
+any M6 amendment appeared anywhere in it. An M6 definition turn reading §14's M6 acceptance list would have seen
+four bullets about occurrences, relation consumption, source support and permutation invariance, and **no
+inherited produced-witness obligation at all**.
+
+The debt would not have been deleted — it survives in the tracker at debt 5 — but it would have been invisible at
+the point of receipt. Milestone boundaries are exactly where inherited obligations get lost, because after M4
+closes nobody re-reads M4-CP4 records.
+
+Per `REVIEW_TURN_POLICY.md` §3.2 a normative file found deficient is **edited**, not merely annotated, so this
+Review adds the parallel amendment at `DESIGN.md:946`, after the M6 acceptance list and before `### M7`,
+mirroring DEFN-R1's wording: the debt name, M6-CP1 mechanism and M6-CP3 direct-production re-proof owners, and
+the preserved contract (fail-closed `SurfaceCells`, no source-grid recovery or fallback substitution, closed
+source, independently validated candidate eligibility, discriminating hard-feature/protection tamper, zero credit
+for a synthetic or direct arrangement). Recorded as `M4-CP4-DEFN-R2-REV-OBS-01`, closed by this edit.
+
+### V4 — the cumulative pattern, stated plainly
+
+CP4 was chartered with three `G4-B002` produced-witness debts gating it. Across `DEFN-R1` and `DEFN-R2` all three
+have left M4 — two to M5, one to M6 — and §4 states the consequence without euphemism: "No produced-witness debt
+remains M4-owned." **M4-CP4 will therefore close having re-homed, not discharged, every produced-witness debt it
+was chartered to discharge.**
+
+I record this as disclosed and defensible rather than as a finding. Each decision rests on a verified
+pre-existing charter; each preserves the debt in the global count of 5 with explicit zero M4 credit; each
+preserves the original discriminator verbatim rather than weakening it; and the named receiving checkpoints
+(M5-CP1/CP2/CP3, M6-CP1/CP3) are specific rather than gestural. M4 also does not close empty-handed on produced
+evidence: rows 1 and 5 are genuine production-authority identities, and row5 was independently confirmed at
+`TB1-R2-REV` to reach produced torus authority and reject its tamper.
+
+What made this safe is that the obligations remain legible at the point of receipt — which is precisely what V3
+had to repair, and why it was worth repairing before M4 closes rather than after.
+
+### V5 — verification limits
+
+Re-derived from repository bytes: the selector430 construction, row count, byte count and SHA-256; the owner
+census arithmetic; the existence and locations of all three appended identities; the `RemeshPipeline.h`
+diagnostic-only documentation and `hasArrangement` membership; the pre-turn M6 charter at `fbb51c83~1`; and the
+`DESIGN.md` inheritance gap. Accepted as reported: the R2 runtime partition (431 processes, 430 PASS / 1 RED),
+package receipts, and source-snapshot identifiers.

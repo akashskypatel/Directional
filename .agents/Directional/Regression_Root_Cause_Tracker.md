@@ -8594,3 +8594,30 @@ require a separating cycle, which carries no periodic generator and so cannot se
 a different generator pair would decompose into `>=2` regions. It would not. The cross-sheet support in
 `insert_periodic_holonomy` (`src/geometry/SurfaceCellTracing.cpp:6325`) remains real but is unreachable for a
 one-region torus. Ownership is settled by Reading B.
+
+## `M4-CP4-DEFN-R2-REV-OBS-01` — the M6 debt inheritance was invisible in the receiving milestone's charter
+
+**Status.** CLOSED BY REVIEW EDIT / NON-STABLE / no successor obligation.
+
+`M4-CP4-DEFN-R1` re-homed two periodic `G4-B002` debts to M5 and recorded the amendment in `DESIGN.md` §14 at
+line 934 — directly after the M5 acceptance list and before `### M6`, where an M5 definition turn reading its own
+charter must encounter it. That placement is the reason the inheritance is safe.
+
+`M4-CP4-DEFN-R2` re-homed the remaining `G4-B002` debt
+(`CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous`) to M6-CP1/M6-CP3 but **did not touch
+`DESIGN.md`**. It amended the frozen definitions, ROADMAP, tracker and TODO only. Before this Review, `G4-B002`
+appeared exactly once in `DESIGN.md` (the DEFN-R1 M5 amendment), and no M6 amendment existed. An M6 definition
+turn reading §14's M6 acceptance list would have found four bullets and no inherited produced-witness obligation.
+
+**Why:** the debt was never deleted — it stays in the tracker at debt 5 — but it would have been invisible at the
+point of receipt. Milestone boundaries are where inherited obligations are lost, because once M4 closes nobody
+re-reads M4-CP4 records. An obligation recorded only by the milestone that sheds it is one milestone away from
+being forgotten.
+
+**How to apply:** closed by this Review, which added the parallel amendment at `DESIGN.md:946` after the M6
+acceptance list, mirroring DEFN-R1's wording — debt name, M6-CP1 mechanism owner, M6-CP3 direct-production
+re-proof owner, and the preserved contract (fail-closed `SurfaceCells`, no source-grid recovery or fallback
+substitution, closed source, independently validated candidate eligibility, discriminating
+hard-feature/protection tamper, zero credit for synthetic or direct arrangements). **Standing rule for any future
+re-homing: the amendment is written into the receiving milestone's own charter section, not only into the
+records of the milestone shedding it.** See `[[M4-CP4-TB1-R3-REV-OBS-01]]`.
