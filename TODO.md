@@ -2,24 +2,31 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest runtime evidence — `M4-CP4-TB1-R2-EXEC`
+## Latest review — `M4-CP4-TB1-R2-REV`
 
-`M4-CP4-TB1-R2-EXEC` is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Candidate artifact `10575545321` passes exact package/control preflight and immutable postflight. All six focused rows execute: **2 PASS / 4 RED**. Selector427 independently re-proves **427/427 PASS**, giving a complete **433-row ledger = 429 PASS / 4 RED** with benchmark zero and no build/repair/mutation activity.
+R2 is **TRUSTWORTHY / ORCHESTRATION VALID / SEMANTIC NON-GREEN**: focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, immutable postflight exact. Review accepts production-baseline work/boundedness and produced same-region multiplicity-2; `M4-CP3-TB1-R1-REV-OBS-01` is discharged. The four REDs are non-stable test-authority/precondition defects, so stable accounting remains **49 / 14 / 35**, debt **5** and candidate artifact `10575545321` remains unpromoted.
 
-The four focused REDs are not yet classified: row2 stops at `Invalid rawfield fixture header`; rows3/4 stop at `InvalidBoundedDiskBoundaryTurn`; row6 observes `nonFlatAtlas=true` where the focused helper-precondition test expected rejection. Row1 work receipt and row5 produced same-region multiplicity-2 PASS, but any debt/exit credit requires Review. Candidate remains unpromoted. Accepted runtime authority remains package `10565723112` / selector427 **427/427**; provisional accounting **49 / 14 / 35**, debt **5**.
-
-- [x] `M4-CP4-DEFN`: definitions frozen.
+- [x] `M4-CP4-DEFN`: definitions frozen; §3.2 factual helper premise corrected by R2 Review without weakening the produced obligation.
 - [x] `M4-CP4-CB1`: semantic evidence surface compiled; runtime not executed.
-- [x] `M4-CP4-TB1-EXEC`: ORCHESTRATION INVALID / NO SEMANTIC RUNTIME.
-- [x] `M4-CP4-CB2`: all-eight package + corrected receipt/package controls; build GREEN; runtime not executed.
-- [x] `M4-CP4-TB1-R1-EXEC`: ORCHESTRATION INVALID after two focus processes; no postflight or acceptance credit.
-- [x] `M4-CP4-CB3`: control-only correction frozen and statically validated; runtime not executed.
-- [x] `M4-CP4-TB1-R2-EXEC`: trustworthy semantic gate complete; focus 2 PASS / 4 RED; selector427 427/427 PASS; postflight exact.
-- [ ] `M4-CP4-TB1-R2-REV`: **exact next**; mandatory runtime-free adjudication, accounting/debt disposition and one bounded successor plan.
+- [x] `M4-CP4-TB1-EXEC`: orchestration invalid / zero semantic runtime.
+- [x] `M4-CP4-CB2`: all-eight package green; artifact `10575545321`.
+- [x] `M4-CP4-TB1-R1-EXEC`: orchestration invalid after partial focused runtime.
+- [x] `M4-CP4-CB3`: R1 harness control correction statically green.
+- [x] `M4-CP4-TB1-R2-EXEC`: trustworthy 433-row runtime, 429 PASS / 4 RED.
+- [x] `M4-CP4-TB1-R2-REV`: four REDs adjudicated as test-authority/precondition; row1/row5 reviewed credit.
+- [ ] `M4-CP4-CB4`: **exact next**; test-authority-only compile/package correction.
+- [ ] `M4-CP4-TB1-R3-EXEC`: fresh immutable focused + selector427 gate.
+- [ ] `M4-CP4-TB1-R3-REV`: mandatory runtime-free adjudication.
 
-## Current focus — `M4-CP4-TB1-R2-REV`
+## Current focus — `M4-CP4-CB4`
 
-Independent runtime-free Review under `Architecture_M4_CP4_TB1_R2_Review_Plan.md`. Re-derive all four focused REDs and both focused PASSes from exact source+runtime evidence; verify selector427/postflight; adjudicate row2 fixture/test authority, rows3/4 produced-torus reachability, row5 multiplicity-2 credit, row6 zero-transport prerequisite, reporting-only `stop_reason` overwrite, stable accounting/debt, and candidate disposition. No generated Directional runtime is authorized.
+Bounded test-only correction under `Architecture_M4_CP4_CB4_Code_Build_Plan.md`:
+
+- [ ] `CAND-01`: repair row2 test-local rawfield header parsing to `(degree, faceCount)`; no fixture/product parser mutation.
+- [ ] `CAND-02`: align rows3/4 produced torus fixture with accepted row408 explicit hard-rail precondition; runtime must independently prove >=2 periodic relation IDs/edges before oracle/tamper credit.
+- [ ] `CAND-03`: replace row6's planar “non-flat” negative with a genuinely intrinsically non-flat test subject and independently prove nonzero angle defect before expecting rejection.
+- [ ] `OBS-01`: if CB4 freezes R3 controls, make first/last semantic stop-reason semantics explicit without changing runtime gate behavior.
+- [ ] Preserve selector427 byte-for-byte; no product/fixture/benchmark/CMake semantic changes; compile/package only under GMP/GMPXX.
 
 ## Carried forward from M1
 

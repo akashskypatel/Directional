@@ -4,6 +4,15 @@ Corrected artifact-only R2 run/job `35417670510 / 105829346816` re-proves candid
 
 This is trustworthy semantic evidence, not orchestration failure. Candidate `10575545321` remains unpromoted and EXEC grants no debt/regression ownership decisions. Accepted authority remains package `10565723112` / selector427 **427/427** with provisional accounting **49 / 14 / 35**, debt **5**. Exact successor: mandatory runtime-free `M4-CP4-TB1-R2-REV`.
 
+
+## 2026-09-19 — `M4-CP4-TB1-R2-REV`: four focused REDs adjudicated as test-authority/precondition; CB4 frozen
+
+Runtime-free Review independently verifies R2 run/job `35417670510 / 105829346816`: complete 433-row ledger **429 PASS / 4 RED**, focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, exactly one selected test per row, zero skips/benchmark/build-repair counters and exact package/source/execution-view postflight. Accepted M4 authority remains package `10565723112` / selector427; stable accounting remains **49 / 14 / 35**, debt **5**; candidate `10575545321` is not promoted.
+
+Row1 production-baseline work/boundedness and row5 produced same-region multiplicity-2 receive reviewed credit; `M4-CP3-TB1-R1-REV-OBS-01` closes. Row2 is a test-local rawfield `(rows,columns)` vs repository `(degree,faceCount)` mismatch. Rows3/4 share one test-fixture precondition defect: generic `torus_fixture()` stops at `InvalidBoundedDiskBoundaryTurn`, while accepted row408's explicit two-generator/18-hard-edge path remains production-reachable. Row6's purported non-flat fan has all z=0 and is planar. These open `CAND-01/02/03` as non-stable `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`; no product regression fires. Frozen CP4 §3.2 is corrected to remove the false generic-helper claim without weakening its produced periodic multiplicity requirement.
+
+Exact successor is test-authority-only `M4-CP4-CB4`; no product, committed fixture, selector, benchmark or CMake semantic change is authorized. Fresh immutable R3 runtime + Review remains mandatory.
+
 ## 2026-09-19 — `M4-CP4-TB1-R1-EXEC`: partial runtime invalidated by harness errexit bug; CB3 next
 
 ## 2026-09-19 — `M4-CP4-CB3`: R1 harness `errexit` defect corrected; R2 controls frozen

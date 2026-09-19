@@ -61,7 +61,7 @@ A direct call to `closed_toroidal_candidate_complex()` is not credit.
 
 **Debt:** `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`.
 
-The accepted row currently uses `direct_periodic_owner_product()`. Existing source already has a production torus path (`make_torus_pipeline_fixture()` / `torus_fixture()`) with fail-closed SurfaceCells, recovery disabled, retained intermediate authority, and a sibling production test that survives relation-container reversal.
+The accepted row currently uses `direct_periodic_owner_product()`. **R2 Review correction (2026-09-19):** the earlier claim that generic `make_torus_pipeline_fixture()` / `torus_fixture()` already reaches the required produced torus phase front is false. R2 executes that helper fail-closed with recovery disabled and it stops at `InvalidBoundedDiskBoundaryTurn`. Accepted selector row408 provides the relevant production precondition authority instead: its fail-closed/recovery-disabled torus path supplies the explicit two-generator hard-rail cut graph (18 effective hard-feature edges) and reaches a `Produced` phase front. A CP4 focused fixture may align to that already accepted hard-rail precondition, but **must independently prove at runtime** that the produced phase front has the required periodic-relation/periodic-edge multiplicity. If it does not, stop to Review/DEFN; do not substitute direct/draft authority or weaken the multiplicity requirement.
 
 **Proposed focused identity:**
 `M4CP4.ProducedTorusPeriodicRelationOwnersSurviveContainerReordering`.

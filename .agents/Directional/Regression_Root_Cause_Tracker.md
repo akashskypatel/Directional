@@ -8312,6 +8312,8 @@ worth recording against §17.5.
 
 **Prohibited:** silently expiring this because CB4-R1 touched tests without discharging it; folding it into the row400 recovery unless TB2-PLAN proves independent falsifiability is preserved (`LESSONS.md` 170); asserting the multiplicity path by inspection instead of exercising it.
 
+**R2 REVIEW DISCHARGE (2026-09-19).** `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder` executes on produced authority in R2, independently derives two distinct same-region occurrences, verifies two baseline incidences, and rejects deletion of one incidence. **CLOSED / RUNTIME-PROVED / REVIEWED / NON-STABLE; no stable event.**
+
 ## `PROCESS-01` — the durable review-turn rule was deleted and the gate did not notice
 
 **Owner:** closed by `REVIEW_TURN_POLICY.md` + restored `ORIENTATION.md` rule, 2026-09-11 · **Class:** PROCESS/GUARD-GAP
@@ -8392,3 +8394,32 @@ rule is that a claim about a frozen clause must quote the clause.
 report-only and non-gating, with `429` and `4096` explicitly barred from becoming thresholds. That disposition is
 correct and needs no amendment from this entry. Nothing is owed to `M4-CP4-CB1`.
 
+
+
+## `M4-CP4-TB1-R2-REV-CAND-01` — focused closed-complex rawfield reader asserts the wrong file format
+
+**Owner:** `M4-CP4-CB4` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / FIXTURE-FORMAT PRECONDITION`
+**Status:** OPEN / NON-STABLE / TEST-AUTHORITY. No accepted-green loss; stable accounting unchanged.
+
+R2 row2 stops at `Invalid rawfield fixture header` before any produced closed-complex candidate oracle runs. The test-local reader interprets `torus.rawfield` header as `(rows, columns)` and demands `(expectedFaces,12)`, while committed authority and the sibling correct reader use `(degree, faceCount)`; the fixture begins `4 144`. Correction is test-only: parse degree/count/`3*degree`; fixture and production parser remain unchanged. The associated `G4-B002` debt remains open until a produced candidate-bearing complex reaches the independent oracle and tamper.
+
+## `M4-CP4-TB1-R2-REV-CAND-02` — periodic-owner focused tests omit the accepted torus hard-rail production precondition
+
+**Owner:** `M4-CP4-CB4` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / PRODUCED-FIXTURE PRECONDITION + REACHABILITY`
+**Status:** OPEN / NON-STABLE / TEST-AUTHORITY. Rows3/4 are one root cause/recurrence, not two stable events.
+
+R2 rows3/4 both call generic `make_torus_pipeline_fixture()` / `torus_fixture()` and stop at `InvalidBoundedDiskBoundaryTurn` before relation-container reorder or missing-owner tamper. Accepted selector row408 re-passes in the same R2 run and reaches `Produced` on the fail-closed/recovery-disabled torus path with the explicit two-generator/18-hard-edge authority and 179/180 automatic-hard-edge suppression. Frozen CP4 §3.2 is corrected accordingly. CB4 may align focused test authority to row408's precondition, but runtime must independently prove >=2 produced relation IDs and >=2 periodic edges. Direct/draft fallback is prohibited; both periodic `G4-B002` debts remain open.
+
+## `M4-CP4-TB1-R2-REV-CAND-03` — zero-transport negative labels a planar fan non-flat
+
+**Owner:** `M4-CP4-CB4` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / WITNESS-PRECONDITION`
+**Status:** OPEN / NON-STABLE / TEST-AUTHORITY. No product semantic disagreement established.
+
+R2 row6 expects zero transport to reject `make_skew_four_triangle_fan()`, but static re-derivation shows every vertex has `z=0`; the subject is planar. CB4 must provide a genuinely intrinsically non-flat test-local negative and independently prove nonzero interior angle defect/curvature before expecting `CycleTransportMismatch`. `M4-CP-SCALE-TB2-REV-OBS-02` remains open/narrowed until corrected runtime+Review.
+
+## `M4-CP4-TB1-R2-REV-OBS-01` — focused stop-reason field reports last RED, not first
+
+**Owner:** next R3 harness/control freeze (CB4 only if it owns that harness) · **Class:** EVIDENCE-CONTROL / REPORTING SEMANTICS
+**Status:** OPEN / NON-BLOCKING / NON-STABLE.
+
+R2's complete ledger/raw logs are trustworthy, but `run_one` overwrites `stop_reason` for every focused RED, yielding `semantic_red_focus_6` despite a comment implying first-RED retention. Immutable postflight and all 433 rows are unaffected. Clarify/preserve first-vs-last reporting semantics without changing execution, selector stop or acceptance behavior.

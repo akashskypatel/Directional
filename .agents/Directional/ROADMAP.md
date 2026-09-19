@@ -87,6 +87,10 @@ R7 is valid semantic evidence: A0 row1 executes once and REDs `SingularityMismat
 
 CB23 implements DEFN-R1's typed source-global boundary-cycle authority on semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff`. Mandatory GMP/GMPXX compile/package run `35378397152` is GREEN as artifact `10560828304`. R10 artifact-only run/job `35382311474 / 105721178393` then passes CB23 controls **3/3**, inherited Gate A **4/4**, production S5 **1/1** and selector426 **426/426**, total **434/434**, with exact immutable postflight and benchmark/build mutation counts zero. R10 Review independently accepts that evidence, promotes artifact `10560828304`, closes R9/R4 RP-01 recovery non-stably, and accepts S5 for publication. Exact next is publication-only `M4-CP-SCALE-CB24`.
 
+### M4-CP4 current review state — 2026-09-19
+
+R2 completed the full 433-row immutable gate: focus **2 PASS / 4 RED**, accepted selector427 **427/427 PASS**, exact immutable postflight. Review grants work/boundedness and produced same-region multiplicity-2 credit, closes `M4-CP3-TB1-R1-REV-OBS-01`, and classifies all four REDs as non-stable test-authority/precondition defects. All three `G4-B002` debts remain open; candidate `10575545321` is unpromoted. Exact successor is test-authority-only `M4-CP4-CB4`, then fresh R3 artifact-only runtime + Review. Product, fixture and selector427 semantics are frozen.
+
 ## 1. Where the project actually is
 
 | Milestone | State | Accepted authority |
