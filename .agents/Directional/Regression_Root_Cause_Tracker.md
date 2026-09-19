@@ -8493,3 +8493,37 @@ R3 rows3/4 both pass `SurfaceCellProducerDisposition::Produced` under the CB4 ro
 **Status:** OPEN / NON-STABLE / REVIEW-OWNED. Accepted selector427 remains 427/427 PASS; stable accounting is unchanged in EXEC.
 
 R3 row6 independently proves nonzero apex angle defect, flat zero-transport success and non-flat zero-transport rejection. Expected code is `CycleTransportMismatch`; runtime returns enum value 6, currently `NonIntegralCycleLift`. Review must determine test-expectation versus validation-order/product ownership.
+
+## `M4-CP4-TB1-R3-REV-OBS-01` — the DEFN-R1 readings presuppose same-sheet and omit the cross-sheet path
+
+**Status.** OPEN / NON-GATING / owner `M4-CP4-DEFN-R1` / NON-STABLE / must be answered before A-or-B is selected.
+
+`Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Plan.md` §2 offers two readings: **A**
+freeze a bounded M4 **same-sheet** two-generator basis, or **B** re-home both periodic `G4-B002` debts to M5 and
+amend the M4 exit theorem. Reading B fires "if same-sheet basis identity cannot be defined". Both presuppose the
+two generators occupy one `sourceTopologyRegion`.
+
+The product does not require that. `src/geometry/SurfaceCellTracing.cpp:6325` states: "Multiple relations on
+distinct authoritative sheets/components remain valid and are kept." Verified mechanism: `insert_periodic_holonomy`
+refuses only when `sameScope` (`:6314-6315`, comparing `sourceTopologyRegion()`); when scopes differ the loop
+`continue`s, and `:6328-6349` allocates a distinct `PeriodicRelationId` from the occupied typed-ID set with
+existing owners stable under reordering. Frozen §3.2 asks for ">= 2 distinct periodic relation IDs" and does not
+say same-sheet.
+
+**Reading C:** if the produced torus phase-front decomposes into two or more distinct `sourceTopologyRegion`s,
+each carrying one relation, §3.2 is satisfiable in current architecture with no basis solver, no weakening and no
+re-homing. The only remaining blocker would be the hard-rail deferral in
+`build_periodic_annulus_phase_front_for_faces` (`:12423`).
+
+**Why:** Reading B is the heaviest and least reversible option available — it moves two produced-witness debts
+across a milestone boundary and amends a frozen exit theorem. Selecting it while a cheaper path advertised by the
+product's own source is unexamined would be a large irreversible decision taken on an incomplete option set. A
+two-generator torus basis is naturally same-sheet, so Reading C may fail on the facts; that is a reason to
+determine it, not to assume it.
+
+**How to apply:** `M4-CP4-DEFN-R1` explicitly determines and records whether the produced torus phase-front
+yields `>= 2` distinct `sourceTopologyRegion`s able to carry one periodic relation each. If yes, evaluate
+Reading C on its merits. If no, record the evidence and proceed with the A/B binary as written. Reading C
+respects every §3 prohibition: multiplicity comes from produced sheet decomposition, never from the two authored
+hard-rail cycles, discovery order, container order, or a renamed `HardRailMerge`. See
+`[[M4-CP4-TB1-R2-REV-OBS-02]]`.

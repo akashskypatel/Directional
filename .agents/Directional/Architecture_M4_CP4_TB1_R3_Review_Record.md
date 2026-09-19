@@ -139,3 +139,97 @@ Durable facts from the superseded/consumed CP4 turn documents listed in `M4_Cons
 | review_check.py boundary | **PASS** — `python3 .agents/Directional/tools/review_check.py boundary` reports all Review-boundary, selector-hash and durable-marker checks PASS; no product/test/fixture/build/selector mutation. |
 | `STATUS` lifecycle maintained | `Turn=M4-CP4-TB1-R3-REV`; entry/resume state is maintained in root `STATUS`; final COMPLETE / `Successor=M4-CP4-DEFN-R1` / Ended timestamp is reserved for the final direct closeout mutation. Started `2026-09-19T07:32:17Z`; latest attempt resumed `2026-09-19T08:30:37Z`. |
 | Pushed to origin, branch in sync | Web/connector equivalent: coherent documentation patch is pushed to the configured branch through verified Drive transport, then branch authority is re-read after workflow-first cleanup; no self-referential commit hash is embedded in this record. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The architecture-definition finding is confirmed from product bytes and is correct;
+the definition stop is the right call. Accounting holds at **49 / 14 / 35**, debt **5**; selector427 re-hashes
+byte-exact at 427 rows. One substantive amendment is recorded for `M4-CP4-DEFN-R1`.
+
+### V1 — the three-part architecture finding is confirmed verbatim
+
+All three links of §3.3 re-derived from `src/geometry/SurfaceCellTracing.cpp`:
+
+1. **Deferral.** `build_periodic_annulus_phase_front_for_faces(...)` (`:12423`) carries the comment "When hard
+   rails are governed by the immutable A3 plan, defer to the bounded curved producer instead of recreating
+   shared …", guarded on non-empty `options.hardFeatureEdges` and source-edge incidence. Row408's path supplies
+   exactly those hard rails, so it never reaches the periodic-annulus producer.
+2. **Single relation.** The annulus producer allocates `PeriodicRelationId::from_index(0, 1)` (`:13406`). With
+   `from_index(value, extent)` requiring `value < extent` (`include/directional/authority/AuthorityIds.h:179-191`),
+   `(0, 1)` is a domain of exactly **one** relation.
+3. **Same-sheet refusal.** `insert_periodic_holonomy(...)` (`:6302-6326`) computes
+   `sameScope = existing.sourceTopologyRegion() == relation.sourceTopologyRegion()` and returns `AmbiguousBasis`
+   for a second distinct same-scope relation, under the comment "This G4 slice intentionally does not guess a
+   basis inside one source sheet. Distinct same-sheet cycles require a later topology-basis solver; retaining one
+   by discovery order would be unsound."
+
+**Independent corroboration worth recording:** the deferral in (1) *statically predicts* the zero
+`periodicHolonomies` that R3 observed at runtime. Two independent derivations — product control flow read
+here, and the produced relation table read by the focused tests — agree. That is much stronger than either alone,
+and it is why the "not another fixture alias" conclusion holds.
+
+`M4-CP4-TB1-R2-REV-OBS-02` is correctly **discharged**: the tests read multiplicity off the produced table and
+report zero, rather than inferring two relations from the two injected cycles. The hazard I recorded last turn
+did not materialise.
+
+### V2 — row6's typed ordering is confirmed
+
+In `src/authority/FieldTransportAtlas.cpp`, `NonIntegralCycleLift` is returned at `:2457`, ahead of both
+`CycleTransportMismatch` sites at `:2520` and `:2630`. A witness whose lift is non-integral therefore stops at
+the earlier, more specific code. The Review's instruction is right and must be kept precise: the corrected test
+expects **`NonIntegralCycleLift`** for this exact witness and must not weaken to "any failure".
+
+Discharging `M4-CP-SCALE-TB2-REV-OBS-02` is also correct — that obligation was a *precondition* audit, and R3
+proves flat success, genuine non-flat geometry and typed non-flat rejection. The residual error-code assertion is
+a separate, narrower test-authority item. This closes the audit I first raised at CP-SCALE-TB2.
+
+### V3 — AMENDMENT FOR `M4-CP4-DEFN-R1`: the A/B binary omits a path the product already supports
+
+§2 of the successor plan offers exactly two readings — **A**, freeze a bounded M4 *same-sheet* two-generator
+basis; **B**, re-home both debts to M5 and amend the M4 exit theorem. Reading A is titled "same-sheet", and
+Reading B fires "if same-sheet basis identity cannot be defined". **Both presuppose that the two generators must
+live in one `sourceTopologyRegion`.**
+
+The product does not require that, and says so explicitly at `SurfaceCellTracing.cpp:6325`: *"Multiple relations
+on distinct authoritative sheets/components remain valid and are kept."* The mechanism is present and verified —
+when `!sameScope` the loop `continue`s rather than refusing, and `:6328-6349` then allocates a **distinct** id
+from the occupied typed-ID set (`ownerExtent = relations.size() + 1U`, first unoccupied index wins), with
+existing owners explicitly stable under container reordering.
+
+Frozen §3.2 requires "at least two distinct periodic relation IDs and at least two periodic edges resolving
+through typed ownership" on the produced torus. As written it does **not** demand one region. So a third reading
+exists:
+
+> **Reading C — two relations on distinct authoritative sheets.** If the produced torus phase-front decomposes
+> into two or more distinct `sourceTopologyRegion`s, each carrying one relation, §3.2's `>=2` is satisfiable in
+> current architecture with **no** basis solver, **no** weakening, and **no** re-homing. The remaining blocker
+> would be only the hard-rail deferral in (1) — a narrower, bounded question than either A or B.
+
+I cannot settle runtime-free whether a produced torus actually yields `>=2` such regions; a two-generator torus
+basis is *naturally* same-sheet, so Reading C may well fail on the facts. That is exactly why it must be
+**determined and recorded, not assumed away**. Reading B is the heaviest and least reversible option on the
+table — it re-homes two produced-witness debts across a milestone boundary and amends a frozen exit theorem — and
+it should not be reached while a cheaper path the product's own source advertises remains unexamined.
+
+**Required of `M4-CP4-DEFN-R1`:** before selecting A or B, explicitly determine and record whether the produced
+torus phase-front yields two or more distinct `sourceTopologyRegion`s capable of carrying one periodic relation
+each. If yes, evaluate Reading C on its merits. If no, say so with the evidence — and then A/B is the correct
+binary. Recorded as `M4-CP4-TB1-R3-REV-OBS-01`.
+
+This does not weaken any prohibition in §3 of the plan: Reading C derives multiplicity from produced sheet
+decomposition, never from the two authored hard-rail cycles, never from discovery or container order, and never
+by renaming a `HardRailMerge` a periodic relation.
+
+### V4 — verification limits, stated
+
+Re-derived independently from repository bytes: all three architecture links and their comments; the
+`from_index` extent contract; the distinct-id allocation loop; the `NonIntegralCycleLift` /
+`CycleTransportMismatch` ordering; selector427's 427 rows and SHA-256.
+
+Accepted as reported, not re-derivable runtime-free: the 433-row `429 PASS / 4 RED` partition, run/job and
+artifact identifiers, package receipts, postflight byte-identity, and `stop_reason=semantic_red_focus_2`. The
+`stop_reason` fix discharging `R2-REV-OBS-01` is consistent with what CB4 was authorized to change.
+
+The closeout block is complete and every row is answered — including the honest "n/a" on the selector manifest.

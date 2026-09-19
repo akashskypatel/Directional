@@ -1,3 +1,30 @@
+## 2026-09-19 — `M4-CP4-TB1-R3-REV` review: definition stop upheld; cross-sheet reading recorded for DEFN-R1
+
+Runtime-free review. **Upheld.** The architecture-definition finding is confirmed from product bytes and the
+definition stop is correct. Accounting holds at **49 events / 14 categories / 35 recurrences**, debt **5**;
+selector427 re-hashes byte-exact at 427 rows; accepted authority remains package `10565723112` / selector427
+**427/427**.
+
+All three links of §3.3 re-derived: the hard-rail deferral in `build_periodic_annulus_phase_front_for_faces`
+(`SurfaceCellTracing.cpp:12423`); the single-relation domain `PeriodicRelationId::from_index(0, 1)` (`:13406`,
+with `from_index(value, extent)` requiring `value < extent`); and the deliberate same-sheet `AmbiguousBasis`
+refusal (`:6302-6326`). Notably the deferral *statically predicts* the zero `periodicHolonomies` R3 observed at
+runtime — two independent derivations agreeing. `M4-CP4-TB1-R2-REV-OBS-02` is correctly discharged: the tests
+read multiplicity off the produced table rather than inferring it from the injected cycles. Row6's ordering also
+confirmed — `NonIntegralCycleLift` (`FieldTransportAtlas.cpp:2457`) precedes both `CycleTransportMismatch` sites
+(`:2520`, `:2630`) — so the corrected test must expect the specific code, not "any failure". This closes the
+`make_zero_transport_field` precondition audit first raised at CP-SCALE-TB2.
+
+New: `M4-CP4-TB1-R3-REV-OBS-01` (non-gating, owner DEFN-R1) — the plan's Reading A/B binary presupposes the two
+generators share one `sourceTopologyRegion`, but the product explicitly keeps "multiple relations on distinct
+authoritative sheets/components" (`SurfaceCellTracing.cpp:6325`) and allocates distinct ids for them. A third
+reading therefore exists, and Reading B — re-homing two debts across a milestone boundary and amending a frozen
+exit theorem — is the least reversible option on the table. DEFN-R1 must determine and record whether the
+produced torus yields `>= 2` distinct sheets before selecting A or B.
+
+Exact successor unchanged: `M4-CP4-DEFN-R1` — runtime-free definition reconciliation, no product/test/selector
+change.
+
 ## 2026-09-19 — `M4-CP4-TB1-R3-REV`: R3 evidence upheld; candidate not promoted; periodic ownership stops at DEFN
 
 Runtime-free independent Review re-derives R3's **429 PASS / 4 RED** ledger (focus **2 PASS / 4 RED**, selector427 **427/427 PASS**), exact-one selection, immutable postflight and zero build/repair/mutation counters. R2's parser, row408-reachability and non-flat-prerequisite candidates are closed correction-proved/non-stable. Current row2 remains test-witness reachability at `NotProductionReady/tracing`; rows3/4 reach `Produced` but expose zero periodic relations plus an intentional same-sheet `AmbiguousBasis` representation limit; row6 correctly reaches earlier `NonIntegralCycleLift`, making the focused expectation test-owned.
