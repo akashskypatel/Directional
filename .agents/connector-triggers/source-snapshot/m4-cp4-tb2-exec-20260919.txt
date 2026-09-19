@@ -1,0 +1,3 @@
+Purpose: M4-CP4-TB2-EXEC start-of-turn reconciliation snapshot.
+Semantic authority before marker: a13d55c5264e52c938dd5efd9fc8ce198e4a5f81
+Retry: 0
