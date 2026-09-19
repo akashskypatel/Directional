@@ -26,18 +26,9 @@ jobs:
       trim_stale_comments: true
     secrets: inherit
 
-  validate_self:
+  validate:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .github/workflows/m4-cp4-cb6-validate-r1-draft.yml
-      source_ref: ${{ github.sha }}
-    secrets: inherit
-
-  validate_draft:
-    needs: validate_self
-    if: ${{ needs.validate_self.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
-    with:
-      workflow_path: .agents/Directional/turn-payloads/m4-cp4-tb2-r1-caller-draft.yml
+      workflow_path: ${{ contains(github.event.head_commit.message, 'validate self') && '.github/workflows/m4-cp4-cb6-validate-r1-draft.yml' || '.agents/Directional/turn-payloads/m4-cp4-tb2-r1-caller-draft.yml' }}
       source_ref: ${{ github.sha }}
     secrets: inherit
