@@ -1,3 +1,0 @@
-Purpose: M4-CP4-TB2-R1-EXEC start-of-turn reconciliation snapshot.
-Semantic/control authority before marker: 9a94031825d3bc8184f53b80e0c9be95423534e6
-Directional runtime authorized: false
