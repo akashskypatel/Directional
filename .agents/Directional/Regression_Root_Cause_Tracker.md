@@ -6,7 +6,7 @@
 - **`M4-CP4-TB1-R1-ORCH-01`:** `run_one` executes under an outer `set +e` but internally calls `set -e` before its final PASS predicate. A semantic nonzero therefore exits the harness before the outer loop captures status/counter, remaining focused rows, selector427 or immutable postflight. Boundary: `runtime_started=true`, `postflight_complete=false`, `focus_executed=1` despite two raw focus logs, selector `0/427`.
 - **Row-2 disposition:** diagnostic only / unadjudicated. Static source shows its helper expects `rows columns` while committed torus rawfield header is `4 144`; no test/product correction is authorized from this invalid attempt.
 - **Accounting:** no accepted semantic regression/candidate is opened; stable totals remain **49 / 14 / 35**, debt **5**. Accepted authority remains package `10565723112` / selector427 **427/427**.
-- **Exact successor:** runtime-free control-only `M4-CP4-CB3`; preserve artifact `10575545321` and all semantic bytes, correct only harness errexit propagation, then fresh `M4-CP4-TB1-R2-EXEC`.
+- **Correction:** `M4-CP4-CB3` is correction-built / static-control-proved. Frozen R2 harness is 19,885 bytes / SHA-256 `78ab110f8ad851b66fcc331ef02b3a02388f51147efcd4672f2c9bfc7fd750dd`; control-freeze run/job `35416505731 / 105826126230` is green with `runtimeExecution=false`. Runtime re-proof remains pending; stable totals remain **49 / 14 / 35**, debt **5**. Exact successor is fresh `M4-CP4-TB1-R2-EXEC` on unchanged artifact `10575545321`.
 
 ## 2026-09-19 — `M4-CP4-CB2`: TB1 orchestration/package causes corrected without semantic change — **COMPLETE / BUILD GREEN / NON-STABLE**
 

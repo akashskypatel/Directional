@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-19 (`M4-CP4-TB1-R1-EXEC` ORCHESTRATION INVALID AFTER PARTIAL RUNTIME. Candidate `10575545321` passes immutable preflight; focus row1 PASS and row2 one-selected RED are observed, but harness `errexit` control aborts before rows 3–6, selector427 and mandatory postflight. No acceptance credit. Accepted M4 runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting **49 / 14 / 35**, debt **5**. Exact next: runtime-free `M4-CP4-CB3`, then fresh `M4-CP4-TB1-R2-EXEC`.)
+**Status date:** 2026-09-19 (`M4-CP4-CB3` COMPLETE / CONTROL FREEZE GREEN / RUNTIME NOT EXECUTED. R1 orchestration defect `M4-CP4-TB1-R1-ORCH-01` is correction-built with frozen R2 harness SHA-256 `78ab110f8ad851b66fcc331ef02b3a02388f51147efcd4672f2c9bfc7fd750dd`; candidate `10575545321` and all semantic bytes remain unchanged/unpromoted. Accepted M4 runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting **49 / 14 / 35**, debt **5**. Exact next: fresh corrected `M4-CP4-TB1-R2-EXEC`, then mandatory Review.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
