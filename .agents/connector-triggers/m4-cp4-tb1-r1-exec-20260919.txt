@@ -1,5 +1,0 @@
-M4-CP4-TB1-R1-EXEC immutable artifact-only execution
-candidate_artifact=10575545321
-planned_rows=433
-benchmark_execution_count=0
-retry=1

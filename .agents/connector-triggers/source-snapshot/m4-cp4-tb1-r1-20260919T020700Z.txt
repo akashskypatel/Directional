@@ -1,4 +1,0 @@
-M4-CP4-TB1-R1-EXEC source snapshot
-purpose=artifact-only retry execution planning and durable-document inspection
-read_mode=snapshot
-runtime=forbidden
