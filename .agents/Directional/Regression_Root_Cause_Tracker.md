@@ -1,10 +1,19 @@
+## 2026-09-19 — `M4-CP4-TB1-EXEC`: pre-runtime orchestration/package closure failure — **COMPLETE / ORCHESTRATION INVALID / NON-STABLE**
+
+- **Authority:** run/job `35411656874 / 105812362078`, event SHA `807722c0518c2919a6f208e4bbe98368f100905b`, immutable candidate artifact `10574525792` / exact source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`. Result/log artifacts `10573982618 / 10573992605`, provider SHA-256 `2e9bcb293ee8d99e6b9d90210496c6633f02ab5bd2830b6e7d668bc6ad4eba6d / c79fd3fa32fb8d002aa7f6196afd255cc3636436eba4b9a166877d3eaadfaea3`.
+- **Observed:** exact package ZIP SHA, full package manifest and source commit verified; then the TB harness required absent `source-status-after-package.txt` and exited `90` before any generated Directional process. `runtime_started=false`, focus `0/6`, selector `0/427`, benchmark `0`, all build/repair/mutation counters `0`.
+- **Root cause A — orchestration contract:** the harness invented a clean-receipt filename not emitted by the durable reusable compile workflow. Actual clean receipt set is before-configure, preconfigure, after-configure, after-build and final.
+- **Root cause B — package closure:** candidate artifact packages authority-kernel / producer / completion test executables but omits `directional_surface_cell_validation_tests`; selector427 has frozen owners **30 / 281 / 75 / 41**, so the immutable candidate cannot execute 41 validation-owned rows. CB1 compiled only five targets rather than the full standard eight.
+- **Regression disposition:** no product semantic runtime occurred; **no stable regression/candidate is opened** and no recovery claim is made. This is one non-stable orchestration/package-closure incident. Stable totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. Accepted runtime authority remains package `10565723112` / selector427 **427/427**.
+- **Exact successor:** runtime-free `M4-CP4-CB2` under `Architecture_M4_CP4_CB2_Code_Build_Plan.md`; semantic bytes remain frozen, all-eight GMP package + corrected harness only, then fresh `M4-CP4-TB1-R1-EXEC`.
+
 ## 2026-09-19 — `M4-CP4-CB1`: frozen CP4 evidence surface compiles; runtime credit pending — **COMPLETE / BUILD GREEN / NON-STABLE**
 
 - **Candidate build authority:** semantic implementation `024427475aebf438c678caa27c35415f32c31198`; exact compiled source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`; compile run/job `35409797874 / 105806980973`; candidate artifact `10574525792`; log `10574205964`; GMPXX+GMP and `runtimeExecution=false`.
 - **Evidence surface:** current A3 now carries producer/validator work receipts for `1+2E` calls per phase / `2+4E` aggregate, ordered prefix dimensions, zero-reset completion and report-only exact-width categories; the validator independently reconstructs dimensions and executes its own replay. Six focused `M4CP4` identities cover work tamper rejection, the three produced `G4-B002` debts, produced same-region multiplicity-2, and zero-transport precondition separation.
 - **Selector/authority:** selector427 is unchanged at 427 LF rows / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`. Compile success grants no debt discharge or package promotion.
 - **Regression disposition:** no runtime executed, so no new event/candidate/category/recurrence is observed. **+0 / +0 / +0**; totals remain **49 / 14 / 35**, produced-witness debt **5**.
-- **Exact successor:** artifact-only `M4-CP4-TB1-EXEC` under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, then mandatory runtime-free Review.
+- **Exact successor:** artifact-only `M4-CP4-TB1-EXEC` (historical successor; now consumed and consolidated in `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md`).
 
 ## 2026-09-18 — `M4-CP4-DEFN`: cumulative exit contract frozen; no runtime regression observed — **COMPLETE / DEFINITIONS FROZEN / NON-STABLE**
 

@@ -4,38 +4,38 @@
 
 ## Current authority
 
-`M4-CP4-CB1` is **COMPLETE / BUILD GREEN / RUNTIME NOT EXECUTED**. Semantic implementation commit is `024427475aebf438c678caa27c35415f32c31198`; exact compiled source is `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`. Mandatory GMP compile run/job `35409797874 / 105806980973` produced candidate artifact `10574525792` and log artifact `10574205964`; result/log SHA-256 are `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0 / ff296f40f7756804c6a52deefb7fac0bc944a249676085766c215907d2534727`. `runtimeExecution=false`; no generated Directional runtime executed.
+`M4-CP4-TB1-EXEC` is **COMPLETE AS EVIDENCE INTAKE / ORCHESTRATION INVALID / NO SEMANTIC RUNTIME**. Run/job `35411656874 / 105812362078` consumed candidate artifact `10574525792` exactly once, verified provider/package SHA-256 `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0`, complete package `SHA256SUMS`, and exact packaged source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`, then stopped before any generated Directional process. Primary result/log artifacts are `10573982618 / 10573992605`, provider SHA-256 `2e9bcb293ee8d99e6b9d90210496c6633f02ab5bd2830b6e7d668bc6ad4eba6d / c79fd3fa32fb8d002aa7f6196afd255cc3636436eba4b9a166877d3eaadfaea3`.
 
-Accepted current M4 **runtime** authority is unchanged: package `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Selector427 remains 427 LF rows with SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. CB1 compile success grants no produced-witness credit and does not promote the candidate package.
+The deterministic stop has two orchestration/package causes. First, the frozen TB harness incorrectly required `metadata/source-status-after-package.txt`; the reusable compile package actually binds `source-status-before-configure`, `source-status-preconfigure`, `source-status-after-configure`, `source-status-after-build`, and `source-status-final`. Second, the candidate package contains only the authority-kernel, producer and completion owner executables and omits `directional_surface_cell_validation_tests`, while selector427's frozen partition is **30 / 281 / 75 / 41**. No fresh 433-row runtime can be valid on that package. Exact details are consolidated in `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md`.
 
-CB1 implements the frozen CP4 evidence surface only: production-baseline producer+validator work receipts (`1+2E` each / `2+4E` aggregate) with independent replay and report-only exact-width evidence; the three produced `G4-B002` focused identities; produced same-region multiplicity-2 through A2b→baseline; and explicit zero-transport semantic-success precondition audit. Exact evidence is retained in `Architecture_M4_CP4_CB1_Code_Build_Report.md`.
+Accepted current M4 **runtime** authority is unchanged: package `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Selector427 remains 427 LF rows with SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. TB1 grants no produced-witness credit and does not promote candidate artifact `10574525792`.
 
 ## Exact next turn
 
-`M4-CP4-TB1-EXEC` — immutable artifact-only Test + Benchmark under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, consuming only candidate artifact `10574525792`.
+`M4-CP4-CB2` — runtime-free orchestration/package closure Code + Build under `Architecture_M4_CP4_CB2_Code_Build_Plan.md`.
 
-TB1 must verify package/source/GMP/selector integrity, execute the six focused `M4CP4` identities as fresh one-selected processes, and re-prove exact selector427 from the same package with benchmark count zero and immutable postflight. No rebuild, relink, generated discovery, package repair, source/test/fixture/selector mutation or retry after semantic RED is authorized. TB1 does not promote the package; all semantic results route to `M4-CP4-TB1-REV`.
+CB2 keeps product/test/fixture/selector semantics byte-identical, uses mandatory `agent-compile-reusable.yml` with all eight standard targets and GMP/GMPXX, proves all four selector-owner executables are packaged, and freezes a corrected TB1-R1 harness that checks the reusable compile workflow's actual source-status receipt set. No generated Directional runtime belongs in CB2. On a green package, the exact successor is fresh artifact-only `M4-CP4-TB1-R1-EXEC`, rerunning all 433 planned rows from scratch.
 
 ### Carried obligations and owners
 
-- three `G4-B002` produced-witness debts — **M4-CP4 gating**; CB1 authors the focused subjects/oracles/tampers, but runtime+Review still own credit.
-- `M4-CP3-TB1-R1-REV-OBS-01` — **M4-CP4 exit conjunct**; CB1 authors produced same-region multiplicity-2 binder/oracle/tamper evidence; runtime+Review pending.
-- `M4-CP-SCALE-TB2-REV-OBS-02` — **pre-CP4 prerequisite**; CB1 authors the helper precondition audit; runtime+Review pending.
-- `M4-CP-SCALE-TB1-REV-OBS-01` — **M8-CP2**, representative/stress numeric calibration only; remains report-only/non-gating before then.
+- three `G4-B002` produced-witness debts — **M4-CP4 gating**; compiled focused subjects/oracles/tampers still have no runtime+Review credit.
+- `M4-CP3-TB1-R1-REV-OBS-01` — **M4-CP4 exit conjunct**; produced same-region multiplicity-2 evidence remains runtime+Review pending.
+- `M4-CP-SCALE-TB2-REV-OBS-02` — **pre-CP4 prerequisite**; helper precondition audit remains runtime+Review pending.
+- `M4-CP-SCALE-TB1-REV-OBS-01` — **M8-CP2**, representative/stress numeric calibration only; report-only/non-gating before then.
 - `M4-CP-SCALE-DEFN-OBS-01` — **M8-CP2 only if observationally equivalent**; semantic disagreement reopens A2a/M3.
 - `M4-CP3-CB4-REV-OBS-02` — first legitimate future touch of row399 or its path/`sourceFaces` binder/producer.
 - historical row408 provenance — truth constraint; never rewrite history as an observed `InvalidHardRailPairing` failure.
 - two `G4-B003` produced-witness debts — **M5-owned**, unchanged.
 
-## Mandatory resume procedure — current `M4-CP4-TB1-EXEC`
+## Mandatory resume procedure — current `M4-CP4-CB2`
 
-1. Read root `STATUS`, publish the TB1 entry beacon first, read mandatory TB/cadence/workflow policies, choose `READ_MODE=snapshot`, and reconcile exact branch authority.
-2. Re-open this handoff, TODO, `Architecture_M4_CP4_Frozen_Definitions.md`, `Architecture_M4_CP4_CB1_Code_Build_Report.md`, `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, tracker/ROADMAP/ORIENTATION, selector manifest and relevant LESSONS.
-3. Perform TB stale-evidence cleanup only after preserving durable facts. Download artifact `10574525792` once; verify package SHA `857d4928...dec7c0`, packaged source archive `d58c31b0...fd88`, exact source `8d6b8ccf...b3af8`, GMP/GMPXX, clean source receipts, executable modes and `runtimeExecution=false`.
-4. Freeze one harness/caller before generated runtime. Execute exactly six focused `M4CP4` rows, one identity per fresh process with `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, then exact selector427 in file order as 427 fresh one-selected processes. Benchmark count is zero.
-5. Record explicit PASS/RED/SKIP/crash/timeout/selection-mismatch/unexecuted state for all 433 planned rows, preserving exact produced precondition/locus when a focused identity fails. Do not retry or patch semantic RED.
-6. Require exact immutable package/source/execution-view postflight. Route any semantic result to runtime-free `M4-CP4-TB1-REV`; orchestration-invalid evidence routes to the smallest orchestration-correction CB.
-7. Perform mandatory cleanup and durable TB handoff updates; make final `STATUS` the last repository mutation.
+1. Read root `STATUS`; advance only from completed `M4-CP4-TB1-EXEC` to `M4-CP4-CB2`, and publish the CB2 entry beacon as the first repository mutation. Re-read Code + Build/cadence/workflow/GMP/cleanup policies and choose `READ_MODE=snapshot` before broad inspection.
+2. Re-open this handoff, TODO, `Architecture_M4_CP4_Frozen_Definitions.md`, `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md`, `Architecture_M4_CP4_CB2_Code_Build_Plan.md`, tracker/ROADMAP/ORIENTATION, selector427 and relevant LESSONS. Accepted runtime authority remains package `10565723112` / selector427 427/427.
+3. Reconcile that product/test/fixture/selector bytes are unchanged from the CB1 semantic surface. CB2 is orchestration/package closure only; if semantic source edits appear necessary, stop and route to Review/Plan.
+4. Compile/package through mandatory `agent-compile-reusable.yml` with all eight standard targets, exact source, GMP/GMPXX, clean receipts and `runtimeExecution=false`. No generated Directional runtime/discovery/list/help/version/test/benchmark/CLI may execute.
+5. Verify fresh package `SHA256SUMS`, packaged source archive/hash, clean actual receipt set, GMP/GMPXX evidence, selector427 exact 427 rows/SHA, executable modes, and presence of authority-kernel + producer + completion + validation selector-owner binaries. Record actual fresh manifest census; do not infer acceptance from a historical entry count.
+6. Freeze the corrected TB1-R1 harness/caller only after fresh package facts are known. It must check the actual reusable receipt names and preserve the six-focus + 427-selector / 433-row artifact-only contract without runtime in CB2.
+7. On green build/package authority, set exact successor `M4-CP4-TB1-R1-EXEC`, perform mandatory cleanup, and make final COMPLETE `STATUS` the last repository mutation.
 
 ## Historical R8 EXEC resume procedure — consumed
 

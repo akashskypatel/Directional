@@ -1,10 +1,20 @@
+## 2026-09-19 — `M4-CP4-TB1-EXEC`: orchestration-invalid before runtime; CB2 package closure required
+
+Artifact-only TB1 run/job `35411656874 / 105812362078` consumed candidate artifact `10574525792` exactly once and verified provider/package SHA-256 `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0`, full `SHA256SUMS`, and exact packaged source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`. Frozen control receipts were harness 19,860 bytes / SHA-256 `3574953980bb3e9ec377795264a8768b1b237b03b3c9730539ae343e7e030e03` and caller 4,908 bytes / SHA-256 `36c0cad155eff3762bf71259fd4713d5f1de0fc0e80c631273a7bcfff9b62ce5`.
+
+The run stopped with exit 90 before any generated Directional process because the harness required `metadata/source-status-after-package.txt`, a receipt the reusable compile package does not emit. The verified package manifest independently exposes a second closure defect: only authority-kernel, producer and completion owner test executables are packaged; `directional_surface_cell_validation_tests` is absent even though exact selector427 owns **41 validation rows** in partition **30 / 281 / 75 / 41**. Therefore the current immutable candidate cannot satisfy the 427-row accepted-prefix reproof.
+
+Primary result/log artifacts `10573982618 / 10573992605` have provider SHA-256 `2e9bcb293ee8d99e6b9d90210496c6633f02ab5bd2830b6e7d668bc6ad4eba6d / c79fd3fa32fb8d002aa7f6196afd255cc3636436eba4b9a166877d3eaadfaea3`. `runtime_started=false`; focus **0/6**, selector **0/427**, benchmark **0**; configure/compile/relink/repair/generated-discovery/source/test/fixture/selector mutation counts are all zero. No semantic credit or stable regression is created. Accepted runtime authority remains package `10565723112` / selector427 **427/427**; accounting remains **49 / 14 / 35**, debt **5**.
+
+Exact next is runtime-free `M4-CP4-CB2`: preserve all semantic bytes, compile/package all eight standard targets through mandatory GMP reusable compile, prove all four selector-owner executables, and freeze a corrected actual-receipt TB harness. Fresh `M4-CP4-TB1-R1-EXEC` then reruns the complete 433-row gate.
+
 ## 2026-09-19 — `M4-CP4-CB1`: cumulative-exit evidence surface compiled; TB1 planned
 
 CB1 implements the bounded CP4 evidence surface on semantic commit `024427475aebf438c678caa27c35415f32c31198`: production-baseline producer+self-validator work receipts (`1+2E` each / `2+4E` aggregate) with independent replay and report-only exact-width evidence; the three focused produced `G4-B002` identities; produced same-region multiplicity-2 through A2b→baseline; and explicit zero-transport semantic-success precondition audit. Selector427 remains byte-identical at 427 rows / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
 
 Mandatory GMP compile run/job `35409797874 / 105806980973` succeeds on exact source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8` for core, pipeline and the three affected test owners. Candidate result/log artifacts are `10574525792 / 10574205964`, SHA-256 `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0 / ff296f40f7756804c6a52deefb7fac0bc944a249676085766c215907d2534727`; packaged source archive SHA-256 `d58c31b055403c81d663eee16fec65f1b4c447a809093bde94c8cb460280fd88`; manifest self-check passes; source status is clean; GMPXX+GMP link evidence is present; `runtimeExecution=false`. No generated Directional runtime executes.
 
-Accepted runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is immutable artifact-only `M4-CP4-TB1-EXEC` under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, running six focused CP4 identities plus exact selector427 before mandatory Review.
+Accepted runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. Historical next was immutable artifact-only `M4-CP4-TB1-EXEC`; that attempt is now consumed and consolidated in `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## 2026-09-18 — `M4-CP4-DEFN` review: definitions upheld; `TB13-REV-OBS-01` withdrawn by its author
 

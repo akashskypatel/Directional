@@ -2,20 +2,22 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest completed Code + Build — `M4-CP4-CB1`
+## Latest Test + Benchmark — `M4-CP4-TB1-EXEC` orchestration-invalid
 
-`M4-CP4-CB1` is build-green on semantic commit `024427475aebf438c678caa27c35415f32c31198`, exact compiled source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`, candidate artifact `10574525792`. Mandatory GMP compile run/job `35409797874 / 105806980973` compiled the affected core/pipeline and three test owners with `runtimeExecution=false`; no generated Directional runtime executed. Exact selector427 remains unchanged at **427/427** / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`; stable accounting **49 / 14 / 35**, debt **5**.
+`M4-CP4-TB1-EXEC` consumed candidate artifact `10574525792` immutably but stopped in preflight before any generated Directional process. Run/job `35411656874 / 105812362078` verified exact package SHA `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0`, complete package `SHA256SUMS`, and exact packaged source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`, then failed on a harness-only invented receipt requirement: `source-status-after-package.txt` is not emitted by the reusable compile package. `runtime_started=false`; focus **0/6**, selector **0/427**, benchmark **0**.
 
-CB1 authored the frozen CP4 evidence surface: producer+self-validator `2+4E` work receipts and independent validation; all three focused produced `G4-B002` identities; produced same-region multiplicity-2 binder proof; and zero-transport helper precondition audit. Runtime non-vacuity and credit are still pending.
+The verified candidate manifest also packages only authority-kernel / producer / completion test executables and omits `directional_surface_cell_validation_tests`, while selector427 has **41 validation-owned rows** in the frozen **30 / 281 / 75 / 41** owner partition. The current immutable candidate therefore cannot execute the full selector gate. These are orchestration/package-closure defects, not product semantic regressions. Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M4-CP4-DEFN`: definitions frozen in `Architecture_M4_CP4_Frozen_Definitions.md`.
-- [x] `M4-CP4-CB1`: compile/package GREEN; report `Architecture_M4_CP4_CB1_Code_Build_Report.md`; selector427 unchanged; runtime not executed.
-- [ ] `M4-CP4-TB1-EXEC`: **exact next**. Consume artifact `10574525792` immutably; run six focused CP4 identities plus exact selector427, fresh process per identity, benchmark 0, exact postflight.
-- [ ] `M4-CP4-TB1-REV`: mandatory runtime-free adjudication after TB1; only reviewed-green CP4 identities may proceed to publication CB.
+- [x] `M4-CP4-CB1`: semantic evidence surface compiled; runtime not executed. Historical build facts are consolidated into the TB1 report.
+- [x] `M4-CP4-TB1-EXEC`: **ORCHESTRATION INVALID / NO SEMANTIC RUNTIME**; report `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md`.
+- [ ] `M4-CP4-CB2`: **exact next**. Orchestration/package closure only: all-eight standard-target GMP package, all four selector-owner executables, corrected receipt preflight, no generated runtime.
+- [ ] `M4-CP4-TB1-R1-EXEC`: fresh 433-row immutable retry after CB2; not authorized before CB2 closes green.
+- [ ] `M4-CP4-TB1-R1-REV`: mandatory runtime-free adjudication after the fresh retry.
 
-## Current focus — `M4-CP4-TB1-EXEC`
+## Current focus — `M4-CP4-CB2`
 
-Follow `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`. No rebuild, relink, package repair, source/test/fixture/selector mutation, generated discovery, or in-turn semantic correction is authorized.
+Follow `Architecture_M4_CP4_CB2_Code_Build_Plan.md`. Keep product/test/fixture/selector semantics byte-identical. Compile/package all eight standard targets through the mandatory reusable compile with GMP/GMPXX; no generated Directional runtime is authorized.
 
 ## Carried forward from M1
 
@@ -54,7 +56,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. S2 vertex-star, S3, S4 and S5 are cumulative accepted; S1 remains diagnostic/non-gating. Three `G4-B002` debts remain CP4 gating; CB1 has compiled their produced focused identities but runtime+Review credit is pending. Exact next is `M4-CP4-TB1-EXEC`.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. S2 vertex-star, S3, S4 and S5 are cumulative accepted; S1 remains diagnostic/non-gating. Three `G4-B002` debts remain CP4 gating; their focused identities are compiled but still have no runtime+Review credit because TB1 stopped before runtime. Exact next is runtime-free `M4-CP4-CB2` for package/harness closure only.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -94,4 +96,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** is accepted current M4 runtime authority. `M4-CP4-CB1` is build-green on candidate artifact `10574525792` with no runtime and selector427 unchanged. Exact next is artifact-only **`M4-CP4-TB1-EXEC`** under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`; M4 remains open until focused runtime+Review, publication, and the final cumulative gate close CP4. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** is accepted current M4 runtime authority. `M4-CP4-TB1-EXEC` is orchestration-invalid with zero semantic runtime: the TB harness required a non-existent source-status receipt and candidate artifact `10574525792` omits the validation-owner executable needed by 41 selector rows. Exact next is runtime-free **`M4-CP4-CB2`** under `Architecture_M4_CP4_CB2_Code_Build_Plan.md`; M4 remains open until fresh focused runtime+Review, publication, and the final cumulative gate close CP4. PR #8 remains open, draft, and unmerged.
