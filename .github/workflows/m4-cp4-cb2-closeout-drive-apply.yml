@@ -39,8 +39,9 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1wXYr6-tOOWnv6NOoycJuGT8jEKzPKv3W
-      patch_sha256: 3286108f83637097766ea5ef308a4e522485fef4c5fa75687f770e772927b6d9
-      base_sha: 16ff11eeffba2c3cdcba9b761bf92feecaf8d949
+      patch_sha256: '3286108f83637097766ea5ef308a4e522485fef4c5fa75687f770e772927b6d9'
+      base_sha: '16ff11eeffba2c3cdcba9b761bf92feecaf8d949'
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: M4-CP4-CB2: close build and freeze TB1 R1 plan
+      commit_message: 'M4-CP4-CB2: close build and freeze TB1 R1 plan'
+      retention_days: 14
     secrets: inherit
