@@ -1,4 +1,4 @@
 M4-CP4-CB6 static schema validation only.
 Mode: self
 Directional runtime authorized: false
-Retry: 2
+Retry: 3
