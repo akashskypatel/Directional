@@ -1,3 +1,12 @@
+## 2026-09-19 — `M4-CP4-TB2-R2-EXEC`: row2 remains upstream of retained arrangement — **SEMANTIC NON-GREEN / NON-STABLE**
+
+- **Authority:** orchestration-valid run/job `35449574130 / 105914294127`, event SHA `7fa7ee4351f35893194ebddd7890b0d00e1cd20a`; immutable CB4 `10578784752` + CB5 `10582435470`; selector427 **427/427 PASS**; full ledger **430 PASS / 1 RED** across 431 fresh processes; mandatory immutable postflight exact.
+- **`M4-CP4-TB2-R2-CAND-01`: OPEN / SAME ROOT AS `M4-CP4-TB1-R3-CAND-01` / TEST_AUTHORITY_WITNESS_REACHABILITY / NON-STABLE.** Focus row2 selects exactly one test and fails with `Produced torus did not retain arrangement authority: NotProductionReady/tracing`. The independent candidate eligibility/tamper oracle is not reached.
+- **Root cause:** CB5 copied row408's accepted hard-rail input precondition, but row408 proves the A3→A4 `phaseFront` reaches `Produced`; it does not prove the later `surfaceCellContext.hasArrangement` authority required by candidate extraction. The focused subject still terminates during tracing before the later arrangement stage publishes retained arrangement/candidate authority. The correction was therefore insufficient test-authority witness reachability, not an accepted-product regression.
+- **Mechanically green carried evidence:** focus row3 re-proves produced same-region multiplicity-two; focus row4 re-proves the corrected exact `NonIntegralCycleLift` expectation with its flat/non-flat controls. Review owns final closure/credit for those carried items.
+- **Accounting:** no accepted selector loss and no independently established stable product regression. **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, produced-witness debt **5**. Accepted runtime authority remains package `10565723112` / selector427 **427/427**. Periodic `G4-B002` debts remain M5-owned and unchanged.
+- **Exact successor:** runtime-free `M4-CP4-TB2-R2-REV`; no implementation or same-turn retry is authorized.
+
 ## 2026-09-19 — `M4-CP4-CB7`: R1 caller permission ceiling correction — **CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE / NON-STABLE**
 
 - **Authority:** commit `bbb64a7923900c0b0ce8c52680ef4588b85c691a` changes only caller top-level `contents: read` -> `contents: write`; corrected caller SHA-256 `488326cd8cbf1ee4078796b8ecd7031f578b87272eb62df5fa2d7d42fd42d719`, mode 644 / 5,532 bytes. Harness remains `1dcdd6c6e638b0951af0af38ce2b0e34fafcc877843104e617caf175cf36aeba`, mode 755 / 30,249 bytes.

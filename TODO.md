@@ -2,27 +2,27 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Code + Build — `M4-CP4-CB7`
+## Latest Test + Benchmark — `M4-CP4-TB2-R2-EXEC`
 
-CB7 is **COMPLETE / CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE**. Commit `bbb64a7923900c0b0ce8c52680ef4588b85c691a` changes only the durable caller top-level `contents: read` -> `contents: write`. Corrected caller SHA-256 is `488326cd8cbf1ee4078796b8ecd7031f578b87272eb62df5fa2d7d42fd42d719`; harness remains `1dcdd6c6e638b0951af0af38ce2b0e34fafcc877843104e617caf175cf36aeba`. Final validation run `35446771294` is GREEN for schema plus static permission-ceiling/timeout checks. No Directional runtime or compile executed.
+R2 is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Run/job `35449574130 / 105914294127` executes all **431** fresh processes: focus **3 PASS / 1 RED**, selector427 **427/427 PASS**, total **430 PASS / 1 RED**, with exact immutable postflight and zero build/repair/mutation/benchmark counters. The sole RED is the produced closed-complex candidate-extraction witness stopping at `NotProductionReady/tracing` before retained arrangement authority.
 
-Accepted runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. CB4 artifact `10578784752` and CB5 delta `10582435470` remain immutable/unpromoted.
+`M4-CP4-TB2-R2-CAND-01` is the same non-stable test-authority reachability root as `M4-CP4-TB1-R3-CAND-01`; no accepted selector row regressed. Accepted runtime authority therefore remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. Focus row3 multiplicity-two and focus row4 exact zero-transport typed expectation are mechanically green pending Review.
 
 - [x] `M4-CP4-TB2-EXEC`: orchestration-invalid; no semantic rows promoted.
 - [x] `M4-CP4-CB6`: timeout-free execution plane authored; no runtime.
-- [x] `M4-CP4-TB2-R1-EXEC`: startup-invalid at reusable-workflow permission ceiling; zero jobs / zero semantic rows.
-- [x] `M4-CP4-CB7`: caller permission ceiling corrected and statically verified; no runtime.
-- [ ] `M4-CP4-TB2-R2-EXEC`: **exact next**; re-run all 431 frozen processes from scratch.
-- [ ] `M4-CP4-TB2-R2-REV`: mandatory after any orchestration-valid R2 semantic result.
+- [x] `M4-CP4-TB2-R1-EXEC`: startup-invalid at reusable-workflow permission ceiling; zero semantic rows.
+- [x] `M4-CP4-CB7`: permission ceiling corrected and statically verified; no runtime.
+- [x] `M4-CP4-TB2-R2-EXEC`: complete 431-process gate; **430 PASS / 1 RED**, orchestration valid.
+- [ ] `M4-CP4-TB2-R2-REV`: **exact next**; mandatory runtime-free adjudication and successor freeze.
 
-## Current focus — `M4-CP4-TB2-R2-EXEC`
+## Current focus — `M4-CP4-TB2-R2-REV`
 
-- [ ] Begin with Test + Benchmark stale-evidence cleanup.
-- [ ] Install exact corrected caller bytes, re-hash/schema-validate them, and re-prove the caller/reusable permission ceiling before runtime.
-- [ ] Preserve immutable CB4/CB5 packages, harness, selector427, owner census **30/281/75/41**, four-row focus set and routing unchanged.
-- [ ] Execute four focused + 427 selector processes from ordinal1; no resumption/credit from invalid TB2/R1 attempts.
-- [ ] Continue after semantic RED, stop only for orchestration-invalid state, and complete immutable postflight whenever runtime starts.
-- [ ] Classify any semantic non-green before closeout and route any valid semantic result to `M4-CP4-TB2-R2-REV`.
+- [ ] Re-verify R2 run/control/package authority, complete 431-row ledger, raw logs, exact postflight and selector427 owner census.
+- [ ] Adjudicate row2's `NotProductionReady/tracing` reachability stop and prove the distinction between row408 `phaseFront == Produced` and later retained-arrangement authority.
+- [ ] Decide whether the required closed candidate-bearing subject is production-reachable under frozen fail-closed/no-recovery semantics without synthetic/direct/draft substitution.
+- [ ] Decide reviewed closure/credit for focus row1 work receipt, row3 same-region multiplicity-two and row4 exact zero-transport typed expectation.
+- [ ] Preserve M5 periodic debts untouched; classify stable accounting explicitly; update ORIENTATION and perform mandatory Review consolidation.
+- [ ] Freeze exactly one bounded successor; do not implement or execute generated runtime inside Review.
 
 ## Carried forward from M1
 
@@ -61,7 +61,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5; CB5 compile-proves the remaining two M4 test-authority corrections in delta artifact `10582435470` while leaving runtime unadjudicated. Exact next is fresh `M4-CP4-TB2-R2-EXEC` from ordinal1, then mandatory runtime-free Review.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5; CB5 compile-proves the remaining two M4 test-authority corrections in delta artifact `10582435470` while leaving runtime unadjudicated. R2 is complete at **430 PASS / 1 RED** with selector427 **427/427** and exact immutable postflight. Exact next is mandatory runtime-free `M4-CP4-TB2-R2-REV`.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
