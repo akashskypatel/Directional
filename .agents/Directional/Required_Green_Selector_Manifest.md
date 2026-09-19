@@ -39,9 +39,9 @@ Future selector files are named by their resulting identity count.
 | **365** | 365 | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` | 361 | 4 | **ACCEPTED AUTHORITY** |
 | **367** | 367 | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` | 365 | 2 | superseded |
 | **370** | 370 | `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525` | 367 | 3 | superseded |
+| **373** | 373 | `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` | 370 | 3 | superseded |
 | **373** | 373 | `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b` | **none** | - | superseded |
-| **373** | 373 | `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` | **none** | - | superseded |
-| **374** | 374 | `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f` | 373 | 1 | superseded |
+| **374** | 374 | `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f` | **none** | - | superseded |
 | **375** | 375 | `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0` | 374 | 1 | superseded |
 | **376** | 376 | `6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8` | 375 | 1 | superseded |
 | **377** | 377 | `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1` | 376 | 1 | superseded |
@@ -50,9 +50,9 @@ Future selector files are named by their resulting identity count.
 | **380** | 380 | `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4` | **none** | - | superseded |
 | **380** | 380 | `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e` | **none** | - | superseded |
 | **381** | 381 | `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90` | 380 | 1 | superseded |
+| **382** | 382 | `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a` | 381 | 1 | superseded |
 | **382** | 382 | `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f` | **none** | - | superseded |
-| **382** | 382 | `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a` | **none** | - | superseded |
-| **383** | 383 | `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c` | 382 | 1 | superseded |
+| **383** | 383 | `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c` | **none** | - | superseded |
 | **384** | 384 | `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564` | 383 | 1 | superseded |
 | **385** | 388 | `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca` | 384 | 4 | superseded |
 | **391** | 391 | `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0` | 385 | 3 | superseded |
@@ -60,9 +60,9 @@ Future selector files are named by their resulting identity count.
 | **394** | 394 | `6c27b3a0fc7259c5817bc9bbf41d5e2a23b7dd20f41fb75db8789abeb2cfba68` | **none** | - | superseded |
 | **397** | 397 | `d67e5fb72196313c54fbc21be0b446ab0fba3974c47c02e18c33dfe9b4853ee5` | **none** | - | superseded |
 | **401** | 401 | `0d0857a97158dfd0763b536718c24ba257417866aad3d8e51d6f0093be5a5869` | 397 | 4 | superseded |
-| **403** | 403 | `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` | **none** | - | superseded |
-| **403** | 403 | `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007` | **none** | - | superseded |
+| **403** | 403 | `60ff6daa0e1dc71fe9c856ee9559d665628b756ed634f70ffce5881ec2514007` | 401 | 2 | superseded |
 | **403** | 403 | `e8f4fe72cfbbd458289779125c7ff65d7344370df6a6fc98749b4ed9007de802` | **none** | - | superseded |
+| **403** | 403 | `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7` | **none** | - | superseded |
 | **405** | 405 | `615370b65e590dadb59d7a233c6ce74b7dc8cb46a1f40fd3ea5a44257583aae7` | **none** | - | superseded |
 | **406** | 406 | `efd8f9c764316c87c12ce6400d9a0160a682ca185dec1340fa04b7130df80ac0` | 405 | 1 | superseded |
 | **407** | 407 | `9e5b7c62901b694399b215bc02a5ade09f3466795b20181c42a039a32f9718ae` | 406 | 1 | superseded |
@@ -75,6 +75,7 @@ Future selector files are named by their resulting identity count.
 | **425** | 425 | `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` | 424 | 1 | superseded accepted prefix |
 | **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | superseded accepted prefix |
 | **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **ACCEPTED CURRENT AUTHORITY** |
+| **430** | 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 427 | 3 | **CURRENT GATE** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -817,6 +818,18 @@ Appended 1 producer-owned identity to selector426:
 - `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`
 
 CB24 static ownership is **30 authority-kernel / 281 producer / 75 completion / 41 validation**. `M4-CP-SCALE-TB13-EXEC` run/job `35393657851 / 105757517161` executes selector427 **427/427 PASS** in exact file order with exact immutable postflight. `M4-CP-SCALE-TB13-REV` independently re-hashes the selector/prefix, re-parses every one-selected PASS row, verifies the package/result manifests and pre/post censuses, and promotes package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`. S5 therefore has cumulative required-green credit and selector427 is accepted current M4 authority.
+
+### 430 — CURRENT GATE
+
+`Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` — **430 identities**, LF SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`. Its first427 LF rows are byte-identical to accepted selector427 SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+
+Appended exactly the three `M4-CP4-TB2-R2-REV` reviewed-green identities, in frozen order:
+
+- `M4CP4.ProductionBaselineWorkReceiptIsBoundedAndIndependentlyValidated`
+- `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`
+- `M4CP4.ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRejection`
+
+CB8 static ownership is **31 authority-kernel / 283 producer / 75 completion / 41 validation**. Selector430 is the published next cumulative gate; accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** until fresh selector430 artifact-only execution and mandatory Review.
 
 ## Separate lineage — M1
 

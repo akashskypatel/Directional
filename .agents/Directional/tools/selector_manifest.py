@@ -36,7 +36,12 @@ ROLE = {
     406: ("superseded", "CB31 appends one partition-correspondence witness to frozen selector 405."),
     407: ("superseded", "CB32 appends one crossed-face/interior-arc publication witness to frozen selector 406."),
     408: ("superseded", "CB34 appends one separating-arc barrier-rule census-effect witness to frozen selector 407."),
-    409: ("**CURRENT GATE**", "CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen selector 408."),
+    409: ("superseded", "CB39 appends one constructed disjoint-loop boundary-walk falsifier to frozen selector 408."),
+    424: ("superseded accepted prefix", "M4 CP-SCALE cumulative selector prefix."),
+    425: ("superseded accepted prefix", "M4 CP-SCALE cumulative selector prefix."),
+    426: ("superseded accepted prefix", "M4 CP-SCALE cumulative selector prefix."),
+    427: ("**ACCEPTED CURRENT AUTHORITY**", "Accepted M4 runtime authority and exact prefix of selector430."),
+    430: ("**CURRENT GATE**", "M4-CP4-CB8 publishes the three reviewed CP4 identities for fresh cumulative runtime and Review."),
 }
 
 manifest_path = os.path.join(d, "Required_Green_Selector_Manifest.md")
