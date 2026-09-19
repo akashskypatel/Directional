@@ -1,0 +1,3 @@
+Purpose: M4-CP4-CB5 continuation reconciliation snapshot after 2026-09-19T10:19:40Z resume beacon.
+Expected source: this trigger commit (control-only delta from resolved branch head 4446129673a05270eb261ea4dcb64215339760be).
+Retry: 0
