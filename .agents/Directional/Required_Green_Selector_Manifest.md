@@ -829,7 +829,7 @@ Appended exactly the three `M4-CP4-TB2-R2-REV` reviewed-green identities, in fro
 - `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`
 - `M4CP4.ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRejection`
 
-CB8 static ownership is **31 authority-kernel / 283 producer / 75 completion / 41 validation**. Selector430 is the published next cumulative gate; accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** until fresh selector430 artifact-only execution and mandatory Review.
+CB8 static ownership is **31 authority-kernel / 283 producer / 75 completion / 41 validation**. Mandatory GMP compile/package run/job `35468097574 / 105964043163` succeeds from exact publication source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`; candidate artifact `10591801825` has provider ZIP SHA-256 `20d9b07bae631e68f3292ee37ccb80c4724bae6eec0c50cd2274c36443183da6`, package manifest **26/26**, source archive SHA-256 `4d057381ba3f1caed55579f7a9b662753632637eb0aff7b1432326d8e557021a`, all four owner executables mode `0755`, clean source receipts, GMPXX+GMP linkage and `runtimeExecution=false`. Selector430 is the published next cumulative gate; accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427** until fresh selector430 artifact-only execution and mandatory Review.
 
 ## Separate lineage — M1
 

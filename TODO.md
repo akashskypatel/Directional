@@ -2,21 +2,19 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest definition turn — `M4-CP4-DEFN-R2`
+## Latest Code + Build turn — `M4-CP4-CB8`
 
-DEFN-R2 is **COMPLETE / READING B FROZEN / RUNTIME-FREE**. Static stage ownership proves the R2 closed candidate-bearing arrangement is not M4/A4 authority: A4 owns per-region `RegionCellComplex`; A5 owns explicit occurrence complex; current `SurfaceCellPipelineContext` is diagnostic-only and `hasArrangement` is a later retained arrangement after strands/embedding. The unchanged closed-complex debt is re-homed to **M6-CP1 mechanism / M6-CP3 direct-production re-proof**. Stable accounting remains **49 / 14 / 35**, debt **5**; accepted runtime authority remains package `10565723112` / selector427 **427/427**.
-
-R2 Review already credits exactly three M4 CP4 rows. DEFN-R2 freezes selector430 publication as exact selector427 prefix plus those rows, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owner census **31/283/75/41**.
+CB8 is **COMPLETE / SELECTOR430 PUBLISHED EXACTLY / COMPILE+PACKAGE GREEN / GENERATED RUNTIME ZERO**. Selector430 is **430 LF rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` / owners 31/283/75/41**, exact selector427 prefix plus the three reviewed CP4 rows. Mandatory GMP run/job `35468097574 / 105964043163` packages candidate artifact `10591801825` from source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`, manifest **26/26**, with all owner binaries and `runtimeExecution=false`. Accepted runtime authority remains package `10565723112` / selector427 **427/427** pending fresh cumulative TB3 + Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M4-CP4-TB2-R2-REV`: complete; three M4 rows credited; closed-complex subject escalated.
 - [x] `M4-CP4-DEFN-R2`: Reading B; closed-complex debt re-homed to M6 without debt reduction.
-- [ ] `M4-CP4-CB8`: **exact next**; publication-only selector430 + compile/package, no generated runtime.
-- [ ] `M4-CP4-TB3-EXEC`: after CB8 GREEN, immutable artifact-only selector430 cumulative gate.
-- [ ] `M4-CP4-TB3-REV`: mandatory Review; may close CP4/M4 only if final cumulative gate and all amended exit conjuncts are satisfied.
+- [x] `M4-CP4-CB8`: selector430 publication exact; GMP compile/package GREEN; generated runtime zero.
+- [ ] `M4-CP4-TB3-EXEC`: **exact next**; immutable artifact-only selector430 cumulative gate on artifact `10591801825`.
+- [ ] `M4-CP4-TB3-REV`: mandatory Review; may close CP4/M4 only if the final cumulative gate and all amended exit conjuncts are satisfied.
 
-## Current focus — `M4-CP4-CB8`
+## Current focus — `M4-CP4-TB3-EXEC`
 
-Publish only the three reviewed-green CP4 identities after exact selector427; update selector manifest/packaging controls as required; compile/package all selector owner binaries through the durable GMP/GMPXX compile workflow with `runtimeExecution=false`. Do not change product/test/fixture/CMake semantics or execute generated Directional runtime.
+Consume only CB8 artifact `10591801825`; verify immutable package/source/GMP/mode/selector430 authority, then run all 430 selector identities as fresh exact-filter processes in exact order with exact-one selection, zero skips and complete immutable postflight. No configure/compile/relink/discovery/repair/mutation and no benchmark execution. Any orchestration-valid semantic outcome routes to mandatory Review.
 
 ## Carried forward from M1
 
@@ -55,7 +53,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5; CB5 compiled the remaining row2/row6 test-authority corrections in delta artifact `10582435470`, and R2 Review adjudicated them. DEFN-R2 re-homes the sole closed-complex debt to M6 after proving the retained arrangement is not A4 authority. R2-reviewed row1/row3/row4 are frozen for selector430 publication. Exact next is publication-only `M4-CP4-CB8`; CP4 stays open through final cumulative selector430 runtime + Review.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5 and DEFN-R2 re-homed the closed-complex debt to M6. CB8 now publishes exact selector430 and candidate package `10591801825` from source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` with mandatory GMP compile/package GREEN and no generated runtime. Exact next is immutable `M4-CP4-TB3-EXEC`, then mandatory `M4-CP4-TB3-REV`; CP4 stays open until that final cumulative runtime + Review.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -95,4 +93,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; the CB4+CB5 composite remains unpromoted. R2 Review credits work/boundedness, same-region multiplicity-two and zero-transport typed expectation; no produced-witness debt remains M4-owned: the closed-complex `G4-B002` debt is M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M4-CP4-CB8`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority. CB8 publishes exact selector430 and candidate package `10591801825` but grants no runtime credit. No produced-witness debt remains M4-owned: the closed-complex `G4-B002` debt is M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M4-CP4-TB3-EXEC`**. PR #8 remains open, draft, and unmerged.

@@ -1,3 +1,11 @@
+## 2026-09-19 — `M4-CP4-CB8`: selector430 published exactly; GMP compile/package GREEN; TB3 next
+
+CB8 completes the publication-only leg authorized by DEFN-R2. `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` is exact selector427 plus the three reviewed CP4 identities: **430 LF rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`**, exact first427 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **31/283/75/41**. Product/test/fixture/benchmark/CMake semantics and all existing selector bytes remain unchanged.
+
+Publication patch `7b0a630c348217ed9adedf572557056a25459d5ba128fde2008561ef2b7e95dc` applied in run/job `35468024832 / 105963832836` as exact source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`; owner-side Drive retirement then succeeded. Mandatory GMP compile run/job `35468097574 / 105964043163` builds the four selector-owner binaries. Candidate artifact `10591801825` has provider SHA-256 `20d9b07bae631e68f3292ee37ccb80c4724bae6eec0c50cd2274c36443183da6`, package manifest **26/26** SHA-256 `30c3f51fa0e43882d1a3c1227f58c069023007e38dbdc9a96c832ce152157b5a`, source archive `4d057381ba3f1caed55579f7a9b662753632637eb0aff7b1432326d8e557021a`, all owner executables mode `0755`, clean source receipts, authoritative GMPXX+GMP linkage and `runtimeExecution=false`. No generated Directional runtime executed.
+
+Accepted runtime authority remains package `10565723112` / selector427 **427/427**; CB8 supplies candidate build authority only. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is immutable artifact-only `M4-CP4-TB3-EXEC` on artifact `10591801825`, then mandatory `M4-CP4-TB3-REV`.
+
 ## 2026-09-19 — `M4-CP4-DEFN-R2` review: upheld; selector430 pre-commitment verified early; M6 inheritance repaired
 
 Runtime-free review. **Upheld.** Accounting holds at **49 events / 14 categories / 35 recurrences**, debt **5**.
