@@ -1,0 +1,48 @@
+name: M4 CP4 TB2 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-tb2/validate-closeout-caller.txt
+      - .agents/connector-triggers/m4-cp4-tb2/apply-closeout.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-tb2-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-tb2-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-tb2-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: "${{ startsWith(github.event.head_commit.message, 'M4-CP4-TB2-EXEC: apply closeout') && needs.validate.outputs.valid == 'true' }}"
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1f3_DAeFBUhl0ELE2cq5wW0usXXWpQ-Nx
+      patch_sha256: 742996dd58f8932020cb137c75f8098f278a7c7434efd26407fedb2de464e6a0
+      base_sha: 4922b2b7068c93cf6a8af24795ebc08626d70d5b
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M4-CP4-TB2-EXEC: orchestration-invalid closeout'
+    secrets: inherit
