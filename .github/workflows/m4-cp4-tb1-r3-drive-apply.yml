@@ -1,11 +1,11 @@
-name: M4 CP4 TB1 R3 Draft Schema Validation
+name: M4 CP4 TB1 R3 Closeout Patch Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m4-cp4-tb1-r3-schema-validate-20260919.txt
+      - .agents/connector-triggers/m4-cp4-tb1-r3-closeout-apply-20260919.txt
 
 permissions:
   contents: write
@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: m4-cp4-tb1-r3-schema-validate-agent-surface-cell-quad
+  group: m4-cp4-tb1-r3-closeout-apply-agent-surface-cell-quad
   cancel-in-progress: false
 
 jobs:
@@ -22,26 +22,17 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m4-cp4-tb1-r3-schema-validate
+      label: m4-cp4-tb1-r3-closeout-apply
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  validate:
-    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
-    with:
-      workflow_path: .agents/Directional/turn-payloads/m4-cp4-tb1-r3-caller-draft.yml
-      source_ref: ${{ github.sha }}
-    secrets: inherit
-
   apply:
-    needs: validate
-    if: ${{ false }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: "10US8RZxwpPBfaKe-W0NMN5gF14NFZ-l7"
-      patch_sha256: "c2076ff6ad5131eb0a9b9bdee1d232fdf084a9ce183968074bc796cb09cc04ee"
+      file_id: "1rtfm9qyCfnBRQQFARPoCrnth8PaM3aaY"
+      patch_sha256: "dc34ec29e5970f5c626a2f1d1574bbe7b0dfb0ad59bb37624de847c71046054d"
       base_sha: "b0345a26a7015a95491b98fc6d8ad0da45f0df1b"
       target_branch: "agent/surface_cell_quad/p5-recover-bridge-healing"
-      commit_message: "M4-CP4-TB1-R3-EXEC: schema-validation no-op"
+      commit_message: "M4-CP4-TB1-R3-EXEC: record runtime evidence and Review handoff"
     secrets: inherit
