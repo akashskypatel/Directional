@@ -1,3 +1,0 @@
-Purpose: execute the schema-validated M4-CP4-CB5 Google Drive patch application.
-Patch SHA-256: 0cd1643a4f0232ae9aeb2edc5f9749449ebc5d21164b1c60813a02117c2133dd
-Base: fc7da47e7bc7fd23f41351fa12302473764a53a6

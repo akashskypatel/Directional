@@ -1,3 +1,0 @@
-Purpose: apply verified M4-CP4-CB5 closeout documentation patch.
-Base authority: d00ff2c7f48d8fd83bda068cd7f4d2cccf306027
-Retry: 0

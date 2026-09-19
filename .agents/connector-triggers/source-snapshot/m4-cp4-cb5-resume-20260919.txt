@@ -1,3 +1,0 @@
-Purpose: M4-CP4-CB5 resume reconciliation snapshot after STATUS resume beacon.
-Expected authority: exact trigger commit SHA.
-Retry: 0
