@@ -1,0 +1,4 @@
+Purpose: compile-only verification of the two M4-CP4-CB5 authorized test targets.
+Exact source SHA: 4e9ff5003c8dd165dd614c25dd95f0308403719b
+Targets: directional_surface_cell_completion_tests directional_surface_cell_authority_kernel_tests
+Generated Directional runtime is forbidden.
