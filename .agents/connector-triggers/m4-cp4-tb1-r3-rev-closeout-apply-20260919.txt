@@ -1,3 +1,0 @@
-M4-CP4-TB1-R3-REV closeout documentation apply
-base_sha=e73972aa82b3b80b68b1e321288c1bd45ee6472e
-patch_sha256=bb07c844dc8b4ea908b5b47a702180c0298f2a3fb7a4a028ca583c6e436c2c55

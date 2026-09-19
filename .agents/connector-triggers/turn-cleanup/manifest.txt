@@ -1,2 +1,0 @@
-.agents/connector-triggers/m4-cp4-tb1-r3-rev-closeout-apply-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb1-r3-rev-20260919.txt
