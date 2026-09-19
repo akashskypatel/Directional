@@ -1,3 +1,0 @@
-Purpose: M4-CP4-CB6 resume reconciliation snapshot.
-Semantic authority before marker: d502ce08828a539175ae1d89efb502f6bc7791bd
-Retry: 0

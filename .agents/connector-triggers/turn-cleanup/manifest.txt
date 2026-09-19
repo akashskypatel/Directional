@@ -1,7 +1,0 @@
-# M4-CP4-CB6 temporary state cleanup
-.agents/connector-triggers/m4-cp4-cb6/apply-payload.txt
-.agents/connector-triggers/m4-cp4-cb6/validate-r1-draft.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb6-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb6-final-static-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb6-resume-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-cb6-resume2-20260919.txt

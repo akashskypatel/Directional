@@ -1,3 +1,0 @@
-M4-CP4-CB6 closeout apply trigger.
-Patch base: 355a1bbce47937844786be000fa4d66a418864b4
-Patch SHA-256: 041c320bdc4d24adc9460373b2dfa3901b621899a6641963ac50f366ce0b51fc

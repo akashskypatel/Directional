@@ -1,3 +1,0 @@
-Purpose: M4-CP4-CB6 start-of-turn reconciliation snapshot.
-Semantic authority before marker: d9b266fb106f8fdd1d32842ab06c01ec5edb1ad8
-Retry: 0
