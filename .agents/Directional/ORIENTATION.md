@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-19, after `M4-CP4-CB5`):** accepted M4 runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. DEFN-R1's Reading B remains frozen: two periodic `G4-B002` debts are M5-owned and the produced closed-complex debt remains M4-CP4-owned. CB5 changes only row2/row6 test authority and compiles the two affected GMP targets in delta artifact `10582435470`; no generated runtime has adjudicated them. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M4-CP4-TB2-EXEC`; selector427 remains byte-frozen.
+> **Current milestone authority (2026-09-19, after `M4-CP4-TB2-EXEC`):** accepted M4 runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. DEFN-R1's Reading B remains frozen: two periodic `G4-B002` debts are M5-owned and the produced closed-complex debt remains M4-CP4-owned. TB2 composite preflight is exact, but the gate is orchestration-invalid because an external foreground-tool timeout interrupted the full 431-process execution; the attempted same-turn restart is quarantined with zero semantic credit. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP4-CB6`, then fresh `M4-CP4-TB2-R1-EXEC`; selector427 remains byte-frozen.
 
-**Currency.** `M4-CP4-CB5`, 2026-09-19 UTC
+**Currency.** `M4-CP4-TB2-EXEC`, 2026-09-19 UTC
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -75,7 +75,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open after CB5 compile-only correction.** Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427** (`f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; owners **30 / 281 / 75 / 41**). Stable accounting remains **49 / 14 / 35**, debt **5**.
+**M3 is CLOSED / ACCEPTED. M4-CP1/CP2 remain historical accepted framed closures. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open after TB2 orchestration-invalid execution.** Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427** (`f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; owners **30 / 281 / 75 / 41**). Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 `M4-CP4-TB1-R3-EXEC` remains trustworthy semantic evidence on unpromoted candidate `10578784752`: all 433 planned processes ran, focus **2 PASS / 4 RED**, selector **427/427 PASS**, exact-one selection held, and immutable package/source/execution-view postflight is exact. Review retains row1 work/boundedness and row5 produced same-region multiplicity-2 focused credit.
 

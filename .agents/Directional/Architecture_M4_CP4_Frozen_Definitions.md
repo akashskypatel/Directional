@@ -264,7 +264,7 @@ Stop and return to Review/DEFN rather than broadening the checkpoint if any of t
 
 ## 9. Exact next turn
 
-`M4-CP4-CB5` has completed its bounded test-authority correction and compile-only gate without changing product/fixture/selector semantics or the two M5-owned periodic focused identities. Exact next is artifact-only `M4-CP4-TB2-EXEC` under `Architecture_M4_CP4_TB2_Artifact_Only_Test_Benchmark_Plan.md`: four M4-owned focus rows (1/2/5/6) plus exact selector427 through the frozen CB4+CB5 composite owner view, then mandatory runtime-free Review.
+`M4-CP4-CB5` completed its bounded test-authority correction and compile-only gate without changing product/fixture/selector semantics or the two M5-owned periodic focused identities. `M4-CP4-TB2-EXEC` then verified the frozen CB4+CB5 composite preflight but is **ORCHESTRATION INVALID / NO SEMANTIC LEDGER** because the full 431-process gate was interrupted by an external container-tool timeout; its same-turn restart is quarantined as no-credit provenance. No CP4 semantic conclusion changes. Exact next is runtime-free control-plane-only `M4-CP4-CB6`; successful correction must re-execute the unchanged four-row focus + selector427 gate from ordinal1 as `M4-CP4-TB2-R1-EXEC`.
 
 
 ## Review closeout

@@ -2,26 +2,25 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Code + Build — `M4-CP4-CB5`
+## Latest Test + Benchmark — `M4-CP4-TB2-EXEC`
 
-CB5 is **COMPLETE / COMPILE GREEN / TEST-AUTHORITY ONLY / NO GENERATED RUNTIME**. The only semantic edits are row2's accepted row408 18-hard-edge production precondition and row6's exact `NonIntegralCycleLift` expectation. Product, fixture, selector427, periodic focused identities, benchmark, CMake, and reusable-workflow semantics are unchanged.
+TB2 is **COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Immutable composite preflight passed exactly, but the first full 431-process gate was hosted inside a foreground container tool call with an external 300-second deadline and was forcibly interrupted after 118 completed processes. A same-turn restart was then quarantined after `Turn_Cadence.md` was re-applied; it has zero credit as well. Packages/source/view remained immutable.
 
-Mandatory GMP compile run/job `35436226379 / 105879256297` produced delta artifact `10582435470` from exact source `4e9ff5003c8dd165dd614c25dd95f0308403719b`; provider SHA-256 `3e889c4682b35f6de2d30b38b9bf016f0dea526a10e46a0b9f1b404610443ad3`, manifest **24/24**, `runtimeExecution=false`. Accepted runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**.
+Accepted runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. CB4 artifact `10578784752` and CB5 delta `10582435470` remain immutable/unpromoted and reusable.
 
-- [x] `M4-CP4-DEFN`: cumulative definitions frozen.
-- [x] `M4-CP4-CB1` through `M4-CP4-TB1-R3-REV`: prior evidence/review chain complete; candidate `10578784752` remains unpromoted.
-- [x] `M4-CP4-DEFN-R1`: Reading B frozen; periodic debts re-homed to M5.
-- [x] `M4-CP4-CB5`: two bounded test-authority corrections applied and the two affected targets compile under mandatory GMP without runtime.
-- [ ] `M4-CP4-TB2-EXEC`: **exact next**; artifact-only four-row M4 focus + selector427 through the frozen composite owner view, then mandatory Review.
+- [x] `M4-CP4-DEFN` through `M4-CP4-CB5`: prior definition/review/correction chain complete.
+- [x] `M4-CP4-TB2-EXEC`: orchestration-invalid; no semantic rows promoted.
+- [ ] `M4-CP4-CB6`: **exact next**; runtime-free control-plane correction of the full-gate execution surface.
+- [ ] `M4-CP4-TB2-R1-EXEC`: after CB6 only; re-run all 431 frozen processes from scratch.
 
-## Current focus — `M4-CP4-TB2-EXEC`
+## Current focus — `M4-CP4-CB6`
 
-- [ ] Verify immutable full CB4 package `10578784752` and CB5 delta package `10582435470`; no rebuild/repair.
-- [ ] Build a runner-temporary composite view: producer/validation from CB4, authority-kernel/completion from CB5; preserve exact bytes/modes.
-- [ ] Execute M4-owned focus rows1/2/5/6 only; require **4/4 PASS** and preserve row2 independent oracle/tamper plus row6 exact typed controls.
-- [ ] Execute selector427 as **427/427** fresh exact-filter processes through the composite owner map; total planned gate **431** processes, benchmark zero.
-- [ ] Do **not** execute/count periodic focused rows3/4 for M4 acceptance; they remain M5-owned.
-- [ ] On an orchestration-valid semantic result, route to runtime-free `M4-CP4-TB2-REV`; TB2 grants no promotion or debt credit itself.
+- [ ] Preserve both immutable packages, selector427, owner census **30/281/75/41**, focus set and composite routing unchanged.
+- [ ] Move full-gate execution off foreground container-tool timeout authority; no full-suite `timeout-minutes`/watchdog.
+- [ ] Statically validate exact artifact/hash/mode/fixture/owner/ledger/postflight contracts without executing Directional runtime.
+- [ ] If a workflow caller is authored, schema-validate it before activation and keep install/trigger commits separate.
+- [ ] Execute no compile/repackage and no Directional binary in CB6.
+- [ ] Close only to `M4-CP4-TB2-R1-EXEC`, which starts from ordinal1 and grants no credit to invalid TB2 attempts.
 
 ## Carried forward from M1
 

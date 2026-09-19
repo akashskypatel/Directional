@@ -4,24 +4,21 @@
 
 ## Current authority
 
-`M4-CP4-CB5` is **COMPLETE / COMPILE GREEN / TEST-AUTHORITY ONLY / NO GENERATED RUNTIME**. Accepted M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**, selector SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **30 / 281 / 75 / 41**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+`M4-CP4-TB2-EXEC` is **COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Immutable preflight for full CB4 artifact `10578784752` and CB5 delta `10582435470` was exact: provider hashes, 28/28 + 24/24 manifests, source archives, empty receipts, GMP/GMPXX, selector427 `427` rows / `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owner census **30 / 281 / 75 / 41**, designated binary modes, composite owner routing and fixture census all passed.
 
-CB5 changed exactly two authorized focused-test authority files. Row2 now uses the accepted row408 two-generator / 18-hard-edge torus production precondition with automatic feature suppression while preserving fail-closed execution, recovery disabled, retained intermediate geometry, and the independent candidate oracle/tamper. Row6 still proves nonzero apex angle defect and flat zero-transport success and now expects exact `NonIntegralCycleLift` on the unchanged non-flat zero-effort witness. The two periodic focused identities are unchanged and remain M5-owned.
+The first full-gate attempt was invalidated by the ChatGPT container execution call's external **300-second timeout**, which forcibly interrupted the 431-process gate after 118 completed processes with selector ordinal115 in flight. `Turn_Cadence.md` therefore grants **zero semantic credit**. A same-turn restart was then begun before the cadence rule was re-opened; it was terminated at 146 completed processes and is likewise quarantined with zero credit. Both immutable package/source/view surfaces remained byte+mode unchanged and both manifests re-verified.
 
-Patch application run/job `35436117274 / 105878958514` applied patch SHA-256 `0cd1643a4f0232ae9aeb2edc5f9749449ebc5d21164b1c60813a02117c2133dd` as commit `c5daef9a2250610f0f86e5332d8e1a3edd5a91a6`. Mandatory GMP compile run/job `35436226379 / 105879256297` compiled only `directional_surface_cell_completion_tests` and `directional_surface_cell_authority_kernel_tests` from exact source `4e9ff5003c8dd165dd614c25dd95f0308403719b`; candidate delta artifact `10582435470` has provider SHA-256 `3e889c4682b35f6de2d30b38b9bf016f0dea526a10e46a0b9f1b404610443ad3`, manifest **24/24**, GMPXX+GMP linkage, clean source receipts, and `runtimeExecution=false`.
-
-Full CB4 candidate `10578784752` / source `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a` remains unpromoted but supplies the unchanged producer/validation binaries for the next artifact-only gate. Exact source comparison from `c2224f6a…` to `4e9ff500…` changes compiled C++ test semantics only in the two CB5 owner files; there is no `src/**`, `include/**`, CMake, fixture, producer-target, or validation-target semantic change.
+Accepted M4 runtime authority therefore remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. `M4-CP4-TB1-R3-CAND-01` and `CAND-03` remain corrected-in-CB5 but runtime-unproved; audit-only observations from the invalid attempts do not adjudicate them.
 
 ## Exact next turn
 
-**`M4-CP4-TB2-EXEC`** — immutable artifact-only execution under `Architecture_M4_CP4_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
+**`M4-CP4-CB6`** — runtime-free control-plane-only orchestration correction under `Architecture_M4_CP4_CB6_Orchestration_Correction_Plan.md`.
 
-1. Verify immutable full CB4 artifact `10578784752` and CB5 delta artifact `10582435470` once; no rebuild or repair.
-2. Build only a runner-temporary composite execution view: producer/validation executables from CB4; authority-kernel/completion executables from CB5. Preserve exact bytes and modes; neither package is modified.
-3. Execute exactly four M4-owned focus rows in fresh processes: row1 work/boundedness, corrected row2 produced closed-complex oracle, row5 produced same-region multiplicity-2, corrected row6 exact `NonIntegralCycleLift`. Required focus is **4/4 PASS**.
-4. Execute selector427 in exact order as **427 fresh processes**, routing owners through that composite view. Required cumulative result is **427/427 PASS**. Total planned gate is **431 processes**; benchmark count is zero.
-5. Do not execute or count the two periodic M4CP4 focused identities for M4 acceptance. Their debts remain M5-owned and their original discriminators are unchanged.
-6. A trustworthy semantic result routes to mandatory runtime-free `M4-CP4-TB2-REV`; TB2 itself grants no package promotion, debt credit, or M5 credit.
+1. Preserve CB4 `10578784752`, CB5 delta `10582435470`, selector427, the four-row focus set, and 30/281/75/41 routing byte-for-byte; no rebuild/repackage or semantic edit.
+2. Author and statically verify a full-gate execution harness/caller on an execution plane without a repository/job/tool elapsed-time cutoff. No `timeout-minutes` or shell `timeout` may terminate the complete gate.
+3. Freeze exact artifact download/hash verification, mode-preserving extraction, sibling `test-data/benchmarks/fixtures` materialization, fresh-process execution, exact-one-selection checks, semantic-RED continuation, complete immutable postflight, and result/log artifact publication.
+4. CB6 executes **no Directional runtime** and no compile. Any workflow YAML is schema-validated before publication/execution.
+5. Exact successful successor is **`M4-CP4-TB2-R1-EXEC`**, re-running all 431 processes from scratch. The invalid TB2 attempts contribute no rows.
 
 ### Carried obligations and owners
 

@@ -1,3 +1,12 @@
+## 2026-09-19 — `M4-CP4-TB2-EXEC`: full gate interrupted by execution-plane timeout — **ORCHESTRATION INVALID / NO SEMANTIC LEDGER / NON-STABLE**
+
+- **Immutable preflight:** exact CB4 artifact `10578784752` and CB5 delta `10582435470` verify at frozen provider hashes; manifests **28/28 + 24/24**, source archives, empty source-status receipts, GMP/GMPXX evidence, selector427 **427 rows / 34,783 bytes / `f9c883...e86f`**, exact owner census **30/281/75/41**, designated binary modes and fixture-layout/census all pass.
+- **`M4-CP4-TB2-EXEC-CAND-01`: OPEN / ORCHESTRATION / NON-STABLE.** The first full-gate attempt was hosted inside a foreground container tool call carrying an external **300-second** deadline, violating the full-suite uninterrupted-execution rule. It was forcibly terminated after 118 completed processes with selector ordinal115 in flight; mandatory complete-gate/postflight semantics therefore never existed.
+- **Invalid retry provenance:** a same-turn restart was begun before `Turn_Cadence.md` was re-opened. The cadence requires `TB orchestration failure -> CB orchestration correction -> fresh TB`; the restart was terminated at 146 completed processes and is quarantined with zero semantic credit. Both attempts have exact immutable package/source/view postflight where measurable.
+- **Semantic candidates unchanged:** audit-only focus output does not adjudicate `M4-CP4-TB1-R3-CAND-01` or `CAND-03`; both remain **CORRECTED IN CB5 / RUNTIME RE-PROOF PENDING / NON-STABLE**. The M4-owned closed-complex debt and all M5-owned periodic debts remain open exactly as before.
+- **Accounting:** orchestration failure is not a runtime regression event. **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, produced-witness debt **5**. Accepted runtime authority remains package `10565723112` / selector427 **427/427**.
+- **Correction owner:** runtime-free control-plane-only `M4-CP4-CB6`, then fresh from-scratch `M4-CP4-TB2-R1-EXEC`. No unchanged TB2 retry is authorized.
+
 ## 2026-09-19 — `M4-CP4-CB5`: remaining M4 test-authority gaps correction-built — **COMPILE GREEN / RUNTIME RE-PROOF PENDING / NON-STABLE**
 
 - **Authority:** exact patch commit `c5daef9a2250610f0f86e5332d8e1a3edd5a91a6`; exact compiled source `4e9ff5003c8dd165dd614c25dd95f0308403719b`; compile run/job `35436226379 / 105879256297`; delta artifact `10582435470`, provider SHA-256 `3e889c4682b35f6de2d30b38b9bf016f0dea526a10e46a0b9f1b404610443ad3`; GMPXX+GMP; `runtimeExecution=false`.
