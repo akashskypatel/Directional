@@ -1,4 +1,0 @@
-Purpose: M4-CP4-TB2-R2-REV resumed-turn authoritative snapshot.
-Authority before marker: 36b68fd4322addfc757168db5c8f748598b6c59a
-READ_MODE=snapshot
-Directional runtime authorized: false

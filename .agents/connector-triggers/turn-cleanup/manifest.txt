@@ -1,9 +1,0 @@
-# M4-CP4-TB2-R2-REV temporary state cleanup
-.agents/connector-triggers/m4-cp4-tb2-r2/apply-closeout.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r2-rev-closeout-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r2-rev-resume-20260919-1719.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r2-rev-resume-20260919-1843.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r2-rev-resume-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r2-rev-resume-20260919b.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r2-rev-resume2-20260919.txt
-.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r2-rev-start-20260919.txt
