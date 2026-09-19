@@ -1,0 +1,48 @@
+name: M4 CP4 DEFN R1 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-defn-r1-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-defn-r1-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-defn-r1-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-defn-r1-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1rLxjoEulPhnJZjclLVzDWKE5MLLc9ofR
+      patch_sha256: d904969f7a47f3ef019f516d513d283f2c80d0f936c2e545c1ea16a148725e3a
+      base_sha: 7259af1f020c208337a69471e11495c6cd9fd196
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: reconcile M4 CP4 periodic authority ownership"
+      retention_days: 14
+    secrets: inherit
