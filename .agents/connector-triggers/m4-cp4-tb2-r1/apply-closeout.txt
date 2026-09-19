@@ -1,0 +1,3 @@
+M4-CP4-TB2-R1-EXEC closeout apply trigger.
+Patch base: 42dea9844fc09d298ba6fa7c1c1b7eb7a7df28fa
+Patch SHA-256: a1dc9f6956ae527faa52e9a1b5233482cd5e173f78c45e2e0b898eeb6eeb8ade
