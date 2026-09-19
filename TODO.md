@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Test + Benchmark — `M4-CP4-TB1-R3-EXEC`
+## Latest Review — `M4-CP4-TB1-R3-REV`
 
-R3 is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Immutable run/job `35427068822 / 105854843699` consumed candidate `10578784752` and completed all 433 planned rows: focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, total **429 PASS / 4 RED**, zero skips/selection mismatches/benchmark/build-repair/mutation counters and exact immutable postflight. Candidate remains unpromoted; accepted M4 authority remains package `10565723112` / selector427 **427/427**. Stable accounting remains **49 / 14 / 35**, debt **5**, pending mandatory Review.
+R3 Review is **COMPLETE / APPROVED WITH AMENDMENTS / CANDIDATE NOT PROMOTED / DEFINITION RECONCILIATION REQUIRED**. R3 evidence remains trustworthy at focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, total **429 PASS / 4 RED** with exact immutable postflight. R2's parser, row408-reachability and non-flat-prerequisite corrections are runtime-proved and closed non-stably. Current row2 is test-witness reachability; rows3/4 expose a same-sheet periodic-basis representation/ownership conflict; row6 is an over-specific typed expectation. Accepted authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M4-CP4-DEFN`: definitions frozen; §3.2 factual helper premise corrected by R2 Review without weakening the produced obligation.
 - [x] `M4-CP4-CB1`: semantic evidence surface compiled; runtime not executed.
@@ -14,18 +14,19 @@ R3 is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**.
 - [x] `M4-CP4-CB3`: R1 harness control correction statically green.
 - [x] `M4-CP4-TB1-R2-EXEC`: trustworthy 433-row runtime, 429 PASS / 4 RED.
 - [x] `M4-CP4-TB1-R2-REV`: four REDs adjudicated as test-authority/precondition; row1/row5 reviewed credit.
-- [x] `M4-CP4-CB4`: three bounded test-authority corrections; all-eight GMP/GMPXX compile/package GREEN, artifact `10578784752`; no runtime.
+- [x] `M4-CP4-CB4`: three bounded corrections; all-eight GMP/GMPXX compile/package GREEN, artifact `10578784752`; no runtime.
 - [x] `M4-CP4-TB1-R3-EXEC`: trustworthy 433-row runtime, focus 2 PASS / 4 RED, selector427 427/427 PASS, exact immutable postflight.
-- [ ] `M4-CP4-TB1-R3-REV`: **exact next**; mandatory runtime-free adjudication.
+- [x] `M4-CP4-TB1-R3-REV`: R2 corrections re-proved; current R3 findings adjudicated; candidate unpromoted; definition stop invoked.
+- [ ] `M4-CP4-DEFN-R1`: **exact next**; reconcile M4-vs-M5 ownership/representation for the two same-sheet periodic `G4-B002` debts before further CB.
 
-## Current focus — `M4-CP4-TB1-R3-REV`
+## Current focus — `M4-CP4-DEFN-R1`
 
-- [ ] Re-open R3 result/log artifacts, ledger/raw logs, package/source/control authority and immutable postflight without executing generated Directional runtime.
-- [ ] Independently verify six focused results plus selector427 **427/427**, exact-one selection, zero skips and zero build/repair/mutation counters.
-- [ ] Adjudicate `M4-CP4-TB1-R3-CAND-01`: row2 corrected parser is no longer the stop; produced arrangement stops at `NotProductionReady/tracing`.
-- [ ] Adjudicate `M4-CP4-TB1-R3-CAND-02`: rows3/4 reach `Produced`, but produced periodic relation multiplicity is zero and both frozen discriminators remain unreached.
-- [ ] Adjudicate `M4-CP4-TB1-R3-CAND-03`: genuinely non-flat prerequisite and rejection are proved, but typed error is `NonIntegralCycleLift` rather than expected `CycleTransportMismatch`.
-- [ ] Finalize R2 candidate correction states, stop-reason observation, promotion/debt/stable-accounting disposition and exactly one successor.
+- [ ] Decide Reading A vs Reading B from current architecture/source authority, without runtime or implementation mutation.
+- [ ] If Reading A, freeze a canonical same-sheet two-generator periodic basis/owner identity independent of discovery/container order and clearly bounded to M4.
+- [ ] If Reading B, explicitly amend M4 exit ownership and M5 ownership while preserving both debts and total debt accounting.
+- [ ] Preserve the `>=2` periodic-relation discriminator; do not substitute hard rails, authored cycles, direct/draft products, fallback or recovery authority.
+- [ ] Freeze row2 test-witness reachability and row6 exact `NonIntegralCycleLift` expectation as later-CB work, not DEFN implementation.
+- [ ] Publish exactly one bounded successor CB plan only after the definition choice is complete.
 
 ## Carried forward from M1
 
@@ -104,4 +105,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5** after `M4-CP4-CB4`. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority. CB4 corrects the three R2 Review test-authority/precondition roots at compile time only; candidate `10578784752` remains unpromoted and all three `G4-B002` produced-witness debts remain open pending R3 runtime + Review. Exact successor is `M4-CP4-TB1-R3-EXEC`. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5** after `M4-CP4-TB1-R3-REV`. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; candidate `10578784752` remains unpromoted. All three `G4-B002` debts remain open, with the two periodic debts stopped at definition/ownership reconciliation rather than weakened. Exact successor is runtime-free `M4-CP4-DEFN-R1`. PR #8 remains open, draft, and unmerged.

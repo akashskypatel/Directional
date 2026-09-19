@@ -57,6 +57,8 @@ A direct call to `closed_toroidal_candidate_complex()` is not credit.
 
 **Stop condition:** if no currently produced closed fixture reaches a retained candidate-bearing complex without fallback/recovery, focused runtime records the exact blocking stage and returns to Review; it does not replace the subject with a synthetic complex.
 
+**R3 Review amendment (2026-09-19):** this stop condition has fired for the current focused helper. CB4 corrected its rawfield reader, but R3 then stops at `NotProductionReady/tracing` before retained arrangement authority exists. This does **not** establish a product defect or weaken the required subject: §3.1 does not freeze the generic torus setup as unique authority. The first post-definition Code + Build may correct only the test-local production precondition, including reuse of already accepted hard-rail production setup when needed, while preserving fail-closed/no-recovery execution and the independent candidate oracle/tamper. The debt remains open until a produced candidate-bearing arrangement reaches that oracle.
+
 ### 3.2 Produced torus relation ownership under container reordering
 
 **Debt:** `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`.
@@ -76,6 +78,8 @@ from the produced relation table. Reverse only the relation container. Every per
 
 **Discriminating tamper:** swap two distinct produced relation IDs on periodic edges. The materializer/product validator must reject typed-owner mismatch. The existing production `SwappedPeriodicRelationOwnersAreRejected` behavior may be reused as evidence only if the new focused identity independently derives the before/after owner tuples rather than trusting the materializer's failure alone.
 
+**R3 Review amendment (2026-09-19):** the row408-aligned hard-rail precondition correction is runtime-proved: the focused torus reaches `Produced`. The produced product nevertheless contains **zero** `periodicHolonomies`, so the required same-production multiplicity and both discriminators remain unreached. Static product authority shows that the hard-rail/A3 path defers away from the periodic-annulus producer, the periodic-annulus path itself constructs one relation, and `insert_periodic_holonomy(...)` intentionally returns `AmbiguousBasis` for a second distinct relation in the same source topology region because same-sheet basis selection is deferred to a later topology-basis solver. This is a definition/architecture ownership conflict, not permission to reinterpret HardRail authority as periodic relation authority. The `>=2` produced-relation requirement remains explicitly **unweakened** pending `M4-CP4-DEFN-R1`; no direct/draft substitution or cycle-count inference receives credit.
+
 ### 3.3 Missing owner on produced periodic authority
 
 **Debt:** `MissingPeriodicRelationOwnerIsRejected`.
@@ -88,6 +92,8 @@ from the produced relation table. Reverse only the relation container. Every per
 **Independent oracle:** establish that exact relation membership by ID before mutation. Then remove exactly that edge's `periodicRelation` in a copied draft and reconstruct through the checked `SurfacePhaseFrontProduct::make(...)` path.
 
 **Required result:** typed `MissingPeriodicRelationOwner`. A direct `direct_periodic_owner_product()` subject receives zero produced-witness credit.
+
+**R3 Review amendment (2026-09-19):** this debt is reopened at the definition layer together with §3.2 because the accepted row408-aligned produced subject has no explicit produced periodic relation owner to remove. `M4-CP4-DEFN-R1` must resolve same-sheet periodic-authority ownership before a later Code + Build can re-attempt this discriminator. The typed `MissingPeriodicRelationOwner` result and prohibition on direct/draft substitution remain unchanged.
 
 ## 4. Same-region multiplicity-2 is an M4-CP4 exit conjunct
 
@@ -201,7 +207,7 @@ Every carried item has exactly one owner.
 |---|---|---|
 | `M4-CP-SCALE-TB1-REV-OBS-01` — S1 calibration | **re-homed later; not a CP4 exit conjunct** | `M8-CP2` resource-accounting/calibration. S1 remains report-only/non-gating until a representative/stress domain separately justifies a numeric threshold. `429` and `4096` are not thresholds. |
 | `M4-CP-SCALE-DEFN-OBS-01` — arrival/arclength exact fallback | **re-homed later; not a CP4 exit conjunct** | `M8-CP2` owns the hardening only if an exact fallback is observationally equivalent to accepted semantics. Current accepted semantics remain `ArcLengthFiltered`, with overlap -> `Inconclusive` and non-self `Inconclusive` -> symmetric termination. If a proposed exact fallback changes a semantic contact decision on accepted authority, stop and reopen the owning A2a/M3 semantic checkpoint rather than calling it hardening. |
-| `M4-CP-SCALE-TB2-REV-OBS-02` — `make_zero_transport_field` precondition audit | **pre-CP4 prerequisite** | `M4-CP4-CB1` test-authority audit. Enumerate semantic-success uses in the CP4-relevant owner surfaces and require each to prove its upstream field/atlas/topology precondition before downstream reachability is credited. Intentional negative uses are explicitly classified. No product change is authorized by the audit. |
+| `M4-CP-SCALE-TB2-REV-OBS-02` — `make_zero_transport_field` precondition audit | **DISCHARGED by R3 runtime + Review** | R3 proves flat zero-transport success, a genuinely non-flat subject with independently nonzero apex angle defect, and typed non-flat rejection. The remaining `CycleTransportMismatch` versus `NonIntegralCycleLift` disagreement is a separate test-authority expectation issue; this audit does not authorize a product change. |
 | `M4-CP3-TB1-R1-REV-OBS-01` — same-region multiplicity-2 | **M4-CP4 exit conjunct** | `M4-CP4-CB1` authors the produced binder/oracle/tamper identity in §4; later TB+Review must prove it before cumulative selector publication. |
 | `M4-CP3-CB4-REV-OBS-02` — row399 path/`sourceFaces` divergence tamper | **explicit later trigger-owner; not a CP4 exit conjunct** | First Code+Build turn that legitimately changes selector row399 `GlobalTopologyPlan.IndependentValidationRejectsExactSourcePathTamperMatrix`, its path/`sourceFaces` binder, or the owning producer contract. Until then row399 remains byte-frozen. |
 | historical TB3 row408 provenance | **CP4 truth constraint, not a test row** | All CP4 records must preserve that row408 `RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity` was not historically observed failing with `InvalidHardRailPairing`. No rewrite of history receives credit. |
@@ -238,7 +244,7 @@ Stop and return to Review/DEFN rather than broadening the checkpoint if any of t
 
 ## 9. Exact next turn
 
-`M4-CP4-CB1` under `Architecture_M4_CP4_CB1_Code_Build_Plan.md`.
+`M4-CP4-DEFN-R1` under `Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Plan.md`. This successor is runtime-free and must reconcile the same-sheet periodic-basis/ownership requirement exposed by R3 before any further Code + Build.
 
 
 ## Review closeout
