@@ -1,3 +1,9 @@
+## 2026-09-19 — `M4-CP4-TB1-R3-EXEC`: immutable R3 gate trustworthy; selector427 green, four focused REDs enter Review
+
+Artifact-only run/job `35427068822 / 105854843699` consumed candidate `10578784752` / source `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a` without rebuild or repair. Complete gate: **429 PASS / 4 RED** over 433 rows; focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, exact-one selection on every row, zero skips/benchmark/build-repair/mutation counters and exact package/source/execution-view/selector postflight. Result/log artifacts `10579672178 / 10579602228`, provider SHA-256 `77e822f19c9a144f1f5c248d5597575c3734ededc770f8941bab605951ba10e2 / a68b9a1347b3e697011c49a53a4ead6cfb7e7d1c3fb980e2a0932220d6d8bc0f`. `stop_reason=semantic_red_focus_2` preserves the first semantic RED.
+
+Row1/row5 PASS. Row2 passes corrected rawfield format but stops at `NotProductionReady/tracing`. Rows3/4 reach `Produced` but the produced periodic relation table has zero relations. Row6 proves nonzero apex angle defect, flat success and non-flat rejection, but runtime returns `NonIntegralCycleLift` rather than expected `CycleTransportMismatch`. EXEC records non-stable Review-owned `M4-CP4-TB1-R3-CAND-01/02/03`; candidate remains unpromoted and stable accounting remains **49 / 14 / 35**, debt **5**. Exact successor: mandatory runtime-free `M4-CP4-TB1-R3-REV`.
+
 ## 2026-09-19 — `M4-CP4-TB1-R2-REV` review: adjudication upheld on independent re-derivation
 
 Runtime-free review. **Upheld; verdict and all four RED classifications confirmed from repository bytes.**

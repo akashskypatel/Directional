@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Code + Build — `M4-CP4-CB4`
+## Latest Test + Benchmark — `M4-CP4-TB1-R3-EXEC`
 
-CB4 is **COMPLETE / TEST-AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME UNADJUDICATED**. Semantic source `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a` changes only the three authorized focused test files. Mandatory GMP/GMPXX compile run/job `35425760541 / 105851314444` produced immutable candidate artifact `10578784752` with provider SHA-256 `d26610d6e14c72a0dad63e60bb0c3ecc94c0e48dfd72f8261cb110bd3c4c3b9a`, 28/28 package manifest and `runtimeExecution=false`. No runtime credit is claimed. Accepted authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**.
+R3 is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Immutable run/job `35427068822 / 105854843699` consumed candidate `10578784752` and completed all 433 planned rows: focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, total **429 PASS / 4 RED**, zero skips/selection mismatches/benchmark/build-repair/mutation counters and exact immutable postflight. Candidate remains unpromoted; accepted M4 authority remains package `10565723112` / selector427 **427/427**. Stable accounting remains **49 / 14 / 35**, debt **5**, pending mandatory Review.
 
 - [x] `M4-CP4-DEFN`: definitions frozen; §3.2 factual helper premise corrected by R2 Review without weakening the produced obligation.
 - [x] `M4-CP4-CB1`: semantic evidence surface compiled; runtime not executed.
@@ -15,19 +15,17 @@ CB4 is **COMPLETE / TEST-AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME UNADJUDIC
 - [x] `M4-CP4-TB1-R2-EXEC`: trustworthy 433-row runtime, 429 PASS / 4 RED.
 - [x] `M4-CP4-TB1-R2-REV`: four REDs adjudicated as test-authority/precondition; row1/row5 reviewed credit.
 - [x] `M4-CP4-CB4`: three bounded test-authority corrections; all-eight GMP/GMPXX compile/package GREEN, artifact `10578784752`; no runtime.
-- [ ] `M4-CP4-TB1-R3-EXEC`: **exact next**; fresh immutable six-focus + selector427 gate on artifact `10578784752`.
-- [ ] `M4-CP4-TB1-R3-REV`: mandatory runtime-free adjudication.
+- [x] `M4-CP4-TB1-R3-EXEC`: trustworthy 433-row runtime, focus 2 PASS / 4 RED, selector427 427/427 PASS, exact immutable postflight.
+- [ ] `M4-CP4-TB1-R3-REV`: **exact next**; mandatory runtime-free adjudication.
 
-## Current focus — `M4-CP4-TB1-R3-EXEC`
+## Current focus — `M4-CP4-TB1-R3-REV`
 
-Immutable artifact-only execution under `Architecture_M4_CP4_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`:
-
-- [ ] Consume candidate artifact `10578784752` directly; no rebuild/package repair or packaged source/test/fixture/selector mutation.
-- [ ] Execute all six focused identities in fresh one-selected processes, continuing through focused semantic REDs.
-- [ ] Execute exact selector427 **427/427** when orchestration remains valid; benchmark count remains zero.
-- [ ] Require row2 produced closed-complex eligibility authority, rows3/4 produced periodic multiplicity (>=2 IDs and >=2 periodic edges), and row6 independently proven nonzero angle defect before semantic credit.
-- [ ] Preserve first semantic non-green in `stop_reason`, or explicitly encode the field as last semantic non-green; ledger/raw logs remain authoritative.
-- [ ] Exact immutable pre/postflight; then mandatory runtime-free `M4-CP4-TB1-R3-REV`.
+- [ ] Re-open R3 result/log artifacts, ledger/raw logs, package/source/control authority and immutable postflight without executing generated Directional runtime.
+- [ ] Independently verify six focused results plus selector427 **427/427**, exact-one selection, zero skips and zero build/repair/mutation counters.
+- [ ] Adjudicate `M4-CP4-TB1-R3-CAND-01`: row2 corrected parser is no longer the stop; produced arrangement stops at `NotProductionReady/tracing`.
+- [ ] Adjudicate `M4-CP4-TB1-R3-CAND-02`: rows3/4 reach `Produced`, but produced periodic relation multiplicity is zero and both frozen discriminators remain unreached.
+- [ ] Adjudicate `M4-CP4-TB1-R3-CAND-03`: genuinely non-flat prerequisite and rejection are proved, but typed error is `NonIntegralCycleLift` rather than expected `CycleTransportMismatch`.
+- [ ] Finalize R2 candidate correction states, stop-reason observation, promotion/debt/stable-accounting disposition and exactly one successor.
 
 ## Carried forward from M1
 

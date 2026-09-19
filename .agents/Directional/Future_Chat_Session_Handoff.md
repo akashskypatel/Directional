@@ -4,28 +4,23 @@
 
 ## Current authority
 
-`M4-CP4-CB4` is **COMPLETE / TEST-AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME UNADJUDICATED**. Exact semantic source is `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a`. Mandatory GMP/GMPXX compile run/job `35425760541 / 105851314444` produced candidate artifact `10578784752` / provider SHA-256 `d26610d6e14c72a0dad63e60bb0c3ecc94c0e48dfd72f8261cb110bd3c4c3b9a`; compile log artifact `10579290075` has `99fa0e16d6f5e110a3157008bb58b3064d404eeb9f1b73177cbd705f79790868`. Package manifest is **28/28**, packaged source archive SHA-256 is `dd7dd3351ad3ea10f56ef9ce2021fc8ea84e10d682560b93f70ca1d79b089175`, all five source-status receipts are empty, selector427 remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, and `runtimeExecution=false`. No generated Directional runtime executed.
+`M4-CP4-TB1-R3-EXEC` is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Immutable run/job `35427068822 / 105854843699` consumed candidate artifact `10578784752` / compiled source `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a` without rebuild or repair. Result/log artifacts `10579672178 / 10579602228` have provider SHA-256 `77e822f19c9a144f1f5c248d5597575c3734ededc770f8941bab605951ba10e2 / a68b9a1347b3e697011c49a53a4ead6cfb7e7d1c3fb980e2a0932220d6d8bc0f`.
 
-CB4 changed only authorized test authority:
+The complete 433-row ledger is **429 PASS / 4 RED**: focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, exactly one selected per row, zero skips, benchmark zero and all configure/compile/relink/discovery/repair/mutation counters zero. Package/source/execution-view/selector pre/postflight is exact. `stop_reason=semantic_red_focus_2` preserves the first semantic non-green.
 
-- `CAND-01`: test-local rawfield reader now interprets `(degree, faceCount)`, requires degree 4, and allocates `faceCount x 3*degree`; no fixture/product parser mutation.
-- `CAND-02`: produced-torus periodic-owner witnesses now use accepted row408 hard-rail production precondition and require runtime proof of `Produced`, >=2 distinct periodic relation IDs and >=2 periodic edges before reorder/missing-owner credit.
-- `CAND-03`: zero-transport negative now uses a genuinely non-flat test-local fan and independently proves nonzero apex angle defect before expecting `CycleTransportMismatch`.
-- selector427/product/fixture/benchmark/CMake/reusable-workflow semantics remain frozen.
+Focused mechanics: row1/row5 PASS; row2 gets past corrected rawfield parsing but stops at `NotProductionReady/tracing`; rows3/4 reach `Produced` but the produced periodic relation table contains **0** relations; row6 proves nonzero apex angle defect and non-flat rejection while flat succeeds, but returns `NonIntegralCycleLift` rather than expected `CycleTransportMismatch`.
 
-CB4 grants no runtime credit. `M4-CP4-TB1-R2-REV-CAND-01/02/03` remain **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+R3 records `M4-CP4-TB1-R3-CAND-01/02/03` as non-stable Review-owned evidence. It does not adjudicate product-vs-test authority, promote candidate `10578784752`, discharge `G4-B002` debt, close CP4, or change stable accounting. Accepted M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**, pending Review.
 
 ## Exact next turn
 
-**`M4-CP4-TB1-R3-EXEC`** — immutable artifact-only Test + Benchmark under `Architecture_M4_CP4_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`.
+**`M4-CP4-TB1-R3-REV`** — mandatory independent runtime-free Review.
 
-1. Read root `STATUS`, publish the R3 entry beacon first, re-read mandatory TB/workflow/cleanup policies, and choose the cheapest authority-preserving read mode.
-2. Consume immutable artifact `10578784752` directly; verify provider digest, source `c2224f6a...`, 28/28 manifest, source archive `dd7dd335...`, five empty source-status receipts, GMP/GMPXX evidence, executable modes, and selector427 bytes before runtime.
-3. Execute all six focused M4CP4 identities in fresh one-selected processes. Focused semantic REDs do not prevent the remaining focused identities or selector427 when orchestration stays valid.
-4. Execute exact selector427 in 427 fresh exact-filter processes. Benchmark count remains zero. Do not configure, compile, relink, regenerate discovery, chmod/repair the package, or mutate packaged source/tests/fixtures/selectors/manifests.
-5. Require runtime non-vacuity: row2 produced closed-complex eligibility; rows3/4 `Produced` plus >=2 distinct periodic relation IDs and >=2 periodic edges; row6 independently nonzero angle defect before typed rejection. No direct/draft/source-grid/fallback substitution.
-6. Summary stop semantics must preserve the first semantic non-green or explicitly state that they encode the last; complete ledger/raw logs remain primary authority.
-7. Perform exact immutable postflight. Any trustworthy semantic outcome routes to mandatory runtime-free **`M4-CP4-TB1-R3-REV`**. EXEC does not promote, close candidates, discharge debt, or change stable accounting.
+1. Re-open immutable candidate/package authority, R3 result/log artifacts, complete 433-row ledger/raw logs, R3 report, R2 Review, frozen CP4 definitions and CB4 changes; execute no generated Directional runtime.
+2. Independently verify package/source/control identity, six focused outcomes, selector427 **427/427**, exact-one selection/zero skips, immutable postflight and zero mutation/build counters.
+3. Adjudicate `M4-CP4-TB1-R3-CAND-01/02/03` without assuming product or test ownership: row2 witness reachability, rows3/4 produced periodic-relation absence, and row6 typed-rejection ordering/expectation.
+4. Determine the final status of the R2 `CAND-01/02/03` corrections and `M4-CP4-TB1-R2-REV-OBS-01`; update regression/debt accounting only from independently re-derived evidence.
+5. Decide whether candidate `10578784752` receives any promotion/CP4 exit credit and freeze exactly one authorized successor. No corrective CB or further runtime attempt begins inside Review.
 
 ### Carried obligations and owners
 

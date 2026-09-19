@@ -8405,6 +8405,8 @@ R2 row2 stops at `Invalid rawfield fixture header` before any produced closed-co
 
 **CB4 disposition (2026-09-19):** **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE.** `SurfaceComplexSimplificationPhase17Tests.cpp` now reads `(degree, faceCount)`, requires degree 4 and expected face count, and sizes the test-local matrix as `faceCount x 3*degree`. Product parser and `torus.rawfield` bytes are unchanged. Candidate artifact `10578784752` compiles this correction under GMP; R3 must prove the produced closed-complex/oracle path at runtime before this candidate can close.
 
+**R3 mechanical update (2026-09-19):** corrected rawfield parsing is runtime-proved; row2 instead reaches `NotProductionReady/tracing` before produced arrangement/oracle credit. Final ownership/closure is deferred to `M4-CP4-TB1-R3-REV` via `M4-CP4-TB1-R3-CAND-01`.
+
 ## `M4-CP4-TB1-R2-REV-CAND-02` — periodic-owner focused tests omit the accepted torus hard-rail production precondition
 
 **Owner:** `M4-CP4-CB4` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / PRODUCED-FIXTURE PRECONDITION + REACHABILITY`
@@ -8413,6 +8415,8 @@ R2 row2 stops at `Invalid rawfield fixture header` before any produced closed-co
 R2 rows3/4 both call generic `make_torus_pipeline_fixture()` / `torus_fixture()` and stop at `InvalidBoundedDiskBoundaryTurn` before relation-container reorder or missing-owner tamper. Accepted selector row408 re-passes in the same R2 run and reaches `Produced` on the fail-closed/recovery-disabled torus path with the explicit two-generator/18-hard-edge authority and 179/180 automatic-hard-edge suppression. Frozen CP4 §3.2 is corrected accordingly. CB4 may align focused test authority to row408's precondition, but runtime must independently prove >=2 produced relation IDs and >=2 periodic edges. Direct/draft fallback is prohibited; both periodic `G4-B002` debts remain open.
 
 **CB4 disposition (2026-09-19):** **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE.** The focused torus helper now matches accepted row408 hard-rail production setup and the two witnesses explicitly require `Produced`, >=2 distinct produced relation IDs and >=2 periodic edges before semantic credit. Candidate artifact `10578784752` compiles the correction. R3 must independently establish those produced multiplicities and both discriminators; injected cycle count itself is not evidence.
+
+**R3 mechanical update (2026-09-19):** rows3/4 reach `Produced`, proving the hard-rail precondition correction is effective. The produced relation table nevertheless has zero `periodicHolonomies`; required >=2 relation/edge multiplicity and both discriminators remain unreached. Review owns final disposition via `M4-CP4-TB1-R3-CAND-02`.
 
 ## `M4-CP4-TB1-R2-REV-CAND-03` — zero-transport negative labels a planar fan non-flat
 
@@ -8423,12 +8427,14 @@ R2 row6 expects zero transport to reject `make_skew_four_triangle_fan()`, but st
 
 **CB4 disposition (2026-09-19):** **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE.** The focused negative now uses a bounded genuinely non-flat four-triangle fan and independently requires a nonzero apex angle defect before zero-transport construction. Flat positive remains unchanged. Candidate artifact `10578784752` compiles the correction; R3 must prove the typed runtime rejection before closure.
 
+**R3 mechanical update (2026-09-19):** nonzero apex angle defect, flat success and non-flat rejection are runtime-proved. The actual typed error is `NonIntegralCycleLift`, not expected `CycleTransportMismatch`; Review owns final disposition via `M4-CP4-TB1-R3-CAND-03`.
+
 ## `M4-CP4-TB1-R2-REV-OBS-01` — focused stop-reason field reports last RED, not first
 
 **Owner:** next R3 harness/control freeze (CB4 only if it owns that harness) · **Class:** EVIDENCE-CONTROL / REPORTING SEMANTICS
-**Status:** OPEN / NON-BLOCKING / NON-STABLE.
+**Status:** MECHANICALLY DISCHARGED BY R3 / REVIEW BOOKKEEPING PENDING / NON-STABLE.
 
-R2's complete ledger/raw logs are trustworthy, but `run_one` overwrites `stop_reason` for every focused RED, yielding `semantic_red_focus_6` despite a comment implying first-RED retention. Immutable postflight and all 433 rows are unaffected. Clarify/preserve first-vs-last reporting semantics without changing execution, selector stop or acceptance behavior.
+R2's complete ledger/raw logs are trustworthy, but `run_one` overwrote `stop_reason` for every focused RED, yielding `semantic_red_focus_6`. R3 freezes first-RED reporting without changing execution and records `stop_reason=semantic_red_focus_2` while all six focus rows and selector427 execute. `M4-CP4-TB1-R3-REV` owns final bookkeeping.
 
 ## `M4-CP4-TB1-R2-REV-OBS-02` — the row408 hard-rail precondition can supply the multiplicity §3.2 must prove
 
@@ -8454,3 +8460,25 @@ from the injected cycle count, and it must not treat "two cycles supplied" as "t
 discriminating tamper — reverse the relation container, swap two produced relation IDs, require the
 materializer/product validator to reject typed-owner mismatch — is where non-vacuity lives and is unaffected by
 how the cycles arose. See `[[M4-CP4-TB1-R2-REV-CAND-02]]`. No product change is authorized.
+
+
+## `M4-CP4-TB1-R3-CAND-01` — corrected row2 parser reaches a new produced-witness reachability stop
+
+**Owner:** `M4-CP4-TB1-R3-REV` · **Class:** `RP-02 / PRODUCED-WITNESS REACHABILITY / OWNERSHIP UNADJUDICATED`
+**Status:** OPEN / NON-STABLE / REVIEW-OWNED. Accepted selector427 remains 427/427 PASS; stable accounting is unchanged in EXEC.
+
+R3 row2 proves the CB4 rawfield format correction mechanically: the stale header stop is gone. The same focused identity then throws `Produced torus did not retain arrangement authority: NotProductionReady/tracing` before a produced closed candidate complex or independent eligibility/tamper oracle is reached. EXEC does not decide test-subject versus product reachability ownership.
+
+## `M4-CP4-TB1-R3-CAND-02` — row408-aligned torus reaches Produced but publishes zero periodic relations
+
+**Owner:** `M4-CP4-TB1-R3-REV` · **Class:** `RP-02 / PRODUCED-WITNESS SEMANTIC GAP / OWNERSHIP UNADJUDICATED`
+**Status:** OPEN / NON-STABLE / REVIEW-OWNED. Rows3/4 are one root/evidence candidate, not two stable events.
+
+R3 rows3/4 both pass `SurfaceCellProducerDisposition::Produced` under the CB4 row408-aligned hard-rail setup. The produced product exposes zero `periodicHolonomies`; row3 fails `periodicHolonomies().size() > 1`, and row4 derives zero distinct relation IDs against required `>=2`. Neither frozen discriminator is reached. Review owns product-vs-test authority and debt consequences.
+
+## `M4-CP4-TB1-R3-CAND-03` — non-flat zero-transport witness rejects with a different typed atlas error
+
+**Owner:** `M4-CP4-TB1-R3-REV` · **Class:** `RP-02 / TYPED-REJECTION EXPECTATION OR VALIDATION ORDER / OWNERSHIP UNADJUDICATED`
+**Status:** OPEN / NON-STABLE / REVIEW-OWNED. Accepted selector427 remains 427/427 PASS; stable accounting is unchanged in EXEC.
+
+R3 row6 independently proves nonzero apex angle defect, flat zero-transport success and non-flat zero-transport rejection. Expected code is `CycleTransportMismatch`; runtime returns enum value 6, currently `NonIntegralCycleLift`. Review must determine test-expectation versus validation-order/product ownership.
