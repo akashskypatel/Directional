@@ -1,4 +1,0 @@
-M4-CP4-TB3-EXEC trigger
-caller_commit=0fdee8886fdbfb6d261bc7a611640ac0b77f7bb4
-artifact_id=10591801825
-runtimeExecution=selector430-only
