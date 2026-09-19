@@ -1,0 +1,47 @@
+name: M4 CP4 TB1 R1 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-tb1-r1-closeout-drive-apply-20260919.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-tb1-r1-closeout-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-tb1-r1-closeout-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-tb1-r1-closeout-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1i1SEsF_IdZJnpkkZDazUeCDjBOM55zli
+      patch_sha256: 'bb8c66d2420597c8b5f3de53c99ba9df81791f58ca33881cbb66e87bade5649e'
+      base_sha: 'a4764ce76ed93e79da29d7179f82a12d62261fc8'
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M4-CP4-TB1-R1-EXEC: record invalid attempt and freeze CB3'
+      retention_days: 14
+    secrets: inherit
