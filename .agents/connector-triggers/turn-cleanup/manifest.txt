@@ -1,0 +1,6 @@
+# M4-CP4-TB2-R1-EXEC temporary state cleanup
+.agents/connector-triggers/m4-cp4-tb2-r1-exec-20260919.txt
+.agents/connector-triggers/m4-cp4-tb2-r1/apply-closeout.txt
+.agents/connector-triggers/m4-cp4-tb2-r1/validate-installed.txt
+.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r1-installed-20260919.txt
+.agents/connector-triggers/source-snapshot/m4-cp4-tb2-r1-start-20260919.txt
