@@ -1,0 +1,3 @@
+M4-CP4-CB6 static schema validation only.
+R1 caller draft: .agents/Directional/turn-payloads/m4-cp4-tb2-r1-caller-draft.yml
+Directional runtime authorized: false
