@@ -8,6 +8,8 @@
 
 Authoritative TB3 run/job is `35470130614 / 105969470184`; result/log artifacts are `10592987234 / 10592817804`. Independent Review re-derived package **26/26**, all **430** one-selected PASS process rows/raw hashes, result manifest **447/447**, exact package/source/execution-view postflight, and the non-vacuity of the three CP4 appended identities. `M4-CP4` and milestone **M4 are CLOSED / ACCEPTED**.
 
+Evidence commit is `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`. Review/closure planning documentation was published in `6dd94057b042426063b139aadad4d4432d0e9f9f`; mandatory temporary-state cleanup completed in `c50fba756028eb9e7d87aeecad8ba6ab883ec355`. The final Review record closeout is in the containing documentation commit immediately following cleanup; repository-root `STATUS` is the final turn beacon and remains the transition authority.
+
 Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. M5 owns the two periodic `G4-B002` debts plus two `G4-B003` debts. M6 owns the closed candidate-bearing-complex `G4-B002` debt. M4 closure grants no credit to those carried debts.
 
 ## Exact next turn
