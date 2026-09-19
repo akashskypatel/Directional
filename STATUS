@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M4-CP4-TB3-EXEC
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M4-CP4-TB3-REV
 Started at: 2026-09-19T20:57:44Z
 Resumed at: 2026-09-19T21:31:19Z
-Ended at: 
+Ended at: 2026-09-19T21:41:07Z
 ---END_TURN_STATUS---
