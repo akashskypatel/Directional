@@ -4,41 +4,37 @@
 
 ## Current authority
 
-`M4-CP4-TB1-R2-REV` is **COMPLETE / R2 EVIDENCE TRUSTWORTHY / FOUR FOCUSED REDS CLASSIFIED TEST-AUTHORITY / CB4 REQUIRED**. R2 run/job `35417670510 / 105829346816` consumed unpromoted candidate `10575545321` / compiled source `ad54c12774e10480fd3cef8138cacb8d5dec1529`; result/log artifacts `10576548553 / 10575999074` have provider SHA-256 `eb5b86fd219632f11358bafea6f9054a37795a13bd953805acca9dca1dfb971b / 3d4d2d15dc534eea9dc6b98014811b7142b274d9c9f96eedf063a43233714fd9`.
+`M4-CP4-CB4` is **COMPLETE / TEST-AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME UNADJUDICATED**. Exact semantic source is `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a`. Mandatory GMP/GMPXX compile run/job `35425760541 / 105851314444` produced candidate artifact `10578784752` / provider SHA-256 `d26610d6e14c72a0dad63e60bb0c3ecc94c0e48dfd72f8261cb110bd3c4c3b9a`; compile log artifact `10579290075` has `99fa0e16d6f5e110a3157008bb58b3064d404eeb9f1b73177cbd705f79790868`. Package manifest is **28/28**, packaged source archive SHA-256 is `dd7dd3351ad3ea10f56ef9ce2021fc8ea84e10d682560b93f70ca1d79b089175`, all five source-status receipts are empty, selector427 remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, and `runtimeExecution=false`. No generated Directional runtime executed.
 
-Review independently verifies the complete 433-row ledger: **429 PASS / 4 RED**, focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, exact-one-selected rows, zero skips and benchmark zero. Immutable package/source/execution-view postflight is exact and every configure/compile/relink/discovery/repair/mutation counter is zero.
+CB4 changed only authorized test authority:
 
-Reviewed focused disposition:
+- `CAND-01`: test-local rawfield reader now interprets `(degree, faceCount)`, requires degree 4, and allocates `faceCount x 3*degree`; no fixture/product parser mutation.
+- `CAND-02`: produced-torus periodic-owner witnesses now use accepted row408 hard-rail production precondition and require runtime proof of `Produced`, >=2 distinct periodic relation IDs and >=2 periodic edges before reorder/missing-owner credit.
+- `CAND-03`: zero-transport negative now uses a genuinely non-flat test-local fan and independently proves nonzero apex angle defect before expecting `CycleTransportMismatch`.
+- selector427/product/fixture/benchmark/CMake/reusable-workflow semantics remain frozen.
 
-- row1 work receipt **PASS / CREDITED**: producer `1+2E`, validator `1+2E`, aggregate `2+4E`, monotone progress/dimensions/zero retries independently re-derived;
-- row2 **RED / CAND-01 / test authority**: local rawfield reader mistakes repository `(degree,faceCount)` header for `(rows,columns)`; fixture/product semantics are not at fault;
-- rows3/4 **RED / shared CAND-02 / test authority**: generic torus helper omits the accepted row408 explicit hard-rail production precondition and stops at `InvalidBoundedDiskBoundaryTurn`; both periodic `G4-B002` debts remain open;
-- row5 **PASS / CREDITED**: produced same-region multiplicity-2 survives A2b->baseline and deletion tamper is rejected; `M4-CP3-TB1-R1-REV-OBS-01` is discharged;
-- row6 **RED / CAND-03 / test authority**: purported non-flat `make_skew_four_triangle_fan()` is planar (all z=0); zero-transport prerequisite remains open/narrowed.
-
-Frozen CP4 §3.2 is corrected: generic `make_torus_pipeline_fixture()` / `torus_fixture()` is not the required produced torus authority. Accepted row408's fail-closed/recovery-disabled two-generator hard-rail path is the relevant production precondition, but periodic relation/edge multiplicity must still be independently proved at runtime. No direct/draft fallback receives credit.
-
-All four REDs are non-stable `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` instances; stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. Candidate `10575545321` remains unpromoted. Accepted M4 runtime authority remains package `10565723112` / exact source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**.
+CB4 grants no runtime credit. `M4-CP4-TB1-R2-REV-CAND-01/02/03` remain **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
 
 ## Exact next turn
 
-**`M4-CP4-CB4`** — test-authority-only Code + Build under `Architecture_M4_CP4_CB4_Code_Build_Plan.md`.
+**`M4-CP4-TB1-R3-EXEC`** — immutable artifact-only Test + Benchmark under `Architecture_M4_CP4_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`.
 
-1. Read root `STATUS` and publish the CB4 entry beacon first; re-read mandatory CB/GMP/workflow/cleanup policies and choose `READ_MODE=snapshot`.
-2. Re-open this handoff, R2 Review, CB4 plan, frozen CP4 definitions, R2 runtime report, tracker/TODO/ROADMAP/ORIENTATION and relevant lessons.
-3. Correct only test authority: row2 degree/face-count rawfield reader; rows3/4 row408-aligned hard-rail torus precondition with explicit runtime periodic-multiplicity assertions; row6 genuinely non-flat independently certified negative.
-4. No product, committed fixture, selector427, benchmark or CMake semantic change. No fallback/source-grid/direct/draft substitution. Stop to Review if product change is required.
-5. Compile/package all standard targets through mandatory GMP/GMPXX reusable compile; `runtimeExecution=false`; no generated Directional binary executes.
-6. On build GREEN, exact successor is fresh immutable `M4-CP4-TB1-R3-EXEC`, then mandatory `M4-CP4-TB1-R3-REV` for any trustworthy semantic outcome.
+1. Read root `STATUS`, publish the R3 entry beacon first, re-read mandatory TB/workflow/cleanup policies, and choose the cheapest authority-preserving read mode.
+2. Consume immutable artifact `10578784752` directly; verify provider digest, source `c2224f6a...`, 28/28 manifest, source archive `dd7dd335...`, five empty source-status receipts, GMP/GMPXX evidence, executable modes, and selector427 bytes before runtime.
+3. Execute all six focused M4CP4 identities in fresh one-selected processes. Focused semantic REDs do not prevent the remaining focused identities or selector427 when orchestration stays valid.
+4. Execute exact selector427 in 427 fresh exact-filter processes. Benchmark count remains zero. Do not configure, compile, relink, regenerate discovery, chmod/repair the package, or mutate packaged source/tests/fixtures/selectors/manifests.
+5. Require runtime non-vacuity: row2 produced closed-complex eligibility; rows3/4 `Produced` plus >=2 distinct periodic relation IDs and >=2 periodic edges; row6 independently nonzero angle defect before typed rejection. No direct/draft/source-grid/fallback substitution.
+6. Summary stop semantics must preserve the first semantic non-green or explicitly state that they encode the last; complete ledger/raw logs remain primary authority.
+7. Perform exact immutable postflight. Any trustworthy semantic outcome routes to mandatory runtime-free **`M4-CP4-TB1-R3-REV`**. EXEC does not promote, close candidates, discharge debt, or change stable accounting.
 
 ### Carried obligations and owners
 
 - three `G4-B002` produced-witness debts — **M4-CP4 gating**, all still open;
 - `M4-CP3-TB1-R1-REV-OBS-01` — **DISCHARGED** by R2 row5 + Review;
-- `M4-CP-SCALE-TB2-REV-OBS-02` — **OPEN / narrowed**, corrected non-flat zero-transport prerequisite in CB4/R3;
+- `M4-CP-SCALE-TB2-REV-OBS-02` — **OPEN / narrowed**, CB4 provides the corrected non-flat prerequisite; R3 runtime/Review owns proof;
 - `M4-CP-SCALE-TB1-REV-OBS-01` — **M8-CP2**;
 - `M4-CP-SCALE-DEFN-OBS-01` — **M8-CP2 only if observationally equivalent**, otherwise reopen A2a/M3;
 - `M4-CP3-CB4-REV-OBS-02` — first legitimate row399/path/`sourceFaces` binder touch;
 - historical row408 provenance remains a truth constraint;
 - two `G4-B003` debts remain **M5-owned**;
-- `M4-CP4-TB1-R2-REV-OBS-01` — non-gating first/last stop-reason reporting semantics; next harness/control freeze.
+- `M4-CP4-TB1-R2-REV-OBS-01` — non-gating stop-reason reporting semantics, explicitly bound into R3 execution controls.

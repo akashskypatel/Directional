@@ -8403,6 +8403,8 @@ correct and needs no amendment from this entry. Nothing is owed to `M4-CP4-CB1`.
 
 R2 row2 stops at `Invalid rawfield fixture header` before any produced closed-complex candidate oracle runs. The test-local reader interprets `torus.rawfield` header as `(rows, columns)` and demands `(expectedFaces,12)`, while committed authority and the sibling correct reader use `(degree, faceCount)`; the fixture begins `4 144`. Correction is test-only: parse degree/count/`3*degree`; fixture and production parser remain unchanged. The associated `G4-B002` debt remains open until a produced candidate-bearing complex reaches the independent oracle and tamper.
 
+**CB4 disposition (2026-09-19):** **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE.** `SurfaceComplexSimplificationPhase17Tests.cpp` now reads `(degree, faceCount)`, requires degree 4 and expected face count, and sizes the test-local matrix as `faceCount x 3*degree`. Product parser and `torus.rawfield` bytes are unchanged. Candidate artifact `10578784752` compiles this correction under GMP; R3 must prove the produced closed-complex/oracle path at runtime before this candidate can close.
+
 ## `M4-CP4-TB1-R2-REV-CAND-02` — periodic-owner focused tests omit the accepted torus hard-rail production precondition
 
 **Owner:** `M4-CP4-CB4` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / PRODUCED-FIXTURE PRECONDITION + REACHABILITY`
@@ -8410,12 +8412,16 @@ R2 row2 stops at `Invalid rawfield fixture header` before any produced closed-co
 
 R2 rows3/4 both call generic `make_torus_pipeline_fixture()` / `torus_fixture()` and stop at `InvalidBoundedDiskBoundaryTurn` before relation-container reorder or missing-owner tamper. Accepted selector row408 re-passes in the same R2 run and reaches `Produced` on the fail-closed/recovery-disabled torus path with the explicit two-generator/18-hard-edge authority and 179/180 automatic-hard-edge suppression. Frozen CP4 §3.2 is corrected accordingly. CB4 may align focused test authority to row408's precondition, but runtime must independently prove >=2 produced relation IDs and >=2 periodic edges. Direct/draft fallback is prohibited; both periodic `G4-B002` debts remain open.
 
+**CB4 disposition (2026-09-19):** **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE.** The focused torus helper now matches accepted row408 hard-rail production setup and the two witnesses explicitly require `Produced`, >=2 distinct produced relation IDs and >=2 periodic edges before semantic credit. Candidate artifact `10578784752` compiles the correction. R3 must independently establish those produced multiplicities and both discriminators; injected cycle count itself is not evidence.
+
 ## `M4-CP4-TB1-R2-REV-CAND-03` — zero-transport negative labels a planar fan non-flat
 
 **Owner:** `M4-CP4-CB4` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / WITNESS-PRECONDITION`
 **Status:** OPEN / NON-STABLE / TEST-AUTHORITY. No product semantic disagreement established.
 
 R2 row6 expects zero transport to reject `make_skew_four_triangle_fan()`, but static re-derivation shows every vertex has `z=0`; the subject is planar. CB4 must provide a genuinely intrinsically non-flat test-local negative and independently prove nonzero interior angle defect/curvature before expecting `CycleTransportMismatch`. `M4-CP-SCALE-TB2-REV-OBS-02` remains open/narrowed until corrected runtime+Review.
+
+**CB4 disposition (2026-09-19):** **CORRECTED IN CB4 / RUNTIME RE-PROOF PENDING / NON-STABLE.** The focused negative now uses a bounded genuinely non-flat four-triangle fan and independently requires a nonzero apex angle defect before zero-transport construction. Flat positive remains unchanged. Candidate artifact `10578784752` compiles the correction; R3 must prove the typed runtime rejection before closure.
 
 ## `M4-CP4-TB1-R2-REV-OBS-01` — focused stop-reason field reports last RED, not first
 

@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest review — `M4-CP4-TB1-R2-REV`
+## Latest Code + Build — `M4-CP4-CB4`
 
-R2 is **TRUSTWORTHY / ORCHESTRATION VALID / SEMANTIC NON-GREEN**: focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, immutable postflight exact. Review accepts production-baseline work/boundedness and produced same-region multiplicity-2; `M4-CP3-TB1-R1-REV-OBS-01` is discharged. The four REDs are non-stable test-authority/precondition defects, so stable accounting remains **49 / 14 / 35**, debt **5** and candidate artifact `10575545321` remains unpromoted.
+CB4 is **COMPLETE / TEST-AUTHORITY CORRECTED / COMPILE GREEN / RUNTIME UNADJUDICATED**. Semantic source `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a` changes only the three authorized focused test files. Mandatory GMP/GMPXX compile run/job `35425760541 / 105851314444` produced immutable candidate artifact `10578784752` with provider SHA-256 `d26610d6e14c72a0dad63e60bb0c3ecc94c0e48dfd72f8261cb110bd3c4c3b9a`, 28/28 package manifest and `runtimeExecution=false`. No runtime credit is claimed. Accepted authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M4-CP4-DEFN`: definitions frozen; §3.2 factual helper premise corrected by R2 Review without weakening the produced obligation.
 - [x] `M4-CP4-CB1`: semantic evidence surface compiled; runtime not executed.
@@ -14,19 +14,20 @@ R2 is **TRUSTWORTHY / ORCHESTRATION VALID / SEMANTIC NON-GREEN**: focus **2 PASS
 - [x] `M4-CP4-CB3`: R1 harness control correction statically green.
 - [x] `M4-CP4-TB1-R2-EXEC`: trustworthy 433-row runtime, 429 PASS / 4 RED.
 - [x] `M4-CP4-TB1-R2-REV`: four REDs adjudicated as test-authority/precondition; row1/row5 reviewed credit.
-- [ ] `M4-CP4-CB4`: **exact next**; test-authority-only compile/package correction.
-- [ ] `M4-CP4-TB1-R3-EXEC`: fresh immutable focused + selector427 gate.
+- [x] `M4-CP4-CB4`: three bounded test-authority corrections; all-eight GMP/GMPXX compile/package GREEN, artifact `10578784752`; no runtime.
+- [ ] `M4-CP4-TB1-R3-EXEC`: **exact next**; fresh immutable six-focus + selector427 gate on artifact `10578784752`.
 - [ ] `M4-CP4-TB1-R3-REV`: mandatory runtime-free adjudication.
 
-## Current focus — `M4-CP4-CB4`
+## Current focus — `M4-CP4-TB1-R3-EXEC`
 
-Bounded test-only correction under `Architecture_M4_CP4_CB4_Code_Build_Plan.md`:
+Immutable artifact-only execution under `Architecture_M4_CP4_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`:
 
-- [ ] `CAND-01`: repair row2 test-local rawfield header parsing to `(degree, faceCount)`; no fixture/product parser mutation.
-- [ ] `CAND-02`: align rows3/4 produced torus fixture with accepted row408 explicit hard-rail precondition; runtime must independently prove >=2 periodic relation IDs/edges before oracle/tamper credit.
-- [ ] `CAND-03`: replace row6's planar “non-flat” negative with a genuinely intrinsically non-flat test subject and independently prove nonzero angle defect before expecting rejection.
-- [ ] `OBS-01`: if CB4 freezes R3 controls, make first/last semantic stop-reason semantics explicit without changing runtime gate behavior.
-- [ ] Preserve selector427 byte-for-byte; no product/fixture/benchmark/CMake semantic changes; compile/package only under GMP/GMPXX.
+- [ ] Consume candidate artifact `10578784752` directly; no rebuild/package repair or packaged source/test/fixture/selector mutation.
+- [ ] Execute all six focused identities in fresh one-selected processes, continuing through focused semantic REDs.
+- [ ] Execute exact selector427 **427/427** when orchestration remains valid; benchmark count remains zero.
+- [ ] Require row2 produced closed-complex eligibility authority, rows3/4 produced periodic multiplicity (>=2 IDs and >=2 periodic edges), and row6 independently proven nonzero angle defect before semantic credit.
+- [ ] Preserve first semantic non-green in `stop_reason`, or explicitly encode the field as last semantic non-green; ledger/raw logs remain authoritative.
+- [ ] Exact immutable pre/postflight; then mandatory runtime-free `M4-CP4-TB1-R3-REV`.
 
 ## Carried forward from M1
 
@@ -65,7 +66,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Corrected R2 is trustworthy semantic evidence: focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, immutable postflight exact. `M4-CP4-TB1-R2-REV` classifies all four REDs as non-stable test-authority/precondition defects, credits row1 work/boundedness and row5 same-region multiplicity-2, and keeps candidate `10575545321` unpromoted. Exact next is test-authority-only `M4-CP4-CB4`.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. R2 remains trustworthy semantic evidence at focus **2 PASS / 4 RED** and selector427 **427/427 PASS**. CB4 has now corrected only the three reviewed test-authority/precondition roots and produced compile-green candidate `10578784752` / source `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a`; it is unpromoted pending runtime. Exact next is immutable `M4-CP4-TB1-R3-EXEC`, then mandatory Review.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -105,4 +106,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5** after `M4-CP4-TB1-R2-REV`. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority. R2 Review classifies the four focused REDs into three non-stable RP-02 test-authority/precondition candidates, discharges the same-region multiplicity-2 carried observation, keeps all three `G4-B002` debts open, and freezes test-authority-only `M4-CP4-CB4` as the exact successor. Candidate `10575545321` remains unpromoted. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5** after `M4-CP4-CB4`. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority. CB4 corrects the three R2 Review test-authority/precondition roots at compile time only; candidate `10578784752` remains unpromoted and all three `G4-B002` produced-witness debts remain open pending R3 runtime + Review. Exact successor is `M4-CP4-TB1-R3-EXEC`. PR #8 remains open, draft, and unmerged.
