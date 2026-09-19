@@ -1,5 +1,0 @@
-turn=M4-CP4-CB1
-purpose=apply verified preservation patch
-base_sha=5b6abca508b4fb3b1de47639f10cf3c5e9c344dd
-retry=0
-runtimeExecution=false
