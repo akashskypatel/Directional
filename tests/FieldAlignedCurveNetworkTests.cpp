@@ -29,6 +29,7 @@
 #include <directional/core/TriMesh.h>
 #include <directional/fields/CrossField.h>
 #include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/geometry/GlobalConformityBaseline.h>
 #include <directional/geometry/GlobalTopologyPlan.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/io/ReadOBJ.h>
@@ -163,6 +164,9 @@ int source_edge_index(const TriMesh &mesh,
   return -1;
 }
 
+// Test-authority seed only: zero matching/effort is not an admissibility claim.
+// Downstream semantic-success fixtures must establish atlas/topology authority
+// explicitly; direct non-flat uses are construction seeds or negative subjects.
 CrossFieldResult make_zero_transport_field(const TriMesh &mesh) {
   CrossFieldResult field;
   field.degree = directional::fields::kCrossFieldDegree;
@@ -392,6 +396,22 @@ std::optional<SourceTopologyRegions> make_source_authority(
   options.hardFeatureEdges = hardFeatureEdges;
   return directional::geometry::surface_cell_tracing_detail::
       build_source_topology_regions(mesh.F, options);
+}
+
+
+directional::authority::FieldTransportAtlasBuildResult
+zero_transport_atlas_for_semantic_success(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
+    const std::set<SourceEdgeTopologyKey> &hardFeatureEdges = {}) {
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, sourceAuthority, hardFeatureEdges, make_zero_transport_field(mesh));
+  if (!atlas) {
+    throw std::runtime_error(
+        std::string("make_zero_transport_field semantic-success precondition failed: ") +
+        directional::authority::field_atlas_build_error_code_name(
+            atlas.error().code));
+  }
+  return atlas;
 }
 
 CrossFieldResult make_index_one_singularity_field(const TriMesh &mesh) {
@@ -787,8 +807,8 @@ TEST(FieldAlignedCurveNetwork, RejectsMissingDuplicateOrForeignMandatoryEdges) {
   const TriMesh mesh = make_square_mesh();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlasBuild);
   const auto rails = rails_from_atlas(mesh, atlasBuild.value());
   const FieldAlignedCurveNetwork baseline =
@@ -839,8 +859,8 @@ TEST(FieldAlignedCurveNetwork,
   const std::set<SourceEdgeTopologyKey> hardEdges{edge_key(mesh, interiorEdge)};
   const auto sourceAuthority = make_source_authority(mesh, hardEdges);
   ASSERT_TRUE(sourceAuthority.has_value());
-  auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, hardEdges, make_zero_transport_field(mesh));
+  auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority, hardEdges);
   ASSERT_TRUE(atlasBuild);
   const auto rails = rails_from_atlas(mesh, atlasBuild.value(), true);
   const FieldAlignedCurveNetwork network =
@@ -865,9 +885,8 @@ TEST(FieldAlignedCurveNetwork, IsInvariantToRailAndSourceFaceOrdering) {
   const TriMesh baselineMesh = make_square_mesh(false);
   const auto baselineAuthority = make_source_authority(baselineMesh);
   ASSERT_TRUE(baselineAuthority.has_value());
-  auto baselineAtlas = directional::authority::FieldTransportAtlas::make(
-      baselineMesh, *baselineAuthority, {},
-      make_zero_transport_field(baselineMesh));
+  auto baselineAtlas = zero_transport_atlas_for_semantic_success(
+      baselineMesh, *baselineAuthority);
   ASSERT_TRUE(baselineAtlas);
   const auto baselineRails = rails_from_atlas(baselineMesh, baselineAtlas.value());
   const FieldAlignedCurveNetwork baseline = build_network(
@@ -876,9 +895,8 @@ TEST(FieldAlignedCurveNetwork, IsInvariantToRailAndSourceFaceOrdering) {
   const TriMesh reorderedMesh = make_square_mesh(true);
   const auto reorderedAuthority = make_source_authority(reorderedMesh);
   ASSERT_TRUE(reorderedAuthority.has_value());
-  auto reorderedAtlas = directional::authority::FieldTransportAtlas::make(
-      reorderedMesh, *reorderedAuthority, {},
-      make_zero_transport_field(reorderedMesh));
+  auto reorderedAtlas = zero_transport_atlas_for_semantic_success(
+      reorderedMesh, *reorderedAuthority);
   ASSERT_TRUE(reorderedAtlas);
   auto reorderedRails = rails_from_atlas(reorderedMesh, reorderedAtlas.value());
   std::reverse(reorderedRails.begin(), reorderedRails.end());
@@ -2797,8 +2815,8 @@ TEST(SurfaceCutGraph, AlreadyCellularNetworkPublishesEmptyCertifiedCutSet) {
   const TriMesh mesh = make_square_mesh();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  auto atlas = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  auto atlas = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlas);
   const auto rails = rails_from_atlas(mesh, atlas.value());
   if (mesh.boundaryLoops.empty()) {
@@ -3779,8 +3797,8 @@ TEST(GlobalTopologyPlan, PreservesMandatoryBoundaryAndHardFeatureEdges) {
   const std::set<SourceEdgeTopologyKey> hardFeatures{hardFeature.value()};
   const auto sourceAuthority = make_source_authority(mesh, hardFeatures);
   ASSERT_TRUE(sourceAuthority.has_value());
-  auto atlas = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, hardFeatures, make_zero_transport_field(mesh));
+  auto atlas = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority, hardFeatures);
   ASSERT_TRUE(atlas);
   const auto rails = rails_from_atlas(mesh, atlas.value());
   const FieldAlignedCurveNetwork network =
@@ -4143,8 +4161,8 @@ TEST(GlobalTopologyPlan, UnestablishedFieldTransportCannotProduceATopologyPlan) 
   const TriMesh mesh = make_square_mesh();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  auto atlas = Atlas::make(mesh, *sourceAuthority, {},
-                           make_zero_transport_field(mesh));
+  auto atlas = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlas);
   ASSERT_TRUE(atlas.value().quadrangulability().established())
       << "the only public atlas value route publishes an established certificate";
@@ -7864,6 +7882,82 @@ const Cp4cProductionFixture &cp4c_torus_fixture() {
   return fixture;
 }
 
+TEST(M4CP4, ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder) {
+  const auto &fixture = cp4c_torus_fixture();
+  ASSERT_TRUE(fixture.plan.has_value());
+  ASSERT_TRUE(fixture.baseline.has_value())
+      << fixture.terminalFailureCode << '/' << fixture.terminalFailureStage;
+  ASSERT_TRUE(fixture.hasTargetSize);
+
+  struct ProducedDoubleOccurrence {
+    directional::authority::NetworkRegionId region;
+    directional::geometry::ConformitySpanId span;
+    std::array<std::size_t, 2> ordinals{};
+    std::array<directional::authority::Orientation, 2> orientations{};
+  };
+  std::optional<ProducedDoubleOccurrence> witness;
+  for (const auto &region : fixture.plan->regions()) {
+    std::map<directional::authority::NetworkArcId,
+             std::vector<std::pair<std::size_t,
+                                   directional::authority::Orientation>>>
+        occurrences;
+    for (std::size_t ordinal = 0U; ordinal < region.boundary.size(); ++ordinal) {
+      const auto &incidence = region.boundary[ordinal];
+      occurrences[incidence.arc].push_back({ordinal, incidence.orientation});
+    }
+    for (const auto &[arc, values] : occurrences) {
+      if (values.size() != 2U) continue;
+      witness = ProducedDoubleOccurrence{
+          region.id, directional::geometry::ConformitySpanId::from_network_arc(arc),
+          {values[0].first, values[1].first},
+          {values[0].second, values[1].second}};
+      break;
+    }
+    if (witness.has_value()) break;
+  }
+  ASSERT_TRUE(witness.has_value())
+      << "produced torus A2b authority must contain a same-region multiplicity-2 span";
+  ASSERT_NE(witness->ordinals[0], witness->ordinals[1]);
+
+  std::vector<const directional::geometry::BaselineConformityIncidence *>
+      boundOccurrences;
+  for (const auto &incidence : fixture.baseline->incidences()) {
+    if (incidence.id.region == witness->region &&
+        incidence.span == witness->span) {
+      boundOccurrences.push_back(&incidence);
+    }
+  }
+  ASSERT_EQ(2U, boundOccurrences.size());
+  std::sort(boundOccurrences.begin(), boundOccurrences.end(),
+            [](const auto *first, const auto *second) {
+              return first->id.canonicalBoundaryOccurrenceOrdinal <
+                     second->id.canonicalBoundaryOccurrenceOrdinal;
+            });
+  EXPECT_EQ(witness->ordinals[0],
+            boundOccurrences[0]->id.canonicalBoundaryOccurrenceOrdinal);
+  EXPECT_EQ(witness->ordinals[1],
+            boundOccurrences[1]->id.canonicalBoundaryOccurrenceOrdinal);
+  EXPECT_EQ(witness->orientations[0], boundOccurrences[0]->orientation);
+  EXPECT_EQ(witness->orientations[1], boundOccurrences[1]->orientation);
+
+  const auto input = directional::pipeline::remesh_pipeline_detail::
+      make_global_conformity_baseline_input(fixture.mesh.V, fixture.targetSize,
+                                            *fixture.plan);
+  auto tampered = fixture.baseline->validation_candidate();
+  const auto erased = std::find_if(
+      tampered.incidences.begin(), tampered.incidences.end(),
+      [&](const auto &incidence) {
+        return incidence.id.region == witness->region &&
+               incidence.span == witness->span &&
+               incidence.id.canonicalBoundaryOccurrenceOrdinal ==
+                   witness->ordinals[1];
+      });
+  ASSERT_NE(tampered.incidences.end(), erased);
+  tampered.incidences.erase(erased);
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
+      *fixture.plan, input, tampered));
+}
+
 const Cp4cProductionFixture &cp4c_mechanical_fixture() {
   static const Cp4cProductionFixture fixture =
       build_cp4c_production_fixture("mechanical_feature", "mechanical feature");
@@ -11002,8 +11096,8 @@ TEST(ResolvedBranchContinuation,
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  const auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlasBuild);
   const auto &topology = atlasBuild.value().branch_topology();
   const SourceVertexId center =
@@ -11406,8 +11500,8 @@ TEST(ResolvedBranchCorrection,
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  const auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlasBuild);
   const auto &topology = atlasBuild.value().branch_topology();
   const SourceVertexId center =
@@ -11940,8 +12034,8 @@ TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  const auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlasBuild);
   const auto &topology = atlasBuild.value().branch_topology();
   ASSERT_FALSE(topology.frames().empty());
@@ -12121,9 +12215,8 @@ TEST(ResolvedBranchCorrection,
   const TriMesh projectionMesh = make_four_triangle_fan();
   const auto projectionAuthority = make_source_authority(projectionMesh);
   ASSERT_TRUE(projectionAuthority.has_value());
-  const auto projectionAtlasBuild = directional::authority::FieldTransportAtlas::make(
-      projectionMesh, *projectionAuthority, {},
-      make_zero_transport_field(projectionMesh));
+  const auto projectionAtlasBuild = zero_transport_atlas_for_semantic_success(
+      projectionMesh, *projectionAuthority);
   ASSERT_TRUE(projectionAtlasBuild);
 
   Error projectedError;
@@ -13984,8 +14077,8 @@ TEST(ResolvedBranchCorrection,
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  const auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlasBuild);
   const auto &atlas = atlasBuild.value();
   const auto &topology = atlas.branch_topology();
@@ -15228,8 +15321,8 @@ TEST(ResolvedBranchCorrection,
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  const auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlasBuild);
   const SourceVertexId center = SourceVertexId::from_index(4, 5).value();
   const auto &topology = atlasBuild.value().branch_topology();
@@ -15272,8 +15365,8 @@ TEST(ResolvedBranchCorrection,
   const TriMesh fanMesh = make_four_triangle_fan();
   const auto fanAuthority = make_source_authority(fanMesh);
   ASSERT_TRUE(fanAuthority.has_value());
-  const auto fanAtlasBuild = directional::authority::FieldTransportAtlas::make(
-      fanMesh, *fanAuthority, {}, make_zero_transport_field(fanMesh));
+  const auto fanAtlasBuild = zero_transport_atlas_for_semantic_success(
+      fanMesh, *fanAuthority);
   ASSERT_TRUE(fanAtlasBuild);
   const SourceVertexId fanCenter = SourceVertexId::from_index(4, 5).value();
   const auto fanWalk = walk_complete_vertex_fan(
@@ -15441,8 +15534,8 @@ TEST(ResolvedBranchCorrection,
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  const auto atlasBuild = zero_transport_atlas_for_semantic_success(
+      mesh, *sourceAuthority);
   ASSERT_TRUE(atlasBuild);
   const auto &topology = atlasBuild.value().branch_topology();
   const SourceVertexId center = SourceVertexId::from_index(4, 5).value();

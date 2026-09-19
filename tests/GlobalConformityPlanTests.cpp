@@ -97,6 +97,9 @@ int source_edge_index(const TriMesh &mesh,
   return -1;
 }
 
+// Test-authority seed only: zero matching/effort is not an admissibility claim.
+// Downstream semantic-success fixtures must establish atlas/topology authority
+// explicitly; direct non-flat uses are construction seeds or negative subjects.
 CrossFieldResult make_zero_transport_field(const TriMesh &mesh) {
   CrossFieldResult field;
   field.degree = directional::fields::kCrossFieldDegree;
@@ -118,6 +121,20 @@ CrossFieldResult make_zero_transport_field(const TriMesh &mesh) {
         mesh.EF(edge, 1), 0, 0.0});
   }
   return field;
+}
+
+directional::authority::FieldTransportAtlasBuildResult
+zero_transport_atlas_for_semantic_success(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority) {
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, sourceAuthority, {}, make_zero_transport_field(mesh));
+  if (!atlas) {
+    throw std::runtime_error(
+        std::string("make_zero_transport_field semantic-success precondition failed: ") +
+        directional::authority::field_atlas_build_error_code_name(
+            atlas.error().code));
+  }
+  return atlas;
 }
 
 std::optional<SourceTopologyRegions> make_source_authority(const TriMesh &mesh) {
@@ -166,9 +183,8 @@ SquareTopologyFixture make_square_topology_fixture() {
   TriMesh mesh = make_square_mesh();
   const auto sourceAuthority = make_source_authority(mesh);
   if (!sourceAuthority) throw std::runtime_error("source authority fixture failed");
-  auto atlas = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
-  if (!atlas) throw std::runtime_error("field atlas fixture failed");
+  auto atlas =
+      zero_transport_atlas_for_semantic_success(mesh, *sourceAuthority);
   const auto rails = rails_from_atlas(mesh, atlas.value());
   auto network = FieldAlignedCurveNetwork::make(
       mesh, *sourceAuthority, atlas.value(), rails);

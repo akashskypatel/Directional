@@ -81,6 +81,61 @@ struct BaselineConformityObjectiveValue {
   bool operator==(const BaselineConformityObjectiveValue &) const = default;
 };
 
+enum class BaselineConformityWorkPhase : std::uint8_t { Producer, Validator };
+
+enum class BaselineConformityTJoinPurpose : std::uint8_t {
+  InitialOptimum,
+  TrialPrefix,
+  SelectedPrefix
+};
+
+struct BaselineConformityTJoinWorkReceipt {
+  BaselineConformityWorkPhase phase = BaselineConformityWorkPhase::Producer;
+  BaselineConformityTJoinPurpose purpose =
+      BaselineConformityTJoinPurpose::InitialOptimum;
+  std::optional<ConformitySpanId> span;
+  std::size_t fixedPrefixLength = 0U;
+  std::size_t terminalCount = 0U;
+  std::size_t matchingNodeCount = 0U;
+  std::size_t matchingEdgeCount = 0U;
+  bool matchingExecuted = false;
+  std::size_t maximumMatchingDistanceBitWidth = 0U;
+
+  bool operator==(const BaselineConformityTJoinWorkReceipt &) const = default;
+};
+
+struct BaselineConformityWorkReceipt {
+  std::size_t spanCount = 0U;
+  std::size_t parityVertexCount = 0U;
+  std::size_t parityEdgeCount = 0U;
+  std::size_t producerTJoinInvocationCount = 0U;
+  std::size_t validatorTJoinInvocationCount = 0U;
+  std::size_t aggregateTJoinInvocationCount = 0U;
+  std::vector<BaselineConformityTJoinWorkReceipt> tJoinInvocations;
+  std::size_t retryResetCount = 0U;
+  bool producerInitialOptimumPending = false;
+  std::size_t producerRemainingCanonicalSpanDecisions = 0U;
+  bool validatorInitialOptimumPending = false;
+  std::size_t validatorRemainingCanonicalSpanDecisions = 0U;
+
+  bool operator==(const BaselineConformityWorkReceipt &) const = default;
+};
+
+struct BaselineConformityExactWidthReceipt {
+  std::size_t preferredCountBits = 0U;
+  std::size_t scheduledCountBits = 0U;
+  std::size_t minimumFlipCountBits = 0U;
+  std::size_t lexMinimumCountBits = 0U;
+  std::size_t regionBoundaryCountBits = 0U;
+  std::size_t matchingDistanceBits = 0U;
+  std::size_t breakpointOrdinalBits = 0U;
+  std::size_t breakpointNumeratorBits = 0U;
+  std::size_t breakpointDenominatorBits = 0U;
+  std::size_t overallMaximumBits = 0U;
+
+  bool operator==(const BaselineConformityExactWidthReceipt &) const = default;
+};
+
 /** Exact §17.7 certificate for the family/sign-free production baseline. */
 struct GlobalConformityBaselineCertificate {
   std::vector<BaselineConformitySpanParityReceipt> spanParity;
@@ -91,6 +146,8 @@ struct GlobalConformityBaselineCertificate {
   std::vector<BaselineConformityLexReceipt> lexReceipts;
   EInt minimumFlipCount;
   BaselineConformityObjectiveValue objective;
+  BaselineConformityWorkReceipt work;
+  BaselineConformityExactWidthReceipt exactWidths;
   std::uint64_t sourceDigest = 0U;
   std::uint64_t networkDigest = 0U;
   std::uint64_t cutGraphDigest = 0U;

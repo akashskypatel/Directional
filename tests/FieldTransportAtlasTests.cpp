@@ -253,6 +253,9 @@ void populate_zero_source_boundary_cycles(const TriMesh &mesh,
   field.sourceBoundaryCyclesComputed = true;
 }
 
+// Test-authority seed only: zero matching/effort is not an admissibility claim.
+// Downstream semantic-success fixtures must establish atlas/topology authority
+// explicitly; direct non-flat uses are construction seeds or negative subjects.
 CrossFieldResult make_zero_transport_field(const TriMesh &mesh) {
   CrossFieldResult field;
   field.degree = directional::fields::kCrossFieldDegree;
@@ -288,6 +291,26 @@ std::optional<SourceTopologyRegions> make_source_authority(
   options.hardFeatureEdges = hardFeatureEdges;
   return directional::geometry::surface_cell_tracing_detail::
       build_source_topology_regions(mesh.F, options);
+}
+
+TEST(M4CP4, ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRejection) {
+  const TriMesh flatMesh = make_four_triangle_fan();
+  const auto flatAuthority = make_source_authority(flatMesh);
+  ASSERT_TRUE(flatAuthority.has_value());
+  const auto flatAtlas = FieldTransportAtlas::make(
+      flatMesh, *flatAuthority, {}, make_zero_transport_field(flatMesh));
+  ASSERT_TRUE(flatAtlas)
+      << describe_field_atlas_build_error(flatAtlas.error());
+
+  const TriMesh nonFlatMesh = make_skew_four_triangle_fan();
+  const auto nonFlatAuthority = make_source_authority(nonFlatMesh);
+  ASSERT_TRUE(nonFlatAuthority.has_value());
+  const auto nonFlatAtlas = FieldTransportAtlas::make(
+      nonFlatMesh, *nonFlatAuthority, {},
+      make_zero_transport_field(nonFlatMesh));
+  ASSERT_FALSE(nonFlatAtlas);
+  EXPECT_EQ(FieldAtlasBuildErrorCode::CycleTransportMismatch,
+            nonFlatAtlas.error().code);
 }
 
 CrossFieldEdgeTransition *find_transition(CrossFieldResult &field,

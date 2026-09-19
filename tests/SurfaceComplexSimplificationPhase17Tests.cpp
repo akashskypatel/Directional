@@ -1,9 +1,18 @@
+#include "TestFixturePaths.h"
 #include <directional/geometry/SurfaceComplexSimplification.h>
+#include <directional/io/ReadOBJ.h>
+#include <directional/pipeline/RemeshPipeline.h>
 #include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
 #include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <set>
+#include <stdexcept>
+#include <string>
 #include <memory>
 #include <vector>
 
@@ -39,6 +48,166 @@ row_identity_source_authority(const Eigen::MatrixXi &faces,
   return arena.back().get();
 }
 
+
+Eigen::MatrixXd read_rawfield_fixture(const std::filesystem::path &path,
+                                      const int expectedFaces) {
+  std::ifstream input(path);
+  if (!input) {
+    throw std::runtime_error("Failed to open rawfield fixture: " + path.string());
+  }
+  int rows = 0;
+  int columns = 0;
+  input >> rows >> columns;
+  if (!input || rows != expectedFaces || columns != 12) {
+    throw std::runtime_error("Invalid rawfield fixture header: " + path.string());
+  }
+  Eigen::MatrixXd raw(rows, columns);
+  for (int row = 0; row < rows; ++row) {
+    for (int column = 0; column < columns; ++column) {
+      input >> raw(row, column);
+      if (!input) {
+        throw std::runtime_error("Invalid rawfield fixture payload: " + path.string());
+      }
+    }
+  }
+  return raw;
+}
+
+struct ProducedClosedArrangementFixture {
+  directional::TriMesh mesh;
+  directional::geometry::SurfaceCellComplex arrangement;
+};
+
+ProducedClosedArrangementFixture produced_closed_torus_arrangement() {
+  ProducedClosedArrangementFixture fixture;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.rawfield");
+  if (!directional::readOBJ(meshPath.string(), fixture.mesh)) {
+    throw std::runtime_error("Failed to read committed torus fixture");
+  }
+  const Eigen::MatrixXd raw =
+      read_rawfield_fixture(fieldPath, fixture.mesh.F.rows());
+
+  directional::pipeline::RemeshOptions options;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.retainIntermediateGeometry = true;
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      fixture.mesh.V, fixture.mesh.F, raw, options);
+  if (!result.surfaceCellContext.hasArrangement) {
+    throw std::runtime_error(
+        "Produced torus did not retain arrangement authority: " +
+        result.diagnostics.terminalFailureCode + "/" +
+        result.diagnostics.terminalFailureStage);
+  }
+  fixture.arrangement = result.surfaceCellContext.productSnapshots.arrangement;
+  return fixture;
+}
+
+struct IndependentCandidateEligibility {
+  bool canonicalTwinOwnership = true;
+  bool protectedSupportAbsent = true;
+  bool sideFeasible = true;
+  bool sourceScopeConsistent = true;
+  bool pathOrLoopDegreeValid = true;
+
+  [[nodiscard]] bool eligible() const noexcept {
+    return canonicalTwinOwnership && protectedSupportAbsent && sideFeasible &&
+           sourceScopeConsistent && pathOrLoopDegreeValid;
+  }
+};
+
+IndependentCandidateEligibility independently_check_candidate_eligibility(
+    const directional::geometry::SurfaceCellComplex &complex,
+    const directional::geometry::SurfaceSimplificationCandidate &candidate) {
+  IndependentCandidateEligibility result;
+  std::map<int, int> degree;
+  std::set<directional::authority::SurfaceCellOwnershipClassId> ownership;
+
+  for (const int halfedgeId : candidate.elementIds) {
+    if (halfedgeId < 0 ||
+        halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+      result.canonicalTwinOwnership = false;
+      continue;
+    }
+    const auto &edge = complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+    if (edge.twin < 0 || edge.twin >= static_cast<int>(complex.halfedges.size()) ||
+        halfedgeId >= edge.twin) {
+      result.canonicalTwinOwnership = false;
+      continue;
+    }
+    const auto &twin = complex.halfedges[static_cast<std::size_t>(edge.twin)];
+    if (twin.twin != halfedgeId || edge.from != twin.to || edge.to != twin.from) {
+      result.canonicalTwinOwnership = false;
+    }
+    ++degree[edge.from];
+    ++degree[edge.to];
+
+    const bool explicitSingularitySupport = [&] {
+      if (edge.singularitySupport || twin.singularitySupport) return true;
+      for (const auto &value : edge.provenance) {
+        if (value.singularitySupport) return true;
+      }
+      for (const auto &value : twin.provenance) {
+        if (value.singularitySupport) return true;
+      }
+      return false;
+    }();
+    if (edge.hardFeature || twin.hardFeature || edge.family < 0 ||
+        twin.family < 0 || explicitSingularitySupport) {
+      result.protectedSupportAbsent = false;
+    }
+
+    for (const int cellId : {edge.cell, twin.cell}) {
+      if (cellId < 0 || cellId >= static_cast<int>(complex.cells.size())) {
+        result.sideFeasible = false;
+        continue;
+      }
+      const auto &cell = complex.cells[static_cast<std::size_t>(cellId)];
+      if (cell.boundaryCycle) {
+        result.protectedSupportAbsent = false;
+        continue;
+      }
+      result.sideFeasible = result.sideFeasible && cell.disk && cell.closed &&
+                            cell.boundaryComponentCount == 1;
+      if (cell.sourceOwnershipClass.has_value()) {
+        if (directional::geometry::find_surface_cell_ownership_class(
+                complex, cell.sourceTopologyRegion,
+                cell.sourceOwnershipClass) == nullptr) {
+          result.sourceScopeConsistent = false;
+        } else {
+          ownership.insert(cell.sourceOwnershipClass.value());
+        }
+      }
+    }
+  }
+
+  result.sourceScopeConsistent =
+      result.sourceScopeConsistent && ownership.size() <= 1U;
+  const int degreeOne = static_cast<int>(std::count_if(
+      degree.begin(), degree.end(),
+      [](const auto &entry) { return entry.second == 1; }));
+  const bool closed = !degree.empty() &&
+                      std::all_of(degree.begin(), degree.end(),
+                                  [](const auto &entry) {
+                                    return entry.second == 2;
+                                  });
+  const bool open = degreeOne == 2 &&
+                    std::all_of(degree.begin(), degree.end(),
+                                [](const auto &entry) {
+                                  return entry.second == 1 || entry.second == 2;
+                                });
+  result.pathOrLoopDegreeValid = closed || open;
+  return result;
+}
 
 std::vector<directional::geometry::SurfaceSimplificationElement>
 make_elements(const int count) {
@@ -325,6 +494,68 @@ ClosedToroidalCandidateFixture closed_toroidal_candidate_complex() {
 
 
 } // namespace
+
+TEST(M4CP4, ProducedClosedComplexCandidateExtractionHasIndependentEligibilityOracle) {
+  const ProducedClosedArrangementFixture produced =
+      produced_closed_torus_arrangement();
+  std::size_t sourceBoundaryEdges = 0U;
+  for (int edge = 0; edge < produced.mesh.EF.rows(); ++edge) {
+    if (produced.mesh.EF(edge, 1) < 0) ++sourceBoundaryEdges;
+  }
+  ASSERT_EQ(0U, sourceBoundaryEdges);
+  ASSERT_TRUE(produced.arrangement.diagnostics.incidenceValid);
+  ASSERT_EQ(0, produced.arrangement.diagnostics.sourceBoundaryLoopCount);
+
+  directional::geometry::SurfaceSimplificationCandidateExtractionOptions options;
+  options.includeProtectedCandidatesForDiagnostics = false;
+  const auto extracted =
+      directional::geometry::extract_surface_simplification_candidates(
+          produced.arrangement, produced.mesh.V, produced.mesh.F, options);
+  const auto found = std::find_if(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [&](const auto &candidate) {
+        if (candidate.type !=
+                directional::geometry::SurfaceSimplificationCandidateType::OpenStrip &&
+            candidate.type !=
+                directional::geometry::SurfaceSimplificationCandidateType::ClosedLoop &&
+            candidate.type !=
+                directional::geometry::SurfaceSimplificationCandidateType::RedundantStrand) {
+          return false;
+        }
+        return independently_check_candidate_eligibility(
+                   produced.arrangement, candidate)
+            .eligible();
+      });
+  ASSERT_NE(found, extracted.candidates.end())
+      << "produced closed torus must retain at least one independently eligible simplification candidate";
+  const auto originalType = found->type;
+  const auto originalElements = found->elementIds;
+  ASSERT_FALSE(originalElements.empty());
+
+  auto tampered = produced.arrangement;
+  const int selected = originalElements.front();
+  ASSERT_GE(selected, 0);
+  ASSERT_LT(selected, static_cast<int>(tampered.halfedges.size()));
+  const int twin = tampered.halfedges[static_cast<std::size_t>(selected)].twin;
+  ASSERT_GE(twin, 0);
+  ASSERT_LT(twin, static_cast<int>(tampered.halfedges.size()));
+  tampered.halfedges[static_cast<std::size_t>(selected)].hardFeature = true;
+  tampered.halfedges[static_cast<std::size_t>(twin)].hardFeature = true;
+
+  directional::geometry::SurfaceSimplificationCandidate originalCandidate = *found;
+  EXPECT_FALSE(independently_check_candidate_eligibility(tampered, originalCandidate)
+                   .eligible());
+  const auto tamperedExtracted =
+      directional::geometry::extract_surface_simplification_candidates(
+          tampered, produced.mesh.V, produced.mesh.F, options);
+  const auto unchanged = std::find_if(
+      tamperedExtracted.candidates.begin(), tamperedExtracted.candidates.end(),
+      [&](const auto &candidate) {
+        return candidate.type == originalType &&
+               candidate.elementIds == originalElements;
+      });
+  EXPECT_EQ(unchanged, tamperedExtracted.candidates.end());
+}
 
 TEST(SurfaceComplexSimplificationPhase17,
      CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous) {

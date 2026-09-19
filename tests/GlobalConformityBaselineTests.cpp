@@ -96,6 +96,9 @@ int source_edge_index(const TriMesh &mesh,
   return -1;
 }
 
+// Test-authority seed only: zero matching/effort is not an admissibility claim.
+// Downstream semantic-success fixtures must establish atlas/topology authority
+// explicitly; direct non-flat uses are construction seeds or negative subjects.
 CrossFieldResult make_zero_transport_field(const TriMesh &mesh) {
   CrossFieldResult field;
   field.degree = directional::fields::kCrossFieldDegree;
@@ -117,6 +120,20 @@ CrossFieldResult make_zero_transport_field(const TriMesh &mesh) {
         mesh.EF(edge, 1), 0, 0.0});
   }
   return field;
+}
+
+directional::authority::FieldTransportAtlasBuildResult
+zero_transport_atlas_for_semantic_success(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority) {
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, sourceAuthority, {}, make_zero_transport_field(mesh));
+  if (!atlas) {
+    throw std::runtime_error(
+        std::string("make_zero_transport_field semantic-success precondition failed: ") +
+        directional::authority::field_atlas_build_error_code_name(
+            atlas.error().code));
+  }
+  return atlas;
 }
 
 std::optional<SourceTopologyRegions> make_source_authority(const TriMesh &mesh) {
@@ -164,9 +181,8 @@ struct TopologyFixture {
 TopologyFixture make_topology_fixture(TriMesh mesh) {
   const auto sourceAuthority = make_source_authority(mesh);
   if (!sourceAuthority) throw std::runtime_error("source authority fixture failed");
-  auto atlas = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
-  if (!atlas) throw std::runtime_error("field atlas fixture failed");
+  auto atlas =
+      zero_transport_atlas_for_semantic_success(mesh, *sourceAuthority);
   const auto rails = rails_from_atlas(mesh, atlas.value());
   auto network = FieldAlignedCurveNetwork::make(
       mesh, *sourceAuthority, atlas.value(), rails);
@@ -502,6 +518,103 @@ TEST(GlobalConformityBaseline,
     write_int_vector(std::cout, oracle.regionSpanMultiplicities[region]);
   }
   std::cout << '\n';
+}
+
+TEST(M4CP4, ProductionBaselineWorkReceiptIsBoundedAndIndependentlyValidated) {
+  const auto fixture = make_topology_fixture(make_triangle_mesh());
+  const auto input = make_baseline_input(fixture, 1.0);
+  const auto built = directional::geometry::build_global_conformity_baseline(
+      fixture.topology, input);
+  ASSERT_TRUE(built);
+
+  const auto baseline = built.value().validation_candidate();
+  const auto &work = baseline.certificate.work;
+  const std::size_t spanCount = baseline.schedule.size();
+  const std::size_t perPhase = 1U + 2U * spanCount;
+  ASSERT_EQ(spanCount, work.spanCount);
+  EXPECT_EQ(perPhase, work.producerTJoinInvocationCount);
+  EXPECT_EQ(perPhase, work.validatorTJoinInvocationCount);
+  EXPECT_EQ(2U * perPhase, work.aggregateTJoinInvocationCount);
+  ASSERT_EQ(work.aggregateTJoinInvocationCount, work.tJoinInvocations.size());
+  EXPECT_EQ(0U, work.retryResetCount);
+  EXPECT_FALSE(work.producerInitialOptimumPending);
+  EXPECT_EQ(0U, work.producerRemainingCanonicalSpanDecisions);
+  EXPECT_FALSE(work.validatorInitialOptimumPending);
+  EXPECT_EQ(0U, work.validatorRemainingCanonicalSpanDecisions);
+
+  for (std::size_t phase = 0U; phase < 2U; ++phase) {
+    const std::size_t offset = phase * perPhase;
+    const auto expectedPhase =
+        phase == 0U
+            ? directional::geometry::BaselineConformityWorkPhase::Producer
+            : directional::geometry::BaselineConformityWorkPhase::Validator;
+    EXPECT_EQ(expectedPhase, work.tJoinInvocations[offset].phase);
+    EXPECT_EQ(directional::geometry::BaselineConformityTJoinPurpose::InitialOptimum,
+              work.tJoinInvocations[offset].purpose);
+    EXPECT_EQ(0U, work.tJoinInvocations[offset].fixedPrefixLength);
+    for (std::size_t span = 0U; span < spanCount; ++span) {
+      const auto &trial = work.tJoinInvocations[offset + 1U + 2U * span];
+      const auto &selected = work.tJoinInvocations[offset + 2U + 2U * span];
+      EXPECT_EQ(expectedPhase, trial.phase);
+      EXPECT_EQ(expectedPhase, selected.phase);
+      EXPECT_EQ(directional::geometry::BaselineConformityTJoinPurpose::TrialPrefix,
+                trial.purpose);
+      EXPECT_EQ(
+          directional::geometry::BaselineConformityTJoinPurpose::SelectedPrefix,
+          selected.purpose);
+      EXPECT_EQ(span + 1U, trial.fixedPrefixLength);
+      EXPECT_EQ(span + 1U, selected.fixedPrefixLength);
+      EXPECT_LE(trial.matchingEdgeCount,
+                trial.terminalCount * (trial.terminalCount -
+                                       (trial.terminalCount == 0U ? 0U : 1U)) /
+                    2U);
+      EXPECT_LE(selected.matchingEdgeCount,
+                selected.terminalCount *
+                    (selected.terminalCount -
+                     (selected.terminalCount == 0U ? 0U : 1U)) /
+                    2U);
+    }
+  }
+  EXPECT_EQ(baseline.certificate.exactWidths.overallMaximumBits,
+            std::max({baseline.certificate.exactWidths.preferredCountBits,
+                      baseline.certificate.exactWidths.scheduledCountBits,
+                      baseline.certificate.exactWidths.minimumFlipCountBits,
+                      baseline.certificate.exactWidths.lexMinimumCountBits,
+                      baseline.certificate.exactWidths.regionBoundaryCountBits,
+                      baseline.certificate.exactWidths.matchingDistanceBits,
+                      baseline.certificate.exactWidths.breakpointOrdinalBits,
+                      baseline.certificate.exactWidths.breakpointNumeratorBits,
+                      baseline.certificate.exactWidths.breakpointDenominatorBits}));
+  EXPECT_FALSE(
+      directional::geometry::validate_global_conformity_baseline_candidate(
+          fixture.topology, input, baseline));
+
+  auto countTamper = baseline;
+  ++countTamper.certificate.work.producerTJoinInvocationCount;
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
+      fixture.topology, input, countTamper));
+
+  auto orderTamper = baseline;
+  ASSERT_GT(perPhase, 1U);
+  std::swap(orderTamper.certificate.work.tJoinInvocations[0U],
+            orderTamper.certificate.work.tJoinInvocations[1U]);
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
+      fixture.topology, input, orderTamper));
+
+  auto progressTamper = baseline;
+  progressTamper.certificate.work.producerRemainingCanonicalSpanDecisions = 1U;
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
+      fixture.topology, input, progressTamper));
+
+  auto dimensionTamper = baseline;
+  ++dimensionTamper.certificate.work.tJoinInvocations.front().matchingEdgeCount;
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
+      fixture.topology, input, dimensionTamper));
+
+  auto widthTamper = baseline;
+  ++widthTamper.certificate.exactWidths.overallMaximumBits;
+  EXPECT_TRUE(directional::geometry::validate_global_conformity_baseline_candidate(
+      fixture.topology, input, widthTamper));
 }
 
 TEST(GlobalConformityBaseline,

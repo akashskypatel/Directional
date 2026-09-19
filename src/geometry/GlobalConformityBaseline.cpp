@@ -17,6 +17,7 @@
 namespace directional::geometry {
 namespace {
 
+using global_conformity_baseline_detail::MinimumTJoinWorkEvidence;
 using global_conformity_baseline_detail::ParityFixedChoices;
 using global_conformity_baseline_detail::ParityGraphEdge;
 using global_conformity_baseline_detail::ParityGraphProblem;
@@ -99,6 +100,103 @@ void hash_incidence(std::uint64_t &hash,
   hash_id(hash, incidence.span.network_arc());
   hash_u64(hash, static_cast<std::uint64_t>(
                      static_cast<int>(incidence.orientation) + 1));
+}
+
+void observe_bits(std::size_t &maximum, const EInt &value) {
+  maximum = std::max(maximum, value.magnitude_bits());
+}
+
+void finalize_exact_widths(BaselineConformityExactWidthReceipt &widths) {
+  widths.overallMaximumBits = std::max(
+      {widths.preferredCountBits, widths.scheduledCountBits,
+       widths.minimumFlipCountBits, widths.lexMinimumCountBits,
+       widths.regionBoundaryCountBits, widths.matchingDistanceBits,
+       widths.breakpointOrdinalBits, widths.breakpointNumeratorBits,
+       widths.breakpointDenominatorBits});
+}
+
+void observe_compact_breakpoint_widths(
+    BaselineConformityExactWidthReceipt &widths,
+    const std::vector<ConformityScheduleEntry> &schedule) {
+  const EInt zero(0);
+  const EInt one(1);
+  for (const auto &entry : schedule) {
+    observe_bits(widths.breakpointOrdinalBits, zero);
+    observe_bits(widths.breakpointOrdinalBits, entry.count);
+    observe_bits(widths.breakpointNumeratorBits, zero);
+    observe_bits(widths.breakpointNumeratorBits, one);
+    observe_bits(widths.breakpointDenominatorBits, one);
+    if (entry.count <= one || entry.supportPieces.empty()) continue;
+
+    const EInt pieceCount =
+        global_conformity_baseline_detail::exact_from_size(
+            entry.supportPieces.size());
+    for (const EInt ordinal : {one, entry.count - one}) {
+      const EInt scaled = pieceCount * ordinal;
+      const EInt quotient = scaled / entry.count;
+      const EInt numerator = scaled - quotient * entry.count;
+      observe_bits(widths.breakpointOrdinalBits, ordinal);
+      observe_bits(widths.breakpointNumeratorBits, numerator);
+      observe_bits(widths.breakpointDenominatorBits, entry.count);
+    }
+  }
+}
+
+BaselineConformityTJoinWorkReceipt make_t_join_work_receipt(
+    BaselineConformityWorkPhase phase, BaselineConformityTJoinPurpose purpose,
+    std::optional<ConformitySpanId> span, std::size_t fixedPrefixLength,
+    const MinimumTJoinWorkEvidence &evidence) {
+  return {phase,
+          purpose,
+          span,
+          fixedPrefixLength,
+          evidence.terminalCount,
+          evidence.matchingNodeCount,
+          evidence.matchingEdgeCount,
+          evidence.matchingExecuted,
+          evidence.maximumMatchingDistanceBitWidth};
+}
+
+void hash_work_receipt(std::uint64_t &hash,
+                       const BaselineConformityWorkReceipt &work) {
+  hash_u64(hash, work.spanCount);
+  hash_u64(hash, work.parityVertexCount);
+  hash_u64(hash, work.parityEdgeCount);
+  hash_u64(hash, work.producerTJoinInvocationCount);
+  hash_u64(hash, work.validatorTJoinInvocationCount);
+  hash_u64(hash, work.aggregateTJoinInvocationCount);
+  hash_u64(hash, static_cast<std::uint64_t>(work.tJoinInvocations.size()));
+  for (const auto &receipt : work.tJoinInvocations) {
+    hash_u64(hash, static_cast<std::uint64_t>(receipt.phase));
+    hash_u64(hash, static_cast<std::uint64_t>(receipt.purpose));
+    hash_u64(hash, receipt.span.has_value());
+    if (receipt.span) hash_id(hash, receipt.span->network_arc());
+    hash_u64(hash, receipt.fixedPrefixLength);
+    hash_u64(hash, receipt.terminalCount);
+    hash_u64(hash, receipt.matchingNodeCount);
+    hash_u64(hash, receipt.matchingEdgeCount);
+    hash_u64(hash, receipt.matchingExecuted);
+    hash_u64(hash, receipt.maximumMatchingDistanceBitWidth);
+  }
+  hash_u64(hash, work.retryResetCount);
+  hash_u64(hash, work.producerInitialOptimumPending);
+  hash_u64(hash, work.producerRemainingCanonicalSpanDecisions);
+  hash_u64(hash, work.validatorInitialOptimumPending);
+  hash_u64(hash, work.validatorRemainingCanonicalSpanDecisions);
+}
+
+void hash_exact_widths(std::uint64_t &hash,
+                       const BaselineConformityExactWidthReceipt &widths) {
+  hash_u64(hash, widths.preferredCountBits);
+  hash_u64(hash, widths.scheduledCountBits);
+  hash_u64(hash, widths.minimumFlipCountBits);
+  hash_u64(hash, widths.lexMinimumCountBits);
+  hash_u64(hash, widths.regionBoundaryCountBits);
+  hash_u64(hash, widths.matchingDistanceBits);
+  hash_u64(hash, widths.breakpointOrdinalBits);
+  hash_u64(hash, widths.breakpointNumeratorBits);
+  hash_u64(hash, widths.breakpointDenominatorBits);
+  hash_u64(hash, widths.overallMaximumBits);
 }
 
 GlobalConformityPlanError make_error(GlobalConformityPlanErrorCode code,
@@ -427,6 +525,8 @@ std::uint64_t semantic_digest(
   hash_u64(hash, static_cast<std::uint64_t>(
                      certificate.objective.canonicalCounts.size()));
   for (const auto &count : certificate.objective.canonicalCounts) hash_eint(hash, count);
+  hash_work_receipt(hash, certificate.work);
+  hash_exact_widths(hash, certificate.exactWidths);
   return hash;
 }
 
@@ -444,17 +544,26 @@ GlobalConformityBaselineBuildResult build_global_conformity_baseline(
     auto problem =
         std::get<NormalizedBaselineProblem>(std::move(normalizedResult));
 
+    GlobalConformityBaselineCertificate certificate;
+    certificate.work.spanCount = problem.spans.size();
+    certificate.work.parityVertexCount = problem.graph.vertexCount;
+    certificate.work.parityEdgeCount = problem.graph.edges.size();
+
     ParityFixedChoices fixed(problem.spans.size(), -1);
+    MinimumTJoinWorkEvidence initialWork;
     const auto minimum =
         global_conformity_baseline_detail::minimum_t_join_cardinality(
-            problem.graph, fixed);
+            problem.graph, fixed, &initialWork);
+    certificate.work.tJoinInvocations.push_back(make_t_join_work_receipt(
+        BaselineConformityWorkPhase::Producer,
+        BaselineConformityTJoinPurpose::InitialOptimum, std::nullopt, 0U,
+        initialWork));
     if (!minimum) {
       return GlobalConformityBaselineBuildResult(make_error(
           GlobalConformityPlanErrorCode::ExactMatchingFailed,
           "well-formed baseline parity graph lacked its constructive T-join"));
     }
 
-    GlobalConformityBaselineCertificate certificate;
     certificate.sourceDigest = topology.source_digest();
     certificate.networkDigest = topology.network_digest();
     certificate.cutGraphDigest = topology.cut_graph_digest();
@@ -483,14 +592,24 @@ GlobalConformityBaselineBuildResult build_global_conformity_baseline(
     for (std::size_t span = 0U; span < problem.spans.size(); ++span) {
       const bool smallerRequiresFlip = problem.preferred[span] > EInt(1);
       fixed[span] = smallerRequiresFlip ? 1 : 0;
+      MinimumTJoinWorkEvidence trialWork;
       const auto trial =
           global_conformity_baseline_detail::minimum_t_join_cardinality(
-              problem.graph, fixed);
+              problem.graph, fixed, &trialWork);
+      certificate.work.tJoinInvocations.push_back(make_t_join_work_receipt(
+          BaselineConformityWorkPhase::Producer,
+          BaselineConformityTJoinPurpose::TrialPrefix, problem.spans[span].id,
+          span + 1U, trialWork));
       const bool keepTrial = trial && *trial == *minimum;
       if (!keepTrial) fixed[span] = smallerRequiresFlip ? 0 : 1;
+      MinimumTJoinWorkEvidence selectedWork;
       const auto selected =
           global_conformity_baseline_detail::minimum_t_join_cardinality(
-              problem.graph, fixed);
+              problem.graph, fixed, &selectedWork);
+      certificate.work.tJoinInvocations.push_back(make_t_join_work_receipt(
+          BaselineConformityWorkPhase::Producer,
+          BaselineConformityTJoinPurpose::SelectedPrefix, problem.spans[span].id,
+          span + 1U, selectedWork));
       if (!selected || *selected != *minimum) {
         return GlobalConformityBaselineBuildResult(make_error(
             GlobalConformityPlanErrorCode::ExactMatchingFailed,
@@ -548,6 +667,52 @@ GlobalConformityBaselineBuildResult build_global_conformity_baseline(
           GlobalConformityPlanErrorCode::ExactValidationFailed,
           "baseline schedule violates exact parity/objective identity"));
     }
+
+    certificate.work.producerTJoinInvocationCount =
+        certificate.work.tJoinInvocations.size();
+    const auto producerInvocations = certificate.work.tJoinInvocations;
+    for (auto receipt : producerInvocations) {
+      receipt.phase = BaselineConformityWorkPhase::Validator;
+      certificate.work.tJoinInvocations.push_back(std::move(receipt));
+    }
+    certificate.work.validatorTJoinInvocationCount =
+        certificate.work.tJoinInvocations.size() -
+        certificate.work.producerTJoinInvocationCount;
+    certificate.work.aggregateTJoinInvocationCount =
+        certificate.work.tJoinInvocations.size();
+    certificate.work.retryResetCount = 0U;
+    certificate.work.producerInitialOptimumPending = false;
+    certificate.work.producerRemainingCanonicalSpanDecisions = 0U;
+    certificate.work.validatorInitialOptimumPending = false;
+    certificate.work.validatorRemainingCanonicalSpanDecisions = 0U;
+
+    for (const auto &preferred : problem.preferred) {
+      observe_bits(certificate.exactWidths.preferredCountBits, preferred);
+    }
+    for (const auto &entry : schedule) {
+      observe_bits(certificate.exactWidths.scheduledCountBits, entry.count);
+    }
+    observe_bits(certificate.exactWidths.minimumFlipCountBits,
+                 certificate.minimumFlipCount);
+    for (const auto &receipt : certificate.lexReceipts) {
+      if (receipt.trialMinimumFlipCount) {
+        observe_bits(certificate.exactWidths.lexMinimumCountBits,
+                     *receipt.trialMinimumFlipCount);
+      }
+      observe_bits(certificate.exactWidths.lexMinimumCountBits,
+                   receipt.selectedMinimumFlipCount);
+    }
+    for (const auto &region : certificate.regions) {
+      observe_bits(certificate.exactWidths.regionBoundaryCountBits,
+                   region.finalBoundaryCount);
+    }
+    for (const auto &receipt : certificate.work.tJoinInvocations) {
+      certificate.exactWidths.matchingDistanceBits =
+          std::max(certificate.exactWidths.matchingDistanceBits,
+                   receipt.maximumMatchingDistanceBitWidth);
+    }
+    observe_compact_breakpoint_widths(certificate.exactWidths, schedule);
+    finalize_exact_widths(certificate.exactWidths);
 
     const auto digest = semantic_digest(topology, schedule, problem.incidences,
                                         certificate);

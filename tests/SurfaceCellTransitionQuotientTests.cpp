@@ -1483,6 +1483,103 @@ TEST(SurfaceCellTransitionQuotient,
   }
 }
 
+TEST(M4CP4, ProducedTorusPeriodicRelationOwnersSurviveContainerReordering) {
+  const auto &fixture = torus_fixture();
+  const auto &original = fixture.network.phaseFront.product();
+  ASSERT_GT(original.periodicHolonomies().size(), 1U);
+
+  std::map<directional::authority::PeriodicRelationId,
+           directional::geometry::SurfacePeriodicHolonomy> owners;
+  for (const auto &relation : original.periodicHolonomies()) {
+    ASSERT_TRUE(owners.emplace(relation.id(), relation).second);
+  }
+  std::vector<std::size_t> periodicEdges;
+  for (std::size_t edgeIndex = 0U; edgeIndex < original.edges().size(); ++edgeIndex) {
+    const auto &edge = original.edges()[edgeIndex];
+    if (!edge.periodicRelation.has_value()) continue;
+    ASSERT_NE(owners.end(), owners.find(*edge.periodicRelation));
+    periodicEdges.push_back(edgeIndex);
+  }
+  ASSERT_GE(periodicEdges.size(), 2U);
+
+  std::size_t second = 1U;
+  while (second < periodicEdges.size() &&
+         original.edges()[periodicEdges.front()].periodicRelation ==
+             original.edges()[periodicEdges[second]].periodicRelation) {
+    ++second;
+  }
+  ASSERT_LT(second, periodicEdges.size());
+  const auto firstOwnerId =
+      *original.edges()[periodicEdges.front()].periodicRelation;
+  const auto secondOwnerId =
+      *original.edges()[periodicEdges[second]].periodicRelation;
+  ASSERT_NE(firstOwnerId, secondOwnerId);
+  const auto &firstOwner = owners.at(firstOwnerId);
+  const auto &secondOwner = owners.at(secondOwnerId);
+  EXPECT_TRUE(firstOwner.sourceTopologyRegion() != secondOwner.sourceTopologyRegion() ||
+              firstOwner.action() != secondOwner.action() ||
+              firstOwner.route() != secondOwner.route() ||
+              firstOwner.cutRoute() != secondOwner.cutRoute());
+
+  PhaseFrontDraft reorderedDraft = phase_front_draft(original);
+  std::reverse(reorderedDraft.periodicHolonomies.begin(),
+               reorderedDraft.periodicHolonomies.end());
+  auto construction = construct_phase_front_product(std::move(reorderedDraft));
+  auto *reordered =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&construction);
+  ASSERT_NE(nullptr, reordered);
+  for (const auto &edge : reordered->edges()) {
+    if (!edge.periodicRelation.has_value()) continue;
+    const auto before = owners.find(*edge.periodicRelation);
+    ASSERT_NE(owners.end(), before);
+    const auto after = std::find_if(
+        reordered->periodicHolonomies().begin(),
+        reordered->periodicHolonomies().end(), [&](const auto &relation) {
+          return relation.id() == *edge.periodicRelation;
+        });
+    ASSERT_NE(reordered->periodicHolonomies().end(), after);
+    EXPECT_EQ(before->second.sourceTopologyRegion(), after->sourceTopologyRegion());
+    EXPECT_EQ(before->second.action(), after->action());
+    EXPECT_EQ(before->second.route(), after->route());
+    EXPECT_EQ(before->second.cutRoute(), after->cutRoute());
+  }
+
+  PhaseFrontDraft tampered = phase_front_draft(original);
+  std::swap(tampered.edges[periodicEdges.front()].periodicRelation,
+            tampered.edges[periodicEdges[second]].periodicRelation);
+  const auto materialized = materialize(fixture, tampered);
+  EXPECT_FALSE(materialized.success);
+  EXPECT_EQ("InvalidPeriodicRelation", materialized.failure);
+}
+
+TEST(M4CP4, ProducedTorusMissingPeriodicRelationOwnerIsRejected) {
+  const auto &fixture = torus_fixture();
+  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  const int periodic = first_edge_of_kind(
+      tampered, SurfaceFrontBoundaryKind::PeriodicCut);
+  ASSERT_GE(periodic, 0);
+  auto &periodicEdge = tampered.edges[static_cast<std::size_t>(periodic)];
+  ASSERT_TRUE(periodicEdge.periodicRelation.has_value());
+  const auto ownerId = *periodicEdge.periodicRelation;
+  const auto owner = std::find_if(
+      tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
+      [&](const auto &relation) { return relation.id() == ownerId; });
+  ASSERT_NE(tampered.periodicHolonomies.end(), owner);
+  EXPECT_EQ(ownerId, owner->id());
+  EXPECT_FALSE(owner->route().empty());
+  EXPECT_FALSE(owner->cutRoute().empty());
+
+  periodicEdge.periodicRelation = std::nullopt;
+  const auto construction = construct_phase_front_product(std::move(tampered));
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
+          &construction);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                MissingPeriodicRelationOwner,
+            error->code);
+}
+
 TEST(SurfaceCellTransitionQuotient,
      MultiplePeriodicRelationsSurviveRelationReorderingByExplicitOwner) {
   const auto &fixture = torus_fixture();

@@ -4,8 +4,10 @@
 #include "GlobalConformityParityGraph.h"
 
 #include <algorithm>
+#include <limits>
 #include <map>
 #include <numeric>
+#include <queue>
 #include <optional>
 #include <set>
 #include <string>
@@ -16,6 +18,7 @@
 namespace directional::geometry {
 namespace {
 
+using global_conformity_baseline_detail::MinimumTJoinWorkEvidence;
 using global_conformity_baseline_detail::ParityFixedChoices;
 using global_conformity_baseline_detail::ParityGraphProblem;
 
@@ -102,6 +105,199 @@ void hash_incidence(std::uint64_t &hash,
   hash_id(hash, incidence.span.network_arc());
   hash_u64(hash, static_cast<std::uint64_t>(
                      static_cast<int>(incidence.orientation) + 1));
+}
+
+void observe_bits(std::size_t &maximum, const EInt &value) {
+  maximum = std::max(maximum, value.magnitude_bits());
+}
+
+void finalize_exact_widths(BaselineConformityExactWidthReceipt &widths) {
+  widths.overallMaximumBits = std::max(
+      {widths.preferredCountBits, widths.scheduledCountBits,
+       widths.minimumFlipCountBits, widths.lexMinimumCountBits,
+       widths.regionBoundaryCountBits, widths.matchingDistanceBits,
+       widths.breakpointOrdinalBits, widths.breakpointNumeratorBits,
+       widths.breakpointDenominatorBits});
+}
+
+void independently_observe_compact_breakpoint_widths(
+    BaselineConformityExactWidthReceipt &widths,
+    const std::vector<ConformityScheduleEntry> &schedule) {
+  const EInt zero(0);
+  const EInt one(1);
+  for (const auto &entry : schedule) {
+    observe_bits(widths.breakpointOrdinalBits, zero);
+    observe_bits(widths.breakpointOrdinalBits, entry.count);
+    observe_bits(widths.breakpointNumeratorBits, zero);
+    observe_bits(widths.breakpointNumeratorBits, one);
+    observe_bits(widths.breakpointDenominatorBits, one);
+    if (entry.count <= one || entry.supportPieces.empty()) continue;
+
+    const EInt pieceCount =
+        global_conformity_baseline_detail::exact_from_size(
+            entry.supportPieces.size());
+    for (const EInt ordinal : {one, entry.count - one}) {
+      const EInt scaled = pieceCount * ordinal;
+      const EInt quotient = scaled / entry.count;
+      const EInt numerator = scaled - quotient * entry.count;
+      observe_bits(widths.breakpointOrdinalBits, ordinal);
+      observe_bits(widths.breakpointNumeratorBits, numerator);
+      observe_bits(widths.breakpointDenominatorBits, entry.count);
+    }
+  }
+}
+
+std::optional<MinimumTJoinWorkEvidence> independently_derive_t_join_work(
+    const ParityGraphProblem &problem, const ParityFixedChoices &fixed) {
+  if (problem.vertexCount == 0U || problem.demand.size() != problem.vertexCount) {
+    return std::nullopt;
+  }
+  std::size_t spanCount = 0U;
+  for (const auto &edge : problem.edges) {
+    if (edge.firstVertex >= problem.vertexCount ||
+        edge.secondVertex >= problem.vertexCount) {
+      return std::nullopt;
+    }
+    spanCount = std::max(spanCount, edge.spanIndex + 1U);
+  }
+  if (fixed.size() != spanCount) return std::nullopt;
+
+  std::vector<bool> remainingDemand = problem.demand;
+  std::vector<std::vector<std::size_t>> adjacency(problem.vertexCount);
+  for (const auto &edge : problem.edges) {
+    const auto choice = fixed[edge.spanIndex];
+    if (choice < -1 || choice > 1) return std::nullopt;
+    if (choice == 1) {
+      if (edge.firstVertex != edge.secondVertex) {
+        remainingDemand[edge.firstVertex] = !remainingDemand[edge.firstVertex];
+        remainingDemand[edge.secondVertex] = !remainingDemand[edge.secondVertex];
+      }
+      continue;
+    }
+    if (choice == 0 || edge.firstVertex == edge.secondVertex) continue;
+    adjacency[edge.firstVertex].push_back(edge.secondVertex);
+    adjacency[edge.secondVertex].push_back(edge.firstVertex);
+  }
+
+  std::vector<std::size_t> terminals;
+  for (std::size_t vertex = 0U; vertex < problem.vertexCount; ++vertex) {
+    if (remainingDemand[vertex]) terminals.push_back(vertex);
+  }
+  if ((terminals.size() & 1U) != 0U) return std::nullopt;
+
+  MinimumTJoinWorkEvidence evidence;
+  evidence.terminalCount = terminals.size();
+  evidence.matchingNodeCount = terminals.size();
+  evidence.matchingExecuted = !terminals.empty();
+  if (terminals.empty()) return evidence;
+
+  constexpr std::size_t kUnreached = std::numeric_limits<std::size_t>::max();
+  for (std::size_t sourceOrdinal = 0U; sourceOrdinal < terminals.size();
+       ++sourceOrdinal) {
+    std::vector<std::size_t> distance(problem.vertexCount, kUnreached);
+    std::queue<std::size_t> queue;
+    distance[terminals[sourceOrdinal]] = 0U;
+    queue.push(terminals[sourceOrdinal]);
+    while (!queue.empty()) {
+      const auto current = queue.front();
+      queue.pop();
+      for (const auto next : adjacency[current]) {
+        if (distance[next] != kUnreached) continue;
+        distance[next] = distance[current] + 1U;
+        queue.push(next);
+      }
+    }
+    for (std::size_t targetOrdinal = sourceOrdinal + 1U;
+         targetOrdinal < terminals.size(); ++targetOrdinal) {
+      const auto d = distance[terminals[targetOrdinal]];
+      if (d == kUnreached) continue;
+      if (d >= problem.vertexCount) return std::nullopt;
+      ++evidence.matchingEdgeCount;
+      const EInt exactDistance =
+          global_conformity_baseline_detail::exact_from_size(d);
+      evidence.maximumMatchingDistanceBitWidth =
+          std::max(evidence.maximumMatchingDistanceBitWidth,
+                   exactDistance.magnitude_bits());
+    }
+  }
+  return evidence;
+}
+
+bool same_work_evidence(const MinimumTJoinWorkEvidence &first,
+                        const MinimumTJoinWorkEvidence &second) {
+  return first.terminalCount == second.terminalCount &&
+         first.matchingNodeCount == second.matchingNodeCount &&
+         first.matchingEdgeCount == second.matchingEdgeCount &&
+         first.matchingExecuted == second.matchingExecuted &&
+         first.maximumMatchingDistanceBitWidth ==
+             second.maximumMatchingDistanceBitWidth;
+}
+
+std::size_t maximum_matching_edge_count(std::size_t terminalCount) {
+  if (terminalCount < 2U) return 0U;
+  return terminalCount % 2U == 0U
+             ? (terminalCount / 2U) * (terminalCount - 1U)
+             : terminalCount * ((terminalCount - 1U) / 2U);
+}
+
+bool receipt_matches(
+    const BaselineConformityTJoinWorkReceipt &receipt,
+    BaselineConformityWorkPhase phase, BaselineConformityTJoinPurpose purpose,
+    std::optional<ConformitySpanId> span, std::size_t fixedPrefixLength,
+    const MinimumTJoinWorkEvidence &evidence) {
+  return receipt.phase == phase && receipt.purpose == purpose &&
+         receipt.span == span &&
+         receipt.fixedPrefixLength == fixedPrefixLength &&
+         receipt.terminalCount == evidence.terminalCount &&
+         receipt.matchingNodeCount == evidence.matchingNodeCount &&
+         receipt.matchingEdgeCount == evidence.matchingEdgeCount &&
+         receipt.matchingExecuted == evidence.matchingExecuted &&
+         receipt.maximumMatchingDistanceBitWidth ==
+             evidence.maximumMatchingDistanceBitWidth &&
+         receipt.matchingEdgeCount <=
+             maximum_matching_edge_count(receipt.terminalCount);
+}
+
+void hash_work_receipt(std::uint64_t &hash,
+                       const BaselineConformityWorkReceipt &work) {
+  hash_u64(hash, work.spanCount);
+  hash_u64(hash, work.parityVertexCount);
+  hash_u64(hash, work.parityEdgeCount);
+  hash_u64(hash, work.producerTJoinInvocationCount);
+  hash_u64(hash, work.validatorTJoinInvocationCount);
+  hash_u64(hash, work.aggregateTJoinInvocationCount);
+  hash_u64(hash, static_cast<std::uint64_t>(work.tJoinInvocations.size()));
+  for (const auto &receipt : work.tJoinInvocations) {
+    hash_u64(hash, static_cast<std::uint64_t>(receipt.phase));
+    hash_u64(hash, static_cast<std::uint64_t>(receipt.purpose));
+    hash_u64(hash, receipt.span.has_value());
+    if (receipt.span) hash_id(hash, receipt.span->network_arc());
+    hash_u64(hash, receipt.fixedPrefixLength);
+    hash_u64(hash, receipt.terminalCount);
+    hash_u64(hash, receipt.matchingNodeCount);
+    hash_u64(hash, receipt.matchingEdgeCount);
+    hash_u64(hash, receipt.matchingExecuted);
+    hash_u64(hash, receipt.maximumMatchingDistanceBitWidth);
+  }
+  hash_u64(hash, work.retryResetCount);
+  hash_u64(hash, work.producerInitialOptimumPending);
+  hash_u64(hash, work.producerRemainingCanonicalSpanDecisions);
+  hash_u64(hash, work.validatorInitialOptimumPending);
+  hash_u64(hash, work.validatorRemainingCanonicalSpanDecisions);
+}
+
+void hash_exact_widths(std::uint64_t &hash,
+                       const BaselineConformityExactWidthReceipt &widths) {
+  hash_u64(hash, widths.preferredCountBits);
+  hash_u64(hash, widths.scheduledCountBits);
+  hash_u64(hash, widths.minimumFlipCountBits);
+  hash_u64(hash, widths.lexMinimumCountBits);
+  hash_u64(hash, widths.regionBoundaryCountBits);
+  hash_u64(hash, widths.matchingDistanceBits);
+  hash_u64(hash, widths.breakpointOrdinalBits);
+  hash_u64(hash, widths.breakpointNumeratorBits);
+  hash_u64(hash, widths.breakpointDenominatorBits);
+  hash_u64(hash, widths.overallMaximumBits);
 }
 
 struct DisjointSet {
@@ -365,6 +561,8 @@ std::uint64_t independent_semantic_digest(
   hash_u64(hash, static_cast<std::uint64_t>(
                      certificate.objective.canonicalCounts.size()));
   for (const auto &count : certificate.objective.canonicalCounts) hash_eint(hash, count);
+  hash_work_receipt(hash, certificate.work);
+  hash_exact_widths(hash, certificate.exactWidths);
   return hash;
 }
 
@@ -431,13 +629,69 @@ validate_global_conformity_baseline_candidate(
     return validation_error("baseline span/lex certificate cardinality mismatch");
   }
 
+  const std::size_t spanCount = problem->spans.size();
+  if (spanCount > (std::numeric_limits<std::size_t>::max() - 1U) / 2U) {
+    return validation_error("baseline work invocation count overflow");
+  }
+  const std::size_t invocationsPerPhase = 1U + 2U * spanCount;
+  if (invocationsPerPhase >
+      std::numeric_limits<std::size_t>::max() / 2U) {
+    return validation_error("baseline aggregate work invocation count overflow");
+  }
+  const std::size_t aggregateInvocations = 2U * invocationsPerPhase;
+  const auto &work = certificate.work;
+  if (work.spanCount != spanCount ||
+      work.parityVertexCount != problem->graph.vertexCount ||
+      work.parityEdgeCount != problem->graph.edges.size() ||
+      work.producerTJoinInvocationCount != invocationsPerPhase ||
+      work.validatorTJoinInvocationCount != invocationsPerPhase ||
+      work.aggregateTJoinInvocationCount != aggregateInvocations ||
+      work.tJoinInvocations.size() != aggregateInvocations ||
+      work.retryResetCount != 0U || work.producerInitialOptimumPending ||
+      work.producerRemainingCanonicalSpanDecisions != 0U ||
+      work.validatorInitialOptimumPending ||
+      work.validatorRemainingCanonicalSpanDecisions != 0U) {
+    return validation_error("baseline production work receipt cardinality/progress mismatch");
+  }
+
+  BaselineConformityExactWidthReceipt independentWidths;
+  for (const auto &preferred : problem->preferred) {
+    observe_bits(independentWidths.preferredCountBits, preferred);
+  }
+  for (const auto &entry : candidate.schedule) {
+    observe_bits(independentWidths.scheduledCountBits, entry.count);
+  }
+  independently_observe_compact_breakpoint_widths(independentWidths,
+                                                   candidate.schedule);
+
   ParityFixedChoices fixed(problem->spans.size(), -1);
+  const auto independentInitial =
+      independently_derive_t_join_work(problem->graph, fixed);
+  if (!independentInitial ||
+      !receipt_matches(work.tJoinInvocations[0U],
+                       BaselineConformityWorkPhase::Producer,
+                       BaselineConformityTJoinPurpose::InitialOptimum,
+                       std::nullopt, 0U, *independentInitial) ||
+      !receipt_matches(work.tJoinInvocations[invocationsPerPhase],
+                       BaselineConformityWorkPhase::Validator,
+                       BaselineConformityTJoinPurpose::InitialOptimum,
+                       std::nullopt, 0U, *independentInitial)) {
+    return validation_error("baseline initial T-join work receipt mismatch");
+  }
+  MinimumTJoinWorkEvidence actualInitial;
   const auto minimum =
       global_conformity_baseline_detail::minimum_t_join_cardinality(
-          problem->graph, fixed);
+          problem->graph, fixed, &actualInitial);
+  if (!same_work_evidence(actualInitial, *independentInitial)) {
+    return validation_error("baseline validator initial T-join dimensions disagree with independent reconstruction");
+  }
+  independentWidths.matchingDistanceBits =
+      std::max(independentWidths.matchingDistanceBits,
+               independentInitial->maximumMatchingDistanceBitWidth);
   if (!minimum || certificate.minimumFlipCount != *minimum) {
     return validation_error("baseline minimum T-join cardinality mismatch");
   }
+  observe_bits(independentWidths.minimumFlipCountBits, *minimum);
 
   std::vector<bool> selected(problem->spans.size(), false);
   std::vector<ConformitySpanId> selectedFlips;
@@ -451,17 +705,66 @@ validate_global_conformity_baseline_candidate(
 
     const bool desiredFlip = problem->preferred[span] > EInt(1);
     fixed[span] = desiredFlip ? 1 : 0;
+    const auto independentTrial =
+        independently_derive_t_join_work(problem->graph, fixed);
+    const std::size_t trialIndex = 1U + 2U * span;
+    if (!independentTrial ||
+        !receipt_matches(work.tJoinInvocations[trialIndex],
+                         BaselineConformityWorkPhase::Producer,
+                         BaselineConformityTJoinPurpose::TrialPrefix,
+                         problem->spans[span].id, span + 1U,
+                         *independentTrial) ||
+        !receipt_matches(work.tJoinInvocations[invocationsPerPhase + trialIndex],
+                         BaselineConformityWorkPhase::Validator,
+                         BaselineConformityTJoinPurpose::TrialPrefix,
+                         problem->spans[span].id, span + 1U,
+                         *independentTrial)) {
+      return validation_error("baseline trial T-join work receipt mismatch");
+    }
+    MinimumTJoinWorkEvidence actualTrial;
     const auto trial =
         global_conformity_baseline_detail::minimum_t_join_cardinality(
-            problem->graph, fixed);
+            problem->graph, fixed, &actualTrial);
+    if (!same_work_evidence(actualTrial, *independentTrial)) {
+      return validation_error("baseline validator trial T-join dimensions disagree with independent reconstruction");
+    }
+    independentWidths.matchingDistanceBits =
+        std::max(independentWidths.matchingDistanceBits,
+                 independentTrial->maximumMatchingDistanceBitWidth);
+    if (trial) observe_bits(independentWidths.lexMinimumCountBits, *trial);
+
     const bool keepTrial = trial && *trial == *minimum;
     if (!keepTrial) fixed[span] = desiredFlip ? 0 : 1;
+    const auto independentSelected =
+        independently_derive_t_join_work(problem->graph, fixed);
+    const std::size_t selectedIndex = trialIndex + 1U;
+    if (!independentSelected ||
+        !receipt_matches(work.tJoinInvocations[selectedIndex],
+                         BaselineConformityWorkPhase::Producer,
+                         BaselineConformityTJoinPurpose::SelectedPrefix,
+                         problem->spans[span].id, span + 1U,
+                         *independentSelected) ||
+        !receipt_matches(work.tJoinInvocations[invocationsPerPhase + selectedIndex],
+                         BaselineConformityWorkPhase::Validator,
+                         BaselineConformityTJoinPurpose::SelectedPrefix,
+                         problem->spans[span].id, span + 1U,
+                         *independentSelected)) {
+      return validation_error("baseline selected T-join work receipt mismatch");
+    }
+    MinimumTJoinWorkEvidence actualSelected;
     const auto selectedMinimum =
         global_conformity_baseline_detail::minimum_t_join_cardinality(
-            problem->graph, fixed);
+            problem->graph, fixed, &actualSelected);
+    if (!same_work_evidence(actualSelected, *independentSelected)) {
+      return validation_error("baseline validator selected T-join dimensions disagree with independent reconstruction");
+    }
+    independentWidths.matchingDistanceBits =
+        std::max(independentWidths.matchingDistanceBits,
+                 independentSelected->maximumMatchingDistanceBitWidth);
     if (!selectedMinimum || *selectedMinimum != *minimum) {
       return validation_error("baseline lex-prefix replay lost primary optimum");
     }
+    observe_bits(independentWidths.lexMinimumCountBits, *selectedMinimum);
     selected[span] = fixed[span] == 1;
 
     const auto &receipt = certificate.lexReceipts[span];
@@ -509,12 +812,18 @@ validate_global_conformity_baseline_candidate(
     }
     regionReceipts.push_back({problem->regions[region], problem->residual[region],
                               boundary, boundary % EInt(2) == EInt(0)});
+    observe_bits(independentWidths.regionBoundaryCountBits, boundary);
     if (boundary % EInt(2) != EInt(0)) {
       return validation_error("baseline region boundary parity is odd");
     }
   }
   if (certificate.regions != regionReceipts) {
     return validation_error("baseline independent region parity receipt mismatch");
+  }
+
+  finalize_exact_widths(independentWidths);
+  if (certificate.exactWidths != independentWidths) {
+    return validation_error("baseline exact magnitude-width receipt mismatch");
   }
 
   if (candidate.semanticDigest != independent_semantic_digest(topology, candidate)) {

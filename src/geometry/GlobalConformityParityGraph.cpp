@@ -28,7 +28,9 @@ EInt exact_from_size(std::size_t value) {
 } // namespace
 
 std::optional<EInt> minimum_t_join_cardinality(
-    const ParityGraphProblem &problem, const ParityFixedChoices &fixed) {
+    const ParityGraphProblem &problem, const ParityFixedChoices &fixed,
+    MinimumTJoinWorkEvidence *workEvidence) {
+  if (workEvidence != nullptr) *workEvidence = {};
   if (problem.vertexCount == 0U || problem.demand.size() != problem.vertexCount) {
     return std::nullopt;
   }
@@ -67,6 +69,10 @@ std::optional<EInt> minimum_t_join_cardinality(
   for (std::size_t vertex = 0U; vertex < problem.vertexCount; ++vertex) {
     if (remainingDemand[vertex]) terminals.push_back(vertex);
   }
+  if (workEvidence != nullptr) {
+    workEvidence->terminalCount = terminals.size();
+    workEvidence->matchingNodeCount = terminals.size();
+  }
   if ((terminals.size() & 1U) != 0U) return std::nullopt;
   if (terminals.empty()) return forcedCount;
 
@@ -104,8 +110,15 @@ std::optional<EInt> minimum_t_join_cardinality(
       if (d == kUnreached) continue;
       const auto edge = matchingGraph.addEdge(nodes[sourceOrdinal],
                                               nodes[targetOrdinal]);
-      weights[edge] = global_conformity_detail::ExactWeight(-exact_from_size(d));
+      const EInt exactDistance = exact_from_size(d);
+      weights[edge] = global_conformity_detail::ExactWeight(-exactDistance);
       distances[edge] = d;
+      if (workEvidence != nullptr) {
+        ++workEvidence->matchingEdgeCount;
+        workEvidence->maximumMatchingDistanceBitWidth =
+            std::max(workEvidence->maximumMatchingDistanceBitWidth,
+                     exactDistance.magnitude_bits());
+      }
     }
   }
 
@@ -113,6 +126,7 @@ std::optional<EInt> minimum_t_join_cardinality(
       lemon::ListGraph,
       lemon::ListGraph::EdgeMap<global_conformity_detail::ExactWeight>>;
   Matching matching(matchingGraph, weights);
+  if (workEvidence != nullptr) workEvidence->matchingExecuted = true;
   if (!matching.run()) return std::nullopt;
 
   EInt freeCount(0);
