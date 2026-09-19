@@ -1,2 +1,0 @@
-M4-CP4-DEFN-R1 source snapshot trigger.
-Semantic source authority before control marker: ff4e6ca4717c3ac4be9eebd939ab74f9192ed108
