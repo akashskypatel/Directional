@@ -1,3 +1,3 @@
-Purpose: freeze source snapshot for M4-CP4-CB5 static inspection.
-Expected authority: current working branch after entry STATUS beacon.
-Retry: 0
+Purpose: refresh exact source snapshot for M4-CP4-CB5 closeout documentation after test-authority patch and compile evidence.
+Expected authority: current working branch after compile caller retirement.
+Retry: 1
