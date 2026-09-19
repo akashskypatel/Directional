@@ -133,3 +133,100 @@ Its falsifiers are written before implementation. Scope is limited to the row2 p
 | review_check.py boundary | **ALL CHECKS PASSED** against the prepared documentation-only delta with selector427 explicitly re-hashed. |
 | `STATUS` lifecycle maintained | `Turn=M4-CP4-DEFN-R1`; entry `IN_PROGRESS`; `Started at=2026-09-19T09:04:39Z`; continuation `Resumed at=2026-09-19T09:30:09Z`; final COMPLETE / `Successor=M4-CP4-CB5` / Ended timestamp is reserved for the final direct STATUS mutation. |
 | Pushed to origin, branch in sync | The verified documentation patch is pushed to the configured working branch and final branch authority is re-read before the final STATUS beacon; no alternate ref is used. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Reading B is correctly frozen. The Reading C disproof reproduces exactly from
+committed bytes, the Reading A rejection rests on pre-existing authority rather than authority written this turn,
+debt is preserved at **5** with zero M4 credit, and selector427 re-hashes byte-exact at 427 rows. Accounting
+holds at **49 / 14 / 35**.
+
+### V1 — Reading C is disproved; I withdraw it
+
+Reading C was mine (`M4-CP4-TB1-R3-REV-OBS-01`). DEFN-R1 tested it against a concrete falsifier instead of
+arguing about it, which is the right response. I re-derived the census independently from
+`benchmarks/fixtures/milestone-g/torus.obj` and the two authored cycles in
+`cp4c_torus_hard_rail_remesh_options()`, and every number reproduces:
+
+| Quantity | DEFN-R1 | Independently re-derived |
+|---|---|---|
+| vertices | 72 | **72** |
+| faces | 144 | **144** |
+| unique hard edges | 18 | **18** |
+| hard edges present in mesh | 18 / 18 | **18 / 18** |
+| hard edges with exactly 2 incident faces | 18 | **18** |
+| face-adjacency components after omitting all 18 | 1 | **1** |
+| resulting region size | 144 faces | **144** |
+
+Total mesh edges are 216, so `V − E + F = 72 − 216 + 144 = 0` — the fixture is genuinely a torus, which the
+census did not state but which confirms the subject is the right one. **Reading C is false and is withdrawn.**
+
+### V2 — the disproof is stronger than measured: one region is structurally necessary
+
+§2 concludes the result "is consistent with torus topology". It is more than consistent — it is forced, and
+saying so matters for what comes next.
+
+Cutting a surface along a simple closed curve leaves it connected exactly when the curve is **non-separating**.
+Both authored cycles are canonical torus generators, hence non-separating by definition: cutting along the first
+yields a cylinder (connected), and the second then runs between that cylinder's two boundary circles, yielding a
+disc (connected). A canonical generator pair therefore always produces exactly **one** region. Two regions would
+require a *separating* cycle — and a separating cycle carries no periodic generator, so it cannot serve the
+purpose Reading C needed it for.
+
+**Consequence:** Reading C cannot be rescued by choosing a different torus fixture, a finer mesh, or a different
+generator pair. The 144-face census is not a property of this fixture; it is a property of cutting a genus-1
+surface along its generators. A later turn must not re-litigate Reading C on the theory that a different subject
+would decompose — recorded so that door is closed rather than merely unvisited.
+
+### V3 — the Reading A rejection is not circular
+
+Re-homing two produced-witness debts across a milestone boundary is the least reversible action available in this
+sequence, and its stated ground is that `DESIGN.md` §14 already assigns the needed semantics to M5. That ground
+would be worthless if the assignment had been written during this same turn, so I checked the **pre-turn** file.
+
+At `cfe1673e~1`, §14's M5 section already read *"certificate-carrying chart and quotient relations … canonical
+relation IDs and explicit path certificates"*, with acceptance requiring that *"missing, duplicate, conflicting,
+nonreciprocal, and representation-renumbered relations fail typed"* and that *"torus lineage and quotient
+acceptance are direct production evidence."* Every element §3 cites was already chartered to M5 before DEFN-R1
+ran. The two lines added to `DESIGN.md` in `cfe1673e` are labelled as the DEFN-R1 amendment and record the
+decision; they do not manufacture the authority the decision rests on.
+
+Combined with §3's verified same-sheet `AmbiguousBasis` refusal, Reading A's rejection is sound: a bounded M4
+same-sheet basis contract would duplicate M5's chartered relation domain.
+
+### V4 — the normative amendment actually landed, and the discriminator survived intact
+
+Reading B required coordinated normative edits rather than a record-only decision. Verified in `cfe1673e`:
+`Architecture_M4_CP4_Frozen_Definitions.md` gains §2.1 freezing Reading B, and §§3.2/3.3 are marked
+**OPEN / RE-HOMED TO M5** with named owners (`M5-CP1` canonical ID/path mechanism, `M5-CP2` typed missing-owner
+failure, `M5-CP3` direct-production re-proof).
+
+The load-bearing clause is preserved verbatim: *"The `>=2` periodic-relation/edge discriminator is **preserved
+unchanged** … It is not weakened to `>=1`, inferred from…"*. Re-homing moved the *owner*, not the *bar* — which
+is the distinction that separates a legitimate ownership decision from quiet debt relief. Debt stays at **5**
+(1 `G4-B002` M4-owned, 2 `G4-B002` M5-owned, 2 `G4-B003` M5-owned), with explicit zero M4 credit, and the amended
+M4 exit theorem enumerates the seven remaining M4-owned conjuncts.
+
+### V5 — successor scope and process
+
+`Architecture_M4_CP4_CB5_Code_Build_Plan.md` is compile-only, test-authority only, confined to row2's production
+precondition and row6's exact typed expectation, and publishes four **stop falsifiers before implementation** —
+including that CB5 must stop if row2 could only be reached via production-code, fixture-byte, fallback-policy
+changes or a synthetic/weakened candidate predicate, and if source no longer supports `NonIntegralCycleLift` as
+the exact code. Writing the conditions for abandoning the turn before starting it is the correct order.
+
+§6's self-reported process nonconformance — repository documents fetched before the `READ_MODE` gate was
+selected — was recorded rather than concealed, and no semantic claim in the turn depends on those reads; the
+decisive census was re-derived here from committed bytes independently of any snapshot. Correctly handled; no
+finding.
+
+### V6 — verification limits
+
+Re-derived from repository bytes: the full torus census and component count, the Euler characteristic, the
+pre-turn `DESIGN.md` §14 M5 charter, the frozen-definitions amendment and its preserved `>=2` clause, the debt
+table, selector427's 427 rows and SHA-256, and the CB5 scope/falsifiers. Accepted as reported: source-snapshot
+run/artifact/digest identifiers and Drive transport evidence.
+
+**No obligations are carried out of this review.** `M4-CP4-TB1-R3-REV-OBS-01` is discharged and withdrawn.

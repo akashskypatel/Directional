@@ -8505,38 +8505,23 @@ R3 rows3/4 both pass `SurfaceCellProducerDisposition::Produced` under the CB4 ro
 
 R3 row6 independently proves nonzero apex angle defect, flat zero-transport success and non-flat zero-transport rejection. Expected code is `CycleTransportMismatch`; runtime returns enum value 6, currently `NonIntegralCycleLift`. DEFN-R1 freezes the later correction: this witness must expect exact `NonIntegralCycleLift`; generic rejection and product reordering are prohibited.
 
-## `M4-CP4-TB1-R3-REV-OBS-01` — the DEFN-R1 readings presuppose same-sheet and omit the cross-sheet path
+## `M4-CP4-TB1-R3-REV-OBS-01` — DISCHARGED; Reading C disproved and withdrawn by its author
 
-**Status.** DISCHARGED / NON-GATING / NON-STABLE by `M4-CP4-DEFN-R1`.
+**Status.** DISCHARGED at `M4-CP4-DEFN-R1` / WITHDRAWN / NON-STABLE / no successor obligation.
 
-`Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Plan.md` §2 offers two readings: **A**
-freeze a bounded M4 **same-sheet** two-generator basis, or **B** re-home both periodic `G4-B002` debts to M5 and
-amend the M4 exit theorem. Reading B fires "if same-sheet basis identity cannot be defined". Both presuppose the
-two generators occupy one `sourceTopologyRegion`.
+Raised at `M4-CP4-TB1-R3-REV` to require that DEFN-R1 test the cheaper cross-sheet path before selecting the
+heavier A/B binary. DEFN-R1 tested it against a concrete falsifier and it is **false**. Independently re-derived
+from `benchmarks/fixtures/milestone-g/torus.obj` plus the two authored cycles in
+`cp4c_torus_hard_rail_remesh_options()`: `V=72`, `F=144`, `E=216` (so `V-E+F=0`, genuinely a torus), 18 unique
+hard edges, 18/18 present, each two-face incident, and **1** face-adjacency component of 144 faces after omitting
+all 18.
 
-The product does not require that. `src/geometry/SurfaceCellTracing.cpp:6325` states: "Multiple relations on
-distinct authoritative sheets/components remain valid and are kept." Verified mechanism: `insert_periodic_holonomy`
-refuses only when `sameScope` (`:6314-6315`, comparing `sourceTopologyRegion()`); when scopes differ the loop
-`continue`s, and `:6328-6349` allocates a distinct `PeriodicRelationId` from the occupied typed-ID set with
-existing owners stable under reordering. Frozen §3.2 asks for ">= 2 distinct periodic relation IDs" and does not
-say same-sheet.
+**The result is structural, not incidental.** Cutting a surface along a simple closed curve leaves it connected
+exactly when the curve is non-separating. Both authored cycles are canonical torus generators, hence
+non-separating: the first cut yields a cylinder, the second yields a disc — one region, always. Two regions would
+require a separating cycle, which carries no periodic generator and so cannot serve the purpose Reading C needed.
 
-**Reading C:** if the produced torus phase-front decomposes into two or more distinct `sourceTopologyRegion`s,
-each carrying one relation, §3.2 is satisfiable in current architecture with no basis solver, no weakening and no
-re-homing. The only remaining blocker would be the hard-rail deferral in
-`build_periodic_annulus_phase_front_for_faces` (`:12423`).
-
-**Why:** Reading B is the heaviest and least reversible option available — it moves two produced-witness debts
-across a milestone boundary and amends a frozen exit theorem. Selecting it while a cheaper path advertised by the
-product's own source is unexamined would be a large irreversible decision taken on an incomplete option set. A
-two-generator torus basis is naturally same-sheet, so Reading C may fail on the facts; that is a reason to
-determine it, not to assume it.
-
-**How to apply:** `M4-CP4-DEFN-R1` explicitly determines and records whether the produced torus phase-front
-yields `>= 2` distinct `sourceTopologyRegion`s able to carry one periodic relation each. If yes, evaluate
-Reading C on its merits. If no, record the evidence and proceed with the A/B binary as written. Reading C
-respects every §3 prohibition: multiplicity comes from produced sheet decomposition, never from the two authored
-hard-rail cycles, discovery order, container order, or a renamed `HardRailMerge`. See
-`[[M4-CP4-TB1-R2-REV-OBS-02]]`.
-
-**DEFN-R1 resolution:** current source authority plus an independent static census of the committed `torus.obj` disproves the premise for Reading C. The fixture has `72/216/144`, all 18 authored hard edges exist with two incident faces, and the exact adjacency rule used by `build_source_topology_regions(...)` still yields **one** connected component of **144 faces** after those hard edges are excluded. The distinct-authoritative-sheet path therefore cannot provide the required pair on this witness. With Reading C eliminated, Reading A would require a canonical same-sheet topology-basis/relation identity, which `DESIGN.md` §14 assigns to M5. Reading B is frozen.
+**How to apply:** Reading C must not be re-litigated on the theory that a different torus fixture, a finer mesh or
+a different generator pair would decompose into `>=2` regions. It would not. The cross-sheet support in
+`insert_periodic_holonomy` (`src/geometry/SurfaceCellTracing.cpp:6325`) remains real but is unreachable for a
+one-region torus. Ownership is settled by Reading B.

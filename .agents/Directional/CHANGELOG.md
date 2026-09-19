@@ -1,3 +1,30 @@
+## 2026-09-19 — `M4-CP4-DEFN-R1` review: Reading B upheld; Reading C disproved and withdrawn
+
+Runtime-free review. **Upheld.** Accounting holds at **49 events / 14 categories / 35 recurrences**;
+produced-witness debt remains **5** (1 `G4-B002` M4-owned, 2 `G4-B002` re-homed to M5, 2 `G4-B003` M5-owned) with
+explicit zero M4 credit; selector427 re-hashes byte-exact at 427 rows.
+
+**Reading C — raised by this reviewer at R3 — is false and is withdrawn.** The census re-derived independently
+from `benchmarks/fixtures/milestone-g/torus.obj`: `V=72`, `F=144`, `E=216` (`V-E+F=0`), 18 unique hard edges,
+18/18 present and two-face incident, and **1** face-adjacency component of 144 faces after omitting all 18. The
+outcome is structural rather than incidental: both authored cycles are canonical generators and therefore
+non-separating, so cutting yields a cylinder then a disc — one region, always. Recorded so Reading C is not
+re-litigated with a different fixture or generator pair.
+
+**The Reading A rejection is not circular.** Re-homing debt across a milestone is the least reversible action
+available, and its ground is that `DESIGN.md` §14 already charters the needed semantics to M5. Checked at
+`cfe1673e~1`: the pre-turn M5 section already required canonical relation IDs, explicit path certificates, typed
+failure for representation-renumbered/missing/duplicate/nonreciprocal relations, and direct-production torus
+lineage. The `DESIGN.md` lines added this turn record the amendment; they do not create the authority relied on.
+
+The normative amendment landed rather than staying record-only: frozen §2.1 freezes Reading B and §§3.2/3.3 are
+`OPEN / RE-HOMED TO M5` with named owners, while the `>=2` periodic discriminator is preserved verbatim and
+explicitly not weakened to `>=1`. Re-homing moved the owner, not the bar.
+
+`M4-CP4-TB1-R3-REV-OBS-01` discharged; no obligations carried out of this review.
+
+Exact successor: `M4-CP4-CB5` — compile-only, test-authority only, row2 precondition and row6 exact typed code.
+
 ## 2026-09-19 — `M4-CP4-DEFN-R1`: Reading B frozen; two periodic G4-B002 debts re-homed to M5
 
 Runtime-free definition/review. **Reading B frozen.** Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. No product, test, fixture, selector, benchmark or build semantics changed.
