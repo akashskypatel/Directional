@@ -8621,3 +8621,36 @@ substitution, closed source, independently validated candidate eligibility, disc
 hard-feature/protection tamper, zero credit for synthetic or direct arrangements). **Standing rule for any future
 re-homing: the amendment is written into the receiving milestone's own charter section, not only into the
 records of the milestone shedding it.** See `[[M4-CP4-TB1-R3-REV-OBS-01]]`.
+
+## `M4-CP4-TB3-REV-OBS-01` — M4 closed against a governing exit clause that still demanded the re-homed debts
+
+**Status.** CLOSED BY REVIEW EDIT / NON-STABLE / process-class / no successor obligation. **Closure stands.**
+
+`Architecture_M4_DEFN_Frozen_Definitions.md:597-599` governs M4 closure and read: "**CP4 closes M4** only on a
+cumulative green required selector, **all three `G4-B002` debts runtime-reproved on produced authority**,
+exact-torus production path green past the retired post-hoc pairing seam, and work/bit-width evidence satisfies
+the frozen bounds then in force."
+
+None of the three debts was runtime-reproved; all three were re-homed (`DEFN-R1` → M5, `DEFN-R2` → M6). The file
+had not been amended since `05e697a0`, before either re-homing, and `runtime-reproved on produced` appears
+nowhere else in the repository. `M4-CP4-TB3-REV` §5 adjudicated only the subordinate CP4-level conjuncts. The two
+frozen documents therefore contradicted each other at the moment M4 was declared closed.
+
+**Why this matters even though the closure is sound:** the substantive decisions were verified — both re-homings
+rest on pre-existing `DESIGN.md` §14 charters, the debts stay open at zero M4 credit with discriminators intact,
+and the clause's remaining conjuncts were met at 430/430 on published selector430. The danger was purely
+documentary: a later reader of `:597` would correctly conclude M4 closed without meeting its stated exit, and
+might reopen a closure that deserves to stand.
+
+**How to apply:** closed by this Review, which appended a labelled reconciliation amendment at
+`Architecture_M4_DEFN_Frozen_Definitions.md:601` preserving the original sentence, naming the receiving owners,
+and restating that all three debts remain open in the global total of 5 with zero M4 credit. No decision changed;
+nothing reopened.
+
+**Recurring pattern — second instance in two turns.** `[[M4-CP4-DEFN-R2-REV-OBS-01]]` was the same defect one
+level down: a re-homing recorded in the shedding milestone's documents but not in the receiving milestone's
+charter. **A turn reliably amends the document it is working in, and unreliably amends the document that governs
+it.** Standing rule: when a decision changes *what* a checkpoint owes, amend the governing exit theorem in the
+same turn, not only the checkpoint's own definitions; when it changes *who* owes it, amend the receiving
+milestone's charter as well. `[[PROCESS-01]]` lineage applies — a durable rule that lives only where it was
+written is one turn away from being invisible.

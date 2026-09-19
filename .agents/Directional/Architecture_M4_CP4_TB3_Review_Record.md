@@ -134,3 +134,86 @@ No corrective Code + Build plan is warranted. The smallest valid successor is th
 | review_check.py boundary | **PASS — `python3 .agents/Directional/tools/review_check.py boundary --expect-selector 430=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`** |
 | `STATUS` lifecycle maintained | **YES — entry beacon published; final COMPLETE beacon is reserved as the final repository write** |
 | Pushed to origin, branch in sync | **YES** — final documentation authority and temporary-state cleanup are verified on the working branch immediately before the final `STATUS` beacon; no ahead/behind state remains |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld. M4-CP4 closure confirmed on evidence.** The published selector matches the
+pre-commitment exactly, the runtime ledger is sound, and the three appended rows are non-vacuous. One durable
+normative conflict is repaired by this Review; it changes no decision and does not reopen the closure.
+
+### V1 — the pre-commitment was verified before construction and matched on publication
+
+`M4-CP4-DEFN-R2` pre-committed selector430 as 430 rows / 35,001 bytes / SHA-256
+`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`. At the DEFN-R2 review I constructed the
+predicted file independently and confirmed the pre-commitment was **correct before CB8 existed**. The published
+file now re-hashes to exactly that value, at exactly 430 rows and 35,001 bytes, and its first 427 rows hash to
+`f9c88380…eae86f` — byte-identical to accepted selector427. Rows 428-430 are the three pre-committed identities
+in the pre-committed order.
+
+That is the strongest form this discipline has reached: target declared, independently verified while still
+hypothetical, then met byte-for-byte. Four consecutive pre-commitments have now held (425, 426, 427, 430).
+
+The append-only chain is verified at every link:
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424 ⊂ 425 ⊂ 426 ⊂ 427 ⊂ 430**, with no accepted prefix ever
+shifting across CP1, CP2, CP3, CP-COND, CP-SCALE and CP4.
+
+### V2 — the runtime ledger re-derivation is the right kind of evidence
+
+§3 does not summarise; it re-parses. Ordinals exactly `1..430`, the identity map equal to selector430
+line-for-line, one selected test per row, zero skips, each row's `raw_log_sha256` matched to its raw log with
+exactly one `[ RUN ]` and one `[ OK ]` and no skip/fail marker, owner totals independently re-derived as
+`31 / 283 / 75 / 41`, and `447/447` result checksums verified. Per-row log binding is what makes "430 PASS" a
+claim about bytes rather than about a summary line. Accounting correctly remains **49 / 14 / 35**, debt **5**.
+
+### V3 — REPAIRED: the governing M4 exit clause contradicted the closure
+
+`Architecture_M4_DEFN_Frozen_Definitions.md:597-599` — the clause that actually governs M4 closure — still read:
+
+> **CP4 closes M4** only on a cumulative green required selector, **all three `G4-B002` debts runtime-reproved on
+> produced authority**, exact-torus production path green past the retired post-hoc pairing seam, and work/bit-width
+> evidence satisfies the frozen bounds then in force.
+
+Zero of the three debts were runtime-reproved. All three were re-homed — two to M5 at `DEFN-R1`, one to M6 at
+`DEFN-R2`. That file had not been amended since `05e697a0` (CP-SCALE closure), i.e. since **before** either
+re-homing, and the string `runtime-reproved on produced` appears nowhere else in the repository.
+
+§5 of this Review adjudicates "every amended CP4 exit conjunct in `Architecture_M4_CP4_Frozen_Definitions.md`
+§2" and never reaches the M4-level clause. The subordinate document asserts that no later-stage produced-witness
+debt is an M4 exit conjunct; the governing document still demanded all three be runtime-reproved. **M4 was
+therefore closed against a document that its own governing text contradicted.**
+
+The closure itself is sound — I verified both re-homings against pre-existing `DESIGN.md` §14 charters, the debts
+remain open at zero M4 credit with discriminators preserved verbatim, and the remaining conjuncts of the clause
+(cumulative green selector; exact-torus path with work/bit-width evidence) *are* satisfied at 430/430. The defect
+is that the durable record was left self-contradictory. Unrepaired, a later reader of `:597` would correctly
+conclude M4 closed without meeting its stated exit, and could reopen a closure that deserves to stand.
+
+Per `REVIEW_TURN_POLICY.md` §3.2 the normative file is edited rather than annotated elsewhere. This Review
+appends a labelled reconciliation amendment at `Architecture_M4_DEFN_Frozen_Definitions.md:601`, preserving the
+original sentence and recording that the conjunct was overtaken by DEFN-R1/DEFN-R2, naming the receiving owners,
+and restating that all three debts remain open in the global total of 5 with zero M4 credit. It changes no
+decision, grants no credit, and reopens nothing. Recorded as `M4-CP4-TB3-REV-OBS-01`.
+
+### V4 — this is the same failure mode twice in two turns, now one level up
+
+At `M4-CP4-DEFN-R2-REV` I repaired the M6 inheritance, which had been recorded in the shedding milestone's
+documents but not in the receiving milestone's charter, and recorded a standing rule. The identical pattern has
+now recurred one level higher: DEFN-R1 and DEFN-R2 amended the **CP4-level** exit theorem but not the **M4-level**
+clause that governs whether CP4 may close M4.
+
+Two instances in consecutive turns makes this a recurring process defect rather than an oversight, and it is
+worth naming precisely: **a turn reliably amends the document it is working in, and unreliably amends the
+document that governs it.** The generalised rule, recorded in the tracker: when a decision changes what a
+checkpoint owes, amend the governing exit theorem in the same turn — not only the checkpoint's own definitions —
+and when it changes who owes it, amend the receiving milestone's charter too. Existing `PROCESS-01` lineage
+applies: a durable rule that lives only where it was written is one turn away from being invisible.
+
+### V5 — verification limits
+
+Re-derived from repository bytes: selector430's rows, bytes and SHA-256; its 427-row prefix against accepted
+selector427; the three appended identities and their order; the state and history of the M4-level exit clause.
+Accepted as reported: package and result artifact hashes, the 26/26 and 447/447 checksum verifications, run/job
+identifiers, and per-row raw-log binding — all artifact-side, and consistent with a Review that re-parsed rather
+than summarised.

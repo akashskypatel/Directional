@@ -598,6 +598,21 @@ no selector identity is not gate-enforced and must be labeled as such.
   authority, exact-torus production path green past the retired post-hoc pairing seam, and work/bit-width evidence
   satisfies the frozen bounds then in force.
 
+**M4-CP4-TB3-REV reconciliation amendment (2026-09-19).** The `all three G4-B002 debts runtime-reproved on
+produced authority` conjunct above was overtaken by `M4-CP4-DEFN-R1` and `M4-CP4-DEFN-R2`, which re-homed all
+three debts rather than discharging them: the two periodic debts to **M5** (M5-CP1 canonical relation ID/path,
+M5-CP2 typed missing-owner failure, M5-CP3 direct-production re-proof) and the closed candidate-bearing-complex
+debt to **M6** (M6-CP1 A5 occurrence-complex/stage separation, M6-CP3 direct-production re-proof). Those
+decisions each rest on the pre-existing `DESIGN.md` §14 charters for the receiving milestones and are recorded
+there. CP4 accordingly closed M4 against the amended seven-conjunct exit theorem in
+`Architecture_M4_CP4_Frozen_Definitions.md` §2, under which no later-stage produced-witness debt is an M4 exit
+conjunct. All three debts remain **OPEN** in the global produced-witness debt total of **5**, carry **zero M4
+credit**, and retain their original subjects, oracles, tampers and `>=2` discriminators unchanged. This
+amendment reconciles the durable record with decisions already taken, reviewed and accepted; it changes no
+decision and grants no credit. The remaining conjuncts of this clause — cumulative green required selector, and
+exact-torus production path green past the retired post-hoc pairing seam with work/bit-width evidence — were
+satisfied at `M4-CP4-TB3` on published selector430 (430/430 PASS).
+
 ## 14. Exact implementation seam frozen for the first CB
 
 Current source at the latest amended head establishes a surgical seam:

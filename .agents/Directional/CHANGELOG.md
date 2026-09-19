@@ -1,3 +1,36 @@
+## 2026-09-19 — `M4-CP4-TB3-REV` review: M4 closure upheld; governing exit clause reconciled
+
+Runtime-free review. **Upheld — M4-CP4 closure confirmed on evidence and stands.** Accounting holds at
+**49 events / 14 categories / 35 recurrences**, debt **5** (all re-homed, zero M4-owned, zero M4 credit).
+
+**The selector430 pre-commitment closed the loop.** At `DEFN-R2` this reviewer constructed the predicted file and
+confirmed the pre-committed hash was correct *before CB8 existed*. The published file now re-hashes to exactly
+`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` at 430 rows / 35,001 bytes, with its first 427
+rows byte-identical to accepted selector427 and rows 428-430 the three pre-committed identities in order. Four
+consecutive pre-commitments have held (425, 426, 427, 430). The append-only chain is verified at every link:
+**373 ⊂ 380 ⊂ 382 ⊂ 394 ⊂ 403 ⊂ 408 ⊂ 422 ⊂ 423 ⊂ 424 ⊂ 425 ⊂ 426 ⊂ 427 ⊂ 430**.
+
+The TB3 Review re-parses rather than summarises: ordinals `1..430`, identity map equal to selector430
+line-for-line, one selected test per row, zero skips, each row's `raw_log_sha256` bound to a raw log containing
+exactly one `[ RUN ]` and one `[ OK ]`, owner totals re-derived as `31/283/75/41`, and `447/447` checksums.
+
+**Repaired:** `M4-CP4-TB3-REV-OBS-01`. `Architecture_M4_DEFN_Frozen_Definitions.md:597-599` — the clause
+governing M4 closure — still required "all three `G4-B002` debts runtime-reproved on produced authority". None
+was; all three were re-homed at DEFN-R1/DEFN-R2, and that file had not been amended since before either
+re-homing. TB3-REV §5 adjudicated only the subordinate CP4-level conjuncts, so M4 was closed against a document
+its own governing text contradicted. The closure is sound — both re-homings rest on verified pre-existing
+`DESIGN.md` §14 charters, and the clause's other conjuncts were met at 430/430 — but the record was
+self-contradictory. A labelled reconciliation amendment was appended at `:601`, preserving the original sentence,
+naming the receiving owners, and restating that all three debts remain open at zero M4 credit. No decision
+changed; nothing reopened.
+
+Second instance of this pattern in two turns, after the `DESIGN.md` M6 inheritance repair: **a turn reliably
+amends the document it is working in, and unreliably amends the document that governs it.** Standing rule
+recorded — amend the governing exit theorem when a decision changes what a checkpoint owes, and the receiving
+milestone's charter when it changes who owes it.
+
+Exact successor: `M5-DEFN`, which inherits two M5-owned `G4-B002` periodic debts and two `G4-B003` debts.
+
 ## 2026-09-19 — `M4-CP4-TB3-REV`: selector430 accepted; CP4 and M4 close
 
 Independent runtime-free Review re-opens CB8 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` and TB3 result `10592987234`, independently verifies package **26/26**, selector430 **430 rows / `1c412850...9db6`** with exact selector427 prefix, owners **31/283/75/41**, all **430/430 PASS** one-selected process rows/raw hashes, result manifest **447/447**, and exact package/source/execution-view postflight. Static Review also re-derives non-vacuous work/boundedness, produced same-region multiplicity-two, and flat/non-flat zero-transport contracts. Package `10591801825` is promoted as accepted current M4 runtime authority; `M4-CP4` and M4 are **CLOSED / ACCEPTED**. Stable accounting remains **49 / 14 / 35**, debt **5**; four debts remain M5-owned and one remains M6-owned. Exact next is planning-only `M5-DEFN`.
