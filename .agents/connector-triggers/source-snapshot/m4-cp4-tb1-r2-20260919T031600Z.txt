@@ -1,0 +1,4 @@
+M4-CP4-TB1-R2-EXEC source snapshot
+purpose=durable closeout and review-plan preparation after trustworthy semantic runtime
+read_mode=snapshot
+runtime=forbidden
