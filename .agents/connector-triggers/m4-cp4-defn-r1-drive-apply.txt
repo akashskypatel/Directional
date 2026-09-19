@@ -1,4 +1,0 @@
-M4-CP4-DEFN-R1 verified documentation patch apply trigger.
-Caller install: 8595c66564ff228537baa48924bfaa27e892f09f
-Patch base: 7259af1f020c208337a69471e11495c6cd9fd196
-Patch SHA-256: d904969f7a47f3ef019f516d513d283f2c80d0f936c2e545c1ea16a148725e3a
