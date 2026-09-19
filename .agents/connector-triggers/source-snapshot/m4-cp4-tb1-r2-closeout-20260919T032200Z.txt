@@ -1,4 +1,0 @@
-M4-CP4-TB1-R2-EXEC closeout source snapshot
-purpose=durable semantic-red report and review-plan authoring
-read_mode=snapshot
-runtime=forbidden
