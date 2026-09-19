@@ -38,8 +38,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1i1SEsF_IdZJnpkkZDazUeCDjBOM55zli
-      patch_sha256: 'bb8c66d2420597c8b5f3de53c99ba9df81791f58ca33881cbb66e87bade5649e'
+      file_id: 1IWkxvklfwFUgQMPPWLJRDGDNe5eftP9N
+      patch_sha256: '3c851164abc0a8bb6b703c25b9e9e3badad0be3d62488b283d515e1779114830'
       base_sha: 'a4764ce76ed93e79da29d7179f82a12d62261fc8'
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'M4-CP4-TB1-R1-EXEC: record invalid attempt and freeze CB3'
