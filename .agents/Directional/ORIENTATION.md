@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-19, after `M4-CP4-TB2-EXEC`):** accepted M4 runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. DEFN-R1's Reading B remains frozen: two periodic `G4-B002` debts are M5-owned and the produced closed-complex debt remains M4-CP4-owned. TB2 composite preflight is exact, but the gate is orchestration-invalid because an external foreground-tool timeout interrupted the full 431-process execution; the attempted same-turn restart is quarantined with zero semantic credit. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M4-CP4-CB6`, then fresh `M4-CP4-TB2-R1-EXEC`; selector427 remains byte-frozen.
+> **Current milestone authority (2026-09-19, after `M4-CP4-CB6`):** accepted M4 runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. DEFN-R1's Reading B remains frozen: two periodic `G4-B002` debts are M5-owned and the produced closed-complex debt remains M4-CP4-owned. TB2 remains orchestration-invalid with zero semantic credit. CB6 has frozen a timeout-free GitHub Actions R1 control plane: harness SHA-256 `1dcdd6c6...6aeba`, caller draft SHA-256 `88ab6b51...8699c`, exact caller schema validation run `35441895809` GREEN, and no runtime/compile in CB6. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is fresh `M4-CP4-TB2-R1-EXEC` from ordinal1; selector427 remains byte-frozen.
 
-**Currency.** `M4-CP4-TB2-EXEC`, 2026-09-19 UTC
+**Currency.** `M4-CP4-CB6`, 2026-09-19 UTC
 
 **Current definition resolution.** `Architecture_M4_DEFN_Frozen_Definitions.md` §17 is authoritative. Family/sign-free baseline incidences preserve region/span/orientation/multiplicity; every region has even total scheduled boundary count; all-even counts give a constructive feasibility witness; stronger local field/shape/geometry constructibility belongs to A4 and cannot modify A3 shared breakpoints. Alternatives that field-certify all artificial cuts or invent deterministic frame labels are rejected.
 
@@ -81,7 +81,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 DEFN-R1 resolves the rows3/4 ownership stop rather than changing their product. Independent static derivation of the exact row408 torus (`72/216/144`) under the production topology-region adjacency rule yields **one** 144-face region after all **18** hard edges are excluded, so the distinct-sheet Reading C is unavailable. A second independent same-sheet generator needs canonical relation/basis identity and path binding, which `DESIGN.md` §14 assigns to M5 and current product source deliberately refuses to guess (`AmbiguousBasis`). Reading B is frozen: the periodic reorder debt moves to M5-CP1 mechanism / M5-CP3 production proof, and the missing-owner debt to M5-CP2 mechanism / M5-CP3 production proof. Both remain open, their exact discriminators remain unchanged, and debt count remains 5.
 
-M4 now retains one `G4-B002` debt: produced closed-complex candidate extraction. CB5 has corrected row2's test-local production precondition and row6's exact typed expectation and compile-proved the two affected owner binaries; runtime re-proof is still pending. Exact next is artifact-only **`M4-CP4-TB2-EXEC`** using the frozen CB4+CB5 composite owner view.
+M4 now retains one `G4-B002` debt: produced closed-complex candidate extraction. CB5 corrected row2's test-local production precondition and row6's exact typed expectation and compile-proved the two affected owner binaries; runtime re-proof is still pending. CB6 has corrected only the orchestration plane and validated the exact timeout-free R1 caller/harness. Exact next is **`M4-CP4-TB2-R1-EXEC`** using the unchanged frozen CB4+CB5 composite owner view.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,7 +198,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M4-CP4 — NEXT: `M4-CP4-TB2-EXEC` (artifact-only M4-owned focused re-proof + selector427).** Re-run rows1/2/5/6 through the frozen composite owner view, require 4/4 focused PASS plus selector427 427/427, and leave the two M5-owned periodic focused identities unexecuted/uncredited for M4.
+1. **M4-CP4 — NEXT: `M4-CP4-TB2-R1-EXEC` (timeout-free artifact-only full-gate re-execution).** Publish the exact CB6-validated caller, then re-run rows1/2/5/6 plus selector427 from ordinal1 as 431 fresh processes through the frozen composite owner view; leave the two M5-owned periodic focused identities unexecuted/uncredited for M4 and route any orchestration-valid semantic result to Review.
 
 2. **`G4-B002` produced closed-complex debt — OPEN / M4-CP4.** A fail-closed, recovery-disabled produced closed subject must reach a retained incidence-valid candidate-bearing complex and satisfy the independent eligibility oracle plus discriminating tamper.
 
