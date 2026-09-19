@@ -13,9 +13,9 @@ Fresh run/job `35002009539 / 104492480074` consumed immutable candidate `1040760
 Result/log artifacts `10410518189 / 10410672518` have provider SHA-256 `7f9f9a4f9b18930255688e775691a21b92538c666a987f29101541aaec1ce3ac / 26d59ed6846effe4d38fdc5b2c27b23d95cdf0f6784e8b0ff5d49c212320cc7f`. Nested evidence ZIP SHA-256 `576104efb4aa5723a0384ec7aac0abe0fbc244b8dbb9417a198ea53041040bac` carries a verified 1298-entry manifest SHA-256 `1aabede920e5401187f8c8590a4969d26694b8fa43cee98c37f29f63b61ea208`. No configure/compile/relink/repair/discovery/mutation/benchmark occurred. No regression/candidate is observed; stable accounting remains **49 / 14 / 35**, debt **5**. EXEC itself did not promote the candidate; §2.53 records the mandatory Review that does.
 
 **Status:** CURRENT M4 FAMILY RECORD
-**Last updated:** 2026-09-19 at `M4-CP4-TB1-R3-REV`
+**Last updated:** 2026-09-19 at `M4-CP4-DEFN-R1`
 
-This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md` plus checkpoint frozen-definition/closure records; CP4's cumulative-exit authority is `Architecture_M4_CP4_Frozen_Definitions.md`. CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`, CP-COND closure is `M4_CP_COND_Closure_Record.md`, and CP-SCALE closure is `M4_CP_SCALE_Closure_Record.md`. Accepted runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. Stable accounting remains **49 / 14 / 35**, debt **5**. R3 is trustworthy at 433 rows / **429 PASS / 4 RED**, but Review does not promote candidate `10578784752`: row2 remains test-witness reachability; rows3/4 expose a same-sheet periodic-basis representation/ownership conflict after reaching `Produced` with zero periodic relations; row6 is an over-specific typed expectation because `NonIntegralCycleLift` precedes `CycleTransportMismatch`. The three original R2 correction candidates are runtime-proved closed non-stably. All three `G4-B002` debts remain open. Exact next is runtime-free `M4-CP4-DEFN-R1`.
+This record holds M4 history folded under the review-turn consolidation policy. Normative current M4 semantics live in `Architecture_M4_DEFN_Frozen_Definitions.md` plus checkpoint frozen-definition/closure records; CP4's cumulative-exit authority is `Architecture_M4_CP4_Frozen_Definitions.md`. CP1/CP2/CP3 durable closures are `M4_CP1_Closure_Record.md`, `M4_CP2_Closure_Record.md`, and `M4_CP3_Closure_Record.md`, CP-COND closure is `M4_CP_COND_Closure_Record.md`, and CP-SCALE closure is `M4_CP_SCALE_Closure_Record.md`. Accepted runtime authority remains package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` under selector427 **427/427**. Stable accounting remains **49 / 14 / 35**, debt **5**. R3 remains trustworthy at 433 rows / **429 PASS / 4 RED** and candidate `10578784752` remains unpromoted. DEFN-R1 now freezes Reading B: exact row408 torus connectivity yields one 144-face source topology region, so Reading C is unavailable; a canonical second same-sheet relation is M5 relation/path authority. One `G4-B002` debt remains M4-CP4-owned and two periodic debts are re-homed to M5 without credit or debt reduction. Exact next is compile-only `M4-CP4-CB5`.
 
 ## 0.7 `M4-CP4-CB4` — R2 test-authority roots corrected; compile GREEN; R3 runtime required
 
@@ -40,6 +40,16 @@ Independent runtime-free Review re-opened the R3 immutable evidence, selector427
 R2's three original correction candidates are closed recovery-proved: the rawfield parser advances, row408-aligned periodic tests reach `Produced`, and the zero-transport negative is genuinely non-flat and rejects. Current R3 findings are narrower. Row2 is test-witness reachability at `NotProductionReady/tracing`. Rows3/4 are an architecture-definition conflict: the produced product has zero explicit periodic relations, the hard-rail/A3 path defers away from periodic-annulus publication, and a second distinct same-sheet relation is intentionally `AmbiguousBasis` without topology-basis ownership. Row6 is test-authority expectation: this exact witness should assert `NonIntegralCycleLift`, not generic failure and not force later `CycleTransportMismatch` ordering.
 
 Frozen CP4 §3.2's stop-to-Review/DEFN clause therefore fires. The `>=2` periodic requirement remains unweakened and all three `G4-B002` debts remain open entering `M4-CP4-DEFN-R1`. That successor must choose a bounded canonical M4 same-sheet basis/owner representation or explicitly re-home the two periodic debts to M5 with debt count and M4 exit semantics preserved before any further CB.
+
+## 0.10 `M4-CP4-DEFN-R1` — Reading B frozen; periodic produced-witness debt moves to M5
+
+Runtime-free DEFN-R1 answers the R3 definition stop without product/test/selector mutation. Independent static derivation of the exact row408 torus (`72` vertices / `144` faces / `18` accepted hard edges, every hard edge two-face incident) applies the production `build_source_topology_regions(...)` rule and yields exactly **one** 144-face region after those hard edges are omitted from face adjacency. The cheaper Reading C therefore cannot provide two one-relation regions.
+
+Reading A is rejected as M4-local authority because a second same-sheet generator requires canonical relation/basis identity and produced-edge path binding. `DESIGN.md` §14 assigns canonical relation IDs, explicit path certificates, representation-renumbering invariance, typed relation failures, and direct-production torus lineage to M5; current product source independently confirms the boundary by returning `AmbiguousBasis` rather than retaining a same-scope relation by discovery order. Reading B is frozen.
+
+All three `G4-B002` debts remain open and counted. Closed-complex candidate extraction remains M4-CP4-owned. Relation-owner reorder is M5-CP1 mechanism / M5-CP3 production re-proof. Missing periodic owner is M5-CP2 mechanism / M5-CP3 production re-proof. Their original discriminators are unweakened; total produced-witness debt stays **5**. `M4-CP4-TB1-R3-REV-OBS-01` is discharged. Row2 and row6 remain bounded test-authority corrections for `M4-CP4-CB5`.
+
+Exact successor is `M4-CP4-CB5` under `Architecture_M4_CP4_CB5_Code_Build_Plan.md`; it may touch only the row2 and row6 test files and must compile only the two affected GMP test targets without generated runtime.
 
 ## 0.5 `M4-CP4-DEFN` — cumulative exit definitions frozen
 
@@ -78,7 +88,14 @@ Current retained CP4 role set after R2 Review: normative `Architecture_M4_CP4_Fr
 | `Architecture_M4_CP4_TB1_R2_Review_Record.md` | 213 | **SUPERSEDED/FOLDED AFTER R3 REVIEW.** R2 candidate diagnoses, OBS-01/02 and CB4 contract are preserved in §§0.6-0.9, tracker and current Review; original correction candidates are now recovery-proved closed. |
 | `Architecture_M4_CP4_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md` | 90 | **CONSUMED/FOLDED AFTER R3 EXECUTION/REVIEW.** Six-focus + selector427 immutable gate and first-RED stop semantics are preserved in retained R3 runtime report, §0.8 and current Review. |
 
-Current retained CP4 role set after R3 Review: normative `Architecture_M4_CP4_Frozen_Definitions.md`; current runtime report `Architecture_M4_CP4_TB1_R3_Artifact_Only_Test_Benchmark_Report.md`; current Review `Architecture_M4_CP4_TB1_R3_Review_Record.md`; exactly one successor plan `Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Plan.md`; selector history; this consolidated record; tracker/changelog and durable project authority.
+### CP4 DEFN-R1 folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP4_TB1_R3_Review_Record.md` | 235 | **SUPERSEDED/FOLDED BY DEFN-R1.** R3 adjudication, candidate disposition, periodic ownership stop, row2/row6 findings and Reading-C observation are retained in §§0.7–0.10, the DEFN-R1 record, tracker/changelog, and git history. |
+| `Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Plan.md` | 95 | **CONSUMED/FOLDED BY DEFN-R1.** Reading A/B criteria, prohibited shortcuts, non-periodic freeze scope and stop rules are discharged/preserved in the DEFN-R1 record, amended frozen definitions, and CB5 plan. |
+
+Current retained CP4 role set after DEFN-R1: normative `Architecture_M4_CP4_Frozen_Definitions.md`; current runtime report `Architecture_M4_CP4_TB1_R3_Artifact_Only_Test_Benchmark_Report.md`; current definition/review record `Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Record.md`; exactly one successor plan `Architecture_M4_CP4_CB5_Code_Build_Plan.md`; selector history; this consolidated record; tracker/changelog and durable project authority.
 
 
 ## 0. `M4-CP-SCALE-CB4` compile/package authority

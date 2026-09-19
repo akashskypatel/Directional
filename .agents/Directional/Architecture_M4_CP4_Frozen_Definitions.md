@@ -7,6 +7,7 @@
 **Exact selector426 prefix SHA-256:** `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`
 **Selector427 owner partition:** **30 / 281 / 75 / 41**
 **Checkpoint role:** cumulative M4 exit proof only; **no second A3 writer**.
+**DEFN-R1 ownership amendment (2026-09-19):** Reading **B** is frozen. M4 retains only the produced closed-complex `G4-B002` debt; the two periodic produced-witness debts are explicitly M5-owned. Total produced-witness debt remains **5**.
 
 ## 1. Authority and scope
 
@@ -21,7 +22,7 @@ The accepted predecessor is exact selector427. Any eventual CP4 cumulative selec
 M4 may close only when all of the following are simultaneously true:
 
 1. selector427 remains the exact cumulative prefix;
-2. all three M4-owned `G4-B002` debts are re-proved on pipeline-produced authority;
+2. the remaining M4-owned `G4-B002` debt, `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous`, is re-proved on pipeline-produced authority;
 3. production A3 publishes auditable work evidence whose operation count and monotone progress are independently reproducible;
 4. same-region multiplicity-2 is proved end-to-end from A2b boundary authority through the production baseline binder;
 5. the zero-transport test-helper precondition audit is complete enough that no CP4 gate derives semantic-success authority from a helper whose upstream atlas/topology precondition is false;
@@ -30,9 +31,22 @@ M4 may close only when all of the following are simultaneously true:
 
 None of these conditions authorizes another conformity schedule writer, consumer-side schedule repair, direct/draft substitution for a produced witness, or post-hoc ownership reconstruction.
 
-## 3. Three `G4-B002` produced-witness debts
+### 2.1 DEFN-R1 periodic ownership decision — Reading B
 
-The accepted selector427 contains historical identities whose current subjects are direct/synthetic. CP4 does **not** rewrite those accepted rows. It adds new focused identities that prove the same obligations on production authority, then publishes those identities only after focused runtime and Review accept them.
+DEFN-R1 rejects Reading C on current source authority and freezes Reading B. The row408-aligned torus uses the committed 72-vertex / 144-face torus and exactly 18 hard-feature edges. `build_source_topology_regions(...)` removes those hard edges from face adjacency, but an independent static connectivity derivation over the exact fixture still yields **one** connected `sourceTopologyRegion` containing all **144** faces. The product's supported “multiple relations on distinct authoritative sheets/components” path therefore cannot provide two produced relation owners for this witness. `M4-CP4-TB1-R3-REV-OBS-01` is discharged.
+
+Reading A is also rejected as M4-local authority. Naming two independent cycles inside that one source topology region requires a canonical same-sheet topology-basis identity and binding produced relation edges to that identity. `DESIGN.md` §14 assigns canonical relation IDs, explicit path certificates, relation-renumbering invariance, and torus quotient lineage to **M5**. The current product source likewise states that distinct same-sheet cycles require a later topology-basis solver and refuses discovery-order ownership as `AmbiguousBasis`. Freezing a second M4 relation/basis authority would duplicate or pre-empt M5's normative relation domain.
+
+Accordingly:
+
+- `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` is **OPEN / M5-owned**: M5-CP1 owns the canonical ID/path mechanism; M5-CP3 owns the required direct-production torus re-proof.
+- `MissingPeriodicRelationOwnerIsRejected` is **OPEN / M5-owned**: M5-CP2 owns the typed missing-owner failure; M5-CP3 owns the required direct-production re-proof.
+- The `>=2` periodic-relation/edge discriminator is **preserved unchanged** as the production witness requirement for the re-homed M5 debt. It is not weakened to `>=1`, inferred from hard rails, or satisfied by direct/draft authority.
+- M4 may close without produced periodic relation authority only after every remaining M4 exit conjunct in §2 is satisfied. The re-homed debts remain in the global debt total and receive no M4 credit.
+
+## 3. `G4-B002` produced-witness debt ownership
+
+The accepted selector427 contains historical identities whose current subjects are direct/synthetic. CP4 does **not** rewrite those accepted rows. DEFN-R1 now splits ownership: §3.1 remains an M4-CP4 produced-witness gate; §§3.2–3.3 preserve their exact obligations but are re-homed to M5 because canonical same-sheet relation identity is part of M5 relation/certificate authority. No debt is deleted or marked satisfied.
 
 ### 3.1 Produced closed-complex candidate extraction
 
@@ -80,6 +94,8 @@ from the produced relation table. Reverse only the relation container. Every per
 
 **R3 Review amendment (2026-09-19):** the row408-aligned hard-rail precondition correction is runtime-proved: the focused torus reaches `Produced`. The produced product nevertheless contains **zero** `periodicHolonomies`, so the required same-production multiplicity and both discriminators remain unreached. Static product authority shows that the hard-rail/A3 path defers away from the periodic-annulus producer, the periodic-annulus path itself constructs one relation, and `insert_periodic_holonomy(...)` intentionally returns `AmbiguousBasis` for a second distinct relation in the same source topology region because same-sheet basis selection is deferred to a later topology-basis solver. This is a definition/architecture ownership conflict, not permission to reinterpret HardRail authority as periodic relation authority. The `>=2` produced-relation requirement remains explicitly **unweakened** pending `M4-CP4-DEFN-R1`; no direct/draft substitution or cycle-count inference receives credit.
 
+**DEFN-R1 disposition (2026-09-19): OPEN / RE-HOMED TO M5.** Independent static re-derivation of the exact row408 torus and `build_source_topology_regions(...)` rule gives one 144-face source topology region after excluding all 18 hard edges, so the distinct-sheet Reading C cannot satisfy this witness. A canonical two-generator identity inside that one region is the canonical-relation/path-certificate problem assigned by `DESIGN.md` §14 to M5. M5-CP1 owns the relation-ID/path mechanism and M5-CP3 owns this exact produced-torus reorder re-proof. The `>=2` requirement, typed-ID map oracle, reorder check, and swapped-owner tamper above remain unchanged and uncredited. They are no longer M4-CP4 exit conjuncts.
+
 ### 3.3 Missing owner on produced periodic authority
 
 **Debt:** `MissingPeriodicRelationOwnerIsRejected`.
@@ -94,6 +110,8 @@ from the produced relation table. Reverse only the relation container. Every per
 **Required result:** typed `MissingPeriodicRelationOwner`. A direct `direct_periodic_owner_product()` subject receives zero produced-witness credit.
 
 **R3 Review amendment (2026-09-19):** this debt is reopened at the definition layer together with §3.2 because the accepted row408-aligned produced subject has no explicit produced periodic relation owner to remove. `M4-CP4-DEFN-R1` must resolve same-sheet periodic-authority ownership before a later Code + Build can re-attempt this discriminator. The typed `MissingPeriodicRelationOwner` result and prohibition on direct/draft substitution remain unchanged.
+
+**DEFN-R1 disposition (2026-09-19): OPEN / RE-HOMED TO M5.** M5-CP2 owns the typed missing/duplicate/conflicting/nonreciprocal relation-failure surface and M5-CP3 owns the direct-production torus proof. The required `MissingPeriodicRelationOwner` result, exact produced-ID membership oracle, and prohibition on direct/draft substitution remain unchanged. This debt remains counted and receives no M4 credit.
 
 ## 4. Same-region multiplicity-2 is an M4-CP4 exit conjunct
 
@@ -211,7 +229,8 @@ Every carried item has exactly one owner.
 | `M4-CP3-TB1-R1-REV-OBS-01` — same-region multiplicity-2 | **M4-CP4 exit conjunct** | `M4-CP4-CB1` authors the produced binder/oracle/tamper identity in §4; later TB+Review must prove it before cumulative selector publication. |
 | `M4-CP3-CB4-REV-OBS-02` — row399 path/`sourceFaces` divergence tamper | **explicit later trigger-owner; not a CP4 exit conjunct** | First Code+Build turn that legitimately changes selector row399 `GlobalTopologyPlan.IndependentValidationRejectsExactSourcePathTamperMatrix`, its path/`sourceFaces` binder, or the owning producer contract. Until then row399 remains byte-frozen. |
 | historical TB3 row408 provenance | **CP4 truth constraint, not a test row** | All CP4 records must preserve that row408 `RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity` was not historically observed failing with `InvalidHardRailPairing`. No rewrite of history receives credit. |
-| three `G4-B002` produced-witness debts | **M4-CP4 gating** | §§3.1–3.3, implemented focused in `M4-CP4-CB1`, runtime-proved and reviewed before append-only publication. |
+| `G4-B002` produced closed-complex debt | **M4-CP4 gating** | §3.1 only. The first post-definition CB may correct only the test-local production precondition, then immutable TB + Review must prove the independent oracle/tamper. |
+| two periodic `G4-B002` produced-witness debts | **re-homed; not M4 exit conjuncts** | **M5.** Reorder: M5-CP1 mechanism + M5-CP3 production re-proof. Missing owner: M5-CP2 typed failure + M5-CP3 production re-proof. Exact discriminators preserved. |
 | two `G4-B003` produced-witness debts | **explicit later owner** | M5, unchanged. CP4 must not pull them forward. |
 
 The S2-arrival disposition does not certify the current filtered comparator as exact. It only keeps the already accepted semantics fixed while placing the missing exact-authority hardening at the production-readiness resource/diagnostic checkpoint. Any semantic disagreement is a reopen trigger, not a tolerated divergence.
@@ -231,7 +250,8 @@ No DEFN or CB may edit existing selector427 rows to make a new witness fit.
 
 Stop and return to Review/DEFN rather than broadening the checkpoint if any of these occurs:
 
-- a `G4-B002` subject needs fallback, source-grid recovery, or direct/draft substitution;
+- the remaining M4 `G4-B002` closed-complex subject needs fallback, source-grid recovery, or direct/draft substitution;
+- a re-homed periodic `G4-B002` obligation is weakened, credited to M4, inferred from hard rails/authored cycles, or satisfied from direct/draft authority;
 - no produced same-region multiplicity-2 subject can be reached without changing upstream semantics;
 - work evidence can only claim `1+2E` while omitting the validator's second `1+2E` schedule;
 - matching work is reported without terminal/matching graph dimensions;
@@ -244,7 +264,7 @@ Stop and return to Review/DEFN rather than broadening the checkpoint if any of t
 
 ## 9. Exact next turn
 
-`M4-CP4-DEFN-R1` under `Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Plan.md`. This successor is runtime-free and must reconcile the same-sheet periodic-basis/ownership requirement exposed by R3 before any further Code + Build.
+`M4-CP4-CB5` under `Architecture_M4_CP4_CB5_Code_Build_Plan.md`. It is a bounded Code + Build turn limited to the two remaining M4 test-authority corrections: produced closed-complex reachability for §3.1 and the exact `NonIntegralCycleLift` expectation for the already-proved non-flat zero-transport witness. It must leave product/fixture/selector semantics and the two M5-owned periodic focused identities unchanged, compile only, and execute no generated runtime.
 
 
 ## Review closeout

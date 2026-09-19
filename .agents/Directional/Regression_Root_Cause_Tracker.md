@@ -1,3 +1,14 @@
+## 2026-09-19 — `M4-CP4-DEFN-R1`: periodic ownership reconciled at milestone boundary — **READING B / NON-STABLE**
+
+- **Authority:** runtime-free definition/review over accepted package `10565723112` / selector427 **427/427** plus verified source snapshot `7259af1f020c208337a69471e11495c6cd9fd196`. No generated Directional runtime or code/test/fixture/selector/build mutation.
+- **Reading-C discriminator:** exact static census of committed torus: `V=72`, `F=144`, `18` unique hard edges, every hard edge two-face incident; production face adjacency with those edges omitted remains one connected component of **144 faces**. `M4-CP4-TB1-R3-REV-OBS-01` is **DISCHARGED**.
+- **Reading-A disposition:** rejected as M4-local authority. A second same-sheet generator needs canonical topology-basis/relation identity plus path binding; `DESIGN.md` §14 assigns that domain to M5 and current product explicitly returns `AmbiguousBasis` rather than discovery-order ownership.
+- **`M4-CP4-TB1-R3-CAND-02`: CLOSED AS M4 OWNERSHIP QUESTION / RE-HOMED TO M5 / NON-STABLE.** The underlying two `G4-B002` debts remain OPEN and counted. Relation reorder -> M5-CP1 mechanism + M5-CP3 direct-production proof. Missing owner -> M5-CP2 mechanism + M5-CP3 direct-production proof. Exact `>=2` relation/edge and missing-owner discriminators remain unchanged.
+- **`M4-CP4-TB1-R3-CAND-01`: OPEN / RP-02 TEST_AUTHORITY_COVERAGE_GAP / CB5.** M4 retains the produced closed-complex debt; only the test-local production precondition may align to accepted row408 reachability while fail-closed/no-recovery execution and independent oracle/tamper remain unchanged.
+- **`M4-CP4-TB1-R3-CAND-03`: OPEN / RP-02 TEST_AUTHORITY_COVERAGE_GAP / CB5.** Exact expected rejection for the frozen non-flat witness is `NonIntegralCycleLift`; product validation order remains unchanged.
+- **Accounting:** +0 event / +0 category / +0 recurrence. Totals remain **49 / 14 / 35**, produced-witness debt **5**. M4 owns 1 produced-witness debt; M5 owns 4. Accepted runtime authority unchanged.
+- **Exact successor:** compile-only `M4-CP4-CB5`.
+
 ## 2026-09-19 — `M4-CP4-TB1-R3-REV`: R2 corrections proved; periodic-owner representation reaches definition stop — **APPROVED WITH AMENDMENTS / NON-STABLE**
 
 - **Authority reviewed:** R3 run/job `35427068822 / 105854843699`, candidate `10578784752` / source `c2224f6af6a4fab47b928c1a0cd2fad677b87b9a`, result/log artifacts `10579672178 / 10579602228`. Independent Review re-derives focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, total **429 PASS / 4 RED**, exact-one selection, zero skips, exact immutable postflight, and zero build/repair/mutation/benchmark counters.
@@ -7796,7 +7807,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | ID | Blocker | Required gate |
 |---|---|---|
 | `G4-B001` | Direct torus final `LocalSheetMismatch`. | strict-valid torus 3/3 |
-| `G4-B002` | **Main exact Phase10 torus `InvalidHardRailPairing` blocker CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV.** Three inherited produced-witness debts remain open. | M4-CP4 cumulative debt re-proofs |
+| `G4-B002` | **Main exact Phase10 torus `InvalidHardRailPairing` blocker CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV.** Three inherited produced-witness debts remain open and counted: one closed-complex debt is M4-CP4-owned; the two periodic debts are re-homed by DEFN-R1 to M5. | M4-CP4: closed-complex re-proof. M5: relation reorder (CP1 mechanism/CP3 production) + missing owner (CP2 mechanism/CP3 production). |
 | `G4-B003` | Nonzero periodic Z4 production capability. | M5 relation certificate + representative product acceptance |
 | `G4-B004` | Positive multi-isolation quotient witness. | **M5:** focused positive relation/certificate production; **M6:** representative occurrence/embedding/verifier consumption. No M4 gate/debt. |
 
@@ -8475,28 +8486,28 @@ how the cycles arose. See `[[M4-CP4-TB1-R2-REV-CAND-02]]`. No product change is 
 
 ## `M4-CP4-TB1-R3-CAND-01` — corrected row2 parser reaches a new produced-witness reachability stop
 
-**Owner:** `M4-CP4-TB1-R3-REV` · **Class:** `RP-02 / PRODUCED-WITNESS REACHABILITY / OWNERSHIP UNADJUDICATED`
-**Status:** OPEN / NON-STABLE / REVIEW-OWNED. Accepted selector427 remains 427/427 PASS; stable accounting is unchanged in EXEC.
+**Owner:** `M4-CP4-CB5` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / PRODUCED-WITNESS REACHABILITY`
+**Status:** OPEN / NON-STABLE / TEST-AUTHORITY. DEFN-R1 preserves the produced closed-complex debt in M4 and authorizes only a test-local production-precondition correction; product semantics remain frozen.
 
-R3 row2 proves the CB4 rawfield format correction mechanically: the stale header stop is gone. The same focused identity then throws `Produced torus did not retain arrangement authority: NotProductionReady/tracing` before a produced closed candidate complex or independent eligibility/tamper oracle is reached. EXEC does not decide test-subject versus product reachability ownership.
+R3 row2 proves the CB4 rawfield format correction mechanically: the stale header stop is gone. The same focused identity then throws `Produced torus did not retain arrangement authority: NotProductionReady/tracing` before a produced closed candidate complex or independent eligibility/tamper oracle is reached. DEFN-R1 adjudicates this as test-authority reachability: the first post-definition CB may align the focused subject to already accepted production preconditions while keeping fail-closed/no-recovery execution and the independent candidate oracle/tamper unchanged.
 
 ## `M4-CP4-TB1-R3-CAND-02` — row408-aligned torus reaches Produced but publishes zero periodic relations
 
-**Owner:** `M4-CP4-TB1-R3-REV` · **Class:** `RP-02 / PRODUCED-WITNESS SEMANTIC GAP / OWNERSHIP UNADJUDICATED`
-**Status:** OPEN / NON-STABLE / REVIEW-OWNED. Rows3/4 are one root/evidence candidate, not two stable events.
+**Owner:** `M4-CP4-DEFN-R1` · **Class:** `RP-02 / MILESTONE AUTHORITY BOUNDARY / PRODUCED-WITNESS REPRESENTATION`
+**Status:** CLOSED AS M4 OWNERSHIP QUESTION / RE-HOMED TO M5 / NON-STABLE. Rows3/4 are one evidence root, not two stable events; the two underlying debts remain OPEN and counted.
 
-R3 rows3/4 both pass `SurfaceCellProducerDisposition::Produced` under the CB4 row408-aligned hard-rail setup. The produced product exposes zero `periodicHolonomies`; row3 fails `periodicHolonomies().size() > 1`, and row4 derives zero distinct relation IDs against required `>=2`. Neither frozen discriminator is reached. Review owns product-vs-test authority and debt consequences.
+R3 rows3/4 both pass `SurfaceCellProducerDisposition::Produced` under the CB4 row408-aligned hard-rail setup. The produced product exposes zero `periodicHolonomies`; row3 fails `periodicHolonomies().size() > 1`, and row4 derives zero distinct relation IDs against required `>=2`. Neither frozen discriminator is reached. DEFN-R1 proves the exact row408 torus remains one 144-face `sourceTopologyRegion` after excluding all 18 hard edges from face adjacency, so the distinct-sheet Reading C is unavailable. A canonical second same-sheet basis is M5 canonical-relation/path-certificate authority. The relation-reorder debt is re-homed to M5-CP1 mechanism + M5-CP3 production proof; the missing-owner debt is re-homed to M5-CP2 mechanism + M5-CP3 production proof. The original `>=2` and missing-owner discriminators remain unchanged and uncredited.
 
 ## `M4-CP4-TB1-R3-CAND-03` — non-flat zero-transport witness rejects with a different typed atlas error
 
-**Owner:** `M4-CP4-TB1-R3-REV` · **Class:** `RP-02 / TYPED-REJECTION EXPECTATION OR VALIDATION ORDER / OWNERSHIP UNADJUDICATED`
-**Status:** OPEN / NON-STABLE / REVIEW-OWNED. Accepted selector427 remains 427/427 PASS; stable accounting is unchanged in EXEC.
+**Owner:** `M4-CP4-CB5` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / TYPED EXPECTATION`
+**Status:** OPEN / NON-STABLE / TEST-AUTHORITY. R3 already proves the product rejection and validation ordering; only the focused expected code is wrong.
 
-R3 row6 independently proves nonzero apex angle defect, flat zero-transport success and non-flat zero-transport rejection. Expected code is `CycleTransportMismatch`; runtime returns enum value 6, currently `NonIntegralCycleLift`. Review must determine test-expectation versus validation-order/product ownership.
+R3 row6 independently proves nonzero apex angle defect, flat zero-transport success and non-flat zero-transport rejection. Expected code is `CycleTransportMismatch`; runtime returns enum value 6, currently `NonIntegralCycleLift`. DEFN-R1 freezes the later correction: this witness must expect exact `NonIntegralCycleLift`; generic rejection and product reordering are prohibited.
 
 ## `M4-CP4-TB1-R3-REV-OBS-01` — the DEFN-R1 readings presuppose same-sheet and omit the cross-sheet path
 
-**Status.** OPEN / NON-GATING / owner `M4-CP4-DEFN-R1` / NON-STABLE / must be answered before A-or-B is selected.
+**Status.** DISCHARGED / NON-GATING / NON-STABLE by `M4-CP4-DEFN-R1`.
 
 `Architecture_M4_CP4_DEFN_R1_Produced_Periodic_Authority_Reconciliation_Plan.md` §2 offers two readings: **A**
 freeze a bounded M4 **same-sheet** two-generator basis, or **B** re-home both periodic `G4-B002` debts to M5 and
@@ -8527,3 +8538,5 @@ Reading C on its merits. If no, record the evidence and proceed with the A/B bin
 respects every §3 prohibition: multiplicity comes from produced sheet decomposition, never from the two authored
 hard-rail cycles, discovery order, container order, or a renamed `HardRailMerge`. See
 `[[M4-CP4-TB1-R2-REV-OBS-02]]`.
+
+**DEFN-R1 resolution:** current source authority plus an independent static census of the committed `torus.obj` disproves the premise for Reading C. The fixture has `72/216/144`, all 18 authored hard edges exist with two incident faces, and the exact adjacency rule used by `build_source_topology_regions(...)` still yields **one** connected component of **144 faces** after those hard edges are excluded. The distinct-authoritative-sheet path therefore cannot provide the required pair on this witness. With Reading C eliminated, Reading A would require a canonical same-sheet topology-basis/relation identity, which `DESIGN.md` §14 assigns to M5. Reading B is frozen.

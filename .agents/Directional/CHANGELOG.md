@@ -1,3 +1,15 @@
+## 2026-09-19 — `M4-CP4-DEFN-R1`: Reading B frozen; two periodic G4-B002 debts re-homed to M5
+
+Runtime-free definition/review. **Reading B frozen.** Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. No product, test, fixture, selector, benchmark or build semantics changed.
+
+DEFN-R1 first resolves `M4-CP4-TB1-R3-REV-OBS-01` rather than assuming the A/B binary. Independent static derivation of the exact row408 torus gives `72` vertices / `144` faces / `18` valid two-face hard edges; applying the production `build_source_topology_regions(...)` adjacency rule with those 18 edges removed still produces **one** connected 144-face source topology region. Reading C therefore cannot supply two one-relation regions on this witness.
+
+Reading A is rejected as an M4-local contract: a second independent same-sheet generator requires canonical relation/basis identity and produced-edge binding, while `DESIGN.md` §14 assigns canonical relation IDs, explicit path certificates, renumbering invariance, typed relation failures and direct-production torus lineage to M5. Current source agrees by returning `AmbiguousBasis` for a second same-scope relation rather than choosing discovery order.
+
+The three `G4-B002` debts remain open and counted. Closed-complex candidate extraction remains M4-CP4-owned. Relation-owner reorder is re-homed to M5-CP1 mechanism / M5-CP3 direct-production proof; missing periodic owner is re-homed to M5-CP2 mechanism / M5-CP3 direct-production proof. Their original `>=2` relation/edge and exact missing-owner discriminators are unchanged. Together with two `G4-B003` debts, M5 now owns four produced-witness debts; total remains five.
+
+R3 row2 remains a test-authority reachability correction and row6 an exact typed-expectation correction. Exact successor is compile-only `M4-CP4-CB5`; only `SurfaceComplexSimplificationPhase17Tests.cpp` and `FieldTransportAtlasTests.cpp` may change, followed by the two affected GMP test targets with no generated runtime.
+
 ## 2026-09-19 — `M4-CP4-TB1-R3-REV` review: definition stop upheld; cross-sheet reading recorded for DEFN-R1
 
 Runtime-free review. **Upheld.** The architecture-definition finding is confirmed from product bytes and the

@@ -930,6 +930,8 @@ Acceptance:
 - unused valid relations do not alter the selected certificate;
 - missing, duplicate, conflicting, nonreciprocal, and representation-renumbered relations fail typed;
 - torus lineage and quotient acceptance are direct production evidence.
+
+**M4-CP4-DEFN-R1 ownership amendment (2026-09-19).** The inherited `G4-B002` produced-witness debts `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` and `MissingPeriodicRelationOwnerIsRejected` are M5-owned because satisfying them on the one-region torus requires canonical same-sheet relation/basis identity. M5-CP1 owns canonical relation ID/path authority, M5-CP2 owns the typed missing-owner failure, and M5-CP3 owns both direct-production torus re-proofs. Their original `>=2` relation/edge and missing-owner discriminators are preserved; no M4 credit, hard-rail substitution, or direct/draft substitution is allowed.
 ### M6 — occurrence, embedding, and independent verification
  
 Separate occurrence creation, quotient construction, geometry embedding, and validation as complete stage products. The verifier consumes certificates and independently recomputes elementary incidence; it never repairs producer state.

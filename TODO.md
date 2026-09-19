@@ -2,40 +2,34 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Review — `M4-CP4-TB1-R3-REV`
+## Latest Review — `M4-CP4-DEFN-R1`
 
-R3 Review is **COMPLETE / APPROVED WITH AMENDMENTS / CANDIDATE NOT PROMOTED / DEFINITION RECONCILIATION REQUIRED**. R3 evidence remains trustworthy at focus **2 PASS / 4 RED**, selector427 **427/427 PASS**, total **429 PASS / 4 RED** with exact immutable postflight. R2's parser, row408-reachability and non-flat-prerequisite corrections are runtime-proved and closed non-stably. Current row2 is test-witness reachability; rows3/4 expose a same-sheet periodic-basis representation/ownership conflict; row6 is an over-specific typed expectation. Accepted authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**.
+DEFN-R1 is **COMPLETE / READING B FROZEN / RUNTIME-FREE**. Independent static authority proves the row408 torus remains one 144-face `sourceTopologyRegion` after all 18 hard edges are omitted from face adjacency, so the distinct-sheet Reading C is unavailable. A canonical two-generator same-sheet periodic identity belongs to M5's canonical relation/path-certificate domain, not M4 conformity planning.
 
-- [x] `M4-CP4-DEFN`: definitions frozen; §3.2 factual helper premise corrected by R2 Review without weakening the produced obligation.
-- [x] `M4-CP4-CB1`: semantic evidence surface compiled; runtime not executed.
-- [x] `M4-CP4-TB1-EXEC`: orchestration invalid / zero semantic runtime.
-- [x] `M4-CP4-CB2`: all-eight package green; artifact `10575545321`.
-- [x] `M4-CP4-TB1-R1-EXEC`: orchestration invalid after partial focused runtime.
-- [x] `M4-CP4-CB3`: R1 harness control correction statically green.
-- [x] `M4-CP4-TB1-R2-EXEC`: trustworthy 433-row runtime, 429 PASS / 4 RED.
-- [x] `M4-CP4-TB1-R2-REV`: four REDs adjudicated as test-authority/precondition; row1/row5 reviewed credit.
-- [x] `M4-CP4-CB4`: three bounded corrections; all-eight GMP/GMPXX compile/package GREEN, artifact `10578784752`; no runtime.
-- [x] `M4-CP4-TB1-R3-EXEC`: trustworthy 433-row runtime, focus 2 PASS / 4 RED, selector427 427/427 PASS, exact immutable postflight.
-- [x] `M4-CP4-TB1-R3-REV`: R2 corrections re-proved; current R3 findings adjudicated; candidate unpromoted; definition stop invoked.
-- [ ] `M4-CP4-DEFN-R1`: **exact next**; reconcile M4-vs-M5 ownership/representation for the two same-sheet periodic `G4-B002` debts before further CB.
+The two periodic `G4-B002` debts are therefore re-homed to M5 without credit or debt reduction. M4 retains only the produced closed-complex `G4-B002` debt. Accepted authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is compile-only `M4-CP4-CB5`.
 
-## Current focus — `M4-CP4-DEFN-R1`
+- [x] `M4-CP4-DEFN`: cumulative definitions frozen.
+- [x] `M4-CP4-CB1` through `M4-CP4-TB1-R3-REV`: evidence surface, corrected R3 runtime, and independent Review complete; candidate `10578784752` remains unpromoted.
+- [x] `M4-CP4-DEFN-R1`: Reading C disproved on exact torus region authority; Reading A rejected as M5 relation-domain work; Reading B frozen; two periodic debts re-homed to M5.
+- [ ] `M4-CP4-CB5`: **exact next**; correct only row2 produced-witness reachability and row6 exact typed expectation, then compile the two affected test targets with GMP and no runtime.
 
-- [ ] Decide Reading A vs Reading B from current architecture/source authority, without runtime or implementation mutation.
-- [ ] If Reading A, freeze a canonical same-sheet two-generator periodic basis/owner identity independent of discovery/container order and clearly bounded to M4.
-- [ ] If Reading B, explicitly amend M4 exit ownership and M5 ownership while preserving both debts and total debt accounting.
-- [ ] Preserve the `>=2` periodic-relation discriminator; do not substitute hard rails, authored cycles, direct/draft products, fallback or recovery authority.
-- [ ] Freeze row2 test-witness reachability and row6 exact `NonIntegralCycleLift` expectation as later-CB work, not DEFN implementation.
-- [ ] Publish exactly one bounded successor CB plan only after the definition choice is complete.
+## Current focus — `M4-CP4-CB5`
+
+- [ ] `tests/SurfaceComplexSimplificationPhase17Tests.cpp`: align `ProducedClosedComplexCandidateExtractionHasIndependentEligibilityOracle` only to the already accepted row408 production precondition while preserving fail-closed/no-recovery execution and the independent candidate oracle/tamper.
+- [ ] `tests/FieldTransportAtlasTests.cpp`: change the frozen non-flat row6 expectation to exact `NonIntegralCycleLift`; retain independent nonzero apex defect and flat-success controls.
+- [ ] Do **not** edit the two periodic focused identities; they are M5-owned debt witnesses after DEFN-R1 and receive no M4 credit.
+- [ ] Leave selector427, product/fixture/benchmark/CMake/reusable-workflow semantics unchanged.
+- [ ] Compile only `directional_surface_cell_completion_tests` and `directional_surface_cell_authority_kernel_tests` through the mandatory reusable GMP workflow; execute no generated Directional runtime.
+- [ ] On compile success, freeze one artifact-only M4 TB successor covering rows1/2/5/6 plus selector427; exclude periodic rows3/4 from M4 acceptance without deleting or renaming them.
 
 ## Carried forward from M1
 
-**Produced-witness debt — `G4-B002` → revised M4 (3).** A fourth reopens section 14 scheduling.
-- [ ] Re-prove `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on a produced closed complex.
-- [ ] Re-prove `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` through the torus pipeline.
-- [ ] Re-prove `MissingPeriodicRelationOwnerIsRejected` on produced periodic authority.
+**Produced-witness debt — `G4-B002` split by `M4-CP4-DEFN-R1` (3 total, unchanged).**
+- [ ] **M4-CP4:** re-prove `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on a produced closed complex.
+- [ ] **M5-CP1 mechanism / M5-CP3 production:** re-prove `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` with the original `>=2` produced relation/edge discriminator.
+- [ ] **M5-CP2 mechanism / M5-CP3 production:** re-prove `MissingPeriodicRelationOwnerIsRejected` on produced periodic authority.
 
-**Produced-witness debt — `G4-B003` → M5 (2).** A third reopens M5 scheduling.
+**Produced-witness debt — `G4-B003` → M5 (2).** Together with the two re-homed periodic `G4-B002` debts, M5 owns four produced-witness debts; total project debt remains 5.
 - [ ] Re-prove `FullPeriodicRotationAndTranslationMaterialize` on produced nonzero-Z4 authority.
 - [ ] Re-prove `TamperedFullPeriodicTransformIsRejected` on produced nonzero-Z4 authority.
 
@@ -84,7 +78,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
-- [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The **three produced-witness debts remain open and M4-CP4-owned**; this checkbox closes the blocker, not those debt items.
+- [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The three produced-witness debts remain open: one is M4-CP4-owned and two periodic debts are M5-owned after DEFN-R1. This checkbox closes the blocker, not those debt items.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.
 - [ ] `G4-B004`: positive multi-isolation quotient witness; M5/M6.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
@@ -105,4 +99,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5** after `M4-CP4-TB1-R3-REV`. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; candidate `10578784752` remains unpromoted. All three `G4-B002` debts remain open, with the two periodic debts stopped at definition/ownership reconciliation rather than weakened. Exact successor is runtime-free `M4-CP4-DEFN-R1`. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5** after `M4-CP4-DEFN-R1`. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; candidate `10578784752` remains unpromoted. All three `G4-B002` debts remain open and counted: one closed-complex debt is M4-CP4-owned and two periodic debts are M5-owned. Exact successor is compile-only `M4-CP4-CB5`. PR #8 remains open, draft, and unmerged.
