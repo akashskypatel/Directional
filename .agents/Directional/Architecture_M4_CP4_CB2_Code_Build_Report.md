@@ -43,3 +43,9 @@ Closeout transport provenance: the first documentation-apply trigger, run `35414
 Both deterministic TB1 orchestration causes are correction-built without semantic edits. This is build/orchestration closure, not semantic acceptance. Candidate artifact `10575545321` is **not promoted** by CB2. Accepted current M4 runtime authority remains package `10565723112` / exact source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Stable regression accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
 
 Exact successor: **`M4-CP4-TB1-R1-EXEC`** under `Architecture_M4_CP4_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md`.
+
+## 5. Turn cleanup provenance
+
+Temporary workflow callers were deleted first. Mandatory batch cleanup then ran as `35414587311 / 105820587254` from event SHA `83ba4ea27ba8d37487469a3148ba7866a9f769c8` and pushed cleanup commit `9e2c2bfc26c9e84da15f51fae2805eda0047f68a`. Cleanup result/log artifacts are `10575038087 / 10574788232`, provider SHA-256 `2dad7277efe729dd80e6111028ea694bec73e71c29395c0da65efa8739eb17d2 / baa6d3dce5f998bd21910f43dea5fdf4cef6b9977a5daa842fb8ab93cb5364d6`.
+
+The cleanup removed the CB2 source-snapshot marker, compile marker, schema marker, closeout-apply marker, frozen retry harness copy and cleanup manifest after all exact recovery hashes/commits were durably recorded. It deleted five PR conversation comments and zero inline review comments before publishing its observer. The cleanup workflow verified the repository workflow inventory contained only the seven durable workflows. `runtimeExecution=false` throughout cleanup.
