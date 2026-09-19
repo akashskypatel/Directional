@@ -1,3 +1,0 @@
-# M4-CP4-CB5 stale concurrent closeout state
-.agents/connector-triggers/m4-cp4-cb5/validate-closeout-apply-caller.txt
-.agents/connector-triggers/m4-cp4-cb5/apply-closeout-docs.txt
