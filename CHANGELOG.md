@@ -1,5 +1,14 @@
 ## 2026-09-19 — `M4-CP4-TB3-REV`: selector430 accepted; CP4 and M4 close
 
+## 2026-09-19 — M5-DEFN definitions frozen
+
+- Froze `Architecture_M5_Frozen_Definitions.md`: canonical periodic relation IDs are content-derived from topology-region + canonical generator/cut carrier paths; action/transport is relation value.
+- Froze producer-selected ordered relation-path certificates and the bounded consumer cutover that removes verifier-side semantic reachability reconstruction.
+- Froze the CP2 typed failure matrix (missing, duplicate, conflicting, nonreciprocal, representation-renumbered) and unused-valid-relation invariance.
+- Preserved all four M5 produced-witness debts and their original discriminators; no direct/draft mechanism evidence receives production credit.
+- Issued `Architecture_M5_CP1_Code_Build_Plan.md`; exact next is `M5-CP1-CB1`. No production/test/selector/build semantic mutation, compile, test, benchmark, or Directional runtime occurred in M5-DEFN.
+- Operational note: repository inspection began before explicit `READ_MODE=snapshot`; the miss was caught before semantic editing, and subsequent review used immutable snapshot `1cef1133ecfe59eeeee220b37a907301f9315dc7` / artifact `10594140365`. No new regression event; tool ledger before correction remains partial/unknown.
+
 Independent runtime-free Review re-opens CB8 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` and TB3 result `10592987234`, independently verifies package **26/26**, selector430 **430 rows / `1c412850...9db6`** with exact selector427 prefix, owners **31/283/75/41**, all **430/430 PASS** one-selected process rows/raw hashes, result manifest **447/447**, and exact package/source/execution-view postflight. Static Review also re-derives non-vacuous work/boundedness, produced same-region multiplicity-two, and flat/non-flat zero-transport contracts. Package `10591801825` is promoted as accepted current M4 runtime authority; `M4-CP4` and M4 are **CLOSED / ACCEPTED**. Stable accounting remains **49 / 14 / 35**, debt **5**; four debts remain M5-owned and one remains M6-owned. Exact next is planning-only `M5-DEFN`.
 
 ## 2026-09-19 — `M4-CP4-DEFN-R2`: Reading B re-homes closed-complex debt to M6; selector430 publication frozen

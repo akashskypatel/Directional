@@ -89,7 +89,7 @@ CB23 implements DEFN-R1's typed source-global boundary-cycle authority on semant
 
 ### M4-CP4 closure — 2026-09-19
 
-DEFN-R2 froze Reading B and re-homed the closed candidate-bearing-complex debt to **M6-CP1 mechanism / M6-CP3 direct-production re-proof** without changing debt count. CB8 then published exact selector430 and mandatory GMP package `10591801825`; TB3 executed selector430 **430/430 PASS** with exact immutable postflight. `M4-CP4-TB3-REV` independently re-derived package/selector/prefix/owner/ledger authority and the non-vacuity of all three appended identities, then promoted package `10591801825`. **CP4 and M4 are CLOSED / ACCEPTED.** Two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned and the closed-complex `G4-B002` debt remains M6-owned; total debt remains **5**. Exact next is runtime-free `M5-DEFN`.
+DEFN-R2 froze Reading B and re-homed the closed candidate-bearing-complex debt to **M6-CP1 mechanism / M6-CP3 direct-production re-proof** without changing debt count. CB8 then published exact selector430 and mandatory GMP package `10591801825`; TB3 executed selector430 **430/430 PASS** with exact immutable postflight. `M4-CP4-TB3-REV` independently re-derived package/selector/prefix/owner/ledger authority and the non-vacuity of all three appended identities, then promoted package `10591801825`. **CP4 and M4 are CLOSED / ACCEPTED.** Two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned and the closed-complex `G4-B002` debt remains M6-owned; total debt remains **5**. Historical next was runtime-free `M5-DEFN`; that definition turn is now complete and exact next is `M5-CP1-CB1`.
 
 ## 1. Where the project actually is
 
@@ -100,7 +100,7 @@ DEFN-R2 froze Reading B and re-homed the closed candidate-bearing-complex debt t
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
 | M4 | **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`** | `M4_Closure_Record.md`; package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA `1c412850…9db6`, owners **31/283/75/41**. |
-| M5 | **NEXT — `M5-DEFN`** | `Architecture_M5_DEFN_Definition_Plan.md`; four M5-owned produced-witness debts remain open. |
+| M5 | **DEFN FROZEN / NEXT `M5-CP1-CB1`** | `Architecture_M5_Frozen_Definitions.md`; `Architecture_M5_CP1_Code_Build_Plan.md`; four M5-owned produced-witness debts remain open. |
 | M6–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -525,15 +525,15 @@ TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: re
 
 `M4-CP4-CB1` authored the frozen CP4 evidence surface without changing selector427. The first TB was pre-runtime orchestration-invalid; CB2 produced all-eight GMP candidate `10575545321`; R1 exposed the harness `errexit` bug; CB3 corrected only that control path. R2 became trustworthy at focus **2 PASS / 4 RED** plus selector427 **427/427 PASS**. R2 Review classified three test-authority/precondition roots; CB4 corrected them and compiled all-eight candidate `10578784752`. R3 remained **429 PASS / 4 RED**; Review then routed rows3/4 to DEFN-R1, which froze Reading B and re-homed those two periodic debts to M5. CB5 corrected only the remaining row2 production precondition and row6 exact `NonIntegralCycleLift` expectation in delta artifact `10582435470`. CB6 froze the timeout-free execution plane; R1 stopped before job construction on the caller/reusable permission ceiling; CB7 corrected only that ceiling. Fresh R2 now completes all 431 processes at **430 PASS / 1 RED**, including selector427 **427/427**, but row2 still stops at `NotProductionReady/tracing` before retained arrangement authority. Accepted authority remains package `10565723112`; R2 Review credits rows1/3/4 and escalates the sole row2 subject to runtime-free `M4-CP4-DEFN-R2`.
 
-`M4-CP4-DEFN-R2` freezes Reading B and re-homes that final closed-complex subject to M6. CB8 then publishes exact selector430 and mandatory GMP package `10591801825`; TB3 executes all **430/430 PASS** with exact immutable postflight. `M4-CP4-TB3-REV` independently re-derives the package, selector427 prefix, owner census, all process/raw-log hashes and the three appended contracts, promotes package `10591801825`, and closes **CP4 and M4**. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is `M5-DEFN`.
+`M4-CP4-DEFN-R2` freezes Reading B and re-homes that final closed-complex subject to M6. CB8 then publishes exact selector430 and mandatory GMP package `10591801825`; TB3 executes all **430/430 PASS** with exact immutable postflight. `M4-CP4-TB3-REV` independently re-derives the package, selector427 prefix, owner census, all process/raw-log hashes and the three appended contracts, promotes package `10591801825`, and closes **CP4 and M4**. Stable accounting remains **49 / 14 / 35**, debt **5**. M5-DEFN is now complete with definitions frozen; exact next is `M5-CP1-CB1`.
 
 M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing-complex `G4-B002` debt is M6-owned: M6-CP1 owns occurrence-complex/stage-separation mechanism and M6-CP3 owns its direct-production re-proof. The two periodic `G4-B002` debts are M5-owned: canonical relation/container-order identity is an M5-CP1 mechanism with M5-CP3 production proof, while missing-owner typing is an M5-CP2 mechanism with M5-CP3 production proof. `G4-B004` remains explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 
-### M5 — certificate-carrying chart and quotient relations (§14 M5) — **NEXT: `M5-DEFN`**
+### M5 — certificate-carrying chart and quotient relations (§14 M5) — **DEFN FROZEN / NEXT: `M5-CP1-CB1`**
 
 | Checkpoint | Semantic domain |
 |---|---|
-| `M5-DEFN` | freeze canonical relation IDs, path certificates, and the tamper matrix |
+| `M5-DEFN` | **COMPLETE** — canonical relation IDs, selected path certificates, cutover, failure matrix, invariance, and debt ownership frozen in `Architecture_M5_Frozen_Definitions.md` |
 | `M5-CP1` | canonical relation ID domain and explicit path certificates, replacing verifier-side reachability reconstruction |
 | `M5-CP2` | typed failure for missing / duplicate / conflicting / nonreciprocal / representation-renumbered relations |
 | `M5-CP3` | M5 exit — torus lineage and quotient acceptance from direct production evidence; unused valid relations provably do not alter the selected certificate |
@@ -598,10 +598,4 @@ From `DESIGN.md` §2.1, unchanged and not restated in full: a run is production-
 acceptance conditions hold on the full witness set with no degraded result closing a strict gate, under
 the §10.1 determinism requirements, with the §15 stop conditions never triggered.
 
-Operationally, that is `M8-CP3`. The remaining path is: **CP4c-2 → CP4c-3 → M4 (4 checkpoints) → M5 (3)
-→ M6 (3) → M7 (3) → M8 (3)**, plus two CP4c `-DEFN` turns and five milestone `-DEFN` turns. Eighteen
-checkpoints remain.
-
-This decomposition is a **proposal until each milestone's `-DEFN` turn freezes it.** Gate arithmetic
-beyond 322 is deliberately not fixed here — freezing identity counts before the domain is defined is
-the failure `M3-CP4-DEFN` was created to prevent.
+Operationally, that is `M8-CP3`. With M4 closed and M5-DEFN frozen, the remaining semantic path is: **M5 CP1–CP3 → M6 DEFN + CP1–CP3 → M7 DEFN + CP1–CP3 → M8 CP1–CP3**. Exact future gate arithmetic remains deliberately unfrozen until each owning definition turn; freezing identity counts before the domain is defined is the failure `M3-CP4-DEFN` was created to prevent.

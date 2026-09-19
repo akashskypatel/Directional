@@ -2,18 +2,17 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest review turn — `M4-CP4-TB3-REV`
+## Latest definition/review turn — `M5-DEFN`
 
-Review is **COMPLETE / APPROVED**. Package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` is accepted under selector430 **430/430 PASS**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31/283/75/41**. `M4-CP4` and M4 are **CLOSED / ACCEPTED**. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M5-DEFN` is **COMPLETE / APPROVED_WITH_AMENDMENTS / DEFINITIONS FROZEN / RUNTIME-FREE**. `Architecture_M5_Frozen_Definitions.md` now makes periodic relation identity content-derived from topology-region + canonical carrier paths, keeps transport/action as relation value, requires producer-selected ordered path certificates, freezes the five-class typed failure matrix, and preserves all four M5 produced-witness debts unchanged. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
-- [x] `M4-CP4-CB8`: exact selector430 publication + mandatory GMP compile/package.
-- [x] `M4-CP4-TB3-EXEC`: immutable cumulative gate **430/430** with exact postflight.
-- [x] `M4-CP4-TB3-REV`: independent package/selector/ledger/non-vacuity adjudication; package promoted; CP4/M4 closed.
-- [ ] `M5-DEFN`: **exact next**; runtime-free freeze of canonical relation identity/path certificates/tamper matrix and M5 debt ownership.
+- [x] `M5-DEFN`: freeze canonical relation identity, selected certificate, cutover, failure matrix, invariance, production reachability, and CP1/CP2/CP3 debt ownership.
+- [ ] `M5-CP1-CB1`: **exact next**; implement canonical non-ordinal relation IDs + selected path certificates and compile only.
+- [ ] `M5-CP1-TB1-EXEC`: only after a green CB1 immutable package; artifact-only runtime.
 
-## Current focus — `M5-DEFN`
+## Current focus — `M5-CP1-CB1`
 
-Execute only `Architecture_M5_DEFN_Definition_Plan.md`. Freeze the relation-ID domain, explicit selected path-certificate contract, single-writer/consumer cutover, typed missing/duplicate/conflicting/nonreciprocal/representation-renumbered failures, unused-valid-relation invariance, witness-stage reachability, and exact CP1/CP2/CP3 ownership of the four M5 produced-witness debts. No implementation, compile, runtime, or selector mutation is authorized.
+Execute only `Architecture_M5_CP1_Code_Build_Plan.md` against `Architecture_M5_Frozen_Definitions.md`. Implementation/test-definition changes plus mandatory GMP compile/package are authorized; generated Directional runtime, test execution, benchmark execution, and M6 occurrence-complex work are not.
 
 ## Carried forward from M1
 
@@ -53,7 +52,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **NEXT: `M5-DEFN`**; also owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
+- [ ] **M5** certificate-carrying chart/quotient relations — **DEFN COMPLETE; NEXT: `M5-CP1-CB1`** under frozen M5 definitions; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

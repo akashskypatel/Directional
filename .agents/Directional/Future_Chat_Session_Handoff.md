@@ -4,43 +4,47 @@
 
 ## Current authority
 
-`M4-CP4-TB3-REV` is **COMPLETE / APPROVED**. Review promotes CB8 package `10591801825` from exact compiled source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` as accepted M4 runtime authority under selector430 **430/430 PASS**. Selector430 is **430 LF rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`**, exact accepted selector427 prefix `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **31 / 283 / 75 / 41**.
+`M5-DEFN` is **COMPLETE / APPROVED_WITH_AMENDMENTS / DEFINITIONS FROZEN / RUNTIME-FREE**. Normative M5 authority is `Architecture_M5_Frozen_Definitions.md`; historical definition-plan requirements are folded into `M5_Consolidated_Record.md`.
 
-Authoritative TB3 run/job is `35470130614 / 105969470184`; result/log artifacts are `10592987234 / 10592817804`. Independent Review re-derived package **26/26**, all **430** one-selected PASS process rows/raw hashes, result manifest **447/447**, exact package/source/execution-view postflight, and the non-vacuity of the three CP4 appended identities. `M4-CP4` and milestone **M4 are CLOSED / ACCEPTED**.
+Accepted runtime authority is unchanged from M4: package `10591801825` / exact compiled source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430 PASS**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31 / 283 / 75 / 41**. Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**.
 
-Evidence commit is `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`. Review/closure planning documentation was published in `6dd94057b042426063b139aadad4d4432d0e9f9f`; mandatory temporary-state cleanup completed in `c50fba756028eb9e7d87aeecad8ba6ab883ec355`. The final Review record closeout is in the containing documentation commit immediately following cleanup; repository-root `STATUS` is the final turn beacon and remains the transition authority.
-
-Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. M5 owns the two periodic `G4-B002` debts plus two `G4-B003` debts. M6 owns the closed candidate-bearing-complex `G4-B002` debt. M4 closure grants no credit to those carried debts.
+M5-DEFN source review used immutable snapshot `1cef1133ecfe59eeeee220b37a907301f9315dc7` / artifact `10594140365`. The frozen contract removes relation-vector/front-edge identity from semantics, makes `PeriodicRelationId` content-derived from canonical carrier paths, keeps action/transport as relation value, and requires the producer to publish the exact ordered selected relation path. Consumers validate that certificate and may not search for an alternate route.
 
 ## Exact next turn
 
-**`M5-DEFN`** — runtime-free definition/planning turn under `Architecture_M5_DEFN_Definition_Plan.md`.
+**`M5-CP1-CB1`** — Code + Build under `Architecture_M5_CP1_Code_Build_Plan.md` and `Architecture_M5_Frozen_Definitions.md`.
 
-Freeze canonical relation IDs, explicit selected path certificates, the missing/duplicate/conflicting/nonreciprocal/representation-renumbered typed failure matrix, unused-valid-relation invariance, witness-stage reachability, and the exact CP1/CP2/CP3 ownership of all four M5 produced-witness debts. Do not implement, compile, execute Directional runtime, or mutate selector bytes in `M5-DEFN`.
+Implement only canonical relation IDs, storage/aggregation preservation, same-region topology-distinct relation retention, selected path-certificate publication, and the bounded downstream cutover from BFS reachability reconstruction to exact certificate validation. Author focused CP1 test definitions, then compile/package through the mandatory GMP reusable workflow. **Do not execute generated Directional binaries, tests, discovery, or benchmarks.**
 
 ## Carried obligations
 
-- M5-CP1 mechanism + M5-CP3 production: `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, preserving the `>=2` discriminator.
+- M5-CP1 mechanism + M5-CP3 production: `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, preserving `>=2` produced relations and `>=2` owned periodic edges.
 - M5-CP2 mechanism + M5-CP3 production: `MissingPeriodicRelationOwnerIsRejected`.
-- M5-CP3: `FullPeriodicRotationAndTranslationMaterialize` and `TamperedFullPeriodicTransformIsRejected` on direct produced nonzero-Z4 authority.
+- M5-CP3 direct production: `FullPeriodicRotationAndTranslationMaterialize` and `TamperedFullPeriodicTransformIsRejected` on nonzero-Z4 authority.
 - M6-CP1 mechanism + M6-CP3 production: `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on authoritative A5 occurrence-complex production.
-- M8-CP2: `M4-CP-SCALE-TB1-REV-OBS-01`; `M4-CP-SCALE-DEFN-OBS-01` only if observationally equivalent, otherwise use its frozen reopen path.
-- First legitimate row399/path/`sourceFaces` binder touch: `M4-CP3-CB4-REV-OBS-02`.
+- M8-CP2 and first-legitimate-touch obligations recorded in TODO remain unchanged.
+
+## Process note
+
+The M5-DEFN session initially inspected repository documents before explicitly declaring `READ_MODE=snapshot`; the error was caught before semantic editing and all subsequent source/document review used the immutable snapshot above. The known pre-correction tool-call ledger is **partial/unknown** and must not be reconstructed with accounting-only calls.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/REVIEW.md
+  - references/turns/CB.md
 conditional_modules:
-  - trigger: implementation design / corrective planning is required by M5-DEFN
+  - trigger: implementation design / corrective planning is required
     path: modules/engineering-guidelines/MODULE.md
-  - trigger: GitHub connector or workflow/artifact operations are required
+  - trigger: unit-test definitions are edited or reviewed
+    path: modules/unit-testing/MODULE.md
+  - trigger: GitHub connector, workflow, compile, artifact, or patch transport operations are required
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M5_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M5_CP1_Code_Build_Plan.md
   - .agents/Directional/DESIGN.md §14 M5
-  - .agents/Directional/ROADMAP.md §4 M5
-  - .agents/Directional/Architecture_M5_DEFN_Definition_Plan.md
+  - .agents/Directional/ROADMAP.md M5
 templates_when_producing: []
 do_not_preload:
   - sibling turn files

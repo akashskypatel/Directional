@@ -1,5 +1,14 @@
 ## 2026-09-19 — `M4-CP4-TB3-REV` review: M4 closure upheld; governing exit clause reconciled
 
+## 2026-09-19 — M5-DEFN definitions frozen
+
+- Froze `Architecture_M5_Frozen_Definitions.md`: canonical periodic relation IDs are content-derived from topology-region + canonical generator/cut carrier paths; action/transport is relation value.
+- Froze producer-selected ordered relation-path certificates and the bounded consumer cutover that removes verifier-side semantic reachability reconstruction.
+- Froze the CP2 typed failure matrix (missing, duplicate, conflicting, nonreciprocal, representation-renumbered) and unused-valid-relation invariance.
+- Preserved all four M5 produced-witness debts and their original discriminators; no direct/draft mechanism evidence receives production credit.
+- Issued `Architecture_M5_CP1_Code_Build_Plan.md`; exact next is `M5-CP1-CB1`. No production/test/selector/build semantic mutation, compile, test, benchmark, or Directional runtime occurred in M5-DEFN.
+- Operational note: repository inspection began before explicit `READ_MODE=snapshot`; the miss was caught before semantic editing, and subsequent review used immutable snapshot `1cef1133ecfe59eeeee220b37a907301f9315dc7` / artifact `10594140365`. No new regression event; tool ledger before correction remains partial/unknown.
+
 Runtime-free review. **Upheld — M4-CP4 closure confirmed on evidence and stands.** Accounting holds at
 **49 events / 14 categories / 35 recurrences**, debt **5** (all re-homed, zero M4-owned, zero M4 credit).
 

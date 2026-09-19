@@ -1,5 +1,13 @@
 ## 2026-09-19 — `M4-CP4-DEFN-R2`: closed-complex subject is A5/M6 authority — **READING B / NON-STABLE / DEBT RE-HOMED**
 
+## M5-DEFN — definition authority / no runtime regression event
+
+- **Status:** `M5-DEFN` COMPLETE / DEFINITIONS FROZEN / runtime-free.
+- **Finding:** current periodic relation naming still uses index allocation plus component-offset remapping; downstream lineage closure still reconstructs relation reachability. These are the already-owned M5 architectural seams, not newly observed loss of accepted runtime behavior.
+- **Correction authority:** `Architecture_M5_Frozen_Definitions.md` freezes content-derived relation IDs, producer-selected ordered path certificates, the five-class typed failure matrix, and unused-valid-relation invariance.
+- **Evidence boundary:** accepted row408 production reaches `Produced` but the prior M4 R3 evidence measured zero produced periodic holonomies; direct helper/draft tests remain mechanism-only. All four M5 produced-witness debts stay open unchanged.
+- **Accounting:** no Directional runtime executed and no accepted behavior was lost or restored. Stable totals remain **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. No candidate/stable regression ID is created.
+
 - **Decision:** Reading B. `DESIGN.md` assigns A4 to per-region `RegionCellComplex` and A5 to `SurfaceOccurrenceComplex` with explicit corner/side occurrence IDs. Current `SurfaceCellPipelineContext` is explicitly diagnostic-only; `hasArrangement` is published only after tracing continues through strands, embedding and global `build_surface_cell_complex(...)`, and that retained complex is a debug copy consumed by simplification. It cannot be used as M4/A4 semantic authority.
 - **Debt disposition:** `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` remains **OPEN** and is re-homed unchanged to **M6-CP1 mechanism / M6-CP3 direct-production re-proof**. Independent candidate eligibility, hard-feature tamper, fail-closed/no-recovery subject and closed-source preconditions are unchanged.
 - **Candidate disposition:** `M4-CP4-TB2-R2-CAND-01` / antecedent `M4-CP4-TB1-R3-CAND-01` are **CLOSED AS M4 OWNERSHIP QUESTION / RE-HOMED TO M6 / NON-STABLE**. This closes the definition ambiguity, not the underlying debt.
