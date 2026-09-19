@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1pu4jK7WQI2XN5F2O7pOHn-FqR7G_ZCP-
-      patch_sha256: 3caae9a04c79f42b630e5f5056c468de1f8179ca22025349fd9cd51f8c135c9b
-      base_sha: 426b78981c936e1314b8e83e45eadd286f2f8bc3
+      file_id: 1_jD02YTGzr5gy0MW7IourwD1pM0naA6U
+      patch_sha256: ca61790bb7bc0bcd09250b231969e8c5c90e17a8dd530066b8d47eaf8eaaf5e7
+      base_sha: 49bcc7ad4b31ccfa025702beb6cf731d3605e711
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M4-CP4-TB2-R2-EXEC: closeout trustworthy semantic RED"
+      commit_message: "M4-CP4-TB2-R2-REV: close reviewed evidence and freeze DEFN-R2"
       retention_days: 7
     secrets: inherit
