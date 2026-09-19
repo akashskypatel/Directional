@@ -101,3 +101,113 @@ Workflow-first cleanup retired both temporary Drive callers before a diagnosed r
 | review_check.py boundary | **ALL CHECKS PASSED**. |
 | `STATUS` lifecycle maintained | `Turn=M4-CP4-TB1-R2-REV`; entry `IN_PROGRESS`; successor while active self; final `COMPLETE` / successor `M4-CP4-CB4`; Started `2026-09-19T03:40:00Z`; latest Resumed `2026-09-19T05:31:00Z`; Ended written by the final root `STATUS` mutation. |
 | Pushed to origin, branch in sync | Closeout patch and mandatory cleanup are pushed through the authorized origin control plane; cleanup commit `8cf4d3b10abcc91685d6a47948d113816a784944` verifies the seven-workflow durable inventory and no retained turn payload/marker from this Review. Origin synchronization is confirmed from branch authority; this Web turn has no persistent origin-tracking checkout. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Every decisive adjudication re-derived from repository bytes; all four RED
+classifications, the row5 discharge and the §3.2 normative correction are confirmed. Accounting correctly holds
+at **49 / 14 / 35**, debt **5**. Two observations are recorded for `M4-CP4-CB4`; neither changes the verdict.
+
+### V1 — CAND-01 confirmed exactly, including why the defect is easy to miss
+
+`read_rawfield_fixture` (`tests/SurfaceComplexSimplificationPhase17Tests.cpp:58-63`) reads
+`input >> rows >> columns` and rejects unless `rows == expectedFaces && columns == 12`. The committed fixture is
+`benchmarks/fixtures/milestone-g/torus.rawfield`, whose header is `4 144`. The correct reader
+(`tests/SurfaceCellTransitionQuotientTests.cpp:268-276`) reads `stream >> degree >> faceCount`, requires
+`degree == 4` and `faceCount == expectedFaces`, and allocates `raw(faceCount, 3 * degree)`.
+
+Worth naming: `3 * degree == 12`, so the wrong reader's column expectation *coincides numerically* with the right
+one. Only the first two integers disagree. The adjudication is right — the fixture is correct and stays
+byte-frozen, and `Invalid rawfield fixture header` is test-authority, not a package or production defect.
+
+### V2 — CAND-03 confirmed; "skew" is in-plane irregularity, not non-flatness
+
+`make_skew_four_triangle_fan()` (`tests/support/SkewSingularFieldWitness.h:131-146`) sets all five vertices at
+`z = 0.0`. The four faces tile a neighbourhood of the interior vertex inside the plane, so the angle sum at
+vertex 4 is exactly `2π` and the intrinsic angle defect is zero. The helper is *skew* in that its interior vertex
+sits off-centre at `(0.1, 0.15)` and the outer quad is irregular — none of which creates intrinsic curvature.
+The Review's reading is correct: `nonFlatAtlas == true` on this subject is not evidence of product disagreement,
+and narrowing rather than discharging `M4-CP-SCALE-TB2-REV-OBS-02` is the right disposition.
+
+### V3 — CAND-02 confirmed, and the §3.2 correction was actually applied to the frozen file
+
+`make_torus_pipeline_fixture()` (`tests/SurfaceCellTransitionQuotientTests.cpp:475-545`) sets
+`fallbackPolicy::Fail`, `allowSourceGridRecovery = false`, `retainIntermediateGeometry = true` — and sets **no**
+`featureMap`, `userHardEdges` or degree thresholds whatsoever. `torus_fixture()` is a cached wrapper over it.
+By contrast `cp4c_torus_hard_rail_remesh_options()` (`tests/FieldAlignedCurveNetworkTests.cpp:5424-5443`) drives
+row408's accepted path: `cadAbsoluteLowDegrees/HighDegrees = 179.0/180.0` and the organic pair likewise, which
+suppresses automatic hard-edge inference, plus two explicit cycles — a minor cycle of 7 entries (6 edges) and a
+major cycle of 13 entries (12 edges), disjoint, giving exactly the cited **18** hard-feature edges. A genus-1
+surface with `b1 = 2` needs exactly that pair of fundamental cycles to open into a disc, so
+`InvalidBoundedDiskBoundaryTurn` from the generic fixture is the correct typed refusal, not a regression.
+
+The frozen §3.2 sentence that named the generic fixture as an already-produced torus path was therefore false,
+and **the correction was written into `Architecture_M4_CP4_Frozen_Definitions.md` §3.2 in commit `389533bf`** —
+the normative file was edited, not merely annotated in a review record. That is the required discipline.
+
+### V4 — the row5 discharge is sound; the assertion polarity checks out
+
+`M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`
+(`tests/FieldAlignedCurveNetworkTests.cpp:7885-7959`) derives its witness from the produced A2b region boundary,
+asserts the two occurrence ordinals are distinct, requires exactly two corresponding baseline incidences, and
+cross-checks both ordinals and orientations. The tamper erases the incidence matching `ordinals[1]` and asserts
+`EXPECT_TRUE(validate_global_conformity_baseline_candidate(...))`.
+
+That polarity reads backwards at a glance and is worth pinning: the validator returns
+`std::optional<GlobalConformityPlanError>` (`include/directional/geometry/GlobalConformityBaseline.h:267-271`),
+used at `src/geometry/GlobalConformityBaselineValidator.cpp:839-841` as `if (const auto error = ...)`. A truthy
+result is therefore an error, so `EXPECT_TRUE` demands **rejection**. The discharge of
+`M4-CP3-TB1-R1-REV-OBS-01` is correct and non-vacuous, and the expectation is built from the A2b side and checked
+against the baseline side rather than from a single producer's output.
+
+### V5 — RECORD FOR CB4: the hard-rail precondition can smuggle in the multiplicity it is meant to prove
+
+§5.2 directs CB4 to give the periodic-owner subject "the same hard-rail precondition constants/cycles as accepted
+row408". That is the right production precondition, but it carries a specific hazard that neither §2.3 nor the
+CB4 plan names outright.
+
+Row408's precondition **injects two hand-authored cycles** and suppresses automatic hard-edge inference. The
+§3.2 obligation is to show "at least two distinct periodic relation IDs". If CB4 adopts the row408 constants and
+then concludes two relations exist *because two cycles were supplied*, the multiplicity is an echo of the test's
+own input, not a property proved of the produced relation table — the self-authorizing-oracle pattern, satisfying
+§2.3's letter ("independently proving rather than assuming") while inverting its intent.
+
+**CB4 must read the multiplicity off the produced relation table itself** — enumerate distinct
+`PeriodicRelationId` values actually resolved by produced periodic edges — and must not infer it from the
+injected cycle count. The injected cycles are legitimate *setup*; they are not evidence. The discriminating
+tamper (reorder the container, swap two produced relation IDs, require typed-owner rejection) remains where the
+non-vacuity lives, and it is independent of how the cycles arose.
+
+### V6 — RECORD: §4 states a valid ground and an invalid one side by side
+
+§4 grounds non-stability as "test-authority/witness-precondition failures **on an unpromoted candidate**". The
+operative ground is sound and also present: selector427 is **427/427 PASS**, so no ordinal inside the accepted
+prefix transitioned PASS → RED, and all four REDs are new focus rows outside it.
+
+But "on an unpromoted candidate" is, on its own, the reasoning this project ruled invalid at
+`M4-CP-SCALE-TB6-REV`: promotion status cannot bear on stability, because focused REDs are *always* observed on
+unpromoted candidates and the rule would never fire. The verdict here is right; the hazard is that a later turn
+lifts the invalid half alone as precedent. The durable criterion in the tracker is unchanged and remains
+authoritative: **a stable event is recorded when an ordinal inside the accepted selector prefix transitions
+PASS → RED, regardless of whether the failing package is promoted.**
+
+### V7 — verification limits, stated
+
+`§3`'s `run_one` stop-reason claim is the one decisive-adjacent item I could **not** re-derive from repository
+bytes: the R2 harness is a frozen artifact-side payload (19,885 bytes,
+`78ab110f...750dd`) and is not committed to the tree. I accept it as reported, note that it is evidence-neutral
+by the Review's own reasoning and does not affect any RED classification, and record that CB4 owns the fix only
+if it regenerates that control. Package-side hashes and run/job identifiers were likewise taken as reported;
+the selector, fixture, helper, test and validator bytes above were all re-derived independently.
+
+### V8 — durable-document corrections applied by this Review
+
+`CHANGELOG.md` had the `M4-CP4-TB1-R2-REV` entry filed **below** the `M4-CP4-TB1-R2-EXEC` entry it supersedes,
+breaking reverse-chronological order on a same-date pair. Reordered. (This is the same insertion-point error this
+reviewer has made before; the fix is to insert at the first `## `, not the second.)
+
+`M4-CP4-DEFN` has no standalone review record; its verdict lives in `CHANGELOG.md` and the tracker. Given §6's
+consolidation deliberately narrowed retained CP4 authority, adding one now would fight that consolidation, so it
+is intentionally not created — recorded here so the absence is a decision rather than an omission.

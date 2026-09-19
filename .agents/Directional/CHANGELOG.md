@@ -1,9 +1,30 @@
-## 2026-09-19 — `M4-CP4-TB1-R2-EXEC`: corrected immutable gate completes; focused semantic RED enters Review
+## 2026-09-19 — `M4-CP4-TB1-R2-REV` review: adjudication upheld on independent re-derivation
 
-Corrected artifact-only R2 run/job `35417670510 / 105829346816` re-proves candidate `10575545321` preflight exactly, executes all six focus rows and the exact selector427 prefix, and completes immutable postflight. Focus is **2 PASS / 4 RED**: work receipt and produced same-region multiplicity-2 PASS; produced closed-complex oracle REDs at `Invalid rawfield fixture header`; both produced torus periodic-owner witnesses RED at upstream `InvalidBoundedDiskBoundaryTurn`; zero-transport prerequisite REDs because the authored non-flat case returns a valid atlas. Selector427 remains **427/427 PASS**; full ledger **429 PASS / 4 RED**, benchmark zero, no build/repair/mutation activity and exact package/source/execution-view postflight.
+Runtime-free review. **Upheld; verdict and all four RED classifications confirmed from repository bytes.**
+Accounting holds at **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**; accepted
+authority remains package `10565723112` / selector427 **427/427**, which re-hashes byte-exact to
+`f9c88380...eae86f` and is unchanged at 427 rows — byte-frozen held across CB1 through R2.
 
-This is trustworthy semantic evidence, not orchestration failure. Candidate `10575545321` remains unpromoted and EXEC grants no debt/regression ownership decisions. Accepted authority remains package `10565723112` / selector427 **427/427** with provisional accounting **49 / 14 / 35**, debt **5**. Exact successor: mandatory runtime-free `M4-CP4-TB1-R2-REV`.
+Re-derived independently: the CAND-01 rawfield mismatch (fixture header `4 144`; the Phase17 reader demands
+`rows == expectedFaces && columns == 12`, and `3 * degree == 12` is why the wrong reader looks plausible); the
+CAND-03 planarity finding (all five vertices of `make_skew_four_triangle_fan()` at `z = 0.0`, so the intrinsic
+angle defect is zero and "skew" means in-plane irregularity); and the CAND-02 precondition gap (the generic torus
+fixture sets no `featureMap`/`userHardEdges` at all, while row408's hard-rail options suppress inference at
+179/180 and inject two disjoint fundamental cycles totalling 18 hard edges — so `InvalidBoundedDiskBoundaryTurn`
+is a correct typed refusal). The false frozen §3.2 sentence was genuinely **edited** in `389533bf`, not merely
+annotated. The row5 discharge of `M4-CP3-TB1-R1-REV-OBS-01` is non-vacuous: the validator returns
+`std::optional<GlobalConformityPlanError>`, so the tamper's `EXPECT_TRUE` demands rejection.
 
+New: `M4-CP4-TB1-R2-REV-OBS-02` (non-gating, owner CB4) — adopting row408's hard-rail precondition injects two
+hand-authored cycles, so CB4 must read §3.2's required relation multiplicity off the produced relation table and
+not from the cycle count it supplied. Also recorded: §4 pairs the valid non-stability ground (selector 427/427,
+no accepted-prefix transition) with "on an unpromoted candidate", which was ruled invalid at `TB6-REV` and must
+not be lifted alone as precedent.
+
+Corrected here: the `M4-CP4-TB1-R2-REV` changelog entry had been filed below the `M4-CP4-TB1-R2-EXEC` entry it
+supersedes; reverse-chronological order restored.
+
+Exact successor unchanged: `M4-CP4-CB4` — test-authority-only Code + Build, selector427 byte-frozen, no runtime.
 
 ## 2026-09-19 — `M4-CP4-TB1-R2-REV`: four focused REDs adjudicated as test-authority/precondition; CB4 frozen
 
@@ -12,6 +33,13 @@ Runtime-free Review independently verifies R2 run/job `35417670510 / 10582934681
 Row1 production-baseline work/boundedness and row5 produced same-region multiplicity-2 receive reviewed credit; `M4-CP3-TB1-R1-REV-OBS-01` closes. Row2 is a test-local rawfield `(rows,columns)` vs repository `(degree,faceCount)` mismatch. Rows3/4 share one test-fixture precondition defect: generic `torus_fixture()` stops at `InvalidBoundedDiskBoundaryTurn`, while accepted row408's explicit two-generator/18-hard-edge path remains production-reachable. Row6's purported non-flat fan has all z=0 and is planar. These open `CAND-01/02/03` as non-stable `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`; no product regression fires. Frozen CP4 §3.2 is corrected to remove the false generic-helper claim without weakening its produced periodic multiplicity requirement.
 
 Exact successor is test-authority-only `M4-CP4-CB4`; no product, committed fixture, selector, benchmark or CMake semantic change is authorized. Fresh immutable R3 runtime + Review remains mandatory.
+
+## 2026-09-19 — `M4-CP4-TB1-R2-EXEC`: corrected immutable gate completes; focused semantic RED enters Review
+
+Corrected artifact-only R2 run/job `35417670510 / 105829346816` re-proves candidate `10575545321` preflight exactly, executes all six focus rows and the exact selector427 prefix, and completes immutable postflight. Focus is **2 PASS / 4 RED**: work receipt and produced same-region multiplicity-2 PASS; produced closed-complex oracle REDs at `Invalid rawfield fixture header`; both produced torus periodic-owner witnesses RED at upstream `InvalidBoundedDiskBoundaryTurn`; zero-transport prerequisite REDs because the authored non-flat case returns a valid atlas. Selector427 remains **427/427 PASS**; full ledger **429 PASS / 4 RED**, benchmark zero, no build/repair/mutation activity and exact package/source/execution-view postflight.
+
+This is trustworthy semantic evidence, not orchestration failure. Candidate `10575545321` remains unpromoted and EXEC grants no debt/regression ownership decisions. Accepted authority remains package `10565723112` / selector427 **427/427** with provisional accounting **49 / 14 / 35**, debt **5**. Exact successor: mandatory runtime-free `M4-CP4-TB1-R2-REV`.
+
 
 ## 2026-09-19 — `M4-CP4-TB1-R1-EXEC`: partial runtime invalidated by harness errexit bug; CB3 next
 

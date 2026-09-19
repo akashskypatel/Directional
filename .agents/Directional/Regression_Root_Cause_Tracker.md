@@ -8423,3 +8423,28 @@ R2 row6 expects zero transport to reject `make_skew_four_triangle_fan()`, but st
 **Status:** OPEN / NON-BLOCKING / NON-STABLE.
 
 R2's complete ledger/raw logs are trustworthy, but `run_one` overwrites `stop_reason` for every focused RED, yielding `semantic_red_focus_6` despite a comment implying first-RED retention. Immutable postflight and all 433 rows are unaffected. Clarify/preserve first-vs-last reporting semantics without changing execution, selector stop or acceptance behavior.
+
+## `M4-CP4-TB1-R2-REV-OBS-02` — the row408 hard-rail precondition can supply the multiplicity §3.2 must prove
+
+**Status.** OPEN / NON-GATING / owner `M4-CP4-CB4` / NON-STABLE.
+
+`M4-CP4-TB1-R2-REV` §5.2 correctly directs CB4 to give the periodic-owner subject the accepted row408 production
+precondition via `cp4c_torus_hard_rail_remesh_options()`. That precondition suppresses automatic hard-edge
+inference (`cad`/`organic` absolute degrees at `179.0/180.0`) and **injects two hand-authored cycles** — a minor
+cycle of 6 edges and a major cycle of 12, 18 distinct `userHardEdges` in total
+(`tests/FieldAlignedCurveNetworkTests.cpp:5424-5443`).
+
+Frozen §3.2 requires the focused identity to exhibit **at least two distinct periodic relation IDs**. If CB4
+establishes that multiplicity from the two injected cycles, the test proves a property of its own input rather
+than of the produced relation table. It would satisfy §2.3's wording — "independently proving rather than
+assuming" — while reproducing exactly the self-authorizing-oracle pattern that wording exists to prevent.
+
+**Why:** an oracle must derive its expectation from raw input or an independent domain, never from the producer
+output it is checking — and never from a quantity the test itself configured. Injected setup is not evidence.
+
+**How to apply:** CB4 enumerates the distinct `PeriodicRelationId` values actually resolved by produced periodic
+edges, read off the produced relation table, and asserts the multiplicity there. It must not infer multiplicity
+from the injected cycle count, and it must not treat "two cycles supplied" as "two relations produced". The
+discriminating tamper — reverse the relation container, swap two produced relation IDs, require the
+materializer/product validator to reject typed-owner mismatch — is where non-vacuity lives and is unaffected by
+how the cycles arose. See `[[M4-CP4-TB1-R2-REV-CAND-02]]`. No product change is authorized.
