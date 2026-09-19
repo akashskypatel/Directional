@@ -1,0 +1,3 @@
+Purpose: execute immutable M4-CP4-TB2 composite artifact-only gate.
+Harness Drive file: 19RUc7p4fbHk2oDGSZIUsmNo2ui9_-qr8
+Retry: 0
