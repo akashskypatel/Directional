@@ -1,0 +1,47 @@
+name: M5 DEFN Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-defn-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-defn-drive-patch-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m5-defn-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-defn-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1IH2jCwmQqbH8bCZ97n3cxumjMowvrhlc
+      patch_sha256: 3c69768bb065ba9bf3bf1cca8ba783cc819bbad18c3b1d70a3a1f997eec26967
+      base_sha: 1cef1133ecfe59eeeee220b37a907301f9315dc7
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: freeze M5 relation certificate definitions"
+    secrets: inherit
