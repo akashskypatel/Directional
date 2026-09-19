@@ -1,3 +1,11 @@
+## 2026-09-19 — `M4-CP4-CB2`: TB1 orchestration/package causes corrected without semantic change — **COMPLETE / BUILD GREEN / NON-STABLE**
+
+- **Authority:** source `ad54c12774e10480fd3cef8138cacb8d5dec1529`; run/job `35413725768 / 105818192513`; candidate artifact `10575545321`, SHA-256 `602632ed05f2d6e8a4c9ccbfb1ef135417b1d1e2eb30c2c29e74892007f7ba00`; log `10575465548`, SHA-256 `2ae9a797ccc3f0d5f64f3acd0d2570803859ae775236b804286729a85dd2e64c`; source archive `781155c61419f999ebb9631136ca24e998f01dff0c160b071240c946b4afa4ed`.
+- **Root cause A correction:** R1 harness checks the reusable package's five actual clean receipts; nonexistent `source-status-after-package.txt` is replaced by `source-status-preconfigure.txt`. Harness SHA `4b956829e4b656ccc71f00c781028fcb08452cad995cbcdfaaacde314954d29f`.
+- **Root cause B correction:** all-eight GMP package contains all four selector-owner executables, including validation; selector427 remains owners **30 / 281 / 75 / 41**.
+- **Boundary/disposition:** `runtimeExecution=false`; no semantic process ran. The TB1 incident remains non-stable orchestration provenance; both causes are correction-built but not runtime-proved until R1. Stable totals stay **49 / 14 / 35**, debt **5**.
+- **Exact successor:** `M4-CP4-TB1-R1-EXEC`, then mandatory Review for any trustworthy semantic result.
+
 ## 2026-09-19 — `M4-CP4-TB1-EXEC`: pre-runtime orchestration/package closure failure — **COMPLETE / ORCHESTRATION INVALID / NON-STABLE**
 
 - **Authority:** run/job `35411656874 / 105812362078`, event SHA `807722c0518c2919a6f208e4bbe98368f100905b`, immutable candidate artifact `10574525792` / exact source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`. Result/log artifacts `10573982618 / 10573992605`, provider SHA-256 `2e9bcb293ee8d99e6b9d90210496c6633f02ab5bd2830b6e7d668bc6ad4eba6d / c79fd3fa32fb8d002aa7f6196afd255cc3636436eba4b9a166877d3eaadfaea3`.
@@ -5,7 +13,7 @@
 - **Root cause A — orchestration contract:** the harness invented a clean-receipt filename not emitted by the durable reusable compile workflow. Actual clean receipt set is before-configure, preconfigure, after-configure, after-build and final.
 - **Root cause B — package closure:** candidate artifact packages authority-kernel / producer / completion test executables but omits `directional_surface_cell_validation_tests`; selector427 has frozen owners **30 / 281 / 75 / 41**, so the immutable candidate cannot execute 41 validation-owned rows. CB1 compiled only five targets rather than the full standard eight.
 - **Regression disposition:** no product semantic runtime occurred; **no stable regression/candidate is opened** and no recovery claim is made. This is one non-stable orchestration/package-closure incident. Stable totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. Accepted runtime authority remains package `10565723112` / selector427 **427/427**.
-- **Exact successor:** runtime-free `M4-CP4-CB2` under `Architecture_M4_CP4_CB2_Code_Build_Plan.md`; semantic bytes remain frozen, all-eight GMP package + corrected harness only, then fresh `M4-CP4-TB1-R1-EXEC`.
+- **Exact successor:** runtime-free `M4-CP4-CB2` under `Architecture_M4_CP4_CB2_Code_Build_Plan.md`; semantic bytes remain frozen, all-eight GMP package + corrected harness only, then fresh `M4-CP4-TB1-R1-EXEC`. **Correction-built by `M4-CP4-CB2`; fresh R1 runtime remains pending.**
 
 ## 2026-09-19 — `M4-CP4-CB1`: frozen CP4 evidence surface compiles; runtime credit pending — **COMPLETE / BUILD GREEN / NON-STABLE**
 

@@ -1,3 +1,11 @@
+## 2026-09-19 — `M4-CP4-CB2`: all-eight package closure GREEN; corrected TB1-R1 control frozen
+
+Mandatory reusable GMP compile run/job `35413725768 / 105818192513` succeeds on exact source `ad54c12774e10480fd3cef8138cacb8d5dec1529` across all eight standard targets. Candidate result/log artifacts `10575545321 / 10575465548` have SHA-256 `602632ed05f2d6e8a4c9ccbfb1ef135417b1d1e2eb30c2c29e74892007f7ba00 / 2ae9a797ccc3f0d5f64f3acd0d2570803859ae775236b804286729a85dd2e64c`; source archive SHA-256 is `781155c61419f999ebb9631136ca24e998f01dff0c160b071240c946b4afa4ed`. The 28-entry manifest verifies, all five actual clean receipts are empty, GMPXX+GMP is bound, and all four selector owners are packaged/executable. `runtimeExecution=false`.
+
+Corrected R1 harness/caller are frozen but unexecuted: harness 19,871 bytes / SHA `4b956829e4b656ccc71f00c781028fcb08452cad995cbcdfaaacde314954d29f` (commit `cfb6d5a97419fb119c8f73c02d9c42a2235db21b`); caller 4,974 bytes / SHA `617e9e3634cccffd7a68ab2c30e82fb5bc48026823232ada59eae81e89a9790f` (commit `7ca49c0b345b3e6baa50b7e6718d9909125fb77f`), schema GREEN in run `35413925663`. The 6 + 427 = 433 row runtime contract is unchanged.
+
+Candidate `10575545321` is not promoted. Accepted runtime authority remains package `10565723112` / selector427 **427/427**; accounting **49 / 14 / 35**, debt **5**. Exact next: `M4-CP4-TB1-R1-EXEC`.
+
 ## 2026-09-19 — `M4-CP4-TB1-EXEC`: orchestration-invalid before runtime; CB2 package closure required
 
 Artifact-only TB1 run/job `35411656874 / 105812362078` consumed candidate artifact `10574525792` exactly once and verified provider/package SHA-256 `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0`, full `SHA256SUMS`, and exact packaged source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`. Frozen control receipts were harness 19,860 bytes / SHA-256 `3574953980bb3e9ec377795264a8768b1b237b03b3c9730539ae343e7e030e03` and caller 4,908 bytes / SHA-256 `36c0cad155eff3762bf71259fd4713d5f1de0fc0e80c631273a7bcfff9b62ce5`.
