@@ -7,7 +7,8 @@
 **Exact selector426 prefix SHA-256:** `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`
 **Selector427 owner partition:** **30 / 281 / 75 / 41**
 **Checkpoint role:** cumulative M4 exit proof only; **no second A3 writer**.
-**DEFN-R1 ownership amendment (2026-09-19):** Reading **B** is frozen. M4 retains only the produced closed-complex `G4-B002` debt; the two periodic produced-witness debts are explicitly M5-owned. Total produced-witness debt remains **5**.
+**DEFN-R1 ownership amendment (2026-09-19):** Reading **B** is frozen. The two periodic produced-witness debts are explicitly M5-owned.
+**DEFN-R2 ownership amendment (2026-09-19):** Reading **B** is frozen for the remaining closed-complex subject. `surfaceCellContext` is explicitly diagnostic-only and `hasArrangement` retains a post-tracing global arrangement after occurrence-bearing embedding work; it is not the A4 `RegionCellComplex` authority. The unchanged closed-complex candidate-extraction debt is therefore re-homed to **M6-CP1 mechanism / M6-CP3 direct-production re-proof**. M4 owns no remaining produced-witness debt; total project debt remains **5**.
 
 ## 1. Authority and scope
 
@@ -22,7 +23,7 @@ The accepted predecessor is exact selector427. Any eventual CP4 cumulative selec
 M4 may close only when all of the following are simultaneously true:
 
 1. selector427 remains the exact cumulative prefix;
-2. the remaining M4-owned `G4-B002` debt, `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous`, is re-proved on pipeline-produced authority;
+2. no later-stage produced-witness debt is treated as an M4 exit conjunct; the closed candidate-bearing-complex debt remains OPEN globally under the DEFN-R2 M6 owner in §3.1;
 3. production A3 publishes auditable work evidence whose operation count and monotone progress are independently reproducible;
 4. same-region multiplicity-2 is proved end-to-end from A2b boundary authority through the production baseline binder;
 5. the zero-transport test-helper precondition audit is complete enough that no CP4 gate derives semantic-success authority from a helper whose upstream atlas/topology precondition is false;
@@ -46,7 +47,7 @@ Accordingly:
 
 ## 3. `G4-B002` produced-witness debt ownership
 
-The accepted selector427 contains historical identities whose current subjects are direct/synthetic. CP4 does **not** rewrite those accepted rows. DEFN-R1 now splits ownership: §3.1 remains an M4-CP4 produced-witness gate; §§3.2–3.3 preserve their exact obligations but are re-homed to M5 because canonical same-sheet relation identity is part of M5 relation/certificate authority. No debt is deleted or marked satisfied.
+The accepted selector427 contains historical identities whose current subjects are direct/synthetic. CP4 does **not** rewrite those accepted rows. DEFN-R1 re-homed §§3.2–3.3 to M5 because canonical same-sheet relation identity is part of M5 relation/certificate authority. DEFN-R2 re-homes §3.1 to M6 because its required retained candidate-bearing subject is a later occurrence/arrangement product, not A4 `RegionCellComplex` authority. No debt is deleted or marked satisfied.
 
 ### 3.1 Produced closed-complex candidate extraction
 
@@ -74,6 +75,10 @@ A direct call to `closed_toroidal_candidate_complex()` is not credit.
 **R3 Review amendment (2026-09-19):** this stop condition has fired for the current focused helper. CB4 corrected its rawfield reader, but R3 then stops at `NotProductionReady/tracing` before retained arrangement authority exists. This does **not** establish a product defect or weaken the required subject: §3.1 does not freeze the generic torus setup as unique authority. The first post-definition Code + Build may correct only the test-local production precondition, including reuse of already accepted hard-rail production setup when needed, while preserving fail-closed/no-recovery execution and the independent candidate oracle/tamper. The debt remains open until a produced candidate-bearing arrangement reaches that oracle.
 
 **R2 Review amendment (2026-09-19):** CB5 performed that one authorized test-precondition correction by reusing the accepted row408 18-hard-edge torus setup. Fresh R2 still reaches `NotProductionReady/tracing` with `surfaceCellContext.hasArrangement == false`; row408 proves only `phaseFront == Produced`. The test-only correction path is therefore exhausted. No further fixture/precondition edit is authorized until runtime-free `M4-CP4-DEFN-R2` reconciles whether the retained candidate-bearing complex is M4/A4 authority or belongs to a later stage. The debt, independent oracle, tamper and fail-closed/no-recovery requirements remain unchanged.
+
+**DEFN-R2 disposition (2026-09-19): OPEN / RE-HOMED TO M6.** Reading **B** is required by the stage contracts. `DESIGN.md` defines A4 as one `RegionCellComplex` **per region**, while A5 creates the global `SurfaceOccurrenceComplex` in which every cell corner and directed side has an occurrence identity. `SurfaceCellPipelineContext` is explicitly documented as diagnostic-only and forbidden from carrying semantic stage authority. Its `hasArrangement` flag is set only after the produced phase front has passed through the later `strands` and `embedding` work and `build_surface_cell_complex(...)`; the retained arrangement is explicitly a debug copy consumed by simplification. Current transitional materialization also creates `OccurrenceId` ownership/quotient data directly from the phase front, confirming that this surface crosses the A5/A6 boundary rather than defining A4.
+
+The debt is therefore **not an M4 exit conjunct**. Its subject/oracle/tamper are preserved unchanged and re-homed to **M6-CP1**, where occurrence creation / quotient construction / geometry embedding become separate complete stage products. **M6-CP3** owns the required direct-production re-proof on authoritative A5 occurrence-complex output after that mechanism exists. No synthetic/direct arrangement, recovery output, or `phaseFront == Produced` proxy receives credit. Total project debt remains **5**.
 
 ### 3.2 Produced torus relation ownership under container reordering
 
@@ -231,7 +236,7 @@ Every carried item has exactly one owner.
 | `M4-CP3-TB1-R1-REV-OBS-01` — same-region multiplicity-2 | **DISCHARGED / M4-CP4 exit conjunct proved** | `M4-CP4-TB2-R2-REV` independently credits the freshly executed produced binder witness after R2 passes `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`. |
 | `M4-CP3-CB4-REV-OBS-02` — row399 path/`sourceFaces` divergence tamper | **explicit later trigger-owner; not a CP4 exit conjunct** | First Code+Build turn that legitimately changes selector row399 `GlobalTopologyPlan.IndependentValidationRejectsExactSourcePathTamperMatrix`, its path/`sourceFaces` binder, or the owning producer contract. Until then row399 remains byte-frozen. |
 | historical TB3 row408 provenance | **CP4 truth constraint, not a test row** | All CP4 records must preserve that row408 `RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity` was not historically observed failing with `InvalidHardRailPairing`. No rewrite of history receives credit. |
-| `G4-B002` produced closed-complex debt | **OPEN / ownership under `M4-CP4-DEFN-R2`** | §3.1 only. CB5 already consumed the one authorized test-local production-precondition correction; R2 still stops before retained arrangement. No further test-only correction is authorized until DEFN-R2 decides whether the subject is M4/A4 authority or belongs to the earliest later owning stage. The independent oracle/tamper and debt remain unchanged. |
+| `G4-B002` produced closed-complex debt | **OPEN / re-homed; not an M4 exit conjunct** | **M6.** M6-CP1 owns the occurrence-complex/stage-separation mechanism; M6-CP3 owns the exact direct-production candidate-extraction re-proof. The independent eligibility oracle, hard-feature tamper, fail-closed/no-recovery subject and debt remain unchanged. |
 | two periodic `G4-B002` produced-witness debts | **re-homed; not M4 exit conjuncts** | **M5.** Reorder: M5-CP1 mechanism + M5-CP3 production re-proof. Missing owner: M5-CP2 typed failure + M5-CP3 production re-proof. Exact discriminators preserved. |
 | two `G4-B003` produced-witness debts | **explicit later owner** | M5, unchanged. CP4 must not pull them forward. |
 
@@ -243,7 +248,11 @@ CP4 uses two evidence phases so test-authority repair cannot self-publish:
 
 1. **CB1:** implement work receipts/validator support and new focused CP4 identities; compile/package only. selector427 is unchanged.
 2. **Artifact-only TB + Review:** execute the focused identities plus the exact required accepted-prefix reproof defined by the successor TB plan. Review adjudicates produced reachability, independent oracles, work evidence and all tampers.
-3. **Publication CB:** only reviewed-green CP4 identities may be appended after the exact 427-row prefix.
+3. **Publication CB:** only reviewed-green CP4 identities may be appended after the exact 427-row prefix. DEFN-R2 freezes exactly three rows, in this order:
+   1. `M4CP4.ProductionBaselineWorkReceiptIsBoundedAndIndependentlyValidated`;
+   2. `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`;
+   3. `M4CP4.ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRejection`.
+   Exact selector430 is selector427 byte-for-byte plus those three LF rows: **430 rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` / owners 31 / 283 / 75 / 41**. The re-homed closed-complex row and both M5 periodic rows are excluded from M4 publication.
 4. **Final artifact-only cumulative TB + Review:** re-prove every cumulative selector row from immutable package authority. M4 closes only here.
 
 No DEFN or CB may edit existing selector427 rows to make a new witness fit.
@@ -252,7 +261,7 @@ No DEFN or CB may edit existing selector427 rows to make a new witness fit.
 
 Stop and return to Review/DEFN rather than broadening the checkpoint if any of these occurs:
 
-- the remaining M4 `G4-B002` closed-complex subject needs fallback, source-grid recovery, or direct/draft substitution;
+- the re-homed closed-complex `G4-B002` obligation is weakened, credited to M4, pulled backward from A5/M6, or satisfied from fallback/source-grid-recovery/direct/draft authority;
 - a re-homed periodic `G4-B002` obligation is weakened, credited to M4, inferred from hard rails/authored cycles, or satisfied from direct/draft authority;
 - no produced same-region multiplicity-2 subject can be reached without changing upstream semantics;
 - work evidence can only claim `1+2E` while omitting the validator's second `1+2E` schedule;
@@ -266,10 +275,12 @@ Stop and return to Review/DEFN rather than broadening the checkpoint if any of t
 
 ## 9. Exact next turn
 
-`M4-CP4-CB5` completed its bounded test-authority correction and compile-only gate without changing product/fixture/selector semantics or the two M5-owned periodic focused identities. `M4-CP4-TB2-EXEC` then verified the frozen CB4+CB5 composite preflight but is **ORCHESTRATION INVALID / NO SEMANTIC LEDGER** because the full 431-process gate was interrupted by an external container-tool timeout; its same-turn restart is quarantined as no-credit provenance. No CP4 semantic conclusion changes. Exact next is runtime-free control-plane-only `M4-CP4-CB6`; successful correction must re-execute the unchanged four-row focus + selector427 gate from ordinal1 as `M4-CP4-TB2-R1-EXEC`.
+`M4-CP4-DEFN-R2` freezes Reading B for the closed-complex subject: the remaining debt belongs to M6, while R2 Review already credited the three M4-owned focused obligations. CP4 remains OPEN because reviewed identities have not yet been published or re-proved cumulatively. Exact next is publication-only **`M4-CP4-CB8`** under `Architecture_M4_CP4_CB8_Publication_Code_Build_Plan.md`, followed on compile/package GREEN by immutable artifact-only `M4-CP4-TB3-EXEC`.
 
 
-## Review closeout
+## Historical `M4-CP4-DEFN` Review closeout
+
+The table below records the original DEFN closeout at its 2026-09-18 boundary. Later ownership facts in it are superseded by the explicit DEFN-R1/DEFN-R2 amendments above; it is retained as historical process evidence rather than current ownership authority.
 
 | Duty | Answer |
 |---|---|

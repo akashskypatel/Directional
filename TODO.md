@@ -2,32 +2,30 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest Test + Benchmark — `M4-CP4-TB2-R2-EXEC`
+## Latest definition turn — `M4-CP4-DEFN-R2`
 
-R2 is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Run/job `35449574130 / 105914294127` executes all **431** fresh processes: focus **3 PASS / 1 RED**, selector427 **427/427 PASS**, total **430 PASS / 1 RED**, with exact immutable postflight and zero build/repair/mutation/benchmark counters. The sole RED is the produced closed-complex candidate-extraction witness stopping at `NotProductionReady/tracing` before retained arrangement authority.
+DEFN-R2 is **COMPLETE / READING B FROZEN / RUNTIME-FREE**. Static stage ownership proves the R2 closed candidate-bearing arrangement is not M4/A4 authority: A4 owns per-region `RegionCellComplex`; A5 owns explicit occurrence complex; current `SurfaceCellPipelineContext` is diagnostic-only and `hasArrangement` is a later retained arrangement after strands/embedding. The unchanged closed-complex debt is re-homed to **M6-CP1 mechanism / M6-CP3 direct-production re-proof**. Stable accounting remains **49 / 14 / 35**, debt **5**; accepted runtime authority remains package `10565723112` / selector427 **427/427**.
 
-`M4-CP4-TB2-R2-CAND-01` is the same non-stable test-authority reachability root as `M4-CP4-TB1-R3-CAND-01`; no accepted selector row regressed. Accepted runtime authority therefore remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. Focus row3 multiplicity-two and focus row4 exact zero-transport typed expectation are mechanically green pending Review.
+R2 Review already credits exactly three M4 CP4 rows. DEFN-R2 freezes selector430 publication as exact selector427 prefix plus those rows, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owner census **31/283/75/41**.
 
-- [x] `M4-CP4-TB2-EXEC`: orchestration-invalid; no semantic rows promoted.
-- [x] `M4-CP4-CB6`: timeout-free execution plane authored; no runtime.
-- [x] `M4-CP4-TB2-R1-EXEC`: startup-invalid at reusable-workflow permission ceiling; zero semantic rows.
-- [x] `M4-CP4-CB7`: permission ceiling corrected and statically verified; no runtime.
-- [x] `M4-CP4-TB2-R2-EXEC`: complete 431-process gate; **430 PASS / 1 RED**, orchestration valid.
-- [x] `M4-CP4-TB2-R2-REV`: evidence upheld; row1/row3/row4 credited; row2 escalated to definition ownership.
-- [ ] `M4-CP4-DEFN-R2`: **exact next**; runtime-free produced closed-complex stage-ownership reconciliation.
+- [x] `M4-CP4-TB2-R2-REV`: complete; three M4 rows credited; closed-complex subject escalated.
+- [x] `M4-CP4-DEFN-R2`: Reading B; closed-complex debt re-homed to M6 without debt reduction.
+- [ ] `M4-CP4-CB8`: **exact next**; publication-only selector430 + compile/package, no generated runtime.
+- [ ] `M4-CP4-TB3-EXEC`: after CB8 GREEN, immutable artifact-only selector430 cumulative gate.
+- [ ] `M4-CP4-TB3-REV`: mandatory Review; may close CP4/M4 only if final cumulative gate and all amended exit conjuncts are satisfied.
 
-## Current focus — `M4-CP4-DEFN-R2`
+## Current focus — `M4-CP4-CB8`
 
-Runtime-free definition reconciliation under `Architecture_M4_CP4_DEFN_R2_Produced_Closed_Complex_Authority_Reconciliation_Plan.md`. Decide whether the required retained candidate-bearing complex is legitimate M4/A4 authority or belongs to the earliest later owning stage. Preserve debt count 5, fail-closed/no-recovery production subject, independent oracle/tamper, selector427 and accepted package authority. No product/test/fixture/selector/build mutation or generated runtime.
+Publish only the three reviewed-green CP4 identities after exact selector427; update selector manifest/packaging controls as required; compile/package all selector owner binaries through the durable GMP/GMPXX compile workflow with `runtimeExecution=false`. Do not change product/test/fixture/CMake semantics or execute generated Directional runtime.
 
 ## Carried forward from M1
 
-**Produced-witness debt — `G4-B002` split by `M4-CP4-DEFN-R1` (3 total, unchanged).**
-- [ ] **Owner under `M4-CP4-DEFN-R2`:** re-prove `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on the exact produced stage product; ownership may move only by explicit definition amendment with debt/oracle unchanged.
+**Produced-witness debt — `G4-B002` split by DEFN-R1/R2 (3 total, unchanged).**
+- [ ] **M6-CP1 mechanism / M6-CP3 production:** re-prove `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on authoritative A5 occurrence-complex production with the original independent eligibility oracle + hard-feature tamper.
 - [ ] **M5-CP1 mechanism / M5-CP3 production:** re-prove `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` with the original `>=2` produced relation/edge discriminator.
 - [ ] **M5-CP2 mechanism / M5-CP3 production:** re-prove `MissingPeriodicRelationOwnerIsRejected` on produced periodic authority.
 
-**Produced-witness debt — `G4-B003` → M5 (2).** Together with the two re-homed periodic `G4-B002` debts, M5 owns four produced-witness debts; total project debt remains 5.
+**Produced-witness debt — `G4-B003` → M5 (2).** Together with the two re-homed periodic `G4-B002` debts, M5 owns four produced-witness debts; M6 owns the re-homed closed-complex `G4-B002` debt; total project debt remains 5.
 - [ ] Re-prove `FullPeriodicRotationAndTranslationMaterialize` on produced nonzero-Z4 authority.
 - [ ] Re-prove `TamperedFullPeriodicTransformIsRejected` on produced nonzero-Z4 authority.
 
@@ -57,7 +55,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5; CB5 compile-proves the remaining two M4 test-authority corrections in delta artifact `10582435470` while leaving runtime unadjudicated. R2 Review upholds **430 PASS / 1 RED**, credits row1/row3/row4 and closes `CAND-03` non-stably. The sole closed-complex subject remains unreachable after the authorized CB5 precondition correction. Exact next is runtime-free `M4-CP4-DEFN-R2`; CP4 stays open.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. DEFN-R1 re-homed two periodic debts to M5; CB5 compiled the remaining row2/row6 test-authority corrections in delta artifact `10582435470`, and R2 Review adjudicated them. DEFN-R2 re-homes the sole closed-complex debt to M6 after proving the retained arrangement is not A4 authority. R2-reviewed row1/row3/row4 are frozen for selector430 publication. Exact next is publication-only `M4-CP4-CB8`; CP4 stays open through final cumulative selector430 runtime + Review.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -76,7 +74,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
-- [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The three produced-witness debts remain open: one is M4-CP4-owned and two periodic debts are M5-owned after DEFN-R1. This checkbox closes the blocker, not those debt items.
+- [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The three produced-witness debts remain open: one closed-complex debt is M6-owned after DEFN-R2 and two periodic debts are M5-owned after DEFN-R1. This checkbox closes the blocker, not those debt items.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.
 - [ ] `G4-B004`: positive multi-isolation quotient witness; M5/M6.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
@@ -97,4 +95,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; the CB4+CB5 composite remains unpromoted. R2 Review credits work/boundedness, same-region multiplicity-two and zero-transport typed expectation; the remaining closed-complex `G4-B002` debt is under `M4-CP4-DEFN-R2` ownership reconciliation while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M4-CP4-DEFN-R2`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED; M4-CP4 remains open. Package `10565723112` / selector427 **427/427** remains accepted current M4 runtime authority; the CB4+CB5 composite remains unpromoted. R2 Review credits work/boundedness, same-region multiplicity-two and zero-transport typed expectation; no produced-witness debt remains M4-owned: the closed-complex `G4-B002` debt is M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M4-CP4-CB8`**. PR #8 remains open, draft, and unmerged.

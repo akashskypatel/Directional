@@ -1,3 +1,13 @@
+## 2026-09-19 — `M4-CP4-DEFN-R2`: closed-complex subject is A5/M6 authority — **READING B / NON-STABLE / DEBT RE-HOMED**
+
+- **Decision:** Reading B. `DESIGN.md` assigns A4 to per-region `RegionCellComplex` and A5 to `SurfaceOccurrenceComplex` with explicit corner/side occurrence IDs. Current `SurfaceCellPipelineContext` is explicitly diagnostic-only; `hasArrangement` is published only after tracing continues through strands, embedding and global `build_surface_cell_complex(...)`, and that retained complex is a debug copy consumed by simplification. It cannot be used as M4/A4 semantic authority.
+- **Debt disposition:** `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` remains **OPEN** and is re-homed unchanged to **M6-CP1 mechanism / M6-CP3 direct-production re-proof**. Independent candidate eligibility, hard-feature tamper, fail-closed/no-recovery subject and closed-source preconditions are unchanged.
+- **Candidate disposition:** `M4-CP4-TB2-R2-CAND-01` / antecedent `M4-CP4-TB1-R3-CAND-01` are **CLOSED AS M4 OWNERSHIP QUESTION / RE-HOMED TO M6 / NON-STABLE**. This closes the definition ambiguity, not the underlying debt.
+- **M4 implication:** no produced-witness debt remains M4-owned. R2-reviewed rows work/boundedness, same-region multiplicity-two and exact zero-transport behavior are the only CP4 rows authorized for publication after selector427.
+- **Publication freeze:** selector430 = exact selector427 prefix plus those three rows, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31/283/75/41**.
+- **Accounting:** +0 event / +0 category / +0 recurrence. Stable totals remain **49 / 14 / 35**; global produced-witness debt remains **5**; accepted runtime authority remains package `10565723112` / selector427 **427/427**.
+- **Exact successor:** publication-only `M4-CP4-CB8`; no product/test semantic correction is authorized by DEFN-R2.
+
 ## 2026-09-19 — `M4-CP4-TB2-R2-REV`: R2 evidence upheld; closed-complex subject escalates to definition — **NON-STABLE / CP4 OPEN**
 
 - **Authority:** R2 run/job `35449574130 / 105914294127`, result/log `10586074692 / 10586214778`, full CB4 `10578784752` + CB5 delta `10582435470`, exact selector427 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
@@ -8541,12 +8551,14 @@ how the cycles arose. See `[[M4-CP4-TB1-R2-REV-CAND-02]]`. No product change is 
 
 ## `M4-CP4-TB1-R3-CAND-01` — corrected row2 parser reaches a new produced-witness reachability stop
 
-**Owner:** `M4-CP4-DEFN-R2` · **Class:** `ARCHITECTURE_DEFINITION / PRODUCED-SUBJECT STAGE OWNERSHIP`
-**Status:** OPEN / NON-STABLE / DEFINITION RECONCILIATION. CB5 exhausted the one authorized test-local production-precondition correction; R2 still does not retain arrangement authority.
+**Owner:** `M6-CP1` mechanism / `M6-CP3` direct-production proof · **Class:** `ARCHITECTURE_DEFINITION / PRODUCED-SUBJECT STAGE OWNERSHIP`
+**Status:** CLOSED AS M4 OWNERSHIP QUESTION / RE-HOMED TO M6 / NON-STABLE. The underlying produced-witness debt remains OPEN and counted; only its milestone owner changed.
 
 R3 row2 proves the CB4 rawfield format correction mechanically: the stale header stop is gone. The same focused identity then throws `Produced torus did not retain arrangement authority: NotProductionReady/tracing` before a produced closed candidate complex or independent eligibility/tamper oracle is reached. DEFN-R1 adjudicates this as test-authority reachability: the first post-definition CB may align the focused subject to already accepted production preconditions while keeping fail-closed/no-recovery execution and the independent candidate oracle/tamper unchanged.
 
 **R2 Review disposition (2026-09-19):** The row408-aligned helper still terminates `NotProductionReady/tracing` before `surfaceCellContext.hasArrangement`; row408's accepted predicate is only `phaseFront == Produced`. Further test-only correction is not authorized. Ownership escalates to `M4-CP4-DEFN-R2`; the debt/oracle/tamper remain unchanged and no stable repricing occurs.
+
+**DEFN-R2 disposition (2026-09-19):** Reading B. The retained arrangement is a diagnostic post-tracing occurrence/arrangement surface, not A4 `RegionCellComplex` authority. The M4 ownership question closes non-stably; the unchanged debt moves to M6-CP1 mechanism / M6-CP3 direct-production proof. Synthetic/direct/recovery subjects and weakening the independent eligibility/tamper remain prohibited.
 
 ## `M4-CP4-TB1-R3-CAND-02` — row408-aligned torus reaches Produced but publishes zero periodic relations
 

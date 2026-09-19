@@ -152,6 +152,15 @@ Current retained CP4 role set after DEFN-R1: normative `Architecture_M4_CP4_Froz
 
 Current retained CP4 role set after TB2-R2 Review: normative `Architecture_M4_CP4_Frozen_Definitions.md`; current runtime report `Architecture_M4_CP4_TB2_R2_Artifact_Only_Test_Benchmark_Report.md`; current Review `Architecture_M4_CP4_TB2_R2_Review_Record.md`; exactly one successor plan `Architecture_M4_CP4_DEFN_R2_Produced_Closed_Complex_Authority_Reconciliation_Plan.md`; selector history; this consolidated record; tracker/changelog and durable project authority.
 
+### CP4 DEFN-R2 folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M4_CP4_TB2_R2_Review_Record.md` | 118 | **SUPERSEDED/FOLDED BY DEFN-R2.** R2 evidence/adjudication and stage-ownership escalation are retained in §§0.16–0.17, frozen definitions, tracker/changelogs and git history. |
+| `Architecture_M4_CP4_DEFN_R2_Produced_Closed_Complex_Authority_Reconciliation_Plan.md` | 82 | **CONSUMED/FOLDED BY DEFN-R2.** Reading A/B criteria, prohibited substitutions and debt-preservation contract are discharged/preserved in §0.17, the DEFN-R2 record, amended frozen definitions and CB8 plan. |
+
+Current retained CP4 role set after DEFN-R2: normative `Architecture_M4_CP4_Frozen_Definitions.md`; current runtime report `Architecture_M4_CP4_TB2_R2_Artifact_Only_Test_Benchmark_Report.md`; current definition/review record `Architecture_M4_CP4_DEFN_R2_Produced_Closed_Complex_Authority_Reconciliation_Record.md`; exactly one successor plan `Architecture_M4_CP4_CB8_Publication_Code_Build_Plan.md`; selector history; this consolidated record; tracker/changelog and durable project authority.
+
 
 ## 0. `M4-CP-SCALE-CB4` compile/package authority
 
