@@ -1,0 +1,3 @@
+Purpose: M4-CP4-CB6 final static-authority reconciliation snapshot.
+Semantic/control authority before marker: 3d40c513c0d4cf7f83bcd367070ef514df72b4f9
+Directional runtime authorized: false
