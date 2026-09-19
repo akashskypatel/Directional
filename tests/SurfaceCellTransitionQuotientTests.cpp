@@ -493,6 +493,27 @@ PhaseFrontFixture make_torus_pipeline_fixture() {
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
   options.surfaceCells.allowSourceGridRecovery = false;
   options.surfaceCells.retainIntermediateGeometry = true;
+  options.surfaceCells.featureMap.cadAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.cadAbsoluteHighDegrees = 180.0;
+  options.surfaceCells.featureMap.organicAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.organicAbsoluteHighDegrees = 180.0;
+  const std::array<int, 7> minorCycle{{0, 3, 25, 37, 49, 61, 0}};
+  const std::array<int, 13> majorCycle{
+      {0, 1, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 0}};
+  const auto addCycle = [&options](const auto &cycle) {
+    for (std::size_t i = 1U; i < cycle.size(); ++i) {
+      const int a = cycle[i - 1U];
+      const int b = cycle[i];
+      options.surfaceCells.featureMap.userHardEdges.insert(
+          {std::min(a, b), std::max(a, b)});
+    }
+  };
+  addCycle(minorCycle);
+  addCycle(majorCycle);
+  if (options.surfaceCells.featureMap.userHardEdges.size() != 18U) {
+    throw std::runtime_error(
+        "Torus pipeline requires the row408 18-edge hard-rail authority");
+  }
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       fixture.mesh.V, fixture.mesh.F, raw, options);
   if (!result.surfaceCellContext.hasTraceNetwork) {
@@ -1485,6 +1506,8 @@ TEST(SurfaceCellTransitionQuotient,
 
 TEST(M4CP4, ProducedTorusPeriodicRelationOwnersSurviveContainerReordering) {
   const auto &fixture = torus_fixture();
+  ASSERT_EQ(SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition());
   const auto &original = fixture.network.phaseFront.product();
   ASSERT_GT(original.periodicHolonomies().size(), 1U);
 
@@ -1554,7 +1577,23 @@ TEST(M4CP4, ProducedTorusPeriodicRelationOwnersSurviveContainerReordering) {
 
 TEST(M4CP4, ProducedTorusMissingPeriodicRelationOwnerIsRejected) {
   const auto &fixture = torus_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  ASSERT_EQ(SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition());
+  const auto &original = fixture.network.phaseFront.product();
+  std::set<directional::authority::PeriodicRelationId> relationIds;
+  for (const auto &relation : original.periodicHolonomies()) {
+    ASSERT_TRUE(relationIds.insert(relation.id()).second);
+  }
+  ASSERT_GE(relationIds.size(), 2U);
+  std::size_t periodicEdgeCount = 0U;
+  for (const auto &edge : original.edges()) {
+    if (!edge.periodicRelation.has_value()) continue;
+    ++periodicEdgeCount;
+    ASSERT_NE(relationIds.end(), relationIds.find(*edge.periodicRelation));
+  }
+  ASSERT_GE(periodicEdgeCount, 2U);
+
+  PhaseFrontDraft tampered = phase_front_draft(original);
   const int periodic = first_edge_of_kind(
       tampered, SurfaceFrontBoundaryKind::PeriodicCut);
   ASSERT_GE(periodic, 0);

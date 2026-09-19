@@ -293,6 +293,23 @@ std::optional<SourceTopologyRegions> make_source_authority(
       build_source_topology_regions(mesh.F, options);
 }
 
+TriMesh make_nonflat_four_triangle_fan() {
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << 0.0, 0.0, 1.0,
+      -1.0, -1.0, 0.0,
+       1.0, -1.0, 0.0,
+       1.0,  1.0, 0.0,
+      -1.0,  1.0, 0.0;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 2,
+           0, 2, 3,
+           0, 3, 4,
+           0, 4, 1;
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return mesh;
+}
+
 TEST(M4CP4, ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRejection) {
   const TriMesh flatMesh = make_four_triangle_fan();
   const auto flatAuthority = make_source_authority(flatMesh);
@@ -302,7 +319,38 @@ TEST(M4CP4, ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRej
   ASSERT_TRUE(flatAtlas)
       << describe_field_atlas_build_error(flatAtlas.error());
 
-  const TriMesh nonFlatMesh = make_skew_four_triangle_fan();
+  const TriMesh nonFlatMesh = make_nonflat_four_triangle_fan();
+  double apexAngleSum = 0.0;
+  int apexIncidentFaces = 0;
+  for (int face = 0; face < nonFlatMesh.F.rows(); ++face) {
+    int apexCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (nonFlatMesh.F(face, corner) == 0) {
+        apexCorner = corner;
+        break;
+      }
+    }
+    if (apexCorner < 0) continue;
+    const int first = nonFlatMesh.F(face, (apexCorner + 1) % 3);
+    const int second = nonFlatMesh.F(face, (apexCorner + 2) % 3);
+    const Eigen::Vector3d firstVector =
+        nonFlatMesh.V.row(first).transpose() - nonFlatMesh.V.row(0).transpose();
+    const Eigen::Vector3d secondVector =
+        nonFlatMesh.V.row(second).transpose() - nonFlatMesh.V.row(0).transpose();
+    ASSERT_GT(firstVector.norm(), 0.0);
+    ASSERT_GT(secondVector.norm(), 0.0);
+    const double cosine = std::clamp(
+        firstVector.dot(secondVector) /
+            (firstVector.norm() * secondVector.norm()),
+        -1.0, 1.0);
+    apexAngleSum += std::acos(cosine);
+    ++apexIncidentFaces;
+  }
+  ASSERT_EQ(4, apexIncidentFaces);
+  const double apexAngleDefect = 2.0 * std::acos(-1.0) - apexAngleSum;
+  ASSERT_GT(apexAngleDefect, 1e-6)
+      << "non-flat negative must independently prove nonzero intrinsic angle defect";
+
   const auto nonFlatAuthority = make_source_authority(nonFlatMesh);
   ASSERT_TRUE(nonFlatAuthority.has_value());
   const auto nonFlatAtlas = FieldTransportAtlas::make(

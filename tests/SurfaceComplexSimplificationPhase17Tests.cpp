@@ -55,16 +55,16 @@ Eigen::MatrixXd read_rawfield_fixture(const std::filesystem::path &path,
   if (!input) {
     throw std::runtime_error("Failed to open rawfield fixture: " + path.string());
   }
-  int rows = 0;
-  int columns = 0;
-  input >> rows >> columns;
-  if (!input || rows != expectedFaces || columns != 12) {
+  int degree = 0;
+  int faceCount = 0;
+  input >> degree >> faceCount;
+  if (!input || degree != 4 || faceCount != expectedFaces) {
     throw std::runtime_error("Invalid rawfield fixture header: " + path.string());
   }
-  Eigen::MatrixXd raw(rows, columns);
-  for (int row = 0; row < rows; ++row) {
-    for (int column = 0; column < columns; ++column) {
-      input >> raw(row, column);
+  Eigen::MatrixXd raw(faceCount, 3 * degree);
+  for (int face = 0; face < faceCount; ++face) {
+    for (int column = 0; column < raw.cols(); ++column) {
+      input >> raw(face, column);
       if (!input) {
         throw std::runtime_error("Invalid rawfield fixture payload: " + path.string());
       }
