@@ -1,0 +1,47 @@
+name: M4 CP4 CB1 Closeout Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-cb1-closeout-drive-apply-20260919.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m4-cp4-cb1-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-cb1-closeout-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-cb1-closeout-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1d3ii0-MAfXVc8rTtvbVFYb8nn0oY3Z0p
+      patch_sha256: '9a7df55fc3d0c7215a716469f42c229e2cd52dd075dafd560b89c5e2c2455493'
+      base_sha: a93b1d7963e549de2a6fdc1e4ba29b431ef2939c
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M4-CP4-CB1: closeout report and TB1 plan'
+      retention_days: 14
+    secrets: inherit
