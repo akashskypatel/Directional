@@ -1,3 +1,0 @@
-turn=M5-DEFN
-caller_install_sha=015695e3fb9940104fcbe4bb522f1d2d21a2964b
-patch_sha256=87dfda683e2158966284821c2c8e591ca55dfddcfc876ee2234ccef012c682d2
