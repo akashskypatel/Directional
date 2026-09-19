@@ -1,0 +1,4 @@
+M4-CP4-CB2 all-eight GMP compile
+source_sha=ad54c12774e10480fd3cef8138cacb8d5dec1529
+retry=0
+runtime=forbidden
