@@ -1,0 +1,44 @@
+name: M4 CP4 TB1 Closeout Drive Apply R2
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m4-cp4-tb1-closeout-drive-apply-r2-20260919.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m4-cp4-tb1-closeout-drive-apply-r2
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m4-cp4-tb1-closeout-drive-apply-r2.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1mBwbHgwMpB0niRXlJ__g_aZTXbvh5KpI
+      patch_sha256: 451cb2c0571f61a03f01573da610cc136f6a48587ce09b2a8a0dec70b0d560b5
+      base_sha: 807722c0518c2919a6f208e4bbe98368f100905b
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M4-CP4-TB1-EXEC: preserve orchestration-invalid evidence and plan CB2"
+      retention_days: 14
+    secrets: inherit
