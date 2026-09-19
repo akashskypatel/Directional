@@ -4,28 +4,25 @@
 
 ## Current authority
 
-`M4-CP4-CB6` is **COMPLETE / CONTROL-PLANE CORRECTION GREEN / RUNTIME-FREE**. The external 300-second foreground-tool deadline that invalidated TB2 is no longer part of the successor execution path. Durable R1 payload authority is commit `cac96243ef6489107db03e47b11467efc61cd918`:
+`M4-CP4-TB2-R1-EXEC` is **COMPLETE / ORCHESTRATION INVALID / NO SEMANTIC LEDGER / NON-STABLE**. Mandatory stale-evidence cleanup completed. The exact CB6 R1 caller was installed byte-for-byte and fresh source snapshot run `35444548694` re-hashed it to SHA-256 `88ab6b51201801f2468add9b3f1ee4ad890c751052c48b1a7c0e9f773af8699c`; exact installed-caller schema validation run `35444528913` reported `valid=true`. Harness authority remained mode `755`, SHA-256 `1dcdd6c6e638b0951af0af38ce2b0e34fafcc877843104e617caf175cf36aeba`.
 
-- harness `.agents/Directional/turn-payloads/m4-cp4-tb2-r1-harness.sh`, mode `755`, SHA-256 `1dcdd6c6e638b0951af0af38ce2b0e34fafcc877843104e617caf175cf36aeba`;
-- caller draft `.agents/Directional/turn-payloads/m4-cp4-tb2-r1-caller-draft.yml`, mode `644`, SHA-256 `88ab6b51201801f2468add9b3f1ee4ad890c751052c48b1a7c0e9f773af8699c`.
+Runtime trigger event SHA `f255ae88a35a16db177748affb4283cbb10e48db` created run `35444642320`, which terminated as `startup_failure` before any job instantiated. The caller declares top-level `contents: read`, but called `agent-run-observer-reusable.yml` contains an optional `branch-file` job with `contents: write`; GitHub rejects that reusable-workflow permission escalation at run construction. This matches the CB6 validation-carrier startup-failure pattern that was corrected by raising the carrier ceiling to `contents: write`. No R1 harness, package acquisition, Directional runtime, focus row, selector row or postflight ran.
 
-The exact caller draft schema-validates in run `35441895809`. The harness statically freezes CB4 `10578784752` + CB5 `10582435470`, selector427 `427` rows / `34,783` bytes / `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owner census **30 / 281 / 75 / 41**, the four M4-owned focused rows, exact composite routing, fresh-process execution, semantic-RED continuation, mandatory immutable postflight, and complete result/log publication. It contains no shell timeout/watchdog and the caller has no `timeout-minutes` workload cutoff.
-
-CB6 executed no Directional runtime, compile, rebuild or repackage. Accepted M4 runtime authority therefore remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. CB4 and CB5 remain immutable/unpromoted. The two invalid TB2 attempts remain audit-only with zero semantic credit.
+Accepted M4 runtime authority therefore remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. CB4 `10578784752` and CB5 `10582435470` remain immutable/unpromoted. All TB2/R1 orchestration-invalid attempts remain audit-only with zero semantic credit.
 
 ## Exact next turn
 
-**`M4-CP4-TB2-R1-EXEC`** — immutable artifact-only re-execution under `Architecture_M4_CP4_TB2_R1_Artifact_Only_Test_Benchmark_Plan.md`.
+**`M4-CP4-CB7`** — runtime-free control-plane-only caller permission-ceiling correction under `Architecture_M4_CP4_CB7_Orchestration_Correction_Plan.md`.
 
-1. Begin with mandatory Test + Benchmark stale-evidence cleanup and preserve all current authority before retiring anything.
-2. Publish the exact validated caller draft bytes as temporary `.github/workflows/m4-cp4-tb2-r1-exec.yml`; re-hash and schema-validate the installed workflow before runtime. Install and trigger commits remain separate.
-3. Execute all four focused rows and all 427 selector rows from ordinal 1: **431 fresh processes**, with no credit from either invalid TB2 attempt.
-4. Semantic RED does not truncate later semantic rows; orchestration failure does. Complete immutable postflight and publish result/log artifacts under `if: always()`.
-5. Any orchestration-valid semantic result routes to mandatory runtime-free `M4-CP4-TB2-R1-REV`.
+1. Preserve the CB4/CB5 packages, R1 harness, selector427, focus set, owner census **30 / 281 / 75 / 41** and composite routing unchanged.
+2. Correct only the successor caller top-level `contents` permission from `read` to `write` so it satisfies the observer reusable's maximum declared ceiling; do not modify reusable-workflow permissions or enable branch-file reporting.
+3. Derive/freeze the corrected caller SHA-256, schema-validate it and statically verify called-workflow permission ceilings.
+4. Execute no Directional runtime, compile, rebuild or repackage in CB7.
+5. Exact successful successor is **`M4-CP4-TB2-R2-EXEC`**, which re-runs all 431 frozen processes from ordinal1 and imports no invalid-attempt rows.
 
 ### Carried obligations and owners
 
-- `G4-B002` produced closed-complex debt — **OPEN / M4-CP4**, runtime re-proof owner `M4-CP4-TB2-R1-EXEC` then Review;
+- `G4-B002` produced closed-complex debt — **OPEN / M4-CP4**, runtime re-proof owner `M4-CP4-TB2-R2-EXEC` after CB7, then Review;
 - `G4-B002` periodic reorder debt — **OPEN / M5**, M5-CP1 mechanism + M5-CP3 production proof;
 - `G4-B002` missing-owner debt — **OPEN / M5**, M5-CP2 mechanism + M5-CP3 production proof;
 - `M4-CP4-TB1-R3-CAND-01` — **CORRECTED IN CB5 / RUNTIME RE-PROOF PENDING / NON-STABLE**;
