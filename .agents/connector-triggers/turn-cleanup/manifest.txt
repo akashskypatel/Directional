@@ -1,0 +1,6 @@
+# M4-CP4-TB1-R2-EXEC temporary-state cleanup
+.agents/connector-triggers/m4-cp4-tb1-r2-exec-20260919.txt
+.agents/Directional/turn-payloads/m4-cp4-tb1-r2-harness.sh
+.agents/connector-triggers/source-snapshot/m4-cp4-tb1-r2-closeout-20260919T032200Z.txt
+.agents/connector-triggers/source-snapshot/m4-cp4-tb1-r2-20260919T031600Z.txt
+.agents/connector-triggers/m4-cp4-tb1-r2-closeout-drive-apply-20260919.txt
