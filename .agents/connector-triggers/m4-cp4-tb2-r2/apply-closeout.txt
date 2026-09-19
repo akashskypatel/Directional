@@ -1,4 +1,4 @@
-M4-CP4-TB2-R2-EXEC closeout patch apply.
-Patch SHA-256: 3caae9a04c79f42b630e5f5056c468de1f8179ca22025349fd9cd51f8c135c9b
-Patch base: 426b78981c936e1314b8e83e45eadd286f2f8bc3
+M4-CP4-TB2-R2-REV closeout patch apply.
+Patch SHA-256: ca61790bb7bc0bcd09250b231969e8c5c90e17a8dd530066b8d47eaf8eaaf5e7
+Patch base: 49bcc7ad4b31ccfa025702beb6cf731d3605e711
 Directional runtime authorized: false
