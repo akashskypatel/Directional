@@ -1,3 +1,13 @@
+## 2026-09-19 — `M4-CP4-TB2-R2-REV`: R2 evidence upheld; closed-complex subject escalates to definition — **NON-STABLE / CP4 OPEN**
+
+- **Authority:** R2 run/job `35449574130 / 105914294127`, result/log `10586074692 / 10586214778`, full CB4 `10578784752` + CB5 delta `10582435470`, exact selector427 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+- **Independent evidence:** 431 fresh processes = **430 PASS / 1 RED**; focus **3/1**; selector **427/427**; owners **30/281/75/41**; exact-one selection, zero skips and exact immutable postflight.
+- **Reviewed credit:** row1 work/boundedness and row3 same-region multiplicity-two are credited. Row4 exact `NonIntegralCycleLift` correction is runtime-proved and `M4-CP4-TB1-R3-CAND-03` closes **CORRECTION RUNTIME-PROVED / NON-STABLE**.
+- **Row2 disposition:** CB5 already reused accepted row408's 18-hard-edge torus precondition, but row2 still stops `NotProductionReady/tracing` before `surfaceCellContext.hasArrangement`; row408 proves only `phaseFront == Produced`. `M4-CP4-TB2-R2-CAND-01` / antecedent `M4-CP4-TB1-R3-CAND-01` therefore escalate to **ARCHITECTURE_DEFINITION / PRODUCED-SUBJECT STAGE OWNERSHIP / NON-STABLE**. **Falsifier:** DEFN-R2 proves the retained candidate-bearing subject is legitimate M4/A4 authority with one bounded production route/correction, or proves it belongs to the earliest later owning stage and re-homes the unchanged debt/oracle/tamper.
+- **Prohibited:** another ungrounded test-only precondition edit; `phaseFront` substitution for arrangement; synthetic/direct/recovery subject; oracle/tamper weakening; debt deletion.
+- **Accounting:** +0 event / +0 category / +0 recurrence. Totals remain **49 / 14 / 35**, debt **5**; accepted package `10565723112` / selector427 **427/427** unchanged; composite unpromoted.
+- **Exact successor:** runtime-free `M4-CP4-DEFN-R2`.
+
 ## 2026-09-19 — `M4-CP4-TB2-R2-EXEC`: row2 remains upstream of retained arrangement — **SEMANTIC NON-GREEN / NON-STABLE**
 
 - **Authority:** orchestration-valid run/job `35449574130 / 105914294127`, event SHA `7fa7ee4351f35893194ebddd7890b0d00e1cd20a`; immutable CB4 `10578784752` + CB5 `10582435470`; selector427 **427/427 PASS**; full ledger **430 PASS / 1 RED** across 431 fresh processes; mandatory immutable postflight exact.
@@ -8531,10 +8541,12 @@ how the cycles arose. See `[[M4-CP4-TB1-R2-REV-CAND-02]]`. No product change is 
 
 ## `M4-CP4-TB1-R3-CAND-01` — corrected row2 parser reaches a new produced-witness reachability stop
 
-**Owner:** `M4-CP4-CB5` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / PRODUCED-WITNESS REACHABILITY`
-**Status:** OPEN / NON-STABLE / TEST-AUTHORITY. DEFN-R1 preserves the produced closed-complex debt in M4 and authorizes only a test-local production-precondition correction; product semantics remain frozen.
+**Owner:** `M4-CP4-DEFN-R2` · **Class:** `ARCHITECTURE_DEFINITION / PRODUCED-SUBJECT STAGE OWNERSHIP`
+**Status:** OPEN / NON-STABLE / DEFINITION RECONCILIATION. CB5 exhausted the one authorized test-local production-precondition correction; R2 still does not retain arrangement authority.
 
 R3 row2 proves the CB4 rawfield format correction mechanically: the stale header stop is gone. The same focused identity then throws `Produced torus did not retain arrangement authority: NotProductionReady/tracing` before a produced closed candidate complex or independent eligibility/tamper oracle is reached. DEFN-R1 adjudicates this as test-authority reachability: the first post-definition CB may align the focused subject to already accepted production preconditions while keeping fail-closed/no-recovery execution and the independent candidate oracle/tamper unchanged.
+
+**R2 Review disposition (2026-09-19):** The row408-aligned helper still terminates `NotProductionReady/tracing` before `surfaceCellContext.hasArrangement`; row408's accepted predicate is only `phaseFront == Produced`. Further test-only correction is not authorized. Ownership escalates to `M4-CP4-DEFN-R2`; the debt/oracle/tamper remain unchanged and no stable repricing occurs.
 
 ## `M4-CP4-TB1-R3-CAND-02` — row408-aligned torus reaches Produced but publishes zero periodic relations
 
@@ -8545,8 +8557,8 @@ R3 rows3/4 both pass `SurfaceCellProducerDisposition::Produced` under the CB4 ro
 
 ## `M4-CP4-TB1-R3-CAND-03` — non-flat zero-transport witness rejects with a different typed atlas error
 
-**Owner:** `M4-CP4-CB5` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / TYPED EXPECTATION`
-**Status:** OPEN / NON-STABLE / TEST-AUTHORITY. R3 already proves the product rejection and validation ordering; only the focused expected code is wrong.
+**Owner:** closed at `M4-CP4-TB2-R2-REV` · **Class:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP / TYPED EXPECTATION`
+**Status:** CLOSED / CORRECTION RUNTIME-PROVED / NON-STABLE. R2 focus row4 PASSes exact `NonIntegralCycleLift` while preserving flat success and independently nonzero apex-defect/non-flat controls; product validation order is unchanged.
 
 R3 row6 independently proves nonzero apex angle defect, flat zero-transport success and non-flat zero-transport rejection. Expected code is `CycleTransportMismatch`; runtime returns enum value 6, currently `NonIntegralCycleLift`. DEFN-R1 freezes the later correction: this witness must expect exact `NonIntegralCycleLift`; generic rejection and product reordering are prohibited.
 
