@@ -1,0 +1,5 @@
+# M4-CP4-CB8 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m4-cp4-cb8-20260919T202800Z.txt
+.agents/connector-triggers/m4-cp4-cb8-publication-apply-20260919.txt
+.agents/connector-triggers/m4-cp4-cb8-compile-20260919.txt
+.agents/connector-triggers/m4-cp4-cb8-closeout-apply-20260919.txt
