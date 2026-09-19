@@ -1,0 +1,4 @@
+M4-CP4-TB1-R2-REV source snapshot
+purpose=runtime-free independent adjudication and successor planning
+read_mode=snapshot
+runtime=forbidden
