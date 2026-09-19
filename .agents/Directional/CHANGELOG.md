@@ -1,3 +1,11 @@
+## 2026-09-19 — `M4-CP4-CB1`: cumulative-exit evidence surface compiled; TB1 planned
+
+CB1 implements the bounded CP4 evidence surface on semantic commit `024427475aebf438c678caa27c35415f32c31198`: production-baseline producer+self-validator work receipts (`1+2E` each / `2+4E` aggregate) with independent replay and report-only exact-width evidence; the three focused produced `G4-B002` identities; produced same-region multiplicity-2 through A2b→baseline; and explicit zero-transport semantic-success precondition audit. Selector427 remains byte-identical at 427 rows / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+
+Mandatory GMP compile run/job `35409797874 / 105806980973` succeeds on exact source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8` for core, pipeline and the three affected test owners. Candidate result/log artifacts are `10574525792 / 10574205964`, SHA-256 `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0 / ff296f40f7756804c6a52deefb7fac0bc944a249676085766c215907d2534727`; packaged source archive SHA-256 `d58c31b055403c81d663eee16fec65f1b4c447a809093bde94c8cb460280fd88`; manifest self-check passes; source status is clean; GMPXX+GMP link evidence is present; `runtimeExecution=false`. No generated Directional runtime executes.
+
+Accepted runtime authority remains package `10565723112` / selector427 **427/427**; stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is immutable artifact-only `M4-CP4-TB1-EXEC` under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, running six focused CP4 identities plus exact selector427 before mandatory Review.
+
 ## 2026-09-18 — `M4-CP4-DEFN` review: definitions upheld; `TB13-REV-OBS-01` withdrawn by its author
 
 Runtime-free review of the CP4 definition freeze. **Upheld; no amendment required.** Accepted authority unchanged

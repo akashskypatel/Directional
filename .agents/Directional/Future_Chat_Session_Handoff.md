@@ -4,38 +4,38 @@
 
 ## Current authority
 
-`M4-CP4-DEFN` is **COMPLETE / DEFINITIONS FROZEN / RUNTIME-FREE**. Accepted current M4 runtime authority is unchanged: package `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Selector427 SHA-256 is `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; exact selector426 prefix is `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; owners **30/281/75/41**.
+`M4-CP4-CB1` is **COMPLETE / BUILD GREEN / RUNTIME NOT EXECUTED**. Semantic implementation commit is `024427475aebf438c678caa27c35415f32c31198`; exact compiled source is `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`. Mandatory GMP compile run/job `35409797874 / 105806980973` produced candidate artifact `10574525792` and log artifact `10574205964`; result/log SHA-256 are `857d49282a099d7c0c11b378e99c6b2cb7ab26a44ab0797a9e74157b27dec7c0 / ff296f40f7756804c6a52deefb7fac0bc944a249676085766c215907d2534727`. `runtimeExecution=false`; no generated Directional runtime executed.
 
-TB13 run/job `35393657851 / 105757517161` remains the decisive accepted cumulative runtime: result artifact `10566648975`, all **427/427 PASS**, exact immutable postflight, genuine genus-two S5 and verified A3. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. M4 remains OPEN because CP4 still requires focused implementation/runtime/review, append-only publication and the final cumulative exit gate.
+Accepted current M4 **runtime** authority is unchanged: package `10565723112` / exact compiled source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. Selector427 remains 427 LF rows with SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; stable accounting remains **49 / 14 / 35**, produced-witness debt **5**. CB1 compile success grants no produced-witness credit and does not promote the candidate package.
 
-`Architecture_M4_CP4_Frozen_Definitions.md` freezes CP4's cumulative-exit contract. Current production baseline work is `1+2E` minimum-T-join calls in the producer plus `1+2E` in its self-validator, aggregate **`2+4E`**, with monotone lex-prefix progress and report-only exact-width evidence. No numeric bound is inferred from S1's observed 429 bits or the unrelated 4096 operational guard.
+CB1 implements the frozen CP4 evidence surface only: production-baseline producer+validator work receipts (`1+2E` each / `2+4E` aggregate) with independent replay and report-only exact-width evidence; the three produced `G4-B002` focused identities; produced same-region multiplicity-2 through A2b→baseline; and explicit zero-transport semantic-success precondition audit. Exact evidence is retained in `Architecture_M4_CP4_CB1_Code_Build_Report.md`.
 
 ## Exact next turn
 
-`M4-CP4-CB1` — Code + Build, compile/package only, under `Architecture_M4_CP4_CB1_Code_Build_Plan.md`.
+`M4-CP4-TB1-EXEC` — immutable artifact-only Test + Benchmark under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, consuming only candidate artifact `10574525792`.
 
-CB1 implements only the frozen evidence surface: production-baseline work/progress/bit-width receipts + independent validation; the three focused produced `G4-B002` identities; produced same-region multiplicity-2 through the A2b→baseline binder; and the dedicated `make_zero_transport_field` semantic-success precondition audit. selector427 remains byte-frozen and **no generated Directional runtime may execute**.
+TB1 must verify package/source/GMP/selector integrity, execute the six focused `M4CP4` identities as fresh one-selected processes, and re-prove exact selector427 from the same package with benchmark count zero and immutable postflight. No rebuild, relink, generated discovery, package repair, source/test/fixture/selector mutation or retry after semantic RED is authorized. TB1 does not promote the package; all semantic results route to `M4-CP4-TB1-REV`.
 
 ### Carried obligations and owners
 
-- three `G4-B002` produced-witness debts — **M4-CP4 gating**; focused subjects/oracles/tampers are frozen in CP4 definitions.
-- `M4-CP3-TB1-R1-REV-OBS-01` — **M4-CP4 exit conjunct**, implemented in CB1 as produced same-region multiplicity-2 binder/oracle/tamper evidence.
-- `M4-CP-SCALE-TB2-REV-OBS-02` — **pre-CP4 prerequisite**, CB1 helper audit; no product semantic accommodation of an inadmissible zero-transport field.
+- three `G4-B002` produced-witness debts — **M4-CP4 gating**; CB1 authors the focused subjects/oracles/tampers, but runtime+Review still own credit.
+- `M4-CP3-TB1-R1-REV-OBS-01` — **M4-CP4 exit conjunct**; CB1 authors produced same-region multiplicity-2 binder/oracle/tamper evidence; runtime+Review pending.
+- `M4-CP-SCALE-TB2-REV-OBS-02` — **pre-CP4 prerequisite**; CB1 authors the helper precondition audit; runtime+Review pending.
 - `M4-CP-SCALE-TB1-REV-OBS-01` — **M8-CP2**, representative/stress numeric calibration only; remains report-only/non-gating before then.
-- `M4-CP-SCALE-DEFN-OBS-01` — **M8-CP2 only if observationally equivalent**; if an exact arrival fallback changes accepted contact semantics, reopen A2a/M3 instead of treating it as hardening.
+- `M4-CP-SCALE-DEFN-OBS-01` — **M8-CP2 only if observationally equivalent**; semantic disagreement reopens A2a/M3.
 - `M4-CP3-CB4-REV-OBS-02` — first legitimate future touch of row399 or its path/`sourceFaces` binder/producer.
 - historical row408 provenance — truth constraint; never rewrite history as an observed `InvalidHardRailPairing` failure.
 - two `G4-B003` produced-witness debts — **M5-owned**, unchanged.
 
-## Mandatory resume procedure — current `M4-CP4-CB1`
+## Mandatory resume procedure — current `M4-CP4-TB1-EXEC`
 
-1. Read root `STATUS` and publish the CB1 entry beacon first. Read mandatory policies/checklists and Code+Build cadence, choose `READ_MODE=snapshot` before broad cross-file inspection, then reconcile exact branch authority.
-2. Re-open this handoff, TODO, `Architecture_M4_CP4_Frozen_Definitions.md`, `Architecture_M4_CP4_CB1_Code_Build_Plan.md`, tracker/ROADMAP/ORIENTATION, selector manifest and relevant LESSONS. Freeze selector427 byte-for-byte.
-3. Implement only CB1-A through CB1-D. Do not route production back through historical framed work-ledger authority, do not add a second A3 writer, and do not substitute synthetic/direct witnesses for produced-credit subjects.
-4. Independently validate the production-baseline receipt: producer `1+2E`, validator `1+2E`, aggregate `2+4E`, ordered per-call dimensions, zero retries/resets, monotone `(initialOptimumPending, remainingCanonicalSpanDecisions)` progress and report-only EInt width categories. Receipt data must never feed semantic decisions.
-5. For the three `G4-B002` identities and same-region multiplicity subject, STOP to Review if production authority cannot reach the frozen precondition. Do not broaden product semantics or manufacture production credit. The zero-transport helper audit is test-authority only; any required product semantic change also STOPs to Review.
-6. Compile/package only through mandatory `agent-compile-reusable.yml` with GMP/GMPXX and `runtimeExecution=false`. Execute no generated Directional binary, test, benchmark, discovery/list/help/version command or `ctest`.
-7. On compile/package GREEN, author exactly one artifact-only `M4-CP4-TB1-EXEC` successor plan from actual CB1 evidence. Perform mandatory Code+Build closeout, cleanup and durable handoff updates; make final `STATUS` the last repository mutation.
+1. Read root `STATUS`, publish the TB1 entry beacon first, read mandatory TB/cadence/workflow policies, choose `READ_MODE=snapshot`, and reconcile exact branch authority.
+2. Re-open this handoff, TODO, `Architecture_M4_CP4_Frozen_Definitions.md`, `Architecture_M4_CP4_CB1_Code_Build_Report.md`, `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, tracker/ROADMAP/ORIENTATION, selector manifest and relevant LESSONS.
+3. Perform TB stale-evidence cleanup only after preserving durable facts. Download artifact `10574525792` once; verify package SHA `857d4928...dec7c0`, packaged source archive `d58c31b0...fd88`, exact source `8d6b8ccf...b3af8`, GMP/GMPXX, clean source receipts, executable modes and `runtimeExecution=false`.
+4. Freeze one harness/caller before generated runtime. Execute exactly six focused `M4CP4` rows, one identity per fresh process with `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, then exact selector427 in file order as 427 fresh one-selected processes. Benchmark count is zero.
+5. Record explicit PASS/RED/SKIP/crash/timeout/selection-mismatch/unexecuted state for all 433 planned rows, preserving exact produced precondition/locus when a focused identity fails. Do not retry or patch semantic RED.
+6. Require exact immutable package/source/execution-view postflight. Route any semantic result to runtime-free `M4-CP4-TB1-REV`; orchestration-invalid evidence routes to the smallest orchestration-correction CB.
+7. Perform mandatory cleanup and durable TB handoff updates; make final `STATUS` the last repository mutation.
 
 ## Historical R8 EXEC resume procedure — consumed
 

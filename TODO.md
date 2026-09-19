@@ -1,19 +1,21 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-18 UTC
+Last updated: 2026-09-19 UTC
 
-## Latest completed Definition — `M4-CP4-DEFN`
+## Latest completed Code + Build — `M4-CP4-CB1`
 
-`M4-CP4-DEFN` freezes the cumulative M4 exit without runtime or semantic mutation. Exact selector427 remains the accepted predecessor (**427/427**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **30/281/75/41**); package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` remains current runtime authority. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**.
+`M4-CP4-CB1` is build-green on semantic commit `024427475aebf438c678caa27c35415f32c31198`, exact compiled source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`, candidate artifact `10574525792`. Mandatory GMP compile run/job `35409797874 / 105806980973` compiled the affected core/pipeline and three test owners with `runtimeExecution=false`; no generated Directional runtime executed. Exact selector427 remains unchanged at **427/427** / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`; stable accounting **49 / 14 / 35**, debt **5**.
 
-The frozen CP4 contract now requires: all three `G4-B002` re-proofs on produced authority; same-region multiplicity-2 end-to-end binder/oracle coverage; a zero-transport helper precondition audit; and current production-baseline work evidence that counts **both** producer and self-validator T-join schedules (`1+2E` each, aggregate `2+4E`) with monotone prefix progress and report-only exact-width evidence. S1 calibration is re-homed to M8-CP2; S2-arrival hardening is M8-CP2-owned only while observationally equivalent, with semantic disagreement reopening A2a/M3; row399 remains next-legitimate-touch-owned; row408 history remains a truth constraint; G4-B003 remains M5-owned.
+CB1 authored the frozen CP4 evidence surface: producer+self-validator `2+4E` work receipts and independent validation; all three focused produced `G4-B002` identities; produced same-region multiplicity-2 binder proof; and zero-transport helper precondition audit. Runtime non-vacuity and credit are still pending.
 
-- [x] `M4-CP4-DEFN`: definitions frozen in `Architecture_M4_CP4_Frozen_Definitions.md`; no compile/runtime/selector mutation.
-- [ ] `M4-CP4-CB1`: **exact next**. Implement production work receipts/independent validation, the three focused produced `G4-B002` identities, produced same-region multiplicity-2 proof, and the dedicated zero-transport helper precondition audit. Compile/package only; selector427 stays byte-frozen.
+- [x] `M4-CP4-DEFN`: definitions frozen in `Architecture_M4_CP4_Frozen_Definitions.md`.
+- [x] `M4-CP4-CB1`: compile/package GREEN; report `Architecture_M4_CP4_CB1_Code_Build_Report.md`; selector427 unchanged; runtime not executed.
+- [ ] `M4-CP4-TB1-EXEC`: **exact next**. Consume artifact `10574525792` immutably; run six focused CP4 identities plus exact selector427, fresh process per identity, benchmark 0, exact postflight.
+- [ ] `M4-CP4-TB1-REV`: mandatory runtime-free adjudication after TB1; only reviewed-green CP4 identities may proceed to publication CB.
 
-## Current focus — `M4-CP4-CB1`
+## Current focus — `M4-CP4-TB1-EXEC`
 
-Start from the accepted selector427/package authority above. Follow `Architecture_M4_CP4_CB1_Code_Build_Plan.md`. CB1 may change only the bounded product/test-authority surfaces required by the frozen evidence contract and must execute no Directional runtime.
+Follow `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`. No rebuild, relink, package repair, source/test/fixture/selector mutation, generated discovery, or in-turn semantic correction is authorized.
 
 ## Carried forward from M1
 
@@ -52,7 +54,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. S2 vertex-star, S3, S4 and S5 are cumulative accepted; S1 remains diagnostic/non-gating. Three `G4-B002` debts remain CP4 gating. Exact next is `M4-CP4-CB1`.
+- [ ] **M4** global conformity plan — **CP1/CP2 historical framed closures retained / CP3 CLOSED + ACCEPTED / CP-COND CLOSED + ACCEPTED / CP-SCALE CLOSED + ACCEPTED / CP4 OPEN**. Accepted current M4 runtime authority is package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**. S2 vertex-star, S3, S4 and S5 are cumulative accepted; S1 remains diagnostic/non-gating. Three `G4-B002` debts remain CP4 gating; CB1 has compiled their produced focused identities but runtime+Review credit is pending. Exact next is `M4-CP4-TB1-EXEC`.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
@@ -92,4 +94,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** is accepted current M4 runtime authority. `M4-CP4-DEFN` is complete and freezes the cumulative-exit contract. Exact next is compile-only **`M4-CP4-CB1`** under `Architecture_M4_CP4_CB1_Code_Build_Plan.md`; M4 remains open until cumulative CP4 closes. PR #8 remains open, draft, and unmerged.
+Current totals are **49 events / 14 categories / 35 recurrences**, debt **5**. M4-CP3, M4-CP-COND and M4-CP-SCALE are CLOSED / ACCEPTED. Package `10565723112` / selector427 **427/427** is accepted current M4 runtime authority. `M4-CP4-CB1` is build-green on candidate artifact `10574525792` with no runtime and selector427 unchanged. Exact next is artifact-only **`M4-CP4-TB1-EXEC`** under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`; M4 remains open until focused runtime+Review, publication, and the final cumulative gate close CP4. PR #8 remains open, draft, and unmerged.

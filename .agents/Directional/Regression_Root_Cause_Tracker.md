@@ -1,3 +1,11 @@
+## 2026-09-19 — `M4-CP4-CB1`: frozen CP4 evidence surface compiles; runtime credit pending — **COMPLETE / BUILD GREEN / NON-STABLE**
+
+- **Candidate build authority:** semantic implementation `024427475aebf438c678caa27c35415f32c31198`; exact compiled source `8d6b8ccf5d49966414f8c54b02b130d8196d3af8`; compile run/job `35409797874 / 105806980973`; candidate artifact `10574525792`; log `10574205964`; GMPXX+GMP and `runtimeExecution=false`.
+- **Evidence surface:** current A3 now carries producer/validator work receipts for `1+2E` calls per phase / `2+4E` aggregate, ordered prefix dimensions, zero-reset completion and report-only exact-width categories; the validator independently reconstructs dimensions and executes its own replay. Six focused `M4CP4` identities cover work tamper rejection, the three produced `G4-B002` debts, produced same-region multiplicity-2, and zero-transport precondition separation.
+- **Selector/authority:** selector427 is unchanged at 427 LF rows / SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Accepted runtime authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`. Compile success grants no debt discharge or package promotion.
+- **Regression disposition:** no runtime executed, so no new event/candidate/category/recurrence is observed. **+0 / +0 / +0**; totals remain **49 / 14 / 35**, produced-witness debt **5**.
+- **Exact successor:** artifact-only `M4-CP4-TB1-EXEC` under `Architecture_M4_CP4_TB1_Artifact_Only_Test_Benchmark_Plan.md`, then mandatory runtime-free Review.
+
 ## 2026-09-18 — `M4-CP4-DEFN`: cumulative exit contract frozen; no runtime regression observed — **COMPLETE / DEFINITIONS FROZEN / NON-STABLE**
 
 - **Accepted authority unchanged:** package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, owners **30/281/75/41**. DEFN executes no compile or Directional runtime and mutates no product/test/fixture/selector/build semantics.
