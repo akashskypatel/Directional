@@ -1,4 +1,0 @@
-.agents/connector-triggers/source-snapshot/m4-cp4-cb4-20260919.txt
-.agents/connector-triggers/m4-cp4-cb4/drive-apply.txt
-.agents/connector-triggers/m4-cp4-cb4/compile.txt
-.agents/connector-triggers/m4-cp4-cb4/closeout-apply.txt
