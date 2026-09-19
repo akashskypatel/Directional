@@ -1,0 +1,4 @@
+M4-CP4-CB3 durable closeout documentation apply
+base_sha=99442bbca3fcaac8970049c56c8552a76213b018
+patch_sha256=8f729f359ef62824545fe388a497e2fa07375663f0cfa03a937096c186e4b1dc
+runtime=forbidden
