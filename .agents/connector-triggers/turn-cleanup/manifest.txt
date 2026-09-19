@@ -1,2 +1,0 @@
-# M4-CP4-TB3-EXEC temporary state
-.agents/connector-triggers/m4-cp4-tb3-closeout-apply-20260919.txt
