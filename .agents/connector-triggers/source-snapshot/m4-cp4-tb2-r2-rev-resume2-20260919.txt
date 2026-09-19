@@ -1,0 +1,4 @@
+Purpose: M4-CP4-TB2-R2-REV resume reconciliation snapshot.
+Authority before marker: 8b21a0345dd104b6df43a20e05697bc552c1017f
+READ_MODE=snapshot
+Directional runtime authorized: false
