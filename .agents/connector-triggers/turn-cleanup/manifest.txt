@@ -1,3 +1,4 @@
 # M4-CP4-TB1-R2-REV temporary-state cleanup
+# retry=1 after retirement of duplicate temporary Drive caller
 .agents/connector-triggers/source-snapshot/m4-cp4-tb1-r2-rev-20260919T034000Z.txt
 .agents/connector-triggers/m4-cp4-tb1-r2-rev-closeout-drive-apply-20260919.txt
