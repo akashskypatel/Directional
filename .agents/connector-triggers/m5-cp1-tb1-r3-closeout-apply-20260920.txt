@@ -1,6 +1,0 @@
-turn=M5-CP1-TB1-R3-EXEC
-purpose=apply durable R3 report/handoff/tracker closeout
-base_sha=d677f4bd1851517afe88276d744ae93f3f9bdb30
-patch_sha256=9c470ee9a6076ddecf415f08aa443852cbd55d0b446ea590f6600e3052f01420
-retry=1
-runtimeExecution=false
