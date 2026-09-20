@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import collections, csv, datetime as dt, hashlib, json, os, pathlib, re, shlex, shutil, stat, subprocess, sys, tarfile, urllib.request
+import collections, csv, datetime as dt, hashlib, json, os, pathlib, re, shlex, shutil, stat, subprocess, sys, tarfile
 
 TURN='M5-CP3-TB1-EXEC'
 CANDIDATE=10615252806
@@ -46,17 +46,15 @@ def write(path,text): pathlib.Path(path).write_text(text,encoding='utf-8')
 def run(cmd, **kw): return subprocess.run(cmd, check=True, **kw)
 
 def download_artifact(repo, token, artifact_id, expected, dest, receipt):
-    headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}
-    req=urllib.request.Request(f'https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}',headers=headers)
-    with urllib.request.urlopen(req) as r: meta=json.load(r)
+    headers=['-H',f'Authorization: Bearer {token}','-H','Accept: application/vnd.github+json','-H','X-GitHub-Api-Version: 2022-11-28']
+    meta_raw=subprocess.check_output(['curl','--fail','--silent','--show-error',*headers,f'https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}'])
+    meta=json.loads(meta_raw)
     provider=meta.get('digest','')
     if provider != f'sha256:{expected}': fail(f'artifact {artifact_id} provider digest {provider}')
-    req=urllib.request.Request(f'https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}/zip',headers=headers)
-    with urllib.request.urlopen(req) as r, open(dest,'wb') as f: shutil.copyfileobj(r,f)
+    subprocess.run(['curl','-L','--fail','--silent','--show-error',*headers,f'https://api.github.com/repos/{repo}/actions/artifacts/{artifact_id}/zip','-o',str(dest)],check=True)
     actual=sha(dest)
     if actual != expected: fail(f'artifact {artifact_id} downloaded digest {actual}')
-    write(receipt,f'artifact_id={artifact_id}\nprovider_digest={provider}\ndownloaded_zip_sha256={actual}\n')
-
+    write(receipt,f'artifact_id={artifact_id}\\nprovider_digest={provider}\\ndownloaded_zip_sha256={actual}\\n')
 def census(root,out):
     root=pathlib.Path(root).resolve(); rows=[]
     paths=[root,*sorted(root.rglob('*'),key=lambda p:p.relative_to(root).as_posix())]
