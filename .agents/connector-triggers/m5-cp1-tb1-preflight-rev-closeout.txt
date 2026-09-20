@@ -1,4 +1,0 @@
-turn=M5-CP1-TB1-PREFLIGHT-REV
-purpose=apply reviewed documentation closeout patch
-base_sha=79fcc7d75ace06fb431d2271e8f0feb3359b2562
-patch_sha256=593dfbadd4bfb245f8f08c0d7b39dec29e41575a5395830bfcae9970d77d8052

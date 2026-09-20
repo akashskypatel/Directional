@@ -1,2 +1,0 @@
-turn=M5-CP1-TB1-PREFLIGHT-REV
-purpose=exact source snapshot for preflight review
