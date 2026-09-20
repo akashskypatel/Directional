@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP1-TB1-R1-EXEC`
+**Last updated:** 2026-09-20 at `M5-CP1-CB2`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. M5 enters from accepted M4 authority package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, stable accounting **49 / 14 / 35**, produced-witness debt **5**. M5 owns four of those debts.
 
@@ -13,7 +13,7 @@ The frozen correction separates relation **identity** from relation **value**. `
 
 Production evidence remains deliberately uncredited: accepted row408 reaches a produced phase front but M4 R3 measured zero produced periodic holonomies. Existing relation-order, missing-owner, full-periodic, and tampered-transform tests are direct/draft mechanism evidence only. All four M5 produced-witness debts remain open with their original discriminators.
 
-Historical successor was `M5-CP1-CB1`; CP1 semantic compile remains green. R1 never reached semantic runtime, and exact next is runtime-free control-plane correction `M5-CP1-CB2` under `Architecture_M5_CP1_CB2_Orchestration_Correction_Plan.md`.
+Historical successor was `M5-CP1-CB1`; CP1 semantic compile remains green. R1 never reached semantic runtime. CB2 has now statically proved the canonical R2 executor; exact next is `M5-CP1-TB1-R2-EXEC` under `Architecture_M5_CP1_TB1_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ### Operational note
 
@@ -29,7 +29,9 @@ The session began repository document inspection before the required `READ_MODE=
 
 Selector430 remains byte-frozen at **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; its first427 prefix remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
 
-`M5-CP1-TB1-R1-EXEC` then failed before its artifact-only harness could be created. Terminal run/job `35486023017 / 106012455346` reports GZip CRC/length errors; `gate_harness_exit` is empty, no result artifact exists, and **0 Directional processes** ran. Counts are **0/9 focused, 0/430 selector, 0 benchmark**. Diagnostic artifact `10597540714` has SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`. Candidate `10595705100` remains unchanged/unpromoted. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is `M5-CP1-CB2`, runtime-free orchestration correction; no package rebuild, selector change, Directional runtime, or production-debt credit is authorized.
+`M5-CP1-TB1-R1-EXEC` then failed before its artifact-only harness could be created. Terminal run/job `35486023017 / 106012455346` reports GZip CRC/length errors; `gate_harness_exit` is empty, no result artifact exists, and **0 Directional processes** ran. Counts are **0/9 focused, 0/430 selector, 0 benchmark**. Diagnostic artifact `10597540714` has SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`. Candidate `10595705100` remains unchanged/unpromoted. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
+`M5-CP1-CB2` then closes the control-plane correction **STATIC GREEN / RUNTIME-FREE**. Canonical harness SHA-256 is `b706d03adde7d7d3daacb6ac46c4cb35468a40e162d7fb9d1617d4e562d37302`; executor-template SHA-256 is `9c9c2527176645d143cf1f972ad5d493db44bc819179fb04a1845f7bd20a12a1`. Final static run `35490228347` proves both schemas, permission ceiling, no hidden timeout/watchdog, and byte-identical round-trip; artifact `10598826679` hashes to `d765ed4d54b07f130e83f44dd499d61584e6dab1693b32db9472d14004b05b2d`. Immutable local preflight re-proved candidate/root-manifest/selector/routing-map/focused-identity authority without Directional runtime. Candidate `10595705100` remains unchanged/unpromoted. Exact next is fresh `M5-CP1-TB1-R2-EXEC`; no production-debt credit is granted by CB2.
 
 ## 3. Folded-document index
 
