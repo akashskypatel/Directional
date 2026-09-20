@@ -1,0 +1,6 @@
+turn=M5-CP1-TB1-R3-EXEC
+purpose=immutable artifact-only focused9 plus selector430
+candidate_artifact=10600353027
+candidate_source=8a86710dd33d7b6cb9a077aef738577e4075b5f7
+retry=0
+benchmark_execution=0
