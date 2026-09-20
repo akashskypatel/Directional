@@ -2,17 +2,17 @@
 
 Last updated: 2026-09-19 UTC
 
-## Latest definition/review turn — `M5-DEFN`
+## Latest Code + Build turn — `M5-CP1-CB1`
 
-`M5-DEFN` is **COMPLETE / APPROVED_WITH_AMENDMENTS / DEFINITIONS FROZEN / RUNTIME-FREE**. `Architecture_M5_Frozen_Definitions.md` now makes periodic relation identity content-derived from topology-region + canonical carrier paths, keeps transport/action as relation value, requires producer-selected ordered path certificates, freezes the five-class typed failure matrix, and preserves all four M5 produced-witness debts unchanged. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M5-CP1-CB1` is **COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED** at semantic source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`. Candidate artifact `10595705100` was built by mandatory GMP run/job `35478855426 / 105992849133`; package manifest is **28/28**, `runtimeExecution=false`. CP1 now has canonical non-ordinal periodic relation IDs, aggregation preservation, topology-distinct same-region retention, producer-selected relation-path certificates, and certificate-validation cutover. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430** until TB1 runtime. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M5-DEFN`: freeze canonical relation identity, selected certificate, cutover, failure matrix, invariance, production reachability, and CP1/CP2/CP3 debt ownership.
-- [ ] `M5-CP1-CB1`: **exact next**; implement canonical non-ordinal relation IDs + selected path certificates and compile only.
-- [ ] `M5-CP1-TB1-EXEC`: only after a green CB1 immutable package; artifact-only runtime.
+- [x] `M5-CP1-CB1`: implement canonical relation IDs + selected path certificates; mandatory GMP compile/package green, no runtime.
+- [ ] `M5-CP1-TB1-EXEC`: **exact next**; immutable artifact-only focused CP1 + selector430 runtime on artifact `10595705100`.
 
-## Current focus — `M5-CP1-CB1`
+## Current focus — `M5-CP1-TB1-EXEC`
 
-Execute only `Architecture_M5_CP1_Code_Build_Plan.md` against `Architecture_M5_Frozen_Definitions.md`. Implementation/test-definition changes plus mandatory GMP compile/package are authorized; generated Directional runtime, test execution, benchmark execution, and M6 occurrence-complex work are not.
+Execute only `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md` against immutable candidate `10595705100`. No configure, compile, relink, generated discovery, package repair, source/test/fixture/selector mutation, or benchmark execution is authorized.
 
 ## Carried forward from M1
 
@@ -52,7 +52,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **DEFN COMPLETE; NEXT: `M5-CP1-CB1`** under frozen M5 definitions; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 CB COMPILE GREEN; NEXT: `M5-CP1-TB1-EXEC`** on immutable artifact `10595705100`; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

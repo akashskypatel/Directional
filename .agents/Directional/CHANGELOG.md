@@ -1,3 +1,9 @@
+## 2026-09-19 — `M5-CP1-CB1`: canonical relation certificates compile/package GREEN
+
+CB1 is **COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED** at semantic source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`. The bounded CP1 slice replaces ordinal periodic relation identity with topology-region + canonical generator/cut carrier identity, preserves relation IDs through component aggregation, permits topology-distinct same-region relations, publishes producer-selected ordered relation-path certificates, and validates those certificates downstream without semantic BFS/DFS route reconstruction. Focused CP1 regressions are authored and compiled but not executed.
+
+Mandatory GMP compile run/job `35478855426 / 105992849133` is GREEN for all eight standard package targets with `runtimeExecution=false`; candidate artifact `10595705100` has provider SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea`, manifest **28/28**, source archive `4f51257db12ae24363a45ddfa62778200e9ac0a8ef4ce2b585c8c606350d78b9`, and explicit GMPXX+GMP link evidence. Accepted runtime authority remains M4 package `10591801825` / selector430 **430/430**; stable accounting stays **49 / 14 / 35**, debt **5**. Exact next: artifact-only `M5-CP1-TB1-EXEC` under `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`.
+
 ## 2026-09-19 — `M5-DEFN` review: definitions upheld; exit-statement risk recorded for M5-CP3
 
 Runtime-free review. **Upheld; no amendment required.** Entering authority re-derived exact: selector430
