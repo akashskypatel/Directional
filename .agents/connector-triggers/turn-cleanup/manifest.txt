@@ -1,3 +1,0 @@
-# M5-CP1-TB1-R2-REV temporary-state cleanup
-.agents/connector-triggers/m5-cp1-tb1-r2-rev-drive-apply-20260920.txt
-.agents/connector-triggers/source-snapshot/m5-cp1-tb1-r2-rev-20260920.txt
