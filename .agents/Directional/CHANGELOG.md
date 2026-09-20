@@ -1,3 +1,9 @@
+## 2026-09-20 — `M5-CP3-TB1-EXEC`: pre-runtime frozen-plan digest defect; zero semantic credit
+
+Artifact-only TB execution is mechanically blocked before valid preflight. Runs `35544087129` and `35544211517` stopped on HTTP 401 artifact-download orchestration with zero Directional runtime. Diagnosed redirect-safe retry `35544717675` passed schema/driver validation and verified candidate artifact `10615252806` at exact SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`, then failed closed because the frozen CP3 TB1 plan gives routing artifact `10592987234` a malformed 62-character ZIP digest `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; accepted M4-TB3/provider authority is `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`.
+
+Final result/log artifacts are `10616206801` / `10616186884`. Boundary evidence records preflight/runtime false, orchestration failure true, benchmark 0 and all configure/compile/relink/discovery/repair/mutation counters 0. Semantic execution is **0/445**; candidate remains unpromoted; stable accounting remains **49 / 14 / 35**, debt **5**. `M5-CP3-TB1-EXEC-OBS-01` opens non-stably under `M5-CP3-TB1-REV`, which must adjudicate and durably correct plan authority before any fresh execution.
+
 ## 2026-09-20 — `M5-CP3-CB2`: same-region A3 periodic promotion compile/package GREEN
 
 Runtime-free Code + Build is complete at exact semantic source `fc2aa5fa68cac890051614c2104979aef4a60d21`. The A4 exact-pairing seam now promotes only same-region reciprocal A3 cut copies with distinct exact boundary occurrences to canonical owned `PeriodicCut` relations while retaining `sharedBoundaryInterval` provenance; cross-region pairs remain HardRail and the same-region HardRail materializer rejection stays unchanged. Checked phase-front validation permits that provenance on `HardRail` or `PeriodicCut` without weakening existing CP2 owner/route/action checks.

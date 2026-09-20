@@ -1,3 +1,11 @@
+## 2026-09-20 — `M5-CP3-TB1-EXEC-OBS-01`: frozen CP3 TB1 routing ZIP digest is malformed — **OPEN / ORCHESTRATION / FROZEN PLAN AUTHORITY / NON-STABLE**
+
+- **Authority:** final pre-runtime retry `35544717675`; result/log artifacts `10616206801` SHA-256 `48509074dfe81f89133290dc4b8f51454e205ce2e2f1c7df40e3d8553ebfc71c` / `10616186884` SHA-256 `6e91e0eb8ab632ccfea3c491fe44dadc7c0c1a7641068107a24bb5dfb686de01`. Boundary receipt: `preflight_completed=false`, `runtime_started=false`, benchmark/configure/compile/relink/discovery/repair/mutation all zero.
+- **Root cause:** `Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md` freezes routing artifact `10592987234` with 62-character digest `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. Accepted M4-TB3 reports and the live provider identify the artifact as SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`.
+- **Recovery evidence:** attempts `35544087129` and `35544211517` first stopped on preflight HTTP 401 artifact-download orchestration. Retry `35544717675` used the diagnosed redirect-safe download path, verified candidate `10615252806` at its exact digest, and then exposed the independent frozen-plan mismatch before routing extraction or runtime.
+- **Disposition:** TB-EXEC correctly fails closed rather than repairing frozen plan authority. Zero semantic processes executed; candidate remains unpromoted and all four M5 production debts remain open. Owner: `M5-CP3-TB1-REV`.
+- **Accounting:** plan/orchestration defect only; **+0 stable event / +0 category / +0 recurrence**. Stable totals remain **49 / 14 / 35**, debt **5**.
+
 ## 2026-09-20 — `M5-CP1-TB1-R3-REV`: pure-permutation falsifier passes; CP1 closes — **ACCEPTED / NON-STABLE / NO NEW EVENT**
 
 - **Authority:** R3 run/job `35496133258 / 106039321958`, result/log `10601350461 / 10601380504`, accepted candidate `10600353027` / source `8a86710dd33d7b6cb9a077aef738577e4075b5f7`, unchanged selector430 **430/430**.

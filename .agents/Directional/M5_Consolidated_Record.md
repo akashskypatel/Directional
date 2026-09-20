@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP3-CB2`
+**Last updated:** 2026-09-20 at `M5-CP3-TB1-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -35,7 +35,9 @@ Accepted selector row408 keeps the exact 18-edge torus production precondition, 
 
 Mandatory compile/package run/job `35542532109 / 106162702255` builds all eight standard targets with GMP/GMPXX, clean source and `runtimeExecution=false`. Candidate artifact `10615252806` is SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`; root manifest verifies 28/28. Selector430/first427 remain frozen at `1c412850...9db6 / f9c88380...e86f`. The first compile's aggregate-macro syntax error was corrected by one parenthesis-only test-source repair before the successful fresh compile.
 
-Exact successor is `M5-CP3-TB1-EXEC`, artifact-only, under `Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md`: nine reviewed mechanism rows + six produced rows + selector430, 445 fresh exact-filter processes, exact-one/zero-skip, benchmark 0, immutable postflight. Accepted runtime authority remains package `10601978228` until Review. `M5-CP2-TB1-REV-OBS-01` remains open for `M5-CP3-TB1-REV`, and all four M5 produced debts remain open. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M5-CP3-TB1-EXEC` then stopped before semantic runtime. Two initial runs (`35544087129`, `35544211517`) exposed and diagnosed redirect/auth artifact-download orchestration; retry `35544717675` verified the candidate artifact successfully and then failed closed on the frozen plan's malformed 62-character routing ZIP digest. Accepted M4-TB3/provider authority for artifact `10592987234` is `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`, while the CP3 TB1 plan records `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. Final result/log artifacts are `10616206801 / 10616186884`; preflight/runtime are false and all prohibited-operation counters are zero. Semantic credit is **0/445**. Candidate remains unpromoted and accepted runtime authority remains package `10601978228`. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
+Exact successor is runtime-free `M5-CP3-TB1-REV`, which owns `M5-CP3-TB1-EXEC-OBS-01` and must independently adjudicate/correct frozen plan authority before any fresh artifact-only execution. `M5-CP2-TB1-REV-OBS-01` and all four M5 produced debts remain open because no valid CP3 semantic runtime exists.
 
 ## 5. Folded-document index
 
