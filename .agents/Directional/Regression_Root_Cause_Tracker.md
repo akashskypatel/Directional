@@ -8939,3 +8939,24 @@ independent carrier identity and container-reversal repetition); and row **304**
 The CB report records this mapping. Review must independently adjudicate the row-226 boundary relocation; the
 separate `M5-CP1-TB1-R3-REV-OBS-01` selector-publication gap remains OPEN because newly authored CP1/CP2 tests are
 still outside selector430. Stable accounting is unchanged.
+
+## `M5-CP2-TB1-EXEC` — no semantic regression observed; Review obligations preserved
+
+**Status.** COMPLETE / NO REGRESSION OBSERVED / +0 STABLE ACCOUNTING / REVIEW REQUIRED.
+
+Artifact-only run/job `35504249045 / 106061268740` executes candidate `10601978228` / source `0798547d...` under
+the frozen CP2 TB1 plan. Focused relation coverage is **7/7 PASS** and selector430 is **430/430 PASS**, with
+exact-one selection and zero skips across all **437** fresh processes. Benchmark execution is **0** and immutable
+postflight is exact. There is therefore no semantic RED to classify, no new regression candidate, and no basis to
+change stable history: **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35** and produced-witness
+debt remains **5**.
+
+This green execution does **not** close `M5-CP2-CB1-OBS-01` by itself. Accepted selector row 226 and the focused
+`NonReciprocalPeriodicRelation` typed check are green together, but the observation concerns whether relocating the
+accepted rejection from downstream materializer-string authority to the checked phase-front typed boundary preserves
+the intended accepted assertion. That is a Review judgment, not a runtime-pass inference. The observation remains
+**CORRECTED / REPORT MAPPING COMPLETE / REVIEW PENDING / NON-STABLE**.
+
+`M5-CP1-TB1-R3-REV-OBS-01` also remains OPEN: selector430 is still byte-frozen and the newly authored CP1/CP2
+mechanism identities remain outside the cumulative gate. No produced-witness debt is discharged by this direct/helper
+runtime evidence. Exact successor is `M5-CP2-TB1-REV`.

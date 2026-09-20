@@ -4,52 +4,41 @@
 
 ## Current authority
 
-`M5-CP2-CB1` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME NOT EXECUTED**. Exact implementation
-source is `0798547dedd8be05f9cd7a096b07e6bd94755316`. Mandatory compile run/job `35500960779 / 106052541163`
-succeeded; candidate result artifact `10601978228` has provider ZIP SHA-256
-`ad2e502db60d94c275769616edf5555d12abd87499c6cf3987cdafbd458d2f0b`, and log artifact `10601923321` has
-SHA-256 `efadf1c895bad944abc85630eca88cc824f44cac9e7aae1d229f87e9ed968f1c`. Root package manifest verifies
-**28/28**, preflight/build exits are **0 / 0**, source-status receipts are clean, GMPXX+GMP linkage is explicit,
-and the command boundary records `runtimeExecution=false` / `turnBoundary=Code+Build-only`.
+`M5-CP2-TB1-EXEC` is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED** on candidate artifact
+`10601978228` / exact source `0798547dedd8be05f9cd7a096b07e6bd94755316`. Authoritative runtime run/job
+`35504249045 / 106061268740` succeeded. Result artifact `10603438015` has provider/download ZIP SHA-256
+`a2b516bd63ea477d22e34631b2714e6c427b92014e86005e605100acaf0657a6`; diagnostic artifact `10603642400` has
+SHA-256 `5ee4edac0b72507522268b825085facdd9ec7cc558168c73e1ba325bd6f824ec`.
 
-The five frozen CP2 typed relation classes are implemented at the checked phase-front boundary: missing, duplicate,
-conflicting, nonreciprocal and representation-renumbered. Independent negative-oracle helpers derive carrier
-identity from route/source content instead of using production `periodic_relation_id(...)` as the answer. No selector,
-fixture, benchmark or CMake semantic change was made. Candidate artifact `10601978228` is **unexecuted and
-unpromoted**.
+The frozen focused gate is **7/7 PASS** and selector430 is **430/430 PASS**, with exact-one selection and zero skips
+across all **437** fresh processes. Benchmark execution is exactly **0**. Package manifest verification is **28/28**
+before and after runtime; candidate-package, packaged-source and execution-view byte+mode censuses are identical;
+selector and routing bytes are unchanged. The boundary receipt records no configure, compile, relink, generated
+discovery, package/mode repair, or source/test/fixture/selector mutation.
 
-Accepted runtime authority therefore remains package `10600353027` / exact source
-`8a86710dd33d7b6cb9a077aef738577e4075b5f7` under unchanged selector430 **430/430**
-(`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; first427
+Candidate `10601978228` remains **unpromoted** pending mandatory Review. Accepted runtime authority therefore remains
+package `10600353027` / exact source `8a86710dd33d7b6cb9a077aef738577e4075b5f7` under unchanged selector430
+**430/430** (`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; first427
 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; owners **31 / 283 / 75 / 41**).
-Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. All four M5
-production debts remain open.
+No semantic regression was observed; stable accounting remains **49 events / 14 categories / 35 recurrences** and
+produced-witness debt remains **5**. All four M5 production debts remain open.
 
-### Accepted-row audit correction
-
-The prior in-flight `M5-CP2-CB1-OBS-01` row-221 premise was false. Reopening accepted source `8a86710d...` proves
-selector430 row 221 `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` was already positive-only
-before CP2 and is unchanged in `0798547d`; it did not lose the cited negative assertion. The actual accepted selector
-rows touched are 226 (`TamperedFullPeriodicTransformIsRejected`: generic downstream materializer failure moved to
-exact typed `NonReciprocalPeriodicRelation` at the checked phase-front boundary), 296 (duplicate outcome preserved
-and strengthened), and 304 (broad invalid-owner tightened to frozen typed missing-owner with an independent carrier
-oracle). Rows 220 and 221 are unchanged. `Architecture_M5_CP2_CB1_Code_Build_Report.md` records the exact mapping.
-`M5-CP2-CB1-OBS-01` is **CORRECTED / REPORT MAPPING COMPLETE / REVIEW PENDING**; Review must independently adjudicate
-row 226's boundary relocation. `M5-CP1-TB1-R3-REV-OBS-01` remains open because new CP1/CP2 identities are still not
-published into the cumulative selector.
+`M5-CP2-CB1-OBS-01` remains **CORRECTED / REPORT MAPPING COMPLETE / REVIEW PENDING**. Runtime proves row 226 and
+the focused typed relation matrix green together, but Review still owns the accepted-boundary relocation judgment.
+`M5-CP1-TB1-R3-REV-OBS-01` remains open because newly authored CP1/CP2 mechanism identities remain outside the
+cumulative selector and require a frozen publication sequence before M5 closes.
 
 ## Exact next turn
 
-**`M5-CP2-TB1-EXEC`** — immutable artifact-only Test + Benchmark execution under
-`Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Plan.md`.
+**`M5-CP2-TB1-REV`** — runtime-free independent Review of the CP2 candidate and immutable TB1 evidence.
 
-Consume candidate artifact `10601978228` / source `0798547d...` immutably. Verify package digest/manifest/modes,
-GMP compile boundary, selector430 hash, and pre-runtime byte+mode census. Execute the frozen **7-row** focused gate
-(one positive relation-container invariant, five typed failure classes, accepted tampered-transform preservation),
-then selector430 as fresh exact-filter processes with exact-one selection and zero skips. Benchmark execution is
-exactly **0**. No configure, compile, relink, generated discovery, package repair, source/test/fixture/selector
-mutation, or candidate promotion is authorized. Any orchestration-valid outcome routes to runtime-free
-`M5-CP2-TB1-REV`.
+Re-open run/job `35504249045 / 106061268740`, result/log artifacts `10603438015 / 10603642400`, candidate artifact
+`10601978228` / source `0798547d...`, and the exact focused/selector ledgers. Independently verify focused **7/7**,
+selector430 **430/430**, exact-one/zero-skip, immutable postflight, and the zero-benchmark/zero-build boundary.
+Adjudicate `M5-CP2-CB1-OBS-01`, especially accepted row 226's checked-boundary relocation, then decide candidate
+promotion and CP2 closure. Preserve `M5-CP1-TB1-R3-REV-OBS-01` unless Review freezes the required M5 selector
+publication sequence with the required pre-commitment discipline. No runtime or Code + Build execution is authorized
+in Review.
 
 ## Carried obligations
 
@@ -75,13 +64,13 @@ closing CB1.
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M5_CP2_CB1_Code_Build_Report.md
 conditional_modules: []
 deep_references:
+  - .agents/Directional/Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M5_CP2_CB1_Typed_Relation_Failure_Matrix_Plan.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
-  - .agents/Directional/M5_CP1_Closure_Record.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
 templates_when_producing: []
 do_not_preload:

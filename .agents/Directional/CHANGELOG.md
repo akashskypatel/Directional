@@ -1,3 +1,25 @@
+## 2026-09-20 — `M5-CP2-TB1-EXEC`: focused 7/7 + selector430 430/430 mechanically green
+
+Artifact-only runtime run/job `35504249045 / 106061268740` completed successfully on immutable candidate artifact
+`10601978228` / exact source `0798547dedd8be05f9cd7a096b07e6bd94755316`. Focused CP2 gate is **7/7 PASS** and
+selector430 is **430/430 PASS**, exact-one selection / zero skips across all **437** fresh processes. Benchmark
+execution is **0**. Result artifact `10603438015` hashes to
+`a2b516bd63ea477d22e34631b2714e6c427b92014e86005e605100acaf0657a6`; diagnostic artifact `10603642400` hashes
+to `5ee4edac0b72507522268b825085facdd9ec7cc558168c73e1ba325bd6f824ec`. Focused/selector ledger hashes are
+`9dcadb661cadff5e1b523877ba96bd00ad6a67cafa3cce00865404f950d9f2ee` /
+`2ab6db5febdab40606138739a0b01520f6671061ef9420a240fc7d543a342656`.
+
+Immutable postflight is exact: package manifest **28/28** before/after; candidate-package, packaged-source and
+execution-view byte+mode censuses match; candidate ZIP/source archive/selector/routing hashes are unchanged. The
+boundary receipt records no configure, compile, relink, generated discovery, package or mode repair,
+source/test/fixture/selector mutation, or benchmark execution. No semantic regression was observed, so stable
+accounting remains **49 / 14 / 35** and produced-witness debt remains **5**.
+
+Candidate `10601978228` remains **unpromoted** pending mandatory Review; accepted runtime authority remains package
+`10600353027`. `M5-CP2-CB1-OBS-01` remains Review-pending despite the green runtime because accepted row 226's
+boundary relocation is an architectural/test-authority judgment. `M5-CP1-TB1-R3-REV-OBS-01` remains open. Exact
+successor is runtime-free `M5-CP2-TB1-REV`.
+
 ## 2026-09-20 — `M5-CP2-CB1`: typed relation failure matrix compile/package GREEN; accepted-row audit corrected
 
 Code + Build complete on exact semantic source `0798547dedd8be05f9cd7a096b07e6bd94755316`. Compile run/job

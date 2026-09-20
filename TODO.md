@@ -2,6 +2,20 @@
 
 Last updated: 2026-09-20 UTC
 
+## Latest Test + Benchmark turn — `M5-CP2-TB1-EXEC`
+
+`M5-CP2-TB1-EXEC` is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED** on candidate artifact
+`10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316`. Runtime run/job
+`35504249045 / 106061268740`; result artifact `10603438015` (ZIP SHA-256
+`a2b516bd63ea477d22e34631b2714e6c427b92014e86005e605100acaf0657a6`) and log artifact `10603642400`
+(SHA-256 `5ee4edac0b72507522268b825085facdd9ec7cc558168c73e1ba325bd6f824ec`) are authoritative execution evidence.
+Focused **7/7 PASS**, selector430 **430/430 PASS**, exact-one/zero-skip across **437** fresh processes, benchmark
+**0**, manifest **28/28** pre/post, and immutable byte+mode postflight all pass. No configure/compile/relink,
+generated discovery, repair, or source/test/fixture/selector mutation occurred. Candidate remains unpromoted; accepted
+runtime authority remains package `10600353027` pending Review. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
+Exact next is runtime-free `M5-CP2-TB1-REV`.
+
 ## Latest Code + Build turn — `M5-CP2-CB1`
 
 `M5-CP2-CB1` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME NOT EXECUTED** on exact source
@@ -12,7 +26,7 @@ Package manifest **28/28**, build/preflight **0/0**, clean source-status receipt
 `runtimeExecution=false` are verified. Candidate remains unexecuted/unpromoted; accepted runtime authority remains
 package `10600353027` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
-Exact next is artifact-only `M5-CP2-TB1-EXEC`; execute no benchmark and make no source/package mutation.
+The Code + Build candidate has now completed artifact-only TB1 mechanically green; promotion remains Review-owned.
 
 ## Latest Review turn — `M5-CP1-TB1-R3-REV`
 
@@ -30,15 +44,17 @@ Exact next is artifact-only `M5-CP2-TB1-EXEC`; execute no benchmark and make no 
 - [x] `M5-CP1-TB1-R3-EXEC`: immutable complete gate executed; focused **9/9**, selector430 **430/430**, benchmark **0**, exact postflight.
 - [x] `M5-CP1-TB1-R3-REV`: independently uphold R3, discharge the row6 falsifier observation, promote package `10600353027`, close CP1; no production-debt credit.
 - [x] `M5-CP2-CB1`: frozen five-class typed relation failure matrix + independent negative oracles implemented; GMP compile/package GREEN on artifact `10601978228`; no runtime or selector publication.
-- [ ] `M5-CP2-TB1-EXEC`: **exact next**; immutable artifact-only focused 7-row CP2 gate + selector430, exact-one/zero-skip, benchmark 0, then mandatory Review.
+- [x] `M5-CP2-TB1-EXEC`: immutable artifact-only focused gate **7/7 PASS** + selector430 **430/430 PASS**, exact-one/zero-skip, benchmark 0, exact immutable postflight.
+- [ ] `M5-CP2-TB1-REV`: **exact next**; independently adjudicate TB1 evidence, row 226 boundary relocation, candidate promotion/CP2 closure, and preserve the M5 selector-publication boundary.
 
-## Current focus — `M5-CP2-TB1-EXEC`
+## Current focus — `M5-CP2-TB1-REV`
 
-Artifact-only execution under `Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Plan.md`. Consume candidate
-artifact `10601978228` / source `0798547d...` immutably. Preflight the exact package, run the frozen 7-row focused
-matrix and selector430 as fresh exact-filter processes with exact-one/zero-skip discipline, execute **0** benchmarks,
-and perform immutable postflight. No configure, compile, relink, source/test/fixture/selector mutation, package
-repair, or candidate promotion is authorized. Any orchestration-valid outcome routes to `M5-CP2-TB1-REV`.
+Runtime-free independent Review. Re-open candidate artifact `10601978228` / source `0798547d...`, runtime run/job
+`35504249045 / 106061268740`, result/log `10603438015 / 10603642400`, the seven-row focused ledger and selector430
+ledger. Verify **7/7 + 430/430**, exact-one/zero-skip, immutable postflight and zero benchmark/build side effects.
+Adjudicate `M5-CP2-CB1-OBS-01` including accepted row 226's checked-boundary relocation, then decide promotion and
+CP2 closure. `M5-CP1-TB1-R3-REV-OBS-01` remains open unless the selector publication sequence is frozen with the
+required pre-commitment discipline.
 
 ## Carried forward from M1
 
