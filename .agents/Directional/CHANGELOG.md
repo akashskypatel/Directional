@@ -20,6 +20,12 @@ before a separate publication CB, followed by a full published-selector TB + Rev
 observation is discharged into this normative sequence; `M5-CP2-TB1-REV-OBS-01` owns the future exact
 precommitment. Exact successor is `M5-CP3-CB1`.
 
+## 2026-09-20 — `M5-CP3-CB1` frozen stop: row408 hard-rail target conflicts with periodic promotion
+
+`M5-CP3-CB1` completed at the plan's explicit static stop condition before any implementation/test/selector edit or compile. On the accepted one-region row408 torus, row408 requires at least one produced `HardRail` carrying exact A3 `sharedBoundaryInterval`; current `SurfacePhaseFrontProduct::make(...)` accepts that interval only on `HardRail`; but materialization rejects paired same-region `HardRail` as `InvalidHardRailTransport`, whereas CP3's positive exit evidence requires the same cut copies to be owned `PeriodicCut` edges. Converting all same-region cut copies would make row408's exact hard-rail count zero; retaining any as hard rail prevents the required positive materialization. The frozen plan forbids retargeting an accepted selector body or weakening CP2 as an in-turn workaround, so no substitute implementation was attempted.
+
+Inspection authority is source snapshot run `35509222128`, artifact `10604648917`, event SHA `331d9052f70cd60171d5179927bd730ba90fd7ad`, ZIP SHA-256 `884e043f4f711d03c531c00ab9ca39e6d115df0ced59d88654ae6c91d8b9f499`. Accepted runtime authority remains package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316`; selector430 and accounting remain unchanged at **430/430**, **49 / 14 / 35**, debt **5**. `Architecture_M5_CP3_CB1_Stop_Record.md` owns the detailed evidence. Exact successor is runtime-free `M5-CP3-CB1-REV`, which must adjudicate shared-boundary provenance across `PeriodicCut` promotion and explicitly authorize any row408 contract evolution before another Code + Build.
+
 ## 2026-09-20 — `M5-CP2-TB1-EXEC`: focused 7/7 + selector430 430/430 mechanically green
 
 Artifact-only runtime run/job `35504249045 / 106061268740` completed successfully on immutable candidate artifact

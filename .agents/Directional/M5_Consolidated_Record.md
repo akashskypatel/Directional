@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP2-TB1-REV`
+**Last updated:** 2026-09-20 at `M5-CP3-CB1`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -27,9 +27,11 @@ The Review also resolves the prior selector-governance gap by adding frozen §13
 
 ## 4. Current open M5 boundary — `M5-CP3`
 
-`M5-CP3-CB1` is the exact next turn. On the accepted row408-class one-region torus production path, product authority must publish `>=2` distinct canonical periodic relations with `>=2` owned periodic edges and genuine nonzero-Z4 rotation+translation authority. Six exact `M5CP3.Produced...` identities are frozen in `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md`; positive preconditions may not be synthesized by test code.
+`M5-CP3-CB1` stopped before implementation/compile on a frozen contract conflict. Accepted row408 requires at least one produced `HardRail` carrying typed A3 `sharedBoundaryInterval`; the same one-region paired cut copies cannot materialize as `HardRail` because the materializer rejects same-region hard-rail transport, while CP3 requires them to become owned `PeriodicCut` authority. The checked factory also currently permits `sharedBoundaryInterval` only on `HardRail`. Converting all cut copies therefore makes row408's exact hard-rail assertion fail; retaining any same-region hard-rail pair prevents the required positive periodic materialization. This triggers the CP3 plan stop rule rather than authorizing a workaround. Exact evidence is in `Architecture_M5_CP3_CB1_Stop_Record.md`.
 
-The first CP3 artifact-only gate must run the nine reviewed-green M5 mechanism identities currently outside selector430, the six new produced identities, then selector430. All four M5 produced-witness debts remain open until direct production proves them. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M5-CP3-CB1-REV` is exact next and must adjudicate whether A3 shared-boundary provenance remains valid on promoted `PeriodicCut` edges and whether row408 may be surgically re-specified to verify the same 18-edge provenance across that promotion. Until Review freezes a replacement Code + Build plan, no CP3 implementation or runtime is authorized.
+
+The intended first CP3 artifact-only gate remains nine reviewed-green M5 mechanism identities, six frozen produced identities, then selector430, but it is deferred until a reviewed replacement implementation compiles/packages successfully. All four M5 produced-witness debts remain open. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 Open closure obligations are `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` (mechanism/produced naming and credit split), `M5-DEFN-REV-OBS-01` (final reconciled exit-theorem verification), and `M5-CP2-TB1-REV-OBS-01` (exact selector publication precommitment at the CP3 pre-publication Review).
 

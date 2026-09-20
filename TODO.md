@@ -21,10 +21,9 @@ owned by `M5-CP3-TB1-REV`.
 Runtime run/job `35504249045 / 106061268740`; result/log artifacts `10603438015 / 10603642400`. Focused **7/7** +
 selector430 **430/430**, exact-one/zero-skip, benchmark **0**, exact immutable postflight.
 
-## Latest Code + Build turn — `M5-CP2-CB1`
+## Latest Code + Build turn — `M5-CP3-CB1`
 
-`M5-CP2-CB1` is **COMPLETE / REVIEWED ACCEPTED**. Compile run/job `35500960779 / 106052541163`; package
-`10601978228` at source `0798547d...`; mandatory GMP compile/package green; `runtimeExecution=false`.
+`M5-CP3-CB1` is **COMPLETE AT FROZEN STOP CONDITION / REVIEW REQUIRED**. Static inspection found that accepted row408 requires at least one produced `HardRail` carrying exact A3 shared-boundary identity, while the one-region CP3 materialization target requires those same paired cut copies to be `PeriodicCut`; current factory validation also permits `sharedBoundaryInterval` only on `HardRail`. No implementation/test/selector change or compile was performed. Accepted package `10601978228` remains authority. See `Architecture_M5_CP3_CB1_Stop_Record.md`.
 
 ## M5 checkpoint sequence
 
@@ -32,18 +31,14 @@ selector430 **430/430**, exact-one/zero-skip, benchmark **0**, exact immutable p
 - [x] `M5-CP2-CB1`: five-class typed relation failure matrix implemented; GMP compile/package green on `10601978228`; no runtime/selector publication.
 - [x] `M5-CP2-TB1-EXEC`: focused **7/7 PASS** + selector430 **430/430 PASS**, exact-one/zero-skip, benchmark 0, immutable postflight.
 - [x] `M5-CP2-TB1-REV`: promote package `10601978228`, close CP2, discharge boundary-relocation observation, freeze selector-publication sequence.
-- [ ] `M5-CP3-CB1`: **exact next**; direct row408-class torus periodic production + six exact `M5CP3.Produced...` witnesses; mandatory GMP compile/package only; selector430 unchanged.
-- [ ] `M5-CP3-TB1-EXEC`: pre-publication artifact-only 15-row M5 focus (nine carried mechanism + six produced) + selector430.
-- [ ] `M5-CP3-TB1-REV`: adjudicate direct-production debts and pre-commit exact successor-selector bytes/order/hash/census before any publication CB.
+- [x] `M5-CP3-CB1`: stopped before implementation/compile on the frozen row408 `HardRail` versus one-region `PeriodicCut` contract conflict; no semantic source or selector change.
+- [ ] `M5-CP3-CB1-REV`: **exact next**; runtime-free architecture Review + Plan to adjudicate A3 shared-boundary provenance across `PeriodicCut` promotion and whether row408 may be surgically re-specified without weakening its exact 18-edge production precondition.
+- [ ] `M5-CP3-TB1-EXEC`: deferred until a reviewed replacement Code + Build completes and packages a candidate; pre-publication artifact-only 15-row M5 focus + selector430 remains the intended gate.
+- [ ] `M5-CP3-TB1-REV`: after a green pre-publication runtime, adjudicate production debts and pre-commit exact successor-selector bytes/order/hash/census before publication CB.
 
-## Current focus — `M5-CP3-CB1`
+## Current focus — `M5-CP3-CB1-REV`
 
-Use the accepted row408-class one-region torus path with its exact 18-hard-edge precondition. Product code must publish
-`>=2` distinct canonical periodic relations and `>=2` owned periodic edges from authoritative production state, plus a
-genuine nonzero-Z4 rotation+translation relation. Author the six exact produced identities frozen in the CP3 plan.
-Positive preconditions may not be synthesized/injected by tests; CP2 typed checks, canonical IDs and selected
-certificates may not be weakened. Compile/package through mandatory GMP only with `runtimeExecution=false`; selector430
-must remain byte-identical.
+Review the static stop record. The accepted row408 one-region torus currently requires a produced `HardRail` carrying typed A3 shared-boundary identity, while the materializer rejects paired same-region `HardRail` and the CP3 produced/materialized target requires `PeriodicCut` ownership. The checked factory additionally rejects `sharedBoundaryInterval` on `PeriodicCut`. Review must decide the intended architecture and explicitly authorize any row408 contract evolution before another implementation turn. No runtime or compile is authorized in this Review.
 
 ## Carried forward from M1
 
@@ -83,7 +78,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED**; current accepted package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**; exact next `M5-CP3-CB1`; four M5 produced-witness debts remain open.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB1 STOPPED FOR REVIEW**; current accepted package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**; exact next `M5-CP3-CB1-REV`; four M5 produced-witness debts remain open.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -122,4 +117,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority is package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. No produced-witness debt is discharged by CP1/CP2 mechanism closure: the closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-CP3-CB1`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority is package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. M5-CP3-CB1 reached a frozen static stop before implementation or compile; no produced-witness debt was discharged. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-CP3-CB1-REV`**. PR #8 remains open, draft, and unmerged.
