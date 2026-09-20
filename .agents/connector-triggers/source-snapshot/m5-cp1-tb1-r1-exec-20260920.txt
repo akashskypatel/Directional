@@ -1,3 +1,0 @@
-purpose=M5-CP1-TB1-R1-EXEC source snapshot
-expected_source=9e9f5f73540ebdbede9a8f2902b2c843069e3a8a
-retry=0

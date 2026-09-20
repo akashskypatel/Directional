@@ -1,4 +1,0 @@
-# M5-CP1-TB1-R1-EXEC temporary-state cleanup
-.agents/connector-triggers/m5-cp1-tb1-r1-closeout-drive-20260920.txt
-.agents/connector-triggers/m5-cp1-tb1-r1-exec-20260920.txt
-.agents/connector-triggers/source-snapshot/m5-cp1-tb1-r1-exec-20260920.txt
