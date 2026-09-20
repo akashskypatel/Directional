@@ -1,0 +1,5 @@
+turn=M5-CP1-TB1-R2-EXEC
+purpose=apply verified closeout documentation patch
+drive_file_id=146hZoSQ9ZSpoJQ3nSLZvphBYLp832jUK
+patch_sha256=29e5fa4ed729f1afdcc2ec048887d71f68cc3d695f93282cf538fb467e477f2a
+base_sha=cd57e1184184bef5aeaefac9778bab67b50b641d
