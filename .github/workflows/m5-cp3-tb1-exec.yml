@@ -41,7 +41,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       DRIVER_PATH: .agents/Directional/turn-payloads/m5_cp3_tb1_exec.py
-      EXPECTED_DRIVER_SHA256: 5fb1131ed0e65edd3f4ea841ed1c8cbd0f1ae5b299dd2eb5e37bc576d9c43dbe
+      EXPECTED_DRIVER_SHA256: 4aacb9ba01f99ee131e332bce673d2227b9fcc7c51c6c88570d7cbfe0df594a4
       TURN_ID: M5-CP3-TB1-EXEC
     steps:
       - name: Initialize persistent diagnostic log
