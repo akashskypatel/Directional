@@ -1,5 +1,0 @@
-turn=M5-CP1-CB3
-purpose=apply closeout docs and R3 plan
-base_sha=540fdee1c31e431119c3c4d6eb68767bf4802206
-retry=1
-runtimeExecution=false
