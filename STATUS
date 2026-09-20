@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M5-CP1-TB1-EXEC
-Status: COMPLETE
-Successor: M5-CP1-TB1-PREFLIGHT-REV
-Started at: 2026-09-20T01:00:21Z
-Resumed at: 2026-09-20T02:11:05Z
-Ended at: 2026-09-20T02:24:38Z
+Turn: M5-CP1-TB1-PREFLIGHT-REV
+Status: IN_PROGRESS
+Successor: UNKNOWN
+Started at: 2026-09-20T02:14:51Z
+Resumed at: 
+Ended at: 
 ---END_TURN_STATUS---
