@@ -39,7 +39,7 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     runs-on: ubuntu-24.04
     env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+      GH_TOKEN: ${{ github.token }}
       DRIVER_PATH: .agents/Directional/turn-payloads/m5_cp3_tb1_exec.py
       EXPECTED_DRIVER_SHA256: 5fb1131ed0e65edd3f4ea841ed1c8cbd0f1ae5b299dd2eb5e37bc576d9c43dbe
       TURN_ID: M5-CP3-TB1-EXEC
