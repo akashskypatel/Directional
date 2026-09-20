@@ -114,3 +114,86 @@ No genuinely new recurring defect pattern was found. Existing non-vacuity / fals
 | review_check.py boundary | PASS — `review_check.py boundary`: ALL CHECKS PASSED; no product/test/fixture/build mutation, no selector mutation, selector430 hash matched HEAD, durable markers preserved. |
 | `STATUS` lifecycle maintained | entry beacon published as `M5-CP1-TB1-R3-REV / IN_PROGRESS`; final COMPLETE beacon is the required final repository write after durable closeout/cleanup. |
 | Pushed to origin, branch in sync | **YES** — the verified Review patch was applied/pushed on the configured working branch; temporary state cleanup completed successfully; branch authority was re-read after workflow-originated pushes and no unapplied Review documentation delta remains before the final STATUS beacon. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld. `M5-CP1` closure and promotion confirmed on evidence.** The falsifier discharged
+honestly, the credit boundary is drawn explicitly, and accounting correctly holds at **49 / 14 / 35**, debt **5**.
+One durability gap is recorded for M5.
+
+### V1 — the falsifier was real, and it passed on its own terms
+
+`M5-CP1-TB1-R2-REV-OBS-01` required a **pure-permutation** witness and pre-committed that a failure would
+*falsify* the R2 test-authority classification rather than license another witness adjustment. The corrected body
+verified from bytes:
+
+1. `baselineDraft = direct_full_periodic_materializer_draft()`;
+2. constructs a distinct relation via `SurfacePeriodicHolonomy::make(…)`, proves it distinct with `std::none_of`,
+   and appends it **to the baseline**;
+3. `reorderedDraft = baselineDraft` — the complete table is copied **after** the append, so membership is
+   **identical** in both drafts;
+4. `ASSERT_GE(…, 2U)` now guards a precondition the test itself established, which is exactly what R2 lacked;
+5. `ASSERT_NE(firstStoredRelationId, lastStoredRelationId)`, then `std::reverse` on the reordered draft only,
+   then `EXPECT_NE` proving the reversal actually changed the first stored ID — so the permutation is observable
+   rather than nominal;
+6. both materialize successfully; certificate signature non-empty and equal, `hash_completion(…)` equal,
+   consumed-relation counts equal.
+
+Membership fixed, order varied, permutation proven observable. This is the witness R2-REV §4 specified, not
+row7's membership-changing fallback — and **it passed**. The R2 classification was therefore confirmed by a
+genuine falsifier rather than sealed by re-tuning. `M5-CP1-TB1-R2-REV-OBS-01` is correctly discharged; no second
+adjustment occurred.
+
+### V2 — the credit boundary is stated in the operative direction
+
+§4 grants **no production-debt credit** and names the specific reason: row6 runs on
+`direct_full_periodic_materializer_draft()` and row9 on `direct_periodic_owner_product()`, both classified
+mechanism-only by frozen §8.1. Naming the helpers rather than asserting the conclusion is what makes the boundary
+checkable. Debt remains **5**, all four M5 debts open for `M5-CP2`/`M5-CP3` on produced authority.
+
+Selector430 re-hashes to `1c412850…9db6` with its first 427 rows byte-identical to selector427, so the accepted
+prefix is untouched and the durable stable-event criterion is satisfied on its own terms.
+
+### V3 — RECORDED: CP1 closed with all of its own evidence outside the required-green selector
+
+`M5-CP1` promoted a new accepted package while selector430 stayed at **430 rows, unchanged**. Verified:
+`grep -c '^M5CP1\.'` against accepted selector430 returns **0**, and no selector file beyond 430 exists. Every
+`M5CP1.*` identity CB1 authored and R3 proved — canonical identity, aggregation without offset remap,
+same-region coexistence, certificate publication, and the pure-permutation witness above — sits **outside** the
+append-only cumulative gate. The single focused row that *is* in the selector, row 221, is the pre-existing M4
+direct-helper row, not CP1's new evidence.
+
+Nothing commits that evidence to publication. `Architecture_M5_Frozen_Definitions.md` contains **no selector
+publication or append sequence at all** — no counterpart to M4-CP4 frozen §7, which staged publication across two
+evidence phases precisely "so test-authority repair cannot self-publish."
+
+The consequence is durability, not correctness. The CP1 closure rests on evidence that was genuinely proved at
+R3 on a promoted package; but from here nothing re-proves it. The cumulative selector is this project's mechanism
+for making proven behaviour permanently required-green, and every prior checkpoint closure in this sequence
+published into it — 425, 426, 427, 430. CP1 is the first to close without appending. A `M5-CP2` or `M5-CP3`
+change could regress canonical-identity behaviour and the selector gate would not see it, because those
+identities are not in it.
+
+**Required before M5 closes:** freeze an M5 selector publication sequence stating when CP1 and CP2 mechanism
+identities are appended — at CP3 publication or earlier — carrying the pre-commitment discipline that has held
+four times (declare the successor selector's exact SHA-256 and owner census before the publication CB builds it),
+on selector430 as byte-frozen prefix. Recorded as `M5-CP1-TB1-R3-REV-OBS-01`.
+
+This is the same gap as `M5-DEFN-REV-OBS-01` seen from another side: M5's governing document carries neither an
+exit theorem nor a publication sequence, so both the conditions for closing M5 and the mechanism for protecting
+what it proves are currently unstated.
+
+### V4 — process note and verification limits
+
+The first R3 trigger attempt `35496056165` failed on a job-level `runner.temp` scope before runtime and the retry
+changed only control-plane scope. That is the third orchestration-authoring miss in this checkpoint
+(`M5-CP1-TB1-EXEC-OBS-01`, `M5-CP1-TB1-R1-EXEC-OBS-01`); the boundary held each time and no semantic claim
+depends on any of them, but the standing requirement to validate the executor end-to-end before triggering
+remains unmet in practice.
+
+Re-derived from repository bytes: the corrected row6 body and its membership/ordering structure, selector430's
+row count, hash and 427-row prefix, the absence of any `M5CP1.` row in the accepted selector, the absence of any
+selector beyond 430, and the absence of a publication sequence in the M5 frozen definitions. Accepted as
+reported: package and result artifact hashes, the 28/28 manifest, and the `9/9` and `430/430` tallies.

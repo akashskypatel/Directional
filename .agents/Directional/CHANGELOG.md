@@ -1,3 +1,34 @@
+## 2026-09-20 — `M5-CP1-TB1-R3-REV` review: CP1 closure upheld; selector-publication gap recorded
+
+Runtime-free review. **Upheld — `M5-CP1` closure and promotion confirmed on evidence.** Accounting holds at
+**49 / 14 / 35**, debt **5**; selector430 re-hashes to `1c412850…9db6` with its first 427 rows byte-identical to
+selector427, so the accepted prefix is untouched.
+
+**The falsifier discharged honestly.** `M5-CP1-TB1-R2-REV-OBS-01` pre-committed that a failing pure-permutation
+witness would *falsify* the R2 test-authority classification rather than license another adjustment. The
+corrected row6 verified from bytes: the second relation is appended to the **baseline**, the reordered draft is
+copied **after** that append so membership is identical, `ASSERT_GE(…, 2U)` now guards a precondition the test
+establishes, and `EXPECT_NE` on the first stored ID proves the reversal is observable rather than nominal.
+Membership fixed, order varied — the witness R2-REV specified, not row7's membership-changing fallback — and it
+**passed**. The classification was confirmed by a genuine falsifier, not sealed by re-tuning.
+
+The credit boundary is stated in the operative direction: §4 grants **no production-debt credit** and names why —
+row6 runs on `direct_full_periodic_materializer_draft()`, row9 on `direct_periodic_owner_product()`, both
+mechanism-only under frozen §8.1. Naming the helpers rather than asserting the conclusion is what makes it
+checkable.
+
+New: `M5-CP1-TB1-R3-REV-OBS-01` (non-gating for CP1; must close before M5 closes). CP1 promoted a package while
+selector430 stayed at 430 rows: `grep -c '^M5CP1\.'` on the accepted selector returns **0** and no selector
+beyond 430 exists, so **all** of CP1's newly-authored mechanism evidence sits outside the append-only cumulative
+gate. `Architecture_M5_Frozen_Definitions.md` contains no selector publication sequence at all — no counterpart
+to M4-CP4 frozen §7, which staged publication so test-authority repair could not self-publish. The evidence was
+genuinely proved, but nothing now re-proves it; every prior closure in this sequence published (425, 426, 427,
+430). M5 must freeze when CP1/CP2 identities are appended, carrying the pre-commitment discipline that has held
+four consecutive times. Same underlying gap as `M5-DEFN-REV-OBS-01`: M5's governing document states neither an
+exit theorem nor a publication sequence.
+
+Exact successor: `M5-CP2-CB1` — typed relation failure matrix, with stop rules already frozen.
+
 ## 2026-09-20 — `M5-CP1-TB1-R3-REV`: R3 upheld; package promoted; M5-CP1 CLOSED / ACCEPTED
 
 Independent runtime-free Review re-opens R3 run/job `35496133258 / 106039321958`, result/log artifacts `10601350461 / 10601380504`, candidate package `10600353027` / source `8a86710dd33d7b6cb9a077aef738577e4075b5f7`, and the exact candidate source. It independently re-hashes selector430 `1c412850...9db6` and first427 `f9c88380...e86f`, rechecks routing owners **31/283/75/41**, and confirms focused **9/9 PASS** plus selector430 **430/430 PASS** with exact-one/zero-skip across **439**, benchmark **0**, and exact immutable postflight.

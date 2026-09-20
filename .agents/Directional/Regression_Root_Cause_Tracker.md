@@ -8854,3 +8854,36 @@ witness adjustment would convert a falsifiable claim into a self-sealing one.
 Credit is unchanged either way: row6 runs on `direct_full_periodic_materializer_draft()`, which frozen §8.1 marks
 **mechanism-only, no produced-witness credit** and names as highest existing evidence for M5 debts 3 and 4. A
 green row6 discharges no debt. See `[[M5-CP1-TB1-PREFLIGHT-REV-OBS-01]]`.
+
+## `M5-CP1-TB1-R3-REV-OBS-01` — M5-CP1 closed with all of its own evidence outside the required-green selector
+
+**Status.** OPEN / NON-GATING FOR CP1 / must be closed before M5 closes / owner: the M5 turn that freezes
+publication (at latest `M5-CP3`) / NON-STABLE.
+
+`M5-CP1` promoted accepted package `10600353027` while selector430 remained **430 rows, unchanged**. Verified:
+`grep -c '^M5CP1\.'` against `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` returns **0**, and no
+selector file beyond 430 exists. Every `M5CP1.*` identity CB1 authored and R3 proved — canonical content
+identity, aggregation without offset remap, same-region coexistence, certificate publication, and the
+pure-permutation witness — sits outside the append-only cumulative gate. The only focused row already in the
+selector is row **221**, the pre-existing M4 direct-helper row, not CP1's new evidence.
+
+`Architecture_M5_Frozen_Definitions.md` contains **no selector publication or append sequence at all**, unlike
+M4-CP4 frozen §7, which staged publication across two evidence phases specifically "so test-authority repair
+cannot self-publish."
+
+**Why:** this is a durability gap, not a correctness one — the CP1 evidence was genuinely proved at R3 on a
+promoted package. But the cumulative selector is this project's only mechanism for making proven behaviour
+permanently required-green, and nothing now re-proves CP1's identities. Every prior checkpoint closure in this
+sequence published into the selector (425, 426, 427, 430); CP1 is the first to close without appending. A CP2 or
+CP3 change could regress canonical-identity behaviour and the selector gate would not see it, because those
+identities are not in it.
+
+**How to apply:** freeze an M5 selector publication sequence stating when CP1 and CP2 mechanism identities are
+appended — at CP3 publication or earlier — on selector430 as byte-frozen prefix, carrying the pre-commitment
+discipline that has now held four consecutive times: declare the successor selector's exact SHA-256 and owner
+census **before** the publication CB builds it. Per `[[M4-CP4-TB3-REV-OBS-01]]`, write it into the governing M5
+document.
+
+Same gap as `[[M5-DEFN-REV-OBS-01]]` from another side: M5's governing document carries neither an exit theorem
+nor a publication sequence, so both the conditions for closing M5 and the mechanism for protecting what it proves
+are unstated.
