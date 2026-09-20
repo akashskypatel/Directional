@@ -833,6 +833,8 @@ CB8 static ownership is **31 authority-kernel / 283 producer / 75 completion / 4
 
 TB3 run/job `35470130614 / 105969470184` then executes the exact selector430 as **430/430 PASS** fresh exact-filter processes with zero RED/SKIP/crash/selection mismatch/unexecuted and exact owner census **31/283/75/41**. Result/log artifacts are `10592987234 / 10592817804`; mandatory package/source/execution-view postflight is byte+mode exact and every forbidden build/repair/mutation/benchmark counter is zero. `M4-CP4-TB3-REV` independently re-hashes package/selector/prefix, re-parses all 430 process rows/raw hashes, checks the three appended rows for non-vacuity, and **promotes package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` under selector430 as accepted current M4 closure authority**. Selector427 remains its exact accepted historical prefix.
 
+`M5-CP1-TB1-R3-REV` later promotes package `10600353027` / source `8a86710dd33d7b6cb9a077aef738577e4075b5f7` as the **current accepted runtime package under the same byte-frozen selector430** after focused 9/9 + selector430 430/430 artifact-only runtime and independent Review. Selector membership, ordering, hash and owner census are unchanged; this is package/CP1 promotion, not a selector append.
+
 ## Separate lineage — M1
 
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full

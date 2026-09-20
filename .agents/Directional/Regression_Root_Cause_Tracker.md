@@ -1,3 +1,11 @@
+## 2026-09-20 — `M5-CP1-TB1-R3-REV`: pure-permutation falsifier passes; CP1 closes — **ACCEPTED / NON-STABLE / NO NEW EVENT**
+
+- **Authority:** R3 run/job `35496133258 / 106039321958`, result/log `10601350461 / 10601380504`, accepted candidate `10600353027` / source `8a86710dd33d7b6cb9a077aef738577e4075b5f7`, unchanged selector430 **430/430**.
+- **Independent disposition:** focused **9/9 PASS** plus selector430 **430/430 PASS**, exact-one/zero-skip across **439**, immutable postflight exact. Candidate source is canonical-ID keyed with no production ordinal/offset relation remap; row6 establishes two distinct IDs, identical membership and nontrivial storage-only reversal before both successful materializations and full certificate/output equality.
+- **Observation closure:** `M5-CP1-TB1-R2-REV-OBS-01` is **CLOSED / FALSIFIER PASSED / RECOVERY PROVED / NON-STABLE**. The test-authority classification survived its first valid falsifier; no second witness adjustment occurred.
+- **Checkpoint:** `M5-CP1` is **CLOSED / ACCEPTED** for mechanism credit. `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` and `M5-DEFN-REV-OBS-01` remain open for M5-CP3. All four M5 production debts remain open.
+- **Accounting:** no accepted-green loss and no new stable event/category/recurrence. Stable totals remain **49 / 14 / 35**, debt **5**. Accepted runtime authority advances to package `10600353027` under unchanged selector430.
+
 ## 2026-09-20 — `M5-CP1-TB1-R3-EXEC-OBS-01`: temporary executor used runner-only context at job scope — **CLOSED / ORCHESTRATION / CONTEXT SCOPE / NON-STABLE / RECOVERY PROVED**
 
 - **Authority:** first trigger run `35496056165` / event SHA `31a6821803e0bb90bc0bd4cefc88842dde399f53` ended before job instantiation and executed zero Directional binaries. Corrected retry `35496133258` / job `106039321958` passed mandatory SchemaStore validation before runtime.
@@ -8816,7 +8824,7 @@ separation is what made the original TB1 block correct and must be preserved.
 
 ## `M5-CP1-TB1-R2-REV-OBS-01` — the row6 witness correction must be able to falsify its own classification
 
-**Status.** OPEN / WITNESS AUTHORED + COMPILED / RUNTIME FALSIFIER GATING ON `M5-CP1-TB1-R3-EXEC` / NON-STABLE.
+**Status.** CLOSED / RUNTIME FALSIFIER PASSED / RECOVERY PROVED / NON-STABLE.
 
 `M5-CP1-TB1-R2-REV` classified the sole R2 RED — `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation`
 — as an invalid witness precondition rather than a product defect. The classification is correct and verified:
@@ -8840,6 +8848,8 @@ it is RED after exact-one selection, the R2 classification is **falsified**: the
 not test authority. R3 must preserve the receipt and route to independent Review rather than weaken the assertion,
 relax the certificate comparison, change membership between drafts, or make another witness adjustment. A second
 witness adjustment would convert a falsifiable claim into a self-sealing one.
+
+**Resolution — `M5-CP1-TB1-R3-REV`:** R3 executes the corrected pure-permutation witness exactly once with zero skips and PASS. The body proves two distinct canonical IDs and identical relation-table membership, proves reversal changes storage order, materializes baseline and reordered drafts successfully, and compares non-empty complete selected-certificate signatures, `hash_completion(...)`, and consumed relation counts. Independent Review therefore upholds the original test-authority classification and closes this observation. If the product had depended on container order at the checked or materialization seam, this witness could have failed; it did not.
 
 Credit is unchanged either way: row6 runs on `direct_full_periodic_materializer_draft()`, which frozen §8.1 marks
 **mechanism-only, no produced-witness credit** and names as highest existing evidence for M5 debts 3 and 4. A
