@@ -1,3 +1,0 @@
-turn=M5-CP3-TB1-EXEC
-purpose=exact repository snapshot for artifact-only TB execution plan and authority inspection
-base_authority=41fd1c17132254564f339c3fbc19709c6e5bb62a
