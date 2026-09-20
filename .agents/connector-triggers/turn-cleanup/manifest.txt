@@ -1,5 +1,0 @@
-# M5-CP1-CB1 temporary-state cleanup
-# created_at=2026-09-20T00:40:58Z
-.agents/connector-triggers/m5-cp1-cb1-apply-20260919.txt
-.agents/connector-triggers/m5-cp1-cb1-compile-20260919.txt
-.agents/connector-triggers/source-snapshot/m5-cp1-cb1-20260919.txt
