@@ -1473,6 +1473,7 @@ enum class SurfacePeriodicHolonomyErrorCode : int {
   ZeroTranslation = 0,
   MissingRoute = 1,
   MissingCutRoute = 2,
+  InvalidRelationIdentity = 3,
 };
 
 struct SurfacePeriodicHolonomyError {
@@ -1488,8 +1489,7 @@ public:
       std::variant<SurfacePeriodicHolonomy, SurfacePeriodicHolonomyError>;
 
   [[nodiscard]] static ConstructionResult
-  make(authority::PeriodicRelationId id,
-       authority::TopologyRegionId sourceTopologyRegion,
+  make(authority::TopologyRegionId sourceTopologyRegion,
        authority::GridAutomorphism action,
        authority::CanonicalRoute route,
        authority::CanonicalRoute cutRoute);
@@ -1508,11 +1508,6 @@ public:
     return cutRoute_;
   }
 
-  [[nodiscard]] SurfacePeriodicHolonomy
-  with_id(authority::PeriodicRelationId id) const {
-    return SurfacePeriodicHolonomy(id, sourceTopologyRegion_, action_, route_,
-                                   cutRoute_);
-  }
 
   auto operator<=>(const SurfacePeriodicHolonomy &) const = default;
 
@@ -1535,8 +1530,7 @@ private:
 enum class SurfacePeriodicHolonomyInsertStatus : int {
   Inserted = 0,
   Equivalent = 1,
-  AmbiguousBasis = 2,
-  Incompatible = 3,
+  Incompatible = 2,
 };
 
 /** Provenance flags for one source edge on a bounded-disk chart boundary. */

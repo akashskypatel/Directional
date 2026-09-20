@@ -205,30 +205,25 @@ direct_periodic_owner_product() {
   std::vector<directional::geometry::SurfacePeriodicHolonomy> relations;
   std::vector<directional::geometry::SurfaceFrontEdge> edges;
   for (int relationIndex = 0; relationIndex < 2; ++relationIndex) {
-    const auto relationId = directional::authority::PeriodicRelationId::from_index(
-        relationIndex, 2);
-    if (!relationId) {
-      throw std::runtime_error("Invalid direct periodic relation owner ID.");
-    }
     const directional::authority::GridAutomorphism action{
         directional::authority::QuarterTurn{},
         relationIndex == 0 ? directional::authority::LatticeTranslation{4, 0}
                            : directional::authority::LatticeTranslation{0, 5}};
     auto relation = directional::geometry::SurfacePeriodicHolonomy::make(
-        relationId.value(), regionId.value(), action,
-        routes[static_cast<std::size_t>(relationIndex)],
+        regionId.value(), action, routes[static_cast<std::size_t>(relationIndex)],
         cuts[static_cast<std::size_t>(relationIndex)]);
     auto *relationValue =
         std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&relation);
     if (relationValue == nullptr) {
       throw std::runtime_error("Failed to construct direct periodic relation.");
     }
+    const auto relationId = relationValue->id();
     relations.push_back(std::move(*relationValue));
 
     directional::geometry::SurfaceFrontEdge edge(regionId.value(),
                                                   ownerCell.value());
     edge.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
-    edge.periodicRelation = relationId.value();
+    edge.periodicRelation = relationId;
     edges.push_back(std::move(edge));
   }
   auto product = directional::geometry::SurfacePhaseFrontProduct::make(
@@ -715,9 +710,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
      DuplicatePeriodicRelationIdentityRejectsAtCheckedFactory) {
   PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
   ASSERT_GE(tampered.periodicHolonomies.size(), 2U);
-  const auto duplicateId = tampered.periodicHolonomies.front().id();
-  tampered.periodicHolonomies[1] =
-      tampered.periodicHolonomies[1].with_id(duplicateId);
+  tampered.periodicHolonomies[1] = tampered.periodicHolonomies.front();
   const auto construction = construct_phase_front_product(std::move(tampered));
   expect_phase_front_product_error(
       construction,
@@ -735,7 +728,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_TRUE(foreignRegion.has_value());
   const auto &original = tampered.periodicHolonomies.front();
   auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
-      original.id(), foreignRegion.value(), original.action(), original.route(),
+      foreignRegion.value(), original.action(), original.route(),
       original.cutRoute());
   auto *rebuiltValue =
       std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&rebuilt);
@@ -755,11 +748,13 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_FALSE(tampered.edges.empty());
   ASSERT_EQ(SurfaceFrontBoundaryKind::PeriodicCut,
             tampered.edges.front().boundaryKind);
-  const auto relationCount = tampered.periodicHolonomies.size();
-  const auto unknownOwner =
-      directional::authority::PeriodicRelationId::from_index(
-          static_cast<std::int64_t>(relationCount), relationCount + 1U);
+  const auto unknownOwner = directional::authority::periodic_relation_id(
+      tampered.periodicHolonomies.front().sourceTopologyRegion(),
+      test_interior_route(40, 41, 40), test_interior_route(42, 43, 41));
   ASSERT_TRUE(unknownOwner.has_value());
+  ASSERT_TRUE(std::none_of(
+      tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
+      [&](const auto &relation) { return relation.id() == unknownOwner.value(); }));
   tampered.edges.front().periodicRelation = unknownOwner.value();
   const auto construction = construct_phase_front_product(std::move(tampered));
   expect_phase_front_product_error(
@@ -790,6 +785,18 @@ AuthoritativePhaseFrontMeshResult materialize(
   }
   return directional::pipeline::build_authoritative_phase_front_mesh(
       fixture.mesh.V, fixture.mesh.F, *product);
+}
+
+std::vector<directional::geometry::SelectedRelationPathCertificate>
+selected_relation_certificate_signature(
+    const directional::geometry::PureQuadMesh &mesh) {
+  std::vector<directional::geometry::SelectedRelationPathCertificate> result;
+  for (const auto &lineage : mesh.vertexLineage) {
+    result.insert(result.end(), lineage.selectedRelationPaths.begin(),
+                  lineage.selectedRelationPaths.end());
+  }
+  std::sort(result.begin(), result.end());
+  return result;
 }
 
 TEST(SurfaceCellTransitionQuotient,
@@ -1435,6 +1442,91 @@ TEST(SurfaceCellTransitionQuotient,
             result.consumedPeriodicHolonomies);
 }
 
+TEST(M5CP1, SelectedRelationPathCertificateSurvivesRelationContainerPermutation) {
+  const auto &fixture = direct_materializer_base_fixture();
+  PhaseFrontDraft baselineDraft = direct_full_periodic_materializer_draft();
+  PhaseFrontDraft reorderedDraft = baselineDraft;
+  ASSERT_GE(reorderedDraft.periodicHolonomies.size(), 2U);
+  std::reverse(reorderedDraft.periodicHolonomies.begin(),
+               reorderedDraft.periodicHolonomies.end());
+
+  const auto baseline = materialize(fixture, std::move(baselineDraft));
+  const auto reordered = materialize(fixture, std::move(reorderedDraft));
+  ASSERT_TRUE(baseline.success) << baseline.failure;
+  ASSERT_TRUE(reordered.success) << reordered.failure;
+  const auto baselineCertificates =
+      selected_relation_certificate_signature(baseline.mesh);
+  const auto reorderedCertificates =
+      selected_relation_certificate_signature(reordered.mesh);
+  ASSERT_FALSE(baselineCertificates.empty());
+  EXPECT_EQ(baselineCertificates, reorderedCertificates);
+  EXPECT_EQ(directional::pipeline::hash_completion(baseline.mesh),
+            directional::pipeline::hash_completion(reordered.mesh));
+}
+
+TEST(M5CP1, UnusedValidPeriodicRelationDoesNotChangeSelectedCertificate) {
+  const auto &fixture = direct_materializer_base_fixture();
+  PhaseFrontDraft baselineDraft = direct_full_periodic_materializer_draft();
+  PhaseFrontDraft extendedDraft = baselineDraft;
+  ASSERT_FALSE(extendedDraft.periodicHolonomies.empty());
+  const auto &owner = extendedDraft.periodicHolonomies.front();
+  auto unusedConstruction = directional::geometry::SurfacePeriodicHolonomy::make(
+      owner.sourceTopologyRegion(), owner.action(), owner.cutRoute(),
+      owner.route());
+  auto *unused =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(
+          &unusedConstruction);
+  ASSERT_NE(nullptr, unused);
+  ASSERT_TRUE(std::none_of(
+      extendedDraft.periodicHolonomies.begin(),
+      extendedDraft.periodicHolonomies.end(),
+      [&](const auto &relation) { return relation.id() == unused->id(); }));
+  extendedDraft.periodicHolonomies.push_back(*unused);
+  std::reverse(extendedDraft.periodicHolonomies.begin(),
+               extendedDraft.periodicHolonomies.end());
+
+  const auto baseline = materialize(fixture, std::move(baselineDraft));
+  const auto extended = materialize(fixture, std::move(extendedDraft));
+  ASSERT_TRUE(baseline.success) << baseline.failure;
+  ASSERT_TRUE(extended.success) << extended.failure;
+  const auto baselineCertificates =
+      selected_relation_certificate_signature(baseline.mesh);
+  ASSERT_FALSE(baselineCertificates.empty());
+  EXPECT_EQ(baselineCertificates,
+            selected_relation_certificate_signature(extended.mesh));
+  EXPECT_EQ(directional::pipeline::hash_completion(baseline.mesh),
+            directional::pipeline::hash_completion(extended.mesh));
+  EXPECT_EQ(baseline.consumedPeriodicHolonomies,
+            extended.consumedPeriodicHolonomies);
+}
+
+TEST(M5CP1, AlteredSelectedRelationTransformFailsCertificateValidation) {
+  const auto &fixture = direct_materializer_base_fixture();
+  const auto materialized =
+      materialize(fixture, direct_full_periodic_materializer_draft());
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+
+  auto tampered = materialized.mesh;
+  auto lineage = std::find_if(
+      tampered.vertexLineage.begin(), tampered.vertexLineage.end(),
+      [](const auto &candidate) {
+        return !candidate.selectedRelationPaths.empty() &&
+               !candidate.selectedRelationPaths.front().orderedSteps.empty();
+      });
+  ASSERT_NE(tampered.vertexLineage.end(), lineage);
+  auto &step = lineage->selectedRelationPaths.front().orderedSteps.front();
+  step.appliedTransport.shift.x += 1;
+
+  const auto noHardFeatures = directional::geometry::empty_hard_feature_edges();
+  std::string failure;
+  EXPECT_FALSE(directional::geometry::pure_quad_detail::
+                   validate_materialized_completion_domain_ownership(
+                       tampered, fixture.mesh.F,
+                       &fixture.network.phaseFront.product().sourceTopologyRegions(),
+                       &noHardFeatures, failure));
+  EXPECT_EQ("CompletionOwnershipSelectedRelationValueMismatch", failure);
+}
+
 TEST(SurfaceCellTransitionQuotient,
      TamperedFullPeriodicTransformIsRejected) {
   const auto &fixture = direct_materializer_base_fixture();
@@ -1448,12 +1540,15 @@ TEST(SurfaceCellTransitionQuotient,
   auto action = relation->action(); const auto originalAction = action; ASSERT_TRUE(action_has_nonzero_turn(action));
   action.rotation = directional::authority::QuarterTurn::from_integer(
       static_cast<int>(action.rotation.value()) + 1);
-  ASSERT_NE(originalAction, action); auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
-      relation->id(), relation->sourceTopologyRegion(), action,
-      relation->route(), relation->cutRoute());
+  ASSERT_NE(originalAction, action);
+  const auto originalId = relation->id();
+  auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
+      relation->sourceTopologyRegion(), action, relation->route(),
+      relation->cutRoute());
   auto *value =
       std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&rebuilt);
   ASSERT_NE(nullptr, value);
+  EXPECT_EQ(originalId, value->id());
   *relation = std::move(*value);
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
@@ -1971,13 +2066,14 @@ TEST(SurfaceCellTransitionQuotient,
       directional::geometry::PureQuadEquivalenceKind::PeriodicHolonomy;
   equivalence.firstFrontEdge = 3;
   equivalence.secondFrontEdge = 7;
-  const auto relationId =
-      directional::authority::PeriodicRelationId::from_index(1, 2);
-  ASSERT_TRUE(relationId);
-  equivalence.periodicRelation = relationId.value();
   equivalence.action = {directional::authority::QuarterTurn::from_integer(1),
                         {2, -1}};
   equivalence.route = test_interior_route(0, 1, 0);
+  equivalence.cutRoute = test_interior_route(1, 2, 1);
+  const auto relationId = directional::authority::periodic_relation_id(
+      test_topology_region_id(0), equivalence.route, equivalence.cutRoute);
+  ASSERT_TRUE(relationId);
+  equivalence.periodicRelation = relationId.value();
   mutation.product().outputVertexLineage.front().equivalences.push_back(
       equivalence);
   EXPECT_NE(directional::bench::benchmark_output_semantic_hash(baseline),
@@ -2541,7 +2637,7 @@ PhaseFrontDraft direct_full_periodic_materializer_draft() {
     }
 
     auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
-        relation.id(), relation.sourceTopologyRegion(), action, relation.route(),
+        relation.sourceTopologyRegion(), action, relation.route(),
         relation.cutRoute());
     auto *value =
         std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&rebuilt);

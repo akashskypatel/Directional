@@ -986,6 +986,51 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
       target.push_back(static_cast<std::int64_t>(value.index()));
     }
   };
+  const auto append_periodic_relation_id = [](
+      Record &target,
+      const std::optional<authority::PeriodicRelationId> &relation) {
+    target.push_back(relation.has_value() ? 1 : 0);
+    if (!relation.has_value()) return;
+    target.push_back(static_cast<std::int64_t>(relation->region().index()));
+    const auto append_carrier = [&](
+        const std::vector<authority::PeriodicCarrierStepIdentity> &carrier) {
+      target.push_back(static_cast<std::int64_t>(carrier.size()));
+      for (const auto &step : carrier) {
+        target.push_back(static_cast<std::int64_t>(step.kind));
+        target.push_back(
+            static_cast<std::int64_t>(step.topology.first().index()));
+        target.push_back(
+            static_cast<std::int64_t>(step.topology.second().index()));
+        target.push_back(step.interior.has_value()
+                             ? static_cast<std::int64_t>(
+                                   step.interior->index())
+                             : -1);
+      }
+    };
+    append_carrier(relation->generator_carrier());
+    append_carrier(relation->cut_carrier());
+  };
+  const auto append_chart_component = [](
+      Record &target, const geometry::SourceChartComponentIdentity &identity) {
+    target.push_back(identity.valid ? 1 : 0);
+    target.push_back(static_cast<std::int64_t>(identity.members.size()));
+    for (const auto &member : identity.members) {
+      target.push_back(static_cast<std::int64_t>(member.component.index()));
+      target.push_back(static_cast<std::int64_t>(member.sheet.index()));
+      for (const auto vertex : member.face.vertices()) {
+        target.push_back(static_cast<std::int64_t>(vertex.index()));
+      }
+    }
+  };
+  const auto append_projection_chart = [](
+      Record &target, const std::optional<geometry::SourceProjectionChart> &chart) {
+    target.push_back(chart.has_value() ? 1 : 0);
+    if (!chart.has_value()) return;
+    target.push_back(static_cast<std::int64_t>(chart->chart.index()));
+    for (const auto vertex : chart->face.vertices()) {
+      target.push_back(static_cast<std::int64_t>(vertex.index()));
+    }
+  };
 
   std::vector<const geometry::PureQuadVertexLineage *> lineageByVertex(
       static_cast<std::size_t>(result.product().vertices.rows()), nullptr);
@@ -1073,16 +1118,28 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
       Record relation{
           static_cast<int>(equivalence.kind),
           static_cast<int>(equivalence.action.rotation.value()),
-          equivalence.action.shift.x, equivalence.action.shift.y,
-          static_cast<std::int64_t>(equivalence.route.steps().size())};
-      for (const authority::TransitionStep &step : equivalence.route.steps()) {
-        relation.push_back(static_cast<std::int64_t>(step.topology().first().index()));
-        relation.push_back(static_cast<std::int64_t>(step.topology().second().index()));
-        relation.push_back(static_cast<std::int64_t>(step.kind()));
-        relation.push_back(step.interior().has_value()
-                               ? static_cast<std::int64_t>(step.interior()->index())
-                               : -1);
-      }
+          equivalence.action.shift.x, equivalence.action.shift.y};
+      relation.push_back(equivalence.railId.has_value()
+                             ? static_cast<std::int64_t>(
+                                   equivalence.railId->index())
+                             : -1);
+      append_periodic_relation_id(relation, equivalence.periodicRelation);
+      const auto append_route = [&](const authority::CanonicalRoute &route) {
+        relation.push_back(static_cast<std::int64_t>(route.steps().size()));
+        for (const authority::TransitionStep &step : route.steps()) {
+          relation.push_back(
+              static_cast<std::int64_t>(step.topology().first().index()));
+          relation.push_back(
+              static_cast<std::int64_t>(step.topology().second().index()));
+          relation.push_back(static_cast<std::int64_t>(step.kind()));
+          relation.push_back(step.interior().has_value()
+                                 ? static_cast<std::int64_t>(
+                                       step.interior()->index())
+                                 : -1);
+        }
+      };
+      append_route(equivalence.route);
+      append_route(equivalence.cutRoute);
       relation.push_back(
           static_cast<std::int64_t>(equivalence.isolationSeams.size()));
       for (const authority::SourceEdgeTopologyKey &topology :
@@ -1099,6 +1156,68 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
     record.push_back(static_cast<std::int64_t>(equivalenceRecords.size()));
     for (const Record &equivalence : equivalenceRecords) {
       append_record(record, equivalence);
+    }
+
+    std::vector<Record> selectedPathRecords;
+    for (const auto &certificate : lineage.selectedRelationPaths) {
+      Record path;
+      path.push_back(certificate.sourceSupport.has_value()
+                         ? static_cast<std::int64_t>(
+                               authority::support_kind(
+                                   certificate.sourceSupport.value()))
+                         : -1);
+      if (certificate.sourceSupport.has_value()) {
+        const auto &support = certificate.sourceSupport.value();
+        if (const auto *vertex =
+                std::get_if<authority::SourceVertexSupport>(&support)) {
+          path.push_back(static_cast<std::int64_t>(vertex->vertex.index()));
+        } else if (const auto *edge =
+                       std::get_if<authority::SourceEdgeSupport>(&support)) {
+          path.push_back(
+              static_cast<std::int64_t>(edge->edge.first().index()));
+          path.push_back(
+              static_cast<std::int64_t>(edge->edge.second().index()));
+        } else if (const auto *face =
+                       std::get_if<authority::SourceFaceInteriorSupport>(
+                           &support)) {
+          for (const auto vertex : face->face.vertices()) {
+            path.push_back(static_cast<std::int64_t>(vertex.index()));
+          }
+        }
+      }
+      append_chart_component(path, certificate.startChartComponent);
+      append_chart_component(path, certificate.endChartComponent);
+      append_projection_chart(path, certificate.startChart);
+      append_projection_chart(path, certificate.endChart);
+      path.push_back(static_cast<std::int64_t>(
+          certificate.orderedSteps.size()));
+      for (const auto &step : certificate.orderedSteps) {
+        path.push_back(static_cast<std::int64_t>(step.relationKind));
+        path.push_back(step.railId.has_value()
+                           ? static_cast<std::int64_t>(step.railId->index())
+                           : -1);
+        append_periodic_relation_id(path, step.periodicRelation);
+        path.push_back(static_cast<std::int64_t>(step.direction));
+        append_chart_component(path, step.fromChartComponent);
+        append_chart_component(path, step.toChartComponent);
+        path.push_back(
+            static_cast<std::int64_t>(step.appliedTransport.rotation.value()));
+        path.push_back(step.appliedTransport.shift.x);
+        path.push_back(step.appliedTransport.shift.y);
+      }
+      path.push_back(static_cast<std::int64_t>(
+          certificate.composedTransport.rotation.value()));
+      path.push_back(certificate.composedTransport.shift.x);
+      path.push_back(certificate.composedTransport.shift.y);
+      selectedPathRecords.push_back(std::move(path));
+    }
+    std::sort(selectedPathRecords.begin(), selectedPathRecords.end());
+    selectedPathRecords.erase(
+        std::unique(selectedPathRecords.begin(), selectedPathRecords.end()),
+        selectedPathRecords.end());
+    record.push_back(static_cast<std::int64_t>(selectedPathRecords.size()));
+    for (const Record &path : selectedPathRecords) {
+      append_record(record, path);
     }
 
     if (lineage.kind ==

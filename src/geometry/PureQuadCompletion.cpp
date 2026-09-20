@@ -915,79 +915,198 @@ bool close_completion_lineage_source_authority(
     }
   }
 
-  // Retained HardRail quotient equivalence is the only authority that can
-  // extend chart/region closure across a source hard feature. Traverse only
-  // exact retained routes with an existing owner and restore only charts that
-  // were already present in the incoming lineage certificate.
-  if (sourceHardFeatureEdges != nullptr && !retainedSourceCharts.empty() &&
-      !lineage.equivalences.empty()) {
-    const std::map<authority::SourceEdgeTopologyKey, std::vector<int>> sourceEdgeFaces =
-        completion_source_edge_faces(*sourceFaceMatrix);
-    std::set<int> reachableHardRailComponents;
-    if (const auto selectedChart =
-            transitionGraph.chart(lineage.sourcePoint.face);
-        selectedChart.has_value()) {
-      const int selectedChartComponent =
-          transitionGraph.chart_component(selectedChart.value());
-      if (selectedChartComponent >= 0) {
-        reachableHardRailComponents.insert(selectedChartComponent);
+  // Producer-selected relation paths are the only authority that can extend
+  // chart/region closure beyond the selected source-chart component. A
+  // consumer validates the recorded path exactly; it never searches the
+  // retained equivalence set for an alternate route.
+  const bool hasSelectedRelationEvidence = std::any_of(
+      lineage.equivalences.begin(), lineage.equivalences.end(),
+      [](const PureQuadEquivalenceProvenance &equivalence) {
+        return equivalence.kind == PureQuadEquivalenceKind::HardRail ||
+               equivalence.kind == PureQuadEquivalenceKind::PeriodicHolonomy;
+      });
+  if (hasSelectedRelationEvidence && lineage.selectedRelationPaths.empty()) {
+    failure = "CompletionOwnershipMissingSelectedRelationPath";
+    return false;
+  }
+  if (!lineage.selectedRelationPaths.empty()) {
+    const std::map<authority::SourceEdgeTopologyKey, std::vector<int>>
+        sourceEdgeFaces = completion_source_edge_faces(*sourceFaceMatrix);
+    const auto retained_chart = [&](const SourceProjectionChart &chart) {
+      return std::find(retainedSourceCharts.begin(), retainedSourceCharts.end(),
+                       chart) != retainedSourceCharts.end();
+    };
+    const auto component_identity = [&](const SourceProjectionChart &chart)
+        -> std::optional<SourceChartComponentIdentity> {
+      const int component = transitionGraph.chart_component(chart);
+      if (component < 0) return std::nullopt;
+      const SourceChartComponentIdentity &identity =
+          transitionGraph.chart_component_identity(component);
+      return identity.valid
+                 ? std::optional<SourceChartComponentIdentity>(identity)
+                 : std::nullopt;
+    };
+    std::set<SourceChartComponentIdentity> retainedChartComponents;
+    for (const SourceProjectionChart &chart : retainedSourceCharts) {
+      const auto identity = component_identity(chart);
+      if (!identity.has_value()) {
+        failure = "CompletionOwnershipInvalidRetainedSourceChart";
+        return false;
       }
+      retainedChartComponents.insert(identity.value());
+    }
+    const auto selectedChart = transitionGraph.chart(lineage.sourcePoint.face);
+    if (!selectedChart.has_value()) {
+      failure = "CompletionOwnershipMissingPublishedSourceChart";
+      return false;
+    }
+    const auto selectedChartComponent = component_identity(*selectedChart);
+    if (!selectedChartComponent.has_value()) {
+      failure = "CompletionOwnershipMissingPublishedSourceChart";
+      return false;
     }
 
-    std::map<int, std::set<int>> hardRailAdjacency;
-    for (const PureQuadEquivalenceProvenance &equivalence :
-         lineage.equivalences) {
-      const auto components = completion_certified_hard_rail_components(
-          equivalence, support, transitionGraph, sourceEdgeFaces,
-          sourceHardFeatureEdges);
-      if (!components.has_value()) {
-        continue;
+    for (const SelectedRelationPathCertificate &certificate :
+         lineage.selectedRelationPaths) {
+      if (!certificate.valid() || certificate.sourceSupport != support.identity ||
+          !certificate.startChart.has_value() ||
+          !certificate.endChart.has_value() ||
+          certificate.startChart.value() != selectedChart.value() ||
+          certificate.startChartComponent != selectedChartComponent.value() ||
+          !retained_chart(certificate.startChart.value()) ||
+          !retained_chart(certificate.endChart.value())) {
+        failure = "CompletionOwnershipInvalidSelectedRelationPath";
+        return false;
       }
-      hardRailAdjacency[components->first].insert(components->second);
-      hardRailAdjacency[components->second].insert(components->first);
-    }
-    std::vector<int> frontier(reachableHardRailComponents.begin(),
-                              reachableHardRailComponents.end());
-    for (std::size_t index = 0; index < frontier.size(); ++index) {
-      const auto adjacent = hardRailAdjacency.find(frontier[index]);
-      if (adjacent == hardRailAdjacency.end()) {
-        continue;
-      }
-      for (const int component : adjacent->second) {
-        if (reachableHardRailComponents.insert(component).second) {
-          frontier.push_back(component);
-        }
-      }
-    }
 
-    for (const SourceProjectionChart &retainedChart : retainedSourceCharts) {
-      const auto candidateRow = transitionGraph.source_face_row(retainedChart);
-      if (!candidateRow.has_value() ||
+      const auto endRow =
+          transitionGraph.source_face_row(certificate.endChart.value());
+      const auto actualEndChart = endRow.has_value()
+                                      ? transitionGraph.chart(
+                                            static_cast<int>(endRow->index()))
+                                      : std::nullopt;
+      const auto endComponent = component_identity(certificate.endChart.value());
+      if (!endRow.has_value() || !actualEndChart.has_value() ||
+          actualEndChart.value() != certificate.endChart.value() ||
+          !endComponent.has_value() ||
+          endComponent.value() != certificate.endChartComponent ||
           std::find(support.incidentFaces.begin(), support.incidentFaces.end(),
-                    candidateRow.value()) == support.incidentFaces.end()) {
-        continue;
+                    endRow.value()) == support.incidentFaces.end()) {
+        failure = "CompletionOwnershipInvalidSelectedRelationEndpoint";
+        return false;
       }
-      const int candidateFace = static_cast<int>(candidateRow->index());
-      const auto actualChart = transitionGraph.chart(candidateFace);
+
+      authority::GridAutomorphism composed =
+          authority::GridAutomorphism::identity();
+      SourceChartComponentIdentity current =
+          certificate.startChartComponent;
+      for (const SelectedRelationStep &step : certificate.orderedSteps) {
+        if (!step.valid() || step.fromChartComponent != current ||
+            retainedChartComponents.count(step.fromChartComponent) == 0U ||
+            retainedChartComponents.count(step.toChartComponent) == 0U) {
+          failure = "CompletionOwnershipDiscontinuousSelectedRelationPath";
+          return false;
+        }
+
+        bool relationValueMatched = false;
+        if (step.relationKind == SelectedRelationKind::HardRail) {
+          if (sourceHardFeatureEdges == nullptr || !step.railId.has_value()) {
+            failure = "CompletionOwnershipInvalidSelectedHardRail";
+            return false;
+          }
+          for (const PureQuadEquivalenceProvenance &equivalence :
+               lineage.equivalences) {
+            if (equivalence.kind != PureQuadEquivalenceKind::HardRail ||
+                equivalence.railId != step.railId) {
+              continue;
+            }
+            const auto components = completion_certified_hard_rail_components(
+                equivalence, support, transitionGraph, sourceEdgeFaces,
+                sourceHardFeatureEdges);
+            if (!components.has_value()) continue;
+            const SourceChartComponentIdentity &firstIdentity =
+                transitionGraph.chart_component_identity(components->first);
+            const SourceChartComponentIdentity &secondIdentity =
+                transitionGraph.chart_component_identity(components->second);
+            const bool sameComponents =
+                (step.fromChartComponent == firstIdentity &&
+                 step.toChartComponent == secondIdentity) ||
+                (step.fromChartComponent == secondIdentity &&
+                 step.toChartComponent == firstIdentity);
+            const authority::GridAutomorphism forward =
+                equivalence.route.composed_transport();
+            const authority::GridAutomorphism expected =
+                step.direction == authority::Orientation::Forward
+                    ? forward
+                    : forward.inverse();
+            if (sameComponents && expected == step.appliedTransport) {
+              relationValueMatched = true;
+              break;
+            }
+          }
+        } else {
+          if (!step.periodicRelation.has_value()) {
+            failure = "CompletionOwnershipInvalidSelectedPeriodicRelation";
+            return false;
+          }
+          std::optional<std::tuple<authority::GridAutomorphism,
+                                   authority::CanonicalRoute,
+                                   authority::CanonicalRoute>>
+              relationValue;
+          for (const PureQuadEquivalenceProvenance &equivalence :
+               lineage.equivalences) {
+            if (equivalence.kind !=
+                    PureQuadEquivalenceKind::PeriodicHolonomy ||
+                equivalence.periodicRelation != step.periodicRelation) {
+              continue;
+            }
+            const auto value = std::tuple{equivalence.action, equivalence.route,
+                                          equivalence.cutRoute};
+            if (relationValue.has_value() && relationValue.value() != value) {
+              failure = "CompletionOwnershipConflictingPeriodicRelationValue";
+              return false;
+            }
+            relationValue = value;
+          }
+          if (relationValue.has_value()) {
+            const authority::GridAutomorphism &forward =
+                std::get<0>(relationValue.value());
+            const authority::GridAutomorphism expected =
+                step.direction == authority::Orientation::Forward
+                    ? forward
+                    : forward.inverse();
+            relationValueMatched = expected == step.appliedTransport;
+          }
+        }
+        if (!relationValueMatched) {
+          failure = "CompletionOwnershipSelectedRelationValueMismatch";
+          return false;
+        }
+        composed = compose(step.appliedTransport, composed);
+        current = step.toChartComponent;
+      }
+      if (current != certificate.endChartComponent ||
+          composed != certificate.composedTransport) {
+        failure = "CompletionOwnershipSelectedRelationCompositionMismatch";
+        return false;
+      }
+
       const auto candidateRegion =
-          transitionGraph.topology_region(retainedChart);
-      const auto candidateSheet = transitionGraph.isolation_sheet(retainedChart);
+          transitionGraph.topology_region(certificate.endChart.value());
+      const auto candidateSheet =
+          transitionGraph.isolation_sheet(certificate.endChart.value());
       const auto candidateSourceComponent =
-          transitionGraph.source_component(retainedChart);
-      const int candidateChartComponent =
-          transitionGraph.chart_component(retainedChart);
-      if (!actualChart.has_value() || actualChart.value() != retainedChart ||
-          !candidateRegion.has_value() || !candidateSheet.has_value() ||
+          transitionGraph.source_component(certificate.endChart.value());
+      if (!candidateRegion.has_value() || !candidateSheet.has_value() ||
           !candidateSourceComponent.has_value() ||
           candidateSheet.value() != selectedSheet ||
           candidateSourceComponent.value() != selectedComponent ||
-          candidateChartComponent < 0 ||
-          reachableHardRailComponents.count(candidateChartComponent) == 0U ||
           std::find(retainedSourceRegions.begin(), retainedSourceRegions.end(),
                     candidateRegion.value()) == retainedSourceRegions.end()) {
-        continue;
+        failure = "CompletionOwnershipInvalidSelectedRelationDestination";
+        return false;
       }
-      lineage.sourceCharts.push_back(retainedChart);
+      lineage.sourceCharts.push_back(certificate.endChart.value());
       lineage.sourceTopologyRegions.push_back(candidateRegion.value());
     }
   }

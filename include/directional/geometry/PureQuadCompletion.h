@@ -33,6 +33,7 @@
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/geometry/SurfacePointSupport.h>
 #include <directional/geometry/SourceTopologyRegions.h>
+#include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfaceCellOwnership.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/validation/MeshValidator.h>
@@ -189,6 +190,53 @@ enum class PureQuadEquivalenceKind : int {
   PeriodicHolonomy = 2,
 };
 
+enum class SelectedRelationKind : int {
+  HardRail = 0,
+  PeriodicHolonomy = 1,
+};
+
+struct SelectedRelationStep {
+  SelectedRelationKind relationKind = SelectedRelationKind::HardRail;
+  std::optional<authority::HardRailId> railId;
+  std::optional<authority::PeriodicRelationId> periodicRelation;
+  authority::Orientation direction = authority::Orientation::Forward;
+  SourceChartComponentIdentity fromChartComponent;
+  SourceChartComponentIdentity toChartComponent;
+  authority::GridAutomorphism appliedTransport =
+      authority::GridAutomorphism::identity();
+
+  [[nodiscard]] bool valid() const {
+    const bool typedOwner =
+        relationKind == SelectedRelationKind::HardRail
+            ? railId.has_value() && !periodicRelation.has_value()
+            : periodicRelation.has_value() && !railId.has_value();
+    return typedOwner && fromChartComponent.valid && toChartComponent.valid;
+  }
+
+  auto operator<=>(const SelectedRelationStep &) const = default;
+};
+
+struct SelectedRelationPathCertificate {
+  std::optional<authority::SourceSupport> sourceSupport;
+  SourceChartComponentIdentity startChartComponent;
+  SourceChartComponentIdentity endChartComponent;
+  std::optional<SourceProjectionChart> startChart;
+  std::optional<SourceProjectionChart> endChart;
+  std::vector<SelectedRelationStep> orderedSteps;
+  authority::GridAutomorphism composedTransport =
+      authority::GridAutomorphism::identity();
+
+  [[nodiscard]] bool valid() const {
+    return sourceSupport.has_value() && startChartComponent.valid &&
+           endChartComponent.valid && startChart.has_value() &&
+           endChart.has_value() && !orderedSteps.empty() &&
+           std::all_of(orderedSteps.begin(), orderedSteps.end(),
+                       [](const auto &step) { return step.valid(); });
+  }
+
+  auto operator<=>(const SelectedRelationPathCertificate &) const = default;
+};
+
 /** Exact relation that joined two source-corner occurrences. */
 struct PureQuadEquivalenceProvenance {
   PureQuadEquivalenceKind kind = PureQuadEquivalenceKind::OrdinaryFront;
@@ -198,6 +246,7 @@ struct PureQuadEquivalenceProvenance {
   std::optional<authority::HardRailId> railId;
   authority::GridAutomorphism action = authority::GridAutomorphism::identity();
   authority::CanonicalRoute route;
+  authority::CanonicalRoute cutRoute;
   std::vector<authority::SourceEdgeTopologyKey> isolationSeams;
 
   auto operator<=>(const PureQuadEquivalenceProvenance &) const = default;
@@ -226,6 +275,7 @@ struct PureQuadVertexLineage {
   /// Exact typed source-corner occurrences consumed by quotient materialization.
   std::vector<authority::OccurrenceId> sourceOccurrences;
   std::vector<PureQuadEquivalenceProvenance> equivalences;
+  std::vector<SelectedRelationPathCertificate> selectedRelationPaths;
   [[nodiscard]] bool valid() const {
     return outputVertex >= 0 &&
            ((kind == PureQuadVertexLineageKind::SourceTriangle &&

@@ -9,14 +9,17 @@
 #ifndef DIRECTIONAL_AUTHORITY_AUTHORITY_IDS_H
 #define DIRECTIONAL_AUTHORITY_AUTHORITY_IDS_H
 
+#include <algorithm>
 #include <array>
 #include <compare>
 #include <cstddef>
 #include <cstdint>
 #include <optional>
+#include <tuple>
 #include <type_traits>
 #include <utility>
 #include <variant>
+#include <vector>
 
 namespace directional::authority {
 
@@ -234,7 +237,6 @@ using SingularityPortId = SemanticId<detail::SingularityPortTag>;
 using TraceId = SemanticId<detail::TraceTag>;
 using SourceVertexFanId = SemanticId<detail::SourceVertexFanTag>;
 using HardRailId = SemanticId<detail::HardRailTag>;
-using PeriodicRelationId = SemanticId<detail::PeriodicRelationTag>;
 using CellId = SemanticId<detail::CellTag>;
 using OccurrenceId = SemanticId<detail::OccurrenceTag>;
 using QuotientClassId = SemanticId<detail::QuotientClassTag>;
@@ -303,6 +305,85 @@ private:
   SourceVertexId first_;
   SourceVertexId second_;
 };
+
+enum class PeriodicCarrierStepKind : std::uint8_t { Boundary, Interior };
+
+struct PeriodicCarrierStepIdentity {
+  PeriodicCarrierStepKind kind = PeriodicCarrierStepKind::Boundary;
+  SourceEdgeTopologyKey topology;
+  std::optional<InteriorTransitionId> interior;
+
+  [[nodiscard]] bool valid() const noexcept {
+    return kind == PeriodicCarrierStepKind::Boundary
+               ? !interior.has_value()
+               : interior.has_value();
+  }
+
+  auto operator<=>(const PeriodicCarrierStepIdentity &) const = default;
+};
+
+/**
+ * Canonical semantic identity for one periodic relation.
+ *
+ * The identity is the topology-region scope plus the orientation-neutral
+ * generator/cut carrier paths. Transport/action and storage position are
+ * intentionally excluded.
+ */
+class PeriodicRelationId {
+public:
+  PeriodicRelationId() = delete;
+
+  [[nodiscard]] static std::optional<PeriodicRelationId>
+  from_carriers(TopologyRegionId region,
+                std::vector<PeriodicCarrierStepIdentity> generatorCarrier,
+                std::vector<PeriodicCarrierStepIdentity> cutCarrier) {
+    if (generatorCarrier.empty() || cutCarrier.empty() ||
+        std::any_of(generatorCarrier.begin(), generatorCarrier.end(),
+                    [](const auto &step) { return !step.valid(); }) ||
+        std::any_of(cutCarrier.begin(), cutCarrier.end(),
+                    [](const auto &step) { return !step.valid(); })) {
+      return std::nullopt;
+    }
+
+    std::vector<PeriodicCarrierStepIdentity> reversedGenerator(
+        generatorCarrier.rbegin(), generatorCarrier.rend());
+    std::vector<PeriodicCarrierStepIdentity> reversedCut(
+        cutCarrier.rbegin(), cutCarrier.rend());
+    if (std::tie(reversedGenerator, reversedCut) <
+        std::tie(generatorCarrier, cutCarrier)) {
+      generatorCarrier = std::move(reversedGenerator);
+      cutCarrier = std::move(reversedCut);
+    }
+    return PeriodicRelationId(region, std::move(generatorCarrier),
+                              std::move(cutCarrier));
+  }
+
+  [[nodiscard]] TopologyRegionId region() const noexcept { return region_; }
+  [[nodiscard]] const std::vector<PeriodicCarrierStepIdentity> &
+  generator_carrier() const noexcept {
+    return generatorCarrier_;
+  }
+  [[nodiscard]] const std::vector<PeriodicCarrierStepIdentity> &
+  cut_carrier() const noexcept {
+    return cutCarrier_;
+  }
+
+  auto operator<=>(const PeriodicRelationId &) const = default;
+
+private:
+  PeriodicRelationId(TopologyRegionId region,
+                     std::vector<PeriodicCarrierStepIdentity> generatorCarrier,
+                     std::vector<PeriodicCarrierStepIdentity> cutCarrier)
+      : region_(region), generatorCarrier_(std::move(generatorCarrier)),
+        cutCarrier_(std::move(cutCarrier)) {}
+
+  TopologyRegionId region_;
+  std::vector<PeriodicCarrierStepIdentity> generatorCarrier_;
+  std::vector<PeriodicCarrierStepIdentity> cutCarrier_;
+};
+
+static_assert(!std::is_convertible_v<PeriodicRelationId, std::size_t>);
+static_assert(!std::is_constructible_v<PeriodicRelationId, std::size_t>);
 
 class SourceFaceTopologyKey {
 public:

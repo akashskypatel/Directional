@@ -79,6 +79,7 @@ public:
   [[nodiscard]] std::vector<TransitionStep> oriented_steps() const;
   [[nodiscard]] CanonicalRoute reversed() const;
   [[nodiscard]] GridAutomorphism composed_transport() const noexcept;
+  [[nodiscard]] std::vector<PeriodicCarrierStepIdentity> carrier_identity() const;
   [[nodiscard]] bool empty() const noexcept { return canonicalSteps_.empty(); }
 
   auto operator<=>(const CanonicalRoute &) const = default;
@@ -95,6 +96,10 @@ private:
   std::vector<TransitionStep> canonicalSteps_;
   Orientation canonicalOrientation_ = Orientation::Forward;
 };
+
+[[nodiscard]] std::optional<PeriodicRelationId>
+periodic_relation_id(TopologyRegionId region, const CanonicalRoute &route,
+                     const CanonicalRoute &cutRoute);
 
 } // namespace directional::authority
 

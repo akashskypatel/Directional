@@ -3702,15 +3702,44 @@ directional::authority::CanonicalRoute test_interior_route(
       std::move(observed));
 }
 
+std::pair<
+    std::vector<directional::authority::PeriodicCarrierStepIdentity>,
+    std::vector<directional::authority::PeriodicCarrierStepIdentity>>
+independent_periodic_carrier_identity(
+    const directional::authority::CanonicalRoute &route,
+    const directional::authority::CanonicalRoute &cutRoute) {
+  const auto carrier = [](const directional::authority::CanonicalRoute &value) {
+    std::vector<directional::authority::PeriodicCarrierStepIdentity> result;
+    result.reserve(value.steps().size());
+    for (const auto &step : value.oriented_steps()) {
+      result.push_back({
+          step.kind() == directional::authority::TransitionStepKind::Boundary
+              ? directional::authority::PeriodicCarrierStepKind::Boundary
+              : directional::authority::PeriodicCarrierStepKind::Interior,
+          step.topology(), step.interior()});
+    }
+    return result;
+  };
+  auto generator = carrier(route);
+  auto cut = carrier(cutRoute);
+  auto reversedGenerator = generator;
+  auto reversedCut = cut;
+  std::reverse(reversedGenerator.begin(), reversedGenerator.end());
+  std::reverse(reversedCut.begin(), reversedCut.end());
+  if (std::tie(reversedGenerator, reversedCut) < std::tie(generator, cut)) {
+    generator = std::move(reversedGenerator);
+    cut = std::move(reversedCut);
+  }
+  return {std::move(generator), std::move(cut)};
+}
+
 directional::geometry::SurfacePeriodicHolonomy test_periodic_holonomy(
     const directional::authority::TopologyRegionId region,
     const directional::authority::GridAutomorphism &action,
     const directional::authority::CanonicalRoute &route,
     const directional::authority::CanonicalRoute &cutRoute) {
-  const auto id = directional::authority::PeriodicRelationId::from_index(0, 1);
-  if (!id) throw std::runtime_error("Invalid test periodic relation ID.");
   auto result = directional::geometry::SurfacePeriodicHolonomy::make(
-      id.value(), region, action, route, cutRoute);
+      region, action, route, cutRoute);
   auto *value =
       std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&result);
   if (value == nullptr) {
@@ -3735,6 +3764,13 @@ TEST(SurfaceCellsPhase10,
   SurfacePeriodicHolonomy reverse = test_periodic_holonomy(
       test_topology_region(2), action.inverse(), route.reversed(),
       cutRoute.reversed());
+
+  const auto expectedCarrier =
+      independent_periodic_carrier_identity(route, cutRoute);
+  EXPECT_EQ(forward.id(), reverse.id());
+  EXPECT_EQ(test_topology_region(2), forward.id().region());
+  EXPECT_EQ(expectedCarrier.first, forward.id().generator_carrier());
+  EXPECT_EQ(expectedCarrier.second, forward.id().cut_carrier());
 
   std::vector<SurfacePeriodicHolonomy> relations;
   EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
@@ -3778,7 +3814,7 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
-     PeriodicHolonomySameRegionDependentBasisFailsClosedWithoutOrderChoice) {
+     PeriodicHolonomySameRegionTopologyDistinctRelationsAreRetained) {
   using directional::geometry::SurfacePeriodicHolonomy;
   using directional::geometry::SurfacePeriodicHolonomyInsertStatus;
   using directional::geometry::surface_cell_tracing_detail::insert_periodic_holonomy;
@@ -3792,16 +3828,25 @@ TEST(SurfaceCellsPhase10,
         test_interior_route({{base + 2, base + 3, base + 11}}));
   };
 
+  const auto relationA = makeRelation(1);
+  const auto relationB = makeRelation(5);
+  ASSERT_NE(relationA.id(), relationB.id());
+  const std::set<directional::authority::PeriodicRelationId> expectedIds{
+      relationA.id(), relationB.id()};
+
   for (const bool reversed : {false, true}) {
     std::vector<SurfacePeriodicHolonomy> relations;
-    auto first = makeRelation(1);
-    auto second = makeRelation(5);
+    auto first = relationA;
+    auto second = relationB;
     if (reversed) std::swap(first, second);
     EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
               insert_periodic_holonomy(relations, first));
-    EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis,
+    EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
               insert_periodic_holonomy(relations, second));
-    ASSERT_EQ(1U, relations.size());
+    ASSERT_EQ(2U, relations.size());
+    std::set<directional::authority::PeriodicRelationId> actualIds;
+    for (const auto &relation : relations) actualIds.insert(relation.id());
+    EXPECT_EQ(expectedIds, actualIds);
   }
 }
 
@@ -3823,6 +3868,8 @@ TEST(SurfaceCellsPhase10,
       directional::authority::GridAutomorphism{
           directional::authority::QuarterTurn::from_integer(1), {0, 4}},
       route, cutRoute);
+  EXPECT_EQ(first.id(), conflicting.id())
+      << "transport/action is relation value, not canonical identity";
 
   std::vector<SurfacePeriodicHolonomy> relations;
   EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
@@ -5448,6 +5495,77 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_TRUE(rejected.surfaceCellContext.productSnapshots.completedPatches.empty());
 }
 
+
+TEST(M5CP1,
+     ComponentAggregationPreservesCanonicalPeriodicRelationIdWithoutOffsetRemap) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  std::optional<directional::authority::PeriodicRelationId> injectedId;
+  const auto result = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&](const std::size_t componentIndex,
+              directional::pipeline::RemeshResult &componentResult,
+              directional::pipeline::remesh_pipeline_detail::
+                  SurfaceCellComponentStageProducts &) {
+            if (componentIndex != 0U) return;
+            const auto route = test_interior_route({{0, 2, 0}});
+            for (auto &lineage : componentResult.product().outputVertexLineage) {
+              if (lineage.sourceTopologyRegions.empty()) continue;
+              directional::geometry::PureQuadEquivalenceProvenance equivalence;
+              equivalence.kind =
+                  directional::geometry::PureQuadEquivalenceKind::PeriodicHolonomy;
+              equivalence.action = {
+                  directional::authority::QuarterTurn{}, {3, 0}};
+              equivalence.route = route;
+              equivalence.cutRoute = route;
+              const auto relationId = directional::authority::periodic_relation_id(
+                  lineage.sourceTopologyRegions.front(), equivalence.route,
+                  equivalence.cutRoute);
+              if (!relationId.has_value()) {
+                throw std::runtime_error(
+                    "Failed to author aggregation periodic relation identity.");
+              }
+              if (!injectedId.has_value()) {
+                injectedId = relationId.value();
+              } else if (injectedId.value() != relationId.value()) {
+                throw std::runtime_error(
+                    "Aggregation witness changed local relation identity.");
+              }
+              equivalence.periodicRelation = relationId.value();
+              lineage.equivalences.push_back(std::move(equivalence));
+            }
+          });
+
+  ASSERT_TRUE(result.is_produced())
+      << result.diagnostics.terminalFailureCode << ':'
+      << result.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(injectedId.has_value());
+  bool foundPreservedId = false;
+  for (const auto &lineage : result.product().outputVertexLineage) {
+    for (const auto &equivalence : lineage.equivalences) {
+      if (equivalence.kind ==
+              directional::geometry::PureQuadEquivalenceKind::PeriodicHolonomy &&
+          equivalence.periodicRelation == injectedId) {
+        foundPreservedId = true;
+      }
+    }
+  }
+  EXPECT_TRUE(foundPreservedId)
+      << "component aggregation must not offset/remap canonical relation IDs";
+}
 
 TEST(SurfaceCellAuthorityContractCutover,
      PostMoveSingleComponentOptimizerUsesRetainedSourceAuthority) {

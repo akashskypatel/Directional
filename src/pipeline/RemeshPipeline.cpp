@@ -1755,6 +1755,26 @@ void hash_semantic_id(
   hash_combine_u64(seed, value.index());
 }
 
+void hash_semantic_id(
+    std::uint64_t &seed, const authority::PeriodicRelationId &value) {
+  hash_semantic_id(seed, value.region());
+  const auto hash_carrier = [&](
+      const std::vector<authority::PeriodicCarrierStepIdentity> &carrier) {
+    hash_combine_u64(seed, carrier.size());
+    for (const auto &step : carrier) {
+      hash_combine_i64(seed, static_cast<int>(step.kind));
+      hash_semantic_id(seed, step.topology.first());
+      hash_semantic_id(seed, step.topology.second());
+      hash_combine_i64(seed, step.interior.has_value() ? 1 : 0);
+      if (step.interior.has_value()) {
+        hash_semantic_id(seed, step.interior.value());
+      }
+    }
+  };
+  hash_carrier(value.generator_carrier());
+  hash_carrier(value.cut_carrier());
+}
+
 template <typename Tag>
 void hash_optional_semantic_id(
     std::uint64_t &seed,
@@ -1847,6 +1867,18 @@ void hash_optional_source_projection_chart(
     const std::optional<geometry::SourceProjectionChart> &chart) {
   hash_combine_i64(seed, chart.has_value() ? 1 : 0);
   if (chart.has_value()) hash_source_projection_chart(seed, *chart);
+}
+
+void hash_source_chart_component_identity(
+    std::uint64_t &seed,
+    const geometry::SourceChartComponentIdentity &identity) {
+  hash_combine_i64(seed, identity.valid ? 1 : 0);
+  hash_combine_u64(seed, identity.members.size());
+  for (const auto &member : identity.members) {
+    hash_semantic_id(seed, member.component);
+    hash_semantic_id(seed, member.sheet);
+    hash_source_face_topology_key(seed, member.face);
+  }
 }
 
 } // namespace directional::pipeline
@@ -2640,7 +2672,31 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
       hash_optional_semantic_id(seed, equivalence.railId);
       hash_grid_automorphism(seed, equivalence.action);
       hash_canonical_route(seed, equivalence.route);
+      hash_canonical_route(seed, equivalence.cutRoute);
       hash_vector(seed, equivalence.isolationSeams);
+    }
+    hash_combine_u64(seed, lineage.selectedRelationPaths.size());
+    for (const auto &certificate : lineage.selectedRelationPaths) {
+      hash_source_support(seed, certificate.sourceSupport);
+      hash_source_chart_component_identity(seed,
+                                           certificate.startChartComponent);
+      hash_source_chart_component_identity(seed, certificate.endChartComponent);
+      hash_optional_source_projection_chart(seed, certificate.startChart);
+      hash_optional_source_projection_chart(seed, certificate.endChart);
+      hash_combine_u64(seed, certificate.orderedSteps.size());
+      for (const auto &step : certificate.orderedSteps) {
+        hash_combine_i64(seed, static_cast<int>(step.relationKind));
+        hash_optional_semantic_id(seed, step.railId);
+        hash_combine_i64(seed, step.periodicRelation.has_value() ? 1 : 0);
+        if (step.periodicRelation.has_value()) {
+          hash_semantic_id(seed, step.periodicRelation.value());
+        }
+        hash_combine_i64(seed, static_cast<int>(step.direction));
+        hash_source_chart_component_identity(seed, step.fromChartComponent);
+        hash_source_chart_component_identity(seed, step.toChartComponent);
+        hash_grid_automorphism(seed, step.appliedTransport);
+      }
+      hash_grid_automorphism(seed, certificate.composedTransport);
     }
   }
   hash_combine_u64(seed, mesh.quadLineage.size());
@@ -3001,6 +3057,22 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   };
   const geometry::SurfacePointSourceSupportResolver sourceSupportResolver(
       sourceFaces);
+  std::set<authority::SourceEdgeTopologyKey> phaseFrontHardFeatureEdges;
+  for (const geometry::SurfaceFrontEdge &edge : phaseFront.edges()) {
+    if (edge.boundaryKind != geometry::SurfaceFrontBoundaryKind::HardRail) {
+      continue;
+    }
+    for (const authority::TransitionStep &step : edge.route.steps()) {
+      phaseFrontHardFeatureEdges.insert(step.topology());
+    }
+  }
+  const geometry::SourceChartTransitionGraph sourceChartTransitions(
+      sourceFaces, phaseFront.sourceTopologyRegions(),
+      phaseFrontHardFeatureEdges);
+  if (!sourceChartTransitions.available()) {
+    result.failure = "MissingAuthoritativeSourceChartTransitions";
+    return result;
+  }
 
   std::map<authority::TopologyRegionId,
            const geometry::SurfaceTopologyRegion *> topologyRegionById;
@@ -3231,11 +3303,13 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                    geometry::SurfacePoint sourcePoint,
                    authority::SourceSupport sourceSupport,
                    geometry::SourceProjectionChart sourceChart,
+                   geometry::SourceChartComponentIdentity componentIdentity,
                    geometry::LocalLatticeState latticeState,
                    authority::TopologyRegionId region,
                    authority::IsolationSheetId sheet, int cornerIndex)
         : id(occurrenceId), point(std::move(sourcePoint)),
           support(std::move(sourceSupport)), chart(std::move(sourceChart)),
+          chartComponent(std::move(componentIdentity)),
           lattice(std::move(latticeState)), topologyRegion(region),
           isolationSheet(sheet), corner(cornerIndex) {}
 
@@ -3243,6 +3317,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     geometry::SurfacePoint point;
     authority::SourceSupport support;
     geometry::SourceProjectionChart chart;
+    geometry::SourceChartComponentIdentity chartComponent;
     geometry::LocalLatticeState lattice;
     authority::TopologyRegionId topologyRegion;
     authority::IsolationSheetId isolationSheet;
@@ -3269,7 +3344,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   const auto unite = [&](int first, int second) {
     int firstRoot = find_root(first);
     int secondRoot = find_root(second);
-    if (firstRoot == secondRoot) return;
+    if (firstRoot == secondRoot) return false;
     if (ranks[static_cast<std::size_t>(firstRoot)] <
         ranks[static_cast<std::size_t>(secondRoot)]) {
       std::swap(firstRoot, secondRoot);
@@ -3279,7 +3354,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         ranks[static_cast<std::size_t>(secondRoot)]) {
       ++ranks[static_cast<std::size_t>(firstRoot)];
     }
+    return true;
   };
+  struct SelectedQuotientJoin {
+    int firstOccurrence = -1;
+    int secondOccurrence = -1;
+    std::optional<geometry::SelectedRelationStep> relationStep;
+  };
+  std::vector<SelectedQuotientJoin> selectedQuotientJoins;
 
   std::map<authority::CellId, int> cellIndexById;
   for (int cellIndex = 0;
@@ -3368,12 +3450,20 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         result.failure = "InvalidAuthoritativePhaseFrontCorner";
         return result;
       }
+      const geometry::SourceProjectionChart projectionChart(
+          lattice.sourceChart.value(),
+          phaseFront.sourceTopologyRegions().topology_for_row(*faceId));
+      const int chartComponent =
+          sourceChartTransitions.chart_component(projectionChart);
+      const geometry::SourceChartComponentIdentity &componentIdentity =
+          sourceChartTransitions.chart_component_identity(chartComponent);
+      if (chartComponent < 0 || !componentIdentity.valid) {
+        result.failure = "InvalidAuthoritativePhaseFrontChartComponent";
+        return result;
+      }
       occurrences.emplace_back(
           occurrenceOwner->second, std::move(point),
-          resolvedSupport.identity.value(),
-          geometry::SourceProjectionChart(
-              lattice.sourceChart.value(),
-              phaseFront.sourceTopologyRegions().topology_for_row(*faceId)),
+          resolvedSupport.identity.value(), projectionChart, componentIdentity,
           lattice, cell.sourceTopologyRegion, typedSheet, corner);
     }
   }
@@ -3619,6 +3709,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     geometry::PureQuadEquivalenceProvenance equivalence;
     equivalence.firstFrontEdge = edgeIndex;
     equivalence.secondFrontEdge = secondIndex;
+    std::optional<geometry::SelectedRelationKind> selectedRelationKind;
+    std::optional<authority::GridAutomorphism> selectedAppliedTransport;
+    authority::Orientation selectedDirection = authority::Orientation::Forward;
     if (first.boundaryKind ==
         geometry::SurfaceFrontBoundaryKind::OrdinaryInterior) {
       if (!lattice_equal(first.fromLattice, second.toLattice) ||
@@ -3670,7 +3763,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       equivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;
       equivalence.railId =
           first.railId.has_value() ? first.railId : second.railId;
+      if (!equivalence.railId.has_value()) {
+        result.failure = "MissingHardRailRelationOwner";
+        return result;
+      }
       equivalence.route = first.route;
+      equivalence.action = first.route.composed_transport();
+      selectedRelationKind = geometry::SelectedRelationKind::HardRail;
+      selectedAppliedTransport = equivalence.action;
     } else if (first.boundaryKind ==
                geometry::SurfaceFrontBoundaryKind::PeriodicCut) {
       if (first.periodicRelation != second.periodicRelation ||
@@ -3711,22 +3811,51 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       equivalence.periodicRelation = first.periodicRelation;
       equivalence.action = relation.action();
       equivalence.route = relation.route();
+      equivalence.cutRoute = relation.cutRoute();
+      selectedRelationKind = geometry::SelectedRelationKind::PeriodicHolonomy;
+      selectedDirection = forward ? authority::Orientation::Forward
+                                  : authority::Orientation::Reverse;
+      selectedAppliedTransport = forward ? action : inverseAction;
     } else {
       result.failure = "InvalidPairedBoundaryKind";
       return result;
     }
-    unite(firstFrom, secondTo);
-    unite(firstTo, secondFrom);
-    for (const int occurrence : {firstFrom, firstTo, secondFrom, secondTo}) {
-      occurrenceEquivalences[static_cast<std::size_t>(occurrence)].push_back(
-          equivalence);
+    const auto selected_step = [&](const int fromOccurrence,
+                                   const int toOccurrence)
+        -> std::optional<geometry::SelectedRelationStep> {
+      if (!selectedRelationKind.has_value()) return std::nullopt;
+      if (!selectedAppliedTransport.has_value()) return std::nullopt;
+      geometry::SelectedRelationStep step;
+      step.relationKind = selectedRelationKind.value();
+      step.railId = equivalence.railId;
+      step.periodicRelation = equivalence.periodicRelation;
+      step.direction = selectedDirection;
+      step.fromChartComponent =
+          occurrences[static_cast<std::size_t>(fromOccurrence)].chartComponent;
+      step.toChartComponent =
+          occurrences[static_cast<std::size_t>(toOccurrence)].chartComponent;
+      step.appliedTransport = selectedAppliedTransport.value();
+      return step;
+    };
+    const bool selectedFirstJoin = unite(firstFrom, secondTo);
+    if (selectedFirstJoin) {
+      selectedQuotientJoins.push_back(
+          {firstFrom, secondTo, selected_step(firstFrom, secondTo)});
+      for (const int occurrence : {firstFrom, secondTo}) {
+        occurrenceEquivalences[static_cast<std::size_t>(occurrence)].push_back(
+            equivalence);
+      }
+    }
+    const bool selectedSecondJoin = unite(firstTo, secondFrom);
+    if (selectedSecondJoin) {
+      selectedQuotientJoins.push_back(
+          {firstTo, secondFrom, selected_step(firstTo, secondFrom)});
+      for (const int occurrence : {firstTo, secondFrom}) {
+        occurrenceEquivalences[static_cast<std::size_t>(occurrence)].push_back(
+            equivalence);
+      }
     }
   }
-  if (consumedPeriodicRelations.size() != periodicRelationById.size()) {
-    result.failure = "UnconsumedAuthoritativePeriodicRelation";
-    return result;
-  }
-
   std::map<int, std::vector<int>> membersByRoot;
   for (int occurrence = 0; occurrence < occurrenceCount; ++occurrence) {
     membersByRoot[find_root(occurrence)].push_back(occurrence);
@@ -3885,6 +4014,118 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     equivalences.erase(
         std::unique(equivalences.begin(), equivalences.end()),
         equivalences.end());
+
+    struct SelectedPathEdge {
+      int next = -1;
+      std::optional<geometry::SelectedRelationStep> relationStep;
+    };
+    std::set<int> quotientMembers(quotient.memberIndices.begin(),
+                                  quotient.memberIndices.end());
+    std::map<int, std::vector<SelectedPathEdge>> selectedAdjacency;
+    const auto reverse_selected_step = [](
+        const geometry::SelectedRelationStep &forward) {
+      geometry::SelectedRelationStep reverse = forward;
+      reverse.direction = authority::reverse_orientation(forward.direction);
+      std::swap(reverse.fromChartComponent, reverse.toChartComponent);
+      reverse.appliedTransport = forward.appliedTransport.inverse();
+      return reverse;
+    };
+    for (const SelectedQuotientJoin &join : selectedQuotientJoins) {
+      if (quotientMembers.count(join.firstOccurrence) == 0U ||
+          quotientMembers.count(join.secondOccurrence) == 0U) {
+        continue;
+      }
+      selectedAdjacency[join.firstOccurrence].push_back(
+          {join.secondOccurrence, join.relationStep});
+      selectedAdjacency[join.secondOccurrence].push_back(
+          {join.firstOccurrence,
+           join.relationStep.has_value()
+               ? std::optional<geometry::SelectedRelationStep>(
+                     reverse_selected_step(join.relationStep.value()))
+               : std::nullopt});
+    }
+    for (auto &[member, edges] : selectedAdjacency) {
+      (void)member;
+      std::sort(edges.begin(), edges.end(),
+                [](const SelectedPathEdge &a, const SelectedPathEdge &b) {
+                  return a.next < b.next;
+                });
+    }
+
+    std::vector<geometry::SelectedRelationPathCertificate> selectedPaths;
+    for (const int target : quotient.memberIndices) {
+      if (target == representative) continue;
+      std::map<int, std::pair<int, std::optional<geometry::SelectedRelationStep>>>
+          parent;
+      std::vector<int> stack{representative};
+      parent.emplace(representative,
+                     std::pair<int, std::optional<geometry::SelectedRelationStep>>{
+                         -1, std::nullopt});
+      while (!stack.empty() && parent.count(target) == 0U) {
+        const int current = stack.back();
+        stack.pop_back();
+        const auto adjacent = selectedAdjacency.find(current);
+        if (adjacent == selectedAdjacency.end()) continue;
+        for (auto edgeIt = adjacent->second.rbegin();
+             edgeIt != adjacent->second.rend(); ++edgeIt) {
+          if (parent.count(edgeIt->next) != 0U) continue;
+          parent.emplace(edgeIt->next,
+                         std::make_pair(current, edgeIt->relationStep));
+          stack.push_back(edgeIt->next);
+        }
+      }
+      if (parent.count(target) == 0U) {
+        result.failure = "MissingSelectedQuotientJoinPath";
+        return result;
+      }
+
+      std::vector<std::optional<geometry::SelectedRelationStep>> pathEdges;
+      for (int current = target; current != representative;) {
+        const auto found = parent.find(current);
+        if (found == parent.end() || found->second.first < 0) {
+          result.failure = "InvalidSelectedQuotientJoinPath";
+          return result;
+        }
+        pathEdges.push_back(found->second.second);
+        current = found->second.first;
+      }
+      std::reverse(pathEdges.begin(), pathEdges.end());
+
+      geometry::SelectedRelationPathCertificate certificate;
+      certificate.sourceSupport = representativeOccurrence.support;
+      certificate.startChartComponent = representativeOccurrence.chartComponent;
+      certificate.endChartComponent =
+          occurrences[static_cast<std::size_t>(target)].chartComponent;
+      certificate.startChart = representativeOccurrence.chart;
+      certificate.endChart = occurrences[static_cast<std::size_t>(target)].chart;
+      certificate.composedTransport = authority::GridAutomorphism::identity();
+      for (const auto &pathEdge : pathEdges) {
+        if (!pathEdge.has_value()) continue;
+        if (!certificate.orderedSteps.empty() &&
+            certificate.orderedSteps.back().toChartComponent !=
+                pathEdge->fromChartComponent) {
+          result.failure = "DiscontinuousSelectedRelationPath";
+          return result;
+        }
+        certificate.composedTransport = compose(
+            pathEdge->appliedTransport, certificate.composedTransport);
+        certificate.orderedSteps.push_back(pathEdge.value());
+      }
+      if (certificate.orderedSteps.empty()) continue;
+      if (certificate.orderedSteps.front().fromChartComponent !=
+              certificate.startChartComponent ||
+          certificate.orderedSteps.back().toChartComponent !=
+              certificate.endChartComponent ||
+          !certificate.valid()) {
+        result.failure = "InvalidSelectedRelationPathCertificate";
+        return result;
+      }
+      selectedPaths.push_back(std::move(certificate));
+    }
+    std::sort(selectedPaths.begin(), selectedPaths.end());
+    selectedPaths.erase(std::unique(selectedPaths.begin(), selectedPaths.end()),
+                        selectedPaths.end());
+
     result.mesh.vertices.push_back(outputVertex);
     result.mesh.vertexPositions.row(outputVertex) =
         representativeOccurrence.point.position.transpose();
@@ -3908,6 +4149,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     lineage.quotientClass = quotient.id.value();
     lineage.sourceOccurrences = quotient.members;
     lineage.equivalences = std::move(equivalences);
+    lineage.selectedRelationPaths = std::move(selectedPaths);
     result.mesh.vertexLineage.push_back(std::move(lineage));
   }
 
@@ -12502,9 +12744,12 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   std::size_t nextTopologyRegion = 0U;
   std::size_t nextFieldChart = 0U;
   int frontEdgeOffset = 0;
-  std::size_t periodicRelationOffset = 0U;
   std::size_t occurrenceOffset = 0U;
   std::size_t quotientClassOffset = 0U;
+  std::map<authority::PeriodicRelationId,
+           std::tuple<authority::GridAutomorphism, authority::CanonicalRoute,
+                      authority::CanonicalRoute>>
+      aggregatePeriodicRelationValues;
   bool allHaveSourceLabels = true;
   bool allHaveAuthoritativeRails = true;
   staged.surfaceCellContext.productSnapshots.sourceSurfaceLabels.componentByFace.assign(
@@ -13188,28 +13433,10 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     }
 
     int localMaximumFrontEdge = -1;
-    std::map<authority::PeriodicRelationId, authority::PeriodicRelationId>
-        periodicRelationIdRemap;
     std::map<authority::OccurrenceId, authority::OccurrenceId>
         occurrenceIdRemap;
     std::map<authority::QuotientClassId, authority::QuotientClassId>
         quotientClassIdRemap;
-    const auto remap_periodic_relation_id =
-        [&](const authority::PeriodicRelationId local)
-        -> std::optional<authority::PeriodicRelationId> {
-      const auto existing = periodicRelationIdRemap.find(local);
-      if (existing != periodicRelationIdRemap.end()) return existing->second;
-      const std::size_t globalIndex =
-          periodicRelationOffset + periodicRelationIdRemap.size();
-      if (globalIndex < periodicRelationOffset) return std::nullopt;
-      const auto global = authority::PeriodicRelationId::from_index(
-          static_cast<std::int64_t>(globalIndex), globalIndex + 1U);
-      if (!global ||
-          !periodicRelationIdRemap.emplace(local, global.value()).second) {
-        return std::nullopt;
-      }
-      return global.value();
-    };
     const auto remap_occurrence_id = [&](const authority::OccurrenceId local)
         -> std::optional<authority::OccurrenceId> {
       const auto existing = occurrenceIdRemap.find(local);
@@ -13245,6 +13472,41 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
       return existing != railIdRemap.end()
                  ? std::optional<authority::HardRailId>(existing->second)
                  : std::nullopt;
+    };
+
+    const auto remap_projection_chart =
+        [&](const geometry::SourceProjectionChart &local)
+        -> std::optional<geometry::SourceProjectionChart> {
+      const auto chart = typedAuthorityDomain->fieldCharts.find(local.chart);
+      const auto face = remap_source_face_topology(local.face);
+      if (chart == typedAuthorityDomain->fieldCharts.end() || !face) {
+        return std::nullopt;
+      }
+      return geometry::SourceProjectionChart(chart->second, face.value());
+    };
+    const auto remap_chart_component_identity =
+        [&](const geometry::SourceChartComponentIdentity &local)
+        -> std::optional<geometry::SourceChartComponentIdentity> {
+      if (!local.valid || local.members.empty()) return std::nullopt;
+      geometry::SourceChartComponentIdentity global;
+      global.valid = true;
+      global.members.reserve(local.members.size());
+      for (const auto &member : local.members) {
+        const auto sheet = typedAuthorityDomain->isolationSheets.find(member.sheet);
+        const auto face = remap_source_face_topology(member.face);
+        if (sheet == typedAuthorityDomain->isolationSheets.end() || !face) {
+          return std::nullopt;
+        }
+        global.members.push_back(geometry::SourceChartComponentMemberIdentity{
+            globalComponent.value(), sheet->second, face.value()});
+      }
+      std::sort(global.members.begin(), global.members.end());
+      global.members.erase(std::unique(global.members.begin(), global.members.end()),
+                           global.members.end());
+      return global.members.empty()
+                 ? std::nullopt
+                 : std::optional<geometry::SourceChartComponentIdentity>(
+                       std::move(global));
     };
 
     const auto remap_quotient_lineage_authority =
@@ -13308,20 +13570,23 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
               }
               equivalence.secondFrontEdge += frontEdgeOffset;
             }
-            if (equivalence.periodicRelation.has_value()) {
-              const auto relationId = remap_periodic_relation_id(
-                  equivalence.periodicRelation.value());
-              if (!relationId) return false;
-              equivalence.periodicRelation = relationId.value();
-            }
             if (equivalence.railId.has_value()) {
               const auto railId = remap_rail_id(equivalence.railId.value());
               if (!railId) return false;
               equivalence.railId = railId.value();
             }
+            if (equivalence.periodicRelation.has_value()) {
+              const auto localValue = std::tuple{
+                  equivalence.action, equivalence.route, equivalence.cutRoute};
+              const auto [owner, inserted] = aggregatePeriodicRelationValues.emplace(
+                  equivalence.periodicRelation.value(), localValue);
+              if (!inserted && owner->second != localValue) return false;
+            }
             const auto remappedRoute = remap_route(equivalence.route);
-            if (!remappedRoute) return false;
+            const auto remappedCutRoute = remap_route(equivalence.cutRoute);
+            if (!remappedRoute || !remappedCutRoute) return false;
             equivalence.route = remappedRoute.value();
+            equivalence.cutRoute = remappedCutRoute.value();
             for (authority::SourceEdgeTopologyKey &topology :
                  equivalence.isolationSeams) {
               const auto remappedTopology =
@@ -13330,12 +13595,61 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
               topology = remappedTopology.value();
             }
           }
+          for (geometry::SelectedRelationPathCertificate &certificate :
+               lineage.selectedRelationPaths) {
+            if (!certificate.sourceSupport.has_value() ||
+                !lineage.sourceSupport.has_value()) {
+              return false;
+            }
+            certificate.sourceSupport = lineage.sourceSupport;
+            if (!certificate.startChart.has_value() ||
+                !certificate.endChart.has_value()) {
+              return false;
+            }
+            const auto startChart =
+                remap_projection_chart(certificate.startChart.value());
+            const auto endChart =
+                remap_projection_chart(certificate.endChart.value());
+            const auto startComponent = remap_chart_component_identity(
+                certificate.startChartComponent);
+            const auto endComponent = remap_chart_component_identity(
+                certificate.endChartComponent);
+            if (!startChart || !endChart || !startComponent || !endComponent) {
+              return false;
+            }
+            certificate.startChart = startChart.value();
+            certificate.endChart = endChart.value();
+            certificate.startChartComponent = startComponent.value();
+            certificate.endChartComponent = endComponent.value();
+            for (geometry::SelectedRelationStep &step :
+                 certificate.orderedSteps) {
+              if (step.railId.has_value()) {
+                const auto rail = remap_rail_id(step.railId.value());
+                if (!rail) return false;
+                step.railId = rail.value();
+              }
+              const auto from =
+                  remap_chart_component_identity(step.fromChartComponent);
+              const auto to =
+                  remap_chart_component_identity(step.toChartComponent);
+              if (!from || !to) return false;
+              step.fromChartComponent = from.value();
+              step.toChartComponent = to.value();
+            }
+            if (!certificate.valid()) return false;
+          }
           std::sort(lineage.equivalences.begin(),
                     lineage.equivalences.end());
           lineage.equivalences.erase(
               std::unique(lineage.equivalences.begin(),
                           lineage.equivalences.end()),
               lineage.equivalences.end());
+          std::sort(lineage.selectedRelationPaths.begin(),
+                    lineage.selectedRelationPaths.end());
+          lineage.selectedRelationPaths.erase(
+              std::unique(lineage.selectedRelationPaths.begin(),
+                          lineage.selectedRelationPaths.end()),
+              lineage.selectedRelationPaths.end());
           return !lineage.sourceTopologyRegions.empty() &&
                  !lineage.sourceIsolationSheets.empty() &&
                  !lineage.sourceCharts.empty() &&
@@ -13666,7 +13980,6 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     nextTopologyRegion = typedAuthorityDomain->nextTopologyRegion;
     nextFieldChart = typedAuthorityDomain->nextFieldChart;
     frontEdgeOffset += localMaximumFrontEdge + 1;
-    periodicRelationOffset += periodicRelationIdRemap.size();
     occurrenceOffset += occurrenceIdRemap.size();
     quotientClassOffset += quotientClassIdRemap.size();
   }

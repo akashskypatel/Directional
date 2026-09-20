@@ -107,4 +107,25 @@ GridAutomorphism CanonicalRoute::composed_transport() const noexcept {
   return result;
 }
 
+std::vector<PeriodicCarrierStepIdentity> CanonicalRoute::carrier_identity() const {
+  std::vector<PeriodicCarrierStepIdentity> carrier;
+  const std::vector<TransitionStep> observed = oriented_steps();
+  carrier.reserve(observed.size());
+  for (const TransitionStep &step : observed) {
+    carrier.push_back(PeriodicCarrierStepIdentity{
+        step.kind() == TransitionStepKind::Boundary
+            ? PeriodicCarrierStepKind::Boundary
+            : PeriodicCarrierStepKind::Interior,
+        step.topology(), step.interior()});
+  }
+  return carrier;
+}
+
+std::optional<PeriodicRelationId>
+periodic_relation_id(const TopologyRegionId region, const CanonicalRoute &route,
+                     const CanonicalRoute &cutRoute) {
+  return PeriodicRelationId::from_carriers(
+      region, route.carrier_identity(), cutRoute.carrier_identity());
+}
+
 } // namespace directional::authority

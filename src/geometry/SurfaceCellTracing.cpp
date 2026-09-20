@@ -6266,8 +6266,8 @@ int translation_orientation_rank(
 }
 
 auto periodic_relation_key(const SurfacePeriodicHolonomy &relation) {
-  return std::tuple{relation.sourceTopologyRegion(), relation.action(),
-                    relation.route(), relation.cutRoute()};
+  return std::tuple{relation.id(), relation.action(), relation.route(),
+                    relation.cutRoute()};
 }
 
 bool periodic_relation_shape_valid(const SurfacePeriodicHolonomy &relation) {
@@ -6291,8 +6291,8 @@ SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
   };
   if (action_key(inverseAction) < action_key(relation.action())) {
     const auto rebuilt = SurfacePeriodicHolonomy::make(
-        relation.id(), relation.sourceTopologyRegion(), inverseAction,
-        relation.route(), relation.cutRoute());
+        relation.sourceTopologyRegion(), inverseAction, relation.route().reversed(),
+        relation.cutRoute().reversed());
     const auto *value = std::get_if<SurfacePeriodicHolonomy>(&rebuilt);
     if (value != nullptr) relation = *value;
   }
@@ -6308,50 +6308,14 @@ SurfacePeriodicHolonomyInsertStatus insert_periodic_holonomy(
   }
 
   for (const SurfacePeriodicHolonomy &existing : relations) {
+    if (existing.id() != relation.id()) continue;
     if (periodic_relation_key(existing) == periodic_relation_key(relation)) {
       return SurfacePeriodicHolonomyInsertStatus::Equivalent;
     }
-    const bool sameScope =
-        existing.sourceTopologyRegion() == relation.sourceTopologyRegion();
-    if (!sameScope) continue;
-    if (existing.route() == relation.route() ||
-        existing.cutRoute() == relation.cutRoute()) {
-      return SurfacePeriodicHolonomyInsertStatus::Incompatible;
-    }
-
-    // This G4 slice intentionally does not guess a basis inside one source
-    // sheet. Distinct same-sheet cycles require a later topology-basis solver;
-    // retaining one by discovery order would be unsound. Multiple relations
-    // on distinct authoritative sheets/components remain valid and are kept.
-    return SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis;
-  }
-
-  // Allocate ownership from the occupied typed-ID set, not from relation
-  // vector position. Existing owners never change when storage is reordered or
-  // a later relation is inserted.
-  const std::size_t ownerExtent = relations.size() + 1U;
-  std::optional<authority::PeriodicRelationId> allocatedId;
-  for (std::size_t candidateIndex = 0; candidateIndex < ownerExtent;
-       ++candidateIndex) {
-    const auto candidate = authority::PeriodicRelationId::from_index(
-        static_cast<std::int64_t>(candidateIndex), ownerExtent);
-    if (!candidate) return SurfacePeriodicHolonomyInsertStatus::Incompatible;
-    const bool occupied = std::any_of(
-        relations.begin(), relations.end(), [&](const auto &existing) {
-          return existing.id() == candidate.value();
-        });
-    if (!occupied) {
-      allocatedId = candidate.value();
-      break;
-    }
-  }
-  if (!allocatedId.has_value()) {
     return SurfacePeriodicHolonomyInsertStatus::Incompatible;
   }
-  relation = relation.with_id(*allocatedId);
-  relations.push_back(std::move(relation));
 
-  // Storage order is deterministic only; semantic ownership is the typed ID.
+  relations.push_back(std::move(relation));
   std::sort(relations.begin(), relations.end(),
             [](const SurfacePeriodicHolonomy &a,
                const SurfacePeriodicHolonomy &b) {
@@ -7894,12 +7858,10 @@ SurfaceIsolationSeamTransportCertificate::make(
 }
 
 SurfacePeriodicHolonomy::ConstructionResult SurfacePeriodicHolonomy::make(
-    authority::PeriodicRelationId id,
     authority::TopologyRegionId sourceTopologyRegion,
     authority::GridAutomorphism action, authority::CanonicalRoute route,
     authority::CanonicalRoute cutRoute) {
   SurfacePeriodicHolonomyError error;
-  error.id = id;
   error.region = sourceTopologyRegion;
   if (action.shift.x == 0 && action.shift.y == 0) {
     error.code = SurfacePeriodicHolonomyErrorCode::ZeroTranslation;
@@ -7913,7 +7875,14 @@ SurfacePeriodicHolonomy::ConstructionResult SurfacePeriodicHolonomy::make(
     error.code = SurfacePeriodicHolonomyErrorCode::MissingCutRoute;
     return error;
   }
-  return SurfacePeriodicHolonomy(id, sourceTopologyRegion, action,
+  const auto id = authority::periodic_relation_id(sourceTopologyRegion, route,
+                                                   cutRoute);
+  if (!id.has_value()) {
+    error.code = SurfacePeriodicHolonomyErrorCode::InvalidRelationIdentity;
+    return error;
+  }
+  error.id = id.value();
+  return SurfacePeriodicHolonomy(id.value(), sourceTopologyRegion, action,
                                  std::move(route), std::move(cutRoute));
 }
 
@@ -7960,6 +7929,13 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
   std::map<authority::PeriodicRelationId, const SurfacePeriodicHolonomy *>
       relationById;
   for (const SurfacePeriodicHolonomy &relation : periodicHolonomies) {
+    const auto expectedId = authority::periodic_relation_id(
+        relation.sourceTopologyRegion(), relation.route(), relation.cutRoute());
+    if (!expectedId.has_value() || expectedId.value() != relation.id()) {
+      error.code = SurfacePhaseFrontProductErrorCode::DuplicatePeriodicRelationId;
+      error.periodicRelation = relation.id();
+      return error;
+    }
     if (!relationById.emplace(relation.id(), &relation).second) {
       error.code = SurfacePhaseFrontProductErrorCode::DuplicatePeriodicRelationId;
       error.periodicRelation = relation.id();
@@ -13403,14 +13379,8 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
   }
   const authority::CanonicalRoute cutRoute =
       authority::CanonicalRoute::from_observed_steps(std::move(cutSteps));
-  const auto relationId = authority::PeriodicRelationId::from_index(0, 1);
-  if (!relationId) {
-    set_phase_front_failure(result.failure,
-                            SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
-    return result;
-  }
   auto periodicConstruction = SurfacePeriodicHolonomy::make(
-      relationId.value(), region.id(), periodicAction, typedRoute, cutRoute);
+      region.id(), periodicAction, typedRoute, cutRoute);
   auto *periodicValue =
       std::get_if<SurfacePeriodicHolonomy>(&periodicConstruction);
   if (periodicValue == nullptr) {
@@ -16706,13 +16676,6 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       for (SurfacePeriodicHolonomy relation : local.periodicHolonomies) {
         const auto insertion = insert_periodic_holonomy(
             result.periodicHolonomies, std::move(relation));
-        if (insertion == SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis) {
-          result.disposition = SurfaceCellProducerDisposition::Rejected;
-          set_phase_front_failure(
-              result.failure,
-              SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis);
-          return result;
-        }
         if (insertion == SurfacePeriodicHolonomyInsertStatus::Incompatible) {
           result.disposition = SurfaceCellProducerDisposition::Rejected;
           set_phase_front_failure(
