@@ -1,0 +1,4 @@
+turn=M5-CP1-TB1-R3-REV
+base_sha=e00f5db46edab21d5a508b30fcc817b13de10b25
+patch_sha256=6ab0798adef4cdb3c4b33ca954a88d32e41a300d7a684a5bf5fa6614b6cdc2d9
+retry=1
