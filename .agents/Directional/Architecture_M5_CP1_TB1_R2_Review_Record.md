@@ -143,3 +143,76 @@ The retained current M5 role set is: current R2 runtime report, this Review reco
 | review_check.py boundary | **PASS — durable boundary check and selector430 expectation pass on the prepared Review tree.** |
 | `STATUS` lifecycle maintained | **YES — Review entry beacon was published before substantive repository mutation; final COMPLETE beacon is reserved as the last repository write.** |
 | Pushed to origin, branch in sync | **YES — the reviewed documentation/consolidation patch is applied on the configured working branch, branch authority is re-read after push, and no unapplied Review document delta remains before final STATUS closeout.** |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The witness-precondition classification is correct and all three legs of the argument
+re-derive from repository bytes. Accounting correctly holds at **49 / 14 / 35**, debt **5**; accepted authority
+remains package `10591801825` / selector430 **430/430**. One falsifier is recorded for `M5-CP1-CB3`.
+
+### V1 — all three legs verified, and the discriminator is the strong one
+
+**Leg 1 — the precondition is never established.** `TEST(M5CP1, SelectedRelationPathCertificateSurvivesRelationContainerPermutation)`
+takes `direct_full_periodic_materializer_draft()`, copies it to `reorderedDraft`, and then immediately asserts
+`ASSERT_GE(reorderedDraft.periodicHolonomies.size(), 2U)`. There is **no intervening step that creates a second
+relation**. The test asserts a property of the helper rather than establishing it — exactly §3.1's reading.
+
+**Leg 2 — a passing neighbour proves the capability exists.** This is the part that makes the adjudication sound
+rather than merely plausible. `TEST(M5CP1, UnusedValidPeriodicRelationDoesNotChangeSelectedCertificate)` starts
+from the **same** helper, asserts only `ASSERT_FALSE(…empty())`, then *constructs* a second relation via
+`SurfacePeriodicHolonomy::make(…)` from `owner.route()`, proves it distinct with `std::none_of`, `push_back`s it,
+and materializes successfully. So two relations are constructible and materializable from the identical starting
+fixture. The failing row did not hit a product limit; it skipped the construction its neighbour performs.
+
+**Leg 3 — the owned seam is order-independent.** `SurfacePhaseFrontProduct::make(…)`
+(`src/geometry/SurfaceCellTracing.cpp:7889`) builds
+`std::map<authority::PeriodicRelationId, const SurfacePeriodicHolonomy *>` at `:7929`. A `std::map` orders by
+key, not by insertion, so relation-table vector position cannot reach that validation.
+
+Distinguishing a bad witness from a product defect by pointing at a **passing test that does the missing step**
+is the right method — far stronger than arguing from the failing test alone.
+
+### V2 — RECORDED FALSIFIER FOR `M5-CP1-CB3`: the classification must stay falsifiable
+
+§3.3's "no product semantic implementation gap" is a **static** finding. The corrected witness is its actual
+test, and that distinction matters because of the failure mode it invites: corrected witness fails → author
+adjusts the witness again → something eventually passes → a real order dependency is never seen. That is
+"adjust the test until it is green", and it is exactly how a self-sealing classification forms.
+
+**The corrected row6 must be a pure-permutation witness**: identical relation-table membership in both drafts,
+with only storage order reversed, per §4 steps 3-6. If that witness still fails, the R2 classification is
+**falsified** — the defect is then a product order dependency, not test authority — and `M5-CP1-CB3` must
+**STOP and report** rather than weaken the assertion, relax the comparison, change membership between the two
+drafts, or fall back to row7's membership-changing pattern. Re-adjusting the witness a second time would convert
+a falsifiable claim into an unfalsifiable one. Recorded as `M5-CP1-TB1-R2-REV-OBS-01`.
+
+§4's construction is otherwise the right fix and is properly sourced: it lifts row7's *proven* construction
+pattern rather than inventing one, while holding membership fixed so only representation order varies — the
+invariant frozen at §§3.2, 4 and 5.2.
+
+### V3 — credit boundary carries forward unchanged
+
+Row 6 is built on `direct_full_periodic_materializer_draft()`, which `Architecture_M5_Frozen_Definitions.md` §8.1
+names as the highest existing evidence for M5 debts **3** and **4** and classifies as **mechanism-only, no
+produced-witness credit**. A corrected, green row 6 therefore earns CP1 mechanism credit and **discharges no M5
+debt**; debts 3 and 4 remain `M5-CP3` on produced authority.
+
+The selector gate's `430/430` likewise includes rows **218, 220, 221 and 226**, which bear the four open M5 debt
+names as direct/draft witnesses (`M5-CP1-TB1-PREFLIGHT-REV-OBS-01`). Their passing is **regression evidence, not
+discharge**, and must not be reported as debt progress.
+
+### V4 — accounting is correct under the durable criterion
+
+Selector430 is **430/430 PASS**, so no ordinal inside the accepted prefix transitioned PASS → RED. The sole RED is
+focused ordinal 6, an unaccepted row. Under the durable stable-event criterion no stable event is recorded, and
+**49 / 14 / 35** with debt **5** is the right result. Note the criterion is satisfied on its own terms here — the
+ground is the untouched accepted prefix, not the candidate's unpromoted status.
+
+### V5 — verification limits
+
+Re-derived from repository bytes: both test bodies and the exact assertion that fails, row7's second-relation
+construction, and the canonical-ID map at the phase-front seam. Accepted as reported: result and diagnostic
+artifact hashes, focused/selector ledger digests, and the `8/9` and `430/430` tallies — all artifact-side, and
+consistent with a Review that re-opened them rather than copying the execution summary.

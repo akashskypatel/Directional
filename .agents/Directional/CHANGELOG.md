@@ -1,3 +1,36 @@
+## 2026-09-20 — `M5-CP1-TB1-R2-REV` review: witness-precondition classification upheld; falsifier recorded for CB3
+
+Runtime-free review. **Upheld.** Accounting holds at **49 / 14 / 35**, debt **5**; accepted authority remains
+package `10591801825` / selector430 **430/430**. R2 ran focused **8/9 PASS / 1 RED** with selector430
+**430/430 PASS**, so no ordinal inside the accepted prefix transitioned PASS → RED and the durable stable-event
+criterion is satisfied on its own terms — the ground is the untouched accepted prefix, not the candidate's
+unpromoted status.
+
+All three legs of the adjudication re-derive from repository bytes. The failing test asserts
+`ASSERT_GE(…periodicHolonomies.size(), 2U)` immediately after copying
+`direct_full_periodic_materializer_draft()`, with **no** intervening step creating a second relation — it asserts
+a property of the helper instead of establishing it. The neighbouring **passing**
+`M5CP1.UnusedValidPeriodicRelationDoesNotChangeSelectedCertificate` starts from the same helper, constructs a
+second distinct relation via `SurfacePeriodicHolonomy::make(…)`, appends it and materializes successfully — so
+the capability exists and the failing row simply skipped the construction its neighbour performs. And the owned
+seam builds `std::map<authority::PeriodicRelationId, …>` (`SurfaceCellTracing.cpp:7929`), key-ordered rather
+than insertion-ordered, so vector position cannot reach that validation. Diagnosing a bad witness by pointing at
+a passing test that does the missing step is the right method.
+
+New: `M5-CP1-TB1-R2-REV-OBS-01` (gating on CB3). The "no product gap" half of the finding is **static**, and the
+corrected witness is its first real test. CB3 must produce a pure-permutation witness — identical membership,
+only storage order reversed. **If it still fails, the classification is falsified** and CB3 must STOP and report
+rather than weaken the assertion, relax the comparison, change membership, or fall back to row7's
+membership-changing pattern. A second witness adjustment would convert a falsifiable claim into a self-sealing
+one.
+
+Credit boundary unchanged: row6 runs on the draft materializer that frozen §8.1 marks mechanism-only and names as
+highest evidence for debts 3 and 4, so a green row6 discharges nothing; and the selector gate's 430/430 includes
+rows 218/220/221/226, which bear the four open M5 debt names as direct/draft witnesses — regression evidence,
+not discharge.
+
+Exact successor: `M5-CP1-CB3` — test-authority-only correction, no product/fixture/selector/CMake change.
+
 ## 2026-09-20 — `M5-CP1-TB1-R2-REV`: row6 RED adjudicated test-authority-only; CB3 next
 
 Independent runtime-free Review upholds R2 run `35491016562`: focused **8/9 PASS / 1 RED**, selector430 **430/430 PASS**, exact-one/zero-skip, benchmark **0**, immutable postflight exact. Re-opened source proves row6's materializable helper authors only one periodic relation, so its `>=2` assertion is an invalid witness precondition and the test exits before its claimed permutation/certificate invariant. Row7 independently demonstrates a valid second relation can be appended to the same materializable authority and remain decision-neutral under reversal; row9 independently proves two canonical owners survive reversal at the checked product boundary. Product lookup is ID-keyed at the reviewed seam. `M5-CP1-TB1-R2-EXEC-CAND-01` closes **RP-02 / TEST_AUTHORITY_COVERAGE_GAP / NON-STABLE / TEST-ONLY CORRECTION REQUIRED**. Candidate `10595705100` remains unpromoted; accepted M4 package `10591801825` / selector430 remains authority; accounting **49 / 14 / 35**, debt **5**. Exact next is `M5-CP1-CB3`, changing only row6's test body before mandatory GMP compile/package.

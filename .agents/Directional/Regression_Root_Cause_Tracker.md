@@ -8806,3 +8806,31 @@ separation is what made the original TB1 block correct and must be preserved.
 **Terminal R1 evidence.** Run `35486023017` passed schema validation but runtime job `106012455346` failed decoding the embedded GZip payload with CRC and length errors. The harness did not exist, `gate_harness_exit` was empty, no result artifact was produced, and **0 Directional processes** executed. Diagnostic artifact `10597540714` has SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`. This closes the observation non-stably as executor-payload authoring failure and adds no semantic event. Corrective owner is `M5-CP1-CB2`, which must prove executor round-trip/hash/path/schema validity before any fresh runtime.
 
 **CB2 correction evidence.** `M5-CP1-CB2` is STATIC GREEN / RUNTIME-FREE. Canonical harness `b706d03a...d37302` and executor template `9c9c2527...a12a1` are checked in at installation commit `adbd441195fa2dbc122a7463f14e56d6e281c78f`. Immutable local preflight re-proved candidate ZIP/root manifest **28/28**, selector430 **430**, routing map **430 unique / 31-283-75-41**, and all nine focused definitions with zero Directional runtime. Final run `35490228347` validates both YAMLs and proves `bash_n=true`, permission ceiling valid, no timeout/watchdog, and byte-identical harness round-trip; proof artifact `10598826679` is `d765ed4d54b07f130e83f44dd499d61584e6dab1693b32db9472d14004b05b2d`. Fresh successor `M5-CP1-TB1-R2-EXEC` imports no R1 process evidence. This is correction proof for the already non-stable process observation, not a new regression event.
+
+## `M5-CP1-TB1-R2-REV-OBS-01` — the row6 witness correction must be able to falsify its own classification
+
+**Status.** OPEN / GATING ON `M5-CP1-CB3` / NON-STABLE.
+
+`M5-CP1-TB1-R2-REV` classified the sole R2 RED — `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation`
+— as an invalid witness precondition rather than a product defect. The classification is correct and verified:
+the test asserts `ASSERT_GE(…periodicHolonomies.size(), 2U)` immediately after copying
+`direct_full_periodic_materializer_draft()` with no step creating a second relation, while the neighbouring
+**passing** `M5CP1.UnusedValidPeriodicRelationDoesNotChangeSelectedCertificate` constructs exactly such a second
+relation from the same helper and materializes successfully; and the owned seam builds
+`std::map<authority::PeriodicRelationId, …>` (`src/geometry/SurfaceCellTracing.cpp:7929`), which is key-ordered
+rather than insertion-ordered.
+
+**Why this still needs a falsifier:** the "no product semantic gap" half of that finding is **static**. The
+corrected witness is its first real test. The failure mode to guard against is not a wrong classification but an
+unfalsifiable one — corrected witness fails, author adjusts the witness again, something eventually passes, and a
+genuine order dependency is never observed. That is "adjust the test until it is green".
+
+**How to apply:** `M5-CP1-CB3` must produce a **pure-permutation** witness — identical relation-table membership
+in both drafts, only storage order reversed. If that witness still fails, the R2 classification is **falsified**:
+the defect is a product order dependency, not test authority, and CB3 must **STOP and report** rather than weaken
+the assertion, relax the certificate comparison, change membership between drafts, or fall back to row7's
+membership-changing pattern. A second witness adjustment converts a falsifiable claim into a self-sealing one.
+
+Credit is unchanged either way: row6 runs on `direct_full_periodic_materializer_draft()`, which frozen §8.1 marks
+**mechanism-only, no produced-witness credit** and names as highest existing evidence for M5 debts 3 and 4. A
+green row6 discharges no debt. See `[[M5-CP1-TB1-PREFLIGHT-REV-OBS-01]]`.
