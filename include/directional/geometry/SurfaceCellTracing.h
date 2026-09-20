@@ -1694,6 +1694,9 @@ enum class SurfacePhaseFrontProductErrorCode : int {
   InvalidBoundedDiskRegion = 15,
   DuplicateBoundedDiskRegion = 16,
   InvalidSharedBoundaryInterval = 17,
+  ConflictingPeriodicRelation = 18,
+  NonReciprocalPeriodicRelation = 19,
+  RepresentationRenumberedPeriodicRelation = 20,
 };
 
 struct SurfacePhaseFrontProductError {

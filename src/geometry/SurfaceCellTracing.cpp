@@ -7932,12 +7932,18 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     const auto expectedId = authority::periodic_relation_id(
         relation.sourceTopologyRegion(), relation.route(), relation.cutRoute());
     if (!expectedId.has_value() || expectedId.value() != relation.id()) {
-      error.code = SurfacePhaseFrontProductErrorCode::DuplicatePeriodicRelationId;
+      error.code = SurfacePhaseFrontProductErrorCode::
+          RepresentationRenumberedPeriodicRelation;
       error.periodicRelation = relation.id();
       return error;
     }
-    if (!relationById.emplace(relation.id(), &relation).second) {
-      error.code = SurfacePhaseFrontProductErrorCode::DuplicatePeriodicRelationId;
+    const auto [owner, inserted] = relationById.emplace(relation.id(), &relation);
+    if (!inserted) {
+      error.code = *owner->second == relation
+                       ? SurfacePhaseFrontProductErrorCode::
+                             DuplicatePeriodicRelationId
+                       : SurfacePhaseFrontProductErrorCode::
+                             ConflictingPeriodicRelation;
       error.periodicRelation = relation.id();
       return error;
     }
@@ -7948,6 +7954,16 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       return error;
     }
   }
+
+  const auto periodic_action_matches = [](
+      const LocalLatticeState &first, const LocalLatticeState &second,
+      const authority::GridAutomorphism &action) {
+    return action.apply(first.latticeCoordinate) == second.latticeCoordinate &&
+           compose(action.rotation, authority::QuarterTurn::from_integer(
+                                        first.branchRotation)) ==
+               authority::QuarterTurn::from_integer(second.branchRotation) &&
+           first.scaleLevel == second.scaleLevel;
+  };
 
   for (std::size_t edgeIndex = 0; edgeIndex < edges.size(); ++edgeIndex) {
     const SurfaceFrontEdge &edge = edges[edgeIndex];
@@ -8025,12 +8041,61 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         return error;
       }
       const auto owner = relationById.find(*edge.periodicRelation);
-      if (owner == relationById.end() ||
-          owner->second->sourceTopologyRegion() != edge.sourceTopologyRegion) {
+      if (owner == relationById.end()) {
+        error.code = SurfacePhaseFrontProductErrorCode::MissingPeriodicRelationOwner;
+        error.edge = static_cast<int>(edgeIndex);
+        error.periodicRelation = edge.periodicRelation;
+        return error;
+      }
+      if (owner->second->sourceTopologyRegion() != edge.sourceTopologyRegion) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidPeriodicRelationOwner;
         error.edge = static_cast<int>(edgeIndex);
         error.periodicRelation = edge.periodicRelation;
         return error;
+      }
+      if (edge.oppositeEdge >= 0 &&
+          static_cast<int>(edgeIndex) < edge.oppositeEdge) {
+        const SurfaceFrontEdge &opposite =
+            edges[static_cast<std::size_t>(edge.oppositeEdge)];
+        if (opposite.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut ||
+            opposite.periodicRelation != edge.periodicRelation ||
+            opposite.route != edge.route.reversed()) {
+          error.code = SurfacePhaseFrontProductErrorCode::
+              NonReciprocalPeriodicRelation;
+          error.edge = static_cast<int>(edgeIndex);
+          error.periodicRelation = edge.periodicRelation;
+          return error;
+        }
+
+        const authority::CanonicalRoute &cutRoute = owner->second->cutRoute();
+        const bool edgeUsesForwardCarrier = edge.route == cutRoute;
+        const bool edgeUsesReverseCarrier = edge.route == cutRoute.reversed();
+        if (!edgeUsesForwardCarrier && !edgeUsesReverseCarrier) {
+          error.code = SurfacePhaseFrontProductErrorCode::
+              RepresentationRenumberedPeriodicRelation;
+          error.edge = static_cast<int>(edgeIndex);
+          error.periodicRelation = edge.periodicRelation;
+          return error;
+        }
+
+        const authority::GridAutomorphism &action = owner->second->action();
+        const authority::GridAutomorphism inverseAction = action.inverse();
+        const bool forward =
+            periodic_action_matches(edge.fromLattice, opposite.toLattice, action) &&
+            periodic_action_matches(edge.toLattice, opposite.fromLattice, action);
+        const bool inverse = periodic_action_matches(
+                                 edge.fromLattice, opposite.toLattice,
+                                 inverseAction) &&
+                             periodic_action_matches(
+                                 edge.toLattice, opposite.fromLattice,
+                                 inverseAction);
+        if (!forward && !inverse) {
+          error.code = SurfacePhaseFrontProductErrorCode::
+              NonReciprocalPeriodicRelation;
+          error.edge = static_cast<int>(edgeIndex);
+          error.periodicRelation = edge.periodicRelation;
+          return error;
+        }
       }
     } else if (edge.periodicRelation.has_value()) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidPeriodicRelationOwner;

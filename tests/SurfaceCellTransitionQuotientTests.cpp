@@ -17,6 +17,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -143,6 +144,86 @@ directional::authority::CanonicalRoute test_interior_route(
   if (!step) throw std::runtime_error("Invalid test interior-route step.");
   return directional::authority::CanonicalRoute::from_observed_steps(
       {step.value()});
+}
+
+std::vector<directional::authority::PeriodicCarrierStepIdentity>
+independent_periodic_route_carrier(
+    const directional::authority::CanonicalRoute &route) {
+  std::vector<directional::authority::PeriodicCarrierStepIdentity> carrier;
+  carrier.reserve(route.steps().size());
+  for (const auto &step : route.oriented_steps()) {
+    carrier.push_back({
+        step.kind() == directional::authority::TransitionStepKind::Boundary
+            ? directional::authority::PeriodicCarrierStepKind::Boundary
+            : directional::authority::PeriodicCarrierStepKind::Interior,
+        step.topology(), step.interior()});
+  }
+  return carrier;
+}
+
+std::pair<
+    std::vector<directional::authority::PeriodicCarrierStepIdentity>,
+    std::vector<directional::authority::PeriodicCarrierStepIdentity>>
+independent_periodic_carrier_identity(
+    const directional::authority::CanonicalRoute &route,
+    const directional::authority::CanonicalRoute &cutRoute) {
+  auto generator = independent_periodic_route_carrier(route);
+  auto cut = independent_periodic_route_carrier(cutRoute);
+  auto reversedGenerator = generator;
+  auto reversedCut = cut;
+  std::reverse(reversedGenerator.begin(), reversedGenerator.end());
+  std::reverse(reversedCut.begin(), reversedCut.end());
+  if (std::tie(reversedGenerator, reversedCut) < std::tie(generator, cut)) {
+    generator = std::move(reversedGenerator);
+    cut = std::move(reversedCut);
+  }
+  return {std::move(generator), std::move(cut)};
+}
+
+std::optional<directional::authority::PeriodicRelationId>
+independent_periodic_relation_id(
+    const directional::authority::TopologyRegionId region,
+    const directional::authority::CanonicalRoute &route,
+    const directional::authority::CanonicalRoute &cutRoute) {
+  auto [generator, cut] =
+      independent_periodic_carrier_identity(route, cutRoute);
+  return directional::authority::PeriodicRelationId::from_carriers(
+      region, std::move(generator), std::move(cut));
+}
+
+directional::authority::GridAutomorphism independent_route_transport(
+    const directional::authority::CanonicalRoute &route) {
+  auto transport = directional::authority::GridAutomorphism::identity();
+  for (const auto &step : route.oriented_steps()) {
+    transport = compose(step.transport(), transport);
+  }
+  return transport;
+}
+
+directional::authority::CanonicalRoute
+tamper_route_transport_preserving_carrier(
+    const directional::authority::CanonicalRoute &route) {
+  auto steps = route.oriented_steps();
+  if (steps.empty()) {
+    throw std::runtime_error("Cannot tamper an empty periodic route.");
+  }
+  const auto &original = steps.front();
+  auto transport = original.transport();
+  ++transport.shift.x;
+  if (original.kind() == directional::authority::TransitionStepKind::Boundary) {
+    steps.front() = directional::authority::TransitionStep::boundary(
+        original.topology(), transport, original.orientation());
+  } else {
+    const auto replacement = directional::authority::TransitionStep::interior(
+        original.topology(), original.interior(), transport,
+        original.orientation());
+    if (!replacement) {
+      throw std::runtime_error("Failed to tamper periodic interior route.");
+    }
+    steps.front() = replacement.value();
+  }
+  return directional::authority::CanonicalRoute::from_observed_steps(
+      std::move(steps));
 }
 
 directional::geometry::SurfacePhaseFrontProduct
@@ -710,12 +791,59 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
      DuplicatePeriodicRelationIdentityRejectsAtCheckedFactory) {
   PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
   ASSERT_GE(tampered.periodicHolonomies.size(), 2U);
-  tampered.periodicHolonomies[1] = tampered.periodicHolonomies.front();
-  const auto construction = construct_phase_front_product(std::move(tampered));
+  const auto duplicate = tampered.periodicHolonomies.front();
+  const auto expectedCarrier = independent_periodic_carrier_identity(
+      duplicate.route(), duplicate.cutRoute());
+  EXPECT_EQ(expectedCarrier.first, duplicate.id().generator_carrier());
+  EXPECT_EQ(expectedCarrier.second, duplicate.id().cut_carrier());
+  tampered.periodicHolonomies.push_back(duplicate);
+
+  PhaseFrontDraft reordered = tampered;
+  std::reverse(reordered.periodicHolonomies.begin(),
+               reordered.periodicHolonomies.end());
   expect_phase_front_product_error(
-      construction,
+      construct_phase_front_product(std::move(tampered)),
       directional::geometry::SurfacePhaseFrontProductErrorCode::
           DuplicatePeriodicRelationId);
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(reordered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          DuplicatePeriodicRelationId);
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     ConflictingPeriodicRelationValueRejectsAtCheckedFactory) {
+  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
+  ASSERT_FALSE(tampered.periodicHolonomies.empty());
+  const auto &original = tampered.periodicHolonomies.front();
+  const auto expectedCarrier = independent_periodic_carrier_identity(
+      original.route(), original.cutRoute());
+  EXPECT_EQ(expectedCarrier.first, original.id().generator_carrier());
+  EXPECT_EQ(expectedCarrier.second, original.id().cut_carrier());
+
+  auto action = original.action();
+  ++action.shift.x;
+  auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
+      original.sourceTopologyRegion(), action, original.route(),
+      original.cutRoute());
+  const auto *conflicting =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&rebuilt);
+  ASSERT_NE(nullptr, conflicting);
+  ASSERT_EQ(original.id(), conflicting->id());
+  ASSERT_NE(original.action(), conflicting->action());
+  tampered.periodicHolonomies.push_back(*conflicting);
+
+  PhaseFrontDraft reordered = tampered;
+  std::reverse(reordered.periodicHolonomies.begin(),
+               reordered.periodicHolonomies.end());
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          ConflictingPeriodicRelation);
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(reordered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          ConflictingPeriodicRelation);
 }
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
@@ -748,10 +876,16 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_FALSE(tampered.edges.empty());
   ASSERT_EQ(SurfaceFrontBoundaryKind::PeriodicCut,
             tampered.edges.front().boundaryKind);
-  const auto unknownOwner = directional::authority::periodic_relation_id(
-      tampered.periodicHolonomies.front().sourceTopologyRegion(),
-      test_interior_route(40, 41, 40), test_interior_route(42, 43, 41));
+  const auto unknownRoute = test_interior_route(40, 41, 40);
+  const auto unknownCutRoute = test_interior_route(42, 43, 41);
+  const auto unknownOwner = independent_periodic_relation_id(
+      tampered.periodicHolonomies.front().sourceTopologyRegion(), unknownRoute,
+      unknownCutRoute);
   ASSERT_TRUE(unknownOwner.has_value());
+  const auto expectedCarrier =
+      independent_periodic_carrier_identity(unknownRoute, unknownCutRoute);
+  EXPECT_EQ(expectedCarrier.first, unknownOwner->generator_carrier());
+  EXPECT_EQ(expectedCarrier.second, unknownOwner->cut_carrier());
   ASSERT_TRUE(std::none_of(
       tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
       [&](const auto &relation) { return relation.id() == unknownOwner.value(); }));
@@ -760,7 +894,102 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   expect_phase_front_product_error(
       construction,
       directional::geometry::SurfacePhaseFrontProductErrorCode::
-          InvalidPeriodicRelationOwner);
+          MissingPeriodicRelationOwner);
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     NonReciprocalPeriodicRelationRejectsAtCheckedFactory) {
+  PhaseFrontDraft tampered = direct_full_periodic_materializer_draft();
+  std::size_t firstIndex = tampered.edges.size();
+  for (std::size_t edgeIndex = 0; edgeIndex < tampered.edges.size(); ++edgeIndex) {
+    const auto &edge = tampered.edges[edgeIndex];
+    if (edge.boundaryKind == SurfaceFrontBoundaryKind::PeriodicCut &&
+        edge.oppositeEdge > static_cast<int>(edgeIndex)) {
+      firstIndex = edgeIndex;
+      break;
+    }
+  }
+  ASSERT_LT(firstIndex, tampered.edges.size());
+  const std::size_t secondIndex = static_cast<std::size_t>(
+      tampered.edges[firstIndex].oppositeEdge);
+  ASSERT_LT(secondIndex, tampered.edges.size());
+  const auto &first = tampered.edges[firstIndex];
+  const auto beforeCarrier =
+      independent_periodic_route_carrier(tampered.edges[secondIndex].route);
+  auto expectedReverseCarrier = independent_periodic_route_carrier(first.route);
+  std::reverse(expectedReverseCarrier.begin(), expectedReverseCarrier.end());
+  EXPECT_EQ(expectedReverseCarrier, beforeCarrier);
+  EXPECT_EQ(independent_route_transport(first.route).inverse(),
+            independent_route_transport(tampered.edges[secondIndex].route));
+
+  tampered.edges[secondIndex].route =
+      tamper_route_transport_preserving_carrier(
+          tampered.edges[secondIndex].route);
+  EXPECT_EQ(beforeCarrier, independent_periodic_route_carrier(
+                               tampered.edges[secondIndex].route));
+  EXPECT_NE(independent_route_transport(first.route).inverse(),
+            independent_route_transport(tampered.edges[secondIndex].route));
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          NonReciprocalPeriodicRelation);
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
+     RepresentationRenumberedPeriodicRelationRejectsAtCheckedFactory) {
+  PhaseFrontDraft baseline = direct_full_periodic_materializer_draft();
+  std::size_t firstIndex = baseline.edges.size();
+  for (std::size_t edgeIndex = 0; edgeIndex < baseline.edges.size(); ++edgeIndex) {
+    const auto &edge = baseline.edges[edgeIndex];
+    if (edge.boundaryKind == SurfaceFrontBoundaryKind::PeriodicCut &&
+        edge.oppositeEdge > static_cast<int>(edgeIndex)) {
+      firstIndex = edgeIndex;
+      break;
+    }
+  }
+  ASSERT_LT(firstIndex, baseline.edges.size());
+  const std::size_t secondIndex =
+      static_cast<std::size_t>(baseline.edges[firstIndex].oppositeEdge);
+  ASSERT_LT(secondIndex, baseline.edges.size());
+  ASSERT_TRUE(baseline.edges[firstIndex].periodicRelation.has_value());
+  const auto originalId = *baseline.edges[firstIndex].periodicRelation;
+  const auto owner = std::find_if(
+      baseline.periodicHolonomies.begin(), baseline.periodicHolonomies.end(),
+      [&](const auto &relation) { return relation.id() == originalId; });
+  ASSERT_NE(baseline.periodicHolonomies.end(), owner);
+  const auto expectedCarrier =
+      independent_periodic_carrier_identity(owner->route(), owner->cutRoute());
+  EXPECT_EQ(expectedCarrier.first, originalId.generator_carrier());
+  EXPECT_EQ(expectedCarrier.second, originalId.cut_carrier());
+
+  auto unusedConstruction = directional::geometry::SurfacePeriodicHolonomy::make(
+      owner->sourceTopologyRegion(), owner->action(), owner->cutRoute(),
+      owner->route());
+  const auto *unused =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(
+          &unusedConstruction);
+  ASSERT_NE(nullptr, unused);
+  ASSERT_NE(originalId, unused->id());
+  baseline.periodicHolonomies.push_back(*unused);
+  const auto baselineConstruction = construct_phase_front_product(baseline);
+  ASSERT_NE(nullptr,
+            std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                &baselineConstruction));
+
+  PhaseFrontDraft tampered = baseline;
+  tampered.edges[firstIndex].periodicRelation = unused->id();
+  tampered.edges[secondIndex].periodicRelation = unused->id();
+  PhaseFrontDraft reordered = tampered;
+  std::reverse(reordered.periodicHolonomies.begin(),
+               reordered.periodicHolonomies.end());
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          RepresentationRenumberedPeriodicRelation);
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(reordered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          RepresentationRenumberedPeriodicRelation);
 }
 
 SurfacePhaseFrontResult publish_phase_front_draft(PhaseFrontDraft draft) {
@@ -1553,7 +1782,6 @@ TEST(M5CP1, AlteredSelectedRelationTransformFailsCertificateValidation) {
 
 TEST(SurfaceCellTransitionQuotient,
      TamperedFullPeriodicTransformIsRejected) {
-  const auto &fixture = direct_materializer_base_fixture();
   PhaseFrontDraft tampered = direct_full_periodic_materializer_draft();
   const auto relation = std::find_if(
       tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
@@ -1574,9 +1802,10 @@ TEST(SurfaceCellTransitionQuotient,
   ASSERT_NE(nullptr, value);
   EXPECT_EQ(originalId, value->id());
   *relation = std::move(*value);
-  const auto result = materialize(fixture, tampered);
-  EXPECT_FALSE(result.success);
-  EXPECT_EQ("InvalidPeriodicFrontTransport", result.failure);
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          NonReciprocalPeriodicRelation);
 }
 
 TEST(SurfaceCellTransitionQuotient,
@@ -1689,9 +1918,10 @@ TEST(M4CP4, ProducedTorusPeriodicRelationOwnersSurviveContainerReordering) {
   PhaseFrontDraft tampered = phase_front_draft(original);
   std::swap(tampered.edges[periodicEdges.front()].periodicRelation,
             tampered.edges[periodicEdges[second]].periodicRelation);
-  const auto materialized = materialize(fixture, tampered);
-  EXPECT_FALSE(materialized.success);
-  EXPECT_EQ("InvalidPeriodicRelation", materialized.failure);
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          NonReciprocalPeriodicRelation);
 }
 
 TEST(M4CP4, ProducedTorusMissingPeriodicRelationOwnerIsRejected) {
@@ -1772,9 +2002,10 @@ TEST(SurfaceCellTransitionQuotient,
   ASSERT_LT(second, periodicEdges.size());
   std::swap(tampered.edges[periodicEdges[0]].periodicRelation,
             tampered.edges[periodicEdges[second]].periodicRelation);
-  const auto result = materialize(fixture, tampered);
-  EXPECT_FALSE(result.success);
-  EXPECT_EQ("InvalidPeriodicRelation", result.failure);
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          NonReciprocalPeriodicRelation);
 }
 
 TEST(SurfaceCellTransitionQuotient,
