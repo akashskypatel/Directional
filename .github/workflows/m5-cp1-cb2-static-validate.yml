@@ -1,0 +1,107 @@
+name: M5 CP1 CB2 Static Executor Validation
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m5-cp1-cb2-static-validate-20260920.txt]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp1-cb2-static-validate
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp1-cb2-static-validate.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  validate-template:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/tools/m5_cp1_tb1_r2_executor.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  static-proof:
+    needs: [validate-caller, validate-template]
+    if: ${{ needs.validate-caller.outputs.valid == 'true' && needs.validate-template.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Prove canonical executor properties
+        shell: bash
+        env:
+          EXPECTED_HARNESS_SHA256: b706d03adde7d7d3daacb6ac46c4cb35468a40e162d7fb9d1617d4e562d37302
+          EXPECTED_TEMPLATE_SHA256: 9c9c2527176645d143cf1f972ad5d493db44bc819179fb04a1845f7bd20a12a1
+        run: |
+          set -euo pipefail
+          harness=.agents/Directional/tools/m5_cp1_tb1_r2_artifact_only_harness.sh
+          template=.agents/Directional/tools/m5_cp1_tb1_r2_executor.yml
+          out="${RUNNER_TEMP}/m5-cp1-cb2-static-proof"
+          mkdir -p "$out"
+
+          test "$(sha256sum "$harness" | awk '{print $1}')" = "$EXPECTED_HARNESS_SHA256"
+          test "$(sha256sum "$template" | awk '{print $1}')" = "$EXPECTED_TEMPLATE_SHA256"
+          bash -n "$harness"
+          test -x "$harness"
+          ! grep -Eq '(^|[^[:alnum:]_])timeout([[:space:]]|$)|timeout-minutes' "$harness"
+          ! grep -Eq 'timeout-minutes|(^|[^[:alnum:]_])timeout([[:space:]]|$)' "$template"
+          grep -Fq 'permissions:' "$template"
+          grep -Fq 'actions: read' "$template"
+          grep -Fq 'contents: write' "$template"
+          grep -Fq 'issues: write' "$template"
+          grep -Fq 'pull-requests: write' "$template"
+
+          python3 - "$harness" "$template" <<'PY'
+          import pathlib, re, sys
+          text = "\n".join(pathlib.Path(p).read_text() for p in sys.argv[1:])
+          vals = re.findall(r'(?i)(?:sha256|sha|digest)[A-Z0-9_:-]*[=: ]+["\x27]?([0-9a-f]{32,64})', text)
+          bad = [v for v in vals if len(v) != 64 or re.fullmatch(r'[0-9a-f]{64}', v) is None]
+          if bad:
+              raise SystemExit(f"invalid digest literal(s): {bad}")
+          print(f"digest_literals_checked={len(vals)}")
+          PY
+
+          gzip -n -9 -c "$harness" > "${RUNNER_TEMP}/harness.gz"
+          base64 -w0 "${RUNNER_TEMP}/harness.gz" > "${RUNNER_TEMP}/harness.b64"
+          base64 -d "${RUNNER_TEMP}/harness.b64" | gzip -d > "${RUNNER_TEMP}/roundtrip.sh"
+          cmp -s "$harness" "${RUNNER_TEMP}/roundtrip.sh"
+          test "$(sha256sum "${RUNNER_TEMP}/roundtrip.sh" | awk '{print $1}')" = "$EXPECTED_HARNESS_SHA256"
+
+          {
+            echo "event_sha=${GITHUB_SHA}"
+            echo "harness_sha256=${EXPECTED_HARNESS_SHA256}"
+            echo "executor_template_sha256=${EXPECTED_TEMPLATE_SHA256}"
+            echo "bash_n=true"
+            echo "schema_valid=true"
+            echo "permission_ceiling_valid=true"
+            echo "hidden_timeout_watchdog=false"
+            echo "roundtrip_byte_identical=true"
+            echo "runtimeExecution=false"
+          } > "$out/receipt.env"
+
+      - name: Upload static proof receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: m5-cp1-cb2-static-proof-${{ github.run_id }}
+          path: ${{ runner.temp }}/m5-cp1-cb2-static-proof
+          if-no-files-found: error
+          retention-days: 7
