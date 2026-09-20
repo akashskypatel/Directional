@@ -1,18 +1,19 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-19 UTC
+Last updated: 2026-09-20 UTC
 
-## Latest Code + Build turn — `M5-CP1-CB1`
+## Latest Test + Benchmark turn — `M5-CP1-TB1-EXEC`
 
-`M5-CP1-CB1` is **COMPLETE / COMPILE GREEN / RUNTIME UNADJUDICATED** at semantic source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`. Candidate artifact `10595705100` was built by mandatory GMP run/job `35478855426 / 105992849133`; package manifest is **28/28**, `runtimeExecution=false`. CP1 now has canonical non-ordinal periodic relation IDs, aggregation preservation, topology-distinct same-region retention, producer-selected relation-path certificates, and certificate-validation cutover. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430** until TB1 runtime. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M5-CP1-TB1-EXEC` is **BLOCKED / PRE-RUNTIME ORCHESTRATION PLAN DEFECT / ZERO SEMANTIC CREDIT**. Candidate artifact `10595705100` passed package integrity preflight, but the frozen TB1 plan has two fail-closed authority defects: a 63-character identity-map “SHA-256” literal where accepted M4-TB3 authority is `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, and a ninth focused exact-filter identity under suite `M4CP4` that does not exist; the compiled test is under `SurfaceCellTransitionQuotient`. No Directional runtime ran. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M5-DEFN`: freeze canonical relation identity, selected certificate, cutover, failure matrix, invariance, production reachability, and CP1/CP2/CP3 debt ownership.
 - [x] `M5-CP1-CB1`: implement canonical relation IDs + selected path certificates; mandatory GMP compile/package green, no runtime.
-- [ ] `M5-CP1-TB1-EXEC`: **exact next**; immutable artifact-only focused CP1 + selector430 runtime on artifact `10595705100`.
+- [x] `M5-CP1-TB1-EXEC`: pre-runtime fail-closed blocker recorded; **0/9 focused, 0/430 selector, zero semantic credit**.
+- [ ] `M5-CP1-TB1-PREFLIGHT-REV`: **exact next**; independently adjudicate/correct frozen plan routing literals only.
 
-## Current focus — `M5-CP1-TB1-EXEC`
+## Current focus — `M5-CP1-TB1-PREFLIGHT-REV`
 
-Execute only `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md` against immutable candidate `10595705100`. No configure, compile, relink, generated discovery, package repair, source/test/fixture/selector mutation, or benchmark execution is authorized.
+Review `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md` against accepted M4-TB3 routing evidence and immutable packaged source. Product/test/build source, artifact `10595705100`, selector430 and runtime remain frozen during Review.
 
 ## Carried forward from M1
 

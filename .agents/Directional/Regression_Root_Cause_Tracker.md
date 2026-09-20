@@ -1,3 +1,12 @@
+## 2026-09-20 — `M5-CP1-TB1-CAND-01/02`: frozen TB1 routing authority is not literally executable — **OPEN FOR PREFLIGHT REVIEW / ORCHESTRATION / NON-STABLE**
+
+- **Authority:** candidate `10595705100` / source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`; exact turn snapshot run/job `35480330535 / 105996871120`, artifact `10595288347`. No Directional runtime executed.
+- **CAND-01 — malformed map digest:** the frozen TB1 plan records accepted M4-TB3 identity-map SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6`, which is 63 hex characters. Accepted M4-TB3 artifact `10592987234` contains header + 430-row `identity-map.tsv` at actual SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, owners **31/283/75/41**; the accepted M4 report/review use that 64-character value.
+- **CAND-02 — nonexistent exact filter:** the frozen ninth focused identity is `M4CP4.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. Exact immutable source enumeration finds no such identity. The compiled non-vacuous test body is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, and it asserts two relation owners/two owned edges before reorder. Substitution is not authorized in EXEC; the frozen name would select zero tests.
+- **Classification:** frozen-plan orchestration authority defects, not product regressions. The plan itself makes authority mismatch/zero-selection fail closed. Focused runtime **0/9**, selector430 **0/430**, benchmark **0**; no build/repair/mutation occurred.
+- **Falsifier / owner:** `M5-CP1-TB1-PREFLIGHT-REV` must independently prove the intended accepted-map digest and intended ninth exact-filter identity before issuing any corrected runtime plan. No product/test/build correction is justified by current evidence.
+- **Stable-count rationale:** no candidate or accepted-green Directional identity ran, so **+0 event / +0 category / +0 recurrence**. Totals remain **49 / 14 / 35**, debt **5**; accepted M4 authority remains unchanged.
+
 ## 2026-09-19 — `M4-CP4-DEFN-R2`: closed-complex subject is A5/M6 authority — **READING B / NON-STABLE / DEBT RE-HOMED**
 
 ## M5-DEFN — definition authority / no runtime regression event
