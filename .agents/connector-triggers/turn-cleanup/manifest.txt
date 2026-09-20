@@ -1,4 +1,0 @@
-# M5-CP3-CB1-REV temporary-state cleanup
-.agents/connector-triggers/m5-cp3-cb1-rev-closeout-drive-apply-20260920.txt
-.agents/connector-triggers/source-snapshot/m5-cp3-cb1-rev-20260920T184900Z.txt
-.agents/connector-triggers/source-snapshot/m5-cp3-cb1-rev-postcloseout-20260920T193100Z.txt

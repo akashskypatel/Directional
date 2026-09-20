@@ -1,2 +1,0 @@
-M5-CP3-CB1-REV exact source snapshot for independent review
-review-entry authority: 48800e5355ffa1fdaa95c206bc3e44155778a5af
