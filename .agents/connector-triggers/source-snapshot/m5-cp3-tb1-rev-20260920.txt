@@ -1,0 +1,3 @@
+turn=M5-CP3-TB1-REV
+purpose=exact repository snapshot for independent TB evidence review
+base_authority=e31e60bbe8f9236e4532a13cd3607ee6881da226
