@@ -1,0 +1,116 @@
+name: M5 CP1 TB1 R1 Artifact-Only Test Benchmark
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m5-cp1-tb1-r1-exec-20260920.txt]
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp1-tb1-r1-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp1-tb1-r1-exec
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp1-tb1-r1-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  runtime:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+      CANDIDATE_ARTIFACT_ID: "10595705100"
+      ROUTING_ARTIFACT_ID: "10592987234"
+      EXPECTED_CANDIDATE_ZIP_SHA256: "fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea"
+      EXPECTED_ROOT_MANIFEST_SHA256: "8330461b8c5e489059e2ec320cb2e2d5243d6ef36dc01b667b5cefc09f609a3d"
+      EXPECTED_SOURCE_ARCHIVE_SHA256: "4f51257db12ae24363a45ddfa62778200e9ac0a8ef4ce2b585c8c606350d78b9"
+      EXPECTED_SELECTOR430_SHA256: "1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6"
+      EXPECTED_SELECTOR427_SHA256: "f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f"
+      EXPECTED_ROUTING_ZIP_SHA256: "352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce"
+      EXPECTED_IDENTITY_MAP_SHA256: "7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c"
+      EXPECTED_HARNESS_SHA256: "995d16b3dc67ab3e5675f2a1cf91f1ac99e926a9fc4ab977a534e35ee480f0a1"
+      EXPECTED_SOURCE_COMMIT: b98f461b9a392cc182891a81c0a84b0b01dfbb45
+      EXPECTED_SELECTOR_PATH: .agents/Directional/Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${RUNNER_TEMP}/m5-cp1-tb1-r1-exec.log"
+          printf 'workflow=%s\nrun_id=%s\nevent=%s\nevent_sha=%s\nrepository=%s\nstarted_at=%s\n' \
+            "$GITHUB_WORKFLOW" "$GITHUB_RUN_ID" "$GITHUB_EVENT_NAME" "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            | tee -a "${RUNNER_TEMP}/m5-cp1-tb1-r1-exec.log"
+
+      - name: Execute immutable artifact-only gate
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          harness="${RUNNER_TEMP}/run-m5-cp1-tb1-r1.sh"
+          printf '%s' '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' | base64 -d | gzip -d > "$harness"
+          actual_harness_sha="$(sha256sum "$harness" | awk '{print $1}')"
+          if [[ "$actual_harness_sha" != "$EXPECTED_HARNESS_SHA256" ]]; then
+            echo "harness SHA mismatch: ${actual_harness_sha}" | tee -a "${RUNNER_TEMP}/m5-cp1-tb1-r1-exec.log"
+            echo 'harness_exit=2' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          chmod +x "$harness"
+          set +e
+          "$harness"
+          status=$?
+          set -e
+          echo "harness_exit=${status}" >> "$GITHUB_OUTPUT"
+          if [[ -d "${RUNNER_TEMP}/m5-cp1-tb1-r1-result" ]]; then
+            printf 'decoded_harness_sha256=%s\n' "$actual_harness_sha" >> "${RUNNER_TEMP}/m5-cp1-tb1-r1-result/harness-authority.txt"
+          fi
+          exit 0
+
+      - name: Record final diagnostic status
+        if: always()
+        shell: bash
+        run: |
+          printf 'gate_harness_exit=%s\njob_status_before_upload=%s\nfinished_step_at=%s\n' \
+            "${{ steps.gate.outputs.harness_exit }}" "${{ job.status }}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            | tee -a "${RUNNER_TEMP}/m5-cp1-tb1-r1-exec.log"
+
+      - name: Upload result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp1-tb1-r1-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m5-cp1-tb1-r1-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp1-tb1-r1-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m5-cp1-tb1-r1-exec.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail closed on orchestration failure
+        if: always()
+        shell: bash
+        run: test "${{ steps.gate.outputs.harness_exit }}" = "0"
