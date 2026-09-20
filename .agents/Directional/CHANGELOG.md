@@ -1,3 +1,32 @@
+## 2026-09-20 — next-step determination: `M5-CP3-CB2` authorized; M5 governance gaps confirmed closed
+
+Runtime-free. `M5-CP3-CB1-REV` is COMPLETE with successor **`M5-CP3-CB2`**. Accepted authority is package
+`10601978228` / source `0798547d…` / selector430 **430/430**; accounting **49 / 14 / 35**, debt **5**. No
+selector beyond 430 exists and none may be written until the §13.3 sequence reaches publication. `STATUS` was
+already correct in the canonical six-field form and was left unchanged.
+
+**The CB1 stop was correct.** It halted before implementation on a real contract collision — the same A3
+hard-feature cut copies row408 observes as final `HardRail` edges are the ones CP3 needs as periodic relation
+carriers. Stopping rather than inventing a representation is the discipline that made the earlier TB1
+plan-literal block correct.
+
+**Three governance gaps this reviewer carried are now closed in the governing M5 document**, each verified
+present rather than accepted on report: frozen **§13.1** states the reconciled M5 exit theorem
+(`M5-DEFN-REV-OBS-01`); **§13.2/§13.3** list the nine reviewed CP1/CP2 mechanism identities outside selector430
+and freeze a six-phase publication sequence in which `TB1-REV` pre-commits the exact successor selector bytes,
+order, LF SHA-256 and owner census before any publication CB writes them
+(`M5-CP1-TB1-R3-REV-OBS-01`); and **§13.4** requires the `M5CP3.Produced…` namespace and forbids reusing the
+names of accepted direct/helper debt rows 218/220/221/226 (`M5-CP1-TB1-PREFLIGHT-REV-OBS-01`). `M5-CP2-CB1-OBS-01`
+was discharged earlier by byte-level accepted-row comparison.
+
+Constraints recorded in the handoff for CB2: §14.2's four promotion conditions are conjunctive, cross-region
+pairs stay `HardRail` and the same-region HardRail rejection must not be weakened; CB2 stops rather than
+fabricate carrier routes or a full action; row408's body evolution is a strengthening that preserves identity,
+subject, the exact 18-source-edge equality, the A0–A3 path, receipts and fail-closed checks, is not runtime
+credit by itself, and leaves selector430 byte-frozen for full re-proof; the standing accepted-row assertion audit
+applies to row408; and the four produced-witness debts still require **produced** authority, with the
+direct/draft helpers remaining mechanism-only under §8.1.
+
 ## 2026-09-20 — `M5-CP2-TB1-REV`: CP2 accepted; package promoted; M5 publication sequence frozen
 
 

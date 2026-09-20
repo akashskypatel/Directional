@@ -29,6 +29,49 @@ Stop if exact accepted authority cannot construct an independent generator carri
 
 If CB2 is compile/package green, exact successor is `M5-CP3-TB1-EXEC`, artifact-only. That runtime executes nine reviewed mechanism rows + six frozen produced rows + selector430. Even fully green runtime routes to `M5-CP3-TB1-REV`; `M5-CP2-TB1-REV-OBS-01` still requires that Review to freeze exact publication selector bytes/order/hash/owner census before any publication CB.
 
+### Next-step determination (review agent, 2026-09-20)
+
+**The CB1 stop was correct and is upheld.** CB1 halted before implementation on a real contract collision: the
+same A3 hard-feature cut copies row408 observes as final `HardRail` edges are the ones CP3 needs as periodic
+relation carriers. Stopping rather than inventing a representation is the discipline that made the earlier TB1
+plan-literal block correct.
+
+**The M5 governance gaps this agent carried are now closed in the governing document**, each verified present:
+
+- frozen **§13.1** states the reconciled M5 exit theorem (closes `M5-DEFN-REV-OBS-01`; final verification is
+  still owed by the closing Review);
+- frozen **§13.2/§13.3** name the nine reviewed CP1/CP2 mechanism identities outside selector430 and freeze the
+  six-phase publication sequence — CB2 implements, `TB1-EXEC` executes the nine plus the new produced identities
+  plus selector430, `TB1-REV` pre-commits the exact successor selector bytes/order/SHA-256/owner census, a
+  separate publication CB writes only those pre-committed bytes, a full published-selector TB re-runs every row,
+  and only then may a final Review close M5 (closes `M5-CP1-TB1-R3-REV-OBS-01`);
+- frozen **§13.4** requires CP3 production tests to use the `M5CP3.Produced…` namespace and forbids reusing the
+  names of accepted direct/helper debt rows **218/220/221/226** (closes `M5-CP1-TB1-PREFLIGHT-REV-OBS-01`).
+
+No selector beyond 430 exists, and none may be written until §13.3 reaches its publication phase.
+
+**Binding constraints on `M5-CP3-CB2`:**
+
+1. **§14.2's promotion rule is conjunctive** — same `sourceTopologyRegion`; exact reciprocal A3 shared-boundary
+   intervals; distinct exact `boundaryOccurrence` values; canonical-reverse routes with matching families and
+   opposing advance signs. Cross-region pairs remain `HardRail`, and the same-region HardRail rejection in the
+   materializer **must not be weakened**.
+2. **Stop rule** — if accepted authority does not contain enough exact information to construct both carrier
+   routes or one consistent full action, CB2 **stops**. No fallback, no synthesised provenance.
+3. **Row408 body evolution is a strengthening, not a rewrite.** It keeps its identity, committed torus subject,
+   exact 18-source-edge hard-feature equality, accepted A0–A3 path, conformity receipts/digests and fail-closed
+   pairing checks, and additionally requires at least one complete reciprocal promoted pair carrying exact A3
+   interval provenance. It is **not runtime credit by itself**: selector430 stays byte-frozen and the full
+   selector430 runtime must re-prove it in the pre-publication gate. The M4 historical constraint still holds —
+   row408 was never observed failing with `InvalidHardRailPairing`, and no rewrite of that history earns credit.
+4. **Accepted-row assertion audit (standing).** Row408 is an accepted selector row. As at `M5-CP2-CB1-OBS-01`,
+   the CB2 report must map every assertion removed from any accepted selector430 row to the assertion that now
+   covers it and where that assertion lives; the following Review verifies the mapping from bytes. This check has
+   caught a real relocation twice and is not a formality.
+5. **Credit boundary unchanged.** CP3 is where the four M5 produced-witness debts are discharged on **produced**
+   authority. The direct/draft helpers (`direct_periodic_owner_product()`,
+   `direct_full_periodic_materializer_draft()`) remain mechanism-only under §8.1 and discharge nothing.
+
 ## Review obligations
 
 - `M5-DEFN-REV-OBS-01` — **DISCHARGED** by frozen §13.1 reconciled exit theorem, independently confirmed this Review.
