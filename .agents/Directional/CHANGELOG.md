@@ -1,3 +1,11 @@
+## 2026-09-20 — `M5-CP1-CB3`: pure-permutation witness authored; GMP compile/package GREEN
+
+CB3 is **COMPLETE / STATIC ACCEPTANCE GREEN / GMP COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED** at semantic source `8a86710dd33d7b6cb9a077aef738577e4075b5f7`. Only `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation` changed: it now authors a distinct row7-style second relation before copying, proves reversal nontrivial, reverses only the copied relation table, materializes identical-membership subjects and compares full selected certificates, `hash_completion(...)`, and consumed-relation counts. Commit `8a86710d...` touches only `tests/SurfaceCellTransitionQuotientTests.cpp`; selector430 remains 430 LF rows at `1c412850…9db6` and first427 remains `f9c88380…e86f`.
+
+Drive apply run `35494732498` applied work-preservation patch `8060e01d…ea519` and the staged Drive file was owner-deleted afterward. Mandatory GMP compile run/job `35494880046 / 106036002599` is green for all eight standard targets. Candidate artifact `10600353027` has provider SHA-256 `cdc0cb798e6b117727ddde0dbfa5008d2a8140c709eeafb0af66872c5c7ae6b0`, manifest **28/28**, source archive `594dad05c7078c0c5b2e03486f408ca6621e2c36875873fa045803245497352d`, clean source receipts, explicit GMPXX+GMP linkage and `runtimeExecution=false`. No Directional runtime ran. Candidate remains unpromoted; accepted M4 authority and accounting **49 / 14 / 35**, debt **5**, are unchanged. Exact next is immutable `M5-CP1-TB1-R3-EXEC`; corrected row6 is the first runtime falsifier and must not be adjusted again if RED.
+
+Process note: semantic work used immutable snapshot `9d4e04c9...`; initial authority reads preceded explicit `READ_MODE=snapshot`. The connector exposed no workflow-dispatch write action for pre-publication reusable schema validation, so temporary marker-gated callers self-validated through the mandatory reusable before their `needs: validate` workloads; both validations passed. Cleanup run `35494988958` removed the three inventoried trigger markers after workflow callers were retired.
+
 ## 2026-09-20 — `M5-CP1-TB1-R2-REV` review: witness-precondition classification upheld; falsifier recorded for CB3
 
 Runtime-free review. **Upheld.** Accounting holds at **49 / 14 / 35**, debt **5**; accepted authority remains

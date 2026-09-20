@@ -5,7 +5,7 @@
 - **Independent root cause:** `direct_full_periodic_materializer_draft()` starts from one materializable cylinder relation, transforms one eligible relation and stops; it never authors a second. The RED is therefore an invalid test precondition, not evidence that product canonicalization dropped a relation.
 - **Separation evidence:** R2 row7 PASS constructs a distinct unused valid second relation from the same materializable authority, appends/reverses it, materializes and preserves selected-certificate/output semantics. R2 row9 PASS independently proves an explicit two-relation/two-owned-edge direct product survives relation-container reversal. Product review finds phase-front and materializer relation lookup keyed by canonical `PeriodicRelationId`, not vector position.
 - **Classification:** **CLOSED / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / INVALID WITNESS PRECONDITION / NON-STABLE / TEST-ONLY CORRECTION REQUIRED.** No product semantic implementation gap is demonstrated.
-- **Correction owner/falsifier:** `M5-CP1-CB3` changes only the row6 test body: append a row7-style distinct valid relation to a materializable baseline, copy identical membership, prove reversal nontrivial, reverse only the copy, materialize both, and compare full selected-certificate signatures, `hash_completion`, and consumed relation counts. Fresh `M5-CP1-TB1-R3-EXEC` must then pass the complete focused 9 + selector430 gate from ordinal 1.
+- **Correction owner/falsifier:** `M5-CP1-CB3` completed the frozen test-only correction at source `8a86710dd33d7b6cb9a077aef738577e4075b5f7` and candidate `10600353027`: row6 now appends a row7-style distinct valid relation to a materializable baseline, copies identical membership, proves reversal nontrivial, reverses only the copy, materializes both, and compares full selected-certificate signatures, `hash_completion`, and consumed relation counts. Mandatory GMP compile/package is green with `runtimeExecution=false`. Fresh `M5-CP1-TB1-R3-EXEC` remains the runtime falsifier and must execute focused 9 + selector430 from ordinal 1.
 - **Accounting:** no accepted-green product behavior regressed; selector430 remained **430/430 PASS**. **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, debt **5**. Candidate remains unpromoted and accepted M4 authority is unchanged.
 
 ## 2026-09-20 — `M5-CP1-TB1-CAND-01/02`: frozen TB1 routing authority is not literally executable — **CLOSED / PREFLIGHT REVIEW RECOVERY PROVED / ORCHESTRATION / NON-STABLE**
@@ -8809,7 +8809,7 @@ separation is what made the original TB1 block correct and must be preserved.
 
 ## `M5-CP1-TB1-R2-REV-OBS-01` — the row6 witness correction must be able to falsify its own classification
 
-**Status.** OPEN / GATING ON `M5-CP1-CB3` / NON-STABLE.
+**Status.** OPEN / WITNESS AUTHORED + COMPILED / RUNTIME FALSIFIER GATING ON `M5-CP1-TB1-R3-EXEC` / NON-STABLE.
 
 `M5-CP1-TB1-R2-REV` classified the sole R2 RED — `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation`
 — as an invalid witness precondition rather than a product defect. The classification is correct and verified:
@@ -8820,16 +8820,19 @@ relation from the same helper and materializes successfully; and the owned seam 
 `std::map<authority::PeriodicRelationId, …>` (`src/geometry/SurfaceCellTracing.cpp:7929`), which is key-ordered
 rather than insertion-ordered.
 
+**CB3 static/compile evidence:** source `8a86710d...` implements the required same-membership pure permutation and changes only row6's body. Candidate artifact `10600353027` is GMP compile/package green with manifest **28/28**, selector430 byte-identical, and `runtimeExecution=false`. This proves the falsifier is authored and buildable; it does not prove its behavior.
+
 **Why this still needs a falsifier:** the "no product semantic gap" half of that finding is **static**. The
 corrected witness is its first real test. The failure mode to guard against is not a wrong classification but an
 unfalsifiable one — corrected witness fails, author adjusts the witness again, something eventually passes, and a
 genuine order dependency is never observed. That is "adjust the test until it is green".
 
-**How to apply:** `M5-CP1-CB3` must produce a **pure-permutation** witness — identical relation-table membership
-in both drafts, only storage order reversed. If that witness still fails, the R2 classification is **falsified**:
-the defect is a product order dependency, not test authority, and CB3 must **STOP and report** rather than weaken
-the assertion, relax the certificate comparison, change membership between drafts, or fall back to row7's
-membership-changing pattern. A second witness adjustment converts a falsifiable claim into a self-sealing one.
+**How to apply:** CB3 has produced the required **pure-permutation** witness — identical relation-table membership
+in both drafts, only storage order reversed. `M5-CP1-TB1-R3-EXEC` must now execute that exact compiled witness. If
+it is RED after exact-one selection, the R2 classification is **falsified**: the defect is product order dependency,
+not test authority. R3 must preserve the receipt and route to independent Review rather than weaken the assertion,
+relax the certificate comparison, change membership between drafts, or make another witness adjustment. A second
+witness adjustment would convert a falsifiable claim into a self-sealing one.
 
 Credit is unchanged either way: row6 runs on `direct_full_periodic_materializer_draft()`, which frozen §8.1 marks
 **mechanism-only, no produced-witness credit** and names as highest existing evidence for M5 debts 3 and 4. A

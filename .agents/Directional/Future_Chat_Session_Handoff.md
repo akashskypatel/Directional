@@ -4,21 +4,21 @@
 
 ## Current authority
 
-`M5-CP1-TB1-R2-REV` is **COMPLETE / R2 EVIDENCE UPHELD / TEST-AUTHORITY DEFECT ADJUDICATED / RUNTIME-FREE**. The reviewed candidate remains artifact `10595705100` / source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`; it is still **unpromoted**.
+`M5-CP1-CB3` is **COMPLETE / STATIC ACCEPTANCE GREEN / GMP COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED**. The corrected test-authority-only semantic source is `8a86710dd33d7b6cb9a077aef738577e4075b5f7`; candidate artifact `10600353027` has provider ZIP SHA-256 `cdc0cb798e6b117727ddde0dbfa5008d2a8140c709eeafb0af66872c5c7ae6b0` and packaged-source SHA-256 `594dad05c7078c0c5b2e03486f408ca6621e2c36875873fa045803245497352d`.
 
-R2 run `35491016562`, runtime job `106025849497`, remains the current CP1 runtime evidence: focused **8/9 PASS / 1 RED**, selector430 **430/430 PASS**, benchmark **0**, exact-one selection / zero skips across **439** processes, exact immutable postflight. Result artifact `10598684066` is `5896fee5600a6f842fcefd08534d2a21a67cedee8a38ed67daaeace755d2a5dd`; diagnostic artifact `10599222908` is `cabfa52286f006572181c8a0368562b1ec31591061431be7b6fe2055951ac016`.
+CB3 changed only `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation` in `tests/SurfaceCellTransitionQuotientTests.cpp`. It now authors a distinct valid second relation before copying, proves reversal is nontrivial, reverses only the copied relation table, then compares full selected-certificate signatures, `hash_completion(...)`, and consumed periodic-relation counts. Product code, shared helpers, row7, row9, fixtures, selectors, CMake and reusable workflows are unchanged.
 
-Independent Review re-opened the immutable evidence and source. The sole RED, `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation`, fails an authored precondition at **1 vs 2 periodic relations** before reversal, materialization or certificate comparison. `direct_full_periodic_materializer_draft()` supplies one materializable relation and never creates a second. Row7 proves a distinct valid second relation can be appended to that materializable authority and remain decision-neutral under relation-table reversal; row9 proves two direct relation owners survive reversal at the checked product boundary. Product lookup at the reviewed seam is keyed by canonical `PeriodicRelationId`, not relation-vector position.
+Mandatory GMP compile run/job `35494880046 / 106036002599` is green for all eight standard package targets. Root manifest is **28/28**, source-status receipts are empty, GMPXX+GMP linkage is explicit, and `runtimeExecution=false`. No Directional runtime, test or benchmark executed. Selector430 remains **430 LF rows** at `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; first427 remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
 
-`M5-CP1-TB1-R2-EXEC-CAND-01` is therefore **CLOSED / RP-02 TEST_AUTHORITY_COVERAGE_GAP / INVALID WITNESS PRECONDITION / NON-STABLE / TEST-ONLY CORRECTION REQUIRED**. No product semantic defect is demonstrated and stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Row9 remains direct-helper **CP1 mechanism-only / no produced-witness credit**.
+The candidate is **not promoted**. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. `M5-CP1-TB1-R2-REV-OBS-01` is now **witness authored + compiled / runtime falsifier pending R3**.
 
 ## Exact next turn
 
-**`M5-CP1-CB3`** — test-authority-only Code + Build under `Architecture_M5_CP1_CB3_Test_Authority_Correction_Plan.md`.
+**`M5-CP1-TB1-R3-EXEC`** — immutable artifact-only Test + Benchmark under `Architecture_M5_CP1_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`.
 
-Change only the body of `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation` in `tests/SurfaceCellTransitionQuotientTests.cpp`. Use row7's already-proven construction to append one distinct valid unused relation to a materializable baseline, copy that complete same-membership table, prove reversal is nontrivial, reverse only the copy, materialize both, and compare complete selected-certificate signatures, `hash_completion(...)`, and consumed periodic-relation counts.
+Use candidate artifact `10600353027` / source `8a86710d...`. Re-run the complete gate from ordinal 1: focused **9** fresh exact-filter processes plus selector430 **430** fresh exact-filter processes, exact-one selection / zero skips across all **439**, benchmark execution **0**, and exact immutable pre/post package/source/execution-view census. No build, discovery, repair, source/test/fixture/selector mutation is permitted.
 
-Do **not** modify product code, `direct_full_periodic_materializer_draft()`, row7, row9, fixtures, selectors, CMake, or build semantics. CB3 must use the mandatory reusable GMP compile/package workflow and execute no Directional runtime. If compile/package is green, exact successor is fresh `M5-CP1-TB1-R3-EXEC` from ordinal 1: focused **9** + selector430 **430**, zero benchmarks, exact immutable postflight. R3 imports no semantic credit for R2 row6.
+Row6 is the first runtime falsifier of the R2 test-authority classification. If the corrected pure-permutation witness is RED, do not adjust it again; preserve evidence and route directly to independent Review + Plan. If R3 is mechanically green, exact successor is independent `M5-CP1-TB1-R3-REV`; promotion/CP1 acceptance remains Review-owned.
 
 ## Carried obligations
 
@@ -30,20 +30,18 @@ Do **not** modify product code, `direct_full_periodic_materializer_draft()`, row
 - M6-CP1 mechanism + M6-CP3 production: `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on authoritative A5 occurrence-complex production.
 - M8-CP2 and first-legitimate-touch obligations in TODO remain unchanged.
 
-## Review evidence note
+## Evidence note
 
-Review used immutable R2 result/log artifacts plus candidate source and source snapshot run `35493165735` / artifact `10599766847` (provider ZIP SHA-256 `8d74e6a82c903ab1def6a84cce5559caceeaecbb93c27b2a6c93aaa8ddd94464`) at snapshot SHA `3841e71aac0fa881a78af114b16a7ad0b3ce206f`, with `runtimeExecution=false`. No Directional runtime, compile, rebuild, test, benchmark or semantic source mutation occurred in Review.
+R2 Review evidence remains in `Architecture_M5_CP1_TB1_R2_Review_Record.md`. CB3 source inspection used source-snapshot run `35494387448` / artifact `10599503686` at exact snapshot SHA `9d4e04c9713f8accc74681873ca390d0cdfba6f2`, `runtimeExecution=false`. Patch-apply run `35494732498` produced semantic commit `8a86710d...`; mandatory GMP compile run `35494880046` produced candidate `10600353027`. Cleanup run `35494988958` removed temporary marker state.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CODE-BUILD.md
-conditional_modules:
-  - trigger: GitHub Actions, artifact download, or workflow operation is required
-    path: modules/github-connector/MODULE.md
+  - Architecture_M5_CP1_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md
+conditional_modules: []
 deep_references:
-  - .agents/Directional/Architecture_M5_CP1_CB3_Test_Authority_Correction_Plan.md
+  - .agents/Directional/Architecture_M5_CP1_CB3_Test_Authority_Correction_Report.md
   - .agents/Directional/Architecture_M5_CP1_TB1_R2_Review_Record.md
   - .agents/Directional/Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md

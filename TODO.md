@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-20 UTC
 
-## Latest Review turn — `M5-CP1-TB1-R2-REV`
+## Latest Code + Build turn — `M5-CP1-CB3`
 
-`M5-CP1-TB1-R2-REV` is **COMPLETE / R2 EVIDENCE UPHELD / TEST-AUTHORITY DEFECT ADJUDICATED / RUNTIME-FREE**. R2 remains focused **8/9 PASS / 1 RED** plus selector430 **430/430 PASS** with exact immutable postflight. Independent Review proves row6's RED is an invalid authored `>=2`-relation precondition: its materializable helper provides one relation, so the test never reaches reversal/materialization/certificate comparison. No product semantic gap is demonstrated. `M5-CP1-TB1-R2-EXEC-CAND-01` closes non-stably with a test-only correction owner. Candidate `10595705100` remains unpromoted; accepted M4 authority and **49 / 14 / 35**, debt **5** remain unchanged.
+`M5-CP1-CB3` is **COMPLETE / STATIC ACCEPTANCE GREEN / GMP COMPILE+PACKAGE GREEN / RUNTIME UNADJUDICATED**. The test-authority-only correction is semantic source `8a86710dd33d7b6cb9a077aef738577e4075b5f7`; candidate artifact `10600353027` is compile/package green with root manifest **28/28**, GMPXX+GMP, clean source receipts and `runtimeExecution=false`. Only row6's test body changed. Candidate remains unpromoted and accepted M4 authority plus **49 / 14 / 35**, debt **5**, remain unchanged.
 
 - [x] `M5-DEFN`: freeze canonical relation identity, selected certificate, cutover, failure matrix, invariance, production reachability, and CP1/CP2/CP3 debt ownership.
 - [x] `M5-CP1-CB1`: implement canonical relation IDs + selected path certificates; mandatory GMP compile/package green, no runtime.
@@ -13,12 +13,13 @@ Last updated: 2026-09-20 UTC
 - [x] `M5-CP1-TB1-R1-EXEC`: terminal executor decode failed before Directional runtime; **0/9 focused, 0/430 selector, zero semantic credit**.
 - [x] `M5-CP1-CB2`: canonical R2 harness/template authored and statically proved against unchanged immutable artifacts; **zero Directional runtime**.
 - [x] `M5-CP1-TB1-R2-EXEC`: full artifact-only gate completed; focused **8/9 PASS / 1 RED**, selector430 **430/430 PASS**, immutable postflight exact.
-- [x] `M5-CP1-TB1-R2-REV`: independently adjudicate row6 as **test-authority-only**; no product semantic defect demonstrated; candidate remains unpromoted.
-- [ ] `M5-CP1-CB3`: **exact next**; correct only row6's witness body using a same-membership two-relation permutation and mandatory GMP compile/package; no Directional runtime.
+- [x] `M5-CP1-TB1-R2-REV`: independently adjudicate row6 as test-authority-only and freeze the pure-permutation falsifier.
+- [x] `M5-CP1-CB3`: author the pure-permutation row6 witness only; mandatory GMP compile/package green on `10600353027`; no Directional runtime.
+- [ ] `M5-CP1-TB1-R3-EXEC`: **exact next**; immutable candidate `10600353027`, focused **9** + selector430 **430** from ordinal 1, zero benchmarks, exact postflight.
 
-## Current focus — `M5-CP1-CB3`
+## Current focus — `M5-CP1-TB1-R3-EXEC`
 
-Execute only `Architecture_M5_CP1_CB3_Test_Authority_Correction_Plan.md`. Modify only `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation` in `tests/SurfaceCellTransitionQuotientTests.cpp`: author a second distinct valid relation using row7's proven construction, append it to the baseline, copy identical membership, reverse only the copy, materialize both, and compare full certificate/output semantics. Product code, shared helper, row7, row9, fixtures, selectors and CMake stay frozen. Compile/package through the mandatory reusable GMP workflow with `runtimeExecution=false`. Green CB3 routes to fresh `M5-CP1-TB1-R3-EXEC` for focused 9 + selector430 430 from ordinal 1.
+Execute only `Architecture_M5_CP1_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`. Candidate artifact `10600353027` / source `8a86710d...` must be treated as immutable. Execute the complete nine-row focused gate and selector430 in fresh exact-filter processes, with exact-one selection and zero skips. Row6 is the falsifier: if the corrected same-membership, storage-order-only permutation witness is RED, preserve it as product-order-dependency evidence and route to independent Review; do not change the witness again. If mechanically green, route to `M5-CP1-TB1-R3-REV`. No build, benchmark, repair or semantic mutation is authorized.
 
 ## Carried forward from M1
 
@@ -58,7 +59,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 package remains compile-green; R2 runtime is complete with focused 8/9 + selector430 430/430; exact next `M5-CP1-TB1-R2-REV`** adjudicates the sole row6 witness-precondition RED on unchanged artifact `10595705100`; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CB3 corrected candidate `10600353027` is GMP compile/package green and runtime-unadjudicated; exact next `M5-CP1-TB1-R3-EXEC`** reruns focused 9 + selector430 430 from ordinal 1; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -97,4 +98,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4 is **CLOSED / ACCEPTED** on package `10591801825` / selector430 **430/430**. No produced-witness debt is discharged by closure: the closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-CP1-TB1-R2-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4 is **CLOSED / ACCEPTED** on package `10591801825` / selector430 **430/430**. No produced-witness debt is discharged by closure: the closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-CP1-TB1-R3-EXEC`**. PR #8 remains open, draft, and unmerged.
