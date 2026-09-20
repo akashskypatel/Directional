@@ -26,7 +26,9 @@ Consume only candidate artifact `10595705100` without rebuilding. Run the nine f
 
 ## Control-plane note
 
-Temporary source-snapshot/apply/compile markers were removed by cleanup run/job `35479409243 / 105994360386`, cleanup commit `3e627fa15f48d33afda1addf9b8950f291bf990a`; only durable workflows remained afterward. The apply workflow could not trash its staged Drive patch and requested owner retirement; the subsequent owner-authorized delete call for the exact File ID returned `404 notFound`, so no unsupported search/retry was performed.
+Temporary source-snapshot/apply/compile markers were removed by cleanup run/job `35479409243 / 105994360386`, cleanup commit `3e627fa15f48d33afda1addf9b8950f291bf990a`; only durable workflows remained afterward. The implementation patch-apply workflow could not trash its staged Drive patch and requested owner retirement; the subsequent owner-authorized delete call for that exact File ID returned `404 notFound`, so no unsupported search/retry was performed.
+
+Closeout documentation landed through Drive-apply run/job `35479888857 / 105995691076` at commit `cbf3f6ab7587d22d53af66873690c517c7b52d3b`; result/log artifacts are `10595312795 / 10595372756`. Owner-authorized deletion of the closeout staging Drive file succeeded. The temporary closeout caller and marker were then retired in commits `1c804f254dff878bc61d07bdfdcb0f13585771a3` and `e50103dd107f7b155f588b96ea1b05885331aba7`. Final hygiene shows exactly the seven durable workflows and no remaining connector-trigger, workflow-observation, or turn-payload directories.
 
 ## Context Load Plan
 
