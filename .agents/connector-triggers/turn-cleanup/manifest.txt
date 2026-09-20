@@ -1,0 +1,2 @@
+.agents/connector-triggers/source-snapshot/m5-cp1-tb1-preflight-rev-20260920.txt
+.agents/connector-triggers/m5-cp1-tb1-preflight-rev-closeout.txt
