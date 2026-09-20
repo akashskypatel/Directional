@@ -1456,7 +1456,9 @@ struct SurfaceFrontEdge {
   std::optional<authority::PeriodicRelationId> periodicRelation;
   /// Optional exact rail owner.
   std::optional<authority::HardRailId> railId;
-  /// Exact A3 shared-boundary owner. Required for production HardRail pairing.
+  /// Exact A3 shared-boundary provenance. Required for production HardRail
+  /// pairing and retained when an exact same-region pair is promoted to
+  /// PeriodicCut; periodicRelation remains the quotient owner.
   std::optional<SurfaceSharedBoundaryInterval> sharedBoundaryInterval;
   /// Canonical source route carrying topology, transition identity, and transport.
   authority::CanonicalRoute route;

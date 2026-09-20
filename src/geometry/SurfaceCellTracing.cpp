@@ -7995,7 +7995,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       const auto one = authority::FieldExactRational::from_integer(1);
       const bool increasing = interval.firstOrdinal < interval.secondOrdinal;
       const bool decreasing = interval.secondOrdinal < interval.firstOrdinal;
-      if (edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail ||
+      if ((edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail &&
+           edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut) ||
           (!increasing && !decreasing) ||
           (increasing && interval.orientation != authority::Orientation::Forward) ||
           (decreasing && interval.orientation != authority::Orientation::Reverse) ||
@@ -16962,6 +16963,187 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     }
     return &result.sourceTopologyRegions->region(id);
   };
+
+  const auto atlas_rotation_between_faces = [&](
+      const int fromFace, const int toFace,
+      const authority::TopologyRegionId region)
+      -> std::optional<authority::QuarterTurn> {
+    if (options.fieldTransportAtlas == nullptr ||
+        !result.sourceTopologyRegions.has_value()) {
+      return std::nullopt;
+    }
+    const auto fromRow = source_face_id(fromFace, faces.rows());
+    const auto toRow = source_face_id(toFace, faces.rows());
+    if (!fromRow.has_value() || !toRow.has_value() ||
+        result.sourceTopologyRegions->region_for_row(*fromRow) != region ||
+        result.sourceTopologyRegions->region_for_row(*toRow) != region) {
+      return std::nullopt;
+    }
+    const auto fromTopology =
+        result.sourceTopologyRegions->topology_for_row(*fromRow);
+    const auto toTopology = result.sourceTopologyRegions->topology_for_row(*toRow);
+    const authority::FieldBranchTopology &topology =
+        options.fieldTransportAtlas->branch_topology();
+    const authority::FieldFaceBranchFrame *fromFrame =
+        topology.find_frame(fromTopology);
+    const authority::FieldFaceBranchFrame *toFrame =
+        topology.find_frame(toTopology);
+    if (fromFrame == nullptr || toFrame == nullptr ||
+        fromFrame->topologyRegion != region || toFrame->topologyRegion != region) {
+      return std::nullopt;
+    }
+    if (fromTopology == toTopology) return authority::QuarterTurn{};
+
+    struct AtlasNeighbor {
+      authority::SourceFaceTopologyKey face;
+      authority::SourceEdgeTopologyKey edge;
+      authority::QuarterTurn rotation;
+    };
+    std::map<authority::SourceFaceTopologyKey, std::vector<AtlasNeighbor>> graph;
+    for (const authority::FieldBranchTransportAdjacency &transport :
+         topology.transports()) {
+      const authority::FieldFaceBranchFrame *firstFrame =
+          topology.find_frame(transport.firstFace);
+      const authority::FieldFaceBranchFrame *secondFrame =
+          topology.find_frame(transport.secondFace);
+      if (firstFrame == nullptr || secondFrame == nullptr ||
+          firstFrame->topologyRegion != region ||
+          secondFrame->topologyRegion != region) {
+        continue;
+      }
+      graph[transport.firstFace].push_back(
+          {transport.secondFace, transport.sourceEdge, transport.forward});
+      graph[transport.secondFace].push_back(
+          {transport.firstFace, transport.sourceEdge, transport.reverse});
+    }
+    for (auto &[face, neighbors] : graph) {
+      (void)face;
+      std::sort(neighbors.begin(), neighbors.end(),
+                [](const AtlasNeighbor &a, const AtlasNeighbor &b) {
+                  return std::tie(a.edge, a.face, a.rotation) <
+                         std::tie(b.edge, b.face, b.rotation);
+                });
+    }
+
+    std::map<authority::SourceFaceTopologyKey, authority::QuarterTurn> rotations;
+    std::queue<authority::SourceFaceTopologyKey> pending;
+    rotations.emplace(fromTopology, authority::QuarterTurn{});
+    pending.push(fromTopology);
+    while (!pending.empty()) {
+      const auto face = pending.front();
+      pending.pop();
+      const auto foundNeighbors = graph.find(face);
+      if (foundNeighbors == graph.end()) continue;
+      const authority::QuarterTurn current = rotations.at(face);
+      for (const AtlasNeighbor &neighbor : foundNeighbors->second) {
+        const authority::QuarterTurn candidate =
+            compose(neighbor.rotation, current);
+        const auto [found, inserted] = rotations.emplace(neighbor.face, candidate);
+        if (inserted) {
+          pending.push(neighbor.face);
+        } else if (found->second != candidate) {
+          return std::nullopt;
+        }
+      }
+    }
+    const auto target = rotations.find(toTopology);
+    return target == rotations.end()
+               ? std::nullopt
+               : std::optional<authority::QuarterTurn>{target->second};
+  };
+
+  const auto generator_route_for_span = [&](
+      const authority::NetworkArcId span,
+      const authority::QuarterTurn rotation)
+      -> std::optional<authority::CanonicalRoute> {
+    if (options.globalTopologyPlan == nullptr) return std::nullopt;
+    const GlobalTopologyArc *arc = options.globalTopologyPlan->find_arc(span);
+    if (arc == nullptr || arc->sourcePath.empty() ||
+        !authority::exact_source_path_is_canonical(arc->sourcePath)) {
+      return std::nullopt;
+    }
+    std::vector<authority::TransitionStep> steps;
+    steps.reserve(arc->sourcePath.size());
+    for (std::size_t index = 0U; index < arc->sourcePath.size(); ++index) {
+      const authority::ExactSourceSupportPiece &piece = arc->sourcePath[index];
+      const auto *carrier =
+          std::get_if<authority::SourceEdgeSupport>(&piece.carrier);
+      const auto *first = std::get_if<authority::SourceVertexId>(&piece.first);
+      const auto *second = std::get_if<authority::SourceVertexId>(&piece.second);
+      if (carrier == nullptr || first == nullptr || second == nullptr ||
+          *first == *second) {
+        return std::nullopt;
+      }
+      authority::Orientation orientation;
+      if (*first == carrier->edge.first() && *second == carrier->edge.second()) {
+        orientation = authority::Orientation::Forward;
+      } else if (*first == carrier->edge.second() &&
+                 *second == carrier->edge.first()) {
+        orientation = authority::Orientation::Reverse;
+      } else {
+        return std::nullopt;
+      }
+      const auto transitionIndex = sourceMatchingIndices.find(carrier->edge);
+      if (transitionIndex == sourceMatchingIndices.end()) {
+        return std::nullopt;
+      }
+      const auto transition = authority::InteriorTransitionId::from_index(
+          transitionIndex->second, sourceMatchingIndices.size());
+      if (!transition) return std::nullopt;
+      // Carrier identity comes only from the accepted exact source path. The
+      // cut-open atlas supplies the aggregate generator rotation; record that
+      // transport once so the canonical route composes to the same authority.
+      authority::GridAutomorphism transport =
+          authority::GridAutomorphism::identity();
+      if (index == 0U) transport.rotation = rotation;
+      const auto step = authority::TransitionStep::interior(
+          carrier->edge, transition.value(), transport, orientation);
+      if (!step) return std::nullopt;
+      steps.push_back(step.value());
+    }
+    authority::CanonicalRoute route =
+        authority::CanonicalRoute::from_observed_steps(std::move(steps));
+    if (route.empty() || route.composed_transport().rotation != rotation) {
+      return std::nullopt;
+    }
+    return route;
+  };
+
+  const auto periodic_action_for_pair = [&](
+      const SurfaceFrontEdge &first, const SurfaceFrontEdge &second,
+      const authority::QuarterTurn rotation)
+      -> std::optional<authority::GridAutomorphism> {
+    if (!first.fromLattice.sourceChart.has_value() ||
+        !first.toLattice.sourceChart.has_value() ||
+        !second.fromLattice.sourceChart.has_value() ||
+        !second.toLattice.sourceChart.has_value() ||
+        first.fromLattice.scaleLevel != second.toLattice.scaleLevel ||
+        first.toLattice.scaleLevel != second.fromLattice.scaleLevel ||
+        compose(rotation,
+                authority::QuarterTurn::from_integer(
+                    first.fromLattice.branchRotation)) !=
+            authority::QuarterTurn::from_integer(
+                second.toLattice.branchRotation) ||
+        compose(rotation,
+                authority::QuarterTurn::from_integer(
+                    first.toLattice.branchRotation)) !=
+            authority::QuarterTurn::from_integer(
+                second.fromLattice.branchRotation)) {
+      return std::nullopt;
+    }
+    const authority::LatticeTranslation shift =
+        second.toLattice.latticeCoordinate -
+        rotate(rotation, first.fromLattice.latticeCoordinate);
+    authority::GridAutomorphism action{rotation, shift};
+    if (action.apply(first.fromLattice.latticeCoordinate) !=
+            second.toLattice.latticeCoordinate ||
+        action.apply(first.toLattice.latticeCoordinate) !=
+            second.fromLattice.latticeCoordinate) {
+      return std::nullopt;
+    }
+    return action;
+  };
+
   std::map<HardRailPairKey, std::vector<int>> hardRailGroups;
   for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size());
        ++edgeIndex) {
@@ -17056,8 +17238,67 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     first.exterior = false;
     second.exterior = false;
     pairedHardEdges.insert(pair.begin(), pair.end());
-    result.events.push_back(
-        {SurfaceFrontEventKind::HardRailMerge, pair[0], pair[1]});
+
+    SurfaceFrontEventKind mergeKind = SurfaceFrontEventKind::HardRailMerge;
+    if (sameSourceRegion) {
+      const auto firstRotation = atlas_rotation_between_faces(
+          first.from.face, second.to.face, first.sourceTopologyRegion);
+      const auto secondRotation = atlas_rotation_between_faces(
+          first.to.face, second.from.face, first.sourceTopologyRegion);
+      if (!firstRotation.has_value() || !secondRotation.has_value() ||
+          *firstRotation != *secondRotation) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+            static_cast<int>(first.filledCell.index()), first.filledSide);
+        return result;
+      }
+      const auto generatorRoute = generator_route_for_span(
+          first.sharedBoundaryInterval->span, *firstRotation);
+      const auto action =
+          periodic_action_for_pair(first, second, *firstRotation);
+      if (!generatorRoute.has_value() || !action.has_value() ||
+          generatorRoute->carrier_identity() == first.route.carrier_identity() ||
+          generatorRoute->carrier_identity() ==
+              first.route.reversed().carrier_identity() ||
+          generatorRoute->composed_transport().rotation != action->rotation) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+            static_cast<int>(first.filledCell.index()), first.filledSide);
+        return result;
+      }
+      auto construction = SurfacePeriodicHolonomy::make(
+          first.sourceTopologyRegion, *action, *generatorRoute, first.route);
+      auto *relation = std::get_if<SurfacePeriodicHolonomy>(&construction);
+      if (relation == nullptr) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+            static_cast<int>(first.filledCell.index()), first.filledSide);
+        return result;
+      }
+      const authority::PeriodicRelationId relationId = relation->id();
+      const auto insertion = insert_periodic_holonomy(
+          result.periodicHolonomies, std::move(*relation));
+      if (insertion == SurfacePeriodicHolonomyInsertStatus::Incompatible) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation,
+            static_cast<int>(first.filledCell.index()), first.filledSide);
+        return result;
+      }
+      first.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
+      second.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
+      first.periodicRelation = relationId;
+      second.periodicRelation = relationId;
+      mergeKind = SurfaceFrontEventKind::PeriodicFrontMerge;
+    }
+    result.events.push_back({mergeKind, pair[0], pair[1]});
   }
   result.events.erase(
       std::remove_if(result.events.begin(), result.events.end(),

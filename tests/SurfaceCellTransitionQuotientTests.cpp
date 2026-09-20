@@ -1968,6 +1968,222 @@ TEST(M4CP4, ProducedTorusMissingPeriodicRelationOwnerIsRejected) {
             error->code);
 }
 
+TEST(M5CP3, ProducedTorusPublishesTwoCanonicalPeriodicRelationsAndOwnedEdges) {
+  const auto &fixture = torus_fixture();
+  ASSERT_EQ(SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition());
+  const auto &product = fixture.network.phaseFront.product();
+  ASSERT_EQ(1U, product.sourceTopologyRegions().regions().size());
+
+  std::map<directional::authority::PeriodicRelationId,
+           const directional::geometry::SurfacePeriodicHolonomy *> owners;
+  std::set<std::pair<
+      std::vector<directional::authority::PeriodicCarrierStepIdentity>,
+      std::vector<directional::authority::PeriodicCarrierStepIdentity>>>
+      independentCarriers;
+  for (const auto &relation : product.periodicHolonomies()) {
+    const auto expected = independent_periodic_relation_id(
+        relation.sourceTopologyRegion(), relation.route(), relation.cutRoute());
+    ASSERT_TRUE(expected.has_value());
+    EXPECT_EQ(relation.id(), *expected);
+    const auto carriers = independent_periodic_carrier_identity(
+        relation.route(), relation.cutRoute());
+    EXPECT_EQ(carriers.first, relation.id().generator_carrier());
+    EXPECT_EQ(carriers.second, relation.id().cut_carrier());
+    ASSERT_TRUE(independentCarriers.insert(carriers).second);
+    ASSERT_TRUE(owners.emplace(relation.id(), &relation).second);
+  }
+  ASSERT_GE(owners.size(), 2U);
+
+  std::size_t ownedPeriodicEdges = 0U;
+  std::size_t promotedIntervalEdges = 0U;
+  for (std::size_t edgeIndex = 0U; edgeIndex < product.edges().size();
+       ++edgeIndex) {
+    const auto &edge = product.edges()[edgeIndex];
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut) continue;
+    ++ownedPeriodicEdges;
+    ASSERT_TRUE(edge.periodicRelation.has_value());
+    const auto owner = owners.find(*edge.periodicRelation);
+    ASSERT_NE(owners.end(), owner);
+    EXPECT_EQ(edge.sourceTopologyRegion,
+              owner->second->sourceTopologyRegion());
+    if (!edge.sharedBoundaryInterval.has_value()) continue;
+    ++promotedIntervalEdges;
+    ASSERT_GE(edge.oppositeEdge, 0);
+    ASSERT_LT(static_cast<std::size_t>(edge.oppositeEdge),
+              product.edges().size());
+    const auto &opposite =
+        product.edges()[static_cast<std::size_t>(edge.oppositeEdge)];
+    ASSERT_TRUE(opposite.sharedBoundaryInterval.has_value());
+    EXPECT_EQ(edge.periodicRelation, opposite.periodicRelation);
+    EXPECT_EQ(edge.route, opposite.route.reversed());
+    EXPECT_EQ(edge.sharedBoundaryInterval->span,
+              opposite.sharedBoundaryInterval->span);
+    EXPECT_EQ(edge.sharedBoundaryInterval->firstOrdinal,
+              opposite.sharedBoundaryInterval->secondOrdinal);
+    EXPECT_EQ(edge.sharedBoundaryInterval->secondOrdinal,
+              opposite.sharedBoundaryInterval->firstOrdinal);
+    EXPECT_NE(edge.sharedBoundaryInterval->orientation,
+              opposite.sharedBoundaryInterval->orientation);
+    ASSERT_TRUE(edge.sharedBoundaryInterval->boundaryOccurrence.has_value());
+    ASSERT_TRUE(opposite.sharedBoundaryInterval->boundaryOccurrence.has_value());
+    EXPECT_NE(edge.sharedBoundaryInterval->boundaryOccurrence,
+              opposite.sharedBoundaryInterval->boundaryOccurrence);
+  }
+  EXPECT_GE(ownedPeriodicEdges, 2U);
+  EXPECT_GE(promotedIntervalEdges, 2U);
+}
+
+TEST(M5CP3,
+     ProducedTorusPeriodicRelationStoragePermutationPreservesSelectedCertificate) {
+  const auto &fixture = torus_fixture();
+  const auto &product = fixture.network.phaseFront.product();
+  ASSERT_GE(product.periodicHolonomies().size(), 2U);
+
+  PhaseFrontDraft baselineDraft = phase_front_draft(product);
+  PhaseFrontDraft reorderedDraft = baselineDraft;
+  const auto firstStored = reorderedDraft.periodicHolonomies.front().id();
+  const auto lastStored = reorderedDraft.periodicHolonomies.back().id();
+  ASSERT_NE(firstStored, lastStored);
+  std::reverse(reorderedDraft.periodicHolonomies.begin(),
+               reorderedDraft.periodicHolonomies.end());
+  EXPECT_NE(firstStored, reorderedDraft.periodicHolonomies.front().id());
+
+  const auto baseline = materialize(fixture, std::move(baselineDraft));
+  const auto reordered = materialize(fixture, std::move(reorderedDraft));
+  ASSERT_TRUE(baseline.success) << baseline.failure;
+  ASSERT_TRUE(reordered.success) << reordered.failure;
+  const auto baselineCertificates =
+      selected_relation_certificate_signature(baseline.mesh);
+  const auto reorderedCertificates =
+      selected_relation_certificate_signature(reordered.mesh);
+  ASSERT_FALSE(baselineCertificates.empty());
+  EXPECT_EQ(baselineCertificates, reorderedCertificates);
+  EXPECT_EQ(directional::pipeline::hash_completion(baseline.mesh),
+            directional::pipeline::hash_completion(reordered.mesh));
+  EXPECT_EQ(baseline.consumedPeriodicHolonomies,
+            reordered.consumedPeriodicHolonomies);
+}
+
+TEST(M5CP3, ProducedTorusMissingPeriodicRelationOwnerRejectsTyped) {
+  const auto &fixture = torus_fixture();
+  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  const int periodic =
+      first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::PeriodicCut);
+  ASSERT_GE(periodic, 0);
+  auto &edge = tampered.edges[static_cast<std::size_t>(periodic)];
+  ASSERT_TRUE(edge.periodicRelation.has_value());
+  edge.periodicRelation = std::nullopt;
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          MissingPeriodicRelationOwner);
+}
+
+TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
+  const auto &fixture = torus_fixture();
+  const auto &product = fixture.network.phaseFront.product();
+  const auto relation = std::find_if(
+      product.periodicHolonomies().begin(), product.periodicHolonomies().end(),
+      [](const auto &candidate) {
+        return action_has_nonzero_turn(candidate.action()) &&
+               (candidate.action().shift.x != 0 ||
+                candidate.action().shift.y != 0);
+      });
+  ASSERT_NE(product.periodicHolonomies().end(), relation)
+      << "production must publish a genuine nonzero-Z4 periodic action";
+  const auto expectedId = independent_periodic_relation_id(
+      relation->sourceTopologyRegion(), relation->route(), relation->cutRoute());
+  ASSERT_TRUE(expectedId.has_value());
+  EXPECT_EQ(relation->id(), *expectedId);
+  EXPECT_NE(directional::authority::QuarterTurn{}, relation->action().rotation);
+  EXPECT_NE(directional::authority::LatticeTranslation{0, 0},
+            relation->action().shift);
+
+  const auto materialized = materialize(fixture, fixture.network.phaseFront);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+  const auto certificates =
+      selected_relation_certificate_signature(materialized.mesh);
+  ASSERT_FALSE(certificates.empty());
+  const bool selected = std::any_of(
+      certificates.begin(), certificates.end(), [&](const auto &certificate) {
+        return std::any_of(
+            certificate.orderedSteps.begin(), certificate.orderedSteps.end(),
+            [&](const auto &step) {
+              if (step.periodicRelation != relation->id()) return false;
+              return step.appliedTransport == relation->action() ||
+                     step.appliedTransport == relation->action().inverse();
+            });
+      });
+  EXPECT_TRUE(selected);
+  EXPECT_GT(materialized.consumedPeriodicHolonomies, 0U);
+}
+
+TEST(M5CP3, ProducedTorusTamperedNonzeroZ4TransformRejectsTyped) {
+  const auto &fixture = torus_fixture();
+  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  const auto relation = std::find_if(
+      tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
+      [](const auto &candidate) {
+        return action_has_nonzero_turn(candidate.action()) &&
+               (candidate.action().shift.x != 0 ||
+                candidate.action().shift.y != 0);
+      });
+  ASSERT_NE(tampered.periodicHolonomies.end(), relation);
+  const auto originalId = relation->id();
+  auto action = relation->action();
+  action.rotation = directional::authority::QuarterTurn::from_integer(
+      static_cast<int>(action.rotation.value()) + 1);
+  auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
+      relation->sourceTopologyRegion(), action, relation->route(),
+      relation->cutRoute());
+  auto *value =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&rebuilt);
+  ASSERT_NE(nullptr, value);
+  EXPECT_EQ(originalId, value->id());
+  *relation = std::move(*value);
+
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          NonReciprocalPeriodicRelation);
+}
+
+TEST(M5CP3, ProducedTorusUnusedValidRelationDoesNotAlterSelectedCertificate) {
+  const auto &fixture = torus_fixture();
+  PhaseFrontDraft baselineDraft = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft extendedDraft = baselineDraft;
+  ASSERT_FALSE(extendedDraft.periodicHolonomies.empty());
+  const auto &owner = extendedDraft.periodicHolonomies.front();
+  auto unusedConstruction = directional::geometry::SurfacePeriodicHolonomy::make(
+      owner.sourceTopologyRegion(), owner.action(), owner.cutRoute(),
+      owner.route());
+  const auto *unused =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(
+          &unusedConstruction);
+  ASSERT_NE(nullptr, unused);
+  ASSERT_TRUE(std::none_of(
+      extendedDraft.periodicHolonomies.begin(),
+      extendedDraft.periodicHolonomies.end(), [&](const auto &relation) {
+        return relation.id() == unused->id();
+      }));
+  extendedDraft.periodicHolonomies.push_back(*unused);
+
+  const auto baseline = materialize(fixture, std::move(baselineDraft));
+  const auto extended = materialize(fixture, std::move(extendedDraft));
+  ASSERT_TRUE(baseline.success) << baseline.failure;
+  ASSERT_TRUE(extended.success) << extended.failure;
+  const auto baselineCertificates =
+      selected_relation_certificate_signature(baseline.mesh);
+  ASSERT_FALSE(baselineCertificates.empty());
+  EXPECT_EQ(baselineCertificates,
+            selected_relation_certificate_signature(extended.mesh));
+  EXPECT_EQ(directional::pipeline::hash_completion(baseline.mesh),
+            directional::pipeline::hash_completion(extended.mesh));
+  EXPECT_EQ(baseline.consumedPeriodicHolonomies,
+            extended.consumedPeriodicHolonomies);
+}
+
 TEST(SurfaceCellTransitionQuotient,
      MultiplePeriodicRelationsSurviveRelationReorderingByExplicitOwner) {
   const auto &fixture = torus_fixture();

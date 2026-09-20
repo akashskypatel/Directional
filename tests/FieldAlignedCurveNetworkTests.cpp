@@ -17072,16 +17072,51 @@ TEST(RemeshPipeline,
             phaseFront.conformityPlanReceipt()->baselinePlanDigest);
   EXPECT_NE("InvalidHardRailPairing", fixture.terminalFailureDetailCode);
 
-  std::size_t exactSharedIntervals = 0U;
-  for (const auto &edge : phaseFront.edges()) {
-    if (edge.boundaryKind !=
-        directional::geometry::SurfaceFrontBoundaryKind::HardRail) {
-      continue;
+  std::size_t promotedSharedIntervalEdges = 0U;
+  std::size_t promotedSharedIntervalPairs = 0U;
+  for (std::size_t edgeIndex = 0U; edgeIndex < phaseFront.edges().size();
+       ++edgeIndex) {
+    const auto &edge = phaseFront.edges()[edgeIndex];
+    if (!edge.sharedBoundaryInterval.has_value()) continue;
+    ASSERT_EQ(directional::geometry::SurfaceFrontBoundaryKind::PeriodicCut,
+              edge.boundaryKind);
+    ASSERT_TRUE(edge.periodicRelation.has_value());
+    const auto owner = std::find_if(
+        phaseFront.periodicHolonomies().begin(),
+        phaseFront.periodicHolonomies().end(), [&](const auto &relation) {
+          return relation.id() == *edge.periodicRelation;
+        });
+    ASSERT_NE(phaseFront.periodicHolonomies().end(), owner);
+    EXPECT_EQ(edge.sourceTopologyRegion, owner->sourceTopologyRegion());
+    ASSERT_GE(edge.oppositeEdge, 0);
+    ASSERT_LT(static_cast<std::size_t>(edge.oppositeEdge),
+              phaseFront.edges().size());
+    const auto &opposite =
+        phaseFront.edges()[static_cast<std::size_t>(edge.oppositeEdge)];
+    ASSERT_EQ(directional::geometry::SurfaceFrontBoundaryKind::PeriodicCut,
+              opposite.boundaryKind);
+    ASSERT_EQ(edge.periodicRelation, opposite.periodicRelation);
+    ASSERT_TRUE(opposite.sharedBoundaryInterval.has_value());
+    EXPECT_EQ(edge.sharedBoundaryInterval->span,
+              opposite.sharedBoundaryInterval->span);
+    EXPECT_EQ(edge.sharedBoundaryInterval->firstOrdinal,
+              opposite.sharedBoundaryInterval->secondOrdinal);
+    EXPECT_EQ(edge.sharedBoundaryInterval->secondOrdinal,
+              opposite.sharedBoundaryInterval->firstOrdinal);
+    EXPECT_NE(edge.sharedBoundaryInterval->orientation,
+              opposite.sharedBoundaryInterval->orientation);
+    ASSERT_TRUE(edge.sharedBoundaryInterval->boundaryOccurrence.has_value());
+    ASSERT_TRUE(opposite.sharedBoundaryInterval->boundaryOccurrence.has_value());
+    EXPECT_NE(edge.sharedBoundaryInterval->boundaryOccurrence,
+              opposite.sharedBoundaryInterval->boundaryOccurrence);
+    EXPECT_EQ(edge.route, opposite.route.reversed());
+    ++promotedSharedIntervalEdges;
+    if (edgeIndex < static_cast<std::size_t>(edge.oppositeEdge)) {
+      ++promotedSharedIntervalPairs;
     }
-    ASSERT_TRUE(edge.sharedBoundaryInterval.has_value());
-    ++exactSharedIntervals;
   }
-  EXPECT_GT(exactSharedIntervals, 0U);
+  EXPECT_GE(promotedSharedIntervalEdges, 2U);
+  EXPECT_GE(promotedSharedIntervalPairs, 1U);
 }
 
 TEST(GlobalTopologyPlan,
