@@ -1,6 +1,0 @@
-# M5-CP2-TB1-EXEC temporary-state cleanup
-.agents/Directional/turn-payloads/m5-cp2-tb1-exec-harness.sh
-.agents/connector-triggers/m5-cp2-tb1-closeout-drive-apply-20260920.txt
-.agents/connector-triggers/m5-cp2-tb1-exec-20260920.txt
-.agents/connector-triggers/m5-cp2-tb1-harness-drive-apply-20260920.txt
-.agents/connector-triggers/source-snapshot/m5-cp2-tb1-exec-20260920T095625Z.txt
