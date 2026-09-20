@@ -1,0 +1,5 @@
+purpose=M5-CP1-CB2 canonical executor patch apply
+caller_commit=3d688747903f0cb23fc87dc39941e382796d7065
+patch_file_id=1GNerKBMuUF-Wnd1A6SGErMX0ANaXPqx7
+patch_sha256=deacc5da3b4621c1999a3afc66d7429298acebf092be0bc22cab61d361109dc7
+base_sha=7b6b488af828594d776d9550a77924819235fe0c
