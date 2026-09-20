@@ -1,0 +1,4 @@
+turn=M5-CP3-CB2
+purpose=apply reviewed direct-production promotion patch
+base_sha=c8009a978fb414e0281799c9e09fb30f8701ac8e
+retry=0
