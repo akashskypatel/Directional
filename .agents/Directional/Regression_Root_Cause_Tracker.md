@@ -8763,3 +8763,32 @@ distinguishable from the four accepted direct/draft rows rather than colliding w
 witnesses. Per `[[M4-CP4-TB3-REV-OBS-01]]` the binding belongs where a closure claim will be checked. Same family
 as `LESSONS.md` 171: **selector membership under a debt's name is not debt discharge.** See
 `[[M5-DEFN-REV-OBS-01]]`.
+
+## `M5-CP1-TB1-R1-EXEC-OBS-01` — orchestration authored without pre-validation has now cost a block plus repeated repair
+
+**Status.** OPEN / NON-GATING / process-class / owner: the turn that closes `M5-CP1-TB1-R1-EXEC` / NON-STABLE.
+
+Second instance of the pattern first recorded as `[[M5-CP1-TB1-EXEC-OBS-01]]`, now in the control plane rather
+than the plan:
+
+- `M5-CP1-TB1-EXEC` blocked pre-runtime on two frozen-plan literals that were never checked against the package —
+  a 63-character "SHA-256" and a test identity in a suite that does not contain it.
+- `M5-CP1-TB1-R1-EXEC` then needed executor install, embedded-harness repair after a decode failure, and package
+  preflight path correction, with retries between, before any semantic gate could run.
+
+Same root cause both times: an artifact that asserts facts about other artifacts — a plan literal, an embedded
+harness, a package path — was frozen or installed without being validated against the thing it refers to, so the
+error surfaced at execution instead of at authoring. The cost is turns spent on transcription defects rather than
+semantics.
+
+**The turn boundary held**, which is the part that matters and was verified by diffing the full range: only
+`.agents/connector-triggers/…`, the temporary workflow `.github/workflows/m5-cp1-tb1-r1-exec.yml`, and `STATUS`
+were touched. No product, test, fixture, selector, benchmark or build source changed; accepted authority
+(package `10591801825` / selector430 **430/430**) is untouched and accounting remains **49 / 14 / 35**, debt
+**5**. Repeated control-plane repair is expensive, not unsound.
+
+**How to apply:** before triggering a semantic run, validate the executor end-to-end on the actual package —
+decode the embedded harness and resolve every package path — and validate every literal a frozen plan asserts
+against the artifact it names. Treat a decode or path failure as an authoring defect to be fixed before the run
+is triggered, never as a retry. An executing turn must still never silently repair its own authority; that
+separation is what made the original TB1 block correct and must be preserved.

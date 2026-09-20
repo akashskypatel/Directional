@@ -12,6 +12,37 @@ The corrected identity's body uses `direct_periodic_owner_product()`, a direct-h
 
 Accepted runtime authority is unchanged: M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31 / 283 / 75 / 41**. Stable accounting remains **49 events / 14 categories / 35 recurrences** and produced-witness debt remains **5**.
 
+### In-flight turn state (review-agent determination, 2026-09-20)
+
+`M5-CP1-TB1-R1-EXEC` is **IN_PROGRESS**, not complete. It has produced **no report and no semantic evidence**:
+`Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md` on disk is still the superseded
+`M5-CP1-TB1-EXEC` **BLOCKED** report, and the last documentation-bearing commit is the PREFLIGHT-REV review
+closeout. Everything after it is control-plane only.
+
+The turn required repeated orchestration repair before any semantic run: executor install, embedded-harness
+repair after a decode failure, and package preflight path correction, with retries between. **The turn boundary
+held throughout** — verified by diffing the whole range: the only files touched are
+`.agents/connector-triggers/…`, the temporary workflow `.github/workflows/m5-cp1-tb1-r1-exec.yml`, and `STATUS`.
+No product, test, fixture, selector, benchmark or build source was modified, and accepted authority is untouched.
+
+**Do not re-plan or re-issue this turn.** A run has been triggered and its outcome is not yet recorded;
+authoring a replacement now would duplicate an in-flight execution. The resuming agent must:
+
+1. Read the outcome of the last triggered run and record it. If the gates ran, publish the R1 report against the
+   corrected plan; if orchestration failed again, record **BLOCKED** with zero semantic credit — the same
+   discipline that made the original TB1 block correct.
+2. Set `STATUS` `Successor` to a real turn id once the outcome is known, and complete the beacon with
+   `Ended at`.
+3. Retire the temporary executor workflow and connector triggers at closeout, per the cleanup policy.
+
+Unchanged and still binding on the R1 report when it is written: focused row 9
+(`SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`) uses
+`direct_periodic_owner_product()` and carries **CP1 mechanism credit only — no produced-witness credit**. It
+discharges no M5 debt; debt 1 remains `M5-CP3` on produced authority. Accepted selector rows **218, 220, 221 and
+226** already bear the four open M5 debt names and are all direct/draft witnesses, so their passing in the
+selector gate is regression evidence, not debt discharge
+(`M5-CP1-TB1-PREFLIGHT-REV-OBS-01`).
+
 ## Exact next turn
 
 **`M5-CP1-TB1-R1-EXEC`** — execute only `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md` against unchanged artifact `10595705100`.

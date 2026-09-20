@@ -1,3 +1,33 @@
+## 2026-09-20 — next-step determination: `M5-CP1-TB1-R1-EXEC` in flight, boundary verified intact
+
+Runtime-free. `M5-CP1-TB1-R1-EXEC` is **IN_PROGRESS**, not complete, and has produced **no report and no semantic
+evidence** — the TB1 report on disk is still the superseded BLOCKED `M5-CP1-TB1-EXEC` report, and every commit
+after the PREFLIGHT-REV closeout is control-plane only. Accepted authority is unchanged at package
+`10591801825` / selector430 **430/430**; accounting **49 / 14 / 35**, debt **5**.
+
+**Turn boundary verified intact across the whole repair sequence.** Diffing the full range shows only
+`.agents/connector-triggers/…`, the temporary workflow `.github/workflows/m5-cp1-tb1-r1-exec.yml`, and `STATUS`
+were touched — no product, test, fixture, selector, benchmark or build source. Repeated control-plane repair
+(executor install, embedded-harness repair after a decode failure, package preflight path correction, with
+retries) is expensive, not unsound.
+
+Determination recorded in the handoff: **do not re-plan or re-issue this turn.** A run has been triggered and its
+outcome is not yet recorded, so authoring a replacement would duplicate an in-flight execution. The resuming
+agent reads the last run's outcome and either publishes the R1 report against the corrected plan or records
+BLOCKED with zero semantic credit, then completes the beacon and retires the temporary executor and triggers.
+
+Still binding when the R1 report is written: focused row 9 carries **CP1 mechanism credit only** and discharges
+no M5 debt, and accepted selector rows 218/220/221/226 bear the four open M5 debt names as direct/draft
+witnesses, so their passing is regression evidence rather than discharge
+(`M5-CP1-TB1-PREFLIGHT-REV-OBS-01`).
+
+Recorded `M5-CP1-TB1-R1-EXEC-OBS-01` (non-gating, process-class): second instance of orchestration authored
+without pre-validation — first a frozen plan literal never checked against the package, now an embedded harness
+and package paths never resolved before triggering. Validate the executor end-to-end and every asserted literal
+before triggering a semantic run; treat a decode or path failure as an authoring defect, not a retry. `STATUS`
+repaired to the canonical six-field format (`Resumed at`/`Ended at` absent, and `Successor: NONE` is off-spec —
+the vocabulary is a turn id or `UNKNOWN`).
+
 ## 2026-09-20 — `M5-CP1-TB1-PREFLIGHT-REV` review: upheld; accepted-row weakening audited; debt-name collision recorded
 
 Runtime-free review. **Upheld.** Both frozen-plan defects correctly adjudicated; accounting holds at
