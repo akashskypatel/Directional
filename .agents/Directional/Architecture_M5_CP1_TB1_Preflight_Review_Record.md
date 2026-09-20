@@ -108,4 +108,4 @@ Operational note: this web session began repository document inspection before t
 | Turn boundary held | **YES — runtime-free documentation/static review only; no product/test/fixture/build/selector mutation.** |
 | review_check.py boundary | **PASS** — `python3 .agents/Directional/tools/review_check.py boundary --expect-selector 430=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; all review boundary checks passed. |
 | `STATUS` lifecycle maintained | **YES — entry beacon published for this turn; final COMPLETE beacon reserved as final repository write.** |
-| Pushed to origin, branch in sync | **PENDING patch publication/control-plane cleanup; must be verified before final STATUS.** |
+| Pushed to origin, branch in sync | **YES** — reviewed docs pushed as `2a1020dde92d355e6d068607760d53bfdf23ea48` by patch-apply run `35484185537` / result artifact `10596677066`; temporary caller retired; cleanup run `35484261921` succeeded at `63579649b5f9b3062a9716853ed6e8e989257865` and removed both turn markers; Drive staging file was permanently deleted by the owner-authorized connector. |
