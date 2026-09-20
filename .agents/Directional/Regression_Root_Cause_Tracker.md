@@ -8888,9 +8888,9 @@ Same gap as `[[M5-DEFN-REV-OBS-01]]` from another side: M5's governing document 
 nor a publication sequence, so both the conditions for closing M5 and the mechanism for protecting what it proves
 are unstated.
 
-## `M5-CP2-CB1-OBS-01` — an accepted selector row lost a negative assertion; the relocation must be demonstrated
+## `M5-CP2-CB1-OBS-01` — accepted-selector assertion relocation audit
 
-**Status.** OPEN / NON-GATING / owner: the `M5-CP2-CB1` report and the Review that follows it / NON-STABLE.
+**Status.** CORRECTED / REPORT MAPPING COMPLETE / REVIEW PENDING / NON-GATING / NON-STABLE.
 
 `M5-CP2-CB1` (`0798547d`) implements the typed relation failure matrix. All 17 test-file deletions were audited
 and the change is overwhelmingly a **strengthening**: generic string failure checks
@@ -8921,3 +8921,21 @@ accepted identity and must be restored.
 This makes `[[M5-CP1-TB1-R3-REV-OBS-01]]` concrete: with no M5 selector publication sequence frozen, CP2 is
 actively relocating negative coverage out of the required-green set. Freezing when CP1/CP2 identities are
 appended is now the practical priority.
+
+**CB1 closeout correction (2026-09-20).** Reopening the exact accepted source
+`8a86710dd33d7b6cb9a077aef738577e4075b5f7` falsifies the original row-221 premise: selector430 row 221 was
+already a positive-only 14-assertion invariance test before CP2 and its body is unchanged in compiled source
+`0798547d`. It never contained the cited `EXPECT_EQ("InvalidPeriodicRelation", materialized.failure)` at the
+accepted CP1 authority. The original observation conflated row 221 with the ungated swapped-owner/produced-torus
+negative bodies.
+
+The exact accepted rows touched by CP2 are instead: row **226**
+`TamperedFullPeriodicTransformIsRejected` (downstream `InvalidPeriodicFrontTransport` materializer-string
+rejection moved to exact checked-boundary `NonReciprocalPeriodicRelation`); row **296**
+`DuplicatePeriodicRelationIdentityRejectsAtCheckedFactory` (same typed duplicate outcome, strengthened with
+independent carrier identity and container-reversal repetition); and row **304**
+`UnknownPeriodicRelationOwnerRejectsAtCheckedFactory` (broad `InvalidPeriodicRelationOwner` tightened to frozen
+`MissingPeriodicRelationOwner`, with independent carrier-derived ID). Rows **220** and **221** remain unchanged.
+The CB report records this mapping. Review must independently adjudicate the row-226 boundary relocation; the
+separate `M5-CP1-TB1-R3-REV-OBS-01` selector-publication gap remains OPEN because newly authored CP1/CP2 tests are
+still outside selector430. Stable accounting is unchanged.

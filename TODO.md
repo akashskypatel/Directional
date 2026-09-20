@@ -2,6 +2,18 @@
 
 Last updated: 2026-09-20 UTC
 
+## Latest Code + Build turn — `M5-CP2-CB1`
+
+`M5-CP2-CB1` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME NOT EXECUTED** on exact source
+`0798547dedd8be05f9cd7a096b07e6bd94755316`. Compile run/job `35500960779 / 106052541163`; candidate artifact
+`10601978228` (ZIP SHA-256 `ad2e502db60d94c275769616edf5555d12abd87499c6cf3987cdafbd458d2f0b`) and log artifact
+`10601923321` (SHA-256 `efadf1c895bad944abc85630eca88cc824f44cac9e7aae1d229f87e9ed968f1c`) are authoritative compile evidence.
+Package manifest **28/28**, build/preflight **0/0**, clean source-status receipts, explicit GMPXX+GMP linkage, and
+`runtimeExecution=false` are verified. Candidate remains unexecuted/unpromoted; accepted runtime authority remains
+package `10600353027` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
+Exact next is artifact-only `M5-CP2-TB1-EXEC`; execute no benchmark and make no source/package mutation.
+
 ## Latest Review turn — `M5-CP1-TB1-R3-REV`
 
 `M5-CP1-TB1-R3-REV` is **COMPLETE / CP1 CLOSED / CANDIDATE PROMOTED**. Independent Review re-opens R3 run/job `35496133258 / 106039321958`, result/log `10601350461 / 10601380504`, candidate `10600353027` / source `8a86710dd33d7b6cb9a077aef738577e4075b5f7`, selector430 and routing authority. It upholds focused **9/9** + selector430 **430/430**, exact-one/zero-skip across **439**, immutable postflight, and the corrected row6 pure-permutation falsifier. Package `10600353027` is promoted as accepted current runtime authority. Stable accounting remains **49 / 14 / 35**, debt **5**.
@@ -17,11 +29,16 @@ Last updated: 2026-09-20 UTC
 - [x] `M5-CP1-CB3`: author the pure-permutation row6 witness only; mandatory GMP compile/package green on `10600353027`; no Directional runtime.
 - [x] `M5-CP1-TB1-R3-EXEC`: immutable complete gate executed; focused **9/9**, selector430 **430/430**, benchmark **0**, exact postflight.
 - [x] `M5-CP1-TB1-R3-REV`: independently uphold R3, discharge the row6 falsifier observation, promote package `10600353027`, close CP1; no production-debt credit.
-- [ ] `M5-CP2-CB1`: **exact next**; implement the frozen five-class typed relation failure matrix + independent negative oracles; mandatory GMP compile/package only, no runtime or selector publication.
+- [x] `M5-CP2-CB1`: frozen five-class typed relation failure matrix + independent negative oracles implemented; GMP compile/package GREEN on artifact `10601978228`; no runtime or selector publication.
+- [ ] `M5-CP2-TB1-EXEC`: **exact next**; immutable artifact-only focused 7-row CP2 gate + selector430, exact-one/zero-skip, benchmark 0, then mandatory Review.
 
-## Current focus — `M5-CP2-CB1`
+## Current focus — `M5-CP2-TB1-EXEC`
 
-Code + Build only under `Architecture_M5_CP2_CB1_Typed_Relation_Failure_Matrix_Plan.md`. Retain missing/duplicate semantics, add conflicting/nonreciprocal/representation-renumbered typed failure, and independently derive expected semantic carrier identity in negative tests. Do not reintroduce ordinal relation identity, do not use the production identity factory as the test oracle, do not touch CP3 production evidence or M6 occurrence authority, and do not execute Directional runtime.
+Artifact-only execution under `Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Plan.md`. Consume candidate
+artifact `10601978228` / source `0798547d...` immutably. Preflight the exact package, run the frozen 7-row focused
+matrix and selector430 as fresh exact-filter processes with exact-one/zero-skip discipline, execute **0** benchmarks,
+and perform immutable postflight. No configure, compile, relink, source/test/fixture/selector mutation, package
+repair, or candidate promotion is authorized. Any orchestration-valid outcome routes to `M5-CP2-TB1-REV`.
 
 ## Carried forward from M1
 
@@ -61,7 +78,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 CLOSED / ACCEPTED** on package `10600353027` / source `8a86710d...` under selector430 **430/430**; exact next `M5-CP2-CB1`; four M5 produced-witness debts remain open.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 CLOSED / ACCEPTED** on package `10600353027` / source `8a86710d...` under selector430 **430/430**; CP2 CB1 compile/package GREEN on candidate `10601978228`; exact next `M5-CP2-TB1-EXEC`; four M5 produced-witness debts remain open.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -100,4 +117,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4 and M5-CP1 are **CLOSED / ACCEPTED**; current accepted runtime authority is package `10600353027` / source `8a86710d...` under unchanged selector430 **430/430**. No produced-witness debt is discharged by CP1 closure: the closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-CP2-CB1`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4 and M5-CP1 are **CLOSED / ACCEPTED**; current accepted runtime authority is package `10600353027` / source `8a86710d...` under unchanged selector430 **430/430**. No produced-witness debt is discharged by CP1 closure: the closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-CP2-TB1-EXEC`**. PR #8 remains open, draft, and unmerged.

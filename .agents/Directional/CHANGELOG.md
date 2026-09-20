@@ -1,3 +1,33 @@
+## 2026-09-20 — `M5-CP2-CB1`: typed relation failure matrix compile/package GREEN; accepted-row audit corrected
+
+Code + Build complete on exact semantic source `0798547dedd8be05f9cd7a096b07e6bd94755316`. Compile run/job
+`35500960779 / 106052541163` succeeded through the mandatory reusable GMP workflow. Candidate result artifact
+`10601978228` has provider ZIP SHA-256 `ad2e502db60d94c275769616edf5555d12abd87499c6cf3987cdafbd458d2f0b`;
+log artifact `10601923321` has SHA-256 `efadf1c895bad944abc85630eca88cc824f44cac9e7aae1d229f87e9ed968f1c`.
+Root package manifest verifies **28/28**, build/preflight exits are **0 / 0**, all source-status receipts are clean,
+and explicit GMPXX+GMP linkage is recorded. `runtimeExecution=false`; no Directional runtime, test, benchmark,
+discovery, CLI/GUI, `ctest`, fuzzer, or custom input executed.
+
+The five frozen CP2 classes are implemented at `SurfacePhaseFrontProduct::make(...)`: missing, duplicate,
+conflicting, nonreciprocal and representation-renumbered. Independent test oracles derive carrier identity from
+route/source content rather than calling production `periodic_relation_id(...)` for the expected answer. No ordinal
+relation identity, `periodicRelationOffset`, relation dropping/reassignment, selector edit, fixture edit, benchmark
+edit, or CMake semantic change was introduced.
+
+**Correction to the preceding in-flight audit:** exact accepted source `8a86710d...` proves selector430 row 221 was
+already positive-only before CP2 and is unchanged; it did not lose the cited negative assertion. The actual accepted
+rows touched are 226 (tampered transform: downstream generic materializer failure -> exact typed
+`NonReciprocalPeriodicRelation` at the checked phase-front boundary), 296 (duplicate typed outcome preserved and
+strengthened), and 304 (broad invalid-owner -> frozen typed missing-owner with independent expected identity). The
+CB report records the complete mapping; `M5-CP2-CB1-OBS-01` is corrected to **REPORT MAPPING COMPLETE / REVIEW
+PENDING**. The separate M5 selector-publication observation remains open because new CP1/CP2 evidence is still
+outside selector430.
+
+Accepted runtime authority remains package `10600353027` / source `8a86710d...` / selector430 **430/430**. Stable
+accounting remains **49 / 14 / 35**, debt **5**. Candidate `10601978228` is compile-only and unpromoted. Exact next
+is immutable artifact-only `M5-CP2-TB1-EXEC` under `Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Plan.md`;
+benchmark execution is frozen at zero and semantic acceptance remains Review-owned.
+
 ## 2026-09-20 — next-step determination: `M5-CP2-CB1` in flight; accepted-row assertion audit
 
 Runtime-free. `M5-CP2-CB1` is **IN_PROGRESS**: implementation landed in `0798547d` (typed periodic relation
