@@ -1,4 +1,0 @@
-turn=M5-CP3-CB2
-purpose=apply compile-fix patch for EXPECT_NE aggregate argument
-base_sha=01aab63466f3a38095a0cee83caa93db25197905
-retry=0
