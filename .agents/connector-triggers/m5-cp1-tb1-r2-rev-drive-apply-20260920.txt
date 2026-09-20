@@ -1,0 +1,5 @@
+turn=M5-CP1-TB1-R2-REV
+purpose=apply verified review documentation patch
+file_id=1fQqDwe81KFeMMJojtIcCSrPNtpOEEtZa
+patch_sha256=071aeeb8cd400ac79dfaee5aafb90f1cee1b9115421b966b9cc77f6cbe9c0803
+base_sha=3841e71aac0fa881a78af114b16a7ad0b3ce206f
