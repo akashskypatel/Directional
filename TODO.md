@@ -2,19 +2,20 @@
 
 Last updated: 2026-09-20 UTC
 
-## Latest Review turn — `M5-CP1-TB1-PREFLIGHT-REV`
+## Latest execution turn — `M5-CP1-TB1-R1-EXEC`
 
-`M5-CP1-TB1-PREFLIGHT-REV` is **COMPLETE / ROUTING DEFECTS PROVED / CORRECTED RETRY PLAN FROZEN / RUNTIME-FREE**. It independently re-derived accepted M4-TB3 `identity-map.tsv` SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c` from artifact `10592987234` and proved the actual packaged ninth identity is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. Candidate `10595705100` is unchanged and unpromoted; accepted M4 runtime authority remains package `10591801825` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M5-CP1-TB1-R1-EXEC` is **COMPLETE / PRE-RUNTIME ORCHESTRATION BLOCK / ZERO SEMANTIC CREDIT**. Terminal run `35486023017` passed workflow-schema validation but failed before harness creation because the embedded GZip payload was corrupt (`crc error` / `length error`). No Directional process ran: focused **0/9**, selector430 **0/430**, benchmark **0**. Candidate `10595705100` remains unchanged/unpromoted; accepted M4 authority remains package `10591801825` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M5-DEFN`: freeze canonical relation identity, selected certificate, cutover, failure matrix, invariance, production reachability, and CP1/CP2/CP3 debt ownership.
 - [x] `M5-CP1-CB1`: implement canonical relation IDs + selected path certificates; mandatory GMP compile/package green, no runtime.
 - [x] `M5-CP1-TB1-EXEC`: pre-runtime fail-closed blocker recorded; **0/9 focused, 0/430 selector, zero semantic credit**.
 - [x] `M5-CP1-TB1-PREFLIGHT-REV`: independently prove both frozen-plan routing defects; publish corrected retry plan; no runtime.
-- [ ] `M5-CP1-TB1-R1-EXEC`: **exact next**; unchanged artifact `10595705100`, corrected routing literals only, focused **9** + selector430 **430**, artifact-only.
+- [x] `M5-CP1-TB1-R1-EXEC`: terminal executor decode failed before Directional runtime; **0/9 focused, 0/430 selector, zero semantic credit**.
+- [ ] `M5-CP1-CB2`: **exact next**; runtime-free control-plane correction only. Reuse artifacts `10595705100` and `10592987234`; prove harness round-trip/hash/path/schema preflight before issuing fresh `M5-CP1-TB1-R2-EXEC`.
 
-## Current focus — `M5-CP1-TB1-R1-EXEC`
+## Current focus — `M5-CP1-CB2`
 
-Execute only `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`. Row9 remains direct-helper **CP1 mechanism credit only**; no M5 production debt closes even if green. No rebuild, product/test/fixture/selector edit, discovery, package repair, or benchmark is authorized.
+Execute only `Architecture_M5_CP1_CB2_Orchestration_Correction_Plan.md`. Repair and statically prove the executor/harness transport without running a Directional binary or rebuilding the immutable package. Row9 remains **CP1 mechanism-only**; no M5 production debt closes. On static green, issue fresh `M5-CP1-TB1-R2-EXEC`; do not execute R2 inside CB2.
 
 ## Carried forward from M1
 
@@ -54,7 +55,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 CB COMPILE GREEN; first TB blocked pre-runtime on plan routing; corrected exact next `M5-CP1-TB1-R1-EXEC`** on unchanged artifact `10595705100`; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 semantic package remains compile-green; corrected R1 retry blocked pre-runtime on corrupt executor bytes; exact next `M5-CP1-CB2`** reuses unchanged artifact `10595705100`; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP1-TB1-PREFLIGHT-REV`
+**Last updated:** 2026-09-20 at `M5-CP1-TB1-R1-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. M5 enters from accepted M4 authority package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, stable accounting **49 / 14 / 35**, produced-witness debt **5**. M5 owns four of those debts.
 
@@ -13,13 +13,13 @@ The frozen correction separates relation **identity** from relation **value**. `
 
 Production evidence remains deliberately uncredited: accepted row408 reaches a produced phase front but M4 R3 measured zero produced periodic holonomies. Existing relation-order, missing-owner, full-periodic, and tampered-transform tests are direct/draft mechanism evidence only. All four M5 produced-witness debts remain open with their original discriminators.
 
-Historical successor was `M5-CP1-CB1`; CP1 compile is now green and the current exact successor is `M5-CP1-TB1-R1-EXEC` under `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`.
+Historical successor was `M5-CP1-CB1`; CP1 semantic compile remains green. R1 never reached semantic runtime, and exact next is runtime-free control-plane correction `M5-CP1-CB2` under `Architecture_M5_CP1_CB2_Orchestration_Correction_Plan.md`.
 
 ### Operational note
 
 The session began repository document inspection before the required `READ_MODE=snapshot` declaration. The miss was caught before semantic editing, snapshot mode was selected, and all subsequent project source/document review used immutable snapshot `1cef1133ecfe59eeeee220b37a907301f9315dc7` / artifact `10594140365`. No new semantic regression class is created; this is the already-documented read-mode/trigger-control process pattern in `LESSONS.md`. Tool-call accounting for the pre-correction bootstrap is therefore reported as **partial/unknown**, not reconstructed with extra calls.
 
-## 2. `M5-CP1` — compile green; first TB blocked pre-runtime; retry routing corrected
+## 2. `M5-CP1` — compile green; corrected retry blocked again in executor control plane
 
 `M5-CP1-CB1` implemented canonical relation IDs and producer-selected relation-path certificates at semantic source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`. Mandatory GMP compile/package is green on artifact `10595705100`, ZIP SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea`, root manifest **28/28**, packaged source SHA-256 `4f51257db12ae24363a45ddfa62778200e9ac0a8ef4ce2b585c8c606350d78b9`, and `runtimeExecution=false`. Runtime remains unadjudicated.
 
@@ -27,7 +27,9 @@ The session began repository document inspection before the required `READ_MODE=
 
 `M5-CP1-TB1-PREFLIGHT-REV` independently re-opened immutable evidence and closes both routing candidates non-stably. Accepted M4-TB3 artifact `10592987234` re-hashes to `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; its `identity-map.tsv` is header + 430 rows, 430 unique identities, owners **31/283/75/41**, SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`. Candidate packaged source proves the actual ninth identity is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. Its `direct_periodic_owner_product()` subject is exactly the §8.1 direct-helper mechanism witness, so a green retry can earn CP1 mechanism credit only and closes no M5 production debt.
 
-Selector430 remains byte-frozen at **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; its first427 prefix remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is immutable artifact-only `M5-CP1-TB1-R1-EXEC`; no package rebuild, selector change, or production-debt credit is authorized.
+Selector430 remains byte-frozen at **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; its first427 prefix remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+
+`M5-CP1-TB1-R1-EXEC` then failed before its artifact-only harness could be created. Terminal run/job `35486023017 / 106012455346` reports GZip CRC/length errors; `gate_harness_exit` is empty, no result artifact exists, and **0 Directional processes** ran. Counts are **0/9 focused, 0/430 selector, 0 benchmark**. Diagnostic artifact `10597540714` has SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`. Candidate `10595705100` remains unchanged/unpromoted. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is `M5-CP1-CB2`, runtime-free orchestration correction; no package rebuild, selector change, Directional runtime, or production-debt credit is authorized.
 
 ## 3. Folded-document index
 

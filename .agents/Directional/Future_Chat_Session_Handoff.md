@@ -12,6 +12,12 @@ The corrected identity's body uses `direct_periodic_owner_product()`, a direct-h
 
 Accepted runtime authority is unchanged: M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31 / 283 / 75 / 41**. Stable accounting remains **49 events / 14 categories / 35 recurrences** and produced-witness debt remains **5**.
 
+### Terminal R1 outcome (supersedes the in-flight status below)
+
+`M5-CP1-TB1-R1-EXEC` is **COMPLETE / PRE-RUNTIME ORCHESTRATION BLOCK / ZERO SEMANTIC CREDIT**. Final run `35486023017` passed schema validation job `106012437882`; runtime job `106012455346` failed before harness creation because the embedded GZip payload decoded with CRC and length errors. `gate_harness_exit` stayed empty, no result artifact exists, and no Directional binary executed. Final counters are **0/9 focused, 0/430 selector430, 0 benchmark**. Diagnostic artifact `10597540714` has SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`.
+
+Candidate `10595705100`, routing artifact `10592987234`, accepted M4 runtime authority, stable accounting **49 / 14 / 35**, and debt **5** are unchanged. `M5-CP1-TB1-R1-EXEC-OBS-01` closes non-stably as **ORCHESTRATION / EXECUTOR-PAYLOAD AUTHORING**. Another in-place R1 retry is not authorized. The historical in-flight determination below is retained verbatim as provenance and is superseded only as to current status/routing.
+
 ### In-flight turn state (review-agent determination, 2026-09-20)
 
 `M5-CP1-TB1-R1-EXEC` is **IN_PROGRESS**, not complete. It has produced **no report and no semantic evidence**:
@@ -45,6 +51,10 @@ selector gate is regression evidence, not debt discharge
 
 ## Exact next turn
 
+**`M5-CP1-CB2`** — runtime-free control-plane orchestration correction under `Architecture_M5_CP1_CB2_Orchestration_Correction_Plan.md`. Reuse artifacts `10595705100` and `10592987234` unchanged. Prove canonical harness bytes, deterministic encode/decode round-trip, harness SHA, `bash -n`, immutable artifact paths/digest widths, and workflow schema/permission validity **before** any fresh runtime. Execute no Directional binary, no compile/rebuild, and no semantic product/test/fixture/selector/package change. On static green, freeze fresh `M5-CP1-TB1-R2-EXEC`; CB2 does not execute R2.
+
+### Consumed prior R1 routing authority — retained for provenance; do not execute
+
 **`M5-CP1-TB1-R1-EXEC`** — execute only `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md` against unchanged artifact `10595705100`.
 
 The retry changes no semantic input. It keeps exactly **9** focused identities and selector430 exactly **430** rows. The only corrected frozen authorities are:
@@ -75,14 +85,14 @@ Operationally, document inspection began before the required explicit `READ_MODE
 
 ```yaml
 load_next:
-  - references/turns/TEST-BENCHMARK.md
+  - references/turns/CODE-BUILD.md
 conditional_modules:
   - trigger: GitHub Actions, artifact download, or workflow operation is required
     path: modules/github-connector/MODULE.md
 deep_references:
   - .agents/Directional/Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M5_CP1_TB1_Preflight_Review_Record.md
-  - .agents/Directional/Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M5_CP1_CB2_Orchestration_Correction_Plan.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/M5_Consolidated_Record.md
 templates_when_producing: []

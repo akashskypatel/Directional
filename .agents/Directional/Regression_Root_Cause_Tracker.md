@@ -8766,7 +8766,7 @@ as `LESSONS.md` 171: **selector membership under a debt's name is not debt disch
 
 ## `M5-CP1-TB1-R1-EXEC-OBS-01` — orchestration authored without pre-validation has now cost a block plus repeated repair
 
-**Status.** OPEN / NON-GATING / process-class / owner: the turn that closes `M5-CP1-TB1-R1-EXEC` / NON-STABLE.
+**Status.** CLOSED / ORCHESTRATION REPROVED / NON-GATING / process-class / owner: `M5-CP1-CB2` correction / NON-STABLE.
 
 Second instance of the pattern first recorded as `[[M5-CP1-TB1-EXEC-OBS-01]]`, now in the control plane rather
 than the plan:
@@ -8792,3 +8792,5 @@ decode the embedded harness and resolve every package path — and validate ever
 against the artifact it names. Treat a decode or path failure as an authoring defect to be fixed before the run
 is triggered, never as a retry. An executing turn must still never silently repair its own authority; that
 separation is what made the original TB1 block correct and must be preserved.
+
+**Terminal R1 evidence.** Run `35486023017` passed schema validation but runtime job `106012455346` failed decoding the embedded GZip payload with CRC and length errors. The harness did not exist, `gate_harness_exit` was empty, no result artifact was produced, and **0 Directional processes** executed. Diagnostic artifact `10597540714` has SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`. This closes the observation non-stably as executor-payload authoring failure and adds no semantic event. Corrective owner is `M5-CP1-CB2`, which must prove executor round-trip/hash/path/schema validity before any fresh runtime.

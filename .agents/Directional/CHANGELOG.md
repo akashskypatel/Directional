@@ -1,3 +1,9 @@
+## 2026-09-20 — `M5-CP1-TB1-R1-EXEC`: terminal executor decode failure; route to control-plane CB2
+
+R1 is **COMPLETE** as a turn with gate disposition **BLOCKED / PRE-RUNTIME ORCHESTRATION EXECUTOR CORRUPTION / ZERO SEMANTIC CREDIT**. Run `35486023017` passed schema validation; runtime job `106012455346` failed before harness creation because the embedded Base64/GZip payload produced CRC and length errors. `gate_harness_exit` stayed empty, no result artifact exists, and no Directional binary ran. Final counts: **0/9**, **0/430**, benchmark **0**. Diagnostic artifact `10597540714` is SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`.
+
+Candidate `10595705100` and all semantic/routing authority remain unchanged; accepted authority stays M4 package `10591801825` / selector430 **430/430**, accounting **49 / 14 / 35**, debt **5**. `M5-CP1-TB1-R1-EXEC-OBS-01` closes **ORCHESTRATION / EXECUTOR-PAYLOAD AUTHORING / NON-STABLE**. Exact next is `M5-CP1-CB2`, which must statically prove harness round-trip/hash/path/schema validity before issuing fresh `M5-CP1-TB1-R2-EXEC`. Another in-place R1 retry is not authorized.
+
 ## 2026-09-20 — next-step determination: `M5-CP1-TB1-R1-EXEC` in flight, boundary verified intact
 
 Runtime-free. `M5-CP1-TB1-R1-EXEC` is **IN_PROGRESS**, not complete, and has produced **no report and no semantic
