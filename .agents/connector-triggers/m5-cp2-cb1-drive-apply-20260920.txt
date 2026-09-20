@@ -1,3 +1,0 @@
-M5-CP2-CB1 Drive patch apply trigger
-base=91a2627a6b5fc605240a9bf54a82f72d9029b2f7
-retry=0

@@ -1,6 +1,0 @@
-# M5-CP2-CB1 temporary-state cleanup
-.agents/connector-triggers/google-drive/m5-cp2-cb1-apply-20260920.txt
-.agents/connector-triggers/m5-cp2-cb1-compile-20260920.txt
-.agents/connector-triggers/m5-cp2-cb1-drive-apply-20260920.txt
-.agents/connector-triggers/source-snapshot/m5-cp2-cb1-20260920T082753Z.txt
-.agents/connector-triggers/source-snapshot/m5-cp2-cb1-reconcile-20260920T085300Z.txt
