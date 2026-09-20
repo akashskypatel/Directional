@@ -1,0 +1,5 @@
+turn=M5-CP1-TB1-R2-EXEC
+candidate_artifact_id=10595705100
+routing_artifact_id=10592987234
+executor_sha256=9c9c2527176645d143cf1f972ad5d493db44bc819179fb04a1845f7bd20a12a1
+harness_sha256=b706d03adde7d7d3daacb6ac46c4cb35468a40e162d7fb9d1617d4e562d37302
