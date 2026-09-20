@@ -1,0 +1,3 @@
+M5-CP3-CB1 frozen-stop documentation patch apply
+base: dc2e57bc81990c7e065c30ba4376dd21aa13fe1f
+patch: 59ce7835fcc8f7263f0bac193d8f0622b5cdabc32eba85180b3351f3ca424b35
