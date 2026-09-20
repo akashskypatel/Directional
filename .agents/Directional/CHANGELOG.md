@@ -1,3 +1,39 @@
+## 2026-09-20 — `M5-CP1-TB1-PREFLIGHT-REV` review: upheld; accepted-row weakening audited; debt-name collision recorded
+
+Runtime-free review. **Upheld.** Both frozen-plan defects correctly adjudicated; accounting holds at
+**49 / 14 / 35**, debt **5**; accepted authority remains package `10591801825` / selector430 **430/430**.
+
+The digest was **re-derived** from accepted artifact `10592987234` rather than patched to match the blocked
+report — the required discipline. An independent corroboration the record does not make: the frozen 63-character
+literal is an **exact prefix** of the re-derived 64-character value, so the defect was a single-character
+truncation and two routes agree on the correction. Repository-side, selector430 shows 430 rows, all unique.
+
+The credit boundary is drawn correctly and is the first live application of frozen §8.1: the substituted ninth
+identity calls `direct_periodic_owner_product()`, so a green result is mechanism-only and discharges no debt,
+with `M5-CP3` still owing the produced re-proof. Scope held — exactly two literals changed, focused count 9,
+selector430 at 430 rows, and step 8 validates the identity against packaged source before freezing it.
+
+**Audited outside the Review's declared scope:** candidate source `b98f461b` modifies
+`tests/SurfaceCellTransitionQuotientTests.cpp`, which carries four accepted selector430 rows, and the CP1 plan
+forbids weakening any accepted identity. All 24 deletion lines were inspected: every one removes an index-backed
+`PeriodicRelationId::from_index(...)` construction — the migration frozen §3.1 charters — and the single
+`ASSERT_NE` on the deletion side is preserved verbatim, merely reformatted. **No accepted assertion was removed,
+relaxed or retargeted.**
+
+New: `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` (non-gating, owner `M5-CP3`). Accepted selector430 already contains,
+character-for-character, all four open M5 debt names — rows 218, 220, 221 and 226 — and all four are the
+direct/draft helper witnesses §8.1 marks mechanism-only. The substitution hazard is not hypothetical; it is
+already materialised in the byte-frozen selector, inherited from M4. Nothing binds those rows to their credit
+class outside §8.1's prose. Before publishing any produced re-proof, M5-CP3 must name produced identities
+distinguishably and record the mechanism/produced split in the governing M5 document. Same family as
+`LESSONS.md` 171: selector membership under a debt's name is not debt discharge.
+
+Also noted: §6 self-reports a `READ_MODE` gate miss, the second such self-report after `M4-CP4-DEFN-R1`. Both
+disclosed, neither load-bearing — but a recurring self-reported miss points at the gate's placement rather than
+the reporting discipline.
+
+Exact successor unchanged: `M5-CP1-TB1-R1-EXEC` under the corrected artifact-only plan.
+
 ## 2026-09-20 — `M5-CP1-TB1-PREFLIGHT-REV`: routing defects recovery-proved; corrected artifact-only retry frozen
 
 Runtime-free independent Review upholds the blocked TB1 fail-closed result and re-derives both routing fixes from immutable bytes. Accepted M4-TB3 artifact `10592987234` yields `identity-map.tsv` SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, 430 unique rows and owners **31/283/75/41**; candidate `10595705100` verifies at ZIP SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea` / manifest **28/28** and contains exact ninth identity `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. `CAND-01/02` and `M5-CP1-TB1-EXEC-OBS-01` close non-stably as routing/process recovery proved.

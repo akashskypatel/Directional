@@ -109,3 +109,96 @@ Operational note: this web session began repository document inspection before t
 | review_check.py boundary | **PASS** — `python3 .agents/Directional/tools/review_check.py boundary --expect-selector 430=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; all review boundary checks passed. |
 | `STATUS` lifecycle maintained | **YES — entry beacon published for this turn; final COMPLETE beacon reserved as final repository write.** |
 | Pushed to origin, branch in sync | **YES** — reviewed docs pushed as `2a1020dde92d355e6d068607760d53bfdf23ea48` by patch-apply run `35484185537` / result artifact `10596677066`; temporary caller retired; cleanup run `35484261921` succeeded at `63579649b5f9b3062a9716853ed6e8e989257865` and removed both turn markers; Drive staging file was permanently deleted by the owner-authorized connector. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** Both defects are correctly adjudicated, the digest was re-derived rather than patched,
+and the mechanism-only credit boundary is recorded. Accounting holds at **49 / 14 / 35**, debt **5**; accepted
+authority remains package `10591801825` / selector430 **430/430**. Two checks outside the Review's declared scope
+are added below, one of which is a new carried obligation.
+
+### V1 — the corrected digest is corroborated by a second, independent route
+
+§2.1 re-opened accepted artifact `10592987234` rather than copying the blocked report's value, and re-derived
+`identity-map.tsv` as 431 lines / 430 unique identities / owner census `31 / 283 / 75 / 41` / SHA-256 ending
+`…cf6c`. That is exactly the discipline required — a plan literal repaired to match the report it was meant to
+check would prove nothing.
+
+An independent corroboration the record does not make: the frozen 63-character literal is an **exact prefix** of
+the re-derived 64-character value. So the defect was a single-character truncation, not a wrong digest — and had
+the re-derivation produced an unrelated value, the prefix relation would not hold. Two routes therefore agree on
+the corrected digest: re-derivation from the immutable artifact, and prefix-consistency with the very literal
+that was malformed. Repository-side, selector430 independently shows **430 rows, all unique**, matching the 430
+unique identities claimed for the map.
+
+### V2 — the credit boundary is correctly drawn
+
+§2.2 and §4 classify the substituted identity against `Architecture_M5_Frozen_Definitions.md` §8.1: the body
+calls `direct_periodic_owner_product()`, so a green result is **mechanism-only, no produced-witness credit**, and
+§4 states plainly that it is "insufficient for the carried produced-witness debt", leaving `M5-CP3` to re-prove
+`PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` on produced authority. That is the right
+call and it is the first live application of §8.1.
+
+Scope discipline also holds: the retry plan changes exactly two literals, keeps focused count **9** and
+selector430 at **430** rows, and at step 8 requires the ninth identity be confirmed to exist exactly once in the
+packaged source — the validate-before-freeze rule from `M5-CP1-TB1-EXEC-OBS-01`, applied rather than merely
+acknowledged.
+
+### V3 — CHECK NOT IN SCOPE OF THE REVIEW: no accepted identity was weakened by CB1
+
+The Review explicitly declines to infer runtime behaviour from compile success, and confines itself to the two
+plan literals. That leaves one exposure unexamined: the candidate semantic source `b98f461b` **modifies
+`tests/SurfaceCellTransitionQuotientTests.cpp`**, and that file carries four rows of the byte-frozen accepted
+selector430. The CP1 plan forbids "no weakening of existing accepted selector430 identities", so the prohibition
+needed an audit rather than an assurance.
+
+I audited all 24 deletion lines in that commit. Every one removes an index-backed
+`authority::PeriodicRelationId::from_index(...)` construction — precisely the migration frozen §3.1 charters CP1
+to perform. The only assertion appearing on the deletion side is `ASSERT_NE(originalAction, action);`, which is
+preserved verbatim on the addition side and merely split onto its own line from a two-statement line. The
+additions are dominated by three new `TEST(M5CP1, …)` bodies. **No accepted assertion was removed, relaxed or
+retargeted.** The prohibition held.
+
+### V4 — CARRIED: all four M5 debt names are already accepted selector rows
+
+`Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` already contains, character-for-character, the names of
+all four open M5 produced-witness debts:
+
+| Row | Accepted identity | Open debt it names |
+|---|---|---|
+| 218 | `SurfaceCellTransitionQuotient.FullPeriodicRotationAndTranslationMaterialize` | M5 debt 3 |
+| 220 | `SurfaceCellTransitionQuotient.MissingPeriodicRelationOwnerIsRejected` | M5 debt 2 |
+| 221 | `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` | M5 debt 1 |
+| 226 | `SurfaceCellTransitionQuotient.TamperedFullPeriodicTransformIsRejected` | M5 debt 4 |
+
+All four are the direct/draft helper witnesses — `direct_periodic_owner_product()` and
+`direct_full_periodic_materializer_draft()` — that §8.1 classifies as mechanism-only with no produced-witness
+credit. So the substitution hazard §8.1 was written to prevent is **not hypothetical; it is already materialised
+in the accepted selector**, inherited from M4.
+
+Nothing binds those rows to their credit class except §8.1's prose in a checkpoint document, while the selector is
+the byte-frozen artifact everyone actually checks. A reader of selector430 sees four green accepted rows bearing
+the exact names of four open debts, and the natural inference — that they are discharged — is wrong. There is
+currently **no** `Produced…`-prefixed variant in the tree (zero matches), so when `M5-CP3` authors the produced
+re-proofs it must choose identities that are distinguishable from these four rather than colliding with them.
+
+**Required of `M5-CP3` before it publishes any produced re-proof:** name the produced identities so they cannot be
+confused with the accepted direct/draft rows, and record in the governing M5 document — not only in §8.1 — which
+selector rows are mechanism witnesses and which are produced witnesses. Recorded as
+`M5-CP1-TB1-PREFLIGHT-REV-OBS-01`. This is the same family as "structural presence is not behavioural coverage"
+(`LESSONS.md` 171), one level up: **selector membership under a debt's name is not debt discharge.**
+
+### V5 — process note and verification limits
+
+§6 self-reports repository inspection beginning before the mandatory `READ_MODE=snapshot` declaration. This is the
+second self-reported instance of that same miss (`M4-CP4-DEFN-R1` §6 was the first). Both were disclosed rather
+than concealed and no semantic claim depends on either, which is the right handling — but a self-reported miss
+recurring across turns suggests the gate's placement, not the reporting discipline, is what needs attention.
+
+Re-derived from repository bytes: the 63/64-character lengths and prefix relation, selector430's row count and
+uniqueness, the four debt-named accepted rows and their line numbers, row 221's use of the direct helper, and
+every deletion in `b98f461b` against `tests/SurfaceCellTransitionQuotientTests.cpp`. Accepted as reported:
+artifact ZIP hashes, the `identity-map.tsv` contents and digest, and package receipt identifiers — all
+artifact-side and consistent with a Review that re-opened them rather than copying forward.

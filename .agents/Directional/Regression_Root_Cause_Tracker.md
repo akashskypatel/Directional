@@ -8732,3 +8732,34 @@ discharges **no** M5 debt. Debt 1 remains `M5-CP3` on produced authority with it
 See `[[M5-DEFN-REV-OBS-01]]`.
 
 **Resolution — `M5-CP1-TB1-PREFLIGHT-REV`:** Review independently re-derived the map digest from accepted artifact `10592987234` and exact suite-qualified identity from candidate packaged source, then froze both into the corrected R1 plan without changing package, selector, focused count, or evidence credit. The direct-helper classification was rechecked against the actual `direct_periodic_owner_product()` body and frozen §8.1. This process instance is closed; the general rule remains applicable to future execution plans.
+
+## `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` — accepted selector430 already carries all four open M5 debt names
+
+**Status.** OPEN / NON-GATING / owner `M5-CP3` / must be discharged before any produced re-proof is published.
+
+`Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` contains, character-for-character, the names of all
+four open M5 produced-witness debts:
+
+- row **218** `SurfaceCellTransitionQuotient.FullPeriodicRotationAndTranslationMaterialize` — M5 debt 3;
+- row **220** `SurfaceCellTransitionQuotient.MissingPeriodicRelationOwnerIsRejected` — M5 debt 2;
+- row **221** `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` — M5 debt 1;
+- row **226** `SurfaceCellTransitionQuotient.TamperedFullPeriodicTransformIsRejected` — M5 debt 4.
+
+All four are the direct/draft helper witnesses (`direct_periodic_owner_product()`,
+`direct_full_periodic_materializer_draft()`) that `Architecture_M5_Frozen_Definitions.md` §8.1 classifies as
+**mechanism-only, no produced-witness credit**. The hazard §8.1 exists to prevent is therefore already
+materialised in the accepted, byte-frozen selector, inherited from M4.
+
+**Why:** nothing binds these rows to their credit class except §8.1's prose in a checkpoint-local document, while
+the selector is the byte-frozen artifact that downstream turns and auditors actually check. A reader sees four
+green accepted rows bearing the exact names of four open debts and infers discharge. The inference is wrong, and
+it becomes more attractive the further the reader is from §8.1 — which is to say, exactly at M6 and beyond. There
+is currently **no** `Produced…`-prefixed variant in the tree, so `M5-CP3` has not yet foreclosed a name collision
+with these rows.
+
+**How to apply:** before `M5-CP3` publishes any produced re-proof, (1) name the produced identities so they are
+distinguishable from the four accepted direct/draft rows rather than colliding with them, and (2) record in the
+**governing** M5 document — not only §8.1 — which selector rows are mechanism witnesses and which are produced
+witnesses. Per `[[M4-CP4-TB3-REV-OBS-01]]` the binding belongs where a closure claim will be checked. Same family
+as `LESSONS.md` 171: **selector membership under a debt's name is not debt discharge.** See
+`[[M5-DEFN-REV-OBS-01]]`.
