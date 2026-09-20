@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-20 UTC
 
-## Latest Test + Benchmark turn — `M5-CP1-TB1-R2-EXEC`
+## Latest Review turn — `M5-CP1-TB1-R2-REV`
 
-`M5-CP1-TB1-R2-EXEC` is **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Run `35491016562` executes focused **8/9 PASS / 1 RED** plus selector430 **430/430 PASS**, exact-one/zero-skip, benchmark **0**, with exact immutable postflight. The sole RED is row6 `SelectedRelationPathCertificateSurvivesRelationContainerPermutation`, which fails its `>=2` periodic-relation witness precondition at **1 vs 2** before exercising permutation/materialization/certificate comparison. Candidate `10595705100` remains unpromoted; accepted M4 authority and **49 / 14 / 35**, debt **5** remain unchanged.
+`M5-CP1-TB1-R2-REV` is **COMPLETE / R2 EVIDENCE UPHELD / TEST-AUTHORITY DEFECT ADJUDICATED / RUNTIME-FREE**. R2 remains focused **8/9 PASS / 1 RED** plus selector430 **430/430 PASS** with exact immutable postflight. Independent Review proves row6's RED is an invalid authored `>=2`-relation precondition: its materializable helper provides one relation, so the test never reaches reversal/materialization/certificate comparison. No product semantic gap is demonstrated. `M5-CP1-TB1-R2-EXEC-CAND-01` closes non-stably with a test-only correction owner. Candidate `10595705100` remains unpromoted; accepted M4 authority and **49 / 14 / 35**, debt **5** remain unchanged.
 
 - [x] `M5-DEFN`: freeze canonical relation identity, selected certificate, cutover, failure matrix, invariance, production reachability, and CP1/CP2/CP3 debt ownership.
 - [x] `M5-CP1-CB1`: implement canonical relation IDs + selected path certificates; mandatory GMP compile/package green, no runtime.
@@ -13,11 +13,12 @@ Last updated: 2026-09-20 UTC
 - [x] `M5-CP1-TB1-R1-EXEC`: terminal executor decode failed before Directional runtime; **0/9 focused, 0/430 selector, zero semantic credit**.
 - [x] `M5-CP1-CB2`: canonical R2 harness/template authored and statically proved against unchanged immutable artifacts; **zero Directional runtime**.
 - [x] `M5-CP1-TB1-R2-EXEC`: full artifact-only gate completed; focused **8/9 PASS / 1 RED**, selector430 **430/430 PASS**, immutable postflight exact.
-- [ ] `M5-CP1-TB1-R2-REV`: **exact next**; independently adjudicate row6 witness authority and issue the corrective plan. No retry/CB before Review.
+- [x] `M5-CP1-TB1-R2-REV`: independently adjudicate row6 as **test-authority-only**; no product semantic defect demonstrated; candidate remains unpromoted.
+- [ ] `M5-CP1-CB3`: **exact next**; correct only row6's witness body using a same-membership two-relation permutation and mandatory GMP compile/package; no Directional runtime.
 
-## Current focus — `M5-CP1-TB1-R2-REV`
+## Current focus — `M5-CP1-CB3`
 
-Perform the mandatory runtime-free independent Review of R2. Reopen result artifact `10598684066`, ordinal-6 raw receipt and source at `b98f461b9a392cc182891a81c0a84b0b01dfbb45`; determine whether the one-relation helper is invalid test authority or evidence of a semantic gap, and issue the exact corrective plan. Do not retry R2, patch tests/product code, build, or promote the candidate before Review. Row9 remains **CP1 mechanism-only**; no M5 production debt closes.
+Execute only `Architecture_M5_CP1_CB3_Test_Authority_Correction_Plan.md`. Modify only `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation` in `tests/SurfaceCellTransitionQuotientTests.cpp`: author a second distinct valid relation using row7's proven construction, append it to the baseline, copy identical membership, reverse only the copy, materialize both, and compare full certificate/output semantics. Product code, shared helper, row7, row9, fixtures, selectors and CMake stay frozen. Compile/package through the mandatory reusable GMP workflow with `runtimeExecution=false`. Green CB3 routes to fresh `M5-CP1-TB1-R3-EXEC` for focused 9 + selector430 430 from ordinal 1.
 
 ## Carried forward from M1
 
