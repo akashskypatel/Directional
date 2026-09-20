@@ -1,0 +1,3 @@
+purpose=M5-CP1-CB2 source snapshot
+expected_source=f5dc21a234ee4b9468acb3e70a63c06a35100161
+retry=0
