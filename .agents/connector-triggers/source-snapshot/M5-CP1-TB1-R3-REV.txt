@@ -1,0 +1,3 @@
+turn=M5-CP1-TB1-R3-REV
+base_sha=84440519158d8735bc01166b4229a9b28c81f290
+purpose=review-authority-snapshot
