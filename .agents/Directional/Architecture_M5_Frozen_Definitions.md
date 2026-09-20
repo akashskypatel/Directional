@@ -234,9 +234,9 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB1`** under `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md`.
+**`M5-CP3-CB2`** under `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md`.
 
-It is a Code + Build turn implementing the direct-production M5 exit evidence on the accepted row408-class torus. It is compile/package only with mandatory GMP and `runtimeExecution=false`; selector430 is byte-frozen and no Directional runtime is authorized in CB1.
+It is the reviewed replacement Code + Build after `M5-CP3-CB1` stopped before implementation on the row408 representation conflict. It implements the narrow A3-provenance-preserving same-region periodic promotion, is compile/package only with mandatory GMP and `runtimeExecution=false`; selector430 is byte-frozen and no Directional runtime is authorized in CB2.
 
 ## 12. Supersession and citation map
 
@@ -251,7 +251,7 @@ This record supersedes the consumed `Architecture_M5_DEFN_Definition_Plan.md` as
 | producer/consumer cutover | this record §5 |
 | typed failure matrix | this record §6 |
 | invariance | this record §7 |
-| exact next implementation | `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md` |
+| exact next implementation | `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md` |
 
 
 ## 13. CP2 Review amendment — M5 exit theorem and selector publication sequence
@@ -290,7 +290,7 @@ Existing selector430 rows that already cover related CP1/CP2 behavior remain in-
 
 ### 13.3 Publication sequence — frozen before CP3 implementation
 
-1. **`M5-CP3-CB1`** implements direct production and authors the exact CP3 production identities while selector430 remains byte-identical. No runtime.
+1. **`M5-CP3-CB2`** (the reviewed successor after CB1 stopped before implementation) implements direct production and authors the exact CP3 production identities while selector430 remains byte-identical. No runtime.
 2. **`M5-CP3-TB1-EXEC`** executes, artifact-only, the nine §13.2 identities + the exact new CP3 produced identities + selector430. This is pre-publication evidence; it does not mutate the selector.
 3. **`M5-CP3-TB1-REV`** independently adjudicates the mechanism/produced split and, only if green, pre-commits the exact successor selector bytes/order, LF SHA-256, exact selector430 prefix hash and complete owner census. This pre-commitment is mandatory and must exist **before** publication Code + Build.
 4. A separate **publication Code + Build** may write only the pre-committed selector bytes, compile/package the unchanged reviewed semantics with mandatory GMP, and execute no Directional runtime.
@@ -302,6 +302,46 @@ The publication CB may not choose or reorder identities after seeing build/runti
 ### 13.4 Mechanism versus produced naming boundary
 
 CP3 production tests use the `M5CP3.Produced...` namespace frozen by the CP3-CB1 plan. They must not reuse the exact names of accepted direct/helper debt rows 218/220/221/226. A green direct/helper row remains mechanism evidence only; a produced row earns production credit only after independently proving its row408-class production precondition.
+
+## 14. CP3 CB1 Review amendment — A3 provenance across same-region periodic promotion
+
+`M5-CP3-CB1` proved a representation conflict before mutation: the accepted one-region row408 cut copies cannot remain operative `HardRail` pairs and also satisfy M5 periodic materialization, while the checked factory previously allowed exact A3 `sharedBoundaryInterval` provenance only on `HardRail`. `M5-CP3-CB1-REV` resolves that conflict without weakening §§3-9 or the row408 production precondition.
+
+### 14.1 Provenance and operative ownership are orthogonal
+
+`SurfaceSharedBoundaryInterval` is exact A3 provenance: owning network-arc span, exact ordinal interval, orientation and exact cut-boundary occurrence. Its truth survives a later A4 classification of the same paired chart copies. A final edge may therefore carry this provenance while its operative boundary kind is either `HardRail` or `PeriodicCut`.
+
+For `PeriodicCut`, canonical `periodicRelation` remains mandatory and is the sole quotient owner. Shared-boundary provenance and optional source `railId` may not substitute for that owner, create identity, or relax CP2 route/action reciprocity.
+
+### 14.2 Narrow promotion rule
+
+A4 may promote an already-valid paired hard-rail group to a periodic quotient pair only when:
+
+1. both edges have the same `sourceTopologyRegion`;
+2. both carry exact reciprocal A3 shared-boundary intervals;
+3. both intervals carry exact `boundaryOccurrence` values and those occurrences are distinct;
+4. paired routes are canonical reverses, families match and advance signs oppose.
+
+Cross-region pairs remain `HardRail`. The same-region HardRail rejection in the materializer remains binding and must not be weakened. A promoted pair publishes `PeriodicCut` on both edges, one canonical relation owner, reciprocal routes, `PeriodicFrontMerge`, and retains the exact A3 interval provenance.
+
+### 14.3 Canonical relation authority at promotion
+
+For a promoted pair, relation identity is derived only from exact semantic carrier content:
+
+- resolve the A3 interval `span` through accepted `GlobalTopologyPlan` arc/source-path authority and convert that exact path through existing transition/atlas authority into the generator carrier;
+- use the produced paired-edge canonical route as the cut carrier;
+- derive the complete relation value from authoritative route rotation plus exact chart-lattice correspondence, requiring one `GridAutomorphism` to satisfy both reciprocal endpoint-state pairs before publication.
+
+No edge/group/vector ordinal, `HardRailId`, insertion order, floating path search, direct-helper relation, or M6 occurrence authority may name or synthesize a relation. Exact ID/value duplicates may coalesce; same ID with different value remains the CP2 conflict failure.
+
+### 14.4 Accepted row408 body evolution
+
+Row408 keeps its identity, committed torus subject, exact 18-source-edge hard-feature equality, accepted A0-A3 path, conformity receipt/digests, and fail-closed pairing checks. Its old final assertion that exact A3 intervals must appear on final `HardRail` edges is superseded only at the representation locus.
+
+On the one-region torus, the evolved row requires at least one complete reciprocal promoted pair (at least two edges) carrying the exact A3 interval provenance on `PeriodicCut`, with canonical periodic owner and reverse-route binding. A broad presence count is insufficient. Existing cross-region HardRail tests continue to own HardRail interval semantics.
+
+This accepted-test evolution is not runtime credit by itself. Selector430 remains byte-frozen, and the complete selector430 runtime in the CP3 pre-publication gate must re-prove the evolved row before candidate promotion or M5 publication.
+
 
 ---
 

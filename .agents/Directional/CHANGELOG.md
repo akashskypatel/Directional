@@ -1,5 +1,14 @@
 ## 2026-09-20 — `M5-CP2-TB1-REV`: CP2 accepted; package promoted; M5 publication sequence frozen
 
+
+## 2026-09-20 — `M5-CP3-CB1-REV`: CB1 stop upheld; A3 provenance / PeriodicCut promotion frozen; CB2 next
+
+Runtime-free independent Review re-derives the CB1 row408 conflict from source and upholds the stop. Accepted row408's exact 18-edge hard-feature cut graph and A3 conformity receipt are semantic authority; its final `HardRail` filter is an M4 representation that cannot coexist with M5's same-region quotient materialization. `SurfaceSharedBoundaryInterval` is structurally separate A3 provenance, while canonical `periodicRelation` is the operative quotient owner.
+
+Frozen M5 §14 now permits only already-valid same-region A3 cut-copy pairs with distinct exact boundary occurrences to promote to `PeriodicCut`, retaining interval provenance while adding canonical content-derived relation ownership, full exact action and `PeriodicFrontMerge`. Cross-region HardRail behavior, the materializer's same-region HardRail rejection and every CP2 typed route/action check remain unchanged. Row408 may evolve only at its final-kind assertion; its test identity, exact 18-edge input equality and receipt/digest binding stay frozen.
+
+`M5-DEFN-REV-OBS-01` and `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` are discharged as governance gaps; `M5-CP2-TB1-REV-OBS-01` remains future-owned by `M5-CP3-TB1-REV`. No production debt is credited and accepted runtime authority remains package `10601978228` / source `0798547d...` / selector430 **430/430**. Stable accounting stays **49 / 14 / 35**, debt **5**. Superseded CB1 plan/stop records are folded into `M5_Consolidated_Record.md`. Exact successor: `M5-CP3-CB2` under `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md`.
+
 Runtime-free independent Review re-opens candidate `10601978228` / source `0798547d...`, compile run/job
 `35500960779 / 106052541163`, TB1 run/job `35504249045 / 106061268740`, and result/log artifacts
 `10603438015 / 10603642400`. Review independently re-hashes the candidate and manifests, re-sums focused **7/7**

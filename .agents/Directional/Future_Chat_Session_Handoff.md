@@ -4,49 +4,60 @@
 
 ## Current authority
 
-`M5-CP3-CB1` is **COMPLETE AT FROZEN STOP CONDITION / NO IMPLEMENTATION PATCH / NO COMPILE / REVIEW REQUIRED**. Static inspection of the accepted row408-class one-region torus production path established a contract conflict before product/test edits were authorized. The exact evidence is retained in `Architecture_M5_CP3_CB1_Stop_Record.md`.
+`M5-CP3-CB1-REV` is **COMPLETE / APPROVED_WITH_AMENDMENTS / RUNTIME-FREE**. Review upholds the CB1 stop and freezes the representation decision in `Architecture_M5_Frozen_Definitions.md` §14: exact A3 `sharedBoundaryInterval` is provenance that survives a narrow same-region A3 cut-copy promotion to `PeriodicCut`; canonical `periodicRelation` remains the operative quotient owner; cross-region HardRail behavior and the materializer's same-region HardRail rejection remain unchanged.
 
-The accepted runtime authority therefore remains package `10601978228` / exact semantic source `0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Its compile/TB evidence remains unchanged: compile run/job `35500960779 / 106052541163`, package ZIP SHA-256 `ad2e502db60d94c275769616edf5555d12abd87499c6cf3987cdafbd458d2f0b`; TB run/job `35504249045 / 106061268740`, result/log artifacts `10603438015 / 10603642400`, focused **7/7 PASS** + selector430 **430/430 PASS**, benchmark **0**, exact immutable postflight.
+Accepted runtime authority is unchanged: package `10601978228` / semantic source `0798547dedd8be05f9cd7a096b07e6bd94755316`, compile run/job `35500960779 / 106052541163`, TB run/job `35504249045 / 106061268740`, focused **7/7** + selector430 **430/430**, exact-one/zero-skip, benchmark **0**. Selector430 SHA-256 remains `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; first427 remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**; all four M5 debts remain open.
 
-The CP3 inspection snapshot was run `35509222128`, artifact `10604648917`, event SHA `331d9052f70cd60171d5179927bd730ba90fd7ad`, provider ZIP SHA-256 `884e043f4f711d03c531c00ab9ca39e6d115df0ced59d88654ae6c91d8b9f499`. It proves the current conflict: accepted row408 requires at least one produced `HardRail` edge carrying typed `sharedBoundaryInterval`; the checked factory currently permits that interval only on `HardRail`; but the materializer rejects every paired same-region `HardRail` as `InvalidHardRailTransport`, while CP3's positive produced/materialized authority requires the same one-region cut copies to become `PeriodicCut` with canonical relation owners. All-cut conversion would make row408's exact `HardRail` count zero; leaving any same-region pair as `HardRail` prevents the required positive materialization.
-
-This is the explicit stop condition in `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md`: an accepted selector430 test body/target would need architectural re-adjudication before the frozen CP3 implementation can proceed. CB1 therefore made no production/test/benchmark/build/selector changes and did not compile.
-
-Stable accounting remains **49 events / 14 categories / 35 recurrences**; produced-witness debt remains **5**. All four M5 production debts remain open. Selector430 stays 430 LF rows at `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; first427 remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+The superseded CB1 plan/stop record are folded into `M5_Consolidated_Record.md`. Current Review authority is `Architecture_M5_CP3_CB1_Review_Record.md`; exact implementation authority is `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md`.
 
 ## Exact next turn
 
-**`M5-CP3-CB1-REV`** — runtime-free independent architecture Review + Plan.
+**`M5-CP3-CB2` — Code + Build, compile/package only.**
 
-Review `Architecture_M5_CP3_CB1_Stop_Record.md` against the accepted row408 body, the CP2 checked-factory invariants, materializer boundary semantics, `Architecture_M5_Frozen_Definitions.md`, and `DESIGN.md` §14 M5. Decide explicitly whether A3 `SurfaceSharedBoundaryInterval` provenance is orthogonal metadata that may survive promotion of a same-region cut copy to `PeriodicCut`, and whether row408 may be surgically re-specified to validate the same exact 18-edge A3 provenance across that promoted kind. Do not run Directional, compile, or edit implementation/test/benchmark/build logic in Review.
+Implement only the reviewed promotion contract:
 
-If Review authorizes a revised Code + Build plan, it must preserve the six already frozen `M5CP3.Produced...` identities, the exact 18-edge row408 production subject, canonical content-derived relation IDs, authoritative full `GridAutomorphism` values, CP2 periodic owner/reciprocity/value checks, the M6 boundary, and the selector430 byte freeze. It must explicitly state whether/how row408 itself may change before implementation resumes.
+- eligible pair = already-valid A4 hard-rail pair, same `sourceTopologyRegion`, two distinct exact A3 `boundaryOccurrence` values;
+- generator carrier from accepted A2b/A3 `NetworkArcId`/exact source-path authority; cut carrier from produced paired-edge canonical route;
+- full relation action from authoritative route rotation + exact chart-lattice correspondence, one action valid on both reciprocal endpoint pairs;
+- publish checked canonical relation, `PeriodicCut` on both edges, canonical owner, exact A3 provenance and `PeriodicFrontMerge`;
+- cross-region pairs remain HardRail; materializer same-region HardRail rejection and all CP2 checks remain binding;
+- surgically evolve selector430 row408 only at the final-kind assertion while retaining its exact 18-edge input cut graph and conformity receipt/digests;
+- author the exact six frozen `M5CP3.Produced...` identities and package the frozen nine-mechanism + six-produced + selector430 successor gate;
+- mandatory GMP compile/package only, `runtimeExecution=false`; selector430 bytes unchanged.
 
-## Carried obligations
+Stop if exact accepted authority cannot construct an independent generator carrier, one consistent full action for both pair endpoints, `>=2` distinct produced relations + `>=2` owned periodic edges, or a genuine production nonzero-Z4 rotation+translation. No direct/test injection, edge-order identity, HardRail fallback, CP2 weakening, M6 authority, selector change or row408 18-edge-precondition weakening is authorized.
 
-- `M5-CP2-TB1-REV-OBS-01` — **OPEN / owner `M5-CP3-TB1-REV` after a successful pre-publication runtime**: exact successor-selector bytes/order/hash/owner census remain uncommitted.
-- `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` — **OPEN / M5-CP3-owned**: preserve mechanism/produced evidence distinction.
-- `M5-DEFN-REV-OBS-01` — **OPEN / final M5-CP3 Review**: final reconciled milestone exit-theorem verification.
-- M5 debts 1-4 remain open: produced relation-owner reorder; produced missing-owner typed rejection; full produced nonzero-Z4 rotation+translation materialization; identity-preserving nonzero-Z4 transform-tamper rejection.
-- M6-CP1/M6-CP3 closed-complex produced debt and later M8 obligations remain unchanged.
+If CB2 is compile/package green, exact successor is `M5-CP3-TB1-EXEC`, artifact-only. That runtime executes nine reviewed mechanism rows + six frozen produced rows + selector430. Even fully green runtime routes to `M5-CP3-TB1-REV`; `M5-CP2-TB1-REV-OBS-01` still requires that Review to freeze exact publication selector bytes/order/hash/owner census before any publication CB.
+
+## Review obligations
+
+- `M5-DEFN-REV-OBS-01` — **DISCHARGED** by frozen §13.1 reconciled exit theorem, independently confirmed this Review.
+- `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` — **DISCHARGED** by frozen §13.4 + six distinct `M5CP3.Produced...` names before publication.
+- `M5-CP2-TB1-REV-OBS-01` — **OPEN / owner `M5-CP3-TB1-REV`**; exact publication selector precommitment remains future work.
+- M5 produced debts 1-4 — **OPEN / owner M5-CP3 runtime + Review**; no mechanism/direct-helper credit.
+- M6 closed-complex produced debt — **OPEN / M6-owned**; do not pull A5 authority backward.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M5_CP3_CB1_Stop_Record.md
-  - .agents/Directional/Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md
-  - .agents/Directional/Architecture_M5_Frozen_Definitions.md
-conditional_modules: []
+  - references/turns/CB.md
+conditional_modules:
+  - trigger: implementation design or source/test change
+    path: modules/engineering-guidelines/MODULE.md
+  - trigger: author/review the six produced tests or row408 body evolution
+    path: modules/unit-testing/MODULE.md
+  - trigger: GitHub connector / Actions / artifact / patch transport work
+    path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M5_CP2_TB1_Review_Record.md
-  - .agents/Directional/DESIGN.md
-  - .agents/Directional/M5_Consolidated_Record.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-templates_when_producing: []
+  - .agents/Directional/Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md
+  - .agents/Directional/Architecture_M5_Frozen_Definitions.md §§8-9, 13-14
+  - .agents/Directional/Architecture_M5_CP3_CB1_Review_Record.md
+templates_when_producing:
+  - CODE_BUILD_REPORT.md
+  - TEST_PLAN.md
 do_not_preload:
+  - superseded M5 CP3 CB1 plan/stop record (folded in M5_Consolidated_Record.md)
   - sibling turn files
-  - module reference directories
-  - research/provenance/examples
-  - uncited historical reports
+  - historical reports not cited by the CB2 plan
 ```

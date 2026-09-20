@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP3-CB1`
+**Last updated:** 2026-09-20 at `M5-CP3-CB1-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -27,13 +27,13 @@ The Review also resolves the prior selector-governance gap by adding frozen §13
 
 ## 4. Current open M5 boundary — `M5-CP3`
 
-`M5-CP3-CB1` stopped before implementation/compile on a frozen contract conflict. Accepted row408 requires at least one produced `HardRail` carrying typed A3 `sharedBoundaryInterval`; the same one-region paired cut copies cannot materialize as `HardRail` because the materializer rejects same-region hard-rail transport, while CP3 requires them to become owned `PeriodicCut` authority. The checked factory also currently permits `sharedBoundaryInterval` only on `HardRail`. Converting all cut copies therefore makes row408's exact hard-rail assertion fail; retaining any same-region hard-rail pair prevents the required positive periodic materialization. This triggers the CP3 plan stop rule rather than authorizing a workaround. Exact evidence is in `Architecture_M5_CP3_CB1_Stop_Record.md`.
+`M5-CP3-CB1` correctly stopped before implementation/compile on the accepted row408 representation conflict. `M5-CP3-CB1-REV` independently re-derived the exact 18-edge row408 precondition, the A4 same-region/distinct-occurrence pairing seam, the checked shared-interval and CP2 periodic-owner validators, and the materializer's mutually exclusive HardRail/PeriodicCut semantics.
 
-`M5-CP3-CB1-REV` is exact next and must adjudicate whether A3 shared-boundary provenance remains valid on promoted `PeriodicCut` edges and whether row408 may be surgically re-specified to verify the same 18-edge provenance across that promotion. Until Review freezes a replacement Code + Build plan, no CP3 implementation or runtime is authorized.
+Review freezes normative §14 in `Architecture_M5_Frozen_Definitions.md`: exact A3 shared-boundary interval is provenance that survives a narrow same-region paired-cut promotion to `PeriodicCut`; canonical `periodicRelation` remains the operative quotient owner; cross-region pairs remain HardRail; same-region HardRail rejection stays unchanged. Row408 may evolve only at its final-kind assertion while preserving the exact 18-edge input authority and all receipt bindings.
 
-The intended first CP3 artifact-only gate remains nine reviewed-green M5 mechanism identities, six frozen produced identities, then selector430, but it is deferred until a reviewed replacement implementation compiles/packages successfully. All four M5 produced-witness debts remain open. Stable accounting remains **49 / 14 / 35**, debt **5**.
+Exact successor is `M5-CP3-CB2` under `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md`. It must derive generator carrier from accepted A2b/A3 arc/source-path authority, cut carrier from produced paired-edge route, full action from exact route/chart-lattice authority, publish `PeriodicFrontMerge`, author the same six frozen `M5CP3.Produced...` identities, and compile/package with mandatory GMP without runtime. If exact authority cannot produce `>=2` relations/owned periodic edges or a genuine nonzero-Z4 rotation+translation, it stops again.
 
-Open closure obligations are `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` (mechanism/produced naming and credit split), `M5-DEFN-REV-OBS-01` (final reconciled exit-theorem verification), and `M5-CP2-TB1-REV-OBS-01` (exact selector publication precommitment at the CP3 pre-publication Review).
+`M5-DEFN-REV-OBS-01` and `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` are now discharged by frozen §§13.1/13.4 plus this Review. `M5-CP2-TB1-REV-OBS-01` remains open for `M5-CP3-TB1-REV`: exact successor-selector bytes/hash/owner census must be pre-committed before publication. All four M5 produced-witness debts remain open. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## 5. Folded-document index
 
@@ -53,5 +53,8 @@ Open closure obligations are `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` (mechanism/produc
 | `Architecture_M5_CP1_TB1_R2_Review_Record.md` (218 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP1-TB1-R3-REV`.** Row6 diagnosis, falsifier and credit boundary remain in tracker and CP1 closure. |
 | `Architecture_M5_CP1_TB1_R3_Artifact_Only_Test_Benchmark_Report.md` (83 lines) | **SUPERSEDED CURRENT RUNTIME REPORT / FOLDED BY `M5-CP2-TB1-REV`.** CP1 R3 9/9 + selector430 430/430 authority and hashes remain in CP1 closure, this record, changelog and git history; current runtime report is CP2 TB1. |
 | `Architecture_M5_CP1_TB1_R3_Review_Record.md` (199 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP2-TB1-REV`.** CP1 promotion/falsifier adjudication and selector-publication observation remain in CP1 closure, frozen §13, tracker, this record and git history. |
+
+| `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md` | **CONSUMED / SUPERSEDED AFTER FROZEN STOP.** Its subject, six names, mechanism focus, selector freeze, debt discriminators and stop rules are preserved in current frozen §§13-14, this record and the CB2 plan; provenance remains in git history. |
+| `Architecture_M5_CP3_CB1_Stop_Record.md` | **ADJUDICATED / FOLDED BY `M5-CP3-CB1-REV`.** The HardRail/PeriodicCut/shared-interval contradiction, no-mutation/no-compile boundary and accepted-authority facts are retained in the current Review, this record, tracker and changelog. |
 
 CP2's consumed CB1 plan/report and TB1 execution plan are indexed in durable `M5_CP2_Closure_Record.md`; its current TB1 runtime report and current Review record are retained.

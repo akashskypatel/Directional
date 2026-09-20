@@ -8699,9 +8699,9 @@ written is one turn away from being invisible.
 
 ## `M5-DEFN-REV-OBS-01` — M5's exit conditions are split between the charter and the checkpoint document
 
-**Status.** OPEN / NON-GATING / owner `M5-CP3` / must be discharged before M5 closure is adjudicated.
+**Status.** DISCHARGED at `M5-CP3-CB1-REV` / GOVERNING EXIT THEOREM NOW FROZEN / NON-STABLE.
 
-`Architecture_M5_Frozen_Definitions.md` states no "M5 closes when…" clause, and neither does
+`Architecture_M5_Frozen_Definitions.md` originally stated no "M5 closes when…" clause, and neither does
 `Architecture_M5_DEFN_Definition_Record.md` nor `Architecture_M5_CP1_Code_Build_Plan.md`. §12's citation map
 instead assigns **milestone acceptance** to `DESIGN.md` §14 M5, which does carry acceptance criteria and is
 extended by the `M4-CP4-DEFN-R1` amendment naming the two inherited periodic debts.
@@ -8724,6 +8724,8 @@ debts are discharged on **produced** authority with no mechanism-only credit, th
 weakened, and that the M6-owned closed candidate-bearing-complex debt remains M6's. Per
 `[[M4-CP4-TB3-REV-OBS-01]]`, the reconciled statement is written into the governing M5 document, not only into
 the closing checkpoint's own record.
+
+**Resolution — `M5-CP3-CB1-REV`.** CP2 Review already added frozen §13.1, which explicitly reconciles `DESIGN.md` §14 M5 with §§8-9: selected-certificate invariance, all five typed failures, direct production only, all four produced debts with the `>=2` relation/edge and nonzero-Z4 discriminators, mechanism-only non-credit, and reviewed selector publication. This Review independently re-read that theorem against the charter/debt table and discharges the missing-theorem observation. Final M5 Review must still prove every conjunct; this closure removes only the governance-shape gap.
 
 ## `M5-CP1-TB1-EXEC-OBS-01` — a frozen execution plan named literals that were never validated against the package
 
@@ -8760,7 +8762,7 @@ See `[[M5-DEFN-REV-OBS-01]]`.
 
 ## `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` — accepted selector430 already carries all four open M5 debt names
 
-**Status.** OPEN / NON-GATING / owner `M5-CP3` / must be discharged before any produced re-proof is published.
+**Status.** DISCHARGED at `M5-CP3-CB1-REV` / PRODUCED NAMESPACE + CREDIT BOUNDARY FROZEN BEFORE PUBLICATION / NON-STABLE.
 
 `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` contains, character-for-character, the names of all
 four open M5 produced-witness debts:
@@ -8788,6 +8790,8 @@ distinguishable from the four accepted direct/draft rows rather than colliding w
 witnesses. Per `[[M4-CP4-TB3-REV-OBS-01]]` the binding belongs where a closure claim will be checked. Same family
 as `LESSONS.md` 171: **selector membership under a debt's name is not debt discharge.** See
 `[[M5-DEFN-REV-OBS-01]]`.
+
+**Resolution — `M5-CP3-CB1-REV`.** Frozen §13.4 now binds the mechanism/produced naming boundary in the governing M5 document, and the exact six CP3 identities are pre-authored under `M5CP3.Produced...` with no collision against selector rows 218/220/221/226. The replacement CB2 plan preserves those names unchanged before any produced runtime or selector publication. The governance ambiguity is therefore closed; the four semantic production debts remain fully open until produced runtime/Review.
 
 ## `M5-CP1-TB1-R1-EXEC-OBS-01` — orchestration authored without pre-validation has now cost a block plus repeated repair
 
@@ -8980,3 +8984,19 @@ The governance sequence is now frozen, but the final CP3 produced identities do 
 **Falsifier / stop rule:** if any proposed publication identity was not independently reviewed green on the exact candidate, if selector430 is not the byte-identical prefix, if an identity is renamed/reordered after the digest is computed, or if the owner census does not sum to the exact successor row count, publication is not authorized. The publication CB may not repair the list post hoc.
 
 This obligation replaces the now-discharged absence-of-publication-sequence gap; it is a concrete future precommitment with a named owner and timing boundary.
+
+## `M5-CP3-CB1-REV-OBS-01` — final-kind coupling hid valid A3 provenance behind HardRail-only validation
+
+**Status.** RESOLVED INTO FROZEN M5 §14 / NON-STABLE / implementation owner `M5-CP3-CB2`.
+
+`M5-CP3-CB1` stopped before mutation because three individually accepted contracts could not all hold under the current representation: row408 required exact A3 `sharedBoundaryInterval` on final `HardRail`; the one-region materializer rejects a paired same-region HardRail; and the checked factory rejected that same A3 provenance if the final edge kind became `PeriodicCut`.
+
+Independent Review re-derived that `SurfaceSharedBoundaryInterval` is a separate A3 provenance object (span, exact ordinals, orientation, boundary occurrence), while `boundaryKind` and `periodicRelation` are separate final-edge semantics. The A4 merge seam already distinguishes the exact same-region cut-copy case by two distinct boundary occurrences. The materializer then makes the semantic split explicit: cross-region HardRail is feature equivalence, same-region periodic relation is quotient equivalence.
+
+**Root cause:** representation coupling, not accepted-green loss. A provenance field introduced while HardRail was the only final consumer was validated as though HardRail were part of the provenance identity. M5 changes the final ownership kind but not the upstream A3 fact. This is an instance of existing lessons 22h/22k/22e and single-authority rules, not a new stable category.
+
+**Resolution:** frozen §14 permits exact A3 interval provenance on a narrowly promoted same-region `PeriodicCut` while keeping canonical `periodicRelation` independently mandatory and all CP2 route/action checks intact. Cross-region HardRail and the materializer same-region HardRail rejection remain unchanged. Row408 may change only its final-kind assertion; its exact 18-edge input, receipts and production subject remain frozen. `M5-CP3-CB2` owns implementation.
+
+**Falsifier / stop rule:** if accepted A2b/A3 authority cannot provide a canonical generator carrier, if one exact full action cannot map both reciprocal pair endpoints, if the row408 subject cannot produce `>=2` canonical relations/owned periodic edges or genuine nonzero-Z4 authority, or if the change requires weakening CP2/HardRail semantics, CB2 stops. Direct/test injection, edge-order identity and M6 authority are prohibited.
+
+No runtime or accepted package changed. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
