@@ -1,3 +1,0 @@
-turn=M5-CP1-CB3
-requested_base=44fd9fec414b4f4e1570a0e4f8c8a2683a5cb772
-runtimeExecution=false

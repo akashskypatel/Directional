@@ -1,5 +1,0 @@
-turn=M5-CP1-CB3
-purpose=apply test-authority-only correction
-base_sha=9d4e04c9713f8accc74681873ca390d0cdfba6f2
-retry=1
-runtimeExecution=false
