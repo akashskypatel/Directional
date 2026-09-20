@@ -73,13 +73,29 @@ jobs:
           python3 - "$harness" "$template" <<'PY'
           import pathlib, re, sys
           text = "\n".join(pathlib.Path(p).read_text() for p in sys.argv[1:])
-          vals = []
-          vals += re.findall(r"\\b[A-Z][A-Z0-9_]*SHA256\\b\\s*=\\s*['\"]([0-9a-f]+)['\"]", text)
-          vals += re.findall(r"(?m)^\\s*[A-Z][A-Z0-9_]*SHA256:\\s*([0-9a-f]+)\\s*$", text)
-          bad = [v for v in vals if re.fullmatch(r'[0-9a-f]{64}', v) is None]
-          if not vals or bad:
-              raise SystemExit(f"invalid SHA-256 literal(s): count={len(vals)} bad={bad}")
-          print(f"sha256_literals_checked={len(vals)}")
+          names = [
+              "EXPECTED_CANDIDATE_ZIP_SHA256",
+              "EXPECTED_ROOT_MANIFEST_SHA256",
+              "EXPECTED_SOURCE_ARCHIVE_SHA256",
+              "EXPECTED_SELECTOR_SHA256",
+              "EXPECTED_SELECTOR427_SHA256",
+              "EXPECTED_ROUTING_ZIP_SHA256",
+              "EXPECTED_IDENTITY_MAP_SHA256",
+              "EXPECTED_HARNESS_SHA256",
+          ]
+          checked = 0
+          for name in names:
+              vals = []
+              for line in text.splitlines():
+                  if name not in line:
+                      continue
+                  vals.extend(re.findall(r'(?<![0-9a-f])[0-9a-f]{32,64}(?![0-9a-f])', line))
+              if not vals:
+                  raise SystemExit(f"missing digest literal for {name}")
+              if any(re.fullmatch(r'[0-9a-f]{64}', v) is None for v in vals):
+                  raise SystemExit(f"invalid digest literal for {name}: {vals}")
+              checked += len(vals)
+          print(f"sha256_literals_checked={checked}")
           PY
 
           gzip -n -9 -c "$harness" > "${RUNNER_TEMP}/harness.gz"
