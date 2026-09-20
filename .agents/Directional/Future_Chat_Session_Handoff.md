@@ -14,6 +14,29 @@ Accepted runtime authority is unchanged from M4: package `10591801825` / source 
 
 **`M5-CP1-TB1-PREFLIGHT-REV`** — independent Review + Plan over `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md`. Adjudicate only the malformed 63-character accepted-map digest and the nonexistent ninth focused exact-filter identity. If the intended authorities are proved, publish a corrected immutable artifact-only execution plan; do not edit product/test/build source, rebuild package `10595705100`, mutate selector430, or execute semantic runtime inside Review.
 
+**Review-agent steer (added `M5-CP1-TB1-PREFLIGHT-REV` preparation).** Both defects are independently confirmed
+from repository bytes: the frozen literal is exactly **63** characters, so it cannot be a SHA-256 regardless of
+the true value; and `grep` for `TEST(M4CP4, PeriodicRelationOwners…` returns **0** matches while the real body
+sits at `tests/SurfaceCellTransitionQuotientTests.cpp:1559` under suite `SurfaceCellTransitionQuotient`. TB1 was
+correct to block rather than silently repair its own frozen authority.
+
+Three constraints on the corrected plan:
+
+1. **Re-derive the digest; do not patch a character.** The fix for `M5-CP1-TB1-CAND-01` is to recompute the
+   accepted M4-TB3 `identity-map.tsv` digest from the immutable artifact and confirm it equals the accepted
+   64-character value, not to append `c` because the accepted report ends in `cf6c`. A plan literal repaired to
+   match a report it was supposed to be checked against proves nothing.
+2. **The substituted identity carries CP1 MECHANISM CREDIT ONLY.** The real body uses
+   `direct_periodic_owner_product()` — a direct helper that `Architecture_M5_Frozen_Definitions.md` §8.1
+   classifies as *mechanism-only, no produced-witness credit*. A green result must **not** be recorded as
+   discharging M5 debt 1 `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. That discharge
+   is `M5-CP3` on **produced** authority, retaining the `>=2` produced relations / `>=2` owned periodic edges
+   discriminator. The substitution promotes a direct-helper test to a named focused gate identity, which is one
+   step from being misread as debt discharge — §8.1 exists precisely to prevent that step.
+3. **No scope drift.** The corrected plan keeps focused count **9** and selector430 at **430** rows, hash
+   `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`. Fixing two plan literals is not an
+   occasion to re-select the focused set.
+
 ## Carried obligations
 
 - M5-CP1 mechanism + M5-CP3 production: `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, preserving `>=2` produced relations and `>=2` owned periodic edges.

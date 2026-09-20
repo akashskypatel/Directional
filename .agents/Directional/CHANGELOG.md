@@ -1,3 +1,27 @@
+## 2026-09-20 — next-step determination after `M5-CP1-TB1-EXEC` blocked
+
+Runtime-free. TB1 executed no Directional binary and blocked in immutable candidate-package preflight on two
+frozen-plan defects; accepted runtime authority is unchanged at M4 package `10591801825` / selector430
+**430/430**, accounting **49 / 14 / 35**, debt **5**. Both defects re-derived independently from repository
+bytes: the frozen accepted identity-map digest is exactly **63** characters and so cannot be a SHA-256 whatever
+the true value; and `TEST(M4CP4, PeriodicRelationOwners…` matches **0** tests, the real body being
+`SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` at
+`tests/SurfaceCellTransitionQuotientTests.cpp:1559`. TB1 was correct to block rather than repair its own frozen
+authority.
+
+`M5-CP1-TB1-PREFLIGHT-REV` remains the right successor. The handoff now carries three constraints on the
+corrected plan: re-derive the digest from the immutable M4-TB3 artifact rather than appending a character to
+match the accepted report; keep focused count 9 and selector430 at 430 rows; and — the one that matters — record
+that the substituted identity carries **CP1 mechanism credit only**. Its body uses
+`direct_periodic_owner_product()`, which frozen §8.1 classifies as mechanism-only with no produced-witness
+credit, so a green result discharges no M5 debt. Debt 1 stays `M5-CP3` on produced authority with its `>=2`
+discriminator intact. The substitution promotes a direct-helper test to a named focused gate identity, which is
+exactly the step §8.1 exists to stop being misread as discharge.
+
+Recorded `M5-CP1-TB1-EXEC-OBS-01` (non-gating, process-class): a frozen plan naming exact digests and identities
+must validate them against the packaged source before freezing, or the first runtime turn spends itself
+discovering typos. STATUS repaired to the canonical six-field format (the `Resumed at` field was absent).
+
 ## 2026-09-20 — `M5-CP1-TB1-EXEC`: pre-runtime frozen-plan blocker; no semantic runtime
 
 TB1 is **BLOCKED / PRE-RUNTIME ORCHESTRATION PLAN DEFECT / ZERO SEMANTIC CREDIT**. Candidate artifact `10595705100` verifies at provider/download SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea`, package manifest **28/28**, exact source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`, GMP/GMPXX, executable modes and selector430 bytes. Execution then stops before any Directional process because the frozen plan contains a 63-character identity-map digest literal while accepted M4-TB3 authority is `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, and its ninth focused exact filter names nonexistent suite `M4CP4`; the compiled non-vacuous test is under `SurfaceCellTransitionQuotient`. No silent plan repair/substitution was made. Runtime is **0/9 focused, 0/430 selector, 0 benchmark**; accepted M4 package `10591801825` / selector430 remains authority, accounting **49 / 14 / 35**, debt **5**. Exact next: independent `M5-CP1-TB1-PREFLIGHT-REV`.

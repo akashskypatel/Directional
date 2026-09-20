@@ -8699,3 +8699,34 @@ debts are discharged on **produced** authority with no mechanism-only credit, th
 weakened, and that the M6-owned closed candidate-bearing-complex debt remains M6's. Per
 `[[M4-CP4-TB3-REV-OBS-01]]`, the reconciled statement is written into the governing M5 document, not only into
 the closing checkpoint's own record.
+
+## `M5-CP1-TB1-EXEC-OBS-01` — a frozen execution plan named literals that were never validated against the package
+
+**Status.** OPEN / NON-GATING / process-class / owner `M5-CP1-TB1-PREFLIGHT-REV` / NON-STABLE.
+
+`M5-CP1-TB1-EXEC` blocked pre-runtime on two frozen-plan literals, both independently confirmed from repository
+bytes:
+
+- `M5-CP1-TB1-CAND-01` — the frozen accepted identity-map digest
+  `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6` is exactly **63** characters. It cannot be a
+  SHA-256 whatever the true value is, so the defect stands without needing the artifact.
+- `M5-CP1-TB1-CAND-02` — the frozen ninth focused filter
+  `M4CP4.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` matches **0** tests. The real body
+  is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` at
+  `tests/SurfaceCellTransitionQuotientTests.cpp:1559`.
+
+**Why:** both are literals a plan asserts about artifacts it does not itself verify — a digest transcribed from a
+predecessor report, and a test identity assumed to live in the suite the debt is named after. Neither survives
+contact with the package. A frozen plan that names exact identities and digests must validate them against the
+packaged source **before** being frozen; otherwise the first runtime turn spends itself discovering typos.
+
+TB1 was right to block rather than repair its own frozen authority: an executing turn that silently corrects its
+plan destroys the separation between authority and execution. Zero semantic credit and zero accepted-green
+exposure is the correct outcome — accounting is unchanged at **49 / 14 / 35**, debt **5**.
+
+**How to apply:** the corrected plan re-derives the digest from the immutable M4-TB3 artifact rather than
+appending a character to match the accepted report, and substitutes the suite-qualified identity. Critically, the
+substituted body uses `direct_periodic_owner_product()`, which `Architecture_M5_Frozen_Definitions.md` §8.1
+classifies as **mechanism-only, no produced-witness credit** — so a green result earns CP1 mechanism credit and
+discharges **no** M5 debt. Debt 1 remains `M5-CP3` on produced authority with its `>=2` discriminator intact.
+See `[[M5-DEFN-REV-OBS-01]]`.
