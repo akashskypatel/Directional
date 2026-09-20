@@ -40,7 +40,6 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
       TURN_ID: M5-CP1-TB1-R3-EXEC
       SOURCE_HARNESS: .agents/Directional/tools/m5_cp1_tb1_r2_artifact_only_harness.sh
-      GENERATED_HARNESS: ${{ runner.temp }}/m5_cp1_tb1_r3_artifact_only_harness.sh
       EXPECTED_SOURCE_HARNESS_SHA256: 'b706d03adde7d7d3daacb6ac46c4cb35468a40e162d7fb9d1617d4e562d37302'
       EXPECTED_GENERATED_HARNESS_SHA256: '55b451366039673f383d4d8636ba84744c828381493597bf9e24fb92e455788c'
     steps:
@@ -53,6 +52,8 @@ jobs:
 
       - name: Materialize and verify R3 harness
         shell: bash
+        env:
+          GENERATED_HARNESS: ${{ runner.temp }}/m5_cp1_tb1_r3_artifact_only_harness.sh
         run: |
           set -euo pipefail
           test -f "$SOURCE_HARNESS"
@@ -84,6 +85,8 @@ jobs:
       - name: Execute immutable artifact-only gate
         id: gate
         shell: bash
+        env:
+          GENERATED_HARNESS: ${{ runner.temp }}/m5_cp1_tb1_r3_artifact_only_harness.sh
         run: |
           set +e
           bash "$GENERATED_HARNESS" --execute
