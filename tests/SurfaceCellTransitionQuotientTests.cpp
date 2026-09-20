@@ -2097,7 +2097,7 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   ASSERT_TRUE(expectedId.has_value());
   EXPECT_EQ(relation->id(), *expectedId);
   EXPECT_NE(directional::authority::QuarterTurn{}, relation->action().rotation);
-  EXPECT_NE(directional::authority::LatticeTranslation{0, 0},
+  EXPECT_NE((directional::authority::LatticeTranslation{0, 0}),
             relation->action().shift);
 
   const auto materialized = materialize(fixture, fixture.network.phaseFront);
