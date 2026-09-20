@@ -1,2 +1,0 @@
-M5-CP2-TB1-REV exact source snapshot for independent review
-source authority: 072f946f13494e8c2c65aeeb8ef385e5fffe58e5

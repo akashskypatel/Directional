@@ -1,3 +1,0 @@
-M5-CP2-TB1-REV closeout documentation patch apply
-base: 4ab050de16dbd25a075692e29a80ad0a80d62064
-patch: 14a8537922f21593ac9f1a781ebef72b6d8285bc1d8e071fdce15bba47960e45
