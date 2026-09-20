@@ -1445,10 +1445,32 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(M5CP1, SelectedRelationPathCertificateSurvivesRelationContainerPermutation) {
   const auto &fixture = direct_materializer_base_fixture();
   PhaseFrontDraft baselineDraft = direct_full_periodic_materializer_draft();
+  ASSERT_FALSE(baselineDraft.periodicHolonomies.empty());
+  const auto &owner = baselineDraft.periodicHolonomies.front();
+  auto unusedConstruction = directional::geometry::SurfacePeriodicHolonomy::make(
+      owner.sourceTopologyRegion(), owner.action(), owner.cutRoute(),
+      owner.route());
+  auto *unused =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(
+          &unusedConstruction);
+  ASSERT_NE(nullptr, unused);
+  ASSERT_TRUE(std::none_of(
+      baselineDraft.periodicHolonomies.begin(),
+      baselineDraft.periodicHolonomies.end(),
+      [&](const auto &relation) { return relation.id() == unused->id(); }));
+  baselineDraft.periodicHolonomies.push_back(*unused);
+
   PhaseFrontDraft reorderedDraft = baselineDraft;
   ASSERT_GE(reorderedDraft.periodicHolonomies.size(), 2U);
+  const auto firstStoredRelationId =
+      reorderedDraft.periodicHolonomies.front().id();
+  const auto lastStoredRelationId =
+      reorderedDraft.periodicHolonomies.back().id();
+  ASSERT_NE(firstStoredRelationId, lastStoredRelationId);
   std::reverse(reorderedDraft.periodicHolonomies.begin(),
                reorderedDraft.periodicHolonomies.end());
+  EXPECT_NE(firstStoredRelationId,
+            reorderedDraft.periodicHolonomies.front().id());
 
   const auto baseline = materialize(fixture, std::move(baselineDraft));
   const auto reordered = materialize(fixture, std::move(reorderedDraft));
@@ -1462,6 +1484,8 @@ TEST(M5CP1, SelectedRelationPathCertificateSurvivesRelationContainerPermutation)
   EXPECT_EQ(baselineCertificates, reorderedCertificates);
   EXPECT_EQ(directional::pipeline::hash_completion(baseline.mesh),
             directional::pipeline::hash_completion(reordered.mesh));
+  EXPECT_EQ(baseline.consumedPeriodicHolonomies,
+            reordered.consumedPeriodicHolonomies);
 }
 
 TEST(M5CP1, UnusedValidPeriodicRelationDoesNotChangeSelectedCertificate) {
