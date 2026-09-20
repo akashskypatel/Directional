@@ -1,5 +1,0 @@
-turn=M5-CP3-TB1-EXEC
-purpose=apply verified durable closeout documentation patch
-base_sha=71750a854f65f0228494974643b5921e5e305052
-patch_sha256=ca5a643210bc3225e7df9046dba976600297567f921ee82c68f5a445f97f6897
-retry=0
