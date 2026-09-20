@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP3-CB1-REV`
+**Last updated:** 2026-09-20 at `M5-CP3-CB2`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -27,13 +27,15 @@ The Review also resolves the prior selector-governance gap by adding frozen §13
 
 ## 4. Current open M5 boundary — `M5-CP3`
 
-`M5-CP3-CB1` correctly stopped before implementation/compile on the accepted row408 representation conflict. `M5-CP3-CB1-REV` independently re-derived the exact 18-edge row408 precondition, the A4 same-region/distinct-occurrence pairing seam, the checked shared-interval and CP2 periodic-owner validators, and the materializer's mutually exclusive HardRail/PeriodicCut semantics.
+`M5-CP3-CB1` stopped correctly on the HardRail/PeriodicCut provenance conflict and `M5-CP3-CB1-REV` froze §14. `M5-CP3-CB2` has now implemented that reviewed representation contract and is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE** at exact semantic source `fc2aa5fa68cac890051614c2104979aef4a60d21`.
 
-Review freezes normative §14 in `Architecture_M5_Frozen_Definitions.md`: exact A3 shared-boundary interval is provenance that survives a narrow same-region paired-cut promotion to `PeriodicCut`; canonical `periodicRelation` remains the operative quotient owner; cross-region pairs remain HardRail; same-region HardRail rejection stays unchanged. Row408 may evolve only at its final-kind assertion while preserving the exact 18-edge input authority and all receipt bindings.
+Production now promotes only already-valid same-region A3 paired cut copies satisfying reciprocal exact interval identity, distinct exact boundary occurrences, reverse routes, matching families and opposing advance signs. The generator carrier is derived from accepted topology-arc/source-path transition authority, the produced edge route is the cut carrier, and one exact action must satisfy both reciprocal endpoint pairs before the canonical relation publishes. The pair becomes owned `PeriodicCut` with retained A3 provenance and `PeriodicFrontMerge`; cross-region HardRail and the materializer same-region HardRail rejection remain unchanged. Checked product validation now treats A3 interval provenance as orthogonal to final HardRail/PeriodicCut ownership while preserving CP2 relation checks.
 
-Exact successor is `M5-CP3-CB2` under `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md`. It must derive generator carrier from accepted A2b/A3 arc/source-path authority, cut carrier from produced paired-edge route, full action from exact route/chart-lattice authority, publish `PeriodicFrontMerge`, author the same six frozen `M5CP3.Produced...` identities, and compile/package with mandatory GMP without runtime. If exact authority cannot produce `>=2` relations/owned periodic edges or a genuine nonzero-Z4 rotation+translation, it stops again.
+Accepted selector row408 keeps the exact 18-edge torus production precondition, A0-A3/conformity receipts/digests and fail-closed pairing check; its obsolete final HardRail-only observation is strengthened to require `>=2` promoted interval edges forming at least one complete reciprocal pair with canonical owner. Accepted selector rows 404-407 retain the general/cross-region HardRail interval contract. The six frozen `M5CP3.Produced...` identities exist and compile; Code + Build grants them no runtime credit.
 
-`M5-DEFN-REV-OBS-01` and `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` are now discharged by frozen §§13.1/13.4 plus this Review. `M5-CP2-TB1-REV-OBS-01` remains open for `M5-CP3-TB1-REV`: exact successor-selector bytes/hash/owner census must be pre-committed before publication. All four M5 produced-witness debts remain open. Stable accounting remains **49 / 14 / 35**, debt **5**.
+Mandatory compile/package run/job `35542532109 / 106162702255` builds all eight standard targets with GMP/GMPXX, clean source and `runtimeExecution=false`. Candidate artifact `10615252806` is SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`; root manifest verifies 28/28. Selector430/first427 remain frozen at `1c412850...9db6 / f9c88380...e86f`. The first compile's aggregate-macro syntax error was corrected by one parenthesis-only test-source repair before the successful fresh compile.
+
+Exact successor is `M5-CP3-TB1-EXEC`, artifact-only, under `Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md`: nine reviewed mechanism rows + six produced rows + selector430, 445 fresh exact-filter processes, exact-one/zero-skip, benchmark 0, immutable postflight. Accepted runtime authority remains package `10601978228` until Review. `M5-CP2-TB1-REV-OBS-01` remains open for `M5-CP3-TB1-REV`, and all four M5 produced debts remain open. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 ## 5. Folded-document index
 

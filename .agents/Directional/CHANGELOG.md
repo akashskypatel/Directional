@@ -1,3 +1,13 @@
+## 2026-09-20 — `M5-CP3-CB2`: same-region A3 periodic promotion compile/package GREEN
+
+Runtime-free Code + Build is complete at exact semantic source `fc2aa5fa68cac890051614c2104979aef4a60d21`. The A4 exact-pairing seam now promotes only same-region reciprocal A3 cut copies with distinct exact boundary occurrences to canonical owned `PeriodicCut` relations while retaining `sharedBoundaryInterval` provenance; cross-region pairs remain HardRail and the same-region HardRail materializer rejection stays unchanged. Checked phase-front validation permits that provenance on `HardRail` or `PeriodicCut` without weakening existing CP2 owner/route/action checks.
+
+Accepted selector430 row408 retains its exact 18-source-edge torus production subject, A0-A3/conformity receipts/digests and fail-closed pairing check; only its final-kind assertion is strengthened to require at least one complete reciprocal promoted pair with canonical owner and exact occurrence provenance. Accepted rows 404-407 continue to protect general/cross-region HardRail interval semantics. Six exact `M5CP3.Produced...` identities compile with independent carrier/content/precondition checks. Selector430 and first427 remain byte-identical at `1c412850...9db6` / `f9c88380...e86f`.
+
+The first compile attempt exposed one C++/GoogleTest macro parse error at aggregate `LatticeTranslation{0, 0}`. A one-line parenthesis-only repair was applied through verified Drive transport. Fresh mandatory GMP run/job `35542532109 / 106162702255` then built all eight standard targets with exit 0, clean source, `gmpxx` + `gmp`, `runtimeExecution=false`, and self-verifying 28-entry package manifest. Candidate artifact `10615252806` has SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`; log artifact `10614394740` has SHA-256 `91e768f1f0ecd36f00dd75ce3c5378ed012d1b4a3a521d1059528118eeedffde`.
+
+No runtime, test or benchmark executed, no produced debt is credited, and accepted runtime authority remains package `10601978228` / source `0798547d...`. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact successor is artifact-only `M5-CP3-TB1-EXEC` under `Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md`: frozen nine mechanism rows + six produced rows + selector430 = 445 fresh exact-filter processes, benchmark 0, immutable postflight; mechanically complete evidence then routes to `M5-CP3-TB1-REV`.
+
 ## 2026-09-20 — next-step determination: `M5-CP3-CB2` authorized; M5 governance gaps confirmed closed
 
 Runtime-free. `M5-CP3-CB1-REV` is COMPLETE with successor **`M5-CP3-CB2`**. Accepted authority is package
