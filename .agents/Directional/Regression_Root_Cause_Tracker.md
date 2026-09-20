@@ -1,11 +1,11 @@
-## 2026-09-20 — `M5-CP1-TB1-CAND-01/02`: frozen TB1 routing authority is not literally executable — **OPEN FOR PREFLIGHT REVIEW / ORCHESTRATION / NON-STABLE**
+## 2026-09-20 — `M5-CP1-TB1-CAND-01/02`: frozen TB1 routing authority is not literally executable — **CLOSED / PREFLIGHT REVIEW RECOVERY PROVED / ORCHESTRATION / NON-STABLE**
 
-- **Authority:** candidate `10595705100` / source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`; exact turn snapshot run/job `35480330535 / 105996871120`, artifact `10595288347`. No Directional runtime executed.
-- **CAND-01 — malformed map digest:** the frozen TB1 plan records accepted M4-TB3 identity-map SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6`, which is 63 hex characters. Accepted M4-TB3 artifact `10592987234` contains header + 430-row `identity-map.tsv` at actual SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, owners **31/283/75/41**; the accepted M4 report/review use that 64-character value.
-- **CAND-02 — nonexistent exact filter:** the frozen ninth focused identity is `M4CP4.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. Exact immutable source enumeration finds no such identity. The compiled non-vacuous test body is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, and it asserts two relation owners/two owned edges before reorder. Substitution is not authorized in EXEC; the frozen name would select zero tests.
-- **Classification:** frozen-plan orchestration authority defects, not product regressions. The plan itself makes authority mismatch/zero-selection fail closed. Focused runtime **0/9**, selector430 **0/430**, benchmark **0**; no build/repair/mutation occurred.
-- **Falsifier / owner:** `M5-CP1-TB1-PREFLIGHT-REV` must independently prove the intended accepted-map digest and intended ninth exact-filter identity before issuing any corrected runtime plan. No product/test/build correction is justified by current evidence.
-- **Stable-count rationale:** no candidate or accepted-green Directional identity ran, so **+0 event / +0 category / +0 recurrence**. Totals remain **49 / 14 / 35**, debt **5**; accepted M4 authority remains unchanged.
+- **Authority:** blocked candidate `10595705100` / source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`; no Directional runtime executed in the blocked TB or in Review.
+- **CAND-01 — malformed map digest, recovery proved:** frozen TB1 recorded a 63-character identity-map digest. `M5-CP1-TB1-PREFLIGHT-REV` independently re-opened accepted M4-TB3 result artifact `10592987234` (ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`) and re-derived `identity-map.tsv` as header + 430 rows / 430 unique identities / owners **31/283/75/41** / SHA-256 **`7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`**.
+- **CAND-02 — nonexistent exact filter, recovery proved:** Review independently re-opened candidate package `10595705100` (ZIP SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea`, root manifest **28/28**) and proved the exact compiled identity is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. The former `M4CP4` identity does not exist.
+- **Credit boundary:** the corrected test calls `direct_periodic_owner_product()` and is frozen in M5 §8.1 as **mechanism-only, no produced-witness credit**. The R1 retry may earn CP1 mechanism credit only; M5-CP3 still owns production discharge with the original `>=2` produced-relation / `>=2` owned-periodic-edge discriminator.
+- **Disposition:** both routing candidates are closed non-stably by Review. Corrected sole next plan is `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`; candidate artifact/source/selector are unchanged.
+- **Stable-count rationale:** no accepted-green product regression occurred. **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, debt **5**, accepted M4 runtime authority unchanged.
 
 ## 2026-09-19 — `M4-CP4-DEFN-R2`: closed-complex subject is A5/M6 authority — **READING B / NON-STABLE / DEBT RE-HOMED**
 
@@ -8702,7 +8702,7 @@ the closing checkpoint's own record.
 
 ## `M5-CP1-TB1-EXEC-OBS-01` — a frozen execution plan named literals that were never validated against the package
 
-**Status.** OPEN / NON-GATING / process-class / owner `M5-CP1-TB1-PREFLIGHT-REV` / NON-STABLE.
+**Status.** CLOSED / RECOVERY PROVED / NON-GATING / process-class / NON-STABLE.
 
 `M5-CP1-TB1-EXEC` blocked pre-runtime on two frozen-plan literals, both independently confirmed from repository
 bytes:
@@ -8730,3 +8730,5 @@ substituted body uses `direct_periodic_owner_product()`, which `Architecture_M5_
 classifies as **mechanism-only, no produced-witness credit** — so a green result earns CP1 mechanism credit and
 discharges **no** M5 debt. Debt 1 remains `M5-CP3` on produced authority with its `>=2` discriminator intact.
 See `[[M5-DEFN-REV-OBS-01]]`.
+
+**Resolution — `M5-CP1-TB1-PREFLIGHT-REV`:** Review independently re-derived the map digest from accepted artifact `10592987234` and exact suite-qualified identity from candidate packaged source, then froze both into the corrected R1 plan without changing package, selector, focused count, or evidence credit. The direct-helper classification was rechecked against the actual `direct_periodic_owner_product()` body and frozen §8.1. This process instance is closed; the general rule remains applicable to future execution plans.

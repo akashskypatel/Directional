@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-19, after `M5-DEFN`):** M4 remains **CLOSED / ACCEPTED** with runtime authority package `10591801825` / semantic source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31 / 283 / 75 / 41**. M5 definitions are now frozen in `Architecture_M5_Frozen_Definitions.md`: periodic relation identity is carrier-content-derived, action/transport is relation value, and producer-selected ordered path certificates replace downstream reachability reconstruction. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is Code + Build `M5-CP1-CB1`.
+> **Current milestone authority (2026-09-20, after `M5-CP1-TB1-PREFLIGHT-REV`):** M4 remains **CLOSED / ACCEPTED** with runtime authority package `10591801825` / semantic source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owners **31 / 283 / 75 / 41**. M5-CP1 Code + Build is compile-green on unchanged candidate `10595705100`, but runtime remains unadjudicated: the first TB blocked before execution on two frozen routing literals, and independent Review has now corrected only those literals. Stable accounting remains **49 / 14 / 35**, debt **5**. Exact next is artifact-only `M5-CP1-TB1-R1-EXEC`.
 
-**Currency.** `M5-DEFN`, 2026-09-19 UTC
+**Currency.** `M5-CP1-TB1-PREFLIGHT-REV`, 2026-09-20 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` is the active M5 contract. `PeriodicRelationId` is carrier-content identity under one topology region; action/transport is relation value; the producer records the exact ordered relation path used for lineage, and consumers independently validate that certificate without reachability search. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -81,7 +81,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 DEFN-R1/R2 debt ownership is unchanged by closure. Two periodic `G4-B002` debts plus two `G4-B003` debts remain **M5-owned**; the closed candidate-bearing-complex `G4-B002` debt remains **M6-owned** at M6-CP1 mechanism / M6-CP3 direct-production proof. No produced-witness debt is M4-owned, and none is silently discharged by M4 closure.
 
-M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**. Exact next is **`M5-CP1-CB1`** under `Architecture_M5_CP1_Code_Build_Plan.md`: implement canonical non-ordinal relation IDs, selected path-certificate publication, and the bounded consumer cutover, then compile only.
+M5-DEFN is **COMPLETE / DEFINITIONS FROZEN** and `M5-CP1-CB1` is **COMPILE GREEN / RUNTIME UNADJUDICATED** on candidate `10595705100`. `M5-CP1-TB1-EXEC` correctly stopped pre-runtime on a malformed accepted-map SHA literal and a nonexistent ninth exact-filter suite. `M5-CP1-TB1-PREFLIGHT-REV` independently re-derived the accepted map SHA `7a92e7...5cf6c`, proved the actual suite is `SurfaceCellTransitionQuotient`, and froze a routing-only retry. Exact next is **`M5-CP1-TB1-R1-EXEC`** under `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`; candidate bytes, focused count 9, selector430, and the no-production-debt boundary are unchanged.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,7 +198,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M5-CP1-CB1 — NEXT.** Under frozen `Architecture_M5_Frozen_Definitions.md`, replace ordinal/remapped periodic relation IDs with carrier-content identity, preserve IDs through aggregation, retain topology-distinct same-region relations, publish producer-selected ordered path certificates, and remove downstream semantic BFS path reconstruction. Compile only; runtime belongs to the successor TB.
+1. **M5-CP1-TB1-R1-EXEC — NEXT.** Execute unchanged candidate `10595705100` artifact-only under the corrected routing plan: 9 focused fresh exact-filter processes plus accepted selector430 430/430, immutable postflight, zero benchmark. Preflight must independently verify the accepted M4 map SHA `7a92e7...5cf6c` and exact row9 suite `SurfaceCellTransitionQuotient`; no silent repair/substitution is allowed. Row9 is direct-helper mechanism evidence only.
 
 2. **Periodic produced-witness debts — OPEN / M5.** Relation-owner reorder is M5-CP1 mechanism + M5-CP3 direct-production proof; missing-owner typing is M5-CP2 mechanism + M5-CP3 production proof. The two `G4-B003` nonzero-Z4 debts are also M5-CP3-owned. Original discriminators remain unchanged.
 
@@ -219,6 +219,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 10. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** Do not weaken it pre-emptively; classify as test-authority drift if it fires.
 
 ## 8. Recurring defect patterns
+- **Frozen orchestration literals need immutable-byte validation before freeze — M5-CP1-TB1 instance.** The first CP1 TB plan transcribed a 63-character map digest and guessed the ninth suite as `M4CP4`; both failed before runtime. Independent Review re-derived the 64-character map SHA from accepted artifact `10592987234` and the exact suite from candidate packaged source. Execution was right to stop rather than self-repair. Future plans that freeze digests or exact identities must validate them against the bytes they name before becoming execution authority; this is the standing `M5-CP1-TB1-EXEC-OBS-01` process rule, not a product regression.
 - **Diagnostic retention is not stage authority — DEFN-R2 closes the CP4 instance.** `SurfaceCellPipelineContext` explicitly forbids semantic stage authority, while `hasArrangement` is a post-tracing debug-retention flag over a global occurrence-bearing arrangement. A stage gate must bind the normative product named by `DESIGN.md`, not a convenient diagnostic snapshot with a similar shape. This is the resolved form of existing lesson 22d / authority-domain discipline, not a new stable category.
 - **M5-DEFN freezes identity/value separation at the periodic-relation seam.** A relation is named by region + orientation-neutral semantic carrier paths; action/transport is its value. This is the concrete application of the project rule that representation ordinals and independent re-enumerations cannot be semantic identity. A downstream validator validates the producer-selected path and never searches for a substitute.
 - **DEFN-R1 resolves the R3 representation-expressibility instance by respecting the milestone authority boundary.** The exact torus has one source topology region, so the product cannot use its already-supported distinct-sheet multiplicity path; a second same-sheet generator needs canonical relation/basis identity. That identity is M5 relation/path authority, not a reason to add order-derived ownership to M4. This remains an instance of existing lesson 22d, not a new stable regression category.

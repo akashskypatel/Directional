@@ -1,3 +1,9 @@
+## 2026-09-20 — `M5-CP1-TB1-PREFLIGHT-REV`: routing defects recovery-proved; corrected artifact-only retry frozen
+
+Runtime-free independent Review upholds the blocked TB1 fail-closed result and re-derives both routing fixes from immutable bytes. Accepted M4-TB3 artifact `10592987234` yields `identity-map.tsv` SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, 430 unique rows and owners **31/283/75/41**; candidate `10595705100` verifies at ZIP SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea` / manifest **28/28** and contains exact ninth identity `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. `CAND-01/02` and `M5-CP1-TB1-EXEC-OBS-01` close non-stably as routing/process recovery proved.
+
+The corrected sole next plan is `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`: unchanged package/source, exactly 9 focused identities, selector430 **430/430**, corrected map SHA + suite only. Row9 uses `direct_periodic_owner_product()` and remains **CP1 mechanism-only**; no M5 production debt closes. Accepted runtime authority remains M4 package `10591801825`, stable accounting **49 / 14 / 35**, debt **5**. No Directional runtime, build, product/test/fixture/selector mutation, or benchmark occurred in Review.
+
 ## 2026-09-20 — next-step determination after `M5-CP1-TB1-EXEC` blocked
 
 Runtime-free. TB1 executed no Directional binary and blocked in immutable candidate-package preflight on two

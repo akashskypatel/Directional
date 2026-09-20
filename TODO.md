@@ -2,18 +2,19 @@
 
 Last updated: 2026-09-20 UTC
 
-## Latest Test + Benchmark turn — `M5-CP1-TB1-EXEC`
+## Latest Review turn — `M5-CP1-TB1-PREFLIGHT-REV`
 
-`M5-CP1-TB1-EXEC` is **BLOCKED / PRE-RUNTIME ORCHESTRATION PLAN DEFECT / ZERO SEMANTIC CREDIT**. Candidate artifact `10595705100` passed package integrity preflight, but the frozen TB1 plan has two fail-closed authority defects: a 63-character identity-map “SHA-256” literal where accepted M4-TB3 authority is `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, and a ninth focused exact-filter identity under suite `M4CP4` that does not exist; the compiled test is under `SurfaceCellTransitionQuotient`. No Directional runtime ran. Accepted runtime authority remains M4 package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
+`M5-CP1-TB1-PREFLIGHT-REV` is **COMPLETE / ROUTING DEFECTS PROVED / CORRECTED RETRY PLAN FROZEN / RUNTIME-FREE**. It independently re-derived accepted M4-TB3 `identity-map.tsv` SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c` from artifact `10592987234` and proved the actual packaged ninth identity is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. Candidate `10595705100` is unchanged and unpromoted; accepted M4 runtime authority remains package `10591801825` / selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, debt **5**.
 
 - [x] `M5-DEFN`: freeze canonical relation identity, selected certificate, cutover, failure matrix, invariance, production reachability, and CP1/CP2/CP3 debt ownership.
 - [x] `M5-CP1-CB1`: implement canonical relation IDs + selected path certificates; mandatory GMP compile/package green, no runtime.
 - [x] `M5-CP1-TB1-EXEC`: pre-runtime fail-closed blocker recorded; **0/9 focused, 0/430 selector, zero semantic credit**.
-- [ ] `M5-CP1-TB1-PREFLIGHT-REV`: **exact next**; independently adjudicate/correct frozen plan routing literals only.
+- [x] `M5-CP1-TB1-PREFLIGHT-REV`: independently prove both frozen-plan routing defects; publish corrected retry plan; no runtime.
+- [ ] `M5-CP1-TB1-R1-EXEC`: **exact next**; unchanged artifact `10595705100`, corrected routing literals only, focused **9** + selector430 **430**, artifact-only.
 
-## Current focus — `M5-CP1-TB1-PREFLIGHT-REV`
+## Current focus — `M5-CP1-TB1-R1-EXEC`
 
-Review `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md` against accepted M4-TB3 routing evidence and immutable packaged source. Product/test/build source, artifact `10595705100`, selector430 and runtime remain frozen during Review.
+Execute only `Architecture_M5_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`. Row9 remains direct-helper **CP1 mechanism credit only**; no M5 production debt closes even if green. No rebuild, product/test/fixture/selector edit, discovery, package repair, or benchmark is authorized.
 
 ## Carried forward from M1
 
@@ -53,7 +54,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 CB COMPILE GREEN; NEXT: `M5-CP1-TB1-EXEC`** on immutable artifact `10595705100`; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 CB COMPILE GREEN; first TB blocked pre-runtime on plan routing; corrected exact next `M5-CP1-TB1-R1-EXEC`** on unchanged artifact `10595705100`; owns the 2 `G4-B003` debts and two periodic `G4-B002` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
