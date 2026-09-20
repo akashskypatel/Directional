@@ -1,3 +1,0 @@
-turn=M5-CP3-CB2
-purpose=exact source snapshot for code/build inspection
-base_authority=0baae6ed7816c5ca900a4d150db625454d72cbac
