@@ -1,43 +1,33 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP1-CB2`
+**Last updated:** 2026-09-20 at `M5-CP1-TB1-R2-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. M5 enters from accepted M4 authority package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, stable accounting **49 / 14 / 35**, produced-witness debt **5**. M5 owns four of those debts.
 
 ## 1. `M5-DEFN` — definitions frozen
 
-`M5-DEFN` is **COMPLETE / APPROVED_WITH_AMENDMENTS / RUNTIME-FREE**. The source review identified the exact M5 seam: periodic IDs are still index-allocated/remapped, same-region multiplicity is stopped as `AmbiguousBasis`, lineage retains front-edge representation handles, and `close_completion_lineage_source_authority(...)` reconstructs hard-rail reachability downstream.
+`M5-DEFN` is **COMPLETE / APPROVED_WITH_AMENDMENTS / RUNTIME-FREE**. The frozen correction separates relation **identity** from relation **value**: `PeriodicRelationId` is content-derived from topology-region scope plus orientation-neutral generator/cut carrier paths; action/transport remains value. The producer publishes one ordered selected relation-path certificate and consumers validate that exact certificate without semantic path search. Unused valid relations are decision-neutral. Missing, duplicate, conflicting, nonreciprocal, and representation-renumbered relations have frozen typed failure ownership for CP2.
 
-The frozen correction separates relation **identity** from relation **value**. `PeriodicRelationId` becomes the content identity of topology-region scope plus orientation-neutral generator/cut carrier paths; action/transport remains value so a transform tamper is a conflict on one relation rather than a new identity. The producer publishes one ordered selected relation-path certificate and consumers independently validate that exact certificate without searching for substitutes. Unused valid relations are decision-neutral. Missing, duplicate, conflicting, nonreciprocal, and representation-renumbered relations have frozen typed failure ownership for CP2.
+Production evidence remains deliberately uncredited. Accepted row408 reaches a produced phase front but prior M4 evidence measured zero produced periodic holonomies; existing direct/helper relation tests remain mechanism-only. All four M5 produced-witness debts remain open with their original discriminators.
 
-Production evidence remains deliberately uncredited: accepted row408 reaches a produced phase front but M4 R3 measured zero produced periodic holonomies. Existing relation-order, missing-owner, full-periodic, and tampered-transform tests are direct/draft mechanism evidence only. All four M5 produced-witness debts remain open with their original discriminators.
+## 2. `M5-CP1` — compile green; R2 complete with one focused semantic RED
 
-Historical successor was `M5-CP1-CB1`; CP1 semantic compile remains green. R1 never reached semantic runtime. CB2 has now statically proved the canonical R2 executor; exact next is `M5-CP1-TB1-R2-EXEC` under `Architecture_M5_CP1_TB1_R2_Artifact_Only_Test_Benchmark_Plan.md`.
+`M5-CP1-CB1` implemented canonical relation IDs and producer-selected relation-path certificates at semantic source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`. Mandatory GMP compile/package is green on artifact `10595705100`, ZIP SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea`, root manifest **28/28**, packaged source SHA-256 `4f51257db12ae24363a45ddfa62778200e9ac0a8ef4ce2b585c8c606350d78b9`, and `runtimeExecution=false`.
 
-### Operational note
+The original TB1 and R1 attempts stopped before semantic runtime on frozen-plan and executor-transport defects. Their zero-credit control-plane history remains in git and the current TB report's predecessor history. `M5-CP1-CB2` then froze a canonical harness/template and proved the R2 executor statically, runtime-free.
 
-The session began repository document inspection before the required `READ_MODE=snapshot` declaration. The miss was caught before semantic editing, snapshot mode was selected, and all subsequent project source/document review used immutable snapshot `1cef1133ecfe59eeeee220b37a907301f9315dc7` / artifact `10594140365`. No new semantic regression class is created; this is the already-documented read-mode/trigger-control process pattern in `LESSONS.md`. Tool-call accounting for the pre-correction bootstrap is therefore reported as **partial/unknown**, not reconstructed with extra calls.
+`M5-CP1-TB1-R2-EXEC` is now **COMPLETE / ORCHESTRATION VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED**. Run/job `35491016562 / 106025849497` executes all planned processes from ordinal 1 with exact selection integrity: focused **8/9 PASS / 1 RED**, selector430 **430/430 PASS**, benchmark **0**. Result artifact `10598684066` hashes to `5896fee5600a6f842fcefd08534d2a21a67cedee8a38ed67daaeace755d2a5dd`; diagnostic artifact `10599222908` hashes to `cabfa52286f006572181c8a0368562b1ec31591061431be7b6fe2055951ac016`. Candidate/package/source/execution-view postflight is byte+mode exact and manifest remains **28/28**; no build, discovery, repair, mutation, or benchmark occurred.
 
-## 2. `M5-CP1` — compile green; corrected retry blocked again in executor control plane
+The sole RED is focused ordinal 6, `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation`: it fails its prerequisite `periodicHolonomies.size() >= 2` with **1 vs 2**. Source shows `direct_full_periodic_materializer_draft()` starts from the committed cylinder fixture, transforms one existing periodic relation, and adds no second relation; the test therefore exits before relation-container permutation, materialization, or certificate comparison. `M5-CP1-TB1-R2-EXEC-CAND-01` is recorded **OPEN / RP-02 TEST_AUTHORITY_COVERAGE_GAP / INVALID WITNESS PRECONDITION / NON-STABLE**, pending independent Review. EXEC does not decide the corrective.
 
-`M5-CP1-CB1` implemented canonical relation IDs and producer-selected relation-path certificates at semantic source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`. Mandatory GMP compile/package is green on artifact `10595705100`, ZIP SHA-256 `fdc4046630c6f48b2bc76aad74ebc07b443a024fc9cfd76507bae515eb8668ea`, root manifest **28/28**, packaged source SHA-256 `4f51257db12ae24363a45ddfa62778200e9ac0a8ef4ce2b585c8c606350d78b9`, and `runtimeExecution=false`. Runtime remains unadjudicated.
-
-`M5-CP1-TB1-EXEC` then stopped before any Directional process because its frozen plan named two invalid routing literals: a 63-character accepted M4 identity-map digest and a nonexistent `M4CP4` suite qualification for the ninth focused test. It correctly assigned **zero semantic credit** and left candidate `10595705100` unpromoted.
-
-`M5-CP1-TB1-PREFLIGHT-REV` independently re-opened immutable evidence and closes both routing candidates non-stably. Accepted M4-TB3 artifact `10592987234` re-hashes to `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; its `identity-map.tsv` is header + 430 rows, 430 unique identities, owners **31/283/75/41**, SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`. Candidate packaged source proves the actual ninth identity is `SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`. Its `direct_periodic_owner_product()` subject is exactly the §8.1 direct-helper mechanism witness, so a green retry can earn CP1 mechanism credit only and closes no M5 production debt.
-
-Selector430 remains byte-frozen at **430/430**, SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; its first427 prefix remains `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
-
-`M5-CP1-TB1-R1-EXEC` then failed before its artifact-only harness could be created. Terminal run/job `35486023017 / 106012455346` reports GZip CRC/length errors; `gate_harness_exit` is empty, no result artifact exists, and **0 Directional processes** ran. Counts are **0/9 focused, 0/430 selector, 0 benchmark**. Diagnostic artifact `10597540714` has SHA-256 `818b69adc1f3e459a2d97bfe7e31335efeeb5600c42f432da279b897d05cd019`. Candidate `10595705100` remains unchanged/unpromoted. Stable accounting remains **49 / 14 / 35**, debt **5**.
-
-`M5-CP1-CB2` then closes the control-plane correction **STATIC GREEN / RUNTIME-FREE**. Canonical harness SHA-256 is `b706d03adde7d7d3daacb6ac46c4cb35468a40e162d7fb9d1617d4e562d37302`; executor-template SHA-256 is `9c9c2527176645d143cf1f972ad5d493db44bc819179fb04a1845f7bd20a12a1`. Final static run `35490228347` proves both schemas, permission ceiling, no hidden timeout/watchdog, and byte-identical round-trip; artifact `10598826679` hashes to `d765ed4d54b07f130e83f44dd499d61584e6dab1693b32db9472d14004b05b2d`. Immutable local preflight re-proved candidate/root-manifest/selector/routing-map/focused-identity authority without Directional runtime. Candidate `10595705100` remains unchanged/unpromoted. Exact next is fresh `M5-CP1-TB1-R2-EXEC`; no production-debt credit is granted by CB2.
+Accepted selector430 remains green, so candidate `10595705100` is unpromoted and accepted M4 runtime authority remains unchanged. Stable accounting stays **49 / 14 / 35**, debt **5**. Exact next is runtime-free `M5-CP1-TB1-R2-REV`; no retry or corrective CB is authorized before Review adjudication.
 
 ## 3. Folded-document index
 
 | Folded filename | Verdict / retained home |
 |---|---|
-| `Architecture_M5_DEFN_Definition_Plan.md` | **CONSUMED / FOLDED BY M5-DEFN.** All live requirements are frozen in `Architecture_M5_Frozen_Definitions.md`; historical successor was CP1 Code + Build; provenance remains in git history. |
-| `Architecture_M5_DEFN_Definition_Record.md` (62 lines) | **SUPERSEDED / FOLDED BY M5-CP1-TB1-PREFLIGHT-REV.** Definition adjudication and debt boundaries remain in `Architecture_M5_Frozen_Definitions.md`, this consolidated record, tracker and changelog; provenance remains in git history. |
-| `Architecture_M5_CP1_Code_Build_Plan.md` (163 lines) | **CONSUMED / FOLDED.** CP1 implementation scope completed at CB1; durable outcome is retained in this record and changelog. |
-| `Architecture_M5_CP1_CB1_Code_Build_Report.md` (93 lines) | **SUPERSEDED BUILD REPORT / FOLDED.** Compile/package authority `10595705100` and source `b98f461b...` are retained above and in the current TB report; provenance remains in git history. |
+| `Architecture_M5_DEFN_Definition_Plan.md` | **CONSUMED / FOLDED BY M5-DEFN.** Live requirements are frozen in `Architecture_M5_Frozen_Definitions.md`; provenance remains in git history. |
+| `Architecture_M5_DEFN_Definition_Record.md` | **SUPERSEDED / FOLDED.** Definition adjudication and debt boundaries remain in frozen definitions, this consolidated record, tracker and changelog. |
+| `Architecture_M5_CP1_Code_Build_Plan.md` | **CONSUMED / FOLDED.** CP1 implementation scope completed at CB1; durable outcome is retained here and in changelog. |
+| `Architecture_M5_CP1_CB1_Code_Build_Report.md` | **SUPERSEDED BUILD REPORT / FOLDED.** Compile/package authority `10595705100` and source `b98f461b...` are retained here and in the current TB report. |

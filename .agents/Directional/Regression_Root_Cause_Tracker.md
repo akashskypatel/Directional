@@ -1,3 +1,12 @@
+## 2026-09-20 — `M5-CP1-TB1-R2-EXEC-CAND-01`: selected-certificate permutation test has no two-relation witness — **OPEN / RP-02 TEST AUTHORITY / NON-STABLE**
+
+- **Authority:** R2 run/job `35491016562 / 106025849497`, unchanged candidate `10595705100` / source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`; result artifact `10598684066` SHA-256 `5896fee5600a6f842fcefd08534d2a21a67cedee8a38ed67daaeace755d2a5dd`.
+- **Observed discriminator:** focused ordinal 6 `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation` selects exactly one test, skips zero, and fails `ASSERT_GE(reorderedDraft.periodicHolonomies.size(), 2U)` with **1 vs 2**; raw receipt SHA-256 `68ef89b40caab7818f4aedc3ce2078dbde564eae713257ef56fac28666bfb586`.
+- **Root-cause evidence:** the test constructs both drafts with cylinder-backed `direct_full_periodic_materializer_draft()`. That helper transforms one eligible existing periodic relation and stops after the first transform; it does not add another relation. The assertion fails before `std::reverse(...)`, before either materialization call, and before certificate-signature comparison.
+- **Classification:** **`RP-02 / TEST_AUTHORITY_COVERAGE_GAP` — invalid witness precondition / NON-STABLE.** This is a candidate classification for Review, not a product corrective decision. `M5-CP1-TB1-R2-REV` owns independent adjudication of whether a valid >=2 relation witness exists and whether the corrective is test-only or semantic.
+- **Separation evidence:** the remaining focused rows are **8/8 PASS** and accepted selector430 is **430/430 PASS** under exact-one/zero-skip execution; immutable postflight is exact. Row7/row8 do not substitute for the unexercised row6 invariant.
+- **Stable-count rationale:** the failing test does not reach its claimed permutation/certificate seam and accepted-green selector behavior does not regress. **+0 event / +0 category / +0 recurrence**; totals remain **49 / 14 / 35**, debt **5**. Candidate `10595705100` remains unpromoted; accepted M4 authority is unchanged.
+
 ## 2026-09-20 — `M5-CP1-TB1-CAND-01/02`: frozen TB1 routing authority is not literally executable — **CLOSED / PREFLIGHT REVIEW RECOVERY PROVED / ORCHESTRATION / NON-STABLE**
 
 - **Authority:** blocked candidate `10595705100` / source `b98f461b9a392cc182891a81c0a84b0b01dfbb45`; no Directional runtime executed in the blocked TB or in Review.
