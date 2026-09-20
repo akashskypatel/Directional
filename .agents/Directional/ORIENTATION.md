@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-20, after `M5-CP1-TB1-R3-REV`):** M4 remains **CLOSED / ACCEPTED** and M5-CP1 is now **CLOSED / ACCEPTED**. Current accepted runtime authority is M5-CP1 package `10600353027` / semantic source `8a86710dd33d7b6cb9a077aef738577e4075b5f7` under unchanged selector430 **430/430**. R3 completed focused **9/9 PASS** plus selector430 **430/430**, and independent Review proves the corrected row6 is a non-vacuous pure-permutation falsifier: identical membership, distinct IDs, storage-only reversal, both materializations successful, complete certificate/output equality. Stable accounting remains **49 / 14 / 35**, debt **5**; all four M5 production debts remain open. Exact next is `M5-CP2-CB1`.
+> **Current milestone authority (2026-09-20, after `M5-CP2-TB1-REV`):** M4 remains **CLOSED / ACCEPTED**; M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**. Current accepted runtime authority is package `10601978228` / semantic source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430** (`1c412850...9db6`, owners **31 / 283 / 75 / 41**). CP2 TB1 is focused **7/7 PASS** + selector430 **430/430**, exact-one/zero-skip across 437 processes with exact immutable postflight. Review accepts row226's identity-preserving transform-tamper rejection moving earlier to typed `NonReciprocalPeriodicRelation`, closes the five-class typed failure checkpoint, and freezes the M5 publication sequence. Stable accounting remains **49 / 14 / 35**, debt **5**; all four M5 production debts remain open. Exact next is `M5-CP3-CB1`.
 
-**Currency.** `M5-CP1-TB1-R3-REV`, 2026-09-20 UTC
+**Currency.** `M5-CP2-TB1-REV`, 2026-09-20 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` is the active M5 contract. `PeriodicRelationId` is carrier-content identity under one topology region; action/transport is relation value; the producer records the exact ordered relation path used for lineage, and consumers independently validate that certificate without reachability search. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -81,7 +81,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 DEFN-R1/R2 debt ownership is unchanged by closure. Two periodic `G4-B002` debts plus two `G4-B003` debts remain **M5-owned**; the closed candidate-bearing-complex `G4-B002` debt remains **M6-owned** at M6-CP1 mechanism / M6-CP3 direct-production proof. No produced-witness debt is M4-owned, and none is silently discharged by M4 closure.
 
-M5-DEFN is **COMPLETE / DEFINITIONS FROZEN** and `M5-CP1` is **CLOSED / ACCEPTED**. CB3 candidate `10600353027` / source `8a86710dd33d7b6cb9a077aef738577e4075b5f7` is promoted as current runtime authority under unchanged selector430 **430/430**. R3 executes focused **9/9 PASS** plus selector430 **430/430 PASS** with exact immutable postflight. Independent Review re-derives canonical-ID lookup, no ordinal/offset remap, producer-selected certificate validation, and the corrected row6 pure-permutation witness; `M5-CP1-TB1-R2-REV-OBS-01` is discharged by its first runtime falsifier. CP1 grants mechanism credit only: all four M5 produced-witness debts remain open. Exact next is **`M5-CP2-CB1`** under `Architecture_M5_CP2_CB1_Typed_Relation_Failure_Matrix_Plan.md`.
+M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; `M5-CP1` and `M5-CP2` are **CLOSED / ACCEPTED**. Package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` is the accepted runtime authority under unchanged selector430 **430/430**. CP2 Review independently re-derives focused **7/7** + selector430 **430/430**, validates all five one-fact typed failure discriminators, and discharges `M5-CP2-CB1-OBS-01`: accepted row226 still proves identity-preserving transform tamper rejection, now earlier and more specifically at the checked factory boundary. No production debt is credited. Frozen M5 §13 now states the reconciled exit theorem and pre-publication selector sequence. Exact next is **`M5-CP3-CB1`** under `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md`.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,9 +198,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M5-CP2-CB1 — NEXT.** Complete the frozen five-class periodic-relation failure matrix at the checked phase-front boundary: retain missing/duplicate, add conflicting/nonreciprocal/representation-renumbered, and author independent one-fact negative oracles. Representation-renumbering must not reintroduce ordinal identity or an unchecked test backdoor. Mandatory GMP compile/package only; no Directional runtime or selector publication.
+1. **M5-CP3-CB1 — NEXT.** Make the accepted row408-class one-region torus production path publish genuine periodic authority: `>=2` distinct canonical produced relations, `>=2` owned periodic edges, and a genuinely nonzero-Z4 rotation+translation carried through the product. Author the six frozen `M5CP3.Produced...` positive/tamper/invariance rows; compile/package only with mandatory GMP; selector430 remains byte-frozen.
 
-2. **Periodic produced-witness debts — OPEN / M5.** Relation-owner reorder is M5-CP1 mechanism + M5-CP3 direct-production proof; missing-owner typing is M5-CP2 mechanism + M5-CP3 production proof. The two `G4-B003` nonzero-Z4 debts are also M5-CP3-owned. Original discriminators remain unchanged.
+2. **Periodic produced-witness debts + publication — OPEN / M5.** All four M5 production debts remain CP3-owned. After the first CP3 artifact-only gate, independent Review must pre-commit exact successor-selector bytes/hash/owner census before a separate publication CB; only a subsequent full-selector TB + Review can close M5. `M5-CP2-TB1-REV-OBS-01` owns that precommitment. Original debt discriminators remain unchanged.
 
 3. **`G4-B002` produced closed-complex debt — OPEN / M6.** DEFN-R2 freezes M6-CP1 mechanism / M6-CP3 direct-production proof. Preserve the A5 occurrence-complex subject, independent eligibility oracle, hard-feature tamper, and fail-closed/no-recovery contract. Do not pull diagnostic `hasArrangement` backward into M4/M5.
 

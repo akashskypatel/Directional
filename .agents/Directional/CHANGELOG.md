@@ -1,3 +1,25 @@
+## 2026-09-20 — `M5-CP2-TB1-REV`: CP2 accepted; package promoted; M5 publication sequence frozen
+
+Runtime-free independent Review re-opens candidate `10601978228` / source `0798547d...`, compile run/job
+`35500960779 / 106052541163`, TB1 run/job `35504249045 / 106061268740`, and result/log artifacts
+`10603438015 / 10603642400`. Review independently re-hashes the candidate and manifests, re-sums focused **7/7**
+and selector430 **430/430** with exact-one/zero-skip across **437** fresh processes, re-hashes selector430/first427,
+and verifies exact immutable postflight plus benchmark/build side-effect count zero.
+
+All five CP2 failure classes are independently non-vacuous. `M5-CP2-CB1-OBS-01` is discharged: accepted row226
+preserves canonical relation ID while changing action/value, and its old downstream materializer-string rejection is
+now unreachable because the strengthened checked factory rejects the malformed pair earlier as exact typed
+`NonReciprocalPeriodicRelation`. Rows296/304 are strengthened typed checks; row221 was unchanged. No accepted-green
+loss occurs.
+
+Package `10601978228` is promoted under unchanged selector430 and **M5-CP2 closes**. Stable accounting remains
+**49 / 14 / 35**, debt **5**; all four M5 produced debts remain open. Frozen M5 §13 now states the reconciled exit
+theorem and a pre-publication sequence: CP3 first runs the nine reviewed M5 mechanism identities outside selector430
+plus new produced identities and selector430; its Review must pre-commit exact successor-selector bytes/hash/census
+before a separate publication CB, followed by a full published-selector TB + Review. The prior selector-governance
+observation is discharged into this normative sequence; `M5-CP2-TB1-REV-OBS-01` owns the future exact
+precommitment. Exact successor is `M5-CP3-CB1`.
+
 ## 2026-09-20 — `M5-CP2-TB1-EXEC`: focused 7/7 + selector430 430/430 mechanically green
 
 Artifact-only runtime run/job `35504249045 / 106061268740` completed successfully on immutable candidate artifact

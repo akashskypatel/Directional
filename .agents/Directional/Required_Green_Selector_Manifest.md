@@ -835,6 +835,8 @@ TB3 run/job `35470130614 / 105969470184` then executes the exact selector430 as 
 
 `M5-CP1-TB1-R3-REV` later promotes package `10600353027` / source `8a86710dd33d7b6cb9a077aef738577e4075b5f7` as the **current accepted runtime package under the same byte-frozen selector430** after focused 9/9 + selector430 430/430 artifact-only runtime and independent Review. Selector membership, ordering, hash and owner census are unchanged; this is package/CP1 promotion, not a selector append.
 
+`M5-CP2-TB1-REV` subsequently promotes package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` as the **current accepted runtime package under the same byte-frozen selector430** after focused 7/7 + selector430 430/430 artifact-only runtime and independent Review. Selector membership, ordering, LF hash `1c412850...9db6`, first427 prefix and owner census **31/283/75/41** are unchanged. M5 §13 now freezes the later CP3 publication sequence; no selector append occurs in CP2.
+
 ## Separate lineage — M1
 
 `M1_Full_Required_Green_Selector.txt` — **234** identities, LF SHA-256 `dd8ba17ccf67fd3d184ae87272b97028e1debf70b00eab262c3a2aae812de687`. This is the M1 milestone's full

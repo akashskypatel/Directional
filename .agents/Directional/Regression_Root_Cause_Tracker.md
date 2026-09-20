@@ -8857,8 +8857,7 @@ green row6 discharges no debt. See `[[M5-CP1-TB1-PREFLIGHT-REV-OBS-01]]`.
 
 ## `M5-CP1-TB1-R3-REV-OBS-01` — M5-CP1 closed with all of its own evidence outside the required-green selector
 
-**Status.** OPEN / NON-GATING FOR CP1 / must be closed before M5 closes / owner: the M5 turn that freezes
-publication (at latest `M5-CP3`) / NON-STABLE.
+**Status.** DISCHARGED at `M5-CP2-TB1-REV` / GOVERNANCE GAP FROZEN INTO NORMATIVE §13 / NON-STABLE.
 
 `M5-CP1` promoted accepted package `10600353027` while selector430 remained **430 rows, unchanged**. Verified:
 `grep -c '^M5CP1\.'` against `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` returns **0**, and no
@@ -8890,7 +8889,7 @@ are unstated.
 
 ## `M5-CP2-CB1-OBS-01` — accepted-selector assertion relocation audit
 
-**Status.** CORRECTED / REPORT MAPPING COMPLETE / REVIEW PENDING / NON-GATING / NON-STABLE.
+**Status.** DISCHARGED at `M5-CP2-TB1-REV` / ACCEPTED-BOUNDARY RELOCATION VERIFIED / NON-GATING / NON-STABLE.
 
 `M5-CP2-CB1` (`0798547d`) implements the typed relation failure matrix. All 17 test-file deletions were audited
 and the change is overwhelmingly a **strengthening**: generic string failure checks
@@ -8960,3 +8959,24 @@ the intended accepted assertion. That is a Review judgment, not a runtime-pass i
 `M5-CP1-TB1-R3-REV-OBS-01` also remains OPEN: selector430 is still byte-frozen and the newly authored CP1/CP2
 mechanism identities remain outside the cumulative gate. No produced-witness debt is discharged by this direct/helper
 runtime evidence. Exact successor is `M5-CP2-TB1-REV`.
+
+
+## `M5-CP2-TB1-REV` — CP2 accepted; no stable regression; exact publication precommitment carried
+
+**Status.** COMPLETE / CP2 CLOSED / +0 STABLE ACCOUNTING / package `10601978228` promoted.
+
+Independent Review re-derives candidate/package/manifests, focused **7/7**, selector430 **430/430**, exact-one and zero-skip across **437** processes, exact immutable postflight, the five one-fact typed relation failures and the accepted-row mapping. Row226's semantic contract is preserved: canonical relation ID remains fixed while transport/value is tampered, and the malformed draft now rejects earlier at the checked phase-front boundary as typed `NonReciprocalPeriodicRelation`; the old downstream materializer-string locus is unreachable through successful checked construction. This is strengthening, not accepted-green loss. `M5-CP2-CB1-OBS-01` is discharged.
+
+No semantic RED exists and no accepted behavior is lost. Stable accounting remains **49 events / 14 categories / 35 recurrences** and produced-witness debt remains **5**. CP2 grants mechanism credit only.
+
+`M5-CP1-TB1-R3-REV-OBS-01` is discharged as a governance gap because `Architecture_M5_Frozen_Definitions.md` §13 now freezes when and how M5 identities publish: selector430 is the byte-frozen prefix through CP3 implementation/first runtime; the pre-publication Review must commit exact successor-selector bytes/order/hash/owner census before a separate publication CB; full published-selector runtime + Review is mandatory before M5 closure.
+
+## `M5-CP2-TB1-REV-OBS-01` — exact M5 selector publication precommitment
+
+**Status.** OPEN / NON-STABLE / owner: `M5-CP3-TB1-REV` / must close before any M5 selector publication CB.
+
+The governance sequence is now frozen, but the final CP3 produced identities do not exist in compiled reviewed form yet. Therefore this Review deliberately does **not** invent their successor-selector digest or owner census. After CP3-CB1 authors and compiles the exact six `M5CP3.Produced...` identities and CP3-TB1 executes them together with the nine known outside-selector M5 mechanism identities plus selector430, `M5-CP3-TB1-REV` must freeze the exact publication bytes/order, LF SHA-256, selector430 prefix hash and complete owner census **before** authorizing publication Code + Build.
+
+**Falsifier / stop rule:** if any proposed publication identity was not independently reviewed green on the exact candidate, if selector430 is not the byte-identical prefix, if an identity is renamed/reordered after the digest is computed, or if the owner census does not sum to the exact successor row count, publication is not authorized. The publication CB may not repair the list post hoc.
+
+This obligation replaces the now-discharged absence-of-publication-sequence gap; it is a concrete future precommitment with a named owner and timing boundary.

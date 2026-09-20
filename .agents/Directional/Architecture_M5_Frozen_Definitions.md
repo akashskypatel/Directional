@@ -1,6 +1,6 @@
 # M5 Frozen Definitions — Certificate-Carrying Chart and Quotient Relations
 
-**Status:** FROZEN / `M5-DEFN` COMPLETE / EXACT NEXT = `M5-CP1-CB1` / RUNTIME-FREE
+**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 CLOSED / EXACT NEXT = `M5-CP3-CB1` / RUNTIME-FREE REVIEW AMENDMENT 2026-09-20
 **Date:** 2026-09-19
 **Definition authority:** this record is the normative M5 contract for canonical periodic-relation identity, producer-selected relation-path certificates, consumer validation, failure ownership, and the CP1/CP2/CP3 split. It refines `DESIGN.md` §14 M5 without changing accepted M4 semantics or M6 occurrence-complex ownership.
 
@@ -207,11 +207,11 @@ M6 retains the separate closed candidate-bearing-complex `G4-B002` debt. M5 may 
 
 ## 9. Checkpoint split
 
-### `M5-CP1` — canonical identities and selected certificates
+### `M5-CP1` — canonical identities and selected certificates — **CLOSED / ACCEPTED**
 
 Implement the non-ordinal `PeriodicRelationId`, preserve it through aggregation, permit multiple distinct same-region relations when their canonical path identities differ, publish producer-selected path certificates, and convert the known downstream reachability consumer to certificate validation. Author/compile focused mechanism coverage for relation-order invariance, exact path retention, certificate composition, and semantic discrimination. Do not claim the production debt yet.
 
-### `M5-CP2` — typed relation failures
+### `M5-CP2` — typed relation failures — **CLOSED / ACCEPTED at `M5-CP2-TB1-REV`**
 
 Complete the five-class relation failure matrix with independent negative oracles. Missing/duplicate/conflicting/nonreciprocal/representation-renumbered failures must reject at the named authority boundary without repair. This checkpoint supplies the mechanism credit for `MissingPeriodicRelationOwnerIsRejected` but not its production debt.
 
@@ -232,11 +232,11 @@ All `M5-DEFN` stop rules are resolved:
 
 **Decision:** `approved_with_amendments`. The milestone split is preserved, but relation identity is explicitly separated from relation transport/value so transform tamper becomes a conflict on one stable semantic relation rather than a new identity.
 
-## 11. Exact successor
+## 11. Current exact successor
 
-**`M5-CP1-CB1`** under `Architecture_M5_CP1_Code_Build_Plan.md`.
+**`M5-CP3-CB1`** under `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md`.
 
-It is a Code + Build turn: implementation/test-definition changes and compile-only verification are authorized exactly as that plan states. Directional runtime tests and benchmarks remain forbidden until the successor Test + Benchmark turn.
+It is a Code + Build turn implementing the direct-production M5 exit evidence on the accepted row408-class torus. It is compile/package only with mandatory GMP and `runtimeExecution=false`; selector430 is byte-frozen and no Directional runtime is authorized in CB1.
 
 ## 12. Supersession and citation map
 
@@ -251,7 +251,57 @@ This record supersedes the consumed `Architecture_M5_DEFN_Definition_Plan.md` as
 | producer/consumer cutover | this record §5 |
 | typed failure matrix | this record §6 |
 | invariance | this record §7 |
-| exact next implementation | `Architecture_M5_CP1_Code_Build_Plan.md` |
+| exact next implementation | `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md` |
+
+
+## 13. CP2 Review amendment — M5 exit theorem and selector publication sequence
+
+This section is a runtime-free normative reconciliation recorded by `M5-CP2-TB1-REV`. It does not weaken §§3-9.
+
+### 13.1 Reconciled M5 exit theorem
+
+M5 may close only when **all** of the following are true on one reviewed authority chain:
+
+1. `DESIGN.md` §14 M5: exact producer-selected relation paths are retained and independently verified;
+2. adding an independently valid but unused relation does not alter the selected certificate or accepted output semantics;
+3. missing, duplicate, conflicting, nonreciprocal and representation-renumbered relation states reject with the frozen typed CP2 outcomes and no repair;
+4. torus lineage and quotient acceptance are direct **production** evidence, not direct/draft/helper substitution;
+5. all four §8.2 M5 debts are discharged on the accepted row408-class produced torus, retaining the `>=2` distinct produced relations / `>=2` owned periodic edges discriminator and a genuinely nonzero-Z4 rotation+translation subject;
+6. CP1/CP2 mechanism evidence remains required-green after CP3 changes; direct/helper rows receive no produced-witness credit;
+7. the cumulative selector containing the reviewed M5 mechanism/production identities has been published only after exact pre-commitment, executed completely artifact-only, and independently reviewed green.
+
+The final M5 Review must explicitly check every conjunct. It may not infer one from another.
+
+### 13.2 Nine reviewed M5 mechanism identities outside selector430
+
+Selector430 remains the accepted byte-frozen prefix. The following already-reviewed-green CP1/CP2 mechanism identities are outside it and must be re-proved in the CP3 pre-publication focused gate, then included in the reviewed publication set unless a later independent Review records a concrete supersession:
+
+1. `SurfaceCellsPhase10.PeriodicHolonomyReverseDescriptionCanonicalizesWithoutDuplicateGenerator`
+2. `SurfaceCellsPhase10.PeriodicHolonomySameRegionTopologyDistinctRelationsAreRetained`
+3. `M5CP1.ComponentAggregationPreservesCanonicalPeriodicRelationIdWithoutOffsetRemap`
+4. `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation`
+5. `M5CP1.UnusedValidPeriodicRelationDoesNotChangeSelectedCertificate`
+6. `M5CP1.AlteredSelectedRelationTransformFailsCertificateValidation`
+7. `SurfacePhaseFrontProductFactoryAuthority.ConflictingPeriodicRelationValueRejectsAtCheckedFactory`
+8. `SurfacePhaseFrontProductFactoryAuthority.NonReciprocalPeriodicRelationRejectsAtCheckedFactory`
+9. `SurfacePhaseFrontProductFactoryAuthority.RepresentationRenumberedPeriodicRelationRejectsAtCheckedFactory`
+
+Existing selector430 rows that already cover related CP1/CP2 behavior remain in-place and are not duplicated.
+
+### 13.3 Publication sequence — frozen before CP3 implementation
+
+1. **`M5-CP3-CB1`** implements direct production and authors the exact CP3 production identities while selector430 remains byte-identical. No runtime.
+2. **`M5-CP3-TB1-EXEC`** executes, artifact-only, the nine §13.2 identities + the exact new CP3 produced identities + selector430. This is pre-publication evidence; it does not mutate the selector.
+3. **`M5-CP3-TB1-REV`** independently adjudicates the mechanism/produced split and, only if green, pre-commits the exact successor selector bytes/order, LF SHA-256, exact selector430 prefix hash and complete owner census. This pre-commitment is mandatory and must exist **before** publication Code + Build.
+4. A separate **publication Code + Build** may write only the pre-committed selector bytes, compile/package the unchanged reviewed semantics with mandatory GMP, and execute no Directional runtime.
+5. A subsequent artifact-only **full published-selector Test + Benchmark** executes every published row as a fresh exact-filter process with exact-one selection/zero-skip and immutable postflight.
+6. A final independent Review may close M5 only after re-hashing the published selector/prefix, re-deriving its owner census, independently accepting the full runtime evidence, and proving every §13.1 exit conjunct.
+
+The publication CB may not choose or reorder identities after seeing build/runtime outcomes. Exact successor-selector hash/census authority is owned by the preceding Review, not the publication implementation turn.
+
+### 13.4 Mechanism versus produced naming boundary
+
+CP3 production tests use the `M5CP3.Produced...` namespace frozen by the CP3-CB1 plan. They must not reuse the exact names of accepted direct/helper debt rows 218/220/221/226. A green direct/helper row remains mechanism evidence only; a produced row earns production credit only after independently proving its row408-class production precondition.
 
 ---
 
