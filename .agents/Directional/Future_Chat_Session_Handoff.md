@@ -18,6 +18,44 @@ Complete the frozen five-class relation failure matrix at the checked phase-fron
 
 Stop rather than invent ordinal identity or an unchecked test-only constructor if representation-renumbering cannot be represented through a checked declared/reference boundary.
 
+### In-flight turn state (review-agent determination, 2026-09-20)
+
+`M5-CP2-CB1` is **IN_PROGRESS**. Implementation landed in `0798547d` (typed periodic relation failure matrix:
+`SurfaceCellTracing.h/.cpp` plus `tests/SurfaceCellTransitionQuotientTests.cpp`, 321 insertions / 22 deletions)
+and a compile has been triggered. No Code + Build report exists yet. **Do not re-plan or re-issue this turn** —
+read the compile outcome and record it.
+
+**Turn boundary verified intact.** Diffing the full range since the CP1 review shows only the CP2 seam
+(`SurfaceCellTracing.h/.cpp`), its tests, `.agents/connector-triggers/…`, `.github/workflows/m5-cp2-cb1-compile.yml`
+and `STATUS`. No selector, fixture, benchmark or CMake change. Accepted authority is untouched: package
+`10600353027` / selector430 **430/430**; accounting **49 / 14 / 35**, debt **5**.
+
+**The work is a strengthening, not a weakening — with one item the CB report must demonstrate.** All 17 test-file
+deletions were audited. Generic string failure checks (`EXPECT_EQ("InvalidPeriodicRelation", …)`,
+`EXPECT_EQ("InvalidPeriodicFrontTransport", …)`) are replaced by typed
+`SurfacePhaseFrontProductErrorCode` assertions via `expect_phase_front_product_error(...)` at the phase-front
+product boundary — exactly CP2's charter to reject typed at the named authority boundary. `TamperedFullPeriodic
+TransformIsRejected` additionally gained `EXPECT_EQ(originalId, value->id())`, proving the tamper keeps the same
+identity, which is what keeps that discriminator non-vacuous.
+
+The item needing proof: **accepted selector430 row 221**,
+`SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, lost
+`EXPECT_EQ("InvalidPeriodicRelation", materialized.failure)` and now carries **14 purely positive** invariance
+assertions with no rejection check. That is consistent with relocating the negative into the dedicated typed
+tests, which is CP2's design — but it is an **accepted, permanently-gated row losing a negative assertion**, so
+the relocation must be shown, not assumed.
+
+**Required of the `M5-CP2-CB1` report, and of the Review that follows it:** for every assertion removed from an
+accepted selector430 row, name the typed assertion that now covers it and where that assertion lives. Note that
+`SwappedPeriodicRelationOwnersAreRejected` — which received one of the typed replacements — is **not** in
+selector430 (`SurfacePhaseFrontProductFactoryAuthority` has 11 accepted rows, but the new bodies are not among
+them). Coverage moving from a protected row into unprotected ones is a net reduction in *gated* coverage even
+when authored coverage rises.
+
+That makes `M5-CP1-TB1-R3-REV-OBS-01` concrete rather than theoretical: with no M5 selector publication sequence
+frozen, CP2 is actively relocating negative coverage out of the required-green set. Freezing when CP1/CP2
+identities are appended is now the practical priority, not a bookkeeping nicety.
+
 ## Carried obligations
 
 - `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` remains **OPEN / M5-CP3-owned**: produced re-proof identities must be distinguishable from accepted direct/helper rows whose names match the four open M5 debts, and the governing M5 closure authority must preserve the mechanism/produced split.

@@ -1,3 +1,36 @@
+## 2026-09-20 — next-step determination: `M5-CP2-CB1` in flight; accepted-row assertion audit
+
+Runtime-free. `M5-CP2-CB1` is **IN_PROGRESS**: implementation landed in `0798547d` (typed periodic relation
+failure matrix — `SurfaceCellTracing.h/.cpp` plus its tests, 321 insertions / 22 deletions) and a compile is
+triggered; no Code + Build report exists yet. Determination recorded in the handoff: **do not re-plan or
+re-issue** — read the compile outcome and record it.
+
+**Turn boundary verified intact.** The full range since the CP1 review touches only the CP2 seam, its tests,
+connector triggers, the compile workflow and `STATUS` — no selector, fixture, benchmark or CMake change. Accepted
+authority untouched at package `10600353027` / selector430 **430/430**; accounting **49 / 14 / 35**, debt **5**.
+
+All 17 test-file deletions were audited. The change is overwhelmingly a **strengthening**: generic string failure
+checks are replaced by typed `SurfacePhaseFrontProductErrorCode` assertions via
+`expect_phase_front_product_error(...)` at the phase-front product boundary, and
+`TamperedFullPeriodicTransformIsRejected` additionally gained `EXPECT_EQ(originalId, value->id())`, proving the
+tamper preserves identity — the property that keeps that discriminator non-vacuous.
+
+New: `M5-CP2-CB1-OBS-01`. **Accepted selector430 row 221** lost
+`EXPECT_EQ("InvalidPeriodicRelation", materialized.failure)` and now carries 14 purely positive assertions with
+no rejection check. Relocating that negative into dedicated typed tests is CP2's design and is probably what
+happened — but an accepted, permanently-gated row losing a negative assertion must be **shown, not assumed**.
+The destinations are partly unprotected: `SwappedPeriodicRelationOwnersAreRejected` is not in selector430, and
+the new `SurfacePhaseFrontProductFactoryAuthority` bodies are not among that suite's 11 accepted rows. The CB
+report must map every removed assertion to its typed replacement and location; the following Review verifies it
+from bytes.
+
+This makes `M5-CP1-TB1-R3-REV-OBS-01` concrete rather than theoretical: with no M5 selector publication sequence
+frozen, CP2 is actively relocating negative coverage out of the required-green set. Freezing when CP1/CP2
+identities are appended is now the practical priority.
+
+`STATUS` left at `IN_PROGRESS` with empty `Resumed at`/`Ended at` — correct for an in-flight turn; no timestamps
+were fabricated for a turn this agent did not resume.
+
 ## 2026-09-20 — `M5-CP1-TB1-R3-REV` review: CP1 closure upheld; selector-publication gap recorded
 
 Runtime-free review. **Upheld — `M5-CP1` closure and promotion confirmed on evidence.** Accounting holds at

@@ -8887,3 +8887,37 @@ document.
 Same gap as `[[M5-DEFN-REV-OBS-01]]` from another side: M5's governing document carries neither an exit theorem
 nor a publication sequence, so both the conditions for closing M5 and the mechanism for protecting what it proves
 are unstated.
+
+## `M5-CP2-CB1-OBS-01` — an accepted selector row lost a negative assertion; the relocation must be demonstrated
+
+**Status.** OPEN / NON-GATING / owner: the `M5-CP2-CB1` report and the Review that follows it / NON-STABLE.
+
+`M5-CP2-CB1` (`0798547d`) implements the typed relation failure matrix. All 17 test-file deletions were audited
+and the change is overwhelmingly a **strengthening**: generic string failure checks
+(`EXPECT_EQ("InvalidPeriodicRelation", …)`, `EXPECT_EQ("InvalidPeriodicFrontTransport", …)`) are replaced by
+typed `SurfacePhaseFrontProductErrorCode` assertions via `expect_phase_front_product_error(...)` at the
+phase-front product boundary, which is exactly CP2's charter. `TamperedFullPeriodicTransformIsRejected` also
+gained `EXPECT_EQ(originalId, value->id())`, proving the tamper preserves identity — the property that keeps that
+discriminator non-vacuous.
+
+One item does not follow automatically. **Accepted selector430 row 221**,
+`SurfaceCellTransitionQuotient.PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`, lost
+`EXPECT_EQ("InvalidPeriodicRelation", materialized.failure)` and now carries **14 purely positive** invariance
+assertions with no rejection check.
+
+**Why:** relocating that negative into dedicated typed tests is CP2's design and is probably what happened — but
+row 221 is an **accepted, permanently required-green** identity, and an accepted row losing a negative assertion
+is the `RP-02 TEST_AUTHORITY_COVERAGE_GAP` shape. It must be shown, not assumed. The destinations matter too:
+`SwappedPeriodicRelationOwnersAreRejected`, which received one of the typed replacements, is **not** in
+selector430, and the new `SurfacePhaseFrontProductFactoryAuthority` bodies are not among that suite's 11 accepted
+rows. Coverage moving from a gated row into ungated ones reduces *protected* coverage even while authored
+coverage rises.
+
+**How to apply:** the `M5-CP2-CB1` report must list, for every assertion removed from an accepted selector430
+row, the typed assertion that now covers it and where that assertion lives; the following Review verifies that
+mapping from bytes rather than accepting it. If any removed negative has no replacement, it is a weakening of an
+accepted identity and must be restored.
+
+This makes `[[M5-CP1-TB1-R3-REV-OBS-01]]` concrete: with no M5 selector publication sequence frozen, CP2 is
+actively relocating negative coverage out of the required-green set. Freezing when CP1/CP2 identities are
+appended is now the practical priority.
