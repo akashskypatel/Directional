@@ -73,11 +73,13 @@ jobs:
           python3 - "$harness" "$template" <<'PY'
           import pathlib, re, sys
           text = "\n".join(pathlib.Path(p).read_text() for p in sys.argv[1:])
-          vals = re.findall(r'(?i)(?:sha256|sha|digest)[A-Z0-9_:-]*[=: ]+["\x27]?([0-9a-f]{32,64})', text)
-          bad = [v for v in vals if len(v) != 64 or re.fullmatch(r'[0-9a-f]{64}', v) is None]
-          if bad:
-              raise SystemExit(f"invalid digest literal(s): {bad}")
-          print(f"digest_literals_checked={len(vals)}")
+          vals = []
+          vals += re.findall(r"\\b[A-Z][A-Z0-9_]*SHA256\\b\\s*=\\s*['\"]([0-9a-f]+)['\"]", text)
+          vals += re.findall(r"(?m)^\\s*[A-Z][A-Z0-9_]*SHA256:\\s*([0-9a-f]+)\\s*$", text)
+          bad = [v for v in vals if re.fullmatch(r'[0-9a-f]{64}', v) is None]
+          if not vals or bad:
+              raise SystemExit(f"invalid SHA-256 literal(s): count={len(vals)} bad={bad}")
+          print(f"sha256_literals_checked={len(vals)}")
           PY
 
           gzip -n -9 -c "$harness" > "${RUNNER_TEMP}/harness.gz"
