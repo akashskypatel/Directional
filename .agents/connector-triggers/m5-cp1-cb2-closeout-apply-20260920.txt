@@ -1,5 +1,0 @@
-purpose=M5-CP1-CB2 durable closeout apply
-caller_commit=e42e3b8743ce9feb56300ceb7b8be88aecd0be60
-patch_file_id=17C9wpgdJsYKe5SfIS2iE13q3ZH34FTTu
-patch_sha256=1889b931c5d4ca861a9ec067e75847559acd712e40795993b9c49f53cd42a9ba
-base_sha=8a0c9a13ad9e0587ea34931769740b33339bd791
