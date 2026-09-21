@@ -1,3 +1,13 @@
+## 2026-09-21 — `M5-CP3-TB1-R3-CAND-01`: raw transition correction is unreachable after production atlas cutover — **IMPLEMENTATION AUTHORITY / RP-01 RECURRENCE / MERGED / RECOVERY REQUIRED**
+
+- **Candidate/runtime:** artifact/source `10624020011 / 6dd0e5179686a4ea2ca4aacda0577855948864df`; R3 run/job `35565176454 / 106225476682`; result/log `10623878370 / 10624252516`; self-manifest **908/908**.
+- **Observed gate:** mechanism **9/9 PASS**; produced **0/6 PASS** with shared `PeriodicHolonomyMismatch`; selector430 **429/430 PASS**, sole RED ordinal408 receiving `Rejected` instead of required `Produced`; exact-one/zero-skip and immutable postflight hold across all 445 processes.
+- **Root cause:** production constructs `FieldTransportAtlas` and then intentionally suppresses raw `CrossFieldResult::{matching,effort,edgeTransitions}` ingress. CB4's generator helper requires non-null raw `edgeTransitions`, so it fails before its exact raw edge/face-pair validation can run. The right transition datum exists upstream but CB4 reads it through an authority path that production has deliberately cut off.
+- **Classification/accounting:** same `RP-01 / AUTHORITY_DOMAIN_CONFLATION` family and same already-recorded accepted ordinal408 PASS→RED event as R1. R3 is a failed recovery, not another accepted-green→RED transition: **+0 events / +0 categories / +0 recurrences**. Totals remain **50 / 14 / 36**, debt **5**.
+- **Falsifier / recovery:** `M5-CP3-CB5` must retain uniquely validated interior-edge transition values inside immutable `FieldTransportAtlas`, separately from traversable adjacency, include them in atlas semantic identity, and make the exact A3 generator route query that atlas-owned value. Hard features remain nontraversable; raw production transition ingress and fallback search are forbidden.
+- **Owner/prohibitions:** owner `M5-CP3-CB5`; no test/fixture/selector/frozen-definition change, candidate promotion, debt credit, selector publication, hard-feature adjacency widening or dual raw+atlas production authority.
+- **Carried observation:** `M5-CP3-TB1-R2-REV-OBS-01` remains open/refined because CB4's exact edge/face-pair checks are present but unreachable on production; the next corrected Review must prove those validations live at the atlas construction seam and the production consumer reads the resulting immutable fact.
+
 ## 2026-09-21 — `M5-CP3-TB1-R3-CAND-01`: CB4 hard-feature transition correction does not recover frozen torus endpoint — **EXECUTION EVIDENCE / SEMANTIC RED / REVIEW PENDING**
 
 - **Candidate:** artifact `10624020011` / semantic source `6dd0e5179686a4ea2ca4aacda0577855948864df`.

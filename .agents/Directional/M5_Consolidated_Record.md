@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R3-EXEC`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R3-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -51,14 +51,23 @@ R2 candidate `M5-CP3-TB1-R2-CAND-01` is **IMPLEMENTATION AUTHORITY / HARD-FEATUR
 
 Mandatory GMP run/job `35564191247 / 106222789039` compiles all eight standard targets with preflight/build `0 / 0`, explicit GMPXX+GMP, clean source receipts and `runtimeExecution=false`. Candidate artifact `10624020011` has provider SHA-256 `eeba51295d20082c8f20840b3f3b280d6b6012a1178eef2bd3eb5afbfd1a0ed6`, root manifest **28/28** at `a9ccee0d830768e1d91239741bba67f4912fe86efe12cca8ddd3a13cf50f4177`, and log artifact `10623905213` / `8e58b782ebe544e8b082e3c81b6e3634fc54de420acfe9a38a6a0d08a04a76ed`. This candidate is compile-only, runtime-unproven and unpromoted; accounting remains **50 / 14 / 36**, debt **5**.
 
-Fresh R3 run/job `35565176454 / 106225476682` consumes that CB4 candidate exactly and completes all **445** frozen exact-filter processes with exact-one/zero-skip and immutable postflight. The vector remains **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**; all six produced rows report `PeriodicHolonomyMismatch`, and accepted ordinal408 again receives `Rejected` instead of required `Produced`. Result/log artifacts are `10623878370 / 10624252516`, result self-manifest **908/908**, and all prohibited-operation counters including benchmark execution remain zero. The candidate remains unpromoted; stable accounting remains **50 / 14 / 36**, debt **5**, pending independent Review.
+Fresh R3 run/job `35565176454 / 106225476682` consumes that CB4 candidate exactly and completes all **445** frozen exact-filter processes with exact-one/zero-skip and immutable postflight. The vector remains **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**; all six produced rows report `PeriodicHolonomyMismatch`, and accepted ordinal408 again receives `Rejected` instead of required `Produced`. Result/log artifacts are `10623878370 / 10624252516`, result self-manifest **908/908**, and all prohibited-operation counters including benchmark execution remain zero.
 
-Exact successor is runtime-free **`M5-CP3-TB1-R3-REV`**. Review must independently verify R3 evidence, adjudicate why CB4 did not recover production and decide stable-event/accounting disposition before any further implementation, rerun, promotion, debt credit or selector publication.
+`M5-CP3-TB1-R3-REV` independently upholds those bytes and proves why CB4 is unreachable in production. The production pipeline builds and installs immutable `FieldTransportAtlas`, then the `CrossFieldResult` surface-cell overload intentionally passes raw matching/effort/edge-transition pointers as null; raw containers are legacy/test ingress after the atlas cutover. CB4's generator helper requires raw `edgeTransitions`, so it fails before its new exact edge/face-pair checks can run. This is another `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recovery failure: the correct transition value is read through an authority path production has intentionally retired.
+
+`M5-CP3-TB1-R3-CAND-01` is merged into the existing stable R1 event with **+0** accounting. Totals remain **50 / 14 / 36**, debt **5**. Candidate `10624020011` remains unpromoted; accepted package stays `10601978228` under selector430 **430/430**; all four M5 produced debts remain open and selector publication remains prohibited.
+
+Exact successor is runtime-free **`M5-CP3-CB5`** under `Architecture_M5_CP3_CB5_Atlas_Barrier_Transition_Value_Cutover_Correction_Plan.md`: retain uniquely validated interior-edge transition values inside immutable atlas authority independently of traversability, keep hard features nontraversable, include the retained facts in atlas semantic identity, and consume that atlas-owned value from the exact A3 generator carrier. Compile-green CB5 routes to fresh 445-process R4.
 
 ## 5. Folded-document index
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_CB4_Code_Build_Report.md` (106 lines) | **SUPERSEDED BUILD REPORT / FOLDED BY `M5-CP3-TB1-R3-REV`.** CB4 source/artifact/compile identities and exact raw-transition implementation are retained in current R3 Review, this record, changelog and git history. |
+| `Architecture_M5_CP3_CB4_Hard_Feature_Transition_Transport_Correction_Plan.md` (130 lines) | **CONSUMED CORRECTION PLAN / FOLDED BY `M5-CP3-TB1-R3-REV`.** Its exact-carrier/raw-transition intent and stop rules are retained in current R3 Review; successor authority is CB5. |
+| `Architecture_M5_CP3_TB1_R2_Artifact_Only_Test_Benchmark_Report.md` (148 lines) | **SUPERSEDED RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R3-REV`.** R2 vector and immutable evidence remain in tracker, current Review, this record and git history. |
+| `Architecture_M5_CP3_TB1_R2_Review_Record.md` (200 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP3-TB1-R3-REV`.** Hard-feature traversal-vs-transition diagnosis, R2 accounting and carried observations remain in current Review/tracker/this record. |
+| `Architecture_M5_CP3_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md` (147 lines) | **CONSUMED R3 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R3-REV`.** Candidate/routing/selector hashes, 445-process gate and immutable-boundary requirements remain in current R3 runtime report/Review. |
 | `Architecture_M5_CP3_CB3_Code_Build_Report.md` (91 lines) | **SUPERSEDED BUILD REPORT / FOLDED BY `M5-CP3-TB1-R2-REV`.** Candidate `10620415471` compile/package identities and exact-span implementation outcome remain in current R2 Review, this record, changelog and git history. |
 | `Architecture_M5_CP3_CB3_Exact_Span_Transport_Correction_Plan.md` (110 lines) | **CONSUMED CORRECTION PLAN / FOLDED BY `M5-CP3-TB1-R2-REV`.** Its exact-span requirement, transition-lookup allowance and stop rules remain in current Review/this record; successor plan is CB4. |
 | `Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Report.md` (139 lines) | **SUPERSEDED RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R2-REV`.** R1 vector, artifact authority and accepted-prefix regression remain in tracker, current Review, this record and git history. |
