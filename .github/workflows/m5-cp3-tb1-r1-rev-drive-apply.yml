@@ -43,6 +43,6 @@ jobs:
       patch_sha256: 1aa3e41760d3722eb1c03573422cbe4bab4e38f9cc3e6884b82f15e325a334e4
       base_sha: 36ac4859193b6fb217f9f50aae21f28cb5da54fa
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: complete M5-CP3-TB1-R1 independent review
+      commit_message: "docs: complete M5-CP3-TB1-R1 independent review"
       retention_days: 7
     secrets: inherit
