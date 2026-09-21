@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M5-CP3-TB1-R6-EXEC artifact-only execution planning and durable closeout.
-Base authority before trigger: a2c8969b44d21153535f6897379e42f4efdcbd88
-Runtime execution: false
