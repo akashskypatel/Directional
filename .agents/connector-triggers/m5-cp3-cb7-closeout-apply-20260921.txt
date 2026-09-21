@@ -1,4 +1,0 @@
-Purpose: apply verified M5-CP3-CB7 closeout documentation patch from Google Drive.
-Patch base: 42e3ecb0991c9a5e2081d18f4fe3ba43c64f9e7b
-Patch SHA-256: 6f8dda470bc5758de32d7dfe3e4fff6e8c5a3fa53bea21fae6bee9f1839579ad
-Retry: 0
