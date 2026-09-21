@@ -11652,6 +11652,14 @@ bool orient_and_validate_phase_front_cell(
 
 } // namespace
 
+struct AcceptedCutBoundaryFaceAuthorityKey {
+  SurfaceBoundaryOccurrenceId occurrence;
+  authority::NetworkArcId span;
+  authority::SourceEdgeTopologyKey carrier;
+
+  auto operator<=>(const AcceptedCutBoundaryFaceAuthorityKey &) const = default;
+};
+
 struct SurfacePhaseFrontBuildState {
   SurfaceCellProducerDisposition disposition =
       SurfaceCellProducerDisposition::NotApplicable;
@@ -11665,6 +11673,8 @@ struct SurfacePhaseFrontBuildState {
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
   std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
   std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt;
+  std::map<AcceptedCutBoundaryFaceAuthorityKey, authority::SourceFaceId>
+      acceptedCutBoundaryFaceAuthority;
   SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
@@ -14278,6 +14288,21 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           segment.firstOccurrence);
       boundaryCycle.push_back(segment.firstOccurrence);
       boundarySegmentFaces.push_back(segment.sourceFace);
+      const AcceptedCutBoundaryFaceAuthorityKey faceAuthorityKey{
+          SurfaceBoundaryOccurrenceId{
+              segment.incidence.region,
+              segment.incidence.canonicalBoundaryOccurrenceOrdinal},
+          segment.arc, segment.edge};
+      const auto [faceAuthority, insertedFaceAuthority] =
+          result.acceptedCutBoundaryFaceAuthority.emplace(faceAuthorityKey,
+                                                          segment.sourceFace);
+      if (!insertedFaceAuthority && faceAuthority->second != segment.sourceFace) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
       boundaryAcceptedSegments.push_back(segment);
     }
     for (std::size_t index = 0U; index < acceptedSegments.size(); ++index) {
@@ -16740,6 +16765,18 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       anyProduced = true;
       result.gridU = std::max(result.gridU, local.gridU);
       result.gridV = std::max(result.gridV, local.gridV);
+      for (const auto &[key, sourceFace] :
+           local.acceptedCutBoundaryFaceAuthority) {
+        const auto [faceAuthority, insertedFaceAuthority] =
+            result.acceptedCutBoundaryFaceAuthority.emplace(key, sourceFace);
+        if (!insertedFaceAuthority && faceAuthority->second != sourceFace) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+      }
       for (SurfacePeriodicHolonomy relation : local.periodicHolonomies) {
         const auto insertion = insert_periodic_holonomy(
             result.periodicHolonomies, std::move(relation));
@@ -16966,8 +17003,10 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   };
 
   const auto generator_route_for_span = [&](
-      const authority::NetworkArcId span, const int fromFace,
-      const int toFace) -> std::optional<authority::CanonicalRoute> {
+      const authority::NetworkArcId span,
+      const SurfaceBoundaryOccurrenceId &fromOccurrence,
+      const SurfaceBoundaryOccurrenceId &toOccurrence)
+      -> std::optional<authority::CanonicalRoute> {
     if (options.globalTopologyPlan == nullptr ||
         options.fieldTransportAtlas == nullptr) {
       return std::nullopt;
@@ -16978,12 +17017,6 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         !authority::exact_source_path_is_canonical(arc->sourcePath)) {
       return std::nullopt;
     }
-    const auto typedFromFace = authority::SourceFaceId::from_index(
-        fromFace, static_cast<std::size_t>(faces.rows()));
-    const auto typedToFace = authority::SourceFaceId::from_index(
-        toFace, static_cast<std::size_t>(faces.rows()));
-    if (!typedFromFace || !typedToFace) return std::nullopt;
-
     std::vector<authority::TransitionStep> steps;
     steps.reserve(arc->sourcePath.size());
     for (const authority::ExactSourceSupportPiece &piece : arc->sourcePath) {
@@ -17011,8 +17044,39 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
           transitionIndex->second, sourceMatchingIndices.size());
       if (!transition) return std::nullopt;
 
+      const auto fromFaceAuthority = result.acceptedCutBoundaryFaceAuthority.find(
+          AcceptedCutBoundaryFaceAuthorityKey{fromOccurrence, span,
+                                              carrier->edge});
+      const auto toFaceAuthority = result.acceptedCutBoundaryFaceAuthority.find(
+          AcceptedCutBoundaryFaceAuthorityKey{toOccurrence, span, carrier->edge});
+      if (fromFaceAuthority == result.acceptedCutBoundaryFaceAuthority.end() ||
+          toFaceAuthority == result.acceptedCutBoundaryFaceAuthority.end() ||
+          fromFaceAuthority->second == toFaceAuthority->second) {
+        return std::nullopt;
+      }
+      const auto incidentFaces = sourceEdgeFaces.find(carrier->edge);
+      if (incidentFaces == sourceEdgeFaces.end()) return std::nullopt;
+      const auto firstIncidentFace =
+          source_face_id(incidentFaces->second[0], faces.rows());
+      const auto secondIncidentFace =
+          source_face_id(incidentFaces->second[1], faces.rows());
+      if (!firstIncidentFace.has_value() || !secondIncidentFace.has_value() ||
+          firstIncidentFace == secondIncidentFace) {
+        return std::nullopt;
+      }
+      const std::array<authority::SourceFaceId, 2> resolvedFaces{
+          fromFaceAuthority->second, toFaceAuthority->second};
+      const std::array<authority::SourceFaceId, 2> carrierFaces{
+          *firstIncidentFace, *secondIncidentFace};
+      if (!((resolvedFaces[0] == carrierFaces[0] &&
+             resolvedFaces[1] == carrierFaces[1]) ||
+            (resolvedFaces[0] == carrierFaces[1] &&
+             resolvedFaces[1] == carrierFaces[0]))) {
+        return std::nullopt;
+      }
+
       const auto transitionValue = options.fieldTransportAtlas->transition_value(
-          carrier->edge, typedFromFace.value(), typedToFace.value());
+          carrier->edge, fromFaceAuthority->second, toFaceAuthority->second);
       if (!transitionValue.has_value()) return std::nullopt;
 
       authority::GridAutomorphism transport =
@@ -17162,7 +17226,9 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     SurfaceFrontEventKind mergeKind = SurfaceFrontEventKind::HardRailMerge;
     if (sameSourceRegion) {
       const auto generatorRoute = generator_route_for_span(
-          first.sharedBoundaryInterval->span, first.from.face, second.to.face);
+          first.sharedBoundaryInterval->span,
+          *first.sharedBoundaryInterval->boundaryOccurrence,
+          *second.sharedBoundaryInterval->boundaryOccurrence);
       if (!generatorRoute.has_value()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
