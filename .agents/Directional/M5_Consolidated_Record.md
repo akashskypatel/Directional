@@ -1,15 +1,25 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-CB9`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R8-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB9 compile green, R8 runtime next
+## Current CP3 authority — R8 mechanically complete, semantic RED, mandatory Review next
 
-R7 Review recovery-proved the stable generator-route RP-01 event, discharged the produced relation-owner/reorder and missing-owner debts, and proved the remaining rows4/5 plus row6 failures were non-stable witness-authority gaps. CB9 changes only `tests/SurfaceCellTransitionQuotientTests.cpp` to supply a deterministic source-authoritative nonzero-Z4 torus witness, independent exact directed A3/source-path oracle, rows4/5 binding to that witness, and a row6 relation independently required absent/unowned/unselected before insertion.
+R7 Review recovery-proved the stable generator-route RP-01 event and discharged two produced debts. CB9 then changed only test
+witness authority and compiled candidate `10660365136` / source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2`.
 
-Semantic commit `1907c26ed4de03b96c11e8f3500a65167bd2e42b` compiles/packages at exact source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2` as candidate `10660365136`. Mandatory run/job `35644260337 / 106480821581` builds all eight GMP/GMPXX targets with root manifest **28/28**, clean source status and `runtimeExecution=false`. Candidate remains unpromoted; the two M5 nonzero-Z4 debts and `M5-CP3-TB1-R6-REV-OBS-01` are correction-built/runtime-unadjudicated. Exact successor is immutable artifact-only `M5-CP3-TB1-R8-EXEC`, then mandatory Review.
+R8 run/job `35652063644 / 106506627509` consumes that candidate immutably across all **446/446** fresh exact filters at
+**9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430** with exact-one/zero-skip, benchmark 0 and exact
+postflight. Produced row6 now PASSes the corrected unused-relation witness. Rows4/5 both stop at
+`InvalidBoundedDiskChart` while constructing the nonzero production subject, before directed relation/materialization/tamper
+assertions. Result artifact `10662697929` self-manifest verifies **912/912**.
+
+Candidate remains unpromoted. Stable accounting remains **50 / 14 / 36**, project debt **3** and selector publication is
+prohibited. Exact successor is mandatory runtime-free `M5-CP3-TB1-R8-REV`, which owns the rows4/5 cause and row6 recovery
+adjudication.
+
 
 ## 1. `M5-DEFN` — definitions frozen
 

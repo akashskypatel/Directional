@@ -1,3 +1,40 @@
+## 2026-09-21 — `M5-CP3-TB1-R8-EXEC` witness-authority runtime evidence
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3 in EXEC.**
+
+R8 candidate `10660365136` / source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2` completes all **446/446** immutable
+processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip, benchmark 0,
+exact postflight and zero prohibited-operation counters. Runtime authority is run/job `35652063644 / 106506627509`; result
+artifact `10662697929` self-manifest verifies **912/912**.
+
+### `M5-CP3-TB1-R7-CAND-02` — nonzero source precondition advances; produced subject stops at `InvalidBoundedDiskChart`
+
+**Status:** OPEN / SEMANTIC RED / CAUSE UNADJUDICATED / NON-STABLE / OWNER R8 REVIEW / +0.
+
+Rows4/5 pass the CB9 helper's source-field/nonzero-hard-carrier gate but both throw
+`torus nonzero-Z4 source witness producer failed: InvalidBoundedDiskChart` before source/A3-selected directed relation
+publication, materialization, or transform tamper can execute. EXEC does not classify whether the authored witness is
+inadmissible or production is defective. The two nonzero-Z4 debts remain open and the direction observation is not satisfied.
+
+### `M5-CP3-TB1-R7-CAND-03` — corrected unused-relation witness passes runtime
+
+**Status:** OPEN / RUNTIME FALSIFIER PASS / REVIEW UNADJUDICATED / NON-STABLE / OWNER R8 REVIEW / +0.
+
+Produced row6 now PASSes end-to-end after independently proving the added relation absent from the table, unowned by phase-front
+edges and absent from the baseline selected certificate before insertion; the row then reaches successful baseline/extended
+materialization and its frozen invariance assertions. EXEC records recovery evidence only; mandatory Review owns closure.
+
+### Observation/debt disposition in EXEC
+
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / DIRECTED RELATION DISCRIMINATOR NOT REACHED / OWNER R8 REVIEW**.
+- `M5-CP2-TB1-REV-OBS-01`: **OPEN** because R8 is semantic RED; selector publication remains prohibited.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5** pending rows4/5 localization and a green produced proof.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**; tamper still not reached.
+- closed-complex produced witness: **OPEN / M6**.
+
+Accepted runtime package/source remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430
+**430/430**. Candidate `10660365136` remains unpromoted. Exact successor is mandatory `M5-CP3-TB1-R8-REV`.
+
 ## 2026-09-21 — `M5-CP3-CB9` produced-witness authority correction compile evidence
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**

@@ -1,3 +1,25 @@
+## 2026-09-21 — `M5-CP3-TB1-R8-EXEC`: row6 witness recovers; rows4/5 stop at `InvalidBoundedDiskChart`
+
+Immutable artifact-only R8 consumes CB9 candidate `10660365136` / source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2`.
+Runtime run/job `35652063644 / 106506627509` completes all **446/446** fresh exact-filter processes with exact-one/zero-skip and
+benchmark **0**. Frozen vector is mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **4/6 PASS**, selector430
+**430/430 PASS**. Produced row6 now passes the independently absent/unowned/unselected relation witness; rows1–3 remain green.
+
+Rows4/5 both fail earlier while constructing the new nonzero subject with exact exception
+`torus nonzero-Z4 source witness producer failed: InvalidBoundedDiskChart`. Control flow has passed the helper's nonzero row408
+hard-edge gate but does not reach the source/A3-selected directed relation, materialization or tamper discriminators. EXEC makes
+no causal classification. Accepted selector ordinal408 and protected 191/192/247 remain PASS.
+
+Result/log artifacts `10662697929 / 10662947670` hash to
+`7ad85812cba83c43d293e2c2eccb1fc7536d34115ec682e548c0911f7f643917 /
+87a09731e884023d3d1504940c24a3db21587ec58a8a192fb90833656686b632`. Result self-manifest verifies **912/912** at
+`f3ede0f999eb77b73abf71aa3729b5631fe627dffabc15c7755bc6faee9effcc`; package/source/execution-view postflight is exact and
+all prohibited-operation counters are zero.
+
+Candidate remains unpromoted. Stable accounting stays **50 / 14 / 36**, project debt **3**, and selector publication remains
+prohibited. Exact successor is mandatory runtime-free `M5-CP3-TB1-R8-REV`, which owns row6 recovery adjudication and localization
+of the rows4/5 `InvalidBoundedDiskChart` frontier.
+
 ## 2026-09-21 — `M5-CP3-CB9`: produced-witness authority correction compile green
 
 Runtime-free test-authority Code + Build. Semantic commit `1907c26ed4de03b96c11e8f3500a65167bd2e42b` changes only

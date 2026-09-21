@@ -8,12 +8,13 @@ R7 Review independently upholds the 446-process evidence, closes the stable R1 `
 non-stable test-authority defects, discharges two produced M5 debts, and freezes test-only CB9. Stable accounting remains
 **50 / 14 / 36**; project debt is **3**. Candidate `10651055588` remains unpromoted and selector publication is prohibited.
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R7-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R8-EXEC`
 
-R7 is mechanically complete at **9/9 mechanism + 1/1 focused atlas + 3/6 produced + selector430 430/430** over 446 fresh
-exact-one/zero-skip processes. Zero produced rows report `PeriodicGeneratorRouteUnavailable`; accepted ordinal408 is recovered.
-Finalized evidence artifact `10653953037` has complete self-manifest **918/918** at
-`3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`.
+R8 is mechanically complete at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430** over all 446 fresh
+exact-one/zero-skip processes. Produced row6 now PASSes the corrected unused-relation witness. Rows4/5 both stop at exact
+`InvalidBoundedDiskChart` while establishing the new nonzero-Z4 production subject, before directed-relation/materialization/tamper
+discriminators. Result artifact `10662697929` has complete self-manifest **912/912** at
+`f3ede0f999eb77b73abf71aa3729b5631fe627dffabc15c7755bc6faee9effcc`. Mandatory R8 Review owns cause/adjudication.
 
 ## Latest Code + Build turn — `M5-CP3-CB9`
 
@@ -29,20 +30,20 @@ root manifest **28/28**, explicit GMPXX+GMP, clean source status and `runtimeExe
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / CB9 WITNESS CORRECTION BUILT / RUNTIME UNADJUDICATED**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / CB9 WITNESS CORRECTION BUILT / RUNTIME UNADJUDICATED**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R8 RED AT `InvalidBoundedDiskChart` BEFORE MATERIALIZATION / REVIEW NEXT**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R8 RED AT `InvalidBoundedDiskChart` BEFORE TAMPER / REVIEW NEXT**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
-- [ ] `M5-CP3-TB1-R8-EXEC` — **EXACT NEXT**. Immutable same 446-process gate on candidate `10660365136`; require 9/9 + 1/1 + 6/6 + 430/430, independent nonzero direction oracle, exact immutable postflight.
-- [ ] `M5-CP3-TB1-R8-REV` — mandatory Review; only an all-green Review may discharge remaining M5 debts and pre-commit selector publication.
+- [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
+- [ ] `M5-CP3-TB1-R8-REV` — **EXACT NEXT / MANDATORY**. Independently adjudicate rows4/5 frontier and row6 recovery; no debt credit/promotion/publication before Review.
 - [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
 
 ## Current observations
 
 - [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
-- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / CB9 FALSIFIER COMPILED / RUNTIME UNADJUDICATED**. CB9 now supplies a genuine nonzero-Z4 source/A3 direction oracle; R8 must determine whether production agrees with that direction before any product correction.
-- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN** until first independently all-green corrected CP3 pre-publication Review freezes publication bytes/hash/census.
+- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / R8 DIRECTED-RELATION DISCRIMINATOR NOT REACHED**. R8 advances beyond the zero-Z4 precondition but rows4/5 stop at `InvalidBoundedDiskChart` before source/A3-selected product-direction comparison. R8 Review owns adjudication.
+- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R8 is still semantic RED, so no selector-publication precommitment exists.
 
 ## Deferred hygiene
 
@@ -68,7 +69,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB9 COMPILE GREEN / R8 EXEC NEXT**. Accepted runtime package remains `10601978228`. CB9 candidate `10660365136` / source `1023eea6090...` is compile-only and unpromoted; the R7 witness-authority gaps now have a bounded test-only correction, but the two M5 nonzero-Z4 debts remain runtime-unadjudicated. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-TB1-R8-EXEC`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R8 EXEC COMPLETE / SEMANTIC RED / R8 REVIEW NEXT**. Accepted runtime package remains `10601978228`. Candidate `10660365136` / source `1023eea6090...` is runtime-tested but unpromoted at **9/9 + 1/1 + 4/6 + 430/430**; row6 is green while rows4/5 stop at `InvalidBoundedDiskChart`. The two M5 nonzero-Z4 debts remain open. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-TB1-R8-REV`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
