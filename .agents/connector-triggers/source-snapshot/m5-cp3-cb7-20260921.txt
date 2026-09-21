@@ -1,3 +1,0 @@
-Purpose: source snapshot for M5-CP3-CB7.
-Semantic source before trigger: 3e5d134df390ac54d4ee8731061270c9287619c5
-The snapshot workflow must capture this trigger commit; no semantic source files change in this marker commit.
