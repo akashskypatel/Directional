@@ -53,6 +53,7 @@ using directional::authority::FieldTransportAdjacency;
 using directional::authority::FieldTransportAtlas;
 using directional::authority::FieldTransportBarrierKind;
 using directional::authority::FieldTransportStep;
+using directional::authority::FieldTransportTransitionValue;
 using directional::authority::QuarterTurn;
 using directional::authority::SourceFaceId;
 using directional::authority::SourceFaceTopologyKey;
@@ -514,6 +515,7 @@ IndependentOracleSummary independent_oracle(
 }
 
 struct IndependentAtlasSnapshot {
+  std::vector<FieldTransportTransitionValue> transitionValues;
   std::vector<FieldTransportAdjacency> adjacencies;
   std::vector<directional::authority::FieldFaceBranchFrame> branchFrames;
   std::vector<FieldBranchTransportAdjacency> branchTransports;
@@ -531,10 +533,35 @@ struct IndependentAtlasSnapshot {
   std::uint64_t atlasDigest = 0U;
 };
 
-IndependentAtlasSnapshot independent_snapshot(const FieldTransportAtlas &atlas) {
+IndependentAtlasSnapshot independent_snapshot(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
+    const CrossFieldResult &field, const FieldTransportAtlas &atlas) {
+  std::vector<FieldTransportTransitionValue> transitionValues;
+  for (const CrossFieldEdgeTransition &transition : field.edgeTransitions) {
+    if (transition.firstFace < 0 || transition.secondFace < 0) continue;
+    const auto sourceEdge = SourceEdgeTopologyKey::from_indices(
+        transition.sourceVertex0, transition.sourceVertex1,
+        static_cast<std::size_t>(mesh.V.rows()));
+    const auto first = SourceFaceId::from_index(
+        transition.firstFace, static_cast<std::size_t>(mesh.F.rows()));
+    const auto second = SourceFaceId::from_index(
+        transition.secondFace, static_cast<std::size_t>(mesh.F.rows()));
+    if (!sourceEdge || !first || !second) continue;
+    const QuarterTurn forward = QuarterTurn::from_integer(transition.matching);
+    transitionValues.push_back(FieldTransportTransitionValue{
+        sourceEdge.value(), first.value(), second.value(),
+        sourceAuthority.topology_for_row(first.value()),
+        sourceAuthority.topology_for_row(second.value()), forward,
+        forward.inverse(), transition.matching, transition.effort});
+  }
+  std::sort(transitionValues.begin(), transitionValues.end(),
+            [](const FieldTransportTransitionValue &first,
+               const FieldTransportTransitionValue &second) {
+              return first.sourceEdge < second.sourceEdge;
+            });
   return IndependentAtlasSnapshot{
-      atlas.adjacencies(), atlas.branch_topology().frames(),
-      atlas.branch_topology().transports(),
+      std::move(transitionValues), atlas.adjacencies(),
+      atlas.branch_topology().frames(), atlas.branch_topology().transports(),
       atlas.branch_topology().singularity_port_attachments(),
       atlas.branch_topology().semantic_digest(),
       atlas.nontraversable_edges(), atlas.cycles(),
@@ -715,6 +742,31 @@ std::uint64_t independent_atlas_digest(
   std::uint64_t hash = kIndependentFnvOffset;
   independent_consume(hash, snapshot.sourceDigest);
   independent_consume(hash, snapshot.branchTopologyDigest);
+
+  independent_consume(hash, snapshot.transitionValues.size());
+  for (const FieldTransportTransitionValue &value :
+       snapshot.transitionValues) {
+    independent_consume(hash, value.sourceEdge.first().index());
+    independent_consume(hash, value.sourceEdge.second().index());
+    const bool canonicalForward =
+        value.firstFaceTopology < value.secondFaceTopology;
+    independent_consume_face(
+        hash, canonicalForward ? value.firstFaceTopology
+                               : value.secondFaceTopology);
+    independent_consume_face(
+        hash, canonicalForward ? value.secondFaceTopology
+                               : value.firstFaceTopology);
+    independent_consume(
+        hash, (canonicalForward ? value.forward : value.reverse).value());
+    independent_consume(
+        hash, (canonicalForward ? value.reverse : value.forward).value());
+    independent_consume_signed(
+        hash, canonicalForward ? value.forwardLift : -value.forwardLift);
+    double canonicalEffort = canonicalForward ? value.effort : -value.effort;
+    if (canonicalEffort == 0.0) canonicalEffort = 0.0;
+    independent_consume(hash,
+                        std::bit_cast<std::uint64_t>(canonicalEffort));
+  }
 
   independent_consume(hash, snapshot.adjacencies.size());
   for (const FieldTransportAdjacency &adjacency : snapshot.adjacencies) {
@@ -1586,6 +1638,15 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     }
   }
 
+  std::map<SourceEdgeTopologyKey, const FieldTransportTransitionValue *>
+      transitionValues;
+  for (const FieldTransportTransitionValue &candidate :
+       snapshot.transitionValues) {
+    if (!transitionValues.emplace(candidate.sourceEdge, &candidate).second) {
+      return FieldAtlasBuildErrorCode::DuplicateAdjacency;
+    }
+  }
+
   std::map<SourceEdgeTopologyKey, const FieldTransportAdjacency *> adjacency;
   for (const FieldTransportAdjacency &candidate : snapshot.adjacencies) {
     if (!adjacency.emplace(candidate.sourceEdge, &candidate).second) {
@@ -1616,6 +1677,49 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     std::optional<FieldTransportBarrierKind> expectedBarrier;
     if (!second.has_value()) {
       expectedBarrier = FieldTransportBarrierKind::SourceBoundary;
+      if (transitionValues.count(edge) != 0U) {
+        return FieldAtlasBuildErrorCode::CanonicalBindingMismatch;
+      }
+    } else {
+      const auto rawFound = raw.find(edge);
+      const auto valueFound = transitionValues.find(edge);
+      if (rawFound == raw.end() || valueFound == transitionValues.end()) {
+        return FieldAtlasBuildErrorCode::MissingAdjacency;
+      }
+      const CrossFieldEdgeTransition &transition = *rawFound->second;
+      const FieldTransportTransitionValue &value = *valueFound->second;
+      const bool rawForward =
+          transition.firstFace == firstRaw && transition.secondFace == secondRaw;
+      const bool rawReverse =
+          transition.firstFace == secondRaw && transition.secondFace == firstRaw;
+      if (!rawForward && !rawReverse) {
+        return FieldAtlasBuildErrorCode::NonReciprocalAdjacency;
+      }
+      const int expectedLift =
+          rawForward ? transition.matching : -transition.matching;
+      const double expectedEffort =
+          rawForward ? transition.effort : -transition.effort;
+      const IndependentEdgeMeasurement sourceMeasurement =
+          independent_edge_measurement(mesh, field, transition.firstFace,
+                                       transition.secondFace, edge);
+      if (std::abs(sourceMeasurement.effort - transition.effort) >= 1.0e-6 ||
+          QuarterTurn::from_integer(sourceMeasurement.matching) !=
+              QuarterTurn::from_integer(transition.matching)) {
+        return FieldAtlasBuildErrorCode::NonReciprocalAdjacency;
+      }
+      const QuarterTurn expectedForward =
+          QuarterTurn::from_integer(expectedLift);
+      if (value.firstFace != first || value.secondFace != *second ||
+          value.firstFaceTopology != rowTopology[first.index()] ||
+          value.secondFaceTopology != rowTopology[second->index()] ||
+          value.forward != expectedForward ||
+          value.reverse != expectedForward.inverse() ||
+          value.forwardLift != expectedLift || value.effort != expectedEffort) {
+        return FieldAtlasBuildErrorCode::NonReciprocalAdjacency;
+      }
+    }
+    if (!second.has_value()) {
+      // Source-boundary classification was established above.
     } else if (hardFeatureEdges.count(edge) != 0U) {
       expectedBarrier = FieldTransportBarrierKind::HardFeature;
     } else if (sourceAuthority.region_for_row(first) !=
@@ -1705,7 +1809,12 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
       return FieldAtlasBuildErrorCode::NonReciprocalAdjacency;
     }
   }
-  if (adjacency.size() != traversableCount ||
+  std::size_t interiorEdgeCount = 0U;
+  for (int edgeIndex = 0; edgeIndex < mesh.EF.rows(); ++edgeIndex) {
+    if (mesh.EF(edgeIndex, 1) >= 0) ++interiorEdgeCount;
+  }
+  if (transitionValues.size() != interiorEdgeCount ||
+      adjacency.size() != traversableCount ||
       branchTransportByEdge.size() != traversableCount) {
     return FieldAtlasBuildErrorCode::DuplicateAdjacency;
   }
@@ -2202,7 +2311,8 @@ TEST(FieldTransportAtlas,
   EXPECT_EQ(atlas.quadrangulability().atlas_digest(),
             directional::authority::field_transport_atlas_hash(atlas));
   EXPECT_FALSE(independent_validate_snapshot(
-      mesh, *sourceAuthority, field, {}, independent_snapshot(atlas))
+      mesh, *sourceAuthority, field, {},
+      independent_snapshot(mesh, *sourceAuthority, field, atlas))
                    .has_value());
 
   const auto &adjacency = atlas.adjacencies().front();
@@ -2302,7 +2412,8 @@ TEST(FieldTransportAtlas, IndependentOracleRejectsCycleOrderingTamper) {
   const CrossFieldResult field = make_zero_transport_field(mesh);
   auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
   ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
-  const IndependentAtlasSnapshot baseline = independent_snapshot(built.value());
+  const IndependentAtlasSnapshot baseline =
+      independent_snapshot(mesh, *sourceAuthority, field, built.value());
   ASSERT_FALSE(independent_validate_snapshot(
       mesh, *sourceAuthority, field, {}, baseline));
 
@@ -2396,7 +2507,8 @@ TEST(FieldTransportAtlas,
   EXPECT_EQ(expectedBoundary->support,
             independent_published_support(*published));
 
-  const IndependentAtlasSnapshot baseline = independent_snapshot(built.value());
+  const IndependentAtlasSnapshot baseline =
+      independent_snapshot(mesh, *sourceAuthority, field, built.value());
   EXPECT_FALSE(independent_validate_snapshot(
       mesh, *sourceAuthority, field, {}, baseline));
 
@@ -2486,7 +2598,7 @@ TEST(FieldTransportAtlas,
   auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
   ASSERT_TRUE(built);
   const IndependentAtlasSnapshot baseline =
-      independent_snapshot(built.value());
+      independent_snapshot(mesh, *sourceAuthority, field, built.value());
   ASSERT_FALSE(independent_validate_snapshot(
       mesh, *sourceAuthority, field, {}, baseline));
 
@@ -2611,6 +2723,65 @@ TEST(FieldTransportAtlas, ClassifiesHardFeaturesAsNontraversableCuts) {
       });
   EXPECT_EQ(1, hard);
   EXPECT_EQ(2U, built.value().component_topology().size());
+}
+
+TEST(FieldTransportAtlas,
+     RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency) {
+  const TriMesh mesh = make_square_mesh();
+  int interiorEdge = -1;
+  for (int edge = 0; edge < mesh.EF.rows(); ++edge) {
+    if (mesh.EF(edge, 1) >= 0) interiorEdge = edge;
+  }
+  ASSERT_GE(interiorEdge, 0);
+  const SourceEdgeTopologyKey sourceEdge = edge_key(mesh, interiorEdge);
+  const std::set<SourceEdgeTopologyKey> hardEdges{sourceEdge};
+  const auto sourceAuthority = make_source_authority(mesh, hardEdges);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const CrossFieldResult field = make_zero_transport_field(mesh);
+
+  auto built = FieldTransportAtlas::make(
+      mesh, *sourceAuthority, hardEdges, field);
+  ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
+  const FieldTransportAtlas &atlas = built.value();
+  const SourceFaceId first = SourceFaceId::from_index(
+      mesh.EF(interiorEdge, 0), static_cast<std::size_t>(mesh.F.rows())).value();
+  const SourceFaceId second = SourceFaceId::from_index(
+      mesh.EF(interiorEdge, 1), static_cast<std::size_t>(mesh.F.rows())).value();
+  const auto raw = std::find_if(
+      field.edgeTransitions.begin(), field.edgeTransitions.end(),
+      [&](const CrossFieldEdgeTransition &candidate) {
+        return candidate.sourceEdge == interiorEdge;
+      });
+  ASSERT_NE(field.edgeTransitions.end(), raw);
+  const bool rawForward =
+      raw->firstFace == static_cast<int>(first.index()) &&
+      raw->secondFace == static_cast<int>(second.index());
+  ASSERT_TRUE(rawForward ||
+              (raw->firstFace == static_cast<int>(second.index()) &&
+               raw->secondFace == static_cast<int>(first.index())));
+  const int expectedLift = rawForward ? raw->matching : -raw->matching;
+  const double expectedEffort = rawForward ? raw->effort : -raw->effort;
+
+  const auto forward = atlas.transition_value(sourceEdge, first, second);
+  const auto reverse = atlas.transition_value(sourceEdge, second, first);
+  ASSERT_TRUE(forward.has_value());
+  ASSERT_TRUE(reverse.has_value());
+  EXPECT_EQ(QuarterTurn::from_integer(expectedLift), forward->transport);
+  EXPECT_EQ(expectedLift, forward->signedLift);
+  EXPECT_EQ(expectedEffort, forward->effort);
+  EXPECT_EQ(forward->transport.inverse(), reverse->transport);
+  EXPECT_EQ(-forward->signedLift, reverse->signedLift);
+  EXPECT_EQ(-forward->effort, reverse->effort);
+  EXPECT_FALSE(atlas.transport(sourceEdge, first, second).has_value());
+  EXPECT_FALSE(atlas.transport(sourceEdge, second, first).has_value());
+  EXPECT_EQ(nullptr, atlas.find_adjacency(sourceEdge));
+  const auto barrier = std::find_if(
+      atlas.nontraversable_edges().begin(), atlas.nontraversable_edges().end(),
+      [&](const FieldNonTraversableEdge &candidate) {
+        return candidate.sourceEdge == sourceEdge;
+      });
+  ASSERT_NE(atlas.nontraversable_edges().end(), barrier);
+  EXPECT_EQ(FieldTransportBarrierKind::HardFeature, barrier->kind);
 }
 
 TEST(FieldTransportAtlas,
@@ -3111,7 +3282,8 @@ TEST(FieldTransportAtlas,
   ASSERT_TRUE(relabeled);
   EXPECT_FALSE(independent_validate_snapshot(
       relabeledMesh, *relabeledAuthority, relabeledField, {},
-      independent_snapshot(relabeled.value()))
+      independent_snapshot(relabeledMesh, *relabeledAuthority,
+                           relabeledField, relabeled.value()))
                    .has_value());
 
   EXPECT_EQ(baselineOracle.traversableEdges,
@@ -3161,7 +3333,8 @@ TEST(FieldTransportAtlas, PublishesCanonicalBranchFramesAndBoundaryPairings) {
   EXPECT_TRUE(sawDistinctCarriers);
   EXPECT_NE(0U, topology.semantic_digest());
   EXPECT_FALSE(independent_validate_snapshot(
-      mesh, *sourceAuthority, field, {}, independent_snapshot(built.value())));
+      mesh, *sourceAuthority, field, {},
+      independent_snapshot(mesh, *sourceAuthority, field, built.value())));
 }
 
 TEST(FieldTransportAtlas, PublishesCheckedSingularityPortAttachments) {
@@ -3310,7 +3483,8 @@ TEST(FieldTransportAtlas, BranchTopologyIsInvariantToEquivalentZ4Relabeling) {
       << describe_field_atlas_build_error(baseline.error());
   EXPECT_FALSE(independent_validate_snapshot(
       mesh, *sourceAuthority, baselineField, {},
-      independent_snapshot(baseline.value())));
+      independent_snapshot(mesh, *sourceAuthority, baselineField,
+                           baseline.value())));
 
   const std::vector<int> shifts{0, 1, 3, 2};
   CrossFieldResult relabeledField = gauge_relabel_field(mesh, baselineField, shifts);
@@ -3341,7 +3515,8 @@ TEST(FieldTransportAtlas, BranchTopologyIsInvariantToEquivalentZ4Relabeling) {
       << describe_field_atlas_build_error(relabeled.error());
   EXPECT_FALSE(independent_validate_snapshot(
       mesh, *sourceAuthority, relabeledField, {},
-      independent_snapshot(relabeled.value())));
+      independent_snapshot(mesh, *sourceAuthority, relabeledField,
+                           relabeled.value())));
   EXPECT_EQ(baseline.value().branch_topology().frames(),
             relabeled.value().branch_topology().frames());
   EXPECT_EQ(baseline.value().branch_topology().transports(),
@@ -3395,7 +3570,8 @@ TEST(FieldTransportAtlas,
   auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
   ASSERT_TRUE(built)
       << describe_field_atlas_build_error(built.error());
-  const IndependentAtlasSnapshot baseline = independent_snapshot(built.value());
+  const IndependentAtlasSnapshot baseline =
+      independent_snapshot(mesh, *sourceAuthority, field, built.value());
   ASSERT_FALSE(independent_validate_snapshot(
       mesh, *sourceAuthority, field, {}, baseline));
 

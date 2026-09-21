@@ -17176,9 +17176,6 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       const auto action =
           periodic_action_for_pair(first, second, generatorRotation);
       if (!action.has_value() ||
-          generatorRoute->carrier_identity() == first.route.carrier_identity() ||
-          generatorRoute->carrier_identity() ==
-              first.route.reversed().carrier_identity() ||
           generatorRoute->composed_transport().rotation != action->rotation) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
