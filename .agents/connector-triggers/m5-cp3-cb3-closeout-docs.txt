@@ -1,0 +1,4 @@
+turn=M5-CP3-CB3
+purpose=apply durable closeout docs and frozen R2 plan
+base_sha=9edd3551ef030226d28eb8cdde0eb8d11fd8884b
+retry=0
