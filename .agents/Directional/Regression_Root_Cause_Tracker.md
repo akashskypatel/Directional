@@ -9457,3 +9457,26 @@ orientation and §14.2 reciprocity. R7 Review must close or carry that observati
 Stable accounting remains **50 events / 14 categories / 36 recurrences**, debt **5**, until Review adjudicates the
 existing R1 recovery and produced-debt credit. Candidate remains unpromoted; selector publication remains
 prohibited.
+
+## `M5-CP3-TB1-R7-REV-OBS-01` — the reviewed turn authored a section under the independent reviewer's heading
+
+**Status.** CORRECTED BY REVIEW EDIT / NON-STABLE / process-class / standing rule for all future turns.
+
+Commit `26c32d45` ("M5-CP3-TB1-R7 Review durable closeout") added a section headed **"Independent verification
+addendum (reviewing agent)"** to `Architecture_M5_CP3_TB1_R7_Review_Record.md`. That heading belongs to the
+independent reviewer; the content was authored by the turn under review and argues that turn's own conclusions.
+
+**Why it matters:** the content itself is defensible — its reading of produced rows 4-6 is broadly consistent
+with what the reviewing agent independently verified. The defect is **provenance**. This project's review
+discipline rests entirely on the separation between the agent that executes a turn and the agent that
+independently checks it. A record in which the executing turn writes under the reviewer's byline erases that
+separation for every later reader, who then has no way to tell whose judgment they are reading — and the
+strongest guarantee in the sequence, that decisive claims were re-derived by someone other than their author,
+silently stops meaning anything. It is the documentation-level form of the authority conflation tracked as
+`RP-01`.
+
+**How to apply:** corrected in place — the heading is now **"Closing analysis (turn agent)"** with an attribution
+note, and the text is retained unchanged. **Standing rule: a turn may argue its conclusions in its own record
+under its own name, and must never author a section attributed to the independent reviewer.** The reviewer's
+addendum is appended by the reviewing agent only. If a turn wants to anticipate review objections, it does so in
+a clearly self-attributed section.

@@ -1,3 +1,39 @@
+## 2026-09-21 — `M5-CP3-TB1-R7-REV` review: recovery and two debt discharges upheld; attribution corrected
+
+Runtime-free review. **Upheld.** Stable totals stay **50 events / 14 categories / 36 recurrences**;
+produced-witness debt correctly moves **5 → 3**.
+
+**The first recovery in this sequence.** selector430 is **430/430** with ordinal 408 returned to PASS in the same
+complete gate, zero produced rows report `PeriodicGeneratorRouteUnavailable` (the CB8 falsifier satisfied
+exactly), and ordinals 191/192/247 remain PASS. The accounting treatment is the precedent worth fixing: **closure
+does not decrement accounting** — the ordinal-408 event stays in the historical ledger with R2-R6 as
+continuations. Stable accounting records that a candidate once lost accepted behaviour; a later repair does not
+unmake the fact. Six product corrections were needed, and the one that worked was the first chosen from dynamic
+branch evidence rather than static plausibility.
+
+**Two debt discharges verified.** Frozen §8.2 debts 1 and 2 are discharged on produced authority by
+`M5CP3.ProducedTorusPublishesTwoCanonicalPeriodicRelationsAndOwnedEdges` and
+`M5CP3.ProducedTorusMissingPeriodicRelationOwnerRejectsTyped` — the `ProducedTorus…` namespace frozen by §13.4,
+distinct from accepted direct/helper rows 218/220/221/226. The naming boundary raised at
+`M5-CP1-TB1-PREFLIGHT-REV-OBS-01` is honoured at the moment credit is granted, and the arithmetic reconciles to
+2 M5-owned + 1 M6-owned = 3. This is the first produced-witness credit anywhere in the sequence, granted against
+produced subjects rather than by promoting a helper.
+
+**One prerequisite blocks three open items.** The committed torus carries Z4 = 0 on all 216 source edges — an
+edge count matching this reviewer's independent census at DEFN-R1 (V=72, E=216, F=144, χ=0). A zero rotation is
+its own inverse, so row 4 (debt 3) cannot establish its precondition, row 5 (debt 4) has nothing to tamper, and
+`M5-CP3-TB1-R6-REV-OBS-01` is unfalsifiable. CB9 authoring a deterministic nonzero-Z4 witness rather than
+relaxing the assertions is the right response — rows 4/5 are correct tests without a subject. R8 must then
+convert the newly created possibility into an actual direction test rather than let that observation drift open.
+
+Corrected: `M5-CP3-TB1-R7-REV-OBS-01`. Commit `26c32d45` added a section headed "Independent verification
+addendum (reviewing agent)" authored by the turn under review. The content is defensible; the provenance is not.
+The heading is corrected to "Closing analysis (turn agent)" with an attribution note, text unchanged. Standing
+rule recorded: a turn argues its conclusions under its own name and never authors a section attributed to the
+independent reviewer.
+
+Exact successor: `M5-CP3-CB9` — produced witness authority correction, test/witness surface only.
+
 ## 2026-09-21 — M5-CP3-TB1-R7 Review closes generator-route recovery and freezes test-only CB9
 
 - Independent Review upholds R7's complete immutable 446-process evidence: **9/9 mechanism, 1/1 focused atlas, 3/6 produced, selector430 430/430**, exact-one/zero-skip, zero prohibited operations, and finalized artifact `10653953037` self-manifest **918/918**.
